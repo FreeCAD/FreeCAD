@@ -458,36 +458,42 @@ class BIM_ProjectManager:
             for i in range(self.form.groupsList.count()):
                 groups.append(self.form.groupsList.item(i).text())
 
-            s = "# FreeCAD BIM Project setup preset " + name + "\n"
-            s += "groupNewDocument=" + str(int(self.form.groupNewProject.isChecked())) + "\n"
-            s += "projectName=" + self.form.projectName.text() + "\n"
-            s += "groupSite=" + str(int(self.form.groupSite.isChecked())) + "\n"
+            form = self.form
 
-            s += "siteName=" + self.form.siteName.text() + "\n"
-            s += "siteAddress=" + self.form.siteAddress.text() + "\n"
-            s += "siteLongitude=" + str(self.form.siteLongitude.value()) + "\n"
-            s += "siteLatitude=" + str(self.form.siteLatitude.value()) + "\n"
-            s += "siteDeviation=" + str(self.form.siteDeviation.value()) + "\n"
-            s += "siteElevation=" + self.form.siteElevation.text() + "\n"
+            presets: dict[str, object] = {
+                "groupNewDocument": int(form.groupNewProject.isChecked()),
+                "projectName": form.projectName.text(),
+                "groupSite": int(form.groupSite.isChecked()),
+                "siteName": form.siteName.text(),
+                "siteAddress": form.siteAddress.text(),
+                "siteLongitude": form.siteLongitude.value(),
+                "siteLatitude": form.siteLatitude.value(),
+                "siteDeviation": form.siteDeviation.value(),
+                "siteElevation": form.siteElevation.text(),
+                "groupBuilding": int(form.groupBuilding.isChecked()),
+                "buildingName": form.buildingName.text(),
+                "buildingUse": form.buildingUse.currentIndex(),
+                "buildingLength": form.buildingLength.text(),
+                "buildingWidth": form.buildingWidth.text(),
+                "countVAxes": form.countVAxes.value(),
+                "distVAxes": form.distVAxes.text(),
+                "countHAxes": form.countHAxes.value(),
+                "distHAxes": form.distHAxes.text(),
+                "countLevels": form.countLevels.value(),
+                "levelHeight": form.levelHeight.text(),
+                "lineWidth": form.lineWidth.value(),
+                "lineColor": form.lineColor.property("color").getRgbF()[:3],
+                "groups": ";;".join(groups),
+                "addHumanFigure": int(form.addHumanFigure.isChecked()),
+            }
 
-            s += "groupBuilding=" + str(int(self.form.groupBuilding.isChecked())) + "\n"
-            s += "buildingName=" + self.form.buildingName.text() + "\n"
-            s += "buildingUse=" + str(self.form.buildingUse.currentIndex()) + "\n"
-            s += "buildingLength=" + self.form.buildingLength.text() + "\n"
-            s += "buildingWidth=" + self.form.buildingWidth.text() + "\n"
-            s += "countVAxes=" + str(self.form.countVAxes.value()) + "\n"
-            s += "distVAxes=" + self.form.distVAxes.text() + "\n"
-            s += "countHAxes=" + str(self.form.countHAxes.value()) + "\n"
-            s += "distHAxes=" + self.form.distHAxes.text() + "\n"
-            s += "countLevels=" + str(self.form.countLevels.value()) + "\n"
-            s += "levelHeight=" + self.form.levelHeight.text() + "\n"
-            s += "lineWidth=" + str(self.form.lineWidth.value()) + "\n"
-            s += "lineColor=" + str(self.form.lineColor.property("color").getRgbF()[:3]) + "\n"
-            s += "groups=" + ";;".join(groups) + "\n"
-            s += "addHumanFigure=" + str(int(self.form.addHumanFigure.isChecked())) + "\n"
+            preset = f"# FreeCAD BIM Project setup preset { name }\n"
+
+            for key, value in presets.items():
+                preset += f"{ key }={ value }\n"
 
             f = open(os.path.join(presetdir, name + ".txt"), "w")
-            f.write(s)
+            f.write(preset)
             f.close()
             self.fillPresets()
 
