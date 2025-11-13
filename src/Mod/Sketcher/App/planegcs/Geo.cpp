@@ -122,6 +122,10 @@ DeriVector2 Curve::Value(double /*u*/, double /*du*/, const double* /*derivparam
 }
 
 //----------------Line
+Line::Line(Point p1_, Point p2_)
+    : p1(p1_)
+    , p2(p2_)
+{}
 
 DeriVector2 Line::CalculateNormal(const Point& p, const double* derivparam) const
 {

@@ -94,6 +94,7 @@ struct Substitution
     VEC_D parameters;  // Parameters that mirror unknowns from the GCS class which could not be
                        // reduced/substituted further. The first part of the vector ([0,
                        // unknowns.size[) is fed to the solvers
+    VEC_pD unknowns;
 
     // A parameter can be reduced but not substituted or the other way around
     // reductionMap maps which parameter will replace a given parameter
@@ -106,6 +107,10 @@ struct Substitution
     std::vector<SubstitutionUpdater> constUpdaters;
 
     Substitution(const VEC_pD& initialUnknowns, const std::vector<Constraint*>& initialConstraints);
+    Substitution() = default;
+
+    // Put unknowns' values into the parameters
+    void initParams();
 
     void applyConst() const;
     void applySubst() const;

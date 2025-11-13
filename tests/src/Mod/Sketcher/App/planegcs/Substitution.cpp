@@ -317,36 +317,72 @@ TEST_F(SubstitutionTest, circleLineDist)  // NOLINT
 }
 TEST_F(SubstitutionTest, equalLineLength)  // NOLINT
 {
-    double l1x1 = -2.0;
-    double l1y1 = -5.0;
-    double l1x2 = 1.0;
-    double l1y2 = 1.0;
-    double l1l = 7.0;
-    GCS::Line l1;
-    l1.p1 = GCS::Point(&l1x1, &l1y1);
-    l1.p2 = GCS::Point(&l1x2, &l1y2);
+    // Both lines axis aligned
+    {
+        double l1x1 = -2.0;
+        double l1y1 = -5.0;
+        double l1x2 = 1.0;
+        double l1y2 = 1.0;
+        double l1l = 7.0;
+        GCS::Line l1;
+        l1.p1 = GCS::Point(&l1x1, &l1y1);
+        l1.p2 = GCS::Point(&l1x2, &l1y2);
 
-    double l2x1 = -2.0;
-    double l2y1 = -5.0;
-    double l2x2 = 1.0;
-    double l2y2 = 10.0;
-    GCS::Line l2;
-    l2.p1 = GCS::Point(&l2x1, &l2y1);
-    l2.p2 = GCS::Point(&l2x2, &l2y2);
+        double l2x1 = -2.0;
+        double l2y1 = -5.0;
+        double l2x2 = 1.0;
+        double l2y2 = 10.0;
+        GCS::Line l2;
+        l2.p1 = GCS::Point(&l2x1, &l2y1);
+        l2.p2 = GCS::Point(&l2x2, &l2y2);
 
-    GCS::ConstraintEqual l1horiz(l1.p1.y, l1.p2.y);
-    GCS::ConstraintP2PDistance l1length(l1.p1, l1.p2, &l1l);
-    GCS::ConstraintPerpendicular l2vert(l1, l2);
+        GCS::ConstraintEqual l1horiz(l1.p1.y, l1.p2.y);
+        GCS::ConstraintP2PDistance l1length(l1.p1, l1.p2, &l1l);
+        GCS::ConstraintPerpendicular l2vert(l1, l2);
 
-    GCS::ConstraintEqualLineLength l2length(l1, l2);
+        GCS::ConstraintEqualLineLength l2length(l1, l2);
 
-    std::vector<double*> unknowns = {&l1x1, &l1y1, &l1x2, &l1y2, &l2x1, &l2y1, &l2x2, &l2y2};
-    std::vector<GCS::Constraint*> constraints = {&l1horiz, &l1length, &l2vert, &l2length};
-    GCS::Substitution subst(unknowns, constraints);
+        std::vector<double*> unknowns = {&l1x1, &l1y1, &l1x2, &l1y2, &l2x1, &l2y1, &l2x2, &l2y2};
+        std::vector<GCS::Constraint*> constraints = {&l1horiz, &l1length, &l2vert, &l2length};
+        GCS::Substitution subst(unknowns, constraints);
 
-    subst.applyConst();
-    subst.applySubst();
-    subst.applyReduction();
+        subst.applyConst();
+        subst.applySubst();
+        subst.applyReduction();
 
-    EXPECT_NEAR(l2y2, l2y1 + l1l, 1e-12);
+        EXPECT_NEAR(l2y2, l2y1 + l1l, 1e-12);
+    }
+
+    // line defining length not axis aligned
+    {
+        double l1x1 = -2.0;
+        double l1y1 = -5.0;
+        double l1x2 = 1.0;
+        double l1y2 = 1.0;
+        double l1l = 7.0;
+        GCS::Line l1;
+        l1.p1 = GCS::Point(&l1x1, &l1y1);
+        l1.p2 = GCS::Point(&l1x2, &l1y2);
+
+        double l2x1 = 2.0;
+        double l2y1 = 50.0;
+        double l2x2 = 1.0;
+        double l2y2 = 10.0;
+        GCS::Line l2;
+        l2.p1 = GCS::Point(&l2x1, &l2y1);
+        l2.p2 = GCS::Point(&l2x2, &l2y2);
+
+        GCS::ConstraintP2PDistance l1length(l1.p1, l1.p2, &l1l);
+        GCS::ConstraintEqualLineLength l2length(l1, l2);
+
+        std::vector<double*> unknowns = {&l1x1, &l1y1, &l1x2, &l1y2, &l2x1, &l2y1, &l2x2, &l2y2};
+        std::vector<GCS::Constraint*> constraints = {&l1length, &l2length};
+        GCS::Substitution subst(unknowns, constraints);
+
+        subst.applyConst();
+        subst.applySubst();
+        subst.applyReduction();
+
+        EXPECT_NEAR(l2y2, l2y1 - l1l, 1e-12);
+    }
 }
