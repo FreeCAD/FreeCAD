@@ -1506,8 +1506,6 @@ bool TaskDlgAttacher::accept()
         );
         Gui::cmdAppObject(obj, "recompute()");
 
-        Gui::cmdGuiDocument(obj, "resetEdit()");
-
         Gui::Command::commitCommand();
     }
     catch (const Base::Exception& e) {
@@ -1545,3 +1543,4 @@ bool TaskDlgAttacher::reject()
 }
 
 #include "moc_TaskAttacher.cpp"
+
