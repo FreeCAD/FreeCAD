@@ -26,7 +26,7 @@
 #include <QMessageBox>
 #include <TopExp_Explorer.hxx>
 
-
+#include <App/Datums.h>
 #include <App/Document.h>
 #include <App/GeoFeatureGroupExtension.h>
 #include <App/Origin.h>
@@ -218,7 +218,6 @@ void CmdPartDesignBody::activated(int iMsg)
             return;
         }
     }
-
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Add a Body"));
 
@@ -1028,6 +1027,13 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
     std::vector<App::DocumentObject*> features = getSelection().getObjectsOfType(
         Part::Feature::getClassTypeId()
     );
+
+    // also check and include datum objects, ie. plane, line, and point
+    std::vector<App::DocumentObject*> datums = getSelection().getObjectsOfType(
+        App::DatumElement::getClassTypeId()
+    );
+    features.insert(features.end(), datums.begin(), datums.end());
+
     if (features.empty()) {
         return;
     }
