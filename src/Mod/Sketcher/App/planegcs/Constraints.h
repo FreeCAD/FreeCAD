@@ -395,7 +395,7 @@ public:
 // Difference
 class ConstraintDifference: public Constraint
 {
-private:
+public:
     double* param1()
     {
         return pvec[0];
