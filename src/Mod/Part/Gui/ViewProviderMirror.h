@@ -30,10 +30,11 @@
 
 #include <Mod/Part/Gui/ViewProvider.h>
 
-namespace PartGui {
+namespace PartGui
+{
 
 
-class PartGuiExport ViewProviderMirror : public ViewProviderPart
+class PartGuiExport ViewProviderMirror: public ViewProviderPart
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderMirror);
 
@@ -44,7 +45,7 @@ public:
     //@{
     void setupContextMenu(QMenu*, QObject*, const char*) override;
     std::vector<App::DocumentObject*> claimChildren() const override;
-    bool onDelete(const std::vector<std::string> &) override;
+    bool onDelete(const std::vector<std::string>&) override;
 
 protected:
     bool setEdit(int ModNum) override;
@@ -52,15 +53,15 @@ protected:
     //@}
 
 private:
-    static void dragStartCallback(void * data, SoDragger * d);
-    static void dragFinishCallback(void * data, SoDragger * d);
-    static void dragMotionCallback(void * data, SoDragger * d);
+    static void dragStartCallback(void* data, SoDragger* d);
+    static void dragFinishCallback(void* data, SoDragger* d);
+    static void dragMotionCallback(void* data, SoDragger* d);
 
 private:
     SoSeparator* pcEditNode;
 };
 
-class PartGuiExport ViewProviderFillet : public ViewProviderPart
+class PartGuiExport ViewProviderFillet: public ViewProviderPart
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderFillet);
 
@@ -71,7 +72,7 @@ public:
     //@{
     void setupContextMenu(QMenu*, QObject*, const char*) override;
     std::vector<App::DocumentObject*> claimChildren() const override;
-    bool onDelete(const std::vector<std::string> &) override;
+    bool onDelete(const std::vector<std::string>&) override;
 
 protected:
     void updateData(const App::Property*) override;
@@ -80,7 +81,7 @@ protected:
     //@}
 };
 
-class ViewProviderChamfer : public ViewProviderPart
+class ViewProviderChamfer: public ViewProviderPart
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderChamfer);
 
@@ -93,7 +94,7 @@ public:
     //@{
     void setupContextMenu(QMenu*, QObject*, const char*) override;
     std::vector<App::DocumentObject*> claimChildren() const override;
-    bool onDelete(const std::vector<std::string> &) override;
+    bool onDelete(const std::vector<std::string>&) override;
 
 protected:
     void updateData(const App::Property*) override;
@@ -102,7 +103,7 @@ protected:
     //@}
 };
 
-class ViewProviderRevolution : public ViewProviderPart
+class ViewProviderRevolution: public ViewProviderPart
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderRevolution);
 
@@ -113,11 +114,11 @@ public:
     ~ViewProviderRevolution() override;
 
     /// grouping handling
-    std::vector<App::DocumentObject*> claimChildren()const override;
-    bool onDelete(const std::vector<std::string> &) override;
+    std::vector<App::DocumentObject*> claimChildren() const override;
+    bool onDelete(const std::vector<std::string>&) override;
 };
 
-class ViewProviderLoft : public ViewProviderPart
+class ViewProviderLoft: public ViewProviderPart
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderLoft);
 
@@ -128,11 +129,11 @@ public:
     ~ViewProviderLoft() override;
 
     /// grouping handling
-    std::vector<App::DocumentObject*> claimChildren()const override;
-    bool onDelete(const std::vector<std::string> &) override;
+    std::vector<App::DocumentObject*> claimChildren() const override;
+    bool onDelete(const std::vector<std::string>&) override;
 };
 
-class ViewProviderSweep : public ViewProviderPart
+class ViewProviderSweep: public ViewProviderPart
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderSweep);
 
@@ -143,11 +144,11 @@ public:
     ~ViewProviderSweep() override;
 
     /// grouping handling
-    std::vector<App::DocumentObject*> claimChildren()const override;
-    bool onDelete(const std::vector<std::string> &) override;
+    std::vector<App::DocumentObject*> claimChildren() const override;
+    bool onDelete(const std::vector<std::string>&) override;
 };
 
-class ViewProviderOffset : public ViewProviderPart
+class ViewProviderOffset: public ViewProviderPart
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderOffset);
 
@@ -158,26 +159,27 @@ public:
     ~ViewProviderOffset() override;
 
     /// grouping handling
-    std::vector<App::DocumentObject*> claimChildren()const override;
+    std::vector<App::DocumentObject*> claimChildren() const override;
     void setupContextMenu(QMenu*, QObject*, const char*) override;
-    bool onDelete(const std::vector<std::string> &) override;
+    bool onDelete(const std::vector<std::string>&) override;
 
 protected:
     bool setEdit(int ModNum) override;
     void unsetEdit(int ModNum) override;
 };
 
-class ViewProviderOffset2D : public ViewProviderOffset
+class ViewProviderOffset2D: public ViewProviderOffset
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderOffset2D);
 
 public:
-    ViewProviderOffset2D(){
+    ViewProviderOffset2D()
+    {
         sPixmap = "Part_Offset2D";
     }
 };
 
-class ViewProviderThickness : public ViewProviderPart
+class ViewProviderThickness: public ViewProviderPart
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderThickness);
 
@@ -188,16 +190,16 @@ public:
     ~ViewProviderThickness() override;
 
     /// grouping handling
-    std::vector<App::DocumentObject*> claimChildren()const override;
+    std::vector<App::DocumentObject*> claimChildren() const override;
     void setupContextMenu(QMenu*, QObject*, const char*) override;
-    bool onDelete(const std::vector<std::string> &) override;
+    bool onDelete(const std::vector<std::string>&) override;
 
 protected:
     bool setEdit(int ModNum) override;
     void unsetEdit(int ModNum) override;
 };
 
-class ViewProviderRefine : public ViewProviderPart
+class ViewProviderRefine: public ViewProviderPart
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderRefine);
 
@@ -208,7 +210,7 @@ public:
     ~ViewProviderRefine() override;
 };
 
-class ViewProviderReverse : public ViewProviderPart
+class ViewProviderReverse: public ViewProviderPart
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderReverse);
 
@@ -219,7 +221,7 @@ public:
     ~ViewProviderReverse() override;
 };
 
-} // namespace PartGui
+}  // namespace PartGui
 
 
-#endif // PARTGUI_VIEWPROVIDERMIRROR_H
+#endif  // PARTGUI_VIEWPROVIDERMIRROR_H

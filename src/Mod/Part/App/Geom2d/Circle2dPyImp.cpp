@@ -22,9 +22,9 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <GCE2d_MakeCircle.hxx>
-# include <Geom2d_Circle.hxx>
-# include <gp_Circ2d.hxx>
+#include <GCE2d_MakeCircle.hxx>
+#include <Geom2d_Circle.hxx>
+#include <gp_Circ2d.hxx>
 
 
 #include <Base/GeometryPyCXX.h>
@@ -45,7 +45,7 @@ std::string Circle2dPy::representation() const
     return "<Circle2d object>";
 }
 
-PyObject *Circle2dPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject* Circle2dPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // create a new instance of Circle2dPy and the Twin object
     return new Circle2dPy(new Geom2dCircle());
@@ -55,13 +55,22 @@ PyObject *Circle2dPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // P
 int Circle2dPy::PyInit(PyObject* args, PyObject* kwds)
 {
     // circle and distance for offset
-    PyObject *pCirc;
+    PyObject* pCirc;
     double dist;
-    static const std::array<const char *, 3> keywords_cd {"Circle","Distance",nullptr};
-    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!d", keywords_cd, &(Circle2dPy::Type), &pCirc, &dist)) {
+    static const std::array<const char*, 3> keywords_cd {"Circle", "Distance", nullptr};
+    if (Base::Wrapped_ParseTupleAndKeywords(
+            args,
+            kwds,
+            "O!d",
+            keywords_cd,
+            &(Circle2dPy::Type),
+            &pCirc,
+            &dist
+        )) {
         Circle2dPy* pcCircle = static_cast<Circle2dPy*>(pCirc);
-        Handle(Geom2d_Circle) circle = Handle(Geom2d_Circle)::DownCast
-            (pcCircle->getGeom2dCirclePtr()->handle());
+        Handle(Geom2d_Circle) circle = Handle(Geom2d_Circle)::DownCast(
+            pcCircle->getGeom2dCirclePtr()->handle()
+        );
         GCE2d_MakeCircle mc(circle->Circ2d(), dist);
         if (!mc.IsDone()) {
             PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(mc.Status()));
@@ -75,13 +84,19 @@ int Circle2dPy::PyInit(PyObject* args, PyObject* kwds)
 
     // center and radius
     PyObject *pV1, *pV2, *pV3;
-    static const std::array<const char *, 3> keywords_cnr {"Center","Radius",nullptr};
+    static const std::array<const char*, 3> keywords_cnr {"Center", "Radius", nullptr};
     PyErr_Clear();
-    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!d", keywords_cnr,
-                                        Base::Vector2dPy::type_object(), &pV1,
-                                        &dist)) {
+    if (Base::Wrapped_ParseTupleAndKeywords(
+            args,
+            kwds,
+            "O!d",
+            keywords_cnr,
+            Base::Vector2dPy::type_object(),
+            &pV1,
+            &dist
+        )) {
         Base::Vector2d v1 = Py::toVector2d(pV1);
-        GCE2d_MakeCircle mc(gp_Pnt2d(v1.x,v1.y), dist);
+        GCE2d_MakeCircle mc(gp_Pnt2d(v1.x, v1.y), dist);
         if (!mc.IsDone()) {
             PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(mc.Status()));
             return -1;
@@ -92,30 +107,38 @@ int Circle2dPy::PyInit(PyObject* args, PyObject* kwds)
         return 0;
     }
 
-    static const std::array<const char *, 2> keywords_c {"Circle",nullptr};
+    static const std::array<const char*, 2> keywords_c {"Circle", nullptr};
     PyErr_Clear();
     if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!", keywords_c, &(Circle2dPy::Type), &pCirc)) {
         Circle2dPy* pcCircle = static_cast<Circle2dPy*>(pCirc);
-        Handle(Geom2d_Circle) circ1 = Handle(Geom2d_Circle)::DownCast
-            (pcCircle->getGeom2dCirclePtr()->handle());
-        Handle(Geom2d_Circle) circ2 = Handle(Geom2d_Circle)::DownCast
-            (this->getGeom2dCirclePtr()->handle());
+        Handle(Geom2d_Circle) circ1 = Handle(Geom2d_Circle)::DownCast(
+            pcCircle->getGeom2dCirclePtr()->handle()
+        );
+        Handle(Geom2d_Circle) circ2 = Handle(Geom2d_Circle)::DownCast(
+            this->getGeom2dCirclePtr()->handle()
+        );
         circ2->SetCirc2d(circ1->Circ2d());
         return 0;
     }
 
-    static const std::array<const char *, 4> keywords_ppp {"Point1","Point2","Point3",nullptr};
+    static const std::array<const char*, 4> keywords_ppp {"Point1", "Point2", "Point3", nullptr};
     PyErr_Clear();
-    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!O!O!", keywords_ppp,
-                                            Base::Vector2dPy::type_object(), &pV1,
-                                            Base::Vector2dPy::type_object(), &pV2,
-                                            Base::Vector2dPy::type_object(), &pV3)) {
+    if (Base::Wrapped_ParseTupleAndKeywords(
+            args,
+            kwds,
+            "O!O!O!",
+            keywords_ppp,
+            Base::Vector2dPy::type_object(),
+            &pV1,
+            Base::Vector2dPy::type_object(),
+            &pV2,
+            Base::Vector2dPy::type_object(),
+            &pV3
+        )) {
         Base::Vector2d v1 = Py::toVector2d(pV1);
         Base::Vector2d v2 = Py::toVector2d(pV2);
         Base::Vector2d v3 = Py::toVector2d(pV3);
-        GCE2d_MakeCircle mc(gp_Pnt2d(v1.x,v1.y),
-                            gp_Pnt2d(v2.x,v2.y),
-                            gp_Pnt2d(v3.x,v3.y));
+        GCE2d_MakeCircle mc(gp_Pnt2d(v1.x, v1.y), gp_Pnt2d(v2.x, v2.y), gp_Pnt2d(v3.x, v3.y));
         if (!mc.IsDone()) {
             PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(mc.Status()));
             return -1;
@@ -127,7 +150,7 @@ int Circle2dPy::PyInit(PyObject* args, PyObject* kwds)
     }
 
     // default circle
-    static const std::array<const char *, 1> keywords_n = {nullptr};
+    static const std::array<const char*, 1> keywords_n = {nullptr};
     PyErr_Clear();
     if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "", keywords_n) != 0) {
         Handle(Geom2d_Circle) circle = Handle(Geom2d_Circle)::DownCast(getGeom2dCirclePtr()->handle());
@@ -135,24 +158,35 @@ int Circle2dPy::PyInit(PyObject* args, PyObject* kwds)
         return 0;
     }
 
-    PyErr_SetString(PyExc_TypeError, "Circle constructor accepts:\n"
+    PyErr_SetString(
+        PyExc_TypeError,
+        "Circle constructor accepts:\n"
         "-- empty parameter list\n"
         "-- Circle\n"
         "-- Circle, Distance\n"
         "-- Center, Radius\n"
-        "-- Point1, Point2, Point3");
+        "-- Point1, Point2, Point3"
+    );
     return -1;
 }
 
-PyObject* Circle2dPy::getCircleCenter(PyObject *args)
+PyObject* Circle2dPy::getCircleCenter(PyObject* args)
 {
     PyObject* p1;
     PyObject* p2;
     PyObject* p3;
-    if (!PyArg_ParseTuple(args, "O!O!O!", Base::Vector2dPy::type_object(), &p1
-                                        , Base::Vector2dPy::type_object(), &p2
-                                        , Base::Vector2dPy::type_object(), &p3))
+    if (!PyArg_ParseTuple(
+            args,
+            "O!O!O!",
+            Base::Vector2dPy::type_object(),
+            &p1,
+            Base::Vector2dPy::type_object(),
+            &p2,
+            Base::Vector2dPy::type_object(),
+            &p3
+        )) {
         return nullptr;
+    }
 
     Base::Vector2d v1 = Py::toVector2d(p1);
     Base::Vector2d v2 = Py::toVector2d(p2);
@@ -168,18 +202,18 @@ Py::Float Circle2dPy::getRadius() const
     return Py::Float(circle->Radius());
 }
 
-void  Circle2dPy::setRadius(Py::Float arg)
+void Circle2dPy::setRadius(Py::Float arg)
 {
     Handle(Geom2d_Circle) circle = Handle(Geom2d_Circle)::DownCast(getGeom2dCirclePtr()->handle());
     circle->SetRadius((double)arg);
 }
 
-PyObject *Circle2dPy::getCustomAttributes(const char* ) const
+PyObject* Circle2dPy::getCustomAttributes(const char*) const
 {
     return nullptr;
 }
 
-int Circle2dPy::setCustomAttributes(const char* , PyObject *)
+int Circle2dPy::setCustomAttributes(const char*, PyObject*)
 {
     return 0;
 }

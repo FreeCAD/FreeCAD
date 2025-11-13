@@ -28,19 +28,19 @@
 #include <time.h>
 
 #ifndef ADAPTIVE_HPP
-#define ADAPTIVE_HPP
+# define ADAPTIVE_HPP
 
-#ifndef __DBL_MAX__
-#define __DBL_MAX__ 1.7976931348623158e+308
-#endif
+# ifndef __DBL_MAX__
+#  define __DBL_MAX__ 1.7976931348623158e+308
+# endif
 
-#ifndef __LONG_MAX__
-#define __LONG_MAX__ 2147483647
-#endif
+# ifndef __LONG_MAX__
+#  define __LONG_MAX__ 2147483647
+# endif
 
 // #define DEV_MODE
 
-#define NTOL 1.0e-7  // numeric tolerance
+# define NTOL 1.0e-7  // numeric tolerance
 
 namespace AdaptivePath
 {
@@ -96,16 +96,18 @@ public:
     double keepToolDownDistRatio = 3.0;  // keep tool down distance ratio
     OperationType opType = OperationType::otClearingInside;
 
-    std::list<AdaptiveOutput> Execute(const DPaths& stockPaths,
-                                      const DPaths& paths,
-                                      std::function<bool(TPaths)> progressCallbackFn);
+    std::list<AdaptiveOutput> Execute(
+        const DPaths& stockPaths,
+        const DPaths& paths,
+        std::function<bool(TPaths)> progressCallbackFn
+    );
 
-#ifdef DEV_MODE
+# ifdef DEV_MODE
     /*for debugging*/
     std::function<void(double cx, double cy, double radius, int color)> DrawCircleFn;
     std::function<void(const DPath&, int color)> DrawPathFn;
     std::function<void()> ClearScreenFn;
-#endif
+# endif
 
 private:
     std::list<AdaptiveOutput> results;
@@ -127,72 +129,87 @@ private:
     Path toolGeometry;  // tool geometry at coord 0,0, should not be modified
 
     void ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths);
-    bool FindEntryPoint(TPaths& progressPaths,
-                        const Paths& toolBoundPaths,
-                        const Paths& bound,
-                        ClearedArea& cleared /*output*/,
-                        IntPoint& entryPoint /*output*/,
-                        IntPoint& toolPos,
-                        DoublePoint& toolDir);
-    bool FindEntryPointOutside(TPaths& progressPaths,
-                               const Paths& toolBoundPaths,
-                               const Paths& bound,
-                               ClearedArea& cleared /*output*/,
-                               IntPoint& entryPoint /*output*/,
-                               IntPoint& toolPos,
-                               DoublePoint& toolDir);
-    double CalcCutArea(Clipper& clip,
-                       const IntPoint& toolPos,
-                       const IntPoint& newToolPos,
-                       ClearedArea& clearedArea,
-                       bool preventConventionalMode = true);
-    void AppendToolPath(TPaths& progressPaths,
-                        AdaptiveOutput& output,
-                        const Path& passToolPath,
-                        ClearedArea& clearedAreaBefore,
-                        ClearedArea& clearedAreaAfter,
-                        const Paths& toolBoundPaths);
+    bool FindEntryPoint(
+        TPaths& progressPaths,
+        const Paths& toolBoundPaths,
+        const Paths& bound,
+        ClearedArea& cleared /*output*/,
+        IntPoint& entryPoint /*output*/,
+        IntPoint& toolPos,
+        DoublePoint& toolDir
+    );
+    bool FindEntryPointOutside(
+        TPaths& progressPaths,
+        const Paths& toolBoundPaths,
+        const Paths& bound,
+        ClearedArea& cleared /*output*/,
+        IntPoint& entryPoint /*output*/,
+        IntPoint& toolPos,
+        DoublePoint& toolDir
+    );
+    double CalcCutArea(
+        Clipper& clip,
+        const IntPoint& toolPos,
+        const IntPoint& newToolPos,
+        ClearedArea& clearedArea,
+        bool preventConventionalMode = true
+    );
+    void AppendToolPath(
+        TPaths& progressPaths,
+        AdaptiveOutput& output,
+        const Path& passToolPath,
+        ClearedArea& clearedAreaBefore,
+        ClearedArea& clearedAreaAfter,
+        const Paths& toolBoundPaths
+    );
     bool IsClearPath(const Path& path, ClearedArea& clearedArea, double safetyDistanceScaled = 0);
-    bool IsAllowedToCutTrough(const IntPoint& p1,
-                              const IntPoint& p2,
-                              ClearedArea& clearedArea,
-                              const Paths& toolBoundPaths,
-                              double areaFactor = 1.5,
-                              bool skipBoundsCheck = false);
-    bool MakeLeadPath(bool leadIn,
-                      const IntPoint& startPoint,
-                      const DoublePoint& startDir,
-                      const IntPoint& beaconPoint,
-                      ClearedArea& clearedArea,
-                      const Paths& toolBoundPaths,
-                      Path& output);
+    bool IsAllowedToCutTrough(
+        const IntPoint& p1,
+        const IntPoint& p2,
+        ClearedArea& clearedArea,
+        const Paths& toolBoundPaths,
+        double areaFactor = 1.5,
+        bool skipBoundsCheck = false
+    );
+    bool MakeLeadPath(
+        bool leadIn,
+        const IntPoint& startPoint,
+        const DoublePoint& startDir,
+        const IntPoint& beaconPoint,
+        ClearedArea& clearedArea,
+        const Paths& toolBoundPaths,
+        Path& output
+    );
 
-    bool ResolveLinkPath(const IntPoint& startPoint,
-                         const IntPoint& endPoint,
-                         ClearedArea& clearedArea,
-                         Path& output);
+    bool ResolveLinkPath(
+        const IntPoint& startPoint,
+        const IntPoint& endPoint,
+        ClearedArea& clearedArea,
+        Path& output
+    );
 
     friend class EngagePoint;  // for CalcCutArea
 
     void CheckReportProgress(TPaths& progressPaths, bool force = false);
-    void AddPathsToProgress(TPaths& progressPaths,
-                            const Paths paths,
-                            MotionType mt = MotionType::mtCutting);
-    void
-    AddPathToProgress(TPaths& progressPaths, const Path pth, MotionType mt = MotionType::mtCutting);
+    void AddPathsToProgress(
+        TPaths& progressPaths,
+        const Paths paths,
+        MotionType mt = MotionType::mtCutting
+    );
+    void AddPathToProgress(TPaths& progressPaths, const Path pth, MotionType mt = MotionType::mtCutting);
     void ApplyStockToLeave(Paths& inputPaths);
 
 private:  // constants for fine tuning
     const double RESOLUTION_FACTOR = 16.0;
     const int MAX_ITERATIONS = 10;
-    const double AREA_ERROR_FACTOR =
-        0.05; /* how precise to match the cut area to optimal, reasonable value: 0.05 = 5%*/
+    const double AREA_ERROR_FACTOR = 0.05;     /* how precise to match the cut area to optimal,
+                                                  reasonable value: 0.05 = 5%*/
     const size_t ANGLE_HISTORY_POINTS = 3;     // used for angle prediction
     const int DIRECTION_SMOOTHING_BUFLEN = 3;  // gyro points - used for angle smoothing
 
 
-    const double MIN_CUT_AREA_FACTOR =
-        0.1;  // used for filtering out of insignificant cuts (should be < ENGAGE_AREA_THR_FACTOR)
+    const double MIN_CUT_AREA_FACTOR = 0.1;  // used for filtering out of insignificant cuts (should
+                                             // be < ENGAGE_AREA_THR_FACTOR)
     const double ENGAGE_AREA_THR_FACTOR = 0.5;       // influences minimal engage area
     const double ENGAGE_SCAN_DISTANCE_FACTOR = 0.2;  // influences the engage scan/stepping distance
 

@@ -43,13 +43,13 @@
 #include "XMLTools.h"
 
 #ifdef _MSC_VER
-#include <zipios++/zipios-config.h>
+# include <zipios++/zipios-config.h>
 #endif
 #include <zipios++/zipinputstream.h>
 #include <boost/iostreams/filtering_stream.hpp>
 
 #ifndef XERCES_CPP_NAMESPACE_BEGIN
-#define XERCES_CPP_NAMESPACE_QUALIFIER
+# define XERCES_CPP_NAMESPACE_QUALIFIER
 using namespace XERCES_CPP_NAMESPACE;
 #else
 XERCES_CPP_NAMESPACE_USE
@@ -168,27 +168,35 @@ T Base::XMLReader::getAttribute(const char* AttrName) const
 }
 
 // Explicit template instantiation
-template BaseExport bool Base::XMLReader::getAttribute<bool>(const char* AttrName,
-                                                             bool defaultValue) const;
+template BaseExport bool Base::XMLReader::getAttribute<bool>(
+    const char* AttrName,
+    bool defaultValue
+) const;
 template BaseExport bool Base::XMLReader::getAttribute<bool>(const char* AttrName) const;
-template BaseExport const char*
-Base::XMLReader::getAttribute<const char*>(const char* AttrName, const char* defaultValue) const;
-template BaseExport const char*
-Base::XMLReader::getAttribute<const char*>(const char* AttrName) const;
-template BaseExport double Base::XMLReader::getAttribute<double>(const char* AttrName,
-                                                                 double defaultValue) const;
+template BaseExport const char* Base::XMLReader::getAttribute<const char*>(
+    const char* AttrName,
+    const char* defaultValue
+) const;
+template BaseExport const char* Base::XMLReader::getAttribute<const char*>(const char* AttrName) const;
+template BaseExport double Base::XMLReader::getAttribute<double>(
+    const char* AttrName,
+    double defaultValue
+) const;
 template BaseExport double Base::XMLReader::getAttribute<double>(const char* AttrName) const;
-template BaseExport int Base::XMLReader::getAttribute<int>(const char* AttrName,
-                                                           int defaultValue) const;
+template BaseExport int Base::XMLReader::getAttribute<int>(const char* AttrName, int defaultValue) const;
 template BaseExport int Base::XMLReader::getAttribute<int>(const char* AttrName) const;
-template BaseExport long Base::XMLReader::getAttribute<long>(const char* AttrName,
-                                                             long defaultValue) const;
+template BaseExport long Base::XMLReader::getAttribute<long>(
+    const char* AttrName,
+    long defaultValue
+) const;
 template BaseExport long Base::XMLReader::getAttribute<long>(const char* AttrName) const;
-template BaseExport unsigned long
-Base::XMLReader::getAttribute<unsigned long>(const char* AttrName,
-                                             unsigned long defaultValue) const;
-template BaseExport unsigned long
-Base::XMLReader::getAttribute<unsigned long>(const char* AttrName) const;
+template BaseExport unsigned long Base::XMLReader::getAttribute<unsigned long>(
+    const char* AttrName,
+    unsigned long defaultValue
+) const;
+template BaseExport unsigned long Base::XMLReader::getAttribute<unsigned long>(
+    const char* AttrName
+) const;
 
 bool Base::XMLReader::hasAttribute(const char* AttrName) const
 {
@@ -341,8 +349,7 @@ std::streamsize Base::XMLReader::read(char_type* s, std::streamsize n)
     }
 
     for (;;) {
-        std::streamsize copy_size =
-            static_cast<std::streamsize>(Characters.size()) - CharacterOffset;
+        std::streamsize copy_size = static_cast<std::streamsize>(Characters.size()) - CharacterOffset;
         if (n < copy_size) {
             copy_size = n;
         }
@@ -409,7 +416,8 @@ std::istream& Base::XMLReader::beginCharStream(CharStreamFormat format)
     auto* filteringStream = dynamic_cast<boost::iostreams::filtering_istream*>(CharStream.get());
     if (format == CharStreamFormat::Base64Encoded) {
         filteringStream->push(
-            base64_decoder(Base::base64DefaultBufferSize, Base64ErrorHandling::silent));
+            base64_decoder(Base::base64DefaultBufferSize, Base64ErrorHandling::silent)
+        );
     }
     filteringStream->push(boost::ref(*this));
     return *CharStream;
@@ -479,8 +487,10 @@ void Base::XMLReader::readFiles(zipios::ZipInputStream& zipstream) const
                 // less data than the file size would allow.
                 // All what we need to do is to notify the user about the
                 // failure.
-                Base::Console().error("Reading failed from embedded file: %s\n",
-                                      entry->toString().c_str());
+                Base::Console().error(
+                    "Reading failed from embedded file: %s\n",
+                    entry->toString().c_str()
+                );
                 FailedFiles.push_back(jt->FileName);
             }
             // Go to the next registered file name
@@ -560,10 +570,12 @@ void Base::XMLReader::endDocument()
     ReadType = EndDocument;
 }
 
-void Base::XMLReader::startElement(const XMLCh* const /*uri*/,
-                                   const XMLCh* const localname,
-                                   const XMLCh* const /*qname*/,
-                                   const XERCES_CPP_NAMESPACE_QUALIFIER Attributes& attrs)
+void Base::XMLReader::startElement(
+    const XMLCh* const /*uri*/,
+    const XMLCh* const localname,
+    const XMLCh* const /*qname*/,
+    const XERCES_CPP_NAMESPACE_QUALIFIER Attributes& attrs
+)
 {
     Level++;  // new scope
     LocalName = StrX(localname).c_str();
@@ -577,9 +589,7 @@ void Base::XMLReader::startElement(const XMLCh* const /*uri*/,
     ReadType = StartElement;
 }
 
-void Base::XMLReader::endElement(const XMLCh* const /*uri*/,
-                                 const XMLCh* const localname,
-                                 const XMLCh* const /*qname*/)
+void Base::XMLReader::endElement(const XMLCh* const /*uri*/, const XMLCh* const localname, const XMLCh* const /*qname*/)
 {
     Level--;  // end of scope
     LocalName = StrX(localname).c_str();

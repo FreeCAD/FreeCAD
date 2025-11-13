@@ -149,8 +149,7 @@ TEST_F(ElementMapTest, setElementNameWithHashing)
     const Data::MappedName expectedName(element);
 
     // Act
-    elementMap
-        .encodeElementName(element.getType()[0], elementNameHolder, ss, nullptr, 0, nullptr, 0);
+    elementMap.encodeElementName(element.getType()[0], elementNameHolder, ss, nullptr, 0, nullptr, 0);
     auto resultName = elementMap.setElementName(element, elementNameHolder, 0, _sids);
     auto mappedToElement = elementMap.find(element);
 
@@ -378,25 +377,29 @@ TEST_F(ElementMapTest, mimicSimpleUnion)
     //   act: simulate a union/fuse operation
     auto parent = cube.elementMapPtr->getAll()[5];
     Data::MappedName postfixHolder(std::string(Data::POSTFIX_MOD) + "2");
-    unionPart.elementMapPtr->encodeElementName(postfixHolder[0],
-                                               postfixHolder,
-                                               ss,
-                                               nullptr,
-                                               unionPart.Tag,
-                                               nullptr,
-                                               unionPart.Tag);
+    unionPart.elementMapPtr->encodeElementName(
+        postfixHolder[0],
+        postfixHolder,
+        ss,
+        nullptr,
+        unionPart.Tag,
+        nullptr,
+        unionPart.Tag
+    );
     auto postfixStr = postfixHolder.toString() + Data::ELEMENT_MAP_PREFIX + PartOp;
 
     //   act: with the fuse op, name against the cube's Face6
     Data::MappedName uface3Holder(parent.index);
     // we will invoke the encoder for face 3
-    unionPart.elementMapPtr->encodeElementName(uface3Holder[0],
-                                               uface3Holder,
-                                               ss,
-                                               nullptr,
-                                               unionPart.Tag,
-                                               postfixStr.c_str(),
-                                               cube.Tag);
+    unionPart.elementMapPtr->encodeElementName(
+        uface3Holder[0],
+        uface3Holder,
+        ss,
+        nullptr,
+        unionPart.Tag,
+        postfixStr.c_str(),
+        cube.Tag
+    );
     unionPart.elementMapPtr->setElementName(uface3, uface3Holder, unionPart.Tag, nullptr, true);
 
     // act: generate a full toponame string for testing  purposes
@@ -443,22 +446,26 @@ TEST_F(ElementMapTest, mimicOperationAgainstSelf)
     // Act
     //   act: with the mystery op, name against its own Face6 for some reason
     Data::MappedName postfixHolder(workbenchId);
-    finalPart.elementMapPtr->encodeElementName(postfixHolder[0],
-                                               postfixHolder,
-                                               ss,
-                                               nullptr,
-                                               finalPart.Tag,
-                                               nullptr,
-                                               finalPart.Tag);
+    finalPart.elementMapPtr->encodeElementName(
+        postfixHolder[0],
+        postfixHolder,
+        ss,
+        nullptr,
+        finalPart.Tag,
+        nullptr,
+        finalPart.Tag
+    );
     auto postfixStr = postfixHolder.toString() + Data::ELEMENT_MAP_PREFIX + PartOp;
     // we will invoke the encoder for face 3
-    finalPart.elementMapPtr->encodeElementName(uface3Holder[0],
-                                               uface3Holder,
-                                               ss,
-                                               nullptr,
-                                               finalPart.Tag,
-                                               postfixStr.c_str(),
-                                               finalPart.Tag);
+    finalPart.elementMapPtr->encodeElementName(
+        uface3Holder[0],
+        uface3Holder,
+        ss,
+        nullptr,
+        finalPart.Tag,
+        postfixStr.c_str(),
+        finalPart.Tag
+    );
     // override not forced
     finalPart.elementMapPtr->setElementName(uface3, uface3Holder, finalPart.Tag, nullptr, false);
 
@@ -479,8 +486,8 @@ TEST_F(ElementMapTest, mimicOperationAgainstSelf)
 TEST_F(ElementMapTest, hasChildElementMapTest)
 {
     // Arrange
-    Data::ElementMap::MappedChildElements child =
-        {Data::IndexedName("face", 1), 2, 7, 4L, Data::ElementMapPtr(), QByteArray(""), _sid};
+    Data::ElementMap::MappedChildElements child
+        = {Data::IndexedName("face", 1), 2, 7, 4L, Data::ElementMapPtr(), QByteArray(""), _sid};
     std::vector<Data::ElementMap::MappedChildElements> children = {child};
     LessComplexPart cubeFull(3L, "FullBox", _hasher);
     cubeFull.elementMapPtr->addChildElements(cubeFull.Tag, children);
@@ -508,7 +515,8 @@ TEST_F(ElementMapTest, hashChildMapsTest)
         3L,
         Data::ElementMapPtr(),
         QByteArray("abcdefghij"),  // postfix must be 10 or more bytes to invoke hasher
-        _sid};
+        _sid
+    };
     std::vector<Data::ElementMap::MappedChildElements> children = {childOne};
     cube.elementMapPtr->addChildElements(cube.Tag, children);
     auto before = _hasher->getIDMap();
@@ -533,9 +541,10 @@ TEST_F(ElementMapTest, addAndGetChildElementsTest)
         3L,
         Data::ElementMapPtr(),
         QByteArray("abcdefghij"),  // postfix must be 10 or more bytes to invoke hasher
-        _sid};
-    Data::ElementMap::MappedChildElements childTwo =
-        {Data::IndexedName("Pong", 2), 2, 7, 4L, Data::ElementMapPtr(), QByteArray("abc"), _sid};
+        _sid
+    };
+    Data::ElementMap::MappedChildElements childTwo
+        = {Data::IndexedName("Pong", 2), 2, 7, 4L, Data::ElementMapPtr(), QByteArray("abc"), _sid};
     std::vector<Data::ElementMap::MappedChildElements> children = {childOne, childTwo};
 
     // Act
@@ -544,13 +553,11 @@ TEST_F(ElementMapTest, addAndGetChildElementsTest)
 
     // Assert
     EXPECT_EQ(result.size(), 2);
-    EXPECT_TRUE(
-        std::any_of(result.begin(), result.end(), [](Data::ElementMap::MappedChildElements e) {
-            return e.indexedName.toString() == "Ping1";
-        }));
-    EXPECT_TRUE(
-        std::any_of(result.begin(), result.end(), [](Data::ElementMap::MappedChildElements e) {
-            return e.indexedName.toString() == "Pong2";
-        }));
+    EXPECT_TRUE(std::any_of(result.begin(), result.end(), [](Data::ElementMap::MappedChildElements e) {
+        return e.indexedName.toString() == "Ping1";
+    }));
+    EXPECT_TRUE(std::any_of(result.begin(), result.end(), [](Data::ElementMap::MappedChildElements e) {
+        return e.indexedName.toString() == "Pong2";
+    }));
 }
 // NOLINTEND(readability-magic-numbers)

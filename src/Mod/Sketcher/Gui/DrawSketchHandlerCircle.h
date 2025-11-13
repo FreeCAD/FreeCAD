@@ -48,16 +48,16 @@ extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGe
 
 class DrawSketchHandlerCircle;
 
-using DSHCircleController =
-    DrawSketchDefaultWidgetController<DrawSketchHandlerCircle,
-                                      /*SelectModeT*/ StateMachines::ThreeSeekEnd,
-                                      /*PAutoConstraintSize =*/3,
-                                      /*OnViewParametersT =*/OnViewParameters<3, 6>,  // NOLINT
-                                      /*WidgetParametersT =*/WidgetParameters<0, 0>,  // NOLINT
-                                      /*WidgetCheckboxesT =*/WidgetCheckboxes<0, 0>,  // NOLINT
-                                      /*WidgetComboboxesT =*/WidgetComboboxes<1, 1>,  // NOLINT
-                                      ConstructionMethods::CircleEllipseConstructionMethod,
-                                      /*bool PFirstComboboxIsConstructionMethod =*/true>;
+using DSHCircleController = DrawSketchDefaultWidgetController<
+    DrawSketchHandlerCircle,
+    /*SelectModeT*/ StateMachines::ThreeSeekEnd,
+    /*PAutoConstraintSize =*/3,
+    /*OnViewParametersT =*/OnViewParameters<3, 6>,  // NOLINT
+    /*WidgetParametersT =*/WidgetParameters<0, 0>,  // NOLINT
+    /*WidgetCheckboxesT =*/WidgetCheckboxes<0, 0>,  // NOLINT
+    /*WidgetComboboxesT =*/WidgetComboboxes<1, 1>,  // NOLINT
+    ConstructionMethods::CircleEllipseConstructionMethod,
+    /*bool PFirstComboboxIsConstructionMethod =*/true>;
 
 using DSHCircleControllerBase = DSHCircleController::ControllerBase;
 
@@ -137,10 +137,12 @@ private:
                 else {
                     firstPoint = onSketchPos;
 
-                    seekAndRenderAutoConstraint(sugConstraints[0],
-                                                onSketchPos,
-                                                Base::Vector2d(),
-                                                AutoConstraint::CURVE);
+                    seekAndRenderAutoConstraint(
+                        sugConstraints[0],
+                        onSketchPos,
+                        Base::Vector2d(),
+                        AutoConstraint::CURVE
+                    );
                 }
             } break;
             case SelectMode::SeekSecond: {
@@ -160,12 +162,13 @@ private:
                     toolWidgetManager.drawPositionAtCursor(onSketchPos);
                 }
 
-                seekAndRenderAutoConstraint(sugConstraints[1],
-                                            onSketchPos,
-                                            constructionMethod() == ConstructionMethod::Center
-                                                ? onSketchPos - centerPoint
-                                                : Base::Vector2d(),
-                                            AutoConstraint::CURVE);
+                seekAndRenderAutoConstraint(
+                    sugConstraints[1],
+                    onSketchPos,
+                    constructionMethod() == ConstructionMethod::Center ? onSketchPos - centerPoint
+                                                                       : Base::Vector2d(),
+                    AutoConstraint::CURVE
+                );
             } break;
             case SelectMode::SeekThird: {
                 try {
@@ -174,8 +177,8 @@ private:
                         return;
                     }
 
-                    centerPoint =
-                        Part::Geom2dCircle::getCircleCenter(firstPoint, secondPoint, onSketchPos);
+                    centerPoint
+                        = Part::Geom2dCircle::getCircleCenter(firstPoint, secondPoint, onSketchPos);
 
                     radius = (onSketchPos - centerPoint).Length();
 
@@ -183,10 +186,12 @@ private:
 
                     CreateAndDrawShapeGeometry();
 
-                    seekAndRenderAutoConstraint(sugConstraints[2],
-                                                onSketchPos,
-                                                Base::Vector2d(0.f, 0.f),
-                                                AutoConstraint::CURVE);
+                    seekAndRenderAutoConstraint(
+                        sugConstraints[2],
+                        onSketchPos,
+                        Base::Vector2d(0.f, 0.f),
+                        AutoConstraint::CURVE
+                    );
                 }
                 catch (Base::ValueError& e) {
                     e.reportException();
@@ -209,16 +214,21 @@ private:
             Gui::Command::commitCommand();
         }
         catch (const Base::Exception&) {
-            Gui::NotifyError(sketchgui,
-                             QT_TRANSLATE_NOOP("Notifications", "Error"),
-                             QT_TRANSLATE_NOOP("Notifications", "Failed to add circle"));
+            Gui::NotifyError(
+                sketchgui,
+                QT_TRANSLATE_NOOP("Notifications", "Error"),
+                QT_TRANSLATE_NOOP("Notifications", "Failed to add circle")
+            );
 
             Gui::Command::abortCommand();
-            THROWM(Base::RuntimeError,
-                   QT_TRANSLATE_NOOP(
-                       "Notifications",
-                       "Tool execution aborted") "\n")  // This prevents constraints from being
-                                                        // applied on non existing geometry
+            THROWM(
+                Base::RuntimeError,
+                QT_TRANSLATE_NOOP(
+                    "Notifications",
+                    "Tool execution aborted"
+                ) "\n"
+            )  // This prevents constraints from being
+               // applied on non existing geometry
         }
     }
 
@@ -233,11 +243,13 @@ private:
             generateAutoConstraintsOnElement(
                 ac1,
                 CircleGeoId,
-                Sketcher::PointPos::mid);  // add auto constraints for the center point
+                Sketcher::PointPos::mid
+            );  // add auto constraints for the center point
             generateAutoConstraintsOnElement(
                 ac2,
                 CircleGeoId,
-                Sketcher::PointPos::none);  // add auto constraints for the edge
+                Sketcher::PointPos::none
+            );  // add auto constraints for the edge
         }
         else {
 
@@ -248,15 +260,18 @@ private:
             generateAutoConstraintsOnElement(
                 ac1,
                 CircleGeoId,
-                Sketcher::PointPos::none);  // add auto constraints for the first point
+                Sketcher::PointPos::none
+            );  // add auto constraints for the first point
             generateAutoConstraintsOnElement(
                 ac2,
                 CircleGeoId,
-                Sketcher::PointPos::none);  // add auto constraints for the second point
+                Sketcher::PointPos::none
+            );  // add auto constraints for the second point
             generateAutoConstraintsOnElement(
                 ac3,
                 CircleGeoId,
-                Sketcher::PointPos::none);  // add auto constraints for the second point
+                Sketcher::PointPos::none
+            );  // add auto constraints for the second point
         }
 
         // Ensure temporary autoconstraints do not generate a redundancy and that the geometry
@@ -368,8 +383,7 @@ auto DSHCircleControllerBase::getState(int labelindex) const
                 return SelectMode::SeekSecond;
                 break;
             default:
-                THROWM(Base::ValueError,
-                       "OnViewParameter index without an associated machine state")
+                THROWM(Base::ValueError, "OnViewParameter index without an associated machine state")
         }
     }
     else {  // ConstructionMethod::ThreeRim
@@ -396,34 +410,41 @@ template<>
 void DSHCircleController::configureToolWidget()
 {
     if (!init) {  // Code to be executed only upon initialisation
-        QStringList names = {QApplication::translate("Sketcher_CreateCircle", "Center"),
-                             QApplication::translate("Sketcher_CreateCircle", "3 rim points")};
+        QStringList names = {
+            QApplication::translate("Sketcher_CreateCircle", "Center"),
+            QApplication::translate("Sketcher_CreateCircle", "3 rim points")
+        };
         toolWidget->setComboboxElements(WCombobox::FirstCombo, names);
 
         if (isConstructionMode()) {
             toolWidget->setComboboxItemIcon(
                 WCombobox::FirstCombo,
                 0,
-                Gui::BitmapFactory().iconFromTheme("Sketcher_CreateCircle_Constr"));
+                Gui::BitmapFactory().iconFromTheme("Sketcher_CreateCircle_Constr")
+            );
             toolWidget->setComboboxItemIcon(
                 WCombobox::FirstCombo,
                 1,
-                Gui::BitmapFactory().iconFromTheme("Sketcher_Create3PointCircle_Constr"));
+                Gui::BitmapFactory().iconFromTheme("Sketcher_Create3PointCircle_Constr")
+            );
         }
         else {
             toolWidget->setComboboxItemIcon(
                 WCombobox::FirstCombo,
                 0,
-                Gui::BitmapFactory().iconFromTheme("Sketcher_CreateCircle"));
+                Gui::BitmapFactory().iconFromTheme("Sketcher_CreateCircle")
+            );
             toolWidget->setComboboxItemIcon(
                 WCombobox::FirstCombo,
                 1,
-                Gui::BitmapFactory().iconFromTheme("Sketcher_Create3PointCircle"));
+                Gui::BitmapFactory().iconFromTheme("Sketcher_Create3PointCircle")
+            );
         }
 
 
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning");
+            "User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning"
+        );
         bool dimensioningDiameter = hGrp->GetBool("DimensioningDiameter", true);
         bool dimensioningRadius = hGrp->GetBool("DimensioningRadius", true);
 
@@ -444,19 +465,22 @@ void DSHCircleController::configureToolWidget()
     }
     else {
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning");
+            "User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning"
+        );
         bool dimensioningDiameter = hGrp->GetBool("DimensioningDiameter", true);
         bool dimensioningRadius = hGrp->GetBool("DimensioningRadius", true);
 
         if (dimensioningRadius && !dimensioningDiameter) {
             onViewParameters[OnViewParameter::Third]->setLabelType(
                 Gui::SoDatumLabel::RADIUS,
-                Gui::EditableDatumLabel::Function::Dimensioning);
+                Gui::EditableDatumLabel::Function::Dimensioning
+            );
         }
         else {
             onViewParameters[OnViewParameter::Third]->setLabelType(
                 Gui::SoDatumLabel::DIAMETER,
-                Gui::EditableDatumLabel::Function::Dimensioning);
+                Gui::EditableDatumLabel::Function::Dimensioning
+            );
         }
     }
 }
@@ -480,8 +504,7 @@ void DSHCircleControllerBase::doEnforceControlParameters(Base::Vector2d& onSketc
         case SelectMode::SeekSecond: {
             auto& thirdParam = onViewParameters[OnViewParameter::Third];
 
-            if (handler->constructionMethod()
-                == DrawSketchHandlerCircle::ConstructionMethod::Center) {
+            if (handler->constructionMethod() == DrawSketchHandlerCircle::ConstructionMethod::Center) {
                 if (thirdParam->isSet) {
                     double radius = (handler->isDiameter ? 0.5 : 1) * thirdParam->getValue();
                     if (radius < Precision::Confusion() && thirdParam->hasFinishedEditing) {
@@ -562,10 +585,10 @@ void DSHCircleController::adaptParameters(Base::Vector2d onSketchPos)
         case SelectMode::SeekSecond: {
             auto& thirdParam = onViewParameters[OnViewParameter::Third];
 
-            if (handler->constructionMethod()
-                == DrawSketchHandlerCircle::ConstructionMethod::Center) {
+            if (handler->constructionMethod() == DrawSketchHandlerCircle::ConstructionMethod::Center) {
                 ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-                    "User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning");
+                    "User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning"
+                );
                 bool dimDiameter = hGrp->GetBool("DimensioningDiameter", true);
                 bool dimRadius = hGrp->GetBool("DimensioningRadius", true);
                 bool useRadius = dimRadius && !dimDiameter;
@@ -690,35 +713,43 @@ void DSHCircleController::addConstraints()
         using namespace Sketcher;
 
         auto constraintx0 = [&]() {
-            ConstraintToAttachment(GeoElementId(firstCurve, PointPos::mid),
-                                   GeoElementId::VAxis,
-                                   x0,
-                                   handler->sketchgui->getObject());
+            ConstraintToAttachment(
+                GeoElementId(firstCurve, PointPos::mid),
+                GeoElementId::VAxis,
+                x0,
+                handler->sketchgui->getObject()
+            );
         };
 
         auto constrainty0 = [&]() {
-            ConstraintToAttachment(GeoElementId(firstCurve, PointPos::mid),
-                                   GeoElementId::HAxis,
-                                   y0,
-                                   handler->sketchgui->getObject());
+            ConstraintToAttachment(
+                GeoElementId(firstCurve, PointPos::mid),
+                GeoElementId::HAxis,
+                y0,
+                handler->sketchgui->getObject()
+            );
         };
 
         auto constraintradius = [&]() {
             if (handler->isDiameter) {
-                Gui::cmdAppObjectArgs(handler->sketchgui->getObject(),
-                                      "addConstraint(Sketcher.Constraint('Diameter',%d,%f)) ",
-                                      firstCurve,
-                                      handler->radius * 2);
+                Gui::cmdAppObjectArgs(
+                    handler->sketchgui->getObject(),
+                    "addConstraint(Sketcher.Constraint('Diameter',%d,%f)) ",
+                    firstCurve,
+                    handler->radius * 2
+                );
             }
             else {
-                Gui::cmdAppObjectArgs(handler->sketchgui->getObject(),
-                                      "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
-                                      firstCurve,
-                                      handler->radius);
+                Gui::cmdAppObjectArgs(
+                    handler->sketchgui->getObject(),
+                    "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
+                    firstCurve,
+                    handler->radius
+                );
             }
 
-            const std::vector<Sketcher::Constraint*>& ConStr =
-                handler->sketchgui->getSketchObject()->Constraints.getValues();
+            const std::vector<Sketcher::Constraint*>& ConStr
+                = handler->sketchgui->getSketchObject()->Constraints.getValues();
             int index = static_cast<int>(ConStr.size()) - 1;
             handler->moveConstraint(index, prevCursorPosition);
         };
@@ -750,7 +781,8 @@ void DSHCircleController::addConstraints()
                                                          // after each constraint addition
 
                 startpointinfo = handler->getPointInfo(
-                    GeoElementId(firstCurve, PointPos::mid));  // get updated point position
+                    GeoElementId(firstCurve, PointPos::mid)
+                );  // get updated point position
             }
 
             // if Autoconstraints is empty we do not have a diagnosed system and the parameter will

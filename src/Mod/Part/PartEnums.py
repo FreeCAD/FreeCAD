@@ -29,10 +29,12 @@ __doc__ = "Enum types"
 
 from enum import IntEnum
 
+
 class JoinType(IntEnum):
     Arc = 0
     Tangent = 1
     Intersection = 2
+
 
 class Shape(IntEnum):
     C0 = 0
@@ -43,10 +45,12 @@ class Shape(IntEnum):
     C3 = 5
     CN = 6
 
+
 class FillingStyle(IntEnum):
     StretchStyle = 0
     CoonsStyle = 1
     CurvedStyle = 2
+
 
 class Orientation(IntEnum):
     FORWARD = 0
@@ -54,16 +58,18 @@ class Orientation(IntEnum):
     INTERNAL = 2
     EXTERNAL = 3
 
+
 class ShapeEnum(IntEnum):
     COMPOUND = 0
     COMPSOLID = 1
     SOLID = 2
-    SHELL= 3
+    SHELL = 3
     FACE = 4
     WIRE = 5
     EDGE = 6
     VERTEX = 7
     SHAPE = 8
+
 
 class HLRBRep_TypeOfResultingEdge(IntEnum):
     Undefined = 0
@@ -73,7 +79,7 @@ class HLRBRep_TypeOfResultingEdge(IntEnum):
     RgNLine = 4
     Sharp = 5
 
+
 class SingleShapeCompoundCreationPolicy(IntEnum):
     ReturnShape = 0
     ForceCompound = 1
-

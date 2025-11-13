@@ -36,8 +36,10 @@ class QLabel;
 class QGridLayout;
 class QLineEdit;
 
-namespace Gui {
-namespace Dialog {
+namespace Gui
+{
+namespace Dialog
+{
 
 class Ui_DlgCustomActions;
 
@@ -48,28 +50,28 @@ class Ui_DlgCustomActions;
  * @see Command
  * \author Werner Mayer
  */
-class DlgCustomActionsImp : public CustomizeActionPage
+class DlgCustomActionsImp: public CustomizeActionPage
 {
     Q_OBJECT
 
 public:
-    explicit DlgCustomActionsImp( QWidget* parent = nullptr );
+    explicit DlgCustomActionsImp(QWidget* parent = nullptr);
     ~DlgCustomActionsImp() override;
 
 Q_SIGNALS:
-    void addMacroAction( const QByteArray& );
-    void removeMacroAction( const QByteArray& );
-    void modifyMacroAction( const QByteArray& );
+    void addMacroAction(const QByteArray&);
+    void removeMacroAction(const QByteArray&);
+    void modifyMacroAction(const QByteArray&);
 
 protected:
     /** Trigger for reparent event. */
     bool event(QEvent* e) override;
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
 
 protected:
     void setupConnections();
     /** Enables/disables buttons for deletion */
-    void onActionListWidgetItemActivated( QTreeWidgetItem *i );
+    void onActionListWidgetItemActivated(QTreeWidgetItem* i);
     /** Opens a iconview to select a pixmap */
     void onButtonChoosePixmapClicked();
     /** Adds a custom action */
@@ -95,7 +97,7 @@ private:
 };
 
 class Ui_DlgChooseIcon;
-class IconDialog : public QDialog
+class IconDialog: public QDialog
 {
     Q_OBJECT
 
@@ -109,10 +111,10 @@ private:
     void onAddIconPath();
 
 private:
-    Ui_DlgChooseIcon *ui;
+    Ui_DlgChooseIcon* ui;
 };
 
-class IconFolders : public QDialog
+class IconFolders: public QDialog
 {
     Q_OBJECT
 
@@ -131,10 +133,10 @@ private:
     QGridLayout* gridLayout;
     QLabel* textLabel;
     QPushButton* addButton;
-    QList< QPair<QLineEdit*, QPushButton*> > buttonMap;
+    QList<QPair<QLineEdit*, QPushButton*>> buttonMap;
 };
 
-} // namespace Dialog
-} // namespace Gui
+}  // namespace Dialog
+}  // namespace Gui
 
-#endif // GUI_DIALOG_DLGACTIONS_IMP_H
+#endif  // GUI_DIALOG_DLGACTIONS_IMP_H

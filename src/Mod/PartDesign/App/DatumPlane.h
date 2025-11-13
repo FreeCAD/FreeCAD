@@ -32,7 +32,7 @@
 namespace PartDesign
 {
 
-class PartDesignExport Plane : public Part::Datum
+class PartDesignExport Plane: public Part::Datum
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Plane);
 
@@ -44,8 +44,9 @@ public:
     App::PropertyLength Length;
     App::PropertyLength Width;
 
-    void onChanged(const App::Property *prop) override;
-    const char* getViewProviderName() const override {
+    void onChanged(const App::Property* prop) override;
+    const char* getViewProviderName() const override
+    {
         return "PartDesignGui::ViewProviderDatumPlane";
     }
 
@@ -58,7 +59,7 @@ private:
     static const char* ResizeModeEnums[];
 };
 
-} //namespace PartDesign
+}  // namespace PartDesign
 
 
-#endif // PARTDESIGN_DATUMPLANE_H
+#endif  // PARTDESIGN_DATUMPLANE_H

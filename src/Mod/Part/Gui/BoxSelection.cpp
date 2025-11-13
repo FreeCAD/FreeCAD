@@ -23,15 +23,15 @@
  ***************************************************************************/
 
 
-# include <sstream>
-# include <BRep_Tool.hxx>
-# include <gp_Pnt.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopoDS.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
-# include <Inventor/SoPickedPoint.h>
-# include <Inventor/events/SoMouseButtonEvent.h>
-# include <Inventor/nodes/SoCamera.h>
+#include <sstream>
+#include <BRep_Tool.hxx>
+#include <gp_Pnt.hxx>
+#include <TopExp_Explorer.hxx>
+#include <TopoDS.hxx>
+#include <TopTools_IndexedMapOfShape.hxx>
+#include <Inventor/SoPickedPoint.h>
+#include <Inventor/events/SoMouseButtonEvent.h>
+#include <Inventor/nodes/SoCamera.h>
 
 
 #include <App/Document.h>
@@ -51,20 +51,20 @@
 
 using namespace PartGui;
 
-class BoxSelection::FaceSelectionGate : public Gui::SelectionFilterGate
+class BoxSelection::FaceSelectionGate: public Gui::SelectionFilterGate
 {
 public:
     FaceSelectionGate()
         : Gui::SelectionFilterGate()
-    {
-    }
+    {}
     ~FaceSelectionGate() override = default;
-    bool allow(App::Document*, App::DocumentObject*, const char*sSubName) override
+    bool allow(App::Document*, App::DocumentObject*, const char* sSubName) override
     {
-        if (Base::Tools::isNullOrEmpty(sSubName))
+        if (Base::Tools::isNullOrEmpty(sSubName)) {
             return false;
+        }
         std::string element(sSubName);
-        return element.substr(0,4) == "Face";
+        return element.substr(0, 4) == "Face";
     }
 };
 
@@ -82,9 +82,9 @@ bool BoxSelection::isAutoDelete() const
     return autodelete;
 }
 
-void BoxSelection::selectionCallback(void * ud, SoEventCallback * cb)
+void BoxSelection::selectionCallback(void* ud, SoEventCallback* cb)
 {
-    Gui::View3DInventorViewer* view  = static_cast<Gui::View3DInventorViewer*>(cb->getUserData());
+    Gui::View3DInventorViewer* view = static_cast<Gui::View3DInventorViewer*>(cb->getUserData());
     view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), selectionCallback, ud);
     view->setSelectionEnabled(true);
 
@@ -102,8 +102,9 @@ void BoxSelection::selectionCallback(void * ud, SoEventCallback * cb)
         polygon.Add(Base::Vector2d(pt2[0], pt1[1]));
     }
     else {
-        for (const auto& it : picked)
-            polygon.Add(Base::Vector2d(it[0],it[1]));
+        for (const auto& it : picked) {
+            polygon.Add(Base::Vector2d(it[0], it[1]));
+        }
     }
 
     BoxSelection* self = static_cast<BoxSelection*>(ud);
@@ -114,10 +115,18 @@ void BoxSelection::selectionCallback(void * ud, SoEventCallback * cb)
         std::vector<Part::Feature*> geom = doc->getObjectsOfType<Part::Feature>();
         for (auto it : geom) {
             Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(it);
-            if (!vp->isVisible())
+            if (!vp->isVisible()) {
                 continue;
+            }
             const TopoDS_Shape& shape = it->Shape.getValue();
-            self->addShapeToSelection(doc->getName(), it->getNameInDocument(), proj, polygon, shape, self->shapeEnum);
+            self->addShapeToSelection(
+                doc->getName(),
+                it->getNameInDocument(),
+                proj,
+                polygon,
+                shape,
+                self->shapeEnum
+            );
         }
         view->redraw();
     }
@@ -132,27 +141,31 @@ void BoxSelection::selectionCallback(void * ud, SoEventCallback * cb)
 const char* BoxSelection::nameFromShapeType(TopAbs_ShapeEnum type) const
 {
     switch (type) {
-    case TopAbs_FACE:
-        return "Face";
-    case TopAbs_EDGE:
-        return "Edge";
-    case TopAbs_VERTEX:
-        return "Vertex";
-    default:
-        return nullptr;
+        case TopAbs_FACE:
+            return "Face";
+        case TopAbs_EDGE:
+            return "Edge";
+        case TopAbs_VERTEX:
+            return "Vertex";
+        default:
+            return nullptr;
     }
 }
 
-void BoxSelection::addShapeToSelection(const char* doc, const char* obj,
-                                       const Gui::ViewVolumeProjection& proj,
-                                       const Base::Polygon2d& polygon,
-                                       const TopoDS_Shape& shape,
-                                       TopAbs_ShapeEnum subtype)
+void BoxSelection::addShapeToSelection(
+    const char* doc,
+    const char* obj,
+    const Gui::ViewVolumeProjection& proj,
+    const Base::Polygon2d& polygon,
+    const TopoDS_Shape& shape,
+    TopAbs_ShapeEnum subtype
+)
 {
     try {
         const char* subname = nameFromShapeType(subtype);
-        if (!subname)
+        if (!subname) {
             return;
+        }
 
         TopTools_IndexedMapOfShape M;
         TopExp_Explorer xp(shape, subtype);
@@ -185,14 +198,16 @@ void BoxSelection::addShapeToSelection(const char* doc, const char* obj,
 
 void BoxSelection::start(TopAbs_ShapeEnum shape)
 {
-    Gui::View3DInventor* view = qobject_cast<Gui::View3DInventor*>(Gui::getMainWindow()->activeWindow());
+    Gui::View3DInventor* view = qobject_cast<Gui::View3DInventor*>(
+        Gui::getMainWindow()->activeWindow()
+    );
     if (view) {
         Gui::View3DInventorViewer* viewer = view->getViewer();
         if (!viewer->isSelecting()) {
             viewer->startSelection(Gui::View3DInventorViewer::Rubberband);
             viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(), selectionCallback, this);
-            // avoid that the selection node handles the event otherwise the callback function won't be
-            // called immediately
+            // avoid that the selection node handles the event otherwise the callback function won't
+            // be called immediately
             viewer->setSelectionEnabled(false);
             shapeEnum = shape;
         }

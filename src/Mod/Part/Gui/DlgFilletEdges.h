@@ -34,46 +34,53 @@
 #include <Gui/TaskView/TaskView.h>
 
 
-namespace Base {
-    class Quantity;
+namespace Base
+{
+class Quantity;
 }
-namespace Part {
-    class FilletBase;
-    class Fillet;
-    class Chamfer;
-}
+namespace Part
+{
+class FilletBase;
+class Fillet;
+class Chamfer;
+}  // namespace Part
 
-namespace PartGui {
+namespace PartGui
+{
 
 class Ui_DlgFilletEdges;
-class FilletRadiusDelegate : public QItemDelegate
+class FilletRadiusDelegate: public QItemDelegate
 {
     Q_OBJECT
 
 public:
-    explicit FilletRadiusDelegate(QObject *parent = nullptr);
+    explicit FilletRadiusDelegate(QObject* parent = nullptr);
 
-    QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option,
-                          const QModelIndex &index) const override;
+    QWidget* createEditor(
+        QWidget* parent,
+        const QStyleOptionViewItem& option,
+        const QModelIndex& index
+    ) const override;
 
-    void setEditorData(QWidget *editor, const QModelIndex &index) const override;
-    void setModelData(QWidget *editor, QAbstractItemModel *model,
-                      const QModelIndex &index) const override;
+    void setEditorData(QWidget* editor, const QModelIndex& index) const override;
+    void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const override;
 
-    void updateEditorGeometry(QWidget *editor,
-        const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+    void updateEditorGeometry(
+        QWidget* editor,
+        const QStyleOptionViewItem& option,
+        const QModelIndex& index
+    ) const override;
 };
 
-class FilletRadiusModel : public QStandardItemModel
+class FilletRadiusModel: public QStandardItemModel
 {
     Q_OBJECT
 
 public:
-    explicit FilletRadiusModel(QObject * parent = nullptr);
+    explicit FilletRadiusModel(QObject* parent = nullptr);
 
-    Qt::ItemFlags flags (const QModelIndex & index) const override;
-    bool setData (const QModelIndex & index, const QVariant & value,
-                  int role = Qt::EditRole) override;
+    Qt::ItemFlags flags(const QModelIndex& index) const override;
+    bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole) override;
     QVariant data(const QModelIndex&, int role = Qt::DisplayRole) const override;
     void updateCheckStates();
 
@@ -81,21 +88,30 @@ Q_SIGNALS:
     void toggleCheckState(const QModelIndex&);
 };
 
-class DlgFilletEdges : public QWidget, public Gui::SelectionObserver
+class DlgFilletEdges: public QWidget, public Gui::SelectionObserver
 {
     Q_OBJECT
 
 public:
-    enum FilletType { FILLET, CHAMFER };
+    enum FilletType
+    {
+        FILLET,
+        CHAMFER
+    };
 
-    DlgFilletEdges(FilletType type, Part::FilletBase*, QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    DlgFilletEdges(
+        FilletType type,
+        Part::FilletBase*,
+        QWidget* parent = nullptr,
+        Qt::WindowFlags fl = Qt::WindowFlags()
+    );
     ~DlgFilletEdges() override;
     bool accept();
 
 protected:
     void findShapes();
     void setupFillet(const std::vector<App::DocumentObject*>&);
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
     virtual const char* getFilletType() const;
 
 private:
@@ -124,12 +140,17 @@ private:
     std::unique_ptr<Private> d;
 };
 
-class FilletEdgesDialog : public QDialog
+class FilletEdgesDialog: public QDialog
 {
     Q_OBJECT
 
 public:
-    FilletEdgesDialog(DlgFilletEdges::FilletType type, Part::FilletBase* fillet, QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    FilletEdgesDialog(
+        DlgFilletEdges::FilletType type,
+        Part::FilletBase* fillet,
+        QWidget* parent = nullptr,
+        Qt::WindowFlags fl = Qt::WindowFlags()
+    );
     ~FilletEdgesDialog() override;
     void accept() override;
 
@@ -137,19 +158,23 @@ private:
     DlgFilletEdges* widget;
 };
 
-class DlgChamferEdges : public DlgFilletEdges
+class DlgChamferEdges: public DlgFilletEdges
 {
     Q_OBJECT
 
 public:
-    explicit DlgChamferEdges(Part::FilletBase*, QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    explicit DlgChamferEdges(
+        Part::FilletBase*,
+        QWidget* parent = nullptr,
+        Qt::WindowFlags fl = Qt::WindowFlags()
+    );
     ~DlgChamferEdges() override;
 
 protected:
     const char* getFilletType() const override;
 };
 
-class TaskFilletEdges : public Gui::TaskView::TaskDialog
+class TaskFilletEdges: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
@@ -164,15 +189,19 @@ public:
     bool reject() override;
 
     QDialogButtonBox::StandardButtons getStandardButtons() const override
-    { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
+    {
+        return QDialogButtonBox::Ok | QDialogButtonBox::Cancel;
+    }
     bool needsFullSpace() const override
-    { return true; }
+    {
+        return true;
+    }
 
 private:
     DlgFilletEdges* widget;
 };
 
-class TaskChamferEdges : public Gui::TaskView::TaskDialog
+class TaskChamferEdges: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
@@ -187,14 +216,18 @@ public:
     bool reject() override;
 
     QDialogButtonBox::StandardButtons getStandardButtons() const override
-    { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
+    {
+        return QDialogButtonBox::Ok | QDialogButtonBox::Cancel;
+    }
     bool needsFullSpace() const override
-    { return true; }
+    {
+        return true;
+    }
 
 private:
     DlgChamferEdges* widget;
 };
 
-} // namespace PartGui
+}  // namespace PartGui
 
-#endif // PARTGUI_DLGFILLETEDGES_H
+#endif  // PARTGUI_DLGFILLETEDGES_H

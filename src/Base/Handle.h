@@ -28,7 +28,7 @@
 #define BASE_HANDLE_H
 
 #ifndef FC_GLOBAL_H
-#include <FCGlobal.h>
+# include <FCGlobal.h>
 #endif
 
 

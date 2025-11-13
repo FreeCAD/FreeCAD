@@ -23,21 +23,21 @@
  ***************************************************************************/
 
 
-# include <BRep_Tool.hxx>
-# include <Geom_Curve.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopoDS.hxx>
-# include <Inventor/events/SoKeyboardEvent.h>
-# include <Inventor/events/SoLocation2Event.h>
-# include <Inventor/events/SoMouseButtonEvent.h>
-# include <Inventor/nodes/SoComplexity.h>
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoLineSet.h>
-# include <Inventor/nodes/SoLocateHighlight.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoSphere.h>
-# include <Inventor/nodes/SoTransform.h>
+#include <BRep_Tool.hxx>
+#include <Geom_Curve.hxx>
+#include <TopExp_Explorer.hxx>
+#include <TopoDS.hxx>
+#include <Inventor/events/SoKeyboardEvent.h>
+#include <Inventor/events/SoLocation2Event.h>
+#include <Inventor/events/SoMouseButtonEvent.h>
+#include <Inventor/nodes/SoComplexity.h>
+#include <Inventor/nodes/SoCoordinate3.h>
+#include <Inventor/nodes/SoDrawStyle.h>
+#include <Inventor/nodes/SoLineSet.h>
+#include <Inventor/nodes/SoLocateHighlight.h>
+#include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoSphere.h>
+#include <Inventor/nodes/SoTransform.h>
 
 
 #include <App/Application.h>
@@ -54,7 +54,7 @@ using namespace PartGui;
 //**************************************************************************
 // Construction/Destruction
 
-PROPERTY_SOURCE(PartGui::ViewProviderCurveNet,PartGui::ViewProviderPart)
+PROPERTY_SOURCE(PartGui::ViewProviderCurveNet, PartGui::ViewProviderPart)
 
 
 ViewProviderCurveNet::ViewProviderCurveNet()
@@ -62,7 +62,8 @@ ViewProviderCurveNet::ViewProviderCurveNet()
     LineWidth.setValue(4.0f);
     PointSize.setValue(0.05f);
     /*
-    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part");
+    hGrp = App::GetApplication().GetParameterGroupByPath("User
+    parameter:BaseApp/Preferences/Mod/Part");
 
     fMeshDeviation      = hGrp->GetFloat("MeshDeviation",0.2);
     bNoPerVertexNormals = hGrp->GetBool("NoPerVertexNormals",false);
@@ -73,10 +74,10 @@ ViewProviderCurveNet::ViewProviderCurveNet()
 
 ViewProviderCurveNet::~ViewProviderCurveNet() = default;
 
-void ViewProviderCurveNet::attach(App::DocumentObject *pcFeat)
+void ViewProviderCurveNet::attach(App::DocumentObject* pcFeat)
 {
     // call parent attach method
-    ViewProviderGeometryObject::attach(pcFeat); // clazy:exclude=skipped-base-method
+    ViewProviderGeometryObject::attach(pcFeat);  // clazy:exclude=skipped-base-method
 
     // setup the root and material for the edges
     SoSeparator* ModeRoot = new SoSeparator();
@@ -89,7 +90,7 @@ void ViewProviderCurveNet::attach(App::DocumentObject *pcFeat)
     VertexRoot = new SoSeparator();
     ModeRoot->addChild(VertexRoot);
     VertexRoot->addChild(pcPointMaterial);
-    SoComplexity *copl = new SoComplexity();
+    SoComplexity* copl = new SoComplexity();
     copl->value = (float)0.2;
     VertexRoot->addChild(copl);
 
@@ -98,29 +99,32 @@ void ViewProviderCurveNet::attach(App::DocumentObject *pcFeat)
 
 void ViewProviderCurveNet::updateData(const App::Property* prop)
 {
-    Gui::ViewProviderGeometryObject::updateData(prop); // clazy:exclude=skipped-base-method
+    Gui::ViewProviderGeometryObject::updateData(prop);  // clazy:exclude=skipped-base-method
     if (prop->is<Part::PropertyPartShape>()) {
         TopoDS_Shape cShape = static_cast<const Part::PropertyPartShape*>(prop)->getValue();
-        if (cShape.IsNull())
+        if (cShape.IsNull()) {
             return;
+        }
 
         Gui::coinRemoveAllChildren(EdgeRoot);
         Gui::coinRemoveAllChildren(VertexRoot);
 
-        try{
-            computeEdges   (EdgeRoot,cShape);
-            computeVertices(VertexRoot,cShape);
+        try {
+            computeEdges(EdgeRoot, cShape);
+            computeVertices(VertexRoot, cShape);
         }
-        catch (...){
-            Base::Console().error("ViewProviderPart::create() Cannot compute Inventor representation for the actual shape");
+        catch (...) {
+            Base::Console()
+                .error("ViewProviderPart::create() Cannot compute Inventor representation for the actual shape");
         }
     }
 }
 
 void ViewProviderCurveNet::setDisplayMode(const char* ModeName)
 {
-    if ( strcmp("Edge",ModeName)==0 )
+    if (strcmp("Edge", ModeName) == 0) {
         setDisplayMaskMode("Edge");
+    }
 
     ViewProviderGeometryObject::setDisplayMode(ModeName);
 }
@@ -142,7 +146,7 @@ bool ViewProviderCurveNet::setEdit(int)
 {
     bInEdit = true;
     return true;
-    //getWidget()->setCursor( QCursor( 13 /*ArrowCursor*/) )
+    // getWidget()->setCursor( QCursor( 13 /*ArrowCursor*/) )
 }
 
 void ViewProviderCurveNet::unsetEdit(int)
@@ -150,7 +154,7 @@ void ViewProviderCurveNet::unsetEdit(int)
     bInEdit = false;
 }
 
-bool ViewProviderCurveNet::handleEvent(const SoEvent * const ev, Gui::View3DInventorViewer &Viewer)
+bool ViewProviderCurveNet::handleEvent(const SoEvent* const ev, Gui::View3DInventorViewer& Viewer)
 {
     SbVec3f point, norm;
 
@@ -159,7 +163,7 @@ bool ViewProviderCurveNet::handleEvent(const SoEvent * const ev, Gui::View3DInve
 
     // Keyboard events
     if (ev->getTypeId().isDerivedFrom(SoKeyboardEvent::getClassTypeId())) {
-        const SoKeyboardEvent * ke = static_cast<const SoKeyboardEvent *>(ev);
+        const SoKeyboardEvent* ke = static_cast<const SoKeyboardEvent*>(ev);
         switch (ke->getKey()) {
             case SoKeyboardEvent::LEFT_ALT:
             case SoKeyboardEvent::RIGHT_ALT:
@@ -175,7 +179,7 @@ bool ViewProviderCurveNet::handleEvent(const SoEvent * const ev, Gui::View3DInve
 
     // switching the mouse buttons
     if (ev->getTypeId().isDerivedFrom(SoMouseButtonEvent::getClassTypeId())) {
-        const SoMouseButtonEvent * const event = static_cast<const SoMouseButtonEvent *>(ev);
+        const SoMouseButtonEvent* const event = static_cast<const SoMouseButtonEvent*>(ev);
         const int button = event->getButton();
         const SbBool press = event->getState() == SoButtonEvent::DOWN ? true : false;
 
@@ -185,36 +189,32 @@ bool ViewProviderCurveNet::handleEvent(const SoEvent * const ev, Gui::View3DInve
                 if (press) {
                     Base::Console().log("ViewProviderCurveNet::handleEvent() press left\n");
 
-                    bool bIsNode =  false;
-                    for (const auto & It : NodeList)
-                    {
-                        if (It.pcHighlight->isHighlighted())
-                        {
+                    bool bIsNode = false;
+                    for (const auto& It : NodeList) {
+                        if (It.pcHighlight->isHighlighted()) {
                             bIsNode = true;
                             PointToMove = It;
                             break;
                         }
                     }
 
-                    if (bIsNode)
-                    {
+                    if (bIsNode) {
                         // set the provider in point move mode and remember the point
                         bMovePointMode = true;
                         // PointToMove = *It; ### Error 'It' is out of scope->move inside the loop
 
                         return true;
                     }
-                    else if(Viewer.pickPoint(pos,point,norm))
-                    {
+                    else if (Viewer.pickPoint(pos, point, norm)) {
                         Node n;
-                        Base::Console().log("Picked(%f,%f,%f)\n",point[0],point[1],point[2]);
+                        Base::Console().log("Picked(%f,%f,%f)\n", point[0], point[1], point[2]);
 
-                        SoSeparator *TransRoot = new SoSeparator();
-                        n.pcTransform          = new SoTransform();
+                        SoSeparator* TransRoot = new SoSeparator();
+                        n.pcTransform = new SoTransform();
                         TransRoot->addChild(n.pcTransform);
                         n.pcTransform->translation.setValue(point);
-                        n.pcHighlight          = new Gui::SoFCSelection();
-                        SoSphere * sphere      = new SoSphere;
+                        n.pcHighlight = new Gui::SoFCSelection();
+                        SoSphere* sphere = new SoSphere;
                         sphere->radius = (float)pcLineStyle->pointSize.getValue();
                         n.pcHighlight->addChild(sphere);
                         TransRoot->addChild(n.pcHighlight);
@@ -225,15 +225,14 @@ bool ViewProviderCurveNet::handleEvent(const SoEvent * const ev, Gui::View3DInve
                         return true;
                     }
                 }
-                else // if(pressd)..
+                else  // if(pressd)..
                 {
-                    if (bMovePointMode)
-                    {
+                    if (bMovePointMode) {
                         bMovePointMode = false;
                         return true;
                     }
                 }
-            break;
+                break;
         }
     }
 
@@ -241,7 +240,7 @@ bool ViewProviderCurveNet::handleEvent(const SoEvent * const ev, Gui::View3DInve
     if (ev->getTypeId().isDerivedFrom(SoLocation2Event::getClassTypeId())) {
         //    const SoLocation2Event * const event = (const SoLocation2Event *) ev;
 
-        if (bMovePointMode && Viewer.pickPoint(pos,point,norm) ){
+        if (bMovePointMode && Viewer.pickPoint(pos, point, norm)) {
             PointToMove.pcTransform->translation.setValue(point);
             return true;
         }
@@ -251,44 +250,42 @@ bool ViewProviderCurveNet::handleEvent(const SoEvent * const ev, Gui::View3DInve
     return false;
 }
 
-Standard_Boolean ViewProviderCurveNet::computeEdges(SoSeparator* root, const TopoDS_Shape &myShape)
+Standard_Boolean ViewProviderCurveNet::computeEdges(SoSeparator* root, const TopoDS_Shape& myShape)
 {
     unsigned long ulNbOfPoints = 50;
 
     TopExp_Explorer ex;
-    SoSeparator *EdgeRoot = new SoSeparator();
+    SoSeparator* EdgeRoot = new SoSeparator();
     root->addChild(EdgeRoot);
 
     EdgeRoot->addChild(pcLineStyle);
     EdgeRoot->addChild(pcLineMaterial);
 
-    for (ex.Init(myShape, TopAbs_EDGE); ex.More(); ex.Next())
-    {
+    for (ex.Init(myShape, TopAbs_EDGE); ex.More(); ex.Next()) {
         // get the shape and mesh it
         const TopoDS_Edge& aEdge = TopoDS::Edge(ex.Current());
 
         Standard_Real fBegin, fEnd;
         SbVec3f* vertices = new SbVec3f[ulNbOfPoints];
 
-        Handle(Geom_Curve) hCurve = BRep_Tool::Curve(aEdge,fBegin,fEnd);
-        float fLen   = float(fEnd - fBegin);
+        Handle(Geom_Curve) hCurve = BRep_Tool::Curve(aEdge, fBegin, fEnd);
+        float fLen = float(fEnd - fBegin);
 
-        for (unsigned long i = 0; i < ulNbOfPoints; i++)
-        {
-            gp_Pnt gpPt = hCurve->Value(fBegin + (fLen * float(i)) / float(ulNbOfPoints-1));
-            vertices[i].setValue((float)(gpPt.X()),(float)(gpPt.Y()),(float)(gpPt.Z()));
+        for (unsigned long i = 0; i < ulNbOfPoints; i++) {
+            gp_Pnt gpPt = hCurve->Value(fBegin + (fLen * float(i)) / float(ulNbOfPoints - 1));
+            vertices[i].setValue((float)(gpPt.X()), (float)(gpPt.Y()), (float)(gpPt.Z()));
         }
 
         // define vertices
-        SoCoordinate3 * coords = new SoCoordinate3;
-        coords->point.setValues(0,ulNbOfPoints, vertices);
+        SoCoordinate3* coords = new SoCoordinate3;
+        coords->point.setValues(0, ulNbOfPoints, vertices);
         EdgeRoot->addChild(coords);
 
         // define the indexed face set
         SoLocateHighlight* h = new SoLocateHighlight();
-        h->color.setValue((float)0.2,(float)0.5,(float)0.2);
+        h->color.setValue((float)0.2, (float)0.5, (float)0.2);
 
-        SoLineSet * lineset = new SoLineSet;
+        SoLineSet* lineset = new SoLineSet;
         h->addChild(lineset);
         EdgeRoot->addChild(h);
     }
@@ -296,33 +293,32 @@ Standard_Boolean ViewProviderCurveNet::computeEdges(SoSeparator* root, const Top
     return true;
 }
 
-Standard_Boolean ViewProviderCurveNet::computeVertices(SoSeparator* root, const TopoDS_Shape &myShape)
+Standard_Boolean ViewProviderCurveNet::computeVertices(SoSeparator* root, const TopoDS_Shape& myShape)
 {
     TopExp_Explorer ex;
-    SoSeparator *VertexRoot = new SoSeparator();
+    SoSeparator* VertexRoot = new SoSeparator();
     root->addChild(VertexRoot);
 
     VertexRoot->addChild(pcPointMaterial);
 
-    SoComplexity *copl = new SoComplexity();
+    SoComplexity* copl = new SoComplexity();
     copl->value = (float)0.2;
     VertexRoot->addChild(copl);
 
-    for (ex.Init(myShape, TopAbs_VERTEX); ex.More(); ex.Next())
-    {
+    for (ex.Init(myShape, TopAbs_VERTEX); ex.More(); ex.Next()) {
         // get the shape
         const TopoDS_Vertex& aVertex = TopoDS::Vertex(ex.Current());
-        gp_Pnt gpPt = BRep_Tool::Pnt (aVertex);
+        gp_Pnt gpPt = BRep_Tool::Pnt(aVertex);
 
-        SoSeparator *TransRoot = new SoSeparator();
-        SoTransform *Trans     = new SoTransform();
+        SoSeparator* TransRoot = new SoSeparator();
+        SoTransform* Trans = new SoTransform();
         TransRoot->addChild(Trans);
-        Trans->translation.setValue((float)(gpPt.X()),(float)(gpPt.Y()),(float)(gpPt.Z()));
+        Trans->translation.setValue((float)(gpPt.X()), (float)(gpPt.Y()), (float)(gpPt.Z()));
 
         SoLocateHighlight* h = new SoLocateHighlight();
-        h->color.setValue((float)0.2,(float)0.5,(float)0.2);
+        h->color.setValue((float)0.2, (float)0.5, (float)0.2);
 
-        SoSphere * sphere = new SoSphere;
+        SoSphere* sphere = new SoSphere;
         sphere->radius = (float)pcPointStyle->pointSize.getValue();
 
         h->addChild(sphere);

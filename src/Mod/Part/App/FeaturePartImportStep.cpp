@@ -22,7 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <fcntl.h>
+#include <fcntl.h>
 
 
 #include <Base/Console.h>
@@ -38,21 +38,22 @@ PROPERTY_SOURCE(Part::ImportStep, Part::Feature)
 
 ImportStep::ImportStep()
 {
-    ADD_PROPERTY(FileName,(""));
+    ADD_PROPERTY(FileName, (""));
 }
 
 short ImportStep::mustExecute() const
 {
-    if (FileName.isTouched())
+    if (FileName.isTouched()) {
         return 1;
+    }
     return 0;
 }
 
-App::DocumentObjectExecReturn *ImportStep::execute()
+App::DocumentObjectExecReturn* ImportStep::execute()
 {
     Base::FileInfo fi(FileName.getValue());
     if (!fi.isReadable()) {
-        Base::Console().log("ImportStep::execute() not able to open %s!\n",FileName.getValue());
+        Base::Console().log("ImportStep::execute() not able to open %s!\n", FileName.getValue());
         std::string error = std::string("Cannot open file ") + FileName.getValue();
         return new App::DocumentObjectExecReturn(error);
     }
@@ -63,5 +64,3 @@ App::DocumentObjectExecReturn *ImportStep::execute()
 
     return App::DocumentObject::StdReturn;
 }
-
-

@@ -44,25 +44,33 @@ public:
 
     virtual void setup(const Base::Vector3d& last);
 
-    virtual void g0(int id,
-                    const Base::Vector3d& last,
-                    const Base::Vector3d& next,
-                    const std::deque<Base::Vector3d>& pts);
-    virtual void g1(int id,
-                    const Base::Vector3d& last,
-                    const Base::Vector3d& next,
-                    const std::deque<Base::Vector3d>& pts);
-    virtual void g23(int id,
-                     const Base::Vector3d& last,
-                     const Base::Vector3d& next,
-                     const std::deque<Base::Vector3d>& pts,
-                     const Base::Vector3d& center);
-    virtual void g8x(int id,
-                     const Base::Vector3d& last,
-                     const Base::Vector3d& next,
-                     const std::deque<Base::Vector3d>& pts,
-                     const std::deque<Base::Vector3d>& p,
-                     const std::deque<Base::Vector3d>& q);
+    virtual void g0(
+        int id,
+        const Base::Vector3d& last,
+        const Base::Vector3d& next,
+        const std::deque<Base::Vector3d>& pts
+    );
+    virtual void g1(
+        int id,
+        const Base::Vector3d& last,
+        const Base::Vector3d& next,
+        const std::deque<Base::Vector3d>& pts
+    );
+    virtual void g23(
+        int id,
+        const Base::Vector3d& last,
+        const Base::Vector3d& next,
+        const std::deque<Base::Vector3d>& pts,
+        const Base::Vector3d& center
+    );
+    virtual void g8x(
+        int id,
+        const Base::Vector3d& last,
+        const Base::Vector3d& next,
+        const std::deque<Base::Vector3d>& pts,
+        const std::deque<Base::Vector3d>& p,
+        const std::deque<Base::Vector3d>& q
+    );
     virtual void g38(int id, const Base::Vector3d& last, const Base::Vector3d& next);
 };
 

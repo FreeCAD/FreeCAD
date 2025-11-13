@@ -153,9 +153,11 @@ public:
         , _transform(mat)
     {
         Base::BoundBox3f clBBMesh = _pclMesh->GetBoundBox().Transformed(mat);
-        Rebuild(std::max<unsigned long>((unsigned long)(clBBMesh.LengthX() / fGridLen), 1),
-                std::max<unsigned long>((unsigned long)(clBBMesh.LengthY() / fGridLen), 1),
-                std::max<unsigned long>((unsigned long)(clBBMesh.LengthZ() / fGridLen), 1));
+        Rebuild(
+            std::max<unsigned long>((unsigned long)(clBBMesh.LengthX() / fGridLen), 1),
+            std::max<unsigned long>((unsigned long)(clBBMesh.LengthY() / fGridLen), 1),
+            std::max<unsigned long>((unsigned long)(clBBMesh.LengthZ() / fGridLen), 1)
+        );
     }
 
     void Validate(const MeshCore::MeshKernel& kernel) override
@@ -186,10 +188,12 @@ protected:
         return _pclMesh->CountFacets();
     }
 
-    void Pos(const Base::Vector3f& rclPoint,
-             unsigned long& rulX,
-             unsigned long& rulY,
-             unsigned long& rulZ) const
+    void Pos(
+        const Base::Vector3f& rclPoint,
+        unsigned long& rulX,
+        unsigned long& rulY,
+        unsigned long& rulZ
+    ) const
     {
         rulX = (unsigned long)((rclPoint.x - _fMinX) / _fGridLenX);
         rulY = (unsigned long)((rclPoint.y - _fMinY) / _fGridLenY);
@@ -291,8 +295,8 @@ InspectNominalMesh::InspectNominalMesh(const Mesh::MeshObject& rMesh, float offs
     Base::BoundBox3f box = _mesh.GetBoundBox().Transformed(rMesh.getTransform());
 
     // estimate the minimum allowed grid length
-    float fMinGridLen =
-        (float)pow((box.LengthX() * box.LengthY() * box.LengthZ() / fMaxGridElements), 0.3333f);
+    float fMinGridLen
+        = (float)pow((box.LengthX() * box.LengthY() * box.LengthZ() / fMaxGridElements), 0.3333f);
     float fGridLen = 5.0f * MeshCore::MeshAlgorithm(_mesh).GetAverageEdgeLength();
 
     // We want to avoid to get too small grid elements otherwise building up the grid structure
@@ -363,8 +367,8 @@ InspectNominalFastMesh::InspectNominalFastMesh(const Mesh::MeshObject& rMesh, fl
     Base::BoundBox3f box = kernel.GetBoundBox().Transformed(rMesh.getTransform());
 
     // estimate the minimum allowed grid length
-    float fMinGridLen =
-        (float)pow((box.LengthX() * box.LengthY() * box.LengthZ() / fMaxGridElements), 0.3333f);
+    float fMinGridLen
+        = (float)pow((box.LengthX() * box.LengthY() * box.LengthZ() / fMaxGridElements), 0.3333f);
     float fGridLen = 5.0f * MeshCore::MeshAlgorithm(kernel).GetAverageEdgeLength();
 
     // We want to avoid to get too small grid elements otherwise building up the grid structure
@@ -701,9 +705,7 @@ namespace Inspection
 struct DistanceInspection
 {
 
-    DistanceInspection(float radius,
-                       InspectActualGeometry* a,
-                       std::vector<InspectNominalGeometry*> n)
+    DistanceInspection(float radius, InspectActualGeometry* a, std::vector<InspectNominalGeometry*> n)
         : radius(radius)
         , actual(a)
         , nominal(n)
@@ -843,7 +845,7 @@ App::DocumentObjectExecReturn* Feature::execute()
     // clang-format on
 
 #if 0
-#if 1  // test with some huge data sets
+# if 1  // test with some huge data sets
     std::vector<unsigned long> index(actual->countPoints());
     std::generate(index.begin(), index.end(), Base::iotaGen<unsigned long>(0));
     DistanceInspection check(this->SearchRadius.getValue(), actual, inspectNominal);
@@ -863,7 +865,7 @@ App::DocumentObjectExecReturn* Feature::execute()
 
     std::vector<float> vals;
     vals.insert(vals.end(), future.begin(), future.end());
-#else
+# else
     DistanceInspection insp(this->SearchRadius.getValue(), actual, inspectNominal);
     unsigned long count = actual->countPoints();
     std::stringstream str;
@@ -876,7 +878,7 @@ App::DocumentObjectExecReturn* Feature::execute()
         vals[index] = fMinDist;
         seq.next();
     }
-#endif
+# endif
 
     Distances.setValues(vals);
 
@@ -934,21 +936,25 @@ App::DocumentObjectExecReturn* Feature::execute()
         std::iota(index.begin(), index.end(), 0);
         // Perform map-reduce operation : compute distances and update sum of squares for RMS
         // computation
-        QFuture<DistanceInspectionRMS> future =
-            QtConcurrent::mappedReduced(index, fMap, &DistanceInspectionRMS::operator+=);
+        QFuture<DistanceInspectionRMS> future
+            = QtConcurrent::mappedReduced(index, fMap, &DistanceInspectionRMS::operator+=);
         // Setup progress bar
         Base::FutureWatcherProgress progress("Inspecting...", actual->countPoints());
         QFutureWatcher<DistanceInspectionRMS> watcher;
-        QObject::connect(&watcher,
-                         &QFutureWatcher<DistanceInspectionRMS>::progressValueChanged,
-                         &progress,
-                         &Base::FutureWatcherProgress::progressValueChanged);
+        QObject::connect(
+            &watcher,
+            &QFutureWatcher<DistanceInspectionRMS>::progressValueChanged,
+            &progress,
+            &Base::FutureWatcherProgress::progressValueChanged
+        );
         // Keep UI responsive during computation
         QEventLoop loop;
-        QObject::connect(&watcher,
-                         &QFutureWatcher<DistanceInspectionRMS>::finished,
-                         &loop,
-                         &QEventLoop::quit);
+        QObject::connect(
+            &watcher,
+            &QFutureWatcher<DistanceInspectionRMS>::finished,
+            &loop,
+            &QEventLoop::quit
+        );
         watcher.setFuture(future);
         loop.exec();
         res = future.result();
@@ -964,11 +970,13 @@ App::DocumentObjectExecReturn* Feature::execute()
         }
     }
 
-    Base::Console().message("RMS value for '%s' with search radius [%.4f,%.4f] is: %.4f\n",
-                            this->Label.getValue(),
-                            -this->SearchRadius.getValue(),
-                            this->SearchRadius.getValue(),
-                            res.getRMS());
+    Base::Console().message(
+        "RMS value for '%s' with search radius [%.4f,%.4f] is: %.4f\n",
+        this->Label.getValue(),
+        -this->SearchRadius.getValue(),
+        this->SearchRadius.getValue(),
+        res.getRMS()
+    );
     Distances.setValues(vals);
 #endif
 

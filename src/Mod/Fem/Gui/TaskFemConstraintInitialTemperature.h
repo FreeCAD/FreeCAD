@@ -44,7 +44,8 @@ class TaskFemConstraintInitialTemperature: public TaskFemConstraint
 public:
     explicit TaskFemConstraintInitialTemperature(
         ViewProviderFemConstraintInitialTemperature* ConstraintView,
-        QWidget* parent = nullptr);
+        QWidget* parent = nullptr
+    );
     ~TaskFemConstraintInitialTemperature() override;
     std::string get_temperature() const;
 
@@ -61,7 +62,8 @@ class TaskDlgFemConstraintInitialTemperature: public TaskDlgFemConstraint
 
 public:
     explicit TaskDlgFemConstraintInitialTemperature(
-        ViewProviderFemConstraintInitialTemperature* ConstraintView);
+        ViewProviderFemConstraintInitialTemperature* ConstraintView
+    );
     bool accept() override;
 };
 

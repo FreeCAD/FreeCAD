@@ -53,12 +53,16 @@ using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskTransformedParameters */
 
-TaskTransformedParameters::TaskTransformedParameters(ViewProviderTransformed* TransformedView,
-                                                     QWidget* parent)
-    : TaskBox(Gui::BitmapFactory().pixmap(TransformedView->featureIcon().c_str()),
-              TransformedView->menuName,
-              true,
-              parent)
+TaskTransformedParameters::TaskTransformedParameters(
+    ViewProviderTransformed* TransformedView,
+    QWidget* parent
+)
+    : TaskBox(
+          Gui::BitmapFactory().pixmap(TransformedView->featureIcon().c_str()),
+          TransformedView->menuName,
+          true,
+          parent
+      )
     , TransformedView(TransformedView)
     , ui(new Ui_TaskTransformedParameters)
 {
@@ -90,14 +94,18 @@ void TaskTransformedParameters::setupUI()
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
-    connect(ui->buttonAddFeature,
-            &QToolButton::toggled,
-            this,
-            &TaskTransformedParameters::onButtonAddFeature);
-    connect(ui->buttonRemoveFeature,
-            &QToolButton::toggled,
-            this,
-            &TaskTransformedParameters::onButtonRemoveFeature);
+    connect(
+        ui->buttonAddFeature,
+        &QToolButton::toggled,
+        this,
+        &TaskTransformedParameters::onButtonAddFeature
+    );
+    connect(
+        ui->buttonRemoveFeature,
+        &QToolButton::toggled,
+        this,
+        &TaskTransformedParameters::onButtonRemoveFeature
+    );
 
     // Create context menu
     auto action = new QAction(tr("Remove"), this);
@@ -108,15 +116,14 @@ void TaskTransformedParameters::setupUI()
     ui->listWidgetFeatures->addAction(action);
     connect(action, &QAction::triggered, this, &TaskTransformedParameters::onFeatureDeleted);
     ui->listWidgetFeatures->setContextMenuPolicy(Qt::ActionsContextMenu);
-    connect(ui->listWidgetFeatures->model(),
-            &QAbstractListModel::rowsMoved,
-            this,
-            &TaskTransformedParameters::indexesMoved);
+    connect(
+        ui->listWidgetFeatures->model(),
+        &QAbstractListModel::rowsMoved,
+        this,
+        &TaskTransformedParameters::indexesMoved
+    );
 
-    connect(ui->checkBoxUpdateView,
-            &QCheckBox::toggled,
-            this,
-            &TaskTransformedParameters::onUpdateView);
+    connect(ui->checkBoxUpdateView, &QCheckBox::toggled, this, &TaskTransformedParameters::onUpdateView);
 
     // Get the feature data
     auto pcTransformed = getObject<PartDesign::Transformed>();
@@ -126,10 +133,7 @@ void TaskTransformedParameters::setupUI()
     ui->buttonGroupMode->setId(ui->radioTransformBody, static_cast<int>(Mode::WholeShape));
     ui->buttonGroupMode->setId(ui->radioTransformToolShapes, static_cast<int>(Mode::Features));
 
-    connect(ui->buttonGroupMode,
-            &QButtonGroup::idClicked,
-            this,
-            &TaskTransformedParameters::onModeChanged);
+    connect(ui->buttonGroupMode, &QButtonGroup::idClicked, this, &TaskTransformedParameters::onModeChanged);
 
     auto const mode = static_cast<Mode>(pcTransformed->TransformMode.getValue());
     ui->groupFeatureList->setEnabled(mode == Mode::Features);
@@ -224,8 +228,7 @@ bool TaskTransformedParameters::originalSelected(const Gui::SelectionChanges& ms
         }
 
         PartDesign::Transformed* pcTransformed = getObject();
-        App::DocumentObject* selectedObject =
-            pcTransformed->getDocument()->getObject(msg.pObjectName);
+        App::DocumentObject* selectedObject = pcTransformed->getDocument()->getObject(msg.pObjectName);
         if (selectedObject->isDerivedFrom<PartDesign::FeatureAddSub>()) {
 
             // Do the same like in TaskDlgTransformedParameters::accept() but without doCommand
@@ -380,8 +383,7 @@ void TaskTransformedParameters::onFeatureDeleted()
     recomputeFeature();
 }
 
-void TaskTransformedParameters::removeItemFromListWidget(QListWidget* widget,
-                                                         const QString& itemstr)
+void TaskTransformedParameters::removeItemFromListWidget(QListWidget* widget, const QString& itemstr)
 {
     QList<QListWidgetItem*> items = widget->findItems(itemstr, Qt::MatchExactly);
     if (!items.empty()) {
@@ -428,8 +430,7 @@ void TaskTransformedParameters::fillAxisCombo(Gui::ComboLinks& combolinks, Part:
     combolinks.addLink(nullptr, std::string(), tr("Select reference…"));
 }
 
-void TaskTransformedParameters::fillPlanesCombo(Gui::ComboLinks& combolinks,
-                                                Part::Part2DObject* sketch)
+void TaskTransformedParameters::fillPlanesCombo(Gui::ComboLinks& combolinks, Part::Part2DObject* sketch)
 {
     combolinks.clear();
 
@@ -577,9 +578,11 @@ void TaskTransformedParameters::exitSelectionMode()
 void TaskTransformedParameters::addReferenceSelectionGate(AllowSelectionFlags allow)
 {
     std::unique_ptr<Gui::SelectionFilterGate> gateRefPtr(
-        new ReferenceSelection(getBaseObject(), allow));
+        new ReferenceSelection(getBaseObject(), allow)
+    );
     std::unique_ptr<Gui::SelectionFilterGate> gateDepPtr(
-        new NoDependentsSelection(getTopTransformedObject()));
+        new NoDependentsSelection(getTopTransformedObject())
+    );
     Gui::Selection().addSelectionGate(new CombineSelectionFilterGates(gateRefPtr, gateDepPtr));
 }
 
@@ -613,8 +616,7 @@ void TaskTransformedParameters::indexesMoved()
 
 TaskDlgTransformedParameters::TaskDlgTransformedParameters(ViewProviderTransformed* viewProvider)
     : TaskDlgFeatureParameters(viewProvider)
-{
-}
+{}
 
 //==== calls from the TaskView ===============================================================
 

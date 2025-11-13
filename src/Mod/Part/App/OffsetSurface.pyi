@@ -1,7 +1,6 @@
 from Base.Metadata import export
 from GeometrySurface import GeometrySurface
 
-
 @export(
     Twin="GeomOffsetSurface",
     TwinPointer="GeomOffsetSurface",

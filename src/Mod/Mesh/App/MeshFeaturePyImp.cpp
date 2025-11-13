@@ -124,8 +124,10 @@ PyObject* MeshFeaturePy::decimate(PyObject* args)
         Py_Return;
     }
 
-    PyErr_SetString(PyExc_ValueError,
-                    "decimate(tolerance=float, reduction=float) or decimate(targetSize=int)");
+    PyErr_SetString(
+        PyExc_ValueError,
+        "decimate(tolerance=float, reduction=float) or decimate(targetSize=int)"
+    );
     return nullptr;
 }
 

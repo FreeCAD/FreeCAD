@@ -21,16 +21,16 @@
  ******************************************************************************/
 
 
-
 #include "ViewProviderLinearPattern.h"
 #include "TaskPatternParameters.h"
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderLinearPattern,PartDesignGui::ViewProviderTransformed)
+PROPERTY_SOURCE(PartDesignGui::ViewProviderLinearPattern, PartDesignGui::ViewProviderTransformed)
 
-TaskDlgFeatureParameters *ViewProviderLinearPattern::getEditDialog() {
-    return new TaskDlgLinearPatternParameters (this);
+TaskDlgFeatureParameters* ViewProviderLinearPattern::getEditDialog()
+{
+    return new TaskDlgLinearPatternParameters(this);
 }
 
 void ViewProviderLinearPattern::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
@@ -39,7 +39,7 @@ void ViewProviderLinearPattern::setupContextMenu(QMenu* menu, QObject* receiver,
     PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
 }
 
-const std::string & ViewProviderLinearPattern::featureName() const
+const std::string& ViewProviderLinearPattern::featureName() const
 {
     static const std::string name = "LinearPattern";
     return name;

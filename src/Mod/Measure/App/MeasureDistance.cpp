@@ -45,58 +45,68 @@ PROPERTY_SOURCE(Measure::MeasureDistance, Measure::MeasureBase)
 
 MeasureDistance::MeasureDistance()
 {
-    ADD_PROPERTY_TYPE(Element1,
-                      (nullptr),
-                      "Measurement",
-                      App::Prop_None,
-                      "First element of the measurement");
+    ADD_PROPERTY_TYPE(Element1, (nullptr), "Measurement", App::Prop_None, "First element of the measurement");
     Element1.setScope(App::LinkScope::Global);
     Element1.setAllowExternal(true);
 
-    ADD_PROPERTY_TYPE(Element2,
-                      (nullptr),
-                      "Measurement",
-                      App::Prop_None,
-                      "Second element of the measurement");
+    ADD_PROPERTY_TYPE(
+        Element2,
+        (nullptr),
+        "Measurement",
+        App::Prop_None,
+        "Second element of the measurement"
+    );
     Element2.setScope(App::LinkScope::Global);
     Element2.setAllowExternal(true);
 
-    ADD_PROPERTY_TYPE(Distance,
-                      (0.0),
-                      "Measurement",
-                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
-                      "Distance between the two elements");
+    ADD_PROPERTY_TYPE(
+        Distance,
+        (0.0),
+        "Measurement",
+        App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
+        "Distance between the two elements"
+    );
     Distance.setUnit(Base::Unit::Length);
 
-    ADD_PROPERTY_TYPE(DistanceX,
-                      (0.0),
-                      "Measurement",
-                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
-                      "Distance in X-direction");
+    ADD_PROPERTY_TYPE(
+        DistanceX,
+        (0.0),
+        "Measurement",
+        App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
+        "Distance in X-direction"
+    );
     DistanceX.setUnit(Base::Unit::Length);
-    ADD_PROPERTY_TYPE(DistanceY,
-                      (0.0),
-                      "Measurement",
-                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
-                      "Distance in Y-direction");
+    ADD_PROPERTY_TYPE(
+        DistanceY,
+        (0.0),
+        "Measurement",
+        App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
+        "Distance in Y-direction"
+    );
     DistanceY.setUnit(Base::Unit::Length);
-    ADD_PROPERTY_TYPE(DistanceZ,
-                      (0.0),
-                      "Measurement",
-                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
-                      "Distance in Z-direction");
+    ADD_PROPERTY_TYPE(
+        DistanceZ,
+        (0.0),
+        "Measurement",
+        App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
+        "Distance in Z-direction"
+    );
     DistanceZ.setUnit(Base::Unit::Length);
 
-    ADD_PROPERTY_TYPE(Position1,
-                      (Base::Vector3d(0.0, 0.0, 0.0)),
-                      "Measurement",
-                      App::Prop_Hidden,
-                      "Position1");
-    ADD_PROPERTY_TYPE(Position2,
-                      (Base::Vector3d(0.0, 1.0, 0.0)),
-                      "Measurement",
-                      App::Prop_Hidden,
-                      "Position2");
+    ADD_PROPERTY_TYPE(
+        Position1,
+        (Base::Vector3d(0.0, 0.0, 0.0)),
+        "Measurement",
+        App::Prop_Hidden,
+        "Position1"
+    );
+    ADD_PROPERTY_TYPE(
+        Position2,
+        (Base::Vector3d(0.0, 1.0, 0.0)),
+        "Measurement",
+        App::Prop_Hidden,
+        "Position2"
+    );
 }
 
 MeasureDistance::~MeasureDistance() = default;
@@ -117,10 +127,9 @@ bool MeasureDistance::isValidSelection(const App::MeasureSelection& selection)
         }
 
         if (type != App::MeasureElementType::POINT && type != App::MeasureElementType::LINE
-            && type != App::MeasureElementType::LINESEGMENT
-            && type != App::MeasureElementType::CIRCLE && type != App::MeasureElementType::ARC
-            && type != App::MeasureElementType::CURVE && type != App::MeasureElementType::PLANE
-            && type != App::MeasureElementType::CYLINDER) {
+            && type != App::MeasureElementType::LINESEGMENT && type != App::MeasureElementType::CIRCLE
+            && type != App::MeasureElementType::ARC && type != App::MeasureElementType::CURVE
+            && type != App::MeasureElementType::PLANE && type != App::MeasureElementType::CYLINDER) {
             return false;
         }
     }
@@ -322,42 +331,42 @@ PROPERTY_SOURCE(Measure::MeasureDistanceDetached, Measure::MeasureBase)
 
 MeasureDistanceDetached::MeasureDistanceDetached()
 {
-    ADD_PROPERTY_TYPE(Distance,
-                      (0.0),
-                      "Measurement",
-                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
-                      "Distance between the two elements");
+    ADD_PROPERTY_TYPE(
+        Distance,
+        (0.0),
+        "Measurement",
+        App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
+        "Distance between the two elements"
+    );
     Distance.setUnit(Base::Unit::Length);
 
-    ADD_PROPERTY_TYPE(DistanceX,
-                      (0.0),
-                      "Measurement",
-                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
-                      "Distance in X-direction");
+    ADD_PROPERTY_TYPE(
+        DistanceX,
+        (0.0),
+        "Measurement",
+        App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
+        "Distance in X-direction"
+    );
     DistanceX.setUnit(Base::Unit::Length);
-    ADD_PROPERTY_TYPE(DistanceY,
-                      (0.0),
-                      "Measurement",
-                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
-                      "Distance in Y-direction");
+    ADD_PROPERTY_TYPE(
+        DistanceY,
+        (0.0),
+        "Measurement",
+        App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
+        "Distance in Y-direction"
+    );
     DistanceY.setUnit(Base::Unit::Length);
-    ADD_PROPERTY_TYPE(DistanceZ,
-                      (0.0),
-                      "Measurement",
-                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
-                      "Distance in Z-direction");
+    ADD_PROPERTY_TYPE(
+        DistanceZ,
+        (0.0),
+        "Measurement",
+        App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
+        "Distance in Z-direction"
+    );
     DistanceZ.setUnit(Base::Unit::Length);
 
-    ADD_PROPERTY_TYPE(Position1,
-                      (Base::Vector3d(0.0, 0.0, 0.0)),
-                      "Measurement",
-                      App::Prop_None,
-                      "Position1");
-    ADD_PROPERTY_TYPE(Position2,
-                      (Base::Vector3d(0.0, 1.0, 0.0)),
-                      "Measurement",
-                      App::Prop_None,
-                      "Position2");
+    ADD_PROPERTY_TYPE(Position1, (Base::Vector3d(0.0, 0.0, 0.0)), "Measurement", App::Prop_None, "Position1");
+    ADD_PROPERTY_TYPE(Position2, (Base::Vector3d(0.0, 1.0, 0.0)), "Measurement", App::Prop_None, "Position2");
 }
 
 MeasureDistanceDetached::~MeasureDistanceDetached() = default;
@@ -425,10 +434,12 @@ Base::Type MeasureDistanceType::getTypeId() const
 
 void MeasureDistanceType::init()
 {
-    initSubclass(MeasureDistanceType::classTypeId,
-                 "App::MeasureDistance",
-                 "App::DocumentObject",
-                 &(MeasureDistanceType::create));
+    initSubclass(
+        MeasureDistanceType::classTypeId,
+        "App::MeasureDistance",
+        "App::DocumentObject",
+        &(MeasureDistanceType::create)
+    );
 }
 
 void* MeasureDistanceType::create()
@@ -440,9 +451,11 @@ Base::Type MeasureDistanceType::classTypeId = Base::Type::BadType;
 
 
 // Migrate old MeasureDistance Type
-void MeasureDistanceDetached::handleChangedPropertyName(Base::XMLReader& reader,
-                                                        const char* TypeName,
-                                                        const char* PropName)
+void MeasureDistanceDetached::handleChangedPropertyName(
+    Base::XMLReader& reader,
+    const char* TypeName,
+    const char* PropName
+)
 {
     if (strcmp(PropName, "P1") == 0 && strcmp(TypeName, "App::PropertyVector") == 0) {
         Position1.Restore(reader);

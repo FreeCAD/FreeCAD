@@ -51,7 +51,8 @@ using namespace MeshCore;
 static std::vector<std::string> expandSubObjectNames(
     const App::DocumentObject* obj,
     std::map<const App::DocumentObject*, std::vector<std::string>>& subObjectNameCache,
-    int depth)
+    int depth
+)
 {
     if (!App::GetApplication().checkLinkDepth(depth)) {
         return {};
@@ -111,8 +112,7 @@ int Exporter::addObject(App::DocumentObject* obj, float tol)
         auto it = meshCache.find(linked);
         if (it == meshCache.end()) {
             if (linked->isDerivedFrom<Mesh::Feature>()) {
-                it = meshCache.emplace(linked, static_cast<Mesh::Feature*>(linked)->Mesh.getValue())
-                         .first;
+                it = meshCache.emplace(linked, static_cast<Mesh::Feature*>(linked)->Mesh.getValue()).first;
                 it->second.setTransform(matrix);
             }
             else {
@@ -125,8 +125,7 @@ int Exporter::addObject(App::DocumentObject* obj, float tol)
                 if (PyObject_TypeCheck(pyobj, &Data::ComplexGeoDataPy::Type)) {
                     std::vector<Base::Vector3d> aPoints;
                     std::vector<Data::ComplexGeoData::Facet> aTopo;
-                    auto geoData =
-                        static_cast<Data::ComplexGeoDataPy*>(pyobj)->getComplexGeoDataPtr();
+                    auto geoData = static_cast<Data::ComplexGeoDataPy*>(pyobj)->getComplexGeoDataPtr();
                     geoData->getFaces(aPoints, aTopo, tol);
                     it = meshCache.emplace(linked, MeshObject()).first;
                     it->second.setFacets(aTopo, aPoints);
@@ -328,9 +327,7 @@ void Exporter3MF::write()
 
 // ----------------------------------------------------------------------------
 
-ExporterAMF::ExporterAMF(std::string fileName,
-                         const std::map<std::string, std::string>& meta,
-                         bool compress)
+ExporterAMF::ExporterAMF(std::string fileName, const std::map<std::string, std::string>& meta, bool compress)
 {
     // ask for write permission
     throwIfNoPermission(fileName);

@@ -207,17 +207,17 @@ False = engrenage planétaire</translation>
   <context>
     <name>CmdPartDesignBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="2315"/>
+      <location filename="../../Command.cpp" line="2317"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2316"/>
+      <location filename="../../Command.cpp" line="2318"/>
       <source>Boolean Operation</source>
       <translation>Créer une opération booléenne</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2317"/>
+      <location filename="../../Command.cpp" line="2319"/>
       <source>Applies boolean operations with the selected objects and the active body</source>
       <translation>Applique des opérations booléennes avec les objets sélectionnés et le corps actif.</translation>
     </message>
@@ -687,7 +687,9 @@ False = engrenage planétaire</translation>
     <message>
       <location filename="../../Command.cpp" line="345"/>
       <source>Creates a reference to geometry from one or more objects, allowing it to be used inside or outside a body. It tracks relative placements, supports multiple geometry types (solids, faces, edges, vertices), and can work with objects in the same or external documents.</source>
-      <translation>Crée une référence à la géométrie à partir d'un ou plusieurs objets, ce qui permet de l'utiliser à l'intérieur ou à l'extérieur d'un corps. Elle conserve les positions relatives, prend en charge plusieurs types de géométrie (solides, faces, arêtes, sommets) et peut fonctionner avec des objets dans le même document ou dans des documents externes.</translation>
+      <translation>Crée une référence à la géométrie à partir d'un ou plusieurs objets, ce qui permet de l'utiliser à l'intérieur ou à l'extérieur d'un corps. Elle
+conserve les positions relatives, prend en charge plusieurs types de géométrie (solides, faces, arêtes, sommets) et peut fonctionner
+avec des objets dans le même document ou dans des documents externes.</translation>
     </message>
   </context>
   <context>
@@ -927,7 +929,7 @@ False = engrenage planétaire</translation>
       <translation>Créer une esquisse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2333"/>
+      <location filename="../../Command.cpp" line="2335"/>
       <source>Create Boolean</source>
       <translation>Créer une opération booléenne</translation>
     </message>
@@ -1672,13 +1674,13 @@ les paramètres sont peut-être incompatibles. Ajuster les paramètres et réess
   <context>
     <name>PartDesignGui::TaskExtrudeParameters</name>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1355"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1357"/>
       <source>No face selected</source>
       <translation>Aucune face sélectionnée</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="161"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1135"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="159"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1137"/>
       <source>Face</source>
       <translation>Face</translation>
     </message>
@@ -1688,63 +1690,63 @@ les paramètres sont peut-être incompatibles. Ajuster les paramètres et réess
       <translation>Supprimer</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="349"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="345"/>
       <source>Preview</source>
       <translation>Aperçu</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="353"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="349"/>
       <source>Select Faces</source>
       <translation>Sélectionner des faces</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="688"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="684"/>
       <source>Select reference…</source>
       <translation>Sélectionner une référence…</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="596"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="592"/>
       <source>No shape selected</source>
       <translation>Aucune forme sélectionnée</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="681"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="677"/>
       <source>Sketch normal</source>
       <translation>Normale à l'esquisse</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="684"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="680"/>
       <source>Face normal</source>
       <translation>Face normale</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="692"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="697"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="688"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="693"/>
       <source>Custom direction</source>
       <translation>Direction personnalisée </translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1081"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1083"/>
       <source>Click on a shape in the model</source>
       <translation>Cliquer sur une forme dans le modèle</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1342"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1344"/>
       <source>One sided</source>
       <translation>Unilatéral</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1343"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1345"/>
       <source>Two sided</source>
       <translation>Bilatéral</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1344"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1346"/>
       <source>Symmetric</source>
       <translation>Symétrique</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1350"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1352"/>
       <source>Click on a face in the model</source>
       <translation>Cliquer sur une face du modèle</translation>
     </message>
@@ -2030,130 +2032,130 @@ les paramètres sont peut-être incompatibles. Ajuster les paramètres et réess
   <context>
     <name>PartDesignGui::TaskHoleParameters</name>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="52"/>
+      <location filename="../../TaskHoleParameters.cpp" line="55"/>
       <source>Counterbore</source>
       <translation>Lamage</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="53"/>
+      <location filename="../../TaskHoleParameters.cpp" line="56"/>
       <source>Countersink</source>
       <translation>Fraisage</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="54"/>
+      <location filename="../../TaskHoleParameters.cpp" line="57"/>
       <source>Counterdrill</source>
       <translation>Contre-perçage</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="58"/>
+      <location filename="../../TaskHoleParameters.cpp" line="61"/>
       <source>Hole Parameters</source>
       <translation>Paramètres du perçage</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="67"/>
+      <location filename="../../TaskHoleParameters.cpp" line="70"/>
       <source>None</source>
       <translation>Rien</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="68"/>
+      <location filename="../../TaskHoleParameters.cpp" line="71"/>
       <source>ISO metric regular</source>
       <translation>ISO filet métrique standard</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="69"/>
+      <location filename="../../TaskHoleParameters.cpp" line="72"/>
       <source>ISO metric fine</source>
       <translation>ISO filet métrique fin</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="70"/>
+      <location filename="../../TaskHoleParameters.cpp" line="73"/>
       <source>UTS coarse</source>
       <translation>UTS gros filet</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="71"/>
+      <location filename="../../TaskHoleParameters.cpp" line="74"/>
       <source>UTS fine</source>
       <translation>UTS filet fin</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="72"/>
+      <location filename="../../TaskHoleParameters.cpp" line="75"/>
       <source>UTS extra fine</source>
       <translation>UTS filet extra fin</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="73"/>
+      <location filename="../../TaskHoleParameters.cpp" line="76"/>
       <source>ANSI pipes</source>
       <translation>ANSI raccords</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="74"/>
+      <location filename="../../TaskHoleParameters.cpp" line="77"/>
       <source>ISO/BSP pipes</source>
       <translation>ISO/BSP raccords</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="75"/>
+      <location filename="../../TaskHoleParameters.cpp" line="78"/>
       <source>BSW whitworth</source>
       <translation>BSW Whitworth</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="76"/>
+      <location filename="../../TaskHoleParameters.cpp" line="79"/>
       <source>BSF whitworth fine</source>
       <translation>BSF Whitworth fin</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="77"/>
+      <location filename="../../TaskHoleParameters.cpp" line="80"/>
       <source>ISO tyre valves</source>
       <translation>Valves de pneus ISO</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="671"/>
+      <location filename="../../TaskHoleParameters.cpp" line="674"/>
       <source>Medium</source>
       <comment>Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible</comment>
       <translation>Moyen</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="672"/>
+      <location filename="../../TaskHoleParameters.cpp" line="675"/>
       <source>Fine</source>
       <comment>Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible</comment>
       <translation>Fin</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="673"/>
+      <location filename="../../TaskHoleParameters.cpp" line="676"/>
       <source>Coarse</source>
       <comment>Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible</comment>
       <translation>Grossier</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="676"/>
+      <location filename="../../TaskHoleParameters.cpp" line="679"/>
       <source>Normal</source>
       <comment>Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible</comment>
       <translation>Normal</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="677"/>
+      <location filename="../../TaskHoleParameters.cpp" line="680"/>
       <source>Close</source>
       <comment>Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible</comment>
       <translation>Faible</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="678"/>
+      <location filename="../../TaskHoleParameters.cpp" line="681"/>
       <source>Loose</source>
       <comment>Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible</comment>
       <translation>Jeu</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="681"/>
+      <location filename="../../TaskHoleParameters.cpp" line="684"/>
       <source>Normal</source>
       <comment>Distance between thread crest and hole wall</comment>
       <translation>Normal</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="682"/>
+      <location filename="../../TaskHoleParameters.cpp" line="685"/>
       <source>Close</source>
       <comment>Distance between thread crest and hole wall</comment>
       <translation>Fermer</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="683"/>
+      <location filename="../../TaskHoleParameters.cpp" line="686"/>
       <source>Wide</source>
       <comment>Distance between thread crest and hole wall</comment>
       <translation>Large</translation>
@@ -2385,41 +2387,36 @@ les paramètres sont peut-être incompatibles. Ajuster les paramètres et réess
       <translation>Direction</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="527"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="541"/>
       <source>Set a direction or select an edge
 from the model as reference</source>
       <translation>Définir une direction ou sélectionner une arête du modèle comme référence</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="532"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="546"/>
       <source>Sketch normal</source>
       <translation>Normale à l'esquisse</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="542"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="556"/>
       <source>Custom direction</source>
       <translation>Direction personnalisée </translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="552"/>
-      <source>Show direction</source>
-      <translation>Afficher la direction</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="562"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="569"/>
       <source>Use custom vector for pad direction, otherwise
 the sketch plane's normal vector will be used</source>
       <translation>Utiliser un vecteur personnalisé pour la direction de la protrusion
 sinon le vecteur normal du plan de l'esquisse sera utilisé</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="671"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="521"/>
       <source>If unchecked, the length will be
 measured along the specified direction</source>
       <translation>Si cette option n'est pas cochée, la longueur sera mesurée dans la direction spécifiée.</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="675"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="525"/>
       <source>Length along sketch normal</source>
       <translation>Dimension suivant la normale à l'esquisse</translation>
     </message>
@@ -2435,42 +2432,42 @@ measured along the specified direction</source>
       <translation>Inverser</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="520"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="534"/>
       <source>Direction/edge</source>
       <translation>Direction/arête</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="537"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="551"/>
       <source>Select reference…</source>
       <translation>Sélectionner une référence…</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="575"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="582"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="582"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="589"/>
       <source>X-component of direction vector</source>
       <translation>Composante en X du vecteur directeur</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="604"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="611"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="611"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="618"/>
       <source>Y-component of direction vector</source>
       <translation>Composante en Y du vecteur directeur</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="633"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="640"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="640"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="647"/>
       <source>Z-component of direction vector</source>
       <translation>Composante en Z du vecteur directeur</translation>
     </message>
@@ -2509,7 +2506,7 @@ measured along the specified direction</source>
       <translation>Sélectionne toutes les faces de la forme.</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="685"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="678"/>
       <source>Recompute on change</source>
       <translation>Recalculer en cas de changement</translation>
     </message>
@@ -3190,11 +3187,11 @@ measured along the specified direction</source>
       <translation>Pas de plan valide dans le document</translation>
     </message>
     <message>
+      <location filename="../../ViewProviderDatum.cpp" line="248"/>
       <location filename="../../ViewProvider.cpp" line="134"/>
-      <location filename="../../SketchWorkflow.cpp" line="704"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="94"/>
       <location filename="../../Command.cpp" line="1020"/>
-      <location filename="../../ViewProviderDatum.cpp" line="248"/>
+      <location filename="../../SketchWorkflow.cpp" line="704"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Une fenêtre de dialogue est déjà ouverte dans le panneau des tâches.</translation>
     </message>
@@ -3234,11 +3231,11 @@ measured along the specified direction</source>
       <translation>Aucune esquisse n’est disponible dans le document</translation>
     </message>
     <message>
+      <location filename="../../ViewProviderDatum.cpp" line="249"/>
       <location filename="../../ViewProvider.cpp" line="135"/>
-      <location filename="../../SketchWorkflow.cpp" line="705"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="95"/>
       <location filename="../../Command.cpp" line="1021"/>
-      <location filename="../../ViewProviderDatum.cpp" line="249"/>
+      <location filename="../../SketchWorkflow.cpp" line="705"/>
       <source>Close this dialog?</source>
       <translation>Voulez-vous fermer cette boîte de dialogue ?</translation>
     </message>
@@ -3526,10 +3523,10 @@ Pour les documents historiques contenant des objets PartDesign sans corps, utili
       <translation>Afin d'utiliser cette fonction, elle doit appartenir à un objet pièce dans le document.</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="91"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="208"/>
       <location filename="../../ViewProviderDressUp.cpp" line="63"/>
       <location filename="../../ViewProviderTransformed.cpp" line="64"/>
+      <location filename="../../ViewProvider.cpp" line="91"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="208"/>
       <source>Edit %1</source>
       <translation>Modifier %1</translation>
     </message>
@@ -3956,7 +3953,7 @@ Notez que le calcul peut prendre un certain temps.</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="678"/>
       <source>Clearance / Passthrough</source>
-      <translation>Jeu/passage</translation>
+      <translation>Jeu/trou traversant</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="683"/>
@@ -4003,7 +4000,7 @@ Notez que le calcul peut prendre un certain temps.</translation>
       <source>Hole clearance
 Only available for holes without thread</source>
       <translation>Jeu du trou
-Cela n'est disponible que les trous sans filetage.</translation>
+Disponible uniquement pour les trous sans filetage</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="88"/>
@@ -4468,20 +4465,20 @@ over 90: larger hole radius at the bottom</source>
       <translation>La forme de base est nulle</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2194"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="116"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="690"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="703"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="713"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="171"/>
+      <location filename="../../../App/FeatureDraft.cpp" line="293"/>
       <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="231"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="116"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2194"/>
       <location filename="../../../App/FeatureLoft.cpp" line="272"/>
       <location filename="../../../App/FeatureLoft.cpp" line="307"/>
       <location filename="../../../App/FeaturePipe.cpp" line="400"/>
       <location filename="../../../App/FeaturePipe.cpp" line="439"/>
-      <location filename="../../../App/FeatureChamfer.cpp" line="171"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="234"/>
-      <location filename="../../../App/FeatureDraft.cpp" line="293"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="231"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="690"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="703"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="713"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>Le résultat comporte plusieurs solides : activer « Autoriser les composés » dans le corps actif.</translation>
     </message>
@@ -4517,10 +4514,10 @@ over 90: larger hole radius at the bottom</source>
       <translation>L'extrusion fusionnée résultante est nulle.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="682"/>
       <location filename="../../../App/FeatureLoft.cpp" line="301"/>
       <location filename="../../../App/FeaturePipe.cpp" line="433"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="127"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="682"/>
       <source>Resulting shape is not a solid</source>
       <translation>La forme résultante n'est pas un solide</translation>
     </message>
@@ -4530,8 +4527,8 @@ over 90: larger hole radius at the bottom</source>
       <translation>Impossible de créer le chanfrein</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureFillet.cpp" line="99"/>
       <location filename="../../../App/FeatureDraft.cpp" line="289"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="99"/>
       <source>Resulting shape is null</source>
       <translation>La forme résultante est nulle</translation>
     </message>
@@ -4596,9 +4593,9 @@ over 90: larger hole radius at the bottom</source>
       <translation>La création a échoué car la direction est orthogonale au vecteur normal de l'esquisse.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="446"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="138"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="141"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="138"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="446"/>
       <source>Creating a face from sketch failed</source>
       <translation>La création d'une face à partir de l'esquisse a échoué</translation>
     </message>
@@ -4608,20 +4605,20 @@ over 90: larger hole radius at the bottom</source>
       <translation>Les angles de rainure s'annulent mutuellement.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureGroove.cpp" line="154"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="157"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="154"/>
       <source>Revolve axis intersects the sketch</source>
       <translation>L'axe de révolution coupe l'esquisse</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureGroove.cpp" line="238"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="241"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="238"/>
       <source>Could not revolve the sketch!</source>
       <translation>Impossible de faire tourner l'esquisse !</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureGroove.cpp" line="250"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="253"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="250"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>Impossible de créer une face à partir de l'esquisse.
@@ -5073,8 +5070,8 @@ Les entités d'esquisse qui se croisent ou les faces multiples dans une esquisse
       <translation>Les angles de révolution s'annulent mutuellement.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureGroove.cpp" line="131"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="134"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="131"/>
       <source>Reference axis is invalid</source>
       <translation>L'axe de référence n'est pas valide</translation>
     </message>
@@ -5187,12 +5184,12 @@ Les entités d'esquisse qui se croisent ou les faces multiples dans une esquisse
   <context>
     <name>CmdPartDesignCompDatums</name>
     <message>
-      <location filename="../../Command.cpp" line="2378"/>
+      <location filename="../../Command.cpp" line="2380"/>
       <source>Create Datum</source>
       <translation>Créer une référence</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2379"/>
+      <location filename="../../Command.cpp" line="2381"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>Crée un objet de référence ou un système de coordonnées local.</translation>
     </message>
@@ -5200,12 +5197,12 @@ Les entités d'esquisse qui se croisent ou les faces multiples dans une esquisse
   <context>
     <name>CmdPartDesignCompSketches</name>
     <message>
-      <location filename="../../Command.cpp" line="2413"/>
+      <location filename="../../Command.cpp" line="2415"/>
       <source>Create Datum</source>
       <translation>Créer une référence</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2414"/>
+      <location filename="../../Command.cpp" line="2416"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>Crée un objet de référence ou un système de coordonnées local.</translation>
     </message>

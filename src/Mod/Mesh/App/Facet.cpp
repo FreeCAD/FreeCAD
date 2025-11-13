@@ -31,9 +31,11 @@
 
 using namespace Mesh;
 
-Facet::Facet(const MeshCore::MeshFacet& face,  // NOLINT
-             const MeshObject* obj,
-             MeshCore::FacetIndex index)
+Facet::Facet(
+    const MeshCore::MeshFacet& face,  // NOLINT
+    const MeshObject* obj,
+    MeshCore::FacetIndex index
+)
     : Index(index)
     , Mesh(obj)
 {

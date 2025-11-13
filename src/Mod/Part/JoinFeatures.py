@@ -32,9 +32,9 @@ FreeCAD v0.16. Do not use. Use BOPTools.JoinFeatures instead."
 
 
 def getParamRefine():
-    return FreeCAD.ParamGet(
-        "User parameter:BaseApp/Preferences/Mod/Part/Boolean"
-    ).GetBool("RefineModel")
+    return FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Part/Boolean").GetBool(
+        "RefineModel"
+    )
 
 
 def shapeOfMaxVol(compound):
@@ -57,7 +57,6 @@ def shapeOfMaxVol(compound):
         return compound
 
 
-
 class _PartJoinFeature:
     "The PartJoinFeature object"
 
@@ -67,7 +66,8 @@ class _PartJoinFeature:
             "App::PropertyEnumeration",
             "Mode",
             "Join",
-            "The mode of operation. bypass = make compound (fast)", locked=True,
+            "The mode of operation. bypass = make compound (fast)",
+            locked=True,
         )
         obj.Mode = ["bypass", "Connect", "Embed", "Cutout"]
         obj.addProperty("App::PropertyLink", "Base", "Join", "First object", locked=True)
@@ -76,7 +76,8 @@ class _PartJoinFeature:
             "App::PropertyBool",
             "Refine",
             "Join",
-            "True = refine resulting shape. False = output as is.", locked=True,
+            "True = refine resulting shape. False = output as is.",
+            locked=True,
         )
 
         obj.Proxy = self
@@ -113,11 +114,11 @@ class _ViewProviderPartJoinFeature:
             return ":/icons/booleans/Part_JoinConnect.svg"
         else:
             return {
-                    "bypass": ":/icons/booleans/Part_JoinBypass.svg",
-                    "Connect": ":/icons/booleans/Part_JoinConnect.svg",
-                    "Embed": ":/icons/booleans/Part_JoinEmbed.svg",
-                    "Cutout": ":/icons/booleans/Part_JoinCutout.svg",
-                }[self.Object.Mode]
+                "bypass": ":/icons/booleans/Part_JoinBypass.svg",
+                "Connect": ":/icons/booleans/Part_JoinConnect.svg",
+                "Embed": ":/icons/booleans/Part_JoinEmbed.svg",
+                "Cutout": ":/icons/booleans/Part_JoinCutout.svg",
+            }[self.Object.Mode]
 
     def attach(self, vobj):
         self.ViewObject = vobj

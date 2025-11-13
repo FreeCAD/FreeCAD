@@ -61,7 +61,8 @@ PyMOD_INIT_FUNC(Mesh)
     // call PyType_Ready, otherwise we run into a segmentation fault, later on.
     // This function is responsible for adding inherited slots from a type's base class.
     ParameterGrp::handle handle = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Mesh");
+        "User parameter:BaseApp/Preferences/Mod/Mesh"
+    );
     ParameterGrp::handle asy = handle->GetGroup("Asymptote");
     MeshCore::MeshOutput::SetAsymptoteSize(asy->GetASCII("Width", "500"), asy->GetASCII("Height"));
 

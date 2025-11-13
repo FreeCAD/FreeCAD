@@ -22,19 +22,23 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <Interface_Static.hxx>
+#include <Interface_Static.hxx>
 
 
 #include "ImportExportSettings.h"
 #include <App/Application.h>
 
 
-namespace Part {
-namespace IGES {
+namespace Part
+{
+namespace IGES
+{
 
 ImportExportSettings::ImportExportSettings()
 {
-    pGroup = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part/IGES");
+    pGroup = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Part/IGES"
+    );
 }
 
 bool ImportExportSettings::getSkipBlankEntities() const
@@ -102,5 +106,5 @@ void ImportExportSettings::setProductName(const char* name)
     Part::Interface::writeIgesHeaderProduct(name);
 }
 
-} // namespace IGES
-} // namespace Part
+}  // namespace IGES
+}  // namespace Part

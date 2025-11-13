@@ -625,18 +625,18 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
       <translation>고정할 대상체</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="259"/>
-      <location filename="../../../CommandCreateView.py" line="296"/>
+      <location filename="../../../CommandCreateView.py" line="354"/>
+      <location filename="../../../CommandCreateView.py" line="391"/>
       <source>The objects moved by the move</source>
       <translation>이 오브젝트는 이동 동작에 의해 배치되었습니다.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="271"/>
+      <location filename="../../../CommandCreateView.py" line="366"/>
       <source>This is the movement of the move. The end placement is the result of the start placement * this placement.</source>
       <translation>이동 동작에 의한 배치입니다. 최종 배치는 시작 위치 * 현재 위치 입니다.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="280"/>
+      <location filename="../../../CommandCreateView.py" line="375"/>
       <source>The type of the move</source>
       <translation>이동 방식</translation>
     </message>
@@ -893,60 +893,60 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <translation>관절 연결을 삭제하고 이 대상체를 이동시키겠습니까?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1006"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1012"/>
       <source>Move part</source>
       <translation>부품 이동</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1526"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1548"/>
       <source>ViewProviderAssembly</source>
       <comment>and %1 more</comment>
       <translation type="unfinished">ViewProviderAssembly</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1543"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1565"/>
       <source>Empty Assembly</source>
       <translation>비어 있는 조립품</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1547"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1569"/>
       <source>Over-constrained:</source>
       <translation>과도한 구속:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1554"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1576"/>
       <source>Malformed joints:</source>
       <translation>잘못 연결된 관절들:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1560"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1582"/>
       <source>Redundant joints:</source>
       <translation>중복 연결된 관절들:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1567"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1589"/>
       <source>Partially redundant:</source>
       <translation>부분적인 중복:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1573"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1595"/>
       <source>Solver failed to converge</source>
       <translation type="unfinished">Solver failed to converge</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1579"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1601"/>
       <source>Under-constrained:</source>
       <translation>완전 구속 중:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1581"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1603"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n 자유도</numerusform>
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1585"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1607"/>
       <source>Fully constrained</source>
       <translation>완전히 구속됨</translation>
     </message>
@@ -1081,7 +1081,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly::AssemblyLink</name>
     <message>
-      <location filename="../../../App/AssemblyLink.cpp" line="584"/>
+      <location filename="../../../App/AssemblyLink.cpp" line="604"/>
       <source>Joints</source>
       <translation>관절들</translation>
     </message>
@@ -1467,27 +1467,27 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>AssemblyGui::TaskAssemblyMessages</name>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="37"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="38"/>
       <source>Solver messages</source>
       <translation type="unfinished">Solver messages</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="54"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="55"/>
       <source>Click to select these conflicting joints.</source>
       <translation>충돌하는 관절들을 선택하려면 클릭하세요.</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="57"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="58"/>
       <source>Click to select these redundant joints.</source>
       <translation>이러한 중복되는 관절들을 선택하려면 클릭하세요.</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="60"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="61"/>
       <source>The assembly has unconstrained components giving rise to those Degrees Of Freedom. Click to select these unconstrained components.</source>
       <translation>조립품에는 이러한 자유도를 발생시키는 구속되지 않은 요소들이 있습니다. 클릭하여 이러한 불구속된 요소들을 선택하세요.</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="64"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="65"/>
       <source>Click to select these malformed joints.</source>
       <translation>이러한 잘못 연결된 관절들을 선택하려면 클릭하세요.</translation>
     </message>

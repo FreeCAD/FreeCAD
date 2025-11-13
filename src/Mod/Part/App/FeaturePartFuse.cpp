@@ -22,12 +22,12 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
-# include <BRepCheck_Analyzer.hxx>
-# include <Standard_Failure.hxx>
-# include <TopoDS_Iterator.hxx>
-# include <TopExp.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
+#include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
+#include <BRepCheck_Analyzer.hxx>
+#include <Standard_Failure.hxx>
+#include <TopoDS_Iterator.hxx>
+#include <TopExp.hxx>
+#include <TopTools_IndexedMapOfShape.hxx>
 
 
 #include "FeaturePartFuse.h"
@@ -35,15 +35,15 @@
 #include "modelRefine.h"
 #include "TopoShapeOpCode.h"
 
-FC_LOG_LEVEL_INIT("Part",true,true);
+FC_LOG_LEVEL_INIT("Part", true, true);
 
 using namespace Part;
 
 namespace Part
 {
-    extern void throwIfInvalidIfCheckModel(const TopoDS_Shape& shape);
-    extern bool getRefineModelParameter();
-}
+extern void throwIfInvalidIfCheckModel(const TopoDS_Shape& shape);
+extern bool getRefineModelParameter();
+}  // namespace Part
 
 PROPERTY_SOURCE(Part::Fuse, Part::Boolean)
 
@@ -56,7 +56,7 @@ BRepAlgoAPI_BooleanOperation* Fuse::makeOperation(const TopoDS_Shape& base, cons
     return new FCBRepAlgoAPI_Fuse(base, tool);
 }
 
-const char *Fuse::opCode() const
+const char* Fuse::opCode() const
 {
     return Part::OpCodes::Fuse;
 }
@@ -68,25 +68,37 @@ PROPERTY_SOURCE(Part::MultiFuse, Part::Feature)
 
 MultiFuse::MultiFuse()
 {
-    ADD_PROPERTY(Shapes,(nullptr));
+    ADD_PROPERTY(Shapes, (nullptr));
     Shapes.setSize(0);
-    ADD_PROPERTY_TYPE(History,(ShapeHistory()), "Boolean", (App::PropertyType)
-        (App::Prop_Output|App::Prop_Transient|App::Prop_Hidden), "Shape history");
+    ADD_PROPERTY_TYPE(
+        History,
+        (ShapeHistory()),
+        "Boolean",
+        (App::PropertyType)(App::Prop_Output | App::Prop_Transient | App::Prop_Hidden),
+        "Shape history"
+    );
     History.setSize(0);
 
-    ADD_PROPERTY_TYPE(Refine,(0),"Boolean",(App::PropertyType)(App::Prop_None),"Refine shape (clean up redundant edges) after this boolean operation");
+    ADD_PROPERTY_TYPE(
+        Refine,
+        (0),
+        "Boolean",
+        (App::PropertyType)(App::Prop_None),
+        "Refine shape (clean up redundant edges) after this boolean operation"
+    );
 
     this->Refine.setValue(getRefineModelParameter());
 }
 
 short MultiFuse::mustExecute() const
 {
-    if (Shapes.isTouched())
+    if (Shapes.isTouched()) {
         return 1;
+    }
     return 0;
 }
 
-App::DocumentObjectExecReturn *MultiFuse::execute()
+App::DocumentObjectExecReturn* MultiFuse::execute()
 {
     std::vector<TopoShape> shapes;
     std::vector<App::DocumentObject*> obj = Shapes.getValues();
@@ -100,7 +112,8 @@ App::DocumentObjectExecReturn *MultiFuse::execute()
     TopoShape compoundOfArguments;
 
     // if only one source shape, and it is a compound - fuse children of the compound
-    const int maxIterations = 1'000'000; // will trigger "not enough shape objects linked" error below if ever reached
+    const int maxIterations = 1'000'000;  // will trigger "not enough shape objects linked" error
+                                          // below if ever reached
     for (int i = 0; shapes.size() == 1 && i < maxIterations; ++i) {
         compoundOfArguments = shapes[0];
         TopoDS_Shape shape = compoundOfArguments.getShape();
@@ -108,7 +121,8 @@ App::DocumentObjectExecReturn *MultiFuse::execute()
             shapes.clear();
             shapes = compoundOfArguments.getSubTopoShapes();
             argumentsAreInCompound = true;
-        } else {
+        }
+        else {
             break;
         }
     }
@@ -143,8 +157,7 @@ App::DocumentObjectExecReturn *MultiFuse::execute()
             TopoShape res(0);
             res = res.makeShapeWithElementMap(mkFuse.Shape(), MapperMaker(mkFuse), shapes, OpCodes::Fuse);
             for (const auto& it2 : shapes) {
-                history.push_back(
-                    buildHistory(mkFuse, TopAbs_FACE, res.getShape(), it2.getShape()));
+                history.push_back(buildHistory(mkFuse, TopAbs_FACE, res.getShape(), it2.getShape()));
             }
             if (res.isNull()) {
                 throw Base::RuntimeError("Resulting shape is null");
@@ -158,8 +171,7 @@ App::DocumentObjectExecReturn *MultiFuse::execute()
                     BRepBuilderAPI_RefineModel mkRefine(oldShape);
                     // We just built an element map above for the fuse, don't erase it for a refine.
                     res.setShape(mkRefine.Shape(), false);
-                    ShapeHistory hist =
-                            buildHistory(mkRefine, TopAbs_FACE, res.getShape(), oldShape);
+                    ShapeHistory hist = buildHistory(mkRefine, TopAbs_FACE, res.getShape(), oldShape);
                     for (auto& jt : history) {
                         jt = joinHistory(jt, hist);
                     }
@@ -187,14 +199,14 @@ App::DocumentObjectExecReturn *MultiFuse::execute()
                         int iFaceInChild = histitem.first;
                         ShapeHistory::List& iFacesInResult = histitem.second;
                         const TopoDS_Shape& srcFace = facesOfChild(
-                            iFaceInChild
-                            + 1);  //+1 to convert our 0-based to OCC 1-bsed conventions
+                            iFaceInChild + 1
+                        );  //+1 to convert our 0-based to OCC 1-bsed conventions
                         int iFaceInCompound = facesOfCompound.FindIndex(srcFace) - 1;
-                        overallHist.shapeMap[iFaceInCompound] =
-                            iFacesInResult;  // this may overwrite existing info if the same face is
-                                             // used in several children of compound. This shouldn't
-                                             // be a problem, because the histories should match
-                                             // anyway...
+                        overallHist.shapeMap[iFaceInCompound]
+                            = iFacesInResult;  // this may overwrite existing info if the same face
+                                               // is used in several children of compound. This
+                                               // shouldn't be a problem, because the histories
+                                               // should match anyway...
                     }
                 }
                 history.clear();

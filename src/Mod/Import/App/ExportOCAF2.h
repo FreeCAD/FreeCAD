@@ -61,10 +61,9 @@ struct ImportExport ExportOCAFOptions
 class ImportExport ExportOCAF2
 {
 public:
-    using GetShapeColorsFunc =
-        std::function<std::map<std::string, Base::Color>(App::DocumentObject*, const char*)>;
-    explicit ExportOCAF2(Handle(TDocStd_Document) hDoc,
-                         GetShapeColorsFunc func = GetShapeColorsFunc());
+    using GetShapeColorsFunc
+        = std::function<std::map<std::string, Base::Color>(App::DocumentObject*, const char*)>;
+    explicit ExportOCAF2(Handle(TDocStd_Document) hDoc, GetShapeColorsFunc func = GetShapeColorsFunc());
 
     static ExportOCAFOptions customExportOptions();
     void setExportOptions(ExportOCAFOptions opts)
@@ -83,16 +82,20 @@ public:
     bool canFallback(std::vector<App::DocumentObject*> objs);
 
 private:
-    TDF_Label exportObject(App::DocumentObject* obj,
-                           const char* sub,
-                           TDF_Label parent,
-                           const char* name = nullptr);
-    void setupObject(TDF_Label label,
-                     App::DocumentObject* obj,
-                     const Part::TopoShape& shape,
-                     const std::string& prefix,
-                     const char* name = nullptr,
-                     bool force = false);
+    TDF_Label exportObject(
+        App::DocumentObject* obj,
+        const char* sub,
+        TDF_Label parent,
+        const char* name = nullptr
+    );
+    void setupObject(
+        TDF_Label label,
+        App::DocumentObject* obj,
+        const Part::TopoShape& shape,
+        const std::string& prefix,
+        const char* name = nullptr,
+        bool force = false
+    );
     void setName(TDF_Label label, App::DocumentObject* obj, const char* name = nullptr);
     TDF_Label findComponent(const char* subname, TDF_Label label, TDF_LabelSequence& labels);
 

@@ -32,27 +32,32 @@
 
 #include <spnav.h>
 
-Gui::GuiNativeEvent::GuiNativeEvent(Gui::GUIApplicationNativeEventAware *app)
-: GuiAbstractNativeEvent(app)
-{
-}
+Gui::GuiNativeEvent::GuiNativeEvent(Gui::GUIApplicationNativeEventAware* app)
+    : GuiAbstractNativeEvent(app)
+{}
 
 Gui::GuiNativeEvent::~GuiNativeEvent()
 {
-    if (spnav_close())
+    if (spnav_close()) {
         Base::Console().log("Couldn't disconnect from spacenav daemon\n");
-    else
+    }
+    else {
         Base::Console().log("Disconnected from spacenav daemon\n");
+    }
 }
 
-void Gui::GuiNativeEvent::initSpaceball(QMainWindow *window)
+void Gui::GuiNativeEvent::initSpaceball(QMainWindow* window)
 {
     Q_UNUSED(window)
     if (spnav_open() == -1) {
-        Base::Console().log("Couldn't connect to spacenav daemon. Please ignore if you don't have a spacemouse.\n");
-    } else {
+        Base::Console().log(
+            "Couldn't connect to spacenav daemon. Please ignore if you don't have a spacemouse.\n"
+        );
+    }
+    else {
         Base::Console().log("Connected to spacenav daemon\n");
-        QSocketNotifier* SpacenavNotifier = new QSocketNotifier(spnav_fd(), QSocketNotifier::Read, this);
+        QSocketNotifier* SpacenavNotifier
+            = new QSocketNotifier(spnav_fd(), QSocketNotifier::Read, this);
         connect(SpacenavNotifier, SIGNAL(activated(int)), this, SLOT(pollSpacenav()));
         mainApp->setSpaceballPresent(true);
     }
@@ -61,12 +66,9 @@ void Gui::GuiNativeEvent::initSpaceball(QMainWindow *window)
 void Gui::GuiNativeEvent::pollSpacenav()
 {
     spnav_event ev;
-    while(spnav_poll_event(&ev))
-    {
-        switch (ev.type)
-        {
-            case SPNAV_EVENT_MOTION:
-            {
+    while (spnav_poll_event(&ev)) {
+        switch (ev.type) {
+            case SPNAV_EVENT_MOTION: {
                 motionDataArray[0] = -ev.motion.x;
                 motionDataArray[1] = -ev.motion.z;
                 motionDataArray[2] = -ev.motion.y;
@@ -76,8 +78,7 @@ void Gui::GuiNativeEvent::pollSpacenav()
                 mainApp->postMotionEvent(motionDataArray);
                 break;
             }
-            case SPNAV_EVENT_BUTTON:
-            {
+            case SPNAV_EVENT_BUTTON: {
                 mainApp->postButtonEvent(ev.button.bnum, ev.button.press);
                 break;
             }

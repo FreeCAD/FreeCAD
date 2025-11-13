@@ -4,17 +4,17 @@
   <context>
     <name>CmdPointsConvert</name>
     <message>
-      <location filename="../../Command.cpp" line="234"/>
+      <location filename="../../Command.cpp" line="197"/>
       <source>Points</source>
       <translation>Punts</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="235"/>
+      <location filename="../../Command.cpp" line="198"/>
       <source>Convert to Points</source>
       <translation>Convertir en punts</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="236"/>
+      <location filename="../../Command.cpp" line="199"/>
       <source>Converts to points</source>
       <translation>Convertir en punts</translation>
     </message>
@@ -22,18 +22,18 @@
   <context>
     <name>CmdPointsExport</name>
     <message>
-      <location filename="../../Command.cpp" line="148"/>
+      <location filename="../../Command.cpp" line="150"/>
       <source>Points</source>
       <translation>Punts</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="149"/>
+      <location filename="../../Command.cpp" line="151"/>
       <source>Export Points…</source>
       <translation>Exportar punts…</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="150"/>
       <location filename="../../Command.cpp" line="152"/>
+      <location filename="../../Command.cpp" line="154"/>
       <source>Exports a point cloud</source>
       <translation>Exporta un núvol de punts</translation>
     </message>
@@ -41,17 +41,17 @@
   <context>
     <name>CmdPointsImport</name>
     <message>
-      <location filename="../../Command.cpp" line="66"/>
+      <location filename="../../Command.cpp" line="68"/>
       <source>Points</source>
       <translation>Punts</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="67"/>
+      <location filename="../../Command.cpp" line="69"/>
       <source>Import Points…</source>
       <translation>Importa els punts…</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="68"/>
+      <location filename="../../Command.cpp" line="70"/>
       <source>Imports a point cloud</source>
       <translation>Importa un núvol de punts</translation>
     </message>
@@ -59,17 +59,17 @@
   <context>
     <name>CmdPointsMerge</name>
     <message>
-      <location filename="../../Command.cpp" line="370"/>
+      <location filename="../../Command.cpp" line="333"/>
       <source>Points</source>
       <translation>Punts</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="371"/>
+      <location filename="../../Command.cpp" line="334"/>
       <source>Merge Point Clouds</source>
       <translation>Fusiona els núvols de punts</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="372"/>
+      <location filename="../../Command.cpp" line="335"/>
       <source>Merges several point clouds into one</source>
       <translation>Fusiona diversos núvols de punts en un de sol</translation>
     </message>
@@ -77,17 +77,17 @@
   <context>
     <name>CmdPointsPolyCut</name>
     <message>
-      <location filename="../../Command.cpp" line="322"/>
+      <location filename="../../Command.cpp" line="285"/>
       <source>Points</source>
       <translation>Punts</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="323"/>
+      <location filename="../../Command.cpp" line="286"/>
       <source>Cut Point Cloud</source>
       <translation>Tallar núvol de punts</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="324"/>
+      <location filename="../../Command.cpp" line="287"/>
       <source>Cuts a point cloud with a selected polygon</source>
       <translation>Talla un núvol de punts amb un polígon seleccionat</translation>
     </message>
@@ -95,59 +95,36 @@
   <context>
     <name>CmdPointsStructure</name>
     <message>
-      <location filename="../../Command.cpp" line="432"/>
+      <location filename="../../Command.cpp" line="395"/>
       <source>Points</source>
       <translation>Punts</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="433"/>
+      <location filename="../../Command.cpp" line="396"/>
       <source>Structured Point Cloud</source>
       <translation>Núvol de punts estructurat</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="434"/>
+      <location filename="../../Command.cpp" line="397"/>
       <source>Converts points to a structured point cloud</source>
       <translation>Converteix els punts en un núvol de punts estructurat</translation>
     </message>
   </context>
   <context>
-    <name>CmdPointsTransform</name>
-    <message>
-      <location filename="../../Command.cpp" line="195"/>
-      <source>Points</source>
-      <translation>Punts</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="196"/>
-      <source>Transform Points</source>
-      <translation>Transforma els punts</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="197"/>
-      <source>Performs tests to transform a point cloud</source>
-      <translation>Realitza tests per a transformar un núvol de punts</translation>
-    </message>
-  </context>
-  <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="91"/>
+      <location filename="../../Command.cpp" line="93"/>
       <source>Import points</source>
       <translation>Importa els punts</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="211"/>
-      <source>Transform points</source>
-      <translation>Transforma els punts</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="268"/>
+      <location filename="../../Command.cpp" line="231"/>
       <source>Convert to points</source>
       <translation>Convertir en punts</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="482"/>
-      <location filename="../../ViewProvider.cpp" line="650"/>
+      <location filename="../../ViewProvider.cpp" line="484"/>
+      <location filename="../../ViewProvider.cpp" line="652"/>
       <source>Cut points</source>
       <translation>Talla els punts</translation>
     </message>
@@ -285,34 +262,34 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="83"/>
-      <location filename="../../Command.cpp" line="169"/>
+      <location filename="../../Command.cpp" line="85"/>
+      <location filename="../../Command.cpp" line="171"/>
       <source>Point formats</source>
       <translation>Formats de punt</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="83"/>
-      <location filename="../../Command.cpp" line="169"/>
+      <location filename="../../Command.cpp" line="85"/>
+      <location filename="../../Command.cpp" line="171"/>
       <source>All Files</source>
       <translation>Tots els fitxers</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="114"/>
+      <location filename="../../Command.cpp" line="116"/>
       <source>Points not at Origin</source>
       <translation>Els punts no estan a l'origen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="115"/>
+      <location filename="../../Command.cpp" line="117"/>
       <source>The bounding box of the imported points does not contain the origin. Translate it to the origin?</source>
       <translation>La caixa delimitadora dels punts importats no conté l'origen. Vols moure'l a l'origen?</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="255"/>
+      <location filename="../../Command.cpp" line="218"/>
       <source>Distance</source>
       <translation>Distància</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="256"/>
+      <location filename="../../Command.cpp" line="219"/>
       <source>Enter maximum distance:</source>
       <translation>Introduïu la distància màxima:</translation>
     </message>
@@ -320,12 +297,12 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="33"/>
+      <location filename="../../Workbench.cpp" line="35"/>
       <source>Points Tools</source>
       <translation>Eines de punts</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="34"/>
+      <location filename="../../Workbench.cpp" line="36"/>
       <source>&amp;Points</source>
       <translation>&amp;Punts</translation>
     </message>

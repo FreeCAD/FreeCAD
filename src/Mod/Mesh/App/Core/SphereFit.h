@@ -96,26 +96,26 @@ protected:
     /**
      * Set up the normal equations
      */
-    void setupNormalEquationMatrices(const std::vector<Base::Vector3d>& residuals,
-                                     Matrix4x4& atpa,
-                                     Eigen::VectorXd& atpl) const;
+    void setupNormalEquationMatrices(
+        const std::vector<Base::Vector3d>& residuals,
+        Matrix4x4& atpa,
+        Eigen::VectorXd& atpl
+    ) const;
     /**
      * Sets up contributions of given observation to the normal equation matrices.
      */
-    void setupObservation(const Base::Vector3f& point,
-                          const Base::Vector3d& residual,
-                          double a[4],
-                          double& f0,
-                          double& qw,
-                          double b[3]) const;
+    void setupObservation(
+        const Base::Vector3f& point,
+        const Base::Vector3d& residual,
+        double a[4],
+        double& f0,
+        double& qw,
+        double b[3]
+    ) const;
     /**
      * Computes contribution of the given observation equation on the normal equation matrices
      */
-    void addObservationU(double a[4],
-                         double li,
-                         double pi,
-                         Matrix4x4& atpa,
-                         Eigen::VectorXd& atpl) const;
+    void addObservationU(double a[4], double li, double pi, Matrix4x4& atpa, Eigen::VectorXd& atpl) const;
     /**
      * Set the lower part of the normal matrix equal to the upper part
      */
@@ -124,11 +124,13 @@ protected:
     /**
      * Compute the residuals and sigma0 and check the residual convergence
      */
-    bool computeResiduals(const Eigen::VectorXd& x,
-                          std::vector<Base::Vector3d>& residuals,
-                          double& sigma0,
-                          double vConvLimit,
-                          bool& vConverged) const;
+    bool computeResiduals(
+        const Eigen::VectorXd& x,
+        std::vector<Base::Vector3d>& residuals,
+        double& sigma0,
+        double vConvLimit,
+        bool& vConverged
+    ) const;
 
 private:
     Base::Vector3d _vCenter;       /**< Center of sphere. */

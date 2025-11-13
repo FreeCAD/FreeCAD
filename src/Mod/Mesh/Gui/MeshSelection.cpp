@@ -170,8 +170,7 @@ Gui::View3DInventorViewer* MeshSelection::getViewer() const
     return nullptr;
 }
 
-void MeshSelection::startInteractiveCallback(Gui::View3DInventorViewer* viewer,
-                                             SoEventCallbackCB* cb)
+void MeshSelection::startInteractiveCallback(Gui::View3DInventorViewer* viewer, SoEventCallbackCB* cb)
 {
     if (this->activeCB) {
         return;
@@ -221,9 +220,7 @@ void MeshSelection::prepareFreehandSelection(bool add, SoEventCallbackCB* cb)
             viewer->setComponentCursor(custom);
         };
 
-        QObject::connect(viewer,
-                         &Gui::View3DInventorViewer::devicePixelRatioChanged,
-                         setComponentCursor);
+        QObject::connect(viewer, &Gui::View3DInventorViewer::devicePixelRatioChanged, setComponentCursor);
         setComponentCursor();
         this->addToSelection = add;
     }
@@ -502,10 +499,11 @@ void MeshSelection::selectGLCallback(void* ud, SoEventCallback* n)
             }
             std::vector<Mesh::FacetIndex> rf;
             rf.swap(faces);
-            std::vector<Mesh::FacetIndex> vf =
-                vp->getVisibleFacetsAfterZoom(rect,
-                                              view->getSoRenderManager()->getViewportRegion(),
-                                              view->getSoRenderManager()->getCamera());
+            std::vector<Mesh::FacetIndex> vf = vp->getVisibleFacetsAfterZoom(
+                rect,
+                view->getSoRenderManager()->getViewportRegion(),
+                view->getSoRenderManager()->getCamera()
+            );
 
             // get common facets of the viewport and the visible one
             std::sort(vf.begin(), vf.end());

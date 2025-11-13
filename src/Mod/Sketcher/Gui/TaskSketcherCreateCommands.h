@@ -47,8 +47,10 @@ public:
     explicit TaskSketcherCreateCommands(QWidget* parent = nullptr);
     ~TaskSketcherCreateCommands() override;
     /// Observer message from the Selection
-    void OnChange(Gui::SelectionSingleton::SubjectType& rCaller,
-                  Gui::SelectionSingleton::MessageType Reason) override;
+    void OnChange(
+        Gui::SelectionSingleton::SubjectType& rCaller,
+        Gui::SelectionSingleton::MessageType Reason
+    ) override;
 
 private Q_SLOTS:
 

@@ -19,17 +19,19 @@
 using namespace std;
 
 
-const GUID JtReader::TriStripSetShapeLODElement_ID(0x10dd10ab,
-                                                   0x2ac8,
-                                                   0x11d1,
-                                                   0x9b,
-                                                   0x6b,
-                                                   0x0,
-                                                   0x80,
-                                                   0xc7,
-                                                   0xbb,
-                                                   0x59,
-                                                   0x97);
+const GUID JtReader::TriStripSetShapeLODElement_ID(
+    0x10dd10ab,
+    0x2ac8,
+    0x11d1,
+    0x9b,
+    0x6b,
+    0x0,
+    0x80,
+    0xc7,
+    0xbb,
+    0x59,
+    0x97
+);
 
 JtReader::JtReader()
 {}

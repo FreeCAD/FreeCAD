@@ -40,7 +40,8 @@ class SoFrameLabel;
 namespace Gui
 {
 
-class GuiExport ViewProviderLine : public ViewProviderDatum {
+class GuiExport ViewProviderLine: public ViewProviderDatum
+{
     PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderLine);
 
 public:
@@ -61,7 +62,7 @@ protected:
     ParamHandlers handlers;
 };
 
-} //namespace Gui
+}  // namespace Gui
 
 
-#endif // GUI_ViewProviderLine_H
+#endif  // GUI_ViewProviderLine_H

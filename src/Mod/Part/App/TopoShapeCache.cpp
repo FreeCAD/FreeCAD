@@ -116,8 +116,7 @@ std::vector<TopoShape> TopoShapeCache::Ancestry::getTopoShapes(const TopoShape& 
     return res;
 }
 
-TopoDS_Shape TopoShapeCache::Ancestry::stripLocation(const TopoDS_Shape& parent,
-                                                     const TopoDS_Shape& child)
+TopoDS_Shape TopoShapeCache::Ancestry::stripLocation(const TopoDS_Shape& parent, const TopoDS_Shape& child)
 {
     if (parent.Location() != owner->location) {
         owner->location = parent.Location();
@@ -159,8 +158,7 @@ TopoShapeCache::TopoShapeCache(const TopoDS_Shape& tds)
     : shape(tds.Located(TopLoc_Location()))
 {}
 
-void TopoShapeCache::insertRelation(const ShapeRelationKey& key,
-                                    const QVector<Data::MappedElement>& value)
+void TopoShapeCache::insertRelation(const ShapeRelationKey& key, const QVector<Data::MappedElement>& value)
 {
     auto [insertedItr, newKeyInserted] = relations.insert({key, value});
     if (newKeyInserted) {
@@ -219,10 +217,12 @@ TopoDS_Shape TopoShapeCache::findShape(const TopoDS_Shape& parent, TopAbs_ShapeE
     return {};
 }
 
-TopoDS_Shape TopoShapeCache::findAncestor(const TopoDS_Shape& parent,
-                                          const TopoDS_Shape& subShape,
-                                          TopAbs_ShapeEnum type,
-                                          std::vector<TopoDS_Shape>* ancestors)
+TopoDS_Shape TopoShapeCache::findAncestor(
+    const TopoDS_Shape& parent,
+    const TopoDS_Shape& subShape,
+    TopAbs_ShapeEnum type,
+    std::vector<TopoDS_Shape>* ancestors
+)
 {
     TopoDS_Shape nullShape;
     if (shape.IsNull() || subShape.IsNull() || type == TopAbs_SHAPE) {

@@ -39,13 +39,13 @@ using PyObject = struct _object;  // NOLINT
 
 // Remove once all used compilers support this
 #if defined(__cpp_lib_source_location)
-#define HAVE_STD_SOURCE_LOCATION 1
+# define HAVE_STD_SOURCE_LOCATION 1
 #else
-#undef HAVE_STD_SOURCE_LOCATION
+# undef HAVE_STD_SOURCE_LOCATION
 #endif
 // std::source_location is implemented, but buggy in Clang 15
 #if defined(__clang__) && __clang_major__ <= 15
-#undef HAVE_STD_SOURCE_LOCATION
+# undef HAVE_STD_SOURCE_LOCATION
 #endif
 
 /// The macros do NOT mark any message for translation
@@ -62,23 +62,25 @@ using PyObject = struct _object;  // NOLINT
 
 #if defined(HAVE_STD_SOURCE_LOCATION)
 // NOLINTBEGIN(*-macro-usage)
-#define THROWM(exc, msg) Base::setupAndThrowException<exc>((msg), std::source_location::current());
-#define THROWMT(exc, msg)                                                                          \
-    Base::setupAndThrowException<exc>((msg), std::source_location::current(), true);
-#define FC_THROWM(exception, msg)                                                                  \
-    do {                                                                                           \
-        std::stringstream ss;                                                                      \
-        ss << msg;                                                                                 \
-        THROWM(exception, ss.str());                                                               \
-    } while (0)
+# define THROWM(exc, msg) Base::setupAndThrowException<exc>((msg), std::source_location::current());
+# define THROWMT(exc, msg) \
+     Base::setupAndThrowException<exc>((msg), std::source_location::current(), true);
+# define FC_THROWM(exception, msg) \
+     do { \
+         std::stringstream ss; \
+         ss << msg; \
+         THROWM(exception, ss.str()); \
+     } while (0)
 // NOLINTEND(*-macro-usage)
 
 namespace Base
 {
 template<typename ExceptionType>
-[[noreturn]] void setupAndThrowException(const std::string message,
-                                         const std::source_location location,
-                                         const bool translatable = false)
+[[noreturn]] void setupAndThrowException(
+    const std::string message,
+    const std::source_location location,
+    const bool translatable = false
+)
 {
     ExceptionType exception {message};
     exception.setTranslatable(translatable);
@@ -89,30 +91,32 @@ template<typename ExceptionType>
 
 #else  // HAVE_STD_SOURCE_LOCATION
 
-#ifdef _MSC_VER
-#define FC_THROW_INFO __FILE__, __LINE__, __FUNCSIG__
-#elif __GNUC__
-#define FC_THROW_INFO __FILE__, __LINE__, __PRETTY_FUNCTION__
-#else
-#define FC_THROW_INFO __FILE__, __LINE__, __func__
-#endif
+# ifdef _MSC_VER
+#  define FC_THROW_INFO __FILE__, __LINE__, __FUNCSIG__
+# elif __GNUC__
+#  define FC_THROW_INFO __FILE__, __LINE__, __PRETTY_FUNCTION__
+# else
+#  define FC_THROW_INFO __FILE__, __LINE__, __func__
+# endif
 
-#define THROWM(exc, msg) Base::setupAndThrowException<exc>(msg, FC_THROW_INFO);
-#define THROWMT(exc, msg) Base::setupAndThrowException<exc>(msg, FC_THROW_INFO, true);
-#define FC_THROWM(exception, msg)                                                                  \
-    do {                                                                                           \
-        std::stringstream ss;                                                                      \
-        ss << msg;                                                                                 \
-        THROWM(exception, ss.str());                                                               \
-    } while (0)
+# define THROWM(exc, msg) Base::setupAndThrowException<exc>(msg, FC_THROW_INFO);
+# define THROWMT(exc, msg) Base::setupAndThrowException<exc>(msg, FC_THROW_INFO, true);
+# define FC_THROWM(exception, msg) \
+     do { \
+         std::stringstream ss; \
+         ss << msg; \
+         THROWM(exception, ss.str()); \
+     } while (0)
 namespace Base
 {
 template<typename ExceptionType>
-[[noreturn]] void setupAndThrowException(const std::string message,
-                                         const char* file,
-                                         const int line,
-                                         const char* func,
-                                         const bool translatable = false)
+[[noreturn]] void setupAndThrowException(
+    const std::string message,
+    const char* file,
+    const int line,
+    const char* func,
+    const bool translatable = false
+)
 {
     ExceptionType exception {message};
     exception.setTranslatable(translatable);
@@ -126,22 +130,28 @@ template<typename ExceptionType>
 //--------------------------------------------------------------------------------------------------
 
 template<typename Exception>
-constexpr void THROWM_(const std::string& msg,
-                       const std::source_location location = std::source_location::current())
+constexpr void THROWM_(
+    const std::string& msg,
+    const std::source_location location = std::source_location::current()
+)
 {
     Base::setupAndThrowException<Exception>(msg, location);
 }
 
 template<typename Exception>
-constexpr void THROWMT_(const std::string& msg,
-                        const std::source_location location = std::source_location::current())
+constexpr void THROWMT_(
+    const std::string& msg,
+    const std::source_location location = std::source_location::current()
+)
 {
     Base::setupAndThrowException<Exception>(msg, location, true);
 }
 
 template<typename Exception>
-constexpr void FC_THROWM_(const std::string& raw_msg,
-                          const std::source_location location = std::source_location::current())
+constexpr void FC_THROWM_(
+    const std::string& raw_msg,
+    const std::source_location location = std::source_location::current()
+)
 {
     THROWM_<Exception>(raw_msg, location);
 }
@@ -241,8 +251,10 @@ public:
 class BaseExport FileException: public Exception
 {
 public:
-    explicit FileException(const std::string& message = "Unknown file exception happened",
-                           const std::string& fileName = "");
+    explicit FileException(
+        const std::string& message = "Unknown file exception happened",
+        const std::string& fileName = ""
+    );
     FileException(const std::string& message, const FileInfo& File);
 
     const char* what() const noexcept override;
@@ -319,8 +331,7 @@ public:
 class BaseExport AbnormalProgramTermination: public Exception
 {
 public:
-    explicit AbnormalProgramTermination(
-        const std::string& message = "Abnormal program termination");
+    explicit AbnormalProgramTermination(const std::string& message = "Abnormal program termination");
     PyObject* getPyExceptionType() const override;
 };
 

@@ -624,18 +624,18 @@ SLOPE defineix la inclinació de la transició entre 0 i H1 i H2 a 0 al voltant 
       <translation>L'objecte a bloquejar</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="259"/>
-      <location filename="../../../CommandCreateView.py" line="296"/>
+      <location filename="../../../CommandCreateView.py" line="354"/>
+      <location filename="../../../CommandCreateView.py" line="391"/>
       <source>The objects moved by the move</source>
       <translation>Els objectes desplaçats pel moviment</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="271"/>
+      <location filename="../../../CommandCreateView.py" line="366"/>
       <source>This is the movement of the move. The end placement is the result of the start placement * this placement.</source>
       <translation>Aquest és el desplaçament del moviment. La ubicació final és el resultat de la ubicació inicial * aquesta ubicació.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="280"/>
+      <location filename="../../../CommandCreateView.py" line="375"/>
       <source>The type of the move</source>
       <translation>El tipus de moviment</translation>
     </message>
@@ -808,7 +808,7 @@ SLOPE defineix la inclinació de la transició entre 0 i H1 i H2 a 0 al voltant 
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="46"/>
       <source>Open File</source>
-      <translation>Obrir fitxer</translation>
+      <translation>Obre un fitxer</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="55"/>
@@ -892,53 +892,53 @@ Els fitxers s'anomenen "runPreDrag.asmt" i "dragging.log" i es troben al directo
       <translation>Vols moure l'objecte i eliminar les juntures associades?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1006"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1012"/>
       <source>Move part</source>
       <translation>Moure peça</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1526"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1548"/>
       <source>ViewProviderAssembly</source>
       <comment>and %1 more</comment>
       <translation>Proveïdor del visualitzador de muntatge</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1543"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1565"/>
       <source>Empty Assembly</source>
       <translation>Muntatge buit</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1547"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1569"/>
       <source>Over-constrained:</source>
       <translation>Sobre-restringit:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1554"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1576"/>
       <source>Malformed joints:</source>
       <translation>Juntures mal formades:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1560"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1582"/>
       <source>Redundant joints:</source>
       <translation>Juntures redundants:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1567"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1589"/>
       <source>Partially redundant:</source>
       <translation>Parcialment redundant:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1573"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1595"/>
       <source>Solver failed to converge</source>
       <translation>El solucionador no ha pogut convergir</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1579"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1601"/>
       <source>Under-constrained:</source>
       <translation>Sub-restringit:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1581"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1603"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n grau de llibertat</numerusform>
@@ -946,7 +946,7 @@ Els fitxers s'anomenen "runPreDrag.asmt" i "dragging.log" i es troben al directo
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1585"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1607"/>
       <source>Fully constrained</source>
       <translation>Esbós completament restringit</translation>
     </message>
@@ -1081,7 +1081,7 @@ Els fitxers s'anomenen "runPreDrag.asmt" i "dragging.log" i es troben al directo
   <context>
     <name>Assembly::AssemblyLink</name>
     <message>
-      <location filename="../../../App/AssemblyLink.cpp" line="584"/>
+      <location filename="../../../App/AssemblyLink.cpp" line="604"/>
       <source>Joints</source>
       <translation>Juntures</translation>
     </message>
@@ -1467,27 +1467,27 @@ Els fitxers s'anomenen "runPreDrag.asmt" i "dragging.log" i es troben al directo
   <context>
     <name>AssemblyGui::TaskAssemblyMessages</name>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="37"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="38"/>
       <source>Solver messages</source>
       <translation>Missatges del solucionador</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="54"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="55"/>
       <source>Click to select these conflicting joints.</source>
       <translation>Prem-ho per a seleccionar aquestes juntures en conflicte.</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="57"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="58"/>
       <source>Click to select these redundant joints.</source>
       <translation>Prem-ho per a seleccionar aquestes juntures redundants.</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="60"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="61"/>
       <source>The assembly has unconstrained components giving rise to those Degrees Of Freedom. Click to select these unconstrained components.</source>
       <translation>El muntatge té components sense restriccions que donen lloc a aquests graus de llibertat. Prem-ho per a seleccionar aquests components sense restriccions.</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="64"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="65"/>
       <source>Click to select these malformed joints.</source>
       <translation>Prem-ho per a seleccionar aquestes juntures mal formades.</translation>
     </message>

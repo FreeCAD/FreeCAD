@@ -33,9 +33,9 @@
 #include "VTKExtensions/vtkFemFrameSourceAlgorithm.h"
 
 #if VTK_VERSION_NUMBER < VTK_VERSION_CHECK(9, 3, 0)
-#include "VTKExtensions/vtkCleanUnstructuredGrid.h"
+# include "VTKExtensions/vtkCleanUnstructuredGrid.h"
 #else
-#include <vtkCleanUnstructuredGrid.h>
+# include <vtkCleanUnstructuredGrid.h>
 #endif
 #include <vtkSmartPointer.h>
 
@@ -68,19 +68,23 @@ public:
     // load data from files (single or as multiframe)
     static bool canRead(Base::FileInfo file);
     void read(Base::FileInfo file);
-    void read(std::vector<Base::FileInfo>& files,
-              std::vector<double>& values,
-              Base::Unit unit,
-              std::string& frame_type);
+    void read(
+        std::vector<Base::FileInfo>& files,
+        std::vector<double>& values,
+        Base::Unit unit,
+        std::string& frame_type
+    );
     void scale(double s);
     void renameArrays(const std::map<std::string, std::string>& names);
 
     // load from results
     void load(FemResultObject* res);
-    void load(std::vector<FemResultObject*>& res,
-              std::vector<double>& values,
-              Base::Unit unit,
-              std::string& frame_type);
+    void load(
+        std::vector<FemResultObject*>& res,
+        std::vector<double>& values,
+        Base::Unit unit,
+        std::string& frame_type
+    );
 
     // Group pipeline handling
     void filterChanged(FemPostFilter* filter) override;
@@ -104,9 +108,11 @@ protected:
     bool allowObject(App::DocumentObject* obj) override;
 
     // update documents
-    void handleChangedPropertyName(Base::XMLReader& reader,
-                                   const char* TypeName,
-                                   const char* PropName) override;
+    void handleChangedPropertyName(
+        Base::XMLReader& reader,
+        const char* TypeName,
+        const char* PropName
+    ) override;
     void onDocumentRestored() override;
 
 private:

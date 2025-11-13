@@ -1,4 +1,4 @@
-#/******************************************************************************
+# /******************************************************************************
 # *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
 # *                                                                            *
 # *   This file is part of the FreeCAD CAx development system.                 *
@@ -23,12 +23,16 @@
 from PySide import QtCore, QtGui
 import FreeCAD, FreeCADGui
 
+
 class Diagram:
-    def create(self, title, function, xlength, xname, xunit, xscale, yname, yunit, yscale, numxpoints):
+    def create(
+        self, title, function, xlength, xname, xunit, xscale, yname, yunit, yscale, numxpoints
+    ):
         # Initialize
         from FreeCAD.Plot import Plot
+
         self.title = title
-        self.function = function # This is assumed to be always a SegmentFunction
+        self.function = function  # This is assumed to be always a SegmentFunction
         self.xlength = xlength
         self.xname = xname
         self.xunit = xunit
@@ -52,7 +56,7 @@ class Diagram:
         # Create plot
         self.plot()
 
-    def update(self, function = None, xlength = None):
+    def update(self, function=None, xlength=None):
         if function is not None:
             self.function = function
         if xlength is not None:
@@ -78,7 +82,7 @@ class Diagram:
         self.thePlot.plot(self.xpoints, self.ypoints)
         plots = self.thePlot.series
         axes = plots[0].axes
-        axes.set_xlim(right = max(self.xpoints) * 1.05)
+        axes.set_xlim(right=max(self.xpoints) * 1.05)
         axes.set_ylim(min(self.ypoints) * 1.05, max(self.ypoints) * 1.05)
         self.thePlot.update()
 

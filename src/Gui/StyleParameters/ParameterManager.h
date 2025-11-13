@@ -40,9 +40,9 @@
 // That macro uses inline const because some older compilers to not properly support constexpr
 // for std::string. It should be changed into static constepxr once we migrate to newer compiler.
 #define DEFINE_STYLE_PARAMETER(_name_, _defaultValue_) \
-    static inline const Gui::StyleParameters::ParameterDefinition _name_ { \
-        .name = #_name_, \
-        .defaultValue = (_defaultValue_), \
+    static inline const Gui::StyleParameters::ParameterDefinition _name_ \
+    { \
+        .name = #_name_, .defaultValue = (_defaultValue_), \
     }
 
 namespace Gui::StyleParameters
@@ -115,7 +115,7 @@ private:
  *
  * As a rule, operations can be only performed over values of the same type.
  */
-struct Value : std::variant<Numeric, Base::Color, std::string>
+struct Value: std::variant<Numeric, Base::Color, std::string>
 {
     using std::variant<Numeric, Base::Color, std::string>::variant;
 
@@ -145,7 +145,7 @@ struct Value : std::variant<Numeric, Base::Color, std::string>
  * DEFINE_STYLE_PARAMETER(TextColor, Base::Color(0.5F, 0.2F, 0.8F));
  * @endcode
  */
-template <typename T>
+template<typename T>
 struct ParameterDefinition
 {
     /// The name of the parameter, must be unique.
@@ -160,8 +160,8 @@ struct ParameterDefinition
  * @brief Represents a named, dynamic expression-based parameter.
  *
  * The Parameter structure is used to define reusable named variables in styling or layout systems.
- * Each parameter consists of a `name` and a `value` string, where the value is a CSS-like expression
- * that supports numbers, units, arithmetic, colors, functions, and parameter references.
+ * Each parameter consists of a `name` and a `value` string, where the value is a CSS-like
+ * expression that supports numbers, units, arithmetic, colors, functions, and parameter references.
  *
  * ### Naming Convention
  * Parameter names must be unique and follow **CamelCase**.
@@ -295,7 +295,8 @@ public:
      *
      * @param[in] parameter The `Parameter` object to define or update in the source.
      */
-    virtual void define([[maybe_unused]] const Parameter& parameter) {}
+    virtual void define([[maybe_unused]] const Parameter& parameter)
+    {}
 
     /**
      * @brief Removes a parameter from the source by its name.
@@ -305,12 +306,14 @@ public:
      *
      * @param[in] name The name of the parameter to remove.
      */
-    virtual void remove([[maybe_unused]] const std::string& name) {}
+    virtual void remove([[maybe_unused]] const std::string& name)
+    {}
 
     /**
      * @brief Flushes buffered changes into more persistent storage.
      */
-    virtual void flush() {}
+    virtual void flush()
+    {}
 };
 
 /**
@@ -319,7 +322,7 @@ public:
  * This source is useful for temporary parameter storage or when you need to
  * define parameters programmatically without persisting them to disk.
  */
-class GuiExport InMemoryParameterSource : public ParameterSource
+class GuiExport InMemoryParameterSource: public ParameterSource
 {
     std::map<std::string, Parameter> parameters;
 
@@ -339,7 +342,7 @@ public:
  * FreeCAD's global parameter system. These parameters are typically defined
  * by the application and are read-only.
  */
-class GuiExport BuiltInParameterSource : public ParameterSource
+class GuiExport BuiltInParameterSource: public ParameterSource
 {
 public:
     explicit BuiltInParameterSource(const Metadata& metadata = {});
@@ -348,10 +351,12 @@ public:
     std::optional<Parameter> get(const std::string& name) const override;
 
 private:
-    ParameterGrp::handle hGrpThemes =
-        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Themes");
-    ParameterGrp::handle hGrpView =
-        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    ParameterGrp::handle hGrpThemes = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Themes"
+    );
+    ParameterGrp::handle hGrpView = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/View"
+    );
 
     std::map<std::string, ParameterGrp::handle> params = {
         {"ThemeAccentColor1", hGrpThemes},
@@ -368,7 +373,7 @@ private:
  * in the user's preference file. These parameters can be modified by the
  * user and persist across application sessions.
  */
-class GuiExport UserParameterSource : public ParameterSource
+class GuiExport UserParameterSource: public ParameterSource
 {
     ParameterGrp::handle hGrp;
 
@@ -389,7 +394,7 @@ public:
  * This class maintains an in-memory map of parameters loaded from a YAML file.
  * Any changes through define() or remove() will also update the file.
  */
-class GuiExport YamlParameterSource : public ParameterSource
+class GuiExport YamlParameterSource: public ParameterSource
 {
 public:
     /**
@@ -502,7 +507,7 @@ public:
      * @param context Resolution context for handling circular references
      * @return The resolved value
      */
-    template <typename T>
+    template<typename T>
     T resolve(const ParameterDefinition<T>& definition, ResolveContext context = {}) const
     {
         auto value = resolve(definition.name, std::move(context));
@@ -553,4 +558,4 @@ public:
 
 ENABLE_BITMASK_OPERATORS(Gui::StyleParameters::ParameterSourceOption);
 
-#endif  // STYLEPARAMETERS_PARAMETERMANAGER_H 
+#endif  // STYLEPARAMETERS_PARAMETERMANAGER_H

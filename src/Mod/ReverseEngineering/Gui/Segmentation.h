@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2012 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -46,9 +48,11 @@ class Segmentation: public QWidget
     Q_OBJECT
 
 public:
-    explicit Segmentation(Mesh::Feature* mesh,
-                          QWidget* parent = nullptr,
-                          Qt::WindowFlags fl = Qt::WindowFlags());
+    explicit Segmentation(
+        Mesh::Feature* mesh,
+        QWidget* parent = nullptr,
+        Qt::WindowFlags fl = Qt::WindowFlags()
+    );
     ~Segmentation() override;
     void accept();
 

@@ -45,9 +45,7 @@ namespace SurfaceGui
 class ViewProviderFilling;
 class Ui_TaskFillingVertex;
 
-class FillingVertexPanel: public QWidget,
-                          public Gui::SelectionObserver,
-                          public Gui::DocumentObserver
+class FillingVertexPanel: public QWidget, public Gui::SelectionObserver, public Gui::DocumentObserver
 {
     Q_OBJECT
 

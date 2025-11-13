@@ -151,8 +151,7 @@ void Robot6AxisPy::setTcp(Py::Object value)
         getRobot6AxisPtr()->setTo(p);
     }
     else if (PyObject_TypeCheck(*value, &(Base::PlacementPy::Type))) {
-        if (!getRobot6AxisPtr()->setTo(
-                *static_cast<Base::PlacementPy*>(*value)->getPlacementPtr())) {
+        if (!getRobot6AxisPtr()->setTo(*static_cast<Base::PlacementPy*>(*value)->getPlacementPtr())) {
             throw Base::RuntimeError("Can not reach Point");
         }
     }

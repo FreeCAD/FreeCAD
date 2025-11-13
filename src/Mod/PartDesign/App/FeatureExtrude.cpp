@@ -21,18 +21,18 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <limits>
-# include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
-# include <BRep_Builder.hxx>
-# include <BRepFeat_MakePrism.hxx>
-# include <BRepPrimAPI_MakePrism.hxx>
-# include <gp_Dir.hxx>
-# include <gp_Ax2.hxx>
-# include <Precision.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopoDS_Compound.hxx>
-# include <TopoDS_Face.hxx>
-# include <TopoDS_Shape.hxx>
+#include <limits>
+#include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
+#include <BRep_Builder.hxx>
+#include <BRepFeat_MakePrism.hxx>
+#include <BRepPrimAPI_MakePrism.hxx>
+#include <gp_Dir.hxx>
+#include <gp_Ax2.hxx>
+#include <Precision.hxx>
+#include <TopExp_Explorer.hxx>
+#include <TopoDS_Compound.hxx>
+#include <TopoDS_Face.hxx>
+#include <TopoDS_Shape.hxx>
 
 #include <App/Document.h>
 #include <Base/Tools.h>
@@ -50,40 +50,29 @@ const char* FeatureExtrude::SideTypesEnums[] = {"One side", "Two sides", "Symmet
 
 PROPERTY_SOURCE(PartDesign::FeatureExtrude, PartDesign::ProfileBased)
 
-App::PropertyQuantityConstraint::Constraints FeatureExtrude::signedLengthConstraint = {
-    -std::numeric_limits<double>::max(), std::numeric_limits<double>::max(), 1.0 };
+App::PropertyQuantityConstraint::Constraints FeatureExtrude::signedLengthConstraint
+    = {-std::numeric_limits<double>::max(), std::numeric_limits<double>::max(), 1.0};
 double FeatureExtrude::maxAngle = 90 - Base::toDegrees<double>(Precision::Angular());
-App::PropertyAngle::Constraints FeatureExtrude::floatAngle = { -maxAngle, maxAngle, 1.0 };
+App::PropertyAngle::Constraints FeatureExtrude::floatAngle = {-maxAngle, maxAngle, 1.0};
 
 FeatureExtrude::FeatureExtrude() = default;
 
 short FeatureExtrude::mustExecute() const
 {
-    if (Placement.isTouched() ||
-        SideType.isTouched() ||
-        Type.isTouched() ||
-        Type2.isTouched() ||
-        Length.isTouched() ||
-        Length2.isTouched() ||
-        TaperAngle.isTouched() ||
-        TaperAngle2.isTouched() ||
-        UseCustomVector.isTouched() ||
-        Direction.isTouched() ||
-        ReferenceAxis.isTouched() ||
-        AlongSketchNormal.isTouched() ||
-        Offset.isTouched() ||
-        Offset2.isTouched() ||
-        UpToFace.isTouched() ||
-        UpToFace2.isTouched() ||
-        UpToShape.isTouched() ||
-        UpToShape2.isTouched())
+    if (Placement.isTouched() || SideType.isTouched() || Type.isTouched() || Type2.isTouched()
+        || Length.isTouched() || Length2.isTouched() || TaperAngle.isTouched()
+        || TaperAngle2.isTouched() || UseCustomVector.isTouched() || Direction.isTouched()
+        || ReferenceAxis.isTouched() || AlongSketchNormal.isTouched() || Offset.isTouched()
+        || Offset2.isTouched() || UpToFace.isTouched() || UpToFace2.isTouched()
+        || UpToShape.isTouched() || UpToShape2.isTouched()) {
         return 1;
+    }
     return ProfileBased::mustExecute();
 }
 
 Base::Vector3d FeatureExtrude::computeDirection(const Base::Vector3d& sketchVector, bool inverse)
 {
-    (void) inverse;
+    (void)inverse;
     Base::Vector3d extrudeDirection;
 
     if (!UseCustomVector.getValue()) {
@@ -124,8 +113,9 @@ Base::Vector3d FeatureExtrude::computeDirection(const Base::Vector3d& sketchVect
     Direction.setReadOnly(!UseCustomVector.getValue());
     ReferenceAxis.setReadOnly(UseCustomVector.getValue());
     // UseCustomVector allows AlongSketchNormal but !UseCustomVector does not forbid it
-    if (UseCustomVector.getValue())
+    if (UseCustomVector.getValue()) {
         AlongSketchNormal.setReadOnly(false);
+    }
 
     // explicitly set the Direction so that the dialog shows also the used direction
     // if the sketch's normal vector was used
@@ -135,15 +125,15 @@ Base::Vector3d FeatureExtrude::computeDirection(const Base::Vector3d& sketchVect
 
 bool FeatureExtrude::hasTaperedAngle() const
 {
-    return fabs(TaperAngle.getValue()) > Base::toRadians(Precision::Angular()) ||
-           fabs(TaperAngle2.getValue()) > Base::toRadians(Precision::Angular());
+    return fabs(TaperAngle.getValue()) > Base::toRadians(Precision::Angular())
+        || fabs(TaperAngle2.getValue()) > Base::toRadians(Precision::Angular());
 }
 
-TopoShape FeatureExtrude::makeShellFromUpToShape(TopoShape shape, TopoShape sketchshape, gp_Dir dir){
+TopoShape FeatureExtrude::makeShellFromUpToShape(TopoShape shape, TopoShape sketchshape, gp_Dir dir)
+{
 
     // Find nearest/furthest face
-    std::vector<Part::cutTopoShapeFaces> cfaces =
-        Part::findAllFacesCutBy(shape, sketchshape, dir);
+    std::vector<Part::cutTopoShapeFaces> cfaces = Part::findAllFacesCutBy(shape, sketchshape, dir);
     if (cfaces.empty()) {
         dir = -dir;
         cfaces = Part::findAllFacesCutBy(shape, sketchshape, dir);
@@ -153,10 +143,10 @@ TopoShape FeatureExtrude::makeShellFromUpToShape(TopoShape shape, TopoShape sket
         return shape;
     }
 
-    struct Part::cutTopoShapeFaces *nearFace {};
-    struct Part::cutTopoShapeFaces *farFace {};
+    struct Part::cutTopoShapeFaces* nearFace {};
+    struct Part::cutTopoShapeFaces* farFace {};
     nearFace = farFace = &cfaces.front();
-    for (auto &face : cfaces) {
+    for (auto& face : cfaces) {
         if (face.distsq > farFace->distsq) {
             farFace = &face;
         }
@@ -167,8 +157,8 @@ TopoShape FeatureExtrude::makeShellFromUpToShape(TopoShape shape, TopoShape sket
 
     if (nearFace != farFace) {
         std::vector<TopoShape> faceList;
-        for (auto &face : shape.getSubTopoShapes(TopAbs_FACE)) {
-            if (! (face == farFace->face)){
+        for (auto& face : shape.getSubTopoShapes(TopAbs_FACE)) {
+            if (!(face == farFace->face)) {
                 // don't use the last face so the shell is open
                 // and OCC works better
                 faceList.push_back(face);
@@ -230,47 +220,55 @@ void FeatureExtrude::updateProperties()
 
     if (sideTypeVal == "One side") {
         bool side1ASN = false;
-        configureSideProperties(methodSide1,
-                                isLength1Enabled,
-                                isTaper1Visible,
-                                isUpToFace1Enabled,
-                                isUpToShape1Enabled,
-                                side1ASN,
-                                isOffset1Enabled);
+        configureSideProperties(
+            methodSide1,
+            isLength1Enabled,
+            isTaper1Visible,
+            isUpToFace1Enabled,
+            isUpToShape1Enabled,
+            side1ASN,
+            isOffset1Enabled
+        );
         currentAlongSketchNormalEnabled = side1ASN;
     }
     else if (sideTypeVal == "Two sides") {
         isType2Enabled = true;
 
         bool side1ASN = false;
-        configureSideProperties(methodSide1,
-                                isLength1Enabled,
-                                isTaper1Visible,
-                                isUpToFace1Enabled,
-                                isUpToShape1Enabled,
-                                side1ASN,
-                                isOffset1Enabled);
+        configureSideProperties(
+            methodSide1,
+            isLength1Enabled,
+            isTaper1Visible,
+            isUpToFace1Enabled,
+            isUpToShape1Enabled,
+            side1ASN,
+            isOffset1Enabled
+        );
 
         bool side2ASN = false;
-        configureSideProperties(methodSide2,
-                                isLength2Enabled,
-                                isTaper2Visible,
-                                isUpToFace2Enabled,
-                                isUpToShape2Enabled,
-                                side2ASN,
-                                isOffset2Enabled);
+        configureSideProperties(
+            methodSide2,
+            isLength2Enabled,
+            isTaper2Visible,
+            isUpToFace2Enabled,
+            isUpToShape2Enabled,
+            side2ASN,
+            isOffset2Enabled
+        );
 
         currentAlongSketchNormalEnabled = side1ASN || side2ASN;  // Enable if either side needs it
     }
     else if (sideTypeVal == "Symmetric") {
         bool symASN = false;
-        configureSideProperties(methodSide1,
-                                isLength1Enabled,
-                                isTaper1Visible,
-                                isUpToFace1Enabled,
-                                isUpToShape1Enabled,
-                                symASN,
-                                isOffset1Enabled);
+        configureSideProperties(
+            methodSide1,
+            isLength1Enabled,
+            isTaper1Visible,
+            isUpToFace1Enabled,
+            isUpToShape1Enabled,
+            symASN,
+            isOffset1Enabled
+        );
         currentAlongSketchNormalEnabled = symASN;
     }
 
@@ -297,7 +295,9 @@ void FeatureExtrude::setupObject()
 
 App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions options)
 {
-    if (onlyHaveRefined()) { return App::DocumentObject::StdReturn; }
+    if (onlyHaveRefined()) {
+        return App::DocumentObject::StdReturn;
+    }
 
 
     bool makeface = options.testFlag(ExtrudeOption::MakeFace);
@@ -323,13 +323,13 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
         if (std::abs(L + L2) < Precision::Confusion()) {
             if (addSubType == Type::Additive) {
                 return new App::DocumentObjectExecReturn(
-                    QT_TRANSLATE_NOOP("Exception",
-                                      "Cannot create a pad with a total length of zero."));
+                    QT_TRANSLATE_NOOP("Exception", "Cannot create a pad with a total length of zero.")
+                );
             }
             else {
                 return new App::DocumentObjectExecReturn(
-                    QT_TRANSLATE_NOOP("Exception",
-                                      "Cannot create a pocket with a total length of zero."));
+                    QT_TRANSLATE_NOOP("Exception", "Cannot create a pocket with a total length of zero.")
+                );
             }
         }
     }
@@ -353,15 +353,18 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                 if (sub.empty() && subs.size() > 1) {
                     continue;
                 }
-                TopoShape shape = Part::Feature::getTopoShape(obj,
-                                                                 Part::ShapeOption::NeedSubElement
-                                                               | Part::ShapeOption::ResolveLink
-                                                               | Part::ShapeOption::Transform,
-                                                              sub.c_str());
+                TopoShape shape = Part::Feature::getTopoShape(
+                    obj,
+                    Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink
+                        | Part::ShapeOption::Transform,
+                    sub.c_str()
+                );
 
                 if (shape.isNull()) {
-                    FC_ERR(getFullName()
-                           << ": failed to get profile shape " << obj->getFullName() << "." << sub);
+                    FC_ERR(
+                        getFullName()
+                        << ": failed to get profile shape " << obj->getFullName() << "." << sub
+                    );
                     failed = true;
                 }
                 hasEdges = hasEdges || shape.hasSubShape(TopAbs_EDGE);
@@ -369,7 +372,8 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
             }
             if (failed) {
                 return new App::DocumentObjectExecReturn(
-                    QT_TRANSLATE_NOOP("Exception", "Failed to obtain profile shape"));
+                    QT_TRANSLATE_NOOP("Exception", "Failed to obtain profile shape")
+                );
             }
             if (hasEdges) {
                 sketchshape.makeElementWires(shapes);
@@ -378,7 +382,8 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                 sketchshape.makeElementCompound(
                     shapes,
                     nullptr,
-                    TopoShape::SingleShapeCompoundCreationPolicy::returnShape);
+                    TopoShape::SingleShapeCompoundCreationPolicy::returnShape
+                );
             }
         }
     }
@@ -423,7 +428,8 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
         if (factor < Precision::Confusion()) {
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
                 "Exception",
-                "Creation failed because direction is orthogonal to sketch's normal vector"));
+                "Creation failed because direction is orthogonal to sketch's normal vector"
+            ));
         }
 
         // perform the length correction if not along custom vector
@@ -443,7 +449,8 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
 
         if (sketchshape.isNull()) {
             return new App::DocumentObjectExecReturn(
-                QT_TRANSLATE_NOOP("Exception", "Creating a face from sketch failed"));
+                QT_TRANSLATE_NOOP("Exception", "Creating a face from sketch failed")
+            );
         }
         sketchshape.move(invObjLoc);
 
@@ -452,9 +459,18 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
         double offset1 = Offset.getValue();
 
         if (Sidemethod == "One side") {
-            TopoShape prism1 = generateSingleExtrusionSide(sketchshape,
-                method, L, taper1, UpToFace, UpToShape,
-                dir, offset1, makeface, base);
+            TopoShape prism1 = generateSingleExtrusionSide(
+                sketchshape,
+                method,
+                L,
+                taper1,
+                UpToFace,
+                UpToShape,
+                dir,
+                offset1,
+                makeface,
+                base
+            );
             prisms.push_back(prism1);
         }
         else if (Sidemethod == "Symmetric") {
@@ -466,32 +482,36 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                     // to ensure the taper originates correctly from the sketch plane in both
                     // directions.
                     L /= 2.0;
-                    TopoShape prism1 = generateSingleExtrusionSide(sketchshape.makeElementCopy(),
-                                                                   method,
-                                                                   L,
-                                                                   taper1,
-                                                                   UpToFace,
-                                                                   UpToShape,
-                                                                   dir,
-                                                                   offset1,
-                                                                   makeface,
-                                                                   base);
+                    TopoShape prism1 = generateSingleExtrusionSide(
+                        sketchshape.makeElementCopy(),
+                        method,
+                        L,
+                        taper1,
+                        UpToFace,
+                        UpToShape,
+                        dir,
+                        offset1,
+                        makeface,
+                        base
+                    );
                     if (!prism1.isNull() && !prism1.getShape().IsNull()) {
                         prisms.push_back(prism1);
                     }
 
                     gp_Dir dir2 = dir;
                     dir2.Reverse();
-                    TopoShape prism2 = generateSingleExtrusionSide(sketchshape.makeElementCopy(),
-                                                                   method,
-                                                                   L,
-                                                                   taper1,
-                                                                   UpToFace,
-                                                                   UpToShape,
-                                                                   dir2,
-                                                                   offset1,
-                                                                   makeface,
-                                                                   base);
+                    TopoShape prism2 = generateSingleExtrusionSide(
+                        sketchshape.makeElementCopy(),
+                        method,
+                        L,
+                        taper1,
+                        UpToFace,
+                        UpToShape,
+                        dir2,
+                        offset1,
+                        makeface,
+                        base
+                    );
                     if (!prism2.isNull() && !prism2.getShape().IsNull()) {
                         prisms.push_back(prism2);
                     }
@@ -506,16 +526,18 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                     TopoShape moved_sketch = sketchshape.makeElementCopy();
                     moved_sketch.move(start_transform);
 
-                    TopoShape prism1 = generateSingleExtrusionSide(moved_sketch,
-                                                                   method,
-                                                                   L,
-                                                                   taper1,
-                                                                   UpToFace,
-                                                                   UpToShape,
-                                                                   dir,
-                                                                   offset1,
-                                                                   makeface,
-                                                                   base);
+                    TopoShape prism1 = generateSingleExtrusionSide(
+                        moved_sketch,
+                        method,
+                        L,
+                        taper1,
+                        UpToFace,
+                        UpToShape,
+                        dir,
+                        offset1,
+                        makeface,
+                        base
+                    );
                     if (!prism1.isNull() && !prism1.getShape().IsNull()) {
                         prisms.push_back(prism1);
                     }
@@ -523,9 +545,18 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
             }
             else {
                 // For "UpToFace", "UpToShape", etc., mirror the result.
-                TopoShape prism1 = generateSingleExtrusionSide(sketchshape,
-                    method, L, taper1, UpToFace, UpToShape,
-                    dir, offset1, makeface, base);
+                TopoShape prism1 = generateSingleExtrusionSide(
+                    sketchshape,
+                    method,
+                    L,
+                    taper1,
+                    UpToFace,
+                    UpToShape,
+                    dir,
+                    offset1,
+                    makeface,
+                    base
+                );
                 prisms.push_back(prism1);
 
                 // Prism 2: Mirror prism1 across the sketch plane.
@@ -534,8 +565,10 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                 sketchNormalDir.Transform(invTrsf);  // Transform to global CS, like 'dir' was.
 
                 Base::Vector3d sketchCenter = sketchshape.getBoundBox().GetCenter();
-                gp_Ax2 mirrorPlane(gp_Pnt(sketchCenter.x, sketchCenter.y, sketchCenter.z),
-                                   sketchNormalDir);
+                gp_Ax2 mirrorPlane(
+                    gp_Pnt(sketchCenter.x, sketchCenter.y, sketchCenter.z),
+                    sketchNormalDir
+                );
                 TopoShape prism2 = prism1.makeElementMirror(mirrorPlane);
                 prisms.push_back(prism2);
             }
@@ -556,16 +589,18 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
 
                 TopoShape moved_sketch = sketchshape.makeElementCopy();
                 moved_sketch.move(start_transform);
-                TopoShape prism = generateSingleExtrusionSide(moved_sketch,
-                                                               method2,
-                                                               L + L2,
-                                                               0.0,
-                                                               UpToFace2,
-                                                               UpToShape2,
-                                                               dir2,
-                                                               offset2,
-                                                               makeface,
-                                                               base);
+                TopoShape prism = generateSingleExtrusionSide(
+                    moved_sketch,
+                    method2,
+                    L + L2,
+                    0.0,
+                    UpToFace2,
+                    UpToShape2,
+                    dir2,
+                    offset2,
+                    makeface,
+                    base
+                );
                 if (!prism.isNull() && !prism.getShape().IsNull()) {
                     prisms.push_back(prism);
                 }
@@ -576,46 +611,52 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
 
                 TopoShape moved_sketch = sketchshape.makeElementCopy();
                 moved_sketch.move(start_transform);
-                TopoShape prism = generateSingleExtrusionSide(moved_sketch,
-                                                               method,
-                                                               L + L2,
-                                                               0.0,
-                                                               UpToFace,
-                                                               UpToShape,
-                                                               dir,
-                                                               offset1,
-                                                               makeface,
-                                                               base);
+                TopoShape prism = generateSingleExtrusionSide(
+                    moved_sketch,
+                    method,
+                    L + L2,
+                    0.0,
+                    UpToFace,
+                    UpToShape,
+                    dir,
+                    offset1,
+                    makeface,
+                    base
+                );
                 if (!prism.isNull() && !prism.getShape().IsNull()) {
                     prisms.push_back(prism);
                 }
             }
             else {
-                TopoShape prism1 = generateSingleExtrusionSide(sketchshape.makeElementCopy(),
-                                                               method,
-                                                               L,
-                                                               taper1,
-                                                               UpToFace,
-                                                               UpToShape,
-                                                               dir,
-                                                               offset1,
-                                                               makeface,
-                                                               base);
+                TopoShape prism1 = generateSingleExtrusionSide(
+                    sketchshape.makeElementCopy(),
+                    method,
+                    L,
+                    taper1,
+                    UpToFace,
+                    UpToShape,
+                    dir,
+                    offset1,
+                    makeface,
+                    base
+                );
                 if (!prism1.isNull() && !prism1.getShape().IsNull()) {
                     prisms.push_back(prism1);
                 }
 
                 // Side 2
-                TopoShape prism2 = generateSingleExtrusionSide(sketchshape.makeElementCopy(),
-                                                               method2,
-                                                               L2,
-                                                               taper2,
-                                                               UpToFace2,
-                                                               UpToShape2,
-                                                               dir2,
-                                                               offset2,
-                                                               makeface,
-                                                               base);
+                TopoShape prism2 = generateSingleExtrusionSide(
+                    sketchshape.makeElementCopy(),
+                    method2,
+                    L2,
+                    taper2,
+                    UpToFace2,
+                    UpToShape2,
+                    dir2,
+                    offset2,
+                    makeface,
+                    base
+                );
                 if (!prism2.isNull() && !prism2.getShape().IsNull()) {
                     prisms.push_back(prism2);
                 }
@@ -625,7 +666,9 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
         // --- Combine generated prisms (all in global CS) ---
         TopoShape prism(0, getDocument()->getStringHasher());
         if (prisms.empty()) {
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "No extrusion geometry was generated."));
+            return new App::DocumentObjectExecReturn(
+                QT_TRANSLATE_NOOP("Exception", "No extrusion geometry was generated.")
+            );
         }
         else if (prisms.size() == 1) {
             prism = prisms[0];
@@ -636,16 +679,20 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
             }
             catch (const Standard_Failure& e) {
                 return new App::DocumentObjectExecReturn(
-                    std::string("Failed to xor extrusion sides (OCC): ") + e.GetMessageString());
+                    std::string("Failed to xor extrusion sides (OCC): ") + e.GetMessageString()
+                );
             }
             catch (const Base::Exception& e) {
                 return new App::DocumentObjectExecReturn(
-                    std::string("Failed to xor extrusion sides: ") + e.what());
+                    std::string("Failed to xor extrusion sides: ") + e.what()
+                );
             }
         }
 
         if (prism.isNull()) {
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting fused extrusion is null."));
+            return new App::DocumentObjectExecReturn(
+                QT_TRANSLATE_NOOP("Exception", "Resulting fused extrusion is null.")
+            );
         }
 
         // store shape before refinement
@@ -672,14 +719,16 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
             }
             catch (Standard_Failure&) {
                 return new App::DocumentObjectExecReturn(
-                    QT_TRANSLATE_NOOP("Exception", "Fusion with base feature failed"));
+                    QT_TRANSLATE_NOOP("Exception", "Fusion with base feature failed")
+                );
             }
             // we have to get the solids (fuse sometimes creates compounds)
             auto solRes = this->getSolid(result);
             // lets check if the result is a solid
             if (solRes.isNull()) {
                 return new App::DocumentObjectExecReturn(
-                    QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
+                    QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid")
+                );
             }
 
             // store shape before refinement
@@ -687,7 +736,10 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
             solRes = refineShapeIfActive(result);
 
             if (!isSingleSolidRuleSatisfied(solRes.getShape())) {
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: enable 'Allow Compound' in the active body."));
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
+                    "Exception",
+                    "Result has multiple solids: enable 'Allow Compound' in the active body."
+                ));
             }
             this->Shape.setValue(getSolid(solRes));
         }
@@ -700,7 +752,10 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
             this->rawShape = prism;
             prism = refineShapeIfActive(prism);
             if (!isSingleSolidRuleSatisfied(prism.getShape())) {
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: enable 'Allow Compound' in the active body."));
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
+                    "Exception",
+                    "Result has multiple solids: enable 'Allow Compound' in the active body."
+                ));
             }
             prism = getSolid(prism);
             this->Shape.setValue(prism);
@@ -710,7 +765,10 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
             this->rawShape = prism;
             prism = refineShapeIfActive(prism);
             if (!isSingleSolidRuleSatisfied(prism.getShape())) {
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: enable 'Allow Compound' in the active body."));
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
+                    "Exception",
+                    "Result has multiple solids: enable 'Allow Compound' in the active body."
+                ));
             }
             this->Shape.setValue(prism);
         }
@@ -725,7 +783,8 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
                 "Exception",
                 "Could not create face from sketch.\n"
-                "Intersecting sketch entities or multiple faces in a sketch are not allowed."));
+                "Intersecting sketch entities or multiple faces in a sketch are not allowed."
+            ));
         }
         else {
             return new App::DocumentObjectExecReturn(e.GetMessageString());
@@ -736,20 +795,23 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
     }
 }
 
-TopoShape FeatureExtrude::generateSingleExtrusionSide(const TopoShape& sketchshape,
-                                                      const std::string& method,
-                                                      double length,
-                                                      double taperAngleDeg,
-                                                      App::PropertyLinkSub& upToFacePropHandle,
-                                                      App::PropertyLinkSubList& upToShapePropHandle,
-                                                      gp_Dir dir,
-                                                      double offsetVal,
-                                                      bool makeFace,
-                                                      const TopoShape& base)
+TopoShape FeatureExtrude::generateSingleExtrusionSide(
+    const TopoShape& sketchshape,
+    const std::string& method,
+    double length,
+    double taperAngleDeg,
+    App::PropertyLinkSub& upToFacePropHandle,
+    App::PropertyLinkSubList& upToShapePropHandle,
+    gp_Dir dir,
+    double offsetVal,
+    bool makeFace,
+    const TopoShape& base
+)
 {
     TopoShape prism(0, getDocument()->getStringHasher());
 
-    if (method == "UpToFirst" || method == "UpToLast" || method == "UpToFace" || method == "UpToShape") {
+    if (method == "UpToFirst" || method == "UpToLast" || method == "UpToFace"
+        || method == "UpToShape") {
         // Note: This will return an unlimited planar face if support is a datum plane
         TopoShape supportface = getTopoShapeSupportFace();
         auto invObjLoc = getLocation().Inverted();
@@ -792,17 +854,21 @@ TopoShape FeatureExtrude::generateSingleExtrusionSide(const TopoShape& sketchsha
             if (addSubType != FeatureAddSub::Subtractive) {
                 _base = base;  // avoid issue #16690
             }
-            prism.makeElementPrismUntil(_base,
-                                        sketchshape,
-                                        supportface,
-                                        upToShape,
-                                        dir,
-                                        TopoShape::PrismMode::None,
-                                        true /*CheckUpToFaceLimits.getValue()*/);
+            prism.makeElementPrismUntil(
+                _base,
+                sketchshape,
+                supportface,
+                upToShape,
+                dir,
+                TopoShape::PrismMode::None,
+                true /*CheckUpToFaceLimits.getValue()*/
+            );
         }
         catch (Base::Exception&) {
             if (method == "UpToShape" && faceCount > 1) {
-                throw Base::RuntimeError("Extrude: Unable to reach the selected shape, please select faces");
+                throw Base::RuntimeError(
+                    "Extrude: Unable to reach the selected shape, please select faces"
+                );
             }
         }
     }
@@ -812,8 +878,10 @@ TopoShape FeatureExtrude::generateSingleExtrusionSide(const TopoShape& sketchsha
         Part::ExtrusionParameters params;
         params.taperAngleFwd = Base::toRadians(taperAngleDeg);
 
-        if (std::fabs(params.taperAngleFwd) >= Precision::Angular() || std::fabs(params.taperAngleRev) >= Precision::Angular()) {
-            if (fabs(params.taperAngleFwd) > pi * 0.5 - Precision::Angular() || fabs(params.taperAngleRev) > pi * 0.5 - Precision::Angular()) {
+        if (std::fabs(params.taperAngleFwd) >= Precision::Angular()
+            || std::fabs(params.taperAngleRev) >= Precision::Angular()) {
+            if (fabs(params.taperAngleFwd) > pi * 0.5 - Precision::Angular()
+                || fabs(params.taperAngleRev) > pi * 0.5 - Precision::Angular()) {
                 return prism;
             }
             params.dir = dir;
@@ -821,16 +889,20 @@ TopoShape FeatureExtrude::generateSingleExtrusionSide(const TopoShape& sketchsha
             params.lengthFwd = length;
 
             std::vector<TopoShape> drafts;
-            Part::ExtrusionHelper::makeElementDraft(params,
-                                                    sketchshape,
-                                                    drafts,
-                                                    getDocument()->getStringHasher());
+            Part::ExtrusionHelper::makeElementDraft(
+                params,
+                sketchshape,
+                drafts,
+                getDocument()->getStringHasher()
+            );
             if (drafts.empty()) {
                 return prism;
             }
-            prism.makeElementCompound(drafts,
-                                      nullptr,
-                                      TopoShape::SingleShapeCompoundCreationPolicy::returnShape);
+            prism.makeElementCompound(
+                drafts,
+                nullptr,
+                TopoShape::SingleShapeCompoundCreationPolicy::returnShape
+            );
         }
         else {
             // Without taper angle we create a prism because its shells are in every case no

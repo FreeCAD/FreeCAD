@@ -35,14 +35,15 @@
 #include <Standard_Version.hxx>
 
 
-namespace Part {
+namespace Part
+{
 /*!
  * \brief The BRepOffsetAPI_MakeOffsetFix class
  * This class works around a limitation of the BRepOffsetAPI_MakeOffset which
  * returns unexpected results when an input wire has set a placement and consists
  * of a single edge only.
  */
-class PartExport BRepOffsetAPI_MakeOffsetFix : public BRepBuilderAPI_MakeShape
+class PartExport BRepOffsetAPI_MakeOffsetFix: public BRepBuilderAPI_MakeShape
 {
 public:
     BRepOffsetAPI_MakeOffsetFix();
@@ -50,13 +51,13 @@ public:
     ~BRepOffsetAPI_MakeOffsetFix() override;
 
     //! Initializes the algorithm to construct parallels to the wire Spine.
-    void AddWire (const TopoDS_Wire& Spine);
+    void AddWire(const TopoDS_Wire& Spine);
 
     //! Computes a parallel to the spine at distance Offset and
     //! at an altitude Alt from the plane of the spine in relation
     //! to the normal to the spine.
     //! Exceptions: StdFail_NotDone if the offset is not built.
-    void Perform (const Standard_Real Offset, const Standard_Real Alt = 0.0);
+    void Perform(const Standard_Real Offset, const Standard_Real Alt = 0.0);
 
     //! Builds the resulting shape (redefined from MakeShape).
 #if OCC_VERSION_HEX >= 0x070600
@@ -73,10 +74,17 @@ public:
     //! If join type is GeomAbs_Intersection, the edges that
     //! intersect in a salient vertex generate the edges
     //! prolonged until intersection.
-    void Init(const TopoDS_Face& Spine, const GeomAbs_JoinType Join = GeomAbs_Arc, const Standard_Boolean IsOpenResult = Standard_False);
+    void Init(
+        const TopoDS_Face& Spine,
+        const GeomAbs_JoinType Join = GeomAbs_Arc,
+        const Standard_Boolean IsOpenResult = Standard_False
+    );
 
     //! Initialize the evaluation of Offsetting.
-    void Init(const GeomAbs_JoinType Join = GeomAbs_Arc, const Standard_Boolean IsOpenResult = Standard_False);
+    void Init(
+        const GeomAbs_JoinType Join = GeomAbs_Arc,
+        const Standard_Boolean IsOpenResult = Standard_False
+    );
 
     Standard_Boolean IsDone() const override;
 
@@ -86,14 +94,14 @@ public:
 
     //! returns a list of the created shapes
     //! from the shape <S>.
-    const TopTools_ListOfShape& Generated (const TopoDS_Shape& S) override;
+    const TopTools_ListOfShape& Generated(const TopoDS_Shape& S) override;
 
     //! Returns the list  of shapes modified from the shape
     //! <S>.
-    const TopTools_ListOfShape& Modified (const TopoDS_Shape& S) override;
+    const TopTools_ListOfShape& Modified(const TopoDS_Shape& S) override;
 
     //! Returns true if the shape S has been deleted.
-    Standard_Boolean IsDeleted (const TopoDS_Shape& S) override;
+    Standard_Boolean IsDeleted(const TopoDS_Shape& S) override;
 
     //! Replaces the given curve type with a B-Spline. Input shape <S>
     //! must be a wire or a compound of wires
@@ -105,10 +113,10 @@ private:
 
 private:
     BRepOffsetAPI_MakeOffset mkOffset;
-    std::list<std::pair<TopoDS_Shape, TopLoc_Location> > myLocations;
+    std::list<std::pair<TopoDS_Shape, TopLoc_Location>> myLocations;
     TopoDS_Shape myResult;
 };
 
-}
+}  // namespace Part
 
-#endif // PART_BREPOFFSETAPI_MAKEOFFSETFIX_H
+#endif  // PART_BREPOFFSETAPI_MAKEOFFSETFIX_H

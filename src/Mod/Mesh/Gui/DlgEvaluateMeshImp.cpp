@@ -124,7 +124,8 @@ DlgEvaluateMeshImp::DlgEvaluateMeshImp(QWidget* parent, Qt::WindowFlags fl)
     d->ui.line_8->setFrameShadow(QFrame::Sunken);
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Mesh/Evaluation");
+        "User parameter:BaseApp/Preferences/Mod/Mesh/Evaluation"
+    );
     d->checkNonManfoldPoints = hGrp->GetBool("CheckNonManifoldPoints", false);
     d->enableFoldsCheck = hGrp->GetBool("EnableFoldsCheck", false);
     d->strictlyDegenerated = hGrp->GetBool("StrictlyDegenerated", true);
@@ -159,7 +160,8 @@ DlgEvaluateMeshImp::~DlgEvaluateMeshImp()
 
     try {
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/Mod/Mesh/Evaluation");
+            "User parameter:BaseApp/Preferences/Mod/Mesh/Evaluation"
+        );
         hGrp->SetBool("CheckNonManifoldPoints", d->checkNonManfoldPoints);
         hGrp->SetBool("EnableFoldsCheck", d->enableFoldsCheck);
         hGrp->SetBool("StrictlyDegenerated", d->strictlyDegenerated);
@@ -286,8 +288,7 @@ void DlgEvaluateMeshImp::slotDeletedObject(const App::DocumentObject& Obj)
     }
 }
 
-void DlgEvaluateMeshImp::slotChangedObject(const App::DocumentObject& Obj,
-                                           const App::Property& Prop)
+void DlgEvaluateMeshImp::slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop)
 {
     // if the current mesh object was modified update everything
     if (&Obj == d->meshFeature && Prop.is<Mesh::PropertyMeshKernel>()) {
@@ -344,8 +345,7 @@ void DlgEvaluateMeshImp::setMesh(Mesh::Feature* m)
     }
 }
 
-void DlgEvaluateMeshImp::addViewProvider(const char* name,
-                                         const std::vector<Mesh::ElementIndex>& indices)
+void DlgEvaluateMeshImp::addViewProvider(const char* name, const std::vector<Mesh::ElementIndex>& indices)
 {
     removeViewProvider(name);
 
@@ -387,8 +387,9 @@ void DlgEvaluateMeshImp::onMeshNameButtonActivated(int i)
     QString item = d->ui.meshNameButton->itemData(i).toString();
 
     d->meshFeature = nullptr;
-    std::vector<App::DocumentObject*> objs =
-        getDocument()->getObjectsOfType(Mesh::Feature::getClassTypeId());
+    std::vector<App::DocumentObject*> objs = getDocument()->getObjectsOfType(
+        Mesh::Feature::getClassTypeId()
+    );
     for (auto obj : objs) {
         if (item == QLatin1String(obj->getNameInDocument())) {
             d->meshFeature = static_cast<Mesh::Feature*>(obj);
@@ -408,11 +409,14 @@ void DlgEvaluateMeshImp::refreshList()
 {
     QVector<QPair<QString, QString>> items;
     if (this->getDocument()) {
-        std::vector<App::DocumentObject*> objs =
-            this->getDocument()->getObjectsOfType(Mesh::Feature::getClassTypeId());
+        std::vector<App::DocumentObject*> objs = this->getDocument()->getObjectsOfType(
+            Mesh::Feature::getClassTypeId()
+        );
         for (auto obj : objs) {
-            items.push_back(qMakePair(QString::fromUtf8(obj->Label.getValue()),
-                                      QString::fromLatin1(obj->getNameInDocument())));
+            items.push_back(qMakePair(
+                QString::fromUtf8(obj->Label.getValue()),
+                QString::fromLatin1(obj->getNameInDocument())
+            ));
         }
     }
 
@@ -547,10 +551,12 @@ void DlgEvaluateMeshImp::onRepairOrientationButtonClicked()
         Gui::Document* doc = Gui::Application::Instance->getDocument(docName);
         doc->openCommand(QT_TRANSLATE_NOOP("Command", "Harmonize normals"));
         try {
-            Gui::Command::doCommand(Gui::Command::App,
-                                    R"(App.getDocument("%s").getObject("%s").harmonizeNormals())",
-                                    docName,
-                                    objName);
+            Gui::Command::doCommand(
+                Gui::Command::App,
+                R"(App.getDocument("%s").getObject("%s").harmonizeNormals())",
+                docName,
+                objName
+            );
         }
         catch (const Base::Exception& e) {
             QMessageBox::warning(this, tr("Orientation"), QString::fromLatin1(e.what()));
@@ -621,14 +627,15 @@ void DlgEvaluateMeshImp::onAnalyzeNonmanifoldsButtonClicked()
         }
         else {
             d->ui.checkNonmanifoldsButton->setText(
-                tr("%1 non-manifolds").arg(f_eval.CountManifolds() + point_indices.size()));
+                tr("%1 non-manifolds").arg(f_eval.CountManifolds() + point_indices.size())
+            );
             d->ui.checkNonmanifoldsButton->setChecked(true);
             d->ui.repairNonmanifoldsButton->setEnabled(true);
             d->ui.repairAllTogether->setEnabled(true);
 
             if (!ok1) {
-                const std::vector<std::pair<Mesh::FacetIndex, Mesh::FacetIndex>>& inds =
-                    f_eval.GetIndices();
+                const std::vector<std::pair<Mesh::FacetIndex, Mesh::FacetIndex>>& inds
+                    = f_eval.GetIndices();
                 std::vector<Mesh::FacetIndex> indices;
                 indices.reserve(2 * inds.size());
                 std::vector<std::pair<Mesh::FacetIndex, Mesh::FacetIndex>>::const_iterator it;
@@ -658,17 +665,20 @@ void DlgEvaluateMeshImp::onRepairNonmanifoldsButtonClicked()
         Gui::Document* doc = Gui::Application::Instance->getDocument(docName);
         doc->openCommand(QT_TRANSLATE_NOOP("Command", "Remove non-manifolds"));
         try {
-            Gui::Command::doCommand(Gui::Command::App,
-                                    R"(App.getDocument("%s").getObject("%s").removeNonManifolds())",
-                                    docName,
-                                    objName);
+            Gui::Command::doCommand(
+                Gui::Command::App,
+                R"(App.getDocument("%s").getObject("%s").removeNonManifolds())",
+                docName,
+                objName
+            );
 
             if (d->checkNonManfoldPoints) {
                 Gui::Command::doCommand(
                     Gui::Command::App,
                     R"(App.getDocument("%s").getObject("%s").removeNonManifoldPoints())",
                     docName,
-                    objName);
+                    objName
+                );
             }
         }
         catch (const Base::Exception& e) {
@@ -762,10 +772,12 @@ void DlgEvaluateMeshImp::onRepairIndicesButtonClicked()
         Gui::Document* doc = Gui::Application::Instance->getDocument(docName);
         doc->openCommand(QT_TRANSLATE_NOOP("Command", "Fix indices"));
         try {
-            Gui::Command::doCommand(Gui::Command::App,
-                                    R"(App.getDocument("%s").getObject("%s").fixIndices())",
-                                    docName,
-                                    objName);
+            Gui::Command::doCommand(
+                Gui::Command::App,
+                R"(App.getDocument("%s").getObject("%s").fixIndices())",
+                docName,
+                objName
+            );
         }
         catch (const Base::Exception& e) {
             QMessageBox::warning(this, tr("Indices"), QString::fromLatin1(e.what()));
@@ -831,11 +843,13 @@ void DlgEvaluateMeshImp::onRepairDegeneratedButtonClicked()
         Gui::Document* doc = Gui::Application::Instance->getDocument(docName);
         doc->openCommand(QT_TRANSLATE_NOOP("Command", "Remove degenerated faces"));
         try {
-            Gui::Command::doCommand(Gui::Command::App,
-                                    R"(App.getDocument("%s").getObject("%s").fixDegenerations(%f))",
-                                    docName,
-                                    objName,
-                                    d->epsilonDegenerated);
+            Gui::Command::doCommand(
+                Gui::Command::App,
+                R"(App.getDocument("%s").getObject("%s").fixDegenerations(%f))",
+                docName,
+                objName,
+                d->epsilonDegenerated
+            );
         }
         catch (const Base::Exception& e) {
             QMessageBox::warning(this, tr("Degenerations"), QString::fromLatin1(e.what()));
@@ -906,7 +920,8 @@ void DlgEvaluateMeshImp::onRepairDuplicatedFacesButtonClicked()
                 Gui::Command::App,
                 R"(App.getDocument("%s").getObject("%s").removeDuplicatedFacets())",
                 docName,
-                objName);
+                objName
+            );
         }
         catch (const Base::Exception& e) {
             QMessageBox::warning(this, tr("Duplicated faces"), QString::fromLatin1(e.what()));
@@ -975,7 +990,8 @@ void DlgEvaluateMeshImp::onRepairDuplicatedPointsButtonClicked()
                 Gui::Command::App,
                 R"(App.getDocument("%s").getObject("%s").removeDuplicatedPoints())",
                 docName,
-                objName);
+                objName
+            );
         }
         catch (const Base::Exception& e) {
             QMessageBox::warning(this, tr("Duplicated points"), QString::fromLatin1(e.what()));
@@ -1138,7 +1154,8 @@ void DlgEvaluateMeshImp::onRepairFoldsButtonClicked()
                 Gui::Command::App,
                 R"(App.getDocument("%s").getObject("%s").removeFoldsOnSurface())",
                 docName,
-                objName);
+                objName
+            );
         }
         catch (const Base::Exception& e) {
             QMessageBox::warning(this, tr("Folds"), QString::fromLatin1(e.what()));
@@ -1373,8 +1390,8 @@ DockEvaluateMeshImp::DockEvaluateMeshImp(QWidget* parent, Qt::WindowFlags fl)
     // embed this dialog into a dockable widget container
     Gui::DockWindowManager* pDockMgr = Gui::DockWindowManager::instance();
     // use Qt macro for preparing for translation stuff (but not translating yet)
-    QDockWidget* dw =
-        pDockMgr->addDockWindow("Evaluate & Repair Mesh", scrollArea, Qt::RightDockWidgetArea);
+    QDockWidget* dw
+        = pDockMgr->addDockWindow("Evaluate & Repair Mesh", scrollArea, Qt::RightDockWidgetArea);
     dw->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
     dw->show();
 }

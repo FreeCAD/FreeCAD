@@ -74,8 +74,7 @@ bool ViewProviderAssemblyLink::setEdit(int mode)
     auto* assemblyLink = dynamic_cast<Assembly::AssemblyLink*>(getObject());
 
     if (!assemblyLink->isRigid() && mode == (int)ViewProvider::Transform) {
-        Base::Console().userTranslatedNotification(
-            "Flexible sub-assemblies cannot be transformed.");
+        Base::Console().userTranslatedNotification("Flexible sub-assemblies cannot be transformed.");
         return true;
     }
 
@@ -91,8 +90,9 @@ bool ViewProviderAssemblyLink::doubleClicked()
     }
     auto* assembly = link->getLinkedAssembly();
 
-    auto* vpa =
-        freecad_cast<ViewProviderAssembly*>(Gui::Application::Instance->getViewProvider(assembly));
+    auto* vpa = freecad_cast<ViewProviderAssembly*>(
+        Gui::Application::Instance->getViewProvider(assembly)
+    );
     if (!vpa) {
         return true;
     }
@@ -104,10 +104,12 @@ bool ViewProviderAssemblyLink::onDelete(const std::vector<std::string>& subNames
 {
     Q_UNUSED(subNames)
 
-    Gui::Command::doCommand(Gui::Command::Doc,
-                            "App.getDocument(\"%s\").getObject(\"%s\").removeObjectsFromDocument()",
-                            getObject()->getDocument()->getName(),
-                            getObject()->getNameInDocument());
+    Gui::Command::doCommand(
+        Gui::Command::Doc,
+        "App.getDocument(\"%s\").getObject(\"%s\").removeObjectsFromDocument()",
+        getObject()->getDocument()->getName(),
+        getObject()->getNameInDocument()
+    );
 
     // getObject()->purgeTouched();
 
@@ -121,21 +123,25 @@ void ViewProviderAssemblyLink::setupContextMenu(QMenu* menu, QObject* receiver, 
     auto* assemblyLink = dynamic_cast<Assembly::AssemblyLink*>(getObject());
     if (assemblyLink->isRigid()) {
         act = menu->addAction(QObject::tr("Turn flexible"));
-        act->setToolTip(QObject::tr(
-            "Your sub-assembly is currently rigid. This will make it flexible instead."));
+        act->setToolTip(
+            QObject::tr("Your sub-assembly is currently rigid. This will make it flexible instead.")
+        );
     }
     else {
         act = menu->addAction(QObject::tr("Turn rigid"));
-        act->setToolTip(QObject::tr(
-            "Your sub-assembly is currently flexible. This will make it rigid instead."));
+        act->setToolTip(
+            QObject::tr("Your sub-assembly is currently flexible. This will make it rigid instead.")
+        );
     }
 
     func->trigger(act, [this]() {
         auto* assemblyLink = dynamic_cast<Assembly::AssemblyLink*>(getObject());
         Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Toggle Rigid"));
-        Gui::cmdAppObjectArgs(assemblyLink,
-                              "Rigid = %s",
-                              assemblyLink->Rigid.getValue() ? "False" : "True");
+        Gui::cmdAppObjectArgs(
+            assemblyLink,
+            "Rigid = %s",
+            assemblyLink->Rigid.getValue() ? "False" : "True"
+        );
 
         Gui::Command::commitCommand();
         Gui::Selection().clearSelection();

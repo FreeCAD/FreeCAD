@@ -41,7 +41,7 @@ namespace Part
  * in edit or active on a workbench, the body shows only the
  * resulting shape to the outside (Tip link).
  */
-class PartExport BodyBase : public Part::Feature, public App::OriginGroupExtension
+class PartExport BodyBase: public Part::Feature, public App::OriginGroupExtension
 {
     PROPERTY_HEADER_WITH_EXTENSIONS(Part::BodyBase);
 
@@ -61,17 +61,18 @@ public:
     App::PropertyLink BaseFeature;
 
     /// Returns all Group objects prepanded by BaseFeature (if any)
-    std::vector<App::DocumentObject *> getFullModel () {
-        std::vector<App::DocumentObject *> rv;
-        if ( BaseFeature.getValue () ) {
-            rv.push_back ( BaseFeature.getValue () );
+    std::vector<App::DocumentObject*> getFullModel()
+    {
+        std::vector<App::DocumentObject*> rv;
+        if (BaseFeature.getValue()) {
+            rv.push_back(BaseFeature.getValue());
         }
-        std::copy ( Group.getValues ().begin (), Group.getValues ().end (), std::back_inserter (rv) );
+        std::copy(Group.getValues().begin(), Group.getValues().end(), std::back_inserter(rv));
         return rv;
     }
 
     /// Return true if the feature belongs to the body and is located after the target
-    bool isAfter(const App::DocumentObject *feature, const App::DocumentObject *target) const;
+    bool isAfter(const App::DocumentObject* feature, const App::DocumentObject* target) const;
 
     /**
      * Return the body which this feature belongs too, or NULL.
@@ -85,16 +86,17 @@ public:
 
 protected:
     /// If BaseFeature is getting changed and Tip points to it reset the Tip
-    void onBeforeChange (const App::Property* prop) override;
+    void onBeforeChange(const App::Property* prop) override;
     /// If BaseFeature is set and Tip is null set the Tip to it
-    void onChanged (const App::Property* prop) override;
-    void handleChangedPropertyName(Base::XMLReader &reader,
-                                           const char * TypeName,
-                                           const char *PropName) override;
-
+    void onChanged(const App::Property* prop) override;
+    void handleChangedPropertyName(
+        Base::XMLReader& reader,
+        const char* TypeName,
+        const char* PropName
+    ) override;
 };
 
-} //namespace Part
+}  // namespace Part
 
 
-#endif // PART_BodyBase_H
+#endif  // PART_BodyBase_H

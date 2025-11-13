@@ -59,10 +59,12 @@ TEST_F(FuzzyBooleanTest, testDefaultFuzzy)
     _fuse->execute();
 
     // Verify
-    EXPECT_NEAR(PartTestHelpers::getVolume(_fuse->Shape.getValue()),
-                PartTestHelpers::getVolume(_helix1->Shape.getValue())
-                    + PartTestHelpers::getVolume(_cylinder1->Shape.getValue()),
-                0.1);
+    EXPECT_NEAR(
+        PartTestHelpers::getVolume(_fuse->Shape.getValue()),
+        PartTestHelpers::getVolume(_helix1->Shape.getValue())
+            + PartTestHelpers::getVolume(_cylinder1->Shape.getValue()),
+        0.1
+    );
 
     // Analyse
     Part::TopoShape ts = _fuse->Shape.getValue();
@@ -88,10 +90,12 @@ TEST_F(FuzzyBooleanTest, testGoodFuzzy)
     Part::FuzzyHelper::setBooleanFuzzy(oldFuzzy);
 
     // Verify
-    EXPECT_NEAR(PartTestHelpers::getVolume(_fuse->Shape.getValue()),
-                PartTestHelpers::getVolume(_helix1->Shape.getValue())
-                    + PartTestHelpers::getVolume(_cylinder1->Shape.getValue()),
-                0.1);
+    EXPECT_NEAR(
+        PartTestHelpers::getVolume(_fuse->Shape.getValue()),
+        PartTestHelpers::getVolume(_helix1->Shape.getValue())
+            + PartTestHelpers::getVolume(_cylinder1->Shape.getValue()),
+        0.1
+    );
 
     // Analyse
     Part::TopoShape ts = _fuse->Shape.getValue();

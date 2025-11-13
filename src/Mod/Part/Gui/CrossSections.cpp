@@ -22,20 +22,20 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <limits>
+#include <limits>
 
-# include <QFuture>
-# include <QKeyEvent>
+#include <QFuture>
+#include <QKeyEvent>
 
-# include <BRep_Builder.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Compound.hxx>
+#include <BRep_Builder.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Compound.hxx>
 
-# include <Inventor/nodes/SoBaseColor.h>
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoLineSet.h>
-# include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoBaseColor.h>
+#include <Inventor/nodes/SoCoordinate3.h>
+#include <Inventor/nodes/SoDrawStyle.h>
+#include <Inventor/nodes/SoLineSet.h>
+#include <Inventor/nodes/SoSeparator.h>
 
 #include <App/Document.h>
 #include <Base/Sequencer.h>
@@ -60,10 +60,11 @@
 
 using namespace PartGui;
 namespace sp = std::placeholders;
-#undef CS_FUTURE // multi-threading causes some problems
+#undef CS_FUTURE  // multi-threading causes some problems
 
-namespace PartGui {
-class ViewProviderCrossSections : public Gui::ViewProvider
+namespace PartGui
+{
+class ViewProviderCrossSections: public Gui::ViewProvider
 {
 public:
     ViewProviderCrossSections()
@@ -87,8 +88,7 @@ public:
         planes->unref();
     }
     void updateData(const App::Property*) override
-    {
-    }
+    {}
     const char* getDefaultDisplayMode() const override
     {
         return "";
@@ -101,15 +101,15 @@ public:
     {
         coords->point.setNum(v.size());
         SbVec3f* p = coords->point.startEditing();
-        for (unsigned int i=0; i<v.size(); i++) {
+        for (unsigned int i = 0; i < v.size(); i++) {
             const Base::Vector3f& pt = v[i];
-            p[i].setValue(pt.x,pt.y,pt.z);
+            p[i].setValue(pt.x, pt.y, pt.z);
         }
         coords->point.finishEditing();
-        unsigned int count = v.size()/5;
+        unsigned int count = v.size() / 5;
         planes->numVertices.setNum(count);
         int32_t* l = planes->numVertices.startEditing();
-        for (unsigned int i=0; i<count; i++) {
+        for (unsigned int i = 0; i < count; i++) {
             l[i] = 5;
         }
         planes->numVertices.finishEditing();
@@ -119,12 +119,12 @@ private:
     SoCoordinate3* coords;
     SoLineSet* planes;
 };
-}
+}  // namespace PartGui
 
 CrossSections::CrossSections(const Base::BoundBox3d& bb, QWidget* parent, Qt::WindowFlags fl)
-  : QDialog(parent, fl)
-  , ui(new Ui_CrossSections)
-  , bbox(bb)
+    : QDialog(parent, fl)
+    , ui(new Ui_CrossSections)
+    , bbox(bb)
 {
     ui->setupUi(this);
     setupConnections();
@@ -161,35 +161,45 @@ CrossSections::~CrossSections()
 
 void CrossSections::setupConnections()
 {
-    connect(ui->xyPlane, &QRadioButton::clicked,
-            this, &CrossSections::xyPlaneClicked);
-    connect(ui->xzPlane, &QRadioButton::clicked,
-            this, &CrossSections::xzPlaneClicked);
-    connect(ui->yzPlane, &QRadioButton::clicked,
-            this, &CrossSections::yzPlaneClicked);
-    connect(ui->position, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &CrossSections::positionValueChanged);
-    connect(ui->distance, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &CrossSections::distanceValueChanged);
-    connect(ui->countSections, qOverload<int>(&QSpinBox::valueChanged),
-            this, &CrossSections::countSectionsValueChanged);
-    connect(ui->checkBothSides, &QCheckBox::toggled,
-            this, &CrossSections::checkBothSidesToggled);
-    connect(ui->sectionsBox, &QGroupBox::toggled,
-            this, &CrossSections::sectionsBoxToggled);
+    connect(ui->xyPlane, &QRadioButton::clicked, this, &CrossSections::xyPlaneClicked);
+    connect(ui->xzPlane, &QRadioButton::clicked, this, &CrossSections::xzPlaneClicked);
+    connect(ui->yzPlane, &QRadioButton::clicked, this, &CrossSections::yzPlaneClicked);
+    connect(
+        ui->position,
+        qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this,
+        &CrossSections::positionValueChanged
+    );
+    connect(
+        ui->distance,
+        qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this,
+        &CrossSections::distanceValueChanged
+    );
+    connect(
+        ui->countSections,
+        qOverload<int>(&QSpinBox::valueChanged),
+        this,
+        &CrossSections::countSectionsValueChanged
+    );
+    connect(ui->checkBothSides, &QCheckBox::toggled, this, &CrossSections::checkBothSidesToggled);
+    connect(ui->sectionsBox, &QGroupBox::toggled, this, &CrossSections::sectionsBoxToggled);
 }
 
 CrossSections::Plane CrossSections::plane() const
 {
-    if (ui->xyPlane->isChecked())
+    if (ui->xyPlane->isChecked()) {
         return CrossSections::XY;
-    else if (ui->xzPlane->isChecked())
+    }
+    else if (ui->xzPlane->isChecked()) {
         return CrossSections::XZ;
-    else
+    }
+    else {
         return CrossSections::YZ;
+    }
 }
 
-void CrossSections::changeEvent(QEvent *e)
+void CrossSections::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
@@ -215,21 +225,25 @@ void CrossSections::accept()
 
 bool CrossSections::apply()
 {
-    std::vector<App::DocumentObject*> docobjs = Gui::Selection().
-            getObjectsOfType(App::DocumentObject::getClassTypeId());
+    std::vector<App::DocumentObject*> docobjs = Gui::Selection().getObjectsOfType(
+        App::DocumentObject::getClassTypeId()
+    );
     std::vector<App::DocumentObject*> obj;
     for (auto it : docobjs) {
-        if (!Part::Feature::getTopoShape(it, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform).isNull()) {
+        if (!Part::Feature::getTopoShape(it, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform)
+                 .isNull()) {
             obj.push_back(it);
         }
     }
 
     std::vector<double> d;
-    if (ui->sectionsBox->isChecked())
+    if (ui->sectionsBox->isChecked()) {
         d = getPlanes();
-    else
+    }
+    else {
         d.push_back(ui->position->value().getValue());
-    double a=0,b=0,c=0;
+    }
+    double a = 0, b = 0, c = 0;
     switch (plane()) {
         case CrossSections::XY:
             c = 1.0;
@@ -245,11 +259,11 @@ bool CrossSections::apply()
 #ifdef CS_FUTURE
     Standard::SetReentrant(Standard_True);
     for (std::vector<App::DocumentObject*>::iterator it = obj.begin(); it != obj.end(); ++it) {
-        Part::CrossSection cs(a,b,c,static_cast<Part::Feature*>(*it)->Shape.getValue());
-        QFuture< std::list<TopoDS_Wire> > future = QtConcurrent::mapped
-            (d, std::bind(&Part::CrossSection::section, &cs, sp::_1));
+        Part::CrossSection cs(a, b, c, static_cast<Part::Feature*>(*it)->Shape.getValue());
+        QFuture<std::list<TopoDS_Wire>> future
+            = QtConcurrent::mapped(d, std::bind(&Part::CrossSection::section, &cs, sp::_1));
         future.waitForFinished();
-        QFuture< std::list<TopoDS_Wire> >::const_iterator ft;
+        QFuture<std::list<TopoDS_Wire>>::const_iterator ft;
         TopoDS_Compound comp;
         BRep_Builder builder;
         builder.MakeCompound(comp);
@@ -257,8 +271,9 @@ bool CrossSections::apply()
         for (ft = future.begin(); ft != future.end(); ++ft) {
             const std::list<TopoDS_Wire>& w = *ft;
             for (std::list<TopoDS_Wire>::const_iterator wt = w.begin(); wt != w.end(); ++wt) {
-                if (!wt->IsNull())
+                if (!wt->IsNull()) {
                     builder.Add(comp, *wt);
+                }
             }
         }
 
@@ -278,33 +293,54 @@ bool CrossSections::apply()
             App::Document* doc = it->getDocument();
             std::string s = it->getNameInDocument();
             s += "_cs";
-            Gui::Command::runCommand(Gui::Command::App, QStringLiteral(
-                "wires=list()\n"
-                "shape=FreeCAD.getDocument(\"%1\").%2.Shape\n")
-                .arg(QLatin1String(doc->getName()),
-                     QLatin1String(it->getNameInDocument())).toLatin1());
+            Gui::Command::runCommand(
+                Gui::Command::App,
+                QStringLiteral(
+                    "wires=list()\n"
+                    "shape=FreeCAD.getDocument(\"%1\").%2.Shape\n"
+                )
+                    .arg(QLatin1String(doc->getName()), QLatin1String(it->getNameInDocument()))
+                    .toLatin1()
+            );
 
             for (double jt : d) {
-                Gui::Command::runCommand(Gui::Command::App, QStringLiteral(
-                    "for i in shape.slice(Base.Vector(%1,%2,%3),%4):\n"
-                    "    wires.append(i)\n"
-                    ).arg(a).arg(b).arg(c).arg(jt).toLatin1());
+                Gui::Command::runCommand(
+                    Gui::Command::App,
+                    QStringLiteral(
+                        "for i in shape.slice(Base.Vector(%1,%2,%3),%4):\n"
+                        "    wires.append(i)\n"
+                    )
+                        .arg(a)
+                        .arg(b)
+                        .arg(c)
+                        .arg(jt)
+                        .toLatin1()
+                );
                 seq.next();
             }
 
-            Gui::Command::runCommand(Gui::Command::App, QStringLiteral(
-                "comp=Part.makeCompound(wires)\n"
-                "slice=FreeCAD.getDocument(\"%1\").addObject(\"Part::Feature\",\"%2\")\n"
-                "slice.Shape=comp\n"
-                "slice.purgeTouched()\n"
-                "del slice,comp,wires,shape")
-                .arg(QLatin1String(doc->getName()),
-                     QLatin1String(s.c_str())).toLatin1());
+            Gui::Command::runCommand(
+                Gui::Command::App,
+                QStringLiteral(
+                    "comp=Part.makeCompound(wires)\n"
+                    "slice=FreeCAD.getDocument(\"%1\").addObject(\"Part::Feature\",\"%2\")\n"
+                    "slice.Shape=comp\n"
+                    "slice.purgeTouched()\n"
+                    "del slice,comp,wires,shape"
+                )
+                    .arg(QLatin1String(doc->getName()), QLatin1String(s.c_str()))
+                    .toLatin1()
+            );
         }
         seq.next();
-    } catch (Base::Exception& e) {
+    }
+    catch (Base::Exception& e) {
         e.reportException();
-        QMessageBox::critical(Gui::getMainWindow(), tr("Cannot compute cross-sections"), QString::fromStdString(e.getMessage()));
+        QMessageBox::critical(
+            Gui::getMainWindow(),
+            tr("Cannot compute cross-sections"),
+            QString::fromStdString(e.getMessage())
+        );
         return false;
     }
 
@@ -323,8 +359,9 @@ void CrossSections::xyPlaneClicked()
     }
     else {
         double dist = bbox.LengthZ() / ui->countSections->value();
-        if (!ui->checkBothSides->isChecked())
+        if (!ui->checkBothSides->isChecked()) {
             dist *= 0.5f;
+        }
         ui->distance->setValue(dist);
         calcPlanes(CrossSections::XY);
     }
@@ -339,8 +376,9 @@ void CrossSections::xzPlaneClicked()
     }
     else {
         double dist = bbox.LengthY() / ui->countSections->value();
-        if (!ui->checkBothSides->isChecked())
+        if (!ui->checkBothSides->isChecked()) {
             dist *= 0.5f;
+        }
         ui->distance->setValue(dist);
         calcPlanes(CrossSections::XZ);
     }
@@ -355,8 +393,9 @@ void CrossSections::yzPlaneClicked()
     }
     else {
         double dist = bbox.LengthX() / ui->countSections->value();
-        if (!ui->checkBothSides->isChecked())
+        if (!ui->checkBothSides->isChecked()) {
             dist *= 0.5f;
+        }
         ui->distance->setValue(dist);
         calcPlanes(CrossSections::YZ);
     }
@@ -421,8 +460,9 @@ void CrossSections::countSectionsValueChanged(int v)
             dist = bbox.LengthX() / v;
             break;
     }
-    if (!ui->checkBothSides->isChecked())
+    if (!ui->checkBothSides->isChecked()) {
         dist *= 0.5f;
+    }
     ui->distance->setValue(dist);
     calcPlanes(type);
 }
@@ -498,14 +538,14 @@ std::vector<double> CrossSections::getPlanes() const
 
     std::vector<double> d;
     if (both) {
-        double start = pos-0.5f*(count-1)*stp;
-        for (int i=0; i<count; i++) {
-            d.push_back(start+i*stp);
+        double start = pos - 0.5f * (count - 1) * stp;
+        for (int i = 0; i < count; i++) {
+            d.push_back(start + i * stp);
         }
     }
     else {
-        for (int i=0; i<count; i++) {
-            d.push_back(pos+i*stp);
+        for (int i = 0; i < count; i++) {
+            d.push_back(pos + i * stp);
         }
     }
     return d;
@@ -518,22 +558,22 @@ void CrossSections::makePlanes(Plane type, const std::vector<double>& d, double 
         Base::Vector3f v[4];
         switch (type) {
             case XY:
-                v[0].Set(bound[0],bound[2],it);
-                v[1].Set(bound[1],bound[2],it);
-                v[2].Set(bound[1],bound[3],it);
-                v[3].Set(bound[0],bound[3],it);
+                v[0].Set(bound[0], bound[2], it);
+                v[1].Set(bound[1], bound[2], it);
+                v[2].Set(bound[1], bound[3], it);
+                v[3].Set(bound[0], bound[3], it);
                 break;
             case XZ:
-                v[0].Set(bound[0],it,bound[2]);
-                v[1].Set(bound[1],it,bound[2]);
-                v[2].Set(bound[1],it,bound[3]);
-                v[3].Set(bound[0],it,bound[3]);
+                v[0].Set(bound[0], it, bound[2]);
+                v[1].Set(bound[1], it, bound[2]);
+                v[2].Set(bound[1], it, bound[3]);
+                v[3].Set(bound[0], it, bound[3]);
                 break;
             case YZ:
-                v[0].Set(it,bound[0],bound[2]);
-                v[1].Set(it,bound[1],bound[2]);
-                v[2].Set(it,bound[1],bound[3]);
-                v[3].Set(it,bound[0],bound[3]);
+                v[0].Set(it, bound[0], bound[2]);
+                v[1].Set(it, bound[1], bound[2]);
+                v[2].Set(it, bound[1], bound[3]);
+                v[3].Set(it, bound[0], bound[3]);
                 break;
         }
 

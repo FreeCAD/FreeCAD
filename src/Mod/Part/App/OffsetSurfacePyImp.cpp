@@ -22,8 +22,8 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <Geom_OffsetSurface.hxx>
-# include <memory>
+#include <Geom_OffsetSurface.hxx>
+#include <memory>
 
 
 #include "OCCError.h"
@@ -39,7 +39,7 @@ std::string OffsetSurfacePy::representation() const
     return "<OffsetSurface object>";
 }
 
-PyObject *OffsetSurfacePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject* OffsetSurfacePy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // create a new instance of OffsetSurfacePy and the Twin object
     return new OffsetSurfacePy(new GeomOffsetSurface);
@@ -50,14 +50,12 @@ int OffsetSurfacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
     PyObject* pGeom;
     double offset;
-    if (!PyArg_ParseTuple(args, "O!d",
-                            &(GeometryPy::Type), &pGeom,
-                            &offset))
+    if (!PyArg_ParseTuple(args, "O!d", &(GeometryPy::Type), &pGeom, &offset)) {
         return -1;
+    }
 
     GeometryPy* pcGeo = static_cast<GeometryPy*>(pGeom);
-    Handle(Geom_Surface) surf = Handle(Geom_Surface)::DownCast
-        (pcGeo->getGeometryPtr()->handle());
+    Handle(Geom_Surface) surf = Handle(Geom_Surface)::DownCast(pcGeo->getGeometryPtr()->handle());
     if (surf.IsNull()) {
         PyErr_SetString(PyExc_TypeError, "geometry is not a surface");
         return -1;
@@ -81,7 +79,7 @@ Py::Float OffsetSurfacePy::getOffsetValue() const
     return Py::Float(surf->Offset());
 }
 
-void  OffsetSurfacePy::setOffsetValue(Py::Float arg)
+void OffsetSurfacePy::setOffsetValue(Py::Float arg)
 {
     Handle(Geom_OffsetSurface) surf = Handle(Geom_OffsetSurface)::DownCast(getGeometryPtr()->handle());
     surf->SetOffsetValue((double)arg);
@@ -89,8 +87,7 @@ void  OffsetSurfacePy::setOffsetValue(Py::Float arg)
 
 Py::Object OffsetSurfacePy::getBasisSurface() const
 {
-    Handle(Geom_OffsetSurface) surf = Handle(Geom_OffsetSurface)::DownCast
-        (getGeometryPtr()->handle());
+    Handle(Geom_OffsetSurface) surf = Handle(Geom_OffsetSurface)::DownCast(getGeometryPtr()->handle());
     if (surf.IsNull()) {
         throw Py::TypeError("geometry is not a surface");
     }
@@ -99,20 +96,20 @@ Py::Object OffsetSurfacePy::getBasisSurface() const
     return Py::asObject(geo->getPyObject());
 }
 
-void  OffsetSurfacePy::setBasisSurface(Py::Object arg)
+void OffsetSurfacePy::setBasisSurface(Py::Object arg)
 {
     PyObject* p = arg.ptr();
     if (PyObject_TypeCheck(p, &(GeometryPy::Type))) {
         GeometryPy* pcGeo = static_cast<GeometryPy*>(p);
-        Handle(Geom_Surface) surf = Handle(Geom_Surface)::DownCast
-            (pcGeo->getGeometryPtr()->handle());
+        Handle(Geom_Surface) surf = Handle(Geom_Surface)::DownCast(pcGeo->getGeometryPtr()->handle());
         if (surf.IsNull()) {
             throw Py::TypeError("geometry is not a surface");
         }
 
         try {
-            Handle(Geom_OffsetSurface) surf2 = Handle(Geom_OffsetSurface)::DownCast
-                (getGeometryPtr()->handle());
+            Handle(Geom_OffsetSurface) surf2 = Handle(Geom_OffsetSurface)::DownCast(
+                getGeometryPtr()->handle()
+            );
             surf2->SetBasisSurface(surf);
         }
         catch (Standard_Failure& e) {
@@ -121,7 +118,7 @@ void  OffsetSurfacePy::setBasisSurface(Py::Object arg)
     }
 }
 
-PyObject *OffsetSurfacePy::getCustomAttributes(const char* /*attr*/) const
+PyObject* OffsetSurfacePy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }

@@ -103,7 +103,8 @@ void TaskOrientation::restore(const Base::Placement& plm)
         {Camera::Front, Camera::convert(Camera::Front)},
         {Camera::Rear, Camera::convert(Camera::Rear)},
         {Camera::Right, Camera::convert(Camera::Right)},
-        {Camera::Left, Camera::convert(Camera::Left)}};
+        {Camera::Left, Camera::convert(Camera::Left)}
+    };
 
     Base::Rotation rot = plm.getRotation();
     Base::Vector3d pos = plm.getPosition();
@@ -183,7 +184,8 @@ void TaskOrientation::updateIcon()
     }
 
     ui->previewLabel->setPixmap(
-        Gui::BitmapFactory().pixmapFromSvg(icon.c_str(), ui->previewLabel->size()));
+        Gui::BitmapFactory().pixmapFromSvg(icon.c_str(), ui->previewLabel->size())
+    );
 }
 
 // ----------------------------------------------------------------------------

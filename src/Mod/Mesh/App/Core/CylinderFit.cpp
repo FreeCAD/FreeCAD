@@ -76,9 +76,7 @@ CylinderFit::CylinderFit()
 {}
 
 // Set approximations before calling the fitting
-void CylinderFit::SetApproximations(double radius,
-                                    const Base::Vector3d& base,
-                                    const Base::Vector3d& axis)
+void CylinderFit::SetApproximations(double radius, const Base::Vector3d& base, const Base::Vector3d& axis)
 {
     _bIsFitted = false;
     _fLastResult = std::numeric_limits<float>::max();
@@ -110,10 +108,12 @@ void CylinderFit::SetApproximations(const Base::Vector3d& base, const Base::Vect
 
 // Set iteration convergence criteria for the fit if special values are needed.
 // The default values set in the constructor are suitable for most uses
-void CylinderFit::SetConvergenceCriteria(double posConvLimit,
-                                         double dirConvLimit,
-                                         double vConvLimit,
-                                         int maxIter)
+void CylinderFit::SetConvergenceCriteria(
+    double posConvLimit,
+    double dirConvLimit,
+    double vConvLimit,
+    int maxIter
+)
 {
     if (posConvLimit > 0.0) {
         _posConvLimit = posConvLimit;
@@ -246,12 +246,12 @@ void CylinderFit::ComputeApproximationsLine()
     _dRadius = 0.0;
     if (!_vPoints.empty()) {
         std::vector<Wm4::Vector3d> input;
-        std::transform(_vPoints.begin(),
-                       _vPoints.end(),
-                       std::back_inserter(input),
-                       [](const Base::Vector3f& v) {
-                           return Wm4::Vector3d(v.x, v.y, v.z);
-                       });
+        std::transform(
+            _vPoints.begin(),
+            _vPoints.end(),
+            std::back_inserter(input),
+            [](const Base::Vector3f& v) { return Wm4::Vector3d(v.x, v.y, v.z); }
+        );
         Wm4::Line3<double> kLine = Wm4::OrthogonalLineFit3(input.size(), input.data());
         _vBase.Set(kLine.Origin.X(), kLine.Origin.Y(), kLine.Origin.Z());
         _vAxis.Set(kLine.Direction.X(), kLine.Direction.Y(), kLine.Direction.Z());
@@ -446,10 +446,12 @@ double CylinderFit::meanZObs()
 // Set up the normal equation matrices
 // atpa ... 5x5 normal matrix
 // atpl ... 5x1 matrix (right-hand side of equation)
-void CylinderFit::setupNormalEquationMatrices(SolutionD solDir,
-                                              const std::vector<Base::Vector3d>& residuals,
-                                              Matrix5x5& atpa,
-                                              Eigen::VectorXd& atpl) const
+void CylinderFit::setupNormalEquationMatrices(
+    SolutionD solDir,
+    const std::vector<Base::Vector3d>& residuals,
+    Matrix5x5& atpa,
+    Eigen::VectorXd& atpl
+) const
 {
     // Zero matrices
     atpa.setZero();
@@ -587,11 +589,13 @@ void CylinderFit::setupObservation(SolutionD solDir,
 // pi   ... weight of observation (= quasi weight qw for this solution)
 // atpa ... 5x5 normal equation matrix
 // atpl ... 5x1 matrix/vector (right-hand side of equations)
-void CylinderFit::addObservationU(DoubleArray5 a,
-                                  double li,
-                                  double pi,
-                                  Matrix5x5& atpa,
-                                  Eigen::VectorXd& atpl) const
+void CylinderFit::addObservationU(
+    DoubleArray5 a,
+    double li,
+    double pi,
+    Matrix5x5& atpa,
+    Eigen::VectorXd& atpl
+) const
 {
     const int dim = 5;
     for (int i = 0; i < dim; ++i) {
@@ -618,12 +622,14 @@ void CylinderFit::setLowerPart(Matrix5x5& atpa) const
 }
 
 // Compute the residuals and sigma0 and check the residual convergence
-bool CylinderFit::computeResiduals(SolutionD solDir,
-                                   const Eigen::VectorXd& x,
-                                   std::vector<Base::Vector3d>& residuals,
-                                   double& sigma0,
-                                   double vConvLimit,
-                                   bool& vConverged) const
+bool CylinderFit::computeResiduals(
+    SolutionD solDir,
+    const Eigen::VectorXd& x,
+    std::vector<Base::Vector3d>& residuals,
+    double& sigma0,
+    double vConvLimit,
+    bool& vConverged
+) const
 {
     const int dim = 5;
     // A minimum of 5 surface points is needed to define a cylinder

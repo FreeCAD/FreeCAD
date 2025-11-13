@@ -139,8 +139,7 @@ int PlacementPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
 PyObject* PlacementPy::richCompare(PyObject* v, PyObject* w, int op)
 {
-    if (PyObject_TypeCheck(v, &(PlacementPy::Type))
-        && PyObject_TypeCheck(w, &(PlacementPy::Type))) {
+    if (PyObject_TypeCheck(v, &(PlacementPy::Type)) && PyObject_TypeCheck(w, &(PlacementPy::Type))) {
         Placement p1 = *static_cast<PlacementPy*>(v)->getPlacementPtr();
         Placement p2 = *static_cast<PlacementPy*>(w)->getPlacementPtr();
 
@@ -287,13 +286,7 @@ PyObject* PlacementPy::sclerp(PyObject* args) const
     PyObject* pyplm2 {};
     double t {};
     PyObject* shorten = Py_True;
-    if (!PyArg_ParseTuple(args,
-                          "O!d|O!",
-                          &(PlacementPy::Type),
-                          &pyplm2,
-                          &t,
-                          &(PyBool_Type),
-                          &shorten)) {
+    if (!PyArg_ParseTuple(args, "O!d|O!", &(PlacementPy::Type), &pyplm2, &t, &(PyBool_Type), &shorten)) {
         return nullptr;
     }
     Placement plm2 = static_cast<PlacementPy*>(pyplm2)->value();
@@ -362,10 +355,12 @@ void PlacementPy::setRotation(Py::Object arg)
     Py::Tuple tuple;
     if (tuple.accepts(arg.ptr())) {
         tuple = arg;
-        getPlacementPtr()->setRotation(Rotation(static_cast<double>(Py::Float(tuple[0])),
-                                                static_cast<double>(Py::Float(tuple[1])),
-                                                static_cast<double>(Py::Float(tuple[2])),
-                                                static_cast<double>(Py::Float(tuple[3]))));
+        getPlacementPtr()->setRotation(Rotation(
+            static_cast<double>(Py::Float(tuple[0])),
+            static_cast<double>(Py::Float(tuple[1])),
+            static_cast<double>(Py::Float(tuple[2])),
+            static_cast<double>(Py::Float(tuple[3]))
+        ));
         return;
     }
 

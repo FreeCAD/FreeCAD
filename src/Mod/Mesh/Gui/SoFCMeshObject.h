@@ -51,9 +51,11 @@ class MeshGuiExport SoSFMeshObject: public SoSField
 {
     using inherited = SoSField;
 
-    SO_SFIELD_HEADER(SoSFMeshObject,
-                     Base::Reference<const Mesh::MeshObject>,
-                     Base::Reference<const Mesh::MeshObject>)
+    SO_SFIELD_HEADER(
+        SoSFMeshObject,
+        Base::Reference<const Mesh::MeshObject>,
+        Base::Reference<const Mesh::MeshObject>
+    )
 
 public:
     static void initClass();
@@ -195,11 +197,13 @@ protected:
     void getPrimitiveCount(SoGetPrimitiveCountAction* action) override;
     void rayPick(SoRayPickAction* action) override;
     void generatePrimitives(SoAction* action) override;
-    SoDetail* createTriangleDetail(SoRayPickAction* action,
-                                   const SoPrimitiveVertex* v1,
-                                   const SoPrimitiveVertex* v2,
-                                   const SoPrimitiveVertex* v3,
-                                   SoPickedPoint* pp) override;
+    SoDetail* createTriangleDetail(
+        SoRayPickAction* action,
+        const SoPrimitiveVertex* v1,
+        const SoPrimitiveVertex* v2,
+        const SoPrimitiveVertex* v3,
+        SoPickedPoint* pp
+    ) override;
     // Force using the reference count mechanism.
     ~SoFCMeshObjectShape() override;
 
@@ -216,11 +220,13 @@ private:
     void notify(SoNotList* node) override;
     Binding findMaterialBinding(SoState* const state) const;
     // Draw faces
-    void drawFaces(const Mesh::MeshObject*,
-                   SoMaterialBundle* mb,
-                   Binding bind,
-                   SbBool needNormals,
-                   SbBool ccw) const;
+    void drawFaces(
+        const Mesh::MeshObject*,
+        SoMaterialBundle* mb,
+        Binding bind,
+        SbBool needNormals,
+        SbBool ccw
+    ) const;
     void drawPoints(const Mesh::MeshObject*, SbBool needNormals, SbBool ccw) const;
     unsigned int countTriangles(SoAction* action) const;
 
@@ -275,11 +281,13 @@ private:
 private:
     Binding findMaterialBinding(SoState* const state) const;
     // Draw faces
-    void drawFaces(const Mesh::MeshObject*,
-                   SoMaterialBundle* mb,
-                   Binding bind,
-                   SbBool needNormals,
-                   SbBool ccw) const;
+    void drawFaces(
+        const Mesh::MeshObject*,
+        SoMaterialBundle* mb,
+        Binding bind,
+        SbBool needNormals,
+        SbBool ccw
+    ) const;
     void drawPoints(const Mesh::MeshObject*, SbBool needNormals, SbBool ccw) const;
 };
 

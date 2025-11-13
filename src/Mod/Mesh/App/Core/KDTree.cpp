@@ -23,7 +23,7 @@
  ***************************************************************************/
 
 #ifdef _MSC_VER
-#pragma warning(disable : 4396)
+# pragma warning(disable : 4396)
 #endif
 
 #include "KDTree.h"
@@ -152,8 +152,9 @@ void MeshKDTree::Optimize()
 
 PointIndex MeshKDTree::FindNearest(const Base::Vector3f& p, Base::Vector3f& n, float& dist) const
 {
-    std::pair<MyKDTree::const_iterator, MyKDTree::distance_type> it =
-        d->kd_tree.find_nearest(Point3d(p, 0));
+    std::pair<MyKDTree::const_iterator, MyKDTree::distance_type> it = d->kd_tree.find_nearest(
+        Point3d(p, 0)
+    );
     if (it.first == d->kd_tree.end()) {
         return POINT_INDEX_MAX;
     }
@@ -163,13 +164,15 @@ PointIndex MeshKDTree::FindNearest(const Base::Vector3f& p, Base::Vector3f& n, f
     return index;
 }
 
-PointIndex MeshKDTree::FindNearest(const Base::Vector3f& p,
-                                   float max_dist,
-                                   Base::Vector3f& n,
-                                   float& dist) const
+PointIndex MeshKDTree::FindNearest(
+    const Base::Vector3f& p,
+    float max_dist,
+    Base::Vector3f& n,
+    float& dist
+) const
 {
-    std::pair<MyKDTree::const_iterator, MyKDTree::distance_type> it =
-        d->kd_tree.find_nearest(Point3d(p, 0), max_dist);
+    std::pair<MyKDTree::const_iterator, MyKDTree::distance_type> it
+        = d->kd_tree.find_nearest(Point3d(p, 0), max_dist);
     if (it.first == d->kd_tree.end()) {
         return POINT_INDEX_MAX;
     }
@@ -189,9 +192,7 @@ PointIndex MeshKDTree::FindExact(const Base::Vector3f& p) const
     return index;
 }
 
-void MeshKDTree::FindInRange(const Base::Vector3f& p,
-                             float range,
-                             std::vector<PointIndex>& indices) const
+void MeshKDTree::FindInRange(const Base::Vector3f& p, float range, std::vector<PointIndex>& indices) const
 {
     std::vector<Point3d> v;
     d->kd_tree.find_within_range(Point3d(p, 0), range, std::back_inserter(v));

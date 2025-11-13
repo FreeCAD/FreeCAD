@@ -71,7 +71,8 @@ class GuiExport PropertyEditor: public QTreeView
     // clang-format on
 
 public:
-    enum class ExpansionMode {
+    enum class ExpansionMode
+    {
         DefaultExpand,
         AutoExpand,
         AutoCollapse
@@ -81,8 +82,10 @@ public:
     ~PropertyEditor() override;
 
     /** Builds up the list view with the properties. */
-    void buildUp(PropertyModel::PropertyList&& props = PropertyModel::PropertyList(),
-                 bool checkDocument = false);
+    void buildUp(
+        PropertyModel::PropertyList&& props = PropertyModel::PropertyList(),
+        bool checkDocument = false
+    );
     void blockCollapseAll();
     void updateProperty(const App::Property&);
     void removeProperty(const App::Property&);
@@ -110,8 +113,7 @@ protected Q_SLOTS:
     void onItemActivated(const QModelIndex& index);
     void onItemExpanded(const QModelIndex& index);
     void onItemCollapsed(const QModelIndex& index);
-    void
-    onRowsMoved(const QModelIndex& parent, int start, int end, const QModelIndex& dst, int row);
+    void onRowsMoved(const QModelIndex& parent, int start, int end, const QModelIndex& dst, int row);
     void onRowsRemoved(const QModelIndex& parent, int start, int end);
 
 protected:
@@ -122,11 +124,12 @@ protected:
     void currentChanged(const QModelIndex& current, const QModelIndex& previous) override;
     void rowsInserted(const QModelIndex& parent, int start, int end) override;
     void rowsAboutToBeRemoved(const QModelIndex& parent, int start, int end) override;
-    void
-    drawBranches(QPainter* painter, const QRect& rect, const QModelIndex& index) const override;
-    void drawRow(QPainter* painter,
-                 const QStyleOptionViewItem& options,
-                 const QModelIndex& index) const override;
+    void drawBranches(QPainter* painter, const QRect& rect, const QModelIndex& index) const override;
+    void drawRow(
+        QPainter* painter,
+        const QStyleOptionViewItem& options,
+        const QModelIndex& index
+    ) const override;
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QStyleOptionViewItem viewOptions() const override;
 #else

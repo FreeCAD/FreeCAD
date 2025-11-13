@@ -232,7 +232,7 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
                 name="CapacitanceBody",
                 group="Parameter",
                 doc="Capacitance body",
-                value=0,
+                value=1,
             )
         )
         prop.append(

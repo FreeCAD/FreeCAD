@@ -23,14 +23,14 @@
  ***************************************************************************/
 
 
-# include <gp_Pnt.hxx>
-# include <BRep_Builder.hxx>
-# include <BRep_Tool.hxx>
-# include <BRepBuilderAPI_MakeVertex.hxx>
-# include <Geom_CartesianPoint.hxx>
-# include <Standard_Failure.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Vertex.hxx>
+#include <gp_Pnt.hxx>
+#include <BRep_Builder.hxx>
+#include <BRep_Tool.hxx>
+#include <BRepBuilderAPI_MakeVertex.hxx>
+#include <Geom_CartesianPoint.hxx>
+#include <Standard_Failure.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Vertex.hxx>
 
 
 #include <Base/Vector3D.h>
@@ -52,7 +52,7 @@ std::string TopoShapeVertexPy::representation() const
     return str.str();
 }
 
-PyObject *TopoShapeVertexPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject* TopoShapeVertexPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // create a new instance of TopoShapeVertexPy and the Twin object
     return new TopoShapeVertexPy(new TopoShape);
@@ -68,16 +68,16 @@ int TopoShapeVertexPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
 
     PyErr_Clear();
-    double x=0.0,y=0.0,z=0.0;
-    PyObject *object;
+    double x = 0.0, y = 0.0, z = 0.0;
+    PyObject* object;
     bool success = false;
-    if (PyArg_ParseTuple(args, "|ddd", &x,&y,&z)) {
+    if (PyArg_ParseTuple(args, "|ddd", &x, &y, &z)) {
         // do nothing here
         success = true;
     }
     if (!success) {
-        PyErr_Clear(); // set by PyArg_ParseTuple()
-        if (PyArg_ParseTuple(args,"O!",&(Base::VectorPy::Type), &object)) {
+        PyErr_Clear();  // set by PyArg_ParseTuple()
+        if (PyArg_ParseTuple(args, "O!", &(Base::VectorPy::Type), &object)) {
             Base::Vector3d* ptr = static_cast<Base::VectorPy*>(object)->getVectorPtr();
             x = ptr->x;
             y = ptr->y;
@@ -86,8 +86,8 @@ int TopoShapeVertexPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         }
     }
     if (!success) {
-        PyErr_Clear(); // set by PyArg_ParseTuple()
-        if (PyArg_ParseTuple(args,"O!",&(PyTuple_Type), &object)) {
+        PyErr_Clear();  // set by PyArg_ParseTuple()
+        if (PyArg_ParseTuple(args, "O!", &(PyTuple_Type), &object)) {
             try {
                 Py::Tuple tuple(object);
                 x = Py::Float(tuple.getItem(0));
@@ -101,10 +101,11 @@ int TopoShapeVertexPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         }
     }
     if (!success) {
-        PyErr_Clear(); // set by PyArg_ParseTuple()
-        if (PyArg_ParseTuple(args,"O!",&(PointPy::Type), &object)) {
-            Handle(Geom_CartesianPoint) this_point = Handle(Geom_CartesianPoint)::DownCast
-                (static_cast<PointPy*>(object)->getGeomPointPtr()->handle());
+        PyErr_Clear();  // set by PyArg_ParseTuple()
+        if (PyArg_ParseTuple(args, "O!", &(PointPy::Type), &object)) {
+            Handle(Geom_CartesianPoint) this_point = Handle(Geom_CartesianPoint)::DownCast(
+                static_cast<PointPy*>(object)->getGeomPointPtr()->handle()
+            );
             gp_Pnt pnt = this_point->Pnt();
             x = pnt.X();
             y = pnt.Y();
@@ -113,8 +114,8 @@ int TopoShapeVertexPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         }
     }
     if (!success) {
-        PyErr_Clear(); // set by PyArg_ParseTuple()
-        if (PyArg_ParseTuple(args,"O!",&(Part::TopoShapePy::Type), &object)) {
+        PyErr_Clear();  // set by PyArg_ParseTuple()
+        if (PyArg_ParseTuple(args, "O!", &(Part::TopoShapePy::Type), &object)) {
             TopoShape* ptr = static_cast<TopoShapePy*>(object)->getTopoShapePtr();
             TopoDS_Shape shape = ptr->getShape();
             if (!shape.IsNull() && shape.ShapeType() == TopAbs_VERTEX) {
@@ -130,7 +131,7 @@ int TopoShapeVertexPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
 
     TopoShapeVertexPy::PointerType ptr = getTopoShapePtr();
-    BRepBuilderAPI_MakeVertex aBuilder(gp_Pnt(x,y,z));
+    BRepBuilderAPI_MakeVertex aBuilder(gp_Pnt(x, y, z));
     TopoDS_Shape s = aBuilder.Vertex();
     ptr->setShape(s);
 
@@ -191,7 +192,7 @@ Py::Object TopoShapeVertexPy::getPoint() const
     try {
         const TopoDS_Vertex& v = TopoDS::Vertex(getTopoShapePtr()->getShape());
         gp_Pnt p = BRep_Tool::Pnt(v);
-        Base::PyObjectBase* pnt = new Base::VectorPy(new Base::Vector3d(p.X(),p.Y(),p.Z()));
+        Base::PyObjectBase* pnt = new Base::VectorPy(new Base::Vector3d(p.X(), p.Y(), p.Z()));
         pnt->setNotTracking();
         return Py::asObject(pnt);
     }
@@ -201,7 +202,7 @@ Py::Object TopoShapeVertexPy::getPoint() const
     }
 }
 
-PyObject *TopoShapeVertexPy::getCustomAttributes(const char* /*attr*/) const
+PyObject* TopoShapeVertexPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }

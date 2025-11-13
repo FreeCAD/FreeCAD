@@ -32,8 +32,10 @@
 #include "TaskView/TaskView.h"
 
 
-namespace Gui {
-namespace Dialog {
+namespace Gui
+{
+namespace Dialog
+{
 
 class GuiExport TransformStrategy
 {
@@ -51,8 +53,7 @@ public:
     virtual std::set<App::DocumentObject*> transformObjects() const = 0;
 };
 
-class GuiExport DefaultTransformStrategy : public TransformStrategy,
-                                           public Gui::SelectionObserver
+class GuiExport DefaultTransformStrategy: public TransformStrategy, public Gui::SelectionObserver
 {
 public:
     DefaultTransformStrategy(QWidget* widget);
@@ -68,7 +69,7 @@ private:
 };
 
 class Ui_Placement;
-class GuiExport Transform : public QDialog
+class GuiExport Transform: public QDialog
 {
     Q_OBJECT
 
@@ -82,7 +83,7 @@ public:
 
 protected:
     Base::Vector3d getDirection() const;
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
 
 public:
     void onApplyButtonClicked();
@@ -98,7 +99,7 @@ private:
     TransformStrategy* strategy;
 };
 
-class GuiExport TaskTransform : public Gui::TaskView::TaskDialog
+class GuiExport TaskTransform: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
@@ -113,15 +114,15 @@ public:
 
     void setTransformStrategy(TransformStrategy* ts);
     QDialogButtonBox::StandardButtons getStandardButtons() const override
-    { return QDialogButtonBox::Ok |
-             QDialogButtonBox::Apply |
-             QDialogButtonBox::Cancel; }
+    {
+        return QDialogButtonBox::Ok | QDialogButtonBox::Apply | QDialogButtonBox::Cancel;
+    }
 
 private:
     Transform* dialog;
 };
 
-} // namespace Dialog
-} // namespace Gui
+}  // namespace Dialog
+}  // namespace Gui
 
-#endif // GUI_TRANSFORM_H
+#endif  // GUI_TRANSFORM_H

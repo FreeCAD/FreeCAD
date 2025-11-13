@@ -27,11 +27,12 @@
 
 #include <Gui/InputVector.h>
 
-namespace PartGui {
+namespace PartGui
+{
 class Ui_DlgPartBox;
 using Ui_DlgPartBoxPtr = std::shared_ptr<Ui_DlgPartBox>;
 
-class DlgPartBoxImp : public Gui::LocationDialogUiImp
+class DlgPartBoxImp: public Gui::LocationDialogUiImp
 {
     Q_OBJECT
 
@@ -40,6 +41,6 @@ public:
     ~DlgPartBoxImp() override;
 };
 
-} // namespace PartGui
+}  // namespace PartGui
 
-#endif // PARTGUI_DLGPARTBOXIMP_H
+#endif  // PARTGUI_DLGPARTBOXIMP_H

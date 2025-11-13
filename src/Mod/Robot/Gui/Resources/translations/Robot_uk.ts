@@ -364,16 +364,16 @@
   <context>
     <name>QObject</name>
     <message>
+      <location filename="../../CommandInsertRobot.cpp" line="258"/>
       <location filename="../../CommandExport.cpp" line="60"/>
       <location filename="../../CommandExport.cpp" line="135"/>
+      <location filename="../../Command.cpp" line="69"/>
+      <location filename="../../Command.cpp" line="128"/>
+      <location filename="../../Command.cpp" line="234"/>
       <location filename="../../CommandTrajectory.cpp" line="104"/>
       <location filename="../../CommandTrajectory.cpp" line="171"/>
       <location filename="../../CommandTrajectory.cpp" line="190"/>
       <location filename="../../CommandTrajectory.cpp" line="461"/>
-      <location filename="../../CommandInsertRobot.cpp" line="258"/>
-      <location filename="../../Command.cpp" line="69"/>
-      <location filename="../../Command.cpp" line="128"/>
-      <location filename="../../Command.cpp" line="234"/>
       <source>Wrong selection</source>
       <translation>Невірний вибір</translation>
     </message>
@@ -390,8 +390,8 @@
     <message>
       <location filename="../../CommandExport.cpp" line="61"/>
       <location filename="../../CommandExport.cpp" line="136"/>
-      <location filename="../../CommandTrajectory.cpp" line="105"/>
       <location filename="../../Command.cpp" line="235"/>
+      <location filename="../../CommandTrajectory.cpp" line="105"/>
       <source>Select one Robot and one Trajectory object.</source>
       <translation>Виберіть один робот і одну траєкторію об'єкта.</translation>
     </message>

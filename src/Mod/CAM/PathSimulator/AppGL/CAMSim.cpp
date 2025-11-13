@@ -46,10 +46,12 @@ void CAMSimulator::CAMSim::resetSimulation()
     DlgCAMSimulator::GetInstance()->resetSimulation();
 }
 
-void CAMSim::addTool(const std::vector<float>& toolProfilePoints,
-                     int toolNumber,
-                     float diameter,
-                     float resolution)
+void CAMSim::addTool(
+    const std::vector<float>& toolProfilePoints,
+    int toolNumber,
+    float diameter,
+    float resolution
+)
 {
     DlgCAMSimulator::GetInstance()->addTool(toolProfilePoints, toolNumber, diameter, resolution);
 }

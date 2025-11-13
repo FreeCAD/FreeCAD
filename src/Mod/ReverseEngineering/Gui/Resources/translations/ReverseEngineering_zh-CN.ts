@@ -232,23 +232,23 @@
       <translation>查看三角剖分</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="152"/>
+      <location filename="../../FitBSplineSurface.cpp" line="154"/>
       <source>Placement</source>
       <translation>放置</translation>
     </message>
     <message>
+      <location filename="../../FitBSplineSurface.cpp" line="230"/>
       <location filename="../../FitBSplineCurve.cpp" line="137"/>
-      <location filename="../../FitBSplineSurface.cpp" line="228"/>
       <source>Fit B-spline</source>
       <translation>适用于贝塞尔曲线</translation>
     </message>
     <message>
-      <location filename="../../Poisson.cpp" line="81"/>
+      <location filename="../../Poisson.cpp" line="83"/>
       <source>Poisson reconstruction</source>
       <translation>泊松曲面重建</translation>
     </message>
     <message>
-      <location filename="../../SegmentationManual.cpp" line="279"/>
+      <location filename="../../SegmentationManual.cpp" line="281"/>
       <source>Segmentation</source>
       <translation>段</translation>
     </message>
@@ -336,18 +336,18 @@
   <context>
     <name>ReenGui::FitBSplineSurfaceWidget</name>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="163"/>
-      <location filename="../../FitBSplineSurface.cpp" line="235"/>
+      <location filename="../../FitBSplineSurface.cpp" line="165"/>
+      <location filename="../../FitBSplineSurface.cpp" line="237"/>
       <source>Input error</source>
       <translation>输入错误</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="203"/>
+      <location filename="../../FitBSplineSurface.cpp" line="205"/>
       <source>Wrong selection</source>
       <translation>选择错误</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="204"/>
+      <location filename="../../FitBSplineSurface.cpp" line="206"/>
       <source>Select a single placement object to get the local orientation.</source>
       <translation>选择单个放置对象以获取局部方向。</translation>
     </message>
@@ -380,7 +380,7 @@
       <translation>每个节点的示例</translation>
     </message>
     <message>
-      <location filename="../../Poisson.cpp" line="88"/>
+      <location filename="../../Poisson.cpp" line="90"/>
       <source>Input error</source>
       <translation>输入错误</translation>
     </message>
@@ -578,7 +578,7 @@
   <context>
     <name>ReverseEngineeringGui::TaskSegmentationManual</name>
     <message>
-      <location filename="../../SegmentationManual.cpp" line="349"/>
+      <location filename="../../SegmentationManual.cpp" line="351"/>
       <source>Create</source>
       <translation>创建</translation>
     </message>
@@ -586,7 +586,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="33"/>
+      <location filename="../../Workbench.cpp" line="35"/>
       <source>Reverse Engineering</source>
       <translation>逆向工程</translation>
     </message>

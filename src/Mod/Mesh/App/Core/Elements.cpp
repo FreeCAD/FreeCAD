@@ -240,9 +240,11 @@ bool MeshGeomEdge::IntersectBoundingBox(const Base::BoundBox3f& rclBB) const
     return intrsectbox.Test();
 }
 
-bool MeshGeomEdge::IntersectWithLine(const Base::Vector3f& rclPt,
-                                     const Base::Vector3f& rclDir,
-                                     Base::Vector3f& rclRes) const
+bool MeshGeomEdge::IntersectWithLine(
+    const Base::Vector3f& rclPt,
+    const Base::Vector3f& rclDir,
+    Base::Vector3f& rclRes
+) const
 {
     const float eps = 1e-06F;
     Base::Vector3f n = _aclPoints[1] - _aclPoints[0];
@@ -357,9 +359,11 @@ bool MeshGeomEdge::IntersectWithEdge(const MeshGeomEdge& edge, Base::Vector3f& r
     }
 }
 
-bool MeshGeomEdge::IntersectWithPlane(const Base::Vector3f& rclPt,
-                                      const Base::Vector3f& rclDir,
-                                      Base::Vector3f& rclRes) const
+bool MeshGeomEdge::IntersectWithPlane(
+    const Base::Vector3f& rclPt,
+    const Base::Vector3f& rclDir,
+    Base::Vector3f& rclRes
+) const
 {
     float dist1 = _aclPoints[0].DistanceToPlane(rclPt, rclDir);
     float dist2 = _aclPoints[1].DistanceToPlane(rclPt, rclDir);
@@ -386,10 +390,12 @@ void MeshGeomEdge::ProjectPointToLine(const Base::Vector3f& rclPoint, Base::Vect
     rclProj = rclPoint + vec;
 }
 
-void MeshGeomEdge::ClosestPointsToLine(const Base::Vector3f& linePt,
-                                       const Base::Vector3f& lineDir,
-                                       Base::Vector3f& rclPnt1,
-                                       Base::Vector3f& rclPnt2) const
+void MeshGeomEdge::ClosestPointsToLine(
+    const Base::Vector3f& linePt,
+    const Base::Vector3f& lineDir,
+    Base::Vector3f& rclPnt1,
+    Base::Vector3f& rclPnt2
+) const
 {
     const float eps = 1e-06F;
     Base::Vector3f edgeDir = _aclPoints[1] - _aclPoints[0];
@@ -467,9 +473,7 @@ MeshGeomFacet::MeshGeomFacet()
 {}
 
 
-MeshGeomFacet::MeshGeomFacet(const Base::Vector3f& v1,
-                             const Base::Vector3f& v2,
-                             const Base::Vector3f& v3)
+MeshGeomFacet::MeshGeomFacet(const Base::Vector3f& v1, const Base::Vector3f& v2, const Base::Vector3f& v3)
     : _bNormalCalculated(false)
     , _ucFlag(0)
     , _ulProp(0)
@@ -594,8 +598,7 @@ bool MeshGeomFacet::Weights(const Base::Vector3f& rclP, float& w0, float& w1, fl
     return std::fabs(w0 + w1 + w2 - 1.0F) < 0.001F;
 }
 
-void MeshGeomFacet::ProjectPointToPlane(const Base::Vector3f& rclPoint,
-                                        Base::Vector3f& rclProj) const
+void MeshGeomFacet::ProjectPointToPlane(const Base::Vector3f& rclPoint, Base::Vector3f& rclProj) const
 {
     rclPoint.ProjectToPlane(_aclPoints[0], GetNormal(), rclProj);
 }
@@ -755,10 +758,12 @@ bool MeshGeomFacet::IntersectBoundingBox(const Base::BoundBox3f& rclBB) const
     return (akSec2.Test());
 }
 
-bool MeshGeomFacet::IntersectWithPlane(const Base::Vector3f& rclBase,
-                                       const Base::Vector3f& rclNormal,
-                                       Base::Vector3f& rclP1,
-                                       Base::Vector3f& rclP2) const
+bool MeshGeomFacet::IntersectWithPlane(
+    const Base::Vector3f& rclBase,
+    const Base::Vector3f& rclNormal,
+    Base::Vector3f& rclP1,
+    Base::Vector3f& rclP2
+) const
 {
     const float eps = 1e-06F;
 
@@ -879,10 +884,12 @@ bool MeshGeomFacet::IntersectWithPlane(const Base::Vector3f& rclBase,
     return false;
 }
 
-bool MeshGeomFacet::Foraminate(const Base::Vector3f& P,
-                               const Base::Vector3f& dir,
-                               Base::Vector3f& I,
-                               float fMaxAngle) const
+bool MeshGeomFacet::Foraminate(
+    const Base::Vector3f& P,
+    const Base::Vector3f& dir,
+    Base::Vector3f& I,
+    float fMaxAngle
+) const
 {
     const float eps = 1e-06F;
     Base::Vector3f n = this->GetNormal();
@@ -929,9 +936,11 @@ bool MeshGeomFacet::Foraminate(const Base::Vector3f& P,
     return false;
 }
 
-bool MeshGeomFacet::IntersectPlaneWithLine(const Base::Vector3f& rclPt,
-                                           const Base::Vector3f& rclDir,
-                                           Base::Vector3f& rclRes) const
+bool MeshGeomFacet::IntersectPlaneWithLine(
+    const Base::Vector3f& rclPt,
+    const Base::Vector3f& rclDir,
+    Base::Vector3f& rclRes
+) const
 {
     // calculate the intersection of the straight line <-> plane
     if (fabs(rclDir * GetNormal()) < 1e-3F) {
@@ -944,9 +953,11 @@ bool MeshGeomFacet::IntersectPlaneWithLine(const Base::Vector3f& rclPt,
     return true;
 }
 
-bool MeshGeomFacet::IntersectWithLine(const Base::Vector3f& rclPt,
-                                      const Base::Vector3f& rclDir,
-                                      Base::Vector3f& rclRes) const
+bool MeshGeomFacet::IntersectWithLine(
+    const Base::Vector3f& rclPt,
+    const Base::Vector3f& rclDir,
+    Base::Vector3f& rclRes
+) const
 {
     if (!IntersectPlaneWithLine(rclPt, rclDir, rclRes)) {
         return false;  // line and plane are parallel
@@ -955,8 +966,7 @@ bool MeshGeomFacet::IntersectWithLine(const Base::Vector3f& rclPt,
     return IsPointOfFace(rclRes, 1e-03F);
 }
 
-float MeshGeomFacet::DistanceToLineSegment(const Base::Vector3f& rclP1,
-                                           const Base::Vector3f& rclP2) const
+float MeshGeomFacet::DistanceToLineSegment(const Base::Vector3f& rclP1, const Base::Vector3f& rclP2) const
 {
     // line segment
     Vector3<float> A(rclP1.x, rclP1.y, rclP1.z);
@@ -1101,9 +1111,11 @@ bool MeshGeomFacet::IntersectWithFacet(const MeshGeomFacet& rclFacet) const
  * http://www.acm.org/jgt/papers/Moller97/tritri.html
  * http://www.cs.lth.se/home/Tomas_Akenine_Moller/code/
  */
-int MeshGeomFacet::IntersectWithFacet(const MeshGeomFacet& rclFacet,
-                                      Base::Vector3f& rclPt0,
-                                      Base::Vector3f& rclPt1) const
+int MeshGeomFacet::IntersectWithFacet(
+    const MeshGeomFacet& rclFacet,
+    Base::Vector3f& rclPt0,
+    Base::Vector3f& rclPt1
+) const
 {
     // Note: tri_tri_intersect_with_isection() does not return line of
     // intersection when triangles are coplanar. See tritritest.h:18 and 658.
@@ -1151,15 +1163,7 @@ int MeshGeomFacet::IntersectWithFacet(const MeshGeomFacet& rclFacet,
         U[i][2] = rclFacet._aclPoints[i].z;
     }
 
-    if (tri_tri_intersect_with_isectline(V[0],
-                                         V[1],
-                                         V[2],
-                                         U[0],
-                                         U[1],
-                                         U[2],
-                                         &coplanar,
-                                         isectpt1,
-                                         isectpt2)
+    if (tri_tri_intersect_with_isectline(V[0], V[1], V[2], U[0], U[1], U[2], &coplanar, isectpt1, isectpt2)
         == 0) {
         return 0;  // no intersections
     }
@@ -1377,9 +1381,11 @@ unsigned short MeshGeomFacet::NearestEdgeToPoint(const Base::Vector3f& rclPt) co
     return usSide;
 }
 
-void MeshGeomFacet::NearestEdgeToPoint(const Base::Vector3f& rclPt,
-                                       float& fDistance,
-                                       unsigned short& usSide) const
+void MeshGeomFacet::NearestEdgeToPoint(
+    const Base::Vector3f& rclPt,
+    float& fDistance,
+    unsigned short& usSide
+) const
 {
     const Base::Vector3f& rcP1 = _aclPoints[0];
     const Base::Vector3f& rcP2 = _aclPoints[1];

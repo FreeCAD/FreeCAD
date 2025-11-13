@@ -360,9 +360,11 @@ public:
     /**
      * Construction. The \arg fFactor must be in the range of 0.0 and 0.5.
      */
-    explicit MeshFixCaps(MeshKernel& rclM,
-                         float fMaxAng = 2.61F,
-                         float fFactor = 0.25F)  // ~150 degree
+    explicit MeshFixCaps(
+        MeshKernel& rclM,
+        float fMaxAng = 2.61F,
+        float fFactor = 0.25F
+    )  // ~150 degree
         : MeshValidation(rclM)
         , fMaxAngle(fMaxAng)
         , fSplitFactor(fFactor)
@@ -424,11 +426,7 @@ public:
     /**
      * Construction.
      */
-    MeshFixDeformedFacets(MeshKernel& rclM,
-                          float fMinAngle,
-                          float fMaxAngle,
-                          float fSwapAngle,
-                          float fEps)
+    MeshFixDeformedFacets(MeshKernel& rclM, float fMinAngle, float fMaxAngle, float fSwapAngle, float fEps)
         : MeshValidation(rclM)
         , fMinAngle(fMinAngle)
         , fMaxAngle(fMaxAngle)

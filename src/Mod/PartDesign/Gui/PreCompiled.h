@@ -26,7 +26,7 @@
 #include <FCConfig.h>
 
 #ifdef FC_OS_WIN32
-#include <windows.h>
+# include <windows.h>
 #endif
 
 // Boost
@@ -50,9 +50,9 @@
 #include <limits>
 
 // Qt
-# include <Gui/QtAll.h>
+#include <Gui/QtAll.h>
 
 // Inventor
-# include <Gui/InventorAll.h>
+#include <Gui/InventorAll.h>
 
-#endif // PART_DESIGN_PRECOMPILED_H
+#endif  // PART_DESIGN_PRECOMPILED_H
