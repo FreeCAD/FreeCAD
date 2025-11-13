@@ -363,23 +363,23 @@ def export_common(values: Values, objectslist, filename: str) -> str:
 
     print("done postprocessing.")
 
-    if editor_result in [0, 1]:
-        if not filename == "-":
-            if final[0:2] == "\n\n":
-                # write out the gcode using "\n" as the end-of-line characters
-                with open(filename, "w", encoding="utf-8", newline="") as gfile:
-                    gfile.write(final[2:])
-            elif "\r" in final:
-                with open(filename, "w", encoding="utf-8", newline="") as gfile:
-                    # write out the gcode with whatever end-of-line characters it already has,
-                    # presumably either "\r" or "\r\n"
-                    gfile.write(final)
-            else:
-                with open(filename, "w", encoding="utf-8", newline=None) as gfile:
-                    # The gcode has "\n" as the end-of-line characters, which means
-                    # "write out the gcode with whatever end-of-line characters the system
-                    # that is running the postprocessor uses".
-                    gfile.write(final)
-        return final
-    else:
+    if editor_result == 0:
         return None
+
+    if not filename == "-":
+        if final[0:2] == "\n\n":
+            # write out the gcode using "\n" as the end-of-line characters
+            with open(filename, "w", encoding="utf-8", newline="") as gfile:
+                gfile.write(final[2:])
+        elif "\r" in final:
+            with open(filename, "w", encoding="utf-8", newline="") as gfile:
+                # write out the gcode with whatever end-of-line characters it already has,
+                # presumably either "\r" or "\r\n"
+                gfile.write(final)
+        else:
+            with open(filename, "w", encoding="utf-8", newline=None) as gfile:
+                # The gcode has "\n" as the end-of-line characters, which means
+                # "write out the gcode with whatever end-of-line characters the system
+                # that is running the postprocessor uses".
+                gfile.write(final)
+    return final
