@@ -198,7 +198,9 @@ class TaskAssemblyInsertLink(QtCore.QObject):
             itemName = doc.Label
             icon = QIcon.fromTheme("add", QIcon(":/icons/Document.svg"))
             if doc.Partial:
-                itemName = itemName + " (" + QT_TRANSLATE_NOOP("Assembly_Insert", "Partially loaded") + ")"
+                itemName = (
+                    itemName + " (" + QT_TRANSLATE_NOOP("Assembly_Insert", "Partially loaded") + ")"
+                )
                 icon = self.createDisabledIcon(icon)
             docItem.setText(0, itemName)
             docItem.setIcon(0, icon)
@@ -548,11 +550,13 @@ class TaskAssemblyInsertLink(QtCore.QObject):
                     doc = self.doc_item_map.get(item)
                     if doc and doc.Partial:
                         menu = QtWidgets.QMenu()
-                        load_action_text = QT_TRANSLATE_NOOP("Assembly_Insert", "Fully load document")
+                        load_action_text = QT_TRANSLATE_NOOP(
+                            "Assembly_Insert", "Fully load document"
+                        )
                         load_action = menu.addAction(load_action_text)
                         load_action.triggered.connect(lambda: self.fullyLoadDocument(doc))
                         menu.exec_(event.globalPos())
-                        return True # Event was handled
+                        return True  # Event was handled
 
                 # Iterate through the insertionStack in reverse
                 for i in reversed(range(len(self.insertionStack))):
@@ -612,7 +616,7 @@ class TaskAssemblyInsertLink(QtCore.QObject):
 
         # Get a pixmap from the icon at a standard size
         pixmap = icon.pixmap(icon.actualSize(QtCore.QSize(16, 16)))
-        
+
         # Ask the application's style to generate a disabled version of the pixmap
         style = QtWidgets.QApplication.style()
         disabled_pixmap = style.generatedIconPixmap(
