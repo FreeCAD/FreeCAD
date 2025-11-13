@@ -287,7 +287,7 @@ TEST_F(
 
     // Manually craft a serialized version, only parts in "{}" are important.
     // New way of storing elements is not present, like if it is an older file.
-    std::string serializedConstraint = fmt::format(
+    std::string serializedConstraint = std::format(
         "<Constrain "
         R"(Name="" )"
         R"(Type="0" )"
@@ -354,7 +354,7 @@ TEST_F(
 
     // Manually craft a serialized version, only parts in "{}" are important.
     // Only new way of storing elements is present.
-    std::string serializedConstraint = fmt::format(
+    std::string serializedConstraint = std::format(
         "<Constrain "
         R"(Name="" )"
         R"(Type="0" )"
@@ -415,7 +415,7 @@ TEST_F(ConstraintPointsAccess, testLegacyIsPreferedDuringSerializationIfContradi
 
     // Manually craft a serialized version, only parts in "{}" are important.
     // It is not important if legacy is included before or after, legacy should always be preferred.
-    std::string serializedConstraint = fmt::format(
+    std::string serializedConstraint = std::format(
         "<Constrain "
         R"(Name="" )"
         R"(Type="0" )"

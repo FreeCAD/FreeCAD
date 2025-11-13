@@ -30,13 +30,12 @@
 #include <array>
 #include <cassert>
 #include <chrono>
+#include <format>
 #include <map>
 #include <set>
 #include <string>
 #include <sstream>
 #include <FCGlobal.h>
-
-#include <fmt/printf.h>
 
 // Python stuff
 using PyObject = struct _object;
@@ -1198,12 +1197,12 @@ void Base::ConsoleSingleton::send(const std::string& notifiername, const char* p
 {
     std::string format;
     try {
-        format = fmt::sprintf(pMsg, args...);
+        format = std::vformat(pMsg, std::make_format_args(args...));
     }
-    catch (fmt::format_error& e) {
+    catch (std::format_error& e) {
         // We can't allow an exception to propagate out of this method, which gets used in some
-        // destructors. Instead, make the string's contents the error message that fmt::sprintf gave
-        // us.
+        // destructors. Instead, make the string's contents the error message that std::format
+        // gave us.
         format = std::string("ERROR: Invalid format string or arguments provided.\n");
         format += e.what();
     }
@@ -1212,9 +1211,7 @@ void Base::ConsoleSingleton::send(const std::string& notifiername, const char* p
         notify<category, recipient, contenttype>(notifiername, format);
     }
     else {
-
         const auto type = getConsoleMsg(category);
-
         postEvent(type, recipient, contenttype, notifiername, format);
     }
 }
