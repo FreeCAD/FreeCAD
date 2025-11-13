@@ -823,6 +823,10 @@ void ViewProviderAssembly::collectMovableObjects(
 
     App::DocumentObject* part = getMovingPartFromRef(assemblyPart, selRoot, subNamePrefix);
 
+    if (onlySolids && assemblyPart->isPartConnected(part)) {
+        return;  // No dragger for connected parts.
+    }
+
     if (canDragObjectIn3d(part)) {
         auto* pPlc = dynamic_cast<App::PropertyPlacement*>(part->getPropertyByName("Placement"));
         if (pPlc) {
