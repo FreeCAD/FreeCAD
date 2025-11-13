@@ -125,10 +125,6 @@ class TaskAssemblyCreateBom(QtCore.QObject):
                 self.addColItem(name)
 
             self.bomObj = bomObj
-            self.form.CheckBox_onlyParts.setChecked(bomObj.onlyParts)
-            self.form.CheckBox_detailParts.setChecked(bomObj.detailParts)
-            self.form.CheckBox_detailSubAssemblies.setChecked(bomObj.detailSubAssemblies)
-
         else:
             App.setActiveTransaction("Create Bill Of Materials")
 
@@ -137,11 +133,13 @@ class TaskAssemblyCreateBom(QtCore.QObject):
                 self.addColItem(name)
 
             self.createBomObject()
-            self.form.CheckBox_onlyParts.setChecked(pref.GetBool("BOMOnlyParts", False))
-            self.form.CheckBox_detailParts.setChecked(pref.GetBool("BOMDetailParts", True))
-            self.form.CheckBox_detailSubAssemblies.setChecked(
-                pref.GetBool("BOMDetailSubAssemblies", True)
-            )
+            self.bomObj.onlyParts = pref.GetBool("BOMOnlyParts", False)
+            self.bomObj.detailParts = pref.GetBool("BOMDetailParts", True)
+            self.bomObj.detailSubAssemblies = pref.GetBool("BOMDetailSubAssemblies", True)
+
+        self.form.CheckBox_onlyParts.setChecked(self.bomObj.onlyParts)
+        self.form.CheckBox_detailParts.setChecked(self.bomObj.detailParts)
+        self.form.CheckBox_detailSubAssemblies.setChecked(self.bomObj.detailSubAssemblies)
 
         self.form.columnList.model().rowsMoved.connect(self.onItemsReordered)
         self.form.columnList.itemChanged.connect(self.itemUpdated)
