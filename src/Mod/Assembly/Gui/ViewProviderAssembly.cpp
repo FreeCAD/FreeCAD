@@ -824,7 +824,7 @@ void ViewProviderAssembly::collectMovableObjects(
     App::DocumentObject* part = getMovingPartFromRef(assemblyPart, selRoot, subNamePrefix);
 
     if (onlySolids && assemblyPart->isPartConnected(part)) {
-        return; // No dragger for connected parts.
+        return;  // No dragger for connected parts.
     }
 
     if (canDragObjectIn3d(part)) {
