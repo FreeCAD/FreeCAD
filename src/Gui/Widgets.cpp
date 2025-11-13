@@ -1577,7 +1577,12 @@ bool ExpLineEdit::apply(const std::string& propName)
     if (!ExpressionBinding::apply(propName)) {
         if (!autoClose) {
             QString val = QString::fromUtf8(Base::Interpreter().strToPython(text().toUtf8()).c_str());
-            Gui::Command::doCommand(Gui::Command::Doc, "%s = \"%s\"", propName.c_str(), val.constData());
+            Gui::Command::doCommand(
+                Gui::Command::Doc,
+                "%s = \"%s\"",
+                propName.c_str(),
+                val.toUtf8().constData()
+            );
         }
         return true;
     }
