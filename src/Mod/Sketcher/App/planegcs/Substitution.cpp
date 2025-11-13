@@ -38,6 +38,14 @@ namespace GCS
 
 struct SubstitutionFactory
 {
+    enum class Attempt
+    {
+        Yes,     // Substitution is possible
+        No,      // Substitution is not possible
+        Maybe,   // Substitution could be possible if some parameters are right
+        Unknown  // Not checked yet
+    };
+
     std::unordered_map<double*, std::unordered_map<double*, double>> adjacencyList;
 
     std::unordered_map<double*, double> constUnknowns;
@@ -50,6 +58,8 @@ struct SubstitutionFactory
     // will be used to build the updaters in function of parameters
     std::vector<SubstitutionUpdater> constSubstUpdaters;
     std::vector<SubstitutionUpdater> substUpdaters;
+
+    std::vector<std::pair<Line, double>> linesOfKnownLength;
 
 
     enum class RelationshipOptions
@@ -157,6 +167,30 @@ struct SubstitutionFactory
         }
         return std::abs(foundB->second);
     }
+    std::optional<double> length(Line line)
+    {
+        auto foundLineLength = std::ranges::find_if(linesOfKnownLength, [&](const auto& lokl) {
+            return (line.p1 == lokl.first.p1 && line.p2 == lokl.first.p2)
+                || (line.p1 == lokl.first.p2 && line.p2 == lokl.first.p1);
+        });
+        if (foundLineLength != linesOfKnownLength.end()) {
+            return foundLineLength->second;
+        }
+        std::optional<double> x1v = value(line.p1.x);
+        std::optional<double> y1v = value(line.p1.y);
+        std::optional<double> x2v = value(line.p2.x);
+        std::optional<double> y2v = value(line.p2.y);
+
+        if (x1v.has_value() && y1v.has_value() && x2v.has_value() && y2v.has_value()) {
+            double xl = *x1v - *x2v;
+            double yl = *y1v - *y2v;
+            double length = std::sqrt(xl * xl + yl * yl);
+            linesOfKnownLength.emplace_back(line, length);
+            return length;
+        }
+
+        return std::nullopt;
+    }
     bool hasARelationship(double* unknown) const
     {
         const auto& foundAdj = adjacencyList.find(unknown);
@@ -209,8 +243,9 @@ struct SubstitutionFactory
                                                          .follower = rootOffsets[0].first,
                                                          .offset = rootOffsets[0].second});
             currentSubst = rootOffsets[0].first;
-            unknownsReductionList[currentSubst] = {};
         }
+        unknownsReductionList[currentSubst] = {};
+
 
         for (size_t i = 1; i < rootOffsets.size(); ++i) {
             auto unknownAndOffset = rootOffsets[i];
@@ -251,286 +286,308 @@ struct SubstitutionFactory
             }
         }
     }
-};
 
+    Attempt trySubstitute(ConstraintEqual* constr, const USET_pD& unknowns)
+    {
+        double* p1 = constr->origParams()[0];
+        double* p2 = constr->origParams()[1];
 
-enum class ConstraintSubstitutionAttempt
-{
-    Yes,     // Substitution is possible
-    No,      // Substitution is not possible
-    Maybe,   // Substitution could be possible if some parameters are right
-    Unknown  // Not checked yet
-};
+        bool foundP1 = unknowns.count(p1);
+        bool foundP2 = unknowns.count(p2);
 
-ConstraintSubstitutionAttempt
-substitutionForEqual(Constraint* constr, const USET_pD& unknowns, SubstitutionFactory& factory)
-{
-    double* p1 = constr->origParams()[0];
-    double* p2 = constr->origParams()[1];
+        if (!foundP1 && foundP2) {
+            addConst(p2, *p1);
+            return Attempt::Yes;
+        }
+        if (foundP1 && !foundP2) {
+            addConst(p1, *p2);
+            return Attempt::Yes;
+        }
 
-    bool foundP1 = unknowns.count(p1);
-    bool foundP2 = unknowns.count(p2);
+        if (!foundP1 && !foundP2) {
+            return Attempt::No;
+        }
 
-    if (!foundP1 && foundP2) {
-        factory.addConst(p2, *p1);
-        return ConstraintSubstitutionAttempt::Yes;
+        if (addEqual(p1, p2)) {
+            return Attempt::Yes;
+        }
+        return Attempt::No;
     }
-    if (foundP1 && !foundP2) {
-        factory.addConst(p1, *p2);
-        return ConstraintSubstitutionAttempt::Yes;
-    }
+    Attempt
+    trySubstitute(ConstraintPerpendicular* constr, const USET_pD& unknowns, Attempt previousAttempt)
+    {
+        double* l1x1 = constr->origParams()[0];
+        double* l1y1 = constr->origParams()[1];
+        double* l1x2 = constr->origParams()[2];
+        double* l1y2 = constr->origParams()[3];
+        double* l2x1 = constr->origParams()[4];
+        double* l2y1 = constr->origParams()[5];
+        double* l2x2 = constr->origParams()[6];
+        double* l2y2 = constr->origParams()[7];
 
-    if (!foundP1 && !foundP2) {
-        return ConstraintSubstitutionAttempt::No;
-    }
+        if (previousAttempt == Attempt::Unknown
+            && (!unknowns.count(l1x1) || !unknowns.count(l1y1) || !unknowns.count(l1x2)
+                || !unknowns.count(l1y2) || !unknowns.count(l2x1) || !unknowns.count(l2y1)
+                || !unknowns.count(l2x2) || !unknowns.count(l2y2))) {
+            return Attempt::No;
+        }
 
-    if (factory.addEqual(p1, p2)) {
-        return ConstraintSubstitutionAttempt::Yes;
-    }
-    return ConstraintSubstitutionAttempt::No;
-}
-ConstraintSubstitutionAttempt substitutionForPerpendicular(Constraint* constr,
-                                                           const USET_pD& unknowns,
-                                                           SubstitutionFactory& factory)
-{
-    double* l1x1 = constr->origParams()[0];
-    double* l1y1 = constr->origParams()[1];
-    double* l1x2 = constr->origParams()[2];
-    double* l1y2 = constr->origParams()[3];
-    double* l2x1 = constr->origParams()[4];
-    double* l2y1 = constr->origParams()[5];
-    double* l2x2 = constr->origParams()[6];
-    double* l2y2 = constr->origParams()[7];
+        // First line is vertical, second line should be horizontal
+        if (areEqual(l1x1, l1x2)) {
+            addEqual(l2y1, l2y2);
+            return Attempt::Yes;
+        }
 
-    if (!unknowns.count(l1x1) || !unknowns.count(l1y1) || !unknowns.count(l1x2)
-        || !unknowns.count(l1y2) || !unknowns.count(l2x1) || !unknowns.count(l2y1)
-        || !unknowns.count(l2x2) || !unknowns.count(l2y2)) {
-        return ConstraintSubstitutionAttempt::No;
-    }
+        // First line is horizontal, second line should be vertical
+        if (areEqual(l1y1, l1y2)) {
+            addEqual(l2x1, l2x2);
+            return Attempt::Yes;
+        }
 
-    // First line is vertical, second line should be horizontal
-    if (factory.areEqual(l1x1, l1x2)) {
-        factory.addEqual(l2y1, l2y2);
-        return ConstraintSubstitutionAttempt::Yes;
-    }
+        // Second line is vertical, first line should be horizontal
+        if (areEqual(l2x1, l2x2)) {
+            addEqual(l1y1, l1y2);
+            return Attempt::Yes;
+        }
 
-    // First line is horizontal, second line should be vertical
-    if (factory.areEqual(l1y1, l1y2)) {
-        factory.addEqual(l2x1, l2x2);
-        return ConstraintSubstitutionAttempt::Yes;
-    }
-
-    // Second line is vertical, first line should be horizontal
-    if (factory.areEqual(l2x1, l2x2)) {
-        factory.addEqual(l1y1, l1y2);
-        return ConstraintSubstitutionAttempt::Yes;
+        // Second line is horizontal, fist line should be vertical
+        if (areEqual(l2y1, l2y2)) {
+            addEqual(l1x1, l1x2);
+            return Attempt::Yes;
+        }
+        return Attempt::Maybe;
     }
 
-    // Second line is horizontal, fist line should be vertical
-    if (factory.areEqual(l2y1, l2y2)) {
-        factory.addEqual(l1x1, l1x2);
-        return ConstraintSubstitutionAttempt::Yes;
-    }
-    return ConstraintSubstitutionAttempt::Maybe;
-}
-ConstraintSubstitutionAttempt substitutionForPointOnLine(Constraint* constr,
-                                                         const USET_pD& unknowns,
-                                                         SubstitutionFactory& factory)
-{
-    double* p0x = constr->origParams()[0];
-    double* p0y = constr->origParams()[1];
-    double* lp1x = constr->origParams()[2];
-    double* lp1y = constr->origParams()[3];
-    double* lp2x = constr->origParams()[4];
-    double* lp2y = constr->origParams()[5];
+    Attempt
+    trySubstitute(ConstraintPointOnLine* constr, const USET_pD& unknowns, Attempt previousAttempt)
+    {
+        double* p0x = constr->origParams()[0];
+        double* p0y = constr->origParams()[1];
+        double* lp1x = constr->origParams()[2];
+        double* lp1y = constr->origParams()[3];
+        double* lp2x = constr->origParams()[4];
+        double* lp2y = constr->origParams()[5];
 
-    if (!unknowns.count(p0x) || !unknowns.count(p0y) || !unknowns.count(lp1y)
-        || !unknowns.count(lp1x) || !unknowns.count(lp2x) || !unknowns.count(lp2y)) {
-        return ConstraintSubstitutionAttempt::No;
-    }
+        if (previousAttempt == Attempt::Unknown
+            && (!unknowns.count(p0x) || !unknowns.count(p0y) || !unknowns.count(lp1y)
+                || !unknowns.count(lp1x) || !unknowns.count(lp2x) || !unknowns.count(lp2y))) {
+            return Attempt::No;
+        }
 
-    // Line is vertical, constraint can be translated to a vertical constraint
-    if (factory.areEqual(lp1x, lp2x)) {
-        factory.addEqual(lp1x, p0x);
-        return ConstraintSubstitutionAttempt::Yes;
-    }
+        // Line is vertical, constraint can be translated to a vertical constraint
+        if (areEqual(lp1x, lp2x)) {
+            addEqual(lp1x, p0x);
+            return Attempt::Yes;
+        }
 
-    // Line is horizontal, constraint can be translated to a horizontal constraint
-    if (factory.areEqual(lp1y, lp2y)) {
-        factory.addEqual(lp1y, p0y);
-        return ConstraintSubstitutionAttempt::Yes;
+        // Line is horizontal, constraint can be translated to a horizontal constraint
+        if (areEqual(lp1y, lp2y)) {
+            addEqual(lp1y, p0y);
+            return Attempt::Yes;
+        }
+        return Attempt::Maybe;
     }
-    return ConstraintSubstitutionAttempt::Maybe;
-}
-ConstraintSubstitutionAttempt
-substitutionForP2PDist(Constraint* constr, const USET_pD& unknowns, SubstitutionFactory& factory)
-{
-    double* lp1x = constr->origParams()[0];
-    double* lp1y = constr->origParams()[1];
-    double* lp2x = constr->origParams()[2];
-    double* lp2y = constr->origParams()[3];
-    double* dist = constr->origParams()[4];
+    Attempt
+    trySubstitute(ConstraintP2PDistance* constr, const USET_pD& unknowns, Attempt previousAttempt)
+    {
+        double* lp1x = constr->origParams()[0];
+        double* lp1y = constr->origParams()[1];
+        double* lp2x = constr->origParams()[2];
+        double* lp2y = constr->origParams()[3];
+        double* dist = constr->origParams()[4];
 
-    if (!unknowns.count(lp1x) || !unknowns.count(lp1y) || !unknowns.count(lp2x)
-        || !unknowns.count(lp2y) || unknowns.count(dist)) {
-        return ConstraintSubstitutionAttempt::No;
-    }
+        if (previousAttempt != Attempt::Unknown
+            && (!unknowns.count(lp1x) || !unknowns.count(lp1y) || !unknowns.count(lp2x)
+                || !unknowns.count(lp2y) || unknowns.count(dist))) {
+            return Attempt::No;
+        }
+        if (previousAttempt == Attempt::Unknown) {
+            linesOfKnownLength.emplace_back(Line(Point(lp1x, lp1y), Point(lp2x, lp2y)), *dist);
+        }
 
-    // Line is vertical, constraint can be translated to a vertical distance constraint
-    if (factory.areEqual(lp1x, lp2x)) {
-        factory.addRelationship(lp1y, lp2y, *dist);
-        return ConstraintSubstitutionAttempt::Yes;
-    }
+        // Line is vertical, constraint can be translated to a vertical distance constraint
+        if (areEqual(lp1x, lp2x)) {
+            addRelationship(lp1y, lp2y, *dist);
+            return Attempt::Yes;
+        }
 
-    // Line is horizontal, constraint can be translated to a horizontal distance constraint
-    if (factory.areEqual(lp1y, lp2y)) {
-        factory.addRelationship(lp1x, lp2x, *dist);
-        return ConstraintSubstitutionAttempt::Yes;
+        // Line is horizontal, constraint can be translated to a horizontal distance constraint
+        if (areEqual(lp1y, lp2y)) {
+            addRelationship(lp1x, lp2x, *dist);
+            return Attempt::Yes;
+        }
+        return Attempt::Maybe;
     }
-    return ConstraintSubstitutionAttempt::Maybe;
-}
-ConstraintSubstitutionAttempt
-substitutionForP2LDist(Constraint* constr, const USET_pD& unknowns, SubstitutionFactory& factory)
-{
-    double* p0x = constr->origParams()[0];
-    double* p0y = constr->origParams()[1];
-    double* lp1x = constr->origParams()[2];
-    double* lp1y = constr->origParams()[3];
-    double* lp2x = constr->origParams()[4];
-    double* lp2y = constr->origParams()[5];
-    double* dist = constr->origParams()[6];
+    Attempt trySubstitute(Constraint* constr, const USET_pD& unknowns, Attempt previousAttempt)
+    {
+        double* p0x = constr->origParams()[0];
+        double* p0y = constr->origParams()[1];
+        double* lp1x = constr->origParams()[2];
+        double* lp1y = constr->origParams()[3];
+        double* lp2x = constr->origParams()[4];
+        double* lp2y = constr->origParams()[5];
+        double* dist = constr->origParams()[6];
 
-    if (!unknowns.count(p0x) || !unknowns.count(p0y) || !unknowns.count(lp1y)
-        || !unknowns.count(lp1x) || !unknowns.count(lp2x) || !unknowns.count(lp2y)
-        || unknowns.count(dist)) {
-        return ConstraintSubstitutionAttempt::No;
-    }
+        if (previousAttempt == Attempt::Unknown
+            && (!unknowns.count(p0x) || !unknowns.count(p0y) || !unknowns.count(lp1y)
+                || !unknowns.count(lp1x) || !unknowns.count(lp2x) || !unknowns.count(lp2y)
+                || unknowns.count(dist))) {
+            return Attempt::No;
+        }
 
-    // Line is vertical, constraint can be translated to a horizontal distance constraint
-    if (factory.areEqual(lp1x, lp2x)) {
-        factory.addRelationship(p0x, lp1x, *dist);
-        return ConstraintSubstitutionAttempt::Yes;
-    }
+        // Line is vertical, constraint can be translated to a horizontal distance constraint
+        if (areEqual(lp1x, lp2x)) {
+            addRelationship(p0x, lp1x, *dist);
+            return Attempt::Yes;
+        }
 
-    // Line is horizontal, constraint can be translated to a vertical distance constraint
-    if (factory.areEqual(lp1y, lp2y)) {
-        factory.addRelationship(p0y, lp1y, *dist);
-        return ConstraintSubstitutionAttempt::Yes;
+        // Line is horizontal, constraint can be translated to a vertical distance constraint
+        if (areEqual(lp1y, lp2y)) {
+            addRelationship(p0y, lp1y, *dist);
+            return Attempt::Yes;
+        }
+        return Attempt::Maybe;
     }
-    return ConstraintSubstitutionAttempt::Maybe;
-}
-
-void addCircleDistance(double* centerPos,
-                       double* refPos,
-                       double dist,
-                       double radius,
-                       SubstitutionFactory& factory)
-{
-    if (std::abs(*centerPos - *refPos) < radius) {
-        factory.addRelationship(centerPos, refPos, std::abs(radius - dist));
-    }
-    else {
-        factory.addRelationship(centerPos, refPos, radius + dist);
-    }
-}
-ConstraintSubstitutionAttempt substitutionForC2LDist(ConstraintC2LDistance* constr,
-                                                     const USET_pD& unknowns,
-                                                     SubstitutionFactory& factory)
-{
-    double* dist = constr->origParams()[0];
-    Circle circle = constr->circle;
-    Line line = constr->line;
-
-
-    if (!unknowns.count(circle.center.x) || !unknowns.count(circle.center.y)
-        || !unknowns.count(circle.rad) || !unknowns.count(line.p1.x) || !unknowns.count(line.p1.y)
-        || !unknowns.count(line.p2.x) || !unknowns.count(line.p2.y) || unknowns.count(dist)) {
-        return ConstraintSubstitutionAttempt::No;
-    }
-    std::optional<double> rad = factory.value(circle.rad);
-    if (!rad.has_value()) {
-        return ConstraintSubstitutionAttempt::No;
-    }
-
-    // Line is vertical, the constraint can be translated into a horizontal distance
-    if (factory.areEqual(line.p1.x, line.p2.x)) {
-        addCircleDistance(circle.center.x, line.p1.x, *dist, *rad, factory);
-        return ConstraintSubstitutionAttempt::Yes;
-    }
-
-    // Line is horizontal, the constraint can be translated into a vertical distance
-    if (factory.areEqual(line.p1.y, line.p2.y)) {
-        addCircleDistance(circle.center.y, line.p1.y, *dist, *rad, factory);
-        return ConstraintSubstitutionAttempt::Yes;
-    }
-
-    return ConstraintSubstitutionAttempt::Maybe;
-}
-ConstraintSubstitutionAttempt substitutionForEqualLineLength(ConstraintEqualLineLength* constr,
-                                                             const USET_pD& unknowns,
-                                                             SubstitutionFactory& factory)
-{
-    Line line1 = constr->l1;
-    Line line2 = constr->l2;
-
-    if (!unknowns.count(line1.p1.x) || !unknowns.count(line1.p1.y) || !unknowns.count(line1.p2.x)
-        || !unknowns.count(line1.p2.y) || !unknowns.count(line2.p1.x) || !unknowns.count(line2.p1.y)
-        || !unknowns.count(line2.p2.x) || !unknowns.count(line2.p2.y)) {
-        return ConstraintSubstitutionAttempt::No;
-    }
-    bool l1horiz = false;
-    std::optional<double> l1length = std::nullopt;
-
-    bool l2horiz = false;
-    std::optional<double> l2length = std::nullopt;
-
-    if (factory.isHorizontal(line1)) {
-        l1horiz = true;
-        l1length = factory.distance(line1.p1.x, line1.p2.x);
-    }
-    else if (factory.isVertical(line1)) {
-        l1horiz = false;
-        l1length = factory.distance(line1.p1.y, line1.p2.y);
-    }
-    else {
-        return ConstraintSubstitutionAttempt::Maybe;
-    }
-
-    if (factory.isHorizontal(line2)) {
-        l2horiz = true;
-        l2length = factory.distance(line2.p1.x, line2.p2.x);
-    }
-    else if (factory.isVertical(line2)) {
-        l2horiz = false;
-        l2length = factory.distance(line2.p1.y, line2.p2.y);
-    }
-    else {
-        return ConstraintSubstitutionAttempt::Maybe;
-    }
-
-    if (l1length.has_value() && l2length.has_value()) {
-        return ConstraintSubstitutionAttempt::No;
-    }
-    else if (l1length.has_value()) {
-        if (l2horiz) {
-            factory.addRelationship(line2.p1.x, line2.p2.x, *l1length);
+    void addCircleDistance(double* centerPos, double* refPos, double dist, double radius)
+    {
+        if (std::abs(*centerPos - *refPos) < radius) {
+            addRelationship(centerPos, refPos, std::abs(radius - dist));
         }
         else {
-            factory.addRelationship(line2.p1.y, line2.p2.y, *l1length);
+            addRelationship(centerPos, refPos, radius + dist);
         }
-        return ConstraintSubstitutionAttempt::Yes;
     }
-    else if (l2length.has_value()) {
-        if (l1horiz) {
-            factory.addRelationship(line1.p1.x, line1.p2.x, *l2length);
+    Attempt
+    trySubstitute(ConstraintC2LDistance* constr, const USET_pD& unknowns, Attempt previousAttempt)
+    {
+        double* dist = constr->origParams()[0];
+        Circle circle = constr->circle;
+        Line line = constr->line;
+
+
+        if (previousAttempt == Attempt::Unknown
+            && (!unknowns.count(circle.center.x) || !unknowns.count(circle.center.y)
+                || !unknowns.count(circle.rad) || !unknowns.count(line.p1.x)
+                || !unknowns.count(line.p1.y) || !unknowns.count(line.p2.x)
+                || !unknowns.count(line.p2.y) || unknowns.count(dist))) {
+            return Attempt::No;
+        }
+        std::optional<double> rad = value(circle.rad);
+        if (!rad.has_value()) {
+            return Attempt::No;
+        }
+
+        // Line is vertical, the constraint can be translated into a horizontal distance
+        if (areEqual(line.p1.x, line.p2.x)) {
+            addCircleDistance(circle.center.x, line.p1.x, *dist, *rad);
+            return Attempt::Yes;
+        }
+
+        // Line is horizontal, the constraint can be translated into a vertical distance
+        if (areEqual(line.p1.y, line.p2.y)) {
+            addCircleDistance(circle.center.y, line.p1.y, *dist, *rad);
+            return Attempt::Yes;
+        }
+
+        return Attempt::Maybe;
+    }
+    Attempt trySubstitute(ConstraintEqualLineLength* constr,
+                          const USET_pD& unknowns,
+                          Attempt previousAttempt)
+    {
+        Line line1 = constr->l1;
+        Line line2 = constr->l2;
+
+        if (previousAttempt == Attempt::Unknown
+            && (!unknowns.count(line1.p1.x) || !unknowns.count(line1.p1.y)
+                || !unknowns.count(line1.p2.x) || !unknowns.count(line1.p2.y)
+                || !unknowns.count(line2.p1.x) || !unknowns.count(line2.p1.y)
+                || !unknowns.count(line2.p2.x) || !unknowns.count(line2.p2.y))) {
+            return Attempt::No;
+        }
+        bool l1horiz = false;
+        bool l1vert = false;
+        std::optional<double> l1length = std::nullopt;
+
+        bool l2horiz = false;
+        bool l2vert = false;
+        std::optional<double> l2length = std::nullopt;
+
+        if (isHorizontal(line1)) {
+            l1horiz = true;
+            l1length = distance(line1.p1.x, line1.p2.x);
+        }
+        else if (isVertical(line1)) {
+            l1vert = true;
+            l1length = distance(line1.p1.y, line1.p2.y);
         }
         else {
-            factory.addRelationship(line1.p1.y, line1.p2.y, *l2length);
+            l1length = length(line1);
         }
-        return ConstraintSubstitutionAttempt::Yes;
+
+        if (isHorizontal(line2)) {
+            l2horiz = true;
+            l2length = distance(line2.p1.x, line2.p2.x);
+        }
+        else if (isVertical(line2)) {
+            l2vert = true;
+            l2length = distance(line2.p1.y, line2.p2.y);
+        }
+        else {
+            l2length = length(line2);
+        }
+
+        if (l1length.has_value() && l2length.has_value()) {
+            return Attempt::No;
+        }
+        else if (l1length.has_value()) {
+            linesOfKnownLength.emplace_back(line2, *l1length);
+
+            if (l2horiz) {
+                addRelationship(line2.p1.x, line2.p2.x, *l1length);
+            }
+            else if (l2vert) {
+                addRelationship(line2.p1.y, line2.p2.y, *l1length);
+            }
+            else {
+                return Attempt::Maybe;
+            }
+            return Attempt::Yes;
+        }
+        else if (l2length.has_value()) {
+            linesOfKnownLength.emplace_back(line1, *l2length);
+
+            if (l1horiz) {
+                addRelationship(line1.p1.x, line1.p2.x, *l2length);
+            }
+            else if (l1vert) {
+                addRelationship(line1.p1.y, line1.p2.y, *l2length);
+            }
+            else {
+                return Attempt::Maybe;
+            }
+
+            return Attempt::Yes;
+        }
+        return Attempt::Maybe;
     }
-    return ConstraintSubstitutionAttempt::Maybe;
-}
+    Attempt
+    trySubstitute(ConstraintDifference* constr, const USET_pD& unknowns, Attempt previousAttempt)
+    {
+        double* p1 = constr->param1();
+        double* p2 = constr->param2();
+        double* diff = constr->difference();
+
+        if (previousAttempt == Attempt::Unknown
+            && (!unknowns.count(p1) || !unknowns.count(p2) || unknowns.count(diff))) {
+            return Attempt::No;
+        }
+
+        addRelationship(p1, p2, *diff, RelationshipOptions::Absolute);
+        return Attempt::Yes;
+    }
+};
+
 
 Substitution::Substitution(const VEC_pD& initialUnknowns,
                            const std::vector<Constraint*>& initialConstraints)
@@ -538,8 +595,8 @@ Substitution::Substitution(const VEC_pD& initialUnknowns,
     USET_pD unknownsSet(initialUnknowns.begin(), initialUnknowns.end());
     SubstitutionFactory factory;
 
-    std::vector<ConstraintSubstitutionAttempt> attempts(initialConstraints.size(),
-                                                        ConstraintSubstitutionAttempt::Unknown);
+    std::vector<SubstitutionFactory::Attempt> attempts(initialConstraints.size(),
+                                                       SubstitutionFactory::Attempt::Unknown);
 
 
     bool done = true;
@@ -550,21 +607,24 @@ Substitution::Substitution(const VEC_pD& initialUnknowns,
             continue;
         }
 
-        attempts[i] = substitutionForEqual(constr, unknownsSet, factory);
-        if (attempts[i] == ConstraintSubstitutionAttempt::Yes) {
+        attempts[i] = factory.trySubstitute(static_cast<ConstraintEqual*>(constr), unknownsSet);
+        if (attempts[i] == SubstitutionFactory::Attempt::Yes) {
             done = false;  // If at least one equality was substituted, we can try to translate
                            // other constraints
         }
     }
 
+    // As new substitution & reductions are discovered, previously incompatible
+    // constraints may appear to be substitutable so we try until no constraint
+    // can be substituted
     while (!done) {
         done = true;  // Done until proven false by having a successful substituttion
         for (size_t i = 0; i < initialConstraints.size(); ++i) {
             auto constr = initialConstraints[i];
 
             // No use trying again
-            if (attempts[i] == ConstraintSubstitutionAttempt::No
-                || attempts[i] == ConstraintSubstitutionAttempt::Yes) {
+            if (attempts[i] == SubstitutionFactory::Attempt::No
+                || attempts[i] == SubstitutionFactory::Attempt::Yes) {
                 continue;
             }
 
@@ -573,33 +633,41 @@ Substitution::Substitution(const VEC_pD& initialUnknowns,
                 continue;
             }
 
-            ConstraintSubstitutionAttempt attempt = ConstraintSubstitutionAttempt::No;
+            SubstitutionFactory::Attempt attempt = SubstitutionFactory::Attempt::No;
             switch (constr->getTypeId()) {
                 case Perpendicular:
-                    attempt = substitutionForPerpendicular(constr, unknownsSet, factory);
+                    attempt = factory.trySubstitute(static_cast<ConstraintPerpendicular*>(constr),
+                                                    unknownsSet,
+                                                    attempts[i]);
                     break;
                 case PointOnLine:
-                    attempt = substitutionForPointOnLine(constr, unknownsSet, factory);
+                    attempt = factory.trySubstitute(static_cast<ConstraintPointOnLine*>(constr),
+                                                    unknownsSet,
+                                                    attempts[i]);
                     break;
                 case C2LDistance:
-                    attempt = substitutionForC2LDist(static_cast<ConstraintC2LDistance*>(constr),
-                                                     unknownsSet,
-                                                     factory);
+                    attempt = factory.trySubstitute(static_cast<ConstraintC2LDistance*>(constr),
+                                                    unknownsSet,
+                                                    attempts[i]);
                     break;
                 case P2LDistance:
-                    attempt = substitutionForP2LDist(constr, unknownsSet, factory);
+                    attempt = factory.trySubstitute(static_cast<ConstraintP2LDistance*>(constr),
+                                                    unknownsSet,
+                                                    attempts[i]);
                     break;
                 case P2PDistance:
-                    attempt = substitutionForP2PDist(constr, unknownsSet, factory);
+                    attempt = factory.trySubstitute(static_cast<ConstraintP2PDistance*>(constr),
+                                                    unknownsSet,
+                                                    attempts[i]);
                     break;
                 case EqualLineLength:
-                    attempt = substitutionForEqualLineLength(
-                        static_cast<ConstraintEqualLineLength*>(constr),
-                        unknownsSet,
-                        factory);
+                    attempt = factory.trySubstitute(static_cast<ConstraintEqualLineLength*>(constr),
+                                                    unknownsSet,
+                                                    attempts[i]);
+                    break;
             }
             attempts[i] = attempt;
-            if (attempt == ConstraintSubstitutionAttempt::Yes) {
+            if (attempt == SubstitutionFactory::Attempt::Yes) {
                 done = false;
             }
         }
@@ -684,7 +752,7 @@ Substitution::Substitution(const VEC_pD& initialUnknowns,
 
     // Put all constraints which were not reduced in the constraints vector
     for (size_t i = 0; i < initialConstraints.size(); ++i) {
-        if (attempts[i] != ConstraintSubstitutionAttempt::Yes) {
+        if (attempts[i] != SubstitutionFactory::Attempt::Yes) {
             constraints.push_back(initialConstraints[i]);
             initialConstraints[i]->redirectParams(reductionMap, substitutionMap);
         }

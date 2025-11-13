@@ -50,6 +50,11 @@ public:
     DeriParam x;
     DeriParam y;
 
+    bool operator==(const Point& other) const
+    {
+        return x.param == other.x.param && y.param == other.y.param;
+    }
+
     int PushOwnParams(VEC_pD& pvec) const;
     void ReconstructOnNewPvec(VEC_Deri& pvec, int& cnt);
 };
