@@ -1067,7 +1067,6 @@ class ObjectDressup:
 
         # Process all instructions
         for i, instr in enumerate(source):
-
             # Process without mill instruction
             if not self.isCuttingMove(instr):
                 if not instr.isMove():
