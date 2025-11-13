@@ -212,25 +212,11 @@ TEST_F(ConstraintsTest, rectangleWithOneOffsetDim)  // NOLINT
     GCS::Line l4(GCS::Point(&l4p1x, &l4p1y), GCS::Point(&l4p2x, &l4p2y));
 
 
-    std::vector<double*> unknowns = {&l1p1x,
-                                     &l1p1y,
-                                     &l1p2x,
-                                     &l1p2y,
-
-                                     &l2p1x,
-                                     &l2p1y,
-                                     &l2p2x,
-                                     &l2p2y,
-
-                                     &l3p1x,
-                                     &l3p1y,
-                                     &l3p2x,
-                                     &l3p2y,
-
-                                     &l4p1x,
-                                     &l4p1y,
-                                     &l4p2x,
-                                     &l4p2y};
+    std::vector<double*> unknowns;
+    l1.PushOwnParams(unknowns);
+    l2.PushOwnParams(unknowns);
+    l3.PushOwnParams(unknowns);
+    l4.PushOwnParams(unknowns);
 
     System()->addConstraintP2PCoincident(l1.p2, l2.p1);
     System()->addConstraintP2PCoincident(l2.p2, l3.p1);
