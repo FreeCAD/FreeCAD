@@ -65,11 +65,7 @@ using namespace std;
 Base::XMLReader::XMLReader(const char* FileName, std::istream& str)
     : _File(FileName)
 {
-#ifdef _MSC_VER
-    str.imbue(std::locale::empty());
-#else
     str.imbue(std::locale::classic());
-#endif
 
     // create the parser
     parser = XMLReaderFactory::createXMLReader();  // NOLINT
