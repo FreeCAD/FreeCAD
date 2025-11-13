@@ -1543,4 +1543,3 @@ bool TaskDlgAttacher::reject()
 }
 
 #include "moc_TaskAttacher.cpp"
-
