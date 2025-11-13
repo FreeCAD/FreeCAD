@@ -46,7 +46,7 @@ namespace GCS
 // Constraints
 ///////////////////////////////////////
 
-Constraint::Constraint()
+Constraint::Constraint(ConstraintType typeId_)
     : origpvec(0)
     , pvec(0)
     , scale(1.)
@@ -54,15 +54,31 @@ Constraint::Constraint()
     , pvecChangedFlag(true)
     , driving(true)
     , internalAlignment(Alignment::NoInternalAlignment)
+    , typeId(typeId_)
 {}
 
-void Constraint::redirectParams(const MAP_pD_pD& redirectionmap)
+void Constraint::redirectParams(const UMAP_pD_pD& redirectionmap)
 {
     int i = 0;
     for (VEC_pD::iterator param = origpvec.begin(); param != origpvec.end(); ++param, i++) {
-        MAP_pD_pD::const_iterator it = redirectionmap.find(*param);
+        auto it = redirectionmap.find(*param);
         if (it != redirectionmap.end()) {
             pvec[i] = DeriParam(it->second, it->second);
+        }
+    }
+    pvecChangedFlag = true;
+}
+void Constraint::redirectParams(const UMAP_pD_pD& redirectionmap, const UMAP_pD_pD& substitutionmap)
+{
+    int i = 0;
+    for (VEC_pD::iterator param = origpvec.begin(); param != origpvec.end(); ++param, i++) {
+        auto foundRedirect = redirectionmap.find(*param);
+        auto foundSubst = substitutionmap.find(*param);
+        if (foundRedirect != redirectionmap.end() && foundSubst != substitutionmap.end()) {
+            pvec[i] = DeriParam(foundRedirect->second, foundSubst->second);
+        }
+        else if (foundRedirect != redirectionmap.end()) {
+            pvec[i] = DeriParam(foundRedirect->second, foundRedirect->second);
         }
     }
     pvecChangedFlag = true;
@@ -79,11 +95,6 @@ void Constraint::assignOrigToPvec()
     for (size_t i = 0; i < origpvec.size(); ++i) {
         pvec[i] = origpvec[i];
     }
-}
-
-ConstraintType Constraint::getTypeId()
-{
-    return None;
 }
 
 void Constraint::rescale(double coef)
@@ -112,18 +123,14 @@ int Constraint::findParamInPvec(double* param)
 // --------------------------------------------------------
 // Equal
 ConstraintEqual::ConstraintEqual(double* p1, double* p2, double p1p2ratio)
-    : ratio(p1p2ratio)
+    : Constraint(Equal)
+    , ratio(p1p2ratio)
 {
     origpvec.push_back(p1);
     origpvec.push_back(p2);
     assignOrigToPvec();
 
     rescale();
-}
-
-ConstraintType ConstraintEqual::getTypeId()
-{
-    return Equal;
 }
 
 double ConstraintEqual::error()
@@ -149,9 +156,9 @@ double ConstraintEqual::grad(double* param)
 ConstraintWeightedLinearCombination::ConstraintWeightedLinearCombination(
     size_t givennumpoles,
     const std::vector<double*>& givenpvec,
-    const std::vector<double>& givenfactors
-)
-    : factors(givenfactors)
+    const std::vector<double>& givenfactors)
+    : Constraint(WeightedLinearCombination)
+    , factors(givenfactors)
     , numpoles(givennumpoles)
 {
     origpvec = givenpvec;
@@ -160,11 +167,6 @@ ConstraintWeightedLinearCombination::ConstraintWeightedLinearCombination(
     assignOrigToPvec();
 
     rescale();
-}
-
-ConstraintType ConstraintWeightedLinearCombination::getTypeId()
-{
-    return WeightedLinearCombination;
 }
 
 double ConstraintWeightedLinearCombination::error()
@@ -220,11 +222,10 @@ double ConstraintWeightedLinearCombination::grad(double* param)
 
 // --------------------------------------------------------
 // Center of Gravity
-ConstraintCenterOfGravity::ConstraintCenterOfGravity(
-    const std::vector<double*>& givenpvec,
-    const std::vector<double>& givenweights
-)
-    : weights(givenweights)
+ConstraintCenterOfGravity::ConstraintCenterOfGravity(const std::vector<double*>& givenpvec,
+                                                     const std::vector<double>& givenweights)
+    : Constraint(CenterOfGravity)
+    , weights(givenweights)
     , numpoints(givenpvec.size() - 1)
 {
     origpvec = givenpvec;
@@ -233,11 +234,6 @@ ConstraintCenterOfGravity::ConstraintCenterOfGravity(
     assert(weights.size() == numpoints);
     assignOrigToPvec();
     rescale();
-}
-
-ConstraintType ConstraintCenterOfGravity::getTypeId()
-{
-    return CenterOfGravity;
 }
 
 double ConstraintCenterOfGravity::error()
@@ -270,6 +266,7 @@ double ConstraintCenterOfGravity::grad(double* param)
 // --------------------------------------------------------
 // Slope at B-spline knot
 ConstraintSlopeAtBSplineKnot::ConstraintSlopeAtBSplineKnot(BSpline& b, Line& l, size_t knotindex)
+    : Constraint(SlopeAtBSplineKnot)
 {
     // set up pvec: pole x-coords, pole y-coords, pole weights,
     // line point 1 coords, line point 2 coords
@@ -324,11 +321,6 @@ ConstraintSlopeAtBSplineKnot::ConstraintSlopeAtBSplineKnot(BSpline& b, Line& l, 
 
     assignOrigToPvec();
     ConstraintSlopeAtBSplineKnot::rescale();
-}
-
-ConstraintType ConstraintSlopeAtBSplineKnot::getTypeId()
-{
-    return SlopeAtBSplineKnot;
 }
 
 void ConstraintSlopeAtBSplineKnot::rescale(double coef)
@@ -492,13 +484,12 @@ double ConstraintSlopeAtBSplineKnot::grad(double* param)
 
 // --------------------------------------------------------
 // Point On BSpline
-ConstraintPointOnBSpline::ConstraintPointOnBSpline(
-    double* point,
-    double* initparam,
-    int coordidx,
-    BSpline& b
-)
-    : bsp(b)
+ConstraintPointOnBSpline::ConstraintPointOnBSpline(double* point,
+                                                   double* initparam,
+                                                   int coordidx,
+                                                   BSpline& b)
+    : Constraint(PointOnBSpline)
+    , bsp(b)
 {
     // This is always going to be true
     numpoints = bsp.degree + 1;
@@ -527,11 +518,6 @@ ConstraintPointOnBSpline::ConstraintPointOnBSpline(
 
     assignOrigToPvec();
     rescale();
-}
-
-ConstraintType ConstraintPointOnBSpline::getTypeId()
-{
-    return PointOnBSpline;
 }
 
 void ConstraintPointOnBSpline::setStartPole(double u)
@@ -635,17 +621,13 @@ double ConstraintPointOnBSpline::grad(double* gcsparam)
 
 // Difference
 ConstraintDifference::ConstraintDifference(double* p1, double* p2, double* d)
+    : Constraint(Difference)
 {
     origpvec.push_back(p1);
     origpvec.push_back(p2);
     origpvec.push_back(d);
     assignOrigToPvec();
     rescale();
-}
-
-ConstraintType ConstraintDifference::getTypeId()
-{
-    return Difference;
 }
 
 double ConstraintDifference::error()
@@ -672,6 +654,7 @@ double ConstraintDifference::grad(double* param)
 // --------------------------------------------------------
 // P2PDistance
 ConstraintP2PDistance::ConstraintP2PDistance(Point& p1, Point& p2, double* d)
+    : Constraint(P2PDistance)
 {
     origpvec.push_back(p1.x);
     origpvec.push_back(p1.y);
@@ -680,11 +663,6 @@ ConstraintP2PDistance::ConstraintP2PDistance(Point& p1, Point& p2, double* d)
     origpvec.push_back(d);
     assignOrigToPvec();
     rescale();
-}
-
-ConstraintType ConstraintP2PDistance::getTypeId()
-{
-    return P2PDistance;
 }
 
 double ConstraintP2PDistance::error()
@@ -767,7 +745,8 @@ double ConstraintP2PDistance::maxStep(MAP_pD_D& dir, double lim)
 // --------------------------------------------------------
 // P2PAngle
 ConstraintP2PAngle::ConstraintP2PAngle(Point& p1, Point& p2, double* a, double da_)
-    : da(da_)
+    : Constraint(P2PAngle)
+    , da(da_)
 {
     origpvec.push_back(p1.x);
     origpvec.push_back(p1.y);
@@ -776,11 +755,6 @@ ConstraintP2PAngle::ConstraintP2PAngle(Point& p1, Point& p2, double* a, double d
     origpvec.push_back(a);
     assignOrigToPvec();
     rescale();
-}
-
-ConstraintType ConstraintP2PAngle::getTypeId()
-{
-    return P2PAngle;
 }
 
 double ConstraintP2PAngle::error()
@@ -847,6 +821,7 @@ double ConstraintP2PAngle::maxStep(MAP_pD_D& dir, double lim)
 // --------------------------------------------------------
 // P2LDistance
 ConstraintP2LDistance::ConstraintP2LDistance(Point& p, Line& l, double* d)
+    : Constraint(P2LDistance)
 {
     origpvec.push_back(p.x);
     origpvec.push_back(p.y);
@@ -857,11 +832,6 @@ ConstraintP2LDistance::ConstraintP2LDistance(Point& p, Line& l, double* d)
     origpvec.push_back(d);
     assignOrigToPvec();
     rescale();
-}
-
-ConstraintType ConstraintP2LDistance::getTypeId()
-{
-    return P2LDistance;
 }
 
 double ConstraintP2LDistance::error()
@@ -979,6 +949,7 @@ ConstraintPointOnLine::ConstraintPointOnLine(Point& p, Line& l)
 {}
 
 ConstraintPointOnLine::ConstraintPointOnLine(Point& p, Point& lp1, Point& lp2)
+    : Constraint(PointOnLine)
 {
     origpvec.push_back(p.x);
     origpvec.push_back(p.y);
@@ -988,11 +959,6 @@ ConstraintPointOnLine::ConstraintPointOnLine(Point& p, Point& lp1, Point& lp2)
     origpvec.push_back(lp2.y);
     assignOrigToPvec();
     rescale();
-}
-
-ConstraintType ConstraintPointOnLine::getTypeId()
-{
-    return PointOnLine;
 }
 
 double ConstraintPointOnLine::error()
@@ -1048,6 +1014,7 @@ ConstraintPointOnPerpBisector::ConstraintPointOnPerpBisector(Point& p, Line& l)
 {}
 
 ConstraintPointOnPerpBisector::ConstraintPointOnPerpBisector(Point& p, Point& lp1, Point& lp2)
+    : Constraint(PointOnPerpBisector)
 {
     origpvec.push_back(p.x);
     origpvec.push_back(p.y);
@@ -1057,11 +1024,6 @@ ConstraintPointOnPerpBisector::ConstraintPointOnPerpBisector(Point& p, Point& lp
     origpvec.push_back(lp2.y);
     assignOrigToPvec();
     rescale();
-}
-
-ConstraintType ConstraintPointOnPerpBisector::getTypeId()
-{
-    return PointOnPerpBisector;
 }
 
 void ConstraintPointOnPerpBisector::errorgrad(double* err, double* grad, double* param)
@@ -1092,6 +1054,7 @@ void ConstraintPointOnPerpBisector::errorgrad(double* err, double* grad, double*
 // --------------------------------------------------------
 // Parallel
 ConstraintParallel::ConstraintParallel(Line& l1, Line& l2)
+    : Constraint(Parallel)
 {
     origpvec.push_back(l1.p1.x);
     origpvec.push_back(l1.p1.y);
@@ -1103,11 +1066,6 @@ ConstraintParallel::ConstraintParallel(Line& l1, Line& l2)
     origpvec.push_back(l2.p2.y);
     assignOrigToPvec();
     ConstraintParallel::rescale();
-}
-
-ConstraintType ConstraintParallel::getTypeId()
-{
-    return Parallel;
 }
 
 void ConstraintParallel::rescale(double coef)
@@ -1168,6 +1126,7 @@ ConstraintPerpendicular::ConstraintPerpendicular(Line& l1, Line& l2)
 {}
 
 ConstraintPerpendicular::ConstraintPerpendicular(Point& l1p1, Point& l1p2, Point& l2p1, Point& l2p2)
+    : Constraint(Perpendicular)
 {
     origpvec.push_back(l1p1.x);
     origpvec.push_back(l1p1.y);
@@ -1179,11 +1138,6 @@ ConstraintPerpendicular::ConstraintPerpendicular(Point& l1p1, Point& l1p2, Point
     origpvec.push_back(l2p2.y);
     assignOrigToPvec();
     ConstraintPerpendicular::rescale();
-}
-
-ConstraintType ConstraintPerpendicular::getTypeId()
-{
-    return Perpendicular;
 }
 
 void ConstraintPerpendicular::rescale(double coef)
@@ -1243,7 +1197,12 @@ ConstraintL2LAngle::ConstraintL2LAngle(Line& l1, Line& l2, double* a)
     : ConstraintL2LAngle(l1.p1, l1.p2, l2.p1, l2.p2, a)
 {}
 
-ConstraintL2LAngle::ConstraintL2LAngle(Point& l1p1, Point& l1p2, Point& l2p1, Point& l2p2, double* a)
+ConstraintL2LAngle::ConstraintL2LAngle(Point& l1p1,
+                                       Point& l1p2,
+                                       Point& l2p1,
+                                       Point& l2p2,
+                                       double* a)
+    : Constraint(L2LAngle)
 {
     origpvec.push_back(l1p1.x);
     origpvec.push_back(l1p1.y);
@@ -1256,11 +1215,6 @@ ConstraintL2LAngle::ConstraintL2LAngle(Point& l1p1, Point& l1p2, Point& l2p1, Po
     origpvec.push_back(a);
     assignOrigToPvec();
     rescale();
-}
-
-ConstraintType ConstraintL2LAngle::getTypeId()
-{
-    return L2LAngle;
 }
 
 double ConstraintL2LAngle::error()
@@ -1351,7 +1305,11 @@ ConstraintMidpointOnLine::ConstraintMidpointOnLine(Line& l1, Line& l2)
     : ConstraintMidpointOnLine(l1.p1, l1.p2, l2.p1, l2.p2)
 {}
 
-ConstraintMidpointOnLine::ConstraintMidpointOnLine(Point& l1p1, Point& l1p2, Point& l2p1, Point& l2p2)
+ConstraintMidpointOnLine::ConstraintMidpointOnLine(Point& l1p1,
+                                                   Point& l1p2,
+                                                   Point& l2p1,
+                                                   Point& l2p2)
+    : Constraint(MidpointOnLine)
 {
     origpvec.push_back(l1p1.x);
     origpvec.push_back(l1p1.y);
@@ -1363,11 +1321,6 @@ ConstraintMidpointOnLine::ConstraintMidpointOnLine(Point& l1p1, Point& l1p2, Poi
     origpvec.push_back(l2p2.y);
     assignOrigToPvec();
     rescale();
-}
-
-ConstraintType ConstraintMidpointOnLine::getTypeId()
-{
-    return MidpointOnLine;
 }
 
 double ConstraintMidpointOnLine::error()
@@ -1428,14 +1381,13 @@ double ConstraintMidpointOnLine::grad(double* param)
 
 // --------------------------------------------------------
 // TangentCircumf
-ConstraintTangentCircumf::ConstraintTangentCircumf(
-    Point& p1,
-    Point& p2,
-    double* rad1,
-    double* rad2,
-    bool internal_
-)
-    : internal(internal_)
+ConstraintTangentCircumf::ConstraintTangentCircumf(Point& p1,
+                                                   Point& p2,
+                                                   double* rad1,
+                                                   double* rad2,
+                                                   bool internal_)
+    : Constraint(TangentCircumf)
+    , internal(internal_)
 {
 
     origpvec.push_back(p1.x);
@@ -1446,11 +1398,6 @@ ConstraintTangentCircumf::ConstraintTangentCircumf(
     origpvec.push_back(rad2);
     assignOrigToPvec();
     rescale();
-}
-
-ConstraintType ConstraintTangentCircumf::getTypeId()
-{
-    return TangentCircumf;
 }
 
 double ConstraintTangentCircumf::error()
@@ -1533,6 +1480,7 @@ double ConstraintTangentCircumf::grad(double* param)
 // --------------------------------------------------------
 // ConstraintPointOnEllipse
 ConstraintPointOnEllipse::ConstraintPointOnEllipse(Point& p, Ellipse& e)
+    : Constraint(PointOnEllipse)
 {
     origpvec.push_back(p.x);
     origpvec.push_back(p.y);
@@ -1543,11 +1491,6 @@ ConstraintPointOnEllipse::ConstraintPointOnEllipse(Point& p, Ellipse& e)
     origpvec.push_back(e.radmin);
     assignOrigToPvec();
     rescale();
-}
-
-ConstraintType ConstraintPointOnEllipse::getTypeId()
-{
-    return PointOnEllipse;
 }
 
 double ConstraintPointOnEllipse::error()
@@ -1623,7 +1566,8 @@ double ConstraintPointOnEllipse::grad(double* param)
 // --------------------------------------------------------
 // ConstraintEllipseTangentLine
 ConstraintEllipseTangentLine::ConstraintEllipseTangentLine(Line& l, Ellipse& e)
-    : l(l)
+    : Constraint(TangentEllipseLine)
+    , l(l)
     , e(e)
 {
 
@@ -1641,11 +1585,6 @@ void ConstraintEllipseTangentLine::ReconstructGeomPointers()
     l.ReconstructOnNewPvec(pvec, i);
     e.ReconstructOnNewPvec(pvec, i);
     pvecChangedFlag = false;
-}
-
-ConstraintType ConstraintEllipseTangentLine::getTypeId()
-{
-    return TangentEllipseLine;
 }
 
 void ConstraintEllipseTangentLine::errorgrad(double* err, double* grad, double* param)
@@ -1691,9 +1630,9 @@ void ConstraintEllipseTangentLine::errorgrad(double* err, double* grad, double* 
 ConstraintInternalAlignmentPoint2Ellipse::ConstraintInternalAlignmentPoint2Ellipse(
     Ellipse& e,
     Point& p1,
-    InternalAlignmentType alignmentType
-)
-    : e(e)
+    InternalAlignmentType alignmentType)
+    : Constraint(InternalAlignmentPoint2Ellipse)
+    , e(e)
     , p(p1)
     , AlignmentType(alignmentType)
 {
@@ -1713,11 +1652,6 @@ void ConstraintInternalAlignmentPoint2Ellipse::ReconstructGeomPointers()
     i++;
     e.ReconstructOnNewPvec(pvec, i);
     pvecChangedFlag = false;
-}
-
-ConstraintType ConstraintInternalAlignmentPoint2Ellipse::getTypeId()
-{
-    return InternalAlignmentPoint2Ellipse;
 }
 
 void ConstraintInternalAlignmentPoint2Ellipse::errorgrad(double* err, double* grad, double* param)
@@ -1789,9 +1723,9 @@ void ConstraintInternalAlignmentPoint2Ellipse::errorgrad(double* err, double* gr
 ConstraintInternalAlignmentPoint2Hyperbola::ConstraintInternalAlignmentPoint2Hyperbola(
     Hyperbola& e,
     Point& p1,
-    InternalAlignmentType alignmentType
-)
-    : e(e)
+    InternalAlignmentType alignmentType)
+    : Constraint(InternalAlignmentPoint2Hyperbola)
+    , e(e)
     , p(p1)
     , AlignmentType(alignmentType)
 {
@@ -1811,11 +1745,6 @@ void ConstraintInternalAlignmentPoint2Hyperbola::ReconstructGeomPointers()
     i++;
     e.ReconstructOnNewPvec(pvec, i);
     pvecChangedFlag = false;
-}
-
-ConstraintType ConstraintInternalAlignmentPoint2Hyperbola::getTypeId()
-{
-    return InternalAlignmentPoint2Hyperbola;
 }
 
 void ConstraintInternalAlignmentPoint2Hyperbola::errorgrad(double* err, double* grad, double* param)
@@ -1889,8 +1818,10 @@ void ConstraintInternalAlignmentPoint2Hyperbola::errorgrad(double* err, double* 
 
 // --------------------------------------------------------
 //  ConstraintEqualMajorAxesEllipse
-ConstraintEqualMajorAxesConic::ConstraintEqualMajorAxesConic(MajorRadiusConic* a1, MajorRadiusConic* a2)
-    : e1(a1)
+ConstraintEqualMajorAxesConic::ConstraintEqualMajorAxesConic(MajorRadiusConic* a1,
+                                                             MajorRadiusConic* a2)
+    : Constraint(EqualMajorAxesConic)
+    , e1(a1)
     , e2(a2)
 {
     this->e1->PushOwnParams(origpvec);
@@ -1906,11 +1837,6 @@ void ConstraintEqualMajorAxesConic::ReconstructGeomPointers()
     e1->ReconstructOnNewPvec(pvec, i);
     e2->ReconstructOnNewPvec(pvec, i);
     pvecChangedFlag = false;
-}
-
-ConstraintType ConstraintEqualMajorAxesConic::getTypeId()
-{
-    return EqualMajorAxesConic;
 }
 
 void ConstraintEqualMajorAxesConic::errorgrad(double* err, double* grad, double* param)
@@ -1932,6 +1858,7 @@ void ConstraintEqualMajorAxesConic::errorgrad(double* err, double* grad, double*
 
 //  ConstraintEqualFocalDistance
 ConstraintEqualFocalDistance::ConstraintEqualFocalDistance(ArcOfParabola* a1, ArcOfParabola* a2)
+    : Constraint(EqualFocalDistance)
 {
     this->e1 = a1;
     this->e1->PushOwnParams(origpvec);
@@ -1948,11 +1875,6 @@ void ConstraintEqualFocalDistance::ReconstructGeomPointers()
     e1->ReconstructOnNewPvec(pvec, i);
     e2->ReconstructOnNewPvec(pvec, i);
     pvecChangedFlag = false;
-}
-
-ConstraintType ConstraintEqualFocalDistance::getTypeId()
-{
-    return EqualFocalDistance;
 }
 
 void ConstraintEqualFocalDistance::errorgrad(double* err, double* grad, double* param)
@@ -1991,7 +1913,8 @@ void ConstraintEqualFocalDistance::errorgrad(double* err, double* grad, double* 
 // --------------------------------------------------------
 // ConstraintCurveValue
 ConstraintCurveValue::ConstraintCurveValue(Point& p, double* pcoord, Curve& c, double* u)
-    : crv(c.Copy())
+    : Constraint(CurveValue)
+    , crv(c.Copy())
 {
     origpvec.push_back(p.x);
     origpvec.push_back(p.y);
@@ -2020,11 +1943,6 @@ void ConstraintCurveValue::ReconstructGeomPointers()
     i++;  // we have an inline function for the parameterU
     this->crv->ReconstructOnNewPvec(pvec, i);
     pvecChangedFlag = false;
-}
-
-ConstraintType ConstraintCurveValue::getTypeId()
-{
-    return CurveValue;
 }
 
 void ConstraintCurveValue::errorgrad(double* err, double* grad, double* param)
@@ -2074,6 +1992,7 @@ double ConstraintCurveValue::maxStep(MAP_pD_D& /*dir*/, double lim)
 // --------------------------------------------------------
 // ConstraintPointOnHyperbola
 ConstraintPointOnHyperbola::ConstraintPointOnHyperbola(Point& p, Hyperbola& e)
+    : Constraint(PointOnHyperbola)
 {
     origpvec.push_back(p.x);
     origpvec.push_back(p.y);
@@ -2087,6 +2006,7 @@ ConstraintPointOnHyperbola::ConstraintPointOnHyperbola(Point& p, Hyperbola& e)
 }
 
 ConstraintPointOnHyperbola::ConstraintPointOnHyperbola(Point& p, ArcOfHyperbola& e)
+    : Constraint(PointOnHyperbola)
 {
     origpvec.push_back(p.x);
     origpvec.push_back(p.y);
@@ -2097,11 +2017,6 @@ ConstraintPointOnHyperbola::ConstraintPointOnHyperbola(Point& p, ArcOfHyperbola&
     origpvec.push_back(e.radmin);
     assignOrigToPvec();
     rescale();
-}
-
-ConstraintType ConstraintPointOnHyperbola::getTypeId()
-{
-    return PointOnHyperbola;
 }
 
 double ConstraintPointOnHyperbola::error()
@@ -2190,7 +2105,8 @@ double ConstraintPointOnHyperbola::grad(double* param)
 // --------------------------------------------------------
 // ConstraintPointOnParabola
 ConstraintPointOnParabola::ConstraintPointOnParabola(Point& p, Parabola& e)
-    : parab(e.Copy())
+    : Constraint(PointOnParabola)
+    , parab(e.Copy())
 {
     origpvec.push_back(p.x);
     origpvec.push_back(p.y);
@@ -2201,7 +2117,8 @@ ConstraintPointOnParabola::ConstraintPointOnParabola(Point& p, Parabola& e)
 }
 
 ConstraintPointOnParabola::ConstraintPointOnParabola(Point& p, ArcOfParabola& e)
-    : parab(e.Copy())
+    : Constraint(PointOnParabola)
+    , parab(e.Copy())
 {
     origpvec.push_back(p.x);
     origpvec.push_back(p.y);
@@ -2226,11 +2143,6 @@ void ConstraintPointOnParabola::ReconstructGeomPointers()
     i++;
     this->parab->ReconstructOnNewPvec(pvec, i);
     pvecChangedFlag = false;
-}
-
-ConstraintType ConstraintPointOnParabola::getTypeId()
-{
-    return PointOnParabola;
 }
 
 void ConstraintPointOnParabola::errorgrad(double* err, double* grad, double* param)
@@ -2274,7 +2186,8 @@ void ConstraintPointOnParabola::errorgrad(double* err, double* grad, double* par
 // --------------------------------------------------------
 // ConstraintAngleViaPoint
 ConstraintAngleViaPoint::ConstraintAngleViaPoint(Curve& acrv1, Curve& acrv2, Point p, double* angle)
-    : crv1(acrv1.Copy())
+    : Constraint(AngleViaPoint)
+    , crv1(acrv1.Copy())
     , crv2(acrv2.Copy())
 {
     origpvec.push_back(angle);
@@ -2306,11 +2219,6 @@ void ConstraintAngleViaPoint::ReconstructGeomPointers()
     crv1->ReconstructOnNewPvec(pvec, cnt);
     crv2->ReconstructOnNewPvec(pvec, cnt);
     pvecChangedFlag = false;
-}
-
-ConstraintType ConstraintAngleViaPoint::getTypeId()
-{
-    return AngleViaPoint;
 }
 
 double ConstraintAngleViaPoint::error()
@@ -2360,14 +2268,13 @@ double ConstraintAngleViaPoint::grad(double* param)
 
 // --------------------------------------------------------
 // ConstraintAngleViaTwoPoints
-ConstraintAngleViaTwoPoints::ConstraintAngleViaTwoPoints(
-    Curve& acrv1,
-    Curve& acrv2,
-    Point p1,
-    Point p2,
-    double* angle
-)
-    : crv1(acrv1.Copy())
+ConstraintAngleViaTwoPoints::ConstraintAngleViaTwoPoints(Curve& acrv1,
+                                                         Curve& acrv2,
+                                                         Point p1,
+                                                         Point p2,
+                                                         double* angle)
+    : Constraint(AngleViaTwoPoints)
+    , crv1(acrv1.Copy())
     , crv2(acrv2.Copy())
 {
     origpvec.push_back(angle);
@@ -2405,11 +2312,6 @@ void ConstraintAngleViaTwoPoints::ReconstructGeomPointers()
     crv1->ReconstructOnNewPvec(pvec, cnt);
     crv2->ReconstructOnNewPvec(pvec, cnt);
     pvecChangedFlag = false;
-}
-
-ConstraintType ConstraintAngleViaTwoPoints::getTypeId()
-{
-    return AngleViaTwoPoints;
 }
 
 double ConstraintAngleViaTwoPoints::error()
@@ -2459,14 +2361,13 @@ double ConstraintAngleViaTwoPoints::grad(double* param)
 
 // --------------------------------------------------------
 // ConstraintAngleViaPointAndParam
-ConstraintAngleViaPointAndParam::ConstraintAngleViaPointAndParam(
-    Curve& acrv1,
-    Curve& acrv2,
-    Point p,
-    double* cparam,
-    double* angle
-)
-    : crv1(acrv1.Copy())
+ConstraintAngleViaPointAndParam::ConstraintAngleViaPointAndParam(Curve& acrv1,
+                                                                 Curve& acrv2,
+                                                                 Point p,
+                                                                 double* cparam,
+                                                                 double* angle)
+    : Constraint(AngleViaPointAndParam)
+    , crv1(acrv1.Copy())
     , crv2(acrv2.Copy())
 {
     origpvec.push_back(angle);
@@ -2500,11 +2401,6 @@ void ConstraintAngleViaPointAndParam::ReconstructGeomPointers()
     crv1->ReconstructOnNewPvec(pvec, cnt);
     crv2->ReconstructOnNewPvec(pvec, cnt);
     pvecChangedFlag = false;
-}
-
-ConstraintType ConstraintAngleViaPointAndParam::getTypeId()
-{
-    return AngleViaPointAndParam;
 }
 
 double ConstraintAngleViaPointAndParam::error()
@@ -2554,15 +2450,14 @@ double ConstraintAngleViaPointAndParam::grad(double* param)
 
 // --------------------------------------------------------
 // ConstraintAngleViaPointAndTwoParams
-ConstraintAngleViaPointAndTwoParams::ConstraintAngleViaPointAndTwoParams(
-    Curve& acrv1,
-    Curve& acrv2,
-    Point p,
-    double* cparam1,
-    double* cparam2,
-    double* angle
-)
-    : crv1(acrv1.Copy())
+ConstraintAngleViaPointAndTwoParams::ConstraintAngleViaPointAndTwoParams(Curve& acrv1,
+                                                                         Curve& acrv2,
+                                                                         Point p,
+                                                                         double* cparam1,
+                                                                         double* cparam2,
+                                                                         double* angle)
+    : Constraint(AngleViaPointAndTwoParams)
+    , crv1(acrv1.Copy())
     , crv2(acrv2.Copy())
 {
     origpvec.push_back(angle);
@@ -2598,11 +2493,6 @@ void ConstraintAngleViaPointAndTwoParams::ReconstructGeomPointers()
     crv1->ReconstructOnNewPvec(pvec, cnt);
     crv2->ReconstructOnNewPvec(pvec, cnt);
     pvecChangedFlag = false;
-}
-
-ConstraintType ConstraintAngleViaPointAndTwoParams::getTypeId()
-{
-    return AngleViaPointAndTwoParams;
 }
 
 double ConstraintAngleViaPointAndTwoParams::error()
@@ -2653,17 +2543,16 @@ double ConstraintAngleViaPointAndTwoParams::grad(double* param)
 
 // --------------------------------------------------------
 // ConstraintSnell
-ConstraintSnell::ConstraintSnell(
-    Curve& r1,
-    Curve& r2,
-    Curve& b,
-    Point p,
-    double* n1,
-    double* n2,
-    bool flipn1,
-    bool flipn2
-)
-    : ray1(r1.Copy())
+ConstraintSnell::ConstraintSnell(Curve& r1,
+                                 Curve& r2,
+                                 Curve& b,
+                                 Point p,
+                                 double* n1,
+                                 double* n2,
+                                 bool flipn1,
+                                 bool flipn2)
+    : Constraint(Snell)
+    , ray1(r1.Copy())
     , ray2(r2.Copy())
     , boundary(b.Copy())
     , flipn1(flipn1)
@@ -2707,11 +2596,6 @@ void ConstraintSnell::ReconstructGeomPointers()
     pvecChangedFlag = false;
 }
 
-ConstraintType ConstraintSnell::getTypeId()
-{
-    return Snell;
-}
-
 // error and gradient combined. Values are returned through pointers.
 void ConstraintSnell::errorgrad(double* err, double* grad, double* param)
 {
@@ -2747,7 +2631,8 @@ void ConstraintSnell::errorgrad(double* err, double* grad, double* param)
 // --------------------------------------------------------
 // ConstraintEqualLineLength
 ConstraintEqualLineLength::ConstraintEqualLineLength(Line& l1, Line& l2)
-    : l1(l1)
+    : Constraint(EqualLineLength)
+    , l1(l1)
     , l2(l2)
 {
     this->l1.PushOwnParams(origpvec);
@@ -2763,11 +2648,6 @@ void ConstraintEqualLineLength::ReconstructGeomPointers()
     l1.ReconstructOnNewPvec(pvec, i);
     l2.ReconstructOnNewPvec(pvec, i);
     pvecChangedFlag = false;
-}
-
-ConstraintType ConstraintEqualLineLength::getTypeId()
-{
-    return EqualLineLength;
 }
 
 void ConstraintEqualLineLength::errorgrad(double* err, double* grad, double* param)
@@ -2836,7 +2716,8 @@ void ConstraintEqualLineLength::errorgrad(double* err, double* grad, double* par
 // --------------------------------------------------------
 // ConstraintC2CDistance
 ConstraintC2CDistance::ConstraintC2CDistance(Circle& c1, Circle& c2, double* d)
-    : c1(c1)
+    : Constraint(C2CDistance)
+    , c1(c1)
     , c2(c2)
 {
     origpvec.push_back(d);
@@ -2855,11 +2736,6 @@ void ConstraintC2CDistance::ReconstructGeomPointers()
     c1.ReconstructOnNewPvec(pvec, i);
     c2.ReconstructOnNewPvec(pvec, i);
     pvecChangedFlag = false;
-}
-
-ConstraintType ConstraintC2CDistance::getTypeId()
-{
-    return C2CDistance;
 }
 
 void ConstraintC2CDistance::errorgrad(double* err, double* grad, double* param)
@@ -2921,7 +2797,8 @@ void ConstraintC2CDistance::errorgrad(double* err, double* grad, double* param)
 // --------------------------------------------------------
 // ConstraintC2LDistance
 ConstraintC2LDistance::ConstraintC2LDistance(Circle& c, Line& l, double* d)
-    : circle(c)
+    : Constraint(C2LDistance)
+    , circle(c)
     , line(l)
 {
     origpvec.push_back(d);
@@ -2931,11 +2808,6 @@ ConstraintC2LDistance::ConstraintC2LDistance(Circle& c, Line& l, double* d)
     assignOrigToPvec();
     pvecChangedFlag = true;
     rescale();
-}
-
-ConstraintType ConstraintC2LDistance::getTypeId()
-{
-    return C2LDistance;
 }
 
 void ConstraintC2LDistance::ReconstructGeomPointers()
@@ -3008,7 +2880,8 @@ void ConstraintC2LDistance::errorgrad(double* err, double* grad, double* param)
 // --------------------------------------------------------
 // ConstraintP2CDistance
 ConstraintP2CDistance::ConstraintP2CDistance(Point& p, Circle& c, double* d)
-    : circle(c)
+    : Constraint(P2CDistance)
+    , circle(c)
     , pt(p)
 {
     origpvec.push_back(d);
@@ -3018,11 +2891,6 @@ ConstraintP2CDistance::ConstraintP2CDistance(Point& p, Circle& c, double* d)
     assignOrigToPvec();
     pvecChangedFlag = true;
     rescale();
-}
-
-ConstraintType ConstraintP2CDistance::getTypeId()
-{
-    return P2CDistance;
 }
 
 void ConstraintP2CDistance::ReconstructGeomPointers()
@@ -3072,7 +2940,8 @@ void ConstraintP2CDistance::errorgrad(double* err, double* grad, double* param)
 // --------------------------------------------------------
 // ConstraintArcLength
 ConstraintArcLength::ConstraintArcLength(Arc& a, double* d)
-    : arc(a)
+    : Constraint(ArcLength)
+    , arc(a)
 {
     origpvec.push_back(d);
     this->arc.PushOwnParams(origpvec);
@@ -3088,11 +2957,6 @@ void ConstraintArcLength::ReconstructGeomPointers()
     i++;  // skip the first parameter as there is the inline function distance for it
     arc.ReconstructOnNewPvec(pvec, i);
     pvecChangedFlag = false;
-}
-
-ConstraintType ConstraintArcLength::getTypeId()
-{
-    return ArcLength;
 }
 
 void ConstraintArcLength::errorgrad(double* err, double* grad, double* param)

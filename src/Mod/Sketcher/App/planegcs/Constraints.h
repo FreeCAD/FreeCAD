@@ -128,9 +128,10 @@ public:
     bool pvecChangedFlag;
     bool driving;
     Alignment internalAlignment;
+    ConstraintType typeId {ConstraintType::None};
 
 public:
-    Constraint();
+    Constraint(ConstraintType typeId);
     virtual ~Constraint()
     {}
 
@@ -143,7 +144,8 @@ public:
         return pvec;
     }
 
-    void redirectParams(const MAP_pD_pD& redirectionmap);
+    void redirectParams(const UMAP_pD_pD& redirectionmap);
+    void redirectParams(const UMAP_pD_pD& redirectionmap, const UMAP_pD_pD& substitutionmap);
     void revertParams();
     void assignOrigToPvec();
     void setTag(int tagId)
@@ -174,7 +176,10 @@ public:
     }
 
 
-    virtual ConstraintType getTypeId();
+    ConstraintType getTypeId() const
+    {
+        return typeId;
+    }
     virtual void rescale(double coef = 1.);
 
     // error and gradient combined. Values are returned through pointers.
@@ -230,7 +235,7 @@ private:
 
 public:
     ConstraintEqual(double* p1, double* p2, double p1p2ratio = 1.0);
-    ConstraintType getTypeId() override;
+
     double error() override;
     double grad(double*) override;
 };
@@ -252,11 +257,9 @@ public:
     /// Let `pvec = [q, p_1, p_2,...]`, and
     /// `givenweights = [f_1, f_2,...]`, then this constraint ensures
     /// `q = sum(p_i*f_i)`.
-    ConstraintCenterOfGravity(
-        const std::vector<double*>& givenpvec,
-        const std::vector<double>& givenweights
-    );
-    ConstraintType getTypeId() override;
+    ConstraintCenterOfGravity(const std::vector<double*>& givenpvec,
+                              const std::vector<double>& givenweights);
+
     double error() override;
     double grad(double*) override;
 
@@ -294,12 +297,10 @@ public:
     /// In that case, `q` is the x (or y) coordinate of the knot, `p_i` are
     /// the x (or y) coordinates of the poles, and `w_i` are their weights.
     /// Finally, `f_i` are obtained using `BSpline::getLinCombFactor()`.
-    ConstraintWeightedLinearCombination(
-        size_t givennumpoints,
-        const std::vector<double*>& givenpvec,
-        const std::vector<double>& givenfactors
-    );
-    ConstraintType getTypeId() override;
+    ConstraintWeightedLinearCombination(size_t givennumpoints,
+                                        const std::vector<double*>& givenpvec,
+                                        const std::vector<double>& givenfactors);
+
     double error() override;
     double grad(double*) override;
 
@@ -345,7 +346,7 @@ public:
     // TODO: Should be able to make the geometries passed const
     // Constrains the slope at a (C1 continuous) knot of the b-spline
     ConstraintSlopeAtBSplineKnot(BSpline& b, Line& l, size_t knotindex);
-    ConstraintType getTypeId() override;
+
     void rescale(double coef = 1.) override;
     double error() override;
     double grad(double*) override;
@@ -383,7 +384,7 @@ public:
     /// TODO: Explain how it's provided
     /// coordidx = 0 if x, 1 if y
     ConstraintPointOnBSpline(double* point, double* initparam, int coordidx, BSpline& b);
-    ConstraintType getTypeId() override;
+
     double error() override;
     double grad(double*) override;
     size_t numpoints;
@@ -410,7 +411,7 @@ private:
 
 public:
     ConstraintDifference(double* p1, double* p2, double* d);
-    ConstraintType getTypeId() override;
+
     double error() override;
     double grad(double*) override;
 };
@@ -446,7 +447,7 @@ public:
     ConstraintP2PDistance()
     {}
 #endif
-    ConstraintType getTypeId() override;
+
     double error() override;
     double grad(double*) override;
     double maxStep(MAP_pD_D& dir, double lim = 1.) override;
@@ -484,7 +485,7 @@ public:
     ConstraintP2PAngle()
     {}
 #endif
-    ConstraintType getTypeId() override;
+
     double error() override;
     double grad(double*) override;
     double maxStep(MAP_pD_D& dir, double lim = 1.) override;
@@ -529,7 +530,7 @@ public:
     ConstraintP2LDistance()
     {}
 #endif
-    ConstraintType getTypeId() override;
+
     double error() override;
     double grad(double*) override;
     double maxStep(MAP_pD_D& dir, double lim = 1.) override;
@@ -572,7 +573,7 @@ public:
     ConstraintPointOnLine()
     {}
 #endif
-    ConstraintType getTypeId() override;
+
     double error() override;
     double grad(double*) override;
 };
@@ -613,7 +614,6 @@ public:
 #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
     ConstraintPointOnPerpBisector() {};
 #endif
-    ConstraintType getTypeId() override;
 };
 
 // Parallel
@@ -659,7 +659,7 @@ public:
     ConstraintParallel()
     {}
 #endif
-    ConstraintType getTypeId() override;
+
     void rescale(double coef = 1.) override;
     double error() override;
     double grad(double*) override;
@@ -709,7 +709,7 @@ public:
     ConstraintPerpendicular()
     {}
 #endif
-    ConstraintType getTypeId() override;
+
     void rescale(double coef = 1.) override;
     double error() override;
     double grad(double*) override;
@@ -763,7 +763,7 @@ public:
     ConstraintL2LAngle()
     {}
 #endif
-    ConstraintType getTypeId() override;
+
     double error() override;
     double grad(double*) override;
     double maxStep(MAP_pD_D& dir, double lim = 1.) override;
@@ -813,7 +813,7 @@ public:
     ConstraintMidpointOnLine()
     {}
 #endif
-    ConstraintType getTypeId() override;
+
     double error() override;
     double grad(double*) override;
 };
@@ -860,7 +860,7 @@ public:
     {
         return internal;
     };
-    ConstraintType getTypeId() override;
+
     double error() override;
     double grad(double*) override;
 };
@@ -904,7 +904,7 @@ public:
     ConstraintPointOnEllipse()
     {}
 #endif
-    ConstraintType getTypeId() override;
+
     double error() override;
     double grad(double*) override;
 };
@@ -920,14 +920,15 @@ private:
 
 public:
     ConstraintEllipseTangentLine(Line& l, Ellipse& e);
-    ConstraintType getTypeId() override;
 };
 
 class ConstraintInternalAlignmentPoint2Ellipse: public Constraint
 {
 public:
-    ConstraintInternalAlignmentPoint2Ellipse(Ellipse& e, Point& p1, InternalAlignmentType alignmentType);
-    ConstraintType getTypeId() override;
+    ConstraintInternalAlignmentPoint2Ellipse(Ellipse& e,
+                                             Point& p1,
+                                             InternalAlignmentType alignmentType);
+
 
 private:
     void errorgrad(double* err, double* grad, double* param) override;
@@ -941,12 +942,10 @@ private:
 class ConstraintInternalAlignmentPoint2Hyperbola: public Constraint
 {
 public:
-    ConstraintInternalAlignmentPoint2Hyperbola(
-        Hyperbola& e,
-        Point& p1,
-        InternalAlignmentType alignmentType
-    );
-    ConstraintType getTypeId() override;
+    ConstraintInternalAlignmentPoint2Hyperbola(Hyperbola& e,
+                                               Point& p1,
+                                               InternalAlignmentType alignmentType);
+
 
 private:
     void errorgrad(double* err, double* grad, double* param) override;
@@ -968,7 +967,6 @@ private:
 
 public:
     ConstraintEqualMajorAxesConic(MajorRadiusConic* a1, MajorRadiusConic* a2);
-    ConstraintType getTypeId() override;
 };
 
 class ConstraintEqualFocalDistance: public Constraint
@@ -982,7 +980,6 @@ private:
 
 public:
     ConstraintEqualFocalDistance(ArcOfParabola* a1, ArcOfParabola* a2);
-    ConstraintType getTypeId() override;
 };
 
 class ConstraintCurveValue: public Constraint
@@ -1014,7 +1011,7 @@ public:
      */
     ConstraintCurveValue(Point& p, double* pcoord, Curve& crv, double* u);
     ~ConstraintCurveValue() override;
-    ConstraintType getTypeId() override;
+
     double maxStep(MAP_pD_D& dir, double lim = 1.) override;
 };
 
@@ -1058,7 +1055,7 @@ public:
     ConstraintPointOnHyperbola()
     {}
 #endif
-    ConstraintType getTypeId() override;
+
     double error() override;
     double grad(double*) override;
 };
@@ -1081,7 +1078,6 @@ public:
     ConstraintPointOnParabola()
     {}
 #endif
-    ConstraintType getTypeId() override;
 };
 
 class ConstraintAngleViaPoint: public Constraint
@@ -1110,7 +1106,7 @@ private:
 public:
     ConstraintAngleViaPoint(Curve& acrv1, Curve& acrv2, Point p, double* angle);
     ~ConstraintAngleViaPoint() override;
-    ConstraintType getTypeId() override;
+
     double error() override;
     double grad(double*) override;
 };
@@ -1144,7 +1140,7 @@ private:
 public:
     ConstraintAngleViaTwoPoints(Curve& acrv1, Curve& acrv2, Point p1, Point p2, double* angle);
     ~ConstraintAngleViaTwoPoints() override;
-    ConstraintType getTypeId() override;
+
     double error() override;
     double grad(double*) override;
 };
@@ -1193,7 +1189,6 @@ public:
         bool flipn2
     );
     ~ConstraintSnell() override;
-    ConstraintType getTypeId() override;
 };
 
 class ConstraintAngleViaPointAndParam: public Constraint
@@ -1225,7 +1220,7 @@ public:
     // We assume first curve needs param1
     ConstraintAngleViaPointAndParam(Curve& acrv1, Curve& acrv2, Point p, double* param1, double* angle);
     ~ConstraintAngleViaPointAndParam() override;
-    ConstraintType getTypeId() override;
+
     double error() override;
     double grad(double*) override;
 };
@@ -1270,7 +1265,7 @@ public:
         double* angle
     );
     ~ConstraintAngleViaPointAndTwoParams() override;
-    ConstraintType getTypeId() override;
+
     double error() override;
     double grad(double*) override;
 };
@@ -1288,7 +1283,6 @@ private:
 
 public:
     ConstraintEqualLineLength(Line& l1, Line& l2);
-    ConstraintType getTypeId() override;
 };
 
 class ConstraintC2CDistance: public Constraint
@@ -1306,7 +1300,6 @@ private:
 
 public:
     ConstraintC2CDistance(Circle& c1, Circle& c2, double* d);
-    ConstraintType getTypeId() override;
 };
 
 // C2LDistance
@@ -1328,7 +1321,6 @@ private:
 
 public:
     ConstraintC2LDistance(Circle& c, Line& l, double* d);
-    ConstraintType getTypeId() override;
 };
 
 // P2CDistance
@@ -1346,7 +1338,6 @@ private:
 
 public:
     ConstraintP2CDistance(Point& p, Circle& c, double* d);
-    ConstraintType getTypeId() override;
 };
 
 // ArcLength
@@ -1363,7 +1354,6 @@ private:
 
 public:
     ConstraintArcLength(Arc& a, double* d);
-    ConstraintType getTypeId() override;
 };
 
 }  // namespace GCS
