@@ -397,7 +397,12 @@ class _Stairs(ArchComponent.Component):
                 QT_TRANSLATE_NOOP("App::Property", "The type of landings of these stairs"),
                 locked=True,
             )
-            obj.Landings = ["None", "At center", "At each corner"]
+        landingsEnum = ["None", "At center"]
+        if not obj.getEnumerationsOfProperty("Landings") == landingsEnum:
+            landingsCur = obj.Landings
+            obj.Landings = landingsEnum
+        if landingsCur:
+            obj.Landings = landingsCur
 
         # Not implemented yet, remarked out at the moment
         # if not "Winders" in pl:
