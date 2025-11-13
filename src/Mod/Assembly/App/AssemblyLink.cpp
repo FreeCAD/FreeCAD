@@ -258,20 +258,18 @@ void AssemblyLink::synchronizeComponents()
     std::set<App::DocumentObject*> children;
     for (auto* obj : assemblyGroup) {
         if (auto* partFeat = dynamic_cast<PartApp::Feature*>(obj)) {
-            if (auto* prop =
-                    dynamic_cast<App::PropertyLink*>(partFeat->getPropertyByName("Base"))) {
+            if (auto* prop = dynamic_cast<App::PropertyLink*>(partFeat->getPropertyByName("Base"))) {
                 if (prop->getValue()) {
                     children.insert(prop->getValue());
                 }
             }
-            if (auto* prop =
-                    dynamic_cast<App::PropertyLink*>(partFeat->getPropertyByName("Tool"))) {
+            if (auto* prop = dynamic_cast<App::PropertyLink*>(partFeat->getPropertyByName("Tool"))) {
                 if (prop->getValue()) {
                     children.insert(prop->getValue());
                 }
             }
-            if (auto* prop =
-                    dynamic_cast<App::PropertyLinkList*>(partFeat->getPropertyByName("Shapes"))) {
+            if (auto* prop
+                = dynamic_cast<App::PropertyLinkList*>(partFeat->getPropertyByName("Shapes"))) {
                 for (auto* shapeObj : prop->getValues()) {
                     children.insert(shapeObj);
                 }
@@ -280,12 +278,12 @@ void AssemblyLink::synchronizeComponents()
     }
 
     std::vector<App::DocumentObject*> topLevelComponents;
-    std::copy_if(assemblyGroup.begin(),
-                 assemblyGroup.end(),
-                 std::back_inserter(topLevelComponents),
-                 [&children](App::DocumentObject* obj) {
-                     return children.find(obj) == children.end();
-                 });
+    std::copy_if(
+        assemblyGroup.begin(),
+        assemblyGroup.end(),
+        std::back_inserter(topLevelComponents),
+        [&children](App::DocumentObject* obj) { return children.find(obj) == children.end(); }
+    );
 
     // We check if a component needs to be added to the AssemblyLink
     for (auto* obj : topLevelComponents) {
