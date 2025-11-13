@@ -27,6 +27,7 @@
 
 #include "../../SketcherGlobal.h"
 #include "SubSystem.h"
+#include "Substitution.h"
 
 
 #define EIGEN_VERSION \
@@ -121,6 +122,7 @@ private:
     std::map<Constraint*, VEC_pD> c2p;                // constraint to parameter adjacency list
     std::map<double*, std::vector<Constraint*>> p2c;  // parameter to constraint adjacency list
 
+    Substitution substitution;
     std::vector<SubSystem*> subSystems, subSystemsAux;
     void clearSubSystems();
 

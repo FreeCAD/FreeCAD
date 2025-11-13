@@ -208,6 +208,10 @@ class SketcherExport Line: public Curve
 public:
     Point p1;
     Point p2;
+
+    Line() = default;
+    Line(Point p1_, Point p2_);
+
     DeriVector2 CalculateNormal(const Point& p, const double* derivparam = nullptr) const override;
     DeriVector2 Value(double u, double du, const double* derivparam = nullptr) const override;
     int PushOwnParams(VEC_pD& pvec) override;

@@ -623,13 +623,17 @@ Substitution::Substitution(const VEC_pD& initialUnknowns,
     // when creating the reduction map next
     size_t parameterIndex = 0;
     parameters.resize(untouchedUnknowns.size() + factory.unknownsReductionList.size());
+    unknowns.resize(parameters.size());
+
     for (double* unknown : untouchedUnknowns) {
+        unknowns[parameterIndex] = unknown;
         parameters[parameterIndex] = *unknown;
         reductionMap[unknown] = &parameters[parameterIndex];
         parameterIndex++;
     }
     for (const auto& reduction : factory.unknownsReductionList) {
         // A single unkown is promoted to parameter for every reduction group
+        unknowns[parameterIndex] = reduction.first;
         parameters[parameterIndex] = *reduction.first;
         reductionMap[reduction.first] = &parameters[parameterIndex];
         for (double* reduced : reduction.second) {
@@ -655,6 +659,7 @@ Substitution::Substitution(const VEC_pD& initialUnknowns,
 
         upd.root = foundRoot->second;
         upd.follower = foundFollower->second;
+        substitutionMap[upd.follower] = upd.root;
     }
     for (auto& upd : constUpdaters) {
         auto foundRoot = reductionMap.find(upd.root);
@@ -671,6 +676,25 @@ Substitution::Substitution(const VEC_pD& initialUnknowns,
 
         upd.root = upd.root == nullptr ? nullptr : foundRoot->second;
         upd.follower = foundFollower->second;
+
+        if (upd.root != nullptr) {
+            substitutionMap[upd.follower] = upd.root;
+        }
+    }
+
+    // Put all constraints which were not reduced in the constraints vector
+    for (size_t i = 0; i < initialConstraints.size(); ++i) {
+        if (attempts[i] != ConstraintSubstitutionAttempt::Yes) {
+            constraints.push_back(initialConstraints[i]);
+            initialConstraints[i]->redirectParams(reductionMap, substitutionMap);
+        }
+    }
+}
+
+void Substitution::initParams()
+{
+    for (size_t i = 0; i < unknowns.size(); ++i) {
+        parameters[i] = *unknowns[i];
     }
 }
 

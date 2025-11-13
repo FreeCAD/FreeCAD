@@ -179,3 +179,78 @@ TEST_F(ConstraintsTest, tangentBSplineAndArc)  // NOLINT
         0.005
     );
 }
+TEST_F(ConstraintsTest, rectangleWithOneOffsetDim)  // NOLINT
+{
+    double left = -1;
+    double bottom = -5;
+    double right = 6;
+    double top = 8;
+
+    double l1p1x = left;
+    double l1p1y = bottom;
+    double l1p2x = left;
+    double l1p2y = top;
+    double l1length = 10;
+    GCS::Line l1(GCS::Point(&l1p1x, &l1p1y), GCS::Point(&l1p2x, &l1p2y));
+
+    double l2p1x = left;
+    double l2p1y = top;
+    double l2p2x = right;
+    double l2p2y = top;
+    GCS::Line l2(GCS::Point(&l2p1x, &l2p1y), GCS::Point(&l2p2x, &l2p2y));
+
+    double l3p1x = right;
+    double l3p1y = top;
+    double l3p2x = right;
+    double l3p2y = bottom;
+    GCS::Line l3(GCS::Point(&l3p1x, &l3p1y), GCS::Point(&l3p2x, &l3p2y));
+
+    double l4p1x = right;
+    double l4p1y = bottom;
+    double l4p2x = left;
+    double l4p2y = bottom;
+    GCS::Line l4(GCS::Point(&l4p1x, &l4p1y), GCS::Point(&l4p2x, &l4p2y));
+
+
+    std::vector<double*> unknowns = {&l1p1x,
+                                     &l1p1y,
+                                     &l1p2x,
+                                     &l1p2y,
+
+                                     &l2p1x,
+                                     &l2p1y,
+                                     &l2p2x,
+                                     &l2p2y,
+
+                                     &l3p1x,
+                                     &l3p1y,
+                                     &l3p2x,
+                                     &l3p2y,
+
+                                     &l4p1x,
+                                     &l4p1y,
+                                     &l4p2x,
+                                     &l4p2y};
+
+    System()->addConstraintP2PCoincident(l1.p2, l2.p1);
+    System()->addConstraintP2PCoincident(l2.p2, l3.p1);
+    System()->addConstraintP2PCoincident(l3.p2, l4.p1);
+    System()->addConstraintP2PCoincident(l4.p2, l1.p1);
+
+    System()->addConstraintVertical(l1);
+    System()->addConstraintHorizontal(l2);
+    System()->addConstraintVertical(l3);
+    System()->addConstraintHorizontal(l4);
+
+    System()->addConstraintDifference(l1.p1.y, l1.p2.y, &l1length);
+
+    int solveResult = System()->solve(unknowns);
+    if (solveResult == GCS::Success) {
+        System()->applySolution();
+    }
+
+    // Assert
+    EXPECT_EQ(solveResult, GCS::Success);
+
+    EXPECT_NEAR(*l1.p2.y, *l1.p1.y + l1length, 1e-12);
+}
