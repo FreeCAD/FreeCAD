@@ -275,7 +275,7 @@ def export_common(values: Values, objectslist, filename: str) -> str:
     final: str
     final_for_editor: str
     gcode: Gcode = []
-    editor_result: int
+    editor_result: int = 1
 
     for obj in objectslist:
         if not hasattr(obj, "Path"):
