@@ -671,7 +671,7 @@ class ObjectDressup:
                 lead.append(self.createStraightMove(obj, lineBegin, begin))
 
             # prepend "LineZ" style lead-in - vertical inclined line
-            # Should be apply only on straight Path segment
+            # Should be applied only on straight Path segment
             elif styleIn == "LineZ":
                 # tangent vector in XY plane
                 # normal vector is vertical
@@ -686,7 +686,7 @@ class ObjectDressup:
                 lead.append(self.createStraightMove(obj, lineBegin, begin))
 
             # prepend "ArcZ" style lead-in - vertical Arc
-            # Should be apply only on straight Path segment
+            # Should be applied only on straight Path segment
             elif styleIn == "ArcZ":
                 # tangent vector in XY plane
                 # normal vector is vertical
@@ -704,7 +704,7 @@ class ObjectDressup:
                 arcBegin = begin + tangent + normal
                 lead.extend(self.createArcZMoveDown(obj, arcBegin, begin, arcRadius))
 
-            # replace 'begin' position by first lead-in command
+            # replace 'begin' position with first lead-in command
             begin = lead[0].positionBegin()
 
             if styleIn in ("Arc3d", "Line3d"):
@@ -728,12 +728,12 @@ class ObjectDressup:
 
         if obj.StyleOut == "Helix" and outInstrPrev:
             """change Z for previous helix lead-out
-            Can not do it in getLeadEnd(),
-            because no any information about next moves there while creating Lead-out"""
+            Unable to do it in getLeadEnd(), due to lack of
+            existing information about next moves while creating Lead-out"""
             posPrevZ = outInstrPrev.positionEnd().z
             if posPrevZ > beginZ:
                 """previous profile upper than this
-                mean procesing one stepdown profile"""
+                mean processing one stepdown profile"""
                 halfStepZ = (posPrevZ - beginZ) / 2
                 outInstrPrev.param["Z"] = posPrevZ - halfStepZ
 
@@ -847,7 +847,7 @@ class ObjectDressup:
             else:
                 lead[-1].param["Z"] = self.baseOp.StartDepth.Value
 
-        # append travel moves to clearance height after finish all profiles
+        # append travel moves to clearance height after finishing all profiles
         if last and obj.StyleOut != "No Retract":
             lead += self.getTravelEnd(obj)
 
@@ -888,7 +888,7 @@ class ObjectDressup:
 
         return i
 
-    # Increase travel length from begin
+    # Increase travel length from 'begin'
     def getOvertravelIn(self, obj, source, length, start, end):
         startPoint = source[start].positionBegin()
         endPoint = source[end].positionEnd()
@@ -901,12 +901,12 @@ class ObjectDressup:
                 instrLength = instr.pathLength()
 
                 if Path.Geom.isRoughly(measuredLength + instrLength, length, 1):
-                    # get needed length and not need to cut last command
+                    # get needed length without needing to cut last command
                     commands = source[end - i : end + 1]
                     return commands
 
                 elif measuredLength + instrLength > length:
-                    # measured length exceed needed length and need cut command
+                    # measured length exceeds needed length and needs cut command
                     commands = source[end - i + 1 : end + 1]
                     newLength = length - measuredLength
                     newInstr = self.cutInstrBegin(obj, instr, newLength)
@@ -938,12 +938,12 @@ class ObjectDressup:
                 instrLength = instr.pathLength()
 
                 if Path.Geom.isRoughly(measuredLength + instrLength, length, 1):
-                    # get needed length and not need to cut last command
+                    # get needed length without needing to cut last command
                     commands = source[start : start + i + 1]
                     return commands
 
                 elif measuredLength + instrLength > length:
-                    # measured length exceed needed length and need cut command
+                    # measured length exceeds needed length and needs cut command
                     commands = source[start : start + i]
                     newLength = length - measuredLength
                     newInstr = self.cutInstrEnd(obj, instr, newLength)
@@ -1051,7 +1051,7 @@ class ObjectDressup:
         source = PathLanguage.Maneuver.FromPath(PathUtils.getPathWithPlacement(obj.Base)).instr
         maneuver = PathLanguage.Maneuver()
 
-        # Knowing weather a given instruction is the first cutting move is easy,
+        # Knowing whether a given instruction is the first cutting move is easy,
         # we just use a flag and set it to false afterwards. To find the last
         # cutting move we need to search the list in reverse order.
 
@@ -1067,10 +1067,10 @@ class ObjectDressup:
 
         # Process all instructions
         for i, instr in enumerate(source):
-            # Process not mill instruction
+            # Process without mill instruction
             if not self.isCuttingMove(instr):
                 if not instr.isMove():
-                    # non-move instruction get added verbatim
+                    # non-move instruction gets added verbatim
                     commands.append(instr)
                 else:
                     moveDir = self.getMoveDir(instr)

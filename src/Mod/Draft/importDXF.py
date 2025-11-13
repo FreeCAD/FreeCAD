@@ -1522,7 +1522,7 @@ def drawSpline(spline, forceShape=False):
     if nbfitp != len(fitpoints):
         raise ValueError("Wrong number of fit points")
     if rational == all((w == 1.0 or w is None) for w in weights):
-        raise ValueError("inconsistant rational flag")
+        raise ValueError("Inconsistent rational flag")
     if len(weights) == 0:
         weights = None
     elif len(weights) != len(controlpoints):
