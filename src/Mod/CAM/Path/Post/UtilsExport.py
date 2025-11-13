@@ -336,7 +336,7 @@ def export_common(values: Values, objectslist, filename: str) -> str:
         if len(final) > 100000:
             print("Skipping editor since output is greater than 100kb")
         else:
-            dia = PostUtils.GCodeEditorDialog()
+            dia = PostUtils.GCodeEditorDialog(refactored=True)
             # the editor expects lines to end in "\n", and returns lines ending in "\n"
             if values["END_OF_LINE_CHARACTERS"] == "\n":
                 dia.editor.setText(final)
@@ -361,9 +361,8 @@ def export_common(values: Values, objectslist, filename: str) -> str:
                         #    "\r\n" means "use \r\n"
                         final = final_for_editor.replace("\n", values["END_OF_LINE_CHARACTERS"])
 
-    print("done postprocessing.")
-
     if editor_result == 0:
+        print("canceled postprocessing.")
         return None
 
     if not filename == "-":
@@ -382,4 +381,6 @@ def export_common(values: Values, objectslist, filename: str) -> str:
                 # "write out the gcode with whatever end-of-line characters the system
                 # that is running the postprocessor uses".
                 gfile.write(final)
+
+    print("done postprocessing.")
     return final

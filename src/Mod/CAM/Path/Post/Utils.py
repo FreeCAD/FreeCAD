@@ -208,7 +208,7 @@ class GCodeHighlighter(QtGui.QSyntaxHighlighter):
 
 
 class GCodeEditorDialog(QtGui.QDialog):
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, refactored=False):
         if parent is None:
             parent = FreeCADGui.getMainWindow()
         QtGui.QDialog.__init__(self, parent)
@@ -225,14 +225,21 @@ class GCodeEditorDialog(QtGui.QDialog):
         self.editor.setText("G01 X55 Y4.5 F300.0")
         layout.addWidget(self.editor)
 
-        # OK and Cancel buttons
-        self.buttons = QtGui.QDialogButtonBox(
-            QtGui.QDialogButtonBox.Apply
-            | QtGui.QDialogButtonBox.Discard
-            | QtGui.QDialogButtonBox.Cancel,
-            QtCore.Qt.Horizontal,
-            self,
-        )
+        # buttons depending on the post processor used
+        if refactored:
+            self.buttons = QtGui.QDialogButtonBox(
+                QtGui.QDialogButtonBox.Apply
+                | QtGui.QDialogButtonBox.Discard
+                | QtGui.QDialogButtonBox.Cancel,
+                QtCore.Qt.Horizontal,
+                self,
+            )
+        else:
+            self.buttons = QtGui.QDialogButtonBox(
+                QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel,
+                QtCore.Qt.Horizontal,
+                self,
+            )
         layout.addWidget(self.buttons)
 
         # restore placement and size
@@ -253,7 +260,7 @@ class GCodeEditorDialog(QtGui.QDialog):
         match self.buttons.buttonRole(button):
             case QtGui.QDialogButtonBox.RejectRole:
                 self.done(0)
-            case QtGui.QDialogButtonBox.ApplyRole:
+            case QtGui.QDialogButtonBox.ApplyRole | QtGui.QDialogButtonBox.AcceptRole:
                 self.done(1)
             case QtGui.QDialogButtonBox.DestructiveRole:
                 self.done(2)
