@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2006 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -107,8 +109,7 @@ public:
     //@}
 
     static Placement slerp(const Placement& p0, const Placement& p1, double t);
-    static Placement
-    sclerp(const Placement& p0, const Placement& p1, double t, bool shorten = true);
+    static Placement sclerp(const Placement& p0, const Placement& p1, double t, bool shorten = true);
 
     /// Returns string representation of the placement, useful for debugging
     std::string toString() const;

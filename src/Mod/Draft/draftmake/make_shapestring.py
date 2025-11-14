@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
 # *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
@@ -51,8 +53,7 @@ def make_shapestring(String, FontFile, Size=100, Tracking=0):
         App.Console.PrintError("No active document. Aborting\n")
         return
 
-    obj = App.ActiveDocument.addObject("Part::Part2DObjectPython",
-                                       "ShapeString")
+    obj = App.ActiveDocument.addObject("Part::Part2DObjectPython", "ShapeString")
     ShapeString(obj)
     obj.String = String
     obj.FontFile = FontFile
@@ -63,7 +64,8 @@ def make_shapestring(String, FontFile, Size=100, Tracking=0):
         ViewProviderShapeString(obj.ViewObject)
         gui_utils.format_object(obj)
         obrep = obj.ViewObject
-        if "PointSize" in obrep.PropertiesList: obrep.PointSize = 1 # hide the segment end points
+        if "PointSize" in obrep.PropertiesList:
+            obrep.PointSize = 1  # hide the segment end points
         gui_utils.select(obj)
     obj.recompute()
     return obj

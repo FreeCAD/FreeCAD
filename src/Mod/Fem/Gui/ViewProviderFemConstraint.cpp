@@ -94,8 +94,8 @@ void ViewProviderFemConstraint::attach(App::DocumentObject* pcObject)
     addDisplayMaskMode(sep, "Base");
 }
 
-std::string ViewProviderFemConstraint::resourceSymbolDir =
-    App::Application::getResourceDir() + "Mod/Fem/Resources/symbols/";
+std::string ViewProviderFemConstraint::resourceSymbolDir = App::Application::getResourceDir()
+    + "Mod/Fem/Resources/symbols/";
 
 void ViewProviderFemConstraint::loadSymbol(const char* fileName)
 {
@@ -156,9 +156,11 @@ void ViewProviderFemConstraint::setupContextMenu(QMenu* menu, QObject* receiver,
     QAction* act;
     act = menu->addAction(QObject::tr("Edit Analysis Feature"), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
-    ViewProviderGeometryObject::setupContextMenu(menu,
-                                                 receiver,
-                                                 member);  // clazy:exclude=skipped-base-method
+    ViewProviderGeometryObject::setupContextMenu(
+        menu,
+        receiver,
+        member
+    );  // clazy:exclude=skipped-base-method
 }
 
 void ViewProviderFemConstraint::onChanged(const App::Property* prop)
@@ -179,9 +181,11 @@ void ViewProviderFemConstraint::updateData(const App::Property* prop)
     }
 }
 
-void ViewProviderFemConstraint::handleChangedPropertyName(Base::XMLReader& reader,
-                                                          const char* typeName,
-                                                          const char* propName)
+void ViewProviderFemConstraint::handleChangedPropertyName(
+    Base::XMLReader& reader,
+    const char* typeName,
+    const char* propName
+)
 {
     if (strcmp(propName, "FaceColor") == 0
         && Base::Type::fromName(typeName) == App::PropertyColor::getClassTypeId()) {
@@ -229,9 +233,11 @@ void ViewProviderFemConstraint::updateSymbol()
     transformExtraSymbol();
 }
 
-void ViewProviderFemConstraint::transformSymbol(const Base::Vector3d& point,
-                                                const Base::Vector3d& normal,
-                                                SbMatrix& mat) const
+void ViewProviderFemConstraint::transformSymbol(
+    const Base::Vector3d& point,
+    const Base::Vector3d& normal,
+    SbMatrix& mat
+) const
 {
     auto obj = this->getObject<const Fem::Constraint>();
     SbVec3f axisY(0, 1, 0);
@@ -239,9 +245,7 @@ void ViewProviderFemConstraint::transformSymbol(const Base::Vector3d& point,
     SbVec3f scale(s, s, s);
     SbVec3f norm = rotateSymbol ? SbVec3f(normal.x, normal.y, normal.z) : axisY;
     SbRotation rot(axisY, norm);
-    SbVec3f tra(static_cast<float>(point.x),
-                static_cast<float>(point.y),
-                static_cast<float>(point.z));
+    SbVec3f tra(static_cast<float>(point.x), static_cast<float>(point.y), static_cast<float>(point.z));
     mat.setTransform(tra, rot, scale);
 }
 
@@ -275,9 +279,11 @@ std::string ViewProviderFemConstraint::gethideMeshShowPartStr()
 
 bool ViewProviderFemConstraint::setEdit(int ModNum)
 {
-    Gui::Command::doCommand(Gui::Command::Doc,
-                            "%s",
-                            ViewProviderFemConstraint::gethideMeshShowPartStr().c_str());
+    Gui::Command::doCommand(
+        Gui::Command::Doc,
+        "%s",
+        ViewProviderFemConstraint::gethideMeshShowPartStr().c_str()
+    );
     return Gui::ViewProviderGeometryObject::setEdit(ModNum);
 }
 

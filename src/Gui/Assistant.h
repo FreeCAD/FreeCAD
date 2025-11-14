@@ -28,16 +28,17 @@
 
 class QProcess;
 
-namespace Gui {
+namespace Gui
+{
 
-class Assistant : public QObject
+class Assistant: public QObject
 {
     Q_OBJECT
 
 public:
     Assistant();
     ~Assistant() override;
-    void showDocumentation(const QString &file);
+    void showDocumentation(const QString& file);
 
 private Q_SLOTS:
     void readyReadStandardOutput();
@@ -45,9 +46,9 @@ private Q_SLOTS:
 
 private:
     bool startAssistant();
-    QProcess *proc;
+    QProcess* proc;
 };
 
-}
+}  // namespace Gui
 
-#endif // GUI_ASSISTANT_H
+#endif  // GUI_ASSISTANT_H

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -24,8 +26,6 @@
 #define MESH_PART_APP_PRECOMPILED_H
 
 #include <FCConfig.h>
-
-#ifdef _PreComp_
 
 // standard
 #include <cmath>
@@ -72,5 +72,4 @@
 #include <TopoDS_Shape.hxx>
 #include <gp_Pln.hxx>
 
-#endif  // _PreComp_
 #endif

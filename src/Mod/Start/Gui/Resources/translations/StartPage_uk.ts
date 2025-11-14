@@ -47,7 +47,7 @@
     <message>
       <location filename="../../Manipulator.cpp" line="45"/>
       <source>Start</source>
-      <translation>Початок</translation>
+      <translation>На початкову</translation>
     </message>
     <message>
       <location filename="../../Manipulator.cpp" line="46"/>

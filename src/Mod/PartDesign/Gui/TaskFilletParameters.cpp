@@ -21,25 +21,22 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <QAction>
 #include <QListWidget>
 #include <QMessageBox>
-#endif
+
 
 #include <Base/Interpreter.h>
 #include <Base/Converter.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <Gui/Inventor/Draggers/GizmoHelper.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/ViewProvider.h>
 #include <Mod/PartDesign/App/FeatureFillet.h>
 #include <Mod/Part/App/Attacher.h>
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Part/App/Tools.h>
+#include <Mod/Part/App/GizmoHelper.h>
 
 #include "ui_TaskFilletParameters.h"
 #include "TaskFilletParameters.h"
@@ -121,7 +118,8 @@ void TaskFilletParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
         if (selectionMode == refSel) {
             referenceSelected(msg, ui->listWidgetReferences);
         }
-    } else if (msg.Type == Gui::SelectionChanges::ClrSelection) {
+    }
+    else if (msg.Type == Gui::SelectionChanges::ClrSelection) {
         // TODO: the gizmo position should be only recalculated when the feature associated
         // with the gizmo is removed from the list
         setGizmoPositions();
@@ -254,7 +252,7 @@ void TaskFilletParameters::setGizmoPositions()
     // The dragger length won't be equal to the radius if the two faces
     // are not orthogonal so this correction is needed
     double angle = props1.dir.GetAngle(props2.dir);
-    double correction = 1/std::tan(angle/2);
+    double correction = 1 / std::tan(angle / 2);
 
     radiusGizmo->setMultFactor(correction);
     radiusGizmo2->setMultFactor(correction);

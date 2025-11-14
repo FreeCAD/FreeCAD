@@ -21,11 +21,8 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+#include <QMenu>
 
-#ifndef _PreComp_
-# include <QMenu>
-#endif
 
 #include "TaskPadParameters.h"
 #include "ViewProviderPad.h"
@@ -47,9 +44,9 @@ void ViewProviderPad::setupContextMenu(QMenu* menu, QObject* receiver, const cha
     PartDesignGui::ViewProviderSketchBased::setupContextMenu(menu, receiver, member);
 }
 
-TaskDlgFeatureParameters *ViewProviderPad::getEditDialog()
+TaskDlgFeatureParameters* ViewProviderPad::getEditDialog()
 {
     // TODO fix setting values from the history: now it doesn't work neither in
     //      the master and in the migrated branch  (2015-07-26, Fat-Zer)
-    return new TaskDlgPadParameters( this );
+    return new TaskDlgPadParameters(this);
 }

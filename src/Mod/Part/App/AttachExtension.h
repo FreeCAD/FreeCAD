@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Victor Titov (DeepSOIC) <vv.titov@gmail.com>       *
  *                                                                         *
@@ -20,9 +22,9 @@
  *                                                                         *
  ***************************************************************************/
 /**
-  * AttachExtensionh, .cpp contain a extension class to derive other features from, to make
-  * them attachable.
-  */
+ * AttachExtensionh, .cpp contain a extension class to derive other features from, to make
+ * them attachable.
+ */
 
 #ifndef PARTATTACHABLEOBJECT_H
 #define PARTATTACHABLEOBJECT_H
@@ -33,6 +35,8 @@
 #include <App/PropertyStandard.h>
 #include <Base/Exception.h>
 #include <Base/Placement.h>
+
+#include <Mod/Part/PartGlobal.h>
 
 #include "Attacher.h"
 
@@ -136,12 +140,16 @@ public:
 
 protected:
     void extensionOnChanged(const App::Property* /*prop*/) override;
-    virtual bool extensionHandleChangedPropertyName(Base::XMLReader& reader,
-                                                    const char* TypeName,
-                                                    const char* PropName) override;
+    virtual bool extensionHandleChangedPropertyName(
+        Base::XMLReader& reader,
+        const char* TypeName,
+        const char* PropName
+    ) override;
 
     App::PropertyPlacement& getPlacement() const;
     void initBase(bool force);
+
+    void handleLegacyTangentPlaneOrientation();
 
 public:
     void updateAttacherVals(bool base = false) const;
@@ -164,6 +172,6 @@ private:
 
 using AttachExtensionPython = App::ExtensionPythonT<AttachExtension>;
 
-} // namespace Part
+}  // namespace Part
 
-#endif // PARTATTACHABLEOBJECT_H
+#endif  // PARTATTACHABLEOBJECT_H

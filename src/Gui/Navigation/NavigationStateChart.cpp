@@ -34,7 +34,8 @@ using namespace Gui;
 namespace sc = boost::statechart;
 using NS = NavigationStateChart;
 
-NS::Event::Event() : flags(new Flags)
+NS::Event::Event()
+    : flags(new Flags)
 {}
 
 bool NS::Event::isMouseButtonEvent() const
@@ -150,7 +151,7 @@ NavigationStateChart::~NavigationStateChart()
     naviMachine.reset();
 }
 
-SbBool NavigationStateChart::processSoEvent(const SoEvent * const ev)
+SbBool NavigationStateChart::processSoEvent(const SoEvent* const ev)
 {
     // Events when in "ready-to-seek" mode are ignored, except those
     // which influence the seek mode itself -- these are handled further
@@ -161,7 +162,7 @@ SbBool NavigationStateChart::processSoEvent(const SoEvent * const ev)
 
     // Switch off viewing mode (Bug #0000911)
     if (!this->isSeekMode() && !this->isAnimating() && this->isViewing()) {
-        this->setViewing(false); // by default disable viewing mode to render the scene
+        this->setViewing(false);  // by default disable viewing mode to render the scene
     }
 
     // Mismatches in state of the modifier keys happens if the user
@@ -179,7 +180,7 @@ SbBool NavigationStateChart::processSoEvent(const SoEvent * const ev)
     smev.inventor_event = ev;
 
     // Spaceball/joystick handling
-    if (ev->isOfType(SoMotion3Event::getClassTypeId())){
+    if (ev->isOfType(SoMotion3Event::getClassTypeId())) {
         smev.flags->processed = true;
         this->processMotionEvent(static_cast<const SoMotion3Event*>(ev));
         return true;
@@ -187,7 +188,7 @@ SbBool NavigationStateChart::processSoEvent(const SoEvent * const ev)
 
     // Keyboard handling
     if (ev->isOfType(SoKeyboardEvent::getClassTypeId())) {
-        const auto event = static_cast<const SoKeyboardEvent *>(ev);
+        const auto event = static_cast<const SoKeyboardEvent*>(ev);
         smev.flags->processed = processKeyboardEvent(event);
     }
 
@@ -195,27 +196,25 @@ SbBool NavigationStateChart::processSoEvent(const SoEvent * const ev)
         const auto button = smev.asMouseButtonEvent()->getButton();
         const SbBool press = smev.asMouseButtonEvent()->getState() == SoButtonEvent::DOWN;
         switch (button) {
-        case SoMouseButtonEvent::BUTTON1:
-            this->button1down = press;
-            break;
-        case SoMouseButtonEvent::BUTTON2:
-            this->button2down = press;
-            break;
-        case SoMouseButtonEvent::BUTTON3:
-            this->button3down = press;
-            break;
-        default:
-            break;
+            case SoMouseButtonEvent::BUTTON1:
+                this->button1down = press;
+                break;
+            case SoMouseButtonEvent::BUTTON2:
+                this->button2down = press;
+                break;
+            case SoMouseButtonEvent::BUTTON3:
+                this->button3down = press;
+                break;
+            default:
+                break;
         }
     }
 
-    smev.modifiers =
-        (this->button1down ? NS::Event::BUTTON1DOWN : 0) |
-        (this->button2down ? NS::Event::BUTTON2DOWN : 0) |
-        (this->button3down ? NS::Event::BUTTON3DOWN : 0) |
-        (this->ctrldown    ? NS::Event::CTRLDOWN : 0) |
-        (this->shiftdown   ? NS::Event::SHIFTDOWN : 0) |
-        (this->altdown     ? NS::Event::ALTDOWN : 0);
+    smev.modifiers = (this->button1down ? NS::Event::BUTTON1DOWN : 0)
+        | (this->button2down ? NS::Event::BUTTON2DOWN : 0)
+        | (this->button3down ? NS::Event::BUTTON3DOWN : 0)
+        | (this->ctrldown ? NS::Event::CTRLDOWN : 0) | (this->shiftdown ? NS::Event::SHIFTDOWN : 0)
+        | (this->altdown ? NS::Event::ALTDOWN : 0);
 
     if (!smev.flags->processed) {
         this->naviMachine->process_event(smev);

@@ -3,7 +3,6 @@ from Base.Persistence import Persistence
 from Base.Matrix import Matrix
 from typing import Any, Final, List, Optional
 
-
 class Document(Persistence):
     """
     This is a Document class
@@ -189,9 +188,7 @@ class Document(Persistence):
         """
         ...
 
-    def toggleTreeItem(
-        self, obj: Any, mod: int = 0, subName: Optional[str] = None
-    ) -> None:
+    def toggleTreeItem(self, obj: Any, mod: int = 0, subName: Optional[str] = None) -> None:
         """
         toggleTreeItem(obj, mod=0, subName) -> None
 
@@ -226,7 +223,6 @@ class Document(Persistence):
         obj : Gui.ViewProvider
         """
         ...
-
     ActiveObject: Any = ...
     """The active object of the document."""
 

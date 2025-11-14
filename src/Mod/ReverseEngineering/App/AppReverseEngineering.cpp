@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,11 +22,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <Geom_BSplineSurface.hxx>
 #include <TColgp_Array1OfPnt.hxx>
-#endif
+
 
 #include <Base/Console.h>
 #include <Base/Converter.h>
@@ -35,9 +35,9 @@
 #include <Mod/Part/App/BSplineSurfacePy.h>
 #include <Mod/Points/App/PointsPy.h>
 #if defined(HAVE_PCL_FILTERS)
-#include <pcl/filters/passthrough.h>
-#include <pcl/filters/voxel_grid.h>
-#include <pcl/point_types.h>
+# include <pcl/filters/passthrough.h>
+# include <pcl/filters/voxel_grid.h>
+# include <pcl/point_types.h>
 #endif
 
 #include "ApproxSurface.h"

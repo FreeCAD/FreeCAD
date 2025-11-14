@@ -30,181 +30,191 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 
-namespace Gui {
+namespace Gui
+{
 
-    ComboLinks::ComboLinks(QComboBox* combo)
-        : combo(combo)
-    {
-        if (combo) {
-            combo->clear();
+ComboLinks::ComboLinks(QComboBox* combo)
+    : combo(combo)
+{
+    if (combo) {
+        combo->clear();
+    }
+}
+
+ComboLinks::~ComboLinks()
+{
+    clear();  // Deletes owned pointers in linksInList
+}
+
+void ComboLinks::setCombo(QComboBox* combobox)
+{
+    clear();  // Clear old state if any
+    combo = combobox;
+    if (combo) {
+        combo->clear();
+    }
+}
+
+int ComboLinks::addLink(const App::PropertyLinkSub& lnk, const QString& itemText, int userData)
+{
+    if (!combo) {
+        return -1;
+    }
+    int newIndex = combo->count();
+    int finalUserData = (userData == -1) ? newIndex : userData;
+
+    // Store link internally (create a copy)
+    auto* newLink = new App::PropertyLinkSub();
+    newLink->Paste(lnk);
+    linksInList.push_back(newLink);
+
+    // Add to combo box
+    combo->addItem(itemText, QVariant(finalUserData));
+
+    // Track document context from the first valid object link
+    if (!doc && newLink->getValue()) {
+        doc = newLink->getValue()->getDocument();
+    }
+    return newIndex;
+}
+
+int ComboLinks::addLink(
+    App::DocumentObject* linkObj,
+    const std::string& linkSubname,
+    const QString& itemText,
+    int userData
+)
+{
+    App::PropertyLinkSub lnk;
+    std::vector<std::string> sub = {linkSubname};
+    lnk.setValue(linkObj, sub);
+    return addLink(lnk, itemText, userData);
+}
+
+int ComboLinks::addLinkBefore(
+    const App::PropertyLinkSub& lnk,
+    const QString& itemText,
+    int targetUserData,
+    int userData
+)
+{
+    if (!combo) {
+        return -1;
+    }
+
+    int insertPos = -1;
+    for (int i = 0; i < combo->count(); ++i) {
+        if (combo->itemData(i).toInt() == targetUserData) {
+            insertPos = i;
+            break;
         }
     }
 
-    ComboLinks::~ComboLinks()
-    {
-        clear(); // Deletes owned pointers in linksInList
+    // Store link internally (create a copy)
+    auto* newLink = new App::PropertyLinkSub();
+    newLink->Paste(lnk);
+
+    int finalUserData = (userData == -1) ? ((insertPos == -1) ? count() : insertPos) : userData;
+
+    if (insertPos != -1) {
+        linksInList.insert(linksInList.begin() + insertPos, newLink);
+        combo->insertItem(insertPos, itemText, QVariant(finalUserData));
     }
-
-    void ComboLinks::setCombo(QComboBox* combobox)
-    {
-        clear(); // Clear old state if any
-        combo = combobox;
-        if (combo) {
-            combo->clear();
-        }
-    }
-
-    int ComboLinks::addLink(const App::PropertyLinkSub& lnk, const QString& itemText, int userData)
-    {
-        if (!combo) {
-            return -1;
-        }
-        int newIndex = combo->count();
-        int finalUserData = (userData == -1) ? newIndex : userData;
-
-        // Store link internally (create a copy)
-        auto* newLink = new App::PropertyLinkSub();
-        newLink->Paste(lnk);
+    else {
+        // Target not found, append to end
+        insertPos = combo->count();
         linksInList.push_back(newLink);
-
-        // Add to combo box
         combo->addItem(itemText, QVariant(finalUserData));
-
-        // Track document context from the first valid object link
-        if (!doc && newLink->getValue()) {
-            doc = newLink->getValue()->getDocument();
-        }
-        return newIndex;
     }
 
-    int ComboLinks::addLink(App::DocumentObject* linkObj, const std::string& linkSubname, const QString& itemText, int userData)
-    {
-        App::PropertyLinkSub lnk;
-        std::vector<std::string> sub = { linkSubname };
-        lnk.setValue(linkObj, sub);
-        return addLink(lnk, itemText, userData);
-    }
-
-    int ComboLinks::addLinkBefore(const App::PropertyLinkSub& lnk, const QString& itemText, int targetUserData, int userData)
-    {
-        if (!combo) {
-            return -1;
-        }
-
-        int insertPos = -1;
-        for (int i = 0; i < combo->count(); ++i) {
-            if (combo->itemData(i).toInt() == targetUserData) {
-                insertPos = i;
-                break;
+    // Update user data for subsequent items if default (-1) was used and inserting
+    if (userData == -1 && insertPos != -1 && insertPos < count() - 1) {
+        for (int i = insertPos + 1; i < count(); ++i) {
+            if (combo->itemData(i).toInt() == i - 1) {  // Check if it was using default index
+                combo->setItemData(i, QVariant(i));
             }
         }
-
-        // Store link internally (create a copy)
-        auto* newLink = new App::PropertyLinkSub();
-        newLink->Paste(lnk);
-
-        int finalUserData = (userData == -1) ? ((insertPos == -1) ? count() : insertPos) : userData;
-
-        if (insertPos != -1) {
-            linksInList.insert(linksInList.begin() + insertPos, newLink);
-            combo->insertItem(insertPos, itemText, QVariant(finalUserData));
-        }
-        else {
-            // Target not found, append to end
-            insertPos = combo->count();
-            linksInList.push_back(newLink);
-            combo->addItem(itemText, QVariant(finalUserData));
-        }
-
-        // Update user data for subsequent items if default (-1) was used and inserting
-        if (userData == -1 && insertPos != -1 && insertPos < count() - 1) {
-            for (int i = insertPos + 1; i < count(); ++i) {
-                if (combo->itemData(i).toInt() == i - 1) { // Check if it was using default index
-                    combo->setItemData(i, QVariant(i));
-                }
-            }
-        }
-
-
-        // Track document context
-        if (!doc && newLink->getValue()) {
-            doc = newLink->getValue()->getDocument();
-        }
-        return insertPos;
     }
 
 
-    void ComboLinks::clear()
-    {
-        if (combo) {
-            // Block signals while clearing to prevent issues if connected elsewhere
+    // Track document context
+    if (!doc && newLink->getValue()) {
+        doc = newLink->getValue()->getDocument();
+    }
+    return insertPos;
+}
+
+
+void ComboLinks::clear()
+{
+    if (combo) {
+        // Block signals while clearing to prevent issues if connected elsewhere
+        QSignalBlocker blocker(combo);
+        combo->clear();
+    }
+    for (App::PropertyLinkSub* linkPtr : linksInList) {
+        delete linkPtr;  // Delete the objects pointed to
+    }
+    linksInList.clear();  // Clear the vector itself
+    doc = nullptr;        // Reset document context
+}
+
+App::PropertyLinkSub& ComboLinks::getLink(int index) const
+{
+    if (index < 0 || static_cast<size_t>(index) >= linksInList.size()) {
+        throw Base::IndexError("ComboLinks::getLink: Index out of range");
+    }
+    App::PropertyLinkSub* linkPtr = linksInList[static_cast<size_t>(index)];
+    // Perform validity check only if we have a document context and a linked object
+    if (doc && linkPtr->getValue() && !(doc->isIn(linkPtr->getValue()))) {
+        throw Base::ValueError("Linked object is not in the document; it may have been deleted");
+    }
+    return *linkPtr;
+}
+
+App::PropertyLinkSub& ComboLinks::getCurrentLink() const
+{
+    assert(combo);
+    return getLink(combo->currentIndex());
+}
+
+int ComboLinks::getUserData(int index) const
+{
+    if (!combo || index < 0 || index >= combo->count()) {
+        return -1;  // Indicate invalid index or no combo
+    }
+    return combo->itemData(index).toInt();
+}
+
+int ComboLinks::getCurrentUserData() const
+{
+    if (!combo) {
+        return -1;
+    }
+    return combo->currentData().toInt();
+}
+
+
+int ComboLinks::setCurrentLink(const App::PropertyLinkSub& lnk)
+{
+    if (!combo) {
+        return -1;
+    }
+    for (size_t i = 0; i < linksInList.size(); ++i) {
+        const App::PropertyLinkSub* it = linksInList[i];
+        // Compare object pointer and sub-values vector
+        if (lnk.getValue() == it->getValue() && lnk.getSubValues() == it->getSubValues()) {
             QSignalBlocker blocker(combo);
-            combo->clear();
+            combo->setCurrentIndex(static_cast<int>(i));
+            return static_cast<int>(i);
         }
-        for (App::PropertyLinkSub* linkPtr : linksInList) {
-            delete linkPtr; // Delete the objects pointed to
-        }
-        linksInList.clear(); // Clear the vector itself
-        doc = nullptr; // Reset document context
     }
+    return -1;  // Not found
+}
 
-    App::PropertyLinkSub& ComboLinks::getLink(int index) const
-    {
-        if (index < 0 || static_cast<size_t>(index) >= linksInList.size()) {
-            throw Base::IndexError("ComboLinks::getLink: Index out of range");
-        }
-        App::PropertyLinkSub* linkPtr = linksInList[static_cast<size_t>(index)];
-        // Perform validity check only if we have a document context and a linked object
-        if (doc && linkPtr->getValue() && !(doc->isIn(linkPtr->getValue()))) {
-            throw Base::ValueError("Linked object is not in the document; it may have been deleted");
-        }
-        return *linkPtr;
-    }
+int ComboLinks::count() const
+{
+    return combo ? combo->count() : 0;
+}
 
-    App::PropertyLinkSub& ComboLinks::getCurrentLink() const
-    {
-        assert(combo);
-        return getLink(combo->currentIndex());
-
-    }
-
-    int ComboLinks::getUserData(int index) const
-    {
-        if (!combo || index < 0 || index >= combo->count()) {
-            return -1; // Indicate invalid index or no combo
-        }
-        return combo->itemData(index).toInt();
-    }
-
-    int ComboLinks::getCurrentUserData() const
-    {
-        if (!combo) {
-            return -1;
-        }
-        return combo->currentData().toInt();
-    }
-
-
-    int ComboLinks::setCurrentLink(const App::PropertyLinkSub& lnk)
-    {
-        if (!combo) {
-            return -1;
-        }
-        for (size_t i = 0; i < linksInList.size(); ++i) {
-            const App::PropertyLinkSub* it = linksInList[i];
-            // Compare object pointer and sub-values vector
-            if (lnk.getValue() == it->getValue() && lnk.getSubValues() == it->getSubValues()) {
-                QSignalBlocker blocker(combo);
-                combo->setCurrentIndex(static_cast<int>(i));
-                return static_cast<int>(i);
-            }
-        }
-        return -1; // Not found
-    }
-
-    int ComboLinks::count() const
-    {
-        return combo ? combo->count() : 0;
-    }
-
-} // namespace Gui
+}  // namespace Gui

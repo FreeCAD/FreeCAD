@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2019 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
 # *   Copyright (c) 2024 FreeCAD Project Association                        *
@@ -47,6 +49,7 @@ DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 
 ## \addtogroup draftmake
 # @{
+
 
 def _preprocess(objs, radius, chamfer):
     """Check the inputs and return the edges for the fillet and the objects to be deleted."""
@@ -138,5 +141,6 @@ def make_fillet(objs, radius=100, chamfer=False, delete=False):
         gui_utils.select(obj)
 
     return obj
+
 
 ## @}

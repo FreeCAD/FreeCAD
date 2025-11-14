@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2016 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -174,24 +175,22 @@ class _ToggleOperation:
         }
 
     def IsActive(self):
-        if bool(FreeCADGui.Selection.getSelection()) is False:
-            return False
-        try:
-            for sel in FreeCADGui.Selection.getSelectionEx():
-                selProxy = Path.Dressup.Utils.baseOp(sel.Object).Proxy
-                if not isinstance(selProxy, Path.Op.Base.ObjectOp) and not isinstance(
-                    selProxy, Path.Op.Gui.Array.ObjectArray
-                ):
-                    return False
-            return True
-        except (IndexError, AttributeError):
+        selection = FreeCADGui.Selection.getSelection()
+        if not selection:
             return False
 
+        for sel in selection:
+            baseOp = Path.Dressup.Utils.baseOp(sel)
+            if not hasattr(baseOp, "Active"):
+                return False
+
+        return True
+
     def Activated(self):
-        for sel in FreeCADGui.Selection.getSelectionEx():
-            op = Path.Dressup.Utils.baseOp(sel.Object)
-            op.Active = not op.Active
-            op.ViewObject.Visibility = op.Active
+        selection = FreeCADGui.Selection.getSelection()
+        for sel in selection:
+            baseOp = Path.Dressup.Utils.baseOp(sel)
+            baseOp.Active = not baseOp.Active
 
         FreeCAD.ActiveDocument.recompute()
 

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   (c) 2009 Yorik van Havre <yorik@uncreated.net>                        *
 # *   (c) 2010 Ken Cline <cline@frii.com>                                   *
@@ -49,10 +51,12 @@ class Rectangle(gui_base_original.Creator):
     def GetResources(self):
         """Set icon, menu and tooltip."""
 
-        return {'Pixmap': 'Draft_Rectangle',
-                'Accel': "R, E",
-                'MenuText': QT_TRANSLATE_NOOP("Draft_Rectangle", "Rectangle"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Rectangle", "Creates a 2-point rectangle")}
+        return {
+            "Pixmap": "Draft_Rectangle",
+            "Accel": "R, E",
+            "MenuText": QT_TRANSLATE_NOOP("Draft_Rectangle", "Rectangle"),
+            "ToolTip": QT_TRANSLATE_NOOP("Draft_Rectangle", "Creates a 2-point rectangle"),
+        }
 
     def Activated(self):
         """Execute when the command is called."""
@@ -109,37 +113,39 @@ class Rectangle(gui_base_original.Creator):
             Gui.addModule("Draft")
             if params.get_param("UsePartPrimitives"):
                 # Insert a Part::Primitive object
-                _cmd = 'FreeCAD.ActiveDocument.'
+                _cmd = "FreeCAD.ActiveDocument."
                 _cmd += 'addObject("Part::Plane", "Plane")'
-                _cmd_list = ['plane = ' + _cmd,
-                             'plane.Length = ' + str(length),
-                             'plane.Width = ' + str(height),
-                             'pl = FreeCAD.Placement()',
-                             'pl.Rotation.Q=' + rot,
-                             'pl.Base = ' + DraftVecUtils.toString(base),
-                             'plane.Placement = pl',
-                             'Draft.autogroup(plane)',
-                             'Draft.select(plane)',
-                             'FreeCAD.ActiveDocument.recompute()']
-                self.commit(translate("draft", "Create Plane"),
-                            _cmd_list)
+                _cmd_list = [
+                    "plane = " + _cmd,
+                    "plane.Length = " + str(length),
+                    "plane.Width = " + str(height),
+                    "pl = FreeCAD.Placement()",
+                    "pl.Rotation.Q=" + rot,
+                    "pl.Base = " + DraftVecUtils.toString(base),
+                    "plane.Placement = pl",
+                    "Draft.autogroup(plane)",
+                    "Draft.select(plane)",
+                    "FreeCAD.ActiveDocument.recompute()",
+                ]
+                self.commit(translate("draft", "Create Plane"), _cmd_list)
             else:
-                _cmd = 'Draft.make_rectangle'
-                _cmd += '('
-                _cmd += 'length=' + str(length) + ', '
-                _cmd += 'height=' + str(height) + ', '
-                _cmd += 'placement=pl, '
-                _cmd += 'face=' + fil + ', '
-                _cmd += 'support=' + sup
-                _cmd += ')'
-                _cmd_list = ['pl = FreeCAD.Placement()',
-                             'pl.Rotation.Q = ' + rot,
-                             'pl.Base = ' + DraftVecUtils.toString(base),
-                             'rec = ' + _cmd,
-                             'Draft.autogroup(rec)',
-                             'FreeCAD.ActiveDocument.recompute()']
-                self.commit(translate("draft", "Create Rectangle"),
-                            _cmd_list)
+                _cmd = "Draft.make_rectangle"
+                _cmd += "("
+                _cmd += "length=" + str(length) + ", "
+                _cmd += "height=" + str(height) + ", "
+                _cmd += "placement=pl, "
+                _cmd += "face=" + fil + ", "
+                _cmd += "support=" + sup
+                _cmd += ")"
+                _cmd_list = [
+                    "pl = FreeCAD.Placement()",
+                    "pl.Rotation.Q = " + rot,
+                    "pl.Base = " + DraftVecUtils.toString(base),
+                    "rec = " + _cmd,
+                    "Draft.autogroup(rec)",
+                    "FreeCAD.ActiveDocument.recompute()",
+                ]
+                self.commit(translate("draft", "Create Rectangle"), _cmd_list)
         except Exception:
             _err("Draft: error delaying commit")
         self.finish(cont=None)
@@ -164,9 +170,11 @@ class Rectangle(gui_base_original.Creator):
             self.point, ctrlPoint, info = gui_tool_utils.getPoint(self, arg, noTracker=True)
             self.rect.update(self.point)
             gui_tool_utils.redraw3DView()
-        elif (arg["Type"] == "SoMouseButtonEvent"
-              and arg["State"] == "DOWN"
-              and arg["Button"] == "BUTTON1"):
+        elif (
+            arg["Type"] == "SoMouseButtonEvent"
+            and arg["State"] == "DOWN"
+            and arg["Button"] == "BUTTON1"
+        ):
 
             if arg["Position"] == self.pos:
                 self.finish(cont=None)
@@ -213,12 +221,14 @@ class Rectangle(gui_base_original.Creator):
             hints = [
                 Gui.InputHint(translate("draft", "%1 pick opposite point"), Gui.UserInput.MouseLeft)
             ]
-        return hints \
-            + gui_tool_utils._get_hint_xyz_constrain() \
-            + gui_tool_utils._get_hint_mod_constrain() \
+        return (
+            hints
+            + gui_tool_utils._get_hint_xyz_constrain()
+            + gui_tool_utils._get_hint_mod_constrain()
             + gui_tool_utils._get_hint_mod_snap()
+        )
 
 
-Gui.addCommand('Draft_Rectangle', Rectangle())
+Gui.addCommand("Draft_Rectangle", Rectangle())
 
 ## @}

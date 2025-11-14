@@ -88,13 +88,12 @@ public:
 
 private:
     // Used to support per face textures
-    SoTexture3        * pcShapeTexture3D;
-    SoCoordinate3     * pcShapeCoordinates;
-    SoIndexedFaceSet  * pcShapeFaceset;
+    SoTexture3* pcShapeTexture3D;
+    SoCoordinate3* pcShapeCoordinates;
+    SoIndexedFaceSet* pcShapeFaceset;
 };
 
-} //namespace Gui
+}  // namespace Gui
 
 
-#endif // GUI_VIEWPROVIDERTEXTUREEXT_H
-
+#endif  // GUI_VIEWPROVIDERTEXTUREEXT_H

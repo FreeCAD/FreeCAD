@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2021 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -28,20 +30,20 @@
 
 // Spreadsheet
 #ifndef SpreadsheetExport
-#ifdef Spreadsheet_EXPORTS
-#define SpreadsheetExport FREECAD_DECL_EXPORT
-#else
-#define SpreadsheetExport FREECAD_DECL_IMPORT
-#endif
+# ifdef Spreadsheet_EXPORTS
+#  define SpreadsheetExport FREECAD_DECL_EXPORT
+# else
+#  define SpreadsheetExport FREECAD_DECL_IMPORT
+# endif
 #endif
 
 // SpreadsheetGui
 #ifndef SpreadsheetGuiExport
-#ifdef SpreadsheetGui_EXPORTS
-#define SpreadsheetGuiExport FREECAD_DECL_EXPORT
-#else
-#define SpreadsheetGuiExport FREECAD_DECL_IMPORT
-#endif
+# ifdef SpreadsheetGui_EXPORTS
+#  define SpreadsheetGuiExport FREECAD_DECL_EXPORT
+# else
+#  define SpreadsheetGuiExport FREECAD_DECL_IMPORT
+# endif
 #endif
 
 #endif  // SPREADSHEET_GLOBAL_H

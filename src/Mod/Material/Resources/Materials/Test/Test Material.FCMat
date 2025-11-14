@@ -1,10 +1,11 @@
 ---
+# SPDX-License-Identifier: LGPL-2.1-or-later
 # File created by FreeCAD 0.22.0 Revision: 34863 (Git)
 General:
   UUID: "c6c64159-19c1-40b5-859c-10561f20f979"
   Name: "Test Material"
   Author: "David Carter"
-  License: "GPL-2.0-or-later"
+  License: "LGPL-2.1-or-later"
   Description: "This material is for testing purposes only. It does not describe any real material."
 Inherits:
   DefaultAppearance:

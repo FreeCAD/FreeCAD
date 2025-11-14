@@ -1,5 +1,8 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 set(Import_LIBS
     Part
+    PartDesign
     ${OCC_OCAF_LIBRARIES}
     ${OCC_OCAF_DEBUG_LIBRARIES}
 )
@@ -27,7 +30,6 @@ SET(Import_SRCS
     StepShape.h
     StepShape.cpp
     StepShapePyImp.cpp
-    PreCompiled.cpp
     PreCompiled.h
     Tools.cpp
     Tools.h
@@ -73,6 +75,13 @@ SOURCE_GROUP("SCL" FILES ${SCL_Resources})
 generate_from_py(StepShape)
 
 add_library(Import SHARED ${Import_SRCS})
+
+if(FREECAD_USE_PCH)
+    target_precompile_headers(Import PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
+endif(FREECAD_USE_PCH)
+
 target_include_directories(
     Import
     PRIVATE

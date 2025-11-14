@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
@@ -48,10 +47,12 @@ public:
     Module()
         : Py::ExtensionModule<Module>("Robot")
     {
-        add_varargs_method("simulateToFile",
-                           &Module::simulateToFile,
-                           "simulateToFile(Robot,Trajectory,TickSize,FileName) - runs the "
-                           "simulation and write the result to a file.");
+        add_varargs_method(
+            "simulateToFile",
+            &Module::simulateToFile,
+            "simulateToFile(Robot,Trajectory,TickSize,FileName) - runs the "
+            "simulation and write the result to a file."
+        );
         initialize("This module is the Robot module.");  // register with Python
     }
 
@@ -63,14 +64,16 @@ private:
         float tick;
         char* FileName;
 
-        if (!PyArg_ParseTuple(args.ptr(),
-                              "O!O!fs",
-                              &(Robot6AxisPy::Type),
-                              &pcRobObj,
-                              &(TrajectoryPy::Type),
-                              &pcTracObj,
-                              &tick,
-                              &FileName)) {
+        if (!PyArg_ParseTuple(
+                args.ptr(),
+                "O!O!fs",
+                &(Robot6AxisPy::Type),
+                &pcRobObj,
+                &(TrajectoryPy::Type),
+                &pcTracObj,
+                &tick,
+                &FileName
+            )) {
             throw Py::Exception();
         }
 

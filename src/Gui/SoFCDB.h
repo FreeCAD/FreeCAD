@@ -34,7 +34,8 @@ class SoNode;
 class SoGroup;
 class SoVRMLGroup;
 
-namespace Gui {
+namespace Gui
+{
 /**
  * The FreeCAD database class to initialize all our own Inventor nodes.
  * @author Werner Mayer
@@ -47,7 +48,7 @@ public:
     static void finish();
     static SoNode* replaceSwitches(SoNode* node);
     /// helper to apply a SoWriteAction to a node and write it to a string
-    static const std::string& writeNodesToString(SoNode * root);
+    static const std::string& writeNodesToString(SoNode* root);
     static bool writeToVRML(SoNode* node, const char* filename, bool binary);
     static void writeToVRML(SoNode* node, std::string& buffer);
     static bool writeToX3D(SoNode* node, const char* filename, bool binary);
@@ -62,12 +63,23 @@ public:
 
 private:
     static void writeX3D(SoVRMLGroup* node, bool exportViewpoints, std::ostream& out);
-    static void writeX3DChild(SoNode* node, std::map<SoNode*, std::string>& nodeMap,
-                              int& numDEF, int spaces, std::ostream& out);
-    static void writeX3DFields(SoNode* node, std::map<SoNode*, std::string>& nodeMap,
-                               bool isRoot, int& numDEF, int spaces, std::ostream& out);
+    static void writeX3DChild(
+        SoNode* node,
+        std::map<SoNode*, std::string>& nodeMap,
+        int& numDEF,
+        int spaces,
+        std::ostream& out
+    );
+    static void writeX3DFields(
+        SoNode* node,
+        std::map<SoNode*, std::string>& nodeMap,
+        bool isRoot,
+        int& numDEF,
+        int spaces,
+        std::ostream& out
+    );
 };
 
-} // namespace Gui
+}  // namespace Gui
 
-#endif // GUI_SOFCDB_H
+#endif  // GUI_SOFCDB_H

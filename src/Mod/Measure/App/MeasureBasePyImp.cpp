@@ -1,4 +1,5 @@
-#include "PreCompiled.h"
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 
 #include "MeasureBase.h"
 

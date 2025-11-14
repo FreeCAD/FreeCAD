@@ -79,8 +79,9 @@ PyObject* ViewProviderFemPostFilterPy::createExtractionTaskWidget(PyObject* args
     PyErr_SetString(PyExc_TypeError, "creating the panel failed");
     return nullptr;
 #else
+    (void)args;
     PyErr_SetString(PyExc_NotImplementedError, "VTK python wrapper not available");
-    Py_Return;
+    return nullptr;
 #endif
 }
 

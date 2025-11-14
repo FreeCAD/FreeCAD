@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2007 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -25,6 +27,9 @@
 #define PART_FEATUREPARTBOOLEAN_H
 
 #include <App/PropertyLinks.h>
+
+#include <Mod/Part/PartGlobal.h>
+
 #include "PartFeature.h"
 
 class FCBRepAlgoAPI_BooleanOperation;
@@ -32,7 +37,7 @@ class FCBRepAlgoAPI_BooleanOperation;
 namespace Part
 {
 
-class PartExport Boolean : public Part::Feature
+class PartExport Boolean: public Part::Feature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::Boolean);
 
@@ -47,20 +52,22 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
     short mustExecute() const override;
     //@}
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "PartGui::ViewProviderBoolean";
     }
 
 protected:
-    virtual BRepAlgoAPI_BooleanOperation* makeOperation(const TopoDS_Shape&, const TopoDS_Shape&) const = 0;
-    virtual const char *opCode() const = 0;
+    virtual BRepAlgoAPI_BooleanOperation* makeOperation(const TopoDS_Shape&, const TopoDS_Shape&) const
+        = 0;
+    virtual const char* opCode() const = 0;
 };
 
-}
+}  // namespace Part
 
-#endif // PART_FEATUREPARTBOOLEAN_H
+#endif  // PART_FEATUREPARTBOOLEAN_H

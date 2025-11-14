@@ -31,7 +31,8 @@
 #include <FCGlobal.h>
 
 
-namespace Gui {
+namespace Gui
+{
 
 class GuiExport PythonTracing
 {
@@ -41,8 +42,8 @@ public:
 
     PythonTracing(const PythonTracing&) = delete;
     PythonTracing(PythonTracing&&) = delete;
-    PythonTracing& operator = (const PythonTracing&) = delete;
-    PythonTracing& operator = (PythonTracing&&) = delete;
+    PythonTracing& operator=(const PythonTracing&) = delete;
+    PythonTracing& operator=(PythonTracing&&) = delete;
 
     /*!
      * \brief isActive
@@ -84,7 +85,7 @@ public:
 
 private:
     void setPythonTraceEnabled(bool enabled) const;
-    static int tracer_callback(PyObject *obj, PyFrameObject *frame, int what, PyObject *arg);
+    static int tracer_callback(PyObject* obj, PyFrameObject* frame, int what, PyObject* arg);
 
 private:
     struct Private;
@@ -107,14 +108,14 @@ public:
 
     PythonTracingLocker(const PythonTracingLocker&) = delete;
     PythonTracingLocker(PythonTracingLocker&&) = delete;
-    PythonTracingLocker& operator = (const PythonTracingLocker&) = delete;
-    PythonTracingLocker& operator = (PythonTracingLocker&&) = delete;
+    PythonTracingLocker& operator=(const PythonTracingLocker&) = delete;
+    PythonTracingLocker& operator=(PythonTracingLocker&&) = delete;
 
 private:
     PythonTracing& trace;
 };
 
-class GuiExport PythonTracingWatcher : public QObject
+class GuiExport PythonTracingWatcher: public QObject
 {
     // NOLINTNEXTLINE
     Q_OBJECT
@@ -133,20 +134,21 @@ public:
 
     /*!
      * \brief getTrace
-     * Returns the Python tracing object. It's up to the calling instance to activate and decativate it.
+     * Returns the Python tracing object. It's up to the calling instance to activate and decativate
+     * it.
      * \return PythonTracing
      */
     PythonTracing& getTrace();
 
     PythonTracingWatcher(const PythonTracingWatcher&) = delete;
     PythonTracingWatcher(PythonTracingWatcher&&) = delete;
-    PythonTracingWatcher& operator = (const PythonTracingWatcher&) = delete;
-    PythonTracingWatcher& operator = (PythonTracingWatcher&&) = delete;
+    PythonTracingWatcher& operator=(const PythonTracingWatcher&) = delete;
+    PythonTracingWatcher& operator=(PythonTracingWatcher&&) = delete;
 
 private:
     PythonTracing trace;
 };
 
-} // namespace Gui
+}  // namespace Gui
 
-#endif // GUI_PYTHONTRACING_H
+#endif  // GUI_PYTHONTRACING_H

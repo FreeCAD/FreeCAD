@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2007 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -34,9 +36,16 @@ class SoPickedPoint;
 class SoEventCallback;
 class QSignalMapper;
 
-namespace App { class Document; }
-namespace Gui { class Document; }
-namespace Part {
+namespace App
+{
+class Document;
+}
+namespace Gui
+{
+class Document;
+}
+namespace Part
+{
 class Feature;
 class Primitive;
 class Plane;
@@ -55,26 +64,27 @@ class Ellipse;
 class Vertex;
 class Line;
 class RegularPolygon;
-}
-namespace PartGui {
+}  // namespace Part
+namespace PartGui
+{
 
 class Picker
 {
 public:
     virtual ~Picker() = default;
 
-    virtual bool pickedPoint(const SoPickedPoint * point) = 0;
+    virtual bool pickedPoint(const SoPickedPoint* point) = 0;
     virtual QString command(App::Document*) const = 0;
     void createPrimitive(QWidget* widget, const QString&, Gui::Document*);
     QString toPlacement(const gp_Ax2&) const;
 
-    int exitCode{-1};
+    int exitCode {-1};
     QEventLoop loop;
 };
 
 class Ui_DlgPrimitives;
 
-class AbstractPrimitive : public QObject
+class AbstractPrimitive: public QObject
 {
     Q_OBJECT
 
@@ -97,7 +107,7 @@ protected:
 
 // ----------------------------------------------------------------------------
 
-class PlanePrimitive : public AbstractPrimitive
+class PlanePrimitive: public AbstractPrimitive
 {
     Q_OBJECT
 
@@ -115,7 +125,7 @@ private:
 
 // ----------------------------------------------------------------------------
 
-class BoxPrimitive : public AbstractPrimitive
+class BoxPrimitive: public AbstractPrimitive
 {
     Q_OBJECT
 
@@ -133,7 +143,7 @@ private:
 
 // ----------------------------------------------------------------------------
 
-class CylinderPrimitive : public AbstractPrimitive
+class CylinderPrimitive: public AbstractPrimitive
 {
     Q_OBJECT
 
@@ -151,7 +161,7 @@ private:
 
 // ----------------------------------------------------------------------------
 
-class ConePrimitive : public AbstractPrimitive
+class ConePrimitive: public AbstractPrimitive
 {
     Q_OBJECT
 
@@ -169,7 +179,7 @@ private:
 
 // ----------------------------------------------------------------------------
 
-class SpherePrimitive : public AbstractPrimitive
+class SpherePrimitive: public AbstractPrimitive
 {
     Q_OBJECT
 
@@ -187,7 +197,7 @@ private:
 
 // ----------------------------------------------------------------------------
 
-class EllipsoidPrimitive : public AbstractPrimitive
+class EllipsoidPrimitive: public AbstractPrimitive
 {
     Q_OBJECT
 
@@ -205,7 +215,7 @@ private:
 
 // ----------------------------------------------------------------------------
 
-class TorusPrimitive : public AbstractPrimitive
+class TorusPrimitive: public AbstractPrimitive
 {
     Q_OBJECT
 
@@ -223,7 +233,7 @@ private:
 
 // ----------------------------------------------------------------------------
 
-class PrismPrimitive : public AbstractPrimitive
+class PrismPrimitive: public AbstractPrimitive
 {
     Q_OBJECT
 
@@ -241,7 +251,7 @@ private:
 
 // ----------------------------------------------------------------------------
 
-class WedgePrimitive : public AbstractPrimitive
+class WedgePrimitive: public AbstractPrimitive
 {
     Q_OBJECT
 
@@ -259,7 +269,7 @@ private:
 
 // ----------------------------------------------------------------------------
 
-class HelixPrimitive : public AbstractPrimitive
+class HelixPrimitive: public AbstractPrimitive
 {
     Q_OBJECT
 
@@ -277,7 +287,7 @@ private:
 
 // ----------------------------------------------------------------------------
 
-class SpiralPrimitive : public AbstractPrimitive
+class SpiralPrimitive: public AbstractPrimitive
 {
     Q_OBJECT
 
@@ -295,7 +305,7 @@ private:
 
 // ----------------------------------------------------------------------------
 
-class CirclePrimitive : public AbstractPrimitive
+class CirclePrimitive: public AbstractPrimitive
 {
     Q_OBJECT
 
@@ -313,7 +323,7 @@ private:
 
 // ----------------------------------------------------------------------------
 
-class EllipsePrimitive : public AbstractPrimitive
+class EllipsePrimitive: public AbstractPrimitive
 {
     Q_OBJECT
 
@@ -331,7 +341,7 @@ private:
 
 // ----------------------------------------------------------------------------
 
-class PolygonPrimitive : public AbstractPrimitive
+class PolygonPrimitive: public AbstractPrimitive
 {
     Q_OBJECT
 
@@ -349,7 +359,7 @@ private:
 
 // ----------------------------------------------------------------------------
 
-class LinePrimitive : public AbstractPrimitive
+class LinePrimitive: public AbstractPrimitive
 {
     Q_OBJECT
 
@@ -367,7 +377,7 @@ private:
 
 // ----------------------------------------------------------------------------
 
-class VertexPrimitive : public AbstractPrimitive
+class VertexPrimitive: public AbstractPrimitive
 {
     Q_OBJECT
 
@@ -385,7 +395,7 @@ private:
 
 // ----------------------------------------------------------------------------
 
-class DlgPrimitives : public QWidget
+class DlgPrimitives: public QWidget
 {
     Q_OBJECT
 
@@ -400,7 +410,7 @@ private:
     void buttonCircleFromThreePoints();
 
 private:
-    static void pickCallback(void * ud, SoEventCallback * n);
+    static void pickCallback(void* ud, SoEventCallback* n);
     void executeCallback(Picker*);
     void acceptChanges(const QString&);
     void tryCreatePrimitive(const QString&);
@@ -418,7 +428,7 @@ private:
 };
 
 class Ui_Location;
-class Location : public QWidget
+class Location: public QWidget
 {
     Q_OBJECT
 
@@ -435,7 +445,7 @@ private:
     void setPlacement(Part::Feature* feature);
     void bindExpressions(Part::Feature* feature);
     void connectSignals();
-    static void pickCallback(void * ud, SoEventCallback * n);
+    static void pickCallback(void* ud, SoEventCallback* n);
 
     int mode;
     QPointer<QWidget> activeView;
@@ -443,7 +453,7 @@ private:
     App::DocumentObjectWeakPtrT featurePtr;
 };
 
-class TaskPrimitives : public Gui::TaskView::TaskDialog
+class TaskPrimitives: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
@@ -461,7 +471,7 @@ private:
     Location* location;
 };
 
-class TaskPrimitivesEdit : public Gui::TaskView::TaskDialog
+class TaskPrimitivesEdit: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
@@ -478,6 +488,6 @@ private:
     Location* location;
 };
 
-} // namespace PartGui
+}  // namespace PartGui
 
-#endif // PARTGUI_DLGPRIMITIVES_H
+#endif  // PARTGUI_DLGPRIMITIVES_H

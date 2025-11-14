@@ -32,6 +32,7 @@ TEST_F(FeaturePartMakeElementRefineTest, makeElementRefineBoxes)
     auto _fuse = _doc->addObject<Part::Fuse>();
     _fuse->Base.setValue(_boxes[0]);
     _fuse->Tool.setValue(_boxes[3]);
+    _fuse->Refine.setValue(false);
     // Act
     _fuse->execute();
     Part::TopoShape ts = _fuse->Shape.getShape();

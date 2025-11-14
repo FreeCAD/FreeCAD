@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -27,7 +29,6 @@
 
 #include <Mod/Measure/MeasureGlobal.h>
 
-#ifdef _PreComp_
 
 // standard
 #include <cmath>
@@ -42,7 +43,5 @@
 // OpenCasCade
 #include <Mod/Part/App/OpenCascadeAll.h>
 
-
-#endif  //_PreComp_
 
 #endif  // MEASUREGUI_PRECOMPILED_H

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2004 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -259,8 +260,7 @@ static PropertyItem* createPropertyItem(App::Property* prop)
             return nullptr;
         }
     }
-    auto item =
-        static_cast<PropertyItem*>(PropertyItemFactory::instance().createPropertyItem(editor));
+    auto item = static_cast<PropertyItem*>(PropertyItemFactory::instance().createPropertyItem(editor));
     if (!item) {
         qWarning("No property item for type %s found\n", editor);
     }
@@ -271,8 +271,9 @@ PropertyModel::GroupInfo& PropertyModel::getGroupInfo(App::Property* prop)
 {
     const char* group = prop->getGroup();
     bool isEmpty = Base::Tools::isNullOrEmpty(group);
-    QString groupName =
-        QString::fromLatin1(isEmpty ? QT_TRANSLATE_NOOP("App::Property", "Base") : group);
+    QString groupName = QString::fromLatin1(
+        isEmpty ? QT_TRANSLATE_NOOP("App::Property", "Base") : group
+    );
 
     auto res = groupItems.insert(std::make_pair(groupName, GroupInfo()));
     if (res.second) {
@@ -453,11 +454,7 @@ void PropertyModel::insertOrMoveChildren()
                 }
                 else {
                     flushChanges();
-                    beginMoveRows(createIndex(groupItem->row(), 0, groupItem),
-                                  oldRow,
-                                  oldRow,
-                                  midx,
-                                  row);
+                    beginMoveRows(createIndex(groupItem->row(), 0, groupItem), oldRow, oldRow, midx, row);
                     if (groupItem == groupInfo.groupItem) {
                         groupInfo.groupItem->moveChild(oldRow, row);
                     }

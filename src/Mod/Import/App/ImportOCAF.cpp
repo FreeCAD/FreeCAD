@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,11 +22,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 #if defined(__MINGW32__)
-#define WNT  // avoid conflict with GUID
+# define WNT  // avoid conflict with GUID
 #endif
-#ifndef _PreComp_
 #include <BRepBndLib.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
 #include <BRep_Builder.hxx>
@@ -44,7 +44,7 @@
 #include <XCAFDoc_Location.hxx>
 #include <gp_Pln.hxx>  // for Precision::Confusion()
 #include <gp_Trsf.hxx>
-#endif
+
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -58,9 +58,9 @@
 
 
 #ifdef HAVE_TBB
-#include <tbb/blocked_range.h>
-#include <tbb/parallel_for.h>
-#include <tbb/task_group.h>
+# include <tbb/blocked_range.h>
+# include <tbb/parallel_for.h>
+# include <tbb/task_group.h>
 #endif
 
 using namespace Import;
@@ -118,12 +118,14 @@ void ImportOCAF::setMerge(bool merge)
     this->merge = merge;
 }
 
-void ImportOCAF::loadShapes(const TDF_Label& label,
-                            const TopLoc_Location& loc,
-                            const std::string& defaultname,
-                            const std::string& assembly,
-                            bool isRef,
-                            std::vector<App::DocumentObject*>& lValue)
+void ImportOCAF::loadShapes(
+    const TDF_Label& label,
+    const TopLoc_Location& loc,
+    const std::string& defaultname,
+    const std::string& assembly,
+    bool isRef,
+    std::vector<App::DocumentObject*>& lValue
+)
 {
     int hash = 0;
 #ifdef HAVE_TBB
@@ -175,18 +177,20 @@ void ImportOCAF::loadShapes(const TDF_Label& label,
     }
 
 #ifdef FC_DEBUG
-    Base::Console().log("H:%d, N:%s, T:%d, A:%d, S:%d, C:%d, SS:%d, F:%d, R:%d, C:%d, SS:%d\n",
-                        hash,
-                        part_name.c_str(),
-                        aShapeTool->IsTopLevel(label),
-                        aShapeTool->IsAssembly(label),
-                        aShapeTool->IsShape(label),
-                        aShapeTool->IsCompound(label),
-                        aShapeTool->IsSimpleShape(label),
-                        aShapeTool->IsFree(label),
-                        aShapeTool->IsReference(label),
-                        aShapeTool->IsComponent(label),
-                        aShapeTool->IsSubShape(label));
+    Base::Console().log(
+        "H:%d, N:%s, T:%d, A:%d, S:%d, C:%d, SS:%d, F:%d, R:%d, C:%d, SS:%d\n",
+        hash,
+        part_name.c_str(),
+        aShapeTool->IsTopLevel(label),
+        aShapeTool->IsAssembly(label),
+        aShapeTool->IsShape(label),
+        aShapeTool->IsCompound(label),
+        aShapeTool->IsSimpleShape(label),
+        aShapeTool->IsFree(label),
+        aShapeTool->IsReference(label),
+        aShapeTool->IsComponent(label),
+        aShapeTool->IsSubShape(label)
+    );
 #endif
 
 #if defined(OCAF_KEEP_PLACEMENT)
@@ -265,11 +269,13 @@ void ImportOCAF::loadShapes(const TDF_Label& label,
     }
 }
 
-void ImportOCAF::createShape(const TDF_Label& label,
-                             const TopLoc_Location& loc,
-                             const std::string& name,
-                             std::vector<App::DocumentObject*>& lValue,
-                             bool mergeShape)
+void ImportOCAF::createShape(
+    const TDF_Label& label,
+    const TopLoc_Location& loc,
+    const std::string& name,
+    std::vector<App::DocumentObject*>& lValue,
+    bool mergeShape
+)
 {
     const TopoDS_Shape& aShape = aShapeTool->GetShape(label);
 #ifdef HAVE_TBB
@@ -370,10 +376,12 @@ void ImportOCAF::createShape(const TDF_Label& label,
     }
 }
 
-void ImportOCAF::createShape(const TopoDS_Shape& aShape,
-                             const TopLoc_Location& loc,
-                             const std::string& name,
-                             std::vector<App::DocumentObject*>& lvalue)
+void ImportOCAF::createShape(
+    const TopoDS_Shape& aShape,
+    const TopLoc_Location& loc,
+    const std::string& name,
+    std::vector<App::DocumentObject*>& lvalue
+)
 {
     Part::Feature* part = doc->addObject<Part::Feature>();
 

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2012 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -27,10 +29,14 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
 
-namespace Part { class Offset; }
-namespace PartGui {
+namespace Part
+{
+class Offset;
+}
+namespace PartGui
+{
 
-class OffsetWidget : public QWidget
+class OffsetWidget: public QWidget
 {
     Q_OBJECT
 
@@ -53,14 +59,14 @@ private:
     void onUpdateViewToggled(bool);
 
 private:
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
 
 private:
     class Private;
     Private* d;
 };
 
-class TaskOffset : public Gui::TaskView::TaskDialog
+class TaskOffset: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
@@ -76,12 +82,14 @@ public:
     Part::Offset* getObject() const;
 
     QDialogButtonBox::StandardButtons getStandardButtons() const override
-    { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
+    {
+        return QDialogButtonBox::Ok | QDialogButtonBox::Cancel;
+    }
 
 private:
     OffsetWidget* widget;
 };
 
-} //namespace PartGui
+}  // namespace PartGui
 
-#endif // PARTGUI_TASKOFFSET_H
+#endif  // PARTGUI_TASKOFFSET_H

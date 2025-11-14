@@ -52,8 +52,7 @@ class GuiExport DlgMaterialPropertiesImp: public QDialog
     Q_OBJECT
 
 public:
-    explicit DlgMaterialPropertiesImp(QWidget* parent = nullptr,
-                                      Qt::WindowFlags fl = Qt::WindowFlags());
+    explicit DlgMaterialPropertiesImp(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DlgMaterialPropertiesImp() override;
     App::Material getCustomMaterial() const;
     void setCustomMaterial(const App::Material& mat);

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2006 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -84,8 +86,9 @@ void ViewProviderMeshFaceSet::attach(App::DocumentObject* obj)
     pcShapeGroup->addChild(pcMeshFaces);
 
     // read the threshold from the preferences
-    Base::Reference<ParameterGrp> hGrp =
-        Gui::WindowParameter::getDefaultParameter()->GetGroup("Mod/Mesh");
+    Base::Reference<ParameterGrp> hGrp = Gui::WindowParameter::getDefaultParameter()->GetGroup(
+        "Mod/Mesh"
+    );
     long size = hGrp->GetInt("RenderTriangleLimit", -1);
     if (size > 0) {
         unsigned int limit = (unsigned int)(pow(10.0F, size));  // NOLINT

@@ -33,18 +33,20 @@
 #include "TaskDatumParameters.h"
 #include "TaskFeatureParameters.h"
 
-namespace App {
+namespace App
+{
 class Property;
 }
 
-namespace Gui {
+namespace Gui
+{
 class ViewProvider;
 }
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 class Ui_DlgPrimitives;
-class TaskBoxPrimitives : public Gui::TaskView::TaskBox,
-                          public Gui::DocumentObserver
+class TaskBoxPrimitives: public Gui::TaskView::TaskBox, public Gui::DocumentObserver
 {
     Q_OBJECT
 
@@ -52,7 +54,7 @@ public:
     explicit TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent = nullptr);
     ~TaskBoxPrimitives() override;
 
-    bool setPrimitive(App::DocumentObject *);
+    bool setPrimitive(App::DocumentObject*);
 
 public Q_SLOTS:
     void onBoxLengthChanged(double);
@@ -102,7 +104,8 @@ private:
     /** Notifies when the object is about to be removed. */
     void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj) override;
 
-    template<typename T = App::DocumentObject> T* getObject() const
+    template<typename T = App::DocumentObject>
+    T* getObject() const
     {
         static_assert(std::is_base_of<App::DocumentObject, T>::value, "Wrong template argument");
         if (vp) {
@@ -118,12 +121,12 @@ private:
     ViewProviderPrimitive* vp;
 };
 
-class TaskDlgPrimitiveParameters : public TaskDlgFeatureParameters
+class TaskDlgPrimitiveParameters: public TaskDlgFeatureParameters
 {
     Q_OBJECT
 
 public:
-    explicit TaskDlgPrimitiveParameters(ViewProviderPrimitive *PrimitiveView);
+    explicit TaskDlgPrimitiveParameters(ViewProviderPrimitive* PrimitiveView);
     ~TaskDlgPrimitiveParameters() override;
 
 protected:
@@ -133,11 +136,11 @@ protected:
     bool reject() override;
 
 private:
-    TaskBoxPrimitives*     primitive;
+    TaskBoxPrimitives* primitive;
     PartGui::TaskAttacher* parameter;
     ViewProviderPrimitive* vp_prm;
 };
 
-} //namespace PartDesignGui
+}  // namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

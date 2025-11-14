@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "FeaturePartSpline.h"
 
@@ -31,5 +32,3 @@ PROPERTY_SOURCE(Part::Spline, Part::Feature)
 
 
 Spline::Spline() = default;
-
-

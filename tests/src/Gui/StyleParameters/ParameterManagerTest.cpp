@@ -41,7 +41,8 @@ protected:
                 {"PrimaryColor", "#ff0000"},
                 {"SecondaryColor", "#00ff00"},
             },
-            ParameterSource::Metadata {"Source 1"});
+            ParameterSource::Metadata {"Source 1"}
+        );
 
         auto source2 = std::make_unique<InMemoryParameterSource>(
             std::list<Parameter> {
@@ -49,7 +50,8 @@ protected:
                 {"Margin", "@BaseSize * 2"},
                 {"Padding", "@BaseSize / 2"},
             },
-            ParameterSource::Metadata {"Source 2"});
+            ParameterSource::Metadata {"Source 2"}
+        );
 
         manager.addSource(source1.get());
         manager.addSource(source2.get());
@@ -160,7 +162,8 @@ TEST_F(ParameterManagerTest, SourcePriority)
         std::list<Parameter> {
             {"BaseSize", "24px"},  // Should override both previous sources
         },
-        ParameterSource::Metadata {"Source 3"});
+        ParameterSource::Metadata {"Source 3"}
+    );
 
     manager.addSource(source3.get());
     sources.push_back(std::move(source3));
@@ -254,7 +257,8 @@ TEST_F(ParameterManagerTest, CircularReferenceDetection)
             {"A", "@B"},
             {"B", "@A"},
         },
-        ParameterSource::Metadata {"Circular Source"});
+        ParameterSource::Metadata {"Circular Source"}
+    );
 
     manager.addSource(circularSource.get());
     sources.push_back(std::move(circularSource));
@@ -275,7 +279,8 @@ TEST_F(ParameterManagerTest, ComplexExpressions)
             {"ComplexPadding", "(@BaseSize - 2px) / 2"},
             {"ColorWithFunction", "lighten(@PrimaryColor, 20)"},
         },
-        ParameterSource::Metadata {"Complex Source"});
+        ParameterSource::Metadata {"Complex Source"}
+    );
 
     manager.addSource(complexSource.get());
     sources.push_back(std::move(complexSource));
@@ -317,7 +322,8 @@ TEST_F(ParameterManagerTest, ErrorHandling)
         std::list<Parameter> {
             {"Invalid", "invalid expression that will fail"},
         },
-        ParameterSource::Metadata {"Invalid Source"});
+        ParameterSource::Metadata {"Invalid Source"}
+    );
 
     manager.addSource(invalidSource.get());
     sources.push_back(std::move(invalidSource));

@@ -27,8 +27,10 @@
 #include <Gui/PropertyPage.h>
 #include <memory>
 
-namespace Gui {
-namespace Dialog {
+namespace Gui
+{
+namespace Dialog
+{
 class Ui_DlgSettingsPythonConsole;
 
 /**
@@ -36,7 +38,7 @@ class Ui_DlgSettingsPythonConsole;
  * for the Python console.
  * @author Werner Mayer
  */
-class DlgSettingsPythonConsole : public PreferencePage
+class DlgSettingsPythonConsole: public PreferencePage
 {
     Q_OBJECT
 
@@ -48,13 +50,13 @@ public:
     void loadSettings() override;
 
 protected:
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
 
 private:
     std::unique_ptr<Ui_DlgSettingsPythonConsole> ui;
 };
 
-} // namespace Dialog
-} // namespace Gui
+}  // namespace Dialog
+}  // namespace Gui
 
-#endif // GUI_DIALOG_DLGSETTINGSPYTHONCONSOLE_H
+#endif  // GUI_DIALOG_DLGSETTINGSPYTHONCONSOLE_H

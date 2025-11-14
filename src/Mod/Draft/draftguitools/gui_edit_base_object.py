@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2019, 2020 Carlo Pavan <carlopav@gmail.com>             *
 # *                                                                         *
@@ -24,7 +26,7 @@
 # \brief Provides support functions to edit Arch objects.
 
 __title__ = "FreeCAD Draft Edit Tool"
-__author__ = ("Carlo Pavan")
+__author__ = "Carlo Pavan"
 __url__ = "https://www.freecad.org"
 
 ## \addtogroup draftguitools
@@ -32,8 +34,7 @@ __url__ = "https://www.freecad.org"
 
 
 class GuiTools:
-    """ Base class for object editing tools
-    """
+    """Base class for object editing tools"""
 
     def __init__(self):
         pass
@@ -62,7 +63,7 @@ class GuiTools:
         pass
 
     def get_edit_point_context_menu(self, edit_command, obj, node_idx):
-        """ Get the context menu associated to edit points (user is over an editpoint)
+        """Get the context menu associated to edit points (user is over an editpoint)
 
         Return a list of tuples containing menu labels and associated functions:
             return [
@@ -77,7 +78,7 @@ class GuiTools:
         pass
 
     def get_edit_obj_context_menu(self, edit_command, obj, position):
-        """ Get the context menu associated to edited object (user is over the object)
+        """Get the context menu associated to edited object (user is over the object)
 
         Return a list of tuples containing menu labels and associated functions:
             return [
@@ -105,5 +106,6 @@ class GuiTools:
 
     def update_preview_object(self, edit_command, obj, node_idx, v):
         pass
+
 
 ## @}

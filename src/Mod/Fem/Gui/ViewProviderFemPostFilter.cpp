@@ -31,7 +31,7 @@
 #include "ViewProviderFemPostFilterPy.h"
 
 #ifdef FC_USE_VTK_PYTHON
-#include "TaskPostExtraction.h"
+# include "TaskPostExtraction.h"
 #endif
 
 using namespace FemGui;
@@ -50,8 +50,7 @@ std::vector<std::string> ViewProviderFemPostFilterPythonBase::getDisplayModes() 
 
 namespace Gui
 {
-PROPERTY_SOURCE_TEMPLATE(FemGui::ViewProviderPostFilterPython,
-                         FemGui::ViewProviderFemPostFilterPythonBase)
+PROPERTY_SOURCE_TEMPLATE(FemGui::ViewProviderPostFilterPython, FemGui::ViewProviderFemPostFilterPythonBase)
 
 template<>
 PyObject* FemGui::ViewProviderPostFilterPython::getPyObject()
@@ -103,9 +102,7 @@ void ViewProviderFemPostDataAlongLine::setupTaskDialog(TaskDlgPost* dlg)
 // data at point filter
 PROPERTY_SOURCE(FemGui::ViewProviderFemPostDataAtPoint, FemGui::ViewProviderFemPostObject)
 
-App::PropertyFloatConstraint::Constraints ViewProviderFemPostDataAtPoint::sizeRange = {1.0,
-                                                                                       64.0,
-                                                                                       1.0};
+App::PropertyFloatConstraint::Constraints ViewProviderFemPostDataAtPoint::sizeRange = {1.0, 64.0, 1.0};
 
 ViewProviderFemPostDataAtPoint::ViewProviderFemPostDataAtPoint()
 {
@@ -171,8 +168,7 @@ void ViewProviderFemPostClip::setupTaskDialog(TaskDlgPost* dlg)
 
     // add the function box
     assert(dlg->getView() == this);
-    auto panel =
-        new TaskPostClip(this, &dlg->getView()->getObject<Fem::FemPostClipFilter>()->Function);
+    auto panel = new TaskPostClip(this, &dlg->getView()->getObject<Fem::FemPostClipFilter>()->Function);
     dlg->addTaskBox(panel->getIcon(), panel);
 
     // add the display options
@@ -215,8 +211,7 @@ void ViewProviderFemPostCut::setupTaskDialog(TaskDlgPost* dlg)
 {
     // add the function box
     assert(dlg->getView() == this);
-    auto panel =
-        new TaskPostCut(this, &dlg->getView()->getObject<Fem::FemPostCutFilter>()->Function);
+    auto panel = new TaskPostCut(this, &dlg->getView()->getObject<Fem::FemPostCutFilter>()->Function);
     dlg->addTaskBox(panel->getIcon(), panel);
 
     // add the display options

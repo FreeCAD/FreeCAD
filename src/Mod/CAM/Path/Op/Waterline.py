@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2019 Russell Johnson (russ4262) <russ4262@gmail.com>    *
 # *   Copyright (c) 2019 sliptonic <shopinthewoods@gmail.com>               *
@@ -556,6 +557,9 @@ class ObjectWaterline(PathOp.ObjectOp):
             if self.propertiesReady:
                 if prop in ["Algorithm", "CutPattern"]:
                     self.setEditorProperties(obj)
+
+        if prop == "Active" and obj.ViewObject:
+            obj.ViewObject.signalChangeIcon()
 
     def opOnDocumentRestored(self, obj):
         self.propertiesReady = False

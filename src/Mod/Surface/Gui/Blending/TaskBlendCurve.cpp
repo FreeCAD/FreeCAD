@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2025 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -19,13 +21,10 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QAction>
 #include <QMenu>
 #include <QMessageBox>
 #include <QTimer>
-#endif
 
 #include <App/Document.h>
 #include <Base/Tools.h>
@@ -353,8 +352,10 @@ QString BlendCurvePanel::linkToString(const App::PropertyLinkSub& link)
     const auto& sub = link.getSubValues();
     std::string name = sub.empty() ? "" : sub.front();
 
-    return QString::fromLatin1("%1 [%2]").arg(QString::fromLatin1(obj->Label.getValue()),
-                                              QString::fromStdString(name));
+    return QString::fromLatin1("%1 [%2]").arg(
+        QString::fromLatin1(obj->Label.getValue()),
+        QString::fromStdString(name)
+    );
 }
 
 void BlendCurvePanel::setStartEdge(App::DocumentObject* obj, const std::string& subname)

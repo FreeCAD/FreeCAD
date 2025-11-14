@@ -25,14 +25,15 @@
 
 #include <QProgressBar>
 #ifdef QT_WINEXTRAS_LIB
-#include <QWinTaskbarButton>
-#include <QWinTaskbarProgress>
+# include <QWinTaskbarButton>
+# include <QWinTaskbarProgress>
 #endif
 
 #include <Base/Sequencer.h>
 
 
-namespace Gui {
+namespace Gui
+{
 
 struct SequencerBarPrivate;
 struct ProgressBarPrivate;
@@ -89,22 +90,22 @@ class ProgressBar;
  * just a busy indicator instead of percentage steps.
  * @author Werner Mayer
  */
-class GuiExport SequencerBar : public Base::SequencerBase
+class GuiExport SequencerBar: public Base::SequencerBase
 {
 public:
     /** Returns the sequencer object. */
     static SequencerBar* instance();
     /** This restores the last overridden cursor and release the keyboard while the progress bar
-    * is running. This is useful e.g. if a modal dialog appears while a long operation is performed
-    * to indicate that the user can click on the dialog. Every pause() must eventually be followed
-    * by a corresponding @ref resume().
-    */
+     * is running. This is useful e.g. if a modal dialog appears while a long operation is performed
+     * to indicate that the user can click on the dialog. Every pause() must eventually be followed
+     * by a corresponding @ref resume().
+     */
     void pause() override;
     /** This sets the wait cursor again and grabs the keyboard. @see pause() */
     void resume() override;
     bool isBlocking() const override;
     /** Returns an instance of the progress bar. It creates one if needed. */
-    QProgressBar* getProgressBar(QWidget* parent=nullptr);
+    QProgressBar* getProgressBar(QWidget* parent = nullptr);
 
     void checkAbort() override;
 
@@ -115,7 +116,7 @@ protected:
     ~SequencerBar() override;
 
     /** Puts text to the status bar */
-    void setText (const char* pszTxt) override;
+    void setText(const char* pszTxt) override;
     /** Starts the progress bar */
     void startStep() override;
     /** Increase the progress bar. */
@@ -139,22 +140,22 @@ private:
     friend class ProgressBar;
 };
 
-class ProgressBar : public QProgressBar
+class ProgressBar: public QProgressBar
 {
     Q_OBJECT
 
 public:
     /** Construction */
-    ProgressBar (SequencerBar* s, QWidget * parent=nullptr);
+    ProgressBar(SequencerBar* s, QWidget* parent = nullptr);
     /** Destruction */
-    ~ProgressBar () override;
+    ~ProgressBar() override;
 
     /** Handles all incoming events while the progress bar is running. All key and mouse
-    * events are ignored to block user input.
-    */
+     * events are ignored to block user input.
+     */
     bool eventFilter(QObject* o, QEvent* e) override;
     /** Returns the time in milliseconds that must pass before the progress bar appears.
-    */
+     */
     int minimumDuration() const;
 
 private Q_SLOTS:
@@ -165,8 +166,8 @@ private Q_SLOTS:
 
 public Q_SLOTS:
     /** Sets the time that must pass before the progress bar appears to \a ms.
-    */
-    void setMinimumDuration (int ms);
+     */
+    void setMinimumDuration(int ms);
 
 public:
     bool canAbort() const;
@@ -177,8 +178,8 @@ protected:
 
 protected Q_SLOTS:
     /* Shows the progress bar if it is still hidden after the operation has been started
-    * and minimumDuration milliseconds have passed.
-    */
+     * and minimumDuration milliseconds have passed.
+     */
     void delayedShow();
     void aboutToShow();
     void aboutToHide();
@@ -206,6 +207,6 @@ private:
     friend class SequencerBar;
 };
 
-} // namespace Gui
+}  // namespace Gui
 
-#endif // GUI_PROGRESSBAR_H
+#endif  // GUI_PROGRESSBAR_H

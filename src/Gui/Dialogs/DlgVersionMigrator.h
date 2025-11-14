@@ -30,41 +30,43 @@
 #include <QDialog>
 
 
-namespace Gui {
+namespace Gui
+{
 
-    class MainWindow;
+class MainWindow;
 
-    namespace Dialog {
+namespace Dialog
+{
 
-        class GuiExport DlgVersionMigrator final : public QDialog
-        {
-            Q_OBJECT
+class GuiExport DlgVersionMigrator final: public QDialog
+{
+    Q_OBJECT
 
-        public:
-            explicit DlgVersionMigrator(MainWindow *mw);
-            ~DlgVersionMigrator() override;
-            Q_DISABLE_COPY_MOVE(DlgVersionMigrator)
+public:
+    explicit DlgVersionMigrator(MainWindow* mw);
+    ~DlgVersionMigrator() override;
+    Q_DISABLE_COPY_MOVE(DlgVersionMigrator)
 
-            int exec() override;
+    int exec() override;
 
-        protected Q_SLOTS:
+protected Q_SLOTS:
 
-            void calculateMigrationSize(); // Async -> this starts the process and immediately returns
-            void showSizeOfMigration(uintmax_t size);
-            void migrate();
-            void share();
-            void freshStart();
-            void help();
+    void calculateMigrationSize();  // Async -> this starts the process and immediately returns
+    void showSizeOfMigration(uintmax_t size);
+    void migrate();
+    void share();
+    void freshStart();
+    void help();
 
-        private:
-            MainWindow* mainWindow;
-            QThread* sizeCalculationWorkerThread;
-            std::unique_ptr<class Ui_DlgVersionMigrator> ui;
+private:
+    MainWindow* mainWindow;
+    QThread* sizeCalculationWorkerThread;
+    std::unique_ptr<class Ui_DlgVersionMigrator> ui;
 
-            void restart(const QString &message);
-        };
+    void restart(const QString& message);
+};
 
-    }
-}
+}  // namespace Dialog
+}  // namespace Gui
 
-#endif // GUI_DIALOG_VERSIONMIGRATOR_H
+#endif  // GUI_DIALOG_VERSIONMIGRATOR_H

@@ -21,7 +21,7 @@
  ***************************************************************************/
 
 
-# include <stack>
+#include <stack>
 
 
 #include <zipios++/zipinputstream.h>
@@ -40,13 +40,15 @@
 using namespace Gui;
 namespace sp = std::placeholders;
 
-namespace Gui {
+namespace Gui
+{
 
-class XMLMergeReader : public Base::XMLReader
+class XMLMergeReader: public Base::XMLReader
 {
 public:
     XMLMergeReader(std::map<std::string, std::string>& name, const char* FileName, std::istream& str)
-      : Base::XMLReader(FileName, str), nameMap(name)
+        : Base::XMLReader(FileName, str)
+        , nameMap(name)
     {}
 
     void addName(const char* s1, const char* s2) override
@@ -56,34 +58,38 @@ public:
     const char* getName(const char* name) const override
     {
         std::map<std::string, std::string>::const_iterator it = nameMap.find(name);
-        if (it != nameMap.end())
+        if (it != nameMap.end()) {
             return it->second.c_str();
-        else
+        }
+        else {
             return name;
+        }
     }
     bool doNameMapping() const override
     {
         return true;
     }
+
 protected:
-
-
 private:
     std::map<std::string, std::string>& nameMap;
     using PropertyTag = std::pair<std::string, std::string>;
     std::stack<PropertyTag> propertyStack;
 };
-}
+}  // namespace Gui
 
-MergeDocuments::MergeDocuments(App::Document* doc) : appdoc(doc)
+MergeDocuments::MergeDocuments(App::Document* doc)
+    : appdoc(doc)
 {
-    //NOLINTBEGIN
-    connectExport = doc->signalExportObjects.connect
-        (std::bind(&MergeDocuments::exportObject, this, sp::_1, sp::_2));
-    connectImport = doc->signalImportObjects.connect
-        (std::bind(&MergeDocuments::importObject, this, sp::_1, sp::_2));
+    // NOLINTBEGIN
+    connectExport = doc->signalExportObjects.connect(
+        std::bind(&MergeDocuments::exportObject, this, sp::_1, sp::_2)
+    );
+    connectImport = doc->signalImportObjects.connect(
+        std::bind(&MergeDocuments::importObject, this, sp::_1, sp::_2)
+    );
     document = Gui::Application::Instance->getDocument(doc);
-    //NOLINTEND
+    // NOLINTEND
 }
 
 MergeDocuments::~MergeDocuments()
@@ -92,17 +98,16 @@ MergeDocuments::~MergeDocuments()
     connectImport.disconnect();
 }
 
-unsigned int MergeDocuments::getMemSize () const
+unsigned int MergeDocuments::getMemSize() const
 {
     return 0;
 }
 
-std::vector<App::DocumentObject*>
-MergeDocuments::importObjects(std::istream& input)
+std::vector<App::DocumentObject*> MergeDocuments::importObjects(std::istream& input)
 {
     this->nameMap.clear();
     this->stream = new zipios::ZipInputStream(input);
-    XMLMergeReader reader(this->nameMap,"<memory>", *stream);
+    XMLMergeReader reader(this->nameMap, "<memory>", *stream);
     std::vector<App::DocumentObject*> objs = appdoc->importObjects(reader);
 
     delete this->stream;
@@ -111,40 +116,42 @@ MergeDocuments::importObjects(std::istream& input)
     return objs;
 }
 
-void MergeDocuments::importObject(const std::vector<App::DocumentObject*>& o, Base::XMLReader & r)
+void MergeDocuments::importObject(const std::vector<App::DocumentObject*>& o, Base::XMLReader& r)
 {
     objects = o;
     for (auto it : objects) {
         Gui::ViewProvider* vp = document->getViewProvider(it);
-        if (vp) vp->hide();
+        if (vp) {
+            vp->hide();
+        }
     }
     Restore(r);
 
     r.readFiles(*this->stream);
 }
 
-void MergeDocuments::exportObject(const std::vector<App::DocumentObject*>& o, Base::Writer & w)
+void MergeDocuments::exportObject(const std::vector<App::DocumentObject*>& o, Base::Writer& w)
 {
     objects = o;
     Save(w);
 }
 
-void MergeDocuments::Save (Base::Writer & w) const
+void MergeDocuments::Save(Base::Writer& w) const
 {
     w.addFile("GuiDocument.xml", this);
 }
 
-void MergeDocuments::Restore(Base::XMLReader &r)
+void MergeDocuments::Restore(Base::XMLReader& r)
 {
     r.addFile("GuiDocument.xml", this);
 }
 
-void MergeDocuments::SaveDocFile (Base::Writer & w) const
+void MergeDocuments::SaveDocFile(Base::Writer& w) const
 {
     document->exportObjects(objects, w);
 }
 
-void MergeDocuments::RestoreDocFile(Base::Reader & r)
+void MergeDocuments::RestoreDocFile(Base::Reader& r)
 {
     document->importObjects(objects, r, nameMap);
 }

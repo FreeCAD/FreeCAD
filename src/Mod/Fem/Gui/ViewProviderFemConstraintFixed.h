@@ -30,8 +30,7 @@
 namespace FemGui
 {
 
-class FemGuiExport ViewProviderFemConstraintFixed
-    : public FemGui::ViewProviderFemConstraintOnBoundary
+class FemGuiExport ViewProviderFemConstraintFixed: public FemGui::ViewProviderFemConstraintOnBoundary
 {
     PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemConstraintFixed);
 

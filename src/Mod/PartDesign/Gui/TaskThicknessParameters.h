@@ -31,10 +31,11 @@
 
 class Ui_TaskThicknessParameters;
 
-namespace Gui {
+namespace Gui
+{
 class LinearGizmo;
 class GizmoContainer;
-}
+}  // namespace Gui
 
 namespace PartDesign
 {
