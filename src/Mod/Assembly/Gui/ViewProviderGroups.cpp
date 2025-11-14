@@ -26,19 +26,32 @@
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 
-#include "ViewProviderBomGroup.h"
-
+#include "ViewProviderGroups.h"
 
 using namespace AssemblyGui;
 
-PROPERTY_SOURCE(AssemblyGui::ViewProviderBomGroup, Gui::ViewProviderDocumentObjectGroup)
-
-ViewProviderBomGroup::ViewProviderBomGroup()
-{}
-
-ViewProviderBomGroup::~ViewProviderBomGroup() = default;
+PROPERTY_SOURCE(AssemblyGui::ViewProviderGroupBase, Gui::ViewProviderDocumentObjectGroup)
+PROPERTY_SOURCE(AssemblyGui::ViewProviderBomGroup, AssemblyGui::ViewProviderGroupBase)
+PROPERTY_SOURCE(AssemblyGui::ViewProviderJointGroup, AssemblyGui::ViewProviderGroupBase)
+PROPERTY_SOURCE(AssemblyGui::ViewProviderSimulationGroup, AssemblyGui::ViewProviderGroupBase)
+PROPERTY_SOURCE(AssemblyGui::ViewProviderViewGroup, AssemblyGui::ViewProviderGroupBase)
 
 QIcon ViewProviderBomGroup::getIcon() const
 {
     return Gui::BitmapFactory().pixmap("Assembly_BillOfMaterialsGroup.svg");
+}
+
+QIcon ViewProviderJointGroup::getIcon() const
+{
+    return Gui::BitmapFactory().pixmap("Assembly_JointGroup.svg");
+}
+
+QIcon ViewProviderSimulationGroup::getIcon() const
+{
+    return Gui::BitmapFactory().pixmap("Assembly_SimulationGroup.svg");
+}
+
+QIcon ViewProviderViewGroup::getIcon() const
+{
+    return Gui::BitmapFactory().pixmap("Assembly_ExplodedViewGroup.svg");
 }
