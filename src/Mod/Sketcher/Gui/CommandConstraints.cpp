@@ -4648,7 +4648,7 @@ bool CmdSketcherConstrainCoincidentUnified::isCoincidentSelectionValid(SketchObj
     // check if this coincidence is already enforced (even indirectly)
     bool constraintExists = obj->arePointsCoincident(GeoId1, PosId1, GeoId2, PosId2);
     bool sameGeo = GeoId1 == GeoId2;
-    
+
     const Part::Geometry* geo = obj->getGeometry(GeoId1);
     bool isBSpline = geo && geo->is<Part::GeomBSplineCurve>();
 
