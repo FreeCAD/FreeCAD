@@ -1062,8 +1062,10 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
         view = Gui.ActiveDocument.ActiveView
         width, height = view.getSize()
         # Ensure dimensions are even, as required by many video codecs
-        if width % 2 != 0: width -=1
-        if height % 2 != 0: height -=1
+        if width % 2 != 0:
+            width -= 1
+        if height % 2 != 0:
+            height -= 1
         fps = self.form.FramesPerSecondSpinBox.value()
 
         # Setup temporary directory and progress bar
@@ -1071,7 +1073,10 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
             temp_path = Path(temp_dir)
             progress = QProgressDialog(
                 translate("Assembly", "Generating Frames..."),
-                translate("Assembly", "Cancel"), 0, num_frames, self.form
+                translate("Assembly", "Cancel"),
+                0,
+                num_frames,
+                self.form,
             )
             progress.setWindowModality(Qt.WindowModal)
             progress.show()
@@ -1096,7 +1101,7 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
 
                 # Assemble the final animation file
                 progress.setLabelText(translate("Assembly", "Assembling animation..."))
-                progress.setMaximum(0) # Indeterminate progress
+                progress.setMaximum(0)  # Indeterminate progress
 
                 if file_extension == ".gif":
                     self.create_gif(file_path, frame_files, fps)
@@ -1123,33 +1128,34 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
             append_images=pil_images[1:],
             optimize=True,
             duration=duration_ms,
-            loop=0  # 0 means loop forever
+            loop=0,  # 0 means loop forever
         )
 
     def create_video(self, output_path, frame_files, fps, size):
         """Creates a video file from a list of image files using OpenCV."""
         file_extension = Path(output_path).suffix.lower()
-        
+
         # Select codec based on file type
         if file_extension == ".mp4":
-            fourcc = cv2.VideoWriter_fourcc(*'mp4v') # or 'avc1'
+            fourcc = cv2.VideoWriter_fourcc(*"mp4v")  # or 'avc1'
         elif file_extension == ".avi":
-            fourcc = cv2.VideoWriter_fourcc(*'XVID')
+            fourcc = cv2.VideoWriter_fourcc(*"XVID")
         else:
             # Fallback for other types, may not be supported
-            fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+            fourcc = cv2.VideoWriter_fourcc(*"mp4v")
 
         video_writer = cv2.VideoWriter(output_path, fourcc, fps, size)
         if not video_writer.isOpened():
-             App.Console.PrintError("Could not open video writer. Check codecs.\n")
-             return
+            App.Console.PrintError("Could not open video writer. Check codecs.\n")
+            return
 
         for filename in frame_files:
             # OpenCV reads images in BGR format by default
             frame = cv2.imread(str(filename))
             video_writer.write(frame)
-        
+
         video_writer.release()
+
 
 if App.GuiUp:
     Gui.addCommand("Assembly_CreateSimulation", CommandCreateSimulation())
