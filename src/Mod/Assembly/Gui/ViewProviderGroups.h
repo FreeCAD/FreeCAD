@@ -21,8 +21,8 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef ASSEMBLYGUI_VIEWPROVIDER_ViewProviderBomGroup_H
-#define ASSEMBLYGUI_VIEWPROVIDER_ViewProviderBomGroup_H
+#ifndef ASSEMBLYGUI_VIEWPROVIDER_ViewProviderGroups_H
+#define ASSEMBLYGUI_VIEWPROVIDER_ViewProviderGroups_H
 
 #include <Mod/Assembly/AssemblyGlobal.h>
 
@@ -32,16 +32,13 @@
 namespace AssemblyGui
 {
 
-class AssemblyGuiExport ViewProviderBomGroup: public Gui::ViewProviderDocumentObjectGroup
+class AssemblyGuiExport ViewProviderGroupBase: public Gui::ViewProviderDocumentObjectGroup
 {
-    PROPERTY_HEADER_WITH_OVERRIDE(AssemblyGui::ViewProviderBomGroup);
+    PROPERTY_HEADER_WITH_OVERRIDE(AssemblyGui::ViewProviderGroupBase);
 
 public:
-    ViewProviderBomGroup();
-    ~ViewProviderBomGroup() override;
-
-    /// deliver the icon shown in the tree view. Override from ViewProvider.h
-    QIcon getIcon() const override;
+    ViewProviderGroupBase() = default;
+    ~ViewProviderGroupBase() override = default;
 
     // Prevent dragging of the joints and dropping things inside the joint group.
     bool canDragObjects() const override
@@ -56,12 +53,58 @@ public:
     {
         return false;
     };
+};
 
-    // protected:
-    /// get called by the container whenever a property has been changed
-    // void onChanged(const App::Property* prop) override;
+class AssemblyGuiExport ViewProviderBomGroup: public ViewProviderGroupBase
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(AssemblyGui::ViewProviderBomGroup);
+
+public:
+    ViewProviderBomGroup() = default;
+    ~ViewProviderBomGroup() override = default;
+
+    QIcon getIcon() const override;
+};
+
+class AssemblyGuiExport ViewProviderJointGroup: public ViewProviderGroupBase
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(AssemblyGui::ViewProviderJointGroup);
+
+public:
+    ViewProviderJointGroup() = default;
+    ~ViewProviderJointGroup() override = default;
+
+    QIcon getIcon() const override;
+
+    // Make the joint group impossible to delete.
+    bool onDelete(const std::vector<std::string>&) override
+    {
+        return false;
+    };
+};
+
+class AssemblyGuiExport ViewProviderSimulationGroup: public ViewProviderGroupBase
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(AssemblyGui::ViewProviderSimulationGroup);
+
+public:
+    ViewProviderSimulationGroup() = default;
+    ~ViewProviderSimulationGroup() override = default;
+
+    QIcon getIcon() const override;
+};
+
+class AssemblyGuiExport ViewProviderViewGroup: public ViewProviderGroupBase
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(AssemblyGui::ViewProviderViewGroup);
+
+public:
+    ViewProviderViewGroup() = default;
+    ~ViewProviderViewGroup() override = default;
+
+    QIcon getIcon() const override;
 };
 
 }  // namespace AssemblyGui
 
-#endif  // ASSEMBLYGUI_VIEWPROVIDER_ViewProviderBomGroup_H
+#endif  // ASSEMBLYGUI_VIEWPROVIDER_ViewProviderGroups_H

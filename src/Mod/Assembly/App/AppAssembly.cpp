@@ -29,10 +29,7 @@
 #include "AssemblyObject.h"
 #include "AssemblyLink.h"
 #include "BomObject.h"
-#include "BomGroup.h"
-#include "JointGroup.h"
-#include "ViewGroup.h"
-#include "SimulationGroup.h"
+#include "Groups.h"
 
 
 namespace Assembly
