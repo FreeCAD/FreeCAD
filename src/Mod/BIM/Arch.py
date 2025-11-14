@@ -2151,6 +2151,161 @@ def makeWindow(
     return window
 
 
+def is_debasable(wall):
+    """Determines if an Arch Wall can be cleanly converted to a baseless state.
+
+    This function checks if a given wall is a valid candidate for a parametric
+    "debasing" operation, where its dependency on a Base object is removed and
+    it becomes driven by its own Length and Placement properties.
+
+    Parameters
+    ----------
+    wall : FreeCAD.DocumentObject
+        The Arch Wall object to check.
+
+    Returns
+    -------
+    bool
+        ``True`` if the wall is a valid candidate for debasing, otherwise ``False``.
+
+    Notes
+    -----
+    A wall is considered debasable if its ``Base`` object's final shape consists
+    of exactly one single, straight edge. This check is generic and works for
+    any base object that provides a valid ``.Shape`` property, including
+    ``Draft.Line`` and ``Sketcher::SketchObject`` objects.
+    """
+    import Part
+    import Draft
+
+    # Ensure the object is actually a wall
+    if Draft.getType(wall) != "Wall":
+        return False
+
+    # Check for a valid Base object with a geometric Shape
+    if not hasattr(wall, "Base") or not wall.Base:
+        return False
+    if not hasattr(wall.Base, "Shape") or wall.Base.Shape.isNull():
+        return False
+
+    base_shape = wall.Base.Shape
+
+    # The core condition: the final shape must contain exactly one edge.
+    # This correctly handles Sketches with multiple lines or construction geometry.
+    if len(base_shape.Edges) != 1:
+        return False
+
+    # The single edge must be a straight line.
+    edge = base_shape.Edges[0]
+    if not isinstance(edge.Curve, (Part.Line, Part.LineSegment)):
+        return False
+
+    # If all checks pass, the wall is debasable.
+    return True
+
+
+def debaseWall(wall):
+    """
+    Converts a line-based Arch Wall to be parametrically driven by its own
+    properties and Placement, removing its dependency on a Base object.
+
+    This operation preserves the wall's exact size and global position.
+    It is only supported for walls based on a single, straight line.
+
+    Parameters
+    ----------
+    wall : FreeCAD.DocumentObject
+        The Arch Wall object to debase.
+
+    Returns
+    -------
+    bool
+        True on success, False otherwise.
+    """
+    import FreeCAD
+
+    if not is_debasable(wall):
+        FreeCAD.Console.PrintWarning(f"Wall '{wall.Label}' is not eligible for debasing.\n")
+        return False
+
+    doc = wall.Document
+    doc.openTransaction(f"Debase Wall: {wall.Label}")
+
+    try:
+        # --- Calculation of the final placement ---
+        base_obj = wall.Base
+        base_edge = base_obj.Shape.Edges[0]
+
+        # Step 1: Get global coordinates of the baseline's endpoints.
+        # For Draft objects, Vertex coordinates are already in the global system. For Sketches,
+        # they are local, but ArchWall's internal logic transforms them. The most reliable
+        # way to get the final global baseline is to use the vertices of the base object's
+        # final shape, which are always in global coordinates for these object types.
+        p1_global = base_edge.Vertexes[0].Point
+        p2_global = base_edge.Vertexes[1].Point
+
+        # Step 2: Determine the extrusion normal vector.
+        normal = wall.Normal
+        if normal.Length == 0:
+            normal = base_obj.Placement.Rotation.multVec(FreeCAD.Vector(0, 0, 1))
+            if normal.Length == 0:
+                normal = FreeCAD.Vector(0, 0, 1)
+
+        # Step 3: Calculate the final orientation from the geometric axes.
+        # - The local Z-axis is the extrusion direction (height).
+        # - The local X-axis is along the baseline (length).
+        # - The local Y-axis is perpendicular to both, pointing "Right" to remain
+        #   consistent with the wall's internal creation logic (X x Z = Y).
+        z_axis = normal.normalize()
+        x_axis = (p2_global - p1_global).normalize()
+        y_axis = x_axis.cross(z_axis).normalize()
+        final_rotation = FreeCAD.Rotation(x_axis, y_axis, z_axis)
+
+        # Step 4: Calculate the final position (the wall's volumetric center).
+        # The new placement's Base must be the global coordinate of the final wall's center.
+        centerline_position = (p1_global + p2_global) * 0.5
+
+        # Calculate the offset directly in global coordinates.
+        align_offset_global = FreeCAD.Vector()
+        if wall.Align == "Left":
+            # Baseline is Left. Center must be shifted to the Right (positive Y-axis direction).
+            align_offset_global = y_axis * (wall.Width.Value / 2.0)
+        elif wall.Align == "Right":
+            # Baseline is Right. Center must be shifted to the Left (negative Y-axis direction).
+            align_offset_global = y_axis.negative() * (wall.Width.Value / 2.0)
+
+        final_position = centerline_position.add(align_offset_global)
+        final_placement = FreeCAD.Placement(final_position, final_rotation)
+
+        # Store properties before unlinking
+        height = wall.Height.Value
+        length = wall.Length.Value
+        width = wall.Width.Value
+
+        # Apply changes
+        wall.Placement = final_placement
+
+        # Remove the base. The recompute triggered by this change will already have the correct
+        # placement to work with.
+        wall.Base = None
+        # Clear internal caches that might reference the old base geometry.
+        if hasattr(wall.Proxy, "connectEdges"):
+            wall.Proxy.connectEdges = []
+        wall.Height = height
+        wall.Length = length
+        wall.Width = width
+        doc.recompute()
+
+    except Exception as e:
+        doc.abortTransaction()
+        FreeCAD.Console.PrintError(f"Error debasing wall '{wall.Label}': {e}\n")
+        return False
+    finally:
+        doc.commitTransaction()
+
+    return True
+
+
 def _initializeArchObject(
     objectType,
     baseClassName=None,
