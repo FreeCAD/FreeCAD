@@ -257,8 +257,10 @@ public:
     /// Let `pvec = [q, p_1, p_2,...]`, and
     /// `givenweights = [f_1, f_2,...]`, then this constraint ensures
     /// `q = sum(p_i*f_i)`.
-    ConstraintCenterOfGravity(const std::vector<double*>& givenpvec,
-                              const std::vector<double>& givenweights);
+    ConstraintCenterOfGravity(
+        const std::vector<double*>& givenpvec,
+        const std::vector<double>& givenweights
+    );
 
     double error() override;
     double grad(double*) override;
@@ -297,9 +299,11 @@ public:
     /// In that case, `q` is the x (or y) coordinate of the knot, `p_i` are
     /// the x (or y) coordinates of the poles, and `w_i` are their weights.
     /// Finally, `f_i` are obtained using `BSpline::getLinCombFactor()`.
-    ConstraintWeightedLinearCombination(size_t givennumpoints,
-                                        const std::vector<double*>& givenpvec,
-                                        const std::vector<double>& givenfactors);
+    ConstraintWeightedLinearCombination(
+        size_t givennumpoints,
+        const std::vector<double*>& givenpvec,
+        const std::vector<double>& givenfactors
+    );
 
     double error() override;
     double grad(double*) override;
@@ -925,9 +929,7 @@ public:
 class ConstraintInternalAlignmentPoint2Ellipse: public Constraint
 {
 public:
-    ConstraintInternalAlignmentPoint2Ellipse(Ellipse& e,
-                                             Point& p1,
-                                             InternalAlignmentType alignmentType);
+    ConstraintInternalAlignmentPoint2Ellipse(Ellipse& e, Point& p1, InternalAlignmentType alignmentType);
 
 
 private:
@@ -942,9 +944,11 @@ private:
 class ConstraintInternalAlignmentPoint2Hyperbola: public Constraint
 {
 public:
-    ConstraintInternalAlignmentPoint2Hyperbola(Hyperbola& e,
-                                               Point& p1,
-                                               InternalAlignmentType alignmentType);
+    ConstraintInternalAlignmentPoint2Hyperbola(
+        Hyperbola& e,
+        Point& p1,
+        InternalAlignmentType alignmentType
+    );
 
 
 private:

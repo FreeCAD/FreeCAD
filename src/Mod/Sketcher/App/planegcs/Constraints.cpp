@@ -156,7 +156,8 @@ double ConstraintEqual::grad(double* param)
 ConstraintWeightedLinearCombination::ConstraintWeightedLinearCombination(
     size_t givennumpoles,
     const std::vector<double*>& givenpvec,
-    const std::vector<double>& givenfactors)
+    const std::vector<double>& givenfactors
+)
     : Constraint(WeightedLinearCombination)
     , factors(givenfactors)
     , numpoles(givennumpoles)
@@ -222,8 +223,10 @@ double ConstraintWeightedLinearCombination::grad(double* param)
 
 // --------------------------------------------------------
 // Center of Gravity
-ConstraintCenterOfGravity::ConstraintCenterOfGravity(const std::vector<double*>& givenpvec,
-                                                     const std::vector<double>& givenweights)
+ConstraintCenterOfGravity::ConstraintCenterOfGravity(
+    const std::vector<double*>& givenpvec,
+    const std::vector<double>& givenweights
+)
     : Constraint(CenterOfGravity)
     , weights(givenweights)
     , numpoints(givenpvec.size() - 1)
@@ -484,10 +487,12 @@ double ConstraintSlopeAtBSplineKnot::grad(double* param)
 
 // --------------------------------------------------------
 // Point On BSpline
-ConstraintPointOnBSpline::ConstraintPointOnBSpline(double* point,
-                                                   double* initparam,
-                                                   int coordidx,
-                                                   BSpline& b)
+ConstraintPointOnBSpline::ConstraintPointOnBSpline(
+    double* point,
+    double* initparam,
+    int coordidx,
+    BSpline& b
+)
     : Constraint(PointOnBSpline)
     , bsp(b)
 {
@@ -1197,11 +1202,7 @@ ConstraintL2LAngle::ConstraintL2LAngle(Line& l1, Line& l2, double* a)
     : ConstraintL2LAngle(l1.p1, l1.p2, l2.p1, l2.p2, a)
 {}
 
-ConstraintL2LAngle::ConstraintL2LAngle(Point& l1p1,
-                                       Point& l1p2,
-                                       Point& l2p1,
-                                       Point& l2p2,
-                                       double* a)
+ConstraintL2LAngle::ConstraintL2LAngle(Point& l1p1, Point& l1p2, Point& l2p1, Point& l2p2, double* a)
     : Constraint(L2LAngle)
 {
     origpvec.push_back(l1p1.x);
@@ -1305,10 +1306,7 @@ ConstraintMidpointOnLine::ConstraintMidpointOnLine(Line& l1, Line& l2)
     : ConstraintMidpointOnLine(l1.p1, l1.p2, l2.p1, l2.p2)
 {}
 
-ConstraintMidpointOnLine::ConstraintMidpointOnLine(Point& l1p1,
-                                                   Point& l1p2,
-                                                   Point& l2p1,
-                                                   Point& l2p2)
+ConstraintMidpointOnLine::ConstraintMidpointOnLine(Point& l1p1, Point& l1p2, Point& l2p1, Point& l2p2)
     : Constraint(MidpointOnLine)
 {
     origpvec.push_back(l1p1.x);
@@ -1381,11 +1379,13 @@ double ConstraintMidpointOnLine::grad(double* param)
 
 // --------------------------------------------------------
 // TangentCircumf
-ConstraintTangentCircumf::ConstraintTangentCircumf(Point& p1,
-                                                   Point& p2,
-                                                   double* rad1,
-                                                   double* rad2,
-                                                   bool internal_)
+ConstraintTangentCircumf::ConstraintTangentCircumf(
+    Point& p1,
+    Point& p2,
+    double* rad1,
+    double* rad2,
+    bool internal_
+)
     : Constraint(TangentCircumf)
     , internal(internal_)
 {
@@ -1630,7 +1630,8 @@ void ConstraintEllipseTangentLine::errorgrad(double* err, double* grad, double* 
 ConstraintInternalAlignmentPoint2Ellipse::ConstraintInternalAlignmentPoint2Ellipse(
     Ellipse& e,
     Point& p1,
-    InternalAlignmentType alignmentType)
+    InternalAlignmentType alignmentType
+)
     : Constraint(InternalAlignmentPoint2Ellipse)
     , e(e)
     , p(p1)
@@ -1723,7 +1724,8 @@ void ConstraintInternalAlignmentPoint2Ellipse::errorgrad(double* err, double* gr
 ConstraintInternalAlignmentPoint2Hyperbola::ConstraintInternalAlignmentPoint2Hyperbola(
     Hyperbola& e,
     Point& p1,
-    InternalAlignmentType alignmentType)
+    InternalAlignmentType alignmentType
+)
     : Constraint(InternalAlignmentPoint2Hyperbola)
     , e(e)
     , p(p1)
@@ -1818,8 +1820,7 @@ void ConstraintInternalAlignmentPoint2Hyperbola::errorgrad(double* err, double* 
 
 // --------------------------------------------------------
 //  ConstraintEqualMajorAxesEllipse
-ConstraintEqualMajorAxesConic::ConstraintEqualMajorAxesConic(MajorRadiusConic* a1,
-                                                             MajorRadiusConic* a2)
+ConstraintEqualMajorAxesConic::ConstraintEqualMajorAxesConic(MajorRadiusConic* a1, MajorRadiusConic* a2)
     : Constraint(EqualMajorAxesConic)
     , e1(a1)
     , e2(a2)
@@ -2268,11 +2269,13 @@ double ConstraintAngleViaPoint::grad(double* param)
 
 // --------------------------------------------------------
 // ConstraintAngleViaTwoPoints
-ConstraintAngleViaTwoPoints::ConstraintAngleViaTwoPoints(Curve& acrv1,
-                                                         Curve& acrv2,
-                                                         Point p1,
-                                                         Point p2,
-                                                         double* angle)
+ConstraintAngleViaTwoPoints::ConstraintAngleViaTwoPoints(
+    Curve& acrv1,
+    Curve& acrv2,
+    Point p1,
+    Point p2,
+    double* angle
+)
     : Constraint(AngleViaTwoPoints)
     , crv1(acrv1.Copy())
     , crv2(acrv2.Copy())
@@ -2361,11 +2364,13 @@ double ConstraintAngleViaTwoPoints::grad(double* param)
 
 // --------------------------------------------------------
 // ConstraintAngleViaPointAndParam
-ConstraintAngleViaPointAndParam::ConstraintAngleViaPointAndParam(Curve& acrv1,
-                                                                 Curve& acrv2,
-                                                                 Point p,
-                                                                 double* cparam,
-                                                                 double* angle)
+ConstraintAngleViaPointAndParam::ConstraintAngleViaPointAndParam(
+    Curve& acrv1,
+    Curve& acrv2,
+    Point p,
+    double* cparam,
+    double* angle
+)
     : Constraint(AngleViaPointAndParam)
     , crv1(acrv1.Copy())
     , crv2(acrv2.Copy())
@@ -2450,12 +2455,14 @@ double ConstraintAngleViaPointAndParam::grad(double* param)
 
 // --------------------------------------------------------
 // ConstraintAngleViaPointAndTwoParams
-ConstraintAngleViaPointAndTwoParams::ConstraintAngleViaPointAndTwoParams(Curve& acrv1,
-                                                                         Curve& acrv2,
-                                                                         Point p,
-                                                                         double* cparam1,
-                                                                         double* cparam2,
-                                                                         double* angle)
+ConstraintAngleViaPointAndTwoParams::ConstraintAngleViaPointAndTwoParams(
+    Curve& acrv1,
+    Curve& acrv2,
+    Point p,
+    double* cparam1,
+    double* cparam2,
+    double* angle
+)
     : Constraint(AngleViaPointAndTwoParams)
     , crv1(acrv1.Copy())
     , crv2(acrv2.Copy())
@@ -2543,14 +2550,16 @@ double ConstraintAngleViaPointAndTwoParams::grad(double* param)
 
 // --------------------------------------------------------
 // ConstraintSnell
-ConstraintSnell::ConstraintSnell(Curve& r1,
-                                 Curve& r2,
-                                 Curve& b,
-                                 Point p,
-                                 double* n1,
-                                 double* n2,
-                                 bool flipn1,
-                                 bool flipn2)
+ConstraintSnell::ConstraintSnell(
+    Curve& r1,
+    Curve& r2,
+    Curve& b,
+    Point p,
+    double* n1,
+    double* n2,
+    bool flipn1,
+    bool flipn2
+)
     : Constraint(Snell)
     , ray1(r1.Copy())
     , ray2(r2.Copy())

@@ -1750,8 +1750,7 @@ void System::initSolution(Algorithm alg)
 
     // partitioning into decoupled components
     Graph g;
-    for (int i = 0; i < int(substitution.parameters.size() + substitution.constraints.size());
-         i++) {
+    for (int i = 0; i < int(substitution.parameters.size() + substitution.constraints.size()); i++) {
         boost::add_vertex(g);
     }
 
@@ -5526,12 +5525,14 @@ void System::identifyConflictingRedundantConstraints(
     }
 
     if (res == Success) {
-        std::ranges::copy_if(skipped,
-                             std::inserter(redundant, redundant.begin()),
-                             [this](const auto& constr) {
-                                 double err = constr->error();
-                                 return (err * err < this->convergenceRedundant);
-                             });
+        std::ranges::copy_if(
+            skipped,
+            std::inserter(redundant, redundant.begin()),
+            [this](const auto& constr) {
+                double err = constr->error();
+                return (err * err < this->convergenceRedundant);
+            }
+        );
         resetToReference();
 
         if (debugMode == Minimal || debugMode == IterationLevel) {

@@ -273,11 +273,13 @@ public:
     Point center;
     Point focus1;
     DeriParam radmin;
-    double getRadMaj(const DeriVector2& center,
-                     const DeriVector2& f1,
-                     double b,
-                     double db,
-                     double& ret_dRadMaj) const override;
+    double getRadMaj(
+        const DeriVector2& center,
+        const DeriVector2& f1,
+        double b,
+        double db,
+        double& ret_dRadMaj
+    ) const override;
     double getRadMaj(double* derivparam, double& ret_dRadMaj) const override;
     double getRadMaj() const override;
     DeriVector2 CalculateNormal(const Point& p, const double* derivparam = nullptr) const override;
@@ -309,11 +311,13 @@ public:
     Point center;
     Point focus1;
     DeriParam radmin;
-    double getRadMaj(const DeriVector2& center,
-                     const DeriVector2& f1,
-                     double b,
-                     double db,
-                     double& ret_dRadMaj) const override;
+    double getRadMaj(
+        const DeriVector2& center,
+        const DeriVector2& f1,
+        double b,
+        double db,
+        double& ret_dRadMaj
+    ) const override;
     double getRadMaj(double* derivparam, double& ret_dRadMaj) const override;
     double getRadMaj() const override;
     DeriVector2 CalculateNormal(const Point& p, const double* derivparam = nullptr) const override;
