@@ -21,9 +21,8 @@
  ***************************************************************************/
 
 
-
-# include <QAction>
-# include <QMenu>
+#include <QAction>
+#include <QMenu>
 
 
 #include <Mod/PartDesign/App/FeatureHelix.h>
@@ -37,7 +36,7 @@
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderHelix,PartDesignGui::ViewProvider)
+PROPERTY_SOURCE(PartDesignGui::ViewProviderHelix, PartDesignGui::ViewProvider)
 
 
 ViewProviderHelix::ViewProviderHelix() = default;
@@ -50,29 +49,35 @@ void ViewProviderHelix::setupContextMenu(QMenu* menu, QObject* receiver, const c
     ViewProvider::setupContextMenu(menu, receiver, member);
 }
 
-TaskDlgFeatureParameters *ViewProviderHelix::getEditDialog()
+TaskDlgFeatureParameters* ViewProviderHelix::getEditDialog()
 {
     return new TaskDlgHelixParameters(this);
 }
 
-QIcon ViewProviderHelix::getIcon() const {
+QIcon ViewProviderHelix::getIcon() const
+{
     QString str = QStringLiteral("PartDesign_");
     auto* prim = getObject<PartDesign::Helix>();
-    if(prim->getAddSubType() == PartDesign::FeatureAddSub::Additive)
+    if (prim->getAddSubType() == PartDesign::FeatureAddSub::Additive) {
         str += QStringLiteral("Additive");
-    else
+    }
+    else {
         str += QStringLiteral("Subtractive");
+    }
 
     str += QStringLiteral("Helix.svg");
-    return PartDesignGui::ViewProvider::mergeGreyableOverlayIcons(Gui::BitmapFactory().pixmap(str.toStdString().c_str()));
+    return PartDesignGui::ViewProvider::mergeGreyableOverlayIcons(
+        Gui::BitmapFactory().pixmap(str.toStdString().c_str())
+    );
 }
 
-std::vector<App::DocumentObject*> ViewProviderHelix::claimChildren() const {
+std::vector<App::DocumentObject*> ViewProviderHelix::claimChildren() const
+{
     std::vector<App::DocumentObject*> temp;
     App::DocumentObject* sketch = getObject<PartDesign::ProfileBased>()->Profile.getValue();
-    if (sketch && sketch->isDerivedFrom<Part::Part2DObject>())
+    if (sketch && sketch->isDerivedFrom<Part::Part2DObject>()) {
         temp.push_back(sketch);
+    }
 
     return temp;
 }
-

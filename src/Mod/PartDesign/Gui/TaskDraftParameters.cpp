@@ -22,7 +22,6 @@
  ***************************************************************************/
 
 
-
 #include <QAction>
 #include <QKeyEvent>
 #include <QListWidget>
@@ -36,9 +35,9 @@
 #include <Gui/Selection/Selection.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/Inventor/Draggers/Gizmo.h>
-#include <Gui/Inventor/Draggers/GizmoHelper.h>
 #include <Mod/PartDesign/App/FeatureDraft.h>
 #include <Mod/PartDesign/Gui/ReferenceSelection.h>
+#include <Mod/Part/App/GizmoHelper.h>
 
 #include "ui_TaskDraftParameters.h"
 #include "TaskDraftParameters.h"
@@ -185,7 +184,8 @@ void TaskDraftParameters::onButtonPlane(bool checked)
         Gui::Selection().clearSelection();
         Gui::Selection().addSelectionGate(new ReferenceSelection(
             this->getBase(),
-            AllowSelection::EDGE | AllowSelection::FACE | AllowSelection::PLANAR));
+            AllowSelection::EDGE | AllowSelection::FACE | AllowSelection::PLANAR
+        ));
     }
 }
 
@@ -197,7 +197,8 @@ void TaskDraftParameters::onButtonLine(bool checked)
         selectionMode = line;
         Gui::Selection().clearSelection();
         Gui::Selection().addSelectionGate(
-            new ReferenceSelection(this->getBase(), AllowSelection::EDGE | AllowSelection::PLANAR));
+            new ReferenceSelection(this->getBase(), AllowSelection::EDGE | AllowSelection::PLANAR)
+        );
     }
 }
 

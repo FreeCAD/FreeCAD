@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 David Friedli <david[at]friedli-be.ch>             *
  *                                                                         *
@@ -104,11 +106,15 @@ PyMOD_INIT_FUNC(MeasureGui)
 
     // register preferences pages
     new Gui::PrefPageProducer<MeasureGui::DlgPrefsMeasureAppearanceImp>(
-        QT_TRANSLATE_NOOP("QObject", "Measure"));
+        QT_TRANSLATE_NOOP("QObject", "Measure")
+    );
 
     //    Q_INIT_RESOURCE(Measure);
 
     Base::Interpreter().addType(&MeasureGui::QuickMeasurePy::Type, mod, "QuickMeasure");
+
+    // Create a QuickMeasure instance
+    new MeasureGui::QuickMeasure(QApplication::instance());
 
     PyMOD_Return(mod);
 }

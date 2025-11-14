@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2019 sliptonic <shopinthewoods@gmail.com>               *
  *                                                                         *
@@ -35,9 +36,11 @@
 namespace Path
 {
 
-Base::Vector3d compensateRotation(const Base::Vector3d& pt,
-                                  const Base::Rotation& rot,
-                                  const Base::Vector3d& center)
+Base::Vector3d compensateRotation(
+    const Base::Vector3d& pt,
+    const Base::Rotation& rot,
+    const Base::Vector3d& center
+)
 {
     Base::Vector3d ptRotated;
     rot.multVec(pt - center, ptRotated);
@@ -59,10 +62,12 @@ void PathSegmentVisitor::setup(const Base::Vector3d& last)
     (void)last;
 }
 
-void PathSegmentVisitor::g0(int id,
-                            const Base::Vector3d& last,
-                            const Base::Vector3d& next,
-                            const std::deque<Base::Vector3d>& pts)
+void PathSegmentVisitor::g0(
+    int id,
+    const Base::Vector3d& last,
+    const Base::Vector3d& next,
+    const std::deque<Base::Vector3d>& pts
+)
 {
     (void)id;
     (void)last;
@@ -70,10 +75,12 @@ void PathSegmentVisitor::g0(int id,
     (void)pts;
 }
 
-void PathSegmentVisitor::g1(int id,
-                            const Base::Vector3d& last,
-                            const Base::Vector3d& next,
-                            const std::deque<Base::Vector3d>& pts)
+void PathSegmentVisitor::g1(
+    int id,
+    const Base::Vector3d& last,
+    const Base::Vector3d& next,
+    const std::deque<Base::Vector3d>& pts
+)
 {
     (void)id;
     (void)last;
@@ -81,11 +88,13 @@ void PathSegmentVisitor::g1(int id,
     (void)pts;
 }
 
-void PathSegmentVisitor::g23(int id,
-                             const Base::Vector3d& last,
-                             const Base::Vector3d& next,
-                             const std::deque<Base::Vector3d>& pts,
-                             const Base::Vector3d& center)
+void PathSegmentVisitor::g23(
+    int id,
+    const Base::Vector3d& last,
+    const Base::Vector3d& next,
+    const std::deque<Base::Vector3d>& pts,
+    const Base::Vector3d& center
+)
 {
     (void)id;
     (void)last;
@@ -94,12 +103,14 @@ void PathSegmentVisitor::g23(int id,
     (void)center;
 }
 
-void PathSegmentVisitor::g8x(int id,
-                             const Base::Vector3d& last,
-                             const Base::Vector3d& next,
-                             const std::deque<Base::Vector3d>& pts,
-                             const std::deque<Base::Vector3d>& p,
-                             const std::deque<Base::Vector3d>& q)
+void PathSegmentVisitor::g8x(
+    int id,
+    const Base::Vector3d& last,
+    const Base::Vector3d& next,
+    const std::deque<Base::Vector3d>& pts,
+    const std::deque<Base::Vector3d>& p,
+    const std::deque<Base::Vector3d>& q
+)
 {
     (void)id;
     (void)last;
@@ -128,7 +139,8 @@ void PathSegmentWalker::walk(PathSegmentVisitor& cb, const Base::Vector3d& start
     }
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Part");
+        "User parameter:BaseApp/Preferences/Mod/Part"
+    );
     float deviation = hGrp->GetFloat("MeshDeviation", 0.2);
 
     Base::Vector3d rotCenter = tp.getCenter();
@@ -185,8 +197,10 @@ void PathSegmentWalker::walk(PathSegmentVisitor& cb, const Base::Vector3d& start
         if ((name == "G0") || (name == "G00") || (name == "G1") || (name == "G01")) {
             // straight line
             if (nrot != lrot) {
-                double amax = std::max(fmod(fabs(a - A), 360),
-                                       std::max(fmod(fabs(b - B), 360), fmod(fabs(c - C), 360)));
+                double amax = std::max(
+                    fmod(fabs(a - A), 360),
+                    std::max(fmod(fabs(b - B), 360), fmod(fabs(c - C), 360))
+                );
                 double angle = Base::toRadians(amax);
                 int segments = std::max(ARC_MIN_SEGMENTS, 3.0 / (deviation / angle));
 
@@ -261,14 +275,15 @@ void PathSegmentWalker::walk(PathSegmentVisitor& cb, const Base::Vector3d& start
                 angle = std::numbers::pi * 2;
             }
 
-            double amax = std::max(fmod(fabs(a - A), 360),
-                                   std::max(fmod(fabs(b - B), 360), fmod(fabs(c - C), 360)));
+            double amax = std::max(
+                fmod(fabs(a - A), 360),
+                std::max(fmod(fabs(b - B), 360), fmod(fabs(c - C), 360))
+            );
 
             int segments = std::max(
                 ARC_MIN_SEGMENTS,
-                3.0
-                    / (deviation
-                       / std::max(angle, amax)));  // we use a rather simple rule here, provisorily
+                3.0 / (deviation / std::max(angle, amax))
+            );  // we use a rather simple rule here, provisorily
             double dZ = (next.*pz - last.*pz) / segments;  // How far each segment will helix in Z
 
             double dangle = angle / segments;
@@ -312,8 +327,9 @@ void PathSegmentWalker::walk(PathSegmentVisitor& cb, const Base::Vector3d& start
             // relative mode
             absolutecenter = false;
         }
-        else if ((name == "G73") || (name == "G81") || (name == "G82") || (name == "G83")
-                 || (name == "G84") || (name == "G85") || (name == "G86") || (name == "G89")) {
+        else if ((name == "G73") || (name == "G74") || (name == "G81") || (name == "G82")
+                 || (name == "G83") || (name == "G84") || (name == "G85") || (name == "G86")
+                 || (name == "G89")) {
             // drill,tap,bore
             double r = 0;
             if (cmd.has("R")) {
@@ -327,8 +343,10 @@ void PathSegmentWalker::walk(PathSegmentVisitor& cb, const Base::Vector3d& start
             p1.*pz = last.*pz;
 
             if (nrot != lrot) {
-                double amax = std::max(fmod(fabs(a - A), 360),
-                                       std::max(fmod(fabs(b - B), 360), fmod(fabs(c - C), 360)));
+                double amax = std::max(
+                    fmod(fabs(a - A), 360),
+                    std::max(fmod(fabs(b - B), 360), fmod(fabs(c - C), 360))
+                );
                 double angle = Base::toRadians(amax);
                 int segments = std::max(ARC_MIN_SEGMENTS, 3.0 / (deviation / angle));
 

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2017 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -43,9 +45,7 @@ namespace SurfaceGui
 class ViewProviderFilling;
 class Ui_TaskFillingVertex;
 
-class FillingVertexPanel: public QWidget,
-                          public Gui::SelectionObserver,
-                          public Gui::DocumentObserver
+class FillingVertexPanel: public QWidget, public Gui::SelectionObserver, public Gui::DocumentObserver
 {
     Q_OBJECT
 

@@ -92,8 +92,10 @@ void ReaderGltf::processDocument(Handle(TDocStd_Document) hDoc)
 }
 
 // NOLINTNEXTLINE
-TopoDS_Shape ReaderGltf::processSubShapes(Handle(TDocStd_Document) hDoc,
-                                          const TDF_LabelSequence& subShapeLabels)
+TopoDS_Shape ReaderGltf::processSubShapes(
+    Handle(TDocStd_Document) hDoc,
+    const TDF_LabelSequence& subShapeLabels
+)
 {
     TopoDS_Compound compound;
     Handle(XCAFDoc_ShapeTool) aShapeTool = XCAFDoc_DocumentTool::ShapeTool(hDoc->Main());
@@ -153,7 +155,12 @@ TopoDS_Shape ReaderGltf::fixShape(TopoDS_Shape shape)  // NOLINT
 
     if (cleanup()) {
         sh.sewShape();
-        return sh.removeSplitter();
+        try {
+            return sh.removeSplitter();
+        }
+        catch (const Standard_Failure& e) {
+            return sh.getShape();
+        }
     }
 
     return sh.getShape();

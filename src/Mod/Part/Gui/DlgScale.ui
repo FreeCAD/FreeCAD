@@ -226,6 +226,15 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>rbUniform</tabstop>
+  <tabstop>dsbUniformScale</tabstop>
+  <tabstop>rbNonUniform</tabstop>
+  <tabstop>dsbXScale</tabstop>
+  <tabstop>dsbYScale</tabstop>
+  <tabstop>dsbZScale</tabstop>
+  <tabstop>treeWidget</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

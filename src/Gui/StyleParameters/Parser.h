@@ -167,4 +167,4 @@ private:
 
 }  // namespace Gui::StyleParameters
 
-#endif  // STYLEPARAMETERS_PARSER_H 
+#endif  // STYLEPARAMETERS_PARSER_H

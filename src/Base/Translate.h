@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2018 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -29,7 +31,7 @@
 #include <memory>
 #include <list>
 #ifndef FC_GLOBAL_H
-#include <FCGlobal.h>
+# include <FCGlobal.h>
 #endif
 
 namespace Py

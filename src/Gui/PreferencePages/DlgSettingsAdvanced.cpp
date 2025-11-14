@@ -30,12 +30,12 @@ DlgSettingsAdvanced.define()
 ]]]*/
 
 // Auto generated code (Tools/params_utils.py:567)
-#   include <QApplication>
-#   include <QLabel>
-#   include <QGroupBox>
-#   include <QGridLayout>
-#   include <QVBoxLayout>
-#   include <QHBoxLayout>
+#include <QApplication>
+#include <QLabel>
+#include <QGroupBox>
+#include <QGridLayout>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
 
 #include <Gui/TreeParams.h>
 #include <Gui/OverlayParams.h>
@@ -46,7 +46,7 @@ using namespace Gui::Dialog;
 
 // Auto generated code (Tools/params_utils.py:598)
 DlgSettingsAdvanced::DlgSettingsAdvanced(QWidget* parent)
-    : PreferencePage( parent )
+    : PreferencePage(parent)
 {
 
     auto layout = new QVBoxLayout(this);
@@ -267,7 +267,9 @@ DlgSettingsAdvanced::DlgSettingsAdvanced(QWidget* parent)
     layoutOverlay->addWidget(labelDockOverlaySplitterHandleTimeout, 14, 0);
     DockOverlaySplitterHandleTimeout = new Gui::PrefSpinBox(this);
     layoutOverlay->addWidget(DockOverlaySplitterHandleTimeout, 14, 1);
-    DockOverlaySplitterHandleTimeout->setValue(Gui::OverlayParams::defaultDockOverlaySplitterHandleTimeout());
+    DockOverlaySplitterHandleTimeout->setValue(
+        Gui::OverlayParams::defaultDockOverlaySplitterHandleTimeout()
+    );
     DockOverlaySplitterHandleTimeout->setEntryName("DockOverlaySplitterHandleTimeout");
     DockOverlaySplitterHandleTimeout->setParamGrpPath("View");
     // Auto generated code (Tools/params_utils.py:1135)
@@ -322,8 +324,9 @@ DlgSettingsAdvanced::DlgSettingsAdvanced(QWidget* parent)
     DockOverlayAnimationCurve->setEntryName("DockOverlayAnimationCurve");
     DockOverlayAnimationCurve->setParamGrpPath("View");
     // Auto generated code (Gui/OverlayParams.py:94)
-    for (const auto &item : OverlayParams::AnimationCurveTypes)
+    for (const auto& item : OverlayParams::AnimationCurveTypes) {
         DockOverlayAnimationCurve->addItem(item);
+    }
     DockOverlayAnimationCurve->setCurrentIndex(Gui::OverlayParams::defaultDockOverlayAnimationCurve());
     layout->addItem(new QSpacerItem(40, 20, QSizePolicy::Fixed, QSizePolicy::Expanding));
     retranslateUi();
@@ -333,8 +336,7 @@ DlgSettingsAdvanced::DlgSettingsAdvanced(QWidget* parent)
 
 // Auto generated code (Tools/params_utils.py:614)
 DlgSettingsAdvanced::~DlgSettingsAdvanced()
-{
-}
+{}
 
 // Auto generated code (Tools/params_utils.py:622)
 void DlgSettingsAdvanced::saveSettings()
@@ -391,65 +393,106 @@ void DlgSettingsAdvanced::retranslateUi()
 {
     setWindowTitle(QObject::tr("Advanced"));
     groupOverlay->setTitle(QObject::tr("Overlay"));
-    DockOverlayWheelDelay->setToolTip(QApplication::translate("OverlayParams", Gui::OverlayParams::docDockOverlayWheelDelay()));
+    DockOverlayWheelDelay->setToolTip(
+        QApplication::translate("OverlayParams", Gui::OverlayParams::docDockOverlayWheelDelay())
+    );
     labelDockOverlayWheelDelay->setText(QObject::tr("Delay mouse wheel pass through"));
     labelDockOverlayWheelDelay->setToolTip(DockOverlayWheelDelay->toolTip());
-    DockOverlayAlphaRadius->setToolTip(QApplication::translate("OverlayParams", Gui::OverlayParams::docDockOverlayAlphaRadius()));
+    DockOverlayAlphaRadius->setToolTip(
+        QApplication::translate("OverlayParams", Gui::OverlayParams::docDockOverlayAlphaRadius())
+    );
     labelDockOverlayAlphaRadius->setText(QObject::tr("Alpha test radius"));
     labelDockOverlayAlphaRadius->setToolTip(DockOverlayAlphaRadius->toolTip());
-    DockOverlayCheckNaviCube->setToolTip(QApplication::translate("OverlayParams", Gui::OverlayParams::docDockOverlayCheckNaviCube()));
+    DockOverlayCheckNaviCube->setToolTip(
+        QApplication::translate("OverlayParams", Gui::OverlayParams::docDockOverlayCheckNaviCube())
+    );
     DockOverlayCheckNaviCube->setText(QObject::tr("Check navigation cube"));
-    DockOverlayHintTriggerSize->setToolTip(QApplication::translate("OverlayParams", Gui::OverlayParams::docDockOverlayHintTriggerSize()));
+    DockOverlayHintTriggerSize->setToolTip(
+        QApplication::translate("OverlayParams", Gui::OverlayParams::docDockOverlayHintTriggerSize())
+    );
     labelDockOverlayHintTriggerSize->setText(QObject::tr("Hint trigger size"));
     labelDockOverlayHintTriggerSize->setToolTip(DockOverlayHintTriggerSize->toolTip());
-    DockOverlayHintSize->setToolTip(QApplication::translate("OverlayParams", Gui::OverlayParams::docDockOverlayHintSize()));
+    DockOverlayHintSize->setToolTip(
+        QApplication::translate("OverlayParams", Gui::OverlayParams::docDockOverlayHintSize())
+    );
     labelDockOverlayHintSize->setText(QObject::tr("Hint width"));
     labelDockOverlayHintSize->setToolTip(DockOverlayHintSize->toolTip());
-    DockOverlayHintLeftOffset->setToolTip(QApplication::translate("OverlayParams", Gui::OverlayParams::docDockOverlayHintLeftOffset()));
+    DockOverlayHintLeftOffset->setToolTip(
+        QApplication::translate("OverlayParams", Gui::OverlayParams::docDockOverlayHintLeftOffset())
+    );
     labelDockOverlayHintLeftOffset->setText(QObject::tr("Left panel hint offset"));
     labelDockOverlayHintLeftOffset->setToolTip(DockOverlayHintLeftOffset->toolTip());
-    DockOverlayHintLeftLength->setToolTip(QApplication::translate("OverlayParams", Gui::OverlayParams::docDockOverlayHintLeftLength()));
+    DockOverlayHintLeftLength->setToolTip(
+        QApplication::translate("OverlayParams", Gui::OverlayParams::docDockOverlayHintLeftLength())
+    );
     labelDockOverlayHintLeftLength->setText(QObject::tr("Left panel hint length"));
     labelDockOverlayHintLeftLength->setToolTip(DockOverlayHintLeftLength->toolTip());
-    DockOverlayHintRightOffset->setToolTip(QApplication::translate("OverlayParams", Gui::OverlayParams::docDockOverlayHintRightOffset()));
+    DockOverlayHintRightOffset->setToolTip(
+        QApplication::translate("OverlayParams", Gui::OverlayParams::docDockOverlayHintRightOffset())
+    );
     labelDockOverlayHintRightOffset->setText(QObject::tr("Right panel hint offset"));
     labelDockOverlayHintRightOffset->setToolTip(DockOverlayHintRightOffset->toolTip());
-    DockOverlayHintRightLength->setToolTip(QApplication::translate("OverlayParams", Gui::OverlayParams::docDockOverlayHintRightLength()));
+    DockOverlayHintRightLength->setToolTip(
+        QApplication::translate("OverlayParams", Gui::OverlayParams::docDockOverlayHintRightLength())
+    );
     labelDockOverlayHintRightLength->setText(QObject::tr("Right panel hint length"));
     labelDockOverlayHintRightLength->setToolTip(DockOverlayHintRightLength->toolTip());
-    DockOverlayHintTopOffset->setToolTip(QApplication::translate("OverlayParams", Gui::OverlayParams::docDockOverlayHintTopOffset()));
+    DockOverlayHintTopOffset->setToolTip(
+        QApplication::translate("OverlayParams", Gui::OverlayParams::docDockOverlayHintTopOffset())
+    );
     labelDockOverlayHintTopOffset->setText(QObject::tr("Top panel hint offset"));
     labelDockOverlayHintTopOffset->setToolTip(DockOverlayHintTopOffset->toolTip());
-    DockOverlayHintTopLength->setToolTip(QApplication::translate("OverlayParams", Gui::OverlayParams::docDockOverlayHintTopLength()));
+    DockOverlayHintTopLength->setToolTip(
+        QApplication::translate("OverlayParams", Gui::OverlayParams::docDockOverlayHintTopLength())
+    );
     labelDockOverlayHintTopLength->setText(QObject::tr("Top panel hint length"));
     labelDockOverlayHintTopLength->setToolTip(DockOverlayHintTopLength->toolTip());
-    DockOverlayHintBottomOffset->setToolTip(QApplication::translate("OverlayParams", Gui::OverlayParams::docDockOverlayHintBottomOffset()));
+    DockOverlayHintBottomOffset->setToolTip(
+        QApplication::translate("OverlayParams", Gui::OverlayParams::docDockOverlayHintBottomOffset())
+    );
     labelDockOverlayHintBottomOffset->setText(QObject::tr("Bottom panel hint offset"));
     labelDockOverlayHintBottomOffset->setToolTip(DockOverlayHintBottomOffset->toolTip());
-    DockOverlayHintBottomLength->setToolTip(QApplication::translate("OverlayParams", Gui::OverlayParams::docDockOverlayHintBottomLength()));
+    DockOverlayHintBottomLength->setToolTip(
+        QApplication::translate("OverlayParams", Gui::OverlayParams::docDockOverlayHintBottomLength())
+    );
     labelDockOverlayHintBottomLength->setText(QObject::tr("Bottom panel hint length"));
     labelDockOverlayHintBottomLength->setToolTip(DockOverlayHintBottomLength->toolTip());
-    DockOverlayHintDelay->setToolTip(QApplication::translate("OverlayParams", Gui::OverlayParams::docDockOverlayHintDelay()));
+    DockOverlayHintDelay->setToolTip(
+        QApplication::translate("OverlayParams", Gui::OverlayParams::docDockOverlayHintDelay())
+    );
     labelDockOverlayHintDelay->setText(QObject::tr("Hint delay"));
     labelDockOverlayHintDelay->setToolTip(DockOverlayHintDelay->toolTip());
-    DockOverlaySplitterHandleTimeout->setToolTip(QApplication::translate("OverlayParams", Gui::OverlayParams::docDockOverlaySplitterHandleTimeout()));
+    DockOverlaySplitterHandleTimeout->setToolTip(
+        QApplication::translate(
+            "OverlayParams",
+            Gui::OverlayParams::docDockOverlaySplitterHandleTimeout()
+        )
+    );
     labelDockOverlaySplitterHandleTimeout->setText(QObject::tr("Splitter auto hide delay"));
     labelDockOverlaySplitterHandleTimeout->setToolTip(DockOverlaySplitterHandleTimeout->toolTip());
-    DockOverlayActivateOnHover->setToolTip(QApplication::translate("OverlayParams", Gui::OverlayParams::docDockOverlayActivateOnHover()));
+    DockOverlayActivateOnHover->setToolTip(
+        QApplication::translate("OverlayParams", Gui::OverlayParams::docDockOverlayActivateOnHover())
+    );
     DockOverlayActivateOnHover->setText(QObject::tr("Activate on hover"));
-    DockOverlayDelay->setToolTip(QApplication::translate("OverlayParams", Gui::OverlayParams::docDockOverlayDelay()));
+    DockOverlayDelay->setToolTip(
+        QApplication::translate("OverlayParams", Gui::OverlayParams::docDockOverlayDelay())
+    );
     labelDockOverlayDelay->setText(QObject::tr("Layout delay"));
     labelDockOverlayDelay->setToolTip(DockOverlayDelay->toolTip());
-    DockOverlayAnimationDuration->setToolTip(QApplication::translate("OverlayParams", Gui::OverlayParams::docDockOverlayAnimationDuration()));
+    DockOverlayAnimationDuration->setToolTip(
+        QApplication::translate("OverlayParams", Gui::OverlayParams::docDockOverlayAnimationDuration())
+    );
     labelDockOverlayAnimationDuration->setText(QObject::tr("Animation duration"));
     labelDockOverlayAnimationDuration->setToolTip(DockOverlayAnimationDuration->toolTip());
-    DockOverlayAnimationCurve->setToolTip(QApplication::translate("OverlayParams", Gui::OverlayParams::docDockOverlayAnimationCurve()));
+    DockOverlayAnimationCurve->setToolTip(
+        QApplication::translate("OverlayParams", Gui::OverlayParams::docDockOverlayAnimationCurve())
+    );
     labelDockOverlayAnimationCurve->setText(QObject::tr("Animation curve type"));
     labelDockOverlayAnimationCurve->setToolTip(DockOverlayAnimationCurve->toolTip());
 }
 
 // Auto generated code (Tools/params_utils.py:657)
-void DlgSettingsAdvanced::changeEvent(QEvent *e)
+void DlgSettingsAdvanced::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         retranslateUi();
@@ -471,12 +514,17 @@ void DlgSettingsAdvanced::init()
 
     animator1 = new QPropertyAnimation(this, "offset1", this);
     QObject::connect(animator1, &QPropertyAnimation::stateChanged, [this]() {
-        if (animator1->state() != QAbstractAnimation::Running)
+        if (animator1->state() != QAbstractAnimation::Running) {
             timer->start(1000);
+        }
     });
 
-    QObject::connect(DockOverlayAnimationCurve, QOverload<int>::of(&QComboBox::currentIndexChanged),
-                     this, &DlgSettingsAdvanced::onCurveChange);
+    QObject::connect(
+        DockOverlayAnimationCurve,
+        QOverload<int>::of(&QComboBox::currentIndexChanged),
+        this,
+        &DlgSettingsAdvanced::onCurveChange
+    );
 
     QObject::connect(timer, &QTimer::timeout, [this]() {
         if (animator1->state() != QAbstractAnimation::Running) {
@@ -493,10 +541,11 @@ qreal DlgSettingsAdvanced::offset1() const
 
 void DlgSettingsAdvanced::setOffset1(qreal t)
 {
-    if (t == this->t1)
+    if (t == this->t1) {
         return;
+    }
     this->t1 = t;
-    QLabel *label = this->labelDockOverlayAnimationCurve;
+    QLabel* label = this->labelDockOverlayAnimationCurve;
     if (this->a1 == this->b1) {
         this->a1 = label->x();
         QPoint pos(width(), 0);
@@ -506,9 +555,10 @@ void DlgSettingsAdvanced::setOffset1(qreal t)
 
 void DlgSettingsAdvanced::onCurveChange(int index)
 {
-    if (sender() != DockOverlayAnimationCurve)
+    if (sender() != DockOverlayAnimationCurve) {
         return;
-    double value = DockOverlayAnimationDuration->value()*2;
+    }
+    double value = DockOverlayAnimationDuration->value() * 2;
     auto animator = animator1;
     animator->setStartValue(0.0);
     animator->setEndValue(1.0);

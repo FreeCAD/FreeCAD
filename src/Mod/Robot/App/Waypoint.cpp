@@ -36,14 +36,16 @@ using namespace KDL;
 
 TYPESYSTEM_SOURCE(Robot::Waypoint, Base::Persistence)
 
-Waypoint::Waypoint(const char* name,
-                   const Base::Placement& endPos,
-                   WaypointType type,
-                   float velocity,
-                   float acceleration,
-                   bool cont,
-                   unsigned int tool,
-                   unsigned int base)
+Waypoint::Waypoint(
+    const char* name,
+    const Base::Placement& endPos,
+    WaypointType type,
+    float velocity,
+    float acceleration,
+    bool cont,
+    unsigned int tool,
+    unsigned int base
+)
 
     : Name(name)
     , Type(type)
@@ -111,13 +113,19 @@ void Waypoint::Restore(XMLReader& reader)
     reader.readElement("Waypoint");
     Name = reader.getAttribute<const char*>("name");
     // get the value of the placement
-    EndPos = Base::Placement(Base::Vector3d(reader.getAttribute<double>("Px"),
-                                            reader.getAttribute<double>("Py"),
-                                            reader.getAttribute<double>("Pz")),
-                             Base::Rotation(reader.getAttribute<double>("Q0"),
-                                            reader.getAttribute<double>("Q1"),
-                                            reader.getAttribute<double>("Q2"),
-                                            reader.getAttribute<double>("Q3")));
+    EndPos = Base::Placement(
+        Base::Vector3d(
+            reader.getAttribute<double>("Px"),
+            reader.getAttribute<double>("Py"),
+            reader.getAttribute<double>("Pz")
+        ),
+        Base::Rotation(
+            reader.getAttribute<double>("Q0"),
+            reader.getAttribute<double>("Q1"),
+            reader.getAttribute<double>("Q2"),
+            reader.getAttribute<double>("Q3")
+        )
+    );
 
     Velocity = (float)reader.getAttribute<double>("vel");
     Acceleration = (float)reader.getAttribute<double>("acc");

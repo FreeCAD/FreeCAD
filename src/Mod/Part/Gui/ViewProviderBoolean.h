@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -29,9 +31,10 @@
 #include "ViewProvider.h"
 
 
-namespace PartGui {
+namespace PartGui
+{
 
-class PartGuiExport ViewProviderBoolean : public ViewProviderPart
+class PartGuiExport ViewProviderBoolean: public ViewProviderPart
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderBoolean);
 
@@ -45,11 +48,11 @@ public:
     std::vector<App::DocumentObject*> claimChildren() const override;
     QIcon getIcon() const override;
     void updateData(const App::Property*) override;
-    bool onDelete(const std::vector<std::string> &) override;
+    bool onDelete(const std::vector<std::string>&) override;
 };
 
 /// ViewProvider for the MultiFuse feature
-class PartGuiExport ViewProviderMultiFuse : public ViewProviderPart
+class PartGuiExport ViewProviderMultiFuse: public ViewProviderPart
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderMultiFuse);
 
@@ -63,7 +66,7 @@ public:
     std::vector<App::DocumentObject*> claimChildren() const override;
     QIcon getIcon() const override;
     void updateData(const App::Property*) override;
-    bool onDelete(const std::vector<std::string> &) override;
+    bool onDelete(const std::vector<std::string>&) override;
 
     /// drag and drop
     bool canDragObjects() const override;
@@ -75,7 +78,7 @@ public:
 };
 
 /// ViewProvider for the MultiFuse feature
-class PartGuiExport ViewProviderMultiCommon : public ViewProviderPart
+class PartGuiExport ViewProviderMultiCommon: public ViewProviderPart
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderMultiCommon);
 
@@ -89,7 +92,7 @@ public:
     std::vector<App::DocumentObject*> claimChildren() const override;
     QIcon getIcon() const override;
     void updateData(const App::Property*) override;
-    bool onDelete(const std::vector<std::string> &) override;
+    bool onDelete(const std::vector<std::string>&) override;
 
     /// drag and drop
     bool canDragObjects() const override;
@@ -101,7 +104,7 @@ public:
 };
 
 
-} // namespace PartGui
+}  // namespace PartGui
 
 
-#endif // PARTGUI_ViewProviderBoolean_H
+#endif  // PARTGUI_ViewProviderBoolean_H

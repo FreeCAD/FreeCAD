@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
 # *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
@@ -38,7 +40,7 @@ if App.GuiUp:
 
 
 def make_point(X=0, Y=0, Z=0, color=None, name="Point", point_size=5):
-    """ make_point(x, y, z, [color(r, g, b), point_size]) or
+    """make_point(x, y, z, [color(r, g, b), point_size]) or
         make_point(Vector, color(r, g, b), point_size])
 
     Creates a Draft Point in the current document.

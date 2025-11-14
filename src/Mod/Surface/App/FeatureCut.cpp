@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2014 Nathan Miller <Nathan.A.Mill[at]gmail.com>         *
  *                                                                         *
@@ -54,7 +56,8 @@ App::DocumentObjectExecReturn* Cut::execute()
         std::vector<App::DocumentObject*> shapes = ShapeList.getValues();
         if (shapes.size() != 2) {
             return new App::DocumentObjectExecReturn(
-                "Two shapes must be entered at a time for a cut operation");
+                "Two shapes must be entered at a time for a cut operation"
+            );
         }
 
         Part::TopoShape ts1;

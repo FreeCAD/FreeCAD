@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2007 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,11 +22,11 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <QButtonGroup>
-# include <QRegularExpression>
-# include <QRegularExpressionValidator>
-# include <QVBoxLayout>
-# include <Interface_Static.hxx>
+#include <QButtonGroup>
+#include <QRegularExpression>
+#include <QRegularExpressionValidator>
+#include <QVBoxLayout>
+#include <Interface_Static.hxx>
 
 
 #include <Mod/Part/App/Interface.h>
@@ -43,7 +45,8 @@
 using namespace PartGui;
 
 DlgSettingsGeneral::DlgSettingsGeneral(QWidget* parent)
-  : PreferencePage(parent), ui(new Ui_DlgSettingsGeneral)
+    : PreferencePage(parent)
+    , ui(new Ui_DlgSettingsGeneral)
 {
     ui->setupUi(this);
 }
@@ -88,7 +91,7 @@ void DlgSettingsGeneral::loadSettings()
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgSettingsGeneral::changeEvent(QEvent *e)
+void DlgSettingsGeneral::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
@@ -101,7 +104,8 @@ void DlgSettingsGeneral::changeEvent(QEvent *e)
 // ----------------------------------------------------------------------------
 
 DlgImportExportIges::DlgImportExportIges(QWidget* parent)
-  : PreferencePage(parent), ui(new Ui_DlgImportExportIges)
+    : PreferencePage(parent)
+    , ui(new Ui_DlgImportExportIges)
 {
     ui->setupUi(this);
     ui->lineEditProduct->setReadOnly(true);
@@ -112,7 +116,9 @@ DlgImportExportIges::DlgImportExportIges(QWidget* parent)
 
     QRegularExpression rx;
     rx.setPattern(QStringLiteral("[\\x00-\\x7F]+"));
-    QRegularExpressionValidator* companyValidator = new QRegularExpressionValidator(ui->lineEditCompany);
+    QRegularExpressionValidator* companyValidator = new QRegularExpressionValidator(
+        ui->lineEditCompany
+    );
     companyValidator->setRegularExpression(rx);
     ui->lineEditCompany->setValidator(companyValidator);
     QRegularExpressionValidator* authorValidator = new QRegularExpressionValidator(ui->lineEditAuthor);
@@ -148,10 +154,12 @@ void DlgImportExportIges::loadSettings()
     ui->comboBoxUnits->setCurrentIndex(static_cast<int>(settings.getUnit()));
 
     bool brep = settings.getBRepMode();
-    if (brep)
+    if (brep) {
         ui->radioButtonBRepOn->setChecked(true);
-    else
+    }
+    else {
         ui->radioButtonBRepOff->setChecked(true);
+    }
 
     // Import
     ui->checkSkipBlank->setChecked(settings.getSkipBlankEntities());
@@ -165,7 +173,7 @@ void DlgImportExportIges::loadSettings()
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgImportExportIges::changeEvent(QEvent *e)
+void DlgImportExportIges::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
@@ -178,10 +186,10 @@ void DlgImportExportIges::changeEvent(QEvent *e)
 // ----------------------------------------------------------------------------
 
 DlgImportExportStep::DlgImportExportStep(QWidget* parent)
-  : PreferencePage(parent)
-  , exportStep(new DlgExportStep(this))
-  , importStep(new DlgImportStep(this))
-  , headerStep(new DlgExportHeaderStep(this))
+    : PreferencePage(parent)
+    , exportStep(new DlgExportStep(this))
+    , importStep(new DlgImportStep(this))
+    , headerStep(new DlgExportHeaderStep(this))
 {
     setWindowTitle(QLatin1String("STEP"));
     QVBoxLayout* layout = new QVBoxLayout(this);
@@ -216,7 +224,7 @@ void DlgImportExportStep::loadSettings()
     headerStep->loadSettings();
 }
 
-void DlgImportExportStep::changeEvent(QEvent *)
+void DlgImportExportStep::changeEvent(QEvent*)
 {
     // do nothing
 }

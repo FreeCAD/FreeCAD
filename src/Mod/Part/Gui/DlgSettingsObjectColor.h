@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -27,7 +29,8 @@
 #include <Gui/PropertyPage.h>
 #include <memory>
 
-namespace PartGui {
+namespace PartGui
+{
 class Ui_DlgSettingsObjectColor;
 
 /**
@@ -35,24 +38,24 @@ class Ui_DlgSettingsObjectColor;
  * for data objects.
  * @author Werner Mayer
  */
-class DlgSettingsObjectColor : public Gui::Dialog::PreferencePage
+class DlgSettingsObjectColor: public Gui::Dialog::PreferencePage
 {
-  Q_OBJECT
+    Q_OBJECT
 
 public:
-  explicit DlgSettingsObjectColor(QWidget* parent = nullptr);
-  ~DlgSettingsObjectColor() override;
+    explicit DlgSettingsObjectColor(QWidget* parent = nullptr);
+    ~DlgSettingsObjectColor() override;
 
-  void saveSettings() override;
-  void loadSettings() override;
+    void saveSettings() override;
+    void loadSettings() override;
 
 protected:
-  void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
 
 private:
-  std::unique_ptr<Ui_DlgSettingsObjectColor> ui;
+    std::unique_ptr<Ui_DlgSettingsObjectColor> ui;
 };
 
-} // namespace PartGui
+}  // namespace PartGui
 
-#endif // PARTGUI_DIALOG_DLGSETTINGSOBJECTCOLOR_H
+#endif  // PARTGUI_DIALOG_DLGSETTINGSOBJECTCOLOR_H

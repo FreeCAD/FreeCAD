@@ -25,12 +25,8 @@ private:
     // TODO: use shared_ptr or something else here?
     Sketcher::SketchObject* _sketchobj;
     std::string _docName;
-    std::vector<const char*> allowedTypes {"Vertex",
-                                           "Edge",
-                                           "ExternalEdge",
-                                           "H_Axis",
-                                           "V_Axis",
-                                           "RootPoint"};
+    std::vector<const char*>
+        allowedTypes {"Vertex", "Edge", "ExternalEdge", "H_Axis", "V_Axis", "RootPoint"};
 };
 
 namespace SketcherTestHelpers

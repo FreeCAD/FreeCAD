@@ -83,8 +83,7 @@ class ViewProviderSketchCoinAttorney
 {
 private:
     static inline bool constraintHasExpression(const ViewProviderSketch& vp, int constrid);
-    static inline const std::vector<Sketcher::Constraint*>
-    getConstraints(const ViewProviderSketch& vp);
+    static inline const std::vector<Sketcher::Constraint*> getConstraints(const ViewProviderSketch& vp);
     static inline const GeoList getGeoList(const ViewProviderSketch& vp);
     static inline const GeoListFacade getGeoListFacade(const ViewProviderSketch& vp);
     static inline Base::Placement getEditingPlacement(const ViewProviderSketch& vp);
@@ -92,8 +91,7 @@ private:
     static inline std::unique_ptr<SoRayPickAction> getRayPickAction(const ViewProviderSketch& vp);
 
     static inline float getScaleFactor(const ViewProviderSketch& vp);
-    static inline SbVec2f getScreenCoordinates(const ViewProviderSketch& vp,
-                                               SbVec2f sketchcoordinates);
+    static inline SbVec2f getScreenCoordinates(const ViewProviderSketch& vp, SbVec2f sketchcoordinates);
     static inline QFont getApplicationFont(const ViewProviderSketch& vp);
     static inline double getRotation(const ViewProviderSketch& vp, SbVec3f pos0, SbVec3f pos1);
     static inline int defaultApplicationFontSizePixels(const ViewProviderSketch& vp);
@@ -118,8 +116,10 @@ private:
     static inline bool isCurveSelected(const ViewProviderSketch& vp, int curveId);
     static inline bool isConstraintSelected(const ViewProviderSketch& vp, int constraintId);
 
-    static inline void executeOnSelectionPointSet(const ViewProviderSketch& vp,
-                                                  std::function<void(const int)>&& operation);
+    static inline void executeOnSelectionPointSet(
+        const ViewProviderSketch& vp,
+        std::function<void(const int)>&& operation
+    );
 
     friend class EditModeCoinManager;
     friend class EditModeConstraintCoinManager;
@@ -128,14 +128,17 @@ private:
     friend class EditModeGeometryCoinConverter;
 };
 
-inline bool ViewProviderSketchCoinAttorney::constraintHasExpression(const ViewProviderSketch& vp,
-                                                                    int constrid)
+inline bool ViewProviderSketchCoinAttorney::constraintHasExpression(
+    const ViewProviderSketch& vp,
+    int constrid
+)
 {
     return vp.constraintHasExpression(constrid);
 };
 
-inline const std::vector<Sketcher::Constraint*>
-ViewProviderSketchCoinAttorney::getConstraints(const ViewProviderSketch& vp)
+inline const std::vector<Sketcher::Constraint*> ViewProviderSketchCoinAttorney::getConstraints(
+    const ViewProviderSketch& vp
+)
 {
     return vp.getConstraints();
 }
@@ -150,8 +153,7 @@ const GeoListFacade ViewProviderSketchCoinAttorney::getGeoListFacade(const ViewP
     return vp.getGeoListFacade();
 }
 
-inline Base::Placement
-ViewProviderSketchCoinAttorney::getEditingPlacement(const ViewProviderSketch& vp)
+inline Base::Placement ViewProviderSketchCoinAttorney::getEditingPlacement(const ViewProviderSketch& vp)
 {
     return vp.getEditingPlacement();
 }
@@ -161,8 +163,9 @@ inline bool ViewProviderSketchCoinAttorney::isShownVirtualSpace(const ViewProvid
     return vp.viewProviderParameters.isShownVirtualSpace;
 }
 
-inline std::unique_ptr<SoRayPickAction>
-ViewProviderSketchCoinAttorney::getRayPickAction(const ViewProviderSketch& vp)
+inline std::unique_ptr<SoRayPickAction> ViewProviderSketchCoinAttorney::getRayPickAction(
+    const ViewProviderSketch& vp
+)
 {
     return vp.getRayPickAction();
 }
@@ -172,8 +175,10 @@ inline float ViewProviderSketchCoinAttorney::getScaleFactor(const ViewProviderSk
     return vp.getScaleFactor();
 }
 
-inline SbVec2f ViewProviderSketchCoinAttorney::getScreenCoordinates(const ViewProviderSketch& vp,
-                                                                    SbVec2f sketchcoordinates)
+inline SbVec2f ViewProviderSketchCoinAttorney::getScreenCoordinates(
+    const ViewProviderSketch& vp,
+    SbVec2f sketchcoordinates
+)
 {
     return vp.getScreenCoordinates(sketchcoordinates);
 }
@@ -183,15 +188,16 @@ inline QFont ViewProviderSketchCoinAttorney::getApplicationFont(const ViewProvid
     return vp.getApplicationFont();
 }
 
-inline double ViewProviderSketchCoinAttorney::getRotation(const ViewProviderSketch& vp,
-                                                          SbVec3f pos0,
-                                                          SbVec3f pos1)
+inline double ViewProviderSketchCoinAttorney::getRotation(
+    const ViewProviderSketch& vp,
+    SbVec3f pos0,
+    SbVec3f pos1
+)
 {
     return vp.getRotation(pos0, pos1);
 }
 
-inline int
-ViewProviderSketchCoinAttorney::defaultApplicationFontSizePixels(const ViewProviderSketch& vp)
+inline int ViewProviderSketchCoinAttorney::defaultApplicationFontSizePixels(const ViewProviderSketch& vp)
 {
     return vp.defaultFontSizePixels();
 }
@@ -221,8 +227,7 @@ inline bool ViewProviderSketchCoinAttorney::isSketchFullyConstrained(const ViewP
     return vp.isSketchFullyConstrained();
 }
 
-inline bool
-ViewProviderSketchCoinAttorney::haveConstraintsInvalidGeometry(const ViewProviderSketch& vp)
+inline bool ViewProviderSketchCoinAttorney::haveConstraintsInvalidGeometry(const ViewProviderSketch& vp)
 {
     return vp.haveConstraintsInvalidGeometry();
 }
@@ -232,8 +237,7 @@ inline void ViewProviderSketchCoinAttorney::addNodeToRoot(ViewProviderSketch& vp
     vp.addNodeToRoot(node);
 }
 
-inline void ViewProviderSketchCoinAttorney::removeNodeFromRoot(ViewProviderSketch& vp,
-                                                               SoSeparator* node)
+inline void ViewProviderSketchCoinAttorney::removeNodeFromRoot(ViewProviderSketch& vp, SoSeparator* node)
 {
     vp.removeNodeFromRoot(node);
 }
@@ -253,33 +257,36 @@ inline int ViewProviderSketchCoinAttorney::getPreselectCross(const ViewProviderS
     return vp.getPreselectCross();
 }
 
-inline bool ViewProviderSketchCoinAttorney::isConstraintPreselected(const ViewProviderSketch& vp,
-                                                                    int constraintId)
+inline bool ViewProviderSketchCoinAttorney::isConstraintPreselected(
+    const ViewProviderSketch& vp,
+    int constraintId
+)
 {
     return vp.isConstraintPreselected(constraintId);
 }
 
-inline bool ViewProviderSketchCoinAttorney::isPointSelected(const ViewProviderSketch& vp,
-                                                            int pointId)
+inline bool ViewProviderSketchCoinAttorney::isPointSelected(const ViewProviderSketch& vp, int pointId)
 {
     return vp.isPointSelected(pointId);
 }
 
-inline bool ViewProviderSketchCoinAttorney::isCurveSelected(const ViewProviderSketch& vp,
-                                                            int curveId)
+inline bool ViewProviderSketchCoinAttorney::isCurveSelected(const ViewProviderSketch& vp, int curveId)
 {
     return vp.isCurveSelected(curveId);
 }
 
-inline bool ViewProviderSketchCoinAttorney::isConstraintSelected(const ViewProviderSketch& vp,
-                                                                 int constraintId)
+inline bool ViewProviderSketchCoinAttorney::isConstraintSelected(
+    const ViewProviderSketch& vp,
+    int constraintId
+)
 {
     return vp.isConstraintSelected(constraintId);
 }
 
 inline void ViewProviderSketchCoinAttorney::executeOnSelectionPointSet(
     const ViewProviderSketch& vp,
-    std::function<void(const int)>&& operation)
+    std::function<void(const int)>&& operation
+)
 {
     vp.executeOnSelectionPointSet(std::move(operation));
 }

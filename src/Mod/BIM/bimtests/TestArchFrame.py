@@ -27,6 +27,7 @@ import Draft
 import FreeCAD as App
 from bimtests import TestArchBase
 
+
 class TestArchFrame(TestArchBase.TestArchBase):
 
     def test_makeFrame(self):
@@ -37,7 +38,7 @@ class TestArchFrame(TestArchBase.TestArchBase):
         self.assertEqual(obj.Label, "Frame", "Incorrect default label for Frame")
 
     def testFrame(self):
-        l=Draft.makeLine(App.Vector(0,0,0),App.Vector(-2,0,0))
-        p = Draft.makeRectangle(length=.5,height=.5)
-        f = Arch.makeFrame(l,p)
-        self.assertTrue(f,"Arch Frame failed")
+        l = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(-2, 0, 0))
+        p = Draft.makeRectangle(length=0.5, height=0.5)
+        f = Arch.makeFrame(l, p)
+        self.assertTrue(f, "Arch Frame failed")

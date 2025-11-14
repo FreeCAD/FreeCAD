@@ -25,6 +25,7 @@
 import Arch
 from bimtests import TestArchBase
 
+
 class TestArchCurtainWall(TestArchBase.TestArchBase):
 
     def test_makeCurtainWall(self):
@@ -33,5 +34,7 @@ class TestArchCurtainWall(TestArchBase.TestArchBase):
         self.printTestMessage(operation)
 
         curtain_wall = Arch.makeCurtainWall(name="TestCurtainWall")
-        self.assertIsNotNone(curtain_wall, "makeCurtainWall failed to create a curtain wall object.")
+        self.assertIsNotNone(
+            curtain_wall, "makeCurtainWall failed to create a curtain wall object."
+        )
         self.assertEqual(curtain_wall.Label, "TestCurtainWall", "Curtain wall label is incorrect.")

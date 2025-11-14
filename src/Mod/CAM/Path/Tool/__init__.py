@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 import sys
 from lazy_loader.lazy_loader import LazyLoader
 from . import toolbit

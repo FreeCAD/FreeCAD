@@ -80,30 +80,32 @@ public:
      The result is either the full path if available or just the binary
      name if it was found in a system path
      */
-    static std::string checkIfBinaryExists(std::string prefSection,
-                                           std::string prefBinaryPath,
-                                           std::string prefBinaryName);
+    static std::string checkIfBinaryExists(
+        std::string prefSection,
+        std::string prefBinaryPath,
+        std::string prefBinaryName
+    );
 
     /*!
      Subshape placement is not necessarily the same as the
      feature placement
     */
-    static Base::Placement getSubShapeGlobalLocation(const Part::Feature* feat,
-                                                     const TopoDS_Shape& sh);
+    static Base::Placement getSubShapeGlobalLocation(const Part::Feature* feat, const TopoDS_Shape& sh);
     static void setSubShapeGlobalLocation(const Part::Feature* feat, TopoDS_Shape& sh);
     /*!
      Get subshape from Part Feature. The subShape is returned with global location
     */
-    static TopoDS_Shape
-    getFeatureSubShape(const Part::Feature* feat, const char* subName, bool silent);
+    static TopoDS_Shape getFeatureSubShape(const Part::Feature* feat, const char* subName, bool silent);
     /*!
      Get cylinder parameters. Base is located at the center of the cylinder
     */
-    static bool getCylinderParams(const TopoDS_Shape& sh,
-                                  Base::Vector3d& base,
-                                  Base::Vector3d& axis,
-                                  double& height,
-                                  double& radius);
+    static bool getCylinderParams(
+        const TopoDS_Shape& sh,
+        Base::Vector3d& base,
+        Base::Vector3d& axis,
+        double& height,
+        double& radius
+    );
 };
 
 }  // namespace Fem

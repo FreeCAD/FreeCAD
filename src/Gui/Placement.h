@@ -32,18 +32,21 @@
 
 class QSignalMapper;
 
-namespace App {
+namespace App
+{
 class DocumentObject;
 }
-namespace Gui {
+namespace Gui
+{
 class Document;
 
-namespace Dialog {
+namespace Dialog
+{
 
 class Ui_Placement;
 class TaskPlacement;
 
-class GuiExport PlacementHandler : public QObject
+class GuiExport PlacementHandler: public QObject
 {
     Q_OBJECT
 
@@ -73,8 +76,12 @@ private:
     std::vector<const App::DocumentObject*> getSelectedObjects(const Gui::Document*) const;
     void revertTransformationOfViewProviders(Gui::Document*);
     void tryRecompute(Gui::Document*);
-    void applyPlacement(const Gui::Document*, const App::DocumentObject*,
-                        const Base::Placement& p, bool incremental);
+    void applyPlacement(
+        const Gui::Document*,
+        const App::DocumentObject*,
+        const Base::Placement& p,
+        bool incremental
+    );
     void applyPlacement(const App::DocumentObject*, const QString& p, bool incremental);
     QString getIncrementalPlacement(const App::DocumentObject*, const QString&) const;
     QString getSimplePlacement(const App::DocumentObject*, const QString&) const;
@@ -89,7 +96,7 @@ private Q_SLOTS:
 
 private:
     using Connection = boost::signals2::scoped_connection;
-    std::string propertyName; // the name of the placement property
+    std::string propertyName;  // the name of the placement property
     std::set<std::string> documents;
     /** If false apply the placement directly to the transform nodes,
      * otherwise change the placement property.
@@ -109,7 +116,7 @@ private:
     Base::Vector3d cntOfMass;
 };
 
-class GuiExport Placement : public QDialog
+class GuiExport Placement: public QDialog
 {
     Q_OBJECT
 
@@ -123,8 +130,7 @@ public:
     void setPropertyName(const std::string&);
     void setSelection(const std::vector<SelectionObject>&);
     void bindObject();
-    void setPlacementAndBindObject(const App::DocumentObject* obj,
-                                   const std::string& propertyName);
+    void setPlacementAndBindObject(const App::DocumentObject* obj, const std::string& propertyName);
     void setIgnoreTransactions(bool value);
     Base::Vector3d getDirection() const;
     void setPlacement(const Base::Placement&);
@@ -132,7 +138,7 @@ public:
     void showDefaultButtons(bool);
 
 protected:
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
     void keyPressEvent(QKeyEvent*) override;
 
 public Q_SLOTS:
@@ -168,7 +174,7 @@ private:
     void showErrorMessage();
 
 Q_SIGNALS:
-    void placementChanged(const QVariant &, bool, bool);
+    void placementChanged(const QVariant&, bool, bool);
 
 private:
     Ui_Placement* ui;
@@ -176,7 +182,7 @@ private:
     PlacementHandler handler;
 };
 
-class GuiExport DockablePlacement : public Placement
+class GuiExport DockablePlacement: public Placement
 {
     Q_OBJECT
 
@@ -188,7 +194,7 @@ public:
     void reject() override;
 };
 
-class TaskPlacement : public Gui::TaskView::TaskDialog
+class TaskPlacement: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
@@ -202,26 +208,31 @@ public:
     void setSelection(const std::vector<SelectionObject>&);
     void clearSelection();
     void bindObject();
-    void setPlacementAndBindObject(const App::DocumentObject* obj,
-                                   const std::string& propertyName);
+    void setPlacementAndBindObject(const App::DocumentObject* obj, const std::string& propertyName);
     bool accept() override;
     bool reject() override;
     void clicked(int id) override;
 
     void open() override;
     bool isAllowedAlterDocument() const override
-    { return true; }
+    {
+        return true;
+    }
     bool isAllowedAlterView() const override
-    { return true; }
+    {
+        return true;
+    }
     bool isAllowedAlterSelection() const override
-    { return true; }
+    {
+        return true;
+    }
     QDialogButtonBox::StandardButtons getStandardButtons() const override;
 
 public Q_SLOTS:
-    void slotPlacementChanged(const QVariant &, bool, bool);
+    void slotPlacementChanged(const QVariant&, bool, bool);
 
 Q_SIGNALS:
-    void placementChanged(const QVariant &, bool, bool);
+    void placementChanged(const QVariant&, bool, bool);
 
 private:
     Placement* widget;
@@ -264,7 +275,7 @@ private:
     QPointer<Placement> widget;
 };
 
-} // namespace Dialog
-} // namespace Gui
+}  // namespace Dialog
+}  // namespace Gui
 
-#endif // GUI_PLACEMENT_H
+#endif  // GUI_PLACEMENT_H

@@ -512,6 +512,20 @@
       <string>Direction</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_4">
+      <item row="2" column="0">
+       <widget class="QCheckBox" name="checkBoxAlongDirection">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="toolTip">
+         <string>If unchecked, the length will be
+measured along the specified direction</string>
+        </property>
+        <property name="text">
+         <string>Length along sketch normal</string>
+        </property>
+       </widget>
+      </item>
       <item row="0" column="0">
        <layout class="QGridLayout" name="gridLayout_3">
         <item row="0" column="0">
@@ -547,13 +561,6 @@ from the model as reference</string>
        </layout>
       </item>
       <item row="1" column="0">
-       <widget class="QCheckBox" name="checkBoxDirection">
-        <property name="text">
-         <string>Show direction</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
        <widget class="QGroupBox" name="groupBoxDirection">
         <property name="enabled">
          <bool>true</bool>
@@ -660,20 +667,6 @@ the sketch plane's normal vector will be used</string>
           </widget>
          </item>
         </layout>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QCheckBox" name="checkBoxAlongDirection">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="toolTip">
-         <string>If unchecked, the length will be
-measured along the specified direction</string>
-        </property>
-        <property name="text">
-         <string>Length along sketch normal</string>
-        </property>
        </widget>
       </item>
      </layout>

@@ -30,7 +30,7 @@
 namespace PartDesign
 {
 
-class PartDesignExport FeatureBase : public PartDesign::Feature
+class PartDesignExport FeatureBase: public PartDesign::Feature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::FeatureBase);
 
@@ -39,9 +39,10 @@ public:
 
     short int mustExecute() const override;
 
-    Part::Feature* getBaseObject(bool silent=false) const override;
+    Part::Feature* getBaseObject(bool silent = false) const override;
 
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "PartDesignGui::ViewProviderBase";
     }
 
@@ -53,7 +54,7 @@ private:
     void trySetBaseFeatureOfBody();
 };
 
-} //namespace PartDesign
+}  // namespace PartDesign
 
 
-#endif // PARTDESIGN_FeatureBase_H
+#endif  // PARTDESIGN_FeatureBase_H

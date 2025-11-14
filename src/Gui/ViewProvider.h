@@ -56,25 +56,29 @@ class QMenu;
 class QObject;
 
 
-namespace Base {
-  class Matrix4D;
-  class Color;
-}
+namespace Base
+{
+class Matrix4D;
+class Color;
+}  // namespace Base
 
 class SoGroup;
 
 
-namespace Gui {
-    namespace TaskView {
-        class TaskContent;
-    }
+namespace Gui
+{
+namespace TaskView
+{
+class TaskContent;
+}
 class View3DInventorViewer;
 class ViewProviderPy;
 class ObjectItem;
 class MDIView;
 class SelectionChanges;
 
-enum ViewStatus {
+enum ViewStatus
+{
     UpdateData = 0,
     Detach = 1,
     isRestoring = 2,
@@ -89,39 +93,47 @@ enum ViewStatus {
  * trouble of typing get() all the time.
  */
 template<class T>
-class CoinPtr: public boost::intrusive_ptr<T> {
+class CoinPtr: public boost::intrusive_ptr<T>
+{
 public:
     // Too bad, VC2013 does not support constructor inheritance
-    //using boost::intrusive_ptr<T>::intrusive_ptr;
+    // using boost::intrusive_ptr<T>::intrusive_ptr;
     using inherited = boost::intrusive_ptr<T>;
     CoinPtr() = default;
-    CoinPtr(T *p, bool add_ref=true):inherited(p,add_ref){}
-    template<class Y> CoinPtr(CoinPtr<Y> const &r):inherited(r){}
+    CoinPtr(T* p, bool add_ref = true)
+        : inherited(p, add_ref)
+    {}
+    template<class Y>
+    CoinPtr(CoinPtr<Y> const& r)
+        : inherited(r)
+    {}
 
-    operator T *() const {
+    operator T*() const
+    {
         return this->get();
-    }//explicit bombs
+    }  // explicit bombs
 };
 
 /** Helper function to deal with bug in SoNode::removeAllChildren()
  *
  * @sa https://bitbucket.org/Coin3D/coin/pull-requests/119/fix-sochildlist-auditing/diff
  */
-void GuiExport coinRemoveAllChildren(SoGroup *node);
+void GuiExport coinRemoveAllChildren(SoGroup* node);
 
 /** General interface for all visual stuff in FreeCAD
-  * This class is used to generate and handle all around
-  * visualizing and presenting objects from the FreeCAD
-  * App layer to the user. This class and its descendents
-  * have to be implemented for any object type in order to
-  * show them in the 3DView and TreeView.
-  */
-class GuiExport ViewProvider : public App::TransactionalObject
+ * This class is used to generate and handle all around
+ * visualizing and presenting objects from the FreeCAD
+ * App layer to the user. This class and its descendents
+ * have to be implemented for any object type in order to
+ * show them in the 3DView and TreeView.
+ */
+class GuiExport ViewProvider: public App::TransactionalObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProvider);
 
 public:
-    enum class ToggleVisibilityMode : bool {
+    enum class ToggleVisibilityMode : bool
+    {
         CanToggleVisibility = true,
         NoToggleVisibility = false
     };
@@ -133,10 +145,19 @@ public:
     ~ViewProvider() override;
 
     // returns the root node of the Provider (3D)
-    virtual SoSeparator* getRoot() const {return pcRoot;}
+    virtual SoSeparator* getRoot() const
+    {
+        return pcRoot;
+    }
     // return the mode switch node of the Provider (3D)
-    SoSwitch *getModeSwitch() const {return pcModeSwitch;}
-    SoTransform *getTransformNode() const {return pcTransform;}
+    SoSwitch* getModeSwitch() const
+    {
+        return pcModeSwitch;
+    }
+    SoTransform* getTransformNode() const
+    {
+        return pcTransform;
+    }
     // returns the root for the Annotations.
     SoSeparator* getAnnotation();
     // returns the root node of the Provider (3D)
@@ -145,37 +166,53 @@ public:
     virtual SoGroup* getChildRoot() const;
     // returns the root node of the Provider (3D)
     virtual SoSeparator* getBackRoot() const;
-    ///Indicate whether to be added to scene graph or not
-    virtual bool canAddToSceneGraph() const {return true;}
+    /// Indicate whether to be added to scene graph or not
+    virtual bool canAddToSceneGraph() const
+    {
+        return true;
+    }
     // Indicate whether to be added to object group (true) or only to scene graph (false)
-    virtual bool isPartOfPhysicalObject() const {return true;}
+    virtual bool isPartOfPhysicalObject() const
+    {
+        return true;
+    }
 
     /** deliver the children belonging to this object
-      * this method is used to deliver the objects to
-      * the 3DView which should be grouped under its
-      * scene graph. This affects the visibility and the 3D
-      * position of the object.
-      */
+     * this method is used to deliver the objects to
+     * the 3DView which should be grouped under its
+     * scene graph. This affects the visibility and the 3D
+     * position of the object.
+     */
     virtual std::vector<App::DocumentObject*> claimChildren3D() const;
 
     /** @name Selection handling
-      * This group of methods do the selection handling.
-      * Here you can define how the selection for your ViewProfider
-      * works.
+     * This group of methods do the selection handling.
+     * Here you can define how the selection for your ViewProfider
+     * works.
      */
     //@{
 
     /// indicates if the ViewProvider use the new Selection model
     virtual bool useNewSelectionModel() const;
-    virtual bool isSelectable() const {return true;}
+    virtual bool isSelectable() const
+    {
+        return true;
+    }
     /// called when the selection changes for the view provider
-    virtual void onSelectionChanged(const SelectionChanges&) {}
+    virtual void onSelectionChanged(const SelectionChanges&)
+    {}
     /// return a hit element given the picked point which contains the full node path
-    virtual bool getElementPicked(const SoPickedPoint *, std::string &subname) const;
+    virtual bool getElementPicked(const SoPickedPoint*, std::string& subname) const;
     /// return a hit element to the selection path or 0
-    virtual std::string getElement(const SoDetail *) const { return {}; }
+    virtual std::string getElement(const SoDetail*) const
+    {
+        return {};
+    }
     /// return the coin node detail of the subelement
-    virtual SoDetail* getDetail(const char *) const { return nullptr; }
+    virtual SoDetail* getDetail(const char*) const
+    {
+        return nullptr;
+    }
 
     /** return the coin node detail and path to the node of the subelement
      *
@@ -191,7 +228,7 @@ public:
      * nodes starting just after the mode switch node up till the mode switch of
      * the linked view provider.
      */
-    virtual bool getDetailPath(const char *subname, SoFullPath *pPath, bool append, SoDetail *&det) const;
+    virtual bool getDetailPath(const char* subname, SoFullPath* pPath, bool append, SoDetail*& det) const;
 
     /** partial rendering setup
      *
@@ -204,11 +241,12 @@ public:
      * Partial rendering only works if there is at least one SoFCSelectRoot node
      * in this view provider
      */
-    int partialRender(const std::vector<std::string> &subelements, bool clear);
+    int partialRender(const std::vector<std::string>& subelements, bool clear);
 
-    virtual std::vector<Base::Vector3d> getModelPoints(const SoPickedPoint *) const;
+    virtual std::vector<Base::Vector3d> getModelPoints(const SoPickedPoint*) const;
     /// return the highlight lines for a given element or the whole shape
-    virtual std::vector<Base::Vector3d> getSelectionShape(const char* Element) const {
+    virtual std::vector<Base::Vector3d> getSelectionShape(const char* Element) const
+    {
         (void)Element;
         return {};
     }
@@ -218,15 +256,20 @@ public:
      * This method shall work regardless whether the current view object is
      * visible or not.
      */
-    Base::BoundBox3d getBoundingBox(const char *subname=nullptr, bool transform=true, MDIView *view=nullptr) const;
+    Base::BoundBox3d getBoundingBox(
+        const char* subname = nullptr,
+        bool transform = true,
+        MDIView* view = nullptr
+    ) const;
 
     /**
      * Get called if the object is about to get deleted.
-     * Here you can delete other objects, switch their visibility or prevent the deletion of the object.
+     * Here you can delete other objects, switch their visibility or prevent the deletion of the
+     * object.
      * @param subNames  list of selected subelements
      * @return          true if the deletion is approved by the view provider.
      */
-    virtual bool onDelete(const std::vector<std::string> &subNames);
+    virtual bool onDelete(const std::vector<std::string>& subNames);
     /** Called before deletion
      *
      * Unlike onDelete(), this function is guaranteed to be called before
@@ -244,9 +287,9 @@ public:
 
 
     /** @name Methods used by the Tree
-      * If you want to take control over the
-      * appearance of your object in the tree you
-      * can reimplement these methods.
+     * If you want to take control over the
+     * appearance of your object in the tree you
+     * can reimplement these methods.
      */
     //@{
     /// deliver the icon shown in the tree view
@@ -264,30 +307,31 @@ public:
      * Coin but are "rendered" on the TechDraw page and hence this function can
      * return true for those items.
      */
-    bool canToggleVisibility() const {
+    bool canToggleVisibility() const
+    {
         return toggleVisibilityMode == ToggleVisibilityMode::CanToggleVisibility;
     }
 
-     /** @name Methods used by the Tree
+    /** @name Methods used by the Tree
      * If you want to take control over the
      * viewprovider specific overlay icons that will be drawn with color
      * regardless of whether the icon is greyed out or not, such as status, you
      * can reimplement this method.
      */
-    virtual QIcon mergeColorfulOverlayIcons (const QIcon & orig) const;
+    virtual QIcon mergeColorfulOverlayIcons(const QIcon& orig) const;
 
     /** deliver the children belonging to this object
-      * this method is used to deliver the objects to
-      * the tree framework which should be grouped under its
-      * label. Obvious is the usage in the group but it can
-      * be used for any kind of grouping needed for a special
-      * purpose.
-      */
+     * this method is used to deliver the objects to
+     * the tree framework which should be grouped under its
+     * label. Obvious is the usage in the group but it can
+     * be used for any kind of grouping needed for a special
+     * purpose.
+     */
     virtual std::vector<App::DocumentObject*> claimChildren() const;
     //@}
 
     /** deliver the children belonging to this object recursively.
-      */
+     */
     virtual std::vector<App::DocumentObject*> claimChildrenRecursive() const;
     //@}
 
@@ -304,7 +348,8 @@ public:
     virtual bool canDragObjects() const;
     /** Check whether the object can be removed from the view provider by drag and drop */
     virtual bool canDragObject(App::DocumentObject*) const;
-    /** Check whether the object can be removed from the view provider by drag and drop to a determined target*/
+    /** Check whether the object can be removed from the view provider by drag and drop to a
+     * determined target*/
     virtual bool canDragObjectToTarget(App::DocumentObject* obj, App::DocumentObject* target) const;
     /** Remove a child from the view provider by drag and drop */
     virtual void dragObject(App::DocumentObject*);
@@ -338,13 +383,23 @@ public:
      *
      * @return Return whether the dropping action is allowed.
      * */
-    virtual bool canDropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner,
-            const char *subname, const std::vector<std::string> &elements) const;
+    virtual bool canDropObjectEx(
+        App::DocumentObject* obj,
+        App::DocumentObject* owner,
+        const char* subname,
+        const std::vector<std::string>& elements
+    ) const;
     /* Check whether the object accept reordering of its children during drop.*/
-    virtual bool acceptReorderingObjects() const { return false; };
+    virtual bool acceptReorderingObjects() const
+    {
+        return false;
+    };
 
     /// return a subname referencing the sub-object holding the dropped objects
-    virtual std::string getDropPrefix() const { return {}; }
+    virtual std::string getDropPrefix() const
+    {
+        return {};
+    }
 
     /** Add an object with full qualified name to the view provider by drag and drop
      *
@@ -364,8 +419,12 @@ public:
      * object, which may or may not be the actual dropped object, e.g. it may be
      * a link.
      */
-    virtual std::string dropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner,
-            const char *subname, const std::vector<std::string> &elements);
+    virtual std::string dropObjectEx(
+        App::DocumentObject* obj,
+        App::DocumentObject* owner,
+        const char* subname,
+        const std::vector<std::string>& elements
+    );
     /** Replace an object to the view provider by drag and drop
      *
      * @param oldObj: object to be replaced
@@ -373,24 +432,30 @@ public:
      *
      * @return Returns 0 if not found, 1 if succeeded, -1 if not supported
      */
-    virtual int replaceObject(App::DocumentObject *oldObj, App::DocumentObject *newObj);
+    virtual int replaceObject(App::DocumentObject* oldObj, App::DocumentObject* newObj);
     //@}
 
     /** Tell the tree view if this object should appear there */
-    virtual bool showInTree() const { return true; }
+    virtual bool showInTree() const
+    {
+        return true;
+    }
     /** Tell the tree view to remove children items from the tree root*/
-    virtual bool canRemoveChildrenFromRoot() const {return true;}
+    virtual bool canRemoveChildrenFromRoot() const
+    {
+        return true;
+    }
 
     /** @name Signals of the view provider */
     //@{
     /// signal on icon change
-    boost::signals2::signal<void ()> signalChangeIcon;
+    boost::signals2::signal<void()> signalChangeIcon;
     /// signal on tooltip change
-    boost::signals2::signal<void (const QString&)> signalChangeToolTip;
+    boost::signals2::signal<void(const QString&)> signalChangeToolTip;
     /// signal on status tip change
-    boost::signals2::signal<void (const QString&)> signalChangeStatusTip;
+    boost::signals2::signal<void(const QString&)> signalChangeStatusTip;
     /// signal on highlight change
-    boost::signals2::signal<void (bool, Gui::HighlightMode)> signalChangeHighlight;
+    boost::signals2::signal<void(bool, Gui::HighlightMode)> signalChangeHighlight;
     //@}
 
     /** update the content of the ViewProvider
@@ -401,13 +466,22 @@ public:
      */
     virtual void update(const App::Property*);
     virtual void updateData(const App::Property*);
-    bool isUpdatesEnabled () const;
-    void setUpdatesEnabled (bool enable);
+    bool isUpdatesEnabled() const;
+    void setUpdatesEnabled(bool enable);
 
     /// return the status bits
-    unsigned long getStatus() const {return StatusBits.to_ulong();}
-    bool testStatus(ViewStatus pos) const {return StatusBits.test((size_t)pos);}
-    void setStatus(ViewStatus pos, bool on) {StatusBits.set((size_t)pos, on);}
+    unsigned long getStatus() const
+    {
+        return StatusBits.to_ulong();
+    }
+    bool testStatus(ViewStatus pos) const
+    {
+        return StatusBits.test((size_t)pos);
+    }
+    void setStatus(ViewStatus pos, bool on)
+    {
+        StatusBits.set((size_t)pos, on);
+    }
 
     std::string toString() const;
     PyObject* getPyObject() override;
@@ -433,22 +507,24 @@ public:
     void setLinkVisible(bool);
     bool isLinkVisible() const;
     /// Overrides the display mode with mode.
-    virtual void setOverrideMode(const std::string &mode);
+    virtual void setOverrideMode(const std::string& mode);
     const std::string getOverrideMode();
     //@}
 
     /** @name Color management methods
      */
     //@{
-    virtual std::map<std::string, Base::Color> getElementColors(const char *element=nullptr) const {
+    virtual std::map<std::string, Base::Color> getElementColors(const char* element = nullptr) const
+    {
         (void)element;
         return {};
     }
-    virtual void setElementColors(const std::map<std::string, Base::Color> &colors) {
+    virtual void setElementColors(const std::map<std::string, Base::Color>& colors)
+    {
         (void)colors;
     }
-    static const std::string &hiddenMarker();
-    static const char *hasHiddenMarker(const char *subname);
+    static const std::string& hiddenMarker();
+    static const char* hasHiddenMarker(const char* subname);
     //@}
 
     /** @name Edit methods
@@ -459,11 +535,14 @@ public:
     // the below enum is reflected in 'userEditModes' std::map in Application.h
     // so it is possible for the user to choose a default one through GUI
     // if you add a mode here, consider to make it accessible there too
-    enum EditMode {Default = 0,
-                   Transform,
-                   Cutting,
-                   Color,
+    enum EditMode
+    {
+        Default = 0,
+        Transform,
+        Cutting,
+        Color,
     };
+
 protected:
     /// is called by the document when the provider goes in edit mode
     virtual bool setEdit(int ModNum);
@@ -473,7 +552,7 @@ protected:
     int getEditingMode() const;
 
 public:
-    virtual ViewProvider *startEditing(int ModNum=0);
+    virtual ViewProvider* startEditing(int ModNum = 0);
     bool isEditing() const;
     void finishEditing();
     /// adjust viewer settings when editing a view provider
@@ -488,27 +567,41 @@ public:
      */
     //@{
     /// get a list of TaskBoxes associated with this object
-    virtual void getTaskViewContent(std::vector<Gui::TaskView::TaskContent*>&) const {}
+    virtual void getTaskViewContent(std::vector<Gui::TaskView::TaskContent*>&) const
+    {}
     //@}
 
     /// is called when the provider is in edit and a "Select All" command was issued
     /// Provider shall return 'false' is it ignores the command, 'true' otherwise
-    virtual bool selectAll() { return false; }
+    virtual bool selectAll()
+    {
+        return false;
+    }
     /// is called when the provider is in edit and a key event occurs. Only ESC ends edit.
     virtual bool keyPressed(bool pressed, int key);
     /// Is called by the tree if the user double clicks on the object. It returns the string
     /// for the transaction that will be shown in the undo/redo dialog.
     /// If null is returned then no transaction will be opened.
-    virtual const char* getTransactionText() const { return nullptr; }
+    virtual const char* getTransactionText() const
+    {
+        return nullptr;
+    }
     /// is called by the tree if the user double clicks on the object
-    virtual bool doubleClicked() { return false; }
+    virtual bool doubleClicked()
+    {
+        return false;
+    }
     /// is called when the provider is in edit and the mouse is moved
-    virtual bool mouseMove(const SbVec2s &cursorPos, View3DInventorViewer* viewer);
+    virtual bool mouseMove(const SbVec2s& cursorPos, View3DInventorViewer* viewer);
     /// is called when the Provider is in edit and the mouse is clicked
-    virtual bool mouseButtonPressed(int button, bool pressed, const SbVec2s &cursorPos,
-                                    const View3DInventorViewer* viewer);
+    virtual bool mouseButtonPressed(
+        int button,
+        bool pressed,
+        const SbVec2s& cursorPos,
+        const View3DInventorViewer* viewer
+    );
 
-    virtual bool mouseWheelEvent(int delta, const SbVec2s &cursorPos, const View3DInventorViewer* viewer);
+    virtual bool mouseWheelEvent(int delta, const SbVec2s& cursorPos, const View3DInventorViewer* viewer);
     /// set up the context-menu with the supported edit modes
     virtual void setupContextMenu(QMenu*, QObject*, const char*);
 
@@ -520,24 +613,28 @@ public:
      */
     //@{
     /// set the viewing transformation of the provider
-    virtual void setTransformation(const Base::Matrix4D &rcMatrix);
-    virtual void setTransformation(const SbMatrix &rcMatrix);
-    static SbMatrix convert(const Base::Matrix4D &rcMatrix);
-    static Base::Matrix4D convert(const SbMatrix &sbMat);
+    virtual void setTransformation(const Base::Matrix4D& rcMatrix);
+    virtual void setTransformation(const SbMatrix& rcMatrix);
+    static SbMatrix convert(const Base::Matrix4D& rcMatrix);
+    static Base::Matrix4D convert(const SbMatrix& sbMat);
     //@}
 
-    virtual MDIView *getMDIView() const {
+    virtual MDIView* getMDIView() const
+    {
         return nullptr;
     }
 
 public:
     // this method is called by the viewer when the ViewProvider is in edit
-    static void eventCallback(void * ud, SoEventCallback * node);
+    static void eventCallback(void* ud, SoEventCallback* node);
 
-    //restoring the object from document:
-    //this may be of interest to extensions, hence call them
+    // restoring the object from document:
+    // this may be of interest to extensions, hence call them
     void Restore(Base::XMLReader& reader) override;
-    bool isRestoring() {return testStatus(Gui::isRestoring);}
+    bool isRestoring()
+    {
+        return testStatus(Gui::isRestoring);
+    }
 
 
     /** @name Display mask modes
@@ -549,9 +646,9 @@ public:
      */
     //@{
     /// Adds a new display mask mode
-    void addDisplayMaskMode( SoNode *node, const char* type );
+    void addDisplayMaskMode(SoNode* node, const char* type);
     /// Activates the display mask mode \a type
-    void setDisplayMaskMode( const char* type );
+    void setDisplayMaskMode(const char* type);
     /// Get the node to the display mask mode \a type
     SoNode* getDisplayMaskMode(const char* type) const;
     /// Returns a list of added display mask modes
@@ -570,13 +667,15 @@ protected:
     /** Helper method to get picked entities while editing.
      * It's in the responsibility of the caller to delete the returned instance.
      */
-    SoPickedPoint* getPointOnRay(const SbVec2s& pos,
-                                 const View3DInventorViewer* viewer) const;
+    SoPickedPoint* getPointOnRay(const SbVec2s& pos, const View3DInventorViewer* viewer) const;
     /** Helper method to get picked entities while editing.
      * It's in the responsibility of the caller to delete the returned instance.
      */
-    SoPickedPoint* getPointOnRay(const SbVec3f& pos, const SbVec3f& dir,
-                                 const View3DInventorViewer* viewer) const;
+    SoPickedPoint* getPointOnRay(
+        const SbVec3f& pos,
+        const SbVec3f& dir,
+        const View3DInventorViewer* viewer
+    ) const;
     /// Reimplemented from subclass
     void onBeforeChange(const App::Property* prop) override;
     /// Reimplemented from subclass
@@ -587,24 +686,27 @@ protected:
      * viewprovider specific overlay icons, that will be grayed out together
      * with the base icon, you can reimplement this method.
      */
-    virtual QIcon mergeGreyableOverlayIcons (const QIcon & orig) const;
+    virtual QIcon mergeGreyableOverlayIcons(const QIcon& orig) const;
 
     /// Turn on mode switch
     virtual void setModeSwitch();
 
-    void setToggleVisibility(ToggleVisibilityMode mode) { toggleVisibilityMode = mode; }
+    void setToggleVisibility(ToggleVisibilityMode mode)
+    {
+        toggleVisibilityMode = mode;
+    }
 
 protected:
     /// The root Separator of the ViewProvider
-    SoSeparator *pcRoot;
+    SoSeparator* pcRoot;
     /// this is transformation for the provider
-    SoTransform *pcTransform;
+    SoTransform* pcTransform;
     const char* sPixmap;
     /// this is the mode switch, all the different viewing modes are collected here
-    SoSwitch    *pcModeSwitch;
+    SoSwitch* pcModeSwitch;
     /// The root separator for annotations
-    SoSeparator *pcAnnotation{nullptr};
-    ViewProviderPy* pyViewObject{nullptr};
+    SoSeparator* pcAnnotation {nullptr};
+    ViewProviderPy* pyViewObject {nullptr};
     std::string overrideMode;
     std::bitset<32> StatusBits;
     /// whether visibility can toggled
@@ -613,13 +715,13 @@ protected:
     friend class ViewProviderPy;
 
 private:
-    int _iActualMode{-1};
-    int _iEditMode{-1};
-    int viewOverrideMode{-1};
+    int _iActualMode {-1};
+    int _iEditMode {-1};
+    int viewOverrideMode {-1};
     std::string _sCurrentMode;
     std::map<std::string, int> _sDisplayMaskModes;
 };
 
-} // namespace Gui
+}  // namespace Gui
 
-#endif // GUI_VIEWPROVIDER_H
+#endif  // GUI_VIEWPROVIDER_H

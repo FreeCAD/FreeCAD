@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later AND MIT
+
 /***************************************************************************
  *   Copyright (c) 2024 Shai Seger <shaise at gmail>                       *
  *                                                                         *
@@ -185,11 +187,8 @@ bool CheckCompileResult(int shaderId, const char* shaderName, bool isVertex)
     if (res != 0) {
         return false;
     }
-    int headerLen = snprintf(log,
-                             48,
-                             "Error compiling %s %s shader: ",
-                             shaderName,
-                             isVertex ? "vertex" : "fragment");
+    int headerLen
+        = snprintf(log, 48, "Error compiling %s %s shader: ", shaderName, isVertex ? "vertex" : "fragment");
     glGetShaderInfoLog(shaderId, 1020 - headerLen, &len, log + headerLen);
     len += headerLen;
     if (len > 1020) {
@@ -200,8 +199,7 @@ bool CheckCompileResult(int shaderId, const char* shaderName, bool isVertex)
     return true;
 }
 
-unsigned int
-Shader::CompileShader(const char* name, const char* _vertShader, const char* _fragShader)
+unsigned int Shader::CompileShader(const char* name, const char* _vertShader, const char* _fragShader)
 {
     vertShader = _vertShader;
     fragShader = _fragShader;

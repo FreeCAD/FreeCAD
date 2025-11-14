@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
@@ -26,7 +28,8 @@
 #include <Base/PyObjectBase.h>
 
 
-namespace DraftUtils {
+namespace DraftUtils
+{
 extern PyObject* initModule();
 }
 
@@ -37,7 +40,7 @@ PyMOD_INIT_FUNC(DraftUtils)
     try {
         Base::Interpreter().loadModule("Part");
     }
-    catch(const Base::Exception& e) {
+    catch (const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
         PyMOD_Return(nullptr);
     }

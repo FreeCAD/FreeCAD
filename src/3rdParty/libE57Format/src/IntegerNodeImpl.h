@@ -33,14 +33,17 @@ namespace e57
    class IntegerNodeImpl : public NodeImpl
    {
    public:
-      IntegerNodeImpl( ImageFileImplWeakPtr destImageFile, int64_t value = 0, int64_t minimum = 0,
-                       int64_t maximum = 0 );
+      IntegerNodeImpl( ImageFileImplWeakPtr destImageFile, int64_t value, int64_t minimum,
+                       int64_t maximum );
       ~IntegerNodeImpl() override = default;
 
       NodeType type() const override
       {
-         return E57_INTEGER;
+         return TypeInteger;
       }
+
+      void validateValue() const;
+
       bool isTypeEquivalent( NodeImplSharedPtr ni ) override;
       bool isDefined( const ustring &pathName ) override;
 
@@ -53,7 +56,7 @@ namespace e57
       void writeXml( ImageFileImplSharedPtr imf, CheckedFile &cf, int indent,
                      const char *forcedFieldName = nullptr ) override;
 
-#ifdef E57_DEBUG
+#ifdef E57_ENABLE_DIAGNOSTIC_OUTPUT
       void dump( int indent = 0, std::ostream &os = std::cout ) const override;
 #endif
 

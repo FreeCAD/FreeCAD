@@ -74,11 +74,15 @@ void Robot6Axis::setKinematic(const AxisDefinition KinDef[6])
 
 
     for (int i = 0; i < 6; i++) {
-        temp.addSegment(Segment(Joint(Joint::RotZ),
-                                Frame::DH(KinDef[i].a,
-                                          Base::toRadians<double>(KinDef[i].alpha),
-                                          KinDef[i].d,
-                                          Base::toRadians<double>(KinDef[i].theta))));
+        temp.addSegment(Segment(
+            Joint(Joint::RotZ),
+            Frame::DH(
+                KinDef[i].a,
+                Base::toRadians<double>(KinDef[i].alpha),
+                KinDef[i].d,
+                Base::toRadians<double>(KinDef[i].theta)
+            )
+        ));
         RotDir[i] = KinDef[i].rotDir;
         Max(i) = Base::toRadians<double>(KinDef[i].maxAngle);
         Min(i) = Base::toRadians<double>(KinDef[i].minAngle);
@@ -186,13 +190,19 @@ void Robot6Axis::Restore(XMLReader& reader)
         // read my Element
         reader.readElement("Axis");
         // get the value of the placement
-        Tip = Base::Placement(Base::Vector3d(reader.getAttribute<double>("Px"),
-                                             reader.getAttribute<double>("Py"),
-                                             reader.getAttribute<double>("Pz")),
-                              Base::Rotation(reader.getAttribute<double>("Q0"),
-                                             reader.getAttribute<double>("Q1"),
-                                             reader.getAttribute<double>("Q2"),
-                                             reader.getAttribute<double>("Q3")));
+        Tip = Base::Placement(
+            Base::Vector3d(
+                reader.getAttribute<double>("Px"),
+                reader.getAttribute<double>("Py"),
+                reader.getAttribute<double>("Pz")
+            ),
+            Base::Rotation(
+                reader.getAttribute<double>("Q0"),
+                reader.getAttribute<double>("Q1"),
+                reader.getAttribute<double>("Q2"),
+                reader.getAttribute<double>("Q3")
+            )
+        );
         Temp.addSegment(Segment(Joint(Joint::RotZ), toFrame(Tip)));
 
 
@@ -223,24 +233,29 @@ bool Robot6Axis::setTo(const Placement& To)
     // Creation of the solvers:
     ChainFkSolverPos_recursive fksolver1(Kinematic);  // Forward position solver
     ChainIkSolverVel_pinv iksolver1v(Kinematic);      // Inverse velocity solver
-    ChainIkSolverPos_NR_JL iksolver1(Kinematic,
-                                     Min,
-                                     Max,
-                                     fksolver1,
-                                     iksolver1v,
-                                     100,
-                                     1e-6);  // Maximum 100 iterations, stop at accuracy 1e-6
+    ChainIkSolverPos_NR_JL iksolver1(
+        Kinematic,
+        Min,
+        Max,
+        fksolver1,
+        iksolver1v,
+        100,
+        1e-6
+    );  // Maximum 100 iterations, stop at accuracy 1e-6
 
     // Creation of jntarrays:
     JntArray result(Kinematic.getNrOfJoints());
 
     // Set destination frame
-    Frame F_dest =
-        Frame(KDL::Rotation::Quaternion(To.getRotation()[0],
-                                        To.getRotation()[1],
-                                        To.getRotation()[2],
-                                        To.getRotation()[3]),
-              KDL::Vector(To.getPosition()[0], To.getPosition()[1], To.getPosition()[2]));
+    Frame F_dest = Frame(
+        KDL::Rotation::Quaternion(
+            To.getRotation()[0],
+            To.getRotation()[1],
+            To.getRotation()[2],
+            To.getRotation()[3]
+        ),
+        KDL::Vector(To.getPosition()[0], To.getPosition()[1], To.getPosition()[2])
+    );
 
     // solve
     if (iksolver1.CartToJnt(Actual, F_dest, result) < 0) {
@@ -257,8 +272,7 @@ Base::Placement Robot6Axis::getTcp()
 {
     double x, y, z, w;
     Tcp.M.GetQuaternion(x, y, z, w);
-    return Base::Placement(Base::Vector3d(Tcp.p[0], Tcp.p[1], Tcp.p[2]),
-                           Base::Rotation(x, y, z, w));
+    return Base::Placement(Base::Vector3d(Tcp.p[0], Tcp.p[1], Tcp.p[2]), Base::Rotation(x, y, z, w));
 }
 
 bool Robot6Axis::calcTcp()

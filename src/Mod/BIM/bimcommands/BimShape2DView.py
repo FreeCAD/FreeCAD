@@ -39,7 +39,7 @@ class BIM_Shape2DView(gui_shape2dview.Shape2DView):
         d = super().GetResources()
         d["Pixmap"] = "Arch_BuildingPart_Tree"
         d["MenuText"] = QT_TRANSLATE_NOOP("BIM_Shape2DView", "Section View")
-        d['Accel'] = "V, V"
+        d["Accel"] = "V, V"
         return d
 
     def proceed(self):
@@ -48,14 +48,14 @@ class BIM_Shape2DView(gui_shape2dview.Shape2DView):
         if self.commitlist_BimShape2DView:
             commitlist = self.commitlist_BimShape2DView
             commitlist.append("FreeCAD.ActiveDocument.recompute()")
-            self.commit(translate("draft", "Create 2D view"),
-                        self.commitlist_BimShape2DView)
+            self.commit(translate("draft", "Create 2D view"), self.commitlist_BimShape2DView)
         self.finish()
 
     def proceed_BimShape2DView(self):  # Common
         """Proceed with the command if one object was selected."""
         # difference from Draft: it sets InPlace to False
         import DraftVecUtils
+
         if self.call is not None:
             self.end_callbacks(self.call)
         faces = []
@@ -79,8 +79,8 @@ class BIM_Shape2DView(gui_shape2dview.Shape2DView):
             _cmd += DraftVecUtils.toString(vec) + ", "
             _cmd += "facenumbers=" + str(faces)
             _cmd += ")"
-            #commitlist.append("sv = " + _cmd)
-            #commitlist.append("sv.InPlace = False")
+            # commitlist.append("sv = " + _cmd)
+            # commitlist.append("sv.InPlace = False")
             commitlist.append("sv0 = " + _cmd)
             commitlist.append("sv0.InPlace = False")
         else:
@@ -95,14 +95,14 @@ class BIM_Shape2DView(gui_shape2dview.Shape2DView):
                 commitlist.append("sv" + str(n) + ".InPlace = False")
                 n += 1
         if commitlist:
-            #commitlist.append("FreeCAD.ActiveDocument.recompute()")
+            # commitlist.append("FreeCAD.ActiveDocument.recompute()")
             self.commitlist_BimShape2DView = commitlist
         else:
             self.commitlist_BimShape2DView = None
 
         #    self.commit(translate("draft", "Create 2D view"),
         #                commitlist)
-        #self.finish()
+        # self.finish()
 
 
 class BIM_Shape2DCut(BIM_Shape2DView):
@@ -111,13 +111,13 @@ class BIM_Shape2DCut(BIM_Shape2DView):
         d = super().GetResources()
         d["Pixmap"] = "Arch_View_Cut"
         d["MenuText"] = QT_TRANSLATE_NOOP("BIM_Shape2DView", "Section Cut")
-        d['Accel'] = "V, C"
+        d["Accel"] = "V, C"
         return d
 
     def proceed(self):
-        #super().proceed()
+        # super().proceed()
         #'sv' is not passed from BIM_Shape2DView() to BIM_Shape2DCut()
-        #FreeCADGui.doCommand("sv.ProjectionMode = \"Cutfaces\"")
+        # FreeCADGui.doCommand("sv.ProjectionMode = \"Cutfaces\"")
 
         """Proceed with the command if one object was selected."""
         self.proceed_BimShape2DView()  # Common
@@ -125,15 +125,14 @@ class BIM_Shape2DCut(BIM_Shape2DView):
             commitlist = self.commitlist_BimShape2DView
 
             # BIM_Shape2DCut specific
-            #commitlist.append("sv.ProjectionMode = \"Cutfaces\"")
+            # commitlist.append("sv.ProjectionMode = \"Cutfaces\"")
             objs = self.objs_BimShape2DView
             n = 0
             for o in objs:
-                commitlist.append("sv" + str(n) + ".ProjectionMode = \"Cutfaces\"")
+                commitlist.append("sv" + str(n) + '.ProjectionMode = "Cutfaces"')
                 n += 1
             commitlist.append("FreeCAD.ActiveDocument.recompute()")
-            self.commit(translate("draft", "Create 2D Cut"),
-                        commitlist)
+            self.commit(translate("draft", "Create 2D Cut"), commitlist)
         self.finish()
 
 

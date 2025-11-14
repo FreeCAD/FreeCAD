@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>                  *
 # *   (c) 2009, 2010 Ken Cline <cline@frii.com>                             *
@@ -48,15 +50,20 @@ class Heal(gui_base.GuiCommandSimplest):
     """
 
     def __init__(self):
-        super(Heal, self).__init__(name=translate("draft","Heal"))
+        super(Heal, self).__init__(name=translate("draft", "Heal"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
         _tip = ()
 
-        return {'Pixmap': 'Draft_Heal',
-                'MenuText': QT_TRANSLATE_NOOP("Draft_Heal", "Heal"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Heal", "Heals faulty Draft objects saved with an earlier version of FreeCAD.\nIf an object is selected it tries to heal only that object,\notherwise it tries to heal all objects in the active document.")}
+        return {
+            "Pixmap": "Draft_Heal",
+            "MenuText": QT_TRANSLATE_NOOP("Draft_Heal", "Heal"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Draft_Heal",
+                "Heals faulty Draft objects saved with an earlier version of FreeCAD.\nIf an object is selected it tries to heal only that object,\notherwise it tries to heal all objects in the active document.",
+            ),
+        }
 
     def Activated(self):
         """Execute when the command is called."""
@@ -71,6 +78,6 @@ class Heal(gui_base.GuiCommandSimplest):
         self.doc.commitTransaction()
 
 
-Gui.addCommand('Draft_Heal', Heal())
+Gui.addCommand("Draft_Heal", Heal())
 
 ## @}

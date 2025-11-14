@@ -34,7 +34,7 @@
 
 namespace App
 {
-    class Document;
+class Document;
 }
 
 namespace Gui
@@ -68,11 +68,10 @@ public:
     NotificationArea(QWidget* parent = nullptr);
     ~NotificationArea() override;
 
-    void pushNotification(const QString& notifiername, const QString& message,
-                          Base::LogStyle level);
+    void pushNotification(const QString& notifiername, const QString& message, Base::LogStyle level);
 
-    bool areDeveloperWarningsActive () const;
-    bool areDeveloperErrorsActive () const;
+    bool areDeveloperWarningsActive() const;
+    bool areDeveloperErrorsActive() const;
 
 private:
     void showInNotificationArea();
@@ -89,6 +88,6 @@ private:
 };
 
 
-}// namespace Gui
+}  // namespace Gui
 
-#endif// GUI_NOTIFICATIONAREA_H
+#endif  // GUI_NOTIFICATIONAREA_H

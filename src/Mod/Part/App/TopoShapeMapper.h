@@ -97,14 +97,18 @@ struct ShapeHasher
 #endif
         return res;
     }
-    inline bool operator()(const std::pair<TopoShape, TopoShape>& a,
-                           const std::pair<TopoShape, TopoShape>& b) const
+    inline bool operator()(
+        const std::pair<TopoShape, TopoShape>& a,
+        const std::pair<TopoShape, TopoShape>& b
+    ) const
     {
         return a.first.getShape().IsSame(b.first.getShape())
             && a.second.getShape().IsSame(b.second.getShape());
     }
-    inline bool operator()(const std::pair<TopoDS_Shape, TopoDS_Shape>& a,
-                           const std::pair<TopoDS_Shape, TopoDS_Shape>& b) const
+    inline bool operator()(
+        const std::pair<TopoDS_Shape, TopoDS_Shape>& a,
+        const std::pair<TopoDS_Shape, TopoDS_Shape>& b
+    ) const
     {
         return a.first.IsSame(b.first) && a.second.IsSame(b.second);
     }
@@ -141,9 +145,7 @@ struct PartExport ShapeMapper: TopoShape::Mapper
      * The source will be expanded into sub shapes of faces, edges and vertices
      * before being inserted into the map.
      */
-    void populate(MappingStatus status,
-                  const TopTools_ListOfShape& src,
-                  const TopTools_ListOfShape& dst);
+    void populate(MappingStatus status, const TopTools_ListOfShape& src, const TopTools_ListOfShape& dst);
 
     /** Populate mapping from a source sub shape to a list of shape
      *
@@ -154,9 +156,11 @@ struct PartExport ShapeMapper: TopoShape::Mapper
      * The source will be expanded into sub shapes of faces, edges and vertices
      * before being inserted into the map.
      */
-    void populate(MappingStatus status,
-                  const std::vector<TopoShape>& src,
-                  const std::vector<TopoShape>& dst)
+    void populate(
+        MappingStatus status,
+        const std::vector<TopoShape>& src,
+        const std::vector<TopoShape>& dst
+    )
     {
         for (auto& s : src) {
             populate(status, s, dst);
@@ -241,9 +245,10 @@ struct PartExport ShapeMapper: TopoShape::Mapper
 
 /** Generic shape mapper from a given source to an output shape
  */
-struct PartExport GenericShapeMapper: ShapeMapper {
+struct PartExport GenericShapeMapper: ShapeMapper
+{
     /// Populate the map with a given source shape to an output shape
-    void init(const TopoShape &src, const TopoDS_Shape &dst);
+    void init(const TopoShape& src, const TopoDS_Shape& dst);
 };
 
 /// Parameters for TopoShape::makeElementFilledFace()

@@ -47,30 +47,31 @@ namespace Gui
  *
  * @author qewer33
  */
-class SoPlanarDragger : public SoDragger
+class SoPlanarDragger: public SoDragger
 {
     SO_KIT_HEADER(SoLinearDragger);
     SO_KIT_CATALOG_ENTRY_HEADER(planarTranslatorSwitch);
     SO_KIT_CATALOG_ENTRY_HEADER(planarTranslator);
     SO_KIT_CATALOG_ENTRY_HEADER(planarTranslatorActive);
+
 public:
     static void initClass();
     SoPlanarDragger();
-    SoSFVec3f translation; //!< set from outside and used from outside for single precision.
-    SoSFDouble translationIncrement; //!< set from outside and used for rounding.
-    SoSFInt32 translationIncrementXCount; //!< number of steps. used from outside.
-    SoSFInt32 translationIncrementYCount; //!< number of steps. used from outside.
-    SoSFFloat autoScaleResult; //!< set from parent dragger.
+    SoSFVec3f translation;  //!< set from outside and used from outside for single precision.
+    SoSFDouble translationIncrement;       //!< set from outside and used for rounding.
+    SoSFInt32 translationIncrementXCount;  //!< number of steps. used from outside.
+    SoSFInt32 translationIncrementYCount;  //!< number of steps. used from outside.
+    SoSFFloat autoScaleResult;             //!< set from parent dragger.
 
 protected:
     ~SoPlanarDragger() override;
     SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE) override;
 
-    static void startCB(void *, SoDragger * d);
-    static void motionCB(void *, SoDragger * d);
-    static void finishCB(void *, SoDragger * d);
-    static void fieldSensorCB(void *f, SoSensor *);
-    static void valueChangedCB(void *, SoDragger *d);
+    static void startCB(void*, SoDragger* d);
+    static void motionCB(void*, SoDragger* d);
+    static void finishCB(void*, SoDragger* d);
+    static void fieldSensorCB(void* f, SoSensor*);
+    static void valueChangedCB(void*, SoDragger* d);
 
     void dragStart();
     void drag();
@@ -81,11 +82,11 @@ protected:
 
 private:
     void buildFirstInstance();
-    SbVec3f roundTranslation(const SbVec3f &vecIn, float incrementIn);
+    SbVec3f roundTranslation(const SbVec3f& vecIn, float incrementIn);
     SoGroup* buildGeometry();
     using inherited = SoDragger;
 };
 
-}
+}  // namespace Gui
 
 #endif /* GUI_PLANAR_DRAGGER_H */

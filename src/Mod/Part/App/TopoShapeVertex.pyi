@@ -3,7 +3,6 @@ from Base.Vector import Vector
 from TopoShape import TopoShape
 from typing import Final
 
-
 @export(
     Twin="TopoShape",
     TwinPointer="TopoShape",

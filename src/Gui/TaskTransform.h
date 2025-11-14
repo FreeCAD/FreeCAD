@@ -42,16 +42,30 @@ class SoTransformDragger;
 class ViewProviderDragger;
 class Ui_TaskTransformDialog;
 
-class TaskTransform : public Gui::TaskView::TaskBox, public Gui::SelectionObserver
+class TaskTransform: public Gui::TaskView::TaskBox, public Gui::SelectionObserver
 {
     Q_OBJECT
 
     static constexpr double tolerance = 1e-7;
 
 public:
-    enum class SelectionMode { None, SelectTransformOrigin, SelectAlignTarget };
-    enum class PlacementMode { ObjectOrigin, Centroid, Custom };
-    enum class PositionMode { Local, Global };
+    enum class SelectionMode
+    {
+        None,
+        SelectTransformOrigin,
+        SelectAlignTarget
+    };
+    enum class PlacementMode
+    {
+        ObjectOrigin,
+        Centroid,
+        Custom
+    };
+    enum class PositionMode
+    {
+        Local,
+        Global
+    };
 
     struct CoordinateSystem
     {
@@ -63,13 +77,15 @@ public:
     Q_ENUM(PlacementMode)
     Q_ENUM(PositionMode)
 
-    TaskTransform(Gui::ViewProviderDragger* vp,
-                  Gui::SoTransformDragger* dragger,
-                  QWidget* parent = nullptr,
-                  App::SubObjectPlacementProvider* subObjectPlacementProvider =
-                      Base::provideService<App::SubObjectPlacementProvider>(),
-                  App::CenterOfMassProvider* centerOfMassProvider =
-                      Base::provideService<App::CenterOfMassProvider>());
+    TaskTransform(
+        Gui::ViewProviderDragger* vp,
+        Gui::SoTransformDragger* dragger,
+        QWidget* parent = nullptr,
+        App::SubObjectPlacementProvider* subObjectPlacementProvider
+        = Base::provideService<App::SubObjectPlacementProvider>(),
+        App::CenterOfMassProvider* centerOfMassProvider
+        = Base::provideService<App::CenterOfMassProvider>()
+    );
     ~TaskTransform() override;
 
 private:
@@ -123,29 +139,33 @@ private:
     void resetReferenceRotation();
 
     ViewProviderDragger::DraggerComponents getRelevantComponents();
-    void moveObjectToDragger(ViewProviderDragger::DraggerComponents components = ViewProviderDragger::DraggerComponent::All);
+    void moveObjectToDragger(
+        ViewProviderDragger::DraggerComponents components = ViewProviderDragger::DraggerComponent::All
+    );
 
     bool isDraggerAlignedToCoordinateSystem() const;
 
     ViewProviderDragger* vp;
 
     const App::SubObjectPlacementProvider* subObjectPlacementProvider;
-    const App::CenterOfMassProvider *centerOfMassProvider;
+    const App::CenterOfMassProvider* centerOfMassProvider;
 
     CoinPtr<SoTransformDragger> dragger;
 
-    Ui_TaskTransformDialog *ui;
+    Ui_TaskTransformDialog* ui;
 
-    SelectionMode selectionMode { SelectionMode::None };
-    PlacementMode placementMode { PlacementMode::ObjectOrigin };
-    PositionMode positionMode { PositionMode::Local };
+    SelectionMode selectionMode {SelectionMode::None};
+    PlacementMode placementMode {PlacementMode::ObjectOrigin};
+    PositionMode positionMode {PositionMode::Local};
 
     std::optional<Base::Placement> customTransformOrigin {};
     Base::Placement referencePlacement {};
     Base::Placement globalOrigin {};
     Base::Rotation referenceRotation {};
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/History/Dragger");
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/History/Dragger"
+    );
 };
 
 class TaskTransformDialog: public Gui::TaskView::TaskDialog

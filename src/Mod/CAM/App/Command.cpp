@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
@@ -102,8 +103,7 @@ std::string Command::toGCode(int precision, bool padzero) const
     }
     double scale = std::pow(10.0, precision + 1);
     std::int64_t iscale = static_cast<std::int64_t>(scale) / 10;
-    for (std::map<std::string, double>::const_iterator i = Parameters.begin();
-         i != Parameters.end();
+    for (std::map<std::string, double>::const_iterator i = Parameters.begin(); i != Parameters.end();
          ++i) {
         if (i->first == "N") {
             continue;
@@ -283,8 +283,7 @@ Command Command::transform(const Base::Placement& other)
     plac.getRotation().getYawPitchRoll(aval, bval, cval);
     Command c = Command();
     c.Name = Name;
-    for (std::map<std::string, double>::const_iterator i = Parameters.begin();
-         i != Parameters.end();
+    for (std::map<std::string, double>::const_iterator i = Parameters.begin(); i != Parameters.end();
          ++i) {
         std::string k = i->first;
         double v = i->second;
@@ -313,8 +312,7 @@ Command Command::transform(const Base::Placement& other)
 
 void Command::scaleBy(double factor)
 {
-    for (std::map<std::string, double>::const_iterator i = Parameters.begin();
-         i != Parameters.end();
+    for (std::map<std::string, double>::const_iterator i = Parameters.begin(); i != Parameters.end();
          ++i) {
         switch (i->first[0]) {
             case 'X':

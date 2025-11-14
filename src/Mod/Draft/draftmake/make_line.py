@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
 # *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
@@ -54,7 +56,7 @@ def make_line(first_param, last_param=None):
         if hasattr(first_param, "StartPoint") and hasattr(first_param, "EndPoint"):
             p2 = first_param.EndPoint
             p1 = first_param.StartPoint
-        elif hasattr(p1,"Vertexes"):
+        elif hasattr(p1, "Vertexes"):
             p2 = first_param.Vertexes[-1].Point
             p1 = first_param.Vertexes[0].Point
         else:
@@ -62,7 +64,7 @@ def make_line(first_param, last_param=None):
             App.Console.PrintError(_err + "\n")
             return
 
-    obj = make_wire.make_wire([p1,p2])
+    obj = make_wire.make_wire([p1, p2])
 
     return obj
 
