@@ -56,6 +56,7 @@ public:
     Py::Object render(const Py::Tuple&);
 
     Py::Object writeToImage(const Py::Tuple&);
+    Py::Object writeToBuffer(const Py::Tuple&);
     Py::Object getWriteImageFiletypeInfo();
 
 private:
