@@ -274,3 +274,168 @@ TEST_F(ConstraintsTest, simpleDrag)  // NOLINT
     EXPECT_NEAR(lp1y, dragPointy, 1e-12);
     EXPECT_NEAR(lp2y, lp1y + llength, 1e-12);
 }
+
+TEST_F(ConstraintsTest, classicFlip)  // NOLINT
+{
+    // Create the classic flip L figure
+
+    double l1dist = 20;
+    double l4length = 30;
+    double l6length = 10;
+
+    double originx = 0.0;
+    double originy = 0.0;
+    double zero = 0;
+    GCS::Point origin(&originx, &originy);
+
+    double l1p1x = 20.336287;
+    double l1p1y = 35.627689;
+    double l1p2x = 20.642096;
+    double l1p2y = -0.152126;
+    GCS::Line l1(GCS::Point(&l1p1x, &l1p1y), GCS::Point(&l1p2x, &l1p2y));
+
+    double l2p1x = 20.336287;
+    double l2p1y = -0.152126;
+    double l2p2x = 55.045757;
+    double l2p2y = 0.0000000;
+    GCS::Line l2(GCS::Point(&l2p1x, &l2p1y), GCS::Point(&l2p2x, &l2p2y));
+
+    double l3p1x = 55.045757;
+    double l3p1y = 0.0000000;
+    double l3p2x = 54.892860;
+    double l3p2y = 13.150624;
+    GCS::Line l3(GCS::Point(&l3p1x, &l3p1y), GCS::Point(&l3p2x, &l3p2y));
+
+    double l4p1x = 55.045757;
+    double l4p1y = 13.150624;
+    double l4p2x = 39.755249;
+    double l4p2y = 12.997720;
+    GCS::Line l4(GCS::Point(&l4p1x, &l4p1y), GCS::Point(&l4p2x, &l4p2y));
+
+    double l5p1x = 39.755249;
+    double l5p1y = 13.150624;
+    double l5p2x = 39.908154;
+    double l5p2y = 34.251545;
+    GCS::Line l5(GCS::Point(&l5p1x, &l5p1y), GCS::Point(&l5p2x, &l5p2y));
+
+    double l6p1x = 39.755249;
+    double l6p1y = 34.251545;
+    double l6p2x = 20.336287;
+    double l6p2y = 35.627689;
+    GCS::Line l6(GCS::Point(&l6p1x, &l6p1y), GCS::Point(&l6p2x, &l6p2y));
+
+    std::vector<double*> unknowns;
+    l1.PushOwnParams(unknowns);
+    l2.PushOwnParams(unknowns);
+    l3.PushOwnParams(unknowns);
+    l4.PushOwnParams(unknowns);
+    l5.PushOwnParams(unknowns);
+    l6.PushOwnParams(unknowns);
+    origin.PushOwnParams(unknowns);
+
+
+    System()->addConstraintEqual(&originx, &zero);
+    System()->addConstraintEqual(&originy, &zero);
+
+    System()->addConstraintVertical(l1);
+    System()->addConstraintHorizontal(l2);
+    System()->addConstraintVertical(l3);
+    System()->addConstraintHorizontal(l4);
+    System()->addConstraintVertical(l5);
+    System()->addConstraintHorizontal(l6);
+
+    System()->addConstraintP2PCoincident(l1.p2, l2.p1);
+    System()->addConstraintP2PCoincident(l2.p2, l3.p1);
+    System()->addConstraintP2PCoincident(l3.p2, l4.p1);
+    System()->addConstraintP2PCoincident(l4.p2, l5.p1);
+    System()->addConstraintP2PCoincident(l5.p2, l6.p1);
+    System()->addConstraintP2PCoincident(l6.p2, l1.p1);
+    +System()->addConstraintEqualLength(l3, l6);
+    System()->addConstraintEqualLength(l4, l5);
+
+    System()->addConstraintP2LDistance(origin, l1, &l1dist);
+    // System()->addConstraintP2PDistance(l4.p1, l4.p2, &l4length);
+    // System()->addConstraintP2PDistance(l6.p1, l6.p2, &l6length);
+    System()->addConstraintDifference(l4.p2.x, l4.p1.x, &l4length);
+    System()->addConstraintDifference(l6.p2.x, l6.p1.x, &l6length);
+    System()->addConstraintEqual(&originy, l1.p2.y);
+
+    int solveResult = System()->solve(unknowns);
+    if (solveResult == GCS::Success) {
+        System()->applySolution();
+    }
+
+    // Assert
+    EXPECT_EQ(solveResult, GCS::Success);
+
+    EXPECT_NEAR(l1p1x, l1dist, 1e-12);
+    EXPECT_NEAR(l1p2x, l1dist, 1e-12);
+    EXPECT_NEAR(l6p2x, l1dist, 1e-12);
+    EXPECT_NEAR(l2p1x, l1dist, 1e-12);
+
+    EXPECT_NEAR(l2p2x, l1dist + l4length + l6length, 1e-12);
+    EXPECT_NEAR(l3p1x, l1dist + l4length + l6length, 1e-12);
+    EXPECT_NEAR(l3p2x, l1dist + l4length + l6length, 1e-12);
+    EXPECT_NEAR(l4p1x, l1dist + l4length + l6length, 1e-12);
+
+    EXPECT_NEAR(l4p2x, l1dist + l6length, 1e-12);
+    EXPECT_NEAR(l5p1x, l1dist + l6length, 1e-12);
+    EXPECT_NEAR(l5p2x, l1dist + l6length, 1e-12);
+    EXPECT_NEAR(l6p1x, l1dist + l6length, 1e-12);
+
+    EXPECT_NEAR(l1p1y, l4length + l6length, 1e-12);
+    EXPECT_NEAR(l6p1y, l4length + l6length, 1e-12);
+    EXPECT_NEAR(l6p2y, l4length + l6length, 1e-12);
+    EXPECT_NEAR(l5p2y, l4length + l6length, 1e-12);
+
+    EXPECT_NEAR(l1p2y, 0, 1e-12);
+    EXPECT_NEAR(l2p1y, 0, 1e-12);
+    EXPECT_NEAR(l2p2y, 0, 1e-12);
+    EXPECT_NEAR(l3p1y, 0, 1e-12);
+
+    EXPECT_NEAR(l3p2y, l6length, 1e-12);
+    EXPECT_NEAR(l4p1y, l6length, 1e-12);
+    EXPECT_NEAR(l4p2y, l6length, 1e-12);
+    EXPECT_NEAR(l5p1y, l6length, 1e-12);
+
+
+    // Try to flip it
+    l1dist = 100;
+    solveResult = System()->solve(unknowns);
+    if (solveResult == GCS::Success) {
+        System()->applySolution();
+    }
+
+    // Assert
+    EXPECT_EQ(solveResult, GCS::Success);
+
+    EXPECT_NEAR(l1p1x, l1dist, 1e-12);
+    EXPECT_NEAR(l1p2x, l1dist, 1e-12);
+    EXPECT_NEAR(l6p2x, l1dist, 1e-12);
+    EXPECT_NEAR(l2p1x, l1dist, 1e-12);
+
+    EXPECT_NEAR(l2p2x, l1dist + l4length + l6length, 1e-12);
+    EXPECT_NEAR(l3p1x, l1dist + l4length + l6length, 1e-12);
+    EXPECT_NEAR(l3p2x, l1dist + l4length + l6length, 1e-12);
+    EXPECT_NEAR(l4p1x, l1dist + l4length + l6length, 1e-12);
+
+    EXPECT_NEAR(l4p2x, l1dist + l6length, 1e-12);
+    EXPECT_NEAR(l5p1x, l1dist + l6length, 1e-12);
+    EXPECT_NEAR(l5p2x, l1dist + l6length, 1e-12);
+    EXPECT_NEAR(l6p1x, l1dist + l6length, 1e-12);
+
+    EXPECT_NEAR(l1p1y, l4length + l6length, 1e-12);
+    EXPECT_NEAR(l6p1y, l4length + l6length, 1e-12);
+    EXPECT_NEAR(l6p2y, l4length + l6length, 1e-12);
+    EXPECT_NEAR(l5p2y, l4length + l6length, 1e-12);
+
+    EXPECT_NEAR(l1p2y, 0, 1e-12);
+    EXPECT_NEAR(l2p1y, 0, 1e-12);
+    EXPECT_NEAR(l2p2y, 0, 1e-12);
+    EXPECT_NEAR(l3p1y, 0, 1e-12);
+
+    EXPECT_NEAR(l3p2y, l6length, 1e-12);
+    EXPECT_NEAR(l4p1y, l6length, 1e-12);
+    EXPECT_NEAR(l4p2y, l6length, 1e-12);
+    EXPECT_NEAR(l5p1y, l6length, 1e-12);
+}
