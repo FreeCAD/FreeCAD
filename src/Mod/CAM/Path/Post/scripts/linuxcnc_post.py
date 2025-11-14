@@ -79,6 +79,12 @@ parser.add_argument(
     action="store_true",
     help="suppress tool length offset (G43) following tool changes",
 )
+parser.add_argument(
+    "--coolant-from",
+    type=int,
+    default=0,
+    help="Skip several moves before add coolant command, default=1",
+)
 
 TOOLTIP_ARGS = parser.format_help()
 
@@ -137,6 +143,7 @@ def processArguments(argstring):
     global MODAL
     global USE_TLO
     global OUTPUT_DOUBLES
+    global COOLANT_FROM
 
     try:
         args = parser.parse_args(shlex.split(argstring))
@@ -166,6 +173,7 @@ def processArguments(argstring):
         if args.axis_modal:
             print("here")
             OUTPUT_DOUBLES = False
+        COOLANT_FROM = args.coolant_from
 
     except Exception:
         return False
@@ -215,18 +223,6 @@ def export(objectslist, filename, argstring):
         for line in PRE_OPERATION.splitlines(True):
             gcode += linenumber() + line
 
-        # get coolant mode
-        coolantMode = PathUtil.coolantModeForOp(obj)
-
-        # turn coolant on if required
-        if OUTPUT_COMMENTS:
-            if not coolantMode == "None":
-                gcode += linenumber() + "(Coolant On:" + coolantMode + ")\n"
-        if coolantMode == "Flood":
-            gcode += linenumber() + "M8" + "\n"
-        if coolantMode == "Mist":
-            gcode += linenumber() + "M7" + "\n"
-
         # process the operation gcode
         gcode += parse(obj)
 
@@ -237,6 +233,7 @@ def export(objectslist, filename, argstring):
             gcode += linenumber() + line
 
         # turn coolant off if required
+        coolantMode = PathUtil.coolantModeForOp(obj)
         if not coolantMode == "None":
             if OUTPUT_COMMENTS:
                 gcode += linenumber() + "(Coolant Off:" + coolantMode + ")\n"
@@ -285,6 +282,7 @@ def parse(pathobj):
     global OUTPUT_DOUBLES
     global UNIT_FORMAT
     global UNIT_SPEED_FORMAT
+    global COOLANT_FROM
 
     out = ""
     lastcommand = None
@@ -336,7 +334,15 @@ def parse(pathobj):
         # change here until we can figure out what it going on.
         #
         # for c in PathUtils.getPathWithPlacement(pathobj).Commands:
+
+        coolantMode = PathUtil.coolantModeForOp(pathobj)
+        isCoolantOn = False  # flag to add coolant command only once for operation
+
+        counterMoves = 0
         for c in pathobj.Path.Commands:
+            if c.Name in ("G0", "G00", "G1", "G01", "G2", "G02", "G3", "G03"):
+                counterMoves += 1
+
             outstring = []
             command = c.Name
             outstring.append(command)
@@ -440,6 +446,17 @@ def parse(pathobj):
                 if USE_TLO:
                     tool_height = "\nG43 H" + str(int(c.Parameters["T"]))
                     outstring.append(tool_height)
+
+            # turn coolant on if required
+            # use argment --coolant-from to insert coolant later
+            if coolantMode != "None" and not isCoolantOn and counterMoves > COOLANT_FROM:
+                isCoolantOn = True
+                if OUTPUT_COMMENTS:
+                    out += linenumber() + "(Coolant On:" + coolantMode + ")\n"
+                if coolantMode == "Flood":
+                    out += linenumber() + "M8" + "\n"
+                elif coolantMode == "Mist":
+                    out += linenumber() + "M7" + "\n"
 
             if command == "message":
                 if OUTPUT_COMMENTS is False:
