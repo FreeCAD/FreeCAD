@@ -584,6 +584,7 @@ def makeMeshRegion(doc, base_mesh, element_length=0.0, name="MeshRegion"):
         view_mesh_region.VPMeshRegion(obj.ViewObject)
     return obj
 
+
 def makeMeshDistance(doc, base_mesh, name="MeshDistance"):
     """makeMeshDistance(document, base_mesh, [name]):
     creates a FEM mesh refinement object to define properties for a refinement of a FEM mesh
@@ -601,6 +602,7 @@ def makeMeshDistance(doc, base_mesh, name="MeshDistance"):
 
         view_mesh_distance.VPMeshDistance(obj.ViewObject)
     return obj
+
 
 def makeMeshSphere(doc, base_mesh, name="MeshSphere"):
     """makeMeshSphere(document, base_mesh [name]):
@@ -620,6 +622,7 @@ def makeMeshSphere(doc, base_mesh, name="MeshSphere"):
         view_mesh_shape.VPMeshSphere(obj.ViewObject)
     return obj
 
+
 def makeMeshBox(doc, base_mesh, name="MeshBox"):
     """makeMeshBox(document, base_mesh [name]):
     creates a FEM mesh refinement object to define properties for a refinement of a FEM mesh
@@ -637,6 +640,7 @@ def makeMeshBox(doc, base_mesh, name="MeshBox"):
 
         view_mesh_shape.VPMeshBox(obj.ViewObject)
     return obj
+
 
 def makeMeshCylinder(doc, base_mesh, name="MeshCylinder"):
     """makeMeshCylinder(document, base_mesh [name]):
@@ -656,6 +660,7 @@ def makeMeshCylinder(doc, base_mesh, name="MeshCylinder"):
         view_mesh_shape.VPMeshCylinder(obj.ViewObject)
     return obj
 
+
 def makeMeshTransfiniteCurve(doc, base_mesh, name="TransfiniteCurve"):
     """makeMeshTransfiniteCurve(document, base_mesh, [name]):
     creates a FEM mesh refinement for transfinite curves
@@ -670,9 +675,11 @@ def makeMeshTransfiniteCurve(doc, base_mesh, name="TransfiniteCurve"):
     base_mesh.MeshRefinementList = tmplist
     if FreeCAD.GuiUp:
         from femviewprovider import view_mesh_tfcurve
+
         view_mesh_tfcurve.VPMeshTransfiniteCurve(obj.ViewObject)
 
     return obj
+
 
 def makeMeshTransfiniteSurface(doc, base_mesh, name="TransfiniteSurface"):
     """makeMeshTransfiniteSurface(document, base_mesh, [name]):
@@ -688,9 +695,11 @@ def makeMeshTransfiniteSurface(doc, base_mesh, name="TransfiniteSurface"):
     base_mesh.MeshRefinementList = tmplist
     if FreeCAD.GuiUp:
         from femviewprovider import view_mesh_tfsurface
+
         view_mesh_tfsurface.VPMeshTransfiniteSurface(obj.ViewObject)
 
     return obj
+
 
 def makeMeshTransfiniteVolume(doc, base_mesh, name="TransfiniteVolume"):
     """makeMeshTransfiniteVolume(document, base_mesh, [name]):
@@ -706,6 +715,7 @@ def makeMeshTransfiniteVolume(doc, base_mesh, name="TransfiniteVolume"):
     base_mesh.MeshRefinementList = tmplist
     if FreeCAD.GuiUp:
         from femviewprovider import view_mesh_tfvolume
+
         view_mesh_tfvolume.VPMeshTransfiniteVolume(obj.ViewObject)
 
     return obj

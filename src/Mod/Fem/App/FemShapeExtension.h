@@ -50,10 +50,9 @@ public:
 
     /// Properties
     App::PropertyVectorDistance Center;
-    App::PropertyDistance       Length;
-    App::PropertyDistance       Width;
-    App::PropertyDistance       Height;
-
+    App::PropertyDistance Length;
+    App::PropertyDistance Width;
+    App::PropertyDistance Height;
 };
 
 using BoxExtensionPython = App::ExtensionPythonT<BoxExtension>;
@@ -74,7 +73,6 @@ public:
     App::PropertyVector Axis;
     App::PropertyVectorDistance Center;
     App::PropertyDistance Radius;
-
 };
 
 using CylinderExtensionPython = App::ExtensionPythonT<CylinderExtension>;
@@ -94,7 +92,6 @@ public:
     /// Properties
     App::PropertyDistance Radius;
     App::PropertyVectorDistance Center;
-
 };
 
 using SphereExtensionPython = App::ExtensionPythonT<SphereExtension>;
@@ -124,4 +121,3 @@ using PlaneExtensionPython = App::ExtensionPythonT<PlaneExtension>;
 
 
 #endif  // FEM_FEMSHAPEMANIPULATOREXTENSION_H
-

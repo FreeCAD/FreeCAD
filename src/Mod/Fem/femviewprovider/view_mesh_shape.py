@@ -45,15 +45,16 @@ class VPMeshSphere(view_base_femmeshelement.VPBaseFemMeshElement):
     def setEdit(self, vobj, mode=0):
         return super().setEdit(vobj, mode, task_mesh_shape._TaskPanelSphere)
 
-    def getDisplayModes(self,obj):
-        '''Return a list of display modes.'''
-        modes=[]
+    def getDisplayModes(self, obj):
+        """Return a list of display modes."""
+        modes = []
         modes.append("Default")
         return modes
 
     def getDefaultDisplayMode(self):
-        '''Return the name of the default display mode. It must be defined in getDisplayModes.'''
+        """Return the name of the default display mode. It must be defined in getDisplayModes."""
         return "Default"
+
 
 class VPMeshBox(view_base_femmeshelement.VPBaseFemMeshElement):
     """
@@ -67,15 +68,16 @@ class VPMeshBox(view_base_femmeshelement.VPBaseFemMeshElement):
     def setEdit(self, vobj, mode=0):
         return super().setEdit(vobj, mode, task_mesh_shape._TaskPanelBox)
 
-    def getDisplayModes(self,obj):
-        '''Return a list of display modes.'''
-        modes=[]
+    def getDisplayModes(self, obj):
+        """Return a list of display modes."""
+        modes = []
         modes.append("Default")
         return modes
 
     def getDefaultDisplayMode(self):
-        '''Return the name of the default display mode. It must be defined in getDisplayModes.'''
+        """Return the name of the default display mode. It must be defined in getDisplayModes."""
         return "Default"
+
 
 class VPMeshCylinder(view_base_femmeshelement.VPBaseFemMeshElement):
     """
@@ -89,12 +91,12 @@ class VPMeshCylinder(view_base_femmeshelement.VPBaseFemMeshElement):
     def setEdit(self, vobj, mode=0):
         return super().setEdit(vobj, mode, task_mesh_shape._TaskPanelCylinder)
 
-    def getDisplayModes(self,obj):
-        '''Return a list of display modes.'''
-        modes=[]
+    def getDisplayModes(self, obj):
+        """Return a list of display modes."""
+        modes = []
         modes.append("Default")
         return modes
 
     def getDefaultDisplayMode(self):
-        '''Return the name of the default display mode. It must be defined in getDisplayModes.'''
+        """Return the name of the default display mode. It must be defined in getDisplayModes."""
         return "Default"
