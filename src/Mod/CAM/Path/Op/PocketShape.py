@@ -178,9 +178,11 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         """areaOpSetDefaultValues(obj, job) ... set default values"""
         obj.ClearingPattern = "Offset"
         obj.StepOver = 50
-        obj.ZigZagAngle = 45
+        obj.Angle = 45
         obj.UseOutline = False
+        obj.setExpression("FinishOffset", "OpToolDiameter * 0.25")
         FeatureExtensions.set_default_property_values(obj, job)
+        obj.setExpression("RetractThreshold", "0 * OpToolDiameter")
 
     def areaOpShapes(self, obj):
         """areaOpShapes(obj) ... return shapes representing the solids to be removed."""
