@@ -69,10 +69,12 @@ struct SubstitutionFactory
         Absolute   // Adds a relationship of the form A = B + offset
     };
     // Offset is assumed to be positive
-    bool addRelationship(double* unknownA,
-                         double* unknownB,
-                         double offset,
-                         RelationshipOptions option = RelationshipOptions::Relative)
+    bool addRelationship(
+        double* unknownA,
+        double* unknownB,
+        double offset,
+        RelationshipOptions option = RelationshipOptions::Relative
+    )
     {
         if (haveRelationship(unknownA, unknownB)) {
             std::cerr << "Unexpected! unknowns " << unknownA << " and " << unknownB
@@ -210,8 +212,9 @@ struct SubstitutionFactory
                 std::cerr << "Unexpected! const unknown " << constUnknown.first
                           << " is already visited :(\n";
             }
-            constSubstUpdaters.push_back(SubstitutionUpdater {.follower = constUnknown.first,
-                                                              .offset = constUnknown.second});
+            constSubstUpdaters.push_back(
+                SubstitutionUpdater {.follower = constUnknown.first, .offset = constUnknown.second}
+            );
             unknownsReductionList[constUnknown.first] = {};
             makeComponent(constUnknown.first, visited, constSubstUpdaters);
         }
@@ -221,9 +224,11 @@ struct SubstitutionFactory
             }
         }
     }
-    void makeComponent(double* root,
-                       std::unordered_set<double*>& visited,
-                       std::vector<SubstitutionUpdater>& updaterBucket)
+    void makeComponent(
+        double* root,
+        std::unordered_set<double*>& visited,
+        std::vector<SubstitutionUpdater>& updaterBucket
+    )
     {
         std::vector<std::pair<double*, double>> rootOffsets;
         std::queue<std::pair<double*, double>> toExplore;
@@ -239,9 +244,13 @@ struct SubstitutionFactory
         double* currentSubst = root;
         double currentOffset = rootOffsets[0].second;
         if (rootOffsets[0].first != root) {
-            updaterBucket.push_back(SubstitutionUpdater {.root = root,
-                                                         .follower = rootOffsets[0].first,
-                                                         .offset = rootOffsets[0].second});
+            updaterBucket.push_back(
+                SubstitutionUpdater {
+                    .root = root,
+                    .follower = rootOffsets[0].first,
+                    .offset = rootOffsets[0].second
+                }
+            );
             currentSubst = rootOffsets[0].first;
         }
         unknownsReductionList[currentSubst] = {};
@@ -252,9 +261,12 @@ struct SubstitutionFactory
             if (unknownAndOffset.second != currentOffset) {
                 if (unknownAndOffset.first != root) {
                     updaterBucket.push_back(
-                        SubstitutionUpdater {.root = root,
-                                             .follower = unknownAndOffset.first,
-                                             .offset = unknownAndOffset.second});
+                        SubstitutionUpdater {
+                            .root = root,
+                            .follower = unknownAndOffset.first,
+                            .offset = unknownAndOffset.second
+                        }
+                    );
                     currentSubst = unknownAndOffset.first;
                 }
                 else {
@@ -267,8 +279,10 @@ struct SubstitutionFactory
             }
         }
     }
-    void findNeighbours(std::queue<std::pair<double*, double>>& toExplore,
-                        std::unordered_set<double*>& visited)
+    void findNeighbours(
+        std::queue<std::pair<double*, double>>& toExplore,
+        std::unordered_set<double*>& visited
+    )
     {
         std::pair<double*, double> search = toExplore.front();
         toExplore.pop();
@@ -313,8 +327,7 @@ struct SubstitutionFactory
         }
         return Attempt::No;
     }
-    Attempt
-    trySubstitute(ConstraintPerpendicular* constr, const USET_pD& unknowns, Attempt previousAttempt)
+    Attempt trySubstitute(ConstraintPerpendicular* constr, const USET_pD& unknowns, Attempt previousAttempt)
     {
         double* l1x1 = constr->origParams()[0];
         double* l1y1 = constr->origParams()[1];
@@ -358,8 +371,7 @@ struct SubstitutionFactory
         return Attempt::Maybe;
     }
 
-    Attempt
-    trySubstitute(ConstraintPointOnLine* constr, const USET_pD& unknowns, Attempt previousAttempt)
+    Attempt trySubstitute(ConstraintPointOnLine* constr, const USET_pD& unknowns, Attempt previousAttempt)
     {
         double* p0x = constr->origParams()[0];
         double* p0y = constr->origParams()[1];
@@ -387,8 +399,7 @@ struct SubstitutionFactory
         }
         return Attempt::Maybe;
     }
-    Attempt
-    trySubstitute(ConstraintP2PDistance* constr, const USET_pD& unknowns, Attempt previousAttempt)
+    Attempt trySubstitute(ConstraintP2PDistance* constr, const USET_pD& unknowns, Attempt previousAttempt)
     {
         double* lp1x = constr->origParams()[0];
         double* lp1y = constr->origParams()[1];
@@ -457,8 +468,7 @@ struct SubstitutionFactory
             addRelationship(centerPos, refPos, radius + dist);
         }
     }
-    Attempt
-    trySubstitute(ConstraintC2LDistance* constr, const USET_pD& unknowns, Attempt previousAttempt)
+    Attempt trySubstitute(ConstraintC2LDistance* constr, const USET_pD& unknowns, Attempt previousAttempt)
     {
         double* dist = constr->origParams()[0];
         Circle circle = constr->circle;
@@ -491,9 +501,7 @@ struct SubstitutionFactory
 
         return Attempt::Maybe;
     }
-    Attempt trySubstitute(ConstraintEqualLineLength* constr,
-                          const USET_pD& unknowns,
-                          Attempt previousAttempt)
+    Attempt trySubstitute(ConstraintEqualLineLength* constr, const USET_pD& unknowns, Attempt previousAttempt)
     {
         Line line1 = constr->l1;
         Line line2 = constr->l2;
@@ -571,8 +579,7 @@ struct SubstitutionFactory
         }
         return Attempt::Maybe;
     }
-    Attempt
-    trySubstitute(ConstraintDifference* constr, const USET_pD& unknowns, Attempt previousAttempt)
+    Attempt trySubstitute(ConstraintDifference* constr, const USET_pD& unknowns, Attempt previousAttempt)
     {
         double* p1 = constr->origParams()[0];
         double* p2 = constr->origParams()[1];
@@ -595,14 +602,18 @@ struct SubstitutionFactory
 };
 
 
-Substitution::Substitution(const VEC_pD& initialUnknowns,
-                           const std::vector<Constraint*>& initialConstraints)
+Substitution::Substitution(
+    const VEC_pD& initialUnknowns,
+    const std::vector<Constraint*>& initialConstraints
+)
 {
     USET_pD unknownsSet(initialUnknowns.begin(), initialUnknowns.end());
     SubstitutionFactory factory;
 
-    std::vector<SubstitutionFactory::Attempt> attempts(initialConstraints.size(),
-                                                       SubstitutionFactory::Attempt::Unknown);
+    std::vector<SubstitutionFactory::Attempt> attempts(
+        initialConstraints.size(),
+        SubstitutionFactory::Attempt::Unknown
+    );
 
 
     bool hasTmpConstr = false;
@@ -649,49 +660,58 @@ Substitution::Substitution(const VEC_pD& initialUnknowns,
             SubstitutionFactory::Attempt attempt = SubstitutionFactory::Attempt::No;
             switch (constr->getTypeId()) {
                 case Perpendicular:
-                    attempt = factory.trySubstitute(static_cast<ConstraintPerpendicular*>(constr),
-                                                    unknownsSet,
-                                                    attempts[i]);
+                    attempt = factory.trySubstitute(
+                        static_cast<ConstraintPerpendicular*>(constr),
+                        unknownsSet,
+                        attempts[i]
+                    );
                     break;
                 case PointOnLine:
-                    attempt = factory.trySubstitute(static_cast<ConstraintPointOnLine*>(constr),
-                                                    unknownsSet,
-                                                    attempts[i]);
+                    attempt = factory.trySubstitute(
+                        static_cast<ConstraintPointOnLine*>(constr),
+                        unknownsSet,
+                        attempts[i]
+                    );
                     break;
                 case C2LDistance:
-                    attempt = hasTmpConstr
-                        ? SubstitutionFactory::Attempt::No
-                        : factory.trySubstitute(static_cast<ConstraintC2LDistance*>(constr),
-                                                unknownsSet,
-                                                attempts[i]);
+                    attempt = hasTmpConstr ? SubstitutionFactory::Attempt::No
+                                           : factory.trySubstitute(
+                                                 static_cast<ConstraintC2LDistance*>(constr),
+                                                 unknownsSet,
+                                                 attempts[i]
+                                             );
                     break;
                 case P2LDistance:
-                    attempt = hasTmpConstr
-                        ? SubstitutionFactory::Attempt::No
-                        : factory.trySubstitute(static_cast<ConstraintP2LDistance*>(constr),
-                                                unknownsSet,
-                                                attempts[i]);
+                    attempt = hasTmpConstr ? SubstitutionFactory::Attempt::No
+                                           : factory.trySubstitute(
+                                                 static_cast<ConstraintP2LDistance*>(constr),
+                                                 unknownsSet,
+                                                 attempts[i]
+                                             );
                     break;
                 case P2PDistance:
-                    attempt = hasTmpConstr
-                        ? SubstitutionFactory::Attempt::No
-                        : factory.trySubstitute(static_cast<ConstraintP2PDistance*>(constr),
-                                                unknownsSet,
-                                                attempts[i]);
+                    attempt = hasTmpConstr ? SubstitutionFactory::Attempt::No
+                                           : factory.trySubstitute(
+                                                 static_cast<ConstraintP2PDistance*>(constr),
+                                                 unknownsSet,
+                                                 attempts[i]
+                                             );
                     break;
                 case EqualLineLength:
-                    attempt = hasTmpConstr
-                        ? SubstitutionFactory::Attempt::No
-                        : factory.trySubstitute(static_cast<ConstraintEqualLineLength*>(constr),
-                                                unknownsSet,
-                                                attempts[i]);
+                    attempt = hasTmpConstr ? SubstitutionFactory::Attempt::No
+                                           : factory.trySubstitute(
+                                                 static_cast<ConstraintEqualLineLength*>(constr),
+                                                 unknownsSet,
+                                                 attempts[i]
+                                             );
                     break;
                 case Difference:
-                    attempt = hasTmpConstr
-                        ? SubstitutionFactory::Attempt::No
-                        : factory.trySubstitute(static_cast<ConstraintDifference*>(constr),
-                                                unknownsSet,
-                                                attempts[i]);
+                    attempt = hasTmpConstr ? SubstitutionFactory::Attempt::No
+                                           : factory.trySubstitute(
+                                                 static_cast<ConstraintDifference*>(constr),
+                                                 unknownsSet,
+                                                 attempts[i]
+                                             );
                     break;
             }
             attempts[i] = attempt;

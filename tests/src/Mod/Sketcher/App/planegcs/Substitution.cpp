@@ -143,18 +143,19 @@ TEST_F(SubstitutionTest, mixedAxisAligned)  // NOLINT
     GCS::ConstraintP2LDistance l2vertpos(l1.p1, l2, &l2v);
 
 
-    std::vector<double*> unknowns =
-        {&x0, &y0, &l1x1, &l1y1, &l1x2, &l1y2, &l2x1, &l2y1, &l2x2, &l2y2};
-    std::vector<GCS::Constraint*> constraints = {&originX,
-                                                 &originY,
-                                                 &l1p1onhoriz,
-                                                 &l1vertical,
-                                                 &l1length,
-                                                 &l1horizpos,
-                                                 &l1l2perp,
-                                                 &l2length,
-                                                 &l2p1onl1,
-                                                 &l2vertpos};
+    std::vector<double*> unknowns = {&x0, &y0, &l1x1, &l1y1, &l1x2, &l1y2, &l2x1, &l2y1, &l2x2, &l2y2};
+    std::vector<GCS::Constraint*> constraints = {
+        &originX,
+        &originY,
+        &l1p1onhoriz,
+        &l1vertical,
+        &l1length,
+        &l1horizpos,
+        &l1l2perp,
+        &l2length,
+        &l2p1onl1,
+        &l2vertpos
+    };
     GCS::Substitution subst(unknowns, constraints);
 
     subst.applyConst();
@@ -228,8 +229,8 @@ TEST_F(SubstitutionTest, circleLineDist)  // NOLINT
         GCS::ConstraintC2LDistance circdist(circle, lv, &dist);
 
         std::vector<double*> unknowns = {&lvx1, &lvy1, &lvx2, &lvy2, &cx, &cy, &rad};
-        std::vector<GCS::Constraint*> constraints =
-            {&poslvx1, &poslvy1, &poslvx2, &poslvy2, &radset, &circdist};
+        std::vector<GCS::Constraint*> constraints
+            = {&poslvx1, &poslvy1, &poslvx2, &poslvy2, &radset, &circdist};
         GCS::Substitution subst(unknowns, constraints);
 
         subst.applyConst();
@@ -253,8 +254,8 @@ TEST_F(SubstitutionTest, circleLineDist)  // NOLINT
         GCS::ConstraintC2LDistance circdist(circle, lv, &dist);
 
         std::vector<double*> unknowns = {&lvx1, &lvy1, &lvx2, &lvy2, &cx, &cy, &rad};
-        std::vector<GCS::Constraint*> constraints =
-            {&poslvx1, &poslvy1, &poslvx2, &poslvy2, &radset, &circdist};
+        std::vector<GCS::Constraint*> constraints
+            = {&poslvx1, &poslvy1, &poslvx2, &poslvy2, &radset, &circdist};
         GCS::Substitution subst(unknowns, constraints);
 
         subst.applyConst();
@@ -279,8 +280,8 @@ TEST_F(SubstitutionTest, circleLineDist)  // NOLINT
         GCS::ConstraintC2LDistance circdist(circle, lh, &dist);
 
         std::vector<double*> unknowns = {&lhx1, &lhy1, &lhx2, &lhy2, &cx, &cy, &rad};
-        std::vector<GCS::Constraint*> constraints =
-            {&poslhx1, &poslhy1, &poslhx2, &poslhy2, &radset, &circdist};
+        std::vector<GCS::Constraint*> constraints
+            = {&poslhx1, &poslhy1, &poslhx2, &poslhy2, &radset, &circdist};
         GCS::Substitution subst(unknowns, constraints);
 
         subst.applyConst();
@@ -304,8 +305,8 @@ TEST_F(SubstitutionTest, circleLineDist)  // NOLINT
         GCS::ConstraintC2LDistance circdist(circle, lh, &dist);
 
         std::vector<double*> unknowns = {&lhx1, &lhy1, &lhx2, &lhy2, &cx, &cy, &rad};
-        std::vector<GCS::Constraint*> constraints =
-            {&poslhx1, &poslhy1, &poslhx2, &poslhy2, &radset, &circdist};
+        std::vector<GCS::Constraint*> constraints
+            = {&poslhx1, &poslhy1, &poslhx2, &poslhy2, &radset, &circdist};
         GCS::Substitution subst(unknowns, constraints);
 
         subst.applyConst();
@@ -386,11 +387,8 @@ TEST_F(SubstitutionTest, equalLineLength)  // NOLINT
         l2.PushOwnParams(unknowns);
         l3.PushOwnParams(unknowns);
 
-        std::vector<GCS::Constraint*> constraints = {&l3length,
-                                                     &l2vert,
-                                                     &l3horiz,
-                                                     &l1length,
-                                                     &l2length};
+        std::vector<GCS::Constraint*> constraints
+            = {&l3length, &l2vert, &l3horiz, &l1length, &l2length};
         GCS::Substitution subst(unknowns, constraints);
 
         subst.applyConst();
@@ -411,8 +409,8 @@ TEST_F(SubstitutionTest, equalLineLength)  // NOLINT
         double l1x1fixpos = 15.0;
         double l1y1fixpos = 45.2;
         double l1x2fixpos = 18.0;
-        double l1y2fixpos =
-            l1y1fixpos - std::sqrt(std::pow(l1l, 2) - std::pow(l1x1fixpos - l1x2fixpos, 2));
+        double l1y2fixpos = l1y1fixpos
+            - std::sqrt(std::pow(l1l, 2) - std::pow(l1x1fixpos - l1x2fixpos, 2));
 
         GCS::Line l1(GCS::Point(&l1x1, &l1y1), GCS::Point(&l1x2, &l1y2));
 
@@ -435,8 +433,8 @@ TEST_F(SubstitutionTest, equalLineLength)  // NOLINT
         l1.PushOwnParams(unknowns);
         l2.PushOwnParams(unknowns);
 
-        std::vector<GCS::Constraint*> constraints =
-            {&l1x1fix, &l1y1fix, &l1x2fix, &l1y2fix, &l2horiz, &l2length};
+        std::vector<GCS::Constraint*> constraints
+            = {&l1x1fix, &l1y1fix, &l1x2fix, &l1y2fix, &l2horiz, &l2length};
         GCS::Substitution subst(unknowns, constraints);
 
         subst.applyConst();

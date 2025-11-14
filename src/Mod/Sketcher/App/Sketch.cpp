@@ -1580,19 +1580,23 @@ int Sketch::addBSpline(const Part::GeomBSplineCurve& bspline, bool fixed)
         param2geoelement.emplace(
             std::piecewise_construct,
             std::forward_as_tuple(bs.start.x),
-            std::forward_as_tuple(Geoms.size() - 1, Sketcher::PointPos::start, 0));
+            std::forward_as_tuple(Geoms.size() - 1, Sketcher::PointPos::start, 0)
+        );
         param2geoelement.emplace(
             std::piecewise_construct,
             std::forward_as_tuple(bs.start.y),
-            std::forward_as_tuple(Geoms.size() - 1, Sketcher::PointPos::start, 1));
+            std::forward_as_tuple(Geoms.size() - 1, Sketcher::PointPos::start, 1)
+        );
         param2geoelement.emplace(
             std::piecewise_construct,
             std::forward_as_tuple(bs.end.x),
-            std::forward_as_tuple(Geoms.size() - 1, Sketcher::PointPos::end, 0));
+            std::forward_as_tuple(Geoms.size() - 1, Sketcher::PointPos::end, 0)
+        );
         param2geoelement.emplace(
             std::piecewise_construct,
             std::forward_as_tuple(bs.end.y),
-            std::forward_as_tuple(Geoms.size() - 1, Sketcher::PointPos::end, 1));
+            std::forward_as_tuple(Geoms.size() - 1, Sketcher::PointPos::end, 1)
+        );
     }
 
     // return the position of the newly added geometry
