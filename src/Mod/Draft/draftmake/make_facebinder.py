@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
 # *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
@@ -52,13 +54,13 @@ def make_facebinder(selectionset, name="Facebinder"):
     if not App.ActiveDocument:
         App.Console.PrintError("No active document. Aborting\n")
         return
-    if not isinstance(selectionset,list):
+    if not isinstance(selectionset, list):
         selectionset = [selectionset]
-    fb = App.ActiveDocument.addObject("Part::FeaturePython",name)
+    fb = App.ActiveDocument.addObject("Part::FeaturePython", name)
     Facebinder(fb)
     if App.GuiUp:
         ViewProviderFacebinder(fb.ViewObject)
-    faces = [] # unused variable?
+    faces = []  # unused variable?
     fb.Proxy.addSubobjects(fb, selectionset)
     gui_utils.select(fb)
     return fb

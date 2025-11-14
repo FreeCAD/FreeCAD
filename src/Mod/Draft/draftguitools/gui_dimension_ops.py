@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>                  *
 # *   (c) 2009, 2010 Ken Cline <cline@frii.com>                             *
@@ -52,24 +54,26 @@ class FlipDimension(gui_base.GuiCommandNeedsSelection):
     """
 
     def __init__(self):
-        super(Draft_FlipDimension, self).__init__(name=translate("draft","Flip Dimension"))
+        super(Draft_FlipDimension, self).__init__(name=translate("draft", "Flip Dimension"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
 
-        return {'Pixmap': 'Draft_FlipDimension',
-                'MenuText': QT_TRANSLATE_NOOP("Draft_FlipDimension",
-                                              "Flip Dimension"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_FlipDimension",
-                                             "Flips the normal direction of the selected dimensions (linear, radial, angular).\nIf other objects are selected they are ignored.")}
+        return {
+            "Pixmap": "Draft_FlipDimension",
+            "MenuText": QT_TRANSLATE_NOOP("Draft_FlipDimension", "Flip Dimension"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Draft_FlipDimension",
+                "Flips the normal direction of the selected dimensions (linear, radial, angular).\nIf other objects are selected they are ignored.",
+            ),
+        }
 
     def Activated(self):
         """Execute when the command is called."""
         super(Draft_FlipDimension, self).Activated()
 
         for o in Gui.Selection.getSelection():
-            if utils.get_type(o) in ("Dimension",
-                                     "LinearDimension", "AngularDimension"):
+            if utils.get_type(o) in ("Dimension", "LinearDimension", "AngularDimension"):
                 self.doc.openTransaction("Flip dimension")
                 _cmd = "App.activeDocument()." + o.Name + ".Normal"
                 _cmd += " = "
@@ -80,6 +84,6 @@ class FlipDimension(gui_base.GuiCommandNeedsSelection):
 
 
 Draft_FlipDimension = FlipDimension
-Gui.addCommand('Draft_FlipDimension', FlipDimension())
+Gui.addCommand("Draft_FlipDimension", FlipDimension())
 
 ## @}

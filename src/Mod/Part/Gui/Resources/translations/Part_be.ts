@@ -1178,22 +1178,22 @@
   <context>
     <name>CmdBoxSelection</name>
     <message>
-      <location filename="../../Command.cpp" line="2133"/>
+      <location filename="../../Command.cpp" line="2138"/>
       <source>Part</source>
       <translation>Дэталь</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2134"/>
+      <location filename="../../Command.cpp" line="2139"/>
       <source>Box Selection</source>
       <translation>Вылучыць вобласць</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2135"/>
+      <location filename="../../Command.cpp" line="2140"/>
       <source>Selects elements in the 3D view using a box selection</source>
       <translation>Выбірае элементы ў трохмерным прадстаўленні з дапамогай выбару габарытаў</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2137"/>
+      <location filename="../../Command.cpp" line="2142"/>
       <source>Box selection</source>
       <translation>Вылучыць вобласць</translation>
     </message>
@@ -1201,17 +1201,17 @@
   <context>
     <name>CmdCheckGeometry</name>
     <message>
-      <location filename="../../Command.cpp" line="2063"/>
+      <location filename="../../Command.cpp" line="2068"/>
       <source>Part</source>
       <translation>Дэталь</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2064"/>
+      <location filename="../../Command.cpp" line="2069"/>
       <source>Check Geometry</source>
       <translation>Праверыць Геаметрыю</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2065"/>
+      <location filename="../../Command.cpp" line="2070"/>
       <source>Analyzes the selected shapes for errors</source>
       <translation>Аналізуе абраныя фігуры на наяўнасць памылак</translation>
     </message>
@@ -1219,17 +1219,17 @@
   <context>
     <name>CmdColorPerFace</name>
     <message>
-      <location filename="../../Command.cpp" line="2096"/>
+      <location filename="../../Command.cpp" line="2101"/>
       <source>Part</source>
       <translation>Дэталь</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2097"/>
+      <location filename="../../Command.cpp" line="2102"/>
       <source>Appearance per &amp;Face</source>
       <translation>Знешні выгляд для кожнай &amp;грані</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2098"/>
+      <location filename="../../Command.cpp" line="2103"/>
       <source>Sets the appearance of individual faces of the selected object</source>
       <translation>Задае знешні выгляд асобнай грані абранага аб'екту</translation>
     </message>
@@ -1237,17 +1237,17 @@
   <context>
     <name>CmdPartBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="1235"/>
+      <location filename="../../Command.cpp" line="1236"/>
       <source>Part</source>
       <translation>Дэталь</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1236"/>
+      <location filename="../../Command.cpp" line="1237"/>
       <source>Boolean Operation</source>
       <translation>Лагічная аперацыя</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1237"/>
+      <location filename="../../Command.cpp" line="1238"/>
       <source>Applies a boolean operations with the selected shapes</source>
       <translation>Прымяняе лагічныя аперацыі з абранымі фігурамі</translation>
     </message>
@@ -1275,17 +1275,17 @@
   <context>
     <name>CmdPartBox2</name>
     <message>
-      <location filename="../../Command.cpp" line="132"/>
+      <location filename="../../Command.cpp" line="133"/>
       <source>Part</source>
       <translation>Дэталь</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="133"/>
+      <location filename="../../Command.cpp" line="134"/>
       <source>Box Fix 1</source>
       <translation>Выпраўленне паралелепіпеда 1</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="134"/>
+      <location filename="../../Command.cpp" line="135"/>
       <source>Creates a solid box</source>
       <translation>Стварае суцэльную каробку</translation>
     </message>
@@ -1293,17 +1293,17 @@
   <context>
     <name>CmdPartBox3</name>
     <message>
-      <location filename="../../Command.cpp" line="173"/>
+      <location filename="../../Command.cpp" line="174"/>
       <source>Part</source>
       <translation>Дэталь</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="174"/>
+      <location filename="../../Command.cpp" line="175"/>
       <source>Box Fix 2</source>
       <translation>Выпраўленне паралелепіпеда 2</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="175"/>
+      <location filename="../../Command.cpp" line="176"/>
       <source>Creates a solid box</source>
       <translation>Стварае суцэльную каробку</translation>
     </message>
@@ -1311,17 +1311,17 @@
   <context>
     <name>CmdPartBuilder</name>
     <message>
-      <location filename="../../Command.cpp" line="1526"/>
+      <location filename="../../Command.cpp" line="1527"/>
       <source>Part</source>
       <translation>Дэталь</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1527"/>
+      <location filename="../../Command.cpp" line="1528"/>
       <source>Shape Builder</source>
       <translation>Будаўнік фігур</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1529"/>
+      <location filename="../../Command.cpp" line="1530"/>
       <source>Advanced utility to create shapes</source>
       <translation>Пашыраныя службовыя інструменты для стварэння фігур</translation>
     </message>
@@ -1329,17 +1329,17 @@
   <context>
     <name>CmdPartChamfer</name>
     <message>
-      <location filename="../../Command.cpp" line="1431"/>
+      <location filename="../../Command.cpp" line="1432"/>
       <source>Part</source>
       <translation>Дэталь</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1432"/>
+      <location filename="../../Command.cpp" line="1433"/>
       <source>Chamfer</source>
       <translation>Фаска</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1433"/>
+      <location filename="../../Command.cpp" line="1434"/>
       <source>Chamfers the selected edges of a shape</source>
       <translation>Стварае фаску на абраных рэбрах фігуры</translation>
     </message>
@@ -1347,17 +1347,17 @@
   <context>
     <name>CmdPartCommon</name>
     <message>
-      <location filename="../../Command.cpp" line="359"/>
+      <location filename="../../Command.cpp" line="360"/>
       <source>Part</source>
       <translation>Дэталь</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="360"/>
+      <location filename="../../Command.cpp" line="361"/>
       <source>Intersection</source>
       <translation>Перасячэнне</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="361"/>
+      <location filename="../../Command.cpp" line="362"/>
       <source>Intersects the selected shapes</source>
       <translation>Стварае перасячэнні абраных фігур</translation>
     </message>
@@ -1365,17 +1365,17 @@
   <context>
     <name>CmdPartCompCompoundTools</name>
     <message>
-      <location filename="../../Command.cpp" line="723"/>
+      <location filename="../../Command.cpp" line="724"/>
       <source>Part</source>
       <translation>Дэталь</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="724"/>
+      <location filename="../../Command.cpp" line="725"/>
       <source>Compound Tools</source>
       <translation>Інструмент злучэння</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="725"/>
+      <location filename="../../Command.cpp" line="726"/>
       <source>Compound tools for working with multiple shapes</source>
       <translation>Інструмент злучэння для працы з множнымі фігурамі</translation>
     </message>
@@ -1383,17 +1383,17 @@
   <context>
     <name>CmdPartCompJoinFeatures</name>
     <message>
-      <location filename="../../Command.cpp" line="497"/>
+      <location filename="../../Command.cpp" line="498"/>
       <source>Part</source>
       <translation>Дэталь</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="498"/>
+      <location filename="../../Command.cpp" line="499"/>
       <source>Join Shapes</source>
       <translation>Злучыць фігуры</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="500"/>
+      <location filename="../../Command.cpp" line="501"/>
       <source>Joins the selected walled shapes</source>
       <translation>Злучае абраныя сцены фігур</translation>
     </message>
@@ -1401,17 +1401,17 @@
   <context>
     <name>CmdPartCompOffset</name>
     <message>
-      <location filename="../../Command.cpp" line="1723"/>
+      <location filename="../../Command.cpp" line="1728"/>
       <source>Part</source>
       <translation>Дэталь</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1724"/>
+      <location filename="../../Command.cpp" line="1729"/>
       <source>Offset</source>
       <translation>Зрушэнне</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1725"/>
+      <location filename="../../Command.cpp" line="1730"/>
       <source>Tools to offset shapes (construct parallel shapes)</source>
       <translation>Інструменты для зрушэння фігур (пабудовы паралельных фігур)</translation>
     </message>
@@ -1419,17 +1419,17 @@
   <context>
     <name>CmdPartCompSplitFeatures</name>
     <message>
-      <location filename="../../Command.cpp" line="604"/>
+      <location filename="../../Command.cpp" line="605"/>
       <source>Part</source>
       <translation>Дэталь</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="605"/>
+      <location filename="../../Command.cpp" line="606"/>
       <source>Split Shapes</source>
       <translation>Падзяліць фігуры</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="607"/>
+      <location filename="../../Command.cpp" line="608"/>
       <source>Shape splitting and compsolid creation tools</source>
       <translation>Інструменты для падзелу фігур і стварэння складаных цел</translation>
     </message>
@@ -1437,17 +1437,17 @@
   <context>
     <name>CmdPartCompound</name>
     <message>
-      <location filename="../../Command.cpp" line="830"/>
+      <location filename="../../Command.cpp" line="831"/>
       <source>Part</source>
       <translation>Дэталь</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="831"/>
+      <location filename="../../Command.cpp" line="832"/>
       <source>Compound</source>
       <translation>Злучэнне</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="832"/>
+      <location filename="../../Command.cpp" line="833"/>
       <source>Compounds the selected shapes</source>
       <translation>Злучае абраныя фігуры</translation>
     </message>
@@ -1475,17 +1475,17 @@
   <context>
     <name>CmdPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="1487"/>
+      <location filename="../../Command.cpp" line="1488"/>
       <source>Part</source>
       <translation>Дэталь</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1488"/>
+      <location filename="../../Command.cpp" line="1489"/>
       <source>Cross-Sections</source>
       <translation>Папярочныя перасекі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1489"/>
+      <location filename="../../Command.cpp" line="1490"/>
       <source>Creates cross-sections</source>
       <translation>Стварае папярочныя перасекі</translation>
     </message>
@@ -1493,17 +1493,17 @@
   <context>
     <name>CmdPartCut</name>
     <message>
-      <location filename="../../Command.cpp" line="301"/>
+      <location filename="../../Command.cpp" line="302"/>
       <source>Part</source>
       <translation>Дэталь</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="302"/>
+      <location filename="../../Command.cpp" line="303"/>
       <source>Cut</source>
       <translation>Разрэзаць</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="303"/>
+      <location filename="../../Command.cpp" line="304"/>
       <source>Cuts 2 selected shapes</source>
       <translation>Выразае абраную фігуру з абранай фігуры</translation>
     </message>
@@ -1567,17 +1567,17 @@
   <context>
     <name>CmdPartExport</name>
     <message>
-      <location filename="../../Command.cpp" line="997"/>
+      <location filename="../../Command.cpp" line="998"/>
       <source>Part</source>
       <translation>Дэталь</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="998"/>
+      <location filename="../../Command.cpp" line="999"/>
       <source>Export CAD File</source>
       <translation>Экспартаваць у файл CAD</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1000"/>
+      <location filename="../../Command.cpp" line="1001"/>
       <source>Exports to a CAD file</source>
       <translation>Экспартаваць у файл CAD</translation>
     </message>
@@ -1585,17 +1585,17 @@
   <context>
     <name>CmdPartExtrude</name>
     <message>
-      <location filename="../../Command.cpp" line="1266"/>
+      <location filename="../../Command.cpp" line="1267"/>
       <source>Part</source>
       <translation>Дэталь</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1267"/>
+      <location filename="../../Command.cpp" line="1268"/>
       <source>Extrude</source>
       <translation>Выдушыць</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1268"/>
+      <location filename="../../Command.cpp" line="1269"/>
       <source>Extrudes the selected sketch or profile</source>
       <translation>Выдушвае абраны эскіз ці профіль</translation>
     </message>
@@ -1603,17 +1603,17 @@
   <context>
     <name>CmdPartFillet</name>
     <message>
-      <location filename="../../Command.cpp" line="1403"/>
+      <location filename="../../Command.cpp" line="1404"/>
       <source>Part</source>
       <translation>Дэталь</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1404"/>
+      <location filename="../../Command.cpp" line="1405"/>
       <source>Fillet</source>
       <translation>Акругленне</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1405"/>
+      <location filename="../../Command.cpp" line="1406"/>
       <source>Fillets the selected edges of a shape</source>
       <translation>Акругляе абраныя рэбры ў фігуры</translation>
     </message>
@@ -1621,17 +1621,17 @@
   <context>
     <name>CmdPartFuse</name>
     <message>
-      <location filename="../../Command.cpp" line="418"/>
+      <location filename="../../Command.cpp" line="419"/>
       <source>Part</source>
       <translation>Дэталь</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="419"/>
+      <location filename="../../Command.cpp" line="420"/>
       <source>Union</source>
       <translation>Аб'яднанне</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="420"/>
+      <location filename="../../Command.cpp" line="421"/>
       <source>Unites the selected shapes</source>
       <translation>Аб'ядноўвае абраныя фігуры</translation>
     </message>
@@ -1639,17 +1639,17 @@
   <context>
     <name>CmdPartImport</name>
     <message>
-      <location filename="../../Command.cpp" line="933"/>
+      <location filename="../../Command.cpp" line="934"/>
       <source>Part</source>
       <translation>Дэталь</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="934"/>
+      <location filename="../../Command.cpp" line="935"/>
       <source>Import CAD File</source>
       <translation>Імпартаваць файл CAD</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="936"/>
+      <location filename="../../Command.cpp" line="937"/>
       <source>Imports a CAD file</source>
       <translation>Імпартаваць файл CAD</translation>
     </message>
@@ -1657,17 +1657,17 @@
   <context>
     <name>CmdPartImportCurveNet</name>
     <message>
-      <location filename="../../Command.cpp" line="1046"/>
+      <location filename="../../Command.cpp" line="1047"/>
       <source>Part</source>
       <translation>Дэталь</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1047"/>
+      <location filename="../../Command.cpp" line="1048"/>
       <source>Import Curve Network</source>
       <translation>Імпартаваць сетку крывых</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1049"/>
+      <location filename="../../Command.cpp" line="1050"/>
       <source>Imports a curve network</source>
       <translation>Імпартаваць сетку крывых</translation>
     </message>
@@ -1675,17 +1675,17 @@
   <context>
     <name>CmdPartLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="1556"/>
+      <location filename="../../Command.cpp" line="1557"/>
       <source>Part</source>
       <translation>Дэталь</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1557"/>
+      <location filename="../../Command.cpp" line="1558"/>
       <source>Loft</source>
       <translation>Профіль</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1558"/>
+      <location filename="../../Command.cpp" line="1559"/>
       <source>Lofts the selected profiles</source>
       <translation>Павялічвае вышыню абраных профіляў</translation>
     </message>
@@ -1693,17 +1693,17 @@
   <context>
     <name>CmdPartMakeFace</name>
     <message>
-      <location filename="../../Command.cpp" line="1323"/>
+      <location filename="../../Command.cpp" line="1324"/>
       <source>Part</source>
       <translation>Дэталь</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1324"/>
+      <location filename="../../Command.cpp" line="1325"/>
       <source>Face From Wires</source>
       <translation>Грань з ломанай лініі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1325"/>
+      <location filename="../../Command.cpp" line="1326"/>
       <source>Creates a face from the selected wires (e.g. from a sketch)</source>
       <translation>Стварае грань з абраных ломаных ліній (напрыклад, з эскізу)</translation>
     </message>
@@ -1711,17 +1711,17 @@
   <context>
     <name>CmdPartMakeSolid</name>
     <message>
-      <location filename="../../Command.cpp" line="1095"/>
+      <location filename="../../Command.cpp" line="1096"/>
       <source>Part</source>
       <translation>Дэталь</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1096"/>
+      <location filename="../../Command.cpp" line="1097"/>
       <source>Convert to Solid</source>
       <translation>Пераўтварыць у суцэльнае цела</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1097"/>
+      <location filename="../../Command.cpp" line="1098"/>
       <source>Converts the selected shell or compound to a solid</source>
       <translation>Пераўтварае абраную абалонку ці злучэнне ў суцэльнае цела</translation>
     </message>
@@ -1729,17 +1729,17 @@
   <context>
     <name>CmdPartMirror</name>
     <message>
-      <location filename="../../Command.cpp" line="1459"/>
+      <location filename="../../Command.cpp" line="1460"/>
       <source>Part</source>
       <translation>Дэталь</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1460"/>
+      <location filename="../../Command.cpp" line="1461"/>
       <source>Mirror</source>
       <translation>Сіметрычна</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1461"/>
+      <location filename="../../Command.cpp" line="1462"/>
       <source>Mirrors the selected shape</source>
       <translation>Сіметрычнае пераўтварэнне абранай фігуры</translation>
     </message>
@@ -1747,17 +1747,17 @@
   <context>
     <name>CmdPartOffset</name>
     <message>
-      <location filename="../../Command.cpp" line="1614"/>
+      <location filename="../../Command.cpp" line="1615"/>
       <source>Part</source>
       <translation>Дэталь</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1615"/>
+      <location filename="../../Command.cpp" line="1616"/>
       <source>3D Offset</source>
       <translation>Трохмернае зрушэнне</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1616"/>
+      <location filename="../../Command.cpp" line="1617"/>
       <source>Offsets shapes in 3D</source>
       <translation>Зрушэнне фігур у трохмерным прадстаўленні</translation>
     </message>
@@ -1765,17 +1765,17 @@
   <context>
     <name>CmdPartOffset2D</name>
     <message>
-      <location filename="../../Command.cpp" line="1669"/>
+      <location filename="../../Command.cpp" line="1672"/>
       <source>Part</source>
       <translation>Дэталь</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1670"/>
+      <location filename="../../Command.cpp" line="1673"/>
       <source>2D Offset</source>
       <translation>Двухмернае зрушэнне</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1671"/>
+      <location filename="../../Command.cpp" line="1674"/>
       <source>Offsets planar shapes in 2D</source>
       <translation>Зрушэнне плоскіх фігур у двухмерным прадстаўленні</translation>
     </message>
@@ -1783,17 +1783,17 @@
   <context>
     <name>CmdPartPickCurveNet</name>
     <message>
-      <location filename="../../Command.cpp" line="86"/>
+      <location filename="../../Command.cpp" line="87"/>
       <source>Part</source>
       <translation>Дэталь</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="87"/>
+      <location filename="../../Command.cpp" line="88"/>
       <source>Pick Curve Network</source>
       <translation>Выбар сеткі крывых</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="88"/>
+      <location filename="../../Command.cpp" line="89"/>
       <source>Picks a curve network</source>
       <translation>Выбірае сеткі крывых</translation>
     </message>
@@ -1819,17 +1819,17 @@
   <context>
     <name>CmdPartPrimitives</name>
     <message>
-      <location filename="../../Command.cpp" line="214"/>
+      <location filename="../../Command.cpp" line="215"/>
       <source>Part</source>
       <translation>Дэталь</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="215"/>
+      <location filename="../../Command.cpp" line="216"/>
       <source>Primitive</source>
       <translation>Першаснае цела</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="217"/>
+      <location filename="../../Command.cpp" line="218"/>
       <source>Creates solid geometric primitives parametrically</source>
       <translation>Стварае суцэльныя геаметрычныя першасныя целы параметрычнымі</translation>
     </message>
@@ -1837,17 +1837,17 @@
   <context>
     <name>CmdPartProjectionOnSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="2163"/>
+      <location filename="../../Command.cpp" line="2168"/>
       <source>Part</source>
       <translation>Дэталь</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2164"/>
+      <location filename="../../Command.cpp" line="2169"/>
       <source>Project on Surface</source>
       <translation>Праект на паверхні</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2165"/>
+      <location filename="../../Command.cpp" line="2170"/>
       <source>Projects edges, wires, or faces of one shape
 onto a face of another shape.
 The camera view determines the direction
@@ -1877,17 +1877,17 @@ of the projection.</source>
   <context>
     <name>CmdPartReverseShape</name>
     <message>
-      <location filename="../../Command.cpp" line="1173"/>
+      <location filename="../../Command.cpp" line="1174"/>
       <source>Part</source>
       <translation>Дэталь</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1174"/>
+      <location filename="../../Command.cpp" line="1175"/>
       <source>Reverse Shapes</source>
       <translation>Перавярнуць фігуры</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1175"/>
+      <location filename="../../Command.cpp" line="1176"/>
       <source>Reverses the orientation of the selected shapes</source>
       <translation>Змяняе арыентацыю абраных фігур на супрацьлеглы</translation>
     </message>
@@ -1895,17 +1895,17 @@ of the projection.</source>
   <context>
     <name>CmdPartRevolve</name>
     <message>
-      <location filename="../../Command.cpp" line="1375"/>
+      <location filename="../../Command.cpp" line="1376"/>
       <source>Part</source>
       <translation>Дэталь</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1376"/>
+      <location filename="../../Command.cpp" line="1377"/>
       <source>Revolve</source>
       <translation>Вярчэнне</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1377"/>
+      <location filename="../../Command.cpp" line="1378"/>
       <source>Revolves the selected shape</source>
       <translation>Вярчэнне абранай фігуры</translation>
     </message>
@@ -1913,17 +1913,17 @@ of the projection.</source>
   <context>
     <name>CmdPartRuledSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="1944"/>
+      <location filename="../../Command.cpp" line="1949"/>
       <source>Part</source>
       <translation>Дэталь</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1945"/>
+      <location filename="../../Command.cpp" line="1950"/>
       <source>Ruled Surface</source>
       <translation>Лінейная паверхня</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1946"/>
+      <location filename="../../Command.cpp" line="1951"/>
       <source>Creates a ruled surface between 2 selected wires</source>
       <translation>Стварае лінейную паверхню паміж дзвюма абранымі ломанымі лініямі</translation>
     </message>
@@ -1931,17 +1931,17 @@ of the projection.</source>
   <context>
     <name>CmdPartSection</name>
     <message>
-      <location filename="../../Command.cpp" line="885"/>
+      <location filename="../../Command.cpp" line="886"/>
       <source>Part</source>
       <translation>Дэталь</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="886"/>
+      <location filename="../../Command.cpp" line="887"/>
       <source>Section</source>
       <translation>Перасек</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="887"/>
+      <location filename="../../Command.cpp" line="888"/>
       <source>Sections 2 selected shapes</source>
       <translation>Перасякае дзве абраныя фігуры</translation>
     </message>
@@ -2023,17 +2023,17 @@ of the projection.</source>
   <context>
     <name>CmdPartSweep</name>
     <message>
-      <location filename="../../Command.cpp" line="1585"/>
+      <location filename="../../Command.cpp" line="1586"/>
       <source>Part</source>
       <translation>Дэталь</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1586"/>
+      <location filename="../../Command.cpp" line="1587"/>
       <source>Sweep</source>
       <translation>Выцягнуць</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1587"/>
+      <location filename="../../Command.cpp" line="1588"/>
       <source>Sweeps profiles along a wire</source>
       <translation>Перамяшчае профілі наўздоўж ломанай лініі</translation>
     </message>
@@ -2041,27 +2041,27 @@ of the projection.</source>
   <context>
     <name>CmdPartThickness</name>
     <message>
-      <location filename="../../Command.cpp" line="1815"/>
+      <location filename="../../Command.cpp" line="1820"/>
       <source>Part</source>
       <translation>Дэталь</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1816"/>
+      <location filename="../../Command.cpp" line="1821"/>
       <source>Thickness</source>
       <translation>Таўшчыня</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1817"/>
+      <location filename="../../Command.cpp" line="1822"/>
       <source>Removes the selected faces and offsets the remaining shape outward to add thickness</source>
       <translation>Выдаляе абраныя грані і рухае астатнюю фігуру вонкі, каб дадаць таўшчыню</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1866"/>
+      <location filename="../../Command.cpp" line="1871"/>
       <source>Wrong selection</source>
       <translation>Няправільны выбар</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1867"/>
+      <location filename="../../Command.cpp" line="1872"/>
       <source>Selected shape is not a solid</source>
       <translation>Абраная фігура не суцэльная</translation>
     </message>
@@ -2107,93 +2107,93 @@ of the projection.</source>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="143"/>
-      <location filename="../../Command.cpp" line="184"/>
+      <location filename="../../Command.cpp" line="144"/>
+      <location filename="../../Command.cpp" line="185"/>
       <source>Part Box Create</source>
       <translation>Стварэнне Дэталі навакольнага куба</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="337"/>
+      <location filename="../../Command.cpp" line="338"/>
       <source>Part Cut</source>
       <translation>Разрэзаць дэталь</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="396"/>
+      <location filename="../../Command.cpp" line="397"/>
       <source>Common</source>
       <translation>Перасек</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="474"/>
+      <location filename="../../Command.cpp" line="475"/>
       <source>Fusion</source>
       <translation>Зліццё</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="864"/>
+      <location filename="../../Command.cpp" line="865"/>
       <source>Compound</source>
       <translation>Злучэнне</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="908"/>
+      <location filename="../../Command.cpp" line="909"/>
       <source>Section</source>
       <translation>Перасек</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="961"/>
+      <location filename="../../Command.cpp" line="962"/>
       <source>Import Part</source>
       <translation>Імпартаваць дэталь</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1070"/>
+      <location filename="../../Command.cpp" line="1071"/>
       <source>Import Curve Net</source>
       <translation>Імпартаваць сетку крывых</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1186"/>
+      <location filename="../../Command.cpp" line="1187"/>
       <source>Reverse</source>
       <translation>Перавярнуць</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1337"/>
+      <location filename="../../Command.cpp" line="1338"/>
       <source>Make face</source>
       <translation>Зрабіць грань</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1638"/>
+      <location filename="../../Command.cpp" line="1639"/>
       <source>Make Offset</source>
       <translation>Зрабіць зрушэнне</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1694"/>
+      <location filename="../../Command.cpp" line="1697"/>
       <source>Make 2D Offset</source>
       <translation>Зрабіць дзвюхмернае зрушэнне</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1873"/>
+      <location filename="../../Command.cpp" line="1878"/>
       <source>Make Thickness</source>
       <translation>Зрабіць таўшчыню</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2038"/>
+      <location filename="../../Command.cpp" line="2043"/>
       <source>Create ruled surface</source>
       <translation>Стварыць лінейную паверхню</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2266"/>
+      <location filename="../../Command.cpp" line="2271"/>
       <source>Add coordinate system</source>
       <translation>Дадаць сістэму каардынат</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2300"/>
+      <location filename="../../Command.cpp" line="2305"/>
       <source>Add datum plane</source>
       <translation>Дадаць апорную плоскасць</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2333"/>
+      <location filename="../../Command.cpp" line="2338"/>
       <source>Add datum line</source>
       <translation>Дадаць апорную лінію</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2366"/>
+      <location filename="../../Command.cpp" line="2371"/>
       <source>Add datum point</source>
       <translation>Дадаць апорную кропку</translation>
     </message>
@@ -2223,7 +2223,7 @@ of the projection.</source>
       <translation>Пераўтварыць паліганальную сетку</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1292"/>
+      <location filename="../../TaskAttacher.cpp" line="1301"/>
       <source>Edit attachment</source>
       <translation>Змяніць мацаванне</translation>
     </message>
@@ -2269,12 +2269,12 @@ of the projection.</source>
       <translation>Выцягнуць</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="1559"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="1560"/>
       <source>Project on surface</source>
       <translation>Праект на паверхні</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="210"/>
+      <location filename="../../ViewProviderMirror.cpp" line="208"/>
       <source>Edit mirror</source>
       <translation>Змяніць сіметрычна</translation>
     </message>
@@ -2433,7 +2433,7 @@ Note: The placement is expressed in local space of object being attached.</sourc
       <translation>Колькасць</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="308"/>
+      <location filename="../../CrossSections.cpp" line="307"/>
       <source>Cannot compute cross-sections</source>
       <translation>Не атрымалася вылічыць папярочныя перасекі</translation>
     </message>
@@ -2549,7 +2549,7 @@ Note: The placement is expressed in local space of object being attached.</sourc
   <context>
     <name>PartGui::DlgChamferEdges</name>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="1111"/>
+      <location filename="../../DlgFilletEdges.cpp" line="1110"/>
       <source>Chamfer Edges</source>
       <translation>Зняць фаска на рэбрах</translation>
     </message>
@@ -2960,96 +2960,96 @@ If both lengths are zero, magnitude of direction is used.</source>
       <translation>Пераменны радыус</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="271"/>
+      <location filename="../../DlgFilletEdges.cpp" line="270"/>
       <source>Chamfer type</source>
       <translation>Тып фаскі</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="272"/>
+      <location filename="../../DlgFilletEdges.cpp" line="271"/>
       <source>Length:</source>
       <translation type="unfinished">Length:</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="276"/>
+      <location filename="../../DlgFilletEdges.cpp" line="275"/>
       <source>Edges to chamfer</source>
       <translation>Рэбры для фаскі</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="914"/>
+      <location filename="../../DlgFilletEdges.cpp" line="913"/>
       <source>Start length</source>
       <translation>Пачатковая даўжыня</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="273"/>
+      <location filename="../../DlgFilletEdges.cpp" line="272"/>
       <source>Equal distance</source>
       <translation>Аднолькавыя адлегласці</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="270"/>
+      <location filename="../../DlgFilletEdges.cpp" line="269"/>
       <source>Chamfer parameters</source>
       <translation>Налады фаскі</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="274"/>
+      <location filename="../../DlgFilletEdges.cpp" line="273"/>
       <source>Two distances</source>
       <translation>Дзве адлегласці</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="277"/>
+      <location filename="../../DlgFilletEdges.cpp" line="276"/>
       <source>Size</source>
       <translation>Памер</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="278"/>
+      <location filename="../../DlgFilletEdges.cpp" line="277"/>
       <source>Size2</source>
       <translation>Памер2</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="281"/>
+      <location filename="../../DlgFilletEdges.cpp" line="280"/>
       <source>Fillet parameter</source>
       <translation>Налада акруглення</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="282"/>
+      <location filename="../../DlgFilletEdges.cpp" line="281"/>
       <source>Fillet type</source>
       <translation>Тып акруглення</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="283"/>
+      <location filename="../../DlgFilletEdges.cpp" line="282"/>
       <source>Edges to fillet</source>
       <translation>Рэбры для акруглення</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="284"/>
-      <location filename="../../DlgFilletEdges.cpp" line="916"/>
+      <location filename="../../DlgFilletEdges.cpp" line="283"/>
+      <location filename="../../DlgFilletEdges.cpp" line="915"/>
       <source>Start radius</source>
       <translation>Пачатковы радыус</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="285"/>
+      <location filename="../../DlgFilletEdges.cpp" line="284"/>
       <source>End radius</source>
       <translation>Канчатковы радыус</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="763"/>
-      <location filename="../../DlgFilletEdges.cpp" line="823"/>
+      <location filename="../../DlgFilletEdges.cpp" line="762"/>
+      <location filename="../../DlgFilletEdges.cpp" line="822"/>
       <source>Edge%1</source>
       <translation>Рабро%1</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="906"/>
+      <location filename="../../DlgFilletEdges.cpp" line="905"/>
       <source>Length</source>
       <translation>Даўжыня</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="963"/>
+      <location filename="../../DlgFilletEdges.cpp" line="962"/>
       <source>No valid shape is selected.
 Select a valid shape in the drop-down box first.</source>
       <translation>Не абрана дапушчальная фігура.
 Спачатку абярыце дапушчальную фігуру ў спісе.</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="1015"/>
+      <location filename="../../DlgFilletEdges.cpp" line="1014"/>
       <source>No edge entity is checked to fillet.
 Check one or more edge entities first.</source>
       <translation>Ніводнае рабро не пазначанае як акругленае.
@@ -3057,17 +3057,17 @@ Check one or more edge entities first.</source>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="142"/>
-      <location filename="../../DlgFilletEdges.cpp" line="908"/>
+      <location filename="../../DlgFilletEdges.cpp" line="907"/>
       <source>Radius</source>
       <translation>Радыус</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="962"/>
+      <location filename="../../DlgFilletEdges.cpp" line="961"/>
       <source>No shape selected</source>
       <translation>Фігура не абраная</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="1014"/>
+      <location filename="../../DlgFilletEdges.cpp" line="1013"/>
       <source>No edge selected</source>
       <translation>Рабро не абранае</translation>
     </message>
@@ -3354,12 +3354,12 @@ Check one or more edge entities first.</source>
   <context>
     <name>PartGui::DlgPartImportIgesImp</name>
     <message>
-      <location filename="../../DlgPartImportIgesImp.cpp" line="67"/>
+      <location filename="../../DlgPartImportIgesImp.cpp" line="68"/>
       <source>IGES</source>
       <translation>IGES</translation>
     </message>
     <message>
-      <location filename="../../DlgPartImportIgesImp.cpp" line="68"/>
+      <location filename="../../DlgPartImportIgesImp.cpp" line="69"/>
       <source>All Files</source>
       <translation>Усе файлы</translation>
     </message>
@@ -3385,7 +3385,7 @@ Check one or more edge entities first.</source>
   <context>
     <name>PartGui::DlgPartImportStepImp</name>
     <message>
-      <location filename="../../DlgPartImportStepImp.cpp" line="68"/>
+      <location filename="../../DlgPartImportStepImp.cpp" line="69"/>
       <source>All Files</source>
       <translation>Усе файлы</translation>
     </message>
@@ -3399,79 +3399,79 @@ Check one or more edge entities first.</source>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="33"/>
-      <location filename="../../DlgPrimitives.cpp" line="276"/>
+      <location filename="../../DlgPrimitives.cpp" line="277"/>
       <source>Plane</source>
       <translation>Плоскасць</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="42"/>
-      <location filename="../../DlgPrimitives.cpp" line="351"/>
+      <location filename="../../DlgPrimitives.cpp" line="352"/>
       <source>Box</source>
       <translation type="unfinished">Box</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="51"/>
-      <location filename="../../DlgPrimitives.cpp" line="441"/>
+      <location filename="../../DlgPrimitives.cpp" line="442"/>
       <source>Cylinder</source>
       <translation>Цыліндр</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="60"/>
-      <location filename="../../DlgPrimitives.cpp" line="537"/>
+      <location filename="../../DlgPrimitives.cpp" line="538"/>
       <source>Cone</source>
       <translation>Конус</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="69"/>
-      <location filename="../../DlgPrimitives.cpp" line="628"/>
+      <location filename="../../DlgPrimitives.cpp" line="629"/>
       <source>Sphere</source>
       <translation>Сфера</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="78"/>
-      <location filename="../../DlgPrimitives.cpp" line="732"/>
+      <location filename="../../DlgPrimitives.cpp" line="733"/>
       <source>Ellipsoid</source>
       <translation>Эліпсоід</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="87"/>
-      <location filename="../../DlgPrimitives.cpp" line="839"/>
+      <location filename="../../DlgPrimitives.cpp" line="840"/>
       <source>Torus</source>
       <translation>Тор</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="96"/>
-      <location filename="../../DlgPrimitives.cpp" line="937"/>
+      <location filename="../../DlgPrimitives.cpp" line="938"/>
       <source>Prism</source>
       <translation>Прызма</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="105"/>
-      <location filename="../../DlgPrimitives.cpp" line="1081"/>
+      <location filename="../../DlgPrimitives.cpp" line="1082"/>
       <source>Wedge</source>
       <translation>Клін</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="114"/>
-      <location filename="../../DlgPrimitives.cpp" line="1207"/>
+      <location filename="../../DlgPrimitives.cpp" line="1208"/>
       <source>Helix</source>
       <translation>Спіраль</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="123"/>
-      <location filename="../../DlgPrimitives.cpp" line="1296"/>
+      <location filename="../../DlgPrimitives.cpp" line="1297"/>
       <source>Spiral</source>
       <translation>Спіраль</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="132"/>
-      <location filename="../../DlgPrimitives.cpp" line="1376"/>
+      <location filename="../../DlgPrimitives.cpp" line="1377"/>
       <source>Circle</source>
       <translation>Акружнасць</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="141"/>
-      <location filename="../../DlgPrimitives.cpp" line="1462"/>
+      <location filename="../../DlgPrimitives.cpp" line="1463"/>
       <source>Ellipse</source>
       <translation>Эліпс</translation>
     </message>
@@ -3482,13 +3482,13 @@ Check one or more edge entities first.</source>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="159"/>
-      <location filename="../../DlgPrimitives.cpp" line="1640"/>
+      <location filename="../../DlgPrimitives.cpp" line="1641"/>
       <source>Line</source>
       <translation>Лінія</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="168"/>
-      <location filename="../../DlgPrimitives.cpp" line="1539"/>
+      <location filename="../../DlgPrimitives.cpp" line="1540"/>
       <source>Regular polygon</source>
       <translation>Правільны шматкутнік</translation>
     </message>
@@ -3714,25 +3714,25 @@ Check one or more edge entities first.</source>
       <translation>Канчатковая кропка</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="1740"/>
+      <location filename="../../DlgPrimitives.cpp" line="1741"/>
       <source>Vertex</source>
       <translation>Вяршыня</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="1918"/>
-      <location filename="../../DlgPrimitives.cpp" line="1928"/>
-      <location filename="../../DlgPrimitives.cpp" line="1943"/>
-      <location filename="../../DlgPrimitives.cpp" line="1947"/>
+      <location filename="../../DlgPrimitives.cpp" line="1919"/>
+      <location filename="../../DlgPrimitives.cpp" line="1929"/>
+      <location filename="../../DlgPrimitives.cpp" line="1944"/>
+      <location filename="../../DlgPrimitives.cpp" line="1948"/>
       <source>Create %1</source>
       <translation>Стварыць %1</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="1919"/>
+      <location filename="../../DlgPrimitives.cpp" line="1920"/>
       <source>No active document</source>
       <translation>Без бягучага дакумента</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="2212"/>
+      <location filename="../../DlgPrimitives.cpp" line="2213"/>
       <source>&amp;Create</source>
       <translation>&amp;Стварыць</translation>
     </message>
@@ -3815,17 +3815,17 @@ Check one or more edge entities first.</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="136"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="137"/>
       <source>Projection object</source>
       <translation>Аб'ект праекцыі</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="165"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="166"/>
       <source>No active document</source>
       <translation>Без бягучага дакумента</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="171"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="172"/>
       <source>Cannot create a projection object</source>
       <translation>Не атрымалася стварыць аб'ект праекцыі</translation>
     </message>
@@ -3953,7 +3953,8 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgRevolution.cpp" line="316"/>
       <source>Revolution angle span is zero. It must be non-zero.</source>
-      <translation>Прамежак вугла вярчэння - нуль. Ён павінен быць ненулявым.</translation>
+      <translation>Прамежак вугла вярчэння - нуль.
+Ён павінен быць ненулявым.</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="454"/>
@@ -3991,7 +3992,9 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="49"/>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Брукаванне&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Вызначае найбольшае адхіленне мазаічнай паліганальнай сеткі ад паверхні. Чым менш значэнне, тым павольней хуткасць візуалізацыі, што прыводзіць да павелічэння дэталізацыі / дазволу.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>Брукаванне.
+Вызначае найбольшае адхіленне мазаічнай паліганальнай сеткі ад паверхні.
+Чым менш значэнне, тым павольней хуткасць візуалізацыі, што прыводзіць да павелічэння дэталізацыі / дазволу.</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="52"/>
@@ -4291,7 +4294,7 @@ If not checked, it depends on the option "Backlight color"
 (preferences section Display -&gt; 3D View); either the backlight color
 will be used or black.</source>
       <translation>Ніжні бок паверхні будзе адлюстроўвацца так жа, як і верхні.
-Калі не птушка, гэта залежыць ад налады "Колер асвятлення" (падзел пераваг Праецыраванне - &gt; Трохмернае прадстаўленне); будзе ўжывацца альбо колер асвятлення, альбо чорны.</translation>
+Калі не птушка, гэта залежыць ад налады "Колер асвятлення" (падзел пераваг Праецыраванне → Трохмернае прадстаўленне); будзе ўжывацца альбо колер асвятлення, альбо чорны.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="471"/>
@@ -4479,7 +4482,7 @@ the sketch plane's normal vector will be used</source>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="150"/>
-      <location filename="../../Mirroring.cpp" line="220"/>
+      <location filename="../../Mirroring.cpp" line="218"/>
       <source>Selecting</source>
       <translation>Выбар</translation>
     </message>
@@ -4489,17 +4492,17 @@ the sketch plane's normal vector will be used</source>
       <translation>Сіметрычная апорная плоскасць</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.cpp" line="216"/>
+      <location filename="../../Mirroring.cpp" line="214"/>
       <source>Select reference</source>
       <translation>Абраць апорны элемент</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.cpp" line="285"/>
+      <location filename="../../Mirroring.cpp" line="283"/>
       <source>Select a shape for mirroring.</source>
       <translation>Абраць фігуру для сіметрыі.</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.cpp" line="292"/>
+      <location filename="../../Mirroring.cpp" line="290"/>
       <source>No such document '%1'.</source>
       <translation>Адсутнічае такі дакумент '%1'.</translation>
     </message>
@@ -4507,7 +4510,7 @@ the sketch plane's normal vector will be used</source>
   <context>
     <name>PartGui::OffsetWidget</name>
     <message>
-      <location filename="../../TaskOffset.cpp" line="208"/>
+      <location filename="../../TaskOffset.cpp" line="207"/>
       <source>Input error</source>
       <translation>Памылка ўводу</translation>
     </message>
@@ -4515,17 +4518,17 @@ the sketch plane's normal vector will be used</source>
   <context>
     <name>PartGui::ResultModel</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="341"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="340"/>
       <source>Name</source>
       <translation>Назва</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="343"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="342"/>
       <source>Type</source>
       <translation>Тып</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="345"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="344"/>
       <source>Error</source>
       <translation>Памылка</translation>
     </message>
@@ -4651,7 +4654,7 @@ only created cuts will be visible</source>
       <translation>Калі зачыніць, павінны быць бачныя толькі зрэзы</translation>
     </message>
     <message>
-      <location filename="../../SectionCutting.cpp" line="1091"/>
+      <location filename="../../SectionCutting.cpp" line="1089"/>
       <source>Sliders are disabled for assemblies</source>
       <translation>Паўзункі адключаныя для зборак</translation>
     </message>
@@ -4924,82 +4927,82 @@ of the object being attached.</source>
       <translation>Павярнуць бакі</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="352"/>
+      <location filename="../../TaskAttacher.cpp" line="361"/>
       <source>OCC error: %1</source>
       <translation>Памылка OpenCASCADE: %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="355"/>
+      <location filename="../../TaskAttacher.cpp" line="364"/>
       <source>unknown error</source>
       <translation>невядомая памылка</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="358"/>
+      <location filename="../../TaskAttacher.cpp" line="367"/>
       <source>Attachment mode failed: %1</source>
       <translation>Памылка рэжыму прымацавання: %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="363"/>
+      <location filename="../../TaskAttacher.cpp" line="372"/>
       <source>Not attached</source>
       <translation>Не прымацаваны</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="368"/>
+      <location filename="../../TaskAttacher.cpp" line="377"/>
       <source>Attached with mode %1</source>
       <translation>Прымацаваны ў рэжыме %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="372"/>
+      <location filename="../../TaskAttacher.cpp" line="381"/>
       <source>Attachment offset (in its local coordinate system):</source>
       <translation>Зрушэнне прымацавання (у лакальнай сістэме каардынат):</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="372"/>
+      <location filename="../../TaskAttacher.cpp" line="381"/>
       <source>Attachment offset (inactive - not attached):</source>
       <translation>Зрушэнне прымацавання (неактыўны - не прымацаваны):</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="907"/>
+      <location filename="../../TaskAttacher.cpp" line="916"/>
       <source>Selecting…</source>
       <translation>Выбар…</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="827"/>
+      <location filename="../../TaskAttacher.cpp" line="836"/>
       <source>Face</source>
       <translation>Грань</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="834"/>
+      <location filename="../../TaskAttacher.cpp" line="843"/>
       <source>Edge</source>
       <translation>Рабро</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="841"/>
+      <location filename="../../TaskAttacher.cpp" line="850"/>
       <source>Vertex</source>
       <translation>Вяршыня</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="913"/>
+      <location filename="../../TaskAttacher.cpp" line="922"/>
       <source>Reference%1</source>
       <translation>Апора%1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="960"/>
+      <location filename="../../TaskAttacher.cpp" line="969"/>
       <source>Not editable because rotation of AttachmentOffset is bound by expressions.</source>
       <translation>Недаступны для змены, паколькі вярчэнне Зрушэння прымацавання абмежавана выразамі.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1027"/>
+      <location filename="../../TaskAttacher.cpp" line="1036"/>
       <source>Reference combinations:</source>
       <translation>Камбінацыі арыенціраў:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1044"/>
+      <location filename="../../TaskAttacher.cpp" line="1053"/>
       <source>%1 (add %2)</source>
       <translation>%1 (дадаць %2)</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1050"/>
+      <location filename="../../TaskAttacher.cpp" line="1059"/>
       <source>%1 (add more references)</source>
       <translation>%1 (дадаць болей арыенціраў)</translation>
     </message>
@@ -5007,28 +5010,28 @@ of the object being attached.</source>
   <context>
     <name>PartGui::TaskCheckGeometryDialog</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1080"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1079"/>
       <source>Shape Content</source>
       <translation>Змест фігуры</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1088"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="1283"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1087"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1282"/>
       <source>Settings</source>
       <translation>Налады</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1096"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1095"/>
       <source>Default: false</source>
       <translation>Першапачаткова: false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1103"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1102"/>
       <source>Run boolean operation check</source>
       <translation>Запусціць праверку лагічнай аперацыі</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1104"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1103"/>
       <source>Extra boolean operations check that can sometimes find errors that
 the standard BRep geometry check misses. These errors do not always
 mean the checked object is unusable.  Default: false</source>
@@ -5037,46 +5040,46 @@ mean the checked object is unusable.  Default: false</source>
 азначаюць, што правераны аб'ект непрыдатны для ўжывання. Першапачаткова: false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1114"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1113"/>
       <source>Single-threaded</source>
       <translation>Аднапатокавы</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1115"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1114"/>
       <source>Run the geometry check in a single thread.  This is slower,
 but more stable.  Default: false</source>
       <translation>Запусціць праверку геаметрыі ў адным патоку. Праца павольная,
 але больш стабільная. Першапачаткова: false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1124"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1123"/>
       <source>Log errors</source>
       <translation>Часопіс памылак</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1125"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1124"/>
       <source>Log errors to report view.  Default: true</source>
       <translation>Часопіс памылак у праглядзе справаздачы. Першапачаткова: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1132"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1131"/>
       <source>Expand shape content</source>
       <translation>Разгарнуць змест фігуры</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1133"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1132"/>
       <source>Expand shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
       <translation>Разгарнуць змест фігуры. Змены ўступяць у сілу пры наступным ужыванні
 інструмента праверкі геаметрыі. Першапачаткова: false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1142"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1141"/>
       <source>Advanced shape content</source>
       <translation>Пашыраны змест фігуры</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1143"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1142"/>
       <source>Show advanced shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
       <translation>Паказаць пашыраны змест фігуры.
@@ -5084,119 +5087,119 @@ the check geometry tool.  Default: false</source>
 Першапачаткова: false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1151"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1150"/>
       <source>
 Individual boolean operation checks:</source>
       <translation>
 Праверкі асобнай лагічнай аперацыі:</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1154"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1153"/>
       <source>Bad type</source>
       <translation>Няправільны тып</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1162"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1161"/>
       <source>Self-intersect</source>
       <translation>Самаперакрыжаванне</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1170"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1169"/>
       <source>Too small edge</source>
       <translation>Занадта малое рабро</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1178"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1177"/>
       <source>Nonrecoverable face</source>
       <translation>Неадноўленая грань</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1186"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1185"/>
       <source>Continuity</source>
       <translation>Бесперапыннасць</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1194"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1193"/>
       <source>Incompatibility of face</source>
       <translation>Несумяшчальнасць грані</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1202"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1201"/>
       <source>Incompatibility of vertex</source>
       <translation>Несумяшчальная вяршыня</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1210"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1209"/>
       <source>Incompatibility of edge</source>
       <translation>Несумяшчальнасць рабра</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1218"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1217"/>
       <source>Invalid curve on surface</source>
       <translation>Хібная крывая на паверхні</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1155"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1154"/>
       <source>Check for bad argument types.  Default: true</source>
       <translation>Праверыць на няправільныя тыпы аргументаў. Першапачаткова: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1092"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1091"/>
       <source>Skip this settings page</source>
       <translation>Прапусціць налады старонкі</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1094"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1093"/>
       <source>Skip this settings page and run the geometry check automatically</source>
       <translation>Прапусціць налады старонкі, і выканаць праверку геаметрыі аўтаматычна</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1163"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1162"/>
       <source>Check for self-intersections.  Default: true</source>
       <translation>Праверыць на самаперакрыжаванні. Першапачаткова: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1171"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1170"/>
       <source>Check for edges that are too small.  Default: true</source>
       <translation>Праверыць на занадта малыя рэбры. Першапачаткова: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1179"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1178"/>
       <source>Check for nonrecoverable faces.  Default: true</source>
       <translation>Праверыць на неадноўленыя грані. Першапачаткова: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1187"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1186"/>
       <source>Check for continuity.  Default: true</source>
       <translation>Праверыць на бесперапыннасць. Першапачаткова: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1195"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1194"/>
       <source>Check for incompatible faces.  Default: true</source>
       <translation>Праверыць на несумяшчальнасць граняў. Першапачаткова: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1203"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1202"/>
       <source>Check for incompatible vertices.  Default: true</source>
       <translation>Праверыць на несумяшчальнасць вяршынь. Першапачаткова: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1211"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1210"/>
       <source>Check for incompatible edges.  Default: true</source>
       <translation>Праверыць на несумяшчальнасць рэбраў. Першапачаткова: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1219"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1218"/>
       <source>Check for invalid curves on surfaces.  Default: true</source>
       <translation>Праверыць на хібныя крывая на паверхні. Першапачаткова: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1282"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1281"/>
       <source>Run check</source>
       <translation>Запусціць праверку</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1288"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1287"/>
       <source>Results</source>
       <translation>Вынікі</translation>
     </message>
@@ -5204,63 +5207,63 @@ Individual boolean operation checks:</source>
   <context>
     <name>PartGui::TaskCheckGeometryResults</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="376"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="375"/>
       <source>Check Geometry Results</source>
       <translation>Вынікі праверкі геаметрыі</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="399"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="398"/>
       <source>Check is running…</source>
       <translation>Праверка запушчаная…</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="424"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="423"/>
       <source>Boolean operation check…</source>
       <translation>Праверка лагічнай аперацыі…</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="426"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="425"/>
       <source>Check geometry</source>
       <translation>Праверка геаметрыі</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="457"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="456"/>
       <source>Null shape</source>
       <translation>Пустая фігура</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="458"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="469"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="457"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="468"/>
       <source>Skipped</source>
       <translation>Прапушчана</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="468"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="467"/>
       <source>Infinite shape</source>
       <translation>Бясконцая фігура</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="495"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="494"/>
       <source>Invalid</source>
       <translation>Хібны</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="516"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="515"/>
       <source>Checking</source>
       <translation>Праверка</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="535"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="534"/>
       <source>No errors</source>
       <translation>Без памылак</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="546"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="545"/>
       <source>%1 processed out of %2 selected</source>
       <translation>Апрацавана %1 з абраных %2</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../TaskCheckGeometry.cpp" line="547"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="546"/>
       <source>%n invalid shapes.</source>
       <translation>
         <numerusform>%n хібная фігура.</numerusform>
@@ -5270,32 +5273,32 @@ Individual boolean operation checks:</source>
       </translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="548"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="547"/>
       <source>to report view.</source>
       <translation>прагляд справаздачы.</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="669"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="668"/>
       <source>Global minimum</source>
       <translation>Найменшы глабальны</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="674"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="673"/>
       <source>Global average</source>
       <translation>Сярэдні глабальны</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="679"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="678"/>
       <source>Global maximum</source>
       <translation>Найбольшы глабальны</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="647"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="646"/>
       <source>Checked object</source>
       <translation>Правяраемы аб'ект</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="664"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="663"/>
       <source>Tolerance information</source>
       <translation>Інфармацыя па дакладнасці</translation>
     </message>
@@ -5303,12 +5306,12 @@ Individual boolean operation checks:</source>
   <context>
     <name>PartGui::TaskDlgAttacher</name>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1274"/>
+      <location filename="../../TaskAttacher.cpp" line="1283"/>
       <source>Attachment</source>
       <translation>Прымацаваць</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1335"/>
+      <location filename="../../TaskAttacher.cpp" line="1344"/>
       <source>Datum dialog: input error</source>
       <translation>Дыялог пункту адліку: памылка ўводу</translation>
     </message>
@@ -5530,24 +5533,24 @@ in the 3D view for the sweep path.</source>
   <context>
     <name>PartGui::ThicknessWidget</name>
     <message>
-      <location filename="../../TaskThickness.cpp" line="94"/>
-      <location filename="../../TaskThickness.cpp" line="310"/>
-      <location filename="../../TaskThickness.cpp" line="370"/>
+      <location filename="../../TaskThickness.cpp" line="93"/>
+      <location filename="../../TaskThickness.cpp" line="309"/>
+      <location filename="../../TaskThickness.cpp" line="369"/>
       <source>Thickness</source>
       <translation>Таўшчыня</translation>
     </message>
     <message>
-      <location filename="../../TaskThickness.cpp" line="198"/>
+      <location filename="../../TaskThickness.cpp" line="197"/>
       <source>Select faces of the source object and press 'Done'</source>
       <translation>Абярыце грані зыходнага аб'екта і націсніце 'Гатова'</translation>
     </message>
     <message>
-      <location filename="../../TaskThickness.cpp" line="201"/>
+      <location filename="../../TaskThickness.cpp" line="200"/>
       <source>Done</source>
       <translation>Гатова</translation>
     </message>
     <message>
-      <location filename="../../TaskThickness.cpp" line="275"/>
+      <location filename="../../TaskThickness.cpp" line="274"/>
       <source>Input error</source>
       <translation>Памылка ўводу</translation>
     </message>
@@ -5555,92 +5558,92 @@ in the 3D view for the sweep path.</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../../BasicShapes/ViewProviderShapes.py" line="47"/>
-      <location filename="../../../BasicShapes/ViewProviderShapes.py" line="54"/>
-      <location filename="../../ViewProvider.cpp" line="53"/>
+      <location filename="../../../BasicShapes/ViewProviderShapes.py" line="49"/>
+      <location filename="../../../BasicShapes/ViewProviderShapes.py" line="56"/>
       <location filename="../../ViewProviderPrimitive.cpp" line="53"/>
+      <location filename="../../ViewProvider.cpp" line="53"/>
       <source>Edit %1</source>
       <translation>Змяніць %1</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="248"/>
+      <location filename="../../AppPartGui.cpp" line="245"/>
       <source>Part and Part Design workbench</source>
       <translation>Варштаты Дэталь і Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="249"/>
-      <location filename="../../AppPartGui.cpp" line="250"/>
-      <location filename="../../AppPartGui.cpp" line="251"/>
+      <location filename="../../AppPartGui.cpp" line="246"/>
+      <location filename="../../AppPartGui.cpp" line="247"/>
+      <location filename="../../AppPartGui.cpp" line="248"/>
       <source>Part/Part Design</source>
       <translation>Дэталь/Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="252"/>
-      <location filename="../../AppPartGui.cpp" line="253"/>
+      <location filename="../../AppPartGui.cpp" line="249"/>
+      <location filename="../../AppPartGui.cpp" line="250"/>
       <source>Import-Export</source>
       <translation>Імпарт-Экспарт</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="315"/>
-      <location filename="../../Command.cpp" line="374"/>
-      <location filename="../../Command.cpp" line="452"/>
-      <location filename="../../Command.cpp" line="843"/>
-      <location filename="../../Command.cpp" line="899"/>
-      <location filename="../../Command.cpp" line="2033"/>
+      <location filename="../../Command.cpp" line="316"/>
+      <location filename="../../Command.cpp" line="375"/>
+      <location filename="../../Command.cpp" line="453"/>
+      <location filename="../../Command.cpp" line="844"/>
+      <location filename="../../Command.cpp" line="900"/>
+      <location filename="../../Command.cpp" line="2038"/>
       <source>Wrong selection</source>
       <translation>Няправільны выбар</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="326"/>
-      <location filename="../../Command.cpp" line="385"/>
-      <location filename="../../Command.cpp" line="463"/>
-      <source>Non-solids selected</source>
-      <translation>Абраны несуцэльныя целы</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="316"/>
-      <location filename="../../Command.cpp" line="900"/>
-      <source>Select 2 shapes</source>
-      <translation>Абраць дзве фігуры</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="327"/>
       <location filename="../../Command.cpp" line="386"/>
       <location filename="../../Command.cpp" line="464"/>
+      <source>Non-solids selected</source>
+      <translation>Абраны несуцэльныя целы</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="317"/>
+      <location filename="../../Command.cpp" line="901"/>
+      <source>Select 2 shapes</source>
+      <translation>Абраць дзве фігуры</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="328"/>
+      <location filename="../../Command.cpp" line="387"/>
+      <location filename="../../Command.cpp" line="465"/>
       <source>The use of non-solids for boolean operations may lead to unexpected results.
 Continue?</source>
       <translation>Выкарыстанне несуцэльных цел для лагічных аперацый можа прывесці да нечаканых вынікаў.
 Ці працягнуць?</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="375"/>
+      <location filename="../../Command.cpp" line="376"/>
       <source>Select at least 2 shapes. Alternatively, select 1 compound containing 2 or more shapes to compute the intersection between.</source>
       <translation>Абярыце як мінімум дзве фігуры.
 Альбо абярыце адно злучэнне, якое змяшчае дзве ці болей фігуры, каб вылічыць скрыжаванне паміж імі.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="453"/>
+      <location filename="../../Command.cpp" line="454"/>
       <source>Select at least 2 shapes. Alternatively, select 1 compound containing 2 or more shapes to be fused.</source>
       <translation>Абярыце як мінімум дзве фігуры.
 Альбо абярыце адно злучэнне, якое змяшчае дзве ці болей фігуры, якія неабходна аб'яднаць.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="844"/>
+      <location filename="../../Command.cpp" line="845"/>
       <source>Select at least one shape</source>
       <translation>Абраць хаця б адзін аб'ект</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1060"/>
+      <location filename="../../Command.cpp" line="1061"/>
       <source>All CAD Files</source>
       <translation>Усе файлы CAD</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1065"/>
+      <location filename="../../Command.cpp" line="1066"/>
       <source>All Files</source>
       <translation>Усе файлы</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2034"/>
+      <location filename="../../Command.cpp" line="2039"/>
       <source>Select either 2 edges or 2 wires.</source>
       <translation>Абярыце альбо два рабра, альбо дзве ломаныя лініі.</translation>
     </message>
@@ -5651,322 +5654,322 @@ Continue?</source>
       <translation>Без абраных спасылак</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="82"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <source>Face</source>
       <translation>Грань</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <source>Edge</source>
       <translation>Рабро</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="85"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <source>Vertex</source>
       <translation>Вяршыня</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="78"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="77"/>
       <source>Compound</source>
       <translation>Злучэнне</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="79"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="78"/>
       <source>Compound solid</source>
       <translation>Злучанае суцэльнае цела</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="80"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="79"/>
       <source>Solid</source>
       <translation>Суцэльны</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="80"/>
       <source>Shell</source>
       <translation>Абалонка</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="82"/>
       <source>Wire</source>
       <translation>Ломаная</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="86"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="85"/>
       <source>Shape</source>
       <translation>Фігура</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="101"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="100"/>
       <source>No error</source>
       <translation>Без памылак</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="102"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="101"/>
       <source>Invalid point on curve</source>
       <translation>Хібная кропка на крывой</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="103"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="102"/>
       <source>Invalid point on curve on surface</source>
       <translation>Хібная кропка на крывой паверхні</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="104"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="103"/>
       <source>Invalid point on surface</source>
       <translation>Хібная кропка на паверхні</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="105"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="104"/>
       <source>No 3D curve</source>
       <translation>Без трохмернай крывой</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="106"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="105"/>
       <source>Multiple 3D curves</source>
       <translation>Множная трохмерная крывая</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="107"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="106"/>
       <source>Invalid 3D curve</source>
       <translation>Хібная трохмерная крывая</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="108"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="107"/>
       <source>No curve on surface</source>
       <translation>Без крывой на паверхні</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="109"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="108"/>
       <source>Invalid curve on surface</source>
       <translation>Хібная крывая на паверхні</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="110"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="109"/>
       <source>Invalid curve on closed surface</source>
       <translation>Хібная крывая на замкнутай паверхні</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="111"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="110"/>
       <source>Invalid same range flag</source>
       <translation>Хібны дыяпазон разметкі</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="112"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="111"/>
       <source>Invalid same parameter flag</source>
       <translation>Хібная налада разметкі</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="113"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="112"/>
       <source>Invalid degenerated flag</source>
       <translation>Хібнае памяншэнне разметкі</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="114"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="113"/>
       <source>Free edge</source>
       <translation>Свабоднае рабро</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="115"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="114"/>
       <source>Invalid multi-connexity</source>
       <translation>Хібная шматсувязь</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="116"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="115"/>
       <source>Invalid range</source>
       <translation>Хібны дыяпазон</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="117"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="116"/>
       <source>Empty wire</source>
       <translation>Пустая ломаная лінія</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="118"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="117"/>
       <source>Redundant edge</source>
       <translation>Залішняе рабро</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="119"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="118"/>
       <source>Self-intersecting wire</source>
       <translation>Самаперасякальная ломаная лінія</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="120"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="119"/>
       <source>No surface</source>
       <translation>Без паверхні</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="121"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="120"/>
       <source>Invalid wire</source>
       <translation>Хібная ломаная лінія</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="122"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="121"/>
       <source>Redundant wire</source>
       <translation>Залішняя ломаная лінія</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="123"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="122"/>
       <source>Intersecting wires</source>
       <translation>Перасякальная ломаная лінія</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="124"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="123"/>
       <source>Invalid imbrication of wires</source>
       <translation>Хібнае перакрыццё ломаных ліній</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="125"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="124"/>
       <source>Empty shell</source>
       <translation>Пустая абалонка</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="126"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="125"/>
       <source>Redundant face</source>
       <translation>Залішняя грань</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="127"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="126"/>
       <source>Unorientable shape</source>
       <translation>Неарыентаваная фігура</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="128"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="127"/>
       <source>Not closed</source>
       <translation>Не замкнутая</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="129"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="128"/>
       <source>Not connected</source>
       <translation>Не злучана</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="130"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="129"/>
       <source>Sub-shape not in shape</source>
       <translation>Укладзеная фігура не знаходзіцца ў фігуры</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="131"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="130"/>
       <source>Bad orientation</source>
       <translation>Дрэнная арыентацыя</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="132"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="131"/>
       <source>Bad orientation of sub-shape</source>
       <translation>Дрэнная арыентацыя ўкладзенай фігуры</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="133"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="132"/>
       <source>Invalid tolerance value</source>
       <translation>Хібнае значэнне дакладнасці</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="134"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="133"/>
       <source>Check failed</source>
       <translation>Праверка не пройдзеная</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="144"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="143"/>
       <source>No result</source>
       <translation>Без выніку</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="148"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="147"/>
       <source>Out of enum range:</source>
       <translation>Па-за дыяпазонам пералічэння:</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="160"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="159"/>
       <source>Boolean operation: unknown check</source>
       <translation>Лагічная аперацыя: невядомая праверка</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="161"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="160"/>
       <source>Boolean operation: bad type</source>
       <translation>Лагічная аперацыя: няправільны тып</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="162"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="161"/>
       <source>Boolean operation: self-intersection found</source>
       <translation>Лагічная аперацыя: знойдзена самаперакрыжаванне</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="163"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="162"/>
       <source>Boolean operation: edge too small</source>
       <translation>Лагічная аперацыя: рабро занадта малое</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="164"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="163"/>
       <source>Boolean operation: non-recoverable face</source>
       <translation>Лагічная аперацыя: неадноўленая грань</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="165"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="164"/>
       <source>Boolean operation: incompatibility of vertex</source>
       <translation>Лагічная аперацыя: несумяшчальная вяршыня</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="166"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="165"/>
       <source>Boolean operation: incompatibility of edge</source>
       <translation>Лагічная аперацыя: несумяшчальнае рабро</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="167"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="166"/>
       <source>Boolean operation: incompatibility of face</source>
       <translation>Лагічная аперацыя: несумяшчальная грань</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="168"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="167"/>
       <source>Boolean operation: aborted</source>
       <translation>Лагічная аперацыя: перапыненая</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="170"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="169"/>
       <source>Boolean operation: invalid curve on surface</source>
       <translation>Лагічная аперацыя: хібная крывая на паверхні</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="171"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="170"/>
       <source>Boolean operation: not valid</source>
       <translation>Лагічная аперацыя: недапушчальная</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="169"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="168"/>
       <source>Boolean operation: GeomAbs_C0</source>
       <translation>Лагічная аперацыя: GeomAbs_C0</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="771"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="770"/>
       <source>Invalid</source>
       <translation>Хібны</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="84"/>
+      <location filename="../../ViewProviderMirror.cpp" line="82"/>
       <source>Edit Mirror Plane</source>
       <translation>Змяніць плоскасць сіметрыі</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="294"/>
+      <location filename="../../ViewProviderMirror.cpp" line="292"/>
       <source>Edit Fillet</source>
       <translation>Змяніць акругленне</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="404"/>
+      <location filename="../../ViewProviderMirror.cpp" line="402"/>
       <source>Edit Chamfer</source>
       <translation>Змяніць фаску</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="540"/>
+      <location filename="../../ViewProviderMirror.cpp" line="538"/>
       <source>Edit offset</source>
       <translation>Змяніць зрушэнне</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="622"/>
+      <location filename="../../ViewProviderMirror.cpp" line="620"/>
       <source>Edit thickness</source>
       <translation>Змяніць таўшчыню</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/CommandShapes.py" line="52"/>
+      <location filename="../../../BasicShapes/CommandShapes.py" line="54"/>
       <source>Create tube</source>
       <translation>Стварыць трубу</translation>
     </message>
@@ -5981,7 +5984,7 @@ Continue?</source>
       <translation>Увядзіце адлегласць:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAttachExtension.cpp" line="101"/>
+      <location filename="../../ViewProviderAttachExtension.cpp" line="99"/>
       <source>Attachment Editor</source>
       <translation>Сродак праўкі прымацавання</translation>
     </message>
@@ -5991,83 +5994,141 @@ Continue?</source>
       <translation>Знешні выгляд для кожнай грані</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderProjectOnSurface.cpp" line="54"/>
+      <location filename="../../ViewProviderProjectOnSurface.cpp" line="52"/>
       <source>Edit Projection</source>
       <translation>Змяніць праекцыю</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpline.cpp" line="94"/>
+      <location filename="../../ViewProviderSpline.cpp" line="93"/>
       <source>Show Control Points</source>
       <translation>Паказаць кантрольныя кропкі</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderBoolean.cpp" line="68"/>
+      <source>Delete %1 content?</source>
+      <translation>Ці выдаліць змест %1?</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderBoolean.cpp" line="69"/>
+      <source>The %1 '%2' has %3. Do you want to delete them as well?</source>
+      <translation>У %1 '%2' ёсць %3.
+Ці выдаліць іх?</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderBoolean.cpp" line="222"/>
+      <source>base and tool objects</source>
+      <translation>асноўныя і інструментальныя аб'екты</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderBoolean.cpp" line="224"/>
+      <source>base object</source>
+      <translation>асноўны аб'ект</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderBoolean.cpp" line="226"/>
+      <source>tool object</source>
+      <translation>аб'ект інструменту</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderBoolean.cpp" line="230"/>
+      <source>Boolean operation</source>
+      <translation>Лагічная аперацыя</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderBoolean.cpp" line="318"/>
+      <location filename="../../ViewProviderBoolean.cpp" line="454"/>
+      <source>%1 input objects</source>
+      <translation>Увясці аб'ект %1</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderBoolean.cpp" line="321"/>
+      <source>Fusion</source>
+      <translation>Зліццё</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderBoolean.cpp" line="457"/>
+      <source>Intersection</source>
+      <translation>Перасячэнне</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderCompound.cpp" line="75"/>
+      <source>Delete compound content?</source>
+      <translation>Ці выдаліць змест злучэння?</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderCompound.cpp" line="76"/>
+      <source>The compound '%1' has %2 child objects. Do you want to delete them as well?</source>
+      <translation>У злучэнні '%1' ёсць даччыныя аб'екты '%2'.
+Ці выдаліць іх?</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="34"/>
+      <location filename="../../Workbench.cpp" line="35"/>
       <source>&amp;Part</source>
       <translation>&amp;Дэталь</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="35"/>
+      <location filename="../../Workbench.cpp" line="36"/>
       <source>&amp;Simple</source>
       <translation>&amp;Простая</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="36"/>
+      <location filename="../../Workbench.cpp" line="37"/>
       <source>&amp;Parametric</source>
       <translation>&amp;Параметрычная</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="37"/>
+      <location filename="../../Workbench.cpp" line="38"/>
       <source>Solids</source>
       <translation>Суцэльная целы</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="38"/>
+      <location filename="../../Workbench.cpp" line="39"/>
       <source>Part Tools</source>
       <translation>Інструменты дэталі</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="39"/>
+      <location filename="../../Workbench.cpp" line="40"/>
       <source>Boolean Tools</source>
       <translation>Лагічныя інструменты</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="40"/>
+      <location filename="../../Workbench.cpp" line="41"/>
       <source>Primitives</source>
       <translation>Першасныя целы</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="41"/>
+      <location filename="../../Workbench.cpp" line="42"/>
       <source>Join</source>
       <translation>Аб'яднаць</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="42"/>
+      <location filename="../../Workbench.cpp" line="43"/>
       <source>Split</source>
       <translation>Падзяліць</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="43"/>
+      <location filename="../../Workbench.cpp" line="44"/>
       <source>Compound</source>
       <translation>Злучэнне</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="44"/>
-      <source>Create a copy</source>
-      <translation>Стварыць копію</translation>
+      <location filename="../../Workbench.cpp" line="45"/>
+      <source>Copy</source>
+      <translation>Скапіраваць</translation>
     </message>
   </context>
   <context>
     <name>Part_Tube</name>
     <message>
-      <location filename="../../../BasicShapes/CommandShapes.py" line="44"/>
+      <location filename="../../../BasicShapes/CommandShapes.py" line="46"/>
       <source>Tube</source>
       <translation>Труба</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/CommandShapes.py" line="50"/>
+      <location filename="../../../BasicShapes/CommandShapes.py" line="52"/>
       <source>Creates a tube</source>
       <translation>Стварыць трубу</translation>
     </message>
@@ -6075,40 +6136,40 @@ Continue?</source>
   <context>
     <name>Part_JoinFeatures</name>
     <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="78"/>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="80"/>
       <source>Computing the result failed with an error:</source>
       <translation>Вылічэнне выніку завяршылася памылкай:</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="79"/>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="81"/>
       <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
       <translation>Націсніце 'Працягнуць', каб стварыць функцыю ў любым выпадку, або 'Спыніць', каб адмяніць.</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="80"/>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="199"/>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="295"/>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="389"/>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="82"/>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="201"/>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="297"/>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="391"/>
       <source>Bad Selection</source>
       <translation>Дрэнны выбар</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="82"/>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="84"/>
       <source>Continue</source>
       <translation>Працягнуць</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="198"/>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="200"/>
       <source>Select at least two objects, or one or more compounds</source>
       <translation>Абярыце па меншай меры два аб'екты, альбо адно ці некалькі злучэнняў</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="294"/>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="296"/>
       <source>Select base object, then the object to embed, and then invoke this tool.</source>
       <translation>Абярыце асноўны аб'ект, далей аб'ект для ўбудавання, а потым запусціце гэты інструмент.</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="388"/>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="390"/>
       <source>Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</source>
       <translation>Абярыце аб'ект, у якім трэба зрабіць выраз, потым аб'ект, які павінен упісацца ў выраз, а затым запусціце гэты інструмент.</translation>
     </message>
@@ -6116,47 +6177,47 @@ Continue?</source>
   <context>
     <name>Part_SplitFeatures</name>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="155"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="294"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="485"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="157"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="296"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="487"/>
       <source>Computing the result failed with an error:</source>
       <translation>Вылічэнне выніку завяршылася памылкай:</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="156"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="295"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="486"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="158"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="297"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="488"/>
       <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
       <translation>Націсніце 'Працягнуць', каб стварыць функцыю ў любым выпадку, або 'Спыніць', каб адмяніць.</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="157"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="195"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="296"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="348"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="378"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="487"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="527"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="159"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="197"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="298"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="350"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="380"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="489"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="529"/>
       <source>Bad Selection</source>
       <translation>Дрэнны выбар</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="159"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="298"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="489"/>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="114"/>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="116"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="161"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="300"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="491"/>
       <source>Continue</source>
       <translation>Працягнуць</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="194"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="526"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="196"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="528"/>
       <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
       <translation>Абярыце па меншай меры два аб'екты, альбо адно ці некалькі злучэнняў. Калі абрана толькі адное злучэнне, складовыя фігуры будуць перасякацца адзін з адным (у адваротным выпадку злучэнні з самаперакрыжаванямі хібныя).</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="347"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="377"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="379"/>
       <source>Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</source>
       <translation>Абярыце па меншай меры два аб'екты. Першы з іх - аб'ект, які наразаецца; астатнія - аб'екты, з дапамогай якіх можна нарэзаць.</translation>
     </message>
@@ -6164,17 +6225,17 @@ Continue?</source>
   <context>
     <name>Part_CompoundFilter</name>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="51"/>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="53"/>
       <source>Compound Filter</source>
       <translation>Фільтр злучаных фігур</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="70"/>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="72"/>
       <source>First select a shape that is a compound. If a second object is selected (optional) it will be treated as a stencil.</source>
       <translation>Спачатку абярыце фігуру, якая з'яўляецца злучэннем. Калі абраны другі аб'ект (неабавязкова), ён будзе разглядацца як трафарэт.</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="61"/>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="63"/>
       <source>Filters out objects from the selected compound by characteristics like volume,
 area, or length, or by choosing specific items.
 If a second object is selected, it will be used as reference, for example,
@@ -6183,18 +6244,18 @@ for collision or distance filtering.</source>
 Калі абраны другі аб'ект, ён будзе ўжыты ў якасці эталону, напрыклад, для фільтрацыі сутыкненняў ці адлегласцяў.</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="71"/>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="112"/>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="73"/>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="114"/>
       <source>Bad Selection</source>
       <translation>Дрэнны выбар</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="110"/>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="112"/>
       <source>Computing the result failed with an error:</source>
       <translation>Вылічэнне выніку завяршылася памылкай:</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="111"/>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="113"/>
       <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
       <translation>Націсніце 'Працягнуць', каб стварыць функцыю ў любым выпадку, або 'Спыніць', каб адмяніць.</translation>
     </message>
@@ -6202,22 +6263,22 @@ for collision or distance filtering.</source>
   <context>
     <name>Part_ExplodeCompound</name>
     <message>
-      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="50"/>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="52"/>
       <source>Explode Compound</source>
       <translation>Разбіць злучэнне</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="55"/>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="57"/>
       <source>Splits up a compound of shapes into separate objects, creating a compound filter for each shape</source>
       <translation>Падзяляе злучэнне фігур на асобныя аб'екты, стварае фільтр злучаных фігур для кожнай фігуры</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="61"/>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="63"/>
       <source>First select a shape that is a compound.</source>
       <translation>Спачатку абярыце фігуру, якая з'яўляецца злучэннем.</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="62"/>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="64"/>
       <source>Bad Selection</source>
       <translation>Дрэнны выбар</translation>
     </message>
@@ -6225,105 +6286,105 @@ for collision or distance filtering.</source>
   <context>
     <name>AttachmentEditor</name>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="87"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="89"/>
       <source>No object named {}</source>
       <translation>Адсутнічае аб'ект з назвай {}</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="91"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="93"/>
       <source>Failed to parse link (more than one colon encountered)</source>
       <translation>Не атрымалася апрацаваць сувязь(сустракаецца больш, чым адно двукроп'е)</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="204"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="206"/>
       <source>Object {} is neither movable nor attachable, can't edit attachment</source>
       <translation>Аб'ект {} не з'яўляецца ні рухомым, ні прымацаваным, нельга мяняць мацаванне</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="214"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="216"/>
       <source>{} is not attachable. The attachment editor can still be used to align the object, but the attachment will not be parametric.</source>
       <translation>{} не прымацаваны
 Сродак праўкі мацавання ўсё яшчэ можна ўжываць для выраўноўвання аб'екту, але мацаванне не будзе параметрычным.</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="215"/>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="228"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="217"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="230"/>
       <source>Attachment</source>
       <translation>Прымацаваць</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="217"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="219"/>
       <source>Continue</source>
       <translation>Працягнуць</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="272"/>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="317"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="274"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="319"/>
       <source>Edit attachment of {}</source>
       <translation>Змяніць мацаванне {}</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="362"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="364"/>
       <source>Ignored. Can't attach object to itself!</source>
       <translation>Прапушчана. Не атрымалася прымацаваць аб'ект да самога сябе!</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="365"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="367"/>
       <source>{} depends on object being attached, can't use it for attachment</source>
       <translation>{} залежыць ад прымацаванага аб'екту, нельга ўжываць яго для мацавання</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="504"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="506"/>
       <source>{} (add {})</source>
       <translation>{} (дадаць {})</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="506"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="508"/>
       <source>{} (add more references)</source>
       <translation>{} (дадаць болей арыенціраў)</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="536"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="538"/>
       <source>Reference combinations:</source>
       <translation>Камбінацыі арыенціраў:</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="552"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="554"/>
       <source>Reference{}</source>
       <translation>Адносіны{}</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="557"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="559"/>
       <source>Selecting…</source>
       <translation>Выбар…</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="581"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="583"/>
       <source>Failed to resolve links. {}</source>
       <translation>Не атрымалася дазволіць сувязі. {}</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="589"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="591"/>
       <source>Not attached</source>
       <translation>Не прымацаваны</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="592"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="594"/>
       <source>Attached with mode {}</source>
       <translation>Прымацаваны ў рэжыме {}</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="598"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="600"/>
       <source>Error: {}</source>
       <translation>Памылка: {}</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="601"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="603"/>
       <source>Attachment Offset (in local coordinates):</source>
       <translation>Зрушэнне прымацавання (у лакальных каардынатах):</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="604"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="606"/>
       <source>Attachment Offset (inactive - not attached):</source>
       <translation>Зрушэнне прымацавання (неактыўны - не прымацаваны):</translation>
     </message>
@@ -6331,117 +6392,117 @@ for collision or distance filtering.</source>
   <context>
     <name>TaskCheckGeometryResults</name>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="31"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="32"/>
       <source>Shape type</source>
       <translation>Тып фігуры</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="35"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="36"/>
       <source>Vertices</source>
       <translation>Вяршыні</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="41"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="42"/>
       <source>Edges</source>
       <translation>Рэбры</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="47"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="48"/>
       <source>Wires</source>
       <translation>Ломаныя лініі</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="53"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="54"/>
       <source>Faces</source>
       <translation>Грані</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="59"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="60"/>
       <source>Shells</source>
       <translation>Абалонкі</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="65"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="66"/>
       <source>Solids</source>
       <translation>Суцэльная целы</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="71"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="72"/>
       <source>CompSolids</source>
       <translation>Злучаныя суцэльныя целы</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="77"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="78"/>
       <source>Compounds</source>
       <translation>Злучэнні</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="83"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="84"/>
       <source>Shapes</source>
       <translation>Фігуры</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="108"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="109"/>
       <source>Area</source>
       <translation>Плошча</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="121"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="122"/>
       <source>Volume</source>
       <translation>Аб'ём</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="128"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="129"/>
       <source>Mass</source>
       <translation>Маса</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="135"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="136"/>
       <source>Length</source>
       <translation>Даўжыня</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="142"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="143"/>
       <source>Radius</source>
       <translation>Радыус</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="149"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="150"/>
       <source>Curve center</source>
       <translation>Цэнтр крывой</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="156"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="157"/>
       <source>Continuity</source>
       <translation>Бесперапыннасць</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="163"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="164"/>
       <source>Center of mass</source>
       <translation>Цэнтр масы</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="186"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="187"/>
       <source>Is closed</source>
       <translation>Замкнуты</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="193"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="194"/>
       <source>Orientation</source>
       <translation>Арыентацыя</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="211"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="212"/>
       <source>Global center of mass</source>
       <translation>Глабальны цэнтр масы</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="229"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="230"/>
       <source>Global placement</source>
       <translation>Глабальнае размяшчэнне</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="231"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="232"/>
       <source>Placement</source>
       <translation>Размясціць</translation>
     </message>
@@ -6449,12 +6510,12 @@ for collision or distance filtering.</source>
   <context>
     <name>Part_XOR</name>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="510"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="512"/>
       <source>Boolean XOR</source>
       <translation>Лагічная аперацыя XOR</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="517"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="519"/>
       <source>Performs an 'exclusive OR' boolean operation with two or more selected objects,
 or with the shapes inside a compound.
 Overlapping volumes of the shapes will be removed.</source>
@@ -6541,17 +6602,17 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>CmdPartScale</name>
     <message>
-      <location filename="../../Command.cpp" line="1294"/>
+      <location filename="../../Command.cpp" line="1295"/>
       <source>Part</source>
       <translation>Дэталь</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1295"/>
+      <location filename="../../Command.cpp" line="1296"/>
       <source>Scale</source>
       <translation>Маштаб</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1296"/>
+      <location filename="../../Command.cpp" line="1297"/>
       <source>Scales the selected shape</source>
       <translation>Маштабуе абраную фігуру</translation>
     </message>
@@ -6581,12 +6642,12 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>Part::FaceMakerBullseye</name>
     <message>
-      <location filename="../../../App/FaceMakerBullseye.cpp" line="62"/>
+      <location filename="../../../App/FaceMakerBullseye.cpp" line="61"/>
       <source>Bull's-eye facemaker</source>
       <translation>Майстар усенакіраваных граняў (Мішэнь яблычак)</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMakerBullseye.cpp" line="67"/>
+      <location filename="../../../App/FaceMakerBullseye.cpp" line="66"/>
       <source>Supports making planar faces with holes with islands in them</source>
       <translation>Падтрымлівае стварэнне плоскіх граняў з адтулінамі, якія могуць утрымліваць астраўкі ў іх</translation>
     </message>
@@ -6607,12 +6668,12 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>Part::FaceMakerExtrusion</name>
     <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="395"/>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="397"/>
       <source>Part Extrude facemaker</source>
       <translation>Майстар граняў выдушвання дэталяў</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="400"/>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="402"/>
       <source>Supports making faces with holes, does not support nesting.</source>
       <translation>Падтрымлівае стварэнне граняў з адтулінамі, укладзеннасць не падтрымліваецца.</translation>
     </message>
@@ -6668,22 +6729,22 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>Part_ToleranceFeatures</name>
     <message>
-      <location filename="../../../BOPTools/ToleranceFeatures.py" line="70"/>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="72"/>
       <source>Computing the result failed with an error:</source>
       <translation>Вылічэнне выніку завяршылася памылкай:</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/ToleranceFeatures.py" line="71"/>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="73"/>
       <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
       <translation>Націсніце 'Працягнуць', каб стварыць функцыю ў любым выпадку, або 'Спыніць', каб адмяніць.</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/ToleranceFeatures.py" line="72"/>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="74"/>
       <source>Bad Selection</source>
       <translation>Дрэнны выбар</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/ToleranceFeatures.py" line="74"/>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="76"/>
       <source>Continue</source>
       <translation>Працягнуць</translation>
     </message>
@@ -6691,22 +6752,22 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>Part_ToleranceSet</name>
     <message>
-      <location filename="../../../BOPTools/ToleranceFeatures.py" line="192"/>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="194"/>
       <source>Set Tolerance</source>
       <translation>Задаць дакладнасць</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/ToleranceFeatures.py" line="197"/>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="199"/>
       <source>Creates a parametric copy of the selected object with all contained tolerances set to at least a certain minimum value</source>
       <translation>Стварае параметрычную копію абранага аб'екта з усімі наборамі дакладнасцямі, якія змяшчаюцца, усталяванымі на пэўнае найменшае значэнне</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/ToleranceFeatures.py" line="205"/>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="207"/>
       <source>Bad Selection</source>
       <translation>Дрэнны выбар</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/ToleranceFeatures.py" line="204"/>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="206"/>
       <source>Select at least one object or compounds</source>
       <translation>Абраць хаця б адзін аб'ект ці злучэнне</translation>
     </message>
@@ -6714,17 +6775,17 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>CmdPartCoordinateSystem</name>
     <message>
-      <location filename="../../Command.cpp" line="2254"/>
+      <location filename="../../Command.cpp" line="2259"/>
       <source>Part</source>
       <translation>Дэталь</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2255"/>
+      <location filename="../../Command.cpp" line="2260"/>
       <source>Coordinate System</source>
       <translation>Сістэма каардынат</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2256"/>
+      <location filename="../../Command.cpp" line="2261"/>
       <source>Creates a coordinate system that can be attached to other objects</source>
       <translation>Стварае сістэму каардынат, якая можа быць прымацаваная да іншых аб'ектаў</translation>
     </message>
@@ -6732,17 +6793,17 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>CmdPartDatums</name>
     <message>
-      <location filename="../../Command.cpp" line="2389"/>
+      <location filename="../../Command.cpp" line="2394"/>
       <source>Part</source>
       <translation>Дэталь</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2390"/>
+      <location filename="../../Command.cpp" line="2395"/>
       <source>Datums</source>
       <translation>З велічынёй</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2391"/>
+      <location filename="../../Command.cpp" line="2396"/>
       <source>Creates a datum object (coordinate system, plane, line, or point) that can be attached to other objects</source>
       <translation>Стварае аб'ект велічыні (сістэма каардынат, плоскасць, лінія, кропка), які можа быць прымацаваны да іншых аб'ектаў</translation>
     </message>
@@ -6750,7 +6811,7 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/Geometry.cpp" line="6435"/>
+      <location filename="../../../App/Geometry.cpp" line="6456"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Немагчыма разлічыць скрыжаванне крывых.
 Паспрабуйце дадаць абмежаванні супадзенняў паміж вяршынямі крывых, якія вы збіраецеся акругліць.</translation>
@@ -6759,17 +6820,17 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>CmdPartDatumPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="2288"/>
+      <location filename="../../Command.cpp" line="2293"/>
       <source>Part</source>
       <translation>Дэталь</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2289"/>
+      <location filename="../../Command.cpp" line="2294"/>
       <source>Datum Plane</source>
       <translation>Апорная плоскаць</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2290"/>
+      <location filename="../../Command.cpp" line="2295"/>
       <source>Creates a datum plane that can be attached to other objects</source>
       <translation>Стварае апорную плоскасць, якая можа быць прымацаваная да іншых аб'ектаў</translation>
     </message>
@@ -6777,17 +6838,17 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>CmdPartDatumLine</name>
     <message>
-      <location filename="../../Command.cpp" line="2321"/>
+      <location filename="../../Command.cpp" line="2326"/>
       <source>Part</source>
       <translation>Дэталь</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2322"/>
+      <location filename="../../Command.cpp" line="2327"/>
       <source>Datum Line</source>
       <translation>Апорная лінія</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2323"/>
+      <location filename="../../Command.cpp" line="2328"/>
       <source>Creates a datum line that can be attached to other objects</source>
       <translation>Стварае апорную лінію, якая можа быць прымацаваная да іншых аб'ектаў</translation>
     </message>
@@ -6795,17 +6856,17 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>CmdPartDatumPoint</name>
     <message>
-      <location filename="../../Command.cpp" line="2354"/>
+      <location filename="../../Command.cpp" line="2359"/>
       <source>Part</source>
       <translation>Дэталь</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2355"/>
+      <location filename="../../Command.cpp" line="2360"/>
       <source>Datum Point</source>
       <translation>Апорная кропка</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2356"/>
+      <location filename="../../Command.cpp" line="2361"/>
       <source>Creates a datum point that can be attached to other objects</source>
       <translation>Стварае апорную кропку, якая можа быць прымацаваная да іншых аб'ектаў</translation>
     </message>
@@ -6813,12 +6874,12 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>Part_EditAttachment</name>
     <message>
-      <location filename="../../../AttachmentEditor/Commands.py" line="79"/>
+      <location filename="../../../AttachmentEditor/Commands.py" line="81"/>
       <source>Attachment</source>
       <translation>Прымацаваць</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/Commands.py" line="83"/>
+      <location filename="../../../AttachmentEditor/Commands.py" line="85"/>
       <source>Opens the attachment editor to change the attachment of the selected object</source>
       <translation>Адчыняе сродак праўкі мацавання для праўкі мацавання абранага аб'екту</translation>
     </message>
@@ -6826,12 +6887,12 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>Part_JoinConnect</name>
     <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="186"/>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="188"/>
       <source>Connect Shapes</source>
       <translation>Злучаныя фігуры</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="191"/>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="193"/>
       <source>Fuses shapes, taking care to preserve voids</source>
       <translation>Злучае фігуры, клапочучыся пра захаванне пустэч</translation>
     </message>
@@ -6839,12 +6900,12 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>Part_JoinEmbed</name>
     <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="282"/>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="284"/>
       <source>Embed Shapes</source>
       <translation>Убудаваныя фігуры</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="287"/>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="289"/>
       <source>Fuses one shape into another, taking care to preserve voids</source>
       <translation>Злучае адну фігуру ў іншай, клапочучыся пра захаванне пустэч</translation>
     </message>
@@ -6852,12 +6913,12 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>Part_JoinCutout</name>
     <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="376"/>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="378"/>
       <source>Cutout Shape</source>
       <translation>Адрэзаць фігуру</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="381"/>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="383"/>
       <source>Creates a cutout in the selected shape to fit another shape</source>
       <translation>Стварае выраз у абранай фігуры, які адпаведны іншай фігуры</translation>
     </message>
@@ -6865,12 +6926,12 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>Part_BooleanFragments</name>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="180"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="182"/>
       <source>Boolean Fragments</source>
       <translation>Фрагменты лагічнай аперацыі</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="185"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="187"/>
       <source>Creates a boolean union which is sliced at the intersections of the selected shapes</source>
       <translation>Стварае лагічнае аб'яднанне, якое разразаецца на скрыжаванні абраных фігур</translation>
     </message>
@@ -6878,12 +6939,12 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>Part_Slice</name>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="333"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="335"/>
       <source>Slice to Compound</source>
       <translation>Разрэзаць на злучэнне</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="338"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="340"/>
       <source>Slices the selected object by using other objects as cutting tools and storing the results in one compound</source>
       <translation>Разразае абраны аб'ект, ужываючы іншыя аб'екты ў якасці інструментаў абрэзкі, і захоўвае вынікі ў адным злучэнні</translation>
     </message>
@@ -6891,12 +6952,12 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>Part_SliceApart</name>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="363"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="365"/>
       <source>Slice Apart</source>
       <translation>Разрэзаць на часткі</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="368"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="370"/>
       <source>Slices the selected object by other objects, and splits it apart, creating a compound filter for each slide</source>
       <translation>Нарэзае абраны аб'ект іншымі аб'ектамі, і падзяляе яго на часткі, стварае фільтр злучаных фігур для кожнага разрэзу</translation>
     </message>
@@ -6975,12 +7036,12 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>Part::FaceMakerRing</name>
     <message>
-      <location filename="../../../App/FaceMakerBullseye.cpp" line="369"/>
+      <location filename="../../../App/FaceMakerBullseye.cpp" line="368"/>
       <source>Ring facemaker</source>
       <translation>Кальцавы майстар граняў</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMakerBullseye.cpp" line="374"/>
+      <location filename="../../../App/FaceMakerBullseye.cpp" line="373"/>
       <source>Supports making planar faces with holes and holes as faces</source>
       <translation>Падтрымлівае стварэнне плоскіх граняў з адтулінамі, і адтулінамі ў якасці граняў</translation>
     </message>
@@ -6988,12 +7049,12 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>CmdPartSectionCut</name>
     <message>
-      <location filename="../../Command.cpp" line="2197"/>
+      <location filename="../../Command.cpp" line="2202"/>
       <source>Persiste&amp;nt Section Cut</source>
       <translation>&amp;Сталы разрэз перасеку</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2198"/>
+      <location filename="../../Command.cpp" line="2203"/>
       <source>Creates a new object as a boolean intersection of all visible shapes and the selected axis planes</source>
       <translation>Стварае новы аб'ект у выглядзе лагічнага перасячэння ўсіх бачных фігур і абраных плоскасцяў восі</translation>
     </message>
@@ -7083,58 +7144,63 @@ Overlapping volumes of the shapes will be removed.</source>
     <name>PartGui::PatternParametersWidget</name>
     <message>
       <location filename="../../PatternParametersWidget.ui" line="29"/>
+      <source>Direction 2</source>
+      <translation>Напрамак 2</translation>
+    </message>
+    <message>
+      <location filename="../../PatternParametersWidget.ui" line="36"/>
       <source>Direction</source>
       <translation>Напрамак</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.ui" line="43"/>
+      <location filename="../../PatternParametersWidget.ui" line="50"/>
       <source>Reverse the direction of the pattern.</source>
       <translation>Змяніць напрамак шаблону на супрацьлеглае.</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.ui" line="61"/>
+      <location filename="../../PatternParametersWidget.ui" line="68"/>
       <source>Mode</source>
       <translation>Рэжым</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.ui" line="69"/>
+      <location filename="../../PatternParametersWidget.ui" line="76"/>
       <source>Extent</source>
       <translation>Ступень</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.ui" line="74"/>
-      <location filename="../../PatternParametersWidget.ui" line="96"/>
+      <location filename="../../PatternParametersWidget.ui" line="81"/>
+      <location filename="../../PatternParametersWidget.ui" line="103"/>
       <source>Spacing</source>
       <translation>Адлегласць</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.ui" line="82"/>
+      <location filename="../../PatternParametersWidget.ui" line="89"/>
       <source>Length</source>
       <translation>Даўжыня</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.ui" line="134"/>
+      <location filename="../../PatternParametersWidget.ui" line="141"/>
       <source>Add spacing to create spacing patterns.</source>
       <translation>Дадаць адлегласці, каб стварыць шаблоны адлегласцяў.</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.ui" line="151"/>
+      <location filename="../../PatternParametersWidget.ui" line="158"/>
       <source>Occurrences</source>
       <translation>Выступы</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="73"/>
+      <location filename="../../PatternParametersWidget.cpp" line="69"/>
       <source>Axis</source>
       <translation>Вось</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="320"/>
-      <location filename="../../PatternParametersWidget.cpp" line="411"/>
+      <location filename="../../PatternParametersWidget.cpp" line="361"/>
+      <location filename="../../PatternParametersWidget.cpp" line="452"/>
       <source>Spacing %1</source>
       <translation>Адлегласць %1</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="336"/>
+      <location filename="../../PatternParametersWidget.cpp" line="377"/>
       <source>Remove this spacing definition.</source>
       <translation>Выдаліць вызначэнне адлегласці.</translation>
     </message>
@@ -7142,7 +7208,7 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>PartGui::ViewProviderPreviewExtension</name>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="236"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="232"/>
       <source>Failure while rendering preview: %1. That usually indicates an error with model.</source>
       <translation>Памылка пры папярэднім праглядзе: %1.
 Звычайна паказвае на памылку з мадэллю.</translation>

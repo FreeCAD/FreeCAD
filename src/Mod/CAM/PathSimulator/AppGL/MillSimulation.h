@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2024 Shai Seger <shaise at gmail>                       *
  *                                                                         *
@@ -52,7 +54,7 @@ public:
     void ClearMillPathSegments();
     void Clear();
     void SimNext();
-    void InitSimulation(float quality);
+    void InitSimulation(float quality, qreal devicePixelRatio);
     void AddTool(EndMill* tool);
     void AddTool(const std::vector<float>& toolProfile, int toolid, float diameter);
     bool ToolExists(int toolid)
@@ -83,7 +85,7 @@ public:
 
 
 protected:
-    void InitDisplay(float quality);
+    void InitDisplay(float quality, qreal devicePixelRatio);
     void GlsimStart();
     void GlsimToolStep1(void);
     void GlsimToolStep2(void);

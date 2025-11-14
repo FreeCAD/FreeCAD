@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /****************************************************************************
  *   Copyright (c) 2025 Pieter Hijma <info@pieterhijma.net>                 *
  *                                                                          *
@@ -44,7 +46,8 @@ protected:
     {
         varSet = freecad_cast<App::VarSet*>(_doc->addObject("App::VarSet", "VarSet"));
         prop = freecad_cast<App::PropertyInteger*>(
-            varSet->addDynamicProperty("App::PropertyInteger", "Variable", "Variables"));
+            varSet->addDynamicProperty("App::PropertyInteger", "Variable", "Variables")
+        );
         prop->setValue(Value);
     }
 

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   (c) 2019 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de>           *
 # *                                                                         *
@@ -51,9 +53,13 @@ class PolarArray(gui_base.GuiCommandBase):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        return {"Pixmap": "Draft_PolarArray",
-                "MenuText": QT_TRANSLATE_NOOP("Draft_PolarArray", "Polar Array"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_PolarArray", "Creates copies of the selected object in a polar pattern")}
+        return {
+            "Pixmap": "Draft_PolarArray",
+            "MenuText": QT_TRANSLATE_NOOP("Draft_PolarArray", "Polar Array"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Draft_PolarArray", "Creates copies of the selected object in a polar pattern"
+            ),
+        }
 
     def Activated(self):
         """Execute when the command is called.
@@ -65,10 +71,8 @@ class PolarArray(gui_base.GuiCommandBase):
 
         self.location = coin.SoLocation2Event.getClassTypeId()
         self.mouse_event = coin.SoMouseButtonEvent.getClassTypeId()
-        self.callback_move = \
-            self.view.addEventCallbackPivy(self.location, self.move)
-        self.callback_click = \
-            self.view.addEventCallbackPivy(self.mouse_event, self.click)
+        self.callback_move = self.view.addEventCallbackPivy(self.location, self.move)
+        self.callback_click = self.view.addEventCallbackPivy(self.mouse_event, self.click)
 
         self.ui = task_polararray.TaskPanelPolarArray()
         # The calling class (this one) is saved in the object
@@ -99,8 +103,10 @@ class PolarArray(gui_base.GuiCommandBase):
         """
         if event_cb:
             event = event_cb.getEvent()
-            if (event.getState() != coin.SoMouseButtonEvent.DOWN
-                    or event.getButton() != coin.SoMouseButtonEvent.BUTTON1):
+            if (
+                event.getState() != coin.SoMouseButtonEvent.DOWN
+                or event.getButton() != coin.SoMouseButtonEvent.BUTTON1
+            ):
                 return
         if self.ui and self.point:
             # The accept function of the interface
@@ -128,6 +134,6 @@ class PolarArray(gui_base.GuiCommandBase):
         self.finish()
 
 
-Gui.addCommand('Draft_PolarArray', PolarArray())
+Gui.addCommand("Draft_PolarArray", PolarArray())
 
 ## @}

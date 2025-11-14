@@ -22,7 +22,7 @@ class Conic2d(Curve2d):
     """Location of the conic."""
 
     Eccentricity: Final[float] = ...
-    """                
+    """
     returns the eccentricity value of the conic e.
         e = 0 for a circle
         0 < e < 1 for an ellipse  (e = 0 if MajorRadius = MinorRadius)

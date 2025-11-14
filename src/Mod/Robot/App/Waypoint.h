@@ -49,14 +49,16 @@ public:
 
     Waypoint();
     /// full constructor
-    Waypoint(const char* name,
-             const Base::Placement& endPos,
-             WaypointType type = Waypoint::LINE,
-             float velocity = 2000.0,
-             float acceleration = 100.0,
-             bool cont = false,
-             unsigned int tool = 0,
-             unsigned int base = 0);
+    Waypoint(
+        const char* name,
+        const Base::Placement& endPos,
+        WaypointType type = Waypoint::LINE,
+        float velocity = 2000.0,
+        float acceleration = 100.0,
+        bool cont = false,
+        unsigned int tool = 0,
+        unsigned int base = 0
+    );
 
     ~Waypoint() override;
 

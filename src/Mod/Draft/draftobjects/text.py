@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
 # *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
@@ -49,30 +51,24 @@ class Text(DraftAnnotation):
         properties = obj.PropertiesList
 
         if "Placement" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "The placement of the base point "
-                                     "of the first line")
-            obj.addProperty("App::PropertyPlacement",
-                            "Placement",
-                            "Base",
-                            _tip,
-                            locked=True)
+            _tip = QT_TRANSLATE_NOOP(
+                "App::Property", "The placement of the base point " "of the first line"
+            )
+            obj.addProperty("App::PropertyPlacement", "Placement", "Base", _tip, locked=True)
             obj.Placement = App.Placement()
 
         if "Text" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "The text displayed by this object.\n"
-                                     "It is a list of strings; each element "
-                                     "in the list will be displayed "
-                                     "in its own line.")
-            obj.addProperty("App::PropertyStringList",
-                            "Text",
-                            "Base",
-                            _tip,
-                            locked=True)
+            _tip = QT_TRANSLATE_NOOP(
+                "App::Property",
+                "The text displayed by this object.\n"
+                "It is a list of strings; each element "
+                "in the list will be displayed "
+                "in its own line.",
+            )
+            obj.addProperty("App::PropertyStringList", "Text", "Base", _tip, locked=True)
             obj.Text = []
 
-    def onDocumentRestored(self,obj):
+    def onDocumentRestored(self, obj):
         """Execute code when the document is restored."""
         super().onDocumentRestored(obj)
         gui_utils.restore_view_object(obj, vp_module="view_text", vp_class="ViewProviderText")

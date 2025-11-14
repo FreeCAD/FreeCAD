@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <Base/PlacementPy.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>
@@ -101,19 +100,21 @@ int WaypointPy::PyInit(PyObject* args, PyObject* kwd)
     static const std::array<const char*, 9>
         kwlist {"Pos", "type", "name", "vel", "cont", "tool", "base", "acc", nullptr};
 
-    if (!Base::Wrapped_ParseTupleAndKeywords(args,
-                                             kwd,
-                                             "O!|ssOiiiO",
-                                             kwlist,
-                                             &(Base::PlacementPy::Type),
-                                             &pos,  // the placement object
-                                             &type,
-                                             &name,
-                                             &vel,
-                                             &cont,
-                                             &tool,
-                                             &base,
-                                             &acc)) {
+    if (!Base::Wrapped_ParseTupleAndKeywords(
+            args,
+            kwd,
+            "O!|ssOiiiO",
+            kwlist,
+            &(Base::PlacementPy::Type),
+            &pos,  // the placement object
+            &type,
+            &name,
+            &vel,
+            &cont,
+            &tool,
+            &base,
+            &acc
+        )) {
         return -1;
     }
 

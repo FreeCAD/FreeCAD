@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <Gui/FileDialog.h>
 #include <Gui/MainWindow.h>
@@ -40,8 +41,8 @@ using namespace PartGui;
  *  The dialog will by default be modeless, unless you set 'modal' to
  *  true to construct a modal dialog.
  */
-DlgPartImportStepImp::DlgPartImportStepImp( QWidget* parent, Qt::WindowFlags fl )
-    : QDialog( parent, fl )
+DlgPartImportStepImp::DlgPartImportStepImp(QWidget* parent, Qt::WindowFlags fl)
+    : QDialog(parent, fl)
     , ui(new Ui_DlgPartImportStep)
 {
     ui->setupUi(this);
@@ -57,15 +58,18 @@ DlgPartImportStepImp::~DlgPartImportStepImp() = default;
  */
 void DlgPartImportStepImp::OnApply()
 {
-    qWarning( "DlgPartImportStepImp::OnApply() not yet implemented!" );
+    qWarning("DlgPartImportStepImp::OnApply() not yet implemented!");
 }
 
 void DlgPartImportStepImp::onChooseFileName()
 {
-    QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QString(), QString(),
-        QStringLiteral("%1 (*.stp *.step);;%2 (*.*)"))
-        .arg(QLatin1String("STEP"),
-             tr("All Files"));
+    QString fn = Gui::FileDialog::getOpenFileName(
+                     Gui::getMainWindow(),
+                     QString(),
+                     QString(),
+                     QStringLiteral("%1 (*.stp *.step);;%2 (*.*)")
+    )
+                     .arg(QLatin1String("STEP"), tr("All Files"));
     if (!fn.isEmpty()) {
         ui->FileName->setText(fn);
     }

@@ -22,8 +22,6 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-
 // inclusion of the generated files (generated out of AssemblyObject.xml)
 #include "AssemblyObjectPy.h"
 #include "AssemblyObjectPy.cpp"
@@ -199,4 +197,39 @@ Py::List AssemblyObjectPy::getJoints() const
     }
 
     return ret;
+}
+
+PyObject* AssemblyObjectPy::getDownstreamParts(PyObject* args) const
+{
+    PyObject* pyPart;
+    PyObject* pyJoint;
+
+    // Parse the two arguments: a part object and a joint object
+    if (!PyArg_ParseTuple(
+            args,
+            "O!O!",
+            &(App::DocumentObjectPy::Type),
+            &pyPart,
+            &(App::DocumentObjectPy::Type),
+            &pyJoint
+        )) {
+        return nullptr;
+    }
+
+    auto* part = static_cast<App::DocumentObjectPy*>(pyPart)->getDocumentObjectPtr();
+    auto* joint = static_cast<App::DocumentObjectPy*>(pyJoint)->getDocumentObjectPtr();
+
+    // Call the C++ method
+    std::vector<Assembly::ObjRef> downstreamParts
+        = this->getAssemblyObjectPtr()->getDownstreamParts(part, joint);
+
+    // Convert the result into a Python list of DocumentObjects
+    Py::List ret;
+    for (const auto& objRef : downstreamParts) {
+        if (objRef.obj) {
+            ret.append(Py::Object(objRef.obj->getPyObject(), true));
+        }
+    }
+
+    return Py::new_reference_to(ret);
 }

@@ -86,12 +86,14 @@ class SketcherGuiExport EditModeGeometryCoinManager
 {
 
 public:
-    explicit EditModeGeometryCoinManager(ViewProviderSketch& vp,
-                                         DrawingParameters& drawingParams,
-                                         GeometryLayerParameters& geometryLayerParams,
-                                         AnalysisResults& analysisResultStruct,
-                                         EditModeScenegraphNodes& editModeScenegraph,
-                                         CoinMapping& coinMap);
+    explicit EditModeGeometryCoinManager(
+        ViewProviderSketch& vp,
+        DrawingParameters& drawingParams,
+        GeometryLayerParameters& geometryLayerParams,
+        AnalysisResults& analysisResultStruct,
+        EditModeScenegraphNodes& editModeScenegraph,
+        CoinMapping& coinMap
+    );
     ~EditModeGeometryCoinManager();
 
 

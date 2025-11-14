@@ -81,17 +81,12 @@ class _TaskPanel(base_femlogtaskpanel._BaseLogTaskPanel):
             self.form.pb_edit_input, QtCore.SIGNAL("clicked()"), self.edit_input_clicked
         )
         QtCore.QObject.connect(
-            self.form.pb_working_directory,
-            QtCore.SIGNAL("clicked()"),
-            self.working_directory_clicked,
+            self.form.fc_working_directory,
+            QtCore.SIGNAL("fileNameSelected(QString)"),
+            self.working_directory_selected,
         )
         QtCore.QObject.connect(
             self.form.pb_solver_version, QtCore.SIGNAL("clicked()"), self.get_version
-        )
-        QtCore.QObject.connect(
-            self.form.let_working_directory,
-            QtCore.SIGNAL("editingFinished()"),
-            self.working_directory_edited,
         )
 
         self.get_object_params()
@@ -131,7 +126,7 @@ class _TaskPanel(base_femlogtaskpanel._BaseLogTaskPanel):
         self.form.cb_analysis_type.addItems(self.analysis_type_enum)
         self.form.cb_analysis_type.setCurrentIndex(index)
 
-        self.form.let_working_directory.setText(self.obj.WorkingDirectory)
+        self.form.fc_working_directory.setProperty("fileName", self.obj.WorkingDirectory)
         self.form.ckb_working_directory.setChecked(False)
         self.form.gpb_working_directory.setVisible(False)
 
@@ -139,14 +134,8 @@ class _TaskPanel(base_femlogtaskpanel._BaseLogTaskPanel):
         self.analysis_type = self.analysis_type_enum[index]
         self.obj.AnalysisType = self.analysis_type
 
-    def working_directory_clicked(self):
-        directory = QtGui.QFileDialog.getExistingDirectory(dir=self.obj.WorkingDirectory)
-        if directory:
-            self.form.let_working_directory.setText(directory)
-            self.form.let_working_directory.editingFinished.emit()
-
-    def working_directory_edited(self):
-        self.obj.WorkingDirectory = self.form.let_working_directory.text()
+    def working_directory_selected(self):
+        self.obj.WorkingDirectory = self.form.fc_working_directory.property("fileName")
 
     def write_input_clicked(self):
         self.prepared = False

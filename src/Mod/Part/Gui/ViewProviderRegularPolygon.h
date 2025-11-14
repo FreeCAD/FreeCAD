@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -24,13 +26,16 @@
 #ifndef PARTGUI_VIEWPROVIDERREGULARPOLYGON_H
 #define PARTGUI_VIEWPROVIDERREGULARPOLYGON_H
 
+#include <Mod/Part/PartGlobal.h>
+
 #include "ViewProviderPrimitive.h"
 
 
-namespace PartGui {
+namespace PartGui
+{
 
 
-class PartGuiExport ViewProviderRegularPolygon : public ViewProviderPrimitive
+class PartGuiExport ViewProviderRegularPolygon: public ViewProviderPrimitive
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderRegularPolygon);
 
@@ -43,11 +48,9 @@ public:
     std::vector<std::string> getDisplayModes() const override;
 
 protected:
-
 };
 
-} // namespace PartGui
+}  // namespace PartGui
 
 
-#endif // PARTGUI_VIEWPROVIDERREGULARPOLYGON_H
-
+#endif  // PARTGUI_VIEWPROVIDERREGULARPOLYGON_H

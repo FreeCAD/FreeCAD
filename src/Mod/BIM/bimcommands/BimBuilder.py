@@ -36,9 +36,7 @@ class BIM_Builder:
         return {
             "Pixmap": "Part_Shapebuilder",
             "MenuText": QT_TRANSLATE_NOOP("Part_Builder", "Shape Builder"),
-            "ToolTip": QT_TRANSLATE_NOOP(
-                "Part_Builder", "Advanced utility to create shapes"
-            ),
+            "ToolTip": QT_TRANSLATE_NOOP("Part_Builder", "Advanced utility to create shapes"),
         }
 
     def Activated(self):

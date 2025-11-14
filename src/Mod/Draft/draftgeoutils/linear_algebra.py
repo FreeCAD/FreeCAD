@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
 # *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
@@ -52,10 +54,10 @@ def linearFromPoints(p1, p2):
         return None
 
     line = {}
-    line['dx'] = (p2.x - p1.x)
-    line['dy'] = (p2.y - p1.y)
-    line['slope'] = line['dy'] / line['dx']
-    line['offset'] = p1.y - line['slope'] * p1.x
+    line["dx"] = p2.x - p1.x
+    line["dy"] = p2.y - p1.y
+    line["slope"] = line["dy"] / line["dx"]
+    line["offset"] = p1.y - line["slope"] * p1.x
     return line
 
 
@@ -65,7 +67,7 @@ def determinant(mat, n):
     It recursively expands the minors.
     """
     matTemp = [[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]]
-    if (n > 1):
+    if n > 1:
         if n == 2:
             d = mat[0][0] * mat[1][1] - mat[1][0] * mat[0][1]
         else:
@@ -77,12 +79,12 @@ def determinant(mat, n):
                     for j in range(n):
                         if j == j1:
                             continue
-                        matTemp[i-1][j2] = mat[i][j]
+                        matTemp[i - 1][j2] = mat[i][j]
                         j2 += 1
-                d += ((-1.0)**(1.0 + j1 + 1.0)
-                      * mat[0][j1] * determinant(matTemp, n-1))
+                d += (-1.0) ** (1.0 + j1 + 1.0) * mat[0][j1] * determinant(matTemp, n - 1)
         return d
     else:
         return 0
+
 
 ## @}

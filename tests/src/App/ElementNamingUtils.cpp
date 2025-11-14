@@ -42,16 +42,20 @@ TEST_F(ElementNamingUtilsTest, findElementName)
     // Act
     Data::ElementMap elementMap = Data::ElementMap();
     auto name1 = Data::findElementName("Edge1");
-    auto name2 = Data::findElementName(";g5v2;SKT;:Had6,V;:G;OFS;:Had6:7,V;:G;OFS;:Had6:7,V;WIR;:"
-                                       "Had6:4,V;:G;XTR;:Had6:7,E;:H,E.Face1.Edge2");
+    auto name2 = Data::findElementName(
+        ";g5v2;SKT;:Had6,V;:G;OFS;:Had6:7,V;:G;OFS;:Had6:7,V;WIR;:"
+        "Had6:4,V;:G;XTR;:Had6:7,E;:H,E.Face1.Edge2"
+    );
     auto name3 = Data::findElementName("An.Example.Assembly.Edge3");
     auto name4 = Data::findElementName(".Edge4");
 
     // Assert
     EXPECT_STREQ(name1, "Edge1");
-    EXPECT_STREQ(name2,
-                 ";g5v2;SKT;:Had6,V;:G;OFS;:Had6:7,V;:G;OFS;:Had6:7,V;WIR;:"
-                 "Had6:4,V;:G;XTR;:Had6:7,E;:H,E.Face1.Edge2");
+    EXPECT_STREQ(
+        name2,
+        ";g5v2;SKT;:Had6,V;:G;OFS;:Had6:7,V;:G;OFS;:Had6:7,V;WIR;:"
+        "Had6:4,V;:G;XTR;:Had6:7,E;:H,E.Face1.Edge2"
+    );
     EXPECT_STREQ(name3, "Edge3");
     EXPECT_STREQ(name4, "Edge4");
 }

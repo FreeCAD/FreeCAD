@@ -85,9 +85,11 @@ protected:
      *  property of DocumentObjectGroup. This methods translates old files
      *  still using the "Member" property.
      */
-    void handleChangedPropertyName(Base::XMLReader& reader,
-                                   const char* TypeName,
-                                   const char* PropName) override;
+    void handleChangedPropertyName(
+        Base::XMLReader& reader,
+        const char* TypeName,
+        const char* PropName
+    ) override;
 };
 
 class FemExport DocumentObject: public App::DocumentObject

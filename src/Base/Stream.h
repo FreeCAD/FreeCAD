@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2007 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -25,7 +27,7 @@
 #define BASE_STREAM_H
 
 #ifdef __GNUC__
-#include <cstdint>
+# include <cstdint>
 #endif
 
 #include <fstream>
@@ -366,11 +368,15 @@ public:
 protected:
     int_type overflow(std::streambuf::int_type c) override;
     std::streamsize xsputn(const char* s, std::streamsize num) override;
-    pos_type seekoff(std::streambuf::off_type off,
-                     std::ios_base::seekdir way,
-                     std::ios_base::openmode which = std::ios::in | std::ios::out) override;
-    pos_type seekpos(std::streambuf::pos_type pos,
-                     std::ios_base::openmode which = std::ios::in | std::ios::out) override;
+    pos_type seekoff(
+        std::streambuf::off_type off,
+        std::ios_base::seekdir way,
+        std::ios_base::openmode which = std::ios::in | std::ios::out
+    ) override;
+    pos_type seekpos(
+        std::streambuf::pos_type pos,
+        std::ios_base::openmode which = std::ios::in | std::ios::out
+    ) override;
 
 public:
     ByteArrayOStreambuf(const ByteArrayOStreambuf&) = delete;
@@ -398,11 +404,15 @@ protected:
     int_type underflow() override;
     int_type pbackfail(int_type ch) override;
     std::streamsize showmanyc() override;
-    pos_type seekoff(std::streambuf::off_type off,
-                     std::ios_base::seekdir way,
-                     std::ios_base::openmode which = std::ios::in | std::ios::out) override;
-    pos_type seekpos(std::streambuf::pos_type pos,
-                     std::ios_base::openmode which = std::ios::in | std::ios::out) override;
+    pos_type seekoff(
+        std::streambuf::off_type off,
+        std::ios_base::seekdir way,
+        std::ios_base::openmode which = std::ios::in | std::ios::out
+    ) override;
+    pos_type seekpos(
+        std::streambuf::pos_type pos,
+        std::ios_base::openmode which = std::ios::in | std::ios::out
+    ) override;
 
 public:
     ByteArrayIStreambuf(const ByteArrayIStreambuf&) = delete;
@@ -429,11 +439,15 @@ public:
 protected:
     int_type overflow(std::streambuf::int_type c) override;
     std::streamsize xsputn(const char* s, std::streamsize num) override;
-    pos_type seekoff(std::streambuf::off_type off,
-                     std::ios_base::seekdir way,
-                     std::ios_base::openmode which = std::ios::in | std::ios::out) override;
-    pos_type seekpos(std::streambuf::pos_type pos,
-                     std::ios_base::openmode which = std::ios::in | std::ios::out) override;
+    pos_type seekoff(
+        std::streambuf::off_type off,
+        std::ios_base::seekdir way,
+        std::ios_base::openmode which = std::ios::in | std::ios::out
+    ) override;
+    pos_type seekpos(
+        std::streambuf::pos_type pos,
+        std::ios_base::openmode which = std::ios::in | std::ios::out
+    ) override;
 
 public:
     IODeviceOStreambuf(const IODeviceOStreambuf&) = delete;
@@ -458,11 +472,15 @@ public:
 
 protected:
     int_type underflow() override;
-    pos_type seekoff(std::streambuf::off_type off,
-                     std::ios_base::seekdir way,
-                     std::ios_base::openmode which = std::ios::in | std::ios::out) override;
-    pos_type seekpos(std::streambuf::pos_type pos,
-                     std::ios_base::openmode which = std::ios::in | std::ios::out) override;
+    pos_type seekoff(
+        std::streambuf::off_type off,
+        std::ios_base::seekdir way,
+        std::ios_base::openmode which = std::ios::in | std::ios::out
+    ) override;
+    pos_type seekpos(
+        std::streambuf::pos_type pos,
+        std::ios_base::openmode which = std::ios::in | std::ios::out
+    ) override;
 
 public:
     IODeviceIStreambuf(const IODeviceIStreambuf&) = delete;
@@ -540,11 +558,15 @@ protected:
     int_type underflow() override;
     int_type pbackfail(int_type ch) override;
     std::streamsize showmanyc() override;
-    pos_type seekoff(std::streambuf::off_type off,
-                     std::ios_base::seekdir way,
-                     std::ios_base::openmode which = std::ios::in | std::ios::out) override;
-    pos_type seekpos(std::streambuf::pos_type pos,
-                     std::ios_base::openmode which = std::ios::in | std::ios::out) override;
+    pos_type seekoff(
+        std::streambuf::off_type off,
+        std::ios_base::seekdir way,
+        std::ios_base::openmode which = std::ios::in | std::ios::out
+    ) override;
+    pos_type seekpos(
+        std::streambuf::pos_type pos,
+        std::ios_base::openmode which = std::ios::in | std::ios::out
+    ) override;
 
 public:
     Streambuf(const Streambuf&) = delete;
@@ -579,9 +601,11 @@ public:
         : std::ofstream(fi.toStdWString().c_str(), mode) {}
 #else
         : std::ofstream(fi.filePath().c_str(), mode)
-    {}
+    {
+    }
 #endif
-        ~ofstream() override = default;
+        ~ofstream() override
+        = default;
     void open(const FileInfo& fi, ios_base::openmode mode = std::ios::out | std::ios::trunc)
     {
 #ifdef _MSC_VER
@@ -612,9 +636,11 @@ public:
         : std::ifstream(fi.toStdWString().c_str(), mode) {}
 #else
         : std::ifstream(fi.filePath().c_str(), mode)
-    {}
+    {
+    }
 #endif
-        ~ifstream() override = default;
+        ~ifstream() override
+        = default;
     void open(const FileInfo& fi, ios_base::openmode mode = std::ios::in)
     {
 #ifdef _MSC_VER

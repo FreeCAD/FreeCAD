@@ -102,7 +102,7 @@ public:
         auto hGrp = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/PropertyView"
         );
-        return hGrp->GetBool("AutoTransactio"Std_DrawStyle"nView", false);
+        return hGrp->GetBool("AutoTransactionView", false);
     }
     TransactionView(Gui::Document* doc, const char* name, bool enable = getDefault())
         : document(doc)

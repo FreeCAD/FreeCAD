@@ -106,9 +106,13 @@ protected:
     virtual void setWidgetCursor(QCursor cursor);
 
 private:
-    void setSvgCursor(const QString& svgName, int x, int y,
-                      const std::map<unsigned long, unsigned long>& colorMapping =
-                          std::map<unsigned long, unsigned long>());
+    void setSvgCursor(
+        const QString& svgName,
+        int x,
+        int y,
+        const std::map<unsigned long, unsigned long>& colorMapping
+        = std::map<unsigned long, unsigned long>()
+    );
 
 
     void applyCursor(QCursor& newCursor);
@@ -117,7 +121,6 @@ private:
     void setCrosshairCursor(const char* svgName);
 
 protected:
-
     QCursor oldCursor;
     QCursor actCursor;
     QPixmap actCursorPixmap;

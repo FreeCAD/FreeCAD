@@ -50,8 +50,7 @@ class TaskMirroredParameters: public TaskTransformedParameters
 
 public:
     /// Constructor for task with ViewProvider
-    explicit TaskMirroredParameters(ViewProviderTransformed* TransformedView,
-                                    QWidget* parent = nullptr);
+    explicit TaskMirroredParameters(ViewProviderTransformed* TransformedView, QWidget* parent = nullptr);
     /// Constructor for task with parent task (MultiTransform mode)
     TaskMirroredParameters(TaskMultiTransformParameters* parentTask, QWidget* parameterWidget);
 

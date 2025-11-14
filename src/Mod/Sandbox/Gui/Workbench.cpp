@@ -21,9 +21,7 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <QGridLayout>
 # include <QPainter>
 # include <Inventor/actions/SoAction.h>
@@ -32,7 +30,7 @@
 # include <Inventor/elements/SoViewportRegionElement.h>
 # include <Inventor/SoPrimitiveVertex.h>
 # include <Inventor/SbLinear.h>
-#endif
+
 
 #include "Workbench.h"
 #include <App/Application.h>

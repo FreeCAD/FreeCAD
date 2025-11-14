@@ -49,7 +49,7 @@
 #include <boost/lexical_cast.hpp>
 
 #ifdef FC_OS_WIN32
-#include <windows.h>
+# include <windows.h>
 #endif
 
 // OCC

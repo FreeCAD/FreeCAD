@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -24,6 +26,8 @@
 #ifndef PARTGUI_VIEWPROVIDERCIRCLEPARAMETRIC_H
 #define PARTGUI_VIEWPROVIDERCIRCLEPARAMETRIC_H
 
+#include <Mod/Part/PartGlobal.h>
+
 #include "ViewProviderPrimitive.h"
 
 
@@ -33,10 +37,11 @@ class SoSeparator;
 class SbVec3f;
 class SoTransform;
 
-namespace PartGui {
+namespace PartGui
+{
 
 
-class PartGuiExport ViewProviderCircleParametric : public ViewProviderPrimitive
+class PartGuiExport ViewProviderCircleParametric: public ViewProviderPrimitive
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderCircleParametric);
 
@@ -49,11 +54,9 @@ public:
     std::vector<std::string> getDisplayModes() const override;
 
 protected:
-
 };
 
-} // namespace PartGui
+}  // namespace PartGui
 
 
-#endif // PARTGUI_VIEWPROVIDERCIRCLEPARAMETRIC_H
-
+#endif  // PARTGUI_VIEWPROVIDERCIRCLEPARAMETRIC_H

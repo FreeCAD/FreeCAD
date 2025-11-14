@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2016 Victor Titov (DeepSOIC) <vv.titov@gmail.com>       *
  *                                                                         *
@@ -25,13 +27,15 @@
 
 #include <App/PropertyStandard.h>
 
+#include <Mod/Part/PartGlobal.h>
+
 #include "PartFeature.h"
 
 
 namespace Part
 {
 
-class PartExport Offset : public Part::Feature
+class PartExport Offset: public Part::Feature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::Offset);
 
@@ -39,7 +43,7 @@ public:
     Offset();
     ~Offset() override;
 
-    App::PropertyLink  Source;
+    App::PropertyLink Source;
     App::PropertyFloat Value;
     App::PropertyEnumeration Mode;
     App::PropertyEnumeration Join;
@@ -50,9 +54,10 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
     short mustExecute() const override;
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "PartGui::ViewProviderOffset";
     }
     //@}
@@ -62,9 +67,10 @@ private:
     static const char* JoinEnums[];
 };
 
-class PartExport Offset2D : public Offset
+class PartExport Offset2D: public Offset
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::Offset2D);
+
 public:
     Offset2D();
     ~Offset2D() override;
@@ -72,13 +78,14 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
     short mustExecute() const override;
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "PartGui::ViewProviderOffset2D";
     }
     //@}
 };
 
-}
-#endif // PART_FEATUREOFFSET_H
+}  // namespace Part
+#endif  // PART_FEATUREOFFSET_H

@@ -7,13 +7,13 @@
       <location filename="../../Link.cpp" line="131"/>
       <source>Stores the last user choice of whether to apply CopyOnChange setup to all links
 that reference the same configurable object</source>
-      <translation>Захоўвае апошні выбар карыстальніка адносна таго, ці варта ўжываць наладу CopyOnChange да ўсіх спасылак, якія спасылаюцца на адзін і той жа аб'ект, які наладжваецца</translation>
+      <translation>Захоўвае апошні выбар карыстальніка адносна таго, ці варта ўжываць наладу 'Змена копіі' (CopyOnChange) да ўсіх спасылак, якія спасылаюцца на адзін і той жа аб'ект, які наладжваецца</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Application.cpp" line="456"/>
+      <location filename="../../Application.cpp" line="458"/>
       <source>Unnamed</source>
       <translation>Без назвы</translation>
     </message>

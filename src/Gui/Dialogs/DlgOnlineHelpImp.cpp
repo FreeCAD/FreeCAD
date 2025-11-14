@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <QDir>
-# include <QMessageBox>
+#include <QDir>
+#include <QMessageBox>
 
 #include <App/Application.h>
 
@@ -40,9 +40,9 @@ using namespace Gui::Dialog;
  *  The dialog will by default be modeless, unless you set 'modal' to
  *  true to construct a modal dialog.
  */
-DlgOnlineHelpImp::DlgOnlineHelpImp( QWidget* parent )
-  : PreferencePage(parent)
-  , ui(new Ui_DlgOnlineHelp)
+DlgOnlineHelpImp::DlgOnlineHelpImp(QWidget* parent)
+    : PreferencePage(parent)
+    , ui(new Ui_DlgOnlineHelp)
 {
     ui->setupUi(this);
 
@@ -58,8 +58,8 @@ DlgOnlineHelpImp::DlgOnlineHelpImp( QWidget* parent )
 DlgOnlineHelpImp::~DlgOnlineHelpImp() = default;
 
 /**
- * Returns the start page for the HelpView. If none is defined the default 
- * start page "<FreeCADHome>/doc/free-cad.sourceforge.net/wiki/index.php.html" 
+ * Returns the start page for the HelpView. If none is defined the default
+ * start page "<FreeCADHome>/doc/free-cad.sourceforge.net/wiki/index.php.html"
  * is returned.
  * \remark It is not checked if the returned page really exists.
  */
@@ -82,7 +82,7 @@ void DlgOnlineHelpImp::loadSettings()
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgOnlineHelpImp::changeEvent(QEvent *e)
+void DlgOnlineHelpImp::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
@@ -92,12 +92,17 @@ void DlgOnlineHelpImp::changeEvent(QEvent *e)
     }
 }
 
-void DlgOnlineHelpImp::onLineEditDownloadFileNameSelected( const QString& url )
+void DlgOnlineHelpImp::onLineEditDownloadFileNameSelected(const QString& url)
 {
     QDir dir(url);
     if (dir.exists() && dir.isEmpty()) {
-        QMessageBox::critical(this, tr("Access denied"), tr("Access denied to '%1'\n\n"
-            "Specify another directory.").arg(url));
+        QMessageBox::critical(
+            this,
+            tr("Access denied"),
+            tr("Access denied to '%1'\n\n"
+               "Specify another directory.")
+                .arg(url)
+        );
     }
 }
 

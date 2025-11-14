@@ -34,7 +34,7 @@ def get_information():
     return {
         "name": "CCX cantilever tetra4 solid elements",
         "meshtype": "solid",
-        "meshelement": "Tetra4",
+        "meshelement": "Tet4",
         "constraints": ["fixed", "force"],
         "solvers": ["ccxtools", "elmer", "mystran", "z88"],
         "material": "solid",

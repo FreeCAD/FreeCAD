@@ -1,4 +1,4 @@
- // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /****************************************************************************
  *                                                                          *
  *   Copyright (c) 2024 Ondsel (PL Boyer) <development@ondsel.com>         *
@@ -30,17 +30,19 @@
 namespace Gui
 {
 
-class GuiExport ViewProviderPoint : public ViewProviderDatum {
+class GuiExport ViewProviderPoint: public ViewProviderDatum
+{
     PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderPoint);
+
 public:
     /// Constructor
     ViewProviderPoint();
     ~ViewProviderPoint() override;
 
-    void attach ( App::DocumentObject * ) override;
+    void attach(App::DocumentObject*) override;
 };
 
-} //namespace Gui
+}  // namespace Gui
 
 
-#endif // GUI_ViewProviderPoint_H
+#endif  // GUI_ViewProviderPoint_H

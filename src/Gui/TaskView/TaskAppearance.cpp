@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -19,7 +20,6 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
-
 
 
 #include <Base/Console.h>
@@ -56,7 +56,8 @@ TaskAppearance::TaskAppearance(QWidget* parent)
 
     // NOLINTBEGIN
     this->connectChangedObject = Gui::Application::Instance->signalChangedObject.connect(
-        std::bind(&TaskAppearance::slotChangedObject, this, sp::_1, sp::_2));
+        std::bind(&TaskAppearance::slotChangedObject, this, sp::_1, sp::_2)
+    );
     // NOLINTEND
 }
 
@@ -92,12 +93,13 @@ void TaskAppearance::changeEvent(QEvent* e)
 }
 
 /// @cond DOXERR
-void TaskAppearance::OnChange(Gui::SelectionSingleton::SubjectType& rCaller,
-                              Gui::SelectionSingleton::MessageType Reason)
+void TaskAppearance::OnChange(
+    Gui::SelectionSingleton::SubjectType& rCaller,
+    Gui::SelectionSingleton::MessageType Reason
+)
 {
     Q_UNUSED(rCaller);
-    if (Reason.Type == SelectionChanges::AddSelection
-        || Reason.Type == SelectionChanges::RmvSelection
+    if (Reason.Type == SelectionChanges::AddSelection || Reason.Type == SelectionChanges::RmvSelection
         || Reason.Type == SelectionChanges::SetSelection
         || Reason.Type == SelectionChanges::ClrSelection) {
         std::vector<Gui::ViewProvider*> views = getSelection();
@@ -320,8 +322,9 @@ std::vector<Gui::ViewProvider*> TaskAppearance::getSelection() const
     // get the complete selection
     std::vector<SelectionSingleton::SelObj> sel = Selection().getCompleteSelection();
     for (const auto& it : sel) {
-        Gui::ViewProvider* view =
-            Application::Instance->getDocument(it.pDoc)->getViewProvider(it.pObject);
+        Gui::ViewProvider* view = Application::Instance->getDocument(it.pDoc)->getViewProvider(
+            it.pObject
+        );
         if (view) {
             views.push_back(view);
         }

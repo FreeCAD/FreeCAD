@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 set(SurfaceGui_LIBS
     Surface
     PartGui
@@ -38,7 +40,6 @@ SET(SurfaceGui_SRCS
     TaskSections.h
     AppSurfaceGui.cpp
     Command.cpp
-    PreCompiled.cpp
     PreCompiled.h
     ViewProviderExtend.cpp
     ViewProviderExtend.h
@@ -52,16 +53,16 @@ SET(SurfaceGuiIcon_SVG
     Resources/icons/Surface_Workbench.svg
 )
 
-if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${SurfaceGui_SRCS})
-    ADD_MSVC_PRECOMPILED_HEADER(SurfaceGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
-endif(FREECAD_USE_PCH)
-
 add_library(SurfaceGui SHARED
     ${SurfaceGui_SRCS}
     ${SurfaceGuiIcon_SVG}
 )
+
+if(FREECAD_USE_PCH)
+    target_precompile_headers(SurfaceGui PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
+endif(FREECAD_USE_PCH)
 
 target_include_directories(
     SurfaceGui

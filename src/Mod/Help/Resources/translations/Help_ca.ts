@@ -17,8 +17,8 @@
       <location filename="../../dlgPreferencesHelp.ui" line="29"/>
       <source>Fetches the documentation from pages rendered on GitHub.
 This is currently not available.</source>
-      <translation>Obtenir la documentació de les pàgines renderitzades a GitHub.
-Actualment aquesta opció no està disponible.</translation>
+      <translation>Obté la documentació de les pàgines renderitzades a GitHub.
+Actualment no està disponible.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="46"/>
@@ -41,7 +41,7 @@ la ubicació per defecte ($USERAPPDATADIR/Mod/offline-documentation).</translati
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="123"/>
       <source>FreeCAD Wiki (online)</source>
-      <translation>FreeCAD Wiki (en línia)</translation>
+      <translation>Wiki FreeCAD (en línia)</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="33"/>
@@ -105,7 +105,7 @@ custom stylesheet below and can look nicer than the wiki option. The &apos;Markd
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="180"/>
       <source>The documentation will open in the default web browser</source>
-      <translation>El document s'obrirà amb el navegador per defecte</translation>
+      <translation>El document s'obrirà al navegador per defecte</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="183"/>
@@ -133,7 +133,7 @@ Necessita el component QtWebengineWidgets de PySide.</translation>
       <location filename="../../dlgPreferencesHelp.ui" line="256"/>
       <source>Specify the path to an alternative CSS file for styling Markdown pages.
 This only applies if Markdown is selected above.</source>
-      <translation>Especifica la ruta d'un fitxer CSS alternatiu per a estilitzar les pàgines en Markdown.
+      <translation>Especifica el camí d'un fitxer CSS alternatiu per a estilitzar les pàgines en Markdown.
 Només aplica si s'ha seleccionat Markdown a sobre.</translation>
     </message>
     <message>

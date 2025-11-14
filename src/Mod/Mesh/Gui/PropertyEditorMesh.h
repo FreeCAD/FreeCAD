@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2006 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -25,7 +27,7 @@
 
 #include <Gui/propertyeditor/PropertyItem.h>
 #ifndef MESH_GLOBAL_H
-#include <Mod/Mesh/MeshGlobal.h>
+# include <Mod/Mesh/MeshGlobal.h>
 #endif
 
 

@@ -84,7 +84,8 @@ public:
     // <realthunder.dev@gmail.com>
 
     constexpr static std::array<const char*, NumFlags> flag2str {
-        {"Defining", "Frozen", "Detached", "Missing", "Sync"}};
+        {"Defining", "Frozen", "Detached", "Missing", "Sync"}
+    };
 
 public:
     ExternalGeometryExtension() = default;

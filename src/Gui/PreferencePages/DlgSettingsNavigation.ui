@@ -851,6 +851,99 @@ Mouse tilting is not disabled by this setting.</string>
     </widget>
    </item>
    <item>
+    <widget class="QGroupBox" name="groupBoxClarifySelection">
+     <property name="title">
+      <string>Clarify Selection</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_6">
+      <item row="0" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkBoxEnableLongPressClarifySelection">
+        <property name="toolTip">
+         <string>Enable Clarify Selection on long press of left mouse button.
+When enabled, holding left mouse button shows a menu to select overlapping objects.
+Some navigation styles (OpenInventor, Gesture, OpenSCAD) require Ctrl+LMB instead of just LMB.</string>
+        </property>
+        <property name="text">
+         <string>Enable long press clarify selection</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>EnableLongPressClarifySelection</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="labelLongPressTimeout">
+        <property name="toolTip">
+         <string>Time in seconds to hold left mouse button before showing clarify selection menu</string>
+        </property>
+        <property name="text">
+         <string>Long press timeout</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="Gui::PrefDoubleSpinBox" name="spinBoxLongPressTimeout">
+        <property name="maximumSize">
+         <size>
+          <width>80</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Duration in seconds to hold left mouse button before clarify selection is triggered</string>
+        </property>
+        <property name="suffix">
+         <string notr="true"> s</string>
+        </property>
+        <property name="decimals">
+         <number>1</number>
+        </property>
+        <property name="minimum">
+         <double>0.300000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>3.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+        <property name="value">
+         <double>1.000000000000000</double>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>LongPressTimeout</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <spacer name="horizontalSpacer_7">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -908,5 +1001,38 @@ Mouse tilting is not disabled by this setting.</string>
   </customwidget>
  </customwidgets>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>checkBoxEnableLongPressClarifySelection</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>spinBoxLongPressTimeout</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>274</x>
+     <y>867</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>274</x>
+     <y>897</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBoxEnableLongPressClarifySelection</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>labelLongPressTimeout</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>274</x>
+     <y>867</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>100</x>
+     <y>897</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

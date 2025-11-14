@@ -25,18 +25,20 @@
 
 #include "ViewProviderOriginGroupExtension.h"
 
-namespace Gui {
+namespace Gui
+{
 
 class GuiExport ViewProviderOriginGroup: public ViewProviderDocumentObject,
                                          public ViewProviderOriginGroupExtension
 {
     PROPERTY_HEADER_WITH_EXTENSIONS(Gui::ViewProviderOriginGroup);
+
 public:
-    ViewProviderOriginGroup ();
-    ~ViewProviderOriginGroup () override;
+    ViewProviderOriginGroup();
+    ~ViewProviderOriginGroup() override;
 };
 
-} /* Gui  */
+}  // namespace Gui
 
 
 #endif /* end of include guard: VIEWPROVIDERORIGINGROUP_H */

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: BSD-3-Clause
+
 // AreaDxf.h
 // Copyright (c) 2011, Dan Heeks
 // This program is released under the BSD license. See the file COPYING for details.
@@ -19,11 +21,12 @@ public:
     AreaDxfRead(CArea* area, const char* filepath);
 
     // AreaDxfRead's virtual functions
-    void
-    OnReadLine(const Base::Vector3d& start, const Base::Vector3d& end, bool /*hidden*/) override;
-    void OnReadArc(const Base::Vector3d& start,
-                   const Base::Vector3d& end,
-                   const Base::Vector3d& center,
-                   bool dir,
-                   bool /*hidden*/) override;
+    void OnReadLine(const Base::Vector3d& start, const Base::Vector3d& end, bool /*hidden*/) override;
+    void OnReadArc(
+        const Base::Vector3d& start,
+        const Base::Vector3d& end,
+        const Base::Vector3d& center,
+        bool dir,
+        bool /*hidden*/
+    ) override;
 };

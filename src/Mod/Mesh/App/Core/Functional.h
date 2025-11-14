@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2018 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -43,18 +45,16 @@ static void parallel_sort(Iter begin, Iter end, Pred comp, int threads)
             future.wait();
         }
         else {
-            auto a = std::async(std::launch::async,
-                                parallel_sort<Iter, Pred>,
-                                begin,
-                                mid,
-                                comp,
-                                threads / 2);
-            auto b = std::async(std::launch::async,
-                                parallel_sort<Iter, Pred>,
-                                mid,
-                                end,
-                                comp,
-                                threads / 2);
+            auto a = std::async(
+                std::launch::async,
+                parallel_sort<Iter, Pred>,
+                begin,
+                mid,
+                comp,
+                threads / 2
+            );
+            auto b
+                = std::async(std::launch::async, parallel_sort<Iter, Pred>, mid, end, comp, threads / 2);
             a.wait();
             b.wait();
         }

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <Base/Tools.h>
 #include <Gui/Application.h>
@@ -53,10 +54,12 @@ void FCCmdImportReadBREP::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     openCommand(QT_TRANSLATE_NOOP("Command", "Read BREP"));
-    QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(),
-                                                  QString(),
-                                                  QString(),
-                                                  QLatin1String("BREP (*.brep *.rle)"));
+    QString fn = Gui::FileDialog::getOpenFileName(
+        Gui::getMainWindow(),
+        QString(),
+        QString(),
+        QLatin1String("BREP (*.brep *.rle)")
+    );
     if (fn.isEmpty()) {
         abortCommand();
         return;
@@ -93,10 +96,12 @@ ImportStep::ImportStep()
 void ImportStep::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(),
-                                                  QString(),
-                                                  QString(),
-                                                  QLatin1String("STEP (*.stp *.step)"));
+    QString fn = Gui::FileDialog::getOpenFileName(
+        Gui::getMainWindow(),
+        QString(),
+        QString(),
+        QLatin1String("STEP (*.stp *.step)")
+    );
     if (!fn.isEmpty()) {
         openCommand(QT_TRANSLATE_NOOP("Command", "Part ImportSTEP Create"));
         doCommand(Doc, "f = App.document().addObject(\"ImportStep\",\"ImportStep\")");
@@ -138,10 +143,12 @@ ImportIges::ImportIges()
 void ImportIges::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(),
-                                                  QString(),
-                                                  QString(),
-                                                  QLatin1String("IGES (*.igs *.iges)"));
+    QString fn = Gui::FileDialog::getOpenFileName(
+        Gui::getMainWindow(),
+        QString(),
+        QString(),
+        QLatin1String("IGES (*.igs *.iges)")
+    );
     if (!fn.isEmpty()) {
         openCommand(QT_TRANSLATE_NOOP("Command", "ImportIGES Create"));
         doCommand(Doc, "f = App.document().addObject(\"ImportIges\",\"ImportIges\")");

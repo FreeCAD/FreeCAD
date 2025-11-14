@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -43,11 +45,13 @@ public:
     explicit ConsoleObserverFile(const char* sFileName);
     ~ConsoleObserverFile() override;
 
-    void sendLog(const std::string& notifiername,
-                 const std::string& msg,
-                 LogStyle level,
-                 IntendedRecipient recipient,
-                 ContentType content) override;
+    void sendLog(
+        const std::string& notifiername,
+        const std::string& msg,
+        LogStyle level,
+        IntendedRecipient recipient,
+        ContentType content
+    ) override;
     const char* name() override
     {
         return "File";
@@ -70,11 +74,13 @@ class BaseExport ConsoleObserverStd: public ILogger
 public:
     ConsoleObserverStd();
     ~ConsoleObserverStd() override;
-    void sendLog(const std::string& notifiername,
-                 const std::string& msg,
-                 LogStyle level,
-                 IntendedRecipient recipient,
-                 ContentType content) override;
+    void sendLog(
+        const std::string& notifiername,
+        const std::string& msg,
+        LogStyle level,
+        IntendedRecipient recipient,
+        ContentType content
+    ) override;
     const char* name() override
     {
         return "Console";
@@ -103,13 +109,12 @@ class BaseExport ILoggerBlocker
 public:
     // Constructor that will block message types passed as parameter. By default, all types are
     // blocked.
-    inline explicit ILoggerBlocker(const char* co,
-                                   ConsoleMsgFlags msgTypes = ConsoleSingleton::MsgType_Txt
-                                       | ConsoleSingleton::MsgType_Log
-                                       | ConsoleSingleton::MsgType_Wrn
-                                       | ConsoleSingleton::MsgType_Err
-                                       | ConsoleSingleton::MsgType_Critical
-                                       | ConsoleSingleton::MsgType_Notification);
+    inline explicit ILoggerBlocker(
+        const char* co,
+        ConsoleMsgFlags msgTypes = ConsoleSingleton::MsgType_Txt | ConsoleSingleton::MsgType_Log
+            | ConsoleSingleton::MsgType_Wrn | ConsoleSingleton::MsgType_Err
+            | ConsoleSingleton::MsgType_Critical | ConsoleSingleton::MsgType_Notification
+    );
     // Disable copy & move constructors
     ILoggerBlocker(ILoggerBlocker const&) = delete;
     ILoggerBlocker(ILoggerBlocker const&&) = delete;
@@ -136,8 +141,7 @@ ILoggerBlocker::~ILoggerBlocker()
 #ifdef FC_DEBUG
         auto debug = Console().setEnabledMsgType(conObs, msgTypesBlocked, true);
         if (debug != msgTypesBlocked) {
-            Console().warning(
-                "Enabled message types have been changed while ILoggerBlocker was set\n");
+            Console().warning("Enabled message types have been changed while ILoggerBlocker was set\n");
         }
 #else
         Console().setEnabledMsgType(conObs, msgTypesBlocked, true);

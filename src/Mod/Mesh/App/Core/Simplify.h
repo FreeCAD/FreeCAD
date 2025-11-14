@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 // clang-format off
 // http://voxels.blogspot.de/2014/05/quadric-mesh-simplification-with-source.html
 // https://github.com/sp4cerat/Fast-Quadric-Mesh-Simplification

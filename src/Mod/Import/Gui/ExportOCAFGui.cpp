@@ -22,8 +22,6 @@
  **************************************************************************/
 
 
-#include "PreCompiled.h"
-
 #include "ExportOCAFGui.h"
 #include <Gui/Application.h>
 #include <Mod/Part/Gui/ViewProvider.h>
