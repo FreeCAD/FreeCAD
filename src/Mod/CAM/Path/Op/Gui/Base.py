@@ -429,22 +429,8 @@ class TaskPanelPage(object):
     def copyToolController(self):
         oldTc = self.tcEditor.obj
         self.tcEditor.updateToolController()
-        tc = PathToolController.Create(
-            name=oldTc.Label, tool=oldTc.Tool, toolNumber=oldTc.ToolNumber
-        )
         job = self.obj.Proxy.getJob(self.obj)
-        job.Proxy.addToolController(tc)
-
-        tc.HorizFeed = oldTc.HorizFeed
-        tc.VertFeed = oldTc.VertFeed
-        tc.HorizRapid = oldTc.HorizRapid
-        tc.VertRapid = oldTc.VertRapid
-        tc.SpindleSpeed = oldTc.SpindleSpeed
-        tc.SpindleDir = oldTc.SpindleDir
-        for attr, expr in oldTc.ExpressionEngine:
-            tc.setExpression(attr, expr)
-
-        self.obj.ToolController = tc
+        self.obj.ToolController = PathToolController.copyTC(oldTc, job)
         self.setupToolController()
 
     def tcEditorChanged(self):

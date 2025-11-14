@@ -277,7 +277,7 @@ class JobPreferencesPage:
             self.form.stockCreateCylinder.hide()
 
     def getPostProcessor(self, name):
-        if not name in self.processor:
+        if name not in self.processor:
             processor = PostProcessorFactory.get_post_processor(None, name)
             self.processor[name] = processor
             return processor
