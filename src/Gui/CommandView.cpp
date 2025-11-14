@@ -401,7 +401,7 @@ void StdCmdFreezeViews::activated(int iMsg)
         for (QList<QAction*>::Iterator it = acts.begin() + offset; it != acts.end(); ++it, index++) {
             if (!(*it)->isVisible()) {
                 savedViews++;
-                QString viewnr = QString(QObject::tr("Restore view &%1")).arg(index);
+                QString viewnr = QString(QObject::tr("Restore View &%1")).arg(index);
                 (*it)->setText(viewnr);
                 (*it)->setToolTip(QString::fromLatin1(ppReturn));
                 (*it)->setVisible(true);
@@ -433,7 +433,7 @@ void StdCmdFreezeViews::onSaveViews()
     // Save the views to an XML file
     QString fn = FileDialog::getSaveFileName(
         getMainWindow(),
-        QObject::tr("Save frozen views"),
+        QObject::tr("Save Frozen Views"),
         QString(),
         QStringLiteral("%1 (*.cam)").arg(QObject::tr("Frozen views"))
     );
@@ -479,7 +479,7 @@ void StdCmdFreezeViews::onRestoreViews()
     if (savedViews > 0) {
         auto ret = QMessageBox::question(
             getMainWindow(),
-            QObject::tr("Restore views"),
+            QObject::tr("Restore Views"),
             QObject::tr(
                 "Importing the restored views would clear the already stored views.\n"
                 "Continue?"
@@ -495,7 +495,7 @@ void StdCmdFreezeViews::onRestoreViews()
     // Restore the views from an XML file
     QString fn = FileDialog::getOpenFileName(
         getMainWindow(),
-        QObject::tr("Restore frozen views"),
+        QObject::tr("Restore Frozen Views"),
         QString(),
         QStringLiteral("%1 (*.cam)").arg(QObject::tr("Frozen views"))
     );
@@ -506,7 +506,7 @@ void StdCmdFreezeViews::onRestoreViews()
     if (!file.open(QFile::ReadOnly)) {
         QMessageBox::critical(
             getMainWindow(),
-            QObject::tr("Restore views"),
+            QObject::tr("Restore Views"),
             QObject::tr("Cannot open file '%1'.").arg(fn)
         );
         return;
@@ -573,7 +573,7 @@ void StdCmdFreezeViews::onRestoreViews()
         }
         for (int i = 0; i < numRestoredViews; i++) {
             QString setting = cameras[i];
-            QString viewnr = QString(QObject::tr("Restore view &%1")).arg(i + 1);
+            QString viewnr = QString(QObject::tr("Restore View &%1")).arg(i + 1);
             acts[i + offset]->setText(viewnr);
             acts[i + offset]->setToolTip(setting);
             acts[i + offset]->setVisible(true);
