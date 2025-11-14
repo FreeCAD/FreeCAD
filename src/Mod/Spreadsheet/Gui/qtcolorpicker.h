@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-only OR GPL-3.0-only
+
 /****************************************************************************
 **
 ** This file is part of a Qt Solutions component.

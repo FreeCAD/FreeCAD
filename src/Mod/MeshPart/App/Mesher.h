@@ -30,7 +30,7 @@
 #include <Base/Stream.h>
 
 #ifdef HAVE_SMESH
-#include <SMESH_Version.h>
+# include <SMESH_Version.h>
 #endif
 
 class TopoDS_Shape;

@@ -40,8 +40,10 @@ ZoomableView::ZoomableView(Ui::Sheet* ui)
     else {
         QLayoutItem* li_stv = stv->parentWidget()->layout()->replaceWidget(stv, this);
         if (li_stv == nullptr) {
-            Base::Console().developerWarning("ZoomableView",
-                                             "Failed to replace the SheetTableView object");
+            Base::Console().developerWarning(
+                "ZoomableView",
+                "Failed to replace the SheetTableView object"
+            );
             deleteLater();
             return;
         }
@@ -88,21 +90,20 @@ ZoomableView::ZoomableView(Ui::Sheet* ui)
     connect(dummySB_h, &QAbstractSlider::valueChanged, this, &ZoomableView::updateView);
     connect(dummySB_v, &QAbstractSlider::valueChanged, this, &ZoomableView::updateView);
 
-    connect(this,
-            &ZoomableView::zoomLevelChanged,
-            ui->zoomTB,
-            [zoomTB = ui->zoomTB](int new_zoomLevel) {
-                zoomTB->setText(QStringLiteral("%1%").arg(new_zoomLevel));
-            });
+    connect(this, &ZoomableView::zoomLevelChanged, ui->zoomTB, [zoomTB = ui->zoomTB](int new_zoomLevel) {
+        zoomTB->setText(QStringLiteral("%1%").arg(new_zoomLevel));
+    });
 
-    connect(this,
-            &ZoomableView::zoomLevelChanged,
-            ui->zoomSlider,
-            [zoomSlider = ui->zoomSlider](int new_zoomLevel) {
-                zoomSlider->blockSignals(true);
-                zoomSlider->setValue(new_zoomLevel);
-                zoomSlider->blockSignals(false);
-            });
+    connect(
+        this,
+        &ZoomableView::zoomLevelChanged,
+        ui->zoomSlider,
+        [zoomSlider = ui->zoomSlider](int new_zoomLevel) {
+            zoomSlider->blockSignals(true);
+            zoomSlider->setValue(new_zoomLevel);
+            zoomSlider->blockSignals(false);
+        }
+    );
 
     connect(ui->zoomPlus, &QToolButton::clicked, this, &ZoomableView::zoomIn);
     connect(ui->zoomSlider, &QSlider::valueChanged, this, &ZoomableView::setZoomLevel);
@@ -113,8 +114,7 @@ ZoomableView::ZoomableView(Ui::Sheet* ui)
         constexpr int min = ZoomableView::min, max = ZoomableView::max, step = 10;
         const int val = zoomSlider->value();
         bool ok;
-        const int new_val =
-            QInputDialog::getInt(zoomSlider, title, label, val, min, max, step, &ok);
+        const int new_val = QInputDialog::getInt(zoomSlider, title, label, val, min, max, step, &ok);
 
         if (ok) {
             zoomSlider->setValue(new_val);
@@ -125,12 +125,12 @@ ZoomableView::ZoomableView(Ui::Sheet* ui)
 
     auto connectCursorChangedSignal = [this](QHeaderView* hv) {
         auto header = qobject_cast<SpreadsheetGui::SheetViewHeader*>(hv);
-        connect(header,
-                &SpreadsheetGui::SheetViewHeader::cursorChanged,
-                this,
-                [this](const QCursor& newerCursor) {
-                    qpw->setCursor(newerCursor);
-                });
+        connect(
+            header,
+            &SpreadsheetGui::SheetViewHeader::cursorChanged,
+            this,
+            [this](const QCursor& newerCursor) { qpw->setCursor(newerCursor); }
+        );
     };
     connectCursorChangedSignal(stv->horizontalHeader());
     connectCursorChangedSignal(stv->verticalHeader());

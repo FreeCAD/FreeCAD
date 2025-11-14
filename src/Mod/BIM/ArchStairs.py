@@ -1888,7 +1888,6 @@ class _Stairs(ArchComponent.Component):
                 # TODO Why 'reuse' vBase?
                 # '# Massive Structure to respect 'align' attribute'
                 vBase = vBasedAligned.add(vRiserThickness)
-
                 for i in range(numOfSteps - 1):
                     if not lProfile:
                         lProfile.append(vBase)
@@ -1971,6 +1970,11 @@ class _Stairs(ArchComponent.Component):
                 else:
                     lProfile.append(lProfile[-1].add(Vector(h.x, h.y, -resHeight2)))
 
+                # Add back vertex before start vertex offsetted riser thickness
+                if vRiserThickness.Length and downstartstairs != "HorizontalCut":
+                    lProfile.append(vBasedAligned)
+
+                # Add start vertex as last vertex to complete a closed polygon
                 lProfile.append(vBase)
 
                 pol = Part.makePolygon(lProfile)
@@ -1999,7 +2003,28 @@ class _Stairs(ArchComponent.Component):
                     .multiply(numOfSteps - 1)
                     .add(Vector(0, 0, -vTreadThickness.Length + stringerOverlap))
                 )
+
+                # Shapes of Stringer at Different Cases
+                #
+                #                     p1
+                #                   ∕│
+                #                  ∕ │
+                #                 /  │
+                #                ∕   │
+                #               /    │
+                #              ∕     │
+                #             /      │        p1a -------┐ p1b
+                #            ∕       │           ∕       │
+                #           ∕        │          ∕        │
+                #          ∕         │         ∕         │ p1c
+                #         /          ∕        /          ∕
+                #        /          /        /          /     p1a __________ p1b
+                #       /          ∕        /          ∕         /          ∕
+                #      /          ∕        /          ∕         /          ∕
+                #     /          ⁄        /          ∕         /          ∕
+
                 p1 = vBase.add(l1).add(h1)
+                # TODO: Why not use vBasedAligned but align again?
                 p1 = self.align(p1, align, vWidth)
                 overlapDiff = (float(hgt) / numOfSteps + vTreadThickness.Length) - stringerOverlap
                 strOverlapMax = (structureThickness / vLength.Length) * hyp
@@ -2010,18 +2035,21 @@ class _Stairs(ArchComponent.Component):
                     lProfile.append(p1.add(Vector(0, 0, -strOverlapMax)))
                 else:
                     if (strOverlapMax + overlapDiff) > 0:  # overlapDiff is -ve
-                        vLenDiffP1b = (vLength.Length / vHeight.Length) * overlapDiff
+                        vLenDiffP1a = (vLength.Length / vHeight.Length) * overlapDiff
                         vLenDiffP1c = (structureThickness / vLength.Length) * hyp
                         p1b = p1.add(Vector(0, 0, overlapDiff))  # overlapDiff is -ve
-                        p1a = p1b.add(Vector(vLenDiffP1b, 0, 0))
+                        v1a = DraftVecUtils.scaleTo(vLength, vLenDiffP1a)
+                        p1a = p1b.add(v1a)
                         p1c = p1.add(Vector(0, 0, -vLenDiffP1c))
                         lProfile.append(p1a)
                         lProfile.append(p1b)
                         lProfile.append(p1c)
                     else:
                         vLenDiffP1a = (vLength.Length / vHeight.Length) * (overlapDiff)
-                        p1a = p1.add(Vector(vLenDiffP1a, 0, overlapDiff))
-                        p1b = p1a.add(Vector(strucHorLen, 0, 0))
+                        v1a = DraftVecUtils.scaleTo(vLength, vLenDiffP1a)
+                        p1a = p1.add(Vector(0, 0, overlapDiff)).add(v1a)
+                        v1b = DraftVecUtils.scaleTo(vLength, strucHorLen)
+                        p1b = p1a.add(v1b)
                         lProfile.append(p1a)
                         lProfile.append(p1b)
                 h3 = lProfile[-1].z - vBase.z

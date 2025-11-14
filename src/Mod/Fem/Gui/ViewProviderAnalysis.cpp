@@ -48,7 +48,7 @@
 #include <Mod/Fem/App/FemSetObject.h>
 #include <Mod/Fem/App/FemSolverObject.h>
 #ifdef FC_USE_VTK
-#include <Mod/Fem/App/FemPostObject.h>
+# include <Mod/Fem/App/FemPostObject.h>
 #endif
 
 #include "TaskDlgAnalysis.h"
@@ -125,9 +125,11 @@ bool ViewProviderFemAnalysis::doubleClicked()
 {
     Gui::Command::assureWorkbench("FemWorkbench");
     Gui::Command::addModule(Gui::Command::Gui, "FemGui");
-    Gui::Command::doCommand(Gui::Command::Gui,
-                            "FemGui.setActiveAnalysis(App.activeDocument().%s)",
-                            this->getObject()->getNameInDocument());
+    Gui::Command::doCommand(
+        Gui::Command::Gui,
+        "FemGui.setActiveAnalysis(App.activeDocument().%s)",
+        this->getObject()->getNameInDocument()
+    );
     // After activation of the analysis the allowed FEM toolbar buttons should become active.
     // To achieve this we must clear the object selection to trigger the selection observer.
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.Selection.clearSelection()");
@@ -160,9 +162,7 @@ void ViewProviderFemAnalysis::setupContextMenu(QMenu* menu, QObject*, const char
 {
     Gui::ActionFunction* func = new Gui::ActionFunction(menu);
     QAction* act = menu->addAction(tr("Activate Analysis"));
-    func->trigger(act, [this]() {
-        this->doubleClicked();
-    });
+    func->trigger(act, [this]() { this->doubleClicked(); });
 }
 
 bool ViewProviderFemAnalysis::setEdit(int ModNum)
@@ -272,9 +272,11 @@ bool ViewProviderFemAnalysis::onDelete(const std::vector<std::string>&)
     return checkSelectedChildren(objs, this->getDocument(), "analysis");
 }
 
-bool ViewProviderFemAnalysis::checkSelectedChildren(const std::vector<App::DocumentObject*> objs,
-                                                    Gui::Document* docGui,
-                                                    std::string objectName)
+bool ViewProviderFemAnalysis::checkSelectedChildren(
+    const std::vector<App::DocumentObject*> objs,
+    Gui::Document* docGui,
+    std::string objectName
+)
 {
     // warn the user if the object has unselected children
     if (!objs.empty()) {
@@ -284,8 +286,7 @@ bool ViewProviderFemAnalysis::checkSelectedChildren(const std::vector<App::Docum
         for (auto child : objs) {
             found = false;
             for (Gui::SelectionObject selection : selectionList) {
-                if (std::string(child->getNameInDocument())
-                    == std::string(selection.getFeatName())) {
+                if (std::string(child->getNameInDocument()) == std::string(selection.getFeatName())) {
                     found = true;
                     break;
                 }
@@ -301,23 +302,26 @@ bool ViewProviderFemAnalysis::checkSelectedChildren(const std::vector<App::Docum
         // generate dialog
         QString bodyMessage;
         QTextStream bodyMessageStream(&bodyMessage);
-        bodyMessageStream << qApp->translate("Std_Delete",
-                                             ("The " + objectName
-                                              + " is not empty, therefore the\nfollowing "
-                                                "referencing objects might be lost:")
-                                                 .c_str());
+        bodyMessageStream << qApp->translate(
+            "Std_Delete",
+            ("The " + objectName
+             + " is not empty, therefore the\nfollowing "
+               "referencing objects might be lost:")
+                .c_str()
+        );
         bodyMessageStream << '\n';
         for (auto ObjIterator : objs) {
             bodyMessageStream << '\n' << QString::fromUtf8(ObjIterator->Label.getValue());
         }
         bodyMessageStream << "\n\n" << QObject::tr("Are you sure you want to continue?");
         // show and evaluate the dialog
-        int DialogResult =
-            QMessageBox::warning(Gui::getMainWindow(),
-                                 qApp->translate("Std_Delete", "Object dependencies"),
-                                 bodyMessage,
-                                 QMessageBox::Yes,
-                                 QMessageBox::No);
+        int DialogResult = QMessageBox::warning(
+            Gui::getMainWindow(),
+            qApp->translate("Std_Delete", "Object dependencies"),
+            bodyMessage,
+            QMessageBox::Yes,
+            QMessageBox::No
+        );
         if (DialogResult == QMessageBox::Yes) {
             return true;
         }

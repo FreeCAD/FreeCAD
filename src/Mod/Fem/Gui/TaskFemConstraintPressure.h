@@ -42,8 +42,10 @@ class TaskFemConstraintPressure: public TaskFemConstraintOnBoundary
     Q_OBJECT
 
 public:
-    explicit TaskFemConstraintPressure(ViewProviderFemConstraintPressure* ConstraintView,
-                                       QWidget* parent = nullptr);
+    explicit TaskFemConstraintPressure(
+        ViewProviderFemConstraintPressure* ConstraintView,
+        QWidget* parent = nullptr
+    );
     ~TaskFemConstraintPressure() override;
     const std::string getReferences() const override;
     std::string getPressure() const;

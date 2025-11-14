@@ -20,10 +20,8 @@ class ShapeFix_EdgeConnect(PyObjectBase):
 
     @overload
     def add(self, edge1: TopoShapeEdge, edge2: TopoShapeEdge) -> None: ...
-
     @overload
     def add(self, shape: TopoShape) -> None: ...
-
     def add(self, *args, **kwargs) -> None:
         """
         add(edge, edge)

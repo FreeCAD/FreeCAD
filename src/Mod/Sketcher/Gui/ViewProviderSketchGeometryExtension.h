@@ -30,8 +30,7 @@
 namespace SketcherGui
 {
 
-class SketcherGuiExport ViewProviderSketchGeometryExtension
-    : public Part::GeometryPersistenceExtension
+class SketcherGuiExport ViewProviderSketchGeometryExtension: public Part::GeometryPersistenceExtension
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 

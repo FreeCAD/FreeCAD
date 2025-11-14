@@ -52,30 +52,35 @@ PyObject* FeatureAreaPy::getArea(PyObject* args)
 
 PyObject* FeatureAreaPy::setParams(PyObject* args, PyObject* keywds)
 {
-    static const std::array<const char*, 43> kwlist {PARAM_FIELD_STRINGS(NAME, AREA_PARAMS_CONF),
-                                                     nullptr};
+    static const std::array<const char*, 43> kwlist {
+        PARAM_FIELD_STRINGS(NAME, AREA_PARAMS_CONF),
+        nullptr
+    };
 
     // Declare variables defined in the NAME field of the CONF parameter list
     PARAM_PY_DECLARE(PARAM_FNAME, AREA_PARAMS_CONF);
 
     FeatureArea* feature = getFeatureAreaPtr();
 
-#define AREA_SET(_param)                                                                           \
-    PARAM_FNAME(_param) =                                                                          \
-        PARAM_TYPED(PARAM_PY_CAST_, _param)(feature->PARAM_FNAME(_param).getValue());
+#define AREA_SET(_param) \
+    PARAM_FNAME(_param) = PARAM_TYPED(PARAM_PY_CAST_, _param)( \
+        feature->PARAM_FNAME(_param).getValue() \
+    );
     // populate the CONF variables with values in properties
     PARAM_FOREACH(AREA_SET, AREA_PARAMS_CONF)
 
     // Parse arguments to overwrite CONF variables
-    if (!Base::Wrapped_ParseTupleAndKeywords(args,
-                                             keywds,
-                                             "|" PARAM_PY_KWDS(AREA_PARAMS_CONF),
-                                             kwlist,
-                                             PARAM_REF(PARAM_FNAME, AREA_PARAMS_CONF))) {
+    if (!Base::Wrapped_ParseTupleAndKeywords(
+            args,
+            keywds,
+            "|" PARAM_PY_KWDS(AREA_PARAMS_CONF),
+            kwlist,
+            PARAM_REF(PARAM_FNAME, AREA_PARAMS_CONF)
+        )) {
         return nullptr;
     }
 
-#define AREA_GET(_param)                                                                           \
+#define AREA_GET(_param) \
     feature->PARAM_FNAME(_param).setValue(PARAM_TYPED(PARAM_CAST_PY_, _param)(PARAM_FNAME(_param)));
     // populate properties with the CONF variables
     PARAM_FOREACH(AREA_GET, AREA_PARAMS_CONF)
@@ -98,7 +103,8 @@ void FeatureAreaPy::setWorkPlane(Py::Object obj)
         throw Py::TypeError(error);
     }
     getFeatureAreaPtr()->setWorkPlane(
-        static_cast<Part::TopoShapePy*>(p)->getTopoShapePtr()->getShape());
+        static_cast<Part::TopoShapePy*>(p)->getTopoShapePtr()->getShape()
+    );
 }
 
 PyObject* FeatureAreaPy::getCustomAttributes(const char* /*attr*/) const

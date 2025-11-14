@@ -1,22 +1,22 @@
-# Generated from CLion C/C++ Code Style settings
+# --- Based on Qt Coding Style ---
 BasedOnStyle: LLVM
+
+# --- Bracket and Indentation Behavior ---
+IndentWidth: 4
+ConstructorInitializerIndentWidth: 4
+ContinuationIndentWidth: 4
+TabWidth: 4
+ColumnLimit: 100
+UseTab: Never
 AccessModifierOffset: -4
-AlignAfterOpenBracket: Align
-AlignConsecutiveAssignments: None
-AlignOperands: DontAlign
-AllowAllArgumentsOnNextLine: false
+
+AlignAfterOpenBracket: BlockIndent
 AllowAllParametersOfDeclarationOnNextLine: false
-AllowShortBlocksOnASingleLine: Empty
-AllowShortCaseLabelsOnASingleLine: false
-AllowShortFunctionsOnASingleLine: None
-AllowShortIfStatementsOnASingleLine: Never
-AllowShortLambdasOnASingleLine: Empty
-AllowShortLoopsOnASingleLine: false
-AlwaysBreakAfterReturnType: None
-AlwaysBreakTemplateDeclarations: Yes
-BinPackArguments: false
 BinPackParameters: false
+BinPackArguments: false
 BreakBeforeBraces: Custom
+BreakTemplateDeclarations: Yes
+BreakBeforeBinaryOperators: All
 BraceWrapping:
   AfterCaseLabel: false
   AfterClass: true
@@ -31,41 +31,68 @@ BraceWrapping:
   IndentBraces: false
   SplitEmptyFunction: false
   SplitEmptyRecord: true
-BreakBeforeBinaryOperators: NonAssignment
-BreakBeforeTernaryOperators: true
-BreakConstructorInitializers: BeforeComma
-BreakInheritanceList: BeforeColon
-ColumnLimit: 100
-CompactNamespaces: false
-ContinuationIndentWidth: 4
-IndentCaseLabels: true
-IndentPPDirectives: None
-IndentWidth: 4
-InsertBraces: true
-KeepEmptyLinesAtTheStartOfBlocks: true
-MaxEmptyLinesToKeep: 2
-NamespaceIndentation: None
-ObjCSpaceAfterProperty: false
-ObjCSpaceBeforeProtocolList: true
-PackConstructorInitializers: Never
-PointerAlignment: Left
-ReflowComments: true
-SortIncludes: Never
-SpaceAfterCStyleCast: false
-SpaceAfterLogicalNot: false
-SpaceAfterTemplateKeyword: false
-SpaceBeforeAssignmentOperators: true
-SpaceBeforeCpp11BracedList: true
-SpaceBeforeCtorInitializerColon: true
-SpaceBeforeInheritanceColon: false
+
+# --- Special: Lambdas and Short Things ---
+AllowShortFunctionsOnASingleLine: None
+AllowShortBlocksOnASingleLine: Never
+AllowShortEnumsOnASingleLine: false
+AllowShortIfStatementsOnASingleLine: false
+AllowShortLambdasOnASingleLine: Inline
+AllowAllArgumentsOnNextLine: false
+
+# --- Spaces ---
 SpaceBeforeParens: ControlStatements
+SpaceAfterCStyleCast: false
+Cpp11BracedListStyle: true
+SpaceBeforeCpp11BracedList: true
 SpaceBeforeRangeBasedForLoopColon: true
-SpaceInEmptyParentheses: false
 SpacesBeforeTrailingComments: 2
-SpacesInAngles: false
-SpacesInCStyleCastParentheses: false
-SpacesInContainerLiterals: false
-SpacesInParentheses: false
-SpacesInSquareBrackets: false
-TabWidth: 4
-UseTab: Never
+SpaceAfterTemplateKeyword: false
+SpaceBeforeInheritanceColon: false
+
+# --- Alignment & Formatting Tweaks ---
+AlignConsecutiveAssignments:
+  Enabled: false
+  AcrossEmptyLines: false
+  AcrossComments: false
+  AlignCompound: false
+  AlignFunctionPointers: false
+  PadOperators: true
+AlignConsecutiveDeclarations:
+  Enabled: false
+  AcrossEmptyLines: false
+  AcrossComments: false
+  AlignCompound: false
+  AlignFunctionPointers: false
+  PadOperators: true
+AlignOperands: DontAlign
+BreakConstructorInitializers: BeforeComma
+PointerAlignment: Left
+ReferenceAlignment: Left
+
+# --- Comment Style ---
+CommentPragmas: '^ IWYU pragma:'
+
+# --- Namespace handling ---
+NamespaceIndentation: None
+
+# --- Others ---
+SortIncludes: Never
+IncludeBlocks: Preserve
+MaxEmptyLinesToKeep: 2
+IndentCaseLabels: true
+InsertBraces: true
+AlignEscapedNewlines: DontAlign
+PPIndentWidth: 1
+IndentPPDirectives: AfterHash
+ReflowComments: true
+
+# --- Penalties (Fine-tuning when to break lines) ---
+PenaltyBreakAssignment: 80
+PenaltyBreakBeforeFirstCallParameter: 1
+PenaltyBreakComment: 60
+PenaltyBreakFirstLessLess: 120
+PenaltyBreakString: 1000
+PenaltyBreakOpenParenthesis: 5
+PenaltyExcessCharacter: 10
+PenaltyReturnTypeOnItsOwnLine: 600

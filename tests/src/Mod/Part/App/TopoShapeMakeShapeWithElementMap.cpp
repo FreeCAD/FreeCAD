@@ -50,8 +50,10 @@ protected:
         return &_mapper;
     }
 
-    void testFindSourceSubShapesInElementMapForSource(const std::vector<TopoShape>& sources,
-                                                      const TopoShape& source);
+    void testFindSourceSubShapesInElementMapForSource(
+        const std::vector<TopoShape>& sources,
+        const TopoShape& source
+    );
 
 private:
     std::string _docName;
@@ -75,22 +77,38 @@ TEST_F(TopoShapeMakeShapeWithElementMapTests, nullShapeThrows)
     TopoDS_Compound nullCompound;
 
     // Act and assert
-    EXPECT_THROW(Shape()->makeShapeWithElementMap(nullVertex, *Mapper(), sources),
-                 Part::NullShapeException);
-    EXPECT_THROW(Shape()->makeShapeWithElementMap(nullEdge, *Mapper(), sources),
-                 Part::NullShapeException);
-    EXPECT_THROW(Shape()->makeShapeWithElementMap(nullWire, *Mapper(), sources),
-                 Part::NullShapeException);
-    EXPECT_THROW(Shape()->makeShapeWithElementMap(nullFace, *Mapper(), sources),
-                 Part::NullShapeException);
-    EXPECT_THROW(Shape()->makeShapeWithElementMap(nullShell, *Mapper(), sources),
-                 Part::NullShapeException);
-    EXPECT_THROW(Shape()->makeShapeWithElementMap(nullSolid, *Mapper(), sources),
-                 Part::NullShapeException);
-    EXPECT_THROW(Shape()->makeShapeWithElementMap(nullCompSolid, *Mapper(), sources),
-                 Part::NullShapeException);
-    EXPECT_THROW(Shape()->makeShapeWithElementMap(nullCompound, *Mapper(), sources),
-                 Part::NullShapeException);
+    EXPECT_THROW(
+        Shape()->makeShapeWithElementMap(nullVertex, *Mapper(), sources),
+        Part::NullShapeException
+    );
+    EXPECT_THROW(
+        Shape()->makeShapeWithElementMap(nullEdge, *Mapper(), sources),
+        Part::NullShapeException
+    );
+    EXPECT_THROW(
+        Shape()->makeShapeWithElementMap(nullWire, *Mapper(), sources),
+        Part::NullShapeException
+    );
+    EXPECT_THROW(
+        Shape()->makeShapeWithElementMap(nullFace, *Mapper(), sources),
+        Part::NullShapeException
+    );
+    EXPECT_THROW(
+        Shape()->makeShapeWithElementMap(nullShell, *Mapper(), sources),
+        Part::NullShapeException
+    );
+    EXPECT_THROW(
+        Shape()->makeShapeWithElementMap(nullSolid, *Mapper(), sources),
+        Part::NullShapeException
+    );
+    EXPECT_THROW(
+        Shape()->makeShapeWithElementMap(nullCompSolid, *Mapper(), sources),
+        Part::NullShapeException
+    );
+    EXPECT_THROW(
+        Shape()->makeShapeWithElementMap(nullCompound, *Mapper(), sources),
+        Part::NullShapeException
+    );
 }
 
 std::map<IndexedName, MappedName> elementMap(const TopoShape& shape)
@@ -135,8 +153,9 @@ TEST_F(TopoShapeMakeShapeWithElementMapTests, mapCompoundCount)
     EXPECT_STREQ(compound.shapeName().c_str(), "Compound");
     EXPECT_EQ(
         22,
-        compound.getMappedChildElements().size());  // Changed with PR#12471. Probably will change
-                                                    // again after importing other TopoNaming logics
+        compound.getMappedChildElements().size()
+    );  // Changed with PR#12471. Probably will change
+        // again after importing other TopoNaming logics
 }
 
 TEST_F(TopoShapeMakeShapeWithElementMapTests, emptySourceShapes)
@@ -153,7 +172,8 @@ TEST_F(TopoShapeMakeShapeWithElementMapTests, emptySourceShapes)
 
         EXPECT_EQ(
             &originalShape,
-            &modifiedShape.makeShapeWithElementMap(source.getShape(), *Mapper(), emptySources));
+            &modifiedShape.makeShapeWithElementMap(source.getShape(), *Mapper(), emptySources)
+        );
     }
 }
 
@@ -173,34 +193,41 @@ TEST_F(TopoShapeMakeShapeWithElementMapTests, nonMappableSources)
         }
 
         if (canMap == 0U) {
-            EXPECT_EQ(&source,
-                      &source.makeShapeWithElementMap(source.getShape(), *Mapper(), sources));
+            EXPECT_EQ(&source, &source.makeShapeWithElementMap(source.getShape(), *Mapper(), sources));
         }
     }
 }
 
-void testFindSourceShapesInSingleShape(const Part::TopoShape& cmpdShape,
-                                       const Part::TopoShape& source,
-                                       const std::vector<Part::TopoShape>& sources,
-                                       const TopoShape::Mapper& mapper)
+void testFindSourceShapesInSingleShape(
+    const Part::TopoShape& cmpdShape,
+    const Part::TopoShape& source,
+    const std::vector<Part::TopoShape>& sources,
+    const TopoShape::Mapper& mapper
+)
 {
     std::vector<Part::TopoShape> tmpSources {source};
     for (const auto& subSource : sources) {
         Part::TopoShape tmpShape {source.getShape()};
         tmpShape.makeShapeWithElementMap(source.getShape(), mapper, tmpSources);
         if (&source == &subSource) {
-            EXPECT_NE(tmpShape.findShape(subSource.getShape()),
-                      0);  // if tmpShape uses, for example, cube1 and we search for cube1 than
-                           // we should find it
+            EXPECT_NE(
+                tmpShape.findShape(subSource.getShape()),
+                0
+            );  // if tmpShape uses, for example, cube1 and we search for cube1 than
+                // we should find it
         }
         else {
-            EXPECT_EQ(tmpShape.findShape(subSource.getShape()),
-                      0);  // if tmpShape uses, for example, cube1 and we search for cube2 than
-                           // we shouldn't find it
+            EXPECT_EQ(
+                tmpShape.findShape(subSource.getShape()),
+                0
+            );  // if tmpShape uses, for example, cube1 and we search for cube2 than
+                // we shouldn't find it
         }
     }
-    EXPECT_NE(cmpdShape.findShape(source.getShape()),
-              0);  // as cmpdShape is made with cube1 and cube2 we should find both of them
+    EXPECT_NE(
+        cmpdShape.findShape(source.getShape()),
+        0
+    );  // as cmpdShape is made with cube1 and cube2 we should find both of them
 }
 
 TEST_F(TopoShapeMakeShapeWithElementMapTests, findSourceShapesInShape)
@@ -221,9 +248,11 @@ TEST_F(TopoShapeMakeShapeWithElementMapTests, findSourceShapesInShape)
     }
 }
 
-void testFindSubShapesForSourceWithTypeAndIndex(const std::string& shapeTypeStr,
-                                                std::map<IndexedName, MappedName>& elementStdMap,
-                                                unsigned long shapeIndex)
+void testFindSubShapesForSourceWithTypeAndIndex(
+    const std::string& shapeTypeStr,
+    std::map<IndexedName, MappedName>& elementStdMap,
+    unsigned long shapeIndex
+)
 {
     std::string shapeIndexStr = std::to_string(shapeIndex);
     std::string shapeName {shapeTypeStr + shapeIndexStr};
@@ -242,9 +271,11 @@ void testFindSubShapesForSourceWithTypeAndIndex(const std::string& shapeTypeStr,
     QT_WARNING_POP
 }
 
-void testFindSubShapesForSourceWithType(const TopoShape& source,
-                                        const char* shapeType,
-                                        std::map<IndexedName, MappedName>& elementStdMap)
+void testFindSubShapesForSourceWithType(
+    const TopoShape& source,
+    const char* shapeType,
+    std::map<IndexedName, MappedName>& elementStdMap
+)
 {
     std::string shapeTypeStr {shapeType};
 
@@ -265,7 +296,8 @@ void testFindSubShapesForSourceWithType(const TopoShape& source,
 
 void TopoShapeMakeShapeWithElementMapTests::testFindSourceSubShapesInElementMapForSource(
     const std::vector<TopoShape>& sources,
-    const TopoShape& source)
+    const TopoShape& source
+)
 {
     TopoShape tmpShape {source.getShape()};
     tmpShape.makeShapeWithElementMap(source.getShape(), *Mapper(), sources);
@@ -329,8 +361,7 @@ std::string composeTagInfo(const MappedElement& element, const TopoShape& shape)
 {
     std::string elementNameStr {element.name.constPostfix()};
     std::string tagInfo = POSTFIX_TAG + std::to_string(shape.Tag);
-    tagInfo +=
-        ":" + std::to_string(elementNameStr.substr(0, elementNameStr.find(tagInfo)).length());
+    tagInfo += ":" + std::to_string(elementNameStr.substr(0, elementNameStr.find(tagInfo)).length());
 
     return tagInfo;
 }

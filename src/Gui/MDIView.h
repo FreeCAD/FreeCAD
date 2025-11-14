@@ -52,7 +52,7 @@ class ViewProviderDocumentObject;
  * @see Application
  * @author Jürgen Riegel, Werner Mayer
  */
-class GuiExport MDIView : public QMainWindow, public BaseView
+class GuiExport MDIView: public QMainWindow, public BaseView
 {
     Q_OBJECT
 
@@ -64,7 +64,7 @@ public:
      * the view will attach to the active document. Be aware, there isn't
      * always an active document.
      */
-    MDIView(Gui::Document* pcDocument, QWidget* parent, Qt::WindowFlags wflags=Qt::WindowFlags());
+    MDIView(Gui::Document* pcDocument, QWidget* parent, Qt::WindowFlags wflags = Qt::WindowFlags());
     /** View destructor
      * Detach the view from the document, if attached.
      */
@@ -73,21 +73,21 @@ public:
     virtual MDIView* clone();
 
     /// get called when the document is updated
-    void onRelabel(Gui::Document *pDoc) override;
+    void onRelabel(Gui::Document* pDoc) override;
     virtual void viewAll();
 
     /// build window title
     QString buildWindowTitle() const;
 
     /// Message handler
-    bool onMsg(const char* pMsg,const char** ppReturn) override;
+    bool onMsg(const char* pMsg, const char** ppReturn) override;
     /// Message handler test
     bool onHasMsg(const char* pMsg) const override;
     /// overwrite when checking on close state
     bool canClose() override;
     /// delete itself
     void deleteSelf() override;
-    PyObject *getPyObject() override;
+    PyObject* getPyObject() override;
     /** @name Printing */
     //@{
 public Q_SLOTS:
@@ -112,13 +112,15 @@ public:
     virtual QStringList redoActions() const;
     //@}
 
-    QSize minimumSizeHint () const override;
+    QSize minimumSizeHint() const override;
 
     /// MDI view mode enum
-    enum ViewMode {
-        Child,      /**< Child viewing, view is docked inside the MDI application window */
-        TopLevel,   /**< The view becomes a top level window and can be moved outsinde the application window */
-        FullScreen  /**< The view goes to full screen viewing */
+    enum ViewMode
+    {
+        Child,    /**< Child viewing, view is docked inside the MDI application window */
+        TopLevel, /**< The view becomes a top level window and can be moved outsinde the application
+                     window */
+        FullScreen /**< The view goes to full screen viewing */
     };
     /**
      * If \a b is set to \a FullScreen the MDI view is displayed in full screen mode, if \a b
@@ -127,26 +129,33 @@ public:
      * QWidget::showFullScreen ().
      */
     virtual void setCurrentViewMode(ViewMode mode);
-    ViewMode currentViewMode() const { return currentMode; }
+    ViewMode currentViewMode() const
+    {
+        return currentMode;
+    }
 
 
     /// access getter for the active object list
     template<typename _T>
-    inline _T getActiveObject(const char* name, App::DocumentObject **parent=nullptr, std::string *subname=nullptr) const
+    inline _T getActiveObject(
+        const char* name,
+        App::DocumentObject** parent = nullptr,
+        std::string* subname = nullptr
+    ) const
     {
-        return ActiveObjects.getObject<_T>(name,parent,subname);
+        return ActiveObjects.getObject<_T>(name, parent, subname);
     }
-    void setActiveObject(App::DocumentObject*o, const char*n, const char *subname=nullptr)
+    void setActiveObject(App::DocumentObject* o, const char* n, const char* subname = nullptr)
     {
         ActiveObjects.setObject(o, n, subname);
     }
-    bool hasActiveObject(const char*n) const
+    bool hasActiveObject(const char* n) const
     {
         return ActiveObjects.hasObject(n);
     }
-    bool isActiveObject(App::DocumentObject*o, const char*n, const char *subname=nullptr) const
+    bool isActiveObject(App::DocumentObject* o, const char* n, const char* subname = nullptr) const
     {
-        return ActiveObjects.hasObject(o,n,subname);
+        return ActiveObjects.hasObject(o, n, subname);
     }
 
     App::DocumentObject* getActiveObjectWithExtension(const Base::Type extensionTypeId) const
@@ -160,7 +169,8 @@ public:
      * returns false.
      * \return bool
      */
-    virtual bool containsViewProvider(const ViewProvider*) const {
+    virtual bool containsViewProvider(const ViewProvider*) const
+    {
         return false;
     }
 
@@ -196,11 +206,11 @@ private:
     // list of active objects of this view
     ActiveObjectList ActiveObjects;
     using Connection = boost::signals2::connection;
-    Connection connectDelObject; //remove active object upon delete.
+    Connection connectDelObject;  // remove active object upon delete.
 
     friend class MainWindow;
 };
 
-} // namespace Gui
+}  // namespace Gui
 
-#endif // GUI_MDIVIEW_H
+#endif  // GUI_MDIVIEW_H

@@ -53,9 +53,11 @@ public:
     const char* getViewProviderName() const override;
 
 protected:
-    void handleChangedPropertyName(Base::XMLReader& reader,
-                                   const char* typeName,
-                                   const char* propName) override;
+    void handleChangedPropertyName(
+        Base::XMLReader& reader,
+        const char* typeName,
+        const char* propName
+    ) override;
     void onChanged(const App::Property* prop) override;
 };
 

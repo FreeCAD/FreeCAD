@@ -66,14 +66,16 @@ void TaskSketcherCreateCommands::changeEvent(QEvent* e)
 }
 
 /// @cond DOXERR
-void TaskSketcherCreateCommands::OnChange(Gui::SelectionSingleton::SubjectType& rCaller,
-                                          Gui::SelectionSingleton::MessageType Reason)
+void TaskSketcherCreateCommands::OnChange(
+    Gui::SelectionSingleton::SubjectType& rCaller,
+    Gui::SelectionSingleton::MessageType Reason
+)
 {
     Q_UNUSED(rCaller);
-    if (Reason.Type == SelectionChanges::AddSelection
-        || Reason.Type == SelectionChanges::RmvSelection
+    if (Reason.Type == SelectionChanges::AddSelection || Reason.Type == SelectionChanges::RmvSelection
         || Reason.Type == SelectionChanges::SetSelection
-        || Reason.Type == SelectionChanges::ClrSelection) {}
+        || Reason.Type == SelectionChanges::ClrSelection) {
+    }
 }
 /// @endcond DOXERR
 

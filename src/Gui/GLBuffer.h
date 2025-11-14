@@ -28,7 +28,8 @@
 #include <map>
 #include <Inventor/C/glue/gl.h>
 
-namespace Gui {
+namespace Gui
+{
 
 class GuiExport OpenGLBuffer
 {
@@ -43,7 +44,7 @@ public:
     bool isCreated() const;
 
     void destroy();
-    void allocate(const void *data, int count);
+    void allocate(const void* data, int count);
     bool bind();
     void release();
     GLuint getBufferId() const;
@@ -51,8 +52,8 @@ public:
     int size() const;
 
 private:
-    static void context_destruction_cb(uint32_t context, void * userdata);
-    static void buffer_delete(void * closure, uint32_t contextid);
+    static void context_destruction_cb(uint32_t context, void* userdata);
+    static void buffer_delete(void* closure, uint32_t contextid);
 
     GLenum target;
     GLuint bufferId;
@@ -72,24 +73,24 @@ public:
     bool isCreated(uint32_t ctx) const;
 
     void destroy();
-    void allocate(const void *data, int count);
+    void allocate(const void* data, int count);
     bool bind();
     void release();
     GLuint getBufferId() const;
     int size() const;
 
 private:
-    static void context_destruction_cb(uint32_t context, void * userdata);
-    static void buffer_delete(void * closure, uint32_t contextid);
+    static void context_destruction_cb(uint32_t context, void* userdata);
+    static void buffer_delete(void* closure, uint32_t contextid);
 
     GLenum target;
     // map context to buffer id
     std::map<uint32_t, GLuint> bufs;
-    GLuint *currentBuf;
+    GLuint* currentBuf;
     uint32_t currentContext;
     const cc_glglue* glue;
 };
 
-} // namespace Gui
+}  // namespace Gui
 
 #endif  // GUI_GLBUFFER_H

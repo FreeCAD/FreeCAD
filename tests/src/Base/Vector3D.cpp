@@ -218,9 +218,11 @@ TEST(Vector, TestNormalize)
 TEST(Vector, TestCSTransform)
 {
     Base::Vector3d vec(1, 2, 3);
-    vec.TransformToCoordinateSystem(Base::Vector3d(1, 1, 1),
-                                    Base::Vector3d(0, 1, 0),
-                                    Base::Vector3d(1, 0, 0));
+    vec.TransformToCoordinateSystem(
+        Base::Vector3d(1, 1, 1),
+        Base::Vector3d(0, 1, 0),
+        Base::Vector3d(1, 0, 0)
+    );
     EXPECT_EQ(vec.x, 1);
     EXPECT_EQ(vec.y, 0);
     EXPECT_EQ(vec.z, -2);

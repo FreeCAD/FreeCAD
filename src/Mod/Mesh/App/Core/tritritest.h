@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 // clang-format off
 /* Triangle/triangle intersection test routine,
  * by Tomas Moller, 1997.

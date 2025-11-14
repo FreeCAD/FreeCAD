@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2007 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -31,7 +33,7 @@
 namespace Part
 {
 
-class Section : public Boolean
+class Section: public Boolean
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::Section);
 
@@ -46,12 +48,11 @@ public:
     short mustExecute() const override;
 
 protected:
-    BRepAlgoAPI_BooleanOperation* makeOperation(const TopoDS_Shape&,
-                                                const TopoDS_Shape&) const override;
-    const char *opCode() const override;
+    BRepAlgoAPI_BooleanOperation* makeOperation(const TopoDS_Shape&, const TopoDS_Shape&) const override;
+    const char* opCode() const override;
     //@}
 };
 
-}
+}  // namespace Part
 
-#endif // PART_FEATUREPARTSECTION_H
+#endif  // PART_FEATUREPARTSECTION_H

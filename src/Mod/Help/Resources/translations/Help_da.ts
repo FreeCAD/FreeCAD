@@ -158,27 +158,27 @@ Dette gælder kun, hvis Markdown er valgt ovenfor.</translation>
   <context>
     <name>Help</name>
     <message>
-      <location filename="../../Help.py" line="73"/>
+      <location filename="../../Help.py" line="75"/>
       <source>Contents for this page could not be retrieved. Please check settings under menu Edit → Preferences → General → Help</source>
       <translation>Indholdet for denne side kunne ikke hentes. Kontroller indstillingerne under menuen Rediger → Indstillinger → Generelt → Hjælp</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="77"/>
+      <location filename="../../Help.py" line="79"/>
       <source>Help files location could not be determined. Please check settings under menu Edit → Preferences → General → Help</source>
       <translation>Placeringen af hjælpefiler kunne ikke bestemmes. Kontroller indstillingerne i menuen Rediger → Indstillinger → Generelt → Hjælp</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="81"/>
+      <location filename="../../Help.py" line="83"/>
       <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</source>
       <translation>Modulet, PySide QtWebEngineWidgets, er ikke tilgængeligt. Visning af hjælp foretages med Webbrowseren</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="85"/>
+      <location filename="../../Help.py" line="87"/>
       <source>There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</source>
       <translation>Der er ikke installeret et program til markdown rendering på dit system, så denne hjælpeside gengives som den er. Installér et markdown eller pandoc-python-modul for at forbedre gengivelsen af denne side.</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="117"/>
+      <location filename="../../Help.py" line="119"/>
       <source>Help</source>
       <translation>Hjælp</translation>
     </message>
@@ -186,7 +186,7 @@ Dette gælder kun, hvis Markdown er valgt ovenfor.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Help.py" line="433"/>
+      <location filename="../../Help.py" line="435"/>
       <source>General</source>
       <translation>Generelt</translation>
     </message>

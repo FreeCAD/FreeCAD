@@ -682,12 +682,12 @@ invalid constraints, and degenerate geometry</translation>
       <translation>Yhdistä sketsit</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="130"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="133"/>
       <source>Add sketch line</source>
       <translation>Lisää sketsiin viiva</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="496"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="498"/>
       <source>Add sketch box</source>
       <translation>Lisää sketsiin laatikko</translation>
     </message>
@@ -753,7 +753,7 @@ invalid constraints, and degenerate geometry</translation>
       <translation>Lisää ulkoinen geometria</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerSlot.h" line="173"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="174"/>
       <source>Add slot</source>
       <translation>Lisää slotti</translation>
     </message>
@@ -854,7 +854,7 @@ invalid constraints, and degenerate geometry</translation>
       <translation>Nimeä rajoite uudelleen</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1558"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1561"/>
       <source>Update constraint's visibility</source>
       <translation type="unfinished">Update constraint's visibility</translation>
     </message>
@@ -889,7 +889,7 @@ invalid constraints, and degenerate geometry</translation>
       <translation>Luo jäljennös</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="433"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="416"/>
       <source>Offset</source>
       <translation>Siirtymä</translation>
     </message>
@@ -939,8 +939,8 @@ invalid constraints, and degenerate geometry</translation>
       <translation>Vaihda rakennegeometriatilaa</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchDefaultHandler.h" line="913"/>
       <location filename="../../DrawSketchHandler.cpp" line="760"/>
+      <location filename="../../DrawSketchDefaultHandler.h" line="913"/>
       <source>Add Auto-Constraints</source>
       <translation type="unfinished">Add Auto-Constraints</translation>
     </message>
@@ -963,54 +963,54 @@ invalid constraints, and degenerate geometry</translation>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6619"/>
+      <location filename="../../../App/SketchObject.cpp" line="6625"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Solmun moninkertaisuusarvoon ei pyydetty muutosta.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6612"/>
-      <location filename="../../../App/SketchObject.cpp" line="6774"/>
+      <location filename="../../../App/SketchObject.cpp" line="6618"/>
+      <location filename="../../../App/SketchObject.cpp" line="6780"/>
       <source>B-spline Geometry Index (GeoID) is out of bounds.</source>
       <translation>B-splinin geometria-indeksi (GeoID) on sallittujen rajojen ulkopuolella.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6626"/>
-      <location filename="../../../App/SketchObject.cpp" line="6786"/>
+      <location filename="../../../App/SketchObject.cpp" line="6632"/>
+      <location filename="../../../App/SketchObject.cpp" line="6792"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline.</source>
       <translation>Annettu geometria-indeksi (GeoID) ei vastaa B-splini-käyrää.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6637"/>
+      <location filename="../../../App/SketchObject.cpp" line="6643"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Solmun indeksi on rajojen ulkopuolella. Huomaa, että OCC: n notaation mukaisesti ensimmäisellä solmulla on indeksi 1 eikä nolla.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6649"/>
+      <location filename="../../../App/SketchObject.cpp" line="6655"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Monimuotoisuusarvoa ei voi kasvattaa B-splinin astetta suuremmaksi.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6658"/>
+      <location filename="../../../App/SketchObject.cpp" line="6664"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Moninkertaisuusarvoa ei voi pienentää negatiiviseksi.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6672"/>
+      <location filename="../../../App/SketchObject.cpp" line="6678"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC ei pysty pienentämään moninkertaisuusarvoa pysyäkseen suurimmassa sallitussa toleranssissa.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6779"/>
+      <location filename="../../../App/SketchObject.cpp" line="6785"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>Solmulla ei voi olla nollakerrointa.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6798"/>
+      <location filename="../../../App/SketchObject.cpp" line="6804"/>
       <source>Knot multiplicity cannot be higher than the degree of the B-spline.</source>
       <translation>Monimuotoisuusarvoa ei voi kasvattaa B-splinin astetta suuremmaksi.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6805"/>
+      <location filename="../../../App/SketchObject.cpp" line="6811"/>
       <source>Knot cannot be inserted outside the B-spline parameter range.</source>
       <translation>Solmua ei voi lisätä B-splinin parametrialueen ulkopuolelle.</translation>
     </message>
@@ -1135,6 +1135,32 @@ invalid constraints, and degenerate geometry</translation>
       <translation type="unfinished">Do not attach</translation>
     </message>
     <message>
+      <location filename="../../CommandSketcherTools.cpp" line="369"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1013"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1340"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1350"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1412"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1944"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1954"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2018"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2228"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2238"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2285"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2350"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="166"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="237"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="320"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="407"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="466"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="554"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="601"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="965"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1075"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="165"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="174"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="115"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="124"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="151"/>
       <location filename="../../CommandConstraints.cpp" line="172"/>
       <location filename="../../CommandConstraints.cpp" line="179"/>
       <location filename="../../CommandConstraints.cpp" line="2820"/>
@@ -1255,32 +1281,6 @@ invalid constraints, and degenerate geometry</translation>
       <location filename="../../CommandConstraints.cpp" line="10451"/>
       <location filename="../../CommandConstraints.cpp" line="10526"/>
       <location filename="../../CommandConstraints.cpp" line="10538"/>
-      <location filename="../../CommandAlterGeometry.cpp" line="165"/>
-      <location filename="../../CommandAlterGeometry.cpp" line="174"/>
-      <location filename="../../CommandSketcherTools.cpp" line="369"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1013"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1340"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1350"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1412"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1944"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1954"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2018"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2228"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2238"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2285"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2350"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="115"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="124"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="151"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="166"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="237"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="320"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="407"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="466"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="554"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="601"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="965"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1075"/>
       <source>Wrong selection</source>
       <translation>Virheellinen valinta</translation>
     </message>
@@ -1425,9 +1425,9 @@ tai koska ne ovat molemmat ulkoisia geometrioita, tai reuna ei ole sopiva.</tran
       <translation>Valittujen kohteiden määrä ei ole 3</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="785"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="591"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1112"/>
+      <location filename="../../CommandConstraints.cpp" line="785"/>
       <source>Error</source>
       <translation>Virhe</translation>
     </message>
@@ -1829,14 +1829,14 @@ Hyväksytyt yhdistelmät: kaksi käyrää; päätepiste ja käyrä; kaksi päät
       <translation>Valitse mittarajoite.</translation>
     </message>
     <message>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="116"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="125"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="152"/>
       <location filename="../../CommandConstraints.cpp" line="10404"/>
       <location filename="../../CommandConstraints.cpp" line="10416"/>
       <location filename="../../CommandConstraints.cpp" line="10452"/>
       <location filename="../../CommandConstraints.cpp" line="10527"/>
       <location filename="../../CommandConstraints.cpp" line="10539"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="116"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="125"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="152"/>
       <source>Select constraints from the sketch.</source>
       <translation>Valitse rajoitteet luonnoksesta.</translation>
     </message>
@@ -3426,7 +3426,7 @@ However, no constraints linking to the endpoints were found.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="1536"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1570"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1578"/>
       <source>Error</source>
       <translation>Virhe</translation>
     </message>
@@ -3436,7 +3436,7 @@ However, no constraints linking to the endpoints were found.</translation>
       <translation>Näkyvyyttä ei voi päivittää:</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1570"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1578"/>
       <source>Impossible to update visibility:</source>
       <translation type="unfinished">Impossible to update visibility:</translation>
     </message>
@@ -4587,51 +4587,51 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <translation>Sketsissä on osittain tarpeettomia rajoitteita!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10021"/>
+      <location filename="../../../App/SketchObject.cpp" line="10027"/>
       <source>Unmanaged change of Geometry Property results in invalid constraint indices</source>
       <translation>Geometrian ominaisuuksien hallitsematon muutos johtaa virheellisiin rajoiteindekseihin</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10052"/>
+      <location filename="../../../App/SketchObject.cpp" line="10058"/>
       <source>Unmanaged change of Constraint Property results in invalid constraint indices</source>
       <translation>Rajoituksen ominaisuuden hallitsematon muutos johtaa virheellisiin rajoitusindekseihin</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10675"/>
+      <location filename="../../../App/SketchObject.cpp" line="10681"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>Paraabelit yhdistettiin. Tiedostoa ei voi avata FreeCADin vanhemmilla versioilla!
 </translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="138"/>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="188"/>
-      <location filename="../../DrawSketchHandlerExternal.h" line="204"/>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="327"/>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="227"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="473"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="503"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="216"/>
       <location filename="../../DrawSketchHandlerScale.h" line="140"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="504"/>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="258"/>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="256"/>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="335"/>
-      <location filename="../../DrawSketchHandlerSymmetry.h" line="150"/>
-      <location filename="../../DrawSketchHandlerSplitting.h" line="166"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="141"/>
       <location filename="../../CommandSketcherTools.cpp" line="1290"/>
       <location filename="../../CommandSketcherTools.cpp" line="1870"/>
       <location filename="../../CommandSketcherTools.cpp" line="2307"/>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="141"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="377"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="661"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="731"/>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="216"/>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="188"/>
+      <location filename="../../DrawSketchHandlerSymmetry.h" line="150"/>
       <location filename="../../DrawSketchHandlerPolygon.h" line="132"/>
       <location filename="../../DrawSketchHandlerRotate.h" line="168"/>
-      <location filename="../../DrawSketchHandlerPoint.h" line="105"/>
-      <location filename="../../DrawSketchHandlerSlot.h" line="183"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="188"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="204"/>
+      <location filename="../../DrawSketchHandlerSplitting.h" line="166"/>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="258"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="506"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="141"/>
       <location filename="../../DrawSketchHandlerExtend.h" line="338"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="473"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="503"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="227"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="184"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="188"/>
+      <location filename="../../DrawSketchHandlerPoint.h" line="105"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="256"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="335"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="327"/>
       <location filename="../../DrawSketchHandlerCircle.h" line="213"/>
       <source>Error</source>
       <translation>Virhe</translation>
@@ -4668,16 +4668,16 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <translation>Rajoitteella on virheellinen indeksitieto ja se on siten muodostunut väärin.</translation>
     </message>
     <message>
+      <location filename="../../CommandSketcherTools.cpp" line="1077"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="494"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="629"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="858"/>
       <location filename="../../CommandConstraints.cpp" line="433"/>
       <location filename="../../CommandConstraints.cpp" line="513"/>
       <location filename="../../CommandConstraints.cpp" line="610"/>
       <location filename="../../CommandConstraints.cpp" line="700"/>
       <location filename="../../CommandConstraints.cpp" line="6593"/>
       <location filename="../../CommandConstraints.cpp" line="6797"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1077"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="494"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="629"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="858"/>
       <source>Invalid Constraint</source>
       <translation>Virheellinen rajoite</translation>
     </message>
@@ -4752,23 +4752,23 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <translation>Pyöristystä ei voitu luoda</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="139"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="142"/>
       <location filename="../../DrawSketchHandlerLineSet.h" line="474"/>
       <source>Failed to add line</source>
       <translation>Viivaa ei voitu luoda</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="143"/>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="232"/>
-      <location filename="../../DrawSketchHandlerScale.h" line="147"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="509"/>
-      <location filename="../../DrawSketchHandlerSymmetry.h" line="155"/>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="146"/>
       <location filename="../../DrawSketchHandlerArc.h" line="298"/>
       <location filename="../../DrawSketchHandlerArcSlot.h" line="221"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="147"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="146"/>
+      <location filename="../../DrawSketchHandlerSymmetry.h" line="155"/>
       <location filename="../../DrawSketchHandlerPolygon.h" line="137"/>
       <location filename="../../DrawSketchHandlerRotate.h" line="173"/>
-      <location filename="../../DrawSketchHandlerSlot.h" line="188"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="511"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="146"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="232"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="189"/>
       <location filename="../../DrawSketchHandlerCircle.h" line="218"/>
       <source>Tool execution aborted</source>
       <translation>Työkalun suoritus keskeytetty</translation>
@@ -4784,12 +4784,12 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <translation>Monikulmiota ei voitu luoda</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="505"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="507"/>
       <source>Failed to add box</source>
       <translation>Laatikkoa ei voitu luoda</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerSlot.h" line="184"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="185"/>
       <source>Failed to add slot</source>
       <translation>Slotin luonti epäonnistui</translation>
     </message>
@@ -4804,9 +4804,9 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <translation>Särmää ei voitu karsia</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1221"/>
       <location filename="../../EditDatumDialog.cpp" line="63"/>
       <location filename="../../EditDatumDialog.cpp" line="278"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1221"/>
       <source>Value Error</source>
       <translation>Arvovirhe</translation>
     </message>
@@ -4826,22 +4826,22 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <translation>Yllättävä tarpeeton tai ristiriitainen rajoite. Tarkista rajoitteet ja automaattiset rajoitteet.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="428"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="411"/>
       <source>Offset Error</source>
       <translation type="unfinished">Offset Error</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="429"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="412"/>
       <source>Offset could not be created.</source>
       <translation type="unfinished">Offset could not be created.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1197"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1186"/>
       <source>Invalid Value</source>
       <translation>Virheellinen arvo</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1198"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1187"/>
       <source>Offset value can't be 0.</source>
       <translation>Siirtymä ei voi olla 0.</translation>
     </message>
@@ -5024,17 +5024,17 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
   <context>
     <name>TaskSketcherTool_c1_offset</name>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1171"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1160"/>
       <source>Delete original geometries (U)</source>
       <translation>Poista alkuperäiset geometriat (U)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="537"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="465"/>
       <source>Apply equal constraints</source>
       <translation>Aseta yhtenevyysrajoite</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="541"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="469"/>
       <source>If this option is selected dimensional constraints are excluded from the operation.
 Instead equal constraints are applied between the original objects and their copies.</source>
       <translation>Jos tämä valinta on valittu, mittojen rajoitteita ei sovelleta.
@@ -5044,7 +5044,7 @@ Sen sijaan kopiot ja alkuperäiset rajoitetaan yhteneviksi.</translation>
   <context>
     <name>TaskSketcherTool_c2_offset</name>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1175"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1164"/>
       <source>Add offset constraint (J)</source>
       <translation>Lisää siirtymän rajoite (J)</translation>
     </message>
@@ -5052,32 +5052,32 @@ Sen sijaan kopiot ja alkuperäiset rajoitetaan yhteneviksi.</translation>
   <context>
     <name>TaskSketcherTool_c1_rectangle</name>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1821"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1829"/>
       <source>Corner, width, height</source>
       <translation>Kulma, leveys, korkeus</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1822"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1830"/>
       <source>Center, width, height</source>
       <translation>Keskipiste, leveys, korkeus</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1823"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1831"/>
       <source>3 corners</source>
       <translation>3 kulmaa</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1824"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1832"/>
       <source>Center, 2 corners</source>
       <translation>Keskusta, 2 kulmaa</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1829"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1837"/>
       <source>Rounded corners (U)</source>
       <translation>Pyöristetyt kulmat (U)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1832"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1840"/>
       <source>Create a rectangle with rounded corners.</source>
       <translation>Luo suorakulmio jossa on pyöristetyt kulmat.</translation>
     </message>
@@ -5085,12 +5085,12 @@ Sen sijaan kopiot ja alkuperäiset rajoitetaan yhteneviksi.</translation>
   <context>
     <name>TaskSketcherTool_c2_rectangle</name>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1838"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1846"/>
       <source>Frame (J)</source>
       <translation>Kehys (J)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1841"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1849"/>
       <source>Create two rectangles with a constant offset.</source>
       <translation>Luo kaksi suorakulmiota kiinteällä siirtymällä.</translation>
     </message>
@@ -5391,7 +5391,7 @@ Sen sijaan kopiot ja alkuperäiset rajoitetaan yhteneviksi.</translation>
   <context>
     <name>TaskSketcherTool_p4_rotate</name>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="560"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="488"/>
       <source>Copies (+'U'/ -'J')</source>
       <translation>Kopiot (+'U'/ -'J')</translation>
     </message>
@@ -5412,7 +5412,7 @@ Sen sijaan kopiot ja alkuperäiset rajoitetaan yhteneviksi.</translation>
   <context>
     <name>TaskSketcherTool_c1_scale</name>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="594"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="595"/>
       <source>Keep original geometries (U)</source>
       <translation>Säilytä alkuperäiset geometriat (U)</translation>
     </message>
@@ -5501,17 +5501,17 @@ Sen sijaan kopiot ja alkuperäiset rajoitetaan yhteneviksi.</translation>
   <context>
     <name>Sketcher_CreateLine</name>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="335"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="351"/>
       <source>Point, length, angle</source>
       <translation>Piste, pituus, kulma</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="336"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="352"/>
       <source>Point, width, height</source>
       <translation>Piste, leveys, korkeus</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="337"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="353"/>
       <source>2 points</source>
       <translation>2 pistettä</translation>
     </message>
@@ -5519,12 +5519,12 @@ Sen sijaan kopiot ja alkuperäiset rajoitetaan yhteneviksi.</translation>
   <context>
     <name>Sketcher_CreateOffset</name>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1158"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1147"/>
       <source>Arc</source>
       <translation>Kaari</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1159"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1148"/>
       <source>Intersection</source>
       <translation>Leikkaus</translation>
     </message>
@@ -7600,26 +7600,26 @@ Pisteen täyty olla lähempänä kuin ruudukkovälin viidesosa, jotta tarttumine
   <context>
     <name>SketcherGui::DrawSketchHandlerLine</name>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="217"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="220"/>
       <source>Line Parameters</source>
       <translation type="unfinished">Line Parameters</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="264"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="280"/>
       <source>%1 switch mode</source>
       <translation type="unfinished">%1 switch mode</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="273"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="287"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="301"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="289"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="303"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="317"/>
       <source>%1 pick first point</source>
       <translation type="unfinished">%1 pick first point</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="279"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="293"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="307"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="295"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="309"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="323"/>
       <source>%1 pick second point</source>
       <translation type="unfinished">%1 pick second point</translation>
     </message>
@@ -7702,70 +7702,70 @@ Pisteen täyty olla lähempänä kuin ruudukkovälin viidesosa, jotta tarttumine
   <context>
     <name>SketcherGui::DrawSketchHandlerRectangle</name>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="117"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="119"/>
       <source>%1 switch mode</source>
       <translation type="unfinished">%1 switch mode</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="118"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="120"/>
       <source>%1 toggle rounded corners</source>
       <translation type="unfinished">%1 toggle rounded corners</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="120"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="122"/>
       <source>%1 toggle frame</source>
       <translation type="unfinished">%1 toggle frame</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="129"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="197"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="239"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="131"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="199"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="241"/>
       <source>%1 pick first corner</source>
       <translation type="unfinished">%1 pick first corner</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="137"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="139"/>
       <source>%1 pick opposite corner</source>
       <translation type="unfinished">%1 pick opposite corner</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="145"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="179"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="221"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="255"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="147"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="181"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="223"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="257"/>
       <source>%1 set corner radius or frame thickness</source>
       <translation type="unfinished">%1 set corner radius or frame thickness</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="153"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="187"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="155"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="189"/>
       <source>%1 set frame thickness</source>
       <translation type="unfinished">%1 set frame thickness</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="163"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="231"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="165"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="233"/>
       <source>%1 pick center</source>
       <translation type="unfinished">%1 pick center</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="171"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="173"/>
       <source>%1 pick corner</source>
       <translation type="unfinished">%1 pick corner</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="205"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="247"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="207"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="249"/>
       <source>%1 pick second corner</source>
       <translation type="unfinished">%1 pick second corner</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="213"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="215"/>
       <source>%1 pick third corner</source>
       <translation type="unfinished">%1 pick third corner</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="741"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="743"/>
       <source>Rectangle Parameters</source>
       <translation type="unfinished">Rectangle Parameters</translation>
     </message>
@@ -7817,17 +7817,17 @@ Pisteen täyty olla lähempänä kuin ruudukkovälin viidesosa, jotta tarttumine
   <context>
     <name>SketcherGui::DrawSketchHandlerSlot</name>
     <message>
-      <location filename="../../DrawSketchHandlerSlot.h" line="92"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="93"/>
       <source>%1 pick slot start point</source>
       <translation type="unfinished">%1 pick slot start point</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerSlot.h" line="97"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="98"/>
       <source>%1 pick slot end point</source>
       <translation type="unfinished">%1 pick slot end point</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerSlot.h" line="102"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="103"/>
       <source>%1 pick slot width</source>
       <translation type="unfinished">%1 pick slot width</translation>
     </message>

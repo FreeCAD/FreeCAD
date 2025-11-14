@@ -44,7 +44,8 @@ FemMeshShapeBaseObject::FemMeshShapeBaseObject()
         (nullptr),
         "FEM Mesh",
         Prop_None,
-        "Geometry object, the mesh is made from. The geometry object has to have a Shape.");
+        "Geometry object, the mesh is made from. The geometry object has to have a Shape."
+    );
 
     Shape.setScope(LinkScope::Global);
 }
