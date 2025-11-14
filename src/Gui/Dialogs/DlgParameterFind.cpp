@@ -270,7 +270,7 @@ void DlgParameterFind::accept()
         opt.name = ui->checkNames->isChecked();
         opt.value = ui->checkValues->isChecked();
         opt.match = ui->checkMatch->isChecked();
-        
+
         // store the top item, to go back when you have reached the end
         QTreeWidgetItem* current = groupTree->currentItem();
         QTreeWidgetItem* top = current->parent();
@@ -306,8 +306,12 @@ void DlgParameterFind::accept()
             groupTree->setCurrentItem(next);
         }
         else {
-            auto ret = QMessageBox::warning(this, tr("Not found"), tr("%1 not found. Would you like to start from the beginning?").arg(opt.text),
-                QMessageBox::Yes| QMessageBox::No);
+            auto ret = QMessageBox::warning(
+                this,
+                tr("Not found"),
+                tr("%1 not found. Would you like to start from the beginning?").arg(opt.text),
+                QMessageBox::Yes | QMessageBox::No
+            );
             if (ret == QMessageBox::Yes) {
                 opt.text = "BaseApp";
                 opt.group = ui->checkGroups->isChecked();
