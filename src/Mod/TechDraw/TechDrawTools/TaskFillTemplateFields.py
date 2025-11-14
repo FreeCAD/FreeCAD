@@ -112,6 +112,7 @@ class TaskFillTemplateFields:
                     )
                     msgBox.setText(msg)
                     msgBox.setWindowTitle(msgTitle)
+                    msgBox.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
                     msgBox.exec_()
                     break
 
@@ -429,6 +430,7 @@ class TaskFillTemplateFields:
                     self.button.setEnabled(True)
                     self.dialog.resize(600 + longestText, dialogRow * 50 + 75)
                     self.dialog.move(400, 200 * (400 / (dialogRow * 50 + 75)))
+                    self.dialog.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
                     QtCore.QMetaObject.connectSlotsByName(self.dialog)
                     self.dialog.show()
                     self.dialog.exec_()
@@ -447,6 +449,8 @@ class TaskFillTemplateFields:
                     )
                     msgBox.setText(msg)
                     msgBox.setWindowTitle(msgTitle)
+                    msgBox.move(400, 450)
+                    msgBox.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
                     msgBox.exec_()
 
     def on_cbAll_clicked(self):
@@ -539,4 +543,5 @@ class TaskFillTemplateFields:
 
     def close(self):
         self.dialog.hide()
+        keyLst.clear()
         return True
