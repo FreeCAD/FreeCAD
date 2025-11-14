@@ -240,8 +240,9 @@ TEST_F(ConstraintsTest, rectangleWithOneOffsetDim)  // NOLINT
 
     EXPECT_NEAR(*l1.p2.y, *l1.p1.y + l1length, 1e-12);
 }
-TEST_F(ConstraintsTest, simpleDrag)  // NOLINT
+TEST_F(ConstraintsTest, drag2DOF)  // NOLINT
 {
+    // Drag a line which has a 2 degrees of freedom (the dragged point should go to the dragpos)
     double lp1x = 0.0;
     double lp1y = 0.0;
     double lp2x = 0.0;
@@ -273,6 +274,81 @@ TEST_F(ConstraintsTest, simpleDrag)  // NOLINT
     EXPECT_NEAR(lp1x, dragPointx, 1e-12);
     EXPECT_NEAR(lp1y, dragPointy, 1e-12);
     EXPECT_NEAR(lp2y, lp1y + llength, 1e-12);
+}
+TEST_F(ConstraintsTest, drag1DOF)
+{
+    // Drag a line which has a 1 degree of freedom (1 dimension of the dragged point should go to
+    // the dragpoint)
+    double zero = 0;
+    double lp1x = -1.0;
+    double lp1y = -2.0;
+    double lp2x = -3.0;
+    double lp2y = 20.0;
+    GCS::Line line(GCS::Point(&lp1x, &lp1y), GCS::Point(&lp2x, &lp2y));
+
+    double dragPointx = 5.0;
+    double dragPointy = 2.0;
+    GCS::Point dragPoint(&dragPointx, &dragPointy);
+
+    std::vector<double*> unknowns;
+    line.PushOwnParams(unknowns);
+
+    System()->addConstraintEqual(&lp1x, &zero);
+    System()->addConstraintEqual(&lp1y, &zero);
+    System()->addConstraintVertical(line);
+
+    System()->addConstraintP2PCoincident(line.p2, dragPoint, GCS::DefaultTemporaryConstraint);
+
+    int solveResult = System()->solve(unknowns);
+    if (solveResult == GCS::Success) {
+        System()->applySolution();
+    }
+
+    // Assert
+    EXPECT_EQ(solveResult, GCS::Success);
+
+    EXPECT_NEAR(lp1x, 0, 1e-12);
+    EXPECT_NEAR(lp1y, 0, 1e-12);
+    EXPECT_NEAR(lp2y, dragPointy, 1e-12);
+    EXPECT_NEAR(lp1x, lp2x, 1e-12);
+}
+TEST_F(ConstraintsTest, drag0DOF)
+{
+    // Drag a line which has a 0 degree of freedom (dragged point should not move)
+    double zero = 0;
+    double lp1x = -1.0;
+    double lp1y = -2.0;
+    double lp2x = 0.0;
+    double lp2y = 20.0;
+    double llength = 20;
+    GCS::Line line(GCS::Point(&lp1x, &lp1y), GCS::Point(&lp2x, &lp2y));
+
+    double dragPointx = 5.0;
+    double dragPointy = 2.0;
+    GCS::Point dragPoint(&dragPointx, &dragPointy);
+
+    std::vector<double*> unknowns;
+    line.PushOwnParams(unknowns);
+
+    System()->addConstraintEqual(&lp1x, &zero);
+    System()->addConstraintEqual(&lp1y, &zero);
+    System()->addConstraintVertical(line);
+    System()->addConstraintP2PDistance(line.p1, line.p2, &llength);
+
+    System()->addConstraintP2PCoincident(line.p2, dragPoint, GCS::DefaultTemporaryConstraint);
+
+    int solveResult = System()->solve(unknowns);
+    if (solveResult == GCS::Success) {
+        System()->applySolution();
+    }
+
+    // Assert
+    EXPECT_EQ(solveResult, GCS::Success);
+
+    EXPECT_NEAR(lp1x, 0, 1e-12);
+    EXPECT_NEAR(lp1y, 0, 1e-12);
+    EXPECT_NEAR(lp2y, llength, 1e-12);
+    EXPECT_NEAR(lp1x, lp2x, 1e-12);
 }
 
 TEST_F(ConstraintsTest, classicFlip)  // NOLINT
@@ -350,7 +426,7 @@ TEST_F(ConstraintsTest, classicFlip)  // NOLINT
     System()->addConstraintP2PCoincident(l4.p2, l5.p1);
     System()->addConstraintP2PCoincident(l5.p2, l6.p1);
     System()->addConstraintP2PCoincident(l6.p2, l1.p1);
-    +System()->addConstraintEqualLength(l3, l6);
+    System()->addConstraintEqualLength(l3, l6);
     System()->addConstraintEqualLength(l4, l5);
 
     System()->addConstraintP2LDistance(origin, l1, &l1dist);
@@ -438,4 +514,69 @@ TEST_F(ConstraintsTest, classicFlip)  // NOLINT
     EXPECT_NEAR(l4p1y, l6length, 1e-12);
     EXPECT_NEAR(l4p2y, l6length, 1e-12);
     EXPECT_NEAR(l5p1y, l6length, 1e-12);
+}
+TEST_F(ConstraintsTest, addEquality)  // NOLINT
+{
+    double linelength = 40;
+    double zero = 0.0;
+
+    double lhx1 = 0.0;
+    double lhy1 = 0.0;
+    double lhx2 = 40.0;
+    double lhy2 = 0.0;
+    GCS::Line lh(GCS::Point(&lhx1, &lhy1), GCS::Point(&lhx2, &lhy2));
+
+    double lvx1 = 20.0;
+    double lvy1 = 0.0;
+    double lvx2 = 20.0;
+    double lvy2 = 10.0;
+    GCS::Line lv(GCS::Point(&lvx1, &lvy1), GCS::Point(&lvx2, &lvy2));
+
+    std::vector<double*> unknowns;
+    lh.PushOwnParams(unknowns);
+    lv.PushOwnParams(unknowns);
+
+    System()->addConstraintEqual(lh.p1.x, &zero);
+    System()->addConstraintEqual(lh.p1.y, &zero);
+    System()->addConstraintHorizontal(lh);
+    System()->addConstraintVertical(lv);
+
+    System()->addConstraintP2PDistance(lh.p1, lh.p2, &linelength);
+    System()->addConstraintPointOnLine(lv.p1, lh);
+
+    int solveResult = System()->solve(unknowns);
+    if (solveResult == GCS::Success) {
+        System()->applySolution();
+    }
+
+    // Assert
+    EXPECT_EQ(solveResult, GCS::Success);
+
+    EXPECT_NEAR(lhx1, 0, 1e-12);
+    EXPECT_NEAR(lhy1, 0, 1e-12);
+    EXPECT_NEAR(lhx2, linelength, 1e-12);
+    EXPECT_NEAR(lhy2, 0, 1e-12);
+
+    EXPECT_NEAR(lvx1, 20, 1e-12);
+    EXPECT_NEAR(lvy1, 0, 1e-12);
+    EXPECT_NEAR(lvx2, 20, 1e-12);
+    EXPECT_NEAR(lvy2, 10, 1e-12);
+
+    System()->addConstraintEqualLength(lh, lv);
+    solveResult = System()->solve(unknowns);
+    if (solveResult == GCS::Success) {
+        System()->applySolution();
+    }
+
+    EXPECT_EQ(solveResult, GCS::Success);
+
+    EXPECT_NEAR(lhx1, 0, 1e-12);
+    EXPECT_NEAR(lhy1, 0, 1e-12);
+    EXPECT_NEAR(lhx2, linelength, 1e-12);
+    EXPECT_NEAR(lhy2, 0, 1e-12);
+
+    EXPECT_NEAR(lvx1, 20, 1e-12);
+    EXPECT_NEAR(lvy1, 0, 1e-12);
+    EXPECT_NEAR(lvx2, 20, 1e-12);
+    EXPECT_NEAR(lvy2, linelength, 1e-12);
 }
