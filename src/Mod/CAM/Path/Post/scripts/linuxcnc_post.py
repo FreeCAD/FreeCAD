@@ -79,6 +79,9 @@ parser.add_argument(
     action="store_true",
     help="suppress tool length offset (G43) following tool changes",
 )
+parser.add_argument(
+    "--tool-retraction", action="store_true", help="Retract tool in Z-axis for every tool change"
+)
 
 TOOLTIP_ARGS = parser.format_help()
 
@@ -110,7 +113,6 @@ PREAMBLE = """G17 G54 G40 G49 G80 G90
 # Postamble text will appear following the last operation.
 POSTAMBLE = """M05
 G17 G54 G90 G80 G40
-M2
 """
 
 # Pre operation text will be inserted before every operation
@@ -137,6 +139,7 @@ def processArguments(argstring):
     global MODAL
     global USE_TLO
     global OUTPUT_DOUBLES
+    global TOOL_CHANGE
 
     try:
         args = parser.parse_args(shlex.split(argstring))
@@ -159,12 +162,14 @@ def processArguments(argstring):
             UNIT_SPEED_FORMAT = "in/min"
             UNIT_FORMAT = "in"
             PRECISION = 4
+        if args.tool_retraction:
+            TOOL_CHANGE += "G30 Z0\n"
+            POSTAMBLE += "G30 Z0\n"
         if args.modal:
             MODAL = True
         if args.no_tlo:
             USE_TLO = False
         if args.axis_modal:
-            print("here")
             OUTPUT_DOUBLES = False
 
     except Exception:
@@ -247,6 +252,7 @@ def export(objectslist, filename, argstring):
         gcode += "(begin postamble)\n"
     for line in POSTAMBLE.splitlines():
         gcode += linenumber() + line + "\n"
+    gcode += "M2\n"
 
     if FreeCAD.GuiUp and SHOW_EDITOR:
         final = gcode
