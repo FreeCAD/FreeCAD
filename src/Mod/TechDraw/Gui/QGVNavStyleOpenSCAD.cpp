@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QGuiApplication>
 # include <QMouseEvent>
-#endif
+
 
 #include "QGVNavStyleOpenSCAD.h"
 #include "QGVPage.h"

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2003 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -25,8 +27,6 @@
 #define MESH_PRECOMPILED_H
 
 #include <FCConfig.h>
-
-#ifdef _PreComp_
 
 // standard
 #include <cassert>
@@ -73,7 +73,5 @@
 #include <xercesc/util/XMLUni.hpp>
 #include <xercesc/util/XMLUniDefs.hpp>
 #include <xercesc/util/XercesVersion.hpp>
-
-#endif  //_PreComp_
 
 #endif

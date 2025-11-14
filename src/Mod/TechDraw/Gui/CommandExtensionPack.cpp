@@ -20,15 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QApplication>
 #include <QMessageBox>
 #include <BRepGProp.hxx>
 #include <GProp_GProps.hxx>
 #include <BRepAdaptor_Curve.hxx>
 #include <GCPnts_AbscissaPoint.hxx>
-#endif
+
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>

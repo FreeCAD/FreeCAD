@@ -23,9 +23,6 @@
  ***************************************************************************/
 
 //! CommandHelpers is a collection of methods for common actions in commands
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
 
 #include <QMessageBox>
 

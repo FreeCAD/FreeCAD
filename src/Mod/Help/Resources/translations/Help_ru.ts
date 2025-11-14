@@ -17,7 +17,7 @@
       <location filename="../../dlgPreferencesHelp.ui" line="29"/>
       <source>Fetches the documentation from pages rendered on GitHub.
 This is currently not available.</source>
-      <translation>Это позволит получить документацию со страниц, опубликованных на GitHub.
+      <translation>Получить документацию со страниц, опубликованных на GitHub.
 Сейчас это недоступно.</translation>
     </message>
     <message>
@@ -105,7 +105,7 @@ custom stylesheet below and can look nicer than the wiki option. The &apos;Markd
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="180"/>
       <source>The documentation will open in the default web browser</source>
-      <translation>Документация откроется в веб-браузере по умолчанию</translation>
+      <translation>Документация откроется в веб браузере по умолчанию</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="183"/>
@@ -121,7 +121,7 @@ custom stylesheet below and can look nicer than the wiki option. The &apos;Markd
       <location filename="../../dlgPreferencesHelp.ui" line="221"/>
       <source>Documentation opens in a dockable dialog within FreeCAD, allowing simultaneous work in the 3D view.
 Requires the PySide QtWebengineWidgets component.</source>
-      <translation>Документация откроется непосредственно в диалоговом окне FreeCAD с возможностью закрепления, что позволит одновременно работать с 3D-видом.
+      <translation>Документация откроется непосредственно в диалоговом окне FreeCAD с возможностью закрепления, что позволит одновременно работать с трехмерным видом.
 Требуется компонент QtWebEngineWidgets PySide.</translation>
     </message>
     <message>
@@ -134,7 +134,7 @@ Requires the PySide QtWebengineWidgets component.</source>
       <source>Specify the path to an alternative CSS file for styling Markdown pages.
 This only applies if Markdown is selected above.</source>
       <translation>Укажите путь к альтернативному CSS-файлу для оформления страниц Markdown.
-Это применимо только в том случае, если Markdown выбран выше.</translation>
+Это применимо только в том случае, если выше выбран Markdown.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="202"/>

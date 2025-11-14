@@ -21,9 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <QGuiApplication>
 #include <QHBoxLayout>
 #include <QLabel>
@@ -31,7 +29,7 @@
 #include <QResizeEvent>
 #include <QVBoxLayout>
 #include <QWidget>
-#endif
+
 
 #include "FirstStartWidget.h"
 #include "ThemeSelectorWidget.h"
@@ -93,9 +91,11 @@ void FirstStartWidget::retranslateUi()
 {
     _doneButton->setText(tr("Done"));
     QString application = QString::fromUtf8(App::Application::Config()["ExeName"].c_str());
-    _welcomeLabel->setText(QLatin1String("<h1>") + tr("Welcome to %1").arg(application)
-                           + QLatin1String("</h1>"));
+    _welcomeLabel->setText(
+        QLatin1String("<h1>") + tr("Welcome to %1").arg(application) + QLatin1String("</h1>")
+    );
     _descriptionLabel->setText(
         tr("Set your basic configuration options below.") + QLatin1String(" ")
-        + tr("These options (and many more) can be changed later in the preferences."));
+        + tr("These options (and many more) can be changed later in the preferences.")
+    );
 }

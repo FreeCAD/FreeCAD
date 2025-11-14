@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 if(MSVC)
     add_definitions(-DFCAppMaterial -DHAVE_ACOSH -DHAVE_ASINH -DHAVE_ATANH)
 else(MSVC)
@@ -114,7 +116,6 @@ SET(Materials_SRCS
     ModelManagerLocal.h
     ModelUuids.cpp
     ModelUuids.h
-    PreCompiled.cpp
     PreCompiled.h
     PropertyMaterial.cpp
     PropertyMaterial.h
@@ -134,13 +135,14 @@ if(BUILD_MATERIAL_EXTERNAL)
     )
 endif(BUILD_MATERIAL_EXTERNAL)
 
+add_library(Materials SHARED ${Materials_SRCS})
+
 if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${Materials_SRCS})
-    ADD_MSVC_PRECOMPILED_HEADER(Materials PreCompiled.h PreCompiled.cpp PCH_SRCS)
+    target_precompile_headers(Materials PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
 endif(FREECAD_USE_PCH)
 
-add_library(Materials SHARED ${Materials_SRCS})
 target_include_directories(
     Materials
     PRIVATE

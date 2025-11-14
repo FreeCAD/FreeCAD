@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2024 David Carter <dcarter@david.carter.ca>             *
  *                                                                         *
@@ -19,13 +21,11 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QClipboard>
 #include <QStandardItem>
 #include <QStandardItemModel>
 #include <QTreeView>
-#endif
+
 
 #include <App/Document.h>
 #include <Gui/Application.h>

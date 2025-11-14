@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
 # *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
@@ -80,11 +82,11 @@ def mirror(objlist, p1, p2):
     """
 
     if not objlist:
-        _err(translate("draft","No object given"))
+        _err(translate("draft", "No object given"))
         return
 
     if p1 == p2:
-        _err(translate("draft","The two points are coincident"))
+        _err(translate("draft", "The two points are coincident"))
         return
 
     if not isinstance(objlist, list):
@@ -109,5 +111,6 @@ def mirror(objlist, p1, p2):
         gui_utils.select(result)
 
     return result
+
 
 ## @}

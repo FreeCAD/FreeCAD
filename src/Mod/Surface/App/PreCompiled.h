@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2014 Nathan Miller <Nathan.A.Mill[at]gmail.com>         *
  *                                                                         *
@@ -25,14 +27,10 @@
 
 #include <FCConfig.h>
 
-#ifdef _PreComp_
-
 // STL
 #include <string>
 
 // opencascade
 #include <Mod/Part/App/OpenCascadeAll.h>
-
-#endif  //_PreComp_
 
 #endif

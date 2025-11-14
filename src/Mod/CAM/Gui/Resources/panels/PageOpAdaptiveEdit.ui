@@ -279,32 +279,6 @@ Larger values (further to the right) will calculate faster; smaller values (furt
         </property>
        </widget>
       </item>
-      <item row="26" column="0">
-       <widget class="QCheckBox" name="orderCutsByRegion">
-        <property name="toolTip">
-         <string>After calculating toolpaths, the default cut order is by depth- all regions at a given stepdown are cleared before moving to the next stepdown.
-
-This option changes that behavior to cut each discrete area to its full depth before moving on to the next.</string>
-        </property>
-        <property name="text">
-         <string>Order cuts by region</string>
-        </property>
-       </widget>
-      </item>
-      <item row="21" column="0">
-       <widget class="QLabel" name="label_6">
-        <property name="text">
-         <string>Z stock to leave</string>
-        </property>
-       </widget>
-      </item>
-      <item row="21" column="1">
-       <widget class="Gui::QuantitySpinBox" name="ZStockToLeave" native="true">
-        <property name="toolTip">
-         <string>How much material to leave along the Z axis (i.e. for finishing operation)</string>
-        </property>
-       </widget>
-      </item>
      </layout>
     </widget>
    </item>

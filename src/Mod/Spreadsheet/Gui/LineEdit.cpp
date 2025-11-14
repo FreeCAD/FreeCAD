@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
@@ -20,14 +22,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <QApplication>
 #include <QEvent>
 #include <QKeyEvent>
 #include <QGraphicsProxyWidget>
-#endif
 
 #include "LineEdit.h"
 #include <Gui/MainWindow.h>
@@ -56,8 +55,10 @@ void LineEdit::setDocumentObject(const App::DocumentObject* currentDocObj, bool 
 
     QPointer<Gui::MDIView> active_view = Gui::MainWindow::getInstance()->activeWindow();
     if (!active_view) {
-        Base::Console().developerWarning("LineEdit::setDocumentObject",
-                                         "The active view is not a spreadsheet");
+        Base::Console().developerWarning(
+            "LineEdit::setDocumentObject",
+            "The active view is not a spreadsheet"
+        );
         return;
     }
     QPointer<ZoomableView> zv = active_view->findChild<ZoomableView*>();
@@ -87,8 +88,9 @@ void LineEdit::setDocumentObject(const App::DocumentObject* currentDocObj, bool 
 
 
     auto getPopupPos = [proxy_lineedit, zv]() {
-        const QPointF scene_pos =
-            proxy_lineedit->mapToScene(proxy_lineedit->boundingRect().bottomLeft());
+        const QPointF scene_pos = proxy_lineedit->mapToScene(
+            proxy_lineedit->boundingRect().bottomLeft()
+        );
         const QPoint view_pos = zv->mapFromScene(scene_pos);
         const QPoint global_pos = zv->viewport()->mapToGlobal(view_pos);
 

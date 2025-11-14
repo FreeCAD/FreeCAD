@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Precision.hxx>
-#endif
+#include <Precision.hxx>
+
 
 #include <Mod/PartDesign/App/FeaturePad.h>
 
@@ -36,7 +34,7 @@ using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskPadParameters */
 
-TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView, QWidget *parent, bool newObj)
+TaskPadParameters::TaskPadParameters(ViewProviderPad* PadView, QWidget* parent, bool newObj)
     : TaskExtrudeParameters(PadView, parent, "PartDesign_Pad", tr("Pad Parameters"))
 {
     ui->offsetEdit->setToolTip(tr("Offset the pad from the face at which the pad will end on side 1"));
@@ -138,8 +136,9 @@ void TaskPadParameters::apply()
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgPadParameters::TaskDlgPadParameters(ViewProviderPad *PadView, bool /*newObj*/)
-    : TaskDlgExtrudeParameters(PadView), parameters(new TaskPadParameters(PadView))
+TaskDlgPadParameters::TaskDlgPadParameters(ViewProviderPad* PadView, bool /*newObj*/)
+    : TaskDlgExtrudeParameters(PadView)
+    , parameters(new TaskPadParameters(PadView))
 {
     Content.push_back(parameters);
     Content.push_back(preview);

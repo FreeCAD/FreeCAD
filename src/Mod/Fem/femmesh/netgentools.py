@@ -124,7 +124,7 @@ class NetgenTools:
     def compute(self):
         env = QProcessEnvironment.systemEnvironment()
         self.process.setProcessEnvironment(env)
-        self.process.start(self._get_python_exe(), ["-E", self.script_file])
+        self.process.start(self._get_python_exe(), ["-X", "utf8", "-E", self.script_file])
 
         return self.process
 
@@ -422,7 +422,7 @@ except:
     pass
 """
         p = QProcess()
-        p.start(NetgenTools._get_python_exe(), ["-c", script])
+        p.start(NetgenTools._get_python_exe(), ["-E", "-c", script])
         p.waitForFinished()
         info = p.readAll().data().decode()
 

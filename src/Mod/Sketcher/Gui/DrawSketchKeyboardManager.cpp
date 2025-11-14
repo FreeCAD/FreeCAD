@@ -21,15 +21,12 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <Inventor/events/SoKeyboardEvent.h>
 #include <QApplication>
 #include <QEvent>
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
-#endif
+
 
 #include "ViewProviderSketch.h"
 
@@ -55,9 +52,7 @@ DrawSketchKeyboardManager::DrawSketchKeyboardManager()
 
     timer.setSingleShot(true);
 
-    QObject::connect(&timer, &QTimer::timeout, [this]() {
-        onTimeOut();
-    });
+    QObject::connect(&timer, &QTimer::timeout, [this]() { onTimeOut(); });
 }
 
 bool DrawSketchKeyboardManager::isMode(KeyboardEventHandlingMode mode)

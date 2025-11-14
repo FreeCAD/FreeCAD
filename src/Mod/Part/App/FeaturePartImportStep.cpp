@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,10 +22,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <fcntl.h>
-#endif
+#include <fcntl.h>
+
 
 #include <Base/Console.h>
 #include <Base/FileInfo.h>
@@ -38,21 +38,22 @@ PROPERTY_SOURCE(Part::ImportStep, Part::Feature)
 
 ImportStep::ImportStep()
 {
-    ADD_PROPERTY(FileName,(""));
+    ADD_PROPERTY(FileName, (""));
 }
 
 short ImportStep::mustExecute() const
 {
-    if (FileName.isTouched())
+    if (FileName.isTouched()) {
         return 1;
+    }
     return 0;
 }
 
-App::DocumentObjectExecReturn *ImportStep::execute()
+App::DocumentObjectExecReturn* ImportStep::execute()
 {
     Base::FileInfo fi(FileName.getValue());
     if (!fi.isReadable()) {
-        Base::Console().log("ImportStep::execute() not able to open %s!\n",FileName.getValue());
+        Base::Console().log("ImportStep::execute() not able to open %s!\n", FileName.getValue());
         std::string error = std::string("Cannot open file ") + FileName.getValue();
         return new App::DocumentObjectExecReturn(error);
     }
@@ -63,5 +64,3 @@ App::DocumentObjectExecReturn *ImportStep::execute()
 
     return App::DocumentObject::StdReturn;
 }
-
-

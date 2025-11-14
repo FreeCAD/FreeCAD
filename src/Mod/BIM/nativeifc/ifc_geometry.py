@@ -56,9 +56,7 @@ def add_geom_properties(obj):
                         obj.addProperty(
                             "App::PropertyVector", "ExtrusionDirection", "Geometry", locked=True
                         )
-                    obj.ExtrusionDirection = FreeCAD.Vector(
-                        ext.ExtrudedDirection.DirectionRatios
-                    )
+                    obj.ExtrusionDirection = FreeCAD.Vector(ext.ExtrudedDirection.DirectionRatios)
 
                     # Extrusion of a rectangle
                     if ext.SweptArea.is_a("IfcRectangleProfileDef"):
@@ -83,13 +81,9 @@ def add_geom_properties(obj):
                                     "Geometry",
                                     locked=True,
                                 )
-                            points = [
-                                p.Coordinates for p in ext.SweptArea.OuterCurve.Points
-                            ]
+                            points = [p.Coordinates for p in ext.SweptArea.OuterCurve.Points]
                             points = [p + (0,) for p in points if len(p) < 3]
-                            points = [
-                                FreeCAD.Vector(p).multiply(scaling) for p in points
-                            ]
+                            points = [FreeCAD.Vector(p).multiply(scaling) for p in points]
                             obj.PolylinePoints = points
 
                     # I profile
@@ -239,9 +233,7 @@ def set_geom_property(obj, prop):
                                         rest.append(elem_points.pop())
                                     elem.Points = elem_points
                                     for r in rest:
-                                        ifc_tools.api_run(
-                                            "root.remove_product", ifcfile, product=r
-                                        )
+                                        ifc_tools.api_run("root.remove_product", ifcfile, product=r)
                                 if len(points) == len(elem_points):
                                     for i in range(len(points)):
                                         v = FreeCAD.Vector(points[i]).multiply(scaling)

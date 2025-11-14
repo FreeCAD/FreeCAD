@@ -21,15 +21,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <Inventor/SbMatrix.h>
 #include <Inventor/SbRotation.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Precision.hxx>
-#endif
+
 
 #include "Gui/Control.h"
 #include <Base/Console.h>
@@ -99,10 +97,13 @@ void ViewProviderFemConstraintGear::updateData(const App::Property* prop)
 
             GuiTools::createPlacement(pShapeSep, b, SbRotation(SbVec3f(0, 1, 0), ax));
             pShapeSep->addChild(
-                GuiTools::createCylinder(pcConstraint->Height.getValue() * 0.8, dia / 2));
-            GuiTools::createPlacement(pShapeSep,
-                                      SbVec3f(dia / 2 * sin(angle), 0, dia / 2 * cos(angle)),
-                                      SbRotation(ax, dir));
+                GuiTools::createCylinder(pcConstraint->Height.getValue() * 0.8, dia / 2)
+            );
+            GuiTools::createPlacement(
+                pShapeSep,
+                SbVec3f(dia / 2 * sin(angle), 0, dia / 2 * cos(angle)),
+                SbRotation(ax, dir)
+            );
             pShapeSep->addChild(GuiTools::createArrow(dia / 2, dia / 8));
         }
     }
@@ -126,10 +127,12 @@ void ViewProviderFemConstraintGear::updateData(const App::Property* prop)
 
             const SoSeparator* sep = static_cast<SoSeparator*>(pShapeSep->getChild(2));
             GuiTools::updateCylinder(sep, 0, pcConstraint->Height.getValue() * 0.8, dia / 2);
-            GuiTools::updatePlacement(pShapeSep,
-                                      3,
-                                      SbVec3f(dia / 2 * sin(angle), 0, dia / 2 * cos(angle)),
-                                      SbRotation(ax, dir));
+            GuiTools::updatePlacement(
+                pShapeSep,
+                3,
+                SbVec3f(dia / 2 * sin(angle), 0, dia / 2 * cos(angle)),
+                SbRotation(ax, dir)
+            );
             sep = static_cast<SoSeparator*>(pShapeSep->getChild(5));
             GuiTools::updateArrow(sep, 0, dia / 2, dia / 8);
         }
@@ -162,10 +165,12 @@ void ViewProviderFemConstraintGear::updateData(const App::Property* prop)
             directions!)
             */
 
-            GuiTools::updatePlacement(pShapeSep,
-                                      3,
-                                      SbVec3f(dia / 2 * sin(angle), 0, dia / 2 * cos(angle)),
-                                      SbRotation(ax, dir));
+            GuiTools::updatePlacement(
+                pShapeSep,
+                3,
+                SbVec3f(dia / 2 * sin(angle), 0, dia / 2 * cos(angle)),
+                SbRotation(ax, dir)
+            );
         }
     }
 

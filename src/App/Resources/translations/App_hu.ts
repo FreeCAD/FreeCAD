@@ -14,7 +14,7 @@ amelyek ugyanarra a konfigurálható tárgyra hivatkoznak</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Application.cpp" line="456"/>
+      <location filename="../../Application.cpp" line="458"/>
       <source>Unnamed</source>
       <translation>Névtelen</translation>
     </message>

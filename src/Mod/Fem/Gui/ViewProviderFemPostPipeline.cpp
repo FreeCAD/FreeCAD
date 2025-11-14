@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <vtkPointData.h>
-#endif
+
 
 #include <App/FeaturePythonPyImp.h>
 #include <App/GroupExtension.h>
@@ -63,6 +61,9 @@ void ViewProviderFemPostPipeline::updateData(const App::Property* prop)
         updateFunctionSize();
         updateColorBars();
     }
+    else if (prop == &pipeline->MergeDuplicate) {
+        updateVtk();
+    }
 }
 
 void ViewProviderFemPostPipeline::updateFunctionSize()
@@ -74,9 +75,10 @@ void ViewProviderFemPostPipeline::updateFunctionSize()
         return;
     }
 
-    FemGui::ViewProviderFemPostFunctionProvider* vp =
-        static_cast<FemGui::ViewProviderFemPostFunctionProvider*>(
-            Gui::Application::Instance->getViewProvider(fp));
+    FemGui::ViewProviderFemPostFunctionProvider* vp
+        = static_cast<FemGui::ViewProviderFemPostFunctionProvider*>(
+            Gui::Application::Instance->getViewProvider(fp)
+        );
 
     if (obj->Data.getValue() && obj->Data.getValue()->IsA("vtkDataSet")) {
         vtkBoundingBox box = obj->getBoundingBox();
@@ -97,7 +99,8 @@ ViewProviderFemAnalysis* getAnalyzeView(App::DocumentObject* obj)
 
     if (Fem::FemAnalysis* analyze = freecad_cast<Fem::FemAnalysis*>(grp)) {
         analyzeView = freecad_cast<ViewProviderFemAnalysis*>(
-            Gui::Application::Instance->getViewProvider(analyze));
+            Gui::Application::Instance->getViewProvider(analyze)
+        );
     }
 
     return analyzeView;
@@ -112,6 +115,16 @@ bool ViewProviderFemPostPipeline::onDelete(const std::vector<std::string>& objs)
     }
 
     return ViewProviderFemPostObject::onDelete(objs);
+}
+
+void ViewProviderFemPostPipeline::beforeDelete()
+{
+    ViewProviderFemAnalysis* analyzeView = getAnalyzeView(this->getObject());
+    if (analyzeView) {
+        analyzeView->removeView(this);
+    }
+
+    ViewProviderFemPostObject::beforeDelete();
 }
 
 void ViewProviderFemPostPipeline::onSelectionChanged(const Gui::SelectionChanges& sel)
@@ -143,7 +156,8 @@ void ViewProviderFemPostPipeline::updateColorBars()
     for (auto& child : children) {
         if (child->Visibility.getValue()) {
             auto vpObject = dynamic_cast<FemGui::ViewProviderFemPostObject*>(
-                Gui::Application::Instance->getViewProvider(child));
+                Gui::Application::Instance->getViewProvider(child)
+            );
             if (vpObject) {
                 vpObject->updateMaterial();
             }
@@ -191,9 +205,7 @@ void ViewProviderFemPostPipeline::transformField(char* FieldName, double FieldFa
     }
 }
 
-void ViewProviderFemPostPipeline::scaleField(vtkDataSet* dset,
-                                             vtkDataArray* pdata,
-                                             double FieldFactor)
+void ViewProviderFemPostPipeline::scaleField(vtkDataSet* dset, vtkDataArray* pdata, double FieldFactor)
 {
     // safe guard
     if (!dset || !pdata) {
@@ -232,8 +244,10 @@ bool ViewProviderFemPostPipeline::acceptReorderingObjects() const
     return true;
 }
 
-bool ViewProviderFemPostPipeline::canDragObjectToTarget(App::DocumentObject*,
-                                                        App::DocumentObject* target) const
+bool ViewProviderFemPostPipeline::canDragObjectToTarget(
+    App::DocumentObject*,
+    App::DocumentObject* target
+) const
 {
 
     // allow drag only to other post groups

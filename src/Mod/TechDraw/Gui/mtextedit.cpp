@@ -22,14 +22,12 @@
 */
 // clazy:excludeall=qstring-arg
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <cstdlib>
 # include <QBuffer>
 # include <QByteArray>
 # include <QImage>
 # include <QTextCursor>
-#endif
+
 
 #include "mtextedit.h"
 

@@ -234,8 +234,7 @@ TEST_F(SketchObjectTest, testTrimLineSegmentMid)
     // TODO: Once this line segment is trimmed, there should be two "smaller" curves in its place
     EXPECT_EQ(getObject()->getHighestCurveIndex(), geoId + 1);
     // TODO: There should be a "point-on-object" constraint on the intersecting curves
-    int numberOfPointOnObjectConstraints =
-        countConstraintsOfType(getObject(), Sketcher::PointOnObject);
+    int numberOfPointOnObjectConstraints = countConstraintsOfType(getObject(), Sketcher::PointOnObject);
     EXPECT_EQ(numberOfPointOnObjectConstraints, 1);
     int numberOfCoincidentConstraints = countConstraintsOfType(getObject(), Sketcher::Coincident);
     EXPECT_EQ(numberOfCoincidentConstraints, 1);
@@ -297,8 +296,7 @@ TEST_F(SketchObjectTest, testTrimCircleMid)
     EXPECT_EQ(getObject()->getHighestCurveIndex(), geoId);
     // There should be one "coincident" and one "point-on-object" constraint on the intersecting
     // curves
-    int numberOfPointOnObjectConstraints =
-        countConstraintsOfType(getObject(), Sketcher::PointOnObject);
+    int numberOfPointOnObjectConstraints = countConstraintsOfType(getObject(), Sketcher::PointOnObject);
     EXPECT_EQ(numberOfPointOnObjectConstraints, 1);
     int numberOfCoincidentConstraints = countConstraintsOfType(getObject(), Sketcher::Coincident);
     EXPECT_EQ(numberOfCoincidentConstraints, 1);
@@ -362,8 +360,7 @@ TEST_F(SketchObjectTest, testTrimArcOfCircleMid)
     EXPECT_EQ(result, 0);
     EXPECT_EQ(getObject()->getHighestCurveIndex(), geoId + 1);
     // There should be a "point-on-object" constraint on the intersecting curves
-    int numberOfPointOnObjectConstraints =
-        countConstraintsOfType(getObject(), Sketcher::PointOnObject);
+    int numberOfPointOnObjectConstraints = countConstraintsOfType(getObject(), Sketcher::PointOnObject);
     EXPECT_EQ(numberOfPointOnObjectConstraints, 1);
     // There should be 2 coincident constraints: one with lineSegCut1 and one between centers of the
     // new arcs
@@ -438,8 +435,7 @@ TEST_F(SketchObjectTest, testTrimEllipseMid)
     EXPECT_EQ(getObject()->getHighestCurveIndex(), 2);
     // There should be one "coincident" and one "point-on-object" constraint on the intersecting
     // curves
-    int numberOfPointOnObjectConstraints =
-        countConstraintsOfType(getObject(), Sketcher::PointOnObject);
+    int numberOfPointOnObjectConstraints = countConstraintsOfType(getObject(), Sketcher::PointOnObject);
     EXPECT_EQ(numberOfPointOnObjectConstraints, 1);
     int numberOfCoincidentConstraints = countConstraintsOfType(getObject(), Sketcher::Coincident);
     EXPECT_EQ(numberOfCoincidentConstraints, 1);
@@ -510,8 +506,7 @@ TEST_F(SketchObjectTest, testTrimPeriodicBSplineMid)
     EXPECT_EQ(getObject()->getHighestCurveIndex(), 2);
     // There should be one "coincident" and one "point-on-object" constraint on the intersecting
     // curves
-    int numberOfPointOnObjectConstraints =
-        countConstraintsOfType(getObject(), Sketcher::PointOnObject);
+    int numberOfPointOnObjectConstraints = countConstraintsOfType(getObject(), Sketcher::PointOnObject);
     EXPECT_EQ(numberOfPointOnObjectConstraints, 1);
     int numberOfCoincidentConstraints = countConstraintsOfType(getObject(), Sketcher::Coincident);
     EXPECT_EQ(numberOfCoincidentConstraints, 1);
@@ -587,8 +582,7 @@ TEST_F(SketchObjectTest, testTrimNonPeriodicBSplineMid)
     // Only remaining: one line segment and the trimmed B-spline
     EXPECT_EQ(getObject()->getHighestCurveIndex(), 3);
     // There should be a "point-on-object" constraint on the intersecting curves
-    int numberOfPointOnObjectConstraints =
-        countConstraintsOfType(getObject(), Sketcher::PointOnObject);
+    int numberOfPointOnObjectConstraints = countConstraintsOfType(getObject(), Sketcher::PointOnObject);
     EXPECT_EQ(numberOfPointOnObjectConstraints, 1);
     int numberOfCoincidentConstraints = countConstraintsOfType(getObject(), Sketcher::Coincident);
     EXPECT_EQ(numberOfCoincidentConstraints, 1);
@@ -740,9 +734,11 @@ TEST_F(SketchObjectTest, testTrimEndEffectOnUnrelatedTangent)
     EXPECT_EQ(result, 0);
     // TODO: find tangent and confirm nature
     const auto& constraints = getObject()->Constraints.getValues();
-    auto tangIt = std::ranges::find(constraints,
-                                    Sketcher::ConstraintType::Tangent,
-                                    &Sketcher::Constraint::Type);
+    auto tangIt = std::ranges::find(
+        constraints,
+        Sketcher::ConstraintType::Tangent,
+        &Sketcher::Constraint::Type
+    );
     EXPECT_NE(tangIt, constraints.end());
     EXPECT_EQ((*tangIt)->FirstPos, Sketcher::PointPos::none);
     EXPECT_EQ((*tangIt)->SecondPos, Sketcher::PointPos::none);
@@ -1067,9 +1063,7 @@ TEST_F(SketchObjectTest, testJoinCurvesWhenTangent)
     EXPECT_EQ(getObject()->getHighestCurveIndex(), 0);
     // TODO: Check the shape is conserved (how?)
     // Check there is no C-0 knot (should be possible for the chosen example)
-    auto mults = static_cast<const Part::GeomBSplineCurve*>(getObject()->getGeometry(0))
-                     ->getMultiplicities();
-    EXPECT_TRUE(std::all_of(mults.begin(), mults.end(), [](auto mult) {
-        return mult >= 1;
-    }));
+    auto mults
+        = static_cast<const Part::GeomBSplineCurve*>(getObject()->getGeometry(0))->getMultiplicities();
+    EXPECT_TRUE(std::all_of(mults.begin(), mults.end(), [](auto mult) { return mult >= 1; }));
 }

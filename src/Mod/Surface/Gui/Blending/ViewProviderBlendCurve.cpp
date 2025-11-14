@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Matteo Grellier <matteogrellier@gmail.com>         *
  *                                                                         *
@@ -20,10 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QMenu>
-#endif
 
 #include "ViewProviderBlendCurve.h"
 #include "TaskBlendCurve.h"
@@ -45,11 +44,10 @@ void ViewProviderBlendCurve::setupContextMenu(QMenu* menu, QObject* receiver, co
 {
     auto func = new Gui::ActionFunction(menu);
     QAction* act = menu->addAction(
-        QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue())));
+        QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue()))
+    );
     act->setData(QVariant((int)ViewProvider::Default));
-    func->trigger(act, [this]() {
-        this->startDefaultEditMode();
-    });
+    func->trigger(act, [this]() { this->startDefaultEditMode(); });
 
     ViewProviderSpline::setupContextMenu(menu, receiver, member);
 }

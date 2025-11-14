@@ -21,8 +21,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <cmath>
 
 #include <BRep_Tool.hxx>
@@ -33,7 +31,6 @@
 #include <TopoDS_Shape.hxx>
 #include <TopoDS_Vertex.hxx>
 #include <gp_Pnt.hxx>
-#endif
 
 #include <App/Document.h>
 #include <Base/Console.h>
@@ -251,8 +248,10 @@ struct PointConstraints
         vertexIds.push_back(id);
     }
 
-    std::list<ConstraintIds> getMissingCoincidences(std::vector<Sketcher::Constraint*>& allcoincid,
-                                                    double precision)
+    std::list<ConstraintIds> getMissingCoincidences(
+        std::vector<Sketcher::Constraint*>& allcoincid,
+        double precision
+    )
     {
         std::list<ConstraintIds> missingCoincidences;  // Holds the list of missing coincidences
 
@@ -501,8 +500,7 @@ private:
 
 }  // namespace
 
-int SketchAnalysis::detectMissingPointOnPointConstraints(double precision,
-                                                         bool includeconstruction /*=true*/)
+int SketchAnalysis::detectMissingPointOnPointConstraints(double precision, bool includeconstruction /*=true*/)
 {
     PointConstraints pointConstr;
 
@@ -534,8 +532,8 @@ int SketchAnalysis::detectMissingPointOnPointConstraints(double precision,
     }
 
     // Holds the list of missing coincidences
-    std::list<ConstraintIds> missingCoincidences =
-        pointConstr.getMissingCoincidences(coincidences, precision);
+    std::list<ConstraintIds> missingCoincidences
+        = pointConstr.getMissingCoincidences(coincidences, precision);
 
     // Update list of missing constraints stored as member variable of sketch
     this->vertexConstraints.clear();
@@ -571,8 +569,7 @@ void SketchAnalysis::analyseMissingPointOnPointCoincident(double angleprecision)
                 Base::Vector3d dir2 = segm2->getEndPoint() - segm2->getStartPoint();
 
                 if ((checkVertical(dir1, angleprecision) || checkHorizontal(dir1, angleprecision))
-                    && (checkVertical(dir2, angleprecision)
-                        || checkHorizontal(dir2, angleprecision))) {
+                    && (checkVertical(dir2, angleprecision) || checkHorizontal(dir2, angleprecision))) {
                     // this is a job for horizontal/vertical constraints alone
                     continue;
                 }
@@ -596,8 +593,10 @@ void SketchAnalysis::analyseMissingPointOnPointCoincident(double angleprecision)
                 }
             }
             catch (Base::Exception&) {
-                Base::Console().warning("Point-On-Point Coincidence analysis: unable to obtain "
-                                        "derivative. Detection ignored.\n");
+                Base::Console().warning(
+                    "Point-On-Point Coincidence analysis: unable to obtain "
+                    "derivative. Detection ignored.\n"
+                );
                 continue;
             }
         }
@@ -671,10 +670,14 @@ void SketchAnalysis::makeMissingPointOnPointCoincident()
 
 void SketchAnalysis::makeMissingPointOnPointCoincidentOneByOne()
 {
-    makeConstraintsOneByOne(vertexConstraints,
-                            QT_TRANSLATE_NOOP("Exceptions",
-                                              "Autoconstraint error: Unsolvable sketch while "
-                                              "applying coincident constraints."));
+    makeConstraintsOneByOne(
+        vertexConstraints,
+        QT_TRANSLATE_NOOP(
+            "Exceptions",
+            "Autoconstraint error: Unsolvable sketch while "
+            "applying coincident constraints."
+        )
+    );
 }
 
 int SketchAnalysis::detectMissingVerticalHorizontalConstraints(double angleprecision)
@@ -718,10 +721,14 @@ void SketchAnalysis::makeMissingVerticalHorizontal()
 
 void SketchAnalysis::makeMissingVerticalHorizontalOneByOne()
 {
-    makeConstraintsOneByOne(verthorizConstraints,
-                            QT_TRANSLATE_NOOP("Exceptions",
-                                              "Autoconstraint error: Unsolvable sketch while "
-                                              "applying vertical/horizontal constraints."));
+    makeConstraintsOneByOne(
+        verthorizConstraints,
+        QT_TRANSLATE_NOOP(
+            "Exceptions",
+            "Autoconstraint error: Unsolvable sketch while "
+            "applying vertical/horizontal constraints."
+        )
+    );
 }
 
 bool SketchAnalysis::checkVertical(Base::Vector3d dir, double angleprecision)
@@ -754,12 +761,8 @@ int SketchAnalysis::detectMissingEqualityConstraints(double precision)
     std::vector<Sketcher::Constraint*> constraint = sketch->Constraints.getValues();
     for (auto it : constraint) {
         if (it->Type == Sketcher::Equal) {
-            ConstraintIds id {Base::Vector3d {},
-                              it->First,
-                              it->Second,
-                              it->FirstPos,
-                              it->SecondPos,
-                              it->Type};
+            ConstraintIds
+                id {Base::Vector3d {}, it->First, it->Second, it->FirstPos, it->SecondPos, it->Type};
 
             auto pos = std::find_if(equallines.begin(), equallines.end(), Constraint_Equal(id));
 
@@ -795,9 +798,11 @@ int SketchAnalysis::detectMissingEqualityConstraints(double precision)
 void SketchAnalysis::makeMissingEquality()
 {
     std::vector<Sketcher::ConstraintIds> equalities(lineequalityConstraints);
-    equalities.insert(equalities.end(),
-                      radiusequalityConstraints.begin(),
-                      radiusequalityConstraints.end());
+    equalities.insert(
+        equalities.end(),
+        radiusequalityConstraints.begin(),
+        radiusequalityConstraints.end()
+    );
     makeConstraints(equalities);
 
     lineequalityConstraints.clear();
@@ -807,14 +812,20 @@ void SketchAnalysis::makeMissingEquality()
 void SketchAnalysis::makeMissingEqualityOneByOne()
 {
     std::vector<Sketcher::ConstraintIds> equalities(lineequalityConstraints);
-    equalities.insert(equalities.end(),
-                      radiusequalityConstraints.begin(),
-                      radiusequalityConstraints.end());
+    equalities.insert(
+        equalities.end(),
+        radiusequalityConstraints.begin(),
+        radiusequalityConstraints.end()
+    );
 
-    makeConstraintsOneByOne(equalities,
-                            QT_TRANSLATE_NOOP("Exceptions",
-                                              "Autoconstraint error: Unsolvable sketch while "
-                                              "applying equality constraints."));
+    makeConstraintsOneByOne(
+        equalities,
+        QT_TRANSLATE_NOOP(
+            "Exceptions",
+            "Autoconstraint error: Unsolvable sketch while "
+            "applying equality constraints."
+        )
+    );
     lineequalityConstraints.clear();
     radiusequalityConstraints.clear();
 }
@@ -852,8 +863,9 @@ void SketchAnalysis::autoDeleteAllConstraints()
     doc->commitTransaction();
 
     // a failure should not be possible at this moment as we start from a clean situation
-    solveSketch(QT_TRANSLATE_NOOP("Exceptions",
-                                  "Autoconstraint error: Unsolvable sketch without constraints."));
+    solveSketch(
+        QT_TRANSLATE_NOOP("Exceptions", "Autoconstraint error: Unsolvable sketch without constraints.")
+    );
 }
 
 void SketchAnalysis::autoHorizontalVerticalConstraints()
@@ -866,9 +878,11 @@ void SketchAnalysis::autoHorizontalVerticalConstraints()
     // finish the transaction and update
     doc->commitTransaction();
 
-    solveSketch(QT_TRANSLATE_NOOP("Exceptions",
-                                  "Autoconstraint error: Unsolvable sketch after applying "
-                                  "horizontal and vertical constraints."));
+    solveSketch(QT_TRANSLATE_NOOP(
+        "Exceptions",
+        "Autoconstraint error: Unsolvable sketch after applying "
+        "horizontal and vertical constraints."
+    ));
 }
 
 void SketchAnalysis::autoPointOnPointCoincident()
@@ -881,9 +895,11 @@ void SketchAnalysis::autoPointOnPointCoincident()
     // finish the transaction and update
     doc->commitTransaction();
 
-    solveSketch(QT_TRANSLATE_NOOP("Exceptions",
-                                  "Autoconstraint error: Unsolvable sketch after applying "
-                                  "point-on-point constraints."));
+    solveSketch(QT_TRANSLATE_NOOP(
+        "Exceptions",
+        "Autoconstraint error: Unsolvable sketch after applying "
+        "point-on-point constraints."
+    ));
 }
 
 void SketchAnalysis::autoMissingEquality()
@@ -902,14 +918,14 @@ void SketchAnalysis::autoMissingEquality()
     // finish the transaction and update
     doc->commitTransaction();
 
-    solveSketch(QT_TRANSLATE_NOOP("Exceptions",
-                                  "Autoconstraint error: Unsolvable sketch after "
-                                  "applying equality constraints."));
+    solveSketch(QT_TRANSLATE_NOOP(
+        "Exceptions",
+        "Autoconstraint error: Unsolvable sketch after "
+        "applying equality constraints."
+    ));
 }
 
-int SketchAnalysis::autoconstraint(double precision,
-                                   double angleprecision,
-                                   bool includeconstruction)
+int SketchAnalysis::autoconstraint(double precision, double angleprecision, bool includeconstruction)
 {
     autoDeleteAllConstraints();
 
@@ -930,11 +946,13 @@ int SketchAnalysis::autoconstraint(double precision,
     // STAGE 3: Equality constraint detection
     int ne = detectMissingEqualityConstraints(precision);
 
-    Base::Console().log("Constraints: Vertical/Horizontal: %d found. "
-                        "Point-on-point: %d. Equality: %d\n",
-                        nhv,
-                        nc,
-                        ne);
+    Base::Console().log(
+        "Constraints: Vertical/Horizontal: %d found. "
+        "Point-on-point: %d. Equality: %d\n",
+        nhv,
+        nc,
+        ne
+    );
 
     // Applying STAGE 1, if any
     if (nhv > 0) {

@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <TopoDS_Shape.hxx>
-#endif
+
 
 #include <BRep_Tool.hxx>
 #include <BRepAdaptor_Curve.hxx>

@@ -188,7 +188,7 @@
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="338"/>
       <source>Material</source>
-      <translation>Gérer les matériaux</translation>
+      <translation>Matériau</translation>
     </message>
   </context>
   <context>
@@ -231,7 +231,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="100"/>
       <source>Appearance</source>
-      <translation>Apparence</translation>
+      <translation>Définir l'apparence</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="107"/>
@@ -314,7 +314,7 @@
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="94"/>
       <source>Material</source>
-      <translation>Gérer les matériaux</translation>
+      <translation>Matériau</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="128"/>
@@ -444,7 +444,7 @@
     <message>
       <location filename="../../DlgMaterial.ui" line="14"/>
       <source>Material</source>
-      <translation>Gérer les matériaux</translation>
+      <translation>Matériau</translation>
     </message>
   </context>
   <context>
@@ -456,7 +456,7 @@
       <translation>Matériau par défaut</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsDefaultMaterial.cpp" line="51"/>
+      <location filename="../../DlgSettingsDefaultMaterial.cpp" line="52"/>
       <source>Physical</source>
       <translation>Physique</translation>
     </message>
@@ -859,7 +859,7 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
     <message>
       <location filename="../../MaterialsEditor.ui" line="262"/>
       <source>Appearance</source>
-      <translation>Apparence</translation>
+      <translation>Définir l'apparence</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="286"/>
@@ -1025,7 +1025,7 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
     <message>
       <location filename="../../ModelSelect.cpp" line="446"/>
       <source>Appearance</source>
-      <translation>Apparence</translation>
+      <translation>Définir l'apparence</translation>
     </message>
   </context>
   <context>
@@ -1102,22 +1102,22 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
   <context>
     <name>QDockWidget</name>
     <message>
-      <location filename="../../DlgMaterialImp.cpp" line="57"/>
+      <location filename="../../DlgMaterialImp.cpp" line="56"/>
       <source>Material</source>
-      <translation>Gérer les matériaux</translation>
+      <translation>Matériau</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppMatGui.cpp" line="110"/>
+      <location filename="../../AppMatGui.cpp" line="108"/>
       <source>Material Workbench</source>
       <translation>Atelier Material</translation>
     </message>
     <message>
+      <location filename="../../AppMatGui.cpp" line="110"/>
       <location filename="../../AppMatGui.cpp" line="112"/>
-      <location filename="../../AppMatGui.cpp" line="114"/>
-      <location filename="../../AppMatGui.cpp" line="117"/>
+      <location filename="../../AppMatGui.cpp" line="115"/>
       <source>Material</source>
       <translation>Material</translation>
     </message>
@@ -1207,12 +1207,12 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="34"/>
+      <location filename="../../Workbench.cpp" line="35"/>
       <source>&amp;Materials</source>
       <translation>&amp;Matériaux</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="35"/>
+      <location filename="../../Workbench.cpp" line="36"/>
       <source>Materials</source>
       <translation>Matériaux</translation>
     </message>
@@ -1250,7 +1250,7 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
       <translation>État</translation>
     </message>
     <message>
-      <location filename="../../TaskMigrateExternal.cpp" line="180"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="178"/>
       <source>&amp;Migrate</source>
       <translation>&amp;Migrer</translation>
     </message>
@@ -1294,7 +1294,7 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
       <translation>Taille du cache des matériaux</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsExternal.cpp" line="97"/>
+      <location filename="../../DlgSettingsExternal.cpp" line="95"/>
       <source>None</source>
       <translation>Aucun</translation>
     </message>
@@ -1302,53 +1302,53 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
   <context>
     <name>MatGui::DlgMigrateExternal</name>
     <message>
-      <location filename="../../TaskMigrateExternal.cpp" line="77"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="75"/>
       <source>Migrating models…</source>
       <translation>Transférer des modèles…</translation>
     </message>
     <message>
-      <location filename="../../TaskMigrateExternal.cpp" line="83"/>
-      <location filename="../../TaskMigrateExternal.cpp" line="95"/>
-      <location filename="../../TaskMigrateExternal.cpp" line="107"/>
-      <location filename="../../TaskMigrateExternal.cpp" line="119"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="81"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="93"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="105"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="117"/>
       <source>  Library: </source>
       <translation>  Bibliothèque : </translation>
     </message>
     <message>
-      <location filename="../../TaskMigrateExternal.cpp" line="87"/>
-      <location filename="../../TaskMigrateExternal.cpp" line="99"/>
-      <location filename="../../TaskMigrateExternal.cpp" line="111"/>
-      <location filename="../../TaskMigrateExternal.cpp" line="123"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="85"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="97"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="109"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="121"/>
       <source>done</source>
       <translation>Valider</translation>
     </message>
     <message>
-      <location filename="../../TaskMigrateExternal.cpp" line="89"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="87"/>
       <source>Validating models…</source>
       <translation>Valider des modèles…</translation>
     </message>
     <message>
-      <location filename="../../TaskMigrateExternal.cpp" line="101"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="99"/>
       <source>Migrating materials…</source>
       <translation>Transférer des matériaux…</translation>
     </message>
     <message>
-      <location filename="../../TaskMigrateExternal.cpp" line="113"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="111"/>
       <source>Validating materials…</source>
       <translation>Valider des matériaux…</translation>
     </message>
     <message>
-      <location filename="../../TaskMigrateExternal.cpp" line="147"/>
-      <location filename="../../TaskMigrateExternal.cpp" line="150"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="145"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="148"/>
       <source>Unknown exception - aborted</source>
       <translation>Une exception inconnue s'est produite. L'opération a été interrompue.</translation>
     </message>
     <message>
-      <location filename="../../TaskMigrateExternal.cpp" line="127"/>
-      <location filename="../../TaskMigrateExternal.cpp" line="131"/>
-      <location filename="../../TaskMigrateExternal.cpp" line="135"/>
-      <location filename="../../TaskMigrateExternal.cpp" line="139"/>
-      <location filename="../../TaskMigrateExternal.cpp" line="143"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="125"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="129"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="133"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="137"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="141"/>
       <source>Aborted</source>
       <translation>Annulé</translation>
     </message>
@@ -1358,7 +1358,7 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
     <message>
       <location filename="../../Command.cpp" line="53"/>
       <source>Material</source>
-      <translation>Gérer les matériaux</translation>
+      <translation>Matériau</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="54"/>
@@ -1392,17 +1392,17 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
   <context>
     <name>MatGui::DlgDisplayPropertiesImp</name>
     <message>
-      <location filename="../../DlgDisplayPropertiesImp.cpp" line="181"/>
+      <location filename="../../DlgDisplayPropertiesImp.cpp" line="180"/>
       <source>Basic appearance</source>
       <translation>Apparence de base</translation>
     </message>
     <message>
-      <location filename="../../DlgDisplayPropertiesImp.cpp" line="186"/>
+      <location filename="../../DlgDisplayPropertiesImp.cpp" line="185"/>
       <source>Texture appearance</source>
       <translation>Apparence de la texture</translation>
     </message>
     <message>
-      <location filename="../../DlgDisplayPropertiesImp.cpp" line="191"/>
+      <location filename="../../DlgDisplayPropertiesImp.cpp" line="190"/>
       <source>All materials</source>
       <translation>Tous les matériaux</translation>
     </message>

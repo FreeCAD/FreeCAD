@@ -20,13 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <QAction>
 #include <QMessageBox>
 #include <QMetaObject>
-#endif
+
 
 #include <App/Application.h>
 #include <App/DocumentObject.h>
@@ -76,14 +74,13 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe* PipeView, bool /*newObj
     QMetaObject::connectSlotsByName(this);
 
     // some buttons are handled in a buttongroup
-    connect(ui->buttonProfileBase,
-            &QToolButton::toggled,
-            this,
-            &TaskPipeParameters::onProfileButton);
-    connect(ui->comboBoxTransition,
-            qOverload<int>(&QComboBox::currentIndexChanged),
-            this,
-            &TaskPipeParameters::onTransitionChanged);
+    connect(ui->buttonProfileBase, &QToolButton::toggled, this, &TaskPipeParameters::onProfileButton);
+    connect(
+        ui->comboBoxTransition,
+        qOverload<int>(&QComboBox::currentIndexChanged),
+        this,
+        &TaskPipeParameters::onTransitionChanged
+    );
 
     // Create context menu
     QAction* remove = new QAction(tr("Remove"), this);
@@ -91,7 +88,7 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe* PipeView, bool /*newObj
     remove->setShortcutContext(Qt::WidgetShortcut);
 
     // display shortcut behind the context menu entry
-    remove->setShortcutVisibleInContextMenu(true); 
+    remove->setShortcutVisibleInContextMenu(true);
 
 
     ui->listWidgetReferences->addAction(remove);
@@ -118,7 +115,8 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe* PipeView, bool /*newObj
         profileShow = profileVP->isShow();
         profileVP->setVisible(true);
         ui->profileBaseEdit->setText(
-            make2DLabel(pipe->Profile.getValue(), pipe->Profile.getSubValues()));
+            make2DLabel(pipe->Profile.getValue(), pipe->Profile.getSubValues())
+        );
     }
     // the auxiliary spine
     if (pipe->AuxiliarySpine.getValue()) {
@@ -154,8 +152,7 @@ TaskPipeParameters::~TaskPipeParameters()
             // invoking sweep
             Gui::cmdGuiObject(pipe, "Visibility = True");
             getViewObject<ViewProviderPipe>()->highlightReferences(ViewProviderPipe::Spine, false);
-            getViewObject<ViewProviderPipe>()->highlightReferences(ViewProviderPipe::Profile,
-                                                                   false);
+            getViewObject<ViewProviderPipe>()->highlightReferences(ViewProviderPipe::Profile, false);
         }
     }
     catch (const Standard_OutOfRange&) {
@@ -181,11 +178,10 @@ void TaskPipeParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
         if (referenceSelected(msg)) {
-            if (stateHandler->getSelectionMode()
-                == StateHandlerTaskPipe::SelectionModes::refProfile) {
+            if (stateHandler->getSelectionMode() == StateHandlerTaskPipe::SelectionModes::refProfile) {
                 App::Document* document = App::GetApplication().getDocument(msg.pDocName);
-                App::DocumentObject* object =
-                    document ? document->getObject(msg.pObjectName) : nullptr;
+                App::DocumentObject* object = document ? document->getObject(msg.pObjectName)
+                                                       : nullptr;
                 if (object) {
                     QString label = make2DLabel(object, {msg.pSubName});
                     ui->profileBaseEdit->setText(label);
@@ -202,8 +198,8 @@ void TaskPipeParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
                 }
 
                 App::Document* document = App::GetApplication().getDocument(msg.pDocName);
-                App::DocumentObject* object =
-                    document ? document->getObject(msg.pObjectName) : nullptr;
+                App::DocumentObject* object = document ? document->getObject(msg.pObjectName)
+                                                       : nullptr;
                 if (object) {
                     QString label = QString::fromUtf8(object->Label.getValue());
                     ui->spineBaseEdit->setText(label);
@@ -224,8 +220,8 @@ void TaskPipeParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
                 ui->listWidgetReferences->clear();
 
                 App::Document* document = App::GetApplication().getDocument(msg.pDocName);
-                App::DocumentObject* object =
-                    document ? document->getObject(msg.pObjectName) : nullptr;
+                App::DocumentObject* object = document ? document->getObject(msg.pObjectName)
+                                                       : nullptr;
                 if (object) {
                     QString label = QString::fromUtf8(object->Label.getValue());
                     ui->spineBaseEdit->setText(label);
@@ -327,8 +323,7 @@ bool TaskPipeParameters::referenceSelected(const SelectionChanges& msg) const
                 auto pipe = getObject<PartDesign::Pipe>();
                 Gui::Document* doc = getGuiDocument();
 
-                getViewObject<ViewProviderPipe>()->highlightReferences(ViewProviderPipe::Profile,
-                                                                       false);
+                getViewObject<ViewProviderPipe>()->highlightReferences(ViewProviderPipe::Profile, false);
 
                 bool success = true;
                 App::DocumentObject* profile = pipe->getDocument()->getObject(msg.pObjectName);
@@ -361,8 +356,10 @@ bool TaskPipeParameters::referenceSelected(const SelectionChanges& msg) const
                 const auto f = std::ranges::find(refs, subName);
 
                 if (selectionMode == StateHandlerTaskPipe::SelectionModes::refSpine) {
-                    getViewObject<ViewProviderPipe>()->highlightReferences(ViewProviderPipe::Spine,
-                                                                           false);
+                    getViewObject<ViewProviderPipe>()->highlightReferences(
+                        ViewProviderPipe::Spine,
+                        false
+                    );
                     refs.clear();
                 }
                 else if (selectionMode == StateHandlerTaskPipe::SelectionModes::refSpineEdgeAdd) {
@@ -373,8 +370,7 @@ bool TaskPipeParameters::referenceSelected(const SelectionChanges& msg) const
                         return false;  // duplicate selection
                     }
                 }
-                else if (selectionMode
-                         == StateHandlerTaskPipe::SelectionModes::refSpineEdgeRemove) {
+                else if (selectionMode == StateHandlerTaskPipe::SelectionModes::refSpineEdgeRemove) {
                     if (f != refs.end()) {
                         refs.erase(f);
                     }
@@ -459,10 +455,11 @@ bool TaskPipeParameters::accept()
     QString label = ui->spineBaseEdit->text();
     if (!spine && !label.isEmpty()) {
         QByteArray ba = label.toUtf8();
-        std::vector<App::DocumentObject*> objs =
-            pipe->getDocument()->findObjects(App::DocumentObject::getClassTypeId(),
-                                             nullptr,
-                                             ba.constData());
+        std::vector<App::DocumentObject*> objs = pipe->getDocument()->findObjects(
+            App::DocumentObject::getClassTypeId(),
+            nullptr,
+            ba.constData()
+        );
         if (!objs.empty()) {
             pipe->Spine.setValue(objs.front());
             spine = objs.front();
@@ -498,19 +495,21 @@ bool TaskPipeParameters::accept()
         if (!dlg.radioXRef->isChecked()) {
             if (!pcActiveBody->hasObject(spine) && !pcActiveBody->getOrigin()->hasObject(spine)) {
                 pipe->Spine.setValue(
-                    PartDesignGui::TaskFeaturePick::makeCopy(spine,
-                                                             "",
-                                                             dlg.radioIndependent->isChecked()),
-                    pipe->Spine.getSubValues());
+                    PartDesignGui::TaskFeaturePick::makeCopy(spine, "", dlg.radioIndependent->isChecked()),
+                    pipe->Spine.getSubValues()
+                );
                 copies.push_back(pipe->Spine.getValue());
             }
             else if (!pcActiveBody->hasObject(auxSpine)
                      && !pcActiveBody->getOrigin()->hasObject(auxSpine)) {
                 pipe->AuxiliarySpine.setValue(
-                    PartDesignGui::TaskFeaturePick::makeCopy(auxSpine,
-                                                             "",
-                                                             dlg.radioIndependent->isChecked()),
-                    pipe->AuxiliarySpine.getSubValues());
+                    PartDesignGui::TaskFeaturePick::makeCopy(
+                        auxSpine,
+                        "",
+                        dlg.radioIndependent->isChecked()
+                    ),
+                    pipe->AuxiliarySpine.getSubValues()
+                );
                 copies.push_back(pipe->AuxiliarySpine.getValue());
             }
 
@@ -519,10 +518,13 @@ bool TaskPipeParameters::accept()
                 if (!pcActiveBody->hasObject(subSet.first)
                     && !pcActiveBody->getOrigin()->hasObject(subSet.first)) {
                     subSets.emplace_back(
-                        PartDesignGui::TaskFeaturePick::makeCopy(subSet.first,
-                                                                 "",
-                                                                 dlg.radioIndependent->isChecked()),
-                        subSet.second);
+                        PartDesignGui::TaskFeaturePick::makeCopy(
+                            subSet.first,
+                            "",
+                            dlg.radioIndependent->isChecked()
+                        ),
+                        subSet.second
+                    );
                     copies.push_back(subSets.back().first);
                 }
                 else {
@@ -556,9 +558,7 @@ bool TaskPipeParameters::accept()
         }
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(this,
-                             tr("Input error"),
-                             QApplication::translate("Exception", e.what()));
+        QMessageBox::warning(this, tr("Input error"), QApplication::translate("Exception", e.what()));
         return false;
     }
 
@@ -571,13 +571,8 @@ bool TaskPipeParameters::accept()
 // Task Orientation
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView,
-                                         bool /*newObj*/,
-                                         QWidget* parent)
-    : TaskSketchBasedParameters(PipeView,
-                                parent,
-                                "PartDesign_AdditivePipe",
-                                tr("Section Orientation"))
+TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView, bool /*newObj*/, QWidget* parent)
+    : TaskSketchBasedParameters(PipeView, parent, "PartDesign_AdditivePipe", tr("Section Orientation"))
     , ui(new Ui_TaskPipeOrientation)
     , stateHandler(nullptr)
 {
@@ -623,7 +618,8 @@ TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView,
     // add initial values
     if (pipe->AuxiliarySpine.getValue()) {
         ui->profileBaseEdit->setText(
-            QString::fromUtf8(pipe->AuxiliarySpine.getValue()->Label.getValue()));
+            QString::fromUtf8(pipe->AuxiliarySpine.getValue()->Label.getValue())
+        );
     }
 
     std::vector<std::string> strings = pipe->AuxiliarySpine.getSubValues();
@@ -639,10 +635,7 @@ TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView,
     ui->curvilinear->setChecked(pipe->AuxiliaryCurvilinear.getValue());
 
     // should be called after panel has become visible
-    QMetaObject::invokeMethod(this,
-                              "updateUI",
-                              Qt::QueuedConnection,
-                              Q_ARG(int, pipe->Mode.getValue()));
+    QMetaObject::invokeMethod(this, "updateUI", Qt::QueuedConnection, Q_ARG(int, pipe->Mode.getValue()));
     this->blockSelection(false);
 }
 
@@ -698,9 +691,11 @@ void TaskPipeOrientation::onCurvilinearChanged(bool checked)
 void TaskPipeOrientation::onBinormalChanged(double)
 {
     if (auto pipe = getObject<PartDesign::Pipe>()) {
-        Base::Vector3d vec(ui->doubleSpinBoxX->value(),
-                           ui->doubleSpinBoxY->value(),
-                           ui->doubleSpinBoxZ->value());
+        Base::Vector3d vec(
+            ui->doubleSpinBoxX->value(),
+            ui->doubleSpinBoxY->value(),
+            ui->doubleSpinBoxZ->value()
+        );
 
         pipe->Binormal.setValue(vec);
         recomputeFeature();
@@ -726,8 +721,8 @@ void TaskPipeOrientation::onSelectionChanged(const SelectionChanges& msg)
                 }
 
                 App::Document* document = App::GetApplication().getDocument(msg.pDocName);
-                App::DocumentObject* object =
-                    document ? document->getObject(msg.pObjectName) : nullptr;
+                App::DocumentObject* object = document ? document->getObject(msg.pObjectName)
+                                                       : nullptr;
                 if (object) {
                     QString label = QString::fromUtf8(object->Label.getValue());
                     ui->profileBaseEdit->setText(label);
@@ -748,8 +743,8 @@ void TaskPipeOrientation::onSelectionChanged(const SelectionChanges& msg)
                 ui->listWidgetReferences->clear();
 
                 App::Document* document = App::GetApplication().getDocument(msg.pDocName);
-                App::DocumentObject* object =
-                    document ? document->getObject(msg.pObjectName) : nullptr;
+                App::DocumentObject* object = document ? document->getObject(msg.pObjectName)
+                                                       : nullptr;
                 if (object) {
                     QString label = QString::fromUtf8(object->Label.getValue());
                     ui->profileBaseEdit->setText(label);
@@ -862,8 +857,7 @@ void TaskPipeOrientation::updateUI(int idx)
     }
 
     if (idx < ui->stackedWidget->count()) {
-        ui->stackedWidget->widget(idx)->setSizePolicy(QSizePolicy::Expanding,
-                                                      QSizePolicy::Expanding);
+        ui->stackedWidget->widget(idx)->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     }
 }
 
@@ -873,10 +867,7 @@ void TaskPipeOrientation::updateUI(int idx)
 // Task Scaling
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 TaskPipeScaling::TaskPipeScaling(ViewProviderPipe* PipeView, bool /*newObj*/, QWidget* parent)
-    : TaskSketchBasedParameters(PipeView,
-                                parent,
-                                "PartDesign_AdditivePipe",
-                                tr("Section Transformation"))
+    : TaskSketchBasedParameters(PipeView, parent, "PartDesign_AdditivePipe", tr("Section Transformation"))
     , ui(new Ui_TaskPipeScaling)
     , stateHandler(nullptr)
 {
@@ -886,10 +877,12 @@ TaskPipeScaling::TaskPipeScaling(ViewProviderPipe* PipeView, bool /*newObj*/, QW
     QMetaObject::connectSlotsByName(this);
 
     // some buttons are handled in a buttongroup
-    connect(ui->comboBoxScaling,
-            qOverload<int>(&QComboBox::currentIndexChanged),
-            this,
-            &TaskPipeScaling::onScalingChanged);
+    connect(
+        ui->comboBoxScaling,
+        qOverload<int>(&QComboBox::currentIndexChanged),
+        this,
+        &TaskPipeScaling::onScalingChanged
+    );
     connect(ui->stackedWidget, &QStackedWidget::currentChanged, this, &TaskPipeScaling::updateUI);
 
     // Create context menu
@@ -904,10 +897,12 @@ TaskPipeScaling::TaskPipeScaling(ViewProviderPipe* PipeView, bool /*newObj*/, QW
     ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
     connect(remove, &QAction::triggered, this, &TaskPipeScaling::onDeleteSection);
 
-    connect(ui->listWidgetReferences->model(),
-            &QAbstractListModel::rowsMoved,
-            this,
-            &TaskPipeScaling::indexesMoved);
+    connect(
+        ui->listWidgetReferences->model(),
+        &QAbstractListModel::rowsMoved,
+        this,
+        &TaskPipeScaling::indexesMoved
+    );
 
     this->groupLayout()->addWidget(proxy);
 
@@ -924,10 +919,12 @@ TaskPipeScaling::TaskPipeScaling(ViewProviderPipe* PipeView, bool /*newObj*/, QW
     ui->comboBoxScaling->setCurrentIndex(pipe->Transformation.getValue());
 
     // should be called after panel has become visible
-    QMetaObject::invokeMethod(this,
-                              "updateUI",
-                              Qt::QueuedConnection,
-                              Q_ARG(int, pipe->Transformation.getValue()));
+    QMetaObject::invokeMethod(
+        this,
+        "updateUI",
+        Qt::QueuedConnection,
+        Q_ARG(int, pipe->Transformation.getValue())
+    );
     this->blockSelection(false);
 }
 
@@ -1001,7 +998,9 @@ void TaskPipeScaling::onSelectionChanged(const SelectionChanges& msg)
                     item->setData(
                         Qt::UserRole,
                         QVariant::fromValue(
-                            std::make_pair(object, std::vector<std::string>(1, msg.pSubName))));
+                            std::make_pair(object, std::vector<std::string>(1, msg.pSubName))
+                        )
+                    );
                     ui->listWidgetReferences->addItem(item);
                 }
                 else if (stateHandler->getSelectionMode()
@@ -1082,9 +1081,9 @@ void TaskPipeScaling::onDeleteSection()
     int row = ui->listWidgetReferences->currentRow();
     QListWidgetItem* item = ui->listWidgetReferences->takeItem(row);
     if (item) {
-        QByteArray data(item->data(Qt::UserRole)
-                            .value<App::PropertyLinkSubList::SubSet>()
-                            .first->getNameInDocument());
+        QByteArray data(
+            item->data(Qt::UserRole).value<App::PropertyLinkSubList::SubSet>().first->getNameInDocument()
+        );
         delete item;
 
         if (const auto pipe = getObject<PartDesign::Pipe>()) {
@@ -1108,8 +1107,7 @@ void TaskPipeScaling::updateUI(int idx)
     }
 
     if (idx < ui->stackedWidget->count()) {
-        ui->stackedWidget->widget(idx)->setSizePolicy(QSizePolicy::Expanding,
-                                                      QSizePolicy::Expanding);
+        ui->stackedWidget->widget(idx)->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     }
 }
 
@@ -1144,21 +1142,21 @@ TaskDlgPipeParameters::TaskDlgPipeParameters(ViewProviderPipe* PipeView, bool ne
     buttonGroup->addButton(parameter->ui->buttonProfileBase, StateHandlerTaskPipe::refProfile);
     buttonGroup->addButton(parameter->ui->buttonSpineBase, StateHandlerTaskPipe::refSpine);
     buttonGroup->addButton(parameter->ui->buttonRefAdd, StateHandlerTaskPipe::refSpineEdgeAdd);
-    buttonGroup->addButton(parameter->ui->buttonRefRemove,
-                           StateHandlerTaskPipe::refSpineEdgeRemove);
+    buttonGroup->addButton(parameter->ui->buttonRefRemove, StateHandlerTaskPipe::refSpineEdgeRemove);
 
     buttonGroup->addButton(orientation->ui->buttonProfileBase, StateHandlerTaskPipe::refAuxSpine);
     buttonGroup->addButton(orientation->ui->buttonRefAdd, StateHandlerTaskPipe::refAuxSpineEdgeAdd);
-    buttonGroup->addButton(orientation->ui->buttonRefRemove,
-                           StateHandlerTaskPipe::refAuxSpineEdgeRemove);
+    buttonGroup->addButton(orientation->ui->buttonRefRemove, StateHandlerTaskPipe::refAuxSpineEdgeRemove);
 
     buttonGroup->addButton(scaling->ui->buttonRefAdd, StateHandlerTaskPipe::refSectionAdd);
     buttonGroup->addButton(scaling->ui->buttonRefRemove, StateHandlerTaskPipe::refSectionRemove);
 
-    connect(buttonGroup,
-            qOverload<QAbstractButton*, bool>(&QButtonGroup::buttonToggled),
-            this,
-            &TaskDlgPipeParameters::onButtonToggled);
+    connect(
+        buttonGroup,
+        qOverload<QAbstractButton*, bool>(&QButtonGroup::buttonToggled),
+        this,
+        &TaskDlgPipeParameters::onButtonToggled
+    );
 }
 
 TaskDlgPipeParameters::~TaskDlgPipeParameters()
@@ -1184,25 +1182,24 @@ void TaskDlgPipeParameters::onButtonToggled(QAbstractButton* button, bool checke
 
     switch (id) {
         case StateHandlerTaskPipe::SelectionModes::refProfile:
-            getViewObject<ViewProviderPipe>()->highlightReferences(ViewProviderPipe::Profile,
-                                                                   checked);
+            getViewObject<ViewProviderPipe>()->highlightReferences(ViewProviderPipe::Profile, checked);
             break;
         case StateHandlerTaskPipe::SelectionModes::refSpine:
         case StateHandlerTaskPipe::SelectionModes::refSpineEdgeAdd:
         case StateHandlerTaskPipe::SelectionModes::refSpineEdgeRemove:
-            getViewObject<ViewProviderPipe>()->highlightReferences(ViewProviderPipe::Spine,
-                                                                   checked);
+            getViewObject<ViewProviderPipe>()->highlightReferences(ViewProviderPipe::Spine, checked);
             break;
         case StateHandlerTaskPipe::SelectionModes::refAuxSpine:
         case StateHandlerTaskPipe::SelectionModes::refAuxSpineEdgeAdd:
         case StateHandlerTaskPipe::SelectionModes::refAuxSpineEdgeRemove:
-            getViewObject<ViewProviderPipe>()->highlightReferences(ViewProviderPipe::AuxiliarySpine,
-                                                                   checked);
+            getViewObject<ViewProviderPipe>()->highlightReferences(
+                ViewProviderPipe::AuxiliarySpine,
+                checked
+            );
             break;
         case StateHandlerTaskPipe::SelectionModes::refSectionAdd:
         case StateHandlerTaskPipe::SelectionModes::refSectionRemove:
-            getViewObject<ViewProviderPipe>()->highlightReferences(ViewProviderPipe::Section,
-                                                                   checked);
+            getViewObject<ViewProviderPipe>()->highlightReferences(ViewProviderPipe::Section, checked);
             break;
         default:
             break;

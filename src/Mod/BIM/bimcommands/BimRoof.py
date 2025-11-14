@@ -34,13 +34,17 @@ PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
 
 class Arch_Roof:
-    '''the Arch Roof command definition'''
+    """the Arch Roof command definition"""
 
     def GetResources(self):
-        return {"Pixmap"  : "Arch_Roof",
-                "MenuText": QT_TRANSLATE_NOOP("Arch_Roof", "Roof"),
-                "Accel"   : "R, F",
-                "ToolTip" : QT_TRANSLATE_NOOP("Arch_Roof", "Creates a roof object from the selected wire.")}
+        return {
+            "Pixmap": "Arch_Roof",
+            "MenuText": QT_TRANSLATE_NOOP("Arch_Roof", "Roof"),
+            "Accel": "R, F",
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Arch_Roof", "Creates a roof object from the selected wire."
+            ),
+        }
 
     def IsActive(self):
         v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
@@ -48,6 +52,7 @@ class Arch_Roof:
 
     def Activated(self):
         import ArchComponent
+
         sel = FreeCADGui.Selection.getSelectionEx()
         if sel:
             sel = sel[0]
@@ -58,7 +63,13 @@ class Arch_Roof:
                     i = int(sel.SubElementNames[0][4:])
                     FreeCAD.ActiveDocument.openTransaction(translate("Arch", "Create Roof"))
                     FreeCADGui.addModule("Arch")
-                    FreeCADGui.doCommand("obj = Arch.makeRoof(FreeCAD.ActiveDocument." + obj.Name + "," + str(i) + ")")
+                    FreeCADGui.doCommand(
+                        "obj = Arch.makeRoof(FreeCAD.ActiveDocument."
+                        + obj.Name
+                        + ","
+                        + str(i)
+                        + ")"
+                    )
                     FreeCADGui.addModule("Draft")
                     FreeCADGui.doCommand("Draft.autogroup(obj)")
                     FreeCAD.ActiveDocument.commitTransaction()
@@ -68,7 +79,9 @@ class Arch_Roof:
                 if obj.Shape.Wires:
                     FreeCAD.ActiveDocument.openTransaction(translate("Arch", "Create Roof"))
                     FreeCADGui.addModule("Arch")
-                    FreeCADGui.doCommand("obj = Arch.makeRoof(FreeCAD.ActiveDocument." + obj.Name + ")")
+                    FreeCADGui.doCommand(
+                        "obj = Arch.makeRoof(FreeCAD.ActiveDocument." + obj.Name + ")"
+                    )
                     FreeCADGui.addModule("Draft")
                     FreeCADGui.doCommand("Draft.autogroup(obj)")
                     FreeCAD.ActiveDocument.commitTransaction()
@@ -79,7 +92,7 @@ class Arch_Roof:
         else:
             FreeCAD.Console.PrintMessage(translate("Arch", "Please select a base object") + "\n")
             FreeCADGui.Control.showDialog(ArchComponent.SelectionTaskPanel())
-            FreeCAD.ArchObserver = ArchComponent.ArchSelectionObserver(nextCommand = "Arch_Roof")
+            FreeCAD.ArchObserver = ArchComponent.ArchSelectionObserver(nextCommand="Arch_Roof")
             FreeCADGui.Selection.addObserver(FreeCAD.ArchObserver)
 
 

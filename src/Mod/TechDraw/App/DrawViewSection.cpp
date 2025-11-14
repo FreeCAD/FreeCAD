@@ -43,9 +43,7 @@
 //     m_sectionTopoDSFaces = alignSectionFaces(faceIntersections)
 //     m_tdSectionFaces = makeTDSectionFaces(m_sectionTopoDSFaces)
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <BRepAdaptor_Surface.hxx>
 #include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
 #include <BRepBndLib.hxx>
@@ -73,7 +71,7 @@
 #include <gp_Pnt.hxx>
 #include <limits>
 #include <sstream>
-#endif
+
 
 #include <App/Document.h>
 #include <Base/BoundBox.h>

@@ -25,8 +25,6 @@
 
 #include <FCConfig.h>
 
-#ifdef _PreComp_
-
 // standard
 #include <cassert>
 #include <cmath>
@@ -51,7 +49,7 @@
 #include <boost/lexical_cast.hpp>
 
 #ifdef FC_OS_WIN32
-#include <windows.h>
+# include <windows.h>
 #endif
 
 // OCC
@@ -158,7 +156,5 @@
 #include <vtkDoubleArray.h>
 #include <vtkLookupTable.h>
 #include <vtkPointData.h>
-
-#endif  //_PreComp_
 
 #endif  // FEMGUI_PRECOMPILED_H

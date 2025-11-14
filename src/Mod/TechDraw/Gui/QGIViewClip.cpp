@@ -21,12 +21,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <algorithm>    // std::find
 # include <QGraphicsScene>
 # include <QKeyEvent>
-#endif
+
 #include <Gui/Selection/Selection.h>
 #include <Gui/Selection/SelectionObject.h>
 

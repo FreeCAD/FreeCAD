@@ -21,13 +21,12 @@
  ***************************************************************************/
 
 
-
-# include <QApplication>
-# include <QBuffer>
-# include <QByteArray>
-# include <QDateTime>
-# include <QImage>
-# include <QThread>
+#include <QApplication>
+#include <QBuffer>
+#include <QByteArray>
+#include <QDateTime>
+#include <QImage>
+#include <QThread>
 
 
 #include <App/Application.h>
@@ -41,9 +40,9 @@
 
 using namespace Gui;
 
-Thumbnail::Thumbnail(int s) : size(s)
-{
-}
+Thumbnail::Thumbnail(int s)
+    : size(s)
+{}
 
 Thumbnail::~Thumbnail() = default;
 
@@ -62,28 +61,30 @@ void Thumbnail::setFileName(const char* fn)
     this->uri = QUrl::fromLocalFile(QString::fromUtf8(fn));
 }
 
-unsigned int Thumbnail::getMemSize () const
+unsigned int Thumbnail::getMemSize() const
 {
     return 0;
 }
 
-void Thumbnail::Save (Base::Writer &writer) const
+void Thumbnail::Save(Base::Writer& writer) const
 {
     // It's only possible to add extra information if force of XML is disabled
-    if (!writer.isForceXML())
+    if (!writer.isForceXML()) {
         writer.addFile("thumbnails/Thumbnail.png", this);
+    }
 }
 
-void Thumbnail::Restore(Base::XMLReader &reader)
+void Thumbnail::Restore(Base::XMLReader& reader)
 {
     Q_UNUSED(reader);
-    //reader.addFile("Thumbnail.png",this);
+    // reader.addFile("Thumbnail.png",this);
 }
 
-void Thumbnail::SaveDocFile (Base::Writer &writer) const
+void Thumbnail::SaveDocFile(Base::Writer& writer) const
 {
-    if (!this->viewer)
+    if (!this->viewer) {
         return;
+    }
     QImage img;
     if (this->viewer->thread() != QThread::currentThread()) {
         qWarning("Cannot create a thumbnail from non-GUI thread");
@@ -93,15 +94,22 @@ void Thumbnail::SaveDocFile (Base::Writer &writer) const
     QColor invalid;
     this->viewer->imageFromFramebuffer(this->size, this->size, 4, invalid, img);
 
-    // Get app icon and resize to half size to insert in topbottom position over the current view snapshot
+    // Get app icon and resize to half size to insert in topbottom position over the current view
+    // snapshot
     QPixmap appIcon = Gui::BitmapFactory().pixmap(App::Application::Config()["AppIcon"].c_str());
-    QPixmap px =  appIcon;
+    QPixmap px = appIcon;
     if (!img.isNull()) {
         // Create a small "Fc" Application icon in the bottom right of the thumbnail
-        if (App::GetApplication().GetParameterGroupByPath
-            ("User parameter:BaseApp/Preferences/Document")->GetBool("AddThumbnailLogo",false)) {
+        if (App::GetApplication()
+                .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")
+                ->GetBool("AddThumbnailLogo", false)) {
             // only scale app icon if an offscreen image could be created
-            appIcon = appIcon.scaled(this->size / 4, this->size /4, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+            appIcon = appIcon.scaled(
+                this->size / 4,
+                this->size / 4,
+                Qt::KeepAspectRatio,
+                Qt::SmoothTransformation
+            );
             px = BitmapFactory().merge(QPixmap::fromImage(img), appIcon, BitmapFactoryInst::BottomRight);
         }
         else {
@@ -126,7 +134,7 @@ void Thumbnail::SaveDocFile (Base::Writer &writer) const
     }
 }
 
-void Thumbnail::RestoreDocFile(Base::Reader &reader)
+void Thumbnail::RestoreDocFile(Base::Reader& reader)
 {
     Q_UNUSED(reader);
 }

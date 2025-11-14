@@ -22,12 +22,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QMessageBox>
 #include <QStandardPaths>
 #include <QThread>
-#endif
+
 
 #include <App/Application.h>
 #include "DlgSettingsFemGmshImp.h"
@@ -42,10 +40,12 @@ DlgSettingsFemGmshImp::DlgSettingsFemGmshImp(QWidget* parent)
 {
     ui->setupUi(this);
 
-    connect(ui->fc_gmsh_binary_path,
-            &Gui::PrefFileChooser::fileNameSelected,
-            this,
-            &DlgSettingsFemGmshImp::onfileNameSelected);
+    connect(
+        ui->fc_gmsh_binary_path,
+        &Gui::PrefFileChooser::fileNameSelected,
+        this,
+        &DlgSettingsFemGmshImp::onfileNameSelected
+    );
 }
 
 DlgSettingsFemGmshImp::~DlgSettingsFemGmshImp() = default;
@@ -62,7 +62,8 @@ void DlgSettingsFemGmshImp::loadSettings()
     ui->fc_gmsh_binary_path->onRestore();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Fem/Gmsh");
+        "User parameter:BaseApp/Preferences/Mod/Fem/Gmsh"
+    );
     // determine number of CPU threads
     ui->sb_threads->setValue(hGrp->GetInt("NumOfThreads", QThread::idealThreadCount()));
 
@@ -83,35 +84,32 @@ void DlgSettingsFemGmshImp::changeEvent(QEvent* e)
     }
 }
 
-void DlgSettingsFemGmshImp::onfileNameSelected(QString FileName)
+void DlgSettingsFemGmshImp::onfileNameSelected(const QString& fileName)
 {
-    if (!FileName.isEmpty() && QStandardPaths::findExecutable(FileName).isEmpty()) {
-        QMessageBox::critical(
-            this,
-            tr("Not an executable binary"),
-            tr("The specified file \n'%1'\n does not exist or is not executable.\n"
-               "Specify another file.")
-                .arg(FileName));
+    if (!fileName.isEmpty() && QStandardPaths::findExecutable(fileName).isEmpty()) {
+        QMessageBox::critical(this, tr("Gmsh"), tr("Executable '%1' not found").arg(fileName));
     }
 }
 
 void DlgSettingsFemGmshImp::populateLogVerbosity()
 {
-    std::list<std::pair<std::string, int>> mapValues = {{"Silent", 0},
-                                                        {"Errors", 1},
-                                                        {"Warnings", 2},
-                                                        {"Direct", 3},
-                                                        {"Information", 4},
-                                                        {"Status", 5},
-                                                        {"Debug", 99}};
+    std::list<std::pair<std::string, int>> mapValues = {
+        {"Silent", 0},
+        {"Errors", 1},
+        {"Warnings", 2},
+        {"Direct", 3},
+        {"Information", 4},
+        {"Status", 5},
+        {"Debug", 99}
+    };
 
     for (const auto& val : mapValues) {
-        ui->cb_log_verbosity->addItem(QString::fromStdString(val.first),
-                                      QString::number(val.second));
+        ui->cb_log_verbosity->addItem(QString::fromStdString(val.first), QString::number(val.second));
     }
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Fem/Gmsh");
+        "User parameter:BaseApp/Preferences/Mod/Fem/Gmsh"
+    );
     std::string current = hGrp->GetASCII("LogVerbosity", "3");
     int index = ui->cb_log_verbosity->findData(QString::fromStdString(current));
     ui->cb_log_verbosity->setCurrentIndex(index);

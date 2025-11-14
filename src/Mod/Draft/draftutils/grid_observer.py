@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2024 Syres                                              *
@@ -20,8 +22,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provide the grid observer for the Draft and BIM workbenches.
-"""
+"""Provide the grid observer for the Draft and BIM workbenches."""
 
 import FreeCAD
 

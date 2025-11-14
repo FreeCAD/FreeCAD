@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <cmath>
 #include <cstdlib>
 #include <cstring>
@@ -56,7 +54,6 @@
 #include <gp_Elips.hxx>
 #include <gp_Pnt.hxx>
 #include <gp_Vec.hxx>
-#endif
 
 #include <Base/Console.h>
 #include <Base/Converter.h>

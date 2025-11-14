@@ -20,13 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <limits>
+
 #include <BRepAdaptor_Curve.hxx>
 #include <BRep_Tool.hxx>
 #include <TopExp.hxx>
-#endif//#ifndef _PreComp_
 
 #include <App/DocumentObject.h>
 #include <Base/Console.h>

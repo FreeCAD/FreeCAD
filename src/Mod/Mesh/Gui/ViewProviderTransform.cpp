@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2004 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,14 +22,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <Inventor/manips/SoTransformerManip.h>
 #include <Inventor/nodes/SoDrawStyle.h>
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoNormalBinding.h>
 #include <Inventor/nodes/SoSeparator.h>
-#endif
+
 
 #include <Gui/Selection/SoFCSelection.h>
 #include <Mod/Mesh/App/MeshFeature.h>

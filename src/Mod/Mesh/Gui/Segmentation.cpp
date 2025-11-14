@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2012 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,11 +22,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <limits>
 #include <sstream>
-#endif
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -87,33 +86,45 @@ void Segmentation::accept()
     std::vector<MeshCore::MeshSurfaceSegmentPtr> segm;
     if (ui->groupBoxFree->isChecked()) {
         segm.emplace_back(
-            std::make_shared<MeshCore::MeshCurvatureFreeformSegment>(meshCurv.GetCurvature(),
-                                                                     ui->numFree->value(),
-                                                                     ui->tol1Free->value(),
-                                                                     ui->tol2Free->value(),
-                                                                     ui->crv1Free->value(),
-                                                                     ui->crv2Free->value()));
+            std::make_shared<MeshCore::MeshCurvatureFreeformSegment>(
+                meshCurv.GetCurvature(),
+                ui->numFree->value(),
+                ui->tol1Free->value(),
+                ui->tol2Free->value(),
+                ui->crv1Free->value(),
+                ui->crv2Free->value()
+            )
+        );
     }
     if (ui->groupBoxCyl->isChecked()) {
         segm.emplace_back(
-            std::make_shared<MeshCore::MeshCurvatureCylindricalSegment>(meshCurv.GetCurvature(),
-                                                                        ui->numCyl->value(),
-                                                                        ui->tol1Cyl->value(),
-                                                                        ui->tol2Cyl->value(),
-                                                                        ui->crvCyl->value()));
+            std::make_shared<MeshCore::MeshCurvatureCylindricalSegment>(
+                meshCurv.GetCurvature(),
+                ui->numCyl->value(),
+                ui->tol1Cyl->value(),
+                ui->tol2Cyl->value(),
+                ui->crvCyl->value()
+            )
+        );
     }
     if (ui->groupBoxSph->isChecked()) {
         segm.emplace_back(
-            std::make_shared<MeshCore::MeshCurvatureSphericalSegment>(meshCurv.GetCurvature(),
-                                                                      ui->numSph->value(),
-                                                                      ui->tolSph->value(),
-                                                                      ui->crvSph->value()));
+            std::make_shared<MeshCore::MeshCurvatureSphericalSegment>(
+                meshCurv.GetCurvature(),
+                ui->numSph->value(),
+                ui->tolSph->value(),
+                ui->crvSph->value()
+            )
+        );
     }
     if (ui->groupBoxPln->isChecked()) {
         segm.emplace_back(
-            std::make_shared<MeshCore::MeshCurvaturePlanarSegment>(meshCurv.GetCurvature(),
-                                                                   ui->numPln->value(),
-                                                                   ui->tolPln->value()));
+            std::make_shared<MeshCore::MeshCurvaturePlanarSegment>(
+                meshCurv.GetCurvature(),
+                ui->numPln->value(),
+                ui->tolPln->value()
+            )
+        );
     }
     finder.FindSegments(segm);
 

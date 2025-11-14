@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QDialog>
-#endif
+
 
 #include <Gui/BitmapFactory.h>
 #include <Gui/MainWindow.h>
@@ -77,8 +75,7 @@ void SketchOrientationDialog::accept()
     }
     else if (ui->YZ_radioButton->isChecked()) {
         if (reverse) {
-            Pos =
-                Base::Placement(Base::Vector3d(offset, 0, 0), Base::Rotation(-1.0, 1.0, 1.0, -1.0));
+            Pos = Base::Placement(Base::Vector3d(offset, 0, 0), Base::Rotation(-1.0, 1.0, 1.0, -1.0));
             DirType = 5;
         }
         else {
@@ -120,7 +117,8 @@ void SketchOrientationDialog::onPreview()
     }
 
     ui->previewLabel->setPixmap(
-        Gui::BitmapFactory().pixmapFromSvg(icon.c_str(), ui->previewLabel->size()));
+        Gui::BitmapFactory().pixmapFromSvg(icon.c_str(), ui->previewLabel->size())
+    );
 }
 
 #include "moc_SketchOrientationDialog.cpp"

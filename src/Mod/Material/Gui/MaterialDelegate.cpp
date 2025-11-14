@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 David Carter <dcarter@david.carter.ca>             *
  *                                                                         *
@@ -19,8 +21,6 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QColorDialog>
 #include <QDesktopServices>
 #include <QIODevice>
@@ -33,7 +33,7 @@
 #include <QTextStream>
 #include <QVariant>
 #include <limits>
-#endif
+
 
 #include <App/Application.h>
 #include <Base/Interpreter.h>

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
@@ -28,6 +30,8 @@
 
 #include <App/Expression.h>
 #include <App/Material.h>
+
+#include <Mod/Spreadsheet/SpreadsheetGlobal.h>
 
 #include "DisplayUnit.h"
 #include "Utils.h"
@@ -109,8 +113,7 @@ public:
 
     bool hasException() const
     {
-        return isUsed(EXCEPTION_SET) || isUsed(PARSE_EXCEPTION_SET)
-            || isUsed(RESOLVE_EXCEPTION_SET);
+        return isUsed(EXCEPTION_SET) || isUsed(PARSE_EXCEPTION_SET) || isUsed(RESOLVE_EXCEPTION_SET);
     }
 
     void moveAbsolute(App::CellAddress newAddress);

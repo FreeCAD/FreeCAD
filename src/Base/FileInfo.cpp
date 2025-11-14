@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2005 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -26,12 +28,13 @@
 #include <algorithm>
 #include <codecvt>
 #include <cstring>
+#include <fstream>
 #include <iostream>
 #include <system_error>
 #ifdef FC_OS_WIN32
-#include <Windows.h>
+# include <Windows.h>
 #else
-#include <unistd.h>
+# include <unistd.h>
 #endif
 
 #include "FileInfo.h"
@@ -282,9 +285,7 @@ bool FileInfo::hasExtension(const char* Ext) const
 
 bool FileInfo::hasExtension(std::initializer_list<const char*> Exts) const
 {
-    return std::ranges::any_of(Exts, [this](const char* ext) {
-        return hasExtension(ext);
-    });
+    return std::ranges::any_of(Exts, [this](const char* ext) { return hasExtension(ext); });
 }
 
 bool FileInfo::exists() const
@@ -304,11 +305,36 @@ bool FileInfo::isReadable() const
     return (perms & fs::perms::owner_read) == fs::perms::owner_read;
 }
 
+bool directoryIsWritable(const fs::path& dir)
+{
+    try {
+        if (!fs::exists(dir) || !fs::is_directory(dir)) {
+            return false;
+        }
+        fs::path test_file = dir / (".fs_perm_test_" + std::to_string(std::rand()) + ".tmp");
+        {
+            std::ofstream ofs(test_file);
+            if (!ofs) {
+                return false;
+            }
+        }
+        std::error_code ec;
+        fs::remove(test_file, ec);
+        return true;
+    }
+    catch (...) {
+        return false;
+    }
+}
+
 bool FileInfo::isWritable() const
 {
     fs::path path = stringToPath(FileName);
     if (!fs::exists(path)) {
         return false;
+    }
+    if (fs::is_directory(path)) {
+        return directoryIsWritable(path);
     }
     fs::file_status stat = fs::status(path);
     fs::perms perms = stat.permissions();
@@ -376,8 +402,7 @@ template<typename TP>
 std::time_t to_time_t(TP tp)
 {
     using namespace std::chrono;
-    auto sctp =
-        time_point_cast<system_clock::duration>(tp - TP::clock::now() + system_clock::now());
+    auto sctp = time_point_cast<system_clock::duration>(tp - TP::clock::now() + system_clock::now());
     return system_clock::to_time_t(sctp);
 }
 

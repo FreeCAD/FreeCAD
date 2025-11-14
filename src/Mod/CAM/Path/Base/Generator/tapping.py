@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
 # *   Copyright (c) 2021 sliptonic <shopinthewoods@gmail.com>               *
 # *   Copyright (c) 2023 luvtofish                                          *
@@ -38,7 +38,15 @@ else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
-def generate(edge, dwelltime=0.0, repeat=1, retractheight=None, righthand=True):
+def generate(
+    edge,
+    dwelltime=0.0,
+    repeat=1,
+    retractheight=None,
+    righthand=True,
+    pitch=None,
+    spindle_speed=None,
+):
     """
     Generates Gcode for tapping a single hole.
 
@@ -90,6 +98,8 @@ def generate(edge, dwelltime=0.0, repeat=1, retractheight=None, righthand=True):
     cmdParams["Y"] = startPoint.y
     cmdParams["Z"] = endPoint.z
     cmdParams["R"] = retractheight if retractheight is not None else startPoint.z
+    cmdParams["S"] = spindle_speed if spindle_speed is not None else 1.0  # Sanity default
+    cmdParams["F"] = float(pitch) if pitch is not None else 100.0  # Sanity default
 
     if repeat < 1:
         raise ValueError("repeat must be 1 or greater")

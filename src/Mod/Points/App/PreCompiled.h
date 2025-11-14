@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -25,8 +27,6 @@
 
 #include <FCConfig.h>
 
-#ifdef _PreComp_
-
 // standard
 #include <cstdio>
 
@@ -47,7 +47,5 @@
 
 // Qt
 #include <QtConcurrentMap>
-
-#endif  //_PreComp_
 
 #endif

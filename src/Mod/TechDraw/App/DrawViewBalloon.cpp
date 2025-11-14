@@ -20,15 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <Precision.hxx>
 #include <cstdlib>
 #include <cstring>
 #include <limits>
 #include <sstream>
-#endif
+
 
 #include <App/Application.h>
 #include <Base/Parameter.h>

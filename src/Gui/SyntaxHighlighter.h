@@ -27,7 +27,8 @@
 #include <QSyntaxHighlighter>
 #include <FCGlobal.h>
 
-namespace Gui {
+namespace Gui
+{
 class SyntaxHighlighterP;
 class TextEditor;
 
@@ -35,7 +36,7 @@ class TextEditor;
  * Abstract Syntax highlighter.
  * @author Werner Mayer
  */
-class GuiExport SyntaxHighlighter : public QSyntaxHighlighter
+class GuiExport SyntaxHighlighter: public QSyntaxHighlighter
 {
 public:
     SyntaxHighlighter(QObject* parent);
@@ -52,8 +53,17 @@ protected:
 protected:
     enum TColor
     {
-        Text = 0, Comment = 1, BlockComment = 2, Number = 3, String = 4, Keyword = 5,
-        Classname = 6, Defname = 7, Operator = 8, Output = 9, Error = 10
+        Text = 0,
+        Comment = 1,
+        BlockComment = 2,
+        Number = 3,
+        String = 4,
+        Keyword = 5,
+        Classname = 6,
+        Defname = 7,
+        Operator = 8,
+        Output = 9,
+        Error = 10
     };
 
     QColor colorByType(TColor type);
@@ -63,6 +73,6 @@ private:
     SyntaxHighlighterP* d;
 };
 
-} // namespace Gui
+}  // namespace Gui
 
-#endif // GUI_SYNTAXHIGHLIGHTER_H
+#endif  // GUI_SYNTAXHIGHLIGHTER_H

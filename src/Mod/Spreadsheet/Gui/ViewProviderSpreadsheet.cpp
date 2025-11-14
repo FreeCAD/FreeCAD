@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Juergen Riegel <juergen.riegel@web.de>             *
  *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
@@ -21,13 +23,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <QMenu>
 #include <QString>
 #include <sstream>
-#endif
+
 
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -105,11 +105,13 @@ void ViewProviderSheet::exportAsFile()
     auto* sheet = getObject<Spreadsheet::Sheet>();
     QString selectedFilter;
     QString formatList = QObject::tr("CSV (*.csv *.CSV);;All (*)");
-    QString fileName = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(),
-                                                        QObject::tr("Export File"),
-                                                        QString(),
-                                                        formatList,
-                                                        &selectedFilter);
+    QString fileName = Gui::FileDialog::getSaveFileName(
+        Gui::getMainWindow(),
+        QObject::tr("Export File"),
+        QString(),
+        formatList,
+        &selectedFilter
+    );
     if (!fileName.isEmpty()) {
         if (sheet) {
             char delim = '\0';

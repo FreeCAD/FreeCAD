@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QKeyEvent>
 #include <QKeySequence>
-#endif
+
 
 #include "ShortcutListener.h"
 #include "ViewProviderSketch.h"

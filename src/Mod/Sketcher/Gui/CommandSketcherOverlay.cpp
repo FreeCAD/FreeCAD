@@ -20,11 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <Inventor/SbString.h>
 #include <QApplication>
-#endif
 
 #include <App/Application.h>
 #include <Base/Console.h>
@@ -51,7 +48,8 @@ using namespace Sketcher;
 void ShowRestoreInformationLayer(const char* visibleelementname)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/General"
+    );
     bool status = hGrp->GetBool(visibleelementname, true);
     hGrp->SetBool(visibleelementname, !status);
 }
@@ -82,7 +80,7 @@ void CmdSketcherBSplineDegree::activated(int iMsg)
 
 bool CmdSketcherBSplineDegree::isActive()
 {
-    return isSketcherBSplineActive(getActiveGuiDocument(), false);
+    return isCommandActive(getActiveGuiDocument());
 }
 
 // Show/Hide B-spline polygon
@@ -111,7 +109,7 @@ void CmdSketcherBSplinePolygon::activated(int iMsg)
 
 bool CmdSketcherBSplinePolygon::isActive()
 {
-    return isSketcherBSplineActive(getActiveGuiDocument(), false);
+    return isCommandActive(getActiveGuiDocument());
 }
 
 // Show/Hide B-spline comb
@@ -140,7 +138,7 @@ void CmdSketcherBSplineComb::activated(int iMsg)
 
 bool CmdSketcherBSplineComb::isActive()
 {
-    return isSketcherBSplineActive(getActiveGuiDocument(), false);
+    return isCommandActive(getActiveGuiDocument());
 }
 
 //
@@ -169,7 +167,7 @@ void CmdSketcherBSplineKnotMultiplicity::activated(int iMsg)
 
 bool CmdSketcherBSplineKnotMultiplicity::isActive()
 {
-    return isSketcherBSplineActive(getActiveGuiDocument(), false);
+    return isCommandActive(getActiveGuiDocument());
 }
 
 //
@@ -198,14 +196,13 @@ void CmdSketcherBSplinePoleWeight::activated(int iMsg)
 
 bool CmdSketcherBSplinePoleWeight::isActive()
 {
-    return isSketcherBSplineActive(getActiveGuiDocument(), false);
+    return isCommandActive(getActiveGuiDocument());
 }
 
 // Composite drop down menu for show/hide BSpline information layer
 DEF_STD_CMD_ACLU(CmdSketcherCompBSplineShowHideGeometryInformation)
 
-CmdSketcherCompBSplineShowHideGeometryInformation::
-    CmdSketcherCompBSplineShowHideGeometryInformation()
+CmdSketcherCompBSplineShowHideGeometryInformation::CmdSketcherCompBSplineShowHideGeometryInformation()
     : Command("Sketcher_CompBSplineShowHideGeometryInformation")
 {
     sAppModule = "Sketcher";
@@ -292,51 +289,98 @@ void CmdSketcherCompBSplineShowHideGeometryInformation::languageChange()
     QList<QAction*> a = pcAction->actions();
 
     QAction* c1 = a[0];
-    c1->setText(QApplication::translate("CmdSketcherCompBSplineShowHideGeometryInformation",
-                                        "Toggle B-Spline Degree"));
+    c1->setText(
+        QApplication::translate("CmdSketcherCompBSplineShowHideGeometryInformation", "Toggle B-Spline Degree")
+    );
     c1->setToolTip(
-        QApplication::translate("Sketcher_BSplineDegree",
-                                "Toggles the visibility of the degree for all B-splines"));
+        QApplication::translate(
+            "Sketcher_BSplineDegree",
+            "Toggles the visibility of the degree for all B-splines"
+        )
+    );
     c1->setStatusTip(
-        QApplication::translate("Sketcher_BSplineDegree",
-                                "Toggles the visibility of the degree for all B-splines"));
+        QApplication::translate(
+            "Sketcher_BSplineDegree",
+            "Toggles the visibility of the degree for all B-splines"
+        )
+    );
     QAction* c2 = a[1];
-    c2->setText(QApplication::translate("CmdSketcherCompBSplineShowHideGeometryInformation",
-                                        "Toggle B-Spline Control Polygon"));
-    c2->setToolTip(QApplication::translate(
-        "Sketcher_BSplinePolygon",
-        "Toggles the visibility of the control polygons for all B-splines"));
-    c2->setStatusTip(QApplication::translate(
-        "Sketcher_BSplinePolygon",
-        "Toggles the visibility of the control polygons for all B-splines"));
+    c2->setText(
+        QApplication::translate(
+            "CmdSketcherCompBSplineShowHideGeometryInformation",
+            "Toggle B-Spline Control Polygon"
+        )
+    );
+    c2->setToolTip(
+        QApplication::translate(
+            "Sketcher_BSplinePolygon",
+            "Toggles the visibility of the control polygons for all B-splines"
+        )
+    );
+    c2->setStatusTip(
+        QApplication::translate(
+            "Sketcher_BSplinePolygon",
+            "Toggles the visibility of the control polygons for all B-splines"
+        )
+    );
     QAction* c3 = a[2];
-    c3->setText(QApplication::translate("CmdSketcherCompBSplineShowHideGeometryInformation",
-                                        "Toggle B-Spline Curvature Comb"));
+    c3->setText(
+        QApplication::translate(
+            "CmdSketcherCompBSplineShowHideGeometryInformation",
+            "Toggle B-Spline Curvature Comb"
+        )
+    );
     c3->setToolTip(
-        QApplication::translate("Sketcher_BSplineComb",
-                                "Toggles the visibility of the curvature comb for all B-splines"));
+        QApplication::translate(
+            "Sketcher_BSplineComb",
+            "Toggles the visibility of the curvature comb for all B-splines"
+        )
+    );
     c3->setStatusTip(
-        QApplication::translate("Sketcher_BSplineComb",
-                                "Toggles the visibility of the curvature comb for all B-splines"));
+        QApplication::translate(
+            "Sketcher_BSplineComb",
+            "Toggles the visibility of the curvature comb for all B-splines"
+        )
+    );
     QAction* c4 = a[3];
-    c4->setText(QApplication::translate("CmdSketcherCompBSplineShowHideGeometryInformation",
-                                        "Toggle B-Spline Knot Multiplicity"));
-    c4->setToolTip(QApplication::translate(
-        "Sketcher_BSplineKnotMultiplicity",
-        "Toggles the visibility of the knot multiplicity for all B-splines"));
-    c4->setStatusTip(QApplication::translate(
-        "Sketcher_BSplineKnotMultiplicity",
-        "Toggles the visibility of the knot multiplicity for all B-splines"));
+    c4->setText(
+        QApplication::translate(
+            "CmdSketcherCompBSplineShowHideGeometryInformation",
+            "Toggle B-Spline Knot Multiplicity"
+        )
+    );
+    c4->setToolTip(
+        QApplication::translate(
+            "Sketcher_BSplineKnotMultiplicity",
+            "Toggles the visibility of the knot multiplicity for all B-splines"
+        )
+    );
+    c4->setStatusTip(
+        QApplication::translate(
+            "Sketcher_BSplineKnotMultiplicity",
+            "Toggles the visibility of the knot multiplicity for all B-splines"
+        )
+    );
 
     QAction* c5 = a[4];
-    c5->setText(QApplication::translate("CmdSketcherCompBSplineShowHideGeometryInformation",
-                                        "Toggle B-Spline Control Point Weight"));
-    c5->setToolTip(QApplication::translate(
-        "Sketcher_BSplinePoleWeight",
-        "Toggles the visibility of the control point weight for all B-splines"));
-    c5->setStatusTip(QApplication::translate(
-        "Sketcher_BSplinePoleWeight",
-        "Toggles the visibility of the control point weight for all B-splines"));
+    c5->setText(
+        QApplication::translate(
+            "CmdSketcherCompBSplineShowHideGeometryInformation",
+            "Toggle B-Spline Control Point Weight"
+        )
+    );
+    c5->setToolTip(
+        QApplication::translate(
+            "Sketcher_BSplinePoleWeight",
+            "Toggles the visibility of the control point weight for all B-splines"
+        )
+    );
+    c5->setStatusTip(
+        QApplication::translate(
+            "Sketcher_BSplinePoleWeight",
+            "Toggles the visibility of the control point weight for all B-splines"
+        )
+    );
 }
 
 void CmdSketcherCompBSplineShowHideGeometryInformation::updateAction(int /*mode*/)
@@ -344,7 +388,7 @@ void CmdSketcherCompBSplineShowHideGeometryInformation::updateAction(int /*mode*
 
 bool CmdSketcherCompBSplineShowHideGeometryInformation::isActive()
 {
-    return isSketcherBSplineActive(getActiveGuiDocument(), false);
+    return isCommandActive(getActiveGuiDocument());
 }
 
 //

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2005 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,10 +22,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <fcntl.h>
-#endif
+#include <fcntl.h>
+
 
 #include <Base/Console.h>
 #include <Base/FileInfo.h>
@@ -38,21 +38,22 @@ PROPERTY_SOURCE(Part::ImportBrep, Part::Feature)
 
 ImportBrep::ImportBrep()
 {
-    ADD_PROPERTY(FileName,(""));
+    ADD_PROPERTY(FileName, (""));
 }
 
 short ImportBrep::mustExecute() const
 {
-    if (FileName.isTouched())
+    if (FileName.isTouched()) {
         return 1;
+    }
     return 0;
 }
 
-App::DocumentObjectExecReturn *ImportBrep::execute()
+App::DocumentObjectExecReturn* ImportBrep::execute()
 {
     Base::FileInfo fi(FileName.getValue());
     if (!fi.isReadable()) {
-        Base::Console().log("ImportBrep::execute() not able to open %s!\n",FileName.getValue());
+        Base::Console().log("ImportBrep::execute() not able to open %s!\n", FileName.getValue());
         std::string error = std::string("Cannot open file ") + FileName.getValue();
         return new App::DocumentObjectExecReturn(error);
     }
@@ -63,4 +64,3 @@ App::DocumentObjectExecReturn *ImportBrep::execute()
 
     return App::DocumentObject::StdReturn;
 }
-

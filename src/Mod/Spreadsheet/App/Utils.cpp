@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
@@ -20,11 +22,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <sstream>
-#endif
+
 
 #include "Sheet.h"
 #include "Utils.h"
@@ -73,8 +73,10 @@ std::string Spreadsheet::rowName(int row)
 }
 
 
-void Spreadsheet::createRectangles(std::set<std::pair<int, int>>& cells,
-                                   std::map<std::pair<int, int>, std::pair<int, int>>& rectangles)
+void Spreadsheet::createRectangles(
+    std::set<std::pair<int, int>>& cells,
+    std::map<std::pair<int, int>, std::pair<int, int>>& rectangles
+)
 {
     while (!cells.empty()) {
         int row, col;

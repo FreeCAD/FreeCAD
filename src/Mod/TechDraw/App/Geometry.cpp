@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 # include <limits>
 # include <Approx_Curve3d.hxx>
 # include <BRep_Tool.hxx>
@@ -70,7 +67,6 @@
 #if OCC_VERSION_HEX < 0x070600
 # include <BRepAdaptor_HCurve.hxx>
 #endif
-#endif  // #ifndef _PreComp_
 
 #include <Base/Console.h>
 #include <Base/Converter.h>

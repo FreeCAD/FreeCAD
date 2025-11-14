@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2017 Shai Seger <shaise at gmail>                       *
  *                                                                         *
@@ -20,11 +22,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"  // NOLINT
-#ifndef _PreComp_
 #include <string>
 #include <vector>
-#endif
+
 
 #include "CAMSim.h"
 #include "DlgCAMSimulator.h"
@@ -46,10 +46,12 @@ void CAMSimulator::CAMSim::resetSimulation()
     DlgCAMSimulator::GetInstance()->resetSimulation();
 }
 
-void CAMSim::addTool(const std::vector<float>& toolProfilePoints,
-                     int toolNumber,
-                     float diameter,
-                     float resolution)
+void CAMSim::addTool(
+    const std::vector<float>& toolProfilePoints,
+    int toolNumber,
+    float diameter,
+    float resolution
+)
 {
     DlgCAMSimulator::GetInstance()->addTool(toolProfilePoints, toolNumber, diameter, resolution);
 }

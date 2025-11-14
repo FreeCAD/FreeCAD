@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2006 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
@@ -21,7 +23,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -89,8 +90,9 @@ private:
         std::string EncodedName = std::string(Name);
         PyMem_Free(Name);
 
-        App::Document* pcDoc =
-            App::GetApplication().newDocument(DocName ? DocName : QT_TR_NOOP("Unnamed"));
+        App::Document* pcDoc = App::GetApplication().newDocument(
+            DocName ? DocName : QT_TR_NOOP("Unnamed")
+        );
         load(pcDoc, EncodedName);
 
         return Py::None();
@@ -146,7 +148,8 @@ PyMOD_INIT_FUNC(SpreadsheetGui)
 
     // register preference page
     new Gui::PrefPageProducer<SpreadsheetGui::DlgSettingsImp>(
-        QT_TRANSLATE_NOOP("QObject", "Spreadsheet"));
+        QT_TRANSLATE_NOOP("QObject", "Spreadsheet")
+    );
 
     // add resources and reloads the translators
     loadSpreadsheetResource();

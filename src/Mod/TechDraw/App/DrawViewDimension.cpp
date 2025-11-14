@@ -21,8 +21,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <limits>
 #include <sstream>
 
@@ -54,7 +52,6 @@
 #include <TopExp_Explorer.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Shape.hxx>
-#endif
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -1241,7 +1238,6 @@ anglePoints DrawViewDimension::getAnglePointsTwoEdges(ReferenceVector references
             farPoint0 = generic0->getStartPoint();
         }
 
-
         // pick the end of generic1 farthest from the apex
         Base::Vector3d farPoint1{generic1->getEndPoint()};
         if ((generic1->getStartPoint() - apex).Length()
@@ -1249,22 +1245,9 @@ anglePoints DrawViewDimension::getAnglePointsTwoEdges(ReferenceVector references
             farPoint1 = (generic1->getStartPoint());
         }
 
-        Base::Vector3d leg0Dir = (farPoint0 - apex).Normalize();
-        Base::Vector3d leg1Dir = (farPoint1 - apex).Normalize();
-        Base::Vector3d extenPoint0 = farPoint0;  // extension line points
-        Base::Vector3d extenPoint1 = farPoint1;
-
-
-        double extenRadius = std::min(extenPoint0.Length(),
-                                      extenPoint1.Length());
-        if (extenRadius == 0) {
-            // one of the legs has 0 length??
-            throw Base::RuntimeError("No extension point radius!!");
-        }
-
         anglePoints pts;
-        pts.first(apex + leg0Dir * extenRadius);
-        pts.second(apex + leg1Dir * extenRadius);
+        pts.first(farPoint0);
+        pts.second(farPoint1);
         pts.vertex(apex);
         return pts;
     }

@@ -22,10 +22,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QMessageBox>
-#endif
+#include <QStandardPaths>
 
 #include <Gui/Application.h>
 
@@ -41,21 +39,23 @@ DlgSettingsFemZ88Imp::DlgSettingsFemZ88Imp(QWidget* parent)
 {
     ui->setupUi(this);
 
-    connect(ui->fc_z88_binary_path,
-            &Gui::PrefFileChooser::fileNameChanged,
-            this,
-            &DlgSettingsFemZ88Imp::onfileNameChanged);
+    connect(
+        ui->fc_z88_binary_path,
+        &Gui::PrefFileChooser::fileNameSelected,
+        this,
+        &DlgSettingsFemZ88Imp::onfileNameSelected
+    );
 }
 
 DlgSettingsFemZ88Imp::~DlgSettingsFemZ88Imp() = default;
 
 void DlgSettingsFemZ88Imp::saveSettings()
 {
-    ui->cb_z88_binary_std->onSave();
     ui->fc_z88_binary_path->onSave();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Fem/Z88");
+        "User parameter:BaseApp/Preferences/Mod/Fem/Z88"
+    );
     hGrp->SetInt("Solver", ui->cmb_solver->currentIndex());
     ui->cmb_solver->onSave();
     hGrp->SetInt("MaxGS", ui->sb_Z88_MaxGS->value());
@@ -66,13 +66,13 @@ void DlgSettingsFemZ88Imp::saveSettings()
 
 void DlgSettingsFemZ88Imp::loadSettings()
 {
-    ui->cb_z88_binary_std->onRestore();
     ui->fc_z88_binary_path->onRestore();
     ui->cmb_solver->onRestore();
     ui->sb_Z88_MaxGS->onRestore();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Fem/Z88");
+        "User parameter:BaseApp/Preferences/Mod/Fem/Z88"
+    );
     int index = hGrp->GetInt("Solver", 0);
     if (index > -1) {
         ui->cmb_solver->setCurrentIndex(index);
@@ -100,33 +100,11 @@ void DlgSettingsFemZ88Imp::changeEvent(QEvent* e)
     }
 }
 
-void DlgSettingsFemZ88Imp::onfileNameChanged(QString FileName)
+void DlgSettingsFemZ88Imp::onfileNameSelected(const QString& fileName)
 {
-    if (!QFileInfo::exists(FileName)) {
-        QMessageBox::critical(this,
-                              tr("File does not exist"),
-                              tr("The specified z88r executable\n'%1'\n does not exist!\n"
-                                 "Specify another file.")
-                                  .arg(FileName));
-        return;
+    if (!fileName.isEmpty() && QStandardPaths::findExecutable(fileName).isEmpty()) {
+        QMessageBox::critical(this, tr("Z88"), tr("Executable '%1' not found").arg(fileName));
     }
-
-    // since the Z88 folder is full of files like "z88h", "z88o" etc. one can easily make a
-    // mistake and is then lost why the solver fails. Therefore check for the correct filename.
-    auto strName = FileName.toStdString();
-#if defined(FC_OS_WIN32)
-    if (strName.substr(strName.length() - 8) != "z88r.exe") {
-        QMessageBox::critical(this,
-                              tr("Wrong file"),
-                              tr("You must specify the path to the z88r.exe!"));
-        return;
-    }
-#elif defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
-    if (strName.substr(strName.length() - 4) != "z88r") {
-        QMessageBox::critical(this, tr("Wrong file"), tr("You must specify the path to the z88r!"));
-        return;
-    }
-#endif
 }
 
 #include "moc_DlgSettingsFemZ88Imp.cpp"

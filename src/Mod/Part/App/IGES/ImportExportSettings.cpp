@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,21 +22,23 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Interface_Static.hxx>
-#endif
+#include <Interface_Static.hxx>
+
 
 #include "ImportExportSettings.h"
 #include <App/Application.h>
 
 
-namespace Part {
-namespace IGES {
+namespace Part
+{
+namespace IGES
+{
 
 ImportExportSettings::ImportExportSettings()
 {
-    pGroup = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part/IGES");
+    pGroup = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Part/IGES"
+    );
 }
 
 bool ImportExportSettings::getSkipBlankEntities() const
@@ -102,5 +106,5 @@ void ImportExportSettings::setProductName(const char* name)
     Part::Interface::writeIgesHeaderProduct(name);
 }
 
-} // namespace IGES
-} // namespace Part
+}  // namespace IGES
+}  // namespace Part

@@ -21,8 +21,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QAction>
 # include <QList>
 # include <QMenu>
@@ -32,7 +30,6 @@
 
 # include <boost/signals2.hpp>
 # include <boost/signals2/connection.hpp>
-#endif
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>

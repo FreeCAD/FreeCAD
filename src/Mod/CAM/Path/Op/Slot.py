@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2020 Russell Johnson (russ4262) <russ4262@gmail.com>    *
 # *                                                                         *
@@ -394,6 +395,9 @@ class ObjectSlot(PathOp.ObjectOp):
                 if prop in ["Base"]:
                     self.updateEnumerations(obj)
                     self.opSetEditorModes(obj)
+
+        if prop == "Active" and obj.ViewObject:
+            obj.ViewObject.signalChangeIcon()
 
     def opOnDocumentRestored(self, obj):
         self.propertiesReady = False

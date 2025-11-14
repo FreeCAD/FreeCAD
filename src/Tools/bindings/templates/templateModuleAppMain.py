@@ -1,5 +1,6 @@
 #! python
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # (c) 2006 Juergen Riegel
 
 from . import template
@@ -23,10 +24,8 @@ class TemplateModuleAppMain(template.ModelTemplate):
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <Python.h>
-#endif
+
 
 #include <Base/Console.h>
 

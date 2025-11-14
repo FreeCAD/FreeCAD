@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2007 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,11 +22,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <algorithm>
 #include <sstream>
-#endif
+
 
 #include "Mesh.h"
 #include "MeshPy.h"
@@ -66,11 +66,13 @@ void Segment::removeIndices(const std::vector<FacetIndex>& inds)
     std::vector<FacetIndex> result;
     std::set<FacetIndex> s1(_indices.begin(), _indices.end());
     std::set<FacetIndex> s2(inds.begin(), inds.end());
-    std::set_difference(s1.begin(),
-                        s1.end(),
-                        s2.begin(),
-                        s2.end(),
-                        std::back_insert_iterator<std::vector<FacetIndex>>(result));
+    std::set_difference(
+        s1.begin(),
+        s1.end(),
+        s2.begin(),
+        s2.end(),
+        std::back_insert_iterator<std::vector<FacetIndex>>(result)
+    );
 
     _indices = result;
     if (_modifykernel) {

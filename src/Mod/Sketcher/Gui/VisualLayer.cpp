@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <Base/Reader.h>
 #include <Base/Writer.h>
@@ -70,8 +69,7 @@ void VisualLayer::setVisible(bool show)
 void VisualLayer::Save(Base::Writer& writer) const
 {
     writer.Stream() << writer.ind() << "<VisualLayer "
-                    << "visible=\""
-                    << (visible ? std::string("true") : std::string("false")).c_str()
+                    << "visible=\"" << (visible ? std::string("true") : std::string("false")).c_str()
                     << "\" linePattern=\"" << linePattern << "\" lineWidth=\"" << lineWidth
                     << "\"/>" << std::endl;
 }

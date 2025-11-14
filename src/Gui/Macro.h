@@ -24,6 +24,7 @@
 #ifndef GUI_MACRO_H
 #define GUI_MACRO_H
 
+#include <stack>
 #include <tuple>
 #include <QString>
 #include <QStringList>
@@ -31,7 +32,8 @@
 #include <Base/Parameter.h>
 
 
-namespace Gui {
+namespace Gui
+{
 struct ApplicationP;
 class PythonConsole;
 class PythonDebugger;
@@ -40,23 +42,25 @@ class MacroFile
 {
 public:
     MacroFile();
-    void open(const char *sName);
+    void open(const char* sName);
     /// indicates if a macro recording is in progress
-    bool isOpen() const {
+    bool isOpen() const
+    {
         return openMacro;
     }
     void append(const QString&);
     void append(const QStringList&);
-    QString fileName() const {
+    QString fileName() const
+    {
         return macroName;
     }
     bool commit();
     void cancel();
 
 private:
-    QStringList macroInProgress;    /**< Container for the macro */
-    QString macroName;              /**< name of the macro */
-    bool openMacro{false};
+    QStringList macroInProgress; /**< Container for the macro */
+    QString macroName;           /**< name of the macro */
+    bool openMacro {false};
 };
 
 class MacroOutputBuffer
@@ -64,19 +68,21 @@ class MacroOutputBuffer
 public:
     MacroOutputBuffer();
     /// Return the added lines regardless of recording or not
-    long getLines() const {
+    long getLines() const
+    {
         return totalLines;
     }
     /// insert a new pending line in the macro
     void addPendingLine(int type, const char* line);
     bool addPendingLineIfComment(int type, const char* line);
-    bool hasPendingLines() const {
+    bool hasPendingLines() const
+    {
         return !pendingLine.empty();
     }
     void incrementIfNoComment(int type);
 
-    long totalLines{0};
-    std::vector<std::pair<int, std::string> > pendingLine;
+    long totalLines {0};
+    std::vector<std::pair<int, std::string>> pendingLine;
 };
 
 class MacroOutputOption
@@ -89,9 +95,9 @@ public:
     static bool isGuiCommand(int type);
     static bool isAppCommand(int type);
 
-    bool recordGui{true};
-    bool guiAsComment{true};
-    bool scriptToPyConsole{true};
+    bool recordGui {true};
+    bool guiAsComment {true};
+    bool scriptToPyConsole {true};
 };
 
 /** Macro recording and play back management
@@ -99,26 +105,68 @@ public:
  * a macro file (so far).
  * \author Jürgen Riegel
  */
-class GuiExport MacroManager : public Base::Observer<const char*>
+class GuiExport MacroManager: public Base::Observer<const char*>
 {
 protected:
     MacroManager();
     ~MacroManager() override;
 
 public:
-
     /** Macro type enumeration  */
-    enum MacroType {
+    enum MacroType
+    {
         File, /**< The macro will be saved in a file */
         User, /**< The macro belongs to the Application and will be saved in the UserParameter */
-        Doc   /**< The macro belongs to the Document and will be saved and restored with the Document */
+        Doc /**< The macro belongs to the Document and will be saved and restored with the Document */
     };
 
     /** Line type enumeration  */
-    enum LineType {
-        App,  /**< The line effects only the document and Application (FreeCAD) */
-        Gui,  /**< The line effects the Gui (FreeCADGui) */
-        Cmt,  /**< The line is handled as a comment */
+    enum LineType
+    {
+        App, /**< The line effects only the document and Application (FreeCAD) */
+        Gui, /**< The line effects the Gui (FreeCADGui) */
+        Cmt, /**< The line is handled as a comment */
+    };
+
+    /**  Redirect the macro output temporarily.
+     *
+     * This is a RAII class to redirect the macro output to a function.
+     * Initializing an instance with a redirect function, ensures that
+     * MacroManager::addLine() calls are redirected by means of the redirect
+     * function.  More than one instances can be used, overriding earlier
+     * instances and their redirect functions.
+     *
+     * @code
+     * void myRedirectFunc1(MacroManager::LineType type, const char* line)
+     * { // do something with the line }
+     *
+     * void myRedirectFunc2(MacroManager::LineType type, const char* line)
+     * { // do something else with the line }
+     *
+     * {
+     *   MacroRedirector redirect(myRedirectFunc1);
+     *   // all macro output will go to myRedirectFunc1
+     *   {
+     *     MacroRedirector redirect2(myRedirectFunc2);
+     *     // all macro output will go to myRedirectFunc2
+     *   }
+     *   // all macro output will go to myRedirectFunc1
+     * }
+     * // normal macro output is restored
+     * @endcode
+     */
+    class MacroRedirector
+    {
+    public:
+        explicit MacroRedirector(const std::function<void(LineType, const char*)>& func)
+        {
+            MacroManager::redirectFuncs.push(func);
+        }
+
+        ~MacroRedirector()
+        {
+            MacroManager::redirectFuncs.pop();
+        }
     };
 
     /** Opens a new Macro recording session
@@ -130,16 +178,25 @@ public:
      * @see commit()
      * @see cancel()
      */
-    void open(MacroType eType,const char *sName);
+    void open(MacroType eType, const char* sName);
     /// close (and save) the recording session
     void commit();
     /// cancels the recording session
     void cancel();
     /// indicates if a macro recording is in progress
-    bool isOpen() const {
+    bool isOpen() const
+    {
         return macroFile.isOpen();
     }
-    /// insert a new line in the macro
+
+    /** Insert a new line in the macro.
+     *
+     * The line is added to the macro unless the output is redirected.
+     * @see MacroRedirector.
+     *
+     * @param Type The type of the line
+     * @param sLine The line to add
+     */
     void addLine(LineType Type, const char* sLine);
     /// insert a new pending line in the macro
     void addPendingLine(LineType type, const char* line);
@@ -149,15 +206,16 @@ public:
      * gets started the right import can be issued.
      */
     void setModule(const char* sModule);
-    void run(MacroType eType,const char *sName);
+    void run(MacroType eType, const char* sName);
     /// Get the Python debugger
     PythonDebugger* debugger() const;
     PythonConsole* getPythonConsole() const;
     /** Observes its parameter group. */
-    void OnChange(Base::Subject<const char*> &rCaller, const char * sReason) override;
+    void OnChange(Base::Subject<const char*>& rCaller, const char* sReason) override;
 
     /// Return the added lines regardless of recording or not
-    long getLines() const {
+    long getLines() const
+    {
         return buffer.getLines();
     }
 
@@ -170,15 +228,16 @@ private:
     MacroFile macroFile;
     MacroOutputBuffer buffer;
     MacroOutputOption option;
-    bool localEnv{true};
-    mutable PythonConsole* pyConsole{nullptr};       // link to the python console
+    bool localEnv {true};
+    mutable PythonConsole* pyConsole {nullptr};  // link to the python console
     PythonDebugger* pyDebugger;
     Base::Reference<ParameterGrp> params;  // link to the Macro parameter group
+    static std::stack<std::function<void(LineType, const char*)>> redirectFuncs;
 
     friend struct ApplicationP;
 };
 
-} // namespace Gui
+}  // namespace Gui
 
 
-#endif // GUI_MACRO_H
+#endif  // GUI_MACRO_H

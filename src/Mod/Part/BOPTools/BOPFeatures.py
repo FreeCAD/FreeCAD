@@ -29,6 +29,7 @@ __doc__ = "Helper class to create the features for Boolean operations."
 import FreeCAD
 import Part
 
+
 class BOPFeatures:
     def __init__(self, doc):
         self.doc = doc
@@ -103,8 +104,6 @@ class BOPFeatures:
 
     def copy_visual_attributes(self, target, source):
         if target.ViewObject:
-            if hasattr(target.ViewObject,"ShapeAppearance") and hasattr(source.ViewObject, "ShapeAppearance"):
-                target.ViewObject.ShapeAppearance = source.ViewObject.ShapeAppearance
             displayMode = source.ViewObject.DisplayMode
             src = source
             while displayMode == "Link":

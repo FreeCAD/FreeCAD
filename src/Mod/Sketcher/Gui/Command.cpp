@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QApplication>
 #include <QCheckBox>
 #include <QGridLayout>
@@ -32,7 +30,7 @@
 #include <QMessageBox>
 #include <QSignalBlocker>
 #include <QWidgetAction>
-#endif
+
 
 #include <App/DocumentObjectGroup.h>
 #include <App/Datums.h>
@@ -1298,10 +1296,6 @@ protected:
     bool isActive() override;
     Gui::Action* createAction() override;
 
-private:
-    void updateIcon(bool value);
-    void updateInactiveHandlerIcon();
-
 public:
     CmdSketcherGrid(const CmdSketcherGrid&) = delete;
     CmdSketcherGrid(CmdSketcherGrid&&) = delete;
@@ -1322,26 +1316,6 @@ CmdSketcherGrid::CmdSketcherGrid()
     eType = 0;
 }
 
-void CmdSketcherGrid::updateIcon(bool value)
-{
-    static QIcon active = Gui::BitmapFactory().iconFromTheme("Sketcher_GridToggle");
-    static QIcon inactive = Gui::BitmapFactory().iconFromTheme("Sketcher_GridToggle_Deactivated");
-
-    auto* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
-    pcAction->setIcon(value ? active : inactive);
-}
-
-void CmdSketcherGrid::updateInactiveHandlerIcon()
-{
-    auto* vp = getInactiveHandlerEditModeSketchViewProvider();
-
-    if (vp) {
-        auto value = vp->ShowGrid.getValue();
-
-        updateIcon(value);
-    }
-}
-
 void CmdSketcherGrid::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
@@ -1353,8 +1327,6 @@ void CmdSketcherGrid::activated(int iMsg)
 
     auto value = sketchView->ShowGrid.getValue();
     sketchView->ShowGrid.setValue(!value);
-
-    updateIcon(!value);
 }
 
 Gui::Action* CmdSketcherGrid::createAction()
@@ -1373,9 +1345,6 @@ Gui::Action* CmdSketcherGrid::createAction()
         Q_UNUSED(menu)
         gsa->updateWidget();
     });
-
-    // set the right pixmap
-    updateInactiveHandlerIcon();
 
     return pcAction;
 }
@@ -1399,10 +1368,6 @@ bool CmdSketcherGrid::isActive()
     auto* vp = getInactiveHandlerEditModeSketchViewProvider();
 
     if (vp) {
-        auto value = vp->ShowGrid.getValue();
-
-        updateIcon(value);
-
         return true;
     }
 
@@ -1529,8 +1494,6 @@ protected:
     Gui::Action* createAction() override;
 
 private:
-    void updateIcon(bool value);
-
     ParameterGrp::handle getParameterPath()
     {
         return App::GetApplication().GetParameterGroupByPath(
@@ -1572,23 +1535,11 @@ void CmdSketcherSnap::OnChange(Base::Subject<const char*>& rCaller, const char* 
     }
 }
 
-void CmdSketcherSnap::updateIcon(bool value)
-{
-    static QIcon active = Gui::BitmapFactory().iconFromTheme("Sketcher_Snap");
-    static QIcon inactive = Gui::BitmapFactory().iconFromTheme("Sketcher_Snap_Deactivated");
-
-    auto* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
-    pcAction->setIcon(value ? active : inactive);
-}
-
 void CmdSketcherSnap::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
     getParameterPath()->SetBool("Snap", !snapEnabled);
-
-    // snapEnable updated via observer
-    updateIcon(snapEnabled);
 
     // Update the widget :
     if (!_pcAction)
@@ -1618,9 +1569,6 @@ Gui::Action* CmdSketcherSnap::createAction()
         ssa->updateWidget(snapEnabled);
     });
 
-    // set the right pixmap
-    updateIcon(snapEnabled);
-
     return pcAction;
 }
 
@@ -1643,8 +1591,6 @@ bool CmdSketcherSnap::isActive()
     auto* vp = getInactiveHandlerEditModeSketchViewProvider();
 
     if (vp) {
-        updateIcon(snapEnabled);
-
         return true;
     }
 
@@ -1790,8 +1736,6 @@ protected:
     Gui::Action* createAction() override;
 
 private:
-    void updateIcon();
-
     ParameterGrp::handle getParameterPath()
     {
         return App::GetApplication().GetParameterGroupByPath(
@@ -1831,28 +1775,6 @@ void CmdRenderingOrder::OnChange(Base::Subject<const char*>& rCaller, const char
 
     if (strcmp(sReason, "TopRenderGeometryId") == 0) {
         TopElement = static_cast<ElementType>(getParameterPath()->GetInt("TopRenderGeometryId", 1));
-
-        updateIcon();
-    }
-}
-
-void CmdRenderingOrder::updateIcon()
-{
-    static QIcon normal = Gui::BitmapFactory().iconFromTheme("Sketcher_RenderingOrder_Normal");
-    static QIcon construction =
-        Gui::BitmapFactory().iconFromTheme("Sketcher_RenderingOrder_Construction");
-    static QIcon external = Gui::BitmapFactory().iconFromTheme("Sketcher_RenderingOrder_External");
-
-    if (auto* pcAction = qobject_cast<Gui::ActionGroup*>(getAction())) {
-        if (TopElement == ElementType::Normal) {
-            pcAction->setIcon(normal);
-        }
-        else if (TopElement == ElementType::Construction) {
-            pcAction->setIcon(construction);
-        }
-        else if (TopElement == ElementType::External) {
-            pcAction->setIcon(external);
-        }
     }
 }
 
@@ -1877,9 +1799,6 @@ Gui::Action* CmdRenderingOrder::createAction()
         Q_UNUSED(menu)
         roa->updateWidget();
     });
-
-    // set the right pixmap
-    updateIcon();
 
     return pcAction;
 }

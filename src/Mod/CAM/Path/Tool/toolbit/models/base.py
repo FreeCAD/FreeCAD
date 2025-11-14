@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2019 sliptonic <shopinthewoods@gmail.com>               *
 # *                 2025 Samuel Abels <knipknap@gmail.com>                  *
@@ -41,6 +42,31 @@ from ..util import to_json, format_value
 
 
 ToolBitView = LazyLoader("Path.Tool.toolbit.ui.view", globals(), "Path.Tool.toolbit.ui.view")
+
+
+class ToolBitRecomputeObserver:
+    """Document observer that triggers queued visual updates after recompute completes."""
+
+    def __init__(self, toolbit_proxy):
+        self.toolbit_proxy = toolbit_proxy
+
+    def slotRecomputedDocument(self, doc):
+        """Called when document recompute is finished."""
+        # Check if the toolbit object is still valid
+        try:
+            obj_doc = self.toolbit_proxy.obj.Document
+        except ReferenceError:
+            # Object has been deleted or does not exist, nothing to do
+            return
+
+        # Only process updates for the correct document
+        if doc != obj_doc:
+            return
+
+        # Process any queued visual updates
+        if self.toolbit_proxy and hasattr(self.toolbit_proxy, "_process_queued_visual_update"):
+            Path.Log.debug("Document recompute finished, processing queued visual update")
+            self.toolbit_proxy._process_queued_visual_update()
 
 
 PropertyGroupShape = "Shape"
@@ -298,6 +324,7 @@ class ToolBit(Asset, ABC):
         """
         Updates the toolbit properties for backward compatibility.
         Ensure obj.ShapeID and obj.ToolBitID are set, handling legacy cases.
+        Also promotes embedded toolbits to correct shape type if needed.
         """
         Path.Log.track(f"Promoting tool bit {self.obj.Label}")
 
@@ -337,6 +364,17 @@ class ToolBit(Asset, ABC):
             raise ValueError(f"Failed to identify shape of ToolBit from '{thetype}'")
         self.obj.ShapeType = shape_class.name
 
+        # Promote embedded toolbits to correct shape type if still Custom
+        if self.obj.ShapeType == "Custom":
+            shape_id = getattr(self.obj, "ShapeID", None)
+            if shape_id:
+                shape_class = ToolBitShape.get_subclass_by_name(shape_id)
+                if shape_class and shape_class.name != "Custom":
+                    self.obj.ShapeType = shape_class.name
+                    self._tool_bit_shape = shape_class(shape_id)
+                    Path.Log.info(
+                        f"Promoted embedded toolbit '{self.obj.Label}' to shape '{shape_class.name}' via ShapeID"
+                    )
         # Ensure ToolBitID is set
         if hasattr(self.obj, "File"):
             self.id = pathlib.Path(self.obj.File).stem
@@ -546,15 +584,19 @@ class ToolBit(Asset, ABC):
             new_value = obj.getPropertyByName(prop)
             Path.Log.debug(
                 f"Shape parameter '{prop}' changed to {new_value}. "
-                f"Updating visual representation."
+                f"Queuing visual representation update."
             )
             self._tool_bit_shape.set_parameter(prop, new_value)
-            self._update_visual_representation()
+            self._queue_visual_update()
         finally:
             self._in_update = False
 
     def onDelete(self, obj, arg2=None):
         Path.Log.track(obj.Label)
+        # Clean up any pending observer
+        if hasattr(self, "_recompute_observer"):
+            FreeCAD.removeDocumentObserver(self._recompute_observer)
+            del self._recompute_observer
         self._removeBitBody()
         obj.Document.removeObject(obj.Name)
 
@@ -683,7 +725,7 @@ class ToolBit(Asset, ABC):
             # Conditional to avoid unnecessary migration warning when called
             # from onDocumentRestored.
             if value is not None and getattr(self.obj, name) != value:
-                setattr(self.obj, name, value)
+                PathUtil.setProperty(self.obj, name, value)
 
         # 2. Add additional properties that are part of the shape,
         # but not part of the schema.
@@ -708,8 +750,76 @@ class ToolBit(Asset, ABC):
                 Path.Log.debug(f"Added custom shape property: {name} ({prop_type})")
 
             # Set the property value
-            PathUtil.setProperty(self.obj, name, value)
+            if value is not None and getattr(self.obj, name) != value:
+                PathUtil.setProperty(self.obj, name, value)
             self.obj.setEditorMode(name, 0)
+
+        # 3. Ensure SpindleDirection property exists and is set
+        # Maybe this could be done with a global schema or added to each
+        # shape schema?
+        if not hasattr(self.obj, "SpindleDirection"):
+            self.obj.addProperty(
+                "App::PropertyEnumeration",
+                "SpindleDirection",
+                "Attributes",
+                QT_TRANSLATE_NOOP("App::Property", "Direction of spindle rotation"),
+            )
+            self.obj.SpindleDirection = ["Forward", "Reverse", "None"]
+            self.obj.SpindleDirection = "Forward"  # Default value
+
+        spindle_value = self._tool_bit_shape.get_parameters().get("SpindleDirection")
+        if (
+            spindle_value in ("Forward", "Reverse", "None")
+            and self.obj.SpindleDirection != spindle_value
+        ):
+            # self.obj.SpindleDirection = spindle_value
+            PathUtil.setProperty(self.obj, "SpindleDirection", spindle_value)
+
+        # 4. Ensure Material property exists and is set
+        if not hasattr(self.obj, "Material"):
+            self.obj.addProperty(
+                "App::PropertyEnumeration",
+                "Material",
+                "Attributes",
+                QT_TRANSLATE_NOOP("App::Property", "Tool material"),
+            )
+            self.obj.Material = ["HSS", "Carbide"]
+            self.obj.Material = "HSS"  # Default value
+
+        material_value = self._tool_bit_shape.get_parameters().get("Material")
+        if material_value in ("HSS", "Carbide") and self.obj.Material != material_value:
+            PathUtil.setProperty(self.obj, "Material", material_value)
+
+    def _queue_visual_update(self):
+        """Queue a visual update to be processed after document recompute is complete."""
+        if not hasattr(self, "_visual_update_queued"):
+            self._visual_update_queued = False
+
+        if not self._visual_update_queued:
+            self._visual_update_queued = True
+            Path.Log.debug(f"Queuing visual update for {self.obj.Label}")
+
+            # Set up a document observer to process the update after recompute
+            self._setup_recompute_observer()
+
+    def _setup_recompute_observer(self):
+        """Set up a document observer to process queued visual updates after recompute."""
+        if not hasattr(self, "_recompute_observer"):
+            Path.Log.debug(f"Setting up recompute observer for {self.obj.Label}")
+            self._recompute_observer = ToolBitRecomputeObserver(self)
+            FreeCAD.addDocumentObserver(self._recompute_observer)
+
+    def _process_queued_visual_update(self):
+        """Process the queued visual update."""
+        if hasattr(self, "_visual_update_queued") and self._visual_update_queued:
+            self._visual_update_queued = False
+            Path.Log.debug(f"Processing queued visual update for {self.obj.Label}")
+            self._update_visual_representation()
+
+            # Clean up the observer
+            if hasattr(self, "_recompute_observer"):
+                FreeCAD.removeDocumentObserver(self._recompute_observer)
+                del self._recompute_observer
 
     def _update_visual_representation(self):
         """

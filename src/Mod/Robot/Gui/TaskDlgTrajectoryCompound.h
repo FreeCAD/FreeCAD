@@ -24,6 +24,8 @@
 #define ROBOTGUI_TaskDlgTrajectoryCompound_H
 
 #include <Gui/TaskView/TaskDialog.h>
+
+#include <Mod/Robot/RobotGlobal.h>
 #include <Mod/Robot/App/TrajectoryCompound.h>
 
 

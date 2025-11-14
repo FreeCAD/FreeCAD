@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 add_library(Points SHARED)
 
 if(WIN32)
@@ -49,7 +51,6 @@ SET(Points_SRCS
     PointsFeature.h
     PointsGrid.cpp
     PointsGrid.h
-    PreCompiled.cpp
     PreCompiled.h
     Properties.cpp
     Properties.h
@@ -65,9 +66,9 @@ set(Points_Scripts
 )
 
 if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${Points_SRCS})
-    ADD_MSVC_PRECOMPILED_HEADER(Points PreCompiled.h PreCompiled.cpp PCH_SRCS)
+    target_precompile_headers(Points PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
 endif(FREECAD_USE_PCH)
 
 target_sources(Points PRIVATE ${Points_SRCS} ${Points_Scripts})

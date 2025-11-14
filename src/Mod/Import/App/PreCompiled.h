@@ -21,18 +21,15 @@
  ***************************************************************************/
 
 
-#ifndef __PRECOMPILED__
-#define __PRECOMPILED__
+#ifndef IMPORT_APP_PRECOMPILED_H
+#define IMPORT_APP_PRECOMPILED_H
 
 #include <FCConfig.h>
-
-#ifdef _PreComp_
 
 // standard
 #include <cassert>
 #include <cstdio>
 #include <fcntl.h>
-#include <io.h>
 #include <iostream>
 #include <list>
 #include <map>
@@ -47,7 +44,5 @@
 // OpenCasCade =====================================================================================
 // Base
 #include <Mod/Part/App/OpenCascadeAll.h>
-
-#endif  //_PreComp_
 
 #endif

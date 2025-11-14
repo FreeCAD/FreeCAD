@@ -23,11 +23,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QMessageBox>
+#include <QStandardPaths>
 #include <QThread>
-#endif
+
 
 #include <App/Application.h>
 
@@ -46,10 +45,12 @@ DlgSettingsFemCcxImp::DlgSettingsFemCcxImp(QWidget* parent)
     ui->dsb_ccx_time_period->setMaximum(std::numeric_limits<float>::max());
     ui->dsb_ccx_initial_time_increment->setMaximum(std::numeric_limits<float>::max());
 
-    connect(ui->fc_ccx_binary_path,
-            &Gui::PrefFileChooser::fileNameChanged,
-            this,
-            &DlgSettingsFemCcxImp::onfileNameChanged);
+    connect(
+        ui->fc_ccx_binary_path,
+        &Gui::PrefFileChooser::fileNameSelected,
+        this,
+        &DlgSettingsFemCcxImp::onfileNameSelected
+    );
 }
 
 DlgSettingsFemCcxImp::~DlgSettingsFemCcxImp() = default;
@@ -57,7 +58,8 @@ DlgSettingsFemCcxImp::~DlgSettingsFemCcxImp() = default;
 void DlgSettingsFemCcxImp::saveSettings()
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Fem/Ccx");
+        "User parameter:BaseApp/Preferences/Mod/Fem/Ccx"
+    );
     hGrp->SetInt("Solver", ui->cmb_solver->currentIndex());
     hGrp->SetInt("AnalysisType", ui->cb_analysis_type->currentIndex());
 
@@ -83,7 +85,6 @@ void DlgSettingsFemCcxImp::saveSettings()
 
     ui->cb_int_editor->onSave();
     ui->fc_ext_editor->onSave();
-    ui->cb_ccx_binary_std->onSave();
     ui->fc_ccx_binary_path->onSave();
     ui->cb_split_inp_writer->onSave();
 }
@@ -112,12 +113,12 @@ void DlgSettingsFemCcxImp::loadSettings()
 
     ui->cb_int_editor->onRestore();
     ui->fc_ext_editor->onRestore();
-    ui->cb_ccx_binary_std->onRestore();
     ui->fc_ccx_binary_path->onRestore();
     ui->cb_split_inp_writer->onRestore();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Fem/Ccx");
+        "User parameter:BaseApp/Preferences/Mod/Fem/Ccx"
+    );
 
     // determine number of CPU threads
     int processor_count = hGrp->GetInt("AnalysisNumCPUs", QThread::idealThreadCount());
@@ -148,14 +149,10 @@ void DlgSettingsFemCcxImp::changeEvent(QEvent* e)
     }
 }
 
-void DlgSettingsFemCcxImp::onfileNameChanged(QString FileName)
+void DlgSettingsFemCcxImp::onfileNameSelected(const QString& fileName)
 {
-    if (!QFileInfo::exists(FileName)) {
-        QMessageBox::critical(this,
-                              tr("File does not exist"),
-                              tr("The specified executable\n'%1'\n does not exist!\n"
-                                 "Specify another file.")
-                                  .arg(FileName));
+    if (!fileName.isEmpty() && QStandardPaths::findExecutable(fileName).isEmpty()) {
+        QMessageBox::critical(this, tr("CalculiX"), tr("Executable '%1' not found").arg(fileName));
     }
 }
 

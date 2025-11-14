@@ -20,11 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QMessageBox>
 #include <gp_Pnt.hxx>
-#endif// #ifndef _PreComp_
 
 #include <App/Document.h>
 #include <App/Link.h>

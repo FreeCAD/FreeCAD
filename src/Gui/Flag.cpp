@@ -21,10 +21,9 @@
  ***************************************************************************/
 
 
-
-# include <QMenu>
-# include <QMouseEvent>
-# include <Inventor/nodes/SoCamera.h>
+#include <QMenu>
+#include <QMouseEvent>
+#include <Inventor/nodes/SoCamera.h>
 
 #include <Inventor/SbVec2s.h>
 
@@ -42,7 +41,8 @@ using namespace Gui;
 //       Embed complete widgets
 
 Flag::Flag(QWidget* parent)
-  : QOpenGLWidget(parent), coord(0.0f, 0.0f, 0.0f)
+    : QOpenGLWidget(parent)
+    , coord(0.0f, 0.0f, 0.0f)
 {
     this->setFixedHeight(20);
     setAutoFillBackground(true);
@@ -92,17 +92,20 @@ const SbVec3f& Flag::getOrigin() const
     return this->coord;
 }
 
-void Flag::drawLine (View3DInventorViewer* v, int tox, int toy)
+void Flag::drawLine(View3DInventorViewer* v, int tox, int toy)
 {
-    if (!isVisible())
+    if (!isVisible()) {
         return;
+    }
 
     // Get position of line
     QSize s = parentWidget()->size();
     SbVec2s view(s.width(), s.height());
     int fromx = pos().x();
-    int fromy = pos().y() + height()/2;
-    if (false) fromx += width();
+    int fromy = pos().y() + height() / 2;
+    if (false) {
+        fromx += width();
+    }
 
     GLPainter p;
     p.begin(v->getGLWidget());
@@ -126,25 +129,26 @@ void Flag::resizeEvent(QResizeEvent* e)
     QOpenGLWidget::resizeEvent(e);
 }
 
-void Flag::mouseMoveEvent(QMouseEvent *e)
+void Flag::mouseMoveEvent(QMouseEvent* e)
 {
     if (e->buttons() & Qt::LeftButton) {
-#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         move(e->globalPos() - dragPosition);
 #else
         move(e->globalPosition().toPoint() - dragPosition);
 #endif
         e->accept();
         auto viewer = qobject_cast<View3DInventorViewer*>(parentWidget());
-        if (viewer)
+        if (viewer) {
             viewer->getSoRenderManager()->scheduleRedraw();
+        }
     }
 }
 
-void Flag::mousePressEvent(QMouseEvent *e)
+void Flag::mousePressEvent(QMouseEvent* e)
 {
     if (e->button() == Qt::LeftButton) {
-#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         dragPosition = e->globalPos() - frameGeometry().topLeft();
 #else
         dragPosition = e->globalPosition().toPoint() - frameGeometry().topLeft();
@@ -153,7 +157,7 @@ void Flag::mousePressEvent(QMouseEvent *e)
     }
 }
 
-void Flag::contextMenuEvent(QContextMenuEvent * e)
+void Flag::contextMenuEvent(QContextMenuEvent* e)
 {
     QMenu menu(this);
 
@@ -168,8 +172,9 @@ void Flag::contextMenuEvent(QContextMenuEvent * e)
     menu.addSeparator();
     QAction* remove = menu.addAction(tr("Remove"));
     QAction* select = menu.exec(e->globalPos());
-    if (remove == select)
+    if (remove == select) {
         this->deleteLater();
+    }
 }
 
 QSize Flag::sizeHint() const
@@ -178,14 +183,14 @@ QSize Flag::sizeHint() const
     int h = 20;
     QFontMetrics metric(this->font());
     QRect r = metric.boundingRect(text);
-    w = std::max<int>(w, r.width()+20);
+    w = std::max<int>(w, r.width() + 20);
     h = std::max<int>(h, r.height());
     return {w, h};
 }
 
 // ------------------------------------------------------------------------
 
-FlagLayout::FlagLayout(QWidget *parent, int margin, int spacing)
+FlagLayout::FlagLayout(QWidget* parent, int margin, int spacing)
     : QLayout(parent)
 {
     setContentsMargins(margin, margin, margin, margin);
@@ -199,17 +204,18 @@ FlagLayout::FlagLayout(int spacing)
 
 FlagLayout::~FlagLayout()
 {
-    QLayoutItem *l;
-    while ((l = takeAt(0)))
+    QLayoutItem* l;
+    while ((l = takeAt(0))) {
         delete l;
+    }
 }
 
-void FlagLayout::addItem(QLayoutItem *item)
+void FlagLayout::addItem(QLayoutItem* item)
 {
     add(item, TopLeft);
 }
 
-void FlagLayout::addWidget(QWidget *widget, Position position)
+void FlagLayout::addWidget(QWidget* widget, Position position)
 {
     add(new QWidgetItem(widget), position);
 }
@@ -229,13 +235,15 @@ int FlagLayout::count() const
     return list.size();
 }
 
-QLayoutItem *FlagLayout::itemAt(int index) const
+QLayoutItem* FlagLayout::itemAt(int index) const
 {
-    ItemWrapper *wrapper = list.value(index);
-    if (wrapper)
+    ItemWrapper* wrapper = list.value(index);
+    if (wrapper) {
         return wrapper->item;
-    else
+    }
+    else {
         return nullptr;
+    }
 }
 
 QSize FlagLayout::minimumSize() const
@@ -243,7 +251,7 @@ QSize FlagLayout::minimumSize() const
     return calculateSize(MinimumSize);
 }
 
-void FlagLayout::setGeometry(const QRect &rect)
+void FlagLayout::setGeometry(const QRect& rect)
 {
     int topHeight = 0;
     int bottomHeight = 0;
@@ -251,41 +259,56 @@ void FlagLayout::setGeometry(const QRect &rect)
     QLayout::setGeometry(rect);
 
     // left side
-    for (ItemWrapper *wrapper : list) {
-        QLayoutItem *item = wrapper->item;
+    for (ItemWrapper* wrapper : list) {
+        QLayoutItem* item = wrapper->item;
         Position position = wrapper->position;
 
         if (position == TopLeft) {
             topHeight += spacing();
-            item->setGeometry(QRect(rect.x() + spacing(), topHeight,
-                                    item->sizeHint().width(), item->sizeHint().height()));
+            item->setGeometry(
+                QRect(rect.x() + spacing(), topHeight, item->sizeHint().width(), item->sizeHint().height())
+            );
 
             topHeight += item->geometry().height();
-        } else if (position == BottomLeft) {
+        }
+        else if (position == BottomLeft) {
             bottomHeight += item->geometry().height() + spacing();
-            item->setGeometry(QRect(rect.x() + spacing(), rect.height() - bottomHeight,
-                                    item->sizeHint().width(), item->sizeHint().height()));
+            item->setGeometry(QRect(
+                rect.x() + spacing(),
+                rect.height() - bottomHeight,
+                item->sizeHint().width(),
+                item->sizeHint().height()
+            ));
         }
     }
 
     // right side
     topHeight = 0;
     bottomHeight = 0;
-    for (ItemWrapper *wrapper : list) {
-        QLayoutItem *item = wrapper->item;
+    for (ItemWrapper* wrapper : list) {
+        QLayoutItem* item = wrapper->item;
         Position position = wrapper->position;
 
         int rightpos = item->sizeHint().width() + spacing();
         if (position == TopRight) {
             topHeight += spacing();
-            item->setGeometry(QRect(rect.x() + rect.width() - rightpos, topHeight,
-                                    item->sizeHint().width(), item->sizeHint().height()));
+            item->setGeometry(QRect(
+                rect.x() + rect.width() - rightpos,
+                topHeight,
+                item->sizeHint().width(),
+                item->sizeHint().height()
+            ));
 
             topHeight += item->geometry().height();
-        } else if (position == BottomRight) {
+        }
+        else if (position == BottomRight) {
             bottomHeight += item->geometry().height() + spacing();
-            item->setGeometry(QRect(rect.x() + rect.width() - rightpos, rect.height() - bottomHeight,
-                                    item->sizeHint().width(), item->sizeHint().height()));
+            item->setGeometry(QRect(
+                rect.x() + rect.width() - rightpos,
+                rect.height() - bottomHeight,
+                item->sizeHint().width(),
+                item->sizeHint().height()
+            ));
         }
     }
 }
@@ -295,16 +318,16 @@ QSize FlagLayout::sizeHint() const
     return calculateSize(SizeHint);
 }
 
-QLayoutItem *FlagLayout::takeAt(int index)
+QLayoutItem* FlagLayout::takeAt(int index)
 {
     if (index >= 0 && index < list.size()) {
-        ItemWrapper *layoutStruct = list.takeAt(index);
+        ItemWrapper* layoutStruct = list.takeAt(index);
         return layoutStruct->item;
     }
     return nullptr;
 }
 
-void FlagLayout::add(QLayoutItem *item, Position position)
+void FlagLayout::add(QLayoutItem* item, Position position)
 {
     list.append(new ItemWrapper(item, position));
 }
@@ -313,16 +336,18 @@ QSize FlagLayout::calculateSize(SizeType sizeType) const
 {
     QSize totalSize;
 
-    for (ItemWrapper *wrapper : list) {
+    for (ItemWrapper* wrapper : list) {
         QSize itemSize;
 
-        if (sizeType == MinimumSize)
+        if (sizeType == MinimumSize) {
             itemSize = wrapper->item->minimumSize();
-        else // (sizeType == SizeHint)
+        }
+        else {  // (sizeType == SizeHint)
             itemSize = wrapper->item->sizeHint();
+        }
 
         totalSize.rheight() += itemSize.height();
-        totalSize.rwidth() = qMax<int>(totalSize.width(),itemSize.width());
+        totalSize.rwidth() = qMax<int>(totalSize.width(), itemSize.width());
     }
     return totalSize;
 }
@@ -330,30 +355,33 @@ QSize FlagLayout::calculateSize(SizeType sizeType) const
 
 TYPESYSTEM_SOURCE_ABSTRACT(Gui::GLFlagWindow, Gui::GLGraphicsItem)
 
-GLFlagWindow::GLFlagWindow(View3DInventorViewer* view) : _viewer(view), _flagLayout(nullptr)
-{
-}
+GLFlagWindow::GLFlagWindow(View3DInventorViewer* view)
+    : _viewer(view)
+    , _flagLayout(nullptr)
+{}
 
 GLFlagWindow::~GLFlagWindow()
 {
     deleteFlags();
-    if (_flagLayout)
+    if (_flagLayout) {
         _flagLayout->deleteLater();
+    }
 }
 
 void GLFlagWindow::deleteFlags()
 {
     if (_flagLayout) {
         int ct = _flagLayout->count();
-        for (int i=0; i<ct;i++) {
+        for (int i = 0; i < ct; i++) {
             QWidget* flag = _flagLayout->itemAt(0)->widget();
             if (flag) {
                 _flagLayout->removeWidget(flag);
                 flag->deleteLater();
             }
         }
-        if (ct > 0)
+        if (ct > 0) {
             _viewer->getSoRenderManager()->scheduleRedraw();
+        }
     }
 }
 
@@ -400,20 +428,20 @@ void GLFlagWindow::paintGL()
 {
     // draw lines for the flags
     if (_flagLayout) {
-        // it can happen that the GL widget gets replaced internally (SoQt only, not with quarter) which
-        // causes to destroy the FlagLayout instance
+        // it can happen that the GL widget gets replaced internally (SoQt only, not with quarter)
+        // which causes to destroy the FlagLayout instance
         int ct = _flagLayout->count();
         const SbViewportRegion vp = _viewer->getSoRenderManager()->getViewportRegion();
         SbVec2s size = vp.getViewportSizePixels();
-        float aspectratio = float(size[0])/float(size[1]);
+        float aspectratio = float(size[0]) / float(size[1]);
         SbViewVolume vv = _viewer->getSoRenderManager()->getCamera()->getViewVolume(aspectratio);
-        for (int i=0; i<ct;i++) {
+        for (int i = 0; i < ct; i++) {
             Flag* flag = qobject_cast<Flag*>(_flagLayout->itemAt(i)->widget());
             if (flag) {
                 SbVec3f pt = flag->getOrigin();
                 vv.projectToScreen(pt, pt);
                 int tox = (int)(pt[0] * size[0]);
-                int toy = (int)((1.0f-pt[1]) * size[1]);
+                int toy = (int)((1.0f - pt[1]) * size[1]);
                 flag->drawLine(_viewer, tox, toy);
             }
         }

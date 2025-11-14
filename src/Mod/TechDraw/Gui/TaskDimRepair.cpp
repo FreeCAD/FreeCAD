@@ -20,14 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <string>
 #include <vector>
 
 #include <QMessageBox>
 #include <QTableWidgetItem>
-#endif// #ifndef _PreComp_
 
 #include <App/Document.h>
 #include <Gui/BitmapFactory.h>

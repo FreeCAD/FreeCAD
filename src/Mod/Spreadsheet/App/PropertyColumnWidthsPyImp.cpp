@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
@@ -20,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "PropertyColumnWidths.h"
 // inclusion of the generated files (generated out of PropertyColumnWidthsPy.xml)
@@ -38,8 +39,7 @@ std::string PropertyColumnWidthsPy::representation() const
     return {"<PropertyColumnWidths object>"};
 }
 
-PyObject*
-PropertyColumnWidthsPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
+PyObject* PropertyColumnWidthsPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // create a new instance of PropertyColumnWidthsPy and the Twin object
     return new PropertyColumnWidthsPy(new PropertyColumnWidths);

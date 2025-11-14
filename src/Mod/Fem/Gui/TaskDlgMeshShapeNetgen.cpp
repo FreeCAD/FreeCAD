@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <QMessageBox>
-#endif
+
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -100,7 +98,8 @@ bool TaskDlgMeshShapeNetgen::accept()
                 QMessageBox::critical(
                     Gui::getMainWindow(),
                     tr("Meshing failure"),
-                    QString::fromStdString(FemMeshShapeNetgenObject->getStatusString()));
+                    QString::fromStdString(FemMeshShapeNetgenObject->getStatusString())
+                );
                 return true;
             }
         }

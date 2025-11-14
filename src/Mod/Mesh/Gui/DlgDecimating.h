@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2020 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -23,6 +25,8 @@
 
 #ifndef MESHGUI_DLGDECIMATING_H
 #define MESHGUI_DLGDECIMATING_H
+
+#include <Mod/Mesh/MeshGlobal.h>
 
 #include <QDialog>
 #include <Gui/TaskView/TaskDialog.h>

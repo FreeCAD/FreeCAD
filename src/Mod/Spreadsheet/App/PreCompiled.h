@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
@@ -21,12 +23,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SPREADSHEET_PRECOMPILED_H
-#define SPREADSHEET_PRECOMPILED_H
+#ifndef SPREADSHEET_APP_PRECOMPILED_H
+#define SPREADSHEET_APP_PRECOMPILED_H
 
 #include <FCConfig.h>
-
-#ifdef _PreComp_
 
 // STL
 #include <algorithm>
@@ -48,6 +48,4 @@
 // Qt
 #include <QLocale>
 
-#endif  //_PreComp_
-
-#endif  // SPREADSHEET_PRECOMPILED_H
+#endif  // SPREADSHEET_APP_PRECOMPILED_H

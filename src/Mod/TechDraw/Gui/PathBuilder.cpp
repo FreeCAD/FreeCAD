@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <qmath.h>
-#endif
+
 
 #include <Base/Console.h>
 

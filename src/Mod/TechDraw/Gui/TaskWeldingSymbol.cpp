@@ -20,11 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <cmath>
 # include <QPushButton>
-#endif // #ifndef _PreComp_
 
 #include <App/Document.h>
 #include <Base/Console.h>

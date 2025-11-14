@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QDialog>
-#endif
+
 
 #include <Gui/MainWindow.h>
 

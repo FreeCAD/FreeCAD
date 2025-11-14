@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-only OR GPL-3.0-only
+
 /****************************************************************************
 **
 ** This file is part of a Qt Solutions component.
@@ -45,8 +47,6 @@
 **
 ****************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <cmath>
 
 #include <QApplication>
@@ -64,7 +64,6 @@
 #include <QtGui/QPaintEvent>
 #include <QtGui/QPixmap>
 #include <QtGui/QShowEvent>
-#endif
 
 #include <Gui/FileDialog.h>
 

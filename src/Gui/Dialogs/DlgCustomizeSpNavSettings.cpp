@@ -195,12 +195,10 @@ void DlgCustomizeSpNavSettings::initialize()
     ui->SliderSpin->setEnabled(ui->CBRotations->isChecked() && ui->CBEnableSpin->isChecked());
 
     ui->CBEnablePanLR->setEnabled(ui->CBTranslations->isChecked());
-    ui->CBReversePanLR->setEnabled(ui->CBTranslations->isChecked()
-                                   && ui->CBEnablePanLR->isChecked());
+    ui->CBReversePanLR->setEnabled(ui->CBTranslations->isChecked() && ui->CBEnablePanLR->isChecked());
     ui->SliderPanLR->setEnabled(ui->CBTranslations->isChecked() && ui->CBEnablePanLR->isChecked());
     ui->CBEnablePanUD->setEnabled(ui->CBTranslations->isChecked());
-    ui->CBReversePanUD->setEnabled(ui->CBTranslations->isChecked()
-                                   && ui->CBEnablePanUD->isChecked());
+    ui->CBReversePanUD->setEnabled(ui->CBTranslations->isChecked() && ui->CBEnablePanUD->isChecked());
     ui->SliderPanUD->setEnabled(ui->CBTranslations->isChecked() && ui->CBEnablePanUD->isChecked());
     ui->CBEnableZoom->setEnabled(ui->CBTranslations->isChecked());
     ui->CBReverseZoom->setEnabled(ui->CBTranslations->isChecked() && ui->CBEnableZoom->isChecked());
@@ -243,12 +241,10 @@ void DlgCustomizeSpNavSettings::on_CBTranslations_clicked()
     spaceballMotionGroup()->SetBool("Translations", ui->CBTranslations->isChecked());
 
     ui->CBEnablePanLR->setEnabled(ui->CBTranslations->isChecked());
-    ui->CBReversePanLR->setEnabled(ui->CBTranslations->isChecked()
-                                   && ui->CBEnablePanLR->isChecked());
+    ui->CBReversePanLR->setEnabled(ui->CBTranslations->isChecked() && ui->CBEnablePanLR->isChecked());
     ui->SliderPanLR->setEnabled(ui->CBTranslations->isChecked() && ui->CBEnablePanLR->isChecked());
     ui->CBEnablePanUD->setEnabled(ui->CBTranslations->isChecked());
-    ui->CBReversePanUD->setEnabled(ui->CBTranslations->isChecked()
-                                   && ui->CBEnablePanUD->isChecked());
+    ui->CBReversePanUD->setEnabled(ui->CBTranslations->isChecked() && ui->CBEnablePanUD->isChecked());
     ui->SliderPanUD->setEnabled(ui->CBTranslations->isChecked() && ui->CBEnablePanUD->isChecked());
     ui->CBEnableZoom->setEnabled(ui->CBTranslations->isChecked());
     ui->CBReverseZoom->setEnabled(ui->CBTranslations->isChecked() && ui->CBEnableZoom->isChecked());

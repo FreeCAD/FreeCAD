@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 add_executable(App_tests_run
         Application.cpp
         ApplicationDirectories.cpp

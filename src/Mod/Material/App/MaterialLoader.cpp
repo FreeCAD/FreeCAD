@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 David Carter <dcarter@david.carter.ca>             *
  *                                                                         *
@@ -19,15 +21,13 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QDirIterator>
 #include <QFileInfo>
 #include <QList>
 #include <QMetaType>
 #include <QRegularExpression>
 #include <QString>
-#endif
+
 
 #include <App/Application.h>
 #include <Base/Interpreter.h>

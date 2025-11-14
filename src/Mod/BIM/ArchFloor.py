@@ -22,9 +22,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__  = "FreeCAD Arch Floor"
+__title__ = "FreeCAD Arch Floor"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecad.org"
+__url__ = "https://www.freecad.org"
 
 ## @package ArchFloor
 #  \ingroup ARCH
@@ -56,14 +56,16 @@ if FreeCAD.GuiUp:
     from draftutils.translate import translate
 else:
     # \cond
-    def translate(ctxt,txt):
+    def translate(ctxt, txt):
         return txt
-    def QT_TRANSLATE_NOOP(ctxt,txt):
+
+    def QT_TRANSLATE_NOOP(ctxt, txt):
         return txt
+
     # \endcond
 
 
-def makeFloor(objectslist=None,baseobj=None,name=None):
+def makeFloor(objectslist=None, baseobj=None, name=None):
     """Obsolete, superseded by ArchBuildingPart.makeFloor.
 
     Create a floor.
@@ -86,12 +88,11 @@ def makeFloor(objectslist=None,baseobj=None,name=None):
         The created floor.
     """
 
-
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
-    obj = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroupPython","Floor")
-    obj.Label = name if name else translate("Arch","Floor")
+    obj = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroupPython", "Floor")
+    obj.Label = name if name else translate("Arch", "Floor")
     _Floor(obj)
     if FreeCAD.GuiUp:
         _ViewProviderFloor(obj.ViewObject)
@@ -114,14 +115,18 @@ class _CommandFloor:
     https://wiki.freecad.org/Arch_Floor
     """
 
-
     def GetResources(self):
         """Return a dictionary with the visual aspects of the Arch Floor tool."""
 
-        return {'Pixmap'  : 'Arch_Floor',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Floor","Level"),
-                'Accel': "L, V",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Floor","Creates a Building Part object that represents a level, including selected objects")}
+        return {
+            "Pixmap": "Arch_Floor",
+            "MenuText": QT_TRANSLATE_NOOP("Arch_Floor", "Level"),
+            "Accel": "L, V",
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Arch_Floor",
+                "Creates a Building Part object that represents a level, including selected objects",
+            ),
+        }
 
     def IsActive(self):
         """Determine whether or not the Arch Floor tool is active.
@@ -144,32 +149,44 @@ class _CommandFloor:
         link = params.get_param_arch("FreeLinking")
         floorobj = []
         warning = False
-        for obj in sel :
-            if not Draft.getType(obj) in ["Site", "Building"] :
+        for obj in sel:
+            if not Draft.getType(obj) in ["Site", "Building"]:
                 floorobj.append(obj)
-            else :
+            else:
                 if link:
                     floorobj.append(obj)
                 else:
                     warning = True
-        if warning :
-            message = translate( "Arch" , "You can put anything but the following objects: Site, Building, and Floor - in a Floor object.\n\
+        if warning:
+            message = (
+                translate(
+                    "Arch",
+                    "You can put anything but the following objects: Site, Building, and Floor - in a Floor object.\n\
 Floor object is not allowed to accept Site, Building, or Floor objects.\n\
 Site, Building, and Floor objects will be removed from the selection.\n\
-You can change that in the preferences.") + "\n"
-            ArchCommands.printMessage( message )
+You can change that in the preferences.",
+                )
+                + "\n"
+            )
+            ArchCommands.printMessage(message)
         if sel and len(floorobj) == 0:
-            message = translate( "Arch" , "There is no valid object in the selection.\n\
-Floor creation aborted.") + "\n"
-            ArchCommands.printMessage( message )
-        else :
+            message = (
+                translate(
+                    "Arch",
+                    "There is no valid object in the selection.\n\
+Floor creation aborted.",
+                )
+                + "\n"
+            )
+            ArchCommands.printMessage(message)
+        else:
             ss = "[ "
             for o in floorobj:
                 ss += "FreeCAD.ActiveDocument." + o.Name + ", "
             ss += "]"
-            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Floor"))
+            FreeCAD.ActiveDocument.openTransaction(translate("Arch", "Create Floor"))
             FreeCADGui.addModule("Arch")
-            FreeCADGui.doCommand("obj = Arch.makeFloor("+ss+")")
+            FreeCADGui.doCommand("obj = Arch.makeFloor(" + ss + ")")
             FreeCADGui.addModule("Draft")
             FreeCADGui.doCommand("Draft.autogroup(obj)")
             FreeCAD.ActiveDocument.commitTransaction()
@@ -195,15 +212,15 @@ class _Floor(ArchIFC.IfcProduct):
         The object to turn into a Floor.
     """
 
-    def __init__(self,obj):
+    def __init__(self, obj):
 
         obj.Proxy = self
         self.Type = "Floor"
         self.Object = obj
-        _Floor.setProperties(self,obj)
+        _Floor.setProperties(self, obj)
         self.IfcType = "Building Storey"
 
-    def setProperties(self,obj):
+    def setProperties(self, obj):
         """Give the object properties unique to floors.
 
         Add the IFC product properties, and the floor's height and area.
@@ -212,27 +229,45 @@ class _Floor(ArchIFC.IfcProduct):
         ArchIFC.IfcProduct.setProperties(self, obj)
         pl = obj.PropertiesList
         if not "Height" in pl:
-            obj.addProperty("App::PropertyLength","Height","Floor",QT_TRANSLATE_NOOP("App::Property","The height of this object"), locked=True)
+            obj.addProperty(
+                "App::PropertyLength",
+                "Height",
+                "Floor",
+                QT_TRANSLATE_NOOP("App::Property", "The height of this object"),
+                locked=True,
+            )
         if not "Area" in pl:
-            obj.addProperty("App::PropertyArea","Area", "Floor",QT_TRANSLATE_NOOP("App::Property","The computed floor area of this floor"), locked=True)
-        if not hasattr(obj,"Placement"):
+            obj.addProperty(
+                "App::PropertyArea",
+                "Area",
+                "Floor",
+                QT_TRANSLATE_NOOP("App::Property", "The computed floor area of this floor"),
+                locked=True,
+            )
+        if not hasattr(obj, "Placement"):
             # obj can be a Part Feature and already has a placement
-            obj.addProperty("App::PropertyPlacement","Placement","Base",QT_TRANSLATE_NOOP("App::Property","The placement of this object"), locked=True)
+            obj.addProperty(
+                "App::PropertyPlacement",
+                "Placement",
+                "Base",
+                QT_TRANSLATE_NOOP("App::Property", "The placement of this object"),
+                locked=True,
+            )
 
-    def onDocumentRestored(self,obj):
+    def onDocumentRestored(self, obj):
         """Method run when the document is restored. Re-adds the properties."""
 
-        _Floor.setProperties(self,obj)
+        _Floor.setProperties(self, obj)
 
     def dumps(self):
 
         return None
 
-    def loads(self,state):
+    def loads(self, state):
 
         self.Type = "Floor"
 
-    def onChanged(self,obj,prop):
+    def onChanged(self, obj, prop):
         """Method called when the object has a property changed.
 
         If the objects grouped under the floor object changes, recompute
@@ -247,20 +282,21 @@ class _Floor(ArchIFC.IfcProduct):
         """
         ArchIFC.IfcProduct.onChanged(self, obj, prop)
 
-        if not hasattr(self,"Object"):
+        if not hasattr(self, "Object"):
             # on restore, self.Object is not there anymore
             self.Object = obj
-        if (prop == "Group") and hasattr(obj,"Area"):
+        if (prop == "Group") and hasattr(obj, "Area"):
             a = 0
-            for o in Draft.getObjectsOfType(Draft.get_group_contents(obj.Group, addgroups=True),
-                                            "Space"):
-                if hasattr(o,"Area"):
-                    if hasattr(o.Area,"Value"):
+            for o in Draft.getObjectsOfType(
+                Draft.get_group_contents(obj.Group, addgroups=True), "Space"
+            ):
+                if hasattr(o, "Area"):
+                    if hasattr(o.Area, "Value"):
                         a += o.Area.Value
                         if obj.Area.Value != a:
                             obj.Area = a
 
-    def execute(self,obj):
+    def execute(self, obj):
         """Method run when the object is recomputed.
 
         Move its children if its placement has changed since the previous
@@ -269,26 +305,26 @@ class _Floor(ArchIFC.IfcProduct):
         """
 
         # move children with this floor
-        if hasattr(obj,"Placement"):
-            if not hasattr(self,"OldPlacement"):
+        if hasattr(obj, "Placement"):
+            if not hasattr(self, "OldPlacement"):
                 self.OldPlacement = obj.Placement.copy()
             else:
                 pl = obj.Placement.copy()
-                if not DraftVecUtils.equals(pl.Base,self.OldPlacement.Base):
+                if not DraftVecUtils.equals(pl.Base, self.OldPlacement.Base):
                     print("placement moved")
                     delta = pl.Base.sub(self.OldPlacement.Base)
                     for o in obj.Group:
-                        if hasattr(o,"Placement"):
+                        if hasattr(o, "Placement"):
                             o.Placement.move(delta)
                     self.OldPlacement = pl
         # adjust childrens heights
         if obj.Height.Value:
             for o in obj.Group:
-                if Draft.getType(o) in ["Wall","Structure"]:
+                if Draft.getType(o) in ["Wall", "Structure"]:
                     if not o.Height.Value:
                         o.Proxy.execute(o)
 
-    def addObject(self,child):
+    def addObject(self, child):
         """Add the object to the floor's group.
 
         Parameters
@@ -297,13 +333,13 @@ class _Floor(ArchIFC.IfcProduct):
             The object to add to the floor's group.
         """
 
-        if hasattr(self,"Object"):
+        if hasattr(self, "Object"):
             g = self.Object.Group
             if not child in g:
                 g.append(child)
                 self.Object.Group = g
 
-    def removeObject(self,child):
+    def removeObject(self, child):
         """Remove the object from the floor's group, if it's present.
 
         Parameters
@@ -312,7 +348,7 @@ class _Floor(ArchIFC.IfcProduct):
             The object to remove from the floor's group.
         """
 
-        if hasattr(self,"Object"):
+        if hasattr(self, "Object"):
             g = self.Object.Group
             if child in g:
                 g.remove(child)
@@ -330,7 +366,7 @@ class _ViewProviderFloor:
         The view provider to turn into a floor view provider.
     """
 
-    def __init__(self,vobj):
+    def __init__(self, vobj):
         vobj.Proxy = self
 
     def getIcon(self):
@@ -343,9 +379,10 @@ class _ViewProviderFloor:
         """
 
         import Arch_rc
+
         return ":/icons/Arch_Floor_Tree.svg"
 
-    def attach(self,vobj):
+    def attach(self, vobj):
         """Add display modes' data to the coin scenegraph.
 
         Add each display mode as a coin node, whose parent is this view
@@ -373,7 +410,7 @@ class _ViewProviderFloor:
             The objects claimed as children.
         """
 
-        if hasattr(self,"Object"):
+        if hasattr(self, "Object"):
             if self.Object:
                 return self.Object.Group
         return []
@@ -382,11 +419,11 @@ class _ViewProviderFloor:
 
         return None
 
-    def loads(self,state):
+    def loads(self, state):
 
         return None
 
-    def setupContextMenu(self,vobj,menu):
+    def setupContextMenu(self, vobj, menu):
         """Add the floor specific options to the context menu.
 
         The context menu is the drop down menu that opens when the user right
@@ -402,12 +439,15 @@ class _ViewProviderFloor:
             called.
         """
 
-        from PySide import QtCore,QtGui
+        from PySide import QtCore, QtGui
         import Arch_rc
-        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+
+        if FreeCADGui.activeWorkbench().name() != "BIMWorkbench":
             return
-        action1 = QtGui.QAction(QtGui.QIcon(":/icons/Arch_BuildingPart.svg"),"Convert to BuildingPart",menu)
-        QtCore.QObject.connect(action1,QtCore.SIGNAL("triggered()"),self.convertToBuildingPart)
+        action1 = QtGui.QAction(
+            QtGui.QIcon(":/icons/Arch_BuildingPart.svg"), "Convert to BuildingPart", menu
+        )
+        QtCore.QObject.connect(action1, QtCore.SIGNAL("triggered()"), self.convertToBuildingPart)
         menu.addAction(action1)
 
     def convertToBuildingPart(self):
@@ -416,11 +456,12 @@ class _ViewProviderFloor:
         TODO: May be depreciated?
         """
 
-        if hasattr(self,"Object"):
+        if hasattr(self, "Object"):
             import ArchBuildingPart
             from draftutils import todo
-            todo.ToDo.delay(ArchBuildingPart.convertFloors,self.Object)
+
+            todo.ToDo.delay(ArchBuildingPart.convertFloors, self.Object)
 
 
 if FreeCAD.GuiUp:
-    FreeCADGui.addCommand('Arch_Floor',_CommandFloor())
+    FreeCADGui.addCommand("Arch_Floor", _CommandFloor())

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 if (NOT FREECAD_USE_EXTERNAL_ONDSELSOLVER)
 include_directories(
     ${CMAKE_SOURCE_DIR}/src/3rdParty/OndselSolver
@@ -53,6 +55,9 @@ SET(AssemblyScripts_SRCS
 SET(AssemblyTests_SRCS
     AssemblyTests/__init__.py
     AssemblyTests/TestCore.py
+    AssemblyTests/TestCommandInsertLink.py
+    AssemblyTests/mocks/__init__.py
+    AssemblyTests/mocks/MockGui.py
 )
 
 

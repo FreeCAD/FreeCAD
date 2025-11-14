@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "FemSetGeometryObject.h"
 #include <App/DocumentObjectPy.h>

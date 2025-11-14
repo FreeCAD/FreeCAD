@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2025 Samuel Abels <knipknap@gmail.com>                  *
 # *                                                                         *
@@ -26,6 +27,12 @@ import Path
 from Path import Preferences
 from Path.Preferences import addToolPreferenceObserver
 from .assets import AssetManager, AssetUri, Asset, FileStore
+
+if False:
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
+else:
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
 def ensure_library_assets_initialized(asset_manager: AssetManager, store_name: str = "local"):
@@ -151,7 +158,7 @@ def ensure_assets_initialized(asset_manager: AssetManager, store="local"):
 
 def _on_asset_path_changed(group, key, value):
     Path.Log.info(f"CAM asset directory changed in preferences: {group} {key} {value}")
-    user_asset_store.set_dir(Preferences.getAssetPath())
+    user_asset_store.set_dir(value)
     ensure_assets_initialized(cam_assets)
 
 

@@ -14,7 +14,7 @@ som refererar till samma konfigurerbara objekt</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Application.cpp" line="456"/>
+      <location filename="../../Application.cpp" line="458"/>
       <source>Unnamed</source>
       <translation>Namnlös</translation>
     </message>

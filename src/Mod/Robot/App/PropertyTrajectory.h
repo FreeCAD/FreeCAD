@@ -26,6 +26,8 @@
 #include <App/Property.h>
 #include <Base/BoundBox.h>
 
+#include <Mod/Robot/RobotGlobal.h>
+
 #include "Trajectory.h"
 
 

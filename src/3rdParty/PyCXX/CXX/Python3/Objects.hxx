@@ -1783,7 +1783,7 @@ namespace Py
     // Python strings return strings as individual elements.
     // I'll try having a class Char which is a String of length 1
     //
-#if !defined(Py_LIMITED_API)
+#if !defined(Py_LIMITED_API) && !defined(Py_UNICODE_DEPRECATED)
     typedef std::basic_string<Py_UNICODE> unicodestring;
     extern Py_UNICODE unicode_null_string[1];
 #endif
@@ -1979,7 +1979,7 @@ namespace Py
             validate();
         }
 
-#if !defined( Py_LIMITED_API )
+#if !defined( Py_LIMITED_API ) && !defined(Py_UNICODE_DEPRECATED)
         Char( Py_UNICODE v )
         : Object( PyUnicode_FromOrdinal( v ), true )
         {
@@ -1987,7 +1987,7 @@ namespace Py
         }
 #endif
 
-#if !defined( Py_LIMITED_API )
+#if !defined( Py_LIMITED_API ) && !defined(Py_UNICODE_DEPRECATED)
         Char( const unicodestring &v )
         : Object( PyUnicode_FromKindAndData( PyUnicode_4BYTE_KIND, const_cast<Py_UNICODE*>( v.data() ),1 ), true )
         {
@@ -2008,7 +2008,7 @@ namespace Py
             return *this;
         }
 
-#if !defined( Py_LIMITED_API )
+#if !defined( Py_LIMITED_API ) && !defined(Py_UNICODE_DEPRECATED)
         Char &operator=( const unicodestring &v )
         {
             set( PyUnicode_FromKindAndData( PyUnicode_4BYTE_KIND, const_cast<Py_UNICODE*>( v.data() ), 1 ), true );
@@ -2016,7 +2016,7 @@ namespace Py
         }
 #endif
 
-#if !defined( Py_LIMITED_API )
+#if !defined( Py_LIMITED_API ) && !defined(Py_UNICODE_DEPRECATED)
         Char &operator=( int v_ )
         {
             Py_UNICODE v( v_ );
@@ -2025,7 +2025,7 @@ namespace Py
         }
 #endif
 
-#if !defined( Py_LIMITED_API )
+#if !defined( Py_LIMITED_API ) && !defined(Py_UNICODE_DEPRECATED)
         Char &operator=( Py_UNICODE v )
         {
             set( PyUnicode_FromKindAndData( PyUnicode_4BYTE_KIND, &v, 1 ), true );
@@ -2164,7 +2164,7 @@ namespace Py
         }
 #endif
 
-#if !defined( Py_LIMITED_API )
+#if !defined( Py_LIMITED_API ) && !defined(Py_UNICODE_DEPRECATED)
         String( const Py_UNICODE *s, int length )
         : SeqBase<Char>( PyUnicode_FromKindAndData( PyUnicode_4BYTE_KIND, s, length ), true )
         {
@@ -2185,7 +2185,7 @@ namespace Py
             return *this;
         }
 
-#if !defined( Py_LIMITED_API )
+#if !defined( Py_LIMITED_API ) && !defined(Py_UNICODE_DEPRECATED)
         String &operator=( const unicodestring &v )
         {
             set( PyUnicode_FromKindAndData( PyUnicode_4BYTE_KIND, const_cast<Py_UNICODE *>( v.data() ), v.length() ), true );

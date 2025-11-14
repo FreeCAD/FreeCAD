@@ -57,10 +57,6 @@
 //                //we can't fix this
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
-
 #include <TopoDS_Shape.hxx>
 
 #include <App/Document.h>

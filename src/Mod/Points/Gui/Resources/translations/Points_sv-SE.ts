@@ -4,17 +4,17 @@
   <context>
     <name>CmdPointsConvert</name>
     <message>
-      <location filename="../../Command.cpp" line="236"/>
+      <location filename="../../Command.cpp" line="197"/>
       <source>Points</source>
       <translation>Punkter</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="237"/>
+      <location filename="../../Command.cpp" line="198"/>
       <source>Convert to Points</source>
       <translation>Konvertera till punkter</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="238"/>
+      <location filename="../../Command.cpp" line="199"/>
       <source>Converts to points</source>
       <translation>Omvandlas till punkter</translation>
     </message>
@@ -59,17 +59,17 @@
   <context>
     <name>CmdPointsMerge</name>
     <message>
-      <location filename="../../Command.cpp" line="372"/>
+      <location filename="../../Command.cpp" line="333"/>
       <source>Points</source>
       <translation>Punkter</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="373"/>
+      <location filename="../../Command.cpp" line="334"/>
       <source>Merge Point Clouds</source>
       <translation>Sammanfoga punktmoln</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="374"/>
+      <location filename="../../Command.cpp" line="335"/>
       <source>Merges several point clouds into one</source>
       <translation>Sammanfogar flera punktmoln till ett</translation>
     </message>
@@ -77,17 +77,17 @@
   <context>
     <name>CmdPointsPolyCut</name>
     <message>
-      <location filename="../../Command.cpp" line="324"/>
+      <location filename="../../Command.cpp" line="285"/>
       <source>Points</source>
       <translation>Punkter</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="325"/>
+      <location filename="../../Command.cpp" line="286"/>
       <source>Cut Point Cloud</source>
       <translation>Moln för skärningspunkt</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="326"/>
+      <location filename="../../Command.cpp" line="287"/>
       <source>Cuts a point cloud with a selected polygon</source>
       <translation>Klipper ett punktmoln med en vald polygon</translation>
     </message>
@@ -95,37 +95,19 @@
   <context>
     <name>CmdPointsStructure</name>
     <message>
-      <location filename="../../Command.cpp" line="434"/>
+      <location filename="../../Command.cpp" line="395"/>
       <source>Points</source>
       <translation>Punkter</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="435"/>
+      <location filename="../../Command.cpp" line="396"/>
       <source>Structured Point Cloud</source>
       <translation>Strukturerat punktmoln</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="436"/>
+      <location filename="../../Command.cpp" line="397"/>
       <source>Converts points to a structured point cloud</source>
       <translation>Konverterar punkter till ett strukturerat punktmoln</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdPointsTransform</name>
-    <message>
-      <location filename="../../Command.cpp" line="197"/>
-      <source>Points</source>
-      <translation>Punkter</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="198"/>
-      <source>Transform Points</source>
-      <translation>Omvandla punkter</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="199"/>
-      <source>Performs tests to transform a point cloud</source>
-      <translation>Utför tester för att omvandla ett punktmoln</translation>
     </message>
   </context>
   <context>
@@ -136,18 +118,13 @@
       <translation>Importera punkter</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="213"/>
-      <source>Transform points</source>
-      <translation>Transformera punkter</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="270"/>
+      <location filename="../../Command.cpp" line="231"/>
       <source>Convert to points</source>
       <translation>Konvertera till punkter</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="485"/>
-      <location filename="../../ViewProvider.cpp" line="653"/>
+      <location filename="../../ViewProvider.cpp" line="484"/>
+      <location filename="../../ViewProvider.cpp" line="652"/>
       <source>Cut points</source>
       <translation>Nedskärningspunkter</translation>
     </message>
@@ -307,12 +284,12 @@
       <translation>Begränsningsrutan för de importerade punkterna innehåller inte origo. Translatera den till origo?</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="257"/>
+      <location filename="../../Command.cpp" line="218"/>
       <source>Distance</source>
       <translation>Avstånd</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="258"/>
+      <location filename="../../Command.cpp" line="219"/>
       <source>Enter maximum distance:</source>
       <translation>Ange maximalt avstånd:</translation>
     </message>
@@ -320,12 +297,12 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="34"/>
+      <location filename="../../Workbench.cpp" line="35"/>
       <source>Points Tools</source>
       <translation>Verktyg för punkter</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="35"/>
+      <location filename="../../Workbench.cpp" line="36"/>
       <source>&amp;Points</source>
       <translation>&amp;Punkter</translation>
     </message>

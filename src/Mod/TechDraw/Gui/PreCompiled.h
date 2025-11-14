@@ -28,8 +28,6 @@
 #ifdef FC_OS_WIN32
 #endif
 
-#ifdef _PreComp_
-
 // standard
 #include <cassert>
 #include <cmath>
@@ -66,7 +64,5 @@
 
 // Open Inventor
 #include <Inventor/SbVec3f.h>
-
-#endif //_PreComp_
 
 #endif // DRAWINGGUI_PRECOMPILED_H

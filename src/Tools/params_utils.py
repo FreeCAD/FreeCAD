@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2022 Zheng Lei (realthunder) <realthunder.dev@gmail.com>*
 # *                                                                         *
@@ -565,14 +566,13 @@ def preference_dialog_define(param_set, header=True):
         cog.out(
             f"""
 {trace_comment()}
-#ifndef _PreComp_
 #   include <QApplication>
 #   include <QLabel>
 #   include <QGroupBox>
 #   include <QGridLayout>
 #   include <QVBoxLayout>
 #   include <QHBoxLayout>
-#endif"""
+"""
         )
         for _, params in param_group:
             for param in params:

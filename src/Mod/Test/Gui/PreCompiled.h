@@ -20,18 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __PRECOMPILED_GUI__
-#define __PRECOMPILED_GUI__
+#ifndef TEST_GUI_PRECOMPILED_H
+#define TEST_GUI_PRECOMPILED_H
 
 #include <FCConfig.h>
-
-#ifdef _PreComp_
 
 // Qt Toolkit
 #include <QApplication>
 #include <QEventLoop>
 #include <QMessageBox>
 
-#endif  //_PreComp_
-
-#endif  // __PRECOMPILED_GUI__
+#endif  // TEST_GUI_PRECOMPILED_H

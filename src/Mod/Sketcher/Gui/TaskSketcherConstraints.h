@@ -103,8 +103,7 @@ protected:
     void languageChange();
 
 private:
-    using filterItemRepr =
-        std::pair<const char*, const int>;  // {filter item text, filter item level}
+    using filterItemRepr = std::pair<const char*, const int>;  // {filter item text, filter item level}
     inline static const std::vector<filterItemRepr> filterItems = {
         {QT_TR_NOOP("All"), 0},
         {QT_TR_NOOP("Geometric"), 0},
@@ -169,6 +168,7 @@ private:
     bool isConstraintFiltered(QListWidgetItem* item);
     void change3DViewVisibilityToTrackFilter(bool filterEnabled);
     bool doSetVirtualSpace(const std::vector<int>& constrIds, bool isvirtualspace);
+    bool doSetVisible(const std::vector<int>& constrIds, bool isVisible);
     void changeFilteredVisibility(bool show, ActionTarget target = ActionTarget::All);
     void updateSelectionFilter();
     void updateAssociatedConstraintsFilter();
@@ -207,13 +207,12 @@ private:
     QWidget* proxy;
     bool inEditMode;
     std::unique_ptr<Ui_TaskSketcherConstraints> ui;
-    ConstraintFilter::FilterValueBitset
-        multiFilterStatus;  // Stores the filters to be aggregated to form the multifilter.
-    std::vector<unsigned int>
-        selectionFilter;  // holds the constraint ids of the selected constraints
-    std::vector<unsigned int>
-        associatedConstraintsFilter;  // holds the constraint ids of the constraints associated with
-                                      // the selected geometry
+    ConstraintFilter::FilterValueBitset multiFilterStatus;  // Stores the filters to be aggregated
+                                                            // to form the multifilter.
+    std::vector<unsigned int> selectionFilter;  // holds the constraint ids of the selected constraints
+    std::vector<unsigned int> associatedConstraintsFilter;  // holds the constraint ids of the
+                                                            // constraints associated with the
+                                                            // selected geometry
     ConstraintFilterList* filterList;
     boost::signals2::scoped_connection changedSketchView;
 };

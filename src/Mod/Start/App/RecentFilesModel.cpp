@@ -21,10 +21,6 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
-
 #include "RecentFilesModel.h"
 #include <App/Application.h>
 #include <App/ProjectFile.h>
@@ -35,7 +31,8 @@ RecentFilesModel::RecentFilesModel(QObject* parent)
     : DisplayedFilesModel(parent)
 {
     _parameterGroup = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/RecentFiles");
+        "User parameter:BaseApp/Preferences/RecentFiles"
+    );
 }
 
 void RecentFilesModel::loadRecentFiles()

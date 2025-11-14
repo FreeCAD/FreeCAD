@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QApplication>
 #include <QDomDocument>
 #include <QFile>
@@ -30,7 +28,7 @@
 #include <QSvgGenerator>
 #include <QTemporaryFile>
 #include <QTextStream>
-#endif
+
 
 #include <App/Document.h>
 #include <Base/Console.h>

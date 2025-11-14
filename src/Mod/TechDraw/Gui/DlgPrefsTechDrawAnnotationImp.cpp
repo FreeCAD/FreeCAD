@@ -22,10 +22,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <vector>
-#endif
+
 
 #include <Base/Tools.h>
 

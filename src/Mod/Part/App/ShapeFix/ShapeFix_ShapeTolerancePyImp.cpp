@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,10 +22,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <TopoDS.hxx>
-#endif
+#include <Mod/Part/PartGlobal.h>
+
+#include <TopoDS.hxx>
+
 
 #include "ShapeFix/ShapeFix_ShapeTolerancePy.h"
 #include "ShapeFix/ShapeFix_ShapeTolerancePy.cpp"
@@ -38,7 +40,7 @@ std::string ShapeFix_ShapeTolerancePy::representation() const
     return "<ShapeFix_ShapeTolerance object>";
 }
 
-PyObject *ShapeFix_ShapeTolerancePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject* ShapeFix_ShapeTolerancePy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     return new ShapeFix_ShapeTolerancePy(new ShapeFix_ShapeTolerance);
 }
@@ -46,41 +48,42 @@ PyObject *ShapeFix_ShapeTolerancePy::PyMake(struct _typeobject *, PyObject *, Py
 // constructor method
 int ShapeFix_ShapeTolerancePy::PyInit(PyObject* args, PyObject* /*kwds*/)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return -1;
+    }
     return 0;
 }
 
-PyObject* ShapeFix_ShapeTolerancePy::limitTolerance(PyObject *args)
+PyObject* ShapeFix_ShapeTolerancePy::limitTolerance(PyObject* args)
 {
     PyObject* shape;
     double tmin;
     double tmax = 0.0;
     TopAbs_ShapeEnum styp = TopAbs_SHAPE;
-    if (!PyArg_ParseTuple(args, "O!d|di", &TopoShapePy::Type, &shape,
-                                         &tmin, &tmax, &styp))
+    if (!PyArg_ParseTuple(args, "O!d|di", &TopoShapePy::Type, &shape, &tmin, &tmax, &styp)) {
         return nullptr;
+    }
 
     TopoDS_Shape sh = static_cast<TopoShapePy*>(shape)->getTopoShapePtr()->getShape();
     bool ok = getShapeFix_ShapeTolerancePtr()->LimitTolerance(sh, tmin, tmax, styp);
     return Py::new_reference_to(Py::Boolean(ok));
 }
 
-PyObject* ShapeFix_ShapeTolerancePy::setTolerance(PyObject *args)
+PyObject* ShapeFix_ShapeTolerancePy::setTolerance(PyObject* args)
 {
     PyObject* shape;
     double prec;
     TopAbs_ShapeEnum styp = TopAbs_SHAPE;
-    if (!PyArg_ParseTuple(args, "O!d|i", &TopoShapePy::Type, &shape,
-                                         &prec, &styp))
+    if (!PyArg_ParseTuple(args, "O!d|i", &TopoShapePy::Type, &shape, &prec, &styp)) {
         return nullptr;
+    }
 
     TopoDS_Shape sh = static_cast<TopoShapePy*>(shape)->getTopoShapePtr()->getShape();
     getShapeFix_ShapeTolerancePtr()->SetTolerance(sh, prec, styp);
     Py_Return;
 }
 
-PyObject *ShapeFix_ShapeTolerancePy::getCustomAttributes(const char* /*attr*/) const
+PyObject* ShapeFix_ShapeTolerancePy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }

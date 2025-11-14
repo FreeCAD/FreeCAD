@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <cmath>
 
 # include <QGraphicsScene>
@@ -29,7 +27,6 @@
 # include <QPainter>
 # include <QPainterPath>
 # include <QVector2D>
-#endif
 
 #include <App/Document.h>
 #include <Base/Console.h>

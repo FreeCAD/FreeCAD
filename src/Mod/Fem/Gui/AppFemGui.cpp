@@ -21,7 +21,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <Base/Console.h>
 #include <Base/PyObjectBase.h>
@@ -70,11 +69,11 @@
 #include "Workbench.h"
 
 #ifdef FC_USE_VTK
-#include "ViewProviderFemPostFilter.h"
-#include "ViewProviderFemPostFunction.h"
-#include "ViewProviderFemPostObject.h"
-#include "ViewProviderFemPostPipeline.h"
-#include "ViewProviderFemPostBranchFilter.h"
+# include "ViewProviderFemPostFilter.h"
+# include "ViewProviderFemPostFunction.h"
+# include "ViewProviderFemPostObject.h"
+# include "ViewProviderFemPostPipeline.h"
+# include "ViewProviderFemPostBranchFilter.h"
 #endif
 
 

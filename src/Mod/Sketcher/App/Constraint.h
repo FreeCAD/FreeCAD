@@ -192,18 +192,20 @@ private:
     // clang-format on
 
     constexpr static std::array<const char*, InternalAlignmentType::NumInternalAlignmentType>
-        internalAlignmentType2str {{"Undef",
-                                    "EllipseMajorDiameter",
-                                    "EllipseMinorDiameter",
-                                    "EllipseFocus1",
-                                    "EllipseFocus2",
-                                    "HyperbolaMajor",
-                                    "HyperbolaMinor",
-                                    "HyperbolaFocus",
-                                    "ParabolaFocus",
-                                    "BSplineControlPoint",
-                                    "BSplineKnotPoint",
-                                    "ParabolaFocalAxis"}};
+        internalAlignmentType2str {
+            {"Undef",
+             "EllipseMajorDiameter",
+             "EllipseMinorDiameter",
+             "EllipseFocus1",
+             "EllipseFocus2",
+             "HyperbolaMajor",
+             "HyperbolaMinor",
+             "HyperbolaFocus",
+             "ParabolaFocus",
+             "BSplineControlPoint",
+             "BSplineKnotPoint",
+             "ParabolaFocalAxis"}
+        };
 
 public:
     ConstraintType Type {None};
@@ -216,6 +218,7 @@ public:
     // index of pole in a bspline). It is not a GeoId!!
     int InternalAlignmentIndex {-1};
     bool isInVirtualSpace {false};
+    bool isVisible {true};
 
     bool isActive {true};
 

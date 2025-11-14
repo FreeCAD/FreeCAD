@@ -20,14 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
   #include <QGraphicsSceneMouseEvent>
   #include <QInputDialog>
   #include <QLineEdit>
   #include <QTextDocument>
-#endif // #ifndef _PreCmp_
 
 #include <Base/Console.h>
 #include <Gui/MainWindow.h>

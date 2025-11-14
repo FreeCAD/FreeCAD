@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -134,7 +135,7 @@ class CommandJobTemplateExport:
         foo = QtGui.QFileDialog.getSaveFileName(
             QtGui.QApplication.activeWindow(),
             "Path - Job Template",
-            Path.Preferences.filePath(),
+            str(Path.Preferences.getTemplateDirectory()),
             "job_*.json",
         )[0]
         if foo:

@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <Base/Exception.h>
 #include <Base/Reader.h>
@@ -34,8 +33,7 @@
 using namespace SketcherGui;
 
 //---------- Geometry Extension
-TYPESYSTEM_SOURCE(SketcherGui::ViewProviderSketchGeometryExtension,
-                  Part::GeometryPersistenceExtension)
+TYPESYSTEM_SOURCE(SketcherGui::ViewProviderSketchGeometryExtension, Part::GeometryPersistenceExtension)
 
 
 ViewProviderSketchGeometryExtension::ViewProviderSketchGeometryExtension()
@@ -46,8 +44,8 @@ ViewProviderSketchGeometryExtension::ViewProviderSketchGeometryExtension()
 void ViewProviderSketchGeometryExtension::copyAttributes(Part::GeometryExtension* cpy) const
 {
     Part::GeometryExtension::copyAttributes(cpy);
-    static_cast<ViewProviderSketchGeometryExtension*>(cpy)->RepresentationFactor =
-        this->RepresentationFactor;
+    static_cast<ViewProviderSketchGeometryExtension*>(cpy)->RepresentationFactor
+        = this->RepresentationFactor;
     static_cast<ViewProviderSketchGeometryExtension*>(cpy)->VisualLayerId = this->VisualLayerId;
 }
 
@@ -79,6 +77,5 @@ void ViewProviderSketchGeometryExtension::saveAttributes(Base::Writer& writer) c
 
 PyObject* ViewProviderSketchGeometryExtension::getPyObject()
 {
-    return new ViewProviderSketchGeometryExtensionPy(
-        new ViewProviderSketchGeometryExtension(*this));
+    return new ViewProviderSketchGeometryExtensionPy(new ViewProviderSketchGeometryExtension(*this));
 }

@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 
 # test script for DrawViewDetail
 # creates a page, a view and a detail view

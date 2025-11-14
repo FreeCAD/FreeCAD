@@ -20,12 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 # include <cmath>
-#endif
 
 #include <Mod/TechDraw/App/CosmeticExtension.h>
 #include "ViewProviderCosmeticExtension.h"

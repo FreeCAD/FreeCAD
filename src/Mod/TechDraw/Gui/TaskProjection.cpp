@@ -22,10 +22,8 @@
 //this file originally part of TechDraw workbench
 //migrated to TechDraw workbench 2022-01-26 by Wandererfan
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QMessageBox>
-#endif
+
 
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>

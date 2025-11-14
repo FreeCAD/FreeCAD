@@ -754,7 +754,7 @@ void  aptrte( Z   nutysu, R      aretmx,
     goto NETTOYAGE;
   }
 }
-void
+int
 #ifdef WIN32
 #ifdef F2C_BUILD
 #else
@@ -868,5 +868,5 @@ void
     MESSAGE( "ATTENTION: "<< nbtrianeg << " TRIANGLES d'AIRE NEGATIVE" );
 
   MESSAGE(" ");
-  return;
+  return 0;
 }

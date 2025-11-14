@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 add_subdirectory(App)
 add_subdirectory(libarea)
 add_subdirectory(PathSimulator)
@@ -126,6 +128,11 @@ SET(PathPythonToolsAssets_SRCS
     Path/Tool/assets/manager.py
     Path/Tool/assets/serializer.py
     Path/Tool/assets/uri.py
+)
+
+SET(PathPythonToolsMigration_SRCS
+    Path/Tool/migration/__init__.py
+    Path/Tool/migration/migration.py
 )
 
 SET(PathPythonToolsAssetsStore_SRCS
@@ -600,6 +607,7 @@ SET(all_files
     ${PathPythonPostScripts_SRCS}
     ${PathPythonTools_SRCS}
     ${PathPythonToolsAssets_SRCS}
+    ${PathPythonToolsMigration_SRCS}
     ${PathPythonToolsAssetsStore_SRCS}
     ${PathPythonToolsAssetsUi_SRCS}
     ${PathPythonToolsDocObject_SRCS}
@@ -753,6 +761,13 @@ INSTALL(
         ${PathPythonToolsAssets_SRCS}
     DESTINATION
         Mod/CAM/Path/Tool/assets
+)
+
+INSTALL(
+    FILES
+        ${PathPythonToolsMigration_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Tool/migration
 )
 
 INSTALL(

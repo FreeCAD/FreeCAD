@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
@@ -36,9 +38,11 @@ public:
     Base::Unit unit;
     double scaler;
 
-    explicit DisplayUnit(const std::string _stringRep = "",
-                         const Base::Unit _unit = Base::Unit(),
-                         double _scaler = 0.0)
+    explicit DisplayUnit(
+        const std::string _stringRep = "",
+        const Base::Unit _unit = Base::Unit(),
+        double _scaler = 0.0
+    )
         : stringRep(std::move(_stringRep))
         , unit(_unit)
         , scaler(_scaler)

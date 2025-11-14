@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,12 +22,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __PRECOMPILED_GUI__
-#define __PRECOMPILED_GUI__
+#ifndef REVERSE_ENGINEERING_GUI_PRECOMPILED_H
+#define REVERSE_ENGINEERING_GUI_PRECOMPILED_H
 
 #include <FCConfig.h>
-
-#ifdef _PreComp_
 
 // standard
 #include <algorithm>
@@ -44,7 +44,5 @@
 #include <QApplication>
 #include <QMessageBox>
 #include <QPushButton>
-
-#endif  //_PreComp_
 
 #endif  // __PRECOMPILED_GUI__

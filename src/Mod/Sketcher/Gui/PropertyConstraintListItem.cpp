@@ -20,12 +20,10 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QDebug>
 #include <QTextStream>
 #include <memory>
-#endif
+
 
 #include <Base/Tools.h>
 #include <Mod/Sketcher/App/PropertyConstraintList.h>
@@ -64,8 +62,8 @@ QString PropertyConstraintListItem::toString(const QVariant& prop) const
 
 void PropertyConstraintListItem::initialize()
 {
-    const Sketcher::PropertyConstraintList* list =
-        static_cast<const Sketcher::PropertyConstraintList*>(getPropertyData()[0]);
+    const Sketcher::PropertyConstraintList* list
+        = static_cast<const Sketcher::PropertyConstraintList*>(getPropertyData()[0]);
     const std::vector<Sketcher::Constraint*>& vals = list->getValues();
 
     int id = 1;
@@ -116,8 +114,7 @@ void PropertyConstraintListItem::initialize()
     // now deal with the unnamed
     if (iNamed == 0) {
         onlyUnnamed = true;
-        for (std::vector<PropertyUnitItem*>::const_iterator it = unnamed.begin();
-             it != unnamed.end();
+        for (std::vector<PropertyUnitItem*>::const_iterator it = unnamed.begin(); it != unnamed.end();
              ++it) {
             (*it)->setParent(this);
             this->appendChild((*it));
@@ -126,8 +123,9 @@ void PropertyConstraintListItem::initialize()
     else {
         onlyUnnamed = false;
         if (!unnamed.empty()) {
-            PropertyConstraintListItem* item =
-                static_cast<PropertyConstraintListItem*>(PropertyConstraintListItem::create());
+            PropertyConstraintListItem* item = static_cast<PropertyConstraintListItem*>(
+                PropertyConstraintListItem::create()
+            );
             item->setParent(this);
             item->setPropertyName(tr("Unnamed"));
             this->appendChild(item);
@@ -151,8 +149,8 @@ void PropertyConstraintListItem::assignProperty(const App::Property* prop)
         return;
     }
 
-    const Sketcher::PropertyConstraintList* list =
-        static_cast<const Sketcher::PropertyConstraintList*>(prop);
+    const Sketcher::PropertyConstraintList* list
+        = static_cast<const Sketcher::PropertyConstraintList*>(prop);
     const std::vector<Sketcher::Constraint*>& vals = list->getValues();
 
     // search for the group of unnamed items if available and take it out
@@ -185,7 +183,8 @@ void PropertyConstraintListItem::assignProperty(const App::Property* prop)
                 // search inside the group item for unnamed constraints
                 if (!unnamed) {
                     unnamed = static_cast<PropertyConstraintListItem*>(
-                        PropertyConstraintListItem::create());
+                        PropertyConstraintListItem::create()
+                    );
                     unnamed->setPropertyName(tr("Unnamed"));
                 }
 
@@ -250,8 +249,8 @@ QVariant PropertyConstraintListItem::value(const App::Property* prop) const
     QList<Base::Quantity> subquantities;
     bool onlyNamed = true;
 
-    const std::vector<Sketcher::Constraint*>& vals =
-        static_cast<const Sketcher::PropertyConstraintList*>(prop)->getValues();
+    const std::vector<Sketcher::Constraint*>& vals
+        = static_cast<const Sketcher::PropertyConstraintList*>(prop)->getValues();
     for (std::vector<Sketcher::Constraint*>::const_iterator it = vals.begin(); it != vals.end();
          ++it, ++id) {
         if ((*it)->Type == Sketcher::Distance ||  // Datum constraint
@@ -280,12 +279,15 @@ QVariant PropertyConstraintListItem::value(const App::Property* prop) const
                 onlyNamed = false;
                 subquantities.append(quant);
                 PropertyItem* child = self->child(self->childCount() - 1);
-                PropertyConstraintListItem* unnamednode =
-                    qobject_cast<PropertyConstraintListItem*>(child);
+                PropertyConstraintListItem* unnamednode = qobject_cast<PropertyConstraintListItem*>(
+                    child
+                );
                 if (unnamednode) {
                     unnamednode->blockEvent = true;
-                    unnamednode->setProperty(internalName.toLatin1(),
-                                             QVariant::fromValue<Base::Quantity>(quant));
+                    unnamednode->setProperty(
+                        internalName.toLatin1(),
+                        QVariant::fromValue<Base::Quantity>(quant)
+                    );
                     unnamednode->blockEvent = false;
                 }
                 else {
@@ -295,8 +297,7 @@ QVariant PropertyConstraintListItem::value(const App::Property* prop) const
             }
             else {
                 self->blockEvent = true;
-                self->setProperty(internalName.toLatin1(),
-                                  QVariant::fromValue<Base::Quantity>(quant));
+                self->setProperty(internalName.toLatin1(), QVariant::fromValue<Base::Quantity>(quant));
                 self->blockEvent = false;
             }
         }
@@ -327,7 +328,8 @@ bool PropertyConstraintListItem::event(QEvent* ev)
             int id = 0;
             if (dynamic_cast<SketcherGui::PropertyConstraintListItem*>(this->parent())) {
                 item = static_cast<Sketcher::PropertyConstraintList*>(
-                    this->parent()->getFirstProperty());
+                    this->parent()->getFirstProperty()
+                );
             }
             else {
                 item = static_cast<Sketcher::PropertyConstraintList*>(getFirstProperty());
@@ -368,9 +370,11 @@ void PropertyConstraintListItem::setValue(const QVariant& value)
     Q_UNUSED(value);
 }
 
-QWidget* PropertyConstraintListItem::createEditor(QWidget* parent,
-                                                  const std::function<void()>& method,
-                                                  FrameOption frameOption) const
+QWidget* PropertyConstraintListItem::createEditor(
+    QWidget* parent,
+    const std::function<void()>& method,
+    FrameOption frameOption
+) const
 {
     Q_UNUSED(method);
     QLineEdit* le = new QLineEdit(parent);

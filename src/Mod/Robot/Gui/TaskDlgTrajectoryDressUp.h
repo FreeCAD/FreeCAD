@@ -26,6 +26,8 @@
 #include <Gui/TaskView/TaskDialog.h>
 #include <Mod/Robot/App/TrajectoryDressUpObject.h>
 
+#include <Mod/Robot/RobotGlobal.h>
+
 #include "TaskTrajectoryDressUpParameter.h"
 
 

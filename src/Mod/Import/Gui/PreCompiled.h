@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -21,12 +23,10 @@
  ***************************************************************************/
 
 
-#ifndef __PRECOMPILED_GUI__
-#define __PRECOMPILED_GUI__
+#ifndef IMPORT_GUI_PRECOMPILED_H
+#define IMPORT_GUI_PRECOMPILED_H
 
 #include <FCConfig.h>
-
-#ifdef _PreComp_
 
 // standard
 #include <cassert>
@@ -39,8 +39,8 @@
 #include <string>
 #include <vector>
 
-#ifndef FC_OS_WIN32
-#include <windows.h>
+#ifdef FC_OS_WIN32
+# include <windows.h>
 #endif
 
 // OpenCasCade Base
@@ -73,16 +73,7 @@
 #include <gp_Sphere.hxx>
 #include <gp_Trsf.hxx>
 
-#ifndef FC_OS_WIN32
-#include <Graphic3d_GraphicDevice.hxx>
-#else
-#include <Graphic3d_WNTGraphicDevice.hxx>
-#endif
-
 // Qt Toolkit
 #include <Gui/QtAll.h>
-
-
-#endif  //_PreComp_
 
 #endif  // __PRECOMPILED_GUI__

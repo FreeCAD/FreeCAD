@@ -20,10 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif // #ifndef _PreComp_
-
 #include <Base/Console.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
