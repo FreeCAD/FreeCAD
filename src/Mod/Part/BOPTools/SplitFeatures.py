@@ -303,12 +303,12 @@ class FeatureSlice:
         # helper function to get the shape from object or group
         def get_shape(obj):
             """get shape from a part object or compound from a group."""
-            if hasattr(obj, 'Shape'):
+            if hasattr(obj, "Shape"):
                 return obj.Shape
-            elif hasattr(obj, 'Group'): # it's a group/container from ie. slice apart
+            elif hasattr(obj, "Group"):  # it's a group/container from ie. slice apart
                 shapes = []
                 for child in obj.Group:
-                    if hasattr(child, 'Shape'):
+                    if hasattr(child, "Shape"):
                         shapes.append(child.Shape)
                 if shapes:
                     return Part.makeCompound(shapes)
@@ -317,7 +317,7 @@ class FeatureSlice:
         # get base shape
         base_shape = get_shape(selfobj.Base)
         if base_shape is None or base_shape.isNull():
-                raise ValueError("Base object has no valid shape!")
+            raise ValueError("Base object has no valid shape!")
 
         # get tool shapes
         tool_shapes = []
