@@ -51,14 +51,8 @@ SET(Assembly_SRCS
     AssemblyUtils.h
     BomObject.cpp
     BomObject.h
-    BomGroup.cpp
-    BomGroup.h
-    JointGroup.cpp
-    JointGroup.h
-    ViewGroup.cpp
-    ViewGroup.h
-    SimulationGroup.cpp
-    SimulationGroup.h
+    Groups.cpp
+    Groups.h
     ${Module_SRCS}
     ${Python_SRCS}
 )
