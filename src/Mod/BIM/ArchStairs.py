@@ -401,8 +401,12 @@ class _Stairs(ArchComponent.Component):
         if not obj.getEnumerationsOfProperty("Landings") == landingsEnum:
             landingsCur = obj.Landings
             obj.Landings = landingsEnum
-        if landingsCur:
-            obj.Landings = landingsCur
+            # For a new object landingsCur is None.
+            # For an object with the old enumeration it is "None", "At center" or "At each corner".
+            if landingsCur == "At center":
+                obj.Landings = landingsCur
+            else:
+                obj.Landings = "None"
 
         # Not implemented yet, remarked out at the moment
         # if not "Winders" in pl:
