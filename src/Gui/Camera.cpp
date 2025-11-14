@@ -39,13 +39,13 @@ SbRotation Camera::bottom()
 
 SbRotation Camera::front()
 {
-    auto root = sqrtf(2.0)/2.0f;
+    auto root = sqrtf(2.0) / 2.0f;
     return {root, 0, 0, root};
 }
 
 SbRotation Camera::rear()
 {
-    auto root = sqrtf(2.0)/2.0f;
+    auto root = sqrtf(2.0) / 2.0f;
     return {0, root, root, 0};
 }
 
@@ -92,26 +92,26 @@ SbRotation Camera::trimetric()
 SbRotation Camera::rotation(Camera::Orientation view)
 {
     switch (view) {
-    case Top:
-        return top();
-    case Bottom:
-        return bottom();
-    case Front:
-        return front();
-    case Rear:
-        return rear();
-    case Right:
-        return right();
-    case Left:
-        return left();
-    case Isometric:
-        return isometric();
-    case Dimetric:
-        return dimetric();
-    case Trimetric:
-        return trimetric();
-    default:
-        return top();
+        case Top:
+            return top();
+        case Bottom:
+            return bottom();
+        case Front:
+            return front();
+        case Rear:
+            return rear();
+        case Right:
+            return right();
+        case Left:
+            return left();
+        case Isometric:
+            return isometric();
+        case Dimetric:
+            return dimetric();
+        case Trimetric:
+            return trimetric();
+        default:
+            return top();
     }
 }
 

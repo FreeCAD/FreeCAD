@@ -364,16 +364,16 @@
   <context>
     <name>QObject</name>
     <message>
+      <location filename="../../CommandInsertRobot.cpp" line="258"/>
       <location filename="../../CommandExport.cpp" line="60"/>
       <location filename="../../CommandExport.cpp" line="135"/>
+      <location filename="../../Command.cpp" line="69"/>
+      <location filename="../../Command.cpp" line="128"/>
+      <location filename="../../Command.cpp" line="234"/>
       <location filename="../../CommandTrajectory.cpp" line="104"/>
       <location filename="../../CommandTrajectory.cpp" line="171"/>
       <location filename="../../CommandTrajectory.cpp" line="190"/>
       <location filename="../../CommandTrajectory.cpp" line="461"/>
-      <location filename="../../CommandInsertRobot.cpp" line="258"/>
-      <location filename="../../Command.cpp" line="69"/>
-      <location filename="../../Command.cpp" line="128"/>
-      <location filename="../../Command.cpp" line="234"/>
       <source>Wrong selection</source>
       <translation>Няправільны выбар</translation>
     </message>
@@ -390,8 +390,8 @@
     <message>
       <location filename="../../CommandExport.cpp" line="61"/>
       <location filename="../../CommandExport.cpp" line="136"/>
-      <location filename="../../CommandTrajectory.cpp" line="105"/>
       <location filename="../../Command.cpp" line="235"/>
+      <location filename="../../CommandTrajectory.cpp" line="105"/>
       <source>Select one Robot and one Trajectory object.</source>
       <translation>Абраць адзін Робат і адну траекторыю аб'екта.</translation>
     </message>
@@ -442,7 +442,8 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="200"/>
       <source>You have to hover above a geometry (Preselection) with the mouse to use this command. See documentation for details.</source>
-      <translation>Каб ужыць каманду, навядзіце курсор мышы на геаметрыю (папярэдне абраную). Падрабязнасці глядзіце ў дакументацыі.</translation>
+      <translation>Каб ужыць каманду, навядзіце паказальнік мышы на геаметрыю (папярэдне абраную).
+Падрабязнасці глядзіце ў дакументацыі.</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="292"/>
@@ -492,7 +493,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="72"/>
       <source>Visit %1 and copy the robot VRML and CSV files to %2</source>
-      <translation type="unfinished">Visit %1 and copy the robot VRML and CSV files to %2</translation>
+      <translation>Перайдзіце на старонку %1 і скапіруйце файлы робата VRML і CSV на старонку %2</translation>
     </message>
   </context>
   <context>

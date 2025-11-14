@@ -1,4 +1,6 @@
-#/***************************************************************************
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+# /***************************************************************************
 # *   Copyright (c) 2016 Victor Titov (DeepSOIC) <vv.titov@gmail.com>       *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
@@ -20,7 +22,7 @@
 # *                                                                         *
 # ***************************************************************************/
 
-__title__="BOPTools.SplitFeatures module"
+__title__ = "BOPTools.SplitFeatures module"
 __author__ = "DeepSOIC"
 __url__ = "https://www.freecad.org"
 __doc__ = "Shape splitting document objects (features)."
@@ -33,27 +35,31 @@ if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
 
-# -------------------------- translation-related code -------------------------
-# See forum thread "A new Part tool is being born... JoinFeatures!"
-# https://forum.freecad.org/viewtopic.php?f=22&t=11112&start=30#p90239
+    # -------------------------- translation-related code -------------------------
+    # See forum thread "A new Part tool is being born... JoinFeatures!"
+    # https://forum.freecad.org/viewtopic.php?f=22&t=11112&start=30#p90239
     try:
         _fromUtf8 = QtCore.QString.fromUtf8
     except Exception:
+
         def _fromUtf8(s):
             return s
+
     translate = FreeCAD.Qt.translate
-#--------------------------/translation-related code --------------------------
+# --------------------------/translation-related code --------------------------
 
 
 def getIconPath(icon_dot_svg):
     return icon_dot_svg
 
+
 # -------------------------- /common stuff ------------------------------------
 
 # -------------------------- BooleanFragments ---------------------------------
 
+
 def makeBooleanFragments(name):
-    '''makeBooleanFragments(name): makes an BooleanFragments object.'''
+    """makeBooleanFragments(name): makes an BooleanFragments object."""
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", name)
     FeatureBooleanFragments(obj)
     if FreeCAD.GuiUp:
@@ -64,33 +70,53 @@ def makeBooleanFragments(name):
 class FeatureBooleanFragments:
     """The BooleanFragments feature object."""
 
-    def __init__(self,obj):
-        obj.addProperty("App::PropertyLinkList","Objects","BooleanFragments","Object to compute intersections between.", locked=True)
-        obj.addProperty("App::PropertyEnumeration","Mode","BooleanFragments",
-                        "- Standard: wires, shells, compsolids remain in one piece.\n"
-                        "- Split: wires, shells, compsolids are split.\n"
-                        "- CompSolid: make compsolid from solid fragments.", locked=True)
+    def __init__(self, obj):
+        obj.addProperty(
+            "App::PropertyLinkList",
+            "Objects",
+            "BooleanFragments",
+            "Object to compute intersections between.",
+            locked=True,
+        )
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "Mode",
+            "BooleanFragments",
+            "- Standard: wires, shells, compsolids remain in one piece.\n"
+            "- Split: wires, shells, compsolids are split.\n"
+            "- CompSolid: make compsolid from solid fragments.",
+            locked=True,
+        )
         obj.Mode = ["Standard", "Split", "CompSolid"]
-        obj.addProperty("App::PropertyLength","Tolerance","BooleanFragments",
-                        "Tolerance when intersecting (fuzzy value). "
-                        "In addition to tolerances of the shapes.", locked=True)
+        obj.addProperty(
+            "App::PropertyLength",
+            "Tolerance",
+            "BooleanFragments",
+            "Tolerance when intersecting (fuzzy value). "
+            "In addition to tolerances of the shapes.",
+            locked=True,
+        )
 
         obj.Proxy = self
         self.Type = "FeatureBooleanFragments"
 
-    def execute(self,selfobj):
+    def execute(self, selfobj):
         shapes = [obj.Shape for obj in selfobj.Objects]
         if len(shapes) == 1 and shapes[0].ShapeType == "Compound":
             shapes = shapes[0].childShapes()
         if len(shapes) < 2:
-            raise ValueError("At least two shapes are needed for computing boolean fragments. Got only {num}.".format(num=len(shapes)))
+            raise ValueError(
+                "At least two shapes are needed for computing boolean fragments. Got only {num}.".format(
+                    num=len(shapes)
+                )
+            )
         selfobj.Shape = SplitAPI.booleanFragments(shapes, selfobj.Mode, selfobj.Tolerance)
 
 
 class ViewProviderBooleanFragments:
     """A View Provider for the Part BooleanFragments feature."""
 
-    def __init__(self,vobj):
+    def __init__(self, vobj):
         vobj.Proxy = self
 
     def getIcon(self):
@@ -103,7 +129,7 @@ class ViewProviderBooleanFragments:
     def dumps(self):
         return None
 
-    def loads(self,state):
+    def loads(self, state):
         return None
 
     def claimChildren(self):
@@ -119,16 +145,21 @@ class ViewProviderBooleanFragments:
 
     def canDragObjects(self):
         return True
+
     def canDropObjects(self):
         return True
+
     def canDragObject(self, dragged_object):
         return True
+
     def canDropObject(self, incoming_object):
-        return hasattr(incoming_object, 'Shape')
+        return hasattr(incoming_object, "Shape")
+
     def dragObject(self, selfvp, dragged_object):
         objs = self.Object.Objects
         objs.remove(dragged_object)
         self.Object.Objects = objs
+
     def dropObject(self, selfvp, incoming_object):
         self.Object.Objects = self.Object.Objects + [incoming_object]
 
@@ -139,11 +170,15 @@ def cmdCreateBooleanFragmentsFeature(name, mode):
     sel = FreeCADGui.Selection.getSelectionEx()
     FreeCAD.ActiveDocument.openTransaction("Create Boolean Fragments")
     FreeCADGui.addModule("BOPTools.SplitFeatures")
-    FreeCADGui.doCommand("j = BOPTools.SplitFeatures.makeBooleanFragments(name='{name}')".format(name=name))
-    FreeCADGui.doCommand("j.Objects = {sel}".format(
-       sel= "["  +  ", ".join(["App.ActiveDocument."+so.Object.Name for so in sel])  +  "]"
-       ))
-    FreeCADGui.doCommand("j.Mode = {mode}".format(mode= repr(mode)))
+    FreeCADGui.doCommand(
+        "j = BOPTools.SplitFeatures.makeBooleanFragments(name='{name}')".format(name=name)
+    )
+    FreeCADGui.doCommand(
+        "j.Objects = {sel}".format(
+            sel="[" + ", ".join(["App.ActiveDocument." + so.Object.Name for so in sel]) + "]"
+        )
+    )
+    FreeCADGui.doCommand("j.Mode = {mode}".format(mode=repr(mode)))
 
     try:
         FreeCADGui.doCommand("j.Proxy.execute(j)")
@@ -152,12 +187,17 @@ def cmdCreateBooleanFragmentsFeature(name, mode):
         mb = QtGui.QMessageBox()
         mb.setIcon(mb.Icon.Warning)
         error_text1 = translate("Part_SplitFeatures", "Computing the result failed with an error:")
-        error_text2 = translate("Part_SplitFeatures", "Click 'Continue' to create the feature anyway, or 'Abort' to cancel.")
+        error_text2 = translate(
+            "Part_SplitFeatures",
+            "Click 'Continue' to create the feature anyway, or 'Abort' to cancel.",
+        )
         mb.setText(error_text1 + "\n\n" + str(err) + "\n\n" + error_text2)
-        mb.setWindowTitle(translate("Part_SplitFeatures","Bad Selection", None))
+        mb.setWindowTitle(translate("Part_SplitFeatures", "Bad Selection", None))
         btnAbort = mb.addButton(QtGui.QMessageBox.StandardButton.Abort)
-        btnOK = mb.addButton(translate("Part_SplitFeatures","Continue",None),
-                             QtGui.QMessageBox.ButtonRole.ActionRole)
+        btnOK = mb.addButton(
+            translate("Part_SplitFeatures", "Continue", None),
+            QtGui.QMessageBox.ButtonRole.ActionRole,
+        )
         mb.setDefaultButton(btnOK)
 
         mb.exec_()
@@ -166,8 +206,9 @@ def cmdCreateBooleanFragmentsFeature(name, mode):
             FreeCAD.ActiveDocument.abortTransaction()
             return
 
-    FreeCADGui.doCommand("for obj in j.ViewObject.Proxy.claimChildren():\n"
-                         "    obj.ViewObject.hide()")
+    FreeCADGui.doCommand(
+        "for obj in j.ViewObject.Proxy.claimChildren():\n" "    obj.ViewObject.hide()"
+    )
 
     FreeCAD.ActiveDocument.commitTransaction()
 
@@ -176,11 +217,15 @@ class CommandBooleanFragments:
     """Command to create BooleanFragments feature."""
 
     def GetResources(self):
-        return {'Pixmap': getIconPath("Part_BooleanFragments.svg"),
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_BooleanFragments","Boolean Fragments"),
-                'Accel': "",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_BooleanFragments",
-                                                    "Creates a boolean union which is sliced at the intersections of the selected shapes")}
+        return {
+            "Pixmap": getIconPath("Part_BooleanFragments.svg"),
+            "MenuText": QtCore.QT_TRANSLATE_NOOP("Part_BooleanFragments", "Boolean Fragments"),
+            "Accel": "",
+            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
+                "Part_BooleanFragments",
+                "Creates a boolean union which is sliced at the intersections of the selected shapes",
+            ),
+        }
 
     def Activated(self):
         if len(FreeCADGui.Selection.getSelectionEx()) >= 1:
@@ -188,11 +233,16 @@ class CommandBooleanFragments:
         else:
             mb = QtGui.QMessageBox()
             mb.setIcon(mb.Icon.Warning)
-            mb.setText(translate("Part_SplitFeatures",
-                                 "Select at least two objects, or one or more compounds. "
-                                 "If only one compound is selected, the compounded shapes will be intersected between each other "
-                                 "(otherwise, compounds with self-intersections are invalid).", None))
-            mb.setWindowTitle(translate("Part_SplitFeatures","Bad Selection", None))
+            mb.setText(
+                translate(
+                    "Part_SplitFeatures",
+                    "Select at least two objects, or one or more compounds. "
+                    "If only one compound is selected, the compounded shapes will be intersected between each other "
+                    "(otherwise, compounds with self-intersections are invalid).",
+                    None,
+                )
+            )
+            mb.setWindowTitle(translate("Part_SplitFeatures", "Bad Selection", None))
             mb.exec_()
 
     def IsActive(self):
@@ -201,13 +251,15 @@ class CommandBooleanFragments:
         else:
             return False
 
+
 # -------------------------- /BooleanFragments --------------------------------
 
 # -------------------------- Slice --------------------------------------------
 
+
 def makeSlice(name):
-    '''makeSlice(name): makes an Slice object.'''
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+    """makeSlice(name): makes an Slice object."""
+    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", name)
     FeatureSlice(obj)
     if FreeCAD.GuiUp:
         ViewProviderSlice(obj.ViewObject)
@@ -217,34 +269,48 @@ def makeSlice(name):
 class FeatureSlice:
     """The Slice feature object."""
 
-    def __init__(self,obj):
-        obj.addProperty("App::PropertyLink","Base","Slice","Object to be sliced.", locked=True)
-        obj.addProperty("App::PropertyLinkList","Tools","Slice","Objects that slice.", locked=True)
-        obj.addProperty("App::PropertyEnumeration","Mode","Slice",
-                        "- Standard: wires, shells, compsolids remain in one piece.\n"
-                        "- Split: wires, shells, compsolids are split.\n"
-                        "- CompSolid: make compsolid from solid fragments.", locked=True)
+    def __init__(self, obj):
+        obj.addProperty("App::PropertyLink", "Base", "Slice", "Object to be sliced.", locked=True)
+        obj.addProperty(
+            "App::PropertyLinkList", "Tools", "Slice", "Objects that slice.", locked=True
+        )
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "Mode",
+            "Slice",
+            "- Standard: wires, shells, compsolids remain in one piece.\n"
+            "- Split: wires, shells, compsolids are split.\n"
+            "- CompSolid: make compsolid from solid fragments.",
+            locked=True,
+        )
         obj.Mode = ["Standard", "Split", "CompSolid"]
-        obj.addProperty("App::PropertyLength","Tolerance","Slice",
-                        "Tolerance when intersecting (fuzzy value). "
-                        "In addition to tolerances of the shapes.", locked=True)
+        obj.addProperty(
+            "App::PropertyLength",
+            "Tolerance",
+            "Slice",
+            "Tolerance when intersecting (fuzzy value). "
+            "In addition to tolerances of the shapes.",
+            locked=True,
+        )
 
         obj.Proxy = self
         self.Type = "FeatureSlice"
 
-    def execute(self,selfobj):
+    def execute(self, selfobj):
         if len(selfobj.Tools) < 1:
             raise ValueError("No slicing objects supplied!")
-        selfobj.Shape = SplitAPI.slice(selfobj.Base.Shape,
-                                       [obj.Shape for obj in selfobj.Tools],
-                                       selfobj.Mode,
-                                       selfobj.Tolerance)
+        selfobj.Shape = SplitAPI.slice(
+            selfobj.Base.Shape,
+            [obj.Shape for obj in selfobj.Tools],
+            selfobj.Mode,
+            selfobj.Tolerance,
+        )
 
 
 class ViewProviderSlice:
     """A View Provider for the Part Slice feature."""
 
-    def __init__(self,vobj):
+    def __init__(self, vobj):
         vobj.Proxy = self
 
     def getIcon(self):
@@ -257,7 +323,7 @@ class ViewProviderSlice:
     def dumps(self):
         return None
 
-    def loads(self,state):
+    def loads(self, state):
         return None
 
     def claimChildren(self):
@@ -271,18 +337,22 @@ class ViewProviderSlice:
             FreeCAD.Console.PrintError("Error in onDelete: " + str(err))
         return True
 
+
 def cmdCreateSliceFeature(name, mode, transaction=True):
     """cmdCreateSliceFeature(name, mode): implementation of GUI command to create
     Slice feature. Mode can be "Standard", "Split", or "CompSolid"."""
     sel = FreeCADGui.Selection.getSelectionEx()
-    if transaction: FreeCAD.ActiveDocument.openTransaction("Create Slice")
+    if transaction:
+        FreeCAD.ActiveDocument.openTransaction("Create Slice")
     FreeCADGui.addModule("BOPTools.SplitFeatures")
     FreeCADGui.doCommand("f = BOPTools.SplitFeatures.makeSlice(name='{name}')".format(name=name))
-    FreeCADGui.doCommand("f.Base = {sel}[0]\n"
-                         "f.Tools = {sel}[1:]".format(
-       sel= "["  +  ", ".join(["App.ActiveDocument."+so.Object.Name for so in sel])  +  "]"
-       ))
-    FreeCADGui.doCommand("f.Mode = {mode}".format(mode= repr(mode)))
+    FreeCADGui.doCommand(
+        "f.Base = {sel}[0]\n"
+        "f.Tools = {sel}[1:]".format(
+            sel="[" + ", ".join(["App.ActiveDocument." + so.Object.Name for so in sel]) + "]"
+        )
+    )
+    FreeCADGui.doCommand("f.Mode = {mode}".format(mode=repr(mode)))
 
     try:
         FreeCADGui.doCommand("f.Proxy.execute(f)")
@@ -291,25 +361,34 @@ def cmdCreateSliceFeature(name, mode, transaction=True):
         mb = QtGui.QMessageBox()
         mb.setIcon(mb.Icon.Warning)
         error_text1 = translate("Part_SplitFeatures", "Computing the result failed with an error:")
-        error_text2 = translate("Part_SplitFeatures", "Click 'Continue' to create the feature anyway, or 'Abort' to cancel.")
+        error_text2 = translate(
+            "Part_SplitFeatures",
+            "Click 'Continue' to create the feature anyway, or 'Abort' to cancel.",
+        )
         mb.setText(error_text1 + "\n\n" + str(err) + "\n\n" + error_text2)
-        mb.setWindowTitle(translate("Part_SplitFeatures","Bad Selection", None))
+        mb.setWindowTitle(translate("Part_SplitFeatures", "Bad Selection", None))
         btnAbort = mb.addButton(QtGui.QMessageBox.StandardButton.Abort)
-        btnOK = mb.addButton(translate("Part_SplitFeatures","Continue",None),
-                             QtGui.QMessageBox.ButtonRole.ActionRole)
+        btnOK = mb.addButton(
+            translate("Part_SplitFeatures", "Continue", None),
+            QtGui.QMessageBox.ButtonRole.ActionRole,
+        )
         mb.setDefaultButton(btnOK)
 
         mb.exec_()
 
         if mb.clickedButton() is btnAbort:
-            if transaction: FreeCAD.ActiveDocument.abortTransaction()
+            if transaction:
+                FreeCAD.ActiveDocument.abortTransaction()
             return False
 
-    FreeCADGui.doCommand("for obj in f.ViewObject.Proxy.claimChildren():\n"
-                         "    obj.ViewObject.hide()")
+    FreeCADGui.doCommand(
+        "for obj in f.ViewObject.Proxy.claimChildren():\n" "    obj.ViewObject.hide()"
+    )
 
-    if transaction: FreeCAD.ActiveDocument.commitTransaction()
+    if transaction:
+        FreeCAD.ActiveDocument.commitTransaction()
     return True
+
 
 def cmdSliceApart():
     FreeCAD.ActiveDocument.openTransaction("Slice apart")
@@ -329,11 +408,15 @@ class CommandSlice:
     """Command to create Slice feature."""
 
     def GetResources(self):
-        return {'Pixmap': getIconPath("Part_Slice.svg"),
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_Slice","Slice to Compound"),
-                'Accel': "",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_Slice",
-                                                    "Slices the selected object by using other objects as cutting tools and storing the results in one compound")}
+        return {
+            "Pixmap": getIconPath("Part_Slice.svg"),
+            "MenuText": QtCore.QT_TRANSLATE_NOOP("Part_Slice", "Slice to Compound"),
+            "Accel": "",
+            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
+                "Part_Slice",
+                "Slices the selected object by using other objects as cutting tools and storing the results in one compound",
+            ),
+        }
 
     def Activated(self):
         if len(FreeCADGui.Selection.getSelectionEx()) > 1:
@@ -341,11 +424,16 @@ class CommandSlice:
         else:
             mb = QtGui.QMessageBox()
             mb.setIcon(mb.Icon.Warning)
-            mb.setText(translate("Part_SplitFeatures",
-                                 "Select at least two objects. "
-                                 "The first one is the object to be sliced; "
-                                 "the rest are objects to slice with.", None))
-            mb.setWindowTitle(translate("Part_SplitFeatures","Bad Selection", None))
+            mb.setText(
+                translate(
+                    "Part_SplitFeatures",
+                    "Select at least two objects. "
+                    "The first one is the object to be sliced; "
+                    "the rest are objects to slice with.",
+                    None,
+                )
+            )
+            mb.setWindowTitle(translate("Part_SplitFeatures", "Bad Selection", None))
             mb.exec_()
 
     def IsActive(self):
@@ -359,11 +447,15 @@ class CommandSliceApart:
     """Command to create exploded Slice feature."""
 
     def GetResources(self):
-        return {'Pixmap': getIconPath("Part_SliceApart.svg"),
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_SliceApart","Slice Apart"),
-                'Accel': "",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_SliceApart",
-                                                    "Slices the selected object by other objects, and splits it apart, creating a compound filter for each slide")}
+        return {
+            "Pixmap": getIconPath("Part_SliceApart.svg"),
+            "MenuText": QtCore.QT_TRANSLATE_NOOP("Part_SliceApart", "Slice Apart"),
+            "Accel": "",
+            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
+                "Part_SliceApart",
+                "Slices the selected object by other objects, and splits it apart, creating a compound filter for each slide",
+            ),
+        }
 
     def Activated(self):
         if len(FreeCADGui.Selection.getSelectionEx()) > 1:
@@ -371,11 +463,16 @@ class CommandSliceApart:
         else:
             mb = QtGui.QMessageBox()
             mb.setIcon(mb.Icon.Warning)
-            mb.setText(translate("Part_SplitFeatures",
-                                 "Select at least two objects. "
-                                 "The first one is the object to be sliced; "
-                                 "the rest are objects to slice with.", None))
-            mb.setWindowTitle(translate("Part_SplitFeatures","Bad Selection", None))
+            mb.setText(
+                translate(
+                    "Part_SplitFeatures",
+                    "Select at least two objects. "
+                    "The first one is the object to be sliced; "
+                    "the rest are objects to slice with.",
+                    None,
+                )
+            )
+            mb.setWindowTitle(translate("Part_SplitFeatures", "Bad Selection", None))
             mb.exec_()
 
     def IsActive(self):
@@ -384,13 +481,15 @@ class CommandSliceApart:
         else:
             return False
 
+
 # -------------------------- /Slice -------------------------------------------
 
 # -------------------------- XOR ----------------------------------------------
 
+
 def makeXOR(name):
-    '''makeXOR(name): makes an XOR object.'''
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+    """makeXOR(name): makes an XOR object."""
+    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", name)
     FeatureXOR(obj)
     if FreeCAD.GuiUp:
         ViewProviderXOR(obj.ViewObject)
@@ -400,28 +499,43 @@ def makeXOR(name):
 class FeatureXOR:
     """The XOR feature object."""
 
-    def __init__(self,obj):
-        obj.addProperty("App::PropertyLinkList","Objects","XOR","Object to compute intersections between.", locked=True)
-        obj.addProperty("App::PropertyLength","Tolerance","XOR",
-                        "Tolerance when intersecting (fuzzy value). "
-                        "In addition to tolerances of the shapes.", locked=True)
+    def __init__(self, obj):
+        obj.addProperty(
+            "App::PropertyLinkList",
+            "Objects",
+            "XOR",
+            "Object to compute intersections between.",
+            locked=True,
+        )
+        obj.addProperty(
+            "App::PropertyLength",
+            "Tolerance",
+            "XOR",
+            "Tolerance when intersecting (fuzzy value). "
+            "In addition to tolerances of the shapes.",
+            locked=True,
+        )
 
         obj.Proxy = self
         self.Type = "FeatureXOR"
 
-    def execute(self,selfobj):
+    def execute(self, selfobj):
         shapes = [obj.Shape for obj in selfobj.Objects]
         if len(shapes) == 1 and shapes[0].ShapeType == "Compound":
             shapes = shapes[0].childShapes()
         if len(shapes) < 2:
-            raise ValueError("At least two shapes are needed for computing XOR. Got only {num}.".format(num=len(shapes)))
+            raise ValueError(
+                "At least two shapes are needed for computing XOR. Got only {num}.".format(
+                    num=len(shapes)
+                )
+            )
         selfobj.Shape = SplitAPI.xor(shapes, selfobj.Tolerance)
 
 
 class ViewProviderXOR:
     """A View Provider for the Part XOR feature."""
 
-    def __init__(self,vobj):
+    def __init__(self, vobj):
         vobj.Proxy = self
 
     def getIcon(self):
@@ -434,7 +548,7 @@ class ViewProviderXOR:
     def dumps(self):
         return None
 
-    def loads(self,state):
+    def loads(self, state):
         return None
 
     def claimChildren(self):
@@ -450,16 +564,21 @@ class ViewProviderXOR:
 
     def canDragObjects(self):
         return True
+
     def canDropObjects(self):
         return True
+
     def canDragObject(self, dragged_object):
         return True
+
     def canDropObject(self, incoming_object):
-        return hasattr(incoming_object, 'Shape')
+        return hasattr(incoming_object, "Shape")
+
     def dragObject(self, selfvp, dragged_object):
         objs = self.Object.Objects
         objs.remove(dragged_object)
         self.Object.Objects = objs
+
     def dropObject(self, selfvp, incoming_object):
         self.Object.Objects = self.Object.Objects + [incoming_object]
 
@@ -471,9 +590,11 @@ def cmdCreateXORFeature(name):
     FreeCAD.ActiveDocument.openTransaction("Create Boolean XOR")
     FreeCADGui.addModule("BOPTools.SplitFeatures")
     FreeCADGui.doCommand("j = BOPTools.SplitFeatures.makeXOR(name='{name}')".format(name=name))
-    FreeCADGui.doCommand("j.Objects = {sel}".format(
-       sel= "["  +  ", ".join(["App.ActiveDocument."+so.Object.Name for so in sel])  +  "]"
-       ))
+    FreeCADGui.doCommand(
+        "j.Objects = {sel}".format(
+            sel="[" + ", ".join(["App.ActiveDocument." + so.Object.Name for so in sel]) + "]"
+        )
+    )
 
     try:
         FreeCADGui.doCommand("j.Proxy.execute(j)")
@@ -482,12 +603,17 @@ def cmdCreateXORFeature(name):
         mb = QtGui.QMessageBox()
         mb.setIcon(mb.Icon.Warning)
         error_text1 = translate("Part_SplitFeatures", "Computing the result failed with an error:")
-        error_text2 = translate("Part_SplitFeatures", "Click 'Continue' to create the feature anyway, or 'Abort' to cancel.")
+        error_text2 = translate(
+            "Part_SplitFeatures",
+            "Click 'Continue' to create the feature anyway, or 'Abort' to cancel.",
+        )
         mb.setText(error_text1 + "\n\n" + str(err) + "\n\n" + error_text2)
-        mb.setWindowTitle(translate("Part_SplitFeatures","Bad Selection", None))
+        mb.setWindowTitle(translate("Part_SplitFeatures", "Bad Selection", None))
         btnAbort = mb.addButton(QtGui.QMessageBox.StandardButton.Abort)
-        btnOK = mb.addButton(translate("Part_SplitFeatures","Continue",None),
-                             QtGui.QMessageBox.ButtonRole.ActionRole)
+        btnOK = mb.addButton(
+            translate("Part_SplitFeatures", "Continue", None),
+            QtGui.QMessageBox.ButtonRole.ActionRole,
+        )
         mb.setDefaultButton(btnOK)
 
         mb.exec_()
@@ -496,8 +622,9 @@ def cmdCreateXORFeature(name):
             FreeCAD.ActiveDocument.abortTransaction()
             return
 
-    FreeCADGui.doCommand("for obj in j.ViewObject.Proxy.claimChildren():\n"
-                         "    obj.ViewObject.hide()")
+    FreeCADGui.doCommand(
+        "for obj in j.ViewObject.Proxy.claimChildren():\n" "    obj.ViewObject.hide()"
+    )
 
     FreeCAD.ActiveDocument.commitTransaction()
 
@@ -506,13 +633,17 @@ class CommandXOR:
     """Command to create XOR feature."""
 
     def GetResources(self):
-        return {'Pixmap': getIconPath("Part_XOR.svg"),
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_XOR","Boolean XOR"),
-                'Accel': "",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_XOR",
-                                                    "Performs an 'exclusive OR' boolean operation with two or more selected objects,\n"
-                                                    "or with the shapes inside a compound.\n"
-                                                    "Overlapping volumes of the shapes will be removed.")}
+        return {
+            "Pixmap": getIconPath("Part_XOR.svg"),
+            "MenuText": QtCore.QT_TRANSLATE_NOOP("Part_XOR", "Boolean XOR"),
+            "Accel": "",
+            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
+                "Part_XOR",
+                "Performs an 'exclusive OR' boolean operation with two or more selected objects,\n"
+                "or with the shapes inside a compound.\n"
+                "Overlapping volumes of the shapes will be removed.",
+            ),
+        }
 
     def Activated(self):
         if len(FreeCADGui.Selection.getSelectionEx()) >= 1:
@@ -520,11 +651,16 @@ class CommandXOR:
         else:
             mb = QtGui.QMessageBox()
             mb.setIcon(mb.Icon.Warning)
-            mb.setText(translate("Part_SplitFeatures",
-                                 "Select at least two objects, or one or more compounds. "
-                                 "If only one compound is selected, the compounded shapes will be intersected between each other "
-                                 "(otherwise, compounds with self-intersections are invalid).", None))
-            mb.setWindowTitle(translate("Part_SplitFeatures","Bad Selection", None))
+            mb.setText(
+                translate(
+                    "Part_SplitFeatures",
+                    "Select at least two objects, or one or more compounds. "
+                    "If only one compound is selected, the compounded shapes will be intersected between each other "
+                    "(otherwise, compounds with self-intersections are invalid).",
+                    None,
+                )
+            )
+            mb.setWindowTitle(translate("Part_SplitFeatures", "Bad Selection", None))
             mb.exec_()
 
     def IsActive(self):
@@ -533,10 +669,12 @@ class CommandXOR:
         else:
             return False
 
+
 # -------------------------- /XOR ---------------------------------------------
 
+
 def addCommands():
-    FreeCADGui.addCommand('Part_BooleanFragments',CommandBooleanFragments())
-    FreeCADGui.addCommand('Part_Slice',CommandSlice())
-    FreeCADGui.addCommand('Part_SliceApart',CommandSliceApart())
-    FreeCADGui.addCommand('Part_XOR',CommandXOR())
+    FreeCADGui.addCommand("Part_BooleanFragments", CommandBooleanFragments())
+    FreeCADGui.addCommand("Part_Slice", CommandSlice())
+    FreeCADGui.addCommand("Part_SliceApart", CommandSliceApart())
+    FreeCADGui.addCommand("Part_XOR", CommandXOR())

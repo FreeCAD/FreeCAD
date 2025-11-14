@@ -20,17 +20,15 @@
  ***************************************************************************/
 
 
-
-
-# include <QAbstractItemView>
-# include <QActionGroup>
-# include <QApplication>
-# include <QMenuBar>
-# include <QScreen>
-# include <QStatusBar>
-# include <QToolBar>
-# include <QLayout>
-# include <QTimer>
+#include <QAbstractItemView>
+#include <QActionGroup>
+#include <QApplication>
+#include <QMenuBar>
+#include <QScreen>
+#include <QStatusBar>
+#include <QToolBar>
+#include <QLayout>
+#include <QTimer>
 
 
 #include "Base/Tools.h"
@@ -45,7 +43,8 @@
 
 using namespace Gui;
 
-WorkbenchComboBox::WorkbenchComboBox(WorkbenchGroup* aGroup, QWidget* parent) : QComboBox(parent)
+WorkbenchComboBox::WorkbenchComboBox(WorkbenchGroup* aGroup, QWidget* parent)
+    : QComboBox(parent)
 {
     setIconSize(QSize(16, 16));
     setToolTip(aGroup->toolTip());
@@ -67,7 +66,7 @@ void WorkbenchComboBox::showPopup()
     if (rows > 0) {
         int height = view()->sizeHintForRow(0);
         int maxHeight = QApplication::primaryScreen()->size().height();
-        view()->setMinimumHeight(qMin(height * rows, maxHeight/2));
+        view()->setMinimumHeight(qMin(height * rows, maxHeight / 2));
     }
 
     QComboBox::showPopup();
@@ -77,7 +76,9 @@ void WorkbenchComboBox::refreshList(QList<QAction*> actionList)
 {
     clear();
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Workbenches");
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Workbenches"
+    );
 
     auto itemStyle = static_cast<WorkbenchItemStyle>(hGrp->GetInt("WorkbenchSelectorItem", 0));
 
@@ -88,7 +89,7 @@ void WorkbenchComboBox::refreshList(QList<QAction*> actionList)
             addItem(action->text());
         }
         else if (itemStyle == WorkbenchItemStyle::IconOnly) {
-            addItem(icon, {}); // empty string to ensure that only icon is displayed
+            addItem(icon, {});  // empty string to ensure that only icon is displayed
         }
         else {
             addItem(icon, action->text());
@@ -146,7 +147,12 @@ WorkbenchTabWidget::WorkbenchTabWidget(WorkbenchGroup* aGroup, QWidget* parent)
     updateWorkbenchList();
 
     connect(aGroup, &WorkbenchGroup::workbenchListRefreshed, this, &WorkbenchTabWidget::updateWorkbenchList);
-    connect(aGroup->groupAction(), &QActionGroup::triggered, this, &WorkbenchTabWidget::handleWorkbenchSelection);
+    connect(
+        aGroup->groupAction(),
+        &QActionGroup::triggered,
+        this,
+        &WorkbenchTabWidget::handleWorkbenchSelection
+    );
     connect(tabBar, &QTabBar::currentChanged, this, &WorkbenchTabWidget::handleTabChange);
 
     if (auto toolBar = qobject_cast<QToolBar*>(parent)) {
@@ -204,7 +210,9 @@ int WorkbenchTabWidget::tabIndexForWorkbenchActivateAction(QAction* workbenchAct
 
 WorkbenchItemStyle Gui::WorkbenchTabWidget::itemStyle() const
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Workbenches");
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Workbenches"
+    );
     return static_cast<WorkbenchItemStyle>(hGrp->GetInt("WorkbenchSelectorItem", 0));
 }
 
@@ -220,7 +228,10 @@ void WorkbenchTabWidget::updateLayout()
         tabBar->setSizePolicy(toolBar->sizePolicy());
 
         if (toolBar->isFloating()) {
-            setToolBarArea(toolBar->orientation() == Qt::Horizontal ? Gui::ToolBarArea::TopToolBarArea : Gui::ToolBarArea::LeftToolBarArea);
+            setToolBarArea(
+                toolBar->orientation() == Qt::Horizontal ? Gui::ToolBarArea::TopToolBarArea
+                                                         : Gui::ToolBarArea::LeftToolBarArea
+            );
             return;
         }
     }
@@ -230,9 +241,7 @@ void WorkbenchTabWidget::updateLayout()
     setToolBarArea(toolBarArea);
 
     tabBar->setSelectionBehaviorOnRemove(
-        direction() == Qt::LeftToRight
-            ? QTabBar::SelectLeftTab
-            : QTabBar::SelectRightTab
+        direction() == Qt::LeftToRight ? QTabBar::SelectLeftTab : QTabBar::SelectRightTab
     );
 }
 
@@ -342,7 +351,7 @@ int WorkbenchTabWidget::addWorkbenchTab(QAction* action, int tabIndex)
         tabBar->insertTab(tabIndex, action->text());
     }
     else if (itemStyle == WorkbenchItemStyle::IconOnly) {
-        tabBar->insertTab(tabIndex, icon, {}); // empty string to ensure only icon is displayed
+        tabBar->insertTab(tabIndex, icon, {});  // empty string to ensure only icon is displayed
     }
     else {
         tabBar->insertTab(tabIndex, icon, action->text());
@@ -363,8 +372,12 @@ void WorkbenchTabWidget::setToolBarArea(Gui::ToolBarArea area)
         case Gui::ToolBarArea::LeftToolBarArea:
         case Gui::ToolBarArea::RightToolBarArea: {
             setDirection(Qt::LeftToRight);
-            layout->setDirection(direction() == Qt::LeftToRight ? QBoxLayout::TopToBottom : QBoxLayout::BottomToTop);
-            tabBar->setShape(area == Gui::ToolBarArea::LeftToolBarArea ? QTabBar::RoundedWest : QTabBar::RoundedEast);
+            layout->setDirection(
+                direction() == Qt::LeftToRight ? QBoxLayout::TopToBottom : QBoxLayout::BottomToTop
+            );
+            tabBar->setShape(
+                area == Gui::ToolBarArea::LeftToolBarArea ? QTabBar::RoundedWest : QTabBar::RoundedEast
+            );
             break;
         }
 
@@ -373,17 +386,17 @@ void WorkbenchTabWidget::setToolBarArea(Gui::ToolBarArea area)
         case Gui::ToolBarArea::LeftMenuToolBarArea:
         case Gui::ToolBarArea::RightMenuToolBarArea:
         case Gui::ToolBarArea::StatusBarToolBarArea: {
-            bool isTop =
-                area == Gui::ToolBarArea::TopToolBarArea ||
-                area == Gui::ToolBarArea::LeftMenuToolBarArea ||
-                area == Gui::ToolBarArea::RightMenuToolBarArea;
+            bool isTop = area == Gui::ToolBarArea::TopToolBarArea
+                || area == Gui::ToolBarArea::LeftMenuToolBarArea
+                || area == Gui::ToolBarArea::RightMenuToolBarArea;
 
-            bool isRightAligned =
-                area == Gui::ToolBarArea::RightMenuToolBarArea ||
-                area == Gui::ToolBarArea::StatusBarToolBarArea;
+            bool isRightAligned = area == Gui::ToolBarArea::RightMenuToolBarArea
+                || area == Gui::ToolBarArea::StatusBarToolBarArea;
 
             setDirection(isRightAligned ? Qt::RightToLeft : Qt::LeftToRight);
-            layout->setDirection(direction() == Qt::LeftToRight ? QBoxLayout::LeftToRight : QBoxLayout::RightToLeft);
+            layout->setDirection(
+                direction() == Qt::LeftToRight ? QBoxLayout::LeftToRight : QBoxLayout::RightToLeft
+            );
             tabBar->setShape(isTop ? QTabBar::RoundedNorth : QTabBar::RoundedSouth);
             break;
         }

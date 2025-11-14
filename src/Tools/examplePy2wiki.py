@@ -1,4 +1,6 @@
 #! python
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # (c) 2009 Juergen Riegel GPL
 
 Usage = """examplePy2wiki - generating a wiki text out of a python example

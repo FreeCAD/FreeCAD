@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2018 Kresimir Tusek <kresimir.tusek@gmail.com>          *
 # *   Copyright (c) 2019-2021 Schildkroet                                   *

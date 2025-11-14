@@ -1,4 +1,6 @@
 #! python
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # (c) 2007 Jürgen Riegel
 
 import os

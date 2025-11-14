@@ -49,14 +49,14 @@ extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGe
 
 class DrawSketchHandlerPolygon;
 
-using DSHPolygonController =
-    DrawSketchDefaultWidgetController<DrawSketchHandlerPolygon,
-                                      StateMachines::TwoSeekEnd,
-                                      /*PAutoConstraintSize =*/2,
-                                      /*OnViewParametersT =*/OnViewParameters<4>,
-                                      /*WidgetParametersT =*/WidgetParameters<1>,
-                                      /*WidgetCheckboxesT =*/WidgetCheckboxes<0>,
-                                      /*WidgetComboboxesT =*/WidgetComboboxes<0>>;
+using DSHPolygonController = DrawSketchDefaultWidgetController<
+    DrawSketchHandlerPolygon,
+    StateMachines::TwoSeekEnd,
+    /*PAutoConstraintSize =*/2,
+    /*OnViewParametersT =*/OnViewParameters<4>,
+    /*WidgetParametersT =*/WidgetParameters<1>,
+    /*WidgetCheckboxesT =*/WidgetCheckboxes<0>,
+    /*WidgetComboboxesT =*/WidgetComboboxes<0>>;
 
 using DSHPolygonControllerBase = DSHPolygonController::ControllerBase;
 
@@ -84,9 +84,7 @@ private:
 
                 centerPoint = onSketchPos;
 
-                seekAndRenderAutoConstraint(sugConstraints[0],
-                                            onSketchPos,
-                                            Base::Vector2d(0.f, 0.f));
+                seekAndRenderAutoConstraint(sugConstraints[0], onSketchPos, Base::Vector2d(0.f, 0.f));
             } break;
             case SelectMode::SeekSecond: {
                 toolWidgetManager.drawDirectionAtCursor(onSketchPos, centerPoint);
@@ -95,9 +93,7 @@ private:
 
                 CreateAndDrawShapeGeometry();
 
-                seekAndRenderAutoConstraint(sugConstraints[1],
-                                            onSketchPos,
-                                            Base::Vector2d(0.f, 0.f));
+                seekAndRenderAutoConstraint(sugConstraints[1], onSketchPos, Base::Vector2d(0.f, 0.f));
             } break;
             default:
                 break;
@@ -111,33 +107,40 @@ private:
         Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add polygon"));
 
         try {
-            Gui::Command::doCommand(Gui::Command::Doc,
-                                    "import ProfileLib.RegularPolygon\n"
-                                    "ProfileLib.RegularPolygon.makeRegularPolygon(%s,%i,App.Vector("
-                                    "%f,%f,0),App.Vector(%f,%f,0),%s)",
-                                    Gui::Command::getObjectCmd(sketchgui->getObject()).c_str(),
-                                    numberOfCorners,
-                                    centerPoint.x,
-                                    centerPoint.y,
-                                    firstCorner.x,
-                                    firstCorner.y,
-                                    constructionModeAsBooleanText());
+            Gui::Command::doCommand(
+                Gui::Command::Doc,
+                "import ProfileLib.RegularPolygon\n"
+                "ProfileLib.RegularPolygon.makeRegularPolygon(%s,%i,App.Vector("
+                "%f,%f,0),App.Vector(%f,%f,0),%s)",
+                Gui::Command::getObjectCmd(sketchgui->getObject()).c_str(),
+                numberOfCorners,
+                centerPoint.x,
+                centerPoint.y,
+                firstCorner.x,
+                firstCorner.y,
+                constructionModeAsBooleanText()
+            );
 
             Gui::Command::commitCommand();
 
             tryAutoRecomputeIfNotSolve(sketchgui->getObject<Sketcher::SketchObject>());
         }
         catch (const Base::Exception&) {
-            Gui::NotifyError(sketchgui,
-                             QT_TRANSLATE_NOOP("Notifications", "Error"),
-                             QT_TRANSLATE_NOOP("Notifications", "Failed to add polygon"));
+            Gui::NotifyError(
+                sketchgui,
+                QT_TRANSLATE_NOOP("Notifications", "Error"),
+                QT_TRANSLATE_NOOP("Notifications", "Failed to add polygon")
+            );
 
             Gui::Command::abortCommand();
-            THROWM(Base::RuntimeError,
-                   QT_TRANSLATE_NOOP(
-                       "Notifications",
-                       "Tool execution aborted") "\n")  // This prevents constraints from being
-                                                        // applied on non existing geometry
+            THROWM(
+                Base::RuntimeError,
+                QT_TRANSLATE_NOOP(
+                    "Notifications",
+                    "Tool execution aborted"
+                ) "\n"
+            )  // This prevents constraints from being
+               // applied on non existing geometry
         }
     }
 
@@ -147,16 +150,12 @@ private:
         int circlegeoid = getHighestCurveIndex();
         int lastsidegeoid = getHighestCurveIndex() - 1;
         if (sugConstraints[0].size() > 0) {
-            generateAutoConstraintsOnElement(sugConstraints[0],
-                                             circlegeoid,
-                                             Sketcher::PointPos::mid);
+            generateAutoConstraintsOnElement(sugConstraints[0], circlegeoid, Sketcher::PointPos::mid);
         }
 
         // add auto constraints to the last side of the polygon
         if (sugConstraints[1].size() > 0) {
-            generateAutoConstraintsOnElement(sugConstraints[1],
-                                             lastsidegeoid,
-                                             Sketcher::PointPos::end);
+            generateAutoConstraintsOnElement(sugConstraints[1], lastsidegeoid, Sketcher::PointPos::end);
         }
 
         // Ensure temporary autoconstraints do not generate a redundancy and that the geometry
@@ -243,8 +242,8 @@ private:
             return;
         }
 
-        double angleOfSeparation =
-            2.0 * std::numbers::pi / static_cast<double>(numberOfCorners);  // NOLINT
+        double angleOfSeparation = 2.0 * std::numbers::pi
+            / static_cast<double>(numberOfCorners);  // NOLINT
         double cos_v = cos(angleOfSeparation);
         double sin_v = sin(angleOfSeparation);
 
@@ -256,9 +255,7 @@ private:
             rx = cos_v * rx - sin_v * ry;
             ry = cos_v * ry + sin_v * old_rx;
             Base::Vector2d newCorner = Base::Vector2d(centerPoint.x + rx, centerPoint.y + ry);
-            addLineToShapeGeometry(toVector3d(prevCorner),
-                                   toVector3d(newCorner),
-                                   isConstructionMode());
+            addLineToShapeGeometry(toVector3d(prevCorner), toVector3d(newCorner), isConstructionMode());
             prevCorner = newCorner;
         }
     }
@@ -326,7 +323,8 @@ void DSHPolygonController::configureToolWidget()
 
     toolWidget->setParameterLabel(
         WParameter::First,
-        QApplication::translate("ToolWidgetManager_p4", "Sides (+'U'/ -'J')"));
+        QApplication::translate("ToolWidgetManager_p4", "Sides (+'U'/ -'J')")
+    );
     toolWidget->setParameter(WParameter::First,
                              handler->numberOfCorners);  // unconditionally set
     toolWidget->configureParameterUnit(WParameter::First, Base::Unit());
@@ -339,10 +337,12 @@ void DSHPolygonController::configureToolWidget()
     onViewParameters[OnViewParameter::Second]->setLabelType(Gui::SoDatumLabel::DISTANCEY);
     onViewParameters[OnViewParameter::Third]->setLabelType(
         Gui::SoDatumLabel::DISTANCE,
-        Gui::EditableDatumLabel::Function::Dimensioning);
+        Gui::EditableDatumLabel::Function::Dimensioning
+    );
     onViewParameters[OnViewParameter::Fourth]->setLabelType(
         Gui::SoDatumLabel::ANGLE,
-        Gui::EditableDatumLabel::Function::Dimensioning);
+        Gui::EditableDatumLabel::Function::Dimensioning
+    );
 }
 
 template<>
@@ -438,9 +438,11 @@ void DSHPolygonController::adaptParameters(Base::Vector2d onSketchPos)
 
             double range = (handler->firstCorner - handler->centerPoint).Angle();
             if (!fourthParam->isSet) {
-                setOnViewParameterValue(OnViewParameter::Fourth,
-                                        Base::toDegrees(range),
-                                        Base::Unit::Angle);
+                setOnViewParameterValue(
+                    OnViewParameter::Fourth,
+                    Base::toDegrees(range),
+                    Base::Unit::Angle
+                );
             }
 
             thirdParam->setPoints(start, end);
@@ -494,24 +496,30 @@ void DSHPolygonController::addConstraints()
     using namespace Sketcher;
 
     auto constraintx0 = [&]() {
-        ConstraintToAttachment(GeoElementId(lastCurve, PointPos::mid),
-                               GeoElementId::VAxis,
-                               x0,
-                               handler->sketchgui->getObject());
+        ConstraintToAttachment(
+            GeoElementId(lastCurve, PointPos::mid),
+            GeoElementId::VAxis,
+            x0,
+            handler->sketchgui->getObject()
+        );
     };
 
     auto constrainty0 = [&]() {
-        ConstraintToAttachment(GeoElementId(lastCurve, PointPos::mid),
-                               GeoElementId::HAxis,
-                               y0,
-                               handler->sketchgui->getObject());
+        ConstraintToAttachment(
+            GeoElementId(lastCurve, PointPos::mid),
+            GeoElementId::HAxis,
+            y0,
+            handler->sketchgui->getObject()
+        );
     };
 
     auto constraintradius = [&]() {
-        Gui::cmdAppObjectArgs(handler->sketchgui->getObject(),
-                              "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
-                              lastCurve,
-                              radius);
+        Gui::cmdAppObjectArgs(
+            handler->sketchgui->getObject(),
+            "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
+            lastCurve,
+            radius
+        );
     };
 
     // NOTE: if AutoConstraints is empty, we can add constraints directly without any diagnose. No
@@ -541,7 +549,8 @@ void DSHPolygonController::addConstraints()
                                                      // each constraint addition
 
             startpointinfo = handler->getPointInfo(
-                GeoElementId(lastCurve, PointPos::mid));  // get updated point position
+                GeoElementId(lastCurve, PointPos::mid)
+            );  // get updated point position
         }
 
         // if Autoconstraints is empty we do not have a diagnosed system and the parameter will

@@ -176,11 +176,13 @@ using coordinate_map_t = std::map<int32_t, std::set<int32_t>>;
 
 #define VORONOI_USE_EXTERIOR_CACHE 1
 
-static bool callbackWithVertex(Voronoi::diagram_type* dia,
-                               PyObject* callback,
-                               const Voronoi::diagram_type::vertex_type* v,
-                               bool& bail,
-                               exterior_map_t& cache)
+static bool callbackWithVertex(
+    Voronoi::diagram_type* dia,
+    PyObject* callback,
+    const Voronoi::diagram_type::vertex_type* v,
+    bool& bail,
+    exterior_map_t& cache
+)
 {
     bool rc = false;
     if (!bail && v->color() == 0) {
@@ -275,8 +277,10 @@ PyObject* VoronoiPy::colorColinear(PyObject* args)
     Voronoi::color_type color = 0;
     double degree = 10.;
     if (!PyArg_ParseTuple(args, "k|d", &color, &degree)) {
-        throw Py::RuntimeError("colorColinear requires an integer (color) and optionally a "
-                               "derivation in degrees argument (default 10)");
+        throw Py::RuntimeError(
+            "colorColinear requires an integer (color) and optionally a "
+            "derivation in degrees argument (default 10)"
+        );
     }
     getVoronoiPtr()->colorColinear(color, degree);
 
@@ -306,8 +310,7 @@ PyObject* VoronoiPy::getPoints(PyObject* args) const
     Voronoi* vo = getVoronoiPtr();
     Py::List list;
     for (auto it = vo->vd->points.begin(); it != vo->vd->points.end(); ++it) {
-        list.append(
-            Py::asObject(new Base::VectorPy(new Base::Vector3d(vo->vd->scaledVector(*it, z)))));
+        list.append(Py::asObject(new Base::VectorPy(new Base::Vector3d(vo->vd->scaledVector(*it, z)))));
     }
     return Py::new_reference_to(list);
 }

@@ -2,7 +2,6 @@ from Base.Metadata import export, constmethod
 from Base.BaseClass import BaseClass
 from typing import Any, Final, List, Dict, Tuple, overload
 
-
 @export(
     Include="Gui/ViewProviderLink.h",
     Constructor=True,
@@ -40,16 +39,12 @@ class LinkView(BaseClass):
 
     @overload
     def setMaterial(self, material: None) -> None: ...
-
     @overload
     def setMaterial(self, material: Any) -> None: ...
-
     @overload
     def setMaterial(self, material: List[Any]) -> None: ...
-
     @overload
     def setMaterial(self, material: Dict[int, Any]) -> None: ...
-
     def setType(self, type: int, sublink: bool = True) -> None:
         """
         setType(type, sublink=True): set the link type.
@@ -67,10 +62,8 @@ class LinkView(BaseClass):
 
     @overload
     def setType(self, type: int) -> None: ...
-
     @overload
     def setType(self, type: int, sublink: bool) -> None: ...
-
     def setTransform(self, matrix: Any) -> None:
         """
         setTransform(matrix): set transformation of the linked object
@@ -85,16 +78,11 @@ class LinkView(BaseClass):
 
     @overload
     def setTransform(self, matrix: Any) -> None: ...
-
     @overload
     def setTransform(self, matrix: List[Any]) -> None: ...
-
     @overload
     def setTransform(self, matrix: Dict[int, Any]) -> None: ...
-
-    def setChildren(
-        self, children: List[Any], vis: List[Any] = [], type: int = 0
-    ) -> None:
+    def setChildren(self, children: List[Any], vis: List[Any] = [], type: int = 0) -> None:
         """
         setChildren([obj...],vis=[],type=0)
         Group a list of children objects. Note, this mode of operation is incompatible
@@ -129,13 +117,10 @@ class LinkView(BaseClass):
 
     @overload
     def setLink(self, obj: Any) -> None: ...
-
     @overload
     def setLink(self, obj: Any, subname: str) -> None: ...
-
     @overload
     def setLink(self, obj: Any, subname: List[str]) -> None: ...
-
     def getDetailPath(self, element: Any) -> Tuple[Any, Any]:
         """
         getDetailPath(element): get the 3d path an detail of an element.
@@ -162,7 +147,6 @@ class LinkView(BaseClass):
         Get children view objects
         """
         ...
-
     LinkedView: Final[Any] = ...
     """The linked view object"""
 

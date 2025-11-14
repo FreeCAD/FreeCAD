@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <QApplication>
-# include <QPushButton>
+#include <QApplication>
+#include <QPushButton>
 
 #include "Dialogs/DlgActivateWindowImp.h"
 #include "ui_DlgActivateWindow.h"
@@ -41,14 +41,16 @@ using namespace Gui::Dialog;
  *  true to construct a modal dialog.
  */
 DlgActivateWindowImp::DlgActivateWindowImp(QWidget* parent, Qt::WindowFlags fl)
-  : QDialog(parent, fl), ui(new Ui_DlgActivateWindow)
+    : QDialog(parent, fl)
+    , ui(new Ui_DlgActivateWindow)
 {
     // create widgets
     ui->setupUi(this);
     QPushButton* buttonOk = ui->buttonBox->button(QDialogButtonBox::Ok);
     buttonOk->setText(QApplication::translate("Gui::Dialog::DlgActivateWindow", "&Activate"));
-    QTreeWidgetItem* active=nullptr;
-    QStringList labels; labels << tr("Windows");
+    QTreeWidgetItem* active = nullptr;
+    QStringList labels;
+    labels << tr("Windows");
     ui->treeWidget->setHeaderLabels(labels);
     ui->treeWidget->header()->hide();
 
@@ -64,15 +66,18 @@ DlgActivateWindowImp::DlgActivateWindowImp(QWidget* parent, Qt::WindowFlags fl)
         auto item = new QTreeWidgetItem(ui->treeWidget);
         QString title = it->windowTitle();
         title.replace(QLatin1String("[*]"), QLatin1String(""));
-        if (it->isWindowModified())
+        if (it->isWindowModified()) {
             title += QLatin1String("*");
+        }
         item->setText(0, title);
-        if (it == activeWnd)
+        if (it == activeWnd) {
             active = item;
+        }
     }
 
-    if (active)
-        ui->treeWidget->setCurrentItem( active );
+    if (active) {
+        ui->treeWidget->setCurrentItem(active);
+    }
     ui->treeWidget->setFocus();
 }
 

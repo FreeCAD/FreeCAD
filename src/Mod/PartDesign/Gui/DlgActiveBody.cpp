@@ -1,4 +1,4 @@
- /**************************************************************************
+/**************************************************************************
  *   Copyright (c) 2021 FreeCAD Developers                                 *
  *   Author: Ajinkya Dahale                                                *
  *   Based on src/Gui/DlgAddProperty.cpp                                   *
@@ -23,7 +23,7 @@
  ***************************************************************************/
 
 
-# include <QMessageBox>
+#include <QMessageBox>
 
 
 #include <App/Application.h>
@@ -38,7 +38,7 @@ Q_DECLARE_METATYPE(App::DocumentObject*)
 
 using namespace PartDesignGui;
 
-DlgActiveBody::DlgActiveBody(QWidget *parent, App::Document*& doc, const QString& infoText)
+DlgActiveBody::DlgActiveBody(QWidget* parent, App::Document*& doc, const QString& infoText)
     : QDialog(parent)
     , ui(new Ui_DlgActiveBody)
     , _doc(doc)
@@ -46,8 +46,7 @@ DlgActiveBody::DlgActiveBody(QWidget *parent, App::Document*& doc, const QString
 {
     ui->setupUi(this);
 
-    connect(ui->bodySelect, &QListWidget::itemDoubleClicked,
-            this, &DlgActiveBody::accept);
+    connect(ui->bodySelect, &QListWidget::itemDoubleClicked, this, &DlgActiveBody::accept);
 
     if (!infoText.isEmpty()) {
         ui->label->setText(infoText + QStringLiteral("\n\n") + tr("Please select"));
@@ -56,12 +55,12 @@ DlgActiveBody::DlgActiveBody(QWidget *parent, App::Document*& doc, const QString
     auto bodies = _doc->getObjectsOfType(PartDesign::Body::getClassTypeId());
 
     PartDesign::Body* bodyOfActiveObject = nullptr;
-    for (const auto &obj :  Gui::Selection().getSelection()) {
+    for (const auto& obj : Gui::Selection().getSelection()) {
         bodyOfActiveObject = PartDesign::Body::findBodyOf(obj.pObject);
-        break; // Just get the body for first selected object
+        break;  // Just get the body for first selected object
     }
 
-    for (const auto &body : bodies) {
+    for (const auto& body : bodies) {
         auto item = new QListWidgetItem(QString::fromUtf8(body->Label.getValue()));
         item->setData(Qt::UserRole, QVariant::fromValue(body));
         ui->bodySelect->addItem(item);
@@ -77,8 +76,9 @@ DlgActiveBody::DlgActiveBody(QWidget *parent, App::Document*& doc, const QString
         // by default select the first item so that the user
         // can continue by clicking Ok without further action
         QListWidgetItem* first = ui->bodySelect->item(0);
-        if (first)
+        if (first) {
             first->setSelected(true);
+        }
     }
 }
 
@@ -87,11 +87,12 @@ DlgActiveBody::~DlgActiveBody() = default;
 void DlgActiveBody::accept()
 {
     auto selectedItems = ui->bodySelect->selectedItems();
-    if (selectedItems.empty())
+    if (selectedItems.empty()) {
         return;
+    }
 
-    App::DocumentObject* selectedBody =
-        selectedItems[0]->data(Qt::UserRole).value<App::DocumentObject*>();
+    App::DocumentObject* selectedBody
+        = selectedItems[0]->data(Qt::UserRole).value<App::DocumentObject*>();
     if (selectedBody) {
         activeBody = makeBodyActive(selectedBody, _doc);
     }

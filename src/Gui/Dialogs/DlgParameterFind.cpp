@@ -318,7 +318,6 @@ void DlgParameterFind::accept()
                 groupTree->setCurrentItem(top);
                 DlgParameterFind::findItem(current, opt);
             }
-            
         }
     }
 }

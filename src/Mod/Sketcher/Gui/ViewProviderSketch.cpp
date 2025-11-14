@@ -3254,10 +3254,12 @@ bool ViewProviderSketch::getElementPicked(const SoPickedPoint* pp, std::string& 
     return ViewProvider2DObject::getElementPicked(pp, subname);
 }
 
-bool ViewProviderSketch::getDetailPath(const char* subname,
-                                       SoFullPath* pPath,
-                                       bool append,
-                                       SoDetail*& det) const
+bool ViewProviderSketch::getDetailPath(
+    const char* subname,
+    SoFullPath* pPath,
+    bool append,
+    SoDetail*& det
+) const
 {
     const auto getLastPartOfName = [](const char* subname) -> const char* {
         const char* realName = strrchr(subname, '.');
@@ -3392,8 +3394,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
                     "if ActiveSketch.ViewObject.HideDependent:\n"
                     "  tv.hide(tv.get_all_dependent(%3, '%4'))\n"
                     "if ActiveSketch.ViewObject.ShowSupport:\n"
-                    "  tv.show([ref[0] for ref in ActiveSketch.AttachmentSupport if not "
-                    "ref[0].isDerivedFrom(\"App::Plane\")])\n"
+                    "  tv.show([ref[0] for ref in ActiveSketch.AttachmentSupport if not (ref[0].isDerivedFrom(\"App::Plane\") or ref[0].isDerivedFrom(\"App::LocalCoordinateSystem\"))])\n"
                     "if ActiveSketch.ViewObject.ShowLinks:\n"
                     "  tv.show([ref[0] for ref in ActiveSketch.ExternalGeometry])\n"
                     "tv.sketchClipPlane(ActiveSketch, ActiveSketch.ViewObject.SectionView)\n"

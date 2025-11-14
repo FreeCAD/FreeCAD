@@ -35,7 +35,8 @@ QT_BEGIN_NAMESPACE
 class QAbstractButton;
 QT_END_NAMESPACE
 
-namespace Gui {
+namespace Gui
+{
 
 namespace StyleParameters
 {
@@ -43,10 +44,13 @@ class ParameterManager;
 }
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class DlgThemeEditor; }
+namespace Ui
+{
+class DlgThemeEditor;
+}
 QT_END_NAMESPACE
 
-class GuiExport TokenTreeView : public QTreeView
+class GuiExport TokenTreeView: public QTreeView
 {
     Q_OBJECT
 public:
@@ -59,7 +63,8 @@ Q_SIGNALS:
     void requestRemove(const QModelIndex& index);
 };
 
-class GuiExport StyleParametersModel: public QAbstractItemModel, public StyleParameters::ParameterSource
+class GuiExport StyleParametersModel: public QAbstractItemModel,
+                                      public StyleParameters::ParameterSource
 {
     Q_OBJECT
 
@@ -81,8 +86,7 @@ public:
 
     FC_DISABLE_COPY_MOVE(StyleParametersModel);
 
-    explicit StyleParametersModel(const std::list<ParameterSource*>& sources,
-                                  QObject* parent = nullptr);
+    explicit StyleParametersModel(const std::list<ParameterSource*>& sources, QObject* parent = nullptr);
 
     ~StyleParametersModel() override;
 
@@ -107,7 +111,7 @@ public:
     Node* node(const QModelIndex& index) const;
     Item* item(const QModelIndex& index) const;
 
-    template <typename T>
+    template<typename T>
     T* item(const QModelIndex& index) const
     {
         return dynamic_cast<T*>(item(index));
@@ -127,7 +131,8 @@ private:
     std::unique_ptr<Node> root;
 };
 
-class GuiExport DlgThemeEditor : public QDialog {
+class GuiExport DlgThemeEditor: public QDialog
+{
     Q_OBJECT
 
     class Delegate;
@@ -135,7 +140,7 @@ class GuiExport DlgThemeEditor : public QDialog {
 public:
     FC_DISABLE_COPY_MOVE(DlgThemeEditor);
 
-    explicit DlgThemeEditor(QWidget *parent = nullptr);
+    explicit DlgThemeEditor(QWidget* parent = nullptr);
 
     ~DlgThemeEditor() override;
 
@@ -147,6 +152,6 @@ private:
     std::unique_ptr<StyleParameters::ParameterManager> manager;
     std::unique_ptr<StyleParametersModel> model;
 };
-} // Gui
+}  // namespace Gui
 
-#endif //DLGTHEMEEDITOR_H
+#endif  // DLGTHEMEEDITOR_H

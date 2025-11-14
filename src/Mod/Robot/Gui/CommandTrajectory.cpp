@@ -64,9 +64,11 @@ void CmdRobotCreateTrajectory::activated(int)
     std::string FeatName = getUniqueObjectName("Trajectory");
 
     openCommand("Create trajectory");
-    doCommand(Doc,
-              "App.activeDocument().addObject(\"Robot::TrajectoryObject\",\"%s\")",
-              FeatName.c_str());
+    doCommand(
+        Doc,
+        "App.activeDocument().addObject(\"Robot::TrajectoryObject\",\"%s\")",
+        FeatName.c_str()
+    );
     updateActive();
     commitCommand();
 }
@@ -100,9 +102,11 @@ void CmdRobotInsertWaypoint::activated(int)
     unsigned int n2 = getSelection().countObjectsOfType<Robot::TrajectoryObject>();
 
     if (n1 != 1 || n2 != 1) {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Wrong selection"),
-                             QObject::tr("Select one Robot and one Trajectory object."));
+        QMessageBox::warning(
+            Gui::getMainWindow(),
+            QObject::tr("Wrong selection"),
+            QObject::tr("Select one Robot and one Trajectory object.")
+        );
         return;
     }
 
@@ -127,15 +131,17 @@ void CmdRobotInsertWaypoint::activated(int)
     std::string TrakName = pcTrajectoryObject->getNameInDocument();
 
     openCommand("Insert waypoint");
-    doCommand(Doc,
-              "App.activeDocument().%s.Trajectory = "
-              "App.activeDocument().%s.Trajectory.insertWaypoints(Robot.Waypoint(App."
-              "activeDocument().%s.Tcp.multiply(App.activeDocument().%s.Tool),type='LIN',name='Pt',"
-              "vel=_DefSpeed,cont=_DefCont,acc=_DefAcceleration,tool=1))",
-              TrakName.c_str(),
-              TrakName.c_str(),
-              RoboName.c_str(),
-              RoboName.c_str());
+    doCommand(
+        Doc,
+        "App.activeDocument().%s.Trajectory = "
+        "App.activeDocument().%s.Trajectory.insertWaypoints(Robot.Waypoint(App."
+        "activeDocument().%s.Tcp.multiply(App.activeDocument().%s.Tool),type='LIN',name='Pt',"
+        "vel=_DefSpeed,cont=_DefCont,acc=_DefAcceleration,tool=1))",
+        TrakName.c_str(),
+        TrakName.c_str(),
+        RoboName.c_str(),
+        RoboName.c_str()
+    );
     updateActive();
     commitCommand();
 }
@@ -167,9 +173,11 @@ void CmdRobotInsertWaypointPreselect::activated(int)
 {
 
     if (getSelection().size() != 1) {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Wrong selection"),
-                             QObject::tr("Select one Trajectory object."));
+        QMessageBox::warning(
+            Gui::getMainWindow(),
+            QObject::tr("Wrong selection"),
+            QObject::tr("Select one Trajectory object.")
+        );
         return;
     }
 
@@ -186,9 +194,11 @@ void CmdRobotInsertWaypointPreselect::activated(int)
         pcTrajectoryObject = static_cast<Robot::TrajectoryObject*>(Sel[0].pObject);
     }
     else {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Wrong selection"),
-                             QObject::tr("Select one Trajectory object."));
+        QMessageBox::warning(
+            Gui::getMainWindow(),
+            QObject::tr("Wrong selection"),
+            QObject::tr("Select one Trajectory object.")
+        );
         return;
     }
     std::string TrakName = pcTrajectoryObject->getNameInDocument();
@@ -197,22 +207,27 @@ void CmdRobotInsertWaypointPreselect::activated(int)
         QMessageBox::warning(
             Gui::getMainWindow(),
             QObject::tr("No preselection"),
-            QObject::tr("You have to hover above a geometry (Preselection) with the mouse to use "
-                        "this command. See documentation for details."));
+            QObject::tr(
+                "You have to hover above a geometry (Preselection) with the mouse to use "
+                "this command. See documentation for details."
+            )
+        );
         return;
     }
 
     openCommand("Insert waypoint");
-    doCommand(Doc,
-              "App.activeDocument().%s.Trajectory = "
-              "App.activeDocument().%s.Trajectory.insertWaypoints(Robot.Waypoint(FreeCAD.Placement("
-              "FreeCAD.Vector(%f,%f,%f)+_DefDisplacement,_DefOrientation),type='LIN',name='Pt',vel="
-              "_DefSpeed,cont=_DefCont,acc=_DefAcceleration,tool=1))",
-              TrakName.c_str(),
-              TrakName.c_str(),
-              x,
-              y,
-              z);
+    doCommand(
+        Doc,
+        "App.activeDocument().%s.Trajectory = "
+        "App.activeDocument().%s.Trajectory.insertWaypoints(Robot.Waypoint(FreeCAD.Placement("
+        "FreeCAD.Vector(%f,%f,%f)+_DefDisplacement,_DefOrientation),type='LIN',name='Pt',vel="
+        "_DefSpeed,cont=_DefCont,acc=_DefAcceleration,tool=1))",
+        TrakName.c_str(),
+        TrakName.c_str(),
+        x,
+        y,
+        z
+    );
     updateActive();
     commitCommand();
 }
@@ -232,8 +247,9 @@ CmdRobotSetDefaultOrientation::CmdRobotSetDefaultOrientation()
     sAppModule = "Robot";
     sGroup = QT_TR_NOOP("Robot");
     sMenuText = QT_TR_NOOP("Set Default Orientation");
-    sToolTipText =
-        QT_TR_NOOP("Sets the default orientation for subsequent commands for waypoint creation");
+    sToolTipText = QT_TR_NOOP(
+        "Sets the default orientation for subsequent commands for waypoint creation"
+    );
     sWhatsThis = "Robot_SetDefaultOrientation";
     sStatusTip = sToolTipText;
     sPixmap = nullptr;
@@ -251,12 +267,7 @@ void CmdRobotSetDefaultOrientation::activated(int)
         place = Dlg.getPlacement();
         Base::Rotation rot = place.getRotation();
         Base::Vector3d disp = place.getPosition();
-        doCommand(Doc,
-                  "_DefOrientation = FreeCAD.Rotation(%f,%f,%f,%f)",
-                  rot[0],
-                  rot[1],
-                  rot[2],
-                  rot[3]);
+        doCommand(Doc, "_DefOrientation = FreeCAD.Rotation(%f,%f,%f,%f)", rot[0], rot[1], rot[2], rot[3]);
         doCommand(Doc, "_DefDisplacement = FreeCAD.Vector(%f,%f,%f)", disp[0], disp[1], disp[2]);
     }
 }
@@ -276,8 +287,10 @@ CmdRobotSetDefaultValues::CmdRobotSetDefaultValues()
     sAppModule = "Robot";
     sGroup = QT_TR_NOOP("Robot");
     sMenuText = QT_TR_NOOP("Set Default Values");
-    sToolTipText = QT_TR_NOOP("Sets the default values for speed, acceleration, and continuity for "
-                              "subsequent commands of waypoint creation");
+    sToolTipText = QT_TR_NOOP(
+        "Sets the default values for speed, acceleration, and continuity for "
+        "subsequent commands of waypoint creation"
+    );
     sWhatsThis = "Robot_SetDefaultValues";
     sStatusTip = sToolTipText;
     sPixmap = nullptr;
@@ -288,13 +301,15 @@ void CmdRobotSetDefaultValues::activated(int)
 {
 
     bool ok;
-    QString text = QInputDialog::getText(nullptr,
-                                         QObject::tr("Set default speed"),
-                                         QObject::tr("speed: (e.g. 1 m/s or 3 cm/s)"),
-                                         QLineEdit::Normal,
-                                         QStringLiteral("1 m/s"),
-                                         &ok,
-                                         Qt::MSWindowsFixedSizeDialogHint);
+    QString text = QInputDialog::getText(
+        nullptr,
+        QObject::tr("Set default speed"),
+        QObject::tr("speed: (e.g. 1 m/s or 3 cm/s)"),
+        QLineEdit::Normal,
+        QStringLiteral("1 m/s"),
+        &ok,
+        Qt::MSWindowsFixedSizeDialogHint
+    );
     if (ok && !text.isEmpty()) {
         doCommand(Doc, "_DefSpeed = '%s'", text.toLatin1().constData());
     }
@@ -302,27 +317,31 @@ void CmdRobotSetDefaultValues::activated(int)
     QStringList items;
     items << QStringLiteral("False") << QStringLiteral("True");
 
-    QString item = QInputDialog::getItem(nullptr,
-                                         QObject::tr("Set default continuity"),
-                                         QObject::tr("continuous ?"),
-                                         items,
-                                         0,
-                                         false,
-                                         &ok,
-                                         Qt::MSWindowsFixedSizeDialogHint);
+    QString item = QInputDialog::getItem(
+        nullptr,
+        QObject::tr("Set default continuity"),
+        QObject::tr("continuous ?"),
+        items,
+        0,
+        false,
+        &ok,
+        Qt::MSWindowsFixedSizeDialogHint
+    );
     if (ok && !item.isEmpty()) {
         doCommand(Doc, "_DefCont = %s", item.toLatin1().constData());
     }
 
     text.clear();
 
-    text = QInputDialog::getText(nullptr,
-                                 QObject::tr("Set default acceleration"),
-                                 QObject::tr("acceleration: (e.g. 1 m/s^2 or 3 cm/s^2)"),
-                                 QLineEdit::Normal,
-                                 QStringLiteral("1 m/s^2"),
-                                 &ok,
-                                 Qt::MSWindowsFixedSizeDialogHint);
+    text = QInputDialog::getText(
+        nullptr,
+        QObject::tr("Set default acceleration"),
+        QObject::tr("acceleration: (e.g. 1 m/s^2 or 3 cm/s^2)"),
+        QLineEdit::Normal,
+        QStringLiteral("1 m/s^2"),
+        &ok,
+        Qt::MSWindowsFixedSizeDialogHint
+    );
     if (ok && !text.isEmpty()) {
         doCommand(Doc, "_DefAcceleration = '%s'", text.toLatin1().constData());
     }
@@ -378,8 +397,9 @@ void CmdRobotEdge2Trac::activated(int)
     Gui::SelectionFilter EdgeFilter("SELECT Part::Feature SUBELEMENT Edge COUNT 1..");
 
     if (ObjectFilter.match()) {
-        Robot::Edge2TracObject* EdgeObj =
-            static_cast<Robot::Edge2TracObject*>(ObjectFilter.Result[0][0].getObject());
+        Robot::Edge2TracObject* EdgeObj = static_cast<Robot::Edge2TracObject*>(
+            ObjectFilter.Result[0][0].getObject()
+        );
         openCommand("Edit Edge2TracObject");
         doCommand(Gui, "Gui.activeDocument().setEdit('%s')", EdgeObj->getNameInDocument());
     }
@@ -391,9 +411,7 @@ void CmdRobotEdge2Trac::activated(int)
         std::string FeatName = getUniqueObjectName("Edge2Trac");
 
         openCommand("Create a new Edge2TracObject");
-        doCommand(Doc,
-                  "App.activeDocument().addObject('Robot::Edge2TracObject','%s')",
-                  FeatName.c_str());
+        doCommand(Doc, "App.activeDocument().addObject('Robot::Edge2TracObject','%s')", FeatName.c_str());
         doCommand(Gui, "App.activeDocument().%s.Source = %s", FeatName.c_str(), obj_sub.c_str());
         doCommand(Gui, "Gui.activeDocument().setEdit('%s')", FeatName.c_str());
     }
@@ -401,9 +419,7 @@ void CmdRobotEdge2Trac::activated(int)
         std::string FeatName = getUniqueObjectName("Edge2Trac");
 
         openCommand("Create a new Edge2TracObject");
-        doCommand(Doc,
-                  "App.activeDocument().addObject('Robot::Edge2TracObject','%s')",
-                  FeatName.c_str());
+        doCommand(Doc, "App.activeDocument().addObject('Robot::Edge2TracObject','%s')", FeatName.c_str());
         doCommand(Gui, "Gui.activeDocument().setEdit('%s')", FeatName.c_str());
     }
 }
@@ -437,29 +453,37 @@ void CmdRobotTrajectoryDressUp::activated(int)
 
     if (ObjectFilterDressUp.match()) {
         Robot::TrajectoryDressUpObject* Object = static_cast<Robot::TrajectoryDressUpObject*>(
-            ObjectFilterDressUp.Result[0][0].getObject());
+            ObjectFilterDressUp.Result[0][0].getObject()
+        );
         openCommand("Edit Sketch");
         doCommand(Gui, "Gui.activeDocument().setEdit('%s')", Object->getNameInDocument());
     }
     else if (ObjectFilter.match()) {
         std::string FeatName = getUniqueObjectName("DressUpObject");
-        Robot::TrajectoryObject* Object =
-            static_cast<Robot::TrajectoryObject*>(ObjectFilter.Result[0][0].getObject());
+        Robot::TrajectoryObject* Object = static_cast<Robot::TrajectoryObject*>(
+            ObjectFilter.Result[0][0].getObject()
+        );
         openCommand("Create a new TrajectoryDressUp");
-        doCommand(Doc,
-                  "App.activeDocument().addObject('Robot::TrajectoryDressUpObject','%s')",
-                  FeatName.c_str());
-        doCommand(Gui,
-                  "App.activeDocument().%s.Source = App.activeDocument().%s",
-                  FeatName.c_str(),
-                  Object->getNameInDocument());
+        doCommand(
+            Doc,
+            "App.activeDocument().addObject('Robot::TrajectoryDressUpObject','%s')",
+            FeatName.c_str()
+        );
+        doCommand(
+            Gui,
+            "App.activeDocument().%s.Source = App.activeDocument().%s",
+            FeatName.c_str(),
+            Object->getNameInDocument()
+        );
         doCommand(Gui, "Gui.activeDocument().hide(\"%s\")", Object->getNameInDocument());
         doCommand(Gui, "Gui.activeDocument().setEdit('%s')", FeatName.c_str());
     }
     else {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Wrong selection"),
-                             QObject::tr("Select the Trajectory which you want to dress up."));
+        QMessageBox::warning(
+            Gui::getMainWindow(),
+            QObject::tr("Wrong selection"),
+            QObject::tr("Select the Trajectory which you want to dress up.")
+        );
         return;
     }
 }
@@ -491,8 +515,9 @@ void CmdRobotTrajectoryCompound::activated(int)
     Gui::SelectionFilter ObjectFilter("SELECT Robot::TrajectoryCompound COUNT 1");
 
     if (ObjectFilter.match()) {
-        Robot::TrajectoryCompound* Object =
-            static_cast<Robot::TrajectoryCompound*>(ObjectFilter.Result[0][0].getObject());
+        Robot::TrajectoryCompound* Object = static_cast<Robot::TrajectoryCompound*>(
+            ObjectFilter.Result[0][0].getObject()
+        );
         openCommand("Edit TrajectoryCompound");
         doCommand(Gui, "Gui.activeDocument().setEdit('%s')", Object->getNameInDocument());
     }
@@ -500,9 +525,11 @@ void CmdRobotTrajectoryCompound::activated(int)
         std::string FeatName = getUniqueObjectName("TrajectoryCompound");
 
         openCommand("Create a new TrajectoryDressUp");
-        doCommand(Doc,
-                  "App.activeDocument().addObject('Robot::TrajectoryCompound','%s')",
-                  FeatName.c_str());
+        doCommand(
+            Doc,
+            "App.activeDocument().addObject('Robot::TrajectoryCompound','%s')",
+            FeatName.c_str()
+        );
         doCommand(Gui, "Gui.activeDocument().setEdit('%s')", FeatName.c_str());
     }
 }

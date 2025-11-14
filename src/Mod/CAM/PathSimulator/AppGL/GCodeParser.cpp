@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2024 Shai Seger <shaise at gmail>                       *
  *                                                                         *
@@ -21,9 +23,9 @@
  ***************************************************************************/
 
 #ifdef _MSC_VER
-#ifndef _CRT_SECURE_NO_WARNINGS
-#define _CRT_SECURE_NO_WARNINGS
-#endif
+# ifndef _CRT_SECURE_NO_WARNINGS
+#  define _CRT_SECURE_NO_WARNINGS
+# endif
 #endif
 
 #include "GCodeParser.h"

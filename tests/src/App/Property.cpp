@@ -113,7 +113,8 @@ TEST_F(RenameProperty, renamePropertyPython)
 {
     // Act
     Base::Interpreter().runString(
-        "App.ActiveDocument.getObject('VarSet').renameProperty('Variable', 'NewName')");
+        "App.ActiveDocument.getObject('VarSet').renameProperty('Variable', 'NewName')"
+    );
 
     // Assert
     EXPECT_STREQ(varSet->getPropertyName(prop), "NewName");
@@ -170,8 +171,10 @@ TEST_F(RenameProperty, renameStaticPropertyPython)
     // Act / Assert
     EXPECT_THROW(
         Base::Interpreter().runString(
-            "App.ActiveDocument.getObject('VarSet006').renameProperty('Label', 'NewName')"),
-        Base::Exception);
+            "App.ActiveDocument.getObject('VarSet006').renameProperty('Label', 'NewName')"
+        ),
+        Base::Exception
+    );
 
     // Assert
     EXPECT_STREQ(varSet->getPropertyName(prop), "Label");
@@ -198,8 +201,7 @@ TEST_F(RenameProperty, renameLockedProperty)
 TEST_F(RenameProperty, renameToExistingProperty)
 {
     // Arrange
-    App::Property* prop2 =
-        varSet->addDynamicProperty("App::PropertyInteger", "Variable2", "Variables");
+    App::Property* prop2 = varSet->addDynamicProperty("App::PropertyInteger", "Variable2", "Variables");
 
     // Act / Assert
     EXPECT_THROW(varSet->renameDynamicProperty(prop2, "Variable"), Base::NameError);
@@ -230,7 +232,8 @@ TEST_F(RenameProperty, updateExpressionSameContainer)
 {
     // Arrange
     const auto* prop2 = freecad_cast<App::PropertyInteger*>(
-        varSet->addDynamicProperty("App::PropertyInteger", "Variable2", "Variables"));
+        varSet->addDynamicProperty("App::PropertyInteger", "Variable2", "Variables")
+    );
 
     App::ObjectIdentifier path(*prop2);
     std::shared_ptr<App::Expression> expr(App::Expression::parse(varSet, "Variable"));
@@ -260,7 +263,8 @@ TEST_F(RenameProperty, updateExpressionDifferentContainer)
     // Arrange
     auto* varSet2 = freecad_cast<App::VarSet*>(_doc->addObject("App::VarSet", "VarSet2"));
     const auto* prop2 = freecad_cast<App::PropertyInteger*>(
-        varSet2->addDynamicProperty("App::PropertyInteger", "Variable2", "Variables"));
+        varSet2->addDynamicProperty("App::PropertyInteger", "Variable2", "Variables")
+    );
 
     App::ObjectIdentifier path(*prop2);
     std::shared_ptr<App::Expression> expr(App::Expression::parse(varSet, "VarSet.Variable"));
@@ -296,7 +300,8 @@ TEST_F(RenameProperty, updateExpressionDifferentDocument)
 
     auto* varSet2 = freecad_cast<App::VarSet*>(doc->addObject("App::VarSet", "VarSet2"));
     const auto* prop2 = freecad_cast<App::PropertyInteger*>(
-        varSet2->addDynamicProperty("App::PropertyInteger", "Variable2", "Variables"));
+        varSet2->addDynamicProperty("App::PropertyInteger", "Variable2", "Variables")
+    );
 
     App::ObjectIdentifier path(*prop2);
     std::shared_ptr<App::Expression> expr(App::Expression::parse(varSet, "test#VarSet.Variable"));
@@ -330,7 +335,8 @@ TEST_F(RenameProperty, renamePropertyWithExpression)
 {
     // Arrange
     auto* prop2 = freecad_cast<App::PropertyInteger*>(
-        varSet->addDynamicProperty("App::PropertyInteger", "Variable2", "Variables"));
+        varSet->addDynamicProperty("App::PropertyInteger", "Variable2", "Variables")
+    );
     prop2->setValue(Value);
 
     App::ObjectIdentifier path(*prop);

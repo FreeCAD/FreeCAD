@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2017 Shai Seger <shaise at gmail>                       *
  *                                                                         *
@@ -24,7 +26,7 @@
 #define PATHSIMULATOR_CAMSimulatorGui_H
 
 #ifdef _MSC_VER
-#pragma warning(disable : 4251)
+# pragma warning(disable : 4251)
 #endif
 
 #include <Mod/Part/App/TopoShape.h>
@@ -79,10 +81,12 @@ public:  // slots:
     void startSimulation(const Part::TopoShape& stock, float quality);
     void resetSimulation();
     void addGcodeCommand(const char* cmd);
-    void addTool(const std::vector<float>& toolProfilePoints,
-                 int toolNumber,
-                 float diameter,
-                 float resolution);
+    void addTool(
+        const std::vector<float>& toolProfilePoints,
+        int toolNumber,
+        float diameter,
+        float resolution
+    );
 
 protected:
     bool event(QEvent* event) override;
@@ -95,10 +99,12 @@ protected:
     void wheelEvent(QWheelEvent* ev) override;
     void hideEvent(QHideEvent* ev) override;
     void resizeEvent(QResizeEvent* event) override;
-    void GetMeshData(const Part::TopoShape& tshape,
-                     float resolution,
-                     std::vector<MillSim::Vertex>& verts,
-                     std::vector<GLushort>& indices);
+    void GetMeshData(
+        const Part::TopoShape& tshape,
+        float resolution,
+        std::vector<MillSim::Vertex>& verts,
+        std::vector<GLushort>& indices
+    );
 
 private:
     bool mAnimating = false;

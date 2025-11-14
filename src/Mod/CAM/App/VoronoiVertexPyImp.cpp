@@ -79,8 +79,10 @@ PyObject* VoronoiVertexPy::richCompare(PyObject* lhs, PyObject* rhs, int op)
     return cmp;
 }
 
-const Voronoi::voronoi_diagram_type::vertex_type* getVertexFromPy(VoronoiVertexPy* v,
-                                                                  bool throwIfNotBound = true)
+const Voronoi::voronoi_diagram_type::vertex_type* getVertexFromPy(
+    VoronoiVertexPy* v,
+    bool throwIfNotBound = true
+)
 {
     auto self = v->getVoronoiVertexPtr();
     if (self->isBound()) {
@@ -155,9 +157,9 @@ PyObject* VoronoiVertexPy::toPoint(PyObject* args) const
     }
     VoronoiVertex* v = getVoronoiVertexPtr();
     if (v->isBound()) {
-        return new Base::VectorPy(new Base::Vector3d(v->ptr->x() / v->dia->getScale(),
-                                                     v->ptr->y() / v->dia->getScale(),
-                                                     z));
+        return new Base::VectorPy(
+            new Base::Vector3d(v->ptr->x() / v->dia->getScale(), v->ptr->y() / v->dia->getScale(), z)
+        );
     }
     Py_INCREF(Py_None);
     return Py_None;

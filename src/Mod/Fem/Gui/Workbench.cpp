@@ -204,18 +204,18 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
              << "FEM_PostFilterCutFunction"
              << "FEM_PostFilterClipRegion"
              << "FEM_PostFilterContours"
-#ifdef FC_USE_VTK_PYTHON
+# ifdef FC_USE_VTK_PYTHON
              << "FEM_PostFilterGlyph"
-#endif
+# endif
              << "FEM_PostFilterDataAlongLine"
              << "FEM_PostFilterLinearizedStresses"
              << "FEM_PostFilterDataAtPoint"
              << "FEM_PostFilterCalculator"
              << "Separator"
              << "FEM_PostCreateFunctions"
-#ifdef FC_USE_VTK_PYTHON
+# ifdef FC_USE_VTK_PYTHON
              << "FEM_PostVisualization"
-#endif
+# endif
         ;
 #endif
 
@@ -361,18 +361,18 @@ Gui::MenuItem* Workbench::setupMenuBar() const
              << "FEM_PostFilterCutFunction"
              << "FEM_PostFilterClipRegion"
              << "FEM_PostFilterContours"
-#ifdef FC_USE_VTK_PYTHON
+# ifdef FC_USE_VTK_PYTHON
              << "FEM_PostFilterGlyph"
-#endif
+# endif
              << "FEM_PostFilterDataAlongLine"
              << "FEM_PostFilterLinearizedStresses"
              << "FEM_PostFilterDataAtPoint"
              << "FEM_PostFilterCalculator"
              << "Separator"
              << "FEM_PostCreateFunctions"
-#ifdef FC_USE_VTK_PYTHON
+# ifdef FC_USE_VTK_PYTHON
              << "FEM_PostVisualization"
-#endif
+# endif
         ;
 #endif
 

@@ -9,17 +9,17 @@
       <translation>Стандартная система мер (мм, кг, сек, °)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="323"/>
+      <location filename="../../UnitsSchemasData.h" line="326"/>
       <source>MKS (m, kg, s, °)</source>
       <translation>МКС (м, кг, сек, °)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="587"/>
+      <location filename="../../UnitsSchemasData.h" line="593"/>
       <source>US customary (in, lb)</source>
       <translation>Американская традиционная система мер (дюймы, фунты)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="636"/>
+      <location filename="../../UnitsSchemasData.h" line="642"/>
       <source>Imperial for Civil Eng (ft, lb, mph)</source>
       <translation>Английская для гражданского строительства (фут, фунт, миль/ч)</translation>
     </message>
@@ -29,12 +29,12 @@
       <translation>Английская десятичная (дюймы, фунты)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="548"/>
+      <location filename="../../UnitsSchemasData.h" line="554"/>
       <source>Building Euro (cm, m², m³)</source>
       <translation>Европейская для строительства (см, м², м³)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="625"/>
+      <location filename="../../UnitsSchemasData.h" line="631"/>
       <source>Building US (ft-in, sqft, cft)</source>
       <translation>США для строительства (фут-дюйм, квадратный фут, кубический фут)</translation>
     </message>
@@ -44,7 +44,7 @@
       <translation>Метрическая для мелких деталей и ЧПУ (мм, мм/мин)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="575"/>
+      <location filename="../../UnitsSchemasData.h" line="581"/>
       <source>FEM (mm, N, s)</source>
       <translation>Для расчётов МКЭ (мм, Н, сек)</translation>
     </message>

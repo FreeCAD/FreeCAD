@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 IF (BUILD_GUI)
     PYSIDE_WRAP_RC(Tux_QRC_SRCS Resources/Tux.qrc)
 ENDIF (BUILD_GUI)

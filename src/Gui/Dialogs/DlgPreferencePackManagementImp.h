@@ -32,9 +32,11 @@
 
 class QTreeWidgetItem;
 
-namespace Gui {
+namespace Gui
+{
 
-namespace Dialog {
+namespace Dialog
+{
 
 class Ui_DlgPreferencePackManagement;
 
@@ -45,12 +47,11 @@ class Ui_DlgPreferencePackManagement;
  *
  * \author Chris Hennes
  */
-class GuiExport DlgPreferencePackManagementImp : public QDialog
+class GuiExport DlgPreferencePackManagementImp: public QDialog
 {
-  Q_OBJECT
+    Q_OBJECT
 
 public:
-
     DlgPreferencePackManagementImp(QWidget* parent = nullptr);
     ~DlgPreferencePackManagementImp() override;
 
@@ -59,14 +60,14 @@ Q_SIGNALS:
 
 protected Q_SLOTS:
 
-    void deleteUserPack(const std::string & prefPackName);
+    void deleteUserPack(const std::string& prefPackName);
     void hideBuiltInPack(const std::string& prefPackName);
     void hideInstalledPack(const std::string& addonName, const std::string& prefPackName);
     void showAddonManager();
 
 private:
-
-    enum class TreeWidgetType {
+    enum class TreeWidgetType
+    {
         BUILTIN,
         USER,
         ADDON
@@ -74,11 +75,15 @@ private:
 
     std::unique_ptr<Ui_DlgPreferencePackManagement> ui;
 
-    void addTreeNode(const std::string& name, const std::vector<std::string>& contents, TreeWidgetType twt);
+    void addTreeNode(
+        const std::string& name,
+        const std::vector<std::string>& contents,
+        TreeWidgetType twt
+    );
     void updateTree();
 };
 
-} // namespace Dialog
-} // namespace Gui
+}  // namespace Dialog
+}  // namespace Gui
 
-#endif // GUI_DIALOG_DLGPREFERENCEPACKMANAGEMENTIMP_H
+#endif  // GUI_DIALOG_DLGPREFERENCEPACKMANAGEMENTIMP_H

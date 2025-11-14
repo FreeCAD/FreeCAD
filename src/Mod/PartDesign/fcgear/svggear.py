@@ -18,6 +18,7 @@
 import itertools
 from involute import CreateExternalGear, CreateInternalGear, rotate
 
+
 class SVGWireBuilder(object):
     def __init__(self):
         self.theta = 0.0
@@ -26,17 +27,17 @@ class SVGWireBuilder(object):
 
     def move(self, p):
         p = rotate(p, self.theta)
-        self.svg.append('M %s,%s' % (p[0], p[1]))
+        self.svg.append("M %s,%s" % (p[0], p[1]))
         self.pos = p
 
     def line(self, p):
         p = rotate(p, self.theta)
-        self.svg.append('L %s,%s' % (p[0], p[1]))
+        self.svg.append("L %s,%s" % (p[0], p[1]))
         self.pos = p
 
     def arc(self, p, r, sweep):
         p = rotate(p, self.theta)
-        self.svg.append('A %s,%s 0,0,%s %s,%s' % (r, r, str(sweep), p[0], p[1]))
+        self.svg.append("A %s,%s 0,0,%s %s,%s" % (r, r, str(sweep), p[0], p[1]))
         self.pos = p
 
     def curve(self, *points):
@@ -46,48 +47,90 @@ class SVGWireBuilder(object):
         """
         assert len(points) == 3
         points = [rotate(p, self.theta) for p in points]
-        self.svg.append('C %s,%s %s,%s %s,%s' % tuple(itertools.chain(*points)))
+        self.svg.append("C %s,%s %s,%s %s,%s" % tuple(itertools.chain(*points)))
         self.pos = points[-1]
 
     def close(self):
-        self.svg.append('Z')
+        self.svg.append("Z")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     from optparse import OptionParser
+
     p = OptionParser(
         usage="usage: %prog [options] [[MODULE] NUMER_OF_TEETH]",
-        description=("Generates the outline of a metric, involute gear. "
+        description=(
+            "Generates the outline of a metric, involute gear. "
             "Prints out an SVG path. "
             "This is mainly a debugging tool to quickly inspect the gear visually. "
             "For this, online tools like https://yqnn.github.io/svg-path-editor/ are handy. "
             "Most of the time it's enough to just use the first 20 lines or so, e.g.:\n\t"
-            "%prog -z50 | head -n20 | pbcopy"))
-    p.add_option('-z', '--numer-of-teeth',
+            "%prog -z50 | head -n20 | pbcopy"
+        ),
+    )
+    p.add_option(
+        "-z",
+        "--numer-of-teeth",
         help="The number of teeth for the gear.",
-        metavar='NUMER_OF_TEETH', type='int')
-    p.add_option('-m', '--module',
+        metavar="NUMER_OF_TEETH",
+        type="int",
+    )
+    p.add_option(
+        "-m",
+        "--module",
         help="The metric module, in svg user unit, i.e. unit-less. [default: %default]",
-        metavar='MODULE', type='float', default=1)
-    p.add_option('-p', '--pressure-angle',
+        metavar="MODULE",
+        type="float",
+        default=1,
+    )
+    p.add_option(
+        "-p",
+        "--pressure-angle",
         help="The pressure angle, in degree. [default: %default]",
-        metavar='PRESSURE_ANGLE', type='float', default=20)
-    p.add_option('-i', '--internal',
-        help=("Generates an internal gear, i.e. the addednum points towards the center "
-            "and the root fillet is at the outside. [default: %default]"),
-        action='store_true', default=False)
-    p.add_option('-a', '--addendum',
-        help=("The tooth height above the pitch line, normalized by the MODULE. "
-            "[default: %default]"),
-        metavar='ADDENDUM_COEFFICIENT', type='float', default=1)
-    p.add_option('-d', '--dedendum',
-        help=("The tooth height from the root to the pitch line, normalized by the MODULE. "
-            "[default: %default]"),
-        metavar='DEDENDUM_COEFFICIENT', type='float', default=1.25)
-    p.add_option('-f', '--fillet-radius',
-        help=("The radius of the root fillet, normalized by the MODULE. "
-            "[default: %default]"),
-        metavar='FILLET_RADIUS_COEFFICIENT', type='float', default=0.38)
+        metavar="PRESSURE_ANGLE",
+        type="float",
+        default=20,
+    )
+    p.add_option(
+        "-i",
+        "--internal",
+        help=(
+            "Generates an internal gear, i.e. the addednum points towards the center "
+            "and the root fillet is at the outside. [default: %default]"
+        ),
+        action="store_true",
+        default=False,
+    )
+    p.add_option(
+        "-a",
+        "--addendum",
+        help=(
+            "The tooth height above the pitch line, normalized by the MODULE. "
+            "[default: %default]"
+        ),
+        metavar="ADDENDUM_COEFFICIENT",
+        type="float",
+        default=1,
+    )
+    p.add_option(
+        "-d",
+        "--dedendum",
+        help=(
+            "The tooth height from the root to the pitch line, normalized by the MODULE. "
+            "[default: %default]"
+        ),
+        metavar="DEDENDUM_COEFFICIENT",
+        type="float",
+        default=1.25,
+    )
+    p.add_option(
+        "-f",
+        "--fillet-radius",
+        help=("The radius of the root fillet, normalized by the MODULE. " "[default: %default]"),
+        metavar="FILLET_RADIUS_COEFFICIENT",
+        type="float",
+        default=0.38,
+    )
 
     opts, args = p.parse_args()
     errors = []
@@ -106,10 +149,15 @@ if __name__ == '__main__':
 
     w = SVGWireBuilder()
     generator_func = CreateInternalGear if opts.internal else CreateExternalGear
-    generator_func(w, opts.module, opts.numer_of_teeth, opts.pressure_angle,
-        addCoeff=opts.addendum, dedCoeff=opts.dedendum,
-        filletCoeff=opts.fillet_radius)
+    generator_func(
+        w,
+        opts.module,
+        opts.numer_of_teeth,
+        opts.pressure_angle,
+        addCoeff=opts.addendum,
+        dedCoeff=opts.dedendum,
+        filletCoeff=opts.fillet_radius,
+    )
 
     for l in w.svg:
         print(l)
-

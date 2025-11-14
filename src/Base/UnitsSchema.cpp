@@ -52,8 +52,7 @@ std::string UnitsSchema::translate(const Quantity& quant) const
     return translate(quant, dummy1, dummy2);
 }
 
-std::string
-UnitsSchema::translate(const Quantity& quant, double& factor, std::string& unitString) const
+std::string UnitsSchema::translate(const Quantity& quant, double& factor, std::string& unitString) const
 {
     // Use defaults without schema-level translation.
     factor = 1.0;
@@ -76,18 +75,21 @@ UnitsSchema::translate(const Quantity& quant, double& factor, std::string& unitS
     auto unitSpecs = spec.translationSpecs.at(unitName);
     const auto unitSpec = std::find_if(unitSpecs.begin(), unitSpecs.end(), isSuitable);
     if (unitSpec == unitSpecs.end()) {
-        throw RuntimeError("Suitable threshold not found. Schema: " + spec.name
-                           + " value: " + std::to_string(value));
+        throw RuntimeError(
+            "Suitable threshold not found. Schema: " + spec.name + " value: " + std::to_string(value)
+        );
     }
 
     if (unitSpec->factor == 0) {
         const QuantityFormat& format = quant.getFormat();
-        return UnitsSchemasData::runSpecial(unitSpec->unitString,
-                                            value,
-                                            format.getPrecision(),
-                                            format.getDenominator(),
-                                            factor,
-                                            unitString);
+        return UnitsSchemasData::runSpecial(
+            unitSpec->unitString,
+            value,
+            format.getPrecision(),
+            format.getDenominator(),
+            factor,
+            unitString
+        );
     }
 
     factor = unitSpec->factor;
@@ -96,8 +98,7 @@ UnitsSchema::translate(const Quantity& quant, double& factor, std::string& unitS
     return toLocale(quant, factor, unitString);
 }
 
-std::string
-UnitsSchema::toLocale(const Quantity& quant, const double factor, const std::string& unitString)
+std::string UnitsSchema::toLocale(const Quantity& quant, const double factor, const std::string& unitString)
 {
     QLocale Lc;
     const QuantityFormat& format = quant.getFormat();
@@ -105,9 +106,8 @@ UnitsSchema::toLocale(const Quantity& quant, const double factor, const std::str
         Lc.setNumberOptions(static_cast<QLocale::NumberOptions>(format.option));
     }
 
-    auto valueString =
-        Lc.toString(quant.getValue() / factor, format.toFormat(), format.getPrecision())
-            .toStdString();
+    auto valueString = Lc.toString(quant.getValue() / factor, format.toFormat(), format.getPrecision())
+                           .toStdString();
 
     auto notUnit = [](auto s) {
         return s.empty() || s == "°" || s == "″" || s == "′" || s == "\"" || s == "'";
@@ -157,9 +157,7 @@ std::string UnitsSchema::getUnitText(const Base::Quantity& quant) const
 
     // TODO: some common code here with translate()
     if (!spec.translationSpecs.contains(typeString)) {
-        Base::Console().log("Schema %s has no entry for %s\n",
-                            getName().c_str(),
-                            typeString.c_str());
+        Base::Console().log("Schema %s has no entry for %s\n", getName().c_str(), typeString.c_str());
         return {};
     }
     auto unitSpecs = spec.translationSpecs.at(typeString);
@@ -170,8 +168,10 @@ std::string UnitsSchema::getUnitText(const Base::Quantity& quant) const
 
     const auto unitSpec = std::ranges::find_if(unitSpecs, isSuitable);
     if (unitSpec == unitSpecs.end()) {
-        throw RuntimeError("Suitable threshold not found (2). Schema: " + spec.name
-                           + " value: " + std::to_string(value));
+        throw RuntimeError(
+            "Suitable threshold not found (2). Schema: " + spec.name
+            + " value: " + std::to_string(value)
+        );
     }
 
     return unitSpec->unitString;

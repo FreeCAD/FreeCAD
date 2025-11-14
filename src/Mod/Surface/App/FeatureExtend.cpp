@@ -43,9 +43,7 @@
 
 using namespace Surface;
 
-const App::PropertyIntegerConstraint::Constraints SampleRange = {2,
-                                                                 std::numeric_limits<int>::max(),
-                                                                 1};
+const App::PropertyIntegerConstraint::Constraints SampleRange = {2, std::numeric_limits<int>::max(), 1};
 const App::PropertyFloatConstraint::Constraints ToleranceRange = {0.0, 10.0, 0.01};
 const App::PropertyFloatConstraint::Constraints ExtendRange = {-0.5, 10.0, 0.01};
 PROPERTY_SOURCE(Surface::Extend, Part::Spline)
@@ -106,8 +104,9 @@ App::DocumentObjectExecReturn* Extend::execute()
         return new App::DocumentObjectExecReturn("Not exactly one sub-shape linked.");
     }
 
-    TopoDS_Shape shape =
-        static_cast<Part::Feature*>(part)->Shape.getShape().getSubShape(faces[0].c_str());
+    TopoDS_Shape shape = static_cast<Part::Feature*>(part)->Shape.getShape().getSubShape(
+        faces[0].c_str()
+    );
     if (shape.IsNull() || shape.ShapeType() != TopAbs_FACE) {
         return new App::DocumentObjectExecReturn("Sub-shape is not a face.");
     }
@@ -188,13 +187,10 @@ void Extend::onChanged(const App::Property* prop)
     Part::Spline::onChanged(prop);
 }
 
-void Extend::handleChangedPropertyName(Base::XMLReader& reader,
-                                       const char* TypeName,
-                                       const char* PropName)
+void Extend::handleChangedPropertyName(Base::XMLReader& reader, const char* TypeName, const char* PropName)
 {
     Base::Type type = Base::Type::fromName(TypeName);
-    if (App::PropertyFloatConstraint::getClassTypeId() == type
-        && strcmp(PropName, "ExtendU") == 0) {
+    if (App::PropertyFloatConstraint::getClassTypeId() == type && strcmp(PropName, "ExtendU") == 0) {
         App::PropertyFloatConstraint v;
         v.Restore(reader);
         ExtendUNeg.setValue(v.getValue());

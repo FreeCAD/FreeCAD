@@ -28,9 +28,10 @@
 #include "SoFCOffscreenRenderer.h"
 
 
-namespace Gui {
+namespace Gui
+{
 
-class SoQtOffscreenRendererPy : public Py::PythonClass<SoQtOffscreenRendererPy>
+class SoQtOffscreenRendererPy: public Py::PythonClass<SoQtOffscreenRendererPy>
 {
 public:
     static void init_type();
@@ -61,6 +62,6 @@ private:
     SoQtOffscreenRenderer renderer;
 };
 
-} // namespace Gui
+}  // namespace Gui
 
-#endif // GUI_SOQTOFFSCREENRENDERERPY_H
+#endif  // GUI_SOQTOFFSCREENRENDERERPY_H

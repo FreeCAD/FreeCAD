@@ -27,7 +27,7 @@
 #define SRC_BASE_TOOLS_H_
 
 #ifndef FC_GLOBAL_H
-#include <FCGlobal.h>
+# include <FCGlobal.h>
 #endif
 #include <cmath>
 #include <numbers>
