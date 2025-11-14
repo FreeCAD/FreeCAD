@@ -125,24 +125,25 @@ class CAMAssetMigrator:
         workdir = Path.Preferences.preferences().GetString(workdir_str)
         migrated_dir = Path.Preferences.preferences().GetString(migrated_str)
         Path.Log.debug(f"workdir: {workdir}, migrated: {migrated_dir}")
-        if workdir and workdir != migrated_dir:
+        if workdir and not migrated_dir:
             # Look for tool libraries to import
             if os.path.isdir(workdir):
                 libraries = [f for f in glob.glob(workdir + os.path.sep + "*.fctl")]
                 libraries.sort()
                 if len(libraries):
-                    # Offer library import
-                    if self._offer_tool_library_import(workdir, libraries):
+                    # Migrate libraries, automatically and silently
+                    Path.Log.info("Migrating tool libraries into CAM assets")
+                    for library in libraries:
+                        Path.Log.info("Migrating " + library)
                         import_dialog = AssetOpenDialog(
                             cam_assets,
                             asset_class=Library,
                             serializers=library_serializers,
                             parent=None,
                         )
-                        for library in libraries:
-                            asset = import_dialog.deserialize_file(pathlib.Path(library))
-                            if asset:
-                                cam_assets.add(asset)
+                        asset = import_dialog.deserialize_file(pathlib.Path(library), quiet=True)
+                        if asset:
+                            cam_assets.add(asset)
 
                     # Mark directory as migrated
                     Path.Preferences.preferences().SetString(migrated_str, workdir)
@@ -195,35 +196,6 @@ class CAMAssetMigrator:
             return True
         else:
             Path.Log.info("User declined migration")
-            return False
-
-    def _offer_tool_library_import(self, workdir, libraries):
-        if not FreeCAD.GuiUp:
-            Path.Log.debug("GUI not available, skipping tool library import offer")
-            return False
-
-        library_names = "\n".join([f"• {os.path.basename(library)}" for library in libraries])
-
-        msg = (
-            f"FreeCAD now keeps its tool libraries inside its assets directory."
-            f"You have {len(libraries)} libraries stored in another working "
-            f"directory {workdir}. They need to be copied to the assets directory "
-            f"to continue using them.\n\n"
-            f"{library_names}\n\n"
-            f"Would you like to import these libraries?"
-        )
-
-        Path.Log.debug("Showing tool library import dialog to user")
-
-        reply = QMessageBox.question(
-            None, "CAM Tool Library Import", msg, QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes
-        )
-
-        if reply == QMessageBox.Yes:
-            Path.Log.debug("User requested tool library import")
-            return True
-        else:
-            Path.Log.debug("User declined tool library import")
             return False
 
     def _migrate_assets(self, source_path):
