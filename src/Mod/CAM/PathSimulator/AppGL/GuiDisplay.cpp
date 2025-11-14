@@ -313,7 +313,7 @@ void GuiDisplay::MouseCursorPos(int x, int y)
     if (mMouseOverItem != prevMouseOver) {
         if (mMouseOverItem != nullptr && !mMouseOverItem->toolTip.isEmpty()) {
             QPoint pos(x, y);
-            QPoint globPos = CAMSimulator::DlgCAMSimulator::GetInstance()->mapToGlobal(pos);
+            QPoint globPos = CAMSimulator::DlgCAMSimulator::instance()->mapToGlobal(pos);
             QToolTip::showText(globPos, mMouseOverItem->toolTip);
         }
         else {

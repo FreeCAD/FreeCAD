@@ -47,7 +47,7 @@ class SimDisplay
 {
 public:
     ~SimDisplay();
-    void InitGL(qreal devicePixelRatio);
+    void InitGL();
     void CleanGL();
     void CleanFbos();
     void PrepareDisplay(vec3 objCenter);
@@ -108,7 +108,6 @@ protected:
     mat4x4 mMatLookAt;
     StockObject mlightObject;
 
-    qreal mDevicePixelRatio;
     int mWidth;
     int mHeight;
 
