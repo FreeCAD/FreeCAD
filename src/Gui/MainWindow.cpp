@@ -427,7 +427,7 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
     d->hintLabel = new InputHintWidget(statusBar());
     d->hintLabel->setObjectName(QStringLiteral("hintLabel"));
     //: A context menu action used to show or hide the input hints in the status bar
-    d->hintLabel->setWindowTitle(tr("Input hints"));
+    d->hintLabel->setWindowTitle(tr("Input Hints"));
 
     statusBar()->addWidget(d->hintLabel);
 
@@ -437,7 +437,7 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
     statusBar()->addPermanentWidget(d->rightSideLabel);
     d->rightSideLabel->setObjectName(QStringLiteral("rightSideLabel"));
     //: A context menu action used to enable or disable quick measure in the status bar
-    d->rightSideLabel->setWindowTitle(tr("Quick measure"));
+    d->rightSideLabel->setWindowTitle(tr("Quick Measure"));
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/NotificationArea"
