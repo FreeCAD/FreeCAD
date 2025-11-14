@@ -180,6 +180,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         obj.StepOver = 50
         obj.ZigZagAngle = 45
         obj.UseOutline = False
+        obj.setExpression("ExtraOffsetZigZag", "OpToolDiameter * 0.25")
         FeatureExtensions.set_default_property_values(obj, job)
 
     def areaOpShapes(self, obj):
