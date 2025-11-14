@@ -215,7 +215,6 @@ M2
         # expected = "G0 X0.39 Y0.78 Z1.18 "
         # self.assertEqual(result, expected)
 
-
     def test080(self):
         """
         Test tool change

@@ -23,7 +23,6 @@
 # ***************************************************************************
 
 
-
 import FreeCAD
 
 import Path
@@ -55,11 +54,9 @@ class TestGenericPost(PathTestUtils.PathTestBase):
         cls.job, cls.profile_op, cls.tool_controller = (
             PostTestMocks.create_default_job_with_operation()
         )
-        
+
         # Create postprocessor using the mock job
-        cls.post = PostProcessorFactory.get_post_processor(
-            cls.job, "generic"
-        )
+        cls.post = PostProcessorFactory.get_post_processor(cls.job, "generic")
 
     @classmethod
     def tearDownClass(cls):

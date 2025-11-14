@@ -39,6 +39,7 @@ else:
 
 Values = Dict[str, Any]
 
+
 class Generic(PostProcessor):
     def __init__(self, job):
         super().__init__(
@@ -48,7 +49,6 @@ class Generic(PostProcessor):
             units="Metric",
         )
         Path.Log.debug("Generic post processor initialized")
-
 
     def init_values(self, values: Values) -> None:
         """Initialize values that are used throughout the postprocessor."""

@@ -51,7 +51,7 @@ Values = Dict[str, Any]
 class Smoothie(PostProcessor):
     """
     The SmoothieBoard post processor class.
-    
+
     This postprocessor outputs G-code suitable for SmoothieBoard controllers.
     It supports direct network upload to the SmoothieBoard via TCP/IP.
     """
@@ -107,7 +107,9 @@ class Smoothie(PostProcessor):
         # Any commands in this value will be output as the last commands
         # in the G-code file.
         #
-        values["POSTAMBLE"] = """M05
+        values[
+            "POSTAMBLE"
+        ] = """M05
 G17 G90
 M2"""
         values["POSTPROCESSOR_FILE_NAME"] = __name__
@@ -120,50 +122,47 @@ M2"""
     def init_arguments(self, values, argument_defaults, arguments_visible):
         """Initialize command-line arguments, including SmoothieBoard-specific options."""
         parser = super().init_arguments(values, argument_defaults, arguments_visible)
-        
+
         # Add SmoothieBoard-specific argument group
-        smoothie_group = parser.add_argument_group(
-            "SmoothieBoard-specific arguments"
-        )
-        
+        smoothie_group = parser.add_argument_group("SmoothieBoard-specific arguments")
+
         smoothie_group.add_argument(
-            "--ip-addr",
-            help="IP address for direct upload to SmoothieBoard (e.g., 192.168.1.100)"
+            "--ip-addr", help="IP address for direct upload to SmoothieBoard (e.g., 192.168.1.100)"
         )
-        
+
         smoothie_group.add_argument(
             "--verbose",
             action="store_true",
-            help="Enable verbose output for network transfer debugging"
+            help="Enable verbose output for network transfer debugging",
         )
-        
+
         return parser
 
     def process_arguments(self):
         """Process arguments and update values, including SmoothieBoard-specific settings."""
         flag, args = super().process_arguments()
-        
+
         if flag and args:
             # Update SmoothieBoard-specific values from parsed arguments
-            if hasattr(args, 'ip_addr') and args.ip_addr:
+            if hasattr(args, "ip_addr") and args.ip_addr:
                 self.ip_addr = args.ip_addr
                 Path.Log.info(f"SmoothieBoard IP address set to: {self.ip_addr}")
-            
-            if hasattr(args, 'verbose'):
+
+            if hasattr(args, "verbose"):
                 self.verbose = args.verbose
                 if self.verbose:
                     Path.Log.info("Verbose mode enabled")
-        
+
         return flag, args
 
     def export(self):
         """Override export to handle network upload to SmoothieBoard."""
         # First, do the standard export processing
         gcode_sections = super().export()
-        
+
         if gcode_sections is None:
             return None
-        
+
         # If IP address is specified, send to SmoothieBoard instead of writing to file
         if self.ip_addr:
             # Combine all G-code sections
@@ -171,24 +170,24 @@ M2"""
             for section_name, section_gcode in gcode_sections:
                 if section_gcode:
                     gcode += section_gcode
-            
+
             # Get the output filename from the job
             filename = self._job.PostProcessorOutputFile
             if not filename or filename == "-":
                 filename = "output.nc"
-            
+
             self._send_to_smoothie(self.ip_addr, gcode, filename)
-            
+
             # Return the gcode for display/editor
             return gcode_sections
-        
+
         # Normal file-based export
         return gcode_sections
 
     def _send_to_smoothie(self, ip: str, gcode: str, fname: str) -> None:
         """
         Send G-code directly to SmoothieBoard via network.
-        
+
         Args:
             ip: IP address of the SmoothieBoard
             gcode: G-code string to send
@@ -199,7 +198,7 @@ M2"""
 
         gcode = gcode.rstrip()
         filesize = len(gcode)
-        
+
         try:
             # Make connection to SmoothieBoard SFTP server (port 115)
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -265,19 +264,15 @@ M2"""
             tn.close()
 
             FreeCAD.Console.PrintMessage("Upload complete\n")
-            
+
         except socket.timeout:
-            FreeCAD.Console.PrintError(
-                f"Connection timeout while connecting to {ip}:115\n"
-            )
+            FreeCAD.Console.PrintError(f"Connection timeout while connecting to {ip}:115\n")
         except ConnectionRefusedError:
             FreeCAD.Console.PrintError(
                 f"Connection refused by {ip}:115. Is the SmoothieBoard running?\n"
             )
         except Exception as e:
-            FreeCAD.Console.PrintError(
-                f"Error sending to SmoothieBoard: {str(e)}\n"
-            )
+            FreeCAD.Console.PrintError(f"Error sending to SmoothieBoard: {str(e)}\n")
 
     @property
     def tooltip(self):
@@ -285,7 +280,7 @@ M2"""
         This is a postprocessor file for the CAM workbench.
         It is used to take a pseudo-gcode fragment from a CAM object
         and output 'real' GCode suitable for a SmoothieBoard controller.
-        
+
         This postprocessor supports direct network upload to SmoothieBoard
         via the --ip-addr argument.
         """

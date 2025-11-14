@@ -53,13 +53,13 @@ class Linuxcnc(PostProcessor):
     The LinuxCNC post processor class.
     LinuxCNC supports various trajectory control methods (path blending) as
     described at https://linuxcnc.org/docs/2.4/html/common_User_Concepts.html#r1_1_2
-    
+
     This post processor implements the following trajectory control methods:
     - Exact Path (G61)
     - Exact Stop (G64)
     - Blend (G61.1)
-    
-    
+
+
     """
 
     def __init__(
@@ -138,51 +138,51 @@ M2"""
     def init_arguments(self, values, argument_defaults, arguments_visible):
         """Initialize command-line arguments, including LinuxCNC-specific options."""
         parser = super().init_arguments(values, argument_defaults, arguments_visible)
-        
+
         # Add LinuxCNC-specific argument group
-        linuxcnc_group = parser.add_argument_group(
-            "LinuxCNC-specific arguments"
-        )
-        
+        linuxcnc_group = parser.add_argument_group("LinuxCNC-specific arguments")
+
         linuxcnc_group.add_argument(
             "--blend-mode",
             choices=["EXACT_PATH", "EXACT_STOP", "BLEND"],
             default="BLEND",
             help="Path blending mode: EXACT_PATH (G61), EXACT_STOP (G61.1), "
-                 "BLEND (G64/G64 P-) (default: BLEND)"
+            "BLEND (G64/G64 P-) (default: BLEND)",
         )
-        
+
         linuxcnc_group.add_argument(
             "--blend-tolerance",
             type=float,
             default=0.0,
             help="Tolerance for BLEND mode (P value): 0 = no tolerance (G64), "
-                 ">0 = tolerance (G64 P-), in current units (default: 0.0)"
+            ">0 = tolerance (G64 P-), in current units (default: 0.0)",
         )
         return parser
 
     def process_arguments(self):
         """Process arguments and update values, including blend mode handling."""
         flag, args = super().process_arguments()
-        
+
         if flag and args:
             # Update blend mode values from parsed arguments
-            if hasattr(args, 'blend_mode'):
+            if hasattr(args, "blend_mode"):
                 self.values["BLEND_MODE"] = args.blend_mode
-            if hasattr(args, 'blend_tolerance'):
+            if hasattr(args, "blend_tolerance"):
                 self.values["BLEND_TOLERANCE"] = args.blend_tolerance
-            
+
             # Update PREAMBLE with blend command
             blend_cmd = self._get_blend_command()
-            self.values["PREAMBLE"] = f"""G17 G54 G40 G49 G80 G90
+            self.values[
+                "PREAMBLE"
+            ] = f"""G17 G54 G40 G49 G80 G90
 {blend_cmd}"""
-        
+
         return flag, args
 
     def _get_blend_command(self) -> str:
         """Generate the path blending G-code command based on current settings."""
         mode = self.values.get("BLEND_MODE", "BLEND")
-    
+
         if mode == "EXACT_PATH":
             return "G61"
         elif mode == "EXACT_STOP":

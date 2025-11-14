@@ -36,7 +36,7 @@ Path.Log.trackModule(Path.Log.thisModule())
 
 class TestLinuxCNCPost(PathTestUtils.PathTestBase):
     """Test LinuxCNC-specific features of the inuxcnc_post.py postprocessor.
-    
+
     This test suite focuses on LinuxCNC-specific functionality such as path blending modes.
     Generic postprocessor functionality is tested in TestGenericPost.
     """
@@ -57,11 +57,9 @@ class TestLinuxCNCPost(PathTestUtils.PathTestBase):
         cls.job, cls.profile_op, cls.tool_controller = (
             PostTestMocks.create_default_job_with_operation()
         )
-        
+
         # Create postprocessor using the mock job
-        cls.post = PostProcessorFactory.get_post_processor(
-            cls.job, "linuxcnc"
-        )
+        cls.post = PostProcessorFactory.get_post_processor(cls.job, "linuxcnc")
 
     @classmethod
     def tearDownClass(cls):
@@ -100,9 +98,11 @@ class TestLinuxCNCPost(PathTestUtils.PathTestBase):
     def test_blend_mode_exact_path(self):
         """Test EXACT_PATH blend mode outputs G61."""
         self.profile_op.Path = Path.Path([])
-        self.job.PostProcessorArgs = "--no-header --no-comments --blend-mode EXACT_PATH --no-show-editor"
+        self.job.PostProcessorArgs = (
+            "--no-header --no-comments --blend-mode EXACT_PATH --no-show-editor"
+        )
         gcode = self.post.export()[0][1]
-        
+
         # G61 should be in the preamble
         self.assertIn("G61", gcode)
         # Should not have G64
@@ -113,9 +113,11 @@ class TestLinuxCNCPost(PathTestUtils.PathTestBase):
     def test_blend_mode_exact_stop(self):
         """Test EXACT_STOP blend mode outputs G61.1."""
         self.profile_op.Path = Path.Path([])
-        self.job.PostProcessorArgs = "--no-header --no-comments --blend-mode EXACT_STOP --no-show-editor"
+        self.job.PostProcessorArgs = (
+            "--no-header --no-comments --blend-mode EXACT_STOP --no-show-editor"
+        )
         gcode = self.post.export()[0][1]
-        
+
         # G61.1 should be in the preamble
         self.assertIn("G61.1", gcode)
         # Should not have G64
@@ -126,7 +128,7 @@ class TestLinuxCNCPost(PathTestUtils.PathTestBase):
         self.profile_op.Path = Path.Path([])
         self.job.PostProcessorArgs = "--no-header --no-comments --blend-mode BLEND --no-show-editor"
         gcode = self.post.export()[0][1]
-        
+
         # G64 should be in the preamble (without P parameter)
         lines = gcode.splitlines()
         has_g64 = any("G64" in line and "P" not in line for line in lines)
@@ -135,35 +137,41 @@ class TestLinuxCNCPost(PathTestUtils.PathTestBase):
     def test_blend_mode_blend_with_tolerance(self):
         """Test BLEND mode with tolerance outputs G64 P<tolerance>."""
         self.profile_op.Path = Path.Path([])
-        self.job.PostProcessorArgs = "--no-header --no-comments --blend-mode BLEND --blend-tolerance 0.05 --no-show-editor"
+        self.job.PostProcessorArgs = (
+            "--no-header --no-comments --blend-mode BLEND --blend-tolerance 0.05 --no-show-editor"
+        )
         gcode = self.post.export()[0][1]
-        
+
         # G64 P0.05 should be in the preamble
         self.assertIn("G64 P0.0500", gcode)
 
     def test_blend_mode_blend_with_custom_tolerance(self):
         """Test BLEND mode with custom tolerance value."""
         self.profile_op.Path = Path.Path([])
-        self.job.PostProcessorArgs = "--no-header --no-comments --blend-mode BLEND --blend-tolerance 0.02 --no-show-editor"
+        self.job.PostProcessorArgs = (
+            "--no-header --no-comments --blend-mode BLEND --blend-tolerance 0.02 --no-show-editor"
+        )
         gcode = self.post.export()[0][1]
-        
+
         # G64 P0.02 should be in the preamble
         self.assertIn("G64 P0.0200", gcode)
 
     def test_blend_mode_in_preamble_position(self):
         """Test that blend mode command appears in correct position in preamble."""
         self.profile_op.Path = Path.Path([])
-        self.job.PostProcessorArgs = "--no-header --no-comments --blend-mode BLEND --blend-tolerance 0.1 --no-show-editor"
+        self.job.PostProcessorArgs = (
+            "--no-header --no-comments --blend-mode BLEND --blend-tolerance 0.1 --no-show-editor"
+        )
         gcode = self.post.export()[0][1]
         lines = gcode.splitlines()
-        
+
         # Find G64 P line
         g64_line_idx = None
         for i, line in enumerate(lines):
             if "G64 P" in line:
                 g64_line_idx = i
                 break
-        
+
         self.assertIsNotNone(g64_line_idx, "G64 P command not found")
         # Should be early in output (within first few lines of preamble)
         self.assertLess(g64_line_idx, 5, "G64 command should be in preamble")
@@ -171,9 +179,11 @@ class TestLinuxCNCPost(PathTestUtils.PathTestBase):
     def test_blend_tolerance_zero_equals_no_tolerance(self):
         """Test that blend tolerance of 0 outputs G64 without P parameter."""
         self.profile_op.Path = Path.Path([])
-        self.job.PostProcessorArgs = "--no-header --no-comments --blend-mode BLEND --blend-tolerance 0 --no-show-editor"
+        self.job.PostProcessorArgs = (
+            "--no-header --no-comments --blend-mode BLEND --blend-tolerance 0 --no-show-editor"
+        )
         gcode = self.post.export()[0][1]
-        
+
         # Should have G64 without P
         lines = gcode.splitlines()
         has_g64_without_p = any("G64" in line and "P" not in line for line in lines)

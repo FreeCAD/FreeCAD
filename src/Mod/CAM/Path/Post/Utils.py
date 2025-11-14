@@ -341,20 +341,20 @@ def splitArcs(path, deflection=None):
     Args:
         path: Path.Path object to process
         deflection: Curve deflection tolerance (default: from preferences)
-    
+
     Returns:
         Path.Path object with arcs replaced by G1 segments.
     """
     if not isinstance(path, Path.Path):
         raise TypeError("path must be a Path object")
-    
+
     if deflection is None:
         prefGrp = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/CAM")
         deflection = prefGrp.GetFloat("LibAreaCurveAccuracy", 0.01)
 
     results = []
     machine = MachineState()
-    
+
     for command in path.Commands:
         if command.Name not in Path.Geom.CmdMoveArc:
             results.append(command)
@@ -362,14 +362,14 @@ def splitArcs(path, deflection=None):
             # Discretize arc into line segments
             edge = Path.Geom.edgeForCmd(command, machine.getPosition())
             pts = edge.discretize(Deflection=deflection)
-            
+
             # Convert points directly to G1 commands
             feed_params = {"F": command.Parameters["F"]} if "F" in command.Parameters else {}
             for pt in pts[1:]:  # Skip first point (already at that position)
                 params = {"X": pt.x, "Y": pt.y, "Z": pt.z}
                 params.update(feed_params)
                 results.append(Path.Command("G1", params))
-        
+
         machine.addCommand(command)
 
     return Path.Path(results)
