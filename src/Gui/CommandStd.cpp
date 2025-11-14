@@ -457,7 +457,7 @@ StdCmdDlgCustomize::StdCmdDlgCustomize()
     : Command("Std_DlgCustomize")
 {
     sGroup = "Tools";
-    sMenuText = QT_TR_NOOP("Cu&stomize…");
+    sMenuText = QT_TR_NOOP("Cu&stomize");
     sToolTipText = QT_TR_NOOP("Opens a dialog to edit toolbars, shortcuts, and macros");
     sWhatsThis = "Std_DlgCustomize";
     sStatusTip = sToolTipText;

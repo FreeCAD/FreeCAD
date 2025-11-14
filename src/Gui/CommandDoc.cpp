@@ -658,7 +658,7 @@ StdCmdExportDependencyGraph::StdCmdExportDependencyGraph()
     : Command("Std_ExportDependencyGraph")
 {
     sGroup = "Tools";
-    sMenuText = QT_TR_NOOP("Export Dependency &Graph");
+    sMenuText = QT_TR_NOOP("Export Dependency &Graph…");
     sToolTipText = QT_TR_NOOP("Exports the dependency graph as a Graphviz (.gv) file");
     sStatusTip = sToolTipText;
     sWhatsThis = "Std_ExportDependencyGraph";
@@ -673,7 +673,7 @@ void StdCmdExportDependencyGraph::activated(int iMsg)
     QString format = QStringLiteral("%1 (*.gv)").arg(Gui::GraphvizView::tr("Graphviz format"));
     QString fn = Gui::FileDialog::getSaveFileName(
         Gui::getMainWindow(),
-        Gui::GraphvizView::tr("Export graph"),
+        Gui::GraphvizView::tr("Export Graph"),
         QString(),
         format
     );
