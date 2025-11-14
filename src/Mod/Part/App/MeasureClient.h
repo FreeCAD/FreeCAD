@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 Wandererfan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -27,7 +29,6 @@
 #include "MeasureInfo.h"
 
 
-
 namespace Part
 {
 
@@ -35,7 +36,6 @@ namespace Part
 class PartExport MeasureClient
 {
 public:
-
     static void initialize();
 
     static CallbackRegistrationList reportLengthCB();
@@ -47,6 +47,6 @@ public:
 };
 
 
-} //namespace Part
+}  // namespace Part
 
 #endif

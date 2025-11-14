@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2024 Shai Seger <shaise at gmail>                       *
  *                                                                         *
@@ -95,17 +97,10 @@ void EndMill::GenerateDisplayLists(float quality)
     pathShape.ExtrudeProfileLinear(profilePoints.data(), nFullPoints, 0, 1, 0, 0, true, false);
 }
 
-unsigned int
-EndMill::GenerateArcSegmentDL(float radius, float angleRad, float zShift, Shape* retShape)
+unsigned int EndMill::GenerateArcSegmentDL(float radius, float angleRad, float zShift, Shape* retShape)
 {
     int nFullPoints = PROFILE_BUFFER_POINTS(nPoints);
-    retShape->ExtrudeProfileRadial(profilePoints.data(),
-                                   nFullPoints,
-                                   radius,
-                                   angleRad,
-                                   zShift,
-                                   true,
-                                   true);
+    retShape->ExtrudeProfileRadial(profilePoints.data(), nFullPoints, radius, angleRad, zShift, true, true);
     return 0;
 }
 

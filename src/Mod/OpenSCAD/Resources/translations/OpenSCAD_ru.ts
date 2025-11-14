@@ -320,7 +320,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="105"/>
       <source>Explodes a fusion or compound and applies random colors</source>
-      <translation>Разрушает объединение или композит и применяет случайный цвет</translation>
+      <translation>Разрушает объединение или составной объект и применяет случайный цвет</translation>
     </message>
   </context>
   <context>

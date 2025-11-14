@@ -1306,13 +1306,23 @@ class _Structure(ArchComponent.Component):
                                     # TODO use Part.Shape() rather than shape.copy() ... ?
                                     baseface = f.copy()
         elif length and width and height:
+            # check if this was a profil based arch structure
+            # profile-based structures should use XY plane orientation
+            use_profile_orientation = hasattr(obj, "Profile") and obj.Profile
+
             if (length > height) and (IfcType in ["Beam", "Column"]):
                 h2 = height / 2 or 0.5
                 w2 = width / 2 or 0.5
-                v1 = Vector(0, -w2, -h2)
-                v4 = Vector(0, -w2, h2)
-                v3 = Vector(0, w2, h2)
-                v2 = Vector(0, w2, -h2)
+                if use_profile_orientation:
+                    v1 = Vector(-w2, -h2, 0)
+                    v2 = Vector(w2, -h2, 0)
+                    v3 = Vector(w2, h2, 0)
+                    v4 = Vector(-w2, h2, 0)
+                else:
+                    v1 = Vector(0, -w2, -h2)
+                    v2 = Vector(0, w2, -h2)
+                    v3 = Vector(0, w2, h2)
+                    v4 = Vector(0, -w2, h2)
             else:
                 l2 = length / 2 or 0.5
                 w2 = width / 2 or 0.5

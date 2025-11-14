@@ -20,7 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <QPushButton>
+#include <QPushButton>
 
 
 #include <Gui/Application.h>
@@ -48,9 +48,7 @@ DlgSettingsUI::DlgSettingsUI(QWidget* parent)
 {
     ui->setupUi(this);
 
-    connect(ui->themeEditorButton, &QPushButton::clicked, [this]() {
-        openThemeEditor();
-    });
+    connect(ui->themeEditorButton, &QPushButton::clicked, [this]() { openThemeEditor(); });
 }
 
 /**
@@ -126,14 +124,17 @@ void DlgSettingsUI::loadStyleSheet()
     populateStylesheets("OverlayActiveStyleSheet", "overlay", ui->OverlayStyleSheets, "Auto");
 }
 
-void DlgSettingsUI::populateStylesheets(const char* key,
-                                        const char* path,
-                                        PrefComboBox* combo,
-                                        const char* def,
-                                        QStringList filter)
+void DlgSettingsUI::populateStylesheets(
+    const char* key,
+    const char* path,
+    PrefComboBox* combo,
+    const char* def,
+    QStringList filter
+)
 {
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/MainWindow");
+        "User parameter:BaseApp/Preferences/MainWindow"
+    );
     // List all .qss/.css files
     QMap<QString, QString> cssFiles;
     QDir dir;
@@ -194,7 +195,7 @@ void DlgSettingsUI::openThemeEditor()
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgSettingsUI::changeEvent(QEvent *e)
+void DlgSettingsUI::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
@@ -206,4 +207,3 @@ void DlgSettingsUI::changeEvent(QEvent *e)
 }
 
 #include "moc_DlgSettingsUI.cpp"
-

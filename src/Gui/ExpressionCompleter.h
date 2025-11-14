@@ -33,58 +33,67 @@
 
 class QStandardItem;
 
-namespace App {
+namespace App
+{
 class Document;
 class DocumentObject;
 class Property;
 class ObjectIdentifier;
-}
+}  // namespace App
 
-namespace Gui {
+namespace Gui
+{
 
-class GuiExport ExpressionValidator : public QValidator
+class GuiExport ExpressionValidator: public QValidator
 {
     Q_OBJECT
 
 public:
     explicit ExpressionValidator(QObject* parent = nullptr);
-    void fixup(QString &input) const override;
-    QValidator::State validate(QString &input, int &pos) const override;
+    void fixup(QString& input) const override;
+    QValidator::State validate(QString& input, int& pos) const override;
 };
 
 /**
- * @brief The ExpressionCompleter class extends the QCompleter class to provide a completer model of documentobject names and properties.
+ * @brief The ExpressionCompleter class extends the QCompleter class to provide a completer model of
+ * documentobject names and properties.
  */
 
-class GuiExport ExpressionCompleter : public QCompleter
+class GuiExport ExpressionCompleter: public QCompleter
 {
     Q_OBJECT
 public:
-    ExpressionCompleter(const App::DocumentObject * currentDocObj,
-            QObject *parent = nullptr, bool noProperty = false, bool checkInList = true);
+    ExpressionCompleter(
+        const App::DocumentObject* currentDocObj,
+        QObject* parent = nullptr,
+        bool noProperty = false,
+        bool checkInList = true
+    );
 
-    void getPrefixRange(int &start, int &end) const {
+    void getPrefixRange(int& start, int& end) const
+    {
         tokenizer.getPrefixRange(start, end);
     }
 
-    void updatePrefixEnd(int end) {
+    void updatePrefixEnd(int end)
+    {
         tokenizer.updatePrefixEnd(end);
     }
 
-    void setDocumentObject(const App::DocumentObject*, bool checkInList=true);
+    void setDocumentObject(const App::DocumentObject*, bool checkInList = true);
 
-    void setNoProperty(bool enabled=true);
+    void setNoProperty(bool enabled = true);
 
 public Q_SLOTS:
-    void slotUpdate(const QString &prefix, int pos);
+    void slotUpdate(const QString& prefix, int pos);
 
 Q_SIGNALS:
     void completerSlotUpdated();
 
 private:
     void init();
-    QString pathFromIndex ( const QModelIndex & index ) const override;
-    QStringList splitPath ( const QString & input ) const override;
+    QString pathFromIndex(const QModelIndex& index) const override;
+    QStringList splitPath(const QString& input) const override;
 
     App::DocumentObjectT currentObj;
     App::ExpressionTokenizer tokenizer;
@@ -92,32 +101,39 @@ private:
     bool checkInList;
 };
 
-class GuiExport ExpressionLineEdit : public QLineEdit {
+class GuiExport ExpressionLineEdit: public QLineEdit
+{
     Q_OBJECT
     Q_PROPERTY(ExpressionCompleter* completer READ getCompleter)
 public:
-    ExpressionLineEdit(QWidget *parent = nullptr, bool noProperty=false,
-            char checkPrefix=0, bool checkInList=true);
-    void setDocumentObject(const App::DocumentObject *currentDocObj, bool checkInList=true);
+    ExpressionLineEdit(
+        QWidget* parent = nullptr,
+        bool noProperty = false,
+        char checkPrefix = 0,
+        bool checkInList = true
+    );
+    void setDocumentObject(const App::DocumentObject* currentDocObj, bool checkInList = true);
     void setPrefix(char prefix);
     bool completerActive() const;
     void hideCompleter();
-    void setNoProperty(bool enabled=true);
-    void setExactMatch(bool enabled=true);
-    ExpressionCompleter *getCompleter(void);
+    void setNoProperty(bool enabled = true);
+    void setExactMatch(bool enabled = true);
+    ExpressionCompleter* getCompleter(void);
 Q_SIGNALS:
     void textChanged2(QString text, int pos);
 public Q_SLOTS:
-    void slotTextChanged(const QString & text);
+    void slotTextChanged(const QString& text);
     // activated == pressed enter on the completion item
     void slotCompleteText(const QString& completionPrefix, bool isActivated);
     void slotCompleteTextHighlighted(const QString& completionPrefix);
     void slotCompleteTextSelected(const QString& completionPrefix);
+
 protected:
-    void keyPressEvent(QKeyEvent * event) override;
-    void contextMenuEvent(QContextMenuEvent * event) override;
+    void keyPressEvent(QKeyEvent* event) override;
+    void contextMenuEvent(QContextMenuEvent* event) override;
+
 private:
-    ExpressionCompleter * completer;
+    ExpressionCompleter* completer;
     bool block;
     bool noProperty;
     bool exactMatch;
@@ -125,37 +141,41 @@ private:
     char checkPrefix;
 };
 
-class GuiExport ExpressionTextEdit : public QPlainTextEdit {
+class GuiExport ExpressionTextEdit: public QPlainTextEdit
+{
     Q_OBJECT
 public:
-    ExpressionTextEdit(QWidget *parent = nullptr);
-    void setDocumentObject(const App::DocumentObject *currentDocObj);
+    ExpressionTextEdit(QWidget* parent = nullptr);
+    void setDocumentObject(const App::DocumentObject* currentDocObj);
     bool completerActive() const;
     void hideCompleter();
-    void setExactMatch(bool enabled=true);
+    void setExactMatch(bool enabled = true);
     QSize sizeHint() const override;
+
 protected:
-    void keyPressEvent(QKeyEvent * event) override;
-    void contextMenuEvent(QContextMenuEvent * event) override;
+    void keyPressEvent(QKeyEvent* event) override;
+    void contextMenuEvent(QContextMenuEvent* event) override;
 Q_SIGNALS:
     void textChanged2(QString text, int pos);
 public Q_SLOTS:
     void slotTextChanged();
-    void slotCompleteText(const QString & completionPrefix);
+    void slotCompleteText(const QString& completionPrefix);
     void adjustCompleterToCursor();
+
 private:
-    ExpressionCompleter * completer;
+    ExpressionCompleter* completer;
     bool block;
     bool exactMatch;
 };
 
-class GuiExport ExpressionParameter {
+class GuiExport ExpressionParameter
+{
 public:
-    static ExpressionParameter *instance();
+    static ExpressionParameter* instance();
     bool isCaseSensitive() const;
     bool isExactMatch() const;
 };
 
-}
+}  // namespace Gui
 
-#endif // EXPRESSIONCOMPLETER_H
+#endif  // EXPRESSIONCOMPLETER_H

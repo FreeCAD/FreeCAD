@@ -48,7 +48,7 @@ namespace Gui
  * 'translationIncrement' for a full double
  * precision vector scalar.
  */
-class GuiExport SoLinearDragger : public SoDragger
+class GuiExport SoLinearDragger: public SoDragger
 {
     SO_KIT_HEADER(SoLinearDragger);
     SO_KIT_CATALOG_ENTRY_HEADER(baseGeomSwitch);
@@ -65,17 +65,17 @@ public:
     static void initClass();
     SoLinearDragger();
 
-    SoSFString label; //!< set from outside and used to label
-    SoSFVec3f translation; //!< set from outside and used from outside for single precision.
-    SoSFDouble translationIncrement; //!< set from outside and used for rounding.
-    SoSFInt32 translationIncrementCount; //!< number of steps. used from outside.
-    SoSFFloat autoScaleResult; //!< set from parent dragger.
-    SoSFColor color; //!< colour of the dragger
-    SoSFColor activeColor; //!< colour of the dragger while being dragged
-    SoSFBool labelVisible; //!< controls the visibility of the dragger label
-    SoSFVec3f geometryScale; //!< the scale of the dragger geometry
-    SoSFBool active; //!< set when the dragger is being dragged
-    SoSFBool baseGeomVisible; //!< toggles if the dragger has a base geometry or not
+    SoSFString label;       //!< set from outside and used to label
+    SoSFVec3f translation;  //!< set from outside and used from outside for single precision.
+    SoSFDouble translationIncrement;      //!< set from outside and used for rounding.
+    SoSFInt32 translationIncrementCount;  //!< number of steps. used from outside.
+    SoSFFloat autoScaleResult;            //!< set from parent dragger.
+    SoSFColor color;                      //!< colour of the dragger
+    SoSFColor activeColor;                //!< colour of the dragger while being dragged
+    SoSFBool labelVisible;                //!< controls the visibility of the dragger label
+    SoSFVec3f geometryScale;              //!< the scale of the dragger geometry
+    SoSFBool active;                      //!< set when the dragger is being dragged
+    SoSFBool baseGeomVisible;             //!< toggles if the dragger has a base geometry or not
 
     void instantiateBaseGeometry();
 
@@ -83,11 +83,11 @@ protected:
     ~SoLinearDragger() override;
     SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE) override;
 
-    static void startCB(void *, SoDragger * d);
-    static void motionCB(void *, SoDragger * d);
-    static void finishCB(void *, SoDragger * d);
-    static void fieldSensorCB(void *f, SoSensor *);
-    static void valueChangedCB(void *, SoDragger *d);
+    static void startCB(void*, SoDragger* d);
+    static void motionCB(void*, SoDragger* d);
+    static void finishCB(void*, SoDragger* d);
+    static void fieldSensorCB(void* f, SoSensor*);
+    static void valueChangedCB(void*, SoDragger* d);
 
     void dragStart();
     void drag();
@@ -97,7 +97,7 @@ protected:
     SbLineProjector projector;
 
 private:
-    SbVec3f roundTranslation(const SbVec3f &vecIn, float incrementIn);
+    SbVec3f roundTranslation(const SbVec3f& vecIn, float incrementIn);
 
     SoSeparator* buildLabelGeometry();
     SoBaseColor* buildActiveColor();
@@ -133,6 +133,6 @@ private:
     using inherited = SoInteractionKit;
 };
 
-}
+}  // namespace Gui
 
 #endif /* GUI_LINEAR_DRAGGER_H */

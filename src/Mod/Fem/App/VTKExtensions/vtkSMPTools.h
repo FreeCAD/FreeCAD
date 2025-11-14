@@ -28,19 +28,19 @@
  */
 
 #ifndef vtkSMPTools_h
-#define vtkSMPTools_h
+# define vtkSMPTools_h
 
-#include "vtkCommonCoreModule.h"  // For export macro
-#include "vtkObject.h"
+# include "vtkCommonCoreModule.h"  // For export macro
+# include "vtkObject.h"
 
-#include "SMP/Common/vtkSMPToolsAPI.h"
-#include "vtkSMPThreadLocal.h"  // For Initialized
+# include "SMP/Common/vtkSMPToolsAPI.h"
+# include "vtkSMPThreadLocal.h"  // For Initialized
 
-#include <functional>   // For std::function
-#include <iterator>     // For std::iterator
-#include <type_traits>  // For std:::enable_if
+# include <functional>   // For std::function
+# include <iterator>     // For std::iterator
+# include <type_traits>  // For std:::enable_if
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
+# ifndef DOXYGEN_SHOULD_SKIP_THIS
 namespace vtk
 {
 namespace detail
@@ -102,8 +102,9 @@ struct vtkSMPTools_FunctorInternal<Functor, false>
         auto& SMPToolsAPI = vtkSMPToolsAPI::GetInstance();
         SMPToolsAPI.For(first, last, grain, *this);
     }
-    vtkSMPTools_FunctorInternal<Functor, false>&
-    operator=(const vtkSMPTools_FunctorInternal<Functor, false>&);
+    vtkSMPTools_FunctorInternal<Functor, false>& operator=(
+        const vtkSMPTools_FunctorInternal<Functor, false>&
+    );
     vtkSMPTools_FunctorInternal(const vtkSMPTools_FunctorInternal<Functor, false>&);
 };
 
@@ -131,8 +132,9 @@ struct vtkSMPTools_FunctorInternal<Functor, true>
         SMPToolsAPI.For(first, last, grain, *this);
         this->F.Reduce();
     }
-    vtkSMPTools_FunctorInternal<Functor, true>&
-    operator=(const vtkSMPTools_FunctorInternal<Functor, true>&);
+    vtkSMPTools_FunctorInternal<Functor, true>& operator=(
+        const vtkSMPTools_FunctorInternal<Functor, true>&
+    );
     vtkSMPTools_FunctorInternal(const vtkSMPTools_FunctorInternal<Functor, true>&);
 };
 
@@ -226,7 +228,7 @@ using resolvedNotInt = typename std::enable_if<!std::is_integral<T>::value, void
 }  // namespace smp
 }  // namespace detail
 }  // namespace vtk
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+# endif  // DOXYGEN_SHOULD_SKIP_THIS
 
 class VTKCOMMONCORE_EXPORT vtkSMPTools
 {
@@ -316,8 +318,7 @@ public:
      * \endcode
      */
     template<typename Iter, typename Functor>
-    static vtk::detail::smp::resolvedNotInt<Iter>
-    For(Iter begin, Iter end, vtkIdType grain, Functor& f)
+    static vtk::detail::smp::resolvedNotInt<Iter> For(Iter begin, Iter end, vtkIdType grain, Functor& f)
     {
         vtkIdType size = std::distance(begin, end);
         typename vtk::detail::smp::vtkSMPTools_Lookup_RangeFor<Iter, Functor>::type fi(begin, f);
@@ -325,12 +326,15 @@ public:
     }
 
     template<typename Iter, typename Functor>
-    static vtk::detail::smp::resolvedNotInt<Iter>
-    For(Iter begin, Iter end, vtkIdType grain, Functor const& f)
+    static vtk::detail::smp::resolvedNotInt<Iter> For(
+        Iter begin,
+        Iter end,
+        vtkIdType grain,
+        Functor const& f
+    )
     {
         vtkIdType size = std::distance(begin, end);
-        typename vtk::detail::smp::vtkSMPTools_Lookup_RangeFor<Iter, Functor const>::type fi(begin,
-                                                                                             f);
+        typename vtk::detail::smp::vtkSMPTools_Lookup_RangeFor<Iter, Functor const>::type fi(begin, f);
         vtkSMPTools::For(0, size, grain, fi);
     }
     ///@}
@@ -477,13 +481,13 @@ public:
             , Backend(backend)
             , NestedParallelism(nestedParallelism)
         {}
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
+# ifndef DOXYGEN_SHOULD_SKIP_THIS
         Config(vtk::detail::smp::vtkSMPToolsAPI& API)
             : MaxNumberOfThreads(API.GetInternalDesiredNumberOfThread())
             , Backend(API.GetBackend())
             , NestedParallelism(API.GetNestedParallelism())
         {}
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+# endif  // DOXYGEN_SHOULD_SKIP_THIS
     };
 
     /**
@@ -543,11 +547,13 @@ public:
      * Please visit vtkDataArrayRange.h documentation for more information and optimisation.
      */
     template<typename InputIt1, typename InputIt2, typename OutputIt, typename Functor>
-    static void Transform(InputIt1 inBegin1,
-                          InputIt1 inEnd,
-                          InputIt2 inBegin2,
-                          OutputIt outBegin,
-                          Functor transform)
+    static void Transform(
+        InputIt1 inBegin1,
+        InputIt1 inEnd,
+        InputIt2 inBegin2,
+        OutputIt outBegin,
+        Functor transform
+    )
     {
         auto& SMPToolsAPI = vtk::detail::smp::vtkSMPToolsAPI::GetInstance();
         SMPToolsAPI.Transform(inBegin1, inEnd, inBegin2, outBegin, transform);

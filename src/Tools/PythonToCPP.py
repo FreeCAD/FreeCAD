@@ -1,4 +1,6 @@
 #!/usr/bin/python
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # (c) 2004 Werner Mayer LGPL
 
 import os, sys

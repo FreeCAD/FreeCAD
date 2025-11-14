@@ -44,8 +44,7 @@ bool isAlterGeoActive(Gui::Document* doc)
 {
     if (doc) {
         // checks if a Sketch Viewprovider is in Edit
-        if (doc->getInEdit()
-            && doc->getInEdit()->isDerivedFrom<SketcherGui::ViewProviderSketch>()) {
+        if (doc->getInEdit() && doc->getInEdit()->isDerivedFrom<SketcherGui::ViewProviderSketch>()) {
             return true;
         }
     }
@@ -126,8 +125,7 @@ void CmdSketcherToggleConstruction::updateAction(int mode)
                 act->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_ToggleConstruction"));
                 break;
             case GeometryCreationMode::Construction:
-                act->setIcon(
-                    Gui::BitmapFactory().iconFromTheme("Sketcher_ToggleConstruction_Constr"));
+                act->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_ToggleConstruction_Constr"));
                 break;
         }
     }
@@ -154,25 +152,28 @@ void CmdSketcherToggleConstruction::activated(int iMsg)
     {
         // get the selection
         std::vector<Gui::SelectionObject> selection;
-        selection =
-            getSelection().getSelectionEx(nullptr, Sketcher::SketchObject::getClassTypeId());
+        selection = getSelection().getSelectionEx(nullptr, Sketcher::SketchObject::getClassTypeId());
 
         auto* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
         // only one sketch with its subelements are allowed to be selected
         if (selection.size() != 1) {
-            Gui::TranslatedUserWarning(Obj,
-                                       QObject::tr("Wrong selection"),
-                                       QObject::tr("Select edges from the sketch"));
+            Gui::TranslatedUserWarning(
+                Obj,
+                QObject::tr("Wrong selection"),
+                QObject::tr("Select edges from the sketch")
+            );
             return;
         }
 
         // get the needed lists and objects
         const std::vector<std::string>& SubNames = selection[0].getSubNames();
         if (SubNames.empty()) {
-            Gui::TranslatedUserWarning(Obj,
-                                       QObject::tr("Wrong selection"),
-                                       QObject::tr("Select edges from the sketch"));
+            Gui::TranslatedUserWarning(
+                Obj,
+                QObject::tr("Wrong selection"),
+                QObject::tr("Select edges from the sketch")
+            );
             return;
         }
 

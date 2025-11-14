@@ -22,12 +22,11 @@
  ***************************************************************************/
 
 
-
-# include <QMenu>
-# include <QAction>
-# include <QMessageBox>
-# include <TopTools_IndexedMapOfShape.hxx>
-# include <TopExp.hxx>
+#include <QMenu>
+#include <QAction>
+#include <QMessageBox>
+#include <TopTools_IndexedMapOfShape.hxx>
+#include <TopExp.hxx>
 
 
 #include <Gui/Application.h>
@@ -64,7 +63,8 @@ void ViewProviderDressUp::setupContextMenu(QMenu* menu, QObject* receiver, const
     PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
 }
 
-const std::string & ViewProviderDressUp::featureName() const {
+const std::string& ViewProviderDressUp::featureName() const
+{
     static const std::string name = "Undefined";
     return name;
 }
@@ -75,24 +75,30 @@ std::string ViewProviderDressUp::featureIcon() const
 }
 
 
-bool ViewProviderDressUp::setEdit(int ModNum) {
+bool ViewProviderDressUp::setEdit(int ModNum)
+{
     if (ModNum == ViewProvider::Default) {
         // Here we should prevent edit of a Feature with missing base
         // Otherwise it could call unhandled exception.
         PartDesign::DressUp* dressUp = getObject<PartDesign::DressUp>();
-        assert (dressUp);
-        if (dressUp->getBaseObject (/*silent =*/ true)) {
+        assert(dressUp);
+        if (dressUp->getBaseObject(/*silent =*/true)) {
             return ViewProvider::setEdit(ModNum);
-        } else {
-            QMessageBox::warning ( nullptr, QObject::tr("Feature error"),
-                    QObject::tr("%1 misses a base feature.\n"
-                           "This feature is broken and cannot be edited.")
-                        .arg( QString::fromLatin1(dressUp->getNameInDocument()) )
-                );
+        }
+        else {
+            QMessageBox::warning(
+                nullptr,
+                QObject::tr("Feature error"),
+                QObject::tr(
+                    "%1 misses a base feature.\n"
+                    "This feature is broken and cannot be edited."
+                )
+                    .arg(QString::fromLatin1(dressUp->getNameInDocument()))
+            );
             return false;
         }
-
-    } else {
+    }
+    else {
         return ViewProvider::setEdit(ModNum);
     }
 }
@@ -100,13 +106,16 @@ bool ViewProviderDressUp::setEdit(int ModNum) {
 void ViewProviderDressUp::highlightReferences(const bool on)
 {
     PartDesign::DressUp* pcDressUp = getObject<PartDesign::DressUp>();
-    Part::Feature* base = pcDressUp->getBaseObject (/*silent =*/ true);
-    if (!base)
+    Part::Feature* base = pcDressUp->getBaseObject(/*silent =*/true);
+    if (!base) {
         return;
+    }
     PartGui::ViewProviderPart* vp = dynamic_cast<PartGui::ViewProviderPart*>(
-                Gui::Application::Instance->getViewProvider(base));
-    if (!vp)
+        Gui::Application::Instance->getViewProvider(base)
+    );
+    if (!vp) {
         return;
+    }
 
     std::vector<std::string> faces = pcDressUp->Base.getSubValuesStartsWith("Face");
     std::vector<std::string> edges = pcDressUp->Base.getSubValuesStartsWith("Edge");
@@ -115,7 +124,10 @@ void ViewProviderDressUp::highlightReferences(const bool on)
         if (!faces.empty()) {
             std::vector<App::Material> materials = vp->ShapeAppearance.getValues();
 
-            PartGui::ReferenceHighlighter highlighter(base->Shape.getValue(), ShapeAppearance.getDiffuseColor());
+            PartGui::ReferenceHighlighter highlighter(
+                base->Shape.getValue(),
+                ShapeAppearance.getDiffuseColor()
+            );
             highlighter.getFaceMaterials(faces, materials);
 
             vp->setHighlightedFaces(materials);
@@ -128,7 +140,8 @@ void ViewProviderDressUp::highlightReferences(const bool on)
 
             vp->setHighlightedEdges(colors);
         }
-    } else {
+    }
+    else {
         vp->unsetHighlightedFaces();
         vp->unsetHighlightedEdges();
     }
@@ -138,11 +151,11 @@ void ViewProviderDressUp::setErrorState(bool error)
 {
     auto* styleParameterManager = Base::provideService<Gui::StyleParameters::ParameterManager>();
 
-    const float opacity =
-        static_cast<float>(styleParameterManager
-                               ->resolve(error ? StyleParameters::PreviewErrorOpacity
-                                               : StyleParameters::PreviewShapeOpacity)
-                               .value);
+    const float opacity = static_cast<float>(
+        styleParameterManager
+            ->resolve(error ? StyleParameters::PreviewErrorOpacity : StyleParameters::PreviewShapeOpacity)
+            .value
+    );
 
     pcPreviewShape->transparency = 1.0F - opacity;
     pcPreviewShape->color = error

@@ -59,8 +59,9 @@ private:
     class UniqueFileNameManager: public UniqueNameManager
     {
     protected:
-        std::string::const_reverse_iterator
-        getNameSuffixStartPosition(const std::string& name) const override
+        std::string::const_reverse_iterator getNameSuffixStartPosition(
+            const std::string& name
+        ) const override
         {
             // This is an awkward way to do this, because the FileInfo class only yields pieces of
             // the path, not delimiter positions. We can't just use fi.extension().size() because

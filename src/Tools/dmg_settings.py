@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 files = [f"{containing_folder}/FreeCAD.app"]
 symlinks = {"Applications": "/Applications"}
 badge_icon = f"{containing_folder}/FreeCAD.app/Contents/Resources/freecad.icns"

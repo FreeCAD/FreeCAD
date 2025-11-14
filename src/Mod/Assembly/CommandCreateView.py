@@ -153,6 +153,101 @@ class ExplodedView:
 
         UtilsAssembly.restoreAssemblyPartsPlacements(self.getAssembly(viewObj), self.initialPlcs)
 
+    def _calculateExplodedPlacements(self, viewObj):
+        """
+        Internal helper to calculate final placements for an exploded view without
+        applying them.
+        Returns:
+            - A dictionary mapping {part_object: final_placement}.
+            - A list of [start_pos, end_pos] for explosion lines.
+        """
+        final_placements = {}
+        line_positions = []
+        factor = 1
+
+        assembly = self.getAssembly(viewObj)
+        # Get a snapshot of the assembly's current, un-exploded state
+        calculated_placements = UtilsAssembly.saveAssemblyPartsPlacements(assembly)
+
+        com, size = UtilsAssembly.getComAndSize(assembly)
+
+        for move in viewObj.Group:
+            if not UtilsAssembly.isRefValid(move.References, 1):
+                continue
+
+            if move.MoveType == "Radial":
+                distance = move.MovementTransform.Base.Length
+                factor = 4 * distance / size
+
+            subs = move.References[1]
+            for sub in subs:
+                ref = [move.References[0], [sub]]
+                obj = UtilsAssembly.getObject(ref)
+                if not obj or not hasattr(obj, "Placement"):
+                    continue
+
+                # Use the placement from our calculation dictionary, which tracks
+                # changes from previous steps.
+                current_placement = calculated_placements.get(obj.Name, obj.Placement)
+
+                # Use the part's bounding box center relative to its own coordinate system
+                # and transform it by the current placement to get the world start position.
+                local_center = obj.Shape.BoundBox.Center
+                start_pos = current_placement.multVec(local_center)
+
+                if move.MoveType == "Radial":
+                    obj_com, obj_size = UtilsAssembly.getComAndSize(obj)
+                    init_vec = obj_com - com
+                    new_base = current_placement.Base + init_vec * factor
+                    new_placement = App.Placement(new_base, current_placement.Rotation)
+                else:
+                    new_placement = move.MovementTransform * current_placement
+
+                # Store the newly calculated placement for this part
+                calculated_placements[obj.Name] = new_placement
+                final_placements[obj] = new_placement
+
+                end_pos = new_placement.multVec(local_center)
+                line_positions.append([start_pos, end_pos])
+
+        return final_placements, line_positions
+
+    def getExplodedShape(self, viewObj):
+        """
+        Generates a compound shape of the exploded assembly in memory
+        without modifying the document. Returns a single Part.Compound.
+        """
+        final_placements, line_positions = self._calculateExplodedPlacements(viewObj)
+
+        exploded_shapes = []
+
+        # We need to include ALL parts of the assembly, not just the moved ones.
+        assembly = self.getAssembly(viewObj)
+        all_parts = UtilsAssembly.getMovablePartsWithin(
+            assembly, True
+        )  # Or however you get all parts
+
+        for part in all_parts:
+            # Get the original shape. It's crucial to use .copy()
+            shape_copy = part.Shape.copy()
+
+            # If the part was moved, use its calculated final placement.
+            # Otherwise, use its current placement from the document.
+            final_plc = final_placements.get(part, part.Placement)
+
+            shape_copy.transformShape(final_plc.toMatrix())
+            exploded_shapes.append(shape_copy)
+
+        # Add shapes for the explosion lines
+        for start_pos, end_pos in line_positions:
+            line = LineSegment(start_pos, end_pos).toShape()
+            exploded_shapes.append(line)
+
+        if exploded_shapes:
+            return Compound(exploded_shapes)
+
+        return None
+
 
 class ViewProviderExplodedView:
     def __init__(self, vobj):

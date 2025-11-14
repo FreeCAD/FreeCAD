@@ -4,121 +4,121 @@
   <context>
     <name>Attacher</name>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="318"/>
+      <location filename="../../AttacherTexts.cpp" line="320"/>
       <source>Any</source>
       <comment>Attacher reference type</comment>
       <translation type="unfinished">Any</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="319"/>
+      <location filename="../../AttacherTexts.cpp" line="321"/>
       <source>Vertex</source>
       <comment>Attacher reference type</comment>
       <translation type="unfinished">Vertex</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="320"/>
+      <location filename="../../AttacherTexts.cpp" line="322"/>
       <source>Edge</source>
       <comment>Attacher reference type</comment>
       <translation>모서리</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="321"/>
+      <location filename="../../AttacherTexts.cpp" line="323"/>
       <source>Face</source>
       <comment>Attacher reference type</comment>
       <translation>면</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="323"/>
+      <location filename="../../AttacherTexts.cpp" line="325"/>
       <source>Line</source>
       <comment>Attacher reference type</comment>
       <translation>선</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="324"/>
+      <location filename="../../AttacherTexts.cpp" line="326"/>
       <source>Curve</source>
       <comment>Attacher reference type</comment>
       <translation>곡선</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="325"/>
+      <location filename="../../AttacherTexts.cpp" line="327"/>
       <source>Circle</source>
       <comment>Attacher reference type</comment>
       <translation>원</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="326"/>
+      <location filename="../../AttacherTexts.cpp" line="328"/>
       <source>Conic</source>
       <comment>Attacher reference type</comment>
       <translation>원뿔 곡선</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="327"/>
+      <location filename="../../AttacherTexts.cpp" line="329"/>
       <source>Ellipse</source>
       <comment>Attacher reference type</comment>
       <translation>타원</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="328"/>
+      <location filename="../../AttacherTexts.cpp" line="330"/>
       <source>Parabola</source>
       <comment>Attacher reference type</comment>
       <translation>포물선</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="329"/>
+      <location filename="../../AttacherTexts.cpp" line="331"/>
       <source>Hyperbola</source>
       <comment>Attacher reference type</comment>
       <translation>쌍곡선</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="331"/>
+      <location filename="../../AttacherTexts.cpp" line="333"/>
       <source>Plane</source>
       <comment>Attacher reference type</comment>
       <translation>평면</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="332"/>
+      <location filename="../../AttacherTexts.cpp" line="334"/>
       <source>Sphere</source>
       <comment>Attacher reference type</comment>
       <translation>공모양</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="333"/>
+      <location filename="../../AttacherTexts.cpp" line="335"/>
       <source>Revolve</source>
       <comment>Attacher reference type</comment>
       <translation>공전</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="334"/>
+      <location filename="../../AttacherTexts.cpp" line="336"/>
       <source>Cylinder</source>
       <comment>Attacher reference type</comment>
       <translation>원통</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="335"/>
+      <location filename="../../AttacherTexts.cpp" line="337"/>
       <source>Torus</source>
       <comment>Attacher reference type</comment>
       <translation>원환체</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="336"/>
+      <location filename="../../AttacherTexts.cpp" line="338"/>
       <source>Cone</source>
       <comment>Attacher reference type</comment>
       <translation>고깔</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="338"/>
+      <location filename="../../AttacherTexts.cpp" line="340"/>
       <source>Object</source>
       <comment>Attacher reference type</comment>
       <translation>대상체</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="339"/>
+      <location filename="../../AttacherTexts.cpp" line="341"/>
       <source>Solid</source>
       <comment>Attacher reference type</comment>
       <translation>고체</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="340"/>
+      <location filename="../../AttacherTexts.cpp" line="342"/>
       <source>Wire</source>
       <comment>Attacher reference type</comment>
       <translation>철사</translation>
@@ -127,133 +127,133 @@
   <context>
     <name>Attacher0D</name>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="275"/>
+      <location filename="../../AttacherTexts.cpp" line="277"/>
       <source>Deactivated</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>비활성화 된</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="276"/>
+      <location filename="../../AttacherTexts.cpp" line="278"/>
       <source>Attachment is disabled. Point can be moved by editing Placement property.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>부착이 비활성화 됨. 대상체는 위치 속성 수정을 통해 이동할 수 있습니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="278"/>
+      <location filename="../../AttacherTexts.cpp" line="280"/>
       <source>Object's origin</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>대상체의 원점</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="279"/>
+      <location filename="../../AttacherTexts.cpp" line="281"/>
       <source>Point is put at object's placement position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation type="unfinished">Point is put at object's placement position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="281"/>
+      <location filename="../../AttacherTexts.cpp" line="283"/>
       <source>Focus1</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>초점1</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="282"/>
+      <location filename="../../AttacherTexts.cpp" line="284"/>
       <source>Focus of ellipse, parabola, hyperbola.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>타원, 포물선, 쌍곡선의 초점</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="284"/>
+      <location filename="../../AttacherTexts.cpp" line="286"/>
       <source>Focus2</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>초점2</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="285"/>
+      <location filename="../../AttacherTexts.cpp" line="287"/>
       <source>Second focus of ellipse and hyperbola.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>타원과 쌍곡선의 두 번째 초점.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="287"/>
+      <location filename="../../AttacherTexts.cpp" line="289"/>
       <source>On edge</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>모서리 위에</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="288"/>
+      <location filename="../../AttacherTexts.cpp" line="290"/>
       <source>Point is put on edge, MapPathParameter controls where. Additionally, vertex can be linked in for making a projection.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation type="unfinished">Point is put on edge, MapPathParameter controls where. Additionally, vertex can be linked in for making a projection.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="290"/>
+      <location filename="../../AttacherTexts.cpp" line="292"/>
       <source>Center of curvature</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>곡률 중심</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="291"/>
+      <location filename="../../AttacherTexts.cpp" line="293"/>
       <source>Center of osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation type="unfinished">Center of osculating circle of an edge. Optional vertex link defines where.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="293"/>
+      <location filename="../../AttacherTexts.cpp" line="295"/>
       <source>Center of mass</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>무게중심</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="294"/>
+      <location filename="../../AttacherTexts.cpp" line="296"/>
       <source>Center of mass of all references (equal densities are assumed).</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>모든 참조의 질량 중심(밀도가 같다고 가정).</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="296"/>
+      <location filename="../../AttacherTexts.cpp" line="298"/>
       <source>Intersection</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>교차</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="297"/>
+      <location filename="../../AttacherTexts.cpp" line="299"/>
       <source>Not implemented</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>구현되지 않음</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="299"/>
+      <location filename="../../AttacherTexts.cpp" line="301"/>
       <source>Vertex</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>꼭지점</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="300"/>
+      <location filename="../../AttacherTexts.cpp" line="302"/>
       <source>Put Datum point coincident with another vertex.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>다른 꼭지점과 일치하는 기준점을 넣습니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="302"/>
+      <location filename="../../AttacherTexts.cpp" line="304"/>
       <source>Proximity point 1</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>근접 지점 1</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="303"/>
+      <location filename="../../AttacherTexts.cpp" line="305"/>
       <source>Point on first reference that is closest to second reference.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation type="unfinished">Point on first reference that is closest to second reference.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="305"/>
+      <location filename="../../AttacherTexts.cpp" line="307"/>
       <source>Proximity point 2</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>근접 지점 2</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="306"/>
+      <location filename="../../AttacherTexts.cpp" line="308"/>
       <source>Point on second reference that is closest to first reference.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation type="unfinished">Point on second reference that is closest to first reference.</translation>
@@ -262,243 +262,243 @@
   <context>
     <name>Attacher1D</name>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="206"/>
+      <location filename="../../AttacherTexts.cpp" line="208"/>
       <source>Deactivated</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>비활성화 된</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="207"/>
+      <location filename="../../AttacherTexts.cpp" line="209"/>
       <source>Attachment is disabled. Line can be moved by editing Placement property.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>부착이 비활성화 됨. 직선은  위치 속성 수정을 통해 이동할 수 있습니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="209"/>
+      <location filename="../../AttacherTexts.cpp" line="211"/>
       <source>Object's X</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>대상체의 X</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="210"/>
-      <location filename="../../AttacherTexts.cpp" line="216"/>
+      <location filename="../../AttacherTexts.cpp" line="212"/>
+      <location filename="../../AttacherTexts.cpp" line="218"/>
       <source>Line is aligned along local X axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation type="unfinished">Line is aligned along local X axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="212"/>
+      <location filename="../../AttacherTexts.cpp" line="214"/>
       <source>Object's Y</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>대상체의 Y</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="213"/>
+      <location filename="../../AttacherTexts.cpp" line="215"/>
       <source>Line is aligned along local Y axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation type="unfinished">Line is aligned along local Y axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="215"/>
+      <location filename="../../AttacherTexts.cpp" line="217"/>
       <source>Object's Z</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>대상체의 Z</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="218"/>
+      <location filename="../../AttacherTexts.cpp" line="220"/>
       <source>Axis of curvature</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>곡률축</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="219"/>
+      <location filename="../../AttacherTexts.cpp" line="221"/>
       <source>Line that is an axis of osculating circle of curved edge. Optional vertex defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation type="unfinished">Line that is an axis of osculating circle of curved edge. Optional vertex defines where.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="221"/>
+      <location filename="../../AttacherTexts.cpp" line="223"/>
       <source>Directrix1</source>
       <comment>AttachmentLine mode caption</comment>
       <translation type="unfinished">Directrix1</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="222"/>
+      <location filename="../../AttacherTexts.cpp" line="224"/>
       <source>Directrix line for ellipse, parabola, hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation type="unfinished">Directrix line for ellipse, parabola, hyperbola.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="224"/>
+      <location filename="../../AttacherTexts.cpp" line="226"/>
       <source>Directrix2</source>
       <comment>AttachmentLine mode caption</comment>
       <translation type="unfinished">Directrix2</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="225"/>
+      <location filename="../../AttacherTexts.cpp" line="227"/>
       <source>Second directrix line for ellipse and hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation type="unfinished">Second directrix line for ellipse and hyperbola.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="227"/>
+      <location filename="../../AttacherTexts.cpp" line="229"/>
       <source>Asymptote1</source>
       <comment>AttachmentLine mode caption</comment>
       <translation type="unfinished">Asymptote1</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="228"/>
+      <location filename="../../AttacherTexts.cpp" line="230"/>
       <source>Asymptote of a hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation type="unfinished">Asymptote of a hyperbola.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="230"/>
+      <location filename="../../AttacherTexts.cpp" line="232"/>
       <source>Asymptote2</source>
       <comment>AttachmentLine mode caption</comment>
       <translation type="unfinished">Asymptote2</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="231"/>
+      <location filename="../../AttacherTexts.cpp" line="233"/>
       <source>Second asymptote of hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation type="unfinished">Second asymptote of hyperbola.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="233"/>
+      <location filename="../../AttacherTexts.cpp" line="235"/>
       <source>Tangent</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>접선</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="234"/>
+      <location filename="../../AttacherTexts.cpp" line="236"/>
       <source>Line tangent to an edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation type="unfinished">Line tangent to an edge. Optional vertex link defines where.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="236"/>
+      <location filename="../../AttacherTexts.cpp" line="238"/>
       <source>Normal to edge</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>모서리에 수직</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="237"/>
+      <location filename="../../AttacherTexts.cpp" line="239"/>
       <source>Align to N vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation type="unfinished">Align to N vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="239"/>
+      <location filename="../../AttacherTexts.cpp" line="241"/>
       <source>Binormal</source>
       <comment>AttachmentLine mode caption</comment>
       <translation type="unfinished">Binormal</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="240"/>
+      <location filename="../../AttacherTexts.cpp" line="242"/>
       <source>Align to B vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation type="unfinished">Align to B vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="242"/>
+      <location filename="../../AttacherTexts.cpp" line="244"/>
       <source>Tangent to surface (U)</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>표면에 접함(U)</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="243"/>
-      <location filename="../../AttacherTexts.cpp" line="246"/>
+      <location filename="../../AttacherTexts.cpp" line="245"/>
+      <location filename="../../AttacherTexts.cpp" line="248"/>
       <source>Tangent to surface, along U parameter. Vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation type="unfinished">Tangent to surface, along U parameter. Vertex link defines where.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="245"/>
+      <location filename="../../AttacherTexts.cpp" line="247"/>
       <source>Tangent to surface (V)</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>표면에 접함(V)</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="248"/>
+      <location filename="../../AttacherTexts.cpp" line="250"/>
       <source>Through two points</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>두 점을 지남</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="249"/>
+      <location filename="../../AttacherTexts.cpp" line="251"/>
       <source>Line that passes through two vertices.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>두 꼭지점을 지나는 직선</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="251"/>
+      <location filename="../../AttacherTexts.cpp" line="253"/>
       <source>Intersection</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>교차</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="252"/>
+      <location filename="../../AttacherTexts.cpp" line="254"/>
       <source>Intersection of two faces.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>두 면의 교차</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="254"/>
+      <location filename="../../AttacherTexts.cpp" line="256"/>
       <source>Proximity line</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>근접선</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="255"/>
+      <location filename="../../AttacherTexts.cpp" line="257"/>
       <source>Line that spans the shortest distance between shapes.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation type="unfinished">Line that spans the shortest distance between shapes.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="257"/>
+      <location filename="../../AttacherTexts.cpp" line="259"/>
       <source>1st principal axis</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>첫 번째 주축</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="258"/>
+      <location filename="../../AttacherTexts.cpp" line="260"/>
       <source>Line follows first principal axis of inertia.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>선은 첫 번째 주 관성축을 따릅니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="260"/>
+      <location filename="../../AttacherTexts.cpp" line="262"/>
       <source>2nd principal axis</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>두 번째 주축</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="261"/>
+      <location filename="../../AttacherTexts.cpp" line="263"/>
       <source>Line follows second principal axis of inertia.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>선은 두 번째 주 관성축을 따릅니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="263"/>
+      <location filename="../../AttacherTexts.cpp" line="265"/>
       <source>3rd principal axis</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>세 번째 주축</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="264"/>
+      <location filename="../../AttacherTexts.cpp" line="266"/>
       <source>Line follows third principal axis of inertia.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>선은 세 번째 주 관성축을 따릅니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="266"/>
+      <location filename="../../AttacherTexts.cpp" line="268"/>
       <source>Normal to surface</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>면에 수직</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="267"/>
+      <location filename="../../AttacherTexts.cpp" line="269"/>
       <source>Line perpendicular to surface at point set by vertex.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>지점에서 면에 직교하는 선을 꼭지점에 의해 설정</translation>
@@ -507,207 +507,207 @@
   <context>
     <name>Attacher2D</name>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="128"/>
+      <location filename="../../AttacherTexts.cpp" line="130"/>
       <source>Deactivated</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>비활성화 된</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="129"/>
+      <location filename="../../AttacherTexts.cpp" line="131"/>
       <source>Attachment is disabled. Object can be moved by editing Placement property.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>부착이 비활성화 됨. 대상체는 위치 속성 수정을 통해 이동할 수 있습니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="131"/>
+      <location filename="../../AttacherTexts.cpp" line="133"/>
       <source>Translate origin</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>원점 이동</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="132"/>
+      <location filename="../../AttacherTexts.cpp" line="134"/>
       <source>Origin is aligned to match Vertex. Orientation is controlled by Placement property.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>원점은 꼭지점과 일치하도록 정렬됩니다. 방향은 배치 속성으로 조절됩니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="134"/>
+      <location filename="../../AttacherTexts.cpp" line="136"/>
       <source>Object's XY</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>대상체의 XY</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="135"/>
+      <location filename="../../AttacherTexts.cpp" line="137"/>
       <source>Plane is aligned to XY local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>평면은 연결된 대상체의 지역 XY평면에 정렬됩니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="137"/>
+      <location filename="../../AttacherTexts.cpp" line="139"/>
       <source>Object's XZ</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>대상체의 XZ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="138"/>
+      <location filename="../../AttacherTexts.cpp" line="140"/>
       <source>Plane is aligned to XZ local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation type="unfinished">Plane is aligned to XZ local plane of linked object.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="140"/>
+      <location filename="../../AttacherTexts.cpp" line="142"/>
       <source>Object's YZ</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>대상체의 YZ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="141"/>
+      <location filename="../../AttacherTexts.cpp" line="143"/>
       <source>Plane is aligned to YZ local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation type="unfinished">Plane is aligned to YZ local plane of linked object.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="143"/>
+      <location filename="../../AttacherTexts.cpp" line="145"/>
       <source>XY parallel to plane</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation type="unfinished">XY parallel to plane</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="144"/>
+      <location filename="../../AttacherTexts.cpp" line="146"/>
       <source>X' Y' plane is parallel to the plane (object's XY) and passes through the vertex</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation type="unfinished">X' Y' plane is parallel to the plane (object's XY) and passes through the vertex</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="146"/>
+      <location filename="../../AttacherTexts.cpp" line="148"/>
       <source>Plane face</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>평면</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="147"/>
+      <location filename="../../AttacherTexts.cpp" line="149"/>
       <source>Plane is aligned to coincide planar face.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation type="unfinished">Plane is aligned to coincide planar face.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="149"/>
+      <location filename="../../AttacherTexts.cpp" line="151"/>
       <source>Tangent to surface</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>표면에 접함</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="150"/>
+      <location filename="../../AttacherTexts.cpp" line="152"/>
       <source>Plane is made tangent to surface at vertex.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>평면은 꼭지점에서 면에 접하게 만들어짐</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="152"/>
+      <location filename="../../AttacherTexts.cpp" line="154"/>
       <source>Normal to edge</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>모서리에 수직</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="153"/>
+      <location filename="../../AttacherTexts.cpp" line="155"/>
       <source>Plane is made tangent to edge. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation type="unfinished">Plane is made tangent to edge. Optional vertex link defines where.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="155"/>
+      <location filename="../../AttacherTexts.cpp" line="157"/>
       <source>Frenet NB</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation type="unfinished">Frenet NB</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="156"/>
-      <location filename="../../AttacherTexts.cpp" line="159"/>
-      <location filename="../../AttacherTexts.cpp" line="162"/>
+      <location filename="../../AttacherTexts.cpp" line="158"/>
+      <location filename="../../AttacherTexts.cpp" line="161"/>
+      <location filename="../../AttacherTexts.cpp" line="164"/>
       <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation type="unfinished">Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="158"/>
+      <location filename="../../AttacherTexts.cpp" line="160"/>
       <source>Frenet TN</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation type="unfinished">Frenet TN</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="161"/>
+      <location filename="../../AttacherTexts.cpp" line="163"/>
       <source>Frenet TB</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation type="unfinished">Frenet TB</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="164"/>
+      <location filename="../../AttacherTexts.cpp" line="166"/>
       <source>Concentric</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>동심</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="165"/>
+      <location filename="../../AttacherTexts.cpp" line="167"/>
       <source>Align to plane to osculating circle of an edge. Origin is aligned to point of curvature. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation type="unfinished">Align to plane to osculating circle of an edge. Origin is aligned to point of curvature. Optional vertex link defines where.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="167"/>
+      <location filename="../../AttacherTexts.cpp" line="169"/>
       <source>Revolution Section</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation type="unfinished">Revolution Section</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="168"/>
+      <location filename="../../AttacherTexts.cpp" line="170"/>
       <source>Plane is perpendicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation type="unfinished">Plane is perpendicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="170"/>
+      <location filename="../../AttacherTexts.cpp" line="172"/>
       <source>Plane by 3 points</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>3 점에 의한 평면</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="171"/>
+      <location filename="../../AttacherTexts.cpp" line="173"/>
       <source>Align plane to pass through three vertices.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>세 개의 꼭지점을 지나도록 평면을 정렬합니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="173"/>
+      <location filename="../../AttacherTexts.cpp" line="175"/>
       <source>Normal to 3 points</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation type="unfinished">Normal to 3 points</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="174"/>
+      <location filename="../../AttacherTexts.cpp" line="176"/>
       <source>Plane will pass through first two vertices, and perpendicular to plane that passes through three vertices.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>평면은 처음의 두 점을 지나게 되고, 세 점을 지나는 평면에 직교하게 됩니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="176"/>
+      <location filename="../../AttacherTexts.cpp" line="178"/>
       <source>Folding</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation type="unfinished">Folding</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="177"/>
+      <location filename="../../AttacherTexts.cpp" line="179"/>
       <source>Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. Plane will be aligned to folding the first edge.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation type="unfinished">Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. Plane will be aligned to folding the first edge.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="179"/>
+      <location filename="../../AttacherTexts.cpp" line="181"/>
       <source>Inertia 2-3</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation type="unfinished">Inertia 2-3</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="180"/>
+      <location filename="../../AttacherTexts.cpp" line="182"/>
       <source>Plane constructed on second and third principal axes of inertia (passes through center of mass).</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation type="unfinished">Plane constructed on second and third principal axes of inertia (passes through center of mass).</translation>
@@ -716,341 +716,341 @@
   <context>
     <name>Attacher3D</name>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="50"/>
+      <location filename="../../AttacherTexts.cpp" line="52"/>
       <source>Deactivated</source>
       <comment>Attachment3D mode caption</comment>
       <translation>비활성화 된</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="51"/>
+      <location filename="../../AttacherTexts.cpp" line="53"/>
       <source>Attachment is disabled. Object can be moved by editing Placement property.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>부착이 비활성화 됨. 대상체는 위치 속성 수정을 통해 이동할 수 있습니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="53"/>
+      <location filename="../../AttacherTexts.cpp" line="55"/>
       <source>Translate origin</source>
       <comment>Attachment3D mode caption</comment>
       <translation>원점 이동</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="54"/>
+      <location filename="../../AttacherTexts.cpp" line="56"/>
       <source>Origin is aligned to match Vertex. Orientation is controlled by Placement property.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>원점은 꼭지점과 일치하도록 정렬됩니다. 방향은 배치 속성으로 조절됩니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="56"/>
+      <location filename="../../AttacherTexts.cpp" line="58"/>
       <source>Object's X Y Z</source>
       <comment>Attachment3D mode caption</comment>
       <translation>대상체의 X Y Z</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="57"/>
+      <location filename="../../AttacherTexts.cpp" line="59"/>
       <source>Placement is made equal to Placement of linked object.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation type="unfinished">Placement is made equal to Placement of linked object.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="59"/>
+      <location filename="../../AttacherTexts.cpp" line="61"/>
       <source>Object's X Z Y</source>
       <comment>Attachment3D mode caption</comment>
       <translation>대상체의 X Y Z</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="60"/>
+      <location filename="../../AttacherTexts.cpp" line="62"/>
       <source>X', Y', Z' axes are matched with object's local X, Z, -Y, respectively.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation type="unfinished">X', Y', Z' axes are matched with object's local X, Z, -Y, respectively.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="62"/>
+      <location filename="../../AttacherTexts.cpp" line="64"/>
       <source>Object's Y Z X</source>
       <comment>Attachment3D mode caption</comment>
       <translation>대상체의 Y Z X</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="63"/>
+      <location filename="../../AttacherTexts.cpp" line="65"/>
       <source>X', Y', Z' axes are matched with object's local Y, Z, X, respectively.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation type="unfinished">X', Y', Z' axes are matched with object's local Y, Z, X, respectively.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="65"/>
+      <location filename="../../AttacherTexts.cpp" line="67"/>
       <source>XY parallel to plane</source>
       <comment>Attachment3D mode caption</comment>
       <translation type="unfinished">XY parallel to plane</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="66"/>
+      <location filename="../../AttacherTexts.cpp" line="68"/>
       <source>X' Y' plane is parallel to the plane (object's XY) and passes through the vertex.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation type="unfinished">X' Y' plane is parallel to the plane (object's XY) and passes through the vertex.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="68"/>
+      <location filename="../../AttacherTexts.cpp" line="70"/>
       <source>XY on plane</source>
       <comment>Attachment3D mode caption</comment>
       <translation type="unfinished">XY on plane</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="69"/>
+      <location filename="../../AttacherTexts.cpp" line="71"/>
       <source>X' Y' plane is aligned to coincide planar face.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation type="unfinished">X' Y' plane is aligned to coincide planar face.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="71"/>
+      <location filename="../../AttacherTexts.cpp" line="73"/>
       <source>XY tangent to surface</source>
       <comment>Attachment3D mode caption</comment>
       <translation type="unfinished">XY tangent to surface</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="72"/>
+      <location filename="../../AttacherTexts.cpp" line="74"/>
       <source>X' Y' plane is made tangent to surface at vertex.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation type="unfinished">X' Y' plane is made tangent to surface at vertex.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="74"/>
+      <location filename="../../AttacherTexts.cpp" line="76"/>
       <source>Z tangent to edge</source>
       <comment>Attachment3D mode caption</comment>
       <translation type="unfinished">Z tangent to edge</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="75"/>
+      <location filename="../../AttacherTexts.cpp" line="77"/>
       <source>Z' axis is aligned to be tangent to edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation type="unfinished">Z' axis is aligned to be tangent to edge. Optional vertex link defines where.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="77"/>
+      <location filename="../../AttacherTexts.cpp" line="79"/>
       <source>Frenet NBT</source>
       <comment>Attachment3D mode caption</comment>
       <translation type="unfinished">Frenet NBT</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="78"/>
-      <location filename="../../AttacherTexts.cpp" line="81"/>
-      <location filename="../../AttacherTexts.cpp" line="84"/>
+      <location filename="../../AttacherTexts.cpp" line="80"/>
+      <location filename="../../AttacherTexts.cpp" line="83"/>
+      <location filename="../../AttacherTexts.cpp" line="86"/>
       <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation type="unfinished">Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="80"/>
+      <location filename="../../AttacherTexts.cpp" line="82"/>
       <source>Frenet TNB</source>
       <comment>Attachment3D mode caption</comment>
       <translation type="unfinished">Frenet TNB</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="83"/>
+      <location filename="../../AttacherTexts.cpp" line="85"/>
       <source>Frenet TBN</source>
       <comment>Attachment3D mode caption</comment>
       <translation type="unfinished">Frenet TBN</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="86"/>
+      <location filename="../../AttacherTexts.cpp" line="88"/>
       <source>Concentric</source>
       <comment>Attachment3D mode caption</comment>
       <translation>동심</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="89"/>
+      <location filename="../../AttacherTexts.cpp" line="91"/>
       <source>Revolution Section</source>
       <comment>Attachment3D mode caption</comment>
       <translation type="unfinished">Revolution Section</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="90"/>
+      <location filename="../../AttacherTexts.cpp" line="92"/>
       <source>Align Y' axis to match axis of osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation type="unfinished">Align Y' axis to match axis of osculating circle of an edge. Optional vertex link defines where.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="98"/>
+      <location filename="../../AttacherTexts.cpp" line="100"/>
       <source>Folding</source>
       <comment>Attachment3D mode caption</comment>
       <translation type="unfinished">Folding</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="87"/>
+      <location filename="../../AttacherTexts.cpp" line="89"/>
       <source>Align XY-plane to osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation type="unfinished">Align XY-plane to osculating circle of an edge. Optional vertex link defines where.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="92"/>
+      <location filename="../../AttacherTexts.cpp" line="94"/>
       <source>XY-plane by 3 points</source>
       <comment>Attachment3D mode caption</comment>
       <translation type="unfinished">XY-plane by 3 points</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="93"/>
+      <location filename="../../AttacherTexts.cpp" line="95"/>
       <source>Align XY-plane to pass through three vertices.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation type="unfinished">Align XY-plane to pass through three vertices.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="95"/>
+      <location filename="../../AttacherTexts.cpp" line="97"/>
       <source>XZ-plane by 3 points</source>
       <comment>Attachment3D mode caption</comment>
       <translation type="unfinished">XZ-plane by 3 points</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="96"/>
+      <location filename="../../AttacherTexts.cpp" line="98"/>
       <source>Align XZ-plane to pass through 3 points; X axis will pass through two first points.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation type="unfinished">Align XZ-plane to pass through 3 points; X axis will pass through two first points.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="99"/>
+      <location filename="../../AttacherTexts.cpp" line="101"/>
       <source>Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. XY-plane will be aligned to folding the first edge.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation type="unfinished">Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. XY-plane will be aligned to folding the first edge.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="101"/>
+      <location filename="../../AttacherTexts.cpp" line="103"/>
       <source>Inertial CS</source>
       <comment>Attachment3D mode caption</comment>
       <translation type="unfinished">Inertial CS</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="102"/>
+      <location filename="../../AttacherTexts.cpp" line="104"/>
       <source>Inertial coordinate system, constructed on principal axes of inertia and center of mass.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation type="unfinished">Inertial coordinate system, constructed on principal axes of inertia and center of mass.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="104"/>
+      <location filename="../../AttacherTexts.cpp" line="106"/>
       <source>Align O-Z-X</source>
       <comment>Attachment3D mode caption</comment>
       <translation>O-Z-X 정렬</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="105"/>
+      <location filename="../../AttacherTexts.cpp" line="107"/>
       <source>Match origin with first Vertex. Align Z' and X' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation type="unfinished">Match origin with first Vertex. Align Z' and X' axes towards vertex/along line.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="107"/>
+      <location filename="../../AttacherTexts.cpp" line="109"/>
       <source>Align O-Z-Y</source>
       <comment>Attachment3D mode caption</comment>
       <translation>O-Z-Y 정렬</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="108"/>
+      <location filename="../../AttacherTexts.cpp" line="110"/>
       <source>Match origin with first Vertex. Align Z' and Y' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation type="unfinished">Match origin with first Vertex. Align Z' and Y' axes towards vertex/along line.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="110"/>
-      <location filename="../../AttacherTexts.cpp" line="188"/>
+      <location filename="../../AttacherTexts.cpp" line="112"/>
+      <location filename="../../AttacherTexts.cpp" line="190"/>
       <source>Align O-X-Y</source>
       <comment>Attachment3D mode caption</comment>
       <translation>O-X-Y 정렬</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="111"/>
+      <location filename="../../AttacherTexts.cpp" line="113"/>
       <source>Match origin with first Vertex. Align X' and Y' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation type="unfinished">Match origin with first Vertex. Align X' and Y' axes towards vertex/along line.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="113"/>
+      <location filename="../../AttacherTexts.cpp" line="115"/>
       <source>Align O-X-Z</source>
       <comment>Attachment3D mode caption</comment>
       <translation>O-X-Z정렬</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="114"/>
+      <location filename="../../AttacherTexts.cpp" line="116"/>
       <source>Match origin with first Vertex. Align X' and Z' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation type="unfinished">Match origin with first Vertex. Align X' and Z' axes towards vertex/along line.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="116"/>
+      <location filename="../../AttacherTexts.cpp" line="118"/>
       <source>Align O-Y-Z</source>
       <comment>Attachment3D mode caption</comment>
       <translation>O-Y-Z정렬</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="117"/>
+      <location filename="../../AttacherTexts.cpp" line="119"/>
       <source>Match origin with first Vertex. Align Y' and Z' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation type="unfinished">Match origin with first Vertex. Align Y' and Z' axes towards vertex/along line.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="119"/>
-      <location filename="../../AttacherTexts.cpp" line="197"/>
+      <location filename="../../AttacherTexts.cpp" line="121"/>
+      <location filename="../../AttacherTexts.cpp" line="199"/>
       <source>Align O-Y-X</source>
       <comment>Attachment3D mode caption</comment>
       <translation>O-Y-X 정렬</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="120"/>
+      <location filename="../../AttacherTexts.cpp" line="122"/>
       <source>Match origin with first Vertex. Align Y' and X' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation type="unfinished">Match origin with first Vertex. Align Y' and X' axes towards vertex/along line.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="182"/>
+      <location filename="../../AttacherTexts.cpp" line="184"/>
       <source>Align O-N-X</source>
       <comment>Attachment3D mode caption</comment>
       <translation>O-N-X 정렬</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="183"/>
+      <location filename="../../AttacherTexts.cpp" line="185"/>
       <source>Match origin with first Vertex. Align normal and horizontal plane axis towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation type="unfinished">Match origin with first Vertex. Align normal and horizontal plane axis towards vertex/along line.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="185"/>
+      <location filename="../../AttacherTexts.cpp" line="187"/>
       <source>Align O-N-Y</source>
       <comment>Attachment3D mode caption</comment>
       <translation>O-N-Y 정렬</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="186"/>
+      <location filename="../../AttacherTexts.cpp" line="188"/>
       <source>Match origin with first Vertex. Align normal and vertical plane axis towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation type="unfinished">Match origin with first Vertex. Align normal and vertical plane axis towards vertex/along line.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="189"/>
+      <location filename="../../AttacherTexts.cpp" line="191"/>
       <source>Match origin with first Vertex. Align horizontal and vertical plane axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation type="unfinished">Match origin with first Vertex. Align horizontal and vertical plane axes towards vertex/along line.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="191"/>
+      <location filename="../../AttacherTexts.cpp" line="193"/>
       <source>Align O-X-N</source>
       <comment>Attachment3D mode caption</comment>
       <translation>O-X-N 정렬</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="192"/>
+      <location filename="../../AttacherTexts.cpp" line="194"/>
       <source>Match origin with first Vertex. Align horizontal plane axis and normal towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation type="unfinished">Match origin with first Vertex. Align horizontal plane axis and normal towards vertex/along line.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="194"/>
+      <location filename="../../AttacherTexts.cpp" line="196"/>
       <source>Align O-Y-N</source>
       <comment>Attachment3D mode caption</comment>
       <translation>O-Y-N 정렬</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="195"/>
+      <location filename="../../AttacherTexts.cpp" line="197"/>
       <source>Match origin with first Vertex. Align vertical plane axis and normal towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation type="unfinished">Match origin with first Vertex. Align vertical plane axis and normal towards vertex/along line.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="198"/>
+      <location filename="../../AttacherTexts.cpp" line="200"/>
       <source>Match origin with first Vertex. Align vertical and horizontal plane axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation type="unfinished">Match origin with first Vertex. Align vertical and horizontal plane axes towards vertex/along line.</translation>
@@ -1174,22 +1174,22 @@
   <context>
     <name>CmdBoxSelection</name>
     <message>
-      <location filename="../../Command.cpp" line="2136"/>
+      <location filename="../../Command.cpp" line="2138"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2137"/>
+      <location filename="../../Command.cpp" line="2139"/>
       <source>Box Selection</source>
       <translation>영역 선택</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2138"/>
+      <location filename="../../Command.cpp" line="2140"/>
       <source>Selects elements in the 3D view using a box selection</source>
       <translation>3D보기 에서 요소들을 사각형 영역으로 선택합니다</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2140"/>
+      <location filename="../../Command.cpp" line="2142"/>
       <source>Box selection</source>
       <translation>박스 선택항목</translation>
     </message>
@@ -1197,17 +1197,17 @@
   <context>
     <name>CmdCheckGeometry</name>
     <message>
-      <location filename="../../Command.cpp" line="2066"/>
+      <location filename="../../Command.cpp" line="2068"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2067"/>
+      <location filename="../../Command.cpp" line="2069"/>
       <source>Check Geometry</source>
       <translation>도형 검사</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2068"/>
+      <location filename="../../Command.cpp" line="2070"/>
       <source>Analyzes the selected shapes for errors</source>
       <translation type="unfinished">Analyzes the selected shapes for errors</translation>
     </message>
@@ -1215,17 +1215,17 @@
   <context>
     <name>CmdColorPerFace</name>
     <message>
-      <location filename="../../Command.cpp" line="2099"/>
+      <location filename="../../Command.cpp" line="2101"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2100"/>
+      <location filename="../../Command.cpp" line="2102"/>
       <source>Appearance per &amp;Face</source>
       <translation type="unfinished">Appearance per &amp;Face</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2101"/>
+      <location filename="../../Command.cpp" line="2103"/>
       <source>Sets the appearance of individual faces of the selected object</source>
       <translation type="unfinished">Sets the appearance of individual faces of the selected object</translation>
     </message>
@@ -1233,17 +1233,17 @@
   <context>
     <name>CmdPartBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="1234"/>
+      <location filename="../../Command.cpp" line="1236"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1235"/>
+      <location filename="../../Command.cpp" line="1237"/>
       <source>Boolean Operation</source>
       <translation>부울 작업</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1236"/>
+      <location filename="../../Command.cpp" line="1238"/>
       <source>Applies a boolean operations with the selected shapes</source>
       <translation type="unfinished">Applies a boolean operations with the selected shapes</translation>
     </message>
@@ -1251,19 +1251,19 @@
   <context>
     <name>CmdPartBox</name>
     <message>
-      <location filename="../../CommandParametric.cpp" line="104"/>
+      <location filename="../../CommandParametric.cpp" line="106"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="105"/>
-      <location filename="../../CommandParametric.cpp" line="116"/>
-      <location filename="../../CommandParametric.cpp" line="121"/>
+      <location filename="../../CommandParametric.cpp" line="107"/>
+      <location filename="../../CommandParametric.cpp" line="118"/>
+      <location filename="../../CommandParametric.cpp" line="123"/>
       <source>Cube</source>
       <translation>입방체</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="106"/>
+      <location filename="../../CommandParametric.cpp" line="108"/>
       <source>Creates a solid cube</source>
       <translation>고체 입방체를 생성합니다</translation>
     </message>
@@ -1271,17 +1271,17 @@
   <context>
     <name>CmdPartBox2</name>
     <message>
-      <location filename="../../Command.cpp" line="131"/>
+      <location filename="../../Command.cpp" line="133"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="132"/>
+      <location filename="../../Command.cpp" line="134"/>
       <source>Box Fix 1</source>
       <translation type="unfinished">Box Fix 1</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="133"/>
+      <location filename="../../Command.cpp" line="135"/>
       <source>Creates a solid box</source>
       <translation>고체 상자를 생성합니다</translation>
     </message>
@@ -1289,17 +1289,17 @@
   <context>
     <name>CmdPartBox3</name>
     <message>
-      <location filename="../../Command.cpp" line="172"/>
+      <location filename="../../Command.cpp" line="174"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="173"/>
+      <location filename="../../Command.cpp" line="175"/>
       <source>Box Fix 2</source>
       <translation type="unfinished">Box Fix 2</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="174"/>
+      <location filename="../../Command.cpp" line="176"/>
       <source>Creates a solid box</source>
       <translation>고체 상자를 생성합니다</translation>
     </message>
@@ -1307,17 +1307,17 @@
   <context>
     <name>CmdPartBuilder</name>
     <message>
-      <location filename="../../Command.cpp" line="1525"/>
+      <location filename="../../Command.cpp" line="1527"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1526"/>
+      <location filename="../../Command.cpp" line="1528"/>
       <source>Shape Builder</source>
       <translation type="unfinished">Shape Builder</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1528"/>
+      <location filename="../../Command.cpp" line="1530"/>
       <source>Advanced utility to create shapes</source>
       <translation>도형을 만들 고급 유틸리티</translation>
     </message>
@@ -1325,17 +1325,17 @@
   <context>
     <name>CmdPartChamfer</name>
     <message>
-      <location filename="../../Command.cpp" line="1430"/>
+      <location filename="../../Command.cpp" line="1432"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1431"/>
+      <location filename="../../Command.cpp" line="1433"/>
       <source>Chamfer</source>
       <translation>모따기</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1432"/>
+      <location filename="../../Command.cpp" line="1434"/>
       <source>Chamfers the selected edges of a shape</source>
       <translation>형상에서 선택한 모서리를 모따기 합니다</translation>
     </message>
@@ -1343,17 +1343,17 @@
   <context>
     <name>CmdPartCommon</name>
     <message>
-      <location filename="../../Command.cpp" line="358"/>
+      <location filename="../../Command.cpp" line="360"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="359"/>
+      <location filename="../../Command.cpp" line="361"/>
       <source>Intersection</source>
       <translation>교차</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="360"/>
+      <location filename="../../Command.cpp" line="362"/>
       <source>Intersects the selected shapes</source>
       <translation type="unfinished">Intersects the selected shapes</translation>
     </message>
@@ -1361,17 +1361,17 @@
   <context>
     <name>CmdPartCompCompoundTools</name>
     <message>
-      <location filename="../../Command.cpp" line="722"/>
+      <location filename="../../Command.cpp" line="724"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="723"/>
+      <location filename="../../Command.cpp" line="725"/>
       <source>Compound Tools</source>
       <translation type="unfinished">Compound Tools</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="724"/>
+      <location filename="../../Command.cpp" line="726"/>
       <source>Compound tools for working with multiple shapes</source>
       <translation type="unfinished">Compound tools for working with multiple shapes</translation>
     </message>
@@ -1379,17 +1379,17 @@
   <context>
     <name>CmdPartCompJoinFeatures</name>
     <message>
-      <location filename="../../Command.cpp" line="496"/>
+      <location filename="../../Command.cpp" line="498"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="497"/>
+      <location filename="../../Command.cpp" line="499"/>
       <source>Join Shapes</source>
       <translation type="unfinished">Join Shapes</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="499"/>
+      <location filename="../../Command.cpp" line="501"/>
       <source>Joins the selected walled shapes</source>
       <translation type="unfinished">Joins the selected walled shapes</translation>
     </message>
@@ -1397,17 +1397,17 @@
   <context>
     <name>CmdPartCompOffset</name>
     <message>
-      <location filename="../../Command.cpp" line="1726"/>
+      <location filename="../../Command.cpp" line="1728"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1727"/>
+      <location filename="../../Command.cpp" line="1729"/>
       <source>Offset</source>
       <translation>편차</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1728"/>
+      <location filename="../../Command.cpp" line="1730"/>
       <source>Tools to offset shapes (construct parallel shapes)</source>
       <translation type="unfinished">Tools to offset shapes (construct parallel shapes)</translation>
     </message>
@@ -1415,17 +1415,17 @@
   <context>
     <name>CmdPartCompSplitFeatures</name>
     <message>
-      <location filename="../../Command.cpp" line="603"/>
+      <location filename="../../Command.cpp" line="605"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="604"/>
+      <location filename="../../Command.cpp" line="606"/>
       <source>Split Shapes</source>
       <translation type="unfinished">Split Shapes</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="606"/>
+      <location filename="../../Command.cpp" line="608"/>
       <source>Shape splitting and compsolid creation tools</source>
       <translation type="unfinished">Shape splitting and compsolid creation tools</translation>
     </message>
@@ -1433,17 +1433,17 @@
   <context>
     <name>CmdPartCompound</name>
     <message>
-      <location filename="../../Command.cpp" line="829"/>
+      <location filename="../../Command.cpp" line="831"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="830"/>
+      <location filename="../../Command.cpp" line="832"/>
       <source>Compound</source>
       <translation>복합체</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="831"/>
+      <location filename="../../Command.cpp" line="833"/>
       <source>Compounds the selected shapes</source>
       <translation type="unfinished">Compounds the selected shapes</translation>
     </message>
@@ -1451,19 +1451,19 @@
   <context>
     <name>CmdPartCone</name>
     <message>
-      <location filename="../../CommandParametric.cpp" line="188"/>
+      <location filename="../../CommandParametric.cpp" line="190"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="189"/>
-      <location filename="../../CommandParametric.cpp" line="200"/>
-      <location filename="../../CommandParametric.cpp" line="205"/>
+      <location filename="../../CommandParametric.cpp" line="191"/>
+      <location filename="../../CommandParametric.cpp" line="202"/>
+      <location filename="../../CommandParametric.cpp" line="207"/>
       <source>Cone</source>
       <translation>고깔</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="190"/>
+      <location filename="../../CommandParametric.cpp" line="192"/>
       <source>Creates a solid cone</source>
       <translation type="unfinished">Creates a solid cone</translation>
     </message>
@@ -1471,17 +1471,17 @@
   <context>
     <name>CmdPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="1486"/>
+      <location filename="../../Command.cpp" line="1488"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1487"/>
+      <location filename="../../Command.cpp" line="1489"/>
       <source>Cross-Sections</source>
       <translation type="unfinished">Cross-Sections</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1488"/>
+      <location filename="../../Command.cpp" line="1490"/>
       <source>Creates cross-sections</source>
       <translation type="unfinished">Creates cross-sections</translation>
     </message>
@@ -1489,17 +1489,17 @@
   <context>
     <name>CmdPartCut</name>
     <message>
-      <location filename="../../Command.cpp" line="300"/>
+      <location filename="../../Command.cpp" line="302"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="301"/>
+      <location filename="../../Command.cpp" line="303"/>
       <source>Cut</source>
       <translation>자르기</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="302"/>
+      <location filename="../../Command.cpp" line="304"/>
       <source>Cuts 2 selected shapes</source>
       <translation type="unfinished">Cuts 2 selected shapes</translation>
     </message>
@@ -1507,19 +1507,19 @@
   <context>
     <name>CmdPartCylinder</name>
     <message>
-      <location filename="../../CommandParametric.cpp" line="62"/>
+      <location filename="../../CommandParametric.cpp" line="64"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="63"/>
-      <location filename="../../CommandParametric.cpp" line="74"/>
-      <location filename="../../CommandParametric.cpp" line="79"/>
+      <location filename="../../CommandParametric.cpp" line="65"/>
+      <location filename="../../CommandParametric.cpp" line="76"/>
+      <location filename="../../CommandParametric.cpp" line="81"/>
       <source>Cylinder</source>
       <translation>원통</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="64"/>
+      <location filename="../../CommandParametric.cpp" line="66"/>
       <source>Creates a solid cylinder</source>
       <translation>고체 원통을 생성합니다</translation>
     </message>
@@ -1527,17 +1527,17 @@
   <context>
     <name>CmdPartDefeaturing</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="408"/>
+      <location filename="../../CommandSimple.cpp" line="410"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="409"/>
+      <location filename="../../CommandSimple.cpp" line="411"/>
       <source>Defeaturing</source>
       <translation type="unfinished">Defeaturing</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="410"/>
+      <location filename="../../CommandSimple.cpp" line="412"/>
       <source>Removes the selected features from a shape</source>
       <translation type="unfinished">Removes the selected features from a shape</translation>
     </message>
@@ -1545,17 +1545,17 @@
   <context>
     <name>CmdPartElementCopy</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="320"/>
+      <location filename="../../CommandSimple.cpp" line="322"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="321"/>
+      <location filename="../../CommandSimple.cpp" line="323"/>
       <source>Shape Element Copy</source>
       <translation type="unfinished">Shape Element Copy</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="322"/>
+      <location filename="../../CommandSimple.cpp" line="324"/>
       <source>Creates a non-parametric copy of the selected shape element</source>
       <translation type="unfinished">Creates a non-parametric copy of the selected shape element</translation>
     </message>
@@ -1563,17 +1563,17 @@
   <context>
     <name>CmdPartExport</name>
     <message>
-      <location filename="../../Command.cpp" line="996"/>
+      <location filename="../../Command.cpp" line="998"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="997"/>
+      <location filename="../../Command.cpp" line="999"/>
       <source>Export CAD File</source>
       <translation>CAD파일 내보내기</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="999"/>
+      <location filename="../../Command.cpp" line="1001"/>
       <source>Exports to a CAD file</source>
       <translation>CAD 파일로 내보내기</translation>
     </message>
@@ -1581,17 +1581,17 @@
   <context>
     <name>CmdPartExtrude</name>
     <message>
-      <location filename="../../Command.cpp" line="1265"/>
+      <location filename="../../Command.cpp" line="1267"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1266"/>
+      <location filename="../../Command.cpp" line="1268"/>
       <source>Extrude</source>
       <translation>돌출</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1267"/>
+      <location filename="../../Command.cpp" line="1269"/>
       <source>Extrudes the selected sketch or profile</source>
       <translation>선택한 스케치나 윤곽을 돌출합니다</translation>
     </message>
@@ -1599,17 +1599,17 @@
   <context>
     <name>CmdPartFillet</name>
     <message>
-      <location filename="../../Command.cpp" line="1402"/>
+      <location filename="../../Command.cpp" line="1404"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1403"/>
+      <location filename="../../Command.cpp" line="1405"/>
       <source>Fillet</source>
       <translation>모깎기</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1404"/>
+      <location filename="../../Command.cpp" line="1406"/>
       <source>Fillets the selected edges of a shape</source>
       <translation type="unfinished">Fillets the selected edges of a shape</translation>
     </message>
@@ -1617,17 +1617,17 @@
   <context>
     <name>CmdPartFuse</name>
     <message>
-      <location filename="../../Command.cpp" line="417"/>
+      <location filename="../../Command.cpp" line="419"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="418"/>
+      <location filename="../../Command.cpp" line="420"/>
       <source>Union</source>
       <translation>결합체</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="419"/>
+      <location filename="../../Command.cpp" line="421"/>
       <source>Unites the selected shapes</source>
       <translation type="unfinished">Unites the selected shapes</translation>
     </message>
@@ -1635,17 +1635,17 @@
   <context>
     <name>CmdPartImport</name>
     <message>
-      <location filename="../../Command.cpp" line="932"/>
+      <location filename="../../Command.cpp" line="934"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="933"/>
+      <location filename="../../Command.cpp" line="935"/>
       <source>Import CAD File</source>
       <translation>CAD파일 가져오기</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="935"/>
+      <location filename="../../Command.cpp" line="937"/>
       <source>Imports a CAD file</source>
       <translation>CAD 파일 가져오기</translation>
     </message>
@@ -1653,17 +1653,17 @@
   <context>
     <name>CmdPartImportCurveNet</name>
     <message>
-      <location filename="../../Command.cpp" line="1045"/>
+      <location filename="../../Command.cpp" line="1047"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1046"/>
+      <location filename="../../Command.cpp" line="1048"/>
       <source>Import Curve Network</source>
       <translation type="unfinished">Import Curve Network</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1048"/>
+      <location filename="../../Command.cpp" line="1050"/>
       <source>Imports a curve network</source>
       <translation type="unfinished">Imports a curve network</translation>
     </message>
@@ -1671,17 +1671,17 @@
   <context>
     <name>CmdPartLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="1555"/>
+      <location filename="../../Command.cpp" line="1557"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1556"/>
+      <location filename="../../Command.cpp" line="1558"/>
       <source>Loft</source>
       <translation>로프트</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1557"/>
+      <location filename="../../Command.cpp" line="1559"/>
       <source>Lofts the selected profiles</source>
       <translation type="unfinished">Lofts the selected profiles</translation>
     </message>
@@ -1689,17 +1689,17 @@
   <context>
     <name>CmdPartMakeFace</name>
     <message>
-      <location filename="../../Command.cpp" line="1322"/>
+      <location filename="../../Command.cpp" line="1324"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1323"/>
+      <location filename="../../Command.cpp" line="1325"/>
       <source>Face From Wires</source>
       <translation>철사로 면생성</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1324"/>
+      <location filename="../../Command.cpp" line="1326"/>
       <source>Creates a face from the selected wires (e.g. from a sketch)</source>
       <translation>선택된 철사들(예를 들면 스케치)로부터 면을 생성합니다</translation>
     </message>
@@ -1707,17 +1707,17 @@
   <context>
     <name>CmdPartMakeSolid</name>
     <message>
-      <location filename="../../Command.cpp" line="1094"/>
+      <location filename="../../Command.cpp" line="1096"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1095"/>
+      <location filename="../../Command.cpp" line="1097"/>
       <source>Convert to Solid</source>
       <translation>고체로 변환</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1096"/>
+      <location filename="../../Command.cpp" line="1098"/>
       <source>Converts the selected shell or compound to a solid</source>
       <translation>선택된 껍질 또는 복합체를 고체로 변환합니다</translation>
     </message>
@@ -1725,17 +1725,17 @@
   <context>
     <name>CmdPartMirror</name>
     <message>
-      <location filename="../../Command.cpp" line="1458"/>
+      <location filename="../../Command.cpp" line="1460"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1459"/>
+      <location filename="../../Command.cpp" line="1461"/>
       <source>Mirror</source>
       <translation>대칭복사</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1460"/>
+      <location filename="../../Command.cpp" line="1462"/>
       <source>Mirrors the selected shape</source>
       <translation>선택한 형상을 대칭복사 합니다</translation>
     </message>
@@ -1743,17 +1743,17 @@
   <context>
     <name>CmdPartOffset</name>
     <message>
-      <location filename="../../Command.cpp" line="1613"/>
+      <location filename="../../Command.cpp" line="1615"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1614"/>
+      <location filename="../../Command.cpp" line="1616"/>
       <source>3D Offset</source>
       <translation>3D 편차</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1615"/>
+      <location filename="../../Command.cpp" line="1617"/>
       <source>Offsets shapes in 3D</source>
       <translation>3차원에서 입체형상의 편차를 만듭니다</translation>
     </message>
@@ -1761,17 +1761,17 @@
   <context>
     <name>CmdPartOffset2D</name>
     <message>
-      <location filename="../../Command.cpp" line="1670"/>
+      <location filename="../../Command.cpp" line="1672"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1671"/>
+      <location filename="../../Command.cpp" line="1673"/>
       <source>2D Offset</source>
       <translation>2D 편차</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1672"/>
+      <location filename="../../Command.cpp" line="1674"/>
       <source>Offsets planar shapes in 2D</source>
       <translation>2차원에서 평면형상의 편차를 만듭니다</translation>
     </message>
@@ -1779,17 +1779,17 @@
   <context>
     <name>CmdPartPickCurveNet</name>
     <message>
-      <location filename="../../Command.cpp" line="85"/>
+      <location filename="../../Command.cpp" line="87"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="86"/>
+      <location filename="../../Command.cpp" line="88"/>
       <source>Pick Curve Network</source>
       <translation type="unfinished">Pick Curve Network</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="87"/>
+      <location filename="../../Command.cpp" line="89"/>
       <source>Picks a curve network</source>
       <translation type="unfinished">Picks a curve network</translation>
     </message>
@@ -1797,17 +1797,17 @@
   <context>
     <name>CmdPartPointsFromMesh</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="131"/>
+      <location filename="../../CommandSimple.cpp" line="133"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="132"/>
+      <location filename="../../CommandSimple.cpp" line="134"/>
       <source>Points From Shape</source>
       <translation type="unfinished">Points From Shape</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="133"/>
+      <location filename="../../CommandSimple.cpp" line="135"/>
       <source>Creates distributed points from the selected shape</source>
       <translation type="unfinished">Creates distributed points from the selected shape</translation>
     </message>
@@ -1815,17 +1815,17 @@
   <context>
     <name>CmdPartPrimitives</name>
     <message>
-      <location filename="../../Command.cpp" line="213"/>
+      <location filename="../../Command.cpp" line="215"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="214"/>
+      <location filename="../../Command.cpp" line="216"/>
       <source>Primitive</source>
       <translation>기본 도형</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="216"/>
+      <location filename="../../Command.cpp" line="218"/>
       <source>Creates solid geometric primitives parametrically</source>
       <translation type="unfinished">Creates solid geometric primitives parametrically</translation>
     </message>
@@ -1833,17 +1833,17 @@
   <context>
     <name>CmdPartProjectionOnSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="2166"/>
+      <location filename="../../Command.cpp" line="2168"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2167"/>
+      <location filename="../../Command.cpp" line="2169"/>
       <source>Project on Surface</source>
       <translation>표면에 투상</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2168"/>
+      <location filename="../../Command.cpp" line="2170"/>
       <source>Projects edges, wires, or faces of one shape
 onto a face of another shape.
 The camera view determines the direction
@@ -1857,17 +1857,17 @@ of the projection.</translation>
   <context>
     <name>CmdPartRefineShape</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="348"/>
+      <location filename="../../CommandSimple.cpp" line="350"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="349"/>
+      <location filename="../../CommandSimple.cpp" line="351"/>
       <source>Refine Shape</source>
       <translation type="unfinished">Refine Shape</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="350"/>
+      <location filename="../../CommandSimple.cpp" line="352"/>
       <source>Creates a refined copy of the selected shapes</source>
       <translation type="unfinished">Creates a refined copy of the selected shapes</translation>
     </message>
@@ -1875,17 +1875,17 @@ of the projection.</translation>
   <context>
     <name>CmdPartReverseShape</name>
     <message>
-      <location filename="../../Command.cpp" line="1172"/>
+      <location filename="../../Command.cpp" line="1174"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1173"/>
+      <location filename="../../Command.cpp" line="1175"/>
       <source>Reverse Shapes</source>
       <translation type="unfinished">Reverse Shapes</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1174"/>
+      <location filename="../../Command.cpp" line="1176"/>
       <source>Reverses the orientation of the selected shapes</source>
       <translation type="unfinished">Reverses the orientation of the selected shapes</translation>
     </message>
@@ -1893,17 +1893,17 @@ of the projection.</translation>
   <context>
     <name>CmdPartRevolve</name>
     <message>
-      <location filename="../../Command.cpp" line="1374"/>
+      <location filename="../../Command.cpp" line="1376"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1375"/>
+      <location filename="../../Command.cpp" line="1377"/>
       <source>Revolve</source>
       <translation>공전</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1376"/>
+      <location filename="../../Command.cpp" line="1378"/>
       <source>Revolves the selected shape</source>
       <translation type="unfinished">Revolves the selected shape</translation>
     </message>
@@ -1911,17 +1911,17 @@ of the projection.</translation>
   <context>
     <name>CmdPartRuledSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="1947"/>
+      <location filename="../../Command.cpp" line="1949"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1948"/>
+      <location filename="../../Command.cpp" line="1950"/>
       <source>Ruled Surface</source>
       <translation type="unfinished">Ruled Surface</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1949"/>
+      <location filename="../../Command.cpp" line="1951"/>
       <source>Creates a ruled surface between 2 selected wires</source>
       <translation type="unfinished">Creates a ruled surface between 2 selected wires</translation>
     </message>
@@ -1929,17 +1929,17 @@ of the projection.</translation>
   <context>
     <name>CmdPartSection</name>
     <message>
-      <location filename="../../Command.cpp" line="884"/>
+      <location filename="../../Command.cpp" line="886"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="885"/>
+      <location filename="../../Command.cpp" line="887"/>
       <source>Section</source>
       <translation>단면</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="886"/>
+      <location filename="../../Command.cpp" line="888"/>
       <source>Sections 2 selected shapes</source>
       <translation type="unfinished">Sections 2 selected shapes</translation>
     </message>
@@ -1947,17 +1947,17 @@ of the projection.</translation>
   <context>
     <name>CmdPartShapeFromMesh</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="103"/>
+      <location filename="../../CommandSimple.cpp" line="105"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="104"/>
+      <location filename="../../CommandSimple.cpp" line="106"/>
       <source>Shape From Mesh</source>
       <translation type="unfinished">Shape From Mesh</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="105"/>
+      <location filename="../../CommandSimple.cpp" line="107"/>
       <source>Creates a shape from the selected mesh</source>
       <translation type="unfinished">Creates a shape from the selected mesh</translation>
     </message>
@@ -1965,17 +1965,17 @@ of the projection.</translation>
   <context>
     <name>CmdPartSimpleCopy</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="217"/>
+      <location filename="../../CommandSimple.cpp" line="219"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="218"/>
+      <location filename="../../CommandSimple.cpp" line="220"/>
       <source>Simple Copy</source>
       <translation>단순 복사</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="219"/>
+      <location filename="../../CommandSimple.cpp" line="221"/>
       <source>Creates a simple non-parametric copy of the selected shapes</source>
       <translation type="unfinished">Creates a simple non-parametric copy of the selected shapes</translation>
     </message>
@@ -1983,17 +1983,17 @@ of the projection.</translation>
   <context>
     <name>CmdPartSimpleCylinder</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="53"/>
+      <location filename="../../CommandSimple.cpp" line="55"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="54"/>
+      <location filename="../../CommandSimple.cpp" line="56"/>
       <source>Cylinder</source>
       <translation>원통</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="55"/>
+      <location filename="../../CommandSimple.cpp" line="57"/>
       <source>Creates a solid cylinder</source>
       <translation>고체 원통을 생성합니다</translation>
     </message>
@@ -2001,19 +2001,19 @@ of the projection.</translation>
   <context>
     <name>CmdPartSphere</name>
     <message>
-      <location filename="../../CommandParametric.cpp" line="146"/>
+      <location filename="../../CommandParametric.cpp" line="148"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="147"/>
-      <location filename="../../CommandParametric.cpp" line="158"/>
-      <location filename="../../CommandParametric.cpp" line="163"/>
+      <location filename="../../CommandParametric.cpp" line="149"/>
+      <location filename="../../CommandParametric.cpp" line="160"/>
+      <location filename="../../CommandParametric.cpp" line="165"/>
       <source>Sphere</source>
       <translation>공모양</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="148"/>
+      <location filename="../../CommandParametric.cpp" line="150"/>
       <source>Creates a solid sphere</source>
       <translation>고체 공을 생성합니다</translation>
     </message>
@@ -2021,17 +2021,17 @@ of the projection.</translation>
   <context>
     <name>CmdPartSweep</name>
     <message>
-      <location filename="../../Command.cpp" line="1584"/>
+      <location filename="../../Command.cpp" line="1586"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1585"/>
+      <location filename="../../Command.cpp" line="1587"/>
       <source>Sweep</source>
       <translation>스윕</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1586"/>
+      <location filename="../../Command.cpp" line="1588"/>
       <source>Sweeps profiles along a wire</source>
       <translation>선을 따라 윤곽을 쓸어나갑니다</translation>
     </message>
@@ -2039,27 +2039,27 @@ of the projection.</translation>
   <context>
     <name>CmdPartThickness</name>
     <message>
-      <location filename="../../Command.cpp" line="1818"/>
+      <location filename="../../Command.cpp" line="1820"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1819"/>
+      <location filename="../../Command.cpp" line="1821"/>
       <source>Thickness</source>
       <translation>두께</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1820"/>
+      <location filename="../../Command.cpp" line="1822"/>
       <source>Removes the selected faces and offsets the remaining shape outward to add thickness</source>
       <translation type="unfinished">Removes the selected faces and offsets the remaining shape outward to add thickness</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1869"/>
+      <location filename="../../Command.cpp" line="1871"/>
       <source>Wrong selection</source>
       <translation>잘못 된 선택</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1870"/>
+      <location filename="../../Command.cpp" line="1872"/>
       <source>Selected shape is not a solid</source>
       <translation>선택된 모양은 고체가 아닙니다</translation>
     </message>
@@ -2067,19 +2067,19 @@ of the projection.</translation>
   <context>
     <name>CmdPartTorus</name>
     <message>
-      <location filename="../../CommandParametric.cpp" line="230"/>
+      <location filename="../../CommandParametric.cpp" line="232"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="231"/>
-      <location filename="../../CommandParametric.cpp" line="242"/>
-      <location filename="../../CommandParametric.cpp" line="247"/>
+      <location filename="../../CommandParametric.cpp" line="233"/>
+      <location filename="../../CommandParametric.cpp" line="244"/>
+      <location filename="../../CommandParametric.cpp" line="249"/>
       <source>Torus</source>
       <translation>원환체</translation>
     </message>
     <message>
-      <location filename="../../CommandParametric.cpp" line="232"/>
+      <location filename="../../CommandParametric.cpp" line="234"/>
       <source>Creates a solid torus</source>
       <translation>고체 원환체를 생성합니다</translation>
     </message>
@@ -2087,17 +2087,17 @@ of the projection.</translation>
   <context>
     <name>CmdPartTransformedCopy</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="292"/>
+      <location filename="../../CommandSimple.cpp" line="294"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="293"/>
+      <location filename="../../CommandSimple.cpp" line="295"/>
       <source>Transformed Copy</source>
       <translation type="unfinished">Transformed Copy</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="294"/>
+      <location filename="../../CommandSimple.cpp" line="296"/>
       <source>Creates a non-parametric copy with transformed placement of the selected shapes</source>
       <translation type="unfinished">Creates a non-parametric copy with transformed placement of the selected shapes</translation>
     </message>
@@ -2105,174 +2105,174 @@ of the projection.</translation>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="142"/>
-      <location filename="../../Command.cpp" line="183"/>
+      <location filename="../../Command.cpp" line="144"/>
+      <location filename="../../Command.cpp" line="185"/>
       <source>Part Box Create</source>
       <translation type="unfinished">Part Box Create</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="336"/>
+      <location filename="../../Command.cpp" line="338"/>
       <source>Part Cut</source>
       <translation type="unfinished">Part Cut</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="395"/>
+      <location filename="../../Command.cpp" line="397"/>
       <source>Common</source>
       <translation>공통(교집합)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="473"/>
+      <location filename="../../Command.cpp" line="475"/>
       <source>Fusion</source>
       <translation>융합</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="863"/>
+      <location filename="../../Command.cpp" line="865"/>
       <source>Compound</source>
       <translation>복합체</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="907"/>
+      <location filename="../../Command.cpp" line="909"/>
       <source>Section</source>
       <translation>단면</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="960"/>
+      <location filename="../../Command.cpp" line="962"/>
       <source>Import Part</source>
       <translation type="unfinished">Import Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1069"/>
+      <location filename="../../Command.cpp" line="1071"/>
       <source>Import Curve Net</source>
       <translation type="unfinished">Import Curve Net</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1185"/>
+      <location filename="../../Command.cpp" line="1187"/>
       <source>Reverse</source>
       <translation>반대로</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1336"/>
+      <location filename="../../Command.cpp" line="1338"/>
       <source>Make face</source>
       <translation>면 만들기</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1637"/>
+      <location filename="../../Command.cpp" line="1639"/>
       <source>Make Offset</source>
       <translation>편차 만들기</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1695"/>
+      <location filename="../../Command.cpp" line="1697"/>
       <source>Make 2D Offset</source>
       <translation>2D 편차 만들기</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1876"/>
+      <location filename="../../Command.cpp" line="1878"/>
       <source>Make Thickness</source>
       <translation>두께 만들기</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2041"/>
+      <location filename="../../Command.cpp" line="2043"/>
       <source>Create ruled surface</source>
       <translation>선직면 생성</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2269"/>
+      <location filename="../../Command.cpp" line="2271"/>
       <source>Add coordinate system</source>
       <translation>좌표계 추가</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2303"/>
+      <location filename="../../Command.cpp" line="2305"/>
       <source>Add datum plane</source>
       <translation>기준평면 추가</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2336"/>
+      <location filename="../../Command.cpp" line="2338"/>
       <source>Add datum line</source>
       <translation>기준선 추가</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2369"/>
+      <location filename="../../Command.cpp" line="2371"/>
       <source>Add datum point</source>
       <translation>기준점 추가</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="68"/>
+      <location filename="../../CommandSimple.cpp" line="70"/>
       <source>Create Cylinder</source>
       <translation>원통 생성</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="178"/>
+      <location filename="../../CommandSimple.cpp" line="180"/>
       <source>Points from geometry</source>
       <translation type="unfinished">Points from geometry</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="365"/>
+      <location filename="../../CommandSimple.cpp" line="367"/>
       <source>Refine shape</source>
       <translation>형상의 선 정리</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="422"/>
+      <location filename="../../CommandSimple.cpp" line="424"/>
       <source>Defeaturing</source>
       <translation type="unfinished">Defeaturing</translation>
     </message>
     <message>
-      <location filename="../../ShapeFromMesh.cpp" line="71"/>
+      <location filename="../../ShapeFromMesh.cpp" line="73"/>
       <source>Convert mesh</source>
       <translation type="unfinished">Convert mesh</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1299"/>
+      <location filename="../../TaskAttacher.cpp" line="1301"/>
       <source>Edit attachment</source>
       <translation>부착 정보 편집</translation>
     </message>
     <message>
-      <location filename="../../TaskFaceAppearances.cpp" line="453"/>
+      <location filename="../../TaskFaceAppearances.cpp" line="455"/>
       <source>Change face colors</source>
       <translation>면의 색상 변경</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="200"/>
+      <location filename="../../TaskLoft.cpp" line="202"/>
       <source>Loft</source>
       <translation>로프트</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="257"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="259"/>
       <source>Edge</source>
       <translation>모서리</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="298"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="300"/>
       <source>Wire</source>
       <translation>철사</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="350"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="402"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="352"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="404"/>
       <source>Face</source>
       <translation>면</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="463"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="465"/>
       <source>Shell</source>
       <translation>껍질</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="515"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="517"/>
       <source>Solid</source>
       <translation>고체</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="371"/>
+      <location filename="../../TaskSweep.cpp" line="373"/>
       <source>Sweep</source>
       <translation>스윕</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="1558"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="1560"/>
       <source>Project on surface</source>
       <translation>표면에 투상</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="206"/>
+      <location filename="../../ViewProviderMirror.cpp" line="208"/>
       <source>Edit mirror</source>
       <translation>대칭복사 편집</translation>
     </message>
@@ -2431,7 +2431,7 @@ Note: The placement is expressed in local space of object being attached.</sourc
       <translation>횟수</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="305"/>
+      <location filename="../../CrossSections.cpp" line="307"/>
       <source>Cannot compute cross-sections</source>
       <translation type="unfinished">Cannot compute cross-sections</translation>
     </message>
@@ -2504,42 +2504,42 @@ Note: The placement is expressed in local space of object being attached.</sourc
       <translation type="unfinished">Swap Selection</translation>
     </message>
     <message>
-      <location filename="../../DlgBooleanOperation.cpp" line="394"/>
+      <location filename="../../DlgBooleanOperation.cpp" line="396"/>
       <source>Cannot perform a boolean operation with the same shape</source>
       <translation>같은 모양으로 부울 작업을 수행할 수 없습니다.</translation>
     </message>
     <message>
-      <location filename="../../DlgBooleanOperation.cpp" line="404"/>
+      <location filename="../../DlgBooleanOperation.cpp" line="406"/>
       <source>No active document available</source>
       <translation>활성화된 문서 없음.</translation>
     </message>
     <message>
-      <location filename="../../DlgBooleanOperation.cpp" line="384"/>
+      <location filename="../../DlgBooleanOperation.cpp" line="386"/>
       <source>First, select a shape on the left side</source>
       <translation>먼저, 왼쪽 편의 형상을 선택하세요</translation>
     </message>
     <message>
-      <location filename="../../DlgBooleanOperation.cpp" line="389"/>
+      <location filename="../../DlgBooleanOperation.cpp" line="391"/>
       <source>First, select a shape on the right side</source>
       <translation>먼저, 오른쪽 편의 형상을 선택하세요</translation>
     </message>
     <message>
-      <location filename="../../DlgBooleanOperation.cpp" line="414"/>
+      <location filename="../../DlgBooleanOperation.cpp" line="416"/>
       <source>One of the selected objects does not exist anymore</source>
       <translation>선택한 대상체 중 하나가 더이상 존재하지 않습니다</translation>
     </message>
     <message>
-      <location filename="../../DlgBooleanOperation.cpp" line="421"/>
+      <location filename="../../DlgBooleanOperation.cpp" line="423"/>
       <source>Performing union on non-solids is not possible</source>
       <translation>솔리드가 아닌 객체에 연합을 수행 하는 것은 불가능</translation>
     </message>
     <message>
-      <location filename="../../DlgBooleanOperation.cpp" line="429"/>
+      <location filename="../../DlgBooleanOperation.cpp" line="431"/>
       <source>Performing intersection on non-solids is not possible</source>
       <translation>고체가 이닌 것에 교차를 수행하는 것은 불가능</translation>
     </message>
     <message>
-      <location filename="../../DlgBooleanOperation.cpp" line="437"/>
+      <location filename="../../DlgBooleanOperation.cpp" line="439"/>
       <source>Performing difference on non-solids is not possible</source>
       <translation>솔리드가 아닌 객체에 차이(difference)를 수행하는 것은 불가능</translation>
     </message>
@@ -2547,7 +2547,7 @@ Note: The placement is expressed in local space of object being attached.</sourc
   <context>
     <name>PartGui::DlgChamferEdges</name>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="1108"/>
+      <location filename="../../DlgFilletEdges.cpp" line="1110"/>
       <source>Chamfer Edges</source>
       <translation>모서리를 모따기</translation>
     </message>
@@ -2654,7 +2654,7 @@ it inside the placement property.</translation>
       <translation>Scheme</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.cpp" line="57"/>
+      <location filename="../../DlgExportStep.cpp" line="59"/>
       <source>This parameter indicates whether parametric curves (curves in parametric space of surface)
 should be written into the STEP file. This parameter can be set to off in order to minimize
 the size of the resulting STEP file.</source>
@@ -2692,7 +2692,7 @@ the size of the resulting STEP file.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="71"/>
-      <location filename="../../DlgExtrusion.cpp" line="240"/>
+      <location filename="../../DlgExtrusion.cpp" line="242"/>
       <source>Select</source>
       <translation>선택</translation>
     </message>
@@ -2819,41 +2819,41 @@ If both lengths are zero, magnitude of direction is used.</translation>
       <translation>셰이프</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="214"/>
+      <location filename="../../DlgExtrusion.cpp" line="216"/>
       <source>Selecting…</source>
       <translation>선택중…</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="462"/>
+      <location filename="../../DlgExtrusion.cpp" line="464"/>
       <source>The document '%1' doesn't exist.</source>
       <translation type="unfinished">The document '%1' doesn't exist.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="513"/>
+      <location filename="../../DlgExtrusion.cpp" line="515"/>
       <source>Creating extrusion failed.
 %1</source>
       <translation>돌출 실패.
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="519"/>
+      <location filename="../../DlgExtrusion.cpp" line="521"/>
       <source>Creating Extrusion failed.
 %1</source>
       <translation>돌출 실패.
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="586"/>
+      <location filename="../../DlgExtrusion.cpp" line="588"/>
       <source>Object not found: %1</source>
       <translation>대상체를 발견하지 못했습니다:%1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="648"/>
+      <location filename="../../DlgExtrusion.cpp" line="650"/>
       <source>No shapes selected for extrusion.</source>
       <translation>돌출하려 선택한 형상이 없습니다.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="694"/>
+      <location filename="../../DlgExtrusion.cpp" line="696"/>
       <source>Cannot determine normal vector of shape to be extruded. Use other mode. 
 
 (%1)</source>
@@ -2862,12 +2862,12 @@ If both lengths are zero, magnitude of direction is used.</translation>
 (%1)</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="665"/>
+      <location filename="../../DlgExtrusion.cpp" line="667"/>
       <source>Unknown error</source>
       <translation>알 수 없는 오류</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="669"/>
+      <location filename="../../DlgExtrusion.cpp" line="671"/>
       <source>Extrusion direction link is invalid.
 
 %1</source>
@@ -2876,17 +2876,17 @@ If both lengths are zero, magnitude of direction is used.</translation>
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="671"/>
+      <location filename="../../DlgExtrusion.cpp" line="673"/>
       <source>Direction mode is to use an edge, but no edge is linked.</source>
       <translation>돌출 방향으로 모서리가 사용되는데, 연결된 모서리가 없습니다.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="704"/>
+      <location filename="../../DlgExtrusion.cpp" line="706"/>
       <source>Extrusion direction vector is zero-length. It must be non-zero.</source>
       <translation>돌출 방향의 향량이 0의 길이 입니다. 향량은 0이 아니어야 합니다.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="715"/>
+      <location filename="../../DlgExtrusion.cpp" line="717"/>
       <source>Total extrusion length is zero (length1 == -length2). It must be nonzero.</source>
       <translation>돌출 길이가 0이 됩니다 ( 길이1 - 길이2 = 0 ). 두 방향의 길이의 합은 0이 아니어야 합니다.</translation>
     </message>
@@ -2959,113 +2959,113 @@ If both lengths are zero, magnitude of direction is used.</translation>
       <translation>가변 반지름</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="268"/>
+      <location filename="../../DlgFilletEdges.cpp" line="270"/>
       <source>Chamfer type</source>
       <translation>모따기 유형</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="269"/>
+      <location filename="../../DlgFilletEdges.cpp" line="271"/>
       <source>Length:</source>
       <translation>길이:</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="273"/>
+      <location filename="../../DlgFilletEdges.cpp" line="275"/>
       <source>Edges to chamfer</source>
       <translation>모따기할 모서리</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="911"/>
+      <location filename="../../DlgFilletEdges.cpp" line="913"/>
       <source>Start length</source>
       <translation>시작 길이</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="270"/>
+      <location filename="../../DlgFilletEdges.cpp" line="272"/>
       <source>Equal distance</source>
       <translation>같은 거리</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="267"/>
+      <location filename="../../DlgFilletEdges.cpp" line="269"/>
       <source>Chamfer parameters</source>
       <translation>모따기 매개 변수</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="271"/>
+      <location filename="../../DlgFilletEdges.cpp" line="273"/>
       <source>Two distances</source>
       <translation>양쪽 거리</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="274"/>
+      <location filename="../../DlgFilletEdges.cpp" line="276"/>
       <source>Size</source>
       <translation>크기</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="275"/>
+      <location filename="../../DlgFilletEdges.cpp" line="277"/>
       <source>Size2</source>
       <translation>크기2</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="278"/>
+      <location filename="../../DlgFilletEdges.cpp" line="280"/>
       <source>Fillet parameter</source>
       <translation>모깍기 매개변수</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="279"/>
+      <location filename="../../DlgFilletEdges.cpp" line="281"/>
       <source>Fillet type</source>
       <translation>모깎기 유형</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="280"/>
+      <location filename="../../DlgFilletEdges.cpp" line="282"/>
       <source>Edges to fillet</source>
       <translation>모깎기 할 모서리</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="281"/>
-      <location filename="../../DlgFilletEdges.cpp" line="913"/>
+      <location filename="../../DlgFilletEdges.cpp" line="283"/>
+      <location filename="../../DlgFilletEdges.cpp" line="915"/>
       <source>Start radius</source>
       <translation>시작 반지름</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="282"/>
+      <location filename="../../DlgFilletEdges.cpp" line="284"/>
       <source>End radius</source>
       <translation>끝 반지름</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="760"/>
-      <location filename="../../DlgFilletEdges.cpp" line="820"/>
+      <location filename="../../DlgFilletEdges.cpp" line="762"/>
+      <location filename="../../DlgFilletEdges.cpp" line="822"/>
       <source>Edge%1</source>
       <translation>에지 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="903"/>
+      <location filename="../../DlgFilletEdges.cpp" line="905"/>
       <source>Length</source>
       <translation>길이:</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="960"/>
+      <location filename="../../DlgFilletEdges.cpp" line="962"/>
       <source>No valid shape is selected.
 Select a valid shape in the drop-down box first.</source>
       <translation>유효한 형상이 선택되지 않았습니다.
 드롭다운 상자에서 유효한 형상을 선택하세요.</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="1012"/>
+      <location filename="../../DlgFilletEdges.cpp" line="1014"/>
       <source>No edge entity is checked to fillet.
 Check one or more edge entities first.</source>
       <translation>모깎기할 모서리가 선택되지 않았습니다. 하나 이상의 모서리를 선택했는 지 먼저 확인하세요.</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="142"/>
-      <location filename="../../DlgFilletEdges.cpp" line="905"/>
+      <location filename="../../DlgFilletEdges.cpp" line="907"/>
       <source>Radius</source>
       <translation>반지름</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="959"/>
+      <location filename="../../DlgFilletEdges.cpp" line="961"/>
       <source>No shape selected</source>
       <translation>선택된 형상이 없습니다.</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="1011"/>
+      <location filename="../../DlgFilletEdges.cpp" line="1013"/>
       <source>No edge selected</source>
       <translation>선택된 모서리가 없습니다.</translation>
     </message>
@@ -3351,12 +3351,12 @@ Check one or more edge entities first.</source>
   <context>
     <name>PartGui::DlgPartImportIgesImp</name>
     <message>
-      <location filename="../../DlgPartImportIgesImp.cpp" line="66"/>
+      <location filename="../../DlgPartImportIgesImp.cpp" line="68"/>
       <source>IGES</source>
       <translation>IGES</translation>
     </message>
     <message>
-      <location filename="../../DlgPartImportIgesImp.cpp" line="67"/>
+      <location filename="../../DlgPartImportIgesImp.cpp" line="69"/>
       <source>All Files</source>
       <translation>모든 파일</translation>
     </message>
@@ -3382,7 +3382,7 @@ Check one or more edge entities first.</source>
   <context>
     <name>PartGui::DlgPartImportStepImp</name>
     <message>
-      <location filename="../../DlgPartImportStepImp.cpp" line="67"/>
+      <location filename="../../DlgPartImportStepImp.cpp" line="69"/>
       <source>All Files</source>
       <translation>모든 파일</translation>
     </message>
@@ -3396,79 +3396,79 @@ Check one or more edge entities first.</source>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="33"/>
-      <location filename="../../DlgPrimitives.cpp" line="275"/>
+      <location filename="../../DlgPrimitives.cpp" line="277"/>
       <source>Plane</source>
       <translation>평면</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="42"/>
-      <location filename="../../DlgPrimitives.cpp" line="350"/>
+      <location filename="../../DlgPrimitives.cpp" line="352"/>
       <source>Box</source>
       <translation type="unfinished">Box</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="51"/>
-      <location filename="../../DlgPrimitives.cpp" line="440"/>
+      <location filename="../../DlgPrimitives.cpp" line="442"/>
       <source>Cylinder</source>
       <translation>원통</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="60"/>
-      <location filename="../../DlgPrimitives.cpp" line="536"/>
+      <location filename="../../DlgPrimitives.cpp" line="538"/>
       <source>Cone</source>
       <translation>고깔</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="69"/>
-      <location filename="../../DlgPrimitives.cpp" line="627"/>
+      <location filename="../../DlgPrimitives.cpp" line="629"/>
       <source>Sphere</source>
       <translation>공모양</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="78"/>
-      <location filename="../../DlgPrimitives.cpp" line="731"/>
+      <location filename="../../DlgPrimitives.cpp" line="733"/>
       <source>Ellipsoid</source>
       <translation>타원 면</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="87"/>
-      <location filename="../../DlgPrimitives.cpp" line="838"/>
+      <location filename="../../DlgPrimitives.cpp" line="840"/>
       <source>Torus</source>
       <translation>원환체</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="96"/>
-      <location filename="../../DlgPrimitives.cpp" line="936"/>
+      <location filename="../../DlgPrimitives.cpp" line="938"/>
       <source>Prism</source>
       <translation>프리즘</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="105"/>
-      <location filename="../../DlgPrimitives.cpp" line="1080"/>
+      <location filename="../../DlgPrimitives.cpp" line="1082"/>
       <source>Wedge</source>
       <translation>쐐기</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="114"/>
-      <location filename="../../DlgPrimitives.cpp" line="1206"/>
+      <location filename="../../DlgPrimitives.cpp" line="1208"/>
       <source>Helix</source>
       <translation>나선</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="123"/>
-      <location filename="../../DlgPrimitives.cpp" line="1295"/>
+      <location filename="../../DlgPrimitives.cpp" line="1297"/>
       <source>Spiral</source>
       <translation>나선형</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="132"/>
-      <location filename="../../DlgPrimitives.cpp" line="1375"/>
+      <location filename="../../DlgPrimitives.cpp" line="1377"/>
       <source>Circle</source>
       <translation>원</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="141"/>
-      <location filename="../../DlgPrimitives.cpp" line="1461"/>
+      <location filename="../../DlgPrimitives.cpp" line="1463"/>
       <source>Ellipse</source>
       <translation>타원</translation>
     </message>
@@ -3479,13 +3479,13 @@ Check one or more edge entities first.</source>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="159"/>
-      <location filename="../../DlgPrimitives.cpp" line="1639"/>
+      <location filename="../../DlgPrimitives.cpp" line="1641"/>
       <source>Line</source>
       <translation>선</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="168"/>
-      <location filename="../../DlgPrimitives.cpp" line="1538"/>
+      <location filename="../../DlgPrimitives.cpp" line="1540"/>
       <source>Regular polygon</source>
       <translation>일반 다각형</translation>
     </message>
@@ -3711,25 +3711,25 @@ Check one or more edge entities first.</source>
       <translation>끝점</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="1739"/>
+      <location filename="../../DlgPrimitives.cpp" line="1741"/>
       <source>Vertex</source>
       <translation>꼭지점</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="1917"/>
-      <location filename="../../DlgPrimitives.cpp" line="1927"/>
-      <location filename="../../DlgPrimitives.cpp" line="1942"/>
-      <location filename="../../DlgPrimitives.cpp" line="1946"/>
+      <location filename="../../DlgPrimitives.cpp" line="1919"/>
+      <location filename="../../DlgPrimitives.cpp" line="1929"/>
+      <location filename="../../DlgPrimitives.cpp" line="1944"/>
+      <location filename="../../DlgPrimitives.cpp" line="1948"/>
       <source>Create %1</source>
       <translation>%1 만들기</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="1918"/>
+      <location filename="../../DlgPrimitives.cpp" line="1920"/>
       <source>No active document</source>
       <translation>활성 문서가 없습니다</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="2211"/>
+      <location filename="../../DlgPrimitives.cpp" line="2213"/>
       <source>&amp;Create</source>
       <translation>만들기(&amp;C)</translation>
     </message>
@@ -3812,17 +3812,17 @@ Check one or more edge entities first.</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="135"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="137"/>
       <source>Projection object</source>
       <translation>투상 대상체</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="164"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="166"/>
       <source>No active document</source>
       <translation>활성 문서가 없습니다</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="170"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="172"/>
       <source>Cannot create a projection object</source>
       <translation>투상 대상체를 생성할 수 없습니다</translation>
     </message>
@@ -3906,7 +3906,7 @@ Check one or more edge entities first.</source>
       <translation>고체 생성</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="472"/>
+      <location filename="../../DlgRevolution.cpp" line="474"/>
       <source>Select reference</source>
       <translation>다른 회전축 선택하기</translation>
     </message>
@@ -3916,19 +3916,19 @@ Check one or more edge entities first.</source>
       <translation>양쪽 방향으로 회전</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="188"/>
+      <location filename="../../DlgRevolution.cpp" line="190"/>
       <source>Object not found: %1</source>
       <translation>대상체를 발견하지 못했습니다:%1</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="269"/>
+      <location filename="../../DlgRevolution.cpp" line="271"/>
       <source>Select a shape for revolution.</source>
       <translation type="unfinished">Select a shape for revolution.</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="285"/>
-      <location filename="../../DlgRevolution.cpp" line="290"/>
-      <location filename="../../DlgRevolution.cpp" line="295"/>
+      <location filename="../../DlgRevolution.cpp" line="287"/>
+      <location filename="../../DlgRevolution.cpp" line="292"/>
+      <location filename="../../DlgRevolution.cpp" line="297"/>
       <source>Revolution axis link is invalid.
 
 %1</source>
@@ -3937,23 +3937,23 @@ Check one or more edge entities first.</source>
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="295"/>
+      <location filename="../../DlgRevolution.cpp" line="297"/>
       <source>Unknown error</source>
       <translation>알 수 없는 오류</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="304"/>
+      <location filename="../../DlgRevolution.cpp" line="306"/>
       <source>Revolution axis direction is zero-length. It must be non-zero.</source>
       <translation type="unfinished">Revolution axis direction is zero-length. It must be non-zero.</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="314"/>
+      <location filename="../../DlgRevolution.cpp" line="316"/>
       <source>Revolution angle span is zero. It must be non-zero.</source>
       <translation>입력한 회전 각도가 0° 네요? ^ ^ ;  -360° 에서 +360° 범위에서 0°만 빼고 가능합니다!</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="452"/>
-      <location filename="../../DlgRevolution.cpp" line="456"/>
+      <location filename="../../DlgRevolution.cpp" line="454"/>
+      <location filename="../../DlgRevolution.cpp" line="458"/>
       <source>Creating Revolve failed.
 
 %1</source>
@@ -3962,7 +3962,7 @@ Check one or more edge entities first.</source>
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="468"/>
+      <location filename="../../DlgRevolution.cpp" line="470"/>
       <source>Selecting… (line or arc)</source>
       <translation>선택 중...(선 또는 호)</translation>
     </message>
@@ -4000,22 +4000,22 @@ Check one or more edge entities first.</source>
       <translation type="unfinished">Maximum angular deflection</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPartImp.cpp" line="81"/>
+      <location filename="../../DlgSettings3DViewPartImp.cpp" line="83"/>
       <source>Deviation</source>
       <translation type="unfinished">Deviation</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPartImp.cpp" line="82"/>
+      <location filename="../../DlgSettings3DViewPartImp.cpp" line="84"/>
       <source>Setting a too small deviation causes the tessellation to take longer and thus freezes or slows down the GUI.</source>
       <translation type="unfinished">Setting a too small deviation causes the tessellation to take longer and thus freezes or slows down the GUI.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPartImp.cpp" line="102"/>
+      <location filename="../../DlgSettings3DViewPartImp.cpp" line="104"/>
       <source>Angle deflection</source>
       <translation type="unfinished">Angle deflection</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPartImp.cpp" line="103"/>
+      <location filename="../../DlgSettings3DViewPartImp.cpp" line="105"/>
       <source>Setting a too small angle deviation causes the tessellation to take longer and thus freezes or slows down the GUI.</source>
       <translation type="unfinished">Setting a too small angle deviation causes the tessellation to take longer and thus freezes or slows down the GUI.</translation>
     </message>
@@ -4382,37 +4382,37 @@ the sketch plane's normal vector will be used</source>
   <context>
     <name>PartGui::LoftWidget</name>
     <message>
-      <location filename="../../TaskLoft.cpp" line="71"/>
+      <location filename="../../TaskLoft.cpp" line="73"/>
       <source>Available profiles</source>
       <translation>사용 가능한 윤곽</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="72"/>
+      <location filename="../../TaskLoft.cpp" line="74"/>
       <source>Selected profiles</source>
       <translation>선택된 윤곽</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="178"/>
+      <location filename="../../TaskLoft.cpp" line="180"/>
       <source>Too few elements</source>
       <translation>너무 적은 요소들</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="178"/>
+      <location filename="../../TaskLoft.cpp" line="180"/>
       <source>At least 2 vertices, edges, wires, or faces are required.</source>
       <translation>적어도 두 개의 꼭지점과 모서리, 철사나 면이 필요 합니다.</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="212"/>
+      <location filename="../../TaskLoft.cpp" line="214"/>
       <source>Input error</source>
       <translation>입력 오류</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="241"/>
+      <location filename="../../TaskLoft.cpp" line="243"/>
       <source>Vertex/Edge/Wire/Face</source>
       <translation>꼭지점/모서리/철사/면</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="242"/>
+      <location filename="../../TaskLoft.cpp" line="244"/>
       <source>Loft</source>
       <translation>로프트</translation>
     </message>
@@ -4476,7 +4476,7 @@ the sketch plane's normal vector will be used</source>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="150"/>
-      <location filename="../../Mirroring.cpp" line="216"/>
+      <location filename="../../Mirroring.cpp" line="218"/>
       <source>Selecting</source>
       <translation>선택</translation>
     </message>
@@ -4486,17 +4486,17 @@ the sketch plane's normal vector will be used</source>
       <translation>대칭복사 평면 참조</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.cpp" line="212"/>
+      <location filename="../../Mirroring.cpp" line="214"/>
       <source>Select reference</source>
       <translation>참조 선택</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.cpp" line="281"/>
+      <location filename="../../Mirroring.cpp" line="283"/>
       <source>Select a shape for mirroring.</source>
       <translation>대칭복사를 위해 형상을 선택합니다.</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.cpp" line="288"/>
+      <location filename="../../Mirroring.cpp" line="290"/>
       <source>No such document '%1'.</source>
       <translation>'%1' 문서가 없습니다.</translation>
     </message>
@@ -4504,7 +4504,7 @@ the sketch plane's normal vector will be used</source>
   <context>
     <name>PartGui::OffsetWidget</name>
     <message>
-      <location filename="../../TaskOffset.cpp" line="205"/>
+      <location filename="../../TaskOffset.cpp" line="207"/>
       <source>Input error</source>
       <translation>입력 오류</translation>
     </message>
@@ -4512,17 +4512,17 @@ the sketch plane's normal vector will be used</source>
   <context>
     <name>PartGui::ResultModel</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="338"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="340"/>
       <source>Name</source>
       <translation>이름</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="340"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="342"/>
       <source>Type</source>
       <translation>유형</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="342"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="344"/>
       <source>Error</source>
       <translation>오류</translation>
     </message>
@@ -4652,7 +4652,7 @@ only created cuts will be visible</translation>
       <translation type="unfinished">Keep only cuts visible when closing</translation>
     </message>
     <message>
-      <location filename="../../SectionCutting.cpp" line="1087"/>
+      <location filename="../../SectionCutting.cpp" line="1089"/>
       <source>Sliders are disabled for assemblies</source>
       <translation type="unfinished">Sliders are disabled for assemblies</translation>
     </message>
@@ -4660,80 +4660,80 @@ only created cuts will be visible</translation>
   <context>
     <name>PartGui::ShapeBuilderWidget</name>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="216"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="218"/>
       <source>Unsupported</source>
       <translation>지원되지 않음</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="216"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="218"/>
       <source>Box selection for shells is not supported</source>
       <translation>껍질에 대한 BOX 선택은 지원되지 않습니다.</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="225"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="244"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="272"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="313"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="365"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="417"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="478"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="227"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="246"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="274"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="315"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="367"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="419"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="480"/>
       <source>Wrong selection</source>
       <translation>잘못 된 선택</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="225"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="244"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="227"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="246"/>
       <source>Select two vertices</source>
       <translation>두 정점 선택</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="272"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="365"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="274"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="367"/>
       <source>Select at least 1 edge</source>
       <translation>최소 1개의 모서리를 선택하세요</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="417"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="419"/>
       <source>Select at least 2 faces</source>
       <translation>최소 2개의 면을 선택하세요</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="478"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="480"/>
       <source>Select only 1 shape object</source>
       <translation>형상 대상체를 하나만 선택하세요</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="544"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="546"/>
       <source>Select vertices</source>
       <translation>꼭지점 선택</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="551"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="553"/>
       <source>Select a closed loop of edges</source>
       <translation>모서리들의 폐곡선을 선택</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="313"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="315"/>
       <source>Select three or more vertices</source>
       <translation>3 개 이상의 꼭지점을 선택</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="530"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="532"/>
       <source>Select two vertices to create an edge</source>
       <translation>모서리를 생성하기 위해 두 꼭지점을 선택</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="537"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="539"/>
       <source>Select adjacent edges</source>
       <translation>인접한 모서리들 선택</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="558"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="560"/>
       <source>Select adjacent faces</source>
       <translation>인접한 면들 선택</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="565"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="567"/>
       <source>All shape types can be selected</source>
       <translation>모든 유형의 형상을 선택할 수 있습니다</translation>
     </message>
@@ -4741,79 +4741,79 @@ only created cuts will be visible</translation>
   <context>
     <name>PartGui::SweepWidget</name>
     <message>
-      <location filename="../../TaskSweep.cpp" line="130"/>
+      <location filename="../../TaskSweep.cpp" line="132"/>
       <source>Available profiles</source>
       <translation>사용 가능한 윤곽</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="131"/>
+      <location filename="../../TaskSweep.cpp" line="133"/>
       <source>Selected profiles</source>
       <translation>선택된 윤곽</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="334"/>
+      <location filename="../../TaskSweep.cpp" line="336"/>
       <source>Too few elements</source>
       <translation>너무 적은 요소들</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="334"/>
+      <location filename="../../TaskSweep.cpp" line="336"/>
       <source>At least one edge or wire is required.</source>
       <translation>최소한 하나의 모서리나 철사가 필요합니다.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="338"/>
+      <location filename="../../TaskSweep.cpp" line="340"/>
       <source>Invalid selection</source>
       <translation>잘못된 선택</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="338"/>
+      <location filename="../../TaskSweep.cpp" line="340"/>
       <source>Select at least 1 edge from a single object.</source>
       <translation>하나의 대상체에서 최소한 하나의 모서리를 선택하세요.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="345"/>
+      <location filename="../../TaskSweep.cpp" line="347"/>
       <source>Wrong selection</source>
       <translation>잘못 된 선택</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="345"/>
+      <location filename="../../TaskSweep.cpp" line="347"/>
       <source>'%1' cannot be used as profile and path.</source>
       <translation>'%'은 윤곽과 경로로써 사용할 수 없습니다.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="383"/>
+      <location filename="../../TaskSweep.cpp" line="385"/>
       <source>Input error</source>
       <translation>입력 오류</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="416"/>
+      <location filename="../../TaskSweep.cpp" line="418"/>
       <source>Done</source>
       <translation>완료</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="418"/>
+      <location filename="../../TaskSweep.cpp" line="420"/>
       <source>Select one or more connected edges in the 3D view and press 'Done'</source>
       <translation type="unfinished">Select one or more connected edges in the 3D view and press 'Done'</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="440"/>
-      <location filename="../../TaskSweep.cpp" line="448"/>
+      <location filename="../../TaskSweep.cpp" line="442"/>
+      <location filename="../../TaskSweep.cpp" line="450"/>
       <source>Sweep path</source>
       <translation>스윕 경로</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="440"/>
-      <location filename="../../TaskSweep.cpp" line="448"/>
+      <location filename="../../TaskSweep.cpp" line="442"/>
+      <location filename="../../TaskSweep.cpp" line="450"/>
       <source>The selected sweep path is invalid.</source>
       <translation>선택된 쓸기경로가 유효하지 않습니다.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="460"/>
+      <location filename="../../TaskSweep.cpp" line="462"/>
       <source>Vertex/Wire</source>
       <translation type="unfinished">Vertex/Wire</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="461"/>
+      <location filename="../../TaskSweep.cpp" line="463"/>
       <source>Sweep</source>
       <translation>스윕</translation>
     </message>
@@ -4926,82 +4926,82 @@ of the object being attached.</translation>
       <translation>반대쪽으로</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="359"/>
+      <location filename="../../TaskAttacher.cpp" line="361"/>
       <source>OCC error: %1</source>
       <translation>OCC 오류: %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="362"/>
+      <location filename="../../TaskAttacher.cpp" line="364"/>
       <source>unknown error</source>
       <translation>알 수 없는 오류</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="365"/>
+      <location filename="../../TaskAttacher.cpp" line="367"/>
       <source>Attachment mode failed: %1</source>
       <translation>부착 방식 실패: %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="370"/>
+      <location filename="../../TaskAttacher.cpp" line="372"/>
       <source>Not attached</source>
       <translation>부착되지 않음</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="375"/>
+      <location filename="../../TaskAttacher.cpp" line="377"/>
       <source>Attached with mode %1</source>
       <translation>%1 방식으로 부착됨</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="379"/>
+      <location filename="../../TaskAttacher.cpp" line="381"/>
       <source>Attachment offset (in its local coordinate system):</source>
       <translation>부착 편차 (부착 대상의 지역 좌표계 안에서):</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="379"/>
+      <location filename="../../TaskAttacher.cpp" line="381"/>
       <source>Attachment offset (inactive - not attached):</source>
       <translation>부착 편차 (비활성 - 부착되지 않음):</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="914"/>
+      <location filename="../../TaskAttacher.cpp" line="916"/>
       <source>Selecting…</source>
       <translation>선택중…</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="834"/>
+      <location filename="../../TaskAttacher.cpp" line="836"/>
       <source>Face</source>
       <translation>면</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="841"/>
+      <location filename="../../TaskAttacher.cpp" line="843"/>
       <source>Edge</source>
       <translation>모서리</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="848"/>
+      <location filename="../../TaskAttacher.cpp" line="850"/>
       <source>Vertex</source>
       <translation>꼭지점</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="920"/>
+      <location filename="../../TaskAttacher.cpp" line="922"/>
       <source>Reference%1</source>
       <translation>참조%1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="967"/>
+      <location filename="../../TaskAttacher.cpp" line="969"/>
       <source>Not editable because rotation of AttachmentOffset is bound by expressions.</source>
       <translation type="unfinished">Not editable because rotation of AttachmentOffset is bound by expressions.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1034"/>
+      <location filename="../../TaskAttacher.cpp" line="1036"/>
       <source>Reference combinations:</source>
       <translation>참조 결합:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1051"/>
+      <location filename="../../TaskAttacher.cpp" line="1053"/>
       <source>%1 (add %2)</source>
       <translation type="unfinished">%1 (add %2)</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1057"/>
+      <location filename="../../TaskAttacher.cpp" line="1059"/>
       <source>%1 (add more references)</source>
       <translation type="unfinished">%1 (add more references)</translation>
     </message>
@@ -5009,28 +5009,28 @@ of the object being attached.</translation>
   <context>
     <name>PartGui::TaskCheckGeometryDialog</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1077"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1079"/>
       <source>Shape Content</source>
       <translation type="unfinished">Shape Content</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1085"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="1280"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1087"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1282"/>
       <source>Settings</source>
       <translation>설정</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1093"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1095"/>
       <source>Default: false</source>
       <translation>기본값: 거짓</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1100"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1102"/>
       <source>Run boolean operation check</source>
       <translation type="unfinished">Run boolean operation check</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1101"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1103"/>
       <source>Extra boolean operations check that can sometimes find errors that
 the standard BRep geometry check misses. These errors do not always
 mean the checked object is unusable.  Default: false</source>
@@ -5039,165 +5039,165 @@ the standard BRep geometry check misses. These errors do not always
 mean the checked object is unusable.  Default: false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1111"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1113"/>
       <source>Single-threaded</source>
       <translation type="unfinished">Single-threaded</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1112"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1114"/>
       <source>Run the geometry check in a single thread.  This is slower,
 but more stable.  Default: false</source>
       <translation type="unfinished">Run the geometry check in a single thread.  This is slower,
 but more stable.  Default: false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1121"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1123"/>
       <source>Log errors</source>
       <translation type="unfinished">Log errors</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1122"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1124"/>
       <source>Log errors to report view.  Default: true</source>
       <translation type="unfinished">Log errors to report view.  Default: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1129"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1131"/>
       <source>Expand shape content</source>
       <translation type="unfinished">Expand shape content</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1130"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1132"/>
       <source>Expand shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
       <translation type="unfinished">Expand shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1139"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1141"/>
       <source>Advanced shape content</source>
       <translation type="unfinished">Advanced shape content</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1140"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1142"/>
       <source>Show advanced shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
       <translation type="unfinished">Show advanced shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1148"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1150"/>
       <source>
 Individual boolean operation checks:</source>
       <translation type="unfinished">
 Individual boolean operation checks:</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1151"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1153"/>
       <source>Bad type</source>
       <translation type="unfinished">Bad type</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1159"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1161"/>
       <source>Self-intersect</source>
       <translation>자기 교차</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1167"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1169"/>
       <source>Too small edge</source>
       <translation>너무 작은 모서리</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1175"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1177"/>
       <source>Nonrecoverable face</source>
       <translation type="unfinished">Nonrecoverable face</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1183"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1185"/>
       <source>Continuity</source>
       <translation>연속성</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1191"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1193"/>
       <source>Incompatibility of face</source>
       <translation type="unfinished">Incompatibility of face</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1199"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1201"/>
       <source>Incompatibility of vertex</source>
       <translation>꼭지점의 비호환성</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1207"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1209"/>
       <source>Incompatibility of edge</source>
       <translation>모서리의 비호환성</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1215"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1217"/>
       <source>Invalid curve on surface</source>
       <translation>표면의 유효하지 않은 곡선</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1152"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1154"/>
       <source>Check for bad argument types.  Default: true</source>
       <translation type="unfinished">Check for bad argument types.  Default: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1089"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1091"/>
       <source>Skip this settings page</source>
       <translation>이 설정 페이지를 건너뛰기</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1091"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1093"/>
       <source>Skip this settings page and run the geometry check automatically</source>
       <translation>이 설정 페이지를 건너뛰고 도형 검증을 자동실행 합니다</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1160"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1162"/>
       <source>Check for self-intersections.  Default: true</source>
       <translation>자기교차 여부 점검. 기본값: 참</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1168"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1170"/>
       <source>Check for edges that are too small.  Default: true</source>
       <translation>너무 작은 길이의 모서리 점검. 기본값: 참</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1176"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1178"/>
       <source>Check for nonrecoverable faces.  Default: true</source>
       <translation type="unfinished">Check for nonrecoverable faces.  Default: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1184"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1186"/>
       <source>Check for continuity.  Default: true</source>
       <translation>연속성 점검. 기본값: 참</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1192"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1194"/>
       <source>Check for incompatible faces.  Default: true</source>
       <translation>호환되지 않는 면들 점검. 기본값: 참</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1200"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1202"/>
       <source>Check for incompatible vertices.  Default: true</source>
       <translation>호환되지 않는 점들 점검. 기본값: 참</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1208"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1210"/>
       <source>Check for incompatible edges.  Default: true</source>
       <translation>호환되지 않는 모서리들 점검. 기본값: 참</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1216"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1218"/>
       <source>Check for invalid curves on surfaces.  Default: true</source>
       <translation>표면의 유효하지 않은 곡선 점검. 기본값: 참</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1279"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1281"/>
       <source>Run check</source>
       <translation>검증 실행</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1285"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1287"/>
       <source>Results</source>
       <translation>결과</translation>
     </message>
@@ -5205,95 +5205,95 @@ Individual boolean operation checks:</translation>
   <context>
     <name>PartGui::TaskCheckGeometryResults</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="373"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="375"/>
       <source>Check Geometry Results</source>
       <translation>도형 검증 결과 확인</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="396"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="398"/>
       <source>Check is running…</source>
       <translation>검증 실행 중…</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="421"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="423"/>
       <source>Boolean operation check…</source>
       <translation type="unfinished">Boolean operation check…</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="423"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="425"/>
       <source>Check geometry</source>
       <translation>도형 검사</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="454"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="456"/>
       <source>Null shape</source>
       <translation type="unfinished">Null shape</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="455"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="466"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="457"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="468"/>
       <source>Skipped</source>
       <translation type="unfinished">Skipped</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="465"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="467"/>
       <source>Infinite shape</source>
       <translation type="unfinished">Infinite shape</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="492"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="494"/>
       <source>Invalid</source>
       <translation>무효함</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="513"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="515"/>
       <source>Checking</source>
       <translation type="unfinished">Checking</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="532"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="534"/>
       <source>No errors</source>
       <translation>오류 없음</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="543"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="545"/>
       <source>%1 processed out of %2 selected</source>
       <translation type="unfinished">%1 processed out of %2 selected</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../TaskCheckGeometry.cpp" line="544"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="546"/>
       <source>%n invalid shapes.</source>
       <translation>
         <numerusform>무효한 형상 %n 개.</numerusform>
       </translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="545"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="547"/>
       <source>to report view.</source>
       <translation type="unfinished">to report view.</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="666"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="668"/>
       <source>Global minimum</source>
       <translation type="unfinished">Global minimum</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="671"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="673"/>
       <source>Global average</source>
       <translation type="unfinished">Global average</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="676"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="678"/>
       <source>Global maximum</source>
       <translation type="unfinished">Global maximum</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="644"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="646"/>
       <source>Checked object</source>
       <translation>검증된 대상체</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="661"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="663"/>
       <source>Tolerance information</source>
       <translation type="unfinished">Tolerance information</translation>
     </message>
@@ -5301,12 +5301,12 @@ Individual boolean operation checks:</translation>
   <context>
     <name>PartGui::TaskDlgAttacher</name>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1281"/>
+      <location filename="../../TaskAttacher.cpp" line="1283"/>
       <source>Attachment</source>
       <translation>부착</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1342"/>
+      <location filename="../../TaskAttacher.cpp" line="1344"/>
       <source>Datum dialog: input error</source>
       <translation>작업기준 대화창: 입력 오류</translation>
     </message>
@@ -5491,7 +5491,7 @@ Individual boolean operation checks:</translation>
       <translation>프레네</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="486"/>
+      <location filename="../../TaskSweep.cpp" line="488"/>
       <source>Select at least 1 profile and an edge or wire
 in the 3D view for the sweep path.</source>
       <translation>최소한 하나 이상의 윤곽을 선택하고 3D 보기에서 쓸어 나갈 경로로 모서리나 철사를 선택하세요.</translation>
@@ -5528,24 +5528,24 @@ in the 3D view for the sweep path.</source>
   <context>
     <name>PartGui::ThicknessWidget</name>
     <message>
-      <location filename="../../TaskThickness.cpp" line="91"/>
-      <location filename="../../TaskThickness.cpp" line="307"/>
-      <location filename="../../TaskThickness.cpp" line="367"/>
+      <location filename="../../TaskThickness.cpp" line="93"/>
+      <location filename="../../TaskThickness.cpp" line="309"/>
+      <location filename="../../TaskThickness.cpp" line="369"/>
       <source>Thickness</source>
       <translation>두께</translation>
     </message>
     <message>
-      <location filename="../../TaskThickness.cpp" line="195"/>
+      <location filename="../../TaskThickness.cpp" line="197"/>
       <source>Select faces of the source object and press 'Done'</source>
       <translation>원본 대상체의 면을 선택하고 '완료' 클릭</translation>
     </message>
     <message>
-      <location filename="../../TaskThickness.cpp" line="198"/>
+      <location filename="../../TaskThickness.cpp" line="200"/>
       <source>Done</source>
       <translation>완료</translation>
     </message>
     <message>
-      <location filename="../../TaskThickness.cpp" line="272"/>
+      <location filename="../../TaskThickness.cpp" line="274"/>
       <source>Input error</source>
       <translation>입력 오류</translation>
     </message>
@@ -5553,436 +5553,436 @@ in the 3D view for the sweep path.</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../../BasicShapes/ViewProviderShapes.py" line="47"/>
-      <location filename="../../../BasicShapes/ViewProviderShapes.py" line="54"/>
-      <location filename="../../ViewProvider.cpp" line="51"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="51"/>
+      <location filename="../../../BasicShapes/ViewProviderShapes.py" line="49"/>
+      <location filename="../../../BasicShapes/ViewProviderShapes.py" line="56"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="53"/>
+      <location filename="../../ViewProvider.cpp" line="53"/>
       <source>Edit %1</source>
       <translation>수정</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="243"/>
+      <location filename="../../AppPartGui.cpp" line="245"/>
       <source>Part and Part Design workbench</source>
       <translation>부품 그리고 부품설계 작업대</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="244"/>
-      <location filename="../../AppPartGui.cpp" line="245"/>
       <location filename="../../AppPartGui.cpp" line="246"/>
+      <location filename="../../AppPartGui.cpp" line="247"/>
+      <location filename="../../AppPartGui.cpp" line="248"/>
       <source>Part/Part Design</source>
       <translation>부품설계 작업대</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="247"/>
-      <location filename="../../AppPartGui.cpp" line="248"/>
+      <location filename="../../AppPartGui.cpp" line="249"/>
+      <location filename="../../AppPartGui.cpp" line="250"/>
       <source>Import-Export</source>
       <translation>가져오기 내보내기</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="314"/>
-      <location filename="../../Command.cpp" line="373"/>
-      <location filename="../../Command.cpp" line="451"/>
-      <location filename="../../Command.cpp" line="842"/>
-      <location filename="../../Command.cpp" line="898"/>
-      <location filename="../../Command.cpp" line="2036"/>
+      <location filename="../../Command.cpp" line="316"/>
+      <location filename="../../Command.cpp" line="375"/>
+      <location filename="../../Command.cpp" line="453"/>
+      <location filename="../../Command.cpp" line="844"/>
+      <location filename="../../Command.cpp" line="900"/>
+      <location filename="../../Command.cpp" line="2038"/>
       <source>Wrong selection</source>
       <translation>잘못 된 선택</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="325"/>
-      <location filename="../../Command.cpp" line="384"/>
-      <location filename="../../Command.cpp" line="462"/>
+      <location filename="../../Command.cpp" line="327"/>
+      <location filename="../../Command.cpp" line="386"/>
+      <location filename="../../Command.cpp" line="464"/>
       <source>Non-solids selected</source>
       <translation>비-고체가 선택되었습니다</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="315"/>
-      <location filename="../../Command.cpp" line="899"/>
+      <location filename="../../Command.cpp" line="317"/>
+      <location filename="../../Command.cpp" line="901"/>
       <source>Select 2 shapes</source>
       <translation type="unfinished">Select 2 shapes</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="326"/>
-      <location filename="../../Command.cpp" line="385"/>
-      <location filename="../../Command.cpp" line="463"/>
+      <location filename="../../Command.cpp" line="328"/>
+      <location filename="../../Command.cpp" line="387"/>
+      <location filename="../../Command.cpp" line="465"/>
       <source>The use of non-solids for boolean operations may lead to unexpected results.
 Continue?</source>
       <translation type="unfinished">The use of non-solids for boolean operations may lead to unexpected results.
 Continue?</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="374"/>
+      <location filename="../../Command.cpp" line="376"/>
       <source>Select at least 2 shapes. Alternatively, select 1 compound containing 2 or more shapes to compute the intersection between.</source>
       <translation type="unfinished">Select at least 2 shapes. Alternatively, select 1 compound containing 2 or more shapes to compute the intersection between.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="452"/>
+      <location filename="../../Command.cpp" line="454"/>
       <source>Select at least 2 shapes. Alternatively, select 1 compound containing 2 or more shapes to be fused.</source>
       <translation type="unfinished">Select at least 2 shapes. Alternatively, select 1 compound containing 2 or more shapes to be fused.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="843"/>
+      <location filename="../../Command.cpp" line="845"/>
       <source>Select at least one shape</source>
       <translation>적어도 하나의 형상을 선택하세요</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1059"/>
+      <location filename="../../Command.cpp" line="1061"/>
       <source>All CAD Files</source>
       <translation>모든 CAD 파일</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1064"/>
+      <location filename="../../Command.cpp" line="1066"/>
       <source>All Files</source>
       <translation>모든 파일</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2037"/>
+      <location filename="../../Command.cpp" line="2039"/>
       <source>Select either 2 edges or 2 wires.</source>
       <translation>2개의 모서리 또는 2개의 철사를 선택하세요.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="71"/>
-      <location filename="../../TaskAttacher.cpp" line="101"/>
+      <location filename="../../TaskAttacher.cpp" line="73"/>
+      <location filename="../../TaskAttacher.cpp" line="103"/>
       <source>No reference selected</source>
       <translation>아무 참조도 선택되지 않음</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="79"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <source>Face</source>
       <translation>면</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <source>Edge</source>
       <translation>모서리</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="82"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <source>Vertex</source>
       <translation>꼭지점</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="75"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="77"/>
       <source>Compound</source>
       <translation>복합체</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="76"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="78"/>
       <source>Compound solid</source>
       <translation type="unfinished">Compound solid</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="77"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="79"/>
       <source>Solid</source>
       <translation>고체</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="78"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="80"/>
       <source>Shell</source>
       <translation>껍질</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="80"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="82"/>
       <source>Wire</source>
       <translation>철사</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="85"/>
       <source>Shape</source>
       <translation>형상</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="98"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="100"/>
       <source>No error</source>
       <translation>오류 없음</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="99"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="101"/>
       <source>Invalid point on curve</source>
       <translation type="unfinished">Invalid point on curve</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="100"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="102"/>
       <source>Invalid point on curve on surface</source>
       <translation type="unfinished">Invalid point on curve on surface</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="101"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="103"/>
       <source>Invalid point on surface</source>
       <translation>표면에 유효하지 않은 점</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="102"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="104"/>
       <source>No 3D curve</source>
       <translation type="unfinished">No 3D curve</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="103"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="105"/>
       <source>Multiple 3D curves</source>
       <translation type="unfinished">Multiple 3D curves</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="104"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="106"/>
       <source>Invalid 3D curve</source>
       <translation>유효하지 않은 3D 곡선</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="105"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="107"/>
       <source>No curve on surface</source>
       <translation type="unfinished">No curve on surface</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="106"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="108"/>
       <source>Invalid curve on surface</source>
       <translation>표면의 유효하지 않은 곡선</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="107"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="109"/>
       <source>Invalid curve on closed surface</source>
       <translation>닫힌 표면에 유효하지 않은 곡선</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="108"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="110"/>
       <source>Invalid same range flag</source>
       <translation type="unfinished">Invalid same range flag</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="109"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="111"/>
       <source>Invalid same parameter flag</source>
       <translation type="unfinished">Invalid same parameter flag</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="110"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="112"/>
       <source>Invalid degenerated flag</source>
       <translation type="unfinished">Invalid degenerated flag</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="111"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="113"/>
       <source>Free edge</source>
       <translation type="unfinished">Free edge</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="112"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="114"/>
       <source>Invalid multi-connexity</source>
       <translation type="unfinished">Invalid multi-connexity</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="113"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="115"/>
       <source>Invalid range</source>
       <translation type="unfinished">Invalid range</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="114"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="116"/>
       <source>Empty wire</source>
       <translation>빈 철사</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="115"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="117"/>
       <source>Redundant edge</source>
       <translation>중복 모서리</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="116"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="118"/>
       <source>Self-intersecting wire</source>
       <translation>자기 교차하는 철사</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="117"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="119"/>
       <source>No surface</source>
       <translation>표면 없음</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="118"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="120"/>
       <source>Invalid wire</source>
       <translation>잘못된 철사</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="119"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="121"/>
       <source>Redundant wire</source>
       <translation>중복된 철사</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="120"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="122"/>
       <source>Intersecting wires</source>
       <translation>교차하는 철사</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="121"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="123"/>
       <source>Invalid imbrication of wires</source>
       <translation type="unfinished">Invalid imbrication of wires</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="122"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="124"/>
       <source>Empty shell</source>
       <translation>비어 있는 껍질</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="123"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="125"/>
       <source>Redundant face</source>
       <translation>중복된 면</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="124"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="126"/>
       <source>Unorientable shape</source>
       <translation type="unfinished">Unorientable shape</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="125"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="127"/>
       <source>Not closed</source>
       <translation>닫혀있지 않음</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="126"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="128"/>
       <source>Not connected</source>
       <translation>연결되지 않음</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="127"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="129"/>
       <source>Sub-shape not in shape</source>
       <translation type="unfinished">Sub-shape not in shape</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="128"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="130"/>
       <source>Bad orientation</source>
       <translation type="unfinished">Bad orientation</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="129"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="131"/>
       <source>Bad orientation of sub-shape</source>
       <translation type="unfinished">Bad orientation of sub-shape</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="130"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="132"/>
       <source>Invalid tolerance value</source>
       <translation type="unfinished">Invalid tolerance value</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="131"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="133"/>
       <source>Check failed</source>
       <translation>검증 실패</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="141"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="143"/>
       <source>No result</source>
       <translation>결과 없음</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="145"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="147"/>
       <source>Out of enum range:</source>
       <translation type="unfinished">Out of enum range:</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="157"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="159"/>
       <source>Boolean operation: unknown check</source>
       <translation type="unfinished">Boolean operation: unknown check</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="158"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="160"/>
       <source>Boolean operation: bad type</source>
       <translation type="unfinished">Boolean operation: bad type</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="159"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="161"/>
       <source>Boolean operation: self-intersection found</source>
       <translation type="unfinished">Boolean operation: self-intersection found</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="160"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="162"/>
       <source>Boolean operation: edge too small</source>
       <translation type="unfinished">Boolean operation: edge too small</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="161"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="163"/>
       <source>Boolean operation: non-recoverable face</source>
       <translation type="unfinished">Boolean operation: non-recoverable face</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="162"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="164"/>
       <source>Boolean operation: incompatibility of vertex</source>
       <translation type="unfinished">Boolean operation: incompatibility of vertex</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="163"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="165"/>
       <source>Boolean operation: incompatibility of edge</source>
       <translation type="unfinished">Boolean operation: incompatibility of edge</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="164"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="166"/>
       <source>Boolean operation: incompatibility of face</source>
       <translation type="unfinished">Boolean operation: incompatibility of face</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="165"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="167"/>
       <source>Boolean operation: aborted</source>
       <translation type="unfinished">Boolean operation: aborted</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="167"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="169"/>
       <source>Boolean operation: invalid curve on surface</source>
       <translation type="unfinished">Boolean operation: invalid curve on surface</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="168"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="170"/>
       <source>Boolean operation: not valid</source>
       <translation type="unfinished">Boolean operation: not valid</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="166"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="168"/>
       <source>Boolean operation: GeomAbs_C0</source>
       <translation type="unfinished">Boolean operation: GeomAbs_C0</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="768"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="770"/>
       <source>Invalid</source>
       <translation>무효함</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="80"/>
+      <location filename="../../ViewProviderMirror.cpp" line="82"/>
       <source>Edit Mirror Plane</source>
       <translation>대칭 복사 평면 편집</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="290"/>
+      <location filename="../../ViewProviderMirror.cpp" line="292"/>
       <source>Edit Fillet</source>
       <translation>모깎기 수정</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="400"/>
+      <location filename="../../ViewProviderMirror.cpp" line="402"/>
       <source>Edit Chamfer</source>
       <translation>모따기 수정</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="536"/>
+      <location filename="../../ViewProviderMirror.cpp" line="538"/>
       <source>Edit offset</source>
       <translation>편차 수정</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="618"/>
+      <location filename="../../ViewProviderMirror.cpp" line="620"/>
       <source>Edit thickness</source>
       <translation>두께 편집</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/CommandShapes.py" line="52"/>
+      <location filename="../../../BasicShapes/CommandShapes.py" line="54"/>
       <source>Create tube</source>
       <translation>관 생성</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="170"/>
+      <location filename="../../CommandSimple.cpp" line="172"/>
       <source>Distance in parameter space</source>
       <translation type="unfinished">Distance in parameter space</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="171"/>
+      <location filename="../../CommandSimple.cpp" line="173"/>
       <source>Enter distance:</source>
       <translation>거리 입력:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAttachExtension.cpp" line="97"/>
+      <location filename="../../ViewProviderAttachExtension.cpp" line="99"/>
       <source>Attachment Editor</source>
       <translation>부착 정보 편집기</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="892"/>
+      <location filename="../../ViewProviderExt.cpp" line="894"/>
       <source>Appearance per Face</source>
       <translation type="unfinished">Appearance per Face</translation>
     </message>
@@ -5992,63 +5992,63 @@ Continue?</translation>
       <translation>투상 편집</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpline.cpp" line="91"/>
+      <location filename="../../ViewProviderSpline.cpp" line="93"/>
       <source>Show Control Points</source>
       <translation>조절점 보이기</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderBoolean.cpp" line="66"/>
+      <location filename="../../ViewProviderBoolean.cpp" line="68"/>
       <source>Delete %1 content?</source>
       <translation>%1 개 내용을 삭제할까요?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderBoolean.cpp" line="67"/>
+      <location filename="../../ViewProviderBoolean.cpp" line="69"/>
       <source>The %1 '%2' has %3. Do you want to delete them as well?</source>
       <translation type="unfinished">The %1 '%2' has %3. Do you want to delete them as well?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderBoolean.cpp" line="220"/>
+      <location filename="../../ViewProviderBoolean.cpp" line="222"/>
       <source>base and tool objects</source>
       <translation type="unfinished">base and tool objects</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderBoolean.cpp" line="222"/>
+      <location filename="../../ViewProviderBoolean.cpp" line="224"/>
       <source>base object</source>
       <translation>기본 대상체</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderBoolean.cpp" line="224"/>
+      <location filename="../../ViewProviderBoolean.cpp" line="226"/>
       <source>tool object</source>
       <translation>도구 대상체</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderBoolean.cpp" line="228"/>
+      <location filename="../../ViewProviderBoolean.cpp" line="230"/>
       <source>Boolean operation</source>
       <translation>부울 연산</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderBoolean.cpp" line="316"/>
-      <location filename="../../ViewProviderBoolean.cpp" line="452"/>
+      <location filename="../../ViewProviderBoolean.cpp" line="318"/>
+      <location filename="../../ViewProviderBoolean.cpp" line="454"/>
       <source>%1 input objects</source>
       <translation type="unfinished">%1 input objects</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderBoolean.cpp" line="319"/>
+      <location filename="../../ViewProviderBoolean.cpp" line="321"/>
       <source>Fusion</source>
       <translation>융합</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderBoolean.cpp" line="455"/>
+      <location filename="../../ViewProviderBoolean.cpp" line="457"/>
       <source>Intersection</source>
       <translation>교차</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderCompound.cpp" line="73"/>
+      <location filename="../../ViewProviderCompound.cpp" line="75"/>
       <source>Delete compound content?</source>
       <translation type="unfinished">Delete compound content?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderCompound.cpp" line="74"/>
+      <location filename="../../ViewProviderCompound.cpp" line="76"/>
       <source>The compound '%1' has %2 child objects. Do you want to delete them as well?</source>
       <translation type="unfinished">The compound '%1' has %2 child objects. Do you want to delete them as well?</translation>
     </message>
@@ -6056,57 +6056,57 @@ Continue?</translation>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="33"/>
+      <location filename="../../Workbench.cpp" line="35"/>
       <source>&amp;Part</source>
       <translation>부품(&amp;P)</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="34"/>
+      <location filename="../../Workbench.cpp" line="36"/>
       <source>&amp;Simple</source>
       <translation>단순(&amp;S)</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="35"/>
+      <location filename="../../Workbench.cpp" line="37"/>
       <source>&amp;Parametric</source>
       <translation>&amp; 파라메트릭</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="36"/>
+      <location filename="../../Workbench.cpp" line="38"/>
       <source>Solids</source>
       <translation>고체</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="37"/>
+      <location filename="../../Workbench.cpp" line="39"/>
       <source>Part Tools</source>
       <translation type="unfinished">Part Tools</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="38"/>
+      <location filename="../../Workbench.cpp" line="40"/>
       <source>Boolean Tools</source>
       <translation>부울연산 도구</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="39"/>
+      <location filename="../../Workbench.cpp" line="41"/>
       <source>Primitives</source>
       <translation>기본 형상</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="40"/>
+      <location filename="../../Workbench.cpp" line="42"/>
       <source>Join</source>
       <translation type="unfinished">Join</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="41"/>
+      <location filename="../../Workbench.cpp" line="43"/>
       <source>Split</source>
       <translation>분할</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="42"/>
+      <location filename="../../Workbench.cpp" line="44"/>
       <source>Compound</source>
       <translation>복합체</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="43"/>
+      <location filename="../../Workbench.cpp" line="45"/>
       <source>Copy</source>
       <translation>복사</translation>
     </message>
@@ -6114,12 +6114,12 @@ Continue?</translation>
   <context>
     <name>Part_Tube</name>
     <message>
-      <location filename="../../../BasicShapes/CommandShapes.py" line="44"/>
+      <location filename="../../../BasicShapes/CommandShapes.py" line="46"/>
       <source>Tube</source>
       <translation type="unfinished">Tube</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/CommandShapes.py" line="50"/>
+      <location filename="../../../BasicShapes/CommandShapes.py" line="52"/>
       <source>Creates a tube</source>
       <translation>관 생성</translation>
     </message>
@@ -6127,40 +6127,40 @@ Continue?</translation>
   <context>
     <name>Part_JoinFeatures</name>
     <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="78"/>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="80"/>
       <source>Computing the result failed with an error:</source>
       <translation>다음 오류로 인해 결과 계산에 실패했습니다:</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="79"/>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="81"/>
       <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
       <translation type="unfinished">Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="80"/>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="199"/>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="295"/>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="389"/>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="82"/>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="201"/>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="297"/>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="391"/>
       <source>Bad Selection</source>
       <translation>잘못된 선택</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="82"/>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="84"/>
       <source>Continue</source>
       <translation>계속</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="198"/>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="200"/>
       <source>Select at least two objects, or one or more compounds</source>
       <translation>최소 두 개의 대상체를 선택하거나 하나 이상의 복합체를 선택하세요</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="294"/>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="296"/>
       <source>Select base object, then the object to embed, and then invoke this tool.</source>
       <translation type="unfinished">Select base object, then the object to embed, and then invoke this tool.</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="388"/>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="390"/>
       <source>Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</source>
       <translation type="unfinished">Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</translation>
     </message>
@@ -6168,47 +6168,47 @@ Continue?</translation>
   <context>
     <name>Part_SplitFeatures</name>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="155"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="294"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="485"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="157"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="296"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="487"/>
       <source>Computing the result failed with an error:</source>
       <translation>다음 오류로 인해 결과 계산에 실패했습니다:</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="156"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="295"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="486"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="158"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="297"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="488"/>
       <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
       <translation type="unfinished">Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="157"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="195"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="296"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="348"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="378"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="487"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="527"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="159"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="197"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="298"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="350"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="380"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="489"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="529"/>
       <source>Bad Selection</source>
       <translation>잘못된 선택</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="114"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="159"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="298"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="489"/>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="116"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="161"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="300"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="491"/>
       <source>Continue</source>
       <translation>계속</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="194"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="526"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="196"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="528"/>
       <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
       <translation type="unfinished">Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="347"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="377"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="379"/>
       <source>Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</source>
       <translation type="unfinished">Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</translation>
     </message>
@@ -6216,17 +6216,17 @@ Continue?</translation>
   <context>
     <name>Part_CompoundFilter</name>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="51"/>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="53"/>
       <source>Compound Filter</source>
       <translation>복합 여과기</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="70"/>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="72"/>
       <source>First select a shape that is a compound. If a second object is selected (optional) it will be treated as a stencil.</source>
       <translation type="unfinished">First select a shape that is a compound. If a second object is selected (optional) it will be treated as a stencil.</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="61"/>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="63"/>
       <source>Filters out objects from the selected compound by characteristics like volume,
 area, or length, or by choosing specific items.
 If a second object is selected, it will be used as reference, for example,
@@ -6237,18 +6237,18 @@ If a second object is selected, it will be used as reference, for example,
 for collision or distance filtering.</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="71"/>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="112"/>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="73"/>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="114"/>
       <source>Bad Selection</source>
       <translation>잘못된 선택</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="110"/>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="112"/>
       <source>Computing the result failed with an error:</source>
       <translation>다음 오류로 인해 결과 계산에 실패했습니다:</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="111"/>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="113"/>
       <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
       <translation type="unfinished">Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
     </message>
@@ -6256,22 +6256,22 @@ for collision or distance filtering.</translation>
   <context>
     <name>Part_ExplodeCompound</name>
     <message>
-      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="50"/>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="52"/>
       <source>Explode Compound</source>
       <translation type="unfinished">Explode Compound</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="55"/>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="57"/>
       <source>Splits up a compound of shapes into separate objects, creating a compound filter for each shape</source>
       <translation type="unfinished">Splits up a compound of shapes into separate objects, creating a compound filter for each shape</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="61"/>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="63"/>
       <source>First select a shape that is a compound.</source>
       <translation type="unfinished">First select a shape that is a compound.</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="62"/>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="64"/>
       <source>Bad Selection</source>
       <translation>잘못된 선택</translation>
     </message>
@@ -6279,104 +6279,104 @@ for collision or distance filtering.</translation>
   <context>
     <name>AttachmentEditor</name>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="87"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="89"/>
       <source>No object named {}</source>
       <translation>{}라는 이름의 대상체가 없습니다</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="91"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="93"/>
       <source>Failed to parse link (more than one colon encountered)</source>
       <translation type="unfinished">Failed to parse link (more than one colon encountered)</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="204"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="206"/>
       <source>Object {} is neither movable nor attachable, can't edit attachment</source>
       <translation>대상체 {}은 움직일수도 없고 부착할 수도 없습니다, 부착 편집을 할 수 없습니다</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="214"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="216"/>
       <source>{} is not attachable. The attachment editor can still be used to align the object, but the attachment will not be parametric.</source>
       <translation type="unfinished">{} is not attachable. The attachment editor can still be used to align the object, but the attachment will not be parametric.</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="215"/>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="228"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="217"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="230"/>
       <source>Attachment</source>
       <translation>부착</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="217"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="219"/>
       <source>Continue</source>
       <translation>계속</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="272"/>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="317"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="274"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="319"/>
       <source>Edit attachment of {}</source>
       <translation>{} 의 부착 정보 편집</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="362"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="364"/>
       <source>Ignored. Can't attach object to itself!</source>
       <translation>무시됨. 대상체를 자기자신에게 부착할 수 없음!</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="365"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="367"/>
       <source>{} depends on object being attached, can't use it for attachment</source>
       <translation type="unfinished">{} depends on object being attached, can't use it for attachment</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="504"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="506"/>
       <source>{} (add {})</source>
       <translation type="unfinished">{} (add {})</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="506"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="508"/>
       <source>{} (add more references)</source>
       <translation type="unfinished">{} (add more references)</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="536"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="538"/>
       <source>Reference combinations:</source>
       <translation>참조 결합:</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="552"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="554"/>
       <source>Reference{}</source>
       <translation>참조{}</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="557"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="559"/>
       <source>Selecting…</source>
       <translation>선택중…</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="581"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="583"/>
       <source>Failed to resolve links. {}</source>
       <translation type="unfinished">Failed to resolve links. {}</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="589"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="591"/>
       <source>Not attached</source>
       <translation>부착되지 않음</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="592"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="594"/>
       <source>Attached with mode {}</source>
       <translation>{} 방식으로 부착됨</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="598"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="600"/>
       <source>Error: {}</source>
       <translation>오류: {}</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="601"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="603"/>
       <source>Attachment Offset (in local coordinates):</source>
       <translation>부착 편차(지역 좌표에서):</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="604"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="606"/>
       <source>Attachment Offset (inactive - not attached):</source>
       <translation>부착 편차(비활성 - 부착되지 않음):</translation>
     </message>
@@ -6384,117 +6384,117 @@ for collision or distance filtering.</translation>
   <context>
     <name>TaskCheckGeometryResults</name>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="30"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="32"/>
       <source>Shape type</source>
       <translation>형상 유형</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="34"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="36"/>
       <source>Vertices</source>
       <translation>꼭지점들</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="40"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="42"/>
       <source>Edges</source>
       <translation>모서리들</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="46"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="48"/>
       <source>Wires</source>
       <translation>철사</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="52"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="54"/>
       <source>Faces</source>
       <translation>면</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="58"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="60"/>
       <source>Shells</source>
       <translation>셸</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="64"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="66"/>
       <source>Solids</source>
       <translation>고체</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="70"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="72"/>
       <source>CompSolids</source>
       <translation type="unfinished">CompSolids</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="76"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="78"/>
       <source>Compounds</source>
       <translation>복합체</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="82"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="84"/>
       <source>Shapes</source>
       <translation>모양</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="107"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="109"/>
       <source>Area</source>
       <translation>면적</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="120"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="122"/>
       <source>Volume</source>
       <translation>부피</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="127"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="129"/>
       <source>Mass</source>
       <translation>질량</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="134"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="136"/>
       <source>Length</source>
       <translation>길이:</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="141"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="143"/>
       <source>Radius</source>
       <translation>반지름</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="148"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="150"/>
       <source>Curve center</source>
       <translation type="unfinished">Curve center</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="155"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="157"/>
       <source>Continuity</source>
       <translation>연속성</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="162"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="164"/>
       <source>Center of mass</source>
       <translation>무게중심</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="185"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="187"/>
       <source>Is closed</source>
       <translation>닫혀 있습니다</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="192"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="194"/>
       <source>Orientation</source>
       <translation>방향</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="210"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="212"/>
       <source>Global center of mass</source>
       <translation type="unfinished">Global center of mass</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="228"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="230"/>
       <source>Global placement</source>
       <translation type="unfinished">Global placement</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="230"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="232"/>
       <source>Placement</source>
       <translation>위치 설정</translation>
     </message>
@@ -6502,12 +6502,12 @@ for collision or distance filtering.</translation>
   <context>
     <name>Part_XOR</name>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="510"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="512"/>
       <source>Boolean XOR</source>
       <translation type="unfinished">Boolean XOR</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="517"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="519"/>
       <source>Performs an 'exclusive OR' boolean operation with two or more selected objects,
 or with the shapes inside a compound.
 Overlapping volumes of the shapes will be removed.</source>
@@ -6574,18 +6574,18 @@ Overlapping volumes of the shapes will be removed.</translation>
       <translation>셰이프</translation>
     </message>
     <message>
-      <location filename="../../DlgScale.cpp" line="196"/>
+      <location filename="../../DlgScale.cpp" line="198"/>
       <source>No scalable shapes selected</source>
       <translation type="unfinished">No scalable shapes selected</translation>
     </message>
     <message>
-      <location filename="../../DlgScale.cpp" line="204"/>
+      <location filename="../../DlgScale.cpp" line="206"/>
       <source>The document '%1' doesn't exist.</source>
       <translation>'%1'문서가 존재하지 않습니다.</translation>
     </message>
     <message>
-      <location filename="../../DlgScale.cpp" line="252"/>
-      <location filename="../../DlgScale.cpp" line="258"/>
+      <location filename="../../DlgScale.cpp" line="254"/>
+      <location filename="../../DlgScale.cpp" line="260"/>
       <source>Creating scale failed.
 %1</source>
       <translation type="unfinished">Creating scale failed.
@@ -6595,17 +6595,17 @@ Overlapping volumes of the shapes will be removed.</translation>
   <context>
     <name>CmdPartScale</name>
     <message>
-      <location filename="../../Command.cpp" line="1293"/>
+      <location filename="../../Command.cpp" line="1295"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1294"/>
+      <location filename="../../Command.cpp" line="1296"/>
       <source>Scale</source>
       <translation>척도</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1295"/>
+      <location filename="../../Command.cpp" line="1297"/>
       <source>Scales the selected shape</source>
       <translation type="unfinished">Scales the selected shape</translation>
     </message>
@@ -6613,7 +6613,7 @@ Overlapping volumes of the shapes will be removed.</translation>
   <context>
     <name>FaceMaker</name>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="77"/>
+      <location filename="../../../App/FaceMaker.cpp" line="79"/>
       <source>Shape must be a wire, edge or compound. Something else was supplied.</source>
       <translation type="unfinished">Shape must be a wire, edge or compound. Something else was supplied.</translation>
     </message>
@@ -6621,12 +6621,12 @@ Overlapping volumes of the shapes will be removed.</translation>
   <context>
     <name>Part::FaceMakerSimple</name>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="276"/>
+      <location filename="../../../App/FaceMaker.cpp" line="278"/>
       <source>Simple</source>
       <translation type="unfinished">Simple</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="281"/>
+      <location filename="../../../App/FaceMaker.cpp" line="283"/>
       <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
       <translation type="unfinished">Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</translation>
     </message>
@@ -6634,12 +6634,12 @@ Overlapping volumes of the shapes will be removed.</translation>
   <context>
     <name>Part::FaceMakerBullseye</name>
     <message>
-      <location filename="../../../App/FaceMakerBullseye.cpp" line="59"/>
+      <location filename="../../../App/FaceMakerBullseye.cpp" line="61"/>
       <source>Bull's-eye facemaker</source>
       <translation type="unfinished">Bull's-eye facemaker</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMakerBullseye.cpp" line="64"/>
+      <location filename="../../../App/FaceMakerBullseye.cpp" line="66"/>
       <source>Supports making planar faces with holes with islands in them</source>
       <translation type="unfinished">Supports making planar faces with holes with islands in them</translation>
     </message>
@@ -6647,12 +6647,12 @@ Overlapping volumes of the shapes will be removed.</translation>
   <context>
     <name>Part::FaceMakerCheese</name>
     <message>
-      <location filename="../../../App/FaceMakerCheese.cpp" line="245"/>
+      <location filename="../../../App/FaceMakerCheese.cpp" line="247"/>
       <source>Cheese facemaker</source>
       <translation type="unfinished">Cheese facemaker</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMakerCheese.cpp" line="250"/>
+      <location filename="../../../App/FaceMakerCheese.cpp" line="252"/>
       <source>Supports making planar faces with holes, but no islands inside holes</source>
       <translation type="unfinished">Supports making planar faces with holes, but no islands inside holes</translation>
     </message>
@@ -6660,12 +6660,12 @@ Overlapping volumes of the shapes will be removed.</translation>
   <context>
     <name>Part::FaceMakerExtrusion</name>
     <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="395"/>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="397"/>
       <source>Part Extrude facemaker</source>
       <translation type="unfinished">Part Extrude facemaker</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="400"/>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="402"/>
       <source>Supports making faces with holes, does not support nesting.</source>
       <translation type="unfinished">Supports making faces with holes, does not support nesting.</translation>
     </message>
@@ -6721,22 +6721,22 @@ Overlapping volumes of the shapes will be removed.</translation>
   <context>
     <name>Part_ToleranceFeatures</name>
     <message>
-      <location filename="../../../BOPTools/ToleranceFeatures.py" line="70"/>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="72"/>
       <source>Computing the result failed with an error:</source>
       <translation>다음 오류로 인해 결과 계산에 실패했습니다:</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/ToleranceFeatures.py" line="71"/>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="73"/>
       <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
       <translation type="unfinished">Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/ToleranceFeatures.py" line="72"/>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="74"/>
       <source>Bad Selection</source>
       <translation>잘못된 선택</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/ToleranceFeatures.py" line="74"/>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="76"/>
       <source>Continue</source>
       <translation>계속</translation>
     </message>
@@ -6744,22 +6744,22 @@ Overlapping volumes of the shapes will be removed.</translation>
   <context>
     <name>Part_ToleranceSet</name>
     <message>
-      <location filename="../../../BOPTools/ToleranceFeatures.py" line="192"/>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="194"/>
       <source>Set Tolerance</source>
       <translation type="unfinished">Set Tolerance</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/ToleranceFeatures.py" line="197"/>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="199"/>
       <source>Creates a parametric copy of the selected object with all contained tolerances set to at least a certain minimum value</source>
       <translation type="unfinished">Creates a parametric copy of the selected object with all contained tolerances set to at least a certain minimum value</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/ToleranceFeatures.py" line="205"/>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="207"/>
       <source>Bad Selection</source>
       <translation>잘못된 선택</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/ToleranceFeatures.py" line="204"/>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="206"/>
       <source>Select at least one object or compounds</source>
       <translation>적어도 하나의 대상체나 복합체를 선택하세요</translation>
     </message>
@@ -6767,17 +6767,17 @@ Overlapping volumes of the shapes will be removed.</translation>
   <context>
     <name>CmdPartCoordinateSystem</name>
     <message>
-      <location filename="../../Command.cpp" line="2257"/>
+      <location filename="../../Command.cpp" line="2259"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2258"/>
+      <location filename="../../Command.cpp" line="2260"/>
       <source>Coordinate System</source>
       <translation>좌표계</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2259"/>
+      <location filename="../../Command.cpp" line="2261"/>
       <source>Creates a coordinate system that can be attached to other objects</source>
       <translation>다른 대상체에 부착될 수 있는 좌표계를 생성합니다</translation>
     </message>
@@ -6785,17 +6785,17 @@ Overlapping volumes of the shapes will be removed.</translation>
   <context>
     <name>CmdPartDatums</name>
     <message>
-      <location filename="../../Command.cpp" line="2392"/>
+      <location filename="../../Command.cpp" line="2394"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2393"/>
+      <location filename="../../Command.cpp" line="2395"/>
       <source>Datums</source>
       <translation>기준</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2394"/>
+      <location filename="../../Command.cpp" line="2396"/>
       <source>Creates a datum object (coordinate system, plane, line, or point) that can be attached to other objects</source>
       <translation>기준(좌표계, 평면, 선분 또는 점) 대상체를 생성합니다. 이 기준은 다른 대상체에 부착될 수 있습니다</translation>
     </message>
@@ -6803,7 +6803,7 @@ Overlapping volumes of the shapes will be removed.</translation>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/Geometry.cpp" line="6432"/>
+      <location filename="../../../App/Geometry.cpp" line="6456"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation type="unfinished">Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</translation>
     </message>
@@ -6811,17 +6811,17 @@ Overlapping volumes of the shapes will be removed.</translation>
   <context>
     <name>CmdPartDatumPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="2291"/>
+      <location filename="../../Command.cpp" line="2293"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2292"/>
+      <location filename="../../Command.cpp" line="2294"/>
       <source>Datum Plane</source>
       <translation>기준평면</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2293"/>
+      <location filename="../../Command.cpp" line="2295"/>
       <source>Creates a datum plane that can be attached to other objects</source>
       <translation>다른 대상체에 부착될 수 있는 기준평면을 생성합니다</translation>
     </message>
@@ -6829,17 +6829,17 @@ Overlapping volumes of the shapes will be removed.</translation>
   <context>
     <name>CmdPartDatumLine</name>
     <message>
-      <location filename="../../Command.cpp" line="2324"/>
+      <location filename="../../Command.cpp" line="2326"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2325"/>
+      <location filename="../../Command.cpp" line="2327"/>
       <source>Datum Line</source>
       <translation>기준선</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2326"/>
+      <location filename="../../Command.cpp" line="2328"/>
       <source>Creates a datum line that can be attached to other objects</source>
       <translation>다른 대상체에 부착될 수 있는 기준선을 생성합니다</translation>
     </message>
@@ -6847,17 +6847,17 @@ Overlapping volumes of the shapes will be removed.</translation>
   <context>
     <name>CmdPartDatumPoint</name>
     <message>
-      <location filename="../../Command.cpp" line="2357"/>
+      <location filename="../../Command.cpp" line="2359"/>
       <source>Part</source>
       <translation>부품</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2358"/>
+      <location filename="../../Command.cpp" line="2360"/>
       <source>Datum Point</source>
       <translation>기준점</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2359"/>
+      <location filename="../../Command.cpp" line="2361"/>
       <source>Creates a datum point that can be attached to other objects</source>
       <translation>다른 대상체에 부착될 수 있는 기준점을 생성합니다</translation>
     </message>
@@ -6865,12 +6865,12 @@ Overlapping volumes of the shapes will be removed.</translation>
   <context>
     <name>Part_EditAttachment</name>
     <message>
-      <location filename="../../../AttachmentEditor/Commands.py" line="79"/>
+      <location filename="../../../AttachmentEditor/Commands.py" line="81"/>
       <source>Attachment</source>
       <translation>부착</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/Commands.py" line="83"/>
+      <location filename="../../../AttachmentEditor/Commands.py" line="85"/>
       <source>Opens the attachment editor to change the attachment of the selected object</source>
       <translation>선택된 대상체의 부착 정보를 변경하기 위해 부착 편집창을 엽니다</translation>
     </message>
@@ -6878,12 +6878,12 @@ Overlapping volumes of the shapes will be removed.</translation>
   <context>
     <name>Part_JoinConnect</name>
     <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="186"/>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="188"/>
       <source>Connect Shapes</source>
       <translation type="unfinished">Connect Shapes</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="191"/>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="193"/>
       <source>Fuses shapes, taking care to preserve voids</source>
       <translation type="unfinished">Fuses shapes, taking care to preserve voids</translation>
     </message>
@@ -6891,12 +6891,12 @@ Overlapping volumes of the shapes will be removed.</translation>
   <context>
     <name>Part_JoinEmbed</name>
     <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="282"/>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="284"/>
       <source>Embed Shapes</source>
       <translation type="unfinished">Embed Shapes</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="287"/>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="289"/>
       <source>Fuses one shape into another, taking care to preserve voids</source>
       <translation type="unfinished">Fuses one shape into another, taking care to preserve voids</translation>
     </message>
@@ -6904,12 +6904,12 @@ Overlapping volumes of the shapes will be removed.</translation>
   <context>
     <name>Part_JoinCutout</name>
     <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="376"/>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="378"/>
       <source>Cutout Shape</source>
       <translation type="unfinished">Cutout Shape</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="381"/>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="383"/>
       <source>Creates a cutout in the selected shape to fit another shape</source>
       <translation type="unfinished">Creates a cutout in the selected shape to fit another shape</translation>
     </message>
@@ -6917,12 +6917,12 @@ Overlapping volumes of the shapes will be removed.</translation>
   <context>
     <name>Part_BooleanFragments</name>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="180"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="182"/>
       <source>Boolean Fragments</source>
       <translation type="unfinished">Boolean Fragments</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="185"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="187"/>
       <source>Creates a boolean union which is sliced at the intersections of the selected shapes</source>
       <translation type="unfinished">Creates a boolean union which is sliced at the intersections of the selected shapes</translation>
     </message>
@@ -6930,12 +6930,12 @@ Overlapping volumes of the shapes will be removed.</translation>
   <context>
     <name>Part_Slice</name>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="333"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="335"/>
       <source>Slice to Compound</source>
       <translation type="unfinished">Slice to Compound</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="338"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="340"/>
       <source>Slices the selected object by using other objects as cutting tools and storing the results in one compound</source>
       <translation type="unfinished">Slices the selected object by using other objects as cutting tools and storing the results in one compound</translation>
     </message>
@@ -6943,12 +6943,12 @@ Overlapping volumes of the shapes will be removed.</translation>
   <context>
     <name>Part_SliceApart</name>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="363"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="365"/>
       <source>Slice Apart</source>
       <translation type="unfinished">Slice Apart</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="368"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="370"/>
       <source>Slices the selected object by other objects, and splits it apart, creating a compound filter for each slide</source>
       <translation type="unfinished">Slices the selected object by other objects, and splits it apart, creating a compound filter for each slide</translation>
     </message>
@@ -7027,12 +7027,12 @@ Overlapping volumes of the shapes will be removed.</translation>
   <context>
     <name>Part::FaceMakerRing</name>
     <message>
-      <location filename="../../../App/FaceMakerBullseye.cpp" line="366"/>
+      <location filename="../../../App/FaceMakerBullseye.cpp" line="368"/>
       <source>Ring facemaker</source>
       <translation type="unfinished">Ring facemaker</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMakerBullseye.cpp" line="371"/>
+      <location filename="../../../App/FaceMakerBullseye.cpp" line="373"/>
       <source>Supports making planar faces with holes and holes as faces</source>
       <translation type="unfinished">Supports making planar faces with holes and holes as faces</translation>
     </message>
@@ -7040,12 +7040,12 @@ Overlapping volumes of the shapes will be removed.</translation>
   <context>
     <name>CmdPartSectionCut</name>
     <message>
-      <location filename="../../Command.cpp" line="2200"/>
+      <location filename="../../Command.cpp" line="2202"/>
       <source>Persiste&amp;nt Section Cut</source>
       <translation type="unfinished">Persiste&amp;nt Section Cut</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2201"/>
+      <location filename="../../Command.cpp" line="2203"/>
       <source>Creates a new object as a boolean intersection of all visible shapes and the selected axis planes</source>
       <translation type="unfinished">Creates a new object as a boolean intersection of all visible shapes and the selected axis planes</translation>
     </message>
@@ -7053,12 +7053,12 @@ Overlapping volumes of the shapes will be removed.</translation>
   <context>
     <name>PartCmdSelectFilter</name>
     <message>
-      <location filename="../../CommandFilter.cpp" line="44"/>
+      <location filename="../../CommandFilter.cpp" line="46"/>
       <source>Selection Filter</source>
       <translation>선택 여과기</translation>
     </message>
     <message>
-      <location filename="../../CommandFilter.cpp" line="45"/>
+      <location filename="../../CommandFilter.cpp" line="47"/>
       <source>Changes the selection filter</source>
       <translation>선택 여과기를 변경합니다</translation>
     </message>
@@ -7066,12 +7066,12 @@ Overlapping volumes of the shapes will be removed.</translation>
   <context>
     <name>PartCmdVertexSelection</name>
     <message>
-      <location filename="../../CommandFilter.cpp" line="171"/>
+      <location filename="../../CommandFilter.cpp" line="173"/>
       <source>Vertex Selection</source>
       <translation>꼭지점 선택</translation>
     </message>
     <message>
-      <location filename="../../CommandFilter.cpp" line="172"/>
+      <location filename="../../CommandFilter.cpp" line="174"/>
       <source>Only allows the selection of vertices</source>
       <translation>꼭지점만 선택할 수 있게 합니다</translation>
     </message>
@@ -7079,12 +7079,12 @@ Overlapping volumes of the shapes will be removed.</translation>
   <context>
     <name>PartCmdEdgeSelection</name>
     <message>
-      <location filename="../../CommandFilter.cpp" line="196"/>
+      <location filename="../../CommandFilter.cpp" line="198"/>
       <source>Edge Selection</source>
       <translation>모서리 선택</translation>
     </message>
     <message>
-      <location filename="../../CommandFilter.cpp" line="197"/>
+      <location filename="../../CommandFilter.cpp" line="199"/>
       <source>Only allows the selection of edges</source>
       <translation>모서리만 선택할 수 있게 합니다</translation>
     </message>
@@ -7092,12 +7092,12 @@ Overlapping volumes of the shapes will be removed.</translation>
   <context>
     <name>PartCmdFaceSelection</name>
     <message>
-      <location filename="../../CommandFilter.cpp" line="221"/>
+      <location filename="../../CommandFilter.cpp" line="223"/>
       <source>Face Selection</source>
       <translation>면 선택</translation>
     </message>
     <message>
-      <location filename="../../CommandFilter.cpp" line="222"/>
+      <location filename="../../CommandFilter.cpp" line="224"/>
       <source>Only allows the selection of faces</source>
       <translation>면만 선택할 수 있게 합니다</translation>
     </message>
@@ -7105,12 +7105,12 @@ Overlapping volumes of the shapes will be removed.</translation>
   <context>
     <name>PartCmdRemoveSelectionGate</name>
     <message>
-      <location filename="../../CommandFilter.cpp" line="246"/>
+      <location filename="../../CommandFilter.cpp" line="248"/>
       <source>No Selection Filters</source>
       <translation>선택 여과기 없음</translation>
     </message>
     <message>
-      <location filename="../../CommandFilter.cpp" line="247"/>
+      <location filename="../../CommandFilter.cpp" line="249"/>
       <source>Clears all selection filters</source>
       <translation type="unfinished">Clears all selection filters</translation>
     </message>
@@ -7118,7 +7118,7 @@ Overlapping volumes of the shapes will be removed.</translation>
   <context>
     <name>PartGui::TaskExportStep</name>
     <message>
-      <location filename="../../DlgExportStep.cpp" line="206"/>
+      <location filename="../../DlgExportStep.cpp" line="208"/>
       <source>Do not show this dialog again</source>
       <translation>이 대화 상자를 다시 표시하지 않음</translation>
     </message>
@@ -7126,7 +7126,7 @@ Overlapping volumes of the shapes will be removed.</translation>
   <context>
     <name>PartGui::TaskImportStep</name>
     <message>
-      <location filename="../../DlgImportStep.cpp" line="147"/>
+      <location filename="../../DlgImportStep.cpp" line="149"/>
       <source>Do not show this dialog again</source>
       <translation>이 대화 상자를 다시 표시하지 않음</translation>
     </message>

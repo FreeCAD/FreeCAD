@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Werner Mayer <wmayer@users.sourceforge.net>        *
  *                                                                         *
@@ -36,15 +38,17 @@ STDAPI_(HINSTANCE) DllInstance();
 
 // {4BBBEAB5-BE00-41f4-A209-FE838660B9B1}
 #define szCLSID_SampleThumbnailProvider L"{4BBBEAB5-BE00-41f4-A209-FE838660B9B1}"
-DEFINE_GUID(CLSID_SampleThumbnailProvider,
-            0x4bbbeab5,
-            0xbe00,
-            0x41f4,
-            0xa2,
-            0x9,
-            0xfe,
-            0x83,
-            0x86,
-            0x60,
-            0xb9,
-            0xb1);
+DEFINE_GUID(
+    CLSID_SampleThumbnailProvider,
+    0x4bbbeab5,
+    0xbe00,
+    0x41f4,
+    0xa2,
+    0x9,
+    0xfe,
+    0x83,
+    0x86,
+    0x60,
+    0xb9,
+    0xb1
+);

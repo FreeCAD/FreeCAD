@@ -22,9 +22,11 @@ protected:
         _boxes[0]->Width.setValue(5);
         _boxes[0]->Height.setValue(6);
         _boxes[0]->Placement.setValue(
-            Base::Placement(Base::Vector3d(), Base::Rotation(), Base::Vector3d()));
+            Base::Placement(Base::Vector3d(), Base::Rotation(), Base::Vector3d())
+        );
         _boxes[1]->Placement.setValue(
-            Base::Placement(Base::Vector3d(0, 1, 6), Base::Rotation(), Base::Vector3d()));
+            Base::Placement(Base::Vector3d(0, 1, 6), Base::Rotation(), Base::Vector3d())
+        );
         _boxes[1]->Length.setValue(1);
         _boxes[1]->Width.setValue(2);
         _boxes[1]->Height.setValue(3);
@@ -49,8 +51,8 @@ protected:
 
 TEST_F(FeatureFilletTest, testOtherEdges)
 {
-    const double baseVolume =
-        _boxes[0]->Length.getValue() * _boxes[0]->Width.getValue() * _boxes[0]->Height.getValue()
+    const double baseVolume = _boxes[0]->Length.getValue() * _boxes[0]->Width.getValue()
+            * _boxes[0]->Height.getValue()
         + _boxes[1]->Length.getValue() * _boxes[1]->Width.getValue() * _boxes[1]->Height.getValue();
     // Arrange
     _fillet->Base.setValue(_fused);
@@ -86,10 +88,13 @@ TEST_F(FeatureFilletTest, testMostEdges)
     _fused->Refine.setValue(true);
     // _fused->execute();
     _fillet->Base.setValue(_fused);
-    _fillet->Edges.setValues(PartTestHelpers::_getFilletEdges(
-        {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 18, 19, 20, 22, 23, 24},
-        0.4,
-        0.4));
+    _fillet->Edges.setValues(
+        PartTestHelpers::_getFilletEdges(
+            {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 18, 19, 20, 22, 23, 24},
+            0.4,
+            0.4
+        )
+    );
     // Act
     _fillet->execute();
     double filletVolume = PartTestHelpers::getVolume(_fillet->Shape.getValue());
