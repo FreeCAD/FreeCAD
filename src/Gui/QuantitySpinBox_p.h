@@ -27,20 +27,26 @@
 #include <QMouseEvent>
 #include <QLineEdit>
 
-class ExpressionLabel : public QLabel
+class ExpressionLabel: public QLabel
 {
     Q_OBJECT
 public:
-    ExpressionLabel(QWidget * parent) : QLabel(parent) { }
+    ExpressionLabel(QWidget* parent)
+        : QLabel(parent)
+    {}
 
-    void setExpressionText(const QString& text) {
-        if (text.isEmpty())
+    void setExpressionText(const QString& text)
+    {
+        if (text.isEmpty()) {
             this->setToolTip(genericExpressionEditorTooltip);
-        else
+        }
+        else {
             this->setToolTip(expressionEditorTooltipPrefix + text);
+        }
     }
 
-    void show() {
+    void show()
+    {
         if (auto parentLineEdit = qobject_cast<QLineEdit*>(parent())) {
             // horizontal margin, so text will not be behind the icon
             QMargins margins = parentLineEdit->contentsMargins();
@@ -51,9 +57,11 @@ public:
     }
 
 protected:
-    void mouseReleaseEvent(QMouseEvent * event) override {
-        if (rect().contains(event->pos()))
-                Q_EMIT clicked();
+    void mouseReleaseEvent(QMouseEvent* event) override
+    {
+        if (rect().contains(event->pos())) {
+            Q_EMIT clicked();
+        }
     }
 
 Q_SIGNALS:
@@ -64,4 +72,4 @@ private:
     const QString expressionEditorTooltipPrefix = tr("Expression:") + QStringLiteral(" ");
 };
 
-#endif // QUANTITYSPINBOX_P_H
+#endif  // QUANTITYSPINBOX_P_H

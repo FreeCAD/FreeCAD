@@ -97,11 +97,7 @@ class BIM_Tutorial:
         import codecs
         import re
         import sys
-
-        if sys.version_info.major < 3:
-            import urllib2
-        else:
-            import urllib.request as urllib2
+        from urllib.request import urlopen
 
         # initial loading
 
@@ -111,7 +107,7 @@ class BIM_Tutorial:
         # load tutorial from wiki
         offlineloc = os.path.join(FreeCAD.getUserAppDataDir(), "BIM", "Tutorial", "Tutorial.html")
         try:
-            u = urllib2.urlopen(URL)
+            u = urlopen(URL)
             html = u.read()
             if sys.version_info.major >= 3:
                 html = html.decode("utf8")
@@ -183,7 +179,7 @@ class BIM_Tutorial:
                                 fullpath = "https://www.freecadweb.org/wiki" + path
                             else:
                                 fullpath = path
-                            u = urllib2.urlopen(fullpath)
+                            u = urlopen(fullpath)
                             imagedata = u.read()
                             f = open(storename, "wb")
                             f.write(imagedata)

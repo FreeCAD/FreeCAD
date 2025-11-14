@@ -18,60 +18,66 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-'''Auto code generator for preference page of Display/UI
-'''
+"""Auto code generator for preference page of Display/UI"""
 import cog, sys
 from os import sys, path
 
 # import Tools/params_utils.py
-sys.path.append(path.join(path.dirname(
-    path.dirname(path.dirname(path.abspath(__file__)))), 'Tools'))
+sys.path.append(
+    path.join(path.dirname(path.dirname(path.dirname(path.abspath(__file__)))), "Tools")
+)
 import params_utils
 from params_utils import auto_comment
 
-sys.path.append(path.join(path.dirname(
-    path.dirname(path.dirname(path.abspath(__file__)))), 'Gui'))
+sys.path.append(path.join(path.dirname(path.dirname(path.dirname(path.abspath(__file__)))), "Gui"))
 import OverlayParams
 
-Title = 'Advanced'
-NameSpace = 'Gui'
-ClassName = 'DlgSettingsAdvanced'
-ClassDoc = 'Preference dialog for various advanced UI settings'
-UserInit = 'init();'
+Title = "Advanced"
+NameSpace = "Gui"
+ClassName = "DlgSettingsAdvanced"
+ClassDoc = "Preference dialog for various advanced UI settings"
+UserInit = "init();"
 
-_OverlayParams = { param.name : param for param in OverlayParams.Params }
+_OverlayParams = {param.name: param for param in OverlayParams.Params}
 
 ParamGroup = (
-
-    ('Overlay', [_OverlayParams[name] for name in (
-        'DockOverlayWheelDelay',
-        'DockOverlayAlphaRadius',
-        'DockOverlayCheckNaviCube',
-        'DockOverlayHintTriggerSize',
-        'DockOverlayHintSize',
-        'DockOverlayHintLeftOffset',
-        'DockOverlayHintLeftLength',
-        'DockOverlayHintRightOffset',
-        'DockOverlayHintRightLength',
-        'DockOverlayHintTopOffset',
-        'DockOverlayHintTopLength',
-        'DockOverlayHintBottomOffset',
-        'DockOverlayHintBottomLength',
-        'DockOverlayHintDelay',
-        'DockOverlaySplitterHandleTimeout',
-        'DockOverlayActivateOnHover',
-        'DockOverlayDelay',
-        'DockOverlayAnimationDuration',
-        'DockOverlayAnimationCurve',
-    )]),
+    (
+        "Overlay",
+        [
+            _OverlayParams[name]
+            for name in (
+                "DockOverlayWheelDelay",
+                "DockOverlayAlphaRadius",
+                "DockOverlayCheckNaviCube",
+                "DockOverlayHintTriggerSize",
+                "DockOverlayHintSize",
+                "DockOverlayHintLeftOffset",
+                "DockOverlayHintLeftLength",
+                "DockOverlayHintRightOffset",
+                "DockOverlayHintRightLength",
+                "DockOverlayHintTopOffset",
+                "DockOverlayHintTopLength",
+                "DockOverlayHintBottomOffset",
+                "DockOverlayHintBottomLength",
+                "DockOverlayHintDelay",
+                "DockOverlaySplitterHandleTimeout",
+                "DockOverlayActivateOnHover",
+                "DockOverlayDelay",
+                "DockOverlayAnimationDuration",
+                "DockOverlayAnimationCurve",
+            )
+        ],
+    ),
 )
+
 
 def declare_begin():
     params_utils.preference_dialog_declare_begin(sys.modules[__name__])
 
+
 def declare_end():
     params_utils.preference_dialog_declare_end(sys.modules[__name__])
 
+
 def define():
     params_utils.preference_dialog_define(sys.modules[__name__])
-    

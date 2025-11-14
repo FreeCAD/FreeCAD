@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2003 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -45,7 +47,7 @@
 #include <Gui/InventorAll.h>
 
 #if defined(FC_OS_WIN32)
-#include <Windows.h>
+# include <Windows.h>
 #endif
 
 #endif  // MESHGUI_PRECOMPILED_H

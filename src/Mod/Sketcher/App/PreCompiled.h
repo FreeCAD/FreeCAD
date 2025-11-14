@@ -21,38 +21,38 @@
  ***************************************************************************/
 
 #ifndef SKETCHER_APP_PRECOMPILED_H
-#define SKETCHER_APP_PRECOMPILED_H
+# define SKETCHER_APP_PRECOMPILED_H
 
-#include <FCConfig.h>
+# include <FCConfig.h>
 
 
 // standard
-#include <algorithm>
-#include <cassert>
-#include <cmath>
-#include <iostream>
-#include <limits>
-#include <memory>
-#include <ranges>
-#include <sstream>
-#include <string>
-#include <vector>
+# include <algorithm>
+# include <cassert>
+# include <cmath>
+# include <iostream>
+# include <limits>
+# include <memory>
+# include <ranges>
+# include <sstream>
+# include <string>
+# include <vector>
 
 // Qt
-#include <QDateTime>
+# include <QDateTime>
 
 // Boost
-#include <boost/algorithm/string.hpp>
-#include <boost/algorithm/string/predicate.hpp>
-#include <boost/algorithm/string/regex.hpp>
-#include <boost/format.hpp>
-#include <boost/geometry/geometries/register/point.hpp>
-#include <boost/iostreams/device/array.hpp>
-#include <boost/iostreams/stream.hpp>
-#include <boost/random.hpp>
-#include <boost/range/adaptor/map.hpp>
-#include <boost/uuid/uuid_io.hpp>
-#include <boost/geometry.hpp>
+# include <boost/algorithm/string.hpp>
+# include <boost/algorithm/string/predicate.hpp>
+# include <boost/algorithm/string/regex.hpp>
+# include <boost/format.hpp>
+# include <boost/geometry/geometries/register/point.hpp>
+# include <boost/iostreams/device/array.hpp>
+# include <boost/iostreams/stream.hpp>
+# include <boost/random.hpp>
+# include <boost/range/adaptor/map.hpp>
+# include <boost/uuid/uuid_io.hpp>
+# include <boost/geometry.hpp>
 
 // OpenCasCade
 #include <BRepAdaptor_Curve.hxx>
@@ -107,6 +107,6 @@
 #include <gp_Pnt.hxx>
 
 #elif defined(FC_OS_WIN32)
-#include <windows.h>
+# include <windows.h>
 
 #endif

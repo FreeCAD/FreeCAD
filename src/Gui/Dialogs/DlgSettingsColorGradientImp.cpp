@@ -42,9 +42,11 @@ using namespace Gui::Dialog;
  *  Constructs a DlgSettingsColorGradientImp as a child of 'parent', with the
  *  name 'name' and widget flags set to 'f'.
  */
-DlgSettingsColorGradientImp::DlgSettingsColorGradientImp(const App::ColorGradient& cg,
-                                                         QWidget* parent,
-                                                         Qt::WindowFlags fl)
+DlgSettingsColorGradientImp::DlgSettingsColorGradientImp(
+    const App::ColorGradient& cg,
+    QWidget* parent,
+    Qt::WindowFlags fl
+)
     : QDialog(parent, fl)
     , validator(nullptr)
     , ui(new Ui_DlgSettingsColorGradient)
@@ -66,7 +68,8 @@ DlgSettingsColorGradientImp::DlgSettingsColorGradientImp(const App::ColorGradien
     // assure that the LineEdit is as wide to contain numbers with 4 digits and 6 decimals
     QFontMetrics fm(ui->floatLineEditMax->font());
     ui->floatLineEditMax->setMinimumWidth(
-        QtTools::horizontalAdvance(fm, QStringLiteral("-8000.000000")));
+        QtTools::horizontalAdvance(fm, QStringLiteral("-8000.000000"))
+    );
 
     setColorModelNames(cg.getColorModelNames());
     setProfile(cg.getProfile());
@@ -246,9 +249,11 @@ void DlgSettingsColorGradientImp::accept()
     double fMin = QLocale().toDouble(ui->floatLineEditMin->text());
 
     if (fMax <= fMin) {
-        QMessageBox::warning(this,
-                             tr("Wrong parameter"),
-                             tr("The maximum value must be higher than the minimum value."));
+        QMessageBox::warning(
+            this,
+            tr("Wrong parameter"),
+            tr("The maximum value must be higher than the minimum value.")
+        );
     }
     else {
         QDialog::accept();

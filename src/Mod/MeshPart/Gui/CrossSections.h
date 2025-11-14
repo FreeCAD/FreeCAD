@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2019 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -53,9 +55,11 @@ class CrossSections: public QDialog
     };
 
 public:
-    explicit CrossSections(const Base::BoundBox3d& bb,
-                           QWidget* parent = nullptr,
-                           Qt::WindowFlags fl = Qt::WindowFlags());
+    explicit CrossSections(
+        const Base::BoundBox3d& bb,
+        QWidget* parent = nullptr,
+        Qt::WindowFlags fl = Qt::WindowFlags()
+    );
     ~CrossSections() override;
     void accept() override;
     void apply();

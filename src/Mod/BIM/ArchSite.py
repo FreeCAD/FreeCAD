@@ -1202,7 +1202,13 @@ class _ViewProviderSite:
 
         It also handles new objects, where their value is 0.
         """
-        pl = vobj.PropertiesList
+        try:
+            pl = vobj.PropertiesList
+        except ReferenceError:
+            # vobj no longer exists
+            # see https://github.com/FreeCAD/FreeCAD/issues/24543
+            return
+
         if "SunDateMonth" in pl:
             saved_month = vobj.SunDateMonth if vobj.SunDateMonth != 0 else 6
             vobj.SunDateMonth = (saved_month, 1, 12, 1)

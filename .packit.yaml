@@ -1,0 +1,68 @@
+specfile_path: package/fedora/freecad.spec
+files_to_sync:
+    - .packit.yaml
+actions:
+  post-upstream-clone:
+    - bash -c 'BUILD_TAG=dev /usr/bin/python3 package/rattler-build/scripts/make_version_file.py freecad_version.txt'
+    - rm -f freecad-sources.tar.gz
+  changelog-entry:
+    - bash -c 'git log --no-merges --pretty="format:- %s (%an)" $(git describe --tags --abbrev=0 )..HEAD -- |sed 's/%/%%/g''
+  create-archive:
+    - git submodule update --init
+    - bash -c 'git ls-files --recurse-submodules | tar  -caf freecad-sources.tar.gz -T-'
+    - echo -n 'freecad-sources.tar.gz'
+downstream_package_name: freecad
+additional_packages:
+    - python3
+
+jobs:
+- job: copr_build
+  identifier: pull_request
+  trigger: pull_request
+  notifications:
+    pull_request:
+      successful_build: True
+  branch: main
+  additional_repos:
+    - copr://bpostle/IfcOpenShell
+  manual_trigger: true
+  targets:
+    fedora-stable:
+      without_opts:
+      - debug_info
+    fedora-development:
+      without_opts:
+      - debug_info
+
+- job: tests
+  identifier: pull_request
+  trigger: pull_request
+  branch: main
+  manual_trigger: true
+  targets:
+    fedora-latest-stable:
+      without_opts:
+      - debug_info
+  fmf_path: package/fedora/tests
+
+- job: copr_build
+  identifier: main
+  trigger: commit
+  manual_trigger: true
+  branch: main
+  additional_repos:
+    - copr://bpostle/IfcOpenShell
+  owner: freecad
+  project: nightly
+
+- job: copr_build
+  identifier: release
+  trigger: release
+  owner: freecad
+  project: freecad
+  additional_repos:
+    - copr://bpostle/IfcOpenShell
+  targets:
+    fedora-all:
+      without_opts:
+      - tests

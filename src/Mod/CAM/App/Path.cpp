@@ -152,7 +152,8 @@ double Toolpath::getCycleTime(double hFeed, double vFeed, double hRapid, double 
     // check the feedrates are set
     if ((hFeed == 0) || (vFeed == 0)) {
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/Mod/CAM");
+            "User parameter:BaseApp/Preferences/Mod/CAM"
+        );
         if (!hGrp->GetBool("WarningsSuppressAllSpeeds", true)) {
             Base::Console().warning("Feed Rate Error: Check Tool Controllers have Feed Rates");
         }
@@ -222,31 +223,37 @@ public:
     BoundBoxSegmentVisitor()
     {}
 
-    void g0(int id,
-            const Base::Vector3d& last,
-            const Base::Vector3d& next,
-            const std::deque<Base::Vector3d>& pts) override
+    void g0(
+        int id,
+        const Base::Vector3d& last,
+        const Base::Vector3d& next,
+        const std::deque<Base::Vector3d>& pts
+    ) override
     {
         (void)id;
         processPt(last);
         processPts(pts);
         processPt(next);
     }
-    void g1(int id,
-            const Base::Vector3d& last,
-            const Base::Vector3d& next,
-            const std::deque<Base::Vector3d>& pts) override
+    void g1(
+        int id,
+        const Base::Vector3d& last,
+        const Base::Vector3d& next,
+        const std::deque<Base::Vector3d>& pts
+    ) override
     {
         (void)id;
         processPt(last);
         processPts(pts);
         processPt(next);
     }
-    void g23(int id,
-             const Base::Vector3d& last,
-             const Base::Vector3d& next,
-             const std::deque<Base::Vector3d>& pts,
-             const Base::Vector3d& center) override
+    void g23(
+        int id,
+        const Base::Vector3d& last,
+        const Base::Vector3d& next,
+        const std::deque<Base::Vector3d>& pts,
+        const Base::Vector3d& center
+    ) override
     {
         (void)id;
         (void)center;
@@ -254,12 +261,14 @@ public:
         processPts(pts);
         processPt(next);
     }
-    void g8x(int id,
-             const Base::Vector3d& last,
-             const Base::Vector3d& next,
-             const std::deque<Base::Vector3d>& pts,
-             const std::deque<Base::Vector3d>& p,
-             const std::deque<Base::Vector3d>& q) override
+    void g8x(
+        int id,
+        const Base::Vector3d& last,
+        const Base::Vector3d& next,
+        const std::deque<Base::Vector3d>& pts,
+        const std::deque<Base::Vector3d>& p,
+        const std::deque<Base::Vector3d>& q
+    ) override
     {
         (void)id;
         (void)q;  // always within the bounds of p
@@ -304,8 +313,7 @@ Base::BoundBox3d Toolpath::getBoundBox() const
     return visitor.bb;
 }
 
-static void
-bulkAddCommand(const std::string& gcodestr, std::vector<Command*>& commands, bool& inches)
+static void bulkAddCommand(const std::string& gcodestr, std::vector<Command*>& commands, bool& inches)
 {
     Command* cmd = new Command();
     cmd->setFromGCode(gcodestr);

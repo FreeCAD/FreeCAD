@@ -125,7 +125,7 @@ class BIM_IfcQuantities:
         self.form.quantities.setItemDelegate(QtGui.QStyledItemDelegate())
         self.qmodel.dataChanged.connect(self.setChecked)
         self.form.buttonBox.accepted.connect(self.accept)
-        self.form.buttonBox.rejected.connect(self.reject)
+        self.form.rejected.connect(self.reject)  # also triggered by self.form.buttonBox.rejected
         self.form.quantities.clicked.connect(self.onClickTree)
         if hasattr(self.form.onlyVisible, "checkStateChanged"):  # Qt version >= 6.7.0
             self.form.onlyVisible.checkStateChanged.connect(self.update)

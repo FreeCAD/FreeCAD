@@ -75,9 +75,9 @@ public:
 
         if (Mode == STATUS_SEEK_First) {
             setPositionText(onSketchPos);
-            seekAndRenderAutoConstraint(sugConstr1,
-                                        onSketchPos,
-                                        Base::Vector2d(0.f, 0.f));  // TODO: ellipse prio 1
+            seekAndRenderAutoConstraint(sugConstr1, onSketchPos, Base::Vector2d(0.f, 0.f));  // TODO:
+                                                                                             // ellipse
+                                                                                             // prio 1
         }
         else if (Mode == STATUS_SEEK_Second) {
             double rx0 = onSketchPos.x - EditCurve[0].x;
@@ -102,10 +102,12 @@ public:
             }
 
             drawEdit(EditCurve);
-            seekAndRenderAutoConstraint(sugConstr2,
-                                        onSketchPos,
-                                        onSketchPos - centerPoint,
-                                        AutoConstraint::CURVE);
+            seekAndRenderAutoConstraint(
+                sugConstr2,
+                onSketchPos,
+                onSketchPos - centerPoint,
+                AutoConstraint::CURVE
+            );
         }
         else if (Mode == STATUS_SEEK_Third) {
             // angle between the major axis of the ellipse and the X axis
@@ -113,9 +115,10 @@ public:
             double phi = atan2(EditCurve[1].y - EditCurve[0].y, EditCurve[1].x - EditCurve[0].x);
 
             // This is the angle at cursor point
-            double angleatpoint =
-                acos((onSketchPos.x - EditCurve[0].x + (onSketchPos.y - EditCurve[0].y) * tan(phi))
-                     / (a * (cos(phi) + tan(phi) * sin(phi))));
+            double angleatpoint = acos(
+                (onSketchPos.x - EditCurve[0].x + (onSketchPos.y - EditCurve[0].y) * tan(phi))
+                / (a * (cos(phi) + tan(phi) * sin(phi)))
+            );
             double b = (onSketchPos.y - EditCurve[0].y - a * cos(angleatpoint) * sin(phi))
                 / (sin(angleatpoint) * cos(phi));
 
@@ -149,21 +152,28 @@ public:
             // This is the angle at cursor point
             double angleatpoint = acos(
                 (startingPoint.x - centerPoint.x + (startingPoint.y - centerPoint.y) * tan(phi))
-                / (a * (cos(phi) + tan(phi) * sin(phi))));
-            double b = abs((startingPoint.y - centerPoint.y - a * cos(angleatpoint) * sin(phi))
-                           / (sin(angleatpoint) * cos(phi)));
+                / (a * (cos(phi) + tan(phi) * sin(phi)))
+            );
+            double b = abs(
+                (startingPoint.y - centerPoint.y - a * cos(angleatpoint) * sin(phi))
+                / (sin(angleatpoint) * cos(phi))
+            );
 
             double rxs = startingPoint.x - centerPoint.x;
             double rys = startingPoint.y - centerPoint.y;
-            startAngle = atan2(a * (rys * cos(phi) - rxs * sin(phi)),
-                               b * (rxs * cos(phi) + rys * sin(phi)));  // eccentric anomaly angle
+            startAngle = atan2(
+                a * (rys * cos(phi) - rxs * sin(phi)),
+                b * (rxs * cos(phi) + rys * sin(phi))
+            );  // eccentric anomaly angle
 
-            double angle1 = atan2(a
-                                      * ((onSketchPos.y - centerPoint.y) * cos(phi)
-                                         - (onSketchPos.x - centerPoint.x) * sin(phi)),
-                                  b
-                                      * ((onSketchPos.x - centerPoint.x) * cos(phi)
-                                         + (onSketchPos.y - centerPoint.y) * sin(phi)))
+            double angle1 = atan2(
+                                a
+                                    * ((onSketchPos.y - centerPoint.y) * cos(phi)
+                                       - (onSketchPos.x - centerPoint.x) * sin(phi)),
+                                b
+                                    * ((onSketchPos.x - centerPoint.x) * cos(phi)
+                                       + (onSketchPos.y - centerPoint.y) * sin(phi))
+                            )
                 - startAngle;
 
             double angle2 = angle1 + (angle1 < 0. ? 2 : -2) * pi;
@@ -184,10 +194,7 @@ public:
                 std::string aString = lengthToDisplayFormat(a, 1);
                 std::string bString = lengthToDisplayFormat(b, 1);
                 std::string angleString = angleToDisplayFormat(arcAngle * 180.0 / pi, 1);
-                text.sprintf(" (R%s, R%s, %s)",
-                             aString.c_str(),
-                             bString.c_str(),
-                             angleString.c_str());
+                text.sprintf(" (R%s, R%s, %s)", aString.c_str(), bString.c_str(), angleString.c_str());
                 setPositionText(onSketchPos, text);
             }
 
@@ -243,16 +250,21 @@ public:
             // This is the angle at cursor point
             double angleatpoint = acos(
                 (startingPoint.x - centerPoint.x + (startingPoint.y - centerPoint.y) * tan(phi))
-                / (a * (cos(phi) + tan(phi) * sin(phi))));
-            double b = abs((startingPoint.y - centerPoint.y - a * cos(angleatpoint) * sin(phi))
-                           / (sin(angleatpoint) * cos(phi)));
+                / (a * (cos(phi) + tan(phi) * sin(phi)))
+            );
+            double b = abs(
+                (startingPoint.y - centerPoint.y - a * cos(angleatpoint) * sin(phi))
+                / (sin(angleatpoint) * cos(phi))
+            );
 
-            double angle1 = atan2(a
-                                      * ((endPoint.y - centerPoint.y) * cos(phi)
-                                         - (endPoint.x - centerPoint.x) * sin(phi)),
-                                  b
-                                      * ((endPoint.x - centerPoint.x) * cos(phi)
-                                         + (endPoint.y - centerPoint.y) * sin(phi)))
+            double angle1 = atan2(
+                                a
+                                    * ((endPoint.y - centerPoint.y) * cos(phi)
+                                       - (endPoint.x - centerPoint.x) * sin(phi)),
+                                b
+                                    * ((endPoint.x - centerPoint.x) * cos(phi)
+                                       + (endPoint.y - centerPoint.y) * sin(phi))
+                            )
                 - startAngle;
 
             double angle2 = angle1 + (angle1 < 0. ? 2 : -2) * pi;
@@ -298,34 +310,34 @@ public:
             int currentgeoid = getHighestCurveIndex();
 
             try {
-                Gui::Command::openCommand(
-                    QT_TRANSLATE_NOOP("Command", "Add sketch arc of ellipse"));
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch arc of ellipse"));
 
-                Gui::cmdAppObjectArgs(sketchgui->getObject(),
-                                      "addGeometry(Part.ArcOfEllipse"
-                                      "(Part.Ellipse(App.Vector(%f,%f,0),App.Vector(%f,%f,0),App."
-                                      "Vector(%f,%f,0)),%f,%f),%s)",
-                                      majAxisPoint.x,
-                                      majAxisPoint.y,
-                                      minAxisPoint.x,
-                                      minAxisPoint.y,
-                                      centerPoint.x,
-                                      centerPoint.y,
-                                      startAngle,
-                                      endAngle,
-                                      constructionModeAsBooleanText());
+                Gui::cmdAppObjectArgs(
+                    sketchgui->getObject(),
+                    "addGeometry(Part.ArcOfEllipse"
+                    "(Part.Ellipse(App.Vector(%f,%f,0),App.Vector(%f,%f,0),App."
+                    "Vector(%f,%f,0)),%f,%f),%s)",
+                    majAxisPoint.x,
+                    majAxisPoint.y,
+                    minAxisPoint.x,
+                    minAxisPoint.y,
+                    centerPoint.x,
+                    centerPoint.y,
+                    startAngle,
+                    endAngle,
+                    constructionModeAsBooleanText()
+                );
 
                 currentgeoid++;
 
-                Gui::cmdAppObjectArgs(sketchgui->getObject(),
-                                      "exposeInternalGeometry(%d)",
-                                      currentgeoid);
+                Gui::cmdAppObjectArgs(sketchgui->getObject(), "exposeInternalGeometry(%d)", currentgeoid);
             }
             catch (const Base::Exception&) {
                 Gui::NotifyError(
                     sketchgui,
                     QT_TRANSLATE_NOOP("Notifications", "Error"),
-                    QT_TRANSLATE_NOOP("Notifications", "Failed to add arc of ellipse"));
+                    QT_TRANSLATE_NOOP("Notifications", "Failed to add arc of ellipse")
+                );
                 Gui::Command::abortCommand();
 
                 tryAutoRecomputeIfNotSolve(sketchgui->getObject<Sketcher::SketchObject>());
@@ -349,26 +361,29 @@ public:
 
             // add suggested constraints for start of arc
             if (!sugConstr3.empty()) {
-                createAutoConstraints(sugConstr3,
-                                      currentgeoid,
-                                      isOriginalArcCCW ? Sketcher::PointPos::start
-                                                       : Sketcher::PointPos::end);
+                createAutoConstraints(
+                    sugConstr3,
+                    currentgeoid,
+                    isOriginalArcCCW ? Sketcher::PointPos::start : Sketcher::PointPos::end
+                );
                 sugConstr3.clear();
             }
 
             // add suggested constraints for start of arc
             if (!sugConstr4.empty()) {
-                createAutoConstraints(sugConstr4,
-                                      currentgeoid,
-                                      isOriginalArcCCW ? Sketcher::PointPos::end
-                                                       : Sketcher::PointPos::start);
+                createAutoConstraints(
+                    sugConstr4,
+                    currentgeoid,
+                    isOriginalArcCCW ? Sketcher::PointPos::end : Sketcher::PointPos::start
+                );
                 sugConstr4.clear();
             }
 
             tryAutoRecomputeIfNotSolve(sketchgui->getObject<Sketcher::SketchObject>());
 
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-                "User parameter:BaseApp/Preferences/Mod/Sketcher");
+                "User parameter:BaseApp/Preferences/Mod/Sketcher"
+            );
             bool continuousMode = hGrp->GetBool("ContinuousCreationMode", true);
             if (continuousMode) {
                 // This code enables the continuous creation mode.

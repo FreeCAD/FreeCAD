@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
 # *                                                                         *
@@ -42,6 +44,7 @@ class ViewProviderFillet(ViewProviderWire):
     def doubleClicked(self, vobj):
         # See setEdit in ViewProviderDraft.
         import FreeCADGui as Gui
+
         Gui.runCommand("Std_TransformManip")
         return True
 

@@ -1,0 +1,30 @@
+name: Fedora Daily Build
+permissions:
+  contents: read
+on:
+  schedule:
+   - cron: "00 00 * * *"
+  workflow_dispatch:
+
+jobs:
+  trigger-copr-build:
+    env:
+      copr_token: ${{ secrets.COPR_TOKEN }}
+    runs-on: ubuntu-latest
+    container: quay.io/packit/packit
+    steps:
+    - name: setup copr token
+      run: |
+        mkdir -p ~/.config
+        echo "$copr_token" > ~/.config/copr
+    - name: checkout sources
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+        fetch-depth: 500
+        fetch-tags: true
+    - name: Setup safe Git directory
+      run: git config --global --add safe.directory $GITHUB_WORKSPACE
+    - name: trigger copr build
+      run: |
+        packit build in-copr --project freecad

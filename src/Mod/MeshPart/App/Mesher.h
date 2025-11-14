@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -28,7 +30,7 @@
 #include <Base/Stream.h>
 
 #ifdef HAVE_SMESH
-#include <SMESH_Version.h>
+# include <SMESH_Version.h>
 #endif
 
 class TopoDS_Shape;

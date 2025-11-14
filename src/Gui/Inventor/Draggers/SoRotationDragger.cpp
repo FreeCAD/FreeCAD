@@ -57,13 +57,29 @@ SoRotationDragger::SoRotationDragger()
 #endif
 
     SO_KIT_ADD_CATALOG_ENTRY(baseGeomSwitch, SoToggleSwitch, true, topSeparator, motionMatrix, true);
-    SO_KIT_ADD_CATALOG_ABSTRACT_ENTRY(baseGeom, SoRotatorGeometryBaseKit, SoRotatorBase, true, baseGeomSwitch, "", true);
+    SO_KIT_ADD_CATALOG_ABSTRACT_ENTRY(
+        baseGeom,
+        SoRotatorGeometryBaseKit,
+        SoRotatorBase,
+        true,
+        baseGeomSwitch,
+        "",
+        true
+    );
 
     FC_ADD_CATALOG_ENTRY(baseColor, SoBaseColor, geomSeparator);
     FC_ADD_CATALOG_ENTRY(activeSwitch, SoToggleSwitch, geomSeparator);
     FC_ADD_CATALOG_ENTRY(secondaryColor, SoBaseColor, activeSwitch);
     FC_ADD_CATALOG_ENTRY(scale, SoScale, geomSeparator);
-    SO_KIT_ADD_CATALOG_ABSTRACT_ENTRY(rotator, SoRotatorGeometryKit, SoRotatorGeometry, false, geomSeparator, "", true);
+    SO_KIT_ADD_CATALOG_ABSTRACT_ENTRY(
+        rotator,
+        SoRotatorGeometryKit,
+        SoRotatorGeometry,
+        false,
+        geomSeparator,
+        "",
+        true
+    );
 
     SO_KIT_ADD_FIELD(rotation, (SbVec3f(0.0, 0.0, 1.0), 0.0));
     SO_KIT_ADD_FIELD(rotationIncrement, (std::numbers::pi / 8.0));
@@ -225,8 +241,8 @@ void SoRotationDragger::drag()
     }
     int incrementCount = roundIncrement(tempRadians);
     rotationIncrementCount.setValue(incrementCount);
-    localRotation =
-        SbRotation(tempVec, incrementCount * static_cast<float>(rotationIncrement.getValue()));
+    localRotation
+        = SbRotation(tempVec, incrementCount * static_cast<float>(rotationIncrement.getValue()));
 
     // same problem as described in tDragger::drag.
     if (localRotation.equals(SbRotation(SbVec3f(0.0, 0.0, 1.0), 0.0), 0.00001f)) {
@@ -234,17 +250,19 @@ void SoRotationDragger::drag()
         this->valueChanged();
     }
     else {
-        setMotionMatrix(
-            appendRotation(getStartMotionMatrix(), localRotation, SbVec3f(0.0, 0.0, 0.0)));
+        setMotionMatrix(appendRotation(getStartMotionMatrix(), localRotation, SbVec3f(0.0, 0.0, 0.0)));
     }
 
     Base::Quantity quantity(
-        static_cast<double>(rotationIncrementCount.getValue())
-            * (180.0 / std::numbers::pi)* rotationIncrement.getValue(),
-        Base::Unit::Angle);
+        static_cast<double>(rotationIncrementCount.getValue()) * (180.0 / std::numbers::pi)
+            * rotationIncrement.getValue(),
+        Base::Unit::Angle
+    );
 
-    QString message =
-        QStringLiteral("%1 %2").arg(QObject::tr("Rotation:"), QString::fromStdString(quantity.getUserString()));
+    QString message = QStringLiteral("%1 %2").arg(
+        QObject::tr("Rotation:"),
+        QString::fromStdString(quantity.getUserString())
+    );
     getMainWindow()->showMessage(message, 3000);
 }
 
@@ -339,7 +357,8 @@ SoRotationDraggerContainer::SoRotationDraggerContainer()
     getDragger()->color.connectFrom(&color);
 }
 
-SoTransform* SoRotationDraggerContainer::buildTransform() {
+SoTransform* SoRotationDraggerContainer::buildTransform()
+{
     auto transform = new SoTransform;
     transform->translation.connectFrom(&this->translation);
     transform->rotation.connectFrom(&this->rotation);
@@ -355,7 +374,8 @@ SoRotationDragger* SoRotationDraggerContainer::getDragger()
 SbVec3f SoRotationDraggerContainer::getPointerDirection()
 {
     // This is the direction along which the SoLinearDragger points in it local space
-    SbVec3f draggerDir = SO_GET_ANY_PART(this, "rotator", SoRotatorGeometryKit)->pivotPosition.getValue();
+    SbVec3f draggerDir
+        = SO_GET_ANY_PART(this, "rotator", SoRotatorGeometryKit)->pivotPosition.getValue();
     rotation.getValue().multVec(draggerDir, draggerDir);
 
     return draggerDir;
@@ -364,9 +384,10 @@ SbVec3f SoRotationDraggerContainer::getPointerDirection()
 void SoRotationDraggerContainer::setPointerDirection(const SbVec3f& dir)
 {
     // This is the direction from the origin to the spherical pivot of the rotator
-    SbVec3f draggerDir = SO_GET_ANY_PART(this, "rotator", SoRotatorGeometryKit)->pivotPosition.getValue();
+    SbVec3f draggerDir
+        = SO_GET_ANY_PART(this, "rotator", SoRotatorGeometryKit)->pivotPosition.getValue();
 
-    SbRotation rot{draggerDir, dir};
+    SbRotation rot {draggerDir, dir};
     rotation.setValue(rot);
 }
 
@@ -376,6 +397,6 @@ void SoRotationDraggerContainer::setArcNormalDirection(const SbVec3f& dir)
     auto currentRot = rotation.getValue();
     currentRot.multVec(currentNormal, currentNormal);
 
-    SbRotation rot{currentNormal, dir};
-    rotation = currentRot * rot; 
+    SbRotation rot {currentNormal, dir};
+    rotation = currentRot * rot;
 }

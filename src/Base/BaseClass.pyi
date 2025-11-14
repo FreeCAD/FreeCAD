@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 from Metadata import constmethod
 from PyObjectBase import PyObjectBase
 from typing import List, Final

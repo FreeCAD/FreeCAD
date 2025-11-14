@@ -31,36 +31,37 @@
 namespace PartDesign
 {
 
-enum class HelixMode {
+enum class HelixMode
+{
     pitch_height_angle,
     pitch_turns_angle,
     height_turns_angle,
     height_turns_growth
 };
 
-class PartDesignExport Helix : public ProfileBased
+class PartDesignExport Helix: public ProfileBased
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Helix);
 
 public:
     Helix();
 
-    App::PropertyVector      Base;
-    App::PropertyVector      Axis;
-    App::PropertyLength      Pitch;
-    App::PropertyLength      Height;
-    App::PropertyFloatConstraint   Turns;
-    App::PropertyBool        LeftHanded;
-    App::PropertyAngle       Angle;
-    App::PropertyDistance    Growth;
+    App::PropertyVector Base;
+    App::PropertyVector Axis;
+    App::PropertyLength Pitch;
+    App::PropertyLength Height;
+    App::PropertyFloatConstraint Turns;
+    App::PropertyBool LeftHanded;
+    App::PropertyAngle Angle;
+    App::PropertyDistance Growth;
     App::PropertyEnumeration Mode;
-    App::PropertyBool        Outside;
-    App::PropertyBool        HasBeenEdited;
-    App::PropertyFloatConstraint   Tolerance;
+    App::PropertyBool Outside;
+    App::PropertyBool HasBeenEdited;
+    App::PropertyFloatConstraint Tolerance;
 
     /** if this property is set to a valid link, both Axis and Base properties
      *  are calculated according to the linked line
-    */
+     */
     App::PropertyLinkSub ReferenceAxis;
 
     /** @name methods override feature */
@@ -68,7 +69,8 @@ public:
     App::DocumentObjectExecReturn* execute() override;
     short mustExecute() const override;
     /// returns the type name of the view provider
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "PartDesignGui::ViewProviderHelix";
     }
     //@}
@@ -90,7 +92,11 @@ protected:
     Base::Vector3d getProfileCenterPoint();
 
     // handle changed property types for backward compatibility
-    void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop) override;
+    void handleChangedPropertyType(
+        Base::XMLReader& reader,
+        const char* TypeName,
+        App::Property* prop
+    ) override;
 
     void onChanged(const App::Property* prop) override;
 
@@ -106,22 +112,26 @@ private:
 };
 
 
-class PartDesignExport AdditiveHelix : public Helix {
+class PartDesignExport AdditiveHelix: public Helix
+{
 
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::AdditiveHelix);
+
 public:
     AdditiveHelix();
 };
 
 
-class PartDesignExport SubtractiveHelix : public Helix {
+class PartDesignExport SubtractiveHelix: public Helix
+{
 
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::SubtractiveHelix);
+
 public:
     SubtractiveHelix();
 };
 
-} //namespace PartDesign
+}  // namespace PartDesign
 
 
-#endif // PART_Helix_H
+#endif  // PART_Helix_H

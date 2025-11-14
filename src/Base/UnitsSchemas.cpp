@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /************************************************************************
  *                                                                      *
  *   This file is part of the FreeCAD CAx development system.           *
@@ -64,9 +66,7 @@ std::vector<std::string> UnitsSchemas::getVec(const std::function<std::string(Un
 
 std::vector<std::string> UnitsSchemas::names()
 {
-    return getVec([](const UnitsSchemaSpec& spec) {
-        return spec.name;
-    });
+    return getVec([](const UnitsSchemaSpec& spec) { return spec.name; });
 }
 
 std::vector<std::string> UnitsSchemas::descriptions()
@@ -129,21 +129,15 @@ UnitsSchemaSpec UnitsSchemas::findSpec(const std::function<bool(UnitsSchemaSpec)
 
 UnitsSchemaSpec UnitsSchemas::spec()
 {
-    return findSpec([](const UnitsSchemaSpec& spec) {
-        return spec.isDefault;
-    });
+    return findSpec([](const UnitsSchemaSpec& spec) { return spec.isDefault; });
 }
 
 UnitsSchemaSpec UnitsSchemas::spec(const std::string_view& name)
 {
-    return findSpec([&name](const UnitsSchemaSpec& spec) {
-        return spec.name == name;
-    });
+    return findSpec([&name](const UnitsSchemaSpec& spec) { return spec.name == name; });
 }
 
 UnitsSchemaSpec UnitsSchemas::spec(const std::size_t num)
 {
-    return findSpec([&num](const UnitsSchemaSpec& spec) {
-        return spec.num == num;
-    });
+    return findSpec([&num](const UnitsSchemaSpec& spec) { return spec.num == num; });
 }

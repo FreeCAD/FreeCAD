@@ -207,6 +207,9 @@ public:
         return dvBalloon;
     }
 
+    // balloons handle their own dragging
+    void dragFinished() override { };
+
 public Q_SLOTS:
     void balloonLabelDragged(bool ctrl);
     void balloonLabelDragFinished();

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
 # *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
@@ -39,9 +41,8 @@ class Block(DraftObject):
     def __init__(self, obj):
         super().__init__(obj, "Block")
 
-        _tip = QT_TRANSLATE_NOOP("App::Property",
-                "The components of this block")
-        obj.addProperty("App::PropertyLinkList","Components", "Draft", _tip, locked=True)
+        _tip = QT_TRANSLATE_NOOP("App::Property", "The components of this block")
+        obj.addProperty("App::PropertyLinkList", "Components", "Draft", _tip, locked=True)
 
     def onDocumentRestored(self, obj):
         super().onDocumentRestored(obj)
@@ -56,6 +57,7 @@ class Block(DraftObject):
             return
 
         import Part
+
         plm = obj.Placement
         shps = []
         for c in obj.Components:

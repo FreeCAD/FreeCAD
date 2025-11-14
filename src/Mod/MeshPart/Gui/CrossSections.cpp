@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2019 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -121,13 +123,15 @@ private:
 class MeshCrossSection
 {
 public:
-    MeshCrossSection(const MeshCore::MeshKernel& mesh,
-                     const MeshCore::MeshFacetGrid& grid,
-                     double x,
-                     double y,
-                     double z,
-                     bool connectEdges,
-                     double eps)
+    MeshCrossSection(
+        const MeshCore::MeshKernel& mesh,
+        const MeshCore::MeshFacetGrid& grid,
+        double x,
+        double y,
+        double z,
+        bool connectEdges,
+        double eps
+    )
         : mesh(mesh)
         , grid(grid)
         , x(x)
@@ -268,8 +272,9 @@ void CrossSections::accept()
 
 void CrossSections::apply()
 {
-    std::vector<App::DocumentObject*> obj =
-        Gui::Selection().getObjectsOfType(Mesh::Feature::getClassTypeId());
+    std::vector<App::DocumentObject*> obj = Gui::Selection().getObjectsOfType(
+        Mesh::Feature::getClassTypeId()
+    );
 
     std::vector<double> d;
     if (ui->sectionsBox->isChecked()) {
@@ -305,8 +310,8 @@ void CrossSections::apply()
 
         // NOLINTBEGIN
         MeshCrossSection cs(kernel, grid, a, b, c, connectEdges, eps);
-        QFuture<std::list<TopoDS_Wire>> future =
-            QtConcurrent::mapped(d, std::bind(&MeshCrossSection::section, &cs, sp::_1));
+        QFuture<std::list<TopoDS_Wire>> future
+            = QtConcurrent::mapped(d, std::bind(&MeshCrossSection::section, &cs, sp::_1));
         future.waitForFinished();
         // NOLINTEND
 
@@ -356,13 +361,15 @@ void CrossSections::apply()
                     "points=FreeCAD.getDocument(\"%1\").%2.Mesh.crossSections(%3, %4, %5)\n"
                     "wires=[]\n"
                     "for i in points:\n"
-                    "    wires.extend([Part.makePolygon(j) for j in i])\n")
+                    "    wires.extend([Part.makePolygon(j) for j in i])\n"
+                )
                     .arg(QLatin1String(doc->getName()))
                     .arg(QLatin1String((*it)->getNameInDocument()))
                     .arg(planes)
                     .arg(eps)
                     .arg(connectEdges ? QLatin1String("True") : QLatin1String("False"))
-                    .toLatin1());
+                    .toLatin1()
+            );
 
             Gui::Command::runCommand(
                 Gui::Command::App,
@@ -371,10 +378,12 @@ void CrossSections::apply()
                     "slice=FreeCAD.getDocument(\"%1\").addObject(\"Part::Feature\",\"%2\")\n"
                     "slice.Shape=comp\n"
                     "slice.purgeTouched()\n"
-                    "del slice,comp,wires,points")
+                    "del slice,comp,wires,points"
+                )
                     .arg(QLatin1String(doc->getName()))
                     .arg(QLatin1String(s.c_str()))
-                    .toLatin1());
+                    .toLatin1()
+            );
         }
     }
     catch (const Base::Exception& e) {

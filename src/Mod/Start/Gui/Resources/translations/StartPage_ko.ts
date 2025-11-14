@@ -16,12 +16,12 @@
     <message>
       <location filename="../../FirstStartWidget.cpp" line="97"/>
       <source>Set your basic configuration options below.</source>
-      <translation type="unfinished">Set your basic configuration options below.</translation>
+      <translation>아래에서 여러분이 작업하기에 좋은 기본 환경을 설정하세요.</translation>
     </message>
     <message>
       <location filename="../../FirstStartWidget.cpp" line="98"/>
       <source>These options (and many more) can be changed later in the preferences.</source>
-      <translation type="unfinished">These options (and many more) can be changed later in the preferences.</translation>
+      <translation>이 설정(을 포함한 다른 추가 설정들)은 나중에 언제든지 환경설정 메뉴에서 변경할 수 있습니다.</translation>
     </message>
   </context>
   <context>
@@ -34,7 +34,7 @@
     <message>
       <location filename="../../GeneralSettingsWidget.cpp" line="212"/>
       <source>Unit System</source>
-      <translation>단위 계</translation>
+      <translation>단위계</translation>
     </message>
     <message>
       <location filename="../../GeneralSettingsWidget.cpp" line="228"/>
@@ -57,7 +57,7 @@
     <message>
       <location filename="../../Manipulator.cpp" line="47"/>
       <source>Displays the start page</source>
-      <translation type="unfinished">Displays the start page</translation>
+      <translation>시작 페이지를 보여줍니다</translation>
     </message>
   </context>
   <context>
@@ -80,7 +80,7 @@
     <message>
       <location filename="../../StartView.cpp" line="222"/>
       <source>Creates a 2D Draft document</source>
-      <translation type="unfinished">Creates a 2D Draft document</translation>
+      <translation>2D 제도 문서를 생성합니다</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="225"/>
@@ -90,37 +90,37 @@
     <message>
       <location filename="../../StartView.cpp" line="205"/>
       <source>Empty File</source>
-      <translation type="unfinished">Empty File</translation>
+      <translation>빈 파일</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="206"/>
       <source>Creates a new empty FreeCAD file</source>
-      <translation type="unfinished">Creates a new empty FreeCAD file</translation>
+      <translation>내용이 빈 새로운 프리캐드 파일을 생성합니다</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="210"/>
       <source>Opens an existing CAD file or 3D model</source>
-      <translation type="unfinished">Opens an existing CAD file or 3D model</translation>
+      <translation>기존 CAD 파일이나 3D모형을 엽니다</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="213"/>
       <source>Parametric Body</source>
-      <translation type="unfinished">Parametric Body</translation>
+      <translation>매개변수 제어 몸통</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="214"/>
       <source>Creates a body with the Part Design workbench</source>
-      <translation type="unfinished">Creates a body with the Part Design workbench</translation>
+      <translation>부품설계 작업대에서 빈 몸통을 하나 생성합니다</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="218"/>
       <source>Creates an assembly project</source>
-      <translation type="unfinished">Creates an assembly project</translation>
+      <translation>조립 작업대에서 빈 조립품을 생성하며 시작합니다</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="226"/>
       <source>Creates an architectural project</source>
-      <translation type="unfinished">Creates an architectural project</translation>
+      <translation>건축 프로젝트를 생성합니다</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="494"/>
@@ -140,12 +140,12 @@
     <message>
       <location filename="../../StartView.cpp" line="511"/>
       <source>Open First Start Setup</source>
-      <translation type="unfinished">Open First Start Setup</translation>
+      <translation>초기 설정 열기</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="513"/>
       <source>Do not show this Start page again (start with blank screen)</source>
-      <translation type="unfinished">Do not show this Start page again (start with blank screen)</translation>
+      <translation>이 시작 페이지를 다시 표시하지 않기 (빈 화면으로 시작)</translation>
     </message>
   </context>
   <context>
@@ -212,7 +212,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="20"/>
       <source>Contents</source>
-      <translation type="unfinished">Contents</translation>
+      <translation>내용</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="26"/>
@@ -240,12 +240,12 @@ Multiple folders can be added using ";;" to separate paths.</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="64"/>
       <source>Shows example files on the start page</source>
-      <translation type="unfinished">Shows example files on the start page</translation>
+      <translation>시작 페이지에 예제 파일을 보입니다</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="114"/>
       <source>The start page is closed automatically when FreeCAD launches</source>
-      <translation type="unfinished">The start page is closed automatically when FreeCAD launches</translation>
+      <translation>프리캐드 실행시 시작 페이지가 자동으로 닫힙니다</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="108"/>

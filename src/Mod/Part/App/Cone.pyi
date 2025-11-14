@@ -4,7 +4,6 @@ from Base.Axis import Axis as AxisPy
 from GeometrySurface import GeometrySurface
 from typing import Final
 
-
 @export(
     PythonName="Part.Cone",
     Twin="GeomCone",

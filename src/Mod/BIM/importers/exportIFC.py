@@ -170,8 +170,6 @@ def getPreferences():
 
     import ifcopenshell
 
-    if FreeCAD.GuiUp and params.get_param_arch("ifcShowDialog"):
-        FreeCADGui.showPreferencesByName("Import-Export", ":/ui/preferences-ifc-export.ui")
     ifcunit = params.get_param_arch("ifcUnit")
 
     # Factor to multiply the dimension in millimeters
@@ -2517,29 +2515,21 @@ def getRepresentation(
                         rgbt.append(diffusecolor[0])
                     i += len(sol.Faces)
             for i, shape in enumerate(colorshapes):
-                if i < len(rgbt):
-                    key = rgbt[i]
-                else:
-                    key = rgbt[0]
-                # if hasattr(obj,"Material"):
-                #    if obj.Material:
-                #        key = obj.Material.Name #TODO handle multimaterials
+                # TODO handle multimaterials
+                if i >= len(rgbt):
+                    i = 0
+                key = rgbt[i]
+                mat = None
+                if getattr(obj, "Material", None):
+                    mat = obj.Material.Label
+                    if hasattr(obj.Material, "Transparency"):
+                        # Can obj.Material.Transparency (single material) really
+                        # be different from obj.ViewObject.Transparency?
+                        key = key[:3] + (obj.Material.Transparency / 100.0,)
                 if key in surfstyles:
                     psa = surfstyles[key]
                 else:
-                    m = None
-                    if hasattr(obj, "Material"):
-                        if obj.Material:
-                            m = obj.Material.Label
-                            rgbt[i] = (
-                                rgbt[i][0],
-                                rgbt[i][1],
-                                rgbt[i][2],
-                                obj.Material.Transparency / 100.0,
-                            )
-                    psa = ifcbin.createIfcPresentationStyleAssignment(
-                        m, rgbt[i][0], rgbt[i][1], rgbt[i][2], rgbt[i][3]
-                    )
+                    psa = ifcbin.createIfcPresentationStyleAssignment(mat, *key)
                     surfstyles[key] = psa
                 isi = ifcfile.createIfcStyledItem(shape, [psa], None)
 

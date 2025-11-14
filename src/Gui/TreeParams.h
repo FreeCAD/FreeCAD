@@ -33,7 +33,8 @@ TreeParams.declare_begin()
 
 
 // Auto generated code (Tools/params_utils.py:90)
-namespace Gui {
+namespace Gui
+{
 /** Convenient class to obtain tree view related parameters
 
  * The parameters are under group "User parameter:BaseApp/Preferences/TreeView"
@@ -64,291 +65,292 @@ namespace Gui {
  *     void TreeParams:on<parameter_name>Changed()
  * @endcode
  */
-class GuiExport TreeParams {
+class GuiExport TreeParams
+{
 public:
     static ParameterGrp::handle getHandle();
 
     // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter SyncSelection
-    static const bool & getSyncSelection();
-    static const bool & defaultSyncSelection();
+    static const bool& getSyncSelection();
+    static const bool& defaultSyncSelection();
     static void removeSyncSelection();
-    static void setSyncSelection(const bool &v);
-    static const char *docSyncSelection();
+    static void setSyncSelection(const bool& v);
+    static const char* docSyncSelection();
     static void onSyncSelectionChanged();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter CheckBoxesSelection
-    static const bool & getCheckBoxesSelection();
-    static const bool & defaultCheckBoxesSelection();
+    static const bool& getCheckBoxesSelection();
+    static const bool& defaultCheckBoxesSelection();
     static void removeCheckBoxesSelection();
-    static void setCheckBoxesSelection(const bool &v);
-    static const char *docCheckBoxesSelection();
+    static void setCheckBoxesSelection(const bool& v);
+    static const char* docCheckBoxesSelection();
     static void onCheckBoxesSelectionChanged();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter SyncView
-    static const bool & getSyncView();
-    static const bool & defaultSyncView();
+    static const bool& getSyncView();
+    static const bool& defaultSyncView();
     static void removeSyncView();
-    static void setSyncView(const bool &v);
-    static const char *docSyncView();
+    static void setSyncView(const bool& v);
+    static const char* docSyncView();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter PreSelection
-    static const bool & getPreSelection();
-    static const bool & defaultPreSelection();
+    static const bool& getPreSelection();
+    static const bool& defaultPreSelection();
     static void removePreSelection();
-    static void setPreSelection(const bool &v);
-    static const char *docPreSelection();
+    static void setPreSelection(const bool& v);
+    static const char* docPreSelection();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter SyncPlacement
-    static const bool & getSyncPlacement();
-    static const bool & defaultSyncPlacement();
+    static const bool& getSyncPlacement();
+    static const bool& defaultSyncPlacement();
     static void removeSyncPlacement();
-    static void setSyncPlacement(const bool &v);
-    static const char *docSyncPlacement();
+    static void setSyncPlacement(const bool& v);
+    static const char* docSyncPlacement();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter RecordSelection
-    static const bool & getRecordSelection();
-    static const bool & defaultRecordSelection();
+    static const bool& getRecordSelection();
+    static const bool& defaultRecordSelection();
     static void removeRecordSelection();
-    static void setRecordSelection(const bool &v);
-    static const char *docRecordSelection();
+    static void setRecordSelection(const bool& v);
+    static const char* docRecordSelection();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter DocumentMode
-    static const long & getDocumentMode();
-    static const long & defaultDocumentMode();
+    static const long& getDocumentMode();
+    static const long& defaultDocumentMode();
     static void removeDocumentMode();
-    static void setDocumentMode(const long &v);
-    static const char *docDocumentMode();
+    static void setDocumentMode(const long& v);
+    static const char* docDocumentMode();
     static void onDocumentModeChanged();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter StatusTimeout
-    static const long & getStatusTimeout();
-    static const long & defaultStatusTimeout();
+    static const long& getStatusTimeout();
+    static const long& defaultStatusTimeout();
     static void removeStatusTimeout();
-    static void setStatusTimeout(const long &v);
-    static const char *docStatusTimeout();
+    static void setStatusTimeout(const long& v);
+    static const char* docStatusTimeout();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter SelectionTimeout
-    static const long & getSelectionTimeout();
-    static const long & defaultSelectionTimeout();
+    static const long& getSelectionTimeout();
+    static const long& defaultSelectionTimeout();
     static void removeSelectionTimeout();
-    static void setSelectionTimeout(const long &v);
-    static const char *docSelectionTimeout();
+    static void setSelectionTimeout(const long& v);
+    static const char* docSelectionTimeout();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter PreSelectionTimeout
-    static const long & getPreSelectionTimeout();
-    static const long & defaultPreSelectionTimeout();
+    static const long& getPreSelectionTimeout();
+    static const long& defaultPreSelectionTimeout();
     static void removePreSelectionTimeout();
-    static void setPreSelectionTimeout(const long &v);
-    static const char *docPreSelectionTimeout();
+    static void setPreSelectionTimeout(const long& v);
+    static const char* docPreSelectionTimeout();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter PreSelectionDelay
-    static const long & getPreSelectionDelay();
-    static const long & defaultPreSelectionDelay();
+    static const long& getPreSelectionDelay();
+    static const long& defaultPreSelectionDelay();
     static void removePreSelectionDelay();
-    static void setPreSelectionDelay(const long &v);
-    static const char *docPreSelectionDelay();
+    static void setPreSelectionDelay(const long& v);
+    static const char* docPreSelectionDelay();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter PreSelectionMinDelay
-    static const long & getPreSelectionMinDelay();
-    static const long & defaultPreSelectionMinDelay();
+    static const long& getPreSelectionMinDelay();
+    static const long& defaultPreSelectionMinDelay();
     static void removePreSelectionMinDelay();
-    static void setPreSelectionMinDelay(const long &v);
-    static const char *docPreSelectionMinDelay();
+    static void setPreSelectionMinDelay(const long& v);
+    static const char* docPreSelectionMinDelay();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter RecomputeOnDrop
-    static const bool & getRecomputeOnDrop();
-    static const bool & defaultRecomputeOnDrop();
+    static const bool& getRecomputeOnDrop();
+    static const bool& defaultRecomputeOnDrop();
     static void removeRecomputeOnDrop();
-    static void setRecomputeOnDrop(const bool &v);
-    static const char *docRecomputeOnDrop();
+    static void setRecomputeOnDrop(const bool& v);
+    static const char* docRecomputeOnDrop();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter KeepRootOrder
-    static const bool & getKeepRootOrder();
-    static const bool & defaultKeepRootOrder();
+    static const bool& getKeepRootOrder();
+    static const bool& defaultKeepRootOrder();
     static void removeKeepRootOrder();
-    static void setKeepRootOrder(const bool &v);
-    static const char *docKeepRootOrder();
+    static void setKeepRootOrder(const bool& v);
+    static const char* docKeepRootOrder();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter TreeActiveAutoExpand
-    static const bool & getTreeActiveAutoExpand();
-    static const bool & defaultTreeActiveAutoExpand();
+    static const bool& getTreeActiveAutoExpand();
+    static const bool& defaultTreeActiveAutoExpand();
     static void removeTreeActiveAutoExpand();
-    static void setTreeActiveAutoExpand(const bool &v);
-    static const char *docTreeActiveAutoExpand();
+    static void setTreeActiveAutoExpand(const bool& v);
+    static const char* docTreeActiveAutoExpand();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter TreeActiveColor
-    static const unsigned long & getTreeActiveColor();
-    static const unsigned long & defaultTreeActiveColor();
+    static const unsigned long& getTreeActiveColor();
+    static const unsigned long& defaultTreeActiveColor();
     static void removeTreeActiveColor();
-    static void setTreeActiveColor(const unsigned long &v);
-    static const char *docTreeActiveColor();
+    static void setTreeActiveColor(const unsigned long& v);
+    static const char* docTreeActiveColor();
     static void onTreeActiveColorChanged();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter TreeEditColor
-    static const unsigned long & getTreeEditColor();
-    static const unsigned long & defaultTreeEditColor();
+    static const unsigned long& getTreeEditColor();
+    static const unsigned long& defaultTreeEditColor();
     static void removeTreeEditColor();
-    static void setTreeEditColor(const unsigned long &v);
-    static const char *docTreeEditColor();
+    static void setTreeEditColor(const unsigned long& v);
+    static const char* docTreeEditColor();
     static void onTreeEditColorChanged();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter SelectingGroupColor
-    static const unsigned long & getSelectingGroupColor();
-    static const unsigned long & defaultSelectingGroupColor();
+    static const unsigned long& getSelectingGroupColor();
+    static const unsigned long& defaultSelectingGroupColor();
     static void removeSelectingGroupColor();
-    static void setSelectingGroupColor(const unsigned long &v);
-    static const char *docSelectingGroupColor();
+    static void setSelectingGroupColor(const unsigned long& v);
+    static const char* docSelectingGroupColor();
     static void onSelectingGroupColorChanged();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter TreeActiveBold
-    static const bool & getTreeActiveBold();
-    static const bool & defaultTreeActiveBold();
+    static const bool& getTreeActiveBold();
+    static const bool& defaultTreeActiveBold();
     static void removeTreeActiveBold();
-    static void setTreeActiveBold(const bool &v);
-    static const char *docTreeActiveBold();
+    static void setTreeActiveBold(const bool& v);
+    static const char* docTreeActiveBold();
     static void onTreeActiveBoldChanged();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter TreeActiveItalic
-    static const bool & getTreeActiveItalic();
-    static const bool & defaultTreeActiveItalic();
+    static const bool& getTreeActiveItalic();
+    static const bool& defaultTreeActiveItalic();
     static void removeTreeActiveItalic();
-    static void setTreeActiveItalic(const bool &v);
-    static const char *docTreeActiveItalic();
+    static void setTreeActiveItalic(const bool& v);
+    static const char* docTreeActiveItalic();
     static void onTreeActiveItalicChanged();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter TreeActiveUnderlined
-    static const bool & getTreeActiveUnderlined();
-    static const bool & defaultTreeActiveUnderlined();
+    static const bool& getTreeActiveUnderlined();
+    static const bool& defaultTreeActiveUnderlined();
     static void removeTreeActiveUnderlined();
-    static void setTreeActiveUnderlined(const bool &v);
-    static const char *docTreeActiveUnderlined();
+    static void setTreeActiveUnderlined(const bool& v);
+    static const char* docTreeActiveUnderlined();
     static void onTreeActiveUnderlinedChanged();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter TreeActiveOverlined
-    static const bool & getTreeActiveOverlined();
-    static const bool & defaultTreeActiveOverlined();
+    static const bool& getTreeActiveOverlined();
+    static const bool& defaultTreeActiveOverlined();
     static void removeTreeActiveOverlined();
-    static void setTreeActiveOverlined(const bool &v);
-    static const char *docTreeActiveOverlined();
+    static void setTreeActiveOverlined(const bool& v);
+    static const char* docTreeActiveOverlined();
     static void onTreeActiveOverlinedChanged();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter Indentation
-    static const long & getIndentation();
-    static const long & defaultIndentation();
+    static const long& getIndentation();
+    static const long& defaultIndentation();
     static void removeIndentation();
-    static void setIndentation(const long &v);
-    static const char *docIndentation();
+    static void setIndentation(const long& v);
+    static const char* docIndentation();
     static void onIndentationChanged();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter LabelExpression
-    static const bool & getLabelExpression();
-    static const bool & defaultLabelExpression();
+    static const bool& getLabelExpression();
+    static const bool& defaultLabelExpression();
     static void removeLabelExpression();
-    static void setLabelExpression(const bool &v);
-    static const char *docLabelExpression();
+    static void setLabelExpression(const bool& v);
+    static const char* docLabelExpression();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter IconSize
-    static const long & getIconSize();
-    static const long & defaultIconSize();
+    static const long& getIconSize();
+    static const long& defaultIconSize();
     static void removeIconSize();
-    static void setIconSize(const long &v);
-    static const char *docIconSize();
+    static void setIconSize(const long& v);
+    static const char* docIconSize();
     static void onIconSizeChanged();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter FontSize
-    static const long & getFontSize();
-    static const long & defaultFontSize();
+    static const long& getFontSize();
+    static const long& defaultFontSize();
     static void removeFontSize();
-    static void setFontSize(const long &v);
-    static const char *docFontSize();
+    static void setFontSize(const long& v);
+    static const char* docFontSize();
     static void onFontSizeChanged();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter ItemSpacing
-    static const long & getItemSpacing();
-    static const long & defaultItemSpacing();
+    static const long& getItemSpacing();
+    static const long& defaultItemSpacing();
     static void removeItemSpacing();
-    static void setItemSpacing(const long &v);
-    static const char *docItemSpacing();
+    static void setItemSpacing(const long& v);
+    static const char* docItemSpacing();
     static void onItemSpacingChanged();
     //@}
 
@@ -357,11 +359,11 @@ public:
     /// Accessor for parameter ItemBackground
     ///
     /// Tree view item background. Only effective in overlay.
-    static const unsigned long & getItemBackground();
-    static const unsigned long & defaultItemBackground();
+    static const unsigned long& getItemBackground();
+    static const unsigned long& defaultItemBackground();
     static void removeItemBackground();
-    static void setItemBackground(const unsigned long &v);
-    static const char *docItemBackground();
+    static void setItemBackground(const unsigned long& v);
+    static const char* docItemBackground();
     static void onItemBackgroundChanged();
     //@}
 
@@ -370,11 +372,11 @@ public:
     /// Accessor for parameter ItemBackgroundPadding
     ///
     /// Tree view item background padding.
-    static const long & getItemBackgroundPadding();
-    static const long & defaultItemBackgroundPadding();
+    static const long& getItemBackgroundPadding();
+    static const long& defaultItemBackgroundPadding();
     static void removeItemBackgroundPadding();
-    static void setItemBackgroundPadding(const long &v);
-    static const char *docItemBackgroundPadding();
+    static void setItemBackgroundPadding(const long& v);
+    static const char* docItemBackgroundPadding();
     static void onItemBackgroundPaddingChanged();
     //@}
 
@@ -383,11 +385,11 @@ public:
     /// Accessor for parameter HideColumn
     ///
     /// Hide extra tree view column for item description.
-    static const bool & getHideColumn();
-    static const bool & defaultHideColumn();
+    static const bool& getHideColumn();
+    static const bool& defaultHideColumn();
     static void removeHideColumn();
-    static void setHideColumn(const bool &v);
-    static const char *docHideColumn();
+    static void setHideColumn(const bool& v);
+    static const char* docHideColumn();
     static void onHideColumnChanged();
     //@}
 
@@ -396,11 +398,11 @@ public:
     /// Accessor for parameter HideInternalNames
     ///
     /// Hide extra tree view column - Internal Names.
-    static const bool & getHideInternalNames();
-    static const bool & defaultHideInternalNames();
+    static const bool& getHideInternalNames();
+    static const bool& defaultHideInternalNames();
     static void removeHideInternalNames();
-    static void setHideInternalNames(const bool &v);
-    static const char *docHideInternalNames();
+    static void setHideInternalNames(const bool& v);
+    static const char* docHideInternalNames();
     static void onHideInternalNamesChanged();
     //@}
 
@@ -409,11 +411,11 @@ public:
     /// Accessor for parameter HideScrollBar
     ///
     /// Hide tree view scroll bar in dock overlay.
-    static const bool & getHideScrollBar();
-    static const bool & defaultHideScrollBar();
+    static const bool& getHideScrollBar();
+    static const bool& defaultHideScrollBar();
     static void removeHideScrollBar();
-    static void setHideScrollBar(const bool &v);
-    static const char *docHideScrollBar();
+    static void setHideScrollBar(const bool& v);
+    static const char* docHideScrollBar();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
@@ -421,11 +423,11 @@ public:
     /// Accessor for parameter HideHeaderView
     ///
     /// Hide tree view header view in dock overlay.
-    static const bool & getHideHeaderView();
-    static const bool & defaultHideHeaderView();
+    static const bool& getHideHeaderView();
+    static const bool& defaultHideHeaderView();
     static void removeHideHeaderView();
-    static void setHideHeaderView(const bool &v);
-    static const char *docHideHeaderView();
+    static void setHideHeaderView(const bool& v);
+    static const char* docHideHeaderView();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
@@ -433,77 +435,78 @@ public:
     /// Accessor for parameter ResizableColumn
     ///
     /// Allow tree view columns to be manually resized.
-    static const bool & getResizableColumn();
-    static const bool & defaultResizableColumn();
+    static const bool& getResizableColumn();
+    static const bool& defaultResizableColumn();
     static void removeResizableColumn();
-    static void setResizableColumn(const bool &v);
-    static const char *docResizableColumn();
+    static void setResizableColumn(const bool& v);
+    static const char* docResizableColumn();
     static void onResizableColumnChanged();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter ColumnSize1
-    static const long & getColumnSize1();
-    static const long & defaultColumnSize1();
+    static const long& getColumnSize1();
+    static const long& defaultColumnSize1();
     static void removeColumnSize1();
-    static void setColumnSize1(const long &v);
-    static const char *docColumnSize1();
+    static void setColumnSize1(const long& v);
+    static const char* docColumnSize1();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter ColumnSize2
-    static const long & getColumnSize2();
-    static const long & defaultColumnSize2();
+    static const long& getColumnSize2();
+    static const long& defaultColumnSize2();
     static void removeColumnSize2();
-    static void setColumnSize2(const long &v);
-    static const char *docColumnSize2();
+    static void setColumnSize2(const long& v);
+    static const char* docColumnSize2();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter ColumnSize3
-    static const long & getColumnSize3();
-    static const long & defaultColumnSize3();
+    static const long& getColumnSize3();
+    static const long& defaultColumnSize3();
     static void removeColumnSize3();
-    static void setColumnSize3(const long &v);
-    static const char *docColumnSize3();
+    static void setColumnSize3(const long& v);
+    static const char* docColumnSize3();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter TreeToolTipIcon
-    static const bool & getTreeToolTipIcon();
-    static const bool & defaultTreeToolTipIcon();
+    static const bool& getTreeToolTipIcon();
+    static const bool& defaultTreeToolTipIcon();
     static void removeTreeToolTipIcon();
-    static void setTreeToolTipIcon(const bool &v);
-    static const char *docTreeToolTipIcon();
+    static void setTreeToolTipIcon(const bool& v);
+    static const char* docTreeToolTipIcon();
     //@}
 
     // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter VisibilityIcon
     ///
-    /// If enabled, show an eye icon before the tree view items, showing the items visibility status. When clicked the visibility is toggled
-    static const bool & getVisibilityIcon();
-    static const bool & defaultVisibilityIcon();
+    /// If enabled, show an eye icon before the tree view items, showing the items visibility
+    /// status. When clicked the visibility is toggled
+    static const bool& getVisibilityIcon();
+    static const bool& defaultVisibilityIcon();
     static void removeVisibilityIcon();
-    static void setVisibilityIcon(const bool &v);
-    static const char *docVisibilityIcon();
+    static void setVisibilityIcon(const bool& v);
+    static const char* docVisibilityIcon();
     static void onVisibilityIconChanged();
     //@}
-//[[[end]]]
+    //[[[end]]]
 
     static void refreshTreeViews();
 
-/*[[[cog
-TreeParams.declare_end()
-]]]*/
+    /*[[[cog
+    TreeParams.declare_end()
+    ]]]*/
 
-// Auto generated code (Tools/params_utils.py:178)
-}; // class TreeParams
-} // namespace Gui
+    // Auto generated code (Tools/params_utils.py:178)
+};  // class TreeParams
+}  // namespace Gui
 //[[[end]]]
 
-#endif // GUI_TREE_PARAMS_H
+#endif  // GUI_TREE_PARAMS_H

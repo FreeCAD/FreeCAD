@@ -219,12 +219,16 @@ TEST_F(DISABLED_DocumentObserverTest, normalize)
     // The subName is modified replacing "Part__Box" with "$Cube" to test the effect of using
     // SubObjectT::NormalizeOption::KeepSubName, that is leaving the "$Cube" instead of replacing it
     // with the name of the DocumentObject with that label ("Part__Box")
-    auto subObjTKeepSubName {SubObjectT(lGrp,
-                                        subName
-                                            .replace(strlen(partName) + strlen(fuseName) + 2,
-                                                     strlen(boxName),
-                                                     std::string("$").append(boxLabel).c_str())
-                                            .c_str())};
+    auto subObjTKeepSubName {SubObjectT(
+        lGrp,
+        subName
+            .replace(
+                strlen(partName) + strlen(fuseName) + 2,
+                strlen(boxName),
+                std::string("$").append(boxLabel).c_str()
+            )
+            .c_str()
+    )};
     // An App::SubObjectT object used to test SubObjectT::normalize() with the option argument set
     // to SubObjectT::NormalizeOption::ConvertIndex
     // The subName is modified replacing "App_Part" with "0" to test the effect of using
@@ -255,8 +259,7 @@ TEST_F(DISABLED_DocumentObserverTest, normalize)
     normalizeWithoutEl = subObjTWithoutEl.normalize(SubObjectT::NormalizeOption::NoElement);
     normalizeNoFlatten = subObjTNoFlatten.normalize(SubObjectT::NormalizeOption::NoFlatten);
     normalizeKeepSubName = subObjTKeepSubName.normalize(SubObjectT::NormalizeOption::KeepSubName);
-    normalizeConvertIndex =
-        subObjTConvertIndex.normalize(SubObjectT::NormalizeOption::ConvertIndex);
+    normalizeConvertIndex = subObjTConvertIndex.normalize(SubObjectT::NormalizeOption::ConvertIndex);
 
     // Assert
 
@@ -441,14 +444,14 @@ TEST_F(DISABLED_DocumentObserverTest, normalized)
     subObjTEmptyNormalized = subObjTEmpty.normalized();
     subObjTWithoutSubObjNormalized = subObjTWithoutSubObj.normalized();
     subObjTWithSubObjNormalized = subObjTWithSubObj.normalized();
-    subObjTWithoutElNormalized =
-        subObjTWithoutEl.normalized(SubObjectT::NormalizeOption::NoElement);
-    subObjTNoFlattenNormalized =
-        subObjTNoFlatten.normalized(SubObjectT::NormalizeOption::NoFlatten);
-    subObjTKeepSubNameNormalized =
-        subObjTKeepSubName.normalized(SubObjectT::NormalizeOption::KeepSubName);
-    subObjTConvertIndexNormalized =
-        subObjTConvertIndex.normalized(SubObjectT::NormalizeOption::ConvertIndex);
+    subObjTWithoutElNormalized = subObjTWithoutEl.normalized(SubObjectT::NormalizeOption::NoElement);
+    subObjTNoFlattenNormalized = subObjTNoFlatten.normalized(SubObjectT::NormalizeOption::NoFlatten);
+    subObjTKeepSubNameNormalized = subObjTKeepSubName.normalized(
+        SubObjectT::NormalizeOption::KeepSubName
+    );
+    subObjTConvertIndexNormalized = subObjTConvertIndex.normalized(
+        SubObjectT::NormalizeOption::ConvertIndex
+    );
 
     // Assert
 

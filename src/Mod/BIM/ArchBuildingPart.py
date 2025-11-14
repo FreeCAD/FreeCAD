@@ -1188,7 +1188,7 @@ class ViewProviderBuildingPart:
         menu.addAction(actionCloneUp)
 
     def activate(self, action=None):
-        from draftutils.utils import toggle_working_plane
+        from draftutils.gui_utils import toggle_working_plane
 
         vobj = self.Object.ViewObject
 

@@ -108,6 +108,8 @@ public:
         CopyOnChange = 16,
         /// Whether the property editor should create a button for user defined editing.
         UserEdit = 17,
+        /// Do not propagate changes of the property to its container
+        DisableNotify = 18,
 
         // The following bits are corresponding to PropertyType set when the
         // property added. These types are meant to be static, and cannot be
@@ -354,11 +356,16 @@ public:
      */
     virtual void onContainerRestored() {}
 
-    /** @name Property status handling
-     * @{
+    /** Property status handling
      */
-
-    /// Set the property touched.
+    //@{
+    /// This method sets whether notification will be propagated on changing
+    /// the value of the property. The old value of the setting is returned.
+    bool enableNotify(bool on);
+    /// This method returns whether notification of changes to the property value
+    /// are propagated to the container.
+    bool isNotifyEnabled() const;
+    /// Set the property touched
     void touch();
 
     /**

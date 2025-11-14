@@ -86,9 +86,6 @@ def getPreferences():
         2 = Part shapes
         3 = One compound per storey
     """
-    if FreeCAD.GuiUp and params.get_param_arch("ifcShowDialog"):
-        Gui.showPreferencesByName("Import-Export", ":/ui/preferences-ifc.ui")
-
     preferences = {
         "DEBUG": params.get_param_arch("ifcDebug"),
         "PREFIX_NUMBERS": params.get_param_arch("ifcPrefixNumbers"),

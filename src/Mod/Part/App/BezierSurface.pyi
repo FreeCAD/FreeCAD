@@ -8,7 +8,6 @@ from Base.Metadata import (
 from GeometrySurface import GeometrySurface
 from typing import Final, Tuple
 
-
 @export(
     Twin="GeomBezierSurface",
     TwinPointer="GeomBezierSurface",

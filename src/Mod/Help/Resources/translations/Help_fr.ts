@@ -27,7 +27,7 @@ You can easily download the documentation for offline use by using the Addon
 Manager and installing the &quot;offline-documentation&quot; addon. If this
 field is left blank, FreeCAD will automatically search for the help files at
 the default location ($USERAPPDATADIR/Mod/offline-documentation).</source>
-      <translation>Définissez une URL personnalisée ou le dossier dans lequel se trouvent les fichiers d'aide. Vous pouvez facilement télécharger la documentation pour une utilisation hors ligne en utilisant le gestionnaire des extensions et en installant l'extension "offline-documentation". Si ce champ est laissé vide, FreeCAD recherchera automatiquement les fichiers d'aide à l'emplacement par défaut ($USERAPPDATADIR/Mod/offline-documentation).</translation>
+      <translation>Définissez ici une URL personnalisée ou le dossier où se trouvent les fichiers d'aide. Vous pouvez facilement télécharger la documentation pour une utilisation hors ligne en utilisant le gestionnaire des extensions et en installant l'extension « offline-documentation ». Si ce champ est laissé vide, FreeCAD recherchera automatiquement les fichiers d'aide à l'emplacement par défaut ($USERAPPDATADIR/Mod/offline-documentation).</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="53"/>
@@ -48,8 +48,7 @@ the default location ($USERAPPDATADIR/Mod/offline-documentation).</source>
       <location filename="../../dlgPreferencesHelp.ui" line="72"/>
       <source>A translation suffix to use, for example &quot;fr&quot;
 to get French translation of the documentation.</source>
-      <translation>Un suffixe de traduction à utiliser, par exemple "fr", pour
-obtenir une traduction française de la documentation.</translation>
+      <translation>Un suffixe de traduction à utiliser, par exemple « fr » pour obtenir la traduction française de la documentation.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="86"/>
@@ -79,7 +78,7 @@ FreeCADwiki at https://wiki.freecad.org</source>
 of the FreeCAD wiki,hosted on FreeCAD&apos;s GitHub account. This can be styled with a
 custom stylesheet below and can look nicer than the wiki option. The &apos;Markdown&apos; or
 &apos;Pandoc&apos; Python module should be installed for optimal results.</source>
-      <translation>Les pages de la documentation seront extraites à partir d'une conversion automatique avec Markdown du wiki de FreeCAD, hébergé sur le compte GitHub de FreeCAD. Ceci peut être personnalisé avec une feuille de style et peut être plus agréable que l'option du wiki. Les modules Python "Markdown" ou "Pandoc" doivent être installés pour des résultats optimaux.</translation>
+      <translation>Les pages de documentation seront récupérées à partir d'une conversion automatique de Markdown du wiki FreeCAD, hébergé sur le compte GitHub de FreeCAD. Elles peuvent être personnalisées à l'aide d'une feuille de style ci-dessous et peuvent être plus agréables que l'option wiki. Le module Python « Markdown » ou « Pandoc » doit être installé pour obtenir des résultats optimaux.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="145"/>

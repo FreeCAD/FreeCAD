@@ -1554,17 +1554,25 @@ bool TaskSketcherConstraints::doSetVisible(const std::vector<int>& constrIds, bo
 
     std::string constrIdList = stream.str();
 
-    Gui::Command::openCommand(
-            QT_TRANSLATE_NOOP("Command", "Update constraint's visibility"));
+    // Do not create a command if there is already a command (ea Dimension tool) running
+    bool createCommand = !Gui::Command::hasPendingCommand();
+    if (createCommand) {
+        Gui::Command::openCommand(
+                QT_TRANSLATE_NOOP("Command", "Update constraint's visibility"));
+    }
     try {
         Gui::cmdAppObjectArgs(sketch,
             "setVisibility(%s, %s)",
             constrIdList,
             isVisible ? "True" : "False");
-        Gui::Command::commitCommand();
+        if (createCommand) {
+            Gui::Command::commitCommand();
+        }
     }
     catch (const Base::Exception& e) {
-        Gui::Command::abortCommand();
+        if (createCommand) {
+            Gui::Command::abortCommand();
+        }
 
         Gui::TranslatedUserError(
             sketch, tr("Error"), tr("Impossible to update visibility:") + QLatin1String(" ") + QLatin1String(e.what()));

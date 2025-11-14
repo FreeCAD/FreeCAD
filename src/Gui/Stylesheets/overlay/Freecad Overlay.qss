@@ -1,7 +1,3 @@
-QFrame {
-  border: none;
-}
-
 Gui--DockWnd--ReportOutput,
 Gui--TaskView--TaskView QScrollArea {
   border: none;
