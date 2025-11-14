@@ -555,8 +555,9 @@ void ViewProviderBody::show()
     PartGui::ViewProviderPartExt::show();
 
     auto body = static_cast<PartDesign::Body*>(getObject());
-    if (!body)
+    if (!body) {
         return;
+    }
 
     auto tip = body->Tip.getValue();
     if (!tip || tip->Visibility.getValue()) {
@@ -570,20 +571,21 @@ void ViewProviderBody::show()
 
     bool foundVisible = false;
     for (auto f : features) {
-        if (!f)
+        if (!f) {
             continue;
+        }
 
         // Retrieve the ViewProvider for this feature
         auto vp = Gui::Application::Instance->getViewProvider(f);
-        if (!vp)
+        if (!vp) {
             continue;
+        }
 
         // Get the class name of the ViewProvider
         const char* vpType = vp->getTypeId().getName();
 
         // Only consider PartDesign features
-        if (vp->isDerivedFrom(PartDesignGui::ViewProvider::getClassTypeId()))
-        {
+        if (vp->isDerivedFrom(PartDesignGui::ViewProvider::getClassTypeId())) {
             if (f->Visibility.getValue()) {
                 foundVisible = true;
                 break;
