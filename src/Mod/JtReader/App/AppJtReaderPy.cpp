@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) Juergen Riegel         <juergen.riegel@web.de>          *
  *                                                                         *
@@ -20,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -50,18 +51,24 @@ public:
     Module()
         : Py::ExtensionModule<Module>("JtReader")
     {
-        add_varargs_method("read",
-                           &Module::read,
-                           "Read the mesh from a JT file and return a mesh object.");
-        add_varargs_method("open",
-                           &Module::open,
-                           "open(string)\n"
-                           "Create a new document and load the JT file into\n"
-                           "the document.");
-        add_varargs_method("insert",
-                           &Module::importer,
-                           "insert(string|mesh,[string])\n"
-                           "Load or insert a JT file into the given or active document.");
+        add_varargs_method(
+            "read",
+            &Module::read,
+            "Read the mesh from a JT file and return a mesh object."
+        );
+        add_varargs_method(
+            "open",
+            &Module::open,
+            "open(string)\n"
+            "Create a new document and load the JT file into\n"
+            "the document."
+        );
+        add_varargs_method(
+            "insert",
+            &Module::importer,
+            "insert(string|mesh,[string])\n"
+            "Load or insert a JT file into the given or active document."
+        );
         initialize("This module is the JtReader module.");
     }
 
@@ -103,7 +110,8 @@ private:
             App::Document* doc = App::GetApplication().newDocument();
             std::string objname = file.fileNamePure();
             auto iv = dynamic_cast<App::InventorObject*>(
-                doc->addObject("App::InventorObject", objname.c_str()));
+                doc->addObject("App::InventorObject", objname.c_str())
+            );
             iv->Buffer.setValue(jtReader.getOutput());
             iv->purgeTouched();
 #endif
@@ -139,7 +147,8 @@ private:
 
             std::string objname = file.fileNamePure();
             auto iv = dynamic_cast<App::InventorObject*>(
-                doc->addObject("App::InventorObject", objname.c_str()));
+                doc->addObject("App::InventorObject", objname.c_str())
+            );
             iv->Buffer.setValue(jtReader.getOutput());
             iv->purgeTouched();
 #endif

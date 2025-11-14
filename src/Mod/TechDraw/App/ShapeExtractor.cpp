@@ -93,14 +93,11 @@ TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> l
         // Copy the pointer as not const so it can be changed if needed.
         App::DocumentObject* obj = l;
 
-        bool isExplodedView = false;
         auto proxy = dynamic_cast<App::PropertyPythonObject*>(l->getPropertyByName("Proxy"));
         Base::PyGILStateLocker lock;
-        if (proxy && proxy->getValue().hasAttr("saveAssemblyAndExplode")) {
-            isExplodedView = true;
-
+        if (proxy && proxy->getValue().hasAttr("getExplodedShape")) {
             Py::Object explodedViewPy = proxy->getValue();
-            Py::Object attr = explodedViewPy.getAttr("saveAssemblyAndExplode");
+            Py::Object attr = explodedViewPy.getAttr("getExplodedShape");
 
             if (attr.ptr() && attr.isCallable()) {
                 Py::Tuple args(1);
@@ -108,18 +105,16 @@ TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> l
                 Py::Callable methode(attr);
                 Py::Object pyResult = methode.apply(args);
 
-                if (PyObject_TypeCheck(pyResult.ptr(), &(Part::TopoShapePy::Type))) {
+                if (pyResult.ptr()
+                    && PyObject_TypeCheck(pyResult.ptr(), &(Part::TopoShapePy::Type))) {
                     auto* shapepy = static_cast<Part::TopoShapePy*>(pyResult.ptr());
                     const TopoDS_Shape& shape = shapepy->getTopoShapePtr()->getShape();
-                    sourceShapes.push_back(shape);
-                }
-            }
 
-            for (auto* inObj : l->getInList()) {
-                if (inObj->isDerivedFrom<App::Part>()) {
-                    // we replace obj by the assembly
-                    obj = inObj;
-                    break;
+                    // The python script returns the complete exploded view shape (parts + lines).
+                    // We add it and immediately continue to the next object in the source links,
+                    // skipping the default shape extraction logic below.
+                    sourceShapes.push_back(shape);
+                    continue;
                 }
             }
         }
@@ -143,17 +138,6 @@ TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> l
             else {
                 std::vector<TopoDS_Shape> shapeList = getShapesFromObject(obj);
                 sourceShapes.insert(sourceShapes.end(), shapeList.begin(), shapeList.end());
-            }
-        }
-
-        if (isExplodedView) {
-            Py::Object explodedViewPy = proxy->getValue();
-
-            Py::Object attr = explodedViewPy.getAttr("restoreAssembly");
-            if (attr.ptr() && attr.isCallable()) {
-                Py::Tuple args(1);
-                args.setItem(0, Py::asObject(l->getPyObject()));
-                Py::Callable(attr).apply(args);
             }
         }
     }

@@ -22,7 +22,6 @@
  **************************************************************************/
 
 
-
 #include "WorkbenchManipulatorPython.h"
 #include "MenuManager.h"
 #include "ToolBarManager.h"
@@ -53,8 +52,7 @@ void WorkbenchManipulatorPython::removeManipulator(const Py::Object& obj)
 
 WorkbenchManipulatorPython::WorkbenchManipulatorPython(const Py::Object& obj)
     : object(obj)
-{
-}
+{}
 
 WorkbenchManipulatorPython::~WorkbenchManipulatorPython()
 {
@@ -88,7 +86,7 @@ void WorkbenchManipulatorPython::modifyMenuBar(MenuItem* menuBar)
         tryModifyMenuBar(menuBar);
     }
     catch (Py::Exception&) {
-        Base::PyException exc; // extract the Python error text
+        Base::PyException exc;  // extract the Python error text
         exc.reportException();
     }
 }
@@ -165,7 +163,6 @@ void WorkbenchManipulatorPython::tryModifyMenuBar(const Py::Dict& dict, MenuItem
                 delete item;  // NOLINT
             }
         }
-
     }
 }
 
@@ -193,7 +190,7 @@ void WorkbenchManipulatorPython::modifyContextMenu(const char* recipient, MenuIt
         tryModifyContextMenu(recipient, menuBar);
     }
     catch (Py::Exception&) {
-        Base::PyException exc; // extract the Python error text
+        Base::PyException exc;  // extract the Python error text
         exc.reportException();
     }
 }
@@ -231,7 +228,7 @@ void WorkbenchManipulatorPython::modifyToolBars(ToolBarItem* toolBar)
         tryModifyToolBar(toolBar);
     }
     catch (Py::Exception&) {
-        Base::PyException exc; // extract the Python error text
+        Base::PyException exc;  // extract the Python error text
         exc.reportException();
     }
 }
@@ -339,7 +336,7 @@ void WorkbenchManipulatorPython::modifyDockWindows(DockWindowItems* dockWindow)
         tryModifyDockWindows(dockWindow);
     }
     catch (Py::Exception&) {
-        Base::PyException exc; // extract the Python error text
+        Base::PyException exc;  // extract the Python error text
         exc.reportException();
     }
 }
@@ -364,7 +361,8 @@ void WorkbenchManipulatorPython::tryModifyDockWindows(DockWindowItems* dockWindo
     }
 }
 
-void WorkbenchManipulatorPython::tryModifyDockWindows([[maybe_unused]]const Py::Dict& dict,
-                                                      [[maybe_unused]]DockWindowItems* dockWindow)
-{
-}
+void WorkbenchManipulatorPython::tryModifyDockWindows(
+    [[maybe_unused]] const Py::Dict& dict,
+    [[maybe_unused]] DockWindowItems* dockWindow
+)
+{}

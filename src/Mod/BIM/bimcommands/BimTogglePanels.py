@@ -38,9 +38,7 @@ class BIM_TogglePanels:
         return {
             "Pixmap": "BIM_TogglePanels",
             "MenuText": QT_TRANSLATE_NOOP("BIM_TogglePanels", "Toggle Bottom Panels"),
-            "ToolTip": QT_TRANSLATE_NOOP(
-                "BIM_TogglePanels", "Toggles bottom dock panels on/off"
-            ),
+            "ToolTip": QT_TRANSLATE_NOOP("BIM_TogglePanels", "Toggles bottom dock panels on/off"),
             "Accel": "Ctrl+0",
         }
 
@@ -58,10 +56,7 @@ class BIM_TogglePanels:
         bottomwidgets = [
             w
             for w in dockwidgets
-            if (
-                (mw.dockWidgetArea(w) == QtCore.Qt.BottomDockWidgetArea)
-                and w.isVisible()
-            )
+            if ((mw.dockWidgetArea(w) == QtCore.Qt.BottomDockWidgetArea) and w.isVisible())
         ]
         if bottomwidgets:
             hidden = ""
@@ -72,8 +67,8 @@ class BIM_TogglePanels:
             if togglebutton:
                 togglebutton.setChecked(False)
         else:
-            widgets = PARAMS.GetString("HiddenWidgets",
-                "Python console;;Report view;;Selection view;;"
+            widgets = PARAMS.GetString(
+                "HiddenWidgets", "Python console;;Report view;;Selection view;;"
             )
             widgets = [mw.findChild(QtGui.QWidget, w) for w in widgets.split(";;") if w]
             for w in widgets:

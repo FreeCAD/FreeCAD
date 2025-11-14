@@ -1179,7 +1179,6 @@ SET(Inventor_SRCS
     Inventor/Draggers/SoRotationDragger.h
     Inventor/Draggers/SoRotationDraggerGeometry.h
     Inventor/Draggers/Gizmo.h
-    Inventor/Draggers/GizmoHelper.h
     Inventor/Draggers/GizmoStyleParameters.h
     SoFCColorBar.h
     SoFCColorBarNotifier.h
@@ -1382,6 +1381,7 @@ SET(FreeCADGui_CPP_SRCS
     resource.cpp
     Control.cpp
     SpaceballEvent.cpp
+    StatusBarLabel.cpp
     PreferencePackManager.cpp
     Thumbnail.cpp
     Utilities.cpp
@@ -1431,6 +1431,7 @@ SET(FreeCADGui_SRCS
     WaitCursor.h
     ManualAlignment.h
     StartupProcess.h
+    StatusBarLabel.h
     TransactionObject.h
     ToolHandler.h
     StyleParameters/Parser.h
@@ -1511,8 +1512,8 @@ if(FREECAD_USE_PCH)
             PROPERTIES SKIP_PRECOMPILE_HEADERS TRUE)
 endif(FREECAD_USE_PCH)
 
-if (FREECAD_USE_QT_FILEDIALOG)
-    set_source_files_properties(FileDialog.cpp PROPERTIES COMPILE_FLAGS -DUSE_QT_FILEDIALOG)
+if (FREECAD_USE_QT_DIALOGS)
+    set_source_files_properties(FileDialog.cpp PROPERTIES COMPILE_FLAGS -DUSE_QT_DIALOGS)
 endif()
 
 # Suppress some very long Eigen3 warnings of older versions and

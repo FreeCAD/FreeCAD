@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,11 +22,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QDialogButtonBox>
-#endif
+#include <QDialogButtonBox>
+
 
 #include <Mod/Part/App/OCAF/ImportExportSettings.h>
 #include <Mod/Part/App/STEP/ImportExportSettings.h>
@@ -36,8 +36,8 @@
 using namespace PartGui;
 
 DlgImportStep::DlgImportStep(QWidget* parent)
-  : PreferencePage(parent)
-  , ui(new Ui_DlgImportStep)
+    : PreferencePage(parent)
+    , ui(new Ui_DlgImportStep)
 {
     ui->setupUi(this);
     Part::OCAF::ImportExportSettings settings;
@@ -120,7 +120,7 @@ StepImportSettings DlgImportStep::getSettings() const
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgImportStep::changeEvent(QEvent *e)
+void DlgImportStep::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
@@ -133,8 +133,8 @@ void DlgImportStep::changeEvent(QEvent *e)
 // ----------------------------------------------------------------------------
 
 TaskImportStep::TaskImportStep(QWidget* parent)
-  : QDialog(parent)
-  , ui(new DlgImportStep(this))
+    : QDialog(parent)
+    , ui(new DlgImportStep(this))
 {
     QApplication::setOverrideCursor(Qt::ArrowCursor);
 

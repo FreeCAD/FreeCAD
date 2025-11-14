@@ -42,13 +42,15 @@ class SoTranslation;
 class SoCoordinate3;
 class SoIndexedLineSet;
 
-namespace Gui {
+namespace Gui
+{
 
 
 // /*used for generating points for arc display*/
-class GuiExport ArcEngine : public SoEngine
+class GuiExport ArcEngine: public SoEngine
 {
     SO_ENGINE_HEADER(ArcEngine);
+
 public:
     ArcEngine();
     static void initClass();
@@ -63,11 +65,13 @@ public:
 
 protected:
     void evaluate() override;
+
 private:
-    ~ArcEngine() override{}
-    void defaultValues(); //some non error values if something goes wrong.
+    ~ArcEngine() override
+    {}
+    void defaultValues();  // some non error values if something goes wrong.
 };
 
-} // namespace Gui
+}  // namespace Gui
 
-#endif // GUI_ARCENGINE_H
+#endif  // GUI_ARCENGINE_H

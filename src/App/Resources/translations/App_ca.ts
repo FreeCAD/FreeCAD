@@ -13,7 +13,7 @@ that reference the same configurable object</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Application.cpp" line="456"/>
+      <location filename="../../Application.cpp" line="458"/>
       <source>Unnamed</source>
       <translation>Sense nom</translation>
     </message>
@@ -35,7 +35,7 @@ It is recommended that the user right-click the root of the document and select 
 The user should then click the Refresh button in the main toolbar.
 </source>
       <translation>
-Es recomana que l'usuari faci clic amb el botó dret a l'arrel del document i seleccioneu Marca per tornar a calcular.
+Es recomana que l'usuari faci clic amb el botó dret a l'arrel del document i seleccioni Marca per tornar a calcular.
 L'usuari hauria de fer clic al botó Actualitza a la barra d'eines principal.
 </translation>
     </message>
@@ -45,32 +45,32 @@ L'usuari hauria de fer clic al botó Actualitza a la barra d'eines principal.
     <message>
       <location filename="../../Datums.cpp" line="260"/>
       <source>X-axis</source>
-      <translation>Eix-X</translation>
+      <translation>Eix X</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="261"/>
       <source>Y-axis</source>
-      <translation>Eix-Y</translation>
+      <translation>Eix Y</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="262"/>
       <source>Z-axis</source>
-      <translation>Eix-Z</translation>
+      <translation>Eix Z</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="263"/>
       <source>XY-plane</source>
-      <translation>Pla-XY</translation>
+      <translation>Pla XY</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="264"/>
       <source>XZ-plane</source>
-      <translation>Pla-XZ</translation>
+      <translation>Pla XZ</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="265"/>
       <source>YZ-plane</source>
-      <translation>Pla-YZ</translation>
+      <translation>Pla YZ</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="266"/>

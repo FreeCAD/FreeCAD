@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "ViewProviderEllipseParametric.h"
 
@@ -36,23 +37,22 @@ PROPERTY_SOURCE(PartGui::ViewProviderEllipseParametric, PartGui::ViewProviderPri
 
 ViewProviderEllipseParametric::ViewProviderEllipseParametric()
 {
-  sPixmap = "Part_Ellipse_Parametric";
+    sPixmap = "Part_Ellipse_Parametric";
 }
 
 ViewProviderEllipseParametric::~ViewProviderEllipseParametric() = default;
-
 
 
 // **********************************************************************************
 
 std::vector<std::string> ViewProviderEllipseParametric::getDisplayModes() const
 {
-  // get the modes of the father
-  std::vector<std::string> StrList;
+    // get the modes of the father
+    std::vector<std::string> StrList;
 
-  // add your own modes
-  StrList.emplace_back("Wireframe");
-  StrList.emplace_back("Points");
+    // add your own modes
+    StrList.emplace_back("Wireframe");
+    StrList.emplace_back("Points");
 
-  return StrList;
+    return StrList;
 }

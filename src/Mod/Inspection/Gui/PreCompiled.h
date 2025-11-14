@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -26,8 +28,6 @@
 #include <FCConfig.h>
 
 
-#ifdef _PreComp_
-
 // STL
 
 // Inventor
@@ -53,7 +53,5 @@
 #include <QApplication>
 #include <QMenu>
 #include <QMessageBox>
-
-#endif  //_PreComp_
 
 #endif  // GUI_PRECOMPILED_H

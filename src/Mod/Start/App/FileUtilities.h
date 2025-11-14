@@ -45,8 +45,7 @@ const QLatin1String defaultThumbnailName
     ("FreeCADStartThumbnails");
 #endif
 
-const QDir thumbnailsParentDir {
-    QStandardPaths::writableLocation(QStandardPaths::GenericCacheLocation)};
+const QDir thumbnailsParentDir {QStandardPaths::writableLocation(QStandardPaths::GenericCacheLocation)};
 
 const QDir thumbnailsDir {thumbnailsParentDir.absoluteFilePath(defaultThumbnailName)};
 

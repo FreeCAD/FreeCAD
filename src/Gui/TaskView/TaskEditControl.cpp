@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -29,12 +30,12 @@
 
 using namespace Gui::TaskView;
 
-TaskEditControl::TaskEditControl(QWidget *parent)
+TaskEditControl::TaskEditControl(QWidget* parent)
     : TaskWidget(parent)
 {
     hboxLayout = new QHBoxLayout(this);
     buttonBox = new QDialogButtonBox(this);
-    buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
+    buttonBox->setStandardButtons(QDialogButtonBox::Cancel | QDialogButtonBox::Ok);
     buttonBox->setCenterButtons(true);
 
     hboxLayout->addWidget(buttonBox);

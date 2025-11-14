@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <Gui/Control.h>
 #include <Mod/Robot/Gui/TaskDlgTrajectoryDressUp.h>
@@ -44,8 +43,9 @@ PROPERTY_SOURCE(RobotGui::ViewProviderTrajectoryDressUp, RobotGui::ViewProviderT
 
 bool ViewProviderTrajectoryDressUp::setEdit(int)
 {
-    Gui::TaskView::TaskDialog* dlg =
-        new TaskDlgTrajectoryDressUp(getObject<Robot::TrajectoryDressUpObject>());
+    Gui::TaskView::TaskDialog* dlg = new TaskDlgTrajectoryDressUp(
+        getObject<Robot::TrajectoryDressUpObject>()
+    );
     Gui::Control().showDialog(dlg);
     return true;
 }

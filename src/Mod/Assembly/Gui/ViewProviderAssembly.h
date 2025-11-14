@@ -56,10 +56,12 @@ struct MovingObject
     const std::string sub;         // sub name given by the selection.
 
     // Constructor
-    MovingObject(App::DocumentObject* o,
-                 const Base::Placement& p,
-                 App::DocumentObject* ro,
-                 const std::string& s)
+    MovingObject(
+        App::DocumentObject* o,
+        const Base::Placement& p,
+        App::DocumentObject* ro,
+        const std::string& s
+    )
         : obj(o)
         , plc(p)
         , ref(nullptr)
@@ -98,6 +100,13 @@ class AssemblyGuiExport ViewProviderAssembly: public Gui::ViewProviderPart,
     };
 
 public:
+    enum class IsolateMode
+    {
+        Transparent,
+        Wireframe,
+        Hidden,
+    };
+
     ViewProviderAssembly();
     ~ViewProviderAssembly() override;
 
@@ -125,8 +134,7 @@ public:
     }
 
     bool canDragObject(App::DocumentObject*) const override;
-    bool canDragObjectToTarget(App::DocumentObject* obj,
-                               App::DocumentObject* target) const override;
+    bool canDragObjectToTarget(App::DocumentObject* obj, App::DocumentObject* target) const override;
 
     App::DocumentObject* getActivePart() const;
 
@@ -136,10 +144,12 @@ public:
     /// is called when the provider is in edit and the mouse is moved
     bool mouseMove(const SbVec2s& cursorPos, Gui::View3DInventorViewer* viewer) override;
     /// is called when the Provider is in edit and the mouse is clicked
-    bool mouseButtonPressed(int Button,
-                            bool pressed,
-                            const SbVec2s& cursorPos,
-                            const Gui::View3DInventorViewer* viewer) override;
+    bool mouseButtonPressed(
+        int Button,
+        bool pressed,
+        const SbVec2s& cursorPos,
+        const Gui::View3DInventorViewer* viewer
+    ) override;
     // Function to handle double click event
     void doubleClickedIn3dView();
 
@@ -204,6 +214,10 @@ public:
 
     void UpdateSolverInformation();
 
+    void isolateComponents(std::set<App::DocumentObject*>& parts, IsolateMode mode);
+    void isolateJointReferences(App::DocumentObject* joint, IsolateMode mode = IsolateMode::Transparent);
+    void clearIsolate();
+
     DragMode dragMode;
     bool canStartDragging;
     bool partMoving;
@@ -241,13 +255,38 @@ private:
     bool tryMouseMove(const SbVec2s& cursorPos, Gui::View3DInventorViewer* viewer);
     void tryInitMove(const SbVec2s& cursorPos, Gui::View3DInventorViewer* viewer);
 
-    void collectMovableObjects(App::DocumentObject* selRoot,
-                               const std::string& subNamePrefix,
-                               App::DocumentObject* currentObject,
-                               bool onlySolids);
+    void collectMovableObjects(
+        App::DocumentObject* selRoot,
+        const std::string& subNamePrefix,
+        App::DocumentObject* currentObject,
+        bool onlySolids
+    );
+
+    void slotAboutToOpenTransaction(const std::string& cmdName);
+
+    struct ComponentState
+    {
+        bool visibility;
+        bool selectable;
+        // For Links
+        bool overrideMaterial;
+        App::Material shapeMaterial;
+    };
+
+    std::unordered_map<App::DocumentObject*, ComponentState> stateBackup;
+    App::DocumentObject* isolatedJoint {nullptr};
+    bool isolatedJointVisibilityBackup {false};
+
+    void applyIsolationRecursively(
+        App::DocumentObject* current,
+        std::set<App::DocumentObject*>& isolateSet,
+        IsolateMode mode,
+        std::set<App::DocumentObject*>& visited
+    );
 
     TaskAssemblyMessages* taskSolver;
     boost::signals2::connection connectSolverUpdate;
+    boost::signals2::scoped_connection m_preTransactionConn;
 };
 
 }  // namespace AssemblyGui

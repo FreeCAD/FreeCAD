@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
 # *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
@@ -79,7 +81,7 @@ class DraftObject(object):
             obj.Proxy = self
         self.Type = tp
 
-    def onDocumentRestored(self,obj):
+    def onDocumentRestored(self, obj):
         # Object properties are updated when the document is opened.
         self.props_changed_clear()
 

@@ -84,9 +84,15 @@ public:
      *
      * @return returns whether the notification was shown or not
      */
-    static bool showText(const QPoint& pos, const QString& text, QWidget* referenceWidget = nullptr,
-                         int displayTime = -1, unsigned int minShowTime = 0,
-                         Options options = Options::None, int width = 0);
+    static bool showText(
+        const QPoint& pos,
+        const QString& text,
+        QWidget* referenceWidget = nullptr,
+        int displayTime = -1,
+        unsigned int minShowTime = 0,
+        Options options = Options::None,
+        int width = 0
+    );
     /// Hides a notification.
     static inline void hideText()
     {
@@ -106,20 +112,22 @@ public:
     static void setFont(const QFont&);
 };
 
-inline NotificationBox::Options operator|(NotificationBox::Options lhs,
-                                          NotificationBox::Options rhs)
+inline NotificationBox::Options operator|(NotificationBox::Options lhs, NotificationBox::Options rhs)
 {
     return static_cast<NotificationBox::Options>(
         static_cast<std::underlying_type<NotificationBox::Options>::type>(lhs)
-        | static_cast<std::underlying_type<NotificationBox::Options>::type>(rhs));
+        | static_cast<std::underlying_type<NotificationBox::Options>::type>(rhs)
+    );
 }
 
 inline bool operator&(NotificationBox::Options lhs, NotificationBox::Options rhs)
 {
-    return (static_cast<std::underlying_type<NotificationBox::Options>::type>(lhs)
-            & static_cast<std::underlying_type<NotificationBox::Options>::type>(rhs));
+    return (
+        static_cast<std::underlying_type<NotificationBox::Options>::type>(lhs)
+        & static_cast<std::underlying_type<NotificationBox::Options>::type>(rhs)
+    );
 }
 
-}// namespace Gui
+}  // namespace Gui
 
-#endif// GUI_NOTIFICATIONBOX_H
+#endif  // GUI_NOTIFICATIONBOX_H

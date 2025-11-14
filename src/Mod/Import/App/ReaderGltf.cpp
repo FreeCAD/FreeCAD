@@ -22,8 +22,6 @@
  **************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <boost/core/ignore_unused.hpp>
 #include <Standard_Version.hxx>
 #include <BRep_Builder.hxx>
@@ -37,7 +35,6 @@
 #include <XCAFDoc_ShapeTool.hxx>
 #include <XCAFDoc_VisMaterial.hxx>
 #include <XCAFDoc_VisMaterialTool.hxx>
-#endif
 
 #include "ReaderGltf.h"
 #include "Tools.h"
@@ -95,8 +92,10 @@ void ReaderGltf::processDocument(Handle(TDocStd_Document) hDoc)
 }
 
 // NOLINTNEXTLINE
-TopoDS_Shape ReaderGltf::processSubShapes(Handle(TDocStd_Document) hDoc,
-                                          const TDF_LabelSequence& subShapeLabels)
+TopoDS_Shape ReaderGltf::processSubShapes(
+    Handle(TDocStd_Document) hDoc,
+    const TDF_LabelSequence& subShapeLabels
+)
 {
     TopoDS_Compound compound;
     Handle(XCAFDoc_ShapeTool) aShapeTool = XCAFDoc_DocumentTool::ShapeTool(hDoc->Main());
@@ -156,7 +155,12 @@ TopoDS_Shape ReaderGltf::fixShape(TopoDS_Shape shape)  // NOLINT
 
     if (cleanup()) {
         sh.sewShape();
-        return sh.removeSplitter();
+        try {
+            return sh.removeSplitter();
+        }
+        catch (const Standard_Failure& e) {
+            return sh.getShape();
+        }
     }
 
     return sh.getShape();

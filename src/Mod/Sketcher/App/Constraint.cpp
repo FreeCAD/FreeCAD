@@ -173,16 +173,11 @@ void Constraint::Save(Writer& writer) const
                         << "ThirdPos=\"" << getElement(2).posIdAsInt() << "\" ";
 #if SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
         auto elements = std::views::iota(size_t {0}, this->elements.size())
-            | std::views::transform([&](size_t i) {
-                            return getElement(i);
-                        });
+            | std::views::transform([&](size_t i) { return getElement(i); });
 #endif
-        auto geoIds = elements | std::views::transform([](const GeoElementId& e) {
-                          return e.GeoId;
-                      });
-        auto posIds = elements | std::views::transform([](const GeoElementId& e) {
-                          return e.posIdAsInt();
-                      });
+        auto geoIds = elements | std::views::transform([](const GeoElementId& e) { return e.GeoId; });
+        auto posIds = elements
+            | std::views::transform([](const GeoElementId& e) { return e.posIdAsInt(); });
 
         const std::string ids = fmt::format("{}", fmt::join(geoIds, " "));
         const std::string positions = fmt::format("{}", fmt::join(posIds, " "));
@@ -252,9 +247,7 @@ void Constraint::Restore(XMLReader& reader)
                               }
                               return token;
                           })
-                | std::views::filter([](const std::string& s) {
-                              return !s.empty();
-                          });
+                | std::views::filter([](const std::string& s) { return !s.empty(); });
 
             return std::vector<std::string>(tokens.begin(), tokens.end());
         };
@@ -266,10 +259,14 @@ void Constraint::Restore(XMLReader& reader)
         const auto positions = splitAndClean(elementPositions);
 
         if (ids.size() != positions.size()) {
-            throw Base::ParserError(fmt::format("ElementIds and ElementPositions do not match in "
-                                                "size. Got {} ids and {} positions.",
-                                                ids.size(),
-                                                positions.size()));
+            throw Base::ParserError(
+                fmt::format(
+                    "ElementIds and ElementPositions do not match in "
+                    "size. Got {} ids and {} positions.",
+                    ids.size(),
+                    positions.size()
+                )
+            );
         }
 
         elements.clear();
@@ -322,10 +319,7 @@ void Constraint::substituteIndex(int fromGeoId, int toGeoId)
 #endif
 }
 
-void Constraint::substituteIndexAndPos(int fromGeoId,
-                                       PointPos fromPosId,
-                                       int toGeoId,
-                                       PointPos toPosId)
+void Constraint::substituteIndexAndPos(int fromGeoId, PointPos fromPosId, int toGeoId, PointPos toPosId)
 {
     const GeoElementId from {fromGeoId, fromPosId};
 
@@ -358,10 +352,8 @@ std::string Constraint::internalAlignmentTypeToString(InternalAlignmentType alig
 bool Constraint::involvesGeoId(int geoId) const
 {
 #if SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
-    auto elements =
-        std::views::iota(size_t {0}, this->elements.size()) | std::views::transform([&](size_t i) {
-            return getElement(i);
-        });
+    auto elements = std::views::iota(size_t {0}, this->elements.size())
+        | std::views::transform([&](size_t i) { return getElement(i); });
 #endif
     return std::ranges::any_of(elements, [geoId](const auto& element) {
         return element.GeoId == geoId;
@@ -371,10 +363,8 @@ bool Constraint::involvesGeoId(int geoId) const
 bool Constraint::involvesGeoIdAndPosId(int geoId, PointPos posId) const
 {
 #if SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
-    auto elements =
-        std::views::iota(size_t {0}, this->elements.size()) | std::views::transform([&](size_t i) {
-            return getElement(i);
-        });
+    auto elements = std::views::iota(size_t {0}, this->elements.size())
+        | std::views::transform([&](size_t i) { return getElement(i); });
 #endif
     return std::ranges::find(elements, GeoElementId(geoId, posId)) != elements.end();
 }

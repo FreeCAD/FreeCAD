@@ -59,18 +59,17 @@ DlgCustomActionsImp::DlgCustomActionsImp(QWidget* parent)
     setupConnections();
 
     // search for all macros
-    std::string cMacroPath =
-        App::GetApplication()
-            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")
-            ->GetASCII("MacroPath", App::Application::getUserMacroDir().c_str());
+    std::string cMacroPath = App::GetApplication()
+                                 .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")
+                                 ->GetASCII("MacroPath", App::Application::getUserMacroDir().c_str());
 
     QDir d(QString::fromUtf8(cMacroPath.c_str()), QLatin1String("*.FCMacro *.py"));
     for (unsigned int i = 0; i < d.count(); i++) {
         ui->actionMacros->insertItem(0, d[i], QVariant(false));
     }
 
-    QString systemMacroDirStr =
-        QString::fromStdString(App::Application::getHomePath()) + QStringLiteral("Macro");
+    QString systemMacroDirStr = QString::fromStdString(App::Application::getHomePath())
+        + QStringLiteral("Macro");
     d = QDir(systemMacroDirStr, QLatin1String("*.FCMacro *.py"));
     if (d.exists()) {
         for (unsigned int i = 0; i < d.count(); i++) {
@@ -206,9 +205,11 @@ void DlgCustomActionsImp::onActionListWidgetItemActivated(QTreeWidgetItem* item)
         }
 
         if (!bFound) {
-            QMessageBox::critical(this,
-                                  tr("Macro not found"),
-                                  tr("Could not find macro file '%1'").arg(scriptName));
+            QMessageBox::critical(
+                this,
+                tr("Macro not found"),
+                tr("Could not find macro file '%1'").arg(scriptName)
+            );
         }
 
         // fill up labels with the command's data
@@ -217,7 +218,8 @@ void DlgCustomActionsImp::onActionListWidgetItemActivated(QTreeWidgetItem* item)
         ui->actionToolTip->setText(QString::fromUtf8(pScript->getToolTipText()));
         ui->actionStatus->setText(QString::fromUtf8(pScript->getStatusTip()));
         ui->actionAccel->setKeySequence(QKeySequence(
-            ShortcutManager::instance()->getShortcut(actionName.constData(), pScript->getAccel())));
+            ShortcutManager::instance()->getShortcut(actionName.constData(), pScript->getAccel())
+        ));
         ui->pixmapLabel->clear();
         m_sPixmap.clear();
         const char* name = pScript->getPixmap();
@@ -244,9 +246,10 @@ void DlgCustomActionsImp::onButtonAddActionClicked()
     // search for the command in the manager
     CommandManager& rclMan = Application::Instance->commandManager();
     QByteArray actionName = QString::fromStdString(rclMan.newMacroName()).toLatin1();
-    auto macro =
-        new MacroCommand(actionName,
-                         ui->actionMacros->itemData(ui->actionMacros->currentIndex()).toBool());
+    auto macro = new MacroCommand(
+        actionName,
+        ui->actionMacros->itemData(ui->actionMacros->currentIndex()).toBool()
+    );
     rclMan.addCommand(macro);
 
     // add new action
@@ -289,8 +292,7 @@ void DlgCustomActionsImp::onButtonAddActionClicked()
 
     if (!ui->actionAccel->isEmpty()) {
         QString text = ui->actionAccel->text();
-        ShortcutManager::instance()->setShortcut(actionName.constData(),
-                                                 text.toLatin1().constData());
+        ShortcutManager::instance()->setShortcut(actionName.constData(), text.toLatin1().constData());
     }
     ui->actionAccel->clear();
 
@@ -369,7 +371,8 @@ void DlgCustomActionsImp::onButtonReplaceActionClicked()
             action->setIcon(Gui::BitmapFactory().pixmap(macro->getPixmap()));
         }
         action->setShortcut(
-            ShortcutManager::instance()->getShortcut(actionName.constData(), macro->getAccel()));
+            ShortcutManager::instance()->getShortcut(actionName.constData(), macro->getAccel())
+        );
     }
 
     // emit signal to notify the container widget
@@ -445,8 +448,9 @@ void IconDialog::resizeEvent(QResizeEvent*)
 void IconDialog::onAddIconPath()
 {
     // Add the user defined paths
-    Base::Reference<ParameterGrp> group =
-        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Bitmaps");
+    Base::Reference<ParameterGrp> group = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Bitmaps"
+    );
     std::vector<std::string> paths = group->GetASCIIs("CustomPath");
     QStringList pathList;
     for (const auto& path : paths) {
@@ -476,8 +480,7 @@ void IconDialog::onAddIconPath()
                 QStringList filters;
                 QList<QByteArray> formats = QImageReader::supportedImageFormats();
                 for (const auto& format : formats) {
-                    filters << QStringLiteral("*.%1").arg(
-                        QString::fromLatin1(format).toLower());
+                    filters << QStringLiteral("*.%1").arg(QString::fromLatin1(format).toLower());
                 }
                 QDir d(path);
                 d.setNameFilters(filters);
@@ -590,9 +593,11 @@ void IconFolders::addFolder()
         if (it.first->isHidden()) {
             countHidden++;
             if (countHidden == 0) {
-                QString dir = QFileDialog::getExistingDirectory(this,
-                                                                IconDialog::tr("Add icon folder"),
-                                                                QString());
+                QString dir = QFileDialog::getExistingDirectory(
+                    this,
+                    IconDialog::tr("Add icon folder"),
+                    QString()
+                );
                 if (!dir.isEmpty() && paths.indexOf(dir) < 0) {
                     QLineEdit* edit = it.first;
                     edit->setVisible(true);
@@ -619,7 +624,8 @@ void IconFolders::removeFolder()
         QMessageBox::information(
             this,
             tr("Remove folder"),
-            tr("Removing a folder only takes effect after an application restart"));
+            tr("Removing a folder only takes effect after an application restart")
+        );
     }
 
     addButton->setEnabled(true);

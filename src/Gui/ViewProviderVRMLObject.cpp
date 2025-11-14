@@ -21,16 +21,15 @@
  ***************************************************************************/
 
 
-
-# include <sstream>
-# include <Inventor/SoDB.h>
-# include <Inventor/SoFullPath.h>
-# include <Inventor/SoInput.h>
-# include <Inventor/actions/SoSearchAction.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoTransform.h>
-# include <QFile>
-# include <QFileInfo>
+#include <sstream>
+#include <Inventor/SoDB.h>
+#include <Inventor/SoFullPath.h>
+#include <Inventor/SoInput.h>
+#include <Inventor/actions/SoSearchAction.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoTransform.h>
+#include <QFile>
+#include <QFileInfo>
 
 
 #include <Inventor/lists/SbStringList.h>
@@ -60,7 +59,7 @@ ViewProviderVRMLObject::ViewProviderVRMLObject()
     pcVRML = new SoFCSelection();
     pcVRML->preselectionMode = Gui::SoFCSelection::OFF;
     pcVRML->selectionMode = Gui::SoFCSelection::SEL_OFF;
-    //pcVRML->style = Gui::SoFCSelection::BOX;
+    // pcVRML->style = Gui::SoFCSelection::BOX;
     pcVRML->ref();
 }
 
@@ -69,7 +68,7 @@ ViewProviderVRMLObject::~ViewProviderVRMLObject()
     pcVRML->unref();
 }
 
-void ViewProviderVRMLObject::attach(App::DocumentObject *pcObj)
+void ViewProviderVRMLObject::attach(App::DocumentObject* pcObj)
 {
     ViewProviderDocumentObject::attach(pcObj);
     addDisplayMaskMode(pcVRML, "VRML");
@@ -80,9 +79,10 @@ void ViewProviderVRMLObject::attach(App::DocumentObject *pcObj)
 
 void ViewProviderVRMLObject::setDisplayMode(const char* ModeName)
 {
-    if ( strcmp("VRML",ModeName)==0 )
+    if (strcmp("VRML", ModeName) == 0) {
         setDisplayMaskMode("VRML");
-    ViewProviderDocumentObject::setDisplayMode( ModeName );
+    }
+    ViewProviderDocumentObject::setDisplayMode(ModeName);
 }
 
 std::vector<std::string> ViewProviderVRMLObject::getDisplayModes() const
@@ -100,11 +100,11 @@ void ViewProviderVRMLObject::getResourceFile(SoNode* node, std::list<std::string
     sa.setInterest(SoSearchAction::ALL);
     sa.setSearchingAll(true);
     sa.apply(node);
-    const SoPathList & pathlist = sa.getPaths();
-    for (int i = 0; i < pathlist.getLength(); i++ ) {
-        auto path = static_cast<SoFullPath *>(pathlist[i]);
+    const SoPathList& pathlist = sa.getPaths();
+    for (int i = 0; i < pathlist.getLength(); i++) {
+        auto path = static_cast<SoFullPath*>(pathlist[i]);
         if (path->getTail()->isOfType(T::getClassTypeId())) {
-            T * tex = static_cast<T*>(path->getTail());
+            T* tex = static_cast<T*>(path->getTail());
             for (int j = 0; j < tex->url.getNum(); j++) {
                 this->addResource(tex->url[j], resources);
             }
@@ -112,19 +112,23 @@ void ViewProviderVRMLObject::getResourceFile(SoNode* node, std::list<std::string
     }
 }
 
-namespace Gui {
+namespace Gui
+{
 // Special handling for SoVRMLBackground
 template<>
-void ViewProviderVRMLObject::getResourceFile<SoVRMLBackground>(SoNode* node, std::list<std::string>& resources)
+void ViewProviderVRMLObject::getResourceFile<SoVRMLBackground>(
+    SoNode* node,
+    std::list<std::string>& resources
+)
 {
     SoSearchAction sa;
     sa.setType(SoVRMLBackground::getClassTypeId());
     sa.setInterest(SoSearchAction::ALL);
     sa.setSearchingAll(true);
     sa.apply(node);
-    const SoPathList & pathlist = sa.getPaths();
-    for (int i = 0; i < pathlist.getLength(); i++ ) {
-        auto path = static_cast<SoFullPath *>(pathlist[i]);
+    const SoPathList& pathlist = sa.getPaths();
+    for (int i = 0; i < pathlist.getLength(); i++) {
+        auto path = static_cast<SoFullPath*>(pathlist[i]);
         if (path->getTail()->isOfType(SoVRMLBackground::getClassTypeId())) {
             auto vrml = static_cast<SoVRMLBackground*>(path->getTail());
             // backUrl
@@ -155,7 +159,7 @@ void ViewProviderVRMLObject::getResourceFile<SoVRMLBackground>(SoNode* node, std
     }
 }
 
-}
+}  // namespace Gui
 
 void ViewProviderVRMLObject::addResource(const SbString& url, std::list<std::string>& resources)
 {
@@ -178,9 +182,9 @@ void ViewProviderVRMLObject::getLocalResources(SoNode* node, std::list<std::stri
     sa.setSearchingAll(true);
     sa.apply(node);
 
-    const SoPathList & pathlist = sa.getPaths();
-    for (int i = 0; i < pathlist.getLength(); i++ ) {
-        SoPath * path = pathlist[i];
+    const SoPathList& pathlist = sa.getPaths();
+    for (int i = 0; i < pathlist.getLength(); i++) {
+        SoPath* path = pathlist[i];
         auto vrml = static_cast<SoVRMLInline*>(path->getTail());
         const SbString& url = vrml->getFullURLName();
         if (url.getLength() > 0) {
@@ -197,12 +201,12 @@ void ViewProviderVRMLObject::getLocalResources(SoNode* node, std::list<std::stri
     }
 
     // search for SoVRMLImageTexture, ... files
-    getResourceFile<SoVRMLImageTexture  >(node, resources);
-    getResourceFile<SoVRMLMovieTexture  >(node, resources);
-    getResourceFile<SoVRMLScript        >(node, resources);
-    getResourceFile<SoVRMLBackground    >(node, resources);
-    getResourceFile<SoVRMLAudioClip     >(node, resources);
-    getResourceFile<SoVRMLAnchor        >(node, resources);
+    getResourceFile<SoVRMLImageTexture>(node, resources);
+    getResourceFile<SoVRMLMovieTexture>(node, resources);
+    getResourceFile<SoVRMLScript>(node, resources);
+    getResourceFile<SoVRMLBackground>(node, resources);
+    getResourceFile<SoVRMLAudioClip>(node, resources);
+    getResourceFile<SoVRMLAnchor>(node, resources);
 }
 
 void ViewProviderVRMLObject::updateData(const App::Property* prop)
@@ -226,8 +230,8 @@ void ViewProviderVRMLObject::updateData(const App::Property* prop)
 
             // Read in the file
             QByteArray buffer = file.readAll();
-            in.setBuffer((void *)buffer.constData(), buffer.length());
-            SoSeparator * node = SoDB::readAll(&in);
+            in.setBuffer((void*)buffer.constData(), buffer.length());
+            SoSeparator* node = SoDB::readAll(&in);
 
             if (node) {
                 if (!checkRecursion(node)) {
@@ -248,8 +252,8 @@ void ViewProviderVRMLObject::updateData(const App::Property* prop)
             SoInput::removeDirectory(subpath.constData());
         }
     }
-    else if (prop->isDerivedFrom<App::PropertyPlacement>() &&
-             strcmp(prop->getName(), "Placement") == 0) {
+    else if (prop->isDerivedFrom<App::PropertyPlacement>()
+             && strcmp(prop->getName(), "Placement") == 0) {
         // Note: If R is the rotation, c the rotation center and t the translation
         // vector then Inventor applies the following transformation: R*(x-c)+c+t
         // In FreeCAD a placement only has a rotation and a translation part but
@@ -266,9 +270,9 @@ void ViewProviderVRMLObject::updateData(const App::Property* prop)
         auto px = (float)p.getPosition().x;
         auto py = (float)p.getPosition().y;
         auto pz = (float)p.getPosition().z;
-        pcTransform->rotation.setValue(q0,q1,q2,q3);
-        pcTransform->translation.setValue(px,py,pz);
-        pcTransform->center.setValue(0.0f,0.0f,0.0f);
-        pcTransform->scaleFactor.setValue(1.0f,1.0f,1.0f);
+        pcTransform->rotation.setValue(q0, q1, q2, q3);
+        pcTransform->translation.setValue(px, py, pz);
+        pcTransform->center.setValue(0.0f, 0.0f, 0.0f);
+        pcTransform->scaleFactor.setValue(1.0f, 1.0f, 1.0f);
     }
 }

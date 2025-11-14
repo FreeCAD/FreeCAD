@@ -86,10 +86,10 @@ Numeric Numeric::operator*(const Numeric& rhs) const
 void Numeric::ensureEqualUnits(const Numeric& rhs) const
 {
     if (unit != rhs.unit) {
-        THROWM(Base::RuntimeError,
-               fmt::format("Units mismatch left expression is '{}', right expression is '{}'",
-                           unit,
-                           rhs.unit));
+        THROWM(
+            Base::RuntimeError,
+            fmt::format("Units mismatch left expression is '{}', right expression is '{}'", unit, rhs.unit)
+        );
     }
 }
 
@@ -112,8 +112,10 @@ ParameterSource::ParameterSource(const Metadata& metadata)
     : metadata(metadata)
 {}
 
-InMemoryParameterSource::InMemoryParameterSource(const std::list<Parameter>& parameters,
-                                                 const Metadata& metadata)
+InMemoryParameterSource::InMemoryParameterSource(
+    const std::list<Parameter>& parameters,
+    const Metadata& metadata
+)
     : ParameterSource(metadata)
 {
     for (const auto& parameter : parameters) {
@@ -312,8 +314,10 @@ void ParameterManager::reload()
     _resolved.clear();
 }
 
-std::string ParameterManager::replacePlaceholders(const std::string& expression,
-                                                  ResolveContext context) const
+std::string ParameterManager::replacePlaceholders(
+    const std::string& expression,
+    ResolveContext context
+) const
 {
     static const QRegularExpression regex(QStringLiteral("@(\\w+)"));
 
@@ -387,8 +391,7 @@ std::optional<std::string> ParameterManager::expression(const std::string& name)
     return {};
 }
 
-std::optional<Value> ParameterManager::resolve(const std::string& name,
-                                               ResolveContext context) const
+std::optional<Value> ParameterManager::resolve(const std::string& name, ResolveContext context) const
 {
     std::optional<Parameter> maybeParameter = this->parameter(name);
 

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -24,11 +26,14 @@
 #ifndef PARTGUI_VIEWPROVIDERSPHEREPARAMETRIC_H
 #define PARTGUI_VIEWPROVIDERSPHEREPARAMETRIC_H
 
+#include <Mod/Part/PartGlobal.h>
+
 #include "ViewProviderPrimitive.h"
 
-namespace PartGui {
+namespace PartGui
+{
 
-class PartGuiExport ViewProviderSphereParametric : public ViewProviderPrimitive
+class PartGuiExport ViewProviderSphereParametric: public ViewProviderPrimitive
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderSphereParametric);
 
@@ -41,10 +46,9 @@ public:
     std::vector<std::string> getDisplayModes() const override;
 
 protected:
-
 };
 
-class PartGuiExport ViewProviderEllipsoid : public ViewProviderPrimitive
+class PartGuiExport ViewProviderEllipsoid: public ViewProviderPrimitive
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderEllipsoid);
 
@@ -56,8 +60,7 @@ public:
     std::vector<std::string> getDisplayModes() const override;
 };
 
-} // namespace PartGui
+}  // namespace PartGui
 
 
-#endif // PARTGUI_VIEWPROVIDERSPHEREPARAMETRIC_H
-
+#endif  // PARTGUI_VIEWPROVIDERSPHEREPARAMETRIC_H

@@ -41,6 +41,7 @@ else:
 
     def QT_TRANSLATE_NOOP(ctxt, txt):
         return txt
+
     # \endcond
 
 EAST = FreeCAD.Vector(1, 0, 0)
@@ -62,29 +63,54 @@ class _Fence(ArchComponent.Component):
         pl = obj.PropertiesList
 
         if not "Section" in pl:
-            obj.addProperty("App::PropertyLink", "Section", "Fence", QT_TRANSLATE_NOOP(
-                "App::Property", "A single section of the fence"), locked=True)
+            obj.addProperty(
+                "App::PropertyLink",
+                "Section",
+                "Fence",
+                QT_TRANSLATE_NOOP("App::Property", "A single section of the fence"),
+                locked=True,
+            )
 
         if not "Post" in pl:
-            obj.addProperty("App::PropertyLink", "Post", "Fence", QT_TRANSLATE_NOOP(
-                "App::Property", "A single fence post"), locked=True)
+            obj.addProperty(
+                "App::PropertyLink",
+                "Post",
+                "Fence",
+                QT_TRANSLATE_NOOP("App::Property", "A single fence post"),
+                locked=True,
+            )
 
         if not "Path" in pl:
-            obj.addProperty("App::PropertyLink", "Path", "Fence", QT_TRANSLATE_NOOP(
-                "App::Property", "The Path the fence should follow"), locked=True)
+            obj.addProperty(
+                "App::PropertyLink",
+                "Path",
+                "Fence",
+                QT_TRANSLATE_NOOP("App::Property", "The Path the fence should follow"),
+                locked=True,
+            )
 
         if not "NumberOfSections" in pl:
-            obj.addProperty("App::PropertyInteger", "NumberOfSections", "Fence", QT_TRANSLATE_NOOP(
-                "App::Property", "The number of sections the fence is built of"), locked=True)
+            obj.addProperty(
+                "App::PropertyInteger",
+                "NumberOfSections",
+                "Fence",
+                QT_TRANSLATE_NOOP("App::Property", "The number of sections the fence is built of"),
+                locked=True,
+            )
             obj.setEditorMode("NumberOfSections", 1)
 
         if not "NumberOfPosts" in pl:
-            obj.addProperty("App::PropertyInteger", "NumberOfPosts", "Fence", QT_TRANSLATE_NOOP(
-                "App::Property", "The number of posts used to build the fence"), locked=True)
+            obj.addProperty(
+                "App::PropertyInteger",
+                "NumberOfPosts",
+                "Fence",
+                QT_TRANSLATE_NOOP("App::Property", "The number of posts used to build the fence"),
+                locked=True,
+            )
             obj.setEditorMode("NumberOfPosts", 1)
 
     def dumps(self):
-        if hasattr(self, 'sectionFaceNumbers'):
+        if hasattr(self, "sectionFaceNumbers"):
             return self.sectionFaceNumbers
         return None
 
@@ -99,20 +125,17 @@ class _Fence(ArchComponent.Component):
         pathwire = self.calculatePathWire(obj)
 
         if not pathwire:
-            FreeCAD.Console.PrintLog(
-                "ArchFence.execute: path " + obj.Path.Name + " has no edges\n")
+            FreeCAD.Console.PrintLog("ArchFence.execute: path " + obj.Path.Name + " has no edges\n")
 
             return
 
         if not obj.Section:
-            FreeCAD.Console.PrintLog(
-                "ArchFence.execute: Section not set\n")
+            FreeCAD.Console.PrintLog("ArchFence.execute: Section not set\n")
 
             return
 
         if not obj.Post:
-            FreeCAD.Console.PrintLog(
-                "ArchFence.execute: Post not set\n")
+            FreeCAD.Console.PrintLog("ArchFence.execute: Post not set\n")
 
             return
 
@@ -120,8 +143,7 @@ class _Fence(ArchComponent.Component):
         sectionLength = obj.Section.Shape.BoundBox.XMax
         postLength = obj.Post.Shape.BoundBox.XMax
 
-        obj.NumberOfSections = self.calculateNumberOfSections(
-            pathLength, sectionLength, postLength)
+        obj.NumberOfSections = self.calculateNumberOfSections(pathLength, sectionLength, postLength)
         obj.NumberOfPosts = obj.NumberOfSections + 1
 
         # We assume that the section was drawn in front view.
@@ -129,12 +151,12 @@ class _Fence(ArchComponent.Component):
         # correctly by the algorithm later on
         downRotation = FreeCAD.Rotation(FreeCAD.Vector(1, 0, 0), -90)
 
-        postPlacements = self.calculatePostPlacements(
-            obj, pathwire, downRotation)
+        postPlacements = self.calculatePostPlacements(obj, pathwire, downRotation)
 
         postShapes = self.calculatePosts(obj, postPlacements)
         sectionShapes, sectionFaceNumbers = self.calculateSections(
-            obj, postPlacements, postLength, sectionLength)
+            obj, postPlacements, postLength, sectionLength
+        )
 
         allShapes = []
         allShapes.extend(postShapes)
@@ -155,11 +177,11 @@ class _Fence(ArchComponent.Component):
         postWidth = obj.Post.Shape.BoundBox.YMax
 
         # We want to center the posts on the path. So move them the half width in
-        transformationVector = FreeCAD.Vector(0, - postWidth / 2, 0)
+        transformationVector = FreeCAD.Vector(0, -postWidth / 2, 0)
 
-        return patharray.placements_on_path(rotation, pathwire,
-                                            obj.NumberOfPosts,
-                                            transformationVector, True)
+        return patharray.placements_on_path(
+            rotation, pathwire, obj.NumberOfPosts, transformationVector, True
+        )
 
     def calculatePosts(self, obj, postPlacements):
         posts = []
@@ -186,8 +208,7 @@ class _Fence(ArchComponent.Component):
             startPlacement = postPlacements[i]
             endPlacement = postPlacements[i + 1]
 
-            sectionLine = Part.LineSegment(
-                startPlacement.Base, endPlacement.Base)
+            sectionLine = Part.LineSegment(startPlacement.Base, endPlacement.Base)
             sectionBase = sectionLine.value(postLength)
 
             if startPlacement.Rotation.isSame(endPlacement.Rotation):
@@ -206,9 +227,12 @@ class _Fence(ArchComponent.Component):
             if sectionLength > sectionLine.length() - postLength:
                 # Part.show(Part.Shape([sectionLine]), 'line')
                 sectionCopy = self.clipSection(
-                    sectionCopy, sectionLength, sectionLine.length() - postLength)
+                    sectionCopy, sectionLength, sectionLine.length() - postLength
+                )
 
-            sectionCopy = Part.Compound([sectionCopy])  # nest in compound to ensure correct Placement
+            sectionCopy = Part.Compound(
+                [sectionCopy]
+            )  # nest in compound to ensure correct Placement
             sectionCopy.Placement = placement
 
             shapes.append(sectionCopy)
@@ -223,10 +247,20 @@ class _Fence(ArchComponent.Component):
         lengthToCut = length - clipLength
         halfLengthToCut = lengthToCut / 2
 
-        leftBox = Part.makeBox(halfLengthToCut, boundBox.YMax + 1, boundBox.ZMax + 1,
-                               FreeCAD.Vector(boundBox.XMin, boundBox.YMin, boundBox.ZMin))
-        rightBox = Part.makeBox(halfLengthToCut, boundBox.YMax + 1, boundBox.ZMax + 1,
-                                FreeCAD.Vector(boundBox.XMin + halfLengthToCut + clipLength, boundBox.YMin, boundBox.ZMin))
+        leftBox = Part.makeBox(
+            halfLengthToCut,
+            boundBox.YMax + 1,
+            boundBox.ZMax + 1,
+            FreeCAD.Vector(boundBox.XMin, boundBox.YMin, boundBox.ZMin),
+        )
+        rightBox = Part.makeBox(
+            halfLengthToCut,
+            boundBox.YMax + 1,
+            boundBox.ZMax + 1,
+            FreeCAD.Vector(
+                boundBox.XMin + halfLengthToCut + clipLength, boundBox.YMin, boundBox.ZMin
+            ),
+        )
 
         newShape = shape.cut([leftBox, rightBox])
         newBoundBox = newShape.BoundBox
@@ -236,7 +270,7 @@ class _Fence(ArchComponent.Component):
         return newShape.removeSplitter()
 
     def calculatePathWire(self, obj):
-        if (hasattr(obj.Path.Shape, 'Wires') and obj.Path.Shape.Wires):
+        if hasattr(obj.Path.Shape, "Wires") and obj.Path.Shape.Wires:
             return obj.Path.Shape.Wires[0]
         elif obj.Path.Shape.Edges:
             return Part.Wire(obj.Path.Shape.Edges)
@@ -245,7 +279,6 @@ class _Fence(ArchComponent.Component):
 
 
 class _ViewProviderFence(ArchComponent.ViewProviderComponent):
-
     "A View Provider for the Fence object"
 
     def __init__(self, vobj):
@@ -259,8 +292,16 @@ class _ViewProviderFence(ArchComponent.ViewProviderComponent):
         pl = vobj.PropertiesList
 
         if not "UseOriginalColors" in pl:
-            vobj.addProperty("App::PropertyBool", "UseOriginalColors", "Fence", QT_TRANSLATE_NOOP(
-                "App::Property", "When true, the fence will be colored like the original post and section."), locked=True)
+            vobj.addProperty(
+                "App::PropertyBool",
+                "UseOriginalColors",
+                "Fence",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "When true, the fence will be colored like the original post and section.",
+                ),
+                locked=True,
+            )
 
     def attach(self, vobj):
         self.setProperties(vobj)
@@ -322,7 +363,7 @@ class _ViewProviderFence(ArchComponent.ViewProviderComponent):
             numberOfPostFaces = len(post.Shape.Faces)
             numberOfSectionFaces = len(section.Shape.Faces)
 
-            if hasattr(obj.Proxy, 'sectionFaceNumbers'):
+            if hasattr(obj.Proxy, "sectionFaceNumbers"):
                 sectionFaceNumbers = obj.Proxy.sectionFaceNumbers
             else:
                 sectionFaceNumbers = [0]
@@ -331,8 +372,7 @@ class _ViewProviderFence(ArchComponent.ViewProviderComponent):
                 return
 
             postColors = self.normalizeColors(post, numberOfPostFaces)
-            defaultSectionColors = self.normalizeColors(
-                section, numberOfSectionFaces)
+            defaultSectionColors = self.normalizeColors(section, numberOfSectionFaces)
 
             ownColors = []
 
@@ -347,8 +387,7 @@ class _ViewProviderFence(ArchComponent.ViewProviderComponent):
                 if actualSectionFaceCount == numberOfSectionFaces:
                     ownColors.extend(defaultSectionColors)
                 else:
-                    ownColors.extend(self.normalizeColors(
-                        section, actualSectionFaceCount))
+                    ownColors.extend(self.normalizeColors(section, actualSectionFaceCount))
 
             vobj.DiffuseColor = ownColors
 
@@ -365,6 +404,7 @@ class _ViewProviderFence(ArchComponent.ViewProviderComponent):
                 colors = obj.ViewObject.DiffuseColor
         else:
             import Draft
+
             colors = Draft.get_diffuse_color(obj)  # To handle Std_Parts for example.
 
         numberOfColors = len(colors)
@@ -387,5 +427,5 @@ class _ViewProviderFence(ArchComponent.ViewProviderComponent):
 
 
 def hide(obj):
-    if hasattr(obj, 'ViewObject') and obj.ViewObject:
+    if hasattr(obj, "ViewObject") and obj.ViewObject:
         obj.ViewObject.Visibility = False

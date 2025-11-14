@@ -28,9 +28,9 @@ Manager and installing the &quot;offline-documentation&quot; addon. If this
 field is left blank, FreeCAD will automatically search for the help files at
 the default location ($USERAPPDATADIR/Mod/offline-documentation).</source>
       <translation>Ρυθμίστε το σε μια προσαρμοσμένη διεύθυνση URL ή στον φάκελο όπου βρίσκονται τα αρχεία βοήθειας.
-Μπορείτε εύκολα να πραγματοποιήσετε λήψη των οδηγειών για χρήση εκτός σύνδεσης χρησιμοποιώντας το Addon Manager
+Μπορείτε εύκολα να πραγματοποιήσετε λήψη των οδηγειών για χρήση εκτός σύνδεσης χρησιμοποιώντας το Addon Manager 
 και εγκαθιστώντας την &quot;Οδηγείες εκτός σύνδεσης&quot; πρόσθετο.
-Εάν αυτό το πεδίο μείνει κενό, το FreeCAD θα αναζητήσει αυτόματα τα αρχεία βοήθειας στην προεπιλεγμένη θέση
+Εάν αυτό το πεδίο μείνει κενό, το FreeCAD θα αναζητήσει αυτόματα τα αρχεία βοήθειας στην προεπιλεγμένη θέση 
 ($USERAPPDATADIR/Mod/offline-documentation).</translation>
     </message>
     <message>
@@ -62,11 +62,11 @@ Documentation can be downloaded for offline use via the Addon Manager and instal
 &quot;offline-documentation&quot; addon. If this field is left blank, FreeCAD will
 automatically search for the help files at the default location
 ($USERAPPDATADIR/Mod/offline-documentation).</source>
-      <translation>Ορίστε το σε μια προσαρμοσμένη διεύθυνση URL ή στο φάκελο
+      <translation>Ορίστε το σε μια προσαρμοσμένη διεύθυνση URL ή στο φάκελο 
 όπου βρίσκονται τα αρχεία βοήθειας.
-Μπορείτε να κάνετε λήψη της τεκμηρίωσης (οδηγίες χρήσης) για χρήση εκτός σύνδεσης
+Μπορείτε να κάνετε λήψη της τεκμηρίωσης (οδηγίες χρήσης) για χρήση εκτός σύνδεσης 
 μέσω του Addon Manager και εγκαθιστώντας το πρόσθετο &quot;Εκτός Σύνδεσης-Τεκμηρίωσης&quot;.
- Εάν αυτό το πεδίο παραμείνει κενό, το FreeCAD θα αναζητήσει αυτόματα τα αρχεία βοήθειας
+ Εάν αυτό το πεδίο παραμείνει κενό, το FreeCAD θα αναζητήσει αυτόματα τα αρχεία βοήθειας 
 στην προεπιλεγμένη θέση ($USERAPPDATADIR/Mod/offline-documentation).</translation>
     </message>
     <message>
@@ -103,7 +103,7 @@ custom stylesheet below and can look nicer than the wiki option. The &apos;Markd
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="170"/>
       <source>Note: if PySide Web components are not found on the system, help pages will open in the default web browser regardless of the options below.</source>
-      <translation>Σημείωση: Εάν δεν βρεθούν στοιχεία PySide Web στο σύστημα, οι σελίδες βοήθειας θα ανοίξουν στο προεπιλεγμένο πρόγραμμα περιήγησης
+      <translation>Σημείωση: Εάν δεν βρεθούν στοιχεία PySide Web στο σύστημα, οι σελίδες βοήθειας θα ανοίξουν στο προεπιλεγμένο πρόγραμμα περιήγησης 
 ιστού ανεξάρτητα από τις παρακάτω επιλογές.</translation>
     </message>
     <message>
@@ -125,7 +125,7 @@ custom stylesheet below and can look nicer than the wiki option. The &apos;Markd
       <location filename="../../dlgPreferencesHelp.ui" line="221"/>
       <source>Documentation opens in a dockable dialog within FreeCAD, allowing simultaneous work in the 3D view.
 Requires the PySide QtWebengineWidgets component.</source>
-      <translation>Η τεκμηρίωση (οδηγίες χρήσης) ανοίγει απο συνδεόμενο σε ένα παράθυρο διαλόγου μέσα στο FreeCAD,
+      <translation>Η τεκμηρίωση (οδηγίες χρήσης) ανοίγει απο συνδεόμενο σε ένα παράθυρο διαλόγου μέσα στο FreeCAD, 
 επιτρέποντας την ταυτόχρονη εργασία στην τρισδιάστατη προβολή.
 Απαιτείται το στοιχείο PySide QtWebengineWidgets.</translation>
     </message>
@@ -167,7 +167,7 @@ This only applies if Markdown is selected above.</source>
     <message>
       <location filename="../../Help.py" line="79"/>
       <source>Help files location could not be determined. Please check settings under menu Edit → Preferences → General → Help</source>
-      <translation>Δεν ήταν δυνατό να προσδιοριστεί η τοποθεσία των αρχείων βοήθειας.
+      <translation>Δεν ήταν δυνατό να προσδιοριστεί η τοποθεσία των αρχείων βοήθειας. 
 Ελέγξτε τις ρυθμίσεις στο μενού Επεξεργασία → Προτιμήσεις → Γενικά → Βοήθεια</translation>
     </message>
     <message>

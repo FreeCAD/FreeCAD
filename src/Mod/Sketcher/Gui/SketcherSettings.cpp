@@ -122,7 +122,8 @@ void SketcherSettings::saveSettings()
 
     // Dimensioning constraints mode
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning");
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning"
+    );
     bool singleTool = true;
     bool SeparatedTools = false;
     int index = ui->dimensioningMode->currentIndex();
@@ -168,7 +169,8 @@ void SketcherSettings::saveSettings()
     hGrp->SetInt("AutoScaleMode", index);
 
     hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Sketcher/Tools");
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/Tools"
+    );
 
     index = ui->ovpVisibility->currentIndex();
     hGrp->SetInt("OnViewParameterVisibility", index);
@@ -198,16 +200,19 @@ void SketcherSettings::loadSettings()
     ui->dimensioningMode->addItem(tr("Both"));
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning");
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning"
+    );
     bool singleTool = hGrp->GetBool("SingleDimensioningTool", true);
     bool SeparatedTools = hGrp->GetBool("SeparatedDimensioningTools", false);
     int index = SeparatedTools ? (singleTool ? 2 : 1) : 0;
     ui->dimensioningMode->setCurrentIndex(index);
     setProperty("dimensioningMode", index);
-    connect(ui->dimensioningMode,
-            QOverload<int>::of(&QComboBox::currentIndexChanged),
-            this,
-            &SketcherSettings::dimensioningModeChanged);
+    connect(
+        ui->dimensioningMode,
+        QOverload<int>::of(&QComboBox::currentIndexChanged),
+        this,
+        &SketcherSettings::dimensioningModeChanged
+    );
 
     ui->radiusDiameterMode->setEnabled(index != 1);
 
@@ -233,7 +238,8 @@ void SketcherSettings::loadSettings()
     ui->autoScaleMode->setCurrentIndex(index);
 
     hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Sketcher/Tools");
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/Tools"
+    );
     ui->ovpVisibility->clear();
     ui->ovpVisibility->addItem(tr("None"));
     ui->ovpVisibility->addItem(tr("Dimensions only"));
@@ -253,8 +259,7 @@ void SketcherSettings::checkForRestart()
     if (property("dimensioningMode").toInt() != ui->dimensioningMode->currentIndex()) {
         SketcherSettings::requireRestart();
     }
-    if (property("checkBoxUnifiedCoincident").toBool()
-        != ui->checkBoxUnifiedCoincident->isChecked()) {
+    if (property("checkBoxUnifiedCoincident").toBool() != ui->checkBoxUnifiedCoincident->isChecked()) {
         SketcherSettings::requireRestart();
     }
     if (property("checkBoxHorVerAuto").toBool() != ui->checkBoxHorVerAuto->isChecked()) {
@@ -283,7 +288,8 @@ void SketcherSettings::resetSettingsToDefaults()
     ParameterGrp::handle hGrp;
 
     hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning");
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning"
+    );
     // reset "Dimension tools" parameters
     hGrp->RemoveBool("SingleDimensioningTool");
     hGrp->RemoveBool("SeparatedDimensioningTools");
@@ -295,7 +301,8 @@ void SketcherSettings::resetSettingsToDefaults()
     hGrp->RemoveInt("AutoScaleMode");
 
     hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Sketcher/Tools");
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/Tools"
+    );
     // reset "OVP visibility" parameter
     hGrp->RemoveInt("OnViewParameterVisibility");
 
@@ -354,7 +361,8 @@ void SketcherSettingsGrid::saveSettings()
     ui->gridNumberSubdivision->onSave();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/General"
+    );
     QVariant data = ui->gridLinePattern->itemData(ui->gridLinePattern->currentIndex());
     int pattern = data.toInt();
     hGrp->SetInt("GridLinePattern", pattern);
@@ -377,7 +385,8 @@ void SketcherSettingsGrid::loadSettings()
     ui->gridNumberSubdivision->onRestore();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/General"
+    );
     int pattern = hGrp->GetInt("GridLinePattern", 0b0000111100001111);
     int index = ui->gridLinePattern->findData(QVariant(pattern));
     if (index < 0) {
@@ -413,10 +422,7 @@ SketcherSettingsDisplay::SketcherSettingsDisplay(QWidget* parent)
 {
     ui->setupUi(this);
 
-    connect(ui->btnTVApply,
-            &QPushButton::clicked,
-            this,
-            &SketcherSettingsDisplay::onBtnTVApplyClicked);
+    connect(ui->btnTVApply, &QPushButton::clicked, this, &SketcherSettingsDisplay::onBtnTVApplyClicked);
 }
 
 /**
@@ -489,21 +495,23 @@ void SketcherSettingsDisplay::onBtnTVApplyClicked(bool)
 {
     QString errMsg;
     try {
-        Gui::Command::doCommand(Gui::Command::Gui,
-                                "for name,doc in App.listDocuments().items():\n"
-                                "    for sketch in doc.findObjects('Sketcher::SketchObject'):\n"
-                                "        sketch.ViewObject.HideDependent = %s\n"
-                                "        sketch.ViewObject.ShowLinks = %s\n"
-                                "        sketch.ViewObject.ShowSupport = %s\n"
-                                "        sketch.ViewObject.RestoreCamera = %s\n"
-                                "        sketch.ViewObject.ForceOrtho = %s\n"
-                                "        sketch.ViewObject.SectionView = %s\n",
-                                this->ui->checkBoxTVHideDependent->isChecked() ? "True" : "False",
-                                this->ui->checkBoxTVShowLinks->isChecked() ? "True" : "False",
-                                this->ui->checkBoxTVShowSupport->isChecked() ? "True" : "False",
-                                this->ui->checkBoxTVRestoreCamera->isChecked() ? "True" : "False",
-                                this->ui->checkBoxTVForceOrtho->isChecked() ? "True" : "False",
-                                this->ui->checkBoxTVSectionView->isChecked() ? "True" : "False");
+        Gui::Command::doCommand(
+            Gui::Command::Gui,
+            "for name,doc in App.listDocuments().items():\n"
+            "    for sketch in doc.findObjects('Sketcher::SketchObject'):\n"
+            "        sketch.ViewObject.HideDependent = %s\n"
+            "        sketch.ViewObject.ShowLinks = %s\n"
+            "        sketch.ViewObject.ShowSupport = %s\n"
+            "        sketch.ViewObject.RestoreCamera = %s\n"
+            "        sketch.ViewObject.ForceOrtho = %s\n"
+            "        sketch.ViewObject.SectionView = %s\n",
+            this->ui->checkBoxTVHideDependent->isChecked() ? "True" : "False",
+            this->ui->checkBoxTVShowLinks->isChecked() ? "True" : "False",
+            this->ui->checkBoxTVShowSupport->isChecked() ? "True" : "False",
+            this->ui->checkBoxTVRestoreCamera->isChecked() ? "True" : "False",
+            this->ui->checkBoxTVForceOrtho->isChecked() ? "True" : "False",
+            this->ui->checkBoxTVSectionView->isChecked() ? "True" : "False"
+        );
     }
     catch (Base::PyException& e) {
         Base::Console().developerError("SketcherSettings", "error in onBtnTVApplyClicked:\n");
@@ -600,7 +608,8 @@ void SketcherSettingsAppearance::saveSettings()
     ui->InternalFaceColor->onSave();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Sketcher/View");
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/View"
+    );
     QVariant data = ui->EdgePattern->itemData(ui->EdgePattern->currentIndex());
     int pattern = data.toInt();
     hGrp->SetInt("EdgePattern", pattern);
@@ -658,7 +667,8 @@ void SketcherSettingsAppearance::loadSettings()
     ui->InternalFaceColor->onRestore();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Sketcher/View");
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/View"
+    );
     int pattern = hGrp->GetInt("EdgePattern", 0b1111111111111111);
     int index = ui->EdgePattern->findData(QVariant(pattern));
     if (index < 0) {

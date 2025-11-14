@@ -4,17 +4,17 @@
   <context>
     <name>CmdPointsConvert</name>
     <message>
-      <location filename="../../Command.cpp" line="236"/>
+      <location filename="../../Command.cpp" line="197"/>
       <source>Points</source>
       <translation>Кропкі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="237"/>
+      <location filename="../../Command.cpp" line="198"/>
       <source>Convert to Points</source>
       <translation>Пераўтварыць у кропкі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="238"/>
+      <location filename="../../Command.cpp" line="199"/>
       <source>Converts to points</source>
       <translation>Пераўтварае ў кропкі</translation>
     </message>
@@ -59,17 +59,17 @@
   <context>
     <name>CmdPointsMerge</name>
     <message>
-      <location filename="../../Command.cpp" line="372"/>
+      <location filename="../../Command.cpp" line="333"/>
       <source>Points</source>
       <translation>Кропкі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="373"/>
+      <location filename="../../Command.cpp" line="334"/>
       <source>Merge Point Clouds</source>
       <translation>Аб'яднаць воблака кропак</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="374"/>
+      <location filename="../../Command.cpp" line="335"/>
       <source>Merges several point clouds into one</source>
       <translation>Аб'ядноўвае некалькі воблакаў кропак у адно воблака</translation>
     </message>
@@ -77,17 +77,17 @@
   <context>
     <name>CmdPointsPolyCut</name>
     <message>
-      <location filename="../../Command.cpp" line="324"/>
+      <location filename="../../Command.cpp" line="285"/>
       <source>Points</source>
       <translation>Кропкі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="325"/>
+      <location filename="../../Command.cpp" line="286"/>
       <source>Cut Point Cloud</source>
       <translation>Выразаць воблака кропак</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="326"/>
+      <location filename="../../Command.cpp" line="287"/>
       <source>Cuts a point cloud with a selected polygon</source>
       <translation>Выразаць воблака кропак, якое абмежавана абраным шматкутнікам</translation>
     </message>
@@ -95,37 +95,19 @@
   <context>
     <name>CmdPointsStructure</name>
     <message>
-      <location filename="../../Command.cpp" line="434"/>
+      <location filename="../../Command.cpp" line="395"/>
       <source>Points</source>
       <translation>Кропкі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="435"/>
+      <location filename="../../Command.cpp" line="396"/>
       <source>Structured Point Cloud</source>
       <translation>Воблакі структураваных кропак</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="436"/>
+      <location filename="../../Command.cpp" line="397"/>
       <source>Converts points to a structured point cloud</source>
       <translation>Пераўтварае кропкі ў воблака структураваных кропак</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdPointsTransform</name>
-    <message>
-      <location filename="../../Command.cpp" line="197"/>
-      <source>Points</source>
-      <translation>Кропкі</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="198"/>
-      <source>Transform Points</source>
-      <translation>Пераўтварэнне Кропак</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="199"/>
-      <source>Performs tests to transform a point cloud</source>
-      <translation>Выконвае тэсты для пераўтварэння воблака кропак</translation>
     </message>
   </context>
   <context>
@@ -136,18 +118,13 @@
       <translation>Імпарт кропак</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="213"/>
-      <source>Transform points</source>
-      <translation>Пераўтварэнне кропак</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="270"/>
+      <location filename="../../Command.cpp" line="231"/>
       <source>Convert to points</source>
       <translation>Пераўтварыць у кропкі</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="485"/>
-      <location filename="../../ViewProvider.cpp" line="653"/>
+      <location filename="../../ViewProvider.cpp" line="484"/>
+      <location filename="../../ViewProvider.cpp" line="652"/>
       <source>Cut points</source>
       <translation>Выразаць кропкі</translation>
     </message>
@@ -308,12 +285,12 @@
 Ці перанесці яе ў пачатак каардынат?</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="257"/>
+      <location filename="../../Command.cpp" line="218"/>
       <source>Distance</source>
       <translation>Адлегласць</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="258"/>
+      <location filename="../../Command.cpp" line="219"/>
       <source>Enter maximum distance:</source>
       <translation>Увядзіце найбольшую адлегласць:</translation>
     </message>
@@ -321,12 +298,12 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="34"/>
+      <location filename="../../Workbench.cpp" line="35"/>
       <source>Points Tools</source>
       <translation>Інструменты кропак</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="35"/>
+      <location filename="../../Workbench.cpp" line="36"/>
       <source>&amp;Points</source>
       <translation>&amp;Кропкі</translation>
     </message>

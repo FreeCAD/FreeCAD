@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   (c) 2019 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de>           *
 # *                                                                         *
@@ -47,5 +49,6 @@ class ViewProviderCircularArray(ViewProviderDraftArray):
     def getIcon(self):
         """Set the icon in the tree view."""
         return ":/icons/Draft_CircularArray"
+
 
 ## @}

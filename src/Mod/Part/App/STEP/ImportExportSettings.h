@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -26,6 +28,7 @@
 #include <Mod/Part/App/Interface.h>
 #include <Base/Parameter.h>
 
+#include <Mod/Part/PartGlobal.h>
 
 namespace Part
 {
@@ -65,7 +68,7 @@ private:
     ParameterGrp::handle pGroup;
 };
 
-} //namespace STEP
-} //namespace Part
+}  // namespace STEP
+}  // namespace Part
 
 #endif

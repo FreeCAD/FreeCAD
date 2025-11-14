@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -18,8 +20,6 @@
  *   <https://www.gnu.org/licenses/>.                                      *
  *                                                                         *
  **************************************************************************/
-
-#include "PreCompiled.h"
 
 
 #include <TopExp_Explorer.hxx>
@@ -45,19 +45,17 @@ PROPERTY_SOURCE(Measure::MeasureRadius, Measure::MeasureBase)
 
 MeasureRadius::MeasureRadius()
 {
-    ADD_PROPERTY_TYPE(Element,
-                      (nullptr),
-                      "Measurement",
-                      App::Prop_None,
-                      "Element to get the radius from");
+    ADD_PROPERTY_TYPE(Element, (nullptr), "Measurement", App::Prop_None, "Element to get the radius from");
     Element.setScope(App::LinkScope::Global);
     Element.setAllowExternal(true);
 
-    ADD_PROPERTY_TYPE(Radius,
-                      (0.0),
-                      "Measurement",
-                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
-                      "Radius of selection");
+    ADD_PROPERTY_TYPE(
+        Radius,
+        (0.0),
+        "Measurement",
+        App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
+        "Radius of selection"
+    );
 }
 
 MeasureRadius::~MeasureRadius() = default;

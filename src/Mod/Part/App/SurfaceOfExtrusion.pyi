@@ -3,7 +3,6 @@ from GeometrySurface import GeometrySurface
 from GeometryCurve import GeometryCurve
 from Base.Vector import Vector
 
-
 @export(
     Twin="GeomSurfaceOfExtrusion",
     TwinPointer="GeomSurfaceOfExtrusion",

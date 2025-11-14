@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
@@ -124,15 +125,15 @@ class CAMWorkbench(Workbench):
 
         # build commands list
         projcmdlist = ["CAM_Job", "CAM_Post", "CAM_Sanity"]
-        toolcmdlist = [
-            "CAM_Inspect",
-            "CAM_Simulator",
-            "CAM_SimulatorGL",
-            "CAM_SelectLoop",
-            "CAM_OpActiveToggle",
-        ]
+        toolcmdlist = ["CAM_Inspect", "CAM_SelectLoop", "CAM_OpActiveToggle"]
+
+        simcmdlist = ["CAM_SimulatorGL", "CAM_Simulator"]
+        prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/CAM")
+        simLegacy = prefs.GetBool("DefaultSimulatorLegacy", False)
+        if simLegacy:
+            simcmdlist.reverse()
+
         prepcmdlist = [
-            "CAM_Fixture",
             "CAM_Comment",
             "CAM_Stop",
             "CAM_Custom",
@@ -148,7 +149,7 @@ class CAMWorkbench(Workbench):
         ]
         threedopcmdlist = ["CAM_Pocket3D"]
         engravecmdlist = ["CAM_Engrave", "CAM_Deburr", "CAM_Vcarve"]
-        drillingcmdlist = ["CAM_Drilling", "CAM_Tapping"]
+        drillingcmdlist = ["CAM_Drilling"]
         modcmdlist = ["CAM_OperationCopy", "CAM_Array", "CAM_SimpleCopy"]
         dressupcmdlist = [
             "CAM_DressupArray",
@@ -167,6 +168,14 @@ class CAMWorkbench(Workbench):
         toolcmdlist.extend(PathToolBitLibraryCmd.BarList)
         toolbitcmdlist = PathToolBitLibraryCmd.MenuList
 
+        simcmdgroup = ["CAM_SimTools"]
+        FreeCADGui.addCommand(
+            "CAM_SimTools",
+            PathCommandGroup(
+                simcmdlist,
+                QT_TRANSLATE_NOOP("CAM_SimTools", "Simulators"),
+            ),
+        )
         engravecmdgroup = ["CAM_EngraveTools"]
         FreeCADGui.addCommand(
             "CAM_EngraveTools",
@@ -175,14 +184,21 @@ class CAMWorkbench(Workbench):
                 QT_TRANSLATE_NOOP("CAM_EngraveTools", "Engraving Operations"),
             ),
         )
-        drillingcmdgroup = ["CAM_DrillingTools"]
-        FreeCADGui.addCommand(
-            "CAM_DrillingTools",
-            PathCommandGroup(
-                drillingcmdlist,
-                QT_TRANSLATE_NOOP("CAM_DrillingTools", "Drilling Operations"),
-            ),
-        )
+        if Path.Preferences.experimentalFeaturesEnabled():
+            drillingcmdlist.append("CAM_Tapping")
+
+        if set(["CAM_Drilling", "CAM_Tapping"]).issubset(drillingcmdlist):
+            drillingcmdgroup = ["CAM_DrillingTools"]
+            FreeCADGui.addCommand(
+                "CAM_DrillingTools",
+                PathCommandGroup(
+                    drillingcmdlist,
+                    QT_TRANSLATE_NOOP("CAM_DrillingTools", "Drilling Operations"),
+                ),
+            )
+        else:
+            drillingcmdgroup = drillingcmdlist
+
         dressupcmdgroup = ["CAM_DressupTools"]
         FreeCADGui.addCommand(
             "CAM_DressupTools",
@@ -238,7 +254,10 @@ class CAMWorkbench(Workbench):
                     FreeCAD.Console.PrintError("OpenCamLib is not working!\n")
 
         self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Project Setup"), projcmdlist)
-        self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Tool Commands"), toolcmdlist)
+        self.appendToolbar(
+            QT_TRANSLATE_NOOP("Workbench", "Tool Commands"),
+            simcmdgroup + toolcmdlist,
+        )
         self.appendToolbar(
             QT_TRANSLATE_NOOP("Workbench", "New Operations"),
             twodopcmdlist + drillingcmdgroup + engravecmdgroup + threedcmdgroup,
@@ -253,6 +272,7 @@ class CAMWorkbench(Workbench):
             [QT_TRANSLATE_NOOP("Workbench", "&CAM")],
             projcmdlist
             + ["CAM_ExportTemplate", "Separator"]
+            + simcmdlist
             + toolcmdlist
             + toolbitcmdlist
             + ["Separator"]

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2017 Lorenz Lechner                                     *
  *                                                                         *
@@ -20,8 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <map>
 #include <set>
 #include <vector>
@@ -33,7 +33,6 @@
 #include <Standard_Version.hxx>
 #include <TColStd_Array1OfReal.hxx>
 #include <TopLoc_Location.hxx>
-#endif
 
 #include "MeshFlattening.h"
 #include "MeshFlatteningLscmRelax.h"
@@ -171,9 +170,7 @@ FaceUnwrapper::FaceUnwrapper(const TopoDS_Face& face)
 void FaceUnwrapper::findFlatNodes(int steps, double val)
 {
     std::vector<long> fixed_pins;  // TODO: INPUT
-    lscmrelax::LscmRelax mesh_flattener(this->xyz_nodes.transpose(),
-                                        this->tris.transpose(),
-                                        fixed_pins);
+    lscmrelax::LscmRelax mesh_flattener(this->xyz_nodes.transpose(), this->tris.transpose(), fixed_pins);
     mesh_flattener.lscm();
     for (int j = 0; j < steps; j++) {
         mesh_flattener.relax(val);
@@ -184,8 +181,10 @@ void FaceUnwrapper::findFlatNodes(int steps, double val)
 ColMat<double, 3> FaceUnwrapper::interpolateFlatFace(const TopoDS_Face& face)
 {
     if (this->uv_nodes.size() == 0) {
-        throw(std::runtime_error("no uv-coordinates found, interpolating with nurbs is only "
-                                 "possible if the flattener was constructed with a nurbs."));
+        throw(std::runtime_error(
+            "no uv-coordinates found, interpolating with nurbs is only "
+            "possible if the flattener was constructed with a nurbs."
+        ));
     }
 
     // extract xyz poles, knots, weights, degree
@@ -196,8 +195,10 @@ ColMat<double, 3> FaceUnwrapper::interpolateFlatFace(const TopoDS_Face& face)
     const TColStd_Array1OfReal& _vknots = _bspline->VKnotSequence();
 
     Eigen::VectorXd weights;
-    weights.resize(static_cast<Eigen::Index>(_bspline->NbUPoles())
-                   * static_cast<Eigen::Index>(_bspline->NbVPoles()));
+    weights.resize(
+        static_cast<Eigen::Index>(_bspline->NbUPoles())
+        * static_cast<Eigen::Index>(_bspline->NbVPoles())
+    );
     long i = 0;
     for (long u = 1; u <= _bspline->NbUPoles(); u++) {
         for (long v = 1; v <= _bspline->NbVPoles(); v++) {

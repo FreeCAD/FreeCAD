@@ -21,7 +21,6 @@
  ***************************************************************************/
 
 
-
 #include <QDialogButtonBox>
 #include <QKeyEvent>
 #include <QSignalMapper>
@@ -41,22 +40,24 @@
 
 using namespace Gui::Dialog;
 
-namespace Gui { namespace Dialog {
+namespace Gui
+{
+namespace Dialog
+{
 class find_transform
 {
 public:
-    bool operator () (const std::pair<std::string, App::Property*>& elem) const
+    bool operator()(const std::pair<std::string, App::Property*>& elem) const
     {
         if (elem.first == "Placement") {
-            return elem.second->isDerivedFrom
-                (Base::Type::fromName("App::PropertyPlacement"));
+            return elem.second->isDerivedFrom(Base::Type::fromName("App::PropertyPlacement"));
         }
 
         return false;
     }
 };
-}
-}
+}  // namespace Dialog
+}  // namespace Gui
 
 // ----------------------------------------------------------------------------
 
@@ -71,24 +72,29 @@ Base::Vector3d TransformStrategy::getRotationCenter() const
     std::set<App::DocumentObject*> objects = transformObjects();
     if (!objects.empty()) {
         Base::BoundBox3d bbox;
-        bool first=true;
-        for (const auto & object : objects) {
+        bool first = true;
+        for (const auto& object : objects) {
             if (object->isDerivedFrom<App::GeoFeature>()) {
                 // search for a data property
-                const App::PropertyGeometry* geo = static_cast<App::GeoFeature*>(object)->getPropertyOfGeometry();
+                const App::PropertyGeometry* geo
+                    = static_cast<App::GeoFeature*>(object)->getPropertyOfGeometry();
                 if (geo) {
-                    if (first)
+                    if (first) {
                         bbox = geo->getBoundingBox();
-                    else
+                    }
+                    else {
                         bbox.Add(geo->getBoundingBox());
+                    }
                     first = false;
                 }
             }
         }
 
-        return Base::Vector3d((bbox.MinX+bbox.MaxX)/2,
-                              (bbox.MinY+bbox.MaxY)/2,
-                              (bbox.MinZ+bbox.MaxZ)/2);
+        return Base::Vector3d(
+            (bbox.MinX + bbox.MaxX) / 2,
+            (bbox.MinY + bbox.MaxY) / 2,
+            (bbox.MinZ + bbox.MaxZ) / 2
+        );
     }
 
     return Base::Vector3d();
@@ -100,7 +106,7 @@ void TransformStrategy::commitTransform(const Base::Matrix4D& mat)
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
     if (doc) {
         doc->openCommand(QT_TRANSLATE_NOOP("Command", "Transform"));
-        for (const auto & object : objects) {
+        for (const auto& object : objects) {
             acceptDataTransform(mat, object);
         }
         doc->commitCommand();
@@ -110,20 +116,24 @@ void TransformStrategy::commitTransform(const Base::Matrix4D& mat)
 void TransformStrategy::acceptDataTransform(const Base::Matrix4D& mat, App::DocumentObject* obj)
 {
     Gui::Document* doc = Gui::Application::Instance->getDocument(obj->getDocument());
-    std::map<std::string,App::Property*> props;
+    std::map<std::string, App::Property*> props;
     obj->getPropertyMap(props);
     // search for the placement property
-    std::map<std::string,App::Property*>::iterator jt;
+    std::map<std::string, App::Property*>::iterator jt;
     jt = std::find_if(props.begin(), props.end(), find_transform());
     if (jt != props.end()) {
         Base::Placement local = static_cast<App::PropertyPlacement*>(jt->second)->getValue();
         Gui::ViewProvider* vp = doc->getViewProvider(obj);
-        if (vp) vp->setTransformation(local.toMatrix());
+        if (vp) {
+            vp->setTransformation(local.toMatrix());
+        }
     }
     else {
         // No placement found
         Gui::ViewProvider* vp = doc->getViewProvider(obj);
-        if (vp) vp->setTransformation(Base::Matrix4D());
+        if (vp) {
+            vp->setTransformation(Base::Matrix4D());
+        }
     }
 
     // Apply the transformation
@@ -139,7 +149,7 @@ void TransformStrategy::acceptDataTransform(const Base::Matrix4D& mat, App::Docu
 void TransformStrategy::applyTransform(const Base::Placement& plm)
 {
     std::set<App::DocumentObject*> objects = transformObjects();
-    for (const auto & object : objects) {
+    for (const auto& object : objects) {
         applyViewTransform(plm, object);
     }
 }
@@ -147,7 +157,7 @@ void TransformStrategy::applyTransform(const Base::Placement& plm)
 void TransformStrategy::resetTransform()
 {
     std::set<App::DocumentObject*> objects = transformObjects();
-    for (const auto & object : objects) {
+    for (const auto& object : objects) {
         resetViewTransform(object);
     }
 }
@@ -155,47 +165,56 @@ void TransformStrategy::resetTransform()
 void TransformStrategy::applyViewTransform(const Base::Placement& plm, App::DocumentObject* obj)
 {
     Gui::Document* doc = Gui::Application::Instance->getDocument(obj->getDocument());
-    std::map<std::string,App::Property*> props;
+    std::map<std::string, App::Property*> props;
     obj->getPropertyMap(props);
     // search for the placement property
-    std::map<std::string,App::Property*>::iterator jt;
+    std::map<std::string, App::Property*>::iterator jt;
     jt = std::find_if(props.begin(), props.end(), find_transform());
     if (jt != props.end()) {
         Base::Placement local = static_cast<App::PropertyPlacement*>(jt->second)->getValue();
-        local *= plm; // in case a placement is already set
+        local *= plm;  // in case a placement is already set
         Gui::ViewProvider* vp = doc->getViewProvider(obj);
-        if (vp) vp->setTransformation(local.toMatrix());
+        if (vp) {
+            vp->setTransformation(local.toMatrix());
+        }
     }
     else {
         // No placement found, so apply the transformation directly
         Gui::ViewProvider* vp = doc->getViewProvider(obj);
-        if (vp) vp->setTransformation(plm.toMatrix());
+        if (vp) {
+            vp->setTransformation(plm.toMatrix());
+        }
     }
 }
 
 void TransformStrategy::resetViewTransform(App::DocumentObject* obj)
 {
     Gui::Document* doc = Gui::Application::Instance->getDocument(obj->getDocument());
-    std::map<std::string,App::Property*> props;
+    std::map<std::string, App::Property*> props;
     obj->getPropertyMap(props);
     // search for the placement property
-    std::map<std::string,App::Property*>::iterator jt;
+    std::map<std::string, App::Property*>::iterator jt;
     jt = std::find_if(props.begin(), props.end(), find_transform());
     if (jt != props.end()) {
         Base::Placement local = static_cast<App::PropertyPlacement*>(jt->second)->getValue();
         Gui::ViewProvider* vp = doc->getViewProvider(obj);
-        if (vp) vp->setTransformation(local.toMatrix());
+        if (vp) {
+            vp->setTransformation(local.toMatrix());
+        }
     }
     else {
         // No placement found
         Gui::ViewProvider* vp = doc->getViewProvider(obj);
-        if (vp) vp->setTransformation(Base::Matrix4D());
+        if (vp) {
+            vp->setTransformation(Base::Matrix4D());
+        }
     }
 }
 
 // ----------------------------------------------------------------------------
 
-DefaultTransformStrategy::DefaultTransformStrategy(QWidget* w) : widget(w)
+DefaultTransformStrategy::DefaultTransformStrategy(QWidget* w)
+    : widget(w)
 {
     Gui::SelectionChanges mod;
     mod.Type = Gui::SelectionChanges::SetSelection;
@@ -211,24 +230,27 @@ std::set<App::DocumentObject*> DefaultTransformStrategy::transformObjects() cons
 
 void DefaultTransformStrategy::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
-    if (msg.Type == SelectionChanges::SetPreselect ||
-        msg.Type == SelectionChanges::RmvPreselect)
-        return; // nothing to do
+    if (msg.Type == SelectionChanges::SetPreselect || msg.Type == SelectionChanges::RmvPreselect) {
+        return;  // nothing to do
+    }
     if (msg.Type == SelectionChanges::ClrSelection) {
         widget->setDisabled(true);
-        for (const auto & it : selection)
-             resetViewTransform(it);
+        for (const auto& it : selection) {
+            resetViewTransform(it);
+        }
         selection.clear();
         return;
     }
 
     std::set<App::DocumentObject*> update_selection;
-    std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType
-        (App::DocumentObject::getClassTypeId());
-    for (const auto & it : sel) {
+    std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType(
+        App::DocumentObject::getClassTypeId()
+    );
+    for (const auto& it : sel) {
         if (it->isDerivedFrom<App::GeoFeature>()) {
             // search for a data property
-            const App::PropertyGeometry* geo = static_cast<App::GeoFeature*>(it)->getPropertyOfGeometry();
+            const App::PropertyGeometry* geo
+                = static_cast<App::GeoFeature*>(it)->getPropertyOfGeometry();
             if (geo) {
                 update_selection.insert(it);
             }
@@ -253,19 +275,30 @@ void DefaultTransformStrategy::onSelectionChanged(const Gui::SelectionChanges& m
 
     if (!filter.empty()) {
         std::set<App::DocumentObject*> diff;
-        std::insert_iterator< std::set<App::DocumentObject*> > biit(diff, diff.begin());
-        std::set_difference(update_selection.begin(), update_selection.end(),
-            filter.begin(), filter.end(), biit);
+        std::insert_iterator<std::set<App::DocumentObject*>> biit(diff, diff.begin());
+        std::set_difference(
+            update_selection.begin(),
+            update_selection.end(),
+            filter.begin(),
+            filter.end(),
+            biit
+        );
         update_selection = diff;
     }
 
     // reset transform for all deselected objects
     std::vector<App::DocumentObject*> diff;
-    std::back_insert_iterator< std::vector<App::DocumentObject*> > biit(diff);
-    std::set_difference(selection.begin(), selection.end(),
-        update_selection.begin(), update_selection.end(), biit);
-    for (const auto & it : diff)
-         resetViewTransform(it);
+    std::back_insert_iterator<std::vector<App::DocumentObject*>> biit(diff);
+    std::set_difference(
+        selection.begin(),
+        selection.end(),
+        update_selection.begin(),
+        update_selection.end(),
+        biit
+    );
+    for (const auto& it : diff) {
+        resetViewTransform(it);
+    }
     selection = update_selection;
 
     widget->setDisabled(selection.empty());
@@ -276,13 +309,13 @@ void DefaultTransformStrategy::onSelectionChanged(const Gui::SelectionChanges& m
 /* TRANSLATOR Gui::Dialog::Transform */
 
 Transform::Transform(QWidget* parent, Qt::WindowFlags fl)
-  : QDialog(parent, fl), strategy(nullptr)
+    : QDialog(parent, fl)
+    , strategy(nullptr)
 {
     ui = new Ui_Placement();
     ui->setupUi(this);
     QPushButton* applyButton = ui->buttonBox->button(QDialogButtonBox::Apply);
-    connect(applyButton, &QPushButton::clicked,
-            this, &Transform::onApplyButtonClicked);
+    connect(applyButton, &QPushButton::clicked, this, &Transform::onApplyButtonClicked);
 
     ui->resetButton->hide();
     ui->applyIncrementalPlacement->hide();
@@ -294,13 +327,17 @@ Transform::Transform(QWidget* parent, Qt::WindowFlags fl)
 
     int id = 1;
     QList<Gui::QuantitySpinBox*> sb = this->findChildren<Gui::QuantitySpinBox*>();
-    for (const auto & it : sb) {
-        connect(it, qOverload<double>(&QuantitySpinBox::valueChanged), signalMapper, qOverload<>(&QSignalMapper::map));
+    for (const auto& it : sb) {
+        connect(
+            it,
+            qOverload<double>(&QuantitySpinBox::valueChanged),
+            signalMapper,
+            qOverload<>(&QSignalMapper::map)
+        );
         signalMapper->setMapping(it, id++);
     }
 
-    connect(signalMapper, &QSignalMapper::mappedInt,
-            this, &Transform::onTransformChanged);
+    connect(signalMapper, &QSignalMapper::mappedInt, this, &Transform::onTransformChanged);
 
     setTransformStrategy(new DefaultTransformStrategy(this));
 }
@@ -313,10 +350,12 @@ Transform::~Transform()
 
 void Transform::setTransformStrategy(TransformStrategy* ts)
 {
-    if (!ts || ts == strategy)
+    if (!ts || ts == strategy) {
         return;
-    if (strategy)
+    }
+    if (strategy) {
         delete strategy;
+    }
     strategy = ts;
     Base::Vector3d cnt = strategy->getRotationCenter();
     ui->xCnt->setValue(Base::Quantity(cnt.x, Base::Unit::Length));
@@ -357,7 +396,7 @@ void Transform::onApplyButtonClicked()
 
     // nullify the values
     QList<Gui::QuantitySpinBox*> sb = this->findChildren<Gui::QuantitySpinBox*>();
-    for (auto & it : sb) {
+    for (auto& it : sb) {
         it->blockSignals(true);
         it->setValue(0.0);
         it->blockSignals(false);
@@ -384,26 +423,37 @@ Base::Placement Transform::getPlacementData() const
     Base::Vector3d pos;
     Base::Vector3d cnt;
 
-    pos = Base::Vector3d(ui->xPos->value().getValue(),ui->yPos->value().getValue(),ui->zPos->value().getValue());
-    cnt = Base::Vector3d(ui->xCnt->value().getValue(),ui->yCnt->value().getValue(),ui->zCnt->value().getValue());
+    pos = Base::Vector3d(
+        ui->xPos->value().getValue(),
+        ui->yPos->value().getValue(),
+        ui->zPos->value().getValue()
+    );
+    cnt = Base::Vector3d(
+        ui->xCnt->value().getValue(),
+        ui->yCnt->value().getValue(),
+        ui->zCnt->value().getValue()
+    );
 
     if (index == 0) {
         Base::Vector3d dir = getDirection();
-        rot.setValue(Base::Vector3d(dir.x,dir.y,dir.z),
-                     Base::toRadians(ui->angle->value().getValue()));
+        rot.setValue(
+            Base::Vector3d(dir.x, dir.y, dir.z),
+            Base::toRadians(ui->angle->value().getValue())
+        );
     }
     else if (index == 1) {
         rot.setYawPitchRoll(
             ui->yawAngle->value().getValue(),
             ui->pitchAngle->value().getValue(),
-            ui->rollAngle->value().getValue());
+            ui->rollAngle->value().getValue()
+        );
     }
 
     Base::Placement p(pos, rot, cnt);
     return p;
 }
 
-void Transform::changeEvent(QEvent *e)
+void Transform::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);

@@ -27,14 +27,16 @@
 #include <QDialog>
 #include <FCGlobal.h>
 
-namespace Gui {
+namespace Gui
+{
 class View3DInventor;
-namespace Dialog {
+namespace Dialog
+{
 
 /**
  * @author Werner Mayer
  */
-class GuiExport Clipping : public QDialog
+class GuiExport Clipping: public QDialog
 {
     Q_OBJECT
 
@@ -70,7 +72,7 @@ private:
     Private* d;
 };
 
-} // namespace Dialog
-} // namespace Gui
+}  // namespace Dialog
+}  // namespace Gui
 
-#endif // GUI_DIALOG_CLIPPING_H
+#endif  // GUI_DIALOG_CLIPPING_H

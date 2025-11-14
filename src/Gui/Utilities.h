@@ -38,82 +38,113 @@
 class SbViewVolume;
 class QAbstractItemView;
 
-namespace Base {
+namespace Base
+{
 // Specialization for SbVec3f
-template <>
-struct vec_traits<SbVec3f> {
+template<>
+struct vec_traits<SbVec3f>
+{
     using vec_type = SbVec3f;
     using float_type = float;
-    explicit vec_traits(const vec_type& v) : v(v){}
-    inline std::tuple<float_type,float_type,float_type> get() const {
+    explicit vec_traits(const vec_type& v)
+        : v(v)
+    {}
+    inline std::tuple<float_type, float_type, float_type> get() const
+    {
         return std::make_tuple(v[0], v[1], v[2]);
     }
+
 private:
     const vec_type& v;
 };
 
 // Specialization for SbVec3d
-template <>
-struct vec_traits<SbVec3d> {
+template<>
+struct vec_traits<SbVec3d>
+{
     using vec_type = SbVec3d;
     using float_type = double;
-    explicit vec_traits(const vec_type& v) : v(v){}
-    inline std::tuple<float_type,float_type,float_type> get() const {
+    explicit vec_traits(const vec_type& v)
+        : v(v)
+    {}
+    inline std::tuple<float_type, float_type, float_type> get() const
+    {
         return std::make_tuple(v[0], v[1], v[2]);
     }
+
 private:
     const vec_type& v;
 };
 
 // Specialization for SbRotation
-template <>
-struct vec_traits<SbRotation> {
+template<>
+struct vec_traits<SbRotation>
+{
     using vec_type = SbRotation;
     using float_type = float;
-    explicit vec_traits(const vec_type& v) : v(v){}
-    inline std::tuple<float_type,float_type,float_type,float_type> get() const {
-        float_type q1,q2,q3,q4;
-        v.getValue(q1,q2,q3,q4);
+    explicit vec_traits(const vec_type& v)
+        : v(v)
+    {}
+    inline std::tuple<float_type, float_type, float_type, float_type> get() const
+    {
+        float_type q1, q2, q3, q4;
+        v.getValue(q1, q2, q3, q4);
         return std::make_tuple(q1, q2, q3, q4);
     }
+
 private:
     const vec_type& v;
 };
 
 // Specialization for SbColor
-template <>
-struct vec_traits<SbColor> {
+template<>
+struct vec_traits<SbColor>
+{
     using vec_type = SbColor;
     using float_type = float;
-    explicit vec_traits(const vec_type& v) : v(v){}
-    inline std::tuple<float_type,float_type,float_type> get() const {
+    explicit vec_traits(const vec_type& v)
+        : v(v)
+    {}
+    inline std::tuple<float_type, float_type, float_type> get() const
+    {
         return std::make_tuple(v[0], v[1], v[2]);
     }
+
 private:
     const vec_type& v;
 };
 
 // Specialization for Color
-template <>
-struct vec_traits<Base::Color> {
+template<>
+struct vec_traits<Base::Color>
+{
     using vec_type = Base::Color;
     using float_type = float;
-    explicit vec_traits(const vec_type& v) : v(v){}
-    inline std::tuple<float_type,float_type,float_type> get() const {
+    explicit vec_traits(const vec_type& v)
+        : v(v)
+    {}
+    inline std::tuple<float_type, float_type, float_type> get() const
+    {
         return std::make_tuple(v.r, v.g, v.b);
     }
+
 private:
     const vec_type& v;
 };
 
-template <>
-struct vec_traits<QColor> {
+template<>
+struct vec_traits<QColor>
+{
     using vec_type = QColor;
     using float_type = float;
-    explicit vec_traits(const vec_type& v) : v(v){}
-    inline std::tuple<float_type,float_type,float_type> get() const {
+    explicit vec_traits(const vec_type& v)
+        : v(v)
+    {}
+    inline std::tuple<float_type, float_type, float_type> get() const
+    {
         return std::make_tuple(v.redF(), v.greenF(), v.blueF());
     }
+
 private:
     const vec_type& v;
 };
@@ -194,9 +225,11 @@ struct color_traits<SbColor>
     static color_type makeColor(int red, int green, int blue, int alpha = 255)
     {
         (void)alpha;
-        return color_type{static_cast<float>(red) / 255.0F,
-                          static_cast<float>(green) / 255.0F,
-                          static_cast<float>(blue) / 255.0F};
+        return color_type {
+            static_cast<float>(red) / 255.0F,
+            static_cast<float>(green) / 255.0F,
+            static_cast<float>(blue) / 255.0F
+        };
     }
 
 private:
@@ -278,10 +311,12 @@ struct color_traits<SbColor4f>
     }
     static color_type makeColor(int red, int green, int blue, int alpha = 255)
     {
-        return color_type{static_cast<float>(red) / 255.0F,
-                          static_cast<float>(green) / 255.0F,
-                          static_cast<float>(blue) / 255.0F,
-                          static_cast<float>(alpha) / 255.0F};
+        return color_type {
+            static_cast<float>(red) / 255.0F,
+            static_cast<float>(green) / 255.0F,
+            static_cast<float>(blue) / 255.0F,
+            static_cast<float>(alpha) / 255.0F
+        };
     }
 
 private:
@@ -363,53 +398,72 @@ struct color_traits<QColor>
     }
     static color_type makeColor(int red, int green, int blue, int alpha = 255)
     {
-        return color_type{red, green, blue, alpha};
+        return color_type {red, green, blue, alpha};
     }
 
 private:
     color_type ct;
 };
 
-template <>
+template<>
 inline SbMatrix convertTo<SbMatrix, Base::Matrix4D>(const Base::Matrix4D& vec2)
 {
     double dMtrx[16];
     vec2.getGLMatrix(dMtrx);
-    return SbMatrix(dMtrx[0], dMtrx[1], dMtrx[2],  dMtrx[3], // clazy:exclude=rule-of-two-soft
-                    dMtrx[4], dMtrx[5], dMtrx[6],  dMtrx[7],
-                    dMtrx[8], dMtrx[9], dMtrx[10], dMtrx[11],
-                    dMtrx[12],dMtrx[13],dMtrx[14], dMtrx[15]);
+    return SbMatrix(
+        dMtrx[0],
+        dMtrx[1],
+        dMtrx[2],
+        dMtrx[3],  // clazy:exclude=rule-of-two-soft
+        dMtrx[4],
+        dMtrx[5],
+        dMtrx[6],
+        dMtrx[7],
+        dMtrx[8],
+        dMtrx[9],
+        dMtrx[10],
+        dMtrx[11],
+        dMtrx[12],
+        dMtrx[13],
+        dMtrx[14],
+        dMtrx[15]
+    );
 }
 
-template <>
+template<>
 inline Base::Matrix4D convertTo<Base::Matrix4D, SbMatrix>(const SbMatrix& vec2)
 {
     Base::Matrix4D mat;
-    for(int i=0;i<4;++i) {
-        for(int j=0;j<4;++j)
+    for (int i = 0; i < 4; ++i) {
+        for (int j = 0; j < 4; ++j) {
             mat[i][j] = vec2[j][i];
+        }
     }
     return mat;
 }
-}
+}  // namespace Base
 
-namespace App{ class DocumentObject; }
-namespace Gui {
+namespace App
+{
+class DocumentObject;
+}
+namespace Gui
+{
 
 /**
  */
-class GuiExport ViewVolumeProjection : public Base::ViewProjMethod
+class GuiExport ViewVolumeProjection: public Base::ViewProjMethod
 {
 public:
-    explicit ViewVolumeProjection (const SbViewVolume &vv);
+    explicit ViewVolumeProjection(const SbViewVolume& vv);
     ~ViewVolumeProjection() override = default;
 
-    Base::Vector3f operator()(const Base::Vector3f &rclPt) const override;
-    Base::Vector3d operator()(const Base::Vector3d &rclPt) const override;
-    Base::Vector3f inverse (const Base::Vector3f &rclPt) const override;
-    Base::Vector3d inverse (const Base::Vector3d &rclPt) const override;
+    Base::Vector3f operator()(const Base::Vector3f& rclPt) const override;
+    Base::Vector3d operator()(const Base::Vector3d& rclPt) const override;
+    Base::Vector3f inverse(const Base::Vector3f& rclPt) const override;
+    Base::Vector3d inverse(const Base::Vector3d& rclPt) const override;
 
-    Base::Matrix4D getProjectionMatrix () const override;
+    Base::Matrix4D getProjectionMatrix() const override;
 
 protected:
     SbViewVolume viewVolume;
@@ -424,7 +478,7 @@ public:
     std::vector<int> tessellate() const;
 
 private:
-    static void tessCB(void * v0, void * v1, void * v2, void * cbdata);
+    static void tessCB(void* v0, void* v1, void* v2, void* cbdata);
 
 private:
     std::vector<SbVec2f> polygon;
@@ -441,48 +495,53 @@ private:
     class MatchName;
 };
 
-#define FC_ADD_CATALOG_ENTRY(__part__, __partclass__, __parent__) SO_KIT_ADD_CATALOG_ENTRY(__part__, __partclass__, TRUE, __parent__, "", TRUE);
+#define FC_ADD_CATALOG_ENTRY(__part__, __partclass__, __parent__) \
+    SO_KIT_ADD_CATALOG_ENTRY(__part__, __partclass__, TRUE, __parent__, "", TRUE);
 
 #define FC_SET_SWITCH(__name__, __state__) \
-do { \
-    SoSwitch* sw = SO_GET_ANY_PART(this, __name__, SoSwitch); \
-    assert(sw); \
-    sw->whichChild = __state__; \
-} while (0)
+    do { \
+        SoSwitch* sw = SO_GET_ANY_PART(this, __name__, SoSwitch); \
+        assert(sw); \
+        sw->whichChild = __state__; \
+    } while (0)
 
 #define FC_SET_TOGGLE_SWITCH(__name__, __state__) \
-do { \
-    SoToggleSwitch* sw = SO_GET_ANY_PART(this, __name__, SoToggleSwitch); \
-    assert(sw); \
-    sw->on = __state__; \
-} while (0)
+    do { \
+        SoToggleSwitch* sw = SO_GET_ANY_PART(this, __name__, SoToggleSwitch); \
+        assert(sw); \
+        sw->on = __state__; \
+    } while (0)
 
-struct RotationComponents {
+struct RotationComponents
+{
     float angle;
     SbVec3f axis;
 };
 
-[[nodiscard]] inline RotationComponents getRotationComponents(const SbRotation &rotation) {
+[[nodiscard]] inline RotationComponents getRotationComponents(const SbRotation& rotation)
+{
     RotationComponents comps;
     rotation.getValue(comps.axis, comps.angle);
 
     return comps;
 }
 
-struct TransformComponents {
+struct TransformComponents
+{
     SbVec3f translation;
     SbVec3f scale;
     SbRotation rotation;
     SbRotation scaleOrientation;
 };
 
-[[nodiscard]] inline TransformComponents getMatrixTransform(const SbMatrix &matrix) {
+[[nodiscard]] inline TransformComponents getMatrixTransform(const SbMatrix& matrix)
+{
     TransformComponents comps;
     matrix.getTransform(comps.translation, comps.rotation, comps.scale, comps.scaleOrientation);
 
     return comps;
 }
 
-} // namespace Gui
+}  // namespace Gui
 
-#endif // GUI_UTILITIES_H
+#endif  // GUI_UTILITIES_H

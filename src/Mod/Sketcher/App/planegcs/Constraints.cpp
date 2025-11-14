@@ -21,7 +21,7 @@
  ***************************************************************************/
 
 #ifdef _MSC_VER
-#pragma warning(disable : 4251)
+# pragma warning(disable : 4251)
 #endif
 
 #include <cmath>
@@ -30,7 +30,7 @@
 #include <algorithm>
 #define DEBUG_DERIVS 0
 #if DEBUG_DERIVS
-#include <cassert>
+# include <cassert>
 #endif
 
 #include <boost/graph/graph_concepts.hpp>
@@ -140,7 +140,8 @@ double ConstraintEqual::grad(double* param)
 ConstraintWeightedLinearCombination::ConstraintWeightedLinearCombination(
     size_t givennumpoles,
     const std::vector<double*>& givenpvec,
-    const std::vector<double>& givenfactors)
+    const std::vector<double>& givenfactors
+)
     : factors(givenfactors)
     , numpoles(givennumpoles)
 {
@@ -209,8 +210,10 @@ double ConstraintWeightedLinearCombination::grad(double* param)
 
 // --------------------------------------------------------
 // Center of Gravity
-ConstraintCenterOfGravity::ConstraintCenterOfGravity(const std::vector<double*>& givenpvec,
-                                                     const std::vector<double>& givenweights)
+ConstraintCenterOfGravity::ConstraintCenterOfGravity(
+    const std::vector<double*>& givenpvec,
+    const std::vector<double>& givenweights
+)
     : weights(givenweights)
     , numpoints(givenpvec.size() - 1)
 {
@@ -296,10 +299,12 @@ ConstraintSlopeAtBSplineKnot::ConstraintSlopeAtBSplineKnot(BSpline& b, Line& l, 
     factors.resize(numpoles);
     slopefactors.resize(numpoles);
     for (size_t i = 0; i < numpoles + 1; ++i) {
-        tempfactors[i] = b.getLinCombFactor(*(b.knots[knotindex]),
-                                            startpole + b.degree,
-                                            startpole + i,
-                                            b.degree - 1)
+        tempfactors[i] = b.getLinCombFactor(
+                             *(b.knots[knotindex]),
+                             startpole + b.degree,
+                             startpole + i,
+                             b.degree - 1
+                         )
             / (b.flattenedknots[startpole + b.degree + i] - b.flattenedknots[startpole + i]);
     }
     for (size_t i = 0; i < numpoles; ++i) {
@@ -477,10 +482,12 @@ double ConstraintSlopeAtBSplineKnot::grad(double* param)
 
 // --------------------------------------------------------
 // Point On BSpline
-ConstraintPointOnBSpline::ConstraintPointOnBSpline(double* point,
-                                                   double* initparam,
-                                                   int coordidx,
-                                                   BSpline& b)
+ConstraintPointOnBSpline::ConstraintPointOnBSpline(
+    double* point,
+    double* initparam,
+    int coordidx,
+    BSpline& b
+)
     : bsp(b)
 {
     // This is always going to be true
@@ -546,19 +553,11 @@ double ConstraintPointOnBSpline::error()
     for (size_t i = 0; i < numpoints; ++i) {
         d[i] = *poleat(i) * *weightat(i);
     }
-    sum = BSpline::splineValue(*theparam(),
-                               startpole + bsp.degree,
-                               bsp.degree,
-                               d,
-                               bsp.flattenedknots);
+    sum = BSpline::splineValue(*theparam(), startpole + bsp.degree, bsp.degree, d, bsp.flattenedknots);
     for (size_t i = 0; i < numpoints; ++i) {
         d[i] = *weightat(i);
     }
-    wsum = BSpline::splineValue(*theparam(),
-                                startpole + bsp.degree,
-                                bsp.degree,
-                                d,
-                                bsp.flattenedknots);
+    wsum = BSpline::splineValue(*theparam(), startpole + bsp.degree, bsp.degree, d, bsp.flattenedknots);
 
     // TODO: Change the poles as the point moves between pieces
 
@@ -573,11 +572,13 @@ double ConstraintPointOnBSpline::grad(double* gcsparam)
         for (size_t i = 0; i < numpoints; ++i) {
             d[i] = *weightat(i);
         }
-        double wsum = BSpline::splineValue(*theparam(),
-                                           startpole + bsp.degree,
-                                           bsp.degree,
-                                           d,
-                                           bsp.flattenedknots);
+        double wsum = BSpline::splineValue(
+            *theparam(),
+            startpole + bsp.degree,
+            bsp.degree,
+            d,
+            bsp.flattenedknots
+        );
         deriv += wsum;
     }
 
@@ -585,36 +586,36 @@ double ConstraintPointOnBSpline::grad(double* gcsparam)
         VEC_D d(numpoints - 1);
         for (size_t i = 1; i < numpoints; ++i) {
             d[i - 1] = (*poleat(i) * *weightat(i) - *poleat(i - 1) * *weightat(i - 1))
-                / (bsp.flattenedknots[startpole + i + bsp.degree]
-                   - bsp.flattenedknots[startpole + i]);
+                / (bsp.flattenedknots[startpole + i + bsp.degree] - bsp.flattenedknots[startpole + i]);
         }
-        double slopevalue = BSpline::splineValue(*theparam(),
-                                                 startpole + bsp.degree,
-                                                 bsp.degree - 1,
-                                                 d,
-                                                 bsp.flattenedknots);
+        double slopevalue = BSpline::splineValue(
+            *theparam(),
+            startpole + bsp.degree,
+            bsp.degree - 1,
+            d,
+            bsp.flattenedknots
+        );
         for (size_t i = 1; i < numpoints; ++i) {
             d[i - 1] = (*weightat(i) - *weightat(i - 1))
-                / (bsp.flattenedknots[startpole + i + bsp.degree]
-                   - bsp.flattenedknots[startpole + i]);
+                / (bsp.flattenedknots[startpole + i + bsp.degree] - bsp.flattenedknots[startpole + i]);
         }
-        double wslopevalue = BSpline::splineValue(*theparam(),
-                                                  startpole + bsp.degree,
-                                                  bsp.degree - 1,
-                                                  d,
-                                                  bsp.flattenedknots);
+        double wslopevalue = BSpline::splineValue(
+            *theparam(),
+            startpole + bsp.degree,
+            bsp.degree - 1,
+            d,
+            bsp.flattenedknots
+        );
         deriv += (*thepoint() * wslopevalue - slopevalue) * bsp.degree;
     }
 
     for (size_t i = 0; i < numpoints; ++i) {
         if (gcsparam == poleat(i)) {
-            auto factorsI =
-                bsp.getLinCombFactor(*theparam(), startpole + bsp.degree, startpole + i);
+            auto factorsI = bsp.getLinCombFactor(*theparam(), startpole + bsp.degree, startpole + i);
             deriv += -(*weightat(i) * factorsI);
         }
         if (gcsparam == weightat(i)) {
-            auto factorsI =
-                bsp.getLinCombFactor(*theparam(), startpole + bsp.degree, startpole + i);
+            auto factorsI = bsp.getLinCombFactor(*theparam(), startpole + bsp.degree, startpole + i);
             deriv += (*thepoint() - *poleat(i)) * factorsI;
         }
     }
@@ -1269,11 +1270,7 @@ ConstraintL2LAngle::ConstraintL2LAngle(Line& l1, Line& l2, double* a)
     rescale();
 }
 
-ConstraintL2LAngle::ConstraintL2LAngle(Point& l1p1,
-                                       Point& l1p2,
-                                       Point& l2p1,
-                                       Point& l2p2,
-                                       double* a)
+ConstraintL2LAngle::ConstraintL2LAngle(Point& l1p1, Point& l1p2, Point& l2p1, Point& l2p2, double* a)
 {
     pvec.push_back(l1p1.x);
     pvec.push_back(l1p1.y);
@@ -1391,10 +1388,7 @@ ConstraintMidpointOnLine::ConstraintMidpointOnLine(Line& l1, Line& l2)
     rescale();
 }
 
-ConstraintMidpointOnLine::ConstraintMidpointOnLine(Point& l1p1,
-                                                   Point& l1p2,
-                                                   Point& l2p1,
-                                                   Point& l2p2)
+ConstraintMidpointOnLine::ConstraintMidpointOnLine(Point& l1p1, Point& l1p2, Point& l2p1, Point& l2p2)
 {
     pvec.push_back(l1p1.x);
     pvec.push_back(l1p1.y);
@@ -1471,11 +1465,13 @@ double ConstraintMidpointOnLine::grad(double* param)
 
 // --------------------------------------------------------
 // TangentCircumf
-ConstraintTangentCircumf::ConstraintTangentCircumf(Point& p1,
-                                                   Point& p2,
-                                                   double* rad1,
-                                                   double* rad2,
-                                                   bool internal_)
+ConstraintTangentCircumf::ConstraintTangentCircumf(
+    Point& p1,
+    Point& p2,
+    double* rad1,
+    double* rad2,
+    bool internal_
+)
     : internal(internal_)
 {
 
@@ -1498,11 +1494,21 @@ double ConstraintTangentCircumf::error()
 {
     double dx = (*c1x() - *c2x());
     double dy = (*c1y() - *c2y());
+    double d_sq = dx * dx + dy * dy;
+
+    // Handle the singularity for near-concentric circles.
+    // When concentric, tangency is equivalent to equal radii.
+    // We switch to the robust 'r1 - r2 = 0' formulation, which has a
+    // constant non-zero gradient, avoiding the singularity.
+    if (d_sq < 1e-14) {
+        return scale * (*r1() - *r2());
+    }
+
     if (internal) {
-        return scale * ((dx * dx + dy * dy) - (*r1() - *r2()) * (*r1() - *r2()));
+        return scale * (d_sq - (*r1() - *r2()) * (*r1() - *r2()));
     }
     else {
-        return scale * ((dx * dx + dy * dy) - (*r1() + *r2()) * (*r1() + *r2()));
+        return scale * (d_sq - (*r1() + *r2()) * (*r1() + *r2()));
     }
 }
 
@@ -1513,6 +1519,21 @@ double ConstraintTangentCircumf::grad(double* param)
         || param == r2()) {
         double dx = (*c1x() - *c2x());
         double dy = (*c1y() - *c2y());
+        double d_sq = dx * dx + dy * dy;
+
+        // Provide the gradient corresponding to the robust 'r1 - r2 = 0' error function.
+        // This gradient is constant and non-zero, preventing the false redundancy report.
+        if (d_sq < 1e-14) {
+            if (param == r1()) {
+                deriv = 1.0;
+            }
+            else if (param == r2()) {
+                deriv = -1.0;
+            }
+            // The gradient is 0 for all other parameters (center coordinates).
+            return scale * deriv;
+        }
+
         if (param == c1x()) {
             deriv += 2 * dx;
         }
@@ -1707,7 +1728,8 @@ void ConstraintEllipseTangentLine::errorgrad(double* err, double* grad, double* 
 ConstraintInternalAlignmentPoint2Ellipse::ConstraintInternalAlignmentPoint2Ellipse(
     Ellipse& e,
     Point& p1,
-    InternalAlignmentType alignmentType)
+    InternalAlignmentType alignmentType
+)
     : e(e)
     , p(p1)
     , AlignmentType(alignmentType)
@@ -1756,9 +1778,9 @@ void ConstraintInternalAlignmentPoint2Ellipse::errorgrad(double* err, double* gr
     double a, da;
     a = e.getRadMaj(c, f1, b, db, da);
 
-    DeriVector2 poa;  // point to align to
-    bool by_y_not_by_x =
-        false;  // a flag to indicate if the alignment error function is for y (false - x, true - y)
+    DeriVector2 poa;             // point to align to
+    bool by_y_not_by_x = false;  // a flag to indicate if the alignment error function is for y
+                                 // (false - x, true - y)
 
     switch (AlignmentType) {
         case EllipsePositiveMajorX:
@@ -1804,7 +1826,8 @@ void ConstraintInternalAlignmentPoint2Ellipse::errorgrad(double* err, double* gr
 ConstraintInternalAlignmentPoint2Hyperbola::ConstraintInternalAlignmentPoint2Hyperbola(
     Hyperbola& e,
     Point& p1,
-    InternalAlignmentType alignmentType)
+    InternalAlignmentType alignmentType
+)
     : e(e)
     , p(p1)
     , AlignmentType(alignmentType)
@@ -1854,9 +1877,9 @@ void ConstraintInternalAlignmentPoint2Hyperbola::errorgrad(double* err, double* 
     double a, da;
     a = e.getRadMaj(c, f1, b, db, da);
 
-    DeriVector2 poa;  // point to align to
-    bool by_y_not_by_x =
-        false;  // a flag to indicate if the alignment error function is for y (false - x, true - y)
+    DeriVector2 poa;             // point to align to
+    bool by_y_not_by_x = false;  // a flag to indicate if the alignment error function is for y
+                                 // (false - x, true - y)
 
     switch (AlignmentType) {
         case HyperbolaPositiveMajorX:
@@ -1903,8 +1926,7 @@ void ConstraintInternalAlignmentPoint2Hyperbola::errorgrad(double* err, double* 
 
 // --------------------------------------------------------
 //  ConstraintEqualMajorAxesEllipse
-ConstraintEqualMajorAxesConic::ConstraintEqualMajorAxesConic(MajorRadiusConic* a1,
-                                                             MajorRadiusConic* a2)
+ConstraintEqualMajorAxesConic::ConstraintEqualMajorAxesConic(MajorRadiusConic* a1, MajorRadiusConic* a2)
     : e1(a1)
     , e2(a2)
 {
@@ -2375,11 +2397,13 @@ double ConstraintAngleViaPoint::grad(double* param)
 
 // --------------------------------------------------------
 // ConstraintAngleViaTwoPoints
-ConstraintAngleViaTwoPoints::ConstraintAngleViaTwoPoints(Curve& acrv1,
-                                                         Curve& acrv2,
-                                                         Point p1,
-                                                         Point p2,
-                                                         double* angle)
+ConstraintAngleViaTwoPoints::ConstraintAngleViaTwoPoints(
+    Curve& acrv1,
+    Curve& acrv2,
+    Point p1,
+    Point p2,
+    double* angle
+)
     : crv1(acrv1.Copy())
     , crv2(acrv2.Copy())
 {
@@ -2472,11 +2496,13 @@ double ConstraintAngleViaTwoPoints::grad(double* param)
 
 // --------------------------------------------------------
 // ConstraintAngleViaPointAndParam
-ConstraintAngleViaPointAndParam::ConstraintAngleViaPointAndParam(Curve& acrv1,
-                                                                 Curve& acrv2,
-                                                                 Point p,
-                                                                 double* cparam,
-                                                                 double* angle)
+ConstraintAngleViaPointAndParam::ConstraintAngleViaPointAndParam(
+    Curve& acrv1,
+    Curve& acrv2,
+    Point p,
+    double* cparam,
+    double* angle
+)
     : crv1(acrv1.Copy())
     , crv2(acrv2.Copy())
 {
@@ -2565,12 +2591,14 @@ double ConstraintAngleViaPointAndParam::grad(double* param)
 
 // --------------------------------------------------------
 // ConstraintAngleViaPointAndTwoParams
-ConstraintAngleViaPointAndTwoParams::ConstraintAngleViaPointAndTwoParams(Curve& acrv1,
-                                                                         Curve& acrv2,
-                                                                         Point p,
-                                                                         double* cparam1,
-                                                                         double* cparam2,
-                                                                         double* angle)
+ConstraintAngleViaPointAndTwoParams::ConstraintAngleViaPointAndTwoParams(
+    Curve& acrv1,
+    Curve& acrv2,
+    Point p,
+    double* cparam1,
+    double* cparam2,
+    double* angle
+)
     : crv1(acrv1.Copy())
     , crv2(acrv2.Copy())
 {
@@ -2662,14 +2690,16 @@ double ConstraintAngleViaPointAndTwoParams::grad(double* param)
 
 // --------------------------------------------------------
 // ConstraintSnell
-ConstraintSnell::ConstraintSnell(Curve& r1,
-                                 Curve& r2,
-                                 Curve& b,
-                                 Point p,
-                                 double* n1,
-                                 double* n2,
-                                 bool flipn1,
-                                 bool flipn2)
+ConstraintSnell::ConstraintSnell(
+    Curve& r1,
+    Curve& r2,
+    Curve& b,
+    Point p,
+    double* n1,
+    double* n2,
+    bool flipn1,
+    bool flipn2
+)
     : ray1(r1.Copy())
     , ray2(r2.Copy())
     , boundary(b.Copy())
@@ -2968,7 +2998,7 @@ void ConstraintC2LDistance::errorgrad(double* err, double* grad, double* param)
 
     // center to line distance (=h) and its derivative (=dh)
     double darea = 0.0;
-    double area = v_line.crossProdNorm(v_p1ct, darea);  // parallelogram oriented area
+    double area = v_line.crossProdZ(v_p1ct, darea);  // parallelogram oriented area
 
     double dlength;
     double length = v_line.length(dlength);

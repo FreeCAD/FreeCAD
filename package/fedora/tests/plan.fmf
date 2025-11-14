@@ -1,0 +1,10 @@
+summary:
+    Run All FreeCAD python tests
+prepare:
+    how: install
+    package: 
+    - xorg-x11-server-Xvfb
+discover:
+    how: fmf
+execute:
+    how: tmt
