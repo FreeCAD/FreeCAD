@@ -1,7 +1,6 @@
 from Base.Metadata import export, constmethod
 from Base.PyObjectBase import PyObjectBase
 
-
 @export(
     PythonName="Part.ShapeFix.FaceConnect",
     Include="ShapeFix_FaceConnect.hxx",

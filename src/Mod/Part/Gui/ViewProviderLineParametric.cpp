@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "ViewProviderLineParametric.h"
 
@@ -36,23 +37,22 @@ PROPERTY_SOURCE(PartGui::ViewProviderLineParametric, PartGui::ViewProviderPrimit
 
 ViewProviderLineParametric::ViewProviderLineParametric()
 {
-  sPixmap = "Part_Line_Parametric";
+    sPixmap = "Part_Line_Parametric";
 }
 
 ViewProviderLineParametric::~ViewProviderLineParametric() = default;
-
 
 
 // **********************************************************************************
 
 std::vector<std::string> ViewProviderLineParametric::getDisplayModes() const
 {
-  // get the modes of the father
-  std::vector<std::string> StrList;
+    // get the modes of the father
+    std::vector<std::string> StrList;
 
-  // add your own modes
-  StrList.emplace_back("Wireframe");
-  StrList.emplace_back("Points");
+    // add your own modes
+    StrList.emplace_back("Wireframe");
+    StrList.emplace_back("Points");
 
-  return StrList;
+    return StrList;
 }

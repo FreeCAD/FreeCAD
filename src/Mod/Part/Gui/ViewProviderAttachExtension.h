@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2006 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -30,7 +32,7 @@
 namespace PartGui
 {
 
-class PartGuiExport ViewProviderAttachExtension : public Gui::ViewProviderExtension
+class PartGuiExport ViewProviderAttachExtension: public Gui::ViewProviderExtension
 {
     EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderAttachExtension);
 
@@ -39,7 +41,7 @@ public:
     ViewProviderAttachExtension();
     ~ViewProviderAttachExtension() override = default;
 
-    QIcon extensionMergeColorfullOverlayIcons (const QIcon & orig) const override;
+    QIcon extensionMergeColorfullOverlayIcons(const QIcon& orig) const override;
 
     void extensionUpdateData(const App::Property*) override;
     void extensionSetupContextMenu(QMenu*, QObject*, const char*) override;
@@ -47,8 +49,9 @@ public:
     void showAttachmentEditor(std::function<void()> onAccept = {}, std::function<void()> onReject = {});
 };
 
-using ViewProviderAttachExtensionPython = Gui::ViewProviderExtensionPythonT<PartGui::ViewProviderAttachExtension>;
+using ViewProviderAttachExtensionPython
+    = Gui::ViewProviderExtensionPythonT<PartGui::ViewProviderAttachExtension>;
 
-} //namespace Part::Gui
+}  // namespace PartGui
 
-#endif // GUI_VIEWPROVIDERATTACHMENTEXTENSION_H
+#endif  // GUI_VIEWPROVIDERATTACHMENTEXTENSION_H

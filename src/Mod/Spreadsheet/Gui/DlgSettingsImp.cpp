@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -50,7 +52,8 @@ void DlgSettingsImp::saveSettings()
      *  we'll check for validity during import/export
      */
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Spreadsheet");
+        "User parameter:BaseApp/Preferences/Mod/Spreadsheet"
+    );
     QString delimiter = ui->delimiterComboBox->currentText();
     hGrp->SetASCII("ImportExportDelimiter", delimiter.toStdString().c_str());
     ui->quoteCharLineEdit->onSave();
@@ -67,7 +70,8 @@ void DlgSettingsImp::loadSettings()
      */
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Spreadsheet");
+        "User parameter:BaseApp/Preferences/Mod/Spreadsheet"
+    );
     QString delimiter = QString::fromStdString(hGrp->GetASCII("ImportExportDelimiter", "tab"));
     int idx = ui->delimiterComboBox->findText(delimiter, Qt::MatchFixedString);
     if (idx != -1) {

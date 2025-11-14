@@ -307,6 +307,144 @@
             "value": "OFF"
           }
         }
-      }
+      },
+      {
+            "name": "rpm",
+            "description": "Settings like rpm build",
+            "displayName": "rpm",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/rpm",
+            "cacheVariables": {
+                "CMAKE_INSTALL_DATAROOTDIR": {
+                  "type": "PATH",
+                  "value": "/usr/share"
+                },
+                "CMAKE_C_FLAGS_RELEASE": {
+                    "type": "STRING",
+                    "value": "-DNDEBUG"
+                },
+                "CMAKE_CXX_FLAGS_RELEASE": {
+                    "type": "STRING",
+                    "value": "-DNDEBUG"
+                },
+                "CMAKE_Fortran_FLAGS_RELEASE": {
+                    "type": "STRING",
+                    "value": "-DNDEBUG"
+                },
+                "CMAKE_VERBOSE_MAKEFILE": {
+                    "type": "BOOL",
+                    "value": "ON"
+                },
+                "CMAKE_INSTALL_DO_STRIP": {
+                    "type": "BOOL",
+                    "value": "OFF"
+                },
+                "CMAKE_INSTALL_PREFIX": {
+                    "type": "PATH",
+                    "value": "/usr/lib64/freecad"
+                },
+                "CMAKE_INSTALL_FULL_SBINDIR": {
+                    "type": "PATH",
+                    "value": "/usr/bin"
+                },
+                "CMAKE_INSTALL_SBINDIR": {
+                    "type": "PATH",
+                    "value": "bin"
+                },
+                "INCLUDE_INSTALL_DIR": {
+                    "type": "PATH",
+                    "value": "/usr/include"
+                },
+                "LIB_INSTALL_DIR": {
+                    "type": "PATH",
+                    "value": "/usr/lib64"
+                },
+                "SYSCONF_INSTALL_DIR": {
+                    "type": "PATH",
+                    "value": "/etc"
+                },
+                "SHARE_INSTALL_PREFIX": {
+                    "type": "PATH",
+                    "value": "/usr/share"
+                },
+                "LIB_SUFFIX": {
+                    "type": "STRING",
+                    "value": "64"
+                },
+                "BUILD_SHARED_LIBS": {
+                    "type": "BOOL",
+                    "value": "ON"
+                },
+                "CMAKE_INSTALL_DOCDIR": {
+                    "type": "PATH",
+                    "value": "/usr/share/doc/freecad"
+                },
+                "CMAKE_INSTALL_INCLUDEDIR": {
+                    "type": "PATH",
+                    "value": "/usr/include"
+                },
+                "RESOURCEDIR": {
+                    "type": "PATH",
+                    "value": "/usr/share/freecad"
+                },
+                "FREECAD_USE_EXTERNAL_PIVY": {
+                    "type": "BOOL",
+                    "value": "TRUE"
+                },
+                "FREECAD_USE_EXTERNAL_FMT": {
+                    "type": "BOOL",
+                    "value": "TRUE"
+                },
+                "FREECAD_USE_PCL": {
+                    "type": "BOOL",
+                    "value": "OFF"
+                },
+                "FREECAD_QT_VERSION": {
+                    "type": "STRING",
+                    "value": "6"
+                },
+                "OpenGL_GL_PREFERENCE": {
+                    "type": "STRING",
+                    "value": "GLVND"
+                },
+                "USE_OCC": {
+                    "type": "BOOL",
+                    "value": "TRUE"
+                },
+                "PYCXX_INCLUDE_DIR": {
+                    "type": "PATH",
+                    "value": "/usr/include"
+                },
+                "PYCXX_SOURCE_DIR": {
+                    "type": "PATH",
+                    "value": "/usr/src/CXX"
+                },
+                "ENABLE_DEVELOPER_TESTS": {
+                    "type": "BOOL",
+                    "value": "TRUE"
+                },
+                "FREECAD_USE_EXTERNAL_GTEST": {
+                    "type": "BOOL",
+                    "value": "TRUE"
+                },
+                "ONDSELSOLVER_BUILD_EXE": {
+                    "type": "BOOL",
+                    "value": "TRUE"
+                },
+                "BUILD_GUI": {
+                    "type": "BOOL",
+                    "value": "TRUE"
+                }
+            },
+            "environment": {
+                "CC": "gcc",
+                "CXX": "g++",
+                "LT_SYS_LIBRARY_PATH": "/usr/lib64:",
+                "CCACHE_PROGRAM": "/usr/bin/ccache",
+                "CFLAGS": "-O2 -flto=auto -ffat-lto-objects -fexceptions -g -grecord-gcc-switches -pipe -Wall -Werror=format-security -Wp,-U_FORTIFY_SOURCE,-D_FORTIFY_SOURCE=3 -Wp,-D_GLIBCXX_ASSERTIONS -specs=/usr/lib/rpm/redhat/redhat-hardened-cc1 -fstack-protector-strong -specs=/usr/lib/rpm/redhat/redhat-annobin-cc1  -m64 -march=x86-64 -mtune=generic -fasynchronous-unwind-tables -fstack-clash-protection -fcf-protection -mtls-dialect=gnu2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer",
+                "CXXFLAGS": "-O2 -flto=auto -ffat-lto-objects -fexceptions -g -grecord-gcc-switches -pipe -Wall -Werror=format-security -Wp,-U_FORTIFY_SOURCE,-D_FORTIFY_SOURCE=3 -Wp,-D_GLIBCXX_ASSERTIONS -specs=/usr/lib/rpm/redhat/redhat-hardened-cc1 -fstack-protector-strong -specs=/usr/lib/rpm/redhat/redhat-annobin-cc1  -m64 -march=x86-64 -mtune=generic -fasynchronous-unwind-tables -fstack-clash-protection -fcf-protection -mtls-dialect=gnu2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer",
+                "LDFLAGS": "-Wl,--as-needed -Wl,--no-undefined"
+            }
+        }
     ]
 }

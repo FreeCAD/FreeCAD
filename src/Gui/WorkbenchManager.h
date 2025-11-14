@@ -29,7 +29,8 @@
 #include <string>
 #include <FCGlobal.h>
 
-namespace Gui {
+namespace Gui
+{
 
 class Workbench;
 
@@ -48,7 +49,7 @@ public:
      * such workbench exists then a workbench of class \a className gets created, if possible.
      * If the workbench cannot be created 0 is returned.
      */
-    Workbench* createWorkbench (const std::string& name, const std::string& className);
+    Workbench* createWorkbench(const std::string& name, const std::string& className);
     /** Removes the workbench with name \a name. If there is no such
      * workbench exists nothing happens.
      */
@@ -56,7 +57,7 @@ public:
     /** Returns an instance of the workbench with name \a name. If there is
      * no such workbench 0 is returned.
      */
-    Workbench* getWorkbench (const std::string& name) const;
+    Workbench* getWorkbench(const std::string& name) const;
     /** Activates the workbench with name \a name. */
     bool activate(const std::string& name, const std::string& className);
     /** Returns the active workbench. */
@@ -72,11 +73,11 @@ protected:
 
 private:
     static WorkbenchManager* _instance;
-    Workbench*  _activeWorkbench{nullptr};
+    Workbench* _activeWorkbench {nullptr};
     std::map<std::string, Workbench*> _workbenches;
 };
 
-} // namespace Gui
+}  // namespace Gui
 
 
-#endif // GUI_WORKBENCHMANAGER_H
+#endif  // GUI_WORKBENCHMANAGER_H

@@ -42,7 +42,8 @@ using namespace Gui;
 
 TaskFemConstraintInitialTemperature::TaskFemConstraintInitialTemperature(
     ViewProviderFemConstraintInitialTemperature* ConstraintView,
-    QWidget* parent)
+    QWidget* parent
+)
     : TaskFemConstraint(ConstraintView, parent, "FEM_ConstraintInitialTemperature")
     , ui(new Ui_TaskFemConstraintInitialTemperature)
 {
@@ -53,8 +54,8 @@ TaskFemConstraintInitialTemperature::TaskFemConstraintInitialTemperature(
     this->groupLayout()->addWidget(proxy);
 
     // Get the feature data
-    Fem::ConstraintInitialTemperature* pcConstraint =
-        ConstraintView->getObject<Fem::ConstraintInitialTemperature>();
+    Fem::ConstraintInitialTemperature* pcConstraint
+        = ConstraintView->getObject<Fem::ConstraintInitialTemperature>();
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
@@ -80,7 +81,8 @@ void TaskFemConstraintInitialTemperature::changeEvent(QEvent*)
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskDlgFemConstraintInitialTemperature::TaskDlgFemConstraintInitialTemperature(
-    ViewProviderFemConstraintInitialTemperature* ConstraintView)
+    ViewProviderFemConstraintInitialTemperature* ConstraintView
+)
 {
     this->ConstraintView = ConstraintView;
     assert(ConstraintView);
@@ -94,14 +96,16 @@ TaskDlgFemConstraintInitialTemperature::TaskDlgFemConstraintInitialTemperature(
 bool TaskDlgFemConstraintInitialTemperature::accept()
 {
     std::string name = ConstraintView->getObject()->getNameInDocument();
-    const TaskFemConstraintInitialTemperature* parameterTemperature =
-        static_cast<const TaskFemConstraintInitialTemperature*>(parameter);
+    const TaskFemConstraintInitialTemperature* parameterTemperature
+        = static_cast<const TaskFemConstraintInitialTemperature*>(parameter);
 
     try {
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.initialTemperature = \"%s\"",
-                                name.c_str(),
-                                parameterTemperature->get_temperature().c_str());
+        Gui::Command::doCommand(
+            Gui::Command::Doc,
+            "App.ActiveDocument.%s.initialTemperature = \"%s\"",
+            name.c_str(),
+            parameterTemperature->get_temperature().c_str()
+        );
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
         if (!ConstraintView->getObject()->isValid()) {
             throw Base::RuntimeError(ConstraintView->getObject()->getStatusString());

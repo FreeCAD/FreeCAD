@@ -107,9 +107,9 @@ TEST_F(FeatureRevolutionTest, testAxisLink)
     // Assert
     double puckVolume = 0;  // Someday make this test use a more interesting edge angle
     EXPECT_FLOAT_EQ(volume, puckVolume);
-    EXPECT_TRUE(PartTestHelpers::boxesMatch(
-        bb,
-        Base::BoundBox3d(-ext1 / 2, -ext1 / 2, 0, ext1 / 2, ext1 / 2, 0)));
+    EXPECT_TRUE(
+        PartTestHelpers::boxesMatch(bb, Base::BoundBox3d(-ext1 / 2, -ext1 / 2, 0, ext1 / 2, ext1 / 2, 0))
+    );
 }
 
 TEST_F(FeatureRevolutionTest, testSymmetric)

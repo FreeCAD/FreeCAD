@@ -34,7 +34,7 @@
     <message>
       <location filename="../../GeneralSettingsWidget.cpp" line="212"/>
       <source>Unit System</source>
-      <translation>Sistema d'Unitats</translation>
+      <translation>Sistema d'unitats</translation>
     </message>
     <message>
       <location filename="../../GeneralSettingsWidget.cpp" line="228"/>
@@ -52,7 +52,7 @@
     <message>
       <location filename="../../Manipulator.cpp" line="46"/>
       <source>&amp;Start Page</source>
-      <translation>&amp;Pàgina d'inici</translation>
+      <translation>Pàgina d'inici</translation>
     </message>
     <message>
       <location filename="../../Manipulator.cpp" line="47"/>
@@ -65,7 +65,7 @@
     <message>
       <location filename="../../StartView.cpp" line="209"/>
       <source>Open File</source>
-      <translation>Obrir fitxer</translation>
+      <translation>Obre un fitxer</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="217"/>
@@ -80,7 +80,7 @@
     <message>
       <location filename="../../StartView.cpp" line="222"/>
       <source>Creates a 2D Draft document</source>
-      <translation>Crea un document d'esborrany 2D</translation>
+      <translation>Crea un document d'esbós 2D</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="225"/>
@@ -95,7 +95,7 @@
     <message>
       <location filename="../../StartView.cpp" line="206"/>
       <source>Creates a new empty FreeCAD file</source>
-      <translation>Crear un nou fitxer buit de FreeCAD</translation>
+      <translation>Crea un fitxer buit nou del FreeCAD</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="210"/>
@@ -110,12 +110,12 @@
     <message>
       <location filename="../../StartView.cpp" line="214"/>
       <source>Creates a body with the Part Design workbench</source>
-      <translation>Crea una peça amb el banc de treball PartDesign</translation>
+      <translation>Crea una peça amb el banc de treball de Disseny de peces</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="218"/>
       <source>Creates an assembly project</source>
-      <translation>Crear un projecte de muntatge</translation>
+      <translation>Crea un projecte de muntatge</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="226"/>

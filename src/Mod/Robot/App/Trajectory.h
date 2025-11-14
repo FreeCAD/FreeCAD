@@ -28,6 +28,8 @@
 #include <Base/Persistence.h>
 #include <Base/Placement.h>
 
+#include <Mod/Robot/RobotGlobal.h>
+
 #include "Waypoint.h"
 
 

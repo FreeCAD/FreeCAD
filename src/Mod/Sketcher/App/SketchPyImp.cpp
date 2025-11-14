@@ -75,8 +75,7 @@ PyObject* SketchPy::addGeometry(PyObject* args)
         Part::Geometry* geo = static_cast<Part::GeometryPy*>(pcObj)->getGeometryPtr();
         return Py::new_reference_to(Py::Long(this->getSketchPtr()->addGeometry(geo)));
     }
-    else if (PyObject_TypeCheck(pcObj, &(PyList_Type))
-             || PyObject_TypeCheck(pcObj, &(PyTuple_Type))) {
+    else if (PyObject_TypeCheck(pcObj, &(PyList_Type)) || PyObject_TypeCheck(pcObj, &(PyTuple_Type))) {
         std::vector<Part::Geometry*> geoList;
         Py::Sequence list(pcObj);
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
@@ -155,22 +154,17 @@ PyObject* SketchPy::moveGeometry(PyObject* args)
     int index1, index2;
     PyObject* pcObj;
     int relative = 0;
-    if (!PyArg_ParseTuple(args,
-                          "iiO!|i",
-                          &index1,
-                          &index2,
-                          &(Base::VectorPy::Type),
-                          &pcObj,
-                          &relative)) {
+    if (!PyArg_ParseTuple(args, "iiO!|i", &index1, &index2, &(Base::VectorPy::Type), &pcObj, &relative)) {
         return nullptr;
     }
     Base::Vector3d* toPoint = static_cast<Base::VectorPy*>(pcObj)->getVectorPtr();
 
     return Py::new_reference_to(
-        Py::Long(getSketchPtr()->moveGeometry(index1,
-                                              static_cast<Sketcher::PointPos>(index2),
-                                              *toPoint,
-                                              (relative > 0))));
+        Py::Long(
+            getSketchPtr()
+                ->moveGeometry(index1, static_cast<Sketcher::PointPos>(index2), *toPoint, (relative > 0))
+        )
+    );
 }
 
 // +++ attributes implementer ++++++++++++++++++++++++++++++++++++++++++++++++

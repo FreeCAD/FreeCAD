@@ -2,7 +2,6 @@ from Base.Metadata import export
 from GeometryCurve import GeometryCurve
 from typing import Any, Final
 
-
 @export(
     Twin="GeomBoundedCurve",
     TwinPointer="GeomBoundedCurve",

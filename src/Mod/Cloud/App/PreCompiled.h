@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2019 Jean-Marie Verdun        jmverdun3@gmail.com       *
  *                                                                         *
@@ -26,14 +27,6 @@
 
 #include <FCConfig.h>
 
-// Exporting of App classes
-#ifdef FC_OS_WIN32
-#define CloudAppExport __declspec(dllexport)
-#else  // for Linux
-#define CloudAppExport
-#endif
-
-#ifdef _PreComp_
 
 // standard
 #include <cassert>
@@ -54,7 +47,5 @@
 
 // Xerces
 #include <xercesc/util/XercesDefs.hpp>
-
-#endif  //_PreComp_
 
 #endif

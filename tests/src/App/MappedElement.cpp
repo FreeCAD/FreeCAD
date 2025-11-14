@@ -259,9 +259,11 @@ TEST_F(MappedElementTest, comparatorThreeComplexHexNamesInMap)
     // The expected order depends on your comparator logic.
     // If you want to check the exact order, set it here:
     // (Replace with the correct expected order if needed)
-    std::vector<std::string> expectedOrder = {"#19c9:e;:U;FUS;:Hce4:7,E",
-                                              "#1dadb:11;:L#1061a;FUS;:H:d,E",
-                                              "#1dae6:8;:L#1dae4;FUS;:H:d,E"};
+    std::vector<std::string> expectedOrder = {
+        "#19c9:e;:U;FUS;:Hce4:7,E",
+        "#1dadb:11;:L#1061a;FUS;:H:d,E",
+        "#1dae6:8;:L#1dae4;FUS;:H:d,E"
+    };
 
     EXPECT_EQ(keys, expectedOrder);
 }
@@ -311,7 +313,8 @@ TEST_F(MappedElementTest, comparatorLargerWorkedExampleWithMap)
         "g4v2;SKT;:H1234,F;:H5678:2,E;:G0(g1;SKT;:H9012,E);XTR;:H3456:2,F",
         "#1dad:e;:U;FUS;:Hce4:7,E",
         "#1dadb:11;:L#1061a;FUS;:H:d,E",
-        "#1dae6:8;:L#1dae4;FUS;:H:d,E"};
+        "#1dae6:8;:L#1dae4;FUS;:H:d,E"
+    };
 
     EXPECT_EQ(keys, expectedOrder);
 }

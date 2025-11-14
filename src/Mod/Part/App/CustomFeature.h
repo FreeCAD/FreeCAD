@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -24,6 +26,8 @@
 #ifndef PART_CUSTOMFEATURE_H
 #define PART_CUSTOMFEATURE_H
 
+#include <Mod/Part/PartGlobal.h>
+
 #include <Mod/Part/App/PartFeature.h>
 
 namespace Part
@@ -32,7 +36,7 @@ namespace Part
 /** Base class of all custom feature classes which are almost used as base
  * for python feature classes.
  */
-class PartExport CustomFeature : public Part::Feature
+class PartExport CustomFeature: public Part::Feature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::CustomFeature);
 
@@ -44,19 +48,20 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
     short mustExecute() const override;
     //@}
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "PartGui::ViewProviderCustom";
     }
 };
 
 using CustomFeaturePython = App::FeaturePythonT<CustomFeature>;
 
-} //namespace Part
+}  // namespace Part
 
 
-#endif // PART_CUSTOMFEATURE_H
+#endif  // PART_CUSTOMFEATURE_H

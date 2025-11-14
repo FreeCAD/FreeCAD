@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
@@ -20,11 +22,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <QRegularExpression>
-#endif
+
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -45,8 +45,7 @@ using namespace Gui;
 // TaskWidget
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskWidgetPathCompound::TaskWidgetPathCompound(ViewProviderPathCompound* CompoundView,
-                                               QWidget* parent)
+TaskWidgetPathCompound::TaskWidgetPathCompound(ViewProviderPathCompound* CompoundView, QWidget* parent)
     : TaskBox(Gui::BitmapFactory().pixmap("CAM_Compound"), tr("Compound paths"), true, parent)
 {
     // we need a separate container widget to add all controls to
@@ -131,8 +130,9 @@ bool TaskDlgPathCompound::accept()
     App::Document* pcDoc = static_cast<App::Document*>(pcCompound->getDocument());
     std::vector<std::string> names = parameter->getList();
     for (std::size_t i = 0; i < names.size(); i++) {
-        App::DocumentObject* pcPath =
-            static_cast<App::DocumentObject*>(pcDoc->getObject(names[i].c_str()));
+        App::DocumentObject* pcPath = static_cast<App::DocumentObject*>(
+            pcDoc->getObject(names[i].c_str())
+        );
         paths.push_back(pcPath);
     }
     pcCompound->Group.setValues(paths);

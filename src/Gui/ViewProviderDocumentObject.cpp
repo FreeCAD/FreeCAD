@@ -21,15 +21,14 @@
  ***************************************************************************/
 
 
-
-# include <QAction>
-# include <QMenu>
-# include <Inventor/SoFullPath.h>
-# include <Inventor/SoPickedPoint.h>
-# include <Inventor/actions/SoSearchAction.h>
-# include <Inventor/details/SoDetail.h>
-# include <Inventor/misc/SoChildList.h>
-# include <Inventor/nodes/SoSeparator.h>
+#include <QAction>
+#include <QMenu>
+#include <Inventor/SoFullPath.h>
+#include <Inventor/SoPickedPoint.h>
+#include <Inventor/actions/SoSearchAction.h>
+#include <Inventor/details/SoDetail.h>
+#include <Inventor/misc/SoChildList.h>
+#include <Inventor/nodes/SoSeparator.h>
 
 
 #include <App/Document.h>
@@ -58,22 +57,27 @@ PROPERTY_SOURCE(Gui::ViewProviderDocumentObject, Gui::ViewProvider)
 
 ViewProviderDocumentObject::ViewProviderDocumentObject()
 {
-    static const char *dogroup = "Display Options";
-    static const char *sgroup = "Selection";
+    static const char* dogroup = "Display Options";
+    static const char* sgroup = "Selection";
 
     ADD_PROPERTY_TYPE(DisplayMode, ((long)0), dogroup, App::Prop_None, "Set the display mode");
     ADD_PROPERTY_TYPE(Visibility, (true), dogroup, App::Prop_None, "Show the object in the 3d view");
     ADD_PROPERTY_TYPE(ShowInTree, (true), dogroup, App::Prop_None, "Show the object in the tree view");
 
     ADD_PROPERTY_TYPE(SelectionStyle, ((long)0), sgroup, App::Prop_None, "Set the object selection style");
-    static const char *SelectionStyleEnum[] = {"Shape","BoundBox",nullptr};
+    static const char* SelectionStyleEnum[] = {"Shape", "BoundBox", nullptr};
     SelectionStyle.setEnums(SelectionStyleEnum);
 
-    static const char* OnTopEnum[]= {"Disabled","Enabled","Object","Element",nullptr};
-    ADD_PROPERTY_TYPE(OnTopWhenSelected,((long int)0), sgroup, App::Prop_None,
-            "Enabled: Display the object on top of any other object when selected\n"
-            "Object: On top only if the whole object is selected\n"
-            "Element: On top only if some sub-element of the object is selected");
+    static const char* OnTopEnum[] = {"Disabled", "Enabled", "Object", "Element", nullptr};
+    ADD_PROPERTY_TYPE(
+        OnTopWhenSelected,
+        ((long int)0),
+        sgroup,
+        App::Prop_None,
+        "Enabled: Display the object on top of any other object when selected\n"
+        "Object: On top only if the whole object is selected\n"
+        "Element: On top only if some sub-element of the object is selected"
+    );
     OnTopWhenSelected.setEnums(OnTopEnum);
 
     sPixmap = "Feature";
@@ -95,15 +99,17 @@ void ViewProviderDocumentObject::startRestoring()
 {
     hide();
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector)
+    for (Gui::ViewProviderExtension* ext : vector) {
         ext->extensionStartRestoring();
+    }
 }
 
 void ViewProviderDocumentObject::finishRestoring()
 {
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector)
+    for (Gui::ViewProviderExtension* ext : vector) {
         ext->extensionFinishRestoring();
+    }
 }
 
 bool ViewProviderDocumentObject::isAttachedToDocument() const
@@ -122,29 +128,38 @@ const char* ViewProviderDocumentObject::detachFromDocument()
 bool ViewProviderDocumentObject::removeDynamicProperty(const char* name)
 {
     App::Property* prop = getDynamicPropertyByName(name);
-    if(!prop || prop->testStatus(App::Property::LockDynamic))
+    if (!prop || prop->testStatus(App::Property::LockDynamic)) {
         return false;
+    }
 
     // transactions of view providers are also managed in App::Document.
     App::DocumentObject* docobject = getObject();
     App::Document* document = docobject ? docobject->getDocument() : nullptr;
-    if (document)
+    if (document) {
         document->addOrRemovePropertyOfObject(this, prop, false);
+    }
 
     return ViewProvider::removeDynamicProperty(name);
 }
 
 App::Property* ViewProviderDocumentObject::addDynamicProperty(
-    const char* type, const char* name, const char* group, const char* doc,
-    short attr, bool ro, bool hidden)
+    const char* type,
+    const char* name,
+    const char* group,
+    const char* doc,
+    short attr,
+    bool ro,
+    bool hidden
+)
 {
-    auto prop = ViewProvider::addDynamicProperty(type,name,group,doc,attr,ro,hidden);
-    if(prop) {
+    auto prop = ViewProvider::addDynamicProperty(type, name, group, doc, attr, ro, hidden);
+    if (prop) {
         // transactions of view providers are also managed in App::Document.
         App::DocumentObject* docobject = getObject();
         App::Document* document = docobject ? docobject->getDocument() : nullptr;
-        if (document)
+        if (document) {
             document->addOrRemovePropertyOfObject(this, prop, true);
+        }
     }
     return prop;
 }
@@ -174,10 +189,8 @@ void ViewProviderDocumentObject::onChanged(const App::Property* prop)
             Visibility.getValue() ? show() : hide();
             Visibility.setStatus(App::Property::User2, false);
         }
-        if (!Visibility.testStatus(App::Property::User1)
-                && getObject()
-                && getObject()->Visibility.getValue()!=Visibility.getValue())
-        {
+        if (!Visibility.testStatus(App::Property::User1) && getObject()
+            && getObject()->Visibility.getValue() != Visibility.getValue()) {
             // Changing the visibility of a document object will automatically set
             // the document modified but if the 'TouchDocument' flag is not set then
             // this is undesired behaviour. So, if this change marks the document as
@@ -188,8 +201,10 @@ void ViewProviderDocumentObject::onChanged(const App::Property* prop)
                 // property being changed due to the change of Visibility here.
                 // Temporary setting the Visibility property as 'NoModify' is
                 // the proper way.
-                Base::ObjectStatusLocker<App::Property::Status,App::Property> guard(
-                        App::Property::NoModify, &Visibility);
+                Base::ObjectStatusLocker<App::Property::Status, App::Property> guard(
+                    App::Property::NoModify,
+                    &Visibility
+                );
                 // bool mod = false;
                 // if (pcDocument)
                 //     mod = pcDocument->isModified();
@@ -203,18 +218,18 @@ void ViewProviderDocumentObject::onChanged(const App::Property* prop)
         }
     }
     else if (prop == &SelectionStyle) {
-        if(getRoot()->isOfType(SoFCSelectionRoot::getClassTypeId())) {
+        if (getRoot()->isOfType(SoFCSelectionRoot::getClassTypeId())) {
             static_cast<SoFCSelectionRoot*>(getRoot())->selectionStyle = SelectionStyle.getValue()
-                ? SoFCSelectionRoot::Box : SoFCSelectionRoot::Full;
+                ? SoFCSelectionRoot::Box
+                : SoFCSelectionRoot::Full;
         }
     }
 
-    if (prop && !prop->testStatus(App::Property::NoModify)
-             && pcDocument
-             && !pcDocument->isModified()
-             && testStatus(Gui::ViewStatus::TouchDocument)) {
-        if (prop)
+    if (prop && !prop->testStatus(App::Property::NoModify) && pcDocument
+        && !pcDocument->isModified() && testStatus(Gui::ViewStatus::TouchDocument)) {
+        if (prop) {
             FC_LOG(prop->getFullName() << " changed");
+        }
         pcDocument->setModified(true);
     }
 
@@ -239,8 +254,9 @@ bool ViewProviderDocumentObject::isShowable() const
 
 void ViewProviderDocumentObject::setShowable(bool enable)
 {
-    if (_Showable == enable)
+    if (_Showable == enable) {
         return;
+    }
 
     _Showable = enable;
     int which = getModeSwitch()->whichChild.getValue();
@@ -248,8 +264,9 @@ void ViewProviderDocumentObject::setShowable(bool enable)
         setModeSwitch();
     }
     else if (!_Showable) {
-        if (which >= 0)
+        if (which >= 0) {
             ViewProvider::hide();
+        }
     }
 }
 
@@ -269,24 +286,26 @@ void ViewProviderDocumentObject::addDefaultAction(QMenu* menu, const QString& te
     QAction* act = menu->addAction(text);
     act->setData(QVariant((int)ViewProvider::Default));
     auto func = new Gui::ActionFunction(menu);
-    func->trigger(act, [this](){
-        this->startDefaultEditMode();
-    });
+    func->trigger(act, [this]() { this->startDefaultEditMode(); });
 }
 
-void ViewProviderDocumentObject::setModeSwitch() {
-    if(isShowable())
+void ViewProviderDocumentObject::setModeSwitch()
+{
+    if (isShowable()) {
         ViewProvider::setModeSwitch();
+    }
 }
 
 void ViewProviderDocumentObject::show()
 {
-    if(TreeWidget::isObjectShowable(getObject()))
+    if (TreeWidget::isObjectShowable(getObject())) {
         ViewProvider::show();
+    }
     else {
         Visibility.setValue(false);
-        if(getObject())
+        if (getObject()) {
             getObject()->Visibility.setValue(false);
+        }
         return;
     }
 
@@ -305,88 +324,107 @@ const char* ViewProviderDocumentObject::getTransactionText() const
 
 void ViewProviderDocumentObject::updateView()
 {
-    if(!pcObject || testStatus(ViewStatus::UpdatingView))
+    if (!pcObject || testStatus(ViewStatus::UpdatingView)) {
         return;
+    }
 
-    Base::ObjectStatusLocker<ViewStatus,ViewProviderDocumentObject> lock(ViewStatus::UpdatingView,this);
+    Base::ObjectStatusLocker<ViewStatus, ViewProviderDocumentObject> lock(ViewStatus::UpdatingView, this);
 
     // Disable object visibility syncing
-    Base::ObjectStatusLocker<App::Property::Status,App::Property> lock2(App::Property::User1, &Visibility);
+    Base::ObjectStatusLocker<App::Property::Status, App::Property> lock2(
+        App::Property::User1,
+        &Visibility
+    );
 
     std::map<std::string, App::Property*> Map;
     pcObject->getPropertyMap(Map);
 
     // Hide the object temporarily to speed up the update
     bool vis = ViewProvider::isShow();
-    if (vis) ViewProvider::hide();
-    for (const auto & it : Map) {
+    if (vis) {
+        ViewProvider::hide();
+    }
+    for (const auto& it : Map) {
         updateData(it.second);
     }
-    if (vis && Visibility.getValue()) ViewProvider::show();
+    if (vis && Visibility.getValue()) {
+        ViewProvider::show();
+    }
 }
 
-void ViewProviderDocumentObject::attach(App::DocumentObject *pcObj)
+void ViewProviderDocumentObject::attach(App::DocumentObject* pcObj)
 {
     // save Object pointer
     pcObject = pcObj;
 
-    if(pcObj && pcObj->isAttachedToDocument() &&
-       Visibility.getValue()!=pcObj->Visibility.getValue())
+    if (pcObj && pcObj->isAttachedToDocument()
+        && Visibility.getValue() != pcObj->Visibility.getValue()) {
         pcObj->Visibility.setValue(Visibility.getValue());
+    }
 
     // Retrieve the supported display modes of the view provider
     aDisplayModesArray = this->getDisplayModes();
 
-    if (aDisplayModesArray.empty())
+    if (aDisplayModesArray.empty()) {
         aDisplayModesArray.emplace_back("");
+    }
 
     // We must collect the const char* of the strings and give it to PropertyEnumeration,
     // but we are still responsible for them, i.e. the property class must not delete the literals.
-    //for (auto it = aDisplayModesArray.begin(); it != aDisplayModesArray.end(); ++it) {
-    for (const auto & it : aDisplayModesArray) {
-        aDisplayEnumsArray.push_back( it.c_str() );
+    // for (auto it = aDisplayModesArray.begin(); it != aDisplayModesArray.end(); ++it) {
+    for (const auto& it : aDisplayModesArray) {
+        aDisplayEnumsArray.push_back(it.c_str());
     }
-    aDisplayEnumsArray.push_back(nullptr); // null termination
+    aDisplayEnumsArray.push_back(nullptr);  // null termination
     DisplayMode.setEnums(&(aDisplayEnumsArray[0]));
 
-    if(!isRestoring()) {
+    if (!isRestoring()) {
         // set the active mode
         const char* defmode = this->getDefaultDisplayMode();
-        if (defmode)
+        if (defmode) {
             DisplayMode.setValue(defmode);
+        }
     }
 
-    //attach the extensions
+    // attach the extensions
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for (Gui::ViewProviderExtension* ext : vector)
+    for (Gui::ViewProviderExtension* ext : vector) {
         ext->extensionAttach(pcObj);
+    }
 }
 
-void ViewProviderDocumentObject::reattach(App::DocumentObject *pcObj) {
+void ViewProviderDocumentObject::reattach(App::DocumentObject* pcObj)
+{
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for (Gui::ViewProviderExtension* ext : vector)
+    for (Gui::ViewProviderExtension* ext : vector) {
         ext->extensionReattach(pcObj);
+    }
 }
 
 void ViewProviderDocumentObject::update(const App::Property* prop)
 {
     // bypass view provider update to always allow changing visibility from
     // document object
-    if(prop == &getObject()->Visibility) {
-        if(!isRestoring() && Visibility.getValue()!=getObject()->Visibility.getValue())
+    if (prop == &getObject()->Visibility) {
+        if (!isRestoring() && Visibility.getValue() != getObject()->Visibility.getValue()) {
             Visibility.setValue(!Visibility.getValue());
-    } else {
+        }
+    }
+    else {
         // Disable object visibility syncing
-        Base::ObjectStatusLocker<App::Property::Status,App::Property>
-            guard(App::Property::User1, &Visibility);
+        Base::ObjectStatusLocker<App::Property::Status, App::Property> guard(
+            App::Property::User1,
+            &Visibility
+        );
         ViewProvider::update(prop);
     }
 }
 
 Gui::Document* ViewProviderDocumentObject::getDocument() const
 {
-    if(!pcObject)
+    if (!pcObject) {
         throw Base::RuntimeError("View provider detached");
+    }
     if (pcDocument) {
         return pcDocument;
     }
@@ -398,8 +436,9 @@ Gui::Document* ViewProviderDocumentObject::getDocument() const
 
 Gui::MDIView* ViewProviderDocumentObject::getActiveView() const
 {
-    if(!pcObject)
+    if (!pcObject) {
         throw Base::RuntimeError("View provider detached");
+    }
 
     if (!pcObject->isAttachedToDocument()) {
         // Check if view provider is attached to a document as an annotation
@@ -419,8 +458,9 @@ Gui::MDIView* ViewProviderDocumentObject::getActiveView() const
 
 Gui::MDIView* ViewProviderDocumentObject::getEditingView() const
 {
-    if(!pcObject)
+    if (!pcObject) {
         throw Base::RuntimeError("View provider detached");
+    }
     App::Document* pAppDoc = pcObject->getDocument();
     Gui::Document* pGuiDoc = Gui::Application::Instance->getDocument(pAppDoc);
     return pGuiDoc->getEditingViewOfViewProvider(const_cast<ViewProviderDocumentObject*>(this));
@@ -428,12 +468,15 @@ Gui::MDIView* ViewProviderDocumentObject::getEditingView() const
 
 Gui::MDIView* ViewProviderDocumentObject::getInventorView() const
 {
-    if(!pcObject)
+    if (!pcObject) {
         throw Base::RuntimeError("View provider detached");
+    }
     App::Document* pAppDoc = pcObject->getDocument();
     Gui::Document* pGuiDoc = Gui::Application::Instance->getDocument(pAppDoc);
 
-    Gui::MDIView* mdi = pGuiDoc->getEditingViewOfViewProvider(const_cast<ViewProviderDocumentObject*>(this));
+    Gui::MDIView* mdi = pGuiDoc->getEditingViewOfViewProvider(
+        const_cast<ViewProviderDocumentObject*>(this)
+    );
     if (!mdi) {
         mdi = pGuiDoc->getViewOfViewProvider(const_cast<ViewProviderDocumentObject*>(this));
     }
@@ -443,8 +486,9 @@ Gui::MDIView* ViewProviderDocumentObject::getInventorView() const
 
 Gui::MDIView* ViewProviderDocumentObject::getViewOfNode(SoNode* node) const
 {
-    if(!pcObject)
+    if (!pcObject) {
         throw Base::RuntimeError("View provider detached");
+    }
     App::Document* pAppDoc = pcObject->getDocument();
     Gui::Document* pGuiDoc = Gui::Application::Instance->getDocument(pAppDoc);
     return pGuiDoc->getViewOfNode(node);
@@ -452,8 +496,9 @@ Gui::MDIView* ViewProviderDocumentObject::getViewOfNode(SoNode* node) const
 
 SoNode* ViewProviderDocumentObject::findFrontRootOfType(const SoType& type) const
 {
-    if(!pcObject)
+    if (!pcObject) {
         return nullptr;
+    }
     // first get the document this object is part of and get its GUI counterpart
     App::Document* pAppDoc = pcObject->getDocument();
     Gui::Document* pGuiDoc = Gui::Application::Instance->getDocument(pAppDoc);
@@ -464,21 +509,23 @@ SoNode* ViewProviderDocumentObject::findFrontRootOfType(const SoType& type) cons
 
     // search in all view providers for the node type
     std::vector<App::DocumentObject*> obj = pAppDoc->getObjects();
-    for (auto & it : obj) {
+    for (auto& it : obj) {
         const ViewProvider* vp = pGuiDoc->getViewProvider(it);
         // Ignore 'this' view provider. It could also happen that vp is 0, e.g. when
         // several objects have been added to the App::Document before notifying the
         // Gui::Document
-        if (!vp || vp == this)
+        if (!vp || vp == this) {
             continue;
+        }
         SoSeparator* front = vp->getFrontRoot();
-        //if (front && front->getTypeId() == type)
-        //    return front;
+        // if (front && front->getTypeId() == type)
+        //     return front;
         if (front) {
             searchAction.apply(front);
             SoPath* path = searchAction.getPath();
-            if (path)
+            if (path) {
                 return path->getTail();
+            }
         }
     }
 
@@ -489,11 +536,13 @@ void ViewProviderDocumentObject::setActiveMode()
 {
     if (DisplayMode.isValid()) {
         const char* mode = DisplayMode.getValueAsString();
-        if (mode)
+        if (mode) {
             setDisplayMode(mode);
+        }
     }
-    if (!Visibility.getValue())
+    if (!Visibility.getValue()) {
         ViewProvider::hide();
+    }
 }
 
 bool ViewProviderDocumentObject::canDelete(App::DocumentObject* obj) const
@@ -501,203 +550,242 @@ bool ViewProviderDocumentObject::canDelete(App::DocumentObject* obj) const
     Q_UNUSED(obj);
     auto* o = getObject();
     return o->hasExtension(App::GroupExtension::getExtensionClassTypeId())
-           || o->isDerivedFrom<App::Origin>();
+        || o->isDerivedFrom<App::Origin>();
 }
 
 PyObject* ViewProviderDocumentObject::getPyObject()
 {
-    if (!pyViewObject)
+    if (!pyViewObject) {
         pyViewObject = new ViewProviderDocumentObjectPy(this);
+    }
     pyViewObject->IncRef();
     return pyViewObject;
 }
 
-bool ViewProviderDocumentObject::canDropObjectEx(App::DocumentObject* obj, App::DocumentObject *owner,
-        const char *subname, const std::vector<std::string> &elements) const
+bool ViewProviderDocumentObject::canDropObjectEx(
+    App::DocumentObject* obj,
+    App::DocumentObject* owner,
+    const char* subname,
+    const std::vector<std::string>& elements
+) const
 {
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector){
-        if(ext->extensionCanDropObjectEx(obj,owner,subname,elements))
+    for (Gui::ViewProviderExtension* ext : vector) {
+        if (ext->extensionCanDropObjectEx(obj, owner, subname, elements)) {
             return true;
+        }
     }
-    if(obj && obj->getDocument()!=getObject()->getDocument())
+    if (obj && obj->getDocument() != getObject()->getDocument()) {
         return false;
+    }
     return canDropObject(obj);
 }
 
-int ViewProviderDocumentObject::replaceObject(
-        App::DocumentObject *oldObj, App::DocumentObject *newObj)
+int ViewProviderDocumentObject::replaceObject(App::DocumentObject* oldObj, App::DocumentObject* newObj)
 {
-    if(!oldObj || !oldObj->isAttachedToDocument()
-            || !newObj || !newObj->isAttachedToDocument())
-    {
-        FC_THROWM(Base::RuntimeError,"Invalid object");
+    if (!oldObj || !oldObj->isAttachedToDocument() || !newObj || !newObj->isAttachedToDocument()) {
+        FC_THROWM(Base::RuntimeError, "Invalid object");
     }
 
     auto obj = getObject();
-    if(!obj || !obj->isAttachedToDocument())
-        FC_THROWM(Base::RuntimeError,"View provider not attached");
-
-    int res = ViewProvider::replaceObject(oldObj,newObj);
-    if(res>=0)
-        return res;
-
-    std::vector<std::pair<App::DocumentObjectT, std::unique_ptr<App::Property> > > propChanges;
-    std::vector<App::Property*> props;
-    obj->getPropertyList(props);
-    for(auto prop : props) {
-        auto linkProp = freecad_cast<App::PropertyLinkBase*>(prop);
-        if(!linkProp)
-            continue;
-        std::unique_ptr<App::Property> copy(linkProp->CopyOnLinkReplace(obj, oldObj,newObj));
-        if(!copy)
-            continue;
-        propChanges.emplace_back(prop,std::move(copy));
+    if (!obj || !obj->isAttachedToDocument()) {
+        FC_THROWM(Base::RuntimeError, "View provider not attached");
     }
 
-    if(propChanges.empty())
+    int res = ViewProvider::replaceObject(oldObj, newObj);
+    if (res >= 0) {
+        return res;
+    }
+
+    std::vector<std::pair<App::DocumentObjectT, std::unique_ptr<App::Property>>> propChanges;
+    std::vector<App::Property*> props;
+    obj->getPropertyList(props);
+    for (auto prop : props) {
+        auto linkProp = freecad_cast<App::PropertyLinkBase*>(prop);
+        if (!linkProp) {
+            continue;
+        }
+        std::unique_ptr<App::Property> copy(linkProp->CopyOnLinkReplace(obj, oldObj, newObj));
+        if (!copy) {
+            continue;
+        }
+        propChanges.emplace_back(prop, std::move(copy));
+    }
+
+    if (propChanges.empty()) {
         return 0;
+    }
 
     // Global search for affected links
-    for(auto doc : App::GetApplication().getDocuments()) {
-        for(auto o : doc->getObjects()) {
-            if(o == obj)
+    for (auto doc : App::GetApplication().getDocuments()) {
+        for (auto o : doc->getObjects()) {
+            if (o == obj) {
                 continue;
+            }
             std::vector<App::Property*> props;
             o->getPropertyList(props);
-            for(auto prop : props) {
+            for (auto prop : props) {
                 auto linkProp = freecad_cast<App::PropertyLinkBase*>(prop);
-                if(!linkProp)
+                if (!linkProp) {
                     continue;
-                std::unique_ptr<App::Property> copy(linkProp->CopyOnLinkReplace(obj,oldObj,newObj));
-                if(!copy)
+                }
+                std::unique_ptr<App::Property> copy(linkProp->CopyOnLinkReplace(obj, oldObj, newObj));
+                if (!copy) {
                     continue;
-                propChanges.emplace_back(App::DocumentObjectT(prop),std::move(copy));
+                }
+                propChanges.emplace_back(App::DocumentObjectT(prop), std::move(copy));
             }
         }
     }
 
-    for(auto &v : propChanges) {
+    for (auto& v : propChanges) {
         auto prop = v.first.getProperty();
-        if(prop)
+        if (prop) {
             prop->Paste(*v.second.get());
+        }
     }
     return 1;
 }
 
-bool ViewProviderDocumentObject::showInTree() const {
+bool ViewProviderDocumentObject::showInTree() const
+{
     return ShowInTree.getValue();
 }
 
-bool ViewProviderDocumentObject::getElementPicked(const SoPickedPoint *pp, std::string &subname) const
+bool ViewProviderDocumentObject::getElementPicked(const SoPickedPoint* pp, std::string& subname) const
 {
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector)
-        if(ext->extensionGetElementPicked(pp,subname))
+    for (Gui::ViewProviderExtension* ext : vector) {
+        if (ext->extensionGetElementPicked(pp, subname)) {
             return true;
+        }
+    }
 
     auto childRoot = getChildRoot();
     int idx;
-    if(!childRoot ||
-       (idx=pcModeSwitch->whichChild.getValue())<0 ||
-       pcModeSwitch->getChild(idx)!=childRoot)
-    {
-        return ViewProvider::getElementPicked(pp,subname);
+    if (!childRoot || (idx = pcModeSwitch->whichChild.getValue()) < 0
+        || pcModeSwitch->getChild(idx) != childRoot) {
+        return ViewProvider::getElementPicked(pp, subname);
     }
 
     SoPath* path = pp->getPath();
     idx = path->findNode(childRoot);
-    if(idx<0 || idx+1>=path->getLength())
+    if (idx < 0 || idx + 1 >= path->getLength()) {
         return false;
-    auto vp = getDocument()->getViewProvider(path->getNode(idx+1));
-    if(!vp)
+    }
+    auto vp = getDocument()->getViewProvider(path->getNode(idx + 1));
+    if (!vp) {
         return false;
+    }
     auto obj = vp->getObject();
-    if(!obj || !obj->isAttachedToDocument())
+    if (!obj || !obj->isAttachedToDocument()) {
         return false;
+    }
     std::ostringstream str;
     str << obj->getNameInDocument() << '.';
-    if(vp->getElementPicked(pp,subname))
+    if (vp->getElementPicked(pp, subname)) {
         str << subname;
+    }
     subname = str.str();
     return true;
 }
 
-bool ViewProviderDocumentObject::getDetailPath(const char *subname, SoFullPath *path, bool append, SoDetail *&det) const
+bool ViewProviderDocumentObject::getDetailPath(
+    const char* subname,
+    SoFullPath* path,
+    bool append,
+    SoDetail*& det
+) const
 {
     auto len = path->getLength();
-    if(!append && len>=2)
+    if (!append && len >= 2) {
         len -= 2;
-    if(ViewProvider::getDetailPath(subname,path,append,det)) {
-        if(det || !subname || !*subname)
+    }
+    if (ViewProvider::getDetailPath(subname, path, append, det)) {
+        if (det || !subname || !*subname) {
             return true;
+        }
     }
 
-    if(det) {
+    if (det) {
         delete det;
         det = nullptr;
     }
 
-    const char *dot = strchr(subname,'.');
-    if(!dot)
+    const char* dot = strchr(subname, '.');
+    if (!dot) {
         return false;
+    }
     auto obj = getObject();
-    if(!obj || !obj->isAttachedToDocument())
+    if (!obj || !obj->isAttachedToDocument()) {
         return false;
-    auto sobj = obj->getSubObject(std::string(subname,dot-subname+1).c_str());
-    if(!sobj)
+    }
+    auto sobj = obj->getSubObject(std::string(subname, dot - subname + 1).c_str());
+    if (!sobj) {
         return false;
+    }
     auto vp = Application::Instance->getViewProvider(sobj);
-    if(!vp)
+    if (!vp) {
         return false;
+    }
 
     auto childRoot = getChildRoot();
-    if(!childRoot)
+    if (!childRoot) {
         path->truncate(len);
+    }
     else {
         auto idx = pcModeSwitch->whichChild.getValue();
-        if(idx < 0 || pcModeSwitch->getChild(idx)!=childRoot)
+        if (idx < 0 || pcModeSwitch->getChild(idx) != childRoot) {
             return false;
+        }
         path->append(childRoot);
     }
     bool ret = false;
-    if(path->getLength()) {
-        SoNode * tail = path->getTail();
-        const SoChildList * children = tail->getChildren();
-        if(children && children->find(vp->getRoot())>=0)
-            ret = vp->getDetailPath(dot+1,path,true,det);
+    if (path->getLength()) {
+        SoNode* tail = path->getTail();
+        const SoChildList* children = tail->getChildren();
+        if (children && children->find(vp->getRoot()) >= 0) {
+            ret = vp->getDetailPath(dot + 1, path, true, det);
+        }
     }
     return ret;
 }
 
-void ViewProviderDocumentObject::onPropertyStatusChanged(
-        const App::Property &prop, unsigned long oldStatus)
+void ViewProviderDocumentObject::onPropertyStatusChanged(const App::Property& prop, unsigned long oldStatus)
 {
     (void)oldStatus;
-    if(!App::Document::isAnyRestoring() && pcObject && pcObject->getDocument())
-        pcObject->getDocument()->signalChangePropertyEditor(*pcObject->getDocument(),prop);
+    if (!App::Document::isAnyRestoring() && pcObject && pcObject->getDocument()) {
+        pcObject->getDocument()->signalChangePropertyEditor(*pcObject->getDocument(), prop);
+    }
 }
 
-ViewProviderDocumentObject *ViewProviderDocumentObject::getLinkedViewProvider(
-        std::string *subname, bool recursive) const
+ViewProviderDocumentObject* ViewProviderDocumentObject::getLinkedViewProvider(
+    std::string* subname,
+    bool recursive
+) const
 {
     (void)subname;
     auto self = const_cast<ViewProviderDocumentObject*>(this);
-    if(!pcObject || !pcObject->isAttachedToDocument())
+    if (!pcObject || !pcObject->isAttachedToDocument()) {
         return self;
+    }
     auto linked = pcObject->getLinkedObject(recursive);
-    if(!linked || linked == pcObject)
+    if (!linked || linked == pcObject) {
         return self;
+    }
     auto res = freecad_cast<ViewProviderDocumentObject*>(
-            Application::Instance->getViewProvider(linked));
-    if(!res)
+        Application::Instance->getViewProvider(linked)
+    );
+    if (!res) {
         res = self;
+    }
     return res;
 }
 
-std::string ViewProviderDocumentObject::getFullName() const {
-    if(pcObject)
+std::string ViewProviderDocumentObject::getFullName() const
+{
+    if (pcObject) {
         return pcObject->getFullName() + ".ViewObject";
+    }
     return std::string("?");
 }
-

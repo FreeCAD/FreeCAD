@@ -20,10 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <QAction>
-# include <QMap>
-# include <QPointer>
-# include <QTimer>
+#include <QAction>
+#include <QMap>
+#include <QPointer>
+#include <QTimer>
 
 #include "ActionFunction.h"
 
@@ -31,20 +31,21 @@
 using namespace Gui;
 
 
-namespace Gui {
+namespace Gui
+{
 class ActionFunctionPrivate
 {
 public:
-    QMap<QAction*, std::function<void()> > triggerMap;
-    QMap<QAction*, std::function<void(bool)> > toggleMap;
-    QMap<QAction*, std::function<void()> > hoverMap;
+    QMap<QAction*, std::function<void()>> triggerMap;
+    QMap<QAction*, std::function<void(bool)>> toggleMap;
+    QMap<QAction*, std::function<void()>> hoverMap;
 };
-}
+}  // namespace Gui
 
 ActionFunction::ActionFunction(QObject* parent)
-  : QObject(parent), d_ptr(new ActionFunctionPrivate())
-{
-}
+    : QObject(parent)
+    , d_ptr(new ActionFunctionPrivate())
+{}
 
 ActionFunction::~ActionFunction() = default;
 
@@ -61,7 +62,7 @@ void ActionFunction::triggered()
     Q_D(ActionFunction);
 
     auto a = qobject_cast<QAction*>(sender());
-    QMap<QAction*, std::function<void()> >::iterator it = d->triggerMap.find(a);
+    QMap<QAction*, std::function<void()>>::iterator it = d->triggerMap.find(a);
     if (it != d->triggerMap.end()) {
         // invoke the class function here
         it.value()();
@@ -81,7 +82,7 @@ void ActionFunction::toggled(bool on)
     Q_D(ActionFunction);
 
     auto a = qobject_cast<QAction*>(sender());
-    QMap<QAction*, std::function<void(bool)> >::iterator it = d->toggleMap.find(a);
+    QMap<QAction*, std::function<void(bool)>>::iterator it = d->toggleMap.find(a);
     if (it != d->toggleMap.end()) {
         // invoke the class function here
         it.value()(on);
@@ -101,7 +102,7 @@ void ActionFunction::hovered()
     Q_D(ActionFunction);
 
     auto a = qobject_cast<QAction*>(sender());
-    QMap<QAction*, std::function<void()> >::iterator it = d->hoverMap.find(a);
+    QMap<QAction*, std::function<void()>>::iterator it = d->hoverMap.find(a);
     if (it != d->hoverMap.end()) {
         // invoke the class function here
         it.value()();
@@ -110,7 +111,8 @@ void ActionFunction::hovered()
 
 // ----------------------------------------------------------------------------
 
-namespace Gui {
+namespace Gui
+{
 class TimerFunctionPrivate
 {
 public:
@@ -121,10 +123,11 @@ public:
     QPointer<QObject> argQObject;
     QVariant argQVariant;
 };
-}
+}  // namespace Gui
 
 TimerFunction::TimerFunction(QObject* parent)
-  : QObject(parent), d_ptr(new TimerFunctionPrivate())
+    : QObject(parent)
+    , d_ptr(new TimerFunctionPrivate())
 {
     d_ptr->autoDelete = false;
 }
@@ -160,14 +163,18 @@ void TimerFunction::setAutoDelete(bool on)
 void TimerFunction::timeout()
 {
     Q_D(TimerFunction);
-    if (d->timeoutFunc)
+    if (d->timeoutFunc) {
         d->timeoutFunc();
-    else if (d->timeoutFuncQObject)
+    }
+    else if (d->timeoutFuncQObject) {
         d->timeoutFuncQObject(d->argQObject);
-    else if (d->timeoutFuncQVariant)
+    }
+    else if (d->timeoutFuncQVariant) {
         d->timeoutFuncQVariant(d->argQVariant);
-    if (d->autoDelete)
+    }
+    if (d->autoDelete) {
         deleteLater();
+    }
 }
 
 void TimerFunction::singleShot(int ms)

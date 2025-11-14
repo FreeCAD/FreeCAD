@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "FeatureGeometrySet.h"
 
@@ -33,18 +34,18 @@ PROPERTY_SOURCE(Part::FeatureGeometrySet, Part::Feature)
 
 FeatureGeometrySet::FeatureGeometrySet()
 {
-    ADD_PROPERTY(GeometrySet,(nullptr));
+    ADD_PROPERTY(GeometrySet, (nullptr));
 }
 
 
-App::DocumentObjectExecReturn *FeatureGeometrySet::execute()
+App::DocumentObjectExecReturn* FeatureGeometrySet::execute()
 {
     TopoShape result;
 
-    const std::vector<Geometry*> &Geoms = GeometrySet.getValues();
+    const std::vector<Geometry*>& Geoms = GeometrySet.getValues();
 
     bool first = true;
-    for(auto Geom : Geoms) {
+    for (auto Geom : Geoms) {
         TopoDS_Shape sh = Geom->toShape();
         if (first) {
             first = false;

@@ -31,17 +31,18 @@
 #include "Command.h"
 
 
-namespace Gui {
+namespace Gui
+{
 
 /// opens a URL in the system Browser
-bool GuiExport OpenURLInBrowser(const char * URL);
+bool GuiExport OpenURLInBrowser(const char* URL);
 
 /**
  * Returns the content of an HTML page which gets sent to
  * the client to be displayed.
  * @author Werner Mayer
  */
-class PythonOnlineHelp : public QObject
+class PythonOnlineHelp: public QObject
 {
     Q_OBJECT
 
@@ -64,7 +65,7 @@ private:
 /**
  * The HttpServer class implements a simple HTTP server.
  */
-class HttpServer : public QTcpServer
+class HttpServer: public QTcpServer
 {
     Q_OBJECT
 
@@ -86,13 +87,15 @@ private:
 
 // --------------------------------------------------------------------
 
-class StdCmdPythonHelp : public Command
+class StdCmdPythonHelp: public Command
 {
 public:
     StdCmdPythonHelp();
     ~StdCmdPythonHelp() override;
     const char* className() const override
-    { return "Gui::StdCmdPythonHelp"; }
+    {
+        return "Gui::StdCmdPythonHelp";
+    }
 
 protected:
     void activated(int iMsg) override;
@@ -101,6 +104,6 @@ private:
     HttpServer* server;
 };
 
-}
+}  // namespace Gui
 
-#endif // GUI_ONLINEDOCUMENTATION_H
+#endif  // GUI_ONLINEDOCUMENTATION_H

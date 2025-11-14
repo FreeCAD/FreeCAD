@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
 
 set(Assembly_LIBS
     Part
@@ -37,7 +38,6 @@ SOURCE_GROUP("Python" FILES ${Python_SRCS})
 SET(Module_SRCS
     AppAssembly.cpp
     AppAssemblyPy.cpp
-    PreCompiled.cpp
     PreCompiled.h
 )
 SOURCE_GROUP("Module" FILES ${Module_SRCS})
@@ -78,9 +78,9 @@ if (FREECAD_WARN_ERROR)
 endif()
 
 if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${Assembly_SRCS})
-    ADD_MSVC_PRECOMPILED_HEADER(Assembly PreCompiled.h PreCompiled.cpp PCH_SRCS)
+    target_precompile_headers(Assembly PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
 endif(FREECAD_USE_PCH)
 
 SET_BIN_DIR(Assembly AssemblyApp /Mod/Assembly)

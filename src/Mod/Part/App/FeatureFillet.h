@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -23,13 +25,15 @@
 #ifndef PART_FEATUREFILLET_H
 #define PART_FEATUREFILLET_H
 
+#include <Mod/Part/PartGlobal.h>
+
 #include "PartFeature.h"
 
 
 namespace Part
 {
 
-class PartExport Fillet : public Part::FilletBase
+class PartExport Fillet: public Part::FilletBase
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::Fillet);
 
@@ -39,15 +43,16 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
     /// returns the type name of the view provider
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "PartGui::ViewProviderFillet";
     }
     //@}
 };
 
-} //namespace Part
+}  // namespace Part
 
 
-#endif // PART_FEATUREFILLET_H
+#endif  // PART_FEATUREFILLET_H

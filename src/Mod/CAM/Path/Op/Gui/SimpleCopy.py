@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2015 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
@@ -29,6 +30,32 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 __doc__ = """CAM SimpleCopy command"""
 
 translate = FreeCAD.Qt.translate
+
+
+class ViewProvider:
+
+    def __init__(self, vobj):
+        self.Object = vobj.Object
+        vobj.Proxy = self
+
+    def attach(self, vobj):
+        self.Object = vobj.Object
+        return
+
+    def dumps(self):
+        return None
+
+    def loads(self, state):
+        return None
+
+    def onChanged(self, vobj, prop):
+        return
+
+    def getIcon(self):
+        if self.Object.Active:
+            return ":/icons/CAM_SimpleCopy.svg"
+        else:
+            return ":/icons/CAM_OpActive.svg"
 
 
 class CommandPathSimpleCopy:
@@ -71,8 +98,10 @@ class CommandPathSimpleCopy:
         FreeCADGui.doCommand("srcpath = PathScripts.PathUtils.getPathWithPlacement(srcobj)\n")
         FreeCADGui.addModule("Path.Op.Custom")
         FreeCADGui.doCommand('obj = Path.Op.Custom.Create("' + selection[0].Name + '_SimpleCopy")')
-        FreeCADGui.doCommand("obj.ViewObject.Proxy = 0")
         FreeCADGui.doCommand("obj.Gcode = [c.toGCode() for c in srcpath.Commands]")
+        FreeCADGui.doCommand(
+            "obj.ViewObject.Proxy = Path.Op.Gui.SimpleCopy.ViewProvider(obj.ViewObject)"
+        )
         FreeCADGui.doCommand("PathScripts.PathUtils.addToJob(obj)")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()

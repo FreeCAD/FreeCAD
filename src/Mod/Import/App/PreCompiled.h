@@ -26,13 +26,10 @@
 
 #include <FCConfig.h>
 
-#ifdef _PreComp_
-
 // standard
 #include <cassert>
 #include <cstdio>
 #include <fcntl.h>
-#include <io.h>
 #include <iostream>
 #include <list>
 #include <map>
@@ -47,7 +44,5 @@
 // OpenCasCade =====================================================================================
 // Base
 #include <Mod/Part/App/OpenCascadeAll.h>
-
-#endif  //_PreComp_
 
 #endif

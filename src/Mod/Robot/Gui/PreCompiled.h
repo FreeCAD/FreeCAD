@@ -25,21 +25,6 @@
 
 #include <FCConfig.h>
 
-// Importing of App classes
-#ifdef FC_OS_WIN32
-#define RobotExport __declspec(dllimport)
-#define PartExport __declspec(dllimport)
-#define PartGuiExport __declspec(dllimport)
-#define RobotGuiExport __declspec(dllexport)
-#else  // for Linux
-#define PartExport
-#define RobotExport
-#define PartGuiExport
-#define RobotGuiExport
-#endif
-
-#ifdef _PreComp_
-
 // STL
 #include <sstream>
 
@@ -70,7 +55,5 @@
 #include <Inventor/nodes/SoLineSet.h>
 #include <Inventor/nodes/SoMarkerSet.h>
 #include <Inventor/nodes/SoSeparator.h>
-
-#endif  //_PreComp_
 
 #endif  // ROBOTGUI_PRECOMPILED_H

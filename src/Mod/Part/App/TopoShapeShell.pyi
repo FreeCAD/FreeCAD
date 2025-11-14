@@ -2,7 +2,6 @@ from Base.Metadata import export, constmethod
 from TopoShape import TopoShape
 from typing import Final, Dict
 
-
 @export(
     Twin="TopoShape",
     TwinPointer="TopoShape",

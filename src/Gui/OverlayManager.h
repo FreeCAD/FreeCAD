@@ -33,12 +33,14 @@ class QString;
 class QPoint;
 class QWidget;
 
-namespace Gui {
+namespace Gui
+{
 
 class OverlayTabWidget;
 
 /// Class that manages overlay dockable widgets
-class GuiExport OverlayManager : public QObject {
+class GuiExport OverlayManager: public QObject
+{
     Q_OBJECT
 public:
     OverlayManager();
@@ -54,7 +56,8 @@ public:
     void refreshIcons();
 
     /// Reload mode
-    enum class ReloadMode {
+    enum class ReloadMode
+    {
         /// Reload is pending
         ReloadPending = 0,
         /// Reload is paused
@@ -74,13 +77,14 @@ public:
      * @param widget: optional source widget that triggers the refresh
      * @param refreshStyle: whether to reload stylesheet
      */
-    void refresh(QWidget *widget=nullptr, bool refreshStyle=false);
+    void refresh(QWidget* widget = nullptr, bool refreshStyle = false);
 
     /// Setup title bar for a QDockWidget
-    void setupTitleBar(QDockWidget *);
+    void setupTitleBar(QDockWidget*);
 
     /// Overlay mode
-    enum class OverlayMode {
+    enum class OverlayMode
+    {
         /// Toggle the focused widget between normal and overlay on top of MDI client area
         ToggleActive,
         /// Toggle overlay dock widget background between opaque and transparent
@@ -122,11 +126,11 @@ public:
     bool isUnderOverlay() const;
 
     /// Initialize a newly created dock widget
-    void initDockWidget(QDockWidget *);
+    void initDockWidget(QDockWidget*);
     /// Prepare a dock widget for overlay display
-    void setupDockWidget(QDockWidget *, int dockArea = Qt::NoDockWidgetArea);
+    void setupDockWidget(QDockWidget*, int dockArea = Qt::NoDockWidgetArea);
     /// Switch a dock widget back to normal display
-    void unsetupDockWidget(QDockWidget *);
+    void unsetupDockWidget(QDockWidget*);
 
     /** Mouse event handler for dragging a dock widget
      * @param pos: mouse cursor position
@@ -136,20 +140,23 @@ public:
      * @param size: widget size before dragging start
      * @param drop: whether to drop after drag to the position
      */
-    void dragDockWidget(const QPoint &pos,
-                        QWidget *widget,
-                        const QPoint &offset,
-                        const QSize &size,
-                        bool drop = false);
+    void dragDockWidget(
+        const QPoint& pos,
+        QWidget* widget,
+        const QPoint& offset,
+        const QSize& size,
+        bool drop = false
+    );
 
     /// Float an overlay docked widget
-    void floatDockWidget(QDockWidget *);
+    void floatDockWidget(QDockWidget*);
 
-    /// Return the last widget whose mouse event got intercepted by the overlay manager for mouse pass through
-    QWidget *getLastMouseInterceptWidget() const;
+    /// Return the last widget whose mouse event got intercepted by the overlay manager for mouse
+    /// pass through
+    QWidget* getLastMouseInterceptWidget() const;
 
     /// Return the stylesheet for overlay widgets
-    const QString &getStyleSheet() const;
+    const QString& getStyleSheet() const;
 
     /// Check whether to hide tab in overlay dock widget
     bool getHideTab() const;
@@ -158,7 +165,7 @@ public:
     static void setFocusView();
 
     /// Return the singleton instance of the overlay manager
-    static OverlayManager * instance();
+    static OverlayManager* instance();
     /// Destroy the overlay manager
     static void destruct();
 
@@ -168,17 +175,17 @@ protected:
     bool eventFilter(QObject* obj, QEvent* ev) override;
 
     /// Register a named docked widget with an overlay tab widget
-    void registerDockWidget(const QString &name, OverlayTabWidget *);
+    void registerDockWidget(const QString& name, OverlayTabWidget*);
     /// Unregister a named docked widget with an overlay tab widget
-    void unregisterDockWidget(const QString &name, OverlayTabWidget *);
+    void unregisterDockWidget(const QString& name, OverlayTabWidget*);
 
 private:
     void onToggleDockWidget(bool checked);
     void onDockVisibleChange(bool visible);
     void onDockFeaturesChange(QDockWidget::DockWidgetFeatures features);
-    void onDockWidgetTitleChange(const QString &);
+    void onDockWidgetTitleChange(const QString&);
     void onTaskViewUpdate();
-    void onFocusChanged(QWidget *, QWidget *);
+    void onFocusChanged(QWidget*, QWidget*);
     void onAction();
 
 private Q_SLOTS:
@@ -187,9 +194,9 @@ private Q_SLOTS:
 private:
     friend class Private;
     friend class OverlayTabWidget;
-    Private * d;
+    Private* d;
 };
 
-} // namespace Gui
+}  // namespace Gui
 
-#endif // FC_OVERLAYMANAGER_H
+#endif  // FC_OVERLAYMANAGER_H

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -25,12 +27,12 @@
 #include <FCConfig.h>
 
 #ifdef FC_OS_WIN32
-#include <Windows.h>
+# include <Windows.h>
 #endif
 #ifdef FC_OS_MACOSX
-#include <OpenGL/gl.h>
+# include <OpenGL/gl.h>
 #else
-#include <GL/gl.h>
+# include <GL/gl.h>
 #endif
 #include <algorithm>
 

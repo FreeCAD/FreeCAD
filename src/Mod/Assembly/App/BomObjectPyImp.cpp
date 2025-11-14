@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2024 Boyer Pierre-Louis <development@ondsel>            *
  *                                                                         *
@@ -20,8 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
 
 // inclusion of the generated files (generated out of BomObject.xml)
 #include "BomObjectPy.h"

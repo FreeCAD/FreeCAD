@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2012 Imetric 3D GmbH                                    *
  *                                                                         *
@@ -57,8 +59,7 @@ public:
      * The facets from raulFacets will be trimmed or deleted and aclNewFacets gives the new
      * generated facets
      */
-    void TrimFacets(const std::vector<FacetIndex>& raulFacets,
-                    std::vector<MeshGeomFacet>& aclNewFacets);
+    void TrimFacets(const std::vector<FacetIndex>& raulFacets, std::vector<MeshGeomFacet>& aclNewFacets);
 
     /**
      * Setter: Trimm INNER or OUTER
@@ -79,19 +80,23 @@ private:
     /**
      * Creates new facets from edge points of the facet
      */
-    bool CreateFacets(FacetIndex ulFacetPos,
-                      int iSide,
-                      const std::vector<Base::Vector3f>& raclPoints,
-                      std::vector<MeshGeomFacet>& aclNewFacets);
+    bool CreateFacets(
+        FacetIndex ulFacetPos,
+        int iSide,
+        const std::vector<Base::Vector3f>& raclPoints,
+        std::vector<MeshGeomFacet>& aclNewFacets
+    );
 
     /**
      * Creates new facets from edge points of the facet and a point inside the facet
      */
-    bool CreateFacets(FacetIndex ulFacetPos,
-                      int iSide,
-                      const std::vector<Base::Vector3f>& raclPoints,
-                      Base::Vector3f& clP3,
-                      std::vector<MeshGeomFacet>& aclNewFacets);
+    bool CreateFacets(
+        FacetIndex ulFacetPos,
+        int iSide,
+        const std::vector<Base::Vector3f>& raclPoints,
+        Base::Vector3f& clP3,
+        std::vector<MeshGeomFacet>& aclNewFacets
+    );
 
     /**
      * Checks if a polygon point lies within a facet
@@ -102,9 +107,11 @@ private:
      * Calculates the two intersection points between polygonline and facet in 2D
      * and project the points back into 3D (not very exactly)
      */
-    bool GetIntersectionPointsOfPolygonAndFacet(FacetIndex ulIndex,
-                                                int& iSide,
-                                                std::vector<Base::Vector3f>& raclPoints) const;
+    bool GetIntersectionPointsOfPolygonAndFacet(
+        FacetIndex ulIndex,
+        int& iSide,
+        std::vector<Base::Vector3f>& raclPoints
+    ) const;
 
     void AdjustFacet(MeshFacet& facet, int iInd);
 

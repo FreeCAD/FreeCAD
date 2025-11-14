@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2014 Nathan Miller <Nathan.A.Mill[at]gmail.com>         *
  *                                                                         *
@@ -20,12 +22,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <BRepBuilderAPI_Sewing.hxx>
 #include <Precision.hxx>
 #include <TopoDS.hxx>
-#endif
+
 
 #include "FeatureSewing.h"
 
@@ -39,17 +39,9 @@ PROPERTY_SOURCE(Surface::Sewing, Part::Feature)
 Sewing::Sewing()
 {
     ADD_PROPERTY_TYPE(ShapeList, (nullptr, ""), "Sewing", App::Prop_None, "Input shapes");
-    ADD_PROPERTY_TYPE(Tolerance,
-                      (Precision::Confusion()),
-                      "Sewing",
-                      App::Prop_None,
-                      "Sewing tolerance");
+    ADD_PROPERTY_TYPE(Tolerance, (Precision::Confusion()), "Sewing", App::Prop_None, "Sewing tolerance");
     ADD_PROPERTY_TYPE(SewingOption, (true), "Sewing", App::Prop_None, "Sewing option");
-    ADD_PROPERTY_TYPE(DegenerateShape,
-                      (true),
-                      "Sewing",
-                      App::Prop_None,
-                      "Analysis of degenerated shapes");
+    ADD_PROPERTY_TYPE(DegenerateShape, (true), "Sewing", App::Prop_None, "Analysis of degenerated shapes");
     ADD_PROPERTY_TYPE(CutFreeEdges, (true), "Sewing", App::Prop_None, "Cutting of free edges");
     ADD_PROPERTY_TYPE(Nonmanifold, (false), "Sewing", App::Prop_None, "Non-manifold processing");
 

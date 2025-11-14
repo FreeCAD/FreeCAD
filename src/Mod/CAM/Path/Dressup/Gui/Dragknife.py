@@ -1,4 +1,5 @@
-#  -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2014 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -26,6 +27,7 @@ import Path.Base.Gui.Util as PathGuiUtil
 from PySide import QtCore
 import math
 import PathScripts.PathUtils as PathUtils
+import Path.Dressup.Utils as PathDressup
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 # lazily loaded modules
@@ -86,6 +88,10 @@ class ObjectDressup:
 
     def loads(self, state):
         return None
+
+    def onChanged(self, obj, prop):
+        if prop == "Path" and obj.ViewObject:
+            obj.ViewObject.signalChangeIcon()
 
     def shortcut(self, queue):
         """Determines whether its shorter to twist CW or CCW to align with
@@ -571,6 +577,12 @@ class ViewProviderDressup:
                 job.Proxy.addOperation(arg1.Object.Base, arg1.Object)
             arg1.Object.Base = None
         return True
+
+    def getIcon(self):
+        if getattr(PathDressup.baseOp(self.Object), "Active", True):
+            return ":/icons/CAM_Dressup.svg"
+        else:
+            return ":/icons/CAM_OpActive.svg"
 
 
 class CommandDressupDragknife:

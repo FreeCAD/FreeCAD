@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -32,7 +34,6 @@
 # include <windows.h>
 #endif
 
-#ifdef _PreComp_
 
 // standard
 #include <cmath>
@@ -67,17 +68,16 @@
 #  endif
 #  include <GL/gl.h>
 #  include <GL/glext.h>
-# endif //FC_OS_MACOSX
-#endif //FC_OS_WIN32
+# endif  // FC_OS_MACOSX
+#endif   // FC_OS_WIN32
 // Should come after glext.h to avoid warnings
 #include <Inventor/C/glue/gl.h>
 
 // Qt Toolkit
-# include <Gui/QtAll.h>
+#include <Gui/QtAll.h>
 
 // Inventor includes OpenGL
-# include <Gui/InventorAll.h>
+#include <Gui/InventorAll.h>
 
-#endif  //_PreComp_
 
-#endif // PARTGUI_PRECOMPILED_H
+#endif  // PARTGUI_PRECOMPILED_H

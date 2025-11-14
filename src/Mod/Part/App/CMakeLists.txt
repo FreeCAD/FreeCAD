@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 add_library(Part SHARED)
 
 target_include_directories(
@@ -556,13 +558,14 @@ SET(Part_SRCS
     Geometry.h
     Geometry2d.cpp
     Geometry2d.h
+    GizmoHelper.cpp
+    GizmoHelper.h
     ImportIges.cpp
     ImportIges.h
     ImportStep.cpp
     ImportStep.h
     Interface.cpp
     Interface.h
-    PreCompiled.cpp
     PreCompiled.h
     Services.cpp
     Services.h
@@ -598,9 +601,9 @@ SET(Part_SRCS
 )
 
 if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${Part_SRCS})
-    ADD_MSVC_PRECOMPILED_HEADER(Part PreCompiled.h PreCompiled.cpp PCH_SRCS)
+    target_precompile_headers(Part PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
 endif(FREECAD_USE_PCH)
 
 # Suppress some very long Eigen3 warnings of older versions

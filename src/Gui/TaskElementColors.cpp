@@ -21,7 +21,6 @@
  ****************************************************************************/
 
 
-
 #include <boost/algorithm/string/predicate.hpp>
 #include <QColorDialog>
 #include <sstream>
@@ -152,10 +151,11 @@ public:
         const char* marker = ViewProvider::hasHiddenMarker(sub);
         if (marker) {
             auto icon = BitmapFactory().pixmap("Invisible");
-            auto item =
-                new QListWidgetItem(icon,
-                                    QString::fromLatin1(std::string(sub, marker - sub).c_str()),
-                                    ui->elementList);
+            auto item = new QListWidgetItem(
+                icon,
+                QString::fromLatin1(std::string(sub, marker - sub).c_str()),
+                ui->elementList
+            );
             item->setData(Qt::UserRole, QColor());
             item->setData(Qt::UserRole + 1, QString::fromLatin1(sub));
             elements.emplace(sub, item);
@@ -177,7 +177,8 @@ public:
             auto item = new QListWidgetItem(
                 QIcon(px),
                 QString::fromLatin1(Data::oldElementName(v.first.c_str()).c_str()),
-                ui->elementList);
+                ui->elementList
+            );
             item->setData(Qt::UserRole, c);
             item->setData(Qt::UserRole + 1, QString::fromLatin1(v.first.c_str()));
             if (push) {
@@ -287,7 +288,8 @@ public:
                         && boost::starts_with(msg.pSubName, editSub)) {
                         const auto items = ui->elementList->findItems(
                             QString::fromLatin1(msg.pSubName - editSub.size()),
-                            Qt::MatchExactly);
+                            Qt::MatchExactly
+                        );
                         for (auto item : items) {
                             item->setSelected(msg.Type == SelectionChanges::AddSelection);
                         }
@@ -306,9 +308,11 @@ public:
         }
         busy = true;
         std::map<std::string, int> sels;
-        for (auto& sel : Selection().getSelectionEx(editDoc.c_str(),
-                                                    App::DocumentObject::getClassTypeId(),
-                                                    ResolveMode::NoResolve)) {
+        for (auto& sel : Selection().getSelectionEx(
+                 editDoc.c_str(),
+                 App::DocumentObject::getClassTypeId(),
+                 ResolveMode::NoResolve
+             )) {
             if (sel.getFeatName() != editObj) {
                 continue;
             }
@@ -327,17 +331,13 @@ public:
             }
             auto& v = sels[name];
             if (!v) {
-                Selection().addSelection(editDoc.c_str(),
-                                         editObj.c_str(),
-                                         (editSub + name).c_str());
+                Selection().addSelection(editDoc.c_str(), editObj.c_str(), (editSub + name).c_str());
             }
             v = 2;
         }
         for (auto& v : sels) {
             if (v.second != 2) {
-                Selection().rmvSelection(editDoc.c_str(),
-                                         editObj.c_str(),
-                                         (editSub + v.first).c_str());
+                Selection().rmvSelection(editDoc.c_str(), editObj.c_str(), (editSub + v.first).c_str());
             }
         }
         busy = false;
@@ -359,8 +359,9 @@ ElementColors::ElementColors(ViewProviderDocumentObject* vp, bool noHide)
         d->ui->hideSelection->setVisible(false);
     }
 
-    ParameterGrp::handle hPart =
-        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    ParameterGrp::handle hPart = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/View"
+    );
     d->ui->recompute->setChecked(hPart->GetBool("ColorRecompute", true));
     d->ui->onTop->setChecked(hPart->GetBool("ColorOnTop", true));
     if (d->ui->onTop->isChecked()) {
@@ -416,15 +417,17 @@ void ElementColors::setupConnections()
 
 void ElementColors::onRecomputeClicked(bool checked)
 {
-    ParameterGrp::handle hPart =
-        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    ParameterGrp::handle hPart = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/View"
+    );
     hPart->SetBool("ColorRecompute", checked);
 }
 
 void ElementColors::onTopClicked(bool checked)
 {
-    ParameterGrp::handle hPart =
-        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    ParameterGrp::handle hPart = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/View"
+    );
     hPart->SetBool("ColorOnTop", checked);
     d->vpParent->OnTopWhenSelected.setValue(checked ? 3 : d->onTopMode);
 }
@@ -458,9 +461,11 @@ void ElementColors::onBoxSelectClicked()
 
 void ElementColors::onHideSelectionClicked()
 {
-    auto sels = Selection().getSelectionEx(d->editDoc.c_str(),
-                                           App::DocumentObject::getClassTypeId(),
-                                           ResolveMode::NoResolve);
+    auto sels = Selection().getSelectionEx(
+        d->editDoc.c_str(),
+        App::DocumentObject::getClassTypeId(),
+        ResolveMode::NoResolve
+    );
     for (auto& sel : sels) {
         if (d->editObj != sel.getFeatName()) {
             continue;
@@ -482,9 +487,11 @@ void ElementColors::onHideSelectionClicked()
 
 void ElementColors::onAddSelectionClicked()
 {
-    auto sels = Selection().getSelectionEx(d->editDoc.c_str(),
-                                           App::DocumentObject::getClassTypeId(),
-                                           ResolveMode::NoResolve);
+    auto sels = Selection().getSelectionEx(
+        d->editDoc.c_str(),
+        App::DocumentObject::getClassTypeId(),
+        ResolveMode::NoResolve
+    );
     d->items.clear();
     if (sels.empty()) {
         d->addItem(-1, "Face", true);
@@ -580,15 +587,16 @@ void ElementColors::onElementListItemEntered(QListWidgetItem* item)
         name.resize(name.size() - ViewProvider::hiddenMarker().size());
     }
 
-    Selection().setPreselect(d->editDoc.c_str(),
-                             d->editObj.c_str(),
-                             (d->editSub + name).c_str(),
-                             0,
-                             0,
-                             0,
-                             d->ui->onTop->isChecked()
-                                 ? Gui::SelectionChanges::MsgSource::TreeView
-                                 : Gui::SelectionChanges::MsgSource::Internal);
+    Selection().setPreselect(
+        d->editDoc.c_str(),
+        d->editObj.c_str(),
+        (d->editSub + name).c_str(),
+        0,
+        0,
+        0,
+        d->ui->onTop->isChecked() ? Gui::SelectionChanges::MsgSource::TreeView
+                                  : Gui::SelectionChanges::MsgSource::Internal
+    );
 }
 
 void ElementColors::onElementListItemSelectionChanged()
@@ -635,4 +643,3 @@ bool TaskElementColors::reject()
 }
 
 #include "moc_TaskElementColors.cpp"
-

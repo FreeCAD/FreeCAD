@@ -29,13 +29,15 @@
 
 class QTreeWidgetItem;
 
-namespace Gui {
-namespace Dialog {
+namespace Gui
+{
+namespace Dialog
+{
 
 class Ui_DlgParameterFind;
 class DlgParameterImp;
 
-class GuiExport DlgParameterFind : public QDialog
+class GuiExport DlgParameterFind: public QDialog
 {
     Q_OBJECT
 
@@ -54,7 +56,8 @@ private:
     void onCheckValuesToggled(bool);
 
 private:
-    struct Options {
+    struct Options
+    {
         QString text;
         bool group = true;
         bool name = true;
@@ -69,7 +72,7 @@ private:
     DlgParameterImp* dialog;
 };
 
-} // namespace Dialog
-} // namespace Gui
+}  // namespace Dialog
+}  // namespace Gui
 
-#endif // GUI_DIALOG_DLGPARAMETERFIND_H
+#endif  // GUI_DIALOG_DLGPARAMETERFIND_H

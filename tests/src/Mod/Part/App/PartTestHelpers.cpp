@@ -41,7 +41,8 @@ void PartTestHelperClass::createTestDoc()
         Base::Vector3d(0, 2, 0),                                 // Touch the first box
         Base::Vector3d(0, 2 + Base::Precision::Confusion(), 0),  // Just Outside of touching
         // For the Just Inside Of Touching case, go enough that we exceed precision rounding
-        Base::Vector3d(0, 2 - minimalDistance, 0)};
+        Base::Vector3d(0, 2 - minimalDistance, 0)
+    };
 
     for (unsigned i = 0; i < _boxes.size(); i++) {
         auto box = _boxes[i] = _doc->addObject<Part::Box>();  // NOLINT
@@ -49,12 +50,16 @@ void PartTestHelperClass::createTestDoc()
         box->Width.setValue(2);
         box->Height.setValue(3);
         box->Placement.setValue(
-            Base::Placement(box_origins[i], Base::Rotation(), Base::Vector3d()));  // NOLINT
+            Base::Placement(box_origins[i], Base::Rotation(), Base::Vector3d())
+        );  // NOLINT
     }
 }
 
-std::vector<Part::FilletElement>
-_getFilletEdges(const std::vector<int>& edges, double startRadius, double endRadius)
+std::vector<Part::FilletElement> _getFilletEdges(
+    const std::vector<int>& edges,
+    double startRadius,
+    double endRadius
+)
 {
     std::vector<Part::FilletElement> filletElements;
     for (auto edge : edges) {
@@ -90,8 +95,10 @@ void rectangle(double height, double width, const char* name)
     ExecutePython(rectstring);
 }
 
-std::tuple<TopoDS_Face, TopoDS_Wire, TopoDS_Edge, TopoDS_Edge, TopoDS_Edge, TopoDS_Edge>
-CreateRectFace(float len, float wid)
+std::tuple<TopoDS_Face, TopoDS_Wire, TopoDS_Edge, TopoDS_Edge, TopoDS_Edge, TopoDS_Edge> CreateRectFace(
+    float len,
+    float wid
+)
 {
     auto edge1 = BRepBuilderAPI_MakeEdge(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(len, 0.0, 0.0)).Edge();
     auto edge2 = BRepBuilderAPI_MakeEdge(gp_Pnt(len, 0.0, 0.0), gp_Pnt(len, wid, 0.0)).Edge();
@@ -102,12 +109,10 @@ CreateRectFace(float len, float wid)
     return {face1, wire1, edge1, edge2, edge3, edge4};
 }
 
-std::tuple<TopoDS_Face, TopoDS_Wire, TopoDS_Wire>
-CreateFaceWithRoundHole(float len, float wid, float radius)
+std::tuple<TopoDS_Face, TopoDS_Wire, TopoDS_Wire> CreateFaceWithRoundHole(float len, float wid, float radius)
 {
     auto [face1, wire1, edge1, edge2, edge3, edge4] = CreateRectFace(len, wid);
-    auto circ1 =
-        GC_MakeCircle(gp_Pnt(len / 2.0, wid / 2.0, 0), gp_Dir(0.0, 0.0, 1.0), radius).Value();
+    auto circ1 = GC_MakeCircle(gp_Pnt(len / 2.0, wid / 2.0, 0), gp_Dir(0.0, 0.0, 1.0), radius).Value();
     auto edge5 = BRepBuilderAPI_MakeEdge(circ1).Edge();
     auto wire2 = BRepBuilderAPI_MakeWire(edge5).Wire();
     auto face2 = BRepBuilderAPI_MakeFace(face1, wire2).Face();
@@ -116,8 +121,7 @@ CreateFaceWithRoundHole(float len, float wid, float radius)
     return {face2, wire1, wire2};
 }
 
-testing::AssertionResult
-boxesMatch(const Base::BoundBox3d& b1, const Base::BoundBox3d& b2, double prec)
+testing::AssertionResult boxesMatch(const Base::BoundBox3d& b1, const Base::BoundBox3d& b2, double prec)
 {
     if (abs(b1.MinX - b2.MinX) < prec && abs(b1.MinY - b2.MinY) < prec
         && abs(b1.MinZ - b2.MinZ) < prec && abs(b1.MaxX - b2.MaxX) < prec
@@ -167,29 +171,31 @@ bool matchStringsWithoutClause(std::string first, std::string second, const std:
  * @param names The vector of names
  * @return An assertion usable by the gtest framework
  */
-testing::AssertionResult elementsMatch(const TopoShape& shape,
-                                       const std::vector<std::string>& names)
+testing::AssertionResult elementsMatch(const TopoShape& shape, const std::vector<std::string>& names)
 {
     auto elements = shape.getElementMap();
     if (!elements.empty() || !names.empty()) {
         for (const auto& name : names) {
-            if (std::find_if(elements.begin(),
-                             elements.end(),
-                             [&, name](const Data::MappedElement& element) {
-                                 return matchStringsWithoutClause(
-                                     element.name.toString(),
-                                     name,
-                                     "(;D|;:H|;K)-?[a-fA-F0-9]+(:[0-9]+)?|(\\(.*?\\))?");
-                                 // ;D ;:H and ;K are the sections of an encoded name for
-                                 // Duplicate, Tag and a Face name in slices.  All three of these
-                                 // can vary from run to run or platform to platform, as they are
-                                 // based on either explicit random numbers or memory addresses.
-                                 // Thus we remove the value from comparisons and just check that
-                                 // they exist.  The full form could be something like ;:He59:53
-                                 // which is what we match and remove.  We also pull out any
-                                 // subexpressions wrapped in parens to keep the parse from
-                                 // becoming too complex.
-                             })
+            if (std::find_if(
+                    elements.begin(),
+                    elements.end(),
+                    [&, name](const Data::MappedElement& element) {
+                        return matchStringsWithoutClause(
+                            element.name.toString(),
+                            name,
+                            "(;D|;:H|;K)-?[a-fA-F0-9]+(:[0-9]+)?|(\\(.*?\\))?"
+                        );
+                        // ;D ;:H and ;K are the sections of an encoded name for
+                        // Duplicate, Tag and a Face name in slices.  All three of these
+                        // can vary from run to run or platform to platform, as they are
+                        // based on either explicit random numbers or memory addresses.
+                        // Thus we remove the value from comparisons and just check that
+                        // they exist.  The full form could be something like ;:He59:53
+                        // which is what we match and remove.  We also pull out any
+                        // subexpressions wrapped in parens to keep the parse from
+                        // becoming too complex.
+                    }
+                )
                 == elements.end()) {
                 return testing::AssertionFailure() << mappedElementVectorToString(elements);
             }
@@ -198,14 +204,12 @@ testing::AssertionResult elementsMatch(const TopoShape& shape,
     return testing::AssertionSuccess();
 }
 
-testing::AssertionResult allElementsMatch(const TopoShape& shape,
-                                          const std::vector<std::string>& names)
+testing::AssertionResult allElementsMatch(const TopoShape& shape, const std::vector<std::string>& names)
 {
     auto elements = shape.getElementMap();
     if (elements.size() != names.size()) {
-        return testing::AssertionFailure()
-            << elements.size() << " != " << names.size()
-            << " elements: " << mappedElementVectorToString(elements);
+        return testing::AssertionFailure() << elements.size() << " != " << names.size()
+                                           << " elements: " << mappedElementVectorToString(elements);
     }
     return elementsMatch(shape, names);
 }

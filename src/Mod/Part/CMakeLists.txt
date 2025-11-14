@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 if(BUILD_TRACY_FRAME_PROFILER)
     add_definitions(-DBUILD_TRACY_FRAME_PROFILER)
 endif()
@@ -76,6 +78,7 @@ set(Part_tests
     parttests/ColorPerFaceTest.py
     parttests/ColorTransparencyTest.py
     parttests/TopoShapeTest.py
+    parttests/TestTangentMode3-0.21.FCStd
 )
 
 add_custom_target(PartScripts ALL SOURCES

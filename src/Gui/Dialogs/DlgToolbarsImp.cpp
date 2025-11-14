@@ -71,10 +71,12 @@ DlgCustomToolbars::DlgCustomToolbars(DlgCustomToolbars::Type t, QWidget* parent)
     sepItem->setData(1, Qt::UserRole, QByteArray("Separator"));
     sepItem->setSizeHint(0, QSize(32, 32));
 
-    conn = DlgCustomKeyboardImp::initCommandWidgets(ui->commandTreeWidget,
-                                                    sepItem,
-                                                    ui->categoryBox,
-                                                    ui->editCommand);
+    conn = DlgCustomKeyboardImp::initCommandWidgets(
+        ui->commandTreeWidget,
+        sepItem,
+        ui->categoryBox,
+        ui->editCommand
+    );
 
     // fills the combo box with all available workbenches
     QStringList workbenches = Application::Instance->workbenches();
@@ -170,7 +172,8 @@ void DlgCustomToolbars::onActivateCategoryBox()
 {}
 
 // called from DlgMacroExecuteImp toolbar walkthrough function
-void DlgCustomToolbars::activateWorkbenchBox(int index) {
+void DlgCustomToolbars::activateWorkbenchBox(int index)
+{
     onWorkbenchBoxActivated(index);
 }
 
@@ -186,8 +189,8 @@ void DlgCustomToolbars::onWorkbenchBoxActivated(int index)
 
 void DlgCustomToolbars::importCustomToolbars(const QByteArray& name)
 {
-    ParameterGrp::handle hGrp =
-        App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Workbench");
+    ParameterGrp::handle hGrp
+        = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Workbench");
     const char* subgroup = (type == Toolbar ? "Toolbar" : "Toolboxbar");
     if (!hGrp->HasGroup(name.constData())) {
         return;
@@ -239,9 +242,7 @@ void DlgCustomToolbars::importCustomToolbars(const QByteArray& name)
                 else {
                     // If corresponding module is not yet loaded do not lose the entry
                     auto item = new QTreeWidgetItem(toplevel);
-                    item->setText(
-                        0,
-                        tr("%1 module not loaded").arg(QString::fromStdString(it2.second)));
+                    item->setText(0, tr("%1 module not loaded").arg(QString::fromStdString(it2.second)));
                     item->setData(0, Qt::UserRole, QByteArray(it2.first.c_str()));
                     item->setData(0, Qt::WhatsThisPropertyRole, QByteArray(it2.second.c_str()));
                     item->setSizeHint(0, QSize(32, 32));
@@ -253,8 +254,8 @@ void DlgCustomToolbars::importCustomToolbars(const QByteArray& name)
 
 void DlgCustomToolbars::exportCustomToolbars(const QByteArray& workbench)
 {
-    ParameterGrp::handle hGrp =
-        App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Workbench");
+    ParameterGrp::handle hGrp
+        = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Workbench");
     const char* subgroup = (type == Toolbar ? "Toolbar" : "Toolboxbar");
     hGrp = hGrp->GetGroup(workbench.constData())->GetGroup(subgroup);
     hGrp->Clear();
@@ -435,24 +436,27 @@ void DlgCustomToolbars::onMoveActionDownButtonClicked()
 void DlgCustomToolbars::onNewButtonClicked()
 {
     bool ok;
-    QString text =
-        QStringLiteral("Custom%1").arg(ui->toolbarTreeWidget->topLevelItemCount() + 1);
-    text = QInputDialog::getText(this,
-                                 tr("New toolbar"),
-                                 tr("Toolbar name:"),
-                                 QLineEdit::Normal,
-                                 text,
-                                 &ok,
-                                 Qt::MSWindowsFixedSizeDialogHint);
+    QString text = QStringLiteral("Custom%1").arg(ui->toolbarTreeWidget->topLevelItemCount() + 1);
+    text = QInputDialog::getText(
+        this,
+        tr("New toolbar"),
+        tr("Toolbar name:"),
+        QLineEdit::Normal,
+        text,
+        &ok,
+        Qt::MSWindowsFixedSizeDialogHint
+    );
     if (ok) {
         // Check for duplicated name
         for (int i = 0; i < ui->toolbarTreeWidget->topLevelItemCount(); i++) {
             QTreeWidgetItem* toplevel = ui->toolbarTreeWidget->topLevelItem(i);
             QString groupName = toplevel->text(0);
             if (groupName == text) {
-                QMessageBox::warning(this,
-                                     tr("Duplicated name"),
-                                     tr("The toolbar name '%1' is already used").arg(text));
+                QMessageBox::warning(
+                    this,
+                    tr("Duplicated name"),
+                    tr("The toolbar name '%1' is already used").arg(text)
+                );
                 return;
             }
         }
@@ -491,22 +495,26 @@ void DlgCustomToolbars::onRenameButtonClicked()
     if (item && !item->parent() && item->isSelected()) {
         bool ok;
         QString old_text = item->text(0);
-        QString text = QInputDialog::getText(this,
-                                             tr("Rename toolbar"),
-                                             tr("Toolbar name:"),
-                                             QLineEdit::Normal,
-                                             old_text,
-                                             &ok,
-                                             Qt::MSWindowsFixedSizeDialogHint);
+        QString text = QInputDialog::getText(
+            this,
+            tr("Rename toolbar"),
+            tr("Toolbar name:"),
+            QLineEdit::Normal,
+            old_text,
+            &ok,
+            Qt::MSWindowsFixedSizeDialogHint
+        );
         if (ok && text != old_text) {
             // Check for duplicated name
             for (int i = 0; i < ui->toolbarTreeWidget->topLevelItemCount(); i++) {
                 QTreeWidgetItem* toplevel = ui->toolbarTreeWidget->topLevelItem(i);
                 QString groupName = toplevel->text(0);
                 if (groupName == text && toplevel != item) {
-                    QMessageBox::warning(this,
-                                         tr("Duplicated name"),
-                                         tr("The toolbar name '%1' is already used").arg(text));
+                    QMessageBox::warning(
+                        this,
+                        tr("Duplicated name"),
+                        tr("The toolbar name '%1' is already used").arg(text)
+                    );
                     return;
                 }
             }

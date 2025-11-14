@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -25,39 +27,43 @@
 
 #include <App/PropertyStandard.h>
 
+#include <Mod/Part/PartGlobal.h>
+
 #include "PrimitiveFeature.h"
 
 
 namespace Part
 {
 
-class PartExport Box :public Part::Primitive
+class PartExport Box: public Part::Primitive
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::Box);
 
 public:
     Box();
 
-    App::PropertyLength Length,Height,Width;
+    App::PropertyLength Length, Height, Width;
 
 
     /** @name methods override feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
     short mustExecute() const override;
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "PartGui::ViewProviderBox";
     }
+
 protected:
-    void Restore(Base::XMLReader &reader) override;
+    void Restore(Base::XMLReader& reader) override;
     /// get called by the container when a property has changed
-    void onChanged (const App::Property* prop) override;
+    void onChanged(const App::Property* prop) override;
     //@}
 };
 
-} //namespace Part
+}  // namespace Part
 
 
-#endif // PART_FEATUREPARTBOX_H
+#endif  // PART_FEATUREPARTBOX_H

@@ -39,7 +39,7 @@ def get_information():
     return {
         "name": "Electrostatics Capacitance Two Balls",
         "meshtype": "solid",
-        "meshelement": "Tet10",
+        "meshelement": "Tet4",
         "constraints": ["electrostatic potential"],
         "solvers": ["elmer"],
         "material": "fluid",
