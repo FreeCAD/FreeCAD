@@ -26,8 +26,10 @@ import FreeCAD
 import Path
 import Path.Op.Base as PathOp
 import PathScripts.PathUtils as PathUtils
+import Path.Dressup.Utils as PathDressup
 
 from Path.Geom import isRoughly
+import math
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -264,119 +266,244 @@ class ObjectOp(PathOp.ObjectOp):
 
         return candidate.discretize(3)[1]
 
+    def getStartIndex(self, cmds1, cmds2, threshold):
+        # get index of command from which continue path to skip retract
+        lastPoint = lastX = lastY = None
+        nextPoint = nextX = nextY = None
+        # determine last point in previous path
+        for cmd in reversed(cmds1):
+            if cmd.Name in Path.Geom.CmdMoveMill:
+                lastX = cmd.x if cmd.x is not None and lastX is None else lastX
+                lastY = cmd.y if cmd.y is not None and lastY is None else lastY
+                if lastX is not None and lastY is not None:
+                    lastPoint = FreeCAD.Vector(lastX, lastY, 0)
+                    break
+        # determine first point in new path
+        indexG1 = None
+        for i, cmd in enumerate(cmds2):
+            if cmd.Name in Path.Geom.CmdMoveStraight:
+                indexG1 = i if indexG1 is None else indexG1
+                nextX = cmd.x if cmd.x is not None and nextX is None else nextX
+                nextY = cmd.y if cmd.y is not None and nextY is None else nextY
+                if nextX is not None and nextY is not None:
+                    nextPoint = FreeCAD.Vector(nextX, nextY, 0)
+                    break
+        if (
+            indexG1 is not None
+            and lastPoint is not None
+            and nextPoint is not None
+            and lastPoint.distanceToPoint(nextPoint) <= threshold
+        ):
+            return indexG1
+        else:
+            return 0
+
+    def getEndVector(self, cmds):
+        # get index of command from which continue path to skip retract
+        lastX = lastY = lastZ = None
+        for cmd in reversed(cmds):
+            if cmd.Name in Path.Geom.CmdMoveMill:
+                lastX = cmd.x if cmd.x is not None and lastX is None else lastX
+                lastY = cmd.y if cmd.y is not None and lastY is None else lastY
+                lastZ = cmd.z if cmd.z is not None and lastZ is None else lastZ
+                if lastX is not None and lastY is not None and lastZ is not None:
+                    return FreeCAD.Vector(lastX, lastY, lastZ)
+
     def _buildPathArea(self, obj, baseobject, isHole, start, getsim):
         """_buildPathArea(obj, baseobject, isHole, start, getsim) ... internal function."""
         Path.Log.track()
-        area = Path.Area()
-        area.setPlane(PathUtils.makeWorkplane(baseobject))
-        area.add(baseobject)
 
-        areaParams = self.areaOpAreaParams(obj, isHole)
-        areaParams["SectionTolerance"] = FreeCAD.Base.Precision.confusion() * 10  # basically 1e-06
+        areaParamsList = []
+        if obj.Proxy.__module__ == "Path.Op.PocketShape" and obj.FinishOffset:
+            # Pocket operation: split area and get order "main" -> 'Offset'
+            areaParamsList.append(self.areaOpAreaParams(obj, isHole))  # "main" area
+            areaParamsList.append(self.areaOpAreaParamsOffset(obj, isHole))  # 'Offset' area
+            if getattr(obj, "StartAt", None) == "Edge":
+                # reverse order 'Offset' -> "main"
+                areaParamsList.reverse()
+        elif obj.Proxy.__module__ == "Path.Op.Profile":
+            # Profile operation: split area for multiple passes
+            areaParams = self.areaOpAreaParams(obj, isHole)
+            offsets = areaParams["Offset"]
+            for offset in offsets:
+                areaParams["Offset"] = offset
+                areaParamsList.append(areaParams.copy())
+        else:
+            areaParamsList.append(self.areaOpAreaParams(obj, isHole))
 
-        heights = [i for i in self.depthparams]
-        Path.Log.debug("depths: {}".format(heights))
-        area.setParams(**areaParams)
-        obj.AreaParams = str(area.getParams())
+        cmds = []
+        sims = []
+        for index, areaParams in enumerate(areaParamsList):
+            allowOneStepDown = False
+            if (
+                obj.Proxy.__module__ == "Path.Op.Profile"
+                and getattr(obj, "OffsetFinish", None)
+                and getattr(obj, "NumPasses", 1) > 1
+                and index == len(areaParamsList) - 1
+                and obj.StartAt != "Edge"
+            ):
+                allowOneStepDown = True
 
-        Path.Log.debug("Area with params: {}".format(area.getParams()))
+            isPocketFinishPass = False
+            isPocketOffsetCenter = False
+            if obj.Proxy.__module__ == "Path.Op.PocketShape":
+                if "JoinType" in areaParams:
+                    isPocketFinishPass = True
+                    if getattr(obj, "StartAt", None) == "Center":
+                        allowOneStepDown = True
+                elif (
+                    getattr(obj, "ClearingPattern", None) == "Offset"
+                    and getattr(obj, "StartAt", None) == "Center"
+                ):
+                    isPocketOffsetCenter = True
 
-        sections = area.makeSections(mode=0, project=self.areaOpUseProjection(obj), heights=heights)
-        Path.Log.debug("sections = %s" % sections)
+            area = Path.Area()
+            area.setPlane(PathUtils.makeWorkplane(baseobject))
+            area.add(baseobject)
+            areaParams["SectionTolerance"] = FreeCAD.Base.Precision.confusion() * 10
 
-        # Rest machining
-        self.sectionShapes = self.sectionShapes + [section.toTopoShape() for section in sections]
-        if hasattr(obj, "UseRestMachining") and obj.UseRestMachining:
-            restSections = []
-            for section in sections:
-                bbox = section.getShape().BoundBox
-                z = bbox.ZMin
-                sectionClearedAreas = []
-                for op in self.job.Operations.Group:
-                    if self in [x.Proxy for x in [op] + op.OutListRecursive if hasattr(x, "Proxy")]:
-                        break
-                    if hasattr(op, "Active") and op.Active and op.Path:
-                        tool = (
-                            op.Proxy.tool
-                            if hasattr(op.Proxy, "tool")
-                            else op.ToolController.Proxy.getTool(op.ToolController)
-                        )
-                        diameter = tool.Diameter.getValueAs("mm")
-                        dz = (
-                            0 if not hasattr(tool, "TipAngle") else -PathUtils.drillTipLength(tool)
-                        )  # for drills, dz translates to the full width part of the tool
-                        sectionClearedAreas.append(
-                            section.getClearedArea(
-                                op.Path,
-                                diameter,
-                                z + dz + self.job.GeometryTolerance.getValueAs("mm"),
-                                bbox,
-                            )
-                        )
-                restSection = section.getRestArea(
-                    sectionClearedAreas, self.tool.Diameter.getValueAs("mm")
-                )
-                if restSection is not None:
-                    restSections.append(restSection)
-            sections = restSections
-
-        shapelist = [sec.getShape() for sec in sections]
-        Path.Log.debug("shapelist = %s" % shapelist)
-
-        pathParams = self.areaOpPathParams(obj, isHole)
-        pathParams["shapes"] = shapelist
-        pathParams["feedrate"] = self.horizFeed
-        pathParams["feedrate_v"] = self.vertFeed
-        pathParams["verbose"] = True
-        pathParams["resume_height"] = obj.SafeHeight.Value
-        pathParams["retraction"] = obj.ClearanceHeight.Value
-        pathParams["return_end"] = True
-        # Note that emitting preambles between moves breaks some dressups and prevents path optimization on some controllers
-        pathParams["preamble"] = False
-
-        # disable path sorting for offset and zigzag-offset paths
-        if (
-            hasattr(obj, "ClearingPattern")
-            and obj.ClearingPattern in ["ZigZagOffset", "Offset"]
-            and hasattr(obj, "MinTravel")
-            and not obj.MinTravel
-        ):
-            pathParams["sort_mode"] = 0
-
-        if not self.areaOpRetractTool(obj):
-            pathParams["threshold"] = 2.001 * self.radius
-
-        if (
-            not obj.UseStartPoint
-            and getattr(obj, "HandleMultipleFeatures", None) == "Individually"
-            and getattr(obj, "UseLongestEdge", False)
-        ):
-            pathParams["start"] = self.getMiddlePointLongestEdge(shapelist[0])
-        elif self.endVector is not None:
-            if self.endVector[:2] != (0, 0):
-                pathParams["start"] = self.endVector
-        elif PathOp.FeatureStartPoint & self.opFeatures(obj) and obj.UseStartPoint:
-            pathParams["start"] = obj.StartPoint
-
-        obj.PathParams = str({key: value for key, value in pathParams.items() if key != "shapes"})
-        Path.Log.debug("Path with params: {}".format(obj.PathParams))
-
-        (pp, end_vector) = Path.fromShapes(**pathParams)
-        Path.Log.debug("pp: {}, end vector: {}".format(pp, end_vector))
-
-        # Keep track of this segment's end only if it has movement (otherwise end_vector is 0,0,0 and the next segment will unnecessarily start there)
-        if pp.Size > 0:
-            self.endVector = end_vector
-
-        simobj = None
-        if getsim:
-            areaParams["Thicken"] = True
-            areaParams["ToolRadius"] = self.radius - self.radius * 0.005
+            heights = [i for i in self.depthparams]
+            Path.Log.debug("depths: {}".format(heights))
             area.setParams(**areaParams)
-            sec = area.makeSections(mode=0, project=False, heights=heights)[-1].getShape()
-            simobj = sec.extrude(FreeCAD.Vector(0, 0, baseobject.BoundBox.ZMax))
+            obj.AreaParams = str(area.getParams())
 
-        return pp, simobj
+            Path.Log.debug("Area with params: {}".format(area.getParams()))
+
+            sections = area.makeSections(
+                mode=0, project=self.areaOpUseProjection(obj), heights=heights
+            )
+            Path.Log.debug("sections = %s" % sections)
+
+            # Rest machining
+            self.sectionShapes = self.sectionShapes + [
+                section.toTopoShape() for section in sections
+            ]
+            if getattr(obj, "UseRestMachining", False):
+                restSections = []
+                for section in sections:
+                    bbox = section.getShape().BoundBox
+                    z = bbox.ZMin
+                    sectionClearedAreas = []
+                    for op in self.job.Operations.Group:
+                        baseOp = PathDressup.baseOp(op)
+                        if baseOp.Name == obj.Name:
+                            break
+                        if not getattr(op, "ApplyToRestMachining", None):
+                            op = baseOp
+                        if getattr(baseOp, "Active", None) and op.Path:
+                            tool = baseOp.ToolController.Tool
+                            diameter = tool.Diameter.getValueAs("mm")
+                            dz = (
+                                0
+                                if not hasattr(tool, "TipAngle")
+                                else -PathUtils.drillTipLength(tool)
+                            )  # for drills, dz translates to the full width part of the tool
+                            sectionClearedAreas.append(
+                                section.getClearedArea(
+                                    op.Path,
+                                    diameter,
+                                    z + dz + self.job.GeometryTolerance.getValueAs("mm"),
+                                    bbox,
+                                )
+                            )
+                    restSection = section.getRestArea(
+                        sectionClearedAreas, self.tool.Diameter.getValueAs("mm")
+                    )
+                    if restSection is not None:
+                        restSections.append(restSection)
+                sections = restSections
+
+            shapelist = [sec.getShape() for sec in sections]
+            Path.Log.debug("shapelist = %s" % shapelist)
+
+            pathParams = self.areaOpPathParams(obj, isHole)
+
+            if isPocketFinishPass:
+                # invert orientation for finish Offset pass in Pocket operation
+                pathParams["orientation"] = not pathParams["orientation"]
+
+            if getattr(obj, "FinishOneStepDown", False) and allowOneStepDown:
+                pathParams["shapes"] = shapelist[-1]
+            else:
+                pathParams["shapes"] = shapelist
+
+            pathParams["feedrate"] = self.horizFeed
+            pathParams["feedrate_v"] = self.vertFeed
+            pathParams["verbose"] = True
+            pathParams["resume_height"] = obj.SafeHeight.Value
+            pathParams["retraction"] = obj.ClearanceHeight.Value
+            pathParams["return_end"] = True
+            # Note that emitting preambles between moves breaks some dressups
+            # and prevents path optimization on some controllers
+            pathParams["preamble"] = False
+
+            if isPocketOffsetCenter:
+                pathParams["sort_mode"] = 0
+            elif isPocketFinishPass:
+                pathParams["sort_mode"] = 3
+
+            if hasattr(obj, "SortMode"):
+                pathParams["sort_mode"] = obj.SortMode
+
+            if hasattr(obj, "RetractThreshold"):
+                pathParams["threshold"] = obj.RetractThreshold.Value
+
+            if (
+                not obj.UseStartPoint
+                and getattr(obj, "HandleMultipleFeatures", None) == "Individually"
+                and hasattr(obj, "StartPointOverride")
+                and obj.StartPointOverride != "No"
+            ):
+                if obj.StartPointOverride == "Corner":
+                    pathParams["start"] = self.getCornerPoint(shapelist[0])
+                elif obj.StartPointOverride == "Middle-Long":
+                    pathParams["start"] = self.getMiddlePoint(shapelist[0], True, False)
+                elif obj.StartPointOverride == "Middle-Long-Straight":
+                    pathParams["start"] = self.getMiddlePoint(shapelist[0], True, True)
+                elif obj.StartPointOverride == "Middle-Short":
+                    pathParams["start"] = self.getMiddlePoint(shapelist[0], False, False)
+                elif obj.StartPointOverride == "Middle-Short-Straight":
+                    pathParams["start"] = self.getMiddlePoint(shapelist[0], False, True)
+            elif self.endVector is not None:
+                if self.endVector[:2] != (0, 0):
+                    pathParams["start"] = self.endVector
+            elif PathOp.FeatureStartPoint & self.opFeatures(obj) and obj.UseStartPoint:
+                pathParams["start"] = obj.StartPoint
+
+            obj.PathParams = str(
+                {key: value for key, value in pathParams.items() if key != "shapes"}
+            )
+            Path.Log.debug("Path with params: {}".format(obj.PathParams))
+
+            (pp, end_vector) = Path.fromShapes(**pathParams)
+            Path.Log.debug("pp: {}, end vector: {}".format(pp, end_vector))
+
+            # Keep track of this segment's end only if it has movement (otherwise end_vector is 0,0,0 and the next segment will unnecessarily start there)
+            if pp.Size:
+                self.endVector = end_vector
+                if end_vector[:2] == (0, 0):
+                    # need for finish pass after pocket offset pattern
+                    self.endVector = self.getEndVector(pp.Commands)
+
+            simobj = None
+            if getsim:
+                areaParams["Thicken"] = True
+                areaParams["ToolRadius"] = self.radius - self.radius * 0.005
+                area.setParams(**areaParams)
+                sec = area.makeSections(mode=0, project=False, heights=heights)[-1].getShape()
+                simobj = sec.extrude(FreeCAD.Vector(0, 0, baseobject.BoundBox.ZMax))
+
+            sims.append(simobj)
+
+            commands = pp.Commands
+            # remove retract between "main" area and Offset
+            if obj.RetractThreshold and cmds and commands:
+                startIndex = self.getStartIndex(cmds, commands, obj.RetractThreshold.Value)
+                cmds.extend(commands[startIndex:])
+            else:
+                cmds.extend(commands)
+
+        return Path.Path(cmds), sims
 
     def _buildProfileOpenEdges(self, obj, edgeList, isHole, start, getsim):
         """_buildPathArea(obj, edgeList, isHole, start, getsim) ... internal function."""
@@ -511,24 +638,19 @@ class ObjectOp(PathOp.ObjectOp):
                 ppCmds = pp if profileEdgesIsOpen else pp.Commands
 
                 self.commandlist.extend(ppCmds)
-                sims.append(sim)
+                if isinstance(sim, list):
+                    sims.extend(sim)
+                else:
+                    sims.append(sim)
 
-            if (
-                self.areaOpRetractTool(obj)
-                and self.endVector is not None
-                and len(self.commandlist) > 1
-            ):
+            if self.endVector is not None and len(self.commandlist) > 1:
                 self.endVector[2] = obj.ClearanceHeight.Value
                 self.commandlist.append(
-                    Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid})
+                    Path.Command("G0", {"Z": obj.ClearanceHeightOut.Value, "F": self.vertRapid})
                 )
 
         Path.Log.debug("obj.Name: " + str(obj.Name) + "\n\n")
         return sims
-
-    def areaOpRetractTool(self, obj):
-        """areaOpRetractTool(obj) ... return False to keep the tool at current level between shapes. Default is True."""
-        return True
 
     def areaOpAreaParams(self, obj, isHole):
         """areaOpAreaParams(obj, isHole) ... return operation specific area parameters in a dictionary.
