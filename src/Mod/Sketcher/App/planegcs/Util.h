@@ -48,29 +48,29 @@ using USET_pD = std::unordered_set<double*>;
 struct DeriParam
 {
     double* param {nullptr};
-    double* deriParam {nullptr};
+    double* deri {nullptr};
 
     DeriParam() = default;
     DeriParam(double* param_)
         : param(param_)
-        , deriParam(param_)
+        , deri(param_)
     {}
     DeriParam(double* param_, double* deri_)
         : param(param_)
-        , deriParam(deri_)
+        , deri(deri_)
     {}
 
-    void fill(const UMAP_pD_pD& paramToDeriv)
-    {
-        auto foundParam = paramToDeriv.find(param);
+    // void fill(const UMAP_pD_pD& paramToDeriv)
+    // {
+    //     auto foundParam = paramToDeriv.find(param);
 
-        if (foundParam != paramToDeriv.end()) {
-            deriParam = foundParam->second;
-        }
-        else {
-            deriParam = nullptr;
-        }
-    }
+    //     if (foundParam != paramToDeriv.end()) {
+    //         deri = foundParam->second;
+    //     }
+    //     else {
+    //         deri = nullptr;
+    //     }
+    // }
 
     operator double*() const
     {
@@ -79,11 +79,6 @@ struct DeriParam
     double& operator*() const
     {
         return *param;
-    }
-
-    bool operator==(double* deri) const
-    {
-        return deri == deriParam;
     }
 };
 

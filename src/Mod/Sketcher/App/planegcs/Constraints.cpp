@@ -68,20 +68,29 @@ void Constraint::redirectParams(const UMAP_pD_pD& redirectionmap)
     }
     pvecChangedFlag = true;
 }
-void Constraint::redirectParams(const UMAP_pD_pD& redirectionmap, const UMAP_pD_pD& substitutionmap)
+bool Constraint::redirectParams(const UMAP_pD_pD& redirectionmap, const UMAP_pD_pD& substitutionmap)
 {
+    bool hasSolvableParam = false;
     int i = 0;
     for (VEC_pD::iterator param = origpvec.begin(); param != origpvec.end(); ++param, i++) {
         auto foundRedirect = redirectionmap.find(*param);
         auto foundSubst = substitutionmap.find(*param);
+
         if (foundRedirect != redirectionmap.end() && foundSubst != substitutionmap.end()) {
             pvec[i] = DeriParam(foundRedirect->second, foundSubst->second);
         }
         else if (foundRedirect != redirectionmap.end()) {
             pvec[i] = DeriParam(foundRedirect->second, foundRedirect->second);
         }
+        else {
+            pvec[i] = DeriParam(*param, nullptr);
+        }
+        if (pvec[i].deri != nullptr) {
+            hasSolvableParam = true;
+        }
     }
     pvecChangedFlag = true;
+    return hasSolvableParam;
 }
 
 void Constraint::revertParams()
@@ -107,11 +116,11 @@ double Constraint::maxStep(MAP_pD_D& /*dir*/, double lim)
     return lim;
 }
 
-int Constraint::findParamInPvec(double* param)
+int Constraint::findParamInPvec(double* deri)
 {
     int ret = -1;
     for (std::size_t i = 0; i < pvec.size(); i++) {
-        if (param == pvec[i]) {
+        if (deri == pvec[i].deri) {
             ret = static_cast<int>(i);
             break;
         }
@@ -141,10 +150,10 @@ double ConstraintEqual::error()
 double ConstraintEqual::grad(double* param)
 {
     double deriv = 0.;
-    if (param == param1()) {
+    if (param == param1().deri) {
         deriv += 1;
     }
-    if (param == param2()) {
+    if (param == param2().deri) {
         deriv += -1;
     }
     return scale * deriv;
@@ -194,7 +203,7 @@ double ConstraintWeightedLinearCombination::grad(double* param)
 
     double deriv = 0.;
 
-    if (param == thepoint()) {
+    if (param == thepoint().deri) {
         // Eq. (11)
         double wsum = 0;
         for (size_t i = 0; i < numpoles; ++i) {
@@ -205,12 +214,12 @@ double ConstraintWeightedLinearCombination::grad(double* param)
     }
 
     for (size_t i = 0; i < numpoles; ++i) {
-        if (param == poleat(i)) {
+        if (param == poleat(i).deri) {
             // Eq. (12)
             deriv = -(*weightat(i) * factors[i]);
             return scale * deriv;
         }
-        if (param == weightat(i)) {
+        if (param == weightat(i).deri) {
             // Eq. (13)
             deriv = (*thepoint() - *poleat(i)) * factors[i];
             return scale * deriv;
@@ -252,12 +261,12 @@ double ConstraintCenterOfGravity::error()
 double ConstraintCenterOfGravity::grad(double* param)
 {
     double deriv = 0.;
-    if (param == thecenter()) {
+    if (param == thecenter().deri) {
         deriv = 1;
     }
 
     for (size_t i = 0; i < numpoints; ++i) {
-        if (param == pointat(i)) {
+        if (param == pointat(i).deri) {
             deriv = -weights[i];
         }
     }
@@ -383,7 +392,7 @@ double ConstraintSlopeAtBSplineKnot::grad(double* param)
     double diry = liney / sqrt(linex * linex + liney * liney);
 
     for (size_t i = 0; i < numpoles; ++i) {
-        if (param == polexat(i)) {
+        if (param == polexat(i).deri) {
             // Eq. (21)
             double wsum = 0., wslopesum = 0.;
             for (size_t j = 0; j < numpoles; ++j) {
@@ -395,7 +404,7 @@ double ConstraintSlopeAtBSplineKnot::grad(double* param)
             result = (wsum * slopefactors[i] - wslopesum * factors[i]) * diry;
             return scale * result;
         }
-        if (param == poleyat(i)) {
+        if (param == poleyat(i).deri) {
             // Eq. (21)
             double wsum = 0., wslopesum = 0.;
             for (size_t i = 0; i < numpoles; ++i) {
@@ -407,7 +416,7 @@ double ConstraintSlopeAtBSplineKnot::grad(double* param)
             result = -(wsum * slopefactors[i] - wslopesum * factors[i]) * dirx;
             return scale * result;
         }
-        if (param == weightat(i)) {
+        if (param == weightat(i).deri) {
             // Eq. (22)
             double xsum = 0., xslopesum = 0.;
             double ysum = 0., yslopesum = 0.;
@@ -448,7 +457,7 @@ double ConstraintSlopeAtBSplineKnot::grad(double* param)
         slopey = wsum * yslopesum - wslopesum * ysum;
     };
 
-    if (param == linep1x()) {
+    if (param == linep1x().deri) {
         getSlopes();
         double dDirxDLinex = (liney * liney) / pow(linex * linex + liney * liney, 1.5);
         double dDiryDLinex = -(linex * liney) / pow(linex * linex + liney * liney, 1.5);
@@ -456,7 +465,7 @@ double ConstraintSlopeAtBSplineKnot::grad(double* param)
         result = slopex * (-dDiryDLinex) - slopey * (-dDirxDLinex);
         return scale * result;
     }
-    if (param == linep2x()) {
+    if (param == linep2x().deri) {
         getSlopes();
         double dDirxDLinex = (liney * liney) / pow(linex * linex + liney * liney, 1.5);
         double dDiryDLinex = -(linex * liney) / pow(linex * linex + liney * liney, 1.5);
@@ -464,7 +473,7 @@ double ConstraintSlopeAtBSplineKnot::grad(double* param)
         result = slopex * dDiryDLinex - slopey * dDirxDLinex;
         return scale * result;
     }
-    if (param == linep1y()) {
+    if (param == linep1y().deri) {
         getSlopes();
         double dDirxDLiney = -(linex * liney) / pow(linex * linex + liney * liney, 1.5);
         double dDiryDLiney = (linex * linex) / pow(linex * linex + liney * liney, 1.5);
@@ -472,7 +481,7 @@ double ConstraintSlopeAtBSplineKnot::grad(double* param)
         result = slopex * (-dDiryDLiney) - slopey * (-dDirxDLiney);
         return scale * result;
     }
-    if (param == linep2y()) {
+    if (param == linep2y().deri) {
         getSlopes();
         double dDirxDLiney = -(linex * liney) / pow(linex * linex + liney * liney, 1.5);
         double dDiryDLiney = (linex * linex) / pow(linex * linex + liney * liney, 1.5);
@@ -568,7 +577,7 @@ double ConstraintPointOnBSpline::error()
 double ConstraintPointOnBSpline::grad(double* gcsparam)
 {
     double deriv = 0.;
-    if (gcsparam == thepoint()) {
+    if (gcsparam == thepoint().deri) {
         VEC_D d(numpoints);
         for (size_t i = 0; i < numpoints; ++i) {
             d[i] = *weightat(i);
@@ -583,7 +592,7 @@ double ConstraintPointOnBSpline::grad(double* gcsparam)
         deriv += wsum;
     }
 
-    if (gcsparam == theparam()) {
+    if (gcsparam == theparam().deri) {
         VEC_D d(numpoints - 1);
         for (size_t i = 1; i < numpoints; ++i) {
             d[i - 1] = (*poleat(i) * *weightat(i) - *poleat(i - 1) * *weightat(i - 1))
@@ -611,11 +620,11 @@ double ConstraintPointOnBSpline::grad(double* gcsparam)
     }
 
     for (size_t i = 0; i < numpoints; ++i) {
-        if (gcsparam == poleat(i)) {
+        if (gcsparam == poleat(i).deri) {
             auto factorsI = bsp.getLinCombFactor(*theparam(), startpole + bsp.degree, startpole + i);
             deriv += -(*weightat(i) * factorsI);
         }
-        if (gcsparam == weightat(i)) {
+        if (gcsparam == weightat(i).deri) {
             auto factorsI = bsp.getLinCombFactor(*theparam(), startpole + bsp.degree, startpole + i);
             deriv += (*thepoint() - *poleat(i)) * factorsI;
         }
@@ -643,13 +652,13 @@ double ConstraintDifference::error()
 double ConstraintDifference::grad(double* param)
 {
     double deriv = 0.;
-    if (param == param1()) {
+    if (param == param1().deri) {
         deriv += -1;
     }
-    if (param == param2()) {
+    if (param == param2().deri) {
         deriv += 1;
     }
-    if (param == difference()) {
+    if (param == difference().deri) {
         deriv += -1;
     }
     return scale * deriv;
@@ -682,24 +691,24 @@ double ConstraintP2PDistance::error()
 double ConstraintP2PDistance::grad(double* param)
 {
     double deriv = 0.;
-    if (param == p1x() || param == p1y() || param == p2x() || param == p2y()) {
+    if (param == p1x().deri || param == p1y().deri || param == p2x().deri || param == p2y().deri) {
         double dx = (*p1x() - *p2x());
         double dy = (*p1y() - *p2y());
         double d = sqrt(dx * dx + dy * dy);
-        if (param == p1x()) {
+        if (param == p1x().deri) {
             deriv += dx / d;
         }
-        if (param == p1y()) {
+        if (param == p1y().deri) {
             deriv += dy / d;
         }
-        if (param == p2x()) {
+        if (param == p2x().deri) {
             deriv += -dx / d;
         }
-        if (param == p2y()) {
+        if (param == p2y().deri) {
             deriv += -dy / d;
         }
     }
-    if (param == distance()) {
+    if (param == distance().deri) {
         deriv += -1.;
     }
 
@@ -777,7 +786,7 @@ double ConstraintP2PAngle::error()
 double ConstraintP2PAngle::grad(double* param)
 {
     double deriv = 0.;
-    if (param == p1x() || param == p1y() || param == p2x() || param == p2y()) {
+    if (param == p1x().deri || param == p1y().deri || param == p2x().deri || param == p2y().deri) {
         double dx = (*p2x() - *p1x());
         double dy = (*p2y() - *p1y());
         double a = *angle() + da;
@@ -788,20 +797,20 @@ double ConstraintP2PAngle::grad(double* param)
         double r2 = dx * dx + dy * dy;
         dx = -y / r2;
         dy = x / r2;
-        if (param == p1x()) {
+        if (param == p1x().deri) {
             deriv += (-ca * dx + sa * dy);
         }
-        if (param == p1y()) {
+        if (param == p1y().deri) {
             deriv += (-sa * dx - ca * dy);
         }
-        if (param == p2x()) {
+        if (param == p2x().deri) {
             deriv += (ca * dx - sa * dy);
         }
-        if (param == p2y()) {
+        if (param == p2y().deri) {
             deriv += (sa * dx + ca * dy);
         }
     }
-    if (param == angle()) {
+    if (param == angle().deri) {
         deriv += -1;
     }
 
@@ -855,8 +864,8 @@ double ConstraintP2LDistance::grad(double* param)
 {
     double deriv = 0.;
 
-    if (param == p0x() || param == p0y() || param == p1x() || param == p1y() || param == p2x()
-        || param == p2y()) {
+    if (param == p0x().deri || param == p0y().deri || param == p1x().deri || param == p1y().deri
+        || param == p2x().deri || param == p2y().deri) {
         double x0 = *p0x(), x1 = *p1x(), x2 = *p2x();
         double y0 = *p0y(), y1 = *p1y(), y2 = *p2y();
         double dx = x2 - x1;
@@ -864,29 +873,29 @@ double ConstraintP2LDistance::grad(double* param)
         double d2 = dx * dx + dy * dy;
         double d = sqrt(d2);
         double area = -x0 * dy + y0 * dx + x1 * y2 - x2 * y1;
-        if (param == p0x()) {
+        if (param == p0x().deri) {
             deriv += (y1 - y2) / d;
         }
-        if (param == p0y()) {
+        if (param == p0y().deri) {
             deriv += (x2 - x1) / d;
         }
-        if (param == p1x()) {
+        if (param == p1x().deri) {
             deriv += ((y2 - y0) * d + (dx / d) * area) / d2;
         }
-        if (param == p1y()) {
+        if (param == p1y().deri) {
             deriv += ((x0 - x2) * d + (dy / d) * area) / d2;
         }
-        if (param == p2x()) {
+        if (param == p2x().deri) {
             deriv += ((y0 - y1) * d - (dx / d) * area) / d2;
         }
-        if (param == p2y()) {
+        if (param == p2y().deri) {
             deriv += ((x1 - x0) * d - (dy / d) * area) / d2;
         }
         if (area < 0) {
             deriv *= -1;
         }
     }
-    if (param == distance()) {
+    if (param == distance().deri) {
         deriv += -1;
     }
 
@@ -980,8 +989,8 @@ double ConstraintPointOnLine::error()
 double ConstraintPointOnLine::grad(double* param)
 {
     double deriv = 0.;
-    if (param == p0x() || param == p0y() || param == p1x() || param == p1y() || param == p2x()
-        || param == p2y()) {
+    if (param == p0x().deri || param == p0y().deri || param == p1x().deri || param == p1y().deri
+        || param == p2x().deri || param == p2y().deri) {
         double x0 = *p0x(), x1 = *p1x(), x2 = *p2x();
         double y0 = *p0y(), y1 = *p1y(), y2 = *p2y();
         double dx = x2 - x1;
@@ -989,22 +998,22 @@ double ConstraintPointOnLine::grad(double* param)
         double d2 = dx * dx + dy * dy;
         double d = sqrt(d2);
         double area = -x0 * dy + y0 * dx + x1 * y2 - x2 * y1;
-        if (param == p0x()) {
+        if (param == p0x().deri) {
             deriv += (y1 - y2) / d;
         }
-        if (param == p0y()) {
+        if (param == p0y().deri) {
             deriv += (x2 - x1) / d;
         }
-        if (param == p1x()) {
+        if (param == p1x().deri) {
             deriv += ((y2 - y0) * d + (dx / d) * area) / d2;
         }
-        if (param == p1y()) {
+        if (param == p1y().deri) {
             deriv += ((x0 - x2) * d + (dy / d) * area) / d2;
         }
-        if (param == p2x()) {
+        if (param == p2x().deri) {
             deriv += ((y0 - y1) * d - (dx / d) * area) / d2;
         }
-        if (param == p2y()) {
+        if (param == p2y().deri) {
             deriv += ((x1 - x0) * d - (dy / d) * area) / d2;
         }
     }
@@ -1094,29 +1103,29 @@ double ConstraintParallel::error()
 double ConstraintParallel::grad(double* param)
 {
     double deriv = 0.;
-    if (param == l1p1x()) {
+    if (param == l1p1x().deri) {
         deriv += (*l2p1y() - *l2p2y());  // = dy2
     }
-    if (param == l1p2x()) {
+    if (param == l1p2x().deri) {
         deriv += -(*l2p1y() - *l2p2y());  // = -dy2
     }
-    if (param == l1p1y()) {
+    if (param == l1p1y().deri) {
         deriv += -(*l2p1x() - *l2p2x());  // = -dx2
     }
-    if (param == l1p2y()) {
+    if (param == l1p2y().deri) {
         deriv += (*l2p1x() - *l2p2x());  // = dx2
     }
 
-    if (param == l2p1x()) {
+    if (param == l2p1x().deri) {
         deriv += -(*l1p1y() - *l1p2y());  // = -dy1
     }
-    if (param == l2p2x()) {
+    if (param == l2p2x().deri) {
         deriv += (*l1p1y() - *l1p2y());  // = dy1
     }
-    if (param == l2p1y()) {
+    if (param == l2p1y().deri) {
         deriv += (*l1p1x() - *l1p2x());  // = dx1
     }
-    if (param == l2p2y()) {
+    if (param == l2p2y().deri) {
         deriv += -(*l1p1x() - *l1p2x());  // = -dx1
     }
 
@@ -1166,29 +1175,29 @@ double ConstraintPerpendicular::error()
 double ConstraintPerpendicular::grad(double* param)
 {
     double deriv = 0.;
-    if (param == l1p1x()) {
+    if (param == l1p1x().deri) {
         deriv += (*l2p1x() - *l2p2x());  // = dx2
     }
-    if (param == l1p2x()) {
+    if (param == l1p2x().deri) {
         deriv += -(*l2p1x() - *l2p2x());  // = -dx2
     }
-    if (param == l1p1y()) {
+    if (param == l1p1y().deri) {
         deriv += (*l2p1y() - *l2p2y());  // = dy2
     }
-    if (param == l1p2y()) {
+    if (param == l1p2y().deri) {
         deriv += -(*l2p1y() - *l2p2y());  // = -dy2
     }
 
-    if (param == l2p1x()) {
+    if (param == l2p1x().deri) {
         deriv += (*l1p1x() - *l1p2x());  // = dx1
     }
-    if (param == l2p2x()) {
+    if (param == l2p2x().deri) {
         deriv += -(*l1p1x() - *l1p2x());  // = -dx1
     }
-    if (param == l2p1y()) {
+    if (param == l2p1y().deri) {
         deriv += (*l1p1y() - *l1p2y());  // = dy1
     }
-    if (param == l2p2y()) {
+    if (param == l2p2y().deri) {
         deriv += -(*l1p1y() - *l1p2y());  // = -dy1
     }
 
@@ -1235,24 +1244,26 @@ double ConstraintL2LAngle::error()
 double ConstraintL2LAngle::grad(double* param)
 {
     double deriv = 0.;
-    if (param == l1p1x() || param == l1p1y() || param == l1p2x() || param == l1p2y()) {
+    if (param == l1p1x().deri || param == l1p1y().deri || param == l1p2x().deri
+        || param == l1p2y().deri) {
         double dx1 = (*l1p2x() - *l1p1x());
         double dy1 = (*l1p2y() - *l1p1y());
         double r2 = dx1 * dx1 + dy1 * dy1;
-        if (param == l1p1x()) {
+        if (param == l1p1x().deri) {
             deriv += -dy1 / r2;
         }
-        if (param == l1p1y()) {
+        if (param == l1p1y().deri) {
             deriv += dx1 / r2;
         }
-        if (param == l1p2x()) {
+        if (param == l1p2x().deri) {
             deriv += dy1 / r2;
         }
-        if (param == l1p2y()) {
+        if (param == l1p2y().deri) {
             deriv += -dx1 / r2;
         }
     }
-    if (param == l2p1x() || param == l2p1y() || param == l2p2x() || param == l2p2y()) {
+    if (param == l2p1x().deri || param == l2p1y().deri || param == l2p2x().deri
+        || param == l2p2y().deri) {
         double dx1 = (*l1p2x() - *l1p1x());
         double dy1 = (*l1p2y() - *l1p1y());
         double dx2 = (*l2p2x() - *l2p1x());
@@ -1265,20 +1276,20 @@ double ConstraintL2LAngle::grad(double* param)
         double r2 = dx2 * dx2 + dy2 * dy2;
         dx2 = -y2 / r2;
         dy2 = x2 / r2;
-        if (param == l2p1x()) {
+        if (param == l2p1x().deri) {
             deriv += (-ca * dx2 + sa * dy2);
         }
-        if (param == l2p1y()) {
+        if (param == l2p1y().deri) {
             deriv += (-sa * dx2 - ca * dy2);
         }
-        if (param == l2p2x()) {
+        if (param == l2p2x().deri) {
             deriv += (ca * dx2 - sa * dy2);
         }
-        if (param == l2p2y()) {
+        if (param == l2p2y().deri) {
             deriv += (sa * dx2 + ca * dy2);
         }
     }
-    if (param == angle()) {
+    if (param == angle().deri) {
         deriv += -1;
     }
 
@@ -1337,8 +1348,9 @@ double ConstraintMidpointOnLine::error()
 double ConstraintMidpointOnLine::grad(double* param)
 {
     double deriv = 0.;
-    if (param == l1p1x() || param == l1p1y() || param == l1p2x() || param == l1p2y()
-        || param == l2p1x() || param == l2p1y() || param == l2p2x() || param == l2p2y()) {
+    if (param == l1p1x().deri || param == l1p1y().deri || param == l1p2x().deri
+        || param == l1p2y().deri || param == l2p1x().deri || param == l2p1y().deri
+        || param == l2p2x().deri || param == l2p2y().deri) {
         double x0 = ((*l1p1x()) + (*l1p2x())) / 2;
         double y0 = ((*l1p1y()) + (*l1p2y())) / 2;
         double x1 = *l2p1x(), x2 = *l2p2x();
@@ -1348,28 +1360,28 @@ double ConstraintMidpointOnLine::grad(double* param)
         double d2 = dx * dx + dy * dy;
         double d = sqrt(d2);
         double area = -x0 * dy + y0 * dx + x1 * y2 - x2 * y1;
-        if (param == l1p1x()) {
+        if (param == l1p1x().deri) {
             deriv += (y1 - y2) / (2 * d);
         }
-        if (param == l1p1y()) {
+        if (param == l1p1y().deri) {
             deriv += (x2 - x1) / (2 * d);
         }
-        if (param == l1p2x()) {
+        if (param == l1p2x().deri) {
             deriv += (y1 - y2) / (2 * d);
         }
-        if (param == l1p2y()) {
+        if (param == l1p2y().deri) {
             deriv += (x2 - x1) / (2 * d);
         }
-        if (param == l2p1x()) {
+        if (param == l2p1x().deri) {
             deriv += ((y2 - y0) * d + (dx / d) * area) / d2;
         }
-        if (param == l2p1y()) {
+        if (param == l2p1y().deri) {
             deriv += ((x0 - x2) * d + (dy / d) * area) / d2;
         }
-        if (param == l2p2x()) {
+        if (param == l2p2x().deri) {
             deriv += ((y0 - y1) * d - (dx / d) * area) / d2;
         }
-        if (param == l2p2y()) {
+        if (param == l2p2y().deri) {
             deriv += ((x1 - x0) * d - (dy / d) * area) / d2;
         }
     }
@@ -1425,8 +1437,8 @@ double ConstraintTangentCircumf::error()
 double ConstraintTangentCircumf::grad(double* param)
 {
     double deriv = 0.;
-    if (param == c1x() || param == c1y() || param == c2x() || param == c2y() || param == r1()
-        || param == r2()) {
+    if (param == c1x().deri || param == c1y().deri || param == c2x().deri || param == c2y().deri
+        || param == r1().deri || param == r2().deri) {
         double dx = (*c1x() - *c2x());
         double dy = (*c1y() - *c2y());
         double d_sq = dx * dx + dy * dy;
@@ -1434,41 +1446,41 @@ double ConstraintTangentCircumf::grad(double* param)
         // Provide the gradient corresponding to the robust 'r1 - r2 = 0' error function.
         // This gradient is constant and non-zero, preventing the false redundancy report.
         if (d_sq < 1e-14) {
-            if (param == r1()) {
+            if (param == r1().deri) {
                 deriv = 1.0;
             }
-            else if (param == r2()) {
+            else if (param == r2().deri) {
                 deriv = -1.0;
             }
             // The gradient is 0 for all other parameters (center coordinates).
             return scale * deriv;
         }
 
-        if (param == c1x()) {
+        if (param == c1x().deri) {
             deriv += 2 * dx;
         }
-        if (param == c1y()) {
+        if (param == c1y().deri) {
             deriv += 2 * dy;
         }
-        if (param == c2x()) {
+        if (param == c2x().deri) {
             deriv += 2 * -dx;
         }
-        if (param == c2y()) {
+        if (param == c2y().deri) {
             deriv += 2 * -dy;
         }
         if (internal) {
-            if (param == r1()) {
+            if (param == r1().deri) {
                 deriv += 2 * (*r2() - *r1());
             }
-            if (param == r2()) {
+            if (param == r2().deri) {
                 deriv += 2 * (*r1() - *r2());
             }
         }
         else {
-            if (param == r1()) {
+            if (param == r1().deri) {
                 deriv += -2 * (*r1() + *r2());
             }
-            if (param == r2()) {
+            if (param == r2().deri) {
                 deriv += -2 * (*r1() + *r2());
             }
         }
@@ -1512,8 +1524,8 @@ double ConstraintPointOnEllipse::error()
 double ConstraintPointOnEllipse::grad(double* param)
 {
     double deriv = 0.;
-    if (param == p1x() || param == p1y() || param == f1x() || param == f1y() || param == cx()
-        || param == cy() || param == rmin()) {
+    if (param == p1x().deri || param == p1y().deri || param == f1x().deri || param == f1y().deri
+        || param == cx().deri || param == cy().deri || param == rmin().deri) {
 
         double X_0 = *p1x();
         double Y_0 = *p1y();
@@ -1523,39 +1535,39 @@ double ConstraintPointOnEllipse::grad(double* param)
         double Y_F1 = *f1y();
         double b = *rmin();
 
-        if (param == p1x()) {
+        if (param == p1x().deri) {
             deriv += (X_0 - X_F1) / sqrt(pow(X_0 - X_F1, 2) + pow(Y_0 - Y_F1, 2))
                 + (X_0 + X_F1 - 2 * X_c)
                     / sqrt(pow(X_0 + X_F1 - 2 * X_c, 2) + pow(Y_0 + Y_F1 - 2 * Y_c, 2));
         }
-        if (param == p1y()) {
+        if (param == p1y().deri) {
             deriv += (Y_0 - Y_F1) / sqrt(pow(X_0 - X_F1, 2) + pow(Y_0 - Y_F1, 2))
                 + (Y_0 + Y_F1 - 2 * Y_c)
                     / sqrt(pow(X_0 + X_F1 - 2 * X_c, 2) + pow(Y_0 + Y_F1 - 2 * Y_c, 2));
         }
-        if (param == f1x()) {
+        if (param == f1x().deri) {
             deriv += -(X_0 - X_F1) / sqrt(pow(X_0 - X_F1, 2) + pow(Y_0 - Y_F1, 2))
                 - 2 * (X_F1 - X_c) / sqrt(pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
                 + (X_0 + X_F1 - 2 * X_c)
                     / sqrt(pow(X_0 + X_F1 - 2 * X_c, 2) + pow(Y_0 + Y_F1 - 2 * Y_c, 2));
         }
-        if (param == f1y()) {
+        if (param == f1y().deri) {
             deriv += -(Y_0 - Y_F1) / sqrt(pow(X_0 - X_F1, 2) + pow(Y_0 - Y_F1, 2))
                 - 2 * (Y_F1 - Y_c) / sqrt(pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
                 + (Y_0 + Y_F1 - 2 * Y_c)
                     / sqrt(pow(X_0 + X_F1 - 2 * X_c, 2) + pow(Y_0 + Y_F1 - 2 * Y_c, 2));
         }
-        if (param == cx()) {
+        if (param == cx().deri) {
             deriv += 2 * (X_F1 - X_c) / sqrt(pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
                 - 2 * (X_0 + X_F1 - 2 * X_c)
                     / sqrt(pow(X_0 + X_F1 - 2 * X_c, 2) + pow(Y_0 + Y_F1 - 2 * Y_c, 2));
         }
-        if (param == cy()) {
+        if (param == cy().deri) {
             deriv += 2 * (Y_F1 - Y_c) / sqrt(pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
                 - 2 * (Y_0 + Y_F1 - 2 * Y_c)
                     / sqrt(pow(X_0 + X_F1 - 2 * X_c, 2) + pow(Y_0 + Y_F1 - 2 * Y_c, 2));
         }
-        if (param == rmin()) {
+        if (param == rmin().deri) {
             deriv += -2 * b / sqrt(pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2));
         }
     }
@@ -1612,7 +1624,7 @@ void ConstraintEllipseTangentLine::errorgrad(double* err, double* grad, double* 
     distF1mF2 = f2.subtr(f1m).length(ddistF1mF2);
 
     // calculate major radius (to compare the distance to)
-    double dradmin = (param == e.radmin) ? 1.0 : 0.0;
+    double dradmin = (param == e.radmin.deri) ? 1.0 : 0.0;
     double radmaj, dradmaj;
     radmaj = e.getRadMaj(c, f1, *e.radmin, dradmin, dradmaj);
 
@@ -1954,7 +1966,7 @@ void ConstraintCurveValue::errorgrad(double* err, double* grad, double* param)
 
     double u, du;
     u = *(this->u());
-    du = (param == this->u()) ? 1.0 : 0.0;
+    du = (param == this->u().deri) ? 1.0 : 0.0;
 
     DeriVector2 P_to;  // point of curve at parameter value of u, in global coordinates
     P_to = this->crv->Value(u, du, param);
@@ -2052,8 +2064,8 @@ double ConstraintPointOnHyperbola::error()
 double ConstraintPointOnHyperbola::grad(double* param)
 {
     double deriv = 0.;
-    if (param == p1x() || param == p1y() || param == f1x() || param == f1y() || param == cx()
-        || param == cy() || param == rmin()) {
+    if (param == p1x().deri || param == p1y().deri || param == f1x().deri || param == f1y().deri
+        || param == cx().deri || param == cy().deri || param == rmin().deri) {
 
         double X_0 = *p1x();
         double Y_0 = *p1y();
@@ -2063,39 +2075,39 @@ double ConstraintPointOnHyperbola::grad(double* param)
         double Y_F1 = *f1y();
         double b = *rmin();
 
-        if (param == p1x()) {
+        if (param == p1x().deri) {
             deriv += -(X_0 - X_F1) / sqrt(pow(X_0 - X_F1, 2) + pow(Y_0 - Y_F1, 2))
                 + (X_0 + X_F1 - 2 * X_c)
                     / sqrt(pow(X_0 + X_F1 - 2 * X_c, 2) + pow(Y_0 + Y_F1 - 2 * Y_c, 2));
         }
-        if (param == p1y()) {
+        if (param == p1y().deri) {
             deriv += -(Y_0 - Y_F1) / sqrt(pow(X_0 - X_F1, 2) + pow(Y_0 - Y_F1, 2))
                 + (Y_0 + Y_F1 - 2 * Y_c)
                     / sqrt(pow(X_0 + X_F1 - 2 * X_c, 2) + pow(Y_0 + Y_F1 - 2 * Y_c, 2));
         }
-        if (param == f1x()) {
+        if (param == f1x().deri) {
             deriv += (X_0 - X_F1) / sqrt(pow(X_0 - X_F1, 2) + pow(Y_0 - Y_F1, 2))
                 - 2 * (X_F1 - X_c) / sqrt(-pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
                 + (X_0 + X_F1 - 2 * X_c)
                     / sqrt(pow(X_0 + X_F1 - 2 * X_c, 2) + pow(Y_0 + Y_F1 - 2 * Y_c, 2));
         }
-        if (param == f1y()) {
+        if (param == f1y().deri) {
             deriv += (Y_0 - Y_F1) / sqrt(pow(X_0 - X_F1, 2) + pow(Y_0 - Y_F1, 2))
                 - 2 * (Y_F1 - Y_c) / sqrt(-pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
                 + (Y_0 + Y_F1 - 2 * Y_c)
                     / sqrt(pow(X_0 + X_F1 - 2 * X_c, 2) + pow(Y_0 + Y_F1 - 2 * Y_c, 2));
         }
-        if (param == cx()) {
+        if (param == cx().deri) {
             deriv += 2 * (X_F1 - X_c) / sqrt(-pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
                 - 2 * (X_0 + X_F1 - 2 * X_c)
                     / sqrt(pow(X_0 + X_F1 - 2 * X_c, 2) + pow(Y_0 + Y_F1 - 2 * Y_c, 2));
         }
-        if (param == cy()) {
+        if (param == cy().deri) {
             deriv += 2 * (Y_F1 - Y_c) / sqrt(-pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
                 - 2 * (Y_0 + Y_F1 - 2 * Y_c)
                     / sqrt(pow(X_0 + X_F1 - 2 * X_c, 2) + pow(Y_0 + Y_F1 - 2 * Y_c, 2));
         }
-        if (param == rmin()) {
+        if (param == rmin().deri) {
             deriv += 2 * b / sqrt(-pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2));
         }
     }
@@ -2256,7 +2268,7 @@ double ConstraintAngleViaPoint::grad(double* param)
         ReconstructGeomPointers();
     }
 
-    if (param == angle()) {
+    if (param == angle().deri) {
         deriv += -1.0;
     }
     DeriVector2 n1 = crv1->CalculateNormal(poa, param);
@@ -2351,7 +2363,7 @@ double ConstraintAngleViaTwoPoints::grad(double* param)
         ReconstructGeomPointers();
     }
 
-    if (param == angle()) {
+    if (param == angle().deri) {
         deriv += -1.0;
     }
     DeriVector2 n1 = crv1->CalculateNormal(poa1, param);
@@ -2442,7 +2454,7 @@ double ConstraintAngleViaPointAndParam::grad(double* param)
         ReconstructGeomPointers();
     }
 
-    if (param == angle()) {
+    if (param == angle().deri) {
         deriv += -1.0;
     }
     DeriVector2 n1 = crv1->CalculateNormal(cparam(), param);
@@ -2536,7 +2548,7 @@ double ConstraintAngleViaPointAndTwoParams::grad(double* param)
         ReconstructGeomPointers();
     }
 
-    if (param == angle()) {
+    if (param == angle().deri) {
         deriv += -1.0;
     }
     DeriVector2 n1 = crv1->CalculateNormal(cparam1(), param);
@@ -2626,8 +2638,8 @@ void ConstraintSnell::errorgrad(double* err, double* grad, double* param)
         dsin2 = -dsin2;
     }
 
-    double dn1 = (param == n1()) ? 1.0 : 0.0;
-    double dn2 = (param == n2()) ? 1.0 : 0.0;
+    double dn1 = (param == n1().deri) ? 1.0 : 0.0;
+    double dn2 = (param == n2().deri) ? 1.0 : 0.0;
     if (err) {
         *err = *n1() * sin1 - *n2() * sin2;
     }
@@ -2694,28 +2706,28 @@ void ConstraintEqualLineLength::errorgrad(double* err, double* grad, double* par
         // or just locked into a maximum/minimum
         if (fabs(*grad) < 1e-10) {
             double surrogate = 1e-10;
-            if (param == l1.p1.x) {
+            if (param == l1.p1.x.deri) {
                 *grad = v1.x > 0 ? surrogate : -surrogate;
             }
-            if (param == l1.p1.y) {
+            if (param == l1.p1.y.deri) {
                 *grad = v1.y > 0 ? surrogate : -surrogate;
             }
-            if (param == l1.p2.x) {
+            if (param == l1.p2.x.deri) {
                 *grad = v1.x > 0 ? -surrogate : surrogate;
             }
-            if (param == l1.p2.y) {
+            if (param == l1.p2.y.deri) {
                 *grad = v1.y > 0 ? -surrogate : surrogate;
             }
-            if (param == l2.p1.x) {
+            if (param == l2.p1.x.deri) {
                 *grad = v2.x > 0 ? surrogate : -surrogate;
             }
-            if (param == l2.p1.y) {
+            if (param == l2.p1.y.deri) {
                 *grad = v2.y > 0 ? surrogate : -surrogate;
             }
-            if (param == l2.p2.x) {
+            if (param == l2.p2.x.deri) {
                 *grad = v2.x > 0 ? -surrogate : surrogate;
             }
-            if (param == l2.p2.y) {
+            if (param == l2.p2.y.deri) {
                 *grad = v2.y > 0 ? -surrogate : surrogate;
             }
         }
@@ -2768,13 +2780,15 @@ void ConstraintC2CDistance::errorgrad(double* err, double* grad, double* param)
             *err = length_ct12 - (*c2.rad + *c1.rad + *distance());
         }
         else if (grad) {
-            double drad = (param == c2.rad || param == c1.rad || param == distance()) ? -1.0 : 0.0;
+            double drad = (param == c2.rad.deri || param == c1.rad.deri || param == distance().deri)
+                ? -1.0
+                : 0.0;
             *grad = dlength_ct12 + drad;
         }
     }
     else {
-        double* bigradius = (*c1.rad >= *c2.rad) ? c1.rad : c2.rad;
-        double* smallradius = (*c1.rad >= *c2.rad) ? c2.rad : c1.rad;
+        DeriParam bigradius = (*c1.rad >= *c2.rad) ? c1.rad : c2.rad;
+        DeriParam smallradius = (*c1.rad >= *c2.rad) ? c2.rad : c1.rad;
 
         double smallspan = *smallradius + length_ct12 + *distance();
 
@@ -2784,13 +2798,13 @@ void ConstraintC2CDistance::errorgrad(double* err, double* grad, double* param)
         else if (grad) {
             double drad = 0.0;
 
-            if (param == bigradius) {
+            if (param == bigradius.deri) {
                 drad = 1.0;
             }
-            else if (param == smallradius) {
+            else if (param == smallradius.deri) {
                 drad = -1.0;
             }
-            else if (param == distance()) {
+            else if (param == distance().deri) {
                 drad = (*distance() < 0.) ? 1.0 : -1.0;
             }
             if (length_ct12 > 1e-13) {
@@ -2872,7 +2886,7 @@ void ConstraintC2LDistance::errorgrad(double* err, double* grad, double* param)
         }
     }
     else if (grad) {
-        if (param == distance() || param == circle.rad) {
+        if (param == distance().deri || param == circle.rad.deri) {
             if (h < *circle.rad) {
                 *grad = -1.0;
             }
@@ -2931,13 +2945,13 @@ void ConstraintP2CDistance::errorgrad(double* err, double* grad, double* param)
         }
     }
     else if (grad) {
-        if (param == distance()) {
+        if (param == distance().deri) {
             *grad = 1.0;
             if (length < *circle.rad) {
                 *grad = -1.0;
             }
         }
-        else if (param == circle.rad) {
+        else if (param == circle.rad.deri) {
             *grad = 1.0;
         }
         else {
@@ -2988,14 +3002,14 @@ void ConstraintArcLength::errorgrad(double* err, double* grad, double* param)
         *err = rad * (endA - startA) - *distance();
     }
     else if (grad) {
-        if (param == distance()) {
+        if (param == distance().deri) {
             // if constraint is not driving it varies on distance().
             *grad = -1.;
         }
         else {
-            double dRad = param == arc.rad ? 1. : 0.;
-            double dStartA = param == arc.startAngle ? 1. : 0.;
-            double dEndA = param == arc.endAngle ? 1. : 0.;
+            double dRad = param == arc.rad.deri ? 1. : 0.;
+            double dStartA = param == arc.startAngle.deri ? 1. : 0.;
+            double dEndA = param == arc.endAngle.deri ? 1. : 0.;
             *grad = rad * (dEndA - dStartA) + dRad * (endA - startA);
         }
     }

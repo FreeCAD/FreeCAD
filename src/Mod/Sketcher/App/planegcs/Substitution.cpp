@@ -45,6 +45,11 @@ struct SubstitutionFactory
         Maybe,   // Substitution could be possible if some parameters are right
         Unknown  // Not checked yet
     };
+    struct ReductionList
+    {
+        std::vector<double*> reduced;
+        bool isConst;
+    };
 
     std::unordered_map<double*, std::unordered_map<double*, double>> adjacencyList;
 
@@ -52,7 +57,7 @@ struct SubstitutionFactory
 
     // Each unknown that will be kept as a parameter to a list of unknowns that are equal,
     // will be used to build the reduction map which will go the otherway around
-    std::unordered_map<double*, std::vector<double*>> unknownsReductionList;
+    std::unordered_map<double*, ReductionList> unknownsReductionList;
 
     // Updaters that are are in function of unknowns,
     // will be used to build the updaters in function of parameters
@@ -215,19 +220,20 @@ struct SubstitutionFactory
             constSubstUpdaters.push_back(
                 SubstitutionUpdater {.follower = constUnknown.first, .offset = constUnknown.second}
             );
-            unknownsReductionList[constUnknown.first] = {};
-            makeComponent(constUnknown.first, visited, constSubstUpdaters);
+            unknownsReductionList[constUnknown.first] = {.reduced = {}, .isConst = true};
+            makeComponent(constUnknown.first, visited, constSubstUpdaters, true);
         }
         for (const auto& unknownVert : adjacencyList) {
             if (!visited.count(unknownVert.first)) {
-                makeComponent(unknownVert.first, visited, substUpdaters);
+                makeComponent(unknownVert.first, visited, substUpdaters, false);
             }
         }
     }
     void makeComponent(
         double* root,
         std::unordered_set<double*>& visited,
-        std::vector<SubstitutionUpdater>& updaterBucket
+        std::vector<SubstitutionUpdater>& updaterBucket,
+        bool isConst
     )
     {
         std::vector<std::pair<double*, double>> rootOffsets;
@@ -253,7 +259,7 @@ struct SubstitutionFactory
             );
             currentSubst = rootOffsets[0].first;
         }
-        unknownsReductionList[currentSubst] = {};
+        unknownsReductionList[currentSubst] = {.reduced = {}, .isConst = isConst};
 
 
         for (size_t i = 1; i < rootOffsets.size(); ++i) {
@@ -272,10 +278,10 @@ struct SubstitutionFactory
                 else {
                     currentSubst = root;
                 }
-                unknownsReductionList[currentSubst] = {};
+                unknownsReductionList[currentSubst] = {.reduced = {}, .isConst = isConst};
             }
             else {
-                unknownsReductionList[currentSubst].push_back(unknownAndOffset.first);
+                unknownsReductionList[currentSubst].reduced.push_back(unknownAndOffset.first);
             }
         }
     }
@@ -752,8 +758,12 @@ Substitution::Substitution(
         unknowns[parameterIndex] = reduction.first;
         parameters[parameterIndex] = *reduction.first;
         reductionMap[reduction.first] = &parameters[parameterIndex];
-        for (double* reduced : reduction.second) {
+        for (double* reduced : reduction.second.reduced) {
             reductionMap[reduced] = &parameters[parameterIndex];
+
+            if (reduction.second.isConst) {
+                substitutionMap[reduced] = nullptr;
+            }
         }
         parameterIndex++;
     }
@@ -790,19 +800,18 @@ Substitution::Substitution(
             continue;
         }
 
+        substitutionMap[upd.follower] = nullptr;  // Constants are not solved for, so they must not
+                                                  // be derived against
         upd.root = upd.root == nullptr ? nullptr : foundRoot->second;
         upd.follower = foundFollower->second;
-
-        if (upd.root != nullptr) {
-            substitutionMap[upd.follower] = upd.root;
-        }
     }
 
     // Put all constraints which were not reduced in the constraints vector
     for (size_t i = 0; i < initialConstraints.size(); ++i) {
         if (attempts[i] != SubstitutionFactory::Attempt::Yes) {
-            constraints.push_back(initialConstraints[i]);
-            initialConstraints[i]->redirectParams(reductionMap, substitutionMap);
+            if (initialConstraints[i]->redirectParams(reductionMap, substitutionMap)) {
+                constraints.push_back(initialConstraints[i]);
+            }
         }
     }
 }

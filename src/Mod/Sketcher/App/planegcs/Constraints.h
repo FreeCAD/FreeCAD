@@ -145,7 +145,9 @@ public:
     }
 
     void redirectParams(const UMAP_pD_pD& redirectionmap);
-    void redirectParams(const UMAP_pD_pD& redirectionmap, const UMAP_pD_pD& substitutionmap);
+
+    // Returns false if no parameters in this constraint can be solved
+    bool redirectParams(const UMAP_pD_pD& redirectionmap, const UMAP_pD_pD& substitutionmap);
     void revertParams();
     void assignOrigToPvec();
     void setTag(int tagId)
@@ -216,7 +218,7 @@ public:
     // on the parameter (it may not actually depend on it, e.g. angle-via-point doesn't depend
     // on ellipse's b (radmin), but b will be included within the constraint anyway.
     // Returns -1 if not found.
-    int findParamInPvec(double* param);
+    int findParamInPvec(double* deri);
 };
 
 // Equal
@@ -224,11 +226,11 @@ class ConstraintEqual: public Constraint
 {
 private:
     double ratio;
-    double* param1()
+    DeriParam param1() const
     {
         return pvec[0];
     }
-    double* param2()
+    DeriParam param2() const
     {
         return pvec[1];
     }
@@ -243,11 +245,11 @@ public:
 // Center of Gravity
 class ConstraintCenterOfGravity: public Constraint
 {
-    double* thecenter()
+    DeriParam thecenter() const
     {
         return pvec[0];
     }
-    double* pointat(size_t i)
+    DeriParam pointat(size_t i) const
     {
         return pvec[1 + i];
     }
@@ -273,15 +275,15 @@ private:
 // Weighted Linear Combination
 class ConstraintWeightedLinearCombination: public Constraint
 {
-    double* thepoint()
+    DeriParam thepoint() const
     {
         return pvec[0];
     }
-    double* poleat(size_t i)
+    DeriParam poleat(size_t i) const
     {
         return pvec[1 + i];
     }
-    double* weightat(size_t i)
+    DeriParam weightat(size_t i) const
     {
         return pvec[1 + numpoles + i];
     }
@@ -317,31 +319,31 @@ private:
 class ConstraintSlopeAtBSplineKnot: public Constraint
 {
 private:
-    double* polexat(size_t i)
+    DeriParam polexat(size_t i) const
     {
         return pvec[i];
     }
-    double* poleyat(size_t i)
+    DeriParam poleyat(size_t i) const
     {
         return pvec[numpoles + i];
     }
-    double* weightat(size_t i)
+    DeriParam weightat(size_t i) const
     {
         return pvec[2 * numpoles + i];
     }
-    double* linep1x()
+    DeriParam linep1x() const
     {
         return pvec[3 * numpoles + 0];
     }
-    double* linep1y()
+    DeriParam linep1y() const
     {
         return pvec[3 * numpoles + 1];
     }
-    double* linep2x()
+    DeriParam linep2x() const
     {
         return pvec[3 * numpoles + 2];
     }
-    double* linep2y()
+    DeriParam linep2y() const
     {
         return pvec[3 * numpoles + 3];
     }
@@ -365,20 +367,20 @@ private:
 class ConstraintPointOnBSpline: public Constraint
 {
 private:
-    double* thepoint()
+    DeriParam thepoint() const
     {
         return pvec[0];
     }
     // TODO: better name because param has a different meaning here?
-    double* theparam()
+    DeriParam theparam() const
     {
         return pvec[1];
     }
-    double* poleat(size_t i)
+    DeriParam poleat(size_t i) const
     {
         return pvec[2 + (startpole + i) % bsp.poles.size()];
     }
-    double* weightat(size_t i)
+    DeriParam weightat(size_t i) const
     {
         return pvec[2 + bsp.poles.size() + (startpole + i) % bsp.weights.size()];
     }
@@ -400,15 +402,15 @@ public:
 class ConstraintDifference: public Constraint
 {
 public:
-    double* param1()
+    DeriParam param1() const
     {
         return pvec[0];
     }
-    double* param2()
+    DeriParam param2() const
     {
         return pvec[1];
     }
-    double* difference()
+    DeriParam difference() const
     {
         return pvec[2];
     }
@@ -424,23 +426,23 @@ public:
 class ConstraintP2PDistance: public Constraint
 {
 private:
-    double* p1x()
+    DeriParam p1x() const
     {
         return pvec[0];
     }
-    double* p1y()
+    DeriParam p1y() const
     {
         return pvec[1];
     }
-    double* p2x()
+    DeriParam p2x() const
     {
         return pvec[2];
     }
-    double* p2y()
+    DeriParam p2y() const
     {
         return pvec[3];
     }
-    double* distance()
+    DeriParam distance() const
     {
         return pvec[4];
     }
@@ -461,23 +463,23 @@ public:
 class ConstraintP2PAngle: public Constraint
 {
 private:
-    double* p1x()
+    DeriParam p1x() const
     {
         return pvec[0];
     }
-    double* p1y()
+    DeriParam p1y() const
     {
         return pvec[1];
     }
-    double* p2x()
+    DeriParam p2x() const
     {
         return pvec[2];
     }
-    double* p2y()
+    DeriParam p2y() const
     {
         return pvec[3];
     }
-    double* angle()
+    DeriParam angle() const
     {
         return pvec[4];
     }
@@ -499,31 +501,31 @@ public:
 class ConstraintP2LDistance: public Constraint
 {
 private:
-    double* p0x()
+    DeriParam p0x() const
     {
         return pvec[0];
     }
-    double* p0y()
+    DeriParam p0y() const
     {
         return pvec[1];
     }
-    double* p1x()
+    DeriParam p1x() const
     {
         return pvec[2];
     }
-    double* p1y()
+    DeriParam p1y() const
     {
         return pvec[3];
     }
-    double* p2x()
+    DeriParam p2x() const
     {
         return pvec[4];
     }
-    double* p2y()
+    DeriParam p2y() const
     {
         return pvec[5];
     }
-    double* distance()
+    DeriParam distance() const
     {
         return pvec[6];
     }
@@ -545,27 +547,27 @@ public:
 class ConstraintPointOnLine: public Constraint
 {
 private:
-    double* p0x()
+    DeriParam p0x() const
     {
         return pvec[0];
     }
-    double* p0y()
+    DeriParam p0y() const
     {
         return pvec[1];
     }
-    double* p1x()
+    DeriParam p1x() const
     {
         return pvec[2];
     }
-    double* p1y()
+    DeriParam p1y() const
     {
         return pvec[3];
     }
-    double* p2x()
+    DeriParam p2x() const
     {
         return pvec[4];
     }
-    double* p2y()
+    DeriParam p2y() const
     {
         return pvec[5];
     }
@@ -586,27 +588,27 @@ public:
 class ConstraintPointOnPerpBisector: public Constraint
 {
 private:
-    double* p0x()
+    DeriParam p0x() const
     {
         return pvec[0];
     }
-    double* p0y()
+    DeriParam p0y() const
     {
         return pvec[1];
     }
-    double* p1x()
+    DeriParam p1x() const
     {
         return pvec[2];
     }
-    double* p1y()
+    DeriParam p1y() const
     {
         return pvec[3];
     }
-    double* p2x()
+    DeriParam p2x() const
     {
         return pvec[4];
     }
-    double* p2y()
+    DeriParam p2y() const
     {
         return pvec[5];
     }
@@ -624,35 +626,35 @@ public:
 class ConstraintParallel: public Constraint
 {
 private:
-    double* l1p1x()
+    DeriParam l1p1x() const
     {
         return pvec[0];
     }
-    double* l1p1y()
+    DeriParam l1p1y() const
     {
         return pvec[1];
     }
-    double* l1p2x()
+    DeriParam l1p2x() const
     {
         return pvec[2];
     }
-    double* l1p2y()
+    DeriParam l1p2y() const
     {
         return pvec[3];
     }
-    double* l2p1x()
+    DeriParam l2p1x() const
     {
         return pvec[4];
     }
-    double* l2p1y()
+    DeriParam l2p1y() const
     {
         return pvec[5];
     }
-    double* l2p2x()
+    DeriParam l2p2x() const
     {
         return pvec[6];
     }
-    double* l2p2y()
+    DeriParam l2p2y() const
     {
         return pvec[7];
     }
@@ -673,35 +675,35 @@ public:
 class ConstraintPerpendicular: public Constraint
 {
 private:
-    double* l1p1x()
+    DeriParam l1p1x() const
     {
         return pvec[0];
     }
-    double* l1p1y()
+    DeriParam l1p1y() const
     {
         return pvec[1];
     }
-    double* l1p2x()
+    DeriParam l1p2x() const
     {
         return pvec[2];
     }
-    double* l1p2y()
+    DeriParam l1p2y() const
     {
         return pvec[3];
     }
-    double* l2p1x()
+    DeriParam l2p1x() const
     {
         return pvec[4];
     }
-    double* l2p1y()
+    DeriParam l2p1y() const
     {
         return pvec[5];
     }
-    double* l2p2x()
+    DeriParam l2p2x() const
     {
         return pvec[6];
     }
-    double* l2p2y()
+    DeriParam l2p2y() const
     {
         return pvec[7];
     }
@@ -723,39 +725,39 @@ public:
 class ConstraintL2LAngle: public Constraint
 {
 private:
-    double* l1p1x()
+    DeriParam l1p1x() const
     {
         return pvec[0];
     }
-    double* l1p1y()
+    DeriParam l1p1y() const
     {
         return pvec[1];
     }
-    double* l1p2x()
+    DeriParam l1p2x() const
     {
         return pvec[2];
     }
-    double* l1p2y()
+    DeriParam l1p2y() const
     {
         return pvec[3];
     }
-    double* l2p1x()
+    DeriParam l2p1x() const
     {
         return pvec[4];
     }
-    double* l2p1y()
+    DeriParam l2p1y() const
     {
         return pvec[5];
     }
-    double* l2p2x()
+    DeriParam l2p2x() const
     {
         return pvec[6];
     }
-    double* l2p2y()
+    DeriParam l2p2y() const
     {
         return pvec[7];
     }
-    double* angle()
+    DeriParam angle() const
     {
         return pvec[8];
     }
@@ -777,35 +779,35 @@ public:
 class ConstraintMidpointOnLine: public Constraint
 {
 private:
-    double* l1p1x()
+    DeriParam l1p1x() const
     {
         return pvec[0];
     }
-    double* l1p1y()
+    DeriParam l1p1y() const
     {
         return pvec[1];
     }
-    double* l1p2x()
+    DeriParam l1p2x() const
     {
         return pvec[2];
     }
-    double* l1p2y()
+    DeriParam l1p2y() const
     {
         return pvec[3];
     }
-    double* l2p1x()
+    DeriParam l2p1x() const
     {
         return pvec[4];
     }
-    double* l2p1y()
+    DeriParam l2p1y() const
     {
         return pvec[5];
     }
-    double* l2p2x()
+    DeriParam l2p2x() const
     {
         return pvec[6];
     }
-    double* l2p2y()
+    DeriParam l2p2y() const
     {
         return pvec[7];
     }
@@ -826,27 +828,27 @@ public:
 class ConstraintTangentCircumf: public Constraint
 {
 private:
-    double* c1x()
+    DeriParam c1x() const
     {
         return pvec[0];
     }
-    double* c1y()
+    DeriParam c1y() const
     {
         return pvec[1];
     }
-    double* c2x()
+    DeriParam c2x() const
     {
         return pvec[2];
     }
-    double* c2y()
+    DeriParam c2y() const
     {
         return pvec[3];
     }
-    double* r1()
+    DeriParam r1() const
     {
         return pvec[4];
     }
-    double* r2()
+    DeriParam r2() const
     {
         return pvec[5];
     }
@@ -872,31 +874,31 @@ public:
 class ConstraintPointOnEllipse: public Constraint
 {
 private:
-    double* p1x()
+    DeriParam p1x() const
     {
         return pvec[0];
     }
-    double* p1y()
+    DeriParam p1y() const
     {
         return pvec[1];
     }
-    double* cx()
+    DeriParam cx() const
     {
         return pvec[2];
     }
-    double* cy()
+    DeriParam cy() const
     {
         return pvec[3];
     }
-    double* f1x()
+    DeriParam f1x() const
     {
         return pvec[4];
     }
-    double* f1y()
+    DeriParam f1y() const
     {
         return pvec[5];
     }
-    double* rmin()
+    DeriParam rmin() const
     {
         return pvec[6];
     }
@@ -990,11 +992,11 @@ class ConstraintCurveValue: public Constraint
 {
 private:
     // defines, which coordinate of point is being constrained by this constraint
-    double* pcoord()
+    DeriParam pcoord() const
     {
         return pvec[2];
     }
-    double* u()
+    DeriParam u() const
     {
         return pvec[3];
     }
@@ -1023,31 +1025,31 @@ public:
 class ConstraintPointOnHyperbola: public Constraint
 {
 private:
-    double* p1x()
+    DeriParam p1x() const
     {
         return pvec[0];
     }
-    double* p1y()
+    DeriParam p1y() const
     {
         return pvec[1];
     }
-    double* cx()
+    DeriParam cx() const
     {
         return pvec[2];
     }
-    double* cy()
+    DeriParam cy() const
     {
         return pvec[3];
     }
-    double* f1x()
+    DeriParam f1x() const
     {
         return pvec[4];
     }
-    double* f1y()
+    DeriParam f1y() const
     {
         return pvec[5];
     }
-    double* rmin()
+    DeriParam rmin() const
     {
         return pvec[6];
     }
@@ -1087,7 +1089,7 @@ public:
 class ConstraintAngleViaPoint: public Constraint
 {
 private:
-    double* angle()
+    DeriParam angle() const
     {
         return pvec[0];
     };
@@ -1118,7 +1120,7 @@ public:
 class ConstraintAngleViaTwoPoints: public Constraint
 {
 private:
-    double* angle()
+    DeriParam angle() const
     {
         return pvec[0];
     };
@@ -1153,11 +1155,11 @@ public:
 class ConstraintSnell: public Constraint
 {
 private:
-    double* n1()
+    DeriParam n1() const
     {
         return pvec[0];
     };
-    double* n2()
+    DeriParam n2() const
     {
         return pvec[1];
     };
@@ -1198,11 +1200,11 @@ public:
 class ConstraintAngleViaPointAndParam: public Constraint
 {
 private:
-    double* angle()
+    DeriParam angle() const
     {
         return pvec[0];
     };
-    double* cparam()
+    DeriParam cparam() const
     {
         return pvec[3];
     };
@@ -1233,15 +1235,15 @@ public:
 class ConstraintAngleViaPointAndTwoParams: public Constraint
 {
 private:
-    double* angle()
+    DeriParam angle() const
     {
         return pvec[0];
     };
-    double* cparam1()
+    DeriParam cparam1() const
     {
         return pvec[3];
     };
-    double* cparam2()
+    DeriParam cparam2() const
     {
         return pvec[4];
     };
@@ -1294,7 +1296,7 @@ class ConstraintC2CDistance: public Constraint
 private:
     Circle c1;
     Circle c2;
-    double* distance()
+    DeriParam distance() const
     {
         return pvec[0];
     }
@@ -1314,7 +1316,7 @@ public:
     Line line;
 
 private:
-    double* distance()
+    DeriParam distance() const
     {
         return pvec[0];
     }
@@ -1333,7 +1335,7 @@ class ConstraintP2CDistance: public Constraint
 private:
     Circle circle;
     Point pt;
-    double* distance()
+    DeriParam distance() const
     {
         return pvec[0];
     }
@@ -1349,7 +1351,7 @@ class ConstraintArcLength: public Constraint
 {
 private:
     Arc arc;
-    double* distance()
+    DeriParam distance() const
     {
         return pvec[0];
     }

@@ -58,10 +58,10 @@ DeriVector2::DeriVector2(const Point& p, const double* derivparam)
     , y(*p.y)
     , dy(0.0)
 {
-    if (derivparam == p.x) {
+    if (derivparam == p.x.deri) {
         dx = 1.0;
     }
-    if (derivparam == p.y) {
+    if (derivparam == p.y.deri) {
         dy = 1.0;
     }
 }
@@ -175,7 +175,7 @@ DeriVector2 Circle::Value(double u, double du, const double* derivparam) const
     DeriVector2 cv(center, derivparam);
     double r, dr;
     r = *(this->rad);
-    dr = (derivparam == this->rad) ? 1.0 : 0.0;
+    dr = (derivparam == this->rad.deri) ? 1.0 : 0.0;
     DeriVector2 ex(r, 0.0, dr, 0.0);
     DeriVector2 ey = ex.rotate90ccw();
     double si, dsi, co, dco;
@@ -261,7 +261,7 @@ double Ellipse::getRadMaj(double* derivparam, double& ret_dRadMaj) const
 {
     DeriVector2 c(center, derivparam);
     DeriVector2 f1(focus1, derivparam);
-    return getRadMaj(c, f1, *radmin, radmin == derivparam ? 1.0 : 0.0, ret_dRadMaj);
+    return getRadMaj(c, f1, *radmin, radmin.deri == derivparam ? 1.0 : 0.0, ret_dRadMaj);
 }
 
 // returns the major radius (plain value, no derivatives)
@@ -306,7 +306,7 @@ DeriVector2 Ellipse::Value(double u, double du, const double* derivparam) const
     DeriVector2 emin = emaj.rotate90ccw();
     double b, db;
     b = *(this->radmin);
-    db = this->radmin == derivparam ? 1.0 : 0.0;
+    db = this->radmin.deri == derivparam ? 1.0 : 0.0;
     double a, da;
     a = this->getRadMaj(c, f1, b, db, da);
     DeriVector2 a_vec = emaj.multD(a, da);
@@ -399,7 +399,7 @@ double Hyperbola::getRadMaj(double* derivparam, double& ret_dRadMaj) const
 {
     DeriVector2 c(center, derivparam);
     DeriVector2 f1(focus1, derivparam);
-    return getRadMaj(c, f1, *radmin, radmin == derivparam ? 1.0 : 0.0, ret_dRadMaj);
+    return getRadMaj(c, f1, *radmin, radmin.deri == derivparam ? 1.0 : 0.0, ret_dRadMaj);
 }
 
 // returns the major radius (plain value, no derivatives)
@@ -446,7 +446,7 @@ DeriVector2 Hyperbola::Value(double u, double du, const double* derivparam) cons
     DeriVector2 emin = emaj.rotate90ccw();
     double b, db;
     b = *(this->radmin);
-    db = this->radmin == derivparam ? 1.0 : 0.0;
+    db = this->radmin.deri == derivparam ? 1.0 : 0.0;
     double a, da;
     a = this->getRadMaj(c, f1, b, db, da);
     DeriVector2 a_vec = emaj.multD(a, da);
@@ -640,7 +640,7 @@ DeriVector2 BSpline::CalculateNormal(const Point& p, const double* derivparam) c
     return {};
 }
 
-DeriVector2 BSpline::CalculateNormal(const double* param, const double* derivparam) const
+DeriVector2 BSpline::CalculateNormal(const DeriParam& param, const double* derivparam) const
 {
     // TODO: is there any advantage in making this a `static`?
     size_t startpole = 0;
@@ -676,7 +676,8 @@ DeriVector2 BSpline::CalculateNormal(const double* param, const double* derivpar
 
     // get dx, dy of the normal as well
     for (size_t i = 0; i < numpoints; ++i) {
-        if (derivparam != polexat(i) && derivparam != poleyat(i) && derivparam != weightat(i)) {
+        if (derivparam != polexat(i).deri && derivparam != poleyat(i).deri
+            && derivparam != weightat(i).deri) {
             continue;
         }
 
@@ -694,13 +695,13 @@ DeriVector2 BSpline::CalculateNormal(const double* param, const double* derivpar
         }
         double slopefactor = splineValue(*param, startpole + degree, degree - 1, sd, flattenedknots);
 
-        if (derivparam == polexat(i)) {
+        if (derivparam == polexat(i).deri) {
             result.dx = *weightat(i) * (wsum * slopefactor - wslopesum * factor);
         }
-        else if (derivparam == poleyat(i)) {
+        else if (derivparam == poleyat(i).deri) {
             result.dy = *weightat(i) * (wsum * slopefactor - wslopesum * factor);
         }
-        else if (derivparam == weightat(i)) {
+        else if (derivparam == weightat(i).deri) {
             result.dx = degree
                 * (factor * (xslopesum - wslopesum * (*polexat(i)))
                    - slopefactor * (xsum - wsum * (*polexat(i))));
@@ -714,7 +715,7 @@ DeriVector2 BSpline::CalculateNormal(const double* param, const double* derivpar
     // the curve parameter being used by the constraint is not known to the geometry (there can be
     // many tangent constraints on the same curve after all). Assume that this is the param
     // provided.
-    if (derivparam != param) {
+    if (derivparam != param.deri) {
         return result.rotate90ccw();
     }
 

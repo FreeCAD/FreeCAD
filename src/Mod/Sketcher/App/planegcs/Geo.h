@@ -47,6 +47,10 @@ public:
         : x(px)
         , y(py)
     {}
+    Point(DeriParam px, DeriParam py)
+        : x(px)
+        , y(py)
+    {}
     DeriParam x;
     DeriParam y;
 
@@ -181,7 +185,7 @@ public:
     virtual DeriVector2 CalculateNormal(const Point& p, const double* derivparam = nullptr) const = 0;
 
     // returns normal vector at parameter instead of at the given point.
-    virtual DeriVector2 CalculateNormal(const double* param, const double* derivparam = nullptr) const
+    virtual DeriVector2 CalculateNormal(const DeriParam& param, const double* derivparam = nullptr) const
     {
         DeriVector2 pointDV = Value(*param, 0.0);
         Point p(&pointDV.x, &pointDV.y);
@@ -389,7 +393,7 @@ public:
     VEC_D flattenedknots;
     DeriVector2 CalculateNormal(const Point& p, const double* derivparam = nullptr) const override;
     // TODO: override parametric version
-    DeriVector2 CalculateNormal(const double* param, const double* derivparam = nullptr) const override;
+    DeriVector2 CalculateNormal(const DeriParam& param, const double* derivparam = nullptr) const override;
     DeriVector2 Value(double u, double du, const double* derivparam = nullptr) const override;
     // Returns value in homogeneous coordinates (x*w, y*w, w) at given parameter u
     void valueHomogenous(
