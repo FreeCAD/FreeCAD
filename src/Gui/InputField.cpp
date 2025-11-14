@@ -770,7 +770,7 @@ void InputField::fixup(QString& input) const
         input.replace(localePlus, asciiPlus);
     }
 
-    // workaround for inproper handling of plus sign
+    // workaround for improper handling of plus sign
     // in Building US unit system
     // https://github.com/FreeCAD/FreeCAD/issues/11345
     QString asciiMinusMinus(QStringLiteral("--"));
@@ -825,3 +825,4 @@ QValidator::State InputValidator::validate(QString& input, int& pos) const
 
 
 #include "moc_InputField.cpp"
+
