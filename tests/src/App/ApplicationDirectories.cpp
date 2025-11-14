@@ -43,14 +43,14 @@ class ApplicationDirectoriesTestClass: public App::ApplicationDirectories
     using App::ApplicationDirectories::ApplicationDirectories;
 
 public:
-    void wrapAppendVersionIfPossible(const fs::path& basePath,
-                                     std::vector<std::string>& subdirs) const
+    void wrapAppendVersionIfPossible(const fs::path& basePath, std::vector<std::string>& subdirs) const
     {
         appendVersionIfPossible(basePath, subdirs);
     }
 
-    std::tuple<int, int>
-    wrapExtractVersionFromConfigMap(const std::map<std::string, std::string>& config)
+    std::tuple<int, int> wrapExtractVersionFromConfigMap(
+        const std::map<std::string, std::string>& config
+    )
     {
         return extractVersionFromConfigMap(config);
     }
@@ -69,14 +69,17 @@ protected:
         _tempDir = MakeUniqueTempDir();
     }
 
-    std::map<std::string, std::string>
-    generateConfig(const std::map<std::string, std::string>& overrides) const
+    std::map<std::string, std::string> generateConfig(
+        const std::map<std::string, std::string>& overrides
+    ) const
     {
-        std::map<std::string, std::string> config {{"AppHomePath", _tempDir.string()},
-                                                   {"ExeVendor", "Vendor"},
-                                                   {"ExeName", "Test"},
-                                                   {"BuildVersionMajor", "4"},
-                                                   {"BuildVersionMinor", "2"}};
+        std::map<std::string, std::string> config {
+            {"AppHomePath", _tempDir.string()},
+            {"ExeVendor", "Vendor"},
+            {"ExeName", "Test"},
+            {"BuildVersionMajor", "4"},
+            {"BuildVersionMinor", "2"}
+        };
         for (const auto& override : overrides) {
             config[override.first] = override.second;
         }
@@ -85,8 +88,10 @@ protected:
 
     std::unique_ptr<ApplicationDirectoriesTestClass> makeAppDirsForVersion(int major, int minor)
     {
-        auto configuration = generateConfig({{"BuildVersionMajor", std::to_string(major)},
-                                             {"BuildVersionMinor", std::to_string(minor)}});
+        auto configuration = generateConfig(
+            {{"BuildVersionMajor", std::to_string(major)},
+             {"BuildVersionMinor", std::to_string(minor)}}
+        );
         return std::make_unique<ApplicationDirectoriesTestClass>(configuration);
     }
 
@@ -136,8 +141,10 @@ TEST_F(ApplicationDirectoriesTest, usingCurrentVersionConfigFalseWhenDirDoesntMa
         / App::ApplicationDirectories::versionStringForPath(major, minor);
 
     // Act: generate a directory structure with the same version
-    auto configuration = generateConfig({{"BuildVersionMajor", std::to_string(major + 1)},
-                                         {"BuildVersionMinor", std::to_string(minor)}});
+    auto configuration = generateConfig(
+        {{"BuildVersionMajor", std::to_string(major + 1)},
+         {"BuildVersionMinor", std::to_string(minor)}}
+    );
     auto appDirs = std::make_unique<App::ApplicationDirectories>(configuration);
 
     // Assert
@@ -216,8 +223,10 @@ TEST_F(ApplicationDirectoriesTest, mostRecentAvailReturnsExactCurrentVersionIfDi
     auto appDirs = makeAppDirsForVersion(5, 4);
     fs::create_directories(versionedPath(tempDir(), 5, 4));
 
-    EXPECT_EQ(appDirs->mostRecentAvailableConfigVersion(tempDir()),
-              App::ApplicationDirectories::versionStringForPath(5, 4));
+    EXPECT_EQ(
+        appDirs->mostRecentAvailableConfigVersion(tempDir()),
+        App::ApplicationDirectories::versionStringForPath(5, 4)
+    );
 }
 
 // No exact match in the current major: choose the highest available minor <= current
@@ -229,8 +238,10 @@ TEST_F(ApplicationDirectoriesTest, mostRecentAvailPrefersSameMajorAndPicksHighes
     fs::create_directories(versionedPath(tempDir(), 5, 3));
     fs::create_directories(versionedPath(tempDir(), 4, 99));  // distractor in lower major
 
-    EXPECT_EQ(appDirs->mostRecentAvailableConfigVersion(tempDir()),
-              App::ApplicationDirectories::versionStringForPath(5, 3));
+    EXPECT_EQ(
+        appDirs->mostRecentAvailableConfigVersion(tempDir()),
+        App::ApplicationDirectories::versionStringForPath(5, 3)
+    );
 }
 
 // No directories in current major: scan next lower major from 99 downward,
@@ -241,8 +252,10 @@ TEST_F(ApplicationDirectoriesTest, mostRecentAvailForLowerMajorPicksHighestAvail
     fs::create_directories(versionedPath(tempDir(), 4, 3));
     fs::create_directories(versionedPath(tempDir(), 4, 42));
 
-    EXPECT_EQ(appDirs->mostRecentAvailableConfigVersion(tempDir()),
-              App::ApplicationDirectories::versionStringForPath(4, 42));
+    EXPECT_EQ(
+        appDirs->mostRecentAvailableConfigVersion(tempDir()),
+        App::ApplicationDirectories::versionStringForPath(4, 42)
+    );
 }
 
 // If the candidate path exists but is a regular file, it must be ignored and
@@ -253,8 +266,10 @@ TEST_F(ApplicationDirectoriesTest, mostRecentAvailSkipsFilesAndFallsBackToNextDi
     touchFile(versionedPath(tempDir(), 5, 4));               // file at the current version
     fs::create_directories(versionedPath(tempDir(), 5, 3));  // directory at next lower minor
 
-    EXPECT_EQ(appDirs->mostRecentAvailableConfigVersion(tempDir()),
-              App::ApplicationDirectories::versionStringForPath(5, 3));
+    EXPECT_EQ(
+        appDirs->mostRecentAvailableConfigVersion(tempDir()),
+        App::ApplicationDirectories::versionStringForPath(5, 3)
+    );
 }
 
 // Higher minor in the current major is not considered (loop starts at the current minor);
@@ -262,12 +277,13 @@ TEST_F(ApplicationDirectoriesTest, mostRecentAvailSkipsFilesAndFallsBackToNextDi
 TEST_F(ApplicationDirectoriesTest, mostRecentAvailIgnoresHigherMinorThanCurrentInSameMajor)
 {
     auto appDirs = makeAppDirsForVersion(5, 4);
-    fs::create_directories(
-        versionedPath(tempDir(), 5, 7));  // higher than the current minor; ignored
+    fs::create_directories(versionedPath(tempDir(), 5, 7));  // higher than the current minor; ignored
     fs::create_directories(versionedPath(tempDir(), 4, 1));  // fallback target
 
-    EXPECT_EQ(appDirs->mostRecentAvailableConfigVersion(tempDir()),
-              App::ApplicationDirectories::versionStringForPath(4, 1));
+    EXPECT_EQ(
+        appDirs->mostRecentAvailableConfigVersion(tempDir()),
+        App::ApplicationDirectories::versionStringForPath(4, 1)
+    );
 }
 
 // No candidates anywhere -> empty string returned.
@@ -289,8 +305,7 @@ TEST_F(ApplicationDirectoriesTest, mostRecentConfigReturnsCurrentVersionDirector
 }
 
 // The current version missing -> falls back to most recent available in same major
-TEST_F(ApplicationDirectoriesTest,
-       mostRecentConfigFallsBackToMostRecentInSameMajorWhenCurrentMissing)
+TEST_F(ApplicationDirectoriesTest, mostRecentConfigFallsBackToMostRecentInSameMajorWhenCurrentMissing)
 {
     auto appDirs = makeAppDirsForVersion(5, 4);
     // There is no directory called "5.4"; provide candidates 5.3 and 5.1; also a distractor in a
@@ -604,7 +619,8 @@ TEST_F(ApplicationDirectoriesTest, appendVecAlreadyVersionedBails)
     fs::path base = tempDir() / "bail_vec";
     std::vector<std::string> sub {
         "configs",
-        App::ApplicationDirectories::versionStringForPath(5, 2)};  // versioned tail
+        App::ApplicationDirectories::versionStringForPath(5, 2)
+    };  // versioned tail
     fs::create_directories(base / sub[0] / sub[1]);
 
     auto before = sub;
@@ -704,8 +720,10 @@ TEST_F(ApplicationDirectoriesTest, extractVersionSucceedsWithPlainIntegers)
 TEST_F(ApplicationDirectoriesTest, extractVersionSucceedsWithWhitespace)
 {
     auto appDirs = makeAppDirsForVersion(5, 4);
-    std::map<std::string, std::string> m {{"BuildVersionMajor", "  10  "},
-                                          {"BuildVersionMinor", "\t3\n"}};
+    std::map<std::string, std::string> m {
+        {"BuildVersionMajor", "  10  "},
+        {"BuildVersionMinor", "\t3\n"}
+    };
     auto [maj, min] = appDirs->wrapExtractVersionFromConfigMap(m);
     EXPECT_EQ(maj, 10);
     EXPECT_EQ(min, 3);
@@ -739,8 +757,10 @@ TEST_F(ApplicationDirectoriesTest, extractVersionNonNumericThrowsRuntimeError)
 TEST_F(ApplicationDirectoriesTest, extractVersionOverflowThrowsRuntimeError)
 {
     auto appDirs = makeAppDirsForVersion(5, 4);
-    std::map<std::string, std::string> m {{"BuildVersionMajor", "9999999999999999999999999"},
-                                          {"BuildVersionMinor", "1"}};
+    std::map<std::string, std::string> m {
+        {"BuildVersionMajor", "9999999999999999999999999"},
+        {"BuildVersionMinor", "1"}
+    };
     EXPECT_THROW(appDirs->wrapExtractVersionFromConfigMap(m), Base::RuntimeError);
 }
 

@@ -73,7 +73,7 @@ public:
     static void initClass();
     SoRotatorGeometry();
 
-    SoSFFloat arcAngle; //!< in radians
+    SoSFFloat arcAngle;  //!< in radians
     SoSFFloat arcRadius;
     SoSFFloat sphereRadius;
     SoSFFloat arcThickness;
@@ -84,7 +84,7 @@ protected:
     void notify(SoNotList* notList) override;
 
 private:
-    constexpr static int segments = 10; //!< segments of the arc per arcAngle
+    constexpr static int segments = 10;  //!< segments of the arc per arcAngle
 
     using inherited = SoRotatorGeometryKit;
 };
@@ -118,7 +118,7 @@ protected:
     void notify(SoNotList* notList) override;
 
 private:
-    constexpr static int segments = 10; //!< segments of the arc per arcAngle
+    constexpr static int segments = 10;  //!< segments of the arc per arcAngle
 
     using inherited = SoRotatorGeometry;
 };
@@ -155,7 +155,7 @@ protected:
     void notify(SoNotList* notList) override;
 
 private:
-    constexpr static int segments = 10; //!< segments of the arc per arcAngle
+    constexpr static int segments = 10;  //!< segments of the arc per arcAngle
 
     using inherited = SoRotatorGeometryKit;
 };
@@ -167,9 +167,9 @@ class GuiExport SoRotatorGeometryBaseKit: public SoBaseKit
 public:
     static void initClass();
 
-    SoSFRotation rotation; //!< set from the parent dragger
-    SoSFVec3f geometryScale; //!< set from the parent dragger
-    SoSFBool active; //!< set from the parent dragger
+    SoSFRotation rotation;    //!< set from the parent dragger
+    SoSFVec3f geometryScale;  //!< set from the parent dragger
+    SoSFBool active;          //!< set from the parent dragger
 
 protected:
     SoRotatorGeometryBaseKit();
@@ -205,11 +205,11 @@ protected:
     void notify(SoNotList* notList) override;
 
 private:
-    constexpr static int segments = 50; //!< segments of the arc per arcAngle
+    constexpr static int segments = 50;  //!< segments of the arc per arcAngle
 
     using inherited = SoRotatorGeometryBaseKit;
 };
 
-}
+}  // namespace Gui
 
 #endif /* GUI_ROTATION_DRAGGER_GEOMETRY_H */

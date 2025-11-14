@@ -30,8 +30,9 @@
 
 class SoNode;
 
-namespace App {
-    class Property;
+namespace App
+{
+class Property;
 }
 
 namespace Gui
@@ -55,7 +56,7 @@ private:
     static std::map<Base::Type, Base::Type> _prop_to_view;
 };
 
-class GuiExport ViewProviderColorBuilder : public ViewProviderBuilder
+class GuiExport ViewProviderColorBuilder: public ViewProviderBuilder
 {
 public:
     /// Constructor
@@ -64,7 +65,7 @@ public:
     void buildNodes(const App::Property*, std::vector<SoNode*>&) const override;
 };
 
-} //namespace Gui
+}  // namespace Gui
 
 
-#endif // GUI_VIEWPROVIDERBUILDER_H
+#endif  // GUI_VIEWPROVIDERBUILDER_H

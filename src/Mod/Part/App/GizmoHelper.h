@@ -39,13 +39,13 @@ EdgeMidPointProps PartExport getEdgeMidPointProps(Part::TopoShape& edge);
 
 Base::Vector3d PartExport getCentreOfMassFromFace(TopoDS_Face& face);
 
-std::optional<std::pair<Base::Vector3d, Base::Vector3d>>
-PartExport getFaceNormalFromPointNearEdge(Part::TopoShape& edge, double middle, TopoDS_Face& face);
+std::optional<std::pair<Base::Vector3d, Base::Vector3d>> PartExport
+getFaceNormalFromPointNearEdge(Part::TopoShape& edge, double middle, TopoDS_Face& face);
 
 Base::Vector3d PartExport getFaceNormalFromPoint(Base::Vector3d& point, TopoDS_Face& face);
 
-std::pair<TopoDS_Face, TopoDS_Face> PartExport getAdjacentFacesFromEdge(Part::TopoShape& edge,
-                                                             Part::TopoShape& baseShape);
+std::pair<TopoDS_Face, TopoDS_Face> PartExport
+getAdjacentFacesFromEdge(Part::TopoShape& edge, Part::TopoShape& baseShape);
 
 struct PartExport DraggerPlacementProps
 {
@@ -53,10 +53,11 @@ struct PartExport DraggerPlacementProps
     Base::Vector3d dir;
     Base::Vector3d tangent;
 };
-DraggerPlacementProps PartExport getDraggerPlacementFromEdgeAndFace(Part::TopoShape& edge, TopoDS_Face& face);
+DraggerPlacementProps PartExport
+getDraggerPlacementFromEdgeAndFace(Part::TopoShape& edge, TopoDS_Face& face);
 
-DraggerPlacementProps PartExport getDraggerPlacementFromEdgeAndFace(Part::TopoShape& edge,
-                                                         Part::TopoShape& face);
+DraggerPlacementProps PartExport
+getDraggerPlacementFromEdgeAndFace(Part::TopoShape& edge, Part::TopoShape& face);
 
 std::vector<Part::TopoShape> PartExport getAdjacentEdgesFromFace(Part::TopoShape& face);
 

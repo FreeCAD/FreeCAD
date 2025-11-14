@@ -63,10 +63,11 @@ App::DocumentObjectExecReturn* Sections::execute()
                 if (!edge.IsNull() && edge.ShapeType() == TopAbs_EDGE) {
                     BRepAdaptor_Curve curve_adapt(TopoDS::Edge(edge));
                     const TopLoc_Location& loc = edge.Location();
-                    Handle(Geom_TrimmedCurve) hCurve =
-                        new Geom_TrimmedCurve(curve_adapt.Curve().Curve(),
-                                              curve_adapt.FirstParameter(),
-                                              curve_adapt.LastParameter());
+                    Handle(Geom_TrimmedCurve) hCurve = new Geom_TrimmedCurve(
+                        curve_adapt.Curve().Curve(),
+                        curve_adapt.FirstParameter(),
+                        curve_adapt.LastParameter()
+                    );
                     if (!loc.IsIdentity()) {
                         hCurve->Transform(loc.Transformation());
                     }

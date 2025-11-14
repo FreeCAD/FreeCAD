@@ -53,18 +53,19 @@ protected:
     void TearDown() override
     {}
 
-    static std::string
-    set(const std::string& schemaName, const Unit unit, const double value)  // NOLINT
+    static std::string set(const std::string& schemaName, const Unit unit, const double value)  // NOLINT
     {
         UnitsApi::setSchema(schemaName);
         const auto quantity = Quantity {value, unit};
         return quantity.getSafeUserString();
     }
 
-    static std::string setWithPrecision(const std::string& name,
-                                        const double value,
-                                        const Unit unit,
-                                        const int precision)
+    static std::string setWithPrecision(
+        const std::string& name,
+        const double value,
+        const Unit unit,
+        const int precision
+    )
     {
         UnitsApi::setSchema(name);
         Quantity quantity {value, unit};
@@ -74,10 +75,12 @@ protected:
         return quantity.getSafeUserString();
     }
 
-    static std::string setWithDenominator(const std::string& name,
-                                          const double value,
-                                          const Unit unit,
-                                          const int denominator)
+    static std::string setWithDenominator(
+        const std::string& name,
+        const double value,
+        const Unit unit,
+        const int denominator
+    )
     {
         UnitsApi::setSchema(name);
         Quantity quantity {value, unit};
@@ -124,8 +127,8 @@ TEST_F(SchemaTest, meter_decimal_123456000_W_precision_6)
 
 TEST_F(SchemaTest, meter_decimal_123456000_V_precision_6)
 {
-    const std::string result =
-        setWithPrecision("MeterDecimal", 123456000.0, Unit::ElectricPotential, 6);
+    const std::string result
+        = setWithPrecision("MeterDecimal", 123456000.0, Unit::ElectricPotential, 6);
     const auto expect {"123.456000 V"};
 
     EXPECT_EQ(result, expect);

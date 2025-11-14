@@ -83,7 +83,8 @@ App::DocumentObjectExecReturn* FeatureArea::execute()
     for (std::vector<App::DocumentObject*>::iterator it = links.begin(); it != links.end(); ++it) {
         if (!(*it && (*it)->isDerivedFrom<Part::Feature>())) {
             return new App::DocumentObjectExecReturn(
-                "Linked object is not a Part object (has no Shape).");
+                "Linked object is not a Part object (has no Shape)."
+            );
         }
         TopoDS_Shape shape = static_cast<Part::Feature*>(*it)->Shape.getShape().getShape();
         if (shape.IsNull()) {
@@ -105,8 +106,10 @@ App::DocumentObjectExecReturn* FeatureArea::execute()
     myArea.setPlane(workPlane);
 
     for (std::vector<App::DocumentObject*>::iterator it = links.begin(); it != links.end(); ++it) {
-        myArea.add(static_cast<Part::Feature*>(*it)->Shape.getShape().getShape(),
-                   PARAM_PROP_ARGS(AREA_PARAMS_OPCODE));
+        myArea.add(
+            static_cast<Part::Feature*>(*it)->Shape.getShape().getShape(),
+            PARAM_PROP_ARGS(AREA_PARAMS_OPCODE)
+        );
     }
 
     myShapes.clear();
@@ -185,13 +188,15 @@ FeatureAreaView::FeatureAreaView()
         (0),
         "Section",
         App::Prop_None,
-        "The start index of the section to show, negative value for reverse index from bottom");
+        "The start index of the section to show, negative value for reverse index from bottom"
+    );
     ADD_PROPERTY_TYPE(
         SectionCount,
         (1),
         "Section",
         App::Prop_None,
-        "Number of sections to show, 0 to show all section starting from SectionIndex");
+        "Number of sections to show, 0 to show all section starting from SectionIndex"
+    );
 }
 
 std::list<TopoDS_Shape> FeatureAreaView::getShapes()

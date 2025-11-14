@@ -22,22 +22,22 @@
 
 #include <FCConfig.h>
 
-# include <Inventor/actions/SoGLRenderAction.h>
-# include <Inventor/elements/SoCacheElement.h>
-# include <Inventor/elements/SoLazyElement.h>
-# include <Inventor/elements/SoModelMatrixElement.h>
-# include <Inventor/elements/SoProjectionMatrixElement.h>
-# include <Inventor/elements/SoViewingMatrixElement.h>
-# include <Inventor/elements/SoViewportRegionElement.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/elements/SoCacheElement.h>
+#include <Inventor/elements/SoLazyElement.h>
+#include <Inventor/elements/SoModelMatrixElement.h>
+#include <Inventor/elements/SoProjectionMatrixElement.h>
+#include <Inventor/elements/SoViewingMatrixElement.h>
+#include <Inventor/elements/SoViewportRegionElement.h>
 
 #if defined(FC_OS_WIN32)
-#include <windows.h>
+# include <windows.h>
 #endif
 
 #ifdef FC_OS_MACOSX
-#include <OpenGL/gl.h>
+# include <OpenGL/gl.h>
 #else
-#include <GL/gl.h>
+# include <GL/gl.h>
 #endif
 
 #include "SoDrawingGrid.h"
@@ -53,8 +53,7 @@ Gui.ActiveDocument.ActiveView.getSceneGraph().addChild(grid)
 
 SO_NODE_SOURCE(SoDrawingGrid)
 
-void
-SoDrawingGrid::initClass()
+void SoDrawingGrid::initClass()
 {
     SO_NODE_INIT_CLASS(SoDrawingGrid, SoShape, "Shape");
 }
@@ -64,52 +63,52 @@ SoDrawingGrid::SoDrawingGrid()
     SO_NODE_CONSTRUCTOR(SoDrawingGrid);
 }
 
-void
-SoDrawingGrid::renderGrid(SoGLRenderAction *action)
+void SoDrawingGrid::renderGrid(SoGLRenderAction* action)
 {
-    if (!shouldGLRender(action))
+    if (!shouldGLRender(action)) {
         return;
+    }
 
-    SoState*  state = action->getState();
+    SoState* state = action->getState();
     state->push();
     SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
 
-    const SbMatrix & mat = SoModelMatrixElement::get(state);
-    //const SbViewVolume & vv = SoViewVolumeElement::get(state);
-    //const SbMatrix & projmatrix = (mat * SoViewingMatrixElement::get(state) *
-    //                               SoProjectionMatrixElement::get(state));
-    const SbViewportRegion & vp = SoViewportRegionElement::get(state);
-    //SbVec2s vpsize = vp.getViewportSizePixels();
+    const SbMatrix& mat = SoModelMatrixElement::get(state);
+    // const SbViewVolume & vv = SoViewVolumeElement::get(state);
+    // const SbMatrix & projmatrix = (mat * SoViewingMatrixElement::get(state) *
+    //                                SoProjectionMatrixElement::get(state));
+    const SbViewportRegion& vp = SoViewportRegionElement::get(state);
+    // SbVec2s vpsize = vp.getViewportSizePixels();
     float fRatio = vp.getViewportAspectRatio();
 
-    //float width = vv.getWidth();
-    //float height = vv.getHeight();
-    SbVec3f worldcenter(0,0,0);
+    // float width = vv.getWidth();
+    // float height = vv.getHeight();
+    SbVec3f worldcenter(0, 0, 0);
     mat.multVecMatrix(worldcenter, worldcenter);
 
-    //float dist = (vv.getProjectionPoint() - worldcenter).length();
+    // float dist = (vv.getProjectionPoint() - worldcenter).length();
 
-    SoModelMatrixElement::set(state,this,SbMatrix::identity());
-    SoViewingMatrixElement::set(state,this,SbMatrix::identity());
-    SoProjectionMatrixElement::set(state,this,SbMatrix::identity());
+    SoModelMatrixElement::set(state, this, SbMatrix::identity());
+    SoViewingMatrixElement::set(state, this, SbMatrix::identity());
+    SoProjectionMatrixElement::set(state, this, SbMatrix::identity());
 
-    glColor3f(1.0f,0.0f,0.0f);
+    glColor3f(1.0f, 0.0f, 0.0f);
     glBegin(GL_LINES);
     float p[3];
     p[2] = 0.0f;
 
     int numX = 20;
-    for (int i=-numX; i<numX; i++) {
-        p[0] = (float)i/numX;
+    for (int i = -numX; i < numX; i++) {
+        p[0] = (float)i / numX;
         p[1] = -1.0f;
         glVertex3fv(p);
         p[1] = 1.0f;
         glVertex3fv(p);
     }
     int numY = numX / fRatio;
-    for (int i=-numY; i<numY; i++) {
+    for (int i = -numY; i < numY; i++) {
         p[0] = -1.0f;
-        p[1] = (float)i/numY;
+        p[1] = (float)i / numY;
         glVertex3fv(p);
         p[0] = 1.0;
         glVertex3fv(p);
@@ -119,35 +118,37 @@ SoDrawingGrid::renderGrid(SoGLRenderAction *action)
     state->pop();
 }
 
-void
-SoDrawingGrid::GLRender(SoGLRenderAction *action)
+void SoDrawingGrid::GLRender(SoGLRenderAction* action)
 {
-    //renderGrid(action);
-    //return;
+    // renderGrid(action);
+    // return;
     switch (action->getCurPathCode()) {
-    case SoAction::NO_PATH:
-    case SoAction::BELOW_PATH:
-        this->GLRenderBelowPath(action);
-        break;
-    case SoAction::OFF_PATH:
-        // do nothing. Separator will reset state.
-        break;
-    case SoAction::IN_PATH:
-        this->GLRenderInPath(action);
-        break;
+        case SoAction::NO_PATH:
+        case SoAction::BELOW_PATH:
+            this->GLRenderBelowPath(action);
+            break;
+        case SoAction::OFF_PATH:
+            // do nothing. Separator will reset state.
+            break;
+        case SoAction::IN_PATH:
+            this->GLRenderInPath(action);
+            break;
     }
 }
 
-void
-SoDrawingGrid::GLRenderBelowPath(SoGLRenderAction * action)
+void SoDrawingGrid::GLRenderBelowPath(SoGLRenderAction* action)
 {
-    //inherited::GLRenderBelowPath(action);
-    //return;
+    // inherited::GLRenderBelowPath(action);
+    // return;
     if (action->isRenderingDelayedPaths()) {
         SbBool zbenabled = glIsEnabled(GL_DEPTH_TEST);
-        if (zbenabled) glDisable(GL_DEPTH_TEST);
+        if (zbenabled) {
+            glDisable(GL_DEPTH_TEST);
+        }
         renderGrid(action);
-        if (zbenabled) glEnable(GL_DEPTH_TEST);
+        if (zbenabled) {
+            glEnable(GL_DEPTH_TEST);
+        }
     }
     else {
         SoCacheElement::invalidate(action->getState());
@@ -155,16 +156,19 @@ SoDrawingGrid::GLRenderBelowPath(SoGLRenderAction * action)
     }
 }
 
-void
-SoDrawingGrid::GLRenderInPath(SoGLRenderAction * action)
+void SoDrawingGrid::GLRenderInPath(SoGLRenderAction* action)
 {
-    //inherited::GLRenderInPath(action);
-    //return;
+    // inherited::GLRenderInPath(action);
+    // return;
     if (action->isRenderingDelayedPaths()) {
         SbBool zbenabled = glIsEnabled(GL_DEPTH_TEST);
-        if (zbenabled) glDisable(GL_DEPTH_TEST);
+        if (zbenabled) {
+            glDisable(GL_DEPTH_TEST);
+        }
         renderGrid(action);
-        if (zbenabled) glEnable(GL_DEPTH_TEST);
+        if (zbenabled) {
+            glEnable(GL_DEPTH_TEST);
+        }
     }
     else {
         SoCacheElement::invalidate(action->getState());
@@ -172,22 +176,18 @@ SoDrawingGrid::GLRenderInPath(SoGLRenderAction * action)
     }
 }
 
-void
-SoDrawingGrid::GLRenderOffPath(SoGLRenderAction *)
+void SoDrawingGrid::GLRenderOffPath(SoGLRenderAction*)
+{}
+
+void SoDrawingGrid::generatePrimitives(SoAction* action)
 {
+    (void)action;
 }
 
-void
-SoDrawingGrid::generatePrimitives(SoAction* action)
+void SoDrawingGrid::computeBBox(SoAction* action, SbBox3f& box, SbVec3f& center)
 {
-    (void)action; 
-}
-
-void
-SoDrawingGrid::computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center)
-{
-    (void)action; 
-    (void)box; 
-    (void)center; 
-    //SoState*  state = action->getState();
+    (void)action;
+    (void)box;
+    (void)center;
+    // SoState*  state = action->getState();
 }

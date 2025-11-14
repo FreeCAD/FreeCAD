@@ -68,7 +68,8 @@ DlgSettingsFemGeneralImp::DlgSettingsFemGeneralImp(QWidget* parent)
     // if the "DefaultSolver" parameter is not yet set and there is only
     // one available solver, set this solver
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Fem/General");
+        "User parameter:BaseApp/Preferences/Mod/Fem/General"
+    );
     auto DefaultSolver = hGrp->GetInt("DefaultSolver", 0);
     if (!DefaultSolver && ui->cmb_def_solver->count() == 2) {
         ui->cmb_def_solver->setCurrentIndex(1);

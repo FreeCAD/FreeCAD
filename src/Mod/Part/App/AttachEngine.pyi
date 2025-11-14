@@ -4,7 +4,6 @@ from Base.Placement import Placement
 from App.DocumentObject import DocumentObject
 from typing import Final, Optional
 
-
 @export(
     Include="Mod/Part/App/Attacher.h",
     Namespace="Attacher",
@@ -78,7 +77,7 @@ class AttachEngine(BaseClass):
         ...
 
     @constmethod
-    def copy(self) -> 'AttachEngine':
+    def copy(self) -> "AttachEngine":
         """
         copy(): returns a new instance of AttachEngine.
         """
@@ -147,4 +146,3 @@ class AttachEngine(BaseClass):
         will crash FreeCAD.
         """
         ...
-

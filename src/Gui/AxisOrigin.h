@@ -25,10 +25,12 @@
 
 #include "ViewProvider.h"
 
-namespace Gui {
+namespace Gui
+{
 
 /// A class to create a Coin3D node representation of an coordinate system
-class GuiExport AxisOrigin : public Base::BaseClass {
+class GuiExport AxisOrigin: public Base::BaseClass
+{
     TYPESYSTEM_HEADER();
 
 public:
@@ -38,31 +40,46 @@ public:
     void setLineWidth(float size);
 
     /// Get axis line width
-    float getLineWidth() const { return lineSize; }
+    float getLineWidth() const
+    {
+        return lineSize;
+    }
 
     /// Set origin point size
     void setPointSize(float size);
 
     /// Get origin point size
-    float getPointSize() const { return pointSize; }
+    float getPointSize() const
+    {
+        return pointSize;
+    }
 
     /// Set the axis line length
     void setAxisLength(float size);
 
     /// Get axis base line length
-    float getAxisLength() const { return size; }
+    float getAxisLength() const
+    {
+        return size;
+    }
 
     /// Set the origin plane size and distance from the axis
     void setPlane(float size, float dist);
 
     /// Get the origin plane size and distance from the axis
-    std::pair<float,float> getPlane() const {return std::make_pair(pSize,dist);}
+    std::pair<float, float> getPlane() const
+    {
+        return std::make_pair(pSize, dist);
+    }
 
     /// Set the auto scale factor, 0 to disable it
     void setScale(float scale);
 
     /// Get the auto scale factor
-    float getScale() const { return scale; }
+    float getScale() const
+    {
+        return scale;
+    }
 
     /** Set customized names for axis components
      *
@@ -74,23 +91,26 @@ public:
      * this function to choose which components are hidden, by not
      * include the key in the input labels.
      */
-    void setLabels(const std::map<std::string,std::string> &labels);
+    void setLabels(const std::map<std::string, std::string>& labels);
 
     /// Obtain the axis component names
-    const std::map<std::string,std::string> &getLabels() const { return labels; }
+    const std::map<std::string, std::string>& getLabels() const
+    {
+        return labels;
+    }
 
     /// Obtain the constructed Coin3D representation
-    SoGroup *getNode();
+    SoGroup* getNode();
 
     /** Return the name of picked element
      * @sa ViewProvider::getElementPicked()
      */
-    bool getElementPicked(const SoPickedPoint *pp, std::string &subname) const;
+    bool getElementPicked(const SoPickedPoint* pp, std::string& subname) const;
 
     /** Return the coin path of a named element
      * @sa ViewProvider::getDetailPath()
      */
-    bool getDetailPath(const char *subname, SoFullPath *pPath, SoDetail *&det) const;
+    bool getDetailPath(const char* subname, SoFullPath* pPath, SoDetail*& det) const;
 
 private:
     float size = 6;
@@ -101,9 +121,9 @@ private:
     float pointSize = 4;
     std::map<std::string, std::string> labels;
     CoinPtr<SoGroup> node;
-    std::map<std::string, CoinPtr<SoNode> > nodeMap;
+    std::map<std::string, CoinPtr<SoNode>> nodeMap;
 };
 
-} // namespace Gui
+}  // namespace Gui
 
-#endif //GUI_AxisOrigin_H
+#endif  // GUI_AxisOrigin_H

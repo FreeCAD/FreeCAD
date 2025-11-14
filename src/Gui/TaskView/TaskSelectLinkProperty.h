@@ -32,36 +32,41 @@
 
 class Ui_TaskSelectLinkProperty;
 
-namespace App {
+namespace App
+{
 class Property;
 }
 
-namespace Gui {
+namespace Gui
+{
 class ViewProvider;
-namespace TaskView {
+namespace TaskView
+{
 
 /** General Link/Selection editor for the Task view
  *  This can be used as part of a TaskDialog to alter
  *  the content of a LinkProperty by user input/selection.
- *  If set active it reflects the selection to the Property 
- *  given and acts due the selection filter given to the constructor. 
+ *  If set active it reflects the selection to the Property
+ *  given and acts due the selection filter given to the constructor.
  *  It will allow only allowed elements to be selected (SelectionFilter)
- *  and shows by the background color if the selection criterion is met. 
+ *  and shows by the background color if the selection criterion is met.
  *  With the call of accept() or reject() the result gets permanent or
  *  discarded in the given Property.
  */
 
 
-class GuiExport TaskSelectLinkProperty : public TaskBox, public Gui::SelectionSingleton::ObserverType
+class GuiExport TaskSelectLinkProperty: public TaskBox, public Gui::SelectionSingleton::ObserverType
 {
     Q_OBJECT
 
 public:
-    TaskSelectLinkProperty(const char *,App::Property *,QWidget *parent = nullptr);
+    TaskSelectLinkProperty(const char*, App::Property*, QWidget* parent = nullptr);
     ~TaskSelectLinkProperty() override;
     /// Observer message from the Selection
-    void OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
-                  Gui::SelectionSingleton::MessageType Reason) override;
+    void OnChange(
+        Gui::SelectionSingleton::SubjectType& rCaller,
+        Gui::SelectionSingleton::MessageType Reason
+    ) override;
 
     /// set the filter criterion (same as in constructor)
     bool setFilter(const char*);
@@ -76,7 +81,10 @@ public:
     /// send the selection to the Property for e.g. forced recomputation of a feature
     void sendSelection2Property();
     /// checks if the filter is currently met
-    inline bool isSelectionValid() const {return Filter->match();}
+    inline bool isSelectionValid() const
+    {
+        return Filter->match();
+    }
 
 private:
     void setupConnections();
@@ -90,7 +98,7 @@ Q_SIGNALS:
     void emitSelectionMisfit();
 
 protected:
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
 
 private:
     // checks for selection and set background color and signals
@@ -99,19 +107,19 @@ private:
     QWidget* proxy;
     Ui_TaskSelectLinkProperty* ui;
 
-    // selection filter for the session 
-    Gui::SelectionFilter *Filter;
+    // selection filter for the session
+    Gui::SelectionFilter* Filter;
 
     // possible used property types, only one is used
-    App::PropertyLinkSub  *LinkSub;
-    App::PropertyLinkList *LinkList;
+    App::PropertyLinkSub* LinkSub;
+    App::PropertyLinkList* LinkList;
 
     // string stores the Property at the beginning (for Cancel)
     std::vector<std::string> StartValueBuffer;
-    App::DocumentObject      *StartObject;
+    App::DocumentObject* StartObject;
 };
 
-} //namespace TaskView
-} //namespace Gui
+}  // namespace TaskView
+}  // namespace Gui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

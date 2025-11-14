@@ -51,8 +51,10 @@ public:
      * @param sketchObject The sketch object containing the constraints
      * @param listOfGeoIds List of geometry IDs that are being transformed
      */
-    void storeOriginalExpressions(Sketcher::SketchObject* sketchObject,
-                                  const std::vector<int>& listOfGeoIds);
+    void storeOriginalExpressions(
+        Sketcher::SketchObject* sketchObject,
+        const std::vector<int>& listOfGeoIds
+    );
 
     /** @brief Apply stored expressions to new constraints after transformation
      *
@@ -63,11 +65,13 @@ public:
      * geometry)
      * @param secondNumberOfCopies Number of rows for array operations
      */
-    void copyExpressionsToNewConstraints(Sketcher::SketchObject* sketchObject,
-                                         const std::vector<int>& listOfGeoIds,
-                                         size_t shapeGeometrySize,
-                                         int numberOfCopies,
-                                         int secondNumberOfCopies);
+    void copyExpressionsToNewConstraints(
+        Sketcher::SketchObject* sketchObject,
+        const std::vector<int>& listOfGeoIds,
+        size_t shapeGeometrySize,
+        int numberOfCopies,
+        int secondNumberOfCopies
+    );
 
     void clear();
     bool hasStoredExpressions() const;
@@ -81,19 +85,23 @@ private:
     };
 
     /// calculate parameters needed for copy operations
-    CopyCalculationParams calculateCopyParams(Sketcher::SketchObject* sketchObject,
-                                              const std::vector<int>& listOfGeoIds,
-                                              size_t shapeGeometrySize,
-                                              int numberOfCopies) const;
+    CopyCalculationParams calculateCopyParams(
+        Sketcher::SketchObject* sketchObject,
+        const std::vector<int>& listOfGeoIds,
+        size_t shapeGeometrySize,
+        int numberOfCopies
+    ) const;
 
     /// try to apply an expression to a constraint if it matches copied geometry
-    bool tryApplyExpressionToConstraint(const Sketcher::Constraint* cstr,
-                                        size_t constraintIndex,
-                                        int originalIndex,
-                                        const CopyCalculationParams& params,
-                                        int secondNumberOfCopies,
-                                        const std::shared_ptr<App::Expression>& expression,
-                                        const std::string& sketchObj) const;
+    bool tryApplyExpressionToConstraint(
+        const Sketcher::Constraint* cstr,
+        size_t constraintIndex,
+        int originalIndex,
+        const CopyCalculationParams& params,
+        int secondNumberOfCopies,
+        const std::shared_ptr<App::Expression>& expression,
+        const std::string& sketchObj
+    ) const;
 
     /// check if a constraint references the specified geometry ID
     bool constraintReferencesGeometry(const Sketcher::Constraint* cstr, int geoId) const;

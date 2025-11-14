@@ -7,88 +7,88 @@ Development tools and related technology provided under license from 3Dconnexion
 
 #include "MouseParameters.h"
 
-MouseParameters::MouseParameters(): fNavigation(kObjectMode)
-	  , fPivot(kAutoPivot)
-	  , fPivotVisibility(kShowPivot)
-	  , fIsLockHorizon(true)
-	  , fIsPanZoom(true)
-	  , fIsRotate(true)
-	  , fSpeed(kLowSpeed)
-{
-}
+MouseParameters::MouseParameters()
+    : fNavigation(kObjectMode)
+    , fPivot(kAutoPivot)
+    , fPivotVisibility(kShowPivot)
+    , fIsLockHorizon(true)
+    , fIsPanZoom(true)
+    , fIsRotate(true)
+    , fSpeed(kLowSpeed)
+{}
 
 MouseParameters::~MouseParameters()
+{}
+
+bool MouseParameters::IsPanZoom() const
 {
+    return fIsPanZoom;
 }
 
-bool MouseParameters::IsPanZoom()  const
+bool MouseParameters::IsRotate() const
 {
-	return fIsPanZoom;
+    return fIsRotate;
 }
 
-bool MouseParameters::IsRotate()  const
+MouseParameters::ESpeed MouseParameters::GetSpeed() const
 {
-	return fIsRotate;
-}
-
-MouseParameters::ESpeed MouseParameters::GetSpeed()  const
-{
-	return fSpeed;
+    return fSpeed;
 }
 
 void MouseParameters::SetPanZoom(bool isPanZoom)
 {
-	fIsPanZoom=isPanZoom;
+    fIsPanZoom = isPanZoom;
 }
 
 void MouseParameters::SetRotate(bool isRotate)
 {
-	fIsRotate=isRotate;
+    fIsRotate = isRotate;
 }
 
 void MouseParameters::SetSpeed(ESpeed speed)
 {
-	fSpeed=speed;
+    fSpeed = speed;
 }
 
 
-MouseParameters::ENavigation MouseParameters::GetNavigationMode()  const
+MouseParameters::ENavigation MouseParameters::GetNavigationMode() const
 {
-	return fNavigation;
+    return fNavigation;
 }
 
-MouseParameters::EPivot MouseParameters::GetPivotMode()  const
+MouseParameters::EPivot MouseParameters::GetPivotMode() const
 {
-	return fPivot;
+    return fPivot;
 }
 
-MouseParameters::EPivotVisibility MouseParameters::GetPivotVisibility()  const
+MouseParameters::EPivotVisibility MouseParameters::GetPivotVisibility() const
 {
-	return fPivotVisibility;
+    return fPivotVisibility;
 }
 
-bool MouseParameters::IsLockHorizon()  const
+bool MouseParameters::IsLockHorizon() const
 {
-	return fIsLockHorizon;
+    return fIsLockHorizon;
 }
 
 void MouseParameters::SetLockHorizon(bool bOn)
 {
-	fIsLockHorizon=bOn;
+    fIsLockHorizon = bOn;
 }
 
 void MouseParameters::SetNavigationMode(ENavigation navigation)
 {
-	fNavigation=navigation;
+    fNavigation = navigation;
 }
 
 void MouseParameters::SetPivotMode(EPivot pivot)
 {
-   if (fPivot!=kManualPivot || pivot!=kAutoPivotOverride)
-	  fPivot = pivot;
+    if (fPivot != kManualPivot || pivot != kAutoPivotOverride) {
+        fPivot = pivot;
+    }
 }
 
 void MouseParameters::SetPivotVisibility(EPivotVisibility visibility)
 {
-	fPivotVisibility = visibility;
+    fPivotVisibility = visibility;
 }

@@ -89,9 +89,11 @@ int ExternalGeometryExtensionPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         return 0;
     }
 
-    PyErr_SetString(PyExc_TypeError,
-                    "ExternalGeometryExtension constructor accepts:\n"
-                    "-- empty parameter list\n");
+    PyErr_SetString(
+        PyExc_TypeError,
+        "ExternalGeometryExtension constructor accepts:\n"
+        "-- empty parameter list\n"
+    );
     return -1;
 }
 
@@ -104,7 +106,8 @@ PyObject* ExternalGeometryExtensionPy::testFlag(PyObject* args) const
 
         if (getExternalGeometryExtensionPtr()->getFlagsFromName(flag, flagtype)) {
             return new_reference_to(
-                Py::Boolean(this->getExternalGeometryExtensionPtr()->testFlag(flagtype)));
+                Py::Boolean(this->getExternalGeometryExtensionPtr()->testFlag(flagtype))
+            );
         }
 
         PyErr_SetString(PyExc_TypeError, "Flag string does not exist.");

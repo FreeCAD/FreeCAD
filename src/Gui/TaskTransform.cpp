@@ -77,11 +77,13 @@ void alignGridLayoutColumns(const std::list<QGridLayout*>& layouts, unsigned col
 
 }  // namespace
 
-TaskTransform::TaskTransform(Gui::ViewProviderDragger* vp,
-                             Gui::SoTransformDragger* dragger,
-                             QWidget* parent,
-                             App::SubObjectPlacementProvider* subObjectPlacementProvider,
-                             App::CenterOfMassProvider* centerOfMassProvider)
+TaskTransform::TaskTransform(
+    Gui::ViewProviderDragger* vp,
+    Gui::SoTransformDragger* dragger,
+    QWidget* parent,
+    App::SubObjectPlacementProvider* subObjectPlacementProvider,
+    App::CenterOfMassProvider* centerOfMassProvider
+)
     : TaskBox(Gui::BitmapFactory().pixmap("Std_TransformManip.svg"), tr("Transform"), false, parent)
     , vp(vp)
     , subObjectPlacementProvider(subObjectPlacementProvider)
@@ -99,7 +101,8 @@ TaskTransform::TaskTransform(Gui::ViewProviderDragger* vp,
     referencePlacement = vp->getObjectPlacement();
     referenceRotation = referencePlacement.getRotation();
 
-    globalOrigin = vp->getObjectPlacement() * App::GeoFeature::getGlobalPlacement(vp->getObject()).inverse();
+    globalOrigin = vp->getObjectPlacement()
+        * App::GeoFeature::getGlobalPlacement(vp->getObject()).inverse();
 
     setupGui();
 }
@@ -117,13 +120,13 @@ TaskTransform::~TaskTransform()
     savePreferences();
 }
 
-void TaskTransform::dragStartCallback([[maybe_unused]] void* data,
-                                      [[maybe_unused]] SoDragger* dragger)
+void TaskTransform::dragStartCallback([[maybe_unused]] void* data, [[maybe_unused]] SoDragger* dragger)
 {
     // This is called when a manipulator is about to manipulating
     if (firstDrag) {
         Gui::Application::Instance->activeDocument()->openCommand(
-            QT_TRANSLATE_NOOP("Command", "Transform"));
+            QT_TRANSLATE_NOOP("Command", "Transform")
+        );
         firstDrag = false;
     }
 }
@@ -165,12 +168,16 @@ void TaskTransform::loadPlacementModeItems() const
 {
     ui->placementComboBox->clear();
 
-    ui->placementComboBox->addItem(tr("Object origin"),
-                                   QVariant::fromValue(PlacementMode::ObjectOrigin));
+    ui->placementComboBox->addItem(
+        tr("Object origin"),
+        QVariant::fromValue(PlacementMode::ObjectOrigin)
+    );
 
     if (centerOfMassProvider->ofDocumentObject(vp->getObject()).has_value()) {
-        ui->placementComboBox->addItem(tr("Center of mass / centroid"),
-                                       QVariant::fromValue(PlacementMode::Centroid));
+        ui->placementComboBox->addItem(
+            tr("Center of mass / centroid"),
+            QVariant::fromValue(PlacementMode::Centroid)
+        );
     }
 
     if (subObjectPlacementProvider) {
@@ -197,52 +204,54 @@ void TaskTransform::setupGui()
     ui->referencePickerWidget->hide();
     ui->alignRotationCheckBox->hide();
 
-    for (auto positionSpinBox : {ui->translationIncrementSpinBox,
-                                 ui->xPositionSpinBox,
-                                 ui->yPositionSpinBox,
-                                 ui->zPositionSpinBox}) {
+    for (auto positionSpinBox :
+         {ui->translationIncrementSpinBox,
+          ui->xPositionSpinBox,
+          ui->yPositionSpinBox,
+          ui->zPositionSpinBox}) {
         positionSpinBox->setUnit(Base::Unit::Length);
     }
 
-    for (auto rotationSpinBox : {ui->rotationIncrementSpinBox,
-                                 ui->xRotationSpinBox,
-                                 ui->yRotationSpinBox,
-                                 ui->zRotationSpinBox}) {
+    for (auto rotationSpinBox :
+         {ui->rotationIncrementSpinBox,
+          ui->xRotationSpinBox,
+          ui->yRotationSpinBox,
+          ui->zRotationSpinBox}) {
         rotationSpinBox->setUnit(Base::Unit::Angle);
     }
 
-    connect(ui->translationIncrementSpinBox,
-            qOverload<double>(&QuantitySpinBox::valueChanged),
-            this,
-            [this](double) {
-                updateIncrements();
-            });
-    connect(ui->rotationIncrementSpinBox,
-            qOverload<double>(&QuantitySpinBox::valueChanged),
-            this,
-            [this](double) {
-                updateIncrements();
-            });
-    connect(ui->positionModeComboBox,
-            qOverload<int>(&QComboBox::currentIndexChanged),
-            this,
-            &TaskTransform::onCoordinateSystemChange);
-    connect(ui->placementComboBox,
-            qOverload<int>(&QComboBox::currentIndexChanged),
-            this,
-            &TaskTransform::onPlacementModeChange);
-    connect(ui->pickTransformOriginButton,
-            &QPushButton::clicked,
-            this,
-            &TaskTransform::onPickTransformOrigin);
-    connect(ui->alignToOtherObjectButton,
-            &QPushButton::clicked,
-            this,
-            &TaskTransform::onAlignToOtherObject);
-    connect(ui->moveOptionsButton,
-            &QPushButton::toggled,
-            ui->frameMoveOptions,
-            &QWidget::setVisible);
+    connect(
+        ui->translationIncrementSpinBox,
+        qOverload<double>(&QuantitySpinBox::valueChanged),
+        this,
+        [this](double) { updateIncrements(); }
+    );
+    connect(
+        ui->rotationIncrementSpinBox,
+        qOverload<double>(&QuantitySpinBox::valueChanged),
+        this,
+        [this](double) { updateIncrements(); }
+    );
+    connect(
+        ui->positionModeComboBox,
+        qOverload<int>(&QComboBox::currentIndexChanged),
+        this,
+        &TaskTransform::onCoordinateSystemChange
+    );
+    connect(
+        ui->placementComboBox,
+        qOverload<int>(&QComboBox::currentIndexChanged),
+        this,
+        &TaskTransform::onPlacementModeChange
+    );
+    connect(
+        ui->pickTransformOriginButton,
+        &QPushButton::clicked,
+        this,
+        &TaskTransform::onPickTransformOrigin
+    );
+    connect(ui->alignToOtherObjectButton, &QPushButton::clicked, this, &TaskTransform::onAlignToOtherObject);
+    connect(ui->moveOptionsButton, &QPushButton::toggled, ui->frameMoveOptions, &QWidget::setVisible);
     connect(ui->translateCheckbox, &QCheckBox::toggled, this, [this](bool translateChecked) {
         ui->matchXcheckbox->setEnabled(translateChecked);
         ui->matchYcheckbox->setEnabled(translateChecked);
@@ -256,35 +265,29 @@ void TaskTransform::setupGui()
 
     connect(ui->flipPartButton, &QPushButton::clicked, this, &TaskTransform::onFlip);
 
-    connect(ui->alignRotationCheckBox,
-            &QCheckBox::clicked,
+    connect(ui->alignRotationCheckBox, &QCheckBox::clicked, this, &TaskTransform::onAlignRotationChanged);
+
+    for (auto positionSpinBox : {ui->xPositionSpinBox, ui->yPositionSpinBox, ui->zPositionSpinBox}) {
+        connect(positionSpinBox, qOverload<double>(&QuantitySpinBox::valueChanged), this, [this](double) {
+            onPositionChange();
+        });
+    }
+
+    for (auto rotationSpinBox : {ui->xRotationSpinBox, ui->yRotationSpinBox, ui->zRotationSpinBox}) {
+        connect(
+            rotationSpinBox,
+            qOverload<double>(&QuantitySpinBox::valueChanged),
             this,
-            &TaskTransform::onAlignRotationChanged);
-
-    for (auto positionSpinBox :
-         {ui->xPositionSpinBox, ui->yPositionSpinBox, ui->zPositionSpinBox}) {
-        connect(positionSpinBox,
-                qOverload<double>(&QuantitySpinBox::valueChanged),
-                this,
-                [this](double) {
-                    onPositionChange();
-                });
+            [this, rotationSpinBox](double) { onRotationChange(rotationSpinBox); }
+        );
     }
 
-    for (auto rotationSpinBox :
-         {ui->xRotationSpinBox, ui->yRotationSpinBox, ui->zRotationSpinBox}) {
-        connect(rotationSpinBox,
-                qOverload<double>(&QuantitySpinBox::valueChanged),
-                this,
-                [this,rotationSpinBox](double) {
-                    onRotationChange(rotationSpinBox);
-                });
-    }
-
-    alignGridLayoutColumns({ui->absolutePositionLayout,
-                            ui->absoluteRotationLayout,
-                            ui->transformOriginLayout,
-                            ui->referencePickerLayout});
+    alignGridLayoutColumns(
+        {ui->absolutePositionLayout,
+         ui->absoluteRotationLayout,
+         ui->transformOriginLayout,
+         ui->referencePickerLayout}
+    );
 
     loadPreferences();
 
@@ -323,7 +326,8 @@ void TaskTransform::updatePositionAndRotationUi() const
 
     auto setPositionValues = [&](const Base::Vector3d& vec, auto* x, auto* y, auto* z) {
         [[maybe_unused]]
-        auto blockers = {QSignalBlocker(x), QSignalBlocker(y), QSignalBlocker(z)};
+        auto blockers
+            = {QSignalBlocker(x), QSignalBlocker(y), QSignalBlocker(z)};
 
         x->setValue(fixNegativeZero(vec.x));
         y->setValue(fixNegativeZero(vec.y));
@@ -332,7 +336,8 @@ void TaskTransform::updatePositionAndRotationUi() const
 
     auto setRotationValues = [&](const Base::Rotation& rot, auto* x, auto* y, auto* z) {
         [[maybe_unused]]
-        auto blockers = {QSignalBlocker(x), QSignalBlocker(y), QSignalBlocker(z)};
+        auto blockers
+            = {QSignalBlocker(x), QSignalBlocker(y), QSignalBlocker(z)};
 
         double alpha, beta, gamma;
         rot.getEulerAngles(eulerSequence(), alpha, beta, gamma);
@@ -342,17 +347,20 @@ void TaskTransform::updatePositionAndRotationUi() const
         z->setValue(fixNegativeZero(gamma));
     };
 
-    setPositionValues(uvwPlacement.getPosition(),
-                      ui->xPositionSpinBox,
-                      ui->yPositionSpinBox,
-                      ui->zPositionSpinBox);
+    setPositionValues(
+        uvwPlacement.getPosition(),
+        ui->xPositionSpinBox,
+        ui->yPositionSpinBox,
+        ui->zPositionSpinBox
+    );
 
-    setRotationValues(positionMode == PositionMode::Local
-                          ? referenceRotation.inverse() * xyzPlacement.getRotation()
-                          : uvwPlacement.getRotation(),
-                      ui->xRotationSpinBox,
-                      ui->yRotationSpinBox,
-                      ui->zRotationSpinBox);
+    setRotationValues(
+        positionMode == PositionMode::Local ? referenceRotation.inverse() * xyzPlacement.getRotation()
+                                            : uvwPlacement.getRotation(),
+        ui->xRotationSpinBox,
+        ui->yRotationSpinBox,
+        ui->zRotationSpinBox
+    );
 }
 
 void TaskTransform::updateInputLabels() const
@@ -370,8 +378,8 @@ void TaskTransform::updateInputLabels() const
 
 void TaskTransform::updateDraggerLabels() const
 {
-    auto coordinateSystem =
-        isDraggerAlignedToCoordinateSystem() ? globalCoordinateSystem() : localCoordinateSystem();
+    auto coordinateSystem = isDraggerAlignedToCoordinateSystem() ? globalCoordinateSystem()
+                                                                 : localCoordinateSystem();
 
     auto [xLabel, yLabel, zLabel] = coordinateSystem.labels;
 
@@ -383,9 +391,11 @@ void TaskTransform::updateDraggerLabels() const
 void TaskTransform::updateIncrements() const
 {
     dragger->translationIncrement.setValue(
-        std::max(ui->translationIncrementSpinBox->rawValue(), 0.001));
+        std::max(ui->translationIncrementSpinBox->rawValue(), 0.001)
+    );
     dragger->rotationIncrement.setValue(
-        Base::toRadians(std::max(ui->rotationIncrementSpinBox->rawValue(), 0.01)));
+        Base::toRadians(std::max(ui->rotationIncrementSpinBox->rawValue(), 0.01))
+    );
 }
 
 void TaskTransform::setSelectionMode(SelectionMode mode)
@@ -460,8 +470,8 @@ Base::Rotation::EulerSequence TaskTransform::eulerSequence() const
 
 void TaskTransform::onSelectionChanged(const SelectionChanges& msg)
 {
-    const auto isSupportedMessage =
-        msg.Type == SelectionChanges::AddSelection || msg.Type == SelectionChanges::SetPreselect;
+    const auto isSupportedMessage = msg.Type == SelectionChanges::AddSelection
+        || msg.Type == SelectionChanges::SetPreselect;
 
     if (!isSupportedMessage) {
         return;
@@ -490,9 +500,11 @@ void TaskTransform::onSelectionChanged(const SelectionChanges& msg)
     auto selectedObjectPlacement = rootPlacement.inverse() * globalPlacement * attachedPlacement;
 
     auto label = QStringLiteral("%1#%2.%3")
-                     .arg(QLatin1String(msg.pOriginalMsg->pObjectName),
-                          QLatin1String(msg.pObjectName),
-                          QLatin1String(msg.pSubName));
+                     .arg(
+                         QLatin1String(msg.pOriginalMsg->pObjectName),
+                         QLatin1String(msg.pObjectName),
+                         QLatin1String(msg.pSubName)
+                     );
 
     switch (selectionMode) {
         case SelectionMode::SelectTransformOrigin: {
@@ -501,7 +513,8 @@ void TaskTransform::onSelectionChanged(const SelectionChanges& msg)
                 customTransformOrigin = selectedObjectPlacement;
                 updateTransformOrigin();
                 setSelectionMode(SelectionMode::None);
-            } else {
+            }
+            else {
                 vp->setTransformOrigin(selectedObjectPlacement);
             }
 
@@ -594,8 +607,9 @@ void TaskTransform::onFlip()
 {
     auto placement = vp->getDraggerPlacement();
 
-    placement.setRotation(placement.getRotation()
-                          * Base::Rotation::fromNormalVector(Base::Vector3d(0, 0, -1)));
+    placement.setRotation(
+        placement.getRotation() * Base::Rotation::fromNormalVector(Base::Vector3d(0, 0, -1))
+    );
 
     vp->setDraggerPlacement(placement);
 
@@ -604,8 +618,10 @@ void TaskTransform::onFlip()
 
 void TaskTransform::onPickTransformOrigin()
 {
-    setSelectionMode(selectionMode == SelectionMode::None ? SelectionMode::SelectTransformOrigin
-                                                          : SelectionMode::None);
+    setSelectionMode(
+        selectionMode == SelectionMode::None ? SelectionMode::SelectTransformOrigin
+                                             : SelectionMode::None
+    );
 }
 
 void TaskTransform::onPlacementModeChange([[maybe_unused]] int index)
@@ -643,7 +659,8 @@ void TaskTransform::updateTransformOrigin()
     auto transformOrigin = getTransformOrigin(placementMode);
     if (isDraggerAlignedToCoordinateSystem()) {
         transformOrigin.setRotation(
-            (vp->getObjectPlacement().inverse() * globalCoordinateSystem().origin).getRotation());
+            (vp->getObjectPlacement().inverse() * globalCoordinateSystem().origin).getRotation()
+        );
     }
 
     vp->setTransformOrigin(transformOrigin);
@@ -706,9 +723,11 @@ void TaskTransform::onCoordinateSystemChange([[maybe_unused]] int mode)
 
 void TaskTransform::onPositionChange()
 {
-    const auto uvwPosition = Base::Vector3d(ui->xPositionSpinBox->rawValue(),
-                                            ui->yPositionSpinBox->rawValue(),
-                                            ui->zPositionSpinBox->rawValue());
+    const auto uvwPosition = Base::Vector3d(
+        ui->xPositionSpinBox->rawValue(),
+        ui->yPositionSpinBox->rawValue(),
+        ui->zPositionSpinBox->rawValue()
+    );
 
     const auto xyzPosition = currentCoordinateSystem().origin.getPosition()
         + currentCoordinateSystem().origin.getRotation().multVec(uvwPosition);
@@ -724,9 +743,8 @@ void TaskTransform::onPositionChange()
 void TaskTransform::onRotationChange(QuantitySpinBox* changed)
 {
     if (positionMode == PositionMode::Local) {
-        for (auto rotationSpinBox : {ui->xRotationSpinBox,
-                                     ui->yRotationSpinBox,
-                                     ui->zRotationSpinBox}) {
+        for (auto rotationSpinBox :
+             {ui->xRotationSpinBox, ui->yRotationSpinBox, ui->zRotationSpinBox}) {
             QSignalBlocker blocker(rotationSpinBox);
 
             // if any other spinbox contains non-zero value we need to reset rotation reference first
@@ -737,10 +755,12 @@ void TaskTransform::onRotationChange(QuantitySpinBox* changed)
         }
     }
 
-    const auto uvwRotation = Base::Rotation::fromEulerAngles(eulerSequence(),
-                                                             ui->xRotationSpinBox->rawValue(),
-                                                             ui->yRotationSpinBox->rawValue(),
-                                                             ui->zRotationSpinBox->rawValue());
+    const auto uvwRotation = Base::Rotation::fromEulerAngles(
+        eulerSequence(),
+        ui->xRotationSpinBox->rawValue(),
+        ui->yRotationSpinBox->rawValue(),
+        ui->zRotationSpinBox->rawValue()
+    );
 
     auto referenceRotation = positionMode == PositionMode::Local
         ? this->referenceRotation

@@ -10,7 +10,8 @@ from typing import Final, overload
     Include="HLRBRep_PolyAlgo.hxx",
     Constructor=True,
 )
-@class_declarations("""
+@class_declarations(
+    """
 private:
     Handle(HLRBRep_PolyAlgo) hAlgo;
 
@@ -18,7 +19,8 @@ public:
     Handle(HLRBRep_PolyAlgo) handle() {
         return hAlgo;
     }
-""")
+"""
+)
 class HLRBRep_PolyAlgo(PyObjectBase):
     """
     PolyAlgo() -> HLRBRep_PolyAlgo
@@ -73,7 +75,7 @@ class HLRBRep_PolyAlgo(PyObjectBase):
         remove(i)
 
         Remove the shape of index i from this framework.
-	    """
+        """
         ...
 
     def nbShapes(self) -> int:
@@ -82,7 +84,7 @@ class HLRBRep_PolyAlgo(PyObjectBase):
 
         Returns the number of shapes in the collection.  It does not modify the
         object's state and is used to retrieve the count of shapes.
-	    """
+        """
         ...
 
     def shape(self, i: int) -> TopoShape:
@@ -90,7 +92,7 @@ class HLRBRep_PolyAlgo(PyObjectBase):
         shape(i) -> TopoShape
 
         Return the shape of index i.
-	    """
+        """
         ...
 
     def index(self, S: TopoShape) -> int:
@@ -98,13 +100,17 @@ class HLRBRep_PolyAlgo(PyObjectBase):
         index(S) ->  int
 
         Return the index of the Shape S.
-	    """
+        """
         ...
 
-    def setProjector(self, *, Origin: tuple[float, float, float] = (0.0, 0.0, 0.0),
-                     ZDir: tuple[float, float, float] = (0.0, 0.0, 0.0),
-                     XDir: tuple[float, float, float] = (0.0, 0.0, 0.0),
-                     focus: float = float("nan")) -> None:
+    def setProjector(
+        self,
+        *,
+        Origin: tuple[float, float, float] = (0.0, 0.0, 0.0),
+        ZDir: tuple[float, float, float] = (0.0, 0.0, 0.0),
+        XDir: tuple[float, float, float] = (0.0, 0.0, 0.0),
+        focus: float = float("nan")
+    ) -> None:
         """
         setProjector(Origin=(0, 0, 0), ZDir=(0,0,0), XDir=(0,0,0), focus=NaN)
 
@@ -120,7 +126,7 @@ class HLRBRep_PolyAlgo(PyObjectBase):
         Launches calculation of outlines of the shape visualized by this
         framework. Used after setting the point of view and defining the shape or
         shapes to be visualized.
-	    """
+        """
         ...
 
     def initHide(self) -> None:
@@ -166,7 +172,6 @@ class HLRBRep_PolyAlgo(PyObjectBase):
         Make a shape with the internal outlines in each face of shape S.
         """
         ...
-
     TolAngular: float = ...
 
     TolCoef: float = ...

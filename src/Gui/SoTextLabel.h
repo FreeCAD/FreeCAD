@@ -37,13 +37,15 @@
 #include "BitmapFactory.h"
 
 
-namespace Gui {
+namespace Gui
+{
 
 /**
  * A text label with a background color.
  * @author Werner Mayer
  */
-class GuiExport SoTextLabel : public SoText2 {
+class GuiExport SoTextLabel: public SoText2
+{
     using inherited = SoText2;
 
     SO_NODE_HEADER(SoTextLabel);
@@ -58,14 +60,15 @@ public:
 
 protected:
     ~SoTextLabel() override = default;
-    void GLRender(SoGLRenderAction *action) override;
+    void GLRender(SoGLRenderAction* action) override;
 };
 
 /**
  * A text label for the color bar.
  * @author Werner Mayer
  */
-class GuiExport SoColorBarLabel : public SoText2 {
+class GuiExport SoColorBarLabel: public SoText2
+{
     using inherited = SoText2;
 
     SO_NODE_HEADER(SoColorBarLabel);
@@ -75,10 +78,11 @@ public:
     SoColorBarLabel();
 
 protected:
-    void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center) override;
+    void computeBBox(SoAction* action, SbBox3f& box, SbVec3f& center) override;
 };
 
-class GuiExport SoStringLabel : public SoNode {
+class GuiExport SoStringLabel: public SoNode
+{
     using inherited = SoNode;
 
     SO_NODE_HEADER(SoStringLabel);
@@ -88,52 +92,56 @@ public:
     SoStringLabel();
 
     SoMFString string;
-    SoSFColor  textColor;
-    SoSFName   name;
-    SoSFInt32  size;
+    SoSFColor textColor;
+    SoSFName name;
+    SoSFInt32 size;
 
 protected:
     ~SoStringLabel() override = default;
-    void GLRender(SoGLRenderAction *action) override;
+    void GLRender(SoGLRenderAction* action) override;
 };
 
-class GuiExport SoFrameLabel : public SoImage {
+class GuiExport SoFrameLabel: public SoImage
+{
     using inherited = SoImage;
 
     SO_NODE_HEADER(SoFrameLabel);
 
 public:
-    enum Justification {
-        LEFT, RIGHT, CENTER
+    enum Justification
+    {
+        LEFT,
+        RIGHT,
+        CENTER
     };
 
     static void initClass();
     SoFrameLabel();
-    void setIcon(const QPixmap &pixMap);
+    void setIcon(const QPixmap& pixMap);
 
     SoMFString string;
-    SoSFColor  textColor;
-    SoSFColor  backgroundColor;
-    SoSFEnum   justification;
-    SoSFName   name;
-    SoSFInt32  size;
-    SoSFBool   frame;
-    SoSFBool   border;
-    SoSFBool   backgroundUseBaseColor;
-    SoSFBool   textUseBaseColor;
-  //SoSFImage  image;
-    QPixmap    iconPixmap;
+    SoSFColor textColor;
+    SoSFColor backgroundColor;
+    SoSFEnum justification;
+    SoSFName name;
+    SoSFInt32 size;
+    SoSFBool frame;
+    SoSFBool border;
+    SoSFBool backgroundUseBaseColor;
+    SoSFBool textUseBaseColor;
+    // SoSFImage  image;
+    QPixmap iconPixmap;
 
 protected:
     ~SoFrameLabel() override = default;
-    void notify(SoNotList * list) override;
-    void GLRender(SoGLRenderAction *action) override;
+    void notify(SoNotList* list) override;
+    void GLRender(SoGLRenderAction* action) override;
 
 private:
     void drawImage();
 };
 
-class GuiExport TranslateManip : public SoTransformManip
+class GuiExport TranslateManip: public SoTransformManip
 {
     SO_NODE_HEADER(TranslateManip);
 
@@ -147,7 +155,6 @@ private:
     ~TranslateManip() override;
 };
 
-} // namespace Gui
+}  // namespace Gui
 
-#endif // GUI_SOTEXTLABEL_H
-
+#endif  // GUI_SOTEXTLABEL_H

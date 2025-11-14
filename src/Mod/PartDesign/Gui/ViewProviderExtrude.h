@@ -27,9 +27,10 @@
 #include "ViewProviderSketchBased.h"
 
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
-class PartDesignGuiExport ViewProviderExtrude : public ViewProviderSketchBased
+class PartDesignGuiExport ViewProviderExtrude: public ViewProviderSketchBased
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderExtrude);
 
@@ -41,8 +42,7 @@ public:
 };
 
 
+}  // namespace PartDesignGui
 
-} // namespace PartDesignGui
 
-
-#endif // PARTGUI_ViewProviderExtrude_H
+#endif  // PARTGUI_ViewProviderExtrude_H

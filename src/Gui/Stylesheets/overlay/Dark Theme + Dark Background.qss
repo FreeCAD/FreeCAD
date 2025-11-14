@@ -125,4 +125,3 @@ Gui--OverlayToolButton[objectName="OBTN AutoMode"] {
 Gui--OverlayToolButton[objectName="OBTN AutoMode"]:hover {
   image: url(qss:images_classic/mode-white.png) ;
 }
-

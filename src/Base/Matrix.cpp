@@ -349,10 +349,7 @@ void Matrix4D::rotLine(const Vector3f& rclBase, const Vector3f& rclDir, float fA
  * Note: In case the \a fTranslation part is zero then passing \a rclBase, \a rclDir and \a rfAngle
  * to a new matrix object creates an identical matrix.
  */
-bool Matrix4D::toAxisAngle(Vector3f& rclBase,
-                           Vector3f& rclDir,
-                           float& rfAngle,
-                           float& fTranslation) const
+bool Matrix4D::toAxisAngle(Vector3f& rclBase, Vector3f& rclDir, float& rfAngle, float& fTranslation) const
 {
     Vector3d pnt = convertTo<Vector3d>(rclBase);
     Vector3d dir = convertTo<Vector3d>(rclDir);
@@ -370,22 +367,23 @@ bool Matrix4D::toAxisAngle(Vector3f& rclBase,
     return ok;
 }
 
-bool Matrix4D::toAxisAngle(Vector3d& rclBase,
-                           Vector3d& rclDir,
-                           double& rfAngle,
-                           double& fTranslation) const
+bool Matrix4D::toAxisAngle(Vector3d& rclBase, Vector3d& rclDir, double& rfAngle, double& fTranslation) const
 {
     // First check if the 3x3 submatrix is orthogonal
     for (int i = 0; i < 3; i++) {
         // length must be one
-        if (fabs(dMtrx4D[0][i] * dMtrx4D[0][i] + dMtrx4D[1][i] * dMtrx4D[1][i]
-                 + dMtrx4D[2][i] * dMtrx4D[2][i] - 1.0)
+        if (fabs(
+                dMtrx4D[0][i] * dMtrx4D[0][i] + dMtrx4D[1][i] * dMtrx4D[1][i]
+                + dMtrx4D[2][i] * dMtrx4D[2][i] - 1.0
+            )
             > 0.01) {
             return false;
         }
         // scalar product with other rows must be zero
-        if (fabs(dMtrx4D[0][i] * dMtrx4D[0][(i + 1) % 3] + dMtrx4D[1][i] * dMtrx4D[1][(i + 1) % 3]
-                 + dMtrx4D[2][i] * dMtrx4D[2][(i + 1) % 3])
+        if (fabs(
+                dMtrx4D[0][i] * dMtrx4D[0][(i + 1) % 3] + dMtrx4D[1][i] * dMtrx4D[1][(i + 1) % 3]
+                + dMtrx4D[2][i] * dMtrx4D[2][(i + 1) % 3]
+            )
             > 0.01) {
             return false;
         }
@@ -688,11 +686,7 @@ void Matrix4D::Print() const
 {
     // NOLINTBEGIN
     for (int i = 0; i < 4; i++) {
-        printf("%9.3f %9.3f %9.3f %9.3f\n",
-               dMtrx4D[i][0],
-               dMtrx4D[i][1],
-               dMtrx4D[i][2],
-               dMtrx4D[i][3]);
+        printf("%9.3f %9.3f %9.3f %9.3f\n", dMtrx4D[i][0], dMtrx4D[i][1], dMtrx4D[i][2], dMtrx4D[i][3]);
     }
     // NOLINTEND
 }
@@ -957,9 +951,7 @@ std::array<Matrix4D, 4> Matrix4D::decompose() const
     residualMatrix.setCol(3, Vector3d());
     // find and extract rotation
     int prim_dir = -1;
-    std::array<Vector3d, 3> dirs = {Vector3d(1., 0., 0.),
-                                    Vector3d(0., 1., 0.),
-                                    Vector3d(0., 0., 1.)};
+    std::array<Vector3d, 3> dirs = {Vector3d(1., 0., 0.), Vector3d(0., 1., 0.), Vector3d(0., 0., 1.)};
     for (int i = 0; i < 3; i++) {
         if (residualMatrix.getCol(i).IsNull()) {
             continue;
@@ -1016,9 +1008,11 @@ std::array<Matrix4D, 4> Matrix4D::decompose() const
     scaleMatrix.dMtrx4D[1][1] = yScale;
     scaleMatrix.dMtrx4D[2][2] = zScale;
     // The remaining shear
-    residualMatrix.scale(xScale != 0 ? 1.0 / xScale : 1.0,
-                         yScale != 0 ? 1.0 / yScale : 1.0,
-                         zScale != 0 ? 1.0 / zScale : 1.0);
+    residualMatrix.scale(
+        xScale != 0 ? 1.0 / xScale : 1.0,
+        yScale != 0 ? 1.0 / yScale : 1.0,
+        zScale != 0 ? 1.0 / zScale : 1.0
+    );
     // Restore trace in shear matrix
     residualMatrix.setDiagonal(Vector3d(1.0, 1.0, 1.0));
     // Remove values close to zero

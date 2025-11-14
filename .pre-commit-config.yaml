@@ -6,9 +6,9 @@ files: |
     (?x)^(
         .github|
         src/Base|
+        src/Gui|
         src/Main|
         src/Tools|
-        tests/src|
         src/Mod/Assembly|
         src/Mod/BIM|
         src/Mod/CAM|
@@ -20,8 +20,10 @@ files: |
         src/Mod/Inspection|
         src/Mod/JtReader|
         src/Mod/Measure|
-        src/Mod/Mesh|
         src/Mod/MeshPart|
+        src/Mod/Mesh|
+        src/Mod/PartDesign|
+        src/Mod/Part|
         src/Mod/Plot|
         src/Mod/Points|
         src/Mod/ReverseEngineering|
@@ -33,7 +35,8 @@ files: |
         src/Mod/Surface|
         src/Mod/Test|
         src/Mod/Tux|
-        src/Mod/Web
+        src/Mod/Web|
+        tests/src
     )
 exclude: |
     (?x)^(
@@ -66,11 +69,11 @@ repos:
     -   id: check-added-large-files
     -   id: mixed-line-ending
 -   repo: https://github.com/psf/black-pre-commit-mirror
-    rev: fe95161893684893d68b1225356702ca71f8d388  # frozen: 25.9.0
+    rev: 2892f1f81088477370d4fbc56545c05d33d2493f  # frozen: 25.11.0
     hooks:
         -   id: black
             args: ['--line-length', '100']
 -   repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: 719856d56a62953b8d2839fb9e851f25c3cfeef8  # frozen: v21.1.2
+    rev: 317810f3c6a0ad3572367dc86cb6e41863e16e08  # frozen: v21.1.5
     hooks:
         -   id: clang-format

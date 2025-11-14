@@ -47,9 +47,11 @@ class MeasureExport ResolveResult
 {
 public:
     ResolveResult();
-    ResolveResult(const App::DocumentObject* realTarget,
-                  const std::string& shortSubName,
-                  const App::DocumentObject* targetParent);
+    ResolveResult(
+        const App::DocumentObject* realTarget,
+        const std::string& shortSubName,
+        const App::DocumentObject* targetParent
+    );
 
     App::DocumentObject& getTarget() const;
     std::string getShortSub() const;
@@ -65,24 +67,35 @@ private:
 class MeasureExport ShapeFinder: public SubnameHelper
 {
 public:
-    static TopoDS_Shape getLocatedShape(const App::DocumentObject& rootObject,
-                                        const std::string& leafSub);
-    static Part::TopoShape getLocatedTopoShape(const App::DocumentObject& rootObject,
-                                               const std::string& leafSub);
+    static TopoDS_Shape getLocatedShape(
+        const App::DocumentObject& rootObject,
+        const std::string& leafSub
+    );
+    static Part::TopoShape getLocatedTopoShape(
+        const App::DocumentObject& rootObject,
+        const std::string& leafSub
+    );
 
 
-    static std::pair<Base::Placement, Base::Matrix4D>
-    getGlobalTransform(const App::DocumentObject& rootObject, const std::string& leafSub);
-    static std::pair<Base::Placement, Base::Matrix4D>
-    getGlobalTransform(const App::DocumentObject* cursorObject);
+    static std::pair<Base::Placement, Base::Matrix4D> getGlobalTransform(
+        const App::DocumentObject& rootObject,
+        const std::string& leafSub
+    );
+    static std::pair<Base::Placement, Base::Matrix4D> getGlobalTransform(
+        const App::DocumentObject* cursorObject
+    );
 
-    static void crawlPlacementChain(std::vector<Base::Placement>& plmStack,
-                                    std::vector<Base::Matrix4D>& scaleStack,
-                                    const App::DocumentObject& rootObj,
-                                    const std::string& leafSub);
+    static void crawlPlacementChain(
+        std::vector<Base::Placement>& plmStack,
+        std::vector<Base::Matrix4D>& scaleStack,
+        const App::DocumentObject& rootObj,
+        const std::string& leafSub
+    );
 
-    static ResolveResult resolveSelection(const App::DocumentObject& selectObj,
-                                          const std::string& selectLongSub);
+    static ResolveResult resolveSelection(
+        const App::DocumentObject& selectObj,
+        const std::string& selectLongSub
+    );
 
     static Base::Placement getPlacement(const App::DocumentObject* root);
     static Base::Matrix4D getScale(const App::DocumentObject* root);
@@ -91,34 +104,42 @@ public:
     static std::string PlacementAsString(const Base::Placement& inPlacement);
     static std::string LocationAsString(const TopLoc_Location& location);
 
-    static TopoDS_Shape transformShape(TopoDS_Shape& inShape,
-                                       const Base::Placement& placement,
-                                       const Base::Matrix4D& scaler);
+    static TopoDS_Shape transformShape(
+        TopoDS_Shape& inShape,
+        const Base::Placement& placement,
+        const Base::Matrix4D& scaler
+    );
     static TopoDS_Shape stripInfiniteShapes(const TopoDS_Shape& inShape);
     static bool isShapeReallyNull(const TopoDS_Shape& shape);
 
-    static std::pair<Base::Placement, Base::Matrix4D>
-    sumTransforms(const std::vector<Base::Placement>& plmStack,
-                  const std::vector<Base::Matrix4D>& scaleStack);
+    static std::pair<Base::Placement, Base::Matrix4D> sumTransforms(
+        const std::vector<Base::Placement>& plmStack,
+        const std::vector<Base::Matrix4D>& scaleStack
+    );
     static App::DocumentObject* getLinkAttachParent(const App::DocumentObject* attachedObject);
     static Base::Placement getAttachedPlacement(const App::DocumentObject* cursorObject);
 
     static std::string getFullPath(const App::DocumentObject* object);
     static std::vector<App::DocumentObject*> getGeometryRootObjects(const App::Document* doc);
-    static std::vector<std::list<App::DocumentObject*>>
-    getGeometryPathsFromOutList(const App::DocumentObject* object);
+    static std::vector<std::list<App::DocumentObject*>> getGeometryPathsFromOutList(
+        const App::DocumentObject* object
+    );
 
 
 private:
     static bool ignoreModule(const std::string& moduleName);
     static bool ignoreObject(const App::DocumentObject* object);
-    static bool ignoreLinkAttachedObject(const App::DocumentObject* object,
-                                         const App::DocumentObject* inlistObject);
-    static std::vector<App::DocumentObject*>
-    tidyInList(const std::vector<App::DocumentObject*>& inlist);
-    static std::vector<App::DocumentObject*>
-    tidyInListAttachment(const App::DocumentObject* owner,
-                         const std::vector<App::DocumentObject*>& inlist);
+    static bool ignoreLinkAttachedObject(
+        const App::DocumentObject* object,
+        const App::DocumentObject* inlistObject
+    );
+    static std::vector<App::DocumentObject*> tidyInList(
+        const std::vector<App::DocumentObject*>& inlist
+    );
+    static std::vector<App::DocumentObject*> tidyInListAttachment(
+        const App::DocumentObject* owner,
+        const std::vector<App::DocumentObject*>& inlist
+    );
 };
 
 }  // namespace Measure

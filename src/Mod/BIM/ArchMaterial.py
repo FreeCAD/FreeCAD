@@ -437,6 +437,7 @@ class _ViewProviderArchMaterial:
                 b.open(QtCore.QIODevice.WriteOnly)
                 im.save(b, "XPM")
                 self.icondata = ba.data().decode("latin1")
+                obj.ViewObject.signalChangeIcon()
 
     def onChanged(self, vobj, prop):
         if prop == "Material":

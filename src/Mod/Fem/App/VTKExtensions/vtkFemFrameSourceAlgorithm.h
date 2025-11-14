@@ -52,12 +52,16 @@ protected:
 
     vtkSmartPointer<vtkDataObject> m_data;
 
-    int RequestInformation(vtkInformation* reqInfo,
-                           vtkInformationVector** inVector,
-                           vtkInformationVector* outVector) override;
-    int RequestData(vtkInformation* reqInfo,
-                    vtkInformationVector** inVector,
-                    vtkInformationVector* outVector) override;
+    int RequestInformation(
+        vtkInformation* reqInfo,
+        vtkInformationVector** inVector,
+        vtkInformationVector* outVector
+    ) override;
+    int RequestData(
+        vtkInformation* reqInfo,
+        vtkInformationVector** inVector,
+        vtkInformationVector* outVector
+    ) override;
 };
 
 }  // namespace Fem

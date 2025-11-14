@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <QAction>
-# include <QApplication>
-# include <QDebug>
-# include <QDockWidget>
-# include <QPointer>
+#include <QAction>
+#include <QApplication>
+#include <QDebug>
+#include <QDockWidget>
+#include <QPointer>
 
 #include <App/AutoTransaction.h>
 #include <Gui/ComboView.h>
@@ -45,18 +45,17 @@ using namespace std;
 ControlSingleton* ControlSingleton::_pcSingleton = nullptr;
 
 ControlSingleton::ControlSingleton()
-  : ActiveDialog(nullptr)
-  , oldTabIndex(-1)
-{
-
-}
+    : ActiveDialog(nullptr)
+    , oldTabIndex(-1)
+{}
 
 ControlSingleton::~ControlSingleton() = default;
 
 Gui::TaskView::TaskView* ControlSingleton::taskPanel() const
 {
-    auto taskView = qobject_cast<Gui::TaskView::TaskView*>
-        (Gui::DockWindowManager::instance()->getDockWindow("Tasks"));
+    auto taskView = qobject_cast<Gui::TaskView::TaskView*>(
+        Gui::DockWindowManager::instance()->getDockWindow("Tasks")
+    );
     return taskView;
 }
 
@@ -130,21 +129,23 @@ void ControlSingleton::showTaskView()
 
 void ControlSingleton::showModelView()
 {
-    auto treeView = qobject_cast<Gui::TreeDockWidget*>
-        (Gui::DockWindowManager::instance()->getDockWindow("Tree view"));
+    auto treeView = qobject_cast<Gui::TreeDockWidget*>(
+        Gui::DockWindowManager::instance()->getDockWindow("Tree view")
+    );
     if (treeView) {
         showDockWidget(treeView);
     }
     else {
-        auto comboView = qobject_cast<Gui::DockWnd::ComboView*>
-            (Gui::DockWindowManager::instance()->getDockWindow("Model"));
+        auto comboView = qobject_cast<Gui::DockWnd::ComboView*>(
+            Gui::DockWindowManager::instance()->getDockWindow("Model")
+        );
         if (comboView) {
             showDockWidget(comboView);
         }
     }
 }
 
-void ControlSingleton::showDialog(Gui::TaskView::TaskDialog *dlg)
+void ControlSingleton::showDialog(Gui::TaskView::TaskDialog* dlg)
 {
     // only one dialog at a time, print a warning instead of raising an assert
     if (ActiveDialog && ActiveDialog != dlg) {
@@ -177,14 +178,14 @@ void ControlSingleton::showDialog(Gui::TaskView::TaskDialog *dlg)
             aboutToShowDialog(dw);
             dw->setVisible(true);
             dw->toggleViewAction()->setVisible(true);
-            dw->setFeatures(QDockWidget::DockWidgetMovable|QDockWidget::DockWidgetFloatable);
+            dw->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
         }
 
-        if (ActiveDialog == dlg)
-            return; // dialog is already defined
+        if (ActiveDialog == dlg) {
+            return;  // dialog is already defined
+        }
         ActiveDialog = dlg;
-        connect(dlg, &TaskView::TaskDialog::aboutToBeDestroyed,
-                this, &ControlSingleton::closedDialog);
+        connect(dlg, &TaskView::TaskDialog::aboutToBeDestroyed, this, &ControlSingleton::closedDialog);
     }
 }
 
@@ -198,8 +199,7 @@ void ControlSingleton::accept()
     Gui::TaskView::TaskView* taskView = taskPanel();
     if (taskView) {
         taskView->accept();
-        qApp->processEvents(QEventLoop::ExcludeUserInputEvents |
-                            QEventLoop::ExcludeSocketNotifiers);
+        qApp->processEvents(QEventLoop::ExcludeUserInputEvents | QEventLoop::ExcludeSocketNotifiers);
     }
 }
 
@@ -208,16 +208,16 @@ void ControlSingleton::reject()
     Gui::TaskView::TaskView* taskView = taskPanel();
     if (taskView) {
         taskView->reject();
-        qApp->processEvents(QEventLoop::ExcludeUserInputEvents |
-                            QEventLoop::ExcludeSocketNotifiers);
+        qApp->processEvents(QEventLoop::ExcludeUserInputEvents | QEventLoop::ExcludeSocketNotifiers);
     }
 }
 
 void ControlSingleton::closeDialog()
 {
     Gui::TaskView::TaskView* taskView = taskPanel();
-    if (taskView)
+    if (taskView) {
         taskView->removeDialog();
+    }
 }
 
 void ControlSingleton::closedDialog()
@@ -230,31 +230,35 @@ void ControlSingleton::closedDialog()
     auto dw = qobject_cast<QDockWidget*>(taskView->parentWidget());
     if (dw) {
         aboutToHideDialog(dw);
-        dw->setFeatures(QDockWidget::DockWidgetClosable
-                        | QDockWidget::DockWidgetMovable
-                        | QDockWidget::DockWidgetFloatable);
+        dw->setFeatures(
+            QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetMovable
+            | QDockWidget::DockWidgetFloatable
+        );
     }
 }
 
 bool ControlSingleton::isAllowedAlterDocument() const
 {
-    if (ActiveDialog)
+    if (ActiveDialog) {
         return ActiveDialog->isAllowedAlterDocument();
+    }
     return true;
 }
 
 
 bool ControlSingleton::isAllowedAlterView() const
 {
-    if (ActiveDialog)
+    if (ActiveDialog) {
         return ActiveDialog->isAllowedAlterView();
+    }
     return true;
 }
 
 bool ControlSingleton::isAllowedAlterSelection() const
 {
-    if (ActiveDialog)
+    if (ActiveDialog) {
         return ActiveDialog->isAllowedAlterSelection();
+    }
     return true;
 }
 
@@ -262,15 +266,17 @@ bool ControlSingleton::isAllowedAlterSelection() const
 
 ControlSingleton& ControlSingleton::instance()
 {
-    if (!_pcSingleton)
+    if (!_pcSingleton) {
         _pcSingleton = new ControlSingleton;
+    }
     return *_pcSingleton;
 }
 
-void ControlSingleton::destruct ()
+void ControlSingleton::destruct()
 {
-    if (_pcSingleton)
+    if (_pcSingleton) {
         delete _pcSingleton;
+    }
     _pcSingleton = nullptr;
 }
 
@@ -279,4 +285,3 @@ void ControlSingleton::destruct ()
 
 
 #include "moc_Control.cpp"
-

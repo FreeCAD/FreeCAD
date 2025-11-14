@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 if (PCL_SURFACE_FOUND AND PCL_FEATURES_FOUND)
     add_definitions(-DHAVE_PCL_SURFACE)
 

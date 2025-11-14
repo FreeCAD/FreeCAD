@@ -59,46 +59,76 @@ def get_after_write_constraint():
 
 def write_meshdata_constraint(f, femobj, bodyheatsource_obj, ccxwriter):
 
-    f.write(f"*ELSET,ELSET={bodyheatsource_obj.Name}\n")
+    ref_iter = itertools.chain(
+        *[itertools.product([i[0]], i[1]) for i in bodyheatsource_obj.References]
+    )
+    ref_iter = tuple(ref_iter)
     for refs, surf, is_sub_el in femobj["BodyHeatSourceElements"]:
+        feat, (sub,) = refs
+        index = ref_iter.index((feat, sub))
+        f.write(f"** {bodyheatsource_obj.Name}.{feat.Name}.{sub}\n")
+        f.write(f"*ELSET,ELSET={bodyheatsource_obj.Name}_{index}\n")
         if not is_sub_el:
             for elem in surf:
                 f.write(f"{elem},\n")
+        f.write("\n")
 
 
 def write_constraint(f, femobj, bodyheatsource_obj, ccxwriter):
 
     # floats read from ccx should use {:.13G}, see comment in writer module
-    # search referenced material
-    ref = bodyheatsource_obj.References[0]
-    ref_feat = ref[0]
-    ref_sub_obj = ref[1][0]
-    density = None
-    for mat in ccxwriter.member.mats_linear:
-        mat_ref = [
-            *itertools.chain(*[itertools.product([i[0]], i[1]) for i in mat["Object"].References])
+    ref_iter = itertools.chain(
+        *[itertools.product([i[0]], i[1]) for i in bodyheatsource_obj.References]
+    )
+    for index, (ref_feat, ref_sub_obj) in enumerate(ref_iter):
+
+        # search referenced material
+        mat = _search_member_property(
+            ccxwriter.member.mats_linear, (ref_feat, ref_sub_obj), "Material"
+        )
+        density = FreeCAD.Units.Quantity(mat["Density"])
+
+        # get data from the bodyheatsource_obj (DissipationRate is in power per unit mass)
+        if bodyheatsource_obj.Mode == "Dissipation Rate":
+            heat = bodyheatsource_obj.DissipationRate * density
+        elif bodyheatsource_obj.Mode == "Total Power":
+            sh = ref_feat.getSubObject(ref_sub_obj)
+            volume = sh.Mass
+            # if shape is face, get thickness
+            if sh.ShapeType == "Face":
+                thick = _search_member_property(
+                    ccxwriter.member.geos_shellthickness, (ref_feat, ref_sub_obj), "Thickness"
+                )
+                volume *= thick.getValueAs("mm")
+            heat = bodyheatsource_obj.TotalPower / FreeCAD.Units.Quantity(volume, "mm^3")
+
+        # write to file
+        if bodyheatsource_obj.EnableAmplitude:
+            f.write(f"*DFLUX, AMPLITUDE={bodyheatsource_obj.Name}\n")
+        else:
+            f.write("*DFLUX\n")
+        elset_name = f"{bodyheatsource_obj.Name}_{index}"
+        f.write("{},BF,{:.13G}\n".format(elset_name, heat.getValueAs("t/(mm*s^3)").Value))
+        f.write("\n")
+
+
+def _search_member_property(it, ref, prop_name):
+    value = None
+    for member in it:
+        member_ref = [
+            *itertools.chain(
+                *[itertools.product([i[0]], i[1]) for i in member["Object"].References]
+            )
         ]
-        if (ref_feat, ref_sub_obj) in mat_ref:
-            density = FreeCAD.Units.Quantity(mat["Object"].Material["Density"])
+        if ref in member_ref:
+            value = member["Object"].getPropertyByName(prop_name)
             break
 
-    if not density:
-        # search material without references
-        for mat in ccxwriter.member.mats_linear:
-            if not mat["Object"].References:
-                density = FreeCAD.Units.Quantity(mat["Object"].Material["Density"])
+    if not value:
+        # search membererial without references
+        for member in it:
+            if not member["Object"].References:
+                value = member["Object"].getPropertyByName(prop_name)
                 break
 
-    # get data from the bodyheatsource_obj (DissipationRate is in power per unit mass)
-    if bodyheatsource_obj.Mode == "Dissipation Rate":
-        heat = bodyheatsource_obj.DissipationRate * density
-    elif bodyheatsource_obj.Mode == "Total Power":
-        volume = ref_feat.getSubObject(ref_sub_obj).Volume
-        heat = bodyheatsource_obj.TotalPower / FreeCAD.Units.Quantity(volume, "mm^3")
-    # write to file
-    if bodyheatsource_obj.EnableAmplitude:
-        f.write(f"*DFLUX, AMPLITUDE={bodyheatsource_obj.Name}\n")
-    else:
-        f.write("*DFLUX\n")
-    f.write("{},BF,{:.13G}\n".format(bodyheatsource_obj.Name, heat.getValueAs("t/(mm*s^3)").Value))
-    f.write("\n")
+    return value

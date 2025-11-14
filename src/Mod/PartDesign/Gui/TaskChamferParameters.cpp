@@ -171,7 +171,8 @@ void TaskChamferParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
         if (selectionMode == refSel) {
             referenceSelected(msg, ui->listWidgetReferences);
         }
-    } else if (msg.Type == Gui::SelectionChanges::ClrSelection) {
+    }
+    else if (msg.Type == Gui::SelectionChanges::ClrSelection) {
         // TODO: the gizmo position should be only recalculated when the feature associated
         // with the gizmo is removed from the list
         setGizmoPositions();
@@ -354,7 +355,7 @@ void TaskChamferParameters::setupGizmos(ViewProviderDressUp* vp)
     secondDistanceGizmo = new Gui::LinearGizmo(ui->chamferSize);
     angleGizmo = new Gui::RotationGizmo(ui->chamferAngle);
 
-    connect(ui->chamferType, qOverload<int>(&QComboBox::currentIndexChanged), [this] (int index) {
+    connect(ui->chamferType, qOverload<int>(&QComboBox::currentIndexChanged), [this](int index) {
         auto type = static_cast<Part::ChamferType>(index);
 
         switch (type) {
@@ -375,13 +376,10 @@ void TaskChamferParameters::setupGizmos(ViewProviderDressUp* vp)
             case Part::ChamferType::distanceAngle:
                 secondDistanceGizmo->setVisibility(false);
                 angleGizmo->setVisibility(true);
-
         }
     });
 
-    gizmoContainer = GizmoContainer::create({
-        distanceGizmo, secondDistanceGizmo, angleGizmo
-    }, vp);
+    gizmoContainer = GizmoContainer::create({distanceGizmo, secondDistanceGizmo, angleGizmo}, vp);
 
     setGizmoPositions();
 
@@ -422,7 +420,9 @@ void TaskChamferParameters::setGizmoPositions()
     secondDistanceGizmo->Gizmo::setDraggerPlacement(props2.position, props2.dir);
 
     angleGizmo->placeBelowLinearGizmo(distanceGizmo);
-    angleGizmo->getDraggerContainer()->setArcNormalDirection(Base::convertTo<SbVec3f>(-props.dir.Cross(props2.dir)));
+    angleGizmo->getDraggerContainer()->setArcNormalDirection(
+        Base::convertTo<SbVec3f>(-props.dir.Cross(props2.dir))
+    );
     // Only show the gizmo if the chamfer type is set to distance and angle
     angleGizmo->setVisibility(getType() == 2);
 }

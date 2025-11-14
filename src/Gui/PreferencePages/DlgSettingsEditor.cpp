@@ -80,65 +80,77 @@ DlgSettingsEditor::DlgSettingsEditor(QWidget* parent)
     QColor col;
     col = qApp->palette().windowText().color();
     unsigned int lText = Base::Color::asPackedRGB<QColor>(col);
-    d->colormap.push_back(
-        QPair<QString, unsigned int>(QString::fromLatin1(QT_TR_NOOP("Text")), lText));
+    d->colormap.push_back(QPair<QString, unsigned int>(QString::fromLatin1(QT_TR_NOOP("Text")), lText));
 
     unsigned int lBookmarks = Base::Color::asPackedRGB<QColor>(QColor(Qt::cyan));
     d->colormap.push_back(
-        QPair<QString, unsigned int>(QString::fromLatin1(QT_TR_NOOP("Bookmark")), lBookmarks));
+        QPair<QString, unsigned int>(QString::fromLatin1(QT_TR_NOOP("Bookmark")), lBookmarks)
+    );
 
     unsigned int lBreakpnts = Base::Color::asPackedRGB<QColor>(QColor(Qt::red));
     d->colormap.push_back(
-        QPair<QString, unsigned int>(QString::fromLatin1(QT_TR_NOOP("Breakpoint")), lBreakpnts));
+        QPair<QString, unsigned int>(QString::fromLatin1(QT_TR_NOOP("Breakpoint")), lBreakpnts)
+    );
 
     unsigned int lKeywords = Base::Color::asPackedRGB<QColor>(QColor(Qt::blue));
     d->colormap.push_back(
-        QPair<QString, unsigned int>(QString::fromLatin1(QT_TR_NOOP("Keyword")), lKeywords));
+        QPair<QString, unsigned int>(QString::fromLatin1(QT_TR_NOOP("Keyword")), lKeywords)
+    );
 
     unsigned int lComments = Base::Color::asPackedRGB<QColor>(QColor(0, 170, 0));
     d->colormap.push_back(
-        QPair<QString, unsigned int>(QString::fromLatin1(QT_TR_NOOP("Comment")), lComments));
+        QPair<QString, unsigned int>(QString::fromLatin1(QT_TR_NOOP("Comment")), lComments)
+    );
 
     unsigned int lBlockCom = Base::Color::asPackedRGB<QColor>(QColor(160, 160, 164));
     d->colormap.push_back(
-        QPair<QString, unsigned int>(QString::fromLatin1(QT_TR_NOOP("Block comment")), lBlockCom));
+        QPair<QString, unsigned int>(QString::fromLatin1(QT_TR_NOOP("Block comment")), lBlockCom)
+    );
 
     unsigned int lNumbers = Base::Color::asPackedRGB<QColor>(QColor(Qt::blue));
     d->colormap.push_back(
-        QPair<QString, unsigned int>(QString::fromLatin1(QT_TR_NOOP("Number")), lNumbers));
+        QPair<QString, unsigned int>(QString::fromLatin1(QT_TR_NOOP("Number")), lNumbers)
+    );
 
     unsigned int lStrings = Base::Color::asPackedRGB<QColor>(QColor(Qt::red));
     d->colormap.push_back(
-        QPair<QString, unsigned int>(QString::fromLatin1(QT_TR_NOOP("String")), lStrings));
+        QPair<QString, unsigned int>(QString::fromLatin1(QT_TR_NOOP("String")), lStrings)
+    );
 
     unsigned int lCharacter = Base::Color::asPackedRGB<QColor>(QColor(Qt::red));
     d->colormap.push_back(
-        QPair<QString, unsigned int>(QString::fromLatin1(QT_TR_NOOP("Character")), lCharacter));
+        QPair<QString, unsigned int>(QString::fromLatin1(QT_TR_NOOP("Character")), lCharacter)
+    );
 
     unsigned int lClass = Base::Color::asPackedRGB<QColor>(QColor(255, 170, 0));
     d->colormap.push_back(
-        QPair<QString, unsigned int>(QString::fromLatin1(QT_TR_NOOP("Class name")), lClass));
+        QPair<QString, unsigned int>(QString::fromLatin1(QT_TR_NOOP("Class name")), lClass)
+    );
 
     unsigned int lDefine = Base::Color::asPackedRGB<QColor>(QColor(255, 170, 0));
     d->colormap.push_back(
-        QPair<QString, unsigned int>(QString::fromLatin1(QT_TR_NOOP("Define name")), lDefine));
+        QPair<QString, unsigned int>(QString::fromLatin1(QT_TR_NOOP("Define name")), lDefine)
+    );
 
     unsigned int lOperat = Base::Color::asPackedRGB<QColor>(QColor(160, 160, 164));
     d->colormap.push_back(
-        QPair<QString, unsigned int>(QString::fromLatin1(QT_TR_NOOP("Operator")), lOperat));
+        QPair<QString, unsigned int>(QString::fromLatin1(QT_TR_NOOP("Operator")), lOperat)
+    );
 
     unsigned int lPyOutput = Base::Color::asPackedRGB<QColor>(QColor(170, 170, 127));
     d->colormap.push_back(
-        QPair<QString, unsigned int>(QString::fromLatin1(QT_TR_NOOP("Python output")), lPyOutput));
+        QPair<QString, unsigned int>(QString::fromLatin1(QT_TR_NOOP("Python output")), lPyOutput)
+    );
 
     unsigned int lPyError = Base::Color::asPackedRGB<QColor>(QColor(Qt::red));
     d->colormap.push_back(
-        QPair<QString, unsigned int>(QString::fromLatin1(QT_TR_NOOP("Python error")), lPyError));
+        QPair<QString, unsigned int>(QString::fromLatin1(QT_TR_NOOP("Python error")), lPyError)
+    );
 
     unsigned int lCLine = Base::Color::asPackedRGB<QColor>(QColor(224, 224, 224));
     d->colormap.push_back(
-        QPair<QString, unsigned int>(QString::fromLatin1(QT_TR_NOOP("Current line highlight")),
-                                     lCLine));
+        QPair<QString, unsigned int>(QString::fromLatin1(QT_TR_NOOP("Current line highlight")), lCLine)
+    );
 
     QStringList labels;
     labels << tr("Items");
@@ -236,18 +248,20 @@ void DlgSettingsEditor::loadSettings()
     ui->radioSpaces->onRestore();
 
     setEditorTabWidth(ui->tabSize->value());
-    ui->textEdit1->setPlainText(QStringLiteral("# Short Python sample\n"
-                                                    "import sys\n"
-                                                    "\n"
-                                                    "def foo(begin, end):\n"
-                                                    "	i = begin\n"
-                                                    "	while i < end:\n"
-                                                    "		print(i)\n"
-                                                    "		i = i + 1\n"
-                                                    "		print(\"Text\")\n"
-                                                    "	return None\n"
-                                                    "\n"
-                                                    "foo(0, 20)\n"));
+    ui->textEdit1->setPlainText(QStringLiteral(
+        "# Short Python sample\n"
+        "import sys\n"
+        "\n"
+        "def foo(begin, end):\n"
+        "	i = begin\n"
+        "	while i < end:\n"
+        "		print(i)\n"
+        "		i = i + 1\n"
+        "		print(\"Text\")\n"
+        "	return None\n"
+        "\n"
+        "foo(0, 20)\n"
+    ));
 
     // Restores the color map
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Editor");
@@ -274,8 +288,7 @@ void DlgSettingsEditor::loadSettings()
             // cursor.pcf was removed to cope with a problem with the Qt Font Manager
             // See https://github.com/FreeCAD/FreeCAD/issues/10514 for details
             if (name.compare(QLatin1String("8514oem"), Qt::CaseInsensitive) != 0
-                && name.compare(QLatin1String("cursor.pcf"), Qt::CaseInsensitive) != 0)
-              {
+                && name.compare(QLatin1String("cursor.pcf"), Qt::CaseInsensitive) != 0) {
                 fixedFamilyNames.append(name);
             }
         }
@@ -288,8 +301,7 @@ void DlgSettingsEditor::loadSettings()
             // cursor.pcf was removed to cope with a problem with the Qt Font Manager
             // See https://github.com/FreeCAD/FreeCAD/issues/10514 for details
             if (name.compare(QLatin1String("8514oem"), Qt::CaseInsensitive) != 0
-                && name.compare(QLatin1String("cursor.pcf"), Qt::CaseInsensitive) != 0)
-              {
+                && name.compare(QLatin1String("cursor.pcf"), Qt::CaseInsensitive) != 0) {
                 fixedFamilyNames.append(name);
             }
         }
@@ -297,7 +309,8 @@ void DlgSettingsEditor::loadSettings()
 #endif
     ui->fontFamily->addItems(fixedFamilyNames);
     int index = fixedFamilyNames.indexOf(
-        QString::fromLatin1(hGrp->GetASCII("Font", defaultMonospaceFont).c_str()));
+        QString::fromLatin1(hGrp->GetASCII("Font", defaultMonospaceFont).c_str())
+    );
     if (index < 0) {
         index = 0;
     }

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /****************************************************************************
  *   Copyright (c) 2018 Zheng, Lei (realthunder) <realthunder.dev@gmail.com>*
  *                                                                          *
@@ -65,15 +67,19 @@ struct Tools
     static Base::Color convertColor(const Quantity_ColorRGBA& rgba);
     static Quantity_ColorRGBA convertColor(const Base::Color& col);
     static std::string labelName(TDF_Label label);
-    static void printLabel(TDF_Label label,
-                           Handle(XCAFDoc_ShapeTool) aShapeTool,
-                           Handle(XCAFDoc_ColorTool) aColorTool,
-                           const char* msg = nullptr);
+    static void printLabel(
+        TDF_Label label,
+        Handle(XCAFDoc_ShapeTool) aShapeTool,
+        Handle(XCAFDoc_ColorTool) aColorTool,
+        const char* msg = nullptr
+    );
 
-    static void dumpLabels(TDF_Label label,
-                           Handle(XCAFDoc_ShapeTool) aShapeTool,
-                           Handle(XCAFDoc_ColorTool) aColorTool,
-                           int depth = 0);
+    static void dumpLabels(
+        TDF_Label label,
+        Handle(XCAFDoc_ShapeTool) aShapeTool,
+        Handle(XCAFDoc_ColorTool) aColorTool,
+        int depth = 0
+    );
 };
 
 }  // namespace Import

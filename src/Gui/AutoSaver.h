@@ -32,13 +32,15 @@
 #include <boost/signals2.hpp>
 #include <Base/Writer.h>
 
-namespace App {
+namespace App
+{
 class Document;
 class DocumentObject;
 class Property;
-}
+}  // namespace App
 
-namespace Gui {
+namespace Gui
+{
 class ViewProvider;
 
 class AutoSaveProperty
@@ -63,7 +65,7 @@ private:
  The class AutoSaver is used to automatically save a document to a temporary file.
  @author Werner Mayer
  */
-class AutoSaver : public QObject
+class AutoSaver: public QObject
 {
     Q_OBJECT
 
@@ -86,7 +88,7 @@ public:
 protected:
     void slotCreateDocument(const App::Document& Doc);
     void slotDeleteDocument(const App::Document& Doc);
-    void timerEvent(QTimerEvent * event) override;
+    void timerEvent(QTimerEvent* event) override;
     void saveDocument(const std::string&, AutoSaveProperty&);
 
 public Q_SLOTS:
@@ -98,7 +100,7 @@ private:
     std::map<std::string, AutoSaveProperty*> saverMap;
 };
 
-class RecoveryWriter : public Base::FileWriter
+class RecoveryWriter: public Base::FileWriter
 {
 public:
     RecoveryWriter(AutoSaveProperty&);
@@ -109,14 +111,14 @@ public:
      to write out certain objects. The default implementation
      always returns true.
      */
-    bool shouldWrite(const std::string&, const Base::Persistence *) const override;
+    bool shouldWrite(const std::string&, const Base::Persistence*) const override;
     void writeFiles() override;
 
 private:
     AutoSaveProperty& saver;
 };
 
-} //namespace Gui
+}  // namespace Gui
 
 
-#endif //GUI_AUTOSAVER_H
+#endif  // GUI_AUTOSAVER_H

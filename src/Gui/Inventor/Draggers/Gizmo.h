@@ -231,7 +231,7 @@ public:
     }
     // This should be called only once after construction
     void addGizmos(std::initializer_list<Gui::Gizmo*> gizmos);
-    void attachViewer(Gui::View3DInventorViewer* viewer, Base::Placement &origin);
+    void attachViewer(Gui::View3DInventorViewer* viewer, Base::Placement& origin);
     void setUpAutoScale(SoCamera* cameraIn);
     void calculateScaleAndOrientation();
 
@@ -254,6 +254,6 @@ private:
     static void cameraPositionChangeCallback(void* data, SoSensor*);
 };
 
-}
+}  // namespace Gui
 
 #endif /* GUI_GIZMO_H */

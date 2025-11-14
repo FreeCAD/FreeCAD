@@ -35,7 +35,7 @@ class QImage;
 namespace Gui
 {
 
-class GuiExport ViewProviderImagePlane : public Gui::ViewProviderGeometryObject
+class GuiExport ViewProviderImagePlane: public Gui::ViewProviderGeometryObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderImagePlane);
 
@@ -45,7 +45,7 @@ public:
 
     App::PropertyEnumeration Lighting;
 
-    void attach(App::DocumentObject *pcObject) override;
+    void attach(App::DocumentObject* pcObject) override;
     void setDisplayMode(const char* ModeName) override;
     std::vector<std::string> getDisplayModes() const override;
     void updateData(const App::Property*) override;
@@ -69,13 +69,13 @@ private:
     void manipulateImage();
 
 private:
-    SoCoordinate3         * pcCoords;
-    SoTexture2            * texture;
-    SoShapeHints          * shapeHints;
-    static const char     * LightingEnums[];
+    SoCoordinate3* pcCoords;
+    SoTexture2* texture;
+    SoShapeHints* shapeHints;
+    static const char* LightingEnums[];
 };
 
-} //namespace Gui
+}  // namespace Gui
 
 
-#endif // GUI_ViewProviderImagePlane_H
+#endif  // GUI_ViewProviderImagePlane_H
