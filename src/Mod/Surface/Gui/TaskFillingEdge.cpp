@@ -153,26 +153,36 @@ FillingEdgePanel::~FillingEdgePanel()
 
 void FillingEdgePanel::setupConnections()
 {
-    connect(ui->buttonUnboundEdgeAdd,
-            &QToolButton::toggled,
-            this,
-            &FillingEdgePanel::onButtonUnboundEdgeAddToggled);
-    connect(ui->buttonUnboundEdgeRemove,
-            &QToolButton::toggled,
-            this,
-            &FillingEdgePanel::onButtonUnboundEdgeRemoveToggled);
-    connect(ui->listUnbound,
-            &QListWidget::itemDoubleClicked,
-            this,
-            &FillingEdgePanel::onListUnboundItemDoubleClicked);
-    connect(ui->buttonUnboundAccept,
-            &QPushButton::clicked,
-            this,
-            &FillingEdgePanel::onButtonUnboundAcceptClicked);
-    connect(ui->buttonUnboundIgnore,
-            &QPushButton::clicked,
-            this,
-            &FillingEdgePanel::onButtonUnboundIgnoreClicked);
+    connect(
+        ui->buttonUnboundEdgeAdd,
+        &QToolButton::toggled,
+        this,
+        &FillingEdgePanel::onButtonUnboundEdgeAddToggled
+    );
+    connect(
+        ui->buttonUnboundEdgeRemove,
+        &QToolButton::toggled,
+        this,
+        &FillingEdgePanel::onButtonUnboundEdgeRemoveToggled
+    );
+    connect(
+        ui->listUnbound,
+        &QListWidget::itemDoubleClicked,
+        this,
+        &FillingEdgePanel::onListUnboundItemDoubleClicked
+    );
+    connect(
+        ui->buttonUnboundAccept,
+        &QPushButton::clicked,
+        this,
+        &FillingEdgePanel::onButtonUnboundAcceptClicked
+    );
+    connect(
+        ui->buttonUnboundIgnore,
+        &QPushButton::clicked,
+        this,
+        &FillingEdgePanel::onButtonUnboundIgnoreClicked
+    );
 }
 
 void FillingEdgePanel::appendButtons(Gui::ButtonGroup* buttonGroup)
@@ -214,8 +224,10 @@ void FillingEdgePanel::setEditedObject(Surface::Filling* fea)
         QListWidgetItem* item = new QListWidgetItem(ui->listUnbound);
         ui->listUnbound->addItem(item);
 
-        QString text = QStringLiteral("%1.%2").arg(QString::fromUtf8(obj->Label.getValue()),
-                                                   QString::fromStdString(edge));
+        QString text = QStringLiteral("%1.%2").arg(
+            QString::fromUtf8(obj->Label.getValue()),
+            QString::fromStdString(edge)
+        );
         item->setText(text);
 
         // The user data field of a list widget item
@@ -253,9 +265,11 @@ void FillingEdgePanel::open()
     checkOpenCommand();
 
     // highlight the boundary edges
-    this->vp->highlightReferences(ViewProviderFilling::Edge,
-                                  editedObject->UnboundEdges.getSubListValues(),
-                                  true);
+    this->vp->highlightReferences(
+        ViewProviderFilling::Edge,
+        editedObject->UnboundEdges.getSubListValues(),
+        true
+    );
 
     Gui::Selection().clearSelection();
 }
@@ -290,9 +304,11 @@ void FillingEdgePanel::slotDeletedObject(const Gui::ViewProviderDocumentObject& 
     // If this view provider is being deleted then reset the colors of
     // referenced part objects. The dialog will be deleted later.
     if (this->vp == &Obj) {
-        this->vp->highlightReferences(ViewProviderFilling::Edge,
-                                      editedObject->UnboundEdges.getSubListValues(),
-                                      false);
+        this->vp->highlightReferences(
+            ViewProviderFilling::Edge,
+            editedObject->UnboundEdges.getSubListValues(),
+            false
+        );
     }
 }
 
@@ -305,23 +321,29 @@ bool FillingEdgePanel::accept()
         editedObject->recomputeFeature();
     }
     if (!editedObject->isValid()) {
-        QMessageBox::warning(this,
-                             tr("Invalid object"),
-                             QString::fromLatin1(editedObject->getStatusString()));
+        QMessageBox::warning(
+            this,
+            tr("Invalid object"),
+            QString::fromLatin1(editedObject->getStatusString())
+        );
         return false;
     }
 
-    this->vp->highlightReferences(ViewProviderFilling::Edge,
-                                  editedObject->UnboundEdges.getSubListValues(),
-                                  false);
+    this->vp->highlightReferences(
+        ViewProviderFilling::Edge,
+        editedObject->UnboundEdges.getSubListValues(),
+        false
+    );
     return true;
 }
 
 bool FillingEdgePanel::reject()
 {
-    this->vp->highlightReferences(ViewProviderFilling::Edge,
-                                  editedObject->UnboundEdges.getSubListValues(),
-                                  false);
+    this->vp->highlightReferences(
+        ViewProviderFilling::Edge,
+        editedObject->UnboundEdges.getSubListValues(),
+        false
+    );
 
     selectionMode = None;
     Gui::Selection().rmvSelectionGate();
@@ -377,10 +399,7 @@ void FillingEdgePanel::onListUnboundItemDoubleClicked(QListWidgetItem* item)
                 TopTools_IndexedMapOfShape faces;
                 TopExp::MapShapes(shape.getShape(), TopAbs_FACE, faces);
                 TopTools_IndexedDataMapOfShapeListOfShape edge2Face;
-                TopExp::MapShapesAndAncestors(shape.getShape(),
-                                              TopAbs_EDGE,
-                                              TopAbs_FACE,
-                                              edge2Face);
+                TopExp::MapShapesAndAncestors(shape.getShape(), TopAbs_EDGE, TopAbs_FACE, edge2Face);
                 const TopTools_ListOfShape& adj_faces = edge2Face.FindFromKey(edge);
                 if (adj_faces.Extent() > 0) {
                     int n = adj_faces.Extent();
@@ -389,12 +408,9 @@ void FillingEdgePanel::onListUnboundItemDoubleClicked(QListWidgetItem* item)
                     // fill up the combo boxes
                     modifyBoundary(true);
                     ui->comboBoxUnboundFaces->addItem(tr("None"), QByteArray(""));
-                    ui->comboBoxUnboundCont->addItem(QStringLiteral("C0"),
-                                                     static_cast<int>(GeomAbs_C0));
-                    ui->comboBoxUnboundCont->addItem(QStringLiteral("G1"),
-                                                     static_cast<int>(GeomAbs_G1));
-                    ui->comboBoxUnboundCont->addItem(QStringLiteral("G2"),
-                                                     static_cast<int>(GeomAbs_G2));
+                    ui->comboBoxUnboundCont->addItem(QStringLiteral("C0"), static_cast<int>(GeomAbs_C0));
+                    ui->comboBoxUnboundCont->addItem(QStringLiteral("G1"), static_cast<int>(GeomAbs_G1));
+                    ui->comboBoxUnboundCont->addItem(QStringLiteral("G2"), static_cast<int>(GeomAbs_G2));
                     TopTools_ListIteratorOfListOfShape it(adj_faces);
                     for (; it.More(); it.Next()) {
                         const TopoDS_Shape& F = it.Value();
@@ -416,9 +432,8 @@ void FillingEdgePanel::onListUnboundItemDoubleClicked(QListWidgetItem* item)
                 }
             }
 
-            Gui::Selection().addSelection(data[0].toByteArray(),
-                                          data[1].toByteArray(),
-                                          data[2].toByteArray());
+            Gui::Selection()
+                .addSelection(data[0].toByteArray(), data[1].toByteArray(), data[2].toByteArray());
         }
         catch (...) {
         }
@@ -438,9 +453,10 @@ void FillingEdgePanel::onSelectionChanged(const Gui::SelectionChanges& msg)
             ui->listUnbound->addItem(item);
 
             Gui::SelectionObject sel(msg);
-            QString text =
-                QStringLiteral("%1.%2").arg(QString::fromUtf8(sel.getObject()->Label.getValue()),
-                                            QString::fromLatin1(msg.pSubName));
+            QString text = QStringLiteral("%1.%2").arg(
+                QString::fromUtf8(sel.getObject()->Label.getValue()),
+                QString::fromLatin1(msg.pSubName)
+            );
             item->setText(text);
 
             QList<QVariant> data;
@@ -470,9 +486,11 @@ void FillingEdgePanel::onSelectionChanged(const Gui::SelectionChanges& msg)
                 editedObject->UnboundOrder.setValues(conts);
             }
 
-            this->vp->highlightReferences(ViewProviderFilling::Edge,
-                                          editedObject->UnboundEdges.getSubListValues(),
-                                          true);
+            this->vp->highlightReferences(
+                ViewProviderFilling::Edge,
+                editedObject->UnboundEdges.getSubListValues(),
+                true
+            );
         }
         else if (selectionMode == RemoveEdge) {
             Gui::SelectionObject sel(msg);
@@ -492,9 +510,11 @@ void FillingEdgePanel::onSelectionChanged(const Gui::SelectionChanges& msg)
                 }
             }
 
-            this->vp->highlightReferences(ViewProviderFilling::Edge,
-                                          editedObject->UnboundEdges.getSubListValues(),
-                                          false);
+            this->vp->highlightReferences(
+                ViewProviderFilling::Edge,
+                editedObject->UnboundEdges.getSubListValues(),
+                false
+            );
             App::DocumentObject* obj = sel.getObject();
             std::string sub = msg.pSubName;
             auto objects = editedObject->UnboundEdges.getValues();
@@ -526,9 +546,11 @@ void FillingEdgePanel::onSelectionChanged(const Gui::SelectionChanges& msg)
                     break;
                 }
             }
-            this->vp->highlightReferences(ViewProviderFilling::Edge,
-                                          editedObject->UnboundEdges.getSubListValues(),
-                                          true);
+            this->vp->highlightReferences(
+                ViewProviderFilling::Edge,
+                editedObject->UnboundEdges.getSubListValues(),
+                true
+            );
         }
 
         editedObject->recomputeFeature();
@@ -554,9 +576,11 @@ void FillingEdgePanel::onDeleteUnboundEdge()
         auto element = editedObject->UnboundEdges.getSubValues();
         auto it = objects.begin();
         auto jt = element.begin();
-        this->vp->highlightReferences(ViewProviderFilling::Edge,
-                                      editedObject->UnboundEdges.getSubListValues(),
-                                      false);
+        this->vp->highlightReferences(
+            ViewProviderFilling::Edge,
+            editedObject->UnboundEdges.getSubListValues(),
+            false
+        );
         for (; it != objects.end() && jt != element.end(); ++it, ++jt) {
             if (*it == obj && *jt == sub) {
                 std::size_t index = std::distance(objects.begin(), it);
@@ -581,9 +605,11 @@ void FillingEdgePanel::onDeleteUnboundEdge()
                 break;
             }
         }
-        this->vp->highlightReferences(ViewProviderFilling::Edge,
-                                      editedObject->UnboundEdges.getSubListValues(),
-                                      true);
+        this->vp->highlightReferences(
+            ViewProviderFilling::Edge,
+            editedObject->UnboundEdges.getSubListValues(),
+            true
+        );
 
         editedObject->recomputeFeature();
     }
@@ -596,8 +622,7 @@ void FillingEdgePanel::onButtonUnboundAcceptClicked()
         QList<QVariant> data;
         data = item->data(Qt::UserRole).toList();
 
-        QVariant face =
-            ui->comboBoxUnboundFaces->itemData(ui->comboBoxUnboundFaces->currentIndex());
+        QVariant face = ui->comboBoxUnboundFaces->itemData(ui->comboBoxUnboundFaces->currentIndex());
         QVariant cont = ui->comboBoxUnboundCont->itemData(ui->comboBoxUnboundCont->currentIndex());
         if (data.size() == 5) {
             data[3] = face;

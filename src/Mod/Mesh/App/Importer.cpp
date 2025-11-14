@@ -76,20 +76,21 @@ void Importer::addFaceColors(Feature* feature, const std::vector<Base::Color>& c
     addColors(feature, "FaceColors", colors);
 }
 
-void Importer::addColors(Feature* feature,
-                         const std::string& property,
-                         const std::vector<Base::Color>& colors)
+void Importer::addColors(
+    Feature* feature,
+    const std::string& property,
+    const std::vector<Base::Color>& colors
+)
 {
     App::PropertyColorList* prop = static_cast<App::PropertyColorList*>(
-        feature->addDynamicProperty("App::PropertyColorList", property.c_str()));
+        feature->addDynamicProperty("App::PropertyColorList", property.c_str())
+    );
     if (prop) {
         prop->setValues(colors);
     }
 }
 
-void Importer::createMeshFromSegments(const std::string& name,
-                                      MeshCore::Material& mat,
-                                      MeshObject& mesh)
+void Importer::createMeshFromSegments(const std::string& name, MeshCore::Material& mat, MeshObject& mesh)
 {
     unsigned long segmct = mesh.countSegments();
     for (unsigned long i = 0; i < segmct; i++) {

@@ -22,23 +22,23 @@
  **************************************************************************/
 
 
-# include <QAction>
-# include <QApplication>
-# include <QContextMenuEvent>
-# include <QClipboard>
-# include <QCursor>
-# include <QFileInfo>
-# include <QImageReader>
-# include <QLabel>
-# include <QMenu>
-# include <QMessageBox>
-# include <QMimeData>
-# include <QPainter>
-# include <QPixmap>
-# include <QPrintDialog>
-# include <QPrinter>
-# include <QScrollArea>
-# include <QScrollBar>
+#include <QAction>
+#include <QApplication>
+#include <QContextMenuEvent>
+#include <QClipboard>
+#include <QCursor>
+#include <QFileInfo>
+#include <QImageReader>
+#include <QLabel>
+#include <QMenu>
+#include <QMessageBox>
+#include <QMimeData>
+#include <QPainter>
+#include <QPixmap>
+#include <QPrintDialog>
+#include <QPrinter>
+#include <QScrollArea>
+#include <QScrollBar>
 
 
 #include "ImageView.h"
@@ -50,8 +50,8 @@ ImageView::ImageView(QWidget* parent)
     : MDIView(nullptr, parent)
     , imageLabel(new QLabel)
     , scrollArea(new QScrollArea)
-    , scaleFactor{1.0}
-    , dragging{false}
+    , scaleFactor {1.0}
+    , dragging {false}
 {
     imageLabel->setBackgroundRole(QPalette::Base);
     imageLabel->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
@@ -71,9 +71,11 @@ bool ImageView::loadFile(const QString& fileName)
     reader.setAutoTransform(true);
     QImage image = reader.read();
     if (image.isNull()) {
-        QMessageBox::information(this, tr("Failed to load image file"),
-                                 tr("Cannot load file %1: %2")
-                                 .arg(fileName, reader.errorString()));
+        QMessageBox::information(
+            this,
+            tr("Failed to load image file"),
+            tr("Cannot load file %1: %2").arg(fileName, reader.errorString())
+        );
         return false;
     }
 
@@ -102,33 +104,32 @@ void ImageView::scaleImage(double factor)
     adjustScrollBar(scrollArea->verticalScrollBar(), factor);
 }
 
-void ImageView::adjustScrollBar(QScrollBar *scrollBar, double factor)
+void ImageView::adjustScrollBar(QScrollBar* scrollBar, double factor)
 {
-    scrollBar->setValue(int(factor * scrollBar->value()
-                            + ((factor - 1) * scrollBar->pageStep()/2)));
+    scrollBar->setValue(int(factor * scrollBar->value() + ((factor - 1) * scrollBar->pageStep() / 2)));
 }
 
 bool ImageView::canZoomIn() const
 {
-    int maxWidth{10000};
+    int maxWidth {10000};
     return !isFitToWindow() && imageLabel->width() < maxWidth;
 }
 
 bool ImageView::canZoomOut() const
 {
-    int minWidth{200};
+    int minWidth {200};
     return !isFitToWindow() && imageLabel->width() > minWidth;
 }
 
 void ImageView::zoomIn()
 {
-    double scale{1.25};
+    double scale {1.25};
     scaleImage(scale);
 }
 
 void ImageView::zoomOut()
 {
-    double scale{0.8};
+    double scale {0.8};
     scaleImage(scale);
 }
 
@@ -153,8 +154,8 @@ bool ImageView::isFitToWindow() const
 
 bool ImageView::canDrag() const
 {
-    return scrollArea->verticalScrollBar()->isVisible() ||
-           scrollArea->horizontalScrollBar()->isVisible();
+    return scrollArea->verticalScrollBar()->isVisible()
+        || scrollArea->horizontalScrollBar()->isVisible();
 }
 
 void ImageView::startDrag()
@@ -249,9 +250,11 @@ bool ImageView::isImageFormat(const QFileInfo& fileInfo)
     QString ext = fileInfo.suffix().toLower();
     QByteArray suffix = ext.toLatin1();
     QList<QByteArray> supportedFormats = QImageReader::supportedImageFormats();
-    auto it = std::find_if(supportedFormats.begin(), supportedFormats.end(), [suffix](const QByteArray& image) {
-        return (image == suffix);
-    });
+    auto it = std::find_if(
+        supportedFormats.begin(),
+        supportedFormats.end(),
+        [suffix](const QByteArray& image) { return (image == suffix); }
+    );
 
     return (it != supportedFormats.end());
 }
@@ -287,7 +290,7 @@ bool ImageView::canPasteImage() const
 QImage ImageView::imageFromClipboard()
 {
     QImage image;
-    if (const QMimeData *mimeData = QApplication::clipboard()->mimeData()) {
+    if (const QMimeData* mimeData = QApplication::clipboard()->mimeData()) {
         if (mimeData->hasImage()) {
             image = qvariant_cast<QImage>(mimeData->imageData());
         }
@@ -308,7 +311,7 @@ void ImageView::print(QPrinter* printer)
     painter.drawPixmap(0, 0, pixmap);
 }
 
-bool ImageView::onMsg(const char* pMsg,const char** ppReturn)
+bool ImageView::onMsg(const char* pMsg, const char** ppReturn)
 {
     Q_UNUSED(ppReturn)
     if (strcmp("ViewFit", pMsg) == 0) {

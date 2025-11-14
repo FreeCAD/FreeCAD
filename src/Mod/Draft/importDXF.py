@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # -*- coding: utf8 -*-
 # Check code with
 # flake8 --ignore=E226,E266,E401,W503
@@ -1520,7 +1522,7 @@ def drawSpline(spline, forceShape=False):
     if nbfitp != len(fitpoints):
         raise ValueError("Wrong number of fit points")
     if rational == all((w == 1.0 or w is None) for w in weights):
-        raise ValueError("inconsistant rational flag")
+        raise ValueError("Inconsistent rational flag")
     if len(weights) == 0:
         weights = None
     elif len(weights) != len(controlpoints):

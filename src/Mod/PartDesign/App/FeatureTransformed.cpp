@@ -60,9 +60,7 @@ extern bool getPDRefineModelParameter();
 
 PROPERTY_SOURCE(PartDesign::Transformed, PartDesign::FeatureRefine)
 
-std::array<char const*, 3> transformModeEnums = {"Features",
-                                                 "Whole shape",
-                                                 nullptr};
+std::array<char const*, 3> transformModeEnums = {"Features", "Whole shape", nullptr};
 
 Transformed::Transformed()
 {
@@ -98,8 +96,10 @@ Part::Feature* Transformed::getBaseObject(bool silent) const
     if (firstOriginal) {
         rv = freecad_cast<Part::Feature*>(firstOriginal);
         if (!rv) {
-            err = QT_TRANSLATE_NOOP("Exception",
-                                    "Transformation feature Linked object is not a Part object");
+            err = QT_TRANSLATE_NOOP(
+                "Exception",
+                "Transformation feature Linked object is not a Part object"
+            );
         }
     }
     else {
@@ -184,8 +184,8 @@ bool Transformed::isMultiTransformChild() const
     }
     */
 
-    // instead check for default property values because these are invalid for a standalone transform feature.
-    // This will mislabel standalone features during the initialization phase.
+    // instead check for default property values because these are invalid for a standalone
+    // transform feature. This will mislabel standalone features during the initialization phase.
     if (TransformMode.getValue() == 0 && Originals.getValue().empty()) {
         return true;
     }
@@ -193,9 +193,11 @@ bool Transformed::isMultiTransformChild() const
     return false;
 }
 
-void Transformed::handleChangedPropertyType(Base::XMLReader& reader,
-                                            const char* TypeName,
-                                            App::Property* prop)
+void Transformed::handleChangedPropertyType(
+    Base::XMLReader& reader,
+    const char* TypeName,
+    App::Property* prop
+)
 {
     // The property 'Angle' of PolarPattern has changed from PropertyFloat
     // to PropertyAngle and the property 'Length' has changed to PropertyLength.
@@ -321,7 +323,8 @@ App::DocumentObjectExecReturn* Transformed::execute()
     const Part::TopoShape& supportTopShape = supportFeature->Shape.getShape();
     if (supportTopShape.getShape().IsNull()) {
         return new App::DocumentObjectExecReturn(
-            QT_TRANSLATE_NOOP("Exception", "Cannot transform invalid support shape"));
+            QT_TRANSLATE_NOOP("Exception", "Cannot transform invalid support shape")
+        );
     }
 
     // create an untransformed copy of the support shape
@@ -333,11 +336,11 @@ App::DocumentObjectExecReturn* Transformed::execute()
 
     auto getTransformedCompShape = [&](const auto& supportShape, const auto& origShape) {
         std::vector<TopoShape> shapes = {supportShape};
-        TopoShape shape (origShape);
-        int idx=1;
+        TopoShape shape(origShape);
+        int idx = 1;
         auto transformIter = transformations.cbegin();
         transformIter++;
-        for ( ; transformIter != transformations.end(); transformIter++) {
+        for (; transformIter != transformations.end(); transformIter++) {
             if (OCCTProgressIndicator::getAppIndicator().UserBreak()) {
                 return std::vector<TopoShape>();
             }
@@ -364,14 +367,15 @@ App::DocumentObjectExecReturn* Transformed::execute()
                 if (!feature) {
                     return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
                         "Exception",
-                        "Only additive and subtractive features can be transformed"));
+                        "Only additive and subtractive features can be transformed"
+                    ));
                 }
 
                 feature->getAddSubShape(fuseShape, cutShape);
                 if (fuseShape.isNull() && cutShape.isNull()) {
                     return new App::DocumentObjectExecReturn(
-                        QT_TRANSLATE_NOOP("Exception",
-                                          "Shape of additive/subtractive feature is empty"));
+                        QT_TRANSLATE_NOOP("Exception", "Shape of additive/subtractive feature is empty")
+                    );
                 }
                 gp_Trsf trsf = feature->getLocation().Transformation().Multiplied(trsfInv);
                 if (!fuseShape.isNull()) {
@@ -435,5 +439,3 @@ TopoDS_Shape Transformed::getRemainingSolids(const TopoDS_Shape& shape)
 }
 
 }  // namespace PartDesign
-
-

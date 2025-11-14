@@ -286,6 +286,8 @@ class ObjectDressup:
     def onChanged(self, obj, prop):
         if prop in ["RampFeedRate", "UseStartDepth"]:
             self.setEditorProperties(obj)
+        if prop == "Path" and obj.ViewObject:
+            obj.ViewObject.signalChangeIcon()
 
     def setEditorProperties(self, obj):
         if hasattr(obj, "UseStartDepth"):
@@ -359,7 +361,7 @@ class ObjectDressup:
             last_params.update(params)
 
             if cmd.Name in Path.Geom.CmdMoveAll and (
-                not "X" in params or not "Y" in params or not "Z" in params
+                "X" not in params or "Y" not in params or "Z" not in params
             ):
                 params["X"] = params.get("X", start_point[0])
                 params["Y"] = params.get("Y", start_point[1])
@@ -758,6 +760,12 @@ class ViewProviderDressup:
 
     def loads(self, state):
         return None
+
+    def getIcon(self):
+        if getattr(PathDressup.baseOp(self.obj), "Active", True):
+            return ":/icons/CAM_Dressup.svg"
+        else:
+            return ":/icons/CAM_OpActive.svg"
 
 
 class CommandPathDressupRampEntry:

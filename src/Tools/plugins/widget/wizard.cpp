@@ -220,8 +220,7 @@ WizardExtensionFactory::WizardExtensionFactory(QExtensionManager* parent)
     : QExtensionFactory(parent)
 {}
 
-QObject*
-WizardExtensionFactory::createExtension(QObject* object, const QString& iid, QObject* parent) const
+QObject* WizardExtensionFactory::createExtension(QObject* object, const QString& iid, QObject* parent) const
 {
     Wizard* widget = qobject_cast<Wizard*>(object);
 

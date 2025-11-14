@@ -35,11 +35,12 @@
 
 #include <Mod/Part/PartGlobal.h>
 
-namespace PartGui {
+namespace PartGui
+{
 
 class GridExtensionP;
 
-class PartGuiExport ViewProviderGridExtension : public Gui::ViewProviderExtension
+class PartGuiExport ViewProviderGridExtension: public Gui::ViewProviderExtension
 {
     EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderGridExtension);
 
@@ -63,9 +64,9 @@ public:
     void setGridOrientation(Base::Vector3d origin, Base::Rotation rotation);
 
     /** Return the distance to the closest point in the grid.
-    *   The point closer to the grid is returned by reference
-    */
-    void getClosestGridPoint(double &x, double &y) const;
+     *   The point closer to the grid is returned by reference
+     */
+    void getClosestGridPoint(double& x, double& y) const;
     double getGridSize() const;
 
 protected:
@@ -78,10 +79,14 @@ protected:
     void setGridDivLinePattern(int pattern);
     void setGridLineWidth(int width);
     void setGridDivLineWidth(int width);
-    void setGridLineColor(const Base::Color & color);
-    void setGridDivLineColor(const Base::Color & color);
+    void setGridLineColor(const Base::Color& color);
+    void setGridDivLineColor(const Base::Color& color);
 
-    bool extensionHandleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
+    bool extensionHandleChangedPropertyType(
+        Base::XMLReader& reader,
+        const char* TypeName,
+        App::Property* prop
+    ) override;
 
 
 private:
@@ -89,15 +94,13 @@ private:
     static App::PropertyQuantityConstraint::Constraints GridSizeRange;
 
     std::unique_ptr<GridExtensionP> pImpl;
-
-
 };
 
-using ViewProviderGridExtensionPython = Gui::ViewProviderExtensionPythonT<PartGui::ViewProviderGridExtension>;
+using ViewProviderGridExtensionPython
+    = Gui::ViewProviderExtensionPythonT<PartGui::ViewProviderGridExtension>;
 
 
-} // namespace PartGui
+}  // namespace PartGui
 
 
-#endif // PARTGUI_VIEWPROVIDERGRIDEXTENSION_H
-
+#endif  // PARTGUI_VIEWPROVIDERGRIDEXTENSION_H

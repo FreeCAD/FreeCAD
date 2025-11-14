@@ -206,17 +206,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="2315"/>
+      <location filename="../../Command.cpp" line="2317"/>
       <source>PartDesign</source>
       <translation>Конструисање делова</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2316"/>
+      <location filename="../../Command.cpp" line="2318"/>
       <source>Boolean Operation</source>
       <translation>Буловe oперацијe</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2317"/>
+      <location filename="../../Command.cpp" line="2319"/>
       <source>Applies boolean operations with the selected objects and the active body</source>
       <translation>Примени булову операцију између изабраних објеката и активног тела</translation>
     </message>
@@ -926,7 +926,7 @@ so that self intersection is avoided.</source>
       <translation>Нова скица</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2333"/>
+      <location filename="../../Command.cpp" line="2335"/>
       <source>Create Boolean</source>
       <translation>Направи булову операцију</translation>
     </message>
@@ -1673,13 +1673,13 @@ Please adjust the parameters and try again.</source>
   <context>
     <name>PartDesignGui::TaskExtrudeParameters</name>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1355"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1357"/>
       <source>No face selected</source>
       <translation>Страница није изабрана</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="161"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1135"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="159"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1137"/>
       <source>Face</source>
       <translation>Страница</translation>
     </message>
@@ -1689,63 +1689,63 @@ Please adjust the parameters and try again.</source>
       <translation>Уклони</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="349"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="345"/>
       <source>Preview</source>
       <translation>Преглед</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="353"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="349"/>
       <source>Select Faces</source>
       <translation>Изабери странице</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="688"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="684"/>
       <source>Select reference…</source>
       <translation>Изабери референцу…</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="596"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="592"/>
       <source>No shape selected</source>
       <translation>Нема одабраних облика</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="681"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="677"/>
       <source>Sketch normal</source>
       <translation>Нормала на скицу</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="684"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="680"/>
       <source>Face normal</source>
       <translation>Нормала на страницу</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="692"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="697"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="688"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="693"/>
       <source>Custom direction</source>
       <translation>Сопствени смер</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1081"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1083"/>
       <source>Click on a shape in the model</source>
       <translation>Кликни на неки обик на моделу</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1342"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1344"/>
       <source>One sided</source>
       <translation>На једну страну</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1343"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1345"/>
       <source>Two sided</source>
       <translation>На две стране</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1344"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1346"/>
       <source>Symmetric</source>
       <translation>Симетрично</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1350"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1352"/>
       <source>Click on a face in the model</source>
       <translation>Кликни на страницу модела</translation>
     </message>
@@ -2031,130 +2031,130 @@ Please adjust the parameters and try again.</source>
   <context>
     <name>PartDesignGui::TaskHoleParameters</name>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="52"/>
+      <location filename="../../TaskHoleParameters.cpp" line="55"/>
       <source>Counterbore</source>
       <translation>Цилиндрично упуштен отвор</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="53"/>
+      <location filename="../../TaskHoleParameters.cpp" line="56"/>
       <source>Countersink</source>
       <translation>Конусно упуштен отвор</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="54"/>
+      <location filename="../../TaskHoleParameters.cpp" line="57"/>
       <source>Counterdrill</source>
       <translation>Цилиндрично и конусно упуштен отвор</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="58"/>
+      <location filename="../../TaskHoleParameters.cpp" line="61"/>
       <source>Hole Parameters</source>
       <translation>Параметри рупе</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="67"/>
+      <location filename="../../TaskHoleParameters.cpp" line="70"/>
       <source>None</source>
       <translation>Ниједан</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="68"/>
+      <location filename="../../TaskHoleParameters.cpp" line="71"/>
       <source>ISO metric regular</source>
       <translation>ISO метрички навој</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="69"/>
+      <location filename="../../TaskHoleParameters.cpp" line="72"/>
       <source>ISO metric fine</source>
       <translation>ISO фини метрички навој</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="70"/>
+      <location filename="../../TaskHoleParameters.cpp" line="73"/>
       <source>UTS coarse</source>
       <translation>UTS груби навој</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="71"/>
+      <location filename="../../TaskHoleParameters.cpp" line="74"/>
       <source>UTS fine</source>
       <translation>UTS фини навој</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="72"/>
+      <location filename="../../TaskHoleParameters.cpp" line="75"/>
       <source>UTS extra fine</source>
       <translation>UTS екстра фини навој</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="73"/>
+      <location filename="../../TaskHoleParameters.cpp" line="76"/>
       <source>ANSI pipes</source>
       <translation>ANSI цевни навоји</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="74"/>
+      <location filename="../../TaskHoleParameters.cpp" line="77"/>
       <source>ISO/BSP pipes</source>
       <translation>ISO/BSP цевни навоји</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="75"/>
+      <location filename="../../TaskHoleParameters.cpp" line="78"/>
       <source>BSW whitworth</source>
       <translation>BSF Витвортов навој</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="76"/>
+      <location filename="../../TaskHoleParameters.cpp" line="79"/>
       <source>BSF whitworth fine</source>
       <translation>BSF Витвортов фини навој</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="77"/>
+      <location filename="../../TaskHoleParameters.cpp" line="80"/>
       <source>ISO tyre valves</source>
       <translation>ISO вентили гума</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="671"/>
+      <location filename="../../TaskHoleParameters.cpp" line="674"/>
       <source>Medium</source>
       <comment>Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible</comment>
       <translation>Средњи</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="672"/>
+      <location filename="../../TaskHoleParameters.cpp" line="675"/>
       <source>Fine</source>
       <comment>Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible</comment>
       <translation>Фини</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="673"/>
+      <location filename="../../TaskHoleParameters.cpp" line="676"/>
       <source>Coarse</source>
       <comment>Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible</comment>
       <translation>Груби</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="676"/>
+      <location filename="../../TaskHoleParameters.cpp" line="679"/>
       <source>Normal</source>
       <comment>Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible</comment>
       <translation>Обичне</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="677"/>
+      <location filename="../../TaskHoleParameters.cpp" line="680"/>
       <source>Close</source>
       <comment>Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible</comment>
       <translation>Затвори</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="678"/>
+      <location filename="../../TaskHoleParameters.cpp" line="681"/>
       <source>Loose</source>
       <comment>Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible</comment>
       <translation>Лабав</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="681"/>
+      <location filename="../../TaskHoleParameters.cpp" line="684"/>
       <source>Normal</source>
       <comment>Distance between thread crest and hole wall</comment>
       <translation>Обичне</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="682"/>
+      <location filename="../../TaskHoleParameters.cpp" line="685"/>
       <source>Close</source>
       <comment>Distance between thread crest and hole wall</comment>
       <translation>Затвори</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="683"/>
+      <location filename="../../TaskHoleParameters.cpp" line="686"/>
       <source>Wide</source>
       <comment>Distance between thread crest and hole wall</comment>
       <translation>Широк</translation>
@@ -2386,43 +2386,38 @@ Please adjust the parameters and try again.</source>
       <translation>Правац</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="527"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="541"/>
       <source>Set a direction or select an edge
 from the model as reference</source>
       <translation>Подеси правац или изаберите ивицу
 из модела као референтну</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="532"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="546"/>
       <source>Sketch normal</source>
       <translation>Нормала на скицу</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="542"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="556"/>
       <source>Custom direction</source>
       <translation>Сопствени смер</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="552"/>
-      <source>Show direction</source>
-      <translation>Прикажи смер</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="562"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="569"/>
       <source>Use custom vector for pad direction, otherwise
 the sketch plane's normal vector will be used</source>
       <translation>Користи сопствени вектор извлачења, у супротном
 ће бити употребљена нормала на скицу</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="671"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="521"/>
       <source>If unchecked, the length will be
 measured along the specified direction</source>
       <translation>Ако није потврђено, дужина ће бити
 мерена дуж задатог правца</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="675"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="525"/>
       <source>Length along sketch normal</source>
       <translation>Дужина дуж нормале на скицу</translation>
     </message>
@@ -2438,42 +2433,42 @@ measured along the specified direction</source>
       <translation>Обрнути смер</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="520"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="534"/>
       <source>Direction/edge</source>
       <translation>Смер/ивица</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="537"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="551"/>
       <source>Select reference…</source>
       <translation>Изабери референцу…</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="575"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="582"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="582"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="589"/>
       <source>X-component of direction vector</source>
       <translation>Х компонента вектора правца</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="604"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="611"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="611"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="618"/>
       <source>Y-component of direction vector</source>
       <translation>Y компонента вектора правца</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="633"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="640"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="640"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="647"/>
       <source>Z-component of direction vector</source>
       <translation>Z компонента вектора правца</translation>
     </message>
@@ -2512,7 +2507,7 @@ measured along the specified direction</source>
       <translation>Изабери све странице облика</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="685"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="678"/>
       <source>Recompute on change</source>
       <translation>Прерачунај приликом промене</translation>
     </message>
@@ -3194,11 +3189,11 @@ measured along the specified direction</source>
       <translation>Нема важећих равни у овом документу</translation>
     </message>
     <message>
+      <location filename="../../ViewProviderDatum.cpp" line="248"/>
       <location filename="../../ViewProvider.cpp" line="134"/>
-      <location filename="../../SketchWorkflow.cpp" line="704"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="94"/>
       <location filename="../../Command.cpp" line="1020"/>
-      <location filename="../../ViewProviderDatum.cpp" line="248"/>
+      <location filename="../../SketchWorkflow.cpp" line="704"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Дијалог је већ отворен у панелу задатака</translation>
     </message>
@@ -3238,11 +3233,11 @@ measured along the specified direction</source>
       <translation>У документу није доступна скица</translation>
     </message>
     <message>
+      <location filename="../../ViewProviderDatum.cpp" line="249"/>
       <location filename="../../ViewProvider.cpp" line="135"/>
-      <location filename="../../SketchWorkflow.cpp" line="705"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="95"/>
       <location filename="../../Command.cpp" line="1021"/>
-      <location filename="../../ViewProviderDatum.cpp" line="249"/>
+      <location filename="../../SketchWorkflow.cpp" line="705"/>
       <source>Close this dialog?</source>
       <translation>Затвори овај дијалог?</translation>
     </message>
@@ -3536,10 +3531,10 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
       <translation>Да би користио овај типски облик, он мора да припада делу у документу.</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="91"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="208"/>
       <location filename="../../ViewProviderDressUp.cpp" line="63"/>
       <location filename="../../ViewProviderTransformed.cpp" line="64"/>
+      <location filename="../../ViewProvider.cpp" line="91"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="208"/>
       <source>Edit %1</source>
       <translation>Уреди %1</translation>
     </message>
@@ -4482,20 +4477,20 @@ over 90: larger hole radius at the bottom</source>
       <translation>Почетни типски облик је празан</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2194"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="116"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="690"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="703"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="713"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="171"/>
+      <location filename="../../../App/FeatureDraft.cpp" line="293"/>
       <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="231"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="116"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2194"/>
       <location filename="../../../App/FeatureLoft.cpp" line="272"/>
       <location filename="../../../App/FeatureLoft.cpp" line="307"/>
       <location filename="../../../App/FeaturePipe.cpp" line="400"/>
       <location filename="../../../App/FeaturePipe.cpp" line="439"/>
-      <location filename="../../../App/FeatureChamfer.cpp" line="171"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="234"/>
-      <location filename="../../../App/FeatureDraft.cpp" line="293"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="231"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="690"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="703"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="713"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation type="unfinished">Result has multiple solids: enable 'Allow Compound' in the active body.</translation>
     </message>
@@ -4531,10 +4526,10 @@ over 90: larger hole radius at the bottom</source>
       <translation>Облик добијен унијом је празан.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="682"/>
       <location filename="../../../App/FeatureLoft.cpp" line="301"/>
       <location filename="../../../App/FeaturePipe.cpp" line="433"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="127"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="682"/>
       <source>Resulting shape is not a solid</source>
       <translation>Добијени облик није пуно тело</translation>
     </message>
@@ -4544,8 +4539,8 @@ over 90: larger hole radius at the bottom</source>
       <translation>Обарање ивица није успело</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureFillet.cpp" line="99"/>
       <location filename="../../../App/FeatureDraft.cpp" line="289"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="99"/>
       <source>Resulting shape is null</source>
       <translation>Добијени облик је празан</translation>
     </message>
@@ -4611,9 +4606,9 @@ over 90: larger hole radius at the bottom</source>
       <translation>Прављење није успело пошто правац заклапа угао од 90° са вектором нормале скице</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="446"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="138"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="141"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="138"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="446"/>
       <source>Creating a face from sketch failed</source>
       <translation>Прављење страница помоћу скице није успело</translation>
     </message>
@@ -4623,20 +4618,20 @@ over 90: larger hole radius at the bottom</source>
       <translation>Углови кружног удубљења поништавају један другог</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureGroove.cpp" line="154"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="157"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="154"/>
       <source>Revolve axis intersects the sketch</source>
       <translation>Оса обртања пресеца скицу</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureGroove.cpp" line="238"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="241"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="238"/>
       <source>Could not revolve the sketch!</source>
       <translation>Није могуће обрнути скицу!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureGroove.cpp" line="250"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="253"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="250"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>Није могуће направити странице помоћу скице.
@@ -5088,8 +5083,8 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <translation>Углови обртања поништавају један другог</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureGroove.cpp" line="131"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="134"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="131"/>
       <source>Reference axis is invalid</source>
       <translation>Референтна оса је неисправна</translation>
     </message>
@@ -5202,12 +5197,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>CmdPartDesignCompDatums</name>
     <message>
-      <location filename="../../Command.cpp" line="2378"/>
+      <location filename="../../Command.cpp" line="2380"/>
       <source>Create Datum</source>
       <translation>Направи помоћне елементе</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2379"/>
+      <location filename="../../Command.cpp" line="2381"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>Направи помоћне елементе или локални координатни систем</translation>
     </message>
@@ -5215,12 +5210,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>CmdPartDesignCompSketches</name>
     <message>
-      <location filename="../../Command.cpp" line="2413"/>
+      <location filename="../../Command.cpp" line="2415"/>
       <source>Create Datum</source>
       <translation>Направи помоћне елементе</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2414"/>
+      <location filename="../../Command.cpp" line="2416"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>Направи помоћне елементе или локални координатни систем</translation>
     </message>

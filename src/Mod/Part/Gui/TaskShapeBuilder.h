@@ -30,10 +30,10 @@
 #include <Gui/TaskView/TaskView.h>
 
 
-namespace PartGui {
+namespace PartGui
+{
 
-class ShapeBuilderWidget : public QWidget,
-                           public Gui::SelectionObserver
+class ShapeBuilderWidget: public QWidget, public Gui::SelectionObserver
 {
     Q_OBJECT
 
@@ -59,14 +59,14 @@ private:
     void createFaceFromEdge();
     void createShellFromFace();
     void createSolidFromShell();
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
 
 private:
     class Private;
     Private* d;
 };
 
-class TaskShapeBuilder : public Gui::TaskView::TaskDialog
+class TaskShapeBuilder: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
@@ -81,12 +81,14 @@ public:
     void clicked(int) override;
 
     QDialogButtonBox::StandardButtons getStandardButtons() const override
-    { return QDialogButtonBox::Close; }
+    {
+        return QDialogButtonBox::Close;
+    }
 
 private:
     ShapeBuilderWidget* widget;
 };
 
-} //namespace PartGui
+}  // namespace PartGui
 
-#endif // PARTGUI_TASKSHAPEBUILDER_H
+#endif  // PARTGUI_TASKSHAPEBUILDER_H

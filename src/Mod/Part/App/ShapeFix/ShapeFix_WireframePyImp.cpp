@@ -36,7 +36,7 @@ std::string ShapeFix_WireframePy::representation() const
     return "<ShapeFix_Wireframe object>";
 }
 
-PyObject *ShapeFix_WireframePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject* ShapeFix_WireframePy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     return new ShapeFix_WireframePy(nullptr);
 }
@@ -45,11 +45,14 @@ PyObject *ShapeFix_WireframePy::PyMake(struct _typeobject *, PyObject *, PyObjec
 int ShapeFix_WireframePy::PyInit(PyObject* args, PyObject* /*kwds*/)
 {
     PyObject* shape = nullptr;
-    if (!PyArg_ParseTuple(args, "|O!", &TopoShapePy::Type, &shape))
+    if (!PyArg_ParseTuple(args, "|O!", &TopoShapePy::Type, &shape)) {
         return -1;
+    }
 
     if (shape) {
-        setHandle(new ShapeFix_Wireframe(static_cast<TopoShapePy*>(shape)->getTopoShapePtr()->getShape()));
+        setHandle(
+            new ShapeFix_Wireframe(static_cast<TopoShapePy*>(shape)->getTopoShapePtr()->getShape())
+        );
     }
     else {
         setHandle(new ShapeFix_Wireframe());
@@ -58,47 +61,52 @@ int ShapeFix_WireframePy::PyInit(PyObject* args, PyObject* /*kwds*/)
     return 0;
 }
 
-PyObject* ShapeFix_WireframePy::load(PyObject *args)
+PyObject* ShapeFix_WireframePy::load(PyObject* args)
 {
     PyObject* shape;
-    if (!PyArg_ParseTuple(args, "O!", &TopoShapePy::Type, &shape))
+    if (!PyArg_ParseTuple(args, "O!", &TopoShapePy::Type, &shape)) {
         return nullptr;
+    }
 
     getShapeFix_WireframePtr()->Load(static_cast<TopoShapePy*>(shape)->getTopoShapePtr()->getShape());
     Py_Return;
 }
 
-PyObject* ShapeFix_WireframePy::clearStatuses(PyObject *args)
+PyObject* ShapeFix_WireframePy::clearStatuses(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     getShapeFix_WireframePtr()->ClearStatuses();
     Py_Return;
 }
 
-PyObject* ShapeFix_WireframePy::fixWireGaps(PyObject *args)
+PyObject* ShapeFix_WireframePy::fixWireGaps(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     bool ok = getShapeFix_WireframePtr()->FixWireGaps();
     return Py::new_reference_to(Py::Boolean(ok));
 }
 
-PyObject* ShapeFix_WireframePy::fixSmallEdges(PyObject *args)
+PyObject* ShapeFix_WireframePy::fixSmallEdges(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     bool ok = getShapeFix_WireframePtr()->FixSmallEdges();
     return Py::new_reference_to(Py::Boolean(ok));
 }
 
-PyObject* ShapeFix_WireframePy::shape(PyObject *args)
+PyObject* ShapeFix_WireframePy::shape(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     TopoShape sh = getShapeFix_WireframePtr()->Shape();
     return sh.getPyObject();
@@ -124,7 +132,7 @@ void ShapeFix_WireframePy::setLimitAngle(Py::Float arg)
     getShapeFix_WireframePtr()->SetLimitAngle(arg);
 }
 
-PyObject *ShapeFix_WireframePy::getCustomAttributes(const char* /*attr*/) const
+PyObject* ShapeFix_WireframePy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }

@@ -10,6 +10,7 @@ __author__ = "Werner Mayer <wmayer[at]users.sourceforge.net>"
 
 import math
 
+
 # 3d vector class
 class Vector:
     def __init__(self, x, y, z):
@@ -18,25 +19,26 @@ class Vector:
         self.z = z
 
     def add(self, vec):
-        return Vector(self.x+vec.x, self.y+vec.y, self.z+vec.z)
+        return Vector(self.x + vec.x, self.y + vec.y, self.z + vec.z)
 
     def sub(self, vec):
-        return Vector(self.x-vec.x, self.y-vec.y, self.z-vec.z)
+        return Vector(self.x - vec.x, self.y - vec.y, self.z - vec.z)
 
     def dot(self, vec):
-        return self.x*vec.x+self.y*vec.y+self.z*vec.z
+        return self.x * vec.x + self.y * vec.y + self.z * vec.z
 
     def mult(self, s):
-        return Vector(self.x*s, self.y*s, self.z*s)
+        return Vector(self.x * s, self.y * s, self.z * s)
 
-    def cross(self,vec):
+    def cross(self, vec):
         return Vector(
             self.y * vec.z - self.z * vec.y,
             self.z * vec.x - self.x * vec.z,
-            self.x * vec.y - self.y * vec.x)
+            self.x * vec.y - self.y * vec.x,
+        )
 
     def length(self):
-        return math.sqrt(self.x*self.x+self.y*self.y+self.z*self.z)
+        return math.sqrt(self.x * self.x + self.y * self.y + self.z * self.z)
 
     def norm(self):
         l = self.length()
@@ -67,7 +69,7 @@ def sgn(val):
 # ccw ... counter-clockwise means which part of the arc is given. ccw must be either True or False
 
 
-def makeFilletArc(M1,P,Q,N,r2,ccw):
+def makeFilletArc(M1, P, Q, N, r2, ccw):
     u = Q.sub(P)
     v = P.sub(M1)
     if ccw:
@@ -83,14 +85,14 @@ def makeFilletArc(M1,P,Q,N,r2,ccw):
     # distinguish between internal and external fillets
     r2 *= sgn(uv)
 
-    cc = 2.0 * r2 * (b.dot(v)-r1)
+    cc = 2.0 * r2 * (b.dot(v) - r1)
     dd = uv * uv - uu * cc
     if dd < 0:
         raise RuntimeError("Unable to calculate intersection points")
     t1 = (-uv + math.sqrt(dd)) / uu
     t2 = (-uv - math.sqrt(dd)) / uu
 
-    if (abs(t1) < abs(t2)):
+    if abs(t1) < abs(t2):
         t = t1
     else:
         t = t2
@@ -100,11 +102,10 @@ def makeFilletArc(M1,P,Q,N,r2,ccw):
     ut = u.mult(t)
     print(ut)
     M2 = P.add(ut).add(br2)
-    S1 = M1.mult(r2/(r1+r2)).add(M2.mult(r1/(r1+r2)))
+    S1 = M1.mult(r2 / (r1 + r2)).add(M2.mult(r1 / (r1 + r2)))
     S2 = M2.sub(br2)
 
     return (S1, S2, M2)
-
 
 
 def test():
@@ -126,6 +127,13 @@ def test():
     Part.show(Part.makeLine(P3, Q))
     Part.show(arc.toShape())
 
-    (S1, S2, M2) = makeArc(Vector(C.x,C.y,C.z), Vector(P3.x,P3.y,P3.z), Vector(Q.x, Q.y, Q.z), Vector(axis.x, axis.y, axis.z), r2, ccw)
+    (S1, S2, M2) = makeArc(
+        Vector(C.x, C.y, C.z),
+        Vector(P3.x, P3.y, P3.z),
+        Vector(Q.x, Q.y, Q.z),
+        Vector(axis.x, axis.y, axis.z),
+        r2,
+        ccw,
+    )
     circle = Part.Circle(Base.Vector(M2.x, M2.y, M2.z), Base.Vector(0, 0, 1), math.fabs(r2))
     Part.show(circle.toShape())

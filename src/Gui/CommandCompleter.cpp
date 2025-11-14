@@ -20,10 +20,10 @@
  *                                                                          *
  ****************************************************************************/
 
-# include <QApplication>
-# include <QKeyEvent>
-# include <QLineEdit>
-# include <QAbstractItemView>
+#include <QApplication>
+#include <QKeyEvent>
+#include <QLineEdit>
+#include <QAbstractItemView>
 
 #include "Application.h"
 #include "ShortcutManager.h"
@@ -34,10 +34,12 @@
 
 using namespace Gui;
 
-namespace {
+namespace
+{
 
-struct CmdInfo {
-    Command *cmd = nullptr;
+struct CmdInfo
+{
+    Command* cmd = nullptr;
     QIcon icon;
     bool iconChecked = false;
 };
@@ -46,7 +48,7 @@ int _CommandRevision;
 const int CommandNameRole = Qt::UserRole;
 bool _ShortcutSignalConnected = false;
 
-class CommandModel : public QAbstractItemModel
+class CommandModel: public QAbstractItemModel
 {
     int revision = 0;
 
@@ -57,94 +59,101 @@ public:
         update();
         if (!_ShortcutSignalConnected) {
             _ShortcutSignalConnected = true;
-            QObject::connect(ShortcutManager::instance(), &ShortcutManager::shortcutChanged, []{_CommandRevision = 0;});
+            QObject::connect(ShortcutManager::instance(), &ShortcutManager::shortcutChanged, [] {
+                _CommandRevision = 0;
+            });
         }
     }
 
     void update()
     {
-        auto &manager = Application::Instance->commandManager();
-        if (revision == _CommandRevision  && _CommandRevision == manager.getRevision())
+        auto& manager = Application::Instance->commandManager();
+        if (revision == _CommandRevision && _CommandRevision == manager.getRevision()) {
             return;
+        }
         beginResetModel();
         revision = manager.getRevision();
         if (revision != _CommandRevision) {
             _CommandRevision = revision;
             _CommandRevision = manager.getRevision();
             _Commands.clear();
-            for (auto &v : manager.getCommands()) {
+            for (auto& v : manager.getCommands()) {
                 _Commands.emplace_back();
-                auto &info = _Commands.back();
+                auto& info = _Commands.back();
                 info.cmd = v.second;
             }
         }
         endResetModel();
     }
 
-    QModelIndex parent(const QModelIndex &) const override
+    QModelIndex parent(const QModelIndex&) const override
     {
         return {};
     }
 
-    QVariant data(const QModelIndex & index, int role) const override
+    QVariant data(const QModelIndex& index, int role) const override
     {
-        if (index.row() < 0 || index.row() >= (int)_Commands.size())
+        if (index.row() < 0 || index.row() >= (int)_Commands.size()) {
             return {};
-
-        auto &info = _Commands[index.row()];
-
-        switch(role) {
-        case Qt::DisplayRole:
-        case Qt::EditRole: {
-            QString title = QStringLiteral("%1 (%2)").arg(
-                    Action::commandMenuText(info.cmd),
-                    QString::fromUtf8(info.cmd->getName()));
-            QString shortcut = info.cmd->getShortcut();
-            if (!shortcut.isEmpty())
-                title += QStringLiteral(" (%1)").arg(shortcut);
-            return title;
         }
-        case Qt::ToolTipRole:
-            return Action::commandToolTip(info.cmd);
 
-        case Qt::DecorationRole:
-            if (!info.iconChecked) {
-                info.iconChecked = true;
-                if(info.cmd->getPixmap())
-                    info.icon = BitmapFactory().iconFromTheme(info.cmd->getPixmap());
+        auto& info = _Commands[index.row()];
+
+        switch (role) {
+            case Qt::DisplayRole:
+            case Qt::EditRole: {
+                QString title = QStringLiteral("%1 (%2)").arg(
+                    Action::commandMenuText(info.cmd),
+                    QString::fromUtf8(info.cmd->getName())
+                );
+                QString shortcut = info.cmd->getShortcut();
+                if (!shortcut.isEmpty()) {
+                    title += QStringLiteral(" (%1)").arg(shortcut);
+                }
+                return title;
             }
-            return info.icon;
+            case Qt::ToolTipRole:
+                return Action::commandToolTip(info.cmd);
 
-        case CommandNameRole:
-            return QByteArray(info.cmd->getName());
+            case Qt::DecorationRole:
+                if (!info.iconChecked) {
+                    info.iconChecked = true;
+                    if (info.cmd->getPixmap()) {
+                        info.icon = BitmapFactory().iconFromTheme(info.cmd->getPixmap());
+                    }
+                }
+                return info.icon;
 
-        default:
-            break;
+            case CommandNameRole:
+                return QByteArray(info.cmd->getName());
+
+            default:
+                break;
         }
         return {};
     }
 
-    QModelIndex index(int row, int, const QModelIndex &) const override
+    QModelIndex index(int row, int, const QModelIndex&) const override
     {
         return this->createIndex(row, 0);
     }
 
-    int rowCount(const QModelIndex &) const override
+    int rowCount(const QModelIndex&) const override
     {
         return (int)(_Commands.size());
     }
 
-    int columnCount(const QModelIndex &) const override
+    int columnCount(const QModelIndex&) const override
     {
         return 1;
     }
 };
 
-} // anonymous namespace
+}  // anonymous namespace
 
 // --------------------------------------------------------------------
 
-CommandCompleter::CommandCompleter(QLineEdit *lineedit, QObject *parent)
+CommandCompleter::CommandCompleter(QLineEdit* lineedit, QObject* parent)
     : QCompleter(parent)
 {
     this->setModel(new CommandModel(this));
@@ -153,84 +162,90 @@ CommandCompleter::CommandCompleter(QLineEdit *lineedit, QObject *parent)
     this->setCompletionMode(QCompleter::PopupCompletion);
     this->setWidget(lineedit);
     connect(lineedit, &QLineEdit::textEdited, this, &CommandCompleter::onTextChanged);
-    connect(this, qOverload<const QModelIndex&>(&CommandCompleter::activated),
-            this, &CommandCompleter::onCommandActivated);
-    connect(this, qOverload<const QString&>(&CommandCompleter::highlighted),
-            lineedit, &QLineEdit::setText);
+    connect(
+        this,
+        qOverload<const QModelIndex&>(&CommandCompleter::activated),
+        this,
+        &CommandCompleter::onCommandActivated
+    );
+    connect(this, qOverload<const QString&>(&CommandCompleter::highlighted), lineedit, &QLineEdit::setText);
 }
 
-bool CommandCompleter::eventFilter(QObject *o, QEvent *ev)
+bool CommandCompleter::eventFilter(QObject* o, QEvent* ev)
 {
-    if (ev->type() == QEvent::KeyPress
-            && (o == this->widget() || o == this->popup()))
-    {
-        QKeyEvent * ke = static_cast<QKeyEvent*>(ev);
-        switch(ke->key()) {
-        case Qt::Key_Escape: {
-            auto edit = qobject_cast<QLineEdit*>(this->widget());
-            if (edit && edit->text().size()) {
-                edit->setText(QString());
-                popup()->hide();
-                return true;
-            } else if (popup()->isVisible()) {
-                popup()->hide();
-                return true;
+    if (ev->type() == QEvent::KeyPress && (o == this->widget() || o == this->popup())) {
+        QKeyEvent* ke = static_cast<QKeyEvent*>(ev);
+        switch (ke->key()) {
+            case Qt::Key_Escape: {
+                auto edit = qobject_cast<QLineEdit*>(this->widget());
+                if (edit && edit->text().size()) {
+                    edit->setText(QString());
+                    popup()->hide();
+                    return true;
+                }
+                else if (popup()->isVisible()) {
+                    popup()->hide();
+                    return true;
+                }
+                break;
             }
-            break;
-        }
-        case Qt::Key_Tab: {
-            if (this->popup()->isVisible()) {
-                QKeyEvent kevent(ke->type(), Qt::Key_Down, Qt::NoModifier);
-                qApp->sendEvent(this->popup(), &kevent);
-                return true;
+            case Qt::Key_Tab: {
+                if (this->popup()->isVisible()) {
+                    QKeyEvent kevent(ke->type(), Qt::Key_Down, Qt::NoModifier);
+                    qApp->sendEvent(this->popup(), &kevent);
+                    return true;
+                }
+                break;
             }
-            break;
-        }
-        case Qt::Key_Backtab: {
-            if (this->popup()->isVisible()) {
-                QKeyEvent kevent(ke->type(), Qt::Key_Up, Qt::NoModifier);
-                qApp->sendEvent(this->popup(), &kevent);
-                return true;
+            case Qt::Key_Backtab: {
+                if (this->popup()->isVisible()) {
+                    QKeyEvent kevent(ke->type(), Qt::Key_Up, Qt::NoModifier);
+                    qApp->sendEvent(this->popup(), &kevent);
+                    return true;
+                }
+                break;
             }
-            break;
-        }
-        case Qt::Key_Enter:
-        case Qt::Key_Return:
-            if (o == this->widget()) {
-                auto index = currentIndex();
-                if (index.isValid())
-                    onCommandActivated(index);
-                else
-                    complete();
-                ev->setAccepted(true);
-                return true;
-            }
-        default:
-            break;
+            case Qt::Key_Enter:
+            case Qt::Key_Return:
+                if (o == this->widget()) {
+                    auto index = currentIndex();
+                    if (index.isValid()) {
+                        onCommandActivated(index);
+                    }
+                    else {
+                        complete();
+                    }
+                    ev->setAccepted(true);
+                    return true;
+                }
+            default:
+                break;
         }
     }
     return QCompleter::eventFilter(o, ev);
 }
 
-void CommandCompleter::onCommandActivated(const QModelIndex &index)
+void CommandCompleter::onCommandActivated(const QModelIndex& index)
 {
     QByteArray name = completionModel()->data(index, CommandNameRole).toByteArray();
     Q_EMIT commandActivated(name);
 }
 
-void CommandCompleter::onTextChanged(const QString &txt)
+void CommandCompleter::onTextChanged(const QString& txt)
 {
     // Do not activate completer if less than 3 characters for better
     // performance.
-    if (txt.size() < 3 || !widget())
+    if (txt.size() < 3 || !widget()) {
         return;
+    }
 
     static_cast<CommandModel*>(this->model())->update();
 
     this->setCompletionPrefix(txt);
     QRect rect = widget()->rect();
-    if (rect.width() < 300)
+    if (rect.width() < 300) {
         rect.setWidth(300);
+    }
     this->complete(rect);
 }
 

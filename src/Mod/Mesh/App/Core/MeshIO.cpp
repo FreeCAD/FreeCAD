@@ -349,8 +349,7 @@ bool MeshInput::LoadSTL(std::istream& input)
 
     try {
         if (!strstr(szBuf, "SOLID") && !strstr(szBuf, "FACET") && !strstr(szBuf, "NORMAL")
-            && !strstr(szBuf, "VERTEX") && !strstr(szBuf, "ENDFACET")
-            && !strstr(szBuf, "ENDLOOP")) {
+            && !strstr(szBuf, "VERTEX") && !strstr(szBuf, "ENDFACET") && !strstr(szBuf, "ENDLOOP")) {
             // probably binary STL
             buf->pubseekoff(0, std::ios::beg, std::ios::in);
             return LoadBinarySTL(input);
@@ -415,12 +414,16 @@ bool MeshInput::LoadOBJ(std::istream& input, const char* filename)
 /** Loads an SMF file. */
 bool MeshInput::LoadSMF(std::istream& input)
 {
-    boost::regex rx_p("^v\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
-                      "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
-                      "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)\\s*$");
-    boost::regex rx_f3("^f\\s+([-+]?[0-9]+)"
-                       "\\s+([-+]?[0-9]+)"
-                       "\\s+([-+]?[0-9]+)\\s*$");
+    boost::regex rx_p(
+        "^v\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+        "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+        "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)\\s*$"
+    );
+    boost::regex rx_f3(
+        "^f\\s+([-+]?[0-9]+)"
+        "\\s+([-+]?[0-9]+)"
+        "\\s+([-+]?[0-9]+)\\s*$"
+    );
     boost::cmatch what;
 
     unsigned long segment = 0;
@@ -666,9 +669,11 @@ bool MeshInput::LoadPLY(std::istream& input)
 
 bool MeshInput::LoadMeshNode(std::istream& input)
 {
-    boost::regex rx_p("^v\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
-                      "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
-                      "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)\\s*$");
+    boost::regex rx_p(
+        "^v\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+        "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+        "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)\\s*$"
+    );
     boost::regex rx_f(R"(^f\s+([0-9]+)\s+([0-9]+)\s+([0-9]+)\s*$)");
     boost::regex rx_e("\\s*]\\s*");
     boost::cmatch what;
@@ -723,12 +728,16 @@ bool MeshInput::LoadMeshNode(std::istream& input)
 /** Loads an ASCII STL file. */
 bool MeshInput::LoadAsciiSTL(std::istream& input)
 {
-    boost::regex rx_p("^\\s*VERTEX\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
-                      "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
-                      "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)\\s*$");
-    boost::regex rx_f("^\\s*FACET\\s+NORMAL\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
-                      "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
-                      "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)\\s*$");
+    boost::regex rx_p(
+        "^\\s*VERTEX\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+        "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+        "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)\\s*$"
+    );
+    boost::regex rx_f(
+        "^\\s*FACET\\s+NORMAL\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+        "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+        "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)\\s*$"
+    );
     boost::cmatch what;
 
     std::string line;
@@ -938,21 +947,21 @@ bool MeshInput::LoadInventor(std::istream& input)
 
     MeshPointArray meshPoints;
     meshPoints.reserve(points.size());
-    std::transform(points.begin(),
-                   points.end(),
-                   std::back_inserter(meshPoints),
-                   [](const Base::Vector3f& v) {
-                       return MeshPoint(v);
-                   });
+    std::transform(
+        points.begin(),
+        points.end(),
+        std::back_inserter(meshPoints),
+        [](const Base::Vector3f& v) { return MeshPoint(v); }
+    );
 
     MeshFacetArray meshFacets;
     meshFacets.reserve(faces.size());
-    std::transform(faces.begin(),
-                   faces.end(),
-                   std::back_inserter(meshFacets),
-                   [](const Base::InventorLoader::Face& f) {
-                       return MeshFacet(f.p1, f.p2, f.p3);
-                   });
+    std::transform(
+        faces.begin(),
+        faces.end(),
+        std::back_inserter(meshFacets),
+        [](const Base::InventorLoader::Face& f) { return MeshFacet(f.p1, f.p2, f.p3); }
+    );
 
     MeshCleanup meshCleanup(meshPoints, meshFacets);
     meshCleanup.RemoveInvalids();
@@ -976,10 +985,14 @@ bool MeshInput::LoadNastran(std::istream& input)
         return false;
     }
 
-    boost::regex rx_t("\\s*CTRIA3\\s+([0-9]+)\\s+([0-9]+)"
-                      "\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s*");
-    boost::regex rx_q("\\s*CQUAD4\\s+([0-9]+)\\s+([0-9]+)"
-                      "\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s*");
+    boost::regex rx_t(
+        "\\s*CTRIA3\\s+([0-9]+)\\s+([0-9]+)"
+        "\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s*"
+    );
+    boost::regex rx_q(
+        "\\s*CQUAD4\\s+([0-9]+)\\s+([0-9]+)"
+        "\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s*"
+    );
     boost::cmatch what;
 
     std::string line;
@@ -1049,8 +1062,7 @@ bool MeshInput::LoadNastran(std::istream& input)
                 badElementCounter++;
                 continue;
             }
-            index =
-                indexCheck.get() - 1;  // Minus one so we are zero-indexed to match existing code
+            index = indexCheck.get() - 1;  // Minus one so we are zero-indexed to match existing code
 
             // Get the high-precision versions first
             auto x = boost::convert<double>(xString, converter);
@@ -1070,10 +1082,12 @@ bool MeshInput::LoadNastran(std::istream& input)
         }
         else if (line.rfind("GRID", 0) == 0) {
 
-            boost::regex rx_spaceDelimited("\\s*GRID\\s+([0-9]+)"
-                                           "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
-                                           "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
-                                           "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)\\s*");
+            boost::regex rx_spaceDelimited(
+                "\\s*GRID\\s+([0-9]+)"
+                "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+                "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+                "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)\\s*"
+            );
 
             if (boost::regex_match(line.c_str(), what, rx_spaceDelimited)) {
                 // insert the read-in vertex into a map to preserve the order
@@ -1159,7 +1173,8 @@ bool MeshInput::LoadNastran(std::istream& input)
         for (int i : tri.second.iV) {
             if (mNode.find(i) == mNode.end()) {
                 Base::Console().error(
-                    "CTRIA3 element refers to a node that does not exist, or could not be read.\n");
+                    "CTRIA3 element refers to a node that does not exist, or could not be read.\n"
+                );
                 return false;
             }
         }
@@ -1170,7 +1185,8 @@ bool MeshInput::LoadNastran(std::istream& input)
         for (int i : quad.second.iV) {
             if (mNode.find(i) == mNode.end()) {
                 Base::Console().error(
-                    "CQUAD4 element refers to a node that does not exist, or could not be read.\n");
+                    "CQUAD4 element refers to a node that does not exist, or could not be read.\n"
+                );
                 return false;
             }
         }
@@ -1803,10 +1819,12 @@ bool MeshOutput::SaveAsymptote(std::ostream& out) const
 
     const MeshPointArray& rPoints = _rclMesh.GetPoints();
     const MeshFacetArray& rFacets = _rclMesh.GetFacets();
-    bool saveVertexColor = (_material && _material->binding == MeshIO::PER_VERTEX
-                            && _material->diffuseColor.size() == rPoints.size());
-    bool saveFaceColor = (_material && _material->binding == MeshIO::PER_FACE
-                          && _material->diffuseColor.size() == rFacets.size());
+    bool saveVertexColor
+        = (_material && _material->binding == MeshIO::PER_VERTEX
+           && _material->diffuseColor.size() == rPoints.size());
+    bool saveFaceColor
+        = (_material && _material->binding == MeshIO::PER_FACE
+           && _material->diffuseColor.size() == rFacets.size());
     // global mesh color
     Base::Color mc(0.8F, 0.8F, 0.8F);
     if (_material && _material->binding == MeshIO::OVERALL && _material->diffuseColor.size() == 1) {
@@ -1869,13 +1887,14 @@ bool MeshOutput::SaveOFF(std::ostream& out) const
     bool exportColor = false;
     if (_material) {
         if (_material->binding == MeshIO::PER_FACE) {
-            Base::Console().warning(
-                "Cannot export color information because it's defined per face");
+            Base::Console().warning("Cannot export color information because it's defined per face");
         }
         else if (_material->binding == MeshIO::PER_VERTEX) {
             if (_material->diffuseColor.size() != rPoints.size()) {
-                Base::Console().warning("Cannot export color information because there is a "
-                                        "different number of points and colors");
+                Base::Console().warning(
+                    "Cannot export color information because there is a "
+                    "different number of points and colors"
+                );
             }
             else {
                 exportColor = true;
@@ -1884,7 +1903,8 @@ bool MeshOutput::SaveOFF(std::ostream& out) const
         else if (_material->binding == MeshIO::OVERALL) {
             if (_material->diffuseColor.empty()) {
                 Base::Console().warning(
-                    "Cannot export color information because there is no color defined");
+                    "Cannot export color information because there is no color defined"
+                );
             }
             else {
                 exportColor = true;
@@ -1936,8 +1956,7 @@ bool MeshOutput::SaveOFF(std::ostream& out) const
 
     // facet indices (no texture and normal indices)
     for (const auto& it : rFacets) {
-        out << "3 " << it._aulPoints[0] << " " << it._aulPoints[1] << " " << it._aulPoints[2]
-            << '\n';
+        out << "3 " << it._aulPoints[0] << " " << it._aulPoints[1] << " " << it._aulPoints[2] << '\n';
         seq.next(true);  // allow one to cancel
     }
 
@@ -1953,8 +1972,9 @@ bool MeshOutput::SaveBinaryPLY(std::ostream& out) const
     if (!out || out.bad()) {
         return false;
     }
-    bool saveVertexColor = (_material && _material->binding == MeshIO::PER_VERTEX
-                            && _material->diffuseColor.size() == rPoints.size());
+    bool saveVertexColor
+        = (_material && _material->binding == MeshIO::PER_VERTEX
+           && _material->diffuseColor.size() == rPoints.size());
     out << "ply\n"
         << "format binary_little_endian 1.0\n"
         << "comment Created by FreeCAD <https://www.freecad.org>\n"
@@ -2015,8 +2035,9 @@ bool MeshOutput::SaveAsciiPLY(std::ostream& out) const
         return false;
     }
 
-    bool saveVertexColor = (_material && _material->binding == MeshIO::PER_VERTEX
-                            && _material->diffuseColor.size() == rPoints.size());
+    bool saveVertexColor
+        = (_material && _material->binding == MeshIO::PER_VERTEX
+           && _material->diffuseColor.size() == rPoints.size());
     out << "ply\n"
         << "format ascii 1.0\n"
         << "comment Created by FreeCAD <https://www.freecad.org>\n"
@@ -2121,8 +2142,7 @@ void MeshOutput::SaveXML(Base::Writer& writer) const
     //  writer << writer.ind() << "<Mesh>" << '\n';
 
     writer.incInd();
-    writer.Stream() << writer.ind() << "<Points Count=\"" << _rclMesh.CountPoints() << "\">"
-                    << '\n';
+    writer.Stream() << writer.ind() << "<Points Count=\"" << _rclMesh.CountPoints() << "\">" << '\n';
 
     writer.incInd();
     if (this->apply_transform) {
@@ -2365,10 +2385,12 @@ bool MeshOutput::SaveX3DContent(std::ostream& out, bool exportViewpoints) const
             mat = _material->diffuseColor.front();
         }
     }
-    bool saveVertexColor = (_material && _material->binding == MeshIO::PER_VERTEX
-                            && _material->diffuseColor.size() == pts.size());
-    bool saveFaceColor = (_material && _material->binding == MeshIO::PER_FACE
-                          && _material->diffuseColor.size() == fts.size());
+    bool saveVertexColor
+        = (_material && _material->binding == MeshIO::PER_VERTEX
+           && _material->diffuseColor.size() == pts.size());
+    bool saveFaceColor
+        = (_material && _material->binding == MeshIO::PER_FACE
+           && _material->diffuseColor.size() == fts.size());
 
     Base::SequencerLauncher seq("Saving...", _rclMesh.CountFacets() + 1);
     out.precision(6);
@@ -2389,11 +2411,13 @@ bool MeshOutput::SaveX3DContent(std::ostream& out, bool exportViewpoints) const
     out << "  <Scene>\n";
 
     if (exportViewpoints) {
-        auto viewpoint = [&out](const char* text,
-                                const Base::Vector3f& cnt,
-                                const Base::Vector3f& pos,
-                                const Base::Vector3f& axis,
-                                float angle) {
+        auto viewpoint = [&out](
+                             const char* text,
+                             const Base::Vector3f& cnt,
+                             const Base::Vector3f& pos,
+                             const Base::Vector3f& axis,
+                             float angle
+                         ) {
             out << "    <Viewpoint id=\"" << text << "\" centerOfRotation=\"" << cnt.x << " "
                 << cnt.y << " " << cnt.z << "\" position=\"" << pos.x << " " << pos.y << " "
                 << pos.z << "\" orientation=\"" << axis.x << " " << axis.y << " " << axis.z << " "
@@ -2405,41 +2429,55 @@ bool MeshOutput::SaveX3DContent(std::ostream& out, bool exportViewpoints) const
         float dist = 1.2F * bbox.CalcDiagonalLength();
         float dist3 = 0.577350F * dist;  // sqrt(1/3) * dist
 
-        viewpoint("Iso",
-                  cnt,
-                  Base::Vector3f(cnt.x + dist3, cnt.y - dist3, cnt.z + dist3),
-                  Base::Vector3f(0.742906F, 0.307722F, 0.594473F),
-                  1.21712F);
-        viewpoint("Front",
-                  cnt,
-                  Base::Vector3f(cnt.x, cnt.y - dist, cnt.z),
-                  Base::Vector3f(1.0F, 0.0F, 0.0F),
-                  1.5707964F);
-        viewpoint("Back",
-                  cnt,
-                  Base::Vector3f(cnt.x, cnt.y + dist, cnt.z),
-                  Base::Vector3f(0.0F, 0.707106F, 0.707106F),
-                  3.141592F);
-        viewpoint("Right",
-                  cnt,
-                  Base::Vector3f(cnt.x + dist, cnt.y, cnt.z),
-                  Base::Vector3f(0.577350F, 0.577350F, 0.577350F),
-                  2.094395F);
-        viewpoint("Left",
-                  cnt,
-                  Base::Vector3f(cnt.x - dist, cnt.y, cnt.z),
-                  Base::Vector3f(-0.577350F, 0.577350F, 0.577350F),
-                  4.188790F);
-        viewpoint("Top",
-                  cnt,
-                  Base::Vector3f(cnt.x, cnt.y, cnt.z + dist),
-                  Base::Vector3f(0.0F, 0.0F, 1.0F),
-                  0.0F);
-        viewpoint("Bottom",
-                  cnt,
-                  Base::Vector3f(cnt.x, cnt.y, cnt.z - dist),
-                  Base::Vector3f(1.0F, 0.0F, 0.0F),
-                  3.141592F);
+        viewpoint(
+            "Iso",
+            cnt,
+            Base::Vector3f(cnt.x + dist3, cnt.y - dist3, cnt.z + dist3),
+            Base::Vector3f(0.742906F, 0.307722F, 0.594473F),
+            1.21712F
+        );
+        viewpoint(
+            "Front",
+            cnt,
+            Base::Vector3f(cnt.x, cnt.y - dist, cnt.z),
+            Base::Vector3f(1.0F, 0.0F, 0.0F),
+            1.5707964F
+        );
+        viewpoint(
+            "Back",
+            cnt,
+            Base::Vector3f(cnt.x, cnt.y + dist, cnt.z),
+            Base::Vector3f(0.0F, 0.707106F, 0.707106F),
+            3.141592F
+        );
+        viewpoint(
+            "Right",
+            cnt,
+            Base::Vector3f(cnt.x + dist, cnt.y, cnt.z),
+            Base::Vector3f(0.577350F, 0.577350F, 0.577350F),
+            2.094395F
+        );
+        viewpoint(
+            "Left",
+            cnt,
+            Base::Vector3f(cnt.x - dist, cnt.y, cnt.z),
+            Base::Vector3f(-0.577350F, 0.577350F, 0.577350F),
+            4.188790F
+        );
+        viewpoint(
+            "Top",
+            cnt,
+            Base::Vector3f(cnt.x, cnt.y, cnt.z + dist),
+            Base::Vector3f(0.0F, 0.0F, 1.0F),
+            0.0F
+        );
+        viewpoint(
+            "Bottom",
+            cnt,
+            Base::Vector3f(cnt.x, cnt.y, cnt.z - dist),
+            Base::Vector3f(1.0F, 0.0F, 0.0F),
+            3.141592F
+        );
     }
 
     if (apply_transform) {
@@ -2649,8 +2687,7 @@ bool MeshOutput::SaveVRML(std::ostream& output) const
 
     Base::BoundBox3f clBB = _rclMesh.GetBoundBox();
 
-    Base::SequencerLauncher seq("Saving VRML file...",
-                                _rclMesh.CountPoints() + _rclMesh.CountFacets());
+    Base::SequencerLauncher seq("Saving VRML file...", _rclMesh.CountPoints() + _rclMesh.CountFacets());
 
     output << "#VRML V2.0 utf8\n";
     output << "WorldInfo {\n"
@@ -2819,10 +2856,10 @@ void MeshCleanup::RemoveInvalids()
 void MeshCleanup::RemoveInvalidFacets()
 {
     MeshIsFlag<MeshFacet> flag;
-    std::size_t countInvalidFacets =
-        std::count_if(facetArray.begin(), facetArray.end(), [flag](const MeshFacet& f) {
-            return flag(f, MeshFacet::INVALID);
-        });
+    std::size_t countInvalidFacets
+        = std::count_if(facetArray.begin(), facetArray.end(), [flag](const MeshFacet& f) {
+              return flag(f, MeshFacet::INVALID);
+          });
     if (countInvalidFacets > 0) {
 
         // adjust the material array if needed
@@ -2841,12 +2878,12 @@ void MeshCleanup::RemoveInvalidFacets()
 
         MeshFacetArray copy_facets(facetArray.size() - countInvalidFacets);
         // copy all valid facets to the new array
-        std::remove_copy_if(facetArray.begin(),
-                            facetArray.end(),
-                            copy_facets.begin(),
-                            [flag](const MeshFacet& f) {
-                                return flag(f, MeshFacet::INVALID);
-                            });
+        std::remove_copy_if(
+            facetArray.begin(),
+            facetArray.end(),
+            copy_facets.begin(),
+            [flag](const MeshFacet& f) { return flag(f, MeshFacet::INVALID); }
+        );
         facetArray.swap(copy_facets);
     }
 }
@@ -2854,10 +2891,10 @@ void MeshCleanup::RemoveInvalidFacets()
 void MeshCleanup::RemoveInvalidPoints()
 {
     MeshIsFlag<MeshPoint> flag;
-    std::size_t countInvalidPoints =
-        std::count_if(pointArray.begin(), pointArray.end(), [flag](const MeshPoint& p) {
-            return flag(p, MeshPoint::INVALID);
-        });
+    std::size_t countInvalidPoints
+        = std::count_if(pointArray.begin(), pointArray.end(), [flag](const MeshPoint& p) {
+              return flag(p, MeshPoint::INVALID);
+          });
     if (countInvalidPoints > 0) {
         // generate array of decrements
         std::vector<PointIndex> decrements;
@@ -2900,12 +2937,12 @@ void MeshCleanup::RemoveInvalidPoints()
 
         MeshPointArray copy_points(validPoints);
         // copy all valid facets to the new array
-        std::remove_copy_if(pointArray.begin(),
-                            pointArray.end(),
-                            copy_points.begin(),
-                            [flag](const MeshPoint& p) {
-                                return flag(p, MeshPoint::INVALID);
-                            });
+        std::remove_copy_if(
+            pointArray.begin(),
+            pointArray.end(),
+            copy_points.begin(),
+            [flag](const MeshPoint& p) { return flag(p, MeshPoint::INVALID); }
+        );
         pointArray.swap(copy_points);
     }
 }

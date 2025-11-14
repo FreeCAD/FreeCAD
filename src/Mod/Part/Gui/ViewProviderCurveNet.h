@@ -37,15 +37,17 @@ class SoSeparator;
 class SbVec3f;
 class SoTransform;
 
-namespace Gui {
-  class View3DInventorViewer;
-  class SoFCSelection;
-}
+namespace Gui
+{
+class View3DInventorViewer;
+class SoFCSelection;
+}  // namespace Gui
 
-namespace PartGui {
+namespace PartGui
+{
 
 
-class PartGuiExport ViewProviderCurveNet:public ViewProviderPart
+class PartGuiExport ViewProviderCurveNet: public ViewProviderPart
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderPart);
 
@@ -55,7 +57,7 @@ public:
     /// destructor
     ~ViewProviderCurveNet() override;
 
-    void attach(App::DocumentObject *) override;
+    void attach(App::DocumentObject*) override;
     void setDisplayMode(const char* ModeName) override;
     /// returns a list of all possible modes
     std::vector<std::string> getDisplayModes() const override;
@@ -63,16 +65,18 @@ public:
     /// Update the Part representation
     void updateData(const App::Property*) override;
 
-    virtual bool handleEvent(const SoEvent * const ev,Gui::View3DInventorViewer &Viewer);
+    virtual bool handleEvent(const SoEvent* const ev, Gui::View3DInventorViewer& Viewer);
 
 protected:
     bool setEdit(int ModNum) override;
     void unsetEdit(int ModNum) override;
 
-    struct Node {
-        Gui::SoFCSelection  *pcHighlight;
-        SoTransform    *pcTransform;
-        Node() {
+    struct Node
+    {
+        Gui::SoFCSelection* pcHighlight;
+        SoTransform* pcTransform;
+        Node()
+        {
             pcHighlight = nullptr;
             pcTransform = nullptr;
         }
@@ -80,18 +84,17 @@ protected:
 
     std::list<Node> NodeList;
 
-    bool bInEdit{false};
-    bool bMovePointMode{false};
+    bool bInEdit {false};
+    bool bMovePointMode {false};
     Node PointToMove;
     /// root of the edge and vertex points
-    SoSeparator *EdgeRoot{nullptr}, *VertexRoot{nullptr};
+    SoSeparator *EdgeRoot {nullptr}, *VertexRoot {nullptr};
 
-    Standard_Boolean computeEdges   (SoSeparator* root, const TopoDS_Shape &myShape);
-    Standard_Boolean computeVertices(SoSeparator* root, const TopoDS_Shape &myShape);
+    Standard_Boolean computeEdges(SoSeparator* root, const TopoDS_Shape& myShape);
+    Standard_Boolean computeVertices(SoSeparator* root, const TopoDS_Shape& myShape);
 };
 
-} // namespace PartGui
+}  // namespace PartGui
 
 
-#endif // PARTGUI_VIEWPROVIDERCURVENET_H
-
+#endif  // PARTGUI_VIEWPROVIDERCURVENET_H

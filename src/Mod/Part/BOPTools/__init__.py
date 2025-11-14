@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-#/***************************************************************************
+# /***************************************************************************
 # *   Copyright (c) 2016 Victor Titov (DeepSOIC) <vv.titov@gmail.com>       *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
@@ -32,15 +32,16 @@ BOP-like operations"""
 #  \ingroup PART
 
 __all__ = [
-"BOPFeatures",
-"GeneralFuseResult",
-"JoinAPI",
-"JoinFeatures",
-"ShapeMerge",
-"Utils",
-"SplitAPI",
-"SplitFeatures",
+    "BOPFeatures",
+    "GeneralFuseResult",
+    "JoinAPI",
+    "JoinFeatures",
+    "ShapeMerge",
+    "Utils",
+    "SplitAPI",
+    "SplitFeatures",
 ]
+
 
 def importAll():
     "importAll(): imports all modules of BOPTools package"
@@ -54,17 +55,19 @@ def importAll():
     from . import SplitFeatures
     from . import ToleranceFeatures
 
+
 def reloadAll():
     "reloadAll(): reloads all modules of BOPTools package. Useful for debugging."
     for modstr in __all__:
         reload(globals()[modstr])
     import FreeCAD
+
     if FreeCAD.GuiUp:
         addCommands()
+
 
 def addCommands():
     "addCommands(): add all GUI commands of BOPTools package to FreeCAD command manager."
     JoinFeatures.addCommands()
     SplitFeatures.addCommands()
     ToleranceFeatures.addCommands()
-

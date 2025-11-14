@@ -1,7 +1,6 @@
 from Base.Metadata import export
 from BoundedCurve import BoundedCurve
 
-
 @export(
     Twin="GeomTrimmedCurve",
     TwinPointer="GeomTrimmedCurve",

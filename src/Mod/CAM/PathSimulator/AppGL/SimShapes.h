@@ -27,23 +27,23 @@
 #include "OpenGlWrapper.h"
 #include "linmath.h"
 
-#define SET_DUAL(var, idx, y, z)                                                                   \
-    {                                                                                              \
-        var[idx++] = y;                                                                            \
-        var[idx++] = z;                                                                            \
+#define SET_DUAL(var, idx, y, z) \
+    { \
+        var[idx++] = y; \
+        var[idx++] = z; \
     }
-#define SET_TRIPLE(var, idx, x, y, z)                                                              \
-    {                                                                                              \
-        var[idx++] = x;                                                                            \
-        var[idx++] = y;                                                                            \
-        var[idx++] = z;                                                                            \
+#define SET_TRIPLE(var, idx, x, y, z) \
+    { \
+        var[idx++] = x; \
+        var[idx++] = y; \
+        var[idx++] = z; \
     }
 
-#define SET_TRIPLE_OFFS(var, idx, offs, x, y, z)                                                   \
-    {                                                                                              \
-        var[idx++] = x + offs;                                                                     \
-        var[idx++] = y + offs;                                                                     \
-        var[idx++] = z + offs;                                                                     \
+#define SET_TRIPLE_OFFS(var, idx, offs, x, y, z) \
+    { \
+        var[idx++] = x + offs; \
+        var[idx++] = y + offs; \
+        var[idx++] = z + offs; \
     }
 
 namespace MillSim
@@ -86,27 +86,33 @@ public:
     void Render(mat4x4 modelMat, mat4x4 normallMat);
     void FreeResources();
     void SetModelData(std::vector<Vertex>& vbuffer, std::vector<GLushort>& ibuffer);
-    void RotateProfile(float* profPoints,
-                       int nPoints,
-                       float distance,
-                       float deltaHeight,
-                       int nSlices,
-                       bool isHalfTurn);
-    void ExtrudeProfileRadial(float* profPoints,
-                              int nPoints,
-                              float radius,
-                              float angleRad,
-                              float deltaHeight,
-                              bool capStart,
-                              bool capEnd);
-    void ExtrudeProfileLinear(float* profPoints,
-                              int nPoints,
-                              float fromX,
-                              float toX,
-                              float fromZ,
-                              float toZ,
-                              bool capStart,
-                              bool capEnd);
+    void RotateProfile(
+        float* profPoints,
+        int nPoints,
+        float distance,
+        float deltaHeight,
+        int nSlices,
+        bool isHalfTurn
+    );
+    void ExtrudeProfileRadial(
+        float* profPoints,
+        int nPoints,
+        float radius,
+        float angleRad,
+        float deltaHeight,
+        bool capStart,
+        bool capEnd
+    );
+    void ExtrudeProfileLinear(
+        float* profPoints,
+        int nPoints,
+        float fromX,
+        float toX,
+        float fromZ,
+        float toZ,
+        bool capStart,
+        bool capEnd
+    );
 
     static void GenerateSinTable(int nSlices);
     static std::vector<float> sinTable;
@@ -115,15 +121,17 @@ public:
 
 protected:
     void GenerateModel(float* vbuffer, GLushort* ibuffer, int numVerts, int numIndices);
-    void CalculateExtrudeBufferSizes(int nProfilePoints,
-                                     bool capStart,
-                                     bool capEnd,
-                                     int* numVerts,
-                                     int* numIndices,
-                                     int* vc1idx,
-                                     int* vc2idx,
-                                     int* ic1idx,
-                                     int* ic2idx);
+    void CalculateExtrudeBufferSizes(
+        int nProfilePoints,
+        bool capStart,
+        bool capEnd,
+        int* numVerts,
+        int* numIndices,
+        int* vc1idx,
+        int* vc2idx,
+        int* ic1idx,
+        int* ic2idx
+    );
 };
 
 }  // namespace MillSim

@@ -95,6 +95,10 @@ class DressupPathBoundary(object):
     def loads(self, state):
         return None
 
+    def onChanged(self, obj, prop):
+        if prop == "Path" and obj.ViewObject:
+            obj.ViewObject.signalChangeIcon()
+
     def onDocumentRestored(self, obj):
         self.obj = obj
         if not hasattr(obj, "KeepToolDown"):

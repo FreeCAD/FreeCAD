@@ -30,18 +30,20 @@
 #include <FCGlobal.h>
 #include <string>
 
-namespace App {
-    class DocumentObject;
+namespace App
+{
+class DocumentObject;
 }
 
-namespace Gui {
+namespace Gui
+{
 
 class SelectionChanges;
 
 /**
  * The Selection object class
  */
-class GuiExport SelectionObject : public Base::BaseClass
+class GuiExport SelectionObject: public Base::BaseClass
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
@@ -59,28 +61,52 @@ public:
     PyObject* getPyObject() override;
 
     /// get the SubElement name of this SelectionObject
-    inline const std::vector<std::string> &getSubNames() const { return SubNames; }
+    inline const std::vector<std::string>& getSubNames() const
+    {
+        return SubNames;
+    }
     /// are there any SubNames selected
-    bool hasSubNames()const { return !SubNames.empty(); }
+    bool hasSubNames() const
+    {
+        return !SubNames.empty();
+    }
     /// get the name of the Document of this SelctionObject
-    inline const char* getDocName() const { return DocName.c_str(); }
+    inline const char* getDocName() const
+    {
+        return DocName.c_str();
+    }
     /// get the name of the Document Object of this SelectionObject
-    inline const char* getFeatName() const { return FeatName.c_str(); }
+    inline const char* getFeatName() const
+    {
+        return FeatName.c_str();
+    }
     /// get the Type of the selected Object
-    inline const char* getTypeName() const { return TypeName.c_str(); }
+    inline const char* getTypeName() const
+    {
+        return TypeName.c_str();
+    }
     /// get the selection points
-    inline const std::vector<Base::Vector3d> getPickedPoints() const { return SelPoses; }
+    inline const std::vector<Base::Vector3d> getPickedPoints() const
+    {
+        return SelPoses;
+    }
 
     /// returns the selected DocumentObject or NULL if the object is already deleted
     const App::DocumentObject* getObject() const;
     /// returns the selected DocumentObject or NULL if the object is already deleted
-    template <class T>
-    const T* getObject() const { return freecad_cast<T*>(getObject()); };
+    template<class T>
+    const T* getObject() const
+    {
+        return freecad_cast<T*>(getObject());
+    };
     /// returns the selected DocumentObject or NULL if the object is already deleted
-    App::DocumentObject *getObject();
+    App::DocumentObject* getObject();
     /// returns the selected DocumentObject if it is of T type or null otherwise
-    template <class T>
-    T* getObject() { return freecad_cast<T*>(getObject()); }
+    template<class T>
+    T* getObject()
+    {
+        return freecad_cast<T*>(getObject());
+    }
 
     /// check the selected object is a special type or derived of
     bool isObjectTypeOf(const Base::Type& typeId) const;
@@ -91,19 +117,19 @@ public:
     friend class SelectionSingleton;
 
 protected:
-    std::vector<std::string>    SubNames;
-    std::string                 DocName;
-    std::string                 FeatName;
-    std::string                 TypeName;
+    std::vector<std::string> SubNames;
+    std::string DocName;
+    std::string FeatName;
+    std::string TypeName;
     std::vector<Base::Vector3d> SelPoses;
 
 private:
     /// to make sure no duplicates of subnames
-    std::set<std::string>       _SubNameSet;
+    std::set<std::string> _SubNameSet;
 };
 
 
-} // namespace Gui
+}  // namespace Gui
 
 
-#endif // GUI_SelectionObject_H
+#endif  // GUI_SelectionObject_H

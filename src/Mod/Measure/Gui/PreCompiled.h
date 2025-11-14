@@ -29,7 +29,7 @@
 #include <Mod/Measure/MeasureGlobal.h>
 
 #ifdef FC_OS_WIN32
-#include <windows.h>
+# include <windows.h>
 #endif
 
 // standard
@@ -52,20 +52,20 @@
 // GL
 // Include glext before QtAll/InventorAll
 #ifdef FC_OS_WIN32
-#include <GL/gl.h>
-#include <GL/glext.h>
+# include <GL/gl.h>
+# include <GL/glext.h>
 #else
-#ifdef FC_OS_MACOSX
-#include <OpenGL/gl.h>
-#include <OpenGL/glext.h>
-#else
-#ifndef GL_GLEXT_PROTOTYPES
-#define GL_GLEXT_PROTOTYPES 1
-#endif
-#include <GL/gl.h>
-#include <GL/glext.h>
-#endif  // FC_OS_MACOSX
-#endif  // FC_OS_WIN32
+# ifdef FC_OS_MACOSX
+#  include <OpenGL/gl.h>
+#  include <OpenGL/glext.h>
+# else
+#  ifndef GL_GLEXT_PROTOTYPES
+#   define GL_GLEXT_PROTOTYPES 1
+#  endif
+#  include <GL/gl.h>
+#  include <GL/glext.h>
+# endif  // FC_OS_MACOSX
+#endif   // FC_OS_WIN32
 // Should come after glext.h to avoid warnings
 #include <Inventor/C/glue/gl.h>
 

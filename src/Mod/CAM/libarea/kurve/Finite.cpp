@@ -12,8 +12,8 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #ifndef WIN32
-#define __min(a, b) ((a < b) ? a : b)
-#define __max(a, b) ((a > b) ? a : b)
+# define __min(a, b) ((a < b) ? a : b)
+# define __max(a, b) ((a > b) ? a : b)
 #endif
 
 namespace geoff_geometry
@@ -92,8 +92,7 @@ int LineArcIntof(const Span& line, const Span& arc, Point& p0, Point& p1, double
     double s = v1.magnitudesqd();
 
     p0.ok = p1.ok = false;
-    if ((nRoots =
-             quadratic(s, 2 * (v0 * v1), v0.magnitudesqd() - arc.radius * arc.radius, t[0], t[1]))
+    if ((nRoots = quadratic(s, 2 * (v0 * v1), v0.magnitudesqd() - arc.radius * arc.radius, t[0], t[1]))
         != 0) {
         double toler = geoff_geometry::TOLERANCE / sqrt(s);  // calc a parametric tolerance
         if (t[0] > -toler && t[0] < 1 + toler) {

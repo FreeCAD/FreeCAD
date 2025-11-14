@@ -32,9 +32,11 @@
 
 #include <FCGlobal.h>
 
-namespace Gui {
+namespace Gui
+{
 
-class GuiExport SoFCPlacementIndicatorKit : public SoBaseKit {
+class GuiExport SoFCPlacementIndicatorKit: public SoBaseKit
+{
     using inherited = SoBaseKit;
 
     static constexpr float planeIndicatorRadius = 0.4F;
@@ -103,6 +105,6 @@ private:
     ~SoFCPlacementIndicatorKit() override;
 };
 
-} // Gui
+}  // namespace Gui
 
-#endif //SOFCPLACEMENTINDICATORKIT_H
+#endif  // SOFCPLACEMENTINDICATORKIT_H

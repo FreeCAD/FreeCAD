@@ -101,8 +101,9 @@ public:
     /// Returns the number of required memory in bytes
     unsigned int GetMemSize() const
     {
-        return static_cast<unsigned int>(_aclPointArray.size() * sizeof(MeshPoint)
-                                         + _aclFacetArray.size() * sizeof(MeshFacet));
+        return static_cast<unsigned int>(
+            _aclPointArray.size() * sizeof(MeshPoint) + _aclFacetArray.size() * sizeof(MeshFacet)
+        );
     }
     /// Determines the bounding box
     const Base::BoundBox3f& GetBoundBox() const
@@ -135,22 +136,25 @@ public:
     inline MeshGeomFacet GetFacet(const MeshFacet& rclFacet) const;
 
     /** Returns the point indices of the given facet index. */
-    inline void GetFacetPoints(FacetIndex ulFaIndex,
-                               PointIndex& rclP0,
-                               PointIndex& rclP1,
-                               PointIndex& rclP2) const;
+    inline void GetFacetPoints(
+        FacetIndex ulFaIndex,
+        PointIndex& rclP0,
+        PointIndex& rclP1,
+        PointIndex& rclP2
+    ) const;
     /** Returns the point indices of the given facet index. */
-    inline void
-    SetFacetPoints(FacetIndex ulFaIndex, PointIndex rclP0, PointIndex rclP1, PointIndex rclP2);
+    inline void SetFacetPoints(FacetIndex ulFaIndex, PointIndex rclP0, PointIndex rclP1, PointIndex rclP2);
     /** Returns the point indices of the given facet indices. */
     std::vector<PointIndex> GetFacetPoints(const std::vector<FacetIndex>&) const;
     /** Returns the facet indices that share the given point indices. */
     std::vector<FacetIndex> GetPointFacets(const std::vector<PointIndex>&) const;
     /** Returns the indices of the neighbour facets of the given facet index. */
-    inline void GetFacetNeighbours(FacetIndex ulIndex,
-                                   FacetIndex& rulNIdx0,
-                                   FacetIndex& rulNIdx1,
-                                   FacetIndex& rulNIdx2) const;
+    inline void GetFacetNeighbours(
+        FacetIndex ulIndex,
+        FacetIndex& rulNIdx0,
+        FacetIndex& rulNIdx1,
+        FacetIndex& rulNIdx2
+    ) const;
 
     /** Determines all facets that are associated to this point. This method is very
      * slow and should be called occasionally only.
@@ -244,14 +248,15 @@ public:
      * \note For the start facet \a ulStartFacet MeshFacetVisitor::Visit() does not get invoked
      * though the facet gets marked as VISIT.
      */
-    unsigned long VisitNeighbourFacets(MeshFacetVisitor& rclFVisitor,
-                                       FacetIndex ulStartFacet) const;
+    unsigned long VisitNeighbourFacets(MeshFacetVisitor& rclFVisitor, FacetIndex ulStartFacet) const;
     /**
      * Does basically the same as the method above unless the facets that share just a common point
      * are regared as neighbours.
      */
-    unsigned long VisitNeighbourFacetsOverCorners(MeshFacetVisitor& rclFVisitor,
-                                                  FacetIndex ulStartFacet) const;
+    unsigned long VisitNeighbourFacetsOverCorners(
+        MeshFacetVisitor& rclFVisitor,
+        FacetIndex ulStartFacet
+    ) const;
     //@}
 
     /** @name Point visitors
@@ -272,8 +277,7 @@ public:
      * ulStartPoint MeshPointVisitor::Visit() does not get invoked though the point gets marked as
      * VISIT.
      */
-    unsigned long VisitNeighbourPoints(MeshPointVisitor& rclPVisitor,
-                                       PointIndex ulStartPoint) const;
+    unsigned long VisitNeighbourPoints(MeshPointVisitor& rclPVisitor, PointIndex ulStartPoint) const;
     //@}
 
     /** @name Iterators
@@ -342,9 +346,11 @@ public:
      * that facets of \a rclFAry can also reference point indices of the internal point array.
      * @note This method is quite expensive and should be rarely used.
      */
-    unsigned long AddFacets(const std::vector<MeshFacet>& rclFAry,
-                            const std::vector<Base::Vector3f>& rclPAry,
-                            bool checkManifolds);
+    unsigned long AddFacets(
+        const std::vector<MeshFacet>& rclFAry,
+        const std::vector<Base::Vector3f>& rclPAry,
+        bool checkManifolds
+    );
     /**
      * Adds all facets and referenced points to the underlying mesh structure. The client programmer
      * must be sure that both meshes don't have geometric overlaps, otherwise the resulting mesh
@@ -419,9 +425,11 @@ public:
      * point indices are correctly set but the neighbourhood gets checked and corrected if \a
      * checkNeighbourHood is true.
      */
-    void Assign(const MeshPointArray& rPoints,
-                const MeshFacetArray& rFacets,
-                bool checkNeighbourHood = false);
+    void Assign(
+        const MeshPointArray& rPoints,
+        const MeshFacetArray& rFacets,
+        bool checkNeighbourHood = false
+    );
     /** This method does basically the same as Assign() unless that it swaps the content of both
      * arrays. These arrays may be empty after assigning to the kernel. This method is a convenient
      * way to build up the mesh structure from outside and assign to a mesh kernel without copying
@@ -449,20 +457,24 @@ public:
      * structure. The facets to be deleted are returned with their geometric representation.
      * @see CheckFacets().
      */
-    void CutFacets(const MeshFacetGrid& rclGrid,
-                   const Base::ViewProjMethod* pclP,
-                   const Base::Polygon2d& rclPoly,
-                   bool bCutInner,
-                   std::vector<MeshGeomFacet>& raclFacets);
+    void CutFacets(
+        const MeshFacetGrid& rclGrid,
+        const Base::ViewProjMethod* pclP,
+        const Base::Polygon2d& rclPoly,
+        bool bCutInner,
+        std::vector<MeshGeomFacet>& raclFacets
+    );
     /**
      * Does basically the same as method above unless that the facets to be deleted are returned
      * with their index number in the facet array of the mesh structure.
      */
-    void CutFacets(const MeshFacetGrid& grid,
-                   const Base::ViewProjMethod* proj,
-                   const Base::Polygon2d& poly,
-                   bool bInner,
-                   std::vector<FacetIndex>& cut);
+    void CutFacets(
+        const MeshFacetGrid& grid,
+        const Base::ViewProjMethod* proj,
+        const Base::Polygon2d& poly,
+        bool bInner,
+        std::vector<FacetIndex>& cut
+    );
     //@}
 
 protected:
@@ -538,10 +550,12 @@ inline MeshGeomFacet MeshKernel::GetFacet(const MeshFacet& rclFacet) const
     return clFacet;
 }
 
-inline void MeshKernel::GetFacetNeighbours(FacetIndex ulIndex,
-                                           FacetIndex& rulNIdx0,
-                                           FacetIndex& rulNIdx1,
-                                           FacetIndex& rulNIdx2) const
+inline void MeshKernel::GetFacetNeighbours(
+    FacetIndex ulIndex,
+    FacetIndex& rulNIdx0,
+    FacetIndex& rulNIdx1,
+    FacetIndex& rulNIdx2
+) const
 {
     assert(ulIndex < _aclFacetArray.size());
 
@@ -567,8 +581,8 @@ inline void MeshKernel::SetPoint(PointIndex ulPtIndex, float x, float y, float z
 
 inline void MeshKernel::AdjustNormal(MeshFacet& rclFacet, const Base::Vector3f& rclNormal)
 {
-    Base::Vector3f clN =
-        (_aclPointArray[rclFacet._aulPoints[1]] - _aclPointArray[rclFacet._aulPoints[0]])
+    Base::Vector3f clN = (_aclPointArray[rclFacet._aulPoints[1]]
+                          - _aclPointArray[rclFacet._aulPoints[0]])
         % (_aclPointArray[rclFacet._aulPoints[2]] - _aclPointArray[rclFacet._aulPoints[0]]);
     if ((clN * rclNormal) < 0.0F) {
         rclFacet.FlipNormal();
@@ -577,8 +591,8 @@ inline void MeshKernel::AdjustNormal(MeshFacet& rclFacet, const Base::Vector3f& 
 
 inline Base::Vector3f MeshKernel::GetNormal(const MeshFacet& rclFacet) const
 {
-    Base::Vector3f clN =
-        (_aclPointArray[rclFacet._aulPoints[1]] - _aclPointArray[rclFacet._aulPoints[0]])
+    Base::Vector3f clN = (_aclPointArray[rclFacet._aulPoints[1]]
+                          - _aclPointArray[rclFacet._aulPoints[0]])
         % (_aclPointArray[rclFacet._aulPoints[2]] - _aclPointArray[rclFacet._aulPoints[0]]);
     clN.Normalize();
     return clN;
@@ -589,15 +603,19 @@ inline Base::Vector3f MeshKernel::GetGravityPoint(const MeshFacet& rclFacet) con
     const Base::Vector3f& p0 = _aclPointArray[rclFacet._aulPoints[0]];
     const Base::Vector3f& p1 = _aclPointArray[rclFacet._aulPoints[1]];
     const Base::Vector3f& p2 = _aclPointArray[rclFacet._aulPoints[2]];
-    return Base::Vector3f((p0.x + p1.x + p2.x) / 3.0F,
-                          (p0.y + p1.y + p2.y) / 3.0F,
-                          (p0.z + p1.z + p2.z) / 3.0F);
+    return Base::Vector3f(
+        (p0.x + p1.x + p2.x) / 3.0F,
+        (p0.y + p1.y + p2.y) / 3.0F,
+        (p0.z + p1.z + p2.z) / 3.0F
+    );
 }
 
-inline void MeshKernel::GetFacetPoints(FacetIndex ulFaIndex,
-                                       PointIndex& rclP0,
-                                       PointIndex& rclP1,
-                                       PointIndex& rclP2) const
+inline void MeshKernel::GetFacetPoints(
+    FacetIndex ulFaIndex,
+    PointIndex& rclP0,
+    PointIndex& rclP1,
+    PointIndex& rclP2
+) const
 {
     assert(ulFaIndex < _aclFacetArray.size());
     const MeshFacet& rclFacet = _aclFacetArray[ulFaIndex];
@@ -606,10 +624,12 @@ inline void MeshKernel::GetFacetPoints(FacetIndex ulFaIndex,
     rclP2 = rclFacet._aulPoints[2];
 }
 
-inline void MeshKernel::SetFacetPoints(FacetIndex ulFaIndex,
-                                       PointIndex rclP0,
-                                       PointIndex rclP1,
-                                       PointIndex rclP2)
+inline void MeshKernel::SetFacetPoints(
+    FacetIndex ulFaIndex,
+    PointIndex rclP0,
+    PointIndex rclP1,
+    PointIndex rclP2
+)
 {
     assert(ulFaIndex < _aclFacetArray.size());
     MeshFacet& rclFacet = _aclFacetArray[ulFaIndex];

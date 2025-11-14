@@ -27,6 +27,7 @@ import FreeCAD
 import FreeCADGui
 import Path
 import Path.Dressup.Boundary as PathDressupPathBoundary
+import Path.Dressup.Utils as PathDressup
 import PathGui
 
 if False:
@@ -240,6 +241,12 @@ class DressupPathBoundaryViewProvider(object):
 
     def clearTaskPanel(self):
         self.panel = None
+
+    def getIcon(self):
+        if getattr(PathDressup.baseOp(self.obj), "Active", True):
+            return ":/icons/CAM_Dressup.svg"
+        else:
+            return ":/icons/CAM_OpActive.svg"
 
 
 def Create(base, name="DressupPathBoundary"):

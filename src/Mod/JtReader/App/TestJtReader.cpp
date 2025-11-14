@@ -43,8 +43,7 @@ void TestJtReader::read(void)
 {
     // const std::vector<TOC_Entry>& toc = readToc();
 
-    for (std::vector<TOC_Entry>::const_iterator i = TocEntries.begin(); i != TocEntries.end();
-         ++i) {
+    for (std::vector<TOC_Entry>::const_iterator i = TocEntries.begin(); i != TocEntries.end(); ++i) {
         int segType = i->getSegmentType();
 
         if (segType == 7) {

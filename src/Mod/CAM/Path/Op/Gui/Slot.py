@@ -117,10 +117,12 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.updateToolController(obj, self.form.toolController)
         self.updateCoolant(obj, self.form.coolantController)
 
-        obj.Reference1 = str(self.form.geo1Reference.currentText())
+        val = obj.getEnumerationsOfProperty("Reference1")[self.form.geo1Reference.currentIndex()]
+        obj.Reference1 = val
         self.geo1Extension.updateProperty()
 
-        obj.Reference2 = str(self.form.geo2Reference.currentText())
+        val = obj.getEnumerationsOfProperty("Reference2")[self.form.geo2Reference.currentIndex()]
+        obj.Reference2 = val
         self.geo2Extension.updateProperty()
 
         val = self.propEnums["LayerMode"][self.form.layerMode.currentIndex()][1]

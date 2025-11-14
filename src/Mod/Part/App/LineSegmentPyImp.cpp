@@ -22,9 +22,9 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <GC_MakeSegment.hxx>
-# include <Geom_Line.hxx>
-# include <Geom_TrimmedCurve.hxx>
+#include <GC_MakeSegment.hxx>
+#include <Geom_Line.hxx>
+#include <Geom_TrimmedCurve.hxx>
 
 
 #include <Base/GeometryPyCXX.h>
@@ -45,15 +45,14 @@ std::string LineSegmentPy::representation() const
 {
     std::stringstream str;
     Base::Vector3d start = getGeomLineSegmentPtr()->getStartPoint();
-    Base::Vector3d end   = getGeomLineSegmentPtr()->getEndPoint();
-    str << "<Line segment ("
-        << start.x << "," <<start.y << "," <<start.z << ") ("
-        << end.x   << "," <<end.y   << "," <<end.z   << ") >";
+    Base::Vector3d end = getGeomLineSegmentPtr()->getEndPoint();
+    str << "<Line segment (" << start.x << "," << start.y << "," << start.z << ") (" << end.x << ","
+        << end.y << "," << end.z << ") >";
 
     return str.str();
 }
 
-PyObject *LineSegmentPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject* LineSegmentPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // create a new instance of LineSegmentPy and the Twin object
     return new LineSegmentPy(new GeomLineSegment);
@@ -67,20 +66,20 @@ int LineSegmentPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
 
     PyErr_Clear();
-    PyObject *pLine;
+    PyObject* pLine;
     if (PyArg_ParseTuple(args, "O!", &(LineSegmentPy::Type), &pLine)) {
         // Copy line
         LineSegmentPy* pcLine = static_cast<LineSegmentPy*>(pLine);
         // get Geom_Line of line segment
-        Handle(Geom_TrimmedCurve) that_curv = Handle(Geom_TrimmedCurve)::DownCast
-            (pcLine->getGeomLineSegmentPtr()->handle());
-        Handle(Geom_Line) that_line = Handle(Geom_Line)::DownCast
-            (that_curv->BasisCurve());
+        Handle(Geom_TrimmedCurve) that_curv = Handle(Geom_TrimmedCurve)::DownCast(
+            pcLine->getGeomLineSegmentPtr()->handle()
+        );
+        Handle(Geom_Line) that_line = Handle(Geom_Line)::DownCast(that_curv->BasisCurve());
         // get Geom_Line of line segment
-        Handle(Geom_TrimmedCurve) this_curv = Handle(Geom_TrimmedCurve)::DownCast
-            (this->getGeomLineSegmentPtr()->handle());
-        Handle(Geom_Line) this_line = Handle(Geom_Line)::DownCast
-            (this_curv->BasisCurve());
+        Handle(Geom_TrimmedCurve) this_curv = Handle(Geom_TrimmedCurve)::DownCast(
+            this->getGeomLineSegmentPtr()->handle()
+        );
+        Handle(Geom_Line) this_line = Handle(Geom_Line)::DownCast(this_curv->BasisCurve());
 
         // Assign the lines
         this_line->SetLin(that_line->Lin());
@@ -94,15 +93,15 @@ int LineSegmentPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         // Copy line
         LineSegmentPy* pcLine = static_cast<LineSegmentPy*>(pLine);
         // get Geom_Line of line segment
-        Handle(Geom_TrimmedCurve) that_curv = Handle(Geom_TrimmedCurve)::DownCast
-            (pcLine->getGeomLineSegmentPtr()->handle());
-        Handle(Geom_Line) that_line = Handle(Geom_Line)::DownCast
-            (that_curv->BasisCurve());
+        Handle(Geom_TrimmedCurve) that_curv = Handle(Geom_TrimmedCurve)::DownCast(
+            pcLine->getGeomLineSegmentPtr()->handle()
+        );
+        Handle(Geom_Line) that_line = Handle(Geom_Line)::DownCast(that_curv->BasisCurve());
         // get Geom_Line of line segment
-        Handle(Geom_TrimmedCurve) this_curv = Handle(Geom_TrimmedCurve)::DownCast
-            (this->getGeomLineSegmentPtr()->handle());
-        Handle(Geom_Line) this_line = Handle(Geom_Line)::DownCast
-            (this_curv->BasisCurve());
+        Handle(Geom_TrimmedCurve) this_curv = Handle(Geom_TrimmedCurve)::DownCast(
+            this->getGeomLineSegmentPtr()->handle()
+        );
+        Handle(Geom_Line) this_line = Handle(Geom_Line)::DownCast(this_curv->BasisCurve());
 
         // Assign the lines
         this_line->SetLin(that_line->Lin());
@@ -115,13 +114,12 @@ int LineSegmentPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         // Copy line
         LinePy* pcLine = static_cast<LinePy*>(pLine);
         // get Geom_Line of line segment
-        Handle(Geom_Line) that_line = Handle(Geom_Line)::DownCast
-            (pcLine->getGeomLinePtr()->handle());
+        Handle(Geom_Line) that_line = Handle(Geom_Line)::DownCast(pcLine->getGeomLinePtr()->handle());
         // get Geom_Line of line segment
-        Handle(Geom_TrimmedCurve) this_curv = Handle(Geom_TrimmedCurve)::DownCast
-            (this->getGeomLineSegmentPtr()->handle());
-        Handle(Geom_Line) this_line = Handle(Geom_Line)::DownCast
-            (this_curv->BasisCurve());
+        Handle(Geom_TrimmedCurve) this_curv = Handle(Geom_TrimmedCurve)::DownCast(
+            this->getGeomLineSegmentPtr()->handle()
+        );
+        Handle(Geom_Line) this_line = Handle(Geom_Line)::DownCast(this_curv->BasisCurve());
 
         // Assign the lines
         this_line->SetLin(that_line->Lin());
@@ -131,27 +129,26 @@ int LineSegmentPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
     PyErr_Clear();
     PyObject *pV1, *pV2;
-    if (PyArg_ParseTuple(args, "O!O!", &(Base::VectorPy::Type), &pV1,
-                                       &(Base::VectorPy::Type), &pV2)) {
+    if (PyArg_ParseTuple(args, "O!O!", &(Base::VectorPy::Type), &pV1, &(Base::VectorPy::Type), &pV2)) {
         Base::Vector3d v1 = static_cast<Base::VectorPy*>(pV1)->value();
         Base::Vector3d v2 = static_cast<Base::VectorPy*>(pV2)->value();
         try {
             // Create line out of two points
             double distance = Base::Distance(v1, v2);
-            if (distance < gp::Resolution())
+            if (distance < gp::Resolution()) {
                 Standard_Failure::Raise("Both points are equal");
-            GC_MakeSegment ms(gp_Pnt(v1.x,v1.y,v1.z),
-                              gp_Pnt(v2.x,v2.y,v2.z));
+            }
+            GC_MakeSegment ms(gp_Pnt(v1.x, v1.y, v1.z), gp_Pnt(v2.x, v2.y, v2.z));
             if (!ms.IsDone()) {
                 PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(ms.Status()));
                 return -1;
             }
 
             // get Geom_Line of line segment
-            Handle(Geom_TrimmedCurve) this_curv = Handle(Geom_TrimmedCurve)::DownCast
-                (this->getGeomLineSegmentPtr()->handle());
-            Handle(Geom_Line) this_line = Handle(Geom_Line)::DownCast
-                (this_curv->BasisCurve());
+            Handle(Geom_TrimmedCurve) this_curv = Handle(Geom_TrimmedCurve)::DownCast(
+                this->getGeomLineSegmentPtr()->handle()
+            );
+            Handle(Geom_Line) this_line = Handle(Geom_Line)::DownCast(this_curv->BasisCurve());
             Handle(Geom_TrimmedCurve) that_curv = ms.Value();
             Handle(Geom_Line) that_line = Handle(Geom_Line)::DownCast(that_curv->BasisCurve());
             this_line->SetLin(that_line->Lin());
@@ -170,24 +167,29 @@ int LineSegmentPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         }
     }
 
-    PyErr_SetString(PyExc_TypeError, "Line constructor accepts:\n"
+    PyErr_SetString(
+        PyExc_TypeError,
+        "Line constructor accepts:\n"
         "-- empty parameter list\n"
         "-- LineSegment\n"
         "-- LineSegment,double,double\n"
         "-- Line,double,double\n"
-        "-- Point, Point");
+        "-- Point, Point"
+    );
     return -1;
 }
 
-PyObject* LineSegmentPy::setParameterRange(PyObject *args)
+PyObject* LineSegmentPy::setParameterRange(PyObject* args)
 {
     double first, last;
-    if (!PyArg_ParseTuple(args, "dd", &first, &last))
+    if (!PyArg_ParseTuple(args, "dd", &first, &last)) {
         return nullptr;
+    }
 
     try {
-        Handle(Geom_TrimmedCurve) this_curve = Handle(Geom_TrimmedCurve)::DownCast
-            (this->getGeomLineSegmentPtr()->handle());
+        Handle(Geom_TrimmedCurve) this_curve = Handle(Geom_TrimmedCurve)::DownCast(
+            this->getGeomLineSegmentPtr()->handle()
+        );
         this_curve->SetTrim(first, last);
     }
     catch (Standard_Failure& e) {
@@ -200,8 +202,9 @@ PyObject* LineSegmentPy::setParameterRange(PyObject *args)
 
 Py::Object LineSegmentPy::getStartPoint() const
 {
-    Handle(Geom_TrimmedCurve) this_curve = Handle(Geom_TrimmedCurve)::DownCast
-        (this->getGeomLineSegmentPtr()->handle());
+    Handle(Geom_TrimmedCurve) this_curve = Handle(Geom_TrimmedCurve)::DownCast(
+        this->getGeomLineSegmentPtr()->handle()
+    );
     gp_Pnt pnt = this_curve->StartPoint();
     return Py::Vector(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
 }
@@ -209,11 +212,12 @@ Py::Object LineSegmentPy::getStartPoint() const
 void LineSegmentPy::setStartPoint(Py::Object arg)
 {
     gp_Pnt p1, p2;
-    Handle(Geom_TrimmedCurve) this_curv = Handle(Geom_TrimmedCurve)::DownCast
-        (this->getGeomLineSegmentPtr()->handle());
+    Handle(Geom_TrimmedCurve) this_curv = Handle(Geom_TrimmedCurve)::DownCast(
+        this->getGeomLineSegmentPtr()->handle()
+    );
     p2 = this_curv->EndPoint();
 
-    PyObject *p = arg.ptr();
+    PyObject* p = arg.ptr();
     if (PyObject_TypeCheck(p, &(Base::VectorPy::Type))) {
         Base::Vector3d v = static_cast<Base::VectorPy*>(p)->value();
         p1.SetX(v.x);
@@ -234,16 +238,16 @@ void LineSegmentPy::setStartPoint(Py::Object arg)
 
     try {
         // Create line out of two points
-        if (p1.Distance(p2) < gp::Resolution())
+        if (p1.Distance(p2) < gp::Resolution()) {
             Standard_Failure::Raise("Both points are equal");
+        }
         GC_MakeSegment ms(p1, p2);
         if (!ms.IsDone()) {
             throw Py::RuntimeError(gce_ErrorStatusText(ms.Status()));
         }
 
         // get Geom_Line of line segment
-        Handle(Geom_Line) this_line = Handle(Geom_Line)::DownCast
-            (this_curv->BasisCurve());
+        Handle(Geom_Line) this_line = Handle(Geom_Line)::DownCast(this_curv->BasisCurve());
         Handle(Geom_TrimmedCurve) that_curv = ms.Value();
         Handle(Geom_Line) that_line = Handle(Geom_Line)::DownCast(that_curv->BasisCurve());
         this_line->SetLin(that_line->Lin());
@@ -256,8 +260,9 @@ void LineSegmentPy::setStartPoint(Py::Object arg)
 
 Py::Object LineSegmentPy::getEndPoint() const
 {
-    Handle(Geom_TrimmedCurve) this_curve = Handle(Geom_TrimmedCurve)::DownCast
-        (this->getGeomLineSegmentPtr()->handle());
+    Handle(Geom_TrimmedCurve) this_curve = Handle(Geom_TrimmedCurve)::DownCast(
+        this->getGeomLineSegmentPtr()->handle()
+    );
     gp_Pnt pnt = this_curve->EndPoint();
     return Py::Vector(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
 }
@@ -265,11 +270,12 @@ Py::Object LineSegmentPy::getEndPoint() const
 void LineSegmentPy::setEndPoint(Py::Object arg)
 {
     gp_Pnt p1, p2;
-    Handle(Geom_TrimmedCurve) this_curv = Handle(Geom_TrimmedCurve)::DownCast
-        (this->getGeomLineSegmentPtr()->handle());
+    Handle(Geom_TrimmedCurve) this_curv = Handle(Geom_TrimmedCurve)::DownCast(
+        this->getGeomLineSegmentPtr()->handle()
+    );
     p1 = this_curv->StartPoint();
 
-    PyObject *p = arg.ptr();
+    PyObject* p = arg.ptr();
     if (PyObject_TypeCheck(p, &(Base::VectorPy::Type))) {
         Base::Vector3d v = static_cast<Base::VectorPy*>(p)->value();
         p2.SetX(v.x);
@@ -290,16 +296,16 @@ void LineSegmentPy::setEndPoint(Py::Object arg)
 
     try {
         // Create line out of two points
-        if (p1.Distance(p2) < gp::Resolution())
+        if (p1.Distance(p2) < gp::Resolution()) {
             Standard_Failure::Raise("Both points are equal");
+        }
         GC_MakeSegment ms(p1, p2);
         if (!ms.IsDone()) {
             throw Py::RuntimeError(gce_ErrorStatusText(ms.Status()));
         }
 
         // get Geom_Line of line segment
-        Handle(Geom_Line) this_line = Handle(Geom_Line)::DownCast
-            (this_curv->BasisCurve());
+        Handle(Geom_Line) this_line = Handle(Geom_Line)::DownCast(this_curv->BasisCurve());
         Handle(Geom_TrimmedCurve) that_curv = ms.Value();
         Handle(Geom_Line) that_line = Handle(Geom_Line)::DownCast(that_curv->BasisCurve());
         this_line->SetLin(that_line->Lin());
@@ -310,7 +316,7 @@ void LineSegmentPy::setEndPoint(Py::Object arg)
     }
 }
 
-PyObject *LineSegmentPy::getCustomAttributes(const char* /*attr*/) const
+PyObject* LineSegmentPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }

@@ -22,24 +22,24 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <BRep_Builder.hxx>
-# include <BRepAdaptor_Curve.hxx>
-# include <BRepBuilderAPI_MakeEdge.hxx>
-# include <BRepBuilderAPI_MakeWire.hxx>
-# include <Geom_BSplineCurve.hxx>
-# include <Precision.hxx>
-# include <ShapeConstruct_Curve.hxx>
-# include <Standard_ConstructionError.hxx>
-# include <Standard_Version.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopLoc_Location.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Compound.hxx>
-# include <TopoDS_Edge.hxx>
-# include <TopoDS_Wire.hxx>
-# include <TopTools_ListIteratorOfListOfShape.hxx>
-# include <TopTools_ListOfShape.hxx>
-# include <TopTools_MapOfShape.hxx>
+#include <BRep_Builder.hxx>
+#include <BRepAdaptor_Curve.hxx>
+#include <BRepBuilderAPI_MakeEdge.hxx>
+#include <BRepBuilderAPI_MakeWire.hxx>
+#include <Geom_BSplineCurve.hxx>
+#include <Precision.hxx>
+#include <ShapeConstruct_Curve.hxx>
+#include <Standard_ConstructionError.hxx>
+#include <Standard_Version.hxx>
+#include <TopExp_Explorer.hxx>
+#include <TopLoc_Location.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Compound.hxx>
+#include <TopoDS_Edge.hxx>
+#include <TopoDS_Wire.hxx>
+#include <TopTools_ListIteratorOfListOfShape.hxx>
+#include <TopTools_ListOfShape.hxx>
+#include <TopTools_MapOfShape.hxx>
 
 
 #include "BRepOffsetAPI_MakeOffsetFix.h"
@@ -49,7 +49,10 @@ using namespace Part;
 
 BRepOffsetAPI_MakeOffsetFix::BRepOffsetAPI_MakeOffsetFix() = default;
 
-BRepOffsetAPI_MakeOffsetFix::BRepOffsetAPI_MakeOffsetFix(const GeomAbs_JoinType Join, const Standard_Boolean IsOpenResult)
+BRepOffsetAPI_MakeOffsetFix::BRepOffsetAPI_MakeOffsetFix(
+    const GeomAbs_JoinType Join,
+    const Standard_Boolean IsOpenResult
+)
 {
     mkOffset.Init(Join, IsOpenResult);
 }
@@ -94,7 +97,7 @@ void BRepOffsetAPI_MakeOffsetFix::AddWire(const TopoDS_Wire& Spine)
     myResult.Nullify();
 }
 
-void BRepOffsetAPI_MakeOffsetFix::Perform (const Standard_Real Offset, const Standard_Real Alt)
+void BRepOffsetAPI_MakeOffsetFix::Perform(const Standard_Real Offset, const Standard_Real Alt)
 {
     mkOffset.Perform(Offset, Alt);
 }
@@ -108,8 +111,11 @@ void BRepOffsetAPI_MakeOffsetFix::Build()
     mkOffset.Build();
 }
 
-void BRepOffsetAPI_MakeOffsetFix::Init(const TopoDS_Face& Spine, const GeomAbs_JoinType Join,
-                                       const Standard_Boolean IsOpenResult)
+void BRepOffsetAPI_MakeOffsetFix::Init(
+    const TopoDS_Face& Spine,
+    const GeomAbs_JoinType Join,
+    const Standard_Boolean IsOpenResult
+)
 {
     mkOffset.Init(Spine, Join, IsOpenResult);
 }
@@ -176,8 +182,7 @@ void BRepOffsetAPI_MakeOffsetFix::MakeWire(TopoDS_Shape& wire)
                     break;
                 }
             }
-        }
-        while (found);
+        } while (found);
     }
 }
 
@@ -219,24 +224,26 @@ const TopTools_ListOfShape& BRepOffsetAPI_MakeOffsetFix::Generated(const TopoDS_
     return mkOffset.Generated(S);
 }
 
-const TopTools_ListOfShape& BRepOffsetAPI_MakeOffsetFix::Modified (const TopoDS_Shape& S)
+const TopTools_ListOfShape& BRepOffsetAPI_MakeOffsetFix::Modified(const TopoDS_Shape& S)
 {
     return mkOffset.Modified(S);
 }
 
-Standard_Boolean BRepOffsetAPI_MakeOffsetFix::IsDeleted (const TopoDS_Shape& S)
+Standard_Boolean BRepOffsetAPI_MakeOffsetFix::IsDeleted(const TopoDS_Shape& S)
 {
     return mkOffset.IsDeleted(S);
 }
 
 TopoDS_Shape BRepOffsetAPI_MakeOffsetFix::Replace(GeomAbs_CurveType type, const TopoDS_Shape& S) const
 {
-    if (S.IsNull())
+    if (S.IsNull()) {
         throw Standard_ConstructionError("Input shape is null");
+    }
 
     // Nothing to do
-    if (type == GeomAbs_BSplineCurve)
+    if (type == GeomAbs_BSplineCurve) {
         return S;
+    }
 
     if (S.ShapeType() == TopAbs_COMPOUND) {
         BRep_Builder builder;
@@ -275,7 +282,8 @@ TopoDS_Wire BRepOffsetAPI_MakeOffsetFix::ReplaceEdges(GeomAbs_CurveType type, co
             ShapeConstruct_Curve scc;
             double u = curve.FirstParameter();
             double v = curve.LastParameter();
-            Handle(Geom_BSplineCurve) spline = scc.ConvertToBSpline(curve.Curve().Curve(), u, v, Precision::Confusion());
+            Handle(Geom_BSplineCurve) spline
+                = scc.ConvertToBSpline(curve.Curve().Curve(), u, v, Precision::Confusion());
             if (!spline.IsNull()) {
                 BRepBuilderAPI_MakeEdge mkEdge(spline, u, v);
                 edge = mkEdge.Edge();

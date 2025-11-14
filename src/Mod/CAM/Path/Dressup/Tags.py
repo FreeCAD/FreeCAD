@@ -972,6 +972,10 @@ class ObjectTagDressup:
         self.mappers = []
         return None
 
+    def onChanged(self, obj, prop):
+        if prop == "Path" and obj.ViewObject:
+            obj.ViewObject.signalChangeIcon()
+
     def onDocumentRestored(self, obj):
         self.obj = obj
 

@@ -67,7 +67,7 @@
 #include "OpenCascadeAll.h"
 
 #if defined(FC_OS_WIN32)
-#include <Windows.h>
+# include <Windows.h>
 #endif
 
 #ifndef _Standard_Version_HeaderFile

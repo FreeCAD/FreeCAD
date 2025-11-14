@@ -305,7 +305,8 @@ class GitControl(VersionControl):
         referencerevision = 14555
 
         result = None
-        countallfh = os.popen("git rev-list --count %s..HEAD" % referencecommit)
+        null_device = "nul" if os.name == "nt" else "/dev/null"
+        countallfh = os.popen(f"git rev-list --count {referencecommit}..HEAD 2>{null_device}")
         countallstr = countallfh.read().strip()
         if countallfh.close() is not None:  # reference commit not present, use the date
             date_object = datetime.datetime.strptime(self.date, "%Y/%m/%d %H:%M:%S")

@@ -93,9 +93,11 @@ float SphereFit::GetDistanceToSphere(const Base::Vector3f& rcPoint) const
 {
     float fResult = std::numeric_limits<float>::max();
     if (_bIsFitted) {
-        fResult = Base::Vector3d((double)rcPoint.x - _vCenter.x,
-                                 (double)rcPoint.y - _vCenter.y,
-                                 (double)rcPoint.z - _vCenter.z)
+        fResult = Base::Vector3d(
+                      (double)rcPoint.x - _vCenter.x,
+                      (double)rcPoint.y - _vCenter.y,
+                      (double)rcPoint.z - _vCenter.z
+                  )
                       .Length()
             - _dRadius;
     }
@@ -130,9 +132,11 @@ void SphereFit::ProjectToSphere()
         // Because this vector is orthogonal to the sphere's surface at the
         // intersection point we can easily compute the projection point on the
         // closest surface point using the radius of the sphere
-        Base::Vector3d diff((double)cPnt.x - _vCenter.x,
-                            (double)cPnt.y - _vCenter.y,
-                            (double)cPnt.z - _vCenter.z);
+        Base::Vector3d diff(
+            (double)cPnt.x - _vCenter.x,
+            (double)cPnt.y - _vCenter.y,
+            (double)cPnt.z - _vCenter.z
+        );
         double length = diff.Length();
         if (length == 0.0) {
             // Point is exactly at the sphere center, so it can be projected in any direction onto
@@ -169,9 +173,11 @@ void SphereFit::ComputeApproximations()
         _vCenter /= (double)_vPoints.size();
 
         for (cIt = _vPoints.begin(); cIt != _vPoints.end(); ++cIt) {
-            Base::Vector3d diff((double)cIt->x - _vCenter.x,
-                                (double)cIt->y - _vCenter.y,
-                                (double)cIt->z - _vCenter.z);
+            Base::Vector3d diff(
+                (double)cIt->x - _vCenter.x,
+                (double)cIt->y - _vCenter.y,
+                (double)cIt->z - _vCenter.z
+            );
             _dRadius += diff.Length();
         }
         _dRadius /= (double)_vPoints.size();
@@ -253,9 +259,11 @@ float SphereFit::Fit()
 // Set up the normal equation matrices
 // atpa ... 4x4 normal matrix
 // atpl ... 4x1 matrix (right-hand side of equation)
-void SphereFit::setupNormalEquationMatrices(const std::vector<Base::Vector3d>& residuals,
-                                            Matrix4x4& atpa,
-                                            Eigen::VectorXd& atpl) const
+void SphereFit::setupNormalEquationMatrices(
+    const std::vector<Base::Vector3d>& residuals,
+    Matrix4x4& atpa,
+    Eigen::VectorXd& atpl
+) const
 {
     // Zero matrices
     atpa.setZero();
@@ -284,12 +292,14 @@ void SphereFit::setupNormalEquationMatrices(const std::vector<Base::Vector3d>& r
 // f0   ... reference to f0 term
 // qw   ... reference to quasi weight (here we are assuming equal unit weights for each observed
 // point coordinate) b[3] ... observation partials
-void SphereFit::setupObservation(const Base::Vector3f& point,
-                                 const Base::Vector3d& residual,
-                                 double a[4],
-                                 double& f0,
-                                 double& qw,
-                                 double b[3]) const
+void SphereFit::setupObservation(
+    const Base::Vector3f& point,
+    const Base::Vector3d& residual,
+    double a[4],
+    double& f0,
+    double& qw,
+    double b[3]
+) const
 {
     // This adjustment requires an update of the observation approximations
     // because the residuals do not have a linear relationship.
@@ -334,11 +344,7 @@ void SphereFit::setupObservation(const Base::Vector3f& point,
 // pi   ... weight of observation (= quasi weight qw for this solution)
 // atpa ... 4x4 normal equation matrix
 // atpl ... 4x1 matrix/vector (right-hand side of equations)
-void SphereFit::addObservationU(double a[4],
-                                double li,
-                                double pi,
-                                Matrix4x4& atpa,
-                                Eigen::VectorXd& atpl) const
+void SphereFit::addObservationU(double a[4], double li, double pi, Matrix4x4& atpa, Eigen::VectorXd& atpl) const
 {
     for (int i = 0; i < 4; ++i) {
         double aipi = a[i] * pi;
@@ -363,11 +369,13 @@ void SphereFit::setLowerPart(Matrix4x4& atpa) const
 }
 
 // Compute the residuals and sigma0 and check the residual convergence
-bool SphereFit::computeResiduals(const Eigen::VectorXd& x,
-                                 std::vector<Base::Vector3d>& residuals,
-                                 double& sigma0,
-                                 double vConvLimit,
-                                 bool& vConverged) const
+bool SphereFit::computeResiduals(
+    const Eigen::VectorXd& x,
+    std::vector<Base::Vector3d>& residuals,
+    double& sigma0,
+    double vConvLimit,
+    bool& vConverged
+) const
 {
     vConverged = true;
     int nPtsUsed = 0;

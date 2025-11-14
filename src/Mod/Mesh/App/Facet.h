@@ -41,9 +41,11 @@ class MeshObject;
 class MeshExport Facet: public MeshCore::MeshGeomFacet
 {
 public:
-    explicit Facet(const MeshCore::MeshFacet& face = MeshCore::MeshFacet(),
-                   const MeshObject* obj = nullptr,
-                   MeshCore::FacetIndex index = MeshCore::FACET_INDEX_MAX);
+    explicit Facet(
+        const MeshCore::MeshFacet& face = MeshCore::MeshFacet(),
+        const MeshObject* obj = nullptr,
+        MeshCore::FacetIndex index = MeshCore::FACET_INDEX_MAX
+    );
     Facet(const Facet& f);
     Facet(Facet&& f);
     ~Facet();

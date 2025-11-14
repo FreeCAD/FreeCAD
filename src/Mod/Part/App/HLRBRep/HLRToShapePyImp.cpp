@@ -34,7 +34,7 @@
 
 using namespace Part;
 
-PyObject *HLRToShapePy::PyMake(struct _typeobject *, PyObject *, PyObject *)
+PyObject* HLRToShapePy::PyMake(struct _typeobject*, PyObject*, PyObject*)
 {
     // create a new instance of HLRBRep_AlgoPy
     return new HLRToShapePy(nullptr);
@@ -44,8 +44,9 @@ PyObject *HLRToShapePy::PyMake(struct _typeobject *, PyObject *, PyObject *)
 int HLRToShapePy::PyInit(PyObject* args, PyObject* /*kwds*/)
 {
     PyObject* algo;
-    if (!PyArg_ParseTuple(args, "O!", &Part::HLRBRep_AlgoPy::Type, &algo))
+    if (!PyArg_ParseTuple(args, "O!", &Part::HLRBRep_AlgoPy::Type, &algo)) {
         return -1;
+    }
 
     HLRBRep_AlgoPy* py = static_cast<HLRBRep_AlgoPy*>(algo);
     setTwinPointer(new HLRBRep_HLRToShape(py->handle()));
@@ -59,11 +60,12 @@ std::string HLRToShapePy::representation() const
     return {"<HLRBRep_HLRToShape object>"};
 }
 
-PyObject* HLRToShapePy::vCompound(PyObject *args)
+PyObject* HLRToShapePy::vCompound(PyObject* args)
 {
     PyObject* shape = nullptr;
-    if (!PyArg_ParseTuple(args, "|O!", &Part::TopoShapePy::Type, &shape))
+    if (!PyArg_ParseTuple(args, "|O!", &Part::TopoShapePy::Type, &shape)) {
         return nullptr;
+    }
 
     if (shape) {
         TopoDS_Shape input = static_cast<TopoShapePy*>(shape)->getTopoShapePtr()->getShape();
@@ -76,11 +78,12 @@ PyObject* HLRToShapePy::vCompound(PyObject *args)
     }
 }
 
-PyObject* HLRToShapePy::Rg1LineVCompound(PyObject *args)
+PyObject* HLRToShapePy::Rg1LineVCompound(PyObject* args)
 {
     PyObject* shape = nullptr;
-    if (!PyArg_ParseTuple(args, "|O!", &Part::TopoShapePy::Type, &shape))
+    if (!PyArg_ParseTuple(args, "|O!", &Part::TopoShapePy::Type, &shape)) {
         return nullptr;
+    }
 
     if (shape) {
         TopoDS_Shape input = static_cast<TopoShapePy*>(shape)->getTopoShapePtr()->getShape();
@@ -93,11 +96,12 @@ PyObject* HLRToShapePy::Rg1LineVCompound(PyObject *args)
     }
 }
 
-PyObject* HLRToShapePy::RgNLineVCompound(PyObject *args)
+PyObject* HLRToShapePy::RgNLineVCompound(PyObject* args)
 {
     PyObject* shape = nullptr;
-    if (!PyArg_ParseTuple(args, "|O!", &Part::TopoShapePy::Type, &shape))
+    if (!PyArg_ParseTuple(args, "|O!", &Part::TopoShapePy::Type, &shape)) {
         return nullptr;
+    }
 
     if (shape) {
         TopoDS_Shape input = static_cast<TopoShapePy*>(shape)->getTopoShapePtr()->getShape();
@@ -110,11 +114,12 @@ PyObject* HLRToShapePy::RgNLineVCompound(PyObject *args)
     }
 }
 
-PyObject* HLRToShapePy::outLineVCompound(PyObject *args)
+PyObject* HLRToShapePy::outLineVCompound(PyObject* args)
 {
     PyObject* shape = nullptr;
-    if (!PyArg_ParseTuple(args, "|O!", &Part::TopoShapePy::Type, &shape))
+    if (!PyArg_ParseTuple(args, "|O!", &Part::TopoShapePy::Type, &shape)) {
         return nullptr;
+    }
 
     if (shape) {
         TopoDS_Shape input = static_cast<TopoShapePy*>(shape)->getTopoShapePtr()->getShape();
@@ -127,20 +132,22 @@ PyObject* HLRToShapePy::outLineVCompound(PyObject *args)
     }
 }
 
-PyObject* HLRToShapePy::outLineVCompound3d(PyObject *args)
+PyObject* HLRToShapePy::outLineVCompound3d(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     TopoDS_Shape result = getHLRBRep_HLRToShapePtr()->OutLineVCompound3d();
     return new TopoShapePy(new TopoShape(result));
 }
 
-PyObject* HLRToShapePy::isoLineVCompound(PyObject *args)
+PyObject* HLRToShapePy::isoLineVCompound(PyObject* args)
 {
     PyObject* shape = nullptr;
-    if (!PyArg_ParseTuple(args, "|O!", &Part::TopoShapePy::Type, &shape))
+    if (!PyArg_ParseTuple(args, "|O!", &Part::TopoShapePy::Type, &shape)) {
         return nullptr;
+    }
 
     if (shape) {
         TopoDS_Shape input = static_cast<TopoShapePy*>(shape)->getTopoShapePtr()->getShape();
@@ -153,11 +160,12 @@ PyObject* HLRToShapePy::isoLineVCompound(PyObject *args)
     }
 }
 
-PyObject* HLRToShapePy::hCompound(PyObject *args)
+PyObject* HLRToShapePy::hCompound(PyObject* args)
 {
     PyObject* shape = nullptr;
-    if (!PyArg_ParseTuple(args, "|O!", &Part::TopoShapePy::Type, &shape))
+    if (!PyArg_ParseTuple(args, "|O!", &Part::TopoShapePy::Type, &shape)) {
         return nullptr;
+    }
 
     if (shape) {
         TopoDS_Shape input = static_cast<TopoShapePy*>(shape)->getTopoShapePtr()->getShape();
@@ -170,11 +178,12 @@ PyObject* HLRToShapePy::hCompound(PyObject *args)
     }
 }
 
-PyObject* HLRToShapePy::Rg1LineHCompound(PyObject *args)
+PyObject* HLRToShapePy::Rg1LineHCompound(PyObject* args)
 {
     PyObject* shape = nullptr;
-    if (!PyArg_ParseTuple(args, "|O!", &Part::TopoShapePy::Type, &shape))
+    if (!PyArg_ParseTuple(args, "|O!", &Part::TopoShapePy::Type, &shape)) {
         return nullptr;
+    }
 
     if (shape) {
         TopoDS_Shape input = static_cast<TopoShapePy*>(shape)->getTopoShapePtr()->getShape();
@@ -187,11 +196,12 @@ PyObject* HLRToShapePy::Rg1LineHCompound(PyObject *args)
     }
 }
 
-PyObject* HLRToShapePy::RgNLineHCompound(PyObject *args)
+PyObject* HLRToShapePy::RgNLineHCompound(PyObject* args)
 {
     PyObject* shape = nullptr;
-    if (!PyArg_ParseTuple(args, "|O!", &Part::TopoShapePy::Type, &shape))
+    if (!PyArg_ParseTuple(args, "|O!", &Part::TopoShapePy::Type, &shape)) {
         return nullptr;
+    }
 
     if (shape) {
         TopoDS_Shape input = static_cast<TopoShapePy*>(shape)->getTopoShapePtr()->getShape();
@@ -204,11 +214,12 @@ PyObject* HLRToShapePy::RgNLineHCompound(PyObject *args)
     }
 }
 
-PyObject* HLRToShapePy::outLineHCompound(PyObject *args)
+PyObject* HLRToShapePy::outLineHCompound(PyObject* args)
 {
     PyObject* shape = nullptr;
-    if (!PyArg_ParseTuple(args, "|O!", &Part::TopoShapePy::Type, &shape))
+    if (!PyArg_ParseTuple(args, "|O!", &Part::TopoShapePy::Type, &shape)) {
         return nullptr;
+    }
 
     if (shape) {
         TopoDS_Shape input = static_cast<TopoShapePy*>(shape)->getTopoShapePtr()->getShape();
@@ -221,11 +232,12 @@ PyObject* HLRToShapePy::outLineHCompound(PyObject *args)
     }
 }
 
-PyObject* HLRToShapePy::isoLineHCompound(PyObject *args)
+PyObject* HLRToShapePy::isoLineHCompound(PyObject* args)
 {
     PyObject* shape = nullptr;
-    if (!PyArg_ParseTuple(args, "|O!", &Part::TopoShapePy::Type, &shape))
+    if (!PyArg_ParseTuple(args, "|O!", &Part::TopoShapePy::Type, &shape)) {
         return nullptr;
+    }
 
     if (shape) {
         TopoDS_Shape input = static_cast<TopoShapePy*>(shape)->getTopoShapePtr()->getShape();
@@ -238,36 +250,51 @@ PyObject* HLRToShapePy::isoLineHCompound(PyObject *args)
     }
 }
 
-PyObject* HLRToShapePy::compoundOfEdges(PyObject *args, PyObject *kwds)
+PyObject* HLRToShapePy::compoundOfEdges(PyObject* args, PyObject* kwds)
 {
     int type;
     PyObject* visible = nullptr;
     PyObject* in3d = nullptr;
     PyObject* shape = nullptr;
 
-    static const std::array<const char *, 5> keywords {"Type", "Visible", "In3D", "Shape", nullptr};
-    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "iO!O!|O!", keywords,
-                                             &type,
-                                             &PyBool_Type, &visible,
-                                             &PyBool_Type, &in3d,
-                                             &Part::TopoShapePy::Type, &shape)) {
+    static const std::array<const char*, 5> keywords {"Type", "Visible", "In3D", "Shape", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(
+            args,
+            kwds,
+            "iO!O!|O!",
+            keywords,
+            &type,
+            &PyBool_Type,
+            &visible,
+            &PyBool_Type,
+            &in3d,
+            &Part::TopoShapePy::Type,
+            &shape
+        )) {
         return nullptr;
     }
 
     if (shape) {
         TopoDS_Shape input = static_cast<TopoShapePy*>(shape)->getTopoShapePtr()->getShape();
-        TopoDS_Shape result = getHLRBRep_HLRToShapePtr()->CompoundOfEdges(input, static_cast<HLRBRep_TypeOfResultingEdge>(type),
-                                                                          Base::asBoolean(visible), Base::asBoolean(in3d));
+        TopoDS_Shape result = getHLRBRep_HLRToShapePtr()->CompoundOfEdges(
+            input,
+            static_cast<HLRBRep_TypeOfResultingEdge>(type),
+            Base::asBoolean(visible),
+            Base::asBoolean(in3d)
+        );
         return new TopoShapePy(new TopoShape(result));
     }
     else {
-        TopoDS_Shape result = getHLRBRep_HLRToShapePtr()->CompoundOfEdges(static_cast<HLRBRep_TypeOfResultingEdge>(type),
-                                                                          Base::asBoolean(visible), Base::asBoolean(in3d));
+        TopoDS_Shape result = getHLRBRep_HLRToShapePtr()->CompoundOfEdges(
+            static_cast<HLRBRep_TypeOfResultingEdge>(type),
+            Base::asBoolean(visible),
+            Base::asBoolean(in3d)
+        );
         return new TopoShapePy(new TopoShape(result));
     }
 }
 
-PyObject *HLRToShapePy::getCustomAttributes(const char* /*attr*/) const
+PyObject* HLRToShapePy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }

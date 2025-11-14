@@ -22,7 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <sstream>
+#include <sstream>
 
 
 #include <Base/UnitsApi.h>
@@ -49,7 +49,8 @@ ShapeFromMesh::ShapeFromMesh(QWidget* parent, Qt::WindowFlags fl)
     int decimals = Base::UnitsApi::getDecimals();
     double tolerance_from_decimals = pow(10., -decimals);
 
-    double minimal_tolerance = tolerance_from_decimals < STD_OCC_TOLERANCE ? STD_OCC_TOLERANCE : tolerance_from_decimals;
+    double minimal_tolerance = tolerance_from_decimals < STD_OCC_TOLERANCE ? STD_OCC_TOLERANCE
+                                                                           : tolerance_from_decimals;
     ui->doubleSpinBox->setRange(minimal_tolerance, 10.0);
     ui->doubleSpinBox->setValue(0.1);
     ui->doubleSpinBox->setSingleStep(0.1);
@@ -77,12 +78,18 @@ void ShapeFromMesh::perform()
         std::string mesh = it->getNameInDocument();
         std::string name = doc->getUniqueObjectName(mesh.c_str());
 
-        Gui::cmdAppDocumentArgs(doc, "addObject('%s', '%s')", "Part::Feature",  name);
+        Gui::cmdAppDocumentArgs(doc, "addObject('%s', '%s')", "Part::Feature", name);
         std::string partObj = App::DocumentObjectT(doc, name).getObjectPython();
         std::string meshObj = App::DocumentObjectT(doc, mesh).getObjectPython();
 
         Gui::doCommandT(Gui::Command::Doc, "__shape__ = Part.Shape()");
-        Gui::doCommandT(Gui::Command::Doc, "__shape__.makeShapeFromMesh(%s.Mesh.Topology, %f, %s)", meshObj, tolerance, (sewShape ? "True" : "False"));
+        Gui::doCommandT(
+            Gui::Command::Doc,
+            "__shape__.makeShapeFromMesh(%s.Mesh.Topology, %f, %s)",
+            meshObj,
+            tolerance,
+            (sewShape ? "True" : "False")
+        );
         Gui::doCommandT(Gui::Command::Doc, partObj + ".Shape = __shape__");
         Gui::doCommandT(Gui::Command::Doc, partObj + ".purgeTouched()");
         Gui::doCommandT(Gui::Command::Doc, "del __shape__");

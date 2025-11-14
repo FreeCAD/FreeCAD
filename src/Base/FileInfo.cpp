@@ -32,9 +32,9 @@
 #include <iostream>
 #include <system_error>
 #ifdef FC_OS_WIN32
-#include <Windows.h>
+# include <Windows.h>
 #else
-#include <unistd.h>
+# include <unistd.h>
 #endif
 
 #include "FileInfo.h"
@@ -285,9 +285,7 @@ bool FileInfo::hasExtension(const char* Ext) const
 
 bool FileInfo::hasExtension(std::initializer_list<const char*> Exts) const
 {
-    return std::ranges::any_of(Exts, [this](const char* ext) {
-        return hasExtension(ext);
-    });
+    return std::ranges::any_of(Exts, [this](const char* ext) { return hasExtension(ext); });
 }
 
 bool FileInfo::exists() const
@@ -404,8 +402,7 @@ template<typename TP>
 std::time_t to_time_t(TP tp)
 {
     using namespace std::chrono;
-    auto sctp =
-        time_point_cast<system_clock::duration>(tp - TP::clock::now() + system_clock::now());
+    auto sctp = time_point_cast<system_clock::duration>(tp - TP::clock::now() + system_clock::now());
     return system_clock::to_time_t(sctp);
 }
 

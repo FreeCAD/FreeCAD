@@ -161,8 +161,10 @@ std::vector<std::string> ViewProviderFace::getDisplayModes() const
     return modes;
 }
 
-SoPickedPoint* ViewProviderFace::getPickedPoint(const SbVec2s& pos,
-                                                const Gui::View3DInventorViewer* viewer) const
+SoPickedPoint* ViewProviderFace::getPickedPoint(
+    const SbVec2s& pos,
+    const Gui::View3DInventorViewer* viewer
+) const
 {
     SoSeparator* root = new SoSeparator;
     root->ref();
@@ -222,9 +224,7 @@ void MeshFaceAddition::finishEditing()
 
     viewer->removeViewProvider(faceView);
     // faceView->mesh->finishEditing();
-    viewer->removeEventCallback(SoEvent::getClassTypeId(),
-                                MeshFaceAddition::addFacetCallback,
-                                this);
+    viewer->removeEventCallback(SoEvent::getClassTypeId(), MeshFaceAddition::addFacetCallback, this);
     this->deleteLater();
 }
 
@@ -291,10 +291,8 @@ void MeshFaceAddition::showMarker(SoPickedPoint* pp)
         if (detail->isOfType(SoFaceDetail::getClassTypeId())) {
             const SoFaceDetail* fd = static_cast<const SoFaceDetail*>(detail);
             Mesh::Feature* mf = faceView->mesh->getObject<Mesh::Feature>();
-            const MeshCore::MeshFacetArray& facets =
-                mf->Mesh.getValuePtr()->getKernel().GetFacets();
-            const MeshCore::MeshPointArray& points =
-                mf->Mesh.getValuePtr()->getKernel().GetPoints();
+            const MeshCore::MeshFacetArray& facets = mf->Mesh.getValuePtr()->getKernel().GetFacets();
+            const MeshCore::MeshPointArray& points = mf->Mesh.getValuePtr()->getKernel().GetPoints();
             // is the face index valid?
             int face_index = fd->getFaceIndex();
             if (face_index >= (int)facets.size()) {
@@ -435,8 +433,7 @@ namespace MeshGui
 // for sorting of elements
 struct NofFacetsCompare
 {
-    bool operator()(const std::vector<Mesh::PointIndex>& rclC1,
-                    const std::vector<Mesh::PointIndex>& rclC2)
+    bool operator()(const std::vector<Mesh::PointIndex>& rclC1, const std::vector<Mesh::PointIndex>& rclC2)
     {
         return rclC1.size() < rclC2.size();
     }
@@ -493,7 +490,8 @@ void MeshFillHole::startEditing(MeshGui::ViewProviderMesh* vp)
     viewer->addEventCallback(SoEvent::getClassTypeId(), MeshFillHole::fileHoleCallback, this);
     // NOLINTBEGIN
     myConnection = App::GetApplication().signalChangedObject.connect(
-        std::bind(&MeshFillHole::slotChangedObject, this, sp::_1, sp::_2));
+        std::bind(&MeshFillHole::slotChangedObject, this, sp::_1, sp::_2)
+    );
     // NOLINTEND
 
     Gui::coinRemoveAllChildren(myBoundariesRoot);
@@ -624,8 +622,7 @@ void MeshFillHole::createPolygons()
     }
 }
 
-SoNode* MeshFillHole::getPickedPolygon(
-    const SoRayPickAction& action /*SoNode* root, const SbVec2s& pos*/) const
+SoNode* MeshFillHole::getPickedPolygon(const SoRayPickAction& action /*SoNode* root, const SbVec2s& pos*/) const
 {
     SoPolygon* poly = nullptr;
     const SoPickedPointList& points = action.getPickedPointList();
@@ -648,10 +645,12 @@ SoNode* MeshFillHole::getPickedPolygon(
     return poly;
 }
 
-float MeshFillHole::findClosestPoint(const SbLine& ray,
-                                     const TBoundary& polygon,
-                                     Mesh::PointIndex& vertex_index,
-                                     SbVec3f& closestPoint) const
+float MeshFillHole::findClosestPoint(
+    const SbLine& ray,
+    const TBoundary& polygon,
+    Mesh::PointIndex& vertex_index,
+    SbVec3f& closestPoint
+) const
 {
     // now check which vertex of the polygon is closest to the ray
     float minDist = std::numeric_limits<float>::max();
@@ -699,8 +698,8 @@ void MeshFillHole::fileHoleCallback(void* ud, SoEventCallback* n)
                 // now check which vertex of the polygon is closest to the ray
                 Mesh::PointIndex vertex_index {};
                 SbVec3f closestPoint;
-                float minDist =
-                    self->findClosestPoint(rp.getLine(), it->second, vertex_index, closestPoint);
+                float minDist
+                    = self->findClosestPoint(rp.getLine(), it->second, vertex_index, closestPoint);
                 if (minDist < 1.0F) {
                     if (self->myNumPoints == 0) {
                         self->myVertex->point.set1Value(0, closestPoint);
@@ -715,8 +714,7 @@ void MeshFillHole::fileHoleCallback(void* ud, SoEventCallback* n)
     else if (ev->getTypeId() == SoMouseButtonEvent::getClassTypeId()) {
         n->setHandled();
         const SoMouseButtonEvent* mbe = static_cast<const SoMouseButtonEvent*>(ev);
-        if (mbe->getButton() == SoMouseButtonEvent::BUTTON1
-            && mbe->getState() == SoButtonEvent::UP) {
+        if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::UP) {
             if (self->myNumPoints > 1) {
                 return;
             }
@@ -736,10 +734,8 @@ void MeshFillHole::fileHoleCallback(void* ud, SoEventCallback* n)
                     // now check which vertex of the polygon is closest to the ray
                     Mesh::PointIndex vertex_index {};
                     SbVec3f closestPoint;
-                    float minDist = self->findClosestPoint(rp.getLine(),
-                                                           it->second,
-                                                           vertex_index,
-                                                           closestPoint);
+                    float minDist
+                        = self->findClosestPoint(rp.getLine(), it->second, vertex_index, closestPoint);
                     if (minDist < 1.0F) {
                         if (self->myNumPoints == 0) {
                             self->myBoundaryRoot->addChild(node);

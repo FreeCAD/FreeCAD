@@ -31,10 +31,11 @@
 #include "ViewProviderPrimitive.h"
 
 
-namespace PartGui {
+namespace PartGui
+{
 
 
-class PartGuiExport ViewProviderRegularPolygon : public ViewProviderPrimitive
+class PartGuiExport ViewProviderRegularPolygon: public ViewProviderPrimitive
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderRegularPolygon);
 
@@ -47,11 +48,9 @@ public:
     std::vector<std::string> getDisplayModes() const override;
 
 protected:
-
 };
 
-} // namespace PartGui
+}  // namespace PartGui
 
 
-#endif // PARTGUI_VIEWPROVIDERREGULARPOLYGON_H
-
+#endif  // PARTGUI_VIEWPROVIDERREGULARPOLYGON_H

@@ -302,7 +302,7 @@ class ViewProvider:
         # make sure the resource view providers are setup properly
         if prop == "Model" and self.obj.Model:
             for base in self.obj.Model.Group:
-                if base.ViewObject and base.ViewObject.Proxy:
+                if base.ViewObject and hasattr(base.ViewObject, "Proxy") and base.ViewObject.Proxy:
                     base.ViewObject.Proxy.onEdit(_OpenCloseResourceEditor)
         if (
             prop == "Stock"

@@ -73,7 +73,7 @@ void PropertyTopoShapeList::setValue()
     clear();
 }
 
-void PropertyTopoShapeList::setValue(const TopoShape &ts)
+void PropertyTopoShapeList::setValue(const TopoShape& ts)
 {
     aboutToSetValue();
     _lValueList.resize(1);
@@ -98,7 +98,6 @@ void PropertyTopoShapeList::clear()
     _lValueList.clear();
     _lValueList.resize(0);
     hasSetValue();
-
 }
 
 // populate the lists with the TopoShapes that have now finished restoring
@@ -115,7 +114,7 @@ void PropertyTopoShapeList::afterRestore()
     App::PropertyLists::afterRestore();
 }
 
-PyObject *PropertyTopoShapeList::getPyObject()
+PyObject* PropertyTopoShapeList::getPyObject()
 {
     Py::List list;
     for (int i = 0; i < getSize(); i++) {
@@ -124,7 +123,7 @@ PyObject *PropertyTopoShapeList::getPyObject()
     return Py::new_reference_to(list);
 }
 
-void PropertyTopoShapeList::setPyObject(PyObject *value)
+void PropertyTopoShapeList::setPyObject(PyObject* value)
 {
     if (PySequence_Check(value)) {
         Py::Sequence sequence(value);
@@ -132,7 +131,7 @@ void PropertyTopoShapeList::setPyObject(PyObject *value)
         std::vector<TopoShape> values;
         values.resize(nSize);
 
-        for (Py_ssize_t i=0; i < nSize; ++i) {
+        for (Py_ssize_t i = 0; i < nSize; ++i) {
             Py::Object item = sequence.getItem(i);
             if (!PyObject_TypeCheck(item.ptr(), &(TopoShapePy::Type))) {
                 std::string error = std::string("types in list must be 'Shape', not ");
@@ -145,7 +144,7 @@ void PropertyTopoShapeList::setPyObject(PyObject *value)
         setValues(values);
     }
     else if (PyObject_TypeCheck(value, &(TopoShapePy::Type))) {
-        TopoShapePy  *pcObject = static_cast<TopoShapePy*>(value);
+        TopoShapePy* pcObject = static_cast<TopoShapePy*>(value);
         setValue(*pcObject->getTopoShapePtr());
     }
     else {
@@ -250,9 +249,9 @@ void PropertyTopoShapeList::RestoreDocFile(Base::Reader& reader)
     }
 }
 
-App::Property *PropertyTopoShapeList::Copy() const
+App::Property* PropertyTopoShapeList::Copy() const
 {
-    PropertyTopoShapeList *p = new PropertyTopoShapeList();
+    PropertyTopoShapeList* p = new PropertyTopoShapeList();
     std::vector<TopoShape> copiedShapes;
     for (auto& shape : _lValueList) {
         BRepBuilderAPI_Copy copy(shape.getShape());
@@ -262,7 +261,7 @@ App::Property *PropertyTopoShapeList::Copy() const
     return p;
 }
 
-void PropertyTopoShapeList::Paste(const Property &from)
+void PropertyTopoShapeList::Paste(const Property& from)
 {
     const PropertyTopoShapeList& FromList = dynamic_cast<const PropertyTopoShapeList&>(from);
     setValues(FromList._lValueList);
@@ -271,8 +270,8 @@ void PropertyTopoShapeList::Paste(const Property &from)
 unsigned int PropertyTopoShapeList::getMemSize() const
 {
     int size = sizeof(PropertyTopoShapeList);
-    for (int i = 0; i < getSize(); i++)
+    for (int i = 0; i < getSize(); i++) {
         size += _lValueList[i].getMemSize();
+    }
     return size;
 }
-

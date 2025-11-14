@@ -38,17 +38,20 @@ PropertyMeshKernelItem::PropertyMeshKernelItem()
 {
     // NOLINTBEGIN
     m_p = static_cast<Gui::PropertyEditor::PropertyIntegerItem*>(
-        Gui::PropertyEditor::PropertyIntegerItem::create());
+        Gui::PropertyEditor::PropertyIntegerItem::create()
+    );
     m_p->setParent(this);
     m_p->setPropertyName(QLatin1String("Points"));
     this->appendChild(m_p);
     m_e = static_cast<Gui::PropertyEditor::PropertyIntegerItem*>(
-        Gui::PropertyEditor::PropertyIntegerItem::create());
+        Gui::PropertyEditor::PropertyIntegerItem::create()
+    );
     m_e->setParent(this);
     m_e->setPropertyName(QLatin1String("Edges"));
     this->appendChild(m_e);
     m_f = static_cast<Gui::PropertyEditor::PropertyIntegerItem*>(
-        Gui::PropertyEditor::PropertyIntegerItem::create());
+        Gui::PropertyEditor::PropertyIntegerItem::create()
+    );
     m_f->setParent(this);
     m_f->setPropertyName(QLatin1String("Faces"));
     this->appendChild(m_f);
@@ -89,9 +92,11 @@ void PropertyMeshKernelItem::setValue(const QVariant& value)
     Q_UNUSED(value);
 }
 
-QWidget* PropertyMeshKernelItem::createEditor(QWidget* parent,
-                                              const std::function<void()>& method,
-                                              FrameOption frameOption) const
+QWidget* PropertyMeshKernelItem::createEditor(
+    QWidget* parent,
+    const std::function<void()>& method,
+    FrameOption frameOption
+) const
 {
     Q_UNUSED(parent);
     Q_UNUSED(method);

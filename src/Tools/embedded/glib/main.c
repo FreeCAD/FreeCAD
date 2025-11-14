@@ -8,16 +8,20 @@ static void helloWorld(GtkWidget* wid, GtkWidget* win)
 {
     PyObject* mmod = PyImport_AddModule("__main__");
     PyObject* dict = PyModule_GetDict(mmod);
-    PyRun_String("import sys\n"
-                 "sys.path.append(\"/home/werner/FreeCAD/lib\")",
-                 Py_file_input,
-                 dict,
-                 dict);
-    PyObject* result = PyRun_String("import FreeCADGui\n"
-                                    "FreeCADGui.showMainWindow()",
-                                    Py_file_input,
-                                    dict,
-                                    dict);
+    PyRun_String(
+        "import sys\n"
+        "sys.path.append(\"/home/werner/FreeCAD/lib\")",
+        Py_file_input,
+        dict,
+        dict
+    );
+    PyObject* result = PyRun_String(
+        "import FreeCADGui\n"
+        "FreeCADGui.showMainWindow()",
+        Py_file_input,
+        dict,
+        dict
+    );
     if (result) {
         Py_DECREF(result);
     }
@@ -28,12 +32,14 @@ static void helloWorld(GtkWidget* wid, GtkWidget* win)
         const char* error = PyUnicode_AsUTF8(pystring);
 
         GtkWidget* dialog = NULL;
-        dialog = gtk_message_dialog_new(GTK_WINDOW(win),
-                                        GTK_DIALOG_MODAL,
-                                        GTK_MESSAGE_INFO,
-                                        GTK_BUTTONS_CLOSE,
-                                        "%s",
-                                        error);
+        dialog = gtk_message_dialog_new(
+            GTK_WINDOW(win),
+            GTK_DIALOG_MODAL,
+            GTK_MESSAGE_INFO,
+            GTK_BUTTONS_CLOSE,
+            "%s",
+            error
+        );
         gtk_window_set_position(GTK_WINDOW(dialog), GTK_WIN_POS_CENTER);
         gtk_dialog_run(GTK_DIALOG(dialog));
         gtk_widget_destroy(dialog);

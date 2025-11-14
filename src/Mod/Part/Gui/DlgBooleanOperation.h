@@ -31,15 +31,17 @@
 
 class QTreeWidgetItem;
 
-namespace App {
+namespace App
+{
 class DocumentObject;
 class Property;
-}
-namespace PartGui {
+}  // namespace App
+namespace PartGui
+{
 
 using Connection = boost::signals2::connection;
 class Ui_DlgBooleanOperation;
-class DlgBooleanOperation : public QWidget
+class DlgBooleanOperation: public QWidget
 {
     Q_OBJECT
 
@@ -56,7 +58,7 @@ private:
     bool hasSolids(const App::DocumentObject*) const;
 
 protected:
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
 
 private:
     void onSwapButtonClicked();
@@ -69,7 +71,7 @@ private:
     std::list<const App::DocumentObject*> observe;
 };
 
-class TaskBooleanOperation : public Gui::TaskView::TaskDialog
+class TaskBooleanOperation: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
@@ -80,16 +82,22 @@ public:
     void clicked(int) override;
 
     QDialogButtonBox::StandardButtons getStandardButtons() const override
-    { return QDialogButtonBox::Apply | QDialogButtonBox::Close; }
+    {
+        return QDialogButtonBox::Apply | QDialogButtonBox::Close;
+    }
     bool isAllowedAlterDocument() const override
-    { return true; }
+    {
+        return true;
+    }
     bool needsFullSpace() const override
-    { return true; }
+    {
+        return true;
+    }
 
 private:
     DlgBooleanOperation* widget;
 };
 
-} // namespace PartGui
+}  // namespace PartGui
 
-#endif // PARTGUI_DLGBOOLEANOPERATION_H
+#endif  // PARTGUI_DLGBOOLEANOPERATION_H

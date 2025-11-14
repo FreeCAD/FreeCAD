@@ -44,10 +44,10 @@
 
 using namespace PartGui;
 
-PatternParametersWidget::PatternParametersWidget(PatternType type, QWidget* parent) :
-    QWidget(parent),
-    type(type),
-    ui(new Ui_PatternParametersWidget)
+PatternParametersWidget::PatternParametersWidget(PatternType type, QWidget* parent)
+    : QWidget(parent)
+    , type(type)
+    , ui(new Ui_PatternParametersWidget)
 {
     ui->setupUi(this);
     setupUiElements();
@@ -73,7 +73,8 @@ void PatternParametersWidget::setupUiElements()
     dirLinks.setCombo(ui->comboDirection);
 
     ParameterGrp::handle hPart = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Part");
+        "User parameter:BaseApp/Preferences/Mod/Part"
+    );
     ui->addSpacingButton->setVisible(hPart->GetBool("ExperimentalFeatures", false));
 
     ui->enableCheckbox->setVisible(false);
@@ -81,40 +82,67 @@ void PatternParametersWidget::setupUiElements()
 
 void PatternParametersWidget::connectSignals()
 {
-    connect(ui->comboDirection, qOverload<int>(&QComboBox::activated),
-        this, &PatternParametersWidget::onDirectionChanged);
-    connect(ui->PushButtonReverse, &QToolButton::pressed,
-        this, &PatternParametersWidget::onReversePressed);
-    connect(ui->comboMode, qOverload<int>(&QComboBox::activated),
-        this, &PatternParametersWidget::onModeChanged);
+    connect(
+        ui->comboDirection,
+        qOverload<int>(&QComboBox::activated),
+        this,
+        &PatternParametersWidget::onDirectionChanged
+    );
+    connect(ui->PushButtonReverse, &QToolButton::pressed, this, &PatternParametersWidget::onReversePressed);
+    connect(
+        ui->comboMode,
+        qOverload<int>(&QComboBox::activated),
+        this,
+        &PatternParametersWidget::onModeChanged
+    );
 
-    connect(ui->spinExtent, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-        this, &PatternParametersWidget::onLengthChanged);
-    connect(ui->spinSpacing, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-        this, &PatternParametersWidget::onOffsetChanged);
-    connect(ui->spinOccurrences, &Gui::UIntSpinBox::unsignedChanged,
-        this, &PatternParametersWidget::onOccurrencesChanged);
+    connect(
+        ui->spinExtent,
+        qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this,
+        &PatternParametersWidget::onLengthChanged
+    );
+    connect(
+        ui->spinSpacing,
+        qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this,
+        &PatternParametersWidget::onOffsetChanged
+    );
+    connect(
+        ui->spinOccurrences,
+        &Gui::UIntSpinBox::unsignedChanged,
+        this,
+        &PatternParametersWidget::onOccurrencesChanged
+    );
 
     // Dynamic spacing buttons
-    connect(ui->addSpacingButton, &QToolButton::clicked,
-        this, &PatternParametersWidget::onAddSpacingButtonClicked);
+    connect(
+        ui->addSpacingButton,
+        &QToolButton::clicked,
+        this,
+        &PatternParametersWidget::onAddSpacingButtonClicked
+    );
 
     connect(ui->groupBox, &QGroupBox::toggled, this, &PatternParametersWidget::onGroupBoxToggled);
-    connect(ui->enableCheckbox,
-            &QCheckBox::toggled,
-            this,
-            &PatternParametersWidget::onEnableCheckBoxToggled);
+    connect(
+        ui->enableCheckbox,
+        &QCheckBox::toggled,
+        this,
+        &PatternParametersWidget::onEnableCheckBoxToggled
+    );
     // Note: Connections for dynamic rows are done in addSpacingRow()
 }
 
-void PatternParametersWidget::bindProperties(App::PropertyLinkSub* directionProp,
+void PatternParametersWidget::bindProperties(
+    App::PropertyLinkSub* directionProp,
     App::PropertyBool* reversedProp,
     App::PropertyEnumeration* modeProp,
     App::PropertyQuantity* lengthProp,
     App::PropertyQuantity* offsetProp,
     App::PropertyFloatList* spacingPatternProp,
     App::PropertyIntegerConstraint* occurrencesProp,
-    App::DocumentObject* feature)
+    App::DocumentObject* feature
+)
 {
     // Store pointers to the properties
     m_directionProp = directionProp;
@@ -124,7 +152,7 @@ void PatternParametersWidget::bindProperties(App::PropertyLinkSub* directionProp
     m_spacingProp = offsetProp;
     m_spacingPatternProp = spacingPatternProp;
     m_occurrencesProp = occurrencesProp;
-    m_feature = feature; // Store feature for context (units, etc.)
+    m_feature = feature;  // Store feature for context (units, etc.)
 
     ui->spinExtent->bind(*m_extentProp);
     Base::Unit unit = type == PatternType::Linear ? Base::Unit::Length : Base::Unit::Angle;
@@ -152,7 +180,12 @@ void PatternParametersWidget::bindProperties(App::PropertyLinkSub* directionProp
     updateUI();
 }
 
-void PatternParametersWidget::addDirection(App::DocumentObject* linkObj, const std::string& linkSubname, const QString& itemText, int userData)
+void PatternParametersWidget::addDirection(
+    App::DocumentObject* linkObj,
+    const std::string& linkSubname,
+    const QString& itemText,
+    int userData
+)
 {
     // Insert custom directions before "Select reference..."
     dirLinks.addLink(linkObj, linkSubname, itemText, userData);
@@ -160,7 +193,7 @@ void PatternParametersWidget::addDirection(App::DocumentObject* linkObj, const s
 
 void PatternParametersWidget::updateUI()
 {
-    if (blockUpdate || !m_feature) { // Need properties to be bound
+    if (blockUpdate || !m_feature) {  // Need properties to be bound
         return;
     }
     Base::StateLocker locker(blockUpdate, true);
@@ -169,9 +202,10 @@ void PatternParametersWidget::updateUI()
     if (dirLinks.setCurrentLink(*m_directionProp) == -1) {
         // failed to set current, because the link isn't in the list yet
         if (m_directionProp->getValue()) {
-            QString refStr =
-                QStringLiteral("%1:%2").arg(QString::fromLatin1(m_directionProp->getValue()->getNameInDocument()),
-                                            QString::fromLatin1(m_directionProp->getSubValues().front().c_str()));
+            QString refStr = QStringLiteral("%1:%2").arg(
+                QString::fromLatin1(m_directionProp->getValue()->getNameInDocument()),
+                QString::fromLatin1(m_directionProp->getSubValues().front().c_str())
+            );
             dirLinks.addLink(*m_directionProp, refStr);
             dirLinks.setCurrentLink(*m_directionProp);
         }
@@ -267,21 +301,25 @@ void PatternParametersWidget::setChecked(bool on)
 
 void PatternParametersWidget::onDirectionChanged(int /*index*/)
 {
-    if (blockUpdate || !m_directionProp) return;
+    if (blockUpdate || !m_directionProp) {
+        return;
+    }
 
     if (isSelectReferenceMode()) {
         // Emit signal for the task panel to handle reference selection
         requestReferenceSelection();
     }
     else {
-        m_directionProp->Paste(dirLinks.getCurrentLink()); // Update the property
-        parametersChanged(); // Notify change
+        m_directionProp->Paste(dirLinks.getCurrentLink());  // Update the property
+        parametersChanged();                                // Notify change
     }
 }
 
 void PatternParametersWidget::onReversePressed()
 {
-    if (blockUpdate || !m_reversedProp) return;
+    if (blockUpdate || !m_reversedProp) {
+        return;
+    }
 
     m_reversedProp->setValue(!m_reversedProp->getValue());
     parametersChanged();
@@ -289,46 +327,55 @@ void PatternParametersWidget::onReversePressed()
 
 void PatternParametersWidget::onModeChanged(int index)
 {
-    if (blockUpdate || !m_modeProp) return;
-    m_modeProp->setValue(index); // Assuming enum values match index
-    adaptVisibilityToMode(); // Update visibility based on new mode
+    if (blockUpdate || !m_modeProp) {
+        return;
+    }
+    m_modeProp->setValue(index);  // Assuming enum values match index
+    adaptVisibilityToMode();      // Update visibility based on new mode
     parametersChanged();
 }
 
 void PatternParametersWidget::onLengthChanged(double value)
 {
     // Usually handled by bind(). If manual update needed:
-    if (blockUpdate || !m_extentProp) return;
+    if (blockUpdate || !m_extentProp) {
+        return;
+    }
     m_extentProp->setValue(value);
-    parametersChanged(); // Still emit signal even if bound
+    parametersChanged();  // Still emit signal even if bound
 }
 
 void PatternParametersWidget::onOffsetChanged(double value)
 {
-    if (blockUpdate || !m_spacingProp || !m_spacingPatternProp) return;
+    if (blockUpdate || !m_spacingProp || !m_spacingPatternProp) {
+        return;
+    }
 
     m_spacingProp->setValue(value);
 
     // Crucially, also update the *first* element of the SpacingPattern list
     std::vector<double> currentSpacings = m_spacingPatternProp->getValues();
     if (currentSpacings.empty()) {
-        currentSpacings.push_back(ui->spinSpacing->value().getValue()); // Use UI value which includes units
+        currentSpacings.push_back(ui->spinSpacing->value().getValue());  // Use UI value which
+                                                                         // includes units
     }
     else {
         currentSpacings[0] = ui->spinSpacing->value().getValue();
     }
 
-    m_spacingPatternProp->setValues(currentSpacings); // Update the property list
-    parametersChanged(); // Emit signal
+    m_spacingPatternProp->setValues(currentSpacings);  // Update the property list
+    parametersChanged();                               // Emit signal
 }
 
 void PatternParametersWidget::onOccurrencesChanged(unsigned int value)
 {
     // Usually handled by bind(). If manual update needed:
-    if (blockUpdate || !m_occurrencesProp) return;
+    if (blockUpdate || !m_occurrencesProp) {
+        return;
+    }
 
     m_occurrencesProp->setValue(value);
-    parametersChanged(); // Still emit signal even if bound
+    parametersChanged();  // Still emit signal even if bound
 }
 
 
@@ -385,10 +432,12 @@ void PatternParametersWidget::addSpacingRow(double value)
     dynamicSpacingSpinBoxes.append(spinBox);
 
     // Connect signals for the new row
-    connect(spinBox,
-            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this,
-            &PatternParametersWidget::onDynamicSpacingChanged);
+    connect(
+        spinBox,
+        qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this,
+        &PatternParametersWidget::onDynamicSpacingChanged
+    );
     connect(removeButton, &QToolButton::clicked, this, [this, fieldWidget]() {
         this->onRemoveSpacingButtonClicked(fieldWidget);
     });
@@ -412,20 +461,24 @@ void PatternParametersWidget::rebuildDynamicSpacingUI()
 
 void PatternParametersWidget::onAddSpacingButtonClicked()
 {
-    if (blockUpdate || !m_spacingProp) return;
+    if (blockUpdate || !m_spacingProp) {
+        return;
+    }
 
     // Add a new row to the UI with a default value (same as main offset)
     addSpacingRow(ui->spinSpacing->value().getValue());
 
     // Update the underlying property list
-    updateSpacingPatternProperty(); // This will emit parametersChanged
+    updateSpacingPatternProperty();  // This will emit parametersChanged
 }
 
 void PatternParametersWidget::onDynamicSpacingChanged()
 {
-    if (blockUpdate) return;
+    if (blockUpdate) {
+        return;
+    }
     // Update the entire property list based on the current UI state.
-    updateSpacingPatternProperty(); // This will emit parametersChanged
+    updateSpacingPatternProperty();  // This will emit parametersChanged
 }
 
 void PatternParametersWidget::onRemoveSpacingButtonClicked(QWidget* fieldWidget)
@@ -447,8 +500,7 @@ void PatternParametersWidget::onRemoveSpacingButtonClicked(QWidget* fieldWidget)
 
     // Update labels of subsequent rows
     for (int i = indexToRemove; i < dynamicSpacingRows.size(); ++i) {
-        if (auto* label =
-                qobject_cast<QLabel*>(ui->formLayout->labelForField(dynamicSpacingRows[i]))) {
+        if (auto* label = qobject_cast<QLabel*>(ui->formLayout->labelForField(dynamicSpacingRows[i]))) {
             label->setText(tr("Spacing %1").arg(i + 2));
         }
     }
@@ -473,14 +525,13 @@ void PatternParametersWidget::updateSpacingPatternProperty()
         newSpacings.push_back(spinBox->value().getValue());
     }
 
-    m_spacingPatternProp->setValues(newSpacings); // Set the property list
-    parametersChanged(); // Emit signal after property is set
+    m_spacingPatternProp->setValues(newSpacings);  // Set the property list
+    parametersChanged();                           // Emit signal after property is set
 }
 
 // --- Getters ---
 
-void PatternParametersWidget::getAxis(App::DocumentObject*& obj,
-    std::vector<std::string>& sub) const
+void PatternParametersWidget::getAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const
 {
     const App::PropertyLinkSub& lnk = dirLinks.getCurrentLink();
     obj = lnk.getValue();
@@ -532,5 +583,4 @@ void PatternParametersWidget::applyQuantitySpinboxes() const
     ui->spinOccurrences->apply();
 }
 
-//#include "moc_PatternParametersWidget.cpp"
-
+// #include "moc_PatternParametersWidget.cpp"

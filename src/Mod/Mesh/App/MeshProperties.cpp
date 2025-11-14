@@ -823,8 +823,7 @@ void PropertyMeshKernel::transformGeometry(const Base::Matrix4D& rclMat)
     hasSetValue();
 }
 
-void PropertyMeshKernel::setPointIndices(
-    const std::vector<std::pair<PointIndex, Base::Vector3f>>& inds)
+void PropertyMeshKernel::setPointIndices(const std::vector<std::pair<PointIndex, Base::Vector3f>>& inds)
 {
     aboutToSetValue();
     MeshCore::MeshKernel& kernel = _meshObject->getKernel();
@@ -847,10 +846,10 @@ Base::Matrix4D PropertyMeshKernel::getTransform() const
 PyObject* PropertyMeshKernel::getPyObject()
 {
     if (!meshPyObject) {
-        meshPyObject = new MeshPy(
-            &*_meshObject);  // Lgtm[cpp/resource-not-released-in-destructor] ** Not destroyed in
-                             // this class because it is reference-counted and destroyed elsewhere
-        meshPyObject->setConst();  // set immutable
+        meshPyObject = new MeshPy(&*_meshObject);  // Lgtm[cpp/resource-not-released-in-destructor]
+                                                   // ** Not destroyed in this class because it is
+                                                   // reference-counted and destroyed elsewhere
+        meshPyObject->setConst();                  // set immutable
         meshPyObject->parentProperty = this;
     }
 
