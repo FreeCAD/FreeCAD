@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 """
 Examples for a feature class and its view provider.
 (c) 2009 Werner Mayer LGPL
