@@ -104,7 +104,9 @@ void ViewProviderSheet::exportAsFile()
 {
     auto* sheet = getObject<Spreadsheet::Sheet>();
     QString selectedFilter;
-    QString formatList = QObject::tr("CSV (*.csv *.CSV);;All (*)");
+    QStringList formatList;
+    formatList << QObject::tr("CSV (*.csv *.CSV)");
+    formatList << QObject::tr("All (*)");
     QString fileName = Gui::FileDialog::getSaveFileName(
         Gui::getMainWindow(),
         QObject::tr("Export File"),

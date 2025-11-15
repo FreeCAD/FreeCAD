@@ -58,7 +58,7 @@ void FCCmdImportReadBREP::activated(int iMsg)
         Gui::getMainWindow(),
         QString(),
         QString(),
-        QLatin1String("BREP (*.brep *.rle)")
+        QStringList(QLatin1String("BREP (*.brep *.rle)"))
     );
     if (fn.isEmpty()) {
         abortCommand();
@@ -100,7 +100,7 @@ void ImportStep::activated(int iMsg)
         Gui::getMainWindow(),
         QString(),
         QString(),
-        QLatin1String("STEP (*.stp *.step)")
+        QStringList(QLatin1String("STEP (*.stp *.step)"))
     );
     if (!fn.isEmpty()) {
         openCommand(QT_TRANSLATE_NOOP("Command", "Part ImportSTEP Create"));
@@ -147,7 +147,7 @@ void ImportIges::activated(int iMsg)
         Gui::getMainWindow(),
         QString(),
         QString(),
-        QLatin1String("IGES (*.igs *.iges)")
+        QStringList(QLatin1String("IGES (*.igs *.iges)"))
     );
     if (!fn.isEmpty()) {
         openCommand(QT_TRANSLATE_NOOP("Command", "ImportIGES Create"));
