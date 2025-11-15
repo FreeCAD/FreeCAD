@@ -44,7 +44,7 @@ class BIM_Sketch:
     def IsActive(self):
         v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
         return v
-        
+
     def Activated(self):
         import WorkingPlane
         from draftutils import params
