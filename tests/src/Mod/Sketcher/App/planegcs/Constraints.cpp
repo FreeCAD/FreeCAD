@@ -7,6 +7,7 @@
 
 #include "Mod/Sketcher/App/planegcs/GCS.h"
 #include "Mod/Sketcher/App/planegcs/Geo.h"
+#include "Mod/Sketcher/App/planegcs/Util.h"
 #include "Mod/Sketcher/App/planegcs/Constraints.h"
 
 class SystemTest: public GCS::System
@@ -82,18 +83,18 @@ TEST_F(ConstraintsTest, tangentBSplineAndArc)  // NOLINT
         bSplineControlPoints[i].y = &bSplineControlPointsY[i];
     }
     std::vector<double> weights(bSplineControlPoints.size(), 1.0);
-    std::vector<double*> weightsAsPtr;
+    std::vector<GCS::DeriParam> weightsAsPtr;
     std::vector<double> knots(bSplineControlPoints.size() - 2);  // Hardcoded for cubic
-    std::vector<double*> knotsAsPtr;
+    std::vector<GCS::DeriParam> knotsAsPtr;
     std::vector<int> mult(bSplineControlPoints.size() - 2, 1);  // Hardcoded for cubic
     mult.front() = 4;                                           // Hardcoded for cubic
     mult.back() = 4;                                            // Hardcoded for cubic
     for (size_t i = 0; i < bSplineControlPoints.size(); ++i) {
-        weightsAsPtr.push_back(&weights[i]);
+        weightsAsPtr.emplace_back(&weights[i]);
     }
     for (size_t i = 0; i < knots.size(); ++i) {
         knots[i] = static_cast<double>(i);
-        knotsAsPtr.push_back(&knots[i]);
+        knotsAsPtr.emplace_back(&knots[i]);
     }
     GCS::Arc arc;
     arc.start = arcStart;
@@ -177,4 +178,405 @@ TEST_F(ConstraintsTest, tangentBSplineAndArc)  // NOLINT
         1.0,
         0.005
     );
+}
+TEST_F(ConstraintsTest, rectangleWithOneOffsetDim)  // NOLINT
+{
+    double left = -1;
+    double bottom = -5;
+    double right = 6;
+    double top = 8;
+
+    double l1p1x = left;
+    double l1p1y = bottom;
+    double l1p2x = left;
+    double l1p2y = top;
+    double l1length = 10;
+    GCS::Line l1(GCS::Point(&l1p1x, &l1p1y), GCS::Point(&l1p2x, &l1p2y));
+
+    double l2p1x = left;
+    double l2p1y = top;
+    double l2p2x = right;
+    double l2p2y = top;
+    GCS::Line l2(GCS::Point(&l2p1x, &l2p1y), GCS::Point(&l2p2x, &l2p2y));
+
+    double l3p1x = right;
+    double l3p1y = top;
+    double l3p2x = right;
+    double l3p2y = bottom;
+    GCS::Line l3(GCS::Point(&l3p1x, &l3p1y), GCS::Point(&l3p2x, &l3p2y));
+
+    double l4p1x = right;
+    double l4p1y = bottom;
+    double l4p2x = left;
+    double l4p2y = bottom;
+    GCS::Line l4(GCS::Point(&l4p1x, &l4p1y), GCS::Point(&l4p2x, &l4p2y));
+
+
+    std::vector<double*> unknowns;
+    l1.PushOwnParams(unknowns);
+    l2.PushOwnParams(unknowns);
+    l3.PushOwnParams(unknowns);
+    l4.PushOwnParams(unknowns);
+
+    System()->addConstraintP2PCoincident(l1.p2, l2.p1);
+    System()->addConstraintP2PCoincident(l2.p2, l3.p1);
+    System()->addConstraintP2PCoincident(l3.p2, l4.p1);
+    System()->addConstraintP2PCoincident(l4.p2, l1.p1);
+
+    System()->addConstraintVertical(l1);
+    System()->addConstraintHorizontal(l2);
+    System()->addConstraintVertical(l3);
+    System()->addConstraintHorizontal(l4);
+
+    System()->addConstraintDifference(l1.p1.y, l1.p2.y, &l1length);
+
+    int solveResult = System()->solve(unknowns);
+    if (solveResult == GCS::Success) {
+        System()->applySolution();
+    }
+
+    // Assert
+    EXPECT_EQ(solveResult, GCS::Success);
+
+    EXPECT_NEAR(*l1.p2.y, *l1.p1.y + l1length, 1e-12);
+}
+TEST_F(ConstraintsTest, drag2DOF)  // NOLINT
+{
+    // Drag a line which has a 2 degrees of freedom (the dragged point should go to the dragpos)
+    double lp1x = 0.0;
+    double lp1y = 0.0;
+    double lp2x = 0.0;
+    double lp2y = 20.0;
+    double llength = 20;
+    GCS::Line line(GCS::Point(&lp1x, &lp1y), GCS::Point(&lp2x, &lp2y));
+
+    double dragPointx = 5.0;
+    double dragPointy = 2.0;
+    GCS::Point dragPoint(&dragPointx, &dragPointy);
+
+    std::vector<double*> unknowns;
+    line.PushOwnParams(unknowns);
+
+    System()->addConstraintVertical(line);
+
+
+    System()->addConstraintDifference(line.p1.y, line.p2.y, &llength);
+    System()->addConstraintP2PCoincident(line.p1, dragPoint, GCS::DefaultTemporaryConstraint);
+
+    int solveResult = System()->solve(unknowns);
+    if (solveResult == GCS::Success) {
+        System()->applySolution();
+    }
+
+    // Assert
+    EXPECT_EQ(solveResult, GCS::Success);
+
+    EXPECT_NEAR(lp1x, dragPointx, 1e-12);
+    EXPECT_NEAR(lp1y, dragPointy, 1e-12);
+    EXPECT_NEAR(lp2y, lp1y + llength, 1e-12);
+}
+TEST_F(ConstraintsTest, drag1DOF)
+{
+    // Drag a line which has a 1 degree of freedom (1 dimension of the dragged point should go to
+    // the dragpoint)
+    double zero = 0;
+    double lp1x = -1.0;
+    double lp1y = -2.0;
+    double lp2x = -3.0;
+    double lp2y = 20.0;
+    GCS::Line line(GCS::Point(&lp1x, &lp1y), GCS::Point(&lp2x, &lp2y));
+
+    double dragPointx = 5.0;
+    double dragPointy = 2.0;
+    GCS::Point dragPoint(&dragPointx, &dragPointy);
+
+    std::vector<double*> unknowns;
+    line.PushOwnParams(unknowns);
+
+    System()->addConstraintEqual(&lp1x, &zero);
+    System()->addConstraintEqual(&lp1y, &zero);
+    System()->addConstraintVertical(line);
+
+    System()->addConstraintP2PCoincident(line.p2, dragPoint, GCS::DefaultTemporaryConstraint);
+
+    int solveResult = System()->solve(unknowns);
+    if (solveResult == GCS::Success) {
+        System()->applySolution();
+    }
+
+    // Assert
+    EXPECT_EQ(solveResult, GCS::Success);
+
+    EXPECT_NEAR(lp1x, 0, 1e-12);
+    EXPECT_NEAR(lp1y, 0, 1e-12);
+    EXPECT_NEAR(lp2y, dragPointy, 1e-12);
+    EXPECT_NEAR(lp1x, lp2x, 1e-12);
+}
+TEST_F(ConstraintsTest, drag0DOF)
+{
+    // Drag a line which has a 0 degree of freedom (dragged point should not move)
+    double zero = 0;
+    double lp1x = -1.0;
+    double lp1y = -2.0;
+    double lp2x = 0.0;
+    double lp2y = 20.0;
+    double llength = 20;
+    GCS::Line line(GCS::Point(&lp1x, &lp1y), GCS::Point(&lp2x, &lp2y));
+
+    double dragPointx = 5.0;
+    double dragPointy = 2.0;
+    GCS::Point dragPoint(&dragPointx, &dragPointy);
+
+    std::vector<double*> unknowns;
+    line.PushOwnParams(unknowns);
+
+    System()->addConstraintEqual(&lp1x, &zero);
+    System()->addConstraintEqual(&lp1y, &zero);
+    System()->addConstraintVertical(line);
+    System()->addConstraintP2PDistance(line.p1, line.p2, &llength);
+
+    System()->addConstraintP2PCoincident(line.p2, dragPoint, GCS::DefaultTemporaryConstraint);
+
+    int solveResult = System()->solve(unknowns);
+    if (solveResult == GCS::Success) {
+        System()->applySolution();
+    }
+
+    // Assert
+    EXPECT_EQ(solveResult, GCS::Success);
+
+    EXPECT_NEAR(lp1x, 0, 1e-12);
+    EXPECT_NEAR(lp1y, 0, 1e-12);
+    EXPECT_NEAR(lp2y, llength, 1e-12);
+    EXPECT_NEAR(lp1x, lp2x, 1e-12);
+}
+
+TEST_F(ConstraintsTest, classicFlip)  // NOLINT
+{
+    // Create the classic flip L figure
+
+    double l1dist = 20;
+    double l4length = 30;
+    double l6length = 10;
+
+    double originx = 0.0;
+    double originy = 0.0;
+    double zero = 0;
+    GCS::Point origin(&originx, &originy);
+
+    double l1p1x = 20.336287;
+    double l1p1y = 35.627689;
+    double l1p2x = 20.642096;
+    double l1p2y = -0.152126;
+    GCS::Line l1(GCS::Point(&l1p1x, &l1p1y), GCS::Point(&l1p2x, &l1p2y));
+
+    double l2p1x = 20.336287;
+    double l2p1y = -0.152126;
+    double l2p2x = 55.045757;
+    double l2p2y = 0.0000000;
+    GCS::Line l2(GCS::Point(&l2p1x, &l2p1y), GCS::Point(&l2p2x, &l2p2y));
+
+    double l3p1x = 55.045757;
+    double l3p1y = 0.0000000;
+    double l3p2x = 54.892860;
+    double l3p2y = 13.150624;
+    GCS::Line l3(GCS::Point(&l3p1x, &l3p1y), GCS::Point(&l3p2x, &l3p2y));
+
+    double l4p1x = 55.045757;
+    double l4p1y = 13.150624;
+    double l4p2x = 39.755249;
+    double l4p2y = 12.997720;
+    GCS::Line l4(GCS::Point(&l4p1x, &l4p1y), GCS::Point(&l4p2x, &l4p2y));
+
+    double l5p1x = 39.755249;
+    double l5p1y = 13.150624;
+    double l5p2x = 39.908154;
+    double l5p2y = 34.251545;
+    GCS::Line l5(GCS::Point(&l5p1x, &l5p1y), GCS::Point(&l5p2x, &l5p2y));
+
+    double l6p1x = 39.755249;
+    double l6p1y = 34.251545;
+    double l6p2x = 20.336287;
+    double l6p2y = 35.627689;
+    GCS::Line l6(GCS::Point(&l6p1x, &l6p1y), GCS::Point(&l6p2x, &l6p2y));
+
+    std::vector<double*> unknowns;
+    l1.PushOwnParams(unknowns);
+    l2.PushOwnParams(unknowns);
+    l3.PushOwnParams(unknowns);
+    l4.PushOwnParams(unknowns);
+    l5.PushOwnParams(unknowns);
+    l6.PushOwnParams(unknowns);
+    origin.PushOwnParams(unknowns);
+
+
+    System()->addConstraintEqual(&originx, &zero);
+    System()->addConstraintEqual(&originy, &zero);
+
+    System()->addConstraintVertical(l1);
+    System()->addConstraintHorizontal(l2);
+    System()->addConstraintVertical(l3);
+    System()->addConstraintHorizontal(l4);
+    System()->addConstraintVertical(l5);
+    System()->addConstraintHorizontal(l6);
+
+    System()->addConstraintP2PCoincident(l1.p2, l2.p1);
+    System()->addConstraintP2PCoincident(l2.p2, l3.p1);
+    System()->addConstraintP2PCoincident(l3.p2, l4.p1);
+    System()->addConstraintP2PCoincident(l4.p2, l5.p1);
+    System()->addConstraintP2PCoincident(l5.p2, l6.p1);
+    System()->addConstraintP2PCoincident(l6.p2, l1.p1);
+    System()->addConstraintEqualLength(l3, l6);
+    System()->addConstraintEqualLength(l4, l5);
+
+    System()->addConstraintP2LDistance(origin, l1, &l1dist);
+    // System()->addConstraintP2PDistance(l4.p1, l4.p2, &l4length);
+    // System()->addConstraintP2PDistance(l6.p1, l6.p2, &l6length);
+    System()->addConstraintDifference(l4.p2.x, l4.p1.x, &l4length);
+    System()->addConstraintDifference(l6.p2.x, l6.p1.x, &l6length);
+    System()->addConstraintEqual(&originy, l1.p2.y);
+
+    int solveResult = System()->solve(unknowns);
+    if (solveResult == GCS::Success) {
+        System()->applySolution();
+    }
+
+    // Assert
+    EXPECT_EQ(solveResult, GCS::Success);
+
+    EXPECT_NEAR(l1p1x, l1dist, 1e-12);
+    EXPECT_NEAR(l1p2x, l1dist, 1e-12);
+    EXPECT_NEAR(l6p2x, l1dist, 1e-12);
+    EXPECT_NEAR(l2p1x, l1dist, 1e-12);
+
+    EXPECT_NEAR(l2p2x, l1dist + l4length + l6length, 1e-12);
+    EXPECT_NEAR(l3p1x, l1dist + l4length + l6length, 1e-12);
+    EXPECT_NEAR(l3p2x, l1dist + l4length + l6length, 1e-12);
+    EXPECT_NEAR(l4p1x, l1dist + l4length + l6length, 1e-12);
+
+    EXPECT_NEAR(l4p2x, l1dist + l6length, 1e-12);
+    EXPECT_NEAR(l5p1x, l1dist + l6length, 1e-12);
+    EXPECT_NEAR(l5p2x, l1dist + l6length, 1e-12);
+    EXPECT_NEAR(l6p1x, l1dist + l6length, 1e-12);
+
+    EXPECT_NEAR(l1p1y, l4length + l6length, 1e-12);
+    EXPECT_NEAR(l6p1y, l4length + l6length, 1e-12);
+    EXPECT_NEAR(l6p2y, l4length + l6length, 1e-12);
+    EXPECT_NEAR(l5p2y, l4length + l6length, 1e-12);
+
+    EXPECT_NEAR(l1p2y, 0, 1e-12);
+    EXPECT_NEAR(l2p1y, 0, 1e-12);
+    EXPECT_NEAR(l2p2y, 0, 1e-12);
+    EXPECT_NEAR(l3p1y, 0, 1e-12);
+
+    EXPECT_NEAR(l3p2y, l6length, 1e-12);
+    EXPECT_NEAR(l4p1y, l6length, 1e-12);
+    EXPECT_NEAR(l4p2y, l6length, 1e-12);
+    EXPECT_NEAR(l5p1y, l6length, 1e-12);
+
+
+    // Try to flip it
+    l1dist = 100;
+    solveResult = System()->solve(unknowns);
+    if (solveResult == GCS::Success) {
+        System()->applySolution();
+    }
+
+    // Assert
+    EXPECT_EQ(solveResult, GCS::Success);
+
+    EXPECT_NEAR(l1p1x, l1dist, 1e-12);
+    EXPECT_NEAR(l1p2x, l1dist, 1e-12);
+    EXPECT_NEAR(l6p2x, l1dist, 1e-12);
+    EXPECT_NEAR(l2p1x, l1dist, 1e-12);
+
+    EXPECT_NEAR(l2p2x, l1dist + l4length + l6length, 1e-12);
+    EXPECT_NEAR(l3p1x, l1dist + l4length + l6length, 1e-12);
+    EXPECT_NEAR(l3p2x, l1dist + l4length + l6length, 1e-12);
+    EXPECT_NEAR(l4p1x, l1dist + l4length + l6length, 1e-12);
+
+    EXPECT_NEAR(l4p2x, l1dist + l6length, 1e-12);
+    EXPECT_NEAR(l5p1x, l1dist + l6length, 1e-12);
+    EXPECT_NEAR(l5p2x, l1dist + l6length, 1e-12);
+    EXPECT_NEAR(l6p1x, l1dist + l6length, 1e-12);
+
+    EXPECT_NEAR(l1p1y, l4length + l6length, 1e-12);
+    EXPECT_NEAR(l6p1y, l4length + l6length, 1e-12);
+    EXPECT_NEAR(l6p2y, l4length + l6length, 1e-12);
+    EXPECT_NEAR(l5p2y, l4length + l6length, 1e-12);
+
+    EXPECT_NEAR(l1p2y, 0, 1e-12);
+    EXPECT_NEAR(l2p1y, 0, 1e-12);
+    EXPECT_NEAR(l2p2y, 0, 1e-12);
+    EXPECT_NEAR(l3p1y, 0, 1e-12);
+
+    EXPECT_NEAR(l3p2y, l6length, 1e-12);
+    EXPECT_NEAR(l4p1y, l6length, 1e-12);
+    EXPECT_NEAR(l4p2y, l6length, 1e-12);
+    EXPECT_NEAR(l5p1y, l6length, 1e-12);
+}
+TEST_F(ConstraintsTest, addEquality)  // NOLINT
+{
+    double linelength = 40;
+    double zero = 0.0;
+
+    double lhx1 = 0.0;
+    double lhy1 = 0.0;
+    double lhx2 = 40.0;
+    double lhy2 = 0.0;
+    GCS::Line lh(GCS::Point(&lhx1, &lhy1), GCS::Point(&lhx2, &lhy2));
+
+    double lvx1 = 20.0;
+    double lvy1 = 0.0;
+    double lvx2 = 20.0;
+    double lvy2 = 10.0;
+    GCS::Line lv(GCS::Point(&lvx1, &lvy1), GCS::Point(&lvx2, &lvy2));
+
+    std::vector<double*> unknowns;
+    lh.PushOwnParams(unknowns);
+    lv.PushOwnParams(unknowns);
+
+    System()->addConstraintEqual(lh.p1.x, &zero);
+    System()->addConstraintEqual(lh.p1.y, &zero);
+    System()->addConstraintHorizontal(lh);
+    System()->addConstraintVertical(lv);
+
+    System()->addConstraintP2PDistance(lh.p1, lh.p2, &linelength);
+    System()->addConstraintPointOnLine(lv.p1, lh);
+
+    int solveResult = System()->solve(unknowns);
+    if (solveResult == GCS::Success) {
+        System()->applySolution();
+    }
+
+    // Assert
+    EXPECT_EQ(solveResult, GCS::Success);
+
+    EXPECT_NEAR(lhx1, 0, 1e-12);
+    EXPECT_NEAR(lhy1, 0, 1e-12);
+    EXPECT_NEAR(lhx2, linelength, 1e-12);
+    EXPECT_NEAR(lhy2, 0, 1e-12);
+
+    EXPECT_NEAR(lvx1, 20, 1e-12);
+    EXPECT_NEAR(lvy1, 0, 1e-12);
+    EXPECT_NEAR(lvx2, 20, 1e-12);
+    EXPECT_NEAR(lvy2, 10, 1e-12);
+
+    System()->addConstraintEqualLength(lh, lv);
+    solveResult = System()->solve(unknowns);
+    if (solveResult == GCS::Success) {
+        System()->applySolution();
+    }
+
+    EXPECT_EQ(solveResult, GCS::Success);
+
+    EXPECT_NEAR(lhx1, 0, 1e-12);
+    EXPECT_NEAR(lhy1, 0, 1e-12);
+    EXPECT_NEAR(lhx2, linelength, 1e-12);
+    EXPECT_NEAR(lhy2, 0, 1e-12);
+
+    EXPECT_NEAR(lvx1, 20, 1e-12);
+    EXPECT_NEAR(lvy1, 0, 1e-12);
+    EXPECT_NEAR(lvx2, 20, 1e-12);
+    EXPECT_NEAR(lvy2, linelength, 1e-12);
 }

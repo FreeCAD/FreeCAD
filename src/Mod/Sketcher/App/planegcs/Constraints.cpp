@@ -20,6 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "Mod/Sketcher/App/planegcs/Util.h"
 #ifdef _MSC_VER
 # pragma warning(disable : 4251)
 #endif
@@ -45,7 +46,7 @@ namespace GCS
 // Constraints
 ///////////////////////////////////////
 
-Constraint::Constraint()
+Constraint::Constraint(ConstraintType typeId_)
     : origpvec(0)
     , pvec(0)
     , scale(1.)
@@ -53,29 +54,56 @@ Constraint::Constraint()
     , pvecChangedFlag(true)
     , driving(true)
     , internalAlignment(Alignment::NoInternalAlignment)
+    , typeId(typeId_)
 {}
 
-void Constraint::redirectParams(const MAP_pD_pD& redirectionmap)
+void Constraint::redirectParams(const UMAP_pD_pD& redirectionmap)
 {
     int i = 0;
     for (VEC_pD::iterator param = origpvec.begin(); param != origpvec.end(); ++param, i++) {
-        MAP_pD_pD::const_iterator it = redirectionmap.find(*param);
+        auto it = redirectionmap.find(*param);
         if (it != redirectionmap.end()) {
-            pvec[i] = it->second;
+            pvec[i] = DeriParam(it->second, it->second);
         }
     }
     pvecChangedFlag = true;
 }
+bool Constraint::redirectParams(const UMAP_pD_pD& redirectionmap, const UMAP_pD_pD& substitutionmap)
+{
+    bool hasSolvableParam = false;
+    int i = 0;
+    for (VEC_pD::iterator param = origpvec.begin(); param != origpvec.end(); ++param, i++) {
+        auto foundRedirect = redirectionmap.find(*param);
+        auto foundSubst = substitutionmap.find(*param);
+
+        if (foundRedirect != redirectionmap.end() && foundSubst != substitutionmap.end()) {
+            pvec[i] = DeriParam(foundRedirect->second, foundSubst->second);
+        }
+        else if (foundRedirect != redirectionmap.end()) {
+            pvec[i] = DeriParam(foundRedirect->second, foundRedirect->second);
+        }
+        else {
+            pvec[i] = DeriParam(*param, nullptr);
+        }
+        if (pvec[i].deri != nullptr) {
+            hasSolvableParam = true;
+        }
+    }
+    pvecChangedFlag = true;
+    return hasSolvableParam;
+}
 
 void Constraint::revertParams()
 {
-    pvec = origpvec;
+    assignOrigToPvec();
     pvecChangedFlag = true;
 }
-
-ConstraintType Constraint::getTypeId()
+void Constraint::assignOrigToPvec()
 {
-    return None;
+    pvec.resize(origpvec.size());
+    for (size_t i = 0; i < origpvec.size(); ++i) {
+        pvec[i] = origpvec[i];
+    }
 }
 
 void Constraint::rescale(double coef)
@@ -88,11 +116,11 @@ double Constraint::maxStep(MAP_pD_D& /*dir*/, double lim)
     return lim;
 }
 
-int Constraint::findParamInPvec(double* param)
+int Constraint::findParamInPvec(double* deri)
 {
     int ret = -1;
     for (std::size_t i = 0; i < pvec.size(); i++) {
-        if (param == pvec[i]) {
+        if (deri == pvec[i].deri) {
             ret = static_cast<int>(i);
             break;
         }
@@ -104,17 +132,14 @@ int Constraint::findParamInPvec(double* param)
 // --------------------------------------------------------
 // Equal
 ConstraintEqual::ConstraintEqual(double* p1, double* p2, double p1p2ratio)
-    : ratio(p1p2ratio)
+    : Constraint(Equal)
+    , ratio(p1p2ratio)
 {
-    pvec.push_back(p1);
-    pvec.push_back(p2);
-    origpvec = pvec;
-    rescale();
-}
+    origpvec.push_back(p1);
+    origpvec.push_back(p2);
+    assignOrigToPvec();
 
-ConstraintType ConstraintEqual::getTypeId()
-{
-    return Equal;
+    rescale();
 }
 
 double ConstraintEqual::error()
@@ -125,10 +150,10 @@ double ConstraintEqual::error()
 double ConstraintEqual::grad(double* param)
 {
     double deriv = 0.;
-    if (param == param1()) {
+    if (param == param1().deri) {
         deriv += 1;
     }
-    if (param == param2()) {
+    if (param == param2().deri) {
         deriv += -1;
     }
     return scale * deriv;
@@ -142,19 +167,16 @@ ConstraintWeightedLinearCombination::ConstraintWeightedLinearCombination(
     const std::vector<double*>& givenpvec,
     const std::vector<double>& givenfactors
 )
-    : factors(givenfactors)
+    : Constraint(WeightedLinearCombination)
+    , factors(givenfactors)
     , numpoles(givennumpoles)
 {
-    pvec = givenpvec;
-    assert(pvec.size() == 2 * numpoles + 1);
+    origpvec = givenpvec;
+    assert(origpvec.size() == 2 * numpoles + 1);
     assert(factors.size() == numpoles);
-    origpvec = pvec;
-    rescale();
-}
+    assignOrigToPvec();
 
-ConstraintType ConstraintWeightedLinearCombination::getTypeId()
-{
-    return WeightedLinearCombination;
+    rescale();
 }
 
 double ConstraintWeightedLinearCombination::error()
@@ -181,7 +203,7 @@ double ConstraintWeightedLinearCombination::grad(double* param)
 
     double deriv = 0.;
 
-    if (param == thepoint()) {
+    if (param == thepoint().deri) {
         // Eq. (11)
         double wsum = 0;
         for (size_t i = 0; i < numpoles; ++i) {
@@ -192,12 +214,12 @@ double ConstraintWeightedLinearCombination::grad(double* param)
     }
 
     for (size_t i = 0; i < numpoles; ++i) {
-        if (param == poleat(i)) {
+        if (param == poleat(i).deri) {
             // Eq. (12)
             deriv = -(*weightat(i) * factors[i]);
             return scale * deriv;
         }
-        if (param == weightat(i)) {
+        if (param == weightat(i).deri) {
             // Eq. (13)
             deriv = (*thepoint() - *poleat(i)) * factors[i];
             return scale * deriv;
@@ -214,20 +236,16 @@ ConstraintCenterOfGravity::ConstraintCenterOfGravity(
     const std::vector<double*>& givenpvec,
     const std::vector<double>& givenweights
 )
-    : weights(givenweights)
+    : Constraint(CenterOfGravity)
+    , weights(givenweights)
     , numpoints(givenpvec.size() - 1)
 {
-    pvec = givenpvec;
+    origpvec = givenpvec;
 
-    assert(pvec.size() > 1);
+    assert(origpvec.size() > 1);
     assert(weights.size() == numpoints);
-    origpvec = pvec;
+    assignOrigToPvec();
     rescale();
-}
-
-ConstraintType ConstraintCenterOfGravity::getTypeId()
-{
-    return CenterOfGravity;
 }
 
 double ConstraintCenterOfGravity::error()
@@ -243,12 +261,12 @@ double ConstraintCenterOfGravity::error()
 double ConstraintCenterOfGravity::grad(double* param)
 {
     double deriv = 0.;
-    if (param == thecenter()) {
+    if (param == thecenter().deri) {
         deriv = 1;
     }
 
     for (size_t i = 0; i < numpoints; ++i) {
-        if (param == pointat(i)) {
+        if (param == pointat(i).deri) {
             deriv = -weights[i];
         }
     }
@@ -260,6 +278,7 @@ double ConstraintCenterOfGravity::grad(double* param)
 // --------------------------------------------------------
 // Slope at B-spline knot
 ConstraintSlopeAtBSplineKnot::ConstraintSlopeAtBSplineKnot(BSpline& b, Line& l, size_t knotindex)
+    : Constraint(SlopeAtBSplineKnot)
 {
     // set up pvec: pole x-coords, pole y-coords, pole weights,
     // line point 1 coords, line point 2 coords
@@ -268,7 +287,7 @@ ConstraintSlopeAtBSplineKnot::ConstraintSlopeAtBSplineKnot(BSpline& b, Line& l, 
     // slope at knot doesn't make sense if there's only C0 continuity
     assert(numpoles >= 2);
 
-    pvec.reserve(3 * numpoles + 4);
+    origpvec.reserve(3 * numpoles + 4);
 
     // `startpole` is the first pole affecting the knot with `knotindex`
     size_t startpole = 0;
@@ -281,18 +300,18 @@ ConstraintSlopeAtBSplineKnot::ConstraintSlopeAtBSplineKnot(BSpline& b, Line& l, 
     }
 
     for (size_t i = 0; i < numpoles; ++i) {
-        pvec.push_back(b.poles[(startpole + i) % b.poles.size()].x);
+        origpvec.push_back(b.poles[(startpole + i) % b.poles.size()].x);
     }
     for (size_t i = 0; i < numpoles; ++i) {
-        pvec.push_back(b.poles[(startpole + i) % b.poles.size()].y);
+        origpvec.push_back(b.poles[(startpole + i) % b.poles.size()].y);
     }
     for (size_t i = 0; i < numpoles; ++i) {
-        pvec.push_back(b.weights[(startpole + i) % b.weights.size()]);
+        origpvec.push_back(b.weights[(startpole + i) % b.weights.size()]);
     }
-    pvec.push_back(l.p1.x);
-    pvec.push_back(l.p1.y);
-    pvec.push_back(l.p2.x);
-    pvec.push_back(l.p2.y);
+    origpvec.push_back(l.p1.x);
+    origpvec.push_back(l.p1.y);
+    origpvec.push_back(l.p2.x);
+    origpvec.push_back(l.p2.y);
 
     // Set up factors to get slope at knot point
     std::vector<double> tempfactors((numpoles + 1), 1.0 / (numpoles + 1));
@@ -312,13 +331,8 @@ ConstraintSlopeAtBSplineKnot::ConstraintSlopeAtBSplineKnot(BSpline& b, Line& l, 
         slopefactors[i] = b.degree * (tempfactors[i] - tempfactors[i + 1]);
     }
 
-    origpvec = pvec;
+    assignOrigToPvec();
     ConstraintSlopeAtBSplineKnot::rescale();
-}
-
-ConstraintType ConstraintSlopeAtBSplineKnot::getTypeId()
-{
-    return SlopeAtBSplineKnot;
 }
 
 void ConstraintSlopeAtBSplineKnot::rescale(double coef)
@@ -378,7 +392,7 @@ double ConstraintSlopeAtBSplineKnot::grad(double* param)
     double diry = liney / sqrt(linex * linex + liney * liney);
 
     for (size_t i = 0; i < numpoles; ++i) {
-        if (param == polexat(i)) {
+        if (param == polexat(i).deri) {
             // Eq. (21)
             double wsum = 0., wslopesum = 0.;
             for (size_t j = 0; j < numpoles; ++j) {
@@ -390,7 +404,7 @@ double ConstraintSlopeAtBSplineKnot::grad(double* param)
             result = (wsum * slopefactors[i] - wslopesum * factors[i]) * diry;
             return scale * result;
         }
-        if (param == poleyat(i)) {
+        if (param == poleyat(i).deri) {
             // Eq. (21)
             double wsum = 0., wslopesum = 0.;
             for (size_t i = 0; i < numpoles; ++i) {
@@ -402,7 +416,7 @@ double ConstraintSlopeAtBSplineKnot::grad(double* param)
             result = -(wsum * slopefactors[i] - wslopesum * factors[i]) * dirx;
             return scale * result;
         }
-        if (param == weightat(i)) {
+        if (param == weightat(i).deri) {
             // Eq. (22)
             double xsum = 0., xslopesum = 0.;
             double ysum = 0., yslopesum = 0.;
@@ -443,7 +457,7 @@ double ConstraintSlopeAtBSplineKnot::grad(double* param)
         slopey = wsum * yslopesum - wslopesum * ysum;
     };
 
-    if (param == linep1x()) {
+    if (param == linep1x().deri) {
         getSlopes();
         double dDirxDLinex = (liney * liney) / pow(linex * linex + liney * liney, 1.5);
         double dDiryDLinex = -(linex * liney) / pow(linex * linex + liney * liney, 1.5);
@@ -451,7 +465,7 @@ double ConstraintSlopeAtBSplineKnot::grad(double* param)
         result = slopex * (-dDiryDLinex) - slopey * (-dDirxDLinex);
         return scale * result;
     }
-    if (param == linep2x()) {
+    if (param == linep2x().deri) {
         getSlopes();
         double dDirxDLinex = (liney * liney) / pow(linex * linex + liney * liney, 1.5);
         double dDiryDLinex = -(linex * liney) / pow(linex * linex + liney * liney, 1.5);
@@ -459,7 +473,7 @@ double ConstraintSlopeAtBSplineKnot::grad(double* param)
         result = slopex * dDiryDLinex - slopey * dDirxDLinex;
         return scale * result;
     }
-    if (param == linep1y()) {
+    if (param == linep1y().deri) {
         getSlopes();
         double dDirxDLiney = -(linex * liney) / pow(linex * linex + liney * liney, 1.5);
         double dDiryDLiney = (linex * linex) / pow(linex * linex + liney * liney, 1.5);
@@ -467,7 +481,7 @@ double ConstraintSlopeAtBSplineKnot::grad(double* param)
         result = slopex * (-dDiryDLiney) - slopey * (-dDirxDLiney);
         return scale * result;
     }
-    if (param == linep2y()) {
+    if (param == linep2y().deri) {
         getSlopes();
         double dDirxDLiney = -(linex * liney) / pow(linex * linex + liney * liney, 1.5);
         double dDiryDLiney = (linex * linex) / pow(linex * linex + liney * liney, 1.5);
@@ -488,40 +502,36 @@ ConstraintPointOnBSpline::ConstraintPointOnBSpline(
     int coordidx,
     BSpline& b
 )
-    : bsp(b)
+    : Constraint(PointOnBSpline)
+    , bsp(b)
 {
     // This is always going to be true
     numpoints = bsp.degree + 1;
 
-    pvec.reserve(2 + 2 * b.poles.size());
-    pvec.push_back(point);
-    pvec.push_back(initparam);
+    origpvec.reserve(2 + 2 * b.poles.size());
+    origpvec.push_back(point);
+    origpvec.push_back(initparam);
 
     setStartPole(*initparam);
 
     for (size_t i = 0; i < b.poles.size(); ++i) {
         if (coordidx == 0) {
-            pvec.push_back(b.poles[i].x);
+            origpvec.push_back(b.poles[i].x);
         }
         else {
-            pvec.push_back(b.poles[i].y);
+            origpvec.push_back(b.poles[i].y);
         }
     }
     for (size_t i = 0; i < b.weights.size(); ++i) {
-        pvec.push_back(b.weights[i]);
+        origpvec.push_back(b.weights[i]);
     }
 
     if (bsp.flattenedknots.empty()) {
         bsp.setupFlattenedKnots();
     }
 
-    origpvec = pvec;
+    assignOrigToPvec();
     rescale();
-}
-
-ConstraintType ConstraintPointOnBSpline::getTypeId()
-{
-    return PointOnBSpline;
 }
 
 void ConstraintPointOnBSpline::setStartPole(double u)
@@ -567,7 +577,7 @@ double ConstraintPointOnBSpline::error()
 double ConstraintPointOnBSpline::grad(double* gcsparam)
 {
     double deriv = 0.;
-    if (gcsparam == thepoint()) {
+    if (gcsparam == thepoint().deri) {
         VEC_D d(numpoints);
         for (size_t i = 0; i < numpoints; ++i) {
             d[i] = *weightat(i);
@@ -582,7 +592,7 @@ double ConstraintPointOnBSpline::grad(double* gcsparam)
         deriv += wsum;
     }
 
-    if (gcsparam == theparam()) {
+    if (gcsparam == theparam().deri) {
         VEC_D d(numpoints - 1);
         for (size_t i = 1; i < numpoints; ++i) {
             d[i - 1] = (*poleat(i) * *weightat(i) - *poleat(i - 1) * *weightat(i - 1))
@@ -610,11 +620,11 @@ double ConstraintPointOnBSpline::grad(double* gcsparam)
     }
 
     for (size_t i = 0; i < numpoints; ++i) {
-        if (gcsparam == poleat(i)) {
+        if (gcsparam == poleat(i).deri) {
             auto factorsI = bsp.getLinCombFactor(*theparam(), startpole + bsp.degree, startpole + i);
             deriv += -(*weightat(i) * factorsI);
         }
-        if (gcsparam == weightat(i)) {
+        if (gcsparam == weightat(i).deri) {
             auto factorsI = bsp.getLinCombFactor(*theparam(), startpole + bsp.degree, startpole + i);
             deriv += (*thepoint() - *poleat(i)) * factorsI;
         }
@@ -625,17 +635,13 @@ double ConstraintPointOnBSpline::grad(double* gcsparam)
 
 // Difference
 ConstraintDifference::ConstraintDifference(double* p1, double* p2, double* d)
+    : Constraint(Difference)
 {
-    pvec.push_back(p1);
-    pvec.push_back(p2);
-    pvec.push_back(d);
-    origpvec = pvec;
+    origpvec.push_back(p1);
+    origpvec.push_back(p2);
+    origpvec.push_back(d);
+    assignOrigToPvec();
     rescale();
-}
-
-ConstraintType ConstraintDifference::getTypeId()
-{
-    return Difference;
 }
 
 double ConstraintDifference::error()
@@ -646,13 +652,13 @@ double ConstraintDifference::error()
 double ConstraintDifference::grad(double* param)
 {
     double deriv = 0.;
-    if (param == param1()) {
+    if (param == param1().deri) {
         deriv += -1;
     }
-    if (param == param2()) {
+    if (param == param2().deri) {
         deriv += 1;
     }
-    if (param == difference()) {
+    if (param == difference().deri) {
         deriv += -1;
     }
     return scale * deriv;
@@ -662,19 +668,15 @@ double ConstraintDifference::grad(double* param)
 // --------------------------------------------------------
 // P2PDistance
 ConstraintP2PDistance::ConstraintP2PDistance(Point& p1, Point& p2, double* d)
+    : Constraint(P2PDistance)
 {
-    pvec.push_back(p1.x);
-    pvec.push_back(p1.y);
-    pvec.push_back(p2.x);
-    pvec.push_back(p2.y);
-    pvec.push_back(d);
-    origpvec = pvec;
+    origpvec.push_back(p1.x);
+    origpvec.push_back(p1.y);
+    origpvec.push_back(p2.x);
+    origpvec.push_back(p2.y);
+    origpvec.push_back(d);
+    assignOrigToPvec();
     rescale();
-}
-
-ConstraintType ConstraintP2PDistance::getTypeId()
-{
-    return P2PDistance;
 }
 
 double ConstraintP2PDistance::error()
@@ -689,24 +691,24 @@ double ConstraintP2PDistance::error()
 double ConstraintP2PDistance::grad(double* param)
 {
     double deriv = 0.;
-    if (param == p1x() || param == p1y() || param == p2x() || param == p2y()) {
+    if (param == p1x().deri || param == p1y().deri || param == p2x().deri || param == p2y().deri) {
         double dx = (*p1x() - *p2x());
         double dy = (*p1y() - *p2y());
         double d = sqrt(dx * dx + dy * dy);
-        if (param == p1x()) {
+        if (param == p1x().deri) {
             deriv += dx / d;
         }
-        if (param == p1y()) {
+        if (param == p1y().deri) {
             deriv += dy / d;
         }
-        if (param == p2x()) {
+        if (param == p2x().deri) {
             deriv += -dx / d;
         }
-        if (param == p2y()) {
+        if (param == p2y().deri) {
             deriv += -dy / d;
         }
     }
-    if (param == distance()) {
+    if (param == distance().deri) {
         deriv += -1.;
     }
 
@@ -757,20 +759,16 @@ double ConstraintP2PDistance::maxStep(MAP_pD_D& dir, double lim)
 // --------------------------------------------------------
 // P2PAngle
 ConstraintP2PAngle::ConstraintP2PAngle(Point& p1, Point& p2, double* a, double da_)
-    : da(da_)
+    : Constraint(P2PAngle)
+    , da(da_)
 {
-    pvec.push_back(p1.x);
-    pvec.push_back(p1.y);
-    pvec.push_back(p2.x);
-    pvec.push_back(p2.y);
-    pvec.push_back(a);
-    origpvec = pvec;
+    origpvec.push_back(p1.x);
+    origpvec.push_back(p1.y);
+    origpvec.push_back(p2.x);
+    origpvec.push_back(p2.y);
+    origpvec.push_back(a);
+    assignOrigToPvec();
     rescale();
-}
-
-ConstraintType ConstraintP2PAngle::getTypeId()
-{
-    return P2PAngle;
 }
 
 double ConstraintP2PAngle::error()
@@ -788,7 +786,7 @@ double ConstraintP2PAngle::error()
 double ConstraintP2PAngle::grad(double* param)
 {
     double deriv = 0.;
-    if (param == p1x() || param == p1y() || param == p2x() || param == p2y()) {
+    if (param == p1x().deri || param == p1y().deri || param == p2x().deri || param == p2y().deri) {
         double dx = (*p2x() - *p1x());
         double dy = (*p2y() - *p1y());
         double a = *angle() + da;
@@ -799,20 +797,20 @@ double ConstraintP2PAngle::grad(double* param)
         double r2 = dx * dx + dy * dy;
         dx = -y / r2;
         dy = x / r2;
-        if (param == p1x()) {
+        if (param == p1x().deri) {
             deriv += (-ca * dx + sa * dy);
         }
-        if (param == p1y()) {
+        if (param == p1y().deri) {
             deriv += (-sa * dx - ca * dy);
         }
-        if (param == p2x()) {
+        if (param == p2x().deri) {
             deriv += (ca * dx - sa * dy);
         }
-        if (param == p2y()) {
+        if (param == p2y().deri) {
             deriv += (sa * dx + ca * dy);
         }
     }
-    if (param == angle()) {
+    if (param == angle().deri) {
         deriv += -1;
     }
 
@@ -837,21 +835,17 @@ double ConstraintP2PAngle::maxStep(MAP_pD_D& dir, double lim)
 // --------------------------------------------------------
 // P2LDistance
 ConstraintP2LDistance::ConstraintP2LDistance(Point& p, Line& l, double* d)
+    : Constraint(P2LDistance)
 {
-    pvec.push_back(p.x);
-    pvec.push_back(p.y);
-    pvec.push_back(l.p1.x);
-    pvec.push_back(l.p1.y);
-    pvec.push_back(l.p2.x);
-    pvec.push_back(l.p2.y);
-    pvec.push_back(d);
-    origpvec = pvec;
+    origpvec.push_back(p.x);
+    origpvec.push_back(p.y);
+    origpvec.push_back(l.p1.x);
+    origpvec.push_back(l.p1.y);
+    origpvec.push_back(l.p2.x);
+    origpvec.push_back(l.p2.y);
+    origpvec.push_back(d);
+    assignOrigToPvec();
     rescale();
-}
-
-ConstraintType ConstraintP2LDistance::getTypeId()
-{
-    return P2LDistance;
 }
 
 double ConstraintP2LDistance::error()
@@ -870,8 +864,8 @@ double ConstraintP2LDistance::grad(double* param)
 {
     double deriv = 0.;
 
-    if (param == p0x() || param == p0y() || param == p1x() || param == p1y() || param == p2x()
-        || param == p2y()) {
+    if (param == p0x().deri || param == p0y().deri || param == p1x().deri || param == p1y().deri
+        || param == p2x().deri || param == p2y().deri) {
         double x0 = *p0x(), x1 = *p1x(), x2 = *p2x();
         double y0 = *p0y(), y1 = *p1y(), y2 = *p2y();
         double dx = x2 - x1;
@@ -879,29 +873,29 @@ double ConstraintP2LDistance::grad(double* param)
         double d2 = dx * dx + dy * dy;
         double d = sqrt(d2);
         double area = -x0 * dy + y0 * dx + x1 * y2 - x2 * y1;
-        if (param == p0x()) {
+        if (param == p0x().deri) {
             deriv += (y1 - y2) / d;
         }
-        if (param == p0y()) {
+        if (param == p0y().deri) {
             deriv += (x2 - x1) / d;
         }
-        if (param == p1x()) {
+        if (param == p1x().deri) {
             deriv += ((y2 - y0) * d + (dx / d) * area) / d2;
         }
-        if (param == p1y()) {
+        if (param == p1y().deri) {
             deriv += ((x0 - x2) * d + (dy / d) * area) / d2;
         }
-        if (param == p2x()) {
+        if (param == p2x().deri) {
             deriv += ((y0 - y1) * d - (dx / d) * area) / d2;
         }
-        if (param == p2y()) {
+        if (param == p2y().deri) {
             deriv += ((x1 - x0) * d - (dy / d) * area) / d2;
         }
         if (area < 0) {
             deriv *= -1;
         }
     }
-    if (param == distance()) {
+    if (param == distance().deri) {
         deriv += -1;
     }
 
@@ -965,32 +959,20 @@ double ConstraintP2LDistance::maxStep(MAP_pD_D& dir, double lim)
 // --------------------------------------------------------
 // PointOnLine
 ConstraintPointOnLine::ConstraintPointOnLine(Point& p, Line& l)
-{
-    pvec.push_back(p.x);
-    pvec.push_back(p.y);
-    pvec.push_back(l.p1.x);
-    pvec.push_back(l.p1.y);
-    pvec.push_back(l.p2.x);
-    pvec.push_back(l.p2.y);
-    origpvec = pvec;
-    rescale();
-}
+    : ConstraintPointOnLine(p, l.p1, l.p2)
+{}
 
 ConstraintPointOnLine::ConstraintPointOnLine(Point& p, Point& lp1, Point& lp2)
+    : Constraint(PointOnLine)
 {
-    pvec.push_back(p.x);
-    pvec.push_back(p.y);
-    pvec.push_back(lp1.x);
-    pvec.push_back(lp1.y);
-    pvec.push_back(lp2.x);
-    pvec.push_back(lp2.y);
-    origpvec = pvec;
+    origpvec.push_back(p.x);
+    origpvec.push_back(p.y);
+    origpvec.push_back(lp1.x);
+    origpvec.push_back(lp1.y);
+    origpvec.push_back(lp2.x);
+    origpvec.push_back(lp2.y);
+    assignOrigToPvec();
     rescale();
-}
-
-ConstraintType ConstraintPointOnLine::getTypeId()
-{
-    return PointOnLine;
 }
 
 double ConstraintPointOnLine::error()
@@ -1007,8 +989,8 @@ double ConstraintPointOnLine::error()
 double ConstraintPointOnLine::grad(double* param)
 {
     double deriv = 0.;
-    if (param == p0x() || param == p0y() || param == p1x() || param == p1y() || param == p2x()
-        || param == p2y()) {
+    if (param == p0x().deri || param == p0y().deri || param == p1x().deri || param == p1y().deri
+        || param == p2x().deri || param == p2y().deri) {
         double x0 = *p0x(), x1 = *p1x(), x2 = *p2x();
         double y0 = *p0y(), y1 = *p1y(), y2 = *p2y();
         double dx = x2 - x1;
@@ -1016,22 +998,22 @@ double ConstraintPointOnLine::grad(double* param)
         double d2 = dx * dx + dy * dy;
         double d = sqrt(d2);
         double area = -x0 * dy + y0 * dx + x1 * y2 - x2 * y1;
-        if (param == p0x()) {
+        if (param == p0x().deri) {
             deriv += (y1 - y2) / d;
         }
-        if (param == p0y()) {
+        if (param == p0y().deri) {
             deriv += (x2 - x1) / d;
         }
-        if (param == p1x()) {
+        if (param == p1x().deri) {
             deriv += ((y2 - y0) * d + (dx / d) * area) / d2;
         }
-        if (param == p1y()) {
+        if (param == p1y().deri) {
             deriv += ((x0 - x2) * d + (dy / d) * area) / d2;
         }
-        if (param == p2x()) {
+        if (param == p2x().deri) {
             deriv += ((y0 - y1) * d - (dx / d) * area) / d2;
         }
-        if (param == p2y()) {
+        if (param == p2y().deri) {
             deriv += ((x1 - x0) * d - (dy / d) * area) / d2;
         }
     }
@@ -1042,32 +1024,20 @@ double ConstraintPointOnLine::grad(double* param)
 // --------------------------------------------------------
 // PointOnPerpBisector
 ConstraintPointOnPerpBisector::ConstraintPointOnPerpBisector(Point& p, Line& l)
-{
-    pvec.push_back(p.x);
-    pvec.push_back(p.y);
-    pvec.push_back(l.p1.x);
-    pvec.push_back(l.p1.y);
-    pvec.push_back(l.p2.x);
-    pvec.push_back(l.p2.y);
-    origpvec = pvec;
-    rescale();
-}
+    : ConstraintPointOnPerpBisector(p, l.p1, l.p2)
+{}
 
 ConstraintPointOnPerpBisector::ConstraintPointOnPerpBisector(Point& p, Point& lp1, Point& lp2)
+    : Constraint(PointOnPerpBisector)
 {
-    pvec.push_back(p.x);
-    pvec.push_back(p.y);
-    pvec.push_back(lp1.x);
-    pvec.push_back(lp1.y);
-    pvec.push_back(lp2.x);
-    pvec.push_back(lp2.y);
-    origpvec = pvec;
+    origpvec.push_back(p.x);
+    origpvec.push_back(p.y);
+    origpvec.push_back(lp1.x);
+    origpvec.push_back(lp1.y);
+    origpvec.push_back(lp2.x);
+    origpvec.push_back(lp2.y);
+    assignOrigToPvec();
     rescale();
-}
-
-ConstraintType ConstraintPointOnPerpBisector::getTypeId()
-{
-    return PointOnPerpBisector;
 }
 
 void ConstraintPointOnPerpBisector::errorgrad(double* err, double* grad, double* param)
@@ -1098,22 +1068,18 @@ void ConstraintPointOnPerpBisector::errorgrad(double* err, double* grad, double*
 // --------------------------------------------------------
 // Parallel
 ConstraintParallel::ConstraintParallel(Line& l1, Line& l2)
+    : Constraint(Parallel)
 {
-    pvec.push_back(l1.p1.x);
-    pvec.push_back(l1.p1.y);
-    pvec.push_back(l1.p2.x);
-    pvec.push_back(l1.p2.y);
-    pvec.push_back(l2.p1.x);
-    pvec.push_back(l2.p1.y);
-    pvec.push_back(l2.p2.x);
-    pvec.push_back(l2.p2.y);
-    origpvec = pvec;
+    origpvec.push_back(l1.p1.x);
+    origpvec.push_back(l1.p1.y);
+    origpvec.push_back(l1.p2.x);
+    origpvec.push_back(l1.p2.y);
+    origpvec.push_back(l2.p1.x);
+    origpvec.push_back(l2.p1.y);
+    origpvec.push_back(l2.p2.x);
+    origpvec.push_back(l2.p2.y);
+    assignOrigToPvec();
     ConstraintParallel::rescale();
-}
-
-ConstraintType ConstraintParallel::getTypeId()
-{
-    return Parallel;
 }
 
 void ConstraintParallel::rescale(double coef)
@@ -1137,29 +1103,29 @@ double ConstraintParallel::error()
 double ConstraintParallel::grad(double* param)
 {
     double deriv = 0.;
-    if (param == l1p1x()) {
+    if (param == l1p1x().deri) {
         deriv += (*l2p1y() - *l2p2y());  // = dy2
     }
-    if (param == l1p2x()) {
+    if (param == l1p2x().deri) {
         deriv += -(*l2p1y() - *l2p2y());  // = -dy2
     }
-    if (param == l1p1y()) {
+    if (param == l1p1y().deri) {
         deriv += -(*l2p1x() - *l2p2x());  // = -dx2
     }
-    if (param == l1p2y()) {
+    if (param == l1p2y().deri) {
         deriv += (*l2p1x() - *l2p2x());  // = dx2
     }
 
-    if (param == l2p1x()) {
+    if (param == l2p1x().deri) {
         deriv += -(*l1p1y() - *l1p2y());  // = -dy1
     }
-    if (param == l2p2x()) {
+    if (param == l2p2x().deri) {
         deriv += (*l1p1y() - *l1p2y());  // = dy1
     }
-    if (param == l2p1y()) {
+    if (param == l2p1y().deri) {
         deriv += (*l1p1x() - *l1p2x());  // = dx1
     }
-    if (param == l2p2y()) {
+    if (param == l2p2y().deri) {
         deriv += -(*l1p1x() - *l1p2x());  // = -dx1
     }
 
@@ -1170,36 +1136,22 @@ double ConstraintParallel::grad(double* param)
 // --------------------------------------------------------
 // Perpendicular
 ConstraintPerpendicular::ConstraintPerpendicular(Line& l1, Line& l2)
-{
-    pvec.push_back(l1.p1.x);
-    pvec.push_back(l1.p1.y);
-    pvec.push_back(l1.p2.x);
-    pvec.push_back(l1.p2.y);
-    pvec.push_back(l2.p1.x);
-    pvec.push_back(l2.p1.y);
-    pvec.push_back(l2.p2.x);
-    pvec.push_back(l2.p2.y);
-    origpvec = pvec;
-    ConstraintPerpendicular::rescale();
-}
+    : ConstraintPerpendicular(l1.p1, l1.p2, l2.p1, l2.p2)
+{}
 
 ConstraintPerpendicular::ConstraintPerpendicular(Point& l1p1, Point& l1p2, Point& l2p1, Point& l2p2)
+    : Constraint(Perpendicular)
 {
-    pvec.push_back(l1p1.x);
-    pvec.push_back(l1p1.y);
-    pvec.push_back(l1p2.x);
-    pvec.push_back(l1p2.y);
-    pvec.push_back(l2p1.x);
-    pvec.push_back(l2p1.y);
-    pvec.push_back(l2p2.x);
-    pvec.push_back(l2p2.y);
-    origpvec = pvec;
+    origpvec.push_back(l1p1.x);
+    origpvec.push_back(l1p1.y);
+    origpvec.push_back(l1p2.x);
+    origpvec.push_back(l1p2.y);
+    origpvec.push_back(l2p1.x);
+    origpvec.push_back(l2p1.y);
+    origpvec.push_back(l2p2.x);
+    origpvec.push_back(l2p2.y);
+    assignOrigToPvec();
     ConstraintPerpendicular::rescale();
-}
-
-ConstraintType ConstraintPerpendicular::getTypeId()
-{
-    return Perpendicular;
 }
 
 void ConstraintPerpendicular::rescale(double coef)
@@ -1223,29 +1175,29 @@ double ConstraintPerpendicular::error()
 double ConstraintPerpendicular::grad(double* param)
 {
     double deriv = 0.;
-    if (param == l1p1x()) {
+    if (param == l1p1x().deri) {
         deriv += (*l2p1x() - *l2p2x());  // = dx2
     }
-    if (param == l1p2x()) {
+    if (param == l1p2x().deri) {
         deriv += -(*l2p1x() - *l2p2x());  // = -dx2
     }
-    if (param == l1p1y()) {
+    if (param == l1p1y().deri) {
         deriv += (*l2p1y() - *l2p2y());  // = dy2
     }
-    if (param == l1p2y()) {
+    if (param == l1p2y().deri) {
         deriv += -(*l2p1y() - *l2p2y());  // = -dy2
     }
 
-    if (param == l2p1x()) {
+    if (param == l2p1x().deri) {
         deriv += (*l1p1x() - *l1p2x());  // = dx1
     }
-    if (param == l2p2x()) {
+    if (param == l2p2x().deri) {
         deriv += -(*l1p1x() - *l1p2x());  // = -dx1
     }
-    if (param == l2p1y()) {
+    if (param == l2p1y().deri) {
         deriv += (*l1p1y() - *l1p2y());  // = dy1
     }
-    if (param == l2p2y()) {
+    if (param == l2p2y().deri) {
         deriv += -(*l1p1y() - *l1p2y());  // = -dy1
     }
 
@@ -1256,38 +1208,23 @@ double ConstraintPerpendicular::grad(double* param)
 // --------------------------------------------------------
 // L2LAngle
 ConstraintL2LAngle::ConstraintL2LAngle(Line& l1, Line& l2, double* a)
-{
-    pvec.push_back(l1.p1.x);
-    pvec.push_back(l1.p1.y);
-    pvec.push_back(l1.p2.x);
-    pvec.push_back(l1.p2.y);
-    pvec.push_back(l2.p1.x);
-    pvec.push_back(l2.p1.y);
-    pvec.push_back(l2.p2.x);
-    pvec.push_back(l2.p2.y);
-    pvec.push_back(a);
-    origpvec = pvec;
-    rescale();
-}
+    : ConstraintL2LAngle(l1.p1, l1.p2, l2.p1, l2.p2, a)
+{}
 
 ConstraintL2LAngle::ConstraintL2LAngle(Point& l1p1, Point& l1p2, Point& l2p1, Point& l2p2, double* a)
+    : Constraint(L2LAngle)
 {
-    pvec.push_back(l1p1.x);
-    pvec.push_back(l1p1.y);
-    pvec.push_back(l1p2.x);
-    pvec.push_back(l1p2.y);
-    pvec.push_back(l2p1.x);
-    pvec.push_back(l2p1.y);
-    pvec.push_back(l2p2.x);
-    pvec.push_back(l2p2.y);
-    pvec.push_back(a);
-    origpvec = pvec;
+    origpvec.push_back(l1p1.x);
+    origpvec.push_back(l1p1.y);
+    origpvec.push_back(l1p2.x);
+    origpvec.push_back(l1p2.y);
+    origpvec.push_back(l2p1.x);
+    origpvec.push_back(l2p1.y);
+    origpvec.push_back(l2p2.x);
+    origpvec.push_back(l2p2.y);
+    origpvec.push_back(a);
+    assignOrigToPvec();
     rescale();
-}
-
-ConstraintType ConstraintL2LAngle::getTypeId()
-{
-    return L2LAngle;
 }
 
 double ConstraintL2LAngle::error()
@@ -1307,24 +1244,26 @@ double ConstraintL2LAngle::error()
 double ConstraintL2LAngle::grad(double* param)
 {
     double deriv = 0.;
-    if (param == l1p1x() || param == l1p1y() || param == l1p2x() || param == l1p2y()) {
+    if (param == l1p1x().deri || param == l1p1y().deri || param == l1p2x().deri
+        || param == l1p2y().deri) {
         double dx1 = (*l1p2x() - *l1p1x());
         double dy1 = (*l1p2y() - *l1p1y());
         double r2 = dx1 * dx1 + dy1 * dy1;
-        if (param == l1p1x()) {
+        if (param == l1p1x().deri) {
             deriv += -dy1 / r2;
         }
-        if (param == l1p1y()) {
+        if (param == l1p1y().deri) {
             deriv += dx1 / r2;
         }
-        if (param == l1p2x()) {
+        if (param == l1p2x().deri) {
             deriv += dy1 / r2;
         }
-        if (param == l1p2y()) {
+        if (param == l1p2y().deri) {
             deriv += -dx1 / r2;
         }
     }
-    if (param == l2p1x() || param == l2p1y() || param == l2p2x() || param == l2p2y()) {
+    if (param == l2p1x().deri || param == l2p1y().deri || param == l2p2x().deri
+        || param == l2p2y().deri) {
         double dx1 = (*l1p2x() - *l1p1x());
         double dy1 = (*l1p2y() - *l1p1y());
         double dx2 = (*l2p2x() - *l2p1x());
@@ -1337,20 +1276,20 @@ double ConstraintL2LAngle::grad(double* param)
         double r2 = dx2 * dx2 + dy2 * dy2;
         dx2 = -y2 / r2;
         dy2 = x2 / r2;
-        if (param == l2p1x()) {
+        if (param == l2p1x().deri) {
             deriv += (-ca * dx2 + sa * dy2);
         }
-        if (param == l2p1y()) {
+        if (param == l2p1y().deri) {
             deriv += (-sa * dx2 - ca * dy2);
         }
-        if (param == l2p2x()) {
+        if (param == l2p2x().deri) {
             deriv += (ca * dx2 - sa * dy2);
         }
-        if (param == l2p2y()) {
+        if (param == l2p2y().deri) {
             deriv += (sa * dx2 + ca * dy2);
         }
     }
-    if (param == angle()) {
+    if (param == angle().deri) {
         deriv += -1;
     }
 
@@ -1375,36 +1314,22 @@ double ConstraintL2LAngle::maxStep(MAP_pD_D& dir, double lim)
 // --------------------------------------------------------
 // MidpointOnLine
 ConstraintMidpointOnLine::ConstraintMidpointOnLine(Line& l1, Line& l2)
-{
-    pvec.push_back(l1.p1.x);
-    pvec.push_back(l1.p1.y);
-    pvec.push_back(l1.p2.x);
-    pvec.push_back(l1.p2.y);
-    pvec.push_back(l2.p1.x);
-    pvec.push_back(l2.p1.y);
-    pvec.push_back(l2.p2.x);
-    pvec.push_back(l2.p2.y);
-    origpvec = pvec;
-    rescale();
-}
+    : ConstraintMidpointOnLine(l1.p1, l1.p2, l2.p1, l2.p2)
+{}
 
 ConstraintMidpointOnLine::ConstraintMidpointOnLine(Point& l1p1, Point& l1p2, Point& l2p1, Point& l2p2)
+    : Constraint(MidpointOnLine)
 {
-    pvec.push_back(l1p1.x);
-    pvec.push_back(l1p1.y);
-    pvec.push_back(l1p2.x);
-    pvec.push_back(l1p2.y);
-    pvec.push_back(l2p1.x);
-    pvec.push_back(l2p1.y);
-    pvec.push_back(l2p2.x);
-    pvec.push_back(l2p2.y);
-    origpvec = pvec;
+    origpvec.push_back(l1p1.x);
+    origpvec.push_back(l1p1.y);
+    origpvec.push_back(l1p2.x);
+    origpvec.push_back(l1p2.y);
+    origpvec.push_back(l2p1.x);
+    origpvec.push_back(l2p1.y);
+    origpvec.push_back(l2p2.x);
+    origpvec.push_back(l2p2.y);
+    assignOrigToPvec();
     rescale();
-}
-
-ConstraintType ConstraintMidpointOnLine::getTypeId()
-{
-    return MidpointOnLine;
 }
 
 double ConstraintMidpointOnLine::error()
@@ -1423,8 +1348,9 @@ double ConstraintMidpointOnLine::error()
 double ConstraintMidpointOnLine::grad(double* param)
 {
     double deriv = 0.;
-    if (param == l1p1x() || param == l1p1y() || param == l1p2x() || param == l1p2y()
-        || param == l2p1x() || param == l2p1y() || param == l2p2x() || param == l2p2y()) {
+    if (param == l1p1x().deri || param == l1p1y().deri || param == l1p2x().deri
+        || param == l1p2y().deri || param == l2p1x().deri || param == l2p1y().deri
+        || param == l2p2x().deri || param == l2p2y().deri) {
         double x0 = ((*l1p1x()) + (*l1p2x())) / 2;
         double y0 = ((*l1p1y()) + (*l1p2y())) / 2;
         double x1 = *l2p1x(), x2 = *l2p2x();
@@ -1434,28 +1360,28 @@ double ConstraintMidpointOnLine::grad(double* param)
         double d2 = dx * dx + dy * dy;
         double d = sqrt(d2);
         double area = -x0 * dy + y0 * dx + x1 * y2 - x2 * y1;
-        if (param == l1p1x()) {
+        if (param == l1p1x().deri) {
             deriv += (y1 - y2) / (2 * d);
         }
-        if (param == l1p1y()) {
+        if (param == l1p1y().deri) {
             deriv += (x2 - x1) / (2 * d);
         }
-        if (param == l1p2x()) {
+        if (param == l1p2x().deri) {
             deriv += (y1 - y2) / (2 * d);
         }
-        if (param == l1p2y()) {
+        if (param == l1p2y().deri) {
             deriv += (x2 - x1) / (2 * d);
         }
-        if (param == l2p1x()) {
+        if (param == l2p1x().deri) {
             deriv += ((y2 - y0) * d + (dx / d) * area) / d2;
         }
-        if (param == l2p1y()) {
+        if (param == l2p1y().deri) {
             deriv += ((x0 - x2) * d + (dy / d) * area) / d2;
         }
-        if (param == l2p2x()) {
+        if (param == l2p2x().deri) {
             deriv += ((y0 - y1) * d - (dx / d) * area) / d2;
         }
-        if (param == l2p2y()) {
+        if (param == l2p2y().deri) {
             deriv += ((x1 - x0) * d - (dy / d) * area) / d2;
         }
     }
@@ -1472,22 +1398,18 @@ ConstraintTangentCircumf::ConstraintTangentCircumf(
     double* rad2,
     bool internal_
 )
-    : internal(internal_)
+    : Constraint(TangentCircumf)
+    , internal(internal_)
 {
 
-    pvec.push_back(p1.x);
-    pvec.push_back(p1.y);
-    pvec.push_back(p2.x);
-    pvec.push_back(p2.y);
-    pvec.push_back(rad1);
-    pvec.push_back(rad2);
-    origpvec = pvec;
+    origpvec.push_back(p1.x);
+    origpvec.push_back(p1.y);
+    origpvec.push_back(p2.x);
+    origpvec.push_back(p2.y);
+    origpvec.push_back(rad1);
+    origpvec.push_back(rad2);
+    assignOrigToPvec();
     rescale();
-}
-
-ConstraintType ConstraintTangentCircumf::getTypeId()
-{
-    return TangentCircumf;
 }
 
 double ConstraintTangentCircumf::error()
@@ -1515,8 +1437,8 @@ double ConstraintTangentCircumf::error()
 double ConstraintTangentCircumf::grad(double* param)
 {
     double deriv = 0.;
-    if (param == c1x() || param == c1y() || param == c2x() || param == c2y() || param == r1()
-        || param == r2()) {
+    if (param == c1x().deri || param == c1y().deri || param == c2x().deri || param == c2y().deri
+        || param == r1().deri || param == r2().deri) {
         double dx = (*c1x() - *c2x());
         double dy = (*c1y() - *c2y());
         double d_sq = dx * dx + dy * dy;
@@ -1524,41 +1446,41 @@ double ConstraintTangentCircumf::grad(double* param)
         // Provide the gradient corresponding to the robust 'r1 - r2 = 0' error function.
         // This gradient is constant and non-zero, preventing the false redundancy report.
         if (d_sq < 1e-14) {
-            if (param == r1()) {
+            if (param == r1().deri) {
                 deriv = 1.0;
             }
-            else if (param == r2()) {
+            else if (param == r2().deri) {
                 deriv = -1.0;
             }
             // The gradient is 0 for all other parameters (center coordinates).
             return scale * deriv;
         }
 
-        if (param == c1x()) {
+        if (param == c1x().deri) {
             deriv += 2 * dx;
         }
-        if (param == c1y()) {
+        if (param == c1y().deri) {
             deriv += 2 * dy;
         }
-        if (param == c2x()) {
+        if (param == c2x().deri) {
             deriv += 2 * -dx;
         }
-        if (param == c2y()) {
+        if (param == c2y().deri) {
             deriv += 2 * -dy;
         }
         if (internal) {
-            if (param == r1()) {
+            if (param == r1().deri) {
                 deriv += 2 * (*r2() - *r1());
             }
-            if (param == r2()) {
+            if (param == r2().deri) {
                 deriv += 2 * (*r1() - *r2());
             }
         }
         else {
-            if (param == r1()) {
+            if (param == r1().deri) {
                 deriv += -2 * (*r1() + *r2());
             }
-            if (param == r2()) {
+            if (param == r2().deri) {
                 deriv += -2 * (*r1() + *r2());
             }
         }
@@ -1570,21 +1492,17 @@ double ConstraintTangentCircumf::grad(double* param)
 // --------------------------------------------------------
 // ConstraintPointOnEllipse
 ConstraintPointOnEllipse::ConstraintPointOnEllipse(Point& p, Ellipse& e)
+    : Constraint(PointOnEllipse)
 {
-    pvec.push_back(p.x);
-    pvec.push_back(p.y);
-    pvec.push_back(e.center.x);
-    pvec.push_back(e.center.y);
-    pvec.push_back(e.focus1.x);
-    pvec.push_back(e.focus1.y);
-    pvec.push_back(e.radmin);
-    origpvec = pvec;
+    origpvec.push_back(p.x);
+    origpvec.push_back(p.y);
+    origpvec.push_back(e.center.x);
+    origpvec.push_back(e.center.y);
+    origpvec.push_back(e.focus1.x);
+    origpvec.push_back(e.focus1.y);
+    origpvec.push_back(e.radmin);
+    assignOrigToPvec();
     rescale();
-}
-
-ConstraintType ConstraintPointOnEllipse::getTypeId()
-{
-    return PointOnEllipse;
 }
 
 double ConstraintPointOnEllipse::error()
@@ -1606,8 +1524,8 @@ double ConstraintPointOnEllipse::error()
 double ConstraintPointOnEllipse::grad(double* param)
 {
     double deriv = 0.;
-    if (param == p1x() || param == p1y() || param == f1x() || param == f1y() || param == cx()
-        || param == cy() || param == rmin()) {
+    if (param == p1x().deri || param == p1y().deri || param == f1x().deri || param == f1y().deri
+        || param == cx().deri || param == cy().deri || param == rmin().deri) {
 
         double X_0 = *p1x();
         double Y_0 = *p1y();
@@ -1617,39 +1535,39 @@ double ConstraintPointOnEllipse::grad(double* param)
         double Y_F1 = *f1y();
         double b = *rmin();
 
-        if (param == p1x()) {
+        if (param == p1x().deri) {
             deriv += (X_0 - X_F1) / sqrt(pow(X_0 - X_F1, 2) + pow(Y_0 - Y_F1, 2))
                 + (X_0 + X_F1 - 2 * X_c)
                     / sqrt(pow(X_0 + X_F1 - 2 * X_c, 2) + pow(Y_0 + Y_F1 - 2 * Y_c, 2));
         }
-        if (param == p1y()) {
+        if (param == p1y().deri) {
             deriv += (Y_0 - Y_F1) / sqrt(pow(X_0 - X_F1, 2) + pow(Y_0 - Y_F1, 2))
                 + (Y_0 + Y_F1 - 2 * Y_c)
                     / sqrt(pow(X_0 + X_F1 - 2 * X_c, 2) + pow(Y_0 + Y_F1 - 2 * Y_c, 2));
         }
-        if (param == f1x()) {
+        if (param == f1x().deri) {
             deriv += -(X_0 - X_F1) / sqrt(pow(X_0 - X_F1, 2) + pow(Y_0 - Y_F1, 2))
                 - 2 * (X_F1 - X_c) / sqrt(pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
                 + (X_0 + X_F1 - 2 * X_c)
                     / sqrt(pow(X_0 + X_F1 - 2 * X_c, 2) + pow(Y_0 + Y_F1 - 2 * Y_c, 2));
         }
-        if (param == f1y()) {
+        if (param == f1y().deri) {
             deriv += -(Y_0 - Y_F1) / sqrt(pow(X_0 - X_F1, 2) + pow(Y_0 - Y_F1, 2))
                 - 2 * (Y_F1 - Y_c) / sqrt(pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
                 + (Y_0 + Y_F1 - 2 * Y_c)
                     / sqrt(pow(X_0 + X_F1 - 2 * X_c, 2) + pow(Y_0 + Y_F1 - 2 * Y_c, 2));
         }
-        if (param == cx()) {
+        if (param == cx().deri) {
             deriv += 2 * (X_F1 - X_c) / sqrt(pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
                 - 2 * (X_0 + X_F1 - 2 * X_c)
                     / sqrt(pow(X_0 + X_F1 - 2 * X_c, 2) + pow(Y_0 + Y_F1 - 2 * Y_c, 2));
         }
-        if (param == cy()) {
+        if (param == cy().deri) {
             deriv += 2 * (Y_F1 - Y_c) / sqrt(pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
                 - 2 * (Y_0 + Y_F1 - 2 * Y_c)
                     / sqrt(pow(X_0 + X_F1 - 2 * X_c, 2) + pow(Y_0 + Y_F1 - 2 * Y_c, 2));
         }
-        if (param == rmin()) {
+        if (param == rmin().deri) {
             deriv += -2 * b / sqrt(pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2));
         }
     }
@@ -1660,14 +1578,15 @@ double ConstraintPointOnEllipse::grad(double* param)
 // --------------------------------------------------------
 // ConstraintEllipseTangentLine
 ConstraintEllipseTangentLine::ConstraintEllipseTangentLine(Line& l, Ellipse& e)
-    : l(l)
+    : Constraint(TangentEllipseLine)
+    , l(l)
     , e(e)
 {
 
-    this->l.PushOwnParams(pvec);
-    this->e.PushOwnParams(pvec);  // DeepSOIC: hopefully, this won't push arc's parameters
+    this->l.PushOwnParams(origpvec);
+    this->e.PushOwnParams(origpvec);  // DeepSOIC: hopefully, this won't push arc's parameters
 
-    origpvec = pvec;
+    assignOrigToPvec();
     pvecChangedFlag = true;
     rescale();
 }
@@ -1678,11 +1597,6 @@ void ConstraintEllipseTangentLine::ReconstructGeomPointers()
     l.ReconstructOnNewPvec(pvec, i);
     e.ReconstructOnNewPvec(pvec, i);
     pvecChangedFlag = false;
-}
-
-ConstraintType ConstraintEllipseTangentLine::getTypeId()
-{
-    return TangentEllipseLine;
 }
 
 void ConstraintEllipseTangentLine::errorgrad(double* err, double* grad, double* param)
@@ -1710,7 +1624,7 @@ void ConstraintEllipseTangentLine::errorgrad(double* err, double* grad, double* 
     distF1mF2 = f2.subtr(f1m).length(ddistF1mF2);
 
     // calculate major radius (to compare the distance to)
-    double dradmin = (param == e.radmin) ? 1.0 : 0.0;
+    double dradmin = (param == e.radmin.deri) ? 1.0 : 0.0;
     double radmaj, dradmaj;
     radmaj = e.getRadMaj(c, f1, *e.radmin, dradmin, dradmaj);
 
@@ -1730,14 +1644,15 @@ ConstraintInternalAlignmentPoint2Ellipse::ConstraintInternalAlignmentPoint2Ellip
     Point& p1,
     InternalAlignmentType alignmentType
 )
-    : e(e)
+    : Constraint(InternalAlignmentPoint2Ellipse)
+    , e(e)
     , p(p1)
     , AlignmentType(alignmentType)
 {
-    pvec.push_back(p.x);
-    pvec.push_back(p.y);
-    this->e.PushOwnParams(pvec);
-    origpvec = pvec;
+    origpvec.push_back(p.x);
+    origpvec.push_back(p.y);
+    this->e.PushOwnParams(origpvec);
+    assignOrigToPvec();
     rescale();
 }
 
@@ -1750,11 +1665,6 @@ void ConstraintInternalAlignmentPoint2Ellipse::ReconstructGeomPointers()
     i++;
     e.ReconstructOnNewPvec(pvec, i);
     pvecChangedFlag = false;
-}
-
-ConstraintType ConstraintInternalAlignmentPoint2Ellipse::getTypeId()
-{
-    return InternalAlignmentPoint2Ellipse;
 }
 
 void ConstraintInternalAlignmentPoint2Ellipse::errorgrad(double* err, double* grad, double* param)
@@ -1828,14 +1738,15 @@ ConstraintInternalAlignmentPoint2Hyperbola::ConstraintInternalAlignmentPoint2Hyp
     Point& p1,
     InternalAlignmentType alignmentType
 )
-    : e(e)
+    : Constraint(InternalAlignmentPoint2Hyperbola)
+    , e(e)
     , p(p1)
     , AlignmentType(alignmentType)
 {
-    pvec.push_back(p.x);
-    pvec.push_back(p.y);
-    this->e.PushOwnParams(pvec);
-    origpvec = pvec;
+    origpvec.push_back(p.x);
+    origpvec.push_back(p.y);
+    this->e.PushOwnParams(origpvec);
+    assignOrigToPvec();
     rescale();
 }
 
@@ -1848,11 +1759,6 @@ void ConstraintInternalAlignmentPoint2Hyperbola::ReconstructGeomPointers()
     i++;
     e.ReconstructOnNewPvec(pvec, i);
     pvecChangedFlag = false;
-}
-
-ConstraintType ConstraintInternalAlignmentPoint2Hyperbola::getTypeId()
-{
-    return InternalAlignmentPoint2Hyperbola;
 }
 
 void ConstraintInternalAlignmentPoint2Hyperbola::errorgrad(double* err, double* grad, double* param)
@@ -1927,12 +1833,13 @@ void ConstraintInternalAlignmentPoint2Hyperbola::errorgrad(double* err, double* 
 // --------------------------------------------------------
 //  ConstraintEqualMajorAxesEllipse
 ConstraintEqualMajorAxesConic::ConstraintEqualMajorAxesConic(MajorRadiusConic* a1, MajorRadiusConic* a2)
-    : e1(a1)
+    : Constraint(EqualMajorAxesConic)
+    , e1(a1)
     , e2(a2)
 {
-    this->e1->PushOwnParams(pvec);
-    this->e2->PushOwnParams(pvec);
-    origpvec = pvec;
+    this->e1->PushOwnParams(origpvec);
+    this->e2->PushOwnParams(origpvec);
+    assignOrigToPvec();
     pvecChangedFlag = true;
     rescale();
 }
@@ -1943,11 +1850,6 @@ void ConstraintEqualMajorAxesConic::ReconstructGeomPointers()
     e1->ReconstructOnNewPvec(pvec, i);
     e2->ReconstructOnNewPvec(pvec, i);
     pvecChangedFlag = false;
-}
-
-ConstraintType ConstraintEqualMajorAxesConic::getTypeId()
-{
-    return EqualMajorAxesConic;
 }
 
 void ConstraintEqualMajorAxesConic::errorgrad(double* err, double* grad, double* param)
@@ -1969,12 +1871,13 @@ void ConstraintEqualMajorAxesConic::errorgrad(double* err, double* grad, double*
 
 //  ConstraintEqualFocalDistance
 ConstraintEqualFocalDistance::ConstraintEqualFocalDistance(ArcOfParabola* a1, ArcOfParabola* a2)
+    : Constraint(EqualFocalDistance)
 {
     this->e1 = a1;
-    this->e1->PushOwnParams(pvec);
+    this->e1->PushOwnParams(origpvec);
     this->e2 = a2;
-    this->e2->PushOwnParams(pvec);
-    origpvec = pvec;
+    this->e2->PushOwnParams(origpvec);
+    assignOrigToPvec();
     pvecChangedFlag = true;
     rescale();
 }
@@ -1985,11 +1888,6 @@ void ConstraintEqualFocalDistance::ReconstructGeomPointers()
     e1->ReconstructOnNewPvec(pvec, i);
     e2->ReconstructOnNewPvec(pvec, i);
     pvecChangedFlag = false;
-}
-
-ConstraintType ConstraintEqualFocalDistance::getTypeId()
-{
-    return EqualFocalDistance;
 }
 
 void ConstraintEqualFocalDistance::errorgrad(double* err, double* grad, double* param)
@@ -2028,15 +1926,16 @@ void ConstraintEqualFocalDistance::errorgrad(double* err, double* grad, double* 
 // --------------------------------------------------------
 // ConstraintCurveValue
 ConstraintCurveValue::ConstraintCurveValue(Point& p, double* pcoord, Curve& c, double* u)
-    : crv(c.Copy())
+    : Constraint(CurveValue)
+    , crv(c.Copy())
 {
-    pvec.push_back(p.x);
-    pvec.push_back(p.y);
-    pvec.push_back(pcoord);
-    pvec.push_back(u);
-    crv->PushOwnParams(pvec);
+    origpvec.push_back(p.x);
+    origpvec.push_back(p.y);
+    origpvec.push_back(pcoord);
+    origpvec.push_back(u);
+    crv->PushOwnParams(origpvec);
     pvecChangedFlag = true;
-    origpvec = pvec;
+    assignOrigToPvec();
     rescale();
 }
 
@@ -2059,11 +1958,6 @@ void ConstraintCurveValue::ReconstructGeomPointers()
     pvecChangedFlag = false;
 }
 
-ConstraintType ConstraintCurveValue::getTypeId()
-{
-    return CurveValue;
-}
-
 void ConstraintCurveValue::errorgrad(double* err, double* grad, double* param)
 {
     if (pvecChangedFlag) {
@@ -2072,7 +1966,7 @@ void ConstraintCurveValue::errorgrad(double* err, double* grad, double* param)
 
     double u, du;
     u = *(this->u());
-    du = (param == this->u()) ? 1.0 : 0.0;
+    du = (param == this->u().deri) ? 1.0 : 0.0;
 
     DeriVector2 P_to;  // point of curve at parameter value of u, in global coordinates
     P_to = this->crv->Value(u, du, param);
@@ -2111,34 +2005,31 @@ double ConstraintCurveValue::maxStep(MAP_pD_D& /*dir*/, double lim)
 // --------------------------------------------------------
 // ConstraintPointOnHyperbola
 ConstraintPointOnHyperbola::ConstraintPointOnHyperbola(Point& p, Hyperbola& e)
+    : Constraint(PointOnHyperbola)
 {
-    pvec.push_back(p.x);
-    pvec.push_back(p.y);
-    pvec.push_back(e.center.x);
-    pvec.push_back(e.center.y);
-    pvec.push_back(e.focus1.x);
-    pvec.push_back(e.focus1.y);
-    pvec.push_back(e.radmin);
-    origpvec = pvec;
+    origpvec.push_back(p.x);
+    origpvec.push_back(p.y);
+    origpvec.push_back(e.center.x);
+    origpvec.push_back(e.center.y);
+    origpvec.push_back(e.focus1.x);
+    origpvec.push_back(e.focus1.y);
+    origpvec.push_back(e.radmin);
+    assignOrigToPvec();
     rescale();
 }
 
 ConstraintPointOnHyperbola::ConstraintPointOnHyperbola(Point& p, ArcOfHyperbola& e)
+    : Constraint(PointOnHyperbola)
 {
-    pvec.push_back(p.x);
-    pvec.push_back(p.y);
-    pvec.push_back(e.center.x);
-    pvec.push_back(e.center.y);
-    pvec.push_back(e.focus1.x);
-    pvec.push_back(e.focus1.y);
-    pvec.push_back(e.radmin);
-    origpvec = pvec;
+    origpvec.push_back(p.x);
+    origpvec.push_back(p.y);
+    origpvec.push_back(e.center.x);
+    origpvec.push_back(e.center.y);
+    origpvec.push_back(e.focus1.x);
+    origpvec.push_back(e.focus1.y);
+    origpvec.push_back(e.radmin);
+    assignOrigToPvec();
     rescale();
-}
-
-ConstraintType ConstraintPointOnHyperbola::getTypeId()
-{
-    return PointOnHyperbola;
 }
 
 double ConstraintPointOnHyperbola::error()
@@ -2173,8 +2064,8 @@ double ConstraintPointOnHyperbola::error()
 double ConstraintPointOnHyperbola::grad(double* param)
 {
     double deriv = 0.;
-    if (param == p1x() || param == p1y() || param == f1x() || param == f1y() || param == cx()
-        || param == cy() || param == rmin()) {
+    if (param == p1x().deri || param == p1y().deri || param == f1x().deri || param == f1y().deri
+        || param == cx().deri || param == cy().deri || param == rmin().deri) {
 
         double X_0 = *p1x();
         double Y_0 = *p1y();
@@ -2184,39 +2075,39 @@ double ConstraintPointOnHyperbola::grad(double* param)
         double Y_F1 = *f1y();
         double b = *rmin();
 
-        if (param == p1x()) {
+        if (param == p1x().deri) {
             deriv += -(X_0 - X_F1) / sqrt(pow(X_0 - X_F1, 2) + pow(Y_0 - Y_F1, 2))
                 + (X_0 + X_F1 - 2 * X_c)
                     / sqrt(pow(X_0 + X_F1 - 2 * X_c, 2) + pow(Y_0 + Y_F1 - 2 * Y_c, 2));
         }
-        if (param == p1y()) {
+        if (param == p1y().deri) {
             deriv += -(Y_0 - Y_F1) / sqrt(pow(X_0 - X_F1, 2) + pow(Y_0 - Y_F1, 2))
                 + (Y_0 + Y_F1 - 2 * Y_c)
                     / sqrt(pow(X_0 + X_F1 - 2 * X_c, 2) + pow(Y_0 + Y_F1 - 2 * Y_c, 2));
         }
-        if (param == f1x()) {
+        if (param == f1x().deri) {
             deriv += (X_0 - X_F1) / sqrt(pow(X_0 - X_F1, 2) + pow(Y_0 - Y_F1, 2))
                 - 2 * (X_F1 - X_c) / sqrt(-pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
                 + (X_0 + X_F1 - 2 * X_c)
                     / sqrt(pow(X_0 + X_F1 - 2 * X_c, 2) + pow(Y_0 + Y_F1 - 2 * Y_c, 2));
         }
-        if (param == f1y()) {
+        if (param == f1y().deri) {
             deriv += (Y_0 - Y_F1) / sqrt(pow(X_0 - X_F1, 2) + pow(Y_0 - Y_F1, 2))
                 - 2 * (Y_F1 - Y_c) / sqrt(-pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
                 + (Y_0 + Y_F1 - 2 * Y_c)
                     / sqrt(pow(X_0 + X_F1 - 2 * X_c, 2) + pow(Y_0 + Y_F1 - 2 * Y_c, 2));
         }
-        if (param == cx()) {
+        if (param == cx().deri) {
             deriv += 2 * (X_F1 - X_c) / sqrt(-pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
                 - 2 * (X_0 + X_F1 - 2 * X_c)
                     / sqrt(pow(X_0 + X_F1 - 2 * X_c, 2) + pow(Y_0 + Y_F1 - 2 * Y_c, 2));
         }
-        if (param == cy()) {
+        if (param == cy().deri) {
             deriv += 2 * (Y_F1 - Y_c) / sqrt(-pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2))
                 - 2 * (Y_0 + Y_F1 - 2 * Y_c)
                     / sqrt(pow(X_0 + X_F1 - 2 * X_c, 2) + pow(Y_0 + Y_F1 - 2 * Y_c, 2));
         }
-        if (param == rmin()) {
+        if (param == rmin().deri) {
             deriv += 2 * b / sqrt(-pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2));
         }
     }
@@ -2227,24 +2118,26 @@ double ConstraintPointOnHyperbola::grad(double* param)
 // --------------------------------------------------------
 // ConstraintPointOnParabola
 ConstraintPointOnParabola::ConstraintPointOnParabola(Point& p, Parabola& e)
-    : parab(e.Copy())
+    : Constraint(PointOnParabola)
+    , parab(e.Copy())
 {
-    pvec.push_back(p.x);
-    pvec.push_back(p.y);
-    parab->PushOwnParams(pvec);
+    origpvec.push_back(p.x);
+    origpvec.push_back(p.y);
+    parab->PushOwnParams(origpvec);
     pvecChangedFlag = true;
-    origpvec = pvec;
+    assignOrigToPvec();
     rescale();
 }
 
 ConstraintPointOnParabola::ConstraintPointOnParabola(Point& p, ArcOfParabola& e)
-    : parab(e.Copy())
+    : Constraint(PointOnParabola)
+    , parab(e.Copy())
 {
-    pvec.push_back(p.x);
-    pvec.push_back(p.y);
-    parab->PushOwnParams(pvec);
+    origpvec.push_back(p.x);
+    origpvec.push_back(p.y);
+    parab->PushOwnParams(origpvec);
     pvecChangedFlag = true;
-    origpvec = pvec;
+    assignOrigToPvec();
     rescale();
 }
 
@@ -2263,11 +2156,6 @@ void ConstraintPointOnParabola::ReconstructGeomPointers()
     i++;
     this->parab->ReconstructOnNewPvec(pvec, i);
     pvecChangedFlag = false;
-}
-
-ConstraintType ConstraintPointOnParabola::getTypeId()
-{
-    return PointOnParabola;
 }
 
 void ConstraintPointOnParabola::errorgrad(double* err, double* grad, double* param)
@@ -2311,15 +2199,16 @@ void ConstraintPointOnParabola::errorgrad(double* err, double* grad, double* par
 // --------------------------------------------------------
 // ConstraintAngleViaPoint
 ConstraintAngleViaPoint::ConstraintAngleViaPoint(Curve& acrv1, Curve& acrv2, Point p, double* angle)
-    : crv1(acrv1.Copy())
+    : Constraint(AngleViaPoint)
+    , crv1(acrv1.Copy())
     , crv2(acrv2.Copy())
 {
-    pvec.push_back(angle);
-    pvec.push_back(p.x);
-    pvec.push_back(p.y);
-    crv1->PushOwnParams(pvec);
-    crv2->PushOwnParams(pvec);
-    origpvec = pvec;
+    origpvec.push_back(angle);
+    origpvec.push_back(p.x);
+    origpvec.push_back(p.y);
+    crv1->PushOwnParams(origpvec);
+    crv2->PushOwnParams(origpvec);
+    assignOrigToPvec();
     pvecChangedFlag = true;
     rescale();
 }
@@ -2343,11 +2232,6 @@ void ConstraintAngleViaPoint::ReconstructGeomPointers()
     crv1->ReconstructOnNewPvec(pvec, cnt);
     crv2->ReconstructOnNewPvec(pvec, cnt);
     pvecChangedFlag = false;
-}
-
-ConstraintType ConstraintAngleViaPoint::getTypeId()
-{
-    return AngleViaPoint;
 }
 
 double ConstraintAngleViaPoint::error()
@@ -2384,7 +2268,7 @@ double ConstraintAngleViaPoint::grad(double* param)
         ReconstructGeomPointers();
     }
 
-    if (param == angle()) {
+    if (param == angle().deri) {
         deriv += -1.0;
     }
     DeriVector2 n1 = crv1->CalculateNormal(poa, param);
@@ -2404,17 +2288,18 @@ ConstraintAngleViaTwoPoints::ConstraintAngleViaTwoPoints(
     Point p2,
     double* angle
 )
-    : crv1(acrv1.Copy())
+    : Constraint(AngleViaTwoPoints)
+    , crv1(acrv1.Copy())
     , crv2(acrv2.Copy())
 {
-    pvec.push_back(angle);
-    pvec.push_back(p1.x);
-    pvec.push_back(p1.y);
-    pvec.push_back(p2.x);
-    pvec.push_back(p2.y);
-    crv1->PushOwnParams(pvec);
-    crv2->PushOwnParams(pvec);
-    origpvec = pvec;
+    origpvec.push_back(angle);
+    origpvec.push_back(p1.x);
+    origpvec.push_back(p1.y);
+    origpvec.push_back(p2.x);
+    origpvec.push_back(p2.y);
+    crv1->PushOwnParams(origpvec);
+    crv2->PushOwnParams(origpvec);
+    assignOrigToPvec();
     pvecChangedFlag = true;
     rescale();
 }
@@ -2442,11 +2327,6 @@ void ConstraintAngleViaTwoPoints::ReconstructGeomPointers()
     crv1->ReconstructOnNewPvec(pvec, cnt);
     crv2->ReconstructOnNewPvec(pvec, cnt);
     pvecChangedFlag = false;
-}
-
-ConstraintType ConstraintAngleViaTwoPoints::getTypeId()
-{
-    return AngleViaTwoPoints;
 }
 
 double ConstraintAngleViaTwoPoints::error()
@@ -2483,7 +2363,7 @@ double ConstraintAngleViaTwoPoints::grad(double* param)
         ReconstructGeomPointers();
     }
 
-    if (param == angle()) {
+    if (param == angle().deri) {
         deriv += -1.0;
     }
     DeriVector2 n1 = crv1->CalculateNormal(poa1, param);
@@ -2503,16 +2383,17 @@ ConstraintAngleViaPointAndParam::ConstraintAngleViaPointAndParam(
     double* cparam,
     double* angle
 )
-    : crv1(acrv1.Copy())
+    : Constraint(AngleViaPointAndParam)
+    , crv1(acrv1.Copy())
     , crv2(acrv2.Copy())
 {
-    pvec.push_back(angle);
-    pvec.push_back(p.x);
-    pvec.push_back(p.y);
-    pvec.push_back(cparam);
-    crv1->PushOwnParams(pvec);
-    crv2->PushOwnParams(pvec);
-    origpvec = pvec;
+    origpvec.push_back(angle);
+    origpvec.push_back(p.x);
+    origpvec.push_back(p.y);
+    origpvec.push_back(cparam);
+    crv1->PushOwnParams(origpvec);
+    crv2->PushOwnParams(origpvec);
+    assignOrigToPvec();
     pvecChangedFlag = true;
     rescale();
 }
@@ -2537,11 +2418,6 @@ void ConstraintAngleViaPointAndParam::ReconstructGeomPointers()
     crv1->ReconstructOnNewPvec(pvec, cnt);
     crv2->ReconstructOnNewPvec(pvec, cnt);
     pvecChangedFlag = false;
-}
-
-ConstraintType ConstraintAngleViaPointAndParam::getTypeId()
-{
-    return AngleViaPointAndParam;
 }
 
 double ConstraintAngleViaPointAndParam::error()
@@ -2578,7 +2454,7 @@ double ConstraintAngleViaPointAndParam::grad(double* param)
         ReconstructGeomPointers();
     }
 
-    if (param == angle()) {
+    if (param == angle().deri) {
         deriv += -1.0;
     }
     DeriVector2 n1 = crv1->CalculateNormal(cparam(), param);
@@ -2599,17 +2475,18 @@ ConstraintAngleViaPointAndTwoParams::ConstraintAngleViaPointAndTwoParams(
     double* cparam2,
     double* angle
 )
-    : crv1(acrv1.Copy())
+    : Constraint(AngleViaPointAndTwoParams)
+    , crv1(acrv1.Copy())
     , crv2(acrv2.Copy())
 {
-    pvec.push_back(angle);
-    pvec.push_back(p.x);
-    pvec.push_back(p.y);
-    pvec.push_back(cparam1);
-    pvec.push_back(cparam2);
-    crv1->PushOwnParams(pvec);
-    crv2->PushOwnParams(pvec);
-    origpvec = pvec;
+    origpvec.push_back(angle);
+    origpvec.push_back(p.x);
+    origpvec.push_back(p.y);
+    origpvec.push_back(cparam1);
+    origpvec.push_back(cparam2);
+    crv1->PushOwnParams(origpvec);
+    crv2->PushOwnParams(origpvec);
+    assignOrigToPvec();
     pvecChangedFlag = true;
     rescale();
 }
@@ -2635,11 +2512,6 @@ void ConstraintAngleViaPointAndTwoParams::ReconstructGeomPointers()
     crv1->ReconstructOnNewPvec(pvec, cnt);
     crv2->ReconstructOnNewPvec(pvec, cnt);
     pvecChangedFlag = false;
-}
-
-ConstraintType ConstraintAngleViaPointAndTwoParams::getTypeId()
-{
-    return AngleViaPointAndTwoParams;
 }
 
 double ConstraintAngleViaPointAndTwoParams::error()
@@ -2676,7 +2548,7 @@ double ConstraintAngleViaPointAndTwoParams::grad(double* param)
         ReconstructGeomPointers();
     }
 
-    if (param == angle()) {
+    if (param == angle().deri) {
         deriv += -1.0;
     }
     DeriVector2 n1 = crv1->CalculateNormal(cparam1(), param);
@@ -2700,20 +2572,21 @@ ConstraintSnell::ConstraintSnell(
     bool flipn1,
     bool flipn2
 )
-    : ray1(r1.Copy())
+    : Constraint(Snell)
+    , ray1(r1.Copy())
     , ray2(r2.Copy())
     , boundary(b.Copy())
     , flipn1(flipn1)
     , flipn2(flipn2)
 {
-    pvec.push_back(n1);
-    pvec.push_back(n2);
-    pvec.push_back(p.x);
-    pvec.push_back(p.y);
-    ray1->PushOwnParams(pvec);
-    ray2->PushOwnParams(pvec);
-    boundary->PushOwnParams(pvec);
-    origpvec = pvec;
+    origpvec.push_back(n1);
+    origpvec.push_back(n2);
+    origpvec.push_back(p.x);
+    origpvec.push_back(p.y);
+    ray1->PushOwnParams(origpvec);
+    ray2->PushOwnParams(origpvec);
+    boundary->PushOwnParams(origpvec);
+    assignOrigToPvec();
     pvecChangedFlag = true;
 
     rescale();
@@ -2744,11 +2617,6 @@ void ConstraintSnell::ReconstructGeomPointers()
     pvecChangedFlag = false;
 }
 
-ConstraintType ConstraintSnell::getTypeId()
-{
-    return Snell;
-}
-
 // error and gradient combined. Values are returned through pointers.
 void ConstraintSnell::errorgrad(double* err, double* grad, double* param)
 {
@@ -2770,8 +2638,8 @@ void ConstraintSnell::errorgrad(double* err, double* grad, double* param)
         dsin2 = -dsin2;
     }
 
-    double dn1 = (param == n1()) ? 1.0 : 0.0;
-    double dn2 = (param == n2()) ? 1.0 : 0.0;
+    double dn1 = (param == n1().deri) ? 1.0 : 0.0;
+    double dn2 = (param == n2().deri) ? 1.0 : 0.0;
     if (err) {
         *err = *n1() * sin1 - *n2() * sin2;
     }
@@ -2784,12 +2652,13 @@ void ConstraintSnell::errorgrad(double* err, double* grad, double* param)
 // --------------------------------------------------------
 // ConstraintEqualLineLength
 ConstraintEqualLineLength::ConstraintEqualLineLength(Line& l1, Line& l2)
-    : l1(l1)
+    : Constraint(EqualLineLength)
+    , l1(l1)
     , l2(l2)
 {
-    this->l1.PushOwnParams(pvec);
-    this->l2.PushOwnParams(pvec);
-    origpvec = pvec;
+    this->l1.PushOwnParams(origpvec);
+    this->l2.PushOwnParams(origpvec);
+    assignOrigToPvec();
     pvecChangedFlag = true;
     rescale();
 }
@@ -2800,11 +2669,6 @@ void ConstraintEqualLineLength::ReconstructGeomPointers()
     l1.ReconstructOnNewPvec(pvec, i);
     l2.ReconstructOnNewPvec(pvec, i);
     pvecChangedFlag = false;
-}
-
-ConstraintType ConstraintEqualLineLength::getTypeId()
-{
-    return EqualLineLength;
 }
 
 void ConstraintEqualLineLength::errorgrad(double* err, double* grad, double* param)
@@ -2842,28 +2706,28 @@ void ConstraintEqualLineLength::errorgrad(double* err, double* grad, double* par
         // or just locked into a maximum/minimum
         if (fabs(*grad) < 1e-10) {
             double surrogate = 1e-10;
-            if (param == l1.p1.x) {
+            if (param == l1.p1.x.deri) {
                 *grad = v1.x > 0 ? surrogate : -surrogate;
             }
-            if (param == l1.p1.y) {
+            if (param == l1.p1.y.deri) {
                 *grad = v1.y > 0 ? surrogate : -surrogate;
             }
-            if (param == l1.p2.x) {
+            if (param == l1.p2.x.deri) {
                 *grad = v1.x > 0 ? -surrogate : surrogate;
             }
-            if (param == l1.p2.y) {
+            if (param == l1.p2.y.deri) {
                 *grad = v1.y > 0 ? -surrogate : surrogate;
             }
-            if (param == l2.p1.x) {
+            if (param == l2.p1.x.deri) {
                 *grad = v2.x > 0 ? surrogate : -surrogate;
             }
-            if (param == l2.p1.y) {
+            if (param == l2.p1.y.deri) {
                 *grad = v2.y > 0 ? surrogate : -surrogate;
             }
-            if (param == l2.p2.x) {
+            if (param == l2.p2.x.deri) {
                 *grad = v2.x > 0 ? -surrogate : surrogate;
             }
-            if (param == l2.p2.y) {
+            if (param == l2.p2.y.deri) {
                 *grad = v2.y > 0 ? -surrogate : surrogate;
             }
         }
@@ -2873,14 +2737,15 @@ void ConstraintEqualLineLength::errorgrad(double* err, double* grad, double* par
 // --------------------------------------------------------
 // ConstraintC2CDistance
 ConstraintC2CDistance::ConstraintC2CDistance(Circle& c1, Circle& c2, double* d)
-    : c1(c1)
+    : Constraint(C2CDistance)
+    , c1(c1)
     , c2(c2)
 {
-    pvec.push_back(d);
-    this->c1.PushOwnParams(pvec);
-    this->c2.PushOwnParams(pvec);
+    origpvec.push_back(d);
+    this->c1.PushOwnParams(origpvec);
+    this->c2.PushOwnParams(origpvec);
 
-    origpvec = pvec;
+    assignOrigToPvec();
     pvecChangedFlag = true;
     rescale();
 }
@@ -2892,11 +2757,6 @@ void ConstraintC2CDistance::ReconstructGeomPointers()
     c1.ReconstructOnNewPvec(pvec, i);
     c2.ReconstructOnNewPvec(pvec, i);
     pvecChangedFlag = false;
-}
-
-ConstraintType ConstraintC2CDistance::getTypeId()
-{
-    return C2CDistance;
 }
 
 void ConstraintC2CDistance::errorgrad(double* err, double* grad, double* param)
@@ -2920,13 +2780,15 @@ void ConstraintC2CDistance::errorgrad(double* err, double* grad, double* param)
             *err = length_ct12 - (*c2.rad + *c1.rad + *distance());
         }
         else if (grad) {
-            double drad = (param == c2.rad || param == c1.rad || param == distance()) ? -1.0 : 0.0;
+            double drad = (param == c2.rad.deri || param == c1.rad.deri || param == distance().deri)
+                ? -1.0
+                : 0.0;
             *grad = dlength_ct12 + drad;
         }
     }
     else {
-        double* bigradius = (*c1.rad >= *c2.rad) ? c1.rad : c2.rad;
-        double* smallradius = (*c1.rad >= *c2.rad) ? c2.rad : c1.rad;
+        DeriParam bigradius = (*c1.rad >= *c2.rad) ? c1.rad : c2.rad;
+        DeriParam smallradius = (*c1.rad >= *c2.rad) ? c2.rad : c1.rad;
 
         double smallspan = *smallradius + length_ct12 + *distance();
 
@@ -2936,13 +2798,13 @@ void ConstraintC2CDistance::errorgrad(double* err, double* grad, double* param)
         else if (grad) {
             double drad = 0.0;
 
-            if (param == bigradius) {
+            if (param == bigradius.deri) {
                 drad = 1.0;
             }
-            else if (param == smallradius) {
+            else if (param == smallradius.deri) {
                 drad = -1.0;
             }
-            else if (param == distance()) {
+            else if (param == distance().deri) {
                 drad = (*distance() < 0.) ? 1.0 : -1.0;
             }
             if (length_ct12 > 1e-13) {
@@ -2958,21 +2820,17 @@ void ConstraintC2CDistance::errorgrad(double* err, double* grad, double* param)
 // --------------------------------------------------------
 // ConstraintC2LDistance
 ConstraintC2LDistance::ConstraintC2LDistance(Circle& c, Line& l, double* d)
-    : circle(c)
+    : Constraint(C2LDistance)
+    , circle(c)
     , line(l)
 {
-    pvec.push_back(d);
-    this->circle.PushOwnParams(pvec);
-    this->line.PushOwnParams(pvec);
+    origpvec.push_back(d);
+    this->circle.PushOwnParams(origpvec);
+    this->line.PushOwnParams(origpvec);
 
-    origpvec = pvec;
+    assignOrigToPvec();
     pvecChangedFlag = true;
     rescale();
-}
-
-ConstraintType ConstraintC2LDistance::getTypeId()
-{
-    return C2LDistance;
 }
 
 void ConstraintC2LDistance::ReconstructGeomPointers()
@@ -3028,7 +2886,7 @@ void ConstraintC2LDistance::errorgrad(double* err, double* grad, double* param)
         }
     }
     else if (grad) {
-        if (param == distance() || param == circle.rad) {
+        if (param == distance().deri || param == circle.rad.deri) {
             if (h < *circle.rad) {
                 *grad = -1.0;
             }
@@ -3045,21 +2903,17 @@ void ConstraintC2LDistance::errorgrad(double* err, double* grad, double* param)
 // --------------------------------------------------------
 // ConstraintP2CDistance
 ConstraintP2CDistance::ConstraintP2CDistance(Point& p, Circle& c, double* d)
-    : circle(c)
+    : Constraint(P2CDistance)
+    , circle(c)
     , pt(p)
 {
-    pvec.push_back(d);
-    this->circle.PushOwnParams(pvec);
-    this->pt.PushOwnParams(pvec);
+    origpvec.push_back(d);
+    this->circle.PushOwnParams(origpvec);
+    this->pt.PushOwnParams(origpvec);
 
-    origpvec = pvec;
+    assignOrigToPvec();
     pvecChangedFlag = true;
     rescale();
-}
-
-ConstraintType ConstraintP2CDistance::getTypeId()
-{
-    return P2CDistance;
 }
 
 void ConstraintP2CDistance::ReconstructGeomPointers()
@@ -3091,13 +2945,13 @@ void ConstraintP2CDistance::errorgrad(double* err, double* grad, double* param)
         }
     }
     else if (grad) {
-        if (param == distance()) {
+        if (param == distance().deri) {
             *grad = 1.0;
             if (length < *circle.rad) {
                 *grad = -1.0;
             }
         }
-        else if (param == circle.rad) {
+        else if (param == circle.rad.deri) {
             *grad = 1.0;
         }
         else {
@@ -3109,12 +2963,13 @@ void ConstraintP2CDistance::errorgrad(double* err, double* grad, double* param)
 // --------------------------------------------------------
 // ConstraintArcLength
 ConstraintArcLength::ConstraintArcLength(Arc& a, double* d)
-    : arc(a)
+    : Constraint(ArcLength)
+    , arc(a)
 {
-    pvec.push_back(d);
-    this->arc.PushOwnParams(pvec);
+    origpvec.push_back(d);
+    this->arc.PushOwnParams(origpvec);
 
-    origpvec = pvec;
+    assignOrigToPvec();
     pvecChangedFlag = true;
     rescale();
 }
@@ -3125,11 +2980,6 @@ void ConstraintArcLength::ReconstructGeomPointers()
     i++;  // skip the first parameter as there is the inline function distance for it
     arc.ReconstructOnNewPvec(pvec, i);
     pvecChangedFlag = false;
-}
-
-ConstraintType ConstraintArcLength::getTypeId()
-{
-    return ArcLength;
 }
 
 void ConstraintArcLength::errorgrad(double* err, double* grad, double* param)
@@ -3152,14 +3002,14 @@ void ConstraintArcLength::errorgrad(double* err, double* grad, double* param)
         *err = rad * (endA - startA) - *distance();
     }
     else if (grad) {
-        if (param == distance()) {
+        if (param == distance().deri) {
             // if constraint is not driving it varies on distance().
             *grad = -1.;
         }
         else {
-            double dRad = param == arc.rad ? 1. : 0.;
-            double dStartA = param == arc.startAngle ? 1. : 0.;
-            double dEndA = param == arc.endAngle ? 1. : 0.;
+            double dRad = param == arc.rad.deri ? 1. : 0.;
+            double dStartA = param == arc.startAngle.deri ? 1. : 0.;
+            double dEndA = param == arc.endAngle.deri ? 1. : 0.;
             *grad = rad * (dEndA - dStartA) + dRad * (endA - startA);
         }
     }

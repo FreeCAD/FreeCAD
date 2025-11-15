@@ -564,7 +564,7 @@ int System::addConstraint(Constraint* constr)
     }
 
     clist.push_back(constr);
-    VEC_pD constr_params = constr->params();
+    VEC_pD constr_params = constr->origParams();
     for (const auto& param : constr_params) {
         // jacobi.set(constr, *param, 0.);
         c2p[constr].push_back(param);
@@ -1746,18 +1746,25 @@ void System::initSolution(Algorithm alg)
         clistR = clist;
     }
 
+    substitution = Substitution(plist, clistR);
+
     // partitioning into decoupled components
     Graph g;
-    for (int i = 0; i < int(plist.size() + clistR.size()); i++) {
+    for (int i = 0; i < int(substitution.parameters.size() + substitution.constraints.size()); i++) {
         boost::add_vertex(g);
     }
 
-    int cvtid = int(plist.size());
-    for (const auto constr : clistR) {
-        VEC_pD& cparams = c2p[constr];
-        for (const auto param : cparams) {
-            MAP_pD_I::const_iterator it = pIndex.find(param);
-            if (it != pIndex.end()) {
+    UMAP_pD_I tmpParamToIndex;
+    for (size_t i = 0; i < substitution.parameters.size(); ++i) {
+        tmpParamToIndex[&substitution.parameters[i]] = i;
+    }
+
+    int cvtid = int(substitution.parameters.size());
+    for (const auto constr : substitution.constraints) {
+        VEC_Deri cparams = constr->params();
+        for (const auto& param : cparams) {
+            auto it = tmpParamToIndex.find(param);
+            if (it != tmpParamToIndex.end()) {
                 boost::add_edge(cvtid, it->second, g);
             }
         }
@@ -1770,55 +1777,23 @@ void System::initSolution(Algorithm alg)
         componentsSize = boost::connected_components(g, &components[0]);
     }
 
-    // identification of equality constraints and parameter reduction
-    std::set<Constraint*> reducedConstrs;  // constraints that will be eliminated through reduction
-    reductionmaps.clear();                 // destroy any maps
-    reductionmaps.resize(componentsSize);  // create empty maps to be filled in
-    {
-        VEC_pD reducedParams = plist;
 
-        for (const auto& constr : clistR) {
-            if (!(constr->getTag() >= 0 && constr->getTypeId() == Equal)) {
-                continue;
-            }
-            const auto it1 = pIndex.find(constr->params()[0]);
-            const auto it2 = pIndex.find(constr->params()[1]);
-            if (it1 == pIndex.end() || it2 == pIndex.end()) {
-                continue;
-            }
-            reducedConstrs.insert(constr);
-            double* p_kept = reducedParams[it1->second];
-            double* p_replaced = reducedParams[it2->second];
-            std::ranges::replace(reducedParams, p_replaced, p_kept);
-        }
-        for (size_t i = 0; i < plist.size(); ++i) {
-            if (plist[i] != reducedParams[i]) {
-                int cid = components[i];
-                reductionmaps[cid][plist[i]] = reducedParams[i];
-            }
-        }
-    }
-
-    // TODO: Why are the later (constraint-related) items added first?
-    // Adding plist-related items first would simplify assignment of `i`, but is not a big expense
-    // overall. Leaving as is to avoid any unintended consequences.
-    clists.clear();                 // destroy any lists
-    clists.resize(componentsSize);  // create empty lists to be filled in
-    size_t i = plist.size();
-    for (const auto& constr : clistR) {
-        if (reducedConstrs.count(constr) == 0) {
-            int cid = components[i];
-            clists[cid].push_back(constr);
-        }
-        ++i;
-    }
+    // Partition parameters and constraints into components
 
     plists.clear();                 // destroy any lists
     plists.resize(componentsSize);  // create empty lists to be filled in
-    for (size_t i = 0; i < plist.size(); ++i) {
+    clists.clear();                 // destroy any lists
+    clists.resize(componentsSize);  // create empty lists to be filled in
+
+    for (size_t i = 0; i < substitution.parameters.size(); ++i) {
         int cid = components[i];
-        plists[cid].push_back(plist[i]);
+        plists[cid].push_back(&substitution.parameters[i]);
     }
+    for (size_t i = 0; i < substitution.constraints.size(); ++i) {
+        int cid = components[i + substitution.parameters.size()];
+        clists[cid].push_back(substitution.constraints[i]);
+    }
+
 
     // calculates subSystems and subSystemsAux from clists, plists and reductionmaps
     clearSubSystems();
@@ -1834,10 +1809,10 @@ void System::initSolution(Algorithm alg)
         );
 
         if (!clist0.empty()) {
-            subSystems[cid] = new SubSystem(clist0, plists[cid], reductionmaps[cid]);
+            subSystems[cid] = new SubSystem(clist0, plists[cid], substitution.reductionMap);
         }
         if (!clist1.empty()) {
-            subSystemsAux[cid] = new SubSystem(clist1, plists[cid], reductionmaps[cid]);
+            subSystemsAux[cid] = new SubSystem(clist1, plists[cid], substitution.reductionMap);
         }
     }
 
@@ -1881,9 +1856,12 @@ int System::solve(bool isFine, Algorithm alg, bool isRedundantsolving)
     // return success by default in order to permit coincidence constraints to be applied
     // even if no other system has to be solved
     int res = Success;
+
     for (int cid = 0; cid < int(subSystems.size()); cid++) {
         if ((subSystems[cid] || subSystemsAux[cid]) && !isReset) {
             resetToReference();
+            substitution.initParams();
+            substitution.applyConst();
             isReset = true;
         }
         if (subSystems[cid] && subSystemsAux[cid]) {
@@ -1897,6 +1875,12 @@ int System::solve(bool isFine, Algorithm alg, bool isRedundantsolving)
         }
     }
     if (res == Success) {
+        if (!isReset) {
+            substitution.initParams();
+            substitution.applyConst();
+        }
+        substitution.applySubst();
+
         for (std::set<Constraint*>::const_iterator constr = redundant.begin();
              constr != redundant.end();
              ++constr) {
@@ -1929,6 +1913,8 @@ int System::solve(SubSystem* subsys, bool isFine, Algorithm alg, bool isRedundan
     }
 }
 
+double lineSearch(SubSystem* subsys, Substitution& substitution, Eigen::VectorXd& xdir);
+
 int System::solve_BFGS(SubSystem* subsys, bool /*isFine*/, bool isRedundantsolving)
 {
 #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
@@ -1939,8 +1925,6 @@ int System::solve_BFGS(SubSystem* subsys, bool /*isFine*/, bool isRedundantsolvi
     if (xsize == 0) {
         return Success;
     }
-
-    subsys->redirectParams();
 
     Eigen::MatrixXd D = Eigen::MatrixXd::Identity(xsize, xsize);
     Eigen::VectorXd x(xsize);
@@ -1956,7 +1940,7 @@ int System::solve_BFGS(SubSystem* subsys, bool /*isFine*/, bool isRedundantsolvi
 
     // Initial search direction opposed to gradient (steepest-descent)
     xdir = -grad;
-    lineSearch(subsys, xdir);
+    lineSearch(subsys, substitution, xdir);
     double err = subsys->error();
 
     h = x;
@@ -2028,7 +2012,7 @@ int System::solve_BFGS(SubSystem* subsys, bool /*isFine*/, bool isRedundantsolvi
         D -= 1. / hty * (h * Dy.transpose() + Dy * h.transpose());
 
         xdir = -D * grad;
-        lineSearch(subsys, xdir);
+        lineSearch(subsys, substitution, xdir);
         err = subsys->error();
 
         h = x;
@@ -2044,8 +2028,6 @@ int System::solve_BFGS(SubSystem* subsys, bool /*isFine*/, bool isRedundantsolvi
             Base::Console().log(tmp.c_str());
         }
     }
-
-    subsys->revertParams();
 
     if (err <= smallF) {
         return Success;
@@ -2074,8 +2056,6 @@ int System::solve_LM(SubSystem* subsys, bool isRedundantsolving)
     Eigen::MatrixXd J(csize, xsize);  // Jacobi of the subsystem
     Eigen::MatrixXd A(xsize, xsize);
     Eigen::VectorXd x(xsize), h(xsize), x_new(xsize), g(xsize), diag_A(xsize);
-
-    subsys->redirectParams();
 
     subsys->getParams(x);
     subsys->calcResidual(e);
@@ -2181,6 +2161,7 @@ int System::solve_LM(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 subsys->setParams(x_new);
+                substitution.applySubst();
                 subsys->calcResidual(e_new);
                 e_new *= -1;
 
@@ -2229,8 +2210,6 @@ int System::solve_LM(SubSystem* subsys, bool isRedundantsolving)
     if (iter >= maxIterNumber) {
         stop = 5;
     }
-
-    subsys->revertParams();
 
     return (stop == 1) ? Success : Failed;
 }
@@ -2281,8 +2260,6 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
     Eigen::VectorXd fx(csize), fx_new(csize);
     Eigen::MatrixXd Jx(csize, xsize), Jx_new(csize, xsize);
     Eigen::VectorXd g(xsize), h_sd(xsize), h_gn(xsize), h_dl(xsize);
-
-    subsys->redirectParams();
 
     double err;
     subsys->getParams(x);
@@ -2384,6 +2361,7 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
         double err_new;
         x_new = x + h_dl;
         subsys->setParams(x_new);
+        substitution.applySubst();
         subsys->calcResidual(fx_new, err_new);
         subsys->calcJacobi(Jx_new);
 
@@ -2437,8 +2415,6 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
         // count this iteration and start again
         iter++;
     }
-
-    subsys->revertParams();
 
     if (debugMode == IterationLevel) {
         std::stringstream stream;
@@ -4530,13 +4506,8 @@ int System::solve(SubSystem* subsysA, SubSystem* subsysB, bool /*isFine*/, bool 
     Eigen::VectorXd y(xsize);
     Eigen::VectorXd Bh(xsize);
 
-    // We assume that there are no common constraints in subsysA and subsysB
-    subsysA->redirectParams();
-    subsysB->redirectParams();
-
-    subsysB->getParams(plistAB, x);
-    subsysA->getParams(plistAB, x);
-    subsysB->setParams(plistAB, x);  // just to ensure that A and B are synchronized
+    SubSystem::getParams(plistAB, x);
+    substitution.applySubst();
 
     subsysB->calcGrad(plistAB, grad);
     subsysA->calcJacobi(plistAB, JA);
@@ -4585,8 +4556,8 @@ int System::solve(SubSystem* subsysA, SubSystem* subsysB, bool /*isFine*/, bool 
             double deriv = grad.dot(xdir) - mu * resA.lpNorm<1>();
 
             x = x0 + alpha * xdir;
-            subsysA->setParams(plistAB, x);
-            subsysB->setParams(plistAB, x);
+            SubSystem::setParams(plistAB, x);
+            substitution.applySubst();
             subsysA->calcResidual(resA);
             double f = subsysB->error() + mu * resA.lpNorm<1>();
 
@@ -4596,8 +4567,8 @@ int System::solve(SubSystem* subsysA, SubSystem* subsysB, bool /*isFine*/, bool 
                 if (first) {
                     xdir1 = -Y * resA;
                     x += xdir1;  // = x0 + alpha * xdir + xdir1
-                    subsysA->setParams(plistAB, x);
-                    subsysB->setParams(plistAB, x);
+                    SubSystem::setParams(plistAB, x);
+                    substitution.applySubst();
                     subsysA->calcResidual(resA);
                     f = subsysB->error() + mu * resA.lpNorm<1>();
                     if (f < f0 + eta * alpha * deriv) {
@@ -4609,8 +4580,8 @@ int System::solve(SubSystem* subsysA, SubSystem* subsysB, bool /*isFine*/, bool 
                     alpha = 0.;
                 }
                 x = x0 + alpha * xdir;
-                subsysA->setParams(plistAB, x);
-                subsysB->setParams(plistAB, x);
+                SubSystem::setParams(plistAB, x);
+                substitution.applySubst();
                 subsysA->calcResidual(resA);
                 f = subsysB->error() + mu * resA.lpNorm<1>();
                 if (alpha < 1e-8) {  // let the linesearch fail
@@ -4659,26 +4630,11 @@ int System::solve(SubSystem* subsysA, SubSystem* subsysB, bool /*isFine*/, bool 
         ret = Failed;
     }
 
-    subsysA->revertParams();
-    subsysB->revertParams();
     return ret;
 }
-
 void System::applySolution()
 {
-    for (int cid = 0; cid < int(subSystems.size()); cid++) {
-        if (subSystemsAux[cid]) {
-            subSystemsAux[cid]->applySolution();
-        }
-        if (subSystems[cid]) {
-            subSystems[cid]->applySolution();
-        }
-        for (MAP_pD_pD::const_iterator it = reductionmaps[cid].begin();
-             it != reductionmaps[cid].end();
-             ++it) {
-            *(it->first) = *(it->second);
-        }
-    }
+    substitution.applyReduction();
 }
 
 void System::undoSolution()
@@ -4708,7 +4664,8 @@ void System::makeReducedJacobian(
     int jacobianconstraintcount = 0;
     int allcount = 0;
     for (auto& constr : clist) {
-        constr->revertParams();
+        // constr->revertParams();
+        // TODO-theo-vt --^
         ++allcount;
         if (constr->getTag() >= 0 && constr->isDriving()) {
             jacobianconstraintcount++;
@@ -5568,7 +5525,6 @@ void System::identifyConflictingRedundantConstraints(
     }
 
     if (res == Success) {
-        subSysTmp->applySolution();
         std::ranges::copy_if(
             skipped,
             std::inserter(redundant, redundant.begin()),
@@ -5668,7 +5624,7 @@ void System::clearSubSystems()
     subSystemsAux.clear();
 }
 
-double lineSearch(SubSystem* subsys, Eigen::VectorXd& xdir)
+double lineSearch(SubSystem* subsys, Substitution& substitution, Eigen::VectorXd& xdir)
 {
     double f1, f2, f3, alpha1, alpha2, alpha3, alphaStar;
 
@@ -5687,12 +5643,14 @@ double lineSearch(SubSystem* subsys, Eigen::VectorXd& xdir)
     alpha2 = 1.;
     x = x0 + alpha2 * xdir;
     subsys->setParams(x);
+    substitution.applySubst();
     f2 = subsys->error();
 
     // Take a step of alpha3 = 2*alpha2
     alpha3 = alpha2 * 2;
     x = x0 + alpha3 * xdir;
     subsys->setParams(x);
+    substitution.applySubst();
     f3 = subsys->error();
 
     // Now reduce or lengthen alpha2 and alpha3 until the minimum is
@@ -5706,6 +5664,7 @@ double lineSearch(SubSystem* subsys, Eigen::VectorXd& xdir)
             alpha2 = alpha2 / 2;
             x = x0 + alpha2 * xdir;
             subsys->setParams(x);
+            substitution.applySubst();
             f2 = subsys->error();
         }
         else if (f2 > f3) {
@@ -5719,6 +5678,7 @@ double lineSearch(SubSystem* subsys, Eigen::VectorXd& xdir)
             alpha3 = alpha3 * 2;
             x = x0 + alpha3 * xdir;
             subsys->setParams(x);
+            substitution.applySubst();
             f3 = subsys->error();
         }
     }
@@ -5741,6 +5701,7 @@ double lineSearch(SubSystem* subsys, Eigen::VectorXd& xdir)
     // Take a final step to alphaStar
     x = x0 + alphaStar * xdir;
     subsys->setParams(x);
+    substitution.applySubst();
 
     return alphaStar;
 }
