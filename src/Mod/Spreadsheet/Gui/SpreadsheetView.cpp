@@ -174,7 +174,8 @@ bool SheetView::onMsg(const char* pMsg, const char**)
     else if (strcmp("Save", pMsg) == 0) {
         getGuiDocument()->save();
         ParameterGrp::handle group = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/Mod/Spreadsheet");
+            "User parameter:BaseApp/Preferences/Mod/Spreadsheet"
+        );
         QString trigger = QString::fromStdString(group->GetASCII("RecomputeTrigger", "none"));
         if (trigger.compare(QLatin1String("onSave"), Qt::CaseInsensitive) == 0) {
             Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
@@ -184,7 +185,8 @@ bool SheetView::onMsg(const char* pMsg, const char**)
     else if (strcmp("SaveAs", pMsg) == 0) {
         getGuiDocument()->save();
         ParameterGrp::handle group = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/Mod/Spreadsheet");
+            "User parameter:BaseApp/Preferences/Mod/Spreadsheet"
+        );
         QString trigger = QString::fromStdString(group->GetASCII("RecomputeTrigger", "none"));
         if (trigger.compare(QLatin1String("onSave"), Qt::CaseInsensitive) == 0) {
             Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");

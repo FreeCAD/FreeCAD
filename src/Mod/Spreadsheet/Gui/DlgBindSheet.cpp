@@ -295,14 +295,13 @@ void DlgBindSheet::onDiscard()
         std::string fromStart(ui->lineEditFromStart->text().trimmed().toLatin1().constData());
         std::string fromEnd(ui->lineEditFromEnd->text().trimmed().toLatin1().constData());
         Gui::Command::openCommand("Unbind cells");
-        Gui::cmdAppObjectArgs(sheet,
-                              "setExpression('.cells.Bind.%s.%s', None)",
-                              fromStart,
-                              fromEnd);
-        Gui::cmdAppObjectArgs(sheet,
-                              "setExpression('.cells.BindHiddenRef.%s.%s', None)",
-                              fromStart,
-                              fromEnd);
+        Gui::cmdAppObjectArgs(sheet, "setExpression('.cells.Bind.%s.%s', None)", fromStart, fromEnd);
+        Gui::cmdAppObjectArgs(
+            sheet,
+            "setExpression('.cells.BindHiddenRef.%s.%s', None)",
+            fromStart,
+            fromEnd
+        );
         Gui::Command::commitCommand();
         reject();
     }
