@@ -205,12 +205,22 @@ class TaskFillTemplateFields:
                         self.cb2.clicked.connect(self.on_cb2_clicked)
                         if projgrp_view.Scale < 1:
                             self.s2.setText("1 : " + str(int(1 / projgrp_view.Scale)))
-                        elif projgrp_view.Scale > 1 and int(projgrp_view.Scale) == projgrp_view.Scale:
+                        elif int(projgrp_view.Scale) == 1 or (
+                            projgrp_view.Scale > 1
+                            and int(projgrp_view.Scale) == projgrp_view.Scale
+                        ):
                             self.s2.setText(str(int(projgrp_view.Scale)) + " : 1")
-                        else: # must be something like 2.5 = 5 : 2
+                        else:  # must be something like 2.5 = 5 : 2
                             for x in range(2, 10):
-                                if int(projgrp_view.Scale * x) == projgrp_view.Scale * x:
-                                    self.s2.setText(str(int(projgrp_view.Scale * x)) + " : " + str(x))
+                                if (
+                                    int(projgrp_view.Scale * x)
+                                    == projgrp_view.Scale * x
+                                ):
+                                    self.s2.setText(
+                                        str(int(projgrp_view.Scale * x))
+                                        + " : "
+                                        + str(x)
+                                    )
                                     break
                         dialogRow += 1
                     if str(key).lower() in LabelChkLst:
