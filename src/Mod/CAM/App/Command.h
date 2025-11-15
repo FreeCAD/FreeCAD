@@ -73,20 +73,24 @@ public:
     void scaleBy(double factor);  // scales the receiver - use for imperial/metric conversions
 
     // annotation methods
-    void setAnnotation(const std::string& key,
-                       const std::string& value);  // sets a string annotation
+    void setAnnotation(
+        const std::string& key,
+        const std::string& value
+    );  // sets a string annotation
     void setAnnotation(const std::string& key,
                        double value);                         // sets a numeric annotation
     std::string getAnnotation(const std::string& key) const;  // gets an annotation value as string
     std::string getAnnotationString(const std::string& key) const;  // gets string annotation
-    double getAnnotationDouble(const std::string& key,
-                               double fallback = 0.0) const;  // gets numeric annotation
-    std::variant<std::string, double>
-    getAnnotationValue(const std::string& key) const;  // gets raw annotation value
-    bool hasAnnotation(const std::string& key) const;  // checks if annotation exists
-    Command&
-    setAnnotations(const std::string& annotationString);  // sets annotations from string and
-                                                          // returns reference for chaining
+    double getAnnotationDouble(
+        const std::string& key,
+        double fallback = 0.0
+    ) const;  // gets numeric annotation
+    std::variant<std::string, double> getAnnotationValue(
+        const std::string& key
+    ) const;                                                       // gets raw annotation value
+    bool hasAnnotation(const std::string& key) const;              // checks if annotation exists
+    Command& setAnnotations(const std::string& annotationString);  // sets annotations from string and
+                                                                   // returns reference for chaining
 
     // this assumes the name is upper case
     inline double getParam(const std::string& name, double fallback = 0.0) const
