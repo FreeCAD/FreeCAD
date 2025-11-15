@@ -55,7 +55,13 @@ listofkeys = [
     "CreatedDateChkLst",
     "LastModifiedDateChkLst",
 ]
-
+listofviewtypes = [
+    "TechDraw::DrawViewPart",
+    "TechDraw::DrawProjGroup",
+    "TechDraw::DrawViewDraft",
+    "TechDraw::DrawViewArch",
+    "TechDraw::DrawViewImage",
+]
 
 """Run the following code when the command is activated (button press)."""
 file_path = App.getResourceDir() + "Mod/TechDraw/CSVdata/FillTemplateFields.csv"
@@ -112,18 +118,19 @@ class TaskFillTemplateFields:
                     )
                     msgBox.setText(msg)
                     msgBox.setWindowTitle(msgTitle)
+                    msgBox.setWindowFlag(QtCore.Qt.WindowStaysOnTopHint, True)
                     msgBox.exec_()
                     break
 
                 projgrp_view = None
                 for pageObj in obj.Views:
-                    if (
-                        pageObj.isDerivedFrom("TechDraw::DrawViewPart") 
-                        or pageObj.isDerivedFrom("TechDraw::DrawProjGroup")
-                    ):
-                        # use the scale from the first DVP or DPG encountered to fill the template's
-                        # Scale editable text. 
-                        projgrp_view = pageObj
+                    for viewtype in listofviewtypes:
+                        if pageObj.isDerivedFrom(viewtype):
+                            # use the scale from the first DVP or DPG encountered to fill the template's
+                            # Scale editable text.
+                            projgrp_view = pageObj
+                            break
+                    if projgrp_view:
                         break
 
                 self.texts = self.page.Template.EditableTexts
@@ -198,8 +205,23 @@ class TaskFillTemplateFields:
                         self.cb2.clicked.connect(self.on_cb2_clicked)
                         if projgrp_view.Scale < 1:
                             self.s2.setText("1 : " + str(int(1 / projgrp_view.Scale)))
-                        else:
+                        elif int(projgrp_view.Scale) == 1 or (
+                            projgrp_view.Scale > 1
+                            and int(projgrp_view.Scale) == projgrp_view.Scale
+                        ):
                             self.s2.setText(str(int(projgrp_view.Scale)) + " : 1")
+                        else:  # must be something like 2.5 = 5 : 2
+                            for x in range(2, 10):
+                                if (
+                                    int(projgrp_view.Scale * x)
+                                    == projgrp_view.Scale * x
+                                ):
+                                    self.s2.setText(
+                                        str(int(projgrp_view.Scale * x))
+                                        + " : "
+                                        + str(x)
+                                    )
+                                    break
                         dialogRow += 1
                     if str(key).lower() in LabelChkLst:
                         t3 = QtGui.QLabel(value)
@@ -429,6 +451,7 @@ class TaskFillTemplateFields:
                     self.button.setEnabled(True)
                     self.dialog.resize(600 + longestText, dialogRow * 50 + 75)
                     self.dialog.move(400, 200 * (400 / (dialogRow * 50 + 75)))
+                    self.dialog.setWindowFlag(QtCore.Qt.WindowStaysOnTopHint, True)
                     QtCore.QMetaObject.connectSlotsByName(self.dialog)
                     self.dialog.show()
                     self.dialog.exec_()
@@ -445,8 +468,10 @@ class TaskFillTemplateFields:
                         "There were no corresponding fields found in "
                         + self.page.Label,
                     )
+                    msgBox.setWindowFlag(QtCore.Qt.WindowStaysOnTopHint, True)
                     msgBox.setText(msg)
                     msgBox.setWindowTitle(msgTitle)
+                    msgBox.move(400, 450)
                     msgBox.exec_()
 
     def on_cbAll_clicked(self):
@@ -539,4 +564,6 @@ class TaskFillTemplateFields:
 
     def close(self):
         self.dialog.hide()
+        keyLst.clear()
+        projgrp_view = None
         return True
