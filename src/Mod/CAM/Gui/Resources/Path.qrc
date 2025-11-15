@@ -111,6 +111,7 @@
         <file>panels/PageOpHelixEdit.ui</file>
         <file>panels/PageOpPocketExtEdit.ui</file>
         <file>panels/PageOpPocketFullEdit.ui</file>
+        <file>panels/PageOpMillFacingEdit.ui</file>
         <file>panels/PageOpProbeEdit.ui</file>
         <file>panels/PageOpProfileFullEdit.ui</file>
         <file>panels/PageOpSlotEdit.ui</file>
