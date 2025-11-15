@@ -22,10 +22,12 @@
 # *                                                                         *
 # ***************************************************************************
 
+
 import FreeCAD
 
 import Path
 import CAMTests.PathTestUtils as PathTestUtils
+import CAMTests.PostTestMocks as PostTestMocks
 from Path.Post.Processor import PostProcessorFactory
 
 
@@ -33,8 +35,8 @@ Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
 Path.Log.trackModule(Path.Log.thisModule())
 
 
-class TestRefactoredCentroidPost(PathTestUtils.PathTestBase):
-    """Test the refactored_centroid_post.py postprocessor."""
+class TestGenericPost(PathTestUtils.PathTestBase):
+    """Test the generic postprocessor."""
 
     @classmethod
     def setUpClass(cls):
@@ -48,16 +50,13 @@ class TestRefactoredCentroidPost(PathTestUtils.PathTestBase):
         is able to call static methods within this same class.
         """
 
-        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "True")
-        cls.doc = FreeCAD.open(FreeCAD.getHomePath() + "/Mod/CAM/CAMTests/boxtest.fcstd")
-        cls.job = cls.doc.getObject("Job")
-        cls.post = PostProcessorFactory.get_post_processor(cls.job, "refactored_centroid")
-        # locate the operation named "Profile"
-        for op in cls.job.Operations.Group:
-            if op.Label == "Profile":
-                # remember the "Profile" operation
-                cls.profile_op = op
-                return
+        # Create mock job with default operation and tool controller
+        cls.job, cls.profile_op, cls.tool_controller = (
+            PostTestMocks.create_default_job_with_operation()
+        )
+
+        # Create postprocessor using the mock job
+        cls.post = PostProcessorFactory.get_post_processor(cls.job, "generic")
 
     @classmethod
     def tearDownClass(cls):
@@ -66,11 +65,11 @@ class TestRefactoredCentroidPost(PathTestUtils.PathTestBase):
         This method is called prior to destruction of this test class.  Add
         code and objects here that cleanup the test environment after the
         test() methods in this class have been executed.  This method does not
-        have access to the class `self` reference.  This method is able to
-        call static methods within this same class.
+        have access to the class `self` reference.  This method
+        is able to call static methods within this same class.
         """
-        FreeCAD.closeDocument(cls.doc.Name)
-        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "")
+        # No cleanup needed for mock objects
+        pass
 
     # Setup and tear down methods called before and after each unit test
 
@@ -93,31 +92,6 @@ class TestRefactoredCentroidPost(PathTestUtils.PathTestBase):
         """
         pass
 
-    def single_compare(self, path, expected, args, debug=False):
-        """Perform a test with a single line of gcode comparison."""
-        nl = "\n"
-        self.job.PostProcessorArgs = args
-        # replace the original path (that came with the job and operation) with our path
-        self.profile_op.Path = Path.Path(path)
-        # the gcode is in the first section for this particular job and operation
-        gcode = self.post.export()[0][1]
-        if debug:
-            print(f"--------{nl}{gcode}--------{nl}")
-        # there are 4 lines of "other stuff" before the line we are interested in
-        self.assertEqual(gcode.splitlines()[4], expected)
-
-    def multi_compare(self, path, expected, args, debug=False):
-        """Perform a test with multiple lines of gcode comparison."""
-        nl = "\n"
-        self.job.PostProcessorArgs = args
-        # replace the original path (that came with the job and operation) with our path
-        self.profile_op.Path = Path.Path(path)
-        # the gcode is in the first section for this particular job and operation
-        gcode = self.post.export()[0][1]
-        if debug:
-            print(f"--------{nl}{gcode}--------{nl}")
-        self.assertEqual(gcode, expected)
-
     def test000(self):
         """Test Output Generation.
         Empty path.  Produces only the preamble and postable.
@@ -131,49 +105,47 @@ class TestRefactoredCentroidPost(PathTestUtils.PathTestBase):
         # Only test length of result.
         self.job.PostProcessorArgs = "--no-show-editor"
         gcode = self.post.export()[0][1]
-        # print(f"--------{nl}{gcode}--------{nl}")
-        self.assertTrue(len(gcode.splitlines()) == 25)
+        # print(f"--------{nl}Actual line count: {len(gcode.splitlines())}{nl}{gcode}--------{nl}")
+        self.assertTrue(len(gcode.splitlines()) == 23)
 
         # Test without header
-        expected = """G90 G80 G40 G49
-;T1=TC__Default_Tool
-;Begin preamble
-G53 G00 G17
+        expected = """(Begin preamble)
+G90
 G21
-;Begin operation
-G54
-;End operation
-;Begin operation
-;TC: Default Tool
-;Begin toolchange
-M6 T1
-;End operation
-;Begin operation
-;End operation
-;Begin postamble
+(Begin operation: TC: Default Tool)
+(Machine units: mm/min)
+(Begin toolchange)
 M5
-M25
-G49 H0
-G90 G80 G40 G49
-M99
+M6 T1
+G43 H1
+M3 S1000
+(Finish operation: TC: Default Tool)
+(Begin operation: Fixture)
+(Machine units: mm/min)
+G54
+(Finish operation: Fixture)
+(Begin operation: Profile)
+(Machine units: mm/min)
+(Finish operation: Profile)
+(Begin postamble)
 """
 
+        self.profile_op.Path = Path.Path([])
+
+        # args = ("--no-header --no-comments --no-show-editor --precision=2")
         self.job.PostProcessorArgs = "--no-header --no-show-editor"
         gcode = self.post.export()[0][1]
         # print(f"--------{nl}{gcode}--------{nl}")
         self.assertEqual(gcode, expected)
 
         # test without comments
-        expected = """G90 G80 G40 G49
-G53 G00 G17
+        expected = """G90
 G21
-G54
-M6 T1
 M5
-M25
-G49 H0
-G90 G80 G40 G49
-M99
+M6 T1
+G43 H1
+M3 S1000
+G54
 """
 
         # args = ("--no-header --no-comments --no-show-editor --precision=2")
@@ -195,14 +167,14 @@ M99
         self.job.PostProcessorArgs = "--no-header --no-show-editor"
         gcode = self.post.export()[0][1]
         # print(f"--------{nl}{gcode}--------{nl}")
-        result = gcode.splitlines()[14]
-        expected = "G0 X10.0000 Y20.0000 Z30.0000"
+        result = gcode.splitlines()[17]
+        expected = "G0 X10.000 Y20.000 Z30.000"
         self.assertEqual(result, expected)
 
-        self.job.PostProcessorArgs = "--no-header --axis-precision=2 --no-show-editor"
+        self.job.PostProcessorArgs = "--no-header --precision=2 --no-show-editor"
         gcode = self.post.export()[0][1]
         # print(f"--------{nl}{gcode}--------{nl}")
-        result = gcode.splitlines()[14]
+        result = gcode.splitlines()[17]
         expected = "G0 X10.00 Y20.00 Z30.00"
         self.assertEqual(result, expected)
 
@@ -219,8 +191,8 @@ M99
         self.job.PostProcessorArgs = "--no-header --line-numbers --no-show-editor"
         gcode = self.post.export()[0][1]
         # print(f"--------{nl}{gcode}--------{nl}")
-        result = gcode.splitlines()[14]
-        expected = "N240 G0 X10.0000 Y20.0000 Z30.0000"
+        result = gcode.splitlines()[17]
+        expected = "N270 G0 X10.000 Y20.000 Z30.000"
         self.assertEqual(result, expected)
 
     def test030(self):
@@ -236,8 +208,9 @@ M99
         )
         gcode = self.post.export()[0][1]
         # print(f"--------{nl}{gcode}--------{nl}")
-        result = gcode.splitlines()[1]
-        self.assertEqual(result, "G18 G55")
+        lines = gcode.splitlines()
+        # Preamble should be in the output
+        self.assertIn("G18 G55", gcode)
 
     def test040(self):
         """
@@ -269,16 +242,16 @@ M99
         self.job.PostProcessorArgs = "--no-header --inches --no-show-editor"
         gcode = self.post.export()[0][1]
         # print(f"--------{nl}{gcode}--------{nl}")
-        self.assertEqual(gcode.splitlines()[4], "G20")
+        self.assertEqual(gcode.splitlines()[2], "G20")
 
-        result = gcode.splitlines()[14]
+        result = gcode.splitlines()[17]
         expected = "G0 X0.3937 Y0.7874 Z1.1811"
         self.assertEqual(result, expected)
 
-        self.job.PostProcessorArgs = "--no-header --inches --axis-precision=2 --no-show-editor"
+        self.job.PostProcessorArgs = "--no-header --inches --precision=2 --no-show-editor"
         gcode = self.post.export()[0][1]
         # print(f"--------{nl}{gcode}--------{nl}")
-        result = gcode.splitlines()[14]
+        result = gcode.splitlines()[17]
         expected = "G0 X0.39 Y0.79 Z1.18"
         self.assertEqual(result, expected)
 
@@ -297,8 +270,8 @@ M99
         self.job.PostProcessorArgs = "--no-header --modal --no-show-editor"
         gcode = self.post.export()[0][1]
         # print(f"--------{nl}{gcode}--------{nl}")
-        result = gcode.splitlines()[15]
-        expected = "X10.0000 Y30.0000 Z30.0000"
+        result = gcode.splitlines()[18]
+        expected = "X10.000 Y30.000 Z30.000"
         self.assertEqual(result, expected)
 
     def test070(self):
@@ -316,8 +289,8 @@ M99
         self.job.PostProcessorArgs = "--no-header --axis-modal --no-show-editor"
         gcode = self.post.export()[0][1]
         # print(f"--------{nl}{gcode}--------{nl}")
-        result = gcode.splitlines()[15]
-        expected = "G0 Y30.0000"
+        result = gcode.splitlines()[18]
+        expected = "G0 Y30.000"
         self.assertEqual(result, expected)
 
     def test080(self):
@@ -334,14 +307,17 @@ M99
         self.job.PostProcessorArgs = "--no-header --no-show-editor"
         gcode = self.post.export()[0][1]
         # print(f"--------{nl}{gcode}--------{nl}")
-        self.assertEqual(gcode.splitlines()[15], "M6 T2")
-        self.assertEqual(gcode.splitlines()[16], "M3 S3000")
+        split_gcode = gcode.splitlines()
+        self.assertEqual(split_gcode[18], "M5")
+        self.assertEqual(split_gcode[19], "M6 T2")
+        self.assertEqual(split_gcode[20], "G43 H2")
+        self.assertEqual(split_gcode[21], "M3 S3000")
 
         # suppress TLO
         self.job.PostProcessorArgs = "--no-header --no-tlo --no-show-editor"
         gcode = self.post.export()[0][1]
         # print(f"--------{nl}{gcode}--------{nl}")
-        self.assertEqual(gcode.splitlines()[16], "M3 S3000")
+        self.assertEqual(gcode.splitlines()[19], "M3 S3000")
 
     def test090(self):
         """
@@ -356,6 +332,6 @@ M99
         self.job.PostProcessorArgs = "--no-header --no-show-editor"
         gcode = self.post.export()[0][1]
         # print(f"--------{nl}{gcode}--------{nl}")
-        result = gcode.splitlines()[14]
-        expected = ";comment"
+        result = gcode.splitlines()[17]
+        expected = "(comment)"
         self.assertEqual(result, expected)

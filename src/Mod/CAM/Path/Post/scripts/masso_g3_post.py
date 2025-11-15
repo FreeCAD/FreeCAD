@@ -48,13 +48,13 @@ else:
 Values = Dict[str, Any]
 
 
-class Refactored_Linuxcnc(PostProcessor):
-    """The Refactored LinuxCNC post processor class."""
+class Masso_G3(PostProcessor):
+    """The Masso G3 post processor class."""
 
     def __init__(
         self,
         job,
-        tooltip=translate("CAM", "Refactored LinuxCNC post processor"),
+        tooltip=translate("CAM", "Masso G3 post processor"),
         tooltipargs=[""],
         units="Metric",
     ) -> None:
@@ -64,22 +64,12 @@ class Refactored_Linuxcnc(PostProcessor):
             tooltipargs=tooltipargs,
             units=units,
         )
-        Path.Log.debug("Refactored LinuxCNC post processor initialized.")
+        Path.Log.debug("Masso G3 post processor initialized.")
 
     def init_values(self, values: Values) -> None:
         """Initialize values that are used throughout the postprocessor."""
-        #
         super().init_values(values)
-        #
-        # Set any values here that need to override the default values set
-        # in the parent routine.
-        #
         values["ENABLE_COOLANT"] = True
-        #
-        # The order of parameters.
-        #
-        # linuxcnc doesn't want K properties on XY plane; Arcs need work.
-        #
         values["PARAMETER_ORDER"] = [
             "X",
             "Y",
@@ -99,31 +89,21 @@ class Refactored_Linuxcnc(PostProcessor):
             "D",
             "P",
         ]
-        #
-        # Used in the argparser code as the "name" of the postprocessor program.
-        #
-        values["MACHINE_NAME"] = "LinuxCNC"
-        #
-        # Any commands in this value will be output as the last commands
-        # in the G-code file.
-        #
         values[
             "POSTAMBLE"
         ] = """M05
 G17 G54 G90 G80 G40
 M2"""
-        values["POSTPROCESSOR_FILE_NAME"] = __name__
-        #
-        # Any commands in this value will be output after the header and
-        # safety block at the beginning of the G-code file.
-        #
         values["PREAMBLE"] = """G17 G54 G40 G49 G80 G90"""
+        values["MACHINE_NAME"] = "Masso G3"
+        values["POSTPROCESSOR_FILE_NAME"] = __name__
+        values["TOOL_BEFORE_CHANGE"] = True
 
     @property
     def tooltip(self):
         tooltip: str = """
         This is a postprocessor file for the CAM workbench.
         It is used to take a pseudo-gcode fragment from a CAM object
-        and output 'real' GCode suitable for a linuxcnc 3 axis mill.
+        and output 'real' GCode suitable for a Masso G3 3 axis mill.
         """
         return tooltip

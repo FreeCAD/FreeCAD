@@ -97,17 +97,20 @@ from CAMTests.TestPathUtil import TestPathUtil
 from CAMTests.TestPathVcarve import TestPathVcarve
 from CAMTests.TestPathVoronoi import TestPathVoronoi
 
-from CAMTests.TestCentroidPost import TestCentroidPost
-from CAMTests.TestGrblPost import TestGrblPost
+from CAMTests.TestGenericPost import TestGenericPost
 from CAMTests.TestLinuxCNCPost import TestLinuxCNCPost
+from CAMTests.TestGrblPost import TestGrblPost
+from CAMTests.TestMassoG3Post import TestMassoG3Post
+from CAMTests.TestCentroidPost import TestCentroidPost
 from CAMTests.TestMach3Mach4Post import TestMach3Mach4Post
-from CAMTests.TestRefactoredCentroidPost import TestRefactoredCentroidPost
-from CAMTests.TestRefactoredGrblPost import TestRefactoredGrblPost
-from CAMTests.TestRefactoredLinuxCNCPost import TestRefactoredLinuxCNCPost
-from CAMTests.TestRefactoredMassoG3Post import TestRefactoredMassoG3Post
-from CAMTests.TestRefactoredMach3Mach4Post import TestRefactoredMach3Mach4Post
-from CAMTests.TestRefactoredTestDressupPost import TestRefactoredTestDressupPost
-from CAMTests.TestRefactoredTestPost import TestRefactoredTestPost
-from CAMTests.TestRefactoredTestPostGCodes import TestRefactoredTestPostGCodes
-from CAMTests.TestRefactoredTestPostMCodes import TestRefactoredTestPostMCodes
+from CAMTests.TestTestPost import TestTestPost
+from CAMTests.TestPostGCodes import TestPostGCodes
+from CAMTests.TestPostMCodes import TestPostMCodes
+from CAMTests.TestDressupPost import TestDressupPost
+
+from CAMTests.TestLinuxCNCLegacyPost import TestLinuxCNCLegacyPost
+from CAMTests.TestGrblLegacyPost import TestGrblLegacyPost
+from CAMTests.TestCentroidLegacyPost import TestCentroidLegacyPost
+from CAMTests.TestMach3Mach4LegacyPost import TestMach3Mach4LegacyPost
+
 from CAMTests.TestSnapmakerPost import TestSnapmakerPost

@@ -39,8 +39,8 @@ Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
 Path.Log.trackModule(Path.Log.thisModule())
 
 
-class TestRefactoredTestPost(PathTestUtils.PathTestBase):
-    """Test the refactored_test_post.py postprocessor command line arguments."""
+class TestTestPost(PathTestUtils.PathTestBase):
+    """Test the test_post.py postprocessor command line arguments."""
 
     @classmethod
     def setUpClass(cls):
@@ -56,7 +56,7 @@ class TestRefactoredTestPost(PathTestUtils.PathTestBase):
         FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "True")
         cls.doc = FreeCAD.open(FreeCAD.getHomePath() + "/Mod/CAM/CAMTests/boxtest.fcstd")
         cls.job = cls.doc.getObject("Job")
-        cls.post = PostProcessorFactory.get_post_processor(cls.job, "refactored_test")
+        cls.post = PostProcessorFactory.get_post_processor(cls.job, "test")
         # locate the operation named "Profile"
         for op in cls.job.Operations.Group:
             if op.Label == "Profile":
@@ -944,7 +944,7 @@ G54
         # print(f"--------{nl}{gcode}--------{nl}")
         split_gcode = gcode.splitlines()
         self.assertEqual(split_gcode[0], "(Exported by FreeCAD)")
-        self.assertEqual(split_gcode[1], "(Post Processor: refactored_test_post)")
+        self.assertEqual(split_gcode[1], "(Post Processor: test_post)")
         self.assertEqual(split_gcode[2], "(Cam File: boxtest.fcstd)")
         # The header contains a time stamp that messes up unit testing.
         # Only test the length of the line that contains the time.
@@ -992,7 +992,7 @@ G54
         split_gcode = gcode.splitlines()
         # print(f"--------{nl}{gcode}--------{nl}")
         self.assertEqual(split_gcode[0], "(Exported by FreeCAD)")
-        self.assertEqual(split_gcode[1], "(Post Processor: refactored_test_post)")
+        self.assertEqual(split_gcode[1], "(Post Processor: test_post)")
         self.assertEqual(split_gcode[2], "(Cam File: boxtest.fcstd)")
         # The header contains a time stamp that messes up unit testing.
         # Only test the length of the line that contains the time.
@@ -1278,6 +1278,8 @@ G0 Z8.000
                         e.g. --return-to=0,0,0 (default is do not move)
   --show-editor         Pop up editor before writing output (default)
   --no-show-editor      Don't pop up editor before writing output
+  --split-arcs          Convert G2/G3 arc commands to discrete G1 line segments
+  --no-split-arcs       Output G2/G3 arc commands as-is (default)
   --tlo                 Output tool length offset (G43) following tool changes
                         (default)
   --no-tlo              Suppress tool length offset (G43) following tool
