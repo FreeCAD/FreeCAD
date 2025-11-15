@@ -32,8 +32,10 @@
 #include <QTreeWidgetItem>
 
 
-namespace Gui {
-namespace Dialog {
+namespace Gui
+{
+namespace Dialog
+{
 
 class Ui_DlgParameter;
 class DlgParameterFind;
@@ -42,12 +44,12 @@ class DlgParameterFind;
  * The DlgParameterImp class implements a dialog showing all parameters in a list view.
  * \author Jürgen Riegel
  */
-class GuiExport DlgParameterImp : public QDialog
+class GuiExport DlgParameterImp: public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit DlgParameterImp( QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags() );
+    explicit DlgParameterImp(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DlgParameterImp() override;
 
     void accept() override;
@@ -59,15 +61,15 @@ protected:
     void setupConnections();
     void onChangeParameterSet(int);
     void onButtonFindClicked();
-    void onFindGroupTtextChanged(const QString &SearchStr);
+    void onFindGroupTtextChanged(const QString& SearchStr);
     void onButtonSaveToDiskClicked();
 
-    void onGroupSelected(QTreeWidgetItem *);
+    void onGroupSelected(QTreeWidgetItem*);
     void onCloseButtonClicked();
     void onCheckSortToggled(bool);
 
 protected:
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
     void showEvent(QShowEvent*) override;
     void closeEvent(QCloseEvent*) override;
 
@@ -91,19 +93,19 @@ private:
  * The leaves represented by ParameterValueItem are displayed in ParameterValue.
  * @author Werner Mayer
  */
-class ParameterGroup : public QTreeWidget
+class ParameterGroup: public QTreeWidget
 {
     Q_OBJECT
 
 public:
-    explicit ParameterGroup( QWidget * parent = nullptr );
+    explicit ParameterGroup(QWidget* parent = nullptr);
     ~ParameterGroup() override;
 
 protected:
     /** Shows the context menu. */
-    void contextMenuEvent ( QContextMenuEvent* event ) override;
+    void contextMenuEvent(QContextMenuEvent* event) override;
     /** Triggers the "Del" key. */
-    void keyPressEvent (QKeyEvent* event) override;
+    void keyPressEvent(QKeyEvent* event) override;
 
 protected Q_SLOTS:
     /** Removes the underlying parameter group and its sub-groups from the
@@ -124,7 +126,7 @@ protected Q_SLOTS:
     void onRenameSelectedItem();
 
 protected:
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
 
 private:
     QMenu* menuEdit;
@@ -143,24 +145,24 @@ private:
  * by the ParameterValueItem class.
  * @author Werner Mayer
  */
-class ParameterValue : public QTreeWidget
+class ParameterValue: public QTreeWidget
 {
     Q_OBJECT
 
 public:
-    explicit ParameterValue( QWidget * parent = nullptr );
+    explicit ParameterValue(QWidget* parent = nullptr);
     ~ParameterValue() override;
 
     /** Sets the current parameter group that is displayed. */
-    void setCurrentGroup( const Base::Reference<ParameterGrp>& _hcGrp );
+    void setCurrentGroup(const Base::Reference<ParameterGrp>& _hcGrp);
     /** Returns the current parameter group that is displayed. */
     Base::Reference<ParameterGrp> currentGroup() const;
 
 protected:
     /** Shows the context menu. */
-    void contextMenuEvent ( QContextMenuEvent* event ) override;
+    void contextMenuEvent(QContextMenuEvent* event) override;
     /** Invokes onDeleteSelectedItem() if the "Del" key was pressed. */
-    void keyPressEvent (QKeyEvent* event) override;
+    void keyPressEvent(QKeyEvent* event) override;
     void resizeEvent(QResizeEvent*) override;
 
 protected Q_SLOTS:
@@ -187,7 +189,7 @@ protected Q_SLOTS:
      * @note We need to reimplement this method as QTreeWidgetItem::flags()
      * doesn't have an int parameter.
      */
-    bool edit ( const QModelIndex & index, QAbstractItemView::EditTrigger trigger, QEvent * event ) override;
+    bool edit(const QModelIndex& index, QAbstractItemView::EditTrigger trigger, QEvent* event) override;
 
 private:
     QMenu* menuEdit;
@@ -210,16 +212,16 @@ private:
  *
  * \author Jürgen Riegel
  */
-class ParameterGroupItem : public QTreeWidgetItem
+class ParameterGroupItem: public QTreeWidgetItem
 {
 public:
     /// Constructor
-    ParameterGroupItem( ParameterGroupItem * parent, const Base::Reference<ParameterGrp> &hcGrp );
-    ParameterGroupItem( QTreeWidget* parent, const Base::Reference<ParameterGrp> &hcGrp);
+    ParameterGroupItem(ParameterGroupItem* parent, const Base::Reference<ParameterGrp>& hcGrp);
+    ParameterGroupItem(QTreeWidget* parent, const Base::Reference<ParameterGrp>& hcGrp);
     ~ParameterGroupItem() override;
 
-    void setData ( int column, int role, const QVariant & value ) override;
-    QVariant data ( int column, int role ) const override;
+    void setData(int column, int role, const QVariant& value) override;
+    QVariant data(int column, int role) const override;
 
     void fillUp();
     Base::Reference<ParameterGrp> _hcGrp;
@@ -234,15 +236,15 @@ public:
  * parameter group.
  * @author Werner Mayer
  */
-class ParameterValueItem : public QTreeWidgetItem
+class ParameterValueItem: public QTreeWidgetItem
 {
 public:
     /// Constructor
-    ParameterValueItem ( QTreeWidget* parent, const Base::Reference<ParameterGrp> &hcGrp);
+    ParameterValueItem(QTreeWidget* parent, const Base::Reference<ParameterGrp>& hcGrp);
     ~ParameterValueItem() override;
 
     /** If the name of the item has changed replace() is invoked. */
-    void setData ( int column, int role, const QVariant & value ) override;
+    void setData(int column, int role, const QVariant& value) override;
     /** Opens an input dialog to change the value. */
     virtual void changeValue() = 0;
     /** Append this item as leaf to the parameter group. */
@@ -252,7 +254,7 @@ public:
 
 protected:
     /** Replaces the name of the leaf from \a oldName to \a newName. */
-    virtual void replace( const QString& oldName, const QString& newName ) = 0;
+    virtual void replace(const QString& oldName, const QString& newName) = 0;
 
 protected:
     Base::Reference<ParameterGrp> _hcGrp;
@@ -262,11 +264,16 @@ protected:
  * The ParameterText class allows interaction with "text" parameter leaves.
  * @author Werner Mayer
  */
-class ParameterText : public ParameterValueItem
+class ParameterText: public ParameterValueItem
 {
 public:
     /// Constructor
-    ParameterText ( QTreeWidget * parent, QString label1, const char* value, const Base::Reference<ParameterGrp> &hcGrp);
+    ParameterText(
+        QTreeWidget* parent,
+        QString label1,
+        const char* value,
+        const Base::Reference<ParameterGrp>& hcGrp
+    );
     ~ParameterText() override;
 
     void changeValue() override;
@@ -274,18 +281,23 @@ public:
     void removeFromGroup() override;
 
 protected:
-    void replace( const QString& oldName, const QString& newName ) override;
+    void replace(const QString& oldName, const QString& newName) override;
 };
 
 /**
  * The ParameterInt class allows interaction with "integer" parameter leaves.
  * @author Werner Mayer
  */
-class ParameterInt : public ParameterValueItem
+class ParameterInt: public ParameterValueItem
 {
 public:
     /// Constructor
-    ParameterInt ( QTreeWidget * parent, QString label1, long value, const Base::Reference<ParameterGrp> &hcGrp);
+    ParameterInt(
+        QTreeWidget* parent,
+        QString label1,
+        long value,
+        const Base::Reference<ParameterGrp>& hcGrp
+    );
     ~ParameterInt() override;
 
     void changeValue() override;
@@ -293,18 +305,23 @@ public:
     void removeFromGroup() override;
 
 protected:
-    void replace( const QString& oldName, const QString& newName ) override;
+    void replace(const QString& oldName, const QString& newName) override;
 };
 
 /**
  * The ParameterUInt class allows interaction with "unsigned integer" parameter leaves.
  * @author Werner Mayer
  */
-class ParameterUInt : public ParameterValueItem
+class ParameterUInt: public ParameterValueItem
 {
 public:
     /// Constructor
-    ParameterUInt ( QTreeWidget * parent, QString label1, unsigned long value, const Base::Reference<ParameterGrp> &hcGrp);
+    ParameterUInt(
+        QTreeWidget* parent,
+        QString label1,
+        unsigned long value,
+        const Base::Reference<ParameterGrp>& hcGrp
+    );
     ~ParameterUInt() override;
 
     void changeValue() override;
@@ -312,18 +329,23 @@ public:
     void removeFromGroup() override;
 
 protected:
-    void replace( const QString& oldName, const QString& newName ) override;
+    void replace(const QString& oldName, const QString& newName) override;
 };
 
 /**
  * The ParameterFloat class allows interaction with "float" parameter leaves.
  * @author Werner Mayer
  */
-class ParameterFloat : public ParameterValueItem
+class ParameterFloat: public ParameterValueItem
 {
 public:
     /// Constructor
-    ParameterFloat ( QTreeWidget * parent, QString label1, double value, const Base::Reference<ParameterGrp> &hcGrp);
+    ParameterFloat(
+        QTreeWidget* parent,
+        QString label1,
+        double value,
+        const Base::Reference<ParameterGrp>& hcGrp
+    );
     ~ParameterFloat() override;
 
     void changeValue() override;
@@ -331,18 +353,23 @@ public:
     void removeFromGroup() override;
 
 protected:
-    void replace( const QString& oldName, const QString& newName ) override;
+    void replace(const QString& oldName, const QString& newName) override;
 };
 
 /**
  * The ParameterBool class allows interaction with "boolean" parameter leaves.
  * @author Werner Mayer
  */
-class ParameterBool : public ParameterValueItem
+class ParameterBool: public ParameterValueItem
 {
 public:
     /// Constructor
-    ParameterBool ( QTreeWidget * parent, QString label1, bool value, const Base::Reference<ParameterGrp> &hcGrp);
+    ParameterBool(
+        QTreeWidget* parent,
+        QString label1,
+        bool value,
+        const Base::Reference<ParameterGrp>& hcGrp
+    );
     ~ParameterBool() override;
 
     void changeValue() override;
@@ -350,10 +377,10 @@ public:
     void removeFromGroup() override;
 
 protected:
-    void replace( const QString& oldName, const QString& newName ) override;
+    void replace(const QString& oldName, const QString& newName) override;
 };
 
-} // namespace Dialog
-} // namespace Gui
+}  // namespace Dialog
+}  // namespace Gui
 
-#endif // GUI_DIALOG_DLGPARAMETER_H
+#endif  // GUI_DIALOG_DLGPARAMETER_H

@@ -24,13 +24,13 @@
 
 #include "GuiApplicationNativeEventAware.h"
 
-std::vector<int> Gui::GuiAbstractNativeEvent::motionDataArray(6,0);
+std::vector<int> Gui::GuiAbstractNativeEvent::motionDataArray(6, 0);
 Gui::GUIApplicationNativeEventAware* Gui::GuiAbstractNativeEvent::mainApp;
 
-Gui::GuiAbstractNativeEvent::GuiAbstractNativeEvent(GUIApplicationNativeEventAware *app)
- : QObject(app)
+Gui::GuiAbstractNativeEvent::GuiAbstractNativeEvent(GUIApplicationNativeEventAware* app)
+    : QObject(app)
 {
-  mainApp = app;	
+    mainApp = app;
 }
 
 Gui::GuiAbstractNativeEvent::~GuiAbstractNativeEvent()

@@ -158,8 +158,7 @@ void ConstraintFluidBoundary::onChanged(const App::Property* prop)
             if (Reversed.getValue() && (DirectionVector.getValue() == naturalDirectionVector)) {
                 DirectionVector.setValue(-naturalDirectionVector);
             }
-            else if (!Reversed.getValue()
-                     && (DirectionVector.getValue() != naturalDirectionVector)) {
+            else if (!Reversed.getValue() && (DirectionVector.getValue() != naturalDirectionVector)) {
                 DirectionVector.setValue(naturalDirectionVector);
             }
         }

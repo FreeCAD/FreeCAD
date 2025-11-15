@@ -27,22 +27,22 @@
 #define BASE_INTERPRETER_H
 
 #if defined(_POSIX_C_SOURCE)
-#undef _POSIX_C_SOURCE
+# undef _POSIX_C_SOURCE
 #endif  // (re-)defined in pyconfig.h
 #if defined(_XOPEN_SOURCE)
-#undef _XOPEN_SOURCE
+# undef _XOPEN_SOURCE
 #endif  // (re-)defined in pyconfig.h
 
 #include <FCConfig.h>
 
 #ifdef FC_OS_MACOSX
-#undef toupper
-#undef tolower
-#undef isupper
-#undef islower
-#undef isspace
-#undef isalpha
-#undef isalnum
+# undef toupper
+# undef tolower
+# undef isupper
+# undef islower
+# undef isspace
+# undef isalpha
+# undef isalnum
 #endif
 
 #include <CXX/Extensions.hxx>
@@ -60,14 +60,14 @@
  *
  *  See FeaturePythonImp::init() for example usage
  */
-#define FC_PY_GetCallable(_pyobj, _name, _var)                                                     \
-    do {                                                                                           \
-        _var = Py::Object();                                                                       \
-        if (PyObject_HasAttrString(_pyobj, _name)) {                                               \
-            Py::Object _obj(PyObject_GetAttrString(_pyobj, _name), true);                          \
-            if (_obj.isCallable())                                                                 \
-                _var = _obj;                                                                       \
-        }                                                                                          \
+#define FC_PY_GetCallable(_pyobj, _name, _var) \
+    do { \
+        _var = Py::Object(); \
+        if (PyObject_HasAttrString(_pyobj, _name)) { \
+            Py::Object _obj(PyObject_GetAttrString(_pyobj, _name), true); \
+            if (_obj.isCallable()) \
+                _var = _obj; \
+        } \
     } while (0)
 
 /** Helper macro to obtain attribute from an object
@@ -78,11 +78,11 @@
  *
  *  See FeaturePythonImp::init() for example usage
  */
-#define FC_PY_GetObject(_pyobj, _name, _var)                                                       \
-    do {                                                                                           \
-        _var = Py::Object();                                                                       \
-        if (PyObject_HasAttrString(_pyobj, _name))                                                 \
-            _var = Py::asObject(PyObject_GetAttrString(_pyobj, _name));                            \
+#define FC_PY_GetObject(_pyobj, _name, _var) \
+    do { \
+        _var = Py::Object(); \
+        if (PyObject_HasAttrString(_pyobj, _name)) \
+            _var = Py::asObject(PyObject_GetAttrString(_pyobj, _name)); \
     } while (0)
 // NOLINTEND
 
@@ -257,8 +257,7 @@ public:
     /// the result.
     std::string runString(const char* psCmd);
     /// Run a statement on the python interpreter with a key for exchanging strings
-    std::string
-    runStringWithKey(const char* psCmd, const char* key, const char* key_initial_value = "");
+    std::string runStringWithKey(const char* psCmd, const char* key, const char* key_initial_value = "");
     /// Run a statement on the python interpreter and return back the result object.
     Py::Object runStringObject(const char* sCmd);
     /// Run a statement on the python interpreter and gives back a string with the representation of
@@ -273,12 +272,14 @@ public:
     /// runs a python object method which returns a arbitrary object
     PyObject* runMethodObject(PyObject* pobject, const char* method);
     /// runs a python method with arbitrary params
-    void runMethod(PyObject* pobject,
-                   const char* method,
-                   const char* resfmt = nullptr,
-                   void* cresult = nullptr,
-                   const char* argfmt = "()",
-                   ...);
+    void runMethod(
+        PyObject* pobject,
+        const char* method,
+        const char* resfmt = nullptr,
+        void* cresult = nullptr,
+        const char* argfmt = "()",
+        ...
+    );
     //@}
 
     /** @name Module handling
@@ -332,13 +333,14 @@ public:
      */
     //@{
     /// generate a SWIG object
-    PyObject*
-    createSWIGPointerObj(const char* Module, const char* TypeName, void* Pointer, int own);
-    bool convertSWIGPointerObj(const char* Module,
-                               const char* TypeName,
-                               PyObject* obj,
-                               void** ptr,
-                               int flags);
+    PyObject* createSWIGPointerObj(const char* Module, const char* TypeName, void* Pointer, int own);
+    bool convertSWIGPointerObj(
+        const char* Module,
+        const char* TypeName,
+        PyObject* obj,
+        void** ptr,
+        int flags
+    );
     void cleanupSWIG(const char* TypeName);
     PyTypeObject* getSWIGPointerTypeObj(const char* Module, const char* TypeName);
     //@}

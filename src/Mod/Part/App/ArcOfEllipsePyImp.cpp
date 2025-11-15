@@ -22,9 +22,9 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <GC_MakeArcOfEllipse.hxx>
-# include <Geom_Ellipse.hxx>
-# include <Geom_TrimmedCurve.hxx>
+#include <GC_MakeArcOfEllipse.hxx>
+#include <Geom_Ellipse.hxx>
+#include <Geom_TrimmedCurve.hxx>
 
 
 #include "ArcOfEllipsePy.h"
@@ -40,8 +40,9 @@ extern const char* gce_ErrorStatusText(gce_ErrorType et);
 // returns a string which represents the object e.g. when printed in python
 std::string ArcOfEllipsePy::representation() const
 {
-    Handle(Geom_TrimmedCurve) trim = Handle(Geom_TrimmedCurve)::DownCast
-        (getGeomArcOfEllipsePtr()->handle());
+    Handle(Geom_TrimmedCurve) trim = Handle(Geom_TrimmedCurve)::DownCast(
+        getGeomArcOfEllipsePtr()->handle()
+    );
     Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(trim->BasisCurve());
 
     gp_Ax1 axis = ellipse->Axis();
@@ -55,9 +56,9 @@ std::string ArcOfEllipsePy::representation() const
     gp_Dir normal = ellipse->Axis().Direction();
     gp_Dir xdir = ellipse->XAxis().Direction();
 
-    gp_Ax2 xdirref(loc, normal); // this is a reference XY for the ellipse
+    gp_Ax2 xdirref(loc, normal);  // this is a reference XY for the ellipse
 
-    Standard_Real fAngleXU = -xdir.AngleWithRef(xdirref.XDirection(),normal);
+    Standard_Real fAngleXU = -xdir.AngleWithRef(xdirref.XDirection(), normal);
 
 
     std::stringstream str;
@@ -65,15 +66,15 @@ std::string ArcOfEllipsePy::representation() const
     str << "MajorRadius : " << fMajRad << ", ";
     str << "MinorRadius : " << fMinRad << ", ";
     str << "AngleXU : " << fAngleXU << ", ";
-    str << "Position : (" << loc.X() << ", "<< loc.Y() << ", "<< loc.Z() << "), ";
-    str << "Direction : (" << dir.X() << ", "<< dir.Y() << ", "<< dir.Z() << "), ";
+    str << "Position : (" << loc.X() << ", " << loc.Y() << ", " << loc.Z() << "), ";
+    str << "Direction : (" << dir.X() << ", " << dir.Y() << ", " << dir.Z() << "), ";
     str << "Parameter : (" << u1 << ", " << u2 << ")";
     str << ")";
 
     return str.str();
 }
 
-PyObject *ArcOfEllipsePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject* ArcOfEllipsePy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // create a new instance of ArcOfEllipsePy and the Twin object
     return new ArcOfEllipsePy(new GeomArcOfEllipse);
@@ -84,11 +85,12 @@ int ArcOfEllipsePy::PyInit(PyObject* args, PyObject* /*kwds*/)
 {
     PyObject* o;
     double u1, u2;
-    PyObject *sense=Py_True;
+    PyObject* sense = Py_True;
     if (PyArg_ParseTuple(args, "O!dd|O!", &(Part::EllipsePy::Type), &o, &u1, &u2, &PyBool_Type, &sense)) {
         try {
-            Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast
-                (static_cast<EllipsePy*>(o)->getGeomEllipsePtr()->handle());
+            Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(
+                static_cast<EllipsePy*>(o)->getGeomEllipsePtr()->handle()
+            );
             GC_MakeArcOfEllipse arc(ellipse->Elips(), u1, u2, Base::asBoolean(sense));
             if (!arc.IsDone()) {
                 PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(arc.Status()));
@@ -109,8 +111,10 @@ int ArcOfEllipsePy::PyInit(PyObject* args, PyObject* /*kwds*/)
     }
 
     // All checks failed
-    PyErr_SetString(PyExc_TypeError,
-        "ArcOfEllipse constructor expects an ellipse curve and a parameter range");
+    PyErr_SetString(
+        PyExc_TypeError,
+        "ArcOfEllipse constructor expects an ellipse curve and a parameter range"
+    );
     return -1;
 }
 
@@ -119,7 +123,7 @@ Py::Float ArcOfEllipsePy::getMajorRadius() const
     return Py::Float(getGeomArcOfEllipsePtr()->getMajorRadius());
 }
 
-void  ArcOfEllipsePy::setMajorRadius(Py::Float arg)
+void ArcOfEllipsePy::setMajorRadius(Py::Float arg)
 {
     getGeomArcOfEllipsePtr()->setMajorRadius((double)arg);
 }
@@ -129,25 +133,26 @@ Py::Float ArcOfEllipsePy::getMinorRadius() const
     return Py::Float(getGeomArcOfEllipsePtr()->getMinorRadius());
 }
 
-void  ArcOfEllipsePy::setMinorRadius(Py::Float arg)
+void ArcOfEllipsePy::setMinorRadius(Py::Float arg)
 {
     getGeomArcOfEllipsePtr()->setMinorRadius((double)arg);
 }
 
 Py::Object ArcOfEllipsePy::getEllipse() const
 {
-    Handle(Geom_TrimmedCurve) trim = Handle(Geom_TrimmedCurve)::DownCast
-        (getGeomArcOfEllipsePtr()->handle());
+    Handle(Geom_TrimmedCurve) trim = Handle(Geom_TrimmedCurve)::DownCast(
+        getGeomArcOfEllipsePtr()->handle()
+    );
     Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(trim->BasisCurve());
     return Py::Object(new EllipsePy(new GeomEllipse(ellipse)), true);
 }
 
-PyObject *ArcOfEllipsePy::getCustomAttributes(const char* ) const
+PyObject* ArcOfEllipsePy::getCustomAttributes(const char*) const
 {
     return nullptr;
 }
 
-int ArcOfEllipsePy::setCustomAttributes(const char* , PyObject *)
+int ArcOfEllipsePy::setCustomAttributes(const char*, PyObject*)
 {
     return 0;
 }

@@ -23,10 +23,10 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <Interface_Static.hxx>
-# include <IGESControl_Controller.hxx>
-# include <STEPControl_Controller.hxx>
-# include <Standard_Version.hxx>
+#include <Interface_Static.hxx>
+#include <IGESControl_Controller.hxx>
+#include <STEPControl_Controller.hxx>
+#include <Standard_Version.hxx>
 
 #include <FCConfig.h>
 
@@ -196,7 +196,8 @@
 #include <App/Services.h>
 #include <Services.h>
 
-namespace Part {
+namespace Part
+{
 extern PyObject* initModule();
 }
 

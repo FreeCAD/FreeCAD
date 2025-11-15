@@ -84,8 +84,10 @@ bool WriterOBJ::Save(std::ostream& out)
     if (_material) {
         if (_material->binding == MeshIO::PER_FACE) {
             if (_material->diffuseColor.size() != rFacets.size()) {
-                Base::Console().warning("Cannot export color information because there is a "
-                                        "different number of faces and colors");
+                Base::Console().warning(
+                    "Cannot export color information because there is a "
+                    "different number of faces and colors"
+                );
             }
             else {
                 exportColorPerFace = true;
@@ -93,8 +95,10 @@ bool WriterOBJ::Save(std::ostream& out)
         }
         else if (_material->binding == MeshIO::PER_VERTEX) {
             if (_material->diffuseColor.size() != rPoints.size()) {
-                Base::Console().warning("Cannot export color information because there is a "
-                                        "different number of points and colors");
+                Base::Console().warning(
+                    "Cannot export color information because there is a "
+                    "different number of points and colors"
+                );
             }
             else {
                 exportColorPerVertex = true;
@@ -103,7 +107,8 @@ bool WriterOBJ::Save(std::ostream& out)
         else if (_material->binding == MeshIO::OVERALL) {
             if (_material->diffuseColor.empty()) {
                 Base::Console().warning(
-                    "Cannot export color information because there is no color defined");
+                    "Cannot export color information because there is no color defined"
+                );
             }
             else {
                 exportColorPerVertex = true;
@@ -198,9 +203,8 @@ bool WriterOBJ::Save(std::ostream& out)
             // facet indices (no texture and normal indices)
             std::size_t faceIdx = 1;
             for (const auto& it : rFacets) {
-                out << "f " << it._aulPoints[0] + 1 << "//" << faceIdx << " "
-                    << it._aulPoints[1] + 1 << "//" << faceIdx << " " << it._aulPoints[2] + 1
-                    << "//" << faceIdx << '\n';
+                out << "f " << it._aulPoints[0] + 1 << "//" << faceIdx << " " << it._aulPoints[1] + 1
+                    << "//" << faceIdx << " " << it._aulPoints[2] + 1 << "//" << faceIdx << '\n';
                 seq.next(true);  // allow one to cancel
                 faceIdx++;
             }
@@ -229,9 +233,8 @@ bool WriterOBJ::Save(std::ostream& out)
                         }
                     }
 
-                    out << "f " << f._aulPoints[0] + 1 << "//" << it + 1 << " "
-                        << f._aulPoints[1] + 1 << "//" << it + 1 << " " << f._aulPoints[2] + 1
-                        << "//" << it + 1 << '\n';
+                    out << "f " << f._aulPoints[0] + 1 << "//" << it + 1 << " " << f._aulPoints[1] + 1
+                        << "//" << it + 1 << " " << f._aulPoints[2] + 1 << "//" << it + 1 << '\n';
                     seq.next(true);  // allow one to cancel
                 }
             }
@@ -241,9 +244,8 @@ bool WriterOBJ::Save(std::ostream& out)
                 out << "g " << Base::Tools::escapedUnicodeFromUtf8(gt.name.c_str()) << '\n';
                 for (FacetIndex it : gt.indices) {
                     const MeshFacet& f = rFacets[it];
-                    out << "f " << f._aulPoints[0] + 1 << "//" << it + 1 << " "
-                        << f._aulPoints[1] + 1 << "//" << it + 1 << " " << f._aulPoints[2] + 1
-                        << "//" << it + 1 << '\n';
+                    out << "f " << f._aulPoints[0] + 1 << "//" << it + 1 << " " << f._aulPoints[1] + 1
+                        << "//" << it + 1 << " " << f._aulPoints[2] + 1 << "//" << it + 1 << '\n';
                     seq.next(true);  // allow one to cancel
                 }
             }

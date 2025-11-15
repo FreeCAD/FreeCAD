@@ -36,15 +36,17 @@
 namespace Part
 {
 
-namespace STEP {
+namespace STEP
+{
 class ImportExportSettings;
 using ImportExportSettingsPtr = std::shared_ptr<ImportExportSettings>;
-}
+}  // namespace STEP
 
-namespace IGES {
+namespace IGES
+{
 class ImportExportSettings;
 using ImportExportSettingsPtr = std::shared_ptr<ImportExportSettings>;
-}
+}  // namespace IGES
 
 namespace OCAF
 {
@@ -52,14 +54,16 @@ namespace OCAF
 class PartExport ImportExportSettings
 {
 public:
-    enum class ImportMode {
+    enum class ImportMode
+    {
         SingleDocument = 0,
         GroupPerDocument = 1,
         GroupPerDirectory = 2,
         ObjectPerDocument = 3,
         ObjectPerDirectory = 4,
     };
-    struct CodePage {
+    struct CodePage
+    {
         std::string codePageName;
         Resource_FormatType codePage;
     };
@@ -150,7 +154,7 @@ private:
     // clang-format on
 };
 
-} //namespace OCAF
-} //namespace Part
+}  // namespace OCAF
+}  // namespace Part
 
 #endif

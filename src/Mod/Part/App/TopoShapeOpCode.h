@@ -34,9 +34,11 @@
  * to its predecessors. Some op codes can be passed to the generalized shape-
  * making API TopoShape::makEBoolean() to make a shape.
  */
-namespace Part {
+namespace Part
+{
 
-class PartExport OpCodes {
+class PartExport OpCodes
+{
 public:
     /** Element name encoding scheme version number
      *
@@ -49,56 +51,56 @@ public:
 
     /** @name Op codes that are also accepted by TopoShape::makEBoolean() */
     //@{
-    static constexpr const char *Fuse = "FUS";
-    static constexpr const char *Cut = "CUT";
-    static constexpr const char *Common = "CMN";
+    static constexpr const char* Fuse = "FUS";
+    static constexpr const char* Cut = "CUT";
+    static constexpr const char* Common = "CMN";
     static constexpr const char* Section = "SEC";
     static constexpr const char* Xor = "XOR";
-    static constexpr const char *Compound = "CMP";
-    static constexpr const char *Compsolid = "CSD";
-    static constexpr const char *Pipe = "PIP";
-    static constexpr const char *Shell = "SHL";
-    static constexpr const char *Wire = "WIR";
+    static constexpr const char* Compound = "CMP";
+    static constexpr const char* Compsolid = "CSD";
+    static constexpr const char* Pipe = "PIP";
+    static constexpr const char* Shell = "SHL";
+    static constexpr const char* Wire = "WIR";
     //@}
 
-    static constexpr const char *Tag = "TAG";
-    static constexpr const char *Copy = "CPY";
-    static constexpr const char *Transform = "XFM";
-    static constexpr const char *Gtransform = "GFM";
-    static constexpr const char *Face = "FAC";
-    static constexpr const char *FilledFace = "FFC";
-    static constexpr const char *Extrude = "XTR";
-    static constexpr const char *GeneralFuse = "GFS";
-    static constexpr const char *Refine = "RFI";
-    static constexpr const char *Boolean = "BOL";
-    static constexpr const char *Slice = "SLC";
-    static constexpr const char *Maker = "MAK";
-    static constexpr const char *Fillet = "FLT";
-    static constexpr const char *Chamfer = "CHF";
-    static constexpr const char *Thicken = "THK";
-    static constexpr const char *Offset = "OFS";
-    static constexpr const char *Offset2D = "OFF";
-    static constexpr const char *Revolve = "RVL";
-    static constexpr const char *Loft = "LFT";
-    static constexpr const char *Sweep = "SWP";
-    static constexpr const char *PipeShell = "PSH";
-    static constexpr const char *ShellFill = "SHF";
-    static constexpr const char *Solid = "SLD";
-    static constexpr const char *RuledSurface = "RSF";
-    static constexpr const char *Mirror = "MIR";
-    static constexpr const char *Sketch = "SKT";
-    static constexpr const char *SketchExport = "SKE";
-    static constexpr const char *Shapebinder = "BND";
-    static constexpr const char *ThruSections = "TRU";
-    static constexpr const char *Sewing = "SEW";
-    static constexpr const char *Prism = "PSM";
-    static constexpr const char *Draft = "DFT";
-    static constexpr const char *HalfSpace = "HSP";
-    static constexpr const char *BSplineFace = "BSF";
-    static constexpr const char *Split = "SPT";
-    static constexpr const char *Evolve = "EVO";
+    static constexpr const char* Tag = "TAG";
+    static constexpr const char* Copy = "CPY";
+    static constexpr const char* Transform = "XFM";
+    static constexpr const char* Gtransform = "GFM";
+    static constexpr const char* Face = "FAC";
+    static constexpr const char* FilledFace = "FFC";
+    static constexpr const char* Extrude = "XTR";
+    static constexpr const char* GeneralFuse = "GFS";
+    static constexpr const char* Refine = "RFI";
+    static constexpr const char* Boolean = "BOL";
+    static constexpr const char* Slice = "SLC";
+    static constexpr const char* Maker = "MAK";
+    static constexpr const char* Fillet = "FLT";
+    static constexpr const char* Chamfer = "CHF";
+    static constexpr const char* Thicken = "THK";
+    static constexpr const char* Offset = "OFS";
+    static constexpr const char* Offset2D = "OFF";
+    static constexpr const char* Revolve = "RVL";
+    static constexpr const char* Loft = "LFT";
+    static constexpr const char* Sweep = "SWP";
+    static constexpr const char* PipeShell = "PSH";
+    static constexpr const char* ShellFill = "SHF";
+    static constexpr const char* Solid = "SLD";
+    static constexpr const char* RuledSurface = "RSF";
+    static constexpr const char* Mirror = "MIR";
+    static constexpr const char* Sketch = "SKT";
+    static constexpr const char* SketchExport = "SKE";
+    static constexpr const char* Shapebinder = "BND";
+    static constexpr const char* ThruSections = "TRU";
+    static constexpr const char* Sewing = "SEW";
+    static constexpr const char* Prism = "PSM";
+    static constexpr const char* Draft = "DFT";
+    static constexpr const char* HalfSpace = "HSP";
+    static constexpr const char* BSplineFace = "BSF";
+    static constexpr const char* Split = "SPT";
+    static constexpr const char* Evolve = "EVO";
 };
 
-} // namespace Part
+}  // namespace Part
 
-#endif // PART_TOPOSHAPE_OPCODE_H
+#endif  // PART_TOPOSHAPE_OPCODE_H

@@ -22,22 +22,22 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <fcntl.h>
-# include <sstream>
-# include <Quantity_Color.hxx>
-# include <BRep_Builder.hxx>
-# include <STEPControl_Reader.hxx>
-# include <StepData_StepModel.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Shape.hxx>
-# include <TopoDS_Shell.hxx>
-# include <TopoDS_Solid.hxx>
-# include <TopoDS_Compound.hxx>
-# include <TopExp_Explorer.hxx>
-# include <Standard_Version.hxx>
-# include <Transfer_TransientProcess.hxx>
-# include <XSControl_TransferReader.hxx>
-# include <XSControl_WorkSession.hxx>
+#include <fcntl.h>
+#include <sstream>
+#include <Quantity_Color.hxx>
+#include <BRep_Builder.hxx>
+#include <STEPControl_Reader.hxx>
+#include <StepData_StepModel.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Shape.hxx>
+#include <TopoDS_Shell.hxx>
+#include <TopoDS_Solid.hxx>
+#include <TopoDS_Compound.hxx>
+#include <TopExp_Explorer.hxx>
+#include <Standard_Version.hxx>
+#include <Transfer_TransientProcess.hxx>
+#include <XSControl_TransferReader.hxx>
+#include <XSControl_WorkSession.hxx>
 
 
 #include <StepElement_AnalysisItemWithinRepresentation.hxx>
@@ -53,12 +53,13 @@
 
 FC_LOG_LEVEL_INIT("Part")
 
-namespace Part {
-bool ReadColors (const Handle(XSControl_WorkSession) &WS, std::map<int, Quantity_Color>& hash_col);
-bool ReadNames (const Handle(XSControl_WorkSession) &WS);
-}
+namespace Part
+{
+bool ReadColors(const Handle(XSControl_WorkSession) & WS, std::map<int, Quantity_Color>& hash_col);
+bool ReadNames(const Handle(XSControl_WorkSession) & WS);
+}  // namespace Part
 
-int Part::ImportStepParts(App::Document *pcDoc, const char* Name)
+int Part::ImportStepParts(App::Document* pcDoc, const char* Name)
 {
     // Use this to force to link against TKSTEPBase, TKSTEPAttr and TKStep209
     // in order to make RUNPATH working on Linux
@@ -77,17 +78,16 @@ int Part::ImportStepParts(App::Document *pcDoc, const char* Name)
         throw Base::FileException(str.str().c_str());
     }
     std::string encodednamestr = encodeFilename(std::string(Name));
-    const char * encodedname = encodednamestr.c_str();
+    const char* encodedname = encodednamestr.c_str();
 
-    if (aReader.ReadFile((Standard_CString)encodedname) !=
-            IFSelect_RetDone) {
+    if (aReader.ReadFile((Standard_CString)encodedname) != IFSelect_RetDone) {
         throw Base::FileException("Cannot open STEP file");
     }
 
     // Root transfers
     Standard_Integer nbr = aReader.NbRootsForTransfer();
-    for (Standard_Integer n = 1; n<= nbr; n++) {
-        Base::Console().log("STEP: Transferring Root %d\n",n);
+    for (Standard_Integer n = 1; n <= nbr; n++) {
+        Base::Console().log("STEP: Transferring Root %d\n", n);
         aReader.TransferRoot(n);
     }
 
@@ -100,31 +100,30 @@ int Part::ImportStepParts(App::Document *pcDoc, const char* Name)
 
         std::map<int, Quantity_Color> hash_col;
 
-        for (Standard_Integer i=1; i<=nbs; i++) {
-            Base::Console().log("STEP:   Transferring Shape %d\n",i);
+        for (Standard_Integer i = 1; i <= nbs; i++) {
+            Base::Console().log("STEP:   Transferring Shape %d\n", i);
             aShape = aReader.Shape(i);
 
             // load each solid as an own object
             TopExp_Explorer ex;
-            for (ex.Init(aShape, TopAbs_SOLID); ex.More(); ex.Next())
-            {
+            for (ex.Init(aShape, TopAbs_SOLID); ex.More(); ex.Next()) {
                 // get the shape
                 const TopoDS_Solid& aSolid = TopoDS::Solid(ex.Current());
 
                 std::string name = fi.fileNamePure();
-                //Handle(Standard_Transient) ent = tr->EntityFromShapeResult(aSolid, 3);
-                //if (!ent.IsNull()) {
-                //    name += ws->Model()->StringLabel(ent)->ToCString();
-                //}
+                // Handle(Standard_Transient) ent = tr->EntityFromShapeResult(aSolid, 3);
+                // if (!ent.IsNull()) {
+                //     name += ws->Model()->StringLabel(ent)->ToCString();
+                // }
 
-                Part::Feature *pcFeature;
+                Part::Feature* pcFeature;
                 pcFeature = pcDoc->addObject<Part::Feature>(name.c_str());
                 pcFeature->Shape.setValue(aSolid);
 
                 // This is a trick to access the GUI via Python and set the color property
                 // of the associated view provider. If no GUI is up an exception is thrown
                 // and cleared immediately
-                std::map<int, Quantity_Color>::iterator it = hash_col.find(ShapeMapHasher{}(aSolid));
+                std::map<int, Quantity_Color>::iterator it = hash_col.find(ShapeMapHasher {}(aSolid));
                 if (it != hash_col.end()) {
                     try {
                         Py::Object obj(pcFeature->getPyObject(), true);
@@ -141,14 +140,13 @@ int Part::ImportStepParts(App::Document *pcDoc, const char* Name)
                 }
             }
             // load all non-solids now
-            for (ex.Init(aShape, TopAbs_SHELL, TopAbs_SOLID); ex.More(); ex.Next())
-            {
+            for (ex.Init(aShape, TopAbs_SHELL, TopAbs_SOLID); ex.More(); ex.Next()) {
                 // get the shape
                 const TopoDS_Shell& aShell = TopoDS::Shell(ex.Current());
 
                 std::string name = fi.fileNamePure();
 
-                Part::Feature *pcFeature = pcDoc->addObject<Part::Feature>(name.c_str());
+                Part::Feature* pcFeature = pcDoc->addObject<Part::Feature>(name.c_str());
                 pcFeature->Shape.setValue(aShell);
             }
 
@@ -185,8 +183,9 @@ int Part::ImportStepParts(App::Document *pcDoc, const char* Name)
 
             if (!emptyComp) {
                 std::string name = fi.fileNamePure();
-                Part::Feature *pcFeature = static_cast<Part::Feature*>(pcDoc->addObject
-                    ("Part::Feature", name.c_str()));
+                Part::Feature* pcFeature = static_cast<Part::Feature*>(
+                    pcDoc->addObject("Part::Feature", name.c_str())
+                );
                 pcFeature->Shape.setValue(comp);
             }
         }
@@ -196,14 +195,14 @@ int Part::ImportStepParts(App::Document *pcDoc, const char* Name)
 }
 
 
-bool Part::ReadColors (const Handle(XSControl_WorkSession) &WS, std::map<int, Quantity_Color>& hash_col)
+bool Part::ReadColors(const Handle(XSControl_WorkSession) & WS, std::map<int, Quantity_Color>& hash_col)
 {
     (void)WS;
     (void)hash_col;
     return Standard_False;
 }
 
-bool Part::ReadNames (const Handle(XSControl_WorkSession) &WS)
+bool Part::ReadNames(const Handle(XSControl_WorkSession) & WS)
 {
     (void)WS;
     return Standard_False;

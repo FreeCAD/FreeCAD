@@ -29,9 +29,8 @@ public:
         , m_user_data(user_data)
     {}
 
-    void
-    SetDirWithPoint(const Point& p);  // set m_dir, such that this point lies between m_s and m_e
-    double IncludedAngle() const;     // always > 0
+    void SetDirWithPoint(const Point& p);  // set m_dir, such that this point lies between m_s and m_e
+    double IncludedAngle() const;          // always > 0
     bool AlmostALine() const;
     Point MidParam(double param) const;
     void GetSegments(void (*callbackfunc)(const double* p), double pixels_per_mm) const;

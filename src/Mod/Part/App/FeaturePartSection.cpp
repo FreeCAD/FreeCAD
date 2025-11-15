@@ -22,8 +22,8 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <Mod/Part/App/FCBRepAlgoAPI_Section.h>
-# include <Standard_Version.hxx>
+#include <Mod/Part/App/FCBRepAlgoAPI_Section.h>
+#include <Standard_Version.hxx>
 
 
 #include "FeaturePartSection.h"
@@ -36,23 +36,27 @@ PROPERTY_SOURCE(Part::Section, Part::Boolean)
 
 Section::Section()
 {
-    ADD_PROPERTY_TYPE(Approximation,(false),"Section",App::Prop_None,"Approximate the output edges");
+    ADD_PROPERTY_TYPE(Approximation, (false), "Section", App::Prop_None, "Approximate the output edges");
 }
 
 short Section::mustExecute() const
 {
-    if (Approximation.isTouched())
+    if (Approximation.isTouched()) {
         return 1;
+    }
     return 0;
 }
 
 
-const char *Section::opCode() const
+const char* Section::opCode() const
 {
     return Part::OpCodes::Section;
 }
 
-BRepAlgoAPI_BooleanOperation* Section::makeOperation(const TopoDS_Shape& base, const TopoDS_Shape& tool) const
+BRepAlgoAPI_BooleanOperation* Section::makeOperation(
+    const TopoDS_Shape& base,
+    const TopoDS_Shape& tool
+) const
 {
     // Let's call algorithm computing a section operation:
 
@@ -63,7 +67,8 @@ BRepAlgoAPI_BooleanOperation* Section::makeOperation(const TopoDS_Shape& base, c
     mkSection->Approximation(approx);
     mkSection->setAutoFuzzy();
     mkSection->Build();
-    if (!mkSection->IsDone())
+    if (!mkSection->IsDone()) {
         throw Base::RuntimeError("Section failed");
+    }
     return mkSection.release();
 }

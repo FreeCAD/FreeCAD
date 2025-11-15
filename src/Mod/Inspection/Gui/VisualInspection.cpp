@@ -82,18 +82,14 @@ VisualInspection::VisualInspection(QWidget* parent, Qt::WindowFlags fl)
     , ui(new Ui_VisualInspection)
 {
     ui->setupUi(this);
-    connect(ui->treeWidgetActual,
-            &QTreeWidget::itemClicked,
-            this,
-            &VisualInspection::onActivateItem);
-    connect(ui->treeWidgetNominal,
-            &QTreeWidget::itemClicked,
-            this,
-            &VisualInspection::onActivateItem);
-    connect(ui->buttonBox,
-            &QDialogButtonBox::helpRequested,
-            Gui::getMainWindow(),
-            &Gui::MainWindow::whatsThis);
+    connect(ui->treeWidgetActual, &QTreeWidget::itemClicked, this, &VisualInspection::onActivateItem);
+    connect(ui->treeWidgetNominal, &QTreeWidget::itemClicked, this, &VisualInspection::onActivateItem);
+    connect(
+        ui->buttonBox,
+        &QDialogButtonBox::helpRequested,
+        Gui::getMainWindow(),
+        &Gui::MainWindow::whatsThis
+    );
 
     // FIXME: Not used yet
     ui->textLabel2->hide();
@@ -157,7 +153,8 @@ VisualInspection::~VisualInspection()
 void VisualInspection::loadSettings()
 {
     ParameterGrp::handle handle = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Inspection/Inspection");
+        "User parameter:BaseApp/Preferences/Mod/Inspection/Inspection"
+    );
 
     double searchDistance = ui->searchRadius->value().getValue();
     searchDistance = handle->GetFloat("SearchDistance", searchDistance);
@@ -171,7 +168,8 @@ void VisualInspection::loadSettings()
 void VisualInspection::saveSettings()
 {
     ParameterGrp::handle handle = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Inspection/Inspection");
+        "User parameter:BaseApp/Preferences/Mod/Inspection/Inspection"
+    );
     double searchDistance = ui->searchRadius->value().getValue();
     handle->SetFloat("SearchDistance", searchDistance);
 
@@ -236,19 +234,23 @@ void VisualInspection::accept()
         doc->openCommand(QT_TRANSLATE_NOOP("Command", "Visual Inspection"));
 
         // create a group
-        Gui::Command::runCommand(Gui::Command::App,
-                                 "App_activeDocument___InspectionGroup=App.ActiveDocument."
-                                 "addObject(\"Inspection::Group\",\"Inspection\")");
+        Gui::Command::runCommand(
+            Gui::Command::App,
+            "App_activeDocument___InspectionGroup=App.ActiveDocument."
+            "addObject(\"Inspection::Group\",\"Inspection\")"
+        );
 
         // for each actual geometry create an inspection feature
         for (QTreeWidgetItemIterator it(ui->treeWidgetActual); *it; it++) {
             SingleSelectionItem* sel = (SingleSelectionItem*)*it;
             if (sel->checkState(0) == Qt::Checked) {
                 QString actualName = sel->data(0, Qt::UserRole).toString();
-                Gui::Command::doCommand(Gui::Command::App,
-                                        "App_activeDocument___InspectionGroup.newObject("
-                                        "\"Inspection::Feature\",\"%s_Inspect\")",
-                                        (const char*)actualName.toLatin1());
+                Gui::Command::doCommand(
+                    Gui::Command::App,
+                    "App_activeDocument___InspectionGroup.newObject("
+                    "\"Inspection::Feature\",\"%s_Inspect\")",
+                    (const char*)actualName.toLatin1()
+                );
                 Gui::Command::doCommand(
                     Gui::Command::App,
                     "App.ActiveDocument.ActiveObject.Actual=App.ActiveDocument.%s\n"
@@ -257,17 +259,22 @@ void VisualInspection::accept()
                     "App.ActiveDocument.ActiveObject.Thickness=%.3f\n",
                     (const char*)actualName.toLatin1(),
                     searchRadius,
-                    thickness);
+                    thickness
+                );
                 for (const auto& it : nominalNames) {
-                    Gui::Command::doCommand(Gui::Command::App,
-                                            "App_activeDocument___activeObject___Nominals.append("
-                                            "App.ActiveDocument.%s)\n",
-                                            (const char*)it.toLatin1());
+                    Gui::Command::doCommand(
+                        Gui::Command::App,
+                        "App_activeDocument___activeObject___Nominals.append("
+                        "App.ActiveDocument.%s)\n",
+                        (const char*)it.toLatin1()
+                    );
                 }
-                Gui::Command::doCommand(Gui::Command::App,
-                                        "App.ActiveDocument.ActiveObject.Nominals=App_"
-                                        "activeDocument___activeObject___Nominals\n"
-                                        "del App_activeDocument___activeObject___Nominals\n");
+                Gui::Command::doCommand(
+                    Gui::Command::App,
+                    "App.ActiveDocument.ActiveObject.Nominals=App_"
+                    "activeDocument___activeObject___Nominals\n"
+                    "del App_activeDocument___activeObject___Nominals\n"
+                );
             }
         }
 
@@ -283,7 +290,8 @@ void VisualInspection::accept()
                 Gui::Command::doCommand(
                     Gui::Command::App,
                     "Gui.ActiveDocument.getObject(\"%s\").Visibility=False",
-                    (const char*)sel->data(0, Qt::UserRole).toString().toLatin1());
+                    (const char*)sel->data(0, Qt::UserRole).toString().toLatin1()
+                );
             }
         }
 
@@ -293,7 +301,8 @@ void VisualInspection::accept()
                 Gui::Command::doCommand(
                     Gui::Command::App,
                     "Gui.ActiveDocument.getObject(\"%s\").Visibility=False",
-                    (const char*)sel->data(0, Qt::UserRole).toString().toLatin1());
+                    (const char*)sel->data(0, Qt::UserRole).toString().toLatin1()
+                );
             }
         }
     }

@@ -9,7 +9,7 @@
 using namespace geoff_geometry;
 
 #ifdef PEPSPOST
-#include "postoutput.h"
+# include "postoutput.h"
 #endif
 
 
@@ -777,11 +777,11 @@ void Kurve::Replace(int vertexnumber, int type, const Point& p0, const Point& pc
 void Kurve::ModifyIndex(int vertexnumber, WireExtraData* i)
 {
     // replace an index
-#ifdef _DEBUG
+# ifdef _DEBUG
     if (vertexnumber > m_nVertices) {
         FAILURE(getMessage(L"Kurve::ModifyIndex - vertexNumber out of range"));
     }
-#endif
+# endif
     SpanVertex* p = (SpanVertex*)m_spans[vertexnumber / SPANSTORAGE];
     p->Add(vertexnumber % SPANSTORAGE, i);
 }
@@ -1197,8 +1197,7 @@ void Kurve::minmax(Point& min, Point& max)
     max = Point(-1.0e61, -1.0e61);
 
     if (!GetScale(xscale)) {
-        FAILURE(
-            getMessage(L"Differential Scale not allowed for this method"));  // differential scale
+        FAILURE(getMessage(L"Differential Scale not allowed for this method"));  // differential scale
     }
     Span sp;
     for (int i = 1; i < m_nVertices; i++) {
@@ -1260,8 +1259,7 @@ double Kurve::Perim() const
     Span sp;
     double xscale = 1.0;
     if (!GetScale(xscale)) {
-        FAILURE(
-            getMessage(L"Differential Scale not allowed for this method"));  // differential scale
+        FAILURE(getMessage(L"Differential Scale not allowed for this method"));  // differential scale
     }
 
     if (m_nVertices > 1) {
@@ -1280,15 +1278,16 @@ double Kurve::Area() const
 
     if (Closed()) {
         if (!GetScale(xscale)) {
-            FAILURE(getMessage(
-                L"Differential Scale not allowed for this method"));  // differential scale
+            FAILURE(getMessage(L"Differential Scale not allowed for this method"));  // differential
+                                                                                     // scale
         }
         for (int i = 1; i < m_nVertices; i++) {
             if (Get(i, sp, true)) {
-                area += (0.5
-                         * ((sp.pc.x - sp.p0.x) * (sp.pc.y + sp.p0.y)
-                            - (sp.pc.x - sp.p1.x) * (sp.pc.y + sp.p1.y)
-                            - sp.angle * sp.radius * sp.radius));
+                area
+                    += (0.5
+                        * ((sp.pc.x - sp.p0.x) * (sp.pc.y + sp.p0.y)
+                           - (sp.pc.x - sp.p1.x) * (sp.pc.y + sp.p1.y)
+                           - sp.angle * sp.radius * sp.radius));
             }
             else {
                 area += 0.5 * (sp.p1.x - sp.p0.x) * (sp.p0.y + sp.p1.y);

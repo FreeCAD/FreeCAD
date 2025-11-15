@@ -50,9 +50,11 @@ class WireJoiner;
 class PartExport FaceMakerBullseye: public FaceMakerPublic
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
 public:
-    FaceMakerBullseye():
-        planeSupplied(false){}
+    FaceMakerBullseye()
+        : planeSupplied(false)
+    {}
     /**
      * @brief setPlane: sets the plane to use when making faces. This is
      * optional. If the plane was set, it is not tested that the wires are
@@ -68,7 +70,7 @@ protected:
     void Build_Essence() override;
 
 protected:
-    gp_Pln myPlane; //externally supplied plane (if any)
+    gp_Pln myPlane;  // externally supplied plane (if any)
     bool planeSupplied {false};
     bool reuseInnerWire {false};
 
@@ -117,7 +119,11 @@ protected:
         void addHole(const WireInfo& info, std::vector<TopoShape>& sources);
         void copyFaceBound(TopoDS_Face& f, TopoShape& tf, const TopoShape& source);
 
-        const TopoDS_Face& Face() const {return myFace;}
+        const TopoDS_Face& Face() const
+        {
+            return myFace;
+        }
+
     public:
         /**
          * @brief wireDirection: determines direction of wire with respect to
@@ -125,7 +131,8 @@ protected:
          * @param w
          * @return  1 = CCW (suits as outer wire), -1 = CW (suits as hole)
          */
-        static int getWireDirection(const gp_Pln &plane, const TopoDS_Wire &w);
+        static int getWireDirection(const gp_Pln& plane, const TopoDS_Wire& w);
+
     private:
         gp_Pln myPlane;
         TopoDS_Face myFace;
@@ -159,5 +166,5 @@ public:
     virtual std::string getBriefExplanation() const override;
 };
 
-}//namespace Part
-#endif // PART_FACEMAKER_BULLSEYE_H
+}  // namespace Part
+#endif  // PART_FACEMAKER_BULLSEYE_H

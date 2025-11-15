@@ -29,20 +29,22 @@
 class Ui_TaskTransformedMessages;
 using Connection = boost::signals2::connection;
 
-namespace App {
+namespace App
+{
 class Property;
 }
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
 class ViewProviderTransformed;
 
-class TaskTransformedMessages : public Gui::TaskView::TaskBox
+class TaskTransformedMessages: public Gui::TaskView::TaskBox
 {
     Q_OBJECT
 
 public:
-    explicit TaskTransformedMessages(ViewProviderTransformed *transformedView);
+    explicit TaskTransformedMessages(ViewProviderTransformed* transformedView);
     ~TaskTransformedMessages() override;
 
     void slotDiagnosis(QString msg);
@@ -50,7 +52,7 @@ public:
 private Q_SLOTS:
 
 protected:
-    ViewProviderTransformed *transformedView;
+    ViewProviderTransformed* transformedView;
     Connection connectionDiagnosis;
 
 private:
@@ -58,6 +60,6 @@ private:
     std::unique_ptr<Ui_TaskTransformedMessages> ui;
 };
 
-} //namespace PartDesignGui
+}  // namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TaskTransformedMessages_H
+#endif  // GUI_TASKVIEW_TaskTransformedMessages_H

@@ -28,17 +28,18 @@
 #include "ViewProvider.h"
 
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
 class TaskDlgDressUpParameters;
 
-class PartDesignGuiExport ViewProviderDressUp : public ViewProvider
+class PartDesignGuiExport ViewProviderDressUp: public ViewProvider
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderDressUp);
 
 public:
     /// constructor
-    ViewProviderDressUp()  = default;
+    ViewProviderDressUp() = default;
     /// destructor
     ~ViewProviderDressUp() override = default;
 
@@ -57,7 +58,7 @@ public:
      * Returns the feature Name associated with the view provider.
      * Should be reimplemented in the successor.
      */
-    virtual const std::string & featureName() const;
+    virtual const std::string& featureName() const;
     std::string featureIcon() const;
     QString menuName;
 
@@ -66,8 +67,7 @@ protected:
 };
 
 
+}  // namespace PartDesignGui
 
-} // namespace PartDesignGui
 
-
-#endif // PARTGUI_ViewProviderDressUp_H
+#endif  // PARTGUI_ViewProviderDressUp_H

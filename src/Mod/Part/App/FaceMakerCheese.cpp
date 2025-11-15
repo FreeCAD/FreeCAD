@@ -22,27 +22,27 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <algorithm>
-# include <Bnd_Box.hxx>
-# include <BRep_Builder.hxx>
-# include <BRep_Tool.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <BRepBuilderAPI_MakeFace.hxx>
-# include <BRepCheck_Analyzer.hxx>
-# include <BRepBndLib.hxx>
-# include <Geom_Plane.hxx>
-# include <IntTools_FClass2d.hxx>
-# include <Precision.hxx>
-# include <ShapeAnalysis.hxx>
-# include <ShapeAnalysis_Surface.hxx>
-# include <ShapeExtend_Explorer.hxx>
-# include <ShapeFix_Shape.hxx>
-# include <ShapeFix_Wire.hxx>
-# include <TopoDS.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
-# include <TopTools_HSequenceOfShape.hxx>
-# include <QtGlobal>
+#include <algorithm>
+#include <Bnd_Box.hxx>
+#include <BRep_Builder.hxx>
+#include <BRep_Tool.hxx>
+#include <BRepAdaptor_Surface.hxx>
+#include <BRepBuilderAPI_MakeFace.hxx>
+#include <BRepCheck_Analyzer.hxx>
+#include <BRepBndLib.hxx>
+#include <Geom_Plane.hxx>
+#include <IntTools_FClass2d.hxx>
+#include <Precision.hxx>
+#include <ShapeAnalysis.hxx>
+#include <ShapeAnalysis_Surface.hxx>
+#include <ShapeExtend_Explorer.hxx>
+#include <ShapeFix_Shape.hxx>
+#include <ShapeFix_Wire.hxx>
+#include <TopoDS.hxx>
+#include <TopExp_Explorer.hxx>
+#include <TopTools_IndexedMapOfShape.hxx>
+#include <TopTools_HSequenceOfShape.hxx>
+#include <QtGlobal>
 
 
 #include "FaceMakerCheese.h"
@@ -61,7 +61,7 @@ TopoDS_Face FaceMakerCheese::validateFace(const TopoDS_Face& face)
         TopTools_IndexedMapOfShape myMap;
         myMap.Add(outerwire);
 
-        TopExp_Explorer xp(face,TopAbs_WIRE);
+        TopExp_Explorer xp(face, TopAbs_WIRE);
         ShapeFix_Wire fix;
         fix.SetFace(face);
         fix.Load(outerwire);
@@ -87,8 +87,9 @@ TopoDS_Face FaceMakerCheese::validateFace(const TopoDS_Face& face)
             fix.FixFaceTool()->Perform();
             TopoDS_Face fixedFace = TopoDS::Face(fix.Shape());
             aChecker.Init(fixedFace);
-            if (!aChecker.IsValid())
+            if (!aChecker.IsValid()) {
                 Standard_Failure::Raise("Failed to validate broken face");
+            }
             return fixedFace;
         }
         return mkFace.Face();
@@ -97,7 +98,7 @@ TopoDS_Face FaceMakerCheese::validateFace(const TopoDS_Face& face)
     return face;
 }
 
-bool FaceMakerCheese::Wire_Compare::operator() (const TopoDS_Wire& w1, const TopoDS_Wire& w2)
+bool FaceMakerCheese::Wire_Compare::operator()(const TopoDS_Wire& w1, const TopoDS_Wire& w2)
 {
     Bnd_Box box1, box2;
     if (!w1.IsNull()) {
@@ -123,32 +124,36 @@ bool FaceMakerCheese::isInside(const TopoDS_Wire& wire1, const TopoDS_Wire& wire
     BRepBndLib::Add(wire2, box2);
     box2.SetGap(0.0);
 
-    if (box1.IsOut(box2))
+    if (box1.IsOut(box2)) {
         return false;
+    }
 
     double prec = Precision::Confusion();
 
     BRepBuilderAPI_MakeFace mkFace(wire1);
-    if (!mkFace.IsDone())
+    if (!mkFace.IsDone()) {
         Standard_Failure::Raise("Failed to create a face from wire in sketch");
+    }
     TopoDS_Face face = validateFace(mkFace.Face());
     BRepAdaptor_Surface adapt(face);
     IntTools_FClass2d class2d(face, prec);
     Handle(Geom_Surface) surf = new Geom_Plane(adapt.Plane());
     ShapeAnalysis_Surface as(surf);
 
-    TopExp_Explorer xp(wire2,TopAbs_VERTEX);
-    while (xp.More())  {
+    TopExp_Explorer xp(wire2, TopAbs_VERTEX);
+    while (xp.More()) {
         TopoDS_Vertex v = TopoDS::Vertex(xp.Current());
         gp_Pnt p = BRep_Tool::Pnt(v);
         gp_Pnt2d uv = as.ValueOfUV(p, prec);
-        if (class2d.Perform(uv) == TopAbs_IN)
+        if (class2d.Perform(uv) == TopAbs_IN) {
             return true;
+        }
         // TODO: We can make a check to see if all points are inside or all outside
         // because otherwise we have some intersections which is not allowed
-        else
+        else {
             return false;
-        //xp.Next();
+        }
+        // xp.Next();
     }
 
     return false;
@@ -158,9 +163,10 @@ TopoDS_Shape FaceMakerCheese::makeFace(std::list<TopoDS_Wire>& wires)
 {
     BRepBuilderAPI_MakeFace mkFace(wires.front());
     const TopoDS_Face& face = mkFace.Face();
-    if (face.IsNull())
+    if (face.IsNull()) {
         return face;
-    gp_Dir axis(0,0,1);
+    }
+    gp_Dir axis(0, 0, 1);
     BRepAdaptor_Surface adapt(face);
     if (adapt.GetType() == GeomAbs_Plane) {
         axis = adapt.Plane().Axis().Direction();
@@ -170,17 +176,19 @@ TopoDS_Shape FaceMakerCheese::makeFace(std::list<TopoDS_Wire>& wires)
     for (auto wire : wires) {
         BRepBuilderAPI_MakeFace mkInnerFace(wire);
         const TopoDS_Face& inner_face = mkInnerFace.Face();
-        if (inner_face.IsNull())
-            return inner_face; // failure
-        gp_Dir inner_axis(0,0,1);
+        if (inner_face.IsNull()) {
+            return inner_face;  // failure
+        }
+        gp_Dir inner_axis(0, 0, 1);
         BRepAdaptor_Surface adapt(inner_face);
         if (adapt.GetType() == GeomAbs_Plane) {
             inner_axis = adapt.Plane().Axis().Direction();
         }
         // It seems that orientation is always 'Forward' and we only have to reverse
         // if the underlying plane have opposite normals.
-        if (axis.Dot(inner_axis) < 0)
+        if (axis.Dot(inner_axis) < 0) {
             wire.Reverse();
+        }
         mkFace.Add(wire);
     }
     return validateFace(mkFace.Face());
@@ -188,18 +196,19 @@ TopoDS_Shape FaceMakerCheese::makeFace(std::list<TopoDS_Wire>& wires)
 
 TopoDS_Shape FaceMakerCheese::makeFace(const std::vector<TopoDS_Wire>& w)
 {
-    if (w.empty())
+    if (w.empty()) {
         return {};
+    }
 
-    //FIXME: Need a safe method to sort wire that the outermost one comes last
-    // Currently it's done with the diagonal lengths of the bounding boxes
+    // FIXME: Need a safe method to sort wire that the outermost one comes last
+    //  Currently it's done with the diagonal lengths of the bounding boxes
     std::vector<TopoDS_Wire> wires = w;
     std::sort(wires.begin(), wires.end(), Wire_Compare());
     std::list<TopoDS_Wire> wire_list;
     wire_list.insert(wire_list.begin(), wires.rbegin(), wires.rend());
 
     // separate the wires into several independent faces
-    std::list< std::list<TopoDS_Wire> > sep_wire_list;
+    std::list<std::list<TopoDS_Wire>> sep_wire_list;
     while (!wire_list.empty()) {
         std::list<TopoDS_Wire> sep_list;
         TopoDS_Wire wire = wire_list.front();
@@ -228,16 +237,17 @@ TopoDS_Shape FaceMakerCheese::makeFace(const std::vector<TopoDS_Wire>& w)
         TopoDS_Compound comp;
         BRep_Builder builder;
         builder.MakeCompound(comp);
-        for (auto & it : sep_wire_list) {
+        for (auto& it : sep_wire_list) {
             TopoDS_Shape aFace = makeFace(it);
-            if (!aFace.IsNull())
+            if (!aFace.IsNull()) {
                 builder.Add(comp, aFace);
+            }
         }
 
         return TopoDS_Shape(std::move(comp));
     }
     else {
-        return {}; // error
+        return {};  // error
     }
 }
 
@@ -257,7 +267,7 @@ void FaceMakerCheese::Build_Essence()
     TopoDS_Shape faces = makeFace(this->myWires);
     ShapeExtend_Explorer xp;
     Handle(TopTools_HSequenceOfShape) seq = xp.SeqFromCompound(faces, Standard_True);
-    for(int i = 0   ;   i < seq->Length()   ;   i++){
-        this->myShapesToReturn.push_back(seq->Value(i+1));
+    for (int i = 0; i < seq->Length(); i++) {
+        this->myShapesToReturn.push_back(seq->Value(i + 1));
     }
 }

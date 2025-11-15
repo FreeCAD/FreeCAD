@@ -22,9 +22,8 @@
  ***************************************************************************/
 
 
-
-# include <QMessageBox>
-# include <Standard_Failure.hxx>
+#include <QMessageBox>
+#include <Standard_Failure.hxx>
 
 
 #include <App/DocumentObject.h>
@@ -49,9 +48,13 @@ using namespace Attacher;
 
 /* TRANSLATOR PartDesignGui::TaskDatumParameters */
 
-TaskDatumParameters::TaskDatumParameters(ViewProviderDatum *ViewProvider,QWidget *parent)
-    : PartGui::TaskAttacher(ViewProvider, parent, QStringLiteral("PartDesign_") + ViewProvider->datumType,
-              ViewProvider->datumMenuText)
+TaskDatumParameters::TaskDatumParameters(ViewProviderDatum* ViewProvider, QWidget* parent)
+    : PartGui::TaskAttacher(
+          ViewProvider,
+          parent,
+          QStringLiteral("PartDesign_") + ViewProvider->datumType,
+          ViewProvider->datumMenuText
+      )
 {
     Gui::Selection().addSelectionGate(new NoDependentsSelection(ViewProvider->getObject()));
     ViewProvider->setPickable(false);
@@ -59,8 +62,9 @@ TaskDatumParameters::TaskDatumParameters(ViewProviderDatum *ViewProvider,QWidget
 
 TaskDatumParameters::~TaskDatumParameters()
 {
-    if(this->ViewProvider && this->ViewProvider->isDerivedFrom<ViewProviderDatum>())
+    if (this->ViewProvider && this->ViewProvider->isDerivedFrom<ViewProviderDatum>()) {
         static_cast<ViewProviderDatum*>(this->ViewProvider)->setPickable(true);
+    }
     Gui::Selection().rmvSelectionGate();
 }
 
@@ -70,72 +74,85 @@ TaskDatumParameters::~TaskDatumParameters()
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgDatumParameters::TaskDlgDatumParameters(ViewProviderDatum *ViewProvider)
+TaskDlgDatumParameters::TaskDlgDatumParameters(ViewProviderDatum* ViewProvider)
     : TaskDlgAttacher(ViewProvider, false)
 {
     assert(ViewProvider);
-    parameter  = new TaskDatumParameters(ViewProvider);
+    parameter = new TaskDatumParameters(ViewProvider);
     Content.push_back(parameter);
 }
 
 TaskDlgDatumParameters::~TaskDlgDatumParameters() = default;
 
-bool TaskDlgDatumParameters::reject() {
+bool TaskDlgDatumParameters::reject()
+{
 
     return PartGui::TaskDlgAttacher::reject();
 }
 
 
-bool TaskDlgDatumParameters::accept() {
+bool TaskDlgDatumParameters::accept()
+{
 
     Part::Datum* pcDatum = ViewProvider->getObject<Part::Datum>();
     auto pcActiveBody = PartDesignGui::getBodyFor(pcDatum, false);
     auto pcActivePart = PartDesignGui::getPartFor(pcActiveBody, false);
     std::vector<App::DocumentObject*> copies;
 
-    //see if we are able to assign a mode
+    // see if we are able to assign a mode
     if (parameter->getActiveMapMode() == mmDeactivated) {
         QMessageBox msg(Gui::getMainWindow());
         msg.setWindowTitle(tr("Incompatible Reference Set"));
-        msg.setText(tr("There is no attachment mode that fits the current set"
-        " of references. If you choose to continue, the feature will remain where"
-        " it is now, and will not be moved as the references change."
-        " Continue?"));
+        msg.setText(
+            tr("There is no attachment mode that fits the current set"
+               " of references. If you choose to continue, the feature will remain where"
+               " it is now, and will not be moved as the references change."
+               " Continue?")
+        );
         msg.addButton(QMessageBox::Yes);
-        auto btNo =  msg.addButton(QMessageBox::No);
+        auto btNo = msg.addButton(QMessageBox::No);
         msg.setDefaultButton(btNo);
         msg.setIcon(QMessageBox::Warning);
         msg.exec();
-        if (msg.buttonRole(msg.clickedButton()) == QMessageBox::NoRole)
+        if (msg.buttonRole(msg.clickedButton()) == QMessageBox::NoRole) {
             return false;
+        }
     }
 
-    //see what to do with external references
-    //check the prerequisites for the selected objects
-    //the user has to decide which option we should take if external references are used
+    // see what to do with external references
+    // check the prerequisites for the selected objects
+    // the user has to decide which option we should take if external references are used
     bool extReference = false;
     for (App::DocumentObject* obj : pcDatum->AttachmentSupport.getValues()) {
-        if (pcActiveBody && !pcActiveBody->hasObject(obj) && !pcActiveBody->getOrigin()->hasObject(obj))
+        if (pcActiveBody && !pcActiveBody->hasObject(obj)
+            && !pcActiveBody->getOrigin()->hasObject(obj)) {
             extReference = true;
+        }
     }
 
-    if(extReference) {
+    if (extReference) {
         // TODO: rewrite this to be shared with CmdPartDesignNewSketch::activated() (2015-10-20, Fat-Zer)
         QDialog dia(Gui::getMainWindow());
         PartDesignGui::Ui_DlgReference dlg;
         dlg.setupUi(&dia);
         dia.setModal(true);
         int result = dia.exec();
-        if (result == QDialog::DialogCode::Rejected)
+        if (result == QDialog::DialogCode::Rejected) {
             return false;
+        }
         else if (!dlg.radioXRef->isChecked()) {
             std::vector<App::DocumentObject*> copyObjects;
             std::vector<std::string> copySubValues;
             std::vector<std::string> subs = pcDatum->AttachmentSupport.getSubValues();
             int index = 0;
             for (App::DocumentObject* obj : pcDatum->AttachmentSupport.getValues()) {
-                if (pcActiveBody && !pcActiveBody->hasObject(obj) && !pcActiveBody->getOrigin()->hasObject(obj)) {
-                    auto* copy = PartDesignGui::TaskFeaturePick::makeCopy(obj, subs[index], dlg.radioIndependent->isChecked());
+                if (pcActiveBody && !pcActiveBody->hasObject(obj)
+                    && !pcActiveBody->getOrigin()->hasObject(obj)) {
+                    auto* copy = PartDesignGui::TaskFeaturePick::makeCopy(
+                        obj,
+                        subs[index],
+                        dlg.radioIndependent->isChecked()
+                    );
                     if (copy) {
                         copyObjects.push_back(copy);
                         copies.push_back(copyObjects.back());
@@ -154,15 +171,19 @@ bool TaskDlgDatumParameters::accept() {
         }
     }
 
-    if (!PartGui::TaskDlgAttacher::accept())
+    if (!PartGui::TaskDlgAttacher::accept()) {
         return false;
+    }
 
-    //we need to add the copied features to the body after the command action, as otherwise FreeCAD crashes unexplainably
-    for(auto obj : copies) {
-        if (pcActiveBody)
+    // we need to add the copied features to the body after the command action, as otherwise FreeCAD
+    // crashes unexplainably
+    for (auto obj : copies) {
+        if (pcActiveBody) {
             pcActiveBody->addObject(obj);
-        else if (pcActivePart)
+        }
+        else if (pcActivePart) {
             pcActivePart->addObject(obj);
+        }
     }
 
     return true;

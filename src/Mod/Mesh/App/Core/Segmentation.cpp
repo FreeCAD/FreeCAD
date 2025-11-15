@@ -63,9 +63,11 @@ MeshSegment MeshSurfaceSegment::FindSegment(FacetIndex index) const
 
 // --------------------------------------------------------
 
-MeshDistancePlanarSegment::MeshDistancePlanarSegment(const MeshKernel& mesh,
-                                                     unsigned long minFacets,
-                                                     float tol)
+MeshDistancePlanarSegment::MeshDistancePlanarSegment(
+    const MeshKernel& mesh,
+    unsigned long minFacets,
+    float tol
+)
     : MeshDistanceSurfaceSegment(mesh, minFacets, tol)
     , fitter(new PlaneFit)
 {}
@@ -399,10 +401,12 @@ std::vector<float> SphereSurfaceFit::Parameters() const
 
 // --------------------------------------------------------
 
-MeshDistanceGenericSurfaceFitSegment::MeshDistanceGenericSurfaceFitSegment(AbstractSurfaceFit* fit,
-                                                                           const MeshKernel& mesh,
-                                                                           unsigned long minFacets,
-                                                                           float tol)
+MeshDistanceGenericSurfaceFitSegment::MeshDistanceGenericSurfaceFitSegment(
+    AbstractSurfaceFit* fit,
+    const MeshKernel& mesh,
+    unsigned long minFacets,
+    float tol
+)
     : MeshDistanceSurfaceSegment(mesh, minFacets, tol)
     , fitter(fit)
 {}
@@ -532,19 +536,18 @@ MeshSurfaceVisitor::MeshSurfaceVisitor(MeshSurfaceSegment& segm, std::vector<Fac
     , segm(segm)
 {}
 
-bool MeshSurfaceVisitor::AllowVisit(const MeshFacet& face,
-                                    const MeshFacet&,
-                                    FacetIndex,
-                                    unsigned long,
-                                    unsigned short)
+bool MeshSurfaceVisitor::AllowVisit(
+    const MeshFacet& face,
+    const MeshFacet&,
+    FacetIndex,
+    unsigned long,
+    unsigned short
+)
 {
     return segm.TestFacet(face);
 }
 
-bool MeshSurfaceVisitor::Visit(const MeshFacet& face,
-                               const MeshFacet&,
-                               FacetIndex ulFInd,
-                               unsigned long)
+bool MeshSurfaceVisitor::Visit(const MeshFacet& face, const MeshFacet&, FacetIndex ulFInd, unsigned long)
 {
     indices.push_back(ulFInd);
     segm.AddFacet(face);

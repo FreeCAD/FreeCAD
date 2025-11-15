@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <Inventor/nodes/SoAnnotation.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoFont.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoMaterialBinding.h>
-# include <Inventor/nodes/SoScale.h>
-# include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoAnnotation.h>
+#include <Inventor/nodes/SoDrawStyle.h>
+#include <Inventor/nodes/SoFont.h>
+#include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoMaterialBinding.h>
+#include <Inventor/nodes/SoScale.h>
+#include <Inventor/nodes/SoSeparator.h>
 
 #include <App/Document.h>
 #include <App/Datums.h>
@@ -44,11 +44,13 @@ using namespace Gui;
 
 PROPERTY_SOURCE(Gui::ViewProviderDatum, Gui::ViewProviderGeometryObject)
 
-ViewProviderDatum::ViewProviderDatum() {
+ViewProviderDatum::ViewProviderDatum()
+{
     // Set default color for origin (light-blue)
     ShapeAppearance.setDiffuseColor(ViewProviderCoordinateSystem::defaultColor);
     Transparency.setValue(0);
-    BoundingBox.setStatus(App::Property::Hidden, true); // Hide Boundingbox from the user due to it doesn't make sense
+    BoundingBox.setStatus(App::Property::Hidden, true);  // Hide Boundingbox from the user due to it
+                                                         // doesn't make sense
 
     // Create node for scaling the origin
     soScale = new SoShapeScale();
@@ -61,7 +63,8 @@ ViewProviderDatum::ViewProviderDatum() {
 }
 
 
-ViewProviderDatum::~ViewProviderDatum() {
+ViewProviderDatum::~ViewProviderDatum()
+{
     pRoot->unref();
 }
 
@@ -84,7 +87,9 @@ void ViewProviderDatum::attach(App::DocumentObject* pcObject)
 
     // Setup font size
     auto font = new SoFont();
-    static const float size = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")->GetFloat("DatumFontSize", 15.0);
+    static const float size = App::GetApplication()
+                                  .GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")
+                                  ->GetFloat("DatumFontSize", 15.0);
     font->size.setValue(size);
     sep->addChild(font);
 
@@ -114,7 +119,7 @@ void ViewProviderDatum::attach(App::DocumentObject* pcObject)
     // Style for hidden lines
     style = new SoDrawStyle();
     style->lineWidth = lineThickness;
-    style->linePattern.setValue(0xFF00); // (dash-skip)
+    style->linePattern.setValue(0xFF00);  // (dash-skip)
     hidden->addChild(style);
 
     // Hidden lines
@@ -140,13 +145,14 @@ void ViewProviderDatum::setTemporaryScale(double factor)
 void ViewProviderDatum::resetTemporarySize()
 {
     float sz = App::GetApplication()
-        .GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")
-        ->GetFloat("LocalCoordinateSystemSize", 1.0);  // NOLINT
+                   .GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")
+                   ->GetFloat("LocalCoordinateSystemSize", 1.0);  // NOLINT
 
     soScale->scaleFactor = sz;
 }
 
-void ViewProviderDatum::onChanged(const App::Property* prop) {
+void ViewProviderDatum::onChanged(const App::Property* prop)
+{
     ViewProviderGeometryObject::onChanged(prop);
 }
 
@@ -166,8 +172,9 @@ void ViewProviderDatum::setDisplayMode(const char* ModeName)
     ViewProviderGeometryObject::setDisplayMode(ModeName);
 }
 
-bool ViewProviderDatum::onDelete(const std::vector<std::string>&) {
-    auto feat = static_cast <App::DatumElement*>(getObject());
+bool ViewProviderDatum::onDelete(const std::vector<std::string>&)
+{
+    auto feat = static_cast<App::DatumElement*>(getObject());
     // Forbid deletion if there is an origin this feature belongs to
     return !feat->getLCS();
 }

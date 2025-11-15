@@ -23,7 +23,7 @@
  ****************************************************************************/
 
 #if defined(__MINGW32__)
-#define WNT  // avoid conflict with GUID
+# define WNT  // avoid conflict with GUID
 #endif
 #include <Interface_Static.hxx>
 #include <Quantity_ColorRGBA.hxx>
@@ -106,15 +106,17 @@ ImportOCAFOptions ImportOCAF2::customImportOptions()
     defaultOptions.expandCompound = settings.getExpandCompound();
     defaultOptions.mode = static_cast<int>(settings.getImportMode());
 
-    auto hGrp =
-        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    auto hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/View"
+    );
     defaultOptions.defaultFaceColor.setPackedValue(
-        hGrp->GetUnsigned("DefaultShapeColor", defaultOptions.defaultFaceColor.getPackedValue()));
+        hGrp->GetUnsigned("DefaultShapeColor", defaultOptions.defaultFaceColor.getPackedValue())
+    );
     defaultOptions.defaultFaceColor.a = 1.0F;
 
     defaultOptions.defaultEdgeColor.setPackedValue(
-        hGrp->GetUnsigned("DefaultShapeLineColor",
-                          defaultOptions.defaultEdgeColor.getPackedValue()));
+        hGrp->GetUnsigned("DefaultShapeLineColor", defaultOptions.defaultEdgeColor.getPackedValue())
+    );
     defaultOptions.defaultEdgeColor.a = 1.0F;
 
     return defaultOptions;
@@ -154,8 +156,9 @@ void ImportOCAF2::setMode(int m)
 
 static void setPlacement(App::PropertyPlacement* prop, const TopoDS_Shape& shape)
 {
-    prop->setValue(Base::Placement(Part::TopoShape::convert(shape.Location().Transformation()))
-                   * prop->getValue());
+    prop->setValue(
+        Base::Placement(Part::TopoShape::convert(shape.Location().Transformation())) * prop->getValue()
+    );
 }
 
 std::string ImportOCAF2::getLabelName(TDF_Label label)
@@ -238,8 +241,7 @@ bool ImportOCAF2::getColor(const TopoDS_Shape& shape, Info& info, bool check, bo
     return ret;
 }
 
-App::DocumentObject*
-ImportOCAF2::expandShape(App::Document* doc, TDF_Label label, const TopoDS_Shape& shape)
+App::DocumentObject* ImportOCAF2::expandShape(App::Document* doc, TDF_Label label, const TopoDS_Shape& shape)
 {
     if (shape.IsNull() || !TopExp_Explorer(shape, TopAbs_VERTEX).More()) {
         return nullptr;
@@ -276,11 +278,13 @@ ImportOCAF2::expandShape(App::Document* doc, TDF_Label label, const TopoDS_Shape
     return info.obj;
 }
 
-bool ImportOCAF2::createObject(App::Document* doc,
-                               TDF_Label label,
-                               const TopoDS_Shape& shape,
-                               Info& info,
-                               bool newDoc)
+bool ImportOCAF2::createObject(
+    App::Document* doc,
+    TDF_Label label,
+    const TopoDS_Shape& shape,
+    Info& info,
+    bool newDoc
+)
 {
     if (shape.IsNull() || !TopExp_Explorer(shape, TopAbs_VERTEX).More()) {
         FC_WARN(Tools::labelName(label) << " has empty shape");
@@ -451,24 +455,26 @@ App::Document* ImportOCAF2::getDocument(App::Document* doc, TDF_Label label)
     return doc;
 }
 
-bool ImportOCAF2::createGroup(App::Document* doc,
-                              Info& info,
-                              const TopoDS_Shape& shape,
-                              std::vector<App::DocumentObject*>& children,
-                              const boost::dynamic_bitset<>& visibilities,
-                              bool canReduce)
+bool ImportOCAF2::createGroup(
+    App::Document* doc,
+    Info& info,
+    const TopoDS_Shape& shape,
+    std::vector<App::DocumentObject*>& children,
+    const boost::dynamic_bitset<>& visibilities,
+    bool canReduce
+)
 {
     assert(children.size() == visibilities.size());
     if (children.empty()) {
         return false;
     }
     bool hasColor = getColor(shape, info, false, true);
-    if (canReduce && !hasColor && options.reduceObjects && children.size() == 1
-        && visibilities[0]) {
+    if (canReduce && !hasColor && options.reduceObjects && children.size() == 1 && visibilities[0]) {
         info.obj = children.front();
         info.free = true;
-        info.propPlacement =
-            dynamic_cast<App::PropertyPlacement*>(info.obj->getPropertyByName("Placement"));
+        info.propPlacement = dynamic_cast<App::PropertyPlacement*>(
+            info.obj->getPropertyByName("Placement")
+        );
         myCollapsedObjects.emplace(info.obj, info.propPlacement);
         return true;
     }
@@ -557,9 +563,10 @@ App::DocumentObject* ImportOCAF2::loadShapes()
         ret->recomputeFeature(true);
     }
     if (options.merge && ret && !ret->isDerivedFrom<Part::Feature>()) {
-        auto shape = Part::Feature::getTopoShape(ret,
-                                                 Part::ShapeOption::ResolveLink
-                                                     | Part::ShapeOption::Transform);
+        auto shape = Part::Feature::getTopoShape(
+            ret,
+            Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform
+        );
         auto feature = pDocument->addObject<Part::Feature>("Feature");
         auto name = Tools::labelName(pDoc->Main());
         feature->Label.setValue(name.empty() ? default_name.c_str() : name.c_str());
@@ -580,9 +587,7 @@ App::DocumentObject* ImportOCAF2::loadShapes()
     return ret;
 }
 
-void ImportOCAF2::getSHUOColors(TDF_Label label,
-                                std::map<std::string, Base::Color>& colors,
-                                bool appendFirst)
+void ImportOCAF2::getSHUOColors(TDF_Label label, std::map<std::string, Base::Color>& colors, bool appendFirst)
 {
     TDF_AttributeSequence seq;
     if (label.IsNull() || !aShapeTool->GetAllComponentSHUO(label, seq)) {
@@ -646,11 +651,13 @@ void ImportOCAF2::getSHUOColors(TDF_Label label,
     }
 }
 
-App::DocumentObject* ImportOCAF2::loadShape(App::Document* doc,
-                                            TDF_Label label,
-                                            const TopoDS_Shape& shape,
-                                            bool baseOnly,
-                                            bool newDoc)
+App::DocumentObject* ImportOCAF2::loadShape(
+    App::Document* doc,
+    TDF_Label label,
+    const TopoDS_Shape& shape,
+    bool baseOnly,
+    bool newDoc
+)
 {
     if (shape.IsNull()) {
         return nullptr;
@@ -736,11 +743,13 @@ struct ChildInfo
     TopoDS_Shape shape;
 };
 
-bool ImportOCAF2::createAssembly(App::Document* _doc,
-                                 TDF_Label label,
-                                 const TopoDS_Shape& shape,
-                                 Info& info,
-                                 bool newDoc)
+bool ImportOCAF2::createAssembly(
+    App::Document* _doc,
+    TDF_Label label,
+    const TopoDS_Shape& shape,
+    Info& info,
+    bool newDoc
+)
 {
     (void)label;
 
@@ -788,8 +797,7 @@ bool ImportOCAF2::createAssembly(App::Document* _doc,
 
         childInfo.vis.push_back(vis);
         childInfo.labels.push_back(childLabel);
-        childInfo.plas.emplace_back(
-            Part::TopoShape::convert(childShape.Location().Transformation()));
+        childInfo.plas.emplace_back(Part::TopoShape::convert(childShape.Location().Transformation()));
         Quantity_ColorRGBA aColor;
         if (aColorTool->GetColor(childShape, XCAFDoc_ColorSurf, aColor)) {
             childInfo.colors[childInfo.plas.size() - 1] = Tools::convertColor(aColor);
@@ -867,9 +875,7 @@ bool ImportOCAF2::createAssembly(App::Document* _doc,
 
 // ----------------------------------------------------------------------------
 
-ImportOCAFExt::ImportOCAFExt(Handle(TDocStd_Document) hStdDoc,
-                             App::Document* doc,
-                             const std::string& name)
+ImportOCAFExt::ImportOCAFExt(Handle(TDocStd_Document) hStdDoc, App::Document* doc, const std::string& name)
     : ImportOCAF2(hStdDoc, doc, name)
 {}
 

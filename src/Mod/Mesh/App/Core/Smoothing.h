@@ -110,10 +110,12 @@ public:
 
 protected:
     void Umbrella(const MeshRefPointToPoints&, const MeshRefPointToFacets&, double);
-    void Umbrella(const MeshRefPointToPoints&,
-                  const MeshRefPointToFacets&,
-                  double,
-                  const std::vector<PointIndex>&);
+    void Umbrella(
+        const MeshRefPointToPoints&,
+        const MeshRefPointToFacets&,
+        double,
+        const std::vector<PointIndex>&
+    );
 
 private:
     double lambda {0.6307};
@@ -151,9 +153,11 @@ public:
     void SmoothPoints(unsigned int, const std::vector<PointIndex>&) override;
 
 private:
-    void UpdatePoints(const MeshRefFacetToFacets&,
-                      const MeshRefPointToFacets&,
-                      const std::vector<PointIndex>&);
+    void UpdatePoints(
+        const MeshRefFacetToFacets&,
+        const MeshRefPointToFacets&,
+        const std::vector<PointIndex>&
+    );
 
 private:
     int weights {1};

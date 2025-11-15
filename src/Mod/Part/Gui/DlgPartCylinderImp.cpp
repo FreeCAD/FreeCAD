@@ -30,9 +30,8 @@
 using namespace PartGui;
 
 DlgPartCylinderImp::DlgPartCylinderImp(QWidget* parent, Qt::WindowFlags fl)
-  : Gui::LocationDialogUiImp(new Ui_DlgPartCylinder, parent, fl)
-{
-}
+    : Gui::LocationDialogUiImp(new Ui_DlgPartCylinder, parent, fl)
+{}
 
 /*
  *  Destroys the object and frees any allocated resources
@@ -41,7 +40,7 @@ DlgPartCylinderImp::~DlgPartCylinderImp() = default;
 
 Ui_DlgPartCylinderPtr DlgPartCylinderImp::getUi() const
 {
-    return boost::any_cast< Ui_DlgPartCylinderPtr >(ui->get());
+    return boost::any_cast<Ui_DlgPartCylinderPtr>(ui->get());
 }
 
 double DlgPartCylinderImp::getRadius() const

@@ -20,7 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <Inventor/nodes/SoAnnotation.h>
+#include <Inventor/nodes/SoAnnotation.h>
 
 #include <App/Document.h>
 #include <Base/ServiceProvider.h>
@@ -41,9 +41,9 @@ using namespace PartDesignGui;
 PROPERTY_SOURCE(PartDesignGui::ViewProviderSketchBased, PartDesignGui::ViewProvider)
 
 
-ViewProviderSketchBased::ViewProviderSketchBased() :
-    pcProfileToggle(new SoToggleSwitch),
-    pcProfileShape(new PartGui::SoPreviewShape)
+ViewProviderSketchBased::ViewProviderSketchBased()
+    : pcProfileToggle(new SoToggleSwitch)
+    , pcProfileShape(new PartGui::SoPreviewShape)
 {
     auto annotation = new Gui::So3DAnnotation;
     annotation->addChild(pcProfileShape);
@@ -61,20 +61,24 @@ ViewProviderSketchBased::ViewProviderSketchBased() :
     updateProfileVisibility();
 
     auto* styleParametersManager = Base::provideService<Gui::StyleParameters::ParameterManager>();
-    pcProfileShape->transparency = 1.0F - static_cast<float>(
-        styleParametersManager->resolve(StyleParameters::PreviewProfileOpacity).value);
+    pcProfileShape->transparency = 1.0F
+        - static_cast<float>(styleParametersManager->resolve(StyleParameters::PreviewProfileOpacity)
+                                 .value);
     pcProfileShape->lineWidth = static_cast<float>(
-        styleParametersManager->resolve(StyleParameters::PreviewProfileLineWidth).value);
+        styleParametersManager->resolve(StyleParameters::PreviewProfileLineWidth).value
+    );
 }
 
 ViewProviderSketchBased::~ViewProviderSketchBased() = default;
 
 
-std::vector<App::DocumentObject*> ViewProviderSketchBased::claimChildren() const {
+std::vector<App::DocumentObject*> ViewProviderSketchBased::claimChildren() const
+{
     std::vector<App::DocumentObject*> temp;
     App::DocumentObject* sketch = getObject<PartDesign::ProfileBased>()->Profile.getValue();
-    if (sketch && !sketch->isDerivedFrom<PartDesign::Feature>())
+    if (sketch && !sketch->isDerivedFrom<PartDesign::Feature>()) {
         temp.push_back(sketch);
+    }
 
     return temp;
 }
@@ -100,7 +104,9 @@ void ViewProviderSketchBased::updateProfileShape()
     auto profileShape = profileBased->getTopoShapeVerifiedFace(true);
 
     // set the correct coordinate space for the profile shape
-    profileShape.setPlacement(profileShape.getPlacement() * profileBased->Placement.getValue().inverse());
+    profileShape.setPlacement(
+        profileShape.getPlacement() * profileBased->Placement.getValue().inverse()
+    );
 
     updatePreviewShape(profileShape, pcProfileShape);
 }
@@ -117,7 +123,6 @@ void ViewProviderSketchBased::updateData(const App::Property* prop)
     if (prop == &profileBased->Profile) {
         updateProfileShape();
     }
-
 }
 void ViewProviderSketchBased::updatePreview()
 {

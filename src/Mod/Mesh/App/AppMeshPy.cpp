@@ -59,69 +59,78 @@ public:
     Module()
         : Py::ExtensionModule<Module>("Mesh")
     {
-        add_varargs_method("read",
-                           &Module::read,
-                           "Read a mesh from a file and returns a Mesh object.");
-        add_varargs_method("open",
-                           &Module::open,
-                           "open(string)\n"
-                           "Create a new document and a Mesh feature to load the file into\n"
-                           "the document.");
-        add_varargs_method("insert",
-                           &Module::importer,
-                           "insert(string|mesh,[string])\n"
-                           "Load or insert a mesh into the given or active document.");
-        add_keyword_method("export",
-                           &Module::exporter,
-                           "export(objects, filename, [tolerance=0.1, exportAmfCompressed=True])\n"
-                           "Export a list of objects into a single file identified by filename.\n"
-                           "tolerance is in mm and specifies the maximum acceptable deviation\n"
-                           "between the specified objects and the exported mesh.\n"
-                           "exportAmfCompressed specifies whether exported AMF files should be\n"
-                           "compressed.\n");
-        add_varargs_method("show",
-                           &Module::show,
-                           "show(shape,[string]) -- Add the mesh to the active document or create "
-                           "one if no document exists.  Returns document object.");
+        add_varargs_method("read", &Module::read, "Read a mesh from a file and returns a Mesh object.");
+        add_varargs_method(
+            "open",
+            &Module::open,
+            "open(string)\n"
+            "Create a new document and a Mesh feature to load the file into\n"
+            "the document."
+        );
+        add_varargs_method(
+            "insert",
+            &Module::importer,
+            "insert(string|mesh,[string])\n"
+            "Load or insert a mesh into the given or active document."
+        );
+        add_keyword_method(
+            "export",
+            &Module::exporter,
+            "export(objects, filename, [tolerance=0.1, exportAmfCompressed=True])\n"
+            "Export a list of objects into a single file identified by filename.\n"
+            "tolerance is in mm and specifies the maximum acceptable deviation\n"
+            "between the specified objects and the exported mesh.\n"
+            "exportAmfCompressed specifies whether exported AMF files should be\n"
+            "compressed.\n"
+        );
+        add_varargs_method(
+            "show",
+            &Module::show,
+            "show(shape,[string]) -- Add the mesh to the active document or create "
+            "one if no document exists.  Returns document object."
+        );
         add_varargs_method("createBox", &Module::createBox, "Create a solid mesh box");
         add_varargs_method("createPlane", &Module::createPlane, "Create a mesh XY plane normal +Z");
         add_varargs_method("createSphere", &Module::createSphere, "Create a tessellated sphere");
-        add_varargs_method("createEllipsoid",
-                           &Module::createEllipsoid,
-                           "Create a tessellated ellipsoid");
-        add_varargs_method("createCylinder",
-                           &Module::createCylinder,
-                           "Create a tessellated cylinder");
+        add_varargs_method("createEllipsoid", &Module::createEllipsoid, "Create a tessellated ellipsoid");
+        add_varargs_method("createCylinder", &Module::createCylinder, "Create a tessellated cylinder");
         add_varargs_method("createCone", &Module::createCone, "Create a tessellated cone");
         add_varargs_method("createTorus", &Module::createTorus, "Create a tessellated torus");
-        add_varargs_method("calculateEigenTransform",
-                           &Module::calculateEigenTransform,
-                           "calculateEigenTransform(seq(Base.Vector))\n"
-                           "Calculates the eigen Transformation from a list of points.\n"
-                           "calculate the point's local coordinate system with the center\n"
-                           "of gravity as origin. The local coordinate system is computed\n"
-                           "this way that u has minimum and w has maximum expansion.\n"
-                           "The local coordinate system is right-handed.\n");
-        add_varargs_method("polynomialFit",
-                           &Module::polynomialFit,
-                           "polynomialFit(seq(Base.Vector)) -- Calculates a polynomial fit.");
+        add_varargs_method(
+            "calculateEigenTransform",
+            &Module::calculateEigenTransform,
+            "calculateEigenTransform(seq(Base.Vector))\n"
+            "Calculates the eigen Transformation from a list of points.\n"
+            "calculate the point's local coordinate system with the center\n"
+            "of gravity as origin. The local coordinate system is computed\n"
+            "this way that u has minimum and w has maximum expansion.\n"
+            "The local coordinate system is right-handed.\n"
+        );
+        add_varargs_method(
+            "polynomialFit",
+            &Module::polynomialFit,
+            "polynomialFit(seq(Base.Vector)) -- Calculates a polynomial fit."
+        );
         add_varargs_method(
             "minimumVolumeOrientedBox",
             &Module::minimumVolumeOrientedBox,
             "minimumVolumeOrientedBox(seq(Base.Vector)) -- Calculates the minimum\n"
             "volume oriented box containing all points. The return value is a\n"
             "tuple of seven items:\n"
-            "    center, u, v, w directions and the lengths of the three vectors.\n");
-        initialize("The functions in this module allow working with mesh objects.\n"
-                   "A set of functions are provided for reading in registered mesh\n"
-                   "file formats to either a new or existing document.\n"
-                   "\n"
-                   "open(string) -- Create a new document and a Mesh feature\n"
-                   "                to load the file into the document.\n"
-                   "insert(string, string) -- Create a Mesh feature to load\n"
-                   "                          the file into the given document.\n"
-                   "Mesh() -- Create an empty mesh object.\n"
-                   "\n");
+            "    center, u, v, w directions and the lengths of the three vectors.\n"
+        );
+        initialize(
+            "The functions in this module allow working with mesh objects.\n"
+            "A set of functions are provided for reading in registered mesh\n"
+            "file formats to either a new or existing document.\n"
+            "\n"
+            "open(string) -- Create a new document and a Mesh feature\n"
+            "                to load the file into the document.\n"
+            "insert(string, string) -- Create a Mesh feature to load\n"
+            "                          the file into the given document.\n"
+            "Mesh() -- Create an empty mesh object.\n"
+            "\n"
+        );
     }
 
 private:
@@ -204,28 +213,28 @@ private:
 
         // If tolerance is specified via python interface, use that.
         // If not, use the preference, if that exists, else default to 0.1mm.
-        auto hGrp(App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/Mod/Mesh"));
+        auto hGrp(
+            App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Mesh")
+        );
         auto fTolerance(hGrp->GetFloat("MaxDeviationExport", 0.1F));
 
         int exportAmfCompressed(hGrp->GetBool("ExportAmfCompressed", true));
         bool export3mfModel(hGrp->GetBool("Export3mfModel", true));
 
-        static const std::array<const char*, 5> kwList {"objectList",
-                                                        "filename",
-                                                        "tolerance",
-                                                        "exportAmfCompressed",
-                                                        nullptr};
+        static const std::array<const char*, 5>
+            kwList {"objectList", "filename", "tolerance", "exportAmfCompressed", nullptr};
 
-        if (!Base::Wrapped_ParseTupleAndKeywords(args.ptr(),
-                                                 keywds.ptr(),
-                                                 "Oet|dp",
-                                                 kwList,
-                                                 &objects,
-                                                 "utf-8",
-                                                 &fileNamePy,
-                                                 &fTolerance,
-                                                 &exportAmfCompressed)) {
+        if (!Base::Wrapped_ParseTupleAndKeywords(
+                args.ptr(),
+                keywds.ptr(),
+                "Oet|dp",
+                kwList,
+                &objects,
+                "utf-8",
+                &fileNamePy,
+                &fTolerance,
+                &exportAmfCompressed
+            )) {
             throw Py::Exception();
         }
 
@@ -260,23 +269,27 @@ private:
             std::map<std::string, std::string> meta;
             meta["cad"] = App::Application::Config()["ExeName"] + " "
                 + App::Application::Config()["ExeVersion"];
-            meta[App::Application::Config()["ExeName"] + "-buildRevisionHash"] =
-                App::Application::Config()["BuildRevisionHash"];
+            meta[App::Application::Config()["ExeName"] + "-buildRevisionHash"]
+                = App::Application::Config()["BuildRevisionHash"];
 
             exporter = std::make_unique<ExporterAMF>(outputFileName, meta, exportAmfCompressed);
         }
         else if (exportFormat == MeshIO::ThreeMF) {
             Extension3MFFactory::initialize();
-            exporter = std::make_unique<Exporter3MF>(outputFileName,
-                                                     Extension3MFFactory::createExtensions());
+            exporter = std::make_unique<Exporter3MF>(
+                outputFileName,
+                Extension3MFFactory::createExtensions()
+            );
             dynamic_cast<Exporter3MF*>(exporter.get())->setForceModel(export3mfModel);
         }
         else if (exportFormat != MeshIO::Undefined) {
             exporter = std::make_unique<MergeExporter>(outputFileName, exportFormat);
         }
         else {
-            std::string exStr("Cannot determine the mesh format from the file name.\nSpecify mesh "
-                              "format file extension: '");
+            std::string exStr(
+                "Cannot determine the mesh format from the file name.\nSpecify mesh "
+                "format file extension: '"
+            );
             exStr += outputFileName + "'";
             throw Py::ValueError(exStr.c_str());
         }
@@ -361,12 +374,16 @@ private:
         float hy = y / 2.0F;
 
         std::vector<MeshCore::MeshGeomFacet> TriaList;
-        TriaList.emplace_back(Base::Vector3f(-hx, -hy, 0.0),
-                              Base::Vector3f(hx, hy, 0.0),
-                              Base::Vector3f(-hx, hy, 0.0));
-        TriaList.emplace_back(Base::Vector3f(-hx, -hy, 0.0),
-                              Base::Vector3f(hx, -hy, 0.0),
-                              Base::Vector3f(hx, hy, 0.0));
+        TriaList.emplace_back(
+            Base::Vector3f(-hx, -hy, 0.0),
+            Base::Vector3f(hx, hy, 0.0),
+            Base::Vector3f(-hx, hy, 0.0)
+        );
+        TriaList.emplace_back(
+            Base::Vector3f(-hx, -hy, 0.0),
+            Base::Vector3f(hx, -hy, 0.0),
+            Base::Vector3f(hx, hy, 0.0)
+        );
 
         std::unique_ptr<MeshObject> mesh(new MeshObject);
         mesh->addFacets(TriaList);
@@ -408,13 +425,7 @@ private:
         int closed = 1;
         float edgelen = 1.0F;
         int sampling = 50;
-        if (!PyArg_ParseTuple(args.ptr(),
-                              "|ffifi",
-                              &radius,
-                              &length,
-                              &closed,
-                              &edgelen,
-                              &sampling)) {
+        if (!PyArg_ParseTuple(args.ptr(), "|ffifi", &radius, &length, &closed, &edgelen, &sampling)) {
             throw Py::Exception();
         }
 
@@ -432,14 +443,7 @@ private:
         int closed = 1;
         float edgelen = 1.0F;
         int sampling = 50;
-        if (!PyArg_ParseTuple(args.ptr(),
-                              "|fffifi",
-                              &radius1,
-                              &radius2,
-                              &len,
-                              &closed,
-                              &edgelen,
-                              &sampling)) {
+        if (!PyArg_ParseTuple(args.ptr(), "|fffifi", &radius1, &radius2, &len, &closed, &edgelen, &sampling)) {
             throw Py::Exception();
         }
 
@@ -596,8 +600,7 @@ private:
             throw Py::RuntimeError("Too few points");
         }
 
-        Wm4::Box3d mobox =
-            Wm4::ContMinBox(points.size(), points.data(), 0.001, Wm4::Query::QT_REAL);
+        Wm4::Box3d mobox = Wm4::ContMinBox(points.size(), points.data(), 0.001, Wm4::Query::QT_REAL);
         Py::Tuple result(7);
         Base::Vector3d v;
 

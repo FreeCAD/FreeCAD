@@ -34,7 +34,8 @@ namespace Gui
 
 // Qt treats area as Flag so in theory toolbar could be in multiple areas at once.
 // We don't do that here so simple enum should suffice.
-enum class ToolBarArea {
+enum class ToolBarArea
+{
     NoToolBarArea,
     LeftToolBarArea,
     RightToolBarArea,
@@ -45,25 +46,27 @@ enum class ToolBarArea {
     StatusBarToolBarArea,
 };
 
-class ToolBarAreaWidget : public QWidget
+class ToolBarAreaWidget: public QWidget
 {
     Q_OBJECT
     using inherited = QWidget;
 
 public:
-    ToolBarAreaWidget(QWidget *parent,
-                ToolBarArea area,
-                const ParameterGrp::handle& hParam,
-                boost::signals2::scoped_connection &conn,
-                QTimer *timer = nullptr);
+    ToolBarAreaWidget(
+        QWidget* parent,
+        ToolBarArea area,
+        const ParameterGrp::handle& hParam,
+        boost::signals2::scoped_connection& conn,
+        QTimer* timer = nullptr
+    );
 
-    void addWidget(QWidget *widget);
-    void insertWidget(int index, QWidget *widget);
-    void removeWidget(QWidget *widget);
+    void addWidget(QWidget* widget);
+    void insertWidget(int index, QWidget* widget);
+    void removeWidget(QWidget* widget);
 
     void adjustParent();
 
-    QWidget *widgetAt(int index) const
+    QWidget* widgetAt(int index) const
     {
         auto item = _layout->itemAt(index);
 
@@ -75,7 +78,7 @@ public:
         return _layout->count();
     }
 
-    int indexOf(QWidget *widget) const
+    int indexOf(QWidget* widget) const
     {
         return _layout->indexOf(widget);
     }
@@ -86,13 +89,13 @@ public:
     }
 
     template<class FuncT>
-    void foreachToolBar(FuncT &&func)
+    void foreachToolBar(FuncT&& func)
     {
         for (int i = 0, count = _layout->count(); i < count; ++i) {
             auto toolbar = qobject_cast<QToolBar*>(widgetAt(i));
 
             if (!toolbar || toolbar->objectName().isEmpty()
-                         || toolbar->objectName().startsWith(QStringLiteral("*"))) {
+                || toolbar->objectName().startsWith(QStringLiteral("*"))) {
                 continue;
             }
 
@@ -101,16 +104,16 @@ public:
     }
 
     void saveState();
-    void restoreState(const std::map<int, QToolBar*> &toolbars);
+    void restoreState(const std::map<int, QToolBar*>& toolbars);
 
 private:
-    QHBoxLayout *_layout;
+    QHBoxLayout* _layout;
     QPointer<QTimer> _sizingTimer;
     ParameterGrp::handle _hParam;
-    boost::signals2::scoped_connection &_conn;
+    boost::signals2::scoped_connection& _conn;
     ToolBarArea _area;
 };
 
-}
+}  // namespace Gui
 
 #endif  // GUI_TOOLBARAREAWIDGET_H

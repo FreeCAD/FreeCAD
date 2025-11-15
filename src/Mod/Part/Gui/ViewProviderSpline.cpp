@@ -22,27 +22,27 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <QAction>
-# include <QMenu>
+#include <QAction>
+#include <QMenu>
 
-# include <BRepAdaptor_Curve.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <Geom_BezierCurve.hxx>
-# include <Geom_BezierSurface.hxx>
-# include <Geom_BSplineCurve.hxx>
-# include <Geom_BSplineSurface.hxx>
-# include <gp_Pnt.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Edge.hxx>
-# include <TopoDS_Face.hxx>
-# include <TopoDS_Shape.hxx>
-# include <TopoDS_Shell.hxx>
-# include <TopoDS_Wire.hxx>
-# include <TopExp_Explorer.hxx>
+#include <BRepAdaptor_Curve.hxx>
+#include <BRepAdaptor_Surface.hxx>
+#include <Geom_BezierCurve.hxx>
+#include <Geom_BezierSurface.hxx>
+#include <Geom_BSplineCurve.hxx>
+#include <Geom_BSplineSurface.hxx>
+#include <gp_Pnt.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Edge.hxx>
+#include <TopoDS_Face.hxx>
+#include <TopoDS_Shape.hxx>
+#include <TopoDS_Shell.hxx>
+#include <TopoDS_Wire.hxx>
+#include <TopExp_Explorer.hxx>
 
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoSwitch.h>
+#include <Inventor/nodes/SoCoordinate3.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoSwitch.h>
 
 #include <Gui/ActionFunction.h>
 #include <Gui/BitmapFactory.h>
@@ -78,7 +78,7 @@ EXTENSION_PROPERTY_SOURCE(PartGui::ViewProviderSplineExtension, Gui::ViewProvide
 ViewProviderSplineExtension::ViewProviderSplineExtension()
 {
     initExtensionType(ViewProviderSplineExtension::getExtensionClassTypeId());
-    EXTENSION_ADD_PROPERTY(ControlPoints,(false));
+    EXTENSION_ADD_PROPERTY(ControlPoints, (false));
 }
 
 void ViewProviderSplineExtension::toggleControlPoints(bool on)
@@ -93,9 +93,7 @@ void ViewProviderSplineExtension::extensionSetupContextMenu(QMenu* menu, QObject
     QAction* act = menu->addAction(QObject::tr("Show Control Points"));
     act->setCheckable(true);
     act->setChecked(ControlPoints.getValue());
-    func->toggle(act, [this](bool on) {
-        this->toggleControlPoints(on);
-    });
+    func->toggle(act, [this](bool on) { this->toggleControlPoints(on); });
 }
 
 void ViewProviderSplineExtension::extensionUpdateData(const App::Property* prop)
@@ -134,14 +132,16 @@ void ViewProviderSplineExtension::showControlPoints(bool show, const App::Proper
         pcControlPoints->whichChild = (show ? SO_SWITCH_ALL : SO_SWITCH_NONE);
     }
 
-    if (!show || !pcControlPoints || pcControlPoints->getNumChildren() > 0)
+    if (!show || !pcControlPoints || pcControlPoints->getNumChildren() > 0) {
         return;
+    }
 
     // ask for the property we are interested in
     if (prop && prop->is<Part::PropertyPartShape>()) {
         const TopoDS_Shape& shape = static_cast<const Part::PropertyPartShape*>(prop)->getValue();
-        if (shape.IsNull())
-            return; // empty shape
+        if (shape.IsNull()) {
+            return;  // empty shape
+        }
 
         for (TopExp_Explorer xp(shape, TopAbs_SHELL); xp.More(); xp.Next()) {
             const TopoDS_Shell& shell = TopoDS::Shell(xp.Current());
@@ -171,55 +171,58 @@ void ViewProviderSplineExtension::showControlPoints(bool show, const App::Proper
 void ViewProviderSplineExtension::showControlPointsOfEdge(const TopoDS_Edge& edge)
 {
     std::list<gp_Pnt> poles, knots;
-    Standard_Integer nCt=0;
+    Standard_Integer nCt = 0;
 
     TopoDS_Edge edge_loc(edge);
     TopLoc_Location aLoc;
     edge_loc.Location(aLoc);
 
     BRepAdaptor_Curve curve(edge_loc);
-    switch (curve.GetType())
-    {
-    case GeomAbs_BezierCurve:
-        {
+    switch (curve.GetType()) {
+        case GeomAbs_BezierCurve: {
             Handle(Geom_BezierCurve) hBezier = curve.Bezier();
             nCt = hBezier->NbPoles();
-            for (Standard_Integer i = 1; i <= nCt; i++)
+            for (Standard_Integer i = 1; i <= nCt; i++) {
                 poles.push_back(hBezier->Pole(i));
+            }
             if (hBezier->IsClosed()) {
                 nCt++;
                 poles.push_back(hBezier->Pole(1));
             }
-        }   break;
-    case GeomAbs_BSplineCurve:
-        {
+        } break;
+        case GeomAbs_BSplineCurve: {
             Handle(Geom_BSplineCurve) hBSpline = curve.BSpline();
             nCt = hBSpline->NbPoles();
-            for (Standard_Integer i = 1; i <= nCt; i++)
+            for (Standard_Integer i = 1; i <= nCt; i++) {
                 poles.push_back(hBSpline->Pole(i));
+            }
             if (hBSpline->IsClosed()) {
                 nCt++;
                 poles.push_back(hBSpline->Pole(1));
             }
-            for (Standard_Integer i = hBSpline->FirstUKnotIndex()+1; i <= hBSpline->LastUKnotIndex()-1; i++)
+            for (Standard_Integer i = hBSpline->FirstUKnotIndex() + 1;
+                 i <= hBSpline->LastUKnotIndex() - 1;
+                 i++) {
                 knots.push_back(hBSpline->Value(hBSpline->Knot(i)));
-        }   break;
-    default:
-        break;
+            }
+        } break;
+        default:
+            break;
     }
 
-    if (poles.empty())
-        return; // nothing to do
+    if (poles.empty()) {
+        return;  // nothing to do
+    }
 
-    SoCoordinate3 * controlcoords = new SoCoordinate3;
+    SoCoordinate3* controlcoords = new SoCoordinate3;
     controlcoords->point.setNum(nCt + knots.size());
 
-    int index=0;
+    int index = 0;
     SbVec3f* verts = controlcoords->point.startEditing();
-    for (const auto & pole : poles) {
+    for (const auto& pole : poles) {
         verts[index++].setValue((float)pole.X(), (float)pole.Y(), (float)pole.Z());
     }
-    for (const auto & knot : knots) {
+    for (const auto& knot : knots) {
         verts[index++].setValue((float)knot.X(), (float)knot.Y(), (float)knot.Z());
     }
     controlcoords->point.finishEditing();
@@ -239,66 +242,68 @@ void ViewProviderSplineExtension::showControlPointsOfEdge(const TopoDS_Edge& edg
 void ViewProviderSplineExtension::showControlPointsOfFace(const TopoDS_Face& face)
 {
     std::list<gp_Pnt> knots;
-    std::vector<std::vector<gp_Pnt> > poles;
-    Standard_Integer nCtU=0, nCtV=0;
+    std::vector<std::vector<gp_Pnt>> poles;
+    Standard_Integer nCtU = 0, nCtV = 0;
 
     TopoDS_Face face_loc(face);
     TopLoc_Location aLoc;
     face_loc.Location(aLoc);
 
     BRepAdaptor_Surface surface(face_loc);
-    switch (surface.GetType())
-    {
-    case GeomAbs_BezierSurface:
-        {
+    switch (surface.GetType()) {
+        case GeomAbs_BezierSurface: {
             Handle(Geom_BezierSurface) hBezier = surface.Bezier();
             nCtU = hBezier->NbUPoles();
             nCtV = hBezier->NbVPoles();
             poles.resize(nCtU);
             for (Standard_Integer u = 1; u <= nCtU; u++) {
-                poles[u-1].resize(nCtV);
-                for (Standard_Integer v = 1; v <= nCtV; v++)
-                    poles[u-1][v-1] = hBezier->Pole(u, v);
+                poles[u - 1].resize(nCtV);
+                for (Standard_Integer v = 1; v <= nCtV; v++) {
+                    poles[u - 1][v - 1] = hBezier->Pole(u, v);
+                }
             }
-        }   break;
-    case GeomAbs_BSplineSurface:
-        {
+        } break;
+        case GeomAbs_BSplineSurface: {
             Handle(Geom_BSplineSurface) hBSpline = surface.BSpline();
             nCtU = hBSpline->NbUPoles();
             nCtV = hBSpline->NbVPoles();
             poles.resize(nCtU);
             for (Standard_Integer u = 1; u <= nCtU; u++) {
-                poles[u-1].resize(nCtV);
-                for (Standard_Integer v = 1; v <= nCtV; v++)
-                    poles[u-1][v-1] = hBSpline->Pole(u, v);
+                poles[u - 1].resize(nCtV);
+                for (Standard_Integer v = 1; v <= nCtV; v++) {
+                    poles[u - 1][v - 1] = hBSpline->Pole(u, v);
+                }
             }
 
-            //Standard_Integer nKnU = hBSpline->NbUKnots();
-            //Standard_Integer nKnV = hBSpline->NbVKnots();
+            // Standard_Integer nKnU = hBSpline->NbUKnots();
+            // Standard_Integer nKnV = hBSpline->NbVKnots();
             for (Standard_Integer u = 1; u <= hBSpline->NbUKnots(); u++) {
-                for (Standard_Integer v = 1; v <= hBSpline->NbVKnots(); v++)
+                for (Standard_Integer v = 1; v <= hBSpline->NbVKnots(); v++) {
                     knots.push_back(hBSpline->Value(hBSpline->UKnot(u), hBSpline->VKnot(v)));
+                }
             }
-        }   break;
-    default:
-        break;
+        } break;
+        default:
+            break;
     }
 
-    if (poles.empty())
-        return; // nothing to do
+    if (poles.empty()) {
+        return;  // nothing to do
+    }
 
-    SoCoordinate3 * coords = new SoCoordinate3;
-    coords->point.setNum((static_cast<float>(nCtU) * static_cast<float>(nCtV)) +
-                         static_cast<float>(knots.size()));
+    SoCoordinate3* coords = new SoCoordinate3;
+    coords->point.setNum(
+        (static_cast<float>(nCtU) * static_cast<float>(nCtV)) + static_cast<float>(knots.size())
+    );
 
-    int index=0;
+    int index = 0;
     SbVec3f* verts = coords->point.startEditing();
-    for (const auto & pole : poles) {
+    for (const auto& pole : poles) {
         for (const auto& v : pole) {
             verts[index++].setValue((float)v.X(), (float)v.Y(), (float)v.Z());
         }
     }
-    for (const auto & knot : knots) {
+    for (const auto& knot : knots) {
         verts[index++].setValue((float)knot.X(), (float)knot.Y(), (float)knot.Z());
     }
     coords->point.finishEditing();
@@ -308,10 +313,10 @@ void ViewProviderSplineExtension::showControlPointsOfFace(const TopoDS_Face& fac
     control->numPolesU = nCtU;
     control->numPolesV = nCtV;
 
-    //if (knots.size() > 0) {
-    //    control->numKnotsU = nKnU;
-    //    control->numKnotsV = nKnV;
-    //}
+    // if (knots.size() > 0) {
+    //     control->numKnotsU = nKnU;
+    //     control->numKnotsV = nKnV;
+    // }
 
     SoSeparator* nodes = new SoSeparator();
     nodes->addChild(coords);
@@ -320,9 +325,13 @@ void ViewProviderSplineExtension::showControlPointsOfFace(const TopoDS_Face& fac
     pcControlPoints->addChild(nodes);
 }
 
-namespace Gui {
-    EXTENSION_PROPERTY_SOURCE_TEMPLATE(PartGui::ViewProviderSplineExtensionPython, PartGui::ViewProviderSplineExtension)
+namespace Gui
+{
+EXTENSION_PROPERTY_SOURCE_TEMPLATE(
+    PartGui::ViewProviderSplineExtensionPython,
+    PartGui::ViewProviderSplineExtension
+)
 
 // explicit template instantiation
-    template class PartGuiExport ViewProviderExtensionPythonT<PartGui::ViewProviderSplineExtension>;
-}
+template class PartGuiExport ViewProviderExtensionPythonT<PartGui::ViewProviderSplineExtension>;
+}  // namespace Gui

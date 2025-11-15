@@ -42,10 +42,12 @@ MeshProjection::MeshProjection(const MeshKernel& mesh)
     : kernel(mesh)
 {}
 
-bool MeshProjection::bboxInsideRectangle(const Base::BoundBox3f& bbox,
-                                         const Base::Vector3f& p1,
-                                         const Base::Vector3f& p2,
-                                         const Base::Vector3f& view) const
+bool MeshProjection::bboxInsideRectangle(
+    const Base::BoundBox3f& bbox,
+    const Base::Vector3f& p1,
+    const Base::Vector3f& p2,
+    const Base::Vector3f& view
+) const
 {
     Base::Vector3f dir(p2 - p1);
     Base::Vector3f base(p1), normal(view % dir);
@@ -62,9 +64,11 @@ bool MeshProjection::bboxInsideRectangle(const Base::BoundBox3f& bbox,
     return false;
 }
 
-bool MeshProjection::isPointInsideDistance(const Base::Vector3f& p1,
-                                           const Base::Vector3f& p2,
-                                           const Base::Vector3f& pt) const
+bool MeshProjection::isPointInsideDistance(
+    const Base::Vector3f& p1,
+    const Base::Vector3f& p2,
+    const Base::Vector3f& pt
+) const
 {
     // project point on line
     Base::Vector3f proj, dir(p2 - p1);
@@ -74,10 +78,12 @@ bool MeshProjection::isPointInsideDistance(const Base::Vector3f& p1,
     return (((p1 - proj) * (p2 - proj)) < 0.0F);
 }
 
-bool MeshProjection::connectLines(std::list<std::pair<Base::Vector3f, Base::Vector3f>>& cutLines,
-                                  const Base::Vector3f& startPoint,
-                                  const Base::Vector3f& endPoint,
-                                  std::vector<Base::Vector3f>& polyline) const
+bool MeshProjection::connectLines(
+    std::list<std::pair<Base::Vector3f, Base::Vector3f>>& cutLines,
+    const Base::Vector3f& startPoint,
+    const Base::Vector3f& endPoint,
+    std::vector<Base::Vector3f>& polyline
+) const
 {
     const float fMaxDist = std::sqrt(std::numeric_limits<float>::max());  // max. length of a gap
     const float fMinEps = 1.0e-4F;
@@ -132,13 +138,15 @@ bool MeshProjection::connectLines(std::list<std::pair<Base::Vector3f, Base::Vect
     return true;
 }
 
-bool MeshProjection::projectLineOnMesh(const MeshFacetGrid& grid,
-                                       const Base::Vector3f& v1,
-                                       FacetIndex f1,
-                                       const Base::Vector3f& v2,
-                                       FacetIndex f2,
-                                       const Base::Vector3f& vd,
-                                       std::vector<Base::Vector3f>& polyline)
+bool MeshProjection::projectLineOnMesh(
+    const MeshFacetGrid& grid,
+    const Base::Vector3f& v1,
+    FacetIndex f1,
+    const Base::Vector3f& v2,
+    FacetIndex f2,
+    const Base::Vector3f& vd,
+    std::vector<Base::Vector3f>& polyline
+)
 {
     Base::Vector3f dir(v2 - v1);
     Base::Vector3f base(v1), normal(vd % dir);

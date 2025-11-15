@@ -61,10 +61,12 @@ public:
 
     void BeginSimulation(const Part::TopoShape& stock, float resolution);
     void resetSimulation();
-    void addTool(const std::vector<float>& toolProfilePoints,
-                 int toolNumber,
-                 float diameter,
-                 float resolution);
+    void addTool(
+        const std::vector<float>& toolProfilePoints,
+        int toolNumber,
+        float diameter,
+        float resolution
+    );
     void SetBaseShape(const Part::TopoShape& baseShape, float resolution);
     void AddCommand(Command* cmd);
 

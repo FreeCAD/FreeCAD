@@ -23,7 +23,7 @@
  ****************************************************************************/
 
 #if defined(__MINGW32__)
-#define WNT  // avoid conflict with GUID
+# define WNT  // avoid conflict with GUID
 #endif
 #include <Quantity_ColorRGBA.hxx>
 #include <Standard_Failure.hxx>
@@ -91,10 +91,12 @@ ExportOCAFOptions ExportOCAF2::customExportOptions()
     defaultOptions.exportHidden = settings.getExportHiddenObject();
     defaultOptions.keepPlacement = settings.getExportKeepPlacement();
 
-    auto handle =
-        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    auto handle = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/View"
+    );
     defaultOptions.defaultColor.setPackedValue(
-        handle->GetUnsigned("DefaultShapeColor", defaultOptions.defaultColor.getPackedValue()));
+        handle->GetUnsigned("DefaultShapeColor", defaultOptions.defaultColor.getPackedValue())
+    );
     defaultOptions.defaultColor.a = 1;
 
     return defaultOptions;
@@ -114,8 +116,10 @@ void ExportOCAF2::setName(TDF_Label label, App::DocumentObject* obj, const char*
 // Similar to XCAFDoc_ShapeTool::FindSHUO but return only main SHUO, i.e. SHUO
 // with no upper_usage. It should not be necessary if we strictly export from
 // bottom up, but let's make sure of it.
-static Standard_Boolean FindSHUO(const TDF_LabelSequence& theLabels,
-                                 Handle(XCAFDoc_GraphNode) & theSHUOAttr)
+static Standard_Boolean FindSHUO(
+    const TDF_LabelSequence& theLabels,
+    Handle(XCAFDoc_GraphNode) & theSHUOAttr
+)
 {
     assert(theLabels.Length() > 1);
     theSHUOAttr.Nullify();
@@ -154,8 +158,7 @@ static Standard_Boolean FindSHUO(const TDF_LabelSequence& theLabels,
     return (!theSHUOAttr.IsNull());
 }
 
-TDF_Label
-ExportOCAF2::findComponent(const char* subname, TDF_Label label, TDF_LabelSequence& labels)
+TDF_Label ExportOCAF2::findComponent(const char* subname, TDF_Label label, TDF_LabelSequence& labels)
 {
     const char* dot = strchr(subname, '.');
     if (!dot) {
@@ -198,12 +201,14 @@ ExportOCAF2::findComponent(const char* subname, TDF_Label label, TDF_LabelSequen
     return {};
 }
 
-void ExportOCAF2::setupObject(TDF_Label label,
-                              App::DocumentObject* obj,
-                              const Part::TopoShape& shape,
-                              const std::string& prefix,
-                              const char* name,
-                              bool force)
+void ExportOCAF2::setupObject(
+    TDF_Label label,
+    App::DocumentObject* obj,
+    const Part::TopoShape& shape,
+    const std::string& prefix,
+    const char* name,
+    bool force
+)
 {
     setName(label, obj, name);
     if (aShapeTool->IsComponent(label)) {
@@ -303,8 +308,10 @@ void ExportOCAF2::setupObject(TDF_Label label,
                 // OCCT code, XCAFDoc_ShapeTool.cxx and STEPCAFControl_Writer.cxx.
                 if (!warned) {
                     warned = true;
-                    FC_WARN("Current OCCT does not support element color override, for object "
-                            << obj->getFullName());
+                    FC_WARN(
+                        "Current OCCT does not support element color override, for object "
+                        << obj->getFullName()
+                    );
                 }
                 // continue;
             }
@@ -376,10 +383,12 @@ void ExportOCAF2::exportObjects(std::vector<App::DocumentObject*>& objs, const c
     aShapeTool->UpdateAssemblies();
 }
 
-TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
-                                    const char* sub,
-                                    TDF_Label parent,
-                                    const char* name)
+TDF_Label ExportOCAF2::exportObject(
+    App::DocumentObject* parentObj,
+    const char* sub,
+    TDF_Label parent,
+    const char* name
+)
 {
     App::DocumentObject* obj;
     auto shape = Part::Feature::getTopoShape(
@@ -387,7 +396,8 @@ TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
         (sub ? Part::ShapeOption::NoFlag : Part::ShapeOption::Transform),
         sub,
         nullptr,
-        &obj);
+        &obj
+    );
     if (!obj || shape.isNull()) {
         if (obj) {
             FC_WARN(obj->getFullName() << " has null shape");
@@ -431,9 +441,10 @@ TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
     auto linked = obj;
     auto linkedShape = shape;
     while (true) {
-        auto s = Part::Feature::getTopoShape(linked,
-                                             Part::ShapeOption::ResolveLink
-                                                 | Part::ShapeOption::Transform);
+        auto s = Part::Feature::getTopoShape(
+            linked,
+            Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform
+        );
         if (s.isNull() || !s.getShape().IsPartner(shape.getShape())) {
             break;
         }
@@ -563,8 +574,8 @@ TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
             continue;
         }
 
-        TDF_Label childLabel =
-            exportObject(obj, subobj.c_str(), label, linkArray ? childName.c_str() : nullptr);
+        TDF_Label childLabel
+            = exportObject(obj, subobj.c_str(), label, linkArray ? childName.c_str() : nullptr);
         if (childLabel.IsNull()) {
             continue;
         }
@@ -584,8 +595,7 @@ TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
 
             // First, check if a color was already set (e.g., for a sub-element).
             Quantity_ColorRGBA existingColor;
-            bool hasExplicitColor =
-                aColorTool->GetColor(childLabel, XCAFDoc_ColorGen, existingColor)
+            bool hasExplicitColor = aColorTool->GetColor(childLabel, XCAFDoc_ColorGen, existingColor)
                 || aColorTool->GetColor(childLabel, XCAFDoc_ColorSurf, existingColor)
                 || aColorTool->GetColor(childLabel, XCAFDoc_ColorCurv, existingColor);
 

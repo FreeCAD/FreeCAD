@@ -30,7 +30,8 @@
 #include <string>
 #include <vector>
 
-namespace App {
+namespace App
+{
 class Property;
 }
 
@@ -46,7 +47,7 @@ class ViewProviderDocumentObject;
  * whenever something happens to a document, like creation, destruction, adding or
  * removing viewproviders or when viewprovider property changes. This is the equivalent to the app
  * python document observer
-*/
+ */
 class GuiExport DocumentObserverPython
 {
 
@@ -86,12 +87,14 @@ private:
     Py::Object inst;
     static std::vector<DocumentObserverPython*> _instances;
 
-    using Connection = struct PythonObject {
-       boost::signals2::scoped_connection slot;
-       Py::Object py;
-       PyObject* ptr() {
-           return py.ptr();
-       }
+    using Connection = struct PythonObject
+    {
+        boost::signals2::scoped_connection slot;
+        Py::Object py;
+        PyObject* ptr()
+        {
+            return py.ptr();
+        }
     };
 
     Connection pyCreatedDocument;
@@ -107,6 +110,6 @@ private:
     Connection pyResetEdit;
 };
 
-} //namespace Gui
+}  // namespace Gui
 
-#endif // GUI_DOCUMENTOBSERVERPYTHON_H
+#endif  // GUI_DOCUMENTOBSERVERPYTHON_H

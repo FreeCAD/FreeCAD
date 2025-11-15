@@ -40,13 +40,15 @@ PathSim::~PathSim()
 void PathSim::BeginSimulation(Part::TopoShape* stock, float resolution)
 {
     Base::BoundBox3d bbox = stock->getBoundBox();
-    m_stock = std::make_unique<cStock>(bbox.MinX,
-                                       bbox.MinY,
-                                       bbox.MinZ,
-                                       bbox.LengthX(),
-                                       bbox.LengthY(),
-                                       bbox.LengthZ(),
-                                       resolution);
+    m_stock = std::make_unique<cStock>(
+        bbox.MinX,
+        bbox.MinY,
+        bbox.MinZ,
+        bbox.LengthX(),
+        bbox.LengthY(),
+        bbox.LengthZ(),
+        resolution
+    );
 }
 
 void PathSim::SetToolShape(const TopoDS_Shape& toolShape, float resolution)

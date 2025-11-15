@@ -140,7 +140,7 @@ class IFC_MakeProject:
         )
         return {
             "Pixmap": "IFC",
-            "MenuText": QT_TRANSLATE_NOOP("IFC_MakeProject", "Create IFC Project"),
+            "MenuText": QT_TRANSLATE_NOOP("IFC_MakeProject", "Convert to IFC Project"),
             "ToolTip": tt,
             "Accel": "I, P",
         }

@@ -88,7 +88,8 @@ public:
             &Module::getLocatedTopoShape,
             "Part.TopoShape = Measure.getLocatedTopoShape(DocumentObject, longSubElement) Resolves "
             "the net placement of DocumentObject and returns the object's shape/subshape with the "
-            "net placement applied.  Link scaling operations along the path are also applied.");
+            "net placement applied.  Link scaling operations along the path are also applied."
+        );
         initialize("This is a module for measuring");  // register with Python
     }
     ~Module() override

@@ -172,9 +172,11 @@ public:
         return *_clIter;
     }
     /// Returns iterators pointing to the current facet's neighbours.
-    inline void GetNeighbours(MeshFacetIterator& rclN0,
-                              MeshFacetIterator& rclN1,
-                              MeshFacetIterator& rclN2) const;
+    inline void GetNeighbours(
+        MeshFacetIterator& rclN0,
+        MeshFacetIterator& rclN1,
+        MeshFacetIterator& rclN2
+    ) const;
     /// Sets the iterator to the current facet's neighbour of the side \a usN.
     inline void SetToNeighbour(unsigned short usN);
     /// Returns the property information to the current facet.
@@ -505,9 +507,11 @@ inline unsigned long MeshFacetIterator::GetProperty() const
     return _clIter->_ulProp;
 }
 
-inline void MeshFacetIterator::GetNeighbours(MeshFacetIterator& rclN0,
-                                             MeshFacetIterator& rclN1,
-                                             MeshFacetIterator& rclN2) const
+inline void MeshFacetIterator::GetNeighbours(
+    MeshFacetIterator& rclN0,
+    MeshFacetIterator& rclN1,
+    MeshFacetIterator& rclN2
+) const
 {
     if (_clIter->_aulNeighbours[0] != FACET_INDEX_MAX) {
         rclN0.Set(_clIter->_aulNeighbours[0]);

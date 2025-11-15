@@ -22,20 +22,20 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <BRepBuilderAPI_Transform.hxx>
-# include <BRep_Tool.hxx>
-# include <gp_Ax2.hxx>
-# include <gp_Circ.hxx>
-# include <gp_Dir.hxx>
-# include <gp_Pnt.hxx>
-# include <gp_Trsf.hxx>
-# include <BRepAdaptor_Curve.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <gp_Pln.hxx>
-# include <Geom_Plane.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Face.hxx>
-# include <TopExp_Explorer.hxx>
+#include <BRepBuilderAPI_Transform.hxx>
+#include <BRep_Tool.hxx>
+#include <gp_Ax2.hxx>
+#include <gp_Circ.hxx>
+#include <gp_Dir.hxx>
+#include <gp_Pnt.hxx>
+#include <gp_Trsf.hxx>
+#include <BRepAdaptor_Curve.hxx>
+#include <BRepAdaptor_Surface.hxx>
+#include <gp_Pln.hxx>
+#include <Geom_Plane.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Face.hxx>
+#include <TopExp_Explorer.hxx>
 
 
 #include <Mod/Part/App/PrimitiveFeature.h>
@@ -46,29 +46,39 @@
 #include "DatumFeature.h"
 
 
-
 using namespace Part;
 
 PROPERTY_SOURCE(Part::Mirroring, Part::Feature)
 
 Mirroring::Mirroring()
 {
-    ADD_PROPERTY(Source,(nullptr));
-    ADD_PROPERTY_TYPE(Base,(Base::Vector3d()),"Plane",App::Prop_None,"The base point of the plane");
-    ADD_PROPERTY_TYPE(Normal,(Base::Vector3d(0,0,1)),"Plane",App::Prop_None,"The normal of the plane");
-    ADD_PROPERTY_TYPE(MirrorPlane,(nullptr),"Plane",App::Prop_None,"A reference for the mirroring plane, overrides Base and Normal if set, can be face or circle");
+    ADD_PROPERTY(Source, (nullptr));
+    ADD_PROPERTY_TYPE(Base, (Base::Vector3d()), "Plane", App::Prop_None, "The base point of the plane");
+    ADD_PROPERTY_TYPE(Normal, (Base::Vector3d(0, 0, 1)), "Plane", App::Prop_None, "The normal of the plane");
+    ADD_PROPERTY_TYPE(
+        MirrorPlane,
+        (nullptr),
+        "Plane",
+        App::Prop_None,
+        "A reference for the mirroring plane, overrides Base and Normal if set, can be face or "
+        "circle"
+    );
 }
 
 short Mirroring::mustExecute() const
 {
-    if (Source.isTouched())
+    if (Source.isTouched()) {
         return 1;
-    if (Base.isTouched())
+    }
+    if (Base.isTouched()) {
         return 1;
-    if (Normal.isTouched())
+    }
+    if (Normal.isTouched()) {
         return 1;
-    if (MirrorPlane.isTouched())
+    }
+    if (MirrorPlane.isTouched()) {
         return 1;
+    }
     return 0;
 }
 
@@ -86,22 +96,23 @@ void Mirroring::onChanged(const App::Property* prop)
     if (!isRestoring()) {
         bool needsRecompute = false;
         App::DocumentObject* refObject = MirrorPlane.getValue();
-        if (!refObject){
+        if (!refObject) {
             Base.setStatus(App::Property::ReadOnly, false);
             Normal.setStatus(App::Property::ReadOnly, false);
             if (prop == &Base || prop == &Normal) {
                 needsRecompute = true;
             }
-        } else {
-            if (prop == &MirrorPlane){
+        }
+        else {
+            if (prop == &MirrorPlane) {
                 Base.setStatus(App::Property::ReadOnly, true);
                 Normal.setStatus(App::Property::ReadOnly, true);
                 needsRecompute = true;
             }
         }
-        if (needsRecompute){
+        if (needsRecompute) {
             try {
-                App::DocumentObjectExecReturn *ret = recompute();
+                App::DocumentObjectExecReturn* ret = recompute();
                 delete ret;
             }
             catch (...) {
@@ -111,7 +122,11 @@ void Mirroring::onChanged(const App::Property* prop)
     Part::Feature::onChanged(prop);
 }
 
-void Mirroring::handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop)
+void Mirroring::handleChangedPropertyType(
+    Base::XMLReader& reader,
+    const char* TypeName,
+    App::Property* prop
+)
 {
     if (prop == &Base && strcmp(TypeName, "App::PropertyVector") == 0) {
         App::PropertyVector v;
@@ -132,11 +147,12 @@ void Mirroring::handleChangedPropertyType(Base::XMLReader &reader, const char *T
     }
 }
 
-App::DocumentObjectExecReturn *Mirroring::execute()
+App::DocumentObjectExecReturn* Mirroring::execute()
 {
     App::DocumentObject* link = Source.getValue();
-    if (!link)
+    if (!link) {
         return new App::DocumentObjectExecReturn("No object linked");
+    }
 
     App::DocumentObject* refObject = MirrorPlane.getValue();
 
@@ -149,107 +165,141 @@ App::DocumentObjectExecReturn *Mirroring::execute()
       DatumPlanes, Part::Planes, Origin planes, Faces, Circles
       Can also be App::Links to such objects
     */
-    if (refObject){
-        if (refObject->isDerivedFrom<Part::Plane>() || refObject->isDerivedFrom<App::Plane>() || (strstr(refObject->getNameInDocument(), "Plane")
-                                                                                                                  && refObject->isDerivedFrom<Part::Datum>())) {
+    if (refObject) {
+        if (refObject->isDerivedFrom<Part::Plane>() || refObject->isDerivedFrom<App::Plane>()
+            || (strstr(refObject->getNameInDocument(), "Plane")
+                && refObject->isDerivedFrom<Part::Datum>())) {
             Part::Feature* plane = static_cast<Part::Feature*>(refObject);
             Base::Vector3d base = plane->Placement.getValue().getPosition();
             axbase = gp_Pnt(base.x, base.y, base.z);
             Base::Rotation rot = plane->Placement.getValue().getRotation();
             Base::Vector3d dir;
-            rot.multVec(Base::Vector3d(0,0,1), dir);
+            rot.multVec(Base::Vector3d(0, 0, 1), dir);
             axdir = gp_Dir(dir.x, dir.y, dir.z);
             // reference is an app::link or a part::feature or some subobject
-        } else if (refObject->isDerivedFrom<Part::Feature>() || refObject->isDerivedFrom<App::Link>()) {
-            if (subStrings.size() > 1){
-                throw Base::ValueError(std::string(this->getFullLabel()) + ": Only 1 subobject is supported for Mirror Plane reference, either a plane face or a circle edge.");
-
+        }
+        else if (refObject->isDerivedFrom<Part::Feature>() || refObject->isDerivedFrom<App::Link>()) {
+            if (subStrings.size() > 1) {
+                throw Base::ValueError(
+                    std::string(this->getFullLabel()) + ": Only 1 subobject is supported for Mirror Plane reference, either a plane face or a circle edge."
+                );
             }
             auto linked = MirrorPlane.getValue();
-            bool isFace = false; //will be true if user selected face subobject or if object only has 1 face
-            bool isEdge = false; //will be true if user selected edge subobject or if object only has 1 edge
+            bool isFace = false;  // will be true if user selected face subobject or if object only
+                                  // has 1 face
+            bool isEdge = false;  // will be true if user selected edge subobject or if object only
+                                  // has 1 edge
             TopoDS_Shape shape;
-            if (!subStrings.empty() && subStrings[0].length() > 0){
+            if (!subStrings.empty() && subStrings[0].length() > 0) {
 
-                shape = Feature::getTopoShape(linked,
-                                                 ShapeOption::NeedSubElement
-                                               | ShapeOption::ResolveLink
-                                               | ShapeOption::Transform,
-                                              subStrings[0].c_str()).getShape();
-                            
-                if (strstr(subStrings[0].c_str(), "Face")){
-                    isFace = true; //was face subobject, e.g. Face3
-                } else {
-                    if (strstr(subStrings[0].c_str(), "Edge")){
-                        isEdge = true; //was edge subobject, e.g. Edge7
+                shape = Feature::getTopoShape(
+                            linked,
+                            ShapeOption::NeedSubElement | ShapeOption::ResolveLink
+                                | ShapeOption::Transform,
+                            subStrings[0].c_str()
+                )
+                            .getShape();
+
+                if (strstr(subStrings[0].c_str(), "Face")) {
+                    isFace = true;  // was face subobject, e.g. Face3
+                }
+                else {
+                    if (strstr(subStrings[0].c_str(), "Edge")) {
+                        isEdge = true;  // was edge subobject, e.g. Edge7
                     }
                 }
-            } else {
-                //no subobjects were selected, so this is entire shape of feature
-                shape = Feature::getShape(linked, ShapeOption::ResolveLink | ShapeOption::Transform); 
+            }
+            else {
+                // no subobjects were selected, so this is entire shape of feature
+                shape = Feature::getShape(linked, ShapeOption::ResolveLink | ShapeOption::Transform);
             }
 
-            // if there is only 1 face or 1 edge, then we don't need to force the user to select that face or edge
-            // instead we can infer what was intended
+            // if there is only 1 face or 1 edge, then we don't need to force the user to select
+            // that face or edge instead we can infer what was intended
             int faceCount = Part::TopoShape(shape).countSubShapes(TopAbs_FACE);
             int edgeCount = Part::TopoShape(shape).countSubShapes(TopAbs_EDGE);
 
             TopoDS_Face face;
             TopoDS_Edge edge;
 
-            if (isFace) { //user selected a face, so use shape to get the TopoDS::Face
+            if (isFace) {  // user selected a face, so use shape to get the TopoDS::Face
                 face = TopoDS::Face(shape);
-            } else {
-                if (faceCount == 1) { //entire feature selected, but it only has 1 face, so get that face
-                    TopoDS_Shape tdface = Part::TopoShape(shape).getSubShape(std::string("Face1").c_str());
+            }
+            else {
+                if (faceCount == 1) {  // entire feature selected, but it only has 1 face, so get
+                                       // that face
+                    TopoDS_Shape tdface = Part::TopoShape(shape).getSubShape(
+                        std::string("Face1").c_str()
+                    );
                     face = TopoDS::Face(tdface);
                     isFace = true;
                 }
             }
-            if (!isFace && isEdge){ //don't bother with edge if we already have a face to work with
-                edge = TopoDS::Edge(shape); //isEdge means an edge was selected
-            } else {
-                if (edgeCount == 1){ //we don't have a face yet and there were no edges in the subobject selection
-                    //but since this object only has 1 edge, we use it
-                    TopoDS_Shape tdedge = Part::TopoShape(shape).getSubShape(std::string("Edge1").c_str());
+            if (!isFace && isEdge) {  // don't bother with edge if we already have a face to work with
+                edge = TopoDS::Edge(shape);  // isEdge means an edge was selected
+            }
+            else {
+                if (edgeCount == 1) {  // we don't have a face yet and there were no edges in the
+                                       // subobject selection
+                    // but since this object only has 1 edge, we use it
+                    TopoDS_Shape tdedge = Part::TopoShape(shape).getSubShape(
+                        std::string("Edge1").c_str()
+                    );
                     edge = TopoDS::Edge(tdedge);
                     isEdge = true;
                 }
             }
 
-            if (isFace && face.IsNull()) { //ensure we have a good face to work with
-                throw Base::ValueError(std::string(this->getFullLabel()) + ": Failed to extract mirror plane because face is null");
+            if (isFace && face.IsNull()) {  // ensure we have a good face to work with
+                throw Base::ValueError(
+                    std::string(this->getFullLabel())
+                    + ": Failed to extract mirror plane because face is null"
+                );
             }
-            if (isEdge && edge.IsNull()){ //ensure we have a good edge to work with
-                throw Base::ValueError(std::string(this->getFullLabel()) + ": Failed to extract mirror plane because edge is null");
+            if (isEdge && edge.IsNull()) {  // ensure we have a good edge to work with
+                throw Base::ValueError(
+                    std::string(this->getFullLabel())
+                    + ": Failed to extract mirror plane because edge is null"
+                );
             }
-            if (!isFace && !isEdge){
-                throw Base::ValueError(std::string(this->getFullLabel()) + ": Failed to extract mirror plane, unable to determine which face or edge to use.");
+            if (!isFace && !isEdge) {
+                throw Base::ValueError(
+                    std::string(this->getFullLabel()) + ": Failed to extract mirror plane, unable to determine which face or edge to use."
+                );
             }
 
             if (isFace) {
                 BRepAdaptor_Surface adapt(face);
-                if (adapt.GetType() != GeomAbs_Plane)
-                    throw Base::TypeError(std::string(this->getFullLabel()) + ": Mirror plane face must be planar");
+                if (adapt.GetType() != GeomAbs_Plane) {
+                    throw Base::TypeError(
+                        std::string(this->getFullLabel()) + ": Mirror plane face must be planar"
+                    );
+                }
                 TopExp_Explorer exp;
                 exp.Init(face, TopAbs_VERTEX);
                 if (exp.More()) {
                     axbase = BRep_Tool::Pnt(TopoDS::Vertex(exp.Current()));
                 }
                 axdir = adapt.Plane().Axis().Direction();
-            } else {
-                if (isEdge){
+            }
+            else {
+                if (isEdge) {
                     BRepAdaptor_Curve curve(edge);
                     if (!(curve.GetType() == GeomAbs_Circle)) {
-                        throw Base::TypeError(std::string(this->getFullLabel()) + ": Only circle edge types are supported");
+                        throw Base::TypeError(
+                            std::string(this->getFullLabel()) + ": Only circle edge types are supported"
+                        );
                     }
                     gp_Circ circle = curve.Circle();
                     axdir = circle.Axis().Direction();
                     axbase = circle.Location();
                 }
             }
-        } else {
-            throw Base::ValueError(std::string(this->getFullLabel()) + ": Mirror plane reference must be a face of a feature or a plane object or a circle");
+        }
+        else {
+            throw Base::ValueError(
+                std::string(this->getFullLabel()) + ": Mirror plane reference must be a face of a feature or a plane object or a circle"
+            );
         }
         Base.setValue(axbase.X(), axbase.Y(), axbase.Z());
         Normal.setValue(axdir.X(), axdir.Y(), axdir.Z());
@@ -259,11 +309,12 @@ App::DocumentObjectExecReturn *Mirroring::execute()
     Base::Vector3d norm = Normal.getValue();
 
     try {
-        gp_Ax2 ax2(gp_Pnt(base.x,base.y,base.z), gp_Dir(norm.x,norm.y,norm.z));
+        gp_Ax2 ax2(gp_Pnt(base.x, base.y, base.z), gp_Dir(norm.x, norm.y, norm.z));
         auto shape = Feature::getTopoShape(link, ShapeOption::ResolveLink | ShapeOption::Transform);
-        if (shape.isNull())
+        if (shape.isNull()) {
             Standard_Failure::Raise("Cannot mirror empty shape");
-        this->Shape.setValue(TopoShape(0).makeElementMirror(shape,ax2));
+        }
+        this->Shape.setValue(TopoShape(0).makeElementMirror(shape, ax2));
         copyMaterial(link);
 
         return Part::Feature::execute();

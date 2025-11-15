@@ -34,18 +34,19 @@ std::string GeometryBoolExtensionPy::representation() const
 {
     std::stringstream str;
     bool val = getGeometryBoolExtensionPtr()->getValue();
-    str << "<GeometryBoolExtension (" ;
+    str << "<GeometryBoolExtension (";
 
-    if(!getGeometryBoolExtensionPtr()->getName().empty())
+    if (!getGeometryBoolExtensionPtr()->getName().empty()) {
         str << "\'" << getGeometryBoolExtensionPtr()->getName() << "\', ";
+    }
 
-    str << (val?"True":"False") << ") >";
+    str << (val ? "True" : "False") << ") >";
 
 
     return str.str();
 }
 
-PyObject *GeometryBoolExtensionPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject* GeometryBoolExtensionPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // create a new instance of the python object and the Twin object
     return new GeometryBoolExtensionPy(new GeometryBoolExtension);
@@ -68,17 +69,20 @@ int GeometryBoolExtensionPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
 
     PyErr_Clear();
-    char * pystr;
+    char* pystr;
     if (PyArg_ParseTuple(args, "O!s", &PyBool_Type, &val, &pystr)) {
         this->getGeometryBoolExtensionPtr()->setValue(Base::asBoolean(val));
         this->getGeometryBoolExtensionPtr()->setName(pystr);
         return 0;
     }
 
-    PyErr_SetString(PyExc_TypeError, "GeometryBoolExtension constructor accepts:\n"
-    "-- empty parameter list\n"
-    "-- Boolean\n"
-    "-- Boolean, string\n");
+    PyErr_SetString(
+        PyExc_TypeError,
+        "GeometryBoolExtension constructor accepts:\n"
+        "-- empty parameter list\n"
+        "-- Boolean\n"
+        "-- Boolean, string\n"
+    );
     return -1;
 }
 
@@ -92,7 +96,7 @@ void GeometryBoolExtensionPy::setValue(Py::Boolean value)
     this->getGeometryBoolExtensionPtr()->setValue(value);
 }
 
-PyObject *GeometryBoolExtensionPy::getCustomAttributes(const char* /*attr*/) const
+PyObject* GeometryBoolExtensionPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }

@@ -57,9 +57,7 @@ UrlLabel::~UrlLabel()
 
 void UrlLabel::mouseReleaseEvent(QMouseEvent*)
 {
-    QMessageBox::information(this,
-                             "Browser",
-                             QString("This starts your browser with url %1").arg(_url));
+    QMessageBox::information(this, "Browser", QString("This starts your browser with url %1").arg(_url));
 }
 
 QString UrlLabel::url() const
@@ -177,19 +175,11 @@ void FileChooser::chooseFile()
     QFileDialog::Options dlgOpt = QFileDialog::DontUseNativeDialog;
     QString fn;
     if (mode() == File) {
-        fn = QFileDialog::getOpenFileName(this,
-                                          tr("Select a file"),
-                                          lineEdit->text(),
-                                          _filter,
-                                          0,
-                                          dlgOpt);
+        fn = QFileDialog::getOpenFileName(this, tr("Select a file"), lineEdit->text(), _filter, 0, dlgOpt);
     }
     else {
         QFileDialog::Options option = QFileDialog::ShowDirsOnly | dlgOpt;
-        fn = QFileDialog::getExistingDirectory(this,
-                                               tr("Select a directory"),
-                                               lineEdit->text(),
-                                               option);
+        fn = QFileDialog::getExistingDirectory(this, tr("Select a directory"), lineEdit->text(), option);
     }
 
     if (!fn.isEmpty()) {
@@ -822,13 +812,11 @@ public:
                 }
                 break;
             case 2:
-                if (copy.at(1) == locale.decimalPoint()
-                    && (plus && copy.at(0) == QLatin1Char('+'))) {
+                if (copy.at(1) == locale.decimalPoint() && (plus && copy.at(0) == QLatin1Char('+'))) {
                     state = QValidator::Intermediate;
                     goto end;
                 }
-                if (copy.at(1) == locale.decimalPoint()
-                    && (minus && copy.at(0) == QLatin1Char('-'))) {
+                if (copy.at(1) == locale.decimalPoint() && (minus && copy.at(0) == QLatin1Char('-'))) {
                     state = QValidator::Intermediate;
                     copy.insert(1, QLatin1Char('0'));
                     pos++;
@@ -1169,8 +1157,7 @@ void QuantitySpinBox::clearSchema()
     updateText(d->quantity);
 }
 
-QString
-QuantitySpinBox::getUserString(const Base::Quantity& val, double& factor, QString& unitString) const
+QString QuantitySpinBox::getUserString(const Base::Quantity& val, double& factor, QString& unitString) const
 {
     return val.getUserString(factor, unitString);
 }
@@ -1872,8 +1859,8 @@ void ColorButton::paintEvent(QPaintEvent* e)
     QPushButton::paintEvent(e);
 
     // repaint the rectangle area
-    QPalette::ColorGroup group =
-        isEnabled() ? hasFocus() ? QPalette::Active : QPalette::Inactive : QPalette::Disabled;
+    QPalette::ColorGroup group = isEnabled() ? hasFocus() ? QPalette::Active : QPalette::Inactive
+                                             : QPalette::Disabled;
     QColor pen = palette().color(group, QPalette::ButtonText);
     {
         QPainter paint(this);

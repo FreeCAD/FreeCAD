@@ -70,24 +70,26 @@
 
 class QGraphicsView;
 
-class GraphicsViewZoom : public QObject {
-  Q_OBJECT
+class GraphicsViewZoom: public QObject
+{
+    Q_OBJECT
 public:
-  GraphicsViewZoom(QGraphicsView* view);
-  void gentle_zoom(double factor);
-  void set_modifiers(Qt::KeyboardModifiers modifiers);
-  void set_zoom_factor_base(double value);
-  void set_zoom_inverted(bool on) {
-      m_invert_zoom = on;
-  }
+    GraphicsViewZoom(QGraphicsView* view);
+    void gentle_zoom(double factor);
+    void set_modifiers(Qt::KeyboardModifiers modifiers);
+    void set_zoom_factor_base(double value);
+    void set_zoom_inverted(bool on)
+    {
+        m_invert_zoom = on;
+    }
 
 private:
-  QGraphicsView* _view;
-  Qt::KeyboardModifiers _modifiers;
-  double _zoom_factor_base;
-  bool m_invert_zoom;
-  QPointF target_scene_pos, target_viewport_pos;
-  bool eventFilter(QObject* object, QEvent* event) override;
+    QGraphicsView* _view;
+    Qt::KeyboardModifiers _modifiers;
+    double _zoom_factor_base;
+    bool m_invert_zoom;
+    QPointF target_scene_pos, target_viewport_pos;
+    bool eventFilter(QObject* object, QEvent* event) override;
 };
 
-#endif // GRAPHICSVIEWZOOM_H
+#endif  // GRAPHICSVIEWZOOM_H

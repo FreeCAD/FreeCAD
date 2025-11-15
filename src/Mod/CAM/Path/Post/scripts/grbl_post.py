@@ -2,8 +2,8 @@
 
 # ***************************************************************************
 # *   Copyright (c) 2014 sliptonic <shopinthewoods@gmail.com>               *
-# *   Copyright (c) 2018, 2019 Gauthier Briere                              *
-# *   Copyright (c) 2019, 2020 Schildkroet                                  *
+# *   Copyright (c) 2022 - 2025 Larry Woestman <LarryWoestman2@gmail.com>   *
+# *   Copyright (c) 2024 Ondsel <development@ondsel.com>                    *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -25,695 +25,165 @@
 # *                                                                         *
 # ***************************************************************************
 
-import FreeCAD
-from FreeCAD import Units
-import Path
-import Path.Base.Util as PathUtil
-import Path.Post.Utils as PostUtils
-import PathScripts.PathUtils as PathUtils
 import argparse
-import datetime
-import shlex
-import re
-from builtins import open as pyopen
 
-
-TOOLTIP = """
-Generate g-code from a Path that is compatible with the grbl controller.
-import grbl_post
-grbl_post.export(object, "/path/to/file.ncc")
-"""
-
-
-# ***************************************************************************
-# * Globals set customization preferences
-# ***************************************************************************
-
-# Default values for command line arguments:
-OUTPUT_COMMENTS = True  # default output of comments in output gCode file
-OUTPUT_HEADER = True  # default output header in output gCode file
-OUTPUT_LINE_NUMBERS = False  # default doesn't output line numbers in output gCode file
-OUTPUT_BCNC = False  # default doesn't add bCNC operation block headers in output gCode file
-SHOW_EDITOR = True  # default show the resulting file dialog output in GUI
-PRECISION = 3  # Default precision for metric (see http://linuxcnc.org/docs/2.7/html/gcode/overview.html#_g_code_best_practices)
-TRANSLATE_DRILL_CYCLES = True  # If true, G81, G82 & G83 are translated in G0/G1 moves
-PREAMBLE = """G17 G90
-"""  # default preamble text will appear at the beginning of the gCode output file.
-POSTAMBLE = """M5
-G17 G90
-M2
-"""  # default postamble text will appear following the last operation.
-
-SPINDLE_WAIT = 0  # no waiting after M3 / M4 by default
-RETURN_TO = None  # no movements after end of program
-
-# Customisation with no command line argument
-MODAL = False  # if true commands are suppressed if the same as previous line.
-LINENR = 100  # line number starting value
-LINEINCR = 10  # line number increment
-OUTPUT_TOOL_CHANGE = (
-    False  # default don't output M6 tool changes (comment it) as grbl currently does not handle it
-)
-DRILL_RETRACT_MODE = (
-    "G98"  # Default value of drill retractations (CURRENT_Z) other possible value is G99
-)
-MOTION_MODE = "G90"  # G90 for absolute moves, G91 for relative
-UNITS = "G21"  # G21 for metric, G20 for us standard
-UNIT_FORMAT = "mm"
-UNIT_SPEED_FORMAT = "mm/min"
-PRE_OPERATION = """"""  # Pre operation text will be inserted before every operation
-POST_OPERATION = """"""  # Post operation text will be inserted after every operation
-TOOL_CHANGE = """"""  # Tool Change commands will be inserted before a tool change
-
-# ***************************************************************************
-# * End of customization
-# ***************************************************************************
-
-# Parser arguments list & definition
-parser = argparse.ArgumentParser(prog="grbl", add_help=False)
-parser.add_argument("--comments", action="store_true", help="output comment (default)")
-parser.add_argument("--no-comments", action="store_true", help="suppress comment output")
-parser.add_argument("--header", action="store_true", help="output headers (default)")
-parser.add_argument("--no-header", action="store_true", help="suppress header output")
-parser.add_argument("--line-numbers", action="store_true", help="prefix with line numbers")
-parser.add_argument(
-    "--no-line-numbers",
-    action="store_true",
-    help="don't prefix with line numbers (default)",
-)
-parser.add_argument(
-    "--show-editor",
-    action="store_true",
-    help="pop up editor before writing output (default)",
-)
-parser.add_argument(
-    "--no-show-editor",
-    action="store_true",
-    help="don't pop up editor before writing output",
-)
-parser.add_argument("--precision", default="3", help="number of digits of precision, default=3")
-parser.add_argument(
-    "--translate_drill",
-    action="store_true",
-    help="translate drill cycles G81, G82 & G83 in G0/G1 movements",
-)
-parser.add_argument(
-    "--no-translate_drill",
-    action="store_true",
-    help="don't translate drill cycles G81, G82 & G83 in G0/G1 movements (default)",
-)
-parser.add_argument(
-    "--preamble",
-    help='set commands to be issued before the first command, default="G17 G90\\n"',
-)
-parser.add_argument(
-    "--postamble",
-    help='set commands to be issued after the last command, default="M5\\nG17 G90\\nM2\\n"',
-)
-parser.add_argument(
-    "--inches", action="store_true", help="Convert output for US imperial mode (G20)"
-)
-parser.add_argument("--tool-change", action="store_true", help="Insert M6 for all tool changes")
-parser.add_argument(
-    "--wait-for-spindle",
-    type=int,
-    default=0,
-    help="Wait for spindle to reach desired speed after M3 / M4, default=0",
-)
-parser.add_argument(
-    "--return-to",
-    default="",
-    help="Move to the specified coordinates at the end, e.g. --return-to=0,0",
-)
-parser.add_argument(
-    "--bcnc",
-    action="store_true",
-    help="Add Job operations as bCNC block headers. Consider suppressing existing comments: Add argument --no-comments",
-)
-parser.add_argument(
-    "--no-bcnc", action="store_true", help="suppress bCNC block header output (default)"
-)
-TOOLTIP_ARGS = parser.format_help()
-
-
-# ***************************************************************************
-# * Internal global variables
-# ***************************************************************************
-MOTION_COMMANDS = [
-    "G0",
-    "G00",
-    "G1",
-    "G01",
-    "G2",
-    "G02",
-    "G3",
-    "G03",
-]  # Motion gCode commands definition
-RAPID_MOVES = ["G0", "G00"]  # Rapid moves gCode commands definition
-SUPPRESS_COMMANDS = []  # These commands are ignored by commenting them out
-COMMAND_SPACE = " "
-# Global variables storing current position
-CURRENT_X = 0
-CURRENT_Y = 0
-CURRENT_Z = 0
-
-
-def processArguments(argstring):
-
-    global OUTPUT_HEADER
-    global OUTPUT_COMMENTS
-    global OUTPUT_LINE_NUMBERS
-    global SHOW_EDITOR
-    global PRECISION
-    global PREAMBLE
-    global POSTAMBLE
-    global UNITS
-    global UNIT_SPEED_FORMAT
-    global UNIT_FORMAT
-    global TRANSLATE_DRILL_CYCLES
-    global OUTPUT_TOOL_CHANGE
-    global SPINDLE_WAIT
-    global RETURN_TO
-    global OUTPUT_BCNC
-
-    try:
-        args = parser.parse_args(shlex.split(argstring))
-        if args.no_header:
-            OUTPUT_HEADER = False
-        if args.header:
-            OUTPUT_HEADER = True
-        if args.no_comments:
-            OUTPUT_COMMENTS = False
-        if args.comments:
-            OUTPUT_COMMENTS = True
-        if args.no_line_numbers:
-            OUTPUT_LINE_NUMBERS = False
-        if args.line_numbers:
-            OUTPUT_LINE_NUMBERS = True
-        if args.no_show_editor:
-            SHOW_EDITOR = False
-        if args.show_editor:
-            SHOW_EDITOR = True
-        PRECISION = args.precision
-        if args.preamble is not None:
-            PREAMBLE = args.preamble.replace("\\n", "\n")
-        if args.postamble is not None:
-            POSTAMBLE = args.postamble.replace("\\n", "\n")
-        if args.no_translate_drill:
-            TRANSLATE_DRILL_CYCLES = False
-        if args.translate_drill:
-            TRANSLATE_DRILL_CYCLES = True
-        if args.inches:
-            UNITS = "G20"
-            UNIT_SPEED_FORMAT = "in/min"
-            UNIT_FORMAT = "in"
-            PRECISION = 4
-        if args.tool_change:
-            OUTPUT_TOOL_CHANGE = True
-        if args.wait_for_spindle > 0:
-            SPINDLE_WAIT = args.wait_for_spindle
-        if args.return_to != "":
-            RETURN_TO = [int(v) for v in args.return_to.split(",")]
-            if len(RETURN_TO) != 2:
-                RETURN_TO = None
-                print("--return-to coordinates must be specified as <x>,<y>, ignoring")
-        if args.bcnc:
-            OUTPUT_BCNC = True
-        if args.no_bcnc:
-            OUTPUT_BCNC = False
-
-    except Exception as e:
-        return False
-
-    return True
-
-
-# For debug...
-def dump(obj):
-    for attr in dir(obj):
-        print("obj.%s = %s" % (attr, getattr(obj, attr)))
-
-
-def export(objectslist, filename, argstring):
-
-    if not processArguments(argstring):
-        return None
-
-    global UNITS
-    global UNIT_FORMAT
-    global UNIT_SPEED_FORMAT
-    global MOTION_MODE
-    global SUPPRESS_COMMANDS
-
-    print("Post Processor: " + __name__ + " postprocessing...")
-    gcode = ""
-
-    # write header
-    if OUTPUT_HEADER:
-        gcode += linenumber() + "(Exported by FreeCAD)\n"
-        gcode += linenumber() + "(Post Processor: " + __name__ + ")\n"
-        gcode += linenumber() + "(Output Time:" + str(datetime.datetime.now()) + ")\n"
-
-    # Check canned cycles for drilling
-    if TRANSLATE_DRILL_CYCLES:
-        if len(SUPPRESS_COMMANDS) == 0:
-            SUPPRESS_COMMANDS = ["G99", "G98", "G80"]
-        else:
-            SUPPRESS_COMMANDS += ["G99", "G98", "G80"]
-
-    # Write the preamble
-    if OUTPUT_COMMENTS:
-        gcode += linenumber() + "(Begin preamble)\n"
-    for line in PREAMBLE.splitlines():
-        gcode += linenumber() + line + "\n"
-    # verify if PREAMBLE have changed MOTION_MODE or UNITS
-    if "G90" in PREAMBLE:
-        MOTION_MODE = "G90"
-    elif "G91" in PREAMBLE:
-        MOTION_MODE = "G91"
-    else:
-        gcode += linenumber() + MOTION_MODE + "\n"
-    if "G21" in PREAMBLE:
-        UNITS = "G21"
-        UNIT_FORMAT = "mm"
-        UNIT_SPEED_FORMAT = "mm/min"
-    elif "G20" in PREAMBLE:
-        UNITS = "G20"
-        UNIT_FORMAT = "in"
-        UNIT_SPEED_FORMAT = "in/min"
-    else:
-        gcode += linenumber() + UNITS + "\n"
-
-    for obj in objectslist:
-        # Debug...
-        # print("\n" + "*"*70)
-        # dump(obj)
-        # print("*"*70 + "\n")
-        if not hasattr(obj, "Path"):
-            print(
-                "The object " + obj.Name + " is not a path. Please select only path and Compounds."
-            )
-            return
-
-        # Skip inactive operations
-        if not PathUtil.activeForOp(obj):
-            continue
-
-        # do the pre_op
-        if OUTPUT_BCNC:
-            gcode += linenumber() + "(Block-name: " + obj.Label + ")\n"
-            gcode += linenumber() + "(Block-expand: 0)\n"
-            gcode += linenumber() + "(Block-enable: 1)\n"
-        if OUTPUT_COMMENTS:
-            gcode += linenumber() + "(Begin operation: " + obj.Label + ")\n"
-        for line in PRE_OPERATION.splitlines(True):
-            gcode += linenumber() + line
-
-        # get coolant mode
-        coolantMode = PathUtil.coolantModeForOp(obj)
-
-        # turn coolant on if required
-        if OUTPUT_COMMENTS:
-            if not coolantMode == "None":
-                gcode += linenumber() + "(Coolant On:" + coolantMode + ")\n"
-        if coolantMode == "Flood":
-            gcode += linenumber() + "M8" + "\n"
-        if coolantMode == "Mist":
-            gcode += linenumber() + "M7" + "\n"
-
-        # Parse the op
-        gcode += parse(obj)
-
-        # do the post_op
-        if OUTPUT_COMMENTS:
-            gcode += linenumber() + "(Finish operation: " + obj.Label + ")\n"
-        for line in POST_OPERATION.splitlines(True):
-            gcode += linenumber() + line
-
-        # turn coolant off if required
-        if not coolantMode == "None":
-            if OUTPUT_COMMENTS:
-                gcode += linenumber() + "(Coolant Off:" + coolantMode + ")\n"
-            gcode += linenumber() + "M9" + "\n"
-
-    if RETURN_TO:
-        gcode += linenumber() + "G0 X%s Y%s\n" % tuple(RETURN_TO)
-
-    # do the post_amble
-    if OUTPUT_BCNC:
-        gcode += linenumber() + "(Block-name: post_amble)\n"
-        gcode += linenumber() + "(Block-expand: 0)\n"
-        gcode += linenumber() + "(Block-enable: 1)\n"
-    if OUTPUT_COMMENTS:
-        gcode += linenumber() + "(Begin postamble)\n"
-    for line in POSTAMBLE.splitlines():
-        gcode += linenumber() + line + "\n"
-
-    # show the gCode result dialog
-    if FreeCAD.GuiUp and SHOW_EDITOR:
-        dia = PostUtils.GCodeEditorDialog()
-        dia.editor.setText(gcode)
-        result = dia.exec_()
-        if result:
-            final = dia.editor.toPlainText()
-        else:
-            final = gcode
-    else:
-        final = gcode
-
-    print("Done postprocessing.")
-
-    # write the file
-    if filename != "-":
-        with pyopen(filename, "w") as gfile:
-            gfile.write(final)
-
-    return final
-
-
-def linenumber():
-    if not OUTPUT_LINE_NUMBERS:
-        return ""
-    global LINENR
-    global LINEINCR
-    s = "N" + str(LINENR) + " "
-    LINENR += LINEINCR
-    return s
-
-
-def format_outstring(strTable):
-    global COMMAND_SPACE
-    # construct the line for the final output
-    s = ""
-    for w in strTable:
-        s += w + COMMAND_SPACE
-    s = s.strip()
-    return s
-
-
-def parse(pathobj):
-
-    global DRILL_RETRACT_MODE
-    global MOTION_MODE
-    global CURRENT_X
-    global CURRENT_Y
-    global CURRENT_Z
-
-    out = ""
-    lastcommand = None
-    precision_string = "." + str(PRECISION) + "f"
-
-    params = [
-        "X",
-        "Y",
-        "Z",
-        "A",
-        "B",
-        "C",
-        "U",
-        "V",
-        "W",
-        "I",
-        "J",
-        "K",
-        "F",
-        "S",
-        "T",
-        "Q",
-        "R",
-        "L",
-        "P",
-    ]
-
-    if hasattr(pathobj, "Group"):  # We have a compound or project.
-        if OUTPUT_COMMENTS:
-            out += linenumber() + "(Compound: " + pathobj.Label + ")\n"
-        for p in pathobj.Group:
-            out += parse(p)
-        return out
-
-    else:  # parsing simple path
-        if not hasattr(pathobj, "Path"):  # groups might contain non-path things like stock.
-            return out
-
-        if OUTPUT_COMMENTS:
-            out += linenumber() + "(Path: " + pathobj.Label + ")\n"
-
-        for c in PathUtils.getPathWithPlacement(pathobj).Commands:
-            outstring = []
-            command = c.Name
-
-            outstring.append(command)
-
-            # if modal: only print the command if it is not the same as the last one
-            if MODAL:
-                if command == lastcommand:
-                    outstring.pop(0)
-
-            # Now add the remaining parameters in order
-            for param in params:
-                if param in c.Parameters:
-                    if param == "F":
-                        if command not in RAPID_MOVES:
-                            speed = Units.Quantity(c.Parameters["F"], FreeCAD.Units.Velocity)
-                            if speed.getValueAs(UNIT_SPEED_FORMAT) > 0.0:
-                                outstring.append(
-                                    param
-                                    + format(
-                                        float(speed.getValueAs(UNIT_SPEED_FORMAT)),
-                                        precision_string,
-                                    )
-                                )
-                    elif param in ["T", "H", "S"]:
-                        outstring.append(param + str(int(c.Parameters[param])))
-                    elif param in ["D", "P", "L"]:
-                        outstring.append(param + str(c.Parameters[param]))
-                    elif param in ["A", "B", "C"]:
-                        outstring.append(param + format(c.Parameters[param], precision_string))
-                    else:  # [X, Y, Z, U, V, W, I, J, K, R, Q] (Conversion eventuelle mm/inches)
-                        pos = Units.Quantity(c.Parameters[param], FreeCAD.Units.Length)
-                        outstring.append(
-                            param + format(float(pos.getValueAs(UNIT_FORMAT)), precision_string)
-                        )
-
-            # store the latest command
-            lastcommand = command
-
-            # Memorizes the current position for calculating the related movements and the withdrawal plan
-            if command in MOTION_COMMANDS:
-                if "X" in c.Parameters:
-                    CURRENT_X = Units.Quantity(c.Parameters["X"], FreeCAD.Units.Length)
-                if "Y" in c.Parameters:
-                    CURRENT_Y = Units.Quantity(c.Parameters["Y"], FreeCAD.Units.Length)
-                if "Z" in c.Parameters:
-                    CURRENT_Z = Units.Quantity(c.Parameters["Z"], FreeCAD.Units.Length)
-
-            if command in ("G98", "G99"):
-                DRILL_RETRACT_MODE = command
-
-            if command in ("G90", "G91"):
-                MOTION_MODE = command
-
-            if TRANSLATE_DRILL_CYCLES:
-                if command in ("G81", "G82", "G83"):
-                    out += drill_translate(outstring, command, c.Parameters)
-                    # Erase the line we just translated
-                    outstring = []
-
-            if SPINDLE_WAIT > 0:
-                if command in ("M3", "M03", "M4", "M04"):
-                    out += linenumber() + format_outstring(outstring) + "\n"
-                    out += linenumber() + format_outstring(["G4", "P%s" % SPINDLE_WAIT]) + "\n"
-                    outstring = []
-
-            # Check for Tool Change:
-            if command in ("M6", "M06"):
-                if OUTPUT_COMMENTS:
-                    out += linenumber() + "(Begin toolchange)\n"
-                if not OUTPUT_TOOL_CHANGE:
-                    outstring.insert(0, "(")
-                    outstring.append(")")
-                else:
-                    for line in TOOL_CHANGE.splitlines(True):
-                        out += linenumber() + line
-
-            if command == "message":
-                if OUTPUT_COMMENTS is False:
-                    out = []
-                else:
-                    outstring.pop(0)  # remove the command
-
-            if command in SUPPRESS_COMMANDS:
-                outstring.insert(0, "(")
-                outstring.append(")")
-
-            # prepend a line number and append a newline
-            if len(outstring) >= 1:
-                out += linenumber() + format_outstring(outstring) + "\n"
-
-            # Check for comments containing machine-specific commands to pass literally to the controller
-            m = re.match(r"^\(MC_RUN_COMMAND: ([^)]+)\)$", command)
-            if m:
-                raw_command = m.group(1)
-                out += linenumber() + raw_command + "\n"
-
-    return out
-
-
-def drill_translate(outstring, cmd, params):
-    global DRILL_RETRACT_MODE
-    global MOTION_MODE
-    global CURRENT_X
-    global CURRENT_Y
-    global CURRENT_Z
-    global UNITS
-    global UNIT_FORMAT
-    global UNIT_SPEED_FORMAT
-
-    strFormat = "." + str(PRECISION) + "f"
-    trBuff = ""
-
-    if OUTPUT_COMMENTS:  # Comment the original command
-        outstring[0] = "(" + outstring[0]
-        outstring[-1] = outstring[-1] + ")"
-        trBuff += linenumber() + format_outstring(outstring) + "\n"
-
-    # cycle conversion
-    # currently only cycles in XY are provided (G17)
-    # other plains ZX (G18) and  YZ (G19) are not dealt with : Z drilling only.
-    param_X = Units.Quantity(params["X"], FreeCAD.Units.Length)
-    param_Y = Units.Quantity(params["Y"], FreeCAD.Units.Length)
-    param_Z = Units.Quantity(params["Z"], FreeCAD.Units.Length)
-    param_R = Units.Quantity(params["R"], FreeCAD.Units.Length)
-    # R less than Z is error
-    if param_R < param_Z:
-        trBuff += linenumber() + "(drill cycle error: R less than Z )\n"
-        return trBuff
-
-    if MOTION_MODE == "G91":  # G91 relative movements, (not generated by CAM WB drilling)
-        param_X += CURRENT_X
-        param_Y += CURRENT_Y
-        param_Z += CURRENT_Z
-        param_R += param_Z
-
-    # NIST-RS274
-    # 3.5.20 Set Canned Cycle Return Level — G98 and G99
-    # When the spindle retracts during canned cycles, there is a choice of how far it retracts: (1) retract
-    # perpendicular to the selected plane to the position indicated by the R word, or (2) retract
-    # perpendicular to the selected plane to the position that axis was in just before the canned cycle
-    # started (unless that position is lower than the position indicated by the R word, in which case use
-    # the R word position).
-    # To use option (1), program G99. To use option (2), program G98. Remember that the R word has
-    # different meanings in absolute distance mode and incremental distance mode.
-    # """
-
-    if DRILL_RETRACT_MODE == "G99":
-        clear_Z = param_R
-    if DRILL_RETRACT_MODE == "G98" and CURRENT_Z >= param_R:
-        clear_Z = CURRENT_Z
-    else:
-        clear_Z = param_R
-
-    strG0_clear_Z = "G0 Z" + format(float(clear_Z.getValueAs(UNIT_FORMAT)), strFormat) + "\n"
-    strG0_param_R = "G0 Z" + format(float(param_R.getValueAs(UNIT_FORMAT)), strFormat) + "\n"
-
-    # get the other parameters
-    drill_feedrate = Units.Quantity(params["F"], FreeCAD.Units.Velocity)
-    strF_Feedrate = " F" + format(float(drill_feedrate.getValueAs(UNIT_SPEED_FORMAT)), ".2f") + "\n"
-
-    if cmd == "G83":
-        drill_Step = Units.Quantity(params["Q"], FreeCAD.Units.Length)
-        a_bit = (
-            drill_Step * 0.05
-        )  # NIST 3.5.16.4 G83 Cycle:  "current hole bottom, backed off a bit."
-    elif cmd == "G82":
-        drill_DwellTime = params["P"]
-
-    # wrap this block to ensure machine MOTION_MODE is restored in case of error
-    try:
-        if MOTION_MODE == "G91":
-            trBuff += linenumber() + "G90\n"  # force absolute coordinates during cycles
-
-        # NIST-RS274
-        # 3.5.16.1 Preliminary and In-Between Motion
-        # At the very beginning of the execution of any of the canned cycles, with the XY-plane selected, if
-        # the current Z position is below the R position, the Z-axis is traversed to the R position. This
-        # happens only once, regardless of the value of L.
-        # In addition, at the beginning of the first cycle and each repeat, the following one or two moves are
-        # made:
-        # 1. a straight traverse parallel to the XY-plane to the given XY-position,
-        # 2. a straight traverse of the Z-axis only to the R position, if it is not already at the R position.
-
-        if CURRENT_Z < param_R:
-            trBuff += linenumber() + strG0_param_R
-        trBuff += (
-            linenumber()
-            + "G0 X"
-            + format(float(param_X.getValueAs(UNIT_FORMAT)), strFormat)
-            + " Y"
-            + format(float(param_Y.getValueAs(UNIT_FORMAT)), strFormat)
-            + "\n"
+from typing import Any, Dict
+
+from Path.Post.Processor import PostProcessor
+
+import Path
+import FreeCAD
+
+translate = FreeCAD.Qt.translate
+
+DEBUG = False
+if DEBUG:
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
+else:
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
+
+#
+# Define some types that are used throughout this file.
+#
+Defaults = Dict[str, bool]
+Values = Dict[str, Any]
+Visible = Dict[str, bool]
+
+
+class Grbl(PostProcessor):
+    """The Grbl post processor class."""
+
+    def __init__(
+        self,
+        job,
+        tooltip=translate("CAM", "Grbl post processor"),
+        tooltipargs=[""],
+        units="Metric",
+    ) -> None:
+        super().__init__(
+            job=job,
+            tooltip=tooltip,
+            tooltipargs=tooltipargs,
+            units=units,
         )
-        if CURRENT_Z > param_R:
-            trBuff += linenumber() + strG0_param_R
+        Path.Log.debug("Grbl post processor initialized.")
 
-        last_Stop_Z = param_R
+    def init_values(self, values: Values) -> None:
+        """Initialize values that are used throughout the postprocessor."""
+        #
+        super().init_values(values)
+        #
+        # Set any values here that need to override the default values set
+        # in the parent routine.
+        #
+        values["ENABLE_COOLANT"] = True
+        #
+        # If this is set to True, then commands that are placed in
+        # comments that look like (MC_RUN_COMMAND: blah) will be output.
+        #
+        values["ENABLE_MACHINE_SPECIFIC_COMMANDS"] = True
+        #
+        # Used in the argparser code as the "name" of the postprocessor program.
+        # This would normally show up in the usage message in the TOOLTIP_ARGS.
+        #
+        values["MACHINE_NAME"] = "Grbl"
+        #
+        # Default to outputting Path labels at the beginning of each Path.
+        #
+        values["OUTPUT_PATH_LABELS"] = True
+        #
+        # Default to not outputting M6 tool changes (comment it) as grbl
+        # currently does not handle it.
+        #
+        values["OUTPUT_TOOL_CHANGE"] = False
+        #
+        # The order of the parameters.
+        # Arcs may only work on the XY plane (this needs to be verified).
+        #
+        values["PARAMETER_ORDER"] = [
+            "X",
+            "Y",
+            "Z",
+            "A",
+            "B",
+            "C",
+            "U",
+            "V",
+            "W",
+            "I",
+            "J",
+            "F",
+            "S",
+            "T",
+            "Q",
+            "R",
+            "L",
+            "P",
+        ]
+        #
+        # Any commands in this value will be output as the last commands in the G-code file.
+        #
+        values[
+            "POSTAMBLE"
+        ] = """M5
+G17 G90
+M2"""
+        values["POSTPROCESSOR_FILE_NAME"] = __name__
+        #
+        # Any commands in this value will be output after the header and
+        # safety block at the beginning of the G-code file.
+        #
+        values["PREAMBLE"] = """G17 G90"""
+        #
+        # Do not show the current machine units just before the PRE_OPERATION.
+        #
+        values["SHOW_MACHINE_UNITS"] = False
+        #
+        # Default to not outputting a G43 following tool changes
+        #
+        values["USE_TLO"] = False
 
-        # drill moves
-        if cmd in ("G81", "G82"):
-            trBuff += (
-                linenumber()
-                + "G1 Z"
-                + format(float(param_Z.getValueAs(UNIT_FORMAT)), strFormat)
-                + strF_Feedrate
-            )
-            # pause where applicable
-            if cmd == "G82":
-                trBuff += linenumber() + "G4 P" + str(drill_DwellTime) + "\n"
-            trBuff += linenumber() + strG0_clear_Z
-        else:  # 'G83'
-            if params["Q"] != 0:
-                while 1:
-                    if last_Stop_Z != clear_Z:
-                        clearance_depth = (
-                            last_Stop_Z + a_bit
-                        )  # rapid move to just short of last drilling depth
-                        trBuff += (
-                            linenumber()
-                            + "G0 Z"
-                            + format(
-                                float(clearance_depth.getValueAs(UNIT_FORMAT)),
-                                strFormat,
-                            )
-                            + "\n"
-                        )
-                    next_Stop_Z = last_Stop_Z - drill_Step
-                    if next_Stop_Z > param_Z:
-                        trBuff += (
-                            linenumber()
-                            + "G1 Z"
-                            + format(float(next_Stop_Z.getValueAs(UNIT_FORMAT)), strFormat)
-                            + strF_Feedrate
-                        )
-                        trBuff += linenumber() + strG0_clear_Z
-                        last_Stop_Z = next_Stop_Z
-                    else:
-                        trBuff += (
-                            linenumber()
-                            + "G1 Z"
-                            + format(float(param_Z.getValueAs(UNIT_FORMAT)), strFormat)
-                            + strF_Feedrate
-                        )
-                        trBuff += linenumber() + strG0_clear_Z
-                        break
+    def init_argument_defaults(self, argument_defaults: Defaults) -> None:
+        """Initialize which arguments (in a pair) are shown as the default argument."""
+        super().init_argument_defaults(argument_defaults)
+        #
+        # Modify which argument to show as the default in flag-type arguments here.
+        # If the value is True, the first argument will be shown as the default.
+        # If the value is False, the second argument will be shown as the default.
+        #
+        # For example, if you want to show Metric mode as the default, use:
+        #   argument_defaults["metric_inch"] = True
+        #
+        # If you want to show that "Don't pop up editor for writing output" is
+        # the default, use:
+        #   argument_defaults["show-editor"] = False.
+        #
+        # Note:  You also need to modify the corresponding entries in the "values" hash
+        #        to actually make the default value(s) change to match.
+        #
+        argument_defaults["tlo"] = False
+        argument_defaults["tool_change"] = False
 
-    except Exception as e:
-        pass
+    def init_arguments_visible(self, arguments_visible: Visible) -> None:
+        """Initialize which argument pairs are visible in TOOLTIP_ARGS."""
+        super().init_arguments_visible(arguments_visible)
+        #
+        # Modify the visibility of any arguments from the defaults here.
+        #
+        arguments_visible["bcnc"] = True
+        arguments_visible["axis-modal"] = False
+        arguments_visible["return-to"] = True
+        arguments_visible["tlo"] = False
+        arguments_visible["tool_change"] = True
+        arguments_visible["translate_drill"] = True
+        arguments_visible["wait-for-spindle"] = True
 
-    if MOTION_MODE == "G91":
-        trBuff += linenumber() + "G91"  # Restore if changed
-
-    return trBuff
-
-
-# print(__name__ + ": GCode postprocessor loaded.")
+    @property
+    def tooltip(self):
+        tooltip: str = """
+        This is a postprocessor file for the CAM workbench.
+        It is used to take a pseudo-gcode fragment from a CAM object
+        and output 'real' GCode suitable for a Grbl 3 axis mill.
+        """
+        return tooltip

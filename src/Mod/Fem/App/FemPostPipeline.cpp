@@ -65,17 +65,15 @@ FemPostPipeline::FemPostPipeline()
 
     FemPostGroupExtension::initExtension(this);
 
-    ADD_PROPERTY_TYPE(Frame,
-                      (long(0)),
-                      "Pipeline",
-                      App::Prop_None,
-                      "The frame used to calculate the data in the pipeline processing (read only, "
-                      "set via pipeline object).");
-    ADD_PROPERTY_TYPE(MergeDuplicate,
-                      (false),
-                      "Pipeline",
-                      App::Prop_None,
-                      "Remove coindent elements.");
+    ADD_PROPERTY_TYPE(
+        Frame,
+        (long(0)),
+        "Pipeline",
+        App::Prop_None,
+        "The frame used to calculate the data in the pipeline processing (read only, "
+        "set via pipeline object)."
+    );
+    ADD_PROPERTY_TYPE(MergeDuplicate, (false), "Pipeline", App::Prop_None, "Remove coindent elements.");
 
     // create our source algorithm
     m_source_algorithm = vtkSmartPointer<vtkFemFrameSourceAlgorithm>::New();
@@ -182,8 +180,12 @@ vtkSmartPointer<vtkDataObject> FemPostPipeline::readPVD(const Base::FileInfo& fi
     std::map<double, std::string> values;
     std::vector<std::string> files;
     while (strcmp(reader.localName(), "DataSet") == 0) {
-        values.emplace(std::make_pair(reader.getAttribute<double>("timestep"),
-                                      reader.getAttribute<std::string>("file")));
+        values.emplace(
+            std::make_pair(
+                reader.getAttribute<double>("timestep"),
+                reader.getAttribute<std::string>("file")
+            )
+        );
         reader.readNextElement();
     }
 
@@ -219,10 +221,12 @@ void FemPostPipeline::read(Base::FileInfo File)
     Data.setValue(dataObjectFromFile(File));
 }
 
-void FemPostPipeline::read(std::vector<Base::FileInfo>& files,
-                           std::vector<double>& values,
-                           Base::Unit unit,
-                           std::string& frame_type)
+void FemPostPipeline::read(
+    std::vector<Base::FileInfo>& files,
+    std::vector<double>& values,
+    Base::Unit unit,
+    std::string& frame_type
+)
 {
     if (files.size() != values.size()) {
         throw Base::ValueError("Result files and frame values have different length");
@@ -371,8 +375,8 @@ void FemPostPipeline::onChanged(const Property* prop)
         Frame.purgeTouched();
         m_block_property = false;
 
-        std::vector<std::string>::iterator it =
-            std::find(frame_values.begin(), frame_values.end(), val);
+        std::vector<std::string>::iterator it
+            = std::find(frame_values.begin(), frame_values.end(), val);
         if (!val.empty() && it != frame_values.end()) {
             // frame stays the same
             m_block_property = true;
@@ -428,18 +432,19 @@ void FemPostPipeline::onChanged(const Property* prop)
             // case an old document is loaded with "custom" mode, idx 2)
             if (Mode.getValue() == Fem::PostGroupMode::Parallel) {
                 // parallel: all filters get out input
-                nextFilter->getFilterInput()->SetInputConnection(
-                    m_transform_filter->GetOutputPort(0));
+                nextFilter->getFilterInput()->SetInputConnection(m_transform_filter->GetOutputPort(0));
             }
             else {
                 // serial: the next filter gets the previous output, the first one gets our input
                 if (!filter) {
                     nextFilter->getFilterInput()->SetInputConnection(
-                        m_transform_filter->GetOutputPort(0));
+                        m_transform_filter->GetOutputPort(0)
+                    );
                 }
                 else {
                     nextFilter->getFilterInput()->SetInputConnection(
-                        filter->getFilterOutput()->GetOutputPort());
+                        filter->getFilterOutput()->GetOutputPort()
+                    );
                 }
             }
 
@@ -580,10 +585,12 @@ void FemPostPipeline::load(FemResultObject* res)
 // set multiple result objects as frames for one pipeline
 // Notes:
 //      1. values vector must contain growing value, smallest first
-void FemPostPipeline::load(std::vector<FemResultObject*>& res,
-                           std::vector<double>& values,
-                           Base::Unit unit,
-                           std::string& frame_type)
+void FemPostPipeline::load(
+    std::vector<FemResultObject*>& res,
+    std::vector<double>& values,
+    Base::Unit unit,
+    std::string& frame_type
+)
 {
 
     if (res.size() != values.size()) {
@@ -617,8 +624,7 @@ void FemPostPipeline::load(std::vector<FemResultObject*>& res,
         }
 
         // first copy the mesh over
-        const FemMesh& mesh =
-            static_cast<FemMeshObject*>(res[i]->Mesh.getValue())->FemMesh.getValue();
+        const FemMesh& mesh = static_cast<FemMeshObject*>(res[i]->Mesh.getValue())->FemMesh.getValue();
         vtkSmartPointer<vtkUnstructuredGrid> grid = vtkSmartPointer<vtkUnstructuredGrid>::New();
         FemVTKTools::exportVTKMesh(&mesh, grid);
 
@@ -640,9 +646,11 @@ void FemPostPipeline::load(std::vector<FemResultObject*>& res,
     Data.setValue(multiblock);
 }
 
-void FemPostPipeline::handleChangedPropertyName(Base::XMLReader& reader,
-                                                const char* typeName,
-                                                const char* propName)
+void FemPostPipeline::handleChangedPropertyName(
+    Base::XMLReader& reader,
+    const char* typeName,
+    const char* propName
+)
 {
     if (strcmp(propName, "Filter") == 0
         && Base::Type::fromName(typeName) == App::PropertyLinkList::getClassTypeId()) {

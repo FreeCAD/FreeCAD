@@ -29,10 +29,10 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
-# include <GC_MakeArcOfCircle.hxx>
-# include <gp_Ax2.hxx>
-# include <gp_Circ.hxx>
-# include <gp_Pln.hxx>
+#include <GC_MakeArcOfCircle.hxx>
+#include <gp_Ax2.hxx>
+#include <gp_Circ.hxx>
+#include <gp_Pln.hxx>
 
 
 #include "BSplineCurveBiArcs.h"
@@ -45,12 +45,12 @@ using Part::GeomBSplineCurve;
 using Part::Geometry;
 
 // Algorithm taken from HeeksCAD
-namespace Part {
+namespace Part
+{
 
 bool tangentialArc(const gp_Pnt& p0, const gp_Vec& v0, const gp_Pnt& p1, gp_Pnt& c, gp_Dir& axis)
 {
-    if (p0.Distance(p1) > Precision::Intersection() &&
-        v0.Magnitude() > Precision::Intersection()){
+    if (p0.Distance(p1) > Precision::Intersection() && v0.Magnitude() > Precision::Intersection()) {
         gp_Vec v1(p0, p1);
         gp_Pnt halfway(p0.XYZ() + v1.XYZ() * 0.5);
         gp_Pln pln1(halfway, v1);
@@ -71,39 +71,45 @@ bool tangentialArc(const gp_Pnt& p0, const gp_Vec& v0, const gp_Pnt& p1, gp_Pnt&
 class TangentialArc
 {
 public:
-    gp_Pnt m_p0; // start point
-    gp_Vec m_v0; // start direction
-    gp_Pnt m_p1; // end point
-    gp_Pnt m_c; // centre point
-    gp_Dir m_a; // axis
+    gp_Pnt m_p0;  // start point
+    gp_Vec m_v0;  // start direction
+    gp_Pnt m_p1;  // end point
+    gp_Pnt m_c;   // centre point
+    gp_Dir m_a;   // axis
     bool m_is_a_line;
     TangentialArc(const gp_Pnt& p0, const gp_Vec& v0, const gp_Pnt& p1)
-        : m_p0(p0), m_v0(v0), m_p1(p1)
+        : m_p0(p0)
+        , m_v0(v0)
+        , m_p1(p1)
     {
         // calculate a tangential arc that goes through p0 and p1, with a direction of v0 at p0
         m_is_a_line = !Part::tangentialArc(m_p0, m_v0, m_p1, m_c, m_a);
     }
-    bool isRadiusEqual(const gp_Pnt &p, double tolerance) const
+    bool isRadiusEqual(const gp_Pnt& p, double tolerance) const
     {
-        if (m_is_a_line)
+        if (m_is_a_line) {
             return true;
+        }
 
         double point_radius = gp_Vec(m_c.XYZ() - p.XYZ()).Magnitude();
-        double diff =  fabs(point_radius - radius());
+        double diff = fabs(point_radius - radius());
         return diff <= tolerance;
     }
     double radius() const
     {
         double r0 = gp_Vec(m_p0.XYZ() - m_c.XYZ()).Magnitude();
         double r1 = gp_Vec(m_p1.XYZ() - m_c.XYZ()).Magnitude();
-        double r = (r0 + r1)/2;
+        double r = (r0 + r1) / 2;
         return r;
     }
     Geometry* makeArc() const
     {
         if (m_is_a_line) {
             GeomLineSegment* line = new GeomLineSegment();
-            line->setPoints(Base::convertTo<Base::Vector3d>(m_p0),Base::convertTo<Base::Vector3d>(m_p1));
+            line->setPoints(
+                Base::convertTo<Base::Vector3d>(m_p0),
+                Base::convertTo<Base::Vector3d>(m_p1)
+            );
             return line;
         }
 
@@ -115,17 +121,25 @@ public:
     }
 };
 
-}
+}  // namespace Part
 
-void BSplineCurveBiArcs::createArcs(double tolerance, std::list<Geometry*>& new_spans,
-                                    const gp_Pnt& p_start, const gp_Vec& v_start,
-                                    double t_start, double t_end, gp_Pnt& p_end, gp_Vec& v_end) const
+void BSplineCurveBiArcs::createArcs(
+    double tolerance,
+    std::list<Geometry*>& new_spans,
+    const gp_Pnt& p_start,
+    const gp_Vec& v_start,
+    double t_start,
+    double t_end,
+    gp_Pnt& p_end,
+    gp_Vec& v_end
+) const
 {
     this->myCurve->D1(t_end, p_end, v_end);
 
     gp_Pnt p1, p2, p3;
 
-    Type can_do_spline_whole = calculateBiArcPoints(t_start, p_start, v_start, t_end, p_end, v_end, p1, p2, p3);
+    Type can_do_spline_whole
+        = calculateBiArcPoints(t_start, p_start, v_start, t_end, p_end, v_end, p1, p2, p3);
 
     Geometry* arc_object1 = nullptr;
     Geometry* arc_object2 = nullptr;
@@ -138,8 +152,7 @@ void BSplineCurveBiArcs::createArcs(double tolerance, std::list<Geometry*>& new_
         this->myCurve->D0(t_start + ((t_end - t_start) * 0.25), p_middle1);
         this->myCurve->D0(t_start + ((t_end - t_start) * 0.75), p_middle2);
 
-        if (!arc1.isRadiusEqual(p_middle1, tolerance) ||
-            !arc2.isRadiusEqual(p_middle2, tolerance)) {
+        if (!arc1.isRadiusEqual(p_middle1, tolerance) || !arc2.isRadiusEqual(p_middle2, tolerance)) {
             can_do_spline_whole = Type::SplitCurve;
         }
         else {
@@ -156,7 +169,7 @@ void BSplineCurveBiArcs::createArcs(double tolerance, std::list<Geometry*>& new_
         double t_middle = t_start + ((t_end - t_start) * 0.5);
         gp_Pnt p_middle;
         gp_Vec v_middle;
-        createArcs(tolerance, new_spans, p_start, v_start, t_start, t_middle, p_middle, v_middle);// recursive
+        createArcs(tolerance, new_spans, p_start, v_start, t_start, t_middle, p_middle, v_middle);  // recursive
         gp_Pnt new_p_end;
         gp_Vec new_v_end;
         createArcs(tolerance, new_spans, p_middle, v_middle, t_middle, t_end, new_p_end, new_v_end);
@@ -164,29 +177,41 @@ void BSplineCurveBiArcs::createArcs(double tolerance, std::list<Geometry*>& new_
     else {
         // calculate_biarc_points failed, just add a line
         Part::GeomLineSegment* line = new Part::GeomLineSegment();
-        line->setPoints(Base::convertTo<Base::Vector3d>(p_start),Base::convertTo<Base::Vector3d>(p_end));
+        line->setPoints(
+            Base::convertTo<Base::Vector3d>(p_start),
+            Base::convertTo<Base::Vector3d>(p_end)
+        );
         new_spans.push_back(line);
     }
 }
 
-BSplineCurveBiArcs::Type
-BSplineCurveBiArcs::calculateBiArcPoints(double t_start, const gp_Pnt& p0, gp_Vec v_start,
-                                         double t_end, const gp_Pnt& p4, gp_Vec v_end,
-                                         gp_Pnt& p1, gp_Pnt& p2, gp_Pnt& p3) const
+BSplineCurveBiArcs::Type BSplineCurveBiArcs::calculateBiArcPoints(
+    double t_start,
+    const gp_Pnt& p0,
+    gp_Vec v_start,
+    double t_end,
+    const gp_Pnt& p4,
+    gp_Vec v_end,
+    gp_Pnt& p1,
+    gp_Pnt& p2,
+    gp_Pnt& p3
+) const
 {
-    if (v_start.Magnitude() < Precision::Intersection())
+    if (v_start.Magnitude() < Precision::Intersection()) {
         v_start = gp_Vec(p0, p1);
-    if (v_end.Magnitude() < Precision::Intersection())
+    }
+    if (v_end.Magnitude() < Precision::Intersection()) {
         v_end = gp_Vec(p3, p4);
+    }
 
     v_start.Normalize();
     v_end.Normalize();
 
     gp_Vec v = p0.XYZ() - p4.XYZ();
 
-    double a = 2*(v_start*v_end-1);
-    double c = v*v;
-    double b = (v*2)*(v_start+v_end);
+    double a = 2 * (v_start * v_end - 1);
+    double c = v * v;
+    double b = (v * 2) * (v_start + v_end);
     if (fabs(a) < Precision::Intersection()) {
         // Check the tangent of a value between t_start and t_end
         double t_mid = 0.9 * t_start + 0.1 * t_end;
@@ -195,7 +220,7 @@ BSplineCurveBiArcs::calculateBiArcPoints(double t_start, const gp_Pnt& p0, gp_Ve
             gp_Vec v_mid;
             this->myCurve->D1(t_mid, p_mid, v_mid);
             v_mid.Normalize();
-            double a = 2*(v_start*v_mid-1);
+            double a = 2 * (v_start * v_mid - 1);
             if (fabs(a) >= Precision::Intersection()) {
                 return Type::SplitCurve;
             }
@@ -204,21 +229,25 @@ BSplineCurveBiArcs::calculateBiArcPoints(double t_start, const gp_Pnt& p0, gp_Ve
     }
 
 
-    double d = b*b-4*a*c;
-    if (d < 0.0)
+    double d = b * b - 4 * a * c;
+    if (d < 0.0) {
         return Type::SingleLine;
+    }
 
     double sd = sqrt(d);
     double e1 = (-b - sd) / (2.0 * a);
     double e2 = (-b + sd) / (2.0 * a);
-    if (e1 > 0 && e2 > 0)
+    if (e1 > 0 && e2 > 0) {
         return Type::SingleLine;
+    }
 
     double e = e1;
-    if (e2 > e)
+    if (e2 > e) {
         e = e2;
-    if (e < 0)
+    }
+    if (e < 0) {
         return Type::SingleLine;
+    }
 
     p1 = p0.XYZ() + v_start.XYZ() * e;
     p3 = p4.XYZ() - v_end.XYZ() * e;
@@ -228,11 +257,9 @@ BSplineCurveBiArcs::calculateBiArcPoints(double t_start, const gp_Pnt& p0, gp_Ve
     return Type::SingleArc;
 }
 
-BSplineCurveBiArcs::BSplineCurveBiArcs(const Handle(Geom_Curve)& c)
+BSplineCurveBiArcs::BSplineCurveBiArcs(const Handle(Geom_Curve) & c)
     : myCurve(c)
-{
-
-}
+{}
 
 std::list<Geometry*> BSplineCurveBiArcs::toBiArcs(double tolerance) const
 {
@@ -248,16 +275,40 @@ std::list<Geometry*> BSplineCurveBiArcs::toBiArcs(double tolerance) const
     // the spline is closed
     if (p_start.Distance(p_end) < Precision::Intersection()) {
         this->myCurve->D1(this->myCurve->FirstParameter(), p_start, v_start);
-        createArcs(tolerance, list, p_start, v_start, this->myCurve->FirstParameter(),
-                   this->myCurve->LastParameter()/2, p_end, v_end);
-        this->myCurve->D1(this->myCurve->LastParameter()/2, p_start, v_start);
-        createArcs(tolerance, list, p_start, v_start, this->myCurve->LastParameter()/2,
-                   this->myCurve->LastParameter(), p_end, v_end);
+        createArcs(
+            tolerance,
+            list,
+            p_start,
+            v_start,
+            this->myCurve->FirstParameter(),
+            this->myCurve->LastParameter() / 2,
+            p_end,
+            v_end
+        );
+        this->myCurve->D1(this->myCurve->LastParameter() / 2, p_start, v_start);
+        createArcs(
+            tolerance,
+            list,
+            p_start,
+            v_start,
+            this->myCurve->LastParameter() / 2,
+            this->myCurve->LastParameter(),
+            p_end,
+            v_end
+        );
     }
     else {
         this->myCurve->D1(this->myCurve->FirstParameter(), p_start, v_start);
-        createArcs(tolerance, list, p_start, v_start, this->myCurve->FirstParameter(),
-                   this->myCurve->LastParameter(), p_end, v_end);
+        createArcs(
+            tolerance,
+            list,
+            p_start,
+            v_start,
+            this->myCurve->FirstParameter(),
+            this->myCurve->LastParameter(),
+            p_end,
+            v_end
+        );
     }
 
     return list;

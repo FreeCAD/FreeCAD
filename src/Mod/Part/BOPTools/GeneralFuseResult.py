@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-#/***************************************************************************
+# /***************************************************************************
 # *   Copyright (c) 2016 Victor Titov (DeepSOIC) <vv.titov@gmail.com>       *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
@@ -22,7 +22,7 @@
 # *                                                                         *
 # ***************************************************************************/
 
-__title__="BOPTools.GeneralFuseResult module"
+__title__ = "BOPTools.GeneralFuseResult module"
 __author__ = "DeepSOIC"
 __url__ = "https://www.freecad.org"
 __doc__ = "Implementation of GeneralFuseResult class, which parses return of generalFuse."
@@ -33,13 +33,13 @@ from .Utils import HashableShape, HashableShape_Deep, FrozenClass
 
 class GeneralFuseResult(FrozenClass):
     """class GeneralFuseResult: helper object for obtaining info from results of
-    Part.Shape.generalFuse() method.
+        Part.Shape.generalFuse() method.
 
-Usage:
-def myCustomFusionRoutine(list_of_shapes):
-    generalFuse_return = list_of_shapes[0].generalFuse(list_of_shapes[1:])
-    ao = GeneralFuseResult(list_of_shapes, generalFuse_return)
-    ... (use attributes and methods of ao) ..."""
+    Usage:
+    def myCustomFusionRoutine(list_of_shapes):
+        generalFuse_return = list_of_shapes[0].generalFuse(list_of_shapes[1:])
+        ao = GeneralFuseResult(list_of_shapes, generalFuse_return)
+        ... (use attributes and methods of ao) ..."""
 
     def __define_attributes(self):
         # stores the data returned by generalFuse, supplied to class constructor
@@ -55,9 +55,9 @@ def myCustomFusionRoutine(list_of_shapes):
         # key = decorated shape. Value = index (int) into self.source_shapes
         self._source_to_index = {}
 
-        #list of pieces (indexes) generated from a source shape, by index of source shape. List of lists of ints.
+        # list of pieces (indexes) generated from a source shape, by index of source shape. List of lists of ints.
         self._pieces_of_source = []
-        #list of source shapes (indexes) the piece came from, by index of piece. List of lists of ints.
+        # list of source shapes (indexes) the piece came from, by index of piece. List of lists of ints.
         self._sources_of_piece = []
 
         # dictionary for finding, which source shapes did an element of pieces come from.
@@ -79,7 +79,7 @@ def myCustomFusionRoutine(list_of_shapes):
 
         It is called automatically by class constructor."""
 
-        #save things to be parsed and wipe out all other data
+        # save things to be parsed and wipe out all other data
         gfa_return = self.gfa_return
         source_shapes = self.source_shapes
         self.__define_attributes()
@@ -105,15 +105,15 @@ def myCustomFusionRoutine(list_of_shapes):
             else:
                 raise ValueError("GeneralFuseAnalyzer.parse: duplicate source shape detected.")
 
-        #test if map has missing entries
+        # test if map has missing entries
         map_needs_repairing = False
         for iSource in range(len(map)):
             if len(map[iSource]) == 0:
                 map_needs_repairing = True
 
         if map_needs_repairing:
-            aggregate_types = set(["Wire","Shell","CompSolid","Compound"])
-            nonaggregate_types = set(["Vertex","Edge","Face","Solid"])
+            aggregate_types = set(["Wire", "Shell", "CompSolid", "Compound"])
+            nonaggregate_types = set(["Vertex", "Edge", "Face", "Solid"])
 
             types = set()
             for piece in self.pieces:
@@ -123,25 +123,29 @@ def myCustomFusionRoutine(list_of_shapes):
 
             def extractor(sh):
                 return (
-                    (sh.Vertexes if "Vertex" in types_to_extract else []) +
-                    (sh.Edges if "Edge" in types_to_extract else []) +
-                    (sh.Faces if "Face" in types_to_extract else []) +
-                    (sh.Solids if "Solid" in types_to_extract else [])
+                    (sh.Vertexes if "Vertex" in types_to_extract else [])
+                    + (sh.Edges if "Edge" in types_to_extract else [])
+                    + (sh.Faces if "Face" in types_to_extract else [])
+                    + (sh.Solids if "Solid" in types_to_extract else [])
                 )
 
-            aggregate_sources_indexes = [self.indexOfSource(sh) for sh in self.source_shapes if sh.ShapeType in aggregate_types]
+            aggregate_sources_indexes = [
+                self.indexOfSource(sh)
+                for sh in self.source_shapes
+                if sh.ShapeType in aggregate_types
+            ]
             aggregate_pieces = [sh for sh in self.pieces if sh.ShapeType in aggregate_types]
-            assert(len(aggregate_sources_indexes) == len(aggregate_pieces))
+            assert len(aggregate_sources_indexes) == len(aggregate_pieces)
             for i_aggregate in range(len(aggregate_sources_indexes)):
                 iSource = aggregate_sources_indexes[i_aggregate]
-                if len(map[iSource]) == 0:#recover only if info is actually missing
+                if len(map[iSource]) == 0:  # recover only if info is actually missing
                     map[iSource] = [aggregate_pieces[i_aggregate]]
-                    #search if any plain pieces are also in this aggregate piece. If yes, we need to add the piece to map.
+                    # search if any plain pieces are also in this aggregate piece. If yes, we need to add the piece to map.
                     for sh in extractor(aggregate_pieces[i_aggregate]):
                         hash = HashableShape(sh)
                         iPiece = self._piece_to_index.get(hash)
                         if iPiece is not None:
-                            #print "found piece {num} in compound {numc}".format(num= iPiece, numc= i_aggregate)
+                            # print "found piece {num} in compound {numc}".format(num= iPiece, numc= i_aggregate)
                             if not map[iSource][-1].isSame(self.pieces[iPiece]):
                                 map[iSource].append(self.pieces[iPiece])
 
@@ -149,12 +153,17 @@ def myCustomFusionRoutine(list_of_shapes):
             for iSource in range(len(map)):
                 if len(map[iSource]) == 0:
                     import FreeCAD as App
-                    App.Console.PrintWarning("Map entry {num} is empty. "
-                                             "Source-to-piece correspondence information is probably incomplete.".format(num=iSource))
+
+                    App.Console.PrintWarning(
+                        "Map entry {num} is empty. "
+                        "Source-to-piece correspondence information is probably incomplete.".format(
+                            num=iSource
+                        )
+                    )
 
         self._pieces_of_source = [[] for i in range(len(self.source_shapes))]
         self._sources_of_piece = [[] for i in range(len(self.pieces))]
-        assert(len(map) == len(self.source_shapes))
+        assert len(map) == len(self.source_shapes)
         for iSource in range(len(self.source_shapes)):
             list_pieces = map[iSource]
             for piece in list_pieces:
@@ -166,8 +175,8 @@ def myCustomFusionRoutine(list_of_shapes):
         """Fills element-to-source map. Potentially slow, so separated from general parse.
         Needed for splitAggregates; called automatically from splitAggregates."""
 
-        if len(self._element_to_source)>0:
-            return #already parsed.
+        if len(self._element_to_source) > 0:
+            return  # already parsed.
 
         for iPiece in range(len(self.pieces)):
             piece = self.pieces[iPiece]
@@ -181,6 +190,7 @@ def myCustomFusionRoutine(list_of_shapes):
     def indexOfPiece(self, piece_shape):
         "indexOfPiece(piece_shape): returns index of piece_shape in list of pieces"
         return self._piece_to_index[HashableShape(piece_shape)]
+
     def indexOfSource(self, source_shape):
         "indexOfSource(source_shape): returns index of source_shape in list of arguments"
         return self._source_to_index[HashableShape(source_shape)]
@@ -212,11 +222,12 @@ def myCustomFusionRoutine(list_of_shapes):
         returns 3.
 
         Note: the return value may be incorrect if some of the pieces are wires/shells/
-        compsolids/compounds. Please use explodeCompounds and splitAggregates before using this function."""
+        compsolids/compounds. Please use explodeCompounds and splitAggregates before using this function.
+        """
 
         return max([len(ilist) for ilist in self._sources_of_piece])
 
-    def splitAggregates(self, pieces_to_split = None):
+    def splitAggregates(self, pieces_to_split=None):
         """splitAggregates(pieces_to_split = None): splits aggregate shapes (wires, shells,
         compsolids) in pieces of GF result as cut by intersections. Also splits aggregates
         inside compounds. After running this, 'self' is replaced with new data, where the
@@ -238,20 +249,20 @@ def myCustomFusionRoutine(list_of_shapes):
         new_data = GeneralFuseReturnBuilder(self.source_shapes)
         changed = False
 
-        #split pieces that are not compounds....
+        # split pieces that are not compounds....
         for iPiece in range(len(self.pieces)):
             piece = self.pieces[iPiece]
 
             if HashableShape(piece) in pieces_to_split:
                 new_pieces = self.makeSplitPieces(piece)
-                changed = changed or len(new_pieces)>1
+                changed = changed or len(new_pieces) > 1
                 for new_piece in new_pieces:
                     new_data.addPiece(new_piece, self._sources_of_piece[iPiece])
             else:
                 new_data.addPiece(piece, self._sources_of_piece[iPiece])
 
-        #split pieces inside compounds
-        #prepare index of existing pieces.
+        # split pieces inside compounds
+        # prepare index of existing pieces.
         existing_pieces = new_data._piece_to_index.copy()
         for i_new_piece in range(len(new_data.pieces)):
             new_piece = new_data.pieces[i_new_piece]
@@ -265,8 +276,8 @@ def myCustomFusionRoutine(list_of_shapes):
         if len(new_data.pieces) > len(self.pieces) or changed:
             self.gfa_return = new_data.getGFReturn()
             self.parse()
-        #else:
-            #print "Nothing was split"
+        # else:
+        # print "Nothing was split"
 
     def _splitInCompound(self, compound, existing_pieces):
         """Splits aggregates inside compound. Returns None if nothing is split, otherwise
@@ -287,10 +298,10 @@ def myCustomFusionRoutine(list_of_shapes):
                     changed = True
             else:
                 new_pieces = self.makeSplitPieces(piece)
-                changed = changed or len(new_pieces)>1
+                changed = changed or len(new_pieces) > 1
                 for new_piece in new_pieces:
                     hash = HashableShape_Deep(new_piece)
-                    dummy,ex_piece = existing_pieces.get(hash, (None, None))
+                    dummy, ex_piece = existing_pieces.get(hash, (None, None))
                     if ex_piece is not None:
                         new_children.append(ex_piece)
                         changed = True
@@ -301,7 +312,6 @@ def myCustomFusionRoutine(list_of_shapes):
             return Part.makeCompound(new_children)
         else:
             return None
-
 
     def makeSplitPieces(self, shape):
         """makeSplitPieces(self, shape): splits a shell, wire or compsolid into pieces where
@@ -320,7 +330,7 @@ def myCustomFusionRoutine(list_of_shapes):
             bit_extractor = lambda sh: sh.Solids
             joint_extractor = lambda sh: sh.Faces
         else:
-            #can't split the shape
+            # can't split the shape
             return [shape]
 
         # for each joint, test if all bits it's connected to are from same number of sources.
@@ -334,21 +344,23 @@ def myCustomFusionRoutine(list_of_shapes):
                 for bit in bit_extractor(self.gfa_return[0]):
                     for joint_bit in joint_extractor(bit):
                         if joint_bit.isSame(joint):
-                            #bit is connected to joint!
+                            # bit is connected to joint!
                             bit_overlap_count = len(self._element_to_source[HashableShape(bit)])
-                            assert(bit_overlap_count <= joint_overlap_count)
+                            assert bit_overlap_count <= joint_overlap_count
                             if bit_overlap_count < joint_overlap_count:
                                 if len(splits) == 0 or splits[-1] is not joint:
                                     splits.append(joint)
-        if len(splits)==0:
-            #shape was not split - no split points found
+        if len(splits) == 0:
+            # shape was not split - no split points found
             return [shape]
 
         from . import ShapeMerge
 
-        new_pieces = ShapeMerge.mergeShapes(bit_extractor(shape), split_connections= splits, bool_compsolid= True).childShapes()
+        new_pieces = ShapeMerge.mergeShapes(
+            bit_extractor(shape), split_connections=splits, bool_compsolid=True
+        ).childShapes()
         if len(new_pieces) == 1:
-            #shape was not split (split points found, but the shape remained in one piece).
+            # shape was not split (split points found, but the shape remained in one piece).
             return [shape]
         return new_pieces
 
@@ -367,7 +379,7 @@ def myCustomFusionRoutine(list_of_shapes):
         from .Utils import compoundLeaves
 
         new_data = GeneralFuseReturnBuilder(self.source_shapes)
-        new_data.hasher_class = HashableShape #deep hashing not needed here.
+        new_data.hasher_class = HashableShape  # deep hashing not needed here.
 
         for iPiece in range(len(self.pieces)):
             piece = self.pieces[iPiece]
@@ -383,13 +395,14 @@ def myCustomFusionRoutine(list_of_shapes):
 
 class GeneralFuseReturnBuilder(FrozenClass):
     "GeneralFuseReturnBuilder: utility class used by splitAggregates to build fake return of generalFuse, for re-parsing."
+
     def __define_attributes(self):
         self.pieces = []
         # key = hasher_class(shape). Value = (index_into_self_dot_pieces, shape).
         # Note that GeneralFuseResult uses this item directly.
         self._piece_to_index = {}
 
-        self._pieces_from_source = [] #list of list of ints
+        self._pieces_from_source = []  # list of list of ints
         self.source_shapes = []
 
         self.hasher_class = HashableShape_Deep
@@ -408,19 +421,22 @@ class GeneralFuseReturnBuilder(FrozenClass):
         ret = False
         i_piece_existing = None
         hash = None
-        if piece_shape.ShapeType != "Compound": # do not catch duplicate compounds
+        if piece_shape.ShapeType != "Compound":  # do not catch duplicate compounds
             hash = self.hasher_class(piece_shape)
             i_piece_existing, dummy = self._piece_to_index.get(hash, (None, None))
 
         if i_piece_existing is None:
-            #adding
+            # adding
             self.pieces.append(piece_shape)
-            i_piece_existing = len(self.pieces)-1
+            i_piece_existing = len(self.pieces) - 1
             if hash is not None:
-                self._piece_to_index[hash] = (i_piece_existing, piece_shape,)
+                self._piece_to_index[hash] = (
+                    i_piece_existing,
+                    piece_shape,
+                )
             ret = True
         else:
-            #re-adding
+            # re-adding
             ret = False
         for iSource in source_shape_index_list:
             if not i_piece_existing in self._pieces_from_source[iSource]:
@@ -428,9 +444,12 @@ class GeneralFuseReturnBuilder(FrozenClass):
         return ret
 
     def replacePiece(self, piece_index, new_shape):
-        assert(self.pieces[piece_index].ShapeType == "Compound")
-        assert(new_shape.ShapeType == "Compound")
+        assert self.pieces[piece_index].ShapeType == "Compound"
+        assert new_shape.ShapeType == "Compound"
         self.pieces[piece_index] = new_shape
 
     def getGFReturn(self):
-        return (Part.makeCompound(self.pieces), [[self.pieces[iPiece] for iPiece in ilist] for ilist in self._pieces_from_source])
+        return (
+            Part.makeCompound(self.pieces),
+            [[self.pieces[iPiece] for iPiece in ilist] for ilist in self._pieces_from_source],
+        )
