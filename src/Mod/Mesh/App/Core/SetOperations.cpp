@@ -554,45 +554,45 @@ void MeshIntersection::getIntersection(std::list<MeshIntersection::Tuple>& intsc
 }
 
 
-    // Contains bounding boxes for every facet of 'k2'
-    std::vector<Base::BoundBox3f> boxes2;
-    MeshFacetIterator cMFI2(k2);
-    for (cMFI2.Begin(); cMFI2.More(); cMFI2.Next()) {
-        boxes2.push_back((*cMFI2).GetBoundBox());
-    }
+// Contains bounding boxes for every facet of 'k2'
+std::vector<Base::BoundBox3f> boxes2;
+MeshFacetIterator cMFI2(k2);
+for (cMFI2.Begin(); cMFI2.More(); cMFI2.Next()) {
+    boxes2.push_back((*cMFI2).GetBoundBox());
+}
 
-    // Splits the mesh using grid for speeding up the calculation
-    MeshFacetGrid cMeshFacetGrid(k1);
+// Splits the mesh using grid for speeding up the calculation
+MeshFacetGrid cMeshFacetGrid(k1);
 
-    const MeshFacetArray& rFaces2 = k2.GetFacets();
-    Base::SequencerLauncher seq("Checking for intersections...", rFaces2.size());
-    int index = 0;
-    MeshGeomFacet facet1, facet2;
-    Base::Vector3f pt1, pt2;
+const MeshFacetArray& rFaces2 = k2.GetFacets();
+Base::SequencerLauncher seq("Checking for intersections...", rFaces2.size());
+int index = 0;
+MeshGeomFacet facet1, facet2;
+Base::Vector3f pt1, pt2;
 
-    // Iterate over the facets of the 2nd mesh and find the grid elements of the 1st mesh
-    for (auto it = rFaces2.begin(); it != rFaces2.end(); ++it, index++) {
-        seq.next();
-        std::vector<FacetIndex> elements;
-        cMeshFacetGrid.Inside(boxes2[index], elements, true);
+// Iterate over the facets of the 2nd mesh and find the grid elements of the 1st mesh
+for (auto it = rFaces2.begin(); it != rFaces2.end(); ++it, index++) {
+    seq.next();
+    std::vector<FacetIndex> elements;
+    cMeshFacetGrid.Inside(boxes2[index], elements, true);
 
-        cMFI2.Set(index);
-        facet2 = *cMFI2;
+    cMFI2.Set(index);
+    facet2 = *cMFI2;
 
-        for (FacetIndex element : elements) {
-            if (boxes2[index] && boxes1[element]) {
-                cMFI1.Set(element);
-                facet1 = *cMFI1;
-                int ret = facet1.IntersectWithFacet(facet2, pt1, pt2);
-                if (ret == 2) {
-                    // abort after the first detected self-intersection
-                    return true;
-                }
+    for (FacetIndex element : elements) {
+        if (boxes2[index] && boxes1[element]) {
+            cMFI1.Set(element);
+            facet1 = *cMFI1;
+            int ret = facet1.IntersectWithFacet(facet2, pt1, pt2);
+            if (ret == 2) {
+                // abort after the first detected self-intersection
+                return true;
             }
         }
     }
+}
 
-    return false;
+return false;
 }
 
 void MeshIntersection::connectLines(

@@ -1158,7 +1158,7 @@ float CylinderFit::Fit()
         Base::Vector3d base = cylFit.GetBase();
         Base::Vector3d dir = cylFit.GetAxis();
 
-# if defined(FC_DEBUG)
+#if defined(FC_DEBUG)
         Base::Console().log(
             "MeshCoreFit::Cylinder Fit:  Base: (%0.4f, %0.4f, %0.4f),  Axis: (%0.6f, %0.6f, "
             "%0.6f),  Radius: %0.4f,  Std Dev: %0.4f,  Iterations: %d\n",
@@ -1172,7 +1172,7 @@ float CylinderFit::Fit()
             cylFit.GetStdDeviation(),
             cylFit.GetNumIterations()
         );
-# endif
+#endif
         _vBase = Base::convertTo<Base::Vector3f>(base);
         _vAxis = Base::convertTo<Base::Vector3f>(dir);
         _fRadius = (float)cylFit.GetRadius();
