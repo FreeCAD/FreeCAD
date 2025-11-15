@@ -135,15 +135,19 @@ public:
             "export(list,string) -- Export a list of objects into a single file."
         );
         add_varargs_method("ocaf", &Module::ocaf, "ocaf(string) -- Browse the ocaf structure.");
-        add_keyword_method("exportDxf",
-                           &Module::exportDxf,
-                           "exportDxf(obj=list, name=string, version=14, lwPoly=False): Exports "
-                           "objects to a DXF file with GUI-awareness.");
+        add_keyword_method(
+            "exportDxf",
+            &Module::exportDxf,
+            "exportDxf(obj=list, name=string, version=14, lwPoly=False): Exports "
+            "objects to a DXF file with GUI-awareness."
+        );
 
-        add_varargs_method("getDXFAci",
-                           &Module::getDXFAci,
-                           "getDXFAci(object, is_text) -- Returns the closest ACI color index for "
-                           "a given object.");
+        add_varargs_method(
+            "getDXFAci",
+            &Module::getDXFAci,
+            "getDXFAci(object, is_text) -- Returns the closest ACI color index for "
+            "a given object."
+        );
         initialize("This module is the ImportGui module.");  // register with Python
     }
 
@@ -682,23 +686,21 @@ private:
         PyObject* use_lwpolyline = Py_False;
         PyObject* helperModule = nullptr;
 
-        static const std::array<const char*, 6> kwd_list {"obj",
-                                                          "name",
-                                                          "version",
-                                                          "lwPoly",
-                                                          "helpers",
-                                                          nullptr};
-        if (!Base::Wrapped_ParseTupleAndKeywords(args.ptr(),
-                                                 kwds.ptr(),
-                                                 "Oet|iO!O",
-                                                 kwd_list,
-                                                 &objectList,
-                                                 "utf-8",
-                                                 &filename,
-                                                 &version,
-                                                 &PyBool_Type,
-                                                 &use_lwpolyline,
-                                                 &helperModule)) {  // No type check for the module
+        static const std::array<const char*, 6>
+            kwd_list {"obj", "name", "version", "lwPoly", "helpers", nullptr};
+        if (!Base::Wrapped_ParseTupleAndKeywords(
+                args.ptr(),
+                kwds.ptr(),
+                "Oet|iO!O",
+                kwd_list,
+                &objectList,
+                "utf-8",
+                &filename,
+                &version,
+                &PyBool_Type,
+                &use_lwpolyline,
+                &helperModule
+            )) {  // No type check for the module
             throw Py::Exception();
         }
 
@@ -717,12 +719,12 @@ private:
             writer.setPolyOverride(use_lwpolyline == Py_True);
 
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-                "User parameter:BaseApp/Preferences/Mod/Draft");
+                "User parameter:BaseApp/Preferences/Mod/Draft"
+            );
             if (hGrp->GetBool("dxfproject", false)) {
                 if (Gui::MDIView* genericView = Gui::Application::Instance->activeView()) {
                     if (auto* view3D = dynamic_cast<Gui::View3DInventor*>(genericView)) {
-                        if (SoCamera* camera =
-                                view3D->getViewer()->getSoRenderManager()->getCamera()) {
+                        if (SoCamera* camera = view3D->getViewer()->getSoRenderManager()->getCamera()) {
                             const SbRotation& rot = camera->orientation.getValue();
                             SbVec3f dir;
                             rot.multVec(SbVec3f(0, 0, -1), dir);
@@ -754,12 +756,14 @@ private:
     {
         PyObject* obj_py;
         PyObject* is_text_py;
-        if (!PyArg_ParseTuple(args.ptr(),
-                              "O!O!",
-                              &(App::DocumentObjectPy::Type),
-                              &obj_py,
-                              &PyBool_Type,
-                              &is_text_py)) {
+        if (!PyArg_ParseTuple(
+                args.ptr(),
+                "O!O!",
+                &(App::DocumentObjectPy::Type),
+                &obj_py,
+                &PyBool_Type,
+                &is_text_py
+            )) {
             throw Py::Exception();
         }
 

@@ -2185,13 +2185,15 @@ void ImpExpDxfWrite::exportText(
     writeText(text, location1, location2, size, just);
 }
 
-void ImpExpDxfWrite::exportLinearDim(Base::Vector3d textLocn,
-                                     Base::Vector3d lineLocn,
-                                     Base::Vector3d extLine1Start,
-                                     Base::Vector3d extLine2Start,
-                                     char* dimText,
-                                     int type,
-                                     double fontSize)
+void ImpExpDxfWrite::exportLinearDim(
+    Base::Vector3d textLocn,
+    Base::Vector3d lineLocn,
+    Base::Vector3d extLine1Start,
+    Base::Vector3d extLine2Start,
+    char* dimText,
+    int type,
+    double fontSize
+)
 {
     double text[3] = {0, 0, 0};
     text[0] = textLocn.x;

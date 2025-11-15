@@ -182,18 +182,20 @@ static PyObject* DxfWriterProxy_addText(DxfWriterProxy* self, PyObject* args)
     double p1[3], p2[3], height, rotation;
     int justification;
 
-    if (!PyArg_ParseTuple(args,
-                          "s(ddd)(ddd)did",
-                          &text_str,
-                          &p1[0],
-                          &p1[1],
-                          &p1[2],
-                          &p2[0],
-                          &p2[1],
-                          &p2[2],
-                          &height,
-                          &justification,
-                          &rotation)) {
+    if (!PyArg_ParseTuple(
+            args,
+            "s(ddd)(ddd)did",
+            &text_str,
+            &p1[0],
+            &p1[1],
+            &p1[2],
+            &p2[0],
+            &p2[1],
+            &p2[2],
+            &height,
+            &justification,
+            &rotation
+        )) {
         return nullptr;  // PyArg_ParseTuple will set an exception
     }
     if (self->writer_inst) {
@@ -210,28 +212,29 @@ static PyObject* DxfWriterProxy_writeLinearDim(DxfWriterProxy* self, PyObject* a
     int dim_type;
     double font_size;
 
-    if (!PyArg_ParseTuple(args,
-                          "(ddd)(ddd)(ddd)(ddd)sid",
-                          &text_mid[0],
-                          &text_mid[1],
-                          &text_mid[2],
-                          &line_def[0],
-                          &line_def[1],
-                          &line_def[2],
-                          &p1[0],
-                          &p1[1],
-                          &p1[2],
-                          &p2[0],
-                          &p2[1],
-                          &p2[2],
-                          &dim_text,
-                          &dim_type,
-                          &font_size)) {
+    if (!PyArg_ParseTuple(
+            args,
+            "(ddd)(ddd)(ddd)(ddd)sid",
+            &text_mid[0],
+            &text_mid[1],
+            &text_mid[2],
+            &line_def[0],
+            &line_def[1],
+            &line_def[2],
+            &p1[0],
+            &p1[1],
+            &p1[2],
+            &p2[0],
+            &p2[1],
+            &p2[2],
+            &dim_text,
+            &dim_type,
+            &font_size
+        )) {
         return nullptr;
     }
     if (self->writer_inst) {
-        self->writer_inst
-            ->writeLinearDim(text_mid, line_def, p1, p2, dim_text, dim_type, font_size);
+        self->writer_inst->writeLinearDim(text_mid, line_def, p1, p2, dim_text, dim_type, font_size);
     }
     Py_RETURN_NONE;
 }
@@ -242,18 +245,12 @@ static PyMethodDef DxfWriterProxy_methods[] = {
      (PyCFunction)DxfWriterProxy_writeBlock,
      METH_VARARGS,
      "writeBlock(name, base_point_tuple)"},
-    {"writeEndBlock",
-     (PyCFunction)DxfWriterProxy_writeEndBlock,
-     METH_VARARGS,
-     "writeEndBlock(name)"},
+    {"writeEndBlock", (PyCFunction)DxfWriterProxy_writeEndBlock, METH_VARARGS, "writeEndBlock(name)"},
     {"writeInsert",
      (PyCFunction)DxfWriterProxy_writeInsert,
      METH_VARARGS,
      "writeInsert(name, insertion_point_tuple, scale, rotation)"},
-    {"exportShape",
-     (PyCFunction)DxfWriterProxy_exportShape,
-     METH_VARARGS,
-     "exportShape(shape_object)"},
+    {"exportShape", (PyCFunction)DxfWriterProxy_exportShape, METH_VARARGS, "exportShape(shape_object)"},
     {"setLayerName", (PyCFunction)DxfWriterProxy_setLayerName, METH_VARARGS, "setLayerName(name)"},
     {"setColor", (PyCFunction)DxfWriterProxy_setColor, METH_VARARGS, "setColor(aci_index)"},
     {"addText", (PyCFunction)DxfWriterProxy_addText, METH_VARARGS, "Writes a TEXT entity."},
@@ -347,8 +344,7 @@ void executeDxfExport(PyObject* objectList, ImpExpDxfWrite& writer, PyObject* he
         PyObject* item = (*it).ptr();
 
         // Call the master dispatcher for every single object
-        PyObject* result =
-            PyObject_CallFunctionObjArgs(export_object_func, item, writerProxyObj, NULL);
+        PyObject* result = PyObject_CallFunctionObjArgs(export_object_func, item, writerProxyObj, NULL);
         Py_XDECREF(result);  // We don't care about the return value
 
         if (PyErr_Occurred()) {
@@ -369,27 +365,39 @@ public:
     Module()
         : Py::ExtensionModule<Module>("Import")
     {
-        add_keyword_method("open",
-                           &Module::importer,
-                           "open(string) -- Open the file and create a new document.");
-        add_keyword_method("insert",
-                           &Module::importer,
-                           "insert(string,string) -- Insert the file into the given document.");
-        add_keyword_method("export",
-                           &Module::exporter,
-                           "export(list,string) -- Export a list of objects into a single file.");
-        add_varargs_method("readDXF",
-                           &Module::readDXF,
-                           "readDXF(filename,[document,ignore_errors,option_source]): Imports a "
-                           "DXF file into the given document. ignore_errors is True by default.");
-        add_varargs_method("writeDXFShape",
-                           &Module::writeDXFShape,
-                           "writeDXFShape([shape],filename [version,usePolyline,optionSource]): "
-                           "Exports Shape(s) to a DXF file.");
-        add_keyword_method("exportDxf",
-                           &Module::exportDxf,
-                           "exportDxf(obj=list, name=string, version=14, lwPoly=False): Exports "
-                           "DocumentObject(s) to a DXF file.");
+        add_keyword_method(
+            "open",
+            &Module::importer,
+            "open(string) -- Open the file and create a new document."
+        );
+        add_keyword_method(
+            "insert",
+            &Module::importer,
+            "insert(string,string) -- Insert the file into the given document."
+        );
+        add_keyword_method(
+            "export",
+            &Module::exporter,
+            "export(list,string) -- Export a list of objects into a single file."
+        );
+        add_varargs_method(
+            "readDXF",
+            &Module::readDXF,
+            "readDXF(filename,[document,ignore_errors,option_source]): Imports a "
+            "DXF file into the given document. ignore_errors is True by default."
+        );
+        add_varargs_method(
+            "writeDXFShape",
+            &Module::writeDXFShape,
+            "writeDXFShape([shape],filename [version,usePolyline,optionSource]): "
+            "Exports Shape(s) to a DXF file."
+        );
+        add_keyword_method(
+            "exportDxf",
+            &Module::exportDxf,
+            "exportDxf(obj=list, name=string, version=14, lwPoly=False): Exports "
+            "DocumentObject(s) to a DXF file."
+        );
 
         // Call initialize() first, as it creates the module object.
         initialize("This module is the Import module.");
@@ -851,23 +859,21 @@ private:
         PyObject* use_lwpolyline = Py_False;
         PyObject* helperModule = nullptr;
 
-        static const std::array<const char*, 6> kwd_list {"obj",
-                                                          "name",
-                                                          "version",
-                                                          "lwPoly",
-                                                          "helpers",
-                                                          nullptr};
-        if (!Base::Wrapped_ParseTupleAndKeywords(args.ptr(),
-                                                 kwds.ptr(),
-                                                 "Oet|iO!O",
-                                                 kwd_list,
-                                                 &objectList,
-                                                 "utf-8",
-                                                 &filename,
-                                                 &version,
-                                                 &PyBool_Type,
-                                                 &use_lwpolyline,
-                                                 &helperModule)) {  // No type check for the module
+        static const std::array<const char*, 6>
+            kwd_list {"obj", "name", "version", "lwPoly", "helpers", nullptr};
+        if (!Base::Wrapped_ParseTupleAndKeywords(
+                args.ptr(),
+                kwds.ptr(),
+                "Oet|iO!O",
+                kwd_list,
+                &objectList,
+                "utf-8",
+                &filename,
+                &version,
+                &PyBool_Type,
+                &use_lwpolyline,
+                &helperModule
+            )) {  // No type check for the module
             throw Py::Exception();
         }
 

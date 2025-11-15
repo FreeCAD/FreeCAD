@@ -630,10 +630,12 @@ void CDxfWrite::writeEndBlock(const std::string& /*blockName*/)
     }
 }
 
-void CDxfWrite::writeInsert(const std::string& blockName,
-                            const double insertionPoint[3],
-                            double scale,
-                            double rotation)
+void CDxfWrite::writeInsert(
+    const std::string& blockName,
+    const double insertionPoint[3],
+    double scale,
+    double rotation
+)
 {
     (*m_ssEntity) << "  0\n";
     (*m_ssEntity) << "INSERT\n";
@@ -910,8 +912,10 @@ void CDxfWrite::writePolyline(const LWPolyDataOut& pd)
     (*m_ssEntity) << getLayerName() << endl;
 }
 
-void CDxfWrite::writePolyFace(const std::vector<point3D>& vertices,
-                              const std::vector<std::vector<int>>& faces)
+void CDxfWrite::writePolyFace(
+    const std::vector<point3D>& vertices,
+    const std::vector<std::vector<int>>& faces
+)
 {
     // A Polyface Mesh is a POLYLINE entity with bit 6 (64) set in its flags (group 70).
     (*m_ssEntity) << "  0\n";
@@ -1461,13 +1465,15 @@ void CDxfWrite::putArrow(
 #define ALIGNED 0
 #define HORIZONTAL 1
 #define VERTICAL 2
-void CDxfWrite::writeLinearDim(const double* textMidPoint,
-                               const double* lineDefPoint,
-                               const double* extLine1,
-                               const double* extLine2,
-                               const char* dimText,
-                               int type,
-                               double fontSize)
+void CDxfWrite::writeLinearDim(
+    const double* textMidPoint,
+    const double* lineDefPoint,
+    const double* extLine1,
+    const double* extLine2,
+    const char* dimText,
+    int type,
+    double fontSize
+)
 {
     (*m_ssEntity) << "  0" << endl;
     (*m_ssEntity) << "DIMENSION" << endl;
@@ -1847,13 +1853,15 @@ void CDxfWrite::writeBlockTrailer()
 //***************************
 // writeLinearDimBlock
 // added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
-void CDxfWrite::writeLinearDimBlock(const double* textMidPoint,
-                                    const double* lineDefPoint,
-                                    const double* extLine1,
-                                    const double* extLine2,
-                                    const char* dimText,
-                                    int type,
-                                    double fontSize)
+void CDxfWrite::writeLinearDimBlock(
+    const double* textMidPoint,
+    const double* lineDefPoint,
+    const double* extLine1,
+    const double* extLine2,
+    const char* dimText,
+    int type,
+    double fontSize
+)
 {
     Base::Vector3d e1S(MakeVector3d(extLine1));
     Base::Vector3d e2S(MakeVector3d(extLine2));
@@ -1906,14 +1914,16 @@ void CDxfWrite::writeLinearDimBlock(const double* textMidPoint,
 
     putLine(e1E, e2E, m_ssBlock, getBlockHandle(), m_saveBlkRecordHandle);
 
-    putText(dimText,
-            toVector3d(textMidPoint),
-            toVector3d(lineDefPoint),
-            fontSize,
-            1,
-            m_ssBlock,
-            getBlockHandle(),
-            m_saveBlkRecordHandle);
+    putText(
+        dimText,
+        toVector3d(textMidPoint),
+        toVector3d(lineDefPoint),
+        fontSize,
+        1,
+        m_ssBlock,
+        getBlockHandle(),
+        m_saveBlkRecordHandle
+    );
 
     perp.Normalize();
     para.Normalize();

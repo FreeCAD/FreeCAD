@@ -486,6 +486,7 @@ def getACI(ob, text=False):
     if not dxfUseLegacyExporter:
         try:
             import ImportGui
+
             # Delegate to the C++ implementation
             return ImportGui.getDXFAci(ob, text)
         except Exception as e:
@@ -507,7 +508,9 @@ def getACI(ob, text=False):
             for parent in ob.InList:
                 if Draft.getType(parent) == "Layer":
                     if ob in parent.Group:
-                        if hasattr(parent, "ViewObject") and hasattr(parent.ViewObject, "OverrideChildren"):
+                        if hasattr(parent, "ViewObject") and hasattr(
+                            parent.ViewObject, "OverrideChildren"
+                        ):
                             if parent.ViewObject.OverrideChildren:
                                 return 256  # BYLAYER
             if text:
@@ -517,9 +520,7 @@ def getACI(ob, text=False):
             aci = [0, 442]
             for i in range(255, -1, -1):
                 ref = dxfColorMap.color_map[i]
-                dist = ((ref[0]-col[0])**2
-                        + (ref[1]-col[1])**2
-                        + (ref[2]-col[2])**2)
+                dist = (ref[0] - col[0]) ** 2 + (ref[1] - col[1]) ** 2 + (ref[2] - col[2]) ** 2
                 if dist <= aci[1]:
                     aci = [i, dist]
             return aci[0]
@@ -3712,6 +3713,7 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
 
         # Get a handle to the current module (importDXF)
         import sys
+
         helpers = sys.modules[__name__]
 
         if gui:
@@ -3719,8 +3721,9 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
         else:
             import Import as DxfExporterModule
 
-        DxfExporterModule.exportDxf(obj=objectslist, name=filename, version=version, lwPoly=lwPoly,
-                                    helpers=helpers)
+        DxfExporterModule.exportDxf(
+            obj=objectslist, name=filename, version=version, lwPoly=lwPoly, helpers=helpers
+        )
         return
 
     getDXFlibs()
@@ -5103,9 +5106,11 @@ class DxfDraftPostProcessor:
         self.doc.recompute()
         FCC.PrintMessage("--- Draft post-processing finished. ---\n")
 
+
 # #####################################################################
 # ## C++ Exporter Helper Functions
 # #####################################################################
+
 
 def _write_text_entities(obj, writer_proxy):
     """Writes DXF TEXT entities for an Annotation object."""
@@ -5115,11 +5120,11 @@ def _write_text_entities(obj, writer_proxy):
 
     if hasattr(obj, "ViewObject"):
         vobj = obj.ViewObject
-        height = float(getattr(vobj, 'FontSize', height))
-        scale_multiplier = float(getattr(vobj, 'ScaleMultiplier', scale_multiplier))
+        height = float(getattr(vobj, "FontSize", height))
+        scale_multiplier = float(getattr(vobj, "ScaleMultiplier", scale_multiplier))
 
         justify_map = {"Left": 0, "Center": 1, "Right": 2}
-        justification = justify_map.get(getattr(vobj, 'Justification', "Left"), justification)
+        justification = justify_map.get(getattr(vobj, "Justification", "Left"), justification)
 
     # Base position and rotation
     placement = obj.Placement
@@ -5142,7 +5147,7 @@ def _write_text_entities(obj, writer_proxy):
         # The second alignment point is needed for certain justifications
         # For simplicity, we can often reuse the insertion point
         p1 = (pos.x, pos.y, pos.z)
-        p2 = p1 # Simplification for now
+        p2 = p1  # Simplification for now
 
         # The legacy exporter used the 0.8 scaling factor for height, most probably
         # to approximate the visual height of the text. This is retained here for consistency.
@@ -5167,11 +5172,11 @@ def _write_dimension_entity(obj, writer_proxy):
     # 0=Aligned, 1=Horizontal, 2=Vertical in our C++ writer
     # A more robust check would analyze the vectors, but this is a start.
     if abs(p1.x - p2.x) < 1e-7:
-        dim_type = 2 # Vertical
+        dim_type = 2  # Vertical
     elif abs(p1.y - p2.y) < 1e-7:
-        dim_type = 1 # Horizontal
+        dim_type = 1  # Horizontal
     else:
-        dim_type = 0 # Aligned
+        dim_type = 0  # Aligned
 
     # Package the data to be returned to C++
     text_mid_point = (dim_line_pt.x, dim_line_pt.y, dim_line_pt.z)
@@ -5182,13 +5187,9 @@ def _write_dimension_entity(obj, writer_proxy):
     if hasattr(obj, "ViewObject"):
         font_size = float(obj.ViewObject.FontSize)
 
-    writer_proxy.writeLinearDim(text_mid_point,
-                                dim_line_pt,
-                                p1_tuple,
-                                p2_tuple,
-                                dim_text_override,
-                                dim_type,
-                                font_size)
+    writer_proxy.writeLinearDim(
+        text_mid_point, dim_line_pt, p1_tuple, p2_tuple, dim_text_override, dim_type, font_size
+    )
 
 
 def _export_techdraw_page(page, writer_proxy):
@@ -5209,10 +5210,10 @@ def _export_techdraw_page(page, writer_proxy):
         # Set layer and color for the geometry inside the block
         # Blocks typically define geometry on layer "0" with color BYBLOCK
         writer_proxy.setLayerName("0")
-        writer_proxy.setColor(0) # 0 = BYBLOCK
+        writer_proxy.setColor(0)  # 0 = BYBLOCK
 
         # Project the source shapes for this view
-        if hasattr(TechDraw, "projectToDXF"): # Check for modern TechDraw API
+        if hasattr(TechDraw, "projectToDXF"):  # Check for modern TechDraw API
             for source_obj in view.Source:
                 # projectToDXF returns a TopoShape, which we can export
                 projected_shape = TechDraw.projectToDXF(source_obj.Shape, view.Direction)
@@ -5225,8 +5226,8 @@ def _export_techdraw_page(page, writer_proxy):
     # Second, insert all the created blocks into the model space
     for view in page.Views:
         # Set the layer and color for the INSERT entity itself
-        layer_name = getGroup(view) # Use the view's layer
-        aci_color = 256 # 256 = BYLAYER for inserts
+        layer_name = getGroup(view)  # Use the view's layer
+        aci_color = 256  # 256 = BYLAYER for inserts
         writer_proxy.setLayerName(layer_name)
         writer_proxy.setColor(aci_color)
 
@@ -5283,6 +5284,7 @@ def _write_arch_axis_entities(obj, writer_proxy):
     except Exception as e:
         FreeCAD.Console.PrintError(f"Error exporting Arch AxisSystem {obj.Name}: {e}\n")
 
+
 def _write_arch_space_entities(obj, writer_proxy):
     """
     Specific helper to export an Arch::Space object.
@@ -5299,7 +5301,7 @@ def _write_arch_space_entities(obj, writer_proxy):
 
         # Set layer and color
         layer_name = getGroup(obj)
-        aci_color = getACI(obj, text=True) # Get text color
+        aci_color = getACI(obj, text=True)  # Get text color
         writer_proxy.setLayerName(layer_name)
         writer_proxy.setColor(aci_color)
 
@@ -5322,10 +5324,18 @@ def _write_arch_space_entities(obj, writer_proxy):
         if text2:
             ofs = obj.Placement.Rotation.multVec(FreeCAD.Vector(0, -lspc.Length, 0))
             p2_pos = p1 + ofs
-            writer_proxy.addText(text2, (p2_pos.x, p2_pos.y, p2_pos.z), (p2_pos.x, p2_pos.y, p2_pos.z), h2 * 0.8, 1, rotation)
+            writer_proxy.addText(
+                text2,
+                (p2_pos.x, p2_pos.y, p2_pos.z),
+                (p2_pos.x, p2_pos.y, p2_pos.z),
+                h2 * 0.8,
+                1,
+                rotation,
+            )
 
     except Exception as e:
         FreeCAD.Console.PrintError(f"Error exporting Arch Space {obj.Name}: {e}\n")
+
 
 def _write_arch_panel_cut_entities(obj, writer_proxy):
     """
@@ -5359,18 +5369,19 @@ def _write_arch_panel_cut_entities(obj, writer_proxy):
         # Export the main outline on the "Outlines" layer in blue
         if outline_wire:
             writer_proxy.setLayerName("Outlines")
-            writer_proxy.setColor(5) # ACI color 5 = blue
+            writer_proxy.setColor(5)  # ACI color 5 = blue
             writer_proxy.exportShape(outline_wire)
 
         # Export the cutouts on the "Cuts" layer in cyan
         if cut_wires:
             writer_proxy.setLayerName("Cuts")
-            writer_proxy.setColor(4) # ACI color 4 = cyan
+            writer_proxy.setColor(4)  # ACI color 4 = cyan
             for cut in cut_wires:
                 writer_proxy.exportShape(cut)
 
     except Exception as e:
         FreeCAD.Console.PrintError(f"Error exporting Arch PanelCut {obj.Name}: {e}\n")
+
 
 def _write_arch_panel_sheet_entities(obj, writer_proxy):
     """
@@ -5390,7 +5401,7 @@ def _write_arch_panel_sheet_entities(obj, writer_proxy):
             border_shape = obj.Proxy.sheetborder.copy()
             border_shape.Placement = obj.Placement
             writer_proxy.setLayerName("Sheets")
-            writer_proxy.setColor(1) # ACI color 1 = red
+            writer_proxy.setColor(1)  # ACI color 1 = red
             writer_proxy.exportShape(border_shape)
 
         # 2. Export the sheet's tag
@@ -5398,7 +5409,7 @@ def _write_arch_panel_sheet_entities(obj, writer_proxy):
             tag_shape = obj.Proxy.sheettag.copy()
             tag_shape.Placement = obj.Placement.multiply(tag_shape.Placement)
             writer_proxy.setLayerName("SheetTags")
-            writer_proxy.setColor(1) # ACI color 1 = red
+            writer_proxy.setColor(1)  # ACI color 1 = red
             writer_proxy.exportShape(tag_shape)
 
         # 3. Process all child objects of the PanelSheet
@@ -5430,10 +5441,10 @@ def _write_generic_shape_entity(obj, writer_proxy):
     shape_to_export = obj.Shape
 
     # Check for sketches, which need special handling to be flattened
-    if Draft.getType(obj) == 'Sketch':
+    if Draft.getType(obj) == "Sketch":
         # This assumes a helper exists to correctly get a flat shape from a sketch
         # In a real implementation, we might need Sketcher.getExportShape(obj)
-        pass # For now, we just use the default shape
+        pass  # For now, we just use the default shape
 
     # The projection/meshing options are checked in C++, but we could
     # also check them here if needed. The C++ check is more efficient.
@@ -5449,7 +5460,7 @@ def _export_object(obj, writer_proxy):
     """
     # 1. Set Layer and Color for the object
     # For text-based objects (Annotations, Dimensions), we get the text color
-    is_text_obj = hasattr(obj, 'ViewObject') and hasattr(obj.ViewObject, 'TextColor')
+    is_text_obj = hasattr(obj, "ViewObject") and hasattr(obj.ViewObject, "TextColor")
     layer_name = getGroup(obj)
     aci_color = getACI(obj, text=is_text_obj)
     writer_proxy.setLayerName(layer_name)
@@ -5460,20 +5471,20 @@ def _export_object(obj, writer_proxy):
 
     # 3. Dispatch to the correct handler
     try:
-        if obj_type in ('Text', 'DraftText', 'Annotation'):
+        if obj_type in ("Text", "DraftText", "Annotation"):
             _write_text_entities(obj, writer_proxy)
-        elif obj_type in ('Dimension', 'LinearDimension', 'AngularDimension'):
+        elif obj_type in ("Dimension", "LinearDimension", "AngularDimension"):
             # TODO: This currently only handles linear dimensions. A full implementation
             # would need to inspect obj_type again here and dispatch to a specific
             # writer function (e.g., _write_angular_dimension_entity).
             _write_dimension_entity(obj, writer_proxy)
-        elif obj_type == 'AxisSystem':
+        elif obj_type == "AxisSystem":
             _write_arch_axis_entities(obj, writer_proxy)
-        elif obj_type == 'Space':
+        elif obj_type == "Space":
             _write_arch_space_entities(obj, writer_proxy)
-        elif obj_type == 'PanelCut':
+        elif obj_type == "PanelCut":
             _write_arch_panel_cut_entities(obj, writer_proxy)
-        elif obj_type == 'PanelSheet':
+        elif obj_type == "PanelSheet":
             _write_arch_panel_sheet_entities(obj, writer_proxy)
         elif hasattr(obj, "Shape") and obj.Shape.isValid():
             # This is the fallback for any other object with a valid Shape property
@@ -5484,6 +5495,7 @@ def _export_object(obj, writer_proxy):
 
     except Exception as e:
         FreeCAD.Console.PrintError(f"Error exporting object {obj.Name} of type {obj_type}: {e}\n")
+
 
 def _ensure_helpers_initialized():
     """

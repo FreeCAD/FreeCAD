@@ -537,32 +537,42 @@ public:
     bool optionProject;
     bool optionMesh;
 
-    void exportText(const char* text,
-                    Base::Vector3d position1,
-                    Base::Vector3d position2,
-                    double size,
-                    int just);
-    void exportLinearDim(Base::Vector3d textLocn,
-                         Base::Vector3d lineLocn,
-                         Base::Vector3d extLine1Start,
-                         Base::Vector3d extLine2Start,
-                         char* dimText,
-                         int type,
-                         double fontSize);
-    void exportAngularDim(Base::Vector3d textLocn,
-                          Base::Vector3d lineLocn,
-                          Base::Vector3d extLine1End,
-                          Base::Vector3d extLine2End,
-                          Base::Vector3d apexPoint,
-                          char* dimText);
-    void exportRadialDim(Base::Vector3d centerPoint,
-                         Base::Vector3d textLocn,
-                         Base::Vector3d arcPoint,
-                         char* dimText);
-    void exportDiametricDim(Base::Vector3d textLocn,
-                            Base::Vector3d arcPoint1,
-                            Base::Vector3d arcPoint2,
-                            char* dimText);
+    void exportText(
+        const char* text,
+        Base::Vector3d position1,
+        Base::Vector3d position2,
+        double size,
+        int just
+    );
+    void exportLinearDim(
+        Base::Vector3d textLocn,
+        Base::Vector3d lineLocn,
+        Base::Vector3d extLine1Start,
+        Base::Vector3d extLine2Start,
+        char* dimText,
+        int type,
+        double fontSize
+    );
+    void exportAngularDim(
+        Base::Vector3d textLocn,
+        Base::Vector3d lineLocn,
+        Base::Vector3d extLine1End,
+        Base::Vector3d extLine2End,
+        Base::Vector3d apexPoint,
+        char* dimText
+    );
+    void exportRadialDim(
+        Base::Vector3d centerPoint,
+        Base::Vector3d textLocn,
+        Base::Vector3d arcPoint,
+        char* dimText
+    );
+    void exportDiametricDim(
+        Base::Vector3d textLocn,
+        Base::Vector3d arcPoint1,
+        Base::Vector3d arcPoint2,
+        char* dimText
+    );
 
     static bool gp_PntEqual(gp_Pnt p1, gp_Pnt p2);
     static bool gp_PntCompare(gp_Pnt p1, gp_Pnt p2);
@@ -593,8 +603,7 @@ protected:
  * The core, non-GUI DXF export logic. This function is exported from the
  * App module to be shared with the Gui module.
  */
-ImportExport void
-executeDxfExport(PyObject* objectList, ImpExpDxfWrite& writer, PyObject* helperModule);
+ImportExport void executeDxfExport(PyObject* objectList, ImpExpDxfWrite& writer, PyObject* helperModule);
 
 }  // namespace Import
 
