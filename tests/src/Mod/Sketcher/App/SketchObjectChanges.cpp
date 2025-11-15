@@ -133,8 +133,10 @@ TEST_F(SketchObjectTest, testReplaceGeometriesOneToTwo)
     Part::GeomLineSegment lineSeg1;
     setupLineSegment(lineSeg1);
     int geoId1 = getObject()->addGeometry(&lineSeg1);
-    std::vector<Part::Geometry*> newCurves {createTypicalNonPeriodicBSpline().release(),
-                                            createTypicalNonPeriodicBSpline().release()};
+    std::vector<Part::Geometry*> newCurves {
+        createTypicalNonPeriodicBSpline().release(),
+        createTypicalNonPeriodicBSpline().release()
+    };
 
     // Act
     getObject()->replaceGeometries({geoId1}, newCurves);
