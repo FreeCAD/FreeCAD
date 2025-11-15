@@ -203,9 +203,13 @@ protected:
 private:
     void onChangedSketchView(const Gui::ViewProvider&, const App::Property&);
 
+private Q_SLOTS:
+    void deferredUpdateList();
+
 private:
     QWidget* proxy;
     bool inEditMode;
+    bool updateListPending;
     std::unique_ptr<Ui_TaskSketcherConstraints> ui;
     ConstraintFilter::FilterValueBitset multiFilterStatus;  // Stores the filters to be aggregated
                                                             // to form the multifilter.
