@@ -21,7 +21,7 @@ def checkForBlindHole(baseshape, selectedFace):
     circularFaces = [
         f
         for f in baseshape.Faces
-        if len(f.OuterWire.Edges) == 1 and type(f.OuterWire.Edges[0].Curve) == Part.Circle
+        if len(f.OuterWire.Edges) == 1 and isinstance(f.OuterWire.Edges[0].Curve, Part.Circle)
     ]
 
     circularFaceEdges = [f.OuterWire.Edges[0] for f in circularFaces]
@@ -69,21 +69,45 @@ def isDrillableCylinder(obj, candidate, tooldiameter=None, vector=App.Vector(0, 
 
         return obj.isInside(startLidCenter, 1e-6, False) or obj.isInside(endLidCenter, 1e-6, False)
 
-    def getSeam(candidate):
-        # Finds the vertical seam edge in a cylinder
+    def getHoleDir(candidate):
+        # Find direction from seam of the cylinder face
+        for edge in candidate.Edges:
+            if edge.isSeam(candidate):
+                if isinstance(edge.Curve, Part.Line):
+                    return edge.Curve.Direction
+                else:
+                    # probably edge is bspline
+                    p1 = edge.Vertexes[0].Point
+                    p2 = edge.Vertexes[-1].Point
+                    return Part.makeLine(p1, p2).Curve.Direction
 
-        for e in candidate.Edges:
-            if isinstance(e.Curve, Part.Line):  # found the seam
-                return e
+        # TODO maybe this is useless and can be removed
+        # Find direction from arcs
+        print("Seam not found")
+        p1 = None
+        p2 = None
+        wire = Part.Wire()
+        for edge in candidate.Edges:
+            if isinstance(edge.Curve, Part.Circle):
+                center = edge.Curve.Center
+                if p1 is None:
+                    p1 = center
+                    wire.add(edge)
+                elif p2 is None and not Path.Geom.pointsCoincide(p1, center):
+                    p2 = center
+                else:
+                    wire.add(edge)
+
+            if p1 and p2 and wire.isClosed():
+                return Part.makeLine(p1, p2).Curve.Direction
+
+        return None
 
     if not candidate.ShapeType == "Face":
         raise TypeError("expected a Face")
 
     if not isinstance(candidate.Surface, Part.Cylinder):
         raise TypeError("expected a cylinder")
-
-    if len(candidate.Edges) != 3:
-        raise TypeError("cylinder does not have 3 edges.  Not supported yet")
 
     if raisedFeature(obj, candidate):
         Path.Log.debug("The cylindrical face is a raised feature")
@@ -103,8 +127,7 @@ def isDrillableCylinder(obj, candidate, tooldiameter=None, vector=App.Vector(0, 
         result = compareVecs(bottomface.normalAt(0, 0), vector, exact=True)
         Path.Log.track(result)
         return result
-
-    elif matchVector and not (compareVecs(getSeam(candidate).Curve.Direction, vector)):
+    elif matchVector and not compareVecs(getHoleDir(candidate), vector):
         Path.Log.debug("The feature is not aligned with the given vector")
         return False
     else:
@@ -121,19 +144,19 @@ def isDrillableFace(obj, candidate, tooldiameter=None, vector=App.Vector(0, 0, 1
         "\n match tool diameter {} \n match vector {}".format(matchToolDiameter, matchVector)
     )
 
-    if not type(candidate.Surface) == Part.Plane:
+    if not isinstance(candidate.Surface, Part.Plane):
         Path.Log.debug("Drilling on non-planar faces not supported")
         return False
 
-    if (
-        len(candidate.Edges) == 1 and type(candidate.Edges[0].Curve) == Part.Circle
+    if len(candidate.Edges) == 1 and isinstance(
+        candidate.Edges[0].Curve, Part.Circle
     ):  # Regular circular face
         Path.Log.debug("Face is circular - 1 edge")
         edge = candidate.Edges[0]
     elif (
         len(candidate.Edges) == 2
-        and type(candidate.Edges[0].Curve) == Part.Circle
-        and type(candidate.Edges[1].Curve) == Part.Circle
+        and isinstance(candidate.Edges[0].Curve, Part.Circle)
+        and isinstance(candidate.Edges[1].Curve, Part.Circle)
     ):  # process a donut
         Path.Log.debug("Face is a donut - 2 edges")
         e1 = candidate.Edges[0]
@@ -225,7 +248,7 @@ def isDrillable(obj, candidate, tooldiameter=None, vector=App.Vector(0, 0, 1), a
         )
     )
 
-    if list == type(obj):
+    if isinstance(obj, list):
         for shape in obj:
             if isDrillable(shape, candidate, tooldiameter, vector):
                 return (True, shape)
@@ -234,21 +257,15 @@ def isDrillable(obj, candidate, tooldiameter=None, vector=App.Vector(0, 0, 1), a
     if candidate.ShapeType not in ["Face", "Edge"]:
         raise TypeError("expected a Face or Edge. Got a {}".format(candidate.ShapeType))
 
-    try:
-        if candidate.ShapeType == "Face":
-            if isinstance(candidate.Surface, Part.Cylinder):
-                return isDrillableCylinder(obj, candidate, tooldiameter, vector)
-            else:
-                return isDrillableFace(obj, candidate, tooldiameter, vector)
-        if candidate.ShapeType == "Edge":
-            return isDrillableEdge(obj, candidate, tooldiameter, vector, allowPartial)
+    if candidate.ShapeType == "Face":
+        if isinstance(candidate.Surface, Part.Cylinder):
+            return isDrillableCylinder(obj, candidate, tooldiameter, vector)
         else:
-            return False
-
-    except TypeError as e:
-        Path.Log.debug(e)
+            return isDrillableFace(obj, candidate, tooldiameter, vector)
+    if candidate.ShapeType == "Edge":
+        return isDrillableEdge(obj, candidate, tooldiameter, vector, allowPartial)
+    else:
         return False
-        # raise TypeError("{}".format(e))
 
 
 def compareVecs(vec1, vec2, exact=False):
@@ -257,6 +274,8 @@ def compareVecs(vec1, vec2, exact=False):
     if exact is True, vectors must match direction. Otherwise,
     alignment can indicate the vectors are the same or exactly opposite
     """
+    if vec1 is None or vec2 is None:
+        return False
 
     angle = vec1.getAngle(vec2)
     angle = 0 if math.isnan(angle) else math.degrees(angle)
@@ -290,12 +309,9 @@ def getDrillableTargets(obj, ToolDiameter=None, vector=App.Vector(0, 0, 1)):
         if not isinstance(candidate.Surface, Part.Cylinder):
             continue
 
-        try:
-            drillable = isDrillable(shp, candidate, tooldiameter=ToolDiameter, vector=vector)
-            Path.Log.debug("fname: {} : drillable {}".format(fname, drillable))
-        except Exception as e:
-            Path.Log.debug(e)
-            continue
+        drillable = isDrillable(shp, candidate, tooldiameter=ToolDiameter, vector=vector)
+        print(f"  fname={fname}  isDrillable={drillable}")
+        Path.Log.debug("fname: {} : drillable {}".format(fname, drillable))
 
         if drillable:
             results.append((obj, fname))
