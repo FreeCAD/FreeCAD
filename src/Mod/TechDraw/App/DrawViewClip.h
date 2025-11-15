@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2012 Yorik van Havre <yorik@uncreated.net>              *
  *   Copyright (c) 2015 WandererFan <wandererfan@gmail.com>                *
