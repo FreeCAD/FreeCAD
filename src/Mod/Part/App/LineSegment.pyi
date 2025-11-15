@@ -1,8 +1,12 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export
 from Base.Type import Type
 from TrimmedCurve import TrimmedCurve
 from Point import Point
-from typing import Final, overload
+from typing import overload
 
 @export(
     PythonName="Part.LineSegment",
