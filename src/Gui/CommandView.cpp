@@ -48,6 +48,7 @@
 #include <App/GeoFeatureGroupExtension.h>
 #include <App/Part.h>
 #include <App/Link.h>
+#include <App/PropertyStandard.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 
@@ -959,6 +960,35 @@ void StdCmdToggleTransparency::activated(int iMsg)
 
     std::vector<Gui::ViewProvider*> viewsToToggle = {};
 
+    // Helper: determine if child view has custom ShapeAppearance that should
+    // prevent redirecting transparency to the parent Body.
+    auto prefersChildAppearance = [](Gui::ViewProvider* childView,
+                                     Gui::ViewProvider* parentView) -> bool {
+        if (!childView || !parentView) {
+            return false;
+        }
+        // Compare ShapeAppearance materials when available
+        if (auto* childMatProp = dynamic_cast<App::PropertyMaterialList*>(
+                childView->getPropertyByName("ShapeAppearance"))) {
+            const auto& childValues = childMatProp->getValues();
+            // Per-face colors -> definitely custom on child
+            if (childValues.size() > 1) {
+                return true;
+            }
+            if (childValues.size() == 1) {
+                if (auto* parentMatProp = dynamic_cast<App::PropertyMaterialList*>(
+                        parentView->getPropertyByName("ShapeAppearance"))) {
+                    const auto& parentValues = parentMatProp->getValues();
+                    if (parentValues.size() == 1) {
+                        // If materials differ, treat child as customized
+                        return !(childValues[0] == parentValues[0]);
+                    }
+                }
+            }
+        }
+        return false;
+    };
+
     for (Gui::SelectionSingleton::SelObj& sel : sels) {
         App::DocumentObject* obj = sel.pObject;
         if (!obj) {
@@ -968,7 +998,7 @@ void StdCmdToggleTransparency::activated(int iMsg)
         bool isGroup = dynamic_cast<App::Part*>(obj) || dynamic_cast<App::LinkGroup*>(obj)
             || dynamic_cast<App::DocumentObjectGroup*>(obj);
 
-        auto addObjects = [](App::DocumentObject* obj, std::vector<Gui::ViewProvider*>& views) {
+        auto addObjects = [&](App::DocumentObject* obj, std::vector<Gui::ViewProvider*>& views) {
             App::Document* doc = obj->getDocument();
             Gui::ViewProvider* view = Application::Instance->getDocument(doc)->getViewProvider(obj);
             App::Property* prop = view->getPropertyByName("Transparency");
@@ -985,7 +1015,9 @@ void StdCmdToggleTransparency::activated(int iMsg)
                         // Make sure it has a transparency prop too
                         parentProp = parentView->getPropertyByName("Transparency");
                         if (parentProp && parentProp->isDerivedFrom<App::PropertyInteger>()) {
-                            view = parentView;
+                            if (!prefersChildAppearance(view, parentView)) {
+                                view = parentView;
+                            }
                         }
                     }
                 }
