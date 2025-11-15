@@ -421,6 +421,7 @@ public:
     int toggleConstruction(int GeoId);
     int setConstruction(int GeoId, bool on);
 
+    std::vector<int> chooseFilletsEdges(const std::vector<int>& GeoIdList) const;
     /*!
      \brief Create a sketch fillet from the point at the intersection of two lines
      \param geoId, pos - one of the (exactly) two coincident endpoints

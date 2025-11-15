@@ -2824,6 +2824,24 @@ int SketchObject::transferConstraints(
 }
 // clang-format off
 
+std::vector<int> SketchObject::chooseFilletsEdges(const std::vector<int>& GeoIdList) const
+{
+    if (GeoIdList.size() == 2) {
+        return GeoIdList;
+    }
+
+    std::vector<int> dst;
+    for (auto id : GeoIdList) {
+        if (!GeometryFacade::getFacade(getGeometry(id))->getConstruction()) {
+            dst.push_back(id);
+
+            if (dst.size() > 2) {
+                return {};
+            }
+        }
+    }
+    return dst;
+}
 int SketchObject::fillet(int GeoId, PointPos PosId, double radius, bool trim, bool createCorner, bool chamfer)
 {
     if (GeoId < 0 || GeoId > getHighestCurveIndex())
@@ -2833,6 +2851,8 @@ int SketchObject::fillet(int GeoId, PointPos PosId, double radius, bool trim, bo
     std::vector<int> GeoIdList;
     std::vector<PointPos> PosIdList;
     getDirectlyCoincidentPoints(GeoId, PosId, GeoIdList, PosIdList);
+
+    GeoIdList = chooseFilletsEdges(GeoIdList);
 
     // only coincident points between two (non-external) edges can be filleted
     if (GeoIdList.size() == 2 && GeoIdList[0] >= 0 && GeoIdList[1] >= 0) {
