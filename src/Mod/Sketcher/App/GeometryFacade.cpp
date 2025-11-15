@@ -61,8 +61,6 @@ std::unique_ptr<GeometryFacade> GeometryFacade::getFacade(const Part::Geometry* 
     else {
         return std::unique_ptr<GeometryFacade>(nullptr);
     }
-    // make_unique has no access to private constructor
-    // return std::make_unique<GeometryFacade>(geometry);
 }
 
 void GeometryFacade::setGeometry(Part::Geometry* geometry)
@@ -82,9 +80,6 @@ void GeometryFacade::initExtension()
     if (!Geo->hasExtension(SketchGeometryExtension::getClassTypeId())) {
 
         getGeo()->setExtension(std::make_unique<SketchGeometryExtension>());  // Create getExtension
-
-        // Base::Console().warning("%s\nSketcher Geometry without Extension: %s \n",
-        // boost::uuids::to_string(Geo->getTag()).c_str());
     }
 
     SketchGeoExtension = std::static_pointer_cast<const SketchGeometryExtension>(
