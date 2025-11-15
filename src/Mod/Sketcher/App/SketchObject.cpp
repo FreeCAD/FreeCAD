@@ -2019,15 +2019,12 @@ int SketchObject::delGeometriesExclusiveList(const std::vector<int>& GeoIds, Del
 }
 
 // clang-format on
-void SketchObject::replaceGeometries(std::vector<int> oldGeoIds,
-                                     std::vector<Part::Geometry*>& newGeos)
+void SketchObject::replaceGeometries(std::vector<int> oldGeoIds, std::vector<Part::Geometry*>& newGeos)
 {
     auto& vals = getInternalGeometry();
     auto newVals(vals);
 
-    if (std::ranges::any_of(oldGeoIds, [](auto geoId) {
-            return geoId < 0;
-        })) {
+    if (std::ranges::any_of(oldGeoIds, [](auto geoId) { return geoId < 0; })) {
         THROWM(ValueError, "Cannot replace external geometries and axes.");
     }
 
@@ -3900,11 +3897,13 @@ int SketchObject::split(int GeoId, const Base::Vector3d& point)
     return 0;
 }
 
-int SketchObject::join(int geoId1,
-                       Sketcher::PointPos posId1,
-                       int geoId2,
-                       Sketcher::PointPos posId2,
-                       int continuity)
+int SketchObject::join(
+    int geoId1,
+    Sketcher::PointPos posId1,
+    int geoId2,
+    Sketcher::PointPos posId2,
+    int continuity
+)
 {
     // No need to check input data validity as this is an sketchobject managed operation
 
@@ -3945,9 +3944,11 @@ int SketchObject::join(int geoId1,
     // we need the splines to be mutable because we may reverse them
     // and/or change their degree
     std::unique_ptr<Part::GeomBSplineCurve> bsp1(
-        geo1->toNurbs(geo1->getFirstParameter(), geo1->getLastParameter()));
+        geo1->toNurbs(geo1->getFirstParameter(), geo1->getLastParameter())
+    );
     std::unique_ptr<Part::GeomBSplineCurve> bsp2(
-        geo2->toNurbs(geo2->getFirstParameter(), geo2->getLastParameter()));
+        geo2->toNurbs(geo2->getFirstParameter(), geo2->getLastParameter())
+    );
 
     if (bsp1->isPeriodic() || bsp2->isPeriodic()) {
         THROWM(ValueError, "It is only possible to join non-periodic curves.");
@@ -4007,18 +4008,22 @@ int SketchObject::join(int geoId1,
     if (makeC1Continuous) {
         newPoles.erase(newPoles.end() - 1);
     }
-    newPoles.insert(newPoles.end(),
-                    std::make_move_iterator(poles2.begin()),
-                    std::make_move_iterator(poles2.end()));
+    newPoles.insert(
+        newPoles.end(),
+        std::make_move_iterator(poles2.begin()),
+        std::make_move_iterator(poles2.end())
+    );
 
     // TODO: Weights might need to be scaled
     weights2.erase(weights2.begin());
     if (makeC1Continuous) {
         newWeights.erase(newWeights.end() - 1);
     }
-    newWeights.insert(newWeights.end(),
-                      std::make_move_iterator(weights2.begin()),
-                      std::make_move_iterator(weights2.end()));
+    newWeights.insert(
+        newWeights.end(),
+        std::make_move_iterator(weights2.begin()),
+        std::make_move_iterator(weights2.end())
+    );
 
     // knots of the second spline come after all of the first
     double offset = newKnots.back() - knots2.front();
@@ -4026,9 +4031,11 @@ int SketchObject::join(int geoId1,
     for (auto& knot : knots2) {
         knot += offset;
     }
-    newKnots.insert(newKnots.end(),
-                    std::make_move_iterator(knots2.begin()),
-                    std::make_move_iterator(knots2.end()));
+    newKnots.insert(
+        newKnots.end(),
+        std::make_move_iterator(knots2.begin()),
+        std::make_move_iterator(knots2.end())
+    );
 
     // end knots can have a multiplicity of (degree + 1)
     if (bsp1->getDegree() < newMults.back()) {
@@ -4039,17 +4046,21 @@ int SketchObject::join(int geoId1,
     }
 
     mults2.erase(mults2.begin());
-    newMults.insert(newMults.end(),
-                    std::make_move_iterator(mults2.begin()),
-                    std::make_move_iterator(mults2.end()));
+    newMults.insert(
+        newMults.end(),
+        std::make_move_iterator(mults2.begin()),
+        std::make_move_iterator(mults2.end())
+    );
 
-    auto* newSpline = new Part::GeomBSplineCurve(newPoles,
-                                                 newWeights,
-                                                 newKnots,
-                                                 newMults,
-                                                 bsp1->getDegree(),
-                                                 false,
-                                                 true);
+    auto* newSpline = new Part::GeomBSplineCurve(
+        newPoles,
+        newWeights,
+        newKnots,
+        newMults,
+        bsp1->getDegree(),
+        false,
+        true
+    );
 
     // int newGeoId = addGeometry(newSpline);
     std::vector<Part::Geometry*> newGeos {newSpline};
@@ -4059,10 +4070,10 @@ int SketchObject::join(int geoId1,
     setConstruction(geoId1, areOriginalCurvesConstruction);
 
     // TODO: transfer constraints on the non-connected ends
-    auto otherPosId1 =
-        (Sketcher::PointPos::start == posId1) ? Sketcher::PointPos::end : Sketcher::PointPos::start;
-    auto otherPosId2 =
-        (Sketcher::PointPos::start == posId2) ? Sketcher::PointPos::end : Sketcher::PointPos::start;
+    auto otherPosId1 = (Sketcher::PointPos::start == posId1) ? Sketcher::PointPos::end
+                                                             : Sketcher::PointPos::start;
+    auto otherPosId2 = (Sketcher::PointPos::start == posId2) ? Sketcher::PointPos::end
+                                                             : Sketcher::PointPos::start;
 
     transferConstraints(geoId1, otherPosId1, geoId1, PointPos::start, true);
     transferConstraints(geoId2, otherPosId2, geoId1, PointPos::end, true);
@@ -4251,10 +4262,12 @@ bool SketchObject::isCarbonCopyAllowed(App::Document* pDoc, App::DocumentObject*
 }
 
 // clang-format on
-int SketchObject::addSymmetric(const std::vector<int>& geoIdList,
-                               int refGeoId,
-                               Sketcher::PointPos refPosId,
-                               bool addSymmetryConstraints)
+int SketchObject::addSymmetric(
+    const std::vector<int>& geoIdList,
+    int refGeoId,
+    Sketcher::PointPos refPosId,
+    bool addSymmetryConstraints
+)
 {
     // no need to check input data validity as this is an sketchobject managed operation.
     Base::StateLocker lock(managedoperation, true);
@@ -4268,15 +4281,16 @@ int SketchObject::addSymmetric(const std::vector<int>& geoIdList,
     // Find out if reference is aligned with V or H axis,
     // if so we can keep Vertical and Horizontal constraints in the mirrored geometry.
     bool refIsLine = refPosId == Sketcher::PointPos::none;
-    bool refIsAxisAligned =
-        refGeoId == Sketcher::GeoEnum::VAxis || refGeoId == Sketcher::GeoEnum::HAxis || !refIsLine
+    bool refIsAxisAligned = refGeoId == Sketcher::GeoEnum::VAxis
+        || refGeoId == Sketcher::GeoEnum::HAxis || !refIsLine
         || std::ranges::any_of(constrvals, [&refGeoId](auto* constr) {
-               return constr->First == refGeoId
-                   && (constr->Type == Sketcher::Vertical || constr->Type == Sketcher::Horizontal);
-           });
+                                return constr->First == refGeoId
+                                    && (constr->Type == Sketcher::Vertical
+                                        || constr->Type == Sketcher::Horizontal);
+                            });
 
-    std::vector<Part::Geometry*> symgeos =
-        getSymmetric(geoIdList, geoIdMap, isStartEndInverted, refGeoId, refPosId);
+    std::vector<Part::Geometry*> symgeos
+        = getSymmetric(geoIdList, geoIdMap, isStartEndInverted, refGeoId, refPosId);
 
     {
         addGeometry(symgeos);
@@ -4298,8 +4312,7 @@ int SketchObject::addSymmetric(const std::vector<int>& geoIdList,
 
             if (constr->Second == GeoEnum::GeoUndef /*&& constr->Third == GeoEnum::GeoUndef*/) {
                 if (refIsAxisAligned
-                    && (constr->Type == Sketcher::DistanceX
-                        || constr->Type == Sketcher::DistanceY)) {
+                    && (constr->Type == Sketcher::DistanceX || constr->Type == Sketcher::DistanceY)) {
                     // In this case we want to keep the Vertical, Horizontal constraints.
                     // DistanceX and DistanceY constraints should also be possible to keep in
                     // this case, but keeping them causes segfault, not sure why.
@@ -4331,9 +4344,11 @@ int SketchObject::addSymmetric(const std::vector<int>& geoIdList,
 
             // Second is also in the list
 
-            auto flipStartEndIfRelevant = [&isStartEndInverted](int geoId,
-                                                                const Sketcher::PointPos posId,
-                                                                Sketcher::PointPos& posIdNew) {
+            auto flipStartEndIfRelevant = [&isStartEndInverted](
+                                              int geoId,
+                                              const Sketcher::PointPos posId,
+                                              Sketcher::PointPos& posIdNew
+                                          ) {
                 if (isStartEndInverted[geoId]) {
                     if (posId == Sketcher::PointPos::start) {
                         posIdNew = Sketcher::PointPos::end;
@@ -4345,8 +4360,7 @@ int SketchObject::addSymmetric(const std::vector<int>& geoIdList,
             };
 
             if (constr->Third == GeoEnum::GeoUndef) {
-                if (!(constr->Type == Sketcher::Coincident
-                      || constr->Type == Sketcher::Perpendicular
+                if (!(constr->Type == Sketcher::Coincident || constr->Type == Sketcher::Perpendicular
                       || constr->Type == Sketcher::Parallel || constr->Type == Sketcher::Tangent
                       || constr->Type == Sketcher::Distance || constr->Type == Sketcher::Equal
                       || constr->Type == Sketcher::Angle || constr->Type == Sketcher::PointOnObject
@@ -4435,14 +4449,18 @@ int SketchObject::addSymmetric(const std::vector<int>& geoIdList,
                 if (!gf->isInternalAligned()) {
                     // Note internal aligned lines (ellipse, parabola, hyperbola) are causing
                     // redundant constraint.
-                    createSymConstr(geoId1,
-                                    geoId2,
-                                    PointPos::start,
-                                    isStartEndInverted[geoId1] ? PointPos::end : PointPos::start);
-                    createSymConstr(geoId1,
-                                    geoId2,
-                                    PointPos::end,
-                                    isStartEndInverted[geoId1] ? PointPos::start : PointPos::end);
+                    createSymConstr(
+                        geoId1,
+                        geoId2,
+                        PointPos::start,
+                        isStartEndInverted[geoId1] ? PointPos::end : PointPos::start
+                    );
+                    createSymConstr(
+                        geoId1,
+                        geoId2,
+                        PointPos::end,
+                        isStartEndInverted[geoId1] ? PointPos::start : PointPos::end
+                    );
                 }
             }
             else if (geo->is<Part::GeomCircle>() || geo->is<Part::GeomEllipse>()) {
@@ -4452,14 +4470,18 @@ int SketchObject::addSymmetric(const std::vector<int>& geoIdList,
             else if (geo->is<Part::GeomArcOfCircle>() || geo->is<Part::GeomArcOfEllipse>()
                      || geo->is<Part::GeomArcOfHyperbola>() || geo->is<Part::GeomArcOfParabola>()) {
                 createEqualityConstr(geoId1, geoId2);
-                createSymConstr(geoId1,
-                                geoId2,
-                                PointPos::start,
-                                isStartEndInverted[geoId1] ? PointPos::end : PointPos::start);
-                createSymConstr(geoId1,
-                                geoId2,
-                                PointPos::end,
-                                isStartEndInverted[geoId1] ? PointPos::start : PointPos::end);
+                createSymConstr(
+                    geoId1,
+                    geoId2,
+                    PointPos::start,
+                    isStartEndInverted[geoId1] ? PointPos::end : PointPos::start
+                );
+                createSymConstr(
+                    geoId1,
+                    geoId2,
+                    PointPos::end,
+                    isStartEndInverted[geoId1] ? PointPos::start : PointPos::end
+                );
             }
             else if (geo->is<Part::GeomPoint>()) {
                 auto gf = GeometryFacade::getFacade(geo);
@@ -4479,11 +4501,13 @@ int SketchObject::addSymmetric(const std::vector<int>& geoIdList,
     return Geometry.getSize() - 1;
 }
 
-std::vector<Part::Geometry*> SketchObject::getSymmetric(const std::vector<int>& geoIdList,
-                                                        std::map<int, int>& geoIdMap,
-                                                        std::map<int, bool>& isStartEndInverted,
-                                                        int refGeoId,
-                                                        Sketcher::PointPos refPosId)
+std::vector<Part::Geometry*> SketchObject::getSymmetric(
+    const std::vector<int>& geoIdList,
+    std::map<int, int>& geoIdMap,
+    std::map<int, bool>& isStartEndInverted,
+    int refGeoId,
+    Sketcher::PointPos refPosId
+)
 {
     using std::numbers::pi;
 
@@ -4537,7 +4561,8 @@ std::vector<Part::Geometry*> SketchObject::getSymmetric(const std::vector<int>& 
 
                 geosymline->setPoints(
                     sp + 2.0 * (sp.Perpendicular(refGeoLine->getStartPoint(), vectline) - sp),
-                    ep + 2.0 * (ep.Perpendicular(refGeoLine->getStartPoint(), vectline) - ep));
+                    ep + 2.0 * (ep.Perpendicular(refGeoLine->getStartPoint(), vectline) - ep)
+                );
                 isStartEndInverted.insert(std::make_pair(geoId, false));
             }
             else if (geosym->is<Part::GeomCircle>()) {
@@ -4545,7 +4570,8 @@ std::vector<Part::Geometry*> SketchObject::getSymmetric(const std::vector<int>& 
                 Base::Vector3d cp = geosymcircle->getCenter();
 
                 geosymcircle->setCenter(
-                    cp + 2.0 * (cp.Perpendicular(refGeoLine->getStartPoint(), vectline) - cp));
+                    cp + 2.0 * (cp.Perpendicular(refGeoLine->getStartPoint(), vectline) - cp)
+                );
                 isStartEndInverted.insert(std::make_pair(geoId, false));
             }
             else if (geosym->is<Part::GeomArcOfCircle>()) {
@@ -4554,17 +4580,15 @@ std::vector<Part::Geometry*> SketchObject::getSymmetric(const std::vector<int>& 
                 Base::Vector3d ep = geoaoc->getEndPoint(true);
                 Base::Vector3d cp = geoaoc->getCenter();
 
-                Base::Vector3d ssp =
-                    sp + 2.0 * (sp.Perpendicular(refGeoLine->getStartPoint(), vectline) - sp);
-                Base::Vector3d sep =
-                    ep + 2.0 * (ep.Perpendicular(refGeoLine->getStartPoint(), vectline) - ep);
-                Base::Vector3d scp =
-                    cp + 2.0 * (cp.Perpendicular(refGeoLine->getStartPoint(), vectline) - cp);
+                Base::Vector3d ssp = sp
+                    + 2.0 * (sp.Perpendicular(refGeoLine->getStartPoint(), vectline) - sp);
+                Base::Vector3d sep = ep
+                    + 2.0 * (ep.Perpendicular(refGeoLine->getStartPoint(), vectline) - ep);
+                Base::Vector3d scp = cp
+                    + 2.0 * (cp.Perpendicular(refGeoLine->getStartPoint(), vectline) - cp);
 
-                double theta1 =
-                    Base::fmod(atan2(sep.y - scp.y, sep.x - scp.x), 2.f * std::numbers::pi);
-                double theta2 =
-                    Base::fmod(atan2(ssp.y - scp.y, ssp.x - scp.x), 2.f * std::numbers::pi);
+                double theta1 = Base::fmod(atan2(sep.y - scp.y, sep.x - scp.x), 2.f * std::numbers::pi);
+                double theta2 = Base::fmod(atan2(ssp.y - scp.y, ssp.x - scp.x), 2.f * std::numbers::pi);
 
                 geoaoc->setCenter(scp);
                 geoaoc->setRange(theta1, theta2, true);
@@ -4580,10 +4604,10 @@ std::vector<Part::Geometry*> SketchObject::getSymmetric(const std::vector<int>& 
                 double df = sqrt(majord * majord - minord * minord);
                 Base::Vector3d f1 = cp + df * majdir;
 
-                Base::Vector3d sf1 =
-                    f1 + 2.0 * (f1.Perpendicular(refGeoLine->getStartPoint(), vectline) - f1);
-                Base::Vector3d scp =
-                    cp + 2.0 * (cp.Perpendicular(refGeoLine->getStartPoint(), vectline) - cp);
+                Base::Vector3d sf1 = f1
+                    + 2.0 * (f1.Perpendicular(refGeoLine->getStartPoint(), vectline) - f1);
+                Base::Vector3d scp = cp
+                    + 2.0 * (cp.Perpendicular(refGeoLine->getStartPoint(), vectline) - cp);
 
                 geosymellipse->setMajorAxisDir(sf1 - scp);
 
@@ -4600,10 +4624,10 @@ std::vector<Part::Geometry*> SketchObject::getSymmetric(const std::vector<int>& 
                 double df = sqrt(majord * majord - minord * minord);
                 Base::Vector3d f1 = cp + df * majdir;
 
-                Base::Vector3d sf1 =
-                    f1 + 2.0 * (f1.Perpendicular(refGeoLine->getStartPoint(), vectline) - f1);
-                Base::Vector3d scp =
-                    cp + 2.0 * (cp.Perpendicular(refGeoLine->getStartPoint(), vectline) - cp);
+                Base::Vector3d sf1 = f1
+                    + 2.0 * (f1.Perpendicular(refGeoLine->getStartPoint(), vectline) - f1);
+                Base::Vector3d scp = cp
+                    + 2.0 * (cp.Perpendicular(refGeoLine->getStartPoint(), vectline) - cp);
 
                 geosymaoe->setMajorAxisDir(sf1 - scp);
 
@@ -4632,10 +4656,10 @@ std::vector<Part::Geometry*> SketchObject::getSymmetric(const std::vector<int>& 
                 double df = sqrt(majord * majord + minord * minord);
                 Base::Vector3d f1 = cp + df * majdir;
 
-                Base::Vector3d sf1 =
-                    f1 + 2.0 * (f1.Perpendicular(refGeoLine->getStartPoint(), vectline) - f1);
-                Base::Vector3d scp =
-                    cp + 2.0 * (cp.Perpendicular(refGeoLine->getStartPoint(), vectline) - cp);
+                Base::Vector3d sf1 = f1
+                    + 2.0 * (f1.Perpendicular(refGeoLine->getStartPoint(), vectline) - f1);
+                Base::Vector3d scp = cp
+                    + 2.0 * (cp.Perpendicular(refGeoLine->getStartPoint(), vectline) - cp);
 
                 geosymaoe->setMajorAxisDir(sf1 - scp);
 
@@ -4656,10 +4680,10 @@ std::vector<Part::Geometry*> SketchObject::getSymmetric(const std::vector<int>& 
 
                 Base::Vector3d f1 = geosymaoe->getFocus();
 
-                Base::Vector3d sf1 =
-                    f1 + 2.0 * (f1.Perpendicular(refGeoLine->getStartPoint(), vectline) - f1);
-                Base::Vector3d scp =
-                    cp + 2.0 * (cp.Perpendicular(refGeoLine->getStartPoint(), vectline) - cp);
+                Base::Vector3d sf1 = f1
+                    + 2.0 * (f1.Perpendicular(refGeoLine->getStartPoint(), vectline) - f1);
+                Base::Vector3d scp = cp
+                    + 2.0 * (cp.Perpendicular(refGeoLine->getStartPoint(), vectline) - cp);
 
                 geosymaoe->setXAxisDir(sf1 - scp);
                 geosymaoe->setCenter(scp);
@@ -4692,7 +4716,8 @@ std::vector<Part::Geometry*> SketchObject::getSymmetric(const std::vector<int>& 
                 Base::Vector3d cp = geosympoint->getPoint();
 
                 geosympoint->setPoint(
-                    cp + 2.0 * (cp.Perpendicular(refGeoLine->getStartPoint(), vectline) - cp));
+                    cp + 2.0 * (cp.Perpendicular(refGeoLine->getStartPoint(), vectline) - cp)
+                );
                 isStartEndInverted.insert(std::make_pair(geoId, false));
             }
             else {
@@ -4869,14 +4894,16 @@ std::vector<Part::Geometry*> SketchObject::getSymmetric(const std::vector<int>& 
     return symmetricVals;
 }
 
-int SketchObject::addCopy(const std::vector<int>& geoIdList,
-                          const Base::Vector3d& displacement,
-                          bool moveonly,
-                          bool clone,
-                          int csize,
-                          int rsize,
-                          bool constraindisplacement,
-                          double perpscale)
+int SketchObject::addCopy(
+    const std::vector<int>& geoIdList,
+    const Base::Vector3d& displacement,
+    bool moveonly,
+    bool clone,
+    int csize,
+    int rsize,
+    bool constraindisplacement,
+    double perpscale
+)
 {
     // no need to check input data validity as this is an sketchobject managed operation.
     Base::StateLocker lock(managedoperation, true);
@@ -4915,8 +4942,8 @@ int SketchObject::addCopy(const std::vector<int>& geoIdList,
 
     std::map<int, int> geoIdMap;
 
-    Base::Vector3d perpendicularDisplacement =
-        Base::Vector3d(perpscale * displacement.y, perpscale * -displacement.x, 0);
+    Base::Vector3d perpendicularDisplacement
+        = Base::Vector3d(perpscale * displacement.y, perpscale * -displacement.x, 0);
 
     int x, y;
 
@@ -4933,20 +4960,23 @@ int SketchObject::addCopy(const std::vector<int>& geoIdList,
                 // the list.
 
                 auto constrIt = std::ranges::find_if(constrvals, [&newgeoIdList](auto c) {
-                    return (c->Type == Sketcher::InternalAlignment
-                            && c->First == *(newgeoIdList.begin()));
+                    return (
+                        c->Type == Sketcher::InternalAlignment && c->First == *(newgeoIdList.begin())
+                    );
                 });
 
-                int definedGeo =
-                    (constrIt != constrvals.end()) ? (*constrIt)->Second : GeoEnum::GeoUndef;
+                int definedGeo = (constrIt != constrvals.end()) ? (*constrIt)->Second
+                                                                : GeoEnum::GeoUndef;
 
                 if (std::ranges::find(newgeoIdList, definedGeo) == newgeoIdList.end()) {
                     // the first element setting the reference is an internal alignment
                     // geometry, wherein the geometry it defines is not part of the copy
                     // operation.
-                    THROWM(Base::ValueError,
-                           "A move/copy/array operation on an internal alignment geometry is "
-                           "only possible together with the geometry it defines.");
+                    THROWM(
+                        Base::ValueError,
+                        "A move/copy/array operation on an internal alignment geometry is "
+                        "only possible together with the geometry it defines."
+                    );
                 }
             }
 
@@ -5016,9 +5046,10 @@ int SketchObject::addCopy(const std::vector<int>& geoIdList,
                 Base::Vector3d ssp = geosymline->getStartPoint() + double(x) * displacement
                     + double(y) * perpendicularDisplacement;
 
-                geosymline->setPoints(ssp,
-                                      ep + double(x) * displacement
-                                          + double(y) * perpendicularDisplacement);
+                geosymline->setPoints(
+                    ssp,
+                    ep + double(x) * displacement + double(y) * perpendicularDisplacement
+                );
 
                 if (it == newgeoIdList.begin()) {
                     iterfirstpoint = ssp;
@@ -5027,8 +5058,8 @@ int SketchObject::addCopy(const std::vector<int>& geoIdList,
             else if (geocopy->is<Part::GeomCircle>()) {
                 auto* geosymcircle = static_cast<Part::GeomCircle*>(geocopy);
                 Base::Vector3d cp = geosymcircle->getCenter();
-                Base::Vector3d scp =
-                    cp + double(x) * displacement + double(y) * perpendicularDisplacement;
+                Base::Vector3d scp = cp + double(x) * displacement
+                    + double(y) * perpendicularDisplacement;
 
                 geosymcircle->setCenter(scp);
 
@@ -5039,8 +5070,8 @@ int SketchObject::addCopy(const std::vector<int>& geoIdList,
             else if (geocopy->is<Part::GeomArcOfCircle>()) {
                 auto* geoaoc = static_cast<Part::GeomArcOfCircle*>(geocopy);
                 Base::Vector3d cp = geoaoc->getCenter();
-                Base::Vector3d scp =
-                    cp + double(x) * displacement + double(y) * perpendicularDisplacement;
+                Base::Vector3d scp = cp + double(x) * displacement
+                    + double(y) * perpendicularDisplacement;
 
                 geoaoc->setCenter(scp);
 
@@ -5051,8 +5082,8 @@ int SketchObject::addCopy(const std::vector<int>& geoIdList,
             else if (geocopy->is<Part::GeomEllipse>()) {
                 auto* geosymellipse = static_cast<Part::GeomEllipse*>(geocopy);
                 Base::Vector3d cp = geosymellipse->getCenter();
-                Base::Vector3d scp =
-                    cp + double(x) * displacement + double(y) * perpendicularDisplacement;
+                Base::Vector3d scp = cp + double(x) * displacement
+                    + double(y) * perpendicularDisplacement;
 
                 geosymellipse->setCenter(scp);
 
@@ -5063,8 +5094,8 @@ int SketchObject::addCopy(const std::vector<int>& geoIdList,
             else if (geocopy->is<Part::GeomArcOfEllipse>()) {
                 auto* geoaoe = static_cast<Part::GeomArcOfEllipse*>(geocopy);
                 Base::Vector3d cp = geoaoe->getCenter();
-                Base::Vector3d scp =
-                    cp + double(x) * displacement + double(y) * perpendicularDisplacement;
+                Base::Vector3d scp = cp + double(x) * displacement
+                    + double(y) * perpendicularDisplacement;
 
                 geoaoe->setCenter(scp);
 
@@ -5075,8 +5106,8 @@ int SketchObject::addCopy(const std::vector<int>& geoIdList,
             else if (geocopy->is<Part::GeomArcOfHyperbola>()) {
                 auto* geoaoe = static_cast<Part::GeomArcOfHyperbola*>(geocopy);
                 Base::Vector3d cp = geoaoe->getCenter();
-                Base::Vector3d scp =
-                    cp + double(x) * displacement + double(y) * perpendicularDisplacement;
+                Base::Vector3d scp = cp + double(x) * displacement
+                    + double(y) * perpendicularDisplacement;
 
                 geoaoe->setCenter(scp);
 
@@ -5087,8 +5118,8 @@ int SketchObject::addCopy(const std::vector<int>& geoIdList,
             else if (geocopy->is<Part::GeomArcOfParabola>()) {
                 auto* geoaoe = static_cast<Part::GeomArcOfParabola*>(geocopy);
                 Base::Vector3d cp = geoaoe->getCenter();
-                Base::Vector3d scp =
-                    cp + double(x) * displacement + double(y) * perpendicularDisplacement;
+                Base::Vector3d scp = cp + double(x) * displacement
+                    + double(y) * perpendicularDisplacement;
 
                 geoaoe->setCenter(scp);
 
@@ -5114,8 +5145,8 @@ int SketchObject::addCopy(const std::vector<int>& geoIdList,
             else if (geocopy->is<Part::GeomPoint>()) {
                 auto* geopoint = static_cast<Part::GeomPoint*>(geocopy);
                 Base::Vector3d cp = geopoint->getPoint();
-                Base::Vector3d scp =
-                    cp + double(x) * displacement + double(y) * perpendicularDisplacement;
+                Base::Vector3d scp = cp + double(x) * displacement
+                    + double(y) * perpendicularDisplacement;
                 geopoint->setPoint(scp);
 
                 if (it == newgeoIdList.begin()) {
@@ -10695,7 +10726,8 @@ void SketchObject::migrateSketch()
             }
 
             auto ext = std::static_pointer_cast<Part::GeometryMigrationExtension>(
-                g->getExtension(Part::GeometryMigrationExtension::getClassTypeId()).lock());
+                g->getExtension(Part::GeometryMigrationExtension::getClassTypeId()).lock()
+            );
 
             if (!ext->testMigrationType(Part::GeometryMigrationExtension::Construction)) {
                 continue;
@@ -10703,8 +10735,8 @@ void SketchObject::migrateSketch()
             // at this point IA geometry is already migrated
             auto gf = GeometryFacade::getFacade(g);
 
-            bool oldConstr =
-                ext->getConstruction() || (g->is<Part::GeomPoint>() && !gf->isInternalAligned());
+            bool oldConstr = ext->getConstruction()
+                || (g->is<Part::GeomPoint>() && !gf->isInternalAligned());
 
             GeometryFacade::setConstruction(g, oldConstr);
 
@@ -10716,8 +10748,7 @@ void SketchObject::migrateSketch()
     auto constraints = Constraints.getValues();
     auto geometries = getInternalGeometry();
 
-    bool parabolaFound =
-        std::ranges::any_of(geometries, &Part::Geometry::is<Part::GeomArcOfParabola>);
+    bool parabolaFound = std::ranges::any_of(geometries, &Part::Geometry::is<Part::GeomArcOfParabola>);
 
     if (!parabolaFound) {
         return;
@@ -10752,21 +10783,24 @@ void SketchObject::migrateSketch()
         // look for a line from focusGeoId:start to Geoid:mid_external
         std::vector<int> focusGeoIdListGeoIdList;
         std::vector<PointPos> focusPosIdList;
-        getDirectlyCoincidentPoints(focusGeoId,
-                                    Sketcher::PointPos::start,
-                                    focusGeoIdListGeoIdList,
-                                    focusPosIdList);
+        getDirectlyCoincidentPoints(
+            focusGeoId,
+            Sketcher::PointPos::start,
+            focusGeoIdListGeoIdList,
+            focusPosIdList
+        );
 
         std::vector<int> parabGeoIdListGeoIdList;
         std::vector<PointPos> parabposidlist;
-        getDirectlyCoincidentPoints(parabolaGeoId,
-                                    Sketcher::PointPos::mid,
-                                    parabGeoIdListGeoIdList,
-                                    parabposidlist);
+        getDirectlyCoincidentPoints(
+            parabolaGeoId,
+            Sketcher::PointPos::mid,
+            parabGeoIdListGeoIdList,
+            parabposidlist
+        );
 
         for (const auto& parabGeoIdListGeoId : parabGeoIdListGeoIdList) {
-            auto iterParabolaGeoId =
-                std::ranges::find(focusGeoIdListGeoIdList, parabGeoIdListGeoId);
+            auto iterParabolaGeoId = std::ranges::find(focusGeoIdListGeoIdList, parabGeoIdListGeoId);
             if (iterParabolaGeoId != focusGeoIdListGeoIdList.end()) {
                 axisGeoId2ParabolaGeoId[*iterParabolaGeoId] = parabolaGeoId;
             }
@@ -10782,15 +10816,15 @@ void SketchObject::migrateSketch()
             continue;
         }
 
-        auto axisMajorCoincidentFound =
-            std::ranges::any_of(axisGeoId2ParabolaGeoId, [&](const auto& pair) {
-                auto parabolaGeoId = pair.second;
-                auto axisgeoid = pair.first;
-                return (c->First == axisgeoid && c->Second == parabolaGeoId
-                        && c->SecondPos == PointPos::mid)
-                    || (c->Second == axisgeoid && c->First == parabolaGeoId
-                        && c->FirstPos == PointPos::mid);
-            });
+        auto axisMajorCoincidentFound
+            = std::ranges::any_of(axisGeoId2ParabolaGeoId, [&](const auto& pair) {
+                  auto parabolaGeoId = pair.second;
+                  auto axisgeoid = pair.first;
+                  return (c->First == axisgeoid && c->Second == parabolaGeoId
+                          && c->SecondPos == PointPos::mid)
+                      || (c->Second == axisgeoid && c->First == parabolaGeoId
+                          && c->FirstPos == PointPos::mid);
+              });
 
         if (axisMajorCoincidentFound) {
             // we skip this coincident, the other coincident on axis will be substituted
@@ -10798,16 +10832,15 @@ void SketchObject::migrateSketch()
             continue;
         }
 
-        auto focusCoincidentFound =
-            std::ranges::find_if(axisGeoId2ParabolaGeoId, [&](const auto& pair) {
-                auto parabolaGeoId = pair.second;
-                auto axisgeoid = pair.first;
-                auto focusGeoId = parabolaGeoId2FocusGeoId[parabolaGeoId];
-                return (c->First == axisgeoid && c->Second == focusGeoId
-                        && c->SecondPos == PointPos::start)
-                    || (c->Second == axisgeoid && c->First == focusGeoId
-                        && c->FirstPos == PointPos::start);
-            });
+        auto focusCoincidentFound = std::ranges::find_if(axisGeoId2ParabolaGeoId, [&](const auto& pair) {
+            auto parabolaGeoId = pair.second;
+            auto axisgeoid = pair.first;
+            auto focusGeoId = parabolaGeoId2FocusGeoId[parabolaGeoId];
+            return (c->First == axisgeoid && c->Second == focusGeoId
+                    && c->SecondPos == PointPos::start)
+                || (c->Second == axisgeoid && c->First == focusGeoId
+                    && c->FirstPos == PointPos::start);
+        });
 
         if (focusCoincidentFound != axisGeoId2ParabolaGeoId.end()) {
             auto* newConstr = new Sketcher::Constraint();
@@ -10833,9 +10866,12 @@ void SketchObject::migrateSketch()
 
     Base::Console().critical(
         this->getFullName(),
-        QT_TRANSLATE_NOOP("Notifications",
-                          "Parabolas were migrated. Migrated files won't open in previous "
-                          "versions of FreeCAD!!\n"));
+        QT_TRANSLATE_NOOP(
+            "Notifications",
+            "Parabolas were migrated. Migrated files won't open in previous "
+            "versions of FreeCAD!!\n"
+        )
+    );
 }
 // clang-format off
 
