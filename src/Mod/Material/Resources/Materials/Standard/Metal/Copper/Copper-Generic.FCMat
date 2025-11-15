@@ -31,3 +31,9 @@ Models:
     UUID: 'b2eb5f48-74b3-4193-9fbb-948674f427f3'
     ElectricalConductivity: "59.59 MS/m"
     RelativePermeability: "0.999994"
+  Hardness:
+    UUID: '3d1a6141-d032-4d82-8bb5-a8f339fff8ad'
+    HardnessUnits: "HV"
+  Costs:
+    UUID: "881df808-8726-4c2e-be38-688bb6cce466"
+    ProductURL: "https://en.wikipedia.org/wiki/List_of_copper_alloys"
