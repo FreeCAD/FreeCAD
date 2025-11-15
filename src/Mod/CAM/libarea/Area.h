@@ -23,6 +23,7 @@ struct CAreaPocketParams
 {
     double tool_radius;
     double extra_offset;
+    double extra_offsetzz;
     double stepover;
     bool from_center;
     PocketMode mode;
@@ -31,6 +32,7 @@ struct CAreaPocketParams
     CAreaPocketParams(
         double Tool_radius,
         double Extra_offset,
+        double Extra_offsetzz,
         double Stepover,
         bool From_center,
         PocketMode Mode,
@@ -39,6 +41,7 @@ struct CAreaPocketParams
     {
         tool_radius = Tool_radius;
         extra_offset = Extra_offset;
+        extra_offsetzz = Extra_offsetzz;
         stepover = Stepover;
         from_center = From_center;
         mode = Mode;
