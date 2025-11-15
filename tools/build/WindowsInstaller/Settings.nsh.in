@@ -1,0 +1,30 @@
+﻿/*
+
+Settings for FreeCAD installer
+
+These typically need to be modified for each FreeCAD release
+
+*/
+
+# Make the installer as small as possible
+# comment this for testing builds since it will reduce the time to create an installer
+# a lot - for the cost of a much greater file size.
+# So assure it is active for release builds!
+SetCompressor /SOLID lzma
+
+#--------------------------------
+# Installer file name
+# Typical names for the release are "FreeCAD-1.1.0-WIN-x64-installer-1.exe" etc.
+
+!define ExeFile "@INSTALLER_EXE_NAME@"
+
+#--------------------------------
+# installer bit type - FreeCAD is only provided as 64bit build
+!define MULTIUSER_USE_PROGRAMFILES64
+
+#--------------------------------
+# File locations
+
+!define FILES_FREECAD "@CMAKE_INSTALL_PREFIX@"
+!define FILES_DEPS "@CMAKE_INSTALL_PREFIX@\MSVCRedist"
+!define FILES_THUMBS "@CMAKE_INSTALL_PREFIX@\thumbnail"
