@@ -1830,7 +1830,7 @@ void System::initSolution(Algorithm alg)
             clists[cid],
             std::back_inserter(clist0),
             std::back_inserter(clist1),
-            [](auto constr) { return constr->getTag() >= 0; }
+            [](auto constr) { return constr->getTag() >= 0 && constr->isDriving(); }
         );
 
         if (!clist0.empty()) {
