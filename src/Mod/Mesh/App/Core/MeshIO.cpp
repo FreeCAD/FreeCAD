@@ -773,11 +773,7 @@ bool MeshInput::LoadAsciiSTL(std::istream& input)
     // restart from the beginning
     buf->pubseekoff(0, std::ios::beg, std::ios::in);
 
-#if 0
-    MeshBuilder builder(this->_rclMesh);
-#else
     MeshFastBuilder builder(this->_rclMesh);
-#endif
     builder.Initialize(ulFacetCt);
 
     ulVertexCt = 0;
@@ -844,11 +840,7 @@ bool MeshInput::LoadBinarySTL(std::istream& input)
         return false;  // not a valid STL file
     }
 
-#if 0
-    MeshBuilder builder(this->_rclMesh);
-#else
     MeshFastBuilder builder(this->_rclMesh);
-#endif
     builder.Initialize(ulCt);
 
     for (uint32_t i = 0; i < ulCt; i++) {
@@ -1803,13 +1795,6 @@ bool MeshOutput::SaveAsymptote(std::ostream& out) const
            "                                 up = ("
         << upvec.x << ", " << upvec.y << ", " << upvec.z << "));\n\n";
 
-    // out << "// LA:Spot, OB:Lamp\n"
-    //     << "// WO:World\n"
-    //     << "currentlight = light(diffuse = rgb(1, 1, 1),\n"
-    //        "                     specular = rgb(1, 1, 1),\n"
-    //        "                     background = rgb(0.078281, 0.16041, 0.25),\n"
-    //        "                     0.56639, 0.21839, 0.79467);\n\n";
-
     out << "// ME:Mesh, OB:Mesh\n";
 
     MeshFacetIterator clIter(_rclMesh), clEnd(_rclMesh);
@@ -2138,8 +2123,6 @@ void MeshOutput::SaveXML(Base::Writer& writer) const
 {
     const MeshPointArray& rPoints = _rclMesh.GetPoints();
     const MeshFacetArray& rFacets = _rclMesh.GetFacets();
-
-    //  writer << writer.ind() << "<Mesh>" << '\n';
 
     writer.incInd();
     writer.Stream() << writer.ind() << "<Points Count=\"" << _rclMesh.CountPoints() << "\">" << '\n';
