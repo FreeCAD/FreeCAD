@@ -2167,7 +2167,7 @@ class _Stairs(ArchComponent.Component):
             if wantLanding:  # but not numOfSteps > 3, so no hasLanding
                 print("Fewer than 4 steps, unable to create landing")
 
-        # TODO height shoulld follow edge's z info if any?
+        # TODO height should follow edge's z info if any?
         #      Order of precedence in makeStraightStairs() - vHeight, hgt, edge height if present
         # setup height
         if height is None:  # if not height:
