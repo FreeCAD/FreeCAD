@@ -72,6 +72,7 @@ SET(FemExamples_SRCS
     femexamples/ccx_cantilever_faceload.py
     femexamples/ccx_cantilever_nodeload.py
     femexamples/ccx_cantilever_prescribeddisplacement.py
+    femexamples/ccx_disc_cyclic_symm_centrif.py
     femexamples/ccx_rigid_body.py
     femexamples/constraint_centrif.py
     femexamples/constraint_contact_shell_shell.py
