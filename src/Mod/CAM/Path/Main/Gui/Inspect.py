@@ -31,6 +31,10 @@ import Path
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import PathScripts.PathUtils as PathUtils
 
+from PySide.QtWidgets import QWidget, QPlainTextEdit
+from PySide.QtGui import QPainter
+from PySide.QtCore import Qt, QRect, QSize
+
 translate = FreeCAD.Qt.translate
 
 
@@ -85,6 +89,86 @@ class GCodeHighlighter(QtGui.QSyntaxHighlighter):
                 index = expression.match(text, index.capturedStart() + length)
 
 
+class LineNumberArea(QWidget):
+    def __init__(self, editor):
+        super().__init__(editor)
+        self.editor = editor
+
+    def sizeHint(self):
+        return QSize(self.editor.fontMetrics().horizontalAdvance("999") + 4, 0)
+
+    def paintEvent(self, event):
+        painter = QPainter(self)
+        painter.fillRect(event.rect(), Qt.black)
+        font = QtGui.QFont()
+        font.setFamily(self.editor.font().family())
+        font.setFixedPitch(self.editor.font().fixedPitch())
+        font.setPointSize(self.editor.font().pointSize())
+        painter.setFont(font)
+
+        block = self.editor.firstVisibleBlock()
+        blockNumber = block.blockNumber()
+        top = self.editor.blockBoundingGeometry(block).translated(self.editor.contentOffset()).top()
+        bottom = top + self.editor.blockBoundingRect(block).height()
+
+        while block.isValid() and top <= event.rect().bottom():
+            if block.isVisible() and bottom >= event.rect().top():
+                number = str(blockNumber + 1)
+                painter.setPen(Qt.gray)
+                painter.drawText(
+                    -6,
+                    int(top),
+                    self.width(),
+                    self.editor.fontMetrics().height(),
+                    Qt.AlignRight,
+                    number,
+                )
+
+            block = block.next()
+            top = bottom
+            bottom = top + self.editor.blockBoundingRect(block).height()
+            blockNumber += 1
+
+
+class CodeEditor(QPlainTextEdit):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.lineNumberArea = LineNumberArea(self)
+        self.blockCountChanged.connect(self.updateLineNumberAreaWidth)
+        self.updateRequest.connect(self.updateLineNumberArea)
+        self.verticalScrollBar().valueChanged.connect(self.lineNumberArea.update)  # Simple update
+
+        self.updateLineNumberAreaWidth(0)  # Initial call
+
+    def lineNumberAreaWidth(self):
+        digits = 2
+        max_value = max(1, self.blockCount())
+        while max_value >= 10:
+            max_value /= 10
+            digits += 1
+        space = 3 + self.fontMetrics().horizontalAdvance("9") * digits
+        return space
+
+    def updateLineNumberAreaWidth(self, newBlockCount):
+        self.setViewportMargins(self.lineNumberAreaWidth(), 0, 0, 0)
+
+    def updateLineNumberArea(self, rect, dy):
+        if dy:
+            self.lineNumberArea.scroll(0, dy)
+        else:
+            self.lineNumberArea.update(0, rect.y(), self.lineNumberArea.width(), rect.height())
+
+        if rect.contains(self.viewport().rect()):
+            self.updateLineNumberAreaWidth(0)
+
+    def resizeEvent(self, event):
+        super().resizeEvent(event)
+        cr = self.contentsRect()
+        self.lineNumberArea.setGeometry(
+            QRect(cr.left(), cr.top(), self.lineNumberAreaWidth(), cr.height())
+        )
+
+
 class GCodeEditorDialog(QtGui.QDialog):
     tool = None
 
@@ -112,15 +196,15 @@ class GCodeEditorDialog(QtGui.QDialog):
         self.selectionobj.ViewObject.LineWidth = 4
         self.selectionobj.ViewObject.NormalColor = highlightcolor
 
-        # nice text editor widget for editing the gcode
-        self.editor = QtGui.QTextEdit()
+        # self.editor = QtGui.QTextEdit()  # without lines enumeration
+        self.editor = CodeEditor()  # with lines enumeration
         font = QtGui.QFont()
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Editor")
         font.setFamily(p.GetString("Font", "Courier"))
         font.setFixedPitch(True)
         font.setPointSize(p.GetInt("FontSize", 10))
         self.editor.setFont(font)
-        self.editor.setText("G01 X55 Y4.5 F300.0")
+        self.editor.setPlainText("G01 X55 Y4.5 F300.0")
         layout.addWidget(self.editor)
 
         # Note
@@ -128,7 +212,8 @@ class GCodeEditorDialog(QtGui.QDialog):
         lab.setText(
             translate(
                 "CAM_Inspect",
-                "<b>Note</b>: This dialog shows path commands in FreeCAD base units (mm/s). \n Values will be converted to the desired unit during post processing.",
+                "<b>Note</b>: This dialog shows path commands in FreeCAD base units (mm/s)."
+                "\nValues will be converted to the desired unit during post processing.",
             )
         )
         lab.setWordWrap(True)
@@ -221,11 +306,11 @@ def show(obj):
     if hasattr(obj, "Path"):
         if obj.Path:
             dia = GCodeEditorDialog(obj)
-            dia.editor.setText(obj.Path.toGCode())
+            dia.editor.setPlainText(obj.Path.toGCode())
             gcodeSize = len(dia.editor.toPlainText())
             if gcodeSize <= mhs:
                 # because of poor performance, syntax highlighting is
-                # limited to mhs octets (default 512 KB).
+                # limited to mhs octets (default 256 KB).
                 # It seems than the response time curve has an inflexion near 500 KB
                 # beyond 500 KB, the response time increases exponentially.
                 dia.highlighter = GCodeHighlighter(dia.editor.document())
@@ -239,8 +324,7 @@ def show(obj):
                     )
                 )
             result = dia.exec_()
-            # exec_() returns 0 or 1 depending on the button pressed (Ok or
-            # Cancel)
+            # exec_() returns 0 or 1 depending on the button pressed (Ok or Cancel)
             if result:
                 p = Path.Path(dia.editor.toPlainText())
                 FreeCAD.ActiveDocument.openTransaction("Edit Path")
