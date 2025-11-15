@@ -31,9 +31,11 @@ namespace Points
 {
 
 template<typename PropertyT>
-bool copyProperty(App::DocumentObject* target,
-                  std::vector<App::DocumentObject*> source,
-                  const char* propertyName)
+bool copyProperty(
+    App::DocumentObject* target,
+    std::vector<App::DocumentObject*> source,
+    const char* propertyName
+)
 {
     // check for properties
     if (std::all_of(std::begin(source), std::end(source), [=](auto obj) {
@@ -41,7 +43,8 @@ bool copyProperty(App::DocumentObject* target,
         })) {
 
         auto target_prop = freecad_cast<PropertyT*>(
-            target->addDynamicProperty(PropertyT::getClassTypeId().getName(), propertyName));
+            target->addDynamicProperty(PropertyT::getClassTypeId().getName(), propertyName)
+        );
         if (target_prop) {
             auto values = target_prop->getValues();
             for (auto it : source) {

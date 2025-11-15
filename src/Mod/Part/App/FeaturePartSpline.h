@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -23,26 +25,28 @@
 #ifndef PART_FEATUREPARTSPLINE_H
 #define PART_FEATUREPARTSPLINE_H
 
+#include <Mod/Part/PartGlobal.h>
+
 #include "PartFeature.h"
 
 
 namespace Part
 {
 
-class PartExport Spline :public Part::Feature
+class PartExport Spline: public Part::Feature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::Spline);
 
 public:
     Spline();
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "PartGui::ViewProviderSpline";
     }
 };
 
-} //namespace Part
+}  // namespace Part
 
 
-#endif // PART_FEATUREPARTSPLINE_H
-
+#endif  // PART_FEATUREPARTSPLINE_H

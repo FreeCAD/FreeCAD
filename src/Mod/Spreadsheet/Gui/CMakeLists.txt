@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 generate_from_py(ViewProviderSpreadsheet)
 
 # The XML files

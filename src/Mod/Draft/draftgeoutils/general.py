@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
 # *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
@@ -59,7 +61,7 @@ def precision():
     return precisionInt
 
 
-def vec(edge, use_orientation = False):
+def vec(edge, use_orientation=False):
     """Return a vector from an edge or a Part.LineSegment.
 
     If use_orientation is True, it takes into account the edges orientation.
@@ -114,8 +116,7 @@ def isNull(something):
         else:
             return False
     elif isinstance(something, App.Placement):
-        if (something.Base == App.Vector(0, 0, 0)
-                and something.Rotation.Q == (0, 0, 0, 1)):
+        if something.Base == App.Vector(0, 0, 0) and something.Rotation.Q == (0, 0, 0, 1):
             return True
         else:
             return False
@@ -148,6 +149,7 @@ def isAligned(edge, axis="x"):
 
     The axis can be 'x', 'y' or 'z'.
     """
+
     def is_same(a, b):
         return round(a, precision()) == round(b, precision())
 
@@ -193,12 +195,9 @@ def getQuad(face):
     v2 = vec(face.Edges[1])
     v3 = vec(face.Edges[2])
     v4 = vec(face.Edges[3])
-    angles90 = [round(math.pi*0.5, precision()),
-                round(math.pi*1.5, precision())]
+    angles90 = [round(math.pi * 0.5, precision()), round(math.pi * 1.5, precision())]
 
-    angles180 = [0,
-                 round(math.pi, precision()),
-                 round(math.pi*2, precision())]
+    angles180 = [0, round(math.pi, precision()), round(math.pi * 2, precision())]
     for ov in [v2, v3, v4]:
         if not (round(v1.getAngle(ov), precision()) in angles90 + angles180):
             return None
@@ -267,7 +266,7 @@ def geomType(edge):
             return "Ellipse"
         else:
             return "Unknown"
-    except Exception: # catch all errors, no only TypeError
+    except Exception:  # catch all errors, no only TypeError
         return "Unknown"
 
 
@@ -319,10 +318,10 @@ def getBoundaryAngles(angle, alist):
         negs = False
         for i in range(len(alist)):
             if alist[i] < 0:
-                alist[i] = 2*math.pi + alist[i]
+                alist[i] = 2 * math.pi + alist[i]
                 negs = True
         if angle < 0:
-            angle = 2*math.pi + angle
+            angle = 2 * math.pi + angle
             negs = True
 
     lower = None
@@ -350,11 +349,12 @@ def getBoundaryAngles(angle, alist):
                     higher = a
 
     if higher is None:
-        higher = 2*math.pi
+        higher = 2 * math.pi
         for a in alist:
             if a < higher:
                 higher = a
 
     return lower, higher
+
 
 ## @}

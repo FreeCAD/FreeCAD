@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
 # *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
@@ -54,7 +56,7 @@ def _get_normal(axis, ref_rot):
         local_comp_vec = App.Vector(1, 0, 0)
     comp_vec = ref_rot.multVec(local_comp_vec)
     axis = App.Vector(axis)  # create independent copy
-    if axis.getAngle(comp_vec) > math.pi/2:
+    if axis.getAngle(comp_vec) > math.pi / 2:
         axis = axis.negative()
     return axis
 
@@ -104,10 +106,9 @@ def make_circle(radius, placement=None, face=None, startangle=None, endangle=Non
         return
 
     if placement:
-        utils.type_check([(placement,App.Placement)], "make_circle")
+        utils.type_check([(placement, App.Placement)], "make_circle")
 
-    if (isinstance(radius, Part.Edge) and len(radius.Vertexes) > 1) \
-            or startangle != endangle:
+    if (isinstance(radius, Part.Edge) and len(radius.Vertexes) > 1) or startangle != endangle:
         name = "Arc"
     else:
         name = "Circle"

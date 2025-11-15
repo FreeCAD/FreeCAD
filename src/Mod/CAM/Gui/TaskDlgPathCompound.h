@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
@@ -41,8 +43,7 @@ class TaskWidgetPathCompound: public Gui::TaskView::TaskBox
     Q_OBJECT
 
 public:
-    explicit TaskWidgetPathCompound(ViewProviderPathCompound* CompoundView,
-                                    QWidget* parent = nullptr);
+    explicit TaskWidgetPathCompound(ViewProviderPathCompound* CompoundView, QWidget* parent = nullptr);
     ~TaskWidgetPathCompound() override;
 
     std::vector<std::string> getList() const;

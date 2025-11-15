@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 add_subdirectory(App)
 add_subdirectory(libarea)
 add_subdirectory(PathSimulator)
@@ -497,6 +499,7 @@ SET(Tests_SRCS
     CAMTests/TestLinuxCNCPost.py
     CAMTests/TestMach3Mach4Post.py
     CAMTests/TestPathAdaptive.py
+    CAMTests/TestPathCommandAnnotations.py
     CAMTests/TestPathCore.py
     CAMTests/TestPathDepthParams.py
     CAMTests/TestPathDressupArray.py

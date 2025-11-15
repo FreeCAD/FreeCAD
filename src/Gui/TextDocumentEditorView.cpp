@@ -39,9 +39,7 @@ using namespace Gui;
 
 TYPESYSTEM_SOURCE_ABSTRACT(Gui::TextDocumentEditorView, Gui::MDIView)  // NOLINT
 
-TextDocumentEditorView::TextDocumentEditorView(App::TextDocument* txtDoc,
-                                               QPlainTextEdit* e,
-                                               QWidget* parent)
+TextDocumentEditorView::TextDocumentEditorView(App::TextDocument* txtDoc, QPlainTextEdit* e, QWidget* parent)
     : MDIView(Application::Instance->getDocument(txtDoc->getDocument()), parent)
     , editor {e}
     , textDocument {txtDoc}
@@ -97,10 +95,10 @@ void TextDocumentEditorView::setupEditor()
 void TextDocumentEditorView::setupConnection()
 {
     // NOLINTBEGIN
-    textConnection =
-        textDocument->connectText(std::bind(&TextDocumentEditorView::sourceChanged, this));
-    labelConnection =
-        textDocument->connectLabel(std::bind(&TextDocumentEditorView::labelChanged, this));
+    textConnection = textDocument->connectText(std::bind(&TextDocumentEditorView::sourceChanged, this));
+    labelConnection = textDocument->connectLabel(
+        std::bind(&TextDocumentEditorView::labelChanged, this)
+    );
     // NOLINTEND
 }
 

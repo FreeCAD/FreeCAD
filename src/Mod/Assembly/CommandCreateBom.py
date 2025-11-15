@@ -68,22 +68,12 @@ class CommandCreateBom:
             "Pixmap": "Assembly_BillOfMaterials",
             "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateBom", "Bill of Materials"),
             "Accel": "O",
-            "ToolTip": "<p>"
-            + QT_TRANSLATE_NOOP(
+            "ToolTip": QT_TRANSLATE_NOOP(
                 "Assembly_CreateBom",
-                "Creates a bill of materials of the current assembly. If an assembly is active, it will be a BOM of this assembly. Else it will be a BOM of the whole document.",
-            )
-            + "</p><p>"
-            + QT_TRANSLATE_NOOP(
-                "Assembly_CreateBom",
-                "The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the BOM. If you do not need the BOM object to be saved as a document object, you can simply export and cancel the task.",
-            )
-            + "</p><p>"
-            + QT_TRANSLATE_NOOP(
-                "Assembly_CreateBom",
-                "The columns 'Index', 'Name', 'File Name' and 'Quantity' are automatically generated on recompute. The 'Description' and custom columns are not overwritten.",
-            )
-            + "</p>",
+                "<p>Creates a bill of materials of the current assembly. If an assembly is active, it will be a BOM of this assembly. Else it will be a BOM of the whole document.</p>"
+                "<p>The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the BOM. If you do not need the BOM object to be saved as a document object, you can simply export and cancel the task.</p>"
+                "<p>The columns 'Index', 'Name', 'File Name' and 'Quantity' are automatically generated on recompute. The 'Description' and custom columns are not overwritten.</p>",
+            ),
             "CmdType": "ForEdit",
         }
 
@@ -135,10 +125,6 @@ class TaskAssemblyCreateBom(QtCore.QObject):
                 self.addColItem(name)
 
             self.bomObj = bomObj
-            self.form.CheckBox_onlyParts.setChecked(bomObj.onlyParts)
-            self.form.CheckBox_detailParts.setChecked(bomObj.detailParts)
-            self.form.CheckBox_detailSubAssemblies.setChecked(bomObj.detailSubAssemblies)
-
         else:
             App.setActiveTransaction("Create Bill Of Materials")
 
@@ -147,11 +133,13 @@ class TaskAssemblyCreateBom(QtCore.QObject):
                 self.addColItem(name)
 
             self.createBomObject()
-            self.form.CheckBox_onlyParts.setChecked(pref.GetBool("BOMOnlyParts", False))
-            self.form.CheckBox_detailParts.setChecked(pref.GetBool("BOMDetailParts", True))
-            self.form.CheckBox_detailSubAssemblies.setChecked(
-                pref.GetBool("BOMDetailSubAssemblies", True)
-            )
+            self.bomObj.onlyParts = pref.GetBool("BOMOnlyParts", False)
+            self.bomObj.detailParts = pref.GetBool("BOMDetailParts", True)
+            self.bomObj.detailSubAssemblies = pref.GetBool("BOMDetailSubAssemblies", True)
+
+        self.form.CheckBox_onlyParts.setChecked(self.bomObj.onlyParts)
+        self.form.CheckBox_detailParts.setChecked(self.bomObj.detailParts)
+        self.form.CheckBox_detailSubAssemblies.setChecked(self.bomObj.detailSubAssemblies)
 
         self.form.columnList.model().rowsMoved.connect(self.onItemsReordered)
         self.form.columnList.itemChanged.connect(self.itemUpdated)

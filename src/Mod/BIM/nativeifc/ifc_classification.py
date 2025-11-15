@@ -34,7 +34,7 @@ def edit_classification(obj):
     if not element or not ifcfile:
         return
     # TODO: remove previous reference?
-    #ifc_tools.api_run("classification.remove_reference",
+    # ifc_tools.api_run("classification.remove_reference",
     #                   ifcfile, reference=ref, products=[obj])
     classifications = ifcfile.by_type("IfcClassification")
     classification = getattr(obj, "Classification", "")
@@ -44,8 +44,9 @@ def edit_classification(obj):
         if cname in cnames:
             system = classifications[cnames.index(cname)]
         else:
-            system = ifc_tools.api_run("classification.add_classification", ifcfile,
-                                       classification=cname)
+            system = ifc_tools.api_run(
+                "classification.add_classification", ifcfile, classification=cname
+            )
         for ref in getattr(system, "HasReferences", []):
             rname = ref.Name or ref.Identification
             if code == rname:
@@ -54,24 +55,27 @@ def edit_classification(obj):
                 if getattr(ref, "ClassificationRefForObjects", None):
                     rel = ref.ClassificationRefForObjects[0]
                     if not element in rel.RelatedObjects:
-                        ifc_tools.edit_attribute(rel, "RelatedObjects",
-                                                 rel.RelatedObjects + [element]
+                        ifc_tools.edit_attribute(
+                            rel, "RelatedObjects", rel.RelatedObjects + [element]
                         )
                 else:
                     # we have a reference, but no classForObjects
                     # this is weird and shouldn't exist...
                     rel = ifcfile.createIfcRelAssociatesClassification(
                         ifc_tools.ifcopenshell.guid.new(),
-                        history,'FreeCADClassificationRel',
+                        history,
+                        "FreeCADClassificationRel",
                         None,
                         [element],
-                        ref
+                        ref,
                     )
         else:
-            ifc_tools.api_run("classification.add_reference", ifcfile,
-                              products = [element],
-                              classification = system,
-                              identification = code
+            ifc_tools.api_run(
+                "classification.add_reference",
+                ifcfile,
+                products=[element],
+                classification=system,
+                identification=code,
             )
     else:
         # classification property is empty
@@ -79,10 +83,11 @@ def edit_classification(obj):
             if rel.is_a("IfcRelAssociatesClassification"):
                 # removing existing classification if only user
                 if len(rel.RelatedObjects) == 1 and rel.RelatedObjects[0] == element:
-                    ifc_tools.api_run("classification.remove_reference",
-                                      ifcfile,
-                                      reference=rel.RelatingClassification,
-                                      products=[element]
+                    ifc_tools.api_run(
+                        "classification.remove_reference",
+                        ifcfile,
+                        reference=rel.RelatingClassification,
+                        products=[element],
                     )
             # TODO: Remove IfcClassification too?
 

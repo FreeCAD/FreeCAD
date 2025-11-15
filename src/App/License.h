@@ -40,7 +40,7 @@ using TLicenseArr = std::array<const char*, colsInArray>;
 constexpr int posnOfIdentifier = 0;
 constexpr int posnOfFullName = 1;
 constexpr int posnOfUrl = 2;
-constexpr int countOfLicenses {18};
+constexpr int countOfLicenses {19};
 // clang-format off
 constexpr std::array<TLicenseArr, countOfLicenses> licenseItems {{
     { "AllRightsReserved", "All rights reserved",                                          "https://en.wikipedia.org/wiki/All_rights_reserved"  },
@@ -61,6 +61,7 @@ constexpr std::array<TLicenseArr, countOfLicenses> licenseItems {{
     { "CERN_OHS_S",        "CERN Open Hardware Licence strongly-reciprocal",               "https://cern-ohl.web.cern.ch/"                      },
     { "CERN_OHS_W",        "CERN Open Hardware Licence weakly-reciprocal",                 "https://cern-ohl.web.cern.ch/"                      },
     { "CERN_OHS_P",        "CERN Open Hardware Licence permissive",                        "https://cern-ohl.web.cern.ch/"                      },
+    { "GPL-3.0-or-later",  "GNU General Public License 3.0 or later",                      "https://www.gnu.org/licenses/gpl-3.0.html"          },
 }};
 // clang-format on
 

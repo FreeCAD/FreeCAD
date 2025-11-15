@@ -53,12 +53,10 @@ class CommandInsertNewPart:
             "Pixmap": "Geofeaturegroup",
             "MenuText": QT_TRANSLATE_NOOP("Assembly_InsertNewPart", "New Part"),
             "Accel": "P",
-            "ToolTip": "<p>"
-            + QT_TRANSLATE_NOOP(
+            "ToolTip": QT_TRANSLATE_NOOP(
                 "Assembly_InsertNewPart",
                 "Insert a new part into the active assembly. The new part's origin can be positioned in the assembly.",
-            )
-            + "</p>",
+            ),
             "CmdType": "ForEdit",
         }
 

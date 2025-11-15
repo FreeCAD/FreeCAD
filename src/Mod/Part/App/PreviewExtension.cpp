@@ -21,8 +21,6 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
 #include "PreviewExtension.h"
 
 #include <App/DocumentObject.h>

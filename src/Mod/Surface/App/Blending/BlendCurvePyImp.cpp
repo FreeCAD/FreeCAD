@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 ///***************************************************************************
 // *   Copyright (c) 2022 Matteo Grellier <matteogrellier@gmail.com>         *
 // *                                                                         *
@@ -20,7 +22,6 @@
 // *                                                                         *
 // ***************************************************************************/
 
-#include "PreCompiled.h"
 
 // clang-format off
 #include "Blending/BlendCurvePy.h"
@@ -48,12 +49,14 @@ int BlendCurvePy::PyInit(PyObject* args, PyObject* /*kwds*/)
     PyObject* b1;
     PyObject* b2;
 
-    if (!PyArg_ParseTuple(args,
-                          "O!O!",
-                          &(Surface::BlendPointPy::Type),
-                          &b1,
-                          &(Surface::BlendPointPy::Type),
-                          &b2)) {
+    if (!PyArg_ParseTuple(
+            args,
+            "O!O!",
+            &(Surface::BlendPointPy::Type),
+            &b1,
+            &(Surface::BlendPointPy::Type),
+            &b2
+        )) {
         return -1;
     }
 

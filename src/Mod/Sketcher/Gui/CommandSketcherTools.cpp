@@ -64,6 +64,7 @@
 #include "DrawSketchHandlerRotate.h"
 #include "DrawSketchHandlerScale.h"
 #include "DrawSketchHandlerSymmetry.h"
+#include "SnapManager.h"
 
 // Hint: this is to prevent to re-format big parts of the file. Remove it later again.
 // clang-format off
@@ -1211,9 +1212,10 @@ public:
         Snap5Degree
     };
 
-    void mouseMove(Base::Vector2d onSketchPos) override
+    void mouseMove(SnapManager::SnapHandle snapHandle) override
     {
         using std::numbers::pi;
+        Base::Vector2d onSketchPos = snapHandle.compute();
 
         if (Mode == STATUS_SEEK_First) {
 
@@ -1789,9 +1791,10 @@ public:
         Snap5Degree
     };
 
-    void mouseMove(Base::Vector2d onSketchPos) override
+    void mouseMove(SnapManager::SnapHandle snapHandle) override
     {
         using std::numbers::pi;
+        Base::Vector2d onSketchPos = snapHandle.compute();
 
         if (Mode == STATUS_SEEK_First) {
 
@@ -2323,7 +2326,7 @@ CmdSketcherOffset::CmdSketcherOffset()
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Offset");
-    sToolTipText = QT_TR_NOOP("Offsets the selected geometry: positive values offset outward, negative values inward");
+    sToolTipText = QT_TR_NOOP("Adds an equidistant closed contour around selected geometry: positive values offset outward, negative values inward");
     sWhatsThis = "Sketcher_Offset";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_Offset";

@@ -64,10 +64,12 @@ TEST_F(PropertySheetTest, isValidCellAddressNameInvalidNames)  // NOLINT
 
 TEST_F(PropertySheetTest, validAliases)  // NOLINT
 {
-    std::vector<std::string> validAliases {"Bork",
-                                           "Bork_de_bork"
-                                           "A",
-                                           "AA123456"};
+    std::vector<std::string> validAliases {
+        "Bork",
+        "Bork_de_bork"
+        "A",
+        "AA123456"
+    };
     for (const auto& name : validAliases) {
         EXPECT_TRUE(propertySheet()->isValidAlias(name))
             << "\"" << name << "\" was not accepted as an alias name, and should be";
@@ -76,11 +78,8 @@ TEST_F(PropertySheetTest, validAliases)  // NOLINT
 
 TEST_F(PropertySheetTest, invalidAliases)  // NOLINT
 {
-    std::vector<std::string> invalidAliases {"A1",
-                                             "ZZ1234",
-                                             "mm",
-                                             "no spaces allowed",
-                                             "\'NoLeadingQuotes"};
+    std::vector<std::string>
+        invalidAliases {"A1", "ZZ1234", "mm", "no spaces allowed", "\'NoLeadingQuotes"};
 
     for (const auto& name : invalidAliases) {
         EXPECT_FALSE(propertySheet()->isValidAlias(name))

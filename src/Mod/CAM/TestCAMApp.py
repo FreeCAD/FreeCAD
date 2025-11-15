@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # flake8: noqa import
 # ***************************************************************************
 # *   Copyright (c) 2016 sliptonic <shopinthewoods@gmail.com>               *
@@ -27,6 +28,7 @@ from CAMTests.TestCAMSanity import TestCAMSanity
 from CAMTests.TestPathProfile import TestPathProfile
 
 from CAMTests.TestPathAdaptive import TestPathAdaptive
+from CAMTests.TestPathCommandAnnotations import TestPathCommandAnnotations
 from CAMTests.TestPathCore import TestPathCore
 from CAMTests.TestPathDepthParams import depthTestCases
 from CAMTests.TestPathDressupDogbone import TestDressupDogbone

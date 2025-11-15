@@ -27,7 +27,7 @@
       <widget class="QComboBox" name="changeMode">
        <item>
         <property name="text">
-         <string>Dimension</string>
+         <string notr="true">Angle</string>
         </property>
        </item>
       </widget>
@@ -139,7 +139,7 @@
         <double>10.000000000000000</double>
        </property>
        <property name="value">
-        <double>60.000000000000000</double>
+        <double>0.000000000000000</double>
        </property>
       </widget>
      </item>

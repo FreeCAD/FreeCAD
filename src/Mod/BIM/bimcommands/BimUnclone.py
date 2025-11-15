@@ -69,6 +69,8 @@ class BIM_Unclone:
                 else:
                     newobj = obj
                     newobj.CloneOf = None
+                    if hasattr(newobj, "ViewObject") and newobj.ViewObject:
+                        newobj.ViewObject.signalChangeIcon()
 
                 # copy properties over, except special ones
                 for prop in cloned.PropertiesList:
@@ -138,9 +140,7 @@ class BIM_Unclone:
                     translate("BIM", "The selected object is not a clone") + "\n"
                 )
         else:
-            FreeCAD.Console.PrintError(
-                translate("BIM", "Select exactly one object") + "\n"
-            )
+            FreeCAD.Console.PrintError(translate("BIM", "Select exactly one object") + "\n")
 
 
 FreeCADGui.addCommand("BIM_Unclone", BIM_Unclone())

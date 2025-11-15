@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -23,13 +25,16 @@
 #ifndef PARTGUI_VIEWPROVIDERRULEDSURFACE_H
 #define PARTGUI_VIEWPROVIDERRULEDSURFACE_H
 
+#include <Mod/Part/PartGlobal.h>
+
 #include "ViewProvider.h"
 
 
-namespace PartGui {
+namespace PartGui
+{
 
 
-class PartGuiExport ViewProviderRuledSurface:public ViewProviderPart
+class PartGuiExport ViewProviderRuledSurface: public ViewProviderPart
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderRuledSurface);
 
@@ -42,13 +47,12 @@ public:
     std::vector<std::string> getDisplayModes() const override;
     std::vector<App::DocumentObject*> claimChildren() const override;
     void updateData(const App::Property*) override;
-    bool onDelete(const std::vector<std::string> &) override;
+    bool onDelete(const std::vector<std::string>&) override;
 
 protected:
-
 };
 
-} // namespace PartGui
+}  // namespace PartGui
 
 
-#endif // PARTGUI_VIEWPROVIDERRULEDSURFACE_H
+#endif  // PARTGUI_VIEWPROVIDERRULEDSURFACE_H

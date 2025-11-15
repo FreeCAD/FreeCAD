@@ -20,12 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
-# include <Inventor/nodes/SoAnnotation.h>
-#endif
+#include <Inventor/nodes/SoAnnotation.h>
 
 #include <App/Document.h>
 #include <Base/ServiceProvider.h>
@@ -38,6 +33,7 @@
 #include "StyleParameters.h"
 
 #include <Gui/Inventor/So3DAnnotation.h>
+#include <Mod/Part/App/BodyBase.h>
 
 
 using namespace PartDesignGui;
@@ -45,9 +41,9 @@ using namespace PartDesignGui;
 PROPERTY_SOURCE(PartDesignGui::ViewProviderSketchBased, PartDesignGui::ViewProvider)
 
 
-ViewProviderSketchBased::ViewProviderSketchBased() :
-    pcProfileToggle(new SoToggleSwitch),
-    pcProfileShape(new PartGui::SoPreviewShape)
+ViewProviderSketchBased::ViewProviderSketchBased()
+    : pcProfileToggle(new SoToggleSwitch)
+    , pcProfileShape(new PartGui::SoPreviewShape)
 {
     auto annotation = new Gui::So3DAnnotation;
     annotation->addChild(pcProfileShape);
@@ -65,20 +61,24 @@ ViewProviderSketchBased::ViewProviderSketchBased() :
     updateProfileVisibility();
 
     auto* styleParametersManager = Base::provideService<Gui::StyleParameters::ParameterManager>();
-    pcProfileShape->transparency = 1.0F - static_cast<float>(
-        styleParametersManager->resolve(StyleParameters::PreviewProfileOpacity).value);
+    pcProfileShape->transparency = 1.0F
+        - static_cast<float>(styleParametersManager->resolve(StyleParameters::PreviewProfileOpacity)
+                                 .value);
     pcProfileShape->lineWidth = static_cast<float>(
-        styleParametersManager->resolve(StyleParameters::PreviewProfileLineWidth).value);
+        styleParametersManager->resolve(StyleParameters::PreviewProfileLineWidth).value
+    );
 }
 
 ViewProviderSketchBased::~ViewProviderSketchBased() = default;
 
 
-std::vector<App::DocumentObject*> ViewProviderSketchBased::claimChildren() const {
+std::vector<App::DocumentObject*> ViewProviderSketchBased::claimChildren() const
+{
     std::vector<App::DocumentObject*> temp;
     App::DocumentObject* sketch = getObject<PartDesign::ProfileBased>()->Profile.getValue();
-    if (sketch && !sketch->isDerivedFrom<PartDesign::Feature>())
+    if (sketch && !sketch->isDerivedFrom<PartDesign::Feature>()) {
         temp.push_back(sketch);
+    }
 
     return temp;
 }
@@ -101,7 +101,14 @@ void ViewProviderSketchBased::updateProfileShape()
     }
 
     auto profileBased = getObject<PartDesign::ProfileBased>();
-    updatePreviewShape(profileBased->getTopoShapeVerifiedFace(true), pcProfileShape);
+    auto profileShape = profileBased->getTopoShapeVerifiedFace(true);
+
+    // set the correct coordinate space for the profile shape
+    profileShape.setPlacement(
+        profileShape.getPlacement() * profileBased->Placement.getValue().inverse()
+    );
+
+    updatePreviewShape(profileShape, pcProfileShape);
 }
 
 void ViewProviderSketchBased::updateData(const App::Property* prop)
@@ -116,7 +123,6 @@ void ViewProviderSketchBased::updateData(const App::Property* prop)
     if (prop == &profileBased->Profile) {
         updateProfileShape();
     }
-
 }
 void ViewProviderSketchBased::updatePreview()
 {

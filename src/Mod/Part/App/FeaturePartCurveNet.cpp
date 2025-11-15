@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2005 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <Base/Console.h>
 
@@ -33,21 +34,22 @@ PROPERTY_SOURCE(Part::CurveNet, Part::Feature)
 
 CurveNet::CurveNet()
 {
-    ADD_PROPERTY(FileName,(""));
+    ADD_PROPERTY(FileName, (""));
 }
 
 short CurveNet::mustExecute() const
 {
-    if (FileName.isTouched())
+    if (FileName.isTouched()) {
         return 1;
+    }
     return 0;
 }
 
-App::DocumentObjectExecReturn *CurveNet::execute()
+App::DocumentObjectExecReturn* CurveNet::execute()
 {
     Base::FileInfo fi(FileName.getValue());
     if (!fi.isReadable()) {
-        Base::Console().log("CurveNet::execute() not able to open %s!\n",FileName.getValue());
+        Base::Console().log("CurveNet::execute() not able to open %s!\n", FileName.getValue());
         std::string error = std::string("Cannot open file ") + FileName.getValue();
         return new App::DocumentObjectExecReturn(error);
     }

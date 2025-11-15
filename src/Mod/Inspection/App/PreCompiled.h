@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -25,8 +27,6 @@
 
 #include <FCConfig.h>
 
-#ifdef _PreComp_
-
 // STL
 #include <numeric>
 
@@ -47,7 +47,5 @@
 #include <QFuture>
 #include <QFutureWatcher>
 #include <QtConcurrentMap>
-
-#endif  //_PreComp_
 
 #endif

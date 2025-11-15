@@ -21,12 +21,10 @@
  ******************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <BRepGProp.hxx>
 #include <GProp_GProps.hxx>
 #include <Precision.hxx>
-#endif
+
 
 #include "FeatureScaled.h"
 #include "FeatureAddSub.h"
@@ -54,8 +52,7 @@ short Scaled::mustExecute() const
     return Transformed::mustExecute();
 }
 
-const std::list<gp_Trsf>
-Scaled::getTransformations(const std::vector<App::DocumentObject*> originals)
+const std::list<gp_Trsf> Scaled::getTransformations(const std::vector<App::DocumentObject*> originals)
 {
     double const factor = Factor.getValue();
     if (factor < Precision::Confusion()) {

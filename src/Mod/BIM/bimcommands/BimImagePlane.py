@@ -36,9 +36,7 @@ class BIM_ImagePlane:
         return {
             "Pixmap": "BIM_ImagePlane.svg",
             "MenuText": QT_TRANSLATE_NOOP("BIM_ImagePlane", "Image Plane"),
-            "ToolTip": QT_TRANSLATE_NOOP(
-                "BIM_ImagePlane", "Creates a plane from an image"
-            ),
+            "ToolTip": QT_TRANSLATE_NOOP("BIM_ImagePlane", "Creates a plane from an image"),
         }
 
     def IsActive(self):
@@ -108,9 +106,7 @@ class BIM_ImagePlane:
             FreeCAD.activeDraftCommand = None
             FreeCADGui.Snapper.off()
             self.tracker.off()
-            midpoint = self.basepoint.add(
-                self.opposite.sub(self.basepoint).multiply(0.5)
-            )
+            midpoint = self.basepoint.add(self.opposite.sub(self.basepoint).multiply(0.5))
             wp = WorkingPlane.get_working_plane()
             rotation = wp.get_placement().Rotation
             diagonal = self.opposite.sub(self.basepoint)

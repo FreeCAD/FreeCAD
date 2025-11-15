@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -24,6 +26,8 @@
 #ifndef PARTGUI_VIEVPROVIDERIMPORT_H
 #define PARTGUI_VIEVPROVIDERIMPORT_H
 
+#include <Mod/Part/PartGlobal.h>
+
 #include "ViewProvider.h"
 
 
@@ -33,10 +37,11 @@ class SoSeparator;
 class SbVec3f;
 class SoTransform;
 
-namespace PartGui {
+namespace PartGui
+{
 
 
-class PartGuiExport ViewProviderImport : public ViewProviderPart
+class PartGuiExport ViewProviderImport: public ViewProviderPart
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderImport);
 
@@ -51,8 +56,7 @@ protected:
     void unsetEdit(int ModNum) override;
 };
 
-} // namespace PartGui
+}  // namespace PartGui
 
 
-#endif // PARTGUI_VIEVPROVIDERIMPORT_H
-
+#endif  // PARTGUI_VIEVPROVIDERIMPORT_H

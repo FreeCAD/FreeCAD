@@ -37,6 +37,7 @@
 #include "GeometryCreationMode.h"
 #include "Utils.h"
 #include "ViewProviderSketch.h"
+#include "SnapManager.h"
 
 
 namespace SketcherGui
@@ -88,9 +89,9 @@ public:
         Gui::Selection().rmvSelectionGate();
     }
 
-    void mouseMove(Base::Vector2d onSketchPos) override
+    void mouseMove(SnapManager::SnapHandle snapHandle) override
     {
-        Q_UNUSED(onSketchPos);
+        Base::Vector2d onSketchPos = snapHandle.compute();
         if (mousePressed) {
             executeCommands(onSketchPos);
             return;
@@ -106,12 +107,14 @@ public:
         auto sk = sketchgui->getObject<Sketcher::SketchObject>();
         int GeoId1, GeoId2;
         Base::Vector3d intersect1, intersect2;
-        if (!sk->seekTrimPoints(GeoId,
-                                Base::Vector3d(onSketchPos.x, onSketchPos.y, 0),
-                                GeoId1,
-                                intersect1,
-                                GeoId2,
-                                intersect2)) {
+        if (!sk->seekTrimPoints(
+                GeoId,
+                Base::Vector3d(onSketchPos.x, onSketchPos.y, 0),
+                GeoId1,
+                intersect1,
+                GeoId2,
+                intersect2
+            )) {
             return;
         }
 
@@ -174,18 +177,22 @@ public:
             || geo->is<Part::GeomEllipse>() || geo->is<Part::GeomBSplineCurve>()) {
             try {
                 Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Trim edge"));
-                Gui::cmdAppObjectArgs(sketchgui->getObject(),
-                                      "trim(%d,App.Vector(%f,%f,0))",
-                                      GeoId,
-                                      onSketchPos.x,
-                                      onSketchPos.y);
+                Gui::cmdAppObjectArgs(
+                    sketchgui->getObject(),
+                    "trim(%d,App.Vector(%f,%f,0))",
+                    GeoId,
+                    onSketchPos.x,
+                    onSketchPos.y
+                );
                 Gui::Command::commitCommand();
                 tryAutoRecompute(sketchgui->getObject<Sketcher::SketchObject>());
             }
             catch (const Base::Exception&) {
-                Gui::NotifyError(sketchgui,
-                                 QT_TRANSLATE_NOOP("Notifications", "Error"),
-                                 QT_TRANSLATE_NOOP("Notifications", "Failed to trim edge"));
+                Gui::NotifyError(
+                    sketchgui,
+                    QT_TRANSLATE_NOOP("Notifications", "Error"),
+                    QT_TRANSLATE_NOOP("Notifications", "Failed to trim edge")
+                );
 
                 Gui::Command::abortCommand();
             }

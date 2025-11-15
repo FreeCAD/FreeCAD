@@ -40,9 +40,11 @@ class PropertyConstraintListItem: public Gui::PropertyEditor::PropertyItem
 
     ~PropertyConstraintListItem() override;
     void assignProperty(const App::Property* prop) override;
-    QWidget* createEditor(QWidget* parent,
-                          const std::function<void()>& method,
-                          FrameOption frameOption) const override;
+    QWidget* createEditor(
+        QWidget* parent,
+        const std::function<void()>& method,
+        FrameOption frameOption
+    ) const override;
     void setEditorData(QWidget* editor, const QVariant& data) const override;
     QVariant editorData(QWidget* editor) const override;
 

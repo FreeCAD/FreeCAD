@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -25,6 +27,8 @@
 
 #include <App/GeoFeature.h>
 
+#include <Mod/Part/PartGlobal.h>
+
 #include "PropertyTopoShape.h"
 
 
@@ -35,7 +39,7 @@ class PartFeaturePy;
 
 /** Base class of all shape feature classes in FreeCAD
  */
-class PartExport FeatureReference : public App::GeoFeature
+class PartExport FeatureReference: public App::GeoFeature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::FeatureReference);
 
@@ -44,26 +48,27 @@ public:
     FeatureReference();
     ~FeatureReference() override;
 
-	App::PropertyLink Reference;
+    App::PropertyLink Reference;
 
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
     short mustExecute() const override;
     //@}
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "PartGui::ViewProviderPartReference";
     }
+
 protected:
     TopLoc_Location getLocation() const;
-
 };
 
 
-} //namespace Part
+}  // namespace Part
 
 
-#endif // PART_FeatureReference_H
+#endif  // PART_FeatureReference_H

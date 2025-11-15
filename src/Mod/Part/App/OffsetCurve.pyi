@@ -3,7 +3,6 @@ from Base.Vector import Vector
 from GeometryCurve import GeometryCurve
 from typing import Final
 
-
 @export(
     PythonName="Part.OffsetCurve",
     Twin="GeomOffsetCurve",

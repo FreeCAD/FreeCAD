@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 David Friedli <david[at]friedli-be.ch>             *
  *                                                                         *
@@ -20,8 +22,6 @@
  **************************************************************************/
 
 
-#include "PreCompiled.h"
-
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/MeasureManager.h>
@@ -38,19 +38,17 @@ PROPERTY_SOURCE(Measure::MeasureLength, Measure::MeasureBase)
 
 MeasureLength::MeasureLength()
 {
-    ADD_PROPERTY_TYPE(Elements,
-                      (nullptr),
-                      "Measurement",
-                      App::Prop_None,
-                      "Elements to get the length from");
+    ADD_PROPERTY_TYPE(Elements, (nullptr), "Measurement", App::Prop_None, "Elements to get the length from");
     Elements.setScope(App::LinkScope::Global);
     Elements.setAllowExternal(true);
 
-    ADD_PROPERTY_TYPE(Length,
-                      (0.0),
-                      "Measurement",
-                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
-                      "Length of selection");
+    ADD_PROPERTY_TYPE(
+        Length,
+        (0.0),
+        "Measurement",
+        App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
+        "Length of selection"
+    );
 }
 
 MeasureLength::~MeasureLength() = default;

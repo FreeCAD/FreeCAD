@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2015 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
@@ -213,8 +214,8 @@ def show(obj):
     "show(obj): shows the G-code data of the given Path object in a dialog"
 
     prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/CAM")
-    # default Max Highlighter Size = 512 Ko
-    defaultMHS = 512 * 1024
+    # default Max Highlighter Size = 256 Ko
+    defaultMHS = 256 * 1024
     mhs = prefs.GetUnsigned("inspecteditorMaxHighlighterSize", defaultMHS)
 
     if hasattr(obj, "Path"):

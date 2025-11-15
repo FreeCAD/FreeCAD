@@ -25,14 +25,10 @@
 
 #include <FCConfig.h>
 
-#ifdef _PreComp_
-
 // stl
 #include <limits>
 
 // OpenCasCade
 #include <Mod/Part/App/OpenCascadeAll.h>
 
-#endif // _PreComp_
 #endif
-
