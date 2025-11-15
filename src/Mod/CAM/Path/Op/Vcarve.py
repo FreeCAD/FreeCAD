@@ -164,7 +164,7 @@ def generateVirtualBackTrackEdges(positionHistory, nextEdge, tolerance) -> list:
     to follow them without lifting toolbit. This approach makes carving a lot of faster.
     """
 
-    if not positionHistory:
+    if not positionHistory or len(positionHistory) < 2:
         return []
 
     backTrackEdges = []
@@ -590,6 +590,8 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             # we start vcarving another wire which may not be connected to previous one
             # but using some routing logic we may avoid raising CNC toolbit and using G0
             # and instead traverse back already carved edges at full speed
+
+            backtrack_edges = generateVirtualBackTrackEdges(positionHistory, wire[0], obj.Tolerance)
 
             edge_list = backtrack_edges + wire
 
