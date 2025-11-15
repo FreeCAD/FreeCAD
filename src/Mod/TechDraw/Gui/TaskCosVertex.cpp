@@ -185,6 +185,9 @@ void TaskCosVertex::startTracker()
 
     if (!m_tracker) {
         m_tracker = new QGTracker(m_vpp->getQGSPage(), m_trackerMode);
+        std::string parentName = m_baseFeat->getNameInDocument();
+        QGIView* parentView = m_vpp->getQGSPage()->getQGIVByName(parentName);
+        m_tracker->setOwnerQView(parentView);
         QObject::connect(
             m_tracker, &QGTracker::drawingFinished,
             this, &TaskCosVertex::onTrackerFinished

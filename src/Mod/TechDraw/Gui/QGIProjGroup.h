@@ -59,6 +59,8 @@ public:
 
     void drawBorder() override;
 
+    bool isMember(App::DocumentObject* dvpObj) const;
+
 protected:
     bool sceneEventFilter(QGraphicsItem* watched, QEvent *event) override;
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;

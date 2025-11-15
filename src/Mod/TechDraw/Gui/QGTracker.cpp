@@ -273,6 +273,10 @@ void QGTracker::onDoubleClick(QPointF pos)
 
 void QGTracker::getPickedQGIV(QPointF pos)
 {
+    if (m_qgParent) {
+        return;
+    }
+
     setVisible(false);
     m_qgParent = nullptr;
     QList<QGraphicsView *> views = scene()->views();
@@ -284,13 +288,12 @@ void QGTracker::getPickedQGIV(QPointF pos)
         if (topItem != pickedItem) {
             pickedItem = topItem;
         }                               //pickedItem sb a QGIV
-        QGIView* qgParent = dynamic_cast<QGIView*>(pickedItem);
+        auto* qgParent = dynamic_cast<QGIView*>(pickedItem);
         if (qgParent) {
             m_qgParent = qgParent;
         }
     }
     setVisible(true);
-    return;
 }
 
 QRectF QGTracker::boundingRect() const
@@ -400,7 +403,7 @@ void QGTracker::setPoint(std::vector<QPointF> pts)
     auto point = new QGIVertex(-1);
     point->setParentItem(this);
     point->setPos(pts.front());
-    point->setRadius(static_cast<QGIViewPart *>(m_qgParent)->getVertexSize());
+    point->setRadius(Rez::guiX(getTrackerWeight()));
     point->setNormalColor(Qt::blue);
     point->setFillColor(Qt::blue);
     point->setPrettyNormal();
@@ -420,6 +423,7 @@ std::vector<Base::Vector3d> QGTracker::convertPoints()
 void QGTracker::terminateDrawing()
 {
     setCursor(Qt::ArrowCursor);
+    // should we care if m_qgParent is null?
     Q_EMIT drawingFinished(m_points, m_qgParent);
 }
 
