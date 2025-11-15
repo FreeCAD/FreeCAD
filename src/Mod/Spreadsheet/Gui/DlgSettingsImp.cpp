@@ -97,7 +97,7 @@ void DlgSettingsImp::loadSettings()
         ui->delimiterComboBox->setCurrentIndex(idx);
     }
 
-    QString trigger = QString::fromStdString(hGrp->GetASCII("RecomputeTrigger", "none"));
+    QString trigger = QString::fromStdString(hGrp->GetASCII("RecomputeTrigger", "interactions"));
     idx = ui->autoRecomputeTriggerComboBox->findText(trigger, Qt::MatchFixedString);
     if (idx != -1) {
         ui->autoRecomputeTriggerComboBox->setCurrentIndex(idx);

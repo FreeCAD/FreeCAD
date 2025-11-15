@@ -291,10 +291,10 @@ Defaults to: %V = %A
       <item row="0" column="2">
        <widget class="Gui::PrefComboBox" name="autoRecomputeTriggerComboBox">
         <property name="toolTip">
-         <string>Which actions should automatically trigger a recompute. By default none do. Manual recomputes are not affected.</string>
+         <string>Which actions should automatically trigger a recompute. By default all row, column, and cell operations do. Manual recomputes are never affected.</string>
         </property>
         <property name="currentText">
-         <string notr="true">none</string>
+         <string notr="true">interactions</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>AutoRecomputeTrigger</cstring>
@@ -302,6 +302,11 @@ Defaults to: %V = %A
         <property name="prefPath" stdset="0">
          <cstring>Mod/Spreadsheet</cstring>
         </property>
+        <item>
+         <property name="text">
+          <string>interactions</string>
+         </property>
+        </item>
         <item>
          <property name="text">
           <string>none</string>

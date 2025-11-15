@@ -366,6 +366,13 @@ void SheetTableView::insertRows()
         Gui::cmdAppObjectArgs(sheet, "insertRows('%s', %d)", rowName(prev).c_str(), count);
     }
     Gui::Command::commitCommand();
+    ParameterGrp::handle group = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Spreadsheet"
+    );
+    QString trigger = QString::fromStdString(group->GetASCII("RecomputeTrigger", "interactions"));
+    if (trigger.compare(QLatin1String("interactions"), Qt::CaseInsensitive) == 0) {
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+    }
 }
 
 void SheetTableView::insertRowsAfter()
@@ -379,6 +386,13 @@ void SheetTableView::insertRowsAfter()
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Insert Rows"));
     Gui::cmdAppObjectArgs(sheet, "insertRows('%s', %d)", rowName(max + 1).c_str(), rows.size());
     Gui::Command::commitCommand();
+    ParameterGrp::handle group = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Spreadsheet"
+    );
+    QString trigger = QString::fromStdString(group->GetASCII("RecomputeTrigger", "interactions"));
+    if (trigger.compare(QLatin1String("interactions"), Qt::CaseInsensitive) == 0) {
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+    }
 }
 
 void SheetTableView::removeRows()
@@ -400,6 +414,13 @@ void SheetTableView::removeRows()
         Gui::cmdAppObjectArgs(sheet, "removeRows('%s', %d)", rowName(it).c_str(), 1);
     }
     Gui::Command::commitCommand();
+    ParameterGrp::handle group = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Spreadsheet"
+    );
+    QString trigger = QString::fromStdString(group->GetASCII("RecomputeTrigger", "interactions"));
+    if (trigger.compare(QLatin1String("interactions"), Qt::CaseInsensitive) == 0) {
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+    }
 }
 
 void SheetTableView::insertColumns()
@@ -438,6 +459,13 @@ void SheetTableView::insertColumns()
         Gui::cmdAppObjectArgs(sheet, "insertColumns('%s', %d)", columnName(prev).c_str(), count);
     }
     Gui::Command::commitCommand();
+    ParameterGrp::handle group = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Spreadsheet"
+    );
+    QString trigger = QString::fromStdString(group->GetASCII("RecomputeTrigger", "interactions"));
+    if (trigger.compare(QLatin1String("interactions"), Qt::CaseInsensitive) == 0) {
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+    }
 }
 
 void SheetTableView::insertColumnsAfter()
@@ -451,6 +479,13 @@ void SheetTableView::insertColumnsAfter()
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Insert Columns"));
     Gui::cmdAppObjectArgs(sheet, "insertColumns('%s', %d)", columnName(max + 1).c_str(), columns.size());
     Gui::Command::commitCommand();
+    ParameterGrp::handle group = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Spreadsheet"
+    );
+    QString trigger = QString::fromStdString(group->GetASCII("RecomputeTrigger", "interactions"));
+    if (trigger.compare(QLatin1String("interactions"), Qt::CaseInsensitive) == 0) {
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+    }
 }
 
 void SheetTableView::removeColumns()
@@ -472,6 +507,13 @@ void SheetTableView::removeColumns()
         Gui::cmdAppObjectArgs(sheet, "removeColumns('%s', %d)", columnName(it).c_str(), 1);
     }
     Gui::Command::commitCommand();
+    ParameterGrp::handle group = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Spreadsheet"
+    );
+    QString trigger = QString::fromStdString(group->GetASCII("RecomputeTrigger", "interactions"));
+    if (trigger.compare(QLatin1String("interactions"), Qt::CaseInsensitive) == 0) {
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+    }
 }
 
 SheetTableView::~SheetTableView() = default;
@@ -683,6 +725,13 @@ void SheetTableView::deleteSelection()
             );
         }
         Gui::Command::commitCommand();
+        ParameterGrp::handle group = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/Mod/Spreadsheet"
+        );
+        QString trigger = QString::fromStdString(group->GetASCII("RecomputeTrigger", "interactions"));
+        if (trigger.compare(QLatin1String("interactions"), Qt::CaseInsensitive) == 0) {
+            Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+        }
     }
 }
 
