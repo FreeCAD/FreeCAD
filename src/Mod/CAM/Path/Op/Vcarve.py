@@ -457,7 +457,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
         obj.Discretize = 0.25
         obj.Tolerance = Path.Preferences.defaultGeometryTolerance()
         # keep copy in local object to use in methods which do not operate directly on obj
-        # we use getattr because OpsDefaultEditor may trigger this method to gather list of 
+        # we use getattr because OpsDefaultEditor may trigger this method to gather list of
         # default operation settings but reading from OpPrototype object fails
         self.Tolerance = getattr(obj, "Tolerance", Path.Preferences.defaultGeometryTolerance())
         self.setupAdditionalProperties(obj)
