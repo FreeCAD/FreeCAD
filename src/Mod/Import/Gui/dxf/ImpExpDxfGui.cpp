@@ -457,7 +457,8 @@ int ImportGui::getAciForObject(App::DocumentObject* obj, bool isText)
         {252, Base::Color(0.41015625f, 0.41015625f, 0.41015625f)},
         {253, Base::Color(0.5078125f, 0.5078125f, 0.5078125f)},
         {254, Base::Color(0.7421875f, 0.7421875f, 0.7421875f)},
-        {255, Base::Color(0.99609375f, 0.99609375f, 0.99609375f)}};
+        {255, Base::Color(0.99609375f, 0.99609375f, 0.99609375f)}
+    };
 
     if (!Gui::Application::Instance || !obj) {
         return 0;
@@ -479,8 +480,7 @@ int ImportGui::getAciForObject(App::DocumentObject* obj, bool isText)
         if (parent->isDerivedFrom(App::DocumentObjectGroup::getClassTypeId())) {
             if (auto* vpParent = gdoc->getViewProvider(const_cast<App::DocumentObject*>(parent))) {
                 if (vpParent->getPropertyByName("OverrideChildren")
-                    && static_cast<App::PropertyBool*>(
-                           vpParent->getPropertyByName("OverrideChildren"))
+                    && static_cast<App::PropertyBool*>(vpParent->getPropertyByName("OverrideChildren"))
                            ->getValue()) {
                     return 256;
                 }
