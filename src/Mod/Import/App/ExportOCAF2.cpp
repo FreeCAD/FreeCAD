@@ -405,6 +405,9 @@ TDF_Label ExportOCAF2::exportObject(
         return {};
     }
 
+    // keep a copy of the original object for naming purposes
+    App::DocumentObject* originalObj = obj;
+
     if (obj->isDerivedFrom(PartDesign::Body::getClassTypeId())) {
         PartDesign::Body* body = static_cast<PartDesign::Body*>(obj);
         App::DocumentObject* tip = body->Tip.getValue();
@@ -473,7 +476,9 @@ TDF_Label ExportOCAF2::exportObject(
             else {
                 label = aShapeTool->AddShape(shape.getShape(), Standard_False, Standard_False);
             }
-            setupObject(label, name ? parentObj : obj, shape, prefix, name);
+
+            // use originalObj to preserve name
+            setupObject(label, name ? parentObj : originalObj, shape, prefix, name);
             return label;
         }
         auto next = linked->getLinkedObject(false, nullptr, false, depth++);
@@ -500,7 +505,7 @@ TDF_Label ExportOCAF2::exportObject(
             }
 
             label = aShapeTool->AddComponent(parent, shape.getShape(), Standard_False);
-            setupObject(label, name ? parentObj : obj, shape, prefix, name);
+            setupObject(label, name ? parentObj : originalObj, shape, prefix, name);
         }
         else {
             // Here means we are exporting a single non-assembly object. We must
@@ -520,7 +525,7 @@ TDF_Label ExportOCAF2::exportObject(
                 shape.setShape(shape.getShape().Located(TopLoc_Location()));
             }
             label = aShapeTool->AddShape(shape.getShape(), Standard_False, Standard_False);
-            auto o = name ? parentObj : obj;
+            auto o = name ? parentObj : originalObj;
             if (o != linked) {
                 setupObject(label, linked, shape, prefix, nullptr, true);
             }
@@ -644,7 +649,7 @@ TDF_Label ExportOCAF2::exportObject(
         // If we are a component, swap in the base shape but keep our location.
         shape.setShape(baseShape.getShape().Located(shape.getShape().Location()));
         label = aShapeTool->AddComponent(parent, label, shape.getShape().Location());
-        setupObject(label, name ? parentObj : obj, shape, prefix, name);
+        setupObject(label, name ? parentObj : originalObj, shape, prefix, name);
     }
     return label;
 }
