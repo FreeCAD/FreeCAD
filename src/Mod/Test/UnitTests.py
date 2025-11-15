@@ -72,7 +72,7 @@ class UnitBasicCases(unittest.TestCase):
 
         psi = FreeCAD.Units.parseQuantity("1psi")
         mpa = psi.getValueAs("MPa").Value
-        self.assertAlmostEqual(0.068947572932, mpa, delta=self.delta)
+        self.assertAlmostEqual(0.0068947572932, mpa, delta=self.delta)
         kpa = psi.getValueAs("kPa").Value
         self.assertAlmostEqual(6.8947572932, kpa, delta=self.delta)
 
