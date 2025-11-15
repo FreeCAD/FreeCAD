@@ -602,15 +602,23 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         # Load available operations into combobox
         if len(availableOps) > 0:
             # Populate the operations list
-            panel.geometryImportList.blockSignals(True)
-            panel.geometryImportList.clear()
-            availableOps.sort()
-            for opLbl in availableOps:
-                panel.geometryImportList.addItem(opLbl)
-            panel.geometryImportList.blockSignals(False)
+            try:
+                panel.geometryImportList.blockSignals(True)
+                panel.geometryImportList.clear()
+                availableOps.sort()
+                for opLbl in availableOps:
+                    panel.geometryImportList.addItem(opLbl)
+                panel.geometryImportList.blockSignals(False)
+            except (AttributeError, RuntimeError):
+                # Widget doesn't exist in UI or C++ object already deleted
+                pass
         else:
-            panel.geometryImportList.hide()
-            panel.geometryImportButton.hide()
+            try:
+                panel.geometryImportList.hide()
+                panel.geometryImportButton.hide()
+            except (AttributeError, RuntimeError):
+                # Widget doesn't exist in UI or C++ object already deleted
+                pass
 
     def getTitle(self, obj):
         return translate("PathOp", "Base Geometry")
