@@ -26,6 +26,7 @@ import Arch
 import FreeCAD as App
 from bimtests import TestArchBase
 
+
 class TestArchEquipment(TestArchBase.TestArchBase):
 
     def test_makeEquipment(self):
@@ -41,4 +42,4 @@ class TestArchEquipment(TestArchBase.TestArchBase):
         box.Width = 2000
         box.Height = 600
         equip = Arch.makeEquipment(box)
-        self.assertTrue(equip,"Arch Equipment failed")
+        self.assertTrue(equip, "Arch Equipment failed")

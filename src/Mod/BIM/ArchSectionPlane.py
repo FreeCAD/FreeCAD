@@ -53,46 +53,49 @@ if FreeCAD.GuiUp:
     from draftutils.translate import translate
 else:
     # \cond
-    def translate(ctxt,txt):
+    def translate(ctxt, txt):
         return txt
-    def QT_TRANSLATE_NOOP(ctxt,txt):
+
+    def QT_TRANSLATE_NOOP(ctxt, txt):
         return txt
+
     # \endcond
 
-ISRENDERING = False # flag to prevent concurrent runs of the coin renderer
+ISRENDERING = False  # flag to prevent concurrent runs of the coin renderer
 
 
 def getSectionData(source):
-
     """Returns some common data from section planes and building parts"""
 
-    if hasattr(source,"Objects"):
+    if hasattr(source, "Objects"):
         objs = source.Objects
         cutplane = source.Shape
-    elif hasattr(source,"Group"):
+    elif hasattr(source, "Group"):
         import Part
+
         objs = source.Group
-        cutplane = Part.makePlane(1000,1000,FreeCAD.Vector(-500,-500,0))
+        cutplane = Part.makePlane(1000, 1000, FreeCAD.Vector(-500, -500, 0))
         m = 1
-        if source.ViewObject and hasattr(source.ViewObject,"CutMargin"):
+        if source.ViewObject and hasattr(source.ViewObject, "CutMargin"):
             m = source.ViewObject.CutMargin.Value
-        cutplane.translate(FreeCAD.Vector(0,0,m))
+        cutplane.translate(FreeCAD.Vector(0, 0, m))
         cutplane.Placement = cutplane.Placement.multiply(source.Placement)
     onlySolids = True
-    if hasattr(source,"OnlySolids"):
+    if hasattr(source, "OnlySolids"):
         onlySolids = source.OnlySolids
     clip = False
-    if hasattr(source,"Clip"):
+    if hasattr(source, "Clip"):
         clip = source.Clip
     p = FreeCAD.Placement(source.Placement)
-    direction = p.Rotation.multVec(FreeCAD.Vector(0,0,1))
+    direction = p.Rotation.multVec(FreeCAD.Vector(0, 0, 1))
     if objs:
         objs = Draft.get_group_contents(objs, walls=True, addgroups=True)
-    return objs,cutplane,onlySolids,clip,direction
+    return objs, cutplane, onlySolids, clip, direction
 
 
-def getCutShapes(objs,cutplane,onlySolids,clip,joinArch,showHidden,groupSshapesByObject=False):
-
+def getCutShapes(
+    objs, cutplane, onlySolids, clip, joinArch, showHidden, groupSshapesByObject=False
+):
     """
     returns a list of shapes (visible, hidden, cut lines...)
     obtained from performing a series of booleans against the given cut plane
@@ -100,6 +103,7 @@ def getCutShapes(objs,cutplane,onlySolids,clip,joinArch,showHidden,groupSshapesB
 
     import Part
     import DraftGeomUtils
+
     shapes = []
     hshapes = []
     sshapes = []
@@ -109,14 +113,18 @@ def getCutShapes(objs,cutplane,onlySolids,clip,joinArch,showHidden,groupSshapesB
     if joinArch:
         shtypes = {}
         for o in objs:
-            if Draft.getType(o) in ["Wall","Structure"]:
+            if Draft.getType(o) in ["Wall", "Structure"]:
                 if o.Shape.isNull():
                     pass
                 elif onlySolids:
-                    shtypes.setdefault(o.Material.Name if (hasattr(o,"Material") and o.Material) else "None",[]).extend(o.Shape.Solids)
+                    shtypes.setdefault(
+                        o.Material.Name if (hasattr(o, "Material") and o.Material) else "None", []
+                    ).extend(o.Shape.Solids)
                 else:
-                    shtypes.setdefault(o.Material.Name if (hasattr(o,"Material") and o.Material) else "None",[]).append(o.Shape.copy())
-            elif hasattr(o,'Shape'):
+                    shtypes.setdefault(
+                        o.Material.Name if (hasattr(o, "Material") and o.Material) else "None", []
+                    ).append(o.Shape.copy())
+            elif hasattr(o, "Shape"):
                 if o.Shape.isNull():
                     pass
                 elif onlySolids:
@@ -124,33 +132,33 @@ def getCutShapes(objs,cutplane,onlySolids,clip,joinArch,showHidden,groupSshapesB
                     objectShapes.append((o, o.Shape.Solids))
                 else:
                     shapes.append(o.Shape.copy())
-                    objectShapes.append((o,[o.Shape.copy()]))
-        for k,v in shtypes.items():
+                    objectShapes.append((o, [o.Shape.copy()]))
+        for k, v in shtypes.items():
             v1 = v.pop()
             if v:
                 v1 = v1.multiFuse(v)
                 v1 = v1.removeSplitter()
             if v1.Solids:
                 shapes.extend(v1.Solids)
-                objectShapes.append((k,v1.Solids))
+                objectShapes.append((k, v1.Solids))
             else:
                 print("ArchSectionPlane: Fusing Arch objects produced non-solid results")
                 shapes.append(v1)
-                objectShapes.append((k,[v1]))
+                objectShapes.append((k, [v1]))
     else:
         for o in objs:
-            if hasattr(o,'Shape'):
+            if hasattr(o, "Shape"):
                 if o.Shape.isNull():
                     pass
                 elif onlySolids:
                     if o.Shape.isValid():
                         shapes.extend(o.Shape.Solids)
-                        objectShapes.append((o,o.Shape.Solids))
+                        objectShapes.append((o, o.Shape.Solids))
                 else:
                     shapes.append(o.Shape)
-                    objectShapes.append((o,[o.Shape]))
+                    objectShapes.append((o, [o.Shape]))
 
-    cutface,cutvolume,invcutvolume = ArchCommands.getCutVolume(cutplane,shapes,clip)
+    cutface, cutvolume, invcutvolume = ArchCommands.getCutVolume(cutplane, shapes, clip)
     shapes = []
     for o, shapeList in objectShapes:
         tmpSshapes = []
@@ -158,7 +166,7 @@ def getCutShapes(objs,cutplane,onlySolids,clip,joinArch,showHidden,groupSshapesB
             for sub in (sh.SubShapes if sh.ShapeType == "Compound" else [sh]):
                 if cutvolume:
                     if sub.Volume < 0:
-                        sub = sub.reversed() # Use reversed as sub is immutable.
+                        sub = sub.reversed()  # Use reversed as sub is immutable.
                     c = sub.cut(cutvolume)
                     s = sub.section(cutface)
                     try:
@@ -167,7 +175,7 @@ def getCutShapes(objs,cutplane,onlySolids,clip,joinArch,showHidden,groupSshapesB
                             f = Part.Face(w)
                             tmpSshapes.append(f)
                     except Part.OCCError:
-                        #print "ArchView: unable to get a face"
+                        # print "ArchView: unable to get a face"
                         tmpSshapes.append(s)
                     shapes.extend(c.SubShapes if c.ShapeType == "Compound" else [c])
                     if showHidden:
@@ -183,91 +191,96 @@ def getCutShapes(objs,cutplane,onlySolids,clip,joinArch,showHidden,groupSshapesB
                     objectSshapes.append((o, tmpSshapes))
 
     if groupSshapesByObject:
-        return shapes,hshapes,sshapes,cutface,cutvolume,invcutvolume,objectSshapes
+        return shapes, hshapes, sshapes, cutface, cutvolume, invcutvolume, objectSshapes
     else:
-        return shapes,hshapes,sshapes,cutface,cutvolume,invcutvolume
+        return shapes, hshapes, sshapes, cutface, cutvolume, invcutvolume
 
 
 def getFillForObject(o, defaultFill, source):
-
     """returns a color tuple from an object's material"""
 
-    if hasattr(source, 'UseMaterialColorForFill') and source.UseMaterialColorForFill:
+    if hasattr(source, "UseMaterialColorForFill") and source.UseMaterialColorForFill:
         material = None
-        if hasattr(o, 'Material') and o.Material:
+        if hasattr(o, "Material") and o.Material:
             material = o.Material
-        elif isinstance(o,str):
+        elif isinstance(o, str):
             material = FreeCAD.ActiveDocument.getObject(o)
         if material:
-            if hasattr(material, 'SectionColor') and material.SectionColor:
+            if hasattr(material, "SectionColor") and material.SectionColor:
                 return material.SectionColor
-            elif hasattr(material, 'Color') and material.Color:
+            elif hasattr(material, "Color") and material.Color:
                 return material.Color
-        elif hasattr(o,"ViewObject") and hasattr(o.ViewObject,"ShapeColor"):
+        elif hasattr(o, "ViewObject") and hasattr(o.ViewObject, "ShapeColor"):
             return o.ViewObject.ShapeColor
     return defaultFill
 
 
-def isOriented(obj,plane):
-
+def isOriented(obj, plane):
     """determines if an annotation is facing the cutplane or not"""
 
-    norm1 = plane.normalAt(0,0)
-    if hasattr(obj,"Placement"):
-        norm2 = obj.Placement.Rotation.multVec(FreeCAD.Vector(0,0,1))
-    elif hasattr(obj,"Normal"):
+    norm1 = plane.normalAt(0, 0)
+    if hasattr(obj, "Placement"):
+        norm2 = obj.Placement.Rotation.multVec(FreeCAD.Vector(0, 0, 1))
+    elif hasattr(obj, "Normal"):
         norm2 = obj.Normal
         if norm2.Length < 0.01:
             return True
     else:
         return True
     a = norm1.getAngle(norm2)
-    if (a < 0.01) or (abs(a-math.pi) < 0.01):
+    if (a < 0.01) or (abs(a - math.pi) < 0.01):
         return True
     return False
+
 
 def update_svg_cache(source, renderMode, showHidden, showFill, fillSpaces, joinArch, allOn, objs):
     """
     Returns None or cached SVG, clears shape cache if required
     """
     svgcache = None
-    if hasattr(source,"Proxy"):
-        if hasattr(source.Proxy,"svgcache") and source.Proxy.svgcache:
+    if hasattr(source, "Proxy"):
+        if hasattr(source.Proxy, "svgcache") and source.Proxy.svgcache:
             # TODO check array bounds
             svgcache = source.Proxy.svgcache[0]
             # empty caches if we want to force-recalculate for certain properties
-            if (source.Proxy.svgcache[1] != renderMode
-              or source.Proxy.svgcache[2] != showHidden
-              or source.Proxy.svgcache[3] != showFill
-              or source.Proxy.svgcache[4] != fillSpaces
-              or source.Proxy.svgcache[5] != joinArch
-              or source.Proxy.svgcache[6] != allOn
-              or source.Proxy.svgcache[7] != set(objs)):
+            if (
+                source.Proxy.svgcache[1] != renderMode
+                or source.Proxy.svgcache[2] != showHidden
+                or source.Proxy.svgcache[3] != showFill
+                or source.Proxy.svgcache[4] != fillSpaces
+                or source.Proxy.svgcache[5] != joinArch
+                or source.Proxy.svgcache[6] != allOn
+                or source.Proxy.svgcache[7] != set(objs)
+            ):
                 svgcache = None
-            if (source.Proxy.svgcache[4] != fillSpaces
-              or source.Proxy.svgcache[5] != joinArch
-              or source.Proxy.svgcache[6] != allOn
-              or source.Proxy.svgcache[7] != set(objs)):
+            if (
+                source.Proxy.svgcache[4] != fillSpaces
+                or source.Proxy.svgcache[5] != joinArch
+                or source.Proxy.svgcache[6] != allOn
+                or source.Proxy.svgcache[7] != set(objs)
+            ):
                 source.Proxy.shapecache = None
     return svgcache
 
 
-def getSVG(source,
-           renderMode="Wireframe",
-           allOn=False,
-           showHidden=False,
-           scale=1,
-           rotation=0,
-           linewidth=1,
-           lineColor=(0.0, 0.0, 0.0),
-           fontsize=1,
-           linespacing=None,
-           showFill=False,
-           fillColor=(1.0, 1.0, 1.0),
-           techdraw=False,
-           fillSpaces=False,
-           cutlinewidth=0,
-           joinArch=False):
+def getSVG(
+    source,
+    renderMode="Wireframe",
+    allOn=False,
+    showHidden=False,
+    scale=1,
+    rotation=0,
+    linewidth=1,
+    lineColor=(0.0, 0.0, 0.0),
+    fontsize=1,
+    linespacing=None,
+    showFill=False,
+    fillColor=(1.0, 1.0, 1.0),
+    techdraw=False,
+    fillSpaces=False,
+    cutlinewidth=0,
+    joinArch=False,
+):
     """
     Return an SVG fragment from an Arch SectionPlane or BuildingPart.
 
@@ -307,14 +320,23 @@ def getSVG(source,
     # separate spaces and Draft objects
     spaces = []
     nonspaces = []
-    drafts = [] # Only used for annotations.
+    drafts = []  # Only used for annotations.
     windows = []
     cutface = None
     for o in objs:
         if Draft.getType(o) == "Space":
             spaces.append(o)
-        elif Draft.getType(o) in ["Dimension","AngularDimension","LinearDimension","Annotation","Label","Text","DraftText","Axis"]:
-            if isOriented(o,cutplane):
+        elif Draft.getType(o) in [
+            "Dimension",
+            "AngularDimension",
+            "LinearDimension",
+            "Annotation",
+            "Label",
+            "Text",
+            "DraftText",
+            "Axis",
+        ]:
+            if isOriented(o, cutplane):
                 drafts.append(o)
         elif o.isDerivedFrom("App::DocumentObjectGroup"):
             # These will have been expanded by getSectionData already
@@ -325,85 +347,94 @@ def getSVG(source,
             windows.append(o)
     objs = nonspaces
 
-    scaledLineWidth = linewidth/scale
-    if renderMode in ["Coin",2,"Coin mono",3]:
+    scaledLineWidth = linewidth / scale
+    if renderMode in ["Coin", 2, "Coin mono", 3]:
         # don't scale linewidths in coin mode
-        svgLineWidth = str(linewidth) + 'px'
+        svgLineWidth = str(linewidth) + "px"
     else:
-        svgLineWidth = str(scaledLineWidth) + 'px'
+        svgLineWidth = str(scaledLineWidth) + "px"
     if cutlinewidth:
-        scaledCutLineWidth = cutlinewidth/scale
-        svgCutLineWidth = str(scaledCutLineWidth) + 'px'
+        scaledCutLineWidth = cutlinewidth / scale
+        svgCutLineWidth = str(scaledCutLineWidth) + "px"
     else:
         st = params.get_param_arch("CutLineThickness")
-        svgCutLineWidth = str(scaledLineWidth * st) + 'px'
+        svgCutLineWidth = str(scaledLineWidth * st) + "px"
     yt = params.get_param_arch("SymbolLineThickness")
     svgSymbolLineWidth = str(linewidth * yt)
     hiddenPattern = params.get_param_arch("archHiddenPattern")
-    svgHiddenPattern = hiddenPattern.replace(" ","")
-    #fillpattern = '<pattern id="sectionfill" patternUnits="userSpaceOnUse" patternTransform="matrix(5,0,0,5,0,0)"'
-    #fillpattern += ' x="0" y="0" width="10" height="10">'
-    #fillpattern += '<g>'
-    #fillpattern += '<rect width="10" height="10" style="stroke:none; fill:#ffffff" /><path style="stroke:#000000; stroke-width:1" d="M0,0 l10,10" /></g></pattern>'
+    svgHiddenPattern = hiddenPattern.replace(" ", "")
+    # fillpattern = '<pattern id="sectionfill" patternUnits="userSpaceOnUse" patternTransform="matrix(5,0,0,5,0,0)"'
+    # fillpattern += ' x="0" y="0" width="10" height="10">'
+    # fillpattern += '<g>'
+    # fillpattern += '<rect width="10" height="10" style="stroke:none; fill:#ffffff" /><path style="stroke:#000000; stroke-width:1" d="M0,0 l10,10" /></g></pattern>'
     svgLineColor = Draft.getrgb(lineColor)
-    svg = ''
+    svg = ""
     # reading cached version
-    svgcache = update_svg_cache(source, renderMode, showHidden, showFill, fillSpaces, joinArch, allOn, objs)
+    svgcache = update_svg_cache(
+        source, renderMode, showHidden, showFill, fillSpaces, joinArch, allOn, objs
+    )
     should_update_svg_cache = False
     if showFill or not svgcache:
         should_update_svg_cache = True
 
     # generating SVG
-    if renderMode in ["Coin",2,"Coin mono",3]:
+    if renderMode in ["Coin", 2, "Coin mono", 3]:
         # render using a coin viewer
-        if hasattr(source.ViewObject,"ViewData") and source.ViewObject.ViewData:
-            cameradata = None#getCameraData(source.ViewObject.ViewData)
+        if hasattr(source.ViewObject, "ViewData") and source.ViewObject.ViewData:
+            cameradata = None  # getCameraData(source.ViewObject.ViewData)
         else:
             cameradata = None
         if should_update_svg_cache:
-            if renderMode in ["Coin mono",3]:
-                svgcache = getCoinSVG(cutplane,objs,cameradata,linewidth="SVGLINEWIDTH",facecolor="#ffffff")
+            if renderMode in ["Coin mono", 3]:
+                svgcache = getCoinSVG(
+                    cutplane, objs, cameradata, linewidth="SVGLINEWIDTH", facecolor="#ffffff"
+                )
             else:
-                svgcache = getCoinSVG(cutplane,objs,cameradata,linewidth="SVGLINEWIDTH")
-    elif renderMode in ["Solid",1]:
+                svgcache = getCoinSVG(cutplane, objs, cameradata, linewidth="SVGLINEWIDTH")
+    elif renderMode in ["Solid", 1]:
         if should_update_svg_cache:
-            svgcache = ''
+            svgcache = ""
             # render using the Arch Vector Renderer
             import ArchVRM
             import WorkingPlane
+
             wp = WorkingPlane.PlaneBase()
             pl = FreeCAD.Placement(source.Placement)
-            if source.ViewObject and hasattr(source.ViewObject,"CutMargin"):
-                mv = pl.multVec(FreeCAD.Vector(0,0,1))
+            if source.ViewObject and hasattr(source.ViewObject, "CutMargin"):
+                mv = pl.multVec(FreeCAD.Vector(0, 0, 1))
                 mv.multiply(source.ViewObject.CutMargin)
                 pl.move(mv)
             wp.align_to_placement(pl)
-            #wp.inverse()
+            # wp.inverse()
             render = ArchVRM.Renderer()
             render.setWorkingPlane(wp)
             render.addObjects(objs)
             if showHidden:
-                render.cut(cutplane,showHidden)
+                render.cut(cutplane, showHidden)
             else:
                 render.cut(cutplane)
             g = '<g transform="scale(1,-1)">\n'
-            if hasattr(source.ViewObject,"RotateSolidRender"):
-                if (source.ViewObject.RotateSolidRender.Value != 0):
+            if hasattr(source.ViewObject, "RotateSolidRender"):
+                if source.ViewObject.RotateSolidRender.Value != 0:
                     g = '<g transform="scale(1,-1) rotate('
                     g += str(source.ViewObject.RotateSolidRender.Value)
                     g += ')">\n'
             svgcache += g
             svgcache += render.getViewSVG(linewidth="SVGLINEWIDTH")
-            #svgcache += fillpattern
-            svgcache += render.getSectionSVG(linewidth="SVGCUTLINEWIDTH",fillpattern="#ffffff")
+            # svgcache += fillpattern
+            svgcache += render.getSectionSVG(linewidth="SVGCUTLINEWIDTH", fillpattern="#ffffff")
             if showHidden:
                 svgcache += render.getHiddenSVG(linewidth="SVGLINEWIDTH")
-            svgcache += '</g>\n'
+            svgcache += "</g>\n"
             # print(render.info())
     else:
         # Wireframe (0) mode
 
-        if hasattr(source,"Proxy") and hasattr(source.Proxy,"shapecache") and source.Proxy.shapecache:
+        if (
+            hasattr(source, "Proxy")
+            and hasattr(source.Proxy, "shapecache")
+            and source.Proxy.shapecache
+        ):
             vshapes = source.Proxy.shapecache[0]
             hshapes = source.Proxy.shapecache[1]
             sshapes = source.Proxy.shapecache[2]
@@ -413,37 +444,63 @@ def getSVG(source,
             objectSshapes = source.Proxy.shapecache[6]
         else:
             if showFill:
-                vshapes,hshapes,sshapes,cutface,cutvolume,invcutvolume,objectSshapes = getCutShapes(objs,cutplane,onlySolids,clip,joinArch,showHidden,True)
+                vshapes, hshapes, sshapes, cutface, cutvolume, invcutvolume, objectSshapes = (
+                    getCutShapes(objs, cutplane, onlySolids, clip, joinArch, showHidden, True)
+                )
             else:
-                vshapes,hshapes,sshapes,cutface,cutvolume,invcutvolume = getCutShapes(objs,cutplane,onlySolids,clip,joinArch,showHidden)
+                vshapes, hshapes, sshapes, cutface, cutvolume, invcutvolume = getCutShapes(
+                    objs, cutplane, onlySolids, clip, joinArch, showHidden
+                )
                 objectSshapes = []
-            source.Proxy.shapecache = [vshapes,hshapes,sshapes,cutface,cutvolume,invcutvolume,objectSshapes]
+            source.Proxy.shapecache = [
+                vshapes,
+                hshapes,
+                sshapes,
+                cutface,
+                cutvolume,
+                invcutvolume,
+                objectSshapes,
+            ]
 
         if should_update_svg_cache:
             svgcache = ""
             # render using the TechDraw module
             import TechDraw
             import Part
+
             if vshapes:
                 baseshape = Part.makeCompound(vshapes)
-                style = {'stroke':       "SVGLINECOLOR",
-                         'stroke-width': "SVGLINEWIDTH"}
+                style = {"stroke": "SVGLINECOLOR", "stroke-width": "SVGLINEWIDTH"}
                 svgcache += TechDraw.projectToSVG(
-                    baseshape, direction,
-                    hStyle=style, h0Style=style, h1Style=style,
-                    vStyle=style, v0Style=style, v1Style=style)
+                    baseshape,
+                    direction,
+                    hStyle=style,
+                    h0Style=style,
+                    h1Style=style,
+                    vStyle=style,
+                    v0Style=style,
+                    v1Style=style,
+                )
             if hshapes:
                 hshapes = Part.makeCompound(hshapes)
-                style = {'stroke':           "SVGLINECOLOR",
-                         'stroke-width':     "SVGLINEWIDTH",
-                         'stroke-dasharray': "SVGHIDDENPATTERN"}
+                style = {
+                    "stroke": "SVGLINECOLOR",
+                    "stroke-width": "SVGLINEWIDTH",
+                    "stroke-dasharray": "SVGHIDDENPATTERN",
+                }
                 svgcache += TechDraw.projectToSVG(
-                    hshapes, direction,
-                    hStyle=style, h0Style=style, h1Style=style,
-                    vStyle=style, v0Style=style, v1Style=style)
+                    hshapes,
+                    direction,
+                    hStyle=style,
+                    h0Style=style,
+                    h1Style=style,
+                    vStyle=style,
+                    v0Style=style,
+                    v1Style=style,
+                )
             if sshapes:
                 if showFill:
-                    #svgcache += fillpattern
+                    # svgcache += fillpattern
                     svgcache += '<g transform="rotate(180)">\n'
                     for o, shapes in objectSshapes:
                         for s in shapes:
@@ -455,45 +512,63 @@ def getSVG(source,
                                 #                      fillstyle="sectionfill",
                                 #                      color=(0,0,0))
                                 # temporarily disabling fill patterns
-                                svgcache += Draft.get_svg(s,
-                                                          linewidth=0,
-                                                          fillstyle=Draft.getrgb(objectFill,testbw=False),
-                                                          direction=direction.negative(),
-                                                          color=lineColor)
+                                svgcache += Draft.get_svg(
+                                    s,
+                                    linewidth=0,
+                                    fillstyle=Draft.getrgb(objectFill, testbw=False),
+                                    direction=direction.negative(),
+                                    color=lineColor,
+                                )
                     svgcache += "</g>\n"
                 sshapes = Part.makeCompound(sshapes)
-                style = {'stroke':       "SVGLINECOLOR",
-                         'stroke-width': "SVGCUTLINEWIDTH"}
+                style = {"stroke": "SVGLINECOLOR", "stroke-width": "SVGCUTLINEWIDTH"}
                 svgcache += TechDraw.projectToSVG(
-                    sshapes, direction,
-                    hStyle=style, h0Style=style, h1Style=style,
-                    vStyle=style, v0Style=style, v1Style=style)
+                    sshapes,
+                    direction,
+                    hStyle=style,
+                    h0Style=style,
+                    h1Style=style,
+                    vStyle=style,
+                    v0Style=style,
+                    v1Style=style,
+                )
     if should_update_svg_cache:
-        if hasattr(source,"Proxy"):
-            source.Proxy.svgcache = [svgcache,renderMode,showHidden,showFill,fillSpaces,joinArch,allOn,set(objs)]
+        if hasattr(source, "Proxy"):
+            source.Proxy.svgcache = [
+                svgcache,
+                renderMode,
+                showHidden,
+                showFill,
+                fillSpaces,
+                joinArch,
+                allOn,
+                set(objs),
+            ]
 
-    svgcache = svgcache.replace("SVGLINECOLOR",svgLineColor)
-    svgcache = svgcache.replace("SVGLINEWIDTH",svgLineWidth)
-    svgcache = svgcache.replace("SVGHIDDENPATTERN",svgHiddenPattern)
-    svgcache = svgcache.replace("SVGCUTLINEWIDTH",svgCutLineWidth)
+    svgcache = svgcache.replace("SVGLINECOLOR", svgLineColor)
+    svgcache = svgcache.replace("SVGLINEWIDTH", svgLineWidth)
+    svgcache = svgcache.replace("SVGHIDDENPATTERN", svgHiddenPattern)
+    svgcache = svgcache.replace("SVGCUTLINEWIDTH", svgCutLineWidth)
     svg += svgcache
 
     if drafts:
         if not techdraw:
             svg += '<g transform="scale(1,-1)">'
         for d in drafts:
-            svg += Draft.get_svg(d,
-                                 scale=scale,
-                                 linewidth=svgSymbolLineWidth,
-                                 fontsize=fontsize,
-                                 linespacing=linespacing,
-                                 direction=direction,
-                                 color=lineColor,
-                                 techdraw=techdraw,
-                                 rotation=rotation,
-                                 override=False)
+            svg += Draft.get_svg(
+                d,
+                scale=scale,
+                linewidth=svgSymbolLineWidth,
+                fontsize=fontsize,
+                linespacing=linespacing,
+                direction=direction,
+                color=lineColor,
+                techdraw=techdraw,
+                rotation=rotation,
+                override=False,
+            )
         if not techdraw:
-            svg += '</g>'
+            svg += "</g>"
 
     if not cutface:
         # if we didn't calculate anything better, use the cutplane...
@@ -506,24 +581,28 @@ def getSVG(source,
         if not techdraw:
             svg += '<g transform="scale(1,-1)">'
         for s in spaces:
-            svg += Draft.get_svg(s,
-                                 scale=scale,
-                                 linewidth=svgSymbolLineWidth,
-                                 fontsize=fontsize,
-                                 linespacing=linespacing,
-                                 direction=direction,
-                                 color=lineColor,
-                                 techdraw=techdraw,
-                                 rotation=rotation,
-                                 fillspaces=fillSpaces)
+            svg += Draft.get_svg(
+                s,
+                scale=scale,
+                linewidth=svgSymbolLineWidth,
+                fontsize=fontsize,
+                linespacing=linespacing,
+                direction=direction,
+                color=lineColor,
+                techdraw=techdraw,
+                rotation=rotation,
+                fillspaces=fillSpaces,
+            )
         if not techdraw:
-            svg += '</g>'
+            svg += "</g>"
 
     # add additional edge symbols from windows
     cutwindows = []
     if cutface and windows and BoundBoxValid(cutface.BoundBox):
         cutwindows = [
-            w.Name for w in windows if BoundBoxValid(w.Shape.BoundBox) and w.Shape.BoundBox.intersect(cutface.BoundBox)
+            w.Name
+            for w in windows
+            if BoundBoxValid(w.Shape.BoundBox) and w.Shape.BoundBox.intersect(cutface.BoundBox)
         ]
     if windows:
         sh = []
@@ -541,23 +620,25 @@ def getSVG(source,
             if not techdraw:
                 svg += '<g transform="scale(1,-1)">'
             for s in sh:
-                svg += Draft.get_svg(s,
-                                     scale=scale,
-                                     linewidth=svgSymbolLineWidth,
-                                     fontsize=fontsize,
-                                     linespacing=linespacing,
-                                     fillstyle="none",
-                                     direction=direction,
-                                     color=lineColor,
-                                     techdraw=techdraw,
-                                     rotation=rotation)
+                svg += Draft.get_svg(
+                    s,
+                    scale=scale,
+                    linewidth=svgSymbolLineWidth,
+                    fontsize=fontsize,
+                    linespacing=linespacing,
+                    fillstyle="none",
+                    direction=direction,
+                    color=lineColor,
+                    techdraw=techdraw,
+                    rotation=rotation,
+                )
             if not techdraw:
-                svg += '</g>'
+                svg += "</g>"
 
     return svg
 
 
-def BoundBoxValid(boundBox)->bool:
+def BoundBoxValid(boundBox) -> bool:
     """Return true if boundBox has a non-zero volume"""
     return boundBox.XLength > 0 and boundBox.YLength > 0 and boundBox.ZLength > 0
 
@@ -569,36 +650,37 @@ def getDXF(obj):
     result = []
     import TechDraw
     import Part
+
     if not obj.Source:
         return result
     source = obj.Source
-    objs,cutplane,onlySolids,clip,direction = getSectionData(source)
+    objs, cutplane, onlySolids, clip, direction = getSectionData(source)
     if not objs:
         return result
     if not allOn:
-            objs = Draft.removeHidden(objs)
+        objs = Draft.removeHidden(objs)
     objs = [
         obj
         for obj in objs
         if (
             not obj.isDerivedFrom("Part::Part2DObject")
-            and Draft.getType(obj) not in [
-                "BezCurve", "BSpline", "Wire", "Annotation", "Dimension", "Space"
-            ]
+            and Draft.getType(obj)
+            not in ["BezCurve", "BSpline", "Wire", "Annotation", "Dimension", "Space"]
         )
     ]
-    vshapes,hshapes,sshapes,cutface,cutvolume,invcutvolume = getCutShapes(objs,cutplane,onlySolids,clip,False,showHidden)
+    vshapes, hshapes, sshapes, cutface, cutvolume, invcutvolume = getCutShapes(
+        objs, cutplane, onlySolids, clip, False, showHidden
+    )
     if vshapes:
-        result.append(TechDraw.projectToDXF(Part.makeCompound(vshapes),direction))
+        result.append(TechDraw.projectToDXF(Part.makeCompound(vshapes), direction))
     if sshapes:
-        result.append(TechDraw.projectToDXF(Part.makeCompound(sshapes),direction))
+        result.append(TechDraw.projectToDXF(Part.makeCompound(sshapes), direction))
     if hshapes:
-        result.append(TechDraw.projectToDXF(Part.makeCompound(hshapes),direction))
+        result.append(TechDraw.projectToDXF(Part.makeCompound(hshapes), direction))
     return result
 
 
 def getCameraData(floatlist):
-
     """reconstructs a valid camera data string from stored values"""
 
     c = ""
@@ -613,7 +695,17 @@ def getCameraData(floatlist):
         else:
             c = "#Inventor V2.1 ascii\n\n\nPerspectiveCamera {\n  viewportMapping ADJUST_CAMERA\n  "
         c += "position " + str(d[0]) + " " + str(d[1]) + " " + str(d[2]) + "\n  "
-        c += "orientation " + str(d[3]) + " " + str(d[4]) + " " + str(d[5]) + "  " + str(d[6]) + "\n  "
+        c += (
+            "orientation "
+            + str(d[3])
+            + " "
+            + str(d[4])
+            + " "
+            + str(d[5])
+            + "  "
+            + str(d[6])
+            + "\n  "
+        )
         c += "aspectRatio " + str(d[9]) + "\n  "
         c += "focalDistance " + str(d[10]) + "\n  "
         if camtype == "orthographic":
@@ -623,8 +715,7 @@ def getCameraData(floatlist):
     return c
 
 
-def getCoinSVG(cutplane,objs,cameradata=None,linewidth=0.2,singleface=False,facecolor=None):
-
+def getCoinSVG(cutplane, objs, cameradata=None, linewidth=0.2, singleface=False, facecolor=None):
     """Returns an SVG fragment generated from a coin view"""
 
     if not FreeCAD.GuiUp:
@@ -646,7 +737,7 @@ def getCoinSVG(cutplane,objs,cameradata=None,linewidth=0.2,singleface=False,face
     ldict = {}
     if singleface:
         for obj in objs:
-            if hasattr(obj,"ViewObject") and hasattr(obj.ViewObject,"Lighting"):
+            if hasattr(obj, "ViewObject") and hasattr(obj.ViewObject, "Lighting"):
                 ldict[obj.Name] = obj.ViewObject.Lighting
                 obj.ViewObject.Lighting = "One side"
 
@@ -654,18 +745,18 @@ def getCoinSVG(cutplane,objs,cameradata=None,linewidth=0.2,singleface=False,face
     root_node = coin.SoSeparator()
     boundbox = FreeCAD.BoundBox()
     for obj in objs:
-        if hasattr(obj.ViewObject,"RootNode") and obj.ViewObject.RootNode:
+        if hasattr(obj.ViewObject, "RootNode") and obj.ViewObject.RootNode:
             old_visibility = obj.ViewObject.isVisible()
             # ignore visibility as only visible objects are passed here
             obj.ViewObject.show()
             node_copy = obj.ViewObject.RootNode.copy()
             root_node.addChild(node_copy)
-            if(old_visibility):
-              obj.ViewObject.show()
+            if old_visibility:
+                obj.ViewObject.show()
             else:
                 obj.ViewObject.hide()
 
-        if hasattr(obj,"Shape") and hasattr(obj.Shape,"BoundBox"):
+        if hasattr(obj, "Shape") and hasattr(obj.Shape, "BoundBox"):
             boundbox.add(obj.Shape.BoundBox)
 
     # reset lighting of objects
@@ -680,39 +771,43 @@ def getCoinSVG(cutplane,objs,cameradata=None,linewidth=0.2,singleface=False,face
     view_window.setName(view_window_name)
     inventor_view = view_window.getViewer()
 
-    inventor_view.setBackgroundColor(1,1,1)
+    inventor_view.setBackgroundColor(1, 1, 1)
     view_window.redraw()
 
     # set clip plane
     clip = coin.SoClipPlane()
-    norm = cutplane.normalAt(0,0).negative()
-    proj = DraftVecUtils.project(cutplane.CenterOfMass,norm)
+    norm = cutplane.normalAt(0, 0).negative()
+    proj = DraftVecUtils.project(cutplane.CenterOfMass, norm)
     dist = proj.Length
     if proj.getAngle(norm) > 1:
         dist = -dist
     clip.on = True
-    plane = coin.SbPlane(coin.SbVec3f(norm.x,norm.y,norm.z),dist) #dir, position on dir
+    plane = coin.SbPlane(coin.SbVec3f(norm.x, norm.y, norm.z), dist)  # dir, position on dir
     clip.plane.setValue(plane)
-    root_node.insertChild(clip,0)
+    root_node.insertChild(clip, 0)
 
     # add white marker at scene bound box corner
-    markervec = FreeCAD.Vector(10,10,10)
-    a = cutplane.normalAt(0,0).getAngle(markervec)
-    if (a < 0.01) or (abs(a-math.pi) < 0.01):
-        markervec = FreeCAD.Vector(10,-10,10)
-    boundbox.enlarge(10) # so the marker don't overlap the objects
+    markervec = FreeCAD.Vector(10, 10, 10)
+    a = cutplane.normalAt(0, 0).getAngle(markervec)
+    if (a < 0.01) or (abs(a - math.pi) < 0.01):
+        markervec = FreeCAD.Vector(10, -10, 10)
+    boundbox.enlarge(10)  # so the marker don't overlap the objects
     sep = coin.SoSeparator()
     mat = coin.SoMaterial()
-    mat.diffuseColor.setValue([1,1,1])
+    mat.diffuseColor.setValue([1, 1, 1])
     sep.addChild(mat)
     coords = coin.SoCoordinate3()
-    coords.point.setValues([[boundbox.XMin,boundbox.YMin,boundbox.ZMin],
-                            [boundbox.XMin+markervec.x,boundbox.YMin+markervec.y,boundbox.ZMin+markervec.z]])
+    coords.point.setValues(
+        [
+            [boundbox.XMin, boundbox.YMin, boundbox.ZMin],
+            [boundbox.XMin + markervec.x, boundbox.YMin + markervec.y, boundbox.ZMin + markervec.z],
+        ]
+    )
     sep.addChild(coords)
     lset = coin.SoIndexedLineSet()
-    lset.coordIndex.setValues(0,2,[0,1])
+    lset.coordIndex.setValues(0, 2, [0, 1])
     sep.addChild(lset)
-    root_node.insertChild(sep,0)
+    root_node.insertChild(sep, 0)
 
     # set scenegraph
     inventor_view.setSceneGraph(root_node)
@@ -722,82 +817,101 @@ def getCoinSVG(cutplane,objs,cameradata=None,linewidth=0.2,singleface=False,face
         view_window.setCamera(cameradata)
     else:
         view_window.setCameraType("Orthographic")
-        #rot = FreeCAD.Rotation(FreeCAD.Vector(0,0,1),cutplane.normalAt(0,0))
-        vx = cutplane.Placement.Rotation.multVec(FreeCAD.Vector(1,0,0))
-        vy = cutplane.Placement.Rotation.multVec(FreeCAD.Vector(0,1,0))
-        vz = cutplane.Placement.Rotation.multVec(FreeCAD.Vector(0,0,1))
-        rot = FreeCAD.Rotation(vx,vy,vz,"ZXY")
+        # rot = FreeCAD.Rotation(FreeCAD.Vector(0,0,1),cutplane.normalAt(0,0))
+        vx = cutplane.Placement.Rotation.multVec(FreeCAD.Vector(1, 0, 0))
+        vy = cutplane.Placement.Rotation.multVec(FreeCAD.Vector(0, 1, 0))
+        vz = cutplane.Placement.Rotation.multVec(FreeCAD.Vector(0, 0, 1))
+        rot = FreeCAD.Rotation(vx, vy, vz, "ZXY")
         view_window.setCameraOrientation(rot.Q)
     # this is needed to set correct focal depth, otherwise saving doesn't work properly
     view_window.fitAll()
 
     # save view
-    #print("saving to",svgfile)
-    view_window.saveVectorGraphic(svgfile,1) # number is pixel size
+    # print("saving to",svgfile)
+    view_window.saveVectorGraphic(svgfile, 1)  # number is pixel size
 
     # set linewidth placeholder
-    f = open(svgfile,"r")
+    f = open(svgfile, "r")
     svg = f.read()
     f.close()
-    svg = svg.replace("stroke-width:1.0;","stroke-width:"+str(linewidth)+";")
-    svg = svg.replace("stroke-width=\"1px","stroke-width=\""+str(linewidth))
+    svg = svg.replace("stroke-width:1.0;", "stroke-width:" + str(linewidth) + ";")
+    svg = svg.replace('stroke-width="1px', 'stroke-width="' + str(linewidth))
 
     # find marker and calculate scale factor and translation
     # <line x1="284.986" y1="356.166" x2="285.038" y2="356.166" stroke="#ffffff" stroke-width="1px" />
     factor = None
     trans = None
     import WorkingPlane
+
     wp = WorkingPlane.PlaneBase()
-    wp.align_to_point_and_axis_svg(Vector(0,0,0),cutplane.normalAt(0,0),0)
+    wp.align_to_point_and_axis_svg(Vector(0, 0, 0), cutplane.normalAt(0, 0), 0)
     p = wp.get_local_coords(markervec)
-    orlength = FreeCAD.Vector(p.x,p.y,0).Length
-    marker = re.findall(r"<line x1=.*?stroke=\"\#ffffff\".*?\/>",svg)
+    orlength = FreeCAD.Vector(p.x, p.y, 0).Length
+    marker = re.findall(r"<line x1=.*?stroke=\"\#ffffff\".*?\/>", svg)
     if marker:
-        marker = marker[0].split("\"")
+        marker = marker[0].split('"')
         x1 = float(marker[1])
         y1 = float(marker[3])
         x2 = float(marker[5])
         y2 = float(marker[7])
-        p1 = FreeCAD.Vector(x1,y1,0)
-        p2 = FreeCAD.Vector(x2,y2,0)
-        factor = orlength/p2.sub(p1).Length
+        p1 = FreeCAD.Vector(x1, y1, 0)
+        p2 = FreeCAD.Vector(x2, y2, 0)
+        factor = orlength / p2.sub(p1).Length
         if factor:
-            orig = wp.get_local_coords(FreeCAD.Vector(boundbox.XMin,boundbox.YMin,boundbox.ZMin))
-            orig = FreeCAD.Vector(orig.x,-orig.y,0)
-            scaledp1 = FreeCAD.Vector(p1.x*factor,p1.y*factor,0)
+            orig = wp.get_local_coords(FreeCAD.Vector(boundbox.XMin, boundbox.YMin, boundbox.ZMin))
+            orig = FreeCAD.Vector(orig.x, -orig.y, 0)
+            scaledp1 = FreeCAD.Vector(p1.x * factor, p1.y * factor, 0)
             trans = orig.sub(scaledp1)
         # remove marker
-        svg = re.sub(r"<line x1=.*?stroke=\"\#ffffff\".*?\/>","",svg,count=1)
+        svg = re.sub(r"<line x1=.*?stroke=\"\#ffffff\".*?\/>", "", svg, count=1)
 
     # remove background rectangle
-    svg = re.sub(r"<path.*?>","",svg,count=1,flags=re.MULTILINE|re.DOTALL)
+    svg = re.sub(r"<path.*?>", "", svg, count=1, flags=re.MULTILINE | re.DOTALL)
 
     # set face color to white
     if facecolor:
-        res = re.findall(r"fill:(.*?); stroke:(.*?);",svg)
+        res = re.findall(r"fill:(.*?); stroke:(.*?);", svg)
         pairs = []
         for pair in res:
-            if (pair not in pairs) and (pair[0] == pair[1]) and(pair[0] not in ["#0a0a0a"]):
+            if (pair not in pairs) and (pair[0] == pair[1]) and (pair[0] not in ["#0a0a0a"]):
                 # coin seems to be rendering a lot of lines as thin triangles with the #0a0a0a color...
                 pairs.append(pair)
         for pair in pairs:
-            svg = re.sub(r"fill:"+pair[0]+"; stroke:"+pair[1]+";","fill:"+facecolor+"; stroke:"+facecolor+";",svg)
+            svg = re.sub(
+                r"fill:" + pair[0] + "; stroke:" + pair[1] + ";",
+                "fill:" + facecolor + "; stroke:" + facecolor + ";",
+                svg,
+            )
 
     # embed everything in a scale group and scale the viewport
     if factor:
         if trans:
-            svg = svg.replace("<g>","<g transform=\"translate("+str(trans.x)+" "+str(trans.y)+") scale("+str(factor)+","+str(factor)+")\">\n<g>",1)
+            svg = svg.replace(
+                "<g>",
+                '<g transform="translate('
+                + str(trans.x)
+                + " "
+                + str(trans.y)
+                + ") scale("
+                + str(factor)
+                + ","
+                + str(factor)
+                + ')">\n<g>',
+                1,
+            )
         else:
-            svg = svg.replace("<g>","<g transform=\"scale("+str(factor)+","+str(factor)+")\">\n<g>",1)
-        svg = svg.replace("</svg>","</g>\n</svg>")
+            svg = svg.replace(
+                "<g>", '<g transform="scale(' + str(factor) + "," + str(factor) + ')">\n<g>', 1
+            )
+        svg = svg.replace("</svg>", "</g>\n</svg>")
 
     # trigger viewer close
-    QtCore.QTimer.singleShot(1,lambda: closeViewer(view_window_name))
+    QtCore.QTimer.singleShot(1, lambda: closeViewer(view_window_name))
 
     # strip svg tags (needed for TD Arch view)
-    svg = re.sub(r"<\?xml.*?>","",svg,flags=re.MULTILINE|re.DOTALL)
-    svg = re.sub(r"<svg.*?>","",svg,flags=re.MULTILINE|re.DOTALL)
-    svg = re.sub(r"<\/svg>","",svg,flags=re.MULTILINE|re.DOTALL)
+    svg = re.sub(r"<\?xml.*?>", "", svg, flags=re.MULTILINE | re.DOTALL)
+    svg = re.sub(r"<svg.*?>", "", svg, flags=re.MULTILINE | re.DOTALL)
+    svg = re.sub(r"<\/svg>", "", svg, flags=re.MULTILINE | re.DOTALL)
 
     ISRENDERING = False
 
@@ -805,7 +919,6 @@ def getCoinSVG(cutplane,objs,cameradata=None,linewidth=0.2,singleface=False,face
 
 
 def closeViewer(name):
-
     """Close temporary viewers"""
 
     mw = FreeCADGui.getMainWindow()
@@ -815,48 +928,105 @@ def closeViewer(name):
 
 
 class _SectionPlane:
-
     "A section plane object"
 
-    def __init__(self,obj):
+    def __init__(self, obj):
         obj.Proxy = self
         self.Type = "SectionPlane"
         self.setProperties(obj)
 
-    def setProperties(self,obj):
+    def setProperties(self, obj):
 
         pl = obj.PropertiesList
         if not "Placement" in pl:
-            obj.addProperty("App::PropertyPlacement","Placement","SectionPlane",QT_TRANSLATE_NOOP("App::Property","The placement of this object"), locked=True)
+            obj.addProperty(
+                "App::PropertyPlacement",
+                "Placement",
+                "SectionPlane",
+                QT_TRANSLATE_NOOP("App::Property", "The placement of this object"),
+                locked=True,
+            )
         if not "Shape" in pl:
-            obj.addProperty("Part::PropertyPartShape","Shape","SectionPlane",QT_TRANSLATE_NOOP("App::Property","The shape of this object"), locked=True)
+            obj.addProperty(
+                "Part::PropertyPartShape",
+                "Shape",
+                "SectionPlane",
+                QT_TRANSLATE_NOOP("App::Property", "The shape of this object"),
+                locked=True,
+            )
         if not "Objects" in pl:
-            obj.addProperty("App::PropertyLinkList","Objects","SectionPlane",QT_TRANSLATE_NOOP("App::Property","The objects that must be considered by this section plane. Empty means the whole document."), locked=True)
+            obj.addProperty(
+                "App::PropertyLinkList",
+                "Objects",
+                "SectionPlane",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "The objects that must be considered by this section plane. Empty means the whole document.",
+                ),
+                locked=True,
+            )
         if not "OnlySolids" in pl:
-            obj.addProperty("App::PropertyBool","OnlySolids","SectionPlane",QT_TRANSLATE_NOOP("App::Property","If false, non-solids will be cut too, with possible wrong results."), locked=True)
+            obj.addProperty(
+                "App::PropertyBool",
+                "OnlySolids",
+                "SectionPlane",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "If false, non-solids will be cut too, with possible wrong results.",
+                ),
+                locked=True,
+            )
             obj.OnlySolids = True
         if not "Clip" in pl:
-            obj.addProperty("App::PropertyBool","Clip","SectionPlane",QT_TRANSLATE_NOOP("App::Property","If True, resulting views will be clipped to the section plane area."), locked=True)
+            obj.addProperty(
+                "App::PropertyBool",
+                "Clip",
+                "SectionPlane",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "If True, resulting views will be clipped to the section plane area.",
+                ),
+                locked=True,
+            )
         if not "UseMaterialColorForFill" in pl:
-            obj.addProperty("App::PropertyBool","UseMaterialColorForFill","SectionPlane",QT_TRANSLATE_NOOP("App::Property","If true, the color of the objects material will be used to fill cut areas."), locked=True)
+            obj.addProperty(
+                "App::PropertyBool",
+                "UseMaterialColorForFill",
+                "SectionPlane",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "If true, the color of the objects material will be used to fill cut areas.",
+                ),
+                locked=True,
+            )
             obj.UseMaterialColorForFill = False
         if not "Depth" in pl:
-            obj.addProperty("App::PropertyLength","Depth","SectionPlane",QT_TRANSLATE_NOOP("App::Property","Geometry further than this value will be cut off. Keep zero for unlimited."), locked=True)
+            obj.addProperty(
+                "App::PropertyLength",
+                "Depth",
+                "SectionPlane",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Geometry further than this value will be cut off. Keep zero for unlimited.",
+                ),
+                locked=True,
+            )
 
-    def onDocumentRestored(self,obj):
+    def onDocumentRestored(self, obj):
 
         self.setProperties(obj)
 
-    def execute(self,obj):
+    def execute(self, obj):
         import math
         import Part
+
         l = 1
         h = 1
         if obj.ViewObject:
-            if hasattr(obj.ViewObject,"DisplayLength"):
+            if hasattr(obj.ViewObject, "DisplayLength"):
                 l = obj.ViewObject.DisplayLength.Value
                 h = obj.ViewObject.DisplayHeight.Value
-            elif hasattr(obj.ViewObject,"DisplaySize"):
+            elif hasattr(obj.ViewObject, "DisplaySize"):
                 # old objects
                 l = obj.ViewObject.DisplaySize.Value
                 h = obj.ViewObject.DisplaySize.Value
@@ -864,43 +1034,42 @@ class _SectionPlane:
             l = 1
         if not h:
             h = 1
-        p = Part.makePlane(l,h,Vector(l/2,-h/2,0),Vector(0,0,-1))
+        p = Part.makePlane(l, h, Vector(l / 2, -h / 2, 0), Vector(0, 0, -1))
         # make sure the normal direction is pointing outwards, you never know what OCC will decide...
         # Apply the object's placement to the new plane first.
         p.Placement = obj.Placement
 
         # Now, check if the resulting plane's normal matches the placement's intended direction.
         # This robustly handles all rotation angles and potential OCC inconsistencies.
-        target_normal = obj.Placement.Rotation.multVec(FreeCAD.Vector(0,0,1))
-        if p.normalAt(0,0).getAngle(target_normal) > math.pi / 2:
+        target_normal = obj.Placement.Rotation.multVec(FreeCAD.Vector(0, 0, 1))
+        if p.normalAt(0, 0).getAngle(target_normal) > math.pi / 2:
             p.reverse()
         obj.Shape = p
         self.svgcache = None
         self.shapecache = None
 
-    def getNormal(self,obj):
+    def getNormal(self, obj):
 
-        return obj.Shape.Faces[0].normalAt(0,0)
+        return obj.Shape.Faces[0].normalAt(0, 0)
 
     def dumps(self):
 
         return None
 
-    def loads(self,state):
+    def loads(self, state):
 
         self.Type = "SectionPlane"
 
 
 class _ViewProviderSectionPlane:
-
     "A View Provider for Section Planes"
 
-    def __init__(self,vobj):
+    def __init__(self, vobj):
 
         vobj.Proxy = self
         self.setProperties(vobj)
 
-    def setProperties(self,vobj):
+    def setProperties(self, vobj):
 
         pl = vobj.PropertiesList
         d = 0
@@ -908,77 +1077,217 @@ class _ViewProviderSectionPlane:
             d = vobj.DisplaySize.Value
             vobj.removeProperty("DisplaySize")
         if not "DisplayLength" in pl:
-            vobj.addProperty("App::PropertyLength","DisplayLength","SectionPlane",QT_TRANSLATE_NOOP("App::Property","The display length of this section plane"), locked=True)
+            vobj.addProperty(
+                "App::PropertyLength",
+                "DisplayLength",
+                "SectionPlane",
+                QT_TRANSLATE_NOOP("App::Property", "The display length of this section plane"),
+                locked=True,
+            )
             if d:
                 vobj.DisplayLength = d
             else:
                 vobj.DisplayLength = 1000
         if not "DisplayHeight" in pl:
-            vobj.addProperty("App::PropertyLength","DisplayHeight","SectionPlane",QT_TRANSLATE_NOOP("App::Property","The display height of this section plane"), locked=True)
+            vobj.addProperty(
+                "App::PropertyLength",
+                "DisplayHeight",
+                "SectionPlane",
+                QT_TRANSLATE_NOOP("App::Property", "The display height of this section plane"),
+                locked=True,
+            )
             if d:
                 vobj.DisplayHeight = d
             else:
                 vobj.DisplayHeight = 1000
         if not "ArrowSize" in pl:
-            vobj.addProperty("App::PropertyLength","ArrowSize","SectionPlane",QT_TRANSLATE_NOOP("App::Property","The size of the arrows of this section plane"), locked=True)
+            vobj.addProperty(
+                "App::PropertyLength",
+                "ArrowSize",
+                "SectionPlane",
+                QT_TRANSLATE_NOOP("App::Property", "The size of the arrows of this section plane"),
+                locked=True,
+            )
             vobj.ArrowSize = 50
         if not "Transparency" in pl:
-            vobj.addProperty("App::PropertyPercent","Transparency","SectionPlane",QT_TRANSLATE_NOOP("App::Property","The transparency of this object"), locked=True)
+            vobj.addProperty(
+                "App::PropertyPercent",
+                "Transparency",
+                "SectionPlane",
+                QT_TRANSLATE_NOOP("App::Property", "The transparency of this object"),
+                locked=True,
+            )
             vobj.Transparency = 85
         if not "LineWidth" in pl:
-            vobj.addProperty("App::PropertyFloat","LineWidth","SectionPlane",QT_TRANSLATE_NOOP("App::Property","The line width of this object"), locked=True)
+            vobj.addProperty(
+                "App::PropertyFloat",
+                "LineWidth",
+                "SectionPlane",
+                QT_TRANSLATE_NOOP("App::Property", "The line width of this object"),
+                locked=True,
+            )
             vobj.LineWidth = 1
         if not "CutDistance" in pl:
-            vobj.addProperty("App::PropertyLength","CutDistance","SectionPlane",QT_TRANSLATE_NOOP("App::Property","Show the cut in the 3D view"), locked=True)
+            vobj.addProperty(
+                "App::PropertyLength",
+                "CutDistance",
+                "SectionPlane",
+                QT_TRANSLATE_NOOP("App::Property", "Show the cut in the 3D view"),
+                locked=True,
+            )
         if not "LineColor" in pl:
-            vobj.addProperty("App::PropertyColor","LineColor","SectionPlane",QT_TRANSLATE_NOOP("App::Property","The color of this object"), locked=True)
+            vobj.addProperty(
+                "App::PropertyColor",
+                "LineColor",
+                "SectionPlane",
+                QT_TRANSLATE_NOOP("App::Property", "The color of this object"),
+                locked=True,
+            )
             vobj.LineColor = ArchCommands.getDefaultColor("Helpers")
         if not "CutView" in pl:
-            vobj.addProperty("App::PropertyBool","CutView","SectionPlane",QT_TRANSLATE_NOOP("App::Property","Show the cut in the 3D view"), locked=True)
+            vobj.addProperty(
+                "App::PropertyBool",
+                "CutView",
+                "SectionPlane",
+                QT_TRANSLATE_NOOP("App::Property", "Show the cut in the 3D view"),
+                locked=True,
+            )
         if not "CutMargin" in pl:
-            vobj.addProperty("App::PropertyLength","CutMargin","SectionPlane",QT_TRANSLATE_NOOP("App::Property","The distance between the cut plane and the actual view cut (keep this a very small value but not zero)"), locked=True)
+            vobj.addProperty(
+                "App::PropertyLength",
+                "CutMargin",
+                "SectionPlane",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "The distance between the cut plane and the actual view cut (keep this a very small value but not zero)",
+                ),
+                locked=True,
+            )
             vobj.CutMargin = 1
         if not "ShowLabel" in pl:
-            vobj.addProperty("App::PropertyBool","ShowLabel","SectionPlane",QT_TRANSLATE_NOOP("App::Property","Show the label in the 3D view"), locked=True)
+            vobj.addProperty(
+                "App::PropertyBool",
+                "ShowLabel",
+                "SectionPlane",
+                QT_TRANSLATE_NOOP("App::Property", "Show the label in the 3D view"),
+                locked=True,
+            )
         if not "FontName" in pl:
-            vobj.addProperty("App::PropertyFont","FontName", "SectionPlane",QT_TRANSLATE_NOOP("App::Property","The name of the font"), locked=True)
+            vobj.addProperty(
+                "App::PropertyFont",
+                "FontName",
+                "SectionPlane",
+                QT_TRANSLATE_NOOP("App::Property", "The name of the font"),
+                locked=True,
+            )
             vobj.FontName = params.get_param("textfont")
         if not "FontSize" in pl:
-            vobj.addProperty("App::PropertyLength","FontSize","SectionPlane",QT_TRANSLATE_NOOP("App::Property","The size of the text font"), locked=True)
-            vobj.FontSize = params.get_param("textheight") * params.get_param("DefaultAnnoScaleMultiplier")
+            vobj.addProperty(
+                "App::PropertyLength",
+                "FontSize",
+                "SectionPlane",
+                QT_TRANSLATE_NOOP("App::Property", "The size of the text font"),
+                locked=True,
+            )
+            vobj.FontSize = params.get_param("textheight") * params.get_param(
+                "DefaultAnnoScaleMultiplier"
+            )
 
-
-    def onDocumentRestored(self,vobj):
+    def onDocumentRestored(self, vobj):
 
         self.setProperties(vobj)
 
     def getIcon(self):
 
         import Arch_rc
+
         return ":/icons/Arch_SectionPlane_Tree.svg"
 
     def claimChildren(self):
         # buggy at the moment so it's disabled - it will for ex. swallow a building object directly at the root of the document...
-        #if hasattr(self,"Object") and hasattr(self.Object,"Objects"):
+        # if hasattr(self,"Object") and hasattr(self.Object,"Objects"):
         #    return self.Object.Objects
         return []
 
-    def attach(self,vobj):
+    def attach(self, vobj):
 
         self.Object = vobj.Object
         self.clip = None
         self.mat1 = coin.SoMaterial()
         self.mat2 = coin.SoMaterial()
         self.fcoords = coin.SoCoordinate3()
-        #fs = coin.SoType.fromName("SoBrepFaceSet").createInstance() # this causes a FreeCAD freeze for me
+        # fs = coin.SoType.fromName("SoBrepFaceSet").createInstance() # this causes a FreeCAD freeze for me
         fs = coin.SoIndexedFaceSet()
-        fs.coordIndex.setValues(0,7,[0,1,2,-1,0,2,3])
+        fs.coordIndex.setValues(0, 7, [0, 1, 2, -1, 0, 2, 3])
         self.drawstyle = coin.SoDrawStyle()
         self.drawstyle.style = coin.SoDrawStyle.LINES
         self.lcoords = coin.SoCoordinate3()
-        import PartGui # Required for "SoBrepEdgeSet" (because a SectionPlane is not a Part::FeaturePython object).
+        import PartGui  # Required for "SoBrepEdgeSet" (because a SectionPlane is not a Part::FeaturePython object).
+
         ls = coin.SoType.fromName("SoBrepEdgeSet").createInstance()
-        ls.coordIndex.setValues(0,57,[0,1,-1,2,3,4,5,-1,6,7,8,9,-1,10,11,-1,12,13,14,15,-1,16,17,18,19,-1,20,21,-1,22,23,24,25,-1,26,27,28,29,-1,30,31,-1,32,33,34,35,-1,36,37,38,39,-1,40,41,42,43,44])
+        ls.coordIndex.setValues(
+            0,
+            57,
+            [
+                0,
+                1,
+                -1,
+                2,
+                3,
+                4,
+                5,
+                -1,
+                6,
+                7,
+                8,
+                9,
+                -1,
+                10,
+                11,
+                -1,
+                12,
+                13,
+                14,
+                15,
+                -1,
+                16,
+                17,
+                18,
+                19,
+                -1,
+                20,
+                21,
+                -1,
+                22,
+                23,
+                24,
+                25,
+                -1,
+                26,
+                27,
+                28,
+                29,
+                -1,
+                30,
+                31,
+                -1,
+                32,
+                33,
+                34,
+                35,
+                -1,
+                36,
+                37,
+                38,
+                39,
+                -1,
+                40,
+                41,
+                42,
+                43,
+                44,
+            ],
+        )
         self.txtcoords = coin.SoTransform()
         self.txtfont = coin.SoFont()
         self.txtfont.name = ""
@@ -1003,13 +1312,13 @@ class _ViewProviderSectionPlane:
         sep.addChild(fsep)
         sep.addChild(psep)
         sep.addChild(tsep)
-        vobj.addDisplayMode(sep,"Default")
-        self.onChanged(vobj,"DisplayLength")
-        self.onChanged(vobj,"LineColor")
-        self.onChanged(vobj,"Transparency")
-        self.onChanged(vobj,"CutView")
+        vobj.addDisplayMode(sep, "Default")
+        self.onChanged(vobj, "DisplayLength")
+        self.onChanged(vobj, "LineColor")
+        self.onChanged(vobj, "Transparency")
+        self.onChanged(vobj, "CutView")
 
-    def getDisplayModes(self,vobj):
+    def getDisplayModes(self, vobj):
 
         return ["Default"]
 
@@ -1017,26 +1326,27 @@ class _ViewProviderSectionPlane:
 
         return "Default"
 
-    def setDisplayMode(self,mode):
+    def setDisplayMode(self, mode):
 
         return mode
 
-    def updateData(self,obj,prop):
+    def updateData(self, obj, prop):
         vobj = obj.ViewObject
         if prop in ["Placement"]:
             # for some reason the text doesn't rotate with the host placement??
             self.txtcoords.rotation.setValue(obj.Placement.Rotation.Q)
-            self.onChanged(vobj,"DisplayLength")
+            self.onChanged(vobj, "DisplayLength")
 
             # Defer the clipping plane update until after the current event
             # loop finishes. This ensures the scene graph has been updated with the
             # new placement before we try to recalculate the clip plane.
             if vobj and hasattr(vobj, "CutView") and vobj.CutView:
                 from PySide import QtCore
+
                 # We use a lambda to pass the vobj argument to the delayed function.
                 QtCore.QTimer.singleShot(0, lambda: self.refreshCutView(vobj))
         elif prop == "Label":
-            if hasattr(obj.ViewObject,"ShowLabel") and obj.ViewObject.ShowLabel:
+            if hasattr(obj.ViewObject, "ShowLabel") and obj.ViewObject.ShowLabel:
                 self.txt.string = obj.Label
         return
 
@@ -1049,89 +1359,94 @@ class _ViewProviderSectionPlane:
             vobj.CutView = False
             vobj.CutView = True
 
-    def onChanged(self,vobj,prop):
+    def onChanged(self, vobj, prop):
 
         if prop == "LineColor":
-            if hasattr(vobj,"LineColor"):
+            if hasattr(vobj, "LineColor"):
                 l = vobj.LineColor
-                self.mat1.diffuseColor.setValue([l[0],l[1],l[2]])
-                self.mat2.diffuseColor.setValue([l[0],l[1],l[2]])
+                self.mat1.diffuseColor.setValue([l[0], l[1], l[2]])
+                self.mat2.diffuseColor.setValue([l[0], l[1], l[2]])
         elif prop == "Transparency":
-            if hasattr(vobj,"Transparency"):
-                self.mat2.transparency.setValue(vobj.Transparency/100.0)
-        elif prop in ["DisplayLength","DisplayHeight","ArrowSize"]:
+            if hasattr(vobj, "Transparency"):
+                self.mat2.transparency.setValue(vobj.Transparency / 100.0)
+        elif prop in ["DisplayLength", "DisplayHeight", "ArrowSize"]:
             # for IFC objects: propagate to the object
-            if prop in ["DisplayLength","DisplayHeight"]:
+            if prop in ["DisplayLength", "DisplayHeight"]:
                 if hasattr(vobj.Object.Proxy, "onChanged"):
                     vobj.Object.Proxy.onChanged(vobj.Object, prop)
-            if hasattr(vobj,"DisplayLength") and hasattr(vobj,"DisplayHeight"):
-                ld = vobj.DisplayLength.Value/2
-                hd = vobj.DisplayHeight.Value/2
-            elif hasattr(vobj,"DisplaySize"):
+            if hasattr(vobj, "DisplayLength") and hasattr(vobj, "DisplayHeight"):
+                ld = vobj.DisplayLength.Value / 2
+                hd = vobj.DisplayHeight.Value / 2
+            elif hasattr(vobj, "DisplaySize"):
                 # old objects
-                ld = vobj.DisplaySize.Value/2
-                hd = vobj.DisplaySize.Value/2
+                ld = vobj.DisplaySize.Value / 2
+                hd = vobj.DisplaySize.Value / 2
             else:
                 ld = 1
                 hd = 1
             verts = []
             fverts = []
             pl = FreeCAD.Placement(vobj.Object.Placement)
-            if hasattr(vobj,"ArrowSize"):
+            if hasattr(vobj, "ArrowSize"):
                 l1 = vobj.ArrowSize.Value if vobj.ArrowSize.Value > 0 else 0.1
             else:
                 l1 = 0.1
-            l2 = l1/3
-            for v in [[-ld,-hd],[ld,-hd],[ld,hd],[-ld,hd]]:
-                p1 = pl.multVec(Vector(v[0],v[1],0))
-                p2 = pl.multVec(Vector(v[0],v[1],-l1))
-                p3 = pl.multVec(Vector(v[0]-l2,v[1],-l1+l2))
-                p4 = pl.multVec(Vector(v[0]+l2,v[1],-l1+l2))
-                p5 = pl.multVec(Vector(v[0],v[1]-l2,-l1+l2))
-                p6 = pl.multVec(Vector(v[0],v[1]+l2,-l1+l2))
-                verts.extend([[p1.x,p1.y,p1.z],[p2.x,p2.y,p2.z]])
-                fverts.append([p1.x,p1.y,p1.z])
-                verts.extend([[p2.x,p2.y,p2.z],[p3.x,p3.y,p3.z],[p4.x,p4.y,p4.z],[p2.x,p2.y,p2.z]])
-                verts.extend([[p2.x,p2.y,p2.z],[p5.x,p5.y,p5.z],[p6.x,p6.y,p6.z],[p2.x,p2.y,p2.z]])
-            p7 = pl.multVec(Vector(-ld+l2,-hd+l2,0)) # text pos
-            verts.extend(fverts+[fverts[0]])
+            l2 = l1 / 3
+            for v in [[-ld, -hd], [ld, -hd], [ld, hd], [-ld, hd]]:
+                p1 = pl.multVec(Vector(v[0], v[1], 0))
+                p2 = pl.multVec(Vector(v[0], v[1], -l1))
+                p3 = pl.multVec(Vector(v[0] - l2, v[1], -l1 + l2))
+                p4 = pl.multVec(Vector(v[0] + l2, v[1], -l1 + l2))
+                p5 = pl.multVec(Vector(v[0], v[1] - l2, -l1 + l2))
+                p6 = pl.multVec(Vector(v[0], v[1] + l2, -l1 + l2))
+                verts.extend([[p1.x, p1.y, p1.z], [p2.x, p2.y, p2.z]])
+                fverts.append([p1.x, p1.y, p1.z])
+                verts.extend(
+                    [[p2.x, p2.y, p2.z], [p3.x, p3.y, p3.z], [p4.x, p4.y, p4.z], [p2.x, p2.y, p2.z]]
+                )
+                verts.extend(
+                    [[p2.x, p2.y, p2.z], [p5.x, p5.y, p5.z], [p6.x, p6.y, p6.z], [p2.x, p2.y, p2.z]]
+                )
+            p7 = pl.multVec(Vector(-ld + l2, -hd + l2, 0))  # text pos
+            verts.extend(fverts + [fverts[0]])
             self.lcoords.point.setValues(verts)
             self.fcoords.point.setValues(fverts)
-            self.txtcoords.translation.setValue([p7.x,p7.y,p7.z])
-            #self.txtfont.size = l1
+            self.txtcoords.translation.setValue([p7.x, p7.y, p7.z])
+            # self.txtfont.size = l1
         elif prop == "LineWidth":
             self.drawstyle.lineWidth = vobj.LineWidth
-        elif prop in ["CutView","CutMargin"]:
-            if hasattr(vobj, "CutView") \
-                    and FreeCADGui.ActiveDocument.ActiveView \
-                    and hasattr(FreeCADGui.ActiveDocument.ActiveView, "getSceneGraph"):
+        elif prop in ["CutView", "CutMargin"]:
+            if (
+                hasattr(vobj, "CutView")
+                and FreeCADGui.ActiveDocument.ActiveView
+                and hasattr(FreeCADGui.ActiveDocument.ActiveView, "getSceneGraph")
+            ):
                 sg = FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
                 if vobj.CutView:
                     if self.clip:
                         sg.removeChild(self.clip)
                         self.clip = None
-                    for o in Draft.get_group_contents(vobj.Object.Objects,
-                                                      walls=True):
-                        if hasattr(o.ViewObject,"Lighting"):
+                    for o in Draft.get_group_contents(vobj.Object.Objects, walls=True):
+                        if hasattr(o.ViewObject, "Lighting"):
                             o.ViewObject.Lighting = "One side"
                     self.clip = coin.SoClipPlane()
                     self.clip.on.setValue(True)
                     norm = vobj.Object.Proxy.getNormal(vobj.Object)
                     mp = vobj.Object.Shape.CenterOfMass
-                    mp = DraftVecUtils.project(mp,norm)
-                    dist = mp.Length #- 0.1 # to not clip exactly on the section object
+                    mp = DraftVecUtils.project(mp, norm)
+                    dist = mp.Length  # - 0.1 # to not clip exactly on the section object
                     norm = norm.negative()
                     marg = 1
-                    if hasattr(vobj,"CutMargin"):
+                    if hasattr(vobj, "CutMargin"):
                         marg = vobj.CutMargin.Value
                     if mp.getAngle(norm) > 1:
                         dist += marg
                         dist = -dist
                     else:
                         dist -= marg
-                    plane = coin.SbPlane(coin.SbVec3f(norm.x,norm.y,norm.z),dist)
+                    plane = coin.SbPlane(coin.SbVec3f(norm.x, norm.y, norm.z), dist)
                     self.clip.plane.setValue(plane)
-                    sg.insertChild(self.clip,0)
+                    sg.insertChild(self.clip, 0)
                 else:
                     if self.clip:
                         sg.removeChild(self.clip)
@@ -1142,13 +1457,13 @@ class _ViewProviderSectionPlane:
             else:
                 self.txt.string = " "
         elif prop == "FontName":
-            if hasattr(self,"txtfont") and hasattr(vobj,"FontName"):
+            if hasattr(self, "txtfont") and hasattr(vobj, "FontName"):
                 if vobj.FontName:
                     self.txtfont.name = vobj.FontName
                 else:
                     self.txtfont.name = ""
         elif prop == "FontSize":
-            if hasattr(self,"txtfont") and hasattr(vobj,"FontSize"):
+            if hasattr(self, "txtfont") and hasattr(vobj, "FontSize"):
                 self.txtfont.size = vobj.FontSize.Value
         return
 
@@ -1156,7 +1471,7 @@ class _ViewProviderSectionPlane:
 
         return None
 
-    def loads(self,state):
+    def loads(self, state):
 
         return None
 
@@ -1182,19 +1497,16 @@ class _ViewProviderSectionPlane:
         return True
 
     def setupContextMenu(self, vobj, menu):
-        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+        if FreeCADGui.activeWorkbench().name() != "BIMWorkbench":
             return
 
-        actionEdit = QtGui.QAction(translate("Arch", "Edit"),
-                                   menu)
-        QtCore.QObject.connect(actionEdit,
-                               QtCore.SIGNAL("triggered()"),
-                               self.edit)
+        actionEdit = QtGui.QAction(translate("Arch", "Edit"), menu)
+        QtCore.QObject.connect(actionEdit, QtCore.SIGNAL("triggered()"), self.edit)
         menu.addAction(actionEdit)
 
-        actionToggleCutview = QtGui.QAction(QtGui.QIcon(":/icons/Draft_Edit.svg"),
-                                            translate("Arch", "Toggle Cutview"),
-                                            menu)
+        actionToggleCutview = QtGui.QAction(
+            QtGui.QIcon(":/icons/Draft_Edit.svg"), translate("Arch", "Toggle Cutview"), menu
+        )
         actionToggleCutview.triggered.connect(lambda: self.toggleCutview(vobj))
         menu.addAction(actionToggleCutview)
 
@@ -1206,8 +1518,7 @@ class _ViewProviderSectionPlane:
 
 
 class SectionPlaneTaskPanel:
-
-    '''A TaskPanel for all the section plane object'''
+    """A TaskPanel for all the section plane object"""
 
     def __init__(self):
 
@@ -1249,7 +1560,9 @@ class SectionPlaneTaskPanel:
         self.cutViewButton.setIcon(QtGui.QIcon(":/icons/Arch_CutPlane.svg"))
         self.cutViewButton.setObjectName("cutViewButton")
         self.cutViewButton.setCheckable(True)
-        QtCore.QObject.connect(self.cutViewButton, QtCore.SIGNAL("toggled(bool)"), self.toggleCutView)
+        QtCore.QObject.connect(
+            self.cutViewButton, QtCore.SIGNAL("toggled(bool)"), self.toggleCutView
+        )
         tools_layout.addWidget(self.cutViewButton)
 
         # rotate / resize buttons
@@ -1293,8 +1606,8 @@ class SectionPlaneTaskPanel:
     def getStandardButtons(self):
         return QtGui.QDialogButtonBox.Close
 
-    def getIcon(self,obj):
-        if hasattr(obj.ViewObject,"Proxy"):
+    def getIcon(self, obj):
+        if hasattr(obj.ViewObject, "Proxy"):
             return QtGui.QIcon(obj.ViewObject.Proxy.getIcon())
         elif obj.isDerivedFrom("Sketcher::SketchObject"):
             return QtGui.QIcon(":/icons/Sketcher_Sketch.svg")
@@ -1305,14 +1618,14 @@ class SectionPlaneTaskPanel:
         return QtGui.QIcon(":/icons/Part_3D_object.svg")
 
     def update(self):
-        'fills the treewidget'
+        "fills the treewidget"
         self.tree.clear()
         if self.obj:
             for o in self.obj.Objects:
                 item = QtGui.QTreeWidgetItem(self.tree)
-                item.setText(0,o.Label)
-                item.setToolTip(0,o.Name)
-                item.setIcon(0,self.getIcon(o))
+                item.setText(0, o.Label)
+                item.setToolTip(0, o.Name)
+                item.setIcon(0, self.getIcon(o))
             if self.obj.ViewObject and hasattr(self.obj.ViewObject, "CutView"):
                 self.cutViewButton.setChecked(self.obj.ViewObject.CutView)
         self.retranslateUi()
@@ -1322,44 +1635,47 @@ class SectionPlaneTaskPanel:
             added = False
             for o in FreeCADGui.Selection.getSelection():
                 if o != self.obj:
-                    ArchComponent.addToComponent(self.obj,o,"Objects")
+                    ArchComponent.addToComponent(self.obj, o, "Objects")
                     added = True
             if added:
                 self.update()
             else:
-                FreeCAD.Console.PrintWarning("Select objects in the 3D view or in the model tree before pressing the button\n")
+                FreeCAD.Console.PrintWarning(
+                    "Select objects in the 3D view or in the model tree before pressing the button\n"
+                )
 
     def removeElement(self):
         if self.obj:
             it = self.tree.currentItem()
             if it:
                 comp = FreeCAD.ActiveDocument.getObject(str(it.toolTip(0)))
-                ArchComponent.removeFromComponent(self.obj,comp)
+                ArchComponent.removeFromComponent(self.obj, comp)
             self.update()
 
-    def rotate(self,axis):
+    def rotate(self, axis):
         if self.obj and self.obj.Shape and self.obj.Shape.Faces:
             face = self.obj.Shape.copy()
             import Part
+
             local_axis = self.obj.Placement.Rotation.multVec(axis)
             face.rotate(self.obj.Placement.Base, local_axis, 90)
             self.obj.Placement = face.Placement
             self.obj.Proxy.execute(self.obj)
 
     def rotateX(self):
-        self.rotate(FreeCAD.Vector(1,0,0))
+        self.rotate(FreeCAD.Vector(1, 0, 0))
 
     def rotateY(self):
-        self.rotate(FreeCAD.Vector(0,1,0))
+        self.rotate(FreeCAD.Vector(0, 1, 0))
 
     def rotateZ(self):
-        self.rotate(FreeCAD.Vector(0,0,1))
+        self.rotate(FreeCAD.Vector(0, 0, 1))
 
     def getBB(self):
         bb = FreeCAD.BoundBox()
         if self.obj:
             for o in Draft.get_group_contents(self.obj.Objects):
-                if hasattr(o,"Shape") and hasattr(o.Shape,"BoundBox"):
+                if hasattr(o, "Shape") and hasattr(o.Shape, "BoundBox"):
                     bb.add(o.Shape.BoundBox)
         return bb
 
@@ -1367,16 +1683,22 @@ class SectionPlaneTaskPanel:
         if self.obj and self.obj.ViewObject:
             bb = self.getBB()
             n = self.obj.Proxy.getNormal(self.obj)
-            margin = bb.XLength*0.1
-            if (n.getAngle(FreeCAD.Vector(1,0,0)) < 0.1) or (n.getAngle(FreeCAD.Vector(-1,0,0)) < 0.1):
-                self.obj.ViewObject.DisplayLength = bb.YLength+margin
-                self.obj.ViewObject.DisplayHeight = bb.ZLength+margin
-            elif (n.getAngle(FreeCAD.Vector(0,1,0)) < 0.1) or (n.getAngle(FreeCAD.Vector(0,-1,0)) < 0.1):
-                self.obj.ViewObject.DisplayLength = bb.XLength+margin
-                self.obj.ViewObject.DisplayHeight = bb.ZLength+margin
-            elif (n.getAngle(FreeCAD.Vector(0,0,1)) < 0.1) or (n.getAngle(FreeCAD.Vector(0,0,-1)) < 0.1):
-                self.obj.ViewObject.DisplayLength = bb.XLength+margin
-                self.obj.ViewObject.DisplayHeight = bb.YLength+margin
+            margin = bb.XLength * 0.1
+            if (n.getAngle(FreeCAD.Vector(1, 0, 0)) < 0.1) or (
+                n.getAngle(FreeCAD.Vector(-1, 0, 0)) < 0.1
+            ):
+                self.obj.ViewObject.DisplayLength = bb.YLength + margin
+                self.obj.ViewObject.DisplayHeight = bb.ZLength + margin
+            elif (n.getAngle(FreeCAD.Vector(0, 1, 0)) < 0.1) or (
+                n.getAngle(FreeCAD.Vector(0, -1, 0)) < 0.1
+            ):
+                self.obj.ViewObject.DisplayLength = bb.XLength + margin
+                self.obj.ViewObject.DisplayHeight = bb.ZLength + margin
+            elif (n.getAngle(FreeCAD.Vector(0, 0, 1)) < 0.1) or (
+                n.getAngle(FreeCAD.Vector(0, 0, -1)) < 0.1
+            ):
+                self.obj.ViewObject.DisplayLength = bb.XLength + margin
+                self.obj.ViewObject.DisplayHeight = bb.YLength + margin
             self.obj.Proxy.execute(self.obj)
 
     def recenter(self):
@@ -1400,27 +1722,59 @@ class SectionPlaneTaskPanel:
         return True
 
     def toggleCutView(self, checked):
-         if self.obj and self.obj.ViewObject and hasattr(self.obj.ViewObject, "CutView"):
+        if self.obj and self.obj.ViewObject and hasattr(self.obj.ViewObject, "CutView"):
             self.obj.ViewObject.CutView = checked
 
     def retranslateUi(self):
         self.scope_widget.setWindowTitle(QtGui.QApplication.translate("Arch", "Scope", None))
-        self.tools_widget.setWindowTitle(QtGui.QApplication.translate("Arch", "Placement and Visuals", None))
-        self.title.setText(QtGui.QApplication.translate("Arch", "Objects seen by this section plane", None))
+        self.tools_widget.setWindowTitle(
+            QtGui.QApplication.translate("Arch", "Placement and Visuals", None)
+        )
+        self.title.setText(
+            QtGui.QApplication.translate("Arch", "Objects seen by this section plane", None)
+        )
         self.delButton.setText(QtGui.QApplication.translate("Arch", "Remove", None))
-        self.delButton.setToolTip(QtGui.QApplication.translate("Arch", "Removes highlighted objects from the list above", None))
+        self.delButton.setToolTip(
+            QtGui.QApplication.translate(
+                "Arch", "Removes highlighted objects from the list above", None
+            )
+        )
         self.addButton.setText(QtGui.QApplication.translate("Arch", "Add Selected", None))
-        self.addButton.setToolTip(QtGui.QApplication.translate("Arch", "Adds selected objects to the scope of this section plane", None))
+        self.addButton.setToolTip(
+            QtGui.QApplication.translate(
+                "Arch", "Adds selected objects to the scope of this section plane", None
+            )
+        )
         self.cutViewButton.setText(QtGui.QApplication.translate("Arch", "Cut View", None))
-        self.cutViewButton.setToolTip(QtGui.QApplication.translate("Arch", "Creates a live cut in the 3D view, hiding geometry on one side of the plane to see inside your model", None))
+        self.cutViewButton.setToolTip(
+            QtGui.QApplication.translate(
+                "Arch",
+                "Creates a live cut in the 3D view, hiding geometry on one side of the plane to see inside your model",
+                None,
+            )
+        )
         self.rotation_label.setText(QtGui.QApplication.translate("Arch", "Rotate by 90°", None))
         self.rotateXButton.setText(QtGui.QApplication.translate("Arch", "Rotate X", None))
-        self.rotateXButton.setToolTip(QtGui.QApplication.translate("Arch", "Rotates the plane around its local X-axis", None))
+        self.rotateXButton.setToolTip(
+            QtGui.QApplication.translate("Arch", "Rotates the plane around its local X-axis", None)
+        )
         self.rotateYButton.setText(QtGui.QApplication.translate("Arch", "Rotate Y", None))
-        self.rotateYButton.setToolTip(QtGui.QApplication.translate("Arch", "Rotates the plane around its local Y-axis", None))
+        self.rotateYButton.setToolTip(
+            QtGui.QApplication.translate("Arch", "Rotates the plane around its local Y-axis", None)
+        )
         self.rotateZButton.setText(QtGui.QApplication.translate("Arch", "Rotate Z", None))
-        self.rotateZButton.setToolTip(QtGui.QApplication.translate("Arch", "Rotates the plane around its local Z-axis", None))
+        self.rotateZButton.setToolTip(
+            QtGui.QApplication.translate("Arch", "Rotates the plane around its local Z-axis", None)
+        )
         self.resizeButton.setText(QtGui.QApplication.translate("Arch", "Resize to Fit", None))
-        self.resizeButton.setToolTip(QtGui.QApplication.translate("Arch", "Resizes the plane to fit the objects in the list above", None))
+        self.resizeButton.setToolTip(
+            QtGui.QApplication.translate(
+                "Arch", "Resizes the plane to fit the objects in the list above", None
+            )
+        )
         self.recenterButton.setText(QtGui.QApplication.translate("Arch", "Recenter Plane", None))
-        self.recenterButton.setToolTip(QtGui.QApplication.translate("Arch", "Centers the plane on the objects in the list above", None))
+        self.recenterButton.setToolTip(
+            QtGui.QApplication.translate(
+                "Arch", "Centers the plane on the objects in the list above", None
+            )
+        )

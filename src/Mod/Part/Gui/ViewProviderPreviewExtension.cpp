@@ -21,12 +21,12 @@
  *                                                                          *
  ***************************************************************************/
 
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoLightModel.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoPickStyle.h>
-# include <Inventor/nodes/SoPolygonOffset.h>
-# include <Inventor/nodes/SoTransform.h>
+#include <Inventor/nodes/SoDrawStyle.h>
+#include <Inventor/nodes/SoLightModel.h>
+#include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoPickStyle.h>
+#include <Inventor/nodes/SoPolygonOffset.h>
+#include <Inventor/nodes/SoTransform.h>
 
 #include "ViewProviderPreviewExtension.h"
 #include "ViewProviderExt.h"
@@ -132,7 +132,8 @@ ViewProviderPreviewExtension::ViewProviderPreviewExtension()
         (magenta),
         "Preview",
         static_cast<App::PropertyType>(App::Prop_Transient | App::Prop_Hidden),
-        "Color used for 3D Preview");
+        "Color used for 3D Preview"
+    );
 
     initExtensionType(ViewProviderPreviewExtension::getExtensionClassTypeId());
 }
@@ -180,7 +181,8 @@ void ViewProviderPreviewExtension::showPreview(bool enable)
         if (annotationRoot->findChild(pcPreviewRoot) < 0) {
             annotationRoot->addChild(pcPreviewRoot);
         }
-    } else {
+    }
+    else {
         annotationRoot->removeChild(pcPreviewRoot);
     }
 }
@@ -204,8 +206,7 @@ void ViewProviderPreviewExtension::updatePreview()
     updatePreviewShape(getPreviewShape(), pcPreviewShape);
 }
 
-void ViewProviderPreviewExtension::updatePreviewShape(Part::TopoShape shape,
-                                                      SoPreviewShape* preview)
+void ViewProviderPreviewExtension::updatePreviewShape(Part::TopoShape shape, SoPreviewShape* preview)
 {
     if (shape.isNull() || preview == nullptr) {
         return;
@@ -218,20 +219,24 @@ void ViewProviderPreviewExtension::updatePreviewShape(Part::TopoShape shape,
     }
 
     const auto updatePreviewShape = [vp](SoPreviewShape* preview, Part::TopoShape shape) {
-        ViewProviderPartExt::setupCoinGeometry(shape.getShape(),
-                                               preview,
-                                               vp->Deviation.getValue(),
-                                               vp->AngularDeflection.getValue());
+        ViewProviderPartExt::setupCoinGeometry(
+            shape.getShape(),
+            preview,
+            vp->Deviation.getValue(),
+            vp->AngularDeflection.getValue()
+        );
     };
 
     try {
         updatePreviewShape(preview, shape);
         preview->transform.setValue(Base::convertTo<SbMatrix>(shape.getTransform()));
-    } catch (Standard_Failure& e) {
+    }
+    catch (Standard_Failure& e) {
         Base::Console().userTranslatedNotification(
             tr("Failure while rendering preview: %1. That usually indicates an error with model.")
                 .arg(QString::fromUtf8(e.GetMessageString()))
-                .toUtf8());
+                .toUtf8()
+        );
 
         updatePreviewShape(preview, {});
     }
@@ -255,9 +260,13 @@ void ViewProviderPreviewExtension::updatePreviewShape(Part::TopoShape shape,
     }
 }
 
-namespace Gui {
-EXTENSION_PROPERTY_SOURCE_TEMPLATE(PartGui::ViewProviderPreviewExtensionPython, PartGui::ViewProviderPreviewExtension)
+namespace Gui
+{
+EXTENSION_PROPERTY_SOURCE_TEMPLATE(
+    PartGui::ViewProviderPreviewExtensionPython,
+    PartGui::ViewProviderPreviewExtension
+)
 
 // explicit template instantiation
 template class PartGuiExport ViewProviderExtensionPythonT<PartGui::ViewProviderPreviewExtension>;
-}
+}  // namespace Gui

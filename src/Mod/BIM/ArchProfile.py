@@ -22,9 +22,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__  = "FreeCAD Profile"
+__title__ = "FreeCAD Profile"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecad.org"
+__url__ = "https://www.freecad.org"
 
 ## @package ArchProfile
 #  \ingroup ARCH
@@ -49,25 +49,29 @@ if FreeCAD.GuiUp:
     from draftutils.translate import translate
 else:
     # \cond
-    def translate(ctxt,txt):
+    def translate(ctxt, txt):
         return txt
-    def QT_TRANSLATE_NOOP(ctxt,txt):
+
+    def QT_TRANSLATE_NOOP(ctxt, txt):
         return txt
+
     # \endcond
 
 
 # Presets in the form: Class, Name, Profile type, [profile data]
 # Search for profiles.csv in data/Mod/Arch/Presets and in the same folder as this file
 # and in the user path
-profilefiles = [os.path.join(FreeCAD.getResourceDir(),"Mod","BIM","Presets","profiles.csv"),
-                os.path.join(os.path.dirname(__file__),"Presets","profiles.csv"),
-                os.path.join(FreeCAD.getUserAppDataDir(),"BIM","profiles.csv")]
+profilefiles = [
+    os.path.join(FreeCAD.getResourceDir(), "Mod", "BIM", "Presets", "profiles.csv"),
+    os.path.join(os.path.dirname(__file__), "Presets", "profiles.csv"),
+    os.path.join(FreeCAD.getUserAppDataDir(), "BIM", "profiles.csv"),
+]
 
 
 def readPresets():
 
-    Presets=[]
-    bid = 1 #Unique index
+    Presets = []
+    bid = 1  # Unique index
     for profilefile in profilefiles:
         if os.path.exists(profilefile):
             try:
@@ -77,40 +81,37 @@ def readPresets():
                         if (not row) or row[0].startswith("#"):
                             continue
                         try:
-                            r=[bid, row[0], row[1], row[2]]
-                            for i in range(3,len(row)):
-                                r=r+[float(row[i])]
+                            r = [bid, row[0], row[1], row[2]]
+                            for i in range(3, len(row)):
+                                r = r + [float(row[i])]
                             if not r in Presets:
                                 Presets.append(r)
-                            bid=bid+1
+                            bid = bid + 1
                         except ValueError:
-                            print("Skipping bad line: "+str(row))
+                            print("Skipping bad line: " + str(row))
             except IOError:
-                print("Could not open ",profilefile)
+                print("Could not open ", profilefile)
     return Presets
 
 
-
 class _Profile(Draft._DraftObject):
+    """Superclass for Profile classes"""
 
-    '''Superclass for Profile classes'''
-
-    def __init__(self,obj, profile):
+    def __init__(self, obj, profile):
         self.Profile = profile
-        Draft._DraftObject.__init__(self,obj,"Profile")
+        Draft._DraftObject.__init__(self, obj, "Profile")
 
     def dumps(self):
-        if hasattr(self,"Profile"):
+        if hasattr(self, "Profile"):
             return self.Profile
 
-    def loads(self,state):
-        if isinstance(state,list):
+    def loads(self, state):
+        if isinstance(state, list):
             self.Profile = state
         self.Type = "Profile"
 
     def cleanProperties(self, obj):
-
-        '''Remove all Profile properties'''
+        """Remove all Profile properties"""
 
         for prop in obj.PropertiesList:
             if obj.getGroupOfProperty(prop) == "Draft":
@@ -119,114 +120,200 @@ class _Profile(Draft._DraftObject):
 
 
 class _ProfileC(_Profile):
+    """A parametric circular tubeprofile. Profile data: [Outside diameter, Wall thickness]"""
 
-    '''A parametric circular tubeprofile. Profile data: [Outside diameter, Wall thickness]'''
-
-    def __init__(self,obj, profile):
+    def __init__(self, obj, profile):
         self.cleanProperties(obj)
-        obj.addProperty("App::PropertyLength","OutDiameter","Draft",QT_TRANSLATE_NOOP("App::Property","Outside Diameter"), locked=True).OutDiameter = profile[4]
-        obj.addProperty("App::PropertyLength","Thickness","Draft",QT_TRANSLATE_NOOP("App::Property","Wall thickness"), locked=True).Thickness = profile[5]
-        _Profile.__init__(self,obj,profile)
+        obj.addProperty(
+            "App::PropertyLength",
+            "OutDiameter",
+            "Draft",
+            QT_TRANSLATE_NOOP("App::Property", "Outside Diameter"),
+            locked=True,
+        ).OutDiameter = profile[4]
+        obj.addProperty(
+            "App::PropertyLength",
+            "Thickness",
+            "Draft",
+            QT_TRANSLATE_NOOP("App::Property", "Wall thickness"),
+            locked=True,
+        ).Thickness = profile[5]
+        _Profile.__init__(self, obj, profile)
 
-    def execute(self,obj):
+    def execute(self, obj):
         import Part
+
         pl = obj.Placement
-        c1=Part.Circle()
-        c1.Radius=obj.OutDiameter.Value/2
-        c2=Part.Circle()
-        c2.Radius=obj.OutDiameter.Value/2-obj.Thickness.Value
-        cs1=c1.toShape()
-        cs2=c2.toShape()
-        p=Part.makeRuledSurface(cs2,cs1)
+        c1 = Part.Circle()
+        c1.Radius = obj.OutDiameter.Value / 2
+        c2 = Part.Circle()
+        c2.Radius = obj.OutDiameter.Value / 2 - obj.Thickness.Value
+        cs1 = c1.toShape()
+        cs2 = c2.toShape()
+        p = Part.makeRuledSurface(cs2, cs1)
         p.reverse()
         obj.Shape = p
         obj.Placement = pl
 
 
 class _ProfileH(_Profile):
+    """A parametric H or I beam profile. Profile data: [width, height, web thickness, flange thickness] (see http://en.wikipedia.org/wiki/I-beam for reference)"""
 
-    '''A parametric H or I beam profile. Profile data: [width, height, web thickness, flange thickness] (see http://en.wikipedia.org/wiki/I-beam for reference)'''
-
-    def __init__(self,obj, profile):
+    def __init__(self, obj, profile):
         self.cleanProperties(obj)
-        obj.addProperty("App::PropertyLength","Width","Draft",QT_TRANSLATE_NOOP("App::Property","Width of the beam"), locked=True).Width = profile[4]
-        obj.addProperty("App::PropertyLength","Height","Draft",QT_TRANSLATE_NOOP("App::Property","Height of the beam"), locked=True).Height = profile[5]
-        obj.addProperty("App::PropertyLength","WebThickness","Draft",QT_TRANSLATE_NOOP("App::Property","Thickness of the web"), locked=True).WebThickness = profile[6]
-        obj.addProperty("App::PropertyLength","FlangeThickness","Draft",QT_TRANSLATE_NOOP("App::Property","Thickness of the flanges"), locked=True).FlangeThickness = profile[7]
-        _Profile.__init__(self,obj,profile)
+        obj.addProperty(
+            "App::PropertyLength",
+            "Width",
+            "Draft",
+            QT_TRANSLATE_NOOP("App::Property", "Width of the beam"),
+            locked=True,
+        ).Width = profile[4]
+        obj.addProperty(
+            "App::PropertyLength",
+            "Height",
+            "Draft",
+            QT_TRANSLATE_NOOP("App::Property", "Height of the beam"),
+            locked=True,
+        ).Height = profile[5]
+        obj.addProperty(
+            "App::PropertyLength",
+            "WebThickness",
+            "Draft",
+            QT_TRANSLATE_NOOP("App::Property", "Thickness of the web"),
+            locked=True,
+        ).WebThickness = profile[6]
+        obj.addProperty(
+            "App::PropertyLength",
+            "FlangeThickness",
+            "Draft",
+            QT_TRANSLATE_NOOP("App::Property", "Thickness of the flanges"),
+            locked=True,
+        ).FlangeThickness = profile[7]
+        _Profile.__init__(self, obj, profile)
 
-    def execute(self,obj):
+    def execute(self, obj):
         import Part
+
         pl = obj.Placement
-        p1 = Vector(-obj.Width.Value/2,-obj.Height.Value/2,0)
-        p2 = Vector(obj.Width.Value/2,-obj.Height.Value/2,0)
-        p3 = Vector(obj.Width.Value/2,(-obj.Height.Value/2)+obj.FlangeThickness.Value,0)
-        p4 = Vector(obj.WebThickness.Value/2,(-obj.Height.Value/2)+obj.FlangeThickness.Value,0)
-        p5 = Vector(obj.WebThickness.Value/2,obj.Height.Value/2-obj.FlangeThickness.Value,0)
-        p6 = Vector(obj.Width.Value/2,obj.Height.Value/2-obj.FlangeThickness.Value,0)
-        p7 = Vector(obj.Width.Value/2,obj.Height.Value/2,0)
-        p8 = Vector(-obj.Width.Value/2,obj.Height.Value/2,0)
-        p9 = Vector(-obj.Width.Value/2,obj.Height.Value/2-obj.FlangeThickness.Value,0)
-        p10 = Vector(-obj.WebThickness.Value/2,obj.Height.Value/2-obj.FlangeThickness.Value,0)
-        p11 = Vector(-obj.WebThickness.Value/2,(-obj.Height.Value/2)+obj.FlangeThickness.Value,0)
-        p12 = Vector(-obj.Width.Value/2,(-obj.Height.Value/2)+obj.FlangeThickness.Value,0)
-        p = Part.makePolygon([p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p1])
+        p1 = Vector(-obj.Width.Value / 2, -obj.Height.Value / 2, 0)
+        p2 = Vector(obj.Width.Value / 2, -obj.Height.Value / 2, 0)
+        p3 = Vector(obj.Width.Value / 2, (-obj.Height.Value / 2) + obj.FlangeThickness.Value, 0)
+        p4 = Vector(
+            obj.WebThickness.Value / 2, (-obj.Height.Value / 2) + obj.FlangeThickness.Value, 0
+        )
+        p5 = Vector(obj.WebThickness.Value / 2, obj.Height.Value / 2 - obj.FlangeThickness.Value, 0)
+        p6 = Vector(obj.Width.Value / 2, obj.Height.Value / 2 - obj.FlangeThickness.Value, 0)
+        p7 = Vector(obj.Width.Value / 2, obj.Height.Value / 2, 0)
+        p8 = Vector(-obj.Width.Value / 2, obj.Height.Value / 2, 0)
+        p9 = Vector(-obj.Width.Value / 2, obj.Height.Value / 2 - obj.FlangeThickness.Value, 0)
+        p10 = Vector(
+            -obj.WebThickness.Value / 2, obj.Height.Value / 2 - obj.FlangeThickness.Value, 0
+        )
+        p11 = Vector(
+            -obj.WebThickness.Value / 2, (-obj.Height.Value / 2) + obj.FlangeThickness.Value, 0
+        )
+        p12 = Vector(-obj.Width.Value / 2, (-obj.Height.Value / 2) + obj.FlangeThickness.Value, 0)
+        p = Part.makePolygon([p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p1])
         p = Part.Face(p)
-        #p.reverse()
+        # p.reverse()
         obj.Shape = p
         obj.Placement = pl
 
 
 class _ProfileR(_Profile):
+    """A parametric rectangular beam profile based on [Width, Height]"""
 
-    '''A parametric rectangular beam profile based on [Width, Height]'''
-
-    def __init__(self,obj, profile):
+    def __init__(self, obj, profile):
         self.cleanProperties(obj)
-        obj.addProperty("App::PropertyLength","Width","Draft",QT_TRANSLATE_NOOP("App::Property","Width of the beam"), locked=True).Width = profile[4]
-        obj.addProperty("App::PropertyLength","Height","Draft",QT_TRANSLATE_NOOP("App::Property","Height of the beam"), locked=True).Height = profile[5]
-        _Profile.__init__(self,obj,profile)
+        obj.addProperty(
+            "App::PropertyLength",
+            "Width",
+            "Draft",
+            QT_TRANSLATE_NOOP("App::Property", "Width of the beam"),
+            locked=True,
+        ).Width = profile[4]
+        obj.addProperty(
+            "App::PropertyLength",
+            "Height",
+            "Draft",
+            QT_TRANSLATE_NOOP("App::Property", "Height of the beam"),
+            locked=True,
+        ).Height = profile[5]
+        _Profile.__init__(self, obj, profile)
 
-    def execute(self,obj):
+    def execute(self, obj):
         import Part
+
         pl = obj.Placement
-        p1 = Vector(-obj.Width.Value/2,-obj.Height.Value/2,0)
-        p2 = Vector(obj.Width.Value/2,-obj.Height.Value/2,0)
-        p3 = Vector(obj.Width.Value/2,obj.Height.Value/2,0)
-        p4 = Vector(-obj.Width.Value/2,obj.Height.Value/2,0)
-        p = Part.makePolygon([p1,p2,p3,p4,p1])
+        p1 = Vector(-obj.Width.Value / 2, -obj.Height.Value / 2, 0)
+        p2 = Vector(obj.Width.Value / 2, -obj.Height.Value / 2, 0)
+        p3 = Vector(obj.Width.Value / 2, obj.Height.Value / 2, 0)
+        p4 = Vector(-obj.Width.Value / 2, obj.Height.Value / 2, 0)
+        p = Part.makePolygon([p1, p2, p3, p4, p1])
         p = Part.Face(p)
-        #p.reverse()
+        # p.reverse()
         obj.Shape = p
         obj.Placement = pl
 
 
 class _ProfileRH(_Profile):
+    """A parametric Rectangular hollow beam profile. Profile data: [width, height, thickness]"""
 
-    '''A parametric Rectangular hollow beam profile. Profile data: [width, height, thickness]'''
-
-    def __init__(self,obj, profile):
+    def __init__(self, obj, profile):
         self.cleanProperties(obj)
-        obj.addProperty("App::PropertyLength","Width","Draft",QT_TRANSLATE_NOOP("App::Property","Width of the beam"), locked=True).Width = profile[4]
-        obj.addProperty("App::PropertyLength","Height","Draft",QT_TRANSLATE_NOOP("App::Property","Height of the beam"), locked=True).Height = profile[5]
-        obj.addProperty("App::PropertyLength","Thickness","Draft",QT_TRANSLATE_NOOP("App::Property","Thickness of the sides"), locked=True).Thickness = profile[6]
-        _Profile.__init__(self,obj,profile)
+        obj.addProperty(
+            "App::PropertyLength",
+            "Width",
+            "Draft",
+            QT_TRANSLATE_NOOP("App::Property", "Width of the beam"),
+            locked=True,
+        ).Width = profile[4]
+        obj.addProperty(
+            "App::PropertyLength",
+            "Height",
+            "Draft",
+            QT_TRANSLATE_NOOP("App::Property", "Height of the beam"),
+            locked=True,
+        ).Height = profile[5]
+        obj.addProperty(
+            "App::PropertyLength",
+            "Thickness",
+            "Draft",
+            QT_TRANSLATE_NOOP("App::Property", "Thickness of the sides"),
+            locked=True,
+        ).Thickness = profile[6]
+        _Profile.__init__(self, obj, profile)
 
-    def execute(self,obj):
+    def execute(self, obj):
         import Part
+
         pl = obj.Placement
-        p1 = Vector(-obj.Width.Value/2,-obj.Height.Value/2,0)
-        p2 = Vector(obj.Width.Value/2,-obj.Height.Value/2,0)
-        p3 = Vector(obj.Width.Value/2,obj.Height.Value/2,0)
-        p4 = Vector(-obj.Width.Value/2,obj.Height.Value/2,0)
-        q1 = Vector(-obj.Width.Value/2+obj.Thickness.Value,-obj.Height.Value/2+obj.Thickness.Value,0)
-        q2 = Vector(obj.Width.Value/2-obj.Thickness.Value,-obj.Height.Value/2+obj.Thickness.Value,0)
-        q3 = Vector(obj.Width.Value/2-obj.Thickness.Value,obj.Height.Value/2-obj.Thickness.Value,0)
-        q4 = Vector(-obj.Width.Value/2+obj.Thickness.Value,obj.Height.Value/2-obj.Thickness.Value,0)
-        p = Part.makePolygon([p1,p2,p3,p4,p1])
-        q = Part.makePolygon([q1,q2,q3,q4,q1])
-        #r = Part.Face([p,q])
-        #r.reverse()
+        p1 = Vector(-obj.Width.Value / 2, -obj.Height.Value / 2, 0)
+        p2 = Vector(obj.Width.Value / 2, -obj.Height.Value / 2, 0)
+        p3 = Vector(obj.Width.Value / 2, obj.Height.Value / 2, 0)
+        p4 = Vector(-obj.Width.Value / 2, obj.Height.Value / 2, 0)
+        q1 = Vector(
+            -obj.Width.Value / 2 + obj.Thickness.Value,
+            -obj.Height.Value / 2 + obj.Thickness.Value,
+            0,
+        )
+        q2 = Vector(
+            obj.Width.Value / 2 - obj.Thickness.Value,
+            -obj.Height.Value / 2 + obj.Thickness.Value,
+            0,
+        )
+        q3 = Vector(
+            obj.Width.Value / 2 - obj.Thickness.Value, obj.Height.Value / 2 - obj.Thickness.Value, 0
+        )
+        q4 = Vector(
+            -obj.Width.Value / 2 + obj.Thickness.Value,
+            obj.Height.Value / 2 - obj.Thickness.Value,
+            0,
+        )
+        p = Part.makePolygon([p1, p2, p3, p4, p1])
+        q = Part.makePolygon([q1, q2, q3, q4, q1])
+        # r = Part.Face([p,q])
+        # r.reverse()
         p = Part.Face(p)
         q = Part.Face(q)
         r = p.cut(q)
@@ -235,136 +322,264 @@ class _ProfileRH(_Profile):
 
 
 class _ProfileU(_Profile):
+    """A parametric U profile. Profile data: [width, height, web thickness, flange thickness] (see  https://en.wikipedia.org/wiki/Structural_channel for reference)"""
 
-    '''A parametric U profile. Profile data: [width, height, web thickness, flange thickness] (see  https://en.wikipedia.org/wiki/Structural_channel for reference)'''
-
-    def __init__(self,obj, profile):
+    def __init__(self, obj, profile):
         self.cleanProperties(obj)
-        obj.addProperty("App::PropertyLength","Width","Draft",QT_TRANSLATE_NOOP("App::Property","Width of the beam"), locked=True).Width = profile[4]
-        obj.addProperty("App::PropertyLength","Height","Draft",QT_TRANSLATE_NOOP("App::Property","Height of the beam"), locked=True).Height = profile[5]
-        obj.addProperty("App::PropertyLength","WebThickness","Draft",QT_TRANSLATE_NOOP("App::Property","Thickness of the webs"), locked=True).WebThickness = profile[6]
-        obj.addProperty("App::PropertyLength","FlangeThickness","Draft",QT_TRANSLATE_NOOP("App::Property","Thickness of the flange"), locked=True).FlangeThickness = profile[7]
-        _Profile.__init__(self,obj,profile)
+        obj.addProperty(
+            "App::PropertyLength",
+            "Width",
+            "Draft",
+            QT_TRANSLATE_NOOP("App::Property", "Width of the beam"),
+            locked=True,
+        ).Width = profile[4]
+        obj.addProperty(
+            "App::PropertyLength",
+            "Height",
+            "Draft",
+            QT_TRANSLATE_NOOP("App::Property", "Height of the beam"),
+            locked=True,
+        ).Height = profile[5]
+        obj.addProperty(
+            "App::PropertyLength",
+            "WebThickness",
+            "Draft",
+            QT_TRANSLATE_NOOP("App::Property", "Thickness of the webs"),
+            locked=True,
+        ).WebThickness = profile[6]
+        obj.addProperty(
+            "App::PropertyLength",
+            "FlangeThickness",
+            "Draft",
+            QT_TRANSLATE_NOOP("App::Property", "Thickness of the flange"),
+            locked=True,
+        ).FlangeThickness = profile[7]
+        _Profile.__init__(self, obj, profile)
 
-    def execute(self,obj):
+    def execute(self, obj):
         import Part
+
         pl = obj.Placement
-        p1 = Vector(-obj.Width.Value/2,-obj.Height.Value/2,0)
-        p2 = Vector(obj.Width.Value/2,-obj.Height.Value/2,0)
-        p3 = Vector(obj.Width.Value/2,obj.Height.Value/2,0)
-        p4 = Vector(obj.Width.Value/2-obj.FlangeThickness.Value,obj.Height.Value/2,0)
-        p5 = Vector(obj.Width.Value/2-obj.FlangeThickness.Value,obj.WebThickness.Value-obj.Height.Value/2,0)
-        p6 = Vector(-obj.Width.Value/2+obj.FlangeThickness.Value,obj.WebThickness.Value-obj.Height.Value/2,0)
-        p7 = Vector(-obj.Width.Value/2+obj.FlangeThickness.Value,obj.Height.Value/2,0)
-        p8 = Vector(-obj.Width.Value/2,obj.Height.Value/2,0)
-        p = Part.makePolygon([p1,p2,p3,p4,p5,p6,p7,p8,p1])
+        p1 = Vector(-obj.Width.Value / 2, -obj.Height.Value / 2, 0)
+        p2 = Vector(obj.Width.Value / 2, -obj.Height.Value / 2, 0)
+        p3 = Vector(obj.Width.Value / 2, obj.Height.Value / 2, 0)
+        p4 = Vector(obj.Width.Value / 2 - obj.FlangeThickness.Value, obj.Height.Value / 2, 0)
+        p5 = Vector(
+            obj.Width.Value / 2 - obj.FlangeThickness.Value,
+            obj.WebThickness.Value - obj.Height.Value / 2,
+            0,
+        )
+        p6 = Vector(
+            -obj.Width.Value / 2 + obj.FlangeThickness.Value,
+            obj.WebThickness.Value - obj.Height.Value / 2,
+            0,
+        )
+        p7 = Vector(-obj.Width.Value / 2 + obj.FlangeThickness.Value, obj.Height.Value / 2, 0)
+        p8 = Vector(-obj.Width.Value / 2, obj.Height.Value / 2, 0)
+        p = Part.makePolygon([p1, p2, p3, p4, p5, p6, p7, p8, p1])
         p = Part.Face(p)
-        #p.reverse()
+        # p.reverse()
         obj.Shape = p
         obj.Placement = pl
 
 
 class _ProfileL(_Profile):
-
-    '''A parametric L profile. Profile data: [width, height, thickness]'''
+    """A parametric L profile. Profile data: [width, height, thickness]"""
 
     def __init__(self, obj, profile):
         self.cleanProperties(obj)
-        obj.addProperty("App::PropertyLength","Width","Draft",QT_TRANSLATE_NOOP("App::Property","Width of the beam"), locked=True).Width = profile[4]
-        obj.addProperty("App::PropertyLength","Height","Draft",QT_TRANSLATE_NOOP("App::Property","Height of the beam"), locked=True).Height = profile[5]
-        obj.addProperty("App::PropertyLength","Thickness","Draft",QT_TRANSLATE_NOOP("App::Property","Thickness of the legs"), locked=True).Thickness = profile[6]
-        _Profile.__init__(self,obj,profile)
+        obj.addProperty(
+            "App::PropertyLength",
+            "Width",
+            "Draft",
+            QT_TRANSLATE_NOOP("App::Property", "Width of the beam"),
+            locked=True,
+        ).Width = profile[4]
+        obj.addProperty(
+            "App::PropertyLength",
+            "Height",
+            "Draft",
+            QT_TRANSLATE_NOOP("App::Property", "Height of the beam"),
+            locked=True,
+        ).Height = profile[5]
+        obj.addProperty(
+            "App::PropertyLength",
+            "Thickness",
+            "Draft",
+            QT_TRANSLATE_NOOP("App::Property", "Thickness of the legs"),
+            locked=True,
+        ).Thickness = profile[6]
+        _Profile.__init__(self, obj, profile)
 
-    def execute(self,obj):
+    def execute(self, obj):
         import Part
+
         pl = obj.Placement
-        p1 = Vector(-obj.Width.Value/2, obj.Height.Value/2, 0)
-        p2 = Vector(-obj.Width.Value/2, -obj.Height.Value/2, 0)
-        p3 = Vector(obj.Width.Value/2, -obj.Height.Value/2, 0)
-        p4 = Vector(obj.Width.Value/2, -obj.Height.Value/2+obj.Thickness.Value, 0)
-        p5 = Vector(-obj.Width.Value/2+obj.Thickness.Value, -obj.Height.Value/2+obj.Thickness.Value, 0)
-        p6 = Vector(-obj.Width.Value/2+obj.Thickness.Value, obj.Height.Value/2, 0)
-        p = Part.makePolygon([p1,p2,p3,p4,p5,p6,p1])
+        p1 = Vector(-obj.Width.Value / 2, obj.Height.Value / 2, 0)
+        p2 = Vector(-obj.Width.Value / 2, -obj.Height.Value / 2, 0)
+        p3 = Vector(obj.Width.Value / 2, -obj.Height.Value / 2, 0)
+        p4 = Vector(obj.Width.Value / 2, -obj.Height.Value / 2 + obj.Thickness.Value, 0)
+        p5 = Vector(
+            -obj.Width.Value / 2 + obj.Thickness.Value,
+            -obj.Height.Value / 2 + obj.Thickness.Value,
+            0,
+        )
+        p6 = Vector(-obj.Width.Value / 2 + obj.Thickness.Value, obj.Height.Value / 2, 0)
+        p = Part.makePolygon([p1, p2, p3, p4, p5, p6, p1])
         p = Part.Face(p)
-        #p.reverse()
+        # p.reverse()
         obj.Shape = p
         obj.Placement = pl
 
 
 class _ProfileT(_Profile):
-
-    '''A parametric T profile. Profile data: [width, height, web thickness, flange thickness]'''
+    """A parametric T profile. Profile data: [width, height, web thickness, flange thickness]"""
 
     def __init__(self, obj, profile):
         self.cleanProperties(obj)
-        obj.addProperty("App::PropertyLength","Width","Draft",QT_TRANSLATE_NOOP("App::Property","Width of the beam"), locked=True).Width = profile[4]
-        obj.addProperty("App::PropertyLength","Height","Draft",QT_TRANSLATE_NOOP("App::Property","Height of the beam"), locked=True).Height = profile[5]
-        obj.addProperty("App::PropertyLength","WebThickness","Draft",QT_TRANSLATE_NOOP("App::Property","Thickness of the web"), locked=True).WebThickness = profile[6]
-        obj.addProperty("App::PropertyLength","FlangeThickness","Draft",QT_TRANSLATE_NOOP("App::Property","Thickness of the flanges"), locked=True).FlangeThickness = profile[7]
-        _Profile.__init__(self,obj,profile)
+        obj.addProperty(
+            "App::PropertyLength",
+            "Width",
+            "Draft",
+            QT_TRANSLATE_NOOP("App::Property", "Width of the beam"),
+            locked=True,
+        ).Width = profile[4]
+        obj.addProperty(
+            "App::PropertyLength",
+            "Height",
+            "Draft",
+            QT_TRANSLATE_NOOP("App::Property", "Height of the beam"),
+            locked=True,
+        ).Height = profile[5]
+        obj.addProperty(
+            "App::PropertyLength",
+            "WebThickness",
+            "Draft",
+            QT_TRANSLATE_NOOP("App::Property", "Thickness of the web"),
+            locked=True,
+        ).WebThickness = profile[6]
+        obj.addProperty(
+            "App::PropertyLength",
+            "FlangeThickness",
+            "Draft",
+            QT_TRANSLATE_NOOP("App::Property", "Thickness of the flanges"),
+            locked=True,
+        ).FlangeThickness = profile[7]
+        _Profile.__init__(self, obj, profile)
 
-    def execute(self,obj):
+    def execute(self, obj):
         import Part
+
         pl = obj.Placement
-        p1 = Vector(obj.WebThickness.Value/2, -obj.Height.Value/2, 0)
-        p2 = Vector(obj.WebThickness.Value/2, obj.Height.Value/2-obj.FlangeThickness.Value, 0)
-        p3 = Vector(obj.Width.Value/2, obj.Height.Value/2-obj.FlangeThickness.Value, 0)
-        p4 = Vector(obj.Width.Value/2, obj.Height.Value/2, 0)
-        p5 = Vector(-obj.Width.Value/2, obj.Height.Value/2, 0)
-        p6 = Vector(-obj.Width.Value/2, obj.Height.Value/2-obj.FlangeThickness.Value, 0)
-        p7 = Vector(-obj.WebThickness.Value/2, obj.Height.Value/2-obj.FlangeThickness.Value, 0)
-        p8 = Vector(-obj.WebThickness.Value/2, -obj.Height.Value/2, 0)
-        p = Part.makePolygon([p1,p2,p3,p4,p5,p6,p7,p8,p1])
+        p1 = Vector(obj.WebThickness.Value / 2, -obj.Height.Value / 2, 0)
+        p2 = Vector(obj.WebThickness.Value / 2, obj.Height.Value / 2 - obj.FlangeThickness.Value, 0)
+        p3 = Vector(obj.Width.Value / 2, obj.Height.Value / 2 - obj.FlangeThickness.Value, 0)
+        p4 = Vector(obj.Width.Value / 2, obj.Height.Value / 2, 0)
+        p5 = Vector(-obj.Width.Value / 2, obj.Height.Value / 2, 0)
+        p6 = Vector(-obj.Width.Value / 2, obj.Height.Value / 2 - obj.FlangeThickness.Value, 0)
+        p7 = Vector(
+            -obj.WebThickness.Value / 2, obj.Height.Value / 2 - obj.FlangeThickness.Value, 0
+        )
+        p8 = Vector(-obj.WebThickness.Value / 2, -obj.Height.Value / 2, 0)
+        p = Part.makePolygon([p1, p2, p3, p4, p5, p6, p7, p8, p1])
         p = Part.Face(p)
-        #p.reverse()
+        # p.reverse()
         obj.Shape = p
         obj.Placement = pl
 
 
 class _ProfileTSLOT(_Profile):
-
-    '''T slot profile common made of aluminum'''
+    """T slot profile common made of aluminum"""
 
     def __init__(self, obj, profile):
         self.cleanProperties(obj)
-        obj.addProperty("App::PropertyLength","Size","Draft",QT_TRANSLATE_NOOP("App::Property","Overall size"), locked=True).Size = profile[4]
-        obj.addProperty("App::PropertyLength","SlotSize","Draft",QT_TRANSLATE_NOOP("App::Property","Slot size"), locked=True).SlotSize = profile[5]
-        obj.addProperty("App::PropertyLength","WallThickness","Draft",QT_TRANSLATE_NOOP("App::Property","Thickness of the wall"), locked=True).WallThickness = profile[6]
-        obj.addProperty("App::PropertyLength","TnutSlotWidth","Draft",QT_TRANSLATE_NOOP("App::Property","T-nut slot width"), locked=True).TnutSlotWidth = profile[7]
-        obj.addProperty("App::PropertyLength","TnutSlotDepth","Draft",QT_TRANSLATE_NOOP("App::Property","T-nut slot depth"), locked=True).TnutSlotDepth = profile[8]
-        obj.addProperty("App::PropertyLength","CoreSize","Draft",QT_TRANSLATE_NOOP("App::Property","Internal core size"), locked=True).CoreSize = profile[9]
-        obj.addProperty("App::PropertyLength","HoleDiameter","Draft",QT_TRANSLATE_NOOP("App::Property","Internal hole diameter"), locked=True).HoleDiameter = profile[10]
-        obj.addProperty("App::PropertyLength","FilletRadius","Draft",QT_TRANSLATE_NOOP("App::Property","Corner fillet radius"), locked=True).FilletRadius = profile[11]
-        _Profile.__init__(self,obj,profile)
+        obj.addProperty(
+            "App::PropertyLength",
+            "Size",
+            "Draft",
+            QT_TRANSLATE_NOOP("App::Property", "Overall size"),
+            locked=True,
+        ).Size = profile[4]
+        obj.addProperty(
+            "App::PropertyLength",
+            "SlotSize",
+            "Draft",
+            QT_TRANSLATE_NOOP("App::Property", "Slot size"),
+            locked=True,
+        ).SlotSize = profile[5]
+        obj.addProperty(
+            "App::PropertyLength",
+            "WallThickness",
+            "Draft",
+            QT_TRANSLATE_NOOP("App::Property", "Thickness of the wall"),
+            locked=True,
+        ).WallThickness = profile[6]
+        obj.addProperty(
+            "App::PropertyLength",
+            "TnutSlotWidth",
+            "Draft",
+            QT_TRANSLATE_NOOP("App::Property", "T-nut slot width"),
+            locked=True,
+        ).TnutSlotWidth = profile[7]
+        obj.addProperty(
+            "App::PropertyLength",
+            "TnutSlotDepth",
+            "Draft",
+            QT_TRANSLATE_NOOP("App::Property", "T-nut slot depth"),
+            locked=True,
+        ).TnutSlotDepth = profile[8]
+        obj.addProperty(
+            "App::PropertyLength",
+            "CoreSize",
+            "Draft",
+            QT_TRANSLATE_NOOP("App::Property", "Internal core size"),
+            locked=True,
+        ).CoreSize = profile[9]
+        obj.addProperty(
+            "App::PropertyLength",
+            "HoleDiameter",
+            "Draft",
+            QT_TRANSLATE_NOOP("App::Property", "Internal hole diameter"),
+            locked=True,
+        ).HoleDiameter = profile[10]
+        obj.addProperty(
+            "App::PropertyLength",
+            "FilletRadius",
+            "Draft",
+            QT_TRANSLATE_NOOP("App::Property", "Corner fillet radius"),
+            locked=True,
+        ).FilletRadius = profile[11]
+        _Profile.__init__(self, obj, profile)
 
-    def execute(self,obj):
+    def execute(self, obj):
         import Part
         import math
+
         # import DraftGeomUtils
         pl = obj.Placement
-        nut_depth = obj.CoreSize/2-(obj.WallThickness/math.sqrt(2))
-        core_dim = obj.CoreSize/2
+        nut_depth = obj.CoreSize / 2 - (obj.WallThickness / math.sqrt(2))
+        core_dim = obj.CoreSize / 2
         wall_dim = obj.WallThickness
-        slot_dim = obj.SlotSize/2
-        nut_width_dim = obj.TnutSlotWidth/2
+        slot_dim = obj.SlotSize / 2
+        nut_width_dim = obj.TnutSlotWidth / 2
         templist = list()
         templist.append(Vector(nut_depth, core_dim, 0.0))
-        templist.append(Vector(nut_width_dim, nut_width_dim+(wall_dim/math.sqrt(2)), 0.0))
-        templist.append(Vector(nut_width_dim, obj.Size/2-wall_dim, 0.0))
-        templist.append(Vector(slot_dim, obj.Size/2-wall_dim, 0.0))
-        templist.append(Vector(slot_dim, obj.Size/2, 0.0))
-        templist.append(Vector(obj.Size/2, obj.Size/2, 0.0))
-        #TODO:
+        templist.append(Vector(nut_width_dim, nut_width_dim + (wall_dim / math.sqrt(2)), 0.0))
+        templist.append(Vector(nut_width_dim, obj.Size / 2 - wall_dim, 0.0))
+        templist.append(Vector(slot_dim, obj.Size / 2 - wall_dim, 0.0))
+        templist.append(Vector(slot_dim, obj.Size / 2, 0.0))
+        templist.append(Vector(obj.Size / 2, obj.Size / 2, 0.0))
+        # TODO:
         # add fillet four profile corners
         # sub_poly1 = Part.makePolygon(templist)
         # rd1=Vector(obj.Size/2-(obj.FilletRadius),obj.Size,0)
         # rd2=Vector(obj.Size/2-(obj.FilletRadius-obj.FilletRadius*math.sin(math.pi/4)),obj.Size/2-(obj.FilletRadius-obj.FilletRadius*math.sin(math.pi/4)),0)
         # rd3=Vector(obj.Size,obj.Size/2-(obj.FilletRadius),0)
         # templist.append(Part.Arc(rd1,rd2,rd3))
-        templist.append(Vector(obj.Size/2, slot_dim, 0.0))
-        templist.append(Vector(obj.Size/2-wall_dim, slot_dim, 0.0))
-        templist.append(Vector(obj.Size/2-wall_dim, nut_width_dim, 0.0))
-        templist.append(Vector(nut_width_dim+(wall_dim/math.sqrt(2)), nut_width_dim, 0.0))
+        templist.append(Vector(obj.Size / 2, slot_dim, 0.0))
+        templist.append(Vector(obj.Size / 2 - wall_dim, slot_dim, 0.0))
+        templist.append(Vector(obj.Size / 2 - wall_dim, nut_width_dim, 0.0))
+        templist.append(Vector(nut_width_dim + (wall_dim / math.sqrt(2)), nut_width_dim, 0.0))
         templist.append(Vector(core_dim, nut_depth, 0.0))
         # sub_poly2 = Part.makePolygon(templist3)
         # l1=Part.LineSegment(Vector(obj.SlotSize/2, obj.Size/2, 0.0),Vector(obj.Size/2, obj.Size/2, 0.0))
@@ -375,34 +590,34 @@ class _ProfileTSLOT(_Profile):
         # p=Part.Face(Shape.Edges)
         templist2 = list()
         for vec in reversed(templist):
-            templist2.append(Vector(vec.x,vec.y*-1,vec.z))
+            templist2.append(Vector(vec.x, vec.y * -1, vec.z))
         templist = templist + templist2
         templist2.clear()
         for vec in reversed(templist):
-            templist2.append(Vector(vec.x*-1,vec.y,vec.z))
+            templist2.append(Vector(vec.x * -1, vec.y, vec.z))
         templist = templist + templist2
         templist.append(templist[0])
         poly = Part.makePolygon(templist)
         pf = Part.Face(poly)
-        hole = Part.makeCircle(obj.HoleDiameter/2, FreeCAD.Vector(0, 0, 0))
-        cf=Part.Face(Part.Wire(hole))
-        p=pf.cut(cf)
-        #p.reverse()
+        hole = Part.makeCircle(obj.HoleDiameter / 2, FreeCAD.Vector(0, 0, 0))
+        cf = Part.Face(Part.Wire(hole))
+        p = pf.cut(cf)
+        # p.reverse()
         obj.Shape = p
         obj.Placement = pl
 
 
 class ViewProviderProfile(Draft._ViewProviderDraft):
+    """General view provider for Profile classes"""
 
-    '''General view provider for Profile classes'''
+    def __init__(self, vobj):
 
-    def __init__(self,vobj):
-
-        Draft._ViewProviderDraft.__init__(self,vobj)
+        Draft._ViewProviderDraft.__init__(self, vobj)
 
     def getIcon(self):
 
         import Arch_rc
+
         return ":/icons/Arch_Profile.svg"
 
     def setEdit(self, vobj, mode):
@@ -422,30 +637,29 @@ class ViewProviderProfile(Draft._ViewProviderDraft):
 
 
 class ProfileTaskPanel:
+    """The editmode TaskPanel for Profile objects"""
 
-    '''The editmode TaskPanel for Profile objects'''
-
-    def __init__(self,obj):
+    def __init__(self, obj):
 
         self.obj = obj
         self.Profile = None
-        if hasattr(obj.Proxy,"Profile"):
+        if hasattr(obj.Proxy, "Profile"):
             self.Profile = obj.Proxy.Profile
-        if isinstance(self.obj.Proxy,_ProfileC):
+        if isinstance(self.obj.Proxy, _ProfileC):
             self.type = "C"
-        elif isinstance(self.obj.Proxy,_ProfileH):
+        elif isinstance(self.obj.Proxy, _ProfileH):
             self.type = "H"
-        elif isinstance(self.obj.Proxy,_ProfileR):
+        elif isinstance(self.obj.Proxy, _ProfileR):
             self.type = "R"
-        elif isinstance(self.obj.Proxy,_ProfileRH):
+        elif isinstance(self.obj.Proxy, _ProfileRH):
             self.type = "RH"
-        elif isinstance(self.obj.Proxy,_ProfileU):
+        elif isinstance(self.obj.Proxy, _ProfileU):
             self.type = "U"
-        elif isinstance(self.obj.Proxy,_ProfileL):
+        elif isinstance(self.obj.Proxy, _ProfileL):
             self.type = "L"
-        elif isinstance(self.obj.Proxy,_ProfileT):
+        elif isinstance(self.obj.Proxy, _ProfileT):
             self.type = "T"
-        elif isinstance(self.obj.Proxy,_ProfileTSLOT):
+        elif isinstance(self.obj.Proxy, _ProfileTSLOT):
             self.type = "TSLOT"
         else:
             self.type = "Building Element Proxy"
@@ -455,8 +669,12 @@ class ProfileTaskPanel:
         layout.addWidget(self.comboCategory)
         self.comboProfile = QtGui.QComboBox(self.form)
         layout.addWidget(self.comboProfile)
-        QtCore.QObject.connect(self.comboCategory, QtCore.SIGNAL("currentTextChanged(QString)"), self.changeCategory)
-        QtCore.QObject.connect(self.comboProfile, QtCore.SIGNAL("currentIndexChanged(int)"), self.changeProfile)
+        QtCore.QObject.connect(
+            self.comboCategory, QtCore.SIGNAL("currentTextChanged(QString)"), self.changeCategory
+        )
+        QtCore.QObject.connect(
+            self.comboProfile, QtCore.SIGNAL("currentIndexChanged(int)"), self.changeProfile
+        )
         # Read preset profiles and add relevant ones
         self.categories = []
         self.presets = readPresets()
@@ -475,35 +693,37 @@ class ProfileTaskPanel:
                         break
         if not self.Profile:
             # try to find by size
-            if hasattr(self.obj,"Width") and hasattr(self.obj,"Height"):
+            if hasattr(self.obj, "Width") and hasattr(self.obj, "Height"):
                 for pre in self.presets:
                     if self.type == pre[1]:
-                        if abs(self.obj.Width - self.Profile[4]) < 0.1 and \
-                           abs(self.obj.Height - self.Profile[5]) < 0.1:
+                        if (
+                            abs(self.obj.Width - self.Profile[4]) < 0.1
+                            and abs(self.obj.Height - self.Profile[5]) < 0.1
+                        ):
                             self.Profile = pre
                             break
         if self.Profile:
-            origprofile = list(self.Profile) # the operation below will change self.profile
-            self.comboCategory.setCurrentIndex(1+self.categories.index(origprofile[1]))
+            origprofile = list(self.Profile)  # the operation below will change self.profile
+            self.comboCategory.setCurrentIndex(1 + self.categories.index(origprofile[1]))
             self.changeCategory(origprofile[1])
             self.comboProfile.setCurrentIndex(self.currentpresets.index(origprofile))
         self.retranslateUi(self.form)
 
-    def changeCategory(self,text):
+    def changeCategory(self, text):
 
         self.comboProfile.clear()
         self.currentpresets = []
         for pre in self.presets:
             if pre[1] == text:
                 self.currentpresets.append(pre)
-                f = FreeCAD.Units.Quantity(pre[4],FreeCAD.Units.Length).getUserPreferred()
-                d = params.get_param("Decimals",path="Units")
-                s1 = str(round(pre[4]/f[1],d))
-                s2 = str(round(pre[5]/f[1],d))
+                f = FreeCAD.Units.Quantity(pre[4], FreeCAD.Units.Length).getUserPreferred()
+                d = params.get_param("Decimals", path="Units")
+                s1 = str(round(pre[4] / f[1], d))
+                s2 = str(round(pre[5] / f[1], d))
                 s3 = str(f[2])
-                self.comboProfile.addItem(pre[2]+" ("+s1+"x"+s2+s3+")")
+                self.comboProfile.addItem(pre[2] + " (" + s1 + "x" + s2 + s3 + ")")
 
-    def changeProfile(self,idx):
+    def changeProfile(self, idx):
 
         self.Profile = self.currentpresets[idx]
 
@@ -511,21 +731,21 @@ class ProfileTaskPanel:
 
         self.obj.Label = self.Profile[2] + "_"
         if self.Profile:
-            if self.Profile[3]=="C":
+            if self.Profile[3] == "C":
                 _ProfileC(self.obj, self.Profile)
-            elif self.Profile[3]=="H":
+            elif self.Profile[3] == "H":
                 _ProfileH(self.obj, self.Profile)
-            elif self.Profile[3]=="R":
+            elif self.Profile[3] == "R":
                 _ProfileR(self.obj, self.Profile)
-            elif self.Profile[3]=="RH":
+            elif self.Profile[3] == "RH":
                 _ProfileRH(self.obj, self.Profile)
-            elif self.Profile[3]=="U":
+            elif self.Profile[3] == "U":
                 _ProfileU(self.obj, self.Profile)
-            elif self.Profile[3]=="L":
+            elif self.Profile[3] == "L":
                 _ProfileL(self.obj, self.Profile)
-            elif self.Profile[3]=="T":
+            elif self.Profile[3] == "T":
                 _ProfileT(self.obj, self.Profile)
-            elif self.Profile[3]=="TSLOT":
+            elif self.Profile[3] == "TSLOT":
                 _ProfileTSLOT(self.obj, self.Profile)
             else:
                 print("Profile not supported")
@@ -541,4 +761,6 @@ class ProfileTaskPanel:
 
     def retranslateUi(self, TaskPanel):
 
-        self.form.setWindowTitle(self.type+" "+QtGui.QApplication.translate("Arch", "Profile", None))
+        self.form.setWindowTitle(
+            self.type + " " + QtGui.QApplication.translate("Arch", "Profile", None)
+        )

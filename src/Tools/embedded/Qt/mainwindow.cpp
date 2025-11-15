@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 
 #include <Python.h>
 #include <QtGui>
@@ -5,7 +6,7 @@
 #include <sstream>
 #include <string>
 #if defined(Q_WS_X11)
-#include <QX11EmbedContainer>
+# include <QX11EmbedContainer>
 #endif
 
 #include "mainwindow.h"

@@ -38,9 +38,9 @@ class TestArchWall(TestArchBase.TestArchBase):
         operation = "Checking Arch Wall..."
         self.printTestMessage(operation)
 
-        l=Draft.makeLine(App.Vector(0,0,0),App.Vector(-2,0,0))
+        l = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(-2, 0, 0))
         w = Arch.makeWall(l)
-        self.assertTrue(w,"Arch Wall failed")
+        self.assertTrue(w, "Arch Wall failed")
 
     def testWallMultiMatAlign(self):
         operation = "Checking Arch Wall with MultiMaterial and 3 alignments..."
@@ -50,38 +50,50 @@ class TestArchWall(TestArchBase.TestArchBase):
         matB = Arch.makeMaterial()
         matMulti = Arch.makeMultiMaterial()
         matMulti.Materials = [matA, matB]
-        matMulti.Thicknesses = [100, 200] # total width different from default 200
-        pts = [App.Vector(   0,    0, 0),
-               App.Vector(1000,    0, 0),
-               App.Vector(1000, 1000, 0),
-               App.Vector(2000, 1000, 0)]
+        matMulti.Thicknesses = [100, 200]  # total width different from default 200
+        pts = [
+            App.Vector(0, 0, 0),
+            App.Vector(1000, 0, 0),
+            App.Vector(1000, 1000, 0),
+            App.Vector(2000, 1000, 0),
+        ]
         # wall based on wire:
         wire = Draft.makeWire(pts)
         wallWire = Arch.makeWall(wire)
         wallWire.Material = matMulti
         # wall based on sketch:
-        sketch = App.activeDocument().addObject('Sketcher::SketchObject','Sketch')
-        sketch.addGeometry([Part.LineSegment(pts[0], pts[1]),
-                            Part.LineSegment(pts[1], pts[2]),
-                            Part.LineSegment(pts[2], pts[3])])
+        sketch = App.activeDocument().addObject("Sketcher::SketchObject", "Sketch")
+        sketch.addGeometry(
+            [
+                Part.LineSegment(pts[0], pts[1]),
+                Part.LineSegment(pts[1], pts[2]),
+                Part.LineSegment(pts[2], pts[3]),
+            ]
+        )
         wallSketch = Arch.makeWall(sketch)
         wallSketch.Material = matMulti
 
         alignLst = ["Left", "Center", "Right"]
-        checkLst = [[App.Vector(0, -300, 0), App.Vector(2000, 1000, 0)],
-                    [App.Vector(0, -150, 0), App.Vector(2000, 1150, 0)],
-                    [App.Vector(0,    0, 0), App.Vector(2000, 1300, 0)]]
+        checkLst = [
+            [App.Vector(0, -300, 0), App.Vector(2000, 1000, 0)],
+            [App.Vector(0, -150, 0), App.Vector(2000, 1150, 0)],
+            [App.Vector(0, 0, 0), App.Vector(2000, 1300, 0)],
+        ]
         for i in range(3):
             wallWire.Align = alignLst[i]
             wallSketch.Align = alignLst[i]
             App.ActiveDocument.recompute()
             for box in [wallWire.Shape.BoundBox, wallSketch.Shape.BoundBox]:
                 ptMin = App.Vector(box.XMin, box.YMin, 0)
-                self.assertTrue(ptMin.isEqual(checkLst[i][0], 1e-8),
-                                "Arch Wall with MultiMaterial and 3 alignments failed")
+                self.assertTrue(
+                    ptMin.isEqual(checkLst[i][0], 1e-8),
+                    "Arch Wall with MultiMaterial and 3 alignments failed",
+                )
                 ptMax = App.Vector(box.XMax, box.YMax, 0)
-                self.assertTrue(ptMax.isEqual(checkLst[i][1], 1e-8),
-                                "Arch Wall with MultiMaterial and 3 alignments failed")
+                self.assertTrue(
+                    ptMax.isEqual(checkLst[i][1], 1e-8),
+                    "Arch Wall with MultiMaterial and 3 alignments failed",
+                )
 
     def test_makeWall(self):
         """Test the makeWall function."""
@@ -103,3 +115,26 @@ class TestArchWall(TestArchBase.TestArchBase):
         wall2 = Arch.makeWall(base_line2, width=200, height=3000)
         joined_wall = Arch.joinWalls([wall1, wall2])
         self.assertIsNotNone(joined_wall, "joinWalls failed to join walls.")
+
+    def test_remove_base_from_wall_without_host(self):
+        """
+        Tests that removing a wall's base using removeComponents(host=None)
+        does not crash and successfully unlinks the base.
+        This is the non-regression test for the 'list' has no attribute 'Base' bug.
+        https://github.com/FreeCAD/FreeCAD/issues/24532
+        """
+        self.printTestMessage("Testing removal of a wall's base component...")
+
+        # 1. Arrange: Create a wall with a base
+        line = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(2000, 0, 0))
+        wall = Arch.makeWall(line)
+        self.assertIsNotNone(wall.Base, "Pre-condition failed: Wall should have a base.")
+
+        # 2. Act: Call removeComponents on the base, simulating the failing workflow
+        # Before the fix, this will raise an AttributeError.
+        # After the fix, it should complete without error.
+        Arch.removeComponents([wall.Base])
+        self.document.recompute()
+
+        # 3. Assert: The base should now be None
+        self.assertIsNone(wall.Base, "The wall's Base property was not cleared after removal.")

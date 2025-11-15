@@ -47,15 +47,16 @@ wall = Arch.makeWall(length=5000, width=200, height=3000)  # mm units
 wall.recompute()
 ```
 """
-__title__  = "FreeCAD Arch API"
+__title__ = "FreeCAD Arch API"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecad.org"
+__url__ = "https://www.freecad.org"
 
 import FreeCAD
 from typing import Optional
 
 if FreeCAD.GuiUp:
     import FreeCADGui
+
     FreeCADGui.updateLocale()
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
@@ -73,6 +74,7 @@ from ArchStructure import *
 
 
 # make functions
+
 
 def makeAxis(num=1, size=1000, name=None):
     """
@@ -93,6 +95,7 @@ def makeAxis(num=1, size=1000, name=None):
         The created axis object.
     """
     import ArchAxis
+
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
@@ -133,6 +136,7 @@ def makeAxisSystem(axes, name=None):
         The created axis system object.
     """
     import ArchAxisSystem
+
     if not isinstance(axes, list):
         axes = [axes]
     obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython", "AxisSystem")
@@ -164,8 +168,9 @@ def makeBuildingPart(objectslist=None, baseobj=None, name=None):
         The created building part object.
     """
     import ArchBuildingPart
+
     obj = FreeCAD.ActiveDocument.addObject("App::GeometryPython", "BuildingPart")
-    #obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","BuildingPart")
+    # obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","BuildingPart")
     obj.Label = name if name else translate("Arch", "BuildingPart")
     ArchBuildingPart.BuildingPart(obj)
     obj.IfcType = "Building Element Part"
@@ -223,6 +228,7 @@ def makeBuilding(objectslist=None, baseobj=None, name=None):
         The created building object.
     """
     import ArchBuildingPart
+
     obj = makeBuildingPart(objectslist)
     obj.Label = name if name else translate("Arch", "Building")
     obj.IfcType = "Building"
@@ -285,6 +291,7 @@ def convertFloors(floor=None):
     """
     import Draft
     import ArchBuildingPart
+
     todel = []
     if floor:
         objset = [floor]
@@ -309,9 +316,9 @@ def convertFloors(floor=None):
                 if hasattr(parent, "Group"):
                     if obj in parent.Group:
                         parent.addObject(nobj)
-                        #g = parent.Group
-                        #g.append(nobj)
-                        #parent.Group = g
+                        # g = parent.Group
+                        # g.append(nobj)
+                        # parent.Group = g
             todel.append(obj.Name)
             if obj.ViewObject:
                 # some bug makes this trigger even efter the object has been deleted...
@@ -321,6 +328,7 @@ def convertFloors(floor=None):
             nobj.Label = label
     for n in todel:
         from draftutils import todo
+
         todo.ToDo.delay(FreeCAD.ActiveDocument.removeObject, n)
 
 
@@ -425,6 +433,7 @@ def makeFence(section, post, path):
     fence.Path = path
     if FreeCAD.GuiUp:
         import ArchFence
+
         ArchFence.hide(section)
         ArchFence.hide(post)
         ArchFence.hide(path)
@@ -804,7 +813,7 @@ def makePipeConnector(pipes, radius=0, name=None):
     return pipeConnector
 
 
-def makeProfile(profile=[0, 'REC', 'REC100x100', 'R', 100, 100]):
+def makeProfile(profile=[0, "REC", "REC100x100", "R", 100, 100]):
     """
     Creates a profile object based on the given profile data.
 
@@ -836,6 +845,7 @@ def makeProfile(profile=[0, 'REC', 'REC100x100', 'R', 100, 100]):
         The created profile object.
     """
     import ArchProfile
+
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
@@ -910,13 +920,14 @@ def makeProject(sites=None, name=None):
 
     return project
 
+
 def makeRebar(
     baseobj: Optional[FreeCAD.DocumentObject] = None,
     sketch: Optional[FreeCAD.DocumentObject] = None,
     diameter: Optional[float] = None,
     amount: int = 1,
     offset: Optional[float] = None,
-    name: Optional[str] = None
+    name: Optional[str] = None,
 ) -> Optional[FreeCAD.DocumentObject]:
     """
     Creates a reinforcement bar (rebar) object.
@@ -1071,19 +1082,22 @@ def makeReference(filepath=None, partname=None, name=None):
         reference.Part = partname
 
     import Draft
+
     Draft.select(reference)
 
     return reference
 
 
-def makeRoof(baseobj=None,
-             facenr=0,
-             angles=[45.0],
-             run=[250.0],
-             idrel=[-1],
-             thickness=[50.0],
-             overhang=[100.0],
-             name=None):
+def makeRoof(
+    baseobj=None,
+    facenr=0,
+    angles=[45.0],
+    run=[250.0],
+    idrel=[-1],
+    thickness=[50.0],
+    overhang=[100.0],
+    name=None,
+):
     """
     Creates a roof object based on a closed wire or an object.
 
@@ -1139,7 +1153,7 @@ def makeRoof(baseobj=None,
                 if FreeCAD.GuiUp:
                     roof.Base.ViewObject.hide()
             else:
-                if (roof.Base.Shape.Faces and roof.Face):
+                if roof.Base.Shape.Faces and roof.Face:
                     baseWire = roof.Base.Shape.Faces[roof.Face - 1].Wires[0]
                     if FreeCAD.GuiUp:
                         roof.Base.ViewObject.hide()
@@ -1153,11 +1167,11 @@ def makeRoof(baseobj=None,
                     roof.Base.ViewObject.hide()
                 edges = Part.__sortEdges__(baseWire.Edges)
                 ln = len(edges)
-                roof.Angles    = ArchRoof.adjust_list_len(angles, ln, angles[0])
-                roof.Runs      = ArchRoof.adjust_list_len(run, ln, run[0])
-                roof.IdRel     = ArchRoof.adjust_list_len(idrel, ln, idrel[0])
+                roof.Angles = ArchRoof.adjust_list_len(angles, ln, angles[0])
+                roof.Runs = ArchRoof.adjust_list_len(run, ln, run[0])
+                roof.IdRel = ArchRoof.adjust_list_len(idrel, ln, idrel[0])
                 roof.Thickness = ArchRoof.adjust_list_len(thickness, ln, thickness[0])
-                roof.Overhang  = ArchRoof.adjust_list_len(overhang, ln, overhang[0])
+                roof.Overhang = ArchRoof.adjust_list_len(overhang, ln, overhang[0])
 
     roof.Face = facenr
 
@@ -1260,6 +1274,7 @@ def makeSite(objectslist=None, baseobj=None, name=None):
         site.Group = objectslist
     if baseobj:
         import Part
+
         if isinstance(baseobj, Part.Shape):
             site.Shape = baseobj
         else:
@@ -1329,12 +1344,13 @@ def makeSpace(objects=None, baseobj=None, name=None):
         # object will determine the type of the set.
         # Input to this function can come into three different formats. First convert it
         # to a common format: [ (<Part::Feature>, ["Face1", ...]), ... ]
-        if (hasattr(objects[0], "isDerivedFrom") and
-                objects[0].isDerivedFrom("Gui::SelectionObject")):
+        if hasattr(objects[0], "isDerivedFrom") and objects[0].isDerivedFrom(
+            "Gui::SelectionObject"
+        ):
             # Selection set: convert to common format
             # [<SelectionObject>, ...]
             objects = [(obj.Object, obj.SubElementNames) for obj in objects]
-        elif (isinstance(objects[0], tuple) or isinstance(objects[0], list)):
+        elif isinstance(objects[0], tuple) or isinstance(objects[0], list):
             # Tuple or list of object with subobjects: pass unmodified
             # [ (<Part::Feature>, ["Face1", ...]), ... ]
             pass
@@ -1358,6 +1374,7 @@ def makeSpace(objects=None, baseobj=None, name=None):
         else:
             space.Proxy.addSubobjects(space, boundaries)
     return space
+
 
 def addSpaceBoundaries(space, subobjects):
     """Adds the given subobjects as defining boundaries of the given space.
@@ -1384,8 +1401,10 @@ def addSpaceBoundaries(space, subobjects):
             subobjects = [(obj, ("Face1", "Face2", "Face3", "Face4"))]
     """
     import Draft
+
     if Draft.getType(space) == "Space":
         space.Proxy.addSubobjects(space, subobjects)
+
 
 def removeSpaceBoundaries(space, subobjects):
     """Remove the given subobjects as defining boundaries of the given space.
@@ -1412,8 +1431,10 @@ def removeSpaceBoundaries(space, subobjects):
             subobjects = [(obj, ("Face1", "Face2", "Face3", "Face4"))]
     """
     import Draft
+
     if Draft.getType(space) == "Space":
         space.Proxy.removeSubobjects(space, subobjects)
+
 
 def makeStairs(baseobj=None, length=None, width=None, height=None, steps=None, name=None):
     """
@@ -1440,6 +1461,7 @@ def makeStairs(baseobj=None, length=None, width=None, height=None, steps=None, n
         The created stairs object.
     """
     import ArchStairs
+
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
@@ -1449,8 +1471,7 @@ def makeStairs(baseobj=None, length=None, width=None, height=None, steps=None, n
     label = name if name else translate("Arch", "Stairs")
 
     def setProperty(obj, length, width, height, steps):
-        """setProperty(obj,length,width,height,steps): sets up the basic properties for this stair
-        """
+        """setProperty(obj,length,width,height,steps): sets up the basic properties for this stair"""
         obj.Length = length if length else params.get_param_arch("StairsLength")
         obj.Width = width if width else params.get_param_arch("StairsWidth")
         obj.Height = height if height else params.get_param_arch("StairsHeight")
@@ -1502,16 +1523,16 @@ def makeStairs(baseobj=None, length=None, width=None, height=None, steps=None, n
                 additions.append(stairs[i])
                 if i > 1:
                     stairs[i].LastSegment = stairs[i - 1]
-            #else:
-                # Below made '1st segment' of a complex stairs went to Base
-                # Remarked below out, 2025.8.31.
-                # Seems no other Arch object create an Arch object as its Base
-                # and use a 'master' Arch(Stairs) object like Stairs.  Base is
-                # not moved together with host upon onChanged(), unlike
-                # behaviour in objects of Additions.
-                #
-                #if len(stairs) > 1: # i.e. length >1, have a 'master' staircase created
-                #    stairs[0].Base = stairs[1]
+            # else:
+            # Below made '1st segment' of a complex stairs went to Base
+            # Remarked below out, 2025.8.31.
+            # Seems no other Arch object create an Arch object as its Base
+            # and use a 'master' Arch(Stairs) object like Stairs.  Base is
+            # not moved together with host upon onChanged(), unlike
+            # behaviour in objects of Additions.
+            #
+            # if len(stairs) > 1: # i.e. length >1, have a 'master' staircase created
+            #    stairs[0].Base = stairs[1]
 
             i += 1
         if lenSelection > 1:
@@ -1554,6 +1575,7 @@ def makeRailing(stairs):
     -------
     None
     """
+
     def makeRailingLorR(stairs, side="L"):
         """makeRailingLorR(stairs,side="L"): Creates a railing on the given side of the stairs, L or
         R"""
@@ -1568,8 +1590,11 @@ def makeRailing(stairs):
                 stairRailingLR = "RailingRight"
             if outlineLR or outlineLRAll:
                 lrRail = makePipe(
-                    baseobj=None, diameter=0, length=0, placement=None,
-                    name=translate("Arch", "Railing")
+                    baseobj=None,
+                    diameter=0,
+                    length=0,
+                    placement=None,
+                    name=translate("Arch", "Railing"),
                 )
                 # All semgments in a complex stairs moved together by default
                 # regardless Move With Host setting in system setting
@@ -1638,8 +1663,14 @@ def makeTruss(baseobj=None, name=None):
 
 
 def makeWall(
-        baseobj=None, height=None, length=None, width=None, align=None, offset=None,
-        face=None, name=None
+    baseobj=None,
+    height=None,
+    length=None,
+    width=None,
+    align=None,
+    offset=None,
+    face=None,
+    name=None,
 ):
     """Create a wall based on a given object, and returns the generated wall.
 
@@ -1692,7 +1723,7 @@ def makeWall(
 
     # Initialize all relevant properties
     if baseobj:
-        if hasattr(baseobj, 'Shape') or baseobj.isDerivedFrom("Mesh::Feature"):
+        if hasattr(baseobj, "Shape") or baseobj.isDerivedFrom("Mesh::Feature"):
             wall.Base = baseobj
         else:
             FreeCAD.Console.PrintWarning(
@@ -1743,6 +1774,7 @@ def joinWalls(walls, delete=False, deletebase=False):
     import Part
     import Draft
     import ArchWall
+
     if not walls:
         return None
     if not isinstance(walls, list):
@@ -1760,6 +1792,7 @@ def joinWalls(walls, delete=False, deletebase=False):
         else:
             try:
                 import ArchSketchObject
+
                 newSk = ArchSketchObject.makeArchSketch()
             except:
                 if Draft.getType(base.Base) != "Sketcher::SketchObject":
@@ -2069,16 +2102,17 @@ def makeWindow(
         # previously hardcoded. With the normal set to 'auto', window object would not suffer weird
         # shape if the Base Sketch is rotated by some reason. Keep the property be 'auto' (0,0,0)
         # here.
-        #obj.Normal = baseobj.Placement.Rotation.multVec(FreeCAD.Vector(0, 0, -1))
+        # obj.Normal = baseobj.Placement.Rotation.multVec(FreeCAD.Vector(0, 0, -1))
         window.Base = baseobj
     if parts is not None:
         window.WindowParts = parts
     else:
         if baseobj:
             linked_obj = baseobj.getLinkedObject(True)
-            if (linked_obj.isDerivedFrom("Part::Part2DObject")
-                or Draft.getType(linked_obj) in ["BezCurve", "BSpline", "Wire"]) \
-                    and DraftGeomUtils.isPlanar(baseobj.Shape):
+            if (
+                linked_obj.isDerivedFrom("Part::Part2DObject")
+                or Draft.getType(linked_obj) in ["BezCurve", "BSpline", "Wire"]
+            ) and DraftGeomUtils.isPlanar(baseobj.Shape):
                 # "BezCurve", "BSpline" and "Wire" objects created with < v1.1 are
                 # "Part::Part2DObject" objects. In all versions these objects need not be planar.
                 if baseobj.Shape.Wires:
@@ -2091,10 +2125,14 @@ def makeWindow(
                             wires.append(f"Wire{i}")
                     wires_str = ",".join(wires)
                     part_name = "Default"
-                    part_frame_thickness = "1" # mm
-                    part_offset = "0" # mm
+                    part_frame_thickness = "1"  # mm
+                    part_offset = "0"  # mm
                     window.WindowParts = [
-                        part_name, part_type, wires_str, part_frame_thickness, part_offset
+                        part_name,
+                        part_type,
+                        wires_str,
+                        part_frame_thickness,
+                        part_offset,
                     ]
             else:
                 # Bind properties from base obj if they exist
@@ -2105,6 +2143,7 @@ def makeWindow(
 
     if window.Base and FreeCAD.GuiUp:
         from ArchWindow import recolorize
+
         window.Base.ViewObject.DisplayMode = "Wireframe"
         window.Base.ViewObject.hide()
         todo.ToDo.delay(recolorize, [window.Document.Name, window.Name])

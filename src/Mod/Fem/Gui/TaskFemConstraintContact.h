@@ -42,8 +42,10 @@ class TaskFemConstraintContact: public TaskFemConstraint
     Q_OBJECT
 
 public:
-    explicit TaskFemConstraintContact(ViewProviderFemConstraintContact* ConstraintView,
-                                      QWidget* parent = nullptr);
+    explicit TaskFemConstraintContact(
+        ViewProviderFemConstraintContact* ConstraintView,
+        QWidget* parent = nullptr
+    );
     ~TaskFemConstraintContact() override;
     const std::string getReferences() const override;
     const std::string getAdjust() const;

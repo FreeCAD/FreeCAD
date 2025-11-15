@@ -65,7 +65,7 @@
     <message>
       <location filename="../../StartView.cpp" line="209"/>
       <source>Open File</source>
-      <translation>Obrir fitxer</translation>
+      <translation>Obre un fitxer</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="217"/>
@@ -95,7 +95,7 @@
     <message>
       <location filename="../../StartView.cpp" line="206"/>
       <source>Creates a new empty FreeCAD file</source>
-      <translation>Crear un nou fitxer buit de FreeCAD</translation>
+      <translation>Crea un fitxer buit nou del FreeCAD</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="210"/>

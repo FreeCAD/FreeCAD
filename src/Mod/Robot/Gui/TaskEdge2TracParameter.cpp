@@ -36,10 +36,7 @@ using namespace RobotGui;
 using namespace Gui;
 
 TaskEdge2TracParameter::TaskEdge2TracParameter(Robot::Edge2TracObject* pcObject, QWidget* parent)
-    : TaskBox(Gui::BitmapFactory().pixmap("Robot_Edge2Trac"),
-              tr("TaskEdge2TracParameter"),
-              true,
-              parent)
+    : TaskBox(Gui::BitmapFactory().pixmap("Robot_Edge2Trac"), tr("TaskEdge2TracParameter"), true, parent)
     , pcObject(pcObject)
     , HideShowObj(nullptr)
 {

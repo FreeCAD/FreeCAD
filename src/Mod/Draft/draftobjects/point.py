@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
 # *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
@@ -54,7 +56,7 @@ class Point(DraftObject):
         obj.Y = y
         obj.Z = z
 
-        obj.setPropertyStatus('Placement', 'Hidden')
+        obj.setPropertyStatus("Placement", "Hidden")
 
     def onDocumentRestored(self, obj):
         super().onDocumentRestored(obj)
@@ -73,6 +75,7 @@ class Point(DraftObject):
             return
 
         import Part
+
         obj.Shape = Part.Vertex(App.Vector(0, 0, 0))
         if base != xyz_vec:
             obj.Placement.Base = xyz_vec

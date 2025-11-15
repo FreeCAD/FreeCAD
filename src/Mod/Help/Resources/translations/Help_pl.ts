@@ -27,9 +27,9 @@ You can easily download the documentation for offline use by using the Addon
 Manager and installing the &quot;offline-documentation&quot; addon. If this
 field is left blank, FreeCAD will automatically search for the help files at
 the default location ($USERAPPDATADIR/Mod/offline-documentation).</source>
-      <translation>Umożliwia nastawienie niestandardowego adresu URL lub folderu, w którym znajdują się pliki pomocy.
-Możesz łatwo pobrać dokumentację do użytku offline, korzystając z Menedżera dodatków
-i instalując dodatek "Dokumentacja offline". Jeśli to pole pozostanie puste, FreeCAD automatycznie wyszuka
+      <translation>Umożliwia nastawienie niestandardowego adresu URL lub folderu, w którym znajdują się pliki pomocy. 
+Możesz łatwo pobrać dokumentację do użytku offline, korzystając z Menedżera dodatków 
+i instalując dodatek "Dokumentacja offline". Jeśli to pole pozostanie puste, FreeCAD automatycznie wyszuka 
 pliki pomocy w domyślnej lokalizacji ($USERAPPDATADIR/Mod/offline-documentation).</translation>
     </message>
     <message>
@@ -60,9 +60,9 @@ Documentation can be downloaded for offline use via the Addon Manager and instal
 &quot;offline-documentation&quot; addon. If this field is left blank, FreeCAD will
 automatically search for the help files at the default location
 ($USERAPPDATADIR/Mod/offline-documentation).</source>
-      <translation>Ustaw to na niestandardowy adres URL lub folder, w którym znajdują się pliki pomocy.
-Dokumentację można pobrać do użytku offline, korzystając z Menedżera dodatków
-i instalując dodatek "offline-documentation". Jeśli to pole pozostanie puste, FreeCAD automatycznie wyszuka
+      <translation>Ustaw to na niestandardowy adres URL lub folder, w którym znajdują się pliki pomocy. 
+Dokumentację można pobrać do użytku offline, korzystając z Menedżera dodatków 
+i instalując dodatek "offline-documentation". Jeśli to pole pozostanie puste, FreeCAD automatycznie wyszuka 
 pliki pomocy w domyślnej lokalizacji ($USERAPPDATADIR/Mod/offline-documentation).</translation>
     </message>
     <message>
@@ -153,19 +153,19 @@ Działa to tylko wtedy, gdy Markdown jest wybrany powyżej.</translation>
     <message>
       <location filename="../../Help.py" line="75"/>
       <source>Contents for this page could not be retrieved. Please check settings under menu Edit → Preferences → General → Help</source>
-      <translation>Nie można pobrać zawartości tej strony.
+      <translation>Nie można pobrać zawartości tej strony. 
 Sprawdź ustawienia w menu Edycja → Preferencje → Ogólne → Pomoc</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="79"/>
       <source>Help files location could not be determined. Please check settings under menu Edit → Preferences → General → Help</source>
-      <translation>Nie można określić lokalizacji plików pomocy.
+      <translation>Nie można określić lokalizacji plików pomocy. 
 Sprawdź ustawienia w menu Edycja → Preferencje → Ogólne → Pomoc</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="83"/>
       <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</source>
-      <translation>Moduł PySide2 QtWebEngineWidgets nie jest dostępny.
+      <translation>Moduł PySide2 QtWebEngineWidgets nie jest dostępny. 
 Renderowanie Pomocy odbywa się za pomocą przeglądarki z twojego systemu.</translation>
     </message>
     <message>

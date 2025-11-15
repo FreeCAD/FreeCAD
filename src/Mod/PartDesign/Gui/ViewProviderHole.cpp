@@ -21,9 +21,8 @@
  ***************************************************************************/
 
 
-
-# include <QMenu>
-# include <QMessageBox>
+#include <QMenu>
+#include <QMessageBox>
 
 
 #include <Gui/Application.h>
@@ -38,7 +37,7 @@
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderHole,PartDesignGui::ViewProvider)
+PROPERTY_SOURCE(PartDesignGui::ViewProviderHole, PartDesignGui::ViewProvider)
 
 ViewProviderHole::ViewProviderHole()
 {

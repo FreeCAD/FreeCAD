@@ -370,6 +370,11 @@ class Joint:
         if not hasattr(joint, "AngleMax"):
             self.addAngleMaxProperty(joint)
 
+        joint.setPropertyStatus("Distance", "AllowNegativeValues")
+        joint.setPropertyStatus("Distance2", "AllowNegativeValues")
+        joint.setPropertyStatus("LengthMin", "AllowNegativeValues")
+        joint.setPropertyStatus("LengthMax", "AllowNegativeValues")
+
     def addAngleProperty(self, joint):
         joint.addProperty(
             "App::PropertyAngle",
@@ -1808,8 +1813,8 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             try:
                 # Use a set to handle cases where both refs point to the same object
                 parts_to_isolate = {
-                    UtilsAssembly.getObject(self.refs[0]),
-                    UtilsAssembly.getObject(self.refs[1]),
+                    self.getMovingPart(self.refs[0]),
+                    self.getMovingPart(self.refs[1]),
                 }
                 assembly_vobj.isolateComponents(list(parts_to_isolate), isolate_mode)
             except Exception as e:

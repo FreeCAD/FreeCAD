@@ -102,13 +102,15 @@ void TaskRobot6Axis::setRobot(Robot::RobotObject* pcRobotObject)
     ui->horizontalSlider_Axis6->setMaximum((int)Rob->getMaxAngle(5));
     ui->horizontalSlider_Axis6->setMinimum((int)Rob->getMinAngle(5));
 
-    setAxis(pcRobot->Axis1.getValue(),
-            pcRobot->Axis2.getValue(),
-            pcRobot->Axis3.getValue(),
-            pcRobot->Axis4.getValue(),
-            pcRobot->Axis5.getValue(),
-            pcRobot->Axis6.getValue(),
-            pcRobot->Tcp.getValue());
+    setAxis(
+        pcRobot->Axis1.getValue(),
+        pcRobot->Axis2.getValue(),
+        pcRobot->Axis3.getValue(),
+        pcRobot->Axis4.getValue(),
+        pcRobot->Axis5.getValue(),
+        pcRobot->Axis6.getValue(),
+        pcRobot->Tcp.getValue()
+    );
     viewTool(pcRobot->Tool.getValue());
 }
 
@@ -218,13 +220,15 @@ void TaskRobot6Axis::setColor(int i, float angle, QLineEdit& lineEdit)
     }
 }
 
-void TaskRobot6Axis::setAxis(float A1,
-                             float A2,
-                             float A3,
-                             float A4,
-                             float A5,
-                             float A6,
-                             const Base::Placement& Tcp)
+void TaskRobot6Axis::setAxis(
+    float A1,
+    float A2,
+    float A3,
+    float A4,
+    float A5,
+    float A6,
+    const Base::Placement& Tcp
+)
 {
     ui->horizontalSlider_Axis1->setSliderPosition((int)A1);
     ui->lineEdit_Axis1->setText(QStringLiteral("%1°").arg(A1, 0, 'f', 1));

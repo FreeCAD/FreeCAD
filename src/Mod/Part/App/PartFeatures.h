@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -34,7 +36,7 @@
 namespace Part
 {
 
-class PartExport RuledSurface : public Part::Feature
+class PartExport RuledSurface: public Part::Feature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::RuledSurface);
 
@@ -48,15 +50,16 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
     short mustExecute() const override;
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "PartGui::ViewProviderRuledSurface";
     }
     //@}
 
 protected:
-    void onChanged (const App::Property* prop) override;
+    void onChanged(const App::Property* prop) override;
 
 private:
     App::DocumentObjectExecReturn* getShape(const App::PropertyLinkSub& link, TopoDS_Shape&) const;
@@ -65,7 +68,7 @@ private:
     static const char* OrientationEnums[];
 };
 
-class PartExport Loft : public Part::Feature
+class PartExport Loft: public Part::Feature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::Loft);
 
@@ -82,21 +85,22 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
     short mustExecute() const override;
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "PartGui::ViewProviderLoft";
     }
     //@}
 
 protected:
-    void onChanged (const App::Property* prop) override;
+    void onChanged(const App::Property* prop) override;
 
 private:
     static App::PropertyIntegerConstraint::Constraints Degrees;
 };
 
-class PartExport Sweep : public Part::Feature
+class PartExport Sweep: public Part::Feature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::Sweep);
 
@@ -113,21 +117,22 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
     short mustExecute() const override;
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "PartGui::ViewProviderSweep";
     }
     //@}
 
 protected:
-    void onChanged (const App::Property* prop) override;
+    void onChanged(const App::Property* prop) override;
 
 private:
     static const char* TransitionEnums[];
 };
 
-class PartExport Thickness : public Part::Feature
+class PartExport Thickness: public Part::Feature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::Thickness);
 
@@ -144,22 +149,27 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
     short mustExecute() const override;
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "PartGui::ViewProviderThickness";
     }
     //@}
 
 protected:
-    void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop) override;
+    void handleChangedPropertyType(
+        Base::XMLReader& reader,
+        const char* TypeName,
+        App::Property* prop
+    ) override;
 
 private:
     static const char* ModeEnums[];
     static const char* JoinEnums[];
 };
 
-class Refine : public Part::Feature
+class Refine: public Part::Feature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::Refine);
 
@@ -171,14 +181,15 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute() override;
-    const char* getViewProviderName() const override {
+    App::DocumentObjectExecReturn* execute() override;
+    const char* getViewProviderName() const override
+    {
         return "PartGui::ViewProviderRefine";
     }
     //@}
 };
 
-class Reverse : public Part::Feature
+class Reverse: public Part::Feature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::Reverse);
 
@@ -191,13 +202,14 @@ public:
     //@{
     /// recalculate the feature
     App::DocumentObjectExecReturn* execute() override;
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "PartGui::ViewProviderReverse";
     }
     //@}
 };
 
-} //namespace Part
+}  // namespace Part
 
 
-#endif // PART_FEATURES_H
+#endif  // PART_FEATURES_H

@@ -21,7 +21,6 @@
  ***************************************************************************/
 
 
-
 #include <App/Document.h>
 #include <App/VarSet.h>
 #include <App/Origin.h>
@@ -42,35 +41,34 @@ PROPERTY_SOURCE(PartDesign::Body, Part::BodyBase)
 
 Body::Body()
 {
-    ADD_PROPERTY_TYPE(AllowCompound, (true), "Experimental", App::Prop_None, "Allow multiple solids in Body (experimental)");
+    ADD_PROPERTY_TYPE(
+        AllowCompound,
+        (true),
+        "Experimental",
+        App::Prop_None,
+        "Allow multiple solids in Body (experimental)"
+    );
 
     _GroupTouched.setStatus(App::Property::Output, true);
 }
 
 /*
-// Note: The following code will catch Python Document::removeObject() modifications. If the object removed is
-// a member of the Body::Group, then it will be automatically removed from the Group property which triggers the
+// Note: The following code will catch Python Document::removeObject() modifications. If the object
+removed is
+// a member of the Body::Group, then it will be automatically removed from the Group property which
+triggers the
 // following two methods
-// But since we require the Python user to call both Document::addObject() and Body::addObject(), we should
-// also require calling both Document::removeObject and Body::removeFeature() in order to be consistent
-void Body::onBeforeChange(const App::Property *prop)
+// But since we require the Python user to call both Document::addObject() and Body::addObject(), we
+should
+// also require calling both Document::removeObject and Body::removeFeature() in order to be
+consistent void Body::onBeforeChange(const App::Property *prop)
 {
-    // Remember the feature before the current Tip. If the Tip is already at the first feature, remember the next feature
-    if (prop == &Group) {
-        std::vector<App::DocumentObject*> features = Group.getValues();
-        if (features.empty()) {
-            rememberTip = NULL;
-        } else {
-            std::vector<App::DocumentObject*>::iterator it = std::find(features.begin(), features.end(), Tip.getValue());
-            if (it == features.begin()) {
-                it++;
-                if (it == features.end())
-                    rememberTip = NULL;
-                else
-                    rememberTip = *it;
-            } else {
-                it--;
-                rememberTip = *it;
+    // Remember the feature before the current Tip. If the Tip is already at the first feature,
+remember the next feature if (prop == &Group) { std::vector<App::DocumentObject*> features =
+Group.getValues(); if (features.empty()) { rememberTip = NULL; } else {
+            std::vector<App::DocumentObject*>::iterator it = std::find(features.begin(),
+features.end(), Tip.getValue()); if (it == features.begin()) { it++; if (it == features.end())
+rememberTip = NULL; else rememberTip = *it; } else { it--; rememberTip = *it;
             }
         }
     }
@@ -85,8 +83,8 @@ void Body::onChanged(const App::Property *prop)
         if (features.empty()) {
             Tip.setValue(NULL);
         } else {
-            std::vector<App::DocumentObject*>::iterator it = std::find(features.begin(), features.end(), Tip.getValue());
-            if (it == features.end()) {
+            std::vector<App::DocumentObject*>::iterator it = std::find(features.begin(),
+features.end(), Tip.getValue()); if (it == features.end()) {
                 // Tip feature was deleted
                 Tip.setValue(rememberTip);
             }
@@ -99,83 +97,87 @@ void Body::onChanged(const App::Property *prop)
 
 short Body::mustExecute() const
 {
-    if ( Tip.isTouched() ) {
+    if (Tip.isTouched()) {
         return 1;
     }
     return Part::BodyBase::mustExecute();
 }
 
-App::DocumentObject* Body::getPrevSolidFeature(App::DocumentObject *start)
+App::DocumentObject* Body::getPrevSolidFeature(App::DocumentObject* start)
 {
-    if (!start) { // default to tip
+    if (!start) {  // default to tip
         start = Tip.getValue();
     }
 
-    if (!start) { // No Tip
+    if (!start) {  // No Tip
         return nullptr;
     }
 
-    if (!hasObject(start))
-        return nullptr;
-
-    const std::vector<App::DocumentObject*> & features = Group.getValues();
-
-    auto startIt = std::find (features.rbegin(), features.rend(), start);
-    if (startIt == features.rend()) { // object not found
+    if (!hasObject(start)) {
         return nullptr;
     }
 
-    auto rvIt = std::find_if (startIt + 1, features.rend(), isSolidFeature);
-    if (rvIt != features.rend()) { // the solid found in model list
+    const std::vector<App::DocumentObject*>& features = Group.getValues();
+
+    auto startIt = std::find(features.rbegin(), features.rend(), start);
+    if (startIt == features.rend()) {  // object not found
+        return nullptr;
+    }
+
+    auto rvIt = std::find_if(startIt + 1, features.rend(), isSolidFeature);
+    if (rvIt != features.rend()) {  // the solid found in model list
         return *rvIt;
     }
     return nullptr;
 }
 
-App::DocumentObject* Body::getNextSolidFeature(App::DocumentObject *start)
+App::DocumentObject* Body::getNextSolidFeature(App::DocumentObject* start)
 {
-    if (!start) { // default to tip
+    if (!start) {  // default to tip
         start = Tip.getValue();
     }
 
-    if (!start || !hasObject(start)) { // no or faulty tip
+    if (!start || !hasObject(start)) {  // no or faulty tip
         return nullptr;
     }
 
-    const std::vector<App::DocumentObject*> & features = Group.getValues();
+    const std::vector<App::DocumentObject*>& features = Group.getValues();
     std::vector<App::DocumentObject*>::const_iterator startIt;
 
-    startIt = std::find (features.begin(), features.end(), start);
-    if (startIt == features.end()) { // object not found
+    startIt = std::find(features.begin(), features.end(), start);
+    if (startIt == features.end()) {  // object not found
         return nullptr;
     }
 
     startIt++;
-    if (startIt == features.end()) { // features list has only one element
+    if (startIt == features.end()) {  // features list has only one element
         return nullptr;
     }
 
-    auto rvIt = std::find_if (startIt, features.end(), isSolidFeature);
-    if (rvIt != features.end()) { // the solid found in model list
+    auto rvIt = std::find_if(startIt, features.end(), isSolidFeature);
+    if (rvIt != features.end()) {  // the solid found in model list
         return *rvIt;
     }
     return nullptr;
 }
 
-bool Body::isAfterInsertPoint(App::DocumentObject* feature) {
-    App::DocumentObject *nextSolid = getNextSolidFeature ();
-    assert (feature);
+bool Body::isAfterInsertPoint(App::DocumentObject* feature)
+{
+    App::DocumentObject* nextSolid = getNextSolidFeature();
+    assert(feature);
 
     if (feature == nextSolid) {
         return true;
-    } else if (!nextSolid) { // the tip is last solid, we can't be placed after it
+    }
+    else if (!nextSolid) {  // the tip is last solid, we can't be placed after it
         return false;
-    } else {
-        return isAfter ( feature, nextSolid );
+    }
+    else {
+        return isAfter(feature, nextSolid);
     }
 }
 
-bool Body::isSolidFeature(const App::DocumentObject *obj)
+bool Body::isSolidFeature(const App::DocumentObject* obj)
 {
     if (!obj) {
         return false;
@@ -192,68 +194,70 @@ bool Body::isSolidFeature(const App::DocumentObject *obj)
         }
         return true;
     }
-    return false;//DeepSOIC: work-in-progress?
+    return false;  // DeepSOIC: work-in-progress?
 }
 
-bool Body::isAllowed(const App::DocumentObject *obj)
+bool Body::isAllowed(const App::DocumentObject* obj)
 {
-    if (!obj)
+    if (!obj) {
         return false;
+    }
 
-    // TODO: Should we introduce a PartDesign::FeaturePython class? This should then also return true for isSolidFeature()
-    return (obj->isDerivedFrom<PartDesign::Feature>() ||
-            obj->isDerivedFrom<Part::Datum>()   ||
-            // TODO Shouldn't we replace it with Sketcher::SketchObject? (2015-08-13, Fat-Zer)
-            obj->isDerivedFrom<Part::Part2DObject>() ||
-            obj->isDerivedFrom<PartDesign::ShapeBinder>() ||
-            obj->isDerivedFrom<PartDesign::SubShapeBinder>() ||
-            // TODO Why this lines was here? why should we allow anything of those? (2015-08-13, Fat-Zer)
-            //obj->isDerivedFrom<Part::FeaturePython>() // trouble with this line on Windows!? Linker fails to find getClassTypeId() of the Part::FeaturePython...
-            //obj->isDerivedFrom<Part::Feature>()
-            // allow VarSets for parameterization
-            obj->isDerivedFrom<App::VarSet>() ||
-            obj->isDerivedFrom<App::DatumElement>() ||
-            obj->isDerivedFrom<App::LocalCoordinateSystem>()
-            );
+    // TODO: Should we introduce a PartDesign::FeaturePython class? This should then also return
+    // true for isSolidFeature()
+    return (
+        obj->isDerivedFrom<PartDesign::Feature>() || obj->isDerivedFrom<Part::Datum>() ||
+        // TODO Shouldn't we replace it with Sketcher::SketchObject? (2015-08-13, Fat-Zer)
+        obj->isDerivedFrom<Part::Part2DObject>() || obj->isDerivedFrom<PartDesign::ShapeBinder>()
+        || obj->isDerivedFrom<PartDesign::SubShapeBinder>() ||
+        // TODO Why this lines was here? why should we allow anything of those? (2015-08-13,
+        // Fat-Zer) obj->isDerivedFrom<Part::FeaturePython>() // trouble with this line on Windows!?
+        // Linker fails to find getClassTypeId() of the Part::FeaturePython...
+        // obj->isDerivedFrom<Part::Feature>()
+        // allow VarSets for parameterization
+        obj->isDerivedFrom<App::VarSet>() || obj->isDerivedFrom<App::DatumElement>()
+        || obj->isDerivedFrom<App::LocalCoordinateSystem>()
+    );
 }
 
 
 Body* Body::findBodyOf(const App::DocumentObject* feature)
 {
-    if(!feature)
+    if (!feature) {
         return nullptr;
+    }
 
     return static_cast<Body*>(BodyBase::findBodyOf(feature));
 }
 
 
-std::vector<App::DocumentObject*> Body::addObject(App::DocumentObject *feature)
+std::vector<App::DocumentObject*> Body::addObject(App::DocumentObject* feature)
 {
-    if(!isAllowed(feature))
+    if (!isAllowed(feature)) {
         throw Base::ValueError("Body: object is not allowed");
-
-    //TODO: features should not add all links
-
-    //only one group per object. If it is in a body the single feature will be removed
-    auto *group = App::GroupExtension::getGroupOfObject(feature);
-    if(group && group != getExtendedObject())
-        group->getExtensionByType<GroupExtension>()->removeObject(feature);
-
-
-    insertObject (feature, getNextSolidFeature (), /*after = */ false);
-    // Move the Tip if we added a solid
-    if (isSolidFeature(feature)) {
-        Tip.setValue (feature);
     }
 
-    if(feature->Visibility.getValue()
-        && feature->isDerivedFrom<PartDesign::Feature>())
-    {
-        for(auto obj : Group.getValues()) {
-            if(obj->Visibility.getValue()
-                    && obj!=feature
-                    && obj->isDerivedFrom<PartDesign::Feature>())
+    // TODO: features should not add all links
+
+    // only one group per object. If it is in a body the single feature will be removed
+    auto* group = App::GroupExtension::getGroupOfObject(feature);
+    if (group && group != getExtendedObject()) {
+        group->getExtensionByType<GroupExtension>()->removeObject(feature);
+    }
+
+
+    insertObject(feature, getNextSolidFeature(), /*after = */ false);
+    // Move the Tip if we added a solid
+    if (isSolidFeature(feature)) {
+        Tip.setValue(feature);
+    }
+
+    if (feature->Visibility.getValue() && feature->isDerivedFrom<PartDesign::Feature>()) {
+        for (auto obj : Group.getValues()) {
+            if (obj->Visibility.getValue() && obj != feature
+                && obj->isDerivedFrom<PartDesign::Feature>()) {
                 obj->Visibility.setValue(false);
+            }
         }
     }
 
@@ -261,23 +265,26 @@ std::vector<App::DocumentObject*> Body::addObject(App::DocumentObject *feature)
     return result;
 }
 
-std::vector< App::DocumentObject* > Body::addObjects(std::vector< App::DocumentObject* > objs) {
+std::vector<App::DocumentObject*> Body::addObjects(std::vector<App::DocumentObject*> objs)
+{
 
-    for(auto obj : objs)
+    for (auto obj : objs) {
         addObject(obj);
+    }
 
     return objs;
 }
 
 
-
 void Body::insertObject(App::DocumentObject* feature, App::DocumentObject* target, bool after)
 {
-    if (target && !hasObject (target)) {
-        throw Base::ValueError("Body: the feature we should insert relative to is not part of that body");
+    if (target && !hasObject(target)) {
+        throw Base::ValueError(
+            "Body: the feature we should insert relative to is not part of that body"
+        );
     }
 
-    //ensure that all origin links are ok
+    // ensure that all origin links are ok
     relinkToOrigin(feature);
 
     std::vector<App::DocumentObject*> model = Group.getValues();
@@ -287,26 +294,31 @@ void Body::insertObject(App::DocumentObject* feature, App::DocumentObject* targe
     if (!target) {
         if (after) {
             insertInto = model.begin();
-        } else {
+        }
+        else {
             insertInto = model.end();
         }
-    } else {
-        std::vector<App::DocumentObject*>::iterator targetIt = std::find (model.begin(), model.end(), target);
-        assert (targetIt != model.end());
+    }
+    else {
+        std::vector<App::DocumentObject*>::iterator targetIt
+            = std::find(model.begin(), model.end(), target);
+        assert(targetIt != model.end());
         if (after) {
             insertInto = targetIt + 1;
-        } else {
+        }
+        else {
             insertInto = targetIt;
         }
     }
 
     // Insert the new feature after the given
-    model.insert (insertInto, feature);
+    model.insert(insertInto, feature);
 
-    Group.setValues (model);
+    Group.setValues(model);
 
-    if(feature->isDerivedFrom<PartDesign::Feature>())
+    if (feature->isDerivedFrom<PartDesign::Feature>()) {
         static_cast<PartDesign::Feature*>(feature)->_Body.setValue(this);
+    }
 
     // Set the BaseFeature property
     setBaseProperty(feature);
@@ -323,7 +335,7 @@ void Body::setBaseProperty(App::DocumentObject* feature)
         // Reroute the next solid feature's BaseFeature property to this feature
         App::DocumentObject* nextSolidFeature = getNextSolidFeature(feature);
         if (nextSolidFeature) {
-            assert ( nextSolidFeature->isDerivedFrom ( PartDesign::Feature::getClassTypeId () ) );
+            assert(nextSolidFeature->isDerivedFrom(PartDesign::Feature::getClassTypeId()));
             static_cast<PartDesign::Feature*>(nextSolidFeature)->BaseFeature.setValue(feature);
         }
     }
@@ -338,8 +350,9 @@ std::vector<App::DocumentObject*> Body::removeObject(App::DocumentObject* featur
         // This is a solid feature
         // If the next feature is solid, reroute its BaseFeature property to the previous solid feature
         if (nextSolidFeature) {
-            assert ( nextSolidFeature->isDerivedFrom ( PartDesign::Feature::getClassTypeId () ) );
-            // Note: It's ok to remove the first solid feature, that just mean the next feature become the base one
+            assert(nextSolidFeature->isDerivedFrom(PartDesign::Feature::getClassTypeId()));
+            // Note: It's ok to remove the first solid feature, that just mean the next feature
+            // become the base one
             static_cast<PartDesign::Feature*>(nextSolidFeature)->BaseFeature.setValue(prevSolidFeature);
         }
     }
@@ -348,10 +361,11 @@ std::vector<App::DocumentObject*> Body::removeObject(App::DocumentObject* featur
     const auto it = std::ranges::find(model, feature);
 
     // Adjust Tip feature if it is pointing to the deleted object
-    if (Tip.getValue()== feature) {
+    if (Tip.getValue() == feature) {
         if (prevSolidFeature) {
             Tip.setValue(prevSolidFeature);
-        } else {
+        }
+        else {
             Tip.setValue(nextSolidFeature);
         }
     }
@@ -366,7 +380,7 @@ std::vector<App::DocumentObject*> Body::removeObject(App::DocumentObject* featur
 }
 
 
-App::DocumentObjectExecReturn *Body::execute()
+App::DocumentObjectExecReturn* Body::execute()
 {
     Part::BodyBase::execute();
     /*
@@ -375,13 +389,11 @@ App::DocumentObjectExecReturn *Body::execute()
     Base::Console().error("   Tip: %s\n", (tip == NULL) ? "None" : tip->getNameInDocument());
     std::vector<App::DocumentObject*> model = Group.getValues();
     Base::Console().error("   Group:\n");
-    for (std::vector<App::DocumentObject*>::const_iterator m = model.begin(); m != model.end(); m++) {
-        if (*m == NULL) continue;
-        Base::Console().error("      %s", (*m)->getNameInDocument());
-        if (Body::isSolidFeature(*m)) {
-            App::DocumentObject* baseFeature = static_cast<PartDesign::Feature*>(*m)->BaseFeature.getValue();
-            Base::Console().error(", Base: %s\n", baseFeature == NULL ? "None" : baseFeature->getNameInDocument());
-        } else {
+    for (std::vector<App::DocumentObject*>::const_iterator m = model.begin(); m != model.end(); m++)
+    { if (*m == NULL) continue; Base::Console().error("      %s", (*m)->getNameInDocument()); if
+    (Body::isSolidFeature(*m)) { App::DocumentObject* baseFeature =
+    static_cast<PartDesign::Feature*>(*m)->BaseFeature.getValue(); Base::Console().error(", Base:
+    %s\n", baseFeature == NULL ? "None" : baseFeature->getNameInDocument()); } else {
             Base::Console().error("\n");
         }
     }
@@ -390,55 +402,61 @@ App::DocumentObjectExecReturn *Body::execute()
     App::DocumentObject* tip = Tip.getValue();
 
     Part::TopoShape tipShape;
-    if ( tip ) {
-        if ( !tip->isDerivedFrom<PartDesign::Feature>() ) {
-            return new App::DocumentObjectExecReturn (QT_TRANSLATE_NOOP("Exception", "Linked object is not a PartDesign feature" ));
+    if (tip) {
+        if (!tip->isDerivedFrom<PartDesign::Feature>()) {
+            return new App::DocumentObjectExecReturn(
+                QT_TRANSLATE_NOOP("Exception", "Linked object is not a PartDesign feature")
+            );
         }
 
         // get the shape of the tip
-        tipShape = static_cast<Part::Feature *>(tip)->Shape.getShape();
+        tipShape = static_cast<Part::Feature*>(tip)->Shape.getShape();
 
-        if ( tipShape.getShape().IsNull () ) {
-            return new App::DocumentObjectExecReturn (QT_TRANSLATE_NOOP("Exception", "Tip shape is empty" ));
+        if (tipShape.getShape().IsNull()) {
+            return new App::DocumentObjectExecReturn(
+                QT_TRANSLATE_NOOP("Exception", "Tip shape is empty")
+            );
         }
 
         // We should hide here the transformation of the baseFeature
-        tipShape.transformShape (tipShape.getTransform(), true );
-
-    } else {
+        tipShape.transformShape(tipShape.getTransform(), true);
+    }
+    else {
         tipShape = Part::TopoShape();
     }
 
-    Shape.setValue ( tipShape );
+    Shape.setValue(tipShape);
     return App::DocumentObject::StdReturn;
-
 }
 
-void Body::onSettingDocument() {
+void Body::onSettingDocument()
+{
 
-    if(connection.connected())
+    if (connection.connected()) {
         connection.disconnect();
+    }
 
     Part::BodyBase::onSettingDocument();
 }
 
-void Body::onChanged(const App::Property* prop) {
+void Body::onChanged(const App::Property* prop)
+{
     // we neither load a project nor perform undo/redo
-    if (!this->isRestoring()
-            && this->getDocument()
-            && !this->getDocument()->isPerformingTransaction()) {
+    if (!this->isRestoring() && this->getDocument()
+        && !this->getDocument()->isPerformingTransaction()) {
         if (prop == &BaseFeature) {
             FeatureBase* bf = nullptr;
             auto first = Group.getValues().empty() ? nullptr : Group.getValues().front();
 
             if (BaseFeature.getValue()) {
-                //setup the FeatureBase if needed
+                // setup the FeatureBase if needed
                 if (!first || !first->isDerivedFrom<FeatureBase>()) {
                     bf = getDocument()->addObject<FeatureBase>("BaseFeature");
                     insertObject(bf, first, false);
 
-                    if (!Tip.getValue())
+                    if (!Tip.getValue()) {
                         Tip.setValue(bf);
+                    }
                 }
                 else {
                     bf = static_cast<FeatureBase*>(first);
@@ -450,10 +468,11 @@ void Body::onChanged(const App::Property* prop) {
             }
         }
         else if (prop == &Group) {
-            //if the FeatureBase was deleted we set the BaseFeature link to nullptr
-            if (BaseFeature.getValue() &&
-               (Group.getValues().empty() || !Group.getValues().front()->isDerivedFrom<FeatureBase>())) {
-                    BaseFeature.setValue(nullptr);
+            // if the FeatureBase was deleted we set the BaseFeature link to nullptr
+            if (BaseFeature.getValue()
+                && (Group.getValues().empty()
+                    || !Group.getValues().front()->isDerivedFrom<FeatureBase>())) {
+                BaseFeature.setValue(nullptr);
             }
         }
         else if (prop == &AllowCompound) {
@@ -463,7 +482,6 @@ void Body::onChanged(const App::Property* prop) {
             for (auto feature : getFullModel()) {
                 feature->enforceRecompute();
             }
-
         }
         else if (prop == &ShapeMaterial) {
             std::vector<App::DocumentObject*> features = Group.getValues();
@@ -484,31 +502,40 @@ void Body::onChanged(const App::Property* prop) {
     Part::BodyBase::onChanged(prop);
 }
 
-void Body::setupObject () {
-    Part::BodyBase::setupObject ();
-}
-
-void Body::unsetupObject () {
-    Part::BodyBase::unsetupObject ();
-}
-
-PyObject *Body::getPyObject()
+void Body::setupObject()
 {
-    if (PythonObject.is(Py::_None())){
+    Part::BodyBase::setupObject();
+}
+
+void Body::unsetupObject()
+{
+    Part::BodyBase::unsetupObject();
+}
+
+PyObject* Body::getPyObject()
+{
+    if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        PythonObject = Py::Object(new BodyPy(this),true);
+        PythonObject = Py::Object(new BodyPy(this), true);
     }
     return Py::new_reference_to(PythonObject);
 }
 
-std::vector<std::string> Body::getSubObjects(int reason) const {
-    if(reason==GS_SELECT && !showTip)
+std::vector<std::string> Body::getSubObjects(int reason) const
+{
+    if (reason == GS_SELECT && !showTip) {
         return Part::BodyBase::getSubObjects(reason);
+    }
     return {};
 }
 
-App::DocumentObject *Body::getSubObject(const char *subname,
-        PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const
+App::DocumentObject* Body::getSubObject(
+    const char* subname,
+    PyObject** pyObj,
+    Base::Matrix4D* pmat,
+    bool transform,
+    int depth
+) const
 {
     while (subname && *subname == '.') {
         ++subname;  // skip leading .
@@ -529,18 +556,20 @@ App::DocumentObject *Body::getSubObject(const char *subname,
                     if (secondObj) {
                         // we support only one level of sibling grouping, so no
                         // recursive call to our own getSubObject()
-                        return Part::BodyBase::getSubObject(firstDot + 1,
-                                                            pyObj,
-                                                            pmat,
-                                                            transform,
-                                                            depth + 1);
+                        return Part::BodyBase::getSubObject(
+                            firstDot + 1,
+                            pyObj,
+                            pmat,
+                            transform,
+                            depth + 1
+                        );
                     }
                 }
             }
         }
     }
 #if 1
-    return Part::BodyBase::getSubObject(subname,pyObj,pmat,transform,depth);
+    return Part::BodyBase::getSubObject(subname, pyObj, pmat, transform, depth);
 #else
     // The following code returns Body shape only if there is at least one
     // child visible in the body (when show through, not show tip). The
@@ -549,35 +578,37 @@ App::DocumentObject *Body::getSubObject(const char *subname,
     // interfere with direct modeling using body shape. Therefore it is
     // disabled here.
 
-    if(!pyObj || showTip ||
-       (subname && !Data::ComplexGeoData::isMappedElement(subname) && strchr(subname,'.')))
-        return Part::BodyBase::getSubObject(subname,pyObj,pmat,transform,depth);
+    if (!pyObj || showTip
+        || (subname && !Data::ComplexGeoData::isMappedElement(subname) && strchr(subname, '.'))) {
+        return Part::BodyBase::getSubObject(subname, pyObj, pmat, transform, depth);
+    }
 
     // We return the shape only if there are feature visible inside
-    for(auto obj : Group.getValues()) {
-        if(obj->Visibility.getValue() &&
-           obj->isDerivedFrom<PartDesign::Feature>())
-        {
-            return Part::BodyBase::getSubObject(subname,pyObj,pmat,transform,depth);
+    for (auto obj : Group.getValues()) {
+        if (obj->Visibility.getValue() && obj->isDerivedFrom<PartDesign::Feature>()) {
+            return Part::BodyBase::getSubObject(subname, pyObj, pmat, transform, depth);
         }
     }
-    if(pmat && transform)
+    if (pmat && transform) {
         *pmat *= Placement.getValue().toMatrix();
+    }
     return const_cast<Body*>(this);
 #endif
 }
 
 void Body::onDocumentRestored()
 {
-    for(auto obj : Group.getValues()) {
-        if(obj->isDerivedFrom<PartDesign::Feature>())
+    for (auto obj : Group.getValues()) {
+        if (obj->isDerivedFrom<PartDesign::Feature>()) {
             static_cast<PartDesign::Feature*>(obj)->_Body.setValue(this);
+        }
     }
-    _GroupTouched.setStatus(App::Property::Output,true);
+    _GroupTouched.setStatus(App::Property::Output, true);
 
     // trigger ViewProviderBody::copyColorsfromTip
-    if (Tip.getValue())
+    if (Tip.getValue()) {
         Tip.touch();
+    }
 
     DocumentObject::onDocumentRestored();
 }
@@ -585,10 +616,11 @@ void Body::onDocumentRestored()
 // a body is solid if it has features that are solid
 bool Body::isSolid()
 {
-    std::vector<App::DocumentObject *> features = getFullModel();
-    for (auto feature : features){
-        if (isSolidFeature(feature))
+    std::vector<App::DocumentObject*> features = getFullModel();
+    for (auto feature : features) {
+        if (isSolidFeature(feature)) {
             return true;
+        }
     }
     return false;
 }

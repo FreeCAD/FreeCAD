@@ -46,7 +46,8 @@ protected:
     {
         varSet = freecad_cast<App::VarSet*>(_doc->addObject("App::VarSet", "VarSet"));
         prop = freecad_cast<App::PropertyInteger*>(
-            varSet->addDynamicProperty("App::PropertyInteger", "Variable", "Variables"));
+            varSet->addDynamicProperty("App::PropertyInteger", "Variable", "Variables")
+        );
         prop->setValue(Value);
     }
 

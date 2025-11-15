@@ -57,8 +57,8 @@ public:
     ~ViewProviderFemMeshShape() override;
 };
 
-using ViewProviderFemMeshShapeBasePython =
-    Gui::ViewProviderFeaturePythonT<ViewProviderFemMeshShapeBase>;
+using ViewProviderFemMeshShapeBasePython
+    = Gui::ViewProviderFeaturePythonT<ViewProviderFemMeshShapeBase>;
 
 }  // namespace FemGui
 

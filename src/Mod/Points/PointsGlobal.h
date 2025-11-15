@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2019 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -23,25 +25,25 @@
 #include <FCGlobal.h>
 
 #ifndef POINTS_GLOBAL_H
-#define POINTS_GLOBAL_H
+# define POINTS_GLOBAL_H
 
 
 // Points
-#ifndef PointsExport
-#ifdef Points_EXPORTS
-#define PointsExport FREECAD_DECL_EXPORT
-#else
-#define PointsExport FREECAD_DECL_IMPORT
-#endif
-#endif
+# ifndef PointsExport
+#  ifdef Points_EXPORTS
+#   define PointsExport FREECAD_DECL_EXPORT
+#  else
+#   define PointsExport FREECAD_DECL_IMPORT
+#  endif
+# endif
 
 // PointsGui
-#ifndef PointsGuiExport
-#ifdef PointsGui_EXPORTS
-#define PointsGuiExport FREECAD_DECL_EXPORT
-#else
-#define PointsGuiExport FREECAD_DECL_IMPORT
-#endif
-#endif
+# ifndef PointsGuiExport
+#  ifdef PointsGui_EXPORTS
+#   define PointsGuiExport FREECAD_DECL_EXPORT
+#  else
+#   define PointsGuiExport FREECAD_DECL_IMPORT
+#  endif
+# endif
 
 #endif  // POINTS_GLOBAL_H

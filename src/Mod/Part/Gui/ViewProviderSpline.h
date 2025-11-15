@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -31,7 +33,7 @@
 namespace PartGui
 {
 
-class PartGuiExport ViewProviderSplineExtension : public Gui::ViewProviderExtension
+class PartGuiExport ViewProviderSplineExtension: public Gui::ViewProviderExtension
 {
     EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderSplineExtension);
 
@@ -52,10 +54,10 @@ protected:
     void showControlPointsOfEdge(const TopoDS_Edge&);
     void showControlPointsOfFace(const TopoDS_Face&);
 
-    SoSwitch     *pcControlPoints{nullptr};
+    SoSwitch* pcControlPoints {nullptr};
 };
 
-class PartGuiExport ViewProviderSpline : public ViewProviderPartExt
+class PartGuiExport ViewProviderSpline: public ViewProviderPartExt
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderSpline);
 
@@ -71,10 +73,10 @@ private:
     ViewProviderSplineExtension extension;
 };
 
-using ViewProviderSplineExtensionPython = Gui::ViewProviderExtensionPythonT<PartGui::ViewProviderSplineExtension>;
+using ViewProviderSplineExtensionPython
+    = Gui::ViewProviderExtensionPythonT<PartGui::ViewProviderSplineExtension>;
 
-} //namespace PartGui
+}  // namespace PartGui
 
 
-#endif // PARTGUI_VIEWPROVIDERPARTSPLINE_H
-
+#endif  // PARTGUI_VIEWPROVIDERPARTSPLINE_H

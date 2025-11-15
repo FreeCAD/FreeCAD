@@ -27,10 +27,10 @@ You can easily download the documentation for offline use by using the Addon
 Manager and installing the &quot;offline-documentation&quot; addon. If this
 field is left blank, FreeCAD will automatically search for the help files at
 the default location ($USERAPPDATADIR/Mod/offline-documentation).</source>
-      <translation>Postavite ovo na prilagođeni URL ili mapu gdje se nalaze datoteke pomoći.
-Lako možete preuzeti dokumentaciju za korištenje izvan mreže pomoću
-Upravitelja Dodataka i instaliranjem dodatka &quot;offline dokumentacija&amp;quot.
-Ako je ovo polje prazno, FreeCAD će automatski pretraživati datoteke za pomoć na
+      <translation>Postavite ovo na prilagođeni URL ili mapu gdje se nalaze datoteke pomoći. 
+Lako možete preuzeti dokumentaciju za korištenje izvan mreže pomoću 
+Upravitelja Dodataka i instaliranjem dodatka &quot;offline dokumentacija&amp;quot. 
+Ako je ovo polje prazno, FreeCAD će automatski pretraživati datoteke za pomoć na 
 zadanoj lokaciji ($USERAPPDATADIR/Mod/offline-documentation).</translation>
     </message>
     <message>

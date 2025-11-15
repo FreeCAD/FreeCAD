@@ -3,7 +3,6 @@ from Part.App.ShapeFix.ShapeFix_Root import ShapeFix_Root
 from Part.TopoShape import TopoShape
 from typing import Final, overload
 
-
 @export(
     PythonName="Part.ShapeFix.Shape",
     Include="ShapeFix_Shape.hxx",

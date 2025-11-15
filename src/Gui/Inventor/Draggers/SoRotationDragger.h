@@ -46,7 +46,7 @@ namespace Gui
  * multiplied with rotationIncrement for full double
  * precision vector scalar.
  */
-class GuiExport SoRotationDragger : public SoDragger
+class GuiExport SoRotationDragger: public SoDragger
 {
     SO_KIT_HEADER(SoRotationDragger);
     SO_KIT_CATALOG_ENTRY_HEADER(baseGeomSwitch);
@@ -61,14 +61,14 @@ public:
     static void initClass();
     SoRotationDragger();
 
-    SoSFRotation rotation; //!< set from outside and used from outside for single precision.
-    SoSFDouble rotationIncrement; //!< set from outside and used for rounding.
-    SoSFInt32 rotationIncrementCount; //!< number of steps. used from outside.
-    SoSFColor color; //!< colour of the dragger
-    SoSFColor activeColor; //!< colour of the dragger while being dragged.
-    SoSFVec3f geometryScale; //!< the scale of the dragger geometry
-    SoSFBool active; //!< set when the dragger is being dragged
-    SoSFBool baseGeomVisible; //!< toggles if the dragger has a base geometry or not
+    SoSFRotation rotation;         //!< set from outside and used from outside for single precision.
+    SoSFDouble rotationIncrement;  //!< set from outside and used for rounding.
+    SoSFInt32 rotationIncrementCount;  //!< number of steps. used from outside.
+    SoSFColor color;                   //!< colour of the dragger
+    SoSFColor activeColor;             //!< colour of the dragger while being dragged.
+    SoSFVec3f geometryScale;           //!< the scale of the dragger geometry
+    SoSFBool active;                   //!< set when the dragger is being dragged
+    SoSFBool baseGeomVisible;          //!< toggles if the dragger has a base geometry or not
 
     void instantiateBaseGeometry();
 
@@ -76,11 +76,11 @@ protected:
     ~SoRotationDragger() override;
     SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE) override;
 
-    static void startCB(void *, SoDragger * d);
-    static void motionCB(void *, SoDragger * d);
-    static void finishCB(void *, SoDragger * d);
-    static void fieldSensorCB(void *f, SoSensor *);
-    static void valueChangedCB(void *, SoDragger *d);
+    static void startCB(void*, SoDragger* d);
+    static void motionCB(void*, SoDragger* d);
+    static void finishCB(void*, SoDragger* d);
+    static void fieldSensorCB(void* f, SoSensor*);
+    static void valueChangedCB(void*, SoDragger* d);
 
     void dragStart();
     void drag();
@@ -90,7 +90,7 @@ protected:
     SbPlaneProjector projector;
 
 private:
-    int roundIncrement(const float &radiansIn);
+    int roundIncrement(const float& radiansIn);
     SoBaseColor* buildActiveColor();
     SoBaseColor* buildColor();
 
@@ -125,6 +125,6 @@ private:
     using inherited = SoInteractionKit;
 };
 
-}
+}  // namespace Gui
 
 #endif /* GUI_ROTATION_DRAGGER_H */

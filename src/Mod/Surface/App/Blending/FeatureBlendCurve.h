@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2014 Matteo Grellier <matteogrellier@gmail.com>         *
  *                                                                         *
@@ -60,9 +62,11 @@ public:
     }
 
 private:
-    BlendPoint GetBlendPoint(App::PropertyLinkSub& link,
-                             App::PropertyFloatConstraint& param,
-                             App::PropertyIntegerConstraint& Continuity);
+    BlendPoint GetBlendPoint(
+        App::PropertyLinkSub& link,
+        App::PropertyFloatConstraint& param,
+        App::PropertyIntegerConstraint& Continuity
+    );
     double RelativeToRealParameters(double, double, double);
 
 protected:
