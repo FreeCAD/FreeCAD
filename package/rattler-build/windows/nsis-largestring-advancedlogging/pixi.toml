@@ -1,0 +1,17 @@
+# SPDX-license-identifier: CC0-1.0
+
+[workspace]
+name = "nsis-largestring-advancedlogging"
+version = "3.11.0"
+channels = ["conda-forge"]
+platforms = ["win-64"]
+
+[dependencies]
+python = "*"
+scons = "*"
+cmake = "*"
+vs2022_win-64 = "*"
+rattler-build = "*"
+
+[tasks.build]
+cmd = "rattler-build build"
