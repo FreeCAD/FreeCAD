@@ -29,6 +29,7 @@
         <file>icons/Assembly_ExplodedViewGroup.svg</file>
         <file>icons/Assembly_CreateSimulation.svg</file>
         <file>icons/Assembly_SimulationGroup.svg</file>
+        <file>icons/Assembly_SnapshotGroup.svg</file>
         <file>panels/TaskAssemblyCreateBom.ui</file>
         <file>panels/TaskAssemblyCreateJoint.ui</file>
         <file>panels/TaskAssemblyInsertLink.ui</file>
