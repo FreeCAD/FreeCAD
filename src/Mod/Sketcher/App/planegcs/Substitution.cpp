@@ -630,6 +630,12 @@ Substitution::Substitution(
         // No substitution for temporary constraints,
         if (constr->getTag() < 0) {
             hasTmpConstr = true;
+            attempts[i] == SubstitutionFactory::Attempt::No;
+            continue;
+        }
+        // This won't help the solve
+        if (!constr->isDriving()) {
+            attempts[i] == SubstitutionFactory::Attempt::No;
             continue;
         }
 
