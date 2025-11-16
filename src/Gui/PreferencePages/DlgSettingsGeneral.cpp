@@ -82,7 +82,7 @@ DlgSettingsGeneral::DlgSettingsGeneral(QWidget* parent)
     recreatePreferencePackMenu();
 
     for (const char* option : Translator::formattingOptions) {
-        ui->UseLocaleFormatting->addItem(tr(option));
+        ui->UseLocaleFormatting->addItem(QCoreApplication::translate("Gui::Translator", option));
     }
 
     ui->themesCombobox->setEnabled(true);
