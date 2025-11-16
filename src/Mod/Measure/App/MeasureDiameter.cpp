@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2024 WandererFan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2025 Kavin Teenakul <andythe_great@protonmail.com>                *
  *                                                                         *
  *   This file is part of FreeCAD.                                         *
  *                                                                         *

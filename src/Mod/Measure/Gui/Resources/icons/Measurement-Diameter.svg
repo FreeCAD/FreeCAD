@@ -1,63 +1,38 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-
 <svg
-   width="64"
-   height="64"
-   id="svg2869"
+   width="100"
+   height="100"
    version="1.1"
-   viewBox="0 0 64 64"
+   id="svg1"
+   sodipodi:docname="Measurement-Diameter.svg"
+   inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:dc="http://purl.org/dc/elements/1.1/">
+   xmlns:svg="http://www.w3.org/2000/svg">
   <defs
-     id="defs2871" />
-  <metadata
-     id="metadata2874">
-    <rdf:RDF>
-      <cc:Work
-         rdf:about="">
-        <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:creator>
-          <cc:Agent>
-            <dc:title>[gpt-5-codex]</dc:title>
-          </cc:Agent>
-        </dc:creator>
-        <dc:relation>https://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
-        <dc:publisher>
-          <cc:Agent>
-            <dc:title>FreeCAD</dc:title>
-          </cc:Agent>
-        </dc:publisher>
-        <dc:identifier>FreeCAD/src/</dc:identifier>
-        <dc:rights>
-          <cc:Agent>
-            <dc:title>FreeCAD LGPL2+</dc:title>
-          </cc:Agent>
-        </dc:rights>
-        <dc:date>2024</dc:date>
-      </cc:Work>
-    </rdf:RDF>
-  </metadata>
-  <circle
-     cx="32"
-     cy="32"
-     r="26"
-     style="fill:none;stroke:#000000;stroke-width:6;stroke-linecap:round;stroke-linejoin:round" />
-  <rect
-     x="18"
-     y="29"
-     width="28"
-     height="6"
-     style="fill:#000000;fill-opacity:1" />
+     id="defs1" />
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showguides="true"
+     inkscape:zoom="4"
+     inkscape:cx="44.75"
+     inkscape:cy="71.875"
+     inkscape:window-width="1920"
+     inkscape:window-height="1052"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg1" />
   <path
-     d="M 12,32 20,24 v 16 z"
-     style="fill:#000000;fill-opacity:1" />
-  <path
-     d="M 52,32 44,24 v 16 z"
-     style="fill:#000000;fill-opacity:1" />
+     id="path1"
+     style="baseline-shift:baseline;display:inline;overflow:visible;opacity:1;vector-effect:none;stroke-linecap:round;stroke-linejoin:round;enable-background:accumulate;stop-color:#000000;stop-opacity:1"
+     d="m 50.002929,10.048828 c -22.006128,0 -39.951171,17.945043 -39.951171,39.951172 0,9.140441 3.096013,17.579949 8.292968,24.324218 l -8.298827,8.298829 7.328124,7.328125 8.298828,-8.296875 c 6.745326,5.199913 15.186761,8.296875 24.330078,8.296875 22.00613,0 39.951173,-17.945044 39.951173,-39.951172 0,-9.142934 -3.097358,-17.584895 -8.296875,-24.330078 l 8.292969,-8.292969 -7.328125,-7.328125 -8.292969,8.292969 C 67.58469,13.144445 59.143755,10.048828 50.002929,10.048828 Z m 0,9.902344 c 6.44555,0 12.403543,2.006312 17.285156,5.43164 L 25.385742,67.283203 C 21.960697,62.401712 19.954101,56.445257 19.954101,50 c 0,-16.653804 13.395024,-30.048828 30.048828,-30.048828 z m 24.613282,12.759765 c 3.4275,4.88256 5.435547,10.841279 5.435547,17.289063 0,16.653804 -13.395024,30.048828 -30.048829,30.048828 -6.448075,0 -12.408332,-2.007764 -17.291015,-5.435547 z" />
 </svg>
