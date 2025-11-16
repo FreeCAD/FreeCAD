@@ -924,12 +924,22 @@ class _MeshDistance(CommandManager):
         self.do_activated = "add_obj_on_gui_selobj_set_edit"
 
 class _MeshRestrict(CommandManager):
-    "The FEM_MeshRefinement command definition"
+    "The FEM_MeshRestrict command definition"
 
     def __init__(self):
         super().__init__()
         self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_MeshRestrict", "Restrict refinement")
         self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_MeshRestrict", "Restrict application of a refinement to certain geometries")
+        self.is_active = "with_gmsh_femmesh"
+        self.do_activated = "add_obj_on_gui_selobj_set_edit"
+
+class _MeshMath(CommandManager):
+    "The FEM_MeshMath command definition"
+
+    def __init__(self):
+        super().__init__()
+        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_MeshMath", "Equation based refinement")
+        self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_MeshMath", "Define mesh size by mathematical equation")
         self.is_active = "with_gmsh_femmesh"
         self.do_activated = "add_obj_on_gui_selobj_set_edit"
 
@@ -1005,7 +1015,7 @@ class _GMSHRefine():
     def GetCommands(self):
         return ["FEM_MeshDistance", "FEM_MeshBoundaryLayer",
                 "FEM_MeshSphere", "FEM_MeshBox", "FEM_MeshCylinder",
-                "FEM_MeshRestrict",
+                "FEM_MeshRestrict", "FEM_MeshMath",
                 "FEM_MeshTransfiniteCurve", "FEM_MeshTransfiniteSurface", "FEM_MeshTransfiniteVolume"]
 
     def GetDefaultCommand(self):
@@ -1417,6 +1427,7 @@ FreeCADGui.addCommand("FEM_MeshNetgenFromShape", _MeshNetgenFromShape())
 FreeCADGui.addCommand("FEM_MeshRegion", _MeshRegion())
 FreeCADGui.addCommand("FEM_MeshDistance", _MeshDistance())
 FreeCADGui.addCommand("FEM_MeshRestrict", _MeshRestrict())
+FreeCADGui.addCommand("FEM_MeshMath", _MeshMath())
 FreeCADGui.addCommand("FEM_MeshSphere", _MeshSphere())
 FreeCADGui.addCommand("FEM_MeshBox", _MeshBox())
 FreeCADGui.addCommand("FEM_MeshCylinder", _MeshCylinder())
