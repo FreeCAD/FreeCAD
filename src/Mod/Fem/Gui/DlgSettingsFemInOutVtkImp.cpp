@@ -51,7 +51,7 @@ void DlgSettingsFemInOutVtkImp::saveSettings()
     hGrp->SetInt("ImportObject", ui->comboBoxVtkImportObject->currentIndex());
 
     ui->comboBoxVtkImportObject->onSave();
-    ui->cb_export_level->onSave();
+    saveExportLevel();
 }
 
 void DlgSettingsFemInOutVtkImp::loadSettings()
@@ -68,7 +68,6 @@ void DlgSettingsFemInOutVtkImp::loadSettings()
     }
 
     populateExportLevel();
-    ui->cb_export_level->onRestore();
 }
 
 /**
@@ -80,26 +79,39 @@ void DlgSettingsFemInOutVtkImp::changeEvent(QEvent* e)
         int c_index = ui->comboBoxVtkImportObject->currentIndex();
         ui->retranslateUi(this);
         ui->comboBoxVtkImportObject->setCurrentIndex(c_index);
+        populateExportLevel();
     }
     else {
         QWidget::changeEvent(e);
     }
 }
 
+void DlgSettingsFemInOutVtkImp::saveExportLevel() const
+{
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Fem/InOutVtk"
+    );
+    hGrp->SetASCII("MeshExportLevel", ui->cb_export_level->currentData().toString().toStdString());
+}
+
 void DlgSettingsFemInOutVtkImp::populateExportLevel() const
 {
-    std::list<std::string> values = {"All", "Highest"};
-
-    for (const auto& val : values) {
-        ui->cb_export_level->addItem(QString::fromStdString(val));
-    }
+    std::list<std::string> values = {QT_TR_NOOP("All"), QT_TR_NOOP("Highest")};
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Fem/InOutVtk"
     );
     std::string current = hGrp->GetASCII("MeshExportLevel", "Highest");
-    int index = ui->cb_export_level->findText(QString::fromStdString(current));
-    ui->cb_export_level->setCurrentIndex(index);
+
+    int index = 0;
+    ui->cb_export_level->clear();
+    for (const auto& val : values) {
+        ui->cb_export_level->addItem(tr(val.c_str()),QString::fromStdString(val));
+        if (val == current) {
+            ui->cb_export_level->setCurrentIndex(index);
+        }
+        ++index;
+    }
 }
 
 #include "moc_DlgSettingsFemInOutVtkImp.cpp"
