@@ -298,15 +298,17 @@ QString DimensionFormatter::formatValueToSpec(const double value, QString format
 
     if (spec == QStringLiteral("w")) {
         formattedValue = format(QStringLiteral("%") + dec + QStringLiteral("f"), value);
-        // First, cut trailing zeros
-        while(formattedValue.endsWith(QStringLiteral("0")))
-        {
-            formattedValue.chop(1);
-        }
-        // Second, try to cut also decimal dot
-        if(formattedValue.endsWith(QStringLiteral(".")))
-        {
-            formattedValue.chop(1);
+        if (formattedValue.contains(QStringLiteral("."))){
+            // First, cut trailing zeros
+            while(formattedValue.endsWith(QStringLiteral("0")))
+            {
+                formattedValue.chop(1);
+            }
+            // Second, try to cut also decimal dot
+            if(formattedValue.endsWith(QStringLiteral(".")))
+            {
+                formattedValue.chop(1);
+            }
         }
     }
     else if (spec == QStringLiteral("r")) {
