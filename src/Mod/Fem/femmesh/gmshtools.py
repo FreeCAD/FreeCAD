@@ -70,12 +70,9 @@ class GmshTools:
         self.load_properties()
         self.error = False
 
-    def _next_field_number(self, background=True):
-        # returns the next unique field number. If cakcground = True,
-        # the field is used as background field
+    def _next_field_number(self):
+        # returns the next unique field number.
         self._field_counter += 1
-        if background:
-            self._background_fields.append(self._field_counter)
         return self._field_counter
 
     def load_properties(self):
@@ -194,20 +191,12 @@ class GmshTools:
             self.group_nodes_export = False
         self.group_elements = {}
 
-        # mesh regions
-        self.ele_length_list = []       # [ (element length, {element names}) ]
-        self.region_element_set = set() # set to remove duplicated element edge or faces
-
         # mesh boundary layer
         self.bl_setting_list = []  # list of dict, each item map to MeshBoundaryLayer object
         self.bl_boundary_list = []  # to remove duplicated boundary edge or faces
 
-        # mesh distance
-        self.dist_setting_list = []     # list of dict, each item map to MeshBoundaryLayer object
-        self.dist_element_set = set()   # set to remove duplicated element edge or faces
-
-        # mesh shapes
-        self.shape_setting_list = []     # list of dict, each item map to MeshBoundaryLayer object
+        # gmsh size fields
+        self.size_field_list = []
 
         # transfinite meshes
         self.transfinite_curve_settings = []       # list of dict, one entry per curve definition
@@ -230,10 +219,8 @@ class GmshTools:
         self.start_logs()
         self.get_dimension()
         self.get_group_data()
-        self.get_region_data()
         self.get_boundary_layer_data()
-        self.get_distance_data()
-        self.get_shape_data()
+        self.get_size_field_data()
         self.get_transfinite_data()
 
     def write_gmsh_input_files(self):
@@ -560,59 +547,6 @@ class GmshTools:
 
         return result
 
-
-    def get_region_data(self):
-        # mesh regions
-        mesh_region_list = self._get_definitions_of_type("Fem::MeshRegion")
-        if not mesh_region_list:
-            # print("  No mesh refinements.")
-            pass
-        else:
-            # Console.PrintMessage("  Mesh regions, we need to get the elements.\n")
-            # by the use of MeshRegion object and a BooleanSplitCompound
-            # there could be problems with node numbers see
-            # https://forum.freecad.org/viewtopic.php?f=18&t=18780&start=40#p149467
-            # https://forum.freecad.org/viewtopic.php?f=18&t=18780&p=149520#p149520
-            part = self.part_obj
-            if (
-                mesh_region_list
-                and part.Shape.ShapeType == "Compound"
-                and (
-                    femutils.is_of_type(part, "FeatureBooleanFragments")
-                    or femutils.is_of_type(part, "FeatureSlice")
-                    or femutils.is_of_type(part, "FeatureXOR")
-                )
-            ):
-                self.outputCompoundWarning()
-            for mr_obj in mesh_region_list:
-                if mr_obj.Suppressed:
-                    continue
-
-                if mr_obj.CharacteristicLength:
-                    if mr_obj.References:
-
-                        elements = self._get_reference_elements(mr_obj, self.region_element_set)
-                        if not elements:
-                            Console.PrintError( ("The mesh distance {} is not used because no unique"
-                                                "elements are selected.\n").format(mr_obj.Name))
-                            continue
-
-                        value = Units.Quantity(mr_obj.CharacteristicLength).Value
-                        self.ele_length_list.append((value, elements))
-
-                    else:
-                        Console.PrintError(
-                            "The mesh refinement: {} is not used to create the mesh "
-                            "because the reference list is empty.\n".format(mr_obj.Name)
-                        )
-                else:
-                    Console.PrintError(
-                        "The mesh refinement: {} is not used to create the "
-                        "mesh because the CharacteristicLength is 0.0 mm.\n".format(mr_obj.Name)
-                    )
-
-            # Console.PrintMessage("  {}\n".format(self.ele_length_list))
-
     def get_boundary_layer_data(self):
         # mesh boundary layer
         # currently only one boundary layer setting object is allowed
@@ -736,22 +670,223 @@ class GmshTools:
             Console.PrintMessage(f"  {self.bl_setting_list}\n")
 
 
-    def get_distance_data(self):
-        # mesh distance
-        mesh_distance_list = self._get_definitions_of_type("Fem::MeshDistance")
-        if not mesh_distance_list:
-            # print("  No mesh refinements.")
-            pass
-        else:
-            # Console.PrintMessage("  Mesh distances, we need to get the elements.\n")
-            # by the use of MeshRegion object and a BooleanSplitCompound
-            # there could be problems with node numbers see
-            # https://forum.freecad.org/viewtopic.php?f=18&t=18780&start=40#p149467
-            # https://forum.freecad.org/viewtopic.php?f=18&t=18780&p=149520#p149520
+    def _build_constant_size_field(self, obj):
+
+        elements = self._get_reference_elements(obj, set())
+
+        if not elements:
+            Console.PrintError( ("The mesh constant size region {} is not used because no unique"
+                                "elements are selected.\n").format(obj.Name))
+            return -1
+
+        element_dict = self._element_list_to_shape_idx_dict(elements)
+
+        settings = {"Field": "Constant", "Option": {}}
+        settings["FieldID"] = self._next_field_number()
+        settings["Option"]["VIn"] = Units.Quantity(obj.CharacteristicLength).Value
+        settings["Option"]["IncludeBoundary"] = 1
+        if element_dict["Vertex"]:
+            ids = ", ".join(str(i) for i in element_dict["Vertex"])
+            settings["Option"]["PointsList"] = f"{{ {ids} }}"
+        if element_dict["Edge"]:
+            ids = ", ".join(str(i) for i in element_dict["Edge"])
+            settings["Option"]["CurvesList"] = f"{{ {ids} }}"
+        if element_dict["Face"]:
+            ids = ", ".join(str(i) for i in element_dict["Face"])
+            settings["Option"]["SurfacesList"] = f"{{ {ids} }}"
+        if element_dict["Solid"]:
+            ids = ", ".join(str(i) for i in element_dict["Solid"])
+            settings["Option"]["VolumesList"] = f"{{ {ids} }}"
+
+        # save everything for later processing
+        self.size_field_list.append(settings)
+        return settings["FieldID"]
+
+
+    def _build_distance_size_field(self, obj):
+
+        elements = self._get_reference_elements(obj, set())
+        if not elements:
+            Console.PrintError( ("The mesh distance {} is not used because no unique"
+                                    "elements are selected.\n").format(obj.Name))
+            return -1
+
+        idx_dict = self._element_list_to_shape_idx_dict(elements)
+
+        # get the settings!
+        settings = {"Field": "Distance", "Option": {}}
+        settings["FieldID"] = self._next_field_number()
+        settings["Option"]["Sampling"] = obj.Sampling
+        if idx_dict["Vertex"]:
+            ids = ", ".join(str(i) for i in idx_dict["Vertex"])
+            settings["Option"]["PointsList"] = f"{{ {ids} }}"
+        if idx_dict["Edge"]:
+            ids = ", ".join(str(i) for i in idx_dict["Edge"])
+            settings["Option"]["CurvesList"] = f"{{ {ids} }}"
+        if idx_dict["Face"]:
+            ids = ", ".join(str(i) for i in idx_dict["Face"])
+            settings["Option"]["SurfacesList"] = f"{{ {ids} }}"
+
+        self.size_field_list.append(settings)
+        dist_field_id = settings["FieldID"]
+
+        settings = {"Field": "Threshold", "Option": {}}
+        settings["FieldID"] = self._next_field_number()
+        settings["Option"]["InField"] = dist_field_id
+        settings["Option"]["DistMin"] = Units.Quantity(obj.DistanceMinimum).Value
+        settings["Option"]["DistMax"] = Units.Quantity(obj.DistanceMaximum).Value
+        settings["Option"]["SizeMin"] = Units.Quantity(obj.SizeMinimum).Value
+        settings["Option"]["SizeMax"] = Units.Quantity(obj.SizeMaximum).Value
+        settings["Option"]["Sigmoid"] = int(not obj.LinearInterpolation)
+        settings["Option"]["StopAtDistMax"] = 1
+
+        # save everything for later processing
+        self.size_field_list.append(settings)
+        return settings["FieldID"]
+
+
+    def _build_sphere_size_field(self, sphere):
+
+        settings = {"Field": "Ball", "Option": {}}
+        settings["FieldID"] = self._next_field_number()
+        settings["Option"]["Radius"] = Units.Quantity(sphere.Radius).Value
+        settings["Option"]["XCenter"] = Units.Quantity(sphere.Center.x).Value
+        settings["Option"]["YCenter"] = Units.Quantity(sphere.Center.y).Value
+        settings["Option"]["ZCenter"] = Units.Quantity(sphere.Center.z).Value
+        settings["Option"]["Thickness"] = Units.Quantity(sphere.Thickness).Value
+        settings["Option"]["VIn"] = Units.Quantity(sphere.SizeIn).Value
+        settings["Option"]["VOut"] = Units.Quantity(sphere.SizeOut).Value
+
+        # save everything for later processing
+        self.size_field_list.append(settings)
+        return settings["FieldID"]
+
+    def _build_cylinder_size_field(self, sphere):
+
+        settings = {"Field": "Cylinder", "Option": {}}
+        settings["FieldID"] = self._next_field_number()
+        settings["Option"]["Radius"] = Units.Quantity(cylinder.Radius).Value
+        settings["Option"]["XCenter"] = Units.Quantity(cylinder.Center.x).Value
+        settings["Option"]["YCenter"] = Units.Quantity(cylinder.Center.y).Value
+        settings["Option"]["ZCenter"] = Units.Quantity(cylinder.Center.z).Value
+        settings["Option"]["XAxis"] = Units.Quantity(cylinder.Axis.x).Value*1000
+        settings["Option"]["YAxis"] = Units.Quantity(cylinder.Axis.y).Value*1000
+        settings["Option"]["ZAxis"] = Units.Quantity(cylinder.Axis.z).Value*1000
+        settings["Option"]["VIn"] = Units.Quantity(cylinder.SizeIn).Value
+        settings["Option"]["VOut"] = Units.Quantity(cylinder.SizeOut).Value
+
+        # save everything for later processing
+        self.size_field_list.append(settings)
+        return settings["FieldID"]
+
+    def _build_box_size_field(self, sphere):
+
+        settings = {"Field": "Box", "Option": {}}
+        settings["FieldID"] = self._next_field_number()
+        settings["Option"]["XMin"] = Units.Quantity(box.Center.x) - Units.Quantity(box.Length/2).Value
+        settings["Option"]["XMax"] = Units.Quantity(box.Center.x) + Units.Quantity(box.Length/2).Value
+        settings["Option"]["YMin"] = Units.Quantity(box.Center.y) - Units.Quantity(box.Width/2).Value
+        settings["Option"]["YMax"] = Units.Quantity(box.Center.y) + Units.Quantity(box.Width/2).Value
+        settings["Option"]["ZMin"] = Units.Quantity(box.Center.z) - Units.Quantity(box.Height/2).Value
+        settings["Option"]["ZMax"] = Units.Quantity(box.Center.z) + Units.Quantity(box.Height/2).Value
+        settings["Option"]["Thickness"] = Units.Quantity(box.Thickness).Value
+        settings["Option"]["VIn"] = Units.Quantity(box.SizeIn).Value
+        settings["Option"]["VOut"] = Units.Quantity(box.SizeOut).Value
+
+        # save everything for later processing
+        self.size_field_list.append(settings)
+        return settings["FieldID"]
+
+    def _build_restrict_size_field(self, obj, restricted_field):
+
+        elements = self._get_reference_elements(obj, set())
+        if not elements:
+            Console.PrintError( ("The restriction {} is not used because no unique"
+                                    "elements are selected.\n").format(obj.Name))
+            return -1
+
+        idx_dict = self._element_list_to_shape_idx_dict(elements)
+
+        # get the settings!
+        settings = {"Field": "Restrict", "Option": {}}
+        settings["FieldID"] = self._next_field_number()
+        settings["Option"]["InField"] = restricted_field
+        settings["Option"]["IncludeBoundary"] = int(obj.IncludeBoundary)
+
+        if idx_dict["Vertex"]:
+            ids = ", ".join(str(i) for i in idx_dict["Vertex"])
+            settings["Option"]["PointsList"] = f"{{ {ids} }}"
+        if idx_dict["Edge"]:
+            ids = ", ".join(str(i) for i in idx_dict["Edge"])
+            settings["Option"]["CurvesList"] = f"{{ {ids} }}"
+        if idx_dict["Face"]:
+            ids = ", ".join(str(i) for i in idx_dict["Face"])
+            settings["Option"]["SurfacesList"] = f"{{ {ids} }}"
+        if idx_dict["Solid"]:
+            ids = ", ".join(str(i) for i in idx_dict["Solid"])
+            settings["Option"]["VolumesList"] = f"{{ {ids} }}"
+
+        self.size_field_list.append(settings)
+        return settings["FieldID"]
+
+    def _get_recursive_size_field_data(self, obj):
+        # iterate recursively over field definitions
+
+        if obj.Suppressed:
+                return
+
+        children = []
+        if hasattr(obj, "Refinement"):
+            # single child definitions
+            children = [obj.Refinement]
+
+        elif hasattr(obj, "Refinements"):
+            # multi child definitions
+            children = obj.Refinements
+
+        # step 1: build all child fields this one depends on
+        children_fields = []
+        for child in children:
+            if child.Suppressed:
+                continue
+
+            id = self._get_recursive_size_field_data(child)
+            if id > 0:
+                children_fields.append(id)
+
+        # step 2: build the field for this object
+        match femutils.type_of_obj(obj):
+            case "Fem::MeshRegion":
+                return self._build_constant_size_field(obj)
+            case "Fem::MeshDistance":
+                return self._build_distance_size_field(obj)
+            case "Fem::MeshSphere":
+                return self._build_sphere_size_field(obj)
+            case "Fem::MeshCylinder":
+                return self._build_cylinder_size_field(obj)
+            case "Fem::MeshBox":
+                return self._build_box_size_field(obj)
+            case "Fem::MeshRestrict":
+                if children_fields:
+                    return self._build_restrict_size_field(obj, children_fields[0])
+                else:
+                    Console.PrintError( ("The restriction {} is not used because no valid"
+                                        "child refinement available.\n").format(obj.Name))
+        return -1
+
+    def get_size_field_data(self):
+
+        # get all size field objects
+        size_field_list =  self._get_definitions_of_type("Fem::MeshRegion")
+        size_field_list += self._get_definitions_of_type("Fem::MeshDistance")
+        size_field_list += self._get_definitions_of_type("Fem::MeshSphere")
+        size_field_list += self._get_definitions_of_type("Fem::MeshCylinder")
+        size_field_list += self._get_definitions_of_type("Fem::MeshBox")
+        size_field_list += self._get_definitions_of_type("Fem::MeshRestrict")
+
+        if size_field_list:
             part = self.part_obj
-            if (
-                mesh_distance_list
-                and part.Shape.ShapeType == "Compound"
+            if (part.Shape.ShapeType == "Compound"
                 and (
                     femutils.is_of_type(part, "FeatureBooleanFragments")
                     or femutils.is_of_type(part, "FeatureSlice")
@@ -759,110 +894,14 @@ class GmshTools:
                 )
             ):
                 self.outputCompoundWarning()
-            for mr_obj in mesh_distance_list:
-                if mr_obj.Suppressed:
-                    continue
-                # print(mr_obj.Name)
-                # print(mr_obj.CharacteristicLength)
-                # print(Units.Quantity(mr_obj.CharacteristicLength).Value)
-                #if mr_obj.CharacteristicLength:
-                if mr_obj.References:
 
-                    # collect all elements!
-                    elements = self._get_reference_elements(mr_obj, self.dist_element_set)
-                    if not elements:
-                        Console.PrintError( ("The mesh distance {} is not used because no unique"
-                                             "elements are selected.\n").format(mr_obj.Name))
-                        continue
+            background_fields = []
+            for obj in size_field_list:
+                id = self._get_recursive_size_field_data(obj)
+                if id > 0:
+                    background_fields.append(id)
 
-                    idx_dict = self._element_list_to_shape_idx_dict(elements)
-
-                    # get the settings!
-                    settings = {"Distance":{}, "Threshold":{}}
-                    settings["Threshold"]["DistMin"] = Units.Quantity(mr_obj.DistanceMinimum).Value
-                    settings["Threshold"]["DistMax"] = Units.Quantity(mr_obj.DistanceMaximum).Value
-                    settings["Threshold"]["SizeMin"] = Units.Quantity(mr_obj.SizeMinimum).Value
-                    settings["Threshold"]["SizeMax"] = Units.Quantity(mr_obj.SizeMaximum).Value
-                    settings["Threshold"]["Sigmoid"] = int(not mr_obj.LinearInterpolation)
-                    settings["Threshold"]["StopAtDistMax"] = 1
-                    settings["Distance"]["Sampling"] = mr_obj.Sampling
-                    if idx_dict["Vertex"]:
-                        ids = ", ".join(str(i) for i in idx_dict["Vertex"])
-                        settings["Distance"]["PointsList"] = f"{{ {ids} }}"
-                    if idx_dict["Edge"]:
-                        ids = ", ".join(str(i) for i in idx_dict["Edge"])
-                        settings["Distance"]["CurvesList"] = f"{{ {ids} }}"
-                    if idx_dict["Face"]:
-                        ids = ", ".join(str(i) for i in idx_dict["Face"])
-                        settings["Distance"]["SurfacesList"] = f"{{ {ids} }}"
-
-                    # save everything for later processing
-                    self.dist_setting_list.append(settings)
-
-                else:
-                    Console.PrintError(
-                        "The mesh refinement: {} is not used to create the mesh "
-                        "because the reference list is empty.\n".format(mr_obj.Name)
-                    )
-
-    def get_shape_data(self):
-        # mesh sphere
-        for sphere in self._get_definitions_of_type("Fem::MeshSphere"):
-
-            if sphere.Suppressed:
-                continue
-
-            settings = {"Field": "Ball", "Data": {}}
-            settings["Data"]["Radius"] = Units.Quantity(sphere.Radius).Value
-            settings["Data"]["XCenter"] = Units.Quantity(sphere.Center.x).Value
-            settings["Data"]["YCenter"] = Units.Quantity(sphere.Center.y).Value
-            settings["Data"]["ZCenter"] = Units.Quantity(sphere.Center.z).Value
-            settings["Data"]["Thickness"] = Units.Quantity(sphere.Thickness).Value
-            settings["Data"]["VIn"] = Units.Quantity(sphere.SizeIn).Value
-            settings["Data"]["VOut"] = Units.Quantity(sphere.SizeOut).Value
-
-            self.shape_setting_list.append(settings)
-
-        # mesh cylinder
-        for cylinder in self._get_definitions_of_type("Fem::MeshCylinder"):
-
-            if cylinder.Suppressed:
-                continue
-
-            settings = {"Field": "Cylinder", "Data": {}}
-            settings["Data"]["Radius"] = Units.Quantity(cylinder.Radius).Value
-            settings["Data"]["XCenter"] = Units.Quantity(cylinder.Center.x).Value
-            settings["Data"]["YCenter"] = Units.Quantity(cylinder.Center.y).Value
-            settings["Data"]["ZCenter"] = Units.Quantity(cylinder.Center.z).Value
-            settings["Data"]["XAxis"] = Units.Quantity(cylinder.Axis.x).Value*1000
-            settings["Data"]["YAxis"] = Units.Quantity(cylinder.Axis.y).Value*1000
-            settings["Data"]["ZAxis"] = Units.Quantity(cylinder.Axis.z).Value*1000
-            #settings["Data"]["Thickness"] = Units.Quantity(cylinder.Thickness).Value
-            settings["Data"]["VIn"] = Units.Quantity(cylinder.SizeIn).Value
-            settings["Data"]["VOut"] = Units.Quantity(cylinder.SizeOut).Value
-
-            self.shape_setting_list.append(settings)
-
-        # mesh box
-        for box in self._get_definitions_of_type("Fem::MeshBox"):
-
-            if box.Suppressed:
-                continue
-
-            settings = {"Field": "Box", "Data": {}}
-            settings["Data"]["XMin"] = Units.Quantity(box.Center.x) - Units.Quantity(box.Length/2).Value
-            settings["Data"]["XMax"] = Units.Quantity(box.Center.x) + Units.Quantity(box.Length/2).Value
-            settings["Data"]["YMin"] = Units.Quantity(box.Center.y) - Units.Quantity(box.Width/2).Value
-            settings["Data"]["YMax"] = Units.Quantity(box.Center.y) + Units.Quantity(box.Width/2).Value
-            settings["Data"]["ZMin"] = Units.Quantity(box.Center.z) - Units.Quantity(box.Height/2).Value
-            settings["Data"]["ZMax"] = Units.Quantity(box.Center.z) + Units.Quantity(box.Height/2).Value
-            settings["Data"]["Thickness"] = Units.Quantity(box.Thickness).Value
-            settings["Data"]["VIn"] = Units.Quantity(box.SizeIn).Value
-            settings["Data"]["VOut"] = Units.Quantity(box.SizeOut).Value
-
-            self.shape_setting_list.append(settings)
-
-
+            self._background_fields = background_fields
 
     def get_transfinite_data(self):
 
@@ -1056,35 +1095,6 @@ class GmshTools:
 
             geo.write("\n")
 
-    def write_regions(self, geo):
-        geo.write("// Constant size regions\n")
-        if self.ele_length_list:
-            # we use the index FreeCAD which starts with 0
-            # we need to add 1 for the index in Gmsh
-            geo.write("// Constant size field according to  Element length map\n")
-            for entry in self.ele_length_list:
-                field_id = self._next_field_number()
-                element_dict = self._element_list_to_shape_idx_dict(entry[1])
-
-                geo.write(f"Field[{field_id}] = Constant;\n")
-                geo.write(f"Field[{field_id}].VIn = {entry[0]};\n")
-                if element_dict["Vertex"]:
-                    id_list = ", ".join(str(i) for i in element_dict["Vertex"])
-                    geo.write(f"Field[{field_id}].PointsList = {{ {id_list} }};\n")
-                if element_dict["Edge"]:
-                    id_list = ", ".join(str(i) for i in element_dict["Edge"])
-                    geo.write(f"Field[{field_id}].CurvesList = {{ {id_list} }};\n")
-                if element_dict["Face"]:
-                    id_list = ", ".join(str(i) for i in element_dict["Face"])
-                    geo.write(f"Field[{field_id}].SurfacesList = {{ {id_list} }};\n")
-                if element_dict["Solid"]:
-                    id_list = ", ".join(str(i) for i in element_dict["Solid"])
-                    geo.write(f"Field[{field_id}].VolumesList = {{ {id_list} }};\n")
-
-            geo.write("\n")
-
-        geo.write("// End of constant size regions\n")
-        geo.write("\n")
 
     def write_boundary_layer(self, geo):
         # currently single body is supported
@@ -1118,64 +1128,24 @@ class GmshTools:
             # print("  no boundary layer setup is found for this mesh")
             geo.write("// no boundary layer settings for this mesh\n")
 
-    def write_distances(self, geo):
-        # currently single body is supported
-        if len(self.dist_setting_list):
-            geo.write("// distance settings\n")
-            Console.PrintMessage("  Start to write distance setup\n")
-            for item in self.dist_setting_list:
-                # distance is not a background field
-                distance_field_number = self._next_field_number(False)
-                prefix = "Field[" + str(distance_field_number) + "]"
-                geo.write(prefix + " = Distance;\n")
-                for k in item["Distance"]:
-                    line = prefix + "." + str(k) + " = " + str(item["Distance"][k]) + ";\n"
-                    geo.write(line)
-                    Console.PrintMessage(f"{line}\n")
 
-                # threshold is a background field
-                threshold_field_number = self._next_field_number()
-                prefix = "Field[" + str(threshold_field_number) + "]"
-                geo.write(prefix + " = Threshold;\n")
-                for k in item["Threshold"]:
-                    line = prefix + "." + str(k) + " = " + str(item["Threshold"][k]) + ";\n"
-                    geo.write(line)
-                    Console.PrintMessage(f"{line}\n")
+    def write_size_fields(self, geo):
 
-                line = prefix + ".InField = " + str(distance_field_number) + ";\n"
-                geo.write(line)
-                Console.PrintMessage(f"{line}\n")
+        geo.write("// size field based refinements\n\n")
 
-            geo.write("// end of distance setup \n")
+        for field in self.size_field_list:
+
+            prefix = f"Field[{field["FieldID"]}]"
+            geo.write(f"{prefix} = {field["Field"]};\n")
+
+            for option in field["Option"]:
+                geo.write(f"{prefix}.{option} = {field["Option"][option]};\n")
 
             geo.write("\n")
-            geo.flush()
-            Console.PrintMessage("  finished in distance setup\n")
-        else:
-            # print("  no boundary layer setup is found for this mesh")
-            geo.write("// no distance settings for this mesh\n")
 
-    def write_shapes(self, geo):
-        if self.shape_setting_list:
-            geo.write("// shape based refinements\n")
+        geo.write("// size field based refinements finished\n")
+        geo.write("\n")
 
-            for shape in self.shape_setting_list:
-                field_number = self._next_field_number()
-                prefix = "Field[" + str(field_number) + "]"
-                geo.write(prefix + " = " + shape["Field"] +";\n")
-
-                for name, data in shape["Data"].items():
-                    line = prefix + "." + str(name) + " = " + str(data) + ";\n"
-                    geo.write(line)
-
-                geo.write("\n")
-
-            geo.write("// end of shape refinements \n")
-            geo.write("\n")
-            geo.flush()
-
-        else:
-            geo.write("// no shape based refinements for this mesh\n")
 
     def write_transfinite(self, geo):
 
@@ -1249,14 +1219,8 @@ class GmshTools:
         # groups
         self.write_groups(geo)
 
-        # Constant size fields
-        self.write_regions(geo)
-
-        # Distance size fields
-        self.write_distances(geo)
-
-        # Shape size fields
-        self.write_shapes(geo)
+        # size fields
+        self.write_size_fields(geo)
 
         # boundary layer generation may need special setup
         # of Gmsh properties, set them in Gmsh TaskPanel
@@ -1269,7 +1233,7 @@ class GmshTools:
         if self._background_fields:
 
             # background field
-            field_id = self._next_field_number(False)
+            field_id = self._next_field_number()
             geo.write(f"\nField[{field_id}] = Min;\n")
             id_list = ", ".join(str(i) for i in self._background_fields)
             geo.write(f"Field[{field_id}].FieldsList = {{ {id_list} }};\n")

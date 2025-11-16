@@ -1,5 +1,5 @@
 # ***************************************************************************
-# *   Copyright (c) 2016 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *   Copyright (c) 2025 Stefan Tröger <stefantroeger@gmx.net>              *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -22,10 +22,10 @@
 # ***************************************************************************
 
 __title__ = "FreeCAD FEM mesh refinement task panel for the document object"
-__author__ = "Bernd Hahnebach"
+__author__ = "Stefan Tröger"
 __url__ = "https://www.freecad.org"
 
-## @package task_mesh_region
+## @package task_mesh_distance
 #  \ingroup FEM
 #  \brief task panel for mesh refinement object
 

@@ -602,6 +602,24 @@ def makeMeshDistance(doc, base_mesh, name="MeshDistance"):
         view_mesh_distance.VPMeshDistance(obj.ViewObject)
     return obj
 
+def makeMeshRestrict(doc, base_mesh, name="MeshRestrict"):
+    """makeMeshRestrict(document, base_mesh, [name]):
+    creates a FEM mesh refinement object to restrict the application of other refinements
+    """
+    obj = doc.addObject("Fem::FeaturePython", name)
+    from femobjects import mesh_restrict
+
+    mesh_restrict.MeshRestrict(obj)
+
+    tmplist = base_mesh.MeshRefinementList
+    tmplist.append(obj)
+    base_mesh.MeshRefinementList = tmplist
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_mesh_restrict
+
+        view_mesh_restrict.VPMeshRestrict(obj.ViewObject)
+    return obj
+
 def makeMeshSphere(doc, base_mesh, name="MeshSphere"):
     """makeMeshSphere(document, base_mesh [name]):
     creates a FEM mesh refinement object to define properties for a refinement of a FEM mesh

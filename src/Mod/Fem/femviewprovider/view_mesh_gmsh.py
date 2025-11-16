@@ -38,6 +38,8 @@ from femtaskpanels import task_mesh_gmsh
 from femtools.femutils import is_of_type, type_of_obj
 
 _supported_definitions = ["Fem::MeshRegion", "Fem::MeshBoundaryLayer", "Fem::MeshDistance",
+                          "Fem::MeshSphere", "Fem::MeshCylinder", "Fem::MeshBox",
+                          "Fem::MeshRestrict",
                           "Fem::MeshTransfiniteCurve", "Fem::MeshTransfiniteSurface",
                           "Fem::MeshTransfiniteVolume"]
 

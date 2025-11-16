@@ -923,6 +923,16 @@ class _MeshDistance(CommandManager):
         self.is_active = "with_gmsh_femmesh"
         self.do_activated = "add_obj_on_gui_selobj_set_edit"
 
+class _MeshRestrict(CommandManager):
+    "The FEM_MeshRefinement command definition"
+
+    def __init__(self):
+        super().__init__()
+        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_MeshRestrict", "Restrict refinement")
+        self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_MeshRestrict", "Restrict application of a refinement to certain geometries")
+        self.is_active = "with_gmsh_femmesh"
+        self.do_activated = "add_obj_on_gui_selobj_set_edit"
+
 class _MeshSphere(CommandManager):
     "The FEM_MeshRefinement command definition"
 
@@ -993,8 +1003,10 @@ class _GMSHRefine():
     # Group command for all gmsh special refinements
 
     def GetCommands(self):
-        return ["FEM_MeshDistance", "FEM_MeshBoundaryLayer", "FEM_MeshSphere", "FEM_MeshBox", "FEM_MeshCylinder", "FEM_MeshTransfiniteCurve",
-                "FEM_MeshTransfiniteSurface", "FEM_MeshTransfiniteVolume"]
+        return ["FEM_MeshDistance", "FEM_MeshBoundaryLayer",
+                "FEM_MeshSphere", "FEM_MeshBox", "FEM_MeshCylinder",
+                "FEM_MeshRestrict",
+                "FEM_MeshTransfiniteCurve", "FEM_MeshTransfiniteSurface", "FEM_MeshTransfiniteVolume"]
 
     def GetDefaultCommand(self):
         return 0
@@ -1404,6 +1416,7 @@ FreeCADGui.addCommand("FEM_MeshGroup", _MeshGroup())
 FreeCADGui.addCommand("FEM_MeshNetgenFromShape", _MeshNetgenFromShape())
 FreeCADGui.addCommand("FEM_MeshRegion", _MeshRegion())
 FreeCADGui.addCommand("FEM_MeshDistance", _MeshDistance())
+FreeCADGui.addCommand("FEM_MeshRestrict", _MeshRestrict())
 FreeCADGui.addCommand("FEM_MeshSphere", _MeshSphere())
 FreeCADGui.addCommand("FEM_MeshBox", _MeshBox())
 FreeCADGui.addCommand("FEM_MeshCylinder", _MeshCylinder())
