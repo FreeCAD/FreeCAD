@@ -52,10 +52,10 @@ AxisDefinition KukaIR500[6] = {
 
 TYPESYSTEM_SOURCE(Robot::Robot6Axis, Base::Persistence)
 
-Robot6Axis::Robot6Axis() :
-    Actual(KDL::JntArray(6)),
-    Min(KDL::JntArray(6)),
-    Max(KDL::JntArray(6))
+Robot6Axis::Robot6Axis()
+    : Actual(KDL::JntArray(6))
+    , Min(KDL::JntArray(6))
+    , Max(KDL::JntArray(6))
 {
     // set to default kuka 500
     setKinematic(KukaIR500);
@@ -67,15 +67,17 @@ void Robot6Axis::setKinematic(const AxisDefinition KinDef[6])
 
 
     for (int i = 0; i < 6; i++) {
-        temp.addSegment(KDL::Segment(
-            KDL::Joint(KDL::Joint::RotZ),
-            KDL::Frame::DH(
-                KinDef[i].a,
-                Base::toRadians<double>(KinDef[i].alpha),
-                KinDef[i].d,
-                Base::toRadians<double>(KinDef[i].theta)
+        temp.addSegment(
+            KDL::Segment(
+                KDL::Joint(KDL::Joint::RotZ),
+                KDL::Frame::DH(
+                    KinDef[i].a,
+                    Base::toRadians<double>(KinDef[i].alpha),
+                    KinDef[i].d,
+                    Base::toRadians<double>(KinDef[i].theta)
+                )
             )
-        ));
+        );
         RotDir[i] = KinDef[i].rotDir;
         Max(i) = Base::toRadians<double>(KinDef[i].maxAngle);
         Min(i) = Base::toRadians<double>(KinDef[i].minAngle);

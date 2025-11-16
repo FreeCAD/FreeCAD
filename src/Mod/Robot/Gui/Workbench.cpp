@@ -64,10 +64,7 @@ void Workbench::activated()
 
     const char* RobotAndTrac[] = {"Robot_InsertWaypoint", "Robot_InsertWaypointPreselect", nullptr};
 
-    const char* Robot[] = {"Robot_AddToolShape",
-                           "Robot_SetHomePos",
-                           "Robot_RestoreHomePos",
-                           nullptr};
+    const char* Robot[] = {"Robot_AddToolShape", "Robot_SetHomePos", "Robot_RestoreHomePos", nullptr};
 
     const char* TracSingle[] = {"Robot_TrajectoryDressUp", nullptr};
 
@@ -75,32 +72,36 @@ void Workbench::activated()
 
     std::vector<Gui::TaskView::TaskWatcher*> Watcher;
 
-    Watcher.push_back(
-        new Gui::TaskView::TaskWatcherCommands("SELECT Robot::TrajectoryObject COUNT 1"
-                                               "SELECT Robot::RobotObject COUNT 1",
-                                               RobotAndTrac,
-                                               "Trajectory Tools",
-                                               "Robot_InsertWaypoint"
+    Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
+        "SELECT Robot::TrajectoryObject COUNT 1"
+        "SELECT Robot::RobotObject COUNT 1",
+        RobotAndTrac,
+        "Trajectory Tools",
+        "Robot_InsertWaypoint"
     ));
 
     Watcher.push_back(new TaskWatcherRobot);
 
-    Watcher.push_back(new Gui::TaskView::TaskWatcherCommands("SELECT Robot::RobotObject COUNT 1",
-                                                              Robot,
-                                                              "Robot Tools",
-                                                              "Robot_CreateRobot"));
+    Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
+        "SELECT Robot::RobotObject COUNT 1",
+        Robot,
+        "Robot Tools",
+        "Robot_CreateRobot"
+    ));
 
-    Watcher.push_back(
-        new Gui::TaskView::TaskWatcherCommands("SELECT Robot::TrajectoryObject COUNT 1",
-                                               TracSingle,
-                                               "Trajectory Tools",
-                                               "Robot_CreateRobot"));
+    Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
+        "SELECT Robot::TrajectoryObject COUNT 1",
+        TracSingle,
+        "Trajectory Tools",
+        "Robot_CreateRobot"
+    ));
 
-    Watcher.push_back(
-        new Gui::TaskView::TaskWatcherCommands("SELECT Robot::TrajectoryObject COUNT 2..",
-                                               TracMore,
-                                               "Trajectory Tools",
-                                               "Robot_CreateRobot"));
+    Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
+        "SELECT Robot::TrajectoryObject COUNT 2..",
+        TracMore,
+        "Trajectory Tools",
+        "Robot_CreateRobot"
+    ));
 
     addTaskWatcher(Watcher);
     Gui::Control().showTaskView();

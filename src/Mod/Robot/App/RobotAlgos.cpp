@@ -119,7 +119,8 @@ KDL::Frame toFrame(const Base::Placement& To)
             To.getRotation()[2],
             To.getRotation()[3]
         ),
-        KDL::Vector(To.getPosition()[0], To.getPosition()[1], To.getPosition()[2])};
+        KDL::Vector(To.getPosition()[0], To.getPosition()[1], To.getPosition()[2])
+    };
 }
 
 Base::Placement toPlacement(const KDL::Frame& frame)
@@ -132,4 +133,4 @@ Base::Placement toPlacement(const KDL::Frame& frame)
     return {Base::Vector3d(frame.p[0], frame.p[1], frame.p[2]), Base::Rotation(x, y, z, w)};
 }
 
-}
+}  // namespace Robot
