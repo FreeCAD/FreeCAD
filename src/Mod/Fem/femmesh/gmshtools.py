@@ -1185,11 +1185,11 @@ class GmshTools:
 
         for field in self.size_field_list:
 
-            prefix = f"Field[{field["FieldID"]}]"
-            geo.write(f"{prefix} = {field["Field"]};\n")
+            prefix = f'Field[{field["FieldID"]}]'
+            geo.write(f'{prefix} = {field["Field"]};\n')
 
             for option in field["Option"]:
-                geo.write(f"{prefix}.{option} = {field["Option"][option]};\n")
+                geo.write(f'{prefix}.{option} = {field["Option"][option]};\n')
 
             geo.write("\n")
 
@@ -1205,36 +1205,36 @@ class GmshTools:
         # write curves
         for setting in self.transfinite_curve_settings:
             geo.write("Transfinite Curve {")
-            geo.write(f"{setting["tag"]} }} = {setting["numNodes"]}")
+            geo.write(f'{setting["tag"]} }} = {setting["numNodes"]}')
 
             if "meshType" in setting:
-                geo.write(f" Using {setting["meshType"]} {setting["coef"]}")
+                geo.write(f' Using {setting["meshType"]} {setting["coef"]}')
             geo.write(";\n")
 
         geo.write("\n")
 
         # write surfaces
         for setting in self.transfinite_surface_settings:
-            geo.write(f"Transfinite Surface {{ {setting["surfaces"]} }}")
+            geo.write(f'Transfinite Surface {{ {setting["surfaces"]} }}')
             if "nodes" in setting:
-                geo.write( f" = {{ {setting["nodes"]} }}" )
+                geo.write( f' = {{ {setting["nodes"]} }}' )
             if "orientation" in setting:
-                geo.write(f" {setting["orientation"]}")
+                geo.write(f' {setting["orientation"]}')
             if "recombine" in setting:
                 geo.write(";\n")
-                geo.write(f"Recombine Surface {{ {setting["surfaces"]} }}")
+                geo.write(f'Recombine Surface {{ {setting["surfaces"]} }}')
 
             geo.write(";\n")
 
         # write volumes
         for setting in self.transfinite_volume_settings:
-            geo.write(f"Transfinite Volume {{ {setting["volumes"]} }}")
+            geo.write(f'Transfinite Volume {{ {setting["volumes"]} }}')
             if "nodes" in setting:
-                geo.write(f" = {{ {setting["nodes"]} }}")
+                geo.write(f' = {{ {setting["nodes"]} }}')
             geo.write(";\n")
-            geo.write(f"Recombine Volume {{ {setting["volumes"]} }};\n")
+            geo.write(f'Recombine Volume {{ {setting["volumes"]} }};\n')
             if "mixed" in setting:
-                geo.write(f"TransfQuadTri {{ {setting["volumes"]} }};\n")
+                geo.write(f'TransfQuadTri {{ {setting["volumes"]} }};\n')
 
         geo.write("// Transfinite elements finished\n")
         geo.write("\n")
