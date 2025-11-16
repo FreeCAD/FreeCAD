@@ -26,10 +26,12 @@
 #include <Inventor/SbColor.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/nodes/SoSubNode.h>
+#include <Inventor/fields/SoSFTrigger.h>
 #include <FCGlobal.h>
+#include <QImage>
+#include <QTimer>
 
-
-class SbColor;
+class QOpenGLTexture;
 class SoGLRenderAction;
 
 namespace Gui {
@@ -56,15 +58,50 @@ public:
     void setColorGradient(const SbColor& fromColor,
                           const SbColor& toColor,
                           const SbColor& midColor);
+    void setupUpdater(void);
 
+    SoSFTrigger redrawTrigger;
 private:
     Gradient gradient;
 
 protected:
     ~SoFCBackgroundGradient() override;
 
-    SbColor fCol, tCol, mCol;
+    QColor fCol, tCol, mCol;
+
+    Gradient old_gradient{};
+    QColor old_fCol{}, old_tCol{}, old_mCol{};
+
+    QScopedPointer <QOpenGLTexture> bgTex{};    // background texture
+    QScopedPointer <QOpenGLTexture> noiseTex{}; // interleaved white noise texture with which the background texture is mixed
+
+    QImage bgImage{};
+    inline static QImage noiseImage{};
+
+    inline static constexpr QSize bgTex_size{1280, 720}; // Coin3D may report incorrect values of the size of the viewport
+    inline static constexpr QSize noise_size{1280, 720};
+    inline static constexpr double bgTex_opacity = 0.97;
+
+    inline static constexpr int pre_update_delay = 300;
+    QTimer updater;
 };
+
+/*!
+ * \brief A function to generate 2D white noise
+ * \param size
+ * \return QImage containing 2D white noise
+ * Generates 2D white noise of QImage::Format_RGB32.
+ */
+QImage whiteNoise(const QSize &size);
+QImage whiteNoise(const int width, const int height);
+
+/*!
+ * \brief A function to generate grey checkerboard pattern
+ * \param img
+ * The creators of Call of Duty: Advanced Warfare recommend using interleaved gradient noise, possessing properties from both dithering and random approaches. It has rich range of values like random noise, but at the same time it produces temporally coherent results.
+This function creates interleaved white noise invisible to the naked eye, but making big areas of the same color pleasant to the eyes with spatial coherency.
+ */
+void checkerboardPattern(QImage &img);
 
 } // namespace Gui
 
