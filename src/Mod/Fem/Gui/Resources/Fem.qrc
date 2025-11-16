@@ -67,6 +67,7 @@
         <file>icons/FEM_MeshRegion.svg</file>
         <file>icons/FEM_MeshDistance.svg</file>
         <file>icons/FEM_MeshRestrict.svg</file>
+        <file>icons/FEM_MeshMath.svg</file>
         <file>icons/FEM_MeshSphere.svg</file>
         <file>icons/FEM_MeshBox.svg</file>
         <file>icons/FEM_MeshCylinder.svg</file>

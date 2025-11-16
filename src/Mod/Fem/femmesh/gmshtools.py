@@ -829,6 +829,46 @@ class GmshTools:
         self.size_field_list.append(settings)
         return settings["FieldID"]
 
+    def _build_math_size_field(self, obj, equation_fields):
+
+        if len(equation_fields) > 8:
+            Console.PrintError( ("The math equation {} has more than 8 child fields,"
+                                    "which is not supported.\n").format(obj.Name))
+            return -1
+
+        # process the equation to use the correct field values!
+        replace = False
+        new_equation = ""
+        for character in obj.Equation:
+
+            if character == "F":
+                replace = True
+                new_equation += character
+                continue
+
+            if replace:
+                if character.isdigit():
+                    idx = int(character)-1
+                    if idx >= len(equation_fields):
+                        Console.PrintError( f"The math equation {obj.Label} uses invalid field variable"
+                                    f" F{character}, hence it cannot be used.\n")
+                        return -1
+
+                    new_equation += str(equation_fields[idx])
+                else:
+                    new_equation += character
+                replace = False
+            else:
+                new_equation += character
+
+        # get the settings!
+        settings = {"Field": "MathEval", "Option": {}}
+        settings["FieldID"] = self._next_field_number()
+        settings["Option"]["F"] = f"'{new_equation}'"
+
+        self.size_field_list.append(settings)
+        return settings["FieldID"]
+
     def _get_recursive_size_field_data(self, obj):
         # iterate recursively over field definitions
 
@@ -851,8 +891,7 @@ class GmshTools:
                 continue
 
             id = self._get_recursive_size_field_data(child)
-            if id > 0:
-                children_fields.append(id)
+            children_fields.append(id)
 
         # step 2: build the field for this object
         match femutils.type_of_obj(obj):
@@ -867,11 +906,21 @@ class GmshTools:
             case "Fem::MeshBox":
                 return self._build_box_size_field(obj)
             case "Fem::MeshRestrict":
-                if children_fields:
+                if children_fields and (children_fields[0]>0):
                     return self._build_restrict_size_field(obj, children_fields[0])
                 else:
                     Console.PrintError( ("The restriction {} is not used because no valid"
-                                        "child refinement available.\n").format(obj.Name))
+                                         "child refinement available.\n").format(obj.Name))
+
+            case "Fem::MeshMath":
+                # make sure all children are valid (if any)! otherwise the fields used in equation will not match
+                if  -1 in children_fields:
+                    Console.PrintError( ("The math equation {} is not used because some child"
+                                            "refinements refinements are not setup correctly.\n").format(obj.Name))
+                    return -1
+
+                return self._build_math_size_field(obj, children_fields)
+
         return -1
 
     def get_size_field_data(self):
@@ -883,6 +932,7 @@ class GmshTools:
         size_field_list += self._get_definitions_of_type("Fem::MeshCylinder")
         size_field_list += self._get_definitions_of_type("Fem::MeshBox")
         size_field_list += self._get_definitions_of_type("Fem::MeshRestrict")
+        size_field_list += self._get_definitions_of_type("Fem::MeshMath")
 
         if size_field_list:
             part = self.part_obj
