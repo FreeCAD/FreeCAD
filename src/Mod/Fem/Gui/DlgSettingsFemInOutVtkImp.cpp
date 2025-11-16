@@ -106,7 +106,7 @@ void DlgSettingsFemInOutVtkImp::populateExportLevel() const
     int index = 0;
     ui->cb_export_level->clear();
     for (const auto& val : values) {
-        ui->cb_export_level->addItem(tr(val.c_str()),QString::fromStdString(val));
+        ui->cb_export_level->addItem(tr(val.c_str()), QString::fromStdString(val));
         if (val == current) {
             ui->cb_export_level->setCurrentIndex(index);
         }
