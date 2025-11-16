@@ -620,6 +620,24 @@ def makeMeshRestrict(doc, base_mesh, name="MeshRestrict"):
         view_mesh_restrict.VPMeshRestrict(obj.ViewObject)
     return obj
 
+def makeMeshMath(doc, base_mesh, name="MeshMath"):
+    """makeMeshMath(document, base_mesh, [name]):
+    creates a FEM mesh refinement object to calculate mesh size by equation
+    """
+    obj = doc.addObject("Fem::FeaturePython", name)
+    from femobjects import mesh_math
+
+    mesh_math.MeshMath(obj)
+
+    tmplist = base_mesh.MeshRefinementList
+    tmplist.append(obj)
+    base_mesh.MeshRefinementList = tmplist
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_mesh_math
+
+        view_mesh_math.VPMeshMath(obj.ViewObject)
+    return obj
+
 def makeMeshSphere(doc, base_mesh, name="MeshSphere"):
     """makeMeshSphere(document, base_mesh [name]):
     creates a FEM mesh refinement object to define properties for a refinement of a FEM mesh
