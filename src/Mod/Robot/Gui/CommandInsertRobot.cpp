@@ -100,7 +100,7 @@ bool CmdRobotAddToolShape::isActive()
 
 void CreateRobotCommandsInsertRobots()
 {
-    Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
+    Gui::CommandManager& command_manager = Gui::Application::Instance->commandManager();
 
-    rcCmdMgr.addCommand(new CmdRobotAddToolShape());
+    command_manager.addCommand(new CmdRobotAddToolShape());
 }

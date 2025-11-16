@@ -102,9 +102,6 @@ void Workbench::activated()
                                                "Trajectory Tools",
                                                "Robot_CreateRobot"));
 
-    Watcher.push_back(
-        new Gui::TaskView::TaskWatcherCommandsEmptyDoc(Empty, "Insert Robot", "Robot_CreateRobot"));
-
     addTaskWatcher(Watcher);
     Gui::Control().showTaskView();
 }
