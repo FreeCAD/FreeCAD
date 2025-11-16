@@ -35,6 +35,7 @@ PROPERTY_SOURCE(AssemblyGui::ViewProviderGroupBase, Gui::ViewProviderDocumentObj
 PROPERTY_SOURCE(AssemblyGui::ViewProviderBomGroup, AssemblyGui::ViewProviderGroupBase)
 PROPERTY_SOURCE(AssemblyGui::ViewProviderJointGroup, AssemblyGui::ViewProviderGroupBase)
 PROPERTY_SOURCE(AssemblyGui::ViewProviderSimulationGroup, AssemblyGui::ViewProviderGroupBase)
+PROPERTY_SOURCE(AssemblyGui::ViewProviderSnapshotGroup, AssemblyGui::ViewProviderGroupBase)
 PROPERTY_SOURCE(AssemblyGui::ViewProviderViewGroup, AssemblyGui::ViewProviderGroupBase)
 
 QIcon ViewProviderBomGroup::getIcon() const
@@ -50,6 +51,11 @@ QIcon ViewProviderJointGroup::getIcon() const
 QIcon ViewProviderSimulationGroup::getIcon() const
 {
     return Gui::BitmapFactory().pixmap("Assembly_SimulationGroup.svg");
+}
+
+QIcon ViewProviderSnapshotGroup::getIcon() const
+{
+    return Gui::BitmapFactory().pixmap("Assembly_SnapshotGroup.svg");
 }
 
 QIcon ViewProviderViewGroup::getIcon() const

@@ -90,6 +90,24 @@ public:
 };
 
 
+class AssemblyExport SnapshotGroup: public App::DocumentObjectGroup
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(Assembly::SnapshotGroup);
+
+public:
+    SnapshotGroup() = default;
+    ~SnapshotGroup() override = default;
+
+    PyObject* getPyObject() override;
+
+    /// returns the type name of the ViewProvider
+    const char* getViewProviderName() const override
+    {
+        return "AssemblyGui::ViewProviderSnapshotGroup";
+    }
+};
+
+
 class AssemblyExport ViewGroup: public App::DocumentObjectGroup
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Assembly::ViewGroup);

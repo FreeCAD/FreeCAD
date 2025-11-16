@@ -94,6 +94,18 @@ public:
     QIcon getIcon() const override;
 };
 
+
+class AssemblyGuiExport ViewProviderSnapshotGroup: public ViewProviderGroupBase
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(AssemblyGui::ViewProviderSnapshotGroup);
+
+public:
+    ViewProviderSnapshotGroup() = default;
+    ~ViewProviderSnapshotGroup() override = default;
+
+    QIcon getIcon() const override;
+};
+
 class AssemblyGuiExport ViewProviderViewGroup: public ViewProviderGroupBase
 {
     PROPERTY_HEADER_WITH_OVERRIDE(AssemblyGui::ViewProviderViewGroup);
