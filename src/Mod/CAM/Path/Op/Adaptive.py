@@ -2003,7 +2003,7 @@ class PathAdaptive(PathOp.ObjectOp):
         obj.setEditorMode("removalshape", 2)  # hide
 
         if hasattr(obj, "HelixDiameterLimit"):
-            oldD = obj.HelixDiameterLimit
+            oldD = obj.HelixDiameterLimit.Value
             obj.removeProperty("HelixDiameterLimit")
             obj.addProperty(
                 "App::PropertyPercent",
@@ -2025,7 +2025,7 @@ class PathAdaptive(PathOp.ObjectOp):
             )
             obj.HelixMinDiameterPercent = 10
             if hasattr(obj, "ToolController"):
-                obj.HelixIdealDiameterPercent = (
+                obj.HelixIdealDiameterPercent = int(
                     75 if oldD == 0 else 100 * oldD / obj.ToolController.Tool.Diameter.Value
                 )
 
