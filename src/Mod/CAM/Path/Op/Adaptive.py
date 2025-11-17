@@ -600,6 +600,7 @@ def Execute(op, obj):
             "stockGeometry": stockPath2d,
             "stepover": float(obj.StepOver),
             "effectiveHelixDiameter": float(helixDiameter),
+            "helixMinDiameter": float(helixMinDiameter),
             "operationType": obj.OperationType,
             "side": obj.Side,
             "forceInsideOut": obj.ForceInsideOut,
