@@ -34,8 +34,8 @@ Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
 Path.Log.trackModule(Path.Log.thisModule())
 
 
-class TestRefactoredTestDressupPost(PathTestUtils.PathTestBase):
-    """Test the refactored_test_post.py postprocessor command line arguments."""
+class TestDressupPost(PathTestUtils.PathTestBase):
+    """Test the test_post.py postprocessor command line arguments."""
 
     @classmethod
     def setUpClass(cls):
@@ -51,7 +51,7 @@ class TestRefactoredTestDressupPost(PathTestUtils.PathTestBase):
         FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "True")
         cls.doc = FreeCAD.open(FreeCAD.getHomePath() + "/Mod/CAM/CAMTests/dressuptest.FCStd")
         cls.job = cls.doc.getObject("Job")
-        cls.post = PostProcessorFactory.get_post_processor(cls.job, "refactored_test")
+        cls.post = PostProcessorFactory.get_post_processor(cls.job, "test")
 
         # there are 4 operations in dressuptest.FCStd
         # every operation uses a different ToolController

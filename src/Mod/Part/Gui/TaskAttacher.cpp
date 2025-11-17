@@ -1506,8 +1506,6 @@ bool TaskDlgAttacher::accept()
         );
         Gui::cmdAppObject(obj, "recompute()");
 
-        Gui::cmdGuiDocument(obj, "resetEdit()");
-
         Gui::Command::commitCommand();
     }
     catch (const Base::Exception& e) {
@@ -1535,7 +1533,6 @@ bool TaskDlgAttacher::reject()
     if (document) {
         // roll back the done things
         Gui::Command::abortCommand();
-        Gui::Command::doCommand(Gui::Command::Gui, "%s.resetEdit()", doc.getGuiDocumentPython().c_str());
         Gui::Command::doCommand(Gui::Command::Doc, "%s.recompute()", doc.getAppDocumentPython().c_str());
     }
 

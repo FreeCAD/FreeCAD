@@ -2,7 +2,8 @@
 
 # ***************************************************************************
 # *   Copyright (c) 2022 sliptonic <shopinthewoods@gmail.com>               *
-# *   Copyright (c) 2022 - 2025 Larry Woestman <LarryWoestman2@gmail.com>   *
+# *   Copyright (c) 2022 Larry Woestman <LarryWoestman2@gmail.com>          *
+# *   Copyright (c) 2024 Carl Slater <CandLWorkshopllc@gmail.com>           *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -22,6 +23,15 @@
 # *                                                                         *
 # ***************************************************************************
 
+# ***************************************************************************
+# *  Note: This file is a modified clone of TestRefactoredLinuxCNCPost.py   *
+# *        any changes to this file should be applied to the other          *
+# *                                                                         *
+# *                                                                         *
+# ***************************************************************************
+
+from importlib import reload
+
 import FreeCAD
 
 import Path
@@ -33,13 +43,10 @@ Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
 Path.Log.trackModule(Path.Log.thisModule())
 
 
-class TestRefactoredMach3Mach4Post(PathTestUtils.PathTestBase):
-    """Test the refactored_mach3_mach4_post.py postprocessor."""
-
+class TestMassoG3Post(PathTestUtils.PathTestBase):
     @classmethod
-    def setUpClass(cls) -> None:
+    def setUpClass(cls):
         """setUpClass()...
-
         This method is called upon instantiation of this test class.  Add code
         and objects here that are needed for the duration of the test() methods
         in this class.  In other words, set up the 'global' test environment
@@ -51,7 +58,7 @@ class TestRefactoredMach3Mach4Post(PathTestUtils.PathTestBase):
         FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "True")
         cls.doc = FreeCAD.open(FreeCAD.getHomePath() + "/Mod/CAM/CAMTests/boxtest.fcstd")
         cls.job = cls.doc.getObject("Job")
-        cls.post = PostProcessorFactory.get_post_processor(cls.job, "refactored_mach3_mach4")
+        cls.post = PostProcessorFactory.get_post_processor(cls.job, "masso_g3")
         # locate the operation named "Profile"
         for op in cls.job.Operations.Group:
             if op.Label == "Profile":
@@ -60,23 +67,20 @@ class TestRefactoredMach3Mach4Post(PathTestUtils.PathTestBase):
                 return
 
     @classmethod
-    def tearDownClass(cls) -> None:
+    def tearDownClass(cls):
         """tearDownClass()...
-
         This method is called prior to destruction of this test class.  Add
         code and objects here that cleanup the test environment after the
         test() methods in this class have been executed.  This method does not
-        have access to the class `self` reference.  This method is able to
-        call static methods within this same class.
+        have access to the class `self` reference.  This method
+        is able to call static methods within this same class.
         """
         FreeCAD.closeDocument(cls.doc.Name)
         FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "")
 
     # Setup and tear down methods called before and after each unit test
-
-    def setUp(self) -> None:
+    def setUp(self):
         """setUp()...
-
         This method is called prior to each `test()` method.  Add code and
         objects here that are needed for multiple `test()` methods.
         """
@@ -85,40 +89,14 @@ class TestRefactoredMach3Mach4Post(PathTestUtils.PathTestBase):
         # reinitialize the postprocessor data structures between tests
         self.post.reinitialize()
 
-    def tearDown(self) -> None:
+    def tearDown(self):
         """tearDown()...
-
         This method is called after each test() method. Add cleanup instructions here.
         Such cleanup instructions will likely undo those in the setUp() method.
         """
         pass
 
-    def single_compare(self, path, expected, args, debug=False):
-        """Perform a test with a single line of gcode comparison."""
-        nl = "\n"
-        self.job.PostProcessorArgs = args
-        # replace the original path (that came with the job and operation) with our path
-        self.profile_op.Path = Path.Path(path)
-        # the gcode is in the first section for this particular job and operation
-        gcode = self.post.export()[0][1]
-        if debug:
-            print(f"--------{nl}{gcode}--------{nl}")
-        # there are 4 lines of "other stuff" before the line we are interested in
-        self.assertEqual(gcode.splitlines()[4], expected)
-
-    def multi_compare(self, path, expected, args, debug=False):
-        """Perform a test with multiple lines of gcode comparison."""
-        nl = "\n"
-        self.job.PostProcessorArgs = args
-        # replace the original path (that came with the job and operation) with our path
-        self.profile_op.Path = Path.Path(path)
-        # the gcode is in the first section for this particular job and operation
-        gcode = self.post.export()[0][1]
-        if debug:
-            print(f"--------{nl}{gcode}--------{nl}")
-        self.assertEqual(gcode, expected)
-
-    def test000(self) -> None:
+    def test000(self):
         """Test Output Generation.
         Empty path.  Produces only the preamble and postable.
         """
@@ -131,7 +109,6 @@ class TestRefactoredMach3Mach4Post(PathTestUtils.PathTestBase):
         # Only test length of result.
         self.job.PostProcessorArgs = "--no-show-editor"
         gcode = self.post.export()[0][1]
-        # print(f"--------{nl}{gcode}--------{nl}")
         self.assertTrue(len(gcode.splitlines()) == 26)
 
         # Test without header
@@ -139,19 +116,19 @@ class TestRefactoredMach3Mach4Post(PathTestUtils.PathTestBase):
 G17 G54 G40 G49 G80 G90
 G21
 (Begin operation: Fixture)
-(Machine: mach3_4, mm/min)
+(Machine units: mm/min)
 G54
 (Finish operation: Fixture)
 (Begin operation: TC: Default Tool)
-(Machine: mach3_4, mm/min)
+(Machine units: mm/min)
 (TC: Default Tool)
 (Begin toolchange)
 M5
-M6 T1
+T1 M6
 G43 H1
 (Finish operation: TC: Default Tool)
 (Begin operation: Profile)
-(Machine: mach3_4, mm/min)
+(Machine units: mm/min)
 (Finish operation: Profile)
 (Begin postamble)
 M05
@@ -159,8 +136,10 @@ G17 G54 G90 G80 G40
 M2
 """
 
-        # args = ("--no-header --no-comments --no-show-editor --precision=2")
+        self.profile_op.Path = Path.Path([])
+
         self.job.PostProcessorArgs = "--no-header --no-show-editor"
+        # args = ("--no-header --no-comments --no-show-editor --precision=2")
         gcode = self.post.export()[0][1]
         # print(f"--------{nl}{gcode}--------{nl}")
         self.assertEqual(gcode, expected)
@@ -170,15 +149,15 @@ M2
 G21
 G54
 M5
-M6 T1
+T1 M6
 G43 H1
 M05
 G17 G54 G90 G80 G40
 M2
 """
 
-        # args = ("--no-header --no-comments --no-show-editor --precision=2")
         self.job.PostProcessorArgs = "--no-header --no-comments --no-show-editor"
+        # args = ("--no-header --no-comments --no-show-editor --precision=2")
         gcode = self.post.export()[0][1]
         # print(f"--------{nl}{gcode}--------{nl}")
         self.assertEqual(gcode, expected)
@@ -335,11 +314,10 @@ M2
         self.job.PostProcessorArgs = "--no-header --no-show-editor"
         gcode = self.post.export()[0][1]
         # print(f"--------{nl}{gcode}--------{nl}")
-        split_gcode = gcode.splitlines()
-        self.assertEqual(split_gcode[18], "M5")
-        self.assertEqual(split_gcode[19], "M6 T2")
-        self.assertEqual(split_gcode[20], "G43 H2")
-        self.assertEqual(split_gcode[21], "M3 S3000")
+        self.assertEqual(gcode.splitlines()[18], "M5")
+        self.assertEqual(gcode.splitlines()[19], "T2 M6")
+        self.assertEqual(gcode.splitlines()[20], "G43 H2")
+        self.assertEqual(gcode.splitlines()[21], "M3 S3000")
 
         # suppress TLO
         self.job.PostProcessorArgs = "--no-header --no-tlo --no-show-editor"
