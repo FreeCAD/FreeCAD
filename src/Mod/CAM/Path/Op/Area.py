@@ -26,7 +26,7 @@ import FreeCAD
 import Path
 import Path.Op.Base as PathOp
 import PathScripts.PathUtils as PathUtils
-
+import PathScripts.tsp as tsp
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -428,7 +428,7 @@ class ObjectOp(PathOp.ObjectOp):
                     shp = s[0]
                 locations.append({"x": shp.BoundBox.XMax, "y": shp.BoundBox.YMax, "shape": s})
 
-            locations = PathUtils.sort_locations(locations, ["x", "y"])
+            locations = tsp.sort_locations(locations, ["x", "y"])
 
             shapes = [j["shape"] for j in locations]
 

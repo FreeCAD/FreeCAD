@@ -26,7 +26,7 @@ import FreeCAD
 import Path
 import Path.Op.Base as PathOp
 from Path.Base import Drillable
-from PathScripts import PathUtils
+import PathScripts.tsp as tsp
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -189,7 +189,7 @@ class ObjectOp(PathOp.ObjectOp):
                 holes.append({"x": location.x, "y": location.y, "r": 0})
 
         if len(holes) > 0:
-            holes = PathUtils.sort_locations(holes, ["x", "y"])
+            holes = tsp.sort_locations(holes, ["x", "y"])
             self.circularHoleExecute(obj, holes)
 
     def circularHoleExecute(self, obj, holes):
