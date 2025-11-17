@@ -1034,7 +1034,9 @@ def drawArc(arc, forceShape=False):
     lastangle = round(arc.end_angle % 360, pre)
     try:
         if (dxfCreateDraft or dxfCreateSketch) and (not forceShape):
-            return make_circle.make_circle(rad, pl, face=False, startangle=firstangle, endangle=lastangle)
+            return make_circle.make_circle(
+                rad, pl, face=False, startangle=firstangle, endangle=lastangle
+            )
         else:
             circle = Part.Circle()
             circle.Radius = rad
@@ -2300,7 +2302,9 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
                     FreeCAD.ActiveDocument.recompute()
                     if dxfMakeBlocks or dxfJoin:
                         if sketch:
-                            shape = make_sketch.make_sketch(shape, autoconstraints=True, addTo=sketch)
+                            shape = make_sketch.make_sketch(
+                                shape, autoconstraints=True, addTo=sketch
+                            )
                         else:
                             shape = make_sketch.make_sketch(shape, autoconstraints=True)
                             sketch = shape
@@ -2346,7 +2350,9 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
                     FreeCAD.ActiveDocument.recompute()
                     if dxfMakeBlocks or dxfJoin:
                         if sketch:
-                            shape = make_sketch.make_sketch(shape, autoconstraints=True, addTo=sketch)
+                            shape = make_sketch.make_sketch(
+                                shape, autoconstraints=True, addTo=sketch
+                            )
                         else:
                             shape = make_sketch.make_sketch(shape, autoconstraints=True)
                             sketch = shape
@@ -2377,7 +2383,9 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
                     FreeCAD.ActiveDocument.recompute()
                     if dxfMakeBlocks or dxfJoin:
                         if sketch:
-                            shape = make_sketch.make_sketch(shape, autoconstraints=True, addTo=sketch)
+                            shape = make_sketch.make_sketch(
+                                shape, autoconstraints=True, addTo=sketch
+                            )
                         else:
                             shape = make_sketch.make_sketch(shape, autoconstraints=True)
                             sketch = shape
@@ -2435,7 +2443,9 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
                     FreeCAD.ActiveDocument.recompute()
                     if dxfMakeBlocks or dxfJoin:
                         if sketch:
-                            shape = make_sketch.make_sketch(shape, autoconstraints=True, addTo=sketch)
+                            shape = make_sketch.make_sketch(
+                                shape, autoconstraints=True, addTo=sketch
+                            )
                         else:
                             shape = make_sketch.make_sketch(shape, autoconstraints=True)
                             sketch = shape
