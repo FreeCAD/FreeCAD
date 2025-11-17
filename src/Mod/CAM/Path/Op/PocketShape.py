@@ -60,77 +60,68 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
     def removeHoles(self, solid, face, tolerance=1e-6):
         """removeHoles(solid, face, tolerance) ... Remove hole wires from a face, keeping outer wire and boss wires.
         
+        Uses a cross-section algorithm: sections the solid slightly above the face level.
+        Wires that appear in the section are bosses (material above).
+        Wires that don't appear are holes (voids).
+        
         Args:
             solid: The parent solid object
             face: The face to process
-            tolerance: Z-tolerance for comparisons
+            tolerance: Distance tolerance for comparisons
             
         Returns:
             New face with outer wire and boss wires only
         """
-        Path.Log.debug("Removing holes from face")
         outer_wire = face.OuterWire
-        all_wires = face.Wires
+        candidate_wires = [w for w in face.Wires if not w.isSame(outer_wire)]
         
-        # Get candidate wires (all except outer wire)
-        candidate_wires = [w for w in all_wires if not w.isSame(outer_wire)]
-        Path.Log.debug("Candidate wires: {}".format(len(candidate_wires)))
-        
-        # Get the Z-level of the original face for comparison
-        face_center = face.CenterOfMass
-        face_z = face_center.z
+        if not candidate_wires:
+            return face
         
         boss_wires = []
         
-        # Test each candidate wire
-        for wire in candidate_wires:
-            is_boss = True  # Assume it's a boss until proven otherwise
+        try:
+            # Create cutting plane from outer wire, offset above face by tolerance
+            cutting_plane = Part.Face(outer_wire)
+            cutting_plane.translate(FreeCAD.Vector(0, 0, tolerance))
             
-            # Find faces in the solid that share edges with this wire
-            wire_edges = wire.Edges
-            adjacent_faces = []
+            # Section the solid
+            section = solid.Shape.section(cutting_plane)
             
-            for edge in wire_edges:
-                for solid_face in solid.Shape.Faces:
-                    # Skip if it's the same as the original face
-                    if solid_face.isSame(face):
-                        continue
-                    
-                    # Check if this face shares the edge
-                    for face_edge in solid_face.Edges:
-                        if edge.isSame(face_edge):
-                            # Avoid duplicates
-                            is_duplicate = False
-                            for existing in adjacent_faces:
-                                if existing.isSame(solid_face):
-                                    is_duplicate = True
-                                    break
-                            if not is_duplicate:
-                                adjacent_faces.append(solid_face)
-                            break
-            
-            # Check each adjacent face
-            for adj_face in adjacent_faces:
-                # Use the highest point of the adjacent face (ZMax) for comparison
-                # If even the highest point is below the original face plane, it's a hole
-                adj_z_max = adj_face.BoundBox.ZMax
+            if hasattr(section, 'Edges') and section.Edges:
+                # Translate section edges back to face level
+                translated_edges = []
+                for edge in section.Edges:
+                    translated_edge = edge.copy()
+                    translated_edge.translate(FreeCAD.Vector(0, 0, -tolerance))
+                    translated_edges.append(translated_edge)
                 
-                # If the highest point of the face is below or at the original face plane (within tolerance), it's a hole
-                if adj_z_max < face_z + tolerance:
-                    Path.Log.debug("Adjacent face is below original face plane")
-                    is_boss = False
-                    break
-            
-            # If all adjacent faces are at or above the original face Z-level, it's a boss
-            if is_boss:
-                boss_wires.append(wire)
-
-        Path.Log.debug("Boss wires: {}".format(len(boss_wires))) 
-        # Construct new face from outer wire and boss wires
-        if boss_wires:
-            new_face = Part.Face([outer_wire] + boss_wires)
-        else:
-            new_face = Part.Face(outer_wire)
+                # Build closed wires from edges
+                edge_groups = Part.sortEdges(translated_edges)
+                all_section_wires = []
+                
+                for edge_list in edge_groups:
+                    try:
+                        wire = Part.Wire(edge_list)
+                        if wire.isClosed():
+                            all_section_wires.append(wire)
+                    except Exception:
+                        pass
+                
+                # Filter out outer wire, keep remaining as boss wires
+                for wire in all_section_wires:
+                    if not wire.isSame(outer_wire):
+                        length_diff = abs(wire.Length - outer_wire.Length)
+                        if length_diff > tolerance:
+                            boss_wires.append(wire)
+                            
+        except Exception as e:
+            Path.Log.error("removeHoles: Section algorithm failed: {}".format(e))
+            boss_wires = candidate_wires
+        
+        # Construct new face with outer wire and boss wires
+        wire_compound = Part.makeCompound([outer_wire] + boss_wires)
+        new_face = Part.makeFace(wire_compound, "Part::FaceMakerBullseye")
         
         return new_face
 
@@ -189,6 +180,8 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                             )
 
             # Convert horizontal faces to use outline only if requested
+            Path.Log.debug("UseOutline: {}".format(obj.UseOutline))
+            Path.Log.debug("self.horiz: {}".format(self.horiz))
             if obj.UseOutline and self.horiz:
                 horiz = [self.removeHoles(base, face) for (face, base) in self.horiz]
                 self.horiz = horiz
