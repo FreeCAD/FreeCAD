@@ -120,8 +120,6 @@ class AssetOpenDialog(QFileDialog):
 
             # If we found external toolbits, ask user if they want to import them
             if external_toolbits:
-                from PySide.QtGui import QMessageBox
-
                 toolbit_names = [uri.asset_id for uri, _ in external_toolbits]
                 if quiet:
                     Path.Log.info("Importing tool bits for the library")
