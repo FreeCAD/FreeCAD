@@ -67,8 +67,8 @@ void DlgSettingsFemGmshImp::loadSettings()
     // determine number of CPU threads
     ui->sb_threads->setValue(hGrp->GetInt("NumOfThreads", QThread::idealThreadCount()));
 
-    populateLogVerbosity();
     ui->cb_log_verbosity->onRestore();
+    populateLogVerbosity();
 }
 
 /**
@@ -78,6 +78,7 @@ void DlgSettingsFemGmshImp::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
+        populateLogVerbosity();
     }
     else {
         QWidget::changeEvent(e);
@@ -94,17 +95,18 @@ void DlgSettingsFemGmshImp::onfileNameSelected(const QString& fileName)
 void DlgSettingsFemGmshImp::populateLogVerbosity()
 {
     std::list<std::pair<std::string, int>> mapValues = {
-        {"Silent", 0},
-        {"Errors", 1},
-        {"Warnings", 2},
-        {"Direct", 3},
-        {"Information", 4},
-        {"Status", 5},
-        {"Debug", 99}
+        {QT_TR_NOOP("Silent"), 0},
+        {QT_TR_NOOP("Errors"), 1},
+        {QT_TR_NOOP("Warnings"), 2},
+        {QT_TR_NOOP("Direct"), 3},
+        {QT_TR_NOOP("Information"), 4},
+        {QT_TR_NOOP("Status"), 5},
+        {QT_TR_NOOP("Debug"), 99}
     };
 
+    ui->cb_log_verbosity->clear();
     for (const auto& val : mapValues) {
-        ui->cb_log_verbosity->addItem(QString::fromStdString(val.first), QString::number(val.second));
+        ui->cb_log_verbosity->addItem(tr(val.first.c_str()), QString::number(val.second));
     }
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
