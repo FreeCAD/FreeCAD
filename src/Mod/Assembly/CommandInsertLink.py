@@ -455,7 +455,7 @@ class TaskAssemblyInsertLink(QtCore.QObject):
             msgBox.setIcon(QtWidgets.QMessageBox.Question)
 
             yesButton = msgBox.addButton("Yes", QtWidgets.QMessageBox.YesRole)
-            noButton = msgBox.addButton("No", QtWidgets.QMessageBox.NoRole)
+            noButton = msgBox.addButton("No", QtWidgets.QMessageBox.RejectRole)
             yesAlwaysButton = msgBox.addButton("Always", QtWidgets.QMessageBox.YesRole)
             noAlwaysButton = msgBox.addButton("Never", QtWidgets.QMessageBox.NoRole)
 
