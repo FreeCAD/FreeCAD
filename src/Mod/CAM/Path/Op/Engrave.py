@@ -119,11 +119,11 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
             Path.Log.track(self.model)
             for base in self.model:
                 Path.Log.track(base.Label)
-                if base.isDerivedFrom("Part::Part2DObject"):
-                    jobshapes.append(base.Shape)
-                elif base.isDerivedFrom("Sketcher::SketchObject"):
-                    jobshapes.append(base.Shape)
-                elif hasattr(base, "ArrayType"):
+                if (
+                    (base.isDerivedFrom("Part::Feature") and base.Shape.Volume == 0)
+                    or base.isDerivedFrom("Sketcher::SketchObject")
+                    or hasattr(base, "ArrayType")
+                ):
                     jobshapes.append(base.Shape)
 
         if jobshapes:
