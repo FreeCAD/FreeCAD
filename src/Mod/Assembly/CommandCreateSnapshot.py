@@ -196,6 +196,8 @@ class Snapshot:
             except (AttributeError, KeyError):
                 pass  # Ignore if material properties are missing or object changed
 
+            part.purgeTouched()
+
 
 class ViewProviderSnapshot:
     """
