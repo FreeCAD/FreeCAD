@@ -122,7 +122,7 @@ public:
         const QString& header,
         const QString& message,
         bool check = false,
-        const QString& checkText = QStringLiteral("Don't show me again")
+        const QString& checkText = tr("Don't show me again")
     );
 
     /// Same as showMessage above, but it checks the specific preference path and parameter
