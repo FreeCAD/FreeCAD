@@ -34,8 +34,8 @@
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCADGui as Gui
-import Draft
-import draftguitools.gui_base as gui_base
+from draftfunctions import heal
+from draftguitools import gui_base
 
 from draftutils.translate import translate
 
@@ -72,9 +72,9 @@ class Heal(gui_base.GuiCommandSimplest):
         s = Gui.Selection.getSelection()
         self.doc.openTransaction("Heal")
         if s:
-            Draft.heal(s)
+            heal.heal(s)
         else:
-            Draft.heal()
+            heal.heal()
         self.doc.commitTransaction()
 
 

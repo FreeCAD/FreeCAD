@@ -39,8 +39,6 @@ import PySide.QtCore as QtCore
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCADGui as Gui
-import Draft
-import Draft_rc
 from draftguitools import gui_base_original
 from draftguitools import gui_tool_utils
 from draftmake import make_fillet
@@ -48,9 +46,6 @@ from draftutils import params
 from draftutils import utils
 from draftutils.messages import _err, _toolmsg
 from draftutils.translate import translate
-
-# The module is used to prevent complaints from code checkers (flake8)
-True if Draft_rc.__name__ else False
 
 
 class Fillet(gui_base_original.Creator):

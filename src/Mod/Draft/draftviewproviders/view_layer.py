@@ -567,12 +567,12 @@ class ViewProviderLayerContainer:
 
     def add_layer(self):
         """Creates a new layer"""
-        import Draft
+        from draftmake import make_layer
 
         doc = App.ActiveDocument
         doc.openTransaction(translate("draft", "Add New Layer"))
 
-        Draft.make_layer(
+        make_layer.make_layer(
             name=None,
             line_color=None,
             shape_color=None,
