@@ -80,6 +80,7 @@ class CommandCreateSnapshot:
         if noTransaction:
             App.closeActiveTransaction()
 
+
 class Snapshot:
     """
     The Python proxy for the Snapshot App::FeaturePython object.
@@ -214,7 +215,7 @@ class ViewProviderSnapshot:
         snapshot_obj = vp_obj.Object
         if not snapshot_obj or not hasattr(snapshot_obj, "Proxy"):
             return False
-            
+
         if Gui.Control.activeDialog():
             App.Console.PrintError("Cannot restore snapshot while a task is active.\n")
             return
