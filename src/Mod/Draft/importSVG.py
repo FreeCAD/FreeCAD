@@ -59,7 +59,7 @@ import FreeCAD
 import Part
 from DraftVecUtils import equals
 from FreeCAD import Vector
-from draftfunctions import svg
+from draftfunctions.svg import get_svg
 from draftmake import make_dimension
 from draftutils import gui_utils
 from draftutils import params
@@ -1362,7 +1362,7 @@ def export(exportList, filename):
             # raw-style exports do not translate the sketch
             svg.write('<g id="%s" transform="scale(1,-1)">\n' % ob.Name)
 
-        svg.write(svg.get_svg(ob, override=False))
+        svg.write(get_svg(ob, override=False))
         _label_enc = str(ob.Label.encode("utf8"))
         _label = _label_enc.replace("<", "&lt;").replace(">", "&gt;")
         # replace('"', "&quot;")
