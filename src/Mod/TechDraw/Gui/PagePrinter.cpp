@@ -369,7 +369,12 @@ void PagePrinter::printPdf(ViewProviderPage* vpPage, const std::string& file)
 
     // first page does not respect page layout unless painter is created after
     // pdfWriter layout is established.
-    QPainter painter(&pdfWriter);
+    QPainter painter;
+    if (!painter.begin(&pdfWriter)) {
+        // this guards against a no-write situation on Win (issue #25299)
+        Base::Console().error("File %s is not available for writing.\n", filespec.c_str());
+        return;
+    }
 
     auto ourScene = vpPage->getQGSPage();
     ourScene->setExportingPdf(true);
@@ -383,7 +388,6 @@ void PagePrinter::printPdf(ViewProviderPage* vpPage, const std::string& file)
     int thigh = int(std::round(height * dpmm));
     QRect targetRect(0, 0, twide, thigh);
     renderPage(vpPage, painter, sourceRect, targetRect);
-
     ourScene->setExportingPdf(false);
     ourDoc->setModified(docModifiedState);
     dPage->redrawCommand();
