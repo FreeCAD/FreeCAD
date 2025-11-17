@@ -367,11 +367,11 @@ struct SubstitutionFactory
         bool foundP2 = unknowns.count(p2);
 
         if (!foundP1 && foundP2) {
-            addConst(p2, *p1);
+            addConst(p2, *p1 * constr->ratio);
             return Attempt::Yes;
         }
         if (foundP1 && !foundP2) {
-            addConst(p1, *p2);
+            addConst(p1, *p2 * constr->ratio);
             return Attempt::Yes;
         }
 
@@ -379,7 +379,7 @@ struct SubstitutionFactory
             return Attempt::No;
         }
 
-        if (addEqual(p1, p2)) {
+        if (constr->ratio == 1.0 && addEqual(p1, p2)) {
             return Attempt::Yes;
         }
         return Attempt::No;
@@ -623,6 +623,7 @@ struct SubstitutionFactory
                     *line.p1.x,
                     circleDistanceToCenterDistance(*circle.center.x, *line.p1.x, *dist, *rad)
                 );
+                return Attempt::Yes;
             }
             else if (lineDesc.orientation == Orientation::Horizontal) {
                 addConstDifference(
@@ -708,7 +709,7 @@ struct SubstitutionFactory
         else if (line2Desc.orientation == Orientation::Vertical) {
             l2length = distance(line2.p1.y, line2.p2.y);  // May return nullopt!
         }
-        else if (line1Desc.orientation == Orientation::Horizontal) {
+        else if (line2Desc.orientation == Orientation::Horizontal) {
             l2length = distance(line2.p1.x, line2.p2.x);  // May return nullopt!
         }
         else {

@@ -224,7 +224,7 @@ public:
 // Equal
 class ConstraintEqual: public Constraint
 {
-private:
+public:
     double ratio;
     DeriParam param1() const
     {

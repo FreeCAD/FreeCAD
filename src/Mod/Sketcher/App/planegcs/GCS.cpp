@@ -1747,7 +1747,7 @@ void System::initSolution(Algorithm alg)
     }
 
     substitution = Substitution(plist, clistR);
-    substitution = Substitution(plist, clistR);
+    // substitution = Substitution(plist, clistR);
 
     // partitioning into decoupled components
     Graph g;
