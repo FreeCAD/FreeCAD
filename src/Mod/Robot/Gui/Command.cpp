@@ -40,6 +40,38 @@
 using namespace std;
 using namespace RobotGui;
 
+#include <QFileDialog>
+
+namespace
+{
+
+std::string getWrl(const QString& hint_directory)
+{
+    QString fileName = QFileDialog::getOpenFileName(
+        Gui::getMainWindow(),
+        QObject::tr("Select VRML file for Robot"),
+        hint_directory,
+        QObject::tr("VRML Files (*.wrl *.vrml)")
+    );
+
+    return fileName.toStdString();
+}
+
+std::string getCsv(const std::string& wrl_path)
+{
+    QFileInfo wrlInfo(QString::fromStdString(wrl_path));
+    QString hintDir = wrlInfo.absolutePath();
+    QString fileName = QFileDialog::getOpenFileName(
+        Gui::getMainWindow(),
+        QObject::tr("Select Kinematic CSV file for Robot"),
+        hintDir,
+        QObject::tr("CSV Files (*.csv)")
+    );
+    return fileName.toStdString();
+}
+
+}  // namespace
+
 DEF_STD_CMD_A(CmdRobotSetHomePos)
 
 CmdRobotSetHomePos::CmdRobotSetHomePos()
@@ -174,29 +206,21 @@ CmdRobotConstraintAxle::CmdRobotConstraintAxle()
 }
 
 
-void CmdRobotConstraintAxle::activated(int)
+void CmdRobotConstraintAxle::activated([[maybe_unused]] int msg)
 {
-    std::string FeatName = getUniqueObjectName("Robot");
-    std::string RobotPath = "Mod/Robot/Lib/Kuka/kr500_1.wrl";
-    std::string KinematicPath = "Mod/Robot/Lib/Kuka/kr500_1.csv";
+    const std::string FeatName = getUniqueObjectName("Robot");
+    const std::string WrlPath = getWrl(QString());
+    const std::string KinematicPath = getCsv(WrlPath);
 
     openCommand("Place robot");
     doCommand(Doc, "App.activeDocument().addObject(\"Robot::RobotObject\",\"%s\")", FeatName.c_str());
+    doCommand(Doc, "App.activeDocument().%s.RobotVrmlFile = \"%s\"", FeatName.c_str(), WrlPath.c_str());
     doCommand(
         Doc,
-        "App.activeDocument().%s.RobotVrmlFile = App.getResourceDir()+\"%s\"",
-        FeatName.c_str(),
-        RobotPath.c_str()
-    );
-    doCommand(
-        Doc,
-        "App.activeDocument().%s.RobotKinematicFile = App.getResourceDir()+\"%s\"",
+        "App.activeDocument().%s.RobotKinematicFile = \"%s\"",
         FeatName.c_str(),
         KinematicPath.c_str()
     );
-    doCommand(Doc, "App.activeDocument().%s.Axis2 = -90", FeatName.c_str());
-    doCommand(Doc, "App.activeDocument().%s.Axis3 = 90", FeatName.c_str());
-    doCommand(Doc, "App.activeDocument().%s.Axis5 = 45", FeatName.c_str());
     updateActive();
     commitCommand();
 }
@@ -270,10 +294,10 @@ bool CmdRobotSimulate::isActive()
 
 void CreateRobotCommands()
 {
-    Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
+    Gui::CommandManager& command_manager = Gui::Application::Instance->commandManager();
 
-    rcCmdMgr.addCommand(new CmdRobotRestoreHomePos());
-    rcCmdMgr.addCommand(new CmdRobotSetHomePos());
-    rcCmdMgr.addCommand(new CmdRobotConstraintAxle());
-    rcCmdMgr.addCommand(new CmdRobotSimulate());
+    command_manager.addCommand(new CmdRobotRestoreHomePos());
+    command_manager.addCommand(new CmdRobotSetHomePos());
+    command_manager.addCommand(new CmdRobotConstraintAxle());
+    command_manager.addCommand(new CmdRobotSimulate());
 }
