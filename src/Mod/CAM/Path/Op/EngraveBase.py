@@ -27,7 +27,6 @@ import Path.Op.Base as PathOp
 import Path.Op.Util as PathOpUtil
 import PathScripts.PathUtils as PathUtils
 
-# import copy
 
 __doc__ = "Base class for all ops in the engrave family."
 
@@ -64,41 +63,88 @@ class ObjectOp(PathOp.ObjectOp):
         """buildpathocc(obj, wires, zValues, relZ=False) ... internal helper function to generate engraving commands."""
         Path.Log.track(obj.Label, len(wires), zValues)
 
-        # sort wires, adapted from Area.py
-        if len(wires) > 1:
+        # Sorting wires
+        sortingMode = getattr(obj, "SortingMode", None)
+        if len(wires) > 1 and sortingMode and "Automatic" in sortingMode:
             locations = []
-            for w in wires:
-                locations.append({"x": w.BoundBox.Center.x, "y": w.BoundBox.Center.y, "wire": w})
+            if sortingMode == "Automatic":
+                # old sorting method
+                for w in wires:
+                    locations.append(
+                        {"x": w.BoundBox.Center.x, "y": w.BoundBox.Center.y, "wire": w}
+                    )
+                locations = PathUtils.sort_locations(locations, ["x", "y"])
+                wires = [loc["wire"] for loc in locations]
 
-            locations = PathUtils.sort_locations(locations, ["x", "y"])
-            wires = [j["wire"] for j in locations]
+            elif sortingMode == "Automatic2":
+                """it uses nearest neighbour algorithm,
+                further improved with relocation and (if allowFlipping=True) 2-opt + flipping
+
+                'allowFlipping' defines whether entry/exit point of each tunnel can be flipped
+
+                'routeStartPoint' and 'routeEndPoint' are optional
+                and specifiy where ROUGHLY the route should start and end
+
+                https://forum.freecad.org/viewtopic.php?p=852141#p852141
+                """
+                route = []
+                for i, wire in enumerate(wires):
+                    route.append(
+                        {
+                            "index": i,
+                            "startX": wire.OrderedEdges[0].firstVertex().X,
+                            "startY": wire.OrderedEdges[0].firstVertex().Y,
+                            "endX": wire.OrderedEdges[-1].lastVertex().X,
+                            "endY": wire.OrderedEdges[-1].lastVertex().Y,
+                            "isOpen": not wire.isClosed(),
+                            "flipped": False,
+                        }
+                    )
+
+                allowFlipping = bool(obj.Direction == "Dual")
+                endPoint = obj.EndPoint if obj.UseEndPoint else None
+                route = PathUtils.tsp_solver_tunnels(
+                    route,
+                    allowFlipping=allowFlipping,
+                    routeStartPoint=obj.StartPoint,
+                    routeEndPoint=endPoint,
+                )
+
+                orderedWires = []
+                for wire in route:
+                    if wire["flipped"]:
+                        orderedWires.append(Path.Geom.flipWire(wires[wire["index"]]))
+                    else:
+                        orderedWires.append(wires[wire["index"]])
+                wires = orderedWires
 
         decomposewires = []
         for wire in wires:
             decomposewires.extend(PathOpUtil.makeWires(wire.Edges))
-
         wires = decomposewires
-        for wire in wires:
-            # offset = wire
 
+        for wire in wires:
             # reorder the wire
             if hasattr(obj, "StartVertex"):
                 start_idx = obj.StartVertex
             edges = wire.Edges
 
-            # edges = copy.copy(PathOpUtil.orientWire(offset, forward).Edges)
-            # Path.Log.track("wire: {} offset: {}".format(len(wire.Edges), len(edges)))
-            # edges = Part.sortEdges(edges)[0]
-            # Path.Log.track("edges: {}".format(len(edges)))
+            lastPoint = None
+            reverseDir = False
+            dualDir = False
 
-            last = None
+            if hasattr(obj, "Direction"):
+                if obj.Direction == "Reversed":
+                    reverseDir = True
+                if obj.Direction == "Dual":
+                    dualDir = True
 
             for z in zValues:
                 Path.Log.debug(z)
-                if last and wire.isClosed():
+                if lastPoint and (wire.isClosed() or dualDir):
                     # Add step down to next Z for closed profile
                     self.appendCommand(
-                        Path.Command("G1", {"X": last.x, "Y": last.y, "Z": last.z}),
+                        Path.Command("G01", {"X": lastPoint.x, "Y": lastPoint.y, "Z": lastPoint.z}),
                         z,
                         relZ,
                         self.vertFeed,
@@ -109,9 +155,19 @@ class ObjectOp(PathOp.ObjectOp):
                     start_idx = len(edges) - 1
 
                 edges = edges[start_idx:] + edges[:start_idx]
-                for edge in edges:
+
+                if reverseDir:
+                    edgesDir = reversed(edges)
+                    sIndex, eIndex = -1, 0
+                else:
+                    edgesDir = edges
+                    sIndex, eIndex = 0, -1
+
+                for i, edge in enumerate(edgesDir):
                     Path.Log.debug(
-                        "points: {} -> {}".format(edge.Vertexes[0].Point, edge.Vertexes[-1].Point)
+                        "points: {} -> {}".format(
+                            edge.Vertexes[sIndex].Point, edge.Vertexes[eIndex].Point
+                        )
                     )
                     Path.Log.debug(
                         "valueat {} -> {}".format(
@@ -119,10 +175,10 @@ class ObjectOp(PathOp.ObjectOp):
                             edge.valueAt(edge.LastParameter),
                         )
                     )
-                    if first and (not last or not wire.isClosed()):
+                    if first and (not lastPoint or (not wire.isClosed() and not dualDir)):
                         Path.Log.debug("processing first edge entry")
                         # Add moves to first point of wire
-                        last = edge.Vertexes[0].Point
+                        lastPoint = edge.Vertexes[sIndex].Point
 
                         self.commandlist.append(
                             Path.Command(
@@ -131,32 +187,41 @@ class ObjectOp(PathOp.ObjectOp):
                             )
                         )
                         self.commandlist.append(
-                            Path.Command("G0", {"X": last.x, "Y": last.y, "F": self.horizRapid})
+                            Path.Command(
+                                "G0", {"X": lastPoint.x, "Y": lastPoint.y, "F": self.horizRapid}
+                            )
                         )
                         self.commandlist.append(
                             Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid})
                         )
                         self.appendCommand(
-                            Path.Command("G1", {"X": last.x, "Y": last.y, "Z": last.z}),
+                            Path.Command(
+                                "G1", {"X": lastPoint.x, "Y": lastPoint.y, "Z": lastPoint.z}
+                            ),
                             z,
                             relZ,
                             self.vertFeed,
                         )
                     first = False
 
-                    if Path.Geom.pointsCoincide(last, edge.valueAt(edge.FirstParameter)):
-                        # if Path.Geom.pointsCoincide(last, edge.Vertexes[0].Point):
-                        # Edge not reversed
-                        for cmd in Path.Geom.cmdsForEdge(edge):
-                            # Add gcode for edge
-                            self.appendCommand(cmd, z, relZ, self.horizFeed)
-                        last = edge.Vertexes[-1].Point
+                    # edgePar = edge.FirstParameter if not reverseDir else edge.LastParameter
+                    # if Path.Geom.pointsCoincide(lastPoint, edge.valueAt(edgePar)):
+                    if Path.Geom.pointsCoincide(lastPoint, edge.Vertexes[sIndex].Point):
+                        flip = False
+                        lastPoint = edge.Vertexes[eIndex].Point
                     else:
-                        # Edge reversed
-                        for cmd in Path.Geom.cmdsForEdge(edge, True):
-                            # Add gcode for reversed edge
-                            self.appendCommand(cmd, z, relZ, self.horizFeed)
-                        last = edge.Vertexes[0].Point
+                        flip = True
+                        lastPoint = edge.Vertexes[sIndex].Point
+
+                    if reverseDir:
+                        flip = not flip
+
+                    for cmd in Path.Geom.cmdsForEdge(edge, flip):
+                        # Add gcode for edge
+                        self.appendCommand(cmd, z, relZ, self.horizFeed)
+
+                if dualDir:
+                    reverseDir = not reverseDir
 
             self.commandlist.append(
                 Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid})
