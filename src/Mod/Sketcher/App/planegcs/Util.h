@@ -45,6 +45,22 @@ using SET_pD = std::set<double*>;
 using SET_I = std::set<int>;
 using USET_pD = std::unordered_set<double*>;
 
+
+// The chain rule tells us that if a variable is defined such that
+// A = B + const offset, df/dA == df/B, so only one of those variables
+// would need to be solved for by the numerical solver
+// and we want to reduce the number of solved parameters because numerical
+// solvers have a computation complexity on the order of O(n^3) and
+// we can use geometric understanding to solve the rest in a way
+// that is more "intuitive" for users
+
+// Describes a parameter of the constraint and it's associated
+// solver parameter. The number of solver parameter is smaller or
+// equal to the number of constraints parameters.
+// The solver will ask for a the derivative of the constraint with
+// respect to a solver parameter and the constraint will compare this
+// parameter to the 'deri' member to choose the computation branch but
+// still use 'param' to execute the actual computation.
 struct DeriParam
 {
     double* param {nullptr};
@@ -59,19 +75,6 @@ struct DeriParam
         : param(param_)
         , deri(deri_)
     {}
-
-    // void fill(const UMAP_pD_pD& paramToDeriv)
-    // {
-    //     auto foundParam = paramToDeriv.find(param);
-
-    //     if (foundParam != paramToDeriv.end()) {
-    //         deri = foundParam->second;
-    //     }
-    //     else {
-    //         deri = nullptr;
-    //     }
-    // }
-
     operator double*() const
     {
         return param;

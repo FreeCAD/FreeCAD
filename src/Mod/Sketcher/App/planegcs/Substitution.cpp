@@ -45,10 +45,23 @@ struct SubstitutionFactory
         Maybe,   // Substitution could be possible if some parameters are right
         Unknown  // Not checked yet
     };
+    enum class Orientation
+    {
+        None,
+        Vertical,
+        Horizontal
+    };
+
     struct ReductionList
     {
         std::vector<double*> reduced;
         bool isConst;
+    };
+    struct LineDesc
+    {
+
+        bool isExternal {false};
+        Orientation orientation {Orientation::None};
     };
 
     std::unordered_map<double*, std::unordered_map<double*, double>> adjacencyList;
@@ -65,7 +78,7 @@ struct SubstitutionFactory
     std::vector<SubstitutionUpdater> substUpdaters;
 
     std::vector<std::pair<Line, double>> linesOfKnownLength;
-
+    USET_pD unknowns;
 
     enum class RelationshipOptions
     {
@@ -73,6 +86,11 @@ struct SubstitutionFactory
                    // condition are B <= A and A = B - offset otherwise
         Absolute   // Adds a relationship of the form A = B + offset
     };
+
+    SubstitutionFactory() = default;
+    SubstitutionFactory(std::vector<double*> unknowns_)
+        : unknowns(unknowns_.begin(), unknowns_.end())
+    {}
     // Offset is assumed to be positive
     bool addRelationship(
         double* unknownA,
@@ -103,6 +121,18 @@ struct SubstitutionFactory
     {
         constUnknowns[unknown] = value;
     }
+    // adds a directed difference between the unknown and the ref
+    // so that *unknown > ref returns the same after solve
+    // diff must be positive
+    void addConstDifference(double* unknown, double ref, double diff)
+    {
+        if (*unknown > ref) {
+            addConst(unknown, ref + diff);
+        }
+        else {
+            addConst(unknown, ref - diff);
+        }
+    }
     std::optional<double> value(double* unknown) const
     {
         auto foundConst = constUnknowns.find(unknown);
@@ -123,14 +153,6 @@ struct SubstitutionFactory
             return areBothConstAndEqual(unknownA, unknownB);
         }
         return foundB->second == 0.0;
-    }
-    bool isVertical(const Line& line) const
-    {
-        return areEqual(line.p1.x, line.p2.x);
-    }
-    bool isHorizontal(const Line& line) const
-    {
-        return areEqual(line.p1.y, line.p2.y);
     }
     bool areBothConstAndEqual(double* unknownA, double* unknownB) const
     {
@@ -207,6 +229,37 @@ struct SubstitutionFactory
         }
 
         return true;
+    }
+    LineDesc lineDescription(const Line& line) const
+    {
+        // Is it possible to have some but not all parameters not unknown??
+        if (!unknowns.count(line.p1.x) || !unknowns.count(line.p1.y) || !unknowns.count(line.p2.x)
+            || !unknowns.count(line.p2.y)) {
+
+            if (std::abs(*line.p1.x - *line.p2.x) < Precision::Confusion()) {
+                return LineDesc {.isExternal = true, .orientation = Orientation::Vertical};
+            }
+            if (std::abs(*line.p1.y - *line.p2.y) < Precision::Confusion()) {
+                return LineDesc {.isExternal = true, .orientation = Orientation::Horizontal};
+            }
+            return LineDesc {.isExternal = true};
+        }
+
+        if (areEqual(line.p1.x, line.p2.x)) {
+            return LineDesc {.orientation = Orientation::Vertical};
+        }
+        if (areEqual(line.p1.y, line.p2.y)) {
+            return LineDesc {.orientation = Orientation::Horizontal};
+        }
+        return LineDesc {};
+    }
+    bool isExternal(const Point& point) const
+    {
+        return !unknowns.count(point.x) || !unknowns.count(point.y);
+    }
+    bool isExternal(const Circle& circle) const
+    {
+        return isExternal(circle.center) || !unknowns.count(circle.rad);
     }
     void compile()
     {
@@ -296,9 +349,7 @@ struct SubstitutionFactory
         if (foundAdj == adjacencyList.end()) {
             return;
         }
-        if (toExplore.size() > 500) {
-            std::cerr << "Waht\n";
-        }
+
         for (auto neighbour : foundAdj->second) {
             if (!visited.count(neighbour.first)) {
                 visited.insert(neighbour.first);
@@ -307,7 +358,7 @@ struct SubstitutionFactory
         }
     }
 
-    Attempt trySubstitute(ConstraintEqual* constr, const USET_pD& unknowns)
+    Attempt trySubstitute(ConstraintEqual* constr)
     {
         double* p1 = constr->origParams()[0];
         double* p2 = constr->origParams()[1];
@@ -333,259 +384,365 @@ struct SubstitutionFactory
         }
         return Attempt::No;
     }
-    Attempt trySubstitute(ConstraintPerpendicular* constr, const USET_pD& unknowns, Attempt previousAttempt)
+    Attempt trySubstitute(ConstraintPerpendicular* constr, Attempt previousAttempt)
     {
-        double* l1x1 = constr->origParams()[0];
-        double* l1y1 = constr->origParams()[1];
-        double* l1x2 = constr->origParams()[2];
-        double* l1y2 = constr->origParams()[3];
-        double* l2x1 = constr->origParams()[4];
-        double* l2y1 = constr->origParams()[5];
-        double* l2x2 = constr->origParams()[6];
-        double* l2y2 = constr->origParams()[7];
+        Line line1(
+            Point(constr->origParams()[0], constr->origParams()[1]),
+            Point(constr->origParams()[2], constr->origParams()[3])
+        );
+        Line line2(
+            Point(constr->origParams()[4], constr->origParams()[5]),
+            Point(constr->origParams()[6], constr->origParams()[7])
+        );
 
-        if (previousAttempt == Attempt::Unknown
-            && (!unknowns.count(l1x1) || !unknowns.count(l1y1) || !unknowns.count(l1x2)
-                || !unknowns.count(l1y2) || !unknowns.count(l2x1) || !unknowns.count(l2y1)
-                || !unknowns.count(l2x2) || !unknowns.count(l2y2))) {
+        LineDesc line1Desc = lineDescription(line1);
+        LineDesc line2Desc = lineDescription(line2);
+
+        if (line1Desc.isExternal && line2Desc.isExternal) {
             return Attempt::No;
         }
 
-        // First line is vertical, second line should be horizontal
-        if (areEqual(l1x1, l1x2)) {
-            addEqual(l2y1, l2y2);
-            return Attempt::Yes;
-        }
-
-        // First line is horizontal, second line should be vertical
-        if (areEqual(l1y1, l1y2)) {
-            addEqual(l2x1, l2x2);
-            return Attempt::Yes;
-        }
-
-        // Second line is vertical, first line should be horizontal
-        if (areEqual(l2x1, l2x2)) {
-            addEqual(l1y1, l1y2);
-            return Attempt::Yes;
-        }
-
-        // Second line is horizontal, fist line should be vertical
-        if (areEqual(l2y1, l2y2)) {
-            addEqual(l1x1, l1x2);
-            return Attempt::Yes;
-        }
-        return Attempt::Maybe;
-    }
-
-    Attempt trySubstitute(ConstraintPointOnLine* constr, const USET_pD& unknowns, Attempt previousAttempt)
-    {
-        double* p0x = constr->origParams()[0];
-        double* p0y = constr->origParams()[1];
-        double* lp1x = constr->origParams()[2];
-        double* lp1y = constr->origParams()[3];
-        double* lp2x = constr->origParams()[4];
-        double* lp2y = constr->origParams()[5];
-
-        if (previousAttempt == Attempt::Unknown
-            && (!unknowns.count(p0x) || !unknowns.count(p0y) || !unknowns.count(lp1y)
-                || !unknowns.count(lp1x) || !unknowns.count(lp2x) || !unknowns.count(lp2y))) {
+        if (line1Desc.orientation != Orientation::None && line2Desc.orientation != Orientation::None) {
             return Attempt::No;
         }
 
-        // Line is vertical, constraint can be translated to a vertical constraint
-        if (areEqual(lp1x, lp2x)) {
-            addEqual(lp1x, p0x);
-            return Attempt::Yes;
+        if (line2Desc.isExternal) {
+            std::swap(line1, line2);
+            std::swap(line1Desc, line2Desc);
         }
 
-        // Line is horizontal, constraint can be translated to a horizontal constraint
-        if (areEqual(lp1y, lp2y)) {
-            addEqual(lp1y, p0y);
-            return Attempt::Yes;
+        if (line1Desc.isExternal) {
+            if (line1Desc.orientation == Orientation::Vertical) {
+                addEqual(line2.p1.y, line2.p2.y);  // Make line2 horizontal
+                return Attempt::Yes;
+            }
+            else if (line2Desc.orientation == Orientation::Horizontal) {
+                addEqual(line2.p1.x, line2.p2.x);  // Make line2 vertical
+                return Attempt::Yes;
+            }
+            return Attempt::No;  // Line1 is external, so will never become horizontal/vertical
         }
-        return Attempt::Maybe;
+        else {
+            if (line1Desc.orientation == Orientation::Vertical) {
+                addEqual(line2.p1.y, line2.p2.y);  // Make line2 horizontal
+                return Attempt::Yes;
+            }
+            else if (line1Desc.orientation == Orientation::Horizontal) {
+                addEqual(line2.p1.x, line2.p2.x);  // Make line2 vertical
+                return Attempt::Yes;
+            }
+            else if (line2Desc.orientation == Orientation::Vertical) {
+                addEqual(line1.p1.y, line1.p2.y);  // Make line1 horizontal
+                return Attempt::Yes;
+            }
+            else if (line2Desc.orientation == Orientation::Horizontal) {
+                addEqual(line1.p1.x, line1.p2.x);  // Make line1 vertical
+                return Attempt::Yes;
+            }
+            return Attempt::Maybe;
+        }
     }
-    Attempt trySubstitute(ConstraintP2PDistance* constr, const USET_pD& unknowns, Attempt previousAttempt)
+    Attempt trySubstitute(ConstraintP2PDistance* constr, Attempt previousAttempt)
     {
-        double* lp1x = constr->origParams()[0];
-        double* lp1y = constr->origParams()[1];
-        double* lp2x = constr->origParams()[2];
-        double* lp2y = constr->origParams()[3];
+        Line line(
+            Point(constr->origParams()[0], constr->origParams()[1]),
+            Point(constr->origParams()[2], constr->origParams()[3])
+        );
         double* dist = constr->origParams()[4];
 
-        if (previousAttempt != Attempt::Unknown
-            && (!unknowns.count(lp1x) || !unknowns.count(lp1y) || !unknowns.count(lp2x)
-                || !unknowns.count(lp2y) || unknowns.count(dist))) {
+        // The distance is not fixed, solved for even
+        if (unknowns.count(dist)) {
             return Attempt::No;
         }
+
         if (previousAttempt == Attempt::Unknown) {
-            linesOfKnownLength.emplace_back(Line(Point(lp1x, lp1y), Point(lp2x, lp2y)), *dist);
+            linesOfKnownLength.emplace_back(line, *dist);
+        }
+
+        LineDesc lineDesc = lineDescription(line);
+        if (lineDesc.isExternal) {
+            return Attempt::No;
         }
 
         // Line is vertical, constraint can be translated to a vertical distance constraint
-        if (areEqual(lp1x, lp2x)) {
-            addRelationship(lp1y, lp2y, *dist);
+        if (lineDesc.orientation == Orientation::Vertical) {
+            addRelationship(line.p1.y, line.p2.y, *dist);
             return Attempt::Yes;
         }
 
         // Line is horizontal, constraint can be translated to a horizontal distance constraint
-        if (areEqual(lp1y, lp2y)) {
-            addRelationship(lp1x, lp2x, *dist);
+        if (lineDesc.orientation == Orientation::Horizontal) {
+            addRelationship(line.p1.x, line.p2.x, *dist);
             return Attempt::Yes;
         }
         return Attempt::Maybe;
     }
-    Attempt trySubstitute(Constraint* constr, const USET_pD& unknowns, Attempt previousAttempt)
+    Attempt trySubstitute(ConstraintPointOnLine* constr)
     {
-        double* p0x = constr->origParams()[0];
-        double* p0y = constr->origParams()[1];
-        double* lp1x = constr->origParams()[2];
-        double* lp1y = constr->origParams()[3];
-        double* lp2x = constr->origParams()[4];
-        double* lp2y = constr->origParams()[5];
-        double* dist = constr->origParams()[6];
+        Point point(constr->origParams()[0], constr->origParams()[1]);
+        Line line(
+            Point(constr->origParams()[2], constr->origParams()[3]),
+            Point(constr->origParams()[4], constr->origParams()[5])
+        );
 
-        if (previousAttempt == Attempt::Unknown
-            && (!unknowns.count(p0x) || !unknowns.count(p0y) || !unknowns.count(lp1y)
-                || !unknowns.count(lp1x) || !unknowns.count(lp2x) || !unknowns.count(lp2y)
-                || unknowns.count(dist))) {
+        LineDesc lineDesc = lineDescription(line);
+        bool pointExternal = isExternal(point);
+
+        if (lineDesc.isExternal && pointExternal) {
             return Attempt::No;
         }
 
-        // Line is vertical, constraint can be translated to a horizontal distance constraint
-        if (areEqual(lp1x, lp2x)) {
-            addRelationship(p0x, lp1x, *dist);
-            return Attempt::Yes;
+        if (lineDesc.isExternal) {
+            if (lineDesc.orientation == Orientation::Vertical) {
+                addConst(point.x, *line.p1.x);
+                return Attempt::Yes;
+            }
+            else if (lineDesc.orientation == Orientation::Horizontal) {
+                addConst(point.y, *line.p1.y);
+                return Attempt::Yes;
+            }
+            return Attempt::No;  // No coming back since the line is external
         }
-
-        // Line is horizontal, constraint can be translated to a vertical distance constraint
-        if (areEqual(lp1y, lp2y)) {
-            addRelationship(p0y, lp1y, *dist);
-            return Attempt::Yes;
-        }
-        return Attempt::Maybe;
-    }
-    void addCircleDistance(double* centerPos, double* refPos, double dist, double radius)
-    {
-        if (std::abs(*centerPos - *refPos) < radius) {
-            addRelationship(centerPos, refPos, std::abs(radius - dist));
+        else if (pointExternal) {
+            if (lineDesc.orientation == Orientation::Vertical) {
+                addConst(line.p1.x, *point.x);
+                return Attempt::Yes;
+            }
+            else if (lineDesc.orientation == Orientation::Horizontal) {
+                addConst(line.p1.y, *point.y);
+                return Attempt::Yes;
+            }
+            return Attempt::Maybe;  // The line may become horizontal/vertical at some point
         }
         else {
-            addRelationship(centerPos, refPos, radius + dist);
+            if (lineDesc.orientation == Orientation::Vertical) {
+                addEqual(point.x, line.p1.x);
+                return Attempt::Yes;
+            }
+            else if (lineDesc.orientation == Orientation::Horizontal) {
+                addEqual(point.y, line.p1.y);
+                return Attempt::Yes;
+            }
+            return Attempt::Maybe;
         }
     }
-    Attempt trySubstitute(ConstraintC2LDistance* constr, const USET_pD& unknowns, Attempt previousAttempt)
+    Attempt trySubstitute(ConstraintP2LDistance* constr)
+    {
+        Point point(constr->origParams()[0], constr->origParams()[1]);
+        Line line(
+            Point(constr->origParams()[2], constr->origParams()[3]),
+            Point(constr->origParams()[4], constr->origParams()[5])
+        );
+
+        double* dist = constr->origParams()[6];
+
+        // The distance is not fixed, solved for even
+        if (unknowns.count(dist)) {
+            return Attempt::No;
+        }
+
+        LineDesc lineDesc = lineDescription(line);
+        bool pointExternal = isExternal(point);
+
+        if (lineDesc.isExternal && pointExternal) {
+            return Attempt::No;
+        }
+
+        if (lineDesc.isExternal) {
+            if (lineDesc.orientation == Orientation::Vertical) {
+                addConstDifference(point.x, *line.p1.x, *dist);
+                return Attempt::Yes;
+            }
+            else if (lineDesc.orientation == Orientation::Horizontal) {
+                addConstDifference(point.y, *line.p1.y, *dist);
+                return Attempt::Yes;
+            }
+            return Attempt::No;  // No coming back since the line is external
+        }
+        else if (pointExternal) {
+            if (lineDesc.orientation == Orientation::Vertical) {
+                addConstDifference(line.p1.x, *point.x, *dist);
+                return Attempt::Yes;
+            }
+            else if (lineDesc.orientation == Orientation::Horizontal) {
+                addConstDifference(line.p1.y, *point.y, *dist);
+                return Attempt::Yes;
+            }
+            return Attempt::Maybe;  // The line may become horizontal/vertical at some point
+        }
+        else {
+            if (lineDesc.orientation == Orientation::Vertical) {
+                addRelationship(point.x, line.p1.x, *dist);
+                return Attempt::Yes;
+            }
+            else if (lineDesc.orientation == Orientation::Horizontal) {
+                addRelationship(point.y, line.p1.y, *dist);
+                return Attempt::Yes;
+            }
+            return Attempt::Maybe;
+        }
+    }
+    double circleDistanceToCenterDistance(double centerPos, double refPos, double dist, double radius)
+    {
+        if (std::abs(centerPos - refPos) < radius) {
+            return std::abs(radius - dist);
+        }
+        else {
+            return radius + dist;
+        }
+    }
+    Attempt trySubstitute(ConstraintC2LDistance* constr, Attempt previousAttempt)
     {
         double* dist = constr->origParams()[0];
         Circle circle = constr->circle;
         Line line = constr->line;
 
+        LineDesc lineDesc = lineDescription(line);
+        bool circleExternal = isExternal(circle);
 
-        if (previousAttempt == Attempt::Unknown
-            && (!unknowns.count(circle.center.x) || !unknowns.count(circle.center.y)
-                || !unknowns.count(circle.rad) || !unknowns.count(line.p1.x)
-                || !unknowns.count(line.p1.y) || !unknowns.count(line.p2.x)
-                || !unknowns.count(line.p2.y) || unknowns.count(dist))) {
-            return Attempt::No;
-        }
-        std::optional<double> rad = value(circle.rad);
-        if (!rad.has_value()) {
+        if (lineDesc.isExternal && circleExternal) {
             return Attempt::No;
         }
 
-        // Line is vertical, the constraint can be translated into a horizontal distance
-        if (areEqual(line.p1.x, line.p2.x)) {
-            addCircleDistance(circle.center.x, line.p1.x, *dist, *rad);
-            return Attempt::Yes;
+        std::optional<double> rad = std::nullopt;
+        if (!circleExternal) {
+            rad = value(circle.rad);
+            if (!rad.has_value()) {
+                return Attempt::No;
+            }
+        }
+        else {
+            rad = *circle.rad;
         }
 
-        // Line is horizontal, the constraint can be translated into a vertical distance
-        if (areEqual(line.p1.y, line.p2.y)) {
-            addCircleDistance(circle.center.y, line.p1.y, *dist, *rad);
-            return Attempt::Yes;
+        if (lineDesc.isExternal) {
+            // Line is vertical, the constraint can be translated into a horizontal distance
+            if (lineDesc.orientation == Orientation::Vertical) {
+                addConstDifference(
+                    circle.center.x,
+                    *line.p1.x,
+                    circleDistanceToCenterDistance(*circle.center.x, *line.p1.x, *dist, *rad)
+                );
+            }
+            else if (lineDesc.orientation == Orientation::Horizontal) {
+                addConstDifference(
+                    circle.center.y,
+                    *line.p1.y,
+                    circleDistanceToCenterDistance(*circle.center.y, *line.p1.y, *dist, *rad)
+                );
+                return Attempt::Yes;
+            }
+            return Attempt::No;
         }
-
-        return Attempt::Maybe;
+        else if (circleExternal) {
+            if (lineDesc.orientation == Orientation::Vertical) {
+                addConstDifference(
+                    line.p1.x,
+                    *circle.center.x,
+                    circleDistanceToCenterDistance(*circle.center.x, *line.p1.x, *dist, *rad)
+                );
+                return Attempt::Yes;
+            }
+            else if (lineDesc.orientation == Orientation::Horizontal) {
+                addConstDifference(
+                    line.p1.y,
+                    *circle.center.y,
+                    circleDistanceToCenterDistance(*circle.center.y, *line.p1.y, *dist, *rad)
+                );
+                return Attempt::Yes;
+            }
+            return Attempt::Maybe;
+        }
+        else {
+            if (lineDesc.orientation == Orientation::Vertical) {
+                addRelationship(
+                    line.p1.x,
+                    circle.center.x,
+                    circleDistanceToCenterDistance(*circle.center.x, *line.p1.x, *dist, *rad)
+                );
+                return Attempt::Yes;
+            }
+            else if (lineDesc.orientation == Orientation::Horizontal) {
+                addRelationship(
+                    line.p1.y,
+                    circle.center.y,
+                    circleDistanceToCenterDistance(*circle.center.y, *line.p1.y, *dist, *rad)
+                );
+                return Attempt::Yes;
+            }
+            return Attempt::Maybe;
+        }
     }
-    Attempt trySubstitute(ConstraintEqualLineLength* constr, const USET_pD& unknowns, Attempt previousAttempt)
+    Attempt trySubstitute(ConstraintEqualLineLength* constr, Attempt previousAttempt)
     {
         Line line1 = constr->l1;
         Line line2 = constr->l2;
 
-        if (previousAttempt == Attempt::Unknown
-            && (!unknowns.count(line1.p1.x) || !unknowns.count(line1.p1.y)
-                || !unknowns.count(line1.p2.x) || !unknowns.count(line1.p2.y)
-                || !unknowns.count(line2.p1.x) || !unknowns.count(line2.p1.y)
-                || !unknowns.count(line2.p2.x) || !unknowns.count(line2.p2.y))) {
-            return Attempt::No;
-        }
-        bool l1horiz = false;
-        bool l1vert = false;
-        std::optional<double> l1length = std::nullopt;
+        LineDesc line1Desc = lineDescription(line1);
+        LineDesc line2Desc = lineDescription(line2);
 
-        bool l2horiz = false;
-        bool l2vert = false;
+        std::optional<double> l1length = std::nullopt;
         std::optional<double> l2length = std::nullopt;
 
-        if (isHorizontal(line1)) {
-            l1horiz = true;
-            l1length = distance(line1.p1.x, line1.p2.x);
+        if (line1Desc.isExternal) {
+            l1length = std::sqrt(
+                std::pow(*line1.p1.x - *line1.p2.x, 2.0) + std::pow(*line1.p1.y - *line1.p2.y, 2.0)
+            );  // This is a constant line, we can just measure it's length
         }
-        else if (isVertical(line1)) {
-            l1vert = true;
-            l1length = distance(line1.p1.y, line1.p2.y);
+        else if (line1Desc.orientation == Orientation::Vertical) {
+            l1length = distance(line1.p1.y, line1.p2.y);  // May return nullopt!
+        }
+        else if (line1Desc.orientation == Orientation::Horizontal) {
+            l1length = distance(line1.p1.x, line1.p2.x);  // May return nullopt!
         }
         else {
-            l1length = length(line1);
+            l1length = length(line1);  // Search in our little database if we have seen it before,
+                                       // may return nullopt
         }
 
-        if (isHorizontal(line2)) {
-            l2horiz = true;
-            l2length = distance(line2.p1.x, line2.p2.x);
+        if (line2Desc.isExternal) {
+            l2length = std::sqrt(
+                std::pow(*line2.p1.x - *line2.p2.x, 2.0) + std::pow(*line2.p1.y - *line2.p2.y, 2.0)
+            );  // This is a constant line, we can just measure it's length
         }
-        else if (isVertical(line2)) {
-            l2vert = true;
-            l2length = distance(line2.p1.y, line2.p2.y);
+        else if (line2Desc.orientation == Orientation::Vertical) {
+            l2length = distance(line2.p1.y, line2.p2.y);  // May return nullopt!
+        }
+        else if (line1Desc.orientation == Orientation::Horizontal) {
+            l2length = distance(line2.p1.x, line2.p2.x);  // May return nullopt!
         }
         else {
-            l2length = length(line2);
+            l2length = length(line2);  // Search in our little database if we have seen it before,
+                                       // may return nullopt
         }
 
         if (l1length.has_value() && l2length.has_value()) {
-            return Attempt::No;
+            return Attempt::No;  // Hopefully they are the same but we are not getting into this
         }
-        else if (l1length.has_value()) {
+
+        if (l2length.has_value()) {
+            std::swap(line1, line2);
+            std::swap(line1Desc, line2Desc);
+            std::swap(l1length, l2length);
+        }
+
+        if (l1length.has_value()) {
             linesOfKnownLength.emplace_back(line2, *l1length);
 
-            if (l2horiz) {
-                addRelationship(line2.p1.x, line2.p2.x, *l1length);
-            }
-            else if (l2vert) {
+            // At this point we know l2 is not external
+            if (line2Desc.orientation == Orientation::Vertical) {
                 addRelationship(line2.p1.y, line2.p2.y, *l1length);
+                return Attempt::Yes;
             }
-            else {
-                return Attempt::Maybe;
+            else if (line2Desc.orientation == Orientation::Horizontal) {
+                addRelationship(line2.p1.x, line2.p2.x, *l1length);
+                return Attempt::Yes;
             }
-            return Attempt::Yes;
-        }
-        else if (l2length.has_value()) {
-            linesOfKnownLength.emplace_back(line1, *l2length);
-
-            if (l1horiz) {
-                addRelationship(line1.p1.x, line1.p2.x, *l2length);
-            }
-            else if (l1vert) {
-                addRelationship(line1.p1.y, line1.p2.y, *l2length);
-            }
-            else {
-                return Attempt::Maybe;
-            }
-
-            return Attempt::Yes;
+            return Attempt::Maybe;
         }
         return Attempt::Maybe;
     }
-    Attempt trySubstitute(ConstraintDifference* constr, const USET_pD& unknowns, Attempt previousAttempt)
+    Attempt trySubstitute(ConstraintDifference* constr, Attempt previousAttempt)
     {
         double* p1 = constr->origParams()[0];
         double* p2 = constr->origParams()[1];
@@ -613,8 +770,7 @@ Substitution::Substitution(
     const std::vector<Constraint*>& initialConstraints
 )
 {
-    USET_pD unknownsSet(initialUnknowns.begin(), initialUnknowns.end());
-    SubstitutionFactory factory;
+    SubstitutionFactory factory(initialUnknowns);
 
     std::vector<SubstitutionFactory::Attempt> attempts(
         initialConstraints.size(),
@@ -623,19 +779,19 @@ Substitution::Substitution(
 
 
     bool hasTmpConstr = false;
-    bool done = true;
+    bool done = false;
     for (size_t i = 0; i < initialConstraints.size(); ++i) {
         auto constr = initialConstraints[i];
 
         // No substitution for temporary constraints,
         if (constr->getTag() < 0) {
             hasTmpConstr = true;
-            attempts[i] == SubstitutionFactory::Attempt::No;
+            attempts[i] = SubstitutionFactory::Attempt::No;
             continue;
         }
         // This won't help the solve
         if (!constr->isDriving()) {
-            attempts[i] == SubstitutionFactory::Attempt::No;
+            attempts[i] = SubstitutionFactory::Attempt::No;
             continue;
         }
 
@@ -644,11 +800,7 @@ Substitution::Substitution(
             continue;
         }
 
-        attempts[i] = factory.trySubstitute(static_cast<ConstraintEqual*>(constr), unknownsSet);
-        if (attempts[i] == SubstitutionFactory::Attempt::Yes) {
-            done = false;  // If at least one equality was substituted, we can try to translate
-                           // other constraints
-        }
+        attempts[i] = factory.trySubstitute(static_cast<ConstraintEqual*>(constr));
     }
     // As new substitution & reductions are discovered, previously incompatible
     // constraints may appear to be substitutable so we try until no constraint
@@ -674,38 +826,28 @@ Substitution::Substitution(
                 case Perpendicular:
                     attempt = factory.trySubstitute(
                         static_cast<ConstraintPerpendicular*>(constr),
-                        unknownsSet,
                         attempts[i]
                     );
                     break;
                 case PointOnLine:
-                    attempt = factory.trySubstitute(
-                        static_cast<ConstraintPointOnLine*>(constr),
-                        unknownsSet,
-                        attempts[i]
-                    );
+                    attempt = factory.trySubstitute(static_cast<ConstraintPointOnLine*>(constr));
                     break;
                 case C2LDistance:
                     attempt = hasTmpConstr ? SubstitutionFactory::Attempt::No
                                            : factory.trySubstitute(
                                                  static_cast<ConstraintC2LDistance*>(constr),
-                                                 unknownsSet,
                                                  attempts[i]
                                              );
                     break;
                 case P2LDistance:
-                    attempt = hasTmpConstr ? SubstitutionFactory::Attempt::No
-                                           : factory.trySubstitute(
-                                                 static_cast<ConstraintP2LDistance*>(constr),
-                                                 unknownsSet,
-                                                 attempts[i]
-                                             );
+                    attempt = hasTmpConstr
+                        ? SubstitutionFactory::Attempt::No
+                        : factory.trySubstitute(static_cast<ConstraintP2LDistance*>(constr));
                     break;
                 case P2PDistance:
                     attempt = hasTmpConstr ? SubstitutionFactory::Attempt::No
                                            : factory.trySubstitute(
                                                  static_cast<ConstraintP2PDistance*>(constr),
-                                                 unknownsSet,
                                                  attempts[i]
                                              );
                     break;
@@ -713,7 +855,6 @@ Substitution::Substitution(
                     attempt = hasTmpConstr ? SubstitutionFactory::Attempt::No
                                            : factory.trySubstitute(
                                                  static_cast<ConstraintEqualLineLength*>(constr),
-                                                 unknownsSet,
                                                  attempts[i]
                                              );
                     break;
@@ -721,7 +862,6 @@ Substitution::Substitution(
                     attempt = hasTmpConstr ? SubstitutionFactory::Attempt::No
                                            : factory.trySubstitute(
                                                  static_cast<ConstraintDifference*>(constr),
-                                                 unknownsSet,
                                                  attempts[i]
                                              );
                     break;
