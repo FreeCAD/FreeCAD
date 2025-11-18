@@ -299,9 +299,39 @@ class FeatureSlice:
     def execute(self, selfobj):
         if len(selfobj.Tools) < 1:
             raise ValueError("No slicing objects supplied!")
+
+        # helper function to get the shape from object or group
+        def get_shape(obj):
+            """get shape from a part object or compound from a group."""
+            if hasattr(obj, "Shape"):
+                return obj.Shape
+            elif hasattr(obj, "Group"):  # it's a group/container from ie. slice apart
+                shapes = []
+                for child in obj.Group:
+                    if hasattr(child, "Shape"):
+                        shapes.append(child.Shape)
+                if shapes:
+                    return Part.makeCompound(shapes)
+            return None
+
+        # get base shape
+        base_shape = get_shape(selfobj.Base)
+        if base_shape is None or base_shape.isNull():
+            raise ValueError("Base object has no valid shape!")
+
+        # get tool shapes
+        tool_shapes = []
+        for tool in selfobj.Tools:
+            shape = get_shape(tool)
+            if shape is not None and not shape.isNull():
+                tool_shapes.append(shape)
+
+        if len(tool_shapes) < 1:
+            raise ValueError("No valid tool shapes available")
+
         selfobj.Shape = SplitAPI.slice(
-            selfobj.Base.Shape,
-            [obj.Shape for obj in selfobj.Tools],
+            base_shape,
+            tool_shapes,
             selfobj.Mode,
             selfobj.Tolerance,
         )
