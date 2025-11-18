@@ -101,12 +101,12 @@
     <message>
       <location filename="../../Command.cpp" line="533"/>
       <source>Wire From Mesh Boundary…</source>
-      <translation type="unfinished">Wire From Mesh Boundary…</translation>
+      <translation>Alambre desde límite de la malla…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="534"/>
       <source>Creates a wire from mesh boundaries</source>
-      <translation type="unfinished">Creates a wire from mesh boundaries</translation>
+      <translation>Crea un alambre a partir de límites de malla</translation>
     </message>
   </context>
   <context>
@@ -119,7 +119,7 @@
     <message>
       <location filename="../../Command.cpp" line="598"/>
       <source>Poisson…</source>
-      <translation type="unfinished">Poisson…</translation>
+      <translation>Poisson…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="599"/>
@@ -137,12 +137,12 @@
     <message>
       <location filename="../../Command.cpp" line="421"/>
       <source>Mesh Segmentation…</source>
-      <translation type="unfinished">Mesh Segmentation…</translation>
+      <translation>Segmentación de malla…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="422"/>
       <source>Creates separate mesh segments based on surface types</source>
-      <translation type="unfinished">Creates separate mesh segments based on surface types</translation>
+      <translation>Crea segmentos de malla separados basados en tipos de superficie</translation>
     </message>
   </context>
   <context>
@@ -155,12 +155,12 @@
     <message>
       <location filename="../../Command.cpp" line="483"/>
       <source>From Components</source>
-      <translation type="unfinished">From Components</translation>
+      <translation>De componentes</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="484"/>
       <source>Creates mesh segments from components</source>
-      <translation type="unfinished">Creates mesh segments from components</translation>
+      <translation>Crea segmentos de malla a partir de componentes</translation>
     </message>
   </context>
   <context>
@@ -173,12 +173,12 @@
     <message>
       <location filename="../../Command.cpp" line="453"/>
       <source>Manual Segmentation…</source>
-      <translation type="unfinished">Manual Segmentation…</translation>
+      <translation>Segmentación manual…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="454"/>
       <source>Creates mesh segments manually</source>
-      <translation type="unfinished">Creates mesh segments manually</translation>
+      <translation>Crea segmentos de malla manualmente</translation>
     </message>
   </context>
   <context>
@@ -191,12 +191,12 @@
     <message>
       <location filename="../../Command.cpp" line="632"/>
       <source>Structured Point Clouds</source>
-      <translation type="unfinished">Structured Point Clouds</translation>
+      <translation>Nubes de puntos estructurados</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="633"/>
       <source>Triangulates structured point clouds</source>
-      <translation type="unfinished">Triangulates structured point clouds</translation>
+      <translation>Triangula las nubes de puntos estructurados</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="634"/>
@@ -232,23 +232,23 @@
       <translation>Ver triangulación</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="152"/>
+      <location filename="../../FitBSplineSurface.cpp" line="154"/>
       <source>Placement</source>
       <translation>Ubicación</translation>
     </message>
     <message>
+      <location filename="../../FitBSplineSurface.cpp" line="230"/>
       <location filename="../../FitBSplineCurve.cpp" line="137"/>
-      <location filename="../../FitBSplineSurface.cpp" line="228"/>
       <source>Fit B-spline</source>
       <translation>Ajustar B-Spline</translation>
     </message>
     <message>
-      <location filename="../../Poisson.cpp" line="81"/>
+      <location filename="../../Poisson.cpp" line="83"/>
       <source>Poisson reconstruction</source>
       <translation>Reconstrucción de Poisson</translation>
     </message>
     <message>
-      <location filename="../../SegmentationManual.cpp" line="279"/>
+      <location filename="../../SegmentationManual.cpp" line="281"/>
       <source>Segmentation</source>
       <translation>Segmentación</translation>
     </message>
@@ -336,18 +336,18 @@
   <context>
     <name>ReenGui::FitBSplineSurfaceWidget</name>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="163"/>
-      <location filename="../../FitBSplineSurface.cpp" line="235"/>
+      <location filename="../../FitBSplineSurface.cpp" line="165"/>
+      <location filename="../../FitBSplineSurface.cpp" line="237"/>
       <source>Input error</source>
       <translation>Error de entrada</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="203"/>
+      <location filename="../../FitBSplineSurface.cpp" line="205"/>
       <source>Wrong selection</source>
       <translation>Selección incorrecta</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="204"/>
+      <location filename="../../FitBSplineSurface.cpp" line="206"/>
       <source>Select a single placement object to get the local orientation.</source>
       <translation type="unfinished">Select a single placement object to get the local orientation.</translation>
     </message>
@@ -380,7 +380,7 @@
       <translation>Muestras por nodo</translation>
     </message>
     <message>
-      <location filename="../../Poisson.cpp" line="88"/>
+      <location filename="../../Poisson.cpp" line="90"/>
       <source>Input error</source>
       <translation>Error de entrada</translation>
     </message>
@@ -415,7 +415,7 @@
     <message>
       <location filename="../../Command.cpp" line="665"/>
       <source>View triangulation failed</source>
-      <translation>Fallo en la vista de triangulación</translation>
+      <translation>Error en la vista de triangulación</translation>
     </message>
   </context>
   <context>
@@ -547,7 +547,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="281"/>
       <source>Region Options</source>
-      <translation type="unfinished">Region Options</translation>
+      <translation>Opciones de región</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="297"/>
@@ -578,7 +578,7 @@
   <context>
     <name>ReverseEngineeringGui::TaskSegmentationManual</name>
     <message>
-      <location filename="../../SegmentationManual.cpp" line="349"/>
+      <location filename="../../SegmentationManual.cpp" line="351"/>
       <source>Create</source>
       <translation>Crear</translation>
     </message>
@@ -586,7 +586,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="33"/>
+      <location filename="../../Workbench.cpp" line="35"/>
       <source>Reverse Engineering</source>
       <translation>Ingeniería Inversa</translation>
     </message>

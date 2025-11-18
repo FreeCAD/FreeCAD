@@ -5729,7 +5729,7 @@ CmdSketcherConstrainDistanceY::CmdSketcherConstrainDistanceY()
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Vertical Dimension");
-    sToolTipText = QT_TR_NOOP("Constrains the vertical distance between the selected elements");
+    sToolTipText = QT_TR_NOOP("Constrains the vertical distance between two points, or from a point to the origin if only one is selected");
     sWhatsThis = "Sketcher_ConstrainDistanceY";
     sStatusTip = sToolTipText;
     sPixmap = "Constraint_VerticalDistance";

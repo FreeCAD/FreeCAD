@@ -21,7 +21,6 @@
  ***************************************************************************/
 
 
-
 #include <boost/algorithm/string/predicate.hpp>
 #include <QAbstractItemView>
 #include <QContextMenuEvent>
@@ -175,8 +174,8 @@ public:
     static const quint64 k_offsetProp = 0;
     static const quint64 k_offsetObj = k_offsetProp + k_numBitsProp;
     static const quint64 k_offsetContextualHierarchy = k_offsetObj + k_numBitsObj;
-    static const quint64 k_offsetDocuments =
-        k_offsetContextualHierarchy + k_numBitsContextualHierarchy;
+    static const quint64 k_offsetDocuments = k_offsetContextualHierarchy
+        + k_numBitsContextualHierarchy;
 
     static const quint64 k_maskProp = ((1ULL << k_numBitsProp) - 1);
     static const quint64 k_maskObj = ((1ULL << k_numBitsObj) - 1);
@@ -229,8 +228,8 @@ public:
             }
             else {
                 info.doc = ((d_enc >> k_offsetDocuments) & k_maskDocuments) - 1;
-                info.contextualHierarchy =
-                    ((d_enc >> k_offsetContextualHierarchy) & k_maskContextualHierarchy);
+                info.contextualHierarchy
+                    = ((d_enc >> k_offsetContextualHierarchy) & k_maskContextualHierarchy);
                 info.obj = ((d_enc >> k_offsetObj) & k_maskObj) - 1;
                 info.prop = ((d_enc >> k_offsetProp) & k_maskProp) - 1;
             }
@@ -258,8 +257,10 @@ public:
         QVariant variant;
         Info info = getInfo(index);
         _data(info, index.row(), &variant, nullptr, role == Qt::UserRole);
-        FC_TRACE(info.doc << "," << info.obj << "," << info.prop << "," << info.contextualHierarchy
-                          << "," << index.row() << ": " << variant.toString().toUtf8().constData());
+        FC_TRACE(
+            info.doc << "," << info.obj << "," << info.prop << "," << info.contextualHierarchy
+                     << "," << index.row() << ": " << variant.toString().toUtf8().constData()
+        );
         return variant;
     }
 
@@ -269,11 +270,13 @@ public:
         if (prop) {
             prop->getPaths(result);
             // need to filter out irrelevant paths (len 1, aka just this object identifier)
-            auto res = std::remove_if(result.begin(),
-                                      result.end(),
-                                      [](const App::ObjectIdentifier& path) -> bool {
-                                          return path.getComponents().empty();
-                                      });
+            auto res = std::remove_if(
+                result.begin(),
+                result.end(),
+                [](const App::ObjectIdentifier& path) -> bool {
+                    return path.getComponents().empty();
+                }
+            );
             result.erase(res, result.end());
         }
         return result;
@@ -597,8 +600,7 @@ public:
                         //      element => [parent.row,-1,parent.row,1]
 
                         info.doc = parentInfo.doc;
-                        info.obj =
-                            -1;  // object information is determined by the DOC index actually
+                        info.obj = -1;  // object information is determined by the DOC index actually
                         info.prop = element.row();
                         info.contextualHierarchy = 1;
                     }
@@ -663,8 +665,10 @@ public:
         }
         int count = 0;
         _data(info, row, nullptr, &count);
-        FC_TRACE(info.doc << "," << info.obj << "," << info.prop << "," << info.contextualHierarchy
-                          << "," << row << " row count " << count);
+        FC_TRACE(
+            info.doc << "," << info.obj << "," << info.prop << "," << info.contextualHierarchy
+                     << "," << row << " row count " << count
+        );
         return count;
     }
 
@@ -689,10 +693,12 @@ const ExpressionCompleterModel::Info ExpressionCompleterModel::Info::root = {-1,
  * @param parent Parent object owning the completer.
  */
 
-ExpressionCompleter::ExpressionCompleter(const App::DocumentObject* currentDocObj,
-                                         QObject* parent,
-                                         bool noProperty,
-                                         bool checkInList)
+ExpressionCompleter::ExpressionCompleter(
+    const App::DocumentObject* currentDocObj,
+    QObject* parent,
+    bool noProperty,
+    bool checkInList
+)
     : QCompleter(parent)
     , currentObj(currentDocObj)
     , noProperty(noProperty)
@@ -752,9 +758,11 @@ QString ExpressionCompleter::pathFromIndex(const QModelIndex& index) const
     } while (parent.isValid());
 
     auto info = ExpressionCompleterModel::getInfo(index);
-    FC_TRACE("join path " << info.doc << "," << info.obj << "," << info.prop << ","
-                          << info.contextualHierarchy << "," << index.row() << ": "
-                          << res.toUtf8().constData());
+    FC_TRACE(
+        "join path " << info.doc << "," << info.obj << "," << info.prop << ","
+                     << info.contextualHierarchy << "," << index.row() << ": "
+                     << res.toUtf8().constData()
+    );
     return res;
 }
 
@@ -803,8 +811,10 @@ QStringList ExpressionCompleter::splitPath(const QString& input) const
                     resultList << QString();
                 }
             }
-            FC_TRACE("split path " << path << " -> "
-                                   << resultList.join(QLatin1String("/")).toUtf8().constData());
+            FC_TRACE(
+                "split path " << path << " -> "
+                              << resultList.join(QLatin1String("/")).toUtf8().constData()
+            );
             return resultList;
         }
         catch (const Base::Exception& except) {
@@ -887,7 +897,7 @@ void ExpressionCompleter::slotUpdate(const QString& prefix, int pos)
     else if (auto itemView = popup()) {
         itemView->setVisible(false);
     }
-    
+
     Q_EMIT completerSlotUpdated();
 }
 
@@ -895,14 +905,14 @@ ExpressionValidator::ExpressionValidator(QObject* parent)
     : QValidator(parent)
 {}
 
-void ExpressionValidator::fixup(QString &input) const
+void ExpressionValidator::fixup(QString& input) const
 {
     if (input.startsWith(QLatin1String("="))) {
         input = input.mid(1);
     }
 }
 
-QValidator::State ExpressionValidator::validate(QString &input, int &pos) const
+QValidator::State ExpressionValidator::validate(QString& input, int& pos) const
 {
     if (input.startsWith(QLatin1String("="))) {
         pos = 0;
@@ -912,10 +922,7 @@ QValidator::State ExpressionValidator::validate(QString &input, int &pos) const
     return QValidator::Acceptable;
 }
 
-ExpressionLineEdit::ExpressionLineEdit(QWidget* parent,
-                                       bool noProperty,
-                                       char checkPrefix,
-                                       bool checkInList)
+ExpressionLineEdit::ExpressionLineEdit(QWidget* parent, bool noProperty, char checkPrefix, bool checkInList)
     : QLineEdit(parent)
     , completer(nullptr)
     , block(true)
@@ -933,8 +940,7 @@ void ExpressionLineEdit::setPrefix(char prefix)
     setValidator(checkPrefix == '=' ? nullptr : new ExpressionValidator(this));
 }
 
-void ExpressionLineEdit::setDocumentObject(const App::DocumentObject* currentDocObj,
-                                           bool _checkInList)
+void ExpressionLineEdit::setDocumentObject(const App::DocumentObject* currentDocObj, bool _checkInList)
 {
     checkInList = _checkInList;
     if (completer) {
@@ -948,18 +954,19 @@ void ExpressionLineEdit::setDocumentObject(const App::DocumentObject* currentDoc
         if (!exactMatch) {
             completer->setFilterMode(Qt::MatchContains);
         }
-        connect(completer,
-                qOverload<const QString&>(&QCompleter::activated),
-                this,
-                &ExpressionLineEdit::slotCompleteTextSelected);
-        connect(completer,
-                qOverload<const QString&>(&QCompleter::highlighted),
-                this,
-                &ExpressionLineEdit::slotCompleteTextHighlighted);
-        connect(this,
-                &ExpressionLineEdit::textChanged2,
-                completer,
-                &ExpressionCompleter::slotUpdate);
+        connect(
+            completer,
+            qOverload<const QString&>(&QCompleter::activated),
+            this,
+            &ExpressionLineEdit::slotCompleteTextSelected
+        );
+        connect(
+            completer,
+            qOverload<const QString&>(&QCompleter::highlighted),
+            this,
+            &ExpressionLineEdit::slotCompleteTextHighlighted
+        );
+        connect(this, &ExpressionLineEdit::textChanged2, completer, &ExpressionCompleter::slotUpdate);
     }
 }
 
@@ -979,7 +986,7 @@ void ExpressionLineEdit::setExactMatch(bool enabled)
     }
 }
 
-ExpressionCompleter *ExpressionLineEdit::getCompleter(void)
+ExpressionCompleter* ExpressionLineEdit::getCompleter(void)
 {
     return this->completer;
 }
@@ -1105,22 +1112,25 @@ void ExpressionTextEdit::setDocumentObject(const App::DocumentObject* currentDoc
         }
         completer->setWidget(this);
         completer->setCaseSensitivity(Qt::CaseInsensitive);
-        connect(completer,
-                qOverload<const QString&>(&QCompleter::activated),
-                this,
-                &ExpressionTextEdit::slotCompleteText);
-        connect(completer,
-                qOverload<const QString&>(&QCompleter::highlighted),
-                this,
-                &ExpressionTextEdit::slotCompleteText);
-        connect(this,
-                &ExpressionTextEdit::textChanged2,
-                completer,
-                &ExpressionCompleter::slotUpdate);
-        connect(completer,
-                &ExpressionCompleter::completerSlotUpdated,
-                this,
-                &ExpressionTextEdit::adjustCompleterToCursor);
+        connect(
+            completer,
+            qOverload<const QString&>(&QCompleter::activated),
+            this,
+            &ExpressionTextEdit::slotCompleteText
+        );
+        connect(
+            completer,
+            qOverload<const QString&>(&QCompleter::highlighted),
+            this,
+            &ExpressionTextEdit::slotCompleteText
+        );
+        connect(this, &ExpressionTextEdit::textChanged2, completer, &ExpressionCompleter::slotUpdate);
+        connect(
+            completer,
+            &ExpressionCompleter::completerSlotUpdated,
+            this,
+            &ExpressionTextEdit::adjustCompleterToCursor
+        );
     }
 }
 
@@ -1140,7 +1150,7 @@ void ExpressionTextEdit::slotTextChanged()
 {
     if (!block) {
         QTextCursor cursor = textCursor();
-        completer->popup()->setVisible(false); // hide the completer to avoid flickering
+        completer->popup()->setVisible(false);  // hide the completer to avoid flickering
         Q_EMIT textChanged2(cursor.block().text(), cursor.positionInBlock());
     }
 }
@@ -1171,7 +1181,8 @@ void ExpressionTextEdit::keyPressEvent(QKeyEvent* e)
     Base::FlagToggler<bool> flag(block, true);
 
     // Shift+Enter - insert a new line
-    if ((e->modifiers() & Qt::ShiftModifier) && (e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return)) {
+    if ((e->modifiers() & Qt::ShiftModifier)
+        && (e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return)) {
         this->setPlainText(this->toPlainText() + QLatin1Char('\n'));
         this->moveCursor(QTextCursor::End);
         if (completer) {
@@ -1190,9 +1201,9 @@ void ExpressionTextEdit::keyPressEvent(QKeyEvent* e)
             case Qt::Key_Backtab:
                 // default action
                 e->ignore();
-                return; 
+                return;
 
-            case Qt::Key_Tab: 
+            case Qt::Key_Tab:
                 // if no completion is selected, take top one
                 if (!completer->popup()->currentIndex().isValid()) {
                     completer->popup()->setCurrentIndex(completer->popup()->model()->index(0, 0));
@@ -1200,7 +1211,7 @@ void ExpressionTextEdit::keyPressEvent(QKeyEvent* e)
                 // insert completion
                 completer->setCurrentRow(completer->popup()->currentIndex().row());
                 slotCompleteText(completer->currentCompletion());
-            
+
                 // refresh completion list
                 completer->setCompletionPrefix(completer->currentCompletion());
                 if (completer->completionCount() == 1) {
@@ -1258,36 +1269,43 @@ void ExpressionTextEdit::adjustCompleterToCursor()
     int maxCompletionWidth = 0;
     for (int i = 0; i < completer->completionModel()->rowCount(); ++i) {
         const QModelIndex index = completer->completionModel()->index(i, 0);
-        const QString element = completer->completionModel()->data(index).toString();        
-        maxCompletionWidth = std::max(maxCompletionWidth, static_cast<int>(element.size()) * completer->popup()->fontMetrics().averageCharWidth());
+        const QString element = completer->completionModel()->data(index).toString();
+        maxCompletionWidth = std::max(
+            maxCompletionWidth,
+            static_cast<int>(element.size()) * completer->popup()->fontMetrics().averageCharWidth()
+        );
     }
     if (maxCompletionWidth == 0) {
-        return; // no completions available
+        return;  // no completions available
     }
 
-    const QPoint cursorPos = cursorRect(textCursor()).topLeft();    
+    const QPoint cursorPos = cursorRect(textCursor()).topLeft();
     int posX = cursorPos.x();
     int posY = cursorPos.y();
 
     completer->popup()->setMaximumWidth(this->viewport()->width() * 0.6);
     completer->popup()->setMaximumHeight(this->viewport()->height() * 0.6);
-    
-    const QSize completerSize { maxCompletionWidth + 40, completer->popup()->size().height() }; // 40 is margin for scrollbar
+
+    const QSize completerSize {
+        maxCompletionWidth + 40,
+        completer->popup()->size().height()
+    };  // 40 is margin for scrollbar
     completer->popup()->resize(completerSize);
 
     // vertical correction
     if (posY + completerSize.height() > viewport()->height()) {
         posY -= completerSize.height();
-    } else {
+    }
+    else {
         posY += fontMetrics().height();
     }
-    
+
     // horizontal correction
     if (posX + completerSize.width() > viewport()->width()) {
         posX = viewport()->width() - completerSize.width();
     }
 
-    completer->popup()->move(mapToGlobal(QPoint{ posX, posY }));
+    completer->popup()->move(mapToGlobal(QPoint {posX, posY}));
     completer->popup()->setVisible(true);
 }
 
@@ -1301,15 +1319,17 @@ ExpressionParameter* ExpressionParameter::instance()
 
 bool ExpressionParameter::isCaseSensitive() const
 {
-    auto handle =
-        GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Expression");
+    auto handle = GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Expression"
+    );
     return handle->GetBool("CompleterCaseSensitive", false);
 }
 
 bool ExpressionParameter::isExactMatch() const
 {
-    auto handle =
-        GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Expression");
+    auto handle = GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Expression"
+    );
     return handle->GetBool("CompleterMatchExact", false);
 }
 

@@ -22,14 +22,14 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <GC_MakeArcOfCircle.hxx>
-# include <GC_MakeArcOfEllipse.hxx>
-# include <GC_MakeArcOfHyperbola.hxx>
-# include <GC_MakeArcOfParabola.hxx>
-# include <Geom_Circle.hxx>
-# include <Geom_Ellipse.hxx>
-# include <Geom_Hyperbola.hxx>
-# include <Geom_Parabola.hxx>
+#include <GC_MakeArcOfCircle.hxx>
+#include <GC_MakeArcOfEllipse.hxx>
+#include <GC_MakeArcOfHyperbola.hxx>
+#include <GC_MakeArcOfParabola.hxx>
+#include <Geom_Circle.hxx>
+#include <Geom_Ellipse.hxx>
+#include <Geom_Hyperbola.hxx>
+#include <Geom_Parabola.hxx>
 
 
 #include <Base/VectorPy.h>
@@ -53,7 +53,7 @@ std::string ArcPy::representation() const
     return "<Arc object>";
 }
 
-PyObject *ArcPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject* ArcPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // never create such objects with the constructor
     return new ArcPy(new GeomTrimmedCurve());
@@ -64,11 +64,12 @@ int ArcPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
     PyObject* o;
     double u1, u2;
-    PyObject *sense=Py_True;
+    PyObject* sense = Py_True;
     if (PyArg_ParseTuple(args, "O!dd|O!", &(Part::CirclePy::Type), &o, &u1, &u2, &PyBool_Type, &sense)) {
         try {
-            Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast
-                (static_cast<CirclePy*>(o)->getGeomCirclePtr()->handle());
+            Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(
+                static_cast<CirclePy*>(o)->getGeomCirclePtr()->handle()
+            );
             GC_MakeArcOfCircle arc(circle->Circ(), u1, u2, Base::asBoolean(sense));
             if (!arc.IsDone()) {
                 PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(arc.Status()));
@@ -90,16 +91,25 @@ int ArcPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
     PyErr_Clear();
     PyObject *pV1, *pV2, *pV3;
-    if (PyArg_ParseTuple(args, "O!O!O!", &(Base::VectorPy::Type), &pV1,
-                                         &(Base::VectorPy::Type), &pV2,
-                                         &(Base::VectorPy::Type), &pV3)) {
+    if (PyArg_ParseTuple(
+            args,
+            "O!O!O!",
+            &(Base::VectorPy::Type),
+            &pV1,
+            &(Base::VectorPy::Type),
+            &pV2,
+            &(Base::VectorPy::Type),
+            &pV3
+        )) {
         Base::Vector3d v1 = static_cast<Base::VectorPy*>(pV1)->value();
         Base::Vector3d v2 = static_cast<Base::VectorPy*>(pV2)->value();
         Base::Vector3d v3 = static_cast<Base::VectorPy*>(pV3)->value();
 
-        GC_MakeArcOfCircle arc(gp_Pnt(v1.x,v1.y,v1.z),
-                               gp_Pnt(v2.x,v2.y,v2.z),
-                               gp_Pnt(v3.x,v3.y,v3.z));
+        GC_MakeArcOfCircle arc(
+            gp_Pnt(v1.x, v1.y, v1.z),
+            gp_Pnt(v2.x, v2.y, v2.z),
+            gp_Pnt(v3.x, v3.y, v3.z)
+        );
         if (!arc.IsDone()) {
             PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(arc.Status()));
             return -1;
@@ -112,8 +122,9 @@ int ArcPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     PyErr_Clear();
     if (PyArg_ParseTuple(args, "O!dd|O!", &(Part::EllipsePy::Type), &o, &u1, &u2, &PyBool_Type, &sense)) {
         try {
-            Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast
-                (static_cast<EllipsePy*>(o)->getGeomEllipsePtr()->handle());
+            Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(
+                static_cast<EllipsePy*>(o)->getGeomEllipsePtr()->handle()
+            );
             GC_MakeArcOfEllipse arc(ellipse->Elips(), u1, u2, Base::asBoolean(sense));
             if (!arc.IsDone()) {
                 PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(arc.Status()));
@@ -137,8 +148,9 @@ int ArcPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     PyErr_Clear();
     if (PyArg_ParseTuple(args, "O!dd|O!", &(Part::ParabolaPy::Type), &o, &u1, &u2, &PyBool_Type, &sense)) {
         try {
-            Handle(Geom_Parabola) parabola = Handle(Geom_Parabola)::DownCast
-                (static_cast<ParabolaPy*>(o)->getGeomParabolaPtr()->handle());
+            Handle(Geom_Parabola) parabola = Handle(Geom_Parabola)::DownCast(
+                static_cast<ParabolaPy*>(o)->getGeomParabolaPtr()->handle()
+            );
             GC_MakeArcOfParabola arc(parabola->Parab(), u1, u2, Base::asBoolean(sense));
             if (!arc.IsDone()) {
                 PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(arc.Status()));
@@ -162,8 +174,9 @@ int ArcPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
     if (PyArg_ParseTuple(args, "O!dd|O!", &(Part::HyperbolaPy::Type), &o, &u1, &u2, &PyBool_Type, &sense)) {
         try {
-            Handle(Geom_Hyperbola) hyperbola = Handle(Geom_Hyperbola)::DownCast
-                (static_cast<HyperbolaPy*>(o)->getGeomHyperbolaPtr()->handle());
+            Handle(Geom_Hyperbola) hyperbola = Handle(Geom_Hyperbola)::DownCast(
+                static_cast<HyperbolaPy*>(o)->getGeomHyperbolaPtr()->handle()
+            );
             GC_MakeArcOfHyperbola arc(hyperbola->Hypr(), u1, u2, Base::asBoolean(sense));
             if (!arc.IsDone()) {
                 PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(arc.Status()));
@@ -188,7 +201,7 @@ int ArcPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     return -1;
 }
 
-PyObject *ArcPy::getCustomAttributes(const char* /*attr*/) const
+PyObject* ArcPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }

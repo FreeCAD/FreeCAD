@@ -42,20 +42,24 @@ public:
     TriangulationVerifier& operator=(const TriangulationVerifier&) = delete;
     TriangulationVerifier& operator=(TriangulationVerifier&&) = delete;
 
-    virtual bool Accept(const Base::Vector3f& n,
-                        const Base::Vector3f& p1,
-                        const Base::Vector3f& p2,
-                        const Base::Vector3f& p3) const;
+    virtual bool Accept(
+        const Base::Vector3f& n,
+        const Base::Vector3f& p1,
+        const Base::Vector3f& p2,
+        const Base::Vector3f& p3
+    ) const;
     virtual bool MustFlip(const Base::Vector3f& n1, const Base::Vector3f& n2) const;
 };
 
 class MeshExport TriangulationVerifierV2: public TriangulationVerifier
 {
 public:
-    bool Accept(const Base::Vector3f& n,
-                const Base::Vector3f& p1,
-                const Base::Vector3f& p2,
-                const Base::Vector3f& p3) const override;
+    bool Accept(
+        const Base::Vector3f& n,
+        const Base::Vector3f& p1,
+        const Base::Vector3f& p2,
+        const Base::Vector3f& p3
+    ) const override;
     bool MustFlip(const Base::Vector3f& n1, const Base::Vector3f& n2) const override;
 };
 
@@ -191,28 +195,28 @@ private:
     public:
         // triangulate a contour/polygon, places results in STL vector
         // as series of triangles.indicating the points
-        static bool Process(const std::vector<Base::Vector3f>& contour,
-                            std::vector<PointIndex>& result);
+        static bool Process(const std::vector<Base::Vector3f>& contour, std::vector<PointIndex>& result);
 
         // compute area of a contour/polygon
         static float Area(const std::vector<Base::Vector3f>& contour);
 
         // decide if point Px/Py is inside triangle defined by
         // (Ax,Ay) (Bx,By) (Cx,Cy)
-        static bool InsideTriangle(float Ax,
-                                   float Ay,
-                                   float Bx,
-                                   float By,
-                                   float Cx,
-                                   float Cy,
-                                   float Px,
-                                   float Py);
+        static bool InsideTriangle(
+            float Ax,
+            float Ay,
+            float Bx,
+            float By,
+            float Cx,
+            float Cy,
+            float Px,
+            float Py
+        );
 
         static bool _invert;
 
     private:
-        static bool
-        Snip(const std::vector<Base::Vector3f>& contour, int u, int v, int w, int n, int* V);
+        static bool Snip(const std::vector<Base::Vector3f>& contour, int u, int v, int w, int n, int* V);
     };
 };
 

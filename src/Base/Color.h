@@ -27,7 +27,7 @@
 #define APP_COLOR_H
 
 #ifdef __GNUC__
-#include <cstdint>
+# include <cstdint>
 #endif
 #include <cmath>
 #include <string>
@@ -165,10 +165,12 @@ public:
     template<typename T>
     static T fromPackedRGBA(uint32_t color)
     {
-        return color_traits<T>::makeColor((color >> 24) & 0xff,
-                                          (color >> 16) & 0xff,
-                                          (color >> 8) & 0xff,
-                                          (color & 0xff));
+        return color_traits<T>::makeColor(
+            (color >> 24) & 0xff,
+            (color >> 16) & 0xff,
+            (color >> 8) & 0xff,
+            (color & 0xff)
+        );
     }
 
     template<typename T>
@@ -181,9 +183,7 @@ public:
     template<typename T>
     static T fromPackedRGB(uint32_t color)
     {
-        return color_traits<T>::makeColor((color >> 24) & 0xff,
-                                          (color >> 16) & 0xff,
-                                          (color >> 8) & 0xff);
+        return color_traits<T>::makeColor((color >> 24) & 0xff, (color >> 16) & 0xff, (color >> 8) & 0xff);
     }
     /**
      * creates FC Color from template type, e.g. Qt QColor
@@ -308,10 +308,12 @@ struct color_traits<Base::Color>
     }
     static color_type makeColor(int red, int green, int blue, int alpha = 255)
     {
-        return color_type {static_cast<float>(red) / 255.0F,
-                           static_cast<float>(green) / 255.0F,
-                           static_cast<float>(blue) / 255.0F,
-                           static_cast<float>(alpha) / 255.0F};
+        return color_type {
+            static_cast<float>(red) / 255.0F,
+            static_cast<float>(green) / 255.0F,
+            static_cast<float>(blue) / 255.0F,
+            static_cast<float>(alpha) / 255.0F
+        };
     }
 
 private:

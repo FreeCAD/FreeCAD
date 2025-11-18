@@ -126,12 +126,12 @@ public:
         auto transformColors = [](const std::vector<Base::Color>& input) {
             std::vector<Base::ColorRGB> output;
             output.reserve(input.size());
-            std::transform(input.cbegin(),
-                           input.cend(),
-                           std::back_inserter(output),
-                           [](const Base::Color& col) {
-                               return Base::ColorRGB {col.r, col.g, col.b};
-                           });
+            std::transform(
+                input.cbegin(),
+                input.cend(),
+                std::back_inserter(output),
+                [](const Base::Color& col) { return Base::ColorRGB {col.r, col.g, col.b}; }
+            );
 
             return output;
         };

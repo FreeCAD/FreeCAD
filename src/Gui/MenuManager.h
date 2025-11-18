@@ -32,7 +32,8 @@
 class QAction;
 class QMenu;
 
-namespace Gui {
+namespace Gui
+{
 
 class MainWindow;
 
@@ -58,8 +59,8 @@ public:
     void removeItem(MenuItem*);
     void clear();
 
-    MenuItem& operator << (MenuItem* item);
-    MenuItem& operator << (const std::string& command);
+    MenuItem& operator<<(MenuItem* item);
+    MenuItem& operator<<(const std::string& command);
     QList<MenuItem*> getItems() const;
 
 private:
@@ -68,8 +69,8 @@ private:
 };
 
 /**
- * The MenuManager class is responsible for the creation of menus and context menus and appending them
- * to the main window.
+ * The MenuManager class is responsible for the creation of menus and context menus and appending
+ * them to the main window.
  * @see ToolBoxManager
  * @see ToolBarManager
  * @author Werner Mayer
@@ -80,7 +81,7 @@ public:
     /** Sets up the menus of a given workbench. */
     void setup(MenuItem*) const;
     /// sets up a context menu out of item
-    void setupContextMenu(MenuItem* item, QMenu &menu) const;
+    void setupContextMenu(MenuItem* item, QMenu& menu) const;
     void retranslate() const;
 
     /// The one and only instance.
@@ -103,7 +104,7 @@ private:
     friend class MainWindow;
 };
 
-} // namespace Gui
+}  // namespace Gui
 
 
-#endif // GUI_MENUMANAGER_H
+#endif  // GUI_MENUMANAGER_H

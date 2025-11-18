@@ -48,10 +48,12 @@ SplineBasisfunction::SplineBasisfunction(int iSize)
     , _iOrder(1)
 {}
 
-SplineBasisfunction::SplineBasisfunction(TColStd_Array1OfReal& vKnots,
-                                         TColStd_Array1OfInteger& vMults,
-                                         int iSize,
-                                         int iOrder)
+SplineBasisfunction::SplineBasisfunction(
+    TColStd_Array1OfReal& vKnots,
+    TColStd_Array1OfInteger& vMults,
+    int iSize,
+    int iOrder
+)
     : _vKnotVector(0, iSize - 1)
 {
     int sum = 0;
@@ -94,9 +96,7 @@ void SplineBasisfunction::SetKnots(TColStd_Array1OfReal& vKnots, int iOrder)
     _iOrder = iOrder;
 }
 
-void SplineBasisfunction::SetKnots(TColStd_Array1OfReal& vKnots,
-                                   TColStd_Array1OfInteger& vMults,
-                                   int iOrder)
+void SplineBasisfunction::SetKnots(TColStd_Array1OfReal& vKnots, TColStd_Array1OfInteger& vMults, int iOrder)
 {
     int sum = 0;
     for (int h = vMults.Lower(); h <= vMults.Upper(); h++) {
@@ -124,10 +124,12 @@ BSplineBasis::BSplineBasis(int iSize)
     : SplineBasisfunction(iSize)
 {}
 
-BSplineBasis::BSplineBasis(TColStd_Array1OfReal& vKnots,
-                           TColStd_Array1OfInteger& vMults,
-                           int iSize,
-                           int iOrder)
+BSplineBasis::BSplineBasis(
+    TColStd_Array1OfReal& vKnots,
+    TColStd_Array1OfInteger& vMults,
+    int iSize,
+    int iOrder
+)
     : SplineBasisfunction(vKnots, vMults, iSize, iOrder)
 {}
 
@@ -257,10 +259,12 @@ double BSplineBasis::BasisFunction(int iIndex, double fParam)
     return N(0);
 }
 
-void BSplineBasis::DerivativesOfBasisFunction(int iIndex,
-                                              int iMaxDer,
-                                              double fParam,
-                                              TColStd_Array1OfReal& Derivat)
+void BSplineBasis::DerivativesOfBasisFunction(
+    int iIndex,
+    int iMaxDer,
+    double fParam,
+    TColStd_Array1OfReal& Derivat
+)
 {
     int iMax = iMaxDer;
     if (Derivat.Length() != iMax + 1) {
@@ -482,8 +486,7 @@ double BSplineBasis::GetIntegralOfProductOfBSplines(int iIdx1, int iIdx2, int iO
     return dIntegral;
 }
 
-void BSplineBasis::GenerateRootsAndWeights(TColStd_Array1OfReal& vRoots,
-                                           TColStd_Array1OfReal& vWeights)
+void BSplineBasis::GenerateRootsAndWeights(TColStd_Array1OfReal& vRoots, TColStd_Array1OfReal& vWeights)
 {
     int iSize = vRoots.Length();
 
@@ -635,10 +638,12 @@ int BSplineBasis::CalcSize(int r, int s)
 
 /////////////////// ParameterCorrection
 
-ParameterCorrection::ParameterCorrection(unsigned usUOrder,
-                                         unsigned usVOrder,
-                                         unsigned usUCtrlpoints,
-                                         unsigned usVCtrlpoints)
+ParameterCorrection::ParameterCorrection(
+    unsigned usUOrder,
+    unsigned usVOrder,
+    unsigned usUCtrlpoints,
+    unsigned usVCtrlpoints
+)
     : _usUOrder(usUOrder)
     , _usVOrder(usVOrder)
     , _usUCtrlpoints(usUCtrlpoints)
@@ -768,9 +773,7 @@ void ParameterCorrection::SetUV(const Base::Vector3d& clU, const Base::Vector3d&
     }
 }
 
-void ParameterCorrection::GetUVW(Base::Vector3d& clU,
-                                 Base::Vector3d& clV,
-                                 Base::Vector3d& clW) const
+void ParameterCorrection::GetUVW(Base::Vector3d& clU, Base::Vector3d& clV, Base::Vector3d& clW) const
 {
     clU = _clU;
     clV = _clV;
@@ -807,10 +810,12 @@ void ParameterCorrection::ProjectControlPointsOnPlane()
     }
 }
 
-Handle(Geom_BSplineSurface) ParameterCorrection::CreateSurface(const TColgp_Array1OfPnt& points,
-                                                               int iIter,
-                                                               bool bParaCor,
-                                                               double fSizeFactor)
+Handle(Geom_BSplineSurface) ParameterCorrection::CreateSurface(
+    const TColgp_Array1OfPnt& points,
+    int iIter,
+    bool bParaCor,
+    double fSizeFactor
+)
 {
     if (_pvcPoints) {
         delete _pvcPoints;
@@ -844,13 +849,15 @@ Handle(Geom_BSplineSurface) ParameterCorrection::CreateSurface(const TColgp_Arra
         DoParameterCorrection(iIter);
     }
 
-    return new Geom_BSplineSurface(_vCtrlPntsOfSurf,
-                                   _vUKnots,
-                                   _vVKnots,
-                                   _vUMults,
-                                   _vVMults,
-                                   _usUOrder - 1,
-                                   _usVOrder - 1);
+    return new Geom_BSplineSurface(
+        _vCtrlPntsOfSurf,
+        _vUKnots,
+        _vVKnots,
+        _vUMults,
+        _vVMults,
+        _usUOrder - 1,
+        _usVOrder - 1
+    );
 }
 
 void ParameterCorrection::EnableSmoothing(bool bSmooth, double fSmoothInfl)
@@ -862,10 +869,12 @@ void ParameterCorrection::EnableSmoothing(bool bSmooth, double fSmoothInfl)
 /////////////////// BSplineParameterCorrection
 
 
-BSplineParameterCorrection::BSplineParameterCorrection(unsigned usUOrder,
-                                                       unsigned usVOrder,
-                                                       unsigned usUCtrlpoints,
-                                                       unsigned usVCtrlpoints)
+BSplineParameterCorrection::BSplineParameterCorrection(
+    unsigned usUOrder,
+    unsigned usVOrder,
+    unsigned usUCtrlpoints,
+    unsigned usVCtrlpoints
+)
     : ParameterCorrection(usUOrder, usVOrder, usUCtrlpoints, usVCtrlpoints)
     , _clUSpline(usUCtrlpoints + usUOrder)
     , _clVSpline(usVCtrlpoints + usVOrder)
@@ -963,21 +972,24 @@ void BSplineParameterCorrection::DoParameterCorrection(int iIter)
     double fMaxDiff = 0.0, fMaxScalar = 1.0;
     double fWeight = _fSmoothInfluence;
 
-    Base::SequencerLauncher seq("Calc surface...",
-                                static_cast<size_t>(iIter)
-                                    * static_cast<size_t>(_pvcPoints->Length()));
+    Base::SequencerLauncher seq(
+        "Calc surface...",
+        static_cast<size_t>(iIter) * static_cast<size_t>(_pvcPoints->Length())
+    );
 
     do {
         fMaxScalar = 1.0;
         fMaxDiff = 0.0;
 
-        Handle(Geom_BSplineSurface) pclBSplineSurf = new Geom_BSplineSurface(_vCtrlPntsOfSurf,
-                                                                             _vUKnots,
-                                                                             _vVKnots,
-                                                                             _vUMults,
-                                                                             _vVMults,
-                                                                             _usUOrder - 1,
-                                                                             _usVOrder - 1);
+        Handle(Geom_BSplineSurface) pclBSplineSurf = new Geom_BSplineSurface(
+            _vCtrlPntsOfSurf,
+            _vUKnots,
+            _vVKnots,
+            _vUMults,
+            _vVMults,
+            _usUOrder - 1,
+            _usVOrder - 1
+        );
 
         for (int ii = _pvcPoints->Lower(); ii <= _pvcPoints->Upper(); ii++) {
             double fDeltaU, fDeltaV, fU, fV;
@@ -1203,8 +1215,8 @@ bool BSplineParameterCorrection::SolveWithSmoothing(double fWeight)
     std::generate(columns.begin(), columns.end(), Base::iotaGen<int>(0));
     ScalarProduct scalar(M);
     // NOLINTBEGIN
-    QFuture<std::vector<double>> future =
-        QtConcurrent::mapped(columns, std::bind(&ScalarProduct::multiply, &scalar, sp::_1));
+    QFuture<std::vector<double>> future
+        = QtConcurrent::mapped(columns, std::bind(&ScalarProduct::multiply, &scalar, sp::_1));
     // NOLINTEND
     QFutureWatcher<std::vector<double>> watcher;
     watcher.setFuture(future);
@@ -1214,8 +1226,7 @@ bool BSplineParameterCorrection::SolveWithSmoothing(double fWeight)
     int rowIndex = 0;
     for (const auto& it : future) {
         int colIndex = 0;
-        for (std::vector<double>::const_iterator jt = it.begin(); jt != it.end();
-             ++jt, colIndex++) {
+        for (std::vector<double>::const_iterator jt = it.begin(); jt != it.end(); ++jt, colIndex++) {
             MTM(rowIndex, colIndex) = *jt;
         }
         rowIndex++;
@@ -1267,17 +1278,15 @@ bool BSplineParameterCorrection::SolveWithSmoothing(double fWeight)
     return true;
 }
 
-void BSplineParameterCorrection::CalcSmoothingTerms(bool bRecalc,
-                                                    double fFirst,
-                                                    double fSecond,
-                                                    double fThird)
+void BSplineParameterCorrection::CalcSmoothingTerms(bool bRecalc, double fFirst, double fSecond, double fThird)
 {
     if (bRecalc) {
-        Base::SequencerLauncher seq("Initializing...",
-                                    static_cast<size_t>(3) * static_cast<size_t>(_usUCtrlpoints)
-                                        * static_cast<size_t>(_usUCtrlpoints)
-                                        * static_cast<size_t>(_usVCtrlpoints)
-                                        * static_cast<size_t>(_usVCtrlpoints));
+        Base::SequencerLauncher seq(
+            "Initializing...",
+            static_cast<size_t>(3) * static_cast<size_t>(_usUCtrlpoints)
+                * static_cast<size_t>(_usUCtrlpoints) * static_cast<size_t>(_usVCtrlpoints)
+                * static_cast<size_t>(_usVCtrlpoints)
+        );
         CalcFirstSmoothMatrix(seq);
         CalcSecondSmoothMatrix(seq);
         CalcThirdSmoothMatrix(seq);
@@ -1371,11 +1380,13 @@ void BSplineParameterCorrection::EnableSmoothing(bool bSmooth, double fSmoothInf
     EnableSmoothing(bSmooth, fSmoothInfl, 1.0, 0.0, 0.0);
 }
 
-void BSplineParameterCorrection::EnableSmoothing(bool bSmooth,
-                                                 double fSmoothInfl,
-                                                 double fFirst,
-                                                 double fSec,
-                                                 double fThird)
+void BSplineParameterCorrection::EnableSmoothing(
+    bool bSmooth,
+    double fSmoothInfl,
+    double fFirst,
+    double fSec,
+    double fThird
+)
 {
     if (_bSmoothing && bSmooth) {
         CalcSmoothingTerms(false, fFirst, fSec, fThird);

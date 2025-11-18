@@ -130,10 +130,12 @@ static void AddVertex(const CVertex& vertex, const CVertex* prev_vertex)
     }
 }
 
-static void MakeLoop(const DoubleAreaPoint& pt0,
-                     const DoubleAreaPoint& pt1,
-                     const DoubleAreaPoint& pt2,
-                     double radius)
+static void MakeLoop(
+    const DoubleAreaPoint& pt0,
+    const DoubleAreaPoint& pt1,
+    const DoubleAreaPoint& pt2,
+    double radius
+)
 {
     Point p0(pt0.X, pt0.Y);
     Point p1(pt1.X, pt1.Y);
@@ -348,8 +350,7 @@ static void MakePoly(const CCurve& curve, TPolygon& p, bool reverse = false)
 
     p.resize(pts_for_AddVertex.size());
     if (reverse) {
-        std::size_t i =
-            pts_for_AddVertex.size() - 1;  // clipper wants them the opposite way to CArea
+        std::size_t i = pts_for_AddVertex.size() - 1;  // clipper wants them the opposite way to CArea
         for (std::list<DoubleAreaPoint>::iterator It = pts_for_AddVertex.begin();
              It != pts_for_AddVertex.end();
              It++, i--) {
@@ -409,11 +410,13 @@ static void SetFromResult(CCurve& curve, TPolygon& p, bool reverse = true, bool 
     }
 }
 
-static void SetFromResult(CArea& area,
-                          TPolyPolygon& pp,
-                          bool reverse = true,
-                          bool is_closed = true,
-                          bool clear = true)
+static void SetFromResult(
+    CArea& area,
+    TPolyPolygon& pp,
+    bool reverse = true,
+    bool is_closed = true,
+    bool clear = true
+)
 {
     // delete existing geometry
     if (clear) {
@@ -556,11 +559,13 @@ void CArea::Clip(ClipType op, const CArea* a, PolyFillType subjFillType, PolyFil
     SetFromResult(*this, solution, false, false, false);
 }
 
-void CArea::OffsetWithClipper(double offset,
-                              JoinType joinType /* =jtRound */,
-                              EndType endType /* =etOpenRound */,
-                              double miterLimit /*  = 5.0 */,
-                              double roundPrecision /*  = 0.0 */)
+void CArea::OffsetWithClipper(
+    double offset,
+    JoinType joinType /* =jtRound */,
+    EndType endType /* =etOpenRound */,
+    double miterLimit /*  = 5.0 */,
+    double roundPrecision /*  = 0.0 */
+)
 {
     offset *= m_units * m_clipper_scale;
     if (roundPrecision == 0.0) {

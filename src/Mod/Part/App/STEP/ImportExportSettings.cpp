@@ -22,19 +22,23 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <Interface_Static.hxx>
+#include <Interface_Static.hxx>
 
 
 #include "ImportExportSettings.h"
 #include <App/Application.h>
 
 
-namespace Part {
-namespace STEP {
+namespace Part
+{
+namespace STEP
+{
 
 ImportExportSettings::ImportExportSettings()
 {
-    pGroup = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part/STEP");
+    pGroup = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Part/STEP"
+    );
 }
 
 void ImportExportSettings::setVisibleExportDialog(bool on)
@@ -59,14 +63,18 @@ bool ImportExportSettings::isVisibleImportDialog() const
 
 void ImportExportSettings::setWriteSurfaceCurveMode(bool on)
 {
-    ParameterGrp::handle grp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part/General");
+    ParameterGrp::handle grp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Part/General"
+    );
     grp->SetInt("WriteSurfaceCurveMode", on ? 1 : 0);
     Interface_Static::SetIVal("write.surfacecurve.mode", on ? 1 : 0);
 }
 
 bool ImportExportSettings::getWriteSurfaceCurveMode() const
 {
-    ParameterGrp::handle grp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part/General");
+    ParameterGrp::handle grp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Part/General"
+    );
     int writesurfacecurve = Interface_Static::IVal("write.surfacecurve.mode");
     writesurfacecurve = grp->GetInt("WriteSurfaceCurveMode", writesurfacecurve);
     return (writesurfacecurve == 0 ? false : true);
@@ -124,5 +132,5 @@ void ImportExportSettings::setProductName(const char* name)
     Part::Interface::writeStepHeaderProduct(name);
 }
 
-} // namespace STEP
-} // namespace Part
+}  // namespace STEP
+}  // namespace Part

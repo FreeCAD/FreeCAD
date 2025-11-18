@@ -186,5 +186,3 @@ QTreeView::branch:has-children:!has-siblings:closed  {
   border-image: none;
   image: url(qss:images_classic/Arrow-right-white.png);
 }
-
-

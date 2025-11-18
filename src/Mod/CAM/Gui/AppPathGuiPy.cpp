@@ -47,17 +47,17 @@ public:
     Module()
         : Py::ExtensionModule<Module>("PathGui")
     {
-        add_varargs_method("open",
-                           &Module::open,
-                           "open(filename): Opens a GCode file as a new document");
+        add_varargs_method("open", &Module::open, "open(filename): Opens a GCode file as a new document");
         add_varargs_method(
             "insert",
             &Module::insert,
-            "insert(filename,docname): Imports a given GCode file into the given document");
+            "insert(filename,docname): Imports a given GCode file into the given document"
+        );
         add_varargs_method(
             "export",
             &Module::exporter,
-            "export(objectslist,filename): Exports a given list of Path objects to a GCode file");
+            "export(objectslist,filename): Exports a given list of Path objects to a GCode file"
+        );
         initialize("This module is the PathGui module.");  // register with Python
     }
 
@@ -85,10 +85,10 @@ private:
             std::string path = App::Application::getHomePath();
             path += "Mod/CAM/Path/Post/scripts/";
             QDir dir1(QString::fromUtf8(path.c_str()), QStringLiteral("*_pre.py"));
-            std::string cMacroPath =
-                App::GetApplication()
-                    .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")
-                    ->GetASCII("MacroPath", App::Application::getUserMacroDir().c_str());
+            std::string cMacroPath
+                = App::GetApplication()
+                      .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")
+                      ->GetASCII("MacroPath", App::Application::getUserMacroDir().c_str());
             QDir dir2(QString::fromUtf8(cMacroPath.c_str()), QStringLiteral("*_pre.py"));
             QFileInfoList list = dir1.entryInfoList();
             list << dir2.entryInfoList();
@@ -158,10 +158,10 @@ private:
             std::string path = App::Application::getHomePath();
             path += "Mod/CAM/Path/Post/scripts/";
             QDir dir1(QString::fromUtf8(path.c_str()), QStringLiteral("*_pre.py"));
-            std::string cMacroPath =
-                App::GetApplication()
-                    .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")
-                    ->GetASCII("MacroPath", App::Application::getUserMacroDir().c_str());
+            std::string cMacroPath
+                = App::GetApplication()
+                      .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")
+                      ->GetASCII("MacroPath", App::Application::getUserMacroDir().c_str());
             QDir dir2(QString::fromUtf8(cMacroPath.c_str()), QStringLiteral("*_pre.py"));
             QFileInfoList list = dir1.entryInfoList();
             list << dir2.entryInfoList();
@@ -243,10 +243,10 @@ private:
             std::string path = App::Application::getHomePath();
             path += "Mod/CAM/Path/Post/scripts/";
             QDir dir1(QString::fromUtf8(path.c_str()), QStringLiteral("*_post.py"));
-            std::string cMacroPath =
-                App::GetApplication()
-                    .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")
-                    ->GetASCII("MacroPath", App::Application::getUserMacroDir().c_str());
+            std::string cMacroPath
+                = App::GetApplication()
+                      .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")
+                      ->GetASCII("MacroPath", App::Application::getUserMacroDir().c_str());
             QDir dir2(QString::fromUtf8(cMacroPath.c_str()), QStringLiteral("*_post.py"));
             QFileInfoList list = dir1.entryInfoList();
             list << dir2.entryInfoList();
@@ -267,17 +267,17 @@ private:
             if (processor.empty()) {
                 if (objlist.size() > 1) {
                     throw Py::RuntimeError(
-                        "Cannot export more than one object without using a post script");
+                        "Cannot export more than one object without using a post script"
+                    );
                 }
                 PyObject* item = objlist[0].ptr();
                 if (PyObject_TypeCheck(item, &(App::DocumentObjectPy::Type))) {
-                    App::DocumentObject* obj =
-                        static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr();
+                    App::DocumentObject* obj
+                        = static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr();
                     App::Document* doc = obj->getDocument();
                     Gui::Command::runCommand(Gui::Command::Gui, "import Path");
-                    cmd << "Path.write(FreeCAD.getDocument(\"" << doc->getName()
-                        << "\").getObject(\"" << obj->getNameInDocument() << "\"),\"" << EncodedName
-                        << "\")";
+                    cmd << "Path.write(FreeCAD.getDocument(\"" << doc->getName() << "\").getObject(\""
+                        << obj->getNameInDocument() << "\"),\"" << EncodedName << "\")";
                     Gui::Command::runCommand(Gui::Command::Gui, cmd.str().c_str());
                 }
                 else {

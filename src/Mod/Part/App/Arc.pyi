@@ -3,7 +3,6 @@ from TrimmedCurve import TrimmedCurve
 from Geometry import Geom_Circle, Geom_Ellipse
 from typing import overload
 
-
 @export(
     Father="TrimmedCurvePy",
     PythonName="Part.Arc",
@@ -23,6 +22,5 @@ class Arc(TrimmedCurve):
 
     @overload
     def __init__(self, circ: Geom_Circle, T: type = ...) -> None: ...
-
     @overload
     def __init__(self, circ: Geom_Ellipse, T: type = ...) -> None: ...

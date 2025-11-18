@@ -31,8 +31,7 @@
 
 using namespace FemGui;
 
-PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintTemperature,
-                FemGui::ViewProviderFemConstraintOnBoundary)
+PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintTemperature, FemGui::ViewProviderFemConstraintOnBoundary)
 
 ViewProviderFemConstraintTemperature::ViewProviderFemConstraintTemperature()
 {

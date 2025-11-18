@@ -28,7 +28,8 @@
 
 class QTimer;
 
-namespace Gui {
+namespace Gui
+{
 class PythonConsole;
 
 /**
@@ -39,18 +40,18 @@ class PythonConsole;
  * @see PythonConsole
  * @author Werner Mayer
  */
-class PythonStdout : public Py::PythonExtension<PythonStdout>
+class PythonStdout: public Py::PythonExtension<PythonStdout>
 {
 private:
     PythonConsole* pyConsole;
 
 public:
-    static void init_type();    // announce properties and methods
+    static void init_type();  // announce properties and methods
 
-    explicit PythonStdout(PythonConsole *pc);
+    explicit PythonStdout(PythonConsole* pc);
     ~PythonStdout() override;
 
-    Py::Object getattr(const char *name) override;
+    Py::Object getattr(const char* name) override;
     Py::Object repr() override;
     Py::Object write(const Py::Tuple&);
     Py::Object flush(const Py::Tuple&);
@@ -65,18 +66,18 @@ public:
  * @see PythonConsole
  * @author Werner Mayer
  */
-class PythonStderr : public Py::PythonExtension<PythonStderr>
+class PythonStderr: public Py::PythonExtension<PythonStderr>
 {
 private:
     PythonConsole* pyConsole;
 
 public:
-    static void init_type();    // announce properties and methods
+    static void init_type();  // announce properties and methods
 
-    explicit PythonStderr(PythonConsole *pc);
+    explicit PythonStderr(PythonConsole* pc);
     ~PythonStderr() override;
 
-    Py::Object getattr(const char *name) override;
+    Py::Object getattr(const char* name) override;
     Py::Object repr() override;
     Py::Object write(const Py::Tuple&);
     Py::Object flush(const Py::Tuple&);
@@ -91,15 +92,15 @@ public:
  * @see PythonStderr
  * @author Werner Mayer
  */
-class OutputStdout : public Py::PythonExtension<OutputStdout>
+class OutputStdout: public Py::PythonExtension<OutputStdout>
 {
 public:
-    static void init_type();    // announce properties and methods
+    static void init_type();  // announce properties and methods
 
     OutputStdout();
     ~OutputStdout() override;
 
-    Py::Object getattr(const char *name) override;
+    Py::Object getattr(const char* name) override;
     Py::Object repr() override;
     Py::Object write(const Py::Tuple&);
     Py::Object flush(const Py::Tuple&);
@@ -114,15 +115,15 @@ public:
  * @see PythonStderr
  * @author Werner Mayer
  */
-class OutputStderr : public Py::PythonExtension<OutputStderr>
+class OutputStderr: public Py::PythonExtension<OutputStderr>
 {
 public:
-    static void init_type();    // announce properties and methods
+    static void init_type();  // announce properties and methods
 
     OutputStderr();
     ~OutputStderr() override;
 
-    Py::Object getattr(const char *name) override;
+    Py::Object getattr(const char* name) override;
     Py::Object repr() override;
     Py::Object write(const Py::Tuple&);
     Py::Object flush(const Py::Tuple&);
@@ -133,22 +134,22 @@ public:
  * Python class for redirection of stdin to an input dialog of Qt.
  * @author Werner Mayer
  */
-class PythonStdin : public Py::PythonExtension<PythonStdin>
+class PythonStdin: public Py::PythonExtension<PythonStdin>
 {
 private:
     PythonConsole* pyConsole;
 
 public:
-    static void init_type();    // announce properties and methods
+    static void init_type();  // announce properties and methods
 
-    explicit PythonStdin(PythonConsole *pc);
+    explicit PythonStdin(PythonConsole* pc);
     ~PythonStdin() override;
 
     Py::Object repr() override;
-    Py::Object getattr(const char *name) override;
+    Py::Object getattr(const char* name) override;
     Py::Object readline(const Py::Tuple&);
 };
 
-} // namespace Gui
+}  // namespace Gui
 
-#endif // GUI_PYTHONCONSOLE_PY_H
+#endif  // GUI_PYTHONCONSOLE_PY_H

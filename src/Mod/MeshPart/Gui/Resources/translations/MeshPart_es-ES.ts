@@ -169,7 +169,7 @@
     <message>
       <location filename="../../CrossSections.cpp" line="383"/>
       <source>Failure</source>
-      <translation>Fallo</translation>
+      <translation>Error</translation>
     </message>
   </context>
   <context>

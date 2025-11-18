@@ -32,15 +32,15 @@
 
 
 #if defined(HAVE_PCL_FILTERS)
-#include <pcl/filters/passthrough.h>
-#include <pcl/point_types.h>
+# include <pcl/filters/passthrough.h>
+# include <pcl/point_types.h>
 #endif
 #if defined(HAVE_PCL_SEGMENTATION)
-#include <pcl/features/normal_3d.h>
-#include <pcl/filters/extract_indices.h>
-#include <pcl/search/kdtree.h>
-#include <pcl/search/search.h>
-#include <pcl/segmentation/region_growing.h>
+# include <pcl/features/normal_3d.h>
+# include <pcl/filters/extract_indices.h>
+# include <pcl/search/kdtree.h>
+# include <pcl/search/search.h>
+# include <pcl/segmentation/region_growing.h>
 
 using namespace std;
 using namespace Reen;
@@ -58,8 +58,7 @@ void RegionGrowing::perform(int ksearch)
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
     cloud->reserve(myPoints.size());
     for (Points::PointKernel::const_iterator it = myPoints.begin(); it != myPoints.end(); ++it) {
-        if (!boost::math::isnan(it->x) && !boost::math::isnan(it->y)
-            && !boost::math::isnan(it->z)) {
+        if (!boost::math::isnan(it->x) && !boost::math::isnan(it->y) && !boost::math::isnan(it->z)) {
             cloud->push_back(pcl::PointXYZ(it->x, it->y, it->z));
         }
     }
@@ -95,8 +94,7 @@ void RegionGrowing::perform(int ksearch)
     std::vector<pcl::PointIndices> clusters;
     reg.extract(clusters);
 
-    for (std::vector<pcl::PointIndices>::iterator it = clusters.begin(); it != clusters.end();
-         ++it) {
+    for (std::vector<pcl::PointIndices>::iterator it = clusters.begin(); it != clusters.end(); ++it) {
         myClusters.push_back(std::vector<int>());
         myClusters.back().swap(it->indices);
     }
@@ -149,8 +147,7 @@ void RegionGrowing::perform(const std::vector<Base::Vector3f>& myNormals)
     std::vector<pcl::PointIndices> clusters;
     reg.extract(clusters);
 
-    for (std::vector<pcl::PointIndices>::iterator it = clusters.begin(); it != clusters.end();
-         ++it) {
+    for (std::vector<pcl::PointIndices>::iterator it = clusters.begin(); it != clusters.end(); ++it) {
         myClusters.push_back(std::vector<int>());
         myClusters.back().swap(it->indices);
     }

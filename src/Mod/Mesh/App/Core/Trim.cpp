@@ -35,9 +35,7 @@
 
 using namespace MeshCore;
 
-MeshTrimming::MeshTrimming(MeshKernel& mesh,
-                           const Base::ViewProjMethod* proj,
-                           const Base::Polygon2d& poly)
+MeshTrimming::MeshTrimming(MeshKernel& mesh, const Base::ViewProjMethod* proj, const Base::Polygon2d& poly)
     : myMesh(mesh)
     , myProj(proj)
     , myPoly(poly)
@@ -55,8 +53,7 @@ void MeshTrimming::SetInnerOrOuter(TMode tMode)
     }
 }
 
-void MeshTrimming::CheckFacets(const MeshFacetGrid& rclGrid,
-                               std::vector<FacetIndex>& raulFacets) const
+void MeshTrimming::CheckFacets(const MeshFacetGrid& rclGrid, std::vector<FacetIndex>& raulFacets) const
 {
     std::vector<FacetIndex>::iterator it;
     MeshFacetIterator clIter(myMesh, 0);
@@ -82,8 +79,10 @@ void MeshTrimming::CheckFacets(const MeshFacetGrid& rclGrid,
 
         // remove double elements
         std::sort(aulAllElements.begin(), aulAllElements.end());
-        aulAllElements.erase(std::unique(aulAllElements.begin(), aulAllElements.end()),
-                             aulAllElements.end());
+        aulAllElements.erase(
+            std::unique(aulAllElements.begin(), aulAllElements.end()),
+            aulAllElements.end()
+        );
 
         Base::SequencerLauncher seq("Check facets for intersection...", aulAllElements.size());
 
@@ -177,19 +176,23 @@ bool MeshTrimming::IsPolygonPointInFacet(FacetIndex ulIndex, Base::Vector3f& clP
     A = clFacPoly[0];
     B = clFacPoly[1];
     C = clFacPoly[2];
-    fDetABC =
-        static_cast<float>(A.x * B.y + A.y * C.x + B.x * C.y - (B.y * C.x + A.y * B.x + A.x * C.y));
+    fDetABC = static_cast<float>(
+        A.x * B.y + A.y * C.x + B.x * C.y - (B.y * C.x + A.y * B.x + A.x * C.y)
+    );
 
     for (size_t j = 0; j < myPoly.GetCtVectors(); j++) {
         // facet contains a polygon point -> calculate the corresponding 3d-point
         if (clFacPoly.Contains(myPoly[j])) {
             P = myPoly[j];
-            fDetPAC = static_cast<float>(A.x * P.y + A.y * C.x + P.x * C.y
-                                         - (P.y * C.x + A.y * P.x + A.x * C.y));
-            fDetPBC = static_cast<float>(P.x * B.y + P.y * C.x + B.x * C.y
-                                         - (B.y * C.x + P.y * B.x + P.x * C.y));
-            fDetPAB = static_cast<float>(A.x * B.y + A.y * P.x + B.x * P.y
-                                         - (B.y * P.x + A.y * B.x + A.x * P.y));
+            fDetPAC = static_cast<float>(
+                A.x * P.y + A.y * C.x + P.x * C.y - (P.y * C.x + A.y * P.x + A.x * C.y)
+            );
+            fDetPBC = static_cast<float>(
+                P.x * B.y + P.y * C.x + B.x * C.y - (B.y * C.x + P.y * B.x + P.x * C.y)
+            );
+            fDetPAB = static_cast<float>(
+                A.x * B.y + A.y * P.x + B.x * P.y - (B.y * P.x + A.y * B.x + A.x * P.y)
+            );
             u = fDetPBC / fDetABC;
             v = fDetPAC / fDetABC;
             w = fDetPAB / fDetABC;
@@ -212,7 +215,8 @@ bool MeshTrimming::IsPolygonPointInFacet(FacetIndex ulIndex, Base::Vector3f& clP
 bool MeshTrimming::GetIntersectionPointsOfPolygonAndFacet(
     FacetIndex ulIndex,
     int& iSide,
-    std::vector<Base::Vector3f>& raclPoints) const
+    std::vector<Base::Vector3f>& raclPoints
+) const
 {
     MeshGeomFacet clFac(myMesh.GetFacet(ulIndex));
     Base::Vector2d S;
@@ -267,8 +271,9 @@ bool MeshTrimming::GetIntersectionPointsOfPolygonAndFacet(
 
                 // is intersection point convex combination?
                 if ((std::fabs(l + m - 1.0F) < 0.001F) && (std::fabs(r + s - 1.0F) < 0.001F)) {
-                    Base::Vector3f clIntersection(m * clFac._aclPoints[j]
-                                                  + l * clFac._aclPoints[(j + 1) % 3]);
+                    Base::Vector3f clIntersection(
+                        m * clFac._aclPoints[j] + l * clFac._aclPoints[(j + 1) % 3]
+                    );
 
                     iIntersections++;
 
@@ -370,10 +375,12 @@ void MeshTrimming::AdjustFacet(MeshFacet& facet, int iInd)
     }
 }
 
-bool MeshTrimming::CreateFacets(FacetIndex ulFacetPos,
-                                int iSide,
-                                const std::vector<Base::Vector3f>& raclPoints,
-                                std::vector<MeshGeomFacet>& aclNewFacets)
+bool MeshTrimming::CreateFacets(
+    FacetIndex ulFacetPos,
+    int iSide,
+    const std::vector<Base::Vector3f>& raclPoints,
+    std::vector<MeshGeomFacet>& aclNewFacets
+)
 {
     MeshGeomFacet clFac;
 
@@ -651,11 +658,13 @@ bool MeshTrimming::CreateFacets(FacetIndex ulFacetPos,
     return true;
 }
 
-bool MeshTrimming::CreateFacets(FacetIndex ulFacetPos,
-                                int iSide,
-                                const std::vector<Base::Vector3f>& raclPoints,
-                                Base::Vector3f& clP3,
-                                std::vector<MeshGeomFacet>& aclNewFacets)
+bool MeshTrimming::CreateFacets(
+    FacetIndex ulFacetPos,
+    int iSide,
+    const std::vector<Base::Vector3f>& raclPoints,
+    Base::Vector3f& clP3,
+    std::vector<MeshGeomFacet>& aclNewFacets
+)
 {
     // no valid triangulation possible
     if (iSide == -1 || raclPoints.size() < 2) {
@@ -670,11 +679,15 @@ bool MeshTrimming::CreateFacets(FacetIndex ulFacetPos,
 
     MeshGeomFacet clFac;
 
-    float fDistEdgeP1 = clP1.DistanceToLineSegment(myMesh._aclPointArray[facet._aulPoints[1]],
-                                                   myMesh._aclPointArray[facet._aulPoints[2]])
+    float fDistEdgeP1 = clP1.DistanceToLineSegment(
+                                myMesh._aclPointArray[facet._aulPoints[1]],
+                                myMesh._aclPointArray[facet._aulPoints[2]]
+    )
                             .Length();
-    float fDistEdgeP2 = clP2.DistanceToLineSegment(myMesh._aclPointArray[facet._aulPoints[1]],
-                                                   myMesh._aclPointArray[facet._aulPoints[2]])
+    float fDistEdgeP2 = clP2.DistanceToLineSegment(
+                                myMesh._aclPointArray[facet._aulPoints[1]],
+                                myMesh._aclPointArray[facet._aulPoints[2]]
+    )
                             .Length();
 
     // swap P1 and P2
@@ -769,8 +782,10 @@ bool MeshTrimming::CreateFacets(FacetIndex ulFacetPos,
     return true;
 }
 
-void MeshTrimming::TrimFacets(const std::vector<FacetIndex>& raulFacets,
-                              std::vector<MeshGeomFacet>& aclNewFacets)
+void MeshTrimming::TrimFacets(
+    const std::vector<FacetIndex>& raulFacets,
+    std::vector<MeshGeomFacet>& aclNewFacets
+)
 {
     Base::Vector3f clP;
     std::vector<Base::Vector3f> clIntsct;

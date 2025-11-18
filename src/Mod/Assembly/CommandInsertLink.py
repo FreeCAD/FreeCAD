@@ -128,6 +128,7 @@ class TaskAssemblyInsertLink(QtCore.QObject):
         self.groundedObj = None
 
         self.insertionStack = []  # used to handle cancellation of insertions.
+        self.doc_item_map = {}
 
         self.buildPartList()
 
@@ -194,8 +195,16 @@ class TaskAssemblyInsertLink(QtCore.QObject):
         for doc in docList:
             # Create a new tree item for the document
             docItem = QtGui.QTreeWidgetItem()
-            docItem.setText(0, doc.Label + ".FCStd")
-            docItem.setIcon(0, QIcon.fromTheme("add", QIcon(":/icons/Document.svg")))
+            itemName = doc.Label
+            icon = QIcon.fromTheme("add", QIcon(":/icons/Document.svg"))
+            if doc.Partial:
+                itemName = (
+                    itemName + " (" + QT_TRANSLATE_NOOP("Assembly_Insert", "Partially loaded") + ")"
+                )
+                icon = self.createDisabledIcon(icon)
+            docItem.setText(0, itemName)
+            docItem.setIcon(0, icon)
+            self.doc_item_map[docItem] = doc
 
             if not any(
                 (child.isDerivedFrom("Part::Feature") or child.isDerivedFrom("App::Part"))
@@ -537,6 +546,18 @@ class TaskAssemblyInsertLink(QtCore.QObject):
             item = watched.itemAt(event.pos())
 
             if item:
+                if item.parent() is None:
+                    doc = self.doc_item_map.get(item)
+                    if doc and doc.Partial:
+                        menu = QtWidgets.QMenu()
+                        load_action_text = QT_TRANSLATE_NOOP(
+                            "Assembly_Insert", "Fully load document"
+                        )
+                        load_action = menu.addAction(load_action_text)
+                        load_action.triggered.connect(lambda: self.fullyLoadDocument(doc))
+                        menu.exec_(event.globalPos())
+                        return True  # Event was handled
+
                 # Iterate through the insertionStack in reverse
                 for i in reversed(range(len(self.insertionStack))):
                     stack_item = self.insertionStack[i]
@@ -569,6 +590,40 @@ class TaskAssemblyInsertLink(QtCore.QObject):
                 return True
 
         return super().eventFilter(watched, event)
+
+    def fullyLoadDocument(self, doc_to_load):
+        """Closes and re-opens a document to load it fully."""
+        if not doc_to_load.FileName:
+            return
+
+        # Save UI state
+        scrollbar = self.form.partList.verticalScrollBar()
+        scroll_position = scrollbar.value()
+
+        # Perform the reload
+        App.open(doc_to_load.FileName)
+        App.setActiveDocument(self.doc.Name)
+
+        # Refresh the UI
+        self.buildPartList()
+
+        # Restore UI state
+        scrollbar.setValue(scroll_position)
+
+    def createDisabledIcon(self, icon):
+        if icon.isNull():
+            return QIcon()
+
+        # Get a pixmap from the icon at a standard size
+        pixmap = icon.pixmap(icon.actualSize(QtCore.QSize(16, 16)))
+
+        # Ask the application's style to generate a disabled version of the pixmap
+        style = QtWidgets.QApplication.style()
+        disabled_pixmap = style.generatedIconPixmap(
+            QtGui.QIcon.Disabled, pixmap, QtWidgets.QStyleOption()
+        )
+
+        return QIcon(disabled_pixmap)
 
     def toggleShowHidden(self, checked):
         self.showHidden = checked

@@ -722,8 +722,8 @@
   <context>
     <name>Dialog</name>
     <message>
-      <location filename="../../TaskPanelInitialTemperature.ui" line="14"/>
       <location filename="../../TaskPanelConstraintTemperature.ui" line="14"/>
+      <location filename="../../TaskPanelInitialTemperature.ui" line="14"/>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="14"/>
       <source>Dialog</source>
       <translation>Dialog</translation>
@@ -764,14 +764,14 @@
       <translation>Välj hörnpunkter, linjer och ytor</translation>
     </message>
     <message>
-      <location filename="../../TaskPanelInitialTemperature.ui" line="42"/>
       <location filename="../../TaskPanelConstraintTemperature.ui" line="39"/>
+      <location filename="../../TaskPanelInitialTemperature.ui" line="42"/>
       <source>Temperature</source>
       <translation>Temperatur</translation>
     </message>
     <message>
-      <location filename="../../TaskPanelInitialTemperature.ui" line="71"/>
       <location filename="../../TaskPanelConstraintTemperature.ui" line="68"/>
+      <location filename="../../TaskPanelInitialTemperature.ui" line="71"/>
       <source>ºC</source>
       <translation>ºC</translation>
     </message>
@@ -1087,7 +1087,7 @@ Gäller endast om "Endast pipeline" är aktiverat</translation>
     <name>FemGui::DlgSettingsFemElmerImp</name>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="14"/>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="90"/>
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="92"/>
       <source>Elmer</source>
       <translation>Elmer</translation>
     </message>
@@ -1108,8 +1108,8 @@ Gäller endast om "Endast pipeline" är aktiverat</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="149"/>
-      <source>Number of processes</source>
-      <translation>Antal processer</translation>
+      <source>Number of tasks</source>
+      <translation>Antal uppgifter</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="159"/>
@@ -1117,27 +1117,37 @@ Gäller endast om "Endast pipeline" är aktiverat</translation>
       <translation>Antal parallella uppgifter. Ställ in på `1` om Elmer inte använder MPI.&lt;br&gt;Det rekommenderas att använda ett jämnt antal kärnor för att dra nytta av meshsymmetrier&lt;br&gt;(att använda 8 kärnor kan vara snabbare än 9 kärnor).&lt;br&gt;I extrema fall kan ElmerSolver eventuellt inte konvergera om antalet kärnor är för högt.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="180"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="175"/>
+      <source>Threads per task</source>
+      <translation>Trådar per uppgift</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemElmer.ui" line="185"/>
+      <source>Number of threads per task. Take effect if Elmer uses OpenMP.</source>
+      <translation>Antal trådar per uppgift. Tar effekt om Elmer använder OpenMP.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemElmer.ui" line="206"/>
       <source>Results</source>
       <translation>Resultat</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="186"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="212"/>
       <source>Save result in binary format</source>
       <translation>Spara resultatet i binärt format</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="189"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="215"/>
       <source>Use binary format</source>
       <translation>Använd binärt format</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="205"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="231"/>
       <source>Save the index of geometric entities</source>
       <translation>Spara index för geometriska enheter</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="208"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="234"/>
       <source>Save geometry IDs</source>
       <translation>Spara geometri-ID:n</translation>
     </message>
@@ -1157,7 +1167,7 @@ Gäller endast om "Endast pipeline" är aktiverat</translation>
       <translation>Alternativ</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="90"/>
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="92"/>
       <source>Executable '%1' not found</source>
       <translation>Körbara filen '%1' hittades inte</translation>
     </message>
@@ -2811,9 +2821,9 @@ att "MAXKOI" behöver ökas.</translation>
       <translation>Inloppstryck</translation>
     </message>
     <message>
-      <location filename="../ui/InitialPressure.ui" line="20"/>
       <location filename="../ui/ElementFluid1D.ui" line="235"/>
       <location filename="../ui/ElementFluid1D.ui" line="308"/>
+      <location filename="../ui/InitialPressure.ui" line="20"/>
       <source>Pressure</source>
       <translation>Tryck</translation>
     </message>
@@ -2943,12 +2953,12 @@ att "MAXKOI" behöver ökas.</translation>
       <translation>Varvtal per sekund</translation>
     </message>
     <message>
-      <location filename="../ui/MeshRegion.ui" line="26"/>
       <location filename="../ui/ConstraintCentrif.ui" line="26"/>
-      <location filename="../ui/ElementGeometry2D.ui" line="26"/>
-      <location filename="../ui/ConstraintSectionPrint.ui" line="26"/>
       <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
       <location filename="../ui/ConstraintTie.ui" line="26"/>
+      <location filename="../ui/ConstraintSectionPrint.ui" line="26"/>
+      <location filename="../ui/MeshRegion.ui" line="26"/>
+      <location filename="../ui/ElementGeometry2D.ui" line="26"/>
       <source>Parameter</source>
       <translation>Parameter</translation>
     </message>
@@ -3112,18 +3122,18 @@ Obs: har ingen effekt om en solid har valts</translation>
       <translation>För att definiera skalärpotential och magnetisk vektorpotential</translation>
     </message>
     <message>
-      <location filename="../ui/Magnetization.ui" line="39"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="113"/>
       <location filename="../ui/CurrentDensity.ui" line="61"/>
       <location filename="../ui/CurrentDensity.ui" line="246"/>
+      <location filename="../ui/Magnetization.ui" line="39"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="113"/>
       <source>Real</source>
       <translation>Verklig</translation>
     </message>
     <message>
-      <location filename="../ui/Magnetization.ui" line="49"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="123"/>
       <location filename="../ui/CurrentDensity.ui" line="71"/>
       <location filename="../ui/CurrentDensity.ui" line="256"/>
+      <location filename="../ui/Magnetization.ui" line="49"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="123"/>
       <source>Imaginary</source>
       <translation>Imaginär</translation>
     </message>
@@ -3215,6 +3225,7 @@ Obs: har ingen effekt om en solid har valts</translation>
       <translation>Bredd</translation>
     </message>
     <message>
+      <location filename="../ui/MeshBoundaryLayer.ui" line="58"/>
       <location filename="../ui/MeshRegion.ui" line="44"/>
       <location filename="../ui/ElementGeometry2D.ui" line="44"/>
       <location filename="../ui/ElementGeometry1D.ui" line="48"/>
@@ -3222,7 +3233,6 @@ Obs: har ingen effekt om en solid har valts</translation>
       <location filename="../ui/ElementGeometry1D.ui" line="111"/>
       <location filename="../ui/ElementGeometry1D.ui" line="148"/>
       <location filename="../ui/ElementGeometry1D.ui" line="174"/>
-      <location filename="../ui/MeshBoundaryLayer.ui" line="58"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
@@ -3279,40 +3289,40 @@ Obs: har ingen effekt om en solid har valts</translation>
       <translation>T4-tjocklek</translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="25"/>
-      <location filename="../ui/FlowVelocity.ui" line="73"/>
-      <location filename="../ui/FlowVelocity.ui" line="131"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="25"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="73"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="131"/>
+      <location filename="../ui/FlowVelocity.ui" line="25"/>
+      <location filename="../ui/FlowVelocity.ui" line="73"/>
+      <location filename="../ui/FlowVelocity.ui" line="131"/>
       <source>Formula</source>
       <translation>Formel</translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="32"/>
-      <location filename="../ui/FlowVelocity.ui" line="87"/>
-      <location filename="../ui/FlowVelocity.ui" line="118"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="32"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="87"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="118"/>
+      <location filename="../ui/FlowVelocity.ui" line="32"/>
+      <location filename="../ui/FlowVelocity.ui" line="87"/>
+      <location filename="../ui/FlowVelocity.ui" line="118"/>
       <source>Unspecified</source>
       <translation>Ospecificerad</translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="42"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="42"/>
+      <location filename="../ui/FlowVelocity.ui" line="42"/>
       <source>Velocity X</source>
       <translation>Hastighet X</translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="80"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="80"/>
+      <location filename="../ui/FlowVelocity.ui" line="80"/>
       <source>Velocity Y</source>
       <translation>Hastighet Y</translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="138"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="138"/>
+      <location filename="../ui/FlowVelocity.ui" line="138"/>
       <source>Velocity Z</source>
       <translation>Hastighet Z</translation>
     </message>
@@ -3322,14 +3332,14 @@ Obs: har ingen effekt om en solid har valts</translation>
       <translation>Normal till gräns</translation>
     </message>
     <message>
-      <location filename="../ui/Magnetization.ui" line="14"/>
-      <location filename="../ui/ElectrostaticPotential.ui" line="14"/>
       <location filename="../ui/CurrentDensity.ui" line="14"/>
-      <location filename="../ui/ElectricChargeDensity.ui" line="14"/>
-      <location filename="../ui/FlowVelocity.ui" line="14"/>
-      <location filename="../ui/BodyHeatSource.ui" line="14"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
+      <location filename="../ui/Magnetization.ui" line="14"/>
       <location filename="../ui/InitialPressure.ui" line="14"/>
+      <location filename="../ui/ElectricChargeDensity.ui" line="14"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
+      <location filename="../ui/FlowVelocity.ui" line="14"/>
+      <location filename="../ui/ElectrostaticPotential.ui" line="14"/>
+      <location filename="../ui/BodyHeatSource.ui" line="14"/>
       <source>Analysis Feature Properties</source>
       <translation>Egenskaper för analysfunktion</translation>
     </message>
@@ -3356,8 +3366,8 @@ Obs: har ingen effekt om en solid har valts</translation>
       <translation>Förlusthastighet</translation>
     </message>
     <message>
-      <location filename="../ui/Magnetization.ui" line="26"/>
       <location filename="../ui/CurrentDensity.ui" line="48"/>
+      <location filename="../ui/Magnetization.ui" line="26"/>
       <source>Imaginary part is only used for equations
 with harmonic/oscillating driving current</source>
       <translation>Imaginärdelen används endast för ekvationer
@@ -3425,9 +3435,9 @@ med harmonisk/oscillerande drivström</translation>
       <translation>Välj anpassat läge för att aktivera vektorströmdensitet</translation>
     </message>
     <message>
+      <location filename="../ui/CurrentDensity.ui" line="78"/>
       <location filename="../ui/Magnetization.ui" line="56"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="194"/>
-      <location filename="../ui/CurrentDensity.ui" line="78"/>
       <source>X</source>
       <translation>X</translation>
     </message>
@@ -3442,9 +3452,9 @@ med harmonisk/oscillerande drivström</translation>
       <translation>Imaginär del av strömtäthetens x-komponent</translation>
     </message>
     <message>
+      <location filename="../ui/CurrentDensity.ui" line="129"/>
       <location filename="../ui/Magnetization.ui" line="107"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="257"/>
-      <location filename="../ui/CurrentDensity.ui" line="129"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
@@ -3459,9 +3469,9 @@ med harmonisk/oscillerande drivström</translation>
       <translation>Imaginär del av strömtäthetens y-komponent</translation>
     </message>
     <message>
+      <location filename="../ui/CurrentDensity.ui" line="180"/>
       <location filename="../ui/Magnetization.ui" line="158"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="320"/>
-      <location filename="../ui/CurrentDensity.ui" line="180"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
@@ -3501,16 +3511,16 @@ med harmonisk/oscillerande drivström</translation>
       <translation>Maximal elementstorlek</translation>
     </message>
     <message>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="14"/>
-      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="14"/>
       <location filename="../ui/PostLineplotIndexAppEdit.ui" line="14"/>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="14"/>
       <location filename="../ui/PostHistogramFieldAppEdit.ui" line="14"/>
+      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="14"/>
       <source>Form</source>
       <translation>Formulär</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="34"/>
       <location filename="../ui/PostHistogramFieldAppEdit.ui" line="34"/>
+      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="34"/>
       <source>Field</source>
       <translation>Fält</translation>
     </message>
@@ -3526,8 +3536,8 @@ med harmonisk/oscillerande drivström</translation>
       <translation>Ett fält för varje ram</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="61"/>
       <location filename="../ui/PostLineplotIndexAppEdit.ui" line="59"/>
+      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="61"/>
       <source>Index</source>
       <translation>Index</translation>
     </message>
@@ -3537,8 +3547,8 @@ med harmonisk/oscillerande drivström</translation>
       <translation>X fält</translation>
     </message>
     <message>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="59"/>
       <location filename="../ui/PostLineplotIndexAppEdit.ui" line="32"/>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="59"/>
       <source>Y field</source>
       <translation>Y fält</translation>
     </message>
@@ -5581,12 +5591,12 @@ normalvektorn för ytan används som riktning</translation>
   <context>
     <name>FEM_SolverZ88</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1220"/>
+      <location filename="../../../femcommands/commands.py" line="1230"/>
       <source>Solver Z88</source>
       <translation>Lösare Z88</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1222"/>
+      <location filename="../../../femcommands/commands.py" line="1232"/>
       <source>Creates a FEM solver Z88</source>
       <translation>Skapar en FEM-solver Z88</translation>
     </message>
@@ -5977,8 +5987,8 @@ Ingen matchande modul hittades i den aktuella Python-sökvägen.</translation>
       <translation>Vilken del av Y-fältvektorn som ska användas för Y-axeln</translation>
     </message>
     <message>
-      <location filename="../../../femobjects/post_extract2D.py" line="64"/>
       <location filename="../../../femobjects/post_extract1D.py" line="64"/>
+      <location filename="../../../femobjects/post_extract2D.py" line="64"/>
       <source>Specify if the field shall be extracted for every available frame</source>
       <translation>Ange om fältet ska extraheras för varje tillgänglig bildruta</translation>
     </message>
@@ -5998,14 +6008,14 @@ Ingen matchande modul hittades i den aktuella Python-sökvägen.</translation>
       <translation>Redigera {}</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_post_lineplot.py" line="56"/>
       <location filename="../../../femtaskpanels/task_post_histogram.py" line="56"/>
+      <location filename="../../../femtaskpanels/task_post_lineplot.py" line="56"/>
       <source>Show Plot</source>
       <translation>Visa tomt</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_post_lineplot.py" line="59"/>
       <location filename="../../../femtaskpanels/task_post_histogram.py" line="59"/>
+      <location filename="../../../femtaskpanels/task_post_lineplot.py" line="59"/>
       <source>Show Data</source>
       <translation>Visa data</translation>
     </message>
@@ -6700,11 +6710,11 @@ Ingen matchande modul hittades i den aktuella Python-sökvägen.</translation>
       <translation>Radera element</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1374"/>
       <location filename="../../TaskCreateElementSet.cpp" line="228"/>
       <location filename="../../TaskCreateElementSet.cpp" line="238"/>
       <location filename="../../TaskCreateElementSet.cpp" line="469"/>
       <location filename="../../TaskCreateElementSet.cpp" line="560"/>
+      <location filename="../../Command.cpp" line="1374"/>
       <source>Wrong selection</source>
       <translation>Felaktigt val</translation>
     </message>
@@ -7052,27 +7062,22 @@ Lämna tomt för att använda standard Python-körbar fil</translation>
       <translation>Sökväg till arbetskatalog</translation>
     </message>
     <message>
-      <location filename="../ui/SolverCalculiX.ui" line="66"/>
-      <source>…</source>
-      <translation>…</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverCalculiX.ui" line="86"/>
+      <location filename="../ui/SolverCalculiX.ui" line="82"/>
       <source>Analysis type</source>
       <translation>Analystyp</translation>
     </message>
     <message>
-      <location filename="../ui/SolverCalculiX.ui" line="126"/>
+      <location filename="../ui/SolverCalculiX.ui" line="122"/>
       <source>Time</source>
       <translation>Tid</translation>
     </message>
     <message>
-      <location filename="../ui/SolverCalculiX.ui" line="78"/>
+      <location filename="../ui/SolverCalculiX.ui" line="74"/>
       <source>Solver Parameters</source>
       <translation>Parametrar för lösare</translation>
     </message>
     <message>
-      <location filename="../ui/SolverCalculiX.ui" line="133"/>
+      <location filename="../ui/SolverCalculiX.ui" line="129"/>
       <source>Solver Version</source>
       <translation>Version av lösare</translation>
     </message>
@@ -7100,8 +7105,8 @@ Lämna tomt för att använda standard Python-körbar fil</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="22"/>
       <location filename="../ui/TaskPostGlyph.ui" line="38"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="37"/>
       <location filename="../ui/TaskPostHistogram.ui" line="37"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="37"/>
       <source>The form of the glyph</source>
       <translation>Glyfens form</translation>
     </message>
@@ -7143,10 +7148,10 @@ Lämna tomt för att använda standard Python-körbar fil</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="75"/>
       <location filename="../ui/TaskPostGlyph.ui" line="91"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="81"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="97"/>
       <location filename="../ui/TaskPostHistogram.ui" line="66"/>
       <location filename="../ui/TaskPostHistogram.ui" line="82"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="81"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="97"/>
       <source>Which vector field is used to orient the glyphs</source>
       <translation>Vilket vektorfält används för att orientera glyferna</translation>
     </message>
@@ -7158,8 +7163,8 @@ Lämna tomt för att använda standard Python-körbar fil</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="95"/>
       <location filename="../ui/TaskPostGlyph.ui" line="148"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="101"/>
       <location filename="../ui/TaskPostHistogram.ui" line="86"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="101"/>
       <source>None</source>
       <translation>Ingen</translation>
     </message>
@@ -7182,8 +7187,8 @@ Lämna tomt för att använda standard Python-körbar fil</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="158"/>
       <location filename="../ui/TaskPostGlyph.ui" line="176"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="155"/>
       <location filename="../ui/TaskPostHistogram.ui" line="176"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="155"/>
       <source>A constant multiplier the glyphs are scaled with</source>
       <translation>En konstant multiplikator som glyferna skalas med</translation>
     </message>
@@ -7199,8 +7204,8 @@ Lämna tomt för att använda standard Python-körbar fil</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="226"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="145"/>
       <location filename="../ui/TaskPostHistogram.ui" line="166"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="145"/>
       <source>If the scale data is a vector this property decides if the glyph is scaled by vector magnitude or by the individual components</source>
       <translation>Om skalningsdata är en vektor avgör denna egenskap om glyfen skalas med vektorstorleken eller med de enskilda komponenterna</translation>
     </message>
@@ -7292,27 +7297,27 @@ Lämna tomt för att använda standard Python-körbar fil</translation>
       <translation>Kumulativ</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostLineplot.ui" line="64"/>
       <location filename="../ui/TaskPostHistogram.ui" line="103"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="64"/>
       <source>Legend</source>
       <translation>Historia</translation>
     </message>
     <message>
+      <location filename="../ui/TaskPostHistogram.ui" line="112"/>
       <location filename="../ui/TaskPostLineplot.ui" line="47"/>
       <location filename="../ui/TaskPostLineplot.ui" line="57"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="112"/>
       <source>Show</source>
       <translation>Visa</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostLineplot.ui" line="117"/>
       <location filename="../ui/TaskPostHistogram.ui" line="138"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="117"/>
       <source>Labels</source>
       <translation>Etiketter</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostLineplot.ui" line="135"/>
       <location filename="../ui/TaskPostHistogram.ui" line="156"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="135"/>
       <source>Y-axis</source>
       <translation>Y-axel</translation>
     </message>
@@ -7322,8 +7327,8 @@ Lämna tomt för att använda standard Python-körbar fil</translation>
       <translation>X-axel</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostLineplot.ui" line="158"/>
       <location filename="../ui/TaskPostHistogram.ui" line="179"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="158"/>
       <source>Title</source>
       <translation>Titel</translation>
     </message>
@@ -7751,12 +7756,12 @@ Lämna tomt för att använda standard Python-körbar fil</translation>
   <context>
     <name>FEM_PostFilterGlyph</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1232"/>
+      <location filename="../../../femcommands/commands.py" line="1242"/>
       <source>Glyph Filter</source>
       <translation>Glyph-filter</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1237"/>
+      <location filename="../../../femcommands/commands.py" line="1247"/>
       <source>Adds a post-processing filter that adds glyphs to the mesh vertices for vertex data visualization</source>
       <translation>Lägger till ett efterbehandlingsfilter som lägger till glyfer i mesh-vertikalerna för visualisering av vertexdata</translation>
     </message>
@@ -7800,35 +7805,35 @@ Lämna tomt för att använda standard Python-körbar fil</translation>
   <context>
     <name>PostHistogramEdit</name>
     <message>
-      <location filename="../ui/PostTableFieldViewEdit.ui" line="14"/>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="14"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="14"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="14"/>
+      <location filename="../ui/PostTableFieldViewEdit.ui" line="14"/>
       <source>Form</source>
       <translation>Formulär</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="40"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="75"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="40"/>
       <source>Outline draw style (None does not draw outlines)</source>
       <translation>Stil för konturritning (None ritar inte konturer)</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="44"/>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="81"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="51"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="79"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="44"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="81"/>
       <source>None</source>
       <translation>Ingen</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="58"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="129"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="58"/>
       <source>Width of all lines (outline and hatch)</source>
       <translation>Bredd på alla linjer (kontur och skraffering)</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="77"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="47"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="77"/>
       <source>Hatch pattern</source>
       <translation>Skrafferingsmönster</translation>
     </message>
@@ -7848,8 +7853,8 @@ Lämna tomt för att använda standard Python-körbar fil</translation>
       <translation>Staplar</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="122"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="62"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="122"/>
       <source>Legend</source>
       <translation>Historia</translation>
     </message>
@@ -7859,8 +7864,8 @@ Lämna tomt för att använda standard Python-körbar fil</translation>
       <translation>Färg på alla linjer (balkkontur och skraffering)</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="148"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="100"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="148"/>
       <source>Color of the bars in histogram</source>
       <translation>Färg på staplarna i histogrammet</translation>
     </message>
@@ -7974,6 +7979,54 @@ Lämna tomt för att använda standard Python-körbar fil</translation>
       <location filename="../../../femtaskpanels/task_constraint_centrif.py" line="67"/>
       <source>Axis Reference Selector</source>
       <translation>Väljare för axelreferens</translation>
+    </message>
+  </context>
+  <context>
+    <name>SolverElmer</name>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="14"/>
+      <source>Solver Elmer Control</source>
+      <translation type="unfinished">Solver Elmer Control</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="20"/>
+      <source>Working directory</source>
+      <translation>Arbetskatalog</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="35"/>
+      <source>Write</source>
+      <translation>Skriv</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="45"/>
+      <source>Edit</source>
+      <translation>Redigera</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="56"/>
+      <source>Path to working directory</source>
+      <translation>Sökväg till arbetskatalog</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="74"/>
+      <source>Solver Parameters</source>
+      <translation>Parametrar för lösare</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="82"/>
+      <source>Simulation type</source>
+      <translation>Simulationstyp</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="122"/>
+      <source>Time</source>
+      <translation>Tid</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="129"/>
+      <source>Solver Version</source>
+      <translation>Version av lösare</translation>
     </message>
   </context>
 </TS>

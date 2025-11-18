@@ -23,9 +23,9 @@
  ***************************************************************************/
 
 #ifdef _MSC_VER
-#ifndef _CRT_SECURE_NO_WARNINGS
-#define _CRT_SECURE_NO_WARNINGS
-#endif
+# ifndef _CRT_SECURE_NO_WARNINGS
+#  define _CRT_SECURE_NO_WARNINGS
+# endif
 #endif
 
 #include "GCodeParser.h"
@@ -140,6 +140,14 @@ const char* GCodeParser::ParseFloat(const char* ptr, float* retFloat)
 
 bool GCodeParser::ParseLine(const char* ptr)
 {
+    // Truncate at first semicolon (annotations / comment)
+    const char* comment = strchr(ptr, ';');
+    std::string line;
+    if (comment) {
+        line = std::string(ptr, comment - ptr);
+        ptr = line.c_str();
+    }
+
     GCToken token;
     bool validMotion = false;
     bool exitLoop = false;

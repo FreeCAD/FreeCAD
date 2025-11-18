@@ -37,8 +37,10 @@ DlgSettingsImportExport::DlgSettingsImportExport(QWidget* parent)
     , ui(new Ui_DlgSettingsImportExport)
 {
     ui->setupUi(this);
-    ui->exportAmfCompressed->setToolTip(tr("This parameter indicates whether ZIP compression\n"
-                                           "is used when writing a file in AMF format"));
+    ui->exportAmfCompressed->setToolTip(
+        tr("This parameter indicates whether ZIP compression\n"
+           "is used when writing a file in AMF format")
+    );
 }
 
 DlgSettingsImportExport::~DlgSettingsImportExport()
@@ -50,7 +52,8 @@ DlgSettingsImportExport::~DlgSettingsImportExport()
 void DlgSettingsImportExport::saveSettings()
 {
     ParameterGrp::handle handle = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Mesh");
+        "User parameter:BaseApp/Preferences/Mod/Mesh"
+    );
     double value = ui->maxDeviationExport->value().getValue();
     handle->SetFloat("MaxDeviationExport", value);
 
@@ -61,14 +64,17 @@ void DlgSettingsImportExport::saveSettings()
     asy->SetASCII("Width", ui->asymptoteWidth->text().toLatin1());
     asy->SetASCII("Height", ui->asymptoteHeight->text().toLatin1());
 
-    MeshCore::MeshOutput::SetAsymptoteSize(ui->asymptoteWidth->text().toStdString(),
-                                           ui->asymptoteHeight->text().toStdString());
+    MeshCore::MeshOutput::SetAsymptoteSize(
+        ui->asymptoteWidth->text().toStdString(),
+        ui->asymptoteHeight->text().toStdString()
+    );
 }
 
 void DlgSettingsImportExport::loadSettings()
 {
     ParameterGrp::handle handle = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Mesh");
+        "User parameter:BaseApp/Preferences/Mod/Mesh"
+    );
     double value = ui->maxDeviationExport->value().getValue();
     value = handle->GetFloat("MaxDeviationExport", value);
     ui->maxDeviationExport->setValue(value);

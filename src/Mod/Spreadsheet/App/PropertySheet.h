@@ -26,9 +26,9 @@
 #define PROPERTYSHEET_H
 
 #ifdef _MSC_VER
-#ifdef PropertySheet
-#undef PropertySheet  // Microsoft's #define conflicts with the use below
-#endif
+# ifdef PropertySheet
+#  undef PropertySheet  // Microsoft's #define conflicts with the use below
+# endif
 #endif
 
 #include <map>
@@ -63,19 +63,24 @@ public:
     void onRelabeledDocument(const App::Document& doc) override;
     void onRenameDynamicProperty(const App::Property& prop, const char* oldName) override;
 
-    void updateElementReference(App::DocumentObject* feature,
-                                bool reverse = false,
-                                bool notify = false) override;
+    void updateElementReference(
+        App::DocumentObject* feature,
+        bool reverse = false,
+        bool notify = false
+    ) override;
     bool referenceChanged() const override;
     bool adjustLink(const std::set<App::DocumentObject*>& inList) override;
-    Property*
-    CopyOnImportExternal(const std::map<std::string, std::string>& nameMap) const override;
-    Property* CopyOnLabelChange(App::DocumentObject* obj,
-                                const std::string& ref,
-                                const char* newLabel) const override;
-    Property* CopyOnLinkReplace(const App::DocumentObject* parent,
-                                App::DocumentObject* oldObj,
-                                App::DocumentObject* newObj) const override;
+    Property* CopyOnImportExternal(const std::map<std::string, std::string>& nameMap) const override;
+    Property* CopyOnLabelChange(
+        App::DocumentObject* obj,
+        const std::string& ref,
+        const char* newLabel
+    ) const override;
+    Property* CopyOnLinkReplace(
+        const App::DocumentObject* parent,
+        App::DocumentObject* oldObj,
+        App::DocumentObject* newObj
+    ) const override;
     void breakLink(App::DocumentObject* obj, bool clear) override;
 
     void afterRestore() override;
@@ -89,10 +94,12 @@ public:
 
     void Restore(Base::XMLReader& reader) override;
 
-    void getLinksTo(std::vector<App::ObjectIdentifier>& identifiers,
-                    App::DocumentObject* obj,
-                    const char* subname = nullptr,
-                    bool all = false) const override;
+    void getLinksTo(
+        std::vector<App::ObjectIdentifier>& identifiers,
+        App::DocumentObject* obj,
+        const char* subname = nullptr,
+        bool all = false
+    ) const override;
 
     void copyCells(Base::Writer& writer, const std::vector<App::Range>& ranges) const;
 
@@ -176,8 +183,7 @@ public:
         return dirty.size() > 0;
     }
 
-    void
-    pasteCells(const std::map<App::CellAddress, std::string>& cells, int rowOffset, int colOffset);
+    void pasteCells(const std::map<App::CellAddress, std::string>& cells, int rowOffset, int colOffset);
 
     void insertRows(int row, int count);
 
@@ -220,8 +226,7 @@ public:
 
     void invalidateDependants(const App::DocumentObject* docObj);
 
-    void
-    renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier>& paths);
+    void renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier>& paths);
 
     void deletedDocumentObject(const App::DocumentObject* docObj);
 
@@ -239,10 +244,12 @@ public:
 
     unsigned getBindingBorder(App::CellAddress address) const;
 
-    bool isBindingPath(const App::ObjectIdentifier& path,
-                       App::CellAddress* from = nullptr,
-                       App::CellAddress* to = nullptr,
-                       bool* href = nullptr) const;
+    bool isBindingPath(
+        const App::ObjectIdentifier& path,
+        App::CellAddress* from = nullptr,
+        App::CellAddress* to = nullptr,
+        bool* href = nullptr
+    ) const;
 
     enum BindingType
     {
@@ -250,10 +257,12 @@ public:
         BindingNormal,
         BindingHiddenRef,
     };
-    BindingType getBinding(const App::Range& range,
-                           App::ExpressionPtr* pStart = nullptr,
-                           App::ExpressionPtr* pEnd = nullptr,
-                           App::ObjectIdentifier* pTarget = nullptr) const;
+    BindingType getBinding(
+        const App::Range& range,
+        App::ExpressionPtr* pStart = nullptr,
+        App::ExpressionPtr* pEnd = nullptr,
+        App::ObjectIdentifier* pTarget = nullptr
+    ) const;
 
 protected:
     void hasSetValue() override;
@@ -302,9 +311,11 @@ private:
 
     void moveAlias(App::CellAddress currPos, App::CellAddress newPos);
 
-    void moveCell(App::CellAddress currPos,
-                  App::CellAddress newPos,
-                  std::map<App::ObjectIdentifier, App::ObjectIdentifier>& renames);
+    void moveCell(
+        App::CellAddress currPos,
+        App::CellAddress newPos,
+        std::map<App::ObjectIdentifier, App::ObjectIdentifier>& renames
+    );
 
     /*
      * Cell dependency tracking

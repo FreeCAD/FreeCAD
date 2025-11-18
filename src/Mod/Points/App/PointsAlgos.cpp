@@ -25,7 +25,7 @@
 #include <FCConfig.h>
 
 #ifdef FC_OS_LINUX
-#include <unistd.h>
+# include <unistd.h>
 #endif
 #include <memory>
 #include <sstream>
@@ -67,9 +67,11 @@ void PointsAlgos::Load(PointKernel& points, const char* FileName)
 
 void PointsAlgos::LoadAscii(PointKernel& points, const char* FileName)
 {
-    boost::regex rx("^\\s*([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
-                    "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
-                    "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)\\s*$");
+    boost::regex rx(
+        "^\\s*([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+        "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+        "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)\\s*$"
+    );
     // boost::regex rx("(\\b[0-9]+\\.([0-9]+\\b)?|\\.[0-9]+\\b)");
     // boost::regex
     // rx("^\\s*(-?[0-9]*)\\.([0-9]+)\\s+(-?[0-9]*)\\.([0-9]+)\\s+(-?[0-9]*)\\.([0-9]+)\\s*$");
@@ -285,9 +287,11 @@ protected:
     {
         return _end - _cur;
     }
-    pos_type seekoff(std::streambuf::off_type off,
-                     std::ios_base::seekdir way,
-                     std::ios_base::openmode mode = std::ios::in | std::ios::out) override
+    pos_type seekoff(
+        std::streambuf::off_type off,
+        std::ios_base::seekdir way,
+        std::ios_base::openmode mode = std::ios::in | std::ios::out
+    ) override
     {
         (void)mode;
         int p_pos = -1;
@@ -313,8 +317,10 @@ protected:
 
         return ((p_pos + off) - _beg);
     }
-    pos_type seekpos(std::streambuf::pos_type pos,
-                     std::ios_base::openmode which = std::ios::in | std::ios::out) override
+    pos_type seekpos(
+        std::streambuf::pos_type pos,
+        std::ios_base::openmode which = std::ios::in | std::ios::out
+    ) override
     {
         (void)which;
         return seekoff(pos, std::ios_base::beg);
@@ -333,8 +339,12 @@ private:
 
 // NOLINTBEGIN
 // Taken from https://github.com/PointCloudLibrary/pcl/blob/master/io/src/lzf.cpp
-unsigned int
-lzfDecompress(const void* const in_data, unsigned int in_len, void* out_data, unsigned int out_len)
+unsigned int lzfDecompress(
+    const void* const in_data,
+    unsigned int in_len,
+    void* out_data,
+    unsigned int out_len
+)
 {
     unsigned char const* ip = static_cast<const unsigned char*>(in_data);
     unsigned char* op = static_cast<unsigned char*>(out_data);
@@ -698,10 +708,12 @@ void PlyReader::read(const std::string& filename)
                 if (alpha != max_size) {
                     a = static_cast<float>(data(i, alpha));
                 }
-                colors.emplace_back(static_cast<float>(r) / 255.0F,
-                                    static_cast<float>(g) / 255.0F,
-                                    static_cast<float>(b) / 255.0F,
-                                    static_cast<float>(a) / 255.0F);
+                colors.emplace_back(
+                    static_cast<float>(r) / 255.0F,
+                    static_cast<float>(g) / 255.0F,
+                    static_cast<float>(b) / 255.0F,
+                    static_cast<float>(a) / 255.0F
+                );
             }
         }
         else if (types[red] == "float") {
@@ -718,12 +730,14 @@ void PlyReader::read(const std::string& filename)
     }
 }
 
-std::size_t PlyReader::readHeader(std::istream& in,
-                                  std::string& format,
-                                  std::size_t& offset,
-                                  std::vector<std::string>& fields,
-                                  std::vector<std::string>& types,
-                                  std::vector<int>& sizes)
+std::size_t PlyReader::readHeader(
+    std::istream& in,
+    std::string& format,
+    std::size_t& offset,
+    std::vector<std::string>& fields,
+    std::vector<std::string>& types,
+    std::vector<int>& sizes
+)
 {
     std::string line;
     std::string element;
@@ -921,12 +935,14 @@ void PlyReader::readAscii(std::istream& inp, std::size_t offset, Eigen::MatrixXd
     }
 }
 
-void PlyReader::readBinary(bool swapByteOrder,
-                           std::istream& inp,
-                           std::size_t offset,
-                           const std::vector<std::string>& types,
-                           const std::vector<int>& sizes,
-                           Eigen::MatrixXd& data)
+void PlyReader::readBinary(
+    bool swapByteOrder,
+    std::istream& inp,
+    std::size_t offset,
+    const std::vector<std::string>& types,
+    const std::vector<int>& sizes,
+    Eigen::MatrixXd& data
+)
 {
     Eigen::Index numPoints = data.rows();
     Eigen::Index numFields = data.cols();
@@ -1173,8 +1189,7 @@ void PcdReader::read(const std::string& filename)
             }
         }
         else if (types[rgba] == "F") {
-            static_assert(sizeof(float) == sizeof(uint32_t),
-                          "float and uint32_t have different sizes");
+            static_assert(sizeof(float) == sizeof(uint32_t), "float and uint32_t have different sizes");
             for (Eigen::Index i = 0; i < numPoints; i++) {
                 float f = static_cast<float>(data(i, rgba));
                 uint32_t packed {};
@@ -1187,11 +1202,13 @@ void PcdReader::read(const std::string& filename)
     }
 }
 
-std::size_t PcdReader::readHeader(std::istream& in,
-                                  std::string& format,
-                                  std::vector<std::string>& fields,
-                                  std::vector<std::string>& types,
-                                  std::vector<int>& sizes)
+std::size_t PcdReader::readHeader(
+    std::istream& in,
+    std::string& format,
+    std::vector<std::string>& fields,
+    std::vector<std::string>& types,
+    std::vector<int>& sizes
+)
 {
     std::string line;
     std::vector<std::string> counts;
@@ -1286,11 +1303,13 @@ void PcdReader::readAscii(std::istream& inp, Eigen::MatrixXd& data)
     }
 }
 
-void PcdReader::readBinary(bool transpose,
-                           std::istream& inp,
-                           const std::vector<std::string>& types,
-                           const std::vector<int>& sizes,
-                           Eigen::MatrixXd& data)
+void PcdReader::readBinary(
+    bool transpose,
+    std::istream& inp,
+    const std::vector<std::string>& types,
+    const std::vector<int>& sizes,
+    Eigen::MatrixXd& data
+)
 {
     Eigen::Index numPoints = data.rows();
     Eigen::Index numFields = data.cols();
@@ -1484,16 +1503,21 @@ private:
         for (int i = 0; i < prototype.childCount(); ++i) {
             e57::Node node(prototype.get(i));
             if ((node.type() == e57::E57_FLOAT) || (node.type() == e57::E57_SCALED_INTEGER)) {
-                if (readCartesian(node, proto)) {}
-                else if (readNormal(node, proto)) {}
-                else if (readItensity(node, proto)) {}
+                if (readCartesian(node, proto)) {
+                }
+                else if (readNormal(node, proto)) {
+                }
+                else if (readItensity(node, proto)) {
+                }
                 else {
                     readOther(node, proto);
                 }
             }
             else if (node.type() == e57::E57_INTEGER) {
-                if (readColor(node, proto)) {}
-                else if (readCartesianInvalidState(node, proto)) {}
+                if (readColor(node, proto)) {
+                }
+                else if (readCartesianInvalidState(node, proto)) {
+                }
                 else {
                     readOther(node, proto);
                 }
@@ -1507,26 +1531,41 @@ private:
     {
         if (node.elementName() == "cartesianX") {
             proto.cnt_xyz++;
-            proto.sdb
-                .emplace_back(imfi, node.elementName(), proto.xData.data(), buf_size, true, true
+            proto.sdb.emplace_back(
+                imfi,
+                node.elementName(),
+                proto.xData.data(),
+                buf_size,
+                true,
+                true
 
-                );
+            );
             return true;
         }
         else if (node.elementName() == "cartesianY") {
             proto.cnt_xyz++;
-            proto.sdb
-                .emplace_back(imfi, node.elementName(), proto.yData.data(), buf_size, true, true
+            proto.sdb.emplace_back(
+                imfi,
+                node.elementName(),
+                proto.yData.data(),
+                buf_size,
+                true,
+                true
 
-                );
+            );
             return true;
         }
         else if (node.elementName() == "cartesianZ") {
             proto.cnt_xyz++;
-            proto.sdb
-                .emplace_back(imfi, node.elementName(), proto.zData.data(), buf_size, true, true
+            proto.sdb.emplace_back(
+                imfi,
+                node.elementName(),
+                proto.zData.data(),
+                buf_size,
+                true,
+                true
 
-                );
+            );
             return true;
         }
 
@@ -1537,26 +1576,41 @@ private:
     {
         if (node.elementName() == "nor:normalX") {
             proto.cnt_nor++;
-            proto.sdb
-                .emplace_back(imfi, node.elementName(), proto.xNormal.data(), buf_size, true, true
+            proto.sdb.emplace_back(
+                imfi,
+                node.elementName(),
+                proto.xNormal.data(),
+                buf_size,
+                true,
+                true
 
-                );
+            );
             return true;
         }
         else if (node.elementName() == "nor:normalY") {
             proto.cnt_nor++;
-            proto.sdb
-                .emplace_back(imfi, node.elementName(), proto.yNormal.data(), buf_size, true, true
+            proto.sdb.emplace_back(
+                imfi,
+                node.elementName(),
+                proto.yNormal.data(),
+                buf_size,
+                true,
+                true
 
-                );
+            );
             return true;
         }
         else if (node.elementName() == "nor:normalZ") {
             proto.cnt_nor++;
-            proto.sdb
-                .emplace_back(imfi, node.elementName(), proto.zNormal.data(), buf_size, true, true
+            proto.sdb.emplace_back(
+                imfi,
+                node.elementName(),
+                proto.zNormal.data(),
+                buf_size,
+                true,
+                true
 
-                );
+            );
             return true;
         }
 
@@ -1567,10 +1621,15 @@ private:
     {
         if (node.elementName() == "cartesianInvalidState") {
             proto.inv_state = true;
-            proto.sdb
-                .emplace_back(imfi, node.elementName(), proto.state.data(), buf_size, true, true
+            proto.sdb.emplace_back(
+                imfi,
+                node.elementName(),
+                proto.state.data(),
+                buf_size,
+                true,
+                true
 
-                );
+            );
             return true;
         }
 
@@ -1581,26 +1640,41 @@ private:
     {
         if (node.elementName() == "colorRed") {
             proto.cnt_rgb++;
-            proto.sdb
-                .emplace_back(imfi, node.elementName(), proto.redData.data(), buf_size, true, true
+            proto.sdb.emplace_back(
+                imfi,
+                node.elementName(),
+                proto.redData.data(),
+                buf_size,
+                true,
+                true
 
-                );
+            );
             return true;
         }
         if (node.elementName() == "colorGreen") {
             proto.cnt_rgb++;
-            proto.sdb
-                .emplace_back(imfi, node.elementName(), proto.greenData.data(), buf_size, true, true
+            proto.sdb.emplace_back(
+                imfi,
+                node.elementName(),
+                proto.greenData.data(),
+                buf_size,
+                true,
+                true
 
-                );
+            );
             return true;
         }
         if (node.elementName() == "colorBlue") {
             proto.cnt_rgb++;
-            proto.sdb
-                .emplace_back(imfi, node.elementName(), proto.blueData.data(), buf_size, true, true
+            proto.sdb.emplace_back(
+                imfi,
+                node.elementName(),
+                proto.blueData.data(),
+                buf_size,
+                true,
+                true
 
-                );
+            );
             return true;
         }
 
@@ -1611,10 +1685,15 @@ private:
     {
         if (node.elementName() == "intensity") {
             proto.inty = true;
-            proto.sdb
-                .emplace_back(imfi, node.elementName(), proto.intensity.data(), buf_size, true, true
+            proto.sdb.emplace_back(
+                imfi,
+                node.elementName(),
+                proto.intensity.data(),
+                buf_size,
+                true,
+                true
 
-                );
+            );
             return true;
         }
 
@@ -1623,15 +1702,23 @@ private:
 
     void readOther(const e57::Node& node, Proto& proto)
     {
-        proto.sdb.emplace_back(imfi, node.elementName(), proto.nil.data(), buf_size, true, true
+        proto.sdb.emplace_back(
+            imfi,
+            node.elementName(),
+            proto.nil.data(),
+            buf_size,
+            true,
+            true
 
         );
     }
 
-    void processProto(e57::CompressedVectorNode& cvn,
-                      const Proto& proto,
-                      bool hasPlacement,
-                      const Base::Placement& plm)
+    void processProto(
+        e57::CompressedVectorNode& cvn,
+        const Proto& proto,
+        bool hasPlacement,
+        const Base::Placement& plm
+    )
     {
         if (proto.cnt_xyz != 3) {
             throw Base::BadFormatError("Missing channels xyz");
@@ -1680,8 +1767,12 @@ private:
         }
     }
 
-    Base::Vector3d
-    getCoord(const Proto& proto, size_t index, bool hasPlacement, const Base::Placement& plm) const
+    Base::Vector3d getCoord(
+        const Proto& proto,
+        size_t index,
+        bool hasPlacement,
+        const Base::Placement& plm
+    ) const
     {
         Base::Vector3d pt;
         pt.x = proto.xData[index];
@@ -1693,8 +1784,12 @@ private:
         return pt;
     }
 
-    Base::Vector3f
-    getNormal(const Proto& proto, size_t index, bool hasPlacement, const Base::Rotation& rot) const
+    Base::Vector3f getNormal(
+        const Proto& proto,
+        size_t index,
+        bool hasPlacement,
+        const Base::Rotation& rot
+    ) const
     {
         Base::Vector3f pt;
         pt.x = proto.xNormal[index];

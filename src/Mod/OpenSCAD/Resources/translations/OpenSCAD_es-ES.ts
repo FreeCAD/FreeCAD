@@ -31,12 +31,12 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="119"/>
       <source>If this is checked, Multmatrix Object will be Parametric</source>
-      <translation>Si se selecciona, el objeto Multmatriz será paramétrico</translation>
+      <translation>Si se selecciona, el objeto multimatriz será paramétrico</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="122"/>
       <source>Use Multmatrix Feature</source>
-      <translation>Usar la función Multmatrix</translation>
+      <translation>Usar la función multimatriz</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="139"/>
@@ -108,7 +108,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="74"/>
       <source>OpenSCAD Import</source>
-      <translation type="unfinished">OpenSCAD Import</translation>
+      <translation>Importación de OpenSCAD</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="102"/>
@@ -118,12 +118,12 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="182"/>
       <source>Send to OpenSCAD via</source>
-      <translation type="unfinished">Send to OpenSCAD via</translation>
+      <translation>Enviar a OpenSCAD vía</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="261"/>
       <source>OpenSCAD Export</source>
-      <translation type="unfinished">OpenSCAD Export</translation>
+      <translation>Exportación de OpenSCAD</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="331"/>
@@ -227,32 +227,32 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="141"/>
       <source>Converts edges to faces</source>
-      <translation type="unfinished">Converts edges to faces</translation>
+      <translation>Convertir aristas en caras</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="303"/>
       <source>Select 3 objects first</source>
-      <translation type="unfinished">Select 3 objects first</translation>
+      <translation>Seleccione 3 objetos primero</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="337"/>
       <source>Clear Code</source>
-      <translation type="unfinished">Clear Code</translation>
+      <translation>Limpiar código</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="338"/>
       <source>Open…</source>
-      <translation type="unfinished">Open…</translation>
+      <translation>Abrir…</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="339"/>
       <source>Save…</source>
-      <translation type="unfinished">Save…</translation>
+      <translation>Guardar…</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="340"/>
       <source>as mesh</source>
-      <translation type="unfinished">as mesh</translation>
+      <translation>como malla</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="429"/>
@@ -320,7 +320,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="105"/>
       <source>Explodes a fusion or compound and applies random colors</source>
-      <translation type="unfinished">Explodes a fusion or compound and applies random colors</translation>
+      <translation>Explota una fusión o compuesto y aplica colores aleatorios</translation>
     </message>
   </context>
   <context>
@@ -333,7 +333,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="121"/>
       <source>Colors shapes by validity and type</source>
-      <translation type="unfinished">Colors shapes by validity and type</translation>
+      <translation>Colorea formas por validez y tipo</translation>
     </message>
   </context>
   <context>
@@ -346,7 +346,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="161"/>
       <source>Creates a refined shape</source>
-      <translation type="unfinished">Creates a refined shape</translation>
+      <translation>Crea una forma refinada</translation>
     </message>
   </context>
   <context>
@@ -359,7 +359,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="271"/>
       <source>Creates a feature to increase the tolerance</source>
-      <translation type="unfinished">Creates a feature to increase the tolerance</translation>
+      <translation>Crea una característica para aumentar la tolerancia</translation>
     </message>
   </context>
   <context>
@@ -385,7 +385,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="309"/>
       <source>Replaces an object in the Tree View</source>
-      <translation type="unfinished">Replaces an object in the Tree View</translation>
+      <translation>Reemplaza un objeto en la vista de árbol</translation>
     </message>
   </context>
   <context>
@@ -393,12 +393,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="319"/>
       <source>Remove Objects and Children</source>
-      <translation type="unfinished">Remove Objects and Children</translation>
+      <translation>Eliminar objetos y sus hijos</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="322"/>
       <source>Removes the selected objects and all children that are not referenced by other objects</source>
-      <translation type="unfinished">Removes the selected objects and all children that are not referenced by other objects</translation>
+      <translation>Elimina los objetos seleccionados y todos los hijos que no son referenciados por otros objetos</translation>
     </message>
   </context>
   <context>
@@ -458,7 +458,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="221"/>
       <source>Scales the mesh</source>
-      <translation type="unfinished">Scales the mesh</translation>
+      <translation>Escala la malla</translation>
     </message>
   </context>
   <context>
@@ -466,12 +466,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="247"/>
       <source>Resize Mesh Feature</source>
-      <translation type="unfinished">Resize Mesh Feature</translation>
+      <translation>Redimensionar malla</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="251"/>
       <source>Resizes the mesh</source>
-      <translation type="unfinished">Resizes the mesh</translation>
+      <translation>Redimensiona la malla</translation>
     </message>
   </context>
   <context>
@@ -497,7 +497,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="550"/>
       <source>Performs a boolean operation using the OpenSCAD binary</source>
-      <translation type="unfinished">Performs a boolean operation using the OpenSCAD binary</translation>
+      <translation>Realiza una operación booleana usando el binario de OpenSCAD</translation>
     </message>
   </context>
   <context>
@@ -505,12 +505,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="587"/>
       <source>Minkowski Sum</source>
-      <translation type="unfinished">Minkowski Sum</translation>
+      <translation>Suma de Minkowski</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="590"/>
       <source>Creates a Minkowski sum</source>
-      <translation type="unfinished">Creates a Minkowski sum</translation>
+      <translation>Crea una suma de Minkowski</translation>
     </message>
   </context>
 </TS>

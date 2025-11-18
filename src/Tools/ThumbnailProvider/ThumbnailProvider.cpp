@@ -87,11 +87,13 @@ IWICBitmapSource* LoadBitmapFromStream(IStream* ipImageStream)
 
     // load WIC's PNG decoder
     IWICBitmapDecoder* ipDecoder = NULL;
-    if (FAILED(CoCreateInstance(CLSID_WICPngDecoder,
-                                NULL,
-                                CLSCTX_INPROC_SERVER,
-                                __uuidof(ipDecoder),
-                                reinterpret_cast<void**>(&ipDecoder)))) {
+    if (FAILED(CoCreateInstance(
+            CLSID_WICPngDecoder,
+            NULL,
+            CLSCTX_INPROC_SERVER,
+            __uuidof(ipDecoder),
+            reinterpret_cast<void**>(&ipDecoder)
+        ))) {
         goto Return;
     }
 

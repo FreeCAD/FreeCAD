@@ -23,16 +23,16 @@
  ***************************************************************************/
 
 
-# include <sstream>
-# include <Bnd_Box.hxx>
-# include <BRepBndLib.hxx>
-# include <BRepBuilderAPI_Copy.hxx>
-# include <BRepTools.hxx>
-# include <BRepTools_ShapeSet.hxx>
-# include <OSD_OpenFile.hxx>
-# include <Standard_Failure.hxx>
-# include <Standard_Version.hxx>
-# include <TopoDS.hxx>
+#include <sstream>
+#include <Bnd_Box.hxx>
+#include <BRepBndLib.hxx>
+#include <BRepBuilderAPI_Copy.hxx>
+#include <BRepTools.hxx>
+#include <BRepTools_ShapeSet.hxx>
+#include <OSD_OpenFile.hxx>
+#include <Standard_Failure.hxx>
+#include <Standard_Version.hxx>
+#include <TopoDS.hxx>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -56,7 +56,7 @@ FC_LOG_LEVEL_INIT("App", true, true)
 namespace sp = std::placeholders;
 using namespace Part;
 
-TYPESYSTEM_SOURCE(Part::PropertyPartShape , App::PropertyComplexGeoData)
+TYPESYSTEM_SOURCE(Part::PropertyPartShape, App::PropertyComplexGeoData)
 
 PropertyPartShape::PropertyPartShape() = default;
 
@@ -67,20 +67,22 @@ void PropertyPartShape::setValue(const TopoShape& sh)
     aboutToSetValue();
     _Shape = sh;
     auto obj = freecad_cast<App::DocumentObject*>(getContainer());
-    if(obj) {
-        if(_Shape.getElementMap().size() != sh.getElementMap().size()) {
+    if (obj) {
+        if (_Shape.getElementMap().size() != sh.getElementMap().size()) {
             TopoShape res(obj->getID(), sh.Hasher, _Shape.getShape());
             res.mapSubElement(_Shape);
             _Shape = res;
         }
 
         auto tag = obj->getID();
-        if(_Shape.Tag && tag!=_Shape.Tag) {
-            auto hasher = _Shape.Hasher?_Shape.Hasher:obj->getDocument()->getStringHasher();
+        if (_Shape.Tag && tag != _Shape.Tag) {
+            auto hasher = _Shape.Hasher ? _Shape.Hasher : obj->getDocument()->getStringHasher();
 
-            _Shape.reTagElementMap(tag,hasher);
-        } else
+            _Shape.reTagElementMap(tag, hasher);
+        }
+        else {
             _Shape.Tag = obj->getID();
+        }
         if (!_Shape.Hasher && _Shape.hasChildElementMap()) {
             _Shape.Hasher = obj->getDocument()->getStringHasher();
             _Shape.hashChildMaps();
@@ -94,9 +96,10 @@ void PropertyPartShape::setValue(const TopoDS_Shape& sh, bool resetElementMap)
 {
     aboutToSetValue();
     auto obj = dynamic_cast<App::DocumentObject*>(getContainer());
-    if(obj)
+    if (obj) {
         _Shape.Tag = obj->getID();
-    _Shape.setShape(sh,resetElementMap);
+    }
+    _Shape.setShape(sh, resetElementMap);
     hasSetValue();
     _Ver.clear();
 }
@@ -131,8 +134,9 @@ const Data::ComplexGeoData* PropertyPartShape::getComplexData() const
 Base::BoundBox3d PropertyPartShape::getBoundingBox() const
 {
     Base::BoundBox3d box;
-    if (_Shape.getShape().IsNull())
+    if (_Shape.getShape().IsNull()) {
         return box;
+    }
     try {
         // If the shape is empty an exception may be thrown
         Bnd_Box bounds;
@@ -154,7 +158,7 @@ Base::BoundBox3d PropertyPartShape::getBoundingBox() const
     return box;
 }
 
-void PropertyPartShape::setTransform(const Base::Matrix4D &rclTrf)
+void PropertyPartShape::setTransform(const Base::Matrix4D& rclTrf)
 {
     _Shape.setTransform(rclTrf);
 }
@@ -164,36 +168,38 @@ Base::Matrix4D PropertyPartShape::getTransform() const
     return _Shape.getTransform();
 }
 
-void PropertyPartShape::transformGeometry(const Base::Matrix4D &rclTrf)
+void PropertyPartShape::transformGeometry(const Base::Matrix4D& rclTrf)
 {
     aboutToSetValue();
     _Shape.transformGeometry(rclTrf);
     hasSetValue();
 }
 
-PyObject *PropertyPartShape::getPyObject()
+PyObject* PropertyPartShape::getPyObject()
 {
     Base::PyObjectBase* prop = static_cast<Base::PyObjectBase*>(_Shape.getPyObject());
-    if (prop)
+    if (prop) {
         prop->setConst();
+    }
     return prop;
 }
 
-void PropertyPartShape::setPyObject(PyObject *value)
+void PropertyPartShape::setPyObject(PyObject* value)
 {
     if (PyObject_TypeCheck(value, &(TopoShapePy::Type))) {
         auto shape = *static_cast<TopoShapePy*>(value)->getTopoShapePtr();
         auto owner = dynamic_cast<App::DocumentObject*>(getContainer());
-        if(owner && owner->getDocument()) {
-            if(shape.Tag || shape.getElementMapSize()) {
+        if (owner && owner->getDocument()) {
+            if (shape.Tag || shape.getElementMapSize()) {
                 // We can't trust the meaning of the input shape tag, so we
                 // remap anyway
-                TopoShape res(owner->getID(),owner->getDocument()->getStringHasher(),shape.getShape());
+                TopoShape res(owner->getID(), owner->getDocument()->getStringHasher(), shape.getShape());
                 res.mapSubElement(shape);
                 shape = res;
-            }else{
+            }
+            else {
                 shape.Tag = owner->getID();
-                if ( shape.Hasher ) {   // TODO: This null guard added during TNP transition
+                if (shape.Hasher) {  // TODO: This null guard added during TNP transition
                     shape.Hasher->clear();
                 }
             }
@@ -207,85 +213,140 @@ void PropertyPartShape::setPyObject(PyObject *value)
     }
 }
 
-App::Property *PropertyPartShape::Copy() const
+App::Property* PropertyPartShape::Copy() const
 {
-    PropertyPartShape *prop = new PropertyPartShape();
+    PropertyPartShape* prop = new PropertyPartShape();
 
     // March, 2024 Toponaming project:  There was originally a feature to enable making an element
     // copy ( new geometry and map ) that has not been kept:
-//    if (PartParams::getShapePropertyCopy()) {
-//        // makeElementCopy() consume too much memory for complex geometry.
-//        prop->_Shape = this->_Shape.makeElementCopy();
-//    } else
-//        prop->_Shape = this->_Shape;
+    //    if (PartParams::getShapePropertyCopy()) {
+    //        // makeElementCopy() consume too much memory for complex geometry.
+    //        prop->_Shape = this->_Shape.makeElementCopy();
+    //    } else
+    //        prop->_Shape = this->_Shape;
     prop->_Shape = this->_Shape;
     prop->_Ver = this->_Ver;
     return prop;
 }
 
-void PropertyPartShape::Paste(const App::Property &from)
+void PropertyPartShape::Paste(const App::Property& from)
 {
     auto prop = freecad_cast<const PropertyPartShape*>(&from);
-    if(prop) {
+    if (prop) {
         setValue(prop->_Shape);
         _Ver = prop->_Ver;
     }
 }
 
-unsigned int PropertyPartShape::getMemSize () const
+unsigned int PropertyPartShape::getMemSize() const
 {
     return _Shape.getMemSize();
 }
 
-void PropertyPartShape::getPaths(std::vector<App::ObjectIdentifier> &paths) const
+void PropertyPartShape::getPaths(std::vector<App::ObjectIdentifier>& paths) const
 {
-    paths.push_back(App::ObjectIdentifier(getContainer()) << App::ObjectIdentifier::Component::SimpleComponent(getName())
-                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("ShapeType")));
-    paths.push_back(App::ObjectIdentifier(getContainer()) << App::ObjectIdentifier::Component::SimpleComponent(getName())
-                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("Orientation")));
-    paths.push_back(App::ObjectIdentifier(getContainer()) << App::ObjectIdentifier::Component::SimpleComponent(getName())
-                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("Length")));
-    paths.push_back(App::ObjectIdentifier(getContainer()) << App::ObjectIdentifier::Component::SimpleComponent(getName())
-                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("Area")));
-    paths.push_back(App::ObjectIdentifier(getContainer()) << App::ObjectIdentifier::Component::SimpleComponent(getName())
-                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("Volume")));
-    paths.push_back(App::ObjectIdentifier(getContainer()) << App::ObjectIdentifier::Component::SimpleComponent(getName())
-                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("BoundBox")));
-    
+    paths.push_back(
+        App::ObjectIdentifier(getContainer())
+        << App::ObjectIdentifier::Component::SimpleComponent(getName())
+        << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("ShapeType"))
+    );
+    paths.push_back(
+        App::ObjectIdentifier(getContainer())
+        << App::ObjectIdentifier::Component::SimpleComponent(getName())
+        << App::ObjectIdentifier::Component::SimpleComponent(
+               App::ObjectIdentifier::String("Orientation")
+           )
+    );
+    paths.push_back(
+        App::ObjectIdentifier(getContainer())
+        << App::ObjectIdentifier::Component::SimpleComponent(getName())
+        << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("Length"))
+    );
+    paths.push_back(
+        App::ObjectIdentifier(getContainer())
+        << App::ObjectIdentifier::Component::SimpleComponent(getName())
+        << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("Area"))
+    );
+    paths.push_back(
+        App::ObjectIdentifier(getContainer())
+        << App::ObjectIdentifier::Component::SimpleComponent(getName())
+        << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("Volume"))
+    );
+    paths.push_back(
+        App::ObjectIdentifier(getContainer())
+        << App::ObjectIdentifier::Component::SimpleComponent(getName())
+        << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("BoundBox"))
+    );
+
     // BoundBox sub-properties
-    paths.push_back(App::ObjectIdentifier(getContainer()) << App::ObjectIdentifier::Component::SimpleComponent(getName())
-                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("BoundBox"))
-                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("XMax")));
-    paths.push_back(App::ObjectIdentifier(getContainer()) << App::ObjectIdentifier::Component::SimpleComponent(getName())
-                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("BoundBox"))
-                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("XMin")));
-    paths.push_back(App::ObjectIdentifier(getContainer()) << App::ObjectIdentifier::Component::SimpleComponent(getName())
-                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("BoundBox"))
-                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("YMax")));
-    paths.push_back(App::ObjectIdentifier(getContainer()) << App::ObjectIdentifier::Component::SimpleComponent(getName())
-                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("BoundBox"))
-                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("YMin")));
-    paths.push_back(App::ObjectIdentifier(getContainer()) << App::ObjectIdentifier::Component::SimpleComponent(getName())
-                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("BoundBox"))
-                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("ZMax")));
-    paths.push_back(App::ObjectIdentifier(getContainer()) << App::ObjectIdentifier::Component::SimpleComponent(getName())
-                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("BoundBox"))
-                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("ZMin")));
-    paths.push_back(App::ObjectIdentifier(getContainer()) << App::ObjectIdentifier::Component::SimpleComponent(getName())
-                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("BoundBox"))
-                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("XLength")));
-    paths.push_back(App::ObjectIdentifier(getContainer()) << App::ObjectIdentifier::Component::SimpleComponent(getName())
-                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("BoundBox"))
-                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("YLength")));
-    paths.push_back(App::ObjectIdentifier(getContainer()) << App::ObjectIdentifier::Component::SimpleComponent(getName())
-                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("BoundBox"))
-                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("ZLength")));
-    paths.push_back(App::ObjectIdentifier(getContainer()) << App::ObjectIdentifier::Component::SimpleComponent(getName())
-                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("BoundBox"))
-                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("DiagonalLength")));
-    paths.push_back(App::ObjectIdentifier(getContainer()) << App::ObjectIdentifier::Component::SimpleComponent(getName())
-                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("BoundBox"))
-                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("Center")));
+    paths.push_back(
+        App::ObjectIdentifier(getContainer())
+        << App::ObjectIdentifier::Component::SimpleComponent(getName())
+        << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("BoundBox"))
+        << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("XMax"))
+    );
+    paths.push_back(
+        App::ObjectIdentifier(getContainer())
+        << App::ObjectIdentifier::Component::SimpleComponent(getName())
+        << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("BoundBox"))
+        << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("XMin"))
+    );
+    paths.push_back(
+        App::ObjectIdentifier(getContainer())
+        << App::ObjectIdentifier::Component::SimpleComponent(getName())
+        << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("BoundBox"))
+        << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("YMax"))
+    );
+    paths.push_back(
+        App::ObjectIdentifier(getContainer())
+        << App::ObjectIdentifier::Component::SimpleComponent(getName())
+        << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("BoundBox"))
+        << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("YMin"))
+    );
+    paths.push_back(
+        App::ObjectIdentifier(getContainer())
+        << App::ObjectIdentifier::Component::SimpleComponent(getName())
+        << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("BoundBox"))
+        << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("ZMax"))
+    );
+    paths.push_back(
+        App::ObjectIdentifier(getContainer())
+        << App::ObjectIdentifier::Component::SimpleComponent(getName())
+        << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("BoundBox"))
+        << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("ZMin"))
+    );
+    paths.push_back(
+        App::ObjectIdentifier(getContainer())
+        << App::ObjectIdentifier::Component::SimpleComponent(getName())
+        << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("BoundBox"))
+        << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("XLength"))
+    );
+    paths.push_back(
+        App::ObjectIdentifier(getContainer())
+        << App::ObjectIdentifier::Component::SimpleComponent(getName())
+        << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("BoundBox"))
+        << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("YLength"))
+    );
+    paths.push_back(
+        App::ObjectIdentifier(getContainer())
+        << App::ObjectIdentifier::Component::SimpleComponent(getName())
+        << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("BoundBox"))
+        << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("ZLength"))
+    );
+    paths.push_back(
+        App::ObjectIdentifier(getContainer())
+        << App::ObjectIdentifier::Component::SimpleComponent(getName())
+        << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("BoundBox"))
+        << App::ObjectIdentifier::Component::SimpleComponent(
+               App::ObjectIdentifier::String("DiagonalLength")
+           )
+    );
+    paths.push_back(
+        App::ObjectIdentifier(getContainer())
+        << App::ObjectIdentifier::Component::SimpleComponent(getName())
+        << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("BoundBox"))
+        << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("Center"))
+    );
 }
 
 void PropertyPartShape::beforeSave() const
@@ -293,24 +354,23 @@ void PropertyPartShape::beforeSave() const
     _HasherIndex = 0;
     _SaveHasher = false;
     auto owner = freecad_cast<App::DocumentObject*>(getContainer());
-    if(owner && !_Shape.isNull() && _Shape.getElementMapSize()>0) {
+    if (owner && !_Shape.isNull() && _Shape.getElementMapSize() > 0) {
         auto ret = owner->getDocument()->addStringHasher(_Shape.Hasher);
         _HasherIndex = ret.second;
         _SaveHasher = ret.first;
         _Shape.beforeSave();
     }
 }
-void PropertyPartShape::Save (Base::Writer &writer) const
+void PropertyPartShape::Save(Base::Writer& writer) const
 {
-    //See SaveDocFile(), RestoreDocFile()
+    // See SaveDocFile(), RestoreDocFile()
     writer.Stream() << writer.ind() << "<Part";
     auto owner = dynamic_cast<App::DocumentObject*>(getContainer());
-    if(owner && !_Shape.isNull()
-        && _Shape.getElementMapSize()>0
-        && !_Shape.Hasher.isNull()) {
+    if (owner && !_Shape.isNull() && _Shape.getElementMapSize() > 0 && !_Shape.Hasher.isNull()) {
         writer.Stream() << " HasherIndex=\"" << _HasherIndex << '"';
-        if(_SaveHasher)
+        if (_SaveHasher) {
             writer.Stream() << " SaveHasher=\"1\"";
+        }
     }
     std::string version;
     // If exporting, do not export mapped element name, but still make a mark
@@ -319,58 +379,68 @@ void PropertyPartShape::Save (Base::Writer &writer) const
         if (!owner->isExporting()) {
             version = version_valid ? _Ver : owner->getElementMapVersion(this);
         }
-    } else {
+    }
+    else {
         version = version_valid ? _Ver : _Shape.getElementMapVersion();
     }
     writer.Stream() << " ElementMap=\"" << version << '"';
 
     bool binary = writer.getMode("BinaryBrep");
     bool toXML = writer.isForceXML();
-    if(!toXML) {
+    if (!toXML) {
         writer.Stream() << " file=\""
-                        << writer.addFile(getFileName(binary?".bin":".brp").c_str(), this)
+                        << writer.addFile(getFileName(binary ? ".bin" : ".brp").c_str(), this)
                         << "\"/>\n";
-    } else if(binary) {
+    }
+    else if (binary) {
         writer.Stream() << " binary=\"1\">\n";
         _Shape.exportBinary(writer.beginCharStream(Base::CharStreamFormat::Base64Encoded));
-        writer.endCharStream() <<  writer.ind() << "</Part>\n";
-    } else {
+        writer.endCharStream() << writer.ind() << "</Part>\n";
+    }
+    else {
         writer.Stream() << " brep=\"1\">\n";
-        _Shape.exportBrep(writer.beginCharStream(Base::CharStreamFormat::Raw)<<'\n');
+        _Shape.exportBrep(writer.beginCharStream(Base::CharStreamFormat::Raw) << '\n');
         writer.endCharStream() << '\n' << writer.ind() << "</Part>\n";
     }
 
-    if(_SaveHasher) {
-        if(!toXML)
+    if (_SaveHasher) {
+        if (!toXML) {
             _Shape.Hasher->setPersistenceFileName(getFileName(".Table").c_str());
-        else
+        }
+        else {
             _Shape.Hasher->setPersistenceFileName(0);
+        }
         _Shape.Hasher->Save(writer);
     }
-    if(version.size()) {
-        if(!toXML)
+    if (version.size()) {
+        if (!toXML) {
             _Shape.setPersistenceFileName(getFileName(".Map").c_str());
-        else
+        }
+        else {
             _Shape.setPersistenceFileName(0);
+        }
         _Shape.Save(writer);
     }
 }
 
-std::string PropertyPartShape::getElementMapVersion(bool restored) const {
-    if(restored)
+std::string PropertyPartShape::getElementMapVersion(bool restored) const
+{
+    if (restored) {
         return _Ver;
+    }
     return PropertyComplexGeoData::getElementMapVersion(false);
 }
 
-void PropertyPartShape::Restore(Base::XMLReader &reader)
+void PropertyPartShape::Restore(Base::XMLReader& reader)
 {
     reader.readElement("Part");
 
     auto owner = freecad_cast<App::DocumentObject*>(getContainer());
     _Ver = "?";
     bool has_ver = reader.hasAttribute("ElementMap");
-    if (has_ver)
+    if (has_ver) {
         _Ver = reader.getAttribute<const char*>("ElementMap");
+    }
 
     int hasher_idx = reader.getAttribute<int>("HasherIndex", -1);
     int save_hasher = reader.getAttribute<int>("SaveHasher", 0);
@@ -395,57 +465,64 @@ void PropertyPartShape::Restore(Base::XMLReader &reader)
 
     reader.readEndElement("Part");
 
-    if(owner && hasher_idx>=0) {
+    if (owner && hasher_idx >= 0) {
         _Shape.Hasher = owner->getDocument()->getStringHasher(hasher_idx);
-        if(save_hasher)
+        if (save_hasher) {
             _Shape.Hasher->Restore(reader);
+        }
     }
 
-    if(has_ver) {
+    if (has_ver) {
         // The file name here is not used for restore, but just a way to get
         // more useful error message if something wrong when restoring
         _Shape.setPersistenceFileName(getFileName().c_str());
-        if(owner && owner->getDocument()->testStatus(App::Document::PartialDoc))
+        if (owner && owner->getDocument()->testStatus(App::Document::PartialDoc)) {
             _Shape.Restore(reader);
-        else if(_Ver == "?" || _Ver.empty()) {
+        }
+        else if (_Ver == "?" || _Ver.empty()) {
             // This indicate the shape is saved by legacy version without
             // element map info.
-            if(owner) {
+            if (owner) {
                 // This will ask user for recompute after import
                 owner->getDocument()->addRecomputeObject(owner);
             }
-        }else{
+        }
+        else {
             _Shape.Restore(reader);
             if (owner ? owner->checkElementMapVersion(this, _Ver.c_str())
                       : _Shape.checkElementMapVersion(_Ver.c_str())) {
-                auto ver = owner?owner->getElementMapVersion(this):_Shape.getElementMapVersion();
-                if(!owner || !owner->getNameInDocument() || !_Shape.getElementMapSize()) {
+                auto ver = owner ? owner->getElementMapVersion(this) : _Shape.getElementMapVersion();
+                if (!owner || !owner->getNameInDocument() || !_Shape.getElementMapSize()) {
                     _Ver = ver;
-                } else {
+                }
+                else {
                     // version mismatch, signal for regenerating.
-                    static const char *warnedDoc=0;
-                    if(warnedDoc != owner->getDocument()->getName()) {
+                    static const char* warnedDoc = 0;
+                    if (warnedDoc != owner->getDocument()->getName()) {
                         warnedDoc = owner->getDocument()->getName();
-                        FC_WARN("Recomputation required for document '" << warnedDoc
-                                                                        << "' on geo element version change in " << getFullName()
-                                                                        << ": " << _Ver << " -> " << ver);
+                        FC_WARN(
+                            "Recomputation required for document '"
+                            << warnedDoc << "' on geo element version change in " << getFullName()
+                            << ": " << _Ver << " -> " << ver
+                        );
                     }
                     owner->getDocument()->addRecomputeObject(owner);
                 }
             }
         }
-    } else if(owner && !owner->getDocument()->testStatus(App::Document::PartialDoc)) {
-        // Toponaming 09/2024:  Original code has an infrastructure for document parameters we aren't bringing in:
-        // if(App::DocumentParams::getWarnRecomputeOnRestore()) {
-        // However, this warning appeared on all files without element maps, and is now superseded by a user dialog
-        // after loading that is triggered by any call to addRecomputeObject()
+    }
+    else if (owner && !owner->getDocument()->testStatus(App::Document::PartialDoc)) {
+        // Toponaming 09/2024:  Original code has an infrastructure for document parameters we
+        // aren't bringing in: if(App::DocumentParams::getWarnRecomputeOnRestore()) { However, this
+        // warning appeared on all files without element maps, and is now superseded by a user
+        // dialog after loading that is triggered by any call to addRecomputeObject()
         // FC_WARN("Pending recompute for generating element map: " << owner->getFullName());
         owner->getDocument()->addRecomputeObject(owner);
     }
 
     if (!shape.isNull() || !_Shape.isNull()) {
         aboutToSetValue();
-        _Shape.setShape(shape.getShape(),false);
+        _Shape.setShape(shape.getShape(), false);
         hasSetValue();
     }
 }
@@ -459,8 +536,9 @@ void PropertyPartShape::afterRestore()
         _Ver = "?";
     }
     else if (_Shape.getElementMapSize() == 0) {
-        if (_Shape.Hasher)
+        if (_Shape.Hasher) {
             _Shape.Hasher->clear();
+        }
     }
     PropertyComplexGeoData::afterRestore();
 }
@@ -469,46 +547,50 @@ void PropertyPartShape::afterRestore()
 // to disable saving of triangulation
 //
 
-static Standard_Boolean  BRepTools_Write(const TopoDS_Shape& Sh, const Standard_CString File)
+static Standard_Boolean BRepTools_Write(const TopoDS_Shape& Sh, const Standard_CString File)
 {
-  std::ofstream os;
-  OSD_OpenStream(os, File, std::ios::out);
+    std::ofstream os;
+    OSD_OpenStream(os, File, std::ios::out);
 
-  if (!os.rdbuf()->is_open())
-      return Standard_False;
+    if (!os.rdbuf()->is_open()) {
+        return Standard_False;
+    }
 
-  Standard_Boolean isGood = (os.good() && !os.eof());
-  if(!isGood)
+    Standard_Boolean isGood = (os.good() && !os.eof());
+    if (!isGood) {
+        return isGood;
+    }
+
+    // See TopTools_FormatVersion of OCCT 7.6
+    enum
+    {
+        VERSION_1 = 1,
+        VERSION_2 = 2,
+        VERSION_3 = 3
+    };
+
+    BRepTools_ShapeSet SS(Standard_False);
+    SS.SetFormatNb(VERSION_1);
+    // SS.SetProgress(PR);
+    SS.Add(Sh);
+
+    os << "DBRep_DrawableShape\n";  // for easy Draw read
+    SS.Write(os);
+    isGood = os.good();
+    if (isGood) {
+        SS.Write(Sh, os);
+    }
+    os.flush();
+    isGood = os.good();
+
+    errno = 0;
+    os.close();
+    isGood = os.good() && isGood && !errno;
+
     return isGood;
-
-  // See TopTools_FormatVersion of OCCT 7.6
-  enum {
-      VERSION_1 = 1,
-      VERSION_2 = 2,
-      VERSION_3 = 3
-  };
-
-  BRepTools_ShapeSet SS(Standard_False);
-  SS.SetFormatNb(VERSION_1);
-  // SS.SetProgress(PR);
-  SS.Add(Sh);
-
-  os << "DBRep_DrawableShape\n";  // for easy Draw read
-  SS.Write(os);
-  isGood = os.good();
-  if(isGood )
-    SS.Write(Sh,os);
-  os.flush();
-  isGood = os.good();
-
-  errno = 0;
-  os.close();
-  isGood = os.good() && isGood && !errno;
-
-  return isGood;
 }
 
-void PropertyPartShape::saveToFile(Base::Writer &writer) const
+void PropertyPartShape::saveToFile(Base::Writer& writer) const
 {
     // create a temporary file and copy the content to the zip stream
     // once the tmp. filename is known use always the same because otherwise
@@ -516,7 +598,7 @@ void PropertyPartShape::saveToFile(Base::Writer &writer) const
     static Base::FileInfo fi(App::Application::getTempFileName());
 
     TopoDS_Shape myShape = _Shape.getShape();
-    if (!BRepTools_Write(myShape,static_cast<Standard_CString>(fi.filePath().c_str()))) {
+    if (!BRepTools_Write(myShape, static_cast<Standard_CString>(fi.filePath().c_str()))) {
         // Note: Do NOT throw an exception here because if the tmp. file could
         // not be created we should not abort.
         // We only print an error message but continue writing the next files to the
@@ -524,8 +606,11 @@ void PropertyPartShape::saveToFile(Base::Writer &writer) const
         App::PropertyContainer* father = this->getContainer();
         if (father && father->isDerivedFrom<App::DocumentObject>()) {
             App::DocumentObject* obj = static_cast<App::DocumentObject*>(father);
-            Base::Console().error("Shape of '%s' cannot be written to BRep file '%s'\n",
-                obj->Label.getValue(),fi.filePath().c_str());
+            Base::Console().error(
+                "Shape of '%s' cannot be written to BRep file '%s'\n",
+                obj->Label.getValue(),
+                fi.filePath().c_str()
+            );
         }
         else {
             Base::Console().error("Cannot save BRep file '%s'\n", fi.filePath().c_str());
@@ -547,7 +632,7 @@ void PropertyPartShape::saveToFile(Base::Writer &writer) const
     fi.deleteFile();
 }
 
-void PropertyPartShape::loadFromFile(Base::Reader &reader)
+void PropertyPartShape::loadFromFile(Base::Reader& reader)
 {
     BRep_Builder builder;
     // create a temporary file and copy the content from the zip stream
@@ -576,11 +661,17 @@ void PropertyPartShape::loadFromFile(Base::Reader &reader)
             App::PropertyContainer* father = this->getContainer();
             if (father && father->isDerivedFrom<App::DocumentObject>()) {
                 App::DocumentObject* obj = static_cast<App::DocumentObject*>(father);
-                Base::Console().error("BRep file '%s' with shape of '%s' seems to be empty\n",
-                    fi.filePath().c_str(),obj->Label.getValue());
+                Base::Console().error(
+                    "BRep file '%s' with shape of '%s' seems to be empty\n",
+                    fi.filePath().c_str(),
+                    obj->Label.getValue()
+                );
             }
             else {
-                Base::Console().warning("Loaded BRep file '%s' seems to be empty\n", fi.filePath().c_str());
+                Base::Console().warning(
+                    "Loaded BRep file '%s' seems to be empty\n",
+                    fi.filePath().c_str()
+                );
             }
         }
     }
@@ -590,7 +681,7 @@ void PropertyPartShape::loadFromFile(Base::Reader &reader)
     setValue(shape);
 }
 
-void PropertyPartShape::loadFromStream(Base::Reader &reader)
+void PropertyPartShape::loadFromStream(Base::Reader& reader)
 {
     try {
         reader.exceptions(std::istream::failbit | std::istream::badbit);
@@ -600,17 +691,19 @@ void PropertyPartShape::loadFromStream(Base::Reader &reader)
         setValue(shape);
     }
     catch (const std::exception&) {
-        if (!reader.eof())
+        if (!reader.eof()) {
             Base::Console().warning("Failed to load BRep file %s\n", reader.getFileName().c_str());
+        }
     }
 }
 
-void PropertyPartShape::SaveDocFile (Base::Writer &writer) const
+void PropertyPartShape::SaveDocFile(Base::Writer& writer) const
 {
     // If the shape is empty we simply store nothing. The file size will be 0 which
     // can be checked when reading in the data.
-    if (_Shape.getShape().IsNull())
+    if (_Shape.getShape().IsNull()) {
         return;
+    }
     TopoDS_Shape myShape = _Shape.getShape();
     if (writer.getMode("BinaryBrep")) {
         TopoShape shape;
@@ -618,8 +711,9 @@ void PropertyPartShape::SaveDocFile (Base::Writer &writer) const
         shape.exportBinary(writer.Stream());
     }
     else {
-        bool direct = App::GetApplication().GetParameterGroupByPath
-            ("User parameter:BaseApp/Preferences/Mod/Part/General")->GetBool("DirectAccess", true);
+        bool direct = App::GetApplication()
+                          .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part/General")
+                          ->GetBool("DirectAccess", true);
         if (!direct) {
             saveToFile(writer);
         }
@@ -631,7 +725,7 @@ void PropertyPartShape::SaveDocFile (Base::Writer &writer) const
     }
 }
 
-void PropertyPartShape::RestoreDocFile(Base::Reader &reader)
+void PropertyPartShape::RestoreDocFile(Base::Reader& reader)
 {
 
     // save the element map
@@ -654,8 +748,9 @@ void PropertyPartShape::RestoreDocFile(Base::Reader &reader)
         shape.importBinary(reader);
     }
     else {
-        bool direct = App::GetApplication().GetParameterGroupByPath
-            ("User parameter:BaseApp/Preferences/Mod/Part/General")->GetBool("DirectAccess", true);
+        bool direct = App::GetApplication()
+                          .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part/General")
+                          ->GetBool("DirectAccess", true);
         if (!direct) {
             loadFromFile(reader);
         }
@@ -676,43 +771,53 @@ void PropertyPartShape::RestoreDocFile(Base::Reader &reader)
 
 // -------------------------------------------------------------------------
 
-ShapeHistory::ShapeHistory(BRepBuilderAPI_MakeShape& mkShape, TopAbs_ShapeEnum type,
-                           const TopoDS_Shape& newS, const TopoDS_Shape& oldS)
+ShapeHistory::ShapeHistory(
+    BRepBuilderAPI_MakeShape& mkShape,
+    TopAbs_ShapeEnum type,
+    const TopoDS_Shape& newS,
+    const TopoDS_Shape& oldS
+)
 {
-    reset(mkShape,type,newS,oldS);
+    reset(mkShape, type, newS, oldS);
 }
 
-void ShapeHistory::reset(BRepBuilderAPI_MakeShape& mkShape, TopAbs_ShapeEnum type,
-                         const TopoDS_Shape& newS, const TopoDS_Shape& oldS)
+void ShapeHistory::reset(
+    BRepBuilderAPI_MakeShape& mkShape,
+    TopAbs_ShapeEnum type,
+    const TopoDS_Shape& newS,
+    const TopoDS_Shape& oldS
+)
 {
     shapeMap.clear();
     this->type = type;
 
     TopTools_IndexedMapOfShape newM, oldM;
-    TopExp::MapShapes(newS, type, newM); // map containing all old objects of type "type"
-    TopExp::MapShapes(oldS, type, oldM); // map containing all new objects of type "type"
+    TopExp::MapShapes(newS, type, newM);  // map containing all old objects of type "type"
+    TopExp::MapShapes(oldS, type, oldM);  // map containing all new objects of type "type"
 
     // Look at all objects in the old shape and try to find the modified object in the new shape
-    for (int i=1; i<=oldM.Extent(); i++) {
+    for (int i = 1; i <= oldM.Extent(); i++) {
         bool found = false;
         TopTools_ListIteratorOfListOfShape it;
         // Find all new objects that are a modification of the old object (e.g. a face was resized)
         for (it.Initialize(mkShape.Modified(oldM(i))); it.More(); it.Next()) {
             found = true;
-            for (int j=1; j<=newM.Extent(); j++) { // one old object might create several new ones!
+            for (int j = 1; j <= newM.Extent();
+                 j++) {  // one old object might create several new ones!
                 if (newM(j).IsPartner(it.Value())) {
-                    shapeMap[i-1].push_back(j-1); // adjust indices to start at zero
+                    shapeMap[i - 1].push_back(j - 1);  // adjust indices to start at zero
                     break;
                 }
             }
         }
 
-        // Find all new objects that were generated from an old object (e.g. a face generated from an edge)
+        // Find all new objects that were generated from an old object (e.g. a face generated from
+        // an edge)
         for (it.Initialize(mkShape.Generated(oldM(i))); it.More(); it.Next()) {
             found = true;
-            for (int j=1; j<=newM.Extent(); j++) {
+            for (int j = 1; j <= newM.Extent(); j++) {
                 if (newM(j).IsPartner(it.Value())) {
-                    shapeMap[i-1].push_back(j-1);
+                    shapeMap[i - 1].push_back(j - 1);
                     break;
                 }
             }
@@ -721,13 +826,13 @@ void ShapeHistory::reset(BRepBuilderAPI_MakeShape& mkShape, TopAbs_ShapeEnum typ
         if (!found) {
             // Find all old objects that don't exist any more (e.g. a face was completely cut away)
             if (mkShape.IsDeleted(oldM(i))) {
-                shapeMap[i-1] = std::vector<int>();
+                shapeMap[i - 1] = std::vector<int>();
             }
             else {
                 // Mop up the rest (will this ever be reached?)
-                for (int j=1; j<=newM.Extent(); j++) {
+                for (int j = 1; j <= newM.Extent(); j++) {
                     if (newM(j).IsPartner(oldM(i))) {
-                        shapeMap[i-1].push_back(j-1);
+                        shapeMap[i - 1].push_back(j - 1);
                         break;
                     }
                 }
@@ -742,9 +847,11 @@ void ShapeHistory::join(const ShapeHistory& newH)
 
     for (ShapeHistory::MapList::const_iterator it = shapeMap.begin(); it != shapeMap.end(); ++it) {
         int old_shape_index = it->first;
-        if (it->second.empty())
+        if (it->second.empty()) {
             join.shapeMap[old_shape_index] = ShapeHistory::List();
-        for (ShapeHistory::List::const_iterator jt = it->second.begin(); jt != it->second.end(); ++jt) {
+        }
+        for (ShapeHistory::List::const_iterator jt = it->second.begin(); jt != it->second.end();
+             ++jt) {
             ShapeHistory::MapList::const_iterator kt = newH.shapeMap.find(*jt);
             if (kt != newH.shapeMap.end()) {
                 ShapeHistory::List& ary = join.shapeMap[old_shape_index];
@@ -758,7 +865,7 @@ void ShapeHistory::join(const ShapeHistory& newH)
 
 // -------------------------------------------------------------------------
 
-TYPESYSTEM_SOURCE(Part::PropertyShapeHistory , App::PropertyLists)
+TYPESYSTEM_SOURCE(Part::PropertyShapeHistory, App::PropertyLists)
 
 PropertyShapeHistory::PropertyShapeHistory() = default;
 
@@ -779,39 +886,34 @@ void PropertyShapeHistory::setValues(const std::vector<ShapeHistory>& values)
     hasSetValue();
 }
 
-PyObject *PropertyShapeHistory::getPyObject()
+PyObject* PropertyShapeHistory::getPyObject()
 {
     return Py::new_reference_to(Py::None());
 }
 
-void PropertyShapeHistory::setPyObject(PyObject *)
-{
-}
+void PropertyShapeHistory::setPyObject(PyObject*)
+{}
 
-void PropertyShapeHistory::Save (Base::Writer &) const
-{
-}
+void PropertyShapeHistory::Save(Base::Writer&) const
+{}
 
-void PropertyShapeHistory::Restore(Base::XMLReader &)
-{
-}
+void PropertyShapeHistory::Restore(Base::XMLReader&)
+{}
 
-void PropertyShapeHistory::SaveDocFile (Base::Writer &) const
-{
-}
+void PropertyShapeHistory::SaveDocFile(Base::Writer&) const
+{}
 
-void PropertyShapeHistory::RestoreDocFile(Base::Reader &)
-{
-}
+void PropertyShapeHistory::RestoreDocFile(Base::Reader&)
+{}
 
-App::Property *PropertyShapeHistory::Copy() const
+App::Property* PropertyShapeHistory::Copy() const
 {
-    PropertyShapeHistory *p= new PropertyShapeHistory();
+    PropertyShapeHistory* p = new PropertyShapeHistory();
     p->_lValueList = _lValueList;
     return p;
 }
 
-void PropertyShapeHistory::Paste(const Property &from)
+void PropertyShapeHistory::Paste(const Property& from)
 {
     aboutToSetValue();
     _lValueList = dynamic_cast<const PropertyShapeHistory&>(from)._lValueList;
@@ -820,7 +922,7 @@ void PropertyShapeHistory::Paste(const Property &from)
 
 // -------------------------------------------------------------------------
 
-TYPESYSTEM_SOURCE(Part::PropertyFilletEdges , App::PropertyLists)
+TYPESYSTEM_SOURCE(Part::PropertyFilletEdges, App::PropertyLists)
 
 PropertyFilletEdges::PropertyFilletEdges() = default;
 
@@ -843,7 +945,7 @@ void PropertyFilletEdges::setValues(const std::vector<FilletElement>& values)
     hasSetValue();
 }
 
-PyObject *PropertyFilletEdges::getPyObject()
+PyObject* PropertyFilletEdges::getPyObject()
 {
     Py::List list(getSize());
     std::vector<FilletElement>::const_iterator it;
@@ -859,7 +961,7 @@ PyObject *PropertyFilletEdges::getPyObject()
     return Py::new_reference_to(list);
 }
 
-void PropertyFilletEdges::setPyObject(PyObject *value)
+void PropertyFilletEdges::setPyObject(PyObject* value)
 {
     Py::Sequence list(value);
     std::vector<FilletElement> values;
@@ -876,54 +978,55 @@ void PropertyFilletEdges::setPyObject(PyObject *value)
     setValues(values);
 }
 
-void PropertyFilletEdges::Save (Base::Writer &writer) const
+void PropertyFilletEdges::Save(Base::Writer& writer) const
 {
     if (!writer.isForceXML()) {
-        writer.Stream() << writer.ind() << "<FilletEdges file=\"" << writer.addFile(getName(), this) << "\"/>" << std::endl;
+        writer.Stream() << writer.ind() << "<FilletEdges file=\"" << writer.addFile(getName(), this)
+                        << "\"/>" << std::endl;
     }
 }
 
-void PropertyFilletEdges::Restore(Base::XMLReader &reader)
+void PropertyFilletEdges::Restore(Base::XMLReader& reader)
 {
     reader.readElement("FilletEdges");
-    std::string file (reader.getAttribute<const char*>("file") );
+    std::string file(reader.getAttribute<const char*>("file"));
 
     if (!file.empty()) {
         // initiate a file read
-        reader.addFile(file.c_str(),this);
+        reader.addFile(file.c_str(), this);
     }
 }
 
-void PropertyFilletEdges::SaveDocFile (Base::Writer &writer) const
+void PropertyFilletEdges::SaveDocFile(Base::Writer& writer) const
 {
     Base::OutputStream str(writer.Stream());
     uint32_t uCt = (uint32_t)getSize();
     str << uCt;
-    for (const auto & it : _lValueList) {
+    for (const auto& it : _lValueList) {
         str << it.edgeid << it.radius1 << it.radius2;
     }
 }
 
-void PropertyFilletEdges::RestoreDocFile(Base::Reader &reader)
+void PropertyFilletEdges::RestoreDocFile(Base::Reader& reader)
 {
     Base::InputStream str(reader);
-    uint32_t uCt=0;
+    uint32_t uCt = 0;
     str >> uCt;
     std::vector<FilletElement> values(uCt);
-    for (auto & it : values) {
+    for (auto& it : values) {
         str >> it.edgeid >> it.radius1 >> it.radius2;
     }
     setValues(values);
 }
 
-App::Property *PropertyFilletEdges::Copy() const
+App::Property* PropertyFilletEdges::Copy() const
 {
-    PropertyFilletEdges *p= new PropertyFilletEdges();
+    PropertyFilletEdges* p = new PropertyFilletEdges();
     p->_lValueList = _lValueList;
     return p;
 }
 
-void PropertyFilletEdges::Paste(const Property &from)
+void PropertyFilletEdges::Paste(const Property& from)
 {
     aboutToSetValue();
     _lValueList = dynamic_cast<const PropertyFilletEdges&>(from)._lValueList;
@@ -934,30 +1037,32 @@ void PropertyFilletEdges::Paste(const Property &from)
 
 TYPESYSTEM_SOURCE(Part::PropertyShapeCache, App::Property);
 
-App::Property *PropertyShapeCache::Copy(void) const {
+App::Property* PropertyShapeCache::Copy(void) const
+{
     return new PropertyShapeCache();
 }
 
-void PropertyShapeCache::Paste(const App::Property &) {
+void PropertyShapeCache::Paste(const App::Property&)
+{
     cache.clear();
 }
 
-void PropertyShapeCache::Save (Base::Writer &) const
-{
-}
+void PropertyShapeCache::Save(Base::Writer&) const
+{}
 
-void PropertyShapeCache::Restore(Base::XMLReader &)
-{
-}
+void PropertyShapeCache::Restore(Base::XMLReader&)
+{}
 
 /**
  * Make a new python List with a tuple for each cache entry containing the key and the shape
  * @return the python list
  */
-PyObject *PropertyShapeCache::getPyObject() {
+PyObject* PropertyShapeCache::getPyObject()
+{
     Py::List res;
-    for(auto &v : cache)
-        res.append(Py::TupleN(Py::String(v.first),shape2pyshape(v.second)));
+    for (auto& v : cache) {
+        res.append(Py::TupleN(Py::String(v.first), shape2pyshape(v.second)));
+    }
     return Py::new_reference_to(res);
 }
 
@@ -965,17 +1070,20 @@ PyObject *PropertyShapeCache::getPyObject() {
  * Remove the cache entries for every element in the list
  * @param value A python list of entry names
  */
-void PropertyShapeCache::setPyObject(PyObject *value) {
-    if(!value)
+void PropertyShapeCache::setPyObject(PyObject* value)
+{
+    if (!value) {
         return;
-    if(value == Py_None) {
+    }
+    if (value == Py_None) {
         cache.clear();
         return;
     }
     App::PropertyStringList prop;
     prop.setPyObject(value);
-    for(const auto &sub : prop.getValues())
+    for (const auto& sub : prop.getValues()) {
         cache.erase(sub);
+    }
 }
 
 #define SHAPE_CACHE_NAME "_Part_ShapeCache"
@@ -985,23 +1093,31 @@ void PropertyShapeCache::setPyObject(PyObject *value) {
  * @param create True if we should create the cache if it doesn't exist
  * @return The shape cache, or null if we aren't creating and it doesn't exist
  */
-PropertyShapeCache *PropertyShapeCache::get(const App::DocumentObject *obj, bool create) {
-    auto prop = freecad_cast<PropertyShapeCache*>(
-        obj->getDynamicPropertyByName(SHAPE_CACHE_NAME));
-    if(prop && prop->getContainer()==obj)
+PropertyShapeCache* PropertyShapeCache::get(const App::DocumentObject* obj, bool create)
+{
+    auto prop = freecad_cast<PropertyShapeCache*>(obj->getDynamicPropertyByName(SHAPE_CACHE_NAME));
+    if (prop && prop->getContainer() == obj) {
         return prop;
-    if(!create)
+    }
+    if (!create) {
         return 0;
+    }
 
-    prop = static_cast<PropertyShapeCache*>(
-        const_cast<App::DocumentObject*>(obj)->addDynamicProperty("Part::PropertyShapeCache",
-                                                                  SHAPE_CACHE_NAME,"Part","Shape cache",
-                                                                  App::Prop_NoPersist|App::Prop_Output|App::Prop_Hidden));
-    if(!prop)
+    prop = static_cast<PropertyShapeCache*>(const_cast<App::DocumentObject*>(obj)->addDynamicProperty(
+        "Part::PropertyShapeCache",
+        SHAPE_CACHE_NAME,
+        "Part",
+        "Shape cache",
+        App::Prop_NoPersist | App::Prop_Output | App::Prop_Hidden
+    ));
+    if (!prop) {
         FC_ERR("Failed to add shape cache for " << obj->getFullName());
-    else
+    }
+    else {
         prop->connChanged = const_cast<App::DocumentObject*>(obj)->signalEarlyChanged.connect(
-            std::bind(&PropertyShapeCache::slotChanged,prop,sp::_1,sp::_2));
+            std::bind(&PropertyShapeCache::slotChanged, prop, sp::_1, sp::_2)
+        );
+    }
     return prop;
 }
 
@@ -1012,17 +1128,21 @@ PropertyShapeCache *PropertyShapeCache::get(const App::DocumentObject *obj, bool
  * @param subname The key to look up
  * @return True if the name was found
  */
-bool PropertyShapeCache::getShape(const App::DocumentObject *obj, TopoShape &shape, const char *subname) {
-// March, 2024 Toponaming project:  There was originally a feature to disable shape cache
-// that has not been kept:
-//    if (PartParams::getDisableShapeCache())
-//        return false;
-    auto prop = get(obj,false);
-    if(!prop)
+bool PropertyShapeCache::getShape(const App::DocumentObject* obj, TopoShape& shape, const char* subname)
+{
+    // March, 2024 Toponaming project:  There was originally a feature to disable shape cache
+    // that has not been kept:
+    //    if (PartParams::getDisableShapeCache())
+    //        return false;
+    auto prop = get(obj, false);
+    if (!prop) {
         return false;
-    if(!subname) subname = "";
+    }
+    if (!subname) {
+        subname = "";
+    }
     auto it = prop->cache.find(subname);
-    if(it!=prop->cache.end()) {
+    if (it != prop->cache.end()) {
         shape = it->second;
         return !shape.isNull();
     }
@@ -1035,29 +1155,31 @@ bool PropertyShapeCache::getShape(const App::DocumentObject *obj, TopoShape &sha
  * @param shape The shape to cache
  * @param subname The key to point at that shape
  */
-void PropertyShapeCache::setShape(
-    const App::DocumentObject *obj, const TopoShape &shape, const char *subname)
+void PropertyShapeCache::setShape(const App::DocumentObject* obj, const TopoShape& shape, const char* subname)
 {
-// March, 2024 Toponaming project:  There was originally a feature to disable shape cache
-// that has not been kept:
-//    if (PartParams::getDisableShapeCache())
-//        return;
-    auto prop = get(obj,true);
-    if(!prop)
+    // March, 2024 Toponaming project:  There was originally a feature to disable shape cache
+    // that has not been kept:
+    //    if (PartParams::getDisableShapeCache())
+    //        return;
+    auto prop = get(obj, true);
+    if (!prop) {
         return;
-    if(!subname) subname = "";
+    }
+    if (!subname) {
+        subname = "";
+    }
     prop->cache[subname] = shape;
 }
 
-void PropertyShapeCache::slotChanged(const App::DocumentObject &, const App::Property &prop) {
+void PropertyShapeCache::slotChanged(const App::DocumentObject&, const App::Property& prop)
+{
     auto propName = prop.getName();
-    if(!propName) return;
-    if(strcmp(propName,"Group")==0 ||
-        strcmp(propName,"Shape")==0 ||
-        strstr(propName,"Touched")!=0)
-    {
+    if (!propName) {
+        return;
+    }
+    if (strcmp(propName, "Group") == 0 || strcmp(propName, "Shape") == 0
+        || strstr(propName, "Touched") != 0) {
         FC_LOG("clear shape cache on changed " << prop.getFullName());
         cache.clear();
     }
 }
-

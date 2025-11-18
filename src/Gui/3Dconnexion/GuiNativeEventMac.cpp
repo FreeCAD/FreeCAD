@@ -25,9 +25,9 @@ Development tools and related technology provided under license from 3Dconnexion
 (c) 1992 - 2012 3Dconnexion. All rights reserved
 */
 
- /*
+/*
 With special thanks to marcxs for making the first steps
- */
+*/
 
 #include <FCConfig.h>
 #include "GuiNativeEventMac.h"
@@ -51,10 +51,11 @@ uint32_t Gui::GuiNativeEvent::lastButtons = 0;
      them directly, (3) write the event info in a shared memory location for
      usage by reader threads.
 */
-void
-Gui::GuiNativeEvent::tdx_drv_handler(io_connect_t connection,
-                                     natural_t messageType,
-                                     void *messageArgument)
+void Gui::GuiNativeEvent::tdx_drv_handler(
+    io_connect_t connection,
+    natural_t messageType,
+    void* messageArgument
+)
 {
     static bool firstTime = true;
     if (firstTime) {
@@ -62,113 +63,114 @@ Gui::GuiNativeEvent::tdx_drv_handler(io_connect_t connection,
         Base::Console().log("Call connexion handler\n");
     }
     Q_UNUSED(connection)
-    //printf("tdx_drv_handler\n");
-    //printf("connection: %X\n", connection);
-    //printf("messageType %c%c%c%c\n", messageType/0x1000000, messageType/0x10000, messageType/0x100, messageType);
+    // printf("tdx_drv_handler\n");
+    // printf("connection: %X\n", connection);
+    // printf("messageType %c%c%c%c\n", messageType/0x1000000, messageType/0x10000,
+    // messageType/0x100, messageType);
     auto msg = (ConnexionDeviceStatePtr)messageArgument;
 
-    switch(messageType) {
-    case kConnexionMsgDeviceState:
-        /* Device state messages are broadcast to all clients.  It is up to
-         * the client to figure out if the message is meant for them. This
-         * is done by comparing the "client" id sent in the message to our
-         * assigned id when the connection to the driver was established.
-         */
-        //printf("msg->client: %d, tdxClientID: %d\n", msg->client, tdxClientID);
-        Base::Console().log("msg->client: %d, msg->command: %d\n", msg->client, msg->command);
+    switch (messageType) {
+        case kConnexionMsgDeviceState:
+            /* Device state messages are broadcast to all clients.  It is up to
+             * the client to figure out if the message is meant for them. This
+             * is done by comparing the "client" id sent in the message to our
+             * assigned id when the connection to the driver was established.
+             */
+            // printf("msg->client: %d, tdxClientID: %d\n", msg->client, tdxClientID);
+            Base::Console().log("msg->client: %d, msg->command: %d\n", msg->client, msg->command);
 
-        if (msg->client == tdxClientID) {
-            switch (msg->command) {
-            case kConnexionCmdHandleAxis:
-            {
-                motionDataArray[0] = -msg->axis[0];
-                motionDataArray[1] = msg->axis[1];
-                motionDataArray[2] = msg->axis[2];
-                motionDataArray[3] = -msg->axis[3];
-                motionDataArray[4] = msg->axis[4];
-                motionDataArray[5] = msg->axis[5];
-                mainApp->postMotionEvent(motionDataArray);
-                break;
+            if (msg->client == tdxClientID) {
+                switch (msg->command) {
+                    case kConnexionCmdHandleAxis: {
+                        motionDataArray[0] = -msg->axis[0];
+                        motionDataArray[1] = msg->axis[1];
+                        motionDataArray[2] = msg->axis[2];
+                        motionDataArray[3] = -msg->axis[3];
+                        motionDataArray[4] = msg->axis[4];
+                        motionDataArray[5] = msg->axis[5];
+                        mainApp->postMotionEvent(motionDataArray);
+                        break;
+                    }
+
+                    case kConnexionCmdHandleButtons: {
+                        // printf("value: %d\n", msg->value);
+                        // printf("buttons: %u\n", msg->buttons);
+                        uint32_t changedButtons = msg->buttons ^ lastButtons;
+                        uint32_t pressedButtons = msg->buttons & changedButtons;
+                        uint32_t releasedButtons = lastButtons & changedButtons;
+                        for (uint8_t bt = 0; bt < 32; bt++) {
+                            if (pressedButtons & 1) {
+                                mainApp->postButtonEvent(bt, 1);
+                            }
+                            pressedButtons = pressedButtons >> 1;
+                        }
+                        for (uint8_t bt = 0; bt < 32; bt++) {
+                            if (releasedButtons & 1) {
+                                mainApp->postButtonEvent(bt, 0);
+                            }
+                            releasedButtons = releasedButtons >> 1;
+                        }
+
+                        lastButtons = msg->buttons;
+                        break;
+                    }
+
+                    default:
+                        break;
+
+                } /* switch */
             }
+            break;
 
-            case kConnexionCmdHandleButtons:
-            {
-                //printf("value: %d\n", msg->value);
-                //printf("buttons: %u\n", msg->buttons);
-                uint32_t changedButtons = msg->buttons ^ lastButtons;
-                uint32_t pressedButtons = msg->buttons & changedButtons;
-                uint32_t releasedButtons = lastButtons & changedButtons;
-                for (uint8_t bt = 0; bt < 32; bt++) {
-                    if (pressedButtons & 1)
-                        mainApp->postButtonEvent(bt, 1);
-                    pressedButtons = pressedButtons >> 1;
-                }
-                for (uint8_t bt = 0; bt < 32; bt++) {
-                    if (releasedButtons & 1)
-                        mainApp->postButtonEvent(bt, 0);
-                    releasedButtons = releasedButtons >> 1;
-                }
-
-                lastButtons = msg->buttons;
-                break;
-            }
-
-            default:
-                break;
-
-            } /* switch */
-        }
-        break;
-
-    default:
-        /* other messageTypes can happen and should be ignored */
-        break;
+        default:
+            /* other messageTypes can happen and should be ignored */
+            break;
     }
 }
 
-Gui::GuiNativeEvent::GuiNativeEvent(Gui::GUIApplicationNativeEventAware *app)
-: GuiAbstractNativeEvent(app)
-{
-}
+Gui::GuiNativeEvent::GuiNativeEvent(Gui::GUIApplicationNativeEventAware* app)
+    : GuiAbstractNativeEvent(app)
+{}
 
 Gui::GuiNativeEvent::~GuiNativeEvent()
 {
     // if 3Dconnexion library was loaded at runtime
     if (InstallConnexionHandlers) {
         // Close our connection with the 3dx driver
-        if (tdxClientID)
+        if (tdxClientID) {
             UnregisterConnexionClient(tdxClientID);
+        }
         CleanupConnexionHandlers();
         Base::Console().log("Disconnected from 3Dconnexion driver\n");
     }
 }
 
-void Gui::GuiNativeEvent::initSpaceball(QMainWindow *window)
+void Gui::GuiNativeEvent::initSpaceball(QMainWindow* window)
 {
     Q_UNUSED(window)
     OSStatus err;
     /* make sure the framework is installed */
-    if (SetConnexionHandlers == NULL)
-    {
+    if (SetConnexionHandlers == NULL) {
         Base::Console().log("3Dconnexion framework not found!\n");
         return;
     }
     /* install 3dx message handler in order to receive driver events */
     err = SetConnexionHandlers(tdx_drv_handler, 0L, 0L, false);
     assert(err == 0);
-    if (err)
-    {
+    if (err) {
         Base::Console().log("Error installing 3Dconnexion handler\n");
         return;
     }
     /* register our app with the driver */
     // Pascal string Application name required to register driver for application
-    UInt8  tdxAppName[] = {7,'F','r','e','e','C','A','D'};
-    tdxClientID = RegisterConnexionClient( kConnexionClientWildcard, tdxAppName,
-                                           kConnexionClientModeTakeOver,
-                                           kConnexionMaskAll );
-    if (tdxClientID == 0)
-    {
+    UInt8 tdxAppName[] = {7, 'F', 'r', 'e', 'e', 'C', 'A', 'D'};
+    tdxClientID = RegisterConnexionClient(
+        kConnexionClientWildcard,
+        tdxAppName,
+        kConnexionClientModeTakeOver,
+        kConnexionMaskAll
+    );
+    if (tdxClientID == 0) {
         Base::Console().log("Couldn't connect to 3Dconnexion driver\n");
         return;
     }

@@ -56,8 +56,11 @@ public:
     std::string translate(const Quantity& quant, double& factor, std::string& unitString) const;
 
 private:
-    [[nodiscard]] static std::string
-    toLocale(const Quantity& quant, double factor, const std::string& unitString);
+    [[nodiscard]] static std::string toLocale(
+        const Quantity& quant,
+        double factor,
+        const std::string& unitString
+    );
 
     UnitsSchemaSpec spec;
 };

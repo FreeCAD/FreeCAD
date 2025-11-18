@@ -7,7 +7,7 @@
 
 
 #ifdef _MSC_VER
-#define strdup _strdup
+# define strdup _strdup
 #endif
 
 #include "Area.h"
@@ -59,15 +59,19 @@ static void print_curve(const CCurve& c)
     for (std::list<CVertex>::const_iterator It = c.m_vertices.begin(); It != c.m_vertices.end();
          It++, i++) {
         const CVertex& vertex = *It;
-        printf("vertex %d type = %d, x = %g, y = %g",
-               i + 1,
-               vertex.m_type,
-               vertex.m_p.x / CArea::get_units(),
-               vertex.m_p.y / CArea::get_units());
+        printf(
+            "vertex %d type = %d, x = %g, y = %g",
+            i + 1,
+            vertex.m_type,
+            vertex.m_p.x / CArea::get_units(),
+            vertex.m_p.y / CArea::get_units()
+        );
         if (vertex.m_type) {
-            printf(", xc = %g, yc = %g",
-                   vertex.m_c.x / CArea::get_units(),
-                   vertex.m_c.y / CArea::get_units());
+            printf(
+                ", xc = %g, yc = %g",
+                vertex.m_c.x / CArea::get_units(),
+                vertex.m_c.y / CArea::get_units()
+            );
         }
         printf("\n");
     }
@@ -132,22 +136,26 @@ static py::tuple nearest_point_to_curve(CCurve& c1, const CCurve& c2)
     return py::make_tuple(p, dist);
 }
 
-std::list<CCurve> MakePocketToolpath(const CArea& a,
-                                     double tool_radius,
-                                     double extra_offset,
-                                     double stepover,
-                                     bool from_center,
-                                     bool use_zig_zag,
-                                     double zig_angle)
+std::list<CCurve> MakePocketToolpath(
+    const CArea& a,
+    double tool_radius,
+    double extra_offset,
+    double stepover,
+    bool from_center,
+    bool use_zig_zag,
+    double zig_angle
+)
 {
     std::list<CCurve> toolpath;
 
-    CAreaPocketParams params(tool_radius,
-                             extra_offset,
-                             stepover,
-                             from_center,
-                             use_zig_zag ? ZigZagPocketMode : SpiralPocketMode,
-                             zig_angle);
+    CAreaPocketParams params(
+        tool_radius,
+        extra_offset,
+        stepover,
+        from_center,
+        use_zig_zag ? ZigZagPocketMode : SpiralPocketMode,
+        zig_angle
+    );
     a.SplitAndMakePocketToolpath(toolpath, params);
 
     return toolpath;
@@ -305,10 +313,11 @@ void init_pyarea(py::module& m)
     py::class_<Span>(m, "Span")
         .def(py::init<Span>())
         .def(py::init<Point, CVertex, bool>())
-        .def("NearestPoint",
-             static_cast<Point (Span::*)(const Point& p) const>(&Span::NearestPoint))
-        .def("NearestPoint",
-             static_cast<Point (Span::*)(const Span& p, double* d) const>(&Span::NearestPoint))
+        .def("NearestPoint", static_cast<Point (Span::*)(const Point& p) const>(&Span::NearestPoint))
+        .def(
+            "NearestPoint",
+            static_cast<Point (Span::*)(const Span& p, double* d) const>(&Span::NearestPoint)
+        )
         .def("GetBox", &Span::GetBox)
         .def("IncludedAngle", &Span::IncludedAngle)
         .def("GetArea", &Span::GetArea)
@@ -327,8 +336,7 @@ void init_pyarea(py::module& m)
         .def("append", &CCurve::append)
         .def("append", &append_point)
         .def("text", &print_curve)
-        .def("NearestPoint",
-             static_cast<Point (CCurve::*)(const Point& p) const>(&CCurve::NearestPoint))
+        .def("NearestPoint", static_cast<Point (CCurve::*)(const Point& p) const>(&CCurve::NearestPoint))
         .def("NearestPoint", &nearest_point_to_curve)
         .def("Reverse", &CCurve::Reverse)
         .def("getNumVertices", &num_vertices)

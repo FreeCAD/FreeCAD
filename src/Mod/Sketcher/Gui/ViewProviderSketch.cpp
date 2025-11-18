@@ -1030,8 +1030,10 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
 
                     return done;
                 }
-                case STATUS_SKETCH_UseHandler:
-                    return sketchHandler->pressButton(Base::Vector2d(x, y));
+                case STATUS_SKETCH_UseHandler: {
+                    Base::Vector2d snappedPos = snapHandle->compute();
+                    return sketchHandler->pressButton(snappedPos);
+                }
                 default:
                     return false;
             }
@@ -1153,7 +1155,8 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     return true;
                 case STATUS_SKETCH_UseHandler: {
                     sketchHandler->applyCursor();
-                    return sketchHandler->releaseButton(Base::Vector2d(x, y));
+                    Base::Vector2d snappedPos = snapHandle->compute();
+                    return sketchHandler->releaseButton(snappedPos);
                 }
                 case STATUS_NONE:
                 default:
@@ -3254,10 +3257,12 @@ bool ViewProviderSketch::getElementPicked(const SoPickedPoint* pp, std::string& 
     return ViewProvider2DObject::getElementPicked(pp, subname);
 }
 
-bool ViewProviderSketch::getDetailPath(const char* subname,
-                                       SoFullPath* pPath,
-                                       bool append,
-                                       SoDetail*& det) const
+bool ViewProviderSketch::getDetailPath(
+    const char* subname,
+    SoFullPath* pPath,
+    bool append,
+    SoDetail*& det
+) const
 {
     const auto getLastPartOfName = [](const char* subname) -> const char* {
         const char* realName = strrchr(subname, '.');
@@ -3392,8 +3397,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
                     "if ActiveSketch.ViewObject.HideDependent:\n"
                     "  tv.hide(tv.get_all_dependent(%3, '%4'))\n"
                     "if ActiveSketch.ViewObject.ShowSupport:\n"
-                    "  tv.show([ref[0] for ref in ActiveSketch.AttachmentSupport if not "
-                    "ref[0].isDerivedFrom(\"App::Plane\")])\n"
+                    "  tv.show([ref[0] for ref in ActiveSketch.AttachmentSupport if not (ref[0].isDerivedFrom(\"App::Plane\") or ref[0].isDerivedFrom(\"App::LocalCoordinateSystem\"))])\n"
                     "if ActiveSketch.ViewObject.ShowLinks:\n"
                     "  tv.show([ref[0] for ref in ActiveSketch.ExternalGeometry])\n"
                     "tv.sketchClipPlane(ActiveSketch, ActiveSketch.ViewObject.SectionView)\n"

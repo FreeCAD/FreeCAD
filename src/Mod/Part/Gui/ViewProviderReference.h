@@ -48,10 +48,11 @@ class SbVec3f;
 class SoSphere;
 class SoScale;
 
-namespace PartGui {
+namespace PartGui
+{
 
 
-class PartGuiExport ViewProviderPartReference : public Gui::ViewProviderGeometryObject
+class PartGuiExport ViewProviderPartReference: public Gui::ViewProviderGeometryObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderPartReference);
 
@@ -62,17 +63,17 @@ public:
     ~ViewProviderPartReference() override;
 
     // Display properties
-    //App::PropertyFloatConstraint LineWidth;
-    //App::PropertyFloatConstraint PointSize;
-    //App::PropertyColor LineColor;
-    //App::PropertyColor PointColor;
-    //App::PropertyMaterial LineMaterial;
-    //App::PropertyMaterial PointMaterial;
-    //App::PropertyBool ControlPoints;
-    //App::PropertyEnumeration Lighting;
+    // App::PropertyFloatConstraint LineWidth;
+    // App::PropertyFloatConstraint PointSize;
+    // App::PropertyColor LineColor;
+    // App::PropertyColor PointColor;
+    // App::PropertyMaterial LineMaterial;
+    // App::PropertyMaterial PointMaterial;
+    // App::PropertyBool ControlPoints;
+    // App::PropertyEnumeration Lighting;
 
 
-    void attach(App::DocumentObject *) override;
+    void attach(App::DocumentObject*) override;
     void setDisplayMode(const char* ModeName) override;
     /// returns a list of all possible modes
     std::vector<std::string> getDisplayModes() const override;
@@ -84,32 +85,30 @@ public:
 protected:
     /// get called by the container whenever a property has been changed
     void onChanged(const App::Property* prop) override;
-    //bool loadParameter();
+    // bool loadParameter();
 
     // nodes for the data representation
-    SoGroup  *EdgeRoot{nullptr};
-    SoGroup  *FaceRoot{nullptr};
-    SoGroup  *VertexRoot{nullptr};
-    SoMaterial   *pcLineMaterial{nullptr};
-    SoMaterial   *pcPointMaterial{nullptr};
-    SoDrawStyle  *pcLineStyle{nullptr};
-    SoDrawStyle  *pcPointStyle{nullptr};
-    SoSwitch     *pcControlPoints{nullptr};
-    SoShapeHints *pShapeHints{nullptr};
+    SoGroup* EdgeRoot {nullptr};
+    SoGroup* FaceRoot {nullptr};
+    SoGroup* VertexRoot {nullptr};
+    SoMaterial* pcLineMaterial {nullptr};
+    SoMaterial* pcPointMaterial {nullptr};
+    SoDrawStyle* pcLineStyle {nullptr};
+    SoDrawStyle* pcPointStyle {nullptr};
+    SoSwitch* pcControlPoints {nullptr};
+    SoShapeHints* pShapeHints {nullptr};
 
 private:
     // settings stuff
-    float meshDeviation{0.01F};
-    bool noPerVertexNormals{true};
-    bool qualityNormals{false};
+    float meshDeviation {0.01F};
+    bool noPerVertexNormals {true};
+    bool qualityNormals {false};
     static App::PropertyFloatConstraint::Constraints floatRange;
     static const char* LightingEnums[];
 };
 
 
+}  // namespace PartGui
 
-} // namespace PartGui
 
-
-#endif // PARTGUI_ViewProviderPartReference_H
-
+#endif  // PARTGUI_ViewProviderPartReference_H

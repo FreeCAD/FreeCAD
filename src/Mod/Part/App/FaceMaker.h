@@ -56,13 +56,15 @@ class PartExport FaceMaker: public BRepBuilderAPI_MakeShape, public Base::BaseCl
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    FaceMaker() {}
-    ~FaceMaker() override {}
+    FaceMaker()
+    {}
+    ~FaceMaker() override
+    {}
 
-    void addTopoShape(const TopoShape &s);
-    void useTopoCompound(const TopoShape &comp);
-    const TopoShape &getTopoShape() const;
-    const TopoShape &TopoFace() const;
+    void addTopoShape(const TopoShape& s);
+    void useTopoCompound(const TopoShape& comp);
+    const TopoShape& getTopoShape() const;
+    const TopoShape& TopoFace() const;
 
     virtual void addWire(const TopoDS_Wire& w);
     /**
@@ -78,9 +80,10 @@ public:
      * is NOT expanded recursively.
      * @param comp
      */
-    virtual void useCompound(const TopoDS_Compound &comp);
+    virtual void useCompound(const TopoDS_Compound& comp);
 
-    virtual void setPlane(const gp_Pln &) {}
+    virtual void setPlane(const gp_Pln&)
+    {}
 
     /**
      * @brief Face: returns the face (result). If result is not a single face,
@@ -95,22 +98,23 @@ public:
     void Build() override;
 #endif
 
-    //fails to compile, huh!
-    //virtual const TopTools_ListOfShape& Generated(const TopoDS_Shape &S) override {throwNotImplemented();}
-    //virtual const TopTools_ListOfShape& Modified(const TopoDS_Shape &S) override {throwNotImplemented();}
-    //virtual Standard_Boolean IsDeleted(const TopoDS_Shape &S) override {throwNotImplemented();}
+    // fails to compile, huh!
+    // virtual const TopTools_ListOfShape& Generated(const TopoDS_Shape &S) override
+    // {throwNotImplemented();} virtual const TopTools_ListOfShape& Modified(const TopoDS_Shape &S)
+    // override {throwNotImplemented();} virtual Standard_Boolean IsDeleted(const TopoDS_Shape &S)
+    // override {throwNotImplemented();}
 
     static std::unique_ptr<FaceMaker> ConstructFromType(const char* className);
     static std::unique_ptr<FaceMaker> ConstructFromType(Base::Type type);
 
-    const char *MyOp = 0;
+    const char* MyOp = 0;
     App::StringHasherRef MyHasher;
 
 protected:
-    std::vector<TopoShape> mySourceShapes; //wire or compound
-    std::vector<TopoDS_Wire> myWires; //wires from mySourceShapes
+    std::vector<TopoShape> mySourceShapes;  // wire or compound
+    std::vector<TopoDS_Wire> myWires;       // wires from mySourceShapes
     std::vector<TopoShape> myTopoWires;
-    std::vector<TopoDS_Compound> myCompounds; //compounds, for recursive processing
+    std::vector<TopoDS_Compound> myCompounds;  // compounds, for recursive processing
     std::vector<TopoDS_Shape> myShapesToReturn;
     std::vector<TopoDS_Shape> myInputFaces;
     TopoShape myTopoShape;
@@ -132,16 +136,17 @@ protected:
 };
 
 /**
- * @brief The FaceMakerPublic class: derive from it if you want the face maker to be listed in tools that allow choosing one.
+ * @brief The FaceMakerPublic class: derive from it if you want the face maker to be listed in tools
+ * that allow choosing one.
  */
-class PartExport FaceMakerPublic : public FaceMaker
+class PartExport FaceMakerPublic: public FaceMaker
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
 public:
     virtual std::string getUserFriendlyName() const = 0;
     virtual std::string getBriefExplanation() const = 0;
 };
-
 
 
 /**
@@ -158,16 +163,18 @@ public:
  * for BOPs, but the faces themselves are valid, provided that the source wires
  * are valid.
  */
-class PartExport FaceMakerSimple : public FaceMakerPublic
+class PartExport FaceMakerSimple: public FaceMakerPublic
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
 public:
     std::string getUserFriendlyName() const override;
     std::string getBriefExplanation() const override;
+
 protected:
     void Build_Essence() override;
 };
 
 
-}//namespace Part
-#endif // PART_FACEMAKER_H
+}  // namespace Part
+#endif  // PART_FACEMAKER_H

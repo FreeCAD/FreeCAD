@@ -69,22 +69,19 @@ int EdgePy::PyInit(PyObject* args, PyObject* /*kwds*/)
 {
     PyObject* pt1 = nullptr;
     PyObject* pt2 = nullptr;
-    if (!PyArg_ParseTuple(args,
-                          "|O!O!",
-                          &Base::VectorPy::Type,
-                          &pt1,
-                          &Base::VectorPy::Type,
-                          &pt2)) {
+    if (!PyArg_ParseTuple(args, "|O!O!", &Base::VectorPy::Type, &pt1, &Base::VectorPy::Type, &pt2)) {
         return -1;
     }
 
     if (pt1) {
-        getEdgePtr()->_aclPoints[0] =
-            Base::convertTo<Base::Vector3f>(Py::Vector(pt1, false).toVector());
+        getEdgePtr()->_aclPoints[0] = Base::convertTo<Base::Vector3f>(
+            Py::Vector(pt1, false).toVector()
+        );
     }
     if (pt2) {
-        getEdgePtr()->_aclPoints[1] =
-            Base::convertTo<Base::Vector3f>(Py::Vector(pt2, false).toVector());
+        getEdgePtr()->_aclPoints[1] = Base::convertTo<Base::Vector3f>(
+            Py::Vector(pt2, false).toVector()
+        );
     }
     return 0;
 }

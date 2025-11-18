@@ -28,8 +28,8 @@
 #include "FemPostObjectPy.cpp"
 
 #ifdef FC_USE_VTK_PYTHON
-#include <vtkDataSet.h>
-#include <vtkPythonUtil.h>
+# include <vtkDataSet.h>
+# include <vtkPythonUtil.h>
 #endif  // BUILD_FEM_VTK
 
 using namespace Fem;

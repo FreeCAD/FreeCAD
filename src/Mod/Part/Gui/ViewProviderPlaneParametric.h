@@ -37,10 +37,11 @@ class SoSeparator;
 class SbVec3f;
 class SoTransform;
 
-namespace PartGui {
+namespace PartGui
+{
 
 
-class PartGuiExport ViewProviderPlaneParametric : public ViewProviderPrimitive
+class PartGuiExport ViewProviderPlaneParametric: public ViewProviderPrimitive
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderPlaneParametric);
 
@@ -53,10 +54,9 @@ public:
     std::vector<std::string> getDisplayModes() const override;
 
 protected:
-
 };
 
-class PartGuiExport ViewProviderFace : public ViewProviderPlaneParametric
+class PartGuiExport ViewProviderFace: public ViewProviderPlaneParametric
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderFace);
 
@@ -73,8 +73,7 @@ public:
     void dropObject(App::DocumentObject*) override;
 };
 
-} // namespace PartGui
+}  // namespace PartGui
 
 
-#endif // PARTGUI_VIEWPROVIDERPLANEPARAMETRIC_H
-
+#endif  // PARTGUI_VIEWPROVIDERPLANEPARAMETRIC_H

@@ -42,17 +42,19 @@ struct GUID
 {
     GUID() {};
 
-    GUID(uint32_t a1,
-         uint16_t b1,
-         uint16_t b2,
-         uint8_t c1,
-         uint8_t c2,
-         uint8_t c3,
-         uint8_t c4,
-         uint8_t c5,
-         uint8_t c6,
-         uint8_t c7,
-         uint8_t c8)
+    GUID(
+        uint32_t a1,
+        uint16_t b1,
+        uint16_t b2,
+        uint8_t c1,
+        uint8_t c2,
+        uint8_t c3,
+        uint8_t c4,
+        uint8_t c5,
+        uint8_t c6,
+        uint8_t c7,
+        uint8_t c8
+    )
         : _A1(a1)
         , _B1(b1)
         , _B2(b2)

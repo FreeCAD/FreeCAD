@@ -77,8 +77,8 @@ Mesh::Extension3MF::Resource ThumbnailExtension3MF::addMesh(const Mesh::MeshObje
     Mesh::Extension3MF::Resource res;
     res.extension = "png";
     res.contentType = "image/png";
-    res.relationshipType =
-        "http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail";
+    res.relationshipType
+        = "http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail";
     res.fileContent = std::string(data.data(), data.size());
     setContentName(res);
 

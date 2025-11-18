@@ -25,7 +25,7 @@
 #include <FCConfig.h>
 
 #ifdef FC_OS_LINUX
-#include <unistd.h>
+# include <unistd.h>
 #endif
 
 #include <Base/Builder3D.h>
@@ -48,8 +48,7 @@ void MeshAlgos::offset(MeshCore::MeshKernel* Mesh, float fSize)
 
     unsigned int i = 0;
     // go through all the Vertex normals
-    for (std::vector<Base::Vector3f>::iterator It = normals.begin(); It != normals.end();
-         ++It, i++) {
+    for (std::vector<Base::Vector3f>::iterator It = normals.begin(); It != normals.end(); ++It, i++) {
         // and move each mesh point in the normal direction
         Mesh->MovePoint(i, It->Normalize() * fSize);
     }
@@ -90,14 +89,18 @@ void MeshAlgos::offsetSpecial2(MeshCore::MeshKernel* Mesh, float fSize)
                 continue;
             }
             // calculate the angle between them
-            float angle = acos((FaceNormals[i] * it->GetNormal())
-                               / (it->GetNormal().Length() * FaceNormals[i].Length()));
+            float angle = acos(
+                (FaceNormals[i] * it->GetNormal())
+                / (it->GetNormal().Length() * FaceNormals[i].Length())
+            );
             if (angle > 1.6) {
                 Base::DrawStyle drawStyle;
                 drawStyle.pointSize = 4.0F;
-                Base::PointItem item {it->GetGravityPoint(),
-                                      drawStyle,
-                                      Base::ColorRGB {1.0F, 0.0F, 0.0F}};
+                Base::PointItem item {
+                    it->GetGravityPoint(),
+                    drawStyle,
+                    Base::ColorRGB {1.0F, 0.0F, 0.0F}
+                };
                 builder.addNode(item);
                 flipped.insert(it.Position());
             }
@@ -130,8 +133,7 @@ void MeshAlgos::offsetSpecial(MeshCore::MeshKernel* Mesh, float fSize, float zma
 
     unsigned int i = 0;
     // go through all the Vertex normals
-    for (std::vector<Base::Vector3f>::iterator It = normals.begin(); It != normals.end();
-         ++It, i++) {
+    for (std::vector<Base::Vector3f>::iterator It = normals.begin(); It != normals.end(); ++It, i++) {
         Base::Vector3f Pnt = Mesh->GetPoint(i);
 
         if (Pnt.z < zmax && Pnt.z > zmin) {
@@ -157,16 +159,20 @@ void MeshAlgos::offsetSpecial(MeshCore::MeshKernel* Mesh, float fSize, float zma
 #include <TopoDS_Vertex.hxx>
 #include <TopoDS_Wire.hxx>
 
-void MeshAlgos::cutByShape(const TopoDS_Shape& aShape,
-                           const MeshCore::MeshKernel* pMesh,
-                           MeshCore::MeshKernel* pToolMesh)
+void MeshAlgos::cutByShape(
+    const TopoDS_Shape& aShape,
+    const MeshCore::MeshKernel* pMesh,
+    MeshCore::MeshKernel* pToolMesh
+)
 {
     CurveProjectorWithToolMesh Project(aShape, *pMesh, *pToolMesh);
 }
 
 
-void MeshAlgos::cutByCurve(MeshCore::MeshKernel* pMesh,
-                           const std::vector<CurveProjector::FaceSplitEdge>& vSplitEdges)
+void MeshAlgos::cutByCurve(
+    MeshCore::MeshKernel* pMesh,
+    const std::vector<CurveProjector::FaceSplitEdge>& vSplitEdges
+)
 {
     MeshTopoAlgorithm cTopAlg(*pMesh);
 
@@ -204,11 +210,13 @@ public:
 };
 
 
-void MeshAlgos::LoftOnCurve(MeshCore::MeshKernel& ResultMesh,
-                            const TopoDS_Shape& Shape,
-                            const std::vector<Base::Vector3f>& poly,
-                            const Base::Vector3f& up,
-                            float MaxSize)
+void MeshAlgos::LoftOnCurve(
+    MeshCore::MeshKernel& ResultMesh,
+    const TopoDS_Shape& Shape,
+    const std::vector<Base::Vector3f>& poly,
+    const Base::Vector3f& up,
+    float MaxSize
+)
 {
     TopExp_Explorer Ex;
     Standard_Real fBegin, fEnd;
@@ -249,9 +257,11 @@ void MeshAlgos::LoftOnCurve(MeshCore::MeshKernel& ResultMesh,
             prop.SetParameter(fBegin + ((fEnd - fBegin) * float(i)) / float(res - 1));
             prop.Tangent(Tangent);
             Base::Vector3f Tng((float)Tangent.X(), (float)Tangent.Y(), (float)Tangent.Z());
-            Base::Vector3f Ptn((float)prop.Value().X(),
-                               (float)prop.Value().Y(),
-                               (float)prop.Value().Z());
+            Base::Vector3f Ptn(
+                (float)prop.Value().X(),
+                (float)prop.Value().Y(),
+                (float)prop.Value().Z()
+            );
             Base::Vector3f Up(up);
             // normalize and calc the third vector of the plane coordinatesystem
             Tng.Normalize();

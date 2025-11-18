@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-#**************************************************************************
+# **************************************************************************
 #   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
 #                                                                         *
 #   This file is part of the FreeCAD CAx development system.              *
@@ -20,7 +20,7 @@
 #   License along with FreeCAD; if not, write to the Free Software        *
 #   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 #   USA                                                                   *
-#**************************************************************************
+# **************************************************************************
 
 import os
 import sys
@@ -31,14 +31,16 @@ import Part
 import PartGui
 from PySide import QtWidgets
 
+
 def findDockWidget(name):
-    """ Get a dock widget by name """
+    """Get a dock widget by name"""
     mw = FreeCADGui.getMainWindow()
     dws = mw.findChildren(QtWidgets.QDockWidget)
     for dw in dws:
         if dw.objectName() == name:
             return dw
     return None
+
 
 """
 #---------------------------------------------------------------------------
@@ -49,7 +51,7 @@ from parttests.ColorPerFaceTest import ColorPerFaceTest
 from parttests.ColorTransparencyTest import ColorTransparencyTest
 
 
-#class PartGuiTestCases(unittest.TestCase):
+# class PartGuiTestCases(unittest.TestCase):
 #    def setUp(self):
 #        self.Doc = FreeCAD.newDocument("PartGuiTest")
 #
@@ -79,8 +81,9 @@ class PartGuiViewProviderTestCases(unittest.TestCase):
             box.ViewObject.dropObject(box, 0)
 
     def tearDown(self):
-        #closing doc
+        # closing doc
         FreeCAD.closeDocument("PartGuiTest")
+
 
 class SectionCutTestCases(unittest.TestCase):
     def setUp(self):
@@ -101,7 +104,7 @@ class SectionCutTestCases(unittest.TestCase):
             button = box.button(QtWidgets.QDialogButtonBox.Close)
             button.click()
         else:
-            print ("No section cutting panel found")
+            print("No section cutting panel found")
 
     def tearDown(self):
         FreeCAD.closeDocument("SectionCut")

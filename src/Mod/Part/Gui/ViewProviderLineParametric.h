@@ -37,10 +37,11 @@ class SoSeparator;
 class SbVec3f;
 class SoTransform;
 
-namespace PartGui {
+namespace PartGui
+{
 
 
-class PartGuiExport ViewProviderLineParametric : public ViewProviderPrimitive
+class PartGuiExport ViewProviderLineParametric: public ViewProviderPrimitive
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderLineParametric);
 
@@ -53,11 +54,9 @@ public:
     std::vector<std::string> getDisplayModes() const override;
 
 protected:
-
 };
 
-} // namespace PartGui
+}  // namespace PartGui
 
 
-#endif // PARTGUI_VIEWPROVIDERLINEPARAMETRIC_H
-
+#endif  // PARTGUI_VIEWPROVIDERLINEPARAMETRIC_H

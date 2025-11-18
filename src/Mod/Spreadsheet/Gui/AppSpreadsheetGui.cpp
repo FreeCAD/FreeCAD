@@ -90,8 +90,9 @@ private:
         std::string EncodedName = std::string(Name);
         PyMem_Free(Name);
 
-        App::Document* pcDoc =
-            App::GetApplication().newDocument(DocName ? DocName : QT_TR_NOOP("Unnamed"));
+        App::Document* pcDoc = App::GetApplication().newDocument(
+            DocName ? DocName : QT_TR_NOOP("Unnamed")
+        );
         load(pcDoc, EncodedName);
 
         return Py::None();
@@ -147,7 +148,8 @@ PyMOD_INIT_FUNC(SpreadsheetGui)
 
     // register preference page
     new Gui::PrefPageProducer<SpreadsheetGui::DlgSettingsImp>(
-        QT_TRANSLATE_NOOP("QObject", "Spreadsheet"));
+        QT_TRANSLATE_NOOP("QObject", "Spreadsheet")
+    );
 
     // add resources and reloads the translators
     loadSpreadsheetResource();

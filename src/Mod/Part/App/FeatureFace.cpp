@@ -22,8 +22,8 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <BRepBuilderAPI_Copy.hxx>
-# include <TopoDS.hxx>
+#include <BRepBuilderAPI_Copy.hxx>
+#include <TopoDS.hxx>
 
 
 #include "FeatureFace.h"
@@ -37,17 +37,21 @@ PROPERTY_SOURCE(Part::Face, Part::Feature)
 
 Face::Face()
 {
-    ADD_PROPERTY(Sources,(nullptr));
-    ADD_PROPERTY(FaceMakerClass,("Part::FaceMakerCheese"));//default value here is for legacy documents. Default for new objects is set in setupObject.
+    ADD_PROPERTY(Sources, (nullptr));
+    ADD_PROPERTY(FaceMakerClass, ("Part::FaceMakerCheese"));  // default value here is for legacy
+                                                              // documents. Default for new objects
+                                                              // is set in setupObject.
     Sources.setSize(0);
 }
 
 short Face::mustExecute() const
 {
-    if (FaceMakerClass.isTouched())
+    if (FaceMakerClass.isTouched()) {
         return 1;
-    if (Sources.isTouched())
+    }
+    if (Sources.isTouched()) {
         return 1;
+    }
     return Part::Feature::mustExecute();
 }
 
@@ -57,20 +61,27 @@ void Face::setupObject()
     Feature::setupObject();
 }
 
-App::DocumentObjectExecReturn *Face::execute()
+App::DocumentObjectExecReturn* Face::execute()
 {
     std::vector<App::DocumentObject*> links = Sources.getValues();
-    if (links.empty())
+    if (links.empty()) {
         return new App::DocumentObjectExecReturn("No shapes linked");
+    }
 
-    std::unique_ptr<FaceMaker> facemaker = FaceMaker::ConstructFromType(this->FaceMakerClass.getValue());
+    std::unique_ptr<FaceMaker> facemaker = FaceMaker::ConstructFromType(
+        this->FaceMakerClass.getValue()
+    );
 
     for (std::vector<App::DocumentObject*>::iterator it = links.begin(); it != links.end(); ++it) {
-        if (!(*it))
-            return new App::DocumentObjectExecReturn("Linked object is not a Part object (has no Shape).");
+        if (!(*it)) {
+            return new App::DocumentObjectExecReturn(
+                "Linked object is not a Part object (has no Shape)."
+            );
+        }
         TopoDS_Shape shape = Feature::getShape(*it, ShapeOption::ResolveLink | ShapeOption::Transform);
-        if (shape.IsNull())
+        if (shape.IsNull()) {
             return new App::DocumentObjectExecReturn("Linked shape object is empty");
+        }
 
         // this is a workaround for an obscure OCC bug which leads to empty tessellations
         // for some faces. Making an explicit copy of the linked shape seems to fix it.
@@ -82,19 +93,21 @@ App::DocumentObjectExecReturn *Face::execute()
                 return new App::DocumentObjectExecReturn("Linked shape object is empty");
         }*/
 
-        if(links.size() == 1 && shape.ShapeType() == TopAbs_COMPOUND)
+        if (links.size() == 1 && shape.ShapeType() == TopAbs_COMPOUND) {
             facemaker->useCompound(TopoDS::Compound(shape));
-        else
+        }
+        else {
             facemaker->addShape(shape);
+        }
     }
 
     facemaker->Build();
 
     TopoDS_Shape aFace = facemaker->Shape();
-    if (aFace.IsNull())
+    if (aFace.IsNull()) {
         return new App::DocumentObjectExecReturn("Creating face failed (null shape result)");
+    }
     this->Shape.setValue(aFace);
 
     return App::DocumentObject::StdReturn;
 }
-

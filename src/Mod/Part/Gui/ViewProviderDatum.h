@@ -36,9 +36,11 @@
 
 #include <Mod/Part/Gui/ViewProviderAttachExtension.h>
 
-namespace PartGui {
+namespace PartGui
+{
 
-class PartGuiExport ViewProviderLine : public Gui::ViewProviderLine, PartGui::ViewProviderAttachExtension
+class PartGuiExport ViewProviderLine: public Gui::ViewProviderLine,
+                                      PartGui::ViewProviderAttachExtension
 {
     PROPERTY_HEADER_WITH_EXTENSIONS(PartGui::ViewProviderLine);
 
@@ -49,7 +51,8 @@ public:
     bool doubleClicked() override;
 };
 
-class PartGuiExport ViewProviderPlane : public Gui::ViewProviderPlane, PartGui::ViewProviderAttachExtension
+class PartGuiExport ViewProviderPlane: public Gui::ViewProviderPlane,
+                                       PartGui::ViewProviderAttachExtension
 {
     PROPERTY_HEADER_WITH_EXTENSIONS(PartGui::ViewProviderPlane);
 
@@ -60,7 +63,8 @@ public:
     bool doubleClicked() override;
 };
 
-class PartGuiExport ViewProviderPoint : public Gui::ViewProviderPoint, PartGui::ViewProviderAttachExtension
+class PartGuiExport ViewProviderPoint: public Gui::ViewProviderPoint,
+                                       PartGui::ViewProviderAttachExtension
 {
     PROPERTY_HEADER_WITH_EXTENSIONS(PartGui::ViewProviderPoint);
 
@@ -71,7 +75,8 @@ public:
     bool doubleClicked() override;
 };
 
-class PartGuiExport ViewProviderLCS : public Gui::ViewProviderCoordinateSystem, PartGui::ViewProviderAttachExtension
+class PartGuiExport ViewProviderLCS: public Gui::ViewProviderCoordinateSystem,
+                                     PartGui::ViewProviderAttachExtension
 {
     PROPERTY_HEADER_WITH_EXTENSIONS(PartGui::ViewProviderLCS);
 
@@ -82,7 +87,7 @@ public:
     bool doubleClicked() override;
 };
 
-} // namespace PartGui
+}  // namespace PartGui
 
 
-#endif // PARTGUI_ViewProviderDatum_H
+#endif  // PARTGUI_ViewProviderDatum_H

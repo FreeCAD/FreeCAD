@@ -302,34 +302,33 @@ SET(PathPythonPost_SRCS
 SET(PathPythonPostScripts_SRCS
     Path/Post/scripts/__init__.py
     Path/Post/scripts/centroid_post.py
-    Path/Post/scripts/comparams_post.py
+    Path/Post/scripts/centroid_legacy_post.py
     Path/Post/scripts/dxf_post.py
     Path/Post/scripts/dynapath_post.py
     Path/Post/scripts/dynapath_4060_post.py
     Path/Post/scripts/estlcam_post.py
-    Path/Post/scripts/example_pre.py
     Path/Post/scripts/fablin_post.py
     Path/Post/scripts/fanuc_post.py
     Path/Post/scripts/fangling_post.py
     Path/Post/scripts/gcode_pre.py
     Path/Post/scripts/generic_post.py
-    Path/Post/scripts/grbl_post.py
+    Path/Post/scripts/grbl_legacy_post.py
     Path/Post/scripts/heidenhain_post.py
     Path/Post/scripts/jtech_post.py
     Path/Post/scripts/KineticNCBeamicon2_post.py
     Path/Post/scripts/linuxcnc_post.py
+    Path/Post/scripts/linuxcnc_legacy_post.py
     Path/Post/scripts/mach3_mach4_post.py
+    Path/Post/scripts/mach3_mach4_legacy_post.py
+    Path/Post/scripts/masso_g3_post.py
     Path/Post/scripts/marlin_post.py
     Path/Post/scripts/nccad_post.py
     Path/Post/scripts/opensbp_post.py
     Path/Post/scripts/opensbp_pre.py
     Path/Post/scripts/philips_post.py
-    Path/Post/scripts/refactored_centroid_post.py
-    Path/Post/scripts/refactored_grbl_post.py
-    Path/Post/scripts/refactored_linuxcnc_post.py
-    Path/Post/scripts/refactored_mach3_mach4_post.py
-    Path/Post/scripts/refactored_masso_g3_post.py
-    Path/Post/scripts/refactored_test_post.py
+    Path/Post/scripts/grbl_post.py
+    Path/Post/scripts/grbl_legacy_post.py
+    Path/Post/scripts/test_post.py
     Path/Post/scripts/rml_post.py
     Path/Post/scripts/rrf_post.py
     Path/Post/scripts/slic3r_pre.py
@@ -481,24 +480,28 @@ SET(Tools_Shape_SRCS
 SET(Tests_SRCS
     CAMTests/__init__.py
     CAMTests/boxtest.fcstd
-    CAMTests/boxtest1.fcstd
     CAMTests/dressuptest.FCStd
     CAMTests/Drilling_1.FCStd
-    CAMTests/drill_test1.FCStd
     CAMTests/FilePathTestUtils.py
     CAMTests/PathTestUtils.py
+    CAMTests/PostTestMocks.py
     CAMTests/test_adaptive.fcstd
     CAMTests/test_profile.fcstd
-    CAMTests/test_centroid_00.ngc
-    CAMTests/test_filenaming.fcstd
     CAMTests/test_geomop.fcstd
     CAMTests/test_holes00.fcstd
     CAMTests/TestCAMSanity.py
     CAMTests/TestCentroidPost.py
+    CAMTests/TestCentroidLegacyPost.py
+    CAMTests/TestGenericPost.py
     CAMTests/TestGrblPost.py
+    CAMTests/TestGrblLegacyPost.py
     CAMTests/TestLinuxCNCPost.py
+    CAMTests/TestLinuxCNCLegacyPost.py
     CAMTests/TestMach3Mach4Post.py
+    CAMTests/TestMach3Mach4LegacyPost.py
+    CAMTests/TestMassoG3Post.py
     CAMTests/TestPathAdaptive.py
+    CAMTests/TestPathCommandAnnotations.py
     CAMTests/TestPathCore.py
     CAMTests/TestPathDepthParams.py
     CAMTests/TestPathDressupArray.py
@@ -549,15 +552,12 @@ SET(Tests_SRCS
     CAMTests/TestPathUtil.py
     CAMTests/TestPathVcarve.py
     CAMTests/TestPathVoronoi.py
-    CAMTests/TestRefactoredCentroidPost.py
-    CAMTests/TestRefactoredGrblPost.py
-    CAMTests/TestRefactoredLinuxCNCPost.py
-    CAMTests/TestRefactoredMach3Mach4Post.py
-    CAMTests/TestRefactoredMassoG3Post.py
-    CAMTests/TestRefactoredTestDressupPost.py
-    CAMTests/TestRefactoredTestPost.py
-    CAMTests/TestRefactoredTestPostGCodes.py
-    CAMTests/TestRefactoredTestPostMCodes.py
+    CAMTests/TestGrblLegacyPost.py
+    CAMTests/TestLinuxCNCLegacyPost.py
+    CAMTests/TestDressupPost.py
+    CAMTests/TestTestPost.py
+    CAMTests/TestPostGCodes.py
+    CAMTests/TestPostMCodes.py
     CAMTests/TestSnapmakerPost.py
     CAMTests/Tools/Bit/test-path-tool-bit-bit-00.fctb
     CAMTests/Tools/Library/test-path-tool-bit-library-00.fctl

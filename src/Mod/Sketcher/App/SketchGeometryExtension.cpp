@@ -109,14 +109,13 @@ PyObject* SketchGeometryExtension::getPyObject()
     return new SketchGeometryExtensionPy(new SketchGeometryExtension(*this));
 }
 
-bool SketchGeometryExtension::getInternalTypeFromName(std::string str,
-                                                      InternalType::InternalType& type)
+bool SketchGeometryExtension::getInternalTypeFromName(std::string str, InternalType::InternalType& type)
 {
-    auto pos = std::find_if(SketchGeometryExtension::internaltype2str.begin(),
-                            SketchGeometryExtension::internaltype2str.end(),
-                            [str](const char* val) {
-                                return strcmp(val, str.c_str()) == 0;
-                            });
+    auto pos = std::find_if(
+        SketchGeometryExtension::internaltype2str.begin(),
+        SketchGeometryExtension::internaltype2str.end(),
+        [str](const char* val) { return strcmp(val, str.c_str()) == 0; }
+    );
 
     if (pos != SketchGeometryExtension::internaltype2str.end()) {
         int index = std::distance(SketchGeometryExtension::internaltype2str.begin(), pos);
@@ -128,14 +127,13 @@ bool SketchGeometryExtension::getInternalTypeFromName(std::string str,
     return false;
 }
 
-bool SketchGeometryExtension::getGeometryModeFromName(std::string str,
-                                                      GeometryMode::GeometryMode& type)
+bool SketchGeometryExtension::getGeometryModeFromName(std::string str, GeometryMode::GeometryMode& type)
 {
-    auto pos = std::find_if(SketchGeometryExtension::geometrymode2str.begin(),
-                            SketchGeometryExtension::geometrymode2str.end(),
-                            [str](const char* val) {
-                                return strcmp(val, str.c_str()) == 0;
-                            });
+    auto pos = std::find_if(
+        SketchGeometryExtension::geometrymode2str.begin(),
+        SketchGeometryExtension::geometrymode2str.end(),
+        [str](const char* val) { return strcmp(val, str.c_str()) == 0; }
+    );
 
     if (pos != SketchGeometryExtension::geometrymode2str.end()) {
         int index = std::distance(SketchGeometryExtension::geometrymode2str.begin(), pos);

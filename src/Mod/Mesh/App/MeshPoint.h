@@ -31,7 +31,7 @@
 #include <Base/Handle.h>
 
 #ifndef MESH_GLOBAL_H
-#include <Mod/Mesh/MeshGlobal.h>
+# include <Mod/Mesh/MeshGlobal.h>
 #endif
 
 using Base::Vector3d;
@@ -51,9 +51,11 @@ class MeshExport MeshPoint: public Vector3d
 
 public:
     /// simple constructor
-    explicit MeshPoint(const Vector3d& vec = Vector3d(),
-                       const MeshObject* obj = nullptr,
-                       unsigned int index = std::numeric_limits<unsigned>::max())
+    explicit MeshPoint(
+        const Vector3d& vec = Vector3d(),
+        const MeshObject* obj = nullptr,
+        unsigned int index = std::numeric_limits<unsigned>::max()
+    )
         : Vector3d(vec)
         , Index(index)
         , Mesh(obj)

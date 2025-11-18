@@ -118,10 +118,12 @@ public:
     /// get the subelement by type and number
     Data::Segment* getSubElement(const char* Type, unsigned long) const override;
     /** Get points from object with given accuracy */
-    void getPoints(std::vector<Base::Vector3d>& Points,
-                   std::vector<Base::Vector3d>& Normals,
-                   double Accuracy,
-                   uint16_t flags = 0) const override;
+    void getPoints(
+        std::vector<Base::Vector3d>& Points,
+        std::vector<Base::Vector3d>& Normals,
+        double Accuracy,
+        uint16_t flags = 0
+    ) const override;
     //@}
 
     /** @name search and retrieval */
@@ -206,12 +208,14 @@ public:
     /// import from files
     void read(const char* FileName);
     void write(const char* FileName) const;
-    void writeABAQUS(const std::string& Filename,
-                     int elemParam,
-                     bool groupParam,
-                     ABAQUS_VolumeVariant volVariant = ABAQUS_VolumeVariant::Standard,
-                     ABAQUS_FaceVariant faceVariant = ABAQUS_FaceVariant::Shell,
-                     ABAQUS_EdgeVariant edgeVariant = ABAQUS_EdgeVariant::Beam) const;
+    void writeABAQUS(
+        const std::string& Filename,
+        int elemParam,
+        bool groupParam,
+        ABAQUS_VolumeVariant volVariant = ABAQUS_VolumeVariant::Standard,
+        ABAQUS_FaceVariant faceVariant = ABAQUS_FaceVariant::Shell,
+        ABAQUS_EdgeVariant edgeVariant = ABAQUS_EdgeVariant::Beam
+    ) const;
     void writeVTK(const std::string& FileName, bool highest = true) const;
     void writeZ88(const std::string& FileName) const;
 

@@ -202,8 +202,8 @@
       <translation>此操作的说明</translation>
     </message>
     <message>
-      <location filename="../ui/dialogTree.ui" line="65"/>
       <location filename="../ui/ArchSchedule.ui" line="68"/>
+      <location filename="../ui/dialogTree.ui" line="65"/>
       <source>Property</source>
       <translation>属性</translation>
     </message>
@@ -413,11 +413,11 @@ of that project, no matter if they are expanded or not.</source>
       <translation>在 FreeCAD 会话中保持登录状态</translation>
     </message>
     <message>
+      <location filename="../ui/dialogQuantitySurveying.ui" line="14"/>
+      <location filename="../ui/dialogPhases.ui" line="14"/>
+      <location filename="../ui/dialogExport.ui" line="14"/>
       <location filename="../ui/DialogDisplayText.ui" line="14"/>
       <location filename="../ui/dialogListWidget.ui" line="14"/>
-      <location filename="../ui/dialogQuantitySurveying.ui" line="14"/>
-      <location filename="../ui/dialogExport.ui" line="14"/>
-      <location filename="../ui/dialogPhases.ui" line="14"/>
       <source>Dialog</source>
       <translation>对话框</translation>
     </message>
@@ -437,8 +437,8 @@ of that project, no matter if they are expanded or not.</source>
       <translation>仅选中对象</translation>
     </message>
     <message>
-      <location filename="../ui/dialogIfcQuantities.ui" line="30"/>
       <location filename="../ui/dialogIfcElements.ui" line="30"/>
+      <location filename="../ui/dialogIfcQuantities.ui" line="30"/>
       <location filename="../ui/dialogIfcProperties.ui" line="39"/>
       <source>Only visible BIM objects</source>
       <translation>仅可见的BIM对象</translation>
@@ -460,8 +460,8 @@ of that project, no matter if they are expanded or not.</source>
     </message>
     <message>
       <location filename="../ui/dialogIfcQuantities.ui" line="80"/>
-      <location filename="../ui/dialogLayersIFC.ui" line="53"/>
       <location filename="../ui/dialogIfcProperties.ui" line="141"/>
+      <location filename="../ui/dialogLayersIFC.ui" line="53"/>
       <source>Select All</source>
       <translation>全选</translation>
     </message>
@@ -754,9 +754,9 @@ of that project, no matter if they are expanded or not.</source>
       <translation>将此图层添加到 IFC 项目</translation>
     </message>
     <message>
+      <location filename="../ui/dialogProjectManager.ui" line="679"/>
       <location filename="../ui/dialogPhases.ui" line="55"/>
       <location filename="../ui/dialogLayersIFC.ui" line="46"/>
-      <location filename="../ui/dialogProjectManager.ui" line="679"/>
       <source>Delete</source>
       <translation>删除</translation>
     </message>
@@ -786,17 +786,17 @@ of that project, no matter if they are expanded or not.</source>
       <translation>分配</translation>
     </message>
     <message>
-      <location filename="../ui/dialogLayersIFC.ui" line="97"/>
       <location filename="../ui/dialogProjectManager.ui" line="728"/>
       <location filename="../ui/dialogProjectManager.ui" line="731"/>
+      <location filename="../ui/dialogLayersIFC.ui" line="97"/>
       <source>Cancel</source>
       <translation>取消</translation>
     </message>
     <message>
+      <location filename="../ui/dialogProjectManager.ui" line="717"/>
       <location filename="../ui/dialogPreflightResults.ui" line="103"/>
       <location filename="../ui/dialogQuantitySurveying.ui" line="26"/>
       <location filename="../ui/dialogLayersIFC.ui" line="104"/>
-      <location filename="../ui/dialogProjectManager.ui" line="717"/>
       <source>OK</source>
       <translation>确定</translation>
     </message>
@@ -856,8 +856,8 @@ of that project, no matter if they are expanded or not.</source>
       <translation>添加标准 IFC 属性集</translation>
     </message>
     <message>
-      <location filename="../ui/dialogAddPSet.ui" line="43"/>
       <location filename="../ui/dialogAddProperty.ui" line="87"/>
+      <location filename="../ui/dialogAddPSet.ui" line="43"/>
       <location filename="../ui/dialogProjectManager.ui" line="246"/>
       <location filename="../ui/dialogProjectManager.ui" line="366"/>
       <source>Name</source>
@@ -1195,8 +1195,8 @@ of that project, no matter if they are expanded or not.</source>
       <translation>以下是此模型当前配置的阶段</translation>
     </message>
     <message>
-      <location filename="../ui/dialogPhases.ui" line="48"/>
       <location filename="../ui/dialogProjectManager.ui" line="665"/>
+      <location filename="../ui/dialogPhases.ui" line="48"/>
       <source>Add</source>
       <translation>添加</translation>
     </message>
@@ -1302,10 +1302,10 @@ of that project, no matter if they are expanded or not.</source>
       <translation>空间信息</translation>
     </message>
     <message>
-      <location filename="../ui/dialogSpaces.ui" line="92"/>
       <location filename="../ui/dialogProjectManager.ui" line="457"/>
       <location filename="../ui/dialogProjectManager.ui" line="480"/>
       <location filename="../ui/dialogProjectManager.ui" line="493"/>
+      <location filename="../ui/dialogSpaces.ui" line="92"/>
       <source>0</source>
       <translation>0</translation>
     </message>
@@ -1706,8 +1706,8 @@ of that project, no matter if they are expanded or not.</source>
       <translation>停止</translation>
     </message>
     <message>
-      <location filename="../ui/dialogLibrary.ui" line="95"/>
       <location filename="../ui/ArchNest.ui" line="177"/>
+      <location filename="../ui/dialogLibrary.ui" line="95"/>
       <source>Preview</source>
       <translation>预览</translation>
     </message>
@@ -1740,8 +1740,8 @@ of that project, no matter if they are expanded or not.</source>
       <translation>只能包含字母数字字符，不能包含空格。使用驼峰大小写自动定义间隔</translation>
     </message>
     <message>
-      <location filename="../ui/dialogWindows.ui" line="189"/>
       <location filename="../ui/dialogCustomProperties.ui" line="37"/>
+      <location filename="../ui/dialogWindows.ui" line="189"/>
       <source>Description</source>
       <translation>说明</translation>
     </message>
@@ -2136,8 +2136,8 @@ of that project, no matter if they are expanded or not.</source>
       <translation>IfcRectangleProfileDef导出是否已禁用？(仅Revit)</translation>
     </message>
     <message>
-      <location filename="../ui/dialogViews.ui" line="14"/>
       <location filename="../ui/dialogReorder.ui" line="14"/>
+      <location filename="../ui/dialogViews.ui" line="14"/>
       <source>Form</source>
       <translation>窗体</translation>
     </message>
@@ -2906,7 +2906,6 @@ a footprint display mode</source>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="32"/>
-      <location filename="../ui/preferences-ifc.ui" line="32"/>
       <source>Show this dialog when importing</source>
       <translation>导入时显示此对话框</translation>
     </message>
@@ -3083,64 +3082,64 @@ a footprint display mode</source>
       <translation>合并到现有文档</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="45"/>
+      <location filename="../ui/preferences-ifc.ui" line="32"/>
       <source>Shows verbose debug messages during import and export
 of IFC files in the Report view panel</source>
       <translation>在导入和导出
 IFC 文件时，在报表视图面板中显示详细的调试消息</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="49"/>
+      <location filename="../ui/preferences-ifc.ui" line="36"/>
       <source>Show debug messages</source>
       <translation>显示调试消息</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="62"/>
+      <location filename="../ui/preferences-ifc.ui" line="49"/>
       <source>Clones are used when objects have shared geometry
 One object is the base object, the others are clones.</source>
       <translation>当对象共享图元时，克隆功能将启用。
 一个是基本对象，其他的是克隆对象。</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="66"/>
+      <location filename="../ui/preferences-ifc.ui" line="53"/>
       <source>Create clones when objects have shared geometry</source>
       <translation>当对象具有共享几何图形时创建副本</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="120"/>
+      <location filename="../ui/preferences-ifc.ui" line="107"/>
       <source>Number of cores to use (experimental)</source>
       <translation>使用核心数 (实验性)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="156"/>
+      <location filename="../ui/preferences-ifc.ui" line="143"/>
       <source>Import arch IFC objects as</source>
       <translation>导入拱IFC对象为</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="163"/>
-      <location filename="../ui/preferences-ifc.ui" line="212"/>
+      <location filename="../ui/preferences-ifc.ui" line="150"/>
+      <location filename="../ui/preferences-ifc.ui" line="199"/>
       <source>Specifies what kind of objects will be created in FreeCAD</source>
       <translation>指定将在 FreeCAD 中创建的对象类型</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="173"/>
+      <location filename="../ui/preferences-ifc.ui" line="160"/>
       <source>Parametric BIM objects</source>
       <translation>参数化 BIM 对象</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="178"/>
-      <location filename="../ui/preferences-ifc.ui" line="222"/>
+      <location filename="../ui/preferences-ifc.ui" line="165"/>
+      <location filename="../ui/preferences-ifc.ui" line="209"/>
       <source>Non-parametric BIM objects</source>
       <translation>非参数化 BIM 对象</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="183"/>
-      <location filename="../ui/preferences-ifc.ui" line="227"/>
+      <location filename="../ui/preferences-ifc.ui" line="170"/>
+      <location filename="../ui/preferences-ifc.ui" line="214"/>
       <source>Simple Part shapes</source>
       <translation>简单零件形状</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="188"/>
+      <location filename="../ui/preferences-ifc.ui" line="175"/>
       <source>One compound per floor</source>
       <translation>每层一个复合体</translation>
     </message>
@@ -3150,8 +3149,8 @@ One object is the base object, the others are clones.</source>
       <translation>IFC 导入</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="90"/>
-      <location filename="../ui/preferences-ifc.ui" line="110"/>
+      <location filename="../ui/preferences-ifc.ui" line="77"/>
+      <location filename="../ui/preferences-ifc.ui" line="97"/>
       <source>EXPERIMENTAL
 The number of cores to use in multicore mode.
 Keep 0 to disable multicore mode.
@@ -3171,129 +3170,129 @@ if crashes occur when multiple cores are set.</source>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="67"/>
-      <location filename="../ui/preferences-ifc.ui" line="148"/>
+      <location filename="../ui/preferences-ifc.ui" line="135"/>
       <source>Import Options</source>
       <translation>导入选项</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="193"/>
+      <location filename="../ui/preferences-ifc.ui" line="180"/>
       <source>Do not import BIM objects</source>
       <translation>不导入 BIM 对象</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="205"/>
+      <location filename="../ui/preferences-ifc.ui" line="192"/>
       <source>Import structure IFC objects as</source>
       <translation>将结构 IFC 对象导入为</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="232"/>
+      <location filename="../ui/preferences-ifc.ui" line="219"/>
       <source>One compound for all</source>
       <translation>全部使用同一种复合体</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="237"/>
+      <location filename="../ui/preferences-ifc.ui" line="224"/>
       <source>Do not import structural objects</source>
       <translation>不导入结构对象</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="249"/>
+      <location filename="../ui/preferences-ifc.ui" line="236"/>
       <source>Root element:</source>
       <translation>根元素:</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="256"/>
+      <location filename="../ui/preferences-ifc.ui" line="243"/>
       <source>Only subtypes of the specified element will be imported.
 Keep the element IfcProduct to import all building elements.</source>
       <translation>仅导入指定元素子类型。
 设置元素为“IfcProduct”以导入所有创建的元素。</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="275"/>
+      <location filename="../ui/preferences-ifc.ui" line="262"/>
       <source>Openings will be imported as subtractions, otherwise wall shapes
 will already have their openings subtracted</source>
       <translation>孔将作为减法导入，否则墙壁上的图元将已经减去了他们的空缺。</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="279"/>
+      <location filename="../ui/preferences-ifc.ui" line="266"/>
       <source>Separate openings</source>
       <translation>独立开口</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="292"/>
+      <location filename="../ui/preferences-ifc.ui" line="279"/>
       <source>The importer will try to detect extrusions.
 Note that this might slow things down.</source>
       <translation>导入功能会尝试侦测异常。
 请注意：这可能会减慢运行速度。</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="296"/>
+      <location filename="../ui/preferences-ifc.ui" line="283"/>
       <source>Detect extrusions</source>
       <translation>检测拉伸</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="309"/>
+      <location filename="../ui/preferences-ifc.ui" line="296"/>
       <source>Split walls made of multiple layers</source>
       <translation>由多个层组成的分割墙</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="312"/>
+      <location filename="../ui/preferences-ifc.ui" line="299"/>
       <source>Split multilayer walls</source>
       <translation>拆分多层墙</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="325"/>
+      <location filename="../ui/preferences-ifc.ui" line="312"/>
       <source>Object names will be prefixed with the IFC ID number</source>
       <translation>对象名称将以IFC ID编号作前缀。</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="328"/>
+      <location filename="../ui/preferences-ifc.ui" line="315"/>
       <source>Prefix names with ID number</source>
       <translation>带 ID 号的前缀名称</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="341"/>
+      <location filename="../ui/preferences-ifc.ui" line="328"/>
       <source>If several materials with the same name and color are found in the IFC file,
 they will be treated as one.</source>
       <translation>如果在 IFC 文件中找到几个具有相同名称和颜色的材料，
 它们将被当作一个处理。</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="345"/>
+      <location filename="../ui/preferences-ifc.ui" line="332"/>
       <source>Merge materials with same name and same color</source>
       <translation>合并具有相同名称和相同颜色的材料。</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="358"/>
+      <location filename="../ui/preferences-ifc.ui" line="345"/>
       <source>Each object will have their IFC properties stored in a spreadsheet object</source>
       <translation>每个对象都将他们的 IFC 属性存储在电子表格对象中。</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="361"/>
+      <location filename="../ui/preferences-ifc.ui" line="348"/>
       <source>Import IFC properties in spreadsheet</source>
       <translation>在电子表格中导入 Ifc 属性</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="374"/>
+      <location filename="../ui/preferences-ifc.ui" line="361"/>
       <source>IFC files can contain unclean or non-solid geometry. If this option is checked, all the geometry is imported, regardless of their validity.</source>
       <translation>IFC 文件可以包含unclean或非固态几何形状。如果选中此选项，所有几何形状都将被导入。</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="377"/>
+      <location filename="../ui/preferences-ifc.ui" line="364"/>
       <source>Allow invalid shapes</source>
       <translation>允许无效形状</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="392"/>
+      <location filename="../ui/preferences-ifc.ui" line="379"/>
       <source>Exclude list</source>
       <translation>排除列表</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="399"/>
+      <location filename="../ui/preferences-ifc.ui" line="386"/>
       <source>Comma-separated list of IFC entities to be excluded from imports</source>
       <translation>以逗号分隔的 IFC 实体列表将被排除在进口范围内</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="420"/>
+      <location filename="../ui/preferences-ifc.ui" line="407"/>
       <source>Fit view during import on the imported objects.
 This will slow down the import, but one can watch the import.</source>
       <translation>导入时对导入的对象进行调整视图。这将减慢导入速度, 但可以监视导入。</translation>
@@ -3301,24 +3300,24 @@ This will slow down the import, but one can watch the import.</source>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="464"/>
       <location filename="../ui/preferences-sh3d-import.ui" line="467"/>
-      <location filename="../ui/preferences-ifc.ui" line="424"/>
+      <location filename="../ui/preferences-ifc.ui" line="411"/>
       <source>Fit view while importing</source>
       <translation>导入时调整视图</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="437"/>
+      <location filename="../ui/preferences-ifc.ui" line="424"/>
       <source>Creates a full parametric model on import using stored
 FreeCAD object properties</source>
       <translation>使用存储的
 FreeCAD 对象属性在导入时创建完整的参数模型</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="441"/>
+      <location filename="../ui/preferences-ifc.ui" line="428"/>
       <source>Import full FreeCAD parametric definitions if available</source>
       <translation>导入完整的 FreeCAD 参数定义，如果可用</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="454"/>
+      <location filename="../ui/preferences-ifc.ui" line="441"/>
       <source>If this option is checked, the default 'Project', 'Site', 'Building', and 'Storeys'
 objects that are usually found in an IFC file are not imported, and all objects
 are placed in a 'Group' instead.
@@ -3329,7 +3328,7 @@ are placed in a 'Group' instead.
 如果超过一个，仍然导入“建筑物”和“商店”。</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="460"/>
+      <location filename="../ui/preferences-ifc.ui" line="447"/>
       <source>Replace 'Project', 'Site', 'Building', and 'Storey' with 'Group'</source>
       <translation>将“项目”、“网站”、“建筑”和“商店”改为“小组”。</translation>
     </message>
@@ -3387,8 +3386,8 @@ If using Netgen, make sure that it is available.</source>
     </message>
     <message>
       <location filename="../ui/preferences-webgl.ui" line="26"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="35"/>
       <location filename="../ui/preferences-dae.ui" line="26"/>
-      <location filename="../ui/preferences-ifc-export.ui" line="57"/>
       <source>Export Options</source>
       <translation>导出选项</translation>
     </message>
@@ -3467,109 +3466,104 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</sour
       <translation>允许四边形</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="41"/>
-      <source>Show this dialog when exporting</source>
-      <translation>导入时显示此对话框</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="71"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="49"/>
       <source>Export type</source>
       <translation>导出类型</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="91"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="69"/>
       <source>Standard model</source>
       <translation>标准模型</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="96"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="74"/>
       <source>Structural analysis</source>
       <translation>结构分析</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="101"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="79"/>
       <source>Standard + structural</source>
       <translation>标准 + 结构</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="128"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="106"/>
       <source>Use triangulation options set in the DAE options page</source>
       <translation>使用 "DAE 选项" 页中设置的三角选项</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="131"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="109"/>
       <source>Use DAE triangulation options</source>
       <translation>使用 DAE 三角选项</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="144"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="122"/>
       <source>Curved shapes that cannot be represented as curves in IFC
 are decomposed into flat facets.
 If this is checked, an additional calculation is done to join coplanar facets.</source>
       <translation>在 IFC 中不能表示为曲线的曲面被分解为平面。如果选中此项, 将进行一些额外的计算以联接共面平面。</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="149"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="127"/>
       <source>Join coplanar facets when triangulating</source>
       <translation>当构建三角时加入共面平面</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="162"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="140"/>
       <source>When exporting objects without unique ID (UID), the generated UID
 will be stored inside the FreeCAD object for reuse next time that object
 is exported. This leads to smaller differences between file versions.</source>
       <translation>在导出不带 uid 的对象时, 生成的 uid 将存储在 FreeCAD 对象中, 以便在下次导出对象时重用, 从而在版本之间提供较小的差异.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="167"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="145"/>
       <source>Store IFC unique ID in FreeCAD objects</source>
       <translation>在 FreeCAD 对象中存储 IFC 通用 ID</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="189"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="167"/>
       <source>Use IfcOpenShell serializer if available</source>
       <translation>使用 IfcOpenShell 序列化程序 (如果可用)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="202"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="180"/>
       <source>2D objects will be exported as IfcAnnotation</source>
       <translation>2D 对象将导出为 IfcAnnotation</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="205"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="183"/>
       <source>Export 2D objects as IfcAnnotations</source>
       <translation>将2D 对象导出为 IfcAnnotations</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="221"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="199"/>
       <source>All FreeCAD object properties will be stored inside the exported objects,
 allowing to recreate a full parametric model on reimport.</source>
       <translation>所有 FreeCAD 对象属性都将存储到导出的对象中, 这样在 重新导入时可以重新创建完整的参数化模型。</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="225"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="203"/>
       <source>Export full FreeCAD parametric model</source>
       <translation>导出全 FreeCAD 参数模型</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="242"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="220"/>
       <source>Reuse similar entities</source>
       <translation>重复使用类似实体</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="264"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="242"/>
       <source>Disable IfcRectangleProfileDef</source>
       <translation>禁用 ifcrectangleprofiledef</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="277"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="255"/>
       <source>Some IFC types such as IfcWall or IfcBeam have special standard versions like IfcWallStandardCase or IfcBeamStandardCase. If this option is turned on, FreeCAD will automatically export such objects
 as standard cases when the necessary conditions are met.</source>
       <translation>某些 IFC 类型（例如 IfcWall 或 IfcBeam）具有特殊的标准版本，例如 IfcWallStandardCase 或 IfcBeamStandardCase。如果启用此选项，FreeCAD 会在满足必要条件时自动将此类对象导出为标准箱体。</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="330"/>
-      <location filename="../ui/preferences-ifc-export.ui" line="345"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="308"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="323"/>
       <source>Desired units in the exported IFC file.
 
 Note that IFC files are ALWAYS written in metric units; imperial units
@@ -3583,30 +3577,30 @@ unit to work with when opening the file.</source>
 但是，某些 BIM 应用程序会使用此系数来选择打开文件时使用的单位。</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="375"/>
-      <location filename="../ui/preferences-ifc.ui" line="473"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="353"/>
+      <location filename="../ui/preferences-ifc.ui" line="460"/>
       <source>Check also native-IFC-specific preferences under BIM -&gt; Native IFC</source>
       <translation>还请检查“BIM -&gt; 原生 IFC”下的原生 IFC 特定首选项</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="391"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="369"/>
       <source>If no building is found in the FreeCAD document, a default one will be added.
 Warning: The IFC standard asks for at least one building in each file. By turning this option off, a non-standard IFC file will be produced.</source>
       <translation>如果在 FreeCAD 文档中未找到任何建筑，则会添加一个默认建筑。
 警告：IFC 标准要求每个文件中至少包含一个建筑。关闭此选项将生成非标准 IFC 文件。</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="395"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="373"/>
       <source>Add default building if one is not found in the document</source>
       <translation>如果文档中未找到默认建筑，则添加默认建筑</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="435"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="413"/>
       <source>Export nested groups as assemblies</source>
       <translation>导出嵌套组为程序集</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="281"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="259"/>
       <source>Auto-detect and export as standard cases when applicable</source>
       <translation>自动检测并导出为标准大小写</translation>
     </message>
@@ -3617,14 +3611,13 @@ Warning: The IFC standard asks for at least one building in each file. By turnin
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="26"/>
-      <location filename="../ui/preferences-ifc-export.ui" line="35"/>
       <location filename="../ui/preferences-ifc.ui" line="26"/>
       <source>General Options</source>
       <translation>通用选项</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="65"/>
-      <location filename="../ui/preferences-ifc-export.ui" line="78"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="43"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="56"/>
       <source>The type of objects to export:
 - Standard model: solid objects
 - Structural analysis: wireframe model for structural calculations
@@ -3635,19 +3628,19 @@ Warning: The IFC standard asks for at least one building in each file. By turnin
 - 标准 + 结构：两种类型的模型</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="111"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="89"/>
       <source>Some IFC viewers do not like objects exported as extrusions.
 Use this to force all objects to be exported as BREP geometry.</source>
       <translation>一些 IFC 查看器不喜欢将对象导出为挤压形状。
 使用此选项可强制将所有对象导出为 BREP 几何体。</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="115"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="93"/>
       <source>Force export as BREP</source>
       <translation>强制导出为 BREP</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="183"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="161"/>
       <source>IFCOpenShell is a library that enables importing IFC files.
 Its serializer functionality allows giving it an OCC shape and it will
 produce adequate IFC geometry: NURBS, faceted, or anything else.
@@ -3658,14 +3651,14 @@ Note: The serializer is still an experimental feature!</source>
 注意：序列化器仍处于实验阶段！</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="238"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="216"/>
       <source>When possible, similar entities will be used only once in the file if possible.
 This can reduce the file size considerably, but will make it less easily readable.</source>
       <translation>如果可能，相似的实体在文件中只会使用一次。
 这可以显著减小文件大小，但会降低文件的可读性。</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="258"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="236"/>
       <source>When possible, IFC objects that are extruded rectangles will be
 exported as IfcRectangleProfileDef.
 However, some other applications might have problems importing that entity.
@@ -3675,61 +3668,61 @@ If this is the case, it can disabled and then all profiles will be exported as I
 如果出现这种情况，可以禁用此功能，然后所有轮廓都将导出为 IfcArbitraryClosedProfileDef。</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="294"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="272"/>
       <source>If no site is found in the FreeCAD document, a default one will be added.
 A site is not mandatory but a common practice is to have at least one in the file.</source>
       <translation>如果在 FreeCAD 文档中未找到场地，则会添加一个默认场地。
 场地并非必需，但通常的做法是在文件中至少包含一个场地。</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="298"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="276"/>
       <source>Add default site if one is not found in the document</source>
       <translation>如果文档中未找到默认场地，则添加默认场地</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="411"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="389"/>
       <source>If not checked, standard FreeCAD groups (App::DocumentObjectGroup) will not be exported as IfcGroup or IfcElementAssembly.\nTheir children will be re-parented to the container of the skipped group in the IFC structure.</source>
       <translation>如果未选中，标准 FreeCAD 组（App::DocumentObjectGroup）将不会导出为 IfcGroup 或 IfcElementAssembly。\n它们的子项将被重新设置为 IFC 结构中跳过组的容器。</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="414"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="392"/>
       <source>Export FreeCAD Groups</source>
       <translation>导出 FreeCAD 组</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="432"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="410"/>
       <source>In FreeCAD, it is possible to nest groups inside buildings or storeys. If this option is disabled, FreeCAD groups will be saved as IfcGroups and aggregated to the building structure. Aggregating non-building elements such as IfcGroups is however not recommended by the IFC standards. It is therefore also possible to export these groups as IfcElementAssemblies, which produces an IFC-compliant file.</source>
       <translation>在 FreeCAD 中，可以在建筑或楼层内嵌套组。如果禁用此选项，FreeCAD 组将保存为 IfcGroups 并聚合到建筑结构中。然而，IFC 标准不建议聚合 IfcGroups 等非建筑元素。因此，也可以将这些组导出为 IfcElementAssemblies，从而生成符合 IFC 标准的文件。</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="385"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="363"/>
       <source>IFC standard compliance</source>
       <translation>IFC 标准合规</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="311"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="289"/>
       <source>If no building storey is found in the FreeCAD document, a default one will be added.
 A building storey is not mandatory but a common practice to have at least one in the file.</source>
       <translation>如果在 FreeCAD 文档中没有找到站点，将添加一个默认站点。
 网站不是强制性的，但常见的做法是文件中至少有一个。</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="315"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="293"/>
       <source>Add default building storey if one is not found in the document</source>
       <translation>如果文档中没有找到的话，添加默认建筑物存储</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="338"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="316"/>
       <source>IFC file units</source>
       <translation>IFC 文件单位</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="360"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="338"/>
       <source>Metric</source>
       <translation>公制</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="365"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="343"/>
       <source>Imperial</source>
       <translation>英制</translation>
     </message>
@@ -3822,8 +3815,8 @@ The default template is located at:
       <translation>结构选项</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1699"/>
       <location filename="../../ArchStructure.py" line="554"/>
+      <location filename="../../ArchCommands.py" line="1699"/>
       <location filename="../../bimcommands/BimProfile.py" line="83"/>
       <source>Category</source>
       <translation>类别</translation>
@@ -3831,32 +3824,32 @@ The default template is located at:
     <message>
       <location filename="../../ArchStructure.py" line="561"/>
       <location filename="../../bimcommands/BimProfile.py" line="90"/>
+      <location filename="../../bimcommands/BimWindow.py" line="439"/>
       <location filename="../../bimcommands/BimPanel.py" line="184"/>
-      <location filename="../../bimcommands/BimWindow.py" line="429"/>
       <source>Preset</source>
       <translation>预设</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1332"/>
       <location filename="../../ArchStructure.py" line="570"/>
       <location filename="../../ArchPrecast.py" line="1719"/>
-      <location filename="../../bimcommands/BimPanel.py" line="194"/>
+      <location filename="../../ArchCommands.py" line="1332"/>
       <location filename="../../bimcommands/BimWall.py" line="341"/>
+      <location filename="../../bimcommands/BimPanel.py" line="194"/>
       <source>Length</source>
       <translation>长度</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="584"/>
       <location filename="../../ArchPrecast.py" line="1720"/>
-      <location filename="../../bimcommands/BimPanel.py" line="201"/>
       <location filename="../../bimcommands/BimWall.py" line="348"/>
+      <location filename="../../bimcommands/BimPanel.py" line="201"/>
       <source>Width</source>
       <translation>宽度</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1084"/>
       <location filename="../../ArchStructure.py" line="591"/>
       <location filename="../../ArchPrecast.py" line="1721"/>
+      <location filename="../../ArchRoof.py" line="1084"/>
       <location filename="../../bimcommands/BimWall.py" line="355"/>
       <source>Height</source>
       <translation>高度</translation>
@@ -3877,39 +3870,39 @@ The default template is located at:
       <translation>切换长度/宽度</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="721"/>
       <location filename="../../ArchStructure.py" line="1170"/>
+      <location filename="../../ArchWall.py" line="721"/>
       <source>This mesh is an invalid solid</source>
       <translation>该网格是无效实体</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="319"/>
       <location filename="../../ArchStructure.py" line="1289"/>
+      <location filename="../../ArchPanel.py" line="319"/>
       <source>Facemaker returned an error</source>
       <translation>服务器返回了一个错误</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1690"/>
+      <location filename="../../ArchStructure.py" line="1700"/>
       <source>Node Tools</source>
       <translation>节点工具</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1715"/>
+      <location filename="../../ArchStructure.py" line="1725"/>
       <source>Extends the nodes of this element to reach the nodes of another element</source>
       <translation>扩展将此元素的节点到另一个元素的节点</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1726"/>
+      <location filename="../../ArchStructure.py" line="1736"/>
       <source>Connects nodes of this element with the nodes of another element</source>
       <translation>将此元素的节点与另一个元素的节点连接</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1737"/>
+      <location filename="../../ArchStructure.py" line="1747"/>
       <source>Toggles all structural nodes of the document on/off</source>
       <translation>打开/关闭文件的所有结构节点</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1744"/>
+      <location filename="../../ArchStructure.py" line="1754"/>
       <source>Extrusion Tools</source>
       <translation>挤压工具</translation>
     </message>
@@ -3929,85 +3922,85 @@ The default template is located at:
       <translation>错误：无法沿此工具对象挤压基本形状</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1695"/>
+      <location filename="../../ArchStructure.py" line="1705"/>
       <source>Reset Nodes</source>
       <translation>重置节点</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1702"/>
+      <location filename="../../ArchStructure.py" line="1712"/>
       <source>Edit Nodes</source>
       <translation>编辑节点</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1708"/>
+      <location filename="../../ArchStructure.py" line="1718"/>
       <source>Extend Nodes</source>
       <translation>延伸节点</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1721"/>
+      <location filename="../../ArchStructure.py" line="1731"/>
       <source>Connect Nodes</source>
       <translation>连接节点</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1732"/>
+      <location filename="../../ArchStructure.py" line="1742"/>
       <source>Toggle All Nodes</source>
       <translation>切换所有节点</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1749"/>
-      <location filename="../../ArchStructure.py" line="1951"/>
+      <location filename="../../ArchStructure.py" line="1759"/>
+      <location filename="../../ArchStructure.py" line="1961"/>
       <source>Select Tool</source>
       <translation>选择工具</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1754"/>
+      <location filename="../../ArchStructure.py" line="1764"/>
       <source>Selects object or edges to be used as a tool (extrusion path)</source>
       <translation>选择要用作工具的对象或边缘（挤压路径）</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1779"/>
-      <location filename="../../ArchStructure.py" line="1829"/>
+      <location filename="../../ArchStructure.py" line="1789"/>
+      <location filename="../../ArchStructure.py" line="1839"/>
       <source>Choose another Structure object:</source>
       <translation>选取另一个结构对象</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1785"/>
-      <location filename="../../ArchStructure.py" line="1835"/>
+      <location filename="../../ArchStructure.py" line="1795"/>
+      <location filename="../../ArchStructure.py" line="1845"/>
       <source>The chosen object is not a Structure</source>
       <translation>所选对象不是结构</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1790"/>
-      <location filename="../../ArchStructure.py" line="1840"/>
+      <location filename="../../ArchStructure.py" line="1800"/>
+      <location filename="../../ArchStructure.py" line="1850"/>
       <source>The chosen object has no structural nodes</source>
       <translation>所选对象没有结构节点</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1795"/>
-      <location filename="../../ArchStructure.py" line="1845"/>
+      <location filename="../../ArchStructure.py" line="1805"/>
+      <location filename="../../ArchStructure.py" line="1855"/>
       <source>One of these objects has more than 2 nodes</source>
       <translation>其中一个对象有超过 2 个节点</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1808"/>
-      <location filename="../../ArchStructure.py" line="1858"/>
+      <location filename="../../ArchStructure.py" line="1818"/>
+      <location filename="../../ArchStructure.py" line="1868"/>
       <source>Unable to find a suitable intersection point</source>
       <translation>找不到合适的交点</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1812"/>
+      <location filename="../../ArchStructure.py" line="1822"/>
       <source>Intersection found.
 </source>
       <translation>找到交集
 </translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1863"/>
+      <location filename="../../ArchStructure.py" line="1873"/>
       <source>Intersection found.</source>
       <translation>找到交集</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1916"/>
+      <location filename="../../ArchStructure.py" line="1926"/>
       <source>Done</source>
       <translation>完成</translation>
     </message>
@@ -4115,14 +4108,14 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>悬垂</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimRoof.py" line="93"/>
       <location filename="../../bimcommands/BimSpace.py" line="70"/>
+      <location filename="../../bimcommands/BimRoof.py" line="93"/>
       <source>Please select a base object</source>
       <translation>请选择一个基物体</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1068"/>
       <location filename="../../Arch.py" line="1143"/>
+      <location filename="../../ArchRoof.py" line="1068"/>
       <source>Roof</source>
       <translation>屋顶</translation>
     </message>
@@ -4392,17 +4385,17 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>未找到窗口，不能继续。</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="378"/>
+      <location filename="../../bimcommands/BimWindow.py" line="388"/>
       <source>Window options</source>
       <translation>窗口选项</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="382"/>
+      <location filename="../../bimcommands/BimWindow.py" line="392"/>
       <source>Auto include in host object</source>
       <translation>自动包含在宿主对象</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="391"/>
+      <location filename="../../bimcommands/BimWindow.py" line="401"/>
       <source>Sill height</source>
       <translation>台体高度</translation>
     </message>
@@ -4480,37 +4473,37 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>如果选中此项，窗口的偏移属性值将添加到此处输入的值</translation>
     </message>
     <message>
-      <location filename="../../ArchAxisSystem.py" line="338"/>
-      <location filename="../../ArchSpace.py" line="944"/>
       <location filename="../../ArchSectionPlane.py" line="1736"/>
+      <location filename="../../ArchAxisSystem.py" line="338"/>
       <location filename="../../ArchComponent.py" line="2343"/>
       <location filename="../../ArchWindow.py" line="1726"/>
       <location filename="../../ArchAxis.py" line="955"/>
+      <location filename="../../ArchSpace.py" line="944"/>
       <source>Remove</source>
       <translation>移除</translation>
     </message>
     <message>
       <location filename="../../ArchAxisSystem.py" line="339"/>
-      <location filename="../../ArchSpace.py" line="938"/>
       <location filename="../../ArchComponent.py" line="2344"/>
       <location filename="../../ArchWindow.py" line="1727"/>
       <location filename="../../ArchAxis.py" line="956"/>
+      <location filename="../../ArchSpace.py" line="938"/>
       <source>Add</source>
       <translation>添加</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="459"/>
-      <location filename="../../ArchMaterial.py" line="786"/>
-      <location filename="../../ArchReference.py" line="695"/>
       <location filename="../../ArchIFCView.py" line="63"/>
-      <location filename="../../ArchAxisSystem.py" line="222"/>
       <location filename="../../ArchSectionPlane.py" line="1503"/>
-      <location filename="../../ArchSite.py" line="1288"/>
-      <location filename="../../ArchSchedule.py" line="766"/>
       <location filename="../../ArchGrid.py" line="384"/>
+      <location filename="../../ArchSite.py" line="1294"/>
+      <location filename="../../ArchReference.py" line="695"/>
+      <location filename="../../ArchAxisSystem.py" line="222"/>
       <location filename="../../ArchComponent.py" line="1874"/>
+      <location filename="../../ArchSchedule.py" line="766"/>
       <location filename="../../ArchWindow.py" line="1728"/>
       <location filename="../../ArchAxis.py" line="788"/>
+      <location filename="../../ArchMaterial.py" line="470"/>
+      <location filename="../../ArchMaterial.py" line="797"/>
       <source>Edit</source>
       <translation>编辑</translation>
     </message>
@@ -4532,23 +4525,23 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>组件</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="868"/>
-      <location filename="../../ArchMaterial.py" line="894"/>
       <location filename="../../ArchWindow.py" line="1736"/>
+      <location filename="../../ArchMaterial.py" line="879"/>
+      <location filename="../../ArchMaterial.py" line="905"/>
       <source>Name</source>
       <translation>名称</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1701"/>
       <location filename="../../ArchComponent.py" line="2419"/>
       <location filename="../../ArchWindow.py" line="1737"/>
+      <location filename="../../ArchCommands.py" line="1701"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="478"/>
       <source>Type</source>
       <translation>类型</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="870"/>
-      <location filename="../../ArchMaterial.py" line="896"/>
+      <location filename="../../ArchMaterial.py" line="881"/>
+      <location filename="../../ArchMaterial.py" line="907"/>
       <location filename="../../ArchRoof.py" line="1082"/>
       <location filename="../../bimcommands/BimPanel.py" line="208"/>
       <source>Thickness</source>
@@ -4612,8 +4605,8 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>选择至少一个轴</translation>
     </message>
     <message>
-      <location filename="../../ArchAxisSystem.py" line="337"/>
       <location filename="../../Arch.py" line="104"/>
+      <location filename="../../ArchAxisSystem.py" line="337"/>
       <location filename="../../ArchComponent.py" line="2350"/>
       <location filename="../../ArchAxis.py" line="954"/>
       <source>Axes</source>
@@ -4625,10 +4618,10 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>轴系统组件</translation>
     </message>
     <message>
-      <location filename="../../importers/importOBJ.py" line="302"/>
-      <location filename="../../importers/importOBJ.py" line="340"/>
       <location filename="../../importers/importWebGL.py" line="371"/>
       <location filename="../../importers/importJSON.py" line="62"/>
+      <location filename="../../importers/importOBJ.py" line="302"/>
+      <location filename="../../importers/importOBJ.py" line="340"/>
       <source>Successfully written</source>
       <translation>写入成功</translation>
     </message>
@@ -4718,9 +4711,9 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>创建多材质</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="869"/>
-      <location filename="../../ArchMaterial.py" line="895"/>
       <location filename="../../Arch.py" line="533"/>
+      <location filename="../../ArchMaterial.py" line="880"/>
+      <location filename="../../ArchMaterial.py" line="906"/>
       <source>Material</source>
       <translation>材质</translation>
     </message>
@@ -4735,17 +4728,17 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>合并重复项</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="934"/>
+      <location filename="../../ArchMaterial.py" line="945"/>
       <source>New layer</source>
       <translation>新建图层</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="971"/>
+      <location filename="../../ArchMaterial.py" line="982"/>
       <source>Total thickness</source>
       <translation>总厚度</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="985"/>
+      <location filename="../../ArchMaterial.py" line="996"/>
       <source>depends on the object</source>
       <translation>取决于对象</translation>
     </message>
@@ -4816,8 +4809,8 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>移除跨度</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="497"/>
       <location filename="../../ArchGrid.py" line="488"/>
+      <location filename="../../Arch.py" line="497"/>
       <source>Grid</source>
       <translation>网格</translation>
     </message>
@@ -4962,8 +4955,8 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>倾斜</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="207"/>
       <location filename="../../ArchPrecast.py" line="1723"/>
+      <location filename="../../Arch.py" line="207"/>
       <source>Level</source>
       <translation>层级</translation>
     </message>
@@ -5014,8 +5007,8 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>错误计算形状</translation>
     </message>
     <message>
+      <location filename="../../ArchStructure.py" line="2075"/>
       <location filename="../../ArchPanel.py" line="563"/>
-      <location filename="../../ArchStructure.py" line="2065"/>
       <source>Could not compute a shape</source>
       <translation>无法计算形状</translation>
     </message>
@@ -5040,8 +5033,8 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>幕墙</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCurtainwall.py" line="62"/>
       <location filename="../../bimcommands/BimTruss.py" line="61"/>
+      <location filename="../../bimcommands/BimCurtainwall.py" line="62"/>
       <source>Select only one base object or none</source>
       <translation>仅选择一个基本对象或不选择</translation>
     </message>
@@ -5205,18 +5198,18 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>对象没有可设置的 IFC 属性</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1702"/>
+      <location filename="../../ArchComponent.py" line="2420"/>
       <location filename="../../ArchSchedule.py" line="989"/>
       <location filename="../../ArchSchedule.py" line="1014"/>
-      <location filename="../../ArchComponent.py" line="2420"/>
+      <location filename="../../ArchCommands.py" line="1702"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="479"/>
       <source>Value</source>
       <translation>值</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1703"/>
       <location filename="../../ArchSchedule.py" line="990"/>
       <location filename="../../ArchSchedule.py" line="1016"/>
+      <location filename="../../ArchCommands.py" line="1703"/>
       <source>Unit</source>
       <translation>单位</translation>
     </message>
@@ -5277,8 +5270,8 @@ Floor creation aborted.</source>
       <translation>距离</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1079"/>
       <location filename="../../ArchAxis.py" line="966"/>
+      <location filename="../../ArchRoof.py" line="1079"/>
       <source>Angle</source>
       <translation>角度</translation>
     </message>
@@ -5368,7 +5361,7 @@ Floor creation aborted.</source>
       <translation>错误的基类型</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="1294"/>
+      <location filename="../../ArchSite.py" line="1300"/>
       <location filename="../../ArchComponent.py" line="1881"/>
       <source>Toggle Subcomponents</source>
       <translation>切换子组件</translation>
@@ -5379,8 +5372,8 @@ Floor creation aborted.</source>
       <translation>关闭草图编辑</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="287"/>
       <location filename="../../ArchComponent.py" line="2342"/>
+      <location filename="../../ArchCommands.py" line="287"/>
       <source>Component</source>
       <translation>组件</translation>
     </message>
@@ -5589,8 +5582,8 @@ Floor creation aborted.</source>
       <translation>将上述列表对象平面居中</translation>
     </message>
     <message>
-      <location filename="../../ArchBuilding.py" line="214"/>
       <location filename="../../Arch.py" line="234"/>
+      <location filename="../../ArchBuilding.py" line="214"/>
       <source>Building</source>
       <translation>建筑</translation>
     </message>
@@ -5925,8 +5918,8 @@ Building creation aborted.</source>
       <translation>新建组</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="100"/>
       <location filename="../../ArchBuildingPart.py" line="1182"/>
+      <location filename="../../ArchMaterial.py" line="100"/>
       <source>Reorder Children Alphabetically</source>
       <translation>按字母顺序重新排列子项</translation>
     </message>
@@ -5979,7 +5972,7 @@ Building creation aborted.</source>
     <name>App::Property</name>
     <message>
       <location filename="../../ArchStructure.py" line="783"/>
-      <location filename="../../ArchStructure.py" line="1941"/>
+      <location filename="../../ArchStructure.py" line="1951"/>
       <source>An optional extrusion path for this element</source>
       <translation>此元素的可选拉伸路径</translation>
     </message>
@@ -6024,14 +6017,14 @@ Building creation aborted.</source>
       <translation>基础围绕工具轴的旋转（仅在 BasePerpendicularToTool 为 True 时使用）</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="85"/>
       <location filename="../../ArchStructure.py" line="879"/>
+      <location filename="../../ArchPanel.py" line="85"/>
       <source>The length of this element, if not based on a profile</source>
       <translation>此元素的长度（如果不基于轮廓）</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="95"/>
       <location filename="../../ArchStructure.py" line="889"/>
+      <location filename="../../ArchPanel.py" line="95"/>
       <source>The width of this element, if not based on a profile</source>
       <translation>此元素的宽度（如果不基于轮廓）</translation>
     </message>
@@ -6041,9 +6034,9 @@ Building creation aborted.</source>
       <translation>此元素的高度或拉伸深度。保持 0 为自动</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="209"/>
-      <location filename="../../ArchWall.py" line="272"/>
       <location filename="../../ArchStructure.py" line="911"/>
+      <location filename="../../ArchWall.py" line="272"/>
+      <location filename="../../ArchPanel.py" line="209"/>
       <source>The normal extrusion direction of this object (keep (0,0,0) for automatic normal)</source>
       <translation>此对象的法向拉伸方向（保持 (0,0,0) 为自动法向）</translation>
     </message>
@@ -6064,8 +6057,8 @@ Building creation aborted.</source>
       <translation>中心线与节点线之间的偏移距离</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="197"/>
       <location filename="../../ArchStructure.py" line="950"/>
+      <location filename="../../ArchPanel.py" line="197"/>
       <source>The facemaker type to use to build the profile of this object</source>
       <translation>用于构建此对象轮廓的面构建器类型</translation>
     </message>
@@ -6082,42 +6075,42 @@ Building creation aborted.</source>
       <translation>选择用户定义的属性集以用于创建变体形状，使用相同的 ArchSketch</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1522"/>
+      <location filename="../../ArchStructure.py" line="1532"/>
       <source>If the nodes are visible or not</source>
       <translation>节点是否可见</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1530"/>
+      <location filename="../../ArchStructure.py" line="1540"/>
       <source>The width of the nodes line</source>
       <translation>节点线的宽度</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1538"/>
+      <location filename="../../ArchStructure.py" line="1548"/>
       <source>The size of the node points</source>
       <translation>节点点的大小</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1547"/>
+      <location filename="../../ArchStructure.py" line="1557"/>
       <source>The color of the nodes line</source>
       <translation>节点线的颜色</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1556"/>
+      <location filename="../../ArchStructure.py" line="1566"/>
       <source>The type of structural node</source>
       <translation>结构节点的类型</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1989"/>
+      <location filename="../../ArchStructure.py" line="1999"/>
       <source>Axes systems this structure is built on</source>
       <translation>此结构所基于的轴系</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1999"/>
+      <location filename="../../ArchStructure.py" line="2009"/>
       <source>The element numbers to exclude when this structure is based on axes</source>
       <translation>当此结构基于轴时要排除的元素编号</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="2006"/>
+      <location filename="../../ArchStructure.py" line="2016"/>
       <source>If true the element are aligned with axes</source>
       <translation>如果为真，则元素与轴对齐</translation>
     </message>
@@ -6132,8 +6125,8 @@ Building creation aborted.</source>
       <translation>此设备产品页面的 URL</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="198"/>
       <location filename="../../ArchEquipment.py" line="211"/>
+      <location filename="../../ArchMaterial.py" line="208"/>
       <source>A standard code (MasterFormat, OmniClass,…)</source>
       <translation>标准代码（MasterFormat, OmniClass,…）</translation>
     </message>
@@ -6148,15 +6141,15 @@ Building creation aborted.</source>
       <translation>此设备所需的电功率，单位为瓦特</translation>
     </message>
     <message>
-      <location filename="../../ArchBuilding.py" line="308"/>
       <location filename="../../Arch.py" line="237"/>
       <location filename="../../Arch.py" line="310"/>
+      <location filename="../../ArchBuilding.py" line="308"/>
       <source>The type of this building</source>
       <translation>此建筑的类型</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="236"/>
       <location filename="../../ArchBuildingPart.py" line="229"/>
+      <location filename="../../ArchFloor.py" line="236"/>
       <source>The height of this object</source>
       <translation>此对象的高度</translation>
     </message>
@@ -6171,8 +6164,8 @@ Building creation aborted.</source>
       <translation>此标高 (0,0,0) 点的标高值</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="244"/>
       <location filename="../../ArchBuildingPart.py" line="257"/>
+      <location filename="../../ArchFloor.py" line="244"/>
       <source>The computed floor area of this floor</source>
       <translation>此楼层的计算楼板面积</translation>
     </message>
@@ -6189,8 +6182,8 @@ Building creation aborted.</source>
       <translation>此组件的可选标签</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="954"/>
       <location filename="../../ArchBuildingPart.py" line="281"/>
+      <location filename="../../ArchSectionPlane.py" line="954"/>
       <source>The shape of this object</source>
       <translation>此对象的形状</translation>
     </message>
@@ -6210,8 +6203,8 @@ Building creation aborted.</source>
       <translation>一个 MaterialName:SolidIndexesList 映射，将材质名称与实体索引相关联，用于从其他文件引用此对象时</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1126"/>
       <location filename="../../ArchBuildingPart.py" line="519"/>
+      <location filename="../../ArchSectionPlane.py" line="1126"/>
       <source>The line width of this object</source>
       <translation>此对象的线宽</translation>
     </message>
@@ -6562,8 +6555,8 @@ Building creation aborted.</source>
       <translation>模型原点(0,0,0)与地理坐标指示点之间的可选偏移</translation>
     </message>
     <message>
-      <location filename="../../ArchIFC.py" line="87"/>
       <location filename="../../ArchSite.py" line="744"/>
+      <location filename="../../ArchIFC.py" line="87"/>
       <source>The type of this object</source>
       <translation>此对象的类型</translation>
     </message>
@@ -6658,17 +6651,17 @@ Building creation aborted.</source>
       <translation>在太阳路径上显示关键小时的文本标签</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="2038"/>
+      <location filename="../../ArchSite.py" line="2044"/>
       <source>The altitude of the sun above the horizon</source>
       <translation>太阳在地平线上的高度</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="2048"/>
+      <location filename="../../ArchSite.py" line="2054"/>
       <source>The compass direction of the sun (0° is North)</source>
       <translation>太阳的指南针方向（0°为北）</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="2056"/>
+      <location filename="../../ArchSite.py" line="2062"/>
       <source>The date and time for this sun position</source>
       <translation>此太阳位置的日期和时间</translation>
     </message>
@@ -6798,8 +6791,8 @@ Building creation aborted.</source>
       <translation>如果为真，几何体被融合，否则为复合体</translation>
     </message>
     <message>
-      <location filename="../../ArchSketchObject.py" line="52"/>
       <location filename="../../ArchWindow.py" line="144"/>
+      <location filename="../../ArchSketchObject.py" line="52"/>
       <source>The objects that host this window</source>
       <translation>承载此窗的对象</translation>
     </message>
@@ -7146,7 +7139,7 @@ Building creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="462"/>
-      <location filename="../../ArchStairs.py" line="1738"/>
+      <location filename="../../ArchStairs.py" line="1753"/>
       <source>The overlap of the stringers above the bottom of the treads</source>
       <translation>楼梯梁在踏步底部的重叠部分</translation>
     </message>
@@ -7211,43 +7204,43 @@ Building creation aborted.</source>
       <translation>为真时，围栏将像原始柱子和段一样着色。</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="190"/>
-      <location filename="../../ArchMaterial.py" line="718"/>
+      <location filename="../../ArchMaterial.py" line="200"/>
+      <location filename="../../ArchMaterial.py" line="729"/>
       <source>A description for this material</source>
       <translation>此材质的描述</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="208"/>
+      <location filename="../../ArchMaterial.py" line="218"/>
       <source>A URL where to find information about this material</source>
       <translation>可找到有关此材质信息的URL</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="216"/>
+      <location filename="../../ArchMaterial.py" line="226"/>
       <source>The transparency value of this material</source>
       <translation>此材质的透明度值</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="224"/>
+      <location filename="../../ArchMaterial.py" line="234"/>
       <source>The color of this material</source>
       <translation>此材质的颜色</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="232"/>
+      <location filename="../../ArchMaterial.py" line="242"/>
       <source>The color of this material when cut</source>
       <translation>此材质在切割时的颜色</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="725"/>
+      <location filename="../../ArchMaterial.py" line="736"/>
       <source>The list of layer names</source>
       <translation>图层名称列表</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="732"/>
+      <location filename="../../ArchMaterial.py" line="743"/>
       <source>The list of layer materials</source>
       <translation>图层材质列表</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="739"/>
+      <location filename="../../ArchMaterial.py" line="750"/>
       <source>The list of layer thicknesses</source>
       <translation>图层厚度列表</translation>
     </message>
@@ -8057,14 +8050,14 @@ Building creation aborted.</source>
       <translation>在3D视图中显示标签</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="579"/>
       <location filename="../../ArchSectionPlane.py" line="1180"/>
+      <location filename="../../ArchSpace.py" line="579"/>
       <source>The name of the font</source>
       <translation>字体名称</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="597"/>
       <location filename="../../ArchSectionPlane.py" line="1189"/>
+      <location filename="../../ArchSpace.py" line="597"/>
       <source>The size of the text font</source>
       <translation>文本字体的大小</translation>
     </message>
@@ -8284,8 +8277,8 @@ Building creation aborted.</source>
       <translation>选择用户定义的属性集以用于创建变体形状、具有相同ArchSketch的Arch Wall的图层</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="381"/>
       <location filename="../../ArchStructure.py" line="962"/>
+      <location filename="../../ArchWall.py" line="381"/>
       <source>Use Base ArchSketch (if used) data (e.g. widths, aligns, offsets) instead of Wall's properties</source>
       <translation>使用基础ArchSketch（如果使用）数据（例如宽度、对齐方式、偏移量）而不是墙的属性</translation>
     </message>
@@ -8293,12 +8286,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_StructureTools</name>
     <message>
-      <location filename="../../ArchStructure.py" line="2128"/>
+      <location filename="../../ArchStructure.py" line="2138"/>
       <source>Structure Tools</source>
       <translation>结构工具</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="2129"/>
+      <location filename="../../ArchStructure.py" line="2139"/>
       <source>Structure tools</source>
       <translation>结构工具</translation>
     </message>
@@ -8374,17 +8367,17 @@ Building creation aborted.</source>
     <message>
       <location filename="../../InitGui.py" line="426"/>
       <source>Object Tools</source>
-      <translation type="unfinished">Object Tools</translation>
+      <translation>对象工具</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="427"/>
       <source>3D Tools</source>
-      <translation type="unfinished">3D Tools</translation>
+      <translation>3D 工具</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="442"/>
       <source>Reinforcement Tools</source>
-      <translation type="unfinished">Reinforcement Tools</translation>
+      <translation>钢筋工具</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="443"/>
@@ -8437,7 +8430,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimProfile.py" line="45"/>
       <source>Creates a profile</source>
-      <translation type="unfinished">Creates a profile</translation>
+      <translation>创建轮廓</translation>
     </message>
   </context>
   <context>
@@ -8450,7 +8443,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimSite.py" line="48"/>
       <source>Creates a site including selected objects</source>
-      <translation type="unfinished">Creates a site including selected objects</translation>
+      <translation>创建场地，包含选定的对象</translation>
     </message>
   </context>
   <context>
@@ -8463,7 +8456,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimRoof.py" line="46"/>
       <source>Creates a roof object from the selected wire.</source>
-      <translation type="unfinished">Creates a roof object from the selected wire.</translation>
+      <translation>从选定的线创建屋顶对象。</translation>
     </message>
   </context>
   <context>
@@ -8471,12 +8464,12 @@ Building creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimCutPlane.py" line="44"/>
       <source>Cut With Plane</source>
-      <translation type="unfinished">Cut With Plane</translation>
+      <translation>用平面切割</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimCutPlane.py" line="45"/>
       <source>Cut an object with a plane</source>
-      <translation type="unfinished">Cut an object with a plane</translation>
+      <translation>用平面切割对象</translation>
     </message>
   </context>
   <context>
@@ -8489,7 +8482,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimReference.py" line="45"/>
       <source>Creates an external reference object</source>
-      <translation type="unfinished">Creates an external reference object</translation>
+      <translation>创建外部参照对象</translation>
     </message>
   </context>
   <context>
@@ -8502,7 +8495,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimFrame.py" line="48"/>
       <source>Creates a frame object from a planar 2D object (the extrusion path(s)) and a profile. Make sure objects are selected in that order.</source>
-      <translation type="unfinished">Creates a frame object from a planar 2D object (the extrusion path(s)) and a profile. Make sure objects are selected in that order.</translation>
+      <translation>从平面二维对象（拉伸路径）和轮廓创建框架对象。请确保按此顺序选择对象。</translation>
     </message>
   </context>
   <context>
@@ -8515,7 +8508,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimWindow.py" line="55"/>
       <source>Creates a window object from a selected object (wire, rectangle or sketch)</source>
-      <translation type="unfinished">Creates a window object from a selected object (wire, rectangle or sketch)</translation>
+      <translation>从选定的对象（线、矩形或草图）创建窗户对象</translation>
     </message>
   </context>
   <context>
@@ -8528,7 +8521,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimAxis.py" line="73"/>
       <source>Creates an axis system from a set of axes</source>
-      <translation type="unfinished">Creates an axis system from a set of axes</translation>
+      <translation>从一组轴线创建轴网系统</translation>
     </message>
   </context>
   <context>
@@ -8541,7 +8534,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimTruss.py" line="47"/>
       <source>Creates a truss object from the selected line or from scratch</source>
-      <translation type="unfinished">Creates a truss object from the selected line or from scratch</translation>
+      <translation>从选定的线或从头开始创建桁架对象</translation>
     </message>
   </context>
   <context>
@@ -8554,7 +8547,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimStairs.py" line="45"/>
       <source>Creates a flight of stairs</source>
-      <translation type="unfinished">Creates a flight of stairs</translation>
+      <translation>创建一段楼梯</translation>
     </message>
   </context>
   <context>
@@ -8567,7 +8560,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimSpace.py" line="47"/>
       <source>Creates a space object from selected boundary objects</source>
-      <translation type="unfinished">Creates a space object from selected boundary objects</translation>
+      <translation>从选定的边界对象创建空间对象</translation>
     </message>
   </context>
   <context>
@@ -8580,7 +8573,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimFence.py" line="45"/>
       <source>Creates a fence object from a selected section, post and path</source>
-      <translation type="unfinished">Creates a fence object from a selected section, post and path</translation>
+      <translation>从选定的截面、立柱和路径创建围栏对象</translation>
     </message>
   </context>
   <context>
@@ -8593,7 +8586,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="537"/>
       <source>Creates or edits the material definition of a selected object.</source>
-      <translation type="unfinished">Creates or edits the material definition of a selected object.</translation>
+      <translation>创建或编辑选定对象的材质定义。</translation>
     </message>
   </context>
   <context>
@@ -8601,12 +8594,12 @@ Building creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="568"/>
       <source>Multi-Material</source>
-      <translation type="unfinished">Multi-Material</translation>
+      <translation>多重材质</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="570"/>
       <source>Creates or edits multi-materials</source>
-      <translation type="unfinished">Creates or edits multi-materials</translation>
+      <translation>创建或编辑多重材质</translation>
     </message>
   </context>
   <context>
@@ -8614,12 +8607,12 @@ Building creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="600"/>
       <source>Material Tools</source>
-      <translation type="unfinished">Material Tools</translation>
+      <translation>材质工具</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="601"/>
       <source>Material tools</source>
-      <translation type="unfinished">Material tools</translation>
+      <translation>材质工具</translation>
     </message>
   </context>
   <context>
@@ -8632,67 +8625,67 @@ Building creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimAxis.py" line="112"/>
       <source>Creates a customizable grid object</source>
-      <translation type="unfinished">Creates a customizable grid object</translation>
+      <translation>创建可自定义的网格对象</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="73"/>
       <source>The number of rows</source>
-      <translation type="unfinished">The number of rows</translation>
+      <translation>行数</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="81"/>
       <source>The number of columns</source>
-      <translation type="unfinished">The number of columns</translation>
+      <translation>列数</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="89"/>
       <source>The sizes of rows</source>
-      <translation type="unfinished">The sizes of rows</translation>
+      <translation>行尺寸</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="97"/>
       <source>The sizes of columns</source>
-      <translation type="unfinished">The sizes of columns</translation>
+      <translation>列尺寸</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="105"/>
       <source>The span ranges of cells that are merged together</source>
-      <translation type="unfinished">The span ranges of cells that are merged together</translation>
+      <translation>合并在一起的单元格跨度范围</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="115"/>
       <source>The type of 3D points produced by this grid object</source>
-      <translation type="unfinished">The type of 3D points produced by this grid object</translation>
+      <translation>此网格对象生成的 3D 点类型</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="124"/>
       <source>The total width of this grid</source>
-      <translation type="unfinished">The total width of this grid</translation>
+      <translation>此网格的总宽度</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="132"/>
       <source>The total height of this grid</source>
-      <translation type="unfinished">The total height of this grid</translation>
+      <translation>此网格的总高度</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="142"/>
       <source>Creates automatic column divisions (set to 0 to disable)</source>
-      <translation type="unfinished">Creates automatic column divisions (set to 0 to disable)</translation>
+      <translation>创建自动列划分（设置为 0 以禁用）</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="152"/>
       <source>Creates automatic row divisions (set to 0 to disable)</source>
-      <translation type="unfinished">Creates automatic row divisions (set to 0 to disable)</translation>
+      <translation>创建自动行划分（设置为 0 以禁用）</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="163"/>
       <source>When in edge midpoint mode, if this grid must reorient its children along edge normals or not</source>
-      <translation type="unfinished">When in edge midpoint mode, if this grid must reorient its children along edge normals or not</translation>
+      <translation>在边中点模式下，此网格是否必须沿边法线重新定向其子项</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="171"/>
       <source>The indices of faces to hide</source>
-      <translation type="unfinished">The indices of faces to hide</translation>
+      <translation>要隐藏的面的索引</translation>
     </message>
   </context>
   <context>
@@ -8700,12 +8693,12 @@ Building creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="55"/>
       <source>Panel</source>
-      <translation type="unfinished">Panel</translation>
+      <translation>板</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="60"/>
       <source>Creates a panel object from scratch or from a selected object (sketch, wire, face or solid)</source>
-      <translation type="unfinished">Creates a panel object from scratch or from a selected object (sketch, wire, face or solid)</translation>
+      <translation>从头开始或从选定的对象（草图、线、面或实体）创建板对象</translation>
     </message>
   </context>
   <context>
@@ -8718,7 +8711,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="289"/>
       <source>Creates 2D views of selected panels</source>
-      <translation type="unfinished">Creates 2D views of selected panels</translation>
+      <translation>创建选定板的 2D 视图</translation>
     </message>
   </context>
   <context>
@@ -8731,7 +8724,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="324"/>
       <source>Creates a 2D sheet which can contain panel cuts</source>
-      <translation type="unfinished">Creates a 2D sheet which can contain panel cuts</translation>
+      <translation>创建可包含板切割的 2D 图纸</translation>
     </message>
   </context>
   <context>
@@ -8739,12 +8732,12 @@ Building creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="359"/>
       <source>Nest</source>
-      <translation type="unfinished">Nest</translation>
+      <translation>嵌套</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="363"/>
       <source>Nests a series of selected shapes in a container</source>
-      <translation type="unfinished">Nests a series of selected shapes in a container</translation>
+      <translation>将一系列选定的形状嵌套在容器中</translation>
     </message>
   </context>
   <context>
@@ -8752,12 +8745,12 @@ Building creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="535"/>
       <source>Panel Tools</source>
-      <translation type="unfinished">Panel Tools</translation>
+      <translation>板工具</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="536"/>
       <source>Panel tools</source>
-      <translation type="unfinished">Panel tools</translation>
+      <translation>板工具</translation>
     </message>
   </context>
   <context>
@@ -8770,7 +8763,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimCurtainwall.py" line="48"/>
       <source>Creates a curtain wall object from selected line or from scratch</source>
-      <translation type="unfinished">Creates a curtain wall object from selected line or from scratch</translation>
+      <translation>从选定的线或从头开始创建幕墙对象</translation>
     </message>
   </context>
   <context>
@@ -8783,7 +8776,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimPipe.py" line="47"/>
       <source>Creates a pipe object from a given wire or line</source>
-      <translation type="unfinished">Creates a pipe object from a given wire or line</translation>
+      <translation>从给定的线创建管道对象</translation>
     </message>
   </context>
   <context>
@@ -8791,12 +8784,12 @@ Building creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimPipe.py" line="87"/>
       <source>Connector</source>
-      <translation type="unfinished">Connector</translation>
+      <translation>连接器</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPipe.py" line="91"/>
       <source>Creates a connector between 2 or 3 selected pipes</source>
-      <translation type="unfinished">Creates a connector between 2 or 3 selected pipes</translation>
+      <translation>在 2 或 3 个选定的管道之间创建连接器</translation>
     </message>
   </context>
   <context>
@@ -8804,12 +8797,12 @@ Building creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimPipe.py" line="132"/>
       <source>Pipe Tools</source>
-      <translation type="unfinished">Pipe Tools</translation>
+      <translation>管道工具</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPipe.py" line="133"/>
       <source>Pipe tools</source>
-      <translation type="unfinished">Pipe tools</translation>
+      <translation>管道工具</translation>
     </message>
   </context>
   <context>
@@ -8822,7 +8815,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimSchedule.py" line="45"/>
       <source>Creates a schedule to collect data from the model</source>
-      <translation type="unfinished">Creates a schedule to collect data from the model</translation>
+      <translation>创建明细表以从模型收集数据</translation>
     </message>
   </context>
   <context>
@@ -8835,7 +8828,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchFloor.py" line="128"/>
       <source>Creates a Building Part object that represents a level, including selected objects</source>
-      <translation type="unfinished">Creates a Building Part object that represents a level, including selected objects</translation>
+      <translation>创建表示楼层的建筑部件对象，包括选定的对象</translation>
     </message>
   </context>
   <context>
@@ -8848,7 +8841,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimAxis.py" line="45"/>
       <source>Creates a set of axes</source>
-      <translation type="unfinished">Creates a set of axes</translation>
+      <translation>创建一组轴线</translation>
     </message>
   </context>
   <context>
@@ -8856,12 +8849,12 @@ Building creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimAxis.py" line="137"/>
       <source>Axis Tools</source>
-      <translation type="unfinished">Axis Tools</translation>
+      <translation>轴线工具</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimAxis.py" line="138"/>
       <source>Axis tools</source>
-      <translation type="unfinished">Axis tools</translation>
+      <translation>轴线工具</translation>
     </message>
   </context>
   <context>
@@ -8869,12 +8862,12 @@ Building creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimRebar.py" line="43"/>
       <source>Custom Rebar</source>
-      <translation type="unfinished">Custom Rebar</translation>
+      <translation>自定义钢筋</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimRebar.py" line="48"/>
       <source>Creates a reinforcement bar from the selected face of solid object and/or a sketch</source>
-      <translation type="unfinished">Creates a reinforcement bar from the selected face of solid object and/or a sketch</translation>
+      <translation>从实体对象的选定面和/或草图创建钢筋</translation>
     </message>
   </context>
   <context>
@@ -8882,12 +8875,12 @@ Building creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimSectionPlane.py" line="44"/>
       <source>Section Plane</source>
-      <translation type="unfinished">Section Plane</translation>
+      <translation>剖面平面</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSectionPlane.py" line="48"/>
       <source>Creates a section plane object, including the selected objects</source>
-      <translation type="unfinished">Creates a section plane object, including the selected objects</translation>
+      <translation>创建剖面平面对象，包括选定的对象</translation>
     </message>
   </context>
   <context>
@@ -8901,12 +8894,12 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchBuilding.py" line="233"/>
       <source>Creates a building object including selected objects.</source>
-      <translation type="unfinished">Creates a building object including selected objects.</translation>
+      <translation>创建建筑对象，包括选定的对象。</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimBuildingPart.py" line="80"/>
       <source>Creates a building object</source>
-      <translation type="unfinished">Creates a building object</translation>
+      <translation>创建建筑对象</translation>
     </message>
   </context>
   <context>
@@ -8919,7 +8912,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimWall.py" line="59"/>
       <source>Creates a wall object from scratch or from a selected object (wire, face or solid)</source>
-      <translation type="unfinished">Creates a wall object from scratch or from a selected object (wire, face or solid)</translation>
+      <translation>从头开始或从选定的对象（线、面或实体）创建墙对象</translation>
     </message>
   </context>
   <context>
@@ -8932,7 +8925,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="543"/>
       <source>Merges the selected walls, if possible</source>
-      <translation type="unfinished">Merges the selected walls, if possible</translation>
+      <translation>如果可能，合并选定的墙</translation>
     </message>
   </context>
   <context>
@@ -8940,12 +8933,12 @@ Building creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="42"/>
       <source>Add Component</source>
-      <translation type="unfinished">Add Component</translation>
+      <translation>添加组件</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="45"/>
       <source>Adds the selected components to the active object</source>
-      <translation type="unfinished">Adds the selected components to the active object</translation>
+      <translation>将选定的组件添加到活动对象</translation>
     </message>
   </context>
   <context>
@@ -8958,7 +8951,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="164"/>
       <source>Splits selected meshes into independent components</source>
-      <translation type="unfinished">Splits selected meshes into independent components</translation>
+      <translation>将选定的网格分割为独立的组件</translation>
     </message>
   </context>
   <context>
@@ -8971,7 +8964,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="197"/>
       <source>Turns selected meshes into Part shape objects</source>
-      <translation type="unfinished">Turns selected meshes into Part shape objects</translation>
+      <translation>将选定的网格转换为零件形状对象</translation>
     </message>
   </context>
   <context>
@@ -8979,12 +8972,12 @@ Building creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="240"/>
       <source>Select Non-Manifold Meshes</source>
-      <translation type="unfinished">Select Non-Manifold Meshes</translation>
+      <translation>选择非流形网格</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="244"/>
       <source>Selects all non-manifold meshes from the document or from the selected groups</source>
-      <translation type="unfinished">Selects all non-manifold meshes from the document or from the selected groups</translation>
+      <translation>从文档或选定的组中选择所有非流形网格</translation>
     </message>
   </context>
   <context>
@@ -8997,7 +8990,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="302"/>
       <source>Closes holes in open shapes, turning them into solids</source>
-      <translation type="unfinished">Closes holes in open shapes, turning them into solids</translation>
+      <translation>闭合开放形状中的孔，将其转换为实体</translation>
     </message>
   </context>
   <context>
@@ -9005,12 +8998,12 @@ Building creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="324"/>
       <source>Check</source>
-      <translation type="unfinished">Check</translation>
+      <translation>检查</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="325"/>
       <source>Checks the selected objects for problems</source>
-      <translation type="unfinished">Checks the selected objects for problems</translation>
+      <translation>检查选定的对象是否存在问题</translation>
     </message>
   </context>
   <context>
@@ -9023,7 +9016,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="354"/>
       <source>Starts survey</source>
-      <translation type="unfinished">Starts survey</translation>
+      <translation>开始测量</translation>
     </message>
   </context>
   <context>
@@ -9036,7 +9029,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="399"/>
       <source>Creates an undefined architectural component</source>
-      <translation type="unfinished">Creates an undefined architectural component</translation>
+      <translation>创建未定义的建筑组件</translation>
     </message>
   </context>
   <context>
@@ -9044,12 +9037,12 @@ Building creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="428"/>
       <source>Clone Component</source>
-      <translation type="unfinished">Clone Component</translation>
+      <translation>克隆组件</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="432"/>
       <source>Clones an object as an undefined architectural component</source>
-      <translation type="unfinished">Clones an object as an undefined architectural component</translation>
+      <translation>将对象克隆为未定义的建筑组件</translation>
     </message>
   </context>
   <context>
@@ -9057,19 +9050,19 @@ Building creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="497"/>
       <source>Toggle Subcomponents</source>
-      <translation type="unfinished">Toggle Subcomponents</translation>
+      <translation>切换子组件</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="500"/>
       <source>Shows or hides the subcomponents of this object</source>
-      <translation type="unfinished">Shows or hides the subcomponents of this object</translation>
+      <translation>显示或隐藏此对象的子组件</translation>
     </message>
   </context>
   <context>
     <name>Command</name>
     <message>
       <location filename="../../ArchIFCView.py" line="73"/>
-      <location filename="../../ArchSite.py" line="1308"/>
+      <location filename="../../ArchSite.py" line="1314"/>
       <location filename="../../ArchAxis.py" line="798"/>
       <source>Transform</source>
       <translation>变换</translation>
@@ -9080,7 +9073,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../InitGui.py" line="479"/>
       <source>BIM</source>
-      <translation type="unfinished">BIM</translation>
+      <translation>BIM</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="480"/>
@@ -9099,7 +9092,7 @@ Building creation aborted.</source>
       <location filename="../../BimStatus.py" line="46"/>
       <location filename="../../BimStatus.py" line="56"/>
       <source>Custom…</source>
-      <translation type="unfinished">Custom…</translation>
+      <translation>自定义…</translation>
     </message>
     <message>
       <location filename="../../BimStatus.py" line="53"/>
@@ -9112,47 +9105,47 @@ Building creation aborted.</source>
     <message>
       <location filename="../../BimStatus.py" line="151"/>
       <source>Toggle report panels on/off (Ctrl+0)</source>
-      <translation type="unfinished">Toggle report panels on/off (Ctrl+0)</translation>
+      <translation>切换报告面板开/关 (Ctrl+0)</translation>
     </message>
     <message>
       <location filename="../../BimStatus.py" line="170"/>
       <source>Toggle BIM views panel on/off (Ctrl+9)</source>
-      <translation type="unfinished">Toggle BIM views panel on/off (Ctrl+9)</translation>
+      <translation>切换 BIM 视图面板开/关 (Ctrl+9)</translation>
     </message>
     <message>
       <location filename="../../BimStatus.py" line="186"/>
       <source>Toggle 3D view background between simple and gradient</source>
-      <translation type="unfinished">Toggle 3D view background between simple and gradient</translation>
+      <translation>在简单背景和渐变背景之间切换 3D 视图背景</translation>
     </message>
     <message>
       <location filename="../../BimStatus.py" line="212"/>
       <source>The value of the nudge movement (rotation is always 45°).CTRL+arrows to move
 CTRL+, to rotate leftCTRL+. to rotate right
 CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch between auto and manual mode</source>
-      <translation type="unfinished">The value of the nudge movement (rotation is always 45°).CTRL+arrows to move
-CTRL+, to rotate leftCTRL+. to rotate right
-CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch between auto and manual mode</translation>
+      <translation>微移移动的值（旋转始终为 45°）。CTRL+箭头键移动
+CTRL+, 向左旋转 CTRL+. 向右旋转
+CTRL+PgUp 延长拉伸 CTRL+PgDown 缩短拉伸 CTRL+/ 在自动和手动模式之间切换</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="43"/>
       <source>The BIM workbench is used to model buildings</source>
-      <translation type="unfinished">The BIM workbench is used to model buildings</translation>
+      <translation>BIM 工作台用于建筑建模</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="44"/>
       <location filename="../../bimcommands/BimViews.py" line="161"/>
       <source>BIM</source>
-      <translation type="unfinished">BIM</translation>
+      <translation>BIM</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="675"/>
       <source>Snapping</source>
-      <translation type="unfinished">Snapping</translation>
+      <translation>捕捉</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimBox.py" line="153"/>
       <source>Box dimensions</source>
-      <translation type="unfinished">Box dimensions</translation>
+      <translation>长方体尺寸</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="48"/>
@@ -9180,89 +9173,89 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimClassification.py" line="91"/>
       <source>Searches classes</source>
-      <translation type="unfinished">Searches classes</translation>
+      <translation>搜索类别</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimClassification.py" line="110"/>
       <source>Editing</source>
-      <translation type="unfinished">Editing</translation>
+      <translation>编辑</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDiff.py" line="69"/>
       <source>The current document must be the main one. The other contains newer objects to merge into it. Ensure that only the objects intended for comparison are visible in both documents. Proceed?</source>
-      <translation type="unfinished">The current document must be the main one. The other contains newer objects to merge into it. Ensure that only the objects intended for comparison are visible in both documents. Proceed?</translation>
+      <translation>当前文档必须是主文档。另一个文档包含要合并到其中的较新对象。请确保两个文档中仅显示用于比较的对象。继续吗？</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDiff.py" line="321"/>
       <source>objects still have the same shape but have a different material. Update them in the main document?</source>
-      <translation type="unfinished">objects still have the same shape but have a different material. Update them in the main document?</translation>
+      <translation>对象形状相同但材质不同。在主文档中更新它们吗？</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDiff.py" line="376"/>
       <source>objects have no IFC ID in the main document, but an identical object with an ID exists in the new document. Transfer these IDs to the original objects?</source>
-      <translation type="unfinished">objects have no IFC ID in the main document, but an identical object with an ID exists in the new document. Transfer these IDs to the original objects?</translation>
+      <translation>对象在主文档中没有 IFC ID，但新文档中存在具有 ID 的相同对象。将这些 ID 传输到原始对象吗？</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDiff.py" line="395"/>
       <source>objects had their name changed. Rename them?</source>
-      <translation type="unfinished">objects had their name changed. Rename them?</translation>
+      <translation>对象的名称已更改。重命名它们吗？</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDiff.py" line="412"/>
       <source>objects had their properties changed. Update?</source>
-      <translation type="unfinished">objects had their properties changed. Update?</translation>
+      <translation>对象的属性已更改。更新吗？</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDiff.py" line="431"/>
       <source>objects have their location changed. Move them to their new position?</source>
-      <translation type="unfinished">objects have their location changed. Move them to their new position?</translation>
+      <translation>对象的位置已更改。将它们移动到新位置吗？</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDiff.py" line="450"/>
       <source>Colorize the objects that have moved in yellow in the other file (to serve as a diff)?</source>
-      <translation type="unfinished">Colorize the objects that have moved in yellow in the other file (to serve as a diff)?</translation>
+      <translation>将已移动的对象在另一个文件中着色为黄色（用作差异显示）？</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDiff.py" line="471"/>
       <source>Colorize the objects that have been modified in orange in the other file (to serve as a diff)?</source>
-      <translation type="unfinished">Colorize the objects that have been modified in orange in the other file (to serve as a diff)?</translation>
+      <translation>将已修改的对象在另一个文件中着色为橙色（用作差异显示）？</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDiff.py" line="494"/>
       <source>objects do not exist anymore in the new document. Move them to a 'To Delete' group?</source>
-      <translation type="unfinished">objects do not exist anymore in the new document. Move them to a 'To Delete' group?</translation>
+      <translation>对象在新文档中不再存在。将它们移动到“待删除”组吗？</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDiff.py" line="509"/>
       <source>Colorize the objects that have been removed in red in the other file (to serve as a diff)?</source>
-      <translation type="unfinished">Colorize the objects that have been removed in red in the other file (to serve as a diff)?</translation>
+      <translation>将已移除的对象在另一个文件中着色为红色（用作差异显示）？</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDiff.py" line="528"/>
       <source>Colorize the objects that have been added in green in the other file (to serve as a diff)?</source>
-      <translation type="unfinished">Colorize the objects that have been added in green in the other file (to serve as a diff)?</translation>
+      <translation>将已添加的对象在另一个文件中着色为绿色（用作差异显示）？</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDiff.py" line="549"/>
       <source>Two documents are required to be open to run this tool. One which is the main document, and one that contains new objects to compare against the existing one. Make sure only the objects to compare in both documents are visible.</source>
-      <translation type="unfinished">Two documents are required to be open to run this tool. One which is the main document, and one that contains new objects to compare against the existing one. Make sure only the objects to compare in both documents are visible.</translation>
+      <translation>需要打开两个文档才能运行此工具。一个是主文档，另一个包含要与现有文档进行比较的新对象。请确保两个文档中仅显示要比较的对象。</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcElements.py" line="91"/>
-      <location filename="../../bimcommands/BimIfcElements.py" line="458"/>
+      <location filename="../../bimcommands/BimIfcElements.py" line="460"/>
       <source>Create new material</source>
-      <translation type="unfinished">Create new material</translation>
+      <translation>创建新材质</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcElements.py" line="92"/>
-      <location filename="../../bimcommands/BimIfcElements.py" line="459"/>
+      <location filename="../../bimcommands/BimIfcElements.py" line="461"/>
       <source>Create new multi-material</source>
-      <translation type="unfinished">Create new multi-material</translation>
+      <translation>创建新多重材质</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="247"/>
       <location filename="../../bimcommands/BimIfcElements.py" line="139"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="206"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="247"/>
       <source>Label</source>
       <translation>标签</translation>
     </message>
@@ -9278,20 +9271,20 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
       <translation>材质</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_tools.py" line="60"/>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="60"/>
+      <location filename="../../nativeifc/ifc_tools.py" line="60"/>
       <source>IfcOpenShell was not found on this system. IFC support is disabled</source>
-      <translation type="unfinished">IfcOpenShell was not found on this system. IFC support is disabled</translation>
+      <translation>在此系统上未找到 IfcOpenShell。IFC 支持已禁用</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="82"/>
       <source>Objects structure</source>
-      <translation type="unfinished">Objects structure</translation>
+      <translation>对象结构</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="92"/>
       <source>Attribute</source>
-      <translation type="unfinished">Attribute</translation>
+      <translation>属性</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="93"/>
@@ -9312,12 +9305,12 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="131"/>
       <source>Back</source>
-      <translation type="unfinished">Back</translation>
+      <translation>返回</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="132"/>
       <source>Go back to last item selected</source>
-      <translation type="unfinished">Go back to last item selected</translation>
+      <translation>返回最后选定的项目</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="137"/>
@@ -9327,7 +9320,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="143"/>
       <source>Inserts the selected object and its children in the active document</source>
-      <translation type="unfinished">Inserts the selected object and its children in the active document</translation>
+      <translation>将选定对象及其子项插入活动文档</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="149"/>
@@ -9337,17 +9330,17 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="150"/>
       <source>Turn mesh display on/off</source>
-      <translation type="unfinished">Turn mesh display on/off</translation>
+      <translation>打开/关闭网格显示</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="186"/>
       <source>Select an IFC file</source>
-      <translation type="unfinished">Select an IFC file</translation>
+      <translation>选择 IFC 文件</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="188"/>
       <source>IFC files (*.ifc)</source>
-      <translation type="unfinished">IFC files (*.ifc)</translation>
+      <translation>IFC 文件 (*.ifc)</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="196"/>
@@ -9358,27 +9351,27 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
       <location filename="../../bimcommands/BimIfcExplorer.py" line="109"/>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="203"/>
       <source>IFC Explorer</source>
-      <translation type="unfinished">IFC Explorer</translation>
+      <translation>IFC 浏览器</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="126"/>
       <source>Open another IFC file</source>
-      <translation type="unfinished">Open another IFC file</translation>
+      <translation>打开另一个 IFC 文件</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="228"/>
       <source>IfcSite element was not found in %s. Unable to explore.</source>
-      <translation type="unfinished">IfcSite element was not found in %s. Unable to explore.</translation>
+      <translation>在 %s 中未找到 IfcSite 元素。无法浏览。</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="485"/>
       <source>Error in entity</source>
-      <translation type="unfinished">Error in entity</translation>
+      <translation>实体错误</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcProperties.py" line="127"/>
       <source>Custom property sets can be defined in</source>
-      <translation type="unfinished">Custom property sets can be defined in</translation>
+      <translation>自定义属性集可以在以下位置定义</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcProperties.py" line="132"/>
@@ -9398,17 +9391,17 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimIfcProperties.py" line="208"/>
       <source>Search results</source>
-      <translation type="unfinished">Search results</translation>
+      <translation>搜索结果</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcProperties.py" line="380"/>
       <source>Warning: object %1 has old-styled IfcProperties and cannot be updated</source>
-      <translation type="unfinished">Warning: object %1 has old-styled IfcProperties and cannot be updated</translation>
+      <translation>警告：对象 %1 具有旧式 IfcProperties，无法更新</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcProperties.py" line="670"/>
       <source>Please select or create a property set first in which the new property should be placed.</source>
-      <translation type="unfinished">Please select or create a property set first in which the new property should be placed.</translation>
+      <translation>请先选择或创建一个属性集，新属性将放置在其中。</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcProperties.py" line="685"/>
@@ -9418,7 +9411,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimIfcProperties.py" line="686"/>
       <source>Property set name:</source>
-      <translation type="unfinished">Property set name:</translation>
+      <translation>属性集名称：</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="51"/>
@@ -9428,12 +9421,12 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="52"/>
       <source>Horizontal Area</source>
-      <translation type="unfinished">Horizontal Area</translation>
+      <translation>水平面积</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="53"/>
       <source>Vertical Area</source>
-      <translation type="unfinished">Vertical Area</translation>
+      <translation>垂直面积</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="54"/>
@@ -9443,37 +9436,37 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="186"/>
       <source>Add quantity set...</source>
-      <translation type="unfinished">Add quantity set...</translation>
+      <translation>添加数量集...</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="203"/>
       <source>Adding quantity set</source>
-      <translation type="unfinished">Adding quantity set</translation>
+      <translation>正在添加数量集</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="438"/>
       <source>Cannot save quantities settings for object %1</source>
-      <translation type="unfinished">Cannot save quantities settings for object %1</translation>
+      <translation>无法保存对象 %1 的数量设置</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimImagePlane.py" line="56"/>
       <source>Select Image</source>
-      <translation type="unfinished">Select Image</translation>
+      <translation>选择图像</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimImagePlane.py" line="58"/>
       <source>Image file (*.png *.jpg *.bmp)</source>
-      <translation type="unfinished">Image file (*.png *.jpg *.bmp)</translation>
+      <translation>图像文件 (*.png *.jpg *.bmp)</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLayers.py" line="201"/>
       <source>Warning: The new layer was added to the project</source>
-      <translation type="unfinished">Warning: The new layer was added to the project</translation>
+      <translation>警告：新图层已添加到项目</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLayers.py" line="207"/>
       <source>There is no IFC project in this document</source>
-      <translation type="unfinished">There is no IFC project in this document</translation>
+      <translation>此文档中没有IFC项目</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLayers.py" line="310"/>
@@ -9523,7 +9516,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimLeader.py" line="52"/>
       <source>Leader</source>
-      <translation type="unfinished">Leader</translation>
+      <translation>引线</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLeader.py" line="77"/>
@@ -9548,37 +9541,37 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="349"/>
       <source>It is not possible to link because the main document is closed.</source>
-      <translation type="unfinished">It is not possible to link because the main document is closed.</translation>
+      <translation>无法链接，因为主文档已关闭。</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="309"/>
       <source>Save the working file before linking.</source>
-      <translation type="unfinished">Save the working file before linking.</translation>
+      <translation>链接前请保存工作文件。</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="502"/>
       <source>No structure in cache. Refresh required.</source>
-      <translation type="unfinished">No structure in cache. Refresh required.</translation>
+      <translation>缓存中无结构。需要刷新。</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="570"/>
       <source>It is not possible to insert this object because the document has been closed.</source>
-      <translation type="unfinished">It is not possible to insert this object because the document has been closed.</translation>
+      <translation>无法插入此对象，因为文档已关闭。</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="616"/>
       <source>Error: Unable to import SAT files - InventorLoader or CadExchanger addon must be installed</source>
-      <translation type="unfinished">Error: Unable to import SAT files - InventorLoader or CadExchanger addon must be installed</translation>
+      <translation>错误：无法导入SAT文件 - 必须安装InventorLoader或CadExchanger插件</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="642"/>
       <source>Error: Unable to download</source>
-      <translation type="unfinished">Error: Unable to download</translation>
+      <translation>错误：无法下载</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="683"/>
       <source>Insertion point</source>
-      <translation type="unfinished">Insertion point</translation>
+      <translation>插入点</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="694"/>
@@ -9593,7 +9586,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="696"/>
       <source>Top center</source>
-      <translation type="unfinished">Top center</translation>
+      <translation>顶部居中</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="697"/>
@@ -9603,17 +9596,17 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="698"/>
       <source>Middle left</source>
-      <translation type="unfinished">Middle left</translation>
+      <translation>中间左侧</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="699"/>
       <source>Middle center</source>
-      <translation type="unfinished">Middle center</translation>
+      <translation>中间居中</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="700"/>
       <source>Middle right</source>
-      <translation type="unfinished">Middle right</translation>
+      <translation>中间右侧</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="701"/>
@@ -9623,7 +9616,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="702"/>
       <source>Bottom center</source>
-      <translation type="unfinished">Bottom center</translation>
+      <translation>底部居中</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="703"/>
@@ -9633,22 +9626,22 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="809"/>
       <source>Could not fetch library contents</source>
-      <translation type="unfinished">Could not fetch library contents</translation>
+      <translation>无法获取库内容</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="813"/>
       <source>No results fetched from online library</source>
-      <translation type="unfinished">No results fetched from online library</translation>
+      <translation>从在线库中未获取到结果</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="871"/>
       <source>Warning, this can take several minutes!</source>
-      <translation type="unfinished">Warning, this can take several minutes!</translation>
+      <translation>警告，这可能需要几分钟！</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="88"/>
       <source>Select material</source>
-      <translation type="unfinished">Select material</translation>
+      <translation>选择材质</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="122"/>
@@ -9668,17 +9661,17 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="129"/>
       <source> Material Operations</source>
-      <translation type="unfinished"> Material Operations</translation>
+      <translation>材质操作</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="135"/>
       <source>New Material</source>
-      <translation type="unfinished">New Material</translation>
+      <translation>新建材质</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="141"/>
       <source>Create new Multi-Material</source>
-      <translation type="unfinished">Create new Multi-Material</translation>
+      <translation>创建新的多重材质</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="148"/>
@@ -9688,7 +9681,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="157"/>
       <source>Delete Unused</source>
-      <translation type="unfinished">Delete Unused</translation>
+      <translation>删除未使用的</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="96"/>
@@ -9704,7 +9697,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="179"/>
       <source>Merge To…</source>
-      <translation type="unfinished">Merge To…</translation>
+      <translation>合并到…</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="92"/>
@@ -9716,53 +9709,53 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
       <location filename="../../bimcommands/BimMaterial.py" line="237"/>
       <location filename="../../bimcommands/BimMaterial.py" line="247"/>
       <source>Merging duplicate material</source>
-      <translation type="unfinished">Merging duplicate material</translation>
+      <translation>正在合并重复材质</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="256"/>
       <source>Unable to delete material</source>
-      <translation type="unfinished">Unable to delete material</translation>
+      <translation>无法删除材质</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="260"/>
       <source>InList not empty</source>
-      <translation type="unfinished">InList not empty</translation>
+      <translation>InList不为空</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="287"/>
       <source>Deleting unused material</source>
-      <translation type="unfinished">Deleting unused material</translation>
+      <translation>正在删除未使用的材质</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="337"/>
       <source>Select material to merge to</source>
-      <translation type="unfinished">Select material to merge to</translation>
+      <translation>选择要合并到的材质</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="382"/>
       <source>This material is used by:</source>
-      <translation type="unfinished">This material is used by:</translation>
+      <translation>此材质被以下对象使用：</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="92"/>
       <location filename="../../bimcommands/BimPreflight.py" line="185"/>
       <source>Press to perform the test</source>
-      <translation type="unfinished">Press to perform the test</translation>
+      <translation>点击执行测试</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="164"/>
       <source>Passed</source>
-      <translation type="unfinished">Passed</translation>
+      <translation>通过</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="165"/>
       <source>This test has succeeded.</source>
-      <translation type="unfinished">This test has succeeded.</translation>
+      <translation>此测试已成功。</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="176"/>
       <source>This test has failed. Press the button to know more</source>
-      <translation type="unfinished">This test has failed. Press the button to know more</translation>
+      <translation>此测试失败。点击按钮了解更多信息</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="184"/>
@@ -9772,253 +9765,253 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="297"/>
       <source>ifcopenshell is not installed on the system or not available to FreeCAD. This library is responsible for IFC support in FreeCAD, and therefore IFC support is currently disabled. Check %1 to obtain more information.</source>
-      <translation type="unfinished">ifcopenshell is not installed on the system or not available to FreeCAD. This library is responsible for IFC support in FreeCAD, and therefore IFC support is currently disabled. Check %1 to obtain more information.</translation>
+      <translation>系统上未安装ifcopenshell或FreeCAD无法使用。此库负责FreeCAD中的IFC支持，因此IFC支持当前已禁用。检查%1以获取更多信息。</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="328"/>
       <source>The version of Ifcopenshell installed on the system could not be parsed</source>
-      <translation type="unfinished">The version of Ifcopenshell installed on the system could not be parsed</translation>
+      <translation>无法解析系统上安装的Ifcopenshell版本</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="340"/>
       <source>The version of Ifcopenshell installed on the system will produce files with this schema version:</source>
-      <translation type="unfinished">The version of Ifcopenshell installed on the system will produce files with this schema version:</translation>
+      <translation>系统上安装的Ifcopenshell版本将生成具有此模式版本的文件：</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="441"/>
       <source>The following building objects have been found to not be included in any Site. You can resolve the situation by creating a Site object, if none is present in your model, and drag and drop the building objects into it in the tree view:</source>
-      <translation type="unfinished">The following building objects have been found to not be included in any Site. You can resolve the situation by creating a Site object, if none is present in your model, and drag and drop the building objects into it in the tree view:</translation>
+      <translation>发现以下建筑对象未包含在任何场地中。如果模型中不存在场地对象，您可以通过创建场地对象并在树视图中将建筑对象拖放其中来解决此情况：</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="487"/>
       <source>The following building storey (building parts with their IFC role set as "building storey") objects have been found to not be included in any building. Resolve the situation by creating a building object, if none is present in the model, and drag and drop the building storey objects into it in the tree view:</source>
-      <translation type="unfinished">The following building storey (building parts with their IFC role set as "building storey") objects have been found to not be included in any building. Resolve the situation by creating a building object, if none is present in the model, and drag and drop the building storey objects into it in the tree view:</translation>
+      <translation>发现以下楼层（IFC角色设置为"building storey"的建筑部件）对象未包含在任何建筑物中。如果模型中不存在建筑物对象，您可以通过创建建筑物对象并在树视图中将楼层对象拖放其中来解决此情况：</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="548"/>
       <source>The following BIM objects have been found to not be included in any building storey (building parts with their IFC role set as "building storey"). Resolve the situation by creating a building storey object, if none is present in the model, and drag and drop these objects into it in the tree view:</source>
-      <translation type="unfinished">The following BIM objects have been found to not be included in any building storey (building parts with their IFC role set as "building storey"). Resolve the situation by creating a building storey object, if none is present in the model, and drag and drop these objects into it in the tree view:</translation>
+      <translation>发现以下BIM对象未包含在任何楼层（IFC角色设置为"building storey"的建筑部件）中。如果模型中不存在楼层对象，您可以通过创建楼层对象并在树视图中将这些对象拖放其中来解决此情况：</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="685"/>
       <source>The objects below have length, width or height properties, but these properties won't be explicitly exported to IFC. This is not necessarily an issue, unless these quantities are desired to be exported:</source>
-      <translation type="unfinished">The objects below have length, width or height properties, but these properties won't be explicitly exported to IFC. This is not necessarily an issue, unless these quantities are desired to be exported:</translation>
+      <translation>以下对象具有长度、宽度或高度属性，但这些属性不会显式导出到IFC。这不一定是问题，除非需要导出这些数量：</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="693"/>
       <source>To enable exporting of these quantities, use the IFC quantities manager tool located under menu Manage -&gt; Manage IFC Quantities</source>
-      <translation type="unfinished">To enable exporting of these quantities, use the IFC quantities manager tool located under menu Manage -&gt; Manage IFC Quantities</translation>
+      <translation>要启用这些数量的导出，请使用位于菜单管理-&gt;管理IFC数量下的IFC数量管理器工具</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="765"/>
       <source>To add common property sets to these objects, use the IFC properties manager tool located under menu Manage -&gt; Manage IFC Properties</source>
-      <translation type="unfinished">To add common property sets to these objects, use the IFC properties manager tool located under menu Manage -&gt; Manage IFC Properties</translation>
+      <translation>要向这些对象添加通用属性集，请使用位于菜单管理-&gt;管理IFC属性下的IFC属性管理器工具</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="858"/>
       <source>To fix the property sets of these objects, use the IFC properties manager tool located under menu Manage -&gt; Manage IFC Properties</source>
-      <translation type="unfinished">To fix the property sets of these objects, use the IFC properties manager tool located under menu Manage -&gt; Manage IFC Properties</translation>
+      <translation>要修复这些对象的属性集，请使用位于菜单管理-&gt;管理IFC属性下的IFC属性管理器工具</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="1074"/>
       <source>An additional object, called "TinyLinesResult" has been added to this model, and selected. It contains all the tiny lines found, for inspection. Be sure to delete the TinyLinesResult object when done!</source>
-      <translation type="unfinished">An additional object, called "TinyLinesResult" has been added to this model, and selected. It contains all the tiny lines found, for inspection. Be sure to delete the TinyLinesResult object when done!</translation>
+      <translation>一个名为"TinyLinesResult"的附加对象已添加到此模型并被选中。它包含所有找到的微小线条以供检查。完成后请务必删除TinyLinesResult对象！</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="386"/>
       <source>The following types were not found in the project:</source>
-      <translation type="unfinished">The following types were not found in the project:</translation>
+      <translation>项目中未找到以下类型：</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="595"/>
       <source>The following BIM objects have the "Undefined" type:</source>
-      <translation type="unfinished">The following BIM objects have the "Undefined" type:</translation>
+      <translation>以下BIM对象具有"未定义"类型：</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="600"/>
       <source>The following objects are not BIM objects:</source>
-      <translation type="unfinished">The following objects are not BIM objects:</translation>
+      <translation>以下对象不是BIM对象：</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="607"/>
       <source>You can turn these objects into BIM objects by using the Modify -&gt; Add Component tool.</source>
-      <translation type="unfinished">You can turn these objects into BIM objects by using the Modify -&gt; Add Component tool.</translation>
+      <translation>您可以使用修改-&gt;添加组件工具将这些对象转换为BIM对象。</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="642"/>
       <source>The following BIM objects have an invalid or non-solid geometry:</source>
-      <translation type="unfinished">The following BIM objects have an invalid or non-solid geometry:</translation>
+      <translation>以下BIM对象具有无效或非实体几何体：</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="757"/>
       <source>The objects below have a defined IFC type but do not have the associated common property set:</source>
-      <translation type="unfinished">The objects below have a defined IFC type but do not have the associated common property set:</translation>
+      <translation>以下对象具有定义的IFC类型但没有相关的通用属性集：</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="839"/>
       <source>The objects below have a common property set but that property set doesn't contain all the needed properties:</source>
-      <translation type="unfinished">The objects below have a common property set but that property set doesn't contain all the needed properties:</translation>
+      <translation>以下对象具有通用属性集，但该属性集不包含所有必需的属性：</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="848"/>
       <source>Verify which properties a certain property set must contain on %1</source>
-      <translation type="unfinished">Verify which properties a certain property set must contain on %1</translation>
+      <translation>在%1上验证特定属性集必须包含哪些属性</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="887"/>
       <source>The following BIM objects have no material attributed:</source>
-      <translation type="unfinished">The following BIM objects have no material attributed:</translation>
+      <translation>以下BIM对象没有分配材质：</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="928"/>
       <source>The following BIM objects have no defined standard code:</source>
-      <translation type="unfinished">The following BIM objects have no defined standard code:</translation>
+      <translation>以下BIM对象没有定义标准代码：</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="978"/>
       <source>The following BIM objects are not extrusions:</source>
-      <translation type="unfinished">The following BIM objects are not extrusions:</translation>
+      <translation>以下BIM对象不是拉伸体：</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="1015"/>
       <source>The following BIM objects are not standard cases:</source>
-      <translation type="unfinished">The following BIM objects are not standard cases:</translation>
+      <translation>以下BIM对象不是标准情况：</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="1064"/>
       <source>The objects below have lines smaller than 1/32 inch or 0.79 mm, which is the smallest line size that Revit accepts. These objects will be discarded when imported into Revit:</source>
-      <translation type="unfinished">The objects below have lines smaller than 1/32 inch or 0.79 mm, which is the smallest line size that Revit accepts. These objects will be discarded when imported into Revit:</translation>
+      <translation>以下对象的线条小于1/32英寸或0.79毫米，这是Revit接受的最小线条尺寸。这些对象在导入Revit时将被丢弃：</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="1080"/>
       <source>Tip: The results are best viewed in Wireframe mode (menu Views -&gt; Draw Style -&gt; Wireframe)</source>
-      <translation type="unfinished">Tip: The results are best viewed in Wireframe mode (menu Views -&gt; Draw Style -&gt; Wireframe)</translation>
+      <translation>提示：在线框模式下查看结果最佳（菜单视图-&gt;绘制样式-&gt;线框）</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="288"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="294"/>
       <source>Building Layout</source>
-      <translation type="unfinished">Building Layout</translation>
+      <translation>建筑布局</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="314"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="320"/>
       <source>Building Outline</source>
-      <translation type="unfinished">Building Outline</translation>
+      <translation>建筑轮廓</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="333"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="339"/>
       <source>Building Label</source>
-      <translation type="unfinished">Building Label</translation>
+      <translation>建筑标签</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="343"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="349"/>
       <source>Vertical Axes</source>
-      <translation type="unfinished">Vertical Axes</translation>
+      <translation>垂直轴线</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="354"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="360"/>
       <source>Horizontal Axes</source>
-      <translation type="unfinished">Horizontal Axes</translation>
+      <translation>水平轴线</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="364"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="370"/>
       <source>Axes</source>
       <translation>轴</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="378"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="384"/>
       <source>Level</source>
       <translation>层级</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="439"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="445"/>
       <source>Save Preset</source>
       <translation>保存预设</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="440"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="446"/>
       <source>Preset name</source>
-      <translation type="unfinished">Preset name</translation>
+      <translation>预设名称</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="489"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="495"/>
       <source>User preset</source>
-      <translation type="unfinished">User preset</translation>
+      <translation>用户预设</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="779"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="785"/>
       <source>Template successfully loaded into the current document</source>
-      <translation type="unfinished">Template successfully loaded into the current document</translation>
+      <translation>模板已成功加载到当前文档</translation>
     </message>
     <message>
+      <location filename="../../bimcommands/BimProjectManager.py" line="430"/>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="156"/>
-      <location filename="../../bimcommands/BimProjectManager.py" line="424"/>
       <source>New Group</source>
       <translation>新建组</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="643"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="649"/>
       <source>Save template file</source>
-      <translation type="unfinished">Save template file</translation>
+      <translation>保存模板文件</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="652"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="658"/>
       <source>Template saved successfully</source>
-      <translation type="unfinished">Template saved successfully</translation>
+      <translation>模板保存成功</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="665"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="671"/>
       <source>Open template file</source>
-      <translation type="unfinished">Open template file</translation>
+      <translation>打开模板文件</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimReorder.py" line="52"/>
       <source>You must choose a group object before using this command</source>
-      <translation type="unfinished">You must choose a group object before using this command</translation>
+      <translation>使用此命令前必须选择组对象</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSetup.py" line="138"/>
       <source>Some additional workbenches are not installed, that extend BIM functionality:</source>
-      <translation type="unfinished">Some additional workbenches are not installed, that extend BIM functionality:</translation>
+      <translation>一些扩展BIM功能的附加工作台未安装：</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSetup.py" line="142"/>
       <source>Install them from menu Tools -&gt; Addon Manager.</source>
-      <translation type="unfinished">Install them from menu Tools -&gt; Addon Manager.</translation>
+      <translation>从菜单工具-&gt;插件管理器安装它们。</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSetup.py" line="181"/>
       <source>Unit system updated for active document</source>
-      <translation type="unfinished">Unit system updated for active document</translation>
+      <translation>活动文档的单位系统已更新</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSetup.py" line="185"/>
       <source>Unit system updated for all opened documents</source>
-      <translation type="unfinished">Unit system updated for all opened documents</translation>
+      <translation>所有打开文档的单位系统已更新</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSetup.py" line="631"/>
       <source>IfcOpenShell not found</source>
-      <translation type="unfinished">IfcOpenShell not found</translation>
+      <translation>未找到IfcOpenShell</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSetup.py" line="635"/>
       <source>IfcOpenShell is needed to import and export IFC files. It appears to be missing on the system. Download and install it now? It will be installed in FreeCAD's macros directory.</source>
-      <translation type="unfinished">IfcOpenShell is needed to import and export IFC files. It appears to be missing on the system. Download and install it now? It will be installed in FreeCAD's macros directory.</translation>
+      <translation>导入和导出IFC文件需要IfcOpenShell。系统上似乎缺少它。现在下载并安装吗？它将安装在FreeCAD的宏目录中。</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSlab.py" line="62"/>
       <source>Select a planar object</source>
-      <translation type="unfinished">Select a planar object</translation>
+      <translation>选择平面对象</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSlab.py" line="76"/>
       <source>Slab</source>
-      <translation type="unfinished">Slab</translation>
+      <translation>楼板</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimTDPage.py" line="62"/>
       <source>Select page template</source>
-      <translation type="unfinished">Select page template</translation>
+      <translation>选择页面模板</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimTDPage.py" line="74"/>
@@ -10028,37 +10021,37 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimTrash.py" line="52"/>
       <source>Trash</source>
-      <translation type="unfinished">Trash</translation>
+      <translation>回收站</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimTutorial.py" line="130"/>
       <source>Unable to access the tutorial. Verify the internet connection (This is needed only once).</source>
-      <translation type="unfinished">Unable to access the tutorial. Verify the internet connection (This is needed only once).</translation>
+      <translation>无法访问教程。请验证互联网连接（这只需要一次）。</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimTutorial.py" line="158"/>
       <source>Downloading images…</source>
-      <translation type="unfinished">Downloading images…</translation>
+      <translation>正在下载图像…</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimTutorial.py" line="242"/>
       <source>BIM Tutorial - step</source>
-      <translation type="unfinished">BIM Tutorial - step</translation>
+      <translation>BIM教程 - 步骤</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimUnclone.py" line="136"/>
       <source>Draft clones are not supported yet!</source>
-      <translation type="unfinished">Draft clones are not supported yet!</translation>
+      <translation>尚不支持Draft克隆！</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimUnclone.py" line="140"/>
       <source>The selected object is not a clone</source>
-      <translation type="unfinished">The selected object is not a clone</translation>
+      <translation>所选对象不是克隆</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimUnclone.py" line="143"/>
       <source>Select exactly one object</source>
-      <translation type="unfinished">Select exactly one object</translation>
+      <translation>请准确选择一个对象</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="94"/>
@@ -10068,17 +10061,17 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimViews.py" line="120"/>
       <source>Creates a new level</source>
-      <translation type="unfinished">Creates a new level</translation>
+      <translation>创建新标高</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="123"/>
       <source>Creates a new working plane proxy</source>
-      <translation type="unfinished">Creates a new working plane proxy</translation>
+      <translation>创建新的工作平面代理</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="124"/>
       <source>Deletes the selected item</source>
-      <translation type="unfinished">Deletes the selected item</translation>
+      <translation>删除所选项目</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="89"/>
@@ -10088,12 +10081,12 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimViews.py" line="90"/>
       <source>New Level</source>
-      <translation type="unfinished">New Level</translation>
+      <translation>新建标高</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="91"/>
       <source>New Working Plane Proxy</source>
-      <translation type="unfinished">New Working Plane Proxy</translation>
+      <translation>新建工作平面代理</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="93"/>
@@ -10103,42 +10096,42 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimViews.py" line="95"/>
       <source>Save View Position</source>
-      <translation type="unfinished">Save View Position</translation>
+      <translation>保存视图位置</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="127"/>
       <source>Toggles the visibility of selected items</source>
-      <translation type="unfinished">Toggles the visibility of selected items</translation>
+      <translation>切换所选项目的可见性</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="130"/>
       <source>Turns all items off except the selected ones</source>
-      <translation type="unfinished">Turns all items off except the selected ones</translation>
+      <translation>关闭除所选项目外的所有项目</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="133"/>
       <source>Saves the current camera position to the selected items</source>
-      <translation type="unfinished">Saves the current camera position to the selected items</translation>
+      <translation>将当前相机位置保存到所选项目</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="134"/>
       <source>Renames the selected item</source>
-      <translation type="unfinished">Renames the selected item</translation>
+      <translation>重命名所选项目</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="135"/>
       <source>Activates the selected item</source>
-      <translation type="unfinished">Activates the selected item</translation>
+      <translation>激活所选项目</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="309"/>
       <source>2D Views</source>
-      <translation type="unfinished">2D Views</translation>
+      <translation>2D视图</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="322"/>
       <source>Sheets</source>
-      <translation type="unfinished">Sheets</translation>
+      <translation>图纸</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWindows.py" line="225"/>
@@ -10148,266 +10141,266 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../nativeifc/ifc_commands.py" line="127"/>
       <source>The active document is already an IFC document</source>
-      <translation type="unfinished">The active document is already an IFC document</translation>
+      <translation>活动文档已是IFC文档</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_diff.py" line="76"/>
       <source>The IFC file is not saved. Save once to have an existing IFC file to compare with. Then, run this command again.</source>
-      <translation type="unfinished">The IFC file is not saved. Save once to have an existing IFC file to compare with. Then, run this command again.</translation>
+      <translation>IFC文件未保存。请先保存以拥有可比较的现有IFC文件。然后再次运行此命令。</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_diff.py" line="88"/>
       <source>No changes to display.</source>
-      <translation type="unfinished">No changes to display.</translation>
+      <translation>无更改可显示。</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_openshell.py" line="73"/>
       <source>IfcOpenShell update</source>
-      <translation type="unfinished">IfcOpenShell update</translation>
+      <translation>IfcOpenShell更新</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_openshell.py" line="77"/>
       <source>The update is installed in your FreeCAD's user directory and will not affect the rest of your system.</source>
-      <translation type="unfinished">The update is installed in your FreeCAD's user directory and will not affect the rest of your system.</translation>
+      <translation>更新安装在您的FreeCAD用户目录中，不会影响系统的其余部分。</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_openshell.py" line="79"/>
       <source>An update to your installed IfcOpenShell version is available</source>
-      <translation type="unfinished">An update to your installed IfcOpenShell version is available</translation>
+      <translation>您安装的IfcOpenShell版本有更新可用</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_openshell.py" line="81"/>
       <source>Would you like to install that update?</source>
-      <translation type="unfinished">Would you like to install that update?</translation>
+      <translation>您要安装该更新吗？</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_openshell.py" line="85"/>
       <source>Your version of IfcOpenShell is already up to date</source>
-      <translation type="unfinished">Your version of IfcOpenShell is already up to date</translation>
+      <translation>您的IfcOpenShell版本已是最新</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_openshell.py" line="88"/>
       <source>No existing IfcOpenShell installation found on this system.</source>
-      <translation type="unfinished">No existing IfcOpenShell installation found on this system.</translation>
+      <translation>系统上未找到现有的IfcOpenShell安装。</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_openshell.py" line="90"/>
       <source>Would you like to install the most recent version?</source>
-      <translation type="unfinished">Would you like to install the most recent version?</translation>
+      <translation>您要安装最新版本吗？</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_openshell.py" line="97"/>
       <source>IfcOpenShell is not installed, and FreeCAD failed to find a suitable version to install. You can still install IfcOpenShell manually, visit https://wiki.freecad.org/IfcOpenShell for further instructions.</source>
-      <translation type="unfinished">IfcOpenShell is not installed, and FreeCAD failed to find a suitable version to install. You can still install IfcOpenShell manually, visit https://wiki.freecad.org/IfcOpenShell for further instructions.</translation>
+      <translation>IfcOpenShell未安装，且FreeCAD未能找到合适的版本进行安装。您仍可以手动安装IfcOpenShell，请访问https://wiki.freecad.org/IfcOpenShell获取进一步说明。</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_openshell.py" line="105"/>
       <source>IfcOpenShell update successfully installed.</source>
-      <translation type="unfinished">IfcOpenShell update successfully installed.</translation>
+      <translation>IfcOpenShell更新已成功安装。</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_openshell.py" line="143"/>
       <source>Unable to run pip. Ensure pip is installed on your system.</source>
-      <translation type="unfinished">Unable to run pip. Ensure pip is installed on your system.</translation>
+      <translation>无法运行pip。请确保系统上已安装pip。</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="36"/>
       <source>Strict IFC mode is ON (all objects are IFC)</source>
-      <translation type="unfinished">Strict IFC mode is ON (all objects are IFC)</translation>
+      <translation>严格IFC模式已开启（所有对象都是IFC）</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="39"/>
       <source>Strict IFC mode is OFF (IFC and non-IFC objects allowed)</source>
-      <translation type="unfinished">Strict IFC mode is OFF (IFC and non-IFC objects allowed)</translation>
+      <translation>严格IFC模式已关闭（允许IFC和非IFC对象）</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="78"/>
       <source>Add IFC property...</source>
-      <translation type="unfinished">Add IFC property...</translation>
+      <translation>添加IFC属性...</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="83"/>
       <source>Add standard IFC Property Set...</source>
-      <translation type="unfinished">Add standard IFC Property Set...</translation>
+      <translation>添加标准IFC属性集...</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="140"/>
       <source>No Property set provided</source>
-      <translation type="unfinished">No Property set provided</translation>
+      <translation>未提供属性集</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="151"/>
       <source>add property</source>
-      <translation type="unfinished">add property</translation>
+      <translation>添加属性</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="214"/>
       <source>Property set already exists</source>
-      <translation type="unfinished">Property set already exists</translation>
+      <translation>属性集已存在</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="218"/>
       <source>add property set</source>
-      <translation type="unfinished">add property set</translation>
+      <translation>添加属性集</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="226"/>
       <source>Property already exists</source>
-      <translation type="unfinished">Property already exists</translation>
+      <translation>属性已存在</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDrawingView.py" line="72"/>
       <source>Viewed lines</source>
-      <translation type="unfinished">Viewed lines</translation>
+      <translation>可见线条</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDrawingView.py" line="83"/>
       <source>Cut lines</source>
-      <translation type="unfinished">Cut lines</translation>
+      <translation>切割线条</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_psets.py" line="376"/>
       <source>Removing property</source>
-      <translation type="unfinished">Removing property</translation>
+      <translation>删除属性</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_psets.py" line="381"/>
       <source>Removing property set</source>
-      <translation type="unfinished">Removing property set</translation>
+      <translation>删除属性集</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_types.py" line="167"/>
       <source>Error: Incompatible type</source>
-      <translation type="unfinished">Error: Incompatible type</translation>
+      <translation>错误：不兼容的类型</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimReextrude.py" line="160"/>
       <source>Error: Select exactly one base face</source>
-      <translation type="unfinished">Error: Select exactly one base face</translation>
+      <translation>错误：请准确选择一个基准面</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimTDView.py" line="76"/>
       <source>No section view, Draft object, or page found or selected in the document</source>
-      <translation type="unfinished">No section view, Draft object, or page found or selected in the document</translation>
+      <translation>文档中未找到或未选择任何剖面视图、草图对象或页面</translation>
     </message>
     <message>
       <location filename="../../importers/importSH3DHelper.py" line="524"/>
       <source>Merging imported element '{id}' with existing element of type '{type(fc_object)}'</source>
-      <translation type="unfinished">Merging imported element '{id}' with existing element of type '{type(fc_object)}'</translation>
+      <translation>正在将导入的元素“{id}”与类型为“{type(fc_object)}”的现有元素合并</translation>
     </message>
     <message>
       <location filename="../../importers/importSH3DHelper.py" line="527"/>
       <source>No element found with id '{id}' and type '{sh_type}'</source>
-      <translation type="unfinished">No element found with id '{id}' and type '{sh_type}'</translation>
+      <translation>未找到ID为“{id}”且类型为“{sh_type}”的元素</translation>
     </message>
     <message>
       <location filename="../../importers/importSH3DHelper.py" line="3263"/>
       <source>Type of &lt;{elm.tag}&gt; #{i} is not supported: '{attribute}'. Skipping!</source>
-      <translation type="unfinished">Type of &lt;{elm.tag}&gt; #{i} is not supported: '{attribute}'. Skipping!</translation>
+      <translation>不支持 &lt;{elm.tag}&gt; #{i} 的类型：“{attribute}”。正在跳过！</translation>
     </message>
     <message>
       <location filename="../../importers/importWebGL.py" line="130"/>
       <source>Custom WebGL template file '{}' could not be read.
 
 Do you want to proceed using the default template?</source>
-      <translation type="unfinished">Custom WebGL template file '{}' could not be read.
+      <translation>无法读取自定义 WebGL 模板文件“{}”。
 
-Do you want to proceed using the default template?</translation>
+是否要继续使用默认模板？</translation>
     </message>
     <message>
       <location filename="../../importers/importWebGL.py" line="134"/>
       <source>WebGL Template Not Found</source>
-      <translation type="unfinished">WebGL Template Not Found</translation>
+      <translation>未找到 WebGL 模板</translation>
     </message>
     <message>
       <location filename="../../importers/importWebGL.py" line="169"/>
       <source>The default WebGL export template is not available at path: {}
 
 Please check your FreeCAD installation or provide a custom template under menu Preferences → Import-Export → WebGL.</source>
-      <translation type="unfinished">The default WebGL export template is not available at path: {}
+      <translation>默认 WebGL 导出模板在以下路径不可用：{}
 
-Please check your FreeCAD installation or provide a custom template under menu Preferences → Import-Export → WebGL.</translation>
+请检查您的 FreeCAD 安装，或在菜单 首选项 → 导入-导出 → WebGL 下提供自定义模板。</translation>
     </message>
     <message>
       <location filename="../../importers/importWebGL.py" line="175"/>
       <source>WebGL Export Template Error</source>
-      <translation type="unfinished">WebGL Export Template Error</translation>
+      <translation>WebGL 导出模板错误</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="105"/>
       <source>Deactivate Container</source>
-      <translation type="unfinished">Deactivate Container</translation>
+      <translation>停用容器</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="107"/>
       <source>Make Active Container</source>
-      <translation type="unfinished">Make Active Container</translation>
+      <translation>设为活动容器</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="111"/>
       <source>Expand Children</source>
-      <translation type="unfinished">Expand Children</translation>
+      <translation>展开子项</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="115"/>
       <source>Collapse Children</source>
-      <translation type="unfinished">Collapse Children</translation>
+      <translation>折叠子项</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="120"/>
       <source>Remove Shape</source>
-      <translation type="unfinished">Remove Shape</translation>
+      <translation>移除形状</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="122"/>
       <source>Load Shape</source>
-      <translation type="unfinished">Load Shape</translation>
+      <translation>加载形状</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="126"/>
       <source>Load Representation</source>
-      <translation type="unfinished">Load Representation</translation>
+      <translation>加载表示</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="130"/>
       <source>Add Geometry Properties</source>
-      <translation type="unfinished">Add Geometry Properties</translation>
+      <translation>添加几何属性</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="133"/>
       <source>Show Geometry Tree</source>
-      <translation type="unfinished">Show Geometry Tree</translation>
+      <translation>显示几何树</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="137"/>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="604"/>
       <source>Expand Property Sets</source>
-      <translation type="unfinished">Expand Property Sets</translation>
+      <translation>展开属性集</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="141"/>
       <source>Load Material</source>
-      <translation type="unfinished">Load Material</translation>
+      <translation>加载材质</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="145"/>
       <source>Convert to Type</source>
-      <translation type="unfinished">Convert to Type</translation>
+      <translation>转换为类型</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="429"/>
       <source>View Diff</source>
-      <translation type="unfinished">View Diff</translation>
+      <translation>查看差异</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="433"/>
       <source>Save IFC File</source>
-      <translation type="unfinished">Save IFC File</translation>
+      <translation>保存 IFC 文件</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="436"/>
       <source>Save IFC File As…</source>
-      <translation type="unfinished">Save IFC File As…</translation>
+      <translation>IFC 文件另存为…</translation>
     </message>
   </context>
   <context>
@@ -10415,12 +10408,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../InitGui.py" line="315"/>
       <source>Reinforcement Tools</source>
-      <translation type="unfinished">Reinforcement Tools</translation>
+      <translation>钢筋工具</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="316"/>
       <source>Reinforcement tools</source>
-      <translation type="unfinished">Reinforcement tools</translation>
+      <translation>钢筋工具</translation>
     </message>
   </context>
   <context>
@@ -10428,12 +10421,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimBackground.py" line="38"/>
       <source>Toggle Background</source>
-      <translation type="unfinished">Toggle Background</translation>
+      <translation>切换背景</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimBackground.py" line="42"/>
       <source>Toggles the background of the 3D view between simple and gradient</source>
-      <translation type="unfinished">Toggles the background of the 3D view between simple and gradient</translation>
+      <translation>在简单背景和渐变背景之间切换 3D 视图的背景</translation>
     </message>
   </context>
   <context>
@@ -10446,7 +10439,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimBeam.py" line="49"/>
       <source>Creates a beam between two points</source>
-      <translation type="unfinished">Creates a beam between two points</translation>
+      <translation>在两点之间创建梁</translation>
     </message>
   </context>
   <context>
@@ -10459,7 +10452,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimBox.py" line="42"/>
       <source>Graphically creates a generic box in the current document</source>
-      <translation type="unfinished">Graphically creates a generic box in the current document</translation>
+      <translation>在当前文档中图形化创建一个通用盒子</translation>
     </message>
   </context>
   <context>
@@ -10467,7 +10460,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimBuilder.py" line="38"/>
       <source>Shape Builder</source>
-      <translation type="unfinished">Shape Builder</translation>
+      <translation>形状生成器</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimBuilder.py" line="39"/>
@@ -10485,7 +10478,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimBuildingPart.py" line="50"/>
       <source>Creates a building part object that represents a level</source>
-      <translation type="unfinished">Creates a building part object that represents a level</translation>
+      <translation>创建一个表示楼层的建筑部件对象</translation>
     </message>
   </context>
   <context>
@@ -10498,7 +10491,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimClone.py" line="46"/>
       <source>Clones selected objects to another location</source>
-      <translation type="unfinished">Clones selected objects to another location</translation>
+      <translation>将选定的对象克隆到另一个位置</translation>
     </message>
   </context>
   <context>
@@ -10511,7 +10504,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimColumn.py" line="49"/>
       <source>Creates a column at a specified location</source>
-      <translation type="unfinished">Creates a column at a specified location</translation>
+      <translation>在指定位置创建柱子</translation>
     </message>
   </context>
   <context>
@@ -10524,7 +10517,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimCommon.py" line="39"/>
       <source>Creates an intersection of two shapes</source>
-      <translation type="unfinished">Creates an intersection of two shapes</translation>
+      <translation>创建两个形状的交集</translation>
     </message>
   </context>
   <context>
@@ -10532,22 +10525,22 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimConvert.py" line="38"/>
       <source>Convert to BIM</source>
-      <translation type="unfinished">Convert to BIM</translation>
+      <translation>转换为 BIM</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimConvert.py" line="39"/>
       <source>Converts any object to a BIM component</source>
-      <translation type="unfinished">Converts any object to a BIM component</translation>
+      <translation>将任何对象转换为 BIM 组件</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimUngroup.py" line="38"/>
       <source>Remove From Group</source>
-      <translation type="unfinished">Remove From Group</translation>
+      <translation>从组中移除</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimUngroup.py" line="41"/>
       <source>Removes this object from its parent group</source>
-      <translation type="unfinished">Removes this object from its parent group</translation>
+      <translation>将此对象从其父组中移除</translation>
     </message>
   </context>
   <context>
@@ -10560,7 +10553,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimCopy.py" line="44"/>
       <source>Copies selected objects to another location</source>
-      <translation type="unfinished">Copies selected objects to another location</translation>
+      <translation>将选定的对象复制到另一个位置</translation>
     </message>
   </context>
   <context>
@@ -10573,7 +10566,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimCut.py" line="38"/>
       <source>Creates a difference between two shapes</source>
-      <translation type="unfinished">Creates a difference between two shapes</translation>
+      <translation>创建两个形状的差集</translation>
     </message>
   </context>
   <context>
@@ -10581,12 +10574,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimDiff.py" line="38"/>
       <source>IFC Diff</source>
-      <translation type="unfinished">IFC Diff</translation>
+      <translation>IFC 差异比较</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDiff.py" line="41"/>
       <source>Shows the difference between two IFC-based documents</source>
-      <translation type="unfinished">Shows the difference between two IFC-based documents</translation>
+      <translation>显示两个基于 IFC 的文档之间的差异</translation>
     </message>
   </context>
   <context>
@@ -10599,7 +10592,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimDoor.py" line="44"/>
       <source>Places a door at a given location</source>
-      <translation type="unfinished">Places a door at a given location</translation>
+      <translation>在给定位置放置门</translation>
     </message>
   </context>
   <context>
@@ -10607,18 +10600,18 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimTrash.py" line="82"/>
       <source>Deletes from the trash bin all objects that are not used by any other</source>
-      <translation type="unfinished">Deletes from the trash bin all objects that are not used by any other</translation>
+      <translation>从回收站中删除所有未被任何其他对象使用的对象</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimEmptyTrash.py" line="38"/>
       <location filename="../../bimcommands/BimTrash.py" line="78"/>
       <source>Empty Trash</source>
-      <translation type="unfinished">Empty Trash</translation>
+      <translation>清空回收站</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimEmptyTrash.py" line="42"/>
       <source>Deletes all objects from the trash bin that are not used by any other</source>
-      <translation type="unfinished">Deletes all objects from the trash bin that are not used by any other</translation>
+      <translation>从回收站中删除所有未被任何其他对象使用的对象</translation>
     </message>
   </context>
   <context>
@@ -10626,12 +10619,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimExamples.py" line="38"/>
       <source>BIM Examples</source>
-      <translation type="unfinished">BIM Examples</translation>
+      <translation>BIM 示例</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimExamples.py" line="42"/>
       <source>Download examples of BIM files made with FreeCAD</source>
-      <translation type="unfinished">Download examples of BIM files made with FreeCAD</translation>
+      <translation>下载使用 FreeCAD 制作的 BIM 文件示例</translation>
     </message>
   </context>
   <context>
@@ -10644,7 +10637,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimExtrude.py" line="39"/>
       <source>Extrudes a selected 2D shape</source>
-      <translation type="unfinished">Extrudes a selected 2D shape</translation>
+      <translation>拉伸选定的 2D 形状</translation>
     </message>
   </context>
   <context>
@@ -10652,7 +10645,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimFence.py" line="59"/>
       <source>Select a section, post and path in exactly this order to build a fence.</source>
-      <translation type="unfinished">Select a section, post and path in exactly this order to build a fence.</translation>
+      <translation>请严格按照此顺序选择截面、立柱和路径来构建围栏。</translation>
     </message>
   </context>
   <context>
@@ -10665,7 +10658,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimFuse.py" line="38"/>
       <source>Creates a union of several shapes</source>
-      <translation type="unfinished">Creates a union of several shapes</translation>
+      <translation>创建多个形状的并集</translation>
     </message>
   </context>
   <context>
@@ -10673,12 +10666,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimGlue.py" line="38"/>
       <source>Glue</source>
-      <translation type="unfinished">Glue</translation>
+      <translation>粘合</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimGlue.py" line="41"/>
       <source>Joins selected shapes into one non-parametric shape</source>
-      <translation type="unfinished">Joins selected shapes into one non-parametric shape</translation>
+      <translation>将选定的形状合并为一个非参数化形状</translation>
     </message>
   </context>
   <context>
@@ -10686,12 +10679,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimHelp.py" line="38"/>
       <source>BIM Help</source>
-      <translation type="unfinished">BIM Help</translation>
+      <translation>BIM 帮助</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimHelp.py" line="42"/>
       <source>Opens the BIM help page on the FreeCAD documentation website</source>
-      <translation type="unfinished">Opens the BIM help page on the FreeCAD documentation website</translation>
+      <translation>在 FreeCAD 文档网站上打开 BIM 帮助页面</translation>
     </message>
   </context>
   <context>
@@ -10699,12 +10692,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimImagePlane.py" line="38"/>
       <source>Image Plane</source>
-      <translation type="unfinished">Image Plane</translation>
+      <translation>图像平面</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimImagePlane.py" line="39"/>
       <source>Creates a plane from an image</source>
-      <translation type="unfinished">Creates a plane from an image</translation>
+      <translation>从图像创建平面</translation>
     </message>
   </context>
   <context>
@@ -10712,12 +10705,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimLeader.py" line="45"/>
       <source>Leader</source>
-      <translation type="unfinished">Leader</translation>
+      <translation>引线</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLeader.py" line="48"/>
       <source>Creates a polyline with an arrow at its endpoint</source>
-      <translation type="unfinished">Creates a polyline with an arrow at its endpoint</translation>
+      <translation>创建一条在其端点带有箭头的多段线</translation>
     </message>
   </context>
   <context>
@@ -10725,12 +10718,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="86"/>
       <source>Objects Library</source>
-      <translation type="unfinished">Objects Library</translation>
+      <translation>对象库</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="87"/>
       <source>Opens the objects library</source>
-      <translation type="unfinished">Opens the objects library</translation>
+      <translation>打开对象库</translation>
     </message>
   </context>
   <context>
@@ -10743,7 +10736,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="65"/>
       <source>Sets or creates a material for selected objects</source>
-      <translation type="unfinished">Sets or creates a material for selected objects</translation>
+      <translation>为选定的对象设置或创建材质</translation>
     </message>
   </context>
   <context>
@@ -10756,7 +10749,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimMoveView.py" line="39"/>
       <source>Moves this view to an existing page</source>
-      <translation type="unfinished">Moves this view to an existing page</translation>
+      <translation>将此视图移动到现有页面</translation>
     </message>
   </context>
   <context>
@@ -10764,7 +10757,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimNudge.py" line="127"/>
       <source>Nudge Switch</source>
-      <translation type="unfinished">Nudge Switch</translation>
+      <translation>微调开关</translation>
     </message>
   </context>
   <context>
@@ -10772,7 +10765,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimNudge.py" line="153"/>
       <source>Nudge Up</source>
-      <translation type="unfinished">Nudge Up</translation>
+      <translation>向上微调</translation>
     </message>
   </context>
   <context>
@@ -10780,7 +10773,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimNudge.py" line="173"/>
       <source>Nudge Down</source>
-      <translation type="unfinished">Nudge Down</translation>
+      <translation>向下微调</translation>
     </message>
   </context>
   <context>
@@ -10788,7 +10781,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimNudge.py" line="193"/>
       <source>Nudge Left</source>
-      <translation type="unfinished">Nudge Left</translation>
+      <translation>向左微调</translation>
     </message>
   </context>
   <context>
@@ -10796,7 +10789,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimNudge.py" line="213"/>
       <source>Nudge Right</source>
-      <translation type="unfinished">Nudge Right</translation>
+      <translation>向右微调</translation>
     </message>
   </context>
   <context>
@@ -10804,7 +10797,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimNudge.py" line="233"/>
       <source>Nudge Extend</source>
-      <translation type="unfinished">Nudge Extend</translation>
+      <translation>延长微调</translation>
     </message>
   </context>
   <context>
@@ -10812,7 +10805,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimNudge.py" line="257"/>
       <source>Nudge Shrink</source>
-      <translation type="unfinished">Nudge Shrink</translation>
+      <translation>收缩微调</translation>
     </message>
   </context>
   <context>
@@ -10820,7 +10813,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimNudge.py" line="281"/>
       <source>Nudge Rotate Left</source>
-      <translation type="unfinished">Nudge Rotate Left</translation>
+      <translation>向左旋转微调</translation>
     </message>
   </context>
   <context>
@@ -10828,7 +10821,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimNudge.py" line="310"/>
       <source>Nudge Rotate Right</source>
-      <translation type="unfinished">Nudge Rotate Right</translation>
+      <translation>向右旋转微调</translation>
     </message>
   </context>
   <context>
@@ -10836,7 +10829,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimOffset.py" line="38"/>
       <source>2D Offset</source>
-      <translation type="unfinished">2D Offset</translation>
+      <translation>2D 偏移</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimOffset.py" line="39"/>
@@ -10849,20 +10842,20 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="64"/>
       <source>Preflight Checks</source>
-      <translation type="unfinished">Preflight Checks</translation>
+      <translation>预检检查</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="68"/>
       <source>Checks several characteristics of this model before exporting to IFC</source>
-      <translation type="unfinished">Checks several characteristics of this model before exporting to IFC</translation>
+      <translation>在导出到 IFC 之前检查此模型的若干特性</translation>
     </message>
   </context>
   <context>
     <name>BIM_Project</name>
     <message>
       <location filename="../../bimcommands/BimProject.py" line="38"/>
-      <source>Project</source>
-      <translation>项目</translation>
+      <source>IFC Project</source>
+      <translation>IFC 项目</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimProject.py" line="39"/>
@@ -10875,12 +10868,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimResetCloneColors.py" line="38"/>
       <source>Reset Colors</source>
-      <translation type="unfinished">Reset Colors</translation>
+      <translation>重置颜色</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimResetCloneColors.py" line="42"/>
       <source>Resets the colors of this object from its cloned original</source>
-      <translation type="unfinished">Resets the colors of this object from its cloned original</translation>
+      <translation>从其克隆的原始对象重置此对象的颜色</translation>
     </message>
   </context>
   <context>
@@ -10888,12 +10881,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimRewire.py" line="39"/>
       <source>Rewire</source>
-      <translation type="unfinished">Rewire</translation>
+      <translation>重新布线</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimRewire.py" line="40"/>
       <source>Recreates wires from selected objects</source>
-      <translation type="unfinished">Recreates wires from selected objects</translation>
+      <translation>从选定的对象重新创建线</translation>
     </message>
   </context>
   <context>
@@ -10906,7 +10899,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimShape2DView.py" line="135"/>
       <source>Create 2D Cut</source>
-      <translation type="unfinished">Create 2D Cut</translation>
+      <translation>创建 2D 切割</translation>
     </message>
   </context>
   <context>
@@ -10914,12 +10907,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimSketch.py" line="38"/>
       <source>Sketch</source>
-      <translation type="unfinished">Sketch</translation>
+      <translation>草图</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSketch.py" line="41"/>
       <source>Creates a new sketch in the current working plane</source>
-      <translation type="unfinished">Creates a new sketch in the current working plane</translation>
+      <translation>在当前工作平面中创建新草图</translation>
     </message>
   </context>
   <context>
@@ -10927,12 +10920,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimSlab.py" line="43"/>
       <source>Slab</source>
-      <translation type="unfinished">Slab</translation>
+      <translation>楼板</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSlab.py" line="44"/>
       <source>Creates a slab from a planar shape</source>
-      <translation type="unfinished">Creates a slab from a planar shape</translation>
+      <translation>从平面形状创建板</translation>
     </message>
   </context>
   <context>
@@ -10945,7 +10938,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimTDPage.py" line="43"/>
       <source>Creates a new TechDraw page from a template</source>
-      <translation type="unfinished">Creates a new TechDraw page from a template</translation>
+      <translation>从模板创建新的 TechDraw 页面</translation>
     </message>
   </context>
   <context>
@@ -10958,7 +10951,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimText.py" line="40"/>
       <source>Create a text in the current 3D view or TechDraw page</source>
-      <translation type="unfinished">Create a text in the current 3D view or TechDraw page</translation>
+      <translation>在当前 3D 视图或 TechDraw 页面中创建文本</translation>
     </message>
   </context>
   <context>
@@ -10966,12 +10959,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimTrash.py" line="39"/>
       <source>Move to Trash</source>
-      <translation type="unfinished">Move to Trash</translation>
+      <translation>移动到回收站</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimTrash.py" line="42"/>
       <source>Moves the selected objects to the trash folder</source>
-      <translation type="unfinished">Moves the selected objects to the trash folder</translation>
+      <translation>将选定的对象移动到回收站文件夹</translation>
     </message>
   </context>
   <context>
@@ -10979,12 +10972,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimTutorial.py" line="50"/>
       <source>BIM Tutorial</source>
-      <translation type="unfinished">BIM Tutorial</translation>
+      <translation>BIM 教程</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimTutorial.py" line="53"/>
       <source>Starts or continues the BIM in-game tutorial</source>
-      <translation type="unfinished">Starts or continues the BIM in-game tutorial</translation>
+      <translation>启动或继续 BIM 内置教程</translation>
     </message>
   </context>
   <context>
@@ -10992,12 +10985,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimUnclone.py" line="39"/>
       <source>Unclone</source>
-      <translation type="unfinished">Unclone</translation>
+      <translation>取消克隆</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimUnclone.py" line="43"/>
       <source>Creates a selected clone object independent from its original</source>
-      <translation type="unfinished">Creates a selected clone object independent from its original</translation>
+      <translation>创建一个独立于其原始对象的选定克隆对象</translation>
     </message>
   </context>
   <context>
@@ -11005,12 +10998,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimViews.py" line="44"/>
       <source>Views Manager</source>
-      <translation type="unfinished">Views Manager</translation>
+      <translation>视图管理器</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="45"/>
       <source>Shows or hides the views manager</source>
-      <translation type="unfinished">Shows or hides the views manager</translation>
+      <translation>显示或隐藏视图管理器</translation>
     </message>
   </context>
   <context>
@@ -11018,12 +11011,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimWPCommands.py" line="38"/>
       <source>Working Plane Front</source>
-      <translation type="unfinished">Working Plane Front</translation>
+      <translation>工作平面 - 前视图</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWPCommands.py" line="39"/>
       <source>Sets the working plane to Front</source>
-      <translation type="unfinished">Sets the working plane to Front</translation>
+      <translation>将工作平面设置为前视图</translation>
     </message>
   </context>
   <context>
@@ -11031,12 +11024,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimWPCommands.py" line="53"/>
       <source>Working Plane Side</source>
-      <translation type="unfinished">Working Plane Side</translation>
+      <translation>工作平面 - 侧视图</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWPCommands.py" line="54"/>
       <source>Sets the working plane to Side</source>
-      <translation type="unfinished">Sets the working plane to Side</translation>
+      <translation>将工作平面设置为侧视图</translation>
     </message>
   </context>
   <context>
@@ -11044,12 +11037,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimWPCommands.py" line="68"/>
       <source>Working Plane Top</source>
-      <translation type="unfinished">Working Plane Top</translation>
+      <translation>工作平面 - 顶视图</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWPCommands.py" line="69"/>
       <source>Sets the working plane to Top</source>
-      <translation type="unfinished">Sets the working plane to Top</translation>
+      <translation>将工作平面设置为顶视图</translation>
     </message>
   </context>
   <context>
@@ -11057,12 +11050,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimWPCommands.py" line="83"/>
       <source>Working Plane View</source>
-      <translation type="unfinished">Working Plane View</translation>
+      <translation>工作平面视图</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWPCommands.py" line="87"/>
       <source>Aligns the view to the current item in BIM Views window or to the current working plane</source>
-      <translation type="unfinished">Aligns the view to the current item in BIM Views window or to the current working plane</translation>
+      <translation>将视图与 BIM 视图窗口中的当前项或当前工作平面对齐</translation>
     </message>
   </context>
   <context>
@@ -11070,12 +11063,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../nativeifc/ifc_commands.py" line="52"/>
       <source>Shows the current unsaved changes in the IFC file</source>
-      <translation type="unfinished">Shows the current unsaved changes in the IFC file</translation>
+      <translation>显示 IFC 文件中当前未保存的更改</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_commands.py" line="54"/>
       <source>IFC Diff</source>
-      <translation type="unfinished">IFC Diff</translation>
+      <translation>IFC 差异比较</translation>
     </message>
   </context>
   <context>
@@ -11083,12 +11076,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../nativeifc/ifc_commands.py" line="75"/>
       <source>Expands the children of the selected objects or document</source>
-      <translation type="unfinished">Expands the children of the selected objects or document</translation>
+      <translation>展开选定对象或文档的子项</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_commands.py" line="77"/>
       <source>IFC Expand</source>
-      <translation type="unfinished">IFC Expand</translation>
+      <translation>IFC 展开</translation>
     </message>
   </context>
   <context>
@@ -11096,12 +11089,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../nativeifc/ifc_commands.py" line="115"/>
       <source>Converts the active document to an IFC document</source>
-      <translation type="unfinished">Converts the active document to an IFC document</translation>
+      <translation>将活动文档转换为 IFC 文档</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_commands.py" line="117"/>
       <source>Convert Document</source>
-      <translation type="unfinished">Convert Document</translation>
+      <translation>转换文档</translation>
     </message>
   </context>
   <context>
@@ -11109,12 +11102,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../nativeifc/ifc_commands.py" line="141"/>
       <source>Converts the current selection to an IFC project</source>
-      <translation type="unfinished">Converts the current selection to an IFC project</translation>
+      <translation>将当前选择转换为 IFC 项目</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_commands.py" line="143"/>
-      <source>Create IFC Project</source>
-      <translation type="unfinished">Create IFC Project</translation>
+      <source>Convert to IFC Project</source>
+      <translation>转换为 IFC 项目</translation>
     </message>
   </context>
   <context>
@@ -11122,12 +11115,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../nativeifc/ifc_commands.py" line="179"/>
       <source>Saves the current IFC document</source>
-      <translation type="unfinished">Saves the current IFC document</translation>
+      <translation>保存当前 IFC 文档</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_commands.py" line="181"/>
       <source>Save IFC File</source>
-      <translation type="unfinished">Save IFC File</translation>
+      <translation>保存 IFC 文件</translation>
     </message>
   </context>
   <context>
@@ -11135,12 +11128,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../nativeifc/ifc_commands.py" line="212"/>
       <source>Saves the current IFC document as another file</source>
-      <translation type="unfinished">Saves the current IFC document as another file</translation>
+      <translation>将当前 IFC 文档另存为另一个文件</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_commands.py" line="214"/>
       <source>Save IFC File As…</source>
-      <translation type="unfinished">Save IFC File As…</translation>
+      <translation>IFC 文件另存为…</translation>
     </message>
   </context>
   <context>
@@ -11148,12 +11141,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../nativeifc/ifc_openshell.py" line="42"/>
       <source>Shows a dialog to update IfcOpenShell</source>
-      <translation type="unfinished">Shows a dialog to update IfcOpenShell</translation>
+      <translation>显示用于更新 IfcOpenShell 的对话框</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_openshell.py" line="44"/>
       <source>IfcOpenShell Update</source>
-      <translation type="unfinished">IfcOpenShell Update</translation>
+      <translation>IfcOpenShell 更新</translation>
     </message>
   </context>
   <context>
@@ -11161,22 +11154,22 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../ui/dialogSetup.ui" line="17"/>
       <source>BIM Setup</source>
-      <translation type="unfinished">BIM Setup</translation>
+      <translation>BIM 设置</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="230"/>
       <source>Preferred working units</source>
-      <translation type="unfinished">Preferred working units</translation>
+      <translation>首选工作单位</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="313"/>
       <source>Default size of a grid square</source>
-      <translation type="unfinished">Default size of a grid square</translation>
+      <translation>网格方格的默认大小</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="108"/>
       <source>Main grid line every</source>
-      <translation type="unfinished">Main grid line every</translation>
+      <translation>主网格线间隔</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="337"/>
@@ -11188,12 +11181,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../ui/dialogSetup.ui" line="152"/>
       <source>Default text size</source>
-      <translation type="unfinished">Default text size</translation>
+      <translation>默认文本大小</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="57"/>
       <source>Default dimension style</source>
-      <translation type="unfinished">Default dimension style</translation>
+      <translation>默认标注样式</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="64"/>
@@ -11203,22 +11196,22 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../ui/dialogSetup.ui" line="237"/>
       <source>Open a new document at startup</source>
-      <translation type="unfinished">Open a new document at startup</translation>
+      <translation>启动时打开新文档</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="327"/>
       <source>Default line width</source>
-      <translation type="unfinished">Default line width</translation>
+      <translation>默认线宽</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="159"/>
       <source>Number of backup files</source>
-      <translation type="unfinished">Number of backup files</translation>
+      <translation>备份文件数量</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="290"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default line width. Location in preferences: &lt;span style=" font-weight:600;"&gt;Display &amp;gt; Part colors &amp;gt; Default line width, Draft &amp;gt; Visual settings &amp;gt; Default line width&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default line width. Location in preferences: &lt;span style=" font-weight:600;"&gt;Display &amp;gt; Part colors &amp;gt; Default line width, Draft &amp;gt; Visual settings &amp;gt; Default line width&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;默认线宽。在首选项中的位置：&lt;span style=" font-weight:600;"&gt;显示 &amp;gt; 零件颜色 &amp;gt; 默认线宽，草绘 &amp;gt; 视觉设置 &amp;gt; 默认线宽&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="293"/>
@@ -11228,12 +11221,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../ui/dialogSetup.ui" line="283"/>
       <source>Default font</source>
-      <translation type="unfinished">Default font</translation>
+      <translation>默认字体</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="574"/>
       <source>Auto (continuously adapts to the current view)</source>
-      <translation type="unfinished">Auto (continuously adapts to the current view)</translation>
+      <translation>自动（持续适应当前视图）</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="579"/>
@@ -11253,52 +11246,52 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../ui/dialogSetup.ui" line="223"/>
       <source>Default grid position</source>
-      <translation type="unfinished">Default grid position</translation>
+      <translation>默认网格位置</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="556"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default font. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Texts and dimensions &amp;gt; Font family, TechDraw &amp;gt; TechDraw 1 &amp;gt; Label Font&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default font. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Texts and dimensions &amp;gt; Font family, TechDraw &amp;gt; TechDraw 1 &amp;gt; Label Font&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;默认字体。在首选项中的位置：&lt;span style=" font-weight:600;"&gt;草绘 &amp;gt; 文本和标注 &amp;gt; 字体族，TechDraw &amp;gt; TechDraw 1 &amp;gt; 标签字体&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="543"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default dimension arrow size. Location in preferences: &lt;span style=" font-weight:600;"&gt;TechDraw &amp;gt; TechDraw 2 &amp;gt; Arrow size, Draft &amp;gt; Texts and dimensions &amp;gt; Arrow size&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default dimension arrow size. Location in preferences: &lt;span style=" font-weight:600;"&gt;TechDraw &amp;gt; TechDraw 2 &amp;gt; Arrow size, Draft &amp;gt; Texts and dimensions &amp;gt; Arrow size&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;默认标注箭头大小。在首选项中的位置：&lt;span style=" font-weight:600;"&gt;TechDraw &amp;gt; TechDraw 2 &amp;gt; 箭头大小，草绘 &amp;gt; 文本和标注 &amp;gt; 箭头大小&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="23"/>
       <source>This dialog will help set FreeCAD up for efficient BIM workflow by setting a couple FreeCAD options. This dialog can be accessed again anytime from menu Manage -&gt; Setup, and more options are available under the edit -&gt; preferences menu.</source>
-      <translation type="unfinished">This dialog will help set FreeCAD up for efficient BIM workflow by setting a couple FreeCAD options. This dialog can be accessed again anytime from menu Manage -&gt; Setup, and more options are available under the edit -&gt; preferences menu.</translation>
+      <translation>此对话框将通过设置一些 FreeCAD 选项来帮助您为高效的 BIM 工作流程配置 FreeCAD。您随时可以从菜单 管理 -&gt; 设置 再次访问此对话框，更多选项可在 编辑 -&gt; 首选项 菜单中找到。</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="33"/>
       <source>Hover the mouse on each setting for additional info</source>
-      <translation type="unfinished">Hover the mouse on each setting for additional info</translation>
+      <translation>将鼠标悬停在每个设置上以获取额外信息</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="81"/>
       <source>Choose one of the presets in this list to fill all the settings below with predetermined values</source>
-      <translation type="unfinished">Choose one of the presets in this list to fill all the settings below with predetermined values</translation>
+      <translation>从此列表中选择一个预设，以使用预定值填充以下所有设置</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="85"/>
       <source>Choose the preferred working unit</source>
-      <translation type="unfinished">Choose the preferred working unit</translation>
+      <translation>选择首选工作单位</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="100"/>
       <source>US/Imperial</source>
-      <translation type="unfinished">US/Imperial</translation>
+      <translation>美制/英制</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="115"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The preferred unit that will be used everywhere: in dialogs, measurements and dimensions. However, any other unit can be entered anytime. Changing the default unit system anytime will not cause any modification to the model. Location in preferences: &lt;span style=" font-weight:600;"&gt;General &amp;gt; Default unit system&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The preferred unit that will be used everywhere: in dialogs, measurements and dimensions. However, any other unit can be entered anytime. Changing the default unit system anytime will not cause any modification to the model. Location in preferences: &lt;span style=" font-weight:600;"&gt;General &amp;gt; Default unit system&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;将在各处使用的首选单位：在对话框、测量和标注中。但是，随时可以输入任何其他单位。随时更改默认单位系统不会导致模型发生任何修改。在首选项中的位置：&lt;span style=" font-weight:600;"&gt;常规 &amp;gt; 默认单位系统&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="119"/>
       <source>Millimeters</source>
-      <translation type="unfinished">Millimeters</translation>
+      <translation>毫米</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="134"/>
@@ -11308,27 +11301,27 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../ui/dialogSetup.ui" line="139"/>
       <source>Feet</source>
-      <translation type="unfinished">Feet</translation>
+      <translation>英尺</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="144"/>
       <source>Architectural</source>
-      <translation type="unfinished">Architectural</translation>
+      <translation>建筑</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="166"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The number of decimals preferred in the interface controls and measurements. Location in preferences: &lt;span style=" font-weight:600;"&gt;General &amp;gt; Units &amp;gt; Number of decimals&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The number of decimals preferred in the interface controls and measurements. Location in preferences: &lt;span style=" font-weight:600;"&gt;General &amp;gt; Units &amp;gt; Number of decimals&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;界面控件和测量中首选的小数位数。在首选项中的位置：&lt;span style=" font-weight:600;"&gt;常规 &amp;gt; 单位 &amp;gt; 小数位数&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="189"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default dimension style. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Texts and dimensions &amp;gt; Arrow style, TechDraw &amp;gt; TechDraw 2 &amp;gt; Arrow Style&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default dimension style. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Texts and dimensions &amp;gt; Arrow style, TechDraw &amp;gt; TechDraw 2 &amp;gt; Arrow Style&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;默认尺寸样式。在首选项中的位置：&lt;span style=" font-weight:600;"&gt;草绘 &amp;gt; 文本和尺寸 &amp;gt; 箭头样式，TechDraw &amp;gt; TechDraw 2 &amp;gt; 箭头样式&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="193"/>
       <source>dot</source>
-      <translation type="unfinished">dot</translation>
+      <translation>点</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="198"/>
@@ -11338,17 +11331,17 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../ui/dialogSetup.ui" line="203"/>
       <source>slash</source>
-      <translation type="unfinished">slash</translation>
+      <translation>斜线</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="208"/>
       <source>thick slash</source>
-      <translation type="unfinished">thick slash</translation>
+      <translation>粗斜线</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="356"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default color of faces in the 3D view. Location in preferences: &lt;span style=" font-weight:600;"&gt;Display &amp;gt; Part/Part Design Color &amp;gt; Shape Appearance &amp;gt; Shape color&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default color of faces in the 3D view. Location in preferences: &lt;span style=" font-weight:600;"&gt;Display &amp;gt; Part/Part Design Color &amp;gt; Shape Appearance &amp;gt; Shape color&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;3D 视图中面的默认颜色。在首选项中的位置：&lt;span style=" font-weight:600;"&gt;显示 &amp;gt; 零件/零件设计颜色 &amp;gt; 形状外观 &amp;gt; 形状颜色&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="363"/>
@@ -11358,7 +11351,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../ui/dialogSetup.ui" line="370"/>
       <source>Helpers</source>
-      <translation type="unfinished">Helpers</translation>
+      <translation>辅助对象</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="377"/>
@@ -11368,7 +11361,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../ui/dialogSetup.ui" line="384"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default color for helper objects such as grids and axes. Location in preferences: &lt;span style=" font-weight:600;"&gt;BIM  &amp;gt; Defaults &amp;gt; Helper colors&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default color for helper objects such as grids and axes. Location in preferences: &lt;span style=" font-weight:600;"&gt;BIM  &amp;gt; Defaults &amp;gt; Helper colors&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;辅助对象（如网格和轴）的默认颜色。在首选项中的位置：&lt;span style=" font-weight:600;"&gt;BIM &amp;gt; 默认值 &amp;gt; 辅助对象颜色&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="391"/>
@@ -11378,17 +11371,17 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../ui/dialogSetup.ui" line="398"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default color of lines in the 3D view. Location in preferences: &lt;span style=" font-weight:600;"&gt;Display &amp;gt; Part/Part Design Color &amp;gt; Shape Appearance &amp;gt; Default line color&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default color of lines in the 3D view. Location in preferences: &lt;span style=" font-weight:600;"&gt;Display &amp;gt; Part/Part Design Color &amp;gt; Shape Appearance &amp;gt; Default line color&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;3D 视图中线的默认颜色。在首选项中的位置：&lt;span style=" font-weight:600;"&gt;显示 &amp;gt; 零件/零件设计颜色 &amp;gt; 形状外观 &amp;gt; 默认线颜色&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="419"/>
       <source>Gradient bottom</source>
-      <translation type="unfinished">Gradient bottom</translation>
+      <translation>渐变底部</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="433"/>
       <source>Plain background</source>
-      <translation type="unfinished">Plain background</translation>
+      <translation>纯色背景</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="440"/>
@@ -11398,154 +11391,154 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../ui/dialogSetup.ui" line="447"/>
       <source>The background color when simple color is enabled</source>
-      <translation type="unfinished">The background color when simple color is enabled</translation>
+      <translation>启用纯色时的背景颜色</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="463"/>
       <source>The altitude of the camera when a blank file is created. Recommended values are between 5 (view a few centimeters wide) and 5000 (view a few meters wide)</source>
-      <translation type="unfinished">The altitude of the camera when a blank file is created. Recommended values are between 5 (view a few centimeters wide) and 5000 (view a few meters wide)</translation>
+      <translation>创建空白文件时相机的高度。推荐值在 5（视图宽几厘米）和 5000（视图宽几米）之间</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="476"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name (optional). You can also add an email address like this: John Doe &amp;lt;john@doe.com&amp;gt;. Location in preferences: &lt;span style=" font-weight:600;"&gt;General &amp;gt; Document &amp;gt; Author name&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name (optional). You can also add an email address like this: John Doe &amp;lt;john@doe.com&amp;gt;. Location in preferences: &lt;span style=" font-weight:600;"&gt;General &amp;gt; Document &amp;gt; Author name&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;名称（可选）。您也可以像这样添加电子邮件地址：张三 &amp;lt;zhangsan@example.com&amp;gt;。在首选项中的位置：&lt;span style=" font-weight:600;"&gt;常规 &amp;gt; 文档 &amp;gt; 作者名称&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="506"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Optional license to use for new files. Keep &amp;quot;All rights reserved&amp;quot; if no license is preferred. Location in preferences: &lt;span style=" font-weight:600;"&gt;General &amp;gt; Document &amp;gt; Default license&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Optional license to use for new files. Keep &amp;quot;All rights reserved&amp;quot; if no license is preferred. Location in preferences: &lt;span style=" font-weight:600;"&gt;General &amp;gt; Document &amp;gt; Default license&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;用于新文件的可选许可证。如果没有首选许可证，请保留&amp;quot;保留所有权利&amp;quot;。在首选项中的位置：&lt;span style=" font-weight:600;"&gt;常规 &amp;gt; 文档 &amp;gt; 默认许可证&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="563"/>
       <source>Default author for new files</source>
-      <translation type="unfinished">Default author for new files</translation>
+      <translation>新文件的默认作者</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="176"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;How many small squares between each main line of the grid. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Grid and snapping &amp;gt; Main line every&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;How many small squares between each main line of the grid. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Grid and snapping &amp;gt; Main line every&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;网格每条主线之间有多少个小方格。在首选项中的位置：&lt;span style=" font-weight:600;"&gt;草绘 &amp;gt; 网格和捕捉 &amp;gt; 主线间隔&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="179"/>
       <source> square(s)</source>
-      <translation type="unfinished"> square(s)</translation>
+      <translation> 个方格</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="303"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The number of backup files to keep when saving a file. Location in preferences: &lt;span style=" font-weight:600;"&gt;General &amp;gt; Document &amp;gt; Maximum number of backup files&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The number of backup files to keep when saving a file. Location in preferences: &lt;span style=" font-weight:600;"&gt;General &amp;gt; Document &amp;gt; Maximum number of backup files&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;保存文件时要保留的备份文件数量。在首选项中的位置：&lt;span style=" font-weight:600;"&gt;常规 &amp;gt; 文档 &amp;gt; 最大备份文件数&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="510"/>
       <source>All rights reserved (no specific license)</source>
-      <translation type="unfinished">All rights reserved (no specific license)</translation>
+      <translation>保留所有权利（无特定许可证）</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="320"/>
       <source>Default license for new files</source>
-      <translation type="unfinished">Default license for new files</translation>
+      <translation>新文件的默认许可证</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="334"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This is the size of the smallest square of the grid. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Grid and snapping &amp;gt; Grid spacing&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This is the size of the smallest square of the grid. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Grid and snapping &amp;gt; Grid spacing&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;这是网格最小方格的大小。在首选项中的位置：&lt;span style=" font-weight:600;"&gt;草绘 &amp;gt; 网格和捕捉 &amp;gt; 网格间距&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="349"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default color of construction geometry. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; General &amp;gt; Construction geometry color&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default color of construction geometry. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; General &amp;gt; Construction geometry color&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;构造几何图形的默认颜色。在首选项中的位置：&lt;span style=" font-weight:600;"&gt;草绘 &amp;gt; 常规 &amp;gt; 构造几何图形颜色&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="486"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default size of texts and dimension texts. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Texts and dimensions &amp;gt; Font size, TechDraw &amp;gt; TechDraw 2 &amp;gt; Font size&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default size of texts and dimension texts. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Texts and dimensions &amp;gt; Font size, TechDraw &amp;gt; TechDraw 2 &amp;gt; Font size&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;文本和标注文本的默认大小。在首选项中的位置：&lt;span style=" font-weight:600;"&gt;草绘 &amp;gt; 文本和标注 &amp;gt; 字体大小，TechDraw &amp;gt; TechDraw 2 &amp;gt; 字体大小&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="499"/>
       <source>Default dimension arrow size</source>
-      <translation type="unfinished">Default dimension arrow size</translation>
+      <translation>默认标注箭头大小</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="603"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Tip&lt;/span&gt;: The appropriate snapping modes on the Snapping toolbar can be set. Enabling only the snap positions needed will make drawing in FreeCAD considerably faster.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Tip&lt;/span&gt;: The appropriate snapping modes on the Snapping toolbar can be set. Enabling only the snap positions needed will make drawing in FreeCAD considerably faster.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;提示&lt;/span&gt;：可以设置捕捉工具栏上的适当捕捉模式。仅启用所需的捕捉位置将使在 FreeCAD 中绘图速度显著提高。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="613"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;b&gt;Tip&lt;/b&gt;: The currently installed FreeCAD version is %1. Consider using the &lt;a href="https://github.com/FreeCAD/FreeCAD/releases"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;latest development version %2&lt;/span&gt;&lt;/a&gt;, which brings all the latest improvements to FreeCAD.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;b&gt;Tip&lt;/b&gt;: The currently installed FreeCAD version is %1. Consider using the &lt;a href="https://github.com/FreeCAD/FreeCAD/releases"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;latest development version %2&lt;/span&gt;&lt;/a&gt;, which brings all the latest improvements to FreeCAD.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;b&gt;提示&lt;/b&gt;：当前安装的 FreeCAD 版本是 %1。考虑使用 &lt;a href="https://github.com/FreeCAD/FreeCAD/releases"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;最新的开发版本 %2&lt;/span&gt;&lt;/a&gt;，它为 FreeCAD 带来了所有最新的改进。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="626"/>
       <source>Missing Workbenches</source>
-      <translation type="unfinished">Missing Workbenches</translation>
+      <translation>缺失的工作台</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="244"/>
       <source>Fill with default values</source>
-      <translation type="unfinished">Fill with default values</translation>
+      <translation>使用默认值填充</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="90"/>
       <location filename="../ui/dialogSetup.ui" line="124"/>
       <source>Centimeters</source>
-      <translation type="unfinished">Centimeters</translation>
+      <translation>厘米</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="95"/>
       <location filename="../ui/dialogSetup.ui" line="129"/>
       <source>Meters</source>
-      <translation type="unfinished">Meters</translation>
+      <translation>米</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="216"/>
       <source>Default camera altitude</source>
-      <translation type="unfinished">Default camera altitude</translation>
+      <translation>默认相机高度</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="71"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check this to make FreeCAD start with a new blank document. Location in preferences: &lt;span style=" font-weight:600;"&gt;General &amp;gt; Document &amp;gt; Create new document at startup&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check this to make FreeCAD start with a new blank document. Location in preferences: &lt;span style=" font-weight:600;"&gt;General &amp;gt; Document &amp;gt; Create new document at startup&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;勾选此项使 FreeCAD 启动时创建一个新的空白文档。在首选项中的位置：&lt;span style=" font-weight:600;"&gt;常规 &amp;gt; 文档 &amp;gt; 启动时创建新文档&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="405"/>
       <source>Gradient top:</source>
-      <translation type="unfinished">Gradient top:</translation>
+      <translation>渐变顶部：</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="412"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The top color of the 3D view background gradient. Location in preferences: &lt;span style=" font-weight:600;"&gt;Display &amp;gt; Colors &amp;gt; Color gradient&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The top color of the 3D view background gradient. Location in preferences: &lt;span style=" font-weight:600;"&gt;Display &amp;gt; Colors &amp;gt; Color gradient&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;3D 视图背景渐变的顶部颜色。在首选项中的位置：&lt;span style=" font-weight:600;"&gt;显示 &amp;gt; 颜色 &amp;gt; 颜色渐变&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="426"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The bottom color of the 3D view background gradient. Location in preferences: &lt;span style=" font-weight:600;"&gt;Display &amp;gt; Colors &amp;gt; Color gradient&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The bottom color of the 3D view background gradient. Location in preferences: &lt;span style=" font-weight:600;"&gt;Display &amp;gt; Colors &amp;gt; Color gradient&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;3D 视图背景渐变的底部颜色。在首选项中的位置：&lt;span style=" font-weight:600;"&gt;显示 &amp;gt; 颜色 &amp;gt; 颜色渐变&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="570"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Where the grid appears at FreeCAD startup. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; General &amp;gt; Default working plane&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Where the grid appears at FreeCAD startup. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; General &amp;gt; Default working plane&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;FreeCAD 启动时网格出现的位置。在首选项中的位置：&lt;span style=" font-weight:600;"&gt;草绘 &amp;gt; 常规 &amp;gt; 默认工作平面&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="454"/>
       <source>The color to use for texts and dimensions</source>
-      <translation type="unfinished">The color to use for texts and dimensions</translation>
+      <translation>用于文本和标注的颜色</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="253"/>
       <source>3D view background</source>
-      <translation type="unfinished">3D view background</translation>
+      <translation>3D 视图背景</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="267"/>
       <source>Geometry color</source>
-      <translation type="unfinished">Geometry color</translation>
+      <translation>几何图形颜色</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="636"/>
       <source>&lt;b&gt;IfcOpenShell&lt;/b&gt; is missing on your system. IfcOpenShell is needed to import or export IFC files to/from FreeCAD. Check &lt;a href="https://www.freecadweb.org/wiki/Arch_IFC"&gt;this wiki page&lt;/a&gt; to know more, or &lt;a href="#install"&gt;download and install it&lt;/a&gt; directly.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;b&gt;IfcOpenShell&lt;/b&gt; is missing on your system. IfcOpenShell is needed to import or export IFC files to/from FreeCAD. Check &lt;a href="https://www.freecadweb.org/wiki/Arch_IFC"&gt;this wiki page&lt;/a&gt; to know more, or &lt;a href="#install"&gt;download and install it&lt;/a&gt; directly.&lt;/p&gt;</translation>
+      <translation>&lt;b&gt;IfcOpenShell&lt;/b&gt; 在您的系统中缺失。需要 IfcOpenShell 才能与 FreeCAD 导入或导出 IFC 文件。查看 &lt;a href="https://www.freecadweb.org/wiki/Arch_IFC"&gt;此 Wiki 页面&lt;/a&gt; 以了解更多信息，或直接 &lt;a href="#install"&gt;下载并安装它&lt;/a&gt;。&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -11553,12 +11546,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="276"/>
       <source>Remove Shape From BIM</source>
-      <translation type="unfinished">Remove Shape From BIM</translation>
+      <translation>从 BIM 中移除形状</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="279"/>
       <source>Removes cubic shapes from BIM components</source>
-      <translation type="unfinished">Removes cubic shapes from BIM components</translation>
+      <translation>从 BIM 组件中移除立方体形状</translation>
     </message>
   </context>
   <context>
@@ -11566,12 +11559,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimDrawingView.py" line="43"/>
       <source>2D Drawing</source>
-      <translation type="unfinished">2D Drawing</translation>
+      <translation>2D 绘图</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDrawingView.py" line="47"/>
       <source>Creates a drawing container to contain elements of a 2D view</source>
-      <translation type="unfinished">Creates a drawing container to contain elements of a 2D view</translation>
+      <translation>创建一个绘图容器以包含 2D 视图的元素</translation>
     </message>
   </context>
   <context>
@@ -11580,7 +11573,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
       <location filename="../../BimStatus.py" line="129"/>
       <source>BIM status widget</source>
       <comment>A context menu action used to show or hide this toolbar widget</comment>
-      <translation type="unfinished">BIM status widget</translation>
+      <translation>BIM 状态控件</translation>
     </message>
   </context>
   <context>
@@ -11588,7 +11581,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../InitGui.py" line="272"/>
       <source>Generic 3D Tools</source>
-      <translation type="unfinished">Generic 3D Tools</translation>
+      <translation>通用 3D 工具</translation>
     </message>
   </context>
   <context>
@@ -11596,7 +11589,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../InitGui.py" line="291"/>
       <source>Create 2D Views</source>
-      <translation type="unfinished">Create 2D Views</translation>
+      <translation>创建 2D 视图</translation>
     </message>
   </context>
   <context>
@@ -11604,12 +11597,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="99"/>
       <source>Remove Component</source>
-      <translation type="unfinished">Remove Component</translation>
+      <translation>移除组件</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="103"/>
       <source>Removes the selected components from their parents, or creates a hole in a component</source>
-      <translation type="unfinished">Removes the selected components from their parents, or creates a hole in a component</translation>
+      <translation>从父对象中移除选定的组件，或在组件中创建孔洞</translation>
     </message>
   </context>
   <context>
@@ -11617,12 +11610,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="372"/>
       <source>Toggle IFC B-Rep Flag</source>
-      <translation type="unfinished">Toggle IFC B-Rep Flag</translation>
+      <translation>切换 IFC B-Rep 标志</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="375"/>
       <source>Forces an object to be exported as B-rep or not</source>
-      <translation type="unfinished">Forces an object to be exported as B-rep or not</translation>
+      <translation>强制对象是否以 B-rep 格式导出</translation>
     </message>
   </context>
   <context>
@@ -11630,12 +11623,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="461"/>
       <source>New IFC Spreadsheet</source>
-      <translation type="unfinished">New IFC Spreadsheet</translation>
+      <translation>新建 IFC 电子表格</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="465"/>
       <source>Creates a spreadsheet to store IFC properties of an object</source>
-      <translation type="unfinished">Creates a spreadsheet to store IFC properties of an object</translation>
+      <translation>创建一个电子表格来存储对象的 IFC 属性</translation>
     </message>
   </context>
   <context>
@@ -11643,12 +11636,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimClassification.py" line="43"/>
       <source>Manage Classification</source>
-      <translation type="unfinished">Manage Classification</translation>
+      <translation>管理分类</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimClassification.py" line="47"/>
       <source>Manages classification systems and apply classification to objects</source>
-      <translation type="unfinished">Manages classification systems and apply classification to objects</translation>
+      <translation>管理分类系统并将分类应用于对象</translation>
     </message>
   </context>
   <context>
@@ -11656,12 +11649,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimCompound.py" line="38"/>
       <source>Create Compound</source>
-      <translation type="unfinished">Create Compound</translation>
+      <translation>创建复合体</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimCompound.py" line="39"/>
       <source>Create a compound of several shapes</source>
-      <translation type="unfinished">Create a compound of several shapes</translation>
+      <translation>创建多个形状的复合体</translation>
     </message>
   </context>
   <context>
@@ -11669,12 +11662,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimDimensions.py" line="43"/>
       <source>Aligned Dimension</source>
-      <translation type="unfinished">Aligned Dimension</translation>
+      <translation>对齐标注</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDimensions.py" line="44"/>
       <source>Creates an aligned dimension</source>
-      <translation type="unfinished">Creates an aligned dimension</translation>
+      <translation>创建一个对齐标注</translation>
     </message>
   </context>
   <context>
@@ -11687,7 +11680,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimDimensions.py" line="60"/>
       <source>Creates an horizontal dimension</source>
-      <translation type="unfinished">Creates an horizontal dimension</translation>
+      <translation>创建一个水平标注</translation>
     </message>
   </context>
   <context>
@@ -11700,7 +11693,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimDimensions.py" line="80"/>
       <source>Creates a vertical dimension</source>
-      <translation type="unfinished">Creates a vertical dimension</translation>
+      <translation>创建一个垂直标注</translation>
     </message>
   </context>
   <context>
@@ -11708,12 +11701,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimIfcElements.py" line="39"/>
       <source>Manage IFC Elements</source>
-      <translation type="unfinished">Manage IFC Elements</translation>
+      <translation>管理 IFC 元素</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcElements.py" line="43"/>
       <source>Manages how the different elements of the BIM project will be exported to IFC</source>
-      <translation type="unfinished">Manages how the different elements of the BIM project will be exported to IFC</translation>
+      <translation>管理 BIM 项目的不同元素将如何导出到 IFC</translation>
     </message>
   </context>
   <context>
@@ -11721,12 +11714,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="44"/>
       <source>IFC Explorer</source>
-      <translation type="unfinished">IFC Explorer</translation>
+      <translation>IFC 浏览器</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="45"/>
       <source>Opens the IFC explorer utility</source>
-      <translation type="unfinished">Opens the IFC explorer utility</translation>
+      <translation>打开 IFC 浏览器工具</translation>
     </message>
   </context>
   <context>
@@ -11734,12 +11727,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimIfcProperties.py" line="44"/>
       <source>Manage IFC Properties</source>
-      <translation type="unfinished">Manage IFC Properties</translation>
+      <translation>管理 IFC 属性</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcProperties.py" line="48"/>
       <source>Manages the different IFC properties of the BIM objects</source>
-      <translation type="unfinished">Manages the different IFC properties of the BIM objects</translation>
+      <translation>管理 BIM 对象的不同 IFC 属性</translation>
     </message>
   </context>
   <context>
@@ -11747,12 +11740,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="72"/>
       <source>Manage IFC Quantities</source>
-      <translation type="unfinished">Manage IFC Quantities</translation>
+      <translation>管理 IFC 数量</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="76"/>
       <source>Manages how the quantities of different elements of the BIM project will be exported to IFC</source>
-      <translation type="unfinished">Manages how the quantities of different elements of the BIM project will be exported to IFC</translation>
+      <translation>管理 BIM 项目不同元素的数量将如何导出到 IFC</translation>
     </message>
   </context>
   <context>
@@ -11760,12 +11753,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimLayers.py" line="55"/>
       <source>Manage Layers</source>
-      <translation type="unfinished">Manage Layers</translation>
+      <translation>管理图层</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLayers.py" line="58"/>
       <source>Sets/modifies the different layers of your BIM project</source>
-      <translation type="unfinished">Sets/modifies the different layers of your BIM project</translation>
+      <translation>设置/修改 BIM 项目的不同图层</translation>
     </message>
   </context>
   <context>
@@ -11773,12 +11766,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimProjectManager.py" line="43"/>
       <source>Setup Project</source>
-      <translation type="unfinished">Setup Project</translation>
+      <translation>设置项目</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimProjectManager.py" line="44"/>
       <source>Creates or manages a BIM project</source>
-      <translation type="unfinished">Creates or manages a BIM project</translation>
+      <translation>创建或管理 BIM 项目</translation>
     </message>
   </context>
   <context>
@@ -11786,12 +11779,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimReextrude.py" line="38"/>
       <source>Re-Extrude</source>
-      <translation type="unfinished">Re-Extrude</translation>
+      <translation>重新拉伸</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimReextrude.py" line="41"/>
       <source>Recreates an extruded structure from a selected face</source>
-      <translation type="unfinished">Recreates an extruded structure from a selected face</translation>
+      <translation>从选定面重新创建拉伸结构</translation>
     </message>
   </context>
   <context>
@@ -11799,12 +11792,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimReorder.py" line="39"/>
       <source>Reorder Children</source>
-      <translation type="unfinished">Reorder Children</translation>
+      <translation>重新排序子项</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimReorder.py" line="41"/>
       <source>Reorders children of the selected object</source>
-      <translation type="unfinished">Reorders children of the selected object</translation>
+      <translation>重新排序所选对象的子项</translation>
     </message>
   </context>
   <context>
@@ -11812,12 +11805,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimSetup.py" line="42"/>
       <source>BIM Setup</source>
-      <translation type="unfinished">BIM Setup</translation>
+      <translation>BIM 设置</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSetup.py" line="45"/>
       <source>Sets common FreeCAD preferences for a BIM workflow</source>
-      <translation type="unfinished">Sets common FreeCAD preferences for a BIM workflow</translation>
+      <translation>为BIM工作流程设置常用FreeCAD首选项</translation>
     </message>
   </context>
   <context>
@@ -11830,7 +11823,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimShape2DView.py" line="114"/>
       <source>Section Cut</source>
-      <translation type="unfinished">Section Cut</translation>
+      <translation>剖面切割</translation>
     </message>
   </context>
   <context>
@@ -11838,12 +11831,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimSimpleCopy.py" line="38"/>
       <source>Create Simple Copy</source>
-      <translation type="unfinished">Create Simple Copy</translation>
+      <translation>创建简单副本</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSimpleCopy.py" line="39"/>
       <source>Creates a simple non-parametric copy</source>
-      <translation type="unfinished">Creates a simple non-parametric copy</translation>
+      <translation>创建一个简单的非参数化副本</translation>
     </message>
   </context>
   <context>
@@ -11851,16 +11844,16 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimTDView.py" line="38"/>
       <source>New View</source>
-      <translation type="unfinished">New View</translation>
+      <translation>新建视图</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimTDView.py" line="44"/>
       <source>Inserts a drawing view on a page.
 To choose where to insert the view when multiple pages are available,
 select both the view and the page before executing the command.</source>
-      <translation type="unfinished">Inserts a drawing view on a page.
-To choose where to insert the view when multiple pages are available,
-select both the view and the page before executing the command.</translation>
+      <translation>在页面上插入绘图视图。
+当有多个页面可用时，要选择在何处插入视图，
+请先选择视图和页面，然后执行命令。</translation>
     </message>
   </context>
   <context>
@@ -11868,12 +11861,12 @@ select both the view and the page before executing the command.</translation>
     <message>
       <location filename="../../bimcommands/BimTogglePanels.py" line="40"/>
       <source>Toggle Bottom Panels</source>
-      <translation type="unfinished">Toggle Bottom Panels</translation>
+      <translation>切换底部面板</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimTogglePanels.py" line="41"/>
       <source>Toggles bottom dock panels on/off</source>
-      <translation type="unfinished">Toggles bottom dock panels on/off</translation>
+      <translation>切换底部停靠面板的打开/关闭</translation>
     </message>
   </context>
   <context>
@@ -11881,12 +11874,12 @@ select both the view and the page before executing the command.</translation>
     <message>
       <location filename="../../bimcommands/BimWelcome.py" line="39"/>
       <source>BIM Welcome Screen</source>
-      <translation type="unfinished">BIM Welcome Screen</translation>
+      <translation>BIM欢迎屏幕</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWelcome.py" line="40"/>
       <source>Shows the BIM workbench welcome screen</source>
-      <translation type="unfinished">Shows the BIM workbench welcome screen</translation>
+      <translation>显示BIM工作台欢迎屏幕</translation>
     </message>
   </context>
   <context>
@@ -11894,12 +11887,12 @@ select both the view and the page before executing the command.</translation>
     <message>
       <location filename="../../bimcommands/BimWindows.py" line="38"/>
       <source>Manage Doors and Windows</source>
-      <translation type="unfinished">Manage Doors and Windows</translation>
+      <translation>管理门和窗</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWindows.py" line="42"/>
       <source>Manages the different doors and windows of the BIM project</source>
-      <translation type="unfinished">Manages the different doors and windows of the BIM project</translation>
+      <translation>管理BIM项目中的不同门和窗</translation>
     </message>
   </context>
   <context>
@@ -11907,7 +11900,7 @@ select both the view and the page before executing the command.</translation>
     <message>
       <location filename="../ui/dialogClassification.ui" line="14"/>
       <source>Classification Manager</source>
-      <translation type="unfinished">Classification Manager</translation>
+      <translation>分类管理器</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="42"/>
@@ -11917,12 +11910,12 @@ select both the view and the page before executing the command.</translation>
     <message>
       <location filename="../ui/dialogClassification.ui" line="48"/>
       <source>Only visible objects</source>
-      <translation type="unfinished">Only visible objects</translation>
+      <translation>仅可见对象</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="60"/>
       <source>Sort by</source>
-      <translation type="unfinished">Sort by</translation>
+      <translation>排序方式</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="68"/>
@@ -11947,7 +11940,7 @@ select both the view and the page before executing the command.</translation>
     <message>
       <location filename="../ui/dialogClassification.ui" line="120"/>
       <source>Object/Material</source>
-      <translation type="unfinished">Object/Material</translation>
+      <translation>对象/材料</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="125"/>
@@ -11957,42 +11950,42 @@ select both the view and the page before executing the command.</translation>
     <message>
       <location filename="../ui/dialogClassification.ui" line="134"/>
       <source>Available classification systems</source>
-      <translation type="unfinished">Available classification systems</translation>
+      <translation>可用的分类系统</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="140"/>
       <source>Classification systems found on this computer</source>
-      <translation type="unfinished">Classification systems found on this computer</translation>
+      <translation>在此计算机上找到的分类系统</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="176"/>
       <source>Apply the selected class to selected objects</source>
-      <translation type="unfinished">Apply the selected class to selected objects</translation>
+      <translation>将选定的类别应用于所选对象</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="179"/>
       <source>&lt;&lt; Apply to Selected</source>
-      <translation type="unfinished">&lt;&lt; Apply to Selected</translation>
+      <translation>&lt;&lt; 应用于选定项</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="186"/>
       <source>Use this class as object name</source>
-      <translation type="unfinished">Use this class as object name</translation>
+      <translation>使用此类别作为对象名称</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="189"/>
       <source>&lt;&lt; Set as Name</source>
-      <translation type="unfinished">&lt;&lt; Set as Name</translation>
+      <translation>&lt;&lt; 设为名称</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="198"/>
       <source>Prefix with classification system name</source>
-      <translation type="unfinished">Prefix with classification system name</translation>
+      <translation>添加分类系统名称作为前缀</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="212"/>
       <source>XML or IFC files of several classification systems can be downloaded from &lt;a href="https://github.com/Moult/IfcClassification"&gt;https://github.com/Moult/IfcClassification&lt;/a&gt; and placed in %s</source>
-      <translation type="unfinished">XML or IFC files of several classification systems can be downloaded from &lt;a href="https://github.com/Moult/IfcClassification"&gt;https://github.com/Moult/IfcClassification&lt;/a&gt; and placed in %s</translation>
+      <translation>多种分类系统的 XML 或 IFC 文件可从 &lt;a href="https://github.com/Moult/IfcClassification"&gt;https://github.com/Moult/IfcClassification&lt;/a&gt; 下载并放置于 %s 目录中</translation>
     </message>
   </context>
   <context>
@@ -12000,7 +11993,7 @@ select both the view and the page before executing the command.</translation>
     <message>
       <location filename="../ui/dialogDiff.ui" line="14"/>
       <source>IFC Difference</source>
-      <translation type="unfinished">IFC Difference</translation>
+      <translation>IFC差异比较</translation>
     </message>
   </context>
 </TS>

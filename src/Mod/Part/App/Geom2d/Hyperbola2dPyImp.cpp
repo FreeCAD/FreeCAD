@@ -22,9 +22,9 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <GCE2d_MakeHyperbola.hxx>
-# include <Geom2d_Hyperbola.hxx>
-# include <gp_Hypr2d.hxx>
+#include <GCE2d_MakeHyperbola.hxx>
+#include <Geom2d_Hyperbola.hxx>
+#include <gp_Hypr2d.hxx>
 
 
 #include <Base/GeometryPyCXX.h>
@@ -45,7 +45,7 @@ std::string Hyperbola2dPy::representation() const
     return "<Hyperbola2d object>";
 }
 
-PyObject *Hyperbola2dPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject* Hyperbola2dPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // create a new instance of Hyperbola2dPy and the Twin object
     return new Hyperbola2dPy(new Geom2dHyperbola);
@@ -54,123 +54,160 @@ PyObject *Hyperbola2dPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  /
 // constructor method
 int Hyperbola2dPy::PyInit(PyObject* args, PyObject* kwds)
 {
-    static const std::array<const char *, 1> keywords_n {nullptr};
+    static const std::array<const char*, 1> keywords_n {nullptr};
     if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "", keywords_n)) {
-        Handle(Geom2d_Hyperbola) hyperbola = Handle(Geom2d_Hyperbola)::DownCast(getGeom2dHyperbolaPtr()->handle());
+        Handle(Geom2d_Hyperbola) hyperbola = Handle(Geom2d_Hyperbola)::DownCast(
+            getGeom2dHyperbolaPtr()->handle()
+        );
         hyperbola->SetMajorRadius(2.0);
         hyperbola->SetMinorRadius(1.0);
         return 0;
     }
 
-    static const std::array<const char *, 2> keywords_e = {"Hyperbola", nullptr};
+    static const std::array<const char*, 2> keywords_e = {"Hyperbola", nullptr};
     PyErr_Clear();
-    PyObject *pHypr;
-    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!",keywords_e, &(Hyperbola2dPy::Type), &pHypr)) {
+    PyObject* pHypr;
+    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!", keywords_e, &(Hyperbola2dPy::Type), &pHypr)) {
         Hyperbola2dPy* pHyperbola = static_cast<Hyperbola2dPy*>(pHypr);
-        Handle(Geom2d_Hyperbola) Hypr1 = Handle(Geom2d_Hyperbola)::DownCast
-            (pHyperbola->getGeom2dHyperbolaPtr()->handle());
-        Handle(Geom2d_Hyperbola) Hypr2 = Handle(Geom2d_Hyperbola)::DownCast
-            (this->getGeom2dHyperbolaPtr()->handle());
+        Handle(Geom2d_Hyperbola) Hypr1 = Handle(Geom2d_Hyperbola)::DownCast(
+            pHyperbola->getGeom2dHyperbolaPtr()->handle()
+        );
+        Handle(Geom2d_Hyperbola) Hypr2 = Handle(Geom2d_Hyperbola)::DownCast(
+            this->getGeom2dHyperbolaPtr()->handle()
+        );
         Hypr2->SetHypr2d(Hypr1->Hypr2d());
         return 0;
     }
 
-    static const std::array<const char *, 4> keywords_ssc {"S1", "S2", "Center", nullptr};
+    static const std::array<const char*, 4> keywords_ssc {"S1", "S2", "Center", nullptr};
     PyErr_Clear();
     PyObject *pV1, *pV2, *pV3;
-    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!O!O!", keywords_ssc,
-                                            Base::Vector2dPy::type_object(), &pV1,
-                                            Base::Vector2dPy::type_object(), &pV2,
-                                            Base::Vector2dPy::type_object(), &pV3)) {
+    if (Base::Wrapped_ParseTupleAndKeywords(
+            args,
+            kwds,
+            "O!O!O!",
+            keywords_ssc,
+            Base::Vector2dPy::type_object(),
+            &pV1,
+            Base::Vector2dPy::type_object(),
+            &pV2,
+            Base::Vector2dPy::type_object(),
+            &pV3
+        )) {
         Base::Vector2d v1 = Py::toVector2d(pV1);
         Base::Vector2d v2 = Py::toVector2d(pV2);
         Base::Vector2d v3 = Py::toVector2d(pV3);
-        GCE2d_MakeHyperbola me(gp_Pnt2d(v1.x,v1.y),
-                               gp_Pnt2d(v2.x,v2.y),
-                               gp_Pnt2d(v3.x,v3.y));
+        GCE2d_MakeHyperbola me(gp_Pnt2d(v1.x, v1.y), gp_Pnt2d(v2.x, v2.y), gp_Pnt2d(v3.x, v3.y));
         if (!me.IsDone()) {
             PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(me.Status()));
             return -1;
         }
 
-        Handle(Geom2d_Hyperbola) hyperbola = Handle(Geom2d_Hyperbola)::DownCast(getGeom2dHyperbolaPtr()->handle());
+        Handle(Geom2d_Hyperbola) hyperbola = Handle(Geom2d_Hyperbola)::DownCast(
+            getGeom2dHyperbolaPtr()->handle()
+        );
         hyperbola->SetHypr2d(me.Value()->Hypr2d());
         return 0;
     }
 
-    static const std::array<const char *, 4> keywords_cmm {"Center", "MajorRadius", "MinorRadius", nullptr};
+    static const std::array<const char*, 4> keywords_cmm {"Center", "MajorRadius", "MinorRadius", nullptr};
     PyErr_Clear();
-    PyObject *pV;
+    PyObject* pV;
     double major, minor;
-    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!dd", keywords_cmm,
-                                            Base::Vector2dPy::type_object(), &pV,
-                                            &major, &minor)) {
+    if (Base::Wrapped_ParseTupleAndKeywords(
+            args,
+            kwds,
+            "O!dd",
+            keywords_cmm,
+            Base::Vector2dPy::type_object(),
+            &pV,
+            &major,
+            &minor
+        )) {
         Base::Vector2d c = Py::toVector2d(pV);
-        GCE2d_MakeHyperbola me(gp_Ax2d(gp_Pnt2d(c.x,c.y), gp_Dir2d(0.0,1.0)),
-                               major, minor);
+        GCE2d_MakeHyperbola me(gp_Ax2d(gp_Pnt2d(c.x, c.y), gp_Dir2d(0.0, 1.0)), major, minor);
         if (!me.IsDone()) {
             PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(me.Status()));
             return -1;
         }
 
-        Handle(Geom2d_Hyperbola) hyperbola = Handle(Geom2d_Hyperbola)::DownCast(getGeom2dHyperbolaPtr()->handle());
+        Handle(Geom2d_Hyperbola) hyperbola = Handle(Geom2d_Hyperbola)::DownCast(
+            getGeom2dHyperbolaPtr()->handle()
+        );
         hyperbola->SetHypr2d(me.Value()->Hypr2d());
         return 0;
     }
 
-    PyErr_SetString(PyExc_TypeError, "Hyperbola constructor accepts:\n"
+    PyErr_SetString(
+        PyExc_TypeError,
+        "Hyperbola constructor accepts:\n"
         "-- empty parameter list\n"
         "-- Hyperbola\n"
         "-- Point, double, double\n"
-        "-- Point, Point, Point");
+        "-- Point, Point, Point"
+    );
     return -1;
 }
 
 Py::Float Hyperbola2dPy::getMajorRadius() const
 {
-    Handle(Geom2d_Hyperbola) hyperbola = Handle(Geom2d_Hyperbola)::DownCast(getGeom2dHyperbolaPtr()->handle());
+    Handle(Geom2d_Hyperbola) hyperbola = Handle(Geom2d_Hyperbola)::DownCast(
+        getGeom2dHyperbolaPtr()->handle()
+    );
     return Py::Float(hyperbola->MajorRadius());
 }
 
 void Hyperbola2dPy::setMajorRadius(Py::Float arg)
 {
-    Handle(Geom2d_Hyperbola) hyperbola = Handle(Geom2d_Hyperbola)::DownCast(getGeom2dHyperbolaPtr()->handle());
+    Handle(Geom2d_Hyperbola) hyperbola = Handle(Geom2d_Hyperbola)::DownCast(
+        getGeom2dHyperbolaPtr()->handle()
+    );
     hyperbola->SetMajorRadius((double)arg);
 }
 
 Py::Float Hyperbola2dPy::getMinorRadius() const
 {
-    Handle(Geom2d_Hyperbola) hyperbola = Handle(Geom2d_Hyperbola)::DownCast(getGeom2dHyperbolaPtr()->handle());
+    Handle(Geom2d_Hyperbola) hyperbola = Handle(Geom2d_Hyperbola)::DownCast(
+        getGeom2dHyperbolaPtr()->handle()
+    );
     return Py::Float(hyperbola->MinorRadius());
 }
 
 void Hyperbola2dPy::setMinorRadius(Py::Float arg)
 {
-    Handle(Geom2d_Hyperbola) hyperbola = Handle(Geom2d_Hyperbola)::DownCast(getGeom2dHyperbolaPtr()->handle());
+    Handle(Geom2d_Hyperbola) hyperbola = Handle(Geom2d_Hyperbola)::DownCast(
+        getGeom2dHyperbolaPtr()->handle()
+    );
     hyperbola->SetMinorRadius((double)arg);
 }
 
 Py::Float Hyperbola2dPy::getFocal() const
 {
-    Handle(Geom2d_Hyperbola) hyperbola = Handle(Geom2d_Hyperbola)::DownCast(getGeom2dHyperbolaPtr()->handle());
+    Handle(Geom2d_Hyperbola) hyperbola = Handle(Geom2d_Hyperbola)::DownCast(
+        getGeom2dHyperbolaPtr()->handle()
+    );
     return Py::Float(hyperbola->Focal());
 }
 
 Py::Object Hyperbola2dPy::getFocus1() const
 {
-    Handle(Geom2d_Hyperbola) hyperbola = Handle(Geom2d_Hyperbola)::DownCast(getGeom2dHyperbolaPtr()->handle());
+    Handle(Geom2d_Hyperbola) hyperbola = Handle(Geom2d_Hyperbola)::DownCast(
+        getGeom2dHyperbolaPtr()->handle()
+    );
     gp_Pnt2d loc = hyperbola->Focus1();
     return Base::Vector2dPy::create(loc.X(), loc.Y());
 }
 
 Py::Object Hyperbola2dPy::getFocus2() const
 {
-    Handle(Geom2d_Hyperbola) hyperbola = Handle(Geom2d_Hyperbola)::DownCast(getGeom2dHyperbolaPtr()->handle());
+    Handle(Geom2d_Hyperbola) hyperbola = Handle(Geom2d_Hyperbola)::DownCast(
+        getGeom2dHyperbolaPtr()->handle()
+    );
     gp_Pnt2d loc = hyperbola->Focus2();
     return Base::Vector2dPy::create(loc.X(), loc.Y());
 }
 
-PyObject *Hyperbola2dPy::getCustomAttributes(const char* /*attr*/) const
+PyObject* Hyperbola2dPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }

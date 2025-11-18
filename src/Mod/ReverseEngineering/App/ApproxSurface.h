@@ -78,10 +78,12 @@ public:
      * and the sum of the values in @a vMults has to be identical to @a iSize.
      * @param iOrder Order (degree + 1) of the basic polynomial
      */
-    SplineBasisfunction(TColStd_Array1OfReal& vKnots,
-                        TColStd_Array1OfInteger& vMults,
-                        int iSize,
-                        int iOrder = 1);
+    SplineBasisfunction(
+        TColStd_Array1OfReal& vKnots,
+        TColStd_Array1OfInteger& vMults,
+        int iSize,
+        int iOrder = 1
+    );
 
     virtual ~SplineBasisfunction();
 
@@ -115,10 +117,12 @@ public:
      *
      * The list must be sufficiently long for iMaxDer+1 elements.
      */
-    virtual void DerivativesOfBasisFunction(int iIndex,
-                                            int iMaxDer,
-                                            double fParam,
-                                            TColStd_Array1OfReal& Derivat) = 0;
+    virtual void DerivativesOfBasisFunction(
+        int iIndex,
+        int iMaxDer,
+        double fParam,
+        TColStd_Array1OfReal& Derivat
+    ) = 0;
 
     /**
      * Calculates the kth derivative at the point fParam
@@ -136,8 +140,7 @@ public:
      * is passed on. Internally, this is converted into a knot vector in the form of (value, 1).
      * The size of this new vector has to be exactly as big as specified in the constructor.
      */
-    virtual void
-    SetKnots(TColStd_Array1OfReal& vKnots, TColStd_Array1OfInteger& vMults, int iOrder = 1);
+    virtual void SetKnots(TColStd_Array1OfReal& vKnots, TColStd_Array1OfInteger& vMults, int iOrder = 1);
 
 protected:  // Member
     // Knot vector
@@ -172,10 +175,7 @@ public:
      * sum of the values in @a vMults has to be identical to @a iSize.
      * @param iOrder Order (degree + 1) of the basic polynomial
      */
-    BSplineBasis(TColStd_Array1OfReal& vKnots,
-                 TColStd_Array1OfInteger& vMults,
-                 int iSize,
-                 int iOrder = 1);
+    BSplineBasis(TColStd_Array1OfReal& vKnots, TColStd_Array1OfInteger& vMults, int iSize, int iOrder = 1);
 
     /**
      * Specifies the knot index for the parameter value (from: Piegl/Tiller 96 The NURBS-Book)
@@ -224,10 +224,12 @@ public:
      * The list must be sufficiently long for iMaxDer+1 elements.
      * @return List of function values
      */
-    void DerivativesOfBasisFunction(int iIndex,
-                                    int iMaxDer,
-                                    double fParam,
-                                    TColStd_Array1OfReal& Derivat) override;
+    void DerivativesOfBasisFunction(
+        int iIndex,
+        int iMaxDer,
+        double fParam,
+        TColStd_Array1OfReal& Derivat
+    ) override;
 
     /**
      * Calculates the kth derivative at the point fParam
@@ -250,8 +252,10 @@ protected:
     /**
      * Calculates the roots of the Legendre-Polynomials and the corresponding weights
      */
-    virtual void GenerateRootsAndWeights(TColStd_Array1OfReal& vAbscissas,
-                                         TColStd_Array1OfReal& vWeights);
+    virtual void GenerateRootsAndWeights(
+        TColStd_Array1OfReal& vAbscissas,
+        TColStd_Array1OfReal& vWeights
+    );
 
     /**
      * Calculates the limits of integration (Indexes of the knots)
@@ -271,10 +275,11 @@ class ReenExport ParameterCorrection
 public:
     // Constructor
     explicit ParameterCorrection(
-        unsigned usUOrder = 4,        // Order in u-direction (order = degree + 1)
-        unsigned usVOrder = 4,        // Order in v-direction
-        unsigned usUCtrlpoints = 6,   // Qty. of the control points in the u-direction
-        unsigned usVCtrlpoints = 6);  // Qty. of the control points in the v-direction
+        unsigned usUOrder = 4,       // Order in u-direction (order = degree + 1)
+        unsigned usVOrder = 4,       // Order in v-direction
+        unsigned usUCtrlpoints = 6,  // Qty. of the control points in the u-direction
+        unsigned usVCtrlpoints = 6
+    );  // Qty. of the control points in the v-direction
 
     virtual ~ParameterCorrection()
     {
@@ -327,10 +332,12 @@ public:
     /**
      * Calculates a B-spline surface from the given points
      */
-    virtual Handle(Geom_BSplineSurface) CreateSurface(const TColgp_Array1OfPnt& points,
-                                                      int iIter,
-                                                      bool bParaCor,
-                                                      double fSizeFactor = 0.0f);
+    virtual Handle(Geom_BSplineSurface) CreateSurface(
+        const TColgp_Array1OfPnt& points,
+        int iIter,
+        bool bParaCor,
+        double fSizeFactor = 0.0f
+    );
     /**
      * Setting the u/v directions
      * The third parameter specifies whether the directions should actually be used.
@@ -387,10 +394,11 @@ class ReenExport BSplineParameterCorrection: public ParameterCorrection
 public:
     // Constructor
     explicit BSplineParameterCorrection(
-        unsigned usUOrder = 4,        // Order in u-direction (order = degree + 1)
-        unsigned usVOrder = 4,        // Order in the v-direction
-        unsigned usUCtrlpoints = 6,   // Qty. of the control points in u-direction
-        unsigned usVCtrlpoints = 6);  // Qty. of the control points in v-direction
+        unsigned usUOrder = 4,       // Order in u-direction (order = degree + 1)
+        unsigned usVOrder = 4,       // Order in the v-direction
+        unsigned usUCtrlpoints = 6,  // Qty. of the control points in u-direction
+        unsigned usVCtrlpoints = 6
+    );  // Qty. of the control points in v-direction
 
     ~BSplineParameterCorrection() override = default;
 
@@ -465,8 +473,7 @@ public:
     /**
      * Use smoothing-terms
      */
-    virtual void
-    EnableSmoothing(bool bSmooth, double fSmoothInfl, double fFirst, double fSec, double fThird);
+    virtual void EnableSmoothing(bool bSmooth, double fSmoothInfl, double fFirst, double fSec, double fThird);
 
 protected:
     /**

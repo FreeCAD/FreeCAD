@@ -23,7 +23,7 @@
  ***************************************************************************/
 
 
-# include <sstream>
+#include <sstream>
 
 
 #include "GeometryStringExtensionPy.h"
@@ -36,17 +36,18 @@ using namespace Part;
 std::string GeometryStringExtensionPy::representation() const
 {
     std::stringstream str;
-    str << "<GeometryStringExtension (" ;
+    str << "<GeometryStringExtension (";
 
-    if(!getGeometryStringExtensionPtr()->getName().empty())
+    if (!getGeometryStringExtensionPtr()->getName().empty()) {
         str << "\'" << getGeometryStringExtensionPtr()->getName() << "\', ";
+    }
 
     str << getGeometryStringExtensionPtr()->getValue() << ") >";
 
     return str.str();
 }
 
-PyObject *GeometryStringExtensionPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject* GeometryStringExtensionPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // create a new instance of the python object and the Twin object
     return new GeometryStringExtensionPy(new GeometryStringExtension);
@@ -62,14 +63,14 @@ int GeometryStringExtensionPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
 
     PyErr_Clear();
-    char *pstr;
+    char* pstr;
     if (PyArg_ParseTuple(args, "s", &pstr)) {
         this->getGeometryStringExtensionPtr()->setValue(pstr);
         return 0;
     }
 
     PyErr_Clear();
-    char * pystr;
+    char* pystr;
     if (PyArg_ParseTuple(args, "ss", &pstr, &pystr)) {
         this->getGeometryStringExtensionPtr()->setValue(pstr);
         this->getGeometryStringExtensionPtr()->setName(pystr);
@@ -77,10 +78,13 @@ int GeometryStringExtensionPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
 
 
-    PyErr_SetString(PyExc_TypeError, "GeometryStringExtension constructor accepts:\n"
-    "-- empty parameter list\n"
-    "-- string\n"
-    "-- string, string\n");
+    PyErr_SetString(
+        PyExc_TypeError,
+        "GeometryStringExtension constructor accepts:\n"
+        "-- empty parameter list\n"
+        "-- string\n"
+        "-- string, string\n"
+    );
     return -1;
 }
 
@@ -94,7 +98,7 @@ void GeometryStringExtensionPy::setValue(Py::String value)
     this->getGeometryStringExtensionPtr()->setValue(value.as_std_string());
 }
 
-PyObject *GeometryStringExtensionPy::getCustomAttributes(const char* /*attr*/) const
+PyObject* GeometryStringExtensionPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }

@@ -60,44 +60,22 @@ SegmentationManual::~SegmentationManual() = default;
 
 void SegmentationManual::setupConnections()
 {
-    connect(ui->selectRegion,
-            &QPushButton::clicked,
-            this,
-            &SegmentationManual::onSelectRegionClicked);
+    connect(ui->selectRegion, &QPushButton::clicked, this, &SegmentationManual::onSelectRegionClicked);
     connect(ui->selectAll, &QPushButton::clicked, this, &SegmentationManual::onSelectAllClicked);
-    connect(ui->selectComponents,
-            &QPushButton::clicked,
-            this,
-            &SegmentationManual::onSelectComponentsClicked);
-    connect(ui->selectTriangle,
-            &QPushButton::clicked,
-            this,
-            &SegmentationManual::onSelectTriangleClicked);
-    connect(ui->deselectAll,
-            &QPushButton::clicked,
-            this,
-            &SegmentationManual::onDeselectAllClicked);
-    connect(ui->visibleTriangles,
-            &QCheckBox::toggled,
-            this,
-            &SegmentationManual::onVisibleTrianglesToggled);
-    connect(ui->screenTriangles,
-            &QCheckBox::toggled,
-            this,
-            &SegmentationManual::onScreenTrianglesToggled);
+    connect(
+        ui->selectComponents,
+        &QPushButton::clicked,
+        this,
+        &SegmentationManual::onSelectComponentsClicked
+    );
+    connect(ui->selectTriangle, &QPushButton::clicked, this, &SegmentationManual::onSelectTriangleClicked);
+    connect(ui->deselectAll, &QPushButton::clicked, this, &SegmentationManual::onDeselectAllClicked);
+    connect(ui->visibleTriangles, &QCheckBox::toggled, this, &SegmentationManual::onVisibleTrianglesToggled);
+    connect(ui->screenTriangles, &QCheckBox::toggled, this, &SegmentationManual::onScreenTrianglesToggled);
     connect(ui->cbSelectComp, &QCheckBox::toggled, this, &SegmentationManual::onSelectCompToggled);
-    connect(ui->planeDetect,
-            &QPushButton::clicked,
-            this,
-            &SegmentationManual::onPlaneDetectClicked);
-    connect(ui->cylinderDetect,
-            &QPushButton::clicked,
-            this,
-            &SegmentationManual::onCylinderDetectClicked);
-    connect(ui->sphereDetect,
-            &QPushButton::clicked,
-            this,
-            &SegmentationManual::onSphereDetectClicked);
+    connect(ui->planeDetect, &QPushButton::clicked, this, &SegmentationManual::onPlaneDetectClicked);
+    connect(ui->cylinderDetect, &QPushButton::clicked, this, &SegmentationManual::onCylinderDetectClicked);
+    connect(ui->sphereDetect, &QPushButton::clicked, this, &SegmentationManual::onSphereDetectClicked);
 }
 
 void SegmentationManual::changeEvent(QEvent* e)
@@ -153,8 +131,11 @@ public:
     static void findGeometry(
         int minFaces,
         double tolerance,
-        std::function<MeshCore::AbstractSurfaceFit*(const std::vector<Base::Vector3f>&,
-                                                    const std::vector<Base::Vector3f>&)> fitFunc)
+        std::function<MeshCore::AbstractSurfaceFit*(
+            const std::vector<Base::Vector3f>&,
+            const std::vector<Base::Vector3f>&
+        )> fitFunc
+    )
     {
         Gui::Document* gdoc = Gui::Application::Instance->activeDocument();
         if (!gdoc) {
@@ -164,8 +145,9 @@ public:
         App::Document* adoc = gdoc->getDocument();
         std::vector<Mesh::Feature*> meshes = adoc->getObjectsOfType<Mesh::Feature>();
         for (auto it : meshes) {
-            MeshGui::ViewProviderMesh* vpm =
-                static_cast<MeshGui::ViewProviderMesh*>(gdoc->getViewProvider(it));
+            MeshGui::ViewProviderMesh* vpm = static_cast<MeshGui::ViewProviderMesh*>(
+                gdoc->getViewProvider(it)
+            );
             const Mesh::MeshObject& mesh = it->Mesh.getValue();
 
             if (mesh.hasSelectedFacets()) {
@@ -192,7 +174,9 @@ public:
                             surfFit,
                             kernel,
                             minFaces,
-                            tolerance));
+                            tolerance
+                        )
+                    );
                     finder.FindSegments(segm);
 
                     for (const auto& segmIt : segm) {

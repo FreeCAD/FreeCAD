@@ -27,14 +27,14 @@
 #include <algorithm>
 #include <limits>
 #ifdef FC_OS_WIN32
-#include <windows.h>
+# include <windows.h>
 #endif
 #ifdef FC_OS_MACOSX
-#include <OpenGL/gl.h>
-#include <OpenGL/glu.h>
+# include <OpenGL/gl.h>
+# include <OpenGL/glu.h>
 #else
-#include <GL/gl.h>
-#include <GL/glu.h>
+# include <GL/gl.h>
+# include <GL/glu.h>
 #endif
 #include <Inventor/SbLine.h>
 #include <Inventor/SoPickedPoint.h>
@@ -178,9 +178,11 @@ private:
 
 // Defines all required member variables and functions for a
 // single-value field
-SO_SFIELD_SOURCE(SoSFMeshObject,
-                 Base::Reference<const Mesh::MeshObject>,
-                 Base::Reference<const Mesh::MeshObject>)
+SO_SFIELD_SOURCE(
+    SoSFMeshObject,
+    Base::Reference<const Mesh::MeshObject>,
+    Base::Reference<const Mesh::MeshObject>
+)
 
 
 void SoSFMeshObject::initClass()
@@ -316,12 +318,11 @@ void SoFCMeshObjectElement::init(SoState* state)
 
 SoFCMeshObjectElement::~SoFCMeshObjectElement() = default;
 
-void SoFCMeshObjectElement::set(SoState* const state,
-                                SoNode* const node,
-                                const Mesh::MeshObject* const mesh)
+void SoFCMeshObjectElement::set(SoState* const state, SoNode* const node, const Mesh::MeshObject* const mesh)
 {
     SoFCMeshObjectElement* elem = static_cast<SoFCMeshObjectElement*>(
-        SoReplacedElement::getElement(state, classStackIndex, node));
+        SoReplacedElement::getElement(state, classStackIndex, node)
+    );
     if (elem) {
         elem->mesh = mesh;
         elem->nodeId = node->getNodeId();
@@ -336,7 +337,8 @@ const Mesh::MeshObject* SoFCMeshObjectElement::get(SoState* const state)
 const SoFCMeshObjectElement* SoFCMeshObjectElement::getInstance(SoState* state)
 {
     return static_cast<const SoFCMeshObjectElement*>(
-        SoElement::getConstElement(state, classStackIndex));
+        SoElement::getConstElement(state, classStackIndex)
+    );
 }
 
 void SoFCMeshObjectElement::print(FILE* /* file */) const
@@ -720,11 +722,13 @@ SoFCMeshObjectShape::Binding SoFCMeshObjectShape::findMaterialBinding(SoState* c
  * defines
  * FIXME: Implement using different values of transparency for each vertex or face
  */
-void SoFCMeshObjectShape::drawFaces(const Mesh::MeshObject* mesh,
-                                    SoMaterialBundle* mb,
-                                    Binding bind,
-                                    SbBool needNormals,
-                                    SbBool ccw) const
+void SoFCMeshObjectShape::drawFaces(
+    const Mesh::MeshObject* mesh,
+    SoMaterialBundle* mb,
+    Binding bind,
+    SbBool needNormals,
+    SbBool ccw
+) const
 {
     const MeshCore::MeshPointArray& rPoints = mesh->getKernel().GetPoints();
     const MeshCore::MeshFacetArray& rFacets = mesh->getKernel().GetFacets();
@@ -799,9 +803,7 @@ void SoFCMeshObjectShape::drawFaces(const Mesh::MeshObject* mesh,
 /**
  * Renders the gravity points of a subset of triangles.
  */
-void SoFCMeshObjectShape::drawPoints(const Mesh::MeshObject* mesh,
-                                     SbBool needNormals,
-                                     SbBool ccw) const
+void SoFCMeshObjectShape::drawPoints(const Mesh::MeshObject* mesh, SbBool needNormals, SbBool ccw) const
 {
     const MeshCore::MeshPointArray& rPoints = mesh->getKernel().GetPoints();
     const MeshCore::MeshFacetArray& rFacets = mesh->getKernel().GetFacets();
@@ -1007,9 +1009,11 @@ void SoFCMeshObjectShape::startSelection(SoAction* action, const Mesh::MeshObjec
     glPushMatrix();
     glLoadIdentity();
     if (w > 0 && h > 0) {
-        glTranslatef((viewport[2] - 2 * (x - viewport[0])) / w,
-                     (viewport[3] - 2 * (y - viewport[1])) / h,
-                     0);
+        glTranslatef(
+            (viewport[2] - 2 * (x - viewport[0])) / w,
+            (viewport[3] - 2 * (y - viewport[1])) / h,
+            0
+        );
         glScalef(viewport[2] / w, viewport[3] / h, 1.0);
     }
     glMultMatrixf(/*mp*/ this->projection);
@@ -1172,11 +1176,13 @@ void SoFCMeshObjectShape::generatePrimitives(SoAction* action)
  * Against the default OpenInventor implementation which returns 0 as well
  * Coin3d fills in the point and face indices.
  */
-SoDetail* SoFCMeshObjectShape::createTriangleDetail(SoRayPickAction* action,
-                                                    const SoPrimitiveVertex* v1,
-                                                    const SoPrimitiveVertex* v2,
-                                                    const SoPrimitiveVertex* v3,
-                                                    SoPickedPoint* pp)
+SoDetail* SoFCMeshObjectShape::createTriangleDetail(
+    SoRayPickAction* action,
+    const SoPrimitiveVertex* v1,
+    const SoPrimitiveVertex* v2,
+    const SoPrimitiveVertex* v3,
+    SoPickedPoint* pp
+)
 {
     SoDetail* detail = inherited::createTriangleDetail(action, v1, v2, v3, pp);
     return detail;
@@ -1191,8 +1197,10 @@ void SoFCMeshObjectShape::computeBBox(SoAction* action, SbBox3f& box, SbVec3f& c
     const Mesh::MeshObject* mesh = SoFCMeshObjectElement::get(state);
     if (mesh && mesh->countPoints() > 0) {
         Base::BoundBox3f cBox = mesh->getKernel().GetBoundBox();
-        box.setBounds(SbVec3f(cBox.MinX, cBox.MinY, cBox.MinZ),
-                      SbVec3f(cBox.MaxX, cBox.MaxY, cBox.MaxZ));
+        box.setBounds(
+            SbVec3f(cBox.MinX, cBox.MinY, cBox.MinZ),
+            SbVec3f(cBox.MaxX, cBox.MaxY, cBox.MaxZ)
+        );
         Base::Vector3f mid = cBox.GetCenter();
         center.setValue(mid.x, mid.y, mid.z);
     }
@@ -1321,19 +1329,20 @@ SoFCMeshSegmentShape::Binding SoFCMeshSegmentShape::findMaterialBinding(SoState*
  * defines
  * FIXME: Implement using different values of transparency for each vertex or face
  */
-void SoFCMeshSegmentShape::drawFaces(const Mesh::MeshObject* mesh,
-                                     SoMaterialBundle* mb,
-                                     Binding bind,
-                                     SbBool needNormals,
-                                     SbBool ccw) const
+void SoFCMeshSegmentShape::drawFaces(
+    const Mesh::MeshObject* mesh,
+    SoMaterialBundle* mb,
+    Binding bind,
+    SbBool needNormals,
+    SbBool ccw
+) const
 {
     const MeshCore::MeshPointArray& rPoints = mesh->getKernel().GetPoints();
     const MeshCore::MeshFacetArray& rFacets = mesh->getKernel().GetFacets();
     if (mesh->countSegments() <= this->index.getValue()) {
         return;
     }
-    const std::vector<Mesh::FacetIndex> rSegm =
-        mesh->getSegment(this->index.getValue()).getIndices();
+    const std::vector<Mesh::FacetIndex> rSegm = mesh->getSegment(this->index.getValue()).getIndices();
     bool perVertex = (mb && bind == PER_VERTEX_INDEXED);
     bool perFace = (mb && bind == PER_FACE_INDEXED);
 
@@ -1408,17 +1417,14 @@ void SoFCMeshSegmentShape::drawFaces(const Mesh::MeshObject* mesh,
 /**
  * Renders the gravity points of a subset of triangles.
  */
-void SoFCMeshSegmentShape::drawPoints(const Mesh::MeshObject* mesh,
-                                      SbBool needNormals,
-                                      SbBool ccw) const
+void SoFCMeshSegmentShape::drawPoints(const Mesh::MeshObject* mesh, SbBool needNormals, SbBool ccw) const
 {
     const MeshCore::MeshPointArray& rPoints = mesh->getKernel().GetPoints();
     const MeshCore::MeshFacetArray& rFacets = mesh->getKernel().GetFacets();
     if (mesh->countSegments() <= this->index.getValue()) {
         return;
     }
-    const std::vector<Mesh::FacetIndex> rSegm =
-        mesh->getSegment(this->index.getValue()).getIndices();
+    const std::vector<Mesh::FacetIndex> rSegm = mesh->getSegment(this->index.getValue()).getIndices();
     int mod = rSegm.size() / renderTriangleLimit + 1;
 
     float size = std::min<float>((float)mod, 3.0F);
@@ -1521,8 +1527,7 @@ void SoFCMeshSegmentShape::generatePrimitives(SoAction* action)
     if (mesh->countSegments() <= this->index.getValue()) {
         return;
     }
-    const std::vector<Mesh::FacetIndex> rSegm =
-        mesh->getSegment(this->index.getValue()).getIndices();
+    const std::vector<Mesh::FacetIndex> rSegm = mesh->getSegment(this->index.getValue()).getIndices();
 
     // get material binding
     Binding mbind = this->findMaterialBinding(state);
@@ -1614,8 +1619,10 @@ void SoFCMeshSegmentShape::computeBBox(SoAction* action, SbBox3f& box, SbVec3f& 
                 cBox.Add(rPoint[face._aulPoints[2]]);
             }
 
-            box.setBounds(SbVec3f(cBox.MinX, cBox.MinY, cBox.MinZ),
-                          SbVec3f(cBox.MaxX, cBox.MaxY, cBox.MaxZ));
+            box.setBounds(
+                SbVec3f(cBox.MinX, cBox.MinY, cBox.MinZ),
+                SbVec3f(cBox.MaxX, cBox.MaxY, cBox.MaxZ)
+            );
             Base::Vector3f mid = cBox.GetCenter();
             center.setValue(mid.x, mid.y, mid.z);
         }
@@ -1762,8 +1769,10 @@ void SoFCMeshObjectBoundary::computeBBox(SoAction* action, SbBox3f& box, SbVec3f
         for (const auto& rPoint : rPoints) {
             cBox.Add(rPoint);
         }
-        box.setBounds(SbVec3f(cBox.MinX, cBox.MinY, cBox.MinZ),
-                      SbVec3f(cBox.MaxX, cBox.MaxY, cBox.MaxZ));
+        box.setBounds(
+            SbVec3f(cBox.MinX, cBox.MinY, cBox.MinZ),
+            SbVec3f(cBox.MaxX, cBox.MaxY, cBox.MaxZ)
+        );
         Base::Vector3f mid = cBox.GetCenter();
         center.setValue(mid.x, mid.y, mid.z);
     }
