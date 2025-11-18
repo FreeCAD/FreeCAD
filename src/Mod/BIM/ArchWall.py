@@ -1550,7 +1550,7 @@ class _Wall(ArchComponent.Component):
                         translate(
                             "ArchComponent",
                             "Removing the base of this complex wall will alter its shape and reset its position.\n\n"
-                            "This operation cannot be undone. Do you want to proceed?",
+                            "Do you want to proceed?",
                         )
                     )
                     msg_box.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.Cancel)
