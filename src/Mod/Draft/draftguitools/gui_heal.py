@@ -50,7 +50,7 @@ class Heal(gui_base.GuiCommandSimplest):
     """
 
     def __init__(self):
-        super(Heal, self).__init__(name=translate("draft", "Heal"))
+        super().__init__(name=translate("draft", "Heal"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
@@ -67,7 +67,7 @@ class Heal(gui_base.GuiCommandSimplest):
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Heal, self).Activated()
+        super().Activated()
 
         s = Gui.Selection.getSelection()
         self.doc.openTransaction("Heal")
