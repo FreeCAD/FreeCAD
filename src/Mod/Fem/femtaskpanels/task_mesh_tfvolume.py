@@ -93,6 +93,36 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         ui.Mixed.setChecked(self.obj.MixedElements)
         ui.Mixed.toggled.connect(self.mixedChanged)
 
+        # automation
+
+        ui.Recombine.setChecked(self.obj.Recombine)
+        ui.Recombine.toggled.connect(self.recombineChanged)
+
+        ui.Orientation.addItems(self.obj.getEnumerationsOfProperty("TriangleOrientation"))
+        ui.Orientation.setCurrentIndex(ui.Orientation.findData(self.obj.TriangleOrientation))
+        ui.Orientation.currentIndexChanged.connect(self.orientationChanged)
+        ui.Orientation.setDisabled(self.obj.Recombine)
+
+        ui.Automation.setChecked(self.obj.UseAutomation)
+        ui.Automation.toggled.connect(self.automationChanged)
+
+        ui.Nodes.setValue(self.obj.Nodes)
+        FreeCADGui.ExpressionBinding(ui.Nodes).bind(self.obj, "Nodes")
+        ui.Nodes.valueChanged.connect(self.nodesChanged)
+
+        ui.Coefficient.setValue(self.obj.Coefficient)
+        FreeCADGui.ExpressionBinding(ui.Coefficient).bind(self.obj, "Coefficient")
+        ui.Coefficient.valueChanged.connect(self.coefficientChanged)
+
+        match self.obj.Distribution:
+            case "Constant":
+                ui.Distribution.setCurrentIndex(0)
+            case "Bump":
+                ui.Distribution.setCurrentIndex(1+int(self.obj.Invert))
+            case "Progression":
+                ui.Distribution.setCurrentIndex(3+int(self.obj.Invert))
+
+        ui.Distribution.currentIndexChanged.connect(self.distributionChanged)
 
     def accept(self):
         self.obj.References = self.selection_widget.references
@@ -106,3 +136,43 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
     @QtCore.Slot(bool)
     def mixedChanged(self, value):
         self.obj.MixedElements = value
+
+    @QtCore.Slot(bool)
+    def recombineChanged(self, value):
+        self.obj.Recombine = value
+        self.parameter_widget.Orientation.setDisabled(self.obj.Recombine)
+
+    @QtCore.Slot(int)
+    def orientationChanged(self, value):
+        self.obj.TriangleOrientation = value
+
+    @QtCore.Slot(bool)
+    def automationChanged(self, value):
+        self.obj.UseAutomation = value
+
+    @QtCore.Slot(int)
+    def nodesChanged(self, value):
+        self.obj.Nodes = int(value)
+
+    @QtCore.Slot(int)
+    def distributionChanged(self, value):
+
+        match value:
+            case 0:
+                self.obj.Distribution = "Constant"
+            case 1:
+                self.obj.Distribution = "Bump"
+                self.obj.Invert = False
+            case 2:
+                self.obj.Distribution = "Bump"
+                self.obj.Invert = True
+            case 3:
+                self.obj.Distribution = "Progression"
+                self.obj.Invert = False
+            case 4:
+                self.obj.Distribution = "Progression"
+                self.obj.Invert = True
+
+    @QtCore.Slot(float)
+    def coefficientChanged(self, value):
+        self.obj.Coefficient = float(value)
