@@ -375,7 +375,8 @@ private:
                               || cstr->Type == DistanceY)
                              && firstIndex >= 0) {
                         if (!deleteOriginal && cloneConstraints
-                            && (cstr->First == cstr->Second || secondIndex < 0)) {  // only line distances
+                            && (cstr->First == cstr->Second || secondIndex < 0)) {  // only line
+                                                                                    // distances
                             if (indexOfGeoId(geoIdsWhoAlreadyHasEqual, firstIndexi) != -1) {
                                 continue;
                             }
@@ -672,4 +673,3 @@ void DSHRotateController::computeNextDrawSketchHandlerMode()
 
 
 #endif  // SKETCHERGUI_DrawSketchHandlerRotate_H
-
