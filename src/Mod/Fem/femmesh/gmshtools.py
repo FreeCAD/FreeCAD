@@ -39,6 +39,7 @@ from FreeCAD import Units
 
 import Fem
 from . import meshtools
+from . import transfinitetools as tft
 from femtools import femutils
 from femtools import geomtools
 
@@ -987,21 +988,11 @@ class GmshTools:
 
                     idx_dict = self._element_list_to_shape_idx_dict(elements)
                     if idx_dict["Edge"]:
-                        settings = {}
-                        prefix = ""
-                        coef = mr_obj.Coefficient
 
-                        if mr_obj.Invert:
-                            if mr_obj.Distribution == "Progression":
-                                prefix = "-"
-                            else:
-                                coef = 1.0/coef
-
-                        settings["tag"] = ",".join(str(prefix+i) for i in idx_dict["Edge"])
-                        settings["numNodes"] = mr_obj.Nodes
-                        if mr_obj.Distribution != "Constant":
-                            settings["meshType"] = mr_obj.Distribution
-                            settings["coef"] = coef
+                        definition = tft.TFCurveDefinition.from_tfcurve_obj(mr_obj)
+                        prefix = definition.tag_prefix()
+                        settings = definition.to_gmshtools_setting()
+                        settings["tag"] = ",".join(prefix+str(i) for i in idx_dict["Edge"])
 
                         self.transfinite_curve_settings.append(settings)
 
@@ -1054,6 +1045,22 @@ class GmshTools:
                             settings["orientation"] = mr_obj.TriangleOrientation
 
                         self.transfinite_surface_settings.append(settings)
+
+                        # if automation is enabled we create more transfinite curves
+                        if mr_obj.UseAutomation:
+                            if idx_dict["Vertex"]:
+                                Console.PrintError( ("Transfinite surface automation in {} cannot not work with vertex selection.\n").format(mr_obj.Name))
+                                continue
+
+                            definition = tft.TFCurveDefinition.from_tfcurve_obj(mr_obj)
+                            edge_sets = tft.get_automatic_transfinite_edge_sets(self.part_obj.Shape, elements, transfinite_curve_list, definition)
+                            for auto_definition, auto_edges in edge_sets.items():
+                                prefix = auto_definition.tag_prefix()
+                                setting = auto_definition.to_gmshtools_setting()
+                                setting["tag"] = ",".join(prefix+str(i) for i in auto_edges)
+
+                                self.transfinite_curve_settings.append(setting)
+
 
                 else:
                     Console.PrintError(
