@@ -40,10 +40,10 @@ import collections as coll
 import inspect
 import itertools
 import math
-import pivy.coin as coin
-import PySide.QtCore as QtCore
-import PySide.QtGui as QtGui
-import PySide.QtWidgets as QtWidgets
+from pivy import coin
+from PySide import QtCore
+from PySide import QtGui
+from PySide import QtWidgets
 
 import FreeCAD as App
 import FreeCADGui as Gui
