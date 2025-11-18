@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,7 +23,7 @@
  ***************************************************************************/
 
 #if defined(__MINGW32__)
-#define WNT  // avoid conflict with GUID
+# define WNT  // avoid conflict with GUID
 #endif
 #include <Quantity_ColorRGBA.hxx>
 #include <Standard_Failure.hxx>
@@ -139,10 +141,12 @@ void ExportOCAF::exportObjects(std::vector<App::DocumentObject*>& objs)
     XCAFDoc_DocumentTool::ShapeTool(pDoc->Main())->UpdateAssemblies();
 }
 
-int ExportOCAF::exportObject(App::DocumentObject* obj,
-                             std::vector<TDF_Label>& hierarchical_label,
-                             std::vector<TopLoc_Location>& hierarchical_loc,
-                             std::vector<App::DocumentObject*>& hierarchical_part)
+int ExportOCAF::exportObject(
+    App::DocumentObject* obj,
+    std::vector<TDF_Label>& hierarchical_label,
+    std::vector<TopLoc_Location>& hierarchical_loc,
+    std::vector<App::DocumentObject*>& hierarchical_part
+)
 {
     std::vector<int> local_label;
     int root_id;
@@ -160,8 +164,7 @@ int ExportOCAF::exportObject(App::DocumentObject* obj,
 
         for (it = entries.begin(); it != entries.end(); ++it) {
             int new_label = 0;
-            new_label =
-                exportObject((*it), hierarchical_label, hierarchical_loc, hierarchical_part);
+            new_label = exportObject((*it), hierarchical_label, hierarchical_loc, hierarchical_part);
             local_label.push_back(new_label);
         }
 
@@ -173,6 +176,10 @@ int ExportOCAF::exportObject(App::DocumentObject* obj,
 
         return_label = root_id;
     }
+
+    // keep a copy of the original object for naming purposes
+    App::DocumentObject* originalObj = obj;
+
     if (obj->isDerivedFrom(PartDesign::Body::getClassTypeId())) {
         PartDesign::Body* body = static_cast<PartDesign::Body*>(obj);
         App::DocumentObject* tip = body->Tip.getValue();
@@ -187,8 +194,9 @@ int ExportOCAF::exportObject(App::DocumentObject* obj,
         std::vector<Base::Color> colors;
         findColors(part, colors);
 
-        return_label =
-            saveShape(part, colors, hierarchical_label, hierarchical_loc, hierarchical_part);
+        const char* label = (originalObj != obj) ? originalObj->Label.getValue() : nullptr;
+        return_label
+            = saveShape(part, colors, hierarchical_label, hierarchical_loc, hierarchical_part, label);
     }
 
     return return_label;
@@ -196,11 +204,13 @@ int ExportOCAF::exportObject(App::DocumentObject* obj,
 
 // This function creates an Assembly node in an XCAF document with its relative placement
 // information
-void ExportOCAF::createNode(App::Part* part,
-                            int& root_id,
-                            std::vector<TDF_Label>& hierarchical_label,
-                            std::vector<TopLoc_Location>& hierarchical_loc,
-                            std::vector<App::DocumentObject*>& hierarchical_part)
+void ExportOCAF::createNode(
+    App::Part* part,
+    int& root_id,
+    std::vector<TDF_Label>& hierarchical_label,
+    std::vector<TopLoc_Location>& hierarchical_loc,
+    std::vector<App::DocumentObject*>& hierarchical_part
+)
 {
     TDF_Label shapeLabel = aShapeTool->NewShape();
     Handle(TDataStd_Name) N;
@@ -225,11 +235,14 @@ void ExportOCAF::createNode(App::Part* part,
     root_id = hierarchical_label.size();
 }
 
-int ExportOCAF::saveShape(Part::Feature* part,
-                          const std::vector<Base::Color>& colors,
-                          std::vector<TDF_Label>& hierarchical_label,
-                          std::vector<TopLoc_Location>& hierarchical_loc,
-                          std::vector<App::DocumentObject*>& hierarchical_part)
+int ExportOCAF::saveShape(
+    Part::Feature* part,
+    const std::vector<Base::Color>& colors,
+    std::vector<TDF_Label>& hierarchical_label,
+    std::vector<TopLoc_Location>& hierarchical_loc,
+    std::vector<App::DocumentObject*>& hierarchical_part,
+    const char* labelOverride
+)
 {
     const TopoDS_Shape& shape = part->Shape.getValue();
     if (shape.IsNull()) {
@@ -263,8 +276,8 @@ int ExportOCAF::saveShape(Part::Feature* part,
     TDF_Label shapeLabel = aShapeTool->NewShape();
     aShapeTool->SetShape(shapeLabel, baseShape);
 
-    TDataStd_Name::Set(shapeLabel, TCollection_ExtendedString(part->Label.getValue(), true));
-
+    const char* labelToUse = labelOverride ? labelOverride : part->Label.getValue();
+    TDataStd_Name::Set(shapeLabel, TCollection_ExtendedString(labelToUse, true));
 
     /*
         if (keepExplicitPlacement) {
@@ -331,9 +344,11 @@ int ExportOCAF::saveShape(Part::Feature* part,
 // If this Free Shapes are regular Part::Feature, we must use absolute coordinate instead of
 // allocating a placement into the hierarchy as it is not attached to a hierarchical node
 
-void ExportOCAF::getFreeLabels(std::vector<TDF_Label>& hierarchical_label,
-                               std::vector<TDF_Label>& labels,
-                               std::vector<int>& label_part_id)
+void ExportOCAF::getFreeLabels(
+    std::vector<TDF_Label>& hierarchical_label,
+    std::vector<TDF_Label>& labels,
+    std::vector<int>& label_part_id
+)
 {
     TDF_LabelSequence FreeLabels;
     aShapeTool->GetFreeShapes(FreeLabels);
@@ -349,10 +364,12 @@ void ExportOCAF::getFreeLabels(std::vector<TDF_Label>& hierarchical_label,
     }
 }
 
-void ExportOCAF::getPartColors(std::vector<App::DocumentObject*> hierarchical_part,
-                               std::vector<TDF_Label> FreeLabels,
-                               std::vector<int> part_id,
-                               std::vector<std::vector<Base::Color>>& Colors) const
+void ExportOCAF::getPartColors(
+    std::vector<App::DocumentObject*> hierarchical_part,
+    std::vector<TDF_Label> FreeLabels,
+    std::vector<int> part_id,
+    std::vector<std::vector<Base::Color>>& Colors
+) const
 {
     // I am seeking for the colors of each parts
     std::size_t n = FreeLabels.size();
@@ -364,10 +381,12 @@ void ExportOCAF::getPartColors(std::vector<App::DocumentObject*> hierarchical_pa
     }
 }
 
-void ExportOCAF::reallocateFreeShape(std::vector<App::DocumentObject*> hierarchical_part,
-                                     std::vector<TDF_Label> FreeLabels,
-                                     std::vector<int> part_id,
-                                     std::vector<std::vector<Base::Color>>& Colors)
+void ExportOCAF::reallocateFreeShape(
+    std::vector<App::DocumentObject*> hierarchical_part,
+    std::vector<TDF_Label> FreeLabels,
+    std::vector<int> part_id,
+    std::vector<std::vector<Base::Color>>& Colors
+)
 {
     std::size_t n = FreeLabels.size();
     for (std::size_t i = 0; i < n; i++) {
@@ -433,10 +452,12 @@ void ExportOCAF::reallocateFreeShape(std::vector<App::DocumentObject*> hierarchi
 }
 
 // This function is moving a "standard" node into an Assembly node within an XCAF doc
-void ExportOCAF::pushNode(int root_id,
-                          int node_id,
-                          std::vector<TDF_Label>& hierarchical_label,
-                          std::vector<TopLoc_Location>& hierarchical_loc)
+void ExportOCAF::pushNode(
+    int root_id,
+    int node_id,
+    std::vector<TDF_Label>& hierarchical_label,
+    std::vector<TopLoc_Location>& hierarchical_loc
+)
 {
     auto isValidIndex = [&](std::size_t root, std::size_t node) {
         // NOLINTBEGIN

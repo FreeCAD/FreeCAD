@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 David Friedli <david[at]friedli-be.ch>             *
  *                                                                         *
@@ -42,7 +44,8 @@ MeasureBase::MeasureBase()
         (Base::Placement()),
         nullptr,
         App::PropertyType(App::Prop_ReadOnly | App::Prop_Output | App::Prop_NoRecompute),
-        "Visual placement of the measurement");
+        "Visual placement of the measurement"
+    );
 }
 
 
@@ -181,7 +184,8 @@ QString MeasureBase::getResultString()
 
     if (prop->isDerivedFrom<App::PropertyQuantity>()) {
         return QString::fromStdString(
-            static_cast<App::PropertyQuantity*>(prop)->getQuantityValue().getUserString());
+            static_cast<App::PropertyQuantity*>(prop)->getQuantityValue().getUserString()
+        );
     }
 
 

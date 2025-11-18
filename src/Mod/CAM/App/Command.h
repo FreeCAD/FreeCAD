@@ -27,6 +27,7 @@
 
 #include <map>
 #include <string>
+#include <variant>
 #include <Base/Persistence.h>
 #include <Base/Placement.h>
 #include <Base/Vector3D.h>
@@ -50,23 +51,46 @@ public:
     void Restore(Base::XMLReader& /*reader*/) override;
 
     // specific methods
-    Base::Placement getPlacement(const Base::Vector3d pos = Base::Vector3d())
-        const;                         // returns a placement from the x,y,z,a,b,c parameters
+    Base::Placement getPlacement(
+        const Base::Vector3d pos = Base::Vector3d()
+    ) const;                           // returns a placement from the x,y,z,a,b,c parameters
     Base::Vector3d getCenter() const;  // returns a 3d vector from the i,j,k parameters
-    void setCenter(const Base::Vector3d&,
-                   bool clockwise = true);  // sets the center coordinates and the command name
-    std::string
-    toGCode(int precision = 6,
-            bool padzero = true) const;  // returns a GCode string representation of the command
-    void setFromGCode(
-        const std::string&);  // sets the parameters from the contents of the given GCode string
-    void setFromPlacement(
-        const Base::Placement&);  // sets the parameters from the contents of the given placement
-    bool
-    has(const std::string&) const;  // returns true if the given string exists in the parameters
+    void setCenter(
+        const Base::Vector3d&,
+        bool clockwise = true
+    );  // sets the center coordinates and the command name
+    std::string toGCode(
+        int precision = 6,
+        bool padzero = true
+    ) const;                                // returns a GCode string representation of the command
+    void setFromGCode(const std::string&);  // sets the parameters from the contents of the given
+                                            // GCode string
+    void setFromPlacement(const Base::Placement&);  // sets the parameters from the contents of the
+                                                    // given placement
+    bool has(const std::string&) const;  // returns true if the given string exists in the parameters
     Command transform(const Base::Placement&);       // returns a transformed copy of this command
     double getValue(const std::string& name) const;  // returns the value of a given parameter
     void scaleBy(double factor);  // scales the receiver - use for imperial/metric conversions
+
+    // annotation methods
+    void setAnnotation(
+        const std::string& key,
+        const std::string& value
+    );  // sets a string annotation
+    void setAnnotation(const std::string& key,
+                       double value);                         // sets a numeric annotation
+    std::string getAnnotation(const std::string& key) const;  // gets an annotation value as string
+    std::string getAnnotationString(const std::string& key) const;  // gets string annotation
+    double getAnnotationDouble(
+        const std::string& key,
+        double fallback = 0.0
+    ) const;  // gets numeric annotation
+    std::variant<std::string, double> getAnnotationValue(
+        const std::string& key
+    ) const;                                                       // gets raw annotation value
+    bool hasAnnotation(const std::string& key) const;              // checks if annotation exists
+    Command& setAnnotations(const std::string& annotationString);  // sets annotations from string and
+                                                                   // returns reference for chaining
 
     // this assumes the name is upper case
     inline double getParam(const std::string& name, double fallback = 0.0) const
@@ -78,6 +102,7 @@ public:
     // attributes
     std::string Name;
     std::map<std::string, double> Parameters;
+    std::map<std::string, std::variant<std::string, double>> Annotations;
 };
 
 }  // namespace Path

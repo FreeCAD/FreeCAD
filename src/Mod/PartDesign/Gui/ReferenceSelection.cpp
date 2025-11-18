@@ -21,12 +21,12 @@
  ******************************************************************************/
 
 
-# include <BRepAdaptor_Curve.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Edge.hxx>
-# include <TopoDS_Face.hxx>
-# include <QDialog>
+#include <BRepAdaptor_Curve.hxx>
+#include <BRepAdaptor_Surface.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Edge.hxx>
+#include <TopoDS_Face.hxx>
+#include <QDialog>
 
 
 #include <App/Document.h>
@@ -62,7 +62,7 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
     if (!pObj) {
         return false;
     }
-    PartDesign::Body *body = getBody();
+    PartDesign::Body* body = getBody();
     App::OriginGroupExtension* originGroup = getOriginGroupExtension(body);
 
     // Don't allow selection in other document
@@ -79,7 +79,8 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
         return allowDatum(body, pObj);
     }
 
-    // The flag was used to be set. So, this block will never be treated and really doesn't make sense anyway
+    // The flag was used to be set. So, this block will never be treated and really doesn't make
+    // sense anyway
 #if 0
     if (!type.testFlag(AllowSelection::OTHERBODY)) {
         if (support == NULL)
@@ -111,33 +112,37 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
 
 PartDesign::Body* ReferenceSelection::getBody() const
 {
-    auto* body = support ? PartDesign::Body::findBodyOf(support)
-                         : PartDesignGui::getBody(false);
+    auto* body = support ? PartDesign::Body::findBodyOf(support) : PartDesignGui::getBody(false);
     return body;
 }
 
-App::OriginGroupExtension* ReferenceSelection::getOriginGroupExtension(PartDesign::Body *body) const
+App::OriginGroupExtension* ReferenceSelection::getOriginGroupExtension(PartDesign::Body* body) const
 {
     App::DocumentObject* originGroupObject = nullptr;
 
-    if (body) { // Search for Part of the body
+    if (body) {  // Search for Part of the body
         originGroupObject = App::OriginGroupExtension::getGroupOfObject(body);
     }
-    else if (support) { // if no body search part for support
+    else if (support) {  // if no body search part for support
         originGroupObject = App::OriginGroupExtension::getGroupOfObject(support);
     }
-    else { // fallback to active part
+    else {  // fallback to active part
         originGroupObject = PartDesignGui::getActivePart();
     }
 
     App::OriginGroupExtension* originGroup = nullptr;
-    if (originGroupObject)
+    if (originGroupObject) {
         originGroup = originGroupObject->getExtensionByType<App::OriginGroupExtension>();
+    }
 
     return originGroup;
 }
 
-bool ReferenceSelection::allowOrigin(PartDesign::Body *body, App::OriginGroupExtension* originGroup, App::DocumentObject* pObj) const
+bool ReferenceSelection::allowOrigin(
+    PartDesign::Body* body,
+    App::OriginGroupExtension* originGroup,
+    App::DocumentObject* pObj
+) const
 {
     bool fits = false;
     if (type.testFlag(AllowSelection::FACE) && pObj->isDerivedFrom<App::Plane>()) {
@@ -147,14 +152,14 @@ bool ReferenceSelection::allowOrigin(PartDesign::Body *body, App::OriginGroupExt
         fits = true;
     }
 
-    if (fits) { // check that it actually belongs to the chosen body or part
-        try { // here are some throwers
+    if (fits) {  // check that it actually belongs to the chosen body or part
+        try {    // here are some throwers
             if (body) {
-                if (body->hasObject(pObj, true) ) {
+                if (body->hasObject(pObj, true)) {
                     return true;
                 }
             }
-            else if (originGroup ) {
+            else if (originGroup) {
                 if (originGroup->hasObject(pObj, true)) {
                     return true;
                 }
@@ -163,24 +168,27 @@ bool ReferenceSelection::allowOrigin(PartDesign::Body *body, App::OriginGroupExt
         catch (const Base::Exception&) {
         }
     }
-    return false; // The Plane/Axis doesn't fits our needs
+    return false;  // The Plane/Axis doesn't fits our needs
 }
 
-bool ReferenceSelection::allowDatum(PartDesign::Body *body, App::DocumentObject* pObj) const
+bool ReferenceSelection::allowDatum(PartDesign::Body* body, App::DocumentObject* pObj) const
 {
-    if (!body) { // Allow selecting Part::Datum features from the active Body
+    if (!body) {  // Allow selecting Part::Datum features from the active Body
         return false;
     }
     else if (!type.testFlag(AllowSelection::OTHERBODY) && !body->hasObject(pObj)) {
         return false;
     }
 
-    if (type.testFlag(AllowSelection::FACE) && (pObj->isDerivedFrom<PartDesign::Plane>()))
+    if (type.testFlag(AllowSelection::FACE) && (pObj->isDerivedFrom<PartDesign::Plane>())) {
         return true;
-    if (type.testFlag(AllowSelection::EDGE) && (pObj->isDerivedFrom<PartDesign::Line>()))
+    }
+    if (type.testFlag(AllowSelection::EDGE) && (pObj->isDerivedFrom<PartDesign::Line>())) {
         return true;
-    if (type.testFlag(AllowSelection::POINT) && (pObj->isDerivedFrom<PartDesign::Point>()))
+    }
+    if (type.testFlag(AllowSelection::POINT) && (pObj->isDerivedFrom<PartDesign::Point>())) {
         return true;
+    }
 
     return false;
 }
@@ -193,18 +201,21 @@ bool ReferenceSelection::allowPartFeature(App::DocumentObject* pObj, const char*
     }
 
     if (type.testFlag(AllowSelection::EDGE) && subName.compare(0, 4, "Edge") == 0) {
-        if (isEdge(pObj, sSubName))
+        if (isEdge(pObj, sSubName)) {
             return true;
+        }
     }
 
     if (type.testFlag(AllowSelection::CIRCLE) && subName.compare(0, 4, "Edge") == 0) {
-        if (isCircle(pObj, sSubName))
+        if (isCircle(pObj, sSubName)) {
             return true;
+        }
     }
 
     if (type.testFlag(AllowSelection::FACE) && subName.compare(0, 4, "Face") == 0) {
-        if (isFace(pObj, sSubName))
+        if (isFace(pObj, sSubName)) {
             return true;
+        }
     }
 
     return false;
@@ -212,14 +223,15 @@ bool ReferenceSelection::allowPartFeature(App::DocumentObject* pObj, const char*
 
 bool ReferenceSelection::isEdge(App::DocumentObject* pObj, const char* sSubName) const
 {
-    const Part::TopoShape &shape = static_cast<const Part::Feature*>(pObj)->Shape.getValue();
+    const Part::TopoShape& shape = static_cast<const Part::Feature*>(pObj)->Shape.getValue();
     TopoDS_Shape sh = shape.getSubShape(sSubName);
     const TopoDS_Edge& edgeShape = TopoDS::Edge(sh);
     if (!edgeShape.IsNull()) {
         if (type.testFlag(AllowSelection::PLANAR)) {
             BRepAdaptor_Curve adapt(edgeShape);
-            if (adapt.GetType() == GeomAbs_Line)
+            if (adapt.GetType() == GeomAbs_Line) {
                 return true;
+            }
         }
         else {
             return true;
@@ -231,14 +243,15 @@ bool ReferenceSelection::isEdge(App::DocumentObject* pObj, const char* sSubName)
 
 bool ReferenceSelection::isFace(App::DocumentObject* pObj, const char* sSubName) const
 {
-    const Part::TopoShape &shape = static_cast<const Part::Feature*>(pObj)->Shape.getValue();
+    const Part::TopoShape& shape = static_cast<const Part::Feature*>(pObj)->Shape.getValue();
     TopoDS_Shape sh = shape.getSubShape(sSubName);
     const TopoDS_Face& face = TopoDS::Face(sh);
     if (!face.IsNull()) {
         if (type.testFlag(AllowSelection::PLANAR)) {
             BRepAdaptor_Surface adapt(face);
-            if (adapt.GetType() == GeomAbs_Plane)
+            if (adapt.GetType() == GeomAbs_Plane) {
                 return true;
+            }
         }
         else {
             return true;
@@ -250,7 +263,7 @@ bool ReferenceSelection::isFace(App::DocumentObject* pObj, const char* sSubName)
 
 bool ReferenceSelection::isCircle(App::DocumentObject* pObj, const char* sSubName) const
 {
-    const Part::TopoShape &shape = static_cast<const Part::Feature*>(pObj)->Shape.getValue();
+    const Part::TopoShape& shape = static_cast<const Part::Feature*>(pObj)->Shape.getValue();
     TopoDS_Shape sh = shape.getSubShape(sSubName);
     const TopoDS_Edge& edgeShape = TopoDS::Edge(sh);
     BRepAdaptor_Curve adapt(edgeShape);
@@ -283,25 +296,32 @@ bool CombineSelectionFilterGates::allow(App::Document* pDoc, App::DocumentObject
 namespace PartDesignGui
 {
 
-bool getReferencedSelection(const App::DocumentObject* thisObj, const Gui::SelectionChanges& msg,
-                            App::DocumentObject*& selObj, std::vector<std::string>& selSub)
+bool getReferencedSelection(
+    const App::DocumentObject* thisObj,
+    const Gui::SelectionChanges& msg,
+    App::DocumentObject*& selObj,
+    std::vector<std::string>& selSub
+)
 {
     selObj = nullptr;
-    if (!thisObj)
+    if (!thisObj) {
         return false;
+    }
 
-    if (strcmp(thisObj->getDocument()->getName(), msg.pDocName) != 0)
+    if (strcmp(thisObj->getDocument()->getName(), msg.pDocName) != 0) {
         return false;
+    }
 
     selObj = thisObj->getDocument()->getObject(msg.pObjectName);
-    if (selObj == thisObj)
+    if (selObj == thisObj) {
         return false;
+    }
 
     std::string subname = msg.pSubName;
 
-    //check if the selection is an external reference and ask the user what to do
-    //of course only if thisObj is in a body, as otherwise the old workflow would not
-    //be supported
+    // check if the selection is an external reference and ask the user what to do
+    // of course only if thisObj is in a body, as otherwise the old workflow would not
+    // be supported
     PartDesign::Body* body = PartDesignGui::getBodyFor(thisObj, false);
     bool originfeature = selObj->isDerivedFrom<App::DatumElement>();
     if (!originfeature && body) {
@@ -320,7 +340,11 @@ bool getReferencedSelection(const App::DocumentObject* thisObj, const Gui::Selec
             if (!dlg.radioXRef->isChecked()) {
                 App::Document* document = thisObj->getDocument();
                 document->openTransaction("Make copy");
-                auto copy = PartDesignGui::TaskFeaturePick::makeCopy(selObj, subname, dlg.radioIndependent->isChecked());
+                auto copy = PartDesignGui::TaskFeaturePick::makeCopy(
+                    selObj,
+                    subname,
+                    dlg.radioIndependent->isChecked()
+                );
                 body->addObject(copy);
 
                 selObj = copy;
@@ -335,7 +359,7 @@ bool getReferencedSelection(const App::DocumentObject* thisObj, const Gui::Selec
         subname = "";
     }
 
-    selSub = std::vector<std::string>(1,subname);
+    selSub = std::vector<std::string>(1, subname);
 
     return true;
 }
@@ -350,8 +374,8 @@ QString getRefStr(const App::DocumentObject* obj, const std::vector<std::string>
         return QString::fromLatin1(obj->getNameInDocument());
     }
     else if (!sub.empty()) {
-        return QString::fromLatin1(obj->getNameInDocument()) + QStringLiteral(":") +
-               QString::fromLatin1(sub.front().c_str());
+        return QString::fromLatin1(obj->getNameInDocument()) + QStringLiteral(":")
+            + QString::fromLatin1(sub.front().c_str());
     }
 
     return {};
@@ -359,58 +383,68 @@ QString getRefStr(const App::DocumentObject* obj, const std::vector<std::string>
 
 std::string buildLinkSubPythonStr(const App::DocumentObject* obj, const std::vector<std::string>& subs)
 {
-    if (!obj)
+    if (!obj) {
         return "None";
+    }
 
     std::string result("[");
 
-    for (const auto & sub : subs)
+    for (const auto& sub : subs) {
         result += "\"" + sub + "\",";
+    }
     result += "]";
 
     return result;
 }
 
-std::string buildLinkSingleSubPythonStr(const App::DocumentObject* obj,
-        const std::vector<std::string>& subs)
+std::string buildLinkSingleSubPythonStr(
+    const App::DocumentObject* obj,
+    const std::vector<std::string>& subs
+)
 {
-    if (!obj)
+    if (!obj) {
         return "None";
+    }
 
-    if (PartDesign::Feature::isDatum(obj))
-        return Gui::Command::getObjectCmd(obj,"(",", [''])");
-    else
-        return Gui::Command::getObjectCmd(obj,"(",", ['") + subs.front() + "'])";
+    if (PartDesign::Feature::isDatum(obj)) {
+        return Gui::Command::getObjectCmd(obj, "(", ", [''])");
+    }
+    else {
+        return Gui::Command::getObjectCmd(obj, "(", ", ['") + subs.front() + "'])";
+    }
 }
 
-std::string buildLinkListPythonStr(const std::vector<App::DocumentObject*> & objs)
+std::string buildLinkListPythonStr(const std::vector<App::DocumentObject*>& objs)
 {
-    if ( objs.empty() ) {
+    if (objs.empty()) {
         return "None";
     }
 
     std::string result("[");
 
-    for (auto obj : objs)
-        result += Gui::Command::getObjectCmd(obj,nullptr,",");
+    for (auto obj : objs) {
+        result += Gui::Command::getObjectCmd(obj, nullptr, ",");
+    }
     result += "]";
 
     return result;
 }
 
-std::string buildLinkSubListPythonStr(const std::vector<App::DocumentObject*> & objs,
-        const std::vector<std::string>& subs)
+std::string buildLinkSubListPythonStr(
+    const std::vector<App::DocumentObject*>& objs,
+    const std::vector<std::string>& subs
+)
 {
-    if ( objs.empty() ) {
+    if (objs.empty()) {
         return "None";
     }
 
     std::string result("[");
 
-    assert (objs.size () == subs.size () );
+    assert(objs.size() == subs.size());
 
-    for (size_t i=0, objs_sz=objs.size(); i < objs_sz; i++) {
-        if (objs[i] ) {
+    for (size_t i = 0, objs_sz = objs.size(); i < objs_sz; i++) {
+        if (objs[i]) {
             result += '(';
             result += Gui::Command::getObjectCmd(objs[i]);
             result += ",\"";
@@ -423,4 +457,4 @@ std::string buildLinkSubListPythonStr(const std::vector<App::DocumentObject*> & 
 
     return result;
 }
-}
+}  // namespace PartDesignGui

@@ -21,19 +21,18 @@
  ***************************************************************************/
 
 
-
-# include <QApplication>
-# include <QKeyEvent>
-# include <QTimer>
-# include <Inventor/SoPickedPoint.h>
-# include <Inventor/actions/SoGetBoundingBoxAction.h>
-# include <Inventor/details/SoDetail.h>
-# include <Inventor/events/SoKeyboardEvent.h>
-# include <Inventor/events/SoLocation2Event.h>
-# include <Inventor/events/SoMouseButtonEvent.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoSwitch.h>
-# include <Inventor/nodes/SoTransform.h>
+#include <QApplication>
+#include <QKeyEvent>
+#include <QTimer>
+#include <Inventor/SoPickedPoint.h>
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
+#include <Inventor/details/SoDetail.h>
+#include <Inventor/events/SoKeyboardEvent.h>
+#include <Inventor/events/SoLocation2Event.h>
+#include <Inventor/events/SoMouseButtonEvent.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoSwitch.h>
+#include <Inventor/nodes/SoTransform.h>
 
 
 #include <Base/BoundBox.h>
@@ -67,23 +66,28 @@ using namespace std;
 using namespace Gui;
 
 
-namespace Gui {
+namespace Gui
+{
 
-void coinRemoveAllChildren(SoGroup *group) {
-    if(!group)
+void coinRemoveAllChildren(SoGroup* group)
+{
+    if (!group) {
         return;
+    }
     int count = group->getNumChildren();
-    if(!count)
+    if (!count) {
         return;
+    }
     FC_TRACE("coin remove all children " << count);
     SbBool autonotify = group->enableNotify(FALSE);
-    for(;count>0;--count)
-        group->removeChild(count-1);
+    for (; count > 0; --count) {
+        group->removeChild(count - 1);
+    }
     group->enableNotify(autonotify);
     group->touch();
 }
 
-} // namespace Gui
+}  // namespace Gui
 
 //**************************************************************************
 //**************************************************************************
@@ -111,7 +115,7 @@ ViewProvider::ViewProvider()
     pcModeSwitch = new SoSwitch();
     pcModeSwitch->ref();
     pcModeSwitch->setName("ModeSwitch");
-    pcTransform  = new SoFCTransform();
+    pcTransform = new SoFCTransform();
     pcTransform->ref();
     pcRoot->addChild(pcTransform);
     pcRoot->addChild(pcModeSwitch);
@@ -132,11 +136,12 @@ ViewProvider::~ViewProvider()
     pcRoot->unref();
     pcTransform->unref();
     pcModeSwitch->unref();
-    if (pcAnnotation)
+    if (pcAnnotation) {
         pcAnnotation->unref();
+    }
 }
 
-ViewProvider *ViewProvider::startEditing(int ModNum)
+ViewProvider* ViewProvider::startEditing(int ModNum)
 {
     try {
         if (setEdit(ModNum)) {
@@ -183,15 +188,14 @@ void ViewProvider::setEditViewer(View3DInventorViewer*, int ModNum)
 }
 
 void ViewProvider::unsetEditViewer(View3DInventorViewer*)
-{
-}
+{}
 
-bool ViewProvider::isUpdatesEnabled () const
+bool ViewProvider::isUpdatesEnabled() const
 {
     return testStatus(UpdateData);
 }
 
-void ViewProvider::setUpdatesEnabled (bool enable)
+void ViewProvider::setUpdatesEnabled(bool enable)
 {
     setStatus(UpdateData, enable);
 }
@@ -201,9 +205,9 @@ void highlight(const HighlightMode& high)
     Q_UNUSED(high);
 }
 
-void ViewProvider::eventCallback(void * ud, SoEventCallback * node)
+void ViewProvider::eventCallback(void* ud, SoEventCallback* node)
 {
-    const SoEvent * ev = node->getEvent();
+    const SoEvent* ev = node->getEvent();
     auto viewer = static_cast<Gui::View3DInventorViewer*>(node->getUserData());
     auto self = static_cast<ViewProvider*>(ud);
     assert(self);
@@ -211,96 +215,107 @@ void ViewProvider::eventCallback(void * ud, SoEventCallback * node)
     try {
         // Keyboard events
         if (ev->getTypeId().isDerivedFrom(SoKeyboardEvent::getClassTypeId())) {
-            auto ke = static_cast<const SoKeyboardEvent *>(ev);
+            auto ke = static_cast<const SoKeyboardEvent*>(ev);
             const SbBool press = ke->getState() == SoButtonEvent::DOWN ? true : false;
             switch (ke->getKey()) {
-            case SoKeyboardEvent::ESCAPE:
-                if (self->keyPressed (press, ke->getKey())) {
-                    node->setHandled();
-                }
-                else if(QApplication::mouseButtons()==Qt::NoButton) {
-                    // Because of a Coin bug (https://bitbucket.org/Coin3D/coin/pull-requests/119),
-                    // FC may crash if user hits ESC to cancel while still
-                    // holding the mouse button while using some SoDragger.
-                    // Therefore, we shall ignore ESC while any mouse button is
-                    // pressed, until this Coin bug is fixed.
-                    if (!press) {
-                        // react only on key release
-                        // Let first selection mode terminate
-                        Gui::Document* doc = Gui::Application::Instance->activeDocument();
-                        const auto view = qobject_cast<Gui::View3DInventor*>(doc->getActiveView());
-                        if (view) {
-                            Gui::View3DInventorViewer* viewer = view->getViewer();
-                            if (viewer->isSelecting()) {
-                                return;
-                            }
-                        }
-
-                        DockWindowManager* pDockMgr = DockWindowManager::instance();
-                        if (QWidget* widget = pDockMgr->getDockWindow("Tasks")) {
-                            auto* ev = new QKeyEvent(QEvent::KeyPress, Qt::Key_Escape, Qt::NoModifier);
-                            qApp->postEvent(widget, ev);
-                        }
-
-                        auto func = new Gui::TimerFunction();
-                        func->setAutoDelete(true);
-                        func->setFunction([doc]() {
-                            doc->resetEdit();
-                        });
-                        func->singleShot(0);
+                case SoKeyboardEvent::ESCAPE:
+                    if (self->keyPressed(press, ke->getKey())) {
+                        node->setHandled();
                     }
-                }
-                else if (press) {
-                    FC_WARN("Release all mouse buttons before exiting editing");
-                }
-                break;
-            default:
-                // call the virtual method
-                if (self->keyPressed (press, ke->getKey()))
-                    node->setHandled();
-                break;
+                    else if (QApplication::mouseButtons() == Qt::NoButton) {
+                        // Because of a Coin bug
+                        // (https://bitbucket.org/Coin3D/coin/pull-requests/119), FC may crash if
+                        // user hits ESC to cancel while still holding the mouse button while using
+                        // some SoDragger. Therefore, we shall ignore ESC while any mouse button is
+                        // pressed, until this Coin bug is fixed.
+                        if (!press) {
+                            // react only on key release
+                            // Let first selection mode terminate
+                            Gui::Document* doc = Gui::Application::Instance->activeDocument();
+                            const auto view = qobject_cast<Gui::View3DInventor*>(doc->getActiveView());
+                            if (view) {
+                                Gui::View3DInventorViewer* viewer = view->getViewer();
+                                if (viewer->isSelecting()) {
+                                    return;
+                                }
+                            }
+
+                            DockWindowManager* pDockMgr = DockWindowManager::instance();
+                            if (QWidget* widget = pDockMgr->getDockWindow("Tasks")) {
+                                auto* ev
+                                    = new QKeyEvent(QEvent::KeyPress, Qt::Key_Escape, Qt::NoModifier);
+                                qApp->postEvent(widget, ev);
+                            }
+
+                            auto func = new Gui::TimerFunction();
+                            func->setAutoDelete(true);
+                            func->setFunction([doc]() { doc->resetEdit(); });
+                            func->singleShot(0);
+                        }
+                    }
+                    else if (press) {
+                        FC_WARN("Release all mouse buttons before exiting editing");
+                    }
+                    break;
+                default:
+                    // call the virtual method
+                    if (self->keyPressed(press, ke->getKey())) {
+                        node->setHandled();
+                    }
+                    break;
             }
         }
         // switching the mouse buttons
         else if (ev->getTypeId().isDerivedFrom(SoMouseButtonEvent::getClassTypeId())) {
 
-            const auto event = (const SoMouseButtonEvent *) ev;
+            const auto event = (const SoMouseButtonEvent*)ev;
             const int button = event->getButton();
             const SbBool press = event->getState() == SoButtonEvent::DOWN ? true : false;
 
             // call the virtual method
-            if (self->mouseButtonPressed(button,press,ev->getPosition(),viewer))
+            if (self->mouseButtonPressed(button, press, ev->getPosition(), viewer)) {
                 node->setHandled();
+            }
         }
         else if (ev->getTypeId().isDerivedFrom(SoMouseWheelEvent::getClassTypeId())) {
-            const auto event = (const SoMouseWheelEvent *) ev;
+            const auto event = (const SoMouseWheelEvent*)ev;
 
-            if (self->mouseWheelEvent(event->getDelta(), event->getPosition(), viewer))
+            if (self->mouseWheelEvent(event->getDelta(), event->getPosition(), viewer)) {
                 node->setHandled();
+            }
         }
         // Mouse Movement handling
         else if (ev->getTypeId().isDerivedFrom(SoLocation2Event::getClassTypeId())) {
-            if (self->mouseMove(ev->getPosition(),viewer))
+            if (self->mouseMove(ev->getPosition(), viewer)) {
                 node->setHandled();
+            }
         }
     }
     catch (const Base::Exception& e) {
-        Base::Console().error("Unhandled exception in ViewProvider::eventCallback: %s\n"
-                              "(Event type: %s, object type: %s)\n"
-                              , e.what(), ev->getTypeId().getName().getString()
-                              , self->getTypeId().getName());
+        Base::Console().error(
+            "Unhandled exception in ViewProvider::eventCallback: %s\n"
+            "(Event type: %s, object type: %s)\n",
+            e.what(),
+            ev->getTypeId().getName().getString(),
+            self->getTypeId().getName()
+        );
     }
     catch (const std::exception& e) {
-        Base::Console().error("Unhandled std exception in ViewProvider::eventCallback: %s\n"
-                              "(Event type: %s, object type: %s)\n"
-                              , e.what(), ev->getTypeId().getName().getString()
-                              , self->getTypeId().getName());
+        Base::Console().error(
+            "Unhandled std exception in ViewProvider::eventCallback: %s\n"
+            "(Event type: %s, object type: %s)\n",
+            e.what(),
+            ev->getTypeId().getName().getString(),
+            self->getTypeId().getName()
+        );
     }
     catch (...) {
-        Base::Console().error("Unhandled unknown C++ exception in ViewProvider::eventCallback"
-                              " (Event type: %s, object type: %s)\n"
-                              , ev->getTypeId().getName().getString()
-                              , self->getTypeId().getName());
+        Base::Console().error(
+            "Unhandled unknown C++ exception in ViewProvider::eventCallback"
+            " (Event type: %s, object type: %s)\n",
+            ev->getTypeId().getName().getString(),
+            self->getTypeId().getName()
+        );
     }
 }
 
@@ -317,68 +332,75 @@ SoSeparator* ViewProvider::getAnnotation()
 void ViewProvider::update(const App::Property* prop)
 {
     // Hide the object temporarily to speed up the update
-    if (!isUpdatesEnabled())
+    if (!isUpdatesEnabled()) {
         return;
+    }
     bool vis = ViewProvider::isShow();
-    if (vis) ViewProvider::hide();
+    if (vis) {
+        ViewProvider::hide();
+    }
     updateData(prop);
-    if (vis) ViewProvider::show();
+    if (vis) {
+        ViewProvider::show();
+    }
 }
 
 QIcon ViewProvider::getIcon() const
 {
-    return mergeGreyableOverlayIcons (Gui::BitmapFactory().pixmap(sPixmap));
+    return mergeGreyableOverlayIcons(Gui::BitmapFactory().pixmap(sPixmap));
 }
 
-QIcon ViewProvider::mergeGreyableOverlayIcons (const QIcon & orig) const
+QIcon ViewProvider::mergeGreyableOverlayIcons(const QIcon& orig) const
 {
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
 
     QIcon overlayedIcon = orig;
 
     for (Gui::ViewProviderExtension* ext : vector) {
-        if (!ext->ignoreOverlayIcon())
+        if (!ext->ignoreOverlayIcon()) {
             overlayedIcon = ext->extensionMergeGreyableOverlayIcons(overlayedIcon);
+        }
     }
 
     return overlayedIcon;
 }
 
-QIcon ViewProvider::mergeColorfulOverlayIcons (const QIcon & orig) const
+QIcon ViewProvider::mergeColorfulOverlayIcons(const QIcon& orig) const
 {
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
 
     QIcon overlayedIcon = orig;
 
     for (Gui::ViewProviderExtension* ext : vector) {
-        if (!ext->ignoreOverlayIcon())
+        if (!ext->ignoreOverlayIcon()) {
             overlayedIcon = ext->extensionMergeColorfullOverlayIcons(overlayedIcon);
+        }
     }
 
     return overlayedIcon;
 }
 
-void ViewProvider::setTransformation(const Base::Matrix4D &rcMatrix)
+void ViewProvider::setTransformation(const Base::Matrix4D& rcMatrix)
 {
     pcTransform->setMatrix(convert(rcMatrix));
 }
 
-void ViewProvider::setTransformation(const SbMatrix &rcMatrix)
+void ViewProvider::setTransformation(const SbMatrix& rcMatrix)
 {
     pcTransform->setMatrix(rcMatrix);
 }
 
-SbMatrix ViewProvider::convert(const Base::Matrix4D &rcMatrix)
+SbMatrix ViewProvider::convert(const Base::Matrix4D& rcMatrix)
 {
     return Base::convertTo<SbMatrix>(rcMatrix);
 }
 
-Base::Matrix4D ViewProvider::convert(const SbMatrix &smat)
+Base::Matrix4D ViewProvider::convert(const SbMatrix& smat)
 {
     return Base::convertTo<Base::Matrix4D>(smat);
 }
 
-void ViewProvider::addDisplayMaskMode(SoNode *node, const char* type)
+void ViewProvider::addDisplayMaskMode(SoNode* node, const char* type)
 {
     _sDisplayMaskModes[type] = pcModeSwitch->getNumChildren();
     pcModeSwitch->addChild(node);
@@ -387,16 +409,18 @@ void ViewProvider::addDisplayMaskMode(SoNode *node, const char* type)
 void ViewProvider::setDisplayMaskMode(const char* type)
 {
     std::map<std::string, int>::const_iterator it = _sDisplayMaskModes.find(type);
-    if (it != _sDisplayMaskModes.end())
+    if (it != _sDisplayMaskModes.end()) {
         _iActualMode = it->second;
-    else
+    }
+    else {
         _iActualMode = -1;
+    }
     setModeSwitch();
 }
 
 SoNode* ViewProvider::getDisplayMaskMode(const char* type) const
 {
-    std::map<std::string, int>::const_iterator it = _sDisplayMaskModes.find( type );
+    std::map<std::string, int>::const_iterator it = _sDisplayMaskModes.find(type);
     if (it != _sDisplayMaskModes.end()) {
         return pcModeSwitch->getChild(it->second);
     }
@@ -407,8 +431,9 @@ SoNode* ViewProvider::getDisplayMaskMode(const char* type) const
 std::vector<std::string> ViewProvider::getDisplayMaskModes() const
 {
     std::vector<std::string> types;
-    for (const auto & it : _sDisplayMaskModes)
-        types.push_back( it.first );
+    for (const auto& it : _sDisplayMaskModes) {
+        types.push_back(it.first);
+    }
     return types;
 }
 
@@ -421,24 +446,27 @@ void ViewProvider::setDisplayMode(const char* ModeName)
 {
     _sCurrentMode = ModeName;
 
-    //infom the exteensions
+    // infom the exteensions
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for (Gui::ViewProviderExtension* ext : vector)
+    for (Gui::ViewProviderExtension* ext : vector) {
         ext->extensionSetDisplayMode(ModeName);
+    }
 }
 
-const char* ViewProvider::getDefaultDisplayMode() const {
+const char* ViewProvider::getDefaultDisplayMode() const
+{
 
     return nullptr;
 }
 
-vector<std::string> ViewProvider::getDisplayModes() const {
+vector<std::string> ViewProvider::getDisplayModes() const
+{
 
-    std::vector< std::string > modes;
+    std::vector<std::string> modes;
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
     for (Gui::ViewProviderExtension* ext : vector) {
         auto extModes = ext->extensionGetDisplayModes();
-        modes.insert( modes.end(), extModes.begin(), extModes.end() );
+        modes.insert(modes.end(), extModes.begin(), extModes.end());
     }
     return modes;
 }
@@ -452,25 +480,28 @@ void ViewProvider::hide()
 {
     auto exts = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
 
-    if(pcModeSwitch->whichChild.getValue() >= 0) {
+    if (pcModeSwitch->whichChild.getValue() >= 0) {
         pcModeSwitch->whichChild = -1;
-        for(auto ext : exts)
+        for (auto ext : exts) {
             ext->extensionModeSwitchChange();
+        }
     }
 
-    //tell extensions that we hide
-    for (Gui::ViewProviderExtension* ext : exts)
+    // tell extensions that we hide
+    for (Gui::ViewProviderExtension* ext : exts) {
         ext->extensionHide();
+    }
 }
 
 void ViewProvider::show()
 {
     setModeSwitch();
 
-    //tell extensions that we show
+    // tell extensions that we show
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for (Gui::ViewProviderExtension* ext : vector)
+    for (Gui::ViewProviderExtension* ext : vector) {
         ext->extensionShow();
+    }
 }
 
 bool ViewProvider::isShow() const
@@ -488,7 +519,7 @@ bool ViewProvider::isVisible() const
     return isShow();
 }
 
-void ViewProvider::setOverrideMode(const std::string &mode)
+void ViewProvider::setOverrideMode(const std::string& mode)
 {
     if (mode == "As Is") {
         viewOverrideMode = -1;
@@ -496,45 +527,55 @@ void ViewProvider::setOverrideMode(const std::string &mode)
     }
     else {
         std::map<std::string, int>::const_iterator it = _sDisplayMaskModes.find(mode);
-        if (it == _sDisplayMaskModes.end())
-            return; //view style not supported
+        if (it == _sDisplayMaskModes.end()) {
+            return;  // view style not supported
+        }
         viewOverrideMode = (*it).second;
         overrideMode = mode;
     }
-    if (pcModeSwitch->whichChild.getValue() != -1)
+    if (pcModeSwitch->whichChild.getValue() != -1) {
         setModeSwitch();
+    }
     else {
-        for(auto ext : getExtensionsDerivedFromType<Gui::ViewProviderExtension>())
+        for (auto ext : getExtensionsDerivedFromType<Gui::ViewProviderExtension>()) {
             ext->extensionModeSwitchChange();
+        }
     }
 }
 
-const string ViewProvider::getOverrideMode() {
+const string ViewProvider::getOverrideMode()
+{
     return overrideMode;
 }
 
 
 void ViewProvider::setModeSwitch()
 {
-    if (viewOverrideMode == -1)
+    if (viewOverrideMode == -1) {
         pcModeSwitch->whichChild = _iActualMode;
-    else if (viewOverrideMode < pcModeSwitch->getNumChildren())
+    }
+    else if (viewOverrideMode < pcModeSwitch->getNumChildren()) {
         pcModeSwitch->whichChild = viewOverrideMode;
-    else
+    }
+    else {
         return;
-    for(auto ext : getExtensionsDerivedFromType<Gui::ViewProviderExtension>())
+    }
+    for (auto ext : getExtensionsDerivedFromType<Gui::ViewProviderExtension>()) {
         ext->extensionModeSwitchChange();
+    }
 }
 
 void ViewProvider::setDefaultMode(int val)
 {
     _iActualMode = val;
-    for(auto ext : getExtensionsDerivedFromType<Gui::ViewProviderExtension>())
+    for (auto ext : getExtensionsDerivedFromType<Gui::ViewProviderExtension>()) {
         ext->extensionModeSwitchChange();
+    }
 }
 
-int ViewProvider::getDefaultMode() const {
-    return viewOverrideMode>=0?viewOverrideMode:_iActualMode;
+int ViewProvider::getDefaultMode() const
+{
+    return viewOverrideMode >= 0 ? viewOverrideMode : _iActualMode;
 }
 
 void ViewProvider::onBeforeChange(const App::Property* prop)
@@ -559,24 +600,26 @@ std::string ViewProvider::toString() const
 
 PyObject* ViewProvider::getPyObject()
 {
-    if (!pyViewObject)
+    if (!pyViewObject) {
         pyViewObject = new ViewProviderPy(this);
+    }
     pyViewObject->IncRef();
     return pyViewObject;
 }
 
 #include <boost/graph/topological_sort.hpp>
 
-namespace Gui {
-using Graph = boost::adjacency_list <
-        boost::vecS,           // class OutEdgeListS  : a Sequence or an AssociativeContainer
-        boost::vecS,           // class VertexListS   : a Sequence or a RandomAccessContainer
-        boost::directedS,      // class DirectedS     : This is a directed graph
-        boost::no_property,    // class VertexProperty:
-        boost::no_property,    // class EdgeProperty:
-        boost::no_property,    // class GraphProperty:
-        boost::listS           // class EdgeListS:
->;
+namespace Gui
+{
+using Graph = boost::adjacency_list<
+    boost::vecS,         // class OutEdgeListS  : a Sequence or an AssociativeContainer
+    boost::vecS,         // class VertexListS   : a Sequence or a RandomAccessContainer
+    boost::directedS,    // class DirectedS     : This is a directed graph
+    boost::no_property,  // class VertexProperty:
+    boost::no_property,  // class EdgeProperty:
+    boost::no_property,  // class GraphProperty:
+    boost::listS         // class EdgeListS:
+    >;
 using Vertex = boost::graph_traits<Graph>::vertex_descriptor;
 using Edge = boost::graph_traits<Graph>::edge_descriptor;
 
@@ -586,7 +629,7 @@ void addNodes(Graph& graph, std::map<SoNode*, Vertex>& vertexNodeMap, SoNode* no
         auto group = static_cast<SoGroup*>(node);
         Vertex groupV = vertexNodeMap[group];
 
-        for (int i=0; i<group->getNumChildren(); i++) {
+        for (int i = 0; i < group->getNumChildren(); i++) {
             SoNode* child = group->getChild(i);
             auto it = vertexNodeMap.find(child);
 
@@ -604,7 +647,7 @@ void addNodes(Graph& graph, std::map<SoNode*, Vertex>& vertexNodeMap, SoNode* no
         }
     }
 }
-}
+}  // namespace Gui
 
 bool ViewProvider::checkRecursion(SoNode* node)
 {
@@ -632,7 +675,11 @@ SoPickedPoint* ViewProvider::getPointOnRay(const SbVec2s& pos, const View3DInven
     return viewer->getPointOnRay(pos, this);
 }
 
-SoPickedPoint* ViewProvider::getPointOnRay(const SbVec3f& pos,const SbVec3f& dir, const View3DInventorViewer* viewer) const
+SoPickedPoint* ViewProvider::getPointOnRay(
+    const SbVec3f& pos,
+    const SbVec3f& dir,
+    const View3DInventorViewer* viewer
+) const
 {
     return viewer->getPointOnRay(pos, dir, this);
 }
@@ -642,7 +689,7 @@ std::vector<Base::Vector3d> ViewProvider::getModelPoints(const SoPickedPoint* pp
     // the default implementation just returns the picked point from the visual representation
     std::vector<Base::Vector3d> pts;
     const SbVec3f& vec = pp->getPoint();
-    pts.emplace_back(vec[0],vec[1],vec[2]);
+    pts.emplace_back(vec[0], vec[1], vec[2]);
     return pts;
 }
 
@@ -653,17 +700,19 @@ bool ViewProvider::keyPressed(bool pressed, int key)
     return false;
 }
 
-bool ViewProvider::mouseMove(const SbVec2s &cursorPos,
-                             View3DInventorViewer* viewer)
+bool ViewProvider::mouseMove(const SbVec2s& cursorPos, View3DInventorViewer* viewer)
 {
     (void)cursorPos;
     (void)viewer;
     return false;
 }
 
-bool ViewProvider::mouseButtonPressed(int button, bool pressed,
-                                      const SbVec2s &cursorPos,
-                                      const View3DInventorViewer* viewer)
+bool ViewProvider::mouseButtonPressed(
+    int button,
+    bool pressed,
+    const SbVec2s& cursorPos,
+    const View3DInventorViewer* viewer
+)
 {
     (void)button;
     (void)pressed;
@@ -672,27 +721,29 @@ bool ViewProvider::mouseButtonPressed(int button, bool pressed,
     return false;
 }
 
-bool ViewProvider::mouseWheelEvent(int delta, const SbVec2s &cursorPos, const View3DInventorViewer* viewer)
+bool ViewProvider::mouseWheelEvent(int delta, const SbVec2s& cursorPos, const View3DInventorViewer* viewer)
 {
-    (void) delta;
-    (void) cursorPos;
-    (void) viewer;
+    (void)delta;
+    (void)cursorPos;
+    (void)viewer;
     return false;
 }
 
 void ViewProvider::setupContextMenu(QMenu* menu, QObject* receiver, const char* method)
 {
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for (Gui::ViewProviderExtension* ext : vector)
+    for (Gui::ViewProviderExtension* ext : vector) {
         ext->extensionSetupContextMenu(menu, receiver, method);
+    }
 }
 
-bool ViewProvider::onDelete(const vector< string >& subNames)
+bool ViewProvider::onDelete(const vector<string>& subNames)
 {
     bool del = true;
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for (Gui::ViewProviderExtension* ext : vector)
+    for (Gui::ViewProviderExtension* ext : vector) {
         del &= ext->extensionOnDelete(subNames);
+    }
 
     return del;
 }
@@ -706,14 +757,18 @@ bool ViewProvider::canDragObject(App::DocumentObject* obj) const
 {
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
     for (Gui::ViewProviderExtension* ext : vector) {
-        if (ext->extensionCanDragObject(obj))
+        if (ext->extensionCanDragObject(obj)) {
             return true;
+        }
     }
 
     return false;
 }
 
-bool ViewProvider::canDragObjectToTarget(App::DocumentObject* obj, [[maybe_unused]] App::DocumentObject* target) const
+bool ViewProvider::canDragObjectToTarget(
+    App::DocumentObject* obj,
+    [[maybe_unused]] App::DocumentObject* target
+) const
 {
     return canDragObject(obj);
 }
@@ -722,8 +777,9 @@ bool ViewProvider::canDragObjects() const
 {
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
     for (Gui::ViewProviderExtension* ext : vector) {
-        if (ext->extensionCanDragObjects())
+        if (ext->extensionCanDragObjects()) {
             return true;
+        }
     }
 
     return false;
@@ -739,7 +795,9 @@ void ViewProvider::dragObject(App::DocumentObject* obj)
         }
     }
 
-    throw Base::RuntimeError("ViewProvider::dragObject: no extension for dragging given object available.");
+    throw Base::RuntimeError(
+        "ViewProvider::dragObject: no extension for dragging given object available."
+    );
 }
 
 bool ViewProvider::canDropObject(App::DocumentObject* obj) const
@@ -748,28 +806,33 @@ bool ViewProvider::canDropObject(App::DocumentObject* obj) const
 #if FC_DEBUG
     Base::Console().log("Check extensions for drop\n");
 #endif
-    for (Gui::ViewProviderExtension* ext : vector){
+    for (Gui::ViewProviderExtension* ext : vector) {
 #if FC_DEBUG
         Base::Console().log("Check extensions %s\n", ext->name().c_str());
 #endif
-        if (ext->extensionCanDropObject(obj))
+        if (ext->extensionCanDropObject(obj)) {
             return true;
+        }
     }
 
     return false;
 }
 
-bool ViewProvider::canDropObjects() const {
+bool ViewProvider::canDropObjects() const
+{
 
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector)
-        if(ext->extensionCanDropObjects())
+    for (Gui::ViewProviderExtension* ext : vector) {
+        if (ext->extensionCanDropObjects()) {
             return true;
+        }
+    }
 
     return false;
 }
 
-bool ViewProvider::canDragAndDropObject(App::DocumentObject* obj) const {
+bool ViewProvider::canDragAndDropObject(App::DocumentObject* obj) const
+{
 
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
     for (Gui::ViewProviderExtension* ext : vector) {
@@ -781,7 +844,8 @@ bool ViewProvider::canDragAndDropObject(App::DocumentObject* obj) const {
     return false;
 }
 
-void ViewProvider::dropObject(App::DocumentObject* obj) {
+void ViewProvider::dropObject(App::DocumentObject* obj)
+{
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
     for (Gui::ViewProviderExtension* ext : vector) {
         if (ext->extensionCanDropObject(obj)) {
@@ -791,24 +855,34 @@ void ViewProvider::dropObject(App::DocumentObject* obj) {
     }
 }
 
-bool ViewProvider::canDropObjectEx(App::DocumentObject* obj, App::DocumentObject *owner,
-        const char *subname, const std::vector<std::string> &elements) const
+bool ViewProvider::canDropObjectEx(
+    App::DocumentObject* obj,
+    App::DocumentObject* owner,
+    const char* subname,
+    const std::vector<std::string>& elements
+) const
 {
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector){
-        if(ext->extensionCanDropObjectEx(obj,owner,subname, elements))
+    for (Gui::ViewProviderExtension* ext : vector) {
+        if (ext->extensionCanDropObjectEx(obj, owner, subname, elements)) {
             return true;
+        }
     }
     return canDropObject(obj);
 }
 
-std::string ViewProvider::dropObjectEx(App::DocumentObject* obj, App::DocumentObject *owner,
-        const char *subname, const std::vector<std::string> &elements)
+std::string ViewProvider::dropObjectEx(
+    App::DocumentObject* obj,
+    App::DocumentObject* owner,
+    const char* subname,
+    const std::vector<std::string>& elements
+)
 {
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector) {
-        if(ext->extensionCanDropObjectEx(obj, owner, subname, elements))
+    for (Gui::ViewProviderExtension* ext : vector) {
+        if (ext->extensionCanDropObjectEx(obj, owner, subname, elements)) {
             return ext->extensionDropObjectEx(obj, owner, subname, elements);
+        }
     }
     dropObject(obj);
     return {};
@@ -820,14 +894,16 @@ int ViewProvider::replaceObject(App::DocumentObject* oldValue, App::DocumentObje
     for (Gui::ViewProviderExtension* ext : vector) {
         if (ext->extensionCanDropObject(newValue)) {
             int ret = ext->extensionReplaceObject(oldValue, newValue);
-            if(ret>=0)
+            if (ret >= 0) {
                 return !!ret;
+            }
         }
     }
     return -1;
 }
 
-void ViewProvider::Restore(Base::XMLReader& reader) {
+void ViewProvider::Restore(Base::XMLReader& reader)
+{
     // Because some PropertyLists type properties are stored in a separate file,
     // and is thus restored outside this function. So we rely on Gui::Document
     // to set the isRestoring flags for us.
@@ -842,8 +918,9 @@ void ViewProvider::Restore(Base::XMLReader& reader) {
 void ViewProvider::updateData(const App::Property* prop)
 {
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for (Gui::ViewProviderExtension* ext : vector)
+    for (Gui::ViewProviderExtension* ext : vector) {
         ext->extensionUpdateData(prop);
+    }
 }
 
 SoSeparator* ViewProvider::getBackRoot() const
@@ -851,8 +928,9 @@ SoSeparator* ViewProvider::getBackRoot() const
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
     for (Gui::ViewProviderExtension* ext : vector) {
         auto* node = ext->extensionGetBackRoot();
-        if (node)
+        if (node) {
             return node;
+        }
     }
     return nullptr;
 }
@@ -862,8 +940,9 @@ SoGroup* ViewProvider::getChildRoot() const
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
     for (Gui::ViewProviderExtension* ext : vector) {
         auto* node = ext->extensionGetChildRoot();
-        if (node)
+        if (node) {
             return node;
+        }
     }
     return nullptr;
 }
@@ -873,97 +952,108 @@ SoSeparator* ViewProvider::getFrontRoot() const
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
     for (Gui::ViewProviderExtension* ext : vector) {
         auto* node = ext->extensionGetFrontRoot();
-        if (node)
+        if (node) {
             return node;
+        }
     }
     return nullptr;
 }
 
-std::vector< App::DocumentObject* > ViewProvider::claimChildren() const
+std::vector<App::DocumentObject*> ViewProvider::claimChildren() const
 {
-    std::vector< App::DocumentObject* > vec;
+    std::vector<App::DocumentObject*> vec;
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
     for (Gui::ViewProviderExtension* ext : vector) {
-        std::vector< App::DocumentObject* > nvec = ext->extensionClaimChildren();
-        if (!nvec.empty()){
+        std::vector<App::DocumentObject*> nvec = ext->extensionClaimChildren();
+        if (!nvec.empty()) {
             vec.insert(std::end(vec), std::begin(nvec), std::end(nvec));
         }
     }
     return vec;
 }
 
-std::vector< App::DocumentObject* > ViewProvider::claimChildrenRecursive() const
+std::vector<App::DocumentObject*> ViewProvider::claimChildrenRecursive() const
 {
     std::vector<App::DocumentObject*> children = claimChildren();
     for (auto* child : claimChildren()) {
         auto* vp = Application::Instance->getViewProvider(child);
-        if (!vp) { continue; }
+        if (!vp) {
+            continue;
+        }
 
         std::vector<App::DocumentObject*> nvec = vp->claimChildrenRecursive();
-        if (!nvec.empty()){
+        if (!nvec.empty()) {
             children.insert(std::end(children), std::begin(nvec), std::end(nvec));
         }
     }
     return children;
 }
 
-std::vector< App::DocumentObject* > ViewProvider::claimChildren3D() const
+std::vector<App::DocumentObject*> ViewProvider::claimChildren3D() const
 {
-    std::vector< App::DocumentObject* > vec;
+    std::vector<App::DocumentObject*> vec;
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
     for (Gui::ViewProviderExtension* ext : vector) {
-        std::vector< App::DocumentObject* > nvec = ext->extensionClaimChildren3D();
-        if (!nvec.empty())
+        std::vector<App::DocumentObject*> nvec = ext->extensionClaimChildren3D();
+        if (!nvec.empty()) {
             vec.insert(std::end(vec), std::begin(nvec), std::end(nvec));
+        }
     }
     return vec;
 }
 
-bool ViewProvider::getElementPicked(const SoPickedPoint *pp, std::string &subname) const {
+bool ViewProvider::getElementPicked(const SoPickedPoint* pp, std::string& subname) const
+{
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector) {
-        if(ext->extensionGetElementPicked(pp,subname))
+    for (Gui::ViewProviderExtension* ext : vector) {
+        if (ext->extensionGetElementPicked(pp, subname)) {
             return true;
+        }
     }
-    subname = getElement(pp?pp->getDetail():nullptr);
+    subname = getElement(pp ? pp->getDetail() : nullptr);
     return true;
 }
 
-bool ViewProvider::getDetailPath(const char *subname, SoFullPath *pPath, bool append, SoDetail *&det) const {
-    if(pcRoot->findChild(pcModeSwitch) < 0) {
+bool ViewProvider::getDetailPath(const char* subname, SoFullPath* pPath, bool append, SoDetail*& det) const
+{
+    if (pcRoot->findChild(pcModeSwitch) < 0) {
         // this is possible in case of editing, where the switch node
         // of the linked view object is temporarily removed from its root
         // if(append)
         //     pPath->append(pcRoot);
         return false;
     }
-    if(append) {
+    if (append) {
         pPath->append(pcRoot);
         pPath->append(pcModeSwitch);
     }
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector) {
-        if(ext->extensionGetDetailPath(subname,pPath,det))
+    for (Gui::ViewProviderExtension* ext : vector) {
+        if (ext->extensionGetDetailPath(subname, pPath, det)) {
             return true;
+        }
     }
     det = getDetail(subname);
     return true;
 }
 
-const std::string &ViewProvider::hiddenMarker() {
+const std::string& ViewProvider::hiddenMarker()
+{
     return App::DocumentObject::hiddenMarker();
 }
 
-const char *ViewProvider::hasHiddenMarker(const char *subname) {
+const char* ViewProvider::hasHiddenMarker(const char* subname)
+{
     return App::DocumentObject::hasHiddenMarker(subname);
 }
 
-int ViewProvider::partialRender(const std::vector<std::string> &elements, bool clear) {
-    if(elements.empty()) {
+int ViewProvider::partialRender(const std::vector<std::string>& elements, bool clear)
+{
+    if (elements.empty()) {
         auto node = pcModeSwitch->getChild(_iActualMode);
-        if(node) {
+        if (node) {
             FC_LOG("partial render clear");
-            SoSelectionElementAction action(SoSelectionElementAction::None,true);
+            SoSelectionElementAction action(SoSelectionElementAction::None, true);
             action.apply(node);
         }
     }
@@ -972,22 +1062,27 @@ int ViewProvider::partialRender(const std::vector<std::string> &elements, bool c
     path->ref();
     SoSelectionElementAction action;
     action.setSecondary(true);
-    for(auto element : elements) {
+    for (auto element : elements) {
         bool hidden = hasHiddenMarker(element.c_str());
-        if(hidden)
-            element.resize(element.size()-hiddenMarker().size());
+        if (hidden) {
+            element.resize(element.size() - hiddenMarker().size());
+        }
         path->truncate(0);
-        SoDetail *det = nullptr;
-        if(getDetailPath(element.c_str(),path,false,det)) {
-            if(!hidden && !det) {
+        SoDetail* det = nullptr;
+        if (getDetailPath(element.c_str(), path, false, det)) {
+            if (!hidden && !det) {
                 FC_LOG("partial render element not found: " << element);
                 continue;
             }
             FC_LOG("partial render (" << path->getLength() << "): " << element);
-            if(!hidden)
-                action.setType(clear?SoSelectionElementAction::Remove:SoSelectionElementAction::Append);
-            else
-                action.setType(clear?SoSelectionElementAction::Show:SoSelectionElementAction::Hide);
+            if (!hidden) {
+                action.setType(
+                    clear ? SoSelectionElementAction::Remove : SoSelectionElementAction::Append
+                );
+            }
+            else {
+                action.setType(clear ? SoSelectionElementAction::Show : SoSelectionElementAction::Hide);
+            }
             action.setElement(det);
             action.apply(path);
             ++count;
@@ -998,36 +1093,44 @@ int ViewProvider::partialRender(const std::vector<std::string> &elements, bool c
     return count;
 }
 
-bool ViewProvider::useNewSelectionModel() const {
+bool ViewProvider::useNewSelectionModel() const
+{
     return ViewParams::instance()->getUseNewSelection();
 }
 
-void ViewProvider::beforeDelete() {
+void ViewProvider::beforeDelete()
+{
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector)
+    for (Gui::ViewProviderExtension* ext : vector) {
         ext->extensionBeforeDelete();
+    }
 }
 
-void ViewProvider::setRenderCacheMode(int mode) {
-    pcRoot->renderCaching =
-        mode==0?SoSeparator::AUTO:(mode==1?SoSeparator::ON:SoSeparator::OFF);
+void ViewProvider::setRenderCacheMode(int mode)
+{
+    pcRoot->renderCaching = mode == 0 ? SoSeparator::AUTO
+                                      : (mode == 1 ? SoSeparator::ON : SoSeparator::OFF);
 }
 
-Base::BoundBox3d ViewProvider::getBoundingBox(const char *subname, bool transform, MDIView *view) const {
-    if(!pcRoot || !pcModeSwitch || pcRoot->findChild(pcModeSwitch)<0)
+Base::BoundBox3d ViewProvider::getBoundingBox(const char* subname, bool transform, MDIView* view) const
+{
+    if (!pcRoot || !pcModeSwitch || pcRoot->findChild(pcModeSwitch) < 0) {
         return Base::BoundBox3d();
+    }
 
-    if(!view)
-        view  = Application::Instance->activeView();
+    if (!view) {
+        view = Application::Instance->activeView();
+    }
     auto iview = qobject_cast<View3DInventor*>(view);
-    if(!iview) {
+    if (!iview) {
         auto doc = Application::Instance->activeDocument();
-        if(doc) {
+        if (doc) {
             auto views = doc->getMDIViewsOfType(View3DInventor::getClassTypeId());
-            if(!views.empty())
+            if (!views.empty()) {
                 iview = qobject_cast<View3DInventor*>(views.front());
+            }
         }
-        if(!iview) {
+        if (!iview) {
             FC_ERR("no view");
             return Base::BoundBox3d();
         }
@@ -1037,16 +1140,18 @@ Base::BoundBox3d ViewProvider::getBoundingBox(const char *subname, bool transfor
     SoGetBoundingBoxAction bboxAction(viewer->getSoRenderManager()->getViewportRegion());
 
     auto mode = pcModeSwitch->whichChild.getValue();
-    if(mode < 0)
+    if (mode < 0) {
         pcModeSwitch->whichChild = getDefaultMode();
+    }
 
     SoTempPath path(20);
     path.ref();
-    if(!Base::Tools::isNullOrEmpty(subname)) {
-        SoDetail *det=nullptr;
-        if(!getDetailPath(subname,&path,true,det)) {
-            if(mode < 0)
+    if (!Base::Tools::isNullOrEmpty(subname)) {
+        SoDetail* det = nullptr;
+        if (!getDetailPath(subname, &path, true, det)) {
+            if (mode < 0) {
                 pcModeSwitch->whichChild = mode;
+            }
             path.unrefNoDelete();
             return Base::BoundBox3d();
         }
@@ -1054,36 +1159,42 @@ Base::BoundBox3d ViewProvider::getBoundingBox(const char *subname, bool transfor
     }
     SoTempPath resetPath(3);
     resetPath.ref();
-    if(!transform) {
+    if (!transform) {
         resetPath.append(pcRoot);
         resetPath.append(pcModeSwitch);
-        bboxAction.setResetPath(&resetPath,true,SoGetBoundingBoxAction::TRANSFORM);
+        bboxAction.setResetPath(&resetPath, true, SoGetBoundingBoxAction::TRANSFORM);
     }
-    if(path.getLength())
+    if (path.getLength()) {
         bboxAction.apply(&path);
-    else
+    }
+    else {
         bboxAction.apply(pcRoot);
-    if(mode < 0)
+    }
+    if (mode < 0) {
         pcModeSwitch->whichChild = mode;
+    }
     resetPath.unrefNoDelete();
     path.unrefNoDelete();
     auto bbox = bboxAction.getBoundingBox();
-    float minX,minY,minZ,maxX,maxY,maxZ;
-    bbox.getMax().getValue(maxX,maxY,maxZ);
-    bbox.getMin().getValue(minX,minY,minZ);
-    return Base::BoundBox3d(minX,minY,minZ,maxX,maxY,maxZ);
+    float minX, minY, minZ, maxX, maxY, maxZ;
+    bbox.getMax().getValue(maxX, maxY, maxZ);
+    bbox.getMin().getValue(minX, minY, minZ);
+    return Base::BoundBox3d(minX, minY, minZ, maxX, maxY, maxZ);
 }
 
-bool ViewProvider::isLinkVisible() const {
+bool ViewProvider::isLinkVisible() const
+{
     auto ext = getExtensionByType<ViewProviderLinkObserver>(true);
-    if(!ext)
+    if (!ext) {
         return true;
+    }
     return ext->isLinkVisible();
 }
 
-void ViewProvider::setLinkVisible(bool visible) {
+void ViewProvider::setLinkVisible(bool visible)
+{
     auto ext = getExtensionByType<ViewProviderLinkObserver>(true);
-    if(ext)
+    if (ext) {
         ext->setLinkVisible(visible);
+    }
 }
-

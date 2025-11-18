@@ -3,7 +3,6 @@ from Base.Vector import Vector
 from TopoShape import TopoShape
 from typing import Final, Tuple, Dict, Optional, List
 
-
 @export(
     Twin="TopoShape",
     TwinPointer="TopoShape",
@@ -106,8 +105,16 @@ class TopoShapeFace(TopoShape):
         ...
 
     @constmethod
-    def makeEvolved(self, *, Profile: TopoShape, Join: int, AxeProf: bool, Solid: bool,
-                    ProfOnSpine: bool, Tolerance: float) -> TopoShape:
+    def makeEvolved(
+        self,
+        *,
+        Profile: TopoShape,
+        Join: int,
+        AxeProf: bool,
+        Solid: bool,
+        ProfOnSpine: bool,
+        Tolerance: float
+    ) -> TopoShape:
         """
         Profile along the spine
         """

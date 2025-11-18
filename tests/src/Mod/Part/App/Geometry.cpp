@@ -44,33 +44,29 @@ TEST_F(GeometryTest, testTrimBSpline)
     std::vector<double> weights(5, 1.0);
     std::vector<double> knotsNonPeriodic = {0.0, 1.0, 2.0};
     std::vector<int> multiplicitiesNonPeriodic = {degree + 1, 1, degree + 1};
-    Part::GeomBSplineCurve nonPeriodicBSpline1(poles,
-                                               weights,
-                                               knotsNonPeriodic,
-                                               multiplicitiesNonPeriodic,
-                                               degree,
-                                               false);
-    Part::GeomBSplineCurve nonPeriodicBSpline2(poles,
-                                               weights,
-                                               knotsNonPeriodic,
-                                               multiplicitiesNonPeriodic,
-                                               degree,
-                                               false);
+    Part::GeomBSplineCurve nonPeriodicBSpline1(
+        poles,
+        weights,
+        knotsNonPeriodic,
+        multiplicitiesNonPeriodic,
+        degree,
+        false
+    );
+    Part::GeomBSplineCurve nonPeriodicBSpline2(
+        poles,
+        weights,
+        knotsNonPeriodic,
+        multiplicitiesNonPeriodic,
+        degree,
+        false
+    );
     std::vector<double> knotsPeriodic = {0.0, 0.3, 1.0, 1.5, 1.8, 2.0};
     double period = knotsPeriodic.back() - knotsPeriodic.front();
     std::vector<int> multiplicitiesPeriodic(6, 1);
-    Part::GeomBSplineCurve periodicBSpline1(poles,
-                                            weights,
-                                            knotsPeriodic,
-                                            multiplicitiesPeriodic,
-                                            degree,
-                                            true);
-    Part::GeomBSplineCurve periodicBSpline2(poles,
-                                            weights,
-                                            knotsPeriodic,
-                                            multiplicitiesPeriodic,
-                                            degree,
-                                            true);
+    Part::GeomBSplineCurve
+        periodicBSpline1(poles, weights, knotsPeriodic, multiplicitiesPeriodic, degree, true);
+    Part::GeomBSplineCurve
+        periodicBSpline2(poles, weights, knotsPeriodic, multiplicitiesPeriodic, degree, true);
     // NOTE: These should be within the knot range, with param1 < param2
     double param1 = 0.5, param2 = 1.4;
     // TODO: Decide what to do if params are outside the range

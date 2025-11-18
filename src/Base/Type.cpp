@@ -31,22 +31,22 @@
 
 using namespace Base;
 
-static_assert(sizeof(Base::Type) == sizeof(Type::TypeId),
-              "Base::Type has been designed to be small to be passed around by value efficiently. "
-              "The size of Base::Type has changed. Be careful when adding more data members.");
+static_assert(
+    sizeof(Base::Type) == sizeof(Type::TypeId),
+    "Base::Type has been designed to be small to be passed around by value efficiently. "
+    "The size of Base::Type has changed. Be careful when adding more data members."
+);
 
 static_assert(
     sizeof(Base::Type) <= 2 * sizeof(void*),
     "Base::Type has been designed to be small to be passed around by value efficiently. "
     "When the size grows larger than ~2 words, consider passing by const reference instead. "
-    "Exact limit depends on the architecture and ABI.");
+    "Exact limit depends on the architecture and ABI."
+);
 
 struct Base::TypeData
 {
-    TypeData(const char* name,
-             const Type type,
-             const Type parent,
-             const Type::instantiationMethod instMethod)
+    TypeData(const char* name, const Type type, const Type parent, const Type::instantiationMethod instMethod)
         : name(name)
         , parent(parent)
         , type(type)
@@ -133,8 +133,7 @@ const std::string Type::getModuleName(const char* className)
     std::string_view classNameView(className);
     auto pos = classNameView.find("::");
 
-    return pos != std::string_view::npos ? std::string(classNameView.substr(0, pos))
-                                         : std::string();
+    return pos != std::string_view::npos ? std::string(classNameView.substr(0, pos)) : std::string();
 }
 
 
@@ -191,15 +190,17 @@ const Type Type::fromKey(TypeId key)
 
 const char* Type::getName() const
 {
-    assert(typedata.size() >= 1
-           && "Type::init() must be called before fetching names, even for bad types");
+    assert(
+        typedata.size() >= 1 && "Type::init() must be called before fetching names, even for bad types"
+    );
     return typedata[index]->name.c_str();
 }
 
 const Type Type::getParent() const
 {
-    assert(typedata.size() >= 1
-           && "Type::init() must be called before fetching parents, even for bad types");
+    assert(
+        typedata.size() >= 1 && "Type::init() must be called before fetching parents, even for bad types"
+    );
     return typedata[index]->parent;
 }
 

@@ -45,9 +45,10 @@ TaskDlgEdge2Trac::TaskDlgEdge2Trac(Robot::Edge2TracObject* obj)
     , Edge2TaskObject(obj)
 {
     param = new TaskEdge2TracParameter(obj);
-    select =
-        new Gui::TaskView::TaskSelectLinkProperty("SELECT Part::Feature SUBELEMENT Edge COUNT 1..",
-                                                  &(obj->Source));
+    select = new Gui::TaskView::TaskSelectLinkProperty(
+        "SELECT Part::Feature SUBELEMENT Edge COUNT 1..",
+        &(obj->Source)
+    );
 
     Content.push_back(param);
     Content.push_back(select);
@@ -71,8 +72,7 @@ void TaskDlgEdge2Trac::clicked(int button)
                 select->sendSelection2Property();
                 // May throw an exception which we must handle here
                 Edge2TaskObject->execute();
-                param->setEdgeAndClusterNbr(Edge2TaskObject->NbrOfEdges,
-                                            Edge2TaskObject->NbrOfCluster);
+                param->setEdgeAndClusterNbr(Edge2TaskObject->NbrOfEdges, Edge2TaskObject->NbrOfCluster);
             }
             else {
                 QApplication::beep();

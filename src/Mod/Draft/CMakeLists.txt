@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 add_subdirectory(App)
 
 IF (BUILD_GUI)
@@ -67,6 +69,7 @@ SET(Draft_tests
     drafttests/test_pivy.py
     drafttests/test_svg.py
     drafttests/README.md
+    drafttests/Issue24314.dxf
 )
 
 SET(Draft_utilities

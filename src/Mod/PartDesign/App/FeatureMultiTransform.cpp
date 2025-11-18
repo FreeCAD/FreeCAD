@@ -73,8 +73,9 @@ short MultiTransform::mustExecute() const
     return Transformed::mustExecute();
 }
 
-const std::list<gp_Trsf>
-MultiTransform::getTransformations(const std::vector<App::DocumentObject*> originals)
+const std::list<gp_Trsf> MultiTransform::getTransformations(
+    const std::vector<App::DocumentObject*> originals
+)
 {
     std::vector<App::DocumentObject*> transFeatures = Transformations.getValues();
 
@@ -82,8 +83,7 @@ MultiTransform::getTransformations(const std::vector<App::DocumentObject*> origi
     if (!originals.empty()) {
         // Find centre of gravity of first original
         // FIXME: This method will NOT give the expected result for more than one original!
-        if (auto addFeature =
-                freecad_cast<PartDesign::FeatureAddSub*>(originals.front())) {
+        if (auto addFeature = freecad_cast<PartDesign::FeatureAddSub*>(originals.front())) {
             TopoDS_Shape original = addFeature->AddSubShape.getShape().getShape();
 
             GProp_GProps props;
@@ -128,12 +128,16 @@ MultiTransform::getTransformations(const std::vector<App::DocumentObject*> origi
                 // oldTransformations vector
 
                 if (newTransformations.empty()) {
-                    throw Base::ValueError("Number of occurrences must be a divisor of previous "
-                                           "number of occurrences");
+                    throw Base::ValueError(
+                        "Number of occurrences must be a divisor of previous "
+                        "number of occurrences"
+                    );
                 }
                 if (oldTransformations.size() % newTransformations.size() != 0) {
-                    throw Base::ValueError("Number of occurrences must be a divisor of previous "
-                                           "number of occurrences");
+                    throw Base::ValueError(
+                        "Number of occurrences must be a divisor of previous "
+                        "number of occurrences"
+                    );
                 }
 
                 unsigned sliceLength = oldTransformations.size() / newTransformations.size();

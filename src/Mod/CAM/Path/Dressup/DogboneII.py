@@ -277,6 +277,10 @@ class Proxy(object):
     def loads(self, state):
         return None
 
+    def onChanged(self, obj, prop):
+        if prop == "Path" and obj.ViewObject:
+            obj.ViewObject.signalChangeIcon()
+
     def toolRadius(self, obj):
         return PathDressup.toolController(obj.Base).Tool.Diameter.Value / 2
 

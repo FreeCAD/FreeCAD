@@ -20,10 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <QMessageBox>
-# include <QPushButton>
-# include <QRegularExpression>
-# include <QRegularExpressionMatch>
+#include <QMessageBox>
+#include <QPushButton>
+#include <QRegularExpression>
+#include <QRegularExpressionMatch>
 
 #include "Dialogs/DlgCreateNewPreferencePackImp.h"
 #include "ui_DlgCreateNewPreferencePack.h"
@@ -50,14 +50,26 @@ DlgCreateNewPreferencePackImp::DlgCreateNewPreferencePackImp(QWidget* parent)
     ui->lineEdit->setValidator(&_nameValidator);
     ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
     connect(ui->treeWidget, &QTreeWidget::itemChanged, this, &DlgCreateNewPreferencePackImp::onItemChanged);
-    connect(ui->lineEdit, &QLineEdit::textEdited, this, &DlgCreateNewPreferencePackImp::onLineEditTextEdited);
-    connect(ui->pushButton, &QPushButton::clicked, this, &DlgCreateNewPreferencePackImp::onBrowseButtonClicked);
+    connect(
+        ui->lineEdit,
+        &QLineEdit::textEdited,
+        this,
+        &DlgCreateNewPreferencePackImp::onLineEditTextEdited
+    );
+    connect(
+        ui->pushButton,
+        &QPushButton::clicked,
+        this,
+        &DlgCreateNewPreferencePackImp::onBrowseButtonClicked
+    );
 }
 
 
 DlgCreateNewPreferencePackImp::~DlgCreateNewPreferencePackImp() = default;
 
-void DlgCreateNewPreferencePackImp::setPreferencePackTemplates(const std::vector<Gui::PreferencePackManager::TemplateFile>& availableTemplates)
+void DlgCreateNewPreferencePackImp::setPreferencePackTemplates(
+    const std::vector<Gui::PreferencePackManager::TemplateFile>& availableTemplates
+)
 {
     ui->treeWidget->clear();
     _groups.clear();
@@ -65,7 +77,7 @@ void DlgCreateNewPreferencePackImp::setPreferencePackTemplates(const std::vector
     ui->treeWidget->header()->setDefaultSectionSize(250);
 
     _templates = availableTemplates;
-    for (const auto &t : _templates) {
+    for (const auto& t : _templates) {
 
         QTreeWidgetItem* group;
         if (auto foundGroup = _groups.find(t.group); foundGroup != _groups.end()) {
@@ -82,14 +94,17 @@ void DlgCreateNewPreferencePackImp::setPreferencePackTemplates(const std::vector
         itemColumns.push_back(QString::fromStdString(t.name));
         auto newItem = new QTreeWidgetItem(group, itemColumns);
         newItem->setCheckState(0, Qt::Checked);
-        if (group->checkState(0) != newItem->checkState(0))
+        if (group->checkState(0) != newItem->checkState(0)) {
             group->setCheckState(0, Qt::PartiallyChecked);
+        }
         newItem->setData(0, TemplateRole, QVariant::fromValue(t));
         group->addChild(newItem);
     }
 }
 
-void Gui::Dialog::DlgCreateNewPreferencePackImp::setPreferencePackNames(const std::vector<std::string>& usedNames)
+void Gui::Dialog::DlgCreateNewPreferencePackImp::setPreferencePackNames(
+    const std::vector<std::string>& usedNames
+)
 {
     _existingPackNames = usedNames;
 }
@@ -98,11 +113,17 @@ std::vector<Gui::PreferencePackManager::TemplateFile> DlgCreateNewPreferencePack
 {
     std::vector<Gui::PreferencePackManager::TemplateFile> results;
 
-    for (const auto& group : _groups)
-        for (int childIndex = 0; childIndex < group.second->childCount(); ++childIndex)
-            if (auto child = group.second->child(childIndex); child->checkState(0) == Qt::Checked)
-                if (child->data(0, TemplateRole).canConvert<Gui::PreferencePackManager::TemplateFile>())
-                    results.push_back(child->data(0, TemplateRole).value<Gui::PreferencePackManager::TemplateFile>());
+    for (const auto& group : _groups) {
+        for (int childIndex = 0; childIndex < group.second->childCount(); ++childIndex) {
+            if (auto child = group.second->child(childIndex); child->checkState(0) == Qt::Checked) {
+                if (child->data(0, TemplateRole).canConvert<Gui::PreferencePackManager::TemplateFile>()) {
+                    results.push_back(
+                        child->data(0, TemplateRole).value<Gui::PreferencePackManager::TemplateFile>()
+                    );
+                }
+            }
+        }
+    }
 
     return results;
 }
@@ -156,19 +177,25 @@ void DlgCreateNewPreferencePackImp::onLineEditTextEdited(const QString& text)
 
 void DlgCreateNewPreferencePackImp::onBrowseButtonClicked()
 {
-    _cfgFileDirectory = FileDialog::getExistingDirectory(this, tr("Export configuration"), _cfgFileDirectory);
+    _cfgFileDirectory
+        = FileDialog::getExistingDirectory(this, tr("Export configuration"), _cfgFileDirectory);
 }
 
 void Gui::Dialog::DlgCreateNewPreferencePackImp::accept()
 {
-    // Ensure that the chosen name is either unique, or that the user actually wants to overwrite the old one
+    // Ensure that the chosen name is either unique, or that the user actually wants to overwrite
+    // the old one
     if (const auto chosenName = ui->lineEdit->text().toStdString();
         std::ranges::find(_existingPackNames, chosenName) != _existingPackNames.end()) {
-        const auto result = QMessageBox::warning(this, tr("Pack already exists"),
-                                           tr("A preference pack with that name already exists. Overwrite it?"),
-                                           QMessageBox::Yes | QMessageBox::Cancel);
-        if (result == QMessageBox::Cancel)
+        const auto result = QMessageBox::warning(
+            this,
+            tr("Pack already exists"),
+            tr("A preference pack with that name already exists. Overwrite it?"),
+            QMessageBox::Yes | QMessageBox::Cancel
+        );
+        if (result == QMessageBox::Cancel) {
             return;
+        }
     }
     QDialog::accept();
 }

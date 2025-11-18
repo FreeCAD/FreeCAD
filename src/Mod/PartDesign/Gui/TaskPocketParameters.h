@@ -28,23 +28,30 @@
 
 class QComboBox;
 
-namespace App {
+namespace App
+{
 class Property;
 }
 
-namespace Gui {
+namespace Gui
+{
 class ViewProvider;
 }
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
 
-class TaskPocketParameters : public TaskExtrudeParameters
+class TaskPocketParameters: public TaskExtrudeParameters
 {
     Q_OBJECT
 
 public:
-    explicit TaskPocketParameters(ViewProviderPocket *PocketView, QWidget *parent = nullptr, bool newObj=false);
+    explicit TaskPocketParameters(
+        ViewProviderPocket* PocketView,
+        QWidget* parent = nullptr,
+        bool newObj = false
+    );
     ~TaskPocketParameters() override;
 
     void apply() override;
@@ -56,12 +63,12 @@ private:
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgPocketParameters : public TaskDlgExtrudeParameters
+class TaskDlgPocketParameters: public TaskDlgExtrudeParameters
 {
     Q_OBJECT
 
 public:
-    explicit TaskDlgPocketParameters(ViewProviderPocket *PocketView);
+    explicit TaskDlgPocketParameters(ViewProviderPocket* PocketView);
 
 protected:
     TaskExtrudeParameters* getTaskParameters() override
@@ -73,6 +80,6 @@ private:
     TaskPocketParameters* parameters;
 };
 
-} //namespace PartDesignGui
+}  // namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

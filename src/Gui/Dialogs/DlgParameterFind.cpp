@@ -303,9 +303,7 @@ void DlgParameterFind::accept()
             groupTree->setCurrentItem(next);
         }
         else {
-            QMessageBox::warning(this,
-                                 tr("Not found"),
-                                 tr("Cannot find the text: %1").arg(opt.text));
+            QMessageBox::warning(this, tr("Not found"), tr("Cannot find the text: %1").arg(opt.text));
         }
     }
 }

@@ -13,9 +13,9 @@
 using namespace geoff_geometry;
 
 #ifdef PEPSDLL
-#include "vdm.h"
-#include "pepsdll.h"
-#include "realds.h"
+# include "vdm.h"
+# include "pepsdll.h"
+# include "realds.h"
 #endif
 ////////////////////////////////////////////////////////////////////////////////////////////////
 // matrix
@@ -182,8 +182,8 @@ void Matrix::Multiply(Matrix& m)
 
     for (i = 0; i < 16; i++) {
         l = i - (k = (i % 4));
-        ret.e[i] =
-            m.e[l] * e[k] + m.e[l + 1] * e[k + 4] + m.e[l + 2] * e[k + 8] + m.e[l + 3] * e[k + 12];
+        ret.e[i] = m.e[l] * e[k] + m.e[l + 1] * e[k + 4] + m.e[l + 2] * e[k + 8]
+            + m.e[l + 3] * e[k + 12];
     }
 
     *this = ret;
@@ -231,9 +231,10 @@ int Matrix::IsMirrored()
     }
     else if (m_mirrored == -1) {
 
-        m_mirrored = ((e[0] * (e[5] * e[10] - e[6] * e[9]) - e[1] * (e[4] * e[10] - e[6] * e[8])
-                       + e[2] * (e[4] * e[9] - e[5] * e[8]))
-                      < 0);
+        m_mirrored
+            = ((e[0] * (e[5] * e[10] - e[6] * e[9]) - e[1] * (e[4] * e[10] - e[6] * e[8])
+                + e[2] * (e[4] * e[9] - e[5] * e[8]))
+               < 0);
     }
     return m_mirrored;
 }

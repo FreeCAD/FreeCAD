@@ -61,12 +61,14 @@ public:
     //@}
 
     /** Builds box from pairs of x,y,z values. */
-    inline explicit BoundBox3(Precision fMinX = std::numeric_limits<Precision>::max(),
-                              Precision fMinY = std::numeric_limits<Precision>::max(),
-                              Precision fMinZ = std::numeric_limits<Precision>::max(),
-                              Precision fMaxX = -std::numeric_limits<Precision>::max(),
-                              Precision fMaxY = -std::numeric_limits<Precision>::max(),
-                              Precision fMaxZ = -std::numeric_limits<Precision>::max());
+    inline explicit BoundBox3(
+        Precision fMinX = std::numeric_limits<Precision>::max(),
+        Precision fMinY = std::numeric_limits<Precision>::max(),
+        Precision fMinZ = std::numeric_limits<Precision>::max(),
+        Precision fMaxX = -std::numeric_limits<Precision>::max(),
+        Precision fMaxY = -std::numeric_limits<Precision>::max(),
+        Precision fMaxZ = -std::numeric_limits<Precision>::max()
+    );
     BoundBox3(const BoundBox3<Precision>& rcBB) = default;
     BoundBox3(BoundBox3<Precision>&& rcBB) noexcept = default;
     /** Builds box from an array of points. */
@@ -178,8 +180,7 @@ public:
      */
     inline Vector3<Precision> CalcPoint(unsigned short usPoint) const;
     /** Returns the plane of the given side. */
-    void
-    CalcPlane(unsigned short usPlane, Vector3<Precision>& rBase, Vector3<Precision>& rNormal) const;
+    void CalcPlane(unsigned short usPlane, Vector3<Precision>& rBase, Vector3<Precision>& rNormal) const;
     /** Calculates the two points of an edge.
      */
     bool CalcEdge(unsigned short usEdge, Vector3<Precision>& rcP0, Vector3<Precision>& rcP1) const;
@@ -187,36 +188,47 @@ public:
      * the base \a rcVct and the direction \a rcVctDir. \a rcVct must lie inside the
      * bounding box.
      */
-    bool IntersectionPoint(const Vector3<Precision>& rcVct,
-                           const Vector3<Precision>& rcVctDir,
-                           Vector3<Precision>& cVctRes,
-                           Precision epsilon) const;
+    bool IntersectionPoint(
+        const Vector3<Precision>& rcVct,
+        const Vector3<Precision>& rcVctDir,
+        Vector3<Precision>& cVctRes,
+        Precision epsilon
+    ) const;
     /** Checks for intersection with line incl. search tolerance. */
-    bool IsCutLine(const Vector3<Precision>& rcBase,
-                   const Vector3<Precision>& rcDir,
-                   Precision fTolerance = 0.0F) const;
+    bool IsCutLine(
+        const Vector3<Precision>& rcBase,
+        const Vector3<Precision>& rcDir,
+        Precision fTolerance = 0.0F
+    ) const;
     /** Checks if this plane specified by (point,normal) cuts this box.
      * @note It's up to the client programmer to make sure that this bounding box is valid.
      */
-    inline bool IsCutPlane(const Vector3<Precision>& rclBase,
-                           const Vector3<Precision>& rclNormal) const;
+    inline bool IsCutPlane(const Vector3<Precision>& rclBase, const Vector3<Precision>& rclNormal) const;
     /** Computes the intersection points of line and bounding box. */
-    bool IntersectWithLine(const Vector3<Precision>& rcBase,
-                           const Vector3<Precision>& rcDir,
-                           Vector3<Precision>& rcP0,
-                           Vector3<Precision>& rcP1) const;
+    bool IntersectWithLine(
+        const Vector3<Precision>& rcBase,
+        const Vector3<Precision>& rcDir,
+        Vector3<Precision>& rcP0,
+        Vector3<Precision>& rcP1
+    ) const;
     /** Computes the intersection point of line and a plane of the bounding box. */
-    bool IntersectPlaneWithLine(unsigned short usSide,
-                                const Vector3<Precision>& rcBase,
-                                const Vector3<Precision>& rcDir,
-                                Vector3<Precision>& rcP0) const;
+    bool IntersectPlaneWithLine(
+        unsigned short usSide,
+        const Vector3<Precision>& rcBase,
+        const Vector3<Precision>& rcDir,
+        Vector3<Precision>& rcP0
+    ) const;
     /** Returns the side of the bounding box the ray exits. */
-    typename BoundBox3<Precision>::SIDE GetSideFromRay(const Vector3<Precision>& rclPt,
-                                                       const Vector3<Precision>& rclDir) const;
+    typename BoundBox3<Precision>::SIDE GetSideFromRay(
+        const Vector3<Precision>& rclPt,
+        const Vector3<Precision>& rclDir
+    ) const;
     /** Returns the side of the bounding box the ray exits. */
-    typename BoundBox3<Precision>::SIDE GetSideFromRay(const Vector3<Precision>& rclPt,
-                                                       const Vector3<Precision>& rclDir,
-                                                       Vector3<Precision>& rcInt) const;
+    typename BoundBox3<Precision>::SIDE GetSideFromRay(
+        const Vector3<Precision>& rclPt,
+        const Vector3<Precision>& rclDir,
+        Vector3<Precision>& rcInt
+    ) const;
 
     /**
      * Searches for the closest point of the bounding box.
@@ -288,12 +300,14 @@ bool BoundBox3<Precision>::isOnRayS(Precision min, Precision max, Precision val)
 
 // NOLINTBEGIN(bugprone-easily-swappable-parameters)
 template<class Precision>
-inline BoundBox3<Precision>::BoundBox3(Precision fMinX,
-                                       Precision fMinY,
-                                       Precision fMinZ,
-                                       Precision fMaxX,
-                                       Precision fMaxY,
-                                       Precision fMaxZ)
+inline BoundBox3<Precision>::BoundBox3(
+    Precision fMinX,
+    Precision fMinY,
+    Precision fMinZ,
+    Precision fMaxX,
+    Precision fMaxY,
+    Precision fMaxZ
+)
     : MinX(fMinX)
     , MinY(fMinY)
     , MinZ(fMinZ)
@@ -377,8 +391,7 @@ inline bool BoundBox3<Precision>::operator&&(const BoundBox2d& rcBB) const
 }
 
 template<class Precision>
-inline BoundBox3<Precision>
-BoundBox3<Precision>::Intersected(const BoundBox3<Precision>& rcBB) const
+inline BoundBox3<Precision> BoundBox3<Precision>::Intersected(const BoundBox3<Precision>& rcBB) const
 {
     BoundBox3<Precision> cBBRes;
 
@@ -478,8 +491,10 @@ inline bool BoundBox3<Precision>::IsValid() const
 }
 
 template<class Precision>
-inline bool BoundBox3<Precision>::GetOctantFromVector(const Vector3<Precision>& rclVct,
-                                                      OCTANT& rclOctant) const
+inline bool BoundBox3<Precision>::GetOctantFromVector(
+    const Vector3<Precision>& rclVct,
+    OCTANT& rclOctant
+) const
 {
     if (!IsInBox(rclVct)) {
         return false;
@@ -500,8 +515,9 @@ inline bool BoundBox3<Precision>::GetOctantFromVector(const Vector3<Precision>& 
 }
 
 template<class Precision>
-inline BoundBox3<Precision>
-BoundBox3<Precision>::CalcOctant(typename BoundBox3<Precision>::OCTANT Octant) const
+inline BoundBox3<Precision> BoundBox3<Precision>::CalcOctant(
+    typename BoundBox3<Precision>::OCTANT Octant
+) const
 {
     BoundBox3<Precision> cOct(*this);
 
@@ -584,9 +600,11 @@ inline Vector3<Precision> BoundBox3<Precision>::CalcPoint(unsigned short usPoint
 
 // NOLINTBEGIN(bugprone-easily-swappable-parameters)
 template<class Precision>
-inline void BoundBox3<Precision>::CalcPlane(unsigned short usPlane,
-                                            Vector3<Precision>& rBase,
-                                            Vector3<Precision>& rNormal) const
+inline void BoundBox3<Precision>::CalcPlane(
+    unsigned short usPlane,
+    Vector3<Precision>& rBase,
+    Vector3<Precision>& rNormal
+) const
 // NOLINTEND(bugprone-easily-swappable-parameters)
 {
     switch (usPlane) {
@@ -625,9 +643,11 @@ inline void BoundBox3<Precision>::CalcPlane(unsigned short usPlane,
 }
 
 template<class Precision>
-inline bool BoundBox3<Precision>::CalcEdge(unsigned short usEdge,
-                                           Vector3<Precision>& rcP0,
-                                           Vector3<Precision>& rcP1) const
+inline bool BoundBox3<Precision>::CalcEdge(
+    unsigned short usEdge,
+    Vector3<Precision>& rcP0,
+    Vector3<Precision>& rcP1
+) const
 {
     switch (usEdge) {
         case TLB_TLF:
@@ -686,10 +706,12 @@ inline bool BoundBox3<Precision>::CalcEdge(unsigned short usEdge,
 }
 
 template<class Precision>
-inline bool BoundBox3<Precision>::IntersectionPoint(const Vector3<Precision>& rcVct,
-                                                    const Vector3<Precision>& rcVctDir,
-                                                    Vector3<Precision>& cVctRes,
-                                                    Precision epsilon) const
+inline bool BoundBox3<Precision>::IntersectionPoint(
+    const Vector3<Precision>& rcVct,
+    const Vector3<Precision>& rcVctDir,
+    Vector3<Precision>& cVctRes,
+    Precision epsilon
+) const
 {
     const unsigned short num = 6;
     bool rc = false;
@@ -721,9 +743,11 @@ inline bool BoundBox3<Precision>::IntersectionPoint(const Vector3<Precision>& rc
 }
 
 template<class Precision>
-inline bool BoundBox3<Precision>::IsCutLine(const Vector3<Precision>& rcBase,
-                                            const Vector3<Precision>& rcDir,
-                                            Precision fTolerance) const
+inline bool BoundBox3<Precision>::IsCutLine(
+    const Vector3<Precision>& rcBase,
+    const Vector3<Precision>& rcDir,
+    Precision fTolerance
+) const
 {
     const unsigned short num = 6;
     Precision fDist;
@@ -777,8 +801,10 @@ inline bool BoundBox3<Precision>::IsCutLine(const Vector3<Precision>& rcBase,
 }
 
 template<class Precision>
-inline bool BoundBox3<Precision>::IsCutPlane(const Vector3<Precision>& rclBase,
-                                             const Vector3<Precision>& rclNormal) const
+inline bool BoundBox3<Precision>::IsCutPlane(
+    const Vector3<Precision>& rclBase,
+    const Vector3<Precision>& rclNormal
+) const
 {
     const unsigned short num = 8;
     if (fabs(GetCenter().DistanceToPlane(rclBase, rclNormal)) < CalcDiagonalLength()) {
@@ -794,10 +820,12 @@ inline bool BoundBox3<Precision>::IsCutPlane(const Vector3<Precision>& rclBase,
 
 // NOLINTBEGIN(bugprone-easily-swappable-parameters)
 template<class Precision>
-inline bool BoundBox3<Precision>::IntersectWithLine(const Vector3<Precision>& rcBase,
-                                                    const Vector3<Precision>& rcDir,
-                                                    Vector3<Precision>& rcP0,
-                                                    Vector3<Precision>& rcP1) const
+inline bool BoundBox3<Precision>::IntersectWithLine(
+    const Vector3<Precision>& rcBase,
+    const Vector3<Precision>& rcDir,
+    Vector3<Precision>& rcP0,
+    Vector3<Precision>& rcP1
+) const
 // NOLINTEND(bugprone-easily-swappable-parameters)
 {
     const unsigned short num = 6;
@@ -819,18 +847,24 @@ inline bool BoundBox3<Precision>::IntersectWithLine(const Vector3<Precision>& rc
             switch (i) {
                 case LEFT:  // left and right plane
                 case RIGHT:
-                    checkIntersect(Vector3<Precision> {MinY, MaxY, clVectRes.y},
-                                   Vector3<Precision> {MinZ, MaxZ, clVectRes.z});
+                    checkIntersect(
+                        Vector3<Precision> {MinY, MaxY, clVectRes.y},
+                        Vector3<Precision> {MinZ, MaxZ, clVectRes.z}
+                    );
                     break;
                 case TOP:  // top and bottom plane
                 case BOTTOM:
-                    checkIntersect(Vector3<Precision> {MinX, MaxX, clVectRes.x},
-                                   Vector3<Precision> {MinZ, MaxZ, clVectRes.z});
+                    checkIntersect(
+                        Vector3<Precision> {MinX, MaxX, clVectRes.x},
+                        Vector3<Precision> {MinZ, MaxZ, clVectRes.z}
+                    );
                     break;
                 case FRONT:  // front and back plane
                 case BACK:
-                    checkIntersect(Vector3<Precision> {MinX, MaxX, clVectRes.x},
-                                   Vector3<Precision> {MinY, MaxY, clVectRes.y});
+                    checkIntersect(
+                        Vector3<Precision> {MinX, MaxX, clVectRes.x},
+                        Vector3<Precision> {MinY, MaxY, clVectRes.y}
+                    );
                     break;
             }
         }
@@ -857,10 +891,12 @@ inline bool BoundBox3<Precision>::IntersectWithLine(const Vector3<Precision>& rc
 
 // NOLINTBEGIN(bugprone-easily-swappable-parameters)
 template<class Precision>
-inline bool BoundBox3<Precision>::IntersectPlaneWithLine(unsigned short usSide,
-                                                         const Vector3<Precision>& rcBase,
-                                                         const Vector3<Precision>& rcDir,
-                                                         Vector3<Precision>& rcP0) const
+inline bool BoundBox3<Precision>::IntersectPlaneWithLine(
+    unsigned short usSide,
+    const Vector3<Precision>& rcBase,
+    const Vector3<Precision>& rcDir,
+    Vector3<Precision>& rcP0
+) const
 // NOLINTEND(bugprone-easily-swappable-parameters)
 {
     Precision value;
@@ -880,19 +916,21 @@ inline bool BoundBox3<Precision>::IntersectPlaneWithLine(unsigned short usSide,
 }
 
 template<class Precision>
-inline typename BoundBox3<Precision>::SIDE
-BoundBox3<Precision>::GetSideFromRay(const Vector3<Precision>& rclPt,
-                                     const Vector3<Precision>& rclDir) const
+inline typename BoundBox3<Precision>::SIDE BoundBox3<Precision>::GetSideFromRay(
+    const Vector3<Precision>& rclPt,
+    const Vector3<Precision>& rclDir
+) const
 {
     Vector3<Precision> cIntersection;
     return GetSideFromRay(rclPt, rclDir, cIntersection);
 }
 
 template<class Precision>
-inline typename BoundBox3<Precision>::SIDE
-BoundBox3<Precision>::GetSideFromRay(const Vector3<Precision>& rclPt,
-                                     const Vector3<Precision>& rclDir,
-                                     Vector3<Precision>& rcInt) const
+inline typename BoundBox3<Precision>::SIDE BoundBox3<Precision>::GetSideFromRay(
+    const Vector3<Precision>& rclPt,
+    const Vector3<Precision>& rclDir,
+    Vector3<Precision>& rcInt
+) const
 {
     Vector3<Precision> cP0;
     Vector3<Precision> cP1;
@@ -1027,9 +1065,10 @@ inline Vector3<Precision> BoundBox3<Precision>::GetMaximum() const
 template<class Precision>
 inline Precision BoundBox3<Precision>::CalcDiagonalLength() const
 {
-    return static_cast<Precision>(sqrt(((MaxX - MinX) * (MaxX - MinX))
-                                       + ((MaxY - MinY) * (MaxY - MinY))
-                                       + ((MaxZ - MinZ) * (MaxZ - MinZ))));
+    return static_cast<Precision>(sqrt(
+        ((MaxX - MinX) * (MaxX - MinX)) + ((MaxY - MinY) * (MaxY - MinY))
+        + ((MaxZ - MinZ) * (MaxZ - MinZ))
+    ));
 }
 
 template<class Precision>

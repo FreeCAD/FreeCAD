@@ -30,15 +30,17 @@
 
 #include <FCGlobal.h>
 
-namespace Gui {
+namespace Gui
+{
 
-class GuiExport SoU3DVectorOutput : public SoVectorOutput {
+class GuiExport SoU3DVectorOutput: public SoVectorOutput
+{
 public:
     SoU3DVectorOutput();
     ~SoU3DVectorOutput() override;
 
-    SbBool openFile (const char *filename) override;
-    void closeFile () override;
+    SbBool openFile(const char* filename) override;
+    void closeFile() override;
     std::fstream& getFileStream();
 
 private:
@@ -49,7 +51,8 @@ private:
  * @author Werner Mayer
  */
 class SoFCVectorizeU3DActionP;
-class GuiExport SoFCVectorizeU3DAction : public SoVectorizeAction {
+class GuiExport SoFCVectorizeU3DAction: public SoVectorizeAction
+{
     using inherited = SoVectorizeAction;
 
     SO_ACTION_HEADER(SoFCVectorizeU3DAction);
@@ -59,25 +62,25 @@ public:
     ~SoFCVectorizeU3DAction() override;
 
     static void initClass();
-    SoU3DVectorOutput * getU3DOutput() const;
+    SoU3DVectorOutput* getU3DOutput() const;
 
 protected:
-    void beginTraversal(SoNode * node) override;
-    void endTraversal(SoNode *node) override;
+    void beginTraversal(SoNode* node) override;
+    void endTraversal(SoNode* node) override;
     void printHeader() const override;
     void printFooter() const override;
     void printBackground() const override;
-    void printItem(const SoVectorizeItem * item) const override;
+    void printItem(const SoVectorizeItem* item) const override;
     void printViewport() const override;
 
 private:
-    static void actionMethod(SoAction *, SoNode *);
+    static void actionMethod(SoAction*, SoNode*);
 
 private:
     SoFCVectorizeU3DActionP* p;
     friend class SoFCVectorizeU3DActionP;
 };
 
-} // namespace Gui
+}  // namespace Gui
 
-#endif // GUI_SOFCVECTORIZEU3DACTION_H
+#endif  // GUI_SOFCVECTORIZEU3DACTION_H

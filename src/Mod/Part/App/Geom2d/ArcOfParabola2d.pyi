@@ -25,5 +25,4 @@ class ArcOfParabola2d(ArcOfConic2d):
     """The internal parabola representation."""
 
     @overload
-    def __init__(self) -> None:
-        ...
+    def __init__(self) -> None: ...

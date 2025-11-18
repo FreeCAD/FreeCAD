@@ -62,13 +62,15 @@ PyObject* PathSimPy::BeginSimulation(PyObject* args, PyObject* kwds)
     static const std::array<const char*, 3> kwlist {"stock", "resolution", nullptr};
     PyObject* pObjStock;
     float resolution;
-    if (!Base::Wrapped_ParseTupleAndKeywords(args,
-                                             kwds,
-                                             "O!f",
-                                             kwlist,
-                                             &(Part::TopoShapePy::Type),
-                                             &pObjStock,
-                                             &resolution)) {
+    if (!Base::Wrapped_ParseTupleAndKeywords(
+            args,
+            kwds,
+            "O!f",
+            kwlist,
+            &(Part::TopoShapePy::Type),
+            &pObjStock,
+            &resolution
+        )) {
         return nullptr;
     }
     PathSim* sim = getPathSimPtr();
@@ -86,8 +88,8 @@ PyObject* PathSimPy::SetToolShape(PyObject* args)
         return nullptr;
     }
     PathSim* sim = getPathSimPtr();
-    const TopoDS_Shape& toolShape =
-        static_cast<Part::TopoShapePy*>(pObjToolShape)->getTopoShapePtr()->getShape();
+    const TopoDS_Shape& toolShape
+        = static_cast<Part::TopoShapePy*>(pObjToolShape)->getTopoShapePtr()->getShape();
     sim->SetToolShape(toolShape, resolution);
     Py_IncRef(Py_None);
     return Py_None;
@@ -121,14 +123,16 @@ PyObject* PathSimPy::ApplyCommand(PyObject* args, PyObject* kwds)
     static const std::array<const char*, 3> kwlist {"position", "command", nullptr};
     PyObject* pObjPlace;
     PyObject* pObjCmd;
-    if (!Base::Wrapped_ParseTupleAndKeywords(args,
-                                             kwds,
-                                             "O!O!",
-                                             kwlist,
-                                             &(Base::PlacementPy::Type),
-                                             &pObjPlace,
-                                             &(Path::CommandPy::Type),
-                                             &pObjCmd)) {
+    if (!Base::Wrapped_ParseTupleAndKeywords(
+            args,
+            kwds,
+            "O!O!",
+            kwlist,
+            &(Base::PlacementPy::Type),
+            &pObjPlace,
+            &(Path::CommandPy::Type),
+            &pObjCmd
+        )) {
         return nullptr;
     }
     PathSim* sim = getPathSimPtr();

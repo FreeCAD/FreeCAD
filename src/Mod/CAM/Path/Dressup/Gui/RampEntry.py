@@ -182,18 +182,6 @@ class ObjectDressup:
             QT_TRANSLATE_NOOP("App::Property", "Ramping Method"),
         )
         obj.addProperty(
-            "App::PropertyEnumeration",
-            "RampFeedRate",
-            "FeedRate",
-            QT_TRANSLATE_NOOP("App::Property", "Which feed rate to use for ramping"),
-        )
-        obj.addProperty(
-            "App::PropertySpeed",
-            "CustomFeedRate",
-            "FeedRate",
-            QT_TRANSLATE_NOOP("App::Property", "Custom feed rate"),
-        )
-        obj.addProperty(
             "App::PropertyBool",
             "UseStartDepth",
             "StartDepth",
@@ -246,21 +234,6 @@ class ObjectDressup:
                 (translate("CAM_DressupRampEntry", "RampMethod3"), "RampMethod3"),
                 (translate("CAM_DressupRampEntry", "Helix"), "Helix"),
             ],
-            "RampFeedRate": [
-                (
-                    translate("CAM_DressupRampEntry", "Horizontal Feed Rate"),
-                    "Horizontal Feed Rate",
-                ),
-                (
-                    translate("CAM_DressupRampEntry", "Vertical Feed Rate"),
-                    "Vertical Feed Rate",
-                ),
-                (
-                    translate("CAM_DressupRampEntry", "Ramp Feed Rate"),
-                    "Ramp Feed Rate",
-                ),
-                (translate("CAM_DressupRampEntry", "Custom"), "Custom"),
-            ],
         }
 
         if dataType == "raw":
@@ -284,8 +257,10 @@ class ObjectDressup:
         return None
 
     def onChanged(self, obj, prop):
-        if prop in ["RampFeedRate", "UseStartDepth"]:
+        if prop in ["UseStartDepth"]:
             self.setEditorProperties(obj)
+        if prop == "Path" and obj.ViewObject:
+            obj.ViewObject.signalChangeIcon()
 
     def setEditorProperties(self, obj):
         if hasattr(obj, "UseStartDepth"):
@@ -294,13 +269,23 @@ class ObjectDressup:
             else:
                 obj.setEditorMode("DressupStartDepth", 2)
 
-        if obj.RampFeedRate == "Custom":
-            obj.setEditorMode("CustomFeedRate", 0)
-        else:
-            obj.setEditorMode("CustomFeedRate", 2)
-
     def onDocumentRestored(self, obj):
         self.setEditorProperties(obj)
+
+        # Remove RampFeedRate + CustomFeedRate properties, but keep the values around temporarily
+        # This is required for tool controller migration: if a TC migrates with onDocumentRestored
+        # called after this, the prior ramp feed rate still needs to be accessible.
+        if hasattr(obj, "RampFeedRate"):
+            obj.Proxy.RampFeedRate = obj.RampFeedRate
+            obj.removeProperty("RampFeedRate")
+
+        if hasattr(obj, "CustomFeedRate"):
+            tmp = obj.CustomFeedRate.Value
+            for prop, exp in obj.ExpressionEngine:
+                if prop == "CustomFeedRate":
+                    tmp = exp
+            obj.Proxy.CustomFeedRate = tmp
+            obj.removeProperty("CustomFeedRate")
 
     def setup(self, obj):
         obj.Angle = 60
@@ -359,7 +344,7 @@ class ObjectDressup:
             last_params.update(params)
 
             if cmd.Name in Path.Geom.CmdMoveAll and (
-                not "X" in params or not "Y" in params or not "Z" in params
+                "X" not in params or "Y" not in params or "Z" not in params
             ):
                 params["X"] = params.get("X", start_point[0])
                 params["Y"] = params.get("Y", start_point[1])
@@ -681,15 +666,7 @@ class ObjectDressup:
         vertFeed = tc.VertFeed.Value
         horizRapid = tc.HorizRapid.Value
         vertRapid = tc.VertRapid.Value
-
-        if obj.RampFeedRate == "Horizontal Feed Rate":
-            rampFeed = horizFeed
-        elif obj.RampFeedRate == "Vertical Feed Rate":
-            rampFeed = vertFeed
-        elif obj.RampFeedRate == "Ramp Feed Rate":
-            rampFeed = math.sqrt(pow(vertFeed, 2) + pow(horizFeed, 2))
-        else:
-            rampFeed = obj.CustomFeedRate.Value
+        rampFeed = tc.RampFeed.Value
 
         lastX = lastY = lastZ = 0
         for cmd in commands:
@@ -758,6 +735,12 @@ class ViewProviderDressup:
 
     def loads(self, state):
         return None
+
+    def getIcon(self):
+        if getattr(PathDressup.baseOp(self.obj), "Active", True):
+            return ":/icons/CAM_Dressup.svg"
+        else:
+            return ":/icons/CAM_OpActive.svg"
 
 
 class CommandPathDressupRampEntry:

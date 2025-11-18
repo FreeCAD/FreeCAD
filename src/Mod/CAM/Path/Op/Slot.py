@@ -963,9 +963,9 @@ class ObjectSlot(PathOp.ObjectOp):
                 deg -= 180.0
             return deg
 
-        # Reject triangular faces
-        if len(shape.Edges) < 4:
-            msg = translate("CAM_Slot", "A single selected face must have four edges minimum.")
+        # Reject incorrect faces
+        if len(shape.Edges) != 4:
+            msg = translate("CAM_Slot", "A single selected face must have four edges.")
             FreeCAD.Console.PrintError(msg + "\n")
             return False
 
@@ -984,12 +984,9 @@ class ObjectSlot(PathOp.ObjectOp):
         parallel_pairs = []
         parallel_flags = [0] * len(shape.Edges)
         current_flag = 1
-        last_edge_index = len(shape.Edges) - 1
+        last_edge_index = min(len(shape.Edges), len(edge_info_list)) - 1
 
-        for i in range(len(shape.Edges)):
-            if i >= last_edge_index:
-                continue
-
+        for i in range(last_edge_index):
             next_i = i + 1
             edge_a_info = edge_info_list[i]
             edge_b_info = edge_info_list[next_i]

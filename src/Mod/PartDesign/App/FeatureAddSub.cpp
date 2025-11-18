@@ -21,7 +21,7 @@
  ***************************************************************************/
 
 
-# include <Standard_Failure.hxx>
+#include <Standard_Failure.hxx>
 
 
 #include <App/FeaturePythonPyImp.h>
@@ -36,7 +36,8 @@
 
 using namespace PartDesign;
 
-namespace PartDesign {
+namespace PartDesign
+{
 
 extern bool getPDRefineModelParameter();
 
@@ -59,8 +60,9 @@ FeatureAddSub::Type FeatureAddSub::getAddSubType()
 
 short FeatureAddSub::mustExecute() const
 {
-    if (Refine.isTouched())
+    if (Refine.isTouched()) {
         return 1;
+    }
     return PartDesign::Feature::mustExecute();
 }
 
@@ -79,9 +81,8 @@ void FeatureAddSub::updatePreviewShape()
     const auto notifyWarning = [](const QString& message) {
         Base::Console().translatedUserWarning(
             "Preview",
-            tr("Failure while computing removed volume preview: %1")
-                .arg(message)
-                .toUtf8());
+            tr("Failure while computing removed volume preview: %1").arg(message).toUtf8()
+        );
     };
 
     // for subtractive shapes we want to also showcase removed volume, not only the tool
@@ -90,15 +91,20 @@ void FeatureAddSub::updatePreviewShape()
 
         if (const TopoShape& addSubShape = AddSubShape.getShape(); !addSubShape.isEmpty()) {
             try {
-                base.makeElementBoolean(Part::OpCodes::Common, { base, addSubShape });
-            } catch (Standard_Failure& e) {
+                base.makeElementBoolean(Part::OpCodes::Common, {base, addSubShape});
+            }
+            catch (Standard_Failure& e) {
                 notifyWarning(QString::fromUtf8(e.GetMessageString()));
-            } catch (Base::Exception& e) {
+            }
+            catch (Base::Exception& e) {
                 notifyWarning(QString::fromStdString(e.getMessage()));
             }
 
             if (base.isEmpty()) {
-                notifyWarning(tr("Resulting shape is empty. That may indicate that no material will be removed or a problem with the model."));
+                notifyWarning(
+                    tr("Resulting shape is empty. That may indicate that no material will be "
+                       "removed or a problem with the model.")
+                );
             }
 
             PreviewShape.setValue(base);
@@ -111,16 +117,21 @@ void FeatureAddSub::updatePreviewShape()
 
 }  // namespace PartDesign
 
-namespace App {
+namespace App
+{
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(PartDesign::FeatureAddSubPython, PartDesign::FeatureAddSub)
-template<> const char* PartDesign::FeatureAddSubPython::getViewProviderName() const {
+template<>
+const char* PartDesign::FeatureAddSubPython::getViewProviderName() const
+{
     return "PartDesignGui::ViewProviderPython";
 }
-template<> PyObject* PartDesign::FeatureAddSubPython::getPyObject() {
+template<>
+PyObject* PartDesign::FeatureAddSubPython::getPyObject()
+{
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        PythonObject = Py::Object(new FeaturePythonPyT<PartDesign::FeaturePy>(this),true);
+        PythonObject = Py::Object(new FeaturePythonPyT<PartDesign::FeaturePy>(this), true);
     }
     return Py::new_reference_to(PythonObject);
 }
@@ -128,10 +139,11 @@ template<> PyObject* PartDesign::FeatureAddSubPython::getPyObject() {
 
 // explicit template instantiation
 template class PartDesignExport FeaturePythonT<PartDesign::FeatureAddSub>;
-}
+}  // namespace App
 
 
-namespace PartDesign {
+namespace PartDesign
+{
 
 PROPERTY_SOURCE(PartDesign::FeatureAdditivePython, PartDesign::FeatureAddSubPython)
 
@@ -152,4 +164,4 @@ FeatureSubtractivePython::FeatureSubtractivePython()
 
 FeatureSubtractivePython::~FeatureSubtractivePython() = default;
 
-}
+}  // namespace PartDesign
