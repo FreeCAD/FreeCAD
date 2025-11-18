@@ -105,7 +105,7 @@ public:
     static PaperAttributes getPaperAttributes(TechDraw::DrawPage* pageObject);
     static PaperAttributes getPaperAttributes(ViewProviderPage* vpPage);
 
-    static void print(ViewProviderPage* vpPage, QPrinter* printer);
+    static void print(ViewProviderPage* vpPage, QPrinter* printer, bool isPreview = false);
     static void printPdf(ViewProviderPage* vpPage, const std::string& file);
     static void printAll(QPrinter* printer, App::Document* doc);
     static void printAllPdf(QPrinter* printer, App::Document* doc);

@@ -21,7 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-import os
+from typing import Any, Dict
 from Path.Post.Processor import PostProcessor
 import Path
 import FreeCAD
@@ -30,12 +30,14 @@ Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 translate = FreeCAD.Qt.translate
 
-debug = True
+debug = False
 if debug:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
     Path.Log.trackModule(Path.Log.thisModule())
 else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
+
+Values = Dict[str, Any]
 
 
 class Generic(PostProcessor):
@@ -43,44 +45,50 @@ class Generic(PostProcessor):
         super().__init__(
             job,
             tooltip=translate("CAM", "Generic post processor"),
-            tooltipargs=["arg1", "arg2"],
-            units="kg",
+            tooltipargs=[],
+            units="Metric",
         )
         Path.Log.debug("Generic post processor initialized")
 
-    def export(self):
-        Path.Log.debug("Exporting the job")
+    def init_values(self, values: Values) -> None:
+        """Initialize values that are used throughout the postprocessor."""
+        #
+        super().init_values(values)
+        values["POSTPROCESSOR_FILE_NAME"] = __name__
+        values["MACHINE_NAME"] = "Generic"
 
-        postables = self._buildPostList()
-        Path.Log.debug(f"postables count: {len(postables)}")
-
-        g_code_sections = []
-        for idx, section in enumerate(postables):
-            partname, sublist = section
-
-            # here is where the sections are converted to gcode.
-            g_code_sections.append((idx, partname))
-
-        return g_code_sections
+        # Set any values here that need to override the default values set
+        # in the parent routine.
+        #
+        # Any commands in this value will be output after the header and
+        # safety block at the beginning of the G-code file.
+        #
+        values["PREAMBLE"] = """"""
+        #
+        # Any commands in this value will be output as the last commands
+        # in the G-code file.
+        #
+        values["POSTAMBLE"] = """"""
 
     @property
     def tooltip(self):
 
         tooltip = """
         This is a generic post processor.
-        It doesn't do anything yet because we haven't immplemented it.
-
-        Implementing it would be a good idea
+        It exposes functionality of the base post processor.
         """
         return tooltip
 
     @property
     def tooltipArgs(self):
-        argtooltip = """
-        --arg1: This is the first argument
-        --arg2: This is the second argument
+        argtooltip = super().tooltipArgs
 
-        """
+        # One could add additional arguments here.
+        # argtooltip += """
+        # --arg1: This is the first argument
+        # --arg2: This is the second argument
+
+        # """
         return argtooltip
 
     @property

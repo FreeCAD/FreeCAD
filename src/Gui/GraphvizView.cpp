@@ -502,7 +502,7 @@ bool GraphvizView::onMsg(const char* pMsg, const char**)
         QString selectedFilter;
         QString fn = Gui::FileDialog::getSaveFileName(
             this,
-            tr("Export graph"),
+            tr("Export Graph"),
             QString(),
             filter.join(QLatin1String(";;")),
             &selectedFilter
@@ -604,7 +604,7 @@ void GraphvizView::printPdf()
     QString selectedFilter;
     QString fn = Gui::FileDialog::getSaveFileName(
         this,
-        tr("Export graph"),
+        tr("Export Graph"),
         QString(),
         filter.join(QLatin1String(";;")),
         &selectedFilter

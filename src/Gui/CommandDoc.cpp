@@ -136,7 +136,7 @@ void StdCmdOpen::activated(int iMsg)
     QString selectedFilter;
     QStringList fileList = FileDialog::getOpenFileNames(
         getMainWindow(),
-        QObject::tr("Open document"),
+        QObject::tr("Open Document"),
         QString(),
         formatList,
         &selectedFilter
@@ -150,7 +150,7 @@ void StdCmdOpen::activated(int iMsg)
     if (dict.isEmpty()) {
         QMessageBox::critical(
             getMainWindow(),
-            qApp->translate("StdCmdOpen", "Cannot open file"),
+            qApp->translate("StdCmdOpen", "Cannot Open File"),
             qApp->translate("StdCmdOpen", "Loading the file %1 is not supported").arg(fileList.front())
         );
     }
@@ -233,7 +233,7 @@ void StdCmdImport::activated(int iMsg)
     QString selectedFilter = QString::fromStdString(hPath->GetASCII("FileImportFilter"));
     QStringList fileList = FileDialog::getOpenFileNames(
         getMainWindow(),
-        QObject::tr("Import file"),
+        QObject::tr("Import File"),
         QString(),
         formatList,
         &selectedFilter
@@ -431,7 +431,7 @@ void StdCmdExport::activated(int iMsg)
     if (selection.empty()) {
         QMessageBox::warning(
             Gui::getMainWindow(),
-            QCoreApplication::translate("StdCmdExport", "No selection"),
+            QCoreApplication::translate("StdCmdExport", "No Selection"),
             QCoreApplication::translate(
                 "StdCmdExport",
                 "Select objects to export before using the Export command."
@@ -515,7 +515,7 @@ void StdCmdExport::activated(int iMsg)
     // Launch the file selection modal dialog
     QString filename = FileDialog::getSaveFileName(
         getMainWindow(),
-        QObject::tr("Export file"),
+        QObject::tr("Export File"),
         defaultFilename,
         formatList,
         &selectedFilter
@@ -581,7 +581,7 @@ void StdCmdMergeProjects::activated(int iMsg)
     QString exe = qApp->applicationName();
     QString project = FileDialog::getOpenFileName(
         Gui::getMainWindow(),
-        QString::fromUtf8(QT_TR_NOOP("Merge document")),
+        QString::fromUtf8(QT_TR_NOOP("Merge Document")),
         FileDialog::getWorkingDirectory(),
         QString::fromUtf8(QT_TR_NOOP("%1 document (*.FCStd)")).arg(exe)
     );
@@ -593,7 +593,7 @@ void StdCmdMergeProjects::activated(int iMsg)
         if (proj == info) {
             QMessageBox::critical(
                 Gui::getMainWindow(),
-                QString::fromUtf8(QT_TR_NOOP("Merge document")),
+                QString::fromUtf8(QT_TR_NOOP("Merge Document")),
                 QString::fromUtf8(QT_TR_NOOP("Cannot merge document with itself."))
             );
             return;
@@ -658,7 +658,7 @@ StdCmdExportDependencyGraph::StdCmdExportDependencyGraph()
     : Command("Std_ExportDependencyGraph")
 {
     sGroup = "Tools";
-    sMenuText = QT_TR_NOOP("Export Dependency &Graph");
+    sMenuText = QT_TR_NOOP("Export Dependency &Graph…");
     sToolTipText = QT_TR_NOOP("Exports the dependency graph as a Graphviz (.gv) file");
     sStatusTip = sToolTipText;
     sWhatsThis = "Std_ExportDependencyGraph";
@@ -673,7 +673,7 @@ void StdCmdExportDependencyGraph::activated(int iMsg)
     QString format = QStringLiteral("%1 (*.gv)").arg(Gui::GraphvizView::tr("Graphviz format"));
     QString fn = Gui::FileDialog::getSaveFileName(
         Gui::getMainWindow(),
-        Gui::GraphvizView::tr("Export graph"),
+        Gui::GraphvizView::tr("Export Graph"),
         QString(),
         format
     );
@@ -1319,7 +1319,7 @@ void StdCmdDuplicateSelection::activated(int iMsg)
         if (!unsaved.empty()) {
             QMessageBox::critical(
                 getMainWindow(),
-                QObject::tr("Unsaved document"),
+                QObject::tr("Unsaved Document"),
                 QObject::tr(
                     "The exported object contains an external link. Save the document."
                     "at least once before exporting."
@@ -1341,7 +1341,7 @@ void StdCmdDuplicateSelection::activated(int iMsg)
         if (hasXLink && !doc->isSaved()) {
             auto ret = QMessageBox::question(
                 getMainWindow(),
-                qApp->translate("Std_DuplicateSelection", "Object dependencies"),
+                qApp->translate("Std_DuplicateSelection", "Object Dependencies"),
                 qApp->translate(
                     "Std_DuplicateSelection",
                     "To link to external objects, the document must be saved at least once.\n"
@@ -1531,7 +1531,7 @@ void StdCmdDelete::activated(int iMsg)
 
                 auto ret = QMessageBox::warning(
                     Gui::getMainWindow(),
-                    qApp->translate("Std_Delete", "Object dependencies"),
+                    qApp->translate("Std_Delete", "Object Dependencies"),
                     bodyMessage,
                     QMessageBox::Yes,
                     QMessageBox::No
@@ -1574,7 +1574,7 @@ void StdCmdDelete::activated(int iMsg)
     catch (const Base::Exception& e) {
         QMessageBox::critical(
             getMainWindow(),
-            QObject::tr("Delete failed"),
+            QObject::tr("Delete Failed"),
             QString::fromLatin1(e.what())
         );
         e.reportException();
@@ -1582,7 +1582,7 @@ void StdCmdDelete::activated(int iMsg)
     catch (...) {
         QMessageBox::critical(
             getMainWindow(),
-            QObject::tr("Delete failed"),
+            QObject::tr("Delete Failed"),
             QStringLiteral("Unknown error")
         );
     }
@@ -1639,7 +1639,7 @@ void StdCmdRefresh::activated([[maybe_unused]] int iMsg)
     catch (Base::Exception& /*e*/) {
         auto ret = QMessageBox::warning(
             getMainWindow(),
-            QObject::tr("Dependency error"),
+            QObject::tr("Dependency Error"),
             qApp->translate(
                 "Std_Refresh",
                 "The document contains dependency cycles.\n"
@@ -2121,7 +2121,7 @@ protected:
         if (failed) {
             QMessageBox::critical(
                 getMainWindow(),
-                QObject::tr("Expression error"),
+                QObject::tr("Expression Error"),
                 QObject::tr(
                     "Failed to parse some of the expressions.\n"
                     "Check the report view for more details."
@@ -2155,7 +2155,7 @@ protected:
             abortCommand();
             QMessageBox::critical(
                 getMainWindow(),
-                QObject::tr("Failed to paste expressions"),
+                QObject::tr("Failed to Paste Expressions"),
                 QString::fromLatin1(e.what())
             );
             e.reportException();
