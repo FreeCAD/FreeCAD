@@ -173,6 +173,7 @@ SET(PathPythonToolsGui_SRCS
 SET(PathPythonToolsToolBit_SRCS
     Path/Tool/toolbit/__init__.py
     Path/Tool/toolbit/util.py
+    Path/Tool/toolbit/migration.py
 )
 
 SET(PathPythonToolsToolBitMixins_SRCS
