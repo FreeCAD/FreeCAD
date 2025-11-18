@@ -43,12 +43,13 @@ TopoShape TopoShapeCache::Ancestry::_getTopoShape(const TopoShape& parent, int i
 {
     TopoShape& foundTS = topoShapes[index - 1];
     TopoShape ts;
-    
+
     if (foundTS.isNull()) {
         ts = shapes.FindKey(index);
         ts.initCache();
         ts._cache->subLocation = ts._Shape.Location();
-    } else {
+    }
+    else {
         ts = foundTS;
     }
 
@@ -84,16 +85,17 @@ TopoShape TopoShapeCache::Ancestry::_getTopoShape(const TopoShape& parent, int i
         // separate these two to avoid invalidating cache.
         res._subLocation = parent._subLocation * parent._cache->subLocation;
         res._parentCache = parent._parentCache;
-    } 
+    }
     else {
         res._parentCache = owner->shared_from_this();
     }
 
-    // the subelement doesn't have an element map, lets find it by mapping the parent shape onto the subelement.
+    // the subelement doesn't have an element map, lets find it by mapping the parent shape onto the
+    // subelement.
     if (res.elementMap(false) == 0 && res._parentCache->cachedElementMap) {
         res.flushElementMap();
     }
-    
+
     return res;
 }
 

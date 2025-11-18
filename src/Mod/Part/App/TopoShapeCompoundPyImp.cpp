@@ -79,10 +79,10 @@ int TopoShapeCompoundPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         Py::Sequence list(pcObj);
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapePy::Type))) {
-                const TopoShape& sh = *(static_cast<TopoShapePy*>((*it).ptr())->
-                    getTopoShapePtr());
-                if (!sh.isNull())
+                const TopoShape& sh = *(static_cast<TopoShapePy*>((*it).ptr())->getTopoShapePtr());
+                if (!sh.isNull()) {
                     shapes.push_back(sh);
+                }
             }
         }
     }

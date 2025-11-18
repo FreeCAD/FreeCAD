@@ -133,8 +133,7 @@ int TopoShapeWirePy::PyInit(PyObject* args, PyObject* /*kwd*/)
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             PyObject* item = (*it).ptr();
             if (PyObject_TypeCheck(item, &(Part::TopoShapePy::Type))) {
-                const TopoShape& sh 
-                    = *(static_cast<Part::TopoShapePy*>(item)->getTopoShapePtr());
+                const TopoShape& sh = *(static_cast<Part::TopoShapePy*>(item)->getTopoShapePtr());
                 if (sh.isNull()) {
                     PyErr_SetString(PyExc_TypeError, "given shape is invalid");
                     return -1;
