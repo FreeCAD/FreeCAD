@@ -90,6 +90,7 @@ class Snapper:
 
     def __init__(self):
         self.activeview = None
+        self.toolbar = None
         self.lastObj = []
         self.radius = 0
         self.constraintAxis = None
@@ -1527,11 +1528,10 @@ class Snapper:
 
     def get_snap_toolbar(self):
         """Get the snap toolbar."""
-        if not (hasattr(self, "toolbar") and self.toolbar):
+        if self.toolbar is None:
             mw = Gui.getMainWindow()
             self.toolbar = mw.findChild(QtWidgets.QToolBar, "Draft Snap")
-        if self.toolbar:
-            return self.toolbar
+        return self.toolbar
 
     def toggleGrid(self):
         """Toggle FreeCAD Draft Grid."""
@@ -1553,22 +1553,21 @@ class Snapper:
 
     def toggle_snap(self, snap, set_to=None):
         """Sets the given snap on/off according to the given parameter"""
-        if set_to:  # set mode
-            if set_to is True:
-                if not snap in self.active_snaps:
-                    self.active_snaps.append(snap)
-                status = True
-            elif set_to is False:
-                if snap in self.active_snaps:
-                    self.active_snaps.remove(snap)
-                status = False
-        else:  # toggle mode, default
+        if set_to is None:  # toggle mode, default
             if not snap in self.active_snaps:
                 self.active_snaps.append(snap)
                 status = True
-            elif snap in self.active_snaps:
+            else:
                 self.active_snaps.remove(snap)
                 status = False
+        elif set_to is True:
+            if not snap in self.active_snaps:
+                self.active_snaps.append(snap)
+            status = True
+        else:
+            if snap in self.active_snaps:
+                self.active_snaps.remove(snap)
+            status = False
         self.save_snap_state()
         return status
 
