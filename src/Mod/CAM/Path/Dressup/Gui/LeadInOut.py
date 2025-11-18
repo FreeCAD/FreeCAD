@@ -264,8 +264,6 @@ class ObjectDressup:
             self.direction = self.baseOp.Direction
         else:
             self.direction = "CCW"
-        self.entranceFeed = self.toolController.LeadInFeed.Value
-        self.exitFeed = self.toolController.LeadOutFeed.Value
 
         obj.Path = self.generateLeadInOutCurve(obj)
 
@@ -686,7 +684,7 @@ class ObjectDressup:
                 lead.append(self.createStraightMove(obj, lineBegin, begin))
 
             # prepend "LineZ" style lead-in - vertical inclined line
-            # Should be apply only on straight Path segment
+            # Should be applied only on straight Path segment
             elif styleIn == "LineZ":
                 # tangent vector in XY plane
                 # normal vector is vertical
@@ -717,9 +715,11 @@ class ObjectDressup:
                 tangent = -self.angleToVector(angleTangent) * tangentLength
                 normal = App.Vector(0, 0, normalLength)
                 arcBegin = begin + tangent + normal
-                lead.extend(self.createArcZMoveDown(obj, arcBegin, begin, arcRadius))
+                lead.extend(
+                    self.createArcZMoveDown(obj, arcBegin, begin, arcRadius)
+                )
 
-            # replace 'begin' position by first lead-in command
+            # replace 'begin' position with first lead-in command
             begin = lead[0].positionBegin()
 
             if styleIn in ("Arc3d", "Line3d"):
@@ -743,12 +743,12 @@ class ObjectDressup:
 
         if obj.StyleOut == "Helix" and outInstrPrev:
             """change Z for previous helix lead-out
-            Can not do it in getLeadEnd(),
-            because no any information about next moves there while creating Lead-out"""
+            Unable to do it in getLeadEnd(), due to lack of
+            existing information about next moves while creating Lead-out"""
             posPrevZ = outInstrPrev.positionEnd().z
             if posPrevZ > beginZ:
                 """previous profile upper than this
-                mean procesing one stepdown profile"""
+                mean processing one stepdown profile"""
                 halfStepZ = (posPrevZ - beginZ) / 2
                 outInstrPrev.param["Z"] = posPrevZ - halfStepZ
 
@@ -805,7 +805,9 @@ class ObjectDressup:
                     * normalLength
                 )
                 arcEnd = end + tangent + normal
-                lead.append(self.createArcMove(obj, end, arcEnd, normalMax, obj.InvertOut))
+                lead.append(
+                    self.createArcMove(obj, end, arcEnd, normalMax, obj.InvertOut)
+                )
 
             # append "Line" style lead-out
             # Line3d the same as Line, but increased Z start point
@@ -862,7 +864,7 @@ class ObjectDressup:
             else:
                 lead[-1].param["Z"] = self.startDepth
 
-        # append travel moves to clearance height after finish all profiles
+        # append travel moves to clearance height after finishing all profiles
         if last and obj.StyleOut != "No Retract":
             lead += self.getTravelEnd(obj)
 
@@ -1043,7 +1045,7 @@ class ObjectDressup:
                 self.angleToVector(angleTangent + self.getArcPathDir(obj, cmdName)) * normalLength
             )
             arcEnd = arcBegin + tangent + normal
-            command = self.createArcMoveN(obj, arcBegin, arcEnd, arcOffset, cmdName, self.horizFeed)
+            command = self.createArcMoveN(obj, arcBegin, arcEnd, arcOffset, cmdName)
 
         return command
 
@@ -1076,7 +1078,7 @@ class ObjectDressup:
             )
             arcBegin = arcEnd + tangent + normal
             arcOffset = arcCenter - arcBegin
-            command = self.createArcMoveN(obj, arcBegin, arcEnd, arcOffset, cmdName, self.horizFeed)
+            command = self.createArcMoveN(obj, arcBegin, arcEnd, arcOffset, cmdName)
             return command
 
         return None
@@ -1086,7 +1088,7 @@ class ObjectDressup:
         self.source = source
         maneuver = PathLanguage.Maneuver()
 
-        # Knowing weather a given instruction is the first cutting move is easy,
+        # Knowing whether a given instruction is the first cutting move is easy,
         # we just use a flag and set it to false afterwards. To find the last
         # cutting move we need to search the list in reverse order.
 
@@ -1103,10 +1105,10 @@ class ObjectDressup:
 
         # Process all instructions
         for i, instr in enumerate(source):
-            # Process not mill instruction
+            # Process without mill instruction
             if not self.isCuttingMove(instr):
                 if not instr.isMove():
-                    # non-move instruction get added verbatim
+                    # non-move instruction gets added verbatim
                     commands.append(instr)
                 else:
                     moveDir = self.getMoveDir(instr)
