@@ -1555,6 +1555,14 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
     def autoClosedOnTransactionChange(self):
         self.reject()
 
+    def autoClosedOnDeletedDocument(self):
+        global activeTask
+        activeTask = None
+        Gui.Selection.removeSelectionGate()
+        Gui.Selection.removeObserver(self)
+        Gui.Selection.setSelectionStyle(Gui.Selection.SelectionStyle.NormalSelection)
+        App.closeActiveTransaction(True)
+
     def deactivate(self):
         global activeTask
         activeTask = None
