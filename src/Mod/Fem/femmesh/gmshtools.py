@@ -491,7 +491,7 @@ class GmshTools:
             search_ele_in_shape_to_mesh = False
             if not self.part_obj.Shape.isSame(sub[0].Shape):
                 Console.PrintLog(
-                    "  One element of the mesh refinement {} is "
+                    "One element of the mesh refinement {} is "
                     "not an element of the Part to mesh.\n"
                     "But we are going to try to find it in "
                     "the Shape to mesh :-)\n".format(mr_obj.Name)
@@ -523,8 +523,8 @@ class GmshTools:
             duplicates = duplicates_set.intersection(elements)
             if duplicates:
                 Console.PrintError(
-                                "The elements {} of the mesh distance {} have been added "
-                                "to another mesh distance already.\n".format(
+                                "The elements {} of the mesh refinement {} have been added"
+                                "to another mesh refinement already.\n".format(
                                     duplicates, mr_obj.Name
                                 )
                             )
@@ -957,6 +957,7 @@ class GmshTools:
     def get_transfinite_data(self):
 
         # transfinite curves
+        edge_map = {}
         transfinite_curve_list = self._get_definitions_of_type("Fem::MeshTransfiniteCurve")
         if not transfinite_curve_list:
             pass
@@ -973,37 +974,13 @@ class GmshTools:
             ):
                 self.outputCompoundWarning()
 
-            for mr_obj in transfinite_curve_list:
-                if mr_obj.Suppressed:
-                    continue
-
-                if mr_obj.References:
-
-                    # collect all elements!
-                    elements = self._get_reference_elements(mr_obj, self.transfinite_curve_elements)
-                    if not elements:
-                        Console.PrintError( ("The transfinite curve {} is not used because no unique"
-                                             "elements are selected.\n").format(mr_obj.Name))
-                        continue
-
-                    idx_dict = self._element_list_to_shape_idx_dict(elements)
-                    if idx_dict["Edge"]:
-
-                        definition = tft.TFCurveDefinition.from_tfcurve_obj(mr_obj)
-                        prefix = definition.tag_prefix()
-                        settings = definition.to_gmshtools_setting()
-                        settings["tag"] = ",".join(prefix+str(i) for i in idx_dict["Edge"])
-
-                        self.transfinite_curve_settings.append(settings)
-
-                else:
-                    Console.PrintError(
-                        "The transfinite curve {} is not used to create the mesh "
-                        "because the reference list is empty.\n".format(mr_obj.Name)
-                    )
-
+            print("setup transfinite edge map")
+            edge_map = tft.setup_transfinite_edge_map(self.part_obj.Shape, transfinite_curve_list)
+            # the settings are only created at the very end, when we know if surface and volume atomation added
+            # addiotional transfinite curves
 
         # transfinite surfaces
+        surface_map = {}
         transfinite_surface_list = self._get_definitions_of_type("Fem::MeshTransfiniteSurface")
         if not transfinite_surface_list:
             pass
@@ -1020,19 +997,31 @@ class GmshTools:
             ):
                 self.outputCompoundWarning()
 
+            surface_map =  tft.setup_transfinite_surface_map(self.part_obj.Shape, transfinite_surface_list)
+
+            # handle surface automation
             for mr_obj in transfinite_surface_list:
+
                 if mr_obj.Suppressed:
                     continue
 
                 if mr_obj.References:
 
                     # collect all elements!
-                    elements = self._get_reference_elements(mr_obj, self.transfinite_surface_elements)
+                    elements = self._get_reference_elements(
+                        mr_obj, self.transfinite_surface_elements
+                    )
                     if not elements:
-                        Console.PrintError( ("The transfinite surface {} is not used because no unique"
-                                             "elements are selected.\n").format(mr_obj.Name))
+                        Console.PrintError(
+                            (
+                                "The transfinite surface {} is not used because no unique"
+                                "elements are selected.\n"
+                            ).format(mr_obj.Name)
+                        )
                         continue
 
+                    # We handle surface settings here, and not via surface map only, as it could be a n-sided face with vertices,
+                    # and that is not handled by the transfinitetools yet
                     idx_dict = self._element_list_to_shape_idx_dict(elements)
                     if idx_dict["Face"]:
                         settings = {}
@@ -1046,27 +1035,23 @@ class GmshTools:
 
                         self.transfinite_surface_settings.append(settings)
 
-                        # if automation is enabled we create more transfinite curves
-                        if mr_obj.UseAutomation:
-                            if idx_dict["Vertex"]:
-                                Console.PrintError( ("Transfinite surface automation in {} cannot not work with vertex selection.\n").format(mr_obj.Name))
-                                continue
 
-                            definition = tft.TFCurveDefinition.from_tfcurve_obj(mr_obj)
-                            edge_sets = tft.get_automatic_transfinite_edge_sets(self.part_obj.Shape, elements, transfinite_curve_list, definition)
-                            for auto_definition, auto_edges in edge_sets.items():
-                                prefix = auto_definition.tag_prefix()
-                                setting = auto_definition.to_gmshtools_setting()
-                                setting["tag"] = ",".join(prefix+str(i) for i in auto_edges)
-
-                                self.transfinite_curve_settings.append(setting)
-
+                    if mr_obj.UseAutomation:
+                        definition = tft.TFCurveDefinition.from_tfcurve_obj(mr_obj)
+                        try:
+                            tft.add_automatic_transfinite_edges_from_faces(edge_map, self.part_obj.Shape, elements, definition)
+                        except Exception as e:
+                            # error: some user settings are incompatible, abort all transfinite
+                            Console.PrintError(str(e))
+                            self.transfinite_surface_settings = []
+                            return
 
                 else:
                     Console.PrintError(
                         "The transfinite surface {} is not used to create the mesh "
                         "because the reference list is empty.\n".format(mr_obj.Name)
                     )
+
 
         # transfinite volumes
         transfinite_volume_list = self._get_definitions_of_type("Fem::MeshTransfiniteVolume")
@@ -1109,12 +1094,40 @@ class GmshTools:
 
                         self.transfinite_volume_settings.append(settings)
 
+                    if mr_obj.UseAutomation:
+
+                        curve_definition = tft.TFCurveDefinition.from_tfcurve_obj(mr_obj)
+                        surf_definition = tft.TFSurfaceDefinition.from_tfsurface_obj(mr_obj)
+                        try:
+                            tft.add_automatic_transfinite_edges_from_solids(edge_map, self.part_obj.Shape, elements, curve_definition)
+                            tft.add_automatic_transfinite_surfaces_from_solids(surface_map, self.part_obj.Shape, elements, surf_definition)
+                        except Exception as e:
+                            # error: some user settings are incompatible, abort all transfinite
+                            Console.PrintError(str(e))
+                            self.transfinite_surface_settings = []
+                            self.transfinite_volume_settings = []
+                            return
+
                 else:
                     Console.PrintError(
                         "The transfinite volume {} is not used to create the mesh "
                         "because the reference list is empty.\n".format(mr_obj.Name)
                     )
 
+        # with all automation steps handled we create the transfinite curves settings!
+        definition_map = tft.map_to_definitions(edge_map, self.part_obj.Shape)
+        for definition, edges in definition_map.items():
+            prefix = definition.tag_prefix()
+            setting = definition.to_gmshtools_setting()
+            setting["tag"] = ",".join(prefix+str(i) for i in edges)
+            self.transfinite_curve_settings.append(setting)
+
+        # and remaining transfinite surface settings!
+        definition_map = tft.map_to_definitions(surface_map, self.part_obj.Shape, only_by_creator = tft.Creation.AutomaticVolume)
+        for definition, surfaces in definition_map.items():
+            setting = definition.to_gmshtools_setting()
+            setting["surfaces"] = ",".join(prefix+str(i) for i in surfaces)
+            self.transfinite_surface_settings.append(setting)
 
 
     def write_groups(self, geo):
@@ -1227,7 +1240,7 @@ class GmshTools:
                 geo.write( f' = {{ {setting["nodes"]} }}' )
             if "orientation" in setting:
                 geo.write(f' {setting["orientation"]}')
-            if "recombine" in setting:
+            if "recombine" in setting and setting["recombine"]:
                 geo.write(";\n")
                 geo.write(f'Recombine Surface {{ {setting["surfaces"]} }}')
 
