@@ -189,7 +189,7 @@ class ExplodedView:
                 # Use the placement from our calculation dictionary, which tracks
                 # changes from previous steps.
                 current_placement = calculated_placements.get(obj.Name, obj.Placement)
-                
+
                 # The part's shape is already placed, so its BBox.Center is the
                 # correct global starting position for the explosion line.
                 start_pos = obj.Shape.BoundBox.Center
@@ -226,10 +226,10 @@ class ExplodedView:
 
         # We need to include ALL parts of the assembly, not just the moved ones.
         assembly = self.getAssembly(viewObj)
-        all_parts = UtilsAssembly.getMovablePartsWithin(
-            assembly, True
-        )
-        visible_parts = [part for part in all_parts if hasattr(part, "Visibility") and part.Visibility]
+        all_parts = UtilsAssembly.getMovablePartsWithin(assembly, True)
+        visible_parts = [
+            part for part in all_parts if hasattr(part, "Visibility") and part.Visibility
+        ]
 
         for part in visible_parts:
             # Get the shape. It's crucial to use .copy()
