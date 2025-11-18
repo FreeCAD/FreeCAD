@@ -161,11 +161,35 @@
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="RunKinematicsButton">
-     <property name="text">
-      <string>Generate</string>
-     </property>
-    </widget>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="RunKinematicsButton">
+       <property name="text">
+        <string>Generate</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QToolButton" name="SaveAnimationButton">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>Save the animation as a GIF or video file.</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="Icons/resource.qrc">
+         <normaloff>:/icons/document-save.svg</normaloff>:/icons/document-save.svg</iconset>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="QGroupBox" name="groupBox_player">
