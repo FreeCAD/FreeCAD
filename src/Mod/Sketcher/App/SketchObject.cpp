@@ -44,6 +44,7 @@
 #include <GeomAPI_ProjectPointOnCurve.hxx>
 #include <GeomAPI_ProjectPointOnSurf.hxx>
 #include <GeomConvert_BSplineCurveKnotSplitting.hxx>
+#include <GeomConvert.hxx>
 #include <GeomLProp_CLProps.hxx>
 #include <Geom_BSplineCurve.hxx>
 #include <Geom_Circle.hxx>
@@ -8392,6 +8393,13 @@ void processEdge2(TopoDS_Edge& projEdge, std::vector<std::unique_ptr<Part::Geome
             GeometryFacade::setConstruction(aoe, true);
             geos.emplace_back(aoe);
         }
+    }
+    else if (projCurve.GetType() == GeomAbs_OffsetCurve) {
+        // this will only be an approximation
+        Handle(Geom_BSplineCurve) bspOCC = GeomConvert::CurveToBSplineCurve(projCurve.OffsetCurve());
+        auto* bsp = new Part::GeomBSplineCurve(bspOCC);
+        GeometryFacade::setConstruction(bsp, true);
+        geos.emplace_back(bsp);
     }
     else {
         throw Base::NotImplementedError("Not yet supported geometry for external geometry");
