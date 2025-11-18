@@ -94,6 +94,7 @@
 #include <Geom_Ellipse.hxx>
 #include <Geom_Hyperbola.hxx>
 #include <Geom_Line.hxx>
+#include <Geom_OffsetCurve.hxx>
 #include <Geom_Parabola.hxx>
 #include <Geom_Plane.hxx>
 #include <Geom_SphericalSurface.hxx>
@@ -1393,6 +1394,9 @@ unsigned int TopoShape::getMemSize() const
                             memsize += curve.NbKnots() * sizeof(Standard_Real);
                             memsize += curve.NbPoles() * sizeof(Standard_Real);
                             memsize += curve.NbPoles() * sizeof(Geom_CartesianPoint);
+                            break;
+                        case GeomAbs_OffsetCurve:
+                            memsize += sizeof(Geom_OffsetCurve);
                             break;
                         case GeomAbs_OtherCurve:
                             // What kind of curve should this be?
