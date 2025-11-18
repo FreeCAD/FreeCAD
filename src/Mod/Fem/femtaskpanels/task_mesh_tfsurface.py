@@ -133,6 +133,7 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
     @QtCore.Slot(bool)
     def recombineChanged(self, value):
         self.obj.Recombine = value
+        self.parameter_widget.Orientation.setDisabled(self.obj.Recombine)
 
     @QtCore.Slot(int)
     def orientationChanged(self, value):

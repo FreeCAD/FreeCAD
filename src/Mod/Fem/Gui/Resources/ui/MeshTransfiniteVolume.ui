@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>385</width>
-    <height>304</height>
+    <width>444</width>
+    <height>504</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -160,7 +160,7 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>All volume surfaces must be transfinite. If the surfaces have different mesh types (quads vs. triangles) the volume must also be meshed with mixed elements.</string>
+        <string>All volume surfaces must be transfinite. If the surfaces have different mesh types (quads vs. triangles) the volume must also be meshed with mixed elements enabled.</string>
        </property>
        <property name="wordWrap">
         <bool>true</bool>
@@ -199,8 +199,150 @@
      </layout>
     </widget>
    </item>
+   <item>
+    <widget class="QGroupBox" name="Automation">
+     <property name="toolTip">
+      <string>If activated all edges and surface belonging to the selected volumes, that do not have a transfinite definitions already, become transfinite automatically. 
+Use strategically placed transfinite curve and surface definitions to guide the automatic algorithm.
+
+Notes:
+1. User defined curves propagated to the opposite edges of faces, over all selected faces.
+2. Works with lany number of volumes, either connected or unconnected </string>
+     </property>
+     <property name="title">
+      <string>Auto apply transfinite surfaces and curves</string>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <layout class="QFormLayout" name="formLayout_2">
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Nodes</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_8">
+        <property name="text">
+         <string>Distribution</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <item>
+         <widget class="QComboBox" name="Distribution">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <item>
+           <property name="text">
+            <string>Constant</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Bump</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Bump Inverted</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Progression</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Progression Inverted</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::DoubleSpinBox" name="Coefficient">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="decimals">
+           <number>3</number>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="1" column="1">
+       <widget class="Gui::IntSpinBox" name="Nodes">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimum">
+         <number>2</number>
+        </property>
+        <property name="maximum">
+         <number>99999</number>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>Surface</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QComboBox" name="Orientation">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="Recombine">
+          <property name="text">
+           <string>Recombine</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::IntSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>Gui/SpinBox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::DoubleSpinBox</class>
+   <extends>QDoubleSpinBox</extends>
+   <header>Gui/SpinBox.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

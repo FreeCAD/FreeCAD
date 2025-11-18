@@ -48,6 +48,55 @@ class MeshTransfiniteVolume(base_femmeshelement.BaseFemMeshElement):
                 group="Transfinite",
                 doc="Creates mixt element types when the bounding surfaces mix quads and triangels",
                 value=False,
+            ),
+            _PropHelper(
+                type="App::PropertyEnumeration",
+                name="TriangleOrientation",
+                group="Automation",
+                doc="Define how the triangles are oriented within the transfinite mesh (if not recombined) for surfaces that are automatically converted to be transfinite",
+                value=["Left", "Right",  "AlternateRight", "AlternateLeft"],
+            ),
+            _PropHelper(
+                type="App::PropertyBool",
+                name="Recombine",
+                group="Automation",
+                doc="Define if the triangles on a surface shall be recombined into quads, if that surface is automatically converted to be transfinite",
+                value=False,
+            ),
+            _PropHelper(
+                type="App::PropertyBool",
+                name="UseAutomation",
+                group="Automation",
+                doc="Enables the automatic application of transfinite curve and surface definitions on all yet undefined edges",
+                value=False
+            ),
+            _PropHelper(
+                type="App::PropertyInteger",
+                name="Nodes",
+                group="Automation",
+                doc="The number of nodes distributed over each edge that is automatically converted to a transfinite curve",
+                value=10,
+            ),
+            _PropHelper(
+                type="App::PropertyFloat",
+                name="Coefficient",
+                group="Automation",
+                doc="The coefficient used by distributon algorithms (except constant) for automatically converted transfinite curves",
+                value=1.2,
+            ),
+            _PropHelper(
+                type="App::PropertyEnumeration",
+                name="Distribution",
+                group="Automation",
+                doc="The algorithm used to distribute the nodes on the edge for automatically converted transfinite curves",
+                value=["Constant", "Bump", "Progression"],
+            ),
+            _PropHelper(
+                type="App::PropertyBool",
+                name="Invert",
+                group="Automation",
+                doc="Inverts the direction of of the non-constant distributions",
+                value=False,
             ),]
 
         return super()._get_properties() + props
