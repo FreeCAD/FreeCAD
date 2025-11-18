@@ -24,7 +24,6 @@
 import re
 import os
 import time
-import numpy
 import cv2
 from PIL import Image
 import tempfile
