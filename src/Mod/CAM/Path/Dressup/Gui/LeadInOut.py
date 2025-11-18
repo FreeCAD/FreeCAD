@@ -715,9 +715,7 @@ class ObjectDressup:
                 tangent = -self.angleToVector(angleTangent) * tangentLength
                 normal = App.Vector(0, 0, normalLength)
                 arcBegin = begin + tangent + normal
-                lead.extend(
-                    self.createArcZMoveDown(obj, arcBegin, begin, arcRadius)
-                )
+                lead.extend(self.createArcZMoveDown(obj, arcBegin, begin, arcRadius))
 
             # replace 'begin' position with first lead-in command
             begin = lead[0].positionBegin()
@@ -805,9 +803,7 @@ class ObjectDressup:
                     * normalLength
                 )
                 arcEnd = end + tangent + normal
-                lead.append(
-                    self.createArcMove(obj, end, arcEnd, normalMax, obj.InvertOut)
-                )
+                lead.append(self.createArcMove(obj, end, arcEnd, normalMax, obj.InvertOut))
 
             # append "Line" style lead-out
             # Line3d the same as Line, but increased Z start point
