@@ -37,6 +37,7 @@ import PathGui
 import PathScripts.PathUtils as PathUtils
 import importlib
 from PySide.QtCore import QT_TRANSLATE_NOOP
+from Path.Geom import CmdMoveRapid
 
 from PySide import QtCore, QtGui, QtWidgets
 
@@ -174,10 +175,36 @@ class ViewProvider(object):
         """getSelectionFactory() ... return a factory function that can be used to create the selection observer."""
         return PathSelection.select(self.OpName)
 
+    def __find_first_feed_move_index(self, cmd_list):
+        """
+        Returns the index of the first command in path_object.Path.Commands
+        that performs a feed-rate move (G1, G2, or G3 with an F parameter).
+        Returns None if no such move is found.
+        """
+
+        for i, cmd in enumerate(cmd_list):
+            # skip comments
+            if cmd.Name[0] in ("(", "#", ";"):
+                continue
+            # skip rapid moves
+            if cmd.Name in CmdMoveRapid:
+                continue
+            # return the index of first thing that is not rapid or comment
+            return i
+        return 0
+
+
     def updateData(self, obj, prop):
         """updateData(obj, prop) ... callback whenever a property of the receiver's model is assigned.
         The callback is forwarded to the task panel - in case an editing session is ongoing."""
-        # Path.Log.track(obj.Label, prop) # Creates a lot of noise
+        #Path.Log.track(obj.Label, prop) # Creates a lot of noise
+
+        # This is experimental.  If it works, it should be turned into a preference setting
+        if prop == "Path":
+            cam_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/CAM")
+            hide_first_rapid = cam_prefs.GetBool("HideFirstRapid", False)
+            if hide_first_rapid:
+                obj.ViewObject.StartIndex = self.__find_first_feed_move_index(obj.Path.Commands)
         if self.panel:
             self.panel.updateData(obj, prop)
 
