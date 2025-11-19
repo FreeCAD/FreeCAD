@@ -217,6 +217,8 @@ public:
     void isolateComponents(std::set<App::DocumentObject*>& parts, IsolateMode mode);
     void isolateJointReferences(App::DocumentObject* joint, IsolateMode mode = IsolateMode::Transparent);
     void clearIsolate();
+    bool explodeTemporarily(App::DocumentObject* explodedView);
+    void clearTemporaryExplosion();
 
     DragMode dragMode;
     bool canStartDragging;
@@ -274,6 +276,7 @@ private:
     };
 
     std::unordered_map<App::DocumentObject*, ComponentState> stateBackup;
+    App::DocumentObject* temporaryExplosion {nullptr};
     App::DocumentObject* isolatedJoint {nullptr};
     bool isolatedJointVisibilityBackup {false};
 
