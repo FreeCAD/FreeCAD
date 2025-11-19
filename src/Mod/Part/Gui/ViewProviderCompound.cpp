@@ -23,9 +23,9 @@
  ***************************************************************************/
 
 
-# include <TopExp.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
-# include <QMessageBox>
+#include <TopExp.hxx>
+#include <TopTools_IndexedMapOfShape.hxx>
+#include <QMessageBox>
 
 #include <App/Document.h>
 #include <Gui/Application.h>
@@ -37,7 +37,7 @@
 
 using namespace PartGui;
 
-PROPERTY_SOURCE(PartGui::ViewProviderCompound,PartGui::ViewProviderPart)
+PROPERTY_SOURCE(PartGui::ViewProviderCompound, PartGui::ViewProviderPart)
 
 ViewProviderCompound::ViewProviderCompound()
 {
@@ -51,17 +51,17 @@ std::vector<App::DocumentObject*> ViewProviderCompound::claimChildren() const
     return getObject<Part::Compound>()->Links.getValues();
 }
 
-bool ViewProviderCompound::onDelete(const std::vector<std::string> &subNames)
+bool ViewProviderCompound::onDelete(const std::vector<std::string>& subNames)
 {
     // get the input shapes
     Part::Compound* pComp = getObject<Part::Compound>();
     std::vector<App::DocumentObject*> pLinks = pComp->Links.getValues();
-    
+
     if (!pLinks.empty()) {
         // check group deletion marker -> it means group called this VP to delete it's content
         // so delete everything recursively
         bool inGroupDeletion = !subNames.empty() && subNames[0] == "group_recursive_deletion";
-        
+
         if (inGroupDeletion) {
             for (auto pLink : pLinks) {
                 if (pLink && pLink->isAttachedToDocument() && !pLink->isRemoving()) {
@@ -71,19 +71,19 @@ bool ViewProviderCompound::onDelete(const std::vector<std::string> &subNames)
             return true;
         }
         QMessageBox::StandardButton choice = QMessageBox::question(
-            Gui::getMainWindow(), 
+            Gui::getMainWindow(),
             QObject::tr("Delete compound content?"),
             QObject::tr("The compound '%1' has %2 child objects. Do you want to delete them as well?")
                 .arg(QString::fromUtf8(pComp->Label.getValue()))
                 .arg(pLinks.size()),
-            QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel, 
+            QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel,
             QMessageBox::No
         );
-            
+
         if (choice == QMessageBox::Cancel) {
             return false;
         }
-        
+
         if (choice == QMessageBox::Yes) {
             for (auto pLink : pLinks) {
                 if (pLink && pLink->isAttachedToDocument() && !pLink->isRemoving()) {
@@ -94,8 +94,9 @@ bool ViewProviderCompound::onDelete(const std::vector<std::string> &subNames)
         }
 
         for (auto pLink : pLinks) {
-            if (pLink)
+            if (pLink) {
                 Gui::Application::Instance->showViewProvider(pLink);
+            }
         }
     }
 
@@ -106,8 +107,8 @@ void ViewProviderCompound::updateData(const App::Property* prop)
 {
     PartGui::ViewProviderPart::updateData(prop);
     if (prop->is<Part::PropertyShapeHistory>()) {
-        const std::vector<Part::ShapeHistory>& hist = static_cast<const Part::PropertyShapeHistory*>
-            (prop)->getValues();
+        const std::vector<Part::ShapeHistory>& hist
+            = static_cast<const Part::PropertyShapeHistory*>(prop)->getValues();
         Part::Compound* objComp = getObject<Part::Compound>();
         std::vector<App::DocumentObject*> sources = objComp->Links.getValues();
 
@@ -128,8 +129,9 @@ void ViewProviderCompound::updateData(const App::Property* prop)
 
             sources = filter;
         }
-        if (hist.size() != sources.size())
+        if (hist.size() != sources.size()) {
             return;
+        }
 
         const TopoDS_Shape& compShape = objComp->Shape.getValue();
         TopTools_IndexedMapOfShape compMap;
@@ -138,18 +140,22 @@ void ViewProviderCompound::updateData(const App::Property* prop)
         std::vector<App::Material> compCol;
         compCol.resize(compMap.Extent(), this->ShapeAppearance[0]);
 
-        int index=0;
-        for (std::vector<App::DocumentObject*>::iterator it = sources.begin(); it != sources.end(); ++it, ++index) {
+        int index = 0;
+        for (std::vector<App::DocumentObject*>::iterator it = sources.begin(); it != sources.end();
+             ++it, ++index) {
             Part::Feature* objBase = dynamic_cast<Part::Feature*>(Part::Feature::getShapeOwner(*it));
-            if (!objBase)
+            if (!objBase) {
                 continue;
+            }
 
             const TopoDS_Shape& baseShape = objBase->Shape.getValue();
 
             TopTools_IndexedMapOfShape baseMap;
             TopExp::MapShapes(baseShape, TopAbs_FACE, baseMap);
 
-            auto vpBase = dynamic_cast<PartGui::ViewProviderPart*>(Gui::Application::Instance->getViewProvider(objBase));
+            auto vpBase = dynamic_cast<PartGui::ViewProviderPart*>(
+                Gui::Application::Instance->getViewProvider(objBase)
+            );
             if (vpBase) {
                 std::vector<App::Material> baseCol = vpBase->ShapeAppearance.getValues();
                 applyTransparency(vpBase->Transparency.getValue(), baseCol);
@@ -172,9 +178,12 @@ void ViewProviderCompound::updateData(const App::Property* prop)
         this->ShapeAppearance.setValues(compCol);
     }
     else if (prop->isDerivedFrom<App::PropertyLinkList>()) {
-        const std::vector<App::DocumentObject *>& pBases = static_cast<const App::PropertyLinkList*>(prop)->getValues();
+        const std::vector<App::DocumentObject*>& pBases
+            = static_cast<const App::PropertyLinkList*>(prop)->getValues();
         for (auto pBase : pBases) {
-            if (pBase) Gui::Application::Instance->hideViewProvider(pBase);
+            if (pBase) {
+                Gui::Application::Instance->hideViewProvider(pBase);
+            }
         }
     }
 }
@@ -219,4 +228,3 @@ void ViewProviderCompound::dropObject(App::DocumentObject* obj)
     pShapes.push_back(obj);
     pComp->Links.setValues(pShapes);
 }
-

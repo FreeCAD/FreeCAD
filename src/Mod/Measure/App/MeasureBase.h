@@ -133,16 +133,17 @@ public:
 
         auto handler = getGeometryHandler(mod);
         if (!handler) {
-            Base::Console().log("MeasureBaseExtendable::getMeasureInfo: No geometry handler "
-                                "available for submitted element type");
+            Base::Console().log(
+                "MeasureBaseExtendable::getMeasureInfo: No geometry handler "
+                "available for submitted element type"
+            );
             return nullptr;
         }
 
         return handler(subObjT);
     }
 
-    static void addGeometryHandlers(const std::vector<std::string>& modules,
-                                    GeometryHandler callback)
+    static void addGeometryHandlers(const std::vector<std::string>& modules, GeometryHandler callback)
     {
         // TODO: this will replace a callback with a later one.  Should we check that there isn't
         // already a handler defined for this module?

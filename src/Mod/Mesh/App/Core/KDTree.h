@@ -48,8 +48,7 @@ public:
     void Optimize();
 
     PointIndex FindNearest(const Base::Vector3f& p, Base::Vector3f& n, float&) const;
-    PointIndex
-    FindNearest(const Base::Vector3f& p, float max_dist, Base::Vector3f& n, float&) const;
+    PointIndex FindNearest(const Base::Vector3f& p, float max_dist, Base::Vector3f& n, float&) const;
     PointIndex FindExact(const Base::Vector3f& p) const;
     void FindInRange(const Base::Vector3f&, float, std::vector<PointIndex>&) const;
 

@@ -37,7 +37,7 @@ std::string BodyBasePy::representation() const
     return {"<body object>"};
 }
 
-PyObject *BodyBasePy::getCustomAttributes(const char* /*attr*/) const
+PyObject* BodyBasePy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }
@@ -46,5 +46,3 @@ int BodyBasePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
     return 0;
 }
-
-

@@ -2207,7 +2207,8 @@ def is_debasable(wall):
 def debaseWall(wall):
     """
     Converts a line-based Arch Wall to be parametrically driven by its own
-    properties and Placement, removing its dependency on a Base object.
+    properties (Length, Width, Height) and Placement, removing its dependency
+    on a Base object.
 
     This operation preserves the wall's exact size and global position.
     It is only supported for walls based on a single, straight line.
@@ -2282,18 +2283,22 @@ def debaseWall(wall):
         length = wall.Length.Value
         width = wall.Width.Value
 
-        # Apply changes
+        # 1. Apply the final placement first.
         wall.Placement = final_placement
 
-        # Remove the base. The recompute triggered by this change will already have the correct
-        # placement to work with.
+        # 2. Now, remove the base. The recompute triggered by this change
+        #    will already have the correct placement to work with.
         wall.Base = None
-        # Clear internal caches that might reference the old base geometry.
+
+        # 3. Clear internal caches and set final properties.
         if hasattr(wall.Proxy, "connectEdges"):
             wall.Proxy.connectEdges = []
+
         wall.Height = height
         wall.Length = length
         wall.Width = width
+
+        # 4. Add an explicit recompute to ensure the final state is settled.
         doc.recompute()
 
     except Exception as e:

@@ -31,9 +31,10 @@
 
 #include <Mod/Part/PartGlobal.h>
 
-namespace PartGui {
+namespace PartGui
+{
 
-class PartGuiExport ViewProviderCustom : public ViewProviderPart
+class PartGuiExport ViewProviderCustom: public ViewProviderPart
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderCustom);
 
@@ -52,8 +53,7 @@ protected:
 using ViewProviderPython = Gui::ViewProviderFeaturePythonT<ViewProviderPart>;
 using ViewProviderCustomPython = Gui::ViewProviderFeaturePythonT<ViewProviderCustom>;
 
-} // namespace PartGui
+}  // namespace PartGui
 
 
-#endif // PARTGUI_VIEWPROVIDERPYTHON_H
-
+#endif  // PARTGUI_VIEWPROVIDERPYTHON_H

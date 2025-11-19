@@ -110,78 +110,6 @@
     </message>
   </context>
   <context>
-    <name>CmdRobotInsertKukaIR125</name>
-    <message>
-      <location filename="../../CommandInsertRobot.cpp" line="190"/>
-      <source>Robot</source>
-      <translation>რობოტი</translation>
-    </message>
-    <message>
-      <location filename="../../CommandInsertRobot.cpp" line="191"/>
-      <source>Kuka IR125</source>
-      <translation>Kuka IR125</translation>
-    </message>
-    <message>
-      <location filename="../../CommandInsertRobot.cpp" line="192"/>
-      <source>Inserts a Kuka IR125 robot into the scene</source>
-      <translation>ჩასვამს რობოტს Kuka IR125 სცენაში</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdRobotInsertKukaIR16</name>
-    <message>
-      <location filename="../../CommandInsertRobot.cpp" line="95"/>
-      <source>Robot</source>
-      <translation>რობოტი</translation>
-    </message>
-    <message>
-      <location filename="../../CommandInsertRobot.cpp" line="96"/>
-      <source>Kuka IR16</source>
-      <translation>Kuka IR16</translation>
-    </message>
-    <message>
-      <location filename="../../CommandInsertRobot.cpp" line="97"/>
-      <source>Inserts a Kuka IR16 robot into the scene</source>
-      <translation>ჩასვამს რობოტს Kuka IR16 სცენაში</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdRobotInsertKukaIR210</name>
-    <message>
-      <location filename="../../CommandInsertRobot.cpp" line="143"/>
-      <source>Robot</source>
-      <translation>რობოტი</translation>
-    </message>
-    <message>
-      <location filename="../../CommandInsertRobot.cpp" line="144"/>
-      <source>Kuka IR210</source>
-      <translation>Kuka IR210</translation>
-    </message>
-    <message>
-      <location filename="../../CommandInsertRobot.cpp" line="145"/>
-      <source>Inserts a Kuka IR210 robot into the scene</source>
-      <translation>ჩასვამს რობოტს Kuka IR210 სცენაში</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdRobotInsertKukaIR500</name>
-    <message>
-      <location filename="../../CommandInsertRobot.cpp" line="44"/>
-      <source>Robot</source>
-      <translation>რობოტი</translation>
-    </message>
-    <message>
-      <location filename="../../CommandInsertRobot.cpp" line="45"/>
-      <source>Kuka IR500</source>
-      <translation>Kuka IR500</translation>
-    </message>
-    <message>
-      <location filename="../../CommandInsertRobot.cpp" line="46"/>
-      <source>Inserts a Kuka IR500 into the document</source>
-      <translation>ჩასვამს Kuka IR500-ს დოკუმენტში</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdRobotInsertWaypoint</name>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="87"/>
@@ -364,16 +292,16 @@
   <context>
     <name>QObject</name>
     <message>
+      <location filename="../../CommandInsertRobot.cpp" line="258"/>
       <location filename="../../CommandExport.cpp" line="60"/>
       <location filename="../../CommandExport.cpp" line="135"/>
+      <location filename="../../Command.cpp" line="69"/>
+      <location filename="../../Command.cpp" line="128"/>
+      <location filename="../../Command.cpp" line="234"/>
       <location filename="../../CommandTrajectory.cpp" line="104"/>
       <location filename="../../CommandTrajectory.cpp" line="171"/>
       <location filename="../../CommandTrajectory.cpp" line="190"/>
       <location filename="../../CommandTrajectory.cpp" line="461"/>
-      <location filename="../../CommandInsertRobot.cpp" line="258"/>
-      <location filename="../../Command.cpp" line="69"/>
-      <location filename="../../Command.cpp" line="128"/>
-      <location filename="../../Command.cpp" line="234"/>
       <source>Wrong selection</source>
       <translation>არასწორი არჩევანი</translation>
     </message>
@@ -390,8 +318,8 @@
     <message>
       <location filename="../../CommandExport.cpp" line="61"/>
       <location filename="../../CommandExport.cpp" line="136"/>
-      <location filename="../../CommandTrajectory.cpp" line="105"/>
       <location filename="../../Command.cpp" line="235"/>
+      <location filename="../../CommandTrajectory.cpp" line="105"/>
       <source>Select one Robot and one Trajectory object.</source>
       <translation>აირჩიეთ ერთი რობოტი და ერთი ტრაექტორიის ობიექტი.</translation>
     </message>
@@ -483,16 +411,6 @@
       <location filename="../../ViewProviderTrajectory.cpp" line="142"/>
       <source>Modify</source>
       <translation>შეცვლა</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="71"/>
-      <source>No robot files installed</source>
-      <translation>რობოტის ფაილები დაყენებული არაა</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="72"/>
-      <source>Visit %1 and copy the robot VRML and CSV files to %2</source>
-      <translation type="unfinished">Visit %1 and copy the robot VRML and CSV files to %2</translation>
     </message>
   </context>
   <context>

@@ -83,7 +83,7 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="112"/>
       <source>Geometry to B-Spline</source>
-      <translation>Geometri til B-Spline</translation>
+      <translation>Geometri til B-spline</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="113"/>
@@ -109,12 +109,12 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="261"/>
       <source>Decrease B-Spline Degree</source>
-      <translation type="unfinished">Decrease B-Spline Degree</translation>
+      <translation>Formindsker B-splinens orden</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="262"/>
       <source>Decreases the degree of the B-spline</source>
-      <translation type="unfinished">Decreases the degree of the B-spline</translation>
+      <translation>Formindsker ordenen af de polynomier der danner B-splinen</translation>
     </message>
   </context>
   <context>
@@ -135,12 +135,12 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="188"/>
       <source>Increase B-Spline Degree</source>
-      <translation type="unfinished">Increase B-Spline Degree</translation>
+      <translation>Forøg B-splinens orden</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="189"/>
       <source>Increases the degree of the B-spline</source>
-      <translation type="unfinished">Increases the degree of the B-spline</translation>
+      <translation>Forøger ordenen af de polynomier der danner B-splinen</translation>
     </message>
   </context>
   <context>
@@ -171,7 +171,7 @@
     <message>
       <location filename="../../Command.cpp" line="668"/>
       <source>Some of the selected objects depend on the sketch to be mapped. Circular dependencies are not allowed.</source>
-      <translation type="unfinished">Some of the selected objects depend on the sketch to be mapped. Circular dependencies are not allowed.</translation>
+      <translation>Nogle af de valgte objekter afhænger af den skitse der ønskes fastgjort. Cirkulære afhængigheder er ikke tilladt.</translation>
     </message>
   </context>
   <context>
@@ -576,7 +576,7 @@ ugyldige relationer og fejlbehæftet geometri</translation>
       <location filename="../../CommandConstraints.cpp" line="7601"/>
       <location filename="../../CommandConstraints.cpp" line="7625"/>
       <source>Add tangent constraint point</source>
-      <translation type="unfinished">Add tangent constraint point</translation>
+      <translation>Tilføj tangentielt relationspunkt</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2479"/>
@@ -644,7 +644,7 @@ ugyldige relationer og fejlbehæftet geometri</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10457"/>
       <source>Toggle constraint to driving/reference</source>
-      <translation type="unfinished">Toggle constraint to driving/reference</translation>
+      <translation>Skift relation mellem definerende og reference</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="246"/>
@@ -682,12 +682,12 @@ ugyldige relationer og fejlbehæftet geometri</translation>
       <translation>Flet skitser</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="130"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="133"/>
       <source>Add sketch line</source>
       <translation>Tilføj en linje</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="496"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="498"/>
       <source>Add sketch box</source>
       <translation type="unfinished">Add sketch box</translation>
     </message>
@@ -753,7 +753,7 @@ ugyldige relationer og fejlbehæftet geometri</translation>
       <translation>Tilføj ekstern geometri</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerSlot.h" line="173"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="174"/>
       <source>Add slot</source>
       <translation>Tilføj oval</translation>
     </message>
@@ -765,12 +765,12 @@ ugyldige relationer og fejlbehæftet geometri</translation>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="214"/>
       <source>Increase B-spline degree</source>
-      <translation type="unfinished">Increase B-spline degree</translation>
+      <translation>Forøg B-splinens orden</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="289"/>
       <source>Decrease B-spline degree</source>
-      <translation type="unfinished">Decrease B-spline degree</translation>
+      <translation>Formindsk B-splinens orden</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="414"/>
@@ -854,7 +854,7 @@ ugyldige relationer og fejlbehæftet geometri</translation>
       <translation>Omdøb skitserelation</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1558"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1561"/>
       <source>Update constraint's visibility</source>
       <translation>Opdater relationens synlighed</translation>
     </message>
@@ -889,7 +889,7 @@ ugyldige relationer og fejlbehæftet geometri</translation>
       <translation>Opret en kopi</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="433"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="416"/>
       <source>Offset</source>
       <translation>Parallel geometri</translation>
     </message>
@@ -936,11 +936,11 @@ ugyldige relationer og fejlbehæftet geometri</translation>
     <message>
       <location filename="../../CommandAlterGeometry.cpp" line="180"/>
       <source>Toggle construction geometry</source>
-      <translation>Slå konstruktionsgeometri til/fra</translation>
+      <translation>Slå konstruktionslinjer til/fra</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchDefaultHandler.h" line="913"/>
       <location filename="../../DrawSketchHandler.cpp" line="760"/>
+      <location filename="../../DrawSketchDefaultHandler.h" line="913"/>
       <source>Add Auto-Constraints</source>
       <translation>Tilføj automatiske relationer</translation>
     </message>
@@ -963,54 +963,54 @@ ugyldige relationer og fejlbehæftet geometri</translation>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6619"/>
+      <location filename="../../../App/SketchObject.cpp" line="6625"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Du beder ikke om en ændring af knude-multipliciteten.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6612"/>
-      <location filename="../../../App/SketchObject.cpp" line="6774"/>
+      <location filename="../../../App/SketchObject.cpp" line="6618"/>
+      <location filename="../../../App/SketchObject.cpp" line="6780"/>
       <source>B-spline Geometry Index (GeoID) is out of bounds.</source>
       <translation type="unfinished">B-spline Geometry Index (GeoID) is out of bounds.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6626"/>
-      <location filename="../../../App/SketchObject.cpp" line="6786"/>
+      <location filename="../../../App/SketchObject.cpp" line="6632"/>
+      <location filename="../../../App/SketchObject.cpp" line="6792"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline.</source>
-      <translation type="unfinished">The Geometry Index (GeoId) provided is not a B-spline.</translation>
+      <translation>Geometriindekset (GeoID) er ikke en B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6637"/>
+      <location filename="../../../App/SketchObject.cpp" line="6643"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation type="unfinished">The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6649"/>
+      <location filename="../../../App/SketchObject.cpp" line="6655"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Multipliciteten kan ikke forøges til mere end graden af B-splinen.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6658"/>
+      <location filename="../../../App/SketchObject.cpp" line="6664"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Multipliciteten kan ikke formindskes til mindre end nul.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6672"/>
+      <location filename="../../../App/SketchObject.cpp" line="6678"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
-      <translation type="unfinished">OCC is unable to decrease the multiplicity within the maximum tolerance.</translation>
+      <translation>OCC kan ikke formindske multipliciteten inden for den maksimale tolerance.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6779"/>
+      <location filename="../../../App/SketchObject.cpp" line="6785"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>Knuden kan ikke have en multiplicitet på nul.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6798"/>
+      <location filename="../../../App/SketchObject.cpp" line="6804"/>
       <source>Knot multiplicity cannot be higher than the degree of the B-spline.</source>
       <translation>Knuders multiplicitet kan ikke være højere end graden af B-splinen.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6805"/>
+      <location filename="../../../App/SketchObject.cpp" line="6811"/>
       <source>Knot cannot be inserted outside the B-spline parameter range.</source>
       <translation>Knudepunkter kan ikke indsættes uden for B-splinens parameterområdet.</translation>
     </message>
@@ -1135,6 +1135,32 @@ ugyldige relationer og fejlbehæftet geometri</translation>
       <translation>Fastgør ikke</translation>
     </message>
     <message>
+      <location filename="../../CommandSketcherTools.cpp" line="369"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1013"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1340"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1350"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1412"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1944"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1954"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2018"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2228"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2238"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2285"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2350"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="166"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="237"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="320"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="407"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="466"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="554"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="601"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="965"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1075"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="165"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="174"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="115"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="124"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="151"/>
       <location filename="../../CommandConstraints.cpp" line="172"/>
       <location filename="../../CommandConstraints.cpp" line="179"/>
       <location filename="../../CommandConstraints.cpp" line="2820"/>
@@ -1255,32 +1281,6 @@ ugyldige relationer og fejlbehæftet geometri</translation>
       <location filename="../../CommandConstraints.cpp" line="10451"/>
       <location filename="../../CommandConstraints.cpp" line="10526"/>
       <location filename="../../CommandConstraints.cpp" line="10538"/>
-      <location filename="../../CommandAlterGeometry.cpp" line="165"/>
-      <location filename="../../CommandAlterGeometry.cpp" line="174"/>
-      <location filename="../../CommandSketcherTools.cpp" line="369"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1013"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1340"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1350"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1412"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1944"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1954"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2018"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2228"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2238"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2285"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2350"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="115"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="124"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="151"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="166"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="237"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="320"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="407"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="466"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="554"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="601"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="965"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1075"/>
       <source>Wrong selection</source>
       <translation>Forkert valg</translation>
     </message>
@@ -1313,7 +1313,7 @@ ugyldige relationer og fejlbehæftet geometri</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="754"/>
       <source>Sketcher Constraint Substitution</source>
-      <translation type="unfinished">Sketcher Constraint Substitution</translation>
+      <translation>Sketcher relationsændring</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="870"/>
@@ -1423,9 +1423,9 @@ ugyldige relationer og fejlbehæftet geometri</translation>
       <translation>Antallet af valgte objekter er ikke 3</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="785"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="591"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1112"/>
+      <location filename="../../CommandConstraints.cpp" line="785"/>
       <source>Error</source>
       <translation>Fejl</translation>
     </message>
@@ -1613,7 +1613,7 @@ Mulige kombinationer: to kurver, et endepunkt og en kurve, to endepunkter, to ku
     <message>
       <location filename="../../CommandConstraints.cpp" line="7012"/>
       <source>Endpoint to endpoint tangency was applied. The coincident constraint was deleted.</source>
-      <translation>Reltaionen 'tangerende endepunkter' blev anvendt. Relationen 'sammenfaldende' blev slettet.</translation>
+      <translation>Relationen 'tangerende endepunkter' blev tilføjet. Relationen 'sammenfaldende' blev slettet.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7040"/>
@@ -1647,12 +1647,12 @@ Mulige kombinationer: to kurver, et endepunkt og en kurve, to endepunkter, to ku
       <location filename="../../CommandConstraints.cpp" line="7219"/>
       <location filename="../../CommandConstraints.cpp" line="7257"/>
       <source>Tangent constraint at B-spline knot is only supported with lines!</source>
-      <translation type="unfinished">Tangent constraint at B-spline knot is only supported with lines!</translation>
+      <translation>Tangentel relation til B-spline-knudepunkter understøttes kun med linjer!</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="228"/>
       <source>One or two point-on-object constraints were deleted, since the latest constraint being applied internally applies point-on-object as well.</source>
-      <translation type="unfinished">One or two point-on-object constraints were deleted, since the latest constraint being applied internally applies point-on-object as well.</translation>
+      <translation>Et eller to punkt-på-objekt relationer blev slettet, da den seneste relation der er tilføjet internt, også medfører en punkt-på-objekt relation.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="760"/>
@@ -1699,7 +1699,7 @@ Mulige kombinationer: to kurver, et endepunkt og en kurve, to endepunkter, to ku
     <message>
       <location filename="../../CommandConstraints.cpp" line="4277"/>
       <source>B-spline knot to endpoint tangency was applied instead.</source>
-      <translation type="unfinished">B-spline knot to endpoint tangency was applied instead.</translation>
+      <translation>Relationen 'B-spline knudepunkt til endepunkt' blev anvendt i stedet.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6257"/>
@@ -1823,14 +1823,14 @@ Mulige kombinationer: to kurver, et endepunkt og en kurve, to endepunkter, to ku
       <translation>Vælg en dimensionsrelation fra skitsen.</translation>
     </message>
     <message>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="116"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="125"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="152"/>
       <location filename="../../CommandConstraints.cpp" line="10404"/>
       <location filename="../../CommandConstraints.cpp" line="10416"/>
       <location filename="../../CommandConstraints.cpp" line="10452"/>
       <location filename="../../CommandConstraints.cpp" line="10527"/>
       <location filename="../../CommandConstraints.cpp" line="10539"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="116"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="125"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="152"/>
       <source>Select constraints from the sketch.</source>
       <translation>Vælg relationer fra skitsen.</translation>
     </message>
@@ -2019,12 +2019,12 @@ Mulige kombinationer: to kurver, et endepunkt og en kurve, to endepunkter, to ku
     <message>
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="103"/>
       <source>The XY axes of the selected sketch do not have the same direction as this sketch. Hold Ctrl+Alt to disregard it.</source>
-      <translation type="unfinished">The XY axes of the selected sketch do not have the same direction as this sketch. Hold Ctrl+Alt to disregard it.</translation>
+      <translation>X- og Y- akserne for den valgte skitse har ikke samme retning som for denne skitse. Hold Ctrl+Alt nede for at se bort fra dette.</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="108"/>
       <source>The origin of the selected sketch is not aligned with the origin of this sketch. Hold Ctrl+Alt to disregard it.</source>
-      <translation type="unfinished">The origin of the selected sketch is not aligned with the origin of this sketch. Hold Ctrl+Alt to disregard it.</translation>
+      <translation>Origo for den markerede skitse falder ikke sammen med origo for denne skitse. Hold Ctrl+Alt nede for at se bort fra dette.</translation>
     </message>
   </context>
   <context>
@@ -2175,7 +2175,7 @@ Mulige kombinationer: to kurver, et endepunkt og en kurve, to endepunkter, to ku
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="566"/>
       <source>Toggle Driving/Reference</source>
-      <translation type="unfinished">Toggle Driving/Reference</translation>
+      <translation>Skift mellem definerende og reference</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="570"/>
@@ -2200,7 +2200,7 @@ Mulige kombinationer: to kurver, et endepunkt og en kurve, to endepunkter, to ku
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="593"/>
       <source>Center Sketch</source>
-      <translation>Centrér skitse</translation>
+      <translation>Centrer skitse</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="601"/>
@@ -2471,7 +2471,7 @@ Mulige kombinationer: to kurver, et endepunkt og en kurve, to endepunkter, to ku
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="97"/>
       <source>Toggle Construction Geometry</source>
-      <translation>Slå konstruktionsgeometri til/fra</translation>
+      <translation>Slå konstruktionslinjer til/fra</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="99"/>
@@ -2692,7 +2692,7 @@ Mulige kombinationer: to kurver, et endepunkt og en kurve, to endepunkter, to ku
       <location filename="../../SketchRectangularArrayDialog.ui" line="115"/>
       <source>Substitutes dimensional constraints by geometric constraints
 in the copies, so that a change in the original element is reflected on copies</source>
-      <translation>Erstatter dimensionsrelationer ved geometriske relationer i kopierne, 
+      <translation>Erstatter dimensionsrelationer med geometriske relationer i kopierne, 
 således at en ændring i det oprindelige element afspejles i kopierne</translation>
     </message>
     <message>
@@ -2772,7 +2772,7 @@ Requires to re-enter edit mode to take effect.</translation>
     <message>
       <location filename="../../SketcherSettings.ui" line="126"/>
       <source>Allows to leave the sketch edit mode by pressing the Esc key</source>
-      <translation>Tillader at forlade skitseredigering ved at taste ESC</translation>
+      <translation>Tillader at Sketcher afsluttes og forlades ved at taste ESC</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="129"/>
@@ -2812,7 +2812,7 @@ Requires to re-enter edit mode to take effect.</translation>
     <message>
       <location filename="../../SketcherSettings.ui" line="221"/>
       <source>Always adds external geometry as construction geometry. Otherwise, it is added according to the current construction mode.</source>
-      <translation>Tilføj altid ekstern geometri som konstruktionsgeometri. Ellers tilføjes det i henhold til den aktuelle konstruktionstilstand.</translation>
+      <translation>Tilføj altid ekstern geometri som konstruktionslinjer. Ellers tilføjes linjerne i henhold til den aktuelle konstruktionstilstand.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="224"/>
@@ -2837,7 +2837,7 @@ Requires to re-enter edit mode to take effect.</translation>
     <message>
       <location filename="../../SketcherSettings.ui" line="292"/>
       <source>Dimension tool diameter/radius mode</source>
-      <translation type="unfinished">Dimension tool diameter/radius mode</translation>
+      <translation>Dimensionværktøj i diameter/radius tilstand</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="299"/>
@@ -2855,10 +2855,10 @@ Requires to re-enter edit mode to take effect.</translation>
 'Always': Automatic scaling upon first dimension is always performed.
 'Never': Automatic scaling upon first dimension is never performed.
 'When no scale feature is visible': Automatic scaling upon first dimension is only performed if there are no visible objects in the 3D view.</source>
-      <translation type="unfinished">Select the mode of automatic geometry scaling upon first dimension:
-'Always': Automatic scaling upon first dimension is always performed.
-'Never': Automatic scaling upon first dimension is never performed.
-'When no scale feature is visible': Automatic scaling upon first dimension is only performed if there are no visible objects in the 3D view.</translation>
+      <translation>Vælg tilstand for automatisk skalering efter fastsættelse af første dimension:
+'Altid': Automatisk skalering udføres altid efter første dimension.
+'Aldrig': Automatisk skalering udføres aldrig efter første dimension.
+'Når ingen skalering er synlig': Automatisk skalering efter første dimension udføres kun, hvis der ikke er synlige objekter i 3D-visningen.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="332"/>
@@ -2963,7 +2963,7 @@ Denne indstilling er kun for værktøjslinjen. Uanset hvad du vælger, er alle v
     <message>
       <location filename="../../SketcherSettings.cpp" line="231"/>
       <source>When no scale feature is visible</source>
-      <translation type="unfinished">When no scale feature is visible</translation>
+      <translation>Når ingen skaleringsfunktion er synlig</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.cpp" line="238"/>
@@ -3008,8 +3008,8 @@ Denne indstilling er kun for værktøjslinjen. Uanset hvad du vælger, er alle v
       <location filename="../../SketcherSettingsDisplay.ui" line="225"/>
       <source>Base length units will not be displayed in constraints or cursor coordinates.
 Supports all unit systems except 'US customary' and 'Building US/Euro'.</source>
-      <translation type="unfinished">Base length units will not be displayed in constraints or cursor coordinates.
-Supports all unit systems except 'US customary' and 'Building US/Euro'.</translation>
+      <translation>Basislængdeenheder vil ikke blive vist i relationer eller markørkoordinater.
+Understøtter alle enhedssystemer undtagen 'US customary' og 'Building US/Euro'.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="170"/>
@@ -3019,7 +3019,7 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</transla
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="299"/>
       <source>Ask for value after creating a dimensional constraint</source>
-      <translation type="unfinished">Ask for value after creating a dimensional constraint</translation>
+      <translation>Spørg om værdi efter oprettelse af en dimensionsrelation</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="183"/>
@@ -3034,7 +3034,7 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</transla
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="229"/>
       <source>Hide base length units for supported unit systems</source>
-      <translation type="unfinished">Hide base length units for supported unit systems</translation>
+      <translation>Skjul basislængdeenheder for understøttede enhedssystemer</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="20"/>
@@ -3059,7 +3059,7 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</transla
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="131"/>
       <source>Show dimensional constraint name with format</source>
-      <translation type="unfinished">Show dimensional constraint name with format</translation>
+      <translation>Vis navnet på dimensionsrelationer med format</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="157"/>
@@ -3420,7 +3420,7 @@ Men der blev ikke fundet relationer, der linker til endepunkterne.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="1536"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1570"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1578"/>
       <source>Error</source>
       <translation>Fejl</translation>
     </message>
@@ -3430,7 +3430,7 @@ Men der blev ikke fundet relationer, der linker til endepunkterne.</translation>
       <translation type="unfinished">Impossible to update visibility tracking:</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1570"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1578"/>
       <source>Impossible to update visibility:</source>
       <translation>Ikke muligt at opdatere synlighed:</translation>
     </message>
@@ -4300,7 +4300,7 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</tran
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="622"/>
       <source>Iteration level</source>
-      <translation type="unfinished">Iteration level</translation>
+      <translation>Iterationsniveau</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="380"/>
@@ -4391,7 +4391,7 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</tran
     <message>
       <location filename="../../Workbench.cpp" line="37"/>
       <source>S&amp;ketch</source>
-      <translation>S&amp;kitse</translation>
+      <translation>S&amp;ketcher</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="38"/>
@@ -4416,7 +4416,7 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</tran
     <message>
       <location filename="../../Workbench.cpp" line="43"/>
       <source>Sketcher Helpers</source>
-      <translation type="unfinished">Sketcher Helpers</translation>
+      <translation>Sketcher hjælpeværktøjer</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>
@@ -4581,51 +4581,51 @@ Gitterafstanden ændres, hvis den bliver mindre end den angivne pixelstørrelse.
       <translation>Skitsen indeholder delvist overflødige relationer!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10021"/>
+      <location filename="../../../App/SketchObject.cpp" line="10027"/>
       <source>Unmanaged change of Geometry Property results in invalid constraint indices</source>
       <translation>Uforvaltede ændringer af geometriske egenskaber resulterer i ugyldige relationsindeks</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10052"/>
+      <location filename="../../../App/SketchObject.cpp" line="10058"/>
       <source>Unmanaged change of Constraint Property results in invalid constraint indices</source>
       <translation>Uforvaltede ændringer af relationsegenskaber resulterer i ugyldige relationsindeks</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10675"/>
+      <location filename="../../../App/SketchObject.cpp" line="10681"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>Der blev overført paraboler. De overførte filer kan ikke åbnes i tidligere versioner af FreeCAD!
 </translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="138"/>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="188"/>
-      <location filename="../../DrawSketchHandlerExternal.h" line="204"/>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="327"/>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="227"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="473"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="503"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="216"/>
       <location filename="../../DrawSketchHandlerScale.h" line="140"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="504"/>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="258"/>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="256"/>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="335"/>
-      <location filename="../../DrawSketchHandlerSymmetry.h" line="150"/>
-      <location filename="../../DrawSketchHandlerSplitting.h" line="166"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="141"/>
       <location filename="../../CommandSketcherTools.cpp" line="1290"/>
       <location filename="../../CommandSketcherTools.cpp" line="1870"/>
       <location filename="../../CommandSketcherTools.cpp" line="2307"/>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="141"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="377"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="661"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="731"/>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="216"/>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="188"/>
+      <location filename="../../DrawSketchHandlerSymmetry.h" line="150"/>
       <location filename="../../DrawSketchHandlerPolygon.h" line="132"/>
       <location filename="../../DrawSketchHandlerRotate.h" line="168"/>
-      <location filename="../../DrawSketchHandlerPoint.h" line="105"/>
-      <location filename="../../DrawSketchHandlerSlot.h" line="183"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="188"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="204"/>
+      <location filename="../../DrawSketchHandlerSplitting.h" line="166"/>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="258"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="506"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="141"/>
       <location filename="../../DrawSketchHandlerExtend.h" line="338"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="473"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="503"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="227"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="184"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="188"/>
+      <location filename="../../DrawSketchHandlerPoint.h" line="105"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="256"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="335"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="327"/>
       <location filename="../../DrawSketchHandlerCircle.h" line="213"/>
       <source>Error</source>
       <translation>Fejl</translation>
@@ -4662,16 +4662,16 @@ Gitterafstanden ændres, hvis den bliver mindre end den angivne pixelstørrelse.
       <translation>Relationen har ugyldige indeksoplysninger og er fejlbehæftet.</translation>
     </message>
     <message>
+      <location filename="../../CommandSketcherTools.cpp" line="1077"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="494"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="629"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="858"/>
       <location filename="../../CommandConstraints.cpp" line="433"/>
       <location filename="../../CommandConstraints.cpp" line="513"/>
       <location filename="../../CommandConstraints.cpp" line="610"/>
       <location filename="../../CommandConstraints.cpp" line="700"/>
       <location filename="../../CommandConstraints.cpp" line="6593"/>
       <location filename="../../CommandConstraints.cpp" line="6797"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1077"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="494"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="629"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="858"/>
       <source>Invalid Constraint</source>
       <translation>Ugyldig relation</translation>
     </message>
@@ -4746,23 +4746,23 @@ Gitterafstanden ændres, hvis den bliver mindre end den angivne pixelstørrelse.
       <translation>Kunne ikke oprette runding</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="139"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="142"/>
       <location filename="../../DrawSketchHandlerLineSet.h" line="474"/>
       <source>Failed to add line</source>
       <translation>Kunne ikke tilføje linje</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="143"/>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="232"/>
-      <location filename="../../DrawSketchHandlerScale.h" line="147"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="509"/>
-      <location filename="../../DrawSketchHandlerSymmetry.h" line="155"/>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="146"/>
       <location filename="../../DrawSketchHandlerArc.h" line="298"/>
       <location filename="../../DrawSketchHandlerArcSlot.h" line="221"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="147"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="146"/>
+      <location filename="../../DrawSketchHandlerSymmetry.h" line="155"/>
       <location filename="../../DrawSketchHandlerPolygon.h" line="137"/>
       <location filename="../../DrawSketchHandlerRotate.h" line="173"/>
-      <location filename="../../DrawSketchHandlerSlot.h" line="188"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="511"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="146"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="232"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="189"/>
       <location filename="../../DrawSketchHandlerCircle.h" line="218"/>
       <source>Tool execution aborted</source>
       <translation>Værktøjskørsel afbrudt</translation>
@@ -4778,12 +4778,12 @@ Gitterafstanden ændres, hvis den bliver mindre end den angivne pixelstørrelse.
       <translation>Kunne ikke tilføje polygon</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="505"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="507"/>
       <source>Failed to add box</source>
       <translation>Kunne ikke tilføje en boks</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerSlot.h" line="184"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="185"/>
       <source>Failed to add slot</source>
       <translation>Kunne ikke tilføje oval</translation>
     </message>
@@ -4798,11 +4798,11 @@ Gitterafstanden ændres, hvis den bliver mindre end den angivne pixelstørrelse.
       <translation>Kunne ikke afkorte linje</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1221"/>
       <location filename="../../EditDatumDialog.cpp" line="63"/>
       <location filename="../../EditDatumDialog.cpp" line="278"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1221"/>
       <source>Value Error</source>
-      <translation type="unfinished">Value Error</translation>
+      <translation>Fejl værdi</translation>
     </message>
     <message>
       <location filename="../../DrawSketchDefaultHandler.h" line="971"/>
@@ -4820,22 +4820,22 @@ Gitterafstanden ændres, hvis den bliver mindre end den angivne pixelstørrelse.
       <translation>Unødvendige/modstridende relationer. Tjek relationerne - også automatiske relationer - for denne handling.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="428"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="411"/>
       <source>Offset Error</source>
       <translation>Fejl i parallel geometri</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="429"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="412"/>
       <source>Offset could not be created.</source>
       <translation>Parallel geometri kunne ikke oprettes.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1197"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1186"/>
       <source>Invalid Value</source>
       <translation>Ugyldig værdi</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1198"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1187"/>
       <source>Offset value can't be 0.</source>
       <translation>Forskydningsværdien kan ikke være 0.</translation>
     </message>
@@ -5019,17 +5019,17 @@ Typen kan ændres med M-tasten.</translation>
   <context>
     <name>TaskSketcherTool_c1_offset</name>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1171"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1160"/>
       <source>Delete original geometries (U)</source>
       <translation>Slet originale geometrier (U)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="537"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="465"/>
       <source>Apply equal constraints</source>
       <translation>Anvend ens-med relationer</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="541"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="469"/>
       <source>If this option is selected dimensional constraints are excluded from the operation.
 Instead equal constraints are applied between the original objects and their copies.</source>
       <translation>Hvis denne indstilling er valgt, anvendes dimensionsrelationer ikke for denne handling.
@@ -5039,7 +5039,7 @@ I stedet anvendes "ens-med" relationer mellem de oprindelige objekter og deres k
   <context>
     <name>TaskSketcherTool_c2_offset</name>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1175"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1164"/>
       <source>Add offset constraint (J)</source>
       <translation>Tilføj forskydningsrelation (J)</translation>
     </message>
@@ -5047,32 +5047,32 @@ I stedet anvendes "ens-med" relationer mellem de oprindelige objekter og deres k
   <context>
     <name>TaskSketcherTool_c1_rectangle</name>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1821"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1829"/>
       <source>Corner, width, height</source>
       <translation>Hjørne, bredde, højde</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1822"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1830"/>
       <source>Center, width, height</source>
       <translation>Center, bredde, højde</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1823"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1831"/>
       <source>3 corners</source>
       <translation>3 hjørner</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1824"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1832"/>
       <source>Center, 2 corners</source>
       <translation>Center, 2 hjørner</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1829"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1837"/>
       <source>Rounded corners (U)</source>
       <translation>Afrundede hjørner (U)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1832"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1840"/>
       <source>Create a rectangle with rounded corners.</source>
       <translation>Opret et rektangel med afrundede hjørner.</translation>
     </message>
@@ -5080,12 +5080,12 @@ I stedet anvendes "ens-med" relationer mellem de oprindelige objekter og deres k
   <context>
     <name>TaskSketcherTool_c2_rectangle</name>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1838"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1846"/>
       <source>Frame (J)</source>
       <translation type="unfinished">Frame (J)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1841"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1849"/>
       <source>Create two rectangles with a constant offset.</source>
       <translation>Opret to rektangler med en konstant forskydning.</translation>
     </message>
@@ -5175,7 +5175,7 @@ I stedet anvendes "ens-med" relationer mellem de oprindelige objekter og deres k
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="308"/>
       <source>Color of fully constrained construction geometry in edit mode</source>
-      <translation>Farve på låst konstruktionsgeometri, i redigeringstilstand</translation>
+      <translation>Farve på låste konstruktionslinjer, i redigeringstilstand</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="354"/>
@@ -5215,7 +5215,7 @@ I stedet anvendes "ens-med" relationer mellem de oprindelige objekter og deres k
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="489"/>
       <source>External construction geometry</source>
-      <translation>Ekstern konstruktionsgeometri</translation>
+      <translation>Eksterne konstruktionslinjer</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="502"/>
@@ -5235,12 +5235,12 @@ I stedet anvendes "ens-med" relationer mellem de oprindelige objekter og deres k
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="560"/>
       <source>External defining geometry</source>
-      <translation>Ekstern definerende geometri</translation>
+      <translation>Eksterne konturlinjer</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="573"/>
       <source>Color of external defining geometry in edit mode</source>
-      <translation>Farve på ekstern definerende geometri i redigeringstilstand</translation>
+      <translation>Farve på eksternt definerende konturlinjer i redigeringstilstand</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="593"/>
@@ -5280,7 +5280,7 @@ I stedet anvendes "ens-med" relationer mellem de oprindelige objekter og deres k
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="754"/>
       <source>Color of dimensional driving constraints in edit mode</source>
-      <translation type="unfinished">Color of dimensional driving constraints in edit mode</translation>
+      <translation>Farve på definerende dimensionsrelationer i redigeringstilstand</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="774"/>
@@ -5340,12 +5340,12 @@ I stedet anvendes "ens-med" relationer mellem de oprindelige objekter og deres k
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="295"/>
       <source>Construction geometry</source>
-      <translation>Konstruktionsgeometri</translation>
+      <translation>Konstruktionslinjer</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="334"/>
       <source>Color of construction geometry in edit mode</source>
-      <translation>Farve på konstruktionsgeometri i redigeringstilstand</translation>
+      <translation>Farve på konstruktionslinjer i redigeringstilstand</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="683"/>
@@ -5360,7 +5360,7 @@ I stedet anvendes "ens-med" relationer mellem de oprindelige objekter og deres k
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="727"/>
       <source>Color of driving constraints in edit mode</source>
-      <translation type="unfinished">Color of driving constraints in edit mode</translation>
+      <translation>Farve på definerende relationer i redigeringstilstand</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="781"/>
@@ -5386,7 +5386,7 @@ I stedet anvendes "ens-med" relationer mellem de oprindelige objekter og deres k
   <context>
     <name>TaskSketcherTool_p4_rotate</name>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="560"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="488"/>
       <source>Copies (+'U'/ -'J')</source>
       <translation>Kopier (+'U'/ -'J')</translation>
     </message>
@@ -5407,7 +5407,7 @@ I stedet anvendes "ens-med" relationer mellem de oprindelige objekter og deres k
   <context>
     <name>TaskSketcherTool_c1_scale</name>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="594"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="595"/>
       <source>Keep original geometries (U)</source>
       <translation>Behold originale geometrier (E)</translation>
     </message>
@@ -5490,23 +5490,23 @@ I stedet anvendes "ens-med" relationer mellem de oprindelige objekter og deres k
     <message>
       <location filename="../../DrawSketchHandlerFillet.h" line="461"/>
       <source>Preserves intersection point and most constraints</source>
-      <translation type="unfinished">Preserves intersection point and most constraints</translation>
+      <translation>Bevarer skæringspunkter og de fleste relationer</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_CreateLine</name>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="335"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="351"/>
       <source>Point, length, angle</source>
       <translation>Punkt, længde, vinkel</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="336"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="352"/>
       <source>Point, width, height</source>
       <translation>Punkt, bredde, højde</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="337"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="353"/>
       <source>2 points</source>
       <translation>2 punkter</translation>
     </message>
@@ -5514,12 +5514,12 @@ I stedet anvendes "ens-med" relationer mellem de oprindelige objekter og deres k
   <context>
     <name>Sketcher_CreateOffset</name>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1158"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1147"/>
       <source>Arc</source>
       <translation>Cirkelbue</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1159"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1148"/>
       <source>Intersection</source>
       <translation>Skæringspunkt</translation>
     </message>
@@ -5619,7 +5619,7 @@ I stedet anvendes "ens-med" relationer mellem de oprindelige objekter og deres k
     <message>
       <location filename="../../Command.cpp" line="366"/>
       <source>Exits the active sketch</source>
-      <translation>Lukker og forlader den aktive skitse</translation>
+      <translation>Lukker den aktive skitse og forlader Sketcher</translation>
     </message>
   </context>
   <context>
@@ -5640,7 +5640,7 @@ I stedet anvendes "ens-med" relationer mellem de oprindelige objekter og deres k
     <message>
       <location filename="../../Command.cpp" line="439"/>
       <source>Reorient Sketch</source>
-      <translation>Juster visningsvinklen for skitsen</translation>
+      <translation>Skift placering af skitse</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="440"/>
@@ -5780,7 +5780,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../Command.cpp" line="1674"/>
       <source>Construction geometry</source>
-      <translation>Konstruktionsgeometri</translation>
+      <translation>Konstruktionslinjer</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1676"/>
@@ -5816,12 +5816,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandAlterGeometry.cpp" line="69"/>
       <source>Toggle Construction Geometry</source>
-      <translation>Slå konstruktionsgeometri til/fra</translation>
+      <translation>Slå konstruktionslinjer til/fra</translation>
     </message>
     <message>
       <location filename="../../CommandAlterGeometry.cpp" line="70"/>
       <source>Toggles between defining geometry and construction geometry modes</source>
-      <translation>Skifter mellem konturgeometri og konstruktionsgeometri</translation>
+      <translation>Skifter mellem konturlinjer og konstruktionslinjer</translation>
     </message>
   </context>
   <context>
@@ -6024,7 +6024,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandConstraints.cpp" line="6955"/>
       <source>Tangent/Collinear Constraint</source>
-      <translation>Tangentiel/kollineær relation</translation>
+      <translation>Tangentiel/kollineær</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6956"/>
@@ -6141,12 +6141,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandConstraints.cpp" line="10346"/>
       <source>Toggle Driving/Reference Constraints</source>
-      <translation type="unfinished">Toggle Driving/Reference Constraints</translation>
+      <translation>Skift mellem definderende relation og referencerelation</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10347"/>
       <source>Toggles between driving and reference mode of the selected constraints and commands</source>
-      <translation type="unfinished">Toggles between driving and reference mode of the selected constraints and commands</translation>
+      <translation>Skifter mellem definerende tilstand og referencetilstand for de valgte relationer og kommandoer</translation>
     </message>
   </context>
   <context>
@@ -6739,12 +6739,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1806"/>
       <source>External Intersection</source>
-      <translation type="unfinished">External Intersection</translation>
+      <translation>Ekstern skæring</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1808"/>
       <source>Creates the intersection of external geometry with the sketch plane</source>
-      <translation type="unfinished">Creates the intersection of external geometry with the sketch plane</translation>
+      <translation>Opretter skæringen af ekstern geometri med skitseplanet</translation>
     </message>
   </context>
   <context>
@@ -6944,7 +6944,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="356"/>
       <source>Toggles the visibility of the circular helpers for all arcs</source>
-      <translation type="unfinished">Toggles the visibility of the circular helpers for all arcs</translation>
+      <translation>Slår synlighed af hjælpeværktøjer for cirkler til/fra for alle cirkelbuer</translation>
     </message>
   </context>
   <context>
@@ -7432,7 +7432,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="497"/>
       <source>B-Spline Parameters</source>
-      <translation type="unfinished">B-Spline Parameters</translation>
+      <translation>B-spline parametre</translation>
     </message>
   </context>
   <context>
@@ -7595,26 +7595,26 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>SketcherGui::DrawSketchHandlerLine</name>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="217"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="220"/>
       <source>Line Parameters</source>
       <translation>Linjeparametre</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="264"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="280"/>
       <source>%1 switch mode</source>
       <translation>%1 skift tilstand</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="273"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="287"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="301"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="289"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="303"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="317"/>
       <source>%1 pick first point</source>
       <translation>%1 vælg første punkt</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="279"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="293"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="307"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="295"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="309"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="323"/>
       <source>%1 pick second point</source>
       <translation>%1 vælg andet punkt</translation>
     </message>
@@ -7697,70 +7697,70 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>SketcherGui::DrawSketchHandlerRectangle</name>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="117"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="119"/>
       <source>%1 switch mode</source>
       <translation>%1 skift tilstand</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="118"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="120"/>
       <source>%1 toggle rounded corners</source>
       <translation>%1 slå afrundede hjørner til/fra</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="120"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="122"/>
       <source>%1 toggle frame</source>
       <translation type="unfinished">%1 toggle frame</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="129"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="197"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="239"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="131"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="199"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="241"/>
       <source>%1 pick first corner</source>
       <translation>%1 vælg første hjørne</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="137"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="139"/>
       <source>%1 pick opposite corner</source>
       <translation>%1 vælg modsatte hjørne</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="145"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="179"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="221"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="255"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="147"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="181"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="223"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="257"/>
       <source>%1 set corner radius or frame thickness</source>
       <translation>%1 indstil hjørneradius eller rammetykkelse</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="153"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="187"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="155"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="189"/>
       <source>%1 set frame thickness</source>
       <translation>%1 indstil rammetykkelse</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="163"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="231"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="165"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="233"/>
       <source>%1 pick center</source>
       <translation>%1 vælg center</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="171"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="173"/>
       <source>%1 pick corner</source>
       <translation>%1 vælg hjørne</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="205"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="247"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="207"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="249"/>
       <source>%1 pick second corner</source>
       <translation>%1 vælg andet hjørne</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="213"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="215"/>
       <source>%1 pick third corner</source>
       <translation>%1 vælg tredje hjørne</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="741"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="743"/>
       <source>Rectangle Parameters</source>
       <translation>Parametre for rektangel</translation>
     </message>
@@ -7812,17 +7812,17 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>SketcherGui::DrawSketchHandlerSlot</name>
     <message>
-      <location filename="../../DrawSketchHandlerSlot.h" line="92"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="93"/>
       <source>%1 pick slot start point</source>
       <translation>%1 vælg startpunkt for ovalen</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerSlot.h" line="97"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="98"/>
       <source>%1 pick slot end point</source>
       <translation>%1 vælg slutpunkt for ovalen</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerSlot.h" line="102"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="103"/>
       <source>%1 pick slot width</source>
       <translation>%1 vælg længden for ovalen</translation>
     </message>

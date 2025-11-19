@@ -37,9 +37,11 @@ class SbRotation;
 class SoDirectionalLightDragger;
 class SoOrthographicCamera;
 
-namespace Gui {
+namespace Gui
+{
 class View3DInventorViewer;
-namespace Dialog {
+namespace Dialog
+{
 class Ui_DlgSettingsLightSources;
 
 /**
@@ -47,7 +49,7 @@ class Ui_DlgSettingsLightSources;
  * for the light sources of a 3D view.
  * @author Werner Mayer
  */
-class DlgSettingsLightSources : public PreferencePage
+class DlgSettingsLightSources: public PreferencePage
 {
     Q_OBJECT
 
@@ -74,15 +76,17 @@ private:
 
 private:
     std::unique_ptr<Ui_DlgSettingsLightSources> ui;
-    QPointer <View3DInventorViewer> view;
-    SoOrthographicCamera *camera = nullptr;
+    QPointer<View3DInventorViewer> view;
+    SoOrthographicCamera* camera = nullptr;
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View/LightSources");
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/View/LightSources"
+    );
 
     float zoomStep = 3.0f;
 };
 
-} // namespace Dialog
-} // namespace Gui
+}  // namespace Dialog
+}  // namespace Gui
 
-#endif // GUI_DIALOG_DLGSETTINGSLIGHTSOURCES_H
+#endif  // GUI_DIALOG_DLGSETTINGSLIGHTSOURCES_H

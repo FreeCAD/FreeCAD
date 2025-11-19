@@ -23,10 +23,10 @@
  ***************************************************************************/
 
 
-# include <BRep_Builder.hxx>
-# include <Standard_Failure.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_CompSolid.hxx>
+#include <BRep_Builder.hxx>
+#include <Standard_Failure.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_CompSolid.hxx>
 
 
 #include "OCCError.h"
@@ -50,7 +50,7 @@ std::string TopoShapeCompSolidPy::representation() const
     return str.str();
 }
 
-PyObject *TopoShapeCompSolidPy::PyMake(struct _typeobject *, PyObject *, PyObject *)
+PyObject* TopoShapeCompSolidPy::PyMake(struct _typeobject*, PyObject*, PyObject*)
 {
     return new TopoShapeCompSolidPy(new TopoShape);
 }
@@ -112,7 +112,7 @@ PyObject* TopoShapeCompSolidPy::add(PyObject* args)
     }
 }
 
-PyObject *TopoShapeCompSolidPy::getCustomAttributes(const char* /*attr*/) const
+PyObject* TopoShapeCompSolidPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }

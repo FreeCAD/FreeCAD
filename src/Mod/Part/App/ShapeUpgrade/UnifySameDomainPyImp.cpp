@@ -24,8 +24,8 @@
 
 #include <Mod/Part/PartGlobal.h>
 
-# include <memory>
-# include <Standard_Failure.hxx>
+#include <memory>
+#include <Standard_Failure.hxx>
 
 // Needed for OCCT 7.5.2
 #include <TopoDS_Edge.hxx>
@@ -40,7 +40,7 @@
 
 using namespace Part;
 
-PyObject *UnifySameDomainPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject* UnifySameDomainPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // create a new instance of UnifySameDomainPy
     return new UnifySameDomainPy(nullptr);
@@ -49,26 +49,38 @@ PyObject *UnifySameDomainPy::PyMake(struct _typeobject *, PyObject *, PyObject *
 // constructor method
 int UnifySameDomainPy::PyInit(PyObject* args, PyObject* kwds)
 {
-    PyObject *shape;
-    PyObject *unifyEdges = Py_True; // NOLINT
-    PyObject *unifyFaces = Py_True; // NOLINT
-    PyObject *concatBSpl = Py_False; // NOLINT
+    PyObject* shape;
+    PyObject* unifyEdges = Py_True;   // NOLINT
+    PyObject* unifyFaces = Py_True;   // NOLINT
+    PyObject* concatBSpl = Py_False;  // NOLINT
 
-    static const std::array<const char *, 5> keywords{"Shape", "UnifyEdges", "UnifyFaces", "ConcatBSplines", nullptr};
-    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!|O!O!O!", keywords,
-                                             &TopoShapePy::Type, &shape,
-                                             &PyBool_Type, &unifyEdges,
-                                             &PyBool_Type, &unifyFaces,
-                                             &PyBool_Type, &concatBSpl)) {
+    static const std::array<const char*, 5>
+        keywords {"Shape", "UnifyEdges", "UnifyFaces", "ConcatBSplines", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(
+            args,
+            kwds,
+            "O!|O!O!O!",
+            keywords,
+            &TopoShapePy::Type,
+            &shape,
+            &PyBool_Type,
+            &unifyEdges,
+            &PyBool_Type,
+            &unifyFaces,
+            &PyBool_Type,
+            &concatBSpl
+        )) {
         return -1;
     }
 
     try {
         TopoDS_Shape shp = static_cast<TopoShapePy*>(shape)->getTopoShapePtr()->getShape();
-        std::unique_ptr<ShapeUpgrade_UnifySameDomain> ptr(new ShapeUpgrade_UnifySameDomain(shp,
-                                                          Base::asBoolean(unifyEdges),
-                                                          Base::asBoolean(unifyFaces),
-                                                          Base::asBoolean(concatBSpl)));
+        std::unique_ptr<ShapeUpgrade_UnifySameDomain> ptr(new ShapeUpgrade_UnifySameDomain(
+            shp,
+            Base::asBoolean(unifyEdges),
+            Base::asBoolean(unifyFaces),
+            Base::asBoolean(concatBSpl)
+        ));
 
         setTwinPointer(ptr.release());
         return 0;
@@ -79,28 +91,40 @@ int UnifySameDomainPy::PyInit(PyObject* args, PyObject* kwds)
     }
 }
 
-PyObject* UnifySameDomainPy::initialize(PyObject *args, PyObject* kwds)
+PyObject* UnifySameDomainPy::initialize(PyObject* args, PyObject* kwds)
 {
-    PyObject *shape;
-    PyObject *unifyEdges = Py_True;
-    PyObject *unifyFaces = Py_True;
-    PyObject *concatBSpl = Py_False;
+    PyObject* shape;
+    PyObject* unifyEdges = Py_True;
+    PyObject* unifyFaces = Py_True;
+    PyObject* concatBSpl = Py_False;
 
-    static const std::array<const char *, 5> keywords{"Shape", "UnifyEdges", "UnifyFaces", "ConcatBSplines", nullptr};
-    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!|O!O!O!", keywords,
-                                             &TopoShapePy::Type, &shape,
-                                             &PyBool_Type, &unifyEdges,
-                                             &PyBool_Type, &unifyFaces,
-                                             &PyBool_Type, &concatBSpl)) {
+    static const std::array<const char*, 5>
+        keywords {"Shape", "UnifyEdges", "UnifyFaces", "ConcatBSplines", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(
+            args,
+            kwds,
+            "O!|O!O!O!",
+            keywords,
+            &TopoShapePy::Type,
+            &shape,
+            &PyBool_Type,
+            &unifyEdges,
+            &PyBool_Type,
+            &unifyFaces,
+            &PyBool_Type,
+            &concatBSpl
+        )) {
         return nullptr;
     }
 
     try {
         TopoDS_Shape shp = static_cast<TopoShapePy*>(shape)->getTopoShapePtr()->getShape();
-        getShapeUpgrade_UnifySameDomainPtr()->Initialize(shp,
+        getShapeUpgrade_UnifySameDomainPtr()->Initialize(
+            shp,
             Base::asBoolean(unifyEdges),
             Base::asBoolean(unifyFaces),
-            Base::asBoolean(concatBSpl));
+            Base::asBoolean(concatBSpl)
+        );
 
         Py_Return;
     }
@@ -116,11 +140,12 @@ std::string UnifySameDomainPy::representation() const
     return {"<ShapeUpgrade_UnifySameDomain object>"};
 }
 
-PyObject* UnifySameDomainPy::allowInternalEdges(PyObject *args)
+PyObject* UnifySameDomainPy::allowInternalEdges(PyObject* args)
 {
     PyObject* allow;
-    if (!PyArg_ParseTuple(args, "O!", &PyBool_Type, &allow))
+    if (!PyArg_ParseTuple(args, "O!", &PyBool_Type, &allow)) {
         return nullptr;
+    }
 
     try {
         getShapeUpgrade_UnifySameDomainPtr()->AllowInternalEdges(Base::asBoolean(allow));
@@ -132,11 +157,12 @@ PyObject* UnifySameDomainPy::allowInternalEdges(PyObject *args)
     }
 }
 
-PyObject* UnifySameDomainPy::keepShape(PyObject *args)
+PyObject* UnifySameDomainPy::keepShape(PyObject* args)
 {
     PyObject* shape;
-    if (!PyArg_ParseTuple(args, "O!", &TopoShapePy::Type, &shape))
+    if (!PyArg_ParseTuple(args, "O!", &TopoShapePy::Type, &shape)) {
         return nullptr;
+    }
 
     try {
         TopoDS_Shape shp = static_cast<TopoShapePy*>(shape)->getTopoShapePtr()->getShape();
@@ -149,11 +175,12 @@ PyObject* UnifySameDomainPy::keepShape(PyObject *args)
     }
 }
 
-PyObject* UnifySameDomainPy::keepShapes(PyObject *args)
+PyObject* UnifySameDomainPy::keepShapes(PyObject* args)
 {
     PyObject* obj;
-    if (!PyArg_ParseTuple(args, "O", &obj))
+    if (!PyArg_ParseTuple(args, "O", &obj)) {
         return nullptr;
+    }
 
     try {
         TopTools_MapOfShape theShapes;
@@ -172,11 +199,12 @@ PyObject* UnifySameDomainPy::keepShapes(PyObject *args)
     }
 }
 
-PyObject* UnifySameDomainPy::setSafeInputMode(PyObject *args)
+PyObject* UnifySameDomainPy::setSafeInputMode(PyObject* args)
 {
     PyObject* mode;
-    if (!PyArg_ParseTuple(args, "O!", &PyBool_Type, &mode))
+    if (!PyArg_ParseTuple(args, "O!", &PyBool_Type, &mode)) {
         return nullptr;
+    }
 
     try {
         getShapeUpgrade_UnifySameDomainPtr()->SetSafeInputMode(Base::asBoolean(mode));
@@ -188,11 +216,12 @@ PyObject* UnifySameDomainPy::setSafeInputMode(PyObject *args)
     }
 }
 
-PyObject* UnifySameDomainPy::setLinearTolerance(PyObject *args)
+PyObject* UnifySameDomainPy::setLinearTolerance(PyObject* args)
 {
     double linTol;
-    if (!PyArg_ParseTuple(args, "d", &linTol))
+    if (!PyArg_ParseTuple(args, "d", &linTol)) {
         return nullptr;
+    }
 
     try {
         getShapeUpgrade_UnifySameDomainPtr()->SetLinearTolerance(linTol);
@@ -204,11 +233,12 @@ PyObject* UnifySameDomainPy::setLinearTolerance(PyObject *args)
     }
 }
 
-PyObject* UnifySameDomainPy::setAngularTolerance(PyObject *args)
+PyObject* UnifySameDomainPy::setAngularTolerance(PyObject* args)
 {
     double angTol;
-    if (!PyArg_ParseTuple(args, "d", &angTol))
+    if (!PyArg_ParseTuple(args, "d", &angTol)) {
         return nullptr;
+    }
 
     try {
         getShapeUpgrade_UnifySameDomainPtr()->SetAngularTolerance(angTol);
@@ -220,10 +250,11 @@ PyObject* UnifySameDomainPy::setAngularTolerance(PyObject *args)
     }
 }
 
-PyObject* UnifySameDomainPy::build(PyObject *args)
+PyObject* UnifySameDomainPy::build(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     try {
         getShapeUpgrade_UnifySameDomainPtr()->Build();
@@ -235,10 +266,11 @@ PyObject* UnifySameDomainPy::build(PyObject *args)
     }
 }
 
-PyObject* UnifySameDomainPy::shape(PyObject *args) const
+PyObject* UnifySameDomainPy::shape(PyObject* args) const
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     try {
         TopoDS_Shape shape = getShapeUpgrade_UnifySameDomainPtr()->Shape();
@@ -250,7 +282,7 @@ PyObject* UnifySameDomainPy::shape(PyObject *args) const
     }
 }
 
-PyObject *UnifySameDomainPy::getCustomAttributes(const char* /*attr*/) const
+PyObject* UnifySameDomainPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }

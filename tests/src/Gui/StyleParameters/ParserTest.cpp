@@ -42,7 +42,8 @@ protected:
                 {"TestColor", "#ff0000"},
                 {"TestNumber", "5"},
             },
-            ParameterSource::Metadata {"Test Source"});
+            ParameterSource::Metadata {"Test Source"}
+        );
 
         manager.addSource(source.get());
         sources.push_back(std::move(source));
@@ -396,7 +397,8 @@ TEST_F(ParserTest, ParseErrors)
             Parser parser("#invalid");
             parser.parse();
         },
-        Base::ParserError);
+        Base::ParserError
+    );
 
     // Invalid RGB format
     EXPECT_THROW(
@@ -404,7 +406,8 @@ TEST_F(ParserTest, ParseErrors)
             Parser parser("rgb(invalid)");
             parser.parse();
         },
-        Base::ParserError);
+        Base::ParserError
+    );
 
     // Missing closing parenthesis
     EXPECT_THROW(
@@ -412,7 +415,8 @@ TEST_F(ParserTest, ParseErrors)
             Parser parser("(10 + 5");
             parser.parse();
         },
-        Base::ParserError);
+        Base::ParserError
+    );
 
     // Invalid function
     EXPECT_THROW(
@@ -421,7 +425,8 @@ TEST_F(ParserTest, ParseErrors)
             auto expr = parser.parse();
             expr->evaluate({&manager, {}});
         },
-        Base::ExpressionError);
+        Base::ExpressionError
+    );
 
     // Division by zero
     EXPECT_THROW(
@@ -430,7 +435,8 @@ TEST_F(ParserTest, ParseErrors)
             auto expr = parser.parse();
             expr->evaluate({&manager, {}});
         },
-        Base::RuntimeError);
+        Base::RuntimeError
+    );
 
     // Unit mismatch
     EXPECT_THROW(
@@ -439,7 +445,8 @@ TEST_F(ParserTest, ParseErrors)
             auto expr = parser.parse();
             expr->evaluate({&manager, {}});
         },
-        Base::RuntimeError);
+        Base::RuntimeError
+    );
 
     // Unary operation on color
     EXPECT_THROW(
@@ -448,7 +455,8 @@ TEST_F(ParserTest, ParseErrors)
             auto expr = parser.parse();
             expr->evaluate({&manager, {}});
         },
-        Base::ExpressionError);
+        Base::ExpressionError
+    );
 
     // Function with wrong number of arguments
     EXPECT_THROW(
@@ -457,7 +465,8 @@ TEST_F(ParserTest, ParseErrors)
             auto expr = parser.parse();
             expr->evaluate({&manager, {}});
         },
-        Base::ExpressionError);
+        Base::ExpressionError
+    );
 
     // Function with wrong argument type
     EXPECT_THROW(
@@ -466,7 +475,8 @@ TEST_F(ParserTest, ParseErrors)
             auto expr = parser.parse();
             expr->evaluate({&manager, {}});
         },
-        Base::ExpressionError);
+        Base::ExpressionError
+    );
 }
 
 // Test whitespace handling
@@ -513,7 +523,8 @@ TEST_F(ParserTest, ParseEdgeCases)
             Parser parser("");
             parser.parse();
         },
-        Base::ParserError);
+        Base::ParserError
+    );
 
     // Just whitespace
     EXPECT_THROW(
@@ -521,7 +532,8 @@ TEST_F(ParserTest, ParseEdgeCases)
             Parser parser("   ");
             parser.parse();
         },
-        Base::ParserError);
+        Base::ParserError
+    );
 
     // Single number
     {

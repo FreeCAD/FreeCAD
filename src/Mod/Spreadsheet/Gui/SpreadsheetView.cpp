@@ -84,33 +84,30 @@ SheetView::SheetView(Gui::Document* pcDocument, App::DocumentObject* docObj, QWi
     ui->cells->setSheet(sheet);
 
     // Connect signals
-    connect(ui->cells->selectionModel(),
-            &QItemSelectionModel::currentChanged,
-            this,
-            &SheetView::currentChanged);
+    connect(
+        ui->cells->selectionModel(),
+        &QItemSelectionModel::currentChanged,
+        this,
+        &SheetView::currentChanged
+    );
 
-    connect(qobject_cast<SheetViewHeader*>(ui->cells->horizontalHeader()),
-            &SheetViewHeader::resizeFinished,
-            this,
-            &SheetView::columnResizeFinished);
-    connect(ui->cells->horizontalHeader(),
-            &QHeaderView::sectionResized,
-            this,
-            &SheetView::columnResized);
+    connect(
+        qobject_cast<SheetViewHeader*>(ui->cells->horizontalHeader()),
+        &SheetViewHeader::resizeFinished,
+        this,
+        &SheetView::columnResizeFinished
+    );
+    connect(ui->cells->horizontalHeader(), &QHeaderView::sectionResized, this, &SheetView::columnResized);
 
-    connect(qobject_cast<SheetViewHeader*>(ui->cells->verticalHeader()),
-            &SheetViewHeader::resizeFinished,
-            this,
-            &SheetView::rowResizeFinished);
-    connect(ui->cells->verticalHeader(),
-            &QHeaderView::sectionResized,
-            this,
-            &SheetView::rowResized);
+    connect(
+        qobject_cast<SheetViewHeader*>(ui->cells->verticalHeader()),
+        &SheetViewHeader::resizeFinished,
+        this,
+        &SheetView::rowResizeFinished
+    );
+    connect(ui->cells->verticalHeader(), &QHeaderView::sectionResized, this, &SheetView::rowResized);
 
-    connect(delegate,
-            &SpreadsheetDelegate::finishedWithKey,
-            this,
-            &SheetView::editingFinishedWithKey);
+    connect(delegate, &SpreadsheetDelegate::finishedWithKey, this, &SheetView::editingFinishedWithKey);
     connect(ui->cellContent, &ExpressionLineEdit::returnPressed, this, [this]() {
         confirmContentChanged(ui->cellContent->text());
     });
@@ -121,9 +118,11 @@ SheetView::SheetView(Gui::Document* pcDocument, App::DocumentObject* docObj, QWi
 
     // NOLINTBEGIN
     columnWidthChangedConnection = sheet->columnWidthChanged.connect(
-        std::bind(&SheetView::resizeColumn, this, sp::_1, sp::_2));
-    rowHeightChangedConnection =
-        sheet->rowHeightChanged.connect(std::bind(&SheetView::resizeRow, this, sp::_1, sp::_2));
+        std::bind(&SheetView::resizeColumn, this, sp::_1, sp::_2)
+    );
+    rowHeightChangedConnection = sheet->rowHeightChanged.connect(
+        std::bind(&SheetView::resizeRow, this, sp::_1, sp::_2)
+    );
     // NOLINTEND
 
     connect(model, &QAbstractItemModel::dataChanged, this, &SheetView::modelUpdated);
@@ -134,13 +133,15 @@ SheetView::SheetView(Gui::Document* pcDocument, App::DocumentObject* docObj, QWi
     ui->cells->setPalette(palette);
 
     QList<QtColorPicker*> bgList = Gui::getMainWindow()->findChildren<QtColorPicker*>(
-        QStringLiteral("Spreadsheet_BackgroundColor"));
+        QStringLiteral("Spreadsheet_BackgroundColor")
+    );
     if (!bgList.empty()) {
         bgList[0]->setCurrentColor(palette.color(QPalette::Base));
     }
 
     QList<QtColorPicker*> fgList = Gui::getMainWindow()->findChildren<QtColorPicker*>(
-        QStringLiteral("Spreadsheet_ForegroundColor"));
+        QStringLiteral("Spreadsheet_ForegroundColor")
+    );
     if (!fgList.empty()) {
         fgList[0]->setCurrentColor(palette.color(QPalette::Text));
     }
@@ -276,10 +277,7 @@ void SheetView::printPreview()
     QPrinter printer(QPrinter::ScreenResolution);
     printer.setPageOrientation(QPageLayout::Landscape);
     QPrintPreviewDialog dlg(&printer, this);
-    connect(&dlg,
-            &QPrintPreviewDialog::paintRequested,
-            this,
-            qOverload<QPrinter*>(&SheetView::print));
+    connect(&dlg, &QPrintPreviewDialog::paintRequested, this, qOverload<QPrinter*>(&SheetView::print));
     dlg.exec();
 }
 
@@ -298,11 +296,12 @@ void SheetView::print(QPrinter* printer)
  */
 void SheetView::printPdf()
 {
-    QString filename =
-        FileDialog::getSaveFileName(this,
-                                    tr("Export PDF"),
-                                    QString(),
-                                    QStringLiteral("%1 (*.pdf)").arg(tr("PDF file")));
+    QString filename = FileDialog::getSaveFileName(
+        this,
+        tr("Export PDF"),
+        QString(),
+        QStringLiteral("%1 (*.pdf)").arg(tr("PDF file"))
+    );
     if (!filename.isEmpty()) {
         QPrinter printer(QPrinter::ScreenResolution);
         // setPdfVersion sets the printed PDF Version to what is chosen in
@@ -498,8 +497,11 @@ void SheetView::aliasChanged(const QString& text)
     else {
         // go back to normal
         ui->cellAlias->setToolTip(
-            QObject::tr("Refer to cell by alias, for example\nSpreadsheet.my_alias_name instead of "
-                        "Spreadsheet.B1"));
+            QObject::tr(
+                "Refer to cell by alias, for example\nSpreadsheet.my_alias_name instead of "
+                "Spreadsheet.B1"
+            )
+        );
         ui->cellAlias->setStyleSheet(originalStylesheet);
     }
 }
@@ -551,20 +553,24 @@ QModelIndexList SheetView::selectedIndexesRaw() const
     return ui->cells->selectedIndexesRaw();
 }
 
-void SpreadsheetGui::SheetView::select(App::CellAddress cell,
-                                       QItemSelectionModel::SelectionFlags flags)
+void SpreadsheetGui::SheetView::select(App::CellAddress cell, QItemSelectionModel::SelectionFlags flags)
 {
     ui->cells->selectionModel()->select(model->index(cell.row(), cell.col()), flags);
 }
 
-void SpreadsheetGui::SheetView::select(App::CellAddress topLeft,
-                                       App::CellAddress bottomRight,
-                                       QItemSelectionModel::SelectionFlags flags)
+void SpreadsheetGui::SheetView::select(
+    App::CellAddress topLeft,
+    App::CellAddress bottomRight,
+    QItemSelectionModel::SelectionFlags flags
+)
 {
     ui->cells->selectionModel()->select(
-        QItemSelection(model->index(topLeft.row(), topLeft.col()),
-                       model->index(bottomRight.row(), bottomRight.col())),
-        flags);
+        QItemSelection(
+            model->index(topLeft.row(), topLeft.col()),
+            model->index(bottomRight.row(), bottomRight.col())
+        ),
+        flags
+    );
 }
 
 void SheetView::deleteSelection()
@@ -608,30 +614,36 @@ void SheetViewPy::init_type()
     behaviors().supportGetattr();
     behaviors().supportSetattr();
 
-    add_varargs_method("selectedRanges",
-                       &SheetViewPy::selectedRanges,
-                       "selectedRanges(): Get a list of all selected ranges");
-    add_varargs_method("selectedCells",
-                       &SheetViewPy::selectedCells,
-                       "selectedCells(): Get a list of all selected cells");
+    add_varargs_method(
+        "selectedRanges",
+        &SheetViewPy::selectedRanges,
+        "selectedRanges(): Get a list of all selected ranges"
+    );
+    add_varargs_method(
+        "selectedCells",
+        &SheetViewPy::selectedCells,
+        "selectedCells(): Get a list of all selected cells"
+    );
     add_varargs_method(
         "select",
         &SheetViewPy::select,
         "select(cell,flags): Select (or deselect) the given cell, applying "
         "QItemSelectionModel.SelectionFlags\nselect(topLeft,bottomRight,flags): Select (or "
-        "deselect) the given range, applying QItemSelectionModel.SelectionFlags");
-    add_varargs_method("currentIndex",
-                       &SheetViewPy::currentIndex,
-                       "currentIndex(): Get the current index");
+        "deselect) the given range, applying QItemSelectionModel.SelectionFlags"
+    );
+    add_varargs_method(
+        "currentIndex",
+        &SheetViewPy::currentIndex,
+        "currentIndex(): Get the current index"
+    );
     add_varargs_method(
         "setCurrentIndex",
         &SheetViewPy::setCurrentIndex,
-        "setCurrentIndex(cell): Set the current index to the named cell (e.g. 'A1')");
+        "setCurrentIndex(cell): Set the current index to the named cell (e.g. 'A1')"
+    );
 
     add_varargs_method("getSheet", &SheetViewPy::getSheet, "getSheet()");
-    add_varargs_method("cast_to_base",
-                       &SheetViewPy::cast_to_base,
-                       "cast_to_base() cast to MDIView class");
+    add_varargs_method("cast_to_base", &SheetViewPy::cast_to_base, "cast_to_base() cast to MDIView class");
     behaviors().readyType();
 }
 
@@ -739,27 +751,37 @@ Py::Object SheetViewPy::select(const Py::Tuple& _args)
     const char* bottomRight;
     int flags = 0;
     if (args.size() == 2 && PyArg_ParseTuple(_args.ptr(), "si", &cell, &flags)) {
-        sheetView->select(App::CellAddress(cell),
-                          static_cast<QItemSelectionModel::SelectionFlags>(flags));
+        sheetView->select(
+            App::CellAddress(cell),
+            static_cast<QItemSelectionModel::SelectionFlags>(flags)
+        );
     }
     else if (args.size() == 3
              && PyArg_ParseTuple(_args.ptr(), "ssi", &topLeft, &bottomRight, &flags)) {
-        sheetView->select(App::CellAddress(topLeft),
-                          App::CellAddress(bottomRight),
-                          static_cast<QItemSelectionModel::SelectionFlags>(flags));
+        sheetView->select(
+            App::CellAddress(topLeft),
+            App::CellAddress(bottomRight),
+            static_cast<QItemSelectionModel::SelectionFlags>(flags)
+        );
     }
     else {
         if (args.size() == 2) {
-            throw Base::TypeError("Expects the arguments to be a cell name (e.g. 'A1') and "
-                                  "QItemSelectionModel.SelectionFlags");
+            throw Base::TypeError(
+                "Expects the arguments to be a cell name (e.g. 'A1') and "
+                "QItemSelectionModel.SelectionFlags"
+            );
         }
         else if (args.size() == 3) {
-            throw Base::TypeError("Expects the arguments to be a cell name (e.g. 'A1'), a second "
-                                  "cell name (e.g. 'B5'), and QItemSelectionModel.SelectionFlags");
+            throw Base::TypeError(
+                "Expects the arguments to be a cell name (e.g. 'A1'), a second "
+                "cell name (e.g. 'B5'), and QItemSelectionModel.SelectionFlags"
+            );
         }
         else {
-            throw Base::TypeError("Wrong arguments to select: specify either a cell, or two cells "
-                                  "(for a range), and QItemSelectionModel.SelectionFlags");
+            throw Base::TypeError(
+                "Wrong arguments to select: specify either a cell, or two cells "
+                "(for a range), and QItemSelectionModel.SelectionFlags"
+            );
         }
     }
     return Py::None();

@@ -80,21 +80,27 @@ Sheet::Sheet()
     , cells(this)
 {
     ADD_PROPERTY_TYPE(cells, (), "Spreadsheet", (PropertyType)(Prop_Hidden), "Cell contents");
-    ADD_PROPERTY_TYPE(columnWidths,
-                      (),
-                      "Spreadsheet",
-                      (PropertyType)(Prop_ReadOnly | Prop_Hidden | Prop_Output),
-                      "Column widths");
-    ADD_PROPERTY_TYPE(rowHeights,
-                      (),
-                      "Spreadsheet",
-                      (PropertyType)(Prop_ReadOnly | Prop_Hidden | Prop_Output),
-                      "Row heights");
-    ADD_PROPERTY_TYPE(rowHeights,
-                      (),
-                      "Spreadsheet",
-                      (PropertyType)(Prop_ReadOnly | Prop_Hidden),
-                      "Row heights");
+    ADD_PROPERTY_TYPE(
+        columnWidths,
+        (),
+        "Spreadsheet",
+        (PropertyType)(Prop_ReadOnly | Prop_Hidden | Prop_Output),
+        "Column widths"
+    );
+    ADD_PROPERTY_TYPE(
+        rowHeights,
+        (),
+        "Spreadsheet",
+        (PropertyType)(Prop_ReadOnly | Prop_Hidden | Prop_Output),
+        "Row heights"
+    );
+    ADD_PROPERTY_TYPE(
+        rowHeights,
+        (),
+        "Spreadsheet",
+        (PropertyType)(Prop_ReadOnly | Prop_Hidden),
+        "Row heights"
+    );
     ExpressionEngine.expressionChanged.connect([this](const App::ObjectIdentifier&) {
         this->updateBindings();
     });
@@ -116,7 +122,8 @@ Sheet::~Sheet()
         // Don't let an exception propagate out of a destructor (calls terminate())
         Base::Console().error(
             "clearAll() resulted in an exception when deleting the spreadsheet : %s\n",
-            getNameInDocument());
+            getNameInDocument()
+        );
     }
 }
 
@@ -151,11 +158,11 @@ bool Sheet::getCharsFromPrefs(char& delim, char& quote, char& escape, std::strin
 {
     bool isValid = true;
     ParameterGrp::handle group = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Spreadsheet");
+        "User parameter:BaseApp/Preferences/Mod/Spreadsheet"
+    );
     QString delimiter = QString::fromStdString(group->GetASCII("ImportExportDelimiter", "tab"));
     QString quoteChar = QString::fromStdString(group->GetASCII("ImportExportQuoteCharacter", "\""));
-    QString escapeChar =
-        QString::fromStdString(group->GetASCII("ImportExportEscapeCharacter", "\\"));
+    QString escapeChar = QString::fromStdString(group->GetASCII("ImportExportEscapeCharacter", "\\"));
 
     delim = delimiter.size() == 1 ? delimiter[0].toLatin1() : '\0';
     if (delimiter.compare(QLatin1String("tab"), Qt::CaseInsensitive) == 0
@@ -208,10 +215,7 @@ bool Sheet::getCharsFromPrefs(char& delim, char& quote, char& escape, std::strin
  * @returns True if successful, false if something failed.
  */
 
-bool Sheet::importFromFile(const std::string& filename,
-                           char delimiter,
-                           char quoteChar,
-                           char escapeChar)
+bool Sheet::importFromFile(const std::string& filename, char delimiter, char quoteChar, char escapeChar)
 {
     Base::FileInfo fi(filename);
     Base::ifstream file(fi, std::ios::in);
@@ -302,10 +306,7 @@ static void writeEscaped(std::string const& s, char quoteChar, char escapeChar, 
  *
  */
 
-bool Sheet::exportToFile(const std::string& filename,
-                         char delimiter,
-                         char quoteChar,
-                         char escapeChar) const
+bool Sheet::exportToFile(const std::string& filename, char delimiter, char quoteChar, char escapeChar) const
 {
     Base::ofstream file;
     int prevRow = -1, prevCol = -1;
@@ -355,8 +356,7 @@ bool Sheet::exportToFile(const std::string& filename,
 
         std::string str = field.str();
 
-        if (quoteChar
-            && str.find_first_of(std::string(quoteChar, delimiter)) != std::string::npos) {
+        if (quoteChar && str.find_first_of(std::string(quoteChar, delimiter)) != std::string::npos) {
             writeEscaped(str, quoteChar, escapeChar, file);
         }
         else {
@@ -586,12 +586,13 @@ Property* Sheet::setFloatProperty(CellAddress key, double value)
             this->removeDynamicProperty(name.c_str());
             propAddress.erase(prop);
         }
-        floatProp = freecad_cast<PropertyFloat*>(
-            addDynamicProperty("App::PropertyFloat",
-                               name.c_str(),
-                               nullptr,
-                               nullptr,
-                               Prop_ReadOnly | Prop_Hidden | Prop_NoPersist));
+        floatProp = freecad_cast<PropertyFloat*>(addDynamicProperty(
+            "App::PropertyFloat",
+            name.c_str(),
+            nullptr,
+            nullptr,
+            Prop_ReadOnly | Prop_Hidden | Prop_NoPersist
+        ));
     }
     else {
         floatProp = static_cast<PropertyFloat*>(prop);
@@ -614,12 +615,13 @@ Property* Sheet::setIntegerProperty(CellAddress key, long value)
             this->removeDynamicProperty(name.c_str());
             propAddress.erase(prop);
         }
-        intProp = freecad_cast<PropertyInteger*>(
-            addDynamicProperty("App::PropertyInteger",
-                               name.c_str(),
-                               nullptr,
-                               nullptr,
-                               Prop_ReadOnly | Prop_Hidden | Prop_NoPersist));
+        intProp = freecad_cast<PropertyInteger*>(addDynamicProperty(
+            "App::PropertyInteger",
+            name.c_str(),
+            nullptr,
+            nullptr,
+            Prop_ReadOnly | Prop_Hidden | Prop_NoPersist
+        ));
     }
     else {
         intProp = static_cast<PropertyInteger*>(prop);
@@ -654,11 +656,13 @@ Property* Sheet::setQuantityProperty(CellAddress key, double value, const Base::
             this->removeDynamicProperty(name.c_str());
             propAddress.erase(prop);
         }
-        Property* p = addDynamicProperty("Spreadsheet::PropertySpreadsheetQuantity",
-                                         name.c_str(),
-                                         nullptr,
-                                         nullptr,
-                                         Prop_ReadOnly | Prop_Hidden | Prop_NoPersist);
+        Property* p = addDynamicProperty(
+            "Spreadsheet::PropertySpreadsheetQuantity",
+            name.c_str(),
+            nullptr,
+            nullptr,
+            Prop_ReadOnly | Prop_Hidden | Prop_NoPersist
+        );
         quantityProp = freecad_cast<PropertySpreadsheetQuantity*>(p);
     }
     else {
@@ -695,12 +699,13 @@ Property* Sheet::setStringProperty(CellAddress key, const std::string& value)
             this->removeDynamicProperty(name.c_str());
             propAddress.erase(prop);
         }
-        stringProp = freecad_cast<PropertyString*>(
-            addDynamicProperty("App::PropertyString",
-                               name.c_str(),
-                               nullptr,
-                               nullptr,
-                               Prop_ReadOnly | Prop_Hidden | Prop_NoPersist));
+        stringProp = freecad_cast<PropertyString*>(addDynamicProperty(
+            "App::PropertyString",
+            name.c_str(),
+            nullptr,
+            nullptr,
+            Prop_ReadOnly | Prop_Hidden | Prop_NoPersist
+        ));
     }
 
     propAddress[stringProp] = key;
@@ -720,12 +725,13 @@ Property* Sheet::setObjectProperty(CellAddress key, Py::Object object)
             this->removeDynamicProperty(name.c_str());
             propAddress.erase(prop);
         }
-        pyProp = freecad_cast<PropertyPythonObject*>(
-            addDynamicProperty("App::PropertyPythonObject",
-                               name.c_str(),
-                               nullptr,
-                               nullptr,
-                               Prop_ReadOnly | Prop_Hidden | Prop_NoPersist));
+        pyProp = freecad_cast<PropertyPythonObject*>(addDynamicProperty(
+            "App::PropertyPythonObject",
+            name.c_str(),
+            nullptr,
+            nullptr,
+            Prop_ReadOnly | Prop_Hidden | Prop_NoPersist
+        ));
     }
 
     propAddress[pyProp] = key;
@@ -949,10 +955,12 @@ void Sheet::recomputeCell(CellAddress p)
     }
 }
 
-PropertySheet::BindingType Sheet::getCellBinding(Range& range,
-                                                 ExpressionPtr* pStart,
-                                                 ExpressionPtr* pEnd,
-                                                 App::ObjectIdentifier* pTarget) const
+PropertySheet::BindingType Sheet::getCellBinding(
+    Range& range,
+    ExpressionPtr* pStart,
+    ExpressionPtr* pEnd,
+    App::ObjectIdentifier* pTarget
+) const
 {
     range.normalize();
     do {
@@ -971,9 +979,11 @@ PropertySheet::BindingType Sheet::getCellBinding(Range& range,
     return PropertySheet::BindingNone;
 }
 
-static inline unsigned _getBorder(const Sheet* sheet,
-                                  const std::vector<App::Range>& ranges,
-                                  const App::CellAddress& address)
+static inline unsigned _getBorder(
+    const Sheet* sheet,
+    const std::vector<App::Range>& ranges,
+    const App::CellAddress& address
+)
 {
     unsigned flags = 0;
     int rows, cols;
@@ -1152,8 +1162,10 @@ DocumentObjectExecReturn* Sheet::execute()
             }
             catch (std::exception&) {  // TODO: evaluate using a more specific exception (not_a_dag)
                 // Cycle detected; flag all with errors
-                Base::Console().error("Cyclic dependency detected in spreadsheet : %s\n",
-                                      getNameInDocument());
+                Base::Console().error(
+                    "Cyclic dependency detected in spreadsheet : %s\n",
+                    getNameInDocument()
+                );
                 std::ostringstream ss;
                 ss << "Cyclic dependency";
                 int count = 0;

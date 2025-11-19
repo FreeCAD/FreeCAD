@@ -67,8 +67,9 @@ Workbench::~Workbench() = default;
 void Workbench::activated()
 {
     if (!initialized) {
-        QList<QToolBar*> bars =
-            Gui::getMainWindow()->findChildren<QToolBar*>(QStringLiteral("Spreadsheet"));
+        QList<QToolBar*> bars = Gui::getMainWindow()->findChildren<QToolBar*>(
+            QStringLiteral("Spreadsheet")
+        );
 
         if (bars.size() == 1) {
             QToolBar* bar = bars[0];
@@ -77,7 +78,8 @@ void Workbench::activated()
             QPalette palette = Gui::getMainWindow()->palette();
 
             QList<QtColorPicker*> fgList = Gui::getMainWindow()->findChildren<QtColorPicker*>(
-                QStringLiteral("Spreadsheet_ForegroundColor"));
+                QStringLiteral("Spreadsheet_ForegroundColor")
+            );
             if (!fgList.empty()) {
                 foregroundColor = fgList[0];
             }
@@ -86,10 +88,12 @@ void Workbench::activated()
                 foregroundColor->setObjectName(QStringLiteral("Spreadsheet_ForegroundColor"));
                 foregroundColor->setStandardColors();
                 foregroundColor->setCurrentColor(palette.color(QPalette::WindowText));
-                QObject::connect(foregroundColor,
-                                 &QtColorPicker::colorSet,
-                                 workbenchHelper.get(),
-                                 &WorkbenchHelper::setForegroundColor);
+                QObject::connect(
+                    foregroundColor,
+                    &QtColorPicker::colorSet,
+                    workbenchHelper.get(),
+                    &WorkbenchHelper::setForegroundColor
+                );
             }
             foregroundColor->setToolTip(QObject::tr("Sets the text color of cells"));
             foregroundColor->setWhatsThis(QObject::tr("Sets the text color of spreadsheet cells"));
@@ -97,7 +101,8 @@ void Workbench::activated()
             bar->addWidget(foregroundColor);
 
             QList<QtColorPicker*> bgList = Gui::getMainWindow()->findChildren<QtColorPicker*>(
-                QStringLiteral("Spreadsheet_BackgroundColor"));
+                QStringLiteral("Spreadsheet_BackgroundColor")
+            );
             if (!bgList.empty()) {
                 backgroundColor = bgList[0];
             }
@@ -106,14 +111,15 @@ void Workbench::activated()
                 backgroundColor->setObjectName(QStringLiteral("Spreadsheet_BackgroundColor"));
                 backgroundColor->setStandardColors();
                 backgroundColor->setCurrentColor(palette.color(QPalette::Base));
-                QObject::connect(backgroundColor,
-                                 &QtColorPicker::colorSet,
-                                 workbenchHelper.get(),
-                                 &WorkbenchHelper::setBackgroundColor);
+                QObject::connect(
+                    backgroundColor,
+                    &QtColorPicker::colorSet,
+                    workbenchHelper.get(),
+                    &WorkbenchHelper::setBackgroundColor
+                );
             }
             backgroundColor->setToolTip(QObject::tr("Sets the background color of cells"));
-            backgroundColor->setWhatsThis(
-                QObject::tr("Sets the spreadsheet cells background color"));
+            backgroundColor->setWhatsThis(QObject::tr("Sets the spreadsheet cells background color"));
             backgroundColor->setStatusTip(QObject::tr("Sets the background color of cells"));
             bar->addWidget(backgroundColor);
 
@@ -128,8 +134,7 @@ void WorkbenchHelper::setForegroundColor(const QColor& color)
 
     if (doc) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
-        SpreadsheetGui::SheetView* sheetView =
-            freecad_cast<SpreadsheetGui::SheetView*>(activeWindow);
+        SpreadsheetGui::SheetView* sheetView = freecad_cast<SpreadsheetGui::SheetView*>(activeWindow);
 
         if (sheetView) {
             Sheet* sheet = sheetView->getSheet();
@@ -141,13 +146,15 @@ void WorkbenchHelper::setForegroundColor(const QColor& color)
 
                 Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Set text color"));
                 for (; i != ranges.end(); ++i) {
-                    Gui::Command::doCommand(Gui::Command::Doc,
-                                            "App.ActiveDocument.%s.setForeground('%s', (%f,%f,%f))",
-                                            sheet->getNameInDocument(),
-                                            i->rangeString().c_str(),
-                                            color.redF(),
-                                            color.greenF(),
-                                            color.blueF());
+                    Gui::Command::doCommand(
+                        Gui::Command::Doc,
+                        "App.ActiveDocument.%s.setForeground('%s', (%f,%f,%f))",
+                        sheet->getNameInDocument(),
+                        i->rangeString().c_str(),
+                        color.redF(),
+                        color.greenF(),
+                        color.blueF()
+                    );
                 }
                 Gui::Command::commitCommand();
                 Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
@@ -162,8 +169,7 @@ void WorkbenchHelper::setBackgroundColor(const QColor& color)
 
     if (doc) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
-        SpreadsheetGui::SheetView* sheetView =
-            freecad_cast<SpreadsheetGui::SheetView*>(activeWindow);
+        SpreadsheetGui::SheetView* sheetView = freecad_cast<SpreadsheetGui::SheetView*>(activeWindow);
 
         if (sheetView) {
             Sheet* sheet = sheetView->getSheet();
@@ -175,13 +181,15 @@ void WorkbenchHelper::setBackgroundColor(const QColor& color)
 
                 Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Set background color"));
                 for (; i != ranges.end(); ++i) {
-                    Gui::Command::doCommand(Gui::Command::Doc,
-                                            "App.ActiveDocument.%s.setBackground('%s', (%f,%f,%f))",
-                                            sheet->getNameInDocument(),
-                                            i->rangeString().c_str(),
-                                            color.redF(),
-                                            color.greenF(),
-                                            color.blueF());
+                    Gui::Command::doCommand(
+                        Gui::Command::Doc,
+                        "App.ActiveDocument.%s.setBackground('%s', (%f,%f,%f))",
+                        sheet->getNameInDocument(),
+                        i->rangeString().c_str(),
+                        color.redF(),
+                        color.greenF(),
+                        color.blueF()
+                    );
                 }
                 Gui::Command::commitCommand();
                 Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");

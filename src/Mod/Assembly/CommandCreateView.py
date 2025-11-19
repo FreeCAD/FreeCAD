@@ -190,10 +190,9 @@ class ExplodedView:
                 # changes from previous steps.
                 current_placement = calculated_placements.get(obj.Name, obj.Placement)
 
-                # Use the part's bounding box center relative to its own coordinate system
-                # and transform it by the current placement to get the world start position.
-                local_center = obj.Shape.BoundBox.Center
-                start_pos = current_placement.multVec(local_center)
+                # The part's shape is already placed, so its BBox.Center is the
+                # correct global starting position for the explosion line.
+                start_pos = obj.Shape.BoundBox.Center
 
                 if move.MoveType == "Radial":
                     obj_com, obj_size = UtilsAssembly.getComAndSize(obj)
@@ -207,7 +206,11 @@ class ExplodedView:
                 calculated_placements[obj.Name] = new_placement
                 final_placements[obj] = new_placement
 
-                end_pos = new_placement.multVec(local_center)
+                # To find the end_pos, calculate the transformation that takes the part
+                # from its current_placement to its new_placement...
+                delta_transform = new_placement * current_placement.inverse()
+                # ...and apply that same transformation to the start_pos.
+                end_pos = delta_transform.multVec(start_pos)
                 line_positions.append([start_pos, end_pos])
 
         return final_placements, line_positions
@@ -223,19 +226,20 @@ class ExplodedView:
 
         # We need to include ALL parts of the assembly, not just the moved ones.
         assembly = self.getAssembly(viewObj)
-        all_parts = UtilsAssembly.getMovablePartsWithin(
-            assembly, True
-        )  # Or however you get all parts
+        all_parts = UtilsAssembly.getMovablePartsWithin(assembly, True)
+        visible_parts = [
+            part for part in all_parts if hasattr(part, "Visibility") and part.Visibility
+        ]
 
-        for part in all_parts:
-            # Get the original shape. It's crucial to use .copy()
+        for part in visible_parts:
+            # Get the shape. It's crucial to use .copy()
             shape_copy = part.Shape.copy()
 
             # If the part was moved, use its calculated final placement.
             # Otherwise, use its current placement from the document.
             final_plc = final_placements.get(part, part.Placement)
 
-            shape_copy.transformShape(final_plc.toMatrix())
+            shape_copy.Placement = final_plc
             exploded_shapes.append(shape_copy)
 
         # Add shapes for the explosion lines

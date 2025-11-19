@@ -21,12 +21,12 @@
  *                                                                          *
  ***************************************************************************/
 
-# include <limits>
-# include <Inventor/sensors/SoNodeSensor.h>
-# include <Inventor/nodes/SoAnnotation.h>
-# include <Inventor/nodes/SoOrthographicCamera.h>
-# include <Inventor/nodes/SoTransform.h>
-# include <Inventor/nodes/SoSwitch.h>
+#include <limits>
+#include <Inventor/sensors/SoNodeSensor.h>
+#include <Inventor/nodes/SoAnnotation.h>
+#include <Inventor/nodes/SoOrthographicCamera.h>
+#include <Inventor/nodes/SoTransform.h>
+#include <Inventor/nodes/SoSwitch.h>
 
 #include <QEvent>
 #include <QKeyEvent>
@@ -43,19 +43,21 @@
 #include "EditableDatumLabel.h"
 
 
-
 using namespace Gui;
 
 
-struct NodeData {
+struct NodeData
+{
     EditableDatumLabel* label;
 };
 
-EditableDatumLabel::EditableDatumLabel(View3DInventorViewer* view,
-                                       const Base::Placement& plc,
-                                       SbColor color,
-                                       bool autoDistance,
-                                       bool avoidMouseCursor)
+EditableDatumLabel::EditableDatumLabel(
+    View3DInventorViewer* view,
+    const Base::Placement& plc,
+    SbColor color,
+    bool autoDistance,
+    bool avoidMouseCursor
+)
     : isSet(false)
     , hasFinishedEditing(false)
     , autoDistance(autoDistance)
@@ -100,7 +102,7 @@ EditableDatumLabel::EditableDatumLabel(View3DInventorViewer* view,
     setPlacement(plc);
     // NOLINTEND
 
-    static_cast<SoSeparator*>(viewer->getSceneGraph())->addChild(root); // NOLINT
+    static_cast<SoSeparator*>(viewer->getSceneGraph())->addChild(root);  // NOLINT
 }
 
 EditableDatumLabel::~EditableDatumLabel()
@@ -120,16 +122,19 @@ void EditableDatumLabel::activate()
 
     root->whichChild = 0;
 
-    //track camera movements to update spinbox position.
-    auto info = new NodeData{ this };
-    cameraSensor = new SoNodeSensor([](void* data, SoSensor* sensor) {
-        Q_UNUSED(sensor);
-        auto info = static_cast<NodeData*>(data);
-        info->label->positionSpinbox();
-        if (info->label->autoDistance) {
-            info->label->setLabelRecommendedDistance();
-        }
-    }, info);
+    // track camera movements to update spinbox position.
+    auto info = new NodeData {this};
+    cameraSensor = new SoNodeSensor(
+        [](void* data, SoSensor* sensor) {
+            Q_UNUSED(sensor);
+            auto info = static_cast<NodeData*>(data);
+            info->label->positionSpinbox();
+            if (info->label->autoDistance) {
+                info->label->setLabelRecommendedDistance();
+            }
+        },
+        info
+    );
     cameraSensor->attach(viewer->getCamera());
 }
 
@@ -166,7 +171,7 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj, bool 
     spinBox->setMinimum(-std::numeric_limits<int>::max());
     spinBox->setMaximum(std::numeric_limits<int>::max());
     spinBox->setButtonSymbols(QAbstractSpinBox::NoButtons);
-    spinBox->setFocusPolicy(Qt::ClickFocus); // prevent passing focus with tab.
+    spinBox->setFocusPolicy(Qt::ClickFocus);  // prevent passing focus with tab.
     spinBox->setAutoNormalize(false);
     spinBox->setKeyboardTracking(true);
     spinBox->installEventFilter(this);
@@ -181,7 +186,8 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj, bool 
 
     spinBox->show();
     setSpinboxValue(val);
-    //Note: adjustSize apparently uses the Min/Max values to set the size. So if we don't set them to INT_MAX, the spinbox are much too big.
+    // Note: adjustSize apparently uses the Min/Max values to set the size. So if we don't set them
+    // to INT_MAX, the spinbox are much too big.
     spinBox->adjustSize();
     setFocusToSpinbox();
 
@@ -217,7 +223,8 @@ bool EditableDatumLabel::eventFilter(QObject* watched, QEvent* event)
 {
     if (event->type() == QEvent::KeyPress) {
         auto* keyEvent = static_cast<QKeyEvent*>(event);
-        if (keyEvent->key() == Qt::Key_Return || keyEvent->key() == Qt::Key_Enter || keyEvent->key() == Qt::Key_Tab) {
+        if (keyEvent->key() == Qt::Key_Return || keyEvent->key() == Qt::Key_Enter
+            || keyEvent->key() == Qt::Key_Tab) {
 
             if (auto* spinBox = qobject_cast<QAbstractSpinBox*>(watched)) {
                 // if tab has been pressed and user did not type anything previously,
@@ -243,8 +250,7 @@ bool EditableDatumLabel::eventFilter(QObject* watched, QEvent* event)
                 }
             }
         }
-        else if (this->hasFinishedEditing && keyEvent->key() != Qt::Key_Tab)
-        {
+        else if (this->hasFinishedEditing && keyEvent->key() != Qt::Key_Tab) {
             this->setLockedAppearance(false);
             return false;
         }
@@ -259,7 +265,7 @@ void EditableDatumLabel::stopEdit()
         // write the spinbox value in the label.
         Base::Quantity quantity = spinBox->value();
 
-        double factor{};
+        double factor {};
         std::string unitStr;
         std::string valueStr;
         valueStr = quantity.getUserString(factor, unitStr);
@@ -293,7 +299,10 @@ double EditableDatumLabel::getValue() const
 void EditableDatumLabel::setSpinboxValue(double val, const Base::Unit& unit)
 {
     if (!spinBox) {
-        Base::Console().developerWarning("EditableDatumLabel::setSpinboxValue", "Spinbox doesn't exist in");
+        Base::Console().developerWarning(
+            "EditableDatumLabel::setSpinboxValue",
+            "Spinbox doesn't exist in"
+        );
         return;
     }
 
@@ -310,7 +319,10 @@ void EditableDatumLabel::setSpinboxValue(double val, const Base::Unit& unit)
 void EditableDatumLabel::setFocusToSpinbox()
 {
     if (!spinBox) {
-        Base::Console().developerWarning("EditableDatumLabel::setFocusToSpinbox", "Spinbox doesn't exist in");
+        Base::Console().developerWarning(
+            "EditableDatumLabel::setFocusToSpinbox",
+            "Spinbox doesn't exist in"
+        );
         return;
     }
     if (!spinBox->hasFocus()) {
@@ -338,10 +350,11 @@ void EditableDatumLabel::positionSpinbox()
 
     if (avoidMouseCursor) {
         QPoint cursorPos = viewer->mapFromGlobal(QCursor::pos());
-        int margin = static_cast<int>(wSize.height() * 0.7); // NOLINT
+        int margin = static_cast<int>(wSize.height() * 0.7);  // NOLINT
         if ((cursorPos.x() > posX - margin && cursorPos.x() < posX + wSize.width() + margin)
             && (cursorPos.y() > posY - margin && cursorPos.y() < posY + wSize.height() + margin)) {
-            posY = cursorPos.y() + ((cursorPos.y() > pxCoord.y()) ? - wSize.height() - margin : margin);
+            posY = cursorPos.y()
+                + ((cursorPos.y() > pxCoord.y()) ? -wSize.height() - margin : margin);
         }
     }
 
@@ -365,8 +378,8 @@ void EditableDatumLabel::positionSpinbox()
 
 SbVec3f EditableDatumLabel::getTextCenterPoint() const
 {
-    //Here we need the 3d point and not the 2d point as are the SoLabel points.
-    // First we get the 2D point (on the sketch/image plane) of the middle of the text label.
+    // Here we need the 3d point and not the 2d point as are the SoLabel points.
+    //  First we get the 2D point (on the sketch/image plane) of the middle of the text label.
     SbVec3f point2D = label->getLabelTextCenter();
     // Get the translation and rotation values from the transform
     SbVec3f translation = transform->translation.getValue();
@@ -399,9 +412,9 @@ SbVec3f EditableDatumLabel::getTextCenterPoint() const
 
 void EditableDatumLabel::setPlacement(const Base::Placement& plc)
 {
-    double x{}, y{}, z{}, w{}; // NOLINT
+    double x {}, y {}, z {}, w {};  // NOLINT
     plc.getRotation().getValue(x, y, z, w);
-    transform->rotation.setValue(x, y, z, w); // NOLINT
+    transform->rotation.setValue(x, y, z, w);  // NOLINT
 
     Base::Vector3d pos = plc.getPosition();
     transform->translation.setValue(float(pos.x), float(pos.y), float(pos.z));
@@ -427,8 +440,9 @@ void EditableDatumLabel::setFocus()
 void EditableDatumLabel::setPoints(SbVec3f p1, SbVec3f p2)
 {
     label->setPoints(p1, p2);
-    //TODO: here the position of the spinbox is not going to be center of p1, p2 because the point given by getTextCenterPoint
-    // is not updated yet. it will be only on redraw so it is actually positioning on previous position.
+    // TODO: here the position of the spinbox is not going to be center of p1, p2 because the point
+    // given by getTextCenterPoint
+    //  is not updated yet. it will be only on redraw so it is actually positioning on previous position.
 
     positionSpinbox();
     if (autoDistance) {
@@ -438,8 +452,10 @@ void EditableDatumLabel::setPoints(SbVec3f p1, SbVec3f p2)
 
 void EditableDatumLabel::setPoints(Base::Vector3d p1, Base::Vector3d p2)
 {
-    setPoints(SbVec3f(float(p1.x), float(p1.y), float(p1.z)),
-              SbVec3f(float(p2.x), float(p2.y), float(p2.z)));
+    setPoints(
+        SbVec3f(float(p1.x), float(p1.y), float(p1.z)),
+        SbVec3f(float(p2.x), float(p2.y), float(p2.z))
+    );
 }
 
 // NOLINTNEXTLINE
@@ -469,7 +485,8 @@ void EditableDatumLabel::setLabelRange(double val)
 
 void EditableDatumLabel::setLabelRecommendedDistance()
 {
-    // Takes the 3d view size, and set the label distance to a % of that, such that the distance does not depend on the zoom level.
+    // Takes the 3d view size, and set the label distance to a % of that, such that the distance
+    // does not depend on the zoom level.
     float width = -1.;
     float length = -1.;
     viewer->getDimensions(width, length);
@@ -478,7 +495,7 @@ void EditableDatumLabel::setLabelRecommendedDistance()
         return;
     }
 
-    label->param1 = (autoDistanceReverse ? -1.0F : 1.0F) * (width + length) * 0.03F; // NOLINT
+    label->param1 = (autoDistanceReverse ? -1.0F : 1.0F) * (width + length) * 0.03F;  // NOLINT
 }
 
 void EditableDatumLabel::setLabelAutoDistanceReverse(bool val)
@@ -504,22 +521,26 @@ void EditableDatumLabel::setLockedAppearance(bool locked)
 
                 // load icon and scale it to fit in spinbox
                 QPixmap lockIcon = Gui::BitmapFactory().pixmap("Constraint_Lock");
-                QPixmap scaledIcon =
-                    lockIcon.scaled(14, 14, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+                QPixmap scaledIcon
+                    = lockIcon.scaled(14, 14, Qt::KeepAspectRatio, Qt::SmoothTransformation);
                 lockIconLabel->setPixmap(scaledIcon);
 
                 // position lock icon inside the spinbox
                 int iconSize = 14;
                 int padding = 4;
                 QSize spinboxSize = spinBox->size();
-                lockIconLabel->setGeometry(spinboxSize.width() - iconSize - padding,
-                                           (spinboxSize.height() - iconSize) / 2,
-                                           iconSize,
-                                           iconSize);
+                lockIconLabel->setGeometry(
+                    spinboxSize.width() - iconSize - padding,
+                    (spinboxSize.height() - iconSize) / 2,
+                    iconSize,
+                    iconSize
+                );
                 // style spinbox and add padding for lock
-                QString styleSheet = QString::fromLatin1("QSpinBox { "
-                                                         "padding-right: %1px; "
-                                                         "}")
+                QString styleSheet = QString::fromLatin1(
+                                         "QSpinBox { "
+                                         "padding-right: %1px; "
+                                         "}"
+                )
                                          .arg(iconSize + padding + 2);
 
                 spinBox->setStyleSheet(styleSheet);
@@ -527,7 +548,8 @@ void EditableDatumLabel::setLockedAppearance(bool locked)
 
             lockIconLabel->show();
         }
-    } else {
+    }
+    else {
         this->hasFinishedEditing = false;
 
         // if spinbox exists, reset its appearance
@@ -553,5 +575,4 @@ EditableDatumLabel::Function EditableDatumLabel::getFunction()
     return function;
 }
 
-#include "moc_EditableDatumLabel.cpp" // NOLINT
-
+#include "moc_EditableDatumLabel.cpp"  // NOLINT

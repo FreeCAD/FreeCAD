@@ -110,78 +110,104 @@ PyMOD_INIT_FUNC(Measure)
 
     // Add fundamental umf Measure Types
 
-    App::MeasureManager::addMeasureType("DISTANCE",
-                                        "Distance",
-                                        "Measure::MeasureDistance",
-                                        MeasureDistance::isValidSelection,
-                                        MeasureDistance::isPrioritizedSelection);
+    App::MeasureManager::addMeasureType(
+        "DISTANCE",
+        "Distance",
+        "Measure::MeasureDistance",
+        MeasureDistance::isValidSelection,
+        MeasureDistance::isPrioritizedSelection
+    );
 
-    App::MeasureManager::addMeasureType("DISTANCEFREE",
-                                        "Distance Free",
-                                        "Measure::MeasureDistanceDetached",
-                                        MeasureDistanceDetached::isValidSelection,
-                                        nullptr);
+    App::MeasureManager::addMeasureType(
+        "DISTANCEFREE",
+        "Distance Free",
+        "Measure::MeasureDistanceDetached",
+        MeasureDistanceDetached::isValidSelection,
+        nullptr
+    );
 
-    App::MeasureManager::addMeasureType("ANGLE",
-                                        "Angle",
-                                        "Measure::MeasureAngle",
-                                        MeasureAngle::isValidSelection,
-                                        MeasureAngle::isPrioritizedSelection);
+    App::MeasureManager::addMeasureType(
+        "ANGLE",
+        "Angle",
+        "Measure::MeasureAngle",
+        MeasureAngle::isValidSelection,
+        MeasureAngle::isPrioritizedSelection
+    );
 
-    App::MeasureManager::addMeasureType("LENGTH",
-                                        "Length",
-                                        "Measure::MeasureLength",
-                                        MeasureLength::isValidSelection,
-                                        nullptr);
+    App::MeasureManager::addMeasureType(
+        "LENGTH",
+        "Length",
+        "Measure::MeasureLength",
+        MeasureLength::isValidSelection,
+        nullptr
+    );
 
-    App::MeasureManager::addMeasureType("POSITION",
-                                        "Position",
-                                        "Measure::MeasurePosition",
-                                        MeasurePosition::isValidSelection,
-                                        nullptr);
+    App::MeasureManager::addMeasureType(
+        "POSITION",
+        "Position",
+        "Measure::MeasurePosition",
+        MeasurePosition::isValidSelection,
+        nullptr
+    );
 
-    App::MeasureManager::addMeasureType("AREA",
-                                        "Area",
-                                        "Measure::MeasureArea",
-                                        MeasureArea::isValidSelection,
-                                        nullptr);
+    App::MeasureManager::addMeasureType(
+        "AREA",
+        "Area",
+        "Measure::MeasureArea",
+        MeasureArea::isValidSelection,
+        nullptr
+    );
 
-    App::MeasureManager::addMeasureType("RADIUS",
-                                        "Radius",
-                                        "Measure::MeasureRadius",
-                                        MeasureRadius::isValidSelection,
-                                        MeasureRadius::isPrioritizedSelection);
+    App::MeasureManager::addMeasureType(
+        "RADIUS",
+        "Radius",
+        "Measure::MeasureRadius",
+        MeasureRadius::isValidSelection,
+        MeasureRadius::isPrioritizedSelection
+    );
 
     // load measure callbacks from Part module
     auto lengthList = Part::MeasureClient::reportLengthCB();
     for (auto& entry : lengthList) {
-        MeasureBaseExtendable<Part::MeasureLengthInfo>::addGeometryHandler(entry.m_module,
-                                                                           entry.m_callback);
+        MeasureBaseExtendable<Part::MeasureLengthInfo>::addGeometryHandler(
+            entry.m_module,
+            entry.m_callback
+        );
     }
     auto angleList = Part::MeasureClient::reportAngleCB();
     for (auto& entry : angleList) {
-        MeasureBaseExtendable<Part::MeasureAngleInfo>::addGeometryHandler(entry.m_module,
-                                                                          entry.m_callback);
+        MeasureBaseExtendable<Part::MeasureAngleInfo>::addGeometryHandler(
+            entry.m_module,
+            entry.m_callback
+        );
     }
     auto areaList = Part::MeasureClient::reportAreaCB();
     for (auto& entry : areaList) {
-        MeasureBaseExtendable<Part::MeasureAreaInfo>::addGeometryHandler(entry.m_module,
-                                                                         entry.m_callback);
+        MeasureBaseExtendable<Part::MeasureAreaInfo>::addGeometryHandler(
+            entry.m_module,
+            entry.m_callback
+        );
     }
     auto distanceList = Part::MeasureClient::reportDistanceCB();
     for (auto& entry : distanceList) {
-        MeasureBaseExtendable<Part::MeasureDistanceInfo>::addGeometryHandler(entry.m_module,
-                                                                             entry.m_callback);
+        MeasureBaseExtendable<Part::MeasureDistanceInfo>::addGeometryHandler(
+            entry.m_module,
+            entry.m_callback
+        );
     }
     auto positionList = Part::MeasureClient::reportPositionCB();
     for (auto& entry : positionList) {
-        MeasureBaseExtendable<Part::MeasurePositionInfo>::addGeometryHandler(entry.m_module,
-                                                                             entry.m_callback);
+        MeasureBaseExtendable<Part::MeasurePositionInfo>::addGeometryHandler(
+            entry.m_module,
+            entry.m_callback
+        );
     }
     auto radiusList = Part::MeasureClient::reportRadiusCB();
     for (auto& entry : radiusList) {
-        MeasureBaseExtendable<Part::MeasureRadiusInfo>::addGeometryHandler(entry.m_module,
-                                                                           entry.m_callback);
+        MeasureBaseExtendable<Part::MeasureRadiusInfo>::addGeometryHandler(
+            entry.m_module,
+            entry.m_callback
+        );
     }
 
 

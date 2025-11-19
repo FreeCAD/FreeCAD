@@ -23,441 +23,265 @@
 # *                                                                         *
 # ***************************************************************************
 
+import os
+import socket
+import sys
+from typing import Any, Dict, Optional
 
-import argparse
-import datetime
-import Path.Post.Utils as PostUtils
-import PathScripts.PathUtils as PathUtils
+from Path.Post.Processor import PostProcessor
+
+import Path
 import FreeCAD
-from FreeCAD import Units
-import shlex
-from builtins import open as pyopen
 
-TOOLTIP = """
-This is a postprocessor file for the Path workbench. It is used to
-take a pseudo-G-code fragment outputted by a Path object, and output
-real G-code suitable for a smoothieboard. This postprocessor, once placed
-in the appropriate PathScripts folder, can be used directly from inside
-FreeCAD, via the GUI importer or via python scripts with:
+translate = FreeCAD.Qt.translate
 
-import smoothie_post
-smoothie_post.export(object,"/path/to/file.ncc","")
-"""
-
-now = datetime.datetime.now()
-
-parser = argparse.ArgumentParser(prog="linuxcnc", add_help=False)
-parser.add_argument("--header", action="store_true", help="output headers (default)")
-parser.add_argument("--no-header", action="store_true", help="suppress header output")
-parser.add_argument("--comments", action="store_true", help="output comment (default)")
-parser.add_argument("--no-comments", action="store_true", help="suppress comment output")
-parser.add_argument("--line-numbers", action="store_true", help="prefix with line numbers")
-parser.add_argument(
-    "--no-line-numbers",
-    action="store_true",
-    help="don't prefix with line numbers (default)",
-)
-parser.add_argument(
-    "--show-editor",
-    action="store_true",
-    help="pop up editor before writing output (default)",
-)
-parser.add_argument(
-    "--no-show-editor",
-    action="store_true",
-    help="don't pop up editor before writing output",
-)
-parser.add_argument("--precision", default="4", help="number of digits of precision, default=4")
-parser.add_argument(
-    "--preamble",
-    help='set commands to be issued before the first command, default="G17\\nG90\\n"',
-)
-parser.add_argument(
-    "--postamble",
-    help='set commands to be issued after the last command, default="M05\\nG17 G90\\nM2\\n"',
-)
-parser.add_argument("--IP_ADDR", help="IP Address for machine target machine")
-parser.add_argument(
-    "--verbose",
-    action="store_true",
-    help='verbose output for debugging, default="False"',
-)
-parser.add_argument(
-    "--inches", action="store_true", help="Convert output for US imperial mode (G20)"
-)
-
-TOOLTIP_ARGS = parser.format_help()
-
-# These globals set common customization preferences
-OUTPUT_COMMENTS = True
-OUTPUT_HEADER = True
-OUTPUT_LINE_NUMBERS = False
-IP_ADDR = None
-VERBOSE = False
-
-SPINDLE_SPEED = 0.0
-
-if FreeCAD.GuiUp:
-    SHOW_EDITOR = True
+DEBUG = False
+if DEBUG:
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    SHOW_EDITOR = False
-MODAL = False  # if true commands are suppressed if the same as previous line.
-COMMAND_SPACE = " "
-LINENR = 100  # line number starting value
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
-# These globals will be reflected in the Machine configuration of the project
-UNITS = "G21"  # G21 for metric, G20 for us standard
-UNIT_SPEED_FORMAT = "mm/min"
-UNIT_FORMAT = "mm"
+#
+# Define some types that are used throughout this file.
+#
+Values = Dict[str, Any]
 
-MACHINE_NAME = "SmoothieBoard"
-CORNER_MIN = {"x": 0, "y": 0, "z": 0}
-CORNER_MAX = {"x": 500, "y": 300, "z": 300}
 
-# Preamble text will appear at the beginning of the GCODE output file.
-PREAMBLE = """G17 G90
-"""
+class Smoothie(PostProcessor):
+    """
+    The SmoothieBoard post processor class.
 
-# Postamble text will appear following the last operation.
-POSTAMBLE = """M05
+    This postprocessor outputs G-code suitable for SmoothieBoard controllers.
+    It supports direct network upload to the SmoothieBoard via TCP/IP.
+    """
+
+    def __init__(
+        self,
+        job,
+        tooltip=translate("CAM", "Refactored SmoothieBoard post processor"),
+        tooltipargs=["ip-addr", "verbose"],
+        units="Metric",
+    ) -> None:
+        super().__init__(
+            job=job,
+            tooltip=tooltip,
+            tooltipargs=tooltipargs,
+            units=units,
+        )
+        Path.Log.debug("Refactored SmoothieBoard post processor initialized.")
+        self.ip_addr: Optional[str] = None
+        self.verbose: bool = False
+
+    def init_values(self, values: Values) -> None:
+        """Initialize values that are used throughout the postprocessor."""
+        #
+        super().init_values(values)
+        #
+        # Set any values here that need to override the default values set
+        # in the parent routine.
+        #
+        # The order of parameters.
+        # SmoothieBoard doesn't want K properties on XY plane (like LinuxCNC).
+        #
+        values["PARAMETER_ORDER"] = [
+            "X",
+            "Y",
+            "Z",
+            "A",
+            "B",
+            "I",
+            "J",
+            "F",
+            "S",
+            "T",
+            "Q",
+            "R",
+            "L",
+        ]
+        #
+        # Used in the argparser code as the "name" of the postprocessor program.
+        #
+        values["MACHINE_NAME"] = "SmoothieBoard"
+        #
+        # Any commands in this value will be output as the last commands
+        # in the G-code file.
+        #
+        values[
+            "POSTAMBLE"
+        ] = """M05
 G17 G90
-M2
-"""
+M2"""
+        values["POSTPROCESSOR_FILE_NAME"] = __name__
+        #
+        # Any commands in this value will be output after the header and
+        # safety block at the beginning of the G-code file.
+        #
+        values["PREAMBLE"] = """G17 G90"""
 
+    def init_arguments(self, values, argument_defaults, arguments_visible):
+        """Initialize command-line arguments, including SmoothieBoard-specific options."""
+        parser = super().init_arguments(values, argument_defaults, arguments_visible)
 
-# Pre operation text will be inserted before every operation
-PRE_OPERATION = """"""
+        # Add SmoothieBoard-specific argument group
+        smoothie_group = parser.add_argument_group("SmoothieBoard-specific arguments")
 
-# Post operation text will be inserted after every operation
-POST_OPERATION = """"""
+        smoothie_group.add_argument(
+            "--ip-addr", help="IP address for direct upload to SmoothieBoard (e.g., 192.168.1.100)"
+        )
 
-# Tool Change commands will be inserted before a tool change
-TOOL_CHANGE = """"""
+        smoothie_group.add_argument(
+            "--verbose",
+            action="store_true",
+            help="Enable verbose output for network transfer debugging",
+        )
 
-# Number of digits after the decimal point
-PRECISION = 5
+        return parser
 
+    def process_arguments(self):
+        """Process arguments and update values, including SmoothieBoard-specific settings."""
+        flag, args = super().process_arguments()
 
-def processArguments(argstring):
-    global OUTPUT_HEADER
-    global OUTPUT_COMMENTS
-    global OUTPUT_LINE_NUMBERS
-    global SHOW_EDITOR
-    global IP_ADDR
-    global VERBOSE
-    global PRECISION
-    global PREAMBLE
-    global POSTAMBLE
-    global UNITS
-    global UNIT_SPEED_FORMAT
-    global UNIT_FORMAT
+        if flag and args:
+            # Update SmoothieBoard-specific values from parsed arguments
+            if hasattr(args, "ip_addr") and args.ip_addr:
+                self.ip_addr = args.ip_addr
+                Path.Log.info(f"SmoothieBoard IP address set to: {self.ip_addr}")
 
-    try:
-        args = parser.parse_args(shlex.split(argstring))
+            if hasattr(args, "verbose"):
+                self.verbose = args.verbose
+                if self.verbose:
+                    Path.Log.info("Verbose mode enabled")
 
-        if args.no_header:
-            OUTPUT_HEADER = False
-        if args.header:
-            OUTPUT_HEADER = True
-        if args.no_comments:
-            OUTPUT_COMMENTS = False
-        if args.comments:
-            OUTPUT_COMMENTS = True
-        if args.no_line_numbers:
-            OUTPUT_LINE_NUMBERS = False
-        if args.line_numbers:
-            OUTPUT_LINE_NUMBERS = True
-        if args.no_show_editor:
-            SHOW_EDITOR = False
-        if args.show_editor:
-            SHOW_EDITOR = True
-        print("Show editor = %d" % SHOW_EDITOR)
-        PRECISION = args.precision
-        if args.preamble is not None:
-            PREAMBLE = args.preamble.replace("\\n", "\n")
-        if args.postamble is not None:
-            POSTAMBLE = args.postamble.replace("\\n", "\n")
-        if args.inches:
-            UNITS = "G20"
-            UNIT_SPEED_FORMAT = "in/min"
-            UNIT_FORMAT = "in"
+        return flag, args
 
-        IP_ADDR = args.IP_ADDR
-        VERBOSE = args.verbose
+    def export(self):
+        """Override export to handle network upload to SmoothieBoard."""
+        # First, do the standard export processing
+        gcode_sections = super().export()
 
-    except Exception:
-        return False
+        if gcode_sections is None:
+            return None
 
-    return True
+        # If IP address is specified, send to SmoothieBoard instead of writing to file
+        if self.ip_addr:
+            # Combine all G-code sections
+            gcode = ""
+            for section_name, section_gcode in gcode_sections:
+                if section_gcode:
+                    gcode += section_gcode
 
+            # Get the output filename from the job
+            filename = self._job.PostProcessorOutputFile
+            if not filename or filename == "-":
+                filename = "output.nc"
 
-def export(objectslist, filename, argstring):
-    processArguments(argstring)
-    global UNITS
-    for obj in objectslist:
-        if not hasattr(obj, "Path"):
+            self._send_to_smoothie(self.ip_addr, gcode, filename)
+
+            # Return the gcode for display/editor
+            return gcode_sections
+
+        # Normal file-based export
+        return gcode_sections
+
+    def _send_to_smoothie(self, ip: str, gcode: str, fname: str) -> None:
+        """
+        Send G-code directly to SmoothieBoard via network.
+
+        Args:
+            ip: IP address of the SmoothieBoard
+            gcode: G-code string to send
+            fname: Filename to use on the SmoothieBoard SD card
+        """
+        fname = os.path.basename(fname)
+        FreeCAD.Console.PrintMessage(f"Sending to SmoothieBoard: {fname}\n")
+
+        gcode = gcode.rstrip()
+        filesize = len(gcode)
+
+        try:
+            # Make connection to SmoothieBoard SFTP server (port 115)
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.settimeout(4.0)
+            s.connect((ip, 115))
+            tn = s.makefile(mode="rw")
+
+            # Read startup prompt
+            ln = tn.readline()
+            if not ln.startswith("+"):
+                FreeCAD.Console.PrintError(f"Failed to connect with SFTP: {ln}\n")
+                return
+
+            if self.verbose:
+                print("RSP: " + ln.strip())
+
+            # Issue initial store command
+            tn.write(f"STOR OLD /sd/{fname}\n")
+            tn.flush()
+
+            ln = tn.readline()
+            if not ln.startswith("+"):
+                FreeCAD.Console.PrintError(f"Failed to create file: {ln}\n")
+                return
+
+            if self.verbose:
+                print("RSP: " + ln.strip())
+
+            # Send size of file
+            tn.write(f"SIZE {filesize}\n")
+            tn.flush()
+
+            ln = tn.readline()
+            if not ln.startswith("+"):
+                FreeCAD.Console.PrintError(f"Failed: {ln}\n")
+                return
+
+            if self.verbose:
+                print("RSP: " + ln.strip())
+
+            # Now send file
+            cnt = 0
+            for line in gcode.splitlines(True):
+                tn.write(line)
+                if self.verbose:
+                    cnt += len(line)
+                    print("SND: " + line.strip())
+                    print(f"{cnt}/{filesize}\r", end="")
+
+            tn.flush()
+
+            ln = tn.readline()
+            if not ln.startswith("+"):
+                FreeCAD.Console.PrintError(f"Failed to save file: {ln}\n")
+                return
+
+            if self.verbose:
+                print("RSP: " + ln.strip())
+
+            # Exit
+            tn.write("DONE\n")
+            tn.flush()
+            tn.close()
+
+            FreeCAD.Console.PrintMessage("Upload complete\n")
+
+        except socket.timeout:
+            FreeCAD.Console.PrintError(f"Connection timeout while connecting to {ip}:115\n")
+        except ConnectionRefusedError:
             FreeCAD.Console.PrintError(
-                "the object "
-                + obj.Name
-                + " is not a path. Please select only path and Compounds.\n"
+                f"Connection refused by {ip}:115. Is the SmoothieBoard running?\n"
             )
-            return
+        except Exception as e:
+            FreeCAD.Console.PrintError(f"Error sending to SmoothieBoard: {str(e)}\n")
 
-    FreeCAD.Console.PrintMessage("postprocessing...\n")
-    gcode = ""
+    @property
+    def tooltip(self):
+        tooltip: str = """
+        This is a postprocessor file for the CAM workbench.
+        It is used to take a pseudo-gcode fragment from a CAM object
+        and output 'real' GCode suitable for a SmoothieBoard controller.
 
-    # Find the machine.
-    # The user my have overridden post processor defaults in the GUI.  Make
-    # sure we're using the current values in the Machine Def.
-    myMachine = None
-    for pathobj in objectslist:
-        if hasattr(pathobj, "MachineName"):
-            myMachine = pathobj.MachineName
-        if hasattr(pathobj, "MachineUnits"):
-            if pathobj.MachineUnits == "Metric":
-                UNITS = "G21"
-            else:
-                UNITS = "G20"
-    if myMachine is None:
-        FreeCAD.Console.PrintWarning("No machine found in this selection\n")
-
-    # write header
-    if OUTPUT_HEADER:
-        gcode += linenumber() + "(Exported by FreeCAD)\n"
-        gcode += linenumber() + "(Post Processor: " + __name__ + ")\n"
-        gcode += linenumber() + "(Output Time:" + str(now) + ")\n"
-
-    # Write the preamble
-    if OUTPUT_COMMENTS:
-        gcode += linenumber() + "(begin preamble)\n"
-    for line in PREAMBLE.splitlines():
-        gcode += linenumber() + line + "\n"
-    gcode += linenumber() + UNITS + "\n"
-
-    for obj in objectslist:
-
-        # do the pre_op
-        if OUTPUT_COMMENTS:
-            gcode += linenumber() + "(begin operation: " + obj.Label + ")\n"
-        for line in PRE_OPERATION.splitlines(True):
-            gcode += linenumber() + line
-
-        gcode += parse(obj)
-
-        # do the post_op
-        if OUTPUT_COMMENTS:
-            gcode += linenumber() + "(finish operation: " + obj.Label + ")\n"
-        for line in POST_OPERATION.splitlines(True):
-            gcode += linenumber() + line
-
-    # do the post_amble
-
-    if OUTPUT_COMMENTS:
-        gcode += "(begin postamble)\n"
-    for line in POSTAMBLE.splitlines():
-        gcode += linenumber() + line + "\n"
-
-    if SHOW_EDITOR:
-        dia = PostUtils.GCodeEditorDialog()
-        dia.editor.setText(gcode)
-        result = dia.exec_()
-        if result:
-            final = dia.editor.toPlainText()
-        else:
-            final = gcode
-    else:
-        final = gcode
-
-    if IP_ADDR is not None:
-        sendToSmoothie(IP_ADDR, final, filename)
-    else:
-
-        if not filename == "-":
-            gfile = pyopen(filename, "w")
-            gfile.write(final)
-            gfile.close()
-
-    FreeCAD.Console.PrintMessage("done postprocessing.\n")
-    return final
-
-
-def sendToSmoothie(ip, GCODE, fname):
-    import sys
-    import socket
-    import os
-
-    fname = os.path.basename(fname)
-    FreeCAD.Console.PrintMessage("sending to smoothie: {}\n".format(fname))
-
-    f = GCODE.rstrip()
-    filesize = len(f)
-    # make connection to sftp server
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.settimeout(4.0)
-    s.connect((ip, 115))
-    tn = s.makefile(mode="rw")
-
-    # read startup prompt
-    ln = tn.readline()
-    if not ln.startswith("+"):
-        FreeCAD.Console.PrintMessage("Failed to connect with sftp: {}\n".format(ln))
-        sys.exit()
-
-    if VERBOSE:
-        print("RSP: " + ln.strip())
-
-    # Issue initial store command
-    tn.write("STOR OLD /sd/" + fname + "\n")
-    tn.flush()
-
-    ln = tn.readline()
-    if not ln.startswith("+"):
-        FreeCAD.Console.PrintError("Failed to create file: {}\n".format(ln))
-        sys.exit()
-
-    if VERBOSE:
-        print("RSP: " + ln.strip())
-
-    # send size of file
-    tn.write("SIZE " + str(filesize) + "\n")
-    tn.flush()
-
-    ln = tn.readline()
-    if not ln.startswith("+"):
-        FreeCAD.Console.PrintError("Failed: {}\n".format(ln))
-        sys.exit()
-
-    if VERBOSE:
-        print("RSP: " + ln.strip())
-
-    cnt = 0
-    # now send file
-    for line in f.splitlines(1):
-        tn.write(line)
-        if VERBOSE:
-            cnt += len(line)
-            print("SND: " + line.strip())
-            print(str(cnt) + "/" + str(filesize) + "\r", end="")
-
-    tn.flush()
-
-    ln = tn.readline()
-    if not ln.startswith("+"):
-        FreeCAD.Console.PrintError("Failed to save file: {}\n".format(ln))
-        sys.exit()
-
-    if VERBOSE:
-        print("RSP: " + ln.strip())
-
-    # exit
-    tn.write("DONE\n")
-    tn.flush()
-    tn.close()
-
-    FreeCAD.Console.PrintMessage("Upload complete\n")
-
-
-def linenumber():
-    global LINENR
-    if OUTPUT_LINE_NUMBERS is True:
-        LINENR += 10
-        return "N" + str(LINENR) + " "
-    return ""
-
-
-def parse(pathobj):
-    global SPINDLE_SPEED
-
-    out = ""
-    lastcommand = None
-    precision_string = "." + str(PRECISION) + "f"
-
-    # params = ['X','Y','Z','A','B','I','J','K','F','S'] #This list control
-    # the order of parameters
-    # linuxcnc doesn't want K properties on XY plane  Arcs need work.
-    params = ["X", "Y", "Z", "A", "B", "I", "J", "F", "S", "T", "Q", "R", "L"]
-
-    if hasattr(pathobj, "Group"):  # We have a compound or project.
-        # if OUTPUT_COMMENTS:
-        #     out += linenumber() + "(compound: " + pathobj.Label + ")\n"
-        for p in pathobj.Group:
-            out += parse(p)
-        return out
-    else:  # parsing simple path
-
-        # groups might contain non-path things like stock.
-        if not hasattr(pathobj, "Path"):
-            return out
-
-        # if OUTPUT_COMMENTS:
-        #     out += linenumber() + "(" + pathobj.Label + ")\n"
-
-        for c in PathUtils.getPathWithPlacement(pathobj).Commands:
-            outstring = []
-            command = c.Name
-            outstring.append(command)
-            # if modal: only print the command if it is not the same as the
-            # last one
-            if MODAL is True:
-                if command == lastcommand:
-                    outstring.pop(0)
-
-            # Now add the remaining parameters in order
-            for param in params:
-                if param in c.Parameters:
-                    if param == "F":
-                        if c.Name not in [
-                            "G0",
-                            "G00",
-                        ]:  # linuxcnc doesn't use rapid speeds
-                            speed = Units.Quantity(c.Parameters["F"], FreeCAD.Units.Velocity)
-                            outstring.append(
-                                param
-                                + format(
-                                    float(speed.getValueAs(UNIT_SPEED_FORMAT)),
-                                    precision_string,
-                                )
-                            )
-                    elif param == "T":
-                        outstring.append(param + str(c.Parameters["T"]))
-                    elif param == "S":
-                        outstring.append(param + str(c.Parameters["S"]))
-                        SPINDLE_SPEED = c.Parameters["S"]
-                    else:
-                        pos = Units.Quantity(c.Parameters[param], FreeCAD.Units.Length)
-                        outstring.append(
-                            param + format(float(pos.getValueAs(UNIT_FORMAT)), precision_string)
-                        )
-            if command in ["G1", "G01", "G2", "G02", "G3", "G03"]:
-                outstring.append("S" + str(SPINDLE_SPEED))
-
-            # store the latest command
-            lastcommand = command
-
-            # Check for Tool Change:
-            if command == "M6":
-                # if OUTPUT_COMMENTS:
-                #     out += linenumber() + "(begin toolchange)\n"
-                for line in TOOL_CHANGE.splitlines(True):
-                    out += linenumber() + line
-
-            if command == "message":
-                if OUTPUT_COMMENTS is False:
-                    out = []
-                else:
-                    outstring.pop(0)  # remove the command
-
-            # prepend a line number and append a newline
-            if len(outstring) >= 1:
-                if OUTPUT_LINE_NUMBERS:
-                    outstring.insert(0, (linenumber()))
-
-                # append the line to the final output
-                for w in outstring:
-                    out += w + COMMAND_SPACE
-                out = out.strip() + "\n"
-
-        return out
-
-
-# print(__name__ + " gcode postprocessor loaded.")
+        This postprocessor supports direct network upload to SmoothieBoard
+        via the --ip-addr argument.
+        """
+        return tooltip

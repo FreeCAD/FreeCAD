@@ -54,18 +54,22 @@ public:
      that don't match \a defaultColor will be used instead, otherwise the color of the
      original material is used.
      */
-    void apply(const Mesh::MeshObject& mesh,
-               const Base::Color& defaultColor,
-               MeshCore::Material& material);
+    void apply(
+        const Mesh::MeshObject& mesh,
+        const Base::Color& defaultColor,
+        MeshCore::Material& material
+    );
     /*!
      Find common points or facets of this to the original mesh. For points or facets
      that don't match \a defaultColor will be used instead, otherwise the color of the
      original material is used.
      */
-    void apply(const Mesh::MeshObject& mesh,
-               const Base::Color& defaultColor,
-               float max_dist,
-               MeshCore::Material& material);
+    void apply(
+        const Mesh::MeshObject& mesh,
+        const Base::Color& defaultColor,
+        float max_dist,
+        MeshCore::Material& material
+    );
     /*!
      Find common points or facets of this to the original mesh and use the color of the original
      material. If for a point of \a mesh no matching point of the original mesh can be found the
@@ -80,11 +84,13 @@ public:
     void apply(const Mesh::MeshObject& mesh, float max_dist, MeshCore::Material& material);
 
 private:
-    void apply(const Mesh::MeshObject& mesh,
-               bool addDefaultColor,
-               const Base::Color& defaultColor,
-               float max_dist,
-               MeshCore::Material& material);
+    void apply(
+        const Mesh::MeshObject& mesh,
+        bool addDefaultColor,
+        const Base::Color& defaultColor,
+        float max_dist,
+        MeshCore::Material& material
+    );
     PointIndex findIndex(const Base::Vector3f& p, float max_dist) const
     {
         if (max_dist < 0.0F) {

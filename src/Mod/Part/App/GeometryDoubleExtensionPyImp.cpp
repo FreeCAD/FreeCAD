@@ -23,7 +23,6 @@
  ***************************************************************************/
 
 
-
 #include "GeometryDefaultExtension.h"
 
 #include "GeometryDoubleExtensionPy.h"
@@ -36,10 +35,11 @@ std::string GeometryDoubleExtensionPy::representation() const
 {
     std::stringstream str;
     double val = getGeometryDoubleExtensionPtr()->getValue();
-    str << "<GeometryDoubleExtension (" ;
+    str << "<GeometryDoubleExtension (";
 
-    if(!getGeometryDoubleExtensionPtr()->getName().empty())
+    if (!getGeometryDoubleExtensionPtr()->getName().empty()) {
         str << "\'" << getGeometryDoubleExtensionPtr()->getName() << "\', ";
+    }
 
     str << val << ") >";
 
@@ -47,7 +47,7 @@ std::string GeometryDoubleExtensionPy::representation() const
     return str.str();
 }
 
-PyObject *GeometryDoubleExtensionPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject* GeometryDoubleExtensionPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // create a new instance of the python object and the Twin object
     return new GeometryDoubleExtensionPy(new GeometryDoubleExtension);
@@ -70,17 +70,20 @@ int GeometryDoubleExtensionPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
 
     PyErr_Clear();
-    char * pystr;
-    if (PyArg_ParseTuple(args, "ds", &val,&pystr)) {
+    char* pystr;
+    if (PyArg_ParseTuple(args, "ds", &val, &pystr)) {
         this->getGeometryDoubleExtensionPtr()->setValue(val);
         this->getGeometryDoubleExtensionPtr()->setName(pystr);
         return 0;
     }
 
-    PyErr_SetString(PyExc_TypeError, "GeometryDoubleExtension constructor accepts:\n"
-    "-- empty parameter list\n"
-    "-- double\n"
-    "-- double, string\n");
+    PyErr_SetString(
+        PyExc_TypeError,
+        "GeometryDoubleExtension constructor accepts:\n"
+        "-- empty parameter list\n"
+        "-- double\n"
+        "-- double, string\n"
+    );
     return -1;
 }
 
@@ -95,8 +98,7 @@ void GeometryDoubleExtensionPy::setValue(Py::Float value)
 }
 
 
-
-PyObject *GeometryDoubleExtensionPy::getCustomAttributes(const char* /*attr*/) const
+PyObject* GeometryDoubleExtensionPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }

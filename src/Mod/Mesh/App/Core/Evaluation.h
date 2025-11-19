@@ -129,8 +129,7 @@ private:
 class MeshExport MeshOrientationCollector: public MeshOrientationVisitor
 {
 public:
-    MeshOrientationCollector(std::vector<FacetIndex>& aulIndices,
-                             std::vector<FacetIndex>& aulComplement);
+    MeshOrientationCollector(std::vector<FacetIndex>& aulIndices, std::vector<FacetIndex>& aulComplement);
 
     /** Returns always true and collects the indices with wrong orientation. */
     bool Visit(const MeshFacet&, const MeshFacet&, FacetIndex, unsigned long) override;
@@ -335,8 +334,10 @@ public:
     /// Evaluate the mesh and return if true if there are self intersections
     bool Evaluate() override;
     /// collect all intersection lines
-    void GetIntersections(const std::vector<std::pair<FacetIndex, FacetIndex>>&,
-                          std::vector<std::pair<Base::Vector3f, Base::Vector3f>>&) const;
+    void GetIntersections(
+        const std::vector<std::pair<FacetIndex, FacetIndex>>&,
+        std::vector<std::pair<Base::Vector3f, Base::Vector3f>>&
+    ) const;
     /// collect the index of all facets with self intersections
     void GetIntersections(std::vector<std::pair<FacetIndex, FacetIndex>>&) const;
 };
@@ -348,8 +349,7 @@ public:
 class MeshExport MeshFixSelfIntersection: public MeshValidation
 {
 public:
-    MeshFixSelfIntersection(MeshKernel& rclB,
-                            const std::vector<std::pair<FacetIndex, FacetIndex>>& si)
+    MeshFixSelfIntersection(MeshKernel& rclB, const std::vector<std::pair<FacetIndex, FacetIndex>>& si)
         : MeshValidation(rclB)
         , selfIntersectons(si)
     {}
@@ -422,8 +422,7 @@ protected:
 
 private:
     Base::Vector3f _cU, _cV, _cW, _cC; /**< Vectors that define the local coordinate system. */
-    float _fU, _fV,
-        _fW; /**< Expansion in \a u, \a v, and \a w direction of the transformed mesh. */
+    float _fU, _fV, _fW; /**< Expansion in \a u, \a v, and \a w direction of the transformed mesh. */
 };
 
 }  // namespace MeshCore

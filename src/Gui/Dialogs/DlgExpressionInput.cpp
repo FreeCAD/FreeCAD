@@ -53,17 +53,20 @@ using namespace Gui::Dialog;
 
 FC_LOG_LEVEL_INIT("DlgExpressionInput", true, true)
 
-DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
-                                       std::shared_ptr<const Expression> _expression,
-                                       const Base::Unit & _impliedUnit, QWidget *parent)
-  : QDialog(parent)
-  , ui(new Ui::DlgExpressionInput)
-  , expression(_expression ? _expression->copy() : nullptr)
-  , path(_path)
-  , discarded(false)
-  , impliedUnit(_impliedUnit)
-  , varSetsVisible(false)
-  , comboBoxGroup(this)
+DlgExpressionInput::DlgExpressionInput(
+    const App::ObjectIdentifier& _path,
+    std::shared_ptr<const Expression> _expression,
+    const Base::Unit& _impliedUnit,
+    QWidget* parent
+)
+    : QDialog(parent)
+    , ui(new Ui::DlgExpressionInput)
+    , expression(_expression ? _expression->copy() : nullptr)
+    , path(_path)
+    , discarded(false)
+    , impliedUnit(_impliedUnit)
+    , varSetsVisible(false)
+    , comboBoxGroup(this)
 {
     assert(path.getDocumentObject());
 
@@ -76,10 +79,8 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
     initializeVarSets();
 
     // Connect signal(s)
-    connect(ui->expression, &ExpressionTextEdit::textChanged,
-        this, &DlgExpressionInput::textChanged);
-    connect(discardBtn, &QPushButton::clicked,
-        this, &DlgExpressionInput::setDiscarded);
+    connect(ui->expression, &ExpressionTextEdit::textChanged, this, &DlgExpressionInput::textChanged);
+    connect(discardBtn, &QPushButton::clicked, this, &DlgExpressionInput::setDiscarded);
 
     if (expression) {
         ui->expression->setPlainText(QString::fromStdString(expression->toString()));
@@ -92,14 +93,15 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
     }
 
     // Set document object on text edit to create auto completer
-    DocumentObject * docObj = path.getDocumentObject();
+    DocumentObject* docObj = path.getDocumentObject();
     ui->expression->setDocumentObject(docObj);
 
     // There are some platforms where setting no system background causes a black
     // rectangle to appear. To avoid this the 'NoSystemBackground' parameter can be
     // set to false. Then a normal non-modal dialog will be shown instead (#0002440).
-    bool noBackground = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/Expression")->GetBool("NoSystemBackground", false);
+    bool noBackground = App::GetApplication()
+                            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Expression")
+                            ->GetBool("NoSystemBackground", false);
 
     if (noBackground) {
 #if defined(Q_OS_MACOS)
@@ -121,32 +123,44 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
         // It is strange that (at least on Linux) DlgExpressionInput will shrink
         // to be narrower than ui->expression after calling adjustSize() above.
         // Why?
-        if(this->width() < ui->expression->width() + 18)
-            this->resize(ui->expression->width()+18,this->height());
+        if (this->width() < ui->expression->width() + 18) {
+            this->resize(ui->expression->width() + 18, this->height());
+        }
     }
     ui->expression->setFocus();
 }
 
 DlgExpressionInput::~DlgExpressionInput()
 {
-#if QT_VERSION >= QT_VERSION_CHECK(6,7,0)
-    disconnect(ui->checkBoxVarSets, &QCheckBox::checkStateChanged,
-               this, &DlgExpressionInput::onCheckVarSets);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 7, 0)
+    disconnect(
+        ui->checkBoxVarSets,
+        &QCheckBox::checkStateChanged,
+        this,
+        &DlgExpressionInput::onCheckVarSets
+    );
 #else
-    disconnect(ui->checkBoxVarSets, &QCheckBox::stateChanged,
-               this, &DlgExpressionInput::onCheckVarSets);
+    disconnect(ui->checkBoxVarSets, &QCheckBox::stateChanged, this, &DlgExpressionInput::onCheckVarSets);
 #endif
-    disconnect(ui->comboBoxVarSet, qOverload<int>(&QComboBox::currentIndexChanged),
-               this, &DlgExpressionInput::onVarSetSelected);
-    disconnect(&comboBoxGroup, &EditFinishedComboBox::currentTextChanged,
-               this, &DlgExpressionInput::onTextChangedGroup);
-    disconnect(ui->lineEditPropNew, &QLineEdit::textChanged,
-               this, &DlgExpressionInput::namePropChanged);
+    disconnect(
+        ui->comboBoxVarSet,
+        qOverload<int>(&QComboBox::currentIndexChanged),
+        this,
+        &DlgExpressionInput::onVarSetSelected
+    );
+    disconnect(
+        &comboBoxGroup,
+        &EditFinishedComboBox::currentTextChanged,
+        this,
+        &DlgExpressionInput::onTextChangedGroup
+    );
+    disconnect(ui->lineEditPropNew, &QLineEdit::textChanged, this, &DlgExpressionInput::namePropChanged);
 
     delete ui;
 }
 
-static void getVarSetsDocument(std::vector<App::VarSet*>& varSets, App::Document* doc) {
+static void getVarSetsDocument(std::vector<App::VarSet*>& varSets, App::Document* doc)
+{
     for (auto obj : doc->getObjects()) {
         auto varSet = dynamic_cast<App::VarSet*>(obj);
         if (varSet) {
@@ -178,9 +192,9 @@ Base::Type DlgExpressionInput::determineTypeVarSet()
 
     // The type of the path is leading.  If it is one of the types below, we
     // can create a property in the varset.
-    if (typePath == App::PropertyString::getClassTypeId() ||
-        typePath.isDerivedFrom(App::PropertyFloat::getClassTypeId()) ||
-        typePath.isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
+    if (typePath == App::PropertyString::getClassTypeId()
+        || typePath.isDerivedFrom(App::PropertyFloat::getClassTypeId())
+        || typePath.isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
         return typePath;
     }
 
@@ -220,19 +234,24 @@ void DlgExpressionInput::initializeErrorFrame()
 
 void DlgExpressionInput::initializeVarSets()
 {
-#if QT_VERSION >= QT_VERSION_CHECK(6,7,0)
-    connect(ui->checkBoxVarSets, &QCheckBox::checkStateChanged,
-            this, &DlgExpressionInput::onCheckVarSets);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 7, 0)
+    connect(ui->checkBoxVarSets, &QCheckBox::checkStateChanged, this, &DlgExpressionInput::onCheckVarSets);
 #else
-    connect(ui->checkBoxVarSets, &QCheckBox::stateChanged,
-            this, &DlgExpressionInput::onCheckVarSets);
+    connect(ui->checkBoxVarSets, &QCheckBox::stateChanged, this, &DlgExpressionInput::onCheckVarSets);
 #endif
-    connect(ui->comboBoxVarSet, qOverload<int>(&QComboBox::currentIndexChanged),
-            this, &DlgExpressionInput::onVarSetSelected);
-    connect(&comboBoxGroup, &EditFinishedComboBox::currentTextChanged,
-            this, &DlgExpressionInput::onTextChangedGroup);
-    connect(ui->lineEditPropNew, &QLineEdit::textChanged,
-            this, &DlgExpressionInput::namePropChanged);
+    connect(
+        ui->comboBoxVarSet,
+        qOverload<int>(&QComboBox::currentIndexChanged),
+        this,
+        &DlgExpressionInput::onVarSetSelected
+    );
+    connect(
+        &comboBoxGroup,
+        &EditFinishedComboBox::currentTextChanged,
+        this,
+        &DlgExpressionInput::onTextChangedGroup
+    );
+    connect(ui->lineEditPropNew, &QLineEdit::textChanged, this, &DlgExpressionInput::namePropChanged);
 
     comboBoxGroup.setObjectName(QStringLiteral("comboBoxGroup"));
     comboBoxGroup.setInsertPolicy(QComboBox::InsertAtTop);
@@ -269,8 +288,9 @@ void NumberRange::clearRange()
 
 void NumberRange::throwIfOutOfRange(const Base::Quantity& value) const
 {
-    if (!defined)
+    if (!defined) {
         return;
+    }
 
     auto toQString = [](const Base::Quantity& v) {
         return QString::fromStdString(v.getUserString());
@@ -280,9 +300,8 @@ void NumberRange::throwIfOutOfRange(const Base::Quantity& value) const
         Base::Quantity minVal(minimum, value.getUnit());
         Base::Quantity maxVal(maximum, value.getUnit());
 
-        const QString fmt = QCoreApplication::translate(
-            "Exceptions",
-            "Value out of range (%1 out of [%2, %3])");
+        const QString fmt
+            = QCoreApplication::translate("Exceptions", "Value out of range (%1 out of [%2, %3])");
         const QString msg = fmt.arg(toQString(value), toQString(minVal), toQString(maxVal));
         THROWM(Base::ValueError, msg.toStdString());
     }
@@ -305,8 +324,9 @@ QPoint DlgExpressionInput::expressionPosition() const
 
 bool DlgExpressionInput::checkCyclicDependencyVarSet(const QString& text)
 {
-     std::shared_ptr<Expression>
-         expr(ExpressionParser::parse(path.getDocumentObject(), text.toUtf8().constData()));
+    std::shared_ptr<Expression> expr(
+        ExpressionParser::parse(path.getDocumentObject(), text.toUtf8().constData())
+    );
 
     if (expr) {
         DocumentObject* obj = path.getDocumentObject();
@@ -317,8 +337,9 @@ bool DlgExpressionInput::checkCyclicDependencyVarSet(const QString& text)
                 // This string is not translated.  It is based on a string that
                 // originates from the expression validator in App that is also
                 // not translated.
-                ui->msg->setText(QString::fromStdString(
-                                         id.first.toString() + " reference causes a cyclic dependency"));
+                ui->msg->setText(
+                    QString::fromStdString(id.first.toString() + " reference causes a cyclic dependency")
+                );
                 return true;
             }
         }
@@ -329,15 +350,17 @@ bool DlgExpressionInput::checkCyclicDependencyVarSet(const QString& text)
 
 void DlgExpressionInput::checkExpression(const QString& text)
 {
-    //now handle expression
-    std::shared_ptr<Expression>
-        expr(ExpressionParser::parse(path.getDocumentObject(), text.toUtf8().constData()));
+    // now handle expression
+    std::shared_ptr<Expression> expr(
+        ExpressionParser::parse(path.getDocumentObject(), text.toUtf8().constData())
+    );
 
     if (expr) {
         std::string error = path.getDocumentObject()->ExpressionEngine.validateExpression(path, expr);
 
-        if (!error.empty())
+        if (!error.empty()) {
             throw Base::RuntimeError(error.c_str());
+        }
 
         std::unique_ptr<Expression> result(expr->eval());
 
@@ -345,10 +368,10 @@ void DlgExpressionInput::checkExpression(const QString& text)
         okBtn->setEnabled(true);
         ui->msg->clear();
 
-        //set default palette as we may have read text right now
+        // set default palette as we may have read text right now
         ui->msg->setPalette(okBtn->palette());
 
-        auto * n = freecad_cast<NumberExpression*>(result.get());
+        auto* n = freecad_cast<NumberExpression*>(result.get());
         if (n) {
             Base::Quantity value = n->getQuantity();
             if (!value.isValid()) {
@@ -357,12 +380,14 @@ void DlgExpressionInput::checkExpression(const QString& text)
 
             QString msg = QString::fromStdString(value.getUserString());
             if (impliedUnit != Base::Unit::One) {
-                if (!value.isDimensionless() && value.getUnit() != impliedUnit)
-                    THROWMT(Base::UnitsMismatchError,
-                            QT_TRANSLATE_NOOP("Exceptions", "Unit mismatch between result and required unit"));
+                if (!value.isDimensionless() && value.getUnit() != impliedUnit) {
+                    THROWMT(
+                        Base::UnitsMismatchError,
+                        QT_TRANSLATE_NOOP("Exceptions", "Unit mismatch between result and required unit")
+                    );
+                }
 
                 value.setUnit(impliedUnit);
-
             }
             else if (!value.isDimensionless()) {
                 msg += tr(" (Warning: unit discarded)");
@@ -379,7 +404,6 @@ void DlgExpressionInput::checkExpression(const QString& text)
             message = result->toString();
         }
         setMsgText();
-
     }
 }
 
@@ -406,7 +430,7 @@ void DlgExpressionInput::textChanged()
             updateVarSetInfo(NoCheckExpr);
         }
     }
-    catch (Base::Exception & e) {
+    catch (Base::Exception& e) {
         message = e.what();
         setMsgText();
         QPalette p(ui->msg->palette());
@@ -433,8 +457,8 @@ void DlgExpressionInput::mousePressEvent(QMouseEvent* event)
 
     // The 'FramelessWindowHint' is also set when the background is transparent.
     if (windowFlags() & Qt::FramelessWindowHint) {
-        //we need to reject the dialog when clicked on the background. As the background is transparent
-        //this is the expected behaviour for the user
+        // we need to reject the dialog when clicked on the background. As the background is
+        // transparent this is the expected behaviour for the user
         bool on = ui->expression->completerActive();
         if (!on) {
             this->reject();
@@ -449,7 +473,7 @@ void DlgExpressionInput::show()
     ui->expression->selectAll();
 }
 
-class Binding : public Gui::ExpressionBinding
+class Binding: public Gui::ExpressionBinding
 {
     // helper class to compensate for the fact that
     // ExpressionBinding::setExpression is protected.
@@ -462,12 +486,15 @@ public:
     }
 };
 
-static constexpr const char* InvalidIdentifierMessage =
-    QT_TR_NOOP("must contain only alphanumeric characters, underscore, and must not start with a digit");
+static constexpr const char* InvalidIdentifierMessage = QT_TR_NOOP(
+    "must contain only alphanumeric characters, underscore, and must not start with a digit"
+);
 
-bool DlgExpressionInput::isPropertyNameValid(const QString& nameProp,
-                                             const App::DocumentObject* obj,
-                                             QString& message) const
+bool DlgExpressionInput::isPropertyNameValid(
+    const QString& nameProp,
+    const App::DocumentObject* obj,
+    QString& message
+) const
 {
     auto withPrefix = [&](const QString& detail) {
         return tr("Invalid property name: %1").arg(detail);
@@ -519,12 +546,15 @@ static QString getValue(QComboBox* comboBox, int role)
     return variant.toString();
 }
 
-static void storePreferences(const std::string& nameDoc,
-                             const std::string& nameVarSet,
-                             const std::string& nameGroup)
+static void storePreferences(
+    const std::string& nameDoc,
+    const std::string& nameVarSet,
+    const std::string& nameGroup
+)
 {
     auto paramExpressionEditor = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/ExpressionEditor");
+        "User parameter:BaseApp/Preferences/ExpressionEditor"
+    );
     paramExpressionEditor->SetASCII("LastDocument", nameDoc);
     paramExpressionEditor->SetASCII("LastVarSet", nameVarSet);
     paramExpressionEditor->SetASCII("LastGroup", nameGroup);
@@ -543,8 +573,8 @@ static const App::StringExpression* toStringExpr(const App::Expression* expr)
 static const App::OperatorExpression* toUnitNumberExpr(const App::Expression* expr)
 {
     auto* opExpr = freecad_cast<const App::OperatorExpression*>(expr);
-    if (opExpr && opExpr->getOperator() == App::OperatorExpression::Operator::UNIT &&
-        toNumberExpr(opExpr->getLeft())) {
+    if (opExpr && opExpr->getOperator() == App::OperatorExpression::Operator::UNIT
+        && toNumberExpr(opExpr->getLeft())) {
         return opExpr;
     }
     return nullptr;
@@ -599,24 +629,36 @@ void DlgExpressionInput::acceptWithVarSet()
     if (const NumberExpression* ne = toNumberExpr(expr)) {
         // the value is a number: directly assign it to the property instead of
         // making it an expression in the variable set
-        Gui::Command::doCommand(Gui::Command::Doc, "App.getDocument('%s').getObject('%s').%s = %f",
-                                obj->getDocument()->getName(),
-                                obj->getNameInDocument(),
-                                prop->getName(), ne->getValue());
+        Gui::Command::doCommand(
+            Gui::Command::Doc,
+            "App.getDocument('%s').getObject('%s').%s = %f",
+            obj->getDocument()->getName(),
+            obj->getNameInDocument(),
+            prop->getName(),
+            ne->getValue()
+        );
     }
     else if (const StringExpression* se = toStringExpr(expr)) {
         // the value is a string: directly assign it to the property.
-        Gui::Command::doCommand(Gui::Command::Doc, "App.getDocument('%s').getObject('%s').%s = \"%s\"",
-                                obj->getDocument()->getName(),
-                                obj->getNameInDocument(),
-                                prop->getName(), se->getText().c_str());
+        Gui::Command::doCommand(
+            Gui::Command::Doc,
+            "App.getDocument('%s').getObject('%s').%s = \"%s\"",
+            obj->getDocument()->getName(),
+            obj->getNameInDocument(),
+            prop->getName(),
+            se->getText().c_str()
+        );
     }
     else if (const OperatorExpression* une = toUnitNumberExpr(expr)) {
         // the value is a unit number: directly assign it to the property.
-        Gui::Command::doCommand(Gui::Command::Doc, "App.getDocument('%s').getObject('%s').%s = \"%s\"",
-                                obj->getDocument()->getName(),
-                                obj->getNameInDocument(),
-                                prop->getName(), une->toString().c_str());
+        Gui::Command::doCommand(
+            Gui::Command::Doc,
+            "App.getDocument('%s').getObject('%s').%s = \"%s\"",
+            obj->getDocument()->getName(),
+            obj->getNameInDocument(),
+            prop->getName(),
+            une->toString().c_str()
+        );
     }
     else {
         // the value is an expression: make an expression binding in the VarSet
@@ -625,13 +667,13 @@ void DlgExpressionInput::acceptWithVarSet()
 
     // Create a new expression that refers to the property in the VarSet
     // for the original property that is the target of this dialog.
-    expression.reset(ExpressionParser::parse(path.getDocumentObject(),
-                                             prop->getFullName().c_str()));
+    expression.reset(ExpressionParser::parse(path.getDocumentObject(), prop->getFullName().c_str()));
 
     storePreferences(nameDoc.toStdString(), nameVarSet.toStdString(), group);
 }
 
-void DlgExpressionInput::accept() {
+void DlgExpressionInput::accept()
+{
     if (varSetsVisible) {
         if (needReportOnVarSet()) {
             return;
@@ -644,7 +686,8 @@ void DlgExpressionInput::accept() {
 static App::Document* getPreselectedDocument()
 {
     auto paramExpressionEditor = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/ExpressionEditor");
+        "User parameter:BaseApp/Preferences/ExpressionEditor"
+    );
     std::string lastDoc = paramExpressionEditor->GetASCII("LastDocument", "");
 
     if (lastDoc.empty()) {
@@ -663,14 +706,15 @@ static App::Document* getPreselectedDocument()
 int DlgExpressionInput::getVarSetIndex(const App::Document* doc) const
 {
     auto paramExpressionEditor = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/ExpressionEditor");
+        "User parameter:BaseApp/Preferences/ExpressionEditor"
+    );
     std::string lastVarSet = paramExpressionEditor->GetASCII("LastVarSet", "VarSet");
 
     auto* model = qobject_cast<QStandardItemModel*>(ui->comboBoxVarSet->model());
     for (int i = 0; i < model->rowCount(); ++i) {
         QStandardItem* item = model->item(i);
-        if (item->data(DocRole).toString() == QString::fromUtf8(doc->getName()) &&
-            item->data(VarSetNameRole).toString() == QString::fromStdString(lastVarSet)) {
+        if (item->data(DocRole).toString() == QString::fromUtf8(doc->getName())
+            && item->data(VarSetNameRole).toString() == QString::fromStdString(lastVarSet)) {
             return i;
         }
     }
@@ -689,11 +733,15 @@ void DlgExpressionInput::preselectVarSet()
 }
 
 // Custom delegate to add indentation
-class IndentedItemDelegate : public QStyledItemDelegate {
+class IndentedItemDelegate: public QStyledItemDelegate
+{
 public:
-    explicit IndentedItemDelegate(QObject *parent = nullptr) : QStyledItemDelegate(parent) {}
+    explicit IndentedItemDelegate(QObject* parent = nullptr)
+        : QStyledItemDelegate(parent)
+    {}
 
-    void initStyleOption(QStyleOptionViewItem *option, const QModelIndex &index) const override {
+    void initStyleOption(QStyleOptionViewItem* option, const QModelIndex& index) const override
+    {
         QStyledItemDelegate::initStyleOption(option, index);
 
         if (index.data(LevelRole) == 1) {
@@ -703,12 +751,16 @@ public:
     }
 };
 
-static void addVarSetsVarSetComboBox(std::vector<App::VarSet*>& varSets,
-                                     QStandardItem* docItem, QStandardItemModel* model)
+static void addVarSetsVarSetComboBox(
+    std::vector<App::VarSet*>& varSets,
+    QStandardItem* docItem,
+    QStandardItemModel* model
+)
 {
     for (auto* varSet : varSets) {
         auto* vp = freecad_cast<Gui::ViewProviderDocumentObject*>(
-                Gui::Application::Instance->getViewProvider(varSet));
+            Gui::Application::Instance->getViewProvider(varSet)
+        );
         if (vp == nullptr) {
             FC_ERR("No ViewProvider found for VarSet: " << varSet->getNameInDocument());
             continue;
@@ -726,8 +778,7 @@ static void addVarSetsVarSetComboBox(std::vector<App::VarSet*>& varSets,
     }
 }
 
-static void addDocVarSetComboBox(App::Document* doc, QPixmap& docIcon,
-                                 QStandardItemModel* model)
+static void addDocVarSetComboBox(App::Document* doc, QPixmap& docIcon, QStandardItemModel* model)
 {
     if (doc->testStatus(App::Document::TempDoc)) {
         // Do not add temporary documents to the VarSet combo box
@@ -745,7 +796,7 @@ static void addDocVarSetComboBox(App::Document* doc, QPixmap& docIcon,
     item->setIcon(docIcon);
     item->setText(QString::fromUtf8(doc->Label.getValue()));
     item->setData(QByteArray(doc->getName()), DocRole);
-    item->setFlags(Qt::ItemIsEnabled); // Make sure this item cannot be selected
+    item->setFlags(Qt::ItemIsEnabled);  // Make sure this item cannot be selected
     item->setData(0, LevelRole);
     model->appendRow(item);
 
@@ -792,7 +843,8 @@ std::string DlgExpressionInput::getType()
     return determineTypeVarSet().getName();
 }
 
-void DlgExpressionInput::onCheckVarSets(int state) {
+void DlgExpressionInput::onCheckVarSets(int state)
+{
     varSetsVisible = state == Qt::Checked;
     ui->groupBoxVarSets->setVisible(varSetsVisible);
     if (varSetsVisible) {
@@ -812,7 +864,8 @@ void DlgExpressionInput::onCheckVarSets(int state) {
 void DlgExpressionInput::preselectGroup()
 {
     auto paramExpressionEditor = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/ExpressionEditor");
+        "User parameter:BaseApp/Preferences/ExpressionEditor"
+    );
     std::string lastGroup = paramExpressionEditor->GetASCII("LastGroup", "");
 
     if (lastGroup.empty()) {
@@ -861,14 +914,13 @@ void DlgExpressionInput::namePropChanged(const QString&)
     updateVarSetInfo();
 }
 
-bool DlgExpressionInput::isGroupNameValid(const QString& nameGroup,
-                                          QString& message) const
+bool DlgExpressionInput::isGroupNameValid(const QString& nameGroup, QString& message) const
 {
     auto withPrefix = [&](const QString& detail) {
         return tr("Invalid group name: %1").arg(detail);
     };
 
-    if(nameGroup.isEmpty()) {
+    if (nameGroup.isEmpty()) {
         message = withPrefix(tr("the name cannot be empty"));
         return false;
     }
@@ -966,13 +1018,13 @@ bool DlgExpressionInput::needReportOnVarSet()
     return reportGroup(comboBoxGroup.currentText()) || reportName();
 }
 
-void DlgExpressionInput::resizeEvent(QResizeEvent *event)
+void DlgExpressionInput::resizeEvent(QResizeEvent* event)
 {
     // When the dialog is resized, message text may need to be re-wrapped
     if (!this->message.empty() && event->size() != event->oldSize()) {
         setMsgText();
     }
-    QDialog::resizeEvent(event);  
+    QDialog::resizeEvent(event);
 }
 
 void DlgExpressionInput::setMsgText()
@@ -981,17 +1033,17 @@ void DlgExpressionInput::setMsgText()
         return;
     }
 
-    const QFontMetrics msgFontMetrics{ ui->msg->font() };
+    const QFontMetrics msgFontMetrics {ui->msg->font()};
 
     // find words longer than length of msg widget
     // then insert newline to wrap it
-    std::string wrappedMsg{};
-    const int msgContentWidth = ui->msg->width() * 0.85; // 0.85 is a magic number for some padding
-    const int maxWordLength = msgContentWidth / msgFontMetrics.averageCharWidth(); 
+    std::string wrappedMsg {};
+    const int msgContentWidth = ui->msg->width() * 0.85;  // 0.85 is a magic number for some padding
+    const int maxWordLength = msgContentWidth / msgFontMetrics.averageCharWidth();
 
-    const auto wrappableWordPattern = std::regex{ "\\S{" + std::to_string(maxWordLength) + "}" };
-    auto it = std::sregex_iterator{ this->message.cbegin(), this->message.cend(), wrappableWordPattern };
-    const auto itEnd = std::sregex_iterator{};
+    const auto wrappableWordPattern = std::regex {"\\S{" + std::to_string(maxWordLength) + "}"};
+    auto it = std::sregex_iterator {this->message.cbegin(), this->message.cend(), wrappableWordPattern};
+    const auto itEnd = std::sregex_iterator {};
 
     int lastPos = 0;
     for (; it != itEnd; ++it) {
@@ -1002,12 +1054,16 @@ void DlgExpressionInput::setMsgText()
     wrappedMsg += this->message.substr(lastPos);
 
     ui->msg->setText(QString::fromStdString(wrappedMsg));
-    
-    // elide text if it is going out of widget bounds 
+
+    // elide text if it is going out of widget bounds
     // note: this is only 'rough elide', as this text is usually not very long;
     const int msgLinesLimit = 3;
     if (wrappedMsg.size() > msgContentWidth / msgFontMetrics.averageCharWidth() * msgLinesLimit) {
-        const QString elidedMsg = msgFontMetrics.elidedText(QString::fromStdString(wrappedMsg), Qt::ElideRight, msgContentWidth * msgLinesLimit);
+        const QString elidedMsg = msgFontMetrics.elidedText(
+            QString::fromStdString(wrappedMsg),
+            Qt::ElideRight,
+            msgContentWidth * msgLinesLimit
+        );
         ui->msg->setText(elidedMsg);
     }
 }

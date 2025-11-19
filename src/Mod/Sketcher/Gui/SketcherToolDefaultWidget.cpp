@@ -71,74 +71,88 @@ SketcherToolDefaultWidget::~SketcherToolDefaultWidget() = default;
 
 void SketcherToolDefaultWidget::setupConnections()
 {
-    connect(ui->parameterOne,
-            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this,
-            &SketcherToolDefaultWidget::parameterOne_valueChanged);
-    connect(ui->parameterTwo,
-            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this,
-            &SketcherToolDefaultWidget::parameterTwo_valueChanged);
-    connect(ui->parameterThree,
-            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this,
-            &SketcherToolDefaultWidget::parameterThree_valueChanged);
-    connect(ui->parameterFour,
-            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this,
-            &SketcherToolDefaultWidget::parameterFour_valueChanged);
-    connect(ui->parameterFive,
-            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this,
-            &SketcherToolDefaultWidget::parameterFive_valueChanged);
-    connect(ui->parameterSix,
-            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this,
-            &SketcherToolDefaultWidget::parameterSix_valueChanged);
-    connect(ui->parameterSeven,
-            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this,
-            &SketcherToolDefaultWidget::parameterSeven_valueChanged);
-    connect(ui->parameterEight,
-            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this,
-            &SketcherToolDefaultWidget::parameterEight_valueChanged);
-    connect(ui->parameterNine,
-            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this,
-            &SketcherToolDefaultWidget::parameterNine_valueChanged);
-    connect(ui->parameterTen,
-            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this,
-            &SketcherToolDefaultWidget::parameterTen_valueChanged);
-    connect(ui->checkBoxTS1,
-            &QCheckBox::toggled,
-            this,
-            &SketcherToolDefaultWidget::checkBoxTS1_toggled);
-    connect(ui->checkBoxTS2,
-            &QCheckBox::toggled,
-            this,
-            &SketcherToolDefaultWidget::checkBoxTS2_toggled);
-    connect(ui->checkBoxTS3,
-            &QCheckBox::toggled,
-            this,
-            &SketcherToolDefaultWidget::checkBoxTS3_toggled);
-    connect(ui->checkBoxTS4,
-            &QCheckBox::toggled,
-            this,
-            &SketcherToolDefaultWidget::checkBoxTS4_toggled);
-    connect(ui->comboBox1,
-            qOverload<int>(&QComboBox::currentIndexChanged),
-            this,
-            &SketcherToolDefaultWidget::comboBox1_currentIndexChanged);
-    connect(ui->comboBox2,
-            qOverload<int>(&QComboBox::currentIndexChanged),
-            this,
-            &SketcherToolDefaultWidget::comboBox2_currentIndexChanged);
-    connect(ui->comboBox3,
-            qOverload<int>(&QComboBox::currentIndexChanged),
-            this,
-            &SketcherToolDefaultWidget::comboBox3_currentIndexChanged);
+    connect(
+        ui->parameterOne,
+        qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this,
+        &SketcherToolDefaultWidget::parameterOne_valueChanged
+    );
+    connect(
+        ui->parameterTwo,
+        qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this,
+        &SketcherToolDefaultWidget::parameterTwo_valueChanged
+    );
+    connect(
+        ui->parameterThree,
+        qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this,
+        &SketcherToolDefaultWidget::parameterThree_valueChanged
+    );
+    connect(
+        ui->parameterFour,
+        qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this,
+        &SketcherToolDefaultWidget::parameterFour_valueChanged
+    );
+    connect(
+        ui->parameterFive,
+        qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this,
+        &SketcherToolDefaultWidget::parameterFive_valueChanged
+    );
+    connect(
+        ui->parameterSix,
+        qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this,
+        &SketcherToolDefaultWidget::parameterSix_valueChanged
+    );
+    connect(
+        ui->parameterSeven,
+        qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this,
+        &SketcherToolDefaultWidget::parameterSeven_valueChanged
+    );
+    connect(
+        ui->parameterEight,
+        qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this,
+        &SketcherToolDefaultWidget::parameterEight_valueChanged
+    );
+    connect(
+        ui->parameterNine,
+        qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this,
+        &SketcherToolDefaultWidget::parameterNine_valueChanged
+    );
+    connect(
+        ui->parameterTen,
+        qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this,
+        &SketcherToolDefaultWidget::parameterTen_valueChanged
+    );
+    connect(ui->checkBoxTS1, &QCheckBox::toggled, this, &SketcherToolDefaultWidget::checkBoxTS1_toggled);
+    connect(ui->checkBoxTS2, &QCheckBox::toggled, this, &SketcherToolDefaultWidget::checkBoxTS2_toggled);
+    connect(ui->checkBoxTS3, &QCheckBox::toggled, this, &SketcherToolDefaultWidget::checkBoxTS3_toggled);
+    connect(ui->checkBoxTS4, &QCheckBox::toggled, this, &SketcherToolDefaultWidget::checkBoxTS4_toggled);
+    connect(
+        ui->comboBox1,
+        qOverload<int>(&QComboBox::currentIndexChanged),
+        this,
+        &SketcherToolDefaultWidget::comboBox1_currentIndexChanged
+    );
+    connect(
+        ui->comboBox2,
+        qOverload<int>(&QComboBox::currentIndexChanged),
+        this,
+        &SketcherToolDefaultWidget::comboBox2_currentIndexChanged
+    );
+    connect(
+        ui->comboBox3,
+        qOverload<int>(&QComboBox::currentIndexChanged),
+        this,
+        &SketcherToolDefaultWidget::comboBox3_currentIndexChanged
+    );
 }
 
 // preselect the number of the spinbox when it gets the focus.
@@ -305,8 +319,7 @@ void SketcherToolDefaultWidget::setParameterVisible(int parameterindex, bool vis
     }
 }
 
-void SketcherToolDefaultWidget::setParameterFilteringObject(int parameterindex,
-                                                            QObject* filteringObject)
+void SketcherToolDefaultWidget::setParameterFilteringObject(int parameterindex, QObject* filteringObject)
 {
     if (parameterindex < nParameters) {
         getParameterSpinBox(parameterindex)->installEventFilter(filteringObject);
@@ -314,8 +327,7 @@ void SketcherToolDefaultWidget::setParameterFilteringObject(int parameterindex,
         return;
     }
 
-    THROWM(Base::IndexError,
-           QT_TRANSLATE_NOOP("Exceptions", "ToolWidget parameter index out of range"));
+    THROWM(Base::IndexError, QT_TRANSLATE_NOOP("Exceptions", "ToolWidget parameter index out of range"));
 }
 
 void SketcherToolDefaultWidget::setParameterLabel(int parameterindex, const QString& string)
@@ -333,8 +345,7 @@ void SketcherToolDefaultWidget::setParameter(int parameterindex, double val)
         return;
     }
 
-    THROWM(Base::IndexError,
-           QT_TRANSLATE_NOOP("Exceptions", "ToolWidget parameter index out of range"));
+    THROWM(Base::IndexError, QT_TRANSLATE_NOOP("Exceptions", "ToolWidget parameter index out of range"));
 }
 
 void SketcherToolDefaultWidget::setParameterWithoutPassingFocus(int parameterindex, double val)
@@ -360,8 +371,7 @@ void SketcherToolDefaultWidget::configureParameterUnit(int parameterindex, const
         return;
     }
 
-    THROWM(Base::IndexError,
-           QT_TRANSLATE_NOOP("Exceptions", "ToolWidget parameter index out of range"));
+    THROWM(Base::IndexError, QT_TRANSLATE_NOOP("Exceptions", "ToolWidget parameter index out of range"));
 }
 
 void SketcherToolDefaultWidget::configureParameterDecimals(int parameterindex, int val)
@@ -373,8 +383,7 @@ void SketcherToolDefaultWidget::configureParameterDecimals(int parameterindex, i
         return;
     }
 
-    THROWM(Base::IndexError,
-           QT_TRANSLATE_NOOP("Exceptions", "ToolWidget parameter index out of range"));
+    THROWM(Base::IndexError, QT_TRANSLATE_NOOP("Exceptions", "ToolWidget parameter index out of range"));
 }
 
 void SketcherToolDefaultWidget::configureParameterMin(int parameterindex, double val)
@@ -386,8 +395,7 @@ void SketcherToolDefaultWidget::configureParameterMin(int parameterindex, double
         return;
     }
 
-    THROWM(Base::IndexError,
-           QT_TRANSLATE_NOOP("Exceptions", "ToolWidget parameter index out of range"));
+    THROWM(Base::IndexError, QT_TRANSLATE_NOOP("Exceptions", "ToolWidget parameter index out of range"));
 }
 
 void SketcherToolDefaultWidget::configureParameterMax(int parameterindex, double val)
@@ -399,8 +407,7 @@ void SketcherToolDefaultWidget::configureParameterMax(int parameterindex, double
         return;
     }
 
-    THROWM(Base::IndexError,
-           QT_TRANSLATE_NOOP("Exceptions", "ToolWidget parameter index out of range"));
+    THROWM(Base::IndexError, QT_TRANSLATE_NOOP("Exceptions", "ToolWidget parameter index out of range"));
 }
 
 void SketcherToolDefaultWidget::setParameterEnabled(int parameterindex, bool active)
@@ -411,8 +418,7 @@ void SketcherToolDefaultWidget::setParameterEnabled(int parameterindex, bool act
         return;
     }
 
-    THROWM(Base::IndexError,
-           QT_TRANSLATE_NOOP("Exceptions", "ToolWidget parameter index out of range"));
+    THROWM(Base::IndexError, QT_TRANSLATE_NOOP("Exceptions", "ToolWidget parameter index out of range"));
 }
 
 void SketcherToolDefaultWidget::setParameterFocus(int parameterindex)
@@ -425,8 +431,7 @@ void SketcherToolDefaultWidget::setParameterFocus(int parameterindex)
         return;
     }
 
-    THROWM(Base::IndexError,
-           QT_TRANSLATE_NOOP("Exceptions", "ToolWidget parameter index out of range"));
+    THROWM(Base::IndexError, QT_TRANSLATE_NOOP("Exceptions", "ToolWidget parameter index out of range"));
 }
 
 void SketcherToolDefaultWidget::setParameterFontStyle(int parameterindex, FontStyle fontStyle)
@@ -452,8 +457,7 @@ void SketcherToolDefaultWidget::setParameterFontStyle(int parameterindex, FontSt
         return;
     }
 
-    THROWM(Base::IndexError,
-           QT_TRANSLATE_NOOP("Exceptions", "ToolWidget parameter index out of range"));
+    THROWM(Base::IndexError, QT_TRANSLATE_NOOP("Exceptions", "ToolWidget parameter index out of range"));
 }
 
 QLabel* SketcherToolDefaultWidget::getParameterLabel(int parameterindex)
@@ -550,9 +554,7 @@ bool SketcherToolDefaultWidget::isParameterSet(int parameterindex)
     THROWM(Base::IndexError, "ToolWidget parameter index out of range");
 }
 
-void SketcherToolDefaultWidget::updateVisualValue(int parameterindex,
-                                                  double val,
-                                                  const Base::Unit& unit)
+void SketcherToolDefaultWidget::updateVisualValue(int parameterindex, double val, const Base::Unit& unit)
 {
     if (parameterindex < nParameters) {
         Base::StateLocker lock(blockParameterSlots, true);
@@ -568,8 +570,7 @@ void SketcherToolDefaultWidget::updateVisualValue(int parameterindex,
         return;
     }
 
-    THROWM(Base::IndexError,
-           QT_TRANSLATE_NOOP("Exceptions", "ToolWidget parameter index out of range"));
+    THROWM(Base::IndexError, QT_TRANSLATE_NOOP("Exceptions", "ToolWidget parameter index out of range"));
 }
 
 // checkbox functions
@@ -677,8 +678,7 @@ bool SketcherToolDefaultWidget::getCheckboxChecked(int checkboxindex)
     THROWM(Base::IndexError, "ToolWidget checkbox index out of range");
 }
 
-void SketcherToolDefaultWidget::setCheckboxPrefEntry(int checkboxindex,
-                                                     const std::string& prefEntry)
+void SketcherToolDefaultWidget::setCheckboxPrefEntry(int checkboxindex, const std::string& prefEntry)
 {
     if (checkboxindex < nCheckbox) {
         QByteArray byteArray(prefEntry.c_str(), prefEntry.length());
@@ -707,8 +707,7 @@ void SketcherToolDefaultWidget::setComboboxItemIcon(int comboboxindex, int index
     }
 }
 
-void SketcherToolDefaultWidget::setComboboxPrefEntry(int comboboxindex,
-                                                     const std::string& prefEntry)
+void SketcherToolDefaultWidget::setComboboxPrefEntry(int comboboxindex, const std::string& prefEntry)
 {
     if (comboboxindex < nCombobox) {
         QByteArray byteArray(prefEntry.c_str(), prefEntry.length());

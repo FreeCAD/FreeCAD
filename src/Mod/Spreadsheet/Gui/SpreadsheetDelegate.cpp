@@ -47,9 +47,11 @@ SpreadsheetDelegate::SpreadsheetDelegate(Spreadsheet::Sheet* _sheet, QWidget* pa
     , sheet(_sheet)
 {}
 
-QWidget* SpreadsheetDelegate::createEditor(QWidget* parent,
-                                           const QStyleOptionViewItem&,
-                                           const QModelIndex& index) const
+QWidget* SpreadsheetDelegate::createEditor(
+    QWidget* parent,
+    const QStyleOptionViewItem&,
+    const QModelIndex& index
+) const
 {
     App::CellAddress addr(index.row(), index.column());
     App::Range range(addr, addr);
@@ -60,10 +62,12 @@ QWidget* SpreadsheetDelegate::createEditor(QWidget* parent,
 
     SpreadsheetGui::LineEdit* editor = new SpreadsheetGui::LineEdit(parent);
     editor->setDocumentObject(sheet);
-    connect(editor,
-            &SpreadsheetGui::LineEdit::finishedWithKey,
-            this,
-            &SpreadsheetDelegate::onEditorFinishedWithKey);
+    connect(
+        editor,
+        &SpreadsheetGui::LineEdit::finishedWithKey,
+        this,
+        &SpreadsheetDelegate::onEditorFinishedWithKey
+    );
     return editor;
 }
 
@@ -76,9 +80,11 @@ void SpreadsheetDelegate::setEditorData(QWidget* editor, const QModelIndex& inde
     }
 }
 
-void SpreadsheetDelegate::setModelData(QWidget* editor,
-                                       QAbstractItemModel* model,
-                                       const QModelIndex& index) const
+void SpreadsheetDelegate::setModelData(
+    QWidget* editor,
+    QAbstractItemModel* model,
+    const QModelIndex& index
+) const
 {
     QLineEdit* edit = qobject_cast<QLineEdit*>(editor);
     if (edit) {
@@ -92,11 +98,13 @@ void SpreadsheetDelegate::onEditorFinishedWithKey(int key, Qt::KeyboardModifiers
     Q_EMIT finishedWithKey(key, modifiers);
 }
 
-static inline void drawBorder(QPainter* painter,
-                              const QStyleOptionViewItem& option,
-                              unsigned flags,
-                              QColor color,
-                              Qt::PenStyle style)
+static inline void drawBorder(
+    QPainter* painter,
+    const QStyleOptionViewItem& option,
+    unsigned flags,
+    QColor color,
+    Qt::PenStyle style
+)
 {
     if (!flags) {
         return;
@@ -125,9 +133,11 @@ static inline void drawBorder(QPainter* painter,
     }
 }
 
-void SpreadsheetDelegate::paint(QPainter* painter,
-                                const QStyleOptionViewItem& option,
-                                const QModelIndex& index) const
+void SpreadsheetDelegate::paint(
+    QPainter* painter,
+    const QStyleOptionViewItem& option,
+    const QModelIndex& index
+) const
 {
     QStyledItemDelegate::paint(painter, option, index);
     if (!sheet) {

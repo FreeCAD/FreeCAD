@@ -22,8 +22,8 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <Geom2d_Conic.hxx>
-# include <Geom2d_TrimmedCurve.hxx>
+#include <Geom2d_Conic.hxx>
+#include <Geom2d_TrimmedCurve.hxx>
 
 
 #include <Base/GeometryPyCXX.h>
@@ -41,11 +41,13 @@ std::string ArcOfConic2dPy::representation() const
     return "<Arc of conic2d object>";
 }
 
-PyObject *ArcOfConic2dPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject* ArcOfConic2dPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // never create such objects with the constructor
-    PyErr_SetString(PyExc_RuntimeError,
-        "You cannot create an instance of the abstract class 'ArcOfConic2d'.");
+    PyErr_SetString(
+        PyExc_RuntimeError,
+        "You cannot create an instance of the abstract class 'ArcOfConic2d'."
+    );
     return nullptr;
 }
 
@@ -61,7 +63,7 @@ Py::Object ArcOfConic2dPy::getLocation() const
     return Base::Vector2dPy::create(loc);
 }
 
-void  ArcOfConic2dPy::setLocation(Py::Object arg)
+void ArcOfConic2dPy::setLocation(Py::Object arg)
 {
     Base::Vector2d loc = Py::toVector2d(arg.ptr());
     getGeom2dArcOfConicPtr()->setLocation(loc);
@@ -69,22 +71,28 @@ void  ArcOfConic2dPy::setLocation(Py::Object arg)
 
 Py::Float ArcOfConic2dPy::getEccentricity() const
 {
-    Handle(Geom2d_TrimmedCurve) curve = Handle(Geom2d_TrimmedCurve)::DownCast(getGeom2dArcOfConicPtr()->handle());
+    Handle(Geom2d_TrimmedCurve) curve = Handle(Geom2d_TrimmedCurve)::DownCast(
+        getGeom2dArcOfConicPtr()->handle()
+    );
     Handle(Geom2d_Conic) conic = Handle(Geom2d_Conic)::DownCast(curve->BasisCurve());
     return Py::Float(conic->Eccentricity());
 }
 
 Py::Object ArcOfConic2dPy::getXAxis() const
 {
-    Handle(Geom2d_TrimmedCurve) curve = Handle(Geom2d_TrimmedCurve)::DownCast(getGeom2dArcOfConicPtr()->handle());
+    Handle(Geom2d_TrimmedCurve) curve = Handle(Geom2d_TrimmedCurve)::DownCast(
+        getGeom2dArcOfConicPtr()->handle()
+    );
     Handle(Geom2d_Conic) conic = Handle(Geom2d_Conic)::DownCast(curve->BasisCurve());
     gp_Dir2d xdir = conic->XAxis().Direction();
     return Base::Vector2dPy::create(xdir.X(), xdir.Y());
 }
 
-void  ArcOfConic2dPy::setXAxis(Py::Object arg)
+void ArcOfConic2dPy::setXAxis(Py::Object arg)
 {
-    Handle(Geom2d_TrimmedCurve) curve = Handle(Geom2d_TrimmedCurve)::DownCast(getGeom2dArcOfConicPtr()->handle());
+    Handle(Geom2d_TrimmedCurve) curve = Handle(Geom2d_TrimmedCurve)::DownCast(
+        getGeom2dArcOfConicPtr()->handle()
+    );
     Handle(Geom2d_Conic) conic = Handle(Geom2d_Conic)::DownCast(curve->BasisCurve());
     Base::Vector2d dir = Py::toVector2d(arg.ptr());
     gp_Ax2d xaxis = conic->XAxis();
@@ -94,15 +102,19 @@ void  ArcOfConic2dPy::setXAxis(Py::Object arg)
 
 Py::Object ArcOfConic2dPy::getYAxis() const
 {
-    Handle(Geom2d_TrimmedCurve) curve = Handle(Geom2d_TrimmedCurve)::DownCast(getGeom2dArcOfConicPtr()->handle());
+    Handle(Geom2d_TrimmedCurve) curve = Handle(Geom2d_TrimmedCurve)::DownCast(
+        getGeom2dArcOfConicPtr()->handle()
+    );
     Handle(Geom2d_Conic) conic = Handle(Geom2d_Conic)::DownCast(curve->BasisCurve());
     gp_Dir2d ydir = conic->YAxis().Direction();
     return Base::Vector2dPy::create(ydir.X(), ydir.Y());
 }
 
-void  ArcOfConic2dPy::setYAxis(Py::Object arg)
+void ArcOfConic2dPy::setYAxis(Py::Object arg)
 {
-    Handle(Geom2d_TrimmedCurve) curve = Handle(Geom2d_TrimmedCurve)::DownCast(getGeom2dArcOfConicPtr()->handle());
+    Handle(Geom2d_TrimmedCurve) curve = Handle(Geom2d_TrimmedCurve)::DownCast(
+        getGeom2dArcOfConicPtr()->handle()
+    );
     Handle(Geom2d_Conic) conic = Handle(Geom2d_Conic)::DownCast(curve->BasisCurve());
     Base::Vector2d dir = Py::toVector2d(arg.ptr());
     gp_Ax2d yaxis = conic->YAxis();
@@ -110,12 +122,12 @@ void  ArcOfConic2dPy::setYAxis(Py::Object arg)
     conic->SetYAxis(yaxis);
 }
 
-PyObject *ArcOfConic2dPy::getCustomAttributes(const char* ) const
+PyObject* ArcOfConic2dPy::getCustomAttributes(const char*) const
 {
     return nullptr;
 }
 
-int ArcOfConic2dPy::setCustomAttributes(const char* , PyObject *)
+int ArcOfConic2dPy::setCustomAttributes(const char*, PyObject*)
 {
     return 0;
 }

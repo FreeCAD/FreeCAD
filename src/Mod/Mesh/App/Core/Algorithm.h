@@ -71,10 +71,12 @@ public:
      * \note This method tests all facets so it should only be used
      * occasionally.
      */
-    bool NearestFacetOnRay(const Base::Vector3f& rclPt,
-                           const Base::Vector3f& rclDir,
-                           Base::Vector3f& rclRes,
-                           FacetIndex& rulFacet) const;
+    bool NearestFacetOnRay(
+        const Base::Vector3f& rclPt,
+        const Base::Vector3f& rclDir,
+        Base::Vector3f& rclRes,
+        FacetIndex& rulFacet
+    ) const;
     /**
      * Searches for the nearest facet to the ray defined by
      * (\a rclPt, \a rclDir).
@@ -83,11 +85,13 @@ public:
      * triangle must be less than or equal to \a fMaxAngle. \note This method tests all facets so it
      * should only be used occasionally.
      */
-    bool NearestFacetOnRay(const Base::Vector3f& rclPt,
-                           const Base::Vector3f& rclDir,
-                           float fMaxAngle,
-                           Base::Vector3f& rclRes,
-                           FacetIndex& rulFacet) const;
+    bool NearestFacetOnRay(
+        const Base::Vector3f& rclPt,
+        const Base::Vector3f& rclDir,
+        float fMaxAngle,
+        Base::Vector3f& rclRes,
+        FacetIndex& rulFacet
+    ) const;
     /**
      * Searches for the nearest facet to the ray defined by
      * (\a rclPt, \a rclDir).
@@ -96,11 +100,13 @@ public:
      * \note This method is optimized by using a grid. So this method can be
      * used for a lot of tests.
      */
-    bool NearestFacetOnRay(const Base::Vector3f& rclPt,
-                           const Base::Vector3f& rclDir,
-                           const MeshFacetGrid& rclGrid,
-                           Base::Vector3f& rclRes,
-                           FacetIndex& rulFacet) const;
+    bool NearestFacetOnRay(
+        const Base::Vector3f& rclPt,
+        const Base::Vector3f& rclDir,
+        const MeshFacetGrid& rclGrid,
+        Base::Vector3f& rclRes,
+        FacetIndex& rulFacet
+    ) const;
     /**
      * Searches for the nearest facet to the ray defined by
      * (\a rclPt, \a rclDir).
@@ -110,40 +116,48 @@ public:
      * the attached mesh. So the caller must ensure that the indices are valid
      * facets.
      */
-    bool NearestFacetOnRay(const Base::Vector3f& rclPt,
-                           const Base::Vector3f& rclDir,
-                           const std::vector<FacetIndex>& raulFacets,
-                           Base::Vector3f& rclRes,
-                           FacetIndex& rulFacet) const;
+    bool NearestFacetOnRay(
+        const Base::Vector3f& rclPt,
+        const Base::Vector3f& rclDir,
+        const std::vector<FacetIndex>& raulFacets,
+        Base::Vector3f& rclRes,
+        FacetIndex& rulFacet
+    ) const;
     /**
      * Searches for the nearest facet to the ray defined by (\a rclPt, \a  rclDir). The point \a
      * rclRes holds the intersection point with the ray and the nearest facet with index \a
      * rulFacet. More a search radius around the ray of \a fMaxSearchArea is defined. \note This
      * method is optimized by using a grid. So this method can be used for a lot of tests.
      */
-    bool NearestFacetOnRay(const Base::Vector3f& rclPt,
-                           const Base::Vector3f& rclDir,
-                           float fMaxSearchArea,
-                           const MeshFacetGrid& rclGrid,
-                           Base::Vector3f& rclRes,
-                           FacetIndex& rulFacet) const;
+    bool NearestFacetOnRay(
+        const Base::Vector3f& rclPt,
+        const Base::Vector3f& rclDir,
+        float fMaxSearchArea,
+        const MeshFacetGrid& rclGrid,
+        Base::Vector3f& rclRes,
+        FacetIndex& rulFacet
+    ) const;
     /**
      * Searches for the first facet of the grid element (\a rGrid) in that the point \a rPt lies
      * into which is a distance not higher than \a fMaxDistance. Of no such facet is found \a
      * uIndex is undefined and false is returned, otherwise true. \note If the point \a rPt is
      * outside of the grid \a rclGrid nothing is done.
      */
-    bool FirstFacetToVertex(const Base::Vector3f& rPt,
-                            float fMaxDistance,
-                            const MeshFacetGrid& rGrid,
-                            FacetIndex& uIndex) const;
+    bool FirstFacetToVertex(
+        const Base::Vector3f& rPt,
+        float fMaxDistance,
+        const MeshFacetGrid& rGrid,
+        FacetIndex& uIndex
+    ) const;
     /**
      * Checks from the viewpoint \a rcView if the vertex \a rcVertex is visible or it is hidden by a
      * facet. If the vertex is visible true is returned, false otherwise.
      */
-    bool IsVertexVisible(const Base::Vector3f& rcVertex,
-                         const Base::Vector3f& rcView,
-                         const MeshFacetGrid& rclGrid) const;
+    bool IsVertexVisible(
+        const Base::Vector3f& rcVertex,
+        const Base::Vector3f& rcView,
+        const MeshFacetGrid& rclGrid
+    ) const;
     /**
      * Calculates the average length of edges.
      */
@@ -172,8 +186,10 @@ public:
     /**
      * Returns all boundaries of a subset the mesh defined by \a raulInd.
      */
-    void GetFacetBorders(const std::vector<FacetIndex>& raulInd,
-                         std::list<std::vector<Base::Vector3f>>& rclBorders) const;
+    void GetFacetBorders(
+        const std::vector<FacetIndex>& raulInd,
+        std::list<std::vector<Base::Vector3f>>& rclBorders
+    ) const;
     /**
      * Returns all boundaries of a subset the mesh defined by \a raulInd. This method does basically
      * the same as above unless that it returns the point indices of the boundaries. If \a
@@ -182,9 +198,11 @@ public:
      * curve with wrong orientation even if the mesh is topologically correct. You should let the
      * default value unless you exactly know what you do.
      */
-    void GetFacetBorders(const std::vector<FacetIndex>& raulInd,
-                         std::list<std::vector<PointIndex>>& rclBorders,
-                         bool ignoreOrientation = false) const;
+    void GetFacetBorders(
+        const std::vector<FacetIndex>& raulInd,
+        std::list<std::vector<PointIndex>>& rclBorders,
+        bool ignoreOrientation = false
+    ) const;
     /**
      * Returns the boundary of the mesh to the facet \a uFacet. If this facet does not have an open
      * edge the returned boundary is empty.
@@ -194,8 +212,10 @@ public:
      * Returns the boundary of the mesh to the facets \a uFacest. If none of the facets have an open
      * edge the returned boundary is empty.
      */
-    void GetFacetsBorders(const std::vector<FacetIndex>& uFacets,
-                          std::list<std::vector<PointIndex>>& rBorders) const;
+    void GetFacetsBorders(
+        const std::vector<FacetIndex>& uFacets,
+        std::list<std::vector<PointIndex>>& rBorders
+    ) const;
     /**
      * Boundaries that consist of several loops must be split in several independent boundaries
      * to perform e.g. a polygon triangulation algorithm on them.
@@ -214,17 +234,21 @@ public:
      * @note If the number of geometric points exceeds the number of boundary indices then the
      * triangulation algorithm has introduced new points which are added to the end of \a rPoints.
      */
-    bool FillupHole(const std::vector<PointIndex>& boundary,
-                    AbstractPolygonTriangulator& cTria,
-                    MeshFacetArray& rFaces,
-                    MeshPointArray& rPoints,
-                    int level,
-                    const MeshRefPointToFacets* pP2FStructure = nullptr) const;
+    bool FillupHole(
+        const std::vector<PointIndex>& boundary,
+        AbstractPolygonTriangulator& cTria,
+        MeshFacetArray& rFaces,
+        MeshPointArray& rPoints,
+        int level,
+        const MeshRefPointToFacets* pP2FStructure = nullptr
+    ) const;
     /** Sets to all facets in \a raulInds the properties in raulProps.
      * \note Both arrays must have the same size.
      */
-    void SetFacetsProperty(const std::vector<FacetIndex>& raulInds,
-                           const std::vector<unsigned long>& raulProps) const;
+    void SetFacetsProperty(
+        const std::vector<FacetIndex>& raulInds,
+        const std::vector<unsigned long>& raulProps
+    ) const;
     /** Sets to all facets the flag \a tF. */
     void SetFacetFlag(MeshFacet::TFlagType tF) const;
     /** Sets to all points the flag \a tF. */
@@ -250,8 +274,10 @@ public:
     /** Count all points with the flag \a tF. */
     unsigned long CountPointFlag(MeshPoint::TFlagType tF) const;
     /** Returns all geometric points from the facets in \a rvecIndices. */
-    void PointsFromFacetsIndices(const std::vector<FacetIndex>& rvecIndices,
-                                 std::vector<Base::Vector3f>& rvecPoints) const;
+    void PointsFromFacetsIndices(
+        const std::vector<FacetIndex>& rvecIndices,
+        std::vector<Base::Vector3f>& rvecPoints
+    ) const;
     /**
      * Returns the indices of all facets that have at least one point that lies inside the tool
      * mesh. The direction \a dir is used to try to foraminate the facets of the tool mesh and
@@ -261,17 +287,21 @@ public:
      * @note It's not tested if \a rToolMesh is a valid solid. In case it is not the result is
      * undefined.
      */
-    void GetFacetsFromToolMesh(const MeshKernel& rToolMesh,
-                               const Base::Vector3f& rcDir,
-                               std::vector<FacetIndex>& raclCutted) const;
+    void GetFacetsFromToolMesh(
+        const MeshKernel& rToolMesh,
+        const Base::Vector3f& rcDir,
+        std::vector<FacetIndex>& raclCutted
+    ) const;
     /**
      * Does basically the same as method above except it uses a mesh grid to speed up the
      * computation.
      */
-    void GetFacetsFromToolMesh(const MeshKernel& rToolMesh,
-                               const Base::Vector3f& rcDir,
-                               const MeshFacetGrid& rGrid,
-                               std::vector<FacetIndex>& raclCutted) const;
+    void GetFacetsFromToolMesh(
+        const MeshKernel& rToolMesh,
+        const Base::Vector3f& rcDir,
+        const MeshFacetGrid& rGrid,
+        std::vector<FacetIndex>& raclCutted
+    ) const;
     /**
      * Checks whether the bounding box \a rBox is surrounded by the attached mesh which must be a
      * solid. The direction \a rcDir is used to try to foraminate the facets of the tool mesh and
@@ -288,42 +318,49 @@ public:
      * with at least one corner outside the polygon get deleted. This algorithm is optimized by
      * using a grid.
      */
-    void CheckFacets(const MeshFacetGrid& rclGrid,
-                     const Base::ViewProjMethod* pclProj,
-                     const Base::Polygon2d& rclPoly,
-                     bool bInner,
-                     std::vector<FacetIndex>& facets) const;
+    void CheckFacets(
+        const MeshFacetGrid& rclGrid,
+        const Base::ViewProjMethod* pclProj,
+        const Base::Polygon2d& rclPoly,
+        bool bInner,
+        std::vector<FacetIndex>& facets
+    ) const;
     /**
      * Does the same as the above method unless that it doesn't use a grid.
      */
-    void CheckFacets(const Base::ViewProjMethod* pclProj,
-                     const Base::Polygon2d& rclPoly,
-                     bool bInner,
-                     std::vector<FacetIndex>& facets) const;
+    void CheckFacets(
+        const Base::ViewProjMethod* pclProj,
+        const Base::Polygon2d& rclPoly,
+        bool bInner,
+        std::vector<FacetIndex>& facets
+    ) const;
     /**
      * Determines all facets of the given array \a raclFacetIndices that lie at the edge or that
      * have at least neighbour facet that is not inside the array. The resulting array \a
      * raclResultIndices is not be deleted before the algorithm starts. \a usLevel indicates how
      * often the algorithm is repeated.
      */
-    void CheckBorderFacets(const std::vector<FacetIndex>& raclFacetIndices,
-                           std::vector<FacetIndex>& raclResultIndices,
-                           unsigned short usLevel = 1) const;
+    void CheckBorderFacets(
+        const std::vector<FacetIndex>& raclFacetIndices,
+        std::vector<FacetIndex>& raclResultIndices,
+        unsigned short usLevel = 1
+    ) const;
     /**
      * Invokes CheckBorderFacets() to get all border facets of \a raclFacetIndices. Then the content
      * of \a raclFacetIndices is replaced by all facets that can be deleted. \note The mesh
      * structure is not modified by this method. This is in the responsibility of the user.
      */
-    void CutBorderFacets(std::vector<FacetIndex>& raclFacetIndices,
-                         unsigned short usLevel = 1) const;
+    void CutBorderFacets(std::vector<FacetIndex>& raclFacetIndices, unsigned short usLevel = 1) const;
     /** Returns the number of border edges */
     unsigned long CountBorderEdges() const;
     /**
      * Determines all border points as indices of the facets in \a raclFacetIndices. The points are
      * unsorted.
      */
-    void GetBorderPoints(const std::vector<FacetIndex>& raclFacetIndices,
-                         std::set<PointIndex>& raclResultPointsIndices) const;
+    void GetBorderPoints(
+        const std::vector<FacetIndex>& raclFacetIndices,
+        std::set<PointIndex>& raclResultPointsIndices
+    ) const;
     /** Computes the surface of the mesh. */
     float Surface() const;
     /** Subsamples the mesh with point distance \a fDist and stores the points in \a rclPoints. */
@@ -339,83 +376,109 @@ public:
      * Searches for all facets that intersect the "search tube" with radius \a r around the
      * polyline.
      */
-    void SearchFacetsFromPolyline(const std::vector<Base::Vector3f>& rclPolyline,
-                                  float fRadius,
-                                  const MeshFacetGrid& rclGrid,
-                                  std::vector<FacetIndex>& rclResultFacetsIndices) const;
+    void SearchFacetsFromPolyline(
+        const std::vector<Base::Vector3f>& rclPolyline,
+        float fRadius,
+        const MeshFacetGrid& rclGrid,
+        std::vector<FacetIndex>& rclResultFacetsIndices
+    ) const;
     /** Projects a point directly to the mesh (means nearest facet), the result is the facet index
      * and the foraminate point, use second version with grid for more performance.
      */
-    bool NearestPointFromPoint(const Base::Vector3f& rclPt,
-                               FacetIndex& rclResFacetIndex,
-                               Base::Vector3f& rclResPoint) const;
-    bool NearestPointFromPoint(const Base::Vector3f& rclPt,
-                               const MeshFacetGrid& rclGrid,
-                               FacetIndex& rclResFacetIndex,
-                               Base::Vector3f& rclResPoint) const;
-    bool NearestPointFromPoint(const Base::Vector3f& rclPt,
-                               const MeshFacetGrid& rclGrid,
-                               float fMaxSearchArea,
-                               FacetIndex& rclResFacetIndex,
-                               Base::Vector3f& rclResPoint) const;
+    bool NearestPointFromPoint(
+        const Base::Vector3f& rclPt,
+        FacetIndex& rclResFacetIndex,
+        Base::Vector3f& rclResPoint
+    ) const;
+    bool NearestPointFromPoint(
+        const Base::Vector3f& rclPt,
+        const MeshFacetGrid& rclGrid,
+        FacetIndex& rclResFacetIndex,
+        Base::Vector3f& rclResPoint
+    ) const;
+    bool NearestPointFromPoint(
+        const Base::Vector3f& rclPt,
+        const MeshFacetGrid& rclGrid,
+        float fMaxSearchArea,
+        FacetIndex& rclResFacetIndex,
+        Base::Vector3f& rclResPoint
+    ) const;
     /** Cuts the mesh with a plane. The result is a list of polylines. */
-    bool CutWithPlane(const Base::Vector3f& clBase,
-                      const Base::Vector3f& clNormal,
-                      const MeshFacetGrid& rclGrid,
-                      std::list<std::vector<Base::Vector3f>>& rclResult,
-                      float fMinEps = 1.0e-2F,
-                      bool bConnectPolygons = false) const;
+    bool CutWithPlane(
+        const Base::Vector3f& clBase,
+        const Base::Vector3f& clNormal,
+        const MeshFacetGrid& rclGrid,
+        std::list<std::vector<Base::Vector3f>>& rclResult,
+        float fMinEps = 1.0e-2F,
+        bool bConnectPolygons = false
+    ) const;
     /**
      * Gets all facets that cut the plane (N,d) and that lie between the two points left and right.
      * The plane is defined by it normalized normal and the signed distance to the origin.
      */
-    void GetFacetsFromPlane(const MeshFacetGrid& rclGrid,
-                            const Base::Vector3f& clNormal,
-                            float dist,
-                            const Base::Vector3f& rclLeft,
-                            const Base::Vector3f& rclRight,
-                            std::vector<FacetIndex>& rclRes) const;
+    void GetFacetsFromPlane(
+        const MeshFacetGrid& rclGrid,
+        const Base::Vector3f& clNormal,
+        float dist,
+        const Base::Vector3f& rclLeft,
+        const Base::Vector3f& rclRight,
+        std::vector<FacetIndex>& rclRes
+    ) const;
 
     /** Returns true if the distance from the \a rclPt to the facet \a ulFacetIdx is less than \a
      * fMaxDistance. If this restriction is met \a rfDistance is set to the actual distance,
      * otherwise false is returned.
      */
-    bool Distance(const Base::Vector3f& rclPt,
-                  FacetIndex ulFacetIdx,
-                  float fMaxDistance,
-                  float& rfDistance) const;
+    bool Distance(
+        const Base::Vector3f& rclPt,
+        FacetIndex ulFacetIdx,
+        float fMaxDistance,
+        float& rfDistance
+    ) const;
     /**
      * Calculates the minimum grid length so that not more elements than \a maxElements will be
      * created when the grid gets built up. The minimum grid length must be at least \a fLength.
      */
-    float CalculateMinimumGridLength(float fLength,
-                                     const Base::BoundBox3f& rBBox,
-                                     unsigned long maxElements) const;
+    float CalculateMinimumGridLength(
+        float fLength,
+        const Base::BoundBox3f& rBBox,
+        unsigned long maxElements
+    ) const;
 
 protected:
     /** Helper method to connect the intersection points to polylines. */
-    bool ConnectLines(std::list<std::pair<Base::Vector3f, Base::Vector3f>>& rclLines,
-                      std::list<std::vector<Base::Vector3f>>& rclPolylines,
-                      float fMinEps) const;
-    bool ConnectPolygons(std::list<std::vector<Base::Vector3f>>& clPolyList,
-                         std::list<std::pair<Base::Vector3f, Base::Vector3f>>& rclLines) const;
+    bool ConnectLines(
+        std::list<std::pair<Base::Vector3f, Base::Vector3f>>& rclLines,
+        std::list<std::vector<Base::Vector3f>>& rclPolylines,
+        float fMinEps
+    ) const;
+    bool ConnectPolygons(
+        std::list<std::vector<Base::Vector3f>>& clPolyList,
+        std::list<std::pair<Base::Vector3f, Base::Vector3f>>& rclLines
+    ) const;
     /** Searches the nearest facet in \a raulFacets to the ray (\a rclPt, \a rclDir). */
-    bool RayNearestField(const Base::Vector3f& rclPt,
-                         const Base::Vector3f& rclDir,
-                         const std::vector<FacetIndex>& raulFacets,
-                         Base::Vector3f& rclRes,
-                         FacetIndex& rulFacet,
-                         float fMaxAngle = Mathf::PI) const;
+    bool RayNearestField(
+        const Base::Vector3f& rclPt,
+        const Base::Vector3f& rclDir,
+        const std::vector<FacetIndex>& raulFacets,
+        Base::Vector3f& rclRes,
+        FacetIndex& rulFacet,
+        float fMaxAngle = Mathf::PI
+    ) const;
     /**
      * Splits the boundary \a rBound in several loops and append this loops to the list of borders.
      */
-    void SplitBoundaryLoops(const std::vector<PointIndex>& rBound,
-                            std::list<std::vector<PointIndex>>& aBorders);
+    void SplitBoundaryLoops(
+        const std::vector<PointIndex>& rBound,
+        std::list<std::vector<PointIndex>>& aBorders
+    );
     /**
      * From the given \a openEdges a boundary is split and added to \a boundary.
      */
-    void SplitBoundaryFromOpenEdges(std::list<std::pair<PointIndex, PointIndex>>& openEdges,
-                                    std::list<PointIndex>& boundary) const;
+    void SplitBoundaryFromOpenEdges(
+        std::list<std::pair<PointIndex, PointIndex>>& openEdges,
+        std::list<PointIndex>& boundary
+    ) const;
 
 private:
     const MeshKernel& _rclMesh; /**< The mesh kernel. */
@@ -498,12 +561,14 @@ public:
     void RemoveFacet(FacetIndex);
 
 protected:
-    void SearchNeighbours(const MeshFacetArray& rFacets,
-                          FacetIndex index,
-                          const Base::Vector3f& rclCenter,
-                          float fMaxDist,
-                          std::set<FacetIndex>& visit,
-                          MeshCollector& collect) const;
+    void SearchNeighbours(
+        const MeshFacetArray& rFacets,
+        FacetIndex index,
+        const Base::Vector3f& rclCenter,
+        float fMaxDist,
+        std::set<FacetIndex>& visit,
+        MeshCollector& collect
+    ) const;
 
 private:
     const MeshKernel& _rclMesh; /**< The mesh kernel. */

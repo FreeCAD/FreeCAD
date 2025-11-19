@@ -29,8 +29,10 @@
 #include <QWidget>
 #include <memory>
 
-namespace Gui {
-namespace Dialog {
+namespace Gui
+{
+namespace Dialog
+{
 class Ui_DlgSettingsImage;
 
 /**
@@ -38,18 +40,18 @@ class Ui_DlgSettingsImage;
  * for the Inventor viewer.
  * @author Werner Mayer
  */
-class DlgSettingsImageImp : public QWidget
+class DlgSettingsImageImp: public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit DlgSettingsImageImp( QWidget* parent = nullptr );
+    explicit DlgSettingsImageImp(QWidget* parent = nullptr);
     ~DlgSettingsImageImp() override;
 
     /** @name Image dimensions */
     //@{
-    void setImageSize( int, int );
-    void setImageSize( const QSize& );
+    void setImageSize(int, int);
+    void setImageSize(const QSize&);
     QSize imageSize() const;
     int imageWidth() const;
     int imageHeight() const;
@@ -61,12 +63,12 @@ public:
     QByteArray method() const;
     QString comment() const;
     int backgroundType() const;
-    void setBackgroundType( int );
+    void setBackgroundType(int);
     bool addWatermark() const;
     //@}
 
 public Q_SLOTS:
-    void onSelectedFilter( const QString& );
+    void onSelectedFilter(const QString&);
 
 protected:
     void setupConnections();
@@ -80,7 +82,7 @@ protected:
 protected:
     // helper to force an aspect ratio
     void adjustImageSize(float fRatio);
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
 
 
 private:
@@ -90,7 +92,7 @@ private:
     SbMatrix _Matrix;
 };
 
-} // namespace Dialog
-} // namespace Gui
+}  // namespace Dialog
+}  // namespace Gui
 
-#endif // GUI_DIALOG_DLGSETTINGSIMAGE_IMP_H
+#endif  // GUI_DIALOG_DLGSETTINGSIMAGE_IMP_H

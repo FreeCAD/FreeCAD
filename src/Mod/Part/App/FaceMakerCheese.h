@@ -45,18 +45,20 @@ namespace Part
 class PartExport FaceMakerCheese: public FaceMakerPublic
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
 public:
     std::string getUserFriendlyName() const override;
     std::string getBriefExplanation() const override;
 
-public: //in Extrusion, they used to be private. but they are also used by PartDesign, so made public.
+public
+    :  // in Extrusion, they used to be private. but they are also used by PartDesign, so made public.
     /**
      * @brief The Wire_Compare class is for sorting wires by bounding box diagonal length
      */
     class Wire_Compare
     {
     public:
-        bool operator() (const TopoDS_Wire& w1, const TopoDS_Wire& w2);
+        bool operator()(const TopoDS_Wire& w1, const TopoDS_Wire& w2);
     };
 
     static TopoDS_Shape makeFace(const std::vector<TopoDS_Wire>&);
@@ -64,12 +66,12 @@ public: //in Extrusion, they used to be private. but they are also used by PartD
     static bool isInside(const TopoDS_Wire&, const TopoDS_Wire&);
 
 private:
-    static TopoDS_Shape makeFace(std::list<TopoDS_Wire>&); // for internal use only
+    static TopoDS_Shape makeFace(std::list<TopoDS_Wire>&);  // for internal use only
 
 protected:
     void Build_Essence() override;
 };
 
 
-}//namespace Part
-#endif // PART_FACEMAKER_CHEESE_H
+}  // namespace Part
+#endif  // PART_FACEMAKER_CHEESE_H

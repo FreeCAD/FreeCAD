@@ -88,15 +88,19 @@ App::DocumentObjectExecReturn* SetOperations::execute()
             type = MeshCore::SetOperations::Outer;
         }
         else {
-            throw Base::ValueError("Operation type must either be 'union' or 'intersection'"
-                                   " or 'difference' or 'inner' or 'outer'");
+            throw Base::ValueError(
+                "Operation type must either be 'union' or 'intersection'"
+                " or 'difference' or 'inner' or 'outer'"
+            );
         }
 
-        MeshCore::SetOperations setOp(meshKernel1.getKernel(),
-                                      meshKernel2.getKernel(),
-                                      pcKernel->getKernel(),
-                                      type,
-                                      1.0e-5F);
+        MeshCore::SetOperations setOp(
+            meshKernel1.getKernel(),
+            meshKernel2.getKernel(),
+            pcKernel->getKernel(),
+            type,
+            1.0e-5F
+        );
         setOp.Do();
         Mesh.setValuePtr(pcKernel.release());
     }

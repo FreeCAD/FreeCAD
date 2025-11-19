@@ -116,8 +116,8 @@ enum class HistoryTraceType
     followTypeChange
 };
 
-/// Behavior of refines when a problem arises; either leave the shape untouched or throw an exception.
-/// This replaces a boolean parameter in the original Toponaming branch by realthunder..
+/// Behavior of refines when a problem arises; either leave the shape untouched or throw an
+/// exception. This replaces a boolean parameter in the original Toponaming branch by realthunder..
 enum class RefineFail
 {
     shapeUntouched,
@@ -266,7 +266,8 @@ enum class OpenResult
 };
 
 // See BRepFeat_MakeRevol
-enum class RevolMode {
+enum class RevolMode
+{
     CutFromBase = 0,
     FuseWithBase = 1,
     None = 2
@@ -281,12 +282,16 @@ class PartExport TopoShape: public Data::ComplexGeoData
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    TopoShape(long Tag=0,   // NOLINT google-explicit-constructor
-              App::StringHasherRef hasher=App::StringHasherRef(),
-              const TopoDS_Shape &shape=TopoDS_Shape());  // Cannot be made explicit
-    TopoShape(const TopoDS_Shape&,  // NOLINT google-explicit-constructor
-              long Tag=0,
-              App::StringHasherRef hasher=App::StringHasherRef());  // Cannot be made explicit
+    TopoShape(
+        long Tag = 0,  // NOLINT google-explicit-constructor
+        App::StringHasherRef hasher = App::StringHasherRef(),
+        const TopoDS_Shape& shape = TopoDS_Shape()
+    );  // Cannot be made explicit
+    TopoShape(
+        const TopoDS_Shape&,  // NOLINT google-explicit-constructor
+        long Tag = 0,
+        App::StringHasherRef hasher = App::StringHasherRef()
+    );  // Cannot be made explicit
     TopoShape(const TopoShape&);
     ~TopoShape() override;
 
@@ -304,11 +309,12 @@ public:
 
     void operator=(const TopoShape&);
 
-    bool operator == (const TopoShape &other) const {
+    bool operator==(const TopoShape& other) const
+    {
         return _Shape.IsEqual(other._Shape);
     }
 
-    virtual bool isSame (const Data::ComplexGeoData &other) const;
+    virtual bool isSame(const Data::ComplexGeoData& other) const;
 
     /** @name Placement control */
     //@{
@@ -331,40 +337,55 @@ public:
     //@{
 private:
     /** Get lines from sub-shape */
-    void getLinesFromSubShape(const TopoDS_Shape& shape,
-                              std::vector<Base::Vector3d>& vertices,
-                              std::vector<Line>& lines) const;
-    void getFacesFromDomains(const std::vector<Domain>& domains,
-                             std::vector<Base::Vector3d>& vertices,
-                             std::vector<Facet>& faces) const;
+    void getLinesFromSubShape(
+        const TopoDS_Shape& shape,
+        std::vector<Base::Vector3d>& vertices,
+        std::vector<Line>& lines
+    ) const;
+    void getFacesFromDomains(
+        const std::vector<Domain>& domains,
+        std::vector<Base::Vector3d>& vertices,
+        std::vector<Facet>& faces
+    ) const;
 
 public:
     /// Get the standard accuracy to be used with getPoints, getLines or getFaces
     double getAccuracy() const override;
     /** Get points from object with given accuracy */
-    void getPoints(std::vector<Base::Vector3d>& Points,
-                   std::vector<Base::Vector3d>& Normals,
-                   double Accuracy,
-                   uint16_t flags = 0) const override;
+    void getPoints(
+        std::vector<Base::Vector3d>& Points,
+        std::vector<Base::Vector3d>& Normals,
+        double Accuracy,
+        uint16_t flags = 0
+    ) const override;
     /** Get lines from object with given accuracy */
-    void getLines(std::vector<Base::Vector3d>& Points,
-                  std::vector<Line>& lines,
-                  double Accuracy,
-                  uint16_t flags = 0) const override;
-    void getFaces(std::vector<Base::Vector3d>& Points,
-                  std::vector<Facet>& faces,
-                  double Accuracy,
-                  uint16_t flags = 0) const override;
-    void setFaces(const std::vector<Base::Vector3d>& Points,
-                  const std::vector<Facet>& faces,
-                  double tolerance = 1.0e-06);  // NOLINT
+    void getLines(
+        std::vector<Base::Vector3d>& Points,
+        std::vector<Line>& lines,
+        double Accuracy,
+        uint16_t flags = 0
+    ) const override;
+    void getFaces(
+        std::vector<Base::Vector3d>& Points,
+        std::vector<Facet>& faces,
+        double Accuracy,
+        uint16_t flags = 0
+    ) const override;
+    void setFaces(
+        const std::vector<Base::Vector3d>& Points,
+        const std::vector<Facet>& faces,
+        double tolerance = 1.0e-06
+    );  // NOLINT
     void getDomains(std::vector<Domain>&) const;
     //@}
 
     /** @name Subelement management */
     //@{
     /// Search to see if a SubShape matches
-    static Data::MappedElement chooseMatchingSubShapeByPlaneOrLine(const TopoShape& shapeToFind, const TopoShape& shapeToLookIn);
+    static Data::MappedElement chooseMatchingSubShapeByPlaneOrLine(
+        const TopoShape& shapeToFind,
+        const TopoShape& shapeToLookIn
+    );
     /// Unlike \ref getTypeAndIndex() this function only handles the supported
     /// element types.
     static std::pair<std::string, unsigned long> getElementTypeAndIndex(const char* Name);
@@ -377,14 +398,18 @@ public:
     /// get the subelement by type and number
     Data::Segment* getSubElement(const char* Type, unsigned long index) const override;
     /** Get lines from segment */
-    void getLinesFromSubElement(const Data::Segment* segment,
-                                std::vector<Base::Vector3d>& Points,
-                                std::vector<Line>& lines) const override;
+    void getLinesFromSubElement(
+        const Data::Segment* segment,
+        std::vector<Base::Vector3d>& Points,
+        std::vector<Line>& lines
+    ) const override;
     /** Get faces from segment */
-    void getFacesFromSubElement(const Data::Segment* segment,
-                                std::vector<Base::Vector3d>& Points,
-                                std::vector<Base::Vector3d>& PointNormals,
-                                std::vector<Facet>& faces) const override;
+    void getFacesFromSubElement(
+        const Data::Segment* segment,
+        std::vector<Base::Vector3d>& Points,
+        std::vector<Base::Vector3d>& PointNormals,
+        std::vector<Facet>& faces
+    ) const override;
     //@}
     /**
      * Locate the TopoDS_Shape associated with a Topo"sub"Shape of the given name
@@ -426,26 +451,32 @@ public:
      * @param avoid The type to avoid
      * @return The sub TopoShapes.
      */
-    std::vector<TopoShape> getSubTopoShapes(TopAbs_ShapeEnum type=TopAbs_SHAPE, TopAbs_ShapeEnum avoid=TopAbs_SHAPE) const;
+    std::vector<TopoShape> getSubTopoShapes(
+        TopAbs_ShapeEnum type = TopAbs_SHAPE,
+        TopAbs_ShapeEnum avoid = TopAbs_SHAPE
+    ) const;
     /**
      * Locate all of the sub TopoDS_Shapes of a given type, while avoiding a given type
      * @param type The type to find
      * @param avoid The type to avoid
      * @return The sub TopoDS_Shapes.
      */
-    std::vector<TopoDS_Shape> getSubShapes(TopAbs_ShapeEnum type=TopAbs_SHAPE, TopAbs_ShapeEnum avoid=TopAbs_SHAPE) const;
+    std::vector<TopoDS_Shape> getSubShapes(
+        TopAbs_ShapeEnum type = TopAbs_SHAPE,
+        TopAbs_ShapeEnum avoid = TopAbs_SHAPE
+    ) const;
     /**
      * Locate all the Edges in the Wires of this shape
      * @param mapElement If True, map the subelements ( Edges ) found
      * @return Vector of the edges
      */
-    std::vector<TopoShape> getOrderedEdges(MapElement mapElement=MapElement::map) const;
+    std::vector<TopoShape> getOrderedEdges(MapElement mapElement = MapElement::map) const;
     /**
      * Locate all the Vertexes in the Wires of this shape
      * @param mapElement If True, map the subelements ( Vertexes )  found
      * @return Vector of the Vertexes
      */
-    std::vector<TopoShape> getOrderedVertexes(MapElement mapElement=MapElement::map) const;
+    std::vector<TopoShape> getOrderedVertexes(MapElement mapElement = MapElement::map) const;
     unsigned long countSubShapes(const char* Type) const;
     unsigned long countSubShapes(TopAbs_ShapeEnum type) const;
     bool hasSubShape(const char* Type) const;
@@ -497,11 +528,11 @@ public:
     /// Returns true if the expansion of the shape is infinite, false otherwise
     bool isInfinite() const;
     /// Checks whether the shape is a planar face
-    bool isPlanar(double tol = 1.0e-7) const;   // NOLINT
+    bool isPlanar(double tol = 1.0e-7) const;  // NOLINT
     /// Check if this shape is a single linear edge, works on BSplineCurve and BezierCurve
     bool isLinearEdge() const;
     /// Check if this shape is a single planar face, works on BSplineSurface and BezierSurface
-    bool isPlanarFace(double tol=1e-7) const;   // NOLINT
+    bool isPlanarFace(double tol = 1e-7) const;  // NOLINT
     //@}
 
     /** @name Boolean operation*/
@@ -513,9 +544,11 @@ public:
     TopoDS_Shape fuse(TopoDS_Shape) const;
     TopoDS_Shape fuse(const std::vector<TopoDS_Shape>&, Standard_Real tolerance = -1.0) const;
     TopoDS_Shape section(TopoDS_Shape, Standard_Boolean approximate = Standard_False) const;
-    TopoDS_Shape section(const std::vector<TopoDS_Shape>&,
-                         Standard_Real tolerance = -1.0,
-                         Standard_Boolean approximate = Standard_False) const;
+    TopoDS_Shape section(
+        const std::vector<TopoDS_Shape>&,
+        Standard_Real tolerance = -1.0,
+        Standard_Boolean approximate = Standard_False
+    ) const;
     std::list<TopoDS_Wire> slice(const Base::Vector3d&, double) const;
     TopoDS_Compound slices(const Base::Vector3d&, const std::vector<double>&) const;
     /**
@@ -539,75 +572,97 @@ public:
      * For example, if input shapes are two intersecting spheres, GFA returns
      * three solids: two cuts and common.
      */
-    TopoDS_Shape generalFuse(const std::vector<TopoDS_Shape>& sOthers,
-                             Standard_Real tolerance,
-                             std::vector<TopTools_ListOfShape>* mapInOut = nullptr) const;
+    TopoDS_Shape generalFuse(
+        const std::vector<TopoDS_Shape>& sOthers,
+        Standard_Real tolerance,
+        std::vector<TopTools_ListOfShape>* mapInOut = nullptr
+    ) const;
     //@}
 
     /** Sweeping */
     //@{
     TopoDS_Shape makePipe(const TopoDS_Shape& profile) const;
-    TopoDS_Shape makePipeShell(const TopTools_ListOfShape& profiles,
-                               const Standard_Boolean make_solid,
-                               const Standard_Boolean isFrenet = Standard_False,
-                               int transition = 0) const;
+    TopoDS_Shape makePipeShell(
+        const TopTools_ListOfShape& profiles,
+        const Standard_Boolean make_solid,
+        const Standard_Boolean isFrenet = Standard_False,
+        int transition = 0
+    ) const;
     TopoDS_Shape makePrism(const gp_Vec&) const;
     /// revolve shape. Note: isSolid is deprecated (instead, use some Part::FaceMaker to make a
     /// face, first).
     TopoDS_Shape revolve(const gp_Ax1&, double d, Standard_Boolean isSolid = Standard_False) const;
     TopoDS_Shape makeSweep(const TopoDS_Shape& profile, double, int) const;
     TopoDS_Shape makeTube(double radius, double tol, int cont, int maxdeg, int maxsegm) const;
-    TopoDS_Shape makeTorus(Standard_Real radius1,
-                           Standard_Real radius2,
-                           Standard_Real angle1,
-                           Standard_Real angle2,
-                           Standard_Real angle3,
-                           Standard_Boolean isSolid = Standard_True) const;
-    TopoDS_Shape makeHelix(Standard_Real pitch,
-                           Standard_Real height,
-                           Standard_Real radius,
-                           Standard_Real angle = 0,
-                           Standard_Boolean left = Standard_False,
-                           Standard_Boolean style = Standard_False) const;
-    TopoDS_Shape makeLongHelix(Standard_Real pitch,
-                               Standard_Real height,
-                               Standard_Real radius,
-                               Standard_Real angle = 0,
-                               Standard_Boolean left = Standard_False) const;
-    TopoDS_Shape makeSpiralHelix(Standard_Real radiusbottom,
-                                 Standard_Real radiustop,
-                                 Standard_Real height,
-                                 Standard_Real nbturns = 1,
-                                 Standard_Real breakperiod = 1,
-                                 Standard_Boolean left = Standard_False) const;
-    TopoDS_Shape makeThread(Standard_Real pitch,
-                            Standard_Real depth,
-                            Standard_Real height,
-                            Standard_Real radius) const;
-    TopoDS_Shape makeLoft(const TopTools_ListOfShape& profiles,
-                          Standard_Boolean isSolid,
-                          Standard_Boolean isRuled,
-                          Standard_Boolean isClosed = Standard_False,
-                          Standard_Integer maxDegree = 5) const;
-    TopoDS_Shape makeOffsetShape(double offset,
-                                 double tol,
-                                 bool intersection = false,
-                                 bool selfInter = false,
-                                 short offsetMode = 0,
-                                 short join = 0,
-                                 bool fill = false) const;
-    TopoDS_Shape makeOffset2D(double offset,
-                              short joinType = 0,
-                              bool fill = false,
-                              bool allowOpenResult = false,
-                              bool intersection = false) const;
-    TopoDS_Shape makeThickSolid(const TopTools_ListOfShape& remFace,
-                                double offset,
-                                double tol,
-                                bool intersection = false,
-                                bool selfInter = false,
-                                short offsetMode = 0,
-                                short join = 0) const;
+    TopoDS_Shape makeTorus(
+        Standard_Real radius1,
+        Standard_Real radius2,
+        Standard_Real angle1,
+        Standard_Real angle2,
+        Standard_Real angle3,
+        Standard_Boolean isSolid = Standard_True
+    ) const;
+    TopoDS_Shape makeHelix(
+        Standard_Real pitch,
+        Standard_Real height,
+        Standard_Real radius,
+        Standard_Real angle = 0,
+        Standard_Boolean left = Standard_False,
+        Standard_Boolean style = Standard_False
+    ) const;
+    TopoDS_Shape makeLongHelix(
+        Standard_Real pitch,
+        Standard_Real height,
+        Standard_Real radius,
+        Standard_Real angle = 0,
+        Standard_Boolean left = Standard_False
+    ) const;
+    TopoDS_Shape makeSpiralHelix(
+        Standard_Real radiusbottom,
+        Standard_Real radiustop,
+        Standard_Real height,
+        Standard_Real nbturns = 1,
+        Standard_Real breakperiod = 1,
+        Standard_Boolean left = Standard_False
+    ) const;
+    TopoDS_Shape makeThread(
+        Standard_Real pitch,
+        Standard_Real depth,
+        Standard_Real height,
+        Standard_Real radius
+    ) const;
+    TopoDS_Shape makeLoft(
+        const TopTools_ListOfShape& profiles,
+        Standard_Boolean isSolid,
+        Standard_Boolean isRuled,
+        Standard_Boolean isClosed = Standard_False,
+        Standard_Integer maxDegree = 5
+    ) const;
+    TopoDS_Shape makeOffsetShape(
+        double offset,
+        double tol,
+        bool intersection = false,
+        bool selfInter = false,
+        short offsetMode = 0,
+        short join = 0,
+        bool fill = false
+    ) const;
+    TopoDS_Shape makeOffset2D(
+        double offset,
+        short joinType = 0,
+        bool fill = false,
+        bool allowOpenResult = false,
+        bool intersection = false
+    ) const;
+    TopoDS_Shape makeThickSolid(
+        const TopTools_ListOfShape& remFace,
+        double offset,
+        double tol,
+        bool intersection = false,
+        bool selfInter = false,
+        short offsetMode = 0,
+        short join = 0
+    ) const;
     //@}
 
     /** @name Manipulation*/
@@ -628,9 +683,10 @@ public:
     TopoDS_Shape defeaturing(const std::vector<TopoDS_Shape>& s) const;
     TopoDS_Shape makeShell(const TopoDS_Shape&) const;
     //@}
-    
+
     /// Wire re-orientation when calling splitWires()
-    enum SplitWireReorient {
+    enum SplitWireReorient
+    {
         /// Keep original reorientation
         NoReorient,
         /// Make outer wire forward, and inner wires reversed
@@ -647,59 +703,77 @@ public:
      *
      * @return Return the outer wire
      */
-    TopoShape splitWires(std::vector<TopoShape> *inner = nullptr,
-                         SplitWireReorient reorient = Reorient) const;
+    TopoShape splitWires(
+        std::vector<TopoShape>* inner = nullptr,
+        SplitWireReorient reorient = Reorient
+    ) const;
 
     /** @name Element name mapping aware shape maker
      *
      * To be complete in next batch of patches
      */
     //@{
-    TopoShape&
-    makeCompound(const std::vector<TopoShape>& shapes, const char* op = nullptr, bool force = true);
+    TopoShape& makeCompound(
+        const std::vector<TopoShape>& shapes,
+        const char* op = nullptr,
+        bool force = true
+    );
 
-    TopoShape&
-    makeWires(const TopoShape& shape, const char* op = nullptr, bool fix = false, double tol = 0.0);
+    TopoShape& makeWires(
+        const TopoShape& shape,
+        const char* op = nullptr,
+        bool fix = false,
+        double tol = 0.0
+    );
     TopoShape makeWires(const char* op = nullptr, bool fix = false, double tol = 0.0) const
     {
         return TopoShape().makeWires(*this, op, fix, tol);
     }
-    TopoShape& makeFace(const std::vector<TopoShape>& shapes,
-                        const char* op = nullptr,
-                        const char* maker = nullptr);
-    TopoShape&
-    makeFace(const TopoShape& shape, const char* op = nullptr, const char* maker = nullptr);
+    TopoShape& makeFace(
+        const std::vector<TopoShape>& shapes,
+        const char* op = nullptr,
+        const char* maker = nullptr
+    );
+    TopoShape& makeFace(const TopoShape& shape, const char* op = nullptr, const char* maker = nullptr);
     TopoShape makeFace(const char* op = nullptr, const char* maker = nullptr) const
     {
         return TopoShape().makeFace(*this, op, maker);
     }
-    bool _makeTransform(const TopoShape& shape,
-                        const Base::Matrix4D& mat,
-                        const char* op = nullptr,
-                        bool checkScale = false,
-                        bool copy = false);
+    bool _makeTransform(
+        const TopoShape& shape,
+        const Base::Matrix4D& mat,
+        const char* op = nullptr,
+        bool checkScale = false,
+        bool copy = false
+    );
 
-    TopoShape& makeTransform(const TopoShape& shape,
-                             const Base::Matrix4D& mat,
-                             const char* op = nullptr,
-                             bool checkScale = false,
-                             bool copy = false)
+    TopoShape& makeTransform(
+        const TopoShape& shape,
+        const Base::Matrix4D& mat,
+        const char* op = nullptr,
+        bool checkScale = false,
+        bool copy = false
+    )
     {
         _makeTransform(shape, mat, op, checkScale, copy);
         return *this;
     }
-    TopoShape makeTransform(const Base::Matrix4D& mat,
-                            const char* op = nullptr,
-                            bool checkScale = false,
-                            bool copy = false) const
+    TopoShape makeTransform(
+        const Base::Matrix4D& mat,
+        const char* op = nullptr,
+        bool checkScale = false,
+        bool copy = false
+    ) const
     {
         return TopoShape().makeTransform(*this, mat, op, checkScale, copy);
     }
 
-    TopoShape& makeTransform(const TopoShape& shape,
-                             const gp_Trsf& trsf,
-                             const char* op = nullptr,
-                             bool copy = false);
+    TopoShape& makeTransform(
+        const TopoShape& shape,
+        const gp_Trsf& trsf,
+        const char* op = nullptr,
+        bool copy = false
+    );
     TopoShape makeTransform(const gp_Trsf& trsf, const char* op = nullptr, bool copy = false) const
     {
         return TopoShape().makeTransform(*this, trsf, op, copy);
@@ -809,16 +883,17 @@ public:
     static TopoDS_Shape& locate(TopoDS_Shape& tds, const gp_Trsf& transfer);
     static TopoDS_Shape located(const TopoDS_Shape& tds, const gp_Trsf& transfer);
 
-    TopoShape& makeGTransform(const TopoShape& shape,
-                              const Base::Matrix4D& mat,
-                              const char* op = nullptr,
-                              bool copy = false);
-    TopoShape
-    makeGTransform(const Base::Matrix4D& mat, const char* op = nullptr, bool copy = false) const
+    TopoShape& makeGTransform(
+        const TopoShape& shape,
+        const Base::Matrix4D& mat,
+        const char* op = nullptr,
+        bool copy = false
+    );
+    TopoShape makeGTransform(const Base::Matrix4D& mat, const char* op = nullptr, bool copy = false) const
     {
         return TopoShape().makeGTransform(*this, mat, op, copy);
     }
-    
+
     /** Refine the input shape by merging faces/edges that share the same geometry
      *
      * @param shape: input shape
@@ -832,9 +907,11 @@ public:
      *         itself as a self reference so that multiple operations can be
      *         carried out for the same shape in the same line of code.
      */
-    TopoShape& makeElementRefine(const TopoShape& shape,
-                                 const char* op = nullptr,
-                                 RefineFail no_fail = RefineFail::throwException);
+    TopoShape& makeElementRefine(
+        const TopoShape& shape,
+        const char* op = nullptr,
+        RefineFail no_fail = RefineFail::throwException
+    );
 
     /** Refine the input shape by merging faces/edges that share the same geometry
      *
@@ -846,19 +923,22 @@ public:
      *
      * @return Return a refined shape. The shape itself is not modified
      */
-    TopoShape makeElementRefine(const char* op = nullptr,
-                                RefineFail no_fail = RefineFail::throwException) const
+    TopoShape makeElementRefine(
+        const char* op = nullptr,
+        RefineFail no_fail = RefineFail::throwException
+    ) const
     {
         return TopoShape(Tag, Hasher).makeElementRefine(*this, op, no_fail);
     }
 
 
-    TopoShape& makeRefine(const TopoShape& shape,
-                          const char* op = nullptr,
-                          RefineFail no_fail = RefineFail::throwException);
+    TopoShape& makeRefine(
+        const TopoShape& shape,
+        const char* op = nullptr,
+        RefineFail no_fail = RefineFail::throwException
+    );
 
-    TopoShape makeRefine(const char* op = nullptr,
-                         RefineFail no_fail = RefineFail::throwException) const
+    TopoShape makeRefine(const char* op = nullptr, RefineFail no_fail = RefineFail::throwException) const
     {
         return TopoShape().makeRefine(*this, op, no_fail);
     }
@@ -882,9 +962,17 @@ public:
      *         a self reference so that multiple operations can be carried out
      *         for the same shape in the same line of code.
      */
-    TopoShape &makeElementThickSolid(const TopoShape &shape, const std::vector<TopoShape> &faces,
-                              double offset, double tol, bool intersection = false, bool selfInter = false,
-                              short offsetMode = 0, JoinType join = JoinType::arc, const char *op=nullptr);
+    TopoShape& makeElementThickSolid(
+        const TopoShape& shape,
+        const std::vector<TopoShape>& faces,
+        double offset,
+        double tol,
+        bool intersection = false,
+        bool selfInter = false,
+        short offsetMode = 0,
+        JoinType join = JoinType::arc,
+        const char* op = nullptr
+    );
 
     /** Make a hollowed solid by removing some faces from a given solid
      *
@@ -903,11 +991,28 @@ public:
      *
      * @return Return the generated new shape. The TopoShape itself is not modified.
      */
-    TopoShape makeElementThickSolid(const std::vector<TopoShape> &faces,
-                             double offset, double tol, bool intersection = false, bool selfInter = false,
-                             short offsetMode = 0, JoinType join = JoinType::arc, const char *op=nullptr) const {
-        return TopoShape(0,Hasher).makeElementThickSolid(*this,faces,offset,tol,intersection,selfInter,
-                                                   offsetMode,join,op);
+    TopoShape makeElementThickSolid(
+        const std::vector<TopoShape>& faces,
+        double offset,
+        double tol,
+        bool intersection = false,
+        bool selfInter = false,
+        short offsetMode = 0,
+        JoinType join = JoinType::arc,
+        const char* op = nullptr
+    ) const
+    {
+        return TopoShape(0, Hasher).makeElementThickSolid(
+            *this,
+            faces,
+            offset,
+            tol,
+            intersection,
+            selfInter,
+            offsetMode,
+            join,
+            op
+        );
     }
     /** Make a 3D offset of a given shape
      *
@@ -930,15 +1035,17 @@ public:
      *         a self reference so that multiple operations can be carried out
      *         for the same shape in the same line of code.
      */
-    TopoShape& makeElementOffset(const TopoShape& source,
-                                 double offset,
-                                 double tol,
-                                 bool intersection = false,
-                                 bool selfInter = false,
-                                 short offsetMode = 0,
-                                 JoinType join = JoinType::arc,
-                                 FillType fill = FillType::noFill,
-                                 const char* op = nullptr);
+    TopoShape& makeElementOffset(
+        const TopoShape& source,
+        double offset,
+        double tol,
+        bool intersection = false,
+        bool selfInter = false,
+        short offsetMode = 0,
+        JoinType join = JoinType::arc,
+        FillType fill = FillType::noFill,
+        const char* op = nullptr
+    );
 
     /** Make a 3D offset of this shape
      *
@@ -957,24 +1064,19 @@ public:
      *
      * @return Return the new shape. The TopoShape itself is not modified.
      */
-    TopoShape makeElementOffset(double offset,
-                                double tol,
-                                bool intersection = false,
-                                bool selfInter = false,
-                                short offsetMode = 0,
-                                JoinType join = JoinType::arc,
-                                FillType fill = FillType::noFill,
-                                const char* op = nullptr) const
+    TopoShape makeElementOffset(
+        double offset,
+        double tol,
+        bool intersection = false,
+        bool selfInter = false,
+        short offsetMode = 0,
+        JoinType join = JoinType::arc,
+        FillType fill = FillType::noFill,
+        const char* op = nullptr
+    ) const
     {
-        return TopoShape(0, Hasher).makeElementOffset(*this,
-                                                      offset,
-                                                      tol,
-                                                      intersection,
-                                                      selfInter,
-                                                      offsetMode,
-                                                      join,
-                                                      fill,
-                                                      op);
+        return TopoShape(0, Hasher)
+            .makeElementOffset(*this, offset, tol, intersection, selfInter, offsetMode, join, fill, op);
     }
 
     /** Make a 2D offset of a given shape
@@ -995,13 +1097,15 @@ public:
      *         a self reference so that multiple operations can be carried out
      *         for the same shape in the same line of code.
      */
-    TopoShape& makeElementOffset2D(const TopoShape& source,
-                                   double offset,
-                                   JoinType join = JoinType::arc,
-                                   FillType fill = FillType::noFill,
-                                   OpenResult allowOpenResult = OpenResult::allowOpenResult,
-                                   bool intersection = false,
-                                   const char* op = nullptr);
+    TopoShape& makeElementOffset2D(
+        const TopoShape& source,
+        double offset,
+        JoinType join = JoinType::arc,
+        FillType fill = FillType::noFill,
+        OpenResult allowOpenResult = OpenResult::allowOpenResult,
+        bool intersection = false,
+        const char* op = nullptr
+    );
     /** Make a 2D offset of a given shape
      *
      * @param source: source shape of edge, wire, face, or compound
@@ -1017,12 +1121,14 @@ public:
      *
      * @return Return the new shape. The TopoShape itself is not modified.
      */
-    TopoShape makeElementOffset2D(double offset,
-                                  JoinType join = JoinType::arc,
-                                  FillType fill = FillType::noFill,
-                                  OpenResult allowOpenResult = OpenResult::allowOpenResult,
-                                  bool intersection = false,
-                                  const char* op = nullptr) const
+    TopoShape makeElementOffset2D(
+        double offset,
+        JoinType join = JoinType::arc,
+        FillType fill = FillType::noFill,
+        OpenResult allowOpenResult = OpenResult::allowOpenResult,
+        bool intersection = false,
+        const char* op = nullptr
+    ) const
     {
         return TopoShape(0, Hasher)
             .makeElementOffset2D(*this, offset, join, fill, allowOpenResult, intersection, op);
@@ -1044,12 +1150,14 @@ public:
      *         a self reference so that multiple operations can be carried out
      *         for the same shape in the same line of code.
      */
-    TopoShape& makeElementOffsetFace(const TopoShape& source,
-                                     double offset,
-                                     double innerOffset,
-                                     JoinType join = JoinType::arc,
-                                     JoinType innerJoin = JoinType::arc,
-                                     const char* op = nullptr);
+    TopoShape& makeElementOffsetFace(
+        const TopoShape& source,
+        double offset,
+        double innerOffset,
+        JoinType join = JoinType::arc,
+        JoinType innerJoin = JoinType::arc,
+        const char* op = nullptr
+    );
 
     /** Make a 2D offset of face with separate control for outer and inner (hole) wires
      *
@@ -1064,16 +1172,17 @@ public:
      *
      * @return Return the new shape. The TopoShape itself is not modified.
      */
-    TopoShape makeElementOffsetFace(double offset,
-                                    double innerOffset,
-                                    JoinType join = JoinType::arc,
-                                    JoinType innerJoin = JoinType::arc,
-                                    const char* op = nullptr) const
+    TopoShape makeElementOffsetFace(
+        double offset,
+        double innerOffset,
+        JoinType join = JoinType::arc,
+        JoinType innerJoin = JoinType::arc,
+        const char* op = nullptr
+    ) const
     {
         return TopoShape(0, Hasher)
             .makeElementOffsetFace(*this, offset, innerOffset, join, innerJoin, op);
     }
-
 
 
     /** Make revolved shell around a basis shape
@@ -1091,8 +1200,13 @@ public:
      *         a self reference so that multiple operations can be carried out
      *         for the same shape in the same line of code.
      */
-    TopoShape &makeElementRevolve(const TopoShape &base, const gp_Ax1& axis, double d,
-                           const char *face_maker=0, const char *op=nullptr);
+    TopoShape& makeElementRevolve(
+        const TopoShape& base,
+        const gp_Ax1& axis,
+        double d,
+        const char* face_maker = 0,
+        const char* op = nullptr
+    );
 
     /** Make revolved shell around a basis shape
      *
@@ -1105,9 +1219,14 @@ public:
      *
      * @return Return the generated new shape. The TopoShape itself is not modified.
      */
-    TopoShape makeElementRevolve(const gp_Ax1& axis, double d,
-                          const char *face_maker=nullptr, const char *op=nullptr) const {
-        return TopoShape(0,Hasher).makeElementRevolve(*this,axis,d,face_maker,op);
+    TopoShape makeElementRevolve(
+        const gp_Ax1& axis,
+        double d,
+        const char* face_maker = nullptr,
+        const char* op = nullptr
+    ) const
+    {
+        return TopoShape(0, Hasher).makeElementRevolve(*this, axis, d, face_maker, op);
     }
 
 
@@ -1127,15 +1246,17 @@ public:
      *
      * @return Return the generated new shape. The TopoShape itself is not modified.
      */
-    TopoShape& makeElementRevolution(const TopoShape& _base,
-                                     const TopoDS_Shape& profile,
-                                     const gp_Ax1& axis,
-                                     const TopoDS_Face& supportface,
-                                     const TopoDS_Face& uptoface,
-                                     const char* face_maker = nullptr,
-                                     RevolMode Mode = RevolMode::None,
-                                     Standard_Boolean Modify = Standard_True,
-                                     const char* op = nullptr);
+    TopoShape& makeElementRevolution(
+        const TopoShape& _base,
+        const TopoDS_Shape& profile,
+        const gp_Ax1& axis,
+        const TopoDS_Face& supportface,
+        const TopoDS_Face& uptoface,
+        const char* face_maker = nullptr,
+        RevolMode Mode = RevolMode::None,
+        Standard_Boolean Modify = Standard_True,
+        const char* op = nullptr
+    );
 
     /** Make revolved shell around a basis shape
      *
@@ -1151,24 +1272,28 @@ public:
      *
      * @return Return the generated new shape. The TopoShape itself is not modified.
      */
-    TopoShape& makeElementRevolution(const gp_Ax1& axis,
-                                     const TopoDS_Shape& profile,
-                                     const TopoDS_Face& supportface,
-                                     const TopoDS_Face& uptoface,
-                                     const char* face_maker = nullptr,
-                                     RevolMode Mode = RevolMode::None,
-                                     Standard_Boolean Modify = Standard_True,
-                                     const char* op = nullptr) const
+    TopoShape& makeElementRevolution(
+        const gp_Ax1& axis,
+        const TopoDS_Shape& profile,
+        const TopoDS_Face& supportface,
+        const TopoDS_Face& uptoface,
+        const char* face_maker = nullptr,
+        RevolMode Mode = RevolMode::None,
+        Standard_Boolean Modify = Standard_True,
+        const char* op = nullptr
+    ) const
     {
-        return TopoShape(0, Hasher).makeElementRevolution(*this,
-                                                          profile,
-                                                          axis,
-                                                          supportface,
-                                                          uptoface,
-                                                          face_maker,
-                                                          Mode,
-                                                          Modify,
-                                                          op);
+        return TopoShape(0, Hasher).makeElementRevolution(
+            *this,
+            profile,
+            axis,
+            supportface,
+            uptoface,
+            face_maker,
+            Mode,
+            Modify,
+            op
+        );
     }
 
     /** Make a prism that is a linear sweep of a basis shape
@@ -1183,7 +1308,7 @@ public:
      *         a self reference so that multiple operations can be carried out
      *         for the same shape in the same line of code.
      */
-    TopoShape &makeElementPrism(const TopoShape &base, const gp_Vec& vec, const char *op=nullptr);
+    TopoShape& makeElementPrism(const TopoShape& base, const gp_Vec& vec, const char* op = nullptr);
 
     /** Make a prism that is a linear sweep of this shape
      *
@@ -1193,12 +1318,14 @@ public:
      *
      * @return Return the generated new shape. The TopoShape itself is not modified.
      */
-    TopoShape makeElementPrism(const gp_Vec& vec, const char *op=nullptr) const {
-        return TopoShape(0,Hasher).makeElementPrism(*this,vec,op);
+    TopoShape makeElementPrism(const gp_Vec& vec, const char* op = nullptr) const
+    {
+        return TopoShape(0, Hasher).makeElementPrism(*this, vec, op);
     }
 
     /// Operation mode for makeElementPrismUntil()
-    enum PrismMode {
+    enum PrismMode
+    {
         /// Remove the generated prism shape from the base shape with boolean cut
         CutFromBase = 0,
         /// Add generated prism shape to the base shape with fusion
@@ -1227,16 +1354,19 @@ public:
      *         a self reference so that multiple operations can be carried out
      *         for the same shape in the same line of code.
      */
-    TopoShape& makeElementPrismUntil(const TopoShape& base,
-                                     const TopoShape& profile,
-                                     const TopoShape& supportFace,
-                                     const TopoShape& upToFace,
-                                     const gp_Dir& direction,
-                                     PrismMode mode,
-                                     Standard_Boolean checkLimits = Standard_True,
-                                     const char* op = nullptr);
+    TopoShape& makeElementPrismUntil(
+        const TopoShape& base,
+        const TopoShape& profile,
+        const TopoShape& supportFace,
+        const TopoShape& upToFace,
+        const gp_Dir& direction,
+        PrismMode mode,
+        Standard_Boolean checkLimits = Standard_True,
+        const char* op = nullptr
+    );
 
-    /** Make a prism based on this shape that is either depression or protrusion of a profile shape up to a given face
+    /** Make a prism based on this shape that is either depression or protrusion of a profile shape
+     * up to a given face
      *
      * @param profile: profile shape used for sweeping to make the prism
      * @param supportFace: optional face serves to determining the type of
@@ -1253,22 +1383,26 @@ public:
      *
      * @return Return the generated new shape. The TopoShape itself is not modified.
      */
-    TopoShape makeElementPrismUntil(const TopoShape& profile,
-                                    const TopoShape& supportFace,
-                                    const TopoShape& upToFace,
-                                    const gp_Dir& direction,
-                                    PrismMode mode,
-                                    Standard_Boolean checkLimits = Standard_True,
-                                    const char* op = nullptr) const
+    TopoShape makeElementPrismUntil(
+        const TopoShape& profile,
+        const TopoShape& supportFace,
+        const TopoShape& upToFace,
+        const gp_Dir& direction,
+        PrismMode mode,
+        Standard_Boolean checkLimits = Standard_True,
+        const char* op = nullptr
+    ) const
     {
-        return TopoShape(0, Hasher).makeElementPrismUntil(*this,
-                                                          profile,
-                                                          supportFace,
-                                                          upToFace,
-                                                          direction,
-                                                          mode,
-                                                          checkLimits,
-                                                          op);
+        return TopoShape(0, Hasher).makeElementPrismUntil(
+            *this,
+            profile,
+            supportFace,
+            upToFace,
+            direction,
+            mode,
+            checkLimits,
+            op
+        );
     }
 
 
@@ -1293,14 +1427,16 @@ public:
      *         a self reference so that multiple operations can be carried out
      *         for the same shape in the same line of code.
      */
-    TopoShape& makeElementPipeShell(const std::vector<TopoShape>& sources,
-                                    const MakeSolid makeSolid,
-                                    const Standard_Boolean isFrenet,
-                                    TransitionMode transition = TransitionMode::Transformed,
-                                    const char* op = nullptr,
-                                    double tol3d = 0.0,
-                                    double tolBound = 0.0,
-                                    double tolAngular = 0.0);
+    TopoShape& makeElementPipeShell(
+        const std::vector<TopoShape>& sources,
+        const MakeSolid makeSolid,
+        const Standard_Boolean isFrenet,
+        TransitionMode transition = TransitionMode::Transformed,
+        const char* op = nullptr,
+        double tol3d = 0.0,
+        double tolBound = 0.0,
+        double tolAngular = 0.0
+    );
 
     /* Make a shape with some subshapes replaced.
      *
@@ -1312,8 +1448,10 @@ public:
      *         a self reference so that multiple operations can be carried out
      *         for the same shape in the same line of code.
      */
-    TopoShape& replaceElementShape(const TopoShape& source,
-                                   const std::vector<std::pair<TopoShape, TopoShape>>& s);
+    TopoShape& replaceElementShape(
+        const TopoShape& source,
+        const std::vector<std::pair<TopoShape, TopoShape>>& s
+    );
     /* Make a new shape using this shape with some subshapes replaced by others
      *
      * @param s: replacement mapping the existing sub shape of source to new shapes
@@ -1360,10 +1498,12 @@ public:
      *         a self reference so that multiple operations can be carried out
      *         for the same shape in the same line of code.
      */
-    TopoShape& makeElementGeneralFuse(const std::vector<TopoShape>& sources,
-                                      std::vector<std::vector<TopoShape>>& modified,
-                                      double tol = -1.0,
-                                      const char* op = nullptr);
+    TopoShape& makeElementGeneralFuse(
+        const std::vector<TopoShape>& sources,
+        std::vector<std::vector<TopoShape>>& modified,
+        double tol = -1.0,
+        const char* op = nullptr
+    );
 
     /** Make a fusion of input shapes
      *
@@ -1377,9 +1517,11 @@ public:
      *         a self reference so that multiple operations can be carried out
      *         for the same shape in the same line of code.
      */
-    TopoShape& makeElementFuse(const std::vector<TopoShape>& sources,
-                               const char* op = nullptr,
-                               double tol = -1.0);
+    TopoShape& makeElementFuse(
+        const std::vector<TopoShape>& sources,
+        const char* op = nullptr,
+        double tol = -1.0
+    );
     /** Make a fusion of this shape and an input shape
      *
      * @param source: the source shape
@@ -1389,8 +1531,7 @@ public:
      *
      * @return Return the new shape. The TopoShape itself is not modified.
      */
-    TopoShape
-    makeElementFuse(const TopoShape& source, const char* op = nullptr, double tol = -1.0) const
+    TopoShape makeElementFuse(const TopoShape& source, const char* op = nullptr, double tol = -1.0) const
     {
         return TopoShape(0, Hasher).makeElementFuse({*this, source}, op, tol);
     }
@@ -1407,8 +1548,11 @@ public:
      *         a self reference so that multiple operations can be carried out
      *         for the same shape in the same line of code.
      */
-    TopoShape&
-    makeElementCut(const std::vector<TopoShape>& sources, const char* op = nullptr, double tol = -1.0);
+    TopoShape& makeElementCut(
+        const std::vector<TopoShape>& sources,
+        const char* op = nullptr,
+        double tol = -1.0
+    );
     /** Make a boolean cut of this shape with an input shape
      *
      * @param source: the source shape
@@ -1418,8 +1562,7 @@ public:
      *
      * @return Return the new shape. The TopoShape itself is not modified.
      */
-    TopoShape
-    makeElementCut(const TopoShape& source, const char* op = nullptr, double tol = -1.0) const
+    TopoShape makeElementCut(const TopoShape& source, const char* op = nullptr, double tol = -1.0) const
     {
         return TopoShape(0, Hasher).makeElementCut({*this, source}, op, tol);
     }
@@ -1436,8 +1579,11 @@ public:
      *         a self reference so that multiple operations can be carried out
      *         for the same shape in the same line of code.
      */
-    TopoShape&
-    makeElementXor(const std::vector<TopoShape>& sources, const char* op = nullptr, double tol = -1.0);
+    TopoShape& makeElementXor(
+        const std::vector<TopoShape>& sources,
+        const char* op = nullptr,
+        double tol = -1.0
+    );
     /** Make a boolean xor of this shape with an input shape
      *
      * @param source: the source shape
@@ -1447,8 +1593,7 @@ public:
      *
      * @return Return the new shape. The TopoShape itself is not modified.
      */
-    TopoShape
-    makeElementXor(const TopoShape& source, const char* op = nullptr, double tol = -1.0) const
+    TopoShape makeElementXor(const TopoShape& source, const char* op = nullptr, double tol = -1.0) const
     {
         return TopoShape(0, Hasher).makeElementXor({*this, source}, op, tol);
     }
@@ -1465,24 +1610,30 @@ public:
     static const std::string& shapeName(TopAbs_ShapeEnum type, bool silent = false);
     const std::string& shapeName(bool silent = false) const;
     static std::pair<TopAbs_ShapeEnum, int> shapeTypeAndIndex(const char* name);
-    static std::pair<TopAbs_ShapeEnum, int> shapeTypeAndIndex(const Data::IndexedName &name);
+    static std::pair<TopAbs_ShapeEnum, int> shapeTypeAndIndex(const Data::IndexedName& name);
 
-    Data::MappedName setElementComboName(const Data::IndexedName & element,
-                                         const std::vector<Data::MappedName> &names,
-                                         const char *marker=nullptr,
-                                         const char *op=nullptr,
-                                         const Data::ElementIDRefs *sids=nullptr);
+    Data::MappedName setElementComboName(
+        const Data::IndexedName& element,
+        const std::vector<Data::MappedName>& names,
+        const char* marker = nullptr,
+        const char* op = nullptr,
+        const Data::ElementIDRefs* sids = nullptr
+    );
 
-    std::vector<Data::MappedName> decodeElementComboName(const Data::IndexedName& element,
-                                                         const Data::MappedName& name,
-                                                         const char* marker = nullptr,
-                                                         std::string* postfix = nullptr) const;
+    std::vector<Data::MappedName> decodeElementComboName(
+        const Data::IndexedName& element,
+        const Data::MappedName& name,
+        const char* marker = nullptr,
+        std::string* postfix = nullptr
+    ) const;
 
-    void reTagElementMap(long tag,  // NOLINT google-default-arguments
-                         App::StringHasherRef hasher,
-                         const char* postfix = nullptr) override;
+    void reTagElementMap(
+        long tag,  // NOLINT google-default-arguments
+        App::StringHasherRef hasher,
+        const char* postfix = nullptr
+    ) override;
 
-    long isElementGenerated(const Data::MappedName &name, int depth=1) const;
+    long isElementGenerated(const Data::MappedName& name, int depth = 1) const;
 
     /** @name sub shape cached functions
      *
@@ -1498,12 +1649,14 @@ public:
     int findAncestor(const TopoDS_Shape& subshape, TopAbs_ShapeEnum type) const;
     TopoDS_Shape findAncestorShape(const TopoDS_Shape& subshape, TopAbs_ShapeEnum type) const;
     std::vector<int> findAncestors(const TopoDS_Shape& subshape, TopAbs_ShapeEnum type) const;
-    std::vector<TopoDS_Shape> findAncestorsShapes(const TopoDS_Shape& subshape,
-                                                  TopAbs_ShapeEnum type) const;
+    std::vector<TopoDS_Shape> findAncestorsShapes(
+        const TopoDS_Shape& subshape,
+        TopAbs_ShapeEnum type
+    ) const;
     /** Find sub shapes with shared Vertexes.
      *
      * Renamed: searchSubShape -> findSubShapesWithSharedVertex
-     * 
+     *
      * unlike findShape(), the input shape does not have to be an actual
      * sub-shape of this shape. The sub-shape is searched by shape geometry
      * Note that subshape must be a Vertex, Edge, or Face.
@@ -1514,24 +1667,31 @@ public:
      * @param tol: tolerance to check coincident vertices
      * @param atol: tolerance to check for same angles
      */
-     std::vector<TopoShape> findSubShapesWithSharedVertex(const TopoShape &subshape,
-                                          std::vector<std::string> *names=nullptr,
-                                          Data::SearchOptions = Data::SearchOption::CheckGeometry,
-                                          double tol=1e-7, double atol=1e-12) const;
+    std::vector<TopoShape> findSubShapesWithSharedVertex(
+        const TopoShape& subshape,
+        std::vector<std::string>* names = nullptr,
+        Data::SearchOptions = Data::SearchOption::CheckGeometry,
+        double tol = 1e-7,
+        double atol = 1e-12
+    ) const;
     //@}
 
-    void copyElementMap(const TopoShape & topoShape, const char *op=nullptr);
-    bool canMapElement(const TopoShape &other) const;
-    void cacheRelatedElements(const Data::MappedName & name,
-                              HistoryTraceType sameType,
-                              const QVector<Data::MappedElement> & names) const;
+    void copyElementMap(const TopoShape& topoShape, const char* op = nullptr);
+    bool canMapElement(const TopoShape& other) const;
+    void cacheRelatedElements(
+        const Data::MappedName& name,
+        HistoryTraceType sameType,
+        const QVector<Data::MappedElement>& names
+    ) const;
 
-    bool getRelatedElementsCached(const Data::MappedName & name,
-                                  HistoryTraceType sameType,
-                                  QVector<Data::MappedElement> &names) const;
+    bool getRelatedElementsCached(
+        const Data::MappedName& name,
+        HistoryTraceType sameType,
+        QVector<Data::MappedElement>& names
+    ) const;
 
-    void mapSubElement(const TopoShape &other,const char *op=nullptr, bool forceHasher=false);
-    void mapSubElement(const std::vector<TopoShape> &shapes, const char *op=nullptr);
+    void mapSubElement(const TopoShape& other, const char* op = nullptr, bool forceHasher = false);
+    void mapSubElement(const std::vector<TopoShape>& shapes, const char* op = nullptr);
     void mapSubElementsTo(std::vector<TopoShape>& shapes, const char* op = nullptr) const;
     bool hasPendingElementMap() const;
 
@@ -1539,11 +1699,12 @@ public:
 
     void flushElementMap() const override;
 
-    Data::ElementMapPtr resetElementMap(
-        Data::ElementMapPtr elementMap=Data::ElementMapPtr()) override;
+    Data::ElementMapPtr resetElementMap(Data::ElementMapPtr elementMap = Data::ElementMapPtr()) override;
 
-    std::vector<Data::IndexedName> getHigherElements(const char *element,
-                                                     bool silent = false) const override;
+    std::vector<Data::IndexedName> getHigherElements(
+        const char* element,
+        bool silent = false
+    ) const override;
 
     /** Helper class to return the generated and modified shape given an input shape
      *
@@ -1552,16 +1713,20 @@ public:
      * some glitches in various derived class. So we use this class as an
      * abstraction, and create various derived classes to deal with the glitches.
      */
-    struct PartExport Mapper {
+    struct PartExport Mapper
+    {
         /// Helper vector for temporary storage of both generated and modified shapes
         mutable std::vector<TopoDS_Shape> _res;
-        virtual ~Mapper() {}
+        virtual ~Mapper()
+        {}
         /// Return a list of shape generated from the given input shape
-        virtual const std::vector<TopoDS_Shape> &generated(const TopoDS_Shape &) const {
+        virtual const std::vector<TopoDS_Shape>& generated(const TopoDS_Shape&) const
+        {
             return _res;
         }
         /// Return a list of shape modified from the given input shape
-        virtual const std::vector<TopoDS_Shape> &modified(const TopoDS_Shape &) const {
+        virtual const std::vector<TopoDS_Shape>& modified(const TopoDS_Shape&) const
+        {
             return _res;
         }
     };
@@ -1587,14 +1752,16 @@ public:
      *         a self reference so that multiple operations can be carried out
      *         for the same shape in the same line of code.
      */
-    TopoShape& makeElementEvolve(const TopoShape& spine,
-                                 const TopoShape& profile,
-                                 JoinType join = JoinType::arc,
-                                 CoordinateSystem = CoordinateSystem::global,
-                                 MakeSolid solid = MakeSolid::noSolid,
-                                 Spine profOnSpine = Spine::notOn,
-                                 double tol = 0.0,
-                                 const char* op = nullptr);
+    TopoShape& makeElementEvolve(
+        const TopoShape& spine,
+        const TopoShape& profile,
+        JoinType join = JoinType::arc,
+        CoordinateSystem = CoordinateSystem::global,
+        MakeSolid solid = MakeSolid::noSolid,
+        Spine profOnSpine = Spine::notOn,
+        double tol = 0.0,
+        const char* op = nullptr
+    );
 
     /** Make an evolved shape using this shape as spine
      *
@@ -1612,13 +1779,15 @@ public:
      *
      * @return Return the new shape. The TopoShape itself is not modified.
      */
-    TopoShape makeElementEvolve(const TopoShape& profile,
-                                JoinType join = JoinType::arc,
-                                CoordinateSystem axeProf = CoordinateSystem::global,
-                                MakeSolid solid = MakeSolid::noSolid,
-                                Spine profOnSpine = Spine::notOn,
-                                double tol = 0.0,
-                                const char* op = nullptr)
+    TopoShape makeElementEvolve(
+        const TopoShape& profile,
+        JoinType join = JoinType::arc,
+        CoordinateSystem axeProf = CoordinateSystem::global,
+        MakeSolid solid = MakeSolid::noSolid,
+        Spine profOnSpine = Spine::notOn,
+        double tol = 0.0,
+        const char* op = nullptr
+    )
     {
         return TopoShape(0, Hasher)
             .makeElementEvolve(*this, profile, join, axeProf, solid, profOnSpine, tol, op);
@@ -1645,9 +1814,14 @@ public:
      *         a self reference so that multiple operations can be carried out
      *         for the same shape in the same line of code.
      */
-    TopoShape &makeElementLoft(const std::vector<TopoShape> &sources,
-                        IsSolid isSolid, IsRuled isRuled, IsClosed isClosed=IsClosed::notClosed,
-                        Standard_Integer maxDegree=5, const char *op=nullptr);
+    TopoShape& makeElementLoft(
+        const std::vector<TopoShape>& sources,
+        IsSolid isSolid,
+        IsRuled isRuled,
+        IsClosed isClosed = IsClosed::notClosed,
+        Standard_Integer maxDegree = 5,
+        const char* op = nullptr
+    );
 
     /** Make a ruled surface
      *
@@ -1662,7 +1836,11 @@ public:
      *         a self reference so that multiple operations can be carried out
      *         for the same shape in the same line of code.
      */
-    TopoShape &makeElementRuledSurface(const std::vector<TopoShape> &source, int orientation=0, const char *op=nullptr);
+    TopoShape& makeElementRuledSurface(
+        const std::vector<TopoShape>& source,
+        int orientation = 0,
+        const char* op = nullptr
+    );
 
     /** Core function to generate mapped element names from shape history
      *
@@ -1677,15 +1855,18 @@ public:
      *         itself as a self reference so that multiple operations can be
      *         carried out for the same shape in the same line of code.
      */
-    TopoShape &makeShapeWithElementMap(const TopoDS_Shape &shape,
-                                       const Mapper &mapper,
-                                       const std::vector<TopoShape> &sources,
-                                       const char *op=nullptr);
+    TopoShape& makeShapeWithElementMap(
+        const TopoDS_Shape& shape,
+        const Mapper& mapper,
+        const std::vector<TopoShape>& sources,
+        const char* op = nullptr
+    );
     /**
      * When given a single shape to create a compound, two results are possible: either to simply
      * return the shape as given, or to force it to be placed in a Compound.
      */
-    enum class SingleShapeCompoundCreationPolicy {
+    enum class SingleShapeCompoundCreationPolicy
+    {
         returnShape,
         forceCompound
     };
@@ -1702,10 +1883,11 @@ public:
      *         a reference so that multiple operations can be carried out for
      *         the same shape in the same line of code.
      */
-    TopoShape& makeElementCompound(const std::vector<TopoShape>& shapes,
-                                   const char* op = nullptr,
-                                   SingleShapeCompoundCreationPolicy policy =
-                                       SingleShapeCompoundCreationPolicy::forceCompound);
+    TopoShape& makeElementCompound(
+        const std::vector<TopoShape>& shapes,
+        const char* op = nullptr,
+        SingleShapeCompoundCreationPolicy policy = SingleShapeCompoundCreationPolicy::forceCompound
+    );
 
 
     enum class ConnectionPolicy
@@ -1736,11 +1918,13 @@ public:
      *         a reference so that multiple operations can be carried out for
      *         the same shape in the same line of code.
      */
-    TopoShape& makeElementWires(const std::vector<TopoShape>& shapes,
-                                const char* op = nullptr,
-                                double tol = 0.0,
-                                ConnectionPolicy policy = ConnectionPolicy::mergeWithTolerance,
-                                TopoShapeMap* output = nullptr);
+    TopoShape& makeElementWires(
+        const std::vector<TopoShape>& shapes,
+        const char* op = nullptr,
+        double tol = 0.0,
+        ConnectionPolicy policy = ConnectionPolicy::mergeWithTolerance,
+        TopoShapeMap* output = nullptr
+    );
 
 
     /** Make a compound of wires by connecting input edges
@@ -1765,11 +1949,13 @@ public:
      *         a reference so that multiple operations can be carried out for
      *         the same shape in the same line of code.
      */
-    TopoShape& makeElementWires(const TopoShape& shape,
-                                const char* op = nullptr,
-                                double tol = 0.0,
-                                ConnectionPolicy policy = ConnectionPolicy::mergeWithTolerance,
-                                TopoShapeMap* output = nullptr);
+    TopoShape& makeElementWires(
+        const TopoShape& shape,
+        const char* op = nullptr,
+        double tol = 0.0,
+        ConnectionPolicy policy = ConnectionPolicy::mergeWithTolerance,
+        TopoShapeMap* output = nullptr
+    );
 
     /** Make a compound of wires by connecting input edges in the given order
      *
@@ -1791,10 +1977,12 @@ public:
      *         a reference so that multiple operations can be carried out for
      *         the same shape in the same line of code.
      */
-    TopoShape& makeElementOrderedWires(const std::vector<TopoShape>& shapes,
-                                       const char* op = nullptr,
-                                       double tol = 0.0,
-                                       TopoShapeMap* output = nullptr);
+    TopoShape& makeElementOrderedWires(
+        const std::vector<TopoShape>& shapes,
+        const char* op = nullptr,
+        double tol = 0.0,
+        TopoShapeMap* output = nullptr
+    );
 
     /** Make a wire or compound of wires with the edges inside the this shape
      *
@@ -1814,10 +2002,12 @@ public:
      * @return The function returns a new shape of either a single wire or a
      *         compound of wires. The shape itself is not modified.
      */
-    TopoShape makeElementWires(const char* op = nullptr,
-                               double tol = 0.0,
-                               ConnectionPolicy policy = ConnectionPolicy::mergeWithTolerance,
-                               TopoShapeMap* output = nullptr) const
+    TopoShape makeElementWires(
+        const char* op = nullptr,
+        double tol = 0.0,
+        ConnectionPolicy policy = ConnectionPolicy::mergeWithTolerance,
+        TopoShapeMap* output = nullptr
+    ) const
     {
         return TopoShape(0, Hasher).makeElementWires(*this, op, tol, policy, output);
     }
@@ -1836,10 +2026,12 @@ public:
      *         TopoShape itself as a self reference so that multiple operations
      *         can be carried out for the same shape in the same line of code.
      */
-    TopoShape& makeElementGTransform(const TopoShape& source,
-                                     const Base::Matrix4D& mat,
-                                     const char* op = nullptr,
-                                     CopyType copy = CopyType::noCopy);
+    TopoShape& makeElementGTransform(
+        const TopoShape& source,
+        const Base::Matrix4D& mat,
+        const char* op = nullptr,
+        CopyType copy = CopyType::noCopy
+    );
 
     /** Make a new shape with transformation that may contain non-uniform scaling
      *
@@ -1853,9 +2045,11 @@ public:
      * @return Return a new shape with transformation. The shape itself is not
      *         modified
      */
-    TopoShape makeElementGTransform(const Base::Matrix4D& mat,
-                                    const char* op = nullptr,
-                                    CopyType copy = CopyType::noCopy) const
+    TopoShape makeElementGTransform(
+        const Base::Matrix4D& mat,
+        const char* op = nullptr,
+        CopyType copy = CopyType::noCopy
+    ) const
     {
         return TopoShape(Tag, Hasher).makeElementGTransform(*this, mat, op, copy);
     }
@@ -1873,10 +2067,12 @@ public:
      *         TopoShape itself as a self reference so that multiple operations
      *         can be carried out for the same shape in the same line of code.
      */
-    TopoShape& makeElementCopy(const TopoShape& source,
-                               const char* op = nullptr,
-                               bool copyGeom = true,
-                               bool copyMesh = false);
+    TopoShape& makeElementCopy(
+        const TopoShape& source,
+        const char* op = nullptr,
+        bool copyGeom = true,
+        bool copyMesh = false
+    );
 
     /** Make a deep copy of the shape
      *
@@ -1888,8 +2084,7 @@ public:
      * @return Return a deep copy of the shape. The shape itself is not
      *         modified
      */
-    TopoShape
-    makeElementCopy(const char* op = nullptr, bool copyGeom = true, bool copyMesh = false) const
+    TopoShape makeElementCopy(const char* op = nullptr, bool copyGeom = true, bool copyMesh = false) const
     {
         return TopoShape(Tag, Hasher).makeElementCopy(*this, op, copyGeom, copyMesh);
     }
@@ -1909,10 +2104,12 @@ public:
      *         multiple operations can be carried out for the same shape in the
      *         same line of code.
      */
-    TopoShape& makeElementBoolean(const char* maker,
-                                  const std::vector<TopoShape>& sources,
-                                  const char* op = nullptr,
-                                  double tol = -1.0);
+    TopoShape& makeElementBoolean(
+        const char* maker,
+        const std::vector<TopoShape>& sources,
+        const char* op = nullptr,
+        double tol = -1.0
+    );
     /** Generalized shape making with mapped element name from shape history
      *
      * @param maker: op code from TopoShapeOpCodes
@@ -1927,10 +2124,12 @@ public:
      *         multiple operations can be carried out for the same shape in the
      *         same line of code.
      */
-    TopoShape& makeElementBoolean(const char* maker,
-                                  const TopoShape& source,
-                                  const char* op = nullptr,
-                                  double tol = -1.0);
+    TopoShape& makeElementBoolean(
+        const char* maker,
+        const TopoShape& source,
+        const char* op = nullptr,
+        double tol = -1.0
+    );
 
     /** Generalized shape making with mapped element name from shape history
      *
@@ -1943,8 +2142,7 @@ public:
      *         shape history using this shape as the source. The shape itself
      *         is not modified.
      */
-    TopoShape
-    makeElementBoolean(const char* maker, const char* op = nullptr, double tol = -1.0) const
+    TopoShape makeElementBoolean(const char* maker, const char* op = nullptr, double tol = -1.0) const
     {
         return TopoShape(0, Hasher).makeElementBoolean(maker, *this, op, tol);
     }
@@ -1961,8 +2159,7 @@ public:
      *         a self reference so that multiple operations can be carried out
      *         for the same shape in the same line of code.
      */
-    TopoShape&
-    makeElementMirror(const TopoShape& source, const gp_Ax2& axis, const char* op = nullptr);
+    TopoShape& makeElementMirror(const TopoShape& source, const gp_Ax2& axis, const char* op = nullptr);
     /** Make a mirrored shape
      *
      * @param source: the source shape
@@ -1990,10 +2187,12 @@ public:
      *         a self reference so that multiple operations can be carried out
      *         for the same shape in the same line of code.
      */
-    TopoShape& makeElementSlice(const TopoShape& source,
-                                const Base::Vector3d& dir,
-                                double distance,
-                                const char* op = nullptr);
+    TopoShape& makeElementSlice(
+        const TopoShape& source,
+        const Base::Vector3d& dir,
+        double distance,
+        const char* op = nullptr
+    );
     /** Make a cross section slice
      *
      * @param source: the source shape
@@ -2022,10 +2221,12 @@ public:
      *         a self reference so that multiple operations can be carried out
      *         for the same shape in the same line of code.
      */
-    TopoShape& makeElementSlices(const TopoShape& source,
-                                 const Base::Vector3d& dir,
-                                 const std::vector<double>& distances,
-                                 const char* op = nullptr);
+    TopoShape& makeElementSlices(
+        const TopoShape& source,
+        const Base::Vector3d& dir,
+        const std::vector<double>& distances,
+        const char* op = nullptr
+    );
     /** Make multiple cross section slices
      *
      * @param source: the source shape
@@ -2036,9 +2237,11 @@ public:
      *
      * @return Return the new shape. The TopoShape itself is not modified.
      */
-    TopoShape makeElementSlices(const Base::Vector3d& dir,
-                                const std::vector<double>& distances,
-                                const char* op = nullptr) const
+    TopoShape makeElementSlices(
+        const Base::Vector3d& dir,
+        const std::vector<double>& distances,
+        const char* op = nullptr
+    ) const
     {
         return TopoShape(0, Hasher).makeElementSlices(*this, dir, distances, op);
     }
@@ -2057,11 +2260,13 @@ public:
      *         a self reference so that multiple operations can be carried out
      *         for the same shape in the same line of code.
      */
-    TopoShape& makeElementFillet(const TopoShape& source,
-                                 const std::vector<TopoShape>& edges,
-                                 double radius1,
-                                 double radius2,
-                                 const char* op = nullptr);
+    TopoShape& makeElementFillet(
+        const TopoShape& source,
+        const std::vector<TopoShape>& edges,
+        double radius1,
+        double radius2,
+        const char* op = nullptr
+    );
     /* Make fillet shape
      *
      * @param source: the source shape
@@ -2073,10 +2278,12 @@ public:
      *
      * @return Return the new shape. The TopoShape itself is not modified.
      */
-    TopoShape makeElementFillet(const std::vector<TopoShape>& edges,
-                                double radius1,
-                                double radius2,
-                                const char* op = nullptr) const
+    TopoShape makeElementFillet(
+        const std::vector<TopoShape>& edges,
+        double radius1,
+        double radius2,
+        const char* op = nullptr
+    ) const
     {
         return TopoShape(0, Hasher).makeElementFillet(*this, edges, radius1, radius2, op);
     }
@@ -2095,13 +2302,15 @@ public:
      *         a self reference so that multiple operations can be carried out
      *         for the same shape in the same line of code.
      */
-    TopoShape& makeElementChamfer(const TopoShape& source,
-                                  const std::vector<TopoShape>& edges,
-                                  ChamferType chamferType,
-                                  double radius1,
-                                  double radius2,
-                                  const char* op = nullptr,
-                                  Flip flipDirection = Flip::none);
+    TopoShape& makeElementChamfer(
+        const TopoShape& source,
+        const std::vector<TopoShape>& edges,
+        ChamferType chamferType,
+        double radius1,
+        double radius2,
+        const char* op = nullptr,
+        Flip flipDirection = Flip::none
+    );
     /* Make chamfer shape
      *
      * @param source: the source shape
@@ -2113,12 +2322,14 @@ public:
      *
      * @return Return the new shape. The TopoShape itself is not modified.
      */
-    TopoShape makeElementChamfer(const std::vector<TopoShape>& edges,
-                                 ChamferType chamferType,
-                                 double radius1,
-                                 double radius2,
-                                 const char* op = nullptr,
-                                 Flip flipDirection = Flip::none) const
+    TopoShape makeElementChamfer(
+        const std::vector<TopoShape>& edges,
+        ChamferType chamferType,
+        double radius1,
+        double radius2,
+        const char* op = nullptr,
+        Flip flipDirection = Flip::none
+    ) const
     {
         return TopoShape(0, Hasher)
             .makeElementChamfer(*this, edges, chamferType, radius1, radius2, op, flipDirection);
@@ -2141,11 +2352,13 @@ public:
      * The original content of this TopoShape is discarded and replaced with
      * the new transformed shape.
      */
-    bool _makeElementTransform(const TopoShape& source,
-                               const Base::Matrix4D& mat,
-                               const char* op = nullptr,
-                               CheckScale checkScale = CheckScale::noScaleCheck,
-                               CopyType copy = CopyType::noCopy);
+    bool _makeElementTransform(
+        const TopoShape& source,
+        const Base::Matrix4D& mat,
+        const char* op = nullptr,
+        CheckScale checkScale = CheckScale::noScaleCheck,
+        CopyType copy = CopyType::noCopy
+    );
 
     /** Make a new shape with transformation
      *
@@ -2164,11 +2377,13 @@ public:
      *         TopoShape itself as a self reference so that multiple operations
      *         can be carried out for the same shape in the same line of code.
      */
-    TopoShape& makeElementTransform(const TopoShape& source,
-                                    const Base::Matrix4D& mat,
-                                    const char* op = nullptr,
-                                    CheckScale checkScale = CheckScale::noScaleCheck,
-                                    CopyType copy = CopyType::noCopy)
+    TopoShape& makeElementTransform(
+        const TopoShape& source,
+        const Base::Matrix4D& mat,
+        const char* op = nullptr,
+        CheckScale checkScale = CheckScale::noScaleCheck,
+        CopyType copy = CopyType::noCopy
+    )
     {
         _makeElementTransform(source, mat, op, checkScale, copy);
         return *this;
@@ -2189,10 +2404,12 @@ public:
      * @return Return a new shape with transformation. The shape itself is not
      *         modified
      */
-    TopoShape makeElementTransform(const Base::Matrix4D& mat,
-                                   const char* op = nullptr,
-                                   CheckScale checkScale = CheckScale::noScaleCheck,
-                                   CopyType copy = CopyType::noCopy)
+    TopoShape makeElementTransform(
+        const Base::Matrix4D& mat,
+        const char* op = nullptr,
+        CheckScale checkScale = CheckScale::noScaleCheck,
+        CopyType copy = CopyType::noCopy
+    )
     {
         return TopoShape(Tag, Hasher).makeElementTransform(*this, mat, op, checkScale, copy);
     }
@@ -2210,10 +2427,12 @@ public:
      *         TopoShape itself as a self reference so that multiple operations
      *         can be carried out for the same shape in the same line of code.
      */
-    TopoShape& makeElementTransform(const TopoShape& shape,
-                                    const gp_Trsf& trsf,
-                                    const char* op = nullptr,
-                                    CopyType copy = CopyType::noCopy);
+    TopoShape& makeElementTransform(
+        const TopoShape& shape,
+        const gp_Trsf& trsf,
+        const char* op = nullptr,
+        CopyType copy = CopyType::noCopy
+    );
 
     /** Make a new shape with transformation
      *
@@ -2226,8 +2445,11 @@ public:
      * @return Return a new shape with transformation. The shape itself is not
      *         modified
      */
-    TopoShape
-    makeElementTransform(const gp_Trsf& trsf, const char* op = nullptr, CopyType copy = CopyType::noCopy)
+    TopoShape makeElementTransform(
+        const gp_Trsf& trsf,
+        const char* op = nullptr,
+        CopyType copy = CopyType::noCopy
+    )
     {
         return TopoShape(Tag, Hasher).makeElementTransform(*this, trsf, op, copy);
     }
@@ -2248,9 +2470,15 @@ public:
      *         a self reference so that multiple operations can be carried out
      *         for the same shape in the same line of code.
      */
-    TopoShape &makeElementDraft(const TopoShape &source, const std::vector<TopoShape> &faces,
-                         const gp_Dir &pullDirection, double angle, const gp_Pln &neutralPlane,
-                         bool retry=true, const char *op=nullptr);
+    TopoShape& makeElementDraft(
+        const TopoShape& source,
+        const std::vector<TopoShape>& faces,
+        const gp_Dir& pullDirection,
+        double angle,
+        const gp_Pln& neutralPlane,
+        bool retry = true,
+        const char* op = nullptr
+    );
     /* Make draft shape
      *
      * @param source: the source shape
@@ -2264,10 +2492,17 @@ public:
      *
      * @return Return the new shape. The TopoShape itself is not modified.
      */
-    TopoShape makeElementDraft(const std::vector<TopoShape> &faces,
-                        const gp_Dir &pullDirection, double angle, const gp_Pln &neutralPlane,
-                        bool retry=true, const char *op=nullptr) const {
-        return TopoShape(0,Hasher).makeElementDraft(*this,faces,pullDirection,angle,neutralPlane,retry,op);
+    TopoShape makeElementDraft(
+        const std::vector<TopoShape>& faces,
+        const gp_Dir& pullDirection,
+        double angle,
+        const gp_Pln& neutralPlane,
+        bool retry = true,
+        const char* op = nullptr
+    ) const
+    {
+        return TopoShape(0, Hasher)
+            .makeElementDraft(*this, faces, pullDirection, angle, neutralPlane, retry, op);
     }
 
     /* Make a shell using this shape
@@ -2294,9 +2529,11 @@ public:
      *         a self reference so that multiple operations can be carried out
      *         for the same shape in the same line of code.
      */
-    TopoShape& makeElementShellFromWires(const std::vector<TopoShape>& wires,
-                                         bool silent = true,
-                                         const char* op = nullptr);
+    TopoShape& makeElementShellFromWires(
+        const std::vector<TopoShape>& wires,
+        bool silent = true,
+        const char* op = nullptr
+    );
     /* Make a shell with input wires
      *
      * @param wires: input wires
@@ -2327,10 +2564,12 @@ public:
      *         multiple operations can be carried out for the same shape in the
      *         same line of code.
      */
-    TopoShape& makeElementFace(const std::vector<TopoShape>& shapes,
-                               const char* op = nullptr,
-                               const char* maker = nullptr,
-                               const gp_Pln* plane = nullptr);
+    TopoShape& makeElementFace(
+        const std::vector<TopoShape>& shapes,
+        const char* op = nullptr,
+        const char* maker = nullptr,
+        const gp_Pln* plane = nullptr
+    );
     /** Make a planar face with the input wire or edge
      *
      * @param shape: input shape. Can be either edge, wire, or compound of
@@ -2347,10 +2586,12 @@ public:
      *         multiple operations can be carried out for the same shape in the
      *         same line of code.
      */
-    TopoShape& makeElementFace(const TopoShape& shape,
-                               const char* op = nullptr,
-                               const char* maker = nullptr,
-                               const gp_Pln* plane = nullptr);
+    TopoShape& makeElementFace(
+        const TopoShape& shape,
+        const char* op = nullptr,
+        const char* maker = nullptr,
+        const gp_Pln* plane = nullptr
+    );
     /** Make a planar face using this shape
      *
      * @param op: optional string to be encoded into topo naming for indicating
@@ -2362,9 +2603,11 @@ public:
      * @return The function returns a new planar face made using the wire or edge
      *         inside this shape. The shape itself is not modified.
      */
-    TopoShape makeElementFace(const char* op = nullptr,
-                              const char* maker = nullptr,
-                              const gp_Pln* plane = nullptr) const
+    TopoShape makeElementFace(
+        const char* op = nullptr,
+        const char* maker = nullptr,
+        const gp_Pln* plane = nullptr
+    ) const
     {
         return TopoShape(0, Hasher).makeElementFace(*this, op, maker, plane);
     }
@@ -2385,10 +2628,12 @@ public:
      *         itself as a self reference so that multiple operations can be
      *         carried out for the same shape in the same line of code.
      */
-    TopoShape &makeElementBSplineFace(const std::vector<TopoShape> &input,
-                               FillingStyle style = FillingStyle::stretch,
-                               bool keepBezier = false,
-                               const char *op=nullptr);
+    TopoShape& makeElementBSplineFace(
+        const std::vector<TopoShape>& input,
+        FillingStyle style = FillingStyle::stretch,
+        bool keepBezier = false,
+        const char* op = nullptr
+    );
     /** Make a face with BSpline (or Bezier) surface
      *
      * @param shape: input shape of any type, but only edges inside the shape
@@ -2405,10 +2650,12 @@ public:
      *         itself as a self reference so that multiple operations can be
      *         carried out for the same shape in the same line of code.
      */
-    TopoShape &makeElementBSplineFace(const TopoShape &input,
-                               FillingStyle style = FillingStyle::stretch,
-                               bool keepBezier = false,
-                               const char *op=nullptr);
+    TopoShape& makeElementBSplineFace(
+        const TopoShape& input,
+        FillingStyle style = FillingStyle::stretch,
+        bool keepBezier = false,
+        const char* op = nullptr
+    );
     /** Make a face with BSpline (or Bezier) surface
      *
      * @param style: surface filling style. @sa FillingStyle
@@ -2420,11 +2667,13 @@ public:
      * @return The function returns a new face with either BSpline or Bezier
      *         surface. The shape itself is not modified.
      */
-    TopoShape makeElementBSplineFace(FillingStyle style = FillingStyle::stretch,
-                              bool keepBezier = false,
-                              const char *op=nullptr)
+    TopoShape makeElementBSplineFace(
+        FillingStyle style = FillingStyle::stretch,
+        bool keepBezier = false,
+        const char* op = nullptr
+    )
     {
-        return TopoShape(0,Hasher).makeElementBSplineFace(*this, style, keepBezier, op);
+        return TopoShape(0, Hasher).makeElementBSplineFace(*this, style, keepBezier, op);
     }
 
 
@@ -2433,21 +2682,22 @@ public:
     /** Provides information about the continuity of a curve.
      *  Corresponds to OCCT type GeomAbs_Shape
      */
-    enum class Continuity {
+    enum class Continuity
+    {
         /// Only geometric continuity
         C0,
         /** for each point on the curve, the tangent vectors 'on the right' and 'on
-        *  the left' are collinear with the same orientation.
-        */
-        G1, 
+         *  the left' are collinear with the same orientation.
+         */
+        G1,
         /** Continuity of the first derivative. The 'C1' curve is also 'G1' but, in
-        *  addition, the tangent vectors 'on the right' and 'on the left' are equal.
-        */
+         *  addition, the tangent vectors 'on the right' and 'on the left' are equal.
+         */
         C1,
 
         /** For each point on the curve, the normalized normal vectors 'on the
-        *  right' and 'on the left' are equal.
-        */
+         *  right' and 'on the left' are equal.
+         */
         G2,
 
         /// Continuity of the second derivative.
@@ -2457,9 +2707,9 @@ public:
         C3,
 
         /** Continuity of the N-th derivative, whatever is the value given for N
-        * (infinite order of continuity). Also provides information about the
-        * continuity of a surface.
-        */
+         * (infinite order of continuity). Also provides information about the
+         * continuity of a surface.
+         */
         CN,
     };
 
@@ -2482,9 +2732,11 @@ public:
      *
      * @sa OCCT BRepOffsetAPI_MakeFilling
      */
-    TopoShape &makeElementFilledFace(const std::vector<TopoShape> &shapes,
-                              const BRepFillingParams &params,
-                              const char *op=nullptr);
+    TopoShape& makeElementFilledFace(
+        const std::vector<TopoShape>& shapes,
+        const BRepFillingParams& params,
+        const char* op = nullptr
+    );
 
 
     /** Make a solid using shells or CompSolid
@@ -2500,7 +2752,7 @@ public:
      *         that multiple operations can be carried out for the same shape
      *         in the same line of code.
      */
-    TopoShape &makeElementSolid(const TopoShape &shape, const char *op=nullptr);
+    TopoShape& makeElementSolid(const TopoShape& shape, const char* op = nullptr);
     /** Make a solid using this shape
      *
      * @param op: optional string to be encoded into topo naming for indicating
@@ -2509,8 +2761,9 @@ public:
      * @return The function returns a new solid using the shell or CompSolid
      *         inside this shape. The shape itself is not modified.
      */
-    TopoShape makeElementSolid(const char *op=nullptr) const {
-        return TopoShape(0,Hasher).makeElementSolid(*this,op);
+    TopoShape makeElementSolid(const char* op = nullptr) const
+    {
+        return TopoShape(0, Hasher).makeElementSolid(*this, op);
     }
 
 
@@ -2527,9 +2780,11 @@ public:
      *         multiple operations can be carried out for the same shape in the
      *         same line of code.
      */
-    TopoShape& makeElementShape(BRepBuilderAPI_MakeShape& mkShape,
-                                const std::vector<TopoShape>& sources,
-                                const char* op = nullptr);
+    TopoShape& makeElementShape(
+        BRepBuilderAPI_MakeShape& mkShape,
+        const std::vector<TopoShape>& sources,
+        const char* op = nullptr
+    );
     /** Generic shape making with mapped element name from shape history
      *
      * @param mkShape: OCCT shape maker.
@@ -2543,9 +2798,11 @@ public:
      *         multiple operations can be carried out for the same shape in the
      *         same line of code.
      */
-    TopoShape& makeElementShape(BRepBuilderAPI_MakeShape& mkShape,
-                                const TopoShape& source,
-                                const char* op = nullptr);
+    TopoShape& makeElementShape(
+        BRepBuilderAPI_MakeShape& mkShape,
+        const TopoShape& source,
+        const char* op = nullptr
+    );
     /** Generic shape making with mapped element name from shape history
      *
      * @param mkShape: OCCT shape maker.
@@ -2574,8 +2831,12 @@ public:
      *         multiple operations can be carried out for the same shape in the
      *         same line of code.
      */
-    TopoShape &makeElementShape(BRepFeat_MakePrism &mkShape,
-                         const std::vector<TopoShape> &sources, const TopoShape &uptoface, const char *op);
+    TopoShape& makeElementShape(
+        BRepFeat_MakePrism& mkShape,
+        const std::vector<TopoShape>& sources,
+        const TopoShape& uptoface,
+        const char* op
+    );
 
     /* Toponaming migration, February 2014:
      * Note that the specialized versions of makeElementShape for operations that do not
@@ -2607,12 +2868,13 @@ private:
         using TopoDS_Shape::TopoDS_Shape;
         using TopoDS_Shape::operator=;
 
-        explicit ShapeProtector(TopoShape & owner)
+        explicit ShapeProtector(TopoShape& owner)
             : _owner(&owner)
         {}
 
-        ShapeProtector(TopoShape & owner, const TopoDS_Shape & shape)
-            : TopoDS_Shape(shape), _owner(&owner)
+        ShapeProtector(TopoShape& owner, const TopoDS_Shape& shape)
+            : TopoDS_Shape(shape)
+            , _owner(&owner)
         {}
 
         void Nullify()
@@ -2705,21 +2967,28 @@ private:
 
 private:
     // Helper methods
-    static std::vector<Data::ElementMap::MappedChildElements>
-    createChildMap(size_t count, const std::vector<TopoShape>& shapes, const char* op);
+    static std::vector<Data::ElementMap::MappedChildElements> createChildMap(
+        size_t count,
+        const std::vector<TopoShape>& shapes,
+        const char* op
+    );
 
-    void setupChild(Data::ElementMap::MappedChildElements& child,
-                    TopAbs_ShapeEnum elementType,
-                    const TopoShape& topoShape,
-                    size_t shapeCount,
-                    const char* op);
+    void setupChild(
+        Data::ElementMap::MappedChildElements& child,
+        TopAbs_ShapeEnum elementType,
+        const TopoShape& topoShape,
+        size_t shapeCount,
+        const char* op
+    );
     void mapSubElementForShape(const TopoShape& other, const char* op);
-    void mapSubElementTypeForShape(const TopoShape& other,
-                                   TopAbs_ShapeEnum type,
-                                   const char* op,
-                                   int count,
-                                   bool forward,
-                                   bool& warned);
+    void mapSubElementTypeForShape(
+        const TopoShape& other,
+        TopAbs_ShapeEnum type,
+        const char* op,
+        int count,
+        bool forward,
+        bool& warned
+    );
     void mapCompoundSubElements(const std::vector<TopoShape>& shapes, const char* op);
 
     /** Given a set of edges, return a sorted list of connected edges
@@ -2733,8 +3002,11 @@ private:
      *             if two edges are connected
      * @return Return a list of ordered connected edges.
      */
-    static std::deque<TopoShape>
-    sortEdges(std::list<TopoShape>& edges, bool keepOrder = false, double tol = 0.0);
+    static std::deque<TopoShape> sortEdges(
+        std::list<TopoShape>& edges,
+        bool keepOrder = false,
+        double tol = 0.0
+    );
     static TopoShape reverseEdge(const TopoShape& edge);
 };
 

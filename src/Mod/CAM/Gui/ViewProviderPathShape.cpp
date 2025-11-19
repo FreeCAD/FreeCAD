@@ -59,8 +59,7 @@ void ViewProviderPathShape::dragObject(App::DocumentObject* obj)
 {
     Path::FeatureShape* feature = getObject<Path::FeatureShape>();
     std::vector<App::DocumentObject*> sources = feature->Sources.getValues();
-    for (std::vector<App::DocumentObject*>::iterator it = sources.begin(); it != sources.end();
-         ++it) {
+    for (std::vector<App::DocumentObject*>::iterator it = sources.begin(); it != sources.end(); ++it) {
         if (*it == obj) {
             sources.erase(it);
             feature->Sources.setValues(sources);
@@ -91,8 +90,8 @@ void ViewProviderPathShape::updateData(const App::Property* prop)
 {
     PathGui::ViewProviderPath::updateData(prop);
     if (prop->isDerivedFrom<App::PropertyLinkList>()) {
-        std::vector<App::DocumentObject*> pShapes =
-            static_cast<const App::PropertyLinkList*>(prop)->getValues();
+        std::vector<App::DocumentObject*> pShapes
+            = static_cast<const App::PropertyLinkList*>(prop)->getValues();
         for (std::vector<App::DocumentObject*>::iterator it = pShapes.begin(); it != pShapes.end();
              ++it) {
             if (*it) {
@@ -107,8 +106,7 @@ bool ViewProviderPathShape::onDelete(const std::vector<std::string>&)
     // get the input shapes
     Path::FeatureShape* feature = getObject<Path::FeatureShape>();
     std::vector<App::DocumentObject*> pShapes = feature->Sources.getValues();
-    for (std::vector<App::DocumentObject*>::iterator it = pShapes.begin(); it != pShapes.end();
-         ++it) {
+    for (std::vector<App::DocumentObject*>::iterator it = pShapes.begin(); it != pShapes.end(); ++it) {
         if (*it) {
             Gui::Application::Instance->showViewProvider(*it);
         }

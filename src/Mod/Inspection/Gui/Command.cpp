@@ -90,9 +90,12 @@ void CmdInspectElement::activated(int)
         viewer->setRedirectToSceneGraph(true);
         viewer->setSelectionEnabled(false);
         viewer->setEditingCursor(
-            QCursor(Gui::BitmapFactory().pixmapFromSvg("inspect_pipette", QSize(32, 32)), 4, 29));
-        viewer->addEventCallback(SoButtonEvent::getClassTypeId(),
-                                 InspectionGui::ViewProviderInspection::inspectCallback);
+            QCursor(Gui::BitmapFactory().pixmapFromSvg("inspect_pipette", QSize(32, 32)), 4, 29)
+        );
+        viewer->addEventCallback(
+            SoButtonEvent::getClassTypeId(),
+            InspectionGui::ViewProviderInspection::inspectCallback
+        );
     }
 }
 

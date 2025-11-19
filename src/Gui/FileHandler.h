@@ -27,11 +27,13 @@
 #include <QString>
 #include <string>
 
-namespace App {
+namespace App
+{
 class Document;
 }
 
-namespace Gui {
+namespace Gui
+{
 
 class FileHandler
 {
@@ -58,6 +60,6 @@ private:
     std::string docname;
 };
 
-}
+}  // namespace Gui
 
-#endif //GUI_FILE_HANDLER_H
+#endif  // GUI_FILE_HANDLER_H

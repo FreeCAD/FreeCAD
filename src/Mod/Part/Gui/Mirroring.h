@@ -30,14 +30,16 @@
 
 class QTreeWidgetItem;
 
-namespace App {
+namespace App
+{
 class DocumentObject;
 class Property;
-}
-namespace PartGui {
+}  // namespace App
+namespace PartGui
+{
 
 class Ui_Mirroring;
-class Mirroring : public QWidget, public Gui::SelectionObserver
+class Mirroring: public QWidget, public Gui::SelectionObserver
 {
     Q_OBJECT
 
@@ -48,7 +50,7 @@ public:
     bool reject();
 
 protected:
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
 
 private:
     void findShapes();
@@ -60,7 +62,7 @@ private:
     std::unique_ptr<Ui_Mirroring> ui;
 };
 
-class TaskMirroring : public Gui::TaskView::TaskDialog
+class TaskMirroring: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
@@ -72,16 +74,22 @@ public:
     bool reject() override;
 
     QDialogButtonBox::StandardButtons getStandardButtons() const override
-    { return QDialogButtonBox::Ok | QDialogButtonBox::Cancel; }
+    {
+        return QDialogButtonBox::Ok | QDialogButtonBox::Cancel;
+    }
     bool isAllowedAlterDocument() const override
-    { return false; }
+    {
+        return false;
+    }
     bool needsFullSpace() const override
-    { return false; }
+    {
+        return false;
+    }
 
 private:
     Mirroring* widget;
 };
 
-} // namespace PartGui
+}  // namespace PartGui
 
-#endif // PARTGUI_MIRRORING_H
+#endif  // PARTGUI_MIRRORING_H

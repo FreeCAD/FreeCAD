@@ -35,8 +35,10 @@ class TaskFemConstraintPulley: public TaskFemConstraintGear
     Q_OBJECT
 
 public:
-    explicit TaskFemConstraintPulley(ViewProviderFemConstraintPulley* ConstraintView,
-                                     QWidget* parent = nullptr);
+    explicit TaskFemConstraintPulley(
+        ViewProviderFemConstraintPulley* ConstraintView,
+        QWidget* parent = nullptr
+    );
 
     double getOtherDiameter() const;
     double getCenterDistance() const;

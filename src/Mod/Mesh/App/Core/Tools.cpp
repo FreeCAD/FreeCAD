@@ -49,11 +49,12 @@ void MeshSearchNeighbours::Reinit(float fSampleDistance)
     MeshAlgorithm(_rclMesh).ResetPointFlag(MeshPoint::MARKED);
 }
 
-unsigned long
-MeshSearchNeighbours::NeighboursFromFacet(FacetIndex ulFacetIdx,
-                                          float fDistance,
-                                          unsigned long ulMinPoints,
-                                          std::vector<Base::Vector3f>& raclResultPoints)
+unsigned long MeshSearchNeighbours::NeighboursFromFacet(
+    FacetIndex ulFacetIdx,
+    float fDistance,
+    unsigned long ulMinPoints,
+    std::vector<Base::Vector3f>& raclResultPoints
+)
 {
     bool bAddPoints = false;
 
@@ -153,10 +154,11 @@ void MeshSearchNeighbours::SampleAllFacets()
     }
 }
 
-unsigned long
-MeshSearchNeighbours::NeighboursFromSampledFacets(FacetIndex ulFacetIdx,
-                                                  float fDistance,
-                                                  std::vector<Base::Vector3f>& raclResultPoints)
+unsigned long MeshSearchNeighbours::NeighboursFromSampledFacets(
+    FacetIndex ulFacetIdx,
+    float fDistance,
+    std::vector<Base::Vector3f>& raclResultPoints
+)
 {
     SampleAllFacets();
 
@@ -235,9 +237,11 @@ bool MeshSearchNeighbours::AccumulateNeighbours(const MeshFacet& rclF, FacetInde
 
     bool bFound = false;
     if (k == 3) {  // add all sample points
-        _aclPointsResult.insert(_aclPointsResult.end(),
-                                _aclSampledFacets[ulFIdx].begin(),
-                                _aclSampledFacets[ulFIdx].end());
+        _aclPointsResult.insert(
+            _aclPointsResult.end(),
+            _aclSampledFacets[ulFIdx].begin(),
+            _aclSampledFacets[ulFIdx].end()
+        );
         bFound = true;
     }
     else {  // add points inner radius
@@ -275,11 +279,12 @@ bool MeshSearchNeighbours::ExpandRadius(unsigned long ulMinPoints)
     return false;
 }
 
-unsigned long
-MeshSearchNeighbours::NeighboursFacetFromFacet(FacetIndex ulFacetIdx,
-                                               float fDistance,
-                                               std::vector<Base::Vector3f>& raclResultPoints,
-                                               std::vector<FacetIndex>& raclResultFacets)
+unsigned long MeshSearchNeighbours::NeighboursFacetFromFacet(
+    FacetIndex ulFacetIdx,
+    float fDistance,
+    std::vector<Base::Vector3f>& raclResultPoints,
+    std::vector<FacetIndex>& raclResultFacets
+)
 {
     std::set<FacetIndex> aulFacetSet;
 

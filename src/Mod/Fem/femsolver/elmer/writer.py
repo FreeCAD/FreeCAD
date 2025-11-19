@@ -466,7 +466,7 @@ class Writer:
                     MgDyn2D.handleMagnetodynamic2DEquation(activeIn, equation)
         if activeIn:
             MgDyn2D.handleMagnetodynamic2DConstants()
-            MgDyn2D.handleMagnetodynamic2DBndConditions()
+            MgDyn2D.handleMagnetodynamic2DBndConditions(equation)
             MgDyn2D.handleMagnetodynamic2DBodyForces(activeIn, equation)
             MgDyn2D.handleMagnetodynamic2DMaterial(activeIn)
 

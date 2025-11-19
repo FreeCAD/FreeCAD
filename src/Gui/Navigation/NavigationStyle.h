@@ -55,7 +55,8 @@ class SoSensor;
 class SbSphereSheetProjector;
 
 // NOLINTBEGIN(cppcoreguidelines-avoid*, readability-avoid-const-params-in-decls)
-namespace Gui {
+namespace Gui
+{
 
 class View3DInventorViewer;
 class NavigationAnimator;
@@ -65,12 +66,13 @@ class NavigationAnimation;
 /**
  * @author Werner Mayer
  */
-class GuiExport NavigationStyleEvent : public QEvent
+class GuiExport NavigationStyleEvent: public QEvent
 {
 public:
     explicit NavigationStyleEvent(const Base::Type& s);
     ~NavigationStyleEvent() override;
     const Base::Type& style() const;
+
 private:
     Base::Type t;
 };
@@ -79,12 +81,13 @@ private:
  * The navigation style base class
  * @author Werner Mayer
  */
-class GuiExport NavigationStyle : public Base::BaseClass
+class GuiExport NavigationStyle: public Base::BaseClass
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    enum ViewerMode {
+    enum ViewerMode
+    {
         IDLE,
         INTERACT,
         ZOOMING,
@@ -97,20 +100,23 @@ public:
         SELECTION
     };
 
-    enum SelectionMode {
-        Lasso       = 0,  /**< Select objects using a lasso. */
-        Rectangle   = 1,  /**< Select objects using a rectangle. */
-        Rubberband  = 2,  /**< Select objects using a rubberband. */
-        BoxZoom     = 3,  /**< Perform a box zoom. */
-        Clip        = 4,  /**< Clip objects using a lasso. */
+    enum SelectionMode
+    {
+        Lasso = 0,      /**< Select objects using a lasso. */
+        Rectangle = 1,  /**< Select objects using a rectangle. */
+        Rubberband = 2, /**< Select objects using a rubberband. */
+        BoxZoom = 3,    /**< Perform a box zoom. */
+        Clip = 4,       /**< Clip objects using a lasso. */
     };
 
-    enum class ClarifySelectionMode {
-        Default,    /**< Long press with LMB to trigger clarify selection */
-        Ctrl        /**< Long press with Ctrl+LMB to trigger clarify selection */
+    enum class ClarifySelectionMode
+    {
+        Default, /**< Long press with LMB to trigger clarify selection */
+        Ctrl     /**< Long press with Ctrl+LMB to trigger clarify selection */
     };
 
-    enum OrbitStyle {
+    enum OrbitStyle
+    {
         Turntable,
         Trackball,
         FreeTurntable,
@@ -118,11 +124,13 @@ public:
         RoundedArcball
     };
 
-    enum class RotationCenterMode {
-        WindowCenter       = 0, /**< The center of the window */
-        ScenePointAtCursor = 1, /**< Find the point in the scene at the cursor position. If there is no point then the focal plane is used */
+    enum class RotationCenterMode
+    {
+        WindowCenter = 0,       /**< The center of the window */
+        ScenePointAtCursor = 1, /**< Find the point in the scene at the cursor position. If there is
+                                   no point then the focal plane is used */
         FocalPointAtCursor = 2, /**< Find the point on the focal plane at the cursor position. */
-        BoundingBoxCenter  = 4  /**< Find the center point of the bounding box of the scene. */
+        BoundingBoxCenter = 4   /**< Find the center point of the bounding box of the scene. */
     };
     Q_DECLARE_FLAGS(RotationCenterModes, RotationCenterMode)
 
@@ -131,7 +139,7 @@ public:
     ~NavigationStyle() override;
     NavigationStyle(const NavigationStyle&) = delete;
 
-    NavigationStyle& operator = (const NavigationStyle& ns);
+    NavigationStyle& operator=(const NavigationStyle& ns);
     void setViewer(View3DInventorViewer*);
 
     void setAnimationEnabled(const SbBool enable);
@@ -162,7 +170,10 @@ public:
     SbVec3f getFocalPoint() const;
 
     SoCamera* getCamera() const;
-    std::shared_ptr<NavigationAnimation> setCameraOrientation(const SbRotation& orientation, SbBool moveToCenter = false) const;
+    std::shared_ptr<NavigationAnimation> setCameraOrientation(
+        const SbRotation& orientation,
+        SbBool moveToCenter = false
+    ) const;
     std::shared_ptr<NavigationAnimation> translateCamera(const SbVec3f& translation) const;
 
 #if (COIN_MAJOR_VERSION * 100 + COIN_MINOR_VERSION * 10 + COIN_MICRO_VERSION < 403)
@@ -179,11 +190,11 @@ public:
 
     void setViewingMode(const ViewerMode newmode);
     int getViewingMode() const;
-    virtual SbBool processEvent(const SoEvent * const ev);
-    virtual SbBool processMotionEvent(const SoMotion3Event * const ev);
-    virtual SbBool processKeyboardEvent(const SoKeyboardEvent * const event);
-    virtual SbBool processClickEvent(const SoMouseButtonEvent * const event);
-    virtual SbBool processWheelEvent(const SoMouseWheelEvent * const event);
+    virtual SbBool processEvent(const SoEvent* const ev);
+    virtual SbBool processMotionEvent(const SoMotion3Event* const ev);
+    virtual SbBool processKeyboardEvent(const SoKeyboardEvent* const event);
+    virtual SbBool processClickEvent(const SoMouseButtonEvent* const event);
+    virtual SbBool processWheelEvent(const SoMouseWheelEvent* const event);
 
     void setPopupMenuEnabled(const SbBool on);
     SbBool isPopupMenuEnabled() const;
@@ -193,11 +204,14 @@ public:
     void abortSelection();
     void stopSelection();
     SbBool isSelecting() const;
-    const std::vector<SbVec2s>& getPolygon(SelectionRole* role=nullptr) const;
+    const std::vector<SbVec2s>& getPolygon(SelectionRole* role = nullptr) const;
 
     bool isDraggerUnderCursor(const SbVec2s pos) const;
 
-    virtual ClarifySelectionMode clarifySelectionMode() const { return ClarifySelectionMode::Default; }
+    virtual ClarifySelectionMode clarifySelectionMode() const
+    {
+        return ClarifySelectionMode::Default;
+    }
 
     void setOrbitStyle(OrbitStyle style);
     OrbitStyle getOrbitStyle() const;
@@ -209,7 +223,7 @@ public:
 
     std::optional<SbVec2s>& getRightClickPosition();
 
-    PyObject *getPyObject() override;
+    PyObject* getPyObject() override;
 
 protected:
     void initialize();
@@ -226,56 +240,58 @@ protected:
     void lookAtPoint(const SbVec2s screenpos);
     void lookAtPoint(const SbVec3f& position);
 
-    void panCamera(SoCamera * camera,
-                   float vpaspect,
-                   const SbPlane & panplane,
-                   const SbVec2f & previous,
-                   const SbVec2f & current);
+    void panCamera(
+        SoCamera* camera,
+        float vpaspect,
+        const SbPlane& panplane,
+        const SbVec2f& previous,
+        const SbVec2f& current
+    );
     void setupPanningPlane(const SoCamera* camera);
     int getDelta() const;
-    void zoom(SoCamera * camera, float diffvalue);
-    virtual void zoomByCursor(const SbVec2f & thispos, const SbVec2f & prevpos);
-    void doZoom(SoCamera * camera, int wheeldelta, const SbVec2f& pos);
-    void doZoom(SoCamera * camera, float logzoomfactor, const SbVec2f& pos);
-    void doScale(SoCamera * camera, float factor);
-    void doRotate(SoCamera * camera, float angle, const SbVec2f& pos);
-    void spin(const SbVec2f & pointerpos);
+    void zoom(SoCamera* camera, float diffvalue);
+    virtual void zoomByCursor(const SbVec2f& thispos, const SbVec2f& prevpos);
+    void doZoom(SoCamera* camera, int wheeldelta, const SbVec2f& pos);
+    void doZoom(SoCamera* camera, float logzoomfactor, const SbVec2f& pos);
+    void doScale(SoCamera* camera, float factor);
+    void doRotate(SoCamera* camera, float angle, const SbVec2f& pos);
+    void spin(const SbVec2f& pointerpos);
     SbBool doSpin();
     void spin_simplified(SbVec2f curpos, SbVec2f prevpos);
     void moveCursorPosition();
-    void saveCursorPosition(const SoEvent * const ev);
+    void saveCursorPosition(const SoEvent* const ev);
 
     SbVec2f normalizePixelPos(SbVec2s pixpos);
     SbVec2f normalizePixelPos(SbVec2f pixpos);
 
     SbBool handleEventInForeground(const SoEvent* const e);
-    virtual SbBool processSoEvent(const SoEvent * const ev);
-    void syncWithEvent(const SoEvent * const ev);
+    virtual SbBool processSoEvent(const SoEvent* const ev);
+    void syncWithEvent(const SoEvent* const ev);
     virtual void openPopupMenu(const SbVec2s& position);
 
 private:
-    void spinInternal(const SbVec2f & pointerpos, const SbVec2f & lastpos);
+    void spinInternal(const SbVec2f& pointerpos, const SbVec2f& lastpos);
     void spinSimplifiedInternal(const SbVec2f curpos, const SbVec2f prevpos);
     bool isNavigationStyleAction(QAction* action, QActionGroup* navMenuGroup) const;
     QWidget* findView3DInventorWidget() const;
     void applyNavigationStyleChange(QAction* selectedAction);
 
 protected:
-
     void clearLog();
     void addToLog(const SbVec2s pos, const SbTime time);
 
-    void syncModifierKeys(const SoEvent * const ev);
+    void syncModifierKeys(const SoEvent* const ev);
 
 protected:
-    struct { // tracking mouse movement in a log
+    struct
+    {  // tracking mouse movement in a log
         short size;
         short historysize;
-        SbVec2s * position;
-        SbTime * time;
+        SbVec2s* position;
+        SbTime* time;
     } log;
 
-    View3DInventorViewer* viewer{nullptr};
+    View3DInventorViewer* viewer {nullptr};
     NavigationAnimator* animator;
     SbBool animationEnabled;
     ViewerMode currentmode;
@@ -298,7 +314,7 @@ protected:
 
     /** @name Mouse model */
     //@{
-    AbstractMouseSelection* mouseSelection{nullptr};
+    AbstractMouseSelection* mouseSelection {nullptr};
     std::vector<SbVec2s> pcPolygon;
     SelectionRole selectedRole;
     //@}
@@ -308,7 +324,7 @@ protected:
     SbBool spinningAnimationEnabled;
     int spinsamplecounter;
     SbRotation spinincrement;
-    SbSphereSheetProjector * spinprojector;
+    SbSphereSheetProjector* spinprojector;
     //@}
 
     Py::SmartPtr pythonObject;
@@ -341,7 +357,8 @@ private:
  * choosable by the user
  * @author Werner Mayer
  */
-class GuiExport UserNavigationStyle : public NavigationStyle {
+class GuiExport UserNavigationStyle: public NavigationStyle
+{
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
@@ -352,7 +369,8 @@ public:
     static std::map<Base::Type, std::string> getUserFriendlyNames();
 };
 
-class GuiExport InventorNavigationStyle : public UserNavigationStyle {
+class GuiExport InventorNavigationStyle: public UserNavigationStyle
+{
     using inherited = UserNavigationStyle;
 
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
@@ -362,13 +380,17 @@ public:
     ~InventorNavigationStyle() override;
     const char* mouseButtons(ViewerMode) override;
     std::string userFriendlyName() const override;
-    ClarifySelectionMode clarifySelectionMode() const override { return ClarifySelectionMode::Ctrl; }
+    ClarifySelectionMode clarifySelectionMode() const override
+    {
+        return ClarifySelectionMode::Ctrl;
+    }
 
 protected:
-    SbBool processSoEvent(const SoEvent * const ev) override;
+    SbBool processSoEvent(const SoEvent* const ev) override;
 };
 
-class GuiExport CADNavigationStyle : public UserNavigationStyle {
+class GuiExport CADNavigationStyle: public UserNavigationStyle
+{
     using inherited = UserNavigationStyle;
 
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
@@ -379,13 +401,14 @@ public:
     const char* mouseButtons(ViewerMode) override;
 
 protected:
-    SbBool processSoEvent(const SoEvent * const ev) override;
+    SbBool processSoEvent(const SoEvent* const ev) override;
 
 private:
-    SbBool lockButton1{false};
+    SbBool lockButton1 {false};
 };
 
-class GuiExport RevitNavigationStyle : public UserNavigationStyle {
+class GuiExport RevitNavigationStyle: public UserNavigationStyle
+{
     using inherited = UserNavigationStyle;
 
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
@@ -396,13 +419,14 @@ public:
     const char* mouseButtons(ViewerMode) override;
 
 protected:
-    SbBool processSoEvent(const SoEvent * const ev) override;
+    SbBool processSoEvent(const SoEvent* const ev) override;
 
 private:
-    SbBool lockButton1{false};
+    SbBool lockButton1 {false};
 };
 
-class GuiExport BlenderNavigationStyle : public UserNavigationStyle {
+class GuiExport BlenderNavigationStyle: public UserNavigationStyle
+{
     using inherited = UserNavigationStyle;
 
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
@@ -413,30 +437,32 @@ public:
     const char* mouseButtons(ViewerMode) override;
 
 protected:
-    SbBool processSoEvent(const SoEvent * const ev) override;
+    SbBool processSoEvent(const SoEvent* const ev) override;
 
 private:
-    SbBool lockButton1{false};
+    SbBool lockButton1 {false};
 };
 
-class GuiExport SolidWorksNavigationStyle : public UserNavigationStyle {
+class GuiExport SolidWorksNavigationStyle: public UserNavigationStyle
+{
     using inherited = UserNavigationStyle;
 
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-SolidWorksNavigationStyle();
+    SolidWorksNavigationStyle();
     ~SolidWorksNavigationStyle() override;
     const char* mouseButtons(ViewerMode) override;
 
 protected:
-    SbBool processSoEvent(const SoEvent * const ev) override;
+    SbBool processSoEvent(const SoEvent* const ev) override;
 
 private:
-    SbBool lockButton1{false};
+    SbBool lockButton1 {false};
 };
 
-class GuiExport MayaGestureNavigationStyle : public UserNavigationStyle {
+class GuiExport MayaGestureNavigationStyle: public UserNavigationStyle
+{
     using inherited = UserNavigationStyle;
 
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
@@ -447,22 +473,27 @@ public:
     const char* mouseButtons(ViewerMode) override;
 
 protected:
-    void zoomByCursor(const SbVec2f & thispos, const SbVec2f & prevpos) override;
+    void zoomByCursor(const SbVec2f& thispos, const SbVec2f& prevpos) override;
 
-    SbBool processSoEvent(const SoEvent * const ev) override;
+    SbBool processSoEvent(const SoEvent* const ev) override;
 
-    SbVec2s mousedownPos;//the position where some mouse button was pressed (local pixel coordinates).
-    short mouseMoveThreshold;//setting. Minimum move required to consider it a move (in pixels).
-    bool mouseMoveThresholdBroken;//a flag that the move threshold was surpassed since last mousedown.
-    int mousedownConsumedCount;//a flag for remembering that a mousedown of button1/button2 was consumed.
-    SoMouseButtonEvent mousedownConsumedEvents[5];//the event that was consumed and is to be refired. 2 should be enough, but just for a case of the maximum 5 buttons...
+    SbVec2s mousedownPos;  // the position where some mouse button was pressed (local pixel coordinates).
+    short mouseMoveThreshold;  // setting. Minimum move required to consider it a move (in pixels).
+    bool mouseMoveThresholdBroken;  // a flag that the move threshold was surpassed since last mousedown.
+    int mousedownConsumedCount;  // a flag for remembering that a mousedown of button1/button2 was
+                                 // consumed.
+    SoMouseButtonEvent mousedownConsumedEvents[5];  // the event that was consumed and is to be
+                                                    // refired. 2 should be enough, but just for a
+                                                    // case of the maximum 5 buttons...
     bool testMoveThreshold(const SbVec2s currentPos) const;
 
-    bool thisClickIsComplex;//a flag that becomes set when a complex clicking pattern is detected (i.e., two or more mouse buttons were down at the same time).
-    bool inGesture; //a flag that is used to filter out mouse events during gestures.
+    bool thisClickIsComplex;  // a flag that becomes set when a complex clicking pattern is detected
+                              // (i.e., two or more mouse buttons were down at the same time).
+    bool inGesture;           // a flag that is used to filter out mouse events during gestures.
 };
 
-class GuiExport TouchpadNavigationStyle : public UserNavigationStyle {
+class GuiExport TouchpadNavigationStyle: public UserNavigationStyle
+{
     using inherited = UserNavigationStyle;
 
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
@@ -473,13 +504,14 @@ public:
     const char* mouseButtons(ViewerMode) override;
 
 protected:
-    SbBool processSoEvent(const SoEvent * const ev) override;
+    SbBool processSoEvent(const SoEvent* const ev) override;
 
 private:
-    SbBool blockPan {false}; // Used to block the first pan in a mouse movement to prevent big jumps
+    SbBool blockPan {false};  // Used to block the first pan in a mouse movement to prevent big jumps
 };
 
-class GuiExport OpenCascadeNavigationStyle : public UserNavigationStyle {
+class GuiExport OpenCascadeNavigationStyle: public UserNavigationStyle
+{
     using inherited = UserNavigationStyle;
 
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
@@ -490,10 +522,11 @@ public:
     const char* mouseButtons(ViewerMode) override;
 
 protected:
-    SbBool processSoEvent(const SoEvent * const ev) override;
+    SbBool processSoEvent(const SoEvent* const ev) override;
 };
 
-class GuiExport OpenSCADNavigationStyle : public UserNavigationStyle {
+class GuiExport OpenSCADNavigationStyle: public UserNavigationStyle
+{
     using inherited = UserNavigationStyle;
 
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
@@ -502,13 +535,17 @@ public:
     OpenSCADNavigationStyle();
     ~OpenSCADNavigationStyle() override;
     const char* mouseButtons(ViewerMode) override;
-    ClarifySelectionMode clarifySelectionMode() const override { return ClarifySelectionMode::Ctrl; }
+    ClarifySelectionMode clarifySelectionMode() const override
+    {
+        return ClarifySelectionMode::Ctrl;
+    }
 
 protected:
-    SbBool processSoEvent(const SoEvent * const ev) override;
+    SbBool processSoEvent(const SoEvent* const ev) override;
 };
 
-class GuiExport TinkerCADNavigationStyle : public UserNavigationStyle {
+class GuiExport TinkerCADNavigationStyle: public UserNavigationStyle
+{
     using inherited = UserNavigationStyle;
 
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
@@ -519,12 +556,12 @@ public:
     const char* mouseButtons(ViewerMode) override;
 
 protected:
-    SbBool processSoEvent(const SoEvent * const ev) override;
+    SbBool processSoEvent(const SoEvent* const ev) override;
 };
 
-} // namespace Gui
+}  // namespace Gui
 // NOLINTEND(cppcoreguidelines-avoid*, readability-avoid-const-params-in-decls)
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(Gui::NavigationStyle::RotationCenterModes)
 
-#endif // GUI_NAVIGATIONSTYLE_H
+#endif  // GUI_NAVIGATIONSTYLE_H

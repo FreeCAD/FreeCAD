@@ -23,9 +23,9 @@
  ***************************************************************************/
 
 /**
-  * AttacherTexts.h, .cpp - files that contain user-friendly translatable names
-  * of attachment modes, as well as help texts, and the like.
-  */
+ * AttacherTexts.h, .cpp - files that contain user-friendly translatable names
+ * of attachment modes, as well as help texts, and the like.
+ */
 
 #ifndef PARTATTACHERTEXTS_H
 #define PARTATTACHERTEXTS_H
@@ -37,7 +37,8 @@
 
 #include <Mod/Part/PartGlobal.h>
 
-namespace AttacherGui {
+namespace AttacherGui
+{
 
 using TextSet = std::vector<QString>;
 
@@ -54,16 +55,17 @@ TextSet PartGuiExport getUIStrings(Base::Type attacherType, Attacher::eMapMode m
 
 QString PartGuiExport getShapeTypeText(Attacher::eRefType type);
 
-QStringList PartGuiExport getRefListForMode(Attacher::AttachEngine &attacher, Attacher::eMapMode mmode);
+QStringList PartGuiExport getRefListForMode(Attacher::AttachEngine& attacher, Attacher::eMapMode mmode);
 
 
 // Python interface
-class PartGuiExport AttacherGuiPy{
+class PartGuiExport AttacherGuiPy
+{
 public:
-    static PyMethodDef    Methods[];
-    static PyObject* sGetModeStrings(PyObject * /*self*/, PyObject *args);
-    static PyObject* sGetRefTypeUserFriendlyName(PyObject * /*self*/, PyObject *args);
+    static PyMethodDef Methods[];
+    static PyObject* sGetModeStrings(PyObject* /*self*/, PyObject* args);
+    static PyObject* sGetRefTypeUserFriendlyName(PyObject* /*self*/, PyObject* args);
 };
 
-}
+}  // namespace AttacherGui
 #endif
