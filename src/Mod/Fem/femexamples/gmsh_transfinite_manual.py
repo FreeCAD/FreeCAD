@@ -96,11 +96,12 @@ def setup(doc=None, solver=None):
                                  FreeCAD.Vector(5,8,0),
                                  FreeCAD.Vector(0,0,0)])
 
-    # 1: simple 3 sided face with tf surface
-    explanation = ("A 3 sided furface can be made transfinite. For this the two guiding "
-                   "edges need to have the same amount of nodes on them.\n\n"
-                   " - The guiding edges of a triangle are Edge1 and Edge3 by default\n"
-                   " - In this example the number of nodes on those edges is equal, as they "
+    # 1: simple 3 edged face with tf surface
+    explanation = ("A face with 3 edges can be made transfinite. For this the two guiding "
+                   "edges need to have the same amount of mesh subdivisions on them.\n\n"
+                   " - The guiding edges of a triangle are Edge1 and Edge3 by default, this "
+                   " means the two edges connecting to Vertex1\n"
+                   " - In this example the number of elements on those edges is equal, as they "
                    "are the same length and we use CharachteristicLengthMax setting to subdivide")
 
     part_obj, mesh_obj = create_example(doc, "Triangle Surface", explanation)
@@ -108,8 +109,8 @@ def setup(doc=None, solver=None):
     tf_surf = ObjectsFem.makeMeshTransfiniteSurface(doc, mesh_obj)
     tf_surf.References = [(part_obj, ["Face1"])]
 
-    # 2: simple 3 sided face with tf surface and quad mesh
-    explanation = ("The transfinite surface of the left example can be created with quad element "
+    # 2: simple 3 edged face with tf surface and quad mesh
+    explanation = ("The transfinite surface of the left example can be created with quad elements "
                    "instead of triangles by using the Recombine option")
 
     part_obj, mesh_obj = create_example(doc, "Triangle Surface Recombined", explanation)
@@ -118,15 +119,15 @@ def setup(doc=None, solver=None):
     tf_surf.References = [(part_obj, ["Face1"])]
     tf_surf.Recombine = True
 
-    # 3: simple 3 sided face with tf surface, quad mesh and transfinite curve guiding
+    # 3: simple 3 edged face with tf surface, quad mesh and transfinite curve guiding
     explanation = ("All edges of the transfinite surface can have arbitrary node distribution, and "
-                   "we can manipulate them for example with transfinite curves\n\n"
-                   " - The requirement of same amount of nodes for Edge1 and Edge3 still holds. "
-                   "This is why we applied the same transfinite curve to those 2\n"
+                   "we can specify it for example with transfinite curves\n\n"
+                   " - The requirement of same amount of subdivisions for Edge1 and Edge3 still holds. "
+                   "This is why we applied the same transfinite curve to those 2. Note: N nodes give N-1 subdivisions.\n"
                    " - The two guiding edges can have different transfinite curve settings, as long "
-                   "as the node count is the same\n"
+                   "as the number of subdivisons is the same\n"
                    " - It is also possible to add a transfinite curve to the non guiding surface "
-                   "Edge2, this can have any number of nodes")
+                   "Edge2, this can have any number of subdivisions")
 
     part_obj, mesh_obj = create_example(doc, "Triangle Surface Recombined Bumped", explanation)
     part_obj.Shape = Part.makeFace(triangle).translate(FreeCAD.Vector(30,0,0))
@@ -142,12 +143,12 @@ def setup(doc=None, solver=None):
     explanation = ("Sometimes the default orientation of the transfinite meshing is not wanted, and "
                    "we want to use different guide edges. This can be achieved with specifying the "
                    "vertex order manual in the transfinite surface\n\n"
-                   " - The order of selection is important: The vertex which connects both guide faces "
+                   " - The order of selection is important: The vertex which connects both guide edges "
                    "needs to be the first one in the list\n"
                    " - You always need to add all 3 vertexes\n"
                    " - This only works for a single surface, when specifying vertexes you cannot use "
-                   "multiple surfaces in that object. But you can ad more transfinite surface objects "
-                   "gmsh, each having a single face with vertexes")
+                   "multiple surfaces in that object. But you can add more transfinite surface objects, "
+                   "each having a single face with vertexes")
 
     part_obj, mesh_obj = create_example(doc, "Triangle Surface Recombined Orientated", explanation)
     part_obj.Shape = Part.makeFace(triangle).translate(FreeCAD.Vector(45,0,0))
@@ -161,9 +162,9 @@ def setup(doc=None, solver=None):
                                       FreeCAD.Vector(0,0,0)])
 
     # 5: simple 3 sided face with tf surface, made to work with transfinite curves
-    explanation = ("If the guiding edges do not have the same amount of nodes by default we need to ensure "
+    explanation = ("If the guiding edges do not have the same amount of subdivisions by default we need to ensure "
                    "this manually. In this example we have chosen to use transfinite curves to ensure both "
-                   "edges have the same amount of nodes")
+                   "edges have the same amount of nodes, and hence subdivisions")
 
     part_obj, mesh_obj = create_example(doc, "Triangle Surface Recombined Unequal Guided", explanation)
     part_obj.Shape = Part.makeFace(smalltriangle).translate(FreeCAD.Vector(60,0,0))
@@ -174,8 +175,8 @@ def setup(doc=None, solver=None):
     tf_curv.References = [(part_obj, ["Edge1", "Edge3"])]
 
     # 6: simple 3 sided face with tf surface, made to work with changed orientation
-    explanation = ("To overcome the unequal amount of nodes in this example we chose different guiding edges, "
-                   "choosing the two edges which have equal length and hence equal node count")
+    explanation = ("To overcome the unequal amount of subdivisions in this example we chose different guiding edges, "
+                   "choosing the two edges which have equal length and hence equal subdivision count")
 
     part_obj, mesh_obj = create_example(doc, "Triangle Surface Recombined Unequal Oriented", explanation)
     part_obj.Shape = Part.makeFace(smalltriangle).translate(FreeCAD.Vector(75,0,0))
@@ -190,10 +191,10 @@ def setup(doc=None, solver=None):
                              FreeCAD.Vector(0,0,0)])
 
     # 7: simple 4 sided face with tf surface
-    explanation = ("A 4 sided furface can be made transfinite. For this the opposite edges need to have "
-                   "the same amount of nodes on them.\n\n"
-                   " - For 4 sided faces the edge order does not matter, only the ones opposite to each are relevant\n"
-                   " - In this example the number of nodes on those edges is equal, as they have the same length "
+    explanation = ("A 4 sided surface can be made transfinite. For this the opposite edges need to have "
+                   "the same amount of subdivisions on them.\n\n"
+                   " - For 4 sided faces the edge order does not matter, only the ones opposite to each other are relevant\n"
+                   " - In this example the number of subdivisions on those edges is equal, as they have the same length, "
                    "and we use CharachteristicLengthMax setting to subdivide")
 
     part_obj, mesh_obj = create_example(doc, "Quad Surface", explanation)
@@ -213,11 +214,11 @@ def setup(doc=None, solver=None):
 
     # 9: simple 4 sided face with tf surface, quad mesh and transfinite curve guiding
     explanation = ("All edges of the transfinite surface can have arbitrary node distribution, and "
-                   "we can manipulate them for example with transfinite curves\n\n"
-                   " - The requirement of same amount of nodes for opposite edges still holds. "
+                   "we can manipulate it for example with transfinite curves\n\n"
+                   " - The requirement of same amount of subdivisions for opposite edges still holds. "
                    "This is why we applied the same transfinite curve to the opposite edges\n"
                    " - The opposite edges can have different transfinite curve settings, as long "
-                   "as the node count is the same\n"
+                   "as the subdivision count is the same (in this case node count is the same)\n"
                    " - It is also possible to only add a transfinite curve to some edges. no matter "
                    "which or how many")
 
@@ -244,7 +245,7 @@ def setup(doc=None, solver=None):
                                        FreeCAD.Vector(3,5,0),
                                        FreeCAD.Vector(0,0,0)])
 
-    explanation = ("If the edges of the face are not equal length we need to ensure that the node counts"
+    explanation = ("If the edges of the face are not equal length we need to ensure that the subdivision counts"
                    "are correct. The simplest way is to make all 4 edges transfinite.")
 
     part_obj, mesh_obj = create_example(doc, "Quad Distorted Surface Recombined Guided", explanation)
@@ -273,7 +274,7 @@ def setup(doc=None, solver=None):
     wire = Part.Wire([Part.Edge(bSpline1), Part.Edge(bSpline2), Part.Edge(bSpline3), Part.Edge(bSpline4)])
     face = Part.Face(wire)
 
-    explanation = ("The edges of the 4 sided face can be any type, and also be hevaily curved. This holds also "
+    explanation = ("The edges of the 4 sided face can be of any form, and also be hevaily curved. This holds also "
                    "for triangles, by the way.")
 
     part_obj, mesh_obj = create_example(doc, "Quad Curved Surface Recombined Guided", explanation)
@@ -302,7 +303,7 @@ def setup(doc=None, solver=None):
     wire = Part.Wire([Part.Edge(bSpline1), Part.Edge(bSpline2), Part.Edge(bSpline3), Part.Edge(bSpline4)])
     face = Part.makeFilledFace(wire)
 
-    explanation = ("An of course this works for 3D cuved faces as well")
+    explanation = ("And of course all transfinite settings works for 3D cuved faces as well")
 
     part_obj, mesh_obj = create_example(doc, "Quad 3D Curved Surface Recombined Guided", explanation)
     part_obj.Shape = face.translate(FreeCAD.Vector(75,-15,0))
@@ -324,16 +325,16 @@ def setup(doc=None, solver=None):
     points.append(points[0]) # to close wire
     hexagon = Part.makePolygon(points)
 
-    explanation = ("It is possible to create transfinite surface meshes for faces with arbitrary amount of edges. "
+    explanation = ("It is possible to create transfinite surface meshes for faces with an arbitrary amount of edges. "
                    "However, for this we need to specify what the corner points are, to guide the transfinite algorithm "
                    "This is done by providing the relevant vertexes in the reference section of transfinite surfaces\n\n"
-                   " - There can be 3 or 4 corner points, making the face to a 3 or 4 sided transfinite surface. "
+                   " - There can be 3 or 4 corner points, making the face a 3 or 4 sided transfinite surface. "
                    "This example uses 3.\n"
-                   " - The amount of nodes between the corner points need to be equal for the guiding surface. This "
+                   " - The amount of subdivisions between the corner points need to be equal for the guiding surface. This "
                    "is the same as for normal 3 sided faces, just now one side is created of multiple edges, for which "
-                   "the nodes are added up."
-                   " - In the example each edge has the same length, hence nodes. As each side of the transfinite surfce "
-                   "consists of 2 edges, the overall node count is the same per side")
+                   "the subdivisions are added up."
+                   " - In this example each edge has the same length, hence subdivisions. As each side of the transfinite surfce "
+                   "consists of 2 edges, the overall subdivision count is the same per side")
 
     part_obj, mesh_obj = create_example(doc, "Hexagon 3-Sided Surface Recombined", explanation)
     part_obj.Shape = Part.makeFace(hexagon).translate(FreeCAD.Vector(5,-25,0))
@@ -342,9 +343,10 @@ def setup(doc=None, solver=None):
     tf_surf.References = [(part_obj, ["Face1", "Vertex1", "Vertex3", "Vertex5"])]
 
     # 13: Hexagon face with 4-sided tf surface
-    explanation = ("The hexagon can also be turned into a 4 sided transfinite surface. For 4 sided transfinite "
-                   "surfaces the opposite sides need to have the same amount of nodes. Therefore we group the 6 edges "
-                   "in a way to have either 2 edges on opposite side or 1 edge.\n\n"
+    explanation = ("The hexagon can also be turned into a 4 sided transfinite surface by selecting 4 corner vertexes."
+                   "For 4 sided transfinite surfaces the opposite sides need to have the same amount of subdivisions."
+                   "Therefore we group the 6 edges in a way so that the sides with 2 edges face each other, and the"
+                   "sides with 1 edge face each other"
                    )
 
     part_obj, mesh_obj = create_example(doc, "Hexagon 4-Sided Surface Recombined", explanation)
@@ -355,13 +357,17 @@ def setup(doc=None, solver=None):
 
     # 14: Hexagon face with 3-sided uneven distributed tf surface
     explanation = ("The 6 edges of the hexagon can also be distributed unevenly into 3 sides of the transfinite surface. "
-                   "We then need to ensure the same node count for the guiding surfaces. This is done with transfinite curves\n\n"
-                   " - The node count of a transfinit curve describes the number of nodes per selected edge. The edge nodes"
-                   "include the ones for starting and ending vertex\n"
-                   " - If two transfinite edges that share a vertex, this vertex is doubled and one node is dropped.\n"
-                   " - Therefore, the total node count of N connected edges is (N x Node - N). This needs to be considerd "
-                   "when setting the transfinite curve node number\n"
-                   " - For our example: Side 1: 13 Nodes/Edge per edge (1*13-1=12), Side 2: 5 Nodes/Edge (3*5-3=12), Side 3: 7 Nodes/Edge (2*7-2=12) "
+                   "We then need to ensure the same subdivision count for the guiding sides. This is done with transfinite curves\n\n"
+                   " - The subdivisions of an edge can be calculated from the nodes used on that edge. For N nodes there are N-1 "
+                   " subdivisions\n"
+                   " - When connecting multiple edges into a single side of a transfinite surface the subdivisions of that side can"
+                   " be simply calculated as the addition of all its edge subdivisions\n"
+                   " - Therefore, the total subdivision count of N connected equally subdivided edges is N * (Node - N). This needs "
+                   "to be considerd when setting the transfinite curve node number for each edge\n"
+                   " - For our example:\n"
+                   "    - Side 1: 13 Nodes/Edge leads to 12 subdivisions (1*(13-1)=12)\n"
+                   "    - Side 2:  5 Nodes/Edge leads to 12 subdivisions (3*(5-1)=12)\n"
+                   "    - Side 3:  7 Nodes/Edge leads to 12 subdivisions (2*(7-1)=12) "
                    )
 
     part_obj, mesh_obj = create_example(doc, "Hexagon 3-Sided Non-symmetric Surface Recombined", explanation)
@@ -380,7 +386,14 @@ def setup(doc=None, solver=None):
     tf_curv.Nodes = 7
 
     # 15: Hexagon face with 4-sided uneven distributed tf surface
-    explanation = ("The 6 edges hexagon can also be used as 4 sided transfinite surface, as shown in this example")
+    explanation = ("The 6 edges hexagon can also be used as 4 sided transfinite surface, as shown in this example. The same requirement "
+                   "on the sides subdivisions hold as before: Opposite sides of the transfinite surface must have the same amount of "
+                   "subdivisions. In this example we achieve this with transfinite curves.\n\n"
+                   " - The total subdivision count of N connected equally subdivided edges is N * (Node - N)\n"
+                   " - For our example:\n"
+                   "    - Side 1:  5 Nodes/Edge leads to 12 subdivisions (3*(5-1)=12)\n"
+                   "    - Side 3: 13 Nodes/Edge leads to 12 subdivisions (1*(13-1)=12)\n"
+                   "    - Side 2 & 4: 6 Nodes/Edge leads to 5 subdivisions (1*(6-1)=5) ")
 
     part_obj, mesh_obj = create_example(doc, "Hexagon 4-Sided Non-symmetric Surface Recombined", explanation)
     part_obj.Shape = Part.makeFace(hexagon).translate(FreeCAD.Vector(50,-25,0))
@@ -396,6 +409,237 @@ def setup(doc=None, solver=None):
     tf_curv = ObjectsFem.makeMeshTransfiniteCurve(doc, mesh_obj)
     tf_curv.References = [(part_obj, ["Edge4", "Edge6"])]
     tf_curv.Nodes = 6
+
+
+    # 16: Two faces
+    triangle_2f = Part.makePolygon([FreeCAD.Vector(0,5,0),
+                                    FreeCAD.Vector(5,5,0),
+                                    FreeCAD.Vector(2.5,9,0),
+                                    FreeCAD.Vector(0,5,0)])
+    quad_2f = Part.makePolygon([FreeCAD.Vector(0,0,0),
+                                FreeCAD.Vector(5,0,0),
+                                FreeCAD.Vector(5,5,0),
+                                FreeCAD.Vector(0,5,0),
+                                FreeCAD.Vector(0,0,0)])
+
+    combined = Part.makeFace(triangle_2f).generalFuse(Part.makeFace(quad_2f))[0]
+
+    explanation = ("It is possible to mesh multiple connected faces with transfinite surfaces. In this example the quad faces sides are "
+                   "equally long, and the triangles sides are also same length. Therefore we can directly make the two surfaces "
+                   "transfinite in a single object, as the sides subdivisions will match correctly")
+
+    part_obj, mesh_obj = create_example(doc, "Multiface Surface", explanation)
+    part_obj.Shape = combined.copy().translate(FreeCAD.Vector(2.5,-45,0))
+    tf_surf = ObjectsFem.makeMeshTransfiniteSurface(doc, mesh_obj)
+    tf_surf.Recombine = True
+    tf_surf.References = [(part_obj, ["Face1", "Face2"])]
+
+    # 17: Two faces, one oriented
+    explanation = ("If we want to reorient the triangle we can do this with the manual definition of the corner points. As shown in "
+                   "earlier examples this requires adding the Vertexes in the surface definition. As this can only be done for a single "
+                   "face, the second face requries a seperate transfinite surface object.\n\n"
+                   " - The second transfinite surface refinement could have selected multiple faces again\n"
+                   " - You can combine as many transfinite surface refinements as you like")
+
+    part_obj, mesh_obj = create_example(doc, "Multiface Surface Oriented", explanation)
+    part_obj.Shape = combined.copy().translate(FreeCAD.Vector(17.5,-45,0))
+    tf_surf = ObjectsFem.makeMeshTransfiniteSurface(doc, mesh_obj)
+    tf_surf.Recombine = True
+    tf_surf.References = [(part_obj, ["Face1", "Vertex3", "Vertex2", "Vertex1"])]
+    tf_surf = ObjectsFem.makeMeshTransfiniteSurface(doc, mesh_obj)
+    tf_surf.Recombine = True
+    tf_surf.References = [(part_obj, ["Face2"])]
+
+    # 18: Two faces, one oriented, guided
+    explanation = ("We can further specify transfinite curves to have more control over the meshing. Those definitions are used by both "
+                   "transfinite surface definitions, and can also be applied to the shared edge")
+
+    part_obj, mesh_obj = create_example(doc, "Multiface Surface Oriented Bumped", explanation)
+    part_obj.Shape = combined.copy().translate(FreeCAD.Vector(32.5,-45,0))
+    tf_surf = ObjectsFem.makeMeshTransfiniteSurface(doc, mesh_obj)
+    tf_surf.Recombine = True
+    tf_surf.References = [(part_obj, ["Face1", "Vertex3", "Vertex2", "Vertex1"])]
+    tf_surf = ObjectsFem.makeMeshTransfiniteSurface(doc, mesh_obj)
+    tf_surf.Recombine = True
+    tf_surf.References = [(part_obj, ["Face2"])]
+    tf_curv = ObjectsFem.makeMeshTransfiniteCurve(doc, mesh_obj)
+    tf_curv.References = [(part_obj, ["Edge1", "Edge4"])]
+    tf_curv.Nodes = 10
+    tf_curv.Distribution = "Bump"
+    tf_curv.Coefficient = 5
+
+    # 19: Wedge as 5 sided volume
+    wedge = Part.makeFace(triangle).extrude(FreeCAD.Vector(2,0,10))
+    explanation = ("Transfinite volumes extend the principles of surfaces into 3D. Every 5 or 6 sided volume can be meshed with this "
+                   "structured algorithm. The important boundary condition is that all surfaces of the volume must be set to be "
+                   "transfinite. \n\n"
+                   " - All 5 faces of the volume can be handled in a single transfinite surface refinement\n"
+                   " - As all edges of the volume have equal length, they subdivide equally, and hence the transfinite "
+                   "surfaces work just as is"
+                   " - Note that from the outside a transfinite volume looks exactly the same as applying only the 5 transfinite surfaces. "
+                   "However, the elements inside the volume are not structured without the application of transfinite volume.")
+
+    part_obj, mesh_obj = create_example(doc, "Wedge Volume", explanation)
+    part_obj.Shape = wedge.copy().translate(FreeCAD.Vector(0,-60,0))
+    tf_surf = ObjectsFem.makeMeshTransfiniteSurface(doc, mesh_obj)
+    tf_surf.References = [(part_obj, [f"Face{i}" for i in range(1,6)])]
+    tf_vol = ObjectsFem.makeMeshTransfiniteVolume(doc, mesh_obj)
+    tf_vol.References = [(part_obj, ["Solid1"])]
+
+    # 20: Wedge as 5 sided volume
+    explanation = ("The transfinite volume derives its element types from the surfaces. If all transfinite surfaces are recombined, "
+                   "the volume will ocnsist of hexaedron elements.")
+
+    part_obj, mesh_obj = create_example(doc, "Wedge Volume Recombined", explanation)
+    part_obj.Shape = wedge.copy().translate(FreeCAD.Vector(15,-60,0))
+    tf_surf = ObjectsFem.makeMeshTransfiniteSurface(doc, mesh_obj)
+    tf_surf.Recombine = True
+    tf_surf.References = [(part_obj, [f"Face{i}" for i in range(1,6)])]
+    tf_vol = ObjectsFem.makeMeshTransfiniteVolume(doc, mesh_obj)
+    tf_vol.References = [(part_obj, ["Solid1"])]
+
+    # 21: Wedge as 5 sided volume, mixed elements
+    explanation = ("The surfaces of the volume can be of mixed type, some recombined and some not. This leads to a combination of "
+                   "hexahedron elements and pyramids within the transfinite volume. This mixing of elements must be explicitly enabled"
+                   "with the mixed mesh option of the volume")
+
+    part_obj, mesh_obj = create_example(doc, "Wedge Volume Mixed", explanation)
+    part_obj.Shape = wedge.copy().translate(FreeCAD.Vector(30,-60,0))
+    tf_surf = ObjectsFem.makeMeshTransfiniteSurface(doc, mesh_obj)
+    tf_surf.Recombine = True
+    tf_surf.References = [(part_obj, [f"Face{i}" for i in range(1,4)])]
+    tf_surf = ObjectsFem.makeMeshTransfiniteSurface(doc, mesh_obj)
+    tf_surf.References = [(part_obj, [f"Face{i}" for i in range(4,6)])]
+    tf_vol = ObjectsFem.makeMeshTransfiniteVolume(doc, mesh_obj)
+    tf_vol.MixedElements = True
+    tf_vol.References = [(part_obj, ["Solid1"])]
+
+    # 22: Wedge as 5 sided volume, mixed elements, Bumped
+    explanation = ("Further tuning of the sructured mesh algorithm can be done with well placed transfinite curves. The curves need "
+                   "to be consistent for every surface, then it will be applied to the volume correctly.\n\n"
+                   " - If the curves are not consistent to the surfaces some will fail to be generated and hence the volume will fail too")
+
+    part_obj, mesh_obj = create_example(doc, "Wedge Volume Recombined Bumped", explanation)
+    part_obj.Shape = wedge.copy().translate(FreeCAD.Vector(45,-60,0))
+    tf_curv = ObjectsFem.makeMeshTransfiniteCurve(doc, mesh_obj)
+    tf_curv.References = [(part_obj, [f"Edge{i}" for i in range(1,10)])]
+    tf_curv.Nodes = 15
+    tf_curv.Distribution = "Bump"
+    tf_curv.Coefficient = 5
+    tf_curv.Invert=True
+    tf_surf = ObjectsFem.makeMeshTransfiniteSurface(doc, mesh_obj)
+    tf_surf.Recombine = True
+    tf_surf.References = [(part_obj, [f"Face{i}" for i in range(1,6)])]
+    tf_vol = ObjectsFem.makeMeshTransfiniteVolume(doc, mesh_obj)
+    tf_vol.MixedElements = True
+    tf_vol.References = [(part_obj, ["Solid1"])]
+
+    # Pyramid seems impossible, even though it has 5 sides
+    # # 23: Pyramid as 5 sided volume, Recombined
+    # point = Part.Vertex(FreeCAD.Vector(5,5,6))
+    # pyramid = Part.makeLoft([quad, point], solid=True)
+    # explanation = ("Pyramid seems impossible")
+
+    # part_obj, mesh_obj = create_example(doc, "Pyramid Volume Recombined", explanation)
+    # part_obj.Shape = pyramid.copy().translate(FreeCAD.Vector(60,-60,0))
+    # tf_surf = ObjectsFem.makeMeshTransfiniteSurface(doc, mesh_obj)
+    # tf_surf = ObjectsFem.makeMeshTransfiniteSurface(doc, mesh_obj)
+    # tf_surf.References = [(part_obj, [f"Face{i}" for i in range(1,6)])]
+    # tf_vol = ObjectsFem.makeMeshTransfiniteVolume(doc, mesh_obj)
+    # tf_vol.MixedElements = True
+    # tf_vol.References = [(part_obj, ["Solid1"])]
+
+    # 23: Curved Wedge as 5 sided volume, Bumped
+    rotation = Part.makeFace(triangle).revolve(FreeCAD.Vector(15,0,0), FreeCAD.Vector(-0.2,1,0), 120)
+    explanation = ("5 Sided volumes work with arbitrarily shapes outlines")
+
+    part_obj, mesh_obj = create_example(doc, "Wedge Volume Curved Recombined Bumped", explanation)
+    part_obj.Shape = rotation.copy().translate(FreeCAD.Vector(60,-60,0))
+    tf_curv = ObjectsFem.makeMeshTransfiniteCurve(doc, mesh_obj)
+    tf_curv.References = [(part_obj, [f"Edge{i}" for i in range(1,10)])]
+    tf_curv.Nodes = 15
+    tf_curv.Distribution = "Bump"
+    tf_curv.Coefficient = 5
+    tf_curv.Invert=True
+    tf_surf = ObjectsFem.makeMeshTransfiniteSurface(doc, mesh_obj)
+    tf_surf.Recombine = True
+    tf_surf.References = [(part_obj, [f"Face{i}" for i in range(1,6)])]
+    tf_vol = ObjectsFem.makeMeshTransfiniteVolume(doc, mesh_obj)
+    tf_vol.MixedElements = True
+    tf_vol.References = [(part_obj, ["Solid1"])]
+
+
+    # 24: Cube as 6 sided volume
+    cube = Part.makeFace(quad).extrude(FreeCAD.Vector(2,0,10))
+    explanation = ("")
+
+    part_obj, mesh_obj = create_example(doc, "Cube Volume", explanation)
+    part_obj.Shape = cube.copy().translate(FreeCAD.Vector(0,-75,0))
+    tf_surf = ObjectsFem.makeMeshTransfiniteSurface(doc, mesh_obj)
+    tf_surf.References = [(part_obj, [f"Face{i}" for i in range(1,7)])]
+    tf_vol = ObjectsFem.makeMeshTransfiniteVolume(doc, mesh_obj)
+    tf_vol.References = [(part_obj, ["Solid1"])]
+
+    # 25: Cube as 6 sided volume, quad meshing
+    explanation = ("")
+
+    part_obj, mesh_obj = create_example(doc, "Cube Volume Recombined", explanation)
+    part_obj.Shape = cube.copy().translate(FreeCAD.Vector(15,-75,0))
+    tf_surf = ObjectsFem.makeMeshTransfiniteSurface(doc, mesh_obj)
+    tf_surf.Recombine = True
+    tf_surf.References = [(part_obj, [f"Face{i}" for i in range(1,7)])]
+    tf_vol = ObjectsFem.makeMeshTransfiniteVolume(doc, mesh_obj)
+    tf_vol.References = [(part_obj, ["Solid1"])]
+
+    # 26: Cube as 6 sided volume, quad meshing, bumped
+    explanation = ("")
+
+    part_obj, mesh_obj = create_example(doc, "Cube Volume Recombined Bumped", explanation)
+    part_obj.Shape = cube.copy().translate(FreeCAD.Vector(30,-75,0))
+    tf_curv = ObjectsFem.makeMeshTransfiniteCurve(doc, mesh_obj)
+    tf_curv.References = [(part_obj, [f"Edge{i}" for i in range(1,13)])]
+    tf_curv.Distribution = "Bump"
+    tf_curv.Coefficient = 5
+    tf_curv.Invert=True
+    tf_surf = ObjectsFem.makeMeshTransfiniteSurface(doc, mesh_obj)
+    tf_surf.Recombine = True
+    tf_surf.References = [(part_obj, [f"Face{i}" for i in range(1,7)])]
+    tf_vol = ObjectsFem.makeMeshTransfiniteVolume(doc, mesh_obj)
+    tf_vol.References = [(part_obj, ["Solid1"])]
+
+
+    # 27: Unregular 3D 4 sided cube
+    bSpline1 = Part.BSplineCurve()
+    bSpline1.interpolate([FreeCAD.Vector(0,0,0), FreeCAD.Vector(3.3,1,1),
+                          FreeCAD.Vector(6.6,-1,-1), FreeCAD.Vector(10,0,1)])
+    bSpline2 = Part.BSplineCurve()
+    bSpline2.interpolate([FreeCAD.Vector(10,0,1), FreeCAD.Vector(10,3.3,0),
+                          FreeCAD.Vector(10,6.6,2), FreeCAD.Vector(10,10,1)])
+    bSpline3 = Part.BSplineCurve()
+    bSpline3.interpolate([FreeCAD.Vector(10,10,1), FreeCAD.Vector(6.6,11,-1),
+                          FreeCAD.Vector(3.3,9,1), FreeCAD.Vector(0,10,0)])
+    bSpline4 = Part.BSplineCurve()
+    bSpline4.interpolate([FreeCAD.Vector(0,10,0), FreeCAD.Vector(-1,7,-1), FreeCAD.Vector(1,5,1),
+                          FreeCAD.Vector(-1,3,-1), FreeCAD.Vector(0,0,0)])
+
+    wire = Part.Wire([Part.Edge(bSpline1), Part.Edge(bSpline2), Part.Edge(bSpline3), Part.Edge(bSpline4)])
+    face = Part.makeFilledFace(wire)
+    cube = face.revolve(FreeCAD.Vector(15,0,0), FreeCAD.Vector(-0.2,1,0), 120)
+
+    explanation = ("And of course all transfinite settings works for 3D cuved faces as well")
+
+    part_obj, mesh_obj = create_example(doc, "Cube Volume Curved Recombined Bumped", explanation)
+    part_obj.Shape = cube.translate(FreeCAD.Vector(45,-75,0))
+    tf_curv = ObjectsFem.makeMeshTransfiniteCurve(doc, mesh_obj)
+    tf_curv.References = [(part_obj, [f"Edge{i}" for i in range(1,13)])]
+    tf_curv.Distribution = "Bump"
+    tf_curv.Coefficient = 5
+    tf_curv.Invert=True
+    tf_surf = ObjectsFem.makeMeshTransfiniteSurface(doc, mesh_obj)
+    tf_surf.Recombine = True
+    tf_surf.References = [(part_obj, [f"Face{i}" for i in range(1,7)])]
+    tf_vol = ObjectsFem.makeMeshTransfiniteVolume(doc, mesh_obj)
+    tf_vol.References = [(part_obj, ["Solid1"])]
 
 
     return doc
