@@ -206,6 +206,15 @@ bool DocumentObject::recomputeFeature(bool recursive)
     return isValid();
 }
 
+void DocumentObject::setTouched(const char* name)
+{
+    // This function is not a replacement for touch(), it is only
+    // used internally for fine-grained document recompute and replaces
+    // the coarse grained equivalent of StatusBits.set(ObjectStatus::Touch);
+    touchedProps.insert(name);
+    StatusBits.set(ObjectStatus::Touch);
+}
+
 /**
  * @brief Set this document object touched.
  * Touching a document object does not mean to recompute it, it only means that
@@ -278,6 +287,12 @@ void DocumentObject::unfreeze(bool noRecompute)
 bool DocumentObject::isTouched() const
 {
     return ExpressionEngine.isTouched() || StatusBits.test(ObjectStatus::Touch);
+}
+
+void DocumentObject::enforceRecompute(std::string& propName)
+{
+    touch(false);
+    touchedProps.insert(propName);
 }
 
 /**
@@ -1058,16 +1073,40 @@ void DocumentObject::onChanged(const Property* prop)
         _pDoc->signalRelabelObject(*this);
     }
 
-    // set object touched if it is an input property
-    if (!testStatus(ObjectStatus::NoTouch) && !(prop->getType() & Prop_Output)
-        && !prop->testStatus(Property::Output)) {
-        if (!StatusBits.test(ObjectStatus::Touch)) {
-            FC_TRACE("touch '" << getFullName() << "' on change of '" << prop->getName() << "'");
-            StatusBits.set(ObjectStatus::Touch);
+    bool fineGrained = GetApplication().fineGrained;
+
+    auto outputHasDeps = [this](const Property* prop) {
+        return std::ranges::any_of(getInListProp(), [this, prop](const DepEdge& edge) {
+            return edge.toObj == this && edge.toProp == prop->getName();
+        });
+    };
+
+    if (fineGrained) {
+        // set object touched if it is not an output property unless it has dependencies
+        if (!testStatus(ObjectStatus::NoTouch)
+            && ((isOutputProperty(prop) && outputHasDeps(prop)) ||
+                !isOutputProperty(prop))) {
+            FC_TRACE("touch '" << getFullName() << "' on change of '" << prop->getName()
+                     << "'");
+            setTouched(prop->getName());
+            // must execute on document recompute
+            if (!(prop->getType() & Prop_NoRecompute)) {
+                StatusBits.set(ObjectStatus::Enforce);
+            }
         }
-        // must execute on document recompute
-        if (!(prop->getType() & Prop_NoRecompute)) {
-            StatusBits.set(ObjectStatus::Enforce);
+    }
+    else {
+        // set object touched if it is not an output property
+        if (!testStatus(ObjectStatus::NoTouch) && !(prop->getType() & Prop_Output)
+            && !prop->testStatus(Property::Output)) {
+            if (!StatusBits.test(ObjectStatus::Touch)) {
+                FC_TRACE("touch '" << getFullName() << "' on change of '" << prop->getName() << "'");
+                StatusBits.set(ObjectStatus::Touch);
+            }
+            // must execute on document recompute
+            if (!(prop->getType() & Prop_NoRecompute)) {
+                StatusBits.set(ObjectStatus::Enforce);
+            }
         }
     }
 
