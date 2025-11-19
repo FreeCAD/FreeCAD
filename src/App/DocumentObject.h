@@ -688,6 +688,18 @@ public:
 
     /// @copydoc testIfLinkDAGCompatible(DocumentObject*) const
     bool testIfLinkDAGCompatible(App::PropertyLinkSub& linkTo) const;
+
+    /// Check if the property is an input property
+    bool isInputProperty(const std::string& propName) const;
+
+    /// Check if the property is an input property
+    bool isInputProperty(const Property* prop) const;
+
+    /// Check if the property is an output property
+    bool isOutputProperty(const std::string& propName) const;
+
+    /// Check if the property is an output property
+    bool isOutputProperty(const Property* prop) const;
     ///@}
 
     /**

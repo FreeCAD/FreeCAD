@@ -659,6 +659,34 @@ bool DocumentObject::testIfLinkDAGCompatible(PropertyLinkSub& linkTo) const
     return this->testIfLinkDAGCompatible(linkTo_in_vector);
 }
 
+bool DocumentObject::isInputProperty(const std::string& propName) const
+{
+    Property* prop = getPropertyByName(propName.c_str());
+    if (!prop) {
+        return false;
+    }
+    return isInputProperty(prop);
+}
+
+bool DocumentObject::isInputProperty(const Property* prop) const
+{
+    return (prop->getType() & Prop_Input) || prop->testStatus(Property::Input);
+}
+
+bool DocumentObject::isOutputProperty(const std::string& propName) const
+{
+    Property* prop = getPropertyByName(propName.c_str());
+    if (!prop) {
+        return false;
+    }
+    return isOutputProperty(prop);
+}
+
+bool DocumentObject::isOutputProperty(const Property* prop) const
+{
+    return (prop->getType() & Prop_Output) || prop->testStatus(Property::Output);
+}
+
 void DocumentObject::onLostLinkToObject(DocumentObject*)
 {}
 
