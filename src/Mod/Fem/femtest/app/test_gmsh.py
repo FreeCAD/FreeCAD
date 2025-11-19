@@ -109,11 +109,17 @@ class TestGMSHBase(unittest.TestCase):
             "Generated mesh does not have the same Node count as the golden sample."
         )
 
-        self.assertEqual(
-            mesh.EdgeCount,
-            sample.EdgeCount,
-            "Generated mesh does not have the same edge count as the golden sample."
-        )
+        # compare node locations!
+        for idx in range(1,mesh.NodeCount+1):
+            self.assertTrue(mesh.Nodes[idx].isEqual(sample.Nodes[idx], 1e-3),
+                            "Generated mesh does not have the same Node locations as golden sample.")
+
+        # don't compare edges: Seems vtk import always generates 0 edges'
+        #self.assertEqual(
+        #    mesh.EdgeCount,
+        #    sample.EdgeCount,
+        #    "Generated mesh does not have the same edge count as the golden sample."
+        #)
 
         self.assertEqual(
             mesh.TriangleCount,
