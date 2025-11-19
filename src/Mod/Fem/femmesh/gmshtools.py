@@ -961,7 +961,6 @@ class GmshTools(ObjectTools):
             ):
                 self.outputCompoundWarning()
 
-            print("setup transfinite edge map")
             edge_map = tft.setup_transfinite_edge_map(self.part_obj.Shape, transfinite_curve_list)
             # the settings are only created at the very end, when we know if surface and volume atomation added
             # addiotional transfinite curves

@@ -322,9 +322,7 @@ def setup_transfinite_edge_map(shape, tf_curve_objs):
 
         data = TFCurveDefinition.from_tfcurve_obj(tf)
 
-        print("handle refs")
         for ref in _get_reference_elements(shape, tf):
-            print("ref element: ", ref)
             ref_shape = shape.getElement(ref)
             if ref_shape.ShapeType != "Edge":
                 continue
