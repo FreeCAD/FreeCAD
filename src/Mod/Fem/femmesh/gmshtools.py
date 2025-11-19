@@ -469,7 +469,9 @@ class GmshTools(ObjectTools):
 
     def _get_reference_elements(self, mr_obj, duplicates_set = None):
 
-        elements = set()
+        # don't use set to avoid duplicates, as we need to keep the user defined order
+        # of reference elements. This is important for example in transfinite surfaces
+        elements = []
         for sub in mr_obj.References:
             # print(sub[0])  # Part the elements belongs to
             # check if the shape of the mesh refinements
@@ -504,10 +506,11 @@ class GmshTools(ObjectTools):
                                 mr_obj.Name
                             )
                         )
-                elements.add(element)
+                if not element in elements:
+                    elements.append(element)
 
         if duplicates_set:
-            duplicates = duplicates_set.intersection(elements)
+            duplicates = duplicates_set.intersection(set(elements))
             if duplicates:
                 Console.PrintError(
                                 "The elements {} of the mesh refinement {} have been added"
@@ -515,9 +518,10 @@ class GmshTools(ObjectTools):
                                     duplicates, mr_obj.Name
                                 )
                             )
-                elements = elements - duplicates
+                for duplicate in duplicates:
+                    elements.remove(duplicate)
 
-            duplicates_set.update(elements)
+            duplicates_set.update(set(elements))
 
         return elements
 
