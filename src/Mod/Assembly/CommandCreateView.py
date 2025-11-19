@@ -167,7 +167,7 @@ class ExplodedView:
             return
 
         UtilsAssembly.restoreAssemblyPartsPlacements(self.getAssembly(viewObj), self.initialPlcs)
-        
+
         for move in viewObj.Group:
             move.Visibility = False
 
