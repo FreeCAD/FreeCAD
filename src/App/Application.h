@@ -858,6 +858,8 @@ public:
     /// Gets the base progress indicator instance.
     Base::ProgressIndicator& getProgressIndicator() { return _progressIndicator; }
 
+    bool fineGrained = true;
+
     friend class App::Document;
 
 protected:

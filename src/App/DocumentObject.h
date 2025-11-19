@@ -27,6 +27,7 @@
 #ifndef SRC_APP_DOCUMENTOBJECT_H_
 #define SRC_APP_DOCUMENTOBJECT_H_
 
+#include <App/DepEdge.h>
 #include <App/TransactionalObject.h>
 #include <App/PropertyExpressionEngine.h>
 #include <App/PropertyGeo.h>
@@ -475,6 +476,43 @@ public:
         OutListNoXLinked = 4, ///< Do not include links from PropertyXLink properties.
     };
 
+    /**
+     * @brief Get a list of dependency edges this object links to.
+     *
+     * The dependency edge registers both the object and the property (if
+     * applicable) this object links to.
+     *
+     * @return the vector of dependency edges.
+     */
+    const std::vector<DepEdge>& getOutListProp();
+
+    /**
+     * @brief Get a list of dependency edges this object links to.
+     *
+     * The dependency edge registers both the object and the property (if
+     * applicable) this object links to.
+     *
+     * @param[in] option Options for computing the OutList.
+     *
+     * @return the vector of dependency edges.
+     *
+     * @see OutListOption for available options.
+     */
+    std::vector<DepEdge> getOutListProp(int options);
+
+    /**
+     * @brief Get a list of dependency edges this object links to.
+     *
+     * The dependency edge registers both the object and the property (if
+     * applicable) this object links to.
+     *
+     * @param[in] option Options for computing the OutList.
+     * @param[in,out] res The vector to fill with the objects this object depends on.
+     *
+     * @see OutListOption for available options.
+     */
+    void getOutListProp(int options, std::vector<DepEdge>& res);
+
     /// Get a list of objects this object links to.
     const std::vector<App::DocumentObject*>& getOutList() const;
 
@@ -545,6 +583,15 @@ public:
     const std::vector<App::DocumentObject*>& getInList() const;
 
     /**
+     * @brief Get a list of dependency edges that link to this object.
+     *
+     * Dependency edges register both the object and the property (if applicable).
+     *
+     * @returns The list of dependency edges.
+     */
+    const std::vector<DepEdge>& getInListProp() const;
+
+    /**
      * @brief Get a list of objects that link to this object, recursively.
      *
      * This function returns all objects that link to this object directly and
@@ -579,6 +626,31 @@ public:
      * @return A set containing all objects linking to this object.
      */
     std::set<App::DocumentObject*> getInListEx(bool recursive) const;
+
+    /** @brief Get a set of all dependency edges linking to this object.
+     *
+     * This function returns a set of all dependency edges that link to this
+     * object, including possible external parent objects.  Dependency edges
+     * record both the object and the property.
+     *
+     * @param[in,out] inSet A set containing all dependency edges linking to
+     * this object.
+     * @param[in] recursive Whether to obtain the InList recursively.
+     */
+    void getInListExProp(std::set<DepEdge>& inSet, bool recursive) const;
+
+    /**
+     * @brief Get a set of all dependency edges linking to this object.
+     *
+     * This function returns a set of all dependency edges that link to this
+     * object, including possible external parent objects.  Dependency edges
+     * record both the object and the property.
+     *
+     * @param[in] recursive Whether to obtain the InList recursively.
+     *
+     * @return A set containing all dependency edges linking to this object.
+     */
+    std::set<DepEdge> getInListExProp(bool recursive) const;
 
     /**
      * @brief Get the group this object belongs to.
@@ -660,6 +732,11 @@ public:
      */
     void _addBackLink(DocumentObject*);
 
+    /// internal, used by PropertyLink to maintain DAG back links
+    void _removeBackLinkProp(const char* objProp, DocumentObject* obj, const char* myProp = nullptr);
+    /// internal, used by PropertyLink to maintain DAG back links
+    void _addBackLinkProp(const char* objProp, DocumentObject* obj, const char* myProp = nullptr);
+
     /**
      * @brief Test an about to created link for circular references.
      *
@@ -715,7 +792,7 @@ public:
     virtual std::string getElementMapVersion(const App::Property* prop,
                                              bool restored = false) const;
 
-    /** @brief Check the element map versionn of the property.
+    /** @brief Check the element map version of the property.
      *
      * This function checks whether the element map version of the given
      * property matches the given version string.  If the function returns
@@ -1370,10 +1447,13 @@ private:
     // Back pointer to all the fathers in a DAG of the document
     // this is used by the document (via friend) to have a effective DAG handling
     std::vector<App::DocumentObject*> _inList;
+    std::vector<DepEdge> _inListProp;
     mutable std::vector<App::DocumentObject*> _outList;
+    mutable std::vector<DepEdge> _outListProp;
     mutable std::unordered_map<const char*, App::DocumentObject*, CStringHasher, CStringHasher>
         _outListMap;
     mutable bool _outListCached = false;
+    mutable bool _outListCachedProp = false;
 };
 
 }  // namespace App
