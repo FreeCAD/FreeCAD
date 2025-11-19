@@ -79,6 +79,7 @@ class FemExamples(QtGui.QWidget):
         solvers = set()
         equations = set()
         materials = set()
+        meshgeneration = set()
 
         for f in files:
             module = import_module("femexamples." + f)
@@ -86,6 +87,16 @@ class FemExamples(QtGui.QWidget):
                 info = getattr(module, "get_information")()
                 files_info[f] = info
                 self.files_name[info["name"]] = f
+
+                if "meshgeneration" in info:
+                    # mesh generation example
+                    meshgeneration.add(info["meshgeneration"])
+
+                # there may be no analysis
+                if ("hasanalysis" in info) and not info["hasanalysis"]:
+                    continue
+
+                # analysis example
                 meshtypes.add(info["meshtype"])
                 mesheles.add(info["meshelement"])
                 file_equations = info["equations"]
@@ -105,6 +116,7 @@ class FemExamples(QtGui.QWidget):
         solvers = sorted(solvers)
         equations = sorted(equations)
         materials = sorted(materials)
+        meshgeneration = sorted(meshgeneration)
 
         all_examples = QtGui.QTreeWidgetItem(self.view, ["All"])
         for example, info in files_info.items():
@@ -115,6 +127,8 @@ class FemExamples(QtGui.QWidget):
         for constraint in constraints:
             constraint_item = QtGui.QTreeWidgetItem(all_constraints, [constraint])
             for example, info in files_info.items():
+                if not "constraints" in info:
+                    continue
                 file_constraints = info["constraints"]
                 if constraint in file_constraints:
                     QtGui.QTreeWidgetItem(constraint_item, [info["name"]])
@@ -124,6 +138,8 @@ class FemExamples(QtGui.QWidget):
         for equation in equations:
             equation_item = QtGui.QTreeWidgetItem(all_equations, [equation])
             for example, info in files_info.items():
+                if not "equations" in info:
+                    continue
                 file_equations = info["equations"]
                 if equation in file_equations:
                     QtGui.QTreeWidgetItem(equation_item, [info["name"]])
@@ -133,6 +149,8 @@ class FemExamples(QtGui.QWidget):
         for material in materials:
             material_item = QtGui.QTreeWidgetItem(all_materials, [material])
             for example, info in files_info.items():
+                if not "material" in info:
+                    continue
                 if info["material"] == material:
                     QtGui.QTreeWidgetItem(material_item, [info["name"]])
         self.view.addTopLevelItem(all_materials)
@@ -141,6 +159,8 @@ class FemExamples(QtGui.QWidget):
         for mesh in meshtypes:
             mesh_item = QtGui.QTreeWidgetItem(all_meshtypes, [mesh])
             for example, info in files_info.items():
+                if not "meshtype" in info:
+                    continue
                 if info["meshtype"] == mesh:
                     QtGui.QTreeWidgetItem(mesh_item, [info["name"]])
         self.view.addTopLevelItem(all_meshtypes)
@@ -149,6 +169,8 @@ class FemExamples(QtGui.QWidget):
         for mesh in mesheles:
             mesh_item = QtGui.QTreeWidgetItem(all_mesheles, [mesh])
             for example, info in files_info.items():
+                if not "meshelement" in info:
+                    continue
                 if info["meshelement"] == mesh:
                     QtGui.QTreeWidgetItem(mesh_item, [info["name"]])
         self.view.addTopLevelItem(all_mesheles)
@@ -157,10 +179,23 @@ class FemExamples(QtGui.QWidget):
         for solver in solvers:
             solver_item = QtGui.QTreeWidgetItem(all_solvers, [solver])
             for example, info in files_info.items():
+                if not "solvers" in info:
+                    continue
                 file_solvers = info["solvers"]
                 if solver in file_solvers:
                     QtGui.QTreeWidgetItem(solver_item, [info["name"]])
         self.view.addTopLevelItem(all_solvers)
+
+        all_meshgenerations = QtGui.QTreeWidgetItem(self.view, ["Mesh generation"])
+        for generator in meshgeneration:
+            generator_item = QtGui.QTreeWidgetItem(all_meshgenerations, [generator])
+            for example, info in files_info.items():
+                if not "meshgeneration" in info:
+                    continue
+                file_generators = info["meshgeneration"]
+                if generator in file_generators:
+                    QtGui.QTreeWidgetItem(generator_item, [info["name"]])
+        self.view.addTopLevelItem(all_meshgenerations)
 
         self.view.setHeaderHidden(True)
         self.view.itemClicked.connect(self.enable_buttons)

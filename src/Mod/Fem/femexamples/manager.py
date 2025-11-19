@@ -127,11 +127,70 @@ def setup_all():
     run_example("thermomech_bimetal")
 
 
+def run_mesh_generation(doc, base_name, filepath=""):
+    from os.path import join, exists
+    from os import makedirs
+    from tempfile import gettempdir as gettmp
+
+    # recompute
+    doc.recompute()
+
+    # print(doc.Objects)
+    # print([obj.Name for obj in doc.Objects])
+
+    # filepath
+    if filepath == "":
+        filepath = join(gettmp(), "FEM_examples")
+    if not exists(filepath):
+        makedirs(filepath)
+
+    # find all mesh generation objects
+    from femtools.femutils import is_derived_from
+
+    gmsh_generators = []
+    netgen_generators = []
+    for m in doc.Objects:
+        if is_derived_from(m, "Fem::FemMeshGmsh"):
+            gmsh_generators.append(m)
+        elif is_derived_from(m, "Fem::FemMeshNetgen"):
+            netgen_generators.append(m)
+
+    if not gmsh_generators and not netgen_generators:
+        # no meshes to generate
+        return
+
+    # a file name is needed for the besides dir to work
+    save_fc_file = join(filepath, (base_name + ".FCStd"))
+    FreeCAD.Console.PrintMessage(f"Save FreeCAD file for {base_name} analysis to {save_fc_file}\n.")
+    doc.saveAs(save_fc_file)
+
+    # run generations
+    from femmesh import gmshtools, netgentools
+
+    for gmsh in gmsh_generators:
+        tool = gmshtools.GmshTools(gmsh)
+        tool.create_mesh()
+
+        # make geometry invisible, and mesh visible, like in the other examples
+        gmsh.ViewObject.Visibility=True
+        gmsh.Shape.ViewObject.Visibility=False
+
+    for netgen in netgen_generators:
+        tool = netgentools.NetgenTools(netgen)
+        tool.compute()
+
+    # save doc once again with results
+    doc.save()
+
 def run_analysis(doc, base_name, filepath="", run_solver=False):
 
     from os.path import join, exists
     from os import makedirs
     from tempfile import gettempdir as gettmp
+
+    # computable?
+    if not hasattr(doc, "Analysis"):
+        return
 
     # recompute
     doc.recompute()
@@ -149,10 +208,14 @@ def run_analysis(doc, base_name, filepath="", run_solver=False):
     # thus ATM only one solver per analysis is supported
     from femtools.femutils import is_derived_from
 
+    solver = None
     for m in doc.Analysis.Group:
         if is_derived_from(m, "Fem::FemSolverObjectPython"):
             solver = m
             break
+
+    if not solver:
+        return
 
     # a file name is needed for the besides dir to work
     save_fc_file = join(filepath, (base_name + ".FCStd"))
@@ -192,6 +255,8 @@ def run_example(example, solver=None, base_name=None, run_solver=False):
         base_name = example
         if solver is not None:
             base_name += "_" + solver
+
+    run_mesh_generation(doc, base_name)
     run_analysis(doc, base_name, run_solver=run_solver)
     doc.recompute()
 

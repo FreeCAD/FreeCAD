@@ -90,9 +90,9 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
 
         ui.Recombine.setChecked(self.obj.Recombine)
         ui.Recombine.toggled.connect(self.recombineChanged)
-
         ui.Orientation.addItems(self.obj.getEnumerationsOfProperty("TriangleOrientation"))
-        ui.Orientation.setCurrentIndex(ui.Orientation.findData(self.obj.TriangleOrientation))
+        idx = self.obj.getEnumerationsOfProperty("TriangleOrientation").index(self.obj.TriangleOrientation)
+        ui.Orientation.setCurrentIndex(idx)
         ui.Orientation.currentIndexChanged.connect(self.orientationChanged)
         ui.Orientation.setDisabled(self.obj.Recombine)
 
