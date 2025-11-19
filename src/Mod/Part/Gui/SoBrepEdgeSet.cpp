@@ -130,6 +130,17 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction* action)
 
     bool hasColorOverride = (ctx2 && !ctx2->colors.empty());
     if (hasColorOverride) {
+        // Special handling for edge color overrides (e.g. highlighting specific edges).
+        // We initially attempted to use the same logic as SoBrepFaceSet (setting
+        // SoMaterialBindingElement::PER_PART_INDEXED and populating SoLazyElement arrays).
+        // However, this proved brittle for SoIndexedLineSet, causing persistent crashes
+        // in SoMaterialBundle/SoGLLazyElement (SIGSEGV) due to internal Coin3D state
+        // mismatches when mixing Lit (default) and Unlit (highlighted) states.
+        //
+        // To ensure stability, we bypass the base class GLRender entirely and perform
+        // a manual dual-pass render using direct OpenGL calls:
+        // Pass 1: Render default lines using the current Coin3D state (Lighting enabled).
+        // Pass 2: Render highlighted lines with Lighting disabled to ensure bright, flat colors.
         state->push();
 
         const SoCoordinateElement* coords;
@@ -140,6 +151,8 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction* action)
         const int32_t* mindices;
         int numcindices;
         SbBool normalCacheUsed;
+
+        // We request normals (true) because default lines need them for lighting
         this->getVertexData(
             state,
             coords,
@@ -149,54 +162,109 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction* action)
             tindices,
             mindices,
             numcindices,
-            false,
+            true,
             normalCacheUsed
         );
 
+        const SbVec3f* coords3d = coords->getArrayPtr3();
+
+        // Apply the default material settings (Standard Lighting/Material)
+        // This ensures default lines look correct (e.g. Black)
         SoMaterialBundle mb(action);
         mb.sendFirst();
 
-        std::vector<uint32_t> packedColors;
-        std::vector<int32_t> matIdx;
-        bool hasTransparency = false;
-
-        // CORRECTED way to get default packed color
-        const SoLazyElement* lazyElem = SoLazyElement::getInstance(state);
-        packedColors.push_back(
-            lazyElem->getDiffuse(state, 0).getPackedValue(lazyElem->getTransparency(state, 0))
-        );
+        // We will collect highlighted segments to render them in a second pass
+        // so we don't have to switch GL state constantly.
+        struct HighlightSegment
+        {
+            int startIndex;
+            Base::Color color;
+        };
+        std::vector<HighlightSegment> highlights;
 
         int linecount = 0;
-        for (int i = 0; i < numcindices; i++) {
-            if (cindices[i] < 0) {
-                auto it = ctx2->colors.find(linecount);
-                if (it != ctx2->colors.end()) {
-                    packedColors.push_back(ctx2->packColor(it->second, hasTransparency));
-                    matIdx.push_back(packedColors.size() - 1);
-                }
-                else {
-                    auto it_all = ctx2->colors.find(-1);
-                    if (it_all != ctx2->colors.end()) {
-                        packedColors.push_back(ctx2->packColor(it_all->second, hasTransparency));
-                        matIdx.push_back(packedColors.size() - 1);
-                    }
-                    else {
-                        matIdx.push_back(0);
-                    }
-                }
-                linecount++;
+        int i = 0;
+
+        // --- PASS 1: Render Default Lines (Lit) ---
+        while (i < numcindices) {
+            int startIndex = i;
+
+            // Check if this line index has an override color
+            const Base::Color* pColor = nullptr;
+            auto it = ctx2->colors.find(linecount);
+            if (it != ctx2->colors.end()) {
+                pColor = &it->second;
             }
+            else {
+                // Check for wildcard color
+                auto it_all = ctx2->colors.find(-1);
+                if (it_all != ctx2->colors.end()) {
+                    pColor = &it_all->second;
+                }
+            }
+
+            if (pColor) {
+                // This is a highlighted line. Save it for Pass 2.
+                highlights.push_back({startIndex, *pColor});
+
+                // Skip over the indices for this line
+                while (i < numcindices && cindices[i] >= 0) {
+                    i++;
+                }
+                i++;  // skip the -1 separator
+            }
+            else {
+                // This is a default line. Render immediately with current (Lit) state.
+                glBegin(GL_LINE_STRIP);
+                while (i < numcindices) {
+                    int32_t idx = cindices[i++];
+                    if (idx < 0) {
+                        break;
+                    }
+
+                    if (idx < coords->getNum()) {
+                        if (normals) {
+                            glNormal3fv((const GLfloat*)(normals + idx));
+                        }
+                        glVertex3fv((const GLfloat*)(coords3d + idx));
+                    }
+                }
+                glEnd();
+            }
+            linecount++;
         }
 
-        if (!matIdx.empty()) {
-            SoLazyElement::setPacked(state, this, packedColors.size(), packedColors.data(), hasTransparency);
-            SoMaterialBindingElement::set(state, this, SoMaterialBindingElement::PER_PART_INDEXED);
-            this->materialIndex.setValues(0, matIdx.size(), matIdx.data());
+        // --- PASS 2: Render Highlighted Lines (Unlit) ---
+        if (!highlights.empty()) {
+            // Disable lighting and textures so the color is flat and bright
+            glPushAttrib(GL_LIGHTING_BIT | GL_CURRENT_BIT | GL_ENABLE_BIT);
+            glDisable(GL_LIGHTING);
+            glDisable(GL_TEXTURE_2D);
+
+            for (const auto& segment : highlights) {
+                // Apply the explicit color from the map
+                // Note: FreeCAD Base::Color transparency is 0.0 (opaque) to 1.0 (transparent)
+                // OpenGL Alpha is 1.0 (opaque) to 0.0 (transparent)
+                glColor4f(segment.color.r, segment.color.g, segment.color.b, 1.0f - segment.color.a);
+
+                glBegin(GL_LINE_STRIP);
+                int j = segment.startIndex;
+                while (j < numcindices) {
+                    int32_t idx = cindices[j++];
+                    if (idx < 0) {
+                        break;
+                    }
+
+                    if (idx < coords->getNum()) {
+                        glVertex3fv((const GLfloat*)(coords3d + idx));
+                    }
+                }
+                glEnd();
+            }
+            glPopAttrib();
         }
 
-        inherited::GLRender(action);
-
-        this->materialIndex.deleteValues(0);
+        // Do NOT call inherited::GLRender(action). We have handled all rendering manually.
         state->pop();
         return;
     }
