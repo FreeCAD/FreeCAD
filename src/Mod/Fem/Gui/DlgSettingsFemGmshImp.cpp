@@ -61,14 +61,13 @@ void DlgSettingsFemGmshImp::loadSettings()
 {
     ui->fc_gmsh_binary_path->onRestore();
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Fem/Gmsh"
-    );
     // determine number of CPU threads
-    ui->sb_threads->setValue(hGrp->GetInt("NumOfThreads", QThread::idealThreadCount()));
 
-    ui->cb_log_verbosity->onRestore();
+    ParameterGrp::handle hGrp = ui->sb_threads->getWindowParameter();
+    ui->sb_threads->setValue(hGrp->GetInt(ui->sb_threads->entryName(), QThread::idealThreadCount()));
+
     populateLogVerbosity();
+    ui->cb_log_verbosity->onRestore();
 }
 
 /**
@@ -106,14 +105,13 @@ void DlgSettingsFemGmshImp::populateLogVerbosity()
 
     ui->cb_log_verbosity->clear();
     for (const auto& val : mapValues) {
-        ui->cb_log_verbosity->addItem(tr(val.first.c_str()), QString::number(val.second));
+        ui->cb_log_verbosity->addItem(tr(val.first.c_str()), QByteArray::number(val.second));
     }
 
-    auto hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Fem/Gmsh"
-    );
-    std::string current = hGrp->GetASCII("LogVerbosity", "3");
-    int index = ui->cb_log_verbosity->findData(QString::fromStdString(current));
+    // set default index
+    auto hGrp = ui->cb_log_verbosity->getWindowParameter();
+    std::string current = hGrp->GetASCII(ui->cb_log_verbosity->entryName(), "3");
+    int index = ui->cb_log_verbosity->findData(QByteArray::fromStdString(current));
     ui->cb_log_verbosity->setCurrentIndex(index);
 }
 
