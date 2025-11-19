@@ -110,6 +110,7 @@ SET(FemExamples_SRCS
     femexamples/thermomech_bimetal.py
     femexamples/truss_3d_cs_circle_ele_seg2.py
     femexamples/truss_3d_cs_circle_ele_seg3.py
+    femexamples/gmsh_transfinite_manual.py
 )
 
 
@@ -373,6 +374,7 @@ SET(FemTestsApp_SRCS
     femtest/app/test_solver_elmer.py
     femtest/app/test_solver_mystran.py
     femtest/app/test_solver_z88.py
+    femtest/app/test_gmsh.py
 )
 
 SET(FemTestsFiles_SRCS
@@ -446,6 +448,26 @@ SET(FemTestsMesh_SRCS
     femtest/data/mesh/tetra10_mesh.yml
     femtest/data/mesh/tetra10_mesh.z88
 )
+
+SET(FemTestsGMESH_SRCS
+    femtest/data/gmsh/Hexagon_4_Sided_Surface_Recombined.vtk
+    femtest/data/gmsh/Hexagon_4_Sided_Non_symmetric_Surface_Recombined.vtk
+    femtest/data/gmsh/Hexagon_3_Sided_Surface_Recombined.vtk
+    femtest/data/gmsh/Hexagon_3_Sided_Non_symmetric_Surface_Recombined.vtk
+    femtest/data/gmsh/Triangle_Surface_Recombined_Unequal_Oriented.vtk
+    femtest/data/gmsh/Triangle_Surface_Recombined_Unequal_Guided.vtk
+    femtest/data/gmsh/Quad_Surface_Recombined_Bumped.vtk
+    femtest/data/gmsh/Quad_Surface_Recombined.vtk
+    femtest/data/gmsh/Quad_Surface.vtk
+    femtest/data/gmsh/Quad_3D_Curved_Surface_Recombined_Guided.vtk
+    femtest/data/gmsh/Quad_Curved_Surface_Recombined_Guided.vtk
+    femtest/data/gmsh/Quad_Distorted_Surface_Recombined_Guided.vtk
+    femtest/data/gmsh/Triangle_Surface_Recombined_Orientated.vtk
+    femtest/data/gmsh/Triangle_Surface_Recombined_Bumped.vtk
+    femtest/data/gmsh/Triangle_Surface_Recombined.vtk
+    femtest/data/gmsh/Triangle_Surface.vtk
+)
+
 
 SET(FemTestsMystran_SRCS
     femtest/data/mystran/__init__.py
@@ -549,6 +571,7 @@ SET(FemAllScripts
     ${FemTestsCcx_SRCS}
     ${FemTestsElmer_SRCS}
     ${FemTestsMesh_SRCS}
+    ${FemTestsGMESH_SRCS}
     ${FemTestsMystran_SRCS}
     ${FemTestsOpen_SRCS}
     ${FemTestsZ88Main_SRCS}
