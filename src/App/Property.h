@@ -95,8 +95,8 @@ public:
         PartialTrigger = 10,
         /// Whether to prevent to touch the owner for a recompute on property change.
         NoRecompute = 11,
-        /// Whether a floating point number should be saved as single precision.
-        Single = 12,
+        /// Whether a property is an input property.
+        Input = 12,
         /// For PropertyLists, whether the order of the elements is
         /// relevant for the container using it.
         Ordered = 13,
@@ -133,17 +133,19 @@ public:
         PropHidden = 26,
         /// Corresponds to Prop_Output.
         PropOutput = 27,
+        /// Corresponds to Prop_Input.
+        PropInput = 28,
         /// Mark the end of enum PropertyType bits.
-        PropStaticEnd = 28,
+        PropStaticEnd = 29,
 
         /// User defined status bit.
-        User1 = 28,
+        User1 = 29,
         /// User defined status bit.
-        User2 = 29,
+        User2 = 30,
         /// User defined status bit.
-        User3 = 30,
+        User3 = 31,
         /// User defined status bit.
-        User4 = 31
+        User4 = 32
     };
 
     /// Construct a property.
