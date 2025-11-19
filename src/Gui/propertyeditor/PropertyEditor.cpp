@@ -806,6 +806,7 @@ enum MenuAction
     MA_EditPropGroup,
     MA_Transient,
     MA_Output,
+    MA_Input,
     MA_NoRecompute,
     MA_ReadOnly,
     MA_Hidden,
@@ -1077,6 +1078,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
 
         ACTION_SETUP(Hidden);
         ACTION_SETUP(Output);
+        ACTION_SETUP(Input);
         ACTION_SETUP(NoRecompute);
         ACTION_SETUP(ReadOnly);
         ACTION_SETUP(Transient);
@@ -1135,6 +1137,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
             ACTION_CHECK(Transient);
             ACTION_CHECK(ReadOnly);
             ACTION_CHECK(Output);
+            ACTION_CHECK(Input);
             ACTION_CHECK(Hidden);
             ACTION_CHECK(EvalOnRestore);
             ACTION_CHECK(CopyOnChange);
