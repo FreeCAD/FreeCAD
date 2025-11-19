@@ -781,6 +781,7 @@ bool importExternalElements(App::PropertyLinkSub& prop, std::vector<App::SubObje
     std::vector<App::SubObjectT> sobjs;
     auto docName = editObj->getDocument()->getName();
     auto inList = editObj->getInListEx(true);
+    auto inListProp = editObj->getInListExProp(true);
     for (auto sobjT : _sobjs) {
         auto sobj = sobjT.getSubObject();
         if (sobj == editObj) {
@@ -789,11 +790,24 @@ bool importExternalElements(App::PropertyLinkSub& prop, std::vector<App::SubObje
         if (!sobj) {
             FC_THROWM(Base::RuntimeError, "Object not found: " << sobjT.getSubObjectFullName(docName));
         }
-        if (inList.count(sobj)) {
-            FC_THROWM(
-                Base::RuntimeError,
-                "Cyclic dependency on object " << sobjT.getSubObjectFullName(docName)
-            );
+        if (App::GetApplication().fineGrained) {
+            // Fully mimics the else block except for taking into account input properties.
+            for (const auto& [fromObj, fromProp, toObj, toProp] : inListProp) {
+                if (fromObj == sobj && !editObj->isInputProperty(toProp)) {
+                    FC_THROWM(
+                        Base::RuntimeError,
+                        "Cyclic dependency on object " << sobjT.getSubObjectFullName(docName)
+                    );
+                }
+            }
+        }
+        else {
+            if (inList.count(sobj)) {
+                FC_THROWM(
+                    Base::RuntimeError,
+                    "Cyclic dependency on object " << sobjT.getSubObjectFullName(docName)
+                );
+            }
         }
         sobjT.normalized();
         // Make sure that if a subelement is chosen for some object,
