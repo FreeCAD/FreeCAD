@@ -38,6 +38,7 @@
 #include <map>
 #include <set>
 #include <string>
+#include <utility>
 #include <vector>
 
 namespace Base
@@ -184,6 +185,7 @@ public:
     /// test if this document object is touched
     bool isTouched() const;
     /// Enforce this document object to be recomputed
+    void enforceRecompute(std::string& propName);
     void enforceRecompute();
     /// Test if this document object must be recomputed
     bool mustRecompute() const;
@@ -193,6 +195,7 @@ public:
         StatusBits.reset(ObjectStatus::Touch);
         StatusBits.reset(ObjectStatus::Enforce);
         setPropertyStatus(0, false);
+        touchedProps.clear();
     }
     /// set this feature to error
     bool isError() const
@@ -794,6 +797,7 @@ protected:
 
 private:
     void printInvalidLinks() const;
+    void setTouched(const char* propName);
 
     /// python object of this class and all descendent
 protected:  // attributes
@@ -813,6 +817,9 @@ private:
 
     // unique identifier (among a document) of this object.
     long _Id {0};
+
+private:
+    std::unordered_set<std::string> touchedProps;
 
 private:
     // Back pointer to all the fathers in a DAG of the document
