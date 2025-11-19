@@ -42,6 +42,7 @@
 #include <map>
 #include <set>
 #include <string>
+#include <utility>
 #include <vector>
 
 namespace Base
@@ -320,6 +321,18 @@ public:
     void enforceRecompute();
 
     /**
+     * @brief Enforce this document object to be recomputed.
+     *
+     * The given property is a property that is marked as a dependency by a
+     * property from a different document object that is touched.  As such, the
+     * given property needs to be touched as well.
+     *
+     * @param[in] propName The name of the property that needs to be marked as
+     * touched.
+     */
+    void enforceRecompute(std::string& propName);
+
+    /**
      * @brief Check whether the document object must be recomputed.
      *
      * This means that the 'Enforce' flag is set or that \ref mustExecute()
@@ -335,6 +348,7 @@ public:
         StatusBits.reset(ObjectStatus::Touch);
         StatusBits.reset(ObjectStatus::Enforce);
         setPropertyStatus(0, false);
+        touchedProps.clear();
     }
 
     /// Check whether this document object is in an error state.
@@ -1421,6 +1435,7 @@ protected:
 
 private:
     void printInvalidLinks() const;
+    void setTouched(const char* propName);
 
 protected:  // attributes
 
@@ -1442,6 +1457,9 @@ private:
 
     // unique identifier (among a document) of this object.
     long _Id {0};
+
+private:
+    std::unordered_set<std::string> touchedProps;
 
 private:
     // Back pointer to all the fathers in a DAG of the document
