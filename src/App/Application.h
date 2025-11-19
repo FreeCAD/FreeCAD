@@ -487,6 +487,8 @@ public:
     /// Gets the base progress indicator instance.
     Base::ProgressIndicator& getProgressIndicator() { return _progressIndicator; }
 
+    bool fineGrained = true;
+
     friend class App::Document;
 
 protected:
@@ -604,6 +606,8 @@ private:
     static PyObject *sGetActiveTransaction  (PyObject *self,PyObject *args);
     static PyObject *sCloseActiveTransaction(PyObject *self,PyObject *args);
     static PyObject *sCheckAbort(PyObject *self,PyObject *args);
+    static PyObject *sSetFineGrainedRecompute(PyObject *self,PyObject *args);
+    static PyObject *sGetFineGrainedRecompute(PyObject *self);
     static PyMethodDef    Methods[];
     // clang-format on
 
