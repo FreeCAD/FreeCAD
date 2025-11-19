@@ -745,7 +745,7 @@ void DlgPropertyLink::onSelectionChanged(const Gui::SelectionChanges& msg)
 
     ui->treeWidget->scrollToItem(item);
     if (allowSubObject) {
-        QString element = QString::fromLatin1(msg.Object.getOldElementName().c_str());
+        QString element = QString::fromUtf8(msg.Object.getOldElementName().c_str());
         if (element.size()) {
             QStringList list;
             QString text = item->text(1);
@@ -868,7 +868,7 @@ QString DlgPropertyLink::linksToPython(const QList<App::SubObjectT>& links)
     }
 
     if (links.size() == 1) {
-        return QString::fromLatin1(links.front().getSubObjectPython(false).c_str());
+        return QString::fromUtf8(links.front().getSubObjectPython(false).c_str());
     }
 
     std::ostringstream ss;
@@ -891,7 +891,7 @@ QString DlgPropertyLink::linksToPython(const QList<App::SubObjectT>& links)
         ss << ']';
     }
 
-    return QString::fromLatin1(ss.str().c_str());
+    return QString::fromUtf8(ss.str().c_str());
 }
 
 void DlgPropertyLink::filterObjects()
@@ -1114,7 +1114,7 @@ QTreeWidgetItem* DlgPropertyLink::createTypeItem(Base::Type type)
         item = new QTreeWidgetItem(item);
     }
     item->setExpanded(true);
-    item->setText(0, QString::fromLatin1(type.getName()));
+    item->setText(0, QString::fromUtf8(type.getName()));
     if (type == App::DocumentObject::getClassTypeId()) {
         item->setFlags(Qt::ItemIsEnabled);
     }
@@ -1129,7 +1129,7 @@ bool DlgPropertyLink::filterType(QTreeWidgetItem* item)
         auto& pitem = typeItems[proxyType];
         if (!pitem) {
             pitem = new QTreeWidgetItem(ui->typeTree);
-            pitem->setText(0, QString::fromLatin1(proxyType));
+            pitem->setText(0, QString::fromUtf8(proxyType));
             pitem->setIcon(0, item->icon(0));
             pitem->setData(0, Qt::UserRole, proxyType);
         }
