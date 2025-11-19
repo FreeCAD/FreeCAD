@@ -357,6 +357,12 @@ public:
     bool testIfLinkDAGCompatible(App::PropertyLinkSubList& linksTo) const;
     bool testIfLinkDAGCompatible(App::PropertyLinkSub& linkTo) const;
 
+    /// check if the property is an input property
+    bool isInputProperty(const std::string& propName) const;
+    bool isInputProperty(const Property* prop) const;
+    bool isOutputProperty(const std::string& propName) const;
+    bool isOutputProperty(const Property* prop) const;
+
     /** Return the element map version of the geometry data stored in the given property
      *
      * @param prop: the geometry property to query for element map version

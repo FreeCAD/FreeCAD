@@ -42,7 +42,7 @@ class PropertyContainer(Persistence):
     def getTypeOfProperty(self, name: str, /) -> list:
         """
         Returns the type of a named property. This can be a list conformed by elements in
-        (Hidden, NoRecompute, NoPersist, Output, ReadOnly, Transient).
+        (Hidden, NoRecompute, NoPersist, Output, ReadOnly, Transient, Input).
 
         name : str
             Property name.

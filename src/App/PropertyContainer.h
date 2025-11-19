@@ -70,6 +70,8 @@ enum PropertyType
     Prop_NoRecompute = 16,
     /// The property won't be saved to file at all.
     Prop_NoPersist   = 32,
+    /// The property is a true input property.
+    Prop_Input   = 64,
 };
 // clang-format on
 

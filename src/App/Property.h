@@ -96,8 +96,8 @@ public:
         PartialTrigger = 10,
         /// Whether to prevent to touch the owner for a recompute on property change.
         NoRecompute = 11,
-        /// Whether a floating point number should be saved as single precision.
-        Single = 12,
+        /// Whether a property is an input property.
+        Input = 12,
         /// For PropertyLists, whether the order of the elements is
         /// relevant for the container using it.
         Ordered = 13,
