@@ -1,5 +1,5 @@
 import sys
-from os import sys, path
+from os import path
 
 # Actual code generation is done in Base/param_utils.py.
 
