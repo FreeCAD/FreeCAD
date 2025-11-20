@@ -20,7 +20,7 @@
 # ***************************************************************************
 """Auto code generator for preference page of Display/UI"""
 import cog, sys
-from os import sys, path
+from os import path
 
 # import Tools/params_utils.py
 sys.path.append(

@@ -21,7 +21,7 @@
 """Auto code generator for overlay widgets related parameters in Preferences/View"""
 import cog
 import inspect, sys
-from os import sys, path
+from os import path
 
 # import Tools/params_utils.py
 sys.path.append(path.join(path.dirname(path.dirname(path.abspath(__file__))), "Tools"))
