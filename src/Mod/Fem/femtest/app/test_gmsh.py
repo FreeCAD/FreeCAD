@@ -43,6 +43,10 @@ def generate_gmesh_samples_from_example_doc(doc, datapath):
     # later compare. Run this only if you want to recreate the golden test meshes which
     # are added into the source code
     # Note: Run this from the source folder!
+    #
+    # from withing freecad with the example files open, run:
+    # from femtest.app import test_gmsh
+    # test_gmsh.generate_gmesh_samples_from_example_doc(App.ActiveDocument, path_to_src_data_folder)
 
     # collect all gmsh objects
     gmsh = []
@@ -194,9 +198,17 @@ class TestGMSHTransfinite(TestGMSHBase):
 
 
     # ********************************************************************************************
-    def test_manual(self):
+    def test_GMSHTransfiniteManual(self):
 
         self.load_example_file("gmsh_transfinite_manual")
+        gmshs = self.get_gmsh_objects()
+        for gmsh in gmshs:
+            self.execute_gmsh(gmsh)
+            self.compare_mesh_to_sample(gmsh)
+
+    def test_GMSHTransfiniteAutomation(self):
+
+        self.load_example_file("gmsh_transfinite_automation")
         gmshs = self.get_gmsh_objects()
         for gmsh in gmshs:
             self.execute_gmsh(gmsh)
