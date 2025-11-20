@@ -6689,4 +6689,3 @@ void DocumentObjectItem::applyExpandedSnapshot(
 }
 
 #include "moc_Tree.cpp"
-
