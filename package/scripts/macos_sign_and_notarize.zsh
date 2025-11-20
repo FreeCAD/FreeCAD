@@ -83,8 +83,11 @@ fi
 
 # Check for dmgbuild executable
 if ! command -v dmgbuild &> /dev/null; then
-    echo "Error: dmgbuild not installed. Please install it for example using pip:"
-    echo 'pip3 install "dmgbuild[badge_icons]>=1.6.0,<1.7.0"'
+    echo 'Error: dmgbuild not installed. Please install it'
+    echo '- using pixi:'
+    echo 'pixi g install dmgbuild --with pyobjc-framework-Quartz'
+    echo '- using pip:'
+    echo 'pip3 install dmgbuild pyobjc-framework-Quartz'
     exit 1
 fi
 
@@ -125,13 +128,13 @@ ID_FILE="${DMG_NAME}.notarization_id"
 # This is a *very slow* process, and occasionally the GitHub runners lose the internet connection for a short time
 # during the run. So in order to be fault-tolerant, this script polls, instead of using --wait
 submit_notarization_request() {
-  if [[ -s "$ID_FILE" ]]; then
-    cat "$ID_FILE"
+  if [[ -s "${ID_FILE}" ]]; then
+    cat "${ID_FILE}"
     return
   fi
   local out
-  if ! out=$(xcrun notarytool submit --keychain-profile "$KEYCHAIN_PROFILE" \
-                --output-format json --no-progress "$DMG_NAME" 2>&1); then
+  if ! out=$(xcrun notarytool submit --keychain-profile "${KEYCHAIN_PROFILE}" \
+                --output-format json --no-progress "${DMG_NAME}" 2>&1); then
       print -r -- "$out" >&2
       return 1
   fi
@@ -142,14 +145,14 @@ submit_notarization_request() {
     /usr/bin/python3 -c 'import sys, json; print(json.load(sys.stdin).get("id",""))'
   )
   [[ -n "$id" ]] || { print -r -- "Could not parse submission id" >&2; return 1; }
-  print -r -- "$id" > "$ID_FILE"
+  print -r -- "$id" > "${ID_FILE}"
   print -r -- "$id"  # ID is a string here, not an integer, so I can't just return it
 }
 
 wait_for_notarization_result() {
   local id="$1" attempt=0
   while :; do
-    if xcrun notarytool wait "$id" --keychain-profile "$KEYCHAIN_PROFILE" \
+    if xcrun notarytool wait "$id" --keychain-profile "${KEYCHAIN_PROFILE}" \
           --timeout 10m --no-progress >/dev/null; then
       return 0
     fi
@@ -161,7 +164,7 @@ wait_for_notarization_result() {
     tmp_json=$(mktemp)
     trap 'rm -f "$tmp_json"' EXIT INT TERM
 
-    xcrun notarytool info "$id" --keychain-profile "$KEYCHAIN_PROFILE" --output-format json 2>/dev/null > "$tmp_json"
+    xcrun notarytool info "$id" --keychain-profile "${KEYCHAIN_PROFILE}" --output-format json 2>/dev/null > "$tmp_json"
     /usr/bin/python3 - "$tmp_json" <<'PY'
 import sys, json
 try:
@@ -180,7 +183,7 @@ PY
 
     if [[ $rc == 2 ]]; then
       print -r -- "Notarization was not accepted by Apple:" >&2
-      xcrun notarytool log "$id" --keychain-profile "$KEYCHAIN_PROFILE" >&2
+      xcrun notarytool log "$id" --keychain-profile "${KEYCHAIN_PROFILE}" >&2
       return 3
     fi
 
@@ -204,9 +207,9 @@ print "Notarization submission ID: $id"
 
 if wait_for_notarization_result "$id"; then
   print "✅ Notarization succeeded. Stapling..."
-  xcrun stapler staple "$DMG_NAME"
-  print "Stapled: $DMG_NAME"
-  rm -f "$ID_FILE"
+  xcrun stapler staple "${DMG_NAME}"
+  print "Stapled: ${DMG_NAME}"
+  rm -f "${ID_FILE}"
 else
   rc=$?
   print "❌ Notarization failed (code $rc)." >&2

@@ -1,5 +1,7 @@
-name: Weekly Build
+name: Build Release
 on:
+  release:
+    types: [created]
   schedule:
    - cron: "0 0 * * 3"
   workflow_dispatch:
@@ -8,10 +10,10 @@ permissions:
   contents: write
 
 jobs:
-  tag_build:
+  upload_src:
     runs-on: ubuntu-latest
     outputs:
-      build_tag: ${{ steps.tag_build.outputs.build_tag }}
+      build_tag: ${{ steps.get_tag.outputs.build_tag }}
     steps:
       - name: Harden the runner (Audit all outbound calls)
         uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
@@ -21,20 +23,25 @@ jobs:
       - name: Checkout Source
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
+          ref: ${{ github.sha }}
           fetch-depth: 2
           fetch-tags: true
           submodules: 'recursive'
 
-      - name: Tag Build
-        id: tag_build
+      - name: get tag and create release if weekly
+        id: get_tag
         shell: bash -l {0}
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          export BUILD_TAG=weekly-$(date "+%Y.%m.%d")
+          if [ "${{ github.event_name }}" = "release" ]; then
+            export BUILD_TAG="${{ github.event.release.tag_name }}"
+          else
+            export BUILD_TAG=weekly-$(date "+%Y.%m.%d")
+            gh release create ${BUILD_TAG} --title "Development Build ${BUILD_TAG}" -F .github/workflows/weekly-build-notes.md --prerelease || true
+          fi
           echo "BUILD_TAG=${BUILD_TAG}" >> "$GITHUB_ENV"
           echo "build_tag=${BUILD_TAG}" >> "$GITHUB_OUTPUT"
-          gh release create ${BUILD_TAG} --title "Development Build ${BUILD_TAG}" -F .github/workflows/weekly-build-notes.md --prerelease || true
 
       - name: Upload Source
         id: upload_source
@@ -42,10 +49,10 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          python3 package/rattler-build/scripts/make_version_file.py ../freecad_version.txt
+          python3 package/scripts/write_version_info.py ../freecad_version.txt
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git config user.name 'github-actions[bot]'
-          git apply package/rattler-build/scripts/disable_git_info.patch
+          git apply package/disable_git_info.patch
           git commit -a -m "Disable git info write to Version.h"
           git archive HEAD -o freecad_source_${BUILD_TAG}.tar
           git submodule foreach --recursive \
@@ -57,7 +64,7 @@ jobs:
           gh release upload --clobber ${BUILD_TAG} "freecad_source_${BUILD_TAG}.tar.gz" "freecad_source_${BUILD_TAG}.tar.gz-SHA256.txt"
 
   build:
-    needs: tag_build
+    needs: upload_src
     strategy:
       matrix:
         include:
@@ -88,10 +95,8 @@ jobs:
       - name: Set Platform Environment Variables
         shell: bash -l {0}
         env:
-          BUILD_TAG: ${{ needs.tag_build.outputs.build_tag }}
           OPERATING_SYSTEM: ${{ runner.os }}
         run: |
-          echo "BUILD_TAG=${BUILD_TAG}" >> "$GITHUB_ENV"
           if [[ $OPERATING_SYSTEM == 'Windows' ]]; then
             echo 'PIXI_CACHE_DIR=D:\rattler' >> "$GITHUB_ENV"
             echo 'RATTLER_CACHE_DIR=D:\rattler' >> "$GITHUB_ENV"
@@ -100,6 +105,7 @@ jobs:
       - name: Checkout Source
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
+          ref: ${{ github.sha }}
           fetch-depth: 2
           fetch-tags: true
           submodules: 'recursive'
@@ -110,6 +116,7 @@ jobs:
           cache: false
 
       - name: Install the Apple certificate and provisioning profile
+        id: get_cert
         if: runner.os == 'macOS'
         env:
           APP_SPECIFIC_PASSWORD: ${{ secrets.APP_SPECIFIC_PASSWORD }}
@@ -120,9 +127,15 @@ jobs:
           KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
           P12_PASSWORD: ${{ secrets.P12_PASSWORD }}
         run: |
+          if [ -z "$BUILD_CERTIFICATE_BASE64" ]; then
+            echo "has_cert=false" >> $GITHUB_OUTPUT
+            echo "No certificate avalable... skipping" && exit 0
+          else
+            echo "has_cert=true" >> $GITHUB_OUTPUT
+          fi
           # create variables
           CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
-          PP_PATH=$RUNNER_TEMP/FreeCAD_Weekly.provisionprofile
+          PP_PATH=$RUNNER_TEMP/FreeCAD_bundle.provisionprofile
           KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
 
           export KEYCHAIN_PASSWORD=$(openssl rand -base64 8)
@@ -152,12 +165,13 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           SIGNING_KEY_ID: ${{ secrets.SIGNING_KEY_ID }}
-          SIGN_RELEASE: "true"
+          SIGN_RELEASE: ${{ steps.get_cert.outputs.has_cert }}
           TARGET_PLATFORM: ${{ matrix.target }}
+          MAKE_INSTALLER: "true"
           UPLOAD_RELEASE: "true"
+          BUILD_TAG: ${{ needs.upload_src.outputs.build_tag }}
         run: |
-          python3 package/rattler-build/scripts/make_version_file.py ../freecad_version.txt
-          git apply package/rattler-build/scripts/disable_git_info.patch
+          python3 package/scripts/write_version_info.py ../freecad_version.txt
           cd package/rattler-build
           pixi install
           pixi run -e package create_bundle

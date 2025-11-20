@@ -11,12 +11,10 @@ import SubWCRev
 
 gitInfo = SubWCRev.GitControl()
 gitInfo.extractInfo("","")
-gitDescription = os.environ['BUILD_TAG']
 
 i = open("src/Build/Version.h.cmake")
 content = []
 for line in i.readlines():
-	line = line.replace("-${PACKAGE_VERSION_SUFFIX}",gitDescription)
 	line = line.replace("${PACKAGE_WCREF}",gitInfo.rev)
 	line = line.replace("${PACKAGE_WCDATE}",gitInfo.date)
 	line = line.replace("${PACKAGE_WCURL}",gitInfo.url)
@@ -28,6 +26,14 @@ with open("src/Build/Version.h.cmake", "w") as o:
 	content.append('#define FCRepositoryBranch "%s"\n' % (gitInfo.branch))
 	o.writelines(content)
 
+with open("src/Tools/SubWCRev.py", "r") as f:
+	new_subwcrev = f.read()
+	new_subwcrev = new_subwcrev.replace("lines = i.writeVersion(lines)",
+		"#lines = i.writeVersion(lines) # this source package already has git info, we do nothing here")
+
+with open("src/Tools/SubWCRev.py", "w") as f:
+	f.writelines(new_subwcrev)
+
 with open(os.sys.argv[1], "w") as f:
 	f.write(f"rev_number: {gitInfo.rev}\n")
 	f.write(f"branch_name: {gitInfo.branch}\n")
@@ -35,8 +41,9 @@ with open(os.sys.argv[1], "w") as f:
 	f.write(f"commit_hash: {gitInfo.hash}\n")
 	f.write(f"remote_url: {gitInfo.url}\n")
 
-p = subprocess.Popen(["git", "-c", "user.name='github-actions[bot]'", "-c", "user.email='41898282+github-actions[bot]@users.noreply.github.com'",
-		       "commit", "-a", "-m", "add git information"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+p = subprocess.Popen(["git", "-c", "user.name='github-actions[bot]'", "-c",
+	"user.email='41898282+github-actions[bot]@users.noreply.github.com'", "commit", "-a", "-m",
+	"add git version information"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
 out, err = p.communicate()
 
