@@ -455,18 +455,37 @@ SET(FemTestsGMESH_SRCS
     femtest/data/gmsh/Hexagon_4_Sided_Non_symmetric_Surface_Recombined.vtk
     femtest/data/gmsh/Hexagon_3_Sided_Surface_Recombined.vtk
     femtest/data/gmsh/Hexagon_3_Sided_Non_symmetric_Surface_Recombined.vtk
-    femtest/data/gmsh/Triangle_Surface_Recombined_Unequal_Oriented.vtk
-    femtest/data/gmsh/Triangle_Surface_Recombined_Unequal_Guided.vtk
     femtest/data/gmsh/Quad_Surface_Recombined_Bumped.vtk
     femtest/data/gmsh/Quad_Surface_Recombined.vtk
     femtest/data/gmsh/Quad_Surface.vtk
     femtest/data/gmsh/Quad_3D_Curved_Surface_Recombined_Guided.vtk
     femtest/data/gmsh/Quad_Curved_Surface_Recombined_Guided.vtk
     femtest/data/gmsh/Quad_Distorted_Surface_Recombined_Guided.vtk
+    femtest/data/gmsh/Triangle_Surface_Recombined_Unequal_Oriented.vtk
+    femtest/data/gmsh/Triangle_Surface_Recombined_Unequal_Guided.vtk
     femtest/data/gmsh/Triangle_Surface_Recombined_Orientated.vtk
     femtest/data/gmsh/Triangle_Surface_Recombined_Bumped.vtk
     femtest/data/gmsh/Triangle_Surface_Recombined.vtk
     femtest/data/gmsh/Triangle_Surface.vtk
+    femtest/data/gmsh/Triangle_Strip_Oriented_Guided_Automated.vtk
+    femtest/data/gmsh/Triangle_Surface_Guided_Opposing_Automated.vtk
+    femtest/data/gmsh/Triangle_Surface_Guided_Automated.vtk
+    femtest/data/gmsh/Triangle_Surface_Automated.vtk
+    femtest/data/gmsh/Triangle_Strip_Oriented_Automated.vtk
+    femtest/data/gmsh/Triangle_Strip_Guided_Automated.vtk
+    femtest/data/gmsh/Triangle_Strip_Automated.vtk
+    femtest/data/gmsh/Cube_Volume_Curved_Recombined_Bumped.vtk
+    femtest/data/gmsh/Wedge_Volume_Recombined_Bumped.vtk
+    femtest/data/gmsh/Wedge_Volume_Curved_Recombined_Bumped.vtk
+    femtest/data/gmsh/Cube_Volume_Recombined_Bumped.vtk
+    femtest/data/gmsh/Cube_Volume_Recombined.vtk
+    femtest/data/gmsh/Cube_Volume.vtk
+    femtest/data/gmsh/Wedge_Volume_Recombined.vtk
+    femtest/data/gmsh/Wedge_Volume_Mixed.vtk
+    femtest/data/gmsh/Wedge_Volume.vtk
+    femtest/data/gmsh/Multiface_Surface_Oriented_Bumped.vtk
+    femtest/data/gmsh/Multiface_Surface_Oriented.vtk
+    femtest/data/gmsh/Multiface_Surface.vtk
 )
 
 
