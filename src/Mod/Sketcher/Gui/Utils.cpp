@@ -355,7 +355,7 @@ bool SketcherGui::isBsplineKnotOrEndPoint(
 
     const Part::Geometry* geo = Obj->getGeometry(GeoId);
     // end points of B-Splines are also knots
-    if (geo->is<Part::GeomBSplineCurve>()
+    if (geo && geo->is<Part::GeomBSplineCurve>()
         && (PosId == Sketcher::PointPos::start || PosId == Sketcher::PointPos::end)) {
         return true;
     }
