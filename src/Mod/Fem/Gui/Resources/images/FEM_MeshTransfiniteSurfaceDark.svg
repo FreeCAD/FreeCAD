@@ -7,7 +7,7 @@
    id="svg2860"
    version="1.1"
    sodipodi:docname="FEM_MeshTransfiniteSurfaceDark.svg"
-   inkscape:version="1.4.1 (93de688d07, 2025-03-30)"
+   inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -288,5 +288,12 @@
        style="fill:none;fill-opacity:1;stroke:#464646;stroke-width:3.85456;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
        d="m 307.45853,94.590014 v 8.214076"
        id="path35" />
+    <circle
+       style="fill:#02317b;fill-opacity:1;stroke:none;stroke-width:4.95662;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       id="circle1"
+       cx="-19.133255"
+       cy="-77.968674"
+       r="5.7930026"
+       transform="rotate(-176.01408)" />
   </g>
 </svg>

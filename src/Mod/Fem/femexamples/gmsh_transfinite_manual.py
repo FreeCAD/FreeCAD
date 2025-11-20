@@ -176,12 +176,13 @@ def setup(doc=None, solver=None):
 
     # 6: simple 3 sided face with tf surface, made to work with changed orientation
     explanation = ("To overcome the unequal amount of subdivisions in this example we chose different guiding edges, "
-                   "choosing the two edges which have equal length and hence equal subdivision count")
+                   "choosing the two edges which have equal length and hence equal subdivision count. Before we did this "
+                   "by choosing all 3 vertices. However, we can have it easier and only selecting the 1 corner vertex.")
 
     part_obj, mesh_obj = create_example(doc, "Triangle Surface Recombined Unequal Oriented", explanation)
     part_obj.Shape = Part.makeFace(smalltriangle).translate(FreeCAD.Vector(75,0,0))
     tf_surf = ObjectsFem.makeMeshTransfiniteSurface(doc, mesh_obj)
-    tf_surf.References = [(part_obj, ["Face1", "Vertex3", "Vertex2", "Vertex1"])]
+    tf_surf.References = [(part_obj, ["Face1", "Vertex3"])]
     tf_surf.Recombine = True
 
     quad = Part.makePolygon([FreeCAD.Vector(0,0,0),

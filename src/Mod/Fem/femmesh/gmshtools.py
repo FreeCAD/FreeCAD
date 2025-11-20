@@ -1000,7 +1000,12 @@ class GmshTools:
             ):
                 self.outputCompoundWarning()
 
-            surface_map =  tft.setup_transfinite_surface_map(self.part_obj.Shape, transfinite_surface_list)
+            try:
+                surface_map =  tft.setup_transfinite_surface_map(self.part_obj.Shape, transfinite_surface_list)
+            except Exception as e:
+                # error: some user settings are incompatible, abort all transfinite
+                Console.PrintError(str(e))
+                return
 
             # handle surface automation
             for mr_obj in transfinite_surface_list:
@@ -1008,52 +1013,18 @@ class GmshTools:
                 if mr_obj.Suppressed:
                     continue
 
-                if mr_obj.References:
+                if mr_obj.UseAutomation and mr_obj.References:
 
                     # collect all elements!
-                    elements = self._get_reference_elements(
-                        mr_obj, self.transfinite_surface_elements
-                    )
-                    if not elements:
-                        Console.PrintError(
-                            (
-                                "The transfinite surface {} is not used because no unique"
-                                "elements are selected.\n"
-                            ).format(mr_obj.Name)
-                        )
-                        continue
+                    elements = self._get_reference_elements(mr_obj)
 
-                    # We handle surface settings here, and not via surface map only, as it could be a n-sided face with vertices,
-                    # and that is not handled by the transfinitetools yet
-                    idx_dict = self._element_list_to_shape_idx_dict(elements)
-                    if idx_dict["Face"]:
-                        settings = {}
-                        settings["surfaces"] = ",".join(str(i) for i in idx_dict["Face"])
-                        if idx_dict["Vertex"]:
-                            settings["nodes"] = ",".join(str(i) for i in idx_dict["Vertex"])
-                        if mr_obj.Recombine:
-                            settings["recombine"] = True
-                        else:
-                            settings["orientation"] = mr_obj.TriangleOrientation
-
-                        self.transfinite_surface_settings.append(settings)
-
-
-                    if mr_obj.UseAutomation:
-                        definition = tft.TFCurveDefinition.from_tfcurve_obj(mr_obj)
-                        try:
-                            tft.add_automatic_transfinite_edges_from_faces(edge_map, self.part_obj.Shape, elements, definition)
-                        except Exception as e:
-                            # error: some user settings are incompatible, abort all transfinite
-                            Console.PrintError(str(e))
-                            self.transfinite_surface_settings = []
-                            return
-
-                else:
-                    Console.PrintError(
-                        "The transfinite surface {} is not used to create the mesh "
-                        "because the reference list is empty.\n".format(mr_obj.Name)
-                    )
+                    definition = tft.TFCurveDefinition.from_tfcurve_obj(mr_obj)
+                    try:
+                        tft.add_automatic_transfinite_edges_from_faces(surface_map, edge_map, self.part_obj.Shape, elements, definition)
+                    except Exception as e:
+                        # error: some user settings are incompatible, abort all transfinite
+                        Console.PrintError(str(e))
+                        return
 
 
         # transfinite volumes
@@ -1102,8 +1073,8 @@ class GmshTools:
                         curve_definition = tft.TFCurveDefinition.from_tfcurve_obj(mr_obj)
                         surf_definition = tft.TFSurfaceDefinition.from_tfsurface_obj(mr_obj)
                         try:
-                            tft.add_automatic_transfinite_edges_from_solids(edge_map, self.part_obj.Shape, elements, curve_definition)
-                            tft.add_automatic_transfinite_surfaces_from_solids(surface_map, self.part_obj.Shape, elements, surf_definition)
+                            tft.add_automatic_transfinite_edges_from_solids(surface_map, edge_map, self.part_obj.Shape, elements, curve_definition)
+                            tft.add_automatic_transfinite_surfaces_from_solids(surface_map, edge_map, self.part_obj.Shape, elements, surf_definition)
                         except Exception as e:
                             # error: some user settings are incompatible, abort all transfinite
                             Console.PrintError(str(e))
@@ -1126,10 +1097,10 @@ class GmshTools:
             self.transfinite_curve_settings.append(setting)
 
         # and remaining transfinite surface settings!
-        definition_map = tft.map_to_definitions(surface_map, self.part_obj.Shape, only_by_creator = tft.Creation.AutomaticVolume)
+        definition_map = tft.map_to_definitions(surface_map, self.part_obj.Shape)
         for definition, surfaces in definition_map.items():
             setting = definition.to_gmshtools_setting()
-            setting["surfaces"] = ",".join(prefix+str(i) for i in surfaces)
+            setting["surfaces"] = ",".join(str(i) for i in surfaces)
             self.transfinite_surface_settings.append(setting)
 
 
