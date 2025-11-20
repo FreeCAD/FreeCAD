@@ -653,6 +653,14 @@ ViewProviderSketch::~ViewProviderSketch()
 
 void ViewProviderSketch::slotUndoDocument(const Gui::Document& /*doc*/)
 {
+    // If undo is triggered during a drag operation, the drag must be canceled to avoid using
+    // stale geometry IDs, which would lead to a crash.
+    if (!drag.Dragged.empty() || !drag.DragConstraintSet.empty()) {
+        drag.reset();
+        setSketchMode(STATUS_NONE);
+        resetPositionText();
+    }
+
     // Note 1: this slot is only operative during edit mode (see signal connection/disconnection)
     // Note 2: ViewProviderSketch::UpdateData does not generate updates during undo/redo
     //         transactions as mid-transaction data may not be in a valid state (e.g. constraints
@@ -664,6 +672,14 @@ void ViewProviderSketch::slotUndoDocument(const Gui::Document& /*doc*/)
 
 void ViewProviderSketch::slotRedoDocument(const Gui::Document& /*doc*/)
 {
+    // If redo is triggered during a drag operation, the drag must be canceled to avoid using
+    // stale geometry IDs, which would lead to a crash.
+    if (!drag.Dragged.empty() || !drag.DragConstraintSet.empty()) {
+        drag.reset();
+        setSketchMode(STATUS_NONE);
+        resetPositionText();
+    }
+
     // Note 1: this slot is only operative during edit mode (see signal connection/disconnection)
     // Note 2: ViewProviderSketch::UpdateData does not generate updates during undo/redo
     //         transactions as mid-transaction data may not be in a valid state (e.g. constraints
