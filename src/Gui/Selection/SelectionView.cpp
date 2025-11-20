@@ -424,11 +424,7 @@ void SelectionView::toggleSelect(QListWidgetItem* item)
                   "Gui.Selection.addSelection("
                   "App.getDocument('%1').getObject('%2'),'%3',%4,%5,%6)"
         )
-                  .arg(
-                      QString::fromUtf8(docname),
-                      QString::fromUtf8(objname),
-                      QString::fromUtf8(subname)
-                  )
+                  .arg(QString::fromUtf8(docname), QString::fromUtf8(objname), QString::fromUtf8(subname))
                   .arg(x)
                   .arg(y)
                   .arg(z);
@@ -467,15 +463,12 @@ void SelectionView::preselect(QListWidgetItem* item)
             *end = 0;
         }
     }
-    QString cmd = QStringLiteral(
-                      "Gui.Selection.setPreselection("
-                      "App.getDocument('%1').getObject('%2'),'%3',tp=2)"
-    )
-                      .arg(
-                          QString::fromUtf8(docname),
-                          QString::fromUtf8(objname),
-                          QString::fromUtf8(subname)
-                      );
+    QString cmd
+        = QStringLiteral(
+              "Gui.Selection.setPreselection("
+              "App.getDocument('%1').getObject('%2'),'%3',tp=2)"
+        )
+              .arg(QString::fromUtf8(docname), QString::fromUtf8(objname), QString::fromUtf8(subname));
     try {
         Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
     }
@@ -1203,4 +1196,3 @@ void SelectionMenu::createGroupedMenu(
 }
 
 #include "moc_SelectionView.cpp"
-
