@@ -162,9 +162,9 @@ void SelectionView::onSelectionChanged(const SelectionChanges& Reason)
                                const char* objName,
                                const char* subName,
                                App::DocumentObject* obj) {
-        str << docName;
+        str << QString::fromUtf8(docName);
         str << "#";
-        str << objName;
+        str << QString::fromUtf8(objName);
         if (subName != 0 && subName[0] != 0) {
             str << ".";
             /* Original code doesn't take account of histories in subelement names and displays
