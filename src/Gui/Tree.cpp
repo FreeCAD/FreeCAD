@@ -6566,7 +6566,8 @@ int DocumentObjectItem::getSubName(std::ostringstream& str, App::DocumentObject*
                 }
                 // if parent claims this child, treat it like a PartGroup
                 group = PartGroup;
-            } else {
+            }
+            else {
                 group = PartGroup;
             }
         }
