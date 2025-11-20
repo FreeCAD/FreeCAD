@@ -424,11 +424,7 @@ void SelectionView::toggleSelect(QListWidgetItem* item)
                   "Gui.Selection.addSelection("
                   "App.getDocument('%1').getObject('%2'),'%3',%4,%5,%6)"
         )
-                  .arg(
-                      QString::fromUtf8(docname),
-                      QString::fromUtf8(objname),
-                      QString::fromUtf8(subname)
-                  )
+                  .arg(QString::fromUtf8(docname), QString::fromUtf8(objname), QString::fromUtf8(subname))
                   .arg(x)
                   .arg(y)
                   .arg(z);
@@ -467,15 +463,12 @@ void SelectionView::preselect(QListWidgetItem* item)
             *end = 0;
         }
     }
-    QString cmd = QString::fromUtf8(
-                      "Gui.Selection.setPreselection("
-                      "App.getDocument('%1').getObject('%2'),'%3',tp=2)"
-    )
-                      .arg(
-                          QString::fromUtf8(docname),
-                          QString::fromUtf8(objname),
-                          QString::fromUtf8(subname)
-                      );
+    QString cmd
+        = QString::fromUtf8(
+              "Gui.Selection.setPreselection("
+              "App.getDocument('%1').getObject('%2'),'%3',tp=2)"
+        )
+              .arg(QString::fromUtf8(docname), QString::fromUtf8(objname), QString::fromUtf8(subname));
     try {
         Gui::Command::runCommand(Gui::Command::Gui, cmd.toUtf8());
     }
@@ -577,7 +570,9 @@ void SelectionView::showPart()
         if (!module.isEmpty() && !property.isEmpty() && supportPart(obj, elements[2])) {
             try {
                 Gui::Command::addModule(Gui::Command::Gui, module.toUtf8());
-                QString cmd = QString::fromUtf8(R"(%1.show(App.getDocument("%2").getObject("%3").%4.%5))")
+                QString cmd = QString::fromUtf8(
+                                  R"(%1.show(App.getDocument("%2").getObject("%3").%4.%5))"
+                )
                                   .arg(module, elements[0], elements[1], property, elements[2]);
                 Gui::Command::runCommand(Gui::Command::Gui, cmd.toUtf8());
             }
