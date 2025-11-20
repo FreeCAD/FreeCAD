@@ -106,6 +106,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                         if wire.isClosed():
                             all_section_wires.append(wire)
                     except Exception:
+                        # ignore any wires that can't be built
                         pass
                 
                 # Filter out outer wire, keep remaining as boss wires
@@ -174,7 +175,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             for base, subList in obj.Base:
                 for sub in subList:
                     if "Face" in sub:
-                        if sub not in avoidFeatures and not self.clasifySub(base, sub):
+                        if sub not in avoidFeatures and not self.classifySub(base, sub):
                             Path.Log.error(
                                 "Pocket does not support shape {}.{}".format(base.Label, sub)
                             )
@@ -272,14 +273,14 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 return True
         return False
 
-    def clasifySub(self, bs, sub):
-        """clasifySub(bs, sub)...
+    def classifySub(self, bs, sub):
+        """classifySub(bs, sub)...
         Given a base and a sub-feature name, returns True
-        if the sub-feature is a horizontally oriented flat face.
+        if the sub-feature is a horizontally or vertically oriented flat face.
         """
         face = bs.Shape.getElement(sub)
 
-        if type(face.Surface) == Part.Plane:
+        if isinstance(face.Surface, Part.Plane):
             Path.Log.debug("type() == Part.Plane")
             if Path.Geom.isVertical(face.Surface.Axis):
                 Path.Log.debug("  -isVertical()")
@@ -291,11 +292,17 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 Path.Log.debug("  -isHorizontal()")
                 self.vert.append(face)
                 return True
-
             else:
                 return False
 
-        elif type(face.Surface) == Part.Cylinder and Path.Geom.isVertical(face.Surface.Axis):
+        elif isinstance(face.Surface, Part.BSplineSurface):
+            Path.Log.debug("face Part.BSplineSurface")
+            if Path.Geom.isRoughly(face.BoundBox.ZLength, 0):
+                Path.Log.debug("  flat horizontal or almost flat horizontal")
+                self.horiz.append(face)
+                return True
+
+        elif isinstance(face.Surface, Part.Cylinder) and Path.Geom.isVertical(face.Surface.Axis):
             Path.Log.debug("type() == Part.Cylinder")
             # vertical cylinder wall
             if any(e.isClosed() for e in face.Edges):
@@ -313,7 +320,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 self.vert.append(face)
                 return True
 
-        elif type(face.Surface) == Part.SurfaceOfExtrusion:
+        elif isinstance(face.Surface, Part.SurfaceOfExtrusion):
             # extrusion wall
             Path.Log.debug("type() == Part.SurfaceOfExtrusion")
             # Save face to self.horiz for processing or display error
@@ -322,14 +329,12 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 return True
             else:
                 Path.Log.error("Failed to identify vertical face from {}".format(sub))
+                return False
 
         else:
             Path.Log.debug("  -type(face.Surface): {}".format(type(face.Surface)))
             return False
-
-
 # Eclass
-
 
 def SetupProperties():
     setup = PathPocketBase.SetupProperties()  # Add properties from PocketBase module
@@ -345,6 +350,4 @@ def Create(name, obj=None, parentJob=None):
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     obj.Proxy = ObjectPocket(obj, name, parentJob)
-    return obj
-
     return obj
