@@ -6539,20 +6539,36 @@ int DocumentObjectItem::getSubName(std::ostringstream& str, App::DocumentObject*
         int group = parent->isGroup();
         if (group == NotGroup) {
             if (ret != PartGroup) {
-                // Handle this situation,
-                //
-                // LinkGroup
-                //    |--PartExtrude
-                //           |--Sketch
-                //
-                // This function traverse from top down, so, when seeing a
-                // non-group object 'PartExtrude', its following children should
-                // not be grouped, so must reset any previous parents here.
-                topParent = nullptr;
-                str.str("");  // reset the current subname
-                return NotGroup;
+                // check if the parent explicitly claims this child,
+                // if so, we should include the parent in the subname path
+                auto children = parent->object()->claimChildren();
+                bool parentClaimsThis = false;
+                for (auto child : children) {
+                    if (child == object()->getObject()) {
+                        parentClaimsThis = true;
+                        break;
+                    }
+                }
+
+                if (!parentClaimsThis) {
+                    // Handle this situation,
+                    //
+                    // LinkGroup
+                    //    |--PartExtrude
+                    //           |--Sketch
+                    //
+                    // This function traverse from top down, so, when seeing a
+                    // non-group object 'PartExtrude', its following children should
+                    // not be grouped, so must reset any previous parents here.
+                    topParent = nullptr;
+                    str.str("");  // reset the current subname
+                    return NotGroup;
+                }
+                // if parent claims this child, treat it like a PartGroup
+                group = PartGroup;
+            } else {
+                group = PartGroup;
             }
-            group = PartGroup;
         }
         ret = group;
     }
