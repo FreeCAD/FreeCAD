@@ -2266,16 +2266,9 @@ def debaseWall(wall):
         # The new placement's Base must be the global coordinate of the final wall's center.
         centerline_position = (p1_global + p2_global) * 0.5
 
-        # Calculate the offset directly in global coordinates.
-        align_offset_global = FreeCAD.Vector()
-        if wall.Align == "Left":
-            # Baseline is Left. Center must be shifted to the Right (positive Y-axis direction).
-            align_offset_global = y_axis * (wall.Width.Value / 2.0)
-        elif wall.Align == "Right":
-            # Baseline is Right. Center must be shifted to the Left (negative Y-axis direction).
-            align_offset_global = y_axis.negative() * (wall.Width.Value / 2.0)
-
-        final_position = centerline_position.add(align_offset_global)
+        # The new placement's Base is the center of the baseline. The alignment is handled by the
+        # geometry generation itself, not by shifting the placement.
+        final_position = centerline_position
         final_placement = FreeCAD.Placement(final_position, final_rotation)
 
         # Store properties before unlinking

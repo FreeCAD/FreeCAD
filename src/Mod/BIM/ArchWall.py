@@ -1641,21 +1641,29 @@ class _Wall(ArchComponent.Component):
         return layers
 
     def build_base_from_scratch(self, obj):
-        """Builds a simple, origin-centered base face for a baseless wall."""
+        """Builds a simple base face for a baseless wall, respecting the alignment convention."""
         import Part
 
         layers = self.get_layers(obj)
         width = self.get_width(obj, widths=False)
-        length = obj.Length.Value
+        align = obj.Align
+
+        # Use a small default for zero dimensions to create a valid shape.
+        safe_length = obj.Length.Value or 0.5
 
         base = []
         if layers:
             totalwidth = sum([abs(layer) for layer in layers])
             offset = 0
+            if align == "Center":
+                offset = -totalwidth / 2
+            elif align == "Left":
+                offset = -totalwidth
+
             for layer in layers:
                 if layer > 0:
-                    l2 = length / 2 or 0.5
-                    w1 = -totalwidth / 2 + offset
+                    l2 = safe_length / 2
+                    w1 = offset
                     w2 = w1 + layer
                     v1 = Vector(-l2, w1, 0)
                     v2 = Vector(l2, w1, 0)
@@ -1664,10 +1672,23 @@ class _Wall(ArchComponent.Component):
                     base.append(Part.Face(Part.makePolygon([v1, v2, v3, v4, v1])))
                 offset += abs(layer)
         else:
-            l2 = length / 2 or 0.5
-            w2 = width / 2 or 0.5
-            v1 = Vector(-l2, -w2, 0)
-            v2 = Vector(l2, -w2, 0)
+            safe_width = width or 0.5
+            l2 = safe_length / 2
+
+            w1, w2 = 0, 0
+            # This logic follows the  convention where 'Left' alignment builds geometry
+            # in the negative-Y direction (geometric right).
+            if align == "Center":
+                w1, w2 = -safe_width / 2, safe_width / 2
+            elif align == "Left":
+                w1, w2 = -safe_width, 0
+            elif align == "Right":
+                w1, w2 = 0, safe_width
+            else:  # Fallback to Center if alignment is invalid
+                w1, w2 = -safe_width / 2, safe_width / 2
+
+            v1 = Vector(-l2, w1, 0)
+            v2 = Vector(l2, w1, 0)
             v3 = Vector(l2, w2, 0)
             v4 = Vector(-l2, w2, 0)
             base = Part.Face(Part.makePolygon([v1, v2, v3, v4, v1]))
