@@ -27,6 +27,7 @@ __url__ = "https://www.freecad.org"
 
 import unittest
 import importlib
+import shutil
 from os.path import join
 
 import FreeCAD
@@ -65,9 +66,10 @@ def generate_gmesh_samples_from_example_doc(doc, datapath):
         filename = mesh.getParentGroup().Label + ".vtk"
         path = join(datapath, filename)
 
-        # 2. store the mesh in the correct folder
-        mesh.FemMesh.write(path)
-
+        # find the vtk file gmsh created and copy it into the location
+        # (we do not export from FemMesh, as the exporter is extremely limited and reimport
+        #  gives other results)
+        shutil.copyfile(tool.temp_file_mesh, path)
 
 class TestGMSHBase(unittest.TestCase):
 
@@ -82,6 +84,10 @@ class TestGMSHBase(unittest.TestCase):
         # opens a example file to process for testing
         module = importlib.import_module(f"femexamples.{name}")
         self.doc = module.setup()
+
+        if FreeCAD.GuiUp:
+            import FreeCADGui
+            FreeCADGui.SendMsgToActiveView("ViewFit")
 
     def get_gmsh_objects(self):
         result = []
@@ -110,73 +116,72 @@ class TestGMSHBase(unittest.TestCase):
         self.assertEqual(
             mesh.NodeCount,
             sample.NodeCount,
-            "Generated mesh does not have the same Node count as the golden sample."
+            f"Generated mesh does not have the same Node count as the golden sample: {name}"
         )
 
         # compare node locations!
         for idx in range(1,mesh.NodeCount+1):
             self.assertTrue(mesh.Nodes[idx].isEqual(sample.Nodes[idx], 1e-3),
-                            "Generated mesh does not have the same Node locations as golden sample.")
+                            f"Generated mesh does not have the same Node locations as golden sample: {name}")
 
-        # don't compare edges: Seems vtk import always generates 0 edges'
-        #self.assertEqual(
-        #    mesh.EdgeCount,
-        #    sample.EdgeCount,
-        #    "Generated mesh does not have the same edge count as the golden sample."
-        #)
+        self.assertEqual(
+            mesh.EdgeCount,
+            sample.EdgeCount,
+            f"Generated mesh does not have the same edge count as the golden sample: {name}"
+        )
 
         self.assertEqual(
             mesh.TriangleCount,
             sample.TriangleCount,
-            "Generated mesh does not have the same triangle count as the golden sample."
+            f"Generated mesh does not have the same triangle count as the golden sample: {name}"
         )
 
         self.assertEqual(
             mesh.QuadrangleCount,
             sample.QuadrangleCount,
-            "Generated mesh does not have the same quadrangle count as the golden sample."
+            f"Generated mesh does not have the same quadrangle count as the golden sample: {name}"
         )
 
         self.assertEqual(
             mesh.PolygonCount,
             sample.PolygonCount,
-            "Generated mesh does not have the same polygon count as the golden sample."
+            f"Generated mesh does not have the same polygon count as the golden sample: {name}"
         )
 
         self.assertEqual(
             mesh.VolumeCount,
             sample.VolumeCount,
-            "Generated mesh does not have the same volume count as the golden sample."
+            f"Generated mesh does not have the same volume count as the golden sample: {name}"
         )
 
         self.assertEqual(
             mesh.TetraCount,
             sample.TetraCount,
-            "Generated mesh does not have the same tetrahedra count as the golden sample."
+            f"Generated mesh does not have the same tetrahedra count as the golden sample: {name}"
         )
 
         self.assertEqual(
             mesh.HexaCount,
             sample.HexaCount,
-            "Generated mesh does not have the same hexahedra count as the golden sample."
+            f"Generated mesh does not have the same hexahedra count as the golden sample: {name}"
         )
 
         self.assertEqual(
             mesh.PyramidCount,
             sample.PyramidCount,
-            "Generated mesh does not have the same pyramid count as the golden sample."
+            f"Generated mesh does not have the same pyramid count as the golden sample: {name}"
         )
 
         self.assertEqual(
             mesh.PrismCount,
             sample.PrismCount,
-            "Generated mesh does not have the same prism count as the golden sample."
+            f"Generated mesh does not have the same prism count as the golden sample: {name}"
         )
 
         self.assertEqual(
             mesh.PolyhedronCount,
             sample.PolyhedronCount,
-            "Generated mesh does not have the same polyhedra count as the golden sample."
+            f"Generated mesh does not have the same polyhedra count as the golden sample: {name}"
         )
 
 
@@ -206,6 +211,10 @@ class TestGMSHTransfinite(TestGMSHBase):
             self.execute_gmsh(gmsh)
             self.compare_mesh_to_sample(gmsh)
 
+            if FreeCAD.GuiUp:
+                import FreeCADGui
+                FreeCADGui.updateGui()
+
     def test_GMSHTransfiniteAutomation(self):
 
         self.load_example_file("gmsh_transfinite_automation")
@@ -213,6 +222,10 @@ class TestGMSHTransfinite(TestGMSHBase):
         for gmsh in gmshs:
             self.execute_gmsh(gmsh)
             self.compare_mesh_to_sample(gmsh)
+
+            if FreeCAD.GuiUp:
+                import FreeCADGui
+                FreeCADGui.updateGui()
 
 
 
