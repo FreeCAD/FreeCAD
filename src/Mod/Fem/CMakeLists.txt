@@ -111,6 +111,7 @@ SET(FemExamples_SRCS
     femexamples/truss_3d_cs_circle_ele_seg2.py
     femexamples/truss_3d_cs_circle_ele_seg3.py
     femexamples/gmsh_transfinite_manual.py
+    femexamples/gmsh_transfinite_automation.py
 )
 
 
