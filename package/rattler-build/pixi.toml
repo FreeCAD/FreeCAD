@@ -22,44 +22,37 @@ freecad = { path = "." }
 [feature.package.dependencies]
 python = ">=3.11,<3.12"
 
+[feature.package.tasks]
+create_bundle = 'bash -c "cd $(bash scripts/get_os.bash) && bash create_bundle.sh"'
+
 ## Linux (x86-64)
 [feature.package.target.linux-64.dependencies]
 coreutils = "*"
-
-[feature.package.target.linux-64.tasks]
-create_bundle = 'bash -c "cd linux && bash create_bundle.sh"'
 
 ## Linux (aarch64)
 [feature.package.target.linux-aarch64.dependencies]
 coreutils = "*"
 
-[feature.package.target.linux-aarch64.tasks]
-create_bundle = 'bash -c "cd linux && bash create_bundle.sh"'
-
 ## macOS (Intel)
 [feature.package.target.osx-64.dependencies]
 coreutils = "*"
 dmgbuild = "*"
+pyobjc-framework-Quartz = "*"
 sed = "*"
-
-[feature.package.target.osx-64.tasks]
-create_bundle = 'bash -c "cd osx && bash create_bundle.sh"'
 
 ## macOS (Apple Silicon)
 [feature.package.target.osx-arm64.dependencies]
 coreutils = "*"
 dmgbuild = "*"
+pyobjc-framework-Quartz = "*"
 sed = "*"
-
-[feature.package.target.osx-arm64.tasks]
-create_bundle = 'bash -c "cd osx && bash create_bundle.sh"'
 
 ## Windows dependencies (x86-64)
 [feature.package.target.win-64.dependencies]
 git = "*"
-
-[feature.package.target.win-64.tasks]
-create_bundle = 'bash -c "cd windows && bash create_bundle.sh"'
+nsis = { version = "*", build = "*_log*" }
+7zip = "*"
+vs2022_win-64 = "*"
 
 [environments]
 default = ["freecad"]
