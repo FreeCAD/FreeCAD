@@ -192,6 +192,129 @@ def setup(doc=None, solver=None):
     tf_curv.Nodes = 5
 
 
+    # 7: Simple 4 edged face with automatic tf surface for unequal side lengths
+    quad = Part.makePolygon([FreeCAD.Vector(0,0,0),
+                              FreeCAD.Vector(10,0,0),
+                              FreeCAD.Vector(10,10,0),
+                              FreeCAD.Vector(4,7,0),
+                              FreeCAD.Vector(0,0,0)])
+    explanation = ("")
+
+    part_obj, mesh_obj = create_example(doc, "Quad Surface", explanation)
+    part_obj.Shape = Part.makeFace(quad).translate(FreeCAD.Vector(0, -15, 0))
+    tf_surf = ObjectsFem.makeMeshTransfiniteSurface(doc, mesh_obj)
+    tf_surf.References = [(part_obj, ["Face1"])]
+    tf_surf.Recombine = True
+    tf_surf.UseAutomation = True
+
+    # 8: Quad/Triangle strip with tr surface for unequal side lengths
+    quad1 = Part.makePolygon([FreeCAD.Vector(0,3,0),
+                              FreeCAD.Vector(10,5,0),
+                              FreeCAD.Vector(10,10,0),
+                              FreeCAD.Vector(4,7,0),
+                              FreeCAD.Vector(0,3,0)])
+
+    triangle1 = Part.makePolygon([FreeCAD.Vector(0,3,0),
+                                  FreeCAD.Vector(10,0,0),
+                                  FreeCAD.Vector(10,5,0),
+                                  FreeCAD.Vector(0,3,0)])
+
+    quad2 = Part.makePolygon([FreeCAD.Vector(10,0,0),
+                              FreeCAD.Vector(10,5,0),
+                              FreeCAD.Vector(17,5,0),
+                              FreeCAD.Vector(20,0,0),
+                              FreeCAD.Vector(10,0,0)])
+
+    triangle2 = Part.makePolygon([FreeCAD.Vector(10,5,0),
+                                  FreeCAD.Vector(17,5,0),
+                                  FreeCAD.Vector(10,10,0),
+                                  FreeCAD.Vector(10,5,0)])
+
+    quad_strip = Part.makeFace(quad1).generalFuse([Part.makeFace(triangle1),
+                                                   Part.makeFace(quad2),
+                                                   Part.makeFace(triangle2)])[0]
+    part_obj, mesh_obj = create_example(doc, "Quad Strip Surface", explanation)
+    part_obj.Shape = quad_strip.copy().translate(FreeCAD.Vector(20, -15, 0))
+    tf_surf = ObjectsFem.makeMeshTransfiniteSurface(doc, mesh_obj)
+    tf_surf.References = [(part_obj, [f"Face{i}" for i in range(1,5)])]
+    tf_surf.Recombine = True
+    tf_surf.UseAutomation = True
+
+    # 9: Quad/Triangle strip with tr surface for unequal side lengths but oriented
+    part_obj, mesh_obj = create_example(doc, "Quad Strip Surface Oriented", explanation)
+    part_obj.Shape = quad_strip.copy().translate(FreeCAD.Vector(45, -15, 0))
+    tf_surf = ObjectsFem.makeMeshTransfiniteSurface(doc, mesh_obj)
+    tf_surf.References = [(part_obj, [f"Face{i}" for i in range(1,5)] + ["Vertex2"])]
+    tf_surf.Recombine = True
+    tf_surf.UseAutomation = True
+
+    # 9: Quad/Triangle strip with tr surface for unequal side lengths but oriented
+    part_obj, mesh_obj = create_example(doc, "Quad Strip Surface Oriented Bumped", explanation)
+    part_obj.Shape = quad_strip.copy().translate(FreeCAD.Vector(70, -15, 0))
+    tf_surf = ObjectsFem.makeMeshTransfiniteSurface(doc, mesh_obj)
+    tf_surf.References = [(part_obj, [f"Face{i}" for i in range(1,5)] + ["Vertex2"])]
+    tf_surf.Recombine = True
+    tf_surf.UseAutomation = True
+    tf_curv = ObjectsFem.makeMeshTransfiniteCurve(doc, mesh_obj)
+    tf_curv.References = [(part_obj, ["Edge4", "Edge8"])]
+    tf_curv.Nodes = 5
+    tf_curv.Distribution = "Bump"
+    tf_curv.Coefficient = 5
+
+    # 10: Quad/Triangle strip with tr surface for unequal side lengths but oriented
+    part_obj, mesh_obj = create_example(doc, "Quad Strip Surface Double Oriented Bumped", explanation)
+    part_obj.Shape = quad_strip.copy().translate(FreeCAD.Vector(95, -15, 0))
+    tf_surf = ObjectsFem.makeMeshTransfiniteSurface(doc, mesh_obj)
+    tf_surf.References = [(part_obj, [f"Face{i}" for i in range(1,5)] + ["Vertex3", "Vertex5"])]
+    tf_surf.Recombine = True
+    tf_surf.UseAutomation = True
+    tf_curv = ObjectsFem.makeMeshTransfiniteCurve(doc, mesh_obj)
+    tf_curv.References = [(part_obj, ["Edge4", "Edge8"])]
+    tf_curv.Nodes = 5
+    tf_curv.Distribution = "Bump"
+    tf_curv.Coefficient = 5
+
+
+    # 11: Wedge default
+    wedge = Part.makeFace(triangle).extrude(FreeCAD.Vector(2,0,10))
+    part_obj, mesh_obj = create_example(doc, "Wedge Volume", explanation)
+    part_obj.Shape = wedge.copy().translate(FreeCAD.Vector(0, -30, 0))
+    tf_vol = ObjectsFem.makeMeshTransfiniteVolume(doc, mesh_obj)
+    tf_vol.References = [(part_obj, ["Solid1"])]
+    tf_vol.UseAutomation = True
+    tf_vol.Recombine = True
+
+    # 11: Wedge default with a surface to orient the triangle
+    wedge = Part.makeFace(triangle).extrude(FreeCAD.Vector(2,0,10))
+    part_obj, mesh_obj = create_example(doc, "Wedge Volume Oriented", explanation)
+    part_obj.Shape = wedge.copy().translate(FreeCAD.Vector(15, -30, 0))
+    tf_vol = ObjectsFem.makeMeshTransfiniteVolume(doc, mesh_obj)
+    tf_vol.References = [(part_obj, ["Solid1"])]
+    tf_vol.UseAutomation = True
+    tf_vol.Recombine = True
+    tf_surf = ObjectsFem.makeMeshTransfiniteSurface(doc, mesh_obj)
+    tf_surf.References = [(part_obj, ["Face5", "Vertex4"])]
+    tf_surf.Recombine = True
+
+    # 12: Wedge default with a surface to orient the triangle
+    wedge = Part.makeFace(triangle).extrude(FreeCAD.Vector(2,0,10))
+    part_obj, mesh_obj = create_example(doc, "Wedge Volume Oriented Bumped", explanation)
+    part_obj.Shape = wedge.copy().translate(FreeCAD.Vector(30, -30, 0))
+    tf_vol = ObjectsFem.makeMeshTransfiniteVolume(doc, mesh_obj)
+    tf_vol.References = [(part_obj, ["Solid1"])]
+    tf_vol.UseAutomation = True
+    tf_vol.Recombine = True
+    tf_surf = ObjectsFem.makeMeshTransfiniteSurface(doc, mesh_obj)
+    tf_surf.References = [(part_obj, ["Face5", "Vertex4"])]
+    tf_surf.Recombine = True
+    tf_curv = ObjectsFem.makeMeshTransfiniteCurve(doc, mesh_obj)
+    tf_curv.References = [(part_obj, ["Edge2", "Edge4"])]
+    tf_curv.Nodes = 7
+    tf_curv.Distribution = "Bump"
+    tf_curv.Coefficient = 5
+    tf_curv.Invert = True
+
+
     return doc
 
 

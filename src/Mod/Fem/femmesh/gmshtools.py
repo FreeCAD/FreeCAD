@@ -1073,8 +1073,9 @@ class GmshTools:
                         curve_definition = tft.TFCurveDefinition.from_tfcurve_obj(mr_obj)
                         surf_definition = tft.TFSurfaceDefinition.from_tfsurface_obj(mr_obj)
                         try:
-                            tft.add_automatic_transfinite_edges_from_solids(surface_map, edge_map, self.part_obj.Shape, elements, curve_definition)
                             tft.add_automatic_transfinite_surfaces_from_solids(surface_map, edge_map, self.part_obj.Shape, elements, surf_definition)
+                            tft.add_automatic_transfinite_edges_from_solids(surface_map, edge_map, self.part_obj.Shape, elements, curve_definition)
+
                         except Exception as e:
                             # error: some user settings are incompatible, abort all transfinite
                             Console.PrintError(str(e))
