@@ -193,8 +193,8 @@ void SelectionView::onSelectionChanged(const SelectionChanges& Reason)
     if (Reason.Type == SelectionChanges::AddSelection) {
         // save as user data
         QStringList list;
-        list << QString::fromLatin1(Reason.pDocName);
-        list << QString::fromLatin1(Reason.pObjectName);
+        list << QString::fromUtf8(Reason.pDocName);
+        list << QString::fromUtf8(Reason.pObjectName);
         App::Document* doc = App::GetApplication().getDocument(Reason.pDocName);
         App::DocumentObject* obj = doc->getObject(Reason.pObjectName);
         getSelectionName(str, Reason.pDocName, Reason.pObjectName, Reason.pSubName, obj);
@@ -237,8 +237,8 @@ void SelectionView::onSelectionChanged(const SelectionChanges& Reason)
         for (const auto& it : objs) {
             // save as user data
             QStringList list;
-            list << QString::fromLatin1(it.DocName);
-            list << QString::fromLatin1(it.FeatName);
+            list << QString::fromUtf8(it.DocName);
+            list << QString::fromUtf8(it.FeatName);
 
             App::Document* doc = App::GetApplication().getDocument(it.DocName);
             App::DocumentObject* obj = doc->getObject(it.FeatName);
@@ -346,11 +346,11 @@ void SelectionView::select(QListWidgetItem* item)
         // Gui::Selection().clearSelection();
         Gui::Command::runCommand(Gui::Command::Gui, "Gui.Selection.clearSelection()");
         // Gui::Selection().addSelection(elements[0].toLatin1(),elements[1].toLatin1(),0);
-        QString cmd = QStringLiteral(
+        QString cmd = QString::fromUtf8(
                           R"(Gui.Selection.addSelection(App.getDocument("%1").getObject("%2")))"
         )
                           .arg(elements[0], elements[1]);
-        Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
+        Gui::Command::runCommand(Gui::Command::Gui, cmd.toUtf8());
     }
     catch (Base::Exception& e) {
         e.reportException();
@@ -369,12 +369,12 @@ void SelectionView::deselect()
     }
 
     // Gui::Selection().rmvSelection(elements[0].toLatin1(),elements[1].toLatin1(),0);
-    QString cmd = QStringLiteral(
+    QString cmd = QString::fromUtf8(
                       R"(Gui.Selection.removeSelection(App.getDocument("%1").getObject("%2")))"
     )
                       .arg(elements[0], elements[1]);
     try {
-        Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
+        Gui::Command::runCommand(Gui::Command::Gui, cmd.toUtf8());
     }
     catch (Base::Exception& e) {
         e.reportException();
@@ -386,7 +386,7 @@ void SelectionView::toggleSelect(QListWidgetItem* item)
     if (!item) {
         return;
     }
-    std::string name = item->text().toLatin1().constData();
+    std::string name = item->text().toUtf8().constData();
     char* docname = &name.at(0);
     char* objname = std::strchr(docname, '#');
     if (!objname) {
@@ -409,7 +409,7 @@ void SelectionView::toggleSelect(QListWidgetItem* item)
     }
     QString cmd;
     if (Gui::Selection().isSelected(docname, objname, subname)) {
-        cmd = QStringLiteral(
+        cmd = QString::fromUtf8(
                   "Gui.Selection.removeSelection("
                   "App.getDocument('%1').getObject('%2'),'%3')"
         )
@@ -420,17 +420,21 @@ void SelectionView::toggleSelect(QListWidgetItem* item)
                   );
     }
     else {
-        cmd = QStringLiteral(
+        cmd = QString::fromUtf8(
                   "Gui.Selection.addSelection("
                   "App.getDocument('%1').getObject('%2'),'%3',%4,%5,%6)"
         )
-                  .arg(QString::fromUtf8(docname), QString::fromUtf8(objname), QString::fromUtf8(subname))
+                  .arg(
+                      QString::fromUtf8(docname),
+                      QString::fromUtf8(objname),
+                      QString::fromUtf8(subname)
+                  )
                   .arg(x)
                   .arg(y)
                   .arg(z);
     }
     try {
-        Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
+        Gui::Command::runCommand(Gui::Command::Gui, cmd.toUtf8());
     }
     catch (Base::Exception& e) {
         e.reportException();
@@ -442,7 +446,7 @@ void SelectionView::preselect(QListWidgetItem* item)
     if (!item) {
         return;
     }
-    std::string name = item->text().toLatin1().constData();
+    std::string name = item->text().toUtf8().constData();
     char* docname = &name.at(0);
     char* objname = std::strchr(docname, '#');
     if (!objname) {
@@ -463,14 +467,17 @@ void SelectionView::preselect(QListWidgetItem* item)
             *end = 0;
         }
     }
-    QString cmd
-        = QStringLiteral(
-              "Gui.Selection.setPreselection("
-              "App.getDocument('%1').getObject('%2'),'%3',tp=2)"
-        )
-              .arg(QString::fromUtf8(docname), QString::fromUtf8(objname), QString::fromUtf8(subname));
+    QString cmd = QString::fromUtf8(
+                      "Gui.Selection.setPreselection("
+                      "App.getDocument('%1').getObject('%2'),'%3',tp=2)"
+    )
+                      .arg(
+                          QString::fromUtf8(docname),
+                          QString::fromUtf8(objname),
+                          QString::fromUtf8(subname)
+                      );
     try {
-        Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
+        Gui::Command::runCommand(Gui::Command::Gui, cmd.toUtf8());
     }
     catch (Base::Exception& e) {
         e.reportException();
@@ -509,10 +516,10 @@ void SelectionView::touch()
     if (elements.size() < 2) {
         return;
     }
-    QString cmd = QStringLiteral(R"(App.getDocument("%1").getObject("%2").touch())")
+    QString cmd = QString::fromUtf8(R"(App.getDocument("%1").getObject("%2").touch())")
                       .arg(elements[0], elements[1]);
     try {
-        Gui::Command::runCommand(Gui::Command::Doc, cmd.toLatin1());
+        Gui::Command::runCommand(Gui::Command::Doc, cmd.toUtf8());
     }
     catch (Base::Exception& e) {
         e.reportException();
@@ -531,22 +538,22 @@ void SelectionView::toPython()
     }
 
     try {
-        QString cmd = QStringLiteral(R"(obj = App.getDocument("%1").getObject("%2"))")
+        QString cmd = QString::fromUtf8(R"(obj = App.getDocument("%1").getObject("%2"))")
                           .arg(elements[0], elements[1]);
-        Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
+        Gui::Command::runCommand(Gui::Command::Gui, cmd.toUtf8());
         if (elements.length() > 2) {
-            App::Document* doc = App::GetApplication().getDocument(elements[0].toLatin1());
-            App::DocumentObject* obj = doc->getObject(elements[1].toLatin1());
+            App::Document* doc = App::GetApplication().getDocument(elements[0].toUtf8());
+            App::DocumentObject* obj = doc->getObject(elements[1].toUtf8());
             QString property = getProperty(obj);
 
-            cmd = QStringLiteral(R"(shp = App.getDocument("%1").getObject("%2").%3)")
+            cmd = QString::fromUtf8(R"(shp = App.getDocument("%1").getObject("%2").%3)")
                       .arg(elements[0], elements[1], property);
-            Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
+            Gui::Command::runCommand(Gui::Command::Gui, cmd.toUtf8());
 
             if (supportPart(obj, elements[2])) {
-                cmd = QStringLiteral(R"(elt = App.getDocument("%1").getObject("%2").%3.%4)")
+                cmd = QString::fromUtf8(R"(elt = App.getDocument("%1").getObject("%2").%3.%4)")
                           .arg(elements[0], elements[1], property, elements[2]);
-                Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
+                Gui::Command::runCommand(Gui::Command::Gui, cmd.toUtf8());
             }
         }
     }
@@ -563,16 +570,16 @@ void SelectionView::showPart()
     }
     QStringList elements = item->data(Qt::UserRole).toStringList();
     if (elements.length() > 2) {
-        App::Document* doc = App::GetApplication().getDocument(elements[0].toLatin1());
-        App::DocumentObject* obj = doc->getObject(elements[1].toLatin1());
+        App::Document* doc = App::GetApplication().getDocument(elements[0].toUtf8());
+        App::DocumentObject* obj = doc->getObject(elements[1].toUtf8());
         QString module = getModule(obj->getTypeId().getName());
         QString property = getProperty(obj);
         if (!module.isEmpty() && !property.isEmpty() && supportPart(obj, elements[2])) {
             try {
-                Gui::Command::addModule(Gui::Command::Gui, module.toLatin1());
-                QString cmd = QStringLiteral(R"(%1.show(App.getDocument("%2").getObject("%3").%4.%5))")
+                Gui::Command::addModule(Gui::Command::Gui, module.toUtf8());
+                QString cmd = QString::fromUtf8(R"(%1.show(App.getDocument("%2").getObject("%3").%4.%5))")
                                   .arg(module, elements[0], elements[1], property, elements[2]);
-                Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
+                Gui::Command::runCommand(Gui::Command::Gui, cmd.toUtf8());
             }
             catch (const Base::Exception& e) {
                 e.reportException();
@@ -616,7 +623,7 @@ QString SelectionView::getProperty(App::DocumentObject* obj) const
         const App::PropertyComplexGeoData* data = geo->getPropertyOfGeometry();
         const char* name = data ? data->getName() : nullptr;
         if (App::Property::isValidName(name)) {
-            property = QString::fromLatin1(name);
+            property = QString::fromUtf8(name);
         }
     }
 
@@ -632,7 +639,7 @@ bool SelectionView::supportPart(App::DocumentObject* obj, const QString& part) c
             const Data::ComplexGeoData* geometry = data->getComplexData();
             std::vector<const char*> types = geometry->getElementTypes();
             for (auto it : types) {
-                if (part.startsWith(QString::fromLatin1(it))) {
+                if (part.startsWith(QString::fromUtf8(it))) {
                     return true;
                 }
             }
