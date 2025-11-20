@@ -298,8 +298,8 @@ void SelectionView::search(const QString& text)
                     QString selObject;
                     QTextStream str(&selObject);
                     QStringList list;
-                    list << QString::fromLatin1(doc->getName());
-                    list << QString::fromLatin1(it->getNameInDocument());
+                    list << QString::fromUtf8(doc->getName());
+                    list << QString::fromUtf8(it->getNameInDocument());
                     // build name
                     str << QString::fromUtf8(doc->Label.getValue());
                     str << "#";
@@ -414,9 +414,9 @@ void SelectionView::toggleSelect(QListWidgetItem* item)
                   "App.getDocument('%1').getObject('%2'),'%3')"
         )
                   .arg(
-                      QString::fromLatin1(docname),
-                      QString::fromLatin1(objname),
-                      QString::fromLatin1(subname)
+                      QString::fromUtf8(docname),
+                      QString::fromUtf8(objname),
+                      QString::fromUtf8(subname)
                   );
     }
     else {
@@ -425,9 +425,9 @@ void SelectionView::toggleSelect(QListWidgetItem* item)
                   "App.getDocument('%1').getObject('%2'),'%3',%4,%5,%6)"
         )
                   .arg(
-                      QString::fromLatin1(docname),
-                      QString::fromLatin1(objname),
-                      QString::fromLatin1(subname)
+                      QString::fromUtf8(docname),
+                      QString::fromUtf8(objname),
+                      QString::fromUtf8(subname)
                   )
                   .arg(x)
                   .arg(y)
@@ -472,9 +472,9 @@ void SelectionView::preselect(QListWidgetItem* item)
                       "App.getDocument('%1').getObject('%2'),'%3',tp=2)"
     )
                       .arg(
-                          QString::fromLatin1(docname),
-                          QString::fromLatin1(objname),
-                          QString::fromLatin1(subname)
+                          QString::fromUtf8(docname),
+                          QString::fromUtf8(objname),
+                          QString::fromUtf8(subname)
                       );
     try {
         Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
@@ -1203,3 +1203,4 @@ void SelectionMenu::createGroupedMenu(
 }
 
 #include "moc_SelectionView.cpp"
+
