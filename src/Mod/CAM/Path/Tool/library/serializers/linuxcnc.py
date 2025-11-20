@@ -65,11 +65,11 @@ class LinuxCNCSerializer(AssetSerializer):
             # for a metric or imperial machine
             # Using user preferred for now
             if hasattr(diameter, "Value"):
-                diameter_value = diameter.Value
+                diameter_value = str(diameter.Value).replace(",", ".")
             elif isinstance(diameter, str):
-                diameter_value = diameter.split(" ")[0]
+                diameter_value = diameter.split(" ")[0].replace(",", ".")
             else:
-                diameter_value = diameter
+                diameter_value = str(diameter).replace(",", ".")
             line = (
                 f"T{bit_no} {pocket} X0 Y0 Z0 A0 B0 C0 U0 V0 W0 "
                 f"D{diameter_value} I0 J0 Q0 ;{bit.label}\n"

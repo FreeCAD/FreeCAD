@@ -64,8 +64,10 @@ class TestPathToolShapeClasses(PathTestWithAssets):
         """Test base class initialization uses default parameters."""
         # Provide a dummy filepath and id for instantiation
         shape = DummyShape(id="dummy_shape_1", filepath=Path("/fake/dummy.fcstd"))
-        self.assertEqual(str(shape.get_parameter("Param1")), "10.0 mm")
-        self.assertEqual(str(shape.get_parameter("Param2")), "5.0 deg")
+        self.assertEqual(shape.get_parameter("Param1").Value, 10.0)
+        self.assertEqual(shape.get_parameter("Param1").Unit, FreeCAD.Units.Unit("mm"))
+        self.assertEqual(shape.get_parameter("Param2").Value, 5.0)
+        self.assertEqual(shape.get_parameter("Param2").Unit, FreeCAD.Units.Unit("deg"))
 
     def test_base_init_with_kwargs(self):
         """Test base class initialization overrides defaults with kwargs."""
