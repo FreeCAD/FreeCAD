@@ -71,10 +71,6 @@
             "type": "BOOL",
             "value": "ON"
           },
-          "BUILD_REVERSEENGINEERING": {
-            "type": "BOOL",
-            "value": "OFF"
-          },
           "ENABLE_DEVELOPER_TESTS": {
             "type": "BOOL",
             "value": "ON"
