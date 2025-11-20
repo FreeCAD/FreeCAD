@@ -359,6 +359,9 @@ bool isCommandNeedingBSplineKnotActive(Gui::Document* doc)
         }
 
         auto* Obj = static_cast<Sketcher::SketchObject*>(sel[0].getObject());
+        if (!Obj) {
+            return false;
+        }
         const std::string& name = names[0];
 
         int geoId {GeoEnum::GeoUndef};
