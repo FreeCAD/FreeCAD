@@ -49,7 +49,7 @@
 
 #include <BRepAdaptor_Surface.hxx>
 #include <BRep_Tool.hxx>
-#include <Bnd_B2d.hxx>
+#include <Bnd_B2.hxx>
 #include <GeomAPI_ProjectPointOnSurf.hxx>
 #include <GeomLib_IsPlanarSurface.hxx>
 #include <TopExp.hxx>
