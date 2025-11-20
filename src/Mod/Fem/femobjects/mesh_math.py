@@ -31,7 +31,9 @@ __url__ = "https://www.freecad.org"
 
 from . import base_femmeshelement
 from . import base_fempythonobject
+
 _PropHelper = base_fempythonobject._PropHelper
+
 
 class MeshMath(base_femmeshelement.BaseFemMeshElement):
     """
@@ -61,4 +63,3 @@ class MeshMath(base_femmeshelement.BaseFemMeshElement):
 
         # do not user super() properties, as we do not need references
         return props
-

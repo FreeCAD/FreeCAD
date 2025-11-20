@@ -1,4 +1,3 @@
-
 # ***************************************************************************
 # *   Copyright (c) 2025 Stefan Tröger <stefantroeger@gmx.net               *
 # *                                                                         *
@@ -32,12 +31,15 @@ __url__ = "https://www.freecad.org"
 
 from . import base_femmeshelement
 from . import base_fempythonobject
+
 _PropHelper = base_fempythonobject._PropHelper
+
 
 class MeshShape(base_femmeshelement.BaseFemMeshElement):
     """
     The FemMeshShape object
     """
+
     def _get_properties(self):
 
         props = [
@@ -77,7 +79,8 @@ class MeshSphere(MeshShape):
                 group="MeshSize",
                 doc="Thickness of transition layer between in/out mesh sizes (added outside of the sphere)",
                 value="0mm",
-            ))
+            )
+        )
         return props
 
 
@@ -98,7 +101,8 @@ class MeshBox(MeshShape):
                 group="MeshSize",
                 doc="Thickness of transition layer between in/out mesh sizes (added outside of the sphere)",
                 value="0mm",
-            ))
+            )
+        )
         return props
 
 

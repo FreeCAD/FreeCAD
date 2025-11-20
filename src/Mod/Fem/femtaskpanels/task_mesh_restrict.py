@@ -72,12 +72,11 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         ui.Boundary.toggled.connect(self.boundaryChanged)
 
         # option seems not to be supported
-        #ui.Embedded.setChecked(self.obj.IncludeEmbedded)
-        #ui.Embedded.toggled.connect(self.embeddedChanged)
+        # ui.Embedded.setChecked(self.obj.IncludeEmbedded)
+        # ui.Embedded.toggled.connect(self.embeddedChanged)
 
         info = FreeCADGui.getIcon("info.svg")
-        ui.Icon.setPixmap(info.pixmap(QtCore.QSize(32,32)))
-
+        ui.Icon.setPixmap(info.pixmap(QtCore.QSize(32, 32)))
 
     def accept(self):
         self.obj.References = self.selection_widget.references
@@ -92,9 +91,6 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
     def boundaryChanged(self, value):
         self.obj.IncludeBoundary = value
 
-    #@QtCore.Slot(bool)
-    #def embeddedChanged(self, value):
+    # @QtCore.Slot(bool)
+    # def embeddedChanged(self, value):
     #    self.obj.IncludeEmbedded = value
-
-
-
