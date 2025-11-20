@@ -144,13 +144,13 @@ class Key:
         return self.Shape.hashCode()
 
 
-def _get_common_faces(face_list_1, face_list_2):
+def _get_common_shapes(shape_list_1, shape_list_2):
 
     result = []
-    for face1 in face_list_1:
-        for face2 in face_list_2:
-            if face1.isSame(face2):
-               result.append(face1)
+    for shape1 in shape_list_1:
+        for shape2 in shape_list_2:
+            if shape1.isSame(shape2):
+               result.append(shape1)
 
     return result
 
@@ -204,6 +204,47 @@ def _get_opposing_edge(surface_map, face, edge):
     # if we are here something went terrible wrong, that should not happen
     raise Exception("Could not find opposing edge")
 
+def _get_opposing_surface(surface_map, solid, face):
+    # Within face, find the edge that is opposite of the given one for transfinite meshing
+
+    match len(solid.Faces):
+        case 5 | 6:
+            print("search 5 and 6 sided solid for opposing face")
+            # find the face that does not share a edge.
+            # that is always possible for 6 sided solids, and also for the top and bottom
+            # faces of a 5-sided solid
+
+            for candidate in solid.Faces:
+                if candidate.isSame(face):
+                    continue
+
+                share = False
+                for candidate_edge in candidate.Edges:
+                    for base_edge in face.Edges:
+                        if candidate_edge.isSame(base_edge):
+                            share = True
+                            break
+
+                    if share:
+                        break
+
+                if not share:
+                    print("found opposing face")
+                    return candidate
+
+        case _:
+            raise Exception("Only 5 or 6 sided solids can be automated")
+
+    # if we are here we are a 5-sided solid, and the face is one of the 3 connected sides.
+    # to solve this we need to use the faces guide vertex
+    #guiding_vertex = face.findSubShape(surface_map[Key(face)].GuideVertex)
+    #TODO: finish
+
+
+
+    # if we are here something went terrible wrong, that should not happen
+    raise Exception("Could not find opposing edge")
+
 
 def _propagate_edge(surfaces_map, edges_map, shape, faces, edge_key, origin_face, creator):
     # Propagates the edge values through the map
@@ -217,7 +258,7 @@ def _propagate_edge(surfaces_map, edges_map, shape, faces, edge_key, origin_face
 
     # 1. Get all faces the edge belongs to (from user provided list)
     edge_faces = shape.ancestorsOfType(edge_key.Shape, Part.Face)
-    propagate_faces = _get_common_faces(edge_faces, faces)
+    propagate_faces = _get_common_shapes(edge_faces, faces)
 
     # 3. Find opposing edges and apply value if not set yet
     for face in propagate_faces:
@@ -247,6 +288,100 @@ def _propagate_edge(surfaces_map, edges_map, shape, faces, edge_key, origin_face
 
             # propagate the opposite edge further
             _propagate_edge(surfaces_map, edges_map, shape, faces, opposite_key, face, creator)
+
+def _propagate_surface(surfaces_map, edges_map, shape, solids, face_key, origin_solid, creator):
+    # Propagates the surface values through the map
+    #
+    # surfaces_map  The map of all face keys to face data
+    # edges_map:    The map of all edge keys to edge data
+    # shape:        The shape all faces and edges belong
+    # faces:        All faces that should be made transfinite
+    # edge_key:     The edge key which shal be propagaed
+    # origin_face:  The face the propagated edge was itself propagated from (to not go backwards)
+
+    # 1. Get all faces the edge belongs to (from user provided list)
+    face_solids = shape.ancestorsOfType(face_key.Shape, Part.Solid)
+    propagate_solids = _get_common_shapes(face_solids, solids)
+
+    # 2. Find opposing face and apply value if not set yet
+    for solid in propagate_solids:
+
+        # do not go backward
+        if origin_solid and solid.isSame(origin_solid):
+            continue
+
+        opposite = _get_opposing_surface(surfaces_map, solid, face_key.Shape)
+        if not opposite:
+            # 5 faced solids may not have a opposite face
+            continue
+
+        opposite_key = Key(opposite)
+        if surfaces_map[opposite_key].IsDefined:
+            continue
+
+        else:
+
+            # transfer the guide_vertex if required
+            if len(face_key.Shape.Edges) == 3:
+                # transfer guide!
+                guide_vertex = face_key.Shape.Vertexes[surfaces_map[face_key].GuideVertex]
+                opposite_guide_vertex = None
+                # find the edge on the guide vertex that is not part of the face!
+                gv_edges = solid.ancestorsOfType(guide_vertex, Part.Edge)
+                share = False
+                connecting_edge = None
+                for gv_edge in gv_edges:
+                    for f_edge in face_key.Shape.Edges:
+                        if gv_edge.isSame(f_edge):
+                            share = True
+                            break
+
+                    if share:
+                        share = False
+                        continue
+
+                    connecting_edge = gv_edge
+
+                if not connecting_edge:
+                    raise Exception("Unable to popagate guiding vertex")
+
+                # the other end of the connection edge is our new guide vertex!
+                if connecting_edge.Vertexes[0].isSame(guide_vertex):
+                    opposite_guide_vertex = connecting_edge.Vertexes[1]
+                else:
+                    opposite_guide_vertex = connecting_edge.Vertexes[0]
+
+                name, guide_vertex_idx = opposite.findSubShape(opposite_guide_vertex)
+                if not name:
+                    raise Exception("Unable to popagate guiding vertex")
+
+                if surfaces_map[opposite_key].GuideVertex != guide_vertex_idx -1:
+                    # the opposite surface requries a non-default guide vertex
+                    # including the new VertexIdx to support this
+
+                    surfaces_map[opposite_key].GuideVertex = guide_vertex_idx - 1
+
+                    # build the VertexIdx for the opposite if requried
+                    data = surfaces_map[face_key].Data
+
+                    # build the new vertex idx (in shape, not face!)
+                    order = []
+                    for vertex in opposite.Vertexes:
+                        _, idx = shape.findSubShape(vertex)
+                        order.append(idx)
+                    _, guide_idx_shape = shape.findSubShape(opposite_guide_vertex)
+                    order.insert(0, order.pop(order.index(guide_idx_shape)))
+                    order_str = TFSurfaceDefinition.vertexIdx_string_from_list(order)
+                    surfaces_map[opposite_key].Data = TFSurfaceDefinition(Recombine=data.Recombine, Orientation=data.Orientation, VertexIdx=order_str)
+                    surfaces_map[opposite_key].Creation = creator
+
+            else:
+                # transfer the data as automatic definition
+                surfaces_map[opposite_key].Data = data
+                surfaces_map[opposite_key].Creation = creator
+
+            # propagate the opposite edge further
+            _propagate_surface(surfaces_map, edges_map, shape, solids, opposite_key, solid, creator)
 
 
 def _get_reference_elements(shape, obj):
@@ -339,6 +474,44 @@ def _get_automatic_transfinite_edges(surfaces_map, edge_map, shape, faces, auto_
     for key, data in edge_map.items():
         if not data.IsDefined:
             data.Data = auto_curve_data
+            data.Creation = creator
+
+def _get_automatic_transfinite_surfaces(surfaces_map, edge_map, shape, solids, auto_surface_data, creator):
+    # Updates the surface map for all surfaces that require transfinite surface definitions in solids list
+    #
+    # shape: The Part shape object all the faces belong to
+    # solids: A list of solids which shall be transfinite
+    # auto_surface_data: The transfinite surface data to apply on non defined or porpagated surfaces
+
+    # 1. add all new surfaces not yet defined (careful to not doulbe add edges)
+    for solid in solids:
+        for face in solid.Faces:
+            if not Key(face) in surfaces_map:
+                surfaces_map[Key(face)] = FaceData()
+
+    # 2. get all already defined surfaces
+    user_surfaces = set()
+    vol_surfaces  = set()
+    for key, data in surfaces_map.items():
+
+        if data.Creation == Creation.User:
+            user_surfaces.add(key)
+        elif data.Creation == Creation.AutomaticVolume:
+            vol_surfaces.add(key)
+
+    # 3. Propagate all user defined values through the map
+    for user_surface in user_surfaces:
+        _propagate_surface(surfaces_map, edge_map, shape, solids, user_surface, None, creator)
+
+    # 4. Propagate all already auto-volume defined values through the map (lower prio then surface defined)
+    #    Requried when there are multiple transfinite surface objects with automation
+    for vol_surface in vol_surfaces:
+        _propagate_edge(surfaces_map, edge_map, shape, solids, vol_surfaces, None, creator)
+
+    # 5. Check if we have further undefined surfaces, and use the default data on them
+    for key, data in surfaces_map.items():
+        if not data.IsDefined:
+            data.Data = auto_surface_data
             data.Creation = creator
 
 
@@ -542,29 +715,20 @@ def add_automatic_transfinite_edges_from_solids(surface_map, edge_map, shape, so
     # solid names to solids
     solid_shapes = [shape.Solids[int(e.lstrip("Solid")) - 1] for e in solids]
 
-    # faces names to faces shape
+    # get all faces we need to process
     face_shapes = []
     for solid in solid_shapes:
         face_shapes += solid.Faces
 
-    # get transfinite data for all edges
-    _get_automatic_transfinite_edges(edge_map, shape, face_shapes, auto_curve_data, Creation.AutomaticVolume)
+    _get_automatic_transfinite_edges(surface_map, edge_map, shape, face_shapes, auto_curve_data, Creation.AutomaticVolume)
 
 
-def add_automatic_transfinite_surfaces_from_solids(surface_map, shape, solids, auto_surface_data):
+def add_automatic_transfinite_surfaces_from_solids(surface_map, edge_map, shape, solids, auto_surface_data):
 
     # solid names to solids
     solid_shapes = [shape.Solids[int(e.lstrip("Solid")) - 1] for e in solids]
 
     # faces names to faces shape
-    face_shapes = []
-    for solid in solid_shapes:
-        face_shapes += solid.Faces
-
-    # check if faces are not defined, and add them if so
-    for face in face_shapes:
-        key = Key(face)
-        if not key in surface_map:
-            surface_map[key] = FaceData(Creation=Creation.AutomaticVolume, Data=auto_surface_data)
+    _get_automatic_transfinite_surfaces(surface_map, edge_map, shape, solid_shapes, auto_surface_data, Creation.AutomaticVolume)
 
 
