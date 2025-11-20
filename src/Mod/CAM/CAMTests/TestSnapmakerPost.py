@@ -83,7 +83,9 @@ class TestSnapmakerPost(PathTestUtils.PathTestBase):
 ;Post Processor: snapmaker_post
 ;CAM File: boxtest.fcstd
 ;Output Time: \\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{0,6}
-;thumbnail: deactivated.""".replace('\n', self.post.values["END_OF_LINE_CHARACTERS"])
+;thumbnail: deactivated.""".replace(
+            "\n", self.post.values["END_OF_LINE_CHARACTERS"]
+        )
 
         expected_body = """\
 ;Begin preamble
@@ -108,16 +110,17 @@ M6 T1
 ;Begin postamble
 M400
 M5
-""".replace('\n', self.post.values["END_OF_LINE_CHARACTERS"])
+""".replace(
+            "\n", self.post.values["END_OF_LINE_CHARACTERS"]
+        )
 
         # test header and body with comments
         gcode = self.get_gcode([], "--machine=A350 --toolhead=50W_CNC")
 
         g_lines = gcode.split(self.post.values["END_OF_LINE_CHARACTERS"])
-        e_lines = (
-            expected_header.split(self.post.values["END_OF_LINE_CHARACTERS"])
-            + expected_body.split(self.post.values["END_OF_LINE_CHARACTERS"])
-        )
+        e_lines = expected_header.split(
+            self.post.values["END_OF_LINE_CHARACTERS"]
+        ) + expected_body.split(self.post.values["END_OF_LINE_CHARACTERS"])
 
         self.assertTrue(len(g_lines), len(e_lines))
         for (nbr, exp), line in zip(enumerate(e_lines), g_lines):
@@ -133,7 +136,11 @@ M5
         # test body without comments
         gcode = self.get_gcode([], "--machine=A350 --toolhead=50W_CNC --no-header --no-comments")
         expected = self.post.values["END_OF_LINE_CHARACTERS"].join(
-            [line for line in expected_body.split(self.post.values["END_OF_LINE_CHARACTERS"]) if not line.startswith(";")]
+            [
+                line
+                for line in expected_body.split(self.post.values["END_OF_LINE_CHARACTERS"])
+                if not line.startswith(";")
+            ]
         )
         self.assertEqual(gcode, expected)
 
@@ -229,7 +236,9 @@ M5
         c1 = Path.Command("M3 S3000")
 
         gcode = self.get_gcode([c0, c1], "--machine=A350 --toolhead=50W_CNC --no-header")
-        self.assertEqual(gcode.split(self.post.values["END_OF_LINE_CHARACTERS"])[19:22], ["M5", "M76", "M6 T2"])
+        self.assertEqual(
+            gcode.split(self.post.values["END_OF_LINE_CHARACTERS"])[19:22], ["M5", "M76", "M6 T2"]
+        )
         self.assertEqual(
             gcode.split(self.post.values["END_OF_LINE_CHARACTERS"])[22], "M3 P25"
         )  # no TLO on Snapmaker (G43 inserted after tool change)
@@ -275,7 +284,9 @@ M5
         # Reference for quick swap kit
         # [2] https://support.snapmaker.com/hc/en-us/articles/15320624494103-Pre-sale-FAQ-for-Quick-Swap-Kit
 
-        def process_modkits(machine, modkits=None, toolhead=None) -> tuple[bool, argparse.Namespace]:
+        def process_modkits(
+            machine, modkits=None, toolhead=None
+        ) -> tuple[bool, argparse.Namespace]:
             """process arguments for the given combination of machine, toolhead and modkits"""
             self.job.PostProcessorArgs = (
                 f"--no-show-editor --no-gui --no-thumbnail --machine={machine} "
@@ -296,7 +307,7 @@ M5
         self.assertEqual(set(self.post.values["MODKITS"].keys()), {"z_extension"})
         self.assertEqual(self.post.values["BOUNDARIES"], dict(X=125, Y=125, Z=146))
 
-        result, args = process_modkits("Original",  "BK")
+        result, args = process_modkits("Original", "BK")
         self.assertFalse(result)
 
         # Artisan
@@ -336,7 +347,7 @@ M5
         self.assertEqual(self.post.values["BOUNDARIES"], dict(X=145, Y=135, Z=90))
 
         # This is incompatible according to [2]
-        result, args = process_modkits("A150",  "QS")
+        result, args = process_modkits("A150", "QS")
         self.assertFalse(result)
 
         # A250
@@ -419,7 +430,7 @@ M5
         self.assertEqual(result, expected)
         self.assertEqual(
             self.post.values["TOOLHEAD"]["name"],
-            self.post.values["TOOLHEADS_LIST"]["Original_CNC"]["name"]
+            self.post.values["TOOLHEADS_LIST"]["Original_CNC"]["name"],
         )
 
         # check succeed with artisan (which base is bigger)
@@ -431,7 +442,7 @@ M5
         self.assertEqual(result, expected)
         self.assertEqual(
             self.post.values["TOOLHEAD"]["name"],
-            self.post.values["TOOLHEADS_LIST"]["200W_CNC"]["name"]
+            self.post.values["TOOLHEADS_LIST"]["200W_CNC"]["name"],
         )
 
         for machine in ("A250", "A250T", "A350", "A350T"):
@@ -457,9 +468,7 @@ M5
         self.assertEqual(gcode.split(self.post.values["END_OF_LINE_CHARACTERS"])[18], "M3 P30")
 
         # test 200W toolhead
-        gcode = self.get_gcode(
-            [command], "--machine=A350 --toolhead=200W_CNC --no-header"
-        )
+        gcode = self.get_gcode([command], "--machine=A350 --toolhead=200W_CNC --no-header")
         self.assertEqual(gcode.split(self.post.values["END_OF_LINE_CHARACTERS"])[18], "M3 S3600")
 
         # test 200W toolhead
@@ -512,7 +521,9 @@ M5
             [command],
             "--machine=A350 --toolhead=50W_CNC --no-header --boundaries-check",
         )
-        self.assertTrue(self.post.check_boundaries(gcode.split(self.post.values["END_OF_LINE_CHARACTERS"])))
+        self.assertTrue(
+            self.post.check_boundaries(gcode.split(self.post.values["END_OF_LINE_CHARACTERS"]))
+        )
 
         # check fails with A350
         c0 = Path.Command("G01 X100 Y-100.5 Z-1")
@@ -521,18 +532,24 @@ M5
             [c0, c1],
             "--machine=A350 --toolhead=50W_CNC --no-header --boundaries-check",
         )
-        self.assertFalse(self.post.check_boundaries(gcode.split(self.post.values["END_OF_LINE_CHARACTERS"])))
+        self.assertFalse(
+            self.post.check_boundaries(gcode.split(self.post.values["END_OF_LINE_CHARACTERS"]))
+        )
 
         # check succeed with artisan (which base is bigger)
         gcode = self.get_gcode(
             [c0, c1],
             "--machine=Artisan --no-header --boundaries-check",
         )
-        self.assertTrue(self.post.check_boundaries(gcode.split(self.post.values["END_OF_LINE_CHARACTERS"])))
+        self.assertTrue(
+            self.post.check_boundaries(gcode.split(self.post.values["END_OF_LINE_CHARACTERS"]))
+        )
 
         # check fails with custom boundaries
         gcode = self.get_gcode(
             [c0, c1],
             "--machine=A350 --toolhead=50W_CNC --no-header --boundaries-check --boundaries='50,400,10'",
         )
-        self.assertFalse(self.post.check_boundaries(gcode.split(self.post.values["END_OF_LINE_CHARACTERS"])))
+        self.assertFalse(
+            self.post.check_boundaries(gcode.split(self.post.values["END_OF_LINE_CHARACTERS"]))
+        )

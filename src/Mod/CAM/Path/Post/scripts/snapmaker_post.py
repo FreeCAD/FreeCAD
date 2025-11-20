@@ -94,14 +94,20 @@ SNAPMAKER_MACHINES = {
 SNAPMAKER_MODKITS = {
     "quick_swap": dict(
         name="Quick Swap Kit",
-        arg=("quick_swap", "QS",),
+        arg=(
+            "quick_swap",
+            "QS",
+        ),
         help="quick swap kit (Snapmaker 2 only)",
         boundaries_delta=dict(X=0, Y=-15, Z=0),
         machines={"A250", "A250T", "A350", "A350T"},
     ),
     "bracing_kit": dict(
         name="Bracing Kit",
-        arg=("bracing_kit", "BK",),
+        arg=(
+            "bracing_kit",
+            "BK",
+        ),
         help="Bracing kit (Snapmaker 2 only)",
         boundaries_delta=dict(X=0, Y=-12, Z=0),
         machines={"A150", "A250", "A250T", "A350", "A350T"},
@@ -181,8 +187,7 @@ class ExtremaAction(argparse.Action):
             }
             setattr(namespace, self.dest, params)
         else:
-            raise argparse.ArgumentError(None,
-                                         message="invalid values provided, should be int,int")
+            raise argparse.ArgumentError(None, message="invalid values provided, should be int,int")
 
 
 class Snapmaker(Path.Post.Processor.PostProcessor):
@@ -319,7 +324,7 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
         self.arguments_visible["spindle-speeds"] = True
 
     def snapmaker_init_parser(
-            self, values, argument_defaults, arguments_visible
+        self, values, argument_defaults, arguments_visible
     ) -> argparse.ArgumentParser:
         """Initialize the postprocessor arguments parser"""
         parser = Path.Post.UtilsArguments.init_shared_arguments(
@@ -337,10 +342,7 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
             help="Include a thumbnail (require --gui)",
         )
         group.add_argument(
-            "--no-thumbnail",
-            action="store_false",
-            dest="thumbnail",
-            help="Remove thumbnail"
+            "--no-thumbnail", action="store_false", dest="thumbnail", help="Remove thumbnail"
         )
 
         group.add_argument(
@@ -387,13 +389,16 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
         group.add_argument(
             "--modkits",
             default=(),
-            choices=[arg for kit in self.values["MODKITS_LIST"].values() for arg in kit['arg']],
+            choices=[arg for kit in self.values["MODKITS_LIST"].values() for arg in kit["arg"]],
             nargs="+",
             # action='append',
-            help="Modification kits added to the machine:\n" + ", ".join(
-                [f"{set(kit['arg'])}: {kit['help']}"
-                 for kit in self.values["MODKITS_LIST"].values()]
-            )
+            help="Modification kits added to the machine:\n"
+            + ", ".join(
+                [
+                    f"{set(kit['arg'])}: {kit['help']}"
+                    for kit in self.values["MODKITS_LIST"].values()
+                ]
+            ),
         )
 
         group.add_argument(
@@ -441,7 +446,7 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
         return parser
 
     def snapmaker_process_arguments(
-            self, filename: str = "-"
+        self, filename: str = "-"
     ) -> tuple[bool, str | argparse.Namespace]:
         """Process any arguments to the postprocessor."""
         (flag, args) = Path.Post.UtilsArguments.process_shared_arguments(
@@ -457,12 +462,11 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
 
             # get toolhead
             compatible_toolheads = {
-                n: th for n, th in self.values["TOOLHEADS_LIST"].items()
+                n: th
+                for n, th in self.values["TOOLHEADS_LIST"].items()
                 if args.machine in th["machines"]
             }
-            toolheads_args = {
-                arg: n for n, th in compatible_toolheads.items() for arg in th["arg"]
-            }
+            toolheads_args = {arg: n for n, th in compatible_toolheads.items() for arg in th["arg"]}
 
             if args.toolhead:
                 if args.toolhead in toolheads_args:
@@ -505,25 +509,26 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
                     )
                     return False, args
             else:  # default is RPM, percent otherwise
-                self.values["SPINDLE_PERCENT"] = toolhead["spindle_percent"] and not toolhead[
-                    "spindle_rpm"]
+                self.values["SPINDLE_PERCENT"] = (
+                    toolhead["spindle_percent"] and not toolhead["spindle_rpm"]
+                )
 
             # display warning only if there is a mismatch between the request and the result
             if args.spindle_percent is not self.values["SPINDLE_PERCENT"]:
                 if self.values["SPINDLE_PERCENT"]:
                     FreeCAD.Console.PrintWarning(
-                        "Spindle speed will be controlled using using percentages.\n")
+                        "Spindle speed will be controlled using using percentages.\n"
+                    )
                 else:
                     FreeCAD.Console.PrintWarning(
-                        "Spindle speed will be controlled using using RPM.\n")
+                        "Spindle speed will be controlled using using RPM.\n"
+                    )
 
             # addons
             compatible_modkits = {
                 n: kit for n, kit in SNAPMAKER_MODKITS.items() if args.machine in kit["machines"]
             }
-            modkits_args = {
-                arg: n for n, th in compatible_modkits.items() for arg in th["arg"]
-            }
+            modkits_args = {arg: n for n, th in compatible_modkits.items() for arg in th["arg"]}
 
             self.values["MODKITS"] = modkits = dict()
             for kit in args.modkits:
@@ -552,7 +557,7 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
                 self.values["BOUNDARIES"] = args.boundaries
                 self.values["MACHINE_NAME"] += " Boundaries override=" + str(args.boundaries)
                 for (axis, calculated), custom in zip(
-                        machine["boundaries"].items(), args.boundaries.values()
+                    machine["boundaries"].items(), args.boundaries.values()
                 ):
                     if custom > calculated:
                         FreeCAD.Console.PrintWarning(
@@ -568,8 +573,7 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
             self.values["LINE_INCREMENT"] = args.line_increment
 
             if args.boundaries_check and not self.values["BOUNDARIES"]:
-                FreeCAD.Console.PrintError(
-                    "Boundary check skipped: no valid boundaries supplied\n")
+                FreeCAD.Console.PrintError("Boundary check skipped: no valid boundaries supplied\n")
                 self.values["BOUNDARIES_CHECK"] = False
             else:
                 self.values["BOUNDARIES_CHECK"] = args.boundaries_check
@@ -691,17 +695,16 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
         # https://wiki.snapmaker.com/en/Snapmaker_Luban/manual/2_supported_gcode_references#m3m4-modified-cnclaser-on
         # Speed as percentage in [0,100]% range
         for index, commandline in enumerate(
-                gcode
+            gcode
         ):  # .split(self.values["END_OF_LINE_CHARACTERS"]):
             if match := re.match(r"(?P<command>M0?[34])\D.*(?P<spindle>S\d+.?\d*)", commandline):
                 percent = (
-                        float(match.group("spindle")[1:]) * 100 / self.values["SPINDLE_SPEEDS"][
-                    "max"]
+                    float(match.group("spindle")[1:]) * 100 / self.values["SPINDLE_SPEEDS"]["max"]
                 )
                 gcode[index] = (
-                        gcode[index][: match.span("spindle")[0]]
-                        + f'P{percent:.{self.values["SPINDLE_DECIMALS"]}f}'
-                        + gcode[index][match.span("spindle")[1]:]
+                    gcode[index][: match.span("spindle")[0]]
+                    + f'P{percent:.{self.values["SPINDLE_DECIMALS"]}f}'
+                    + gcode[index][match.span("spindle")[1] :]
                 )
         return gcode
 
@@ -720,7 +723,7 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
                 relative = True
             elif re.match(r"G0?[12](?:\D|$)", commandline):
                 for axis, value in re.findall(
-                        r"(?P<axis>[XYZ])(?P<value>-?\d+\.?\d*)(?:\D|$)", commandline
+                    r"(?P<axis>[XYZ])(?P<value>-?\d+\.?\d*)(?:\D|$)", commandline
                 ):
                     if relative:
                         position[axis] += float(value)
@@ -801,7 +804,7 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
             if dia.exec_():
                 final = dia.editor.toPlainText()
 
-        if self.values["END_OF_LINE_CHARACTERS"] != '\n':
+        if self.values["END_OF_LINE_CHARACTERS"] != "\n":
             final = final.replace("\n", self.values["END_OF_LINE_CHARACTERS"])
 
         if not filename == "-":
