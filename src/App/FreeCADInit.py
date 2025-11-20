@@ -722,7 +722,12 @@ class utils:
 
     @staticmethod
     def str_to_paths(paths: str, delim: str = ";") -> list[Path]:
-        return [Path(path) for path in paths.split(delim)]
+        """Convert a delimited string list of paths to a list of Path objects."""
+        items = (item.strip() for item in paths.split(delim))
+        # Filtering out empty paths: This may break backwards compat or not.
+        # If something breaks, just remove the filter to allow empty paths
+        non_empty_paths = filter(bool, items)
+        return list(map(Path, non_empty_paths))
 
     @staticmethod
     def env_to_path(name: str) -> Path | None:
@@ -775,7 +780,7 @@ class PathSet:
     override: collections.deque["Path | PathSet"] = dataclasses.field(default_factory=collections.deque)
     fallback: collections.deque["Path | PathSet"] = dataclasses.field(default_factory=collections.deque)
 
-    def add(self, item: "Path | PathSet", priority: PathPriority = PathPriority.FallbackLast) -> None:
+    def add(self, item: "Path | PathSet", priority: PathPriority = PathPriority.OverrideLast) -> None:
         """Add item into the corresponding priority slot."""
         if isinstance(item, Path):
             item = item.resolve()
@@ -783,13 +788,18 @@ class PathSet:
                 return
 
         if priority == PathPriority.FallbackLast:
-            self.override.append(item)
+            self.fallback.append(item)
         elif priority == PathPriority.OverrideFirst:
             self.override.appendleft(item)
         elif priority == PathPriority.OverrideLast:
             self.override.append(item)
         elif priority == PathPriority.FallbackFirst:
             self.fallback.appendleft(item)
+        elif priority == PathPriority.Ignore:
+            pass
+        else:
+            msg = "Invalid path priority"
+            raise ValueError(msg)
 
     def iter(self) -> coll_abc.Iterable[Path]:
         """
@@ -1529,5 +1539,8 @@ def init_applications() -> None:
 # │ Cleanup for next scripts                       │
 # └────────────────────────────────────────────────┘
 
+# Reset logger to no extra newline for subsequent scripts (Backwards compat)
 __logger.sep = ""
+
+# Clean global namespace
 transient.cleanup()
