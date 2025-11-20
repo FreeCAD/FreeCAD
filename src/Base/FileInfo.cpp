@@ -336,6 +336,45 @@ bool FileInfo::isWritable() const
     if (fs::is_directory(path)) {
         return directoryIsWritable(path);
     }
+    #ifdef FC_OS_WIN32
+    //convert filename from UTF-8 to windows WSTRING
+    std::wstring_convert<std::codecvt_utf8<wchar_t>> utf8ToWstringConverter;
+    std::wstring fileNameWstring = utf8ToWstringConverter.from_bytes(FileName);
+    //requires import of <windows.h>
+    DWORD attributes = GetFileAttributes(fileNameWstring.c_str());
+    if (attributes == INVALID_FILE_ATTRIBUTES){
+        //Log the error? 
+        std::clog << "GetFileAttributes failed for file: " << FileName << '\n';
+        //usually indicates some kind of network file issue, so the file is probably not writable
+        return false;
+    }
+    if ((attributes & FILE_ATTRIBUTE_READONLY) != 0)
+    {
+        return false;
+    }
+    //TEST if file is truley writable, because windows ACL does not map well to POSIX perms,
+    // and there are other potential blockers (app or shared file locks, etc)
+    HANDLE hFile = CreateFileW(
+        fileNameWstring.c_str(),
+        GENERIC_WRITE,
+        0, // ----> no sharing: fail if anyone else has it open
+        nullptr,
+        OPEN_EXISTING,
+        FILE_ATTRIBUTE_NORMAL,
+        nullptr
+    );
+
+    if (hFile == INVALID_HANDLE_VALUE) {
+        DWORD err = GetLastError();
+        if (err == ERROR_SHARING_VIOLATION || err == ERROR_LOCK_VIOLATION) {
+            return false;
+        }
+        return false;
+    }
+    if (!CloseHandle(hFile)) {
+        std::clog << "CloseHandle failed for file: " << FileName << " while checking for write access." << '\n';
+    }
+    #endif
     fs::file_status stat = fs::status(path);
     fs::perms perms = stat.permissions();
     return (perms & fs::perms::owner_write) == fs::perms::owner_write;
