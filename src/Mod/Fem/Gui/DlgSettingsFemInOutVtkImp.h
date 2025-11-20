@@ -48,7 +48,6 @@ protected:
     void changeEvent(QEvent* e) override;
 
 private:
-    void saveExportLevel() const;
     void populateExportLevel() const;
     std::unique_ptr<Ui_DlgSettingsFemInOutVtk> ui;
 };
