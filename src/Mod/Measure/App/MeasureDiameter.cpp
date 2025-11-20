@@ -154,8 +154,7 @@ Part::MeasureRadiusInfoPtr MeasureDiameter::getMeasureInfoFirst() const
         return std::make_shared<Part::MeasureRadiusInfo>();
     }
 
-    auto radiusInfo = std::dynamic_pointer_cast<Part::MeasureRadiusInfo>(info);
-    return radiusInfo;
+    return std::dynamic_pointer_cast<Part::MeasureRadiusInfo>(info);
 }
 
 std::vector<App::DocumentObject*> MeasureDiameter::getSubject() const
