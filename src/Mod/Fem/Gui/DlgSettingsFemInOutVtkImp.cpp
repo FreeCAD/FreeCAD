@@ -45,29 +45,16 @@ DlgSettingsFemInOutVtkImp::~DlgSettingsFemInOutVtkImp() = default;
 
 void DlgSettingsFemInOutVtkImp::saveSettings()
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Fem/InOutVtk"
-    );
-    hGrp->SetInt("ImportObject", ui->comboBoxVtkImportObject->currentIndex());
-
     ui->comboBoxVtkImportObject->onSave();
-    saveExportLevel();
+    ui->cb_export_level->onSave();
 }
 
 void DlgSettingsFemInOutVtkImp::loadSettings()
 {
     ui->comboBoxVtkImportObject->onRestore();
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Fem/InOutVtk"
-    );
-    int index = hGrp->GetInt("ImportObject", 0);
-    // 0 is standard on first initialize, 0 .. vtk res obj, 1 .. FEM mesh obj, 2 .. FreeCAD res obj
-    if (index > -1) {
-        ui->comboBoxVtkImportObject->setCurrentIndex(index);
-    }
-
     populateExportLevel();
+    ui->cb_export_level->onSave();
 }
 
 /**
@@ -86,32 +73,20 @@ void DlgSettingsFemInOutVtkImp::changeEvent(QEvent* e)
     }
 }
 
-void DlgSettingsFemInOutVtkImp::saveExportLevel() const
-{
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Fem/InOutVtk"
-    );
-    hGrp->SetASCII("MeshExportLevel", ui->cb_export_level->currentData().toString().toStdString());
-}
-
 void DlgSettingsFemInOutVtkImp::populateExportLevel() const
 {
     std::list<std::string> values = {QT_TR_NOOP("All"), QT_TR_NOOP("Highest")};
 
-    auto hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Fem/InOutVtk"
-    );
-    std::string current = hGrp->GetASCII("MeshExportLevel", "Highest");
-
-    int index = 0;
     ui->cb_export_level->clear();
     for (const auto& val : values) {
-        ui->cb_export_level->addItem(tr(val.c_str()), QString::fromStdString(val));
-        if (val == current) {
-            ui->cb_export_level->setCurrentIndex(index);
-        }
-        ++index;
+        ui->cb_export_level->addItem(tr(val.c_str()), QByteArray::fromStdString(val));
     }
+
+    // set default index
+    auto hGrp = ui->cb_export_level->getWindowParameter();
+    std::string current = hGrp->GetASCII(ui->cb_export_level->entryName(), "Highest");
+    int index = ui->cb_export_level->findData(QByteArray::fromStdString(current));
+    ui->cb_export_level->setCurrentIndex(index);
 }
 
 #include "moc_DlgSettingsFemInOutVtkImp.cpp"
