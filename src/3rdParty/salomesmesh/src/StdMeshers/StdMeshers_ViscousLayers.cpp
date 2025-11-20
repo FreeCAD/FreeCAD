@@ -52,8 +52,8 @@
 #include <BRepAdaptor_Surface.hxx>
 #include <BRepLProp_SLProps.hxx>
 #include <BRep_Tool.hxx>
-#include <Bnd_B2d.hxx>
-#include <Bnd_B3d.hxx>
+#include <Bnd_B2.hxx>
+#include <Bnd_B3.hxx>
 #include <ElCLib.hxx>
 #include <GCPnts_AbscissaPoint.hxx>
 #include <Geom2d_Circle.hxx>

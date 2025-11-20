@@ -29,7 +29,7 @@
 #include "SMESH_TypeDefs.hxx"
 
 #include <BRepClass3d_SolidClassifier.hxx>
-#include <Bnd_B3d.hxx>
+#include <Bnd_B3.hxx>
 #include <GeomAPI_ProjectPointOnCurve.hxx>
 #include <GeomAPI_ProjectPointOnSurf.hxx>
 #include <Quantity_Color.hxx>

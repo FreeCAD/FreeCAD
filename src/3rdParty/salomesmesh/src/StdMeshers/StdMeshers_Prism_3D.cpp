@@ -46,7 +46,7 @@
 
 #include <BRepAdaptor_CompCurve.hxx>
 #include <BRep_Tool.hxx>
-#include <Bnd_B3d.hxx>
+#include <Bnd_B3.hxx>
 #include <Geom2dAdaptor_Curve.hxx>
 #include <Geom2d_Line.hxx>
 #include <GeomLib_IsPlanarSurface.hxx>
