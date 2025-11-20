@@ -413,7 +413,7 @@ public:
                         res = QString::fromUtf8(quote(doc->Label.getStrValue()).c_str());
                     }
                     else {
-                        res = QString::fromLatin1(doc->getName());
+                        res = QString::fromUtf8(doc->getName());
                     }
                     if (sep) {
                         res += QLatin1Char('#');
