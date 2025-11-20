@@ -524,7 +524,7 @@ def setup(doc=None, solver=None):
     part_obj.Shape = wedge.copy().translate(FreeCAD.Vector(45,-60,0))
     tf_curv = ObjectsFem.makeMeshTransfiniteCurve(doc, mesh_obj)
     tf_curv.References = [(part_obj, [f"Edge{i}" for i in range(1,10)])]
-    tf_curv.Nodes = 15
+    tf_curv.Nodes = 7
     tf_curv.Distribution = "Bump"
     tf_curv.Coefficient = 5
     tf_curv.Invert=True
@@ -558,7 +558,7 @@ def setup(doc=None, solver=None):
     part_obj.Shape = rotation.copy().translate(FreeCAD.Vector(60,-60,0))
     tf_curv = ObjectsFem.makeMeshTransfiniteCurve(doc, mesh_obj)
     tf_curv.References = [(part_obj, [f"Edge{i}" for i in range(1,10)])]
-    tf_curv.Nodes = 15
+    tf_curv.Nodes = 7
     tf_curv.Distribution = "Bump"
     tf_curv.Coefficient = 5
     tf_curv.Invert=True
@@ -602,6 +602,7 @@ def setup(doc=None, solver=None):
     tf_curv.Distribution = "Bump"
     tf_curv.Coefficient = 5
     tf_curv.Invert=True
+    tf_curv.Nodes = 7
     tf_surf = ObjectsFem.makeMeshTransfiniteSurface(doc, mesh_obj)
     tf_surf.Recombine = True
     tf_surf.References = [(part_obj, [f"Face{i}" for i in range(1,7)])]
@@ -636,6 +637,7 @@ def setup(doc=None, solver=None):
     tf_curv.Distribution = "Bump"
     tf_curv.Coefficient = 5
     tf_curv.Invert=True
+    tf_curv.Nodes = 7
     tf_surf = ObjectsFem.makeMeshTransfiniteSurface(doc, mesh_obj)
     tf_surf.Recombine = True
     tf_surf.References = [(part_obj, [f"Face{i}" for i in range(1,7)])]
