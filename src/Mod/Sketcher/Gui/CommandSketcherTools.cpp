@@ -2372,11 +2372,11 @@ void CmdSketcherOffset::activated(int iMsg)
 
             const Part::Geometry* geo = Obj->getGeometry(geoId);
             if (!isPoint(*geo)
-                && !isBSplineCurve(*geo)
-                && !isEllipse(*geo)
-                && !isArcOfEllipse(*geo)
-                && !isArcOfHyperbola(*geo)
-                && !isArcOfParabola(*geo)
+                // && !isBSplineCurve(*geo)
+                // && !isEllipse(*geo)
+                // && !isArcOfEllipse(*geo)
+                // && !isArcOfHyperbola(*geo)
+                // && !isArcOfParabola(*geo)
                 && !GeometryFacade::isInternalAligned(geo)) {
                 // Currently ellipse/parabola/hyperbola/bspline are not handled correctly.
                 // Occ engine gives offset of those as set of lines and arcs and does not seem to work consistently.
