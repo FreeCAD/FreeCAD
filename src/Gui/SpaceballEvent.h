@@ -27,11 +27,12 @@
 
 namespace Spaceball
 {
-enum ButtonStateType
+
+enum class ButtonState
 {
-    BUTTON_NONE = 0,
-    BUTTON_PRESSED,
-    BUTTON_RELEASED
+    None = 0,
+    Pressed,
+    Released
 };
 
 class EventBase: public QInputEvent
@@ -104,15 +105,15 @@ public:
     ButtonEvent();
     ButtonEvent(const ButtonEvent& in);
     ButtonEvent& operator=(const ButtonEvent& in);
-    ButtonStateType buttonStatus();
-    void setButtonStatus(const ButtonStateType& buttonStatusIn);
+    ButtonState buttonStatus();
+    void setButtonStatus(const ButtonState& buttonStatusIn);
     int buttonNumber();
     void setButtonNumber(const int& buttonNumberIn);
 
     static int ButtonEventType;
 
 private:
-    ButtonStateType buttonState;
+    ButtonState buttonState;
     int button;
 };
 }  // namespace Spaceball
