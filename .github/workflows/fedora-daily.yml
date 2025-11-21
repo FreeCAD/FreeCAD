@@ -8,6 +8,7 @@ on:
 
 jobs:
   trigger-copr-build:
+    environment: fedora-daily
     env:
       copr_token: ${{ secrets.COPR_TOKEN }}
     runs-on: ubuntu-latest
