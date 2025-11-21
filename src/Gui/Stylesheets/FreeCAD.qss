@@ -508,7 +508,7 @@ QMenu::item:disabled {
 }
 
 QMenu::separator {
-  height: 2px;
+  height: 1px;
   background-color: @GroupboxBorderColor;
 }
 
