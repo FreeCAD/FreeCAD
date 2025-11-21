@@ -9854,7 +9854,7 @@ void CmdSketcherConstrainSymmetric::activated(int iMsg)
 
             if (GeoId1 == GeoId2
                 && (isEdge(GeoId2, PosId2)
-                    || (isVertex(GeoId2, PosId2) 
+                    || (isVertex(GeoId2, PosId2)
                         && (PosId2 == Sketcher::PointPos::start || PosId2 == Sketcher::PointPos::end)) )) {
                 Gui::TranslatedUserWarning(
                     Obj,
