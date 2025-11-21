@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Gui::Dialog::DlgPropertyLink</class>
- <widget class="QDialog" name="Gui::Dialog::DlgPropertyLink">
+ <class>Gui::Dialog::DlgDocumentObject</class>
+ <widget class="QDialog" name="Gui::Dialog::DlgDocumentObject">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,13 +11,13 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Link</string>
+   <string>Object</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
     <widget class="QTreeWidget" name="treeWidget">
      <property name="editTriggers">
-      <set>QAbstractItemView::NoEditTriggers</set>
+      <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
      </property>
      <property name="showDropIndicator" stdset="0">
       <bool>false</bool>
@@ -59,10 +59,10 @@
      </item>
     </layout>
    </item>
-  <item row="5" column="0">
+   <item row="5" column="0">
     <widget class="QTreeWidget" name="typeTree">
      <property name="selectionMode">
-      <enum>QAbstractItemView::ExtendedSelection</enum>
+      <enum>QAbstractItemView::SelectionMode::ExtendedSelection</enum>
      </property>
      <property name="rootIsDecorated">
       <bool>false</bool>
@@ -101,11 +101,11 @@
    <item row="10" column="0">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+      <set>QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Ok</set>
      </property>
     </widget>
    </item>
-   </layout>
+  </layout>
  </widget>
  <customwidgets>
   <customwidget>
@@ -125,7 +125,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>Gui::Dialog::DlgPropertyLink</receiver>
+   <receiver>Gui::Dialog::DlgDocumentObject</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -141,7 +141,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>Gui::Dialog::DlgPropertyLink</receiver>
+   <receiver>Gui::Dialog::DlgDocumentObject</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
