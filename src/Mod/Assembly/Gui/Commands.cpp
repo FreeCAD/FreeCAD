@@ -231,6 +231,72 @@ bool CmdAssemblySelectComponentsWithDoFs::isActive()
     return getActiveAssembly() != nullptr;
 }
 
+// ================================================================================
+// Select Joints of Component
+// ================================================================================
+
+DEF_STD_CMD_A(CmdAssemblySelectJointsOfComponent)
+
+CmdAssemblySelectJointsOfComponent::CmdAssemblySelectJointsOfComponent()
+    : Command("Assembly_SelectJointsOfComponent")
+{
+    sGroup = QT_TR_NOOP("Assembly");
+    sMenuText = QT_TR_NOOP("Select component joints");
+    sToolTipText = QT_TR_NOOP("Selects all joints referencing the selected component");
+    sWhatsThis = "Assembly_SelectJointsOfComponent";
+    sStatusTip = sToolTipText;
+    sPixmap = "Assembly_SelectJointsOfComponent";
+    eType = ForEdit;
+}
+
+void CmdAssemblySelectJointsOfComponent::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    AssemblyObject* assembly = getActiveAssembly();
+    if (!assembly) {
+        return;
+    }
+
+    auto selection = Gui::Selection().getSelectionEx(
+        "",
+        App::DocumentObject::getClassTypeId(),
+        Gui::ResolveMode::NoResolve
+    );
+    if (selection.empty()) {
+        return;
+    }
+
+    std::set<App::DocumentObject*> components;
+    App::Document* doc = assembly->getDocument();
+
+    for (auto& sel : selection) {
+        const std::vector<std::string> subs = sel.getSubNames();
+        std::string sub = subs.empty() ? "" : subs.front();
+
+        App::DocumentObject* comp = getMovingPartFromSel(assembly, sel.getObject(), sub);
+        if (comp) {
+            components.insert(comp);
+        }
+    }
+
+    if (components.empty()) {
+        return;
+    }
+
+    std::vector<App::DocumentObject*> jointsToSelect;
+    for (auto* comp : components) {
+        std::vector<App::DocumentObject*> partJoints = assembly->getJointsOfPart(comp);
+        jointsToSelect.insert(jointsToSelect.end(), partJoints.begin(), partJoints.end());
+    }
+
+    selectObjects(jointsToSelect);
+}
+
+bool CmdAssemblySelectJointsOfComponent::isActive()
+{
+    return getActiveAssembly() != nullptr && !Gui::Selection().getSelection().empty();
+}
+
 
 // ================================================================================
 // Command Creation
@@ -244,4 +310,5 @@ void AssemblyGui::CreateAssemblyCommands()
     rcCmdMgr.addCommand(new CmdAssemblySelectRedundantConstraints());
     rcCmdMgr.addCommand(new CmdAssemblySelectMalformedConstraints());
     rcCmdMgr.addCommand(new CmdAssemblySelectComponentsWithDoFs());
+    rcCmdMgr.addCommand(new CmdAssemblySelectJointsOfComponent());
 }

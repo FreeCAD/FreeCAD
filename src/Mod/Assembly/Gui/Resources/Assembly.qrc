@@ -23,6 +23,7 @@
         <file>icons/Assembly_CreateJointRackPinion.svg</file>
         <file>icons/Assembly_CreateJointScrew.svg</file>
         <file>icons/Assembly_ExportASMT.svg</file>
+        <file>icons/Assembly_SelectJointsOfComponent.svg</file>
         <file>icons/Assembly_SolveAssembly.svg</file>
         <file>icons/Assembly_JointGroup.svg</file>
         <file>icons/Assembly_ExplodedView.svg</file>
