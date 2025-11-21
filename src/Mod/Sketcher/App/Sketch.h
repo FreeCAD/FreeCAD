@@ -230,6 +230,8 @@ public:
     int addArcOfParabola(const Part::GeomArcOfParabola& parabolaSegment, bool fixed = false);
     /// add a BSpline
     int addBSpline(const Part::GeomBSplineCurve& spline, bool fixed = false);
+    /// add an offset curve
+    int addOffsetCurve(const Part::GeomOffsetCurve& offc, bool fixed = false);
     //@}
 
 
@@ -545,7 +547,8 @@ public:
         ArcOfEllipse = 6,
         ArcOfHyperbola = 7,
         ArcOfParabola = 8,
-        BSpline = 9
+        BSpline = 9,
+        OffsetCurve = 10
     };
 
 private:
@@ -617,6 +620,7 @@ private:
     std::vector<GCS::ArcOfHyperbola> ArcsOfHyperbola;
     std::vector<GCS::ArcOfParabola> ArcsOfParabola;
     std::vector<GCS::BSpline> BSplines;
+    std::vector<GCS::OffsetCurve> OffsetCurves;
 
     bool isInitMove;
     bool isFine;
