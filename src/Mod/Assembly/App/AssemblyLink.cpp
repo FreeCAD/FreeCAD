@@ -499,8 +499,6 @@ void AssemblyLink::synchronizeJoints()
 
     assemblyLinkJoints = getJoints();
 
-    AssemblyObject::recomputeJointPlacements(assemblyLinkJoints);
-
     for (auto* joint : assemblyLinkJoints) {
         joint->purgeTouched();
     }
@@ -513,87 +511,55 @@ void AssemblyLink::handleJointReference(
     const char* refName
 )
 {
-    AssemblyObject* assembly = getLinkedAssembly();
-
-    auto prop1 = dynamic_cast<App::PropertyXLinkSubHidden*>(joint->getPropertyByName(refName));
-    auto prop2 = dynamic_cast<App::PropertyXLinkSubHidden*>(lJoint->getPropertyByName(refName));
+    auto prop1 = dynamic_cast<App::PropertyXLinkSub*>(joint->getPropertyByName(refName));
+    auto prop2 = dynamic_cast<App::PropertyXLinkSub*>(lJoint->getPropertyByName(refName));
     if (!prop1 || !prop2) {
         return;
     }
 
-    App::DocumentObject* obj1 = nullptr;
-    App::DocumentObject* obj2 = prop2->getValue();
-    std::vector<std::string> subs1 = prop1->getSubValues();
-    std::vector<std::string> subs2 = prop2->getSubValues();
-    if (subs1.empty()) {
+    // 1. Get the external component prop1 is [ExternalPart, "Sub"]
+    App::DocumentObject* externalComponent = prop1->getValue();
+    if (!externalComponent) {
         return;
     }
 
-    // Example :
-    // Obj1 = docA-Asm1 Subs1 = ["part1.body.pad.face0", "part1.body.pad.vertex1"]
-    // Obj1 = docA-Part Subs1 = ["Asm1.part1.body.pad.face0", "Asm1.part1.body.pad.vertex1"] // some
-    // user may put the assembly inside a part... should become : Obj2 = docB-Asm2 Subs2 =
-    // ["Asm1Link.part1.linkTobody.pad.face0", "Asm1Link.part1.linkTobody.pad.vertex1"] Obj2 =
-    // docB-Part Sub2 = ["Asm2.Asm1Link.part1.linkTobody.pad.face0",
-    // "Asm2.Asm1Link.part1.linkTobody.pad.vertex1"]
-
-    std::string asmLink = getNameInDocument();
-    for (auto& sub : subs1) {
-        // First let's remove 'Asm1' name and everything before if any.
-        sub = removeUpToName(sub, assembly->getNameInDocument());
-        // Then we add the assembly link name.
-        sub = asmLink + "." + sub;
-        // Then the question is, is there more to prepend? Because the parent assembly may have some
-        // parents So we check assemblyLink parents and prepend necessary parents.
-        bool first = true;
-        std::vector<App::DocumentObject*> inList = getInList();
-        int limit = 0;
-        while (!inList.empty() && limit < 20) {
-            ++limit;
-            bool found = false;
-            for (auto* obj : inList) {
-                if (obj->isDerivedFrom<App::Part>()) {
-                    found = true;
-                    if (first) {
-                        first = false;
-                    }
-                    else {
-                        std::string obj1Name = obj1->getNameInDocument();
-                        sub = obj1Name + "." + sub;
-                    }
-                    obj1 = obj;
-                    break;
-                }
-            }
-            if (found) {
-                inList = obj1->getInList();
-            }
-            else {
-                inList = {};
-            }
-        }
-
-        // Lastly we need to replace the object name by its link name.
-        auto* obj = getObjFromRef(prop1);
-        auto* link = objLinkMap[obj];
-        if (!obj || !link) {
-            return;
-        }
-        std::string objName = obj->getNameInDocument();
-        std::string linkName = link->getNameInDocument();
-        sub = replaceLastOccurrence(sub, objName, linkName);
+    // 2. Map to local link
+    auto it = objLinkMap.find(externalComponent);
+    if (it == objLinkMap.end()) {
+        Base::Console().warning(
+            "AssemblyLink: Could not map external component %s to a local link for joint %s\n",
+            externalComponent->getNameInDocument(),
+            joint->getNameInDocument()
+        );
+        return;
     }
-    // Now obj1 and the subs1 are what should be in obj2 and subs2 if the joint did not changed
-    if (obj1 != obj2) {
-        prop2->setValue(obj1);
+    App::DocumentObject* localLink = it->second;
+
+    // 3. Set the new reference
+    // The local joint now points to the local link [LocalLink, "Sub"]
+    if (prop2->getValue() != localLink) {
+        prop2->setValue(localLink);
     }
+
+    // 4. Sync sub-elements
+    // The sub-elements (e.g. "Body.Face1") are relative to the component.
+    // Since the LocalLink points to the ExternalPart, the relative path is identical.
+    std::vector<std::string> subs1 = prop1->getSubValues();
+    std::vector<std::string> subs2 = prop2->getSubValues();
+
     bool changed = false;
-    for (size_t i = 0; i < subs1.size(); ++i) {
-        if (i >= subs2.size() || subs1[i] != subs2[i]) {
-            changed = true;
-            break;
+    if (subs1.size() != subs2.size()) {
+        changed = true;
+    }
+    else {
+        for (size_t i = 0; i < subs1.size(); ++i) {
+            if (subs1[i] != subs2[i]) {
+                changed = true;
+                break;
+            }
         }
     }
+
     if (changed) {
         prop2->setSubValues(std::move(subs1));
     }
