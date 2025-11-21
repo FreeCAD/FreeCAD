@@ -875,7 +875,9 @@ class Joint:
 
     def redrawJointPlacements(self, joint):
         if joint.ViewObject:
-            joint.ViewObject.Proxy.redrawJointPlacements(joint)
+            proxy = joint.ViewObject.Proxy
+            if proxy:
+                proxy.redrawJointPlacements(joint)
 
     """
     So here we want to find a placement that corresponds to a local coordinate system that would be placed at the selected vertex.
