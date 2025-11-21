@@ -97,6 +97,7 @@ void Sketch::clear()
     ArcsOfHyperbola.clear();
     ArcsOfParabola.clear();
     BSplines.clear();
+    OffsetCurves.clear();
     resolveAfterGeometryUpdated = false;
 
     // deleting the doubles allocated with new
@@ -675,54 +676,59 @@ const char* nameByType(Sketch::GeoType type)
 int Sketch::addGeometry(const Part::Geometry* geo, bool fixed)
 {
     if (geo->is<GeomPoint>()) {  // add a point
-        const GeomPoint* point = static_cast<const GeomPoint*>(geo);
+        const auto* point = static_cast<const GeomPoint*>(geo);
         auto pointf = GeometryFacade::getFacade(point);
         // create the definition struct for that geom
         return addPoint(*point, fixed);
     }
     else if (geo->is<GeomLineSegment>()) {  // add a line
-        const GeomLineSegment* lineSeg = static_cast<const GeomLineSegment*>(geo);
+        const auto* lineSeg = static_cast<const GeomLineSegment*>(geo);
         // create the definition struct for that geom
         return addLineSegment(*lineSeg, fixed);
     }
     else if (geo->is<GeomCircle>()) {  // add a circle
-        const GeomCircle* circle = static_cast<const GeomCircle*>(geo);
+        const auto* circle = static_cast<const GeomCircle*>(geo);
         // create the definition struct for that geom
         return addCircle(*circle, fixed);
     }
     else if (geo->is<GeomEllipse>()) {  // add a ellipse
-        const GeomEllipse* ellipse = static_cast<const GeomEllipse*>(geo);
+        const auto* ellipse = static_cast<const GeomEllipse*>(geo);
         // create the definition struct for that geom
         return addEllipse(*ellipse, fixed);
     }
     else if (geo->is<GeomArcOfCircle>()) {  // add an arc
-        const GeomArcOfCircle* aoc = static_cast<const GeomArcOfCircle*>(geo);
+        const auto* aoc = static_cast<const GeomArcOfCircle*>(geo);
         // create the definition struct for that geom
         return addArc(*aoc, fixed);
     }
     else if (geo->is<GeomArcOfEllipse>()) {  // add an arc
-        const GeomArcOfEllipse* aoe = static_cast<const GeomArcOfEllipse*>(geo);
+        const auto* aoe = static_cast<const GeomArcOfEllipse*>(geo);
         // create the definition struct for that geom
         return addArcOfEllipse(*aoe, fixed);
     }
     else if (geo->is<GeomArcOfHyperbola>()) {  // add an arc of hyperbola
-        const GeomArcOfHyperbola* aoh = static_cast<const GeomArcOfHyperbola*>(geo);
+        const auto* aoh = static_cast<const GeomArcOfHyperbola*>(geo);
         // create the definition struct for that geom
         return addArcOfHyperbola(*aoh, fixed);
     }
     else if (geo->is<GeomArcOfParabola>()) {  // add an arc of parabola
-        const GeomArcOfParabola* aop = static_cast<const GeomArcOfParabola*>(geo);
+        const auto* aop = static_cast<const GeomArcOfParabola*>(geo);
         // create the definition struct for that geom
         return addArcOfParabola(*aop, fixed);
     }
     else if (geo->is<GeomBSplineCurve>()) {  // add a bspline
-        const GeomBSplineCurve* bsp = static_cast<const GeomBSplineCurve*>(geo);
+        const auto* bsp = static_cast<const GeomBSplineCurve*>(geo);
 
         // Current B-Spline implementation relies on OCCT calculations, so a second solve
         // is necessary to update actual solver implementation to account for changes in B-Spline
         // geometry
         resolveAfterGeometryUpdated = true;
         return addBSpline(*bsp, fixed);
+    }
+    else if (geo->is<GeomOffsetCurve>()) {  // add an offset curve
+        const auto* offc = static_cast<const GeomOffsetCurve*>(geo);
+        // create the definition struct for that geom
+        return addOffsetCurve(*offc, fixed);
     }
     else {
         throw Base::TypeError("Sketch::addGeometry(): Unknown or unsupported type added to a sketch");
@@ -1759,6 +1765,83 @@ int Sketch::addEllipse(const Part::GeomEllipse& elip, bool fixed)
             std::piecewise_construct,
             std::forward_as_tuple(rmin),
             std::forward_as_tuple(Geoms.size() - 1, Sketcher::PointPos::none, 2)
+        );
+    }
+
+    // return the position of the newly added geometry
+    return Geoms.size() - 1;
+}
+
+int Sketch::addOffsetCurve(const Part::GeomOffsetCurve& offc, bool fixed)
+{
+    std::vector<double*>& params = fixed ? FixParameters : Parameters;
+
+    // create our own copy
+    auto* offcClone = static_cast<GeomOffsetCurve*>(offc.clone());
+    // create the definition struct for that geom
+    GeoDef def;
+    def.geo = offcClone;
+    def.type = OffsetCurve;
+
+    double offset = offcClone->getOffset();
+    Base::Vector3d startPnt = offcClone->value(offcClone->getFirstParameter());
+    Base::Vector3d endPnt = offcClone->value(offcClone->getLastParameter());
+
+    GCS::Point p1, p2;
+
+    params.push_back(new double(offset));
+    double* offsetForGcs = params[params.size() - 1];
+
+    params.push_back(new double(startPnt.x));
+    params.push_back(new double(startPnt.y));
+    p1.x = params[params.size() - 2];
+    p1.y = params[params.size() - 1];
+
+    params.push_back(new double(endPnt.x));
+    params.push_back(new double(endPnt.y));
+    p2.x = params[params.size() - 2];
+    p2.y = params[params.size() - 1];
+
+    def.startPointId = Points.size();
+    Points.push_back(p1);
+    def.endPointId = Points.size();
+    Points.push_back(p2);
+
+    GCS::OffsetCurve curveGcs;
+    curveGcs.offset = offsetForGcs;
+    curveGcs.start = p1;
+    curveGcs.end = p2;
+    def.index = OffsetCurves.size();
+    OffsetCurves.push_back(curveGcs);
+
+    // store complete set
+    Geoms.push_back(def);
+
+    if (!fixed) {
+        param2geoelement.emplace(
+            std::piecewise_construct,
+            std::forward_as_tuple(offsetForGcs),
+            std::forward_as_tuple(Geoms.size() - 1, Sketcher::PointPos::none, 0)
+        );
+        param2geoelement.emplace(
+            std::piecewise_construct,
+            std::forward_as_tuple(p1.x),
+            std::forward_as_tuple(Geoms.size() - 1, Sketcher::PointPos::start, 0)
+        );
+        param2geoelement.emplace(
+            std::piecewise_construct,
+            std::forward_as_tuple(p1.y),
+            std::forward_as_tuple(Geoms.size() - 1, Sketcher::PointPos::start, 1)
+        );
+        param2geoelement.emplace(
+            std::piecewise_construct,
+            std::forward_as_tuple(p2.x),
+            std::forward_as_tuple(Geoms.size() - 1, Sketcher::PointPos::end, 0)
+        );
+        param2geoelement.emplace(
+            std::piecewise_construct,
+            std::forward_as_tuple(p2.y),
+            std::forward_as_tuple(Geoms.size() - 1, Sketcher::PointPos::end, 1)
         );
     }
 
