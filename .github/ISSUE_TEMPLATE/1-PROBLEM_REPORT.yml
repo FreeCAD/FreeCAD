@@ -1,0 +1,92 @@
+name: Report a Problem
+description: Have you found something that does not work well, is too hard to do or is missing altogether? Please create a Problem Report.
+labels: ["Status: Needs triage","Status: Needs confirmation"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this problem report! Please [search](https://github.com/FreeCAD/FreeCAD/issues) if a similar issue already exists and check out [how to report issues](https://github.com/FreeCAD/FreeCAD?tab=readme-ov-file#reporting-issues). By submitting this issue, you agree to follow our [Code of Conduct](https://github.com/FreeCAD/FreeCAD/blob/main/CODE_OF_CONDUCT.md).
+
+  - type: dropdown
+    id: wb
+    attributes:
+      label: Workbench affected?
+      options:
+        - Assembly
+        - BIM
+        - CAM
+        - Core (App, Gui,...)
+        - Draft
+        - FEM
+        - Material
+        - Measurement
+        - Mesh
+        - Part
+        - Part Design
+        - Sketcher
+        - Spreadsheet
+        - TechDraw
+        - Other (specify in description)
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Problem description
+      description: Describe the problem and how it impacts user experience, workflow, maintainability or performance. You can attach images or log files by clicking this area to highlight it and then dragging files in. To attach a FCStd file, ZIP it first.
+      placeholder: Describe your problem briefly.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps_to_reproduce
+    attributes:
+      label: Steps to reproduce
+      description: If the problem appears to be a bug with the current functionality, provide a test case or recipe that reliably reproduces the issue. Ideally [record a macro](https://wiki.freecad.org/Std_DlgMacroRecord) and attach it. Please also add an example file as ZIP.
+      placeholder: |
+        Drag an example file as ZIP into this textbox to attach it.
+
+        Steps to reproduce the behavior:
+        1. Open my example file
+        2. Go to '...'
+        3. Click on '...'
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected_behavior
+    attributes:
+      label: Expected behavior
+      description: A clear and concise description of what you expected to happen when following the provided steps above.
+      placeholder: What is the expected behavior?
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual_behavior
+    attributes:
+      label: Actual behavior
+      description: A clear and concise description of what actually happens. If applicable, add screenshots to help explain the problem.
+      placeholder: What is actually happening? You can add screenshorts or videos by dragging them into this textbox.
+    validations:
+      required: true
+
+  - type: textarea
+    id: dev_version
+    attributes:
+      label: Development version About Info (in Safe Mode)
+      description: Download the latest weekly [development release](https://github.com/FreeCAD/FreeCAD/releases) and try reproducing the issue in safe mode (Help → Restart in Safe Mode). Use the [About FreeCAD](https://wiki.freecad.org/About) dialog to copy your full version information and paste it here.
+      placeholder: |
+        1. Download the latest weekly development version (link above).
+        2. Make sure to run in Safe Mode (Help -> Restart in Safe Mode) to exclude interference from 3rd party addons.
+        3. If the issue is still reproducible, open the About FreeCAD dialog and copy the full version info here.
+      render: shell
+    validations:
+      required: true
+
+  - type: textarea
+    id: good_version
+    attributes:
+      label: Last known good version (optional)
+      description: If this is a regression, paste the [About FreeCAD](https://wiki.freecad.org/About) info from the last known working version.
+      placeholder: If the problem did not exist in a previous version, paste the About FreeCAD info from that version here.
+      render: shell
