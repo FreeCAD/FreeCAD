@@ -501,7 +501,10 @@ TDF_Label ExportOCAF2::exportObject(
                 baseShape.setShape(baseShape.getShape().Located(TopLoc_Location()));
                 label = aShapeTool->NewShape();
                 aShapeTool->SetShape(label, baseShape.getShape());
-                setupObject(label, linked, baseShape, prefix);
+                if (originalObj != linked) {
+                    setupObject(label, linked, baseShape, prefix, nullptr, false);
+                }
+                setupObject(label, originalObj, baseShape, prefix, nullptr, false);
             }
 
             label = aShapeTool->AddComponent(parent, shape.getShape(), Standard_False);
@@ -535,6 +538,10 @@ TDF_Label ExportOCAF2::exportObject(
         myObjects.emplace(obj, label);
         for (auto link : links) {
             myObjects.emplace(link, label);
+        }
+        // also cache the body if it's different from obj (the tip)
+        if (originalObj != obj) {
+            myObjects.emplace(originalObj, label);
         }
         return label;
     }
@@ -637,13 +644,23 @@ TDF_Label ExportOCAF2::exportObject(
         myObjects.emplace(link, label);
     }
 
+    if (originalObj != obj) {
+        myObjects.emplace(originalObj, label);
+    }
+
     if (!parent.IsNull() && !links.empty()) {
         linked = links.back();
     }
     else {
         linked = obj;
     }
-    setupObject(label, linked, baseShape, prefix);
+    // use the originalObj for naming if we changed obj to tip
+    App::DocumentObject* setupObj = (originalObj != obj) ? originalObj : linked;
+    setupObject(label, setupObj, baseShape, prefix);
+
+#ifdef FC_DEBUG
+    Base::Console().warning("assembly name set to: %s\n", linked->Label.getValue());
+#endif
 
     if (!parent.IsNull()) {
         // If we are a component, swap in the base shape but keep our location.
