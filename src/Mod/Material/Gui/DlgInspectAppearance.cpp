@@ -216,7 +216,7 @@ QWidget* DlgInspectAppearance::makeAppearanceTab(const App::Material& material)
     labelAmbient->setToolTip(
         tr("Defines the color of a surface under indirect, uniform lighting, representing how it "
            "appears when illuminated only by ambient light in a scene, without directional light, "
-           "shading, or highlights."));
+           "shading, or highlights"));
     auto* colorAmbient = new ColorWidget(material.ambientColor);
     colorAmbient->setMaximumHeight(23);
 
@@ -267,7 +267,7 @@ QWidget* DlgInspectAppearance::makeAppearanceTab(const App::Material& material)
     auto* labelTransparency = new QLabel();
     labelTransparency->setText(tr("Transparency"));
     labelTransparency->setToolTip(tr("Defines how much light passes through an object, making it "
-                                     "partially or fully see-through."));
+                                     "partially or fully see-through"));
     auto* editTransparency = new QLineEdit();
     editTransparency->setText(QString::number(material.transparency));
     editTransparency->setEnabled(false);

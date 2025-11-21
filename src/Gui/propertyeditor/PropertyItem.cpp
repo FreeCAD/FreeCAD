@@ -3578,7 +3578,7 @@ PropertyMaterialItem::PropertyMaterialItem()
     ambient->setNameToolTipOverride(
         tr("Defines the color of a surface under indirect, uniform lighting, representing how it "
            "appears when illuminated only by ambient light in a scene, without directional light, "
-           "shading, or highlights.")
+           "shading, or highlights")
     );
     this->appendChild(ambient);
 
@@ -3621,7 +3621,7 @@ PropertyMaterialItem::PropertyMaterialItem()
     transparency->setPropertyName(QLatin1String("Transparency"));
     transparency->setNameToolTipOverride(
         tr("Defines how much light passes through an object, making it "
-           "partially or fully see-through.")
+           "partially or fully see-through")
     );
     this->appendChild(transparency);
 }
@@ -3944,7 +3944,7 @@ PropertyMaterialListItem::PropertyMaterialListItem()
     ambient->setNameToolTipOverride(
         tr("Defines the color of a surface under indirect, uniform lighting, representing how it "
            "appears when illuminated only by ambient light in a scene, without directional light, "
-           "shading, or highlights.")
+           "shading, or highlights")
     );
     this->appendChild(ambient);
 
@@ -3987,7 +3987,7 @@ PropertyMaterialListItem::PropertyMaterialListItem()
     transparency->setPropertyName(QLatin1String("Transparency"));
     transparency->setNameToolTipOverride(
         tr("Defines how much light passes through an object, making it "
-           "partially or fully see-through.")
+           "partially or fully see-through")
     );
     this->appendChild(transparency);
 }
