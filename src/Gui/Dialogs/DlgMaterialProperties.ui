@@ -87,7 +87,7 @@
          <string>Ambient color</string>
         </property>
 		<property name="toolTip">
-			 <string>Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights.</string>
+			 <string>Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</string>
 		 </property>
        </widget>
       </item>
@@ -146,7 +146,7 @@
          <string>Default</string>
         </property>
 		<property name="toolTip">
-			 <string>Changes all values to default values.</string>
+			 <string>Changes all values to default values</string>
 		 </property>
        </widget>
       </item>
@@ -176,7 +176,7 @@
          <string>Transparency</string>
         </property>
 		<property name="toolTip">
-			 <string>Defines how much light passes through an object, making it partially or fully see-through.</string>
+			 <string>Defines how much light passes through an object, making it partially or fully see-through</string>
 		 </property>
        </widget>
       </item>
