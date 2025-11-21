@@ -101,7 +101,7 @@ void MotionEvent::setRotations(const int& xRotIn, const int& yRotIn, const int& 
 
 ButtonEvent::ButtonEvent()
     : EventBase(static_cast<QEvent::Type>(ButtonEventType))
-    , buttonState(BUTTON_NONE)
+    , buttonState(ButtonState::None)
     , button(0)
 {}
 
@@ -125,12 +125,12 @@ ButtonEvent& ButtonEvent::operator=(const ButtonEvent& in)
     return *this;
 }
 
-ButtonStateType ButtonEvent::buttonStatus()
+ButtonState ButtonEvent::buttonStatus()
 {
     return buttonState;
 }
 
-void ButtonEvent::setButtonStatus(const ButtonStateType& buttonStatusIn)
+void ButtonEvent::setButtonStatus(const ButtonState& buttonStatusIn)
 {
     buttonState = buttonStatusIn;
 }

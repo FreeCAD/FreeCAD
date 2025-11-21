@@ -898,7 +898,7 @@ bool DlgCustomizeSpaceball::event(QEvent* event)
         return true;
     }
     buttonEvent->setHandled(true);
-    if (buttonEvent->buttonStatus() == Spaceball::BUTTON_PRESSED) {
+    if (buttonEvent->buttonStatus() == Spaceball::ButtonState::Pressed) {
         buttonModel->goButtonPress(buttonEvent->buttonNumber());
     }
     buttonView->selectButton(buttonEvent->buttonNumber());

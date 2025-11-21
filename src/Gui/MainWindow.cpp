@@ -1132,7 +1132,7 @@ bool MainWindow::event(QEvent* e)
         }
         buttonEvent->setHandled(true);
         // only going to respond to button press events.
-        if (buttonEvent->buttonStatus() != Spaceball::BUTTON_PRESSED) {
+        if (buttonEvent->buttonStatus() != Spaceball::ButtonState::Pressed) {
             return true;
         }
         ParameterGrp::handle group = App::GetApplication()

@@ -134,10 +134,10 @@ void Gui::GUIApplicationNativeEventAware::postButtonEvent(int buttonNumber, int 
     auto buttonEvent = new Spaceball::ButtonEvent();
     buttonEvent->setButtonNumber(buttonNumber);
     if (buttonPress) {
-        buttonEvent->setButtonStatus(Spaceball::BUTTON_PRESSED);
+        buttonEvent->setButtonStatus(Spaceball::ButtonState::Pressed);
     }
     else {
-        buttonEvent->setButtonStatus(Spaceball::BUTTON_RELEASED);
+        buttonEvent->setButtonStatus(Spaceball::ButtonState::Released);
     }
     this->postEvent(currentWidget, buttonEvent);
 }
