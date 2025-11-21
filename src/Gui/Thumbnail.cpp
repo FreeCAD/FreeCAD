@@ -181,4 +181,3 @@ void Thumbnail::RestoreDocFile(Base::Reader& reader)
 {
     Q_UNUSED(reader);
 }
-
