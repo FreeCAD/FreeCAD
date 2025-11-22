@@ -366,6 +366,16 @@ public:
         }
     };
 
+    class OffsetCurve: public EdgeParameterStatus
+    {
+    public:
+        OffsetCurve() = default;
+
+        ParameterStatus getOffsetStatus() const
+        {
+            return pstatus[0];
+        }
+    };
 
     SolverGeometryExtension();
     ~SolverGeometryExtension() override = default;
@@ -397,6 +407,7 @@ public:
     ArcOfHyperbola& getArcOfHyperbola();
     ArcOfParabola& getArcOfParabola();
     BSpline& getBSpline();
+    OffsetCurve& getOffsetCurve();
     EdgeParameterStatus getEdgeParameters()
     {
         return Edge;
