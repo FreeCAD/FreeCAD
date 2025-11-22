@@ -1132,4 +1132,3 @@ void DrawSketchHandler::signalToolChanged() const
 {
     ViewProviderSketchDrawSketchHandlerAttorney::signalToolChanged(*sketchgui, this->getToolName());
 }
-
