@@ -118,43 +118,43 @@ public:
     /** @name Signals of the Application */
     //@{
     /// signal on new Document
-    boost::signals2::signal<void(const Gui::Document&, bool)> signalNewDocument;
+    fastsignals::signal<void(const Gui::Document&, bool)> signalNewDocument;
     /// signal on deleted Document
-    boost::signals2::signal<void(const Gui::Document&)> signalDeleteDocument;
+    fastsignals::signal<void(const Gui::Document&)> signalDeleteDocument;
     /// signal on relabeling Document
-    boost::signals2::signal<void(const Gui::Document&)> signalRelabelDocument;
+    fastsignals::signal<void(const Gui::Document&)> signalRelabelDocument;
     /// signal on renaming Document
-    boost::signals2::signal<void(const Gui::Document&)> signalRenameDocument;
+    fastsignals::signal<void(const Gui::Document&)> signalRenameDocument;
     /// signal on activating Document
-    boost::signals2::signal<void(const Gui::Document&)> signalActiveDocument;
+    fastsignals::signal<void(const Gui::Document&)> signalActiveDocument;
     /// signal on new Object
-    boost::signals2::signal<void(const Gui::ViewProvider&)> signalNewObject;
+    fastsignals::signal<void(const Gui::ViewProvider&)> signalNewObject;
     /// signal on deleted Object
-    boost::signals2::signal<void(const Gui::ViewProvider&)> signalDeletedObject;
+    fastsignals::signal<void(const Gui::ViewProvider&)> signalDeletedObject;
     /// signal on changed Object
-    boost::signals2::signal<void(const Gui::ViewProvider&, const App::Property&)> signalBeforeChangeObject;
+    fastsignals::signal<void(const Gui::ViewProvider&, const App::Property&)> signalBeforeChangeObject;
     /// signal on changed object property
-    boost::signals2::signal<void(const Gui::ViewProvider&, const App::Property&)> signalChangedObject;
+    fastsignals::signal<void(const Gui::ViewProvider&, const App::Property&)> signalChangedObject;
     /// signal on renamed Object
-    boost::signals2::signal<void(const Gui::ViewProvider&)> signalRelabelObject;
+    fastsignals::signal<void(const Gui::ViewProvider&)> signalRelabelObject;
     /// signal on activated Object
-    boost::signals2::signal<void(const Gui::ViewProvider&)> signalActivatedObject;
+    fastsignals::signal<void(const Gui::ViewProvider&)> signalActivatedObject;
     /// signal on activated workbench
-    boost::signals2::signal<void(const char*)> signalActivateWorkbench;
+    fastsignals::signal<void(const char*)> signalActivateWorkbench;
     /// signal on added/removed workbench
-    boost::signals2::signal<void()> signalRefreshWorkbenches;
+    fastsignals::signal<void()> signalRefreshWorkbenches;
     /// signal on show hidden items
-    boost::signals2::signal<void(const Gui::Document&)> signalShowHidden;
+    fastsignals::signal<void(const Gui::Document&)> signalShowHidden;
     /// signal on activating view
-    boost::signals2::signal<void(const Gui::MDIView*)> signalActivateView;
+    fastsignals::signal<void(const Gui::MDIView*)> signalActivateView;
     /// signal on closing view
-    boost::signals2::signal<void(const Gui::MDIView*)> signalCloseView;
+    fastsignals::signal<void(const Gui::MDIView*)> signalCloseView;
     /// signal on entering in edit mode
-    boost::signals2::signal<void(const Gui::ViewProviderDocumentObject&)> signalInEdit;
+    fastsignals::signal<void(const Gui::ViewProviderDocumentObject&)> signalInEdit;
     /// signal on leaving edit mode
-    boost::signals2::signal<void(const Gui::ViewProviderDocumentObject&)> signalResetEdit;
+    fastsignals::signal<void(const Gui::ViewProviderDocumentObject&)> signalResetEdit;
     /// signal on changing user edit mode
-    boost::signals2::signal<void(int)> signalUserEditModeChanged;
+    fastsignals::signal<void(int)> signalUserEditModeChanged;
     //@}
 
     /** @name methods for Document handling */
