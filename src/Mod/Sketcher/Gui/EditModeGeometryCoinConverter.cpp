@@ -58,6 +58,7 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeoListFacade& geoli
     // measurements
     bsplineGeoIds.clear();
     arcGeoIds.clear();
+    offsetCurveGeoIds.clear();
 
     // end information layer
     Points.clear();
@@ -273,6 +274,21 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeoListFacade& geoli
                 isGroupMember
             );
             bsplineGeoIds.push_back(GeoId);
+        }
+        else if (type == Part::GeomOffsetCurve::getClassTypeId()) {  // add an offset curve
+            convert<
+                Part::GeomOffsetCurve,
+                EditModeGeometryCoinConverter::PointsMode::InsertStartEnd,
+                EditModeGeometryCoinConverter::CurveMode::OpenCurve,
+                EditModeGeometryCoinConverter::AnalyseMode::BoundingBoxMagnitude>(geom, GeoId, subLayerId);
+            setTracking(
+                GeoId,
+                coinLayer,
+                EditModeGeometryCoinConverter::PointsMode::InsertStartEnd,
+                1,
+                subLayerId
+            );
+            offsetCurveGeoIds.push_back(GeoId);
         }
     }
 
