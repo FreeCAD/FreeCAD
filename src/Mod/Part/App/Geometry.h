@@ -936,6 +936,9 @@ public:
     Base::Vector3d getDir() const;
     double getOffset() const;
 
+    Base::Vector3d getStartPoint() const;
+    Base::Vector3d getEndPoint() const;
+
     // Persistence implementer ---------------------
     unsigned int getMemSize() const override;
     void Save(Base::Writer& /*writer*/) const override;
