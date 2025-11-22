@@ -41,8 +41,9 @@ class SoMaterialBinding;
 class SoTransform;
 class SoSwitch;
 
-namespace Path {
-    class Toolpath;
+namespace Path
+{
+class Toolpath;
 }
 
 namespace PathGui
@@ -95,7 +96,7 @@ public:
 
 private:
     /// Find the index of the first non-rapid move command
-    long findFirstFeedMoveIndex(const Path::Toolpath &path) const;
+    long findFirstFeedMoveIndex(const Path::Toolpath& path) const;
 
 protected:
     void onChanged(const App::Property* prop) override;

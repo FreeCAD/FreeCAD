@@ -499,9 +499,10 @@ void ViewProviderPath::updateData(const App::Property* prop)
     if (prop == &pcPathObj->Path) {
         // Check if we should hide the first rapid moves
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/Mod/CAM");
+            "User parameter:BaseApp/Preferences/Mod/CAM"
+        );
         bool hideFirstRapid = hGrp->GetBool("HideFirstRapid", false);
-        
+
         if (hideFirstRapid) {
             // Find the first feed move and set StartIndex accordingly
             long firstFeedIndex = findFirstFeedMoveIndex(pcPathObj->Path.getValue());
@@ -517,7 +518,7 @@ void ViewProviderPath::updateData(const App::Property* prop)
                 StartIndex.purgeTouched();
             }
         }
-        
+
         updateVisual(true);
         return;
     }
@@ -848,7 +849,7 @@ void ViewProviderPath::recomputeBoundingBox()
     pcBoundingBox->maxBounds.setValue(MaxX, MaxY, MaxZ);
 }
 
-long ViewProviderPath::findFirstFeedMoveIndex(const Path::Toolpath &path) const
+long ViewProviderPath::findFirstFeedMoveIndex(const Path::Toolpath& path) const
 {
     const std::vector<Path::Command*>& commands = path.getCommands();
     for (size_t i = 0; i < commands.size(); ++i) {
@@ -857,21 +858,21 @@ long ViewProviderPath::findFirstFeedMoveIndex(const Path::Toolpath &path) const
             continue;
         }
         std::string name = cmd->Name;
-        
+
         // Skip comments and empty commands
         if (name.empty() || name[0] == '(' || name[0] == ';' || name[0] == '%') {
             continue;
         }
-        
+
         // Skip rapid moves (G0)
         if (name == "G0" || name == "G00") {
             continue;
         }
-        
+
         // Found the first non-rapid move
         return static_cast<long>(i);
     }
-    
+
     // If no feed move found, return 0 to show from the beginning
     return 0;
 }
