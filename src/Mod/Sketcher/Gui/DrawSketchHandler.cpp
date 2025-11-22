@@ -27,6 +27,8 @@
 #include <QGuiApplication>
 #include <QPainter>
 
+#include <Standard_Real.hxx>
+
 #include <Inventor/events/SoKeyboardEvent.h>
 
 #include <Base/Console.h>
@@ -202,32 +204,38 @@ std::vector<Base::Vector2d> CurveConverter::toVector2D(const Part::Geometry* geo
 {
     std::vector<Base::Vector2d> vector2d;
 
-    auto emplaceasvector2d = [&vector2d](const Base::Vector3d& point) {
+    auto emplaceAsVector2d = [&vector2d](const Base::Vector3d& point) {
         vector2d.emplace_back(point.x, point.y);
     };
 
-    auto isperiodicconic = geometry->is<Part::GeomCircle>() || geometry->is<Part::GeomEllipse>();
-    auto isbounded = geometry->isDerivedFrom<Part::GeomBoundedCurve>();
+    auto isPeriodicConic = geometry->is<Part::GeomCircle>() || geometry->is<Part::GeomEllipse>();
+    auto isBounded = geometry->isDerivedFrom<Part::GeomBoundedCurve>();
+    auto canBeFinitelySegmented = isPeriodicConic || isBounded;
+    if (geometry->is<Part::GeomOffsetCurve>()) {
+        const auto* offc = static_cast<const Part::GeomOffsetCurve*>(geometry);
+        canBeFinitelySegmented = canBeFinitelySegmented
+            || (offc->getFirstParameter() != RealFirst() && offc->getLastParameter() != RealLast());
+    }
 
     if (geometry->is<Part::GeomLineSegment>()) {  // add a line
         auto geo = static_cast<const Part::GeomLineSegment*>(geometry);
 
-        emplaceasvector2d(geo->getStartPoint());
-        emplaceasvector2d(geo->getEndPoint());
+        emplaceAsVector2d(geo->getStartPoint());
+        emplaceAsVector2d(geo->getEndPoint());
     }
-    else if (isperiodicconic || isbounded) {
-
+    else if (canBeFinitelySegmented) {
         auto geo = static_cast<const Part::GeomConic*>(geometry);
 
         double segment = (geo->getLastParameter() - geo->getFirstParameter())
             / curvedEdgeCountSegments;
 
         for (int i = 0; i < curvedEdgeCountSegments; i++) {
-            emplaceasvector2d(geo->value(geo->getFirstParameter() + i * segment));
+            emplaceAsVector2d(geo->value(geo->getFirstParameter() + i * segment));
         }
 
         // either close the curve for untrimmed conic or set the last point for bounded curves
-        emplaceasvector2d(isperiodicconic ? geo->value(0) : geo->value(geo->getLastParameter()));
+        // TODO: how does this work for offset curves of conics?
+        emplaceAsVector2d(isPeriodicConic ? geo->value(0) : geo->value(geo->getLastParameter()));
     }
 
     return vector2d;
