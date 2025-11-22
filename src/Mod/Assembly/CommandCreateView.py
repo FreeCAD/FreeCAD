@@ -132,6 +132,14 @@ class ExplodedView:
                 return obj
         return None
 
+    def _createSafeLine(self, start, end):
+        """Creates a LineSegment shape only if points are not coincident."""
+        from Part import Precision
+
+        if (start - end).Length > Precision.confusion():
+            return LineSegment(start, end).toShape()
+        return None
+
     def saveAssemblyAndExplode(self, viewObj):
         self.initialPlcs = UtilsAssembly.saveAssemblyPartsPlacements(self.getAssembly(viewObj))
 
@@ -140,8 +148,9 @@ class ExplodedView:
         lines = []
 
         for startPos, endPos in self.positions:
-            line = LineSegment(startPos, endPos).toShape()
-            lines.append(line)
+            line = self._createSafeLine(startPos, endPos)
+            if line:
+                lines.append(line)
         if lines:
             return Compound(lines)
 
@@ -244,8 +253,9 @@ class ExplodedView:
 
         # Add shapes for the explosion lines
         for start_pos, end_pos in line_positions:
-            line = LineSegment(start_pos, end_pos).toShape()
-            exploded_shapes.append(line)
+            line = self._createSafeLine(start_pos, end_pos)
+            if line:
+                exploded_shapes.append(line)
 
         if exploded_shapes:
             return Compound(exploded_shapes)
