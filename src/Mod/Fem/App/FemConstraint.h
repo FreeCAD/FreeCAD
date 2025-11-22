@@ -231,7 +231,7 @@ private:
     double sizeFactor;
 
     void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop);
-    boost::signals2::connection connDocChangedObject;
+    fastsignals::connection connDocChangedObject;
 };
 
 using ConstraintPython = App::FeaturePythonT<Constraint>;
