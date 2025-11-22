@@ -338,8 +338,7 @@ bool FileInfo::isWritable() const
     }
 #ifdef FC_OS_WIN32
     // convert filename from UTF-8 to windows WSTRING
-    std::wstring_convert<std::codecvt_utf8<wchar_t>> utf8ToWstringConverter;
-    std::wstring fileNameWstring = utf8ToWstringConverter.from_bytes(FileName);
+    std::wstring fileNameWstring = toStdWString();
     // requires import of <windows.h>
     DWORD attributes = GetFileAttributes(fileNameWstring.c_str());
     if (attributes == INVALID_FILE_ATTRIBUTES) {
