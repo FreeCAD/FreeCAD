@@ -116,7 +116,7 @@ struct DocumentP
     std::map<SoSeparator*, ViewProviderDocumentObject*> _CoinMap;
     std::map<std::string, ViewProvider*> _ViewProviderMapAnnotation;
     std::list<ViewProviderDocumentObject*> _redoViewProviders;
-    
+
     using Connection = fastsignals::connection;
     using AdvancedConnection = fastsignals::advanced_connection;
     Connection connectNewObject;
@@ -459,7 +459,8 @@ Document::Document(App::Document* pcDocument, Application* app)
         std::bind(&Gui::Document::slotRelabelObject, this, sp::_1)
     );
     d->connectActObject = pcDocument->signalActivatedObject.connect(
-        std::bind(&Gui::Document::slotActivatedObject, this, sp::_1), fastsignals::advanced_tag()
+        std::bind(&Gui::Document::slotActivatedObject, this, sp::_1),
+        fastsignals::advanced_tag()
     );
     d->connectActObjectBlocker = fastsignals::shared_connection_block(d->connectActObject, false);
     d->connectSaveDocument = pcDocument->signalSaveDocument.connect(
@@ -483,7 +484,8 @@ Document::Document(App::Document* pcDocument, Application* app)
     );
     d->connectChangeDocument
         = d->_pcDocument->signalChanged.connect  // use the same slot function
-          (std::bind(&Gui::Document::slotChangePropertyEditor, this, sp::_1, sp::_2), fastsignals::advanced_tag());
+          (std::bind(&Gui::Document::slotChangePropertyEditor, this, sp::_1, sp::_2),
+           fastsignals::advanced_tag());
     d->connectChangeDocumentBlocker
         = fastsignals::shared_connection_block(d->connectChangeDocument, true);
     d->connectFinishRestoreObject = pcDocument->signalFinishRestoreObject.connect(

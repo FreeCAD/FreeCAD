@@ -401,9 +401,7 @@ private:
 
             if (currentindex != methodint) {
                 // avoid triggering of method change
-                fastsignals::shared_connection_block combobox_block(
-                    connectionComboboxSelectionChanged
-                );
+                fastsignals::shared_connection_block combobox_block(connectionComboboxSelectionChanged);
                 toolWidget->setComboboxIndex(WCombobox::FirstCombo, methodint);
             }
         }
@@ -452,9 +450,7 @@ private:
             auto actualconstructionmethod = static_cast<int>(handler->constructionMethod());
 
             if (constructionmethod != actualconstructionmethod) {
-                fastsignals::shared_connection_block combobox_block(
-                    connectionComboboxSelectionChanged
-                );
+                fastsignals::shared_connection_block combobox_block(connectionComboboxSelectionChanged);
                 toolWidget->setComboboxIndex(WCombobox::FirstCombo, actualconstructionmethod);
             }
         }
