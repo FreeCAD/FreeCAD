@@ -331,6 +331,7 @@ SET(FreeCADApp_HPP_SRCS
     ElementNamingUtils.h
     Services.h
     StringHasher.h
+    ThreadAwareSignal.h
 )
 
 # auto-generate resource file with all available translations
