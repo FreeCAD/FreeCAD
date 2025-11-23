@@ -53,6 +53,7 @@
 #include <Mod/Part/App/Interface.h>
 #include <Mod/Part/App/OCAF/ImportExportSettings.h>
 #include <Mod/PartDesign/App/Body.h>
+#include <Mod/PartDesign/App/Feature.h>
 
 #include "ExportOCAF2.h"
 
@@ -419,6 +420,24 @@ TDF_Label ExportOCAF2::exportObject(
         return {};
     }
 
+    // after resolution, check if obj is a body accessed via sub path and get the tip shape
+    if (sub && obj->isDerivedFrom(PartDesign::Body::getClassTypeId())) {
+        auto* body = static_cast<PartDesign::Body*>(obj);
+        App::DocumentObject* tip = body->Tip.getValue();
+        if (tip) {
+            // reget shape from tip to ensure latest feature is included
+            auto tipShape = Part::Feature::getTopoShape(
+                    tip,
+                    Part::ShapeOption::Transform
+                    );
+            if (!tipShape.isNull()) {
+                shape = tipShape;
+            }
+            // use tip for colors (will be handled later in setupObject)
+            obj = tip;
+        }
+    }
+
     // sub may contain more than one hierarchy, e.g. Assembly container may use
     // getSubObjects to skip some hierarchy containing constraints and stuff
     // when exporting. We search for extra '.', and set it as prefix if found.
@@ -492,7 +511,13 @@ TDF_Label ExportOCAF2::exportObject(
 
     auto subs = obj->getSubObjects();
     // subs empty means obj is not a container.
-    if (subs.empty()) {
+    // treat as non container if:
+    // 1. no subobjects (subs.empty())
+    // 2. is a partdesign feature ie. pad, pocket, boolean
+    // 3. is a partdesign body, should export as single shape via its tip, not as assembly
+    if (subs.empty()
+            || obj->isDerivedFrom(PartDesign::Feature::getClassTypeId())
+            || obj->isDerivedFrom(PartDesign::Body::getClassTypeId())) {
 
         if (!parent.IsNull()) {
             // Search for non-located shape to see if we've stored the original shape before
