@@ -390,7 +390,21 @@ TDF_Label ExportOCAF2::exportObject(
     const char* name
 )
 {
-    App::DocumentObject* obj;
+    App::DocumentObject* obj = nullptr;
+    // keep a copy of the original object for naming purposes
+    App::DocumentObject* originalObj = parentObj;
+
+    // check if this is a body and get its tip before getting the shape
+    if (parentObj && parentObj->isDerivedFrom(PartDesign::Body::getClassTypeId())) {
+        // if (obj->isDerivedFrom(PartDesign::Body::getClassTypeId())) {
+        auto* body = static_cast<PartDesign::Body*>(parentObj);
+        App::DocumentObject* tip = body->Tip.getValue();
+        if (tip) {
+            // obj = tip;
+            parentObj = tip;
+        }
+    }
+
     auto shape = Part::Feature::getTopoShape(
         parentObj,
         (sub ? Part::ShapeOption::NoFlag : Part::ShapeOption::Transform),
@@ -403,19 +417,6 @@ TDF_Label ExportOCAF2::exportObject(
             FC_WARN(obj->getFullName() << " has null shape");
         }
         return {};
-    }
-
-    // keep a copy of the original object for naming purposes
-    App::DocumentObject* originalObj = obj;
-
-    if (obj->isDerivedFrom(PartDesign::Body::getClassTypeId())) {
-        PartDesign::Body* body = static_cast<PartDesign::Body*>(obj);
-        App::DocumentObject* tip = body->Tip.getValue();
-        if (tip) {
-            // keep the shape from the body, but use the tip's colors
-            // by replacing obj with tip
-            obj = tip;
-        }
     }
 
     // sub may contain more than one hierarchy, e.g. Assembly container may use
