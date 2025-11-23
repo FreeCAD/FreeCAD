@@ -1409,15 +1409,15 @@ class _Wall(ArchComponent.Component):
                                     # Offset follows direction of align "Right".
                                     # Needs to be reversed in this case.
                                     off = -off
-                                    #d1 = Vector(dvec).multiply(off)
+                                    # d1 = Vector(dvec).multiply(off)
                                     curWidth = []
                                     alignListC = []
                                     offsetListC = []
                                     for n in range(edgeNum):
                                         curWidth.append(abs(layers[i]))
-                                        alignListC.append("Right") # ("Left")
+                                        alignListC.append("Right")  # ("Left")
                                         offsetListC.append(off)
-                                    #wNe1 = DraftGeomUtils.offsetWire(wire, d1, wireNedge=True)
+                                    # wNe1 = DraftGeomUtils.offsetWire(wire, d1, wireNedge=True)
                                     # See https://github.com/FreeCAD/FreeCAD/issues/25485#issuecomment-3566734050
                                     # d1 may be Vector (0,0,0), offsetWire()
                                     # in draftgeoutils\offsets.py:-
@@ -1426,18 +1426,24 @@ class _Wall(ArchComponent.Component):
                                     # so no need to run above code to deduce
                                     # v1 in offsetWire()
                                     wNe1 = DraftGeomUtils.offsetWire(
-                                        wire, dvec, widthList=curWidth,
+                                        wire,
+                                        dvec,
+                                        widthList=curWidth,
                                         offsetMode="BasewireMode",
-                                        alignList=alignListC, normal=normal,
-                                        basewireOffset=offsetListC,
-                                        wireNedge=True
-                                    )
-                                    wNe2 = DraftGeomUtils.offsetWire(
-                                        wire, dvec, widthList=curWidth,
-                                        offsetMode=None, alignList=alignListC,
+                                        alignList=alignListC,
                                         normal=normal,
                                         basewireOffset=offsetListC,
-                                        wireNedge=True
+                                        wireNedge=True,
+                                    )
+                                    wNe2 = DraftGeomUtils.offsetWire(
+                                        wire,
+                                        dvec,
+                                        widthList=curWidth,
+                                        offsetMode=None,
+                                        alignList=alignListC,
+                                        normal=normal,
+                                        basewireOffset=offsetListC,
+                                        wireNedge=True,
                                     )
                                     layeroffset += abs(curWidth[0])
                                 else:
