@@ -134,6 +134,8 @@ M2"""
         # safety block at the beginning of the G-code file.
         #
         values["PREAMBLE"] = """G17 G54 G40 G49 G80 G90 """
+        # Whether to retract the tool (Z axis) for every tool change
+        values["TOOL_RETRACTION"] = False
 
     def init_arguments(self, values, argument_defaults, arguments_visible):
         """Initialize command-line arguments, including LinuxCNC-specific options."""
@@ -157,6 +159,14 @@ M2"""
             help="Tolerance for BLEND mode (P value): 0 = no tolerance (G64), "
             ">0 = tolerance (G64 P-), in current units (default: 0.0)",
         )
+
+        # Flag-style tool retraction: --tool-retraction / --no-tool-retraction
+        linuxcnc_group.add_argument(
+            "--tool-retraction",
+            action="store_true",
+            help="Retract tool in Z-axis for every tool change",
+        )
+        
         return parser
 
     def process_arguments(self):
@@ -176,6 +186,11 @@ M2"""
                 "PREAMBLE"
             ] = f"""G17 G54 G40 G49 G80 G90
 {blend_cmd}"""
+
+            if hasattr(args, "tool_retraction") and args.tool_retraction:
+                self.values["TOOL_CHANGE"] += "G30 Z0\n"
+                # Lift tool after spindle has stopped (M5) but before program ends (M2)
+                self.values["POSTAMBLE"] = self.values["POSTAMBLE"].replace("M2", "G30 Z0\nM2")
 
         return flag, args
 
