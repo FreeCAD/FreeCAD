@@ -153,6 +153,8 @@ App::DocumentObjectExecReturn* Boolean::execute()
         }
     }
 
+    result.bakeInTransform();
+
     result = refineShapeIfActive(result);
 
     if (!isSingleSolidRuleSatisfied(result.getShape())) {
