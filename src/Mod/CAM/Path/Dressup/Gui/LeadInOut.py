@@ -162,6 +162,7 @@ class ObjectDressup:
             "Path Lead-out",
             QT_TRANSLATE_NOOP("App::Property", "Move end point"),
         )
+
         obj.Proxy = self
 
     def dumps(self):
@@ -201,7 +202,7 @@ class ObjectDressup:
             return None
         if isinstance(obj.Base, list) and obj.Base and obj.Base[0].isDerivedFrom("Path::Feature"):
             return self.getBaseWithTC(obj.Base[0])
-        elif not isinstance(obj.Base, list) and obj.Base.isDerivedFrom("Path::Feature"):
+        if not isinstance(obj.Base, list) and obj.Base.isDerivedFrom("Path::Feature"):
             return self.getBaseWithTC(obj.Base)
         return None
 
@@ -251,8 +252,18 @@ class ObjectDressup:
             )
             return
 
+        self.invertAlt = False
+        self.job = PathUtils.findParentJob(obj)
         self.horizFeed = self.toolController.HorizFeed.Value
         self.vertFeed = self.toolController.VertFeed.Value
+        self.clearanceHeight = self.baseOp.ClearanceHeight.Value
+        self.safeHeight = self.baseOp.SafeHeight.Value
+        self.startDepth = self.baseOp.StartDepth.Value
+        self.side = self.baseOp.Side if hasattr(self.baseOp, "Side") else "Inside"
+        if hasattr(self.baseOp, "Direction") and self.baseOp.Direction in ("CW", "CCW"):
+            self.direction = self.baseOp.Direction
+        else:
+            self.direction = "CCW"
 
         obj.Path = self.generateLeadInOutCurve(obj)
 
@@ -422,21 +433,28 @@ class ObjectDressup:
     # Get direction for lead-in/lead-out in XY plane
     def getLeadDir(self, obj, invert=False):
         output = math.pi / 2
-        side = self.baseOp.Side if hasattr(self.baseOp, "Side") else "Inside"
-        direction = self.baseOp.Direction if hasattr(self.baseOp, "Direction") else "CCW"
+        side = self.side
+        direction = self.direction
         if (side == "Inside" and direction == "CW") or (side == "Outside" and direction == "CCW"):
             output = -output
         if invert:
+            output = -output
+        if self.invertAlt:
             output = -output
 
         return output
 
     # Get direction of original path
-    def getPathDir(self, obj):
-        # only CW or CCW is matter
-        direction = self.baseOp.Direction if hasattr(self.baseOp, "Direction") else "CCW"
+    def getArcPathDir(self, obj, cmdName):
+        # only CW/CCW and G2/G3 matters
+        direction = self.direction
         output = math.pi / 2
         if direction == "CW":
+            output = -output
+
+        if cmdName == "G2" and direction == "CCW":
+            output = -output
+        elif cmdName == "G3" and direction == "CW":
             output = -output
 
         return output
@@ -451,9 +469,7 @@ class ObjectDressup:
 
         if first or (distance > obj.RetractThreshold):
             # move to clearance height
-            commands.append(
-                PathLanguage.MoveStraight(None, "G00", {"Z": self.baseOp.ClearanceHeight.Value})
-            )
+            commands.append(PathLanguage.MoveStraight(None, "G00", {"Z": self.clearanceHeight}))
 
             # move to mill position at clearance height
             commands.append(PathLanguage.MoveStraight(None, "G00", {"X": pos.x, "Y": pos.y}))
@@ -464,9 +480,7 @@ class ObjectDressup:
                 commands.append(PathLanguage.MoveStraight(None, "G00", {"Z": pos.z}))
             else:
                 # move to mill position in two steps
-                commands.append(
-                    PathLanguage.MoveStraight(None, "G00", {"Z": self.baseOp.SafeHeight.Value})
-                )
+                commands.append(PathLanguage.MoveStraight(None, "G00", {"Z": self.safeHeight}))
                 commands.append(
                     PathLanguage.MoveStraight(None, "G01", {"Z": pos.z, "F": self.vertFeed})
                 )
@@ -489,7 +503,7 @@ class ObjectDressup:
     # Create commands with movements to clearance height
     def getTravelEnd(self, obj):
         commands = []
-        z = self.baseOp.ClearanceHeight.Value
+        z = self.clearanceHeight
         commands.append(PathLanguage.MoveStraight(None, "G00", {"Z": z}))
 
         return commands
@@ -533,10 +547,9 @@ class ObjectDressup:
         return command
 
     # Get optimal step angle for iteration ArcZ
-    def getStepAngleArcZ(self, obj, radius):
-        job = PathUtils.findParentJob(obj)
-        minArcLength = job.GeometryTolerance.Value * 2
-        maxArcLength = 1
+    def getStepAngleArcZ(self, obj, radius, segm=1):
+        minArcLength = self.job.GeometryTolerance.Value * 2
+        maxArcLength = segm
         stepAngle = math.pi / 60
         stepArcLength = stepAngle * radius
         if stepArcLength > maxArcLength:
@@ -671,11 +684,11 @@ class ObjectDressup:
                 lead.append(self.createStraightMove(obj, lineBegin, begin))
 
             # prepend "LineZ" style lead-in - vertical inclined line
-            # Should be apply only on straight Path segment
+            # Should be applied only on straight Path segment
             elif styleIn == "LineZ":
                 # tangent vector in XY plane
                 # normal vector is vertical
-                normalLengthMax = self.baseOp.SafeHeight.Value - begin.z
+                normalLengthMax = self.safeHeight - begin.z
                 normalLength = math.sin(angleIn) * length
                 # do not exceed Normal vector max length
                 normalLength = min(normalLength, normalLengthMax)
@@ -686,12 +699,12 @@ class ObjectDressup:
                 lead.append(self.createStraightMove(obj, lineBegin, begin))
 
             # prepend "ArcZ" style lead-in - vertical Arc
-            # Should be apply only on straight Path segment
+            # Should be applied only on straight Path segment or open profile
             elif styleIn == "ArcZ":
                 # tangent vector in XY plane
                 # normal vector is vertical
                 arcRadius = length
-                normalLengthMax = self.baseOp.SafeHeight.Value - begin.z
+                normalLengthMax = self.safeHeight - begin.z
                 normalLength = arcRadius * (1 - math.cos(angleIn))
                 if normalLength > normalLengthMax:
                     # do not exceed Normal vector max length
@@ -704,7 +717,7 @@ class ObjectDressup:
                 arcBegin = begin + tangent + normal
                 lead.extend(self.createArcZMoveDown(obj, arcBegin, begin, arcRadius))
 
-            # replace 'begin' position by first lead-in command
+            # replace 'begin' position with first lead-in command
             begin = lead[0].positionBegin()
 
             if styleIn in ("Arc3d", "Line3d"):
@@ -712,7 +725,7 @@ class ObjectDressup:
                 if inInstrPrev and inInstrPrev.z() > begin.z:
                     begin.z = inInstrPrev.z()
                 else:
-                    begin.z = self.baseOp.StartDepth.Value
+                    begin.z = self.startDepth
                 lead[0].setPositionBegin(begin)
 
             elif styleIn == "Helix":
@@ -724,16 +737,16 @@ class ObjectDressup:
                     halfStepZ = (posPrevZ - beginZ) / 2
                     begin.z += halfStepZ
                 else:
-                    begin.z = self.baseOp.StartDepth.Value
+                    begin.z = self.startDepth
 
         if obj.StyleOut == "Helix" and outInstrPrev:
             """change Z for previous helix lead-out
-            Can not do it in getLeadEnd(),
-            because no any information about next moves there while creating Lead-out"""
+            Unable to do it in getLeadEnd(), due to lack of
+            existing information about next moves while creating Lead-out"""
             posPrevZ = outInstrPrev.positionEnd().z
             if posPrevZ > beginZ:
                 """previous profile upper than this
-                mean procesing one stepdown profile"""
+                mean processing one stepdown profile"""
                 halfStepZ = (posPrevZ - beginZ) / 2
                 outInstrPrev.param["Z"] = posPrevZ - halfStepZ
 
@@ -811,7 +824,7 @@ class ObjectDressup:
             elif obj.StyleOut == "LineZ":
                 # tangent vector in XY plane
                 # normal vector is vertical
-                normalLengthMax = self.baseOp.StartDepth.Value - end.z
+                normalLengthMax = self.startDepth - end.z
                 normalLength = math.sin(angleOut) * length
                 # do not exceed Normal vector max length
                 normalLength = min(normalLength, normalLengthMax)
@@ -827,7 +840,7 @@ class ObjectDressup:
                 # tangent vector in XY plane
                 # normal vector is vertical
                 arcRadius = length
-                normalLengthMax = self.baseOp.SafeHeight.Value - end.z
+                normalLengthMax = self.safeHeight - end.z
                 normalLength = arcRadius * (1 - math.cos(angleOut))
                 if normalLength > normalLengthMax:
                     # do not exceed Normal vector max length
@@ -845,9 +858,9 @@ class ObjectDressup:
             if outInstrPrev and outInstrPrev.positionBegin().z > end.z:
                 lead[-1].param["Z"] = outInstrPrev.positionBegin().z
             else:
-                lead[-1].param["Z"] = self.baseOp.StartDepth.Value
+                lead[-1].param["Z"] = self.startDepth
 
-        # append travel moves to clearance height after finish all profiles
+        # append travel moves to clearance height after finishing all profiles
         if last and obj.StyleOut != "No Retract":
             lead += self.getTravelEnd(obj)
 
@@ -871,43 +884,55 @@ class ObjectDressup:
             return None
 
     # Get last index of mill command in whole Path
-    def findLastCuttingMoveIndex(self, source):
-        for i in range(len(source) - 1, -1, -1):
-            if self.isCuttingMove(source[i]):
+    def findLastCuttingMoveIndex(self):
+        for i in range(len(self.source) - 1, -1, -1):
+            if self.isCuttingMove(self.source[i]):
                 return i
 
         return None
 
     # Get finish index of mill command for one profile
-    def findLastCutMultiProfileIndex(self, source, startIndex):
-        if startIndex >= len(source):
-            return len(source) - 1
-        for i in range(startIndex, len(source), +1):
-            if not self.isCuttingMove(source[i]):
+    def findLastCutMultiProfileIndex(self):
+        startIndex = self.firstMillIndex
+        if startIndex >= len(self.source):
+            return len(self.source) - 1
+        for i in range(startIndex, len(self.source), +1):
+            if not self.isCuttingMove(self.source[i]):
                 return i - 1
 
         return i
 
-    # Increase travel length from begin
-    def getOvertravelIn(self, obj, source, length, start, end):
-        startPoint = source[start].positionBegin()
-        endPoint = source[end].positionEnd()
+    def isProfileClosed(self):
+        start = self.firstMillIndex
+        end = self.lastMillIndex
+        startPoint = self.source[start].positionBegin()
+        endPoint = self.source[end].positionEnd()
 
         if Path.Geom.pointsCoincide(startPoint, endPoint):
+            self.closedProfile = True
+        else:
+            self.closedProfile = False
+
+    # Increase travel length from 'begin', take commands from profile 'end'
+    def getOvertravelIn(self, obj, length):
+        start = self.firstMillIndex
+        end = self.lastMillIndex
+
+        if self.closedProfile:
             # closed profile
             # get extra commands from end of the closed profile
             measuredLength = 0
-            for i, instr in enumerate(reversed(source[start : end + 1])):
+            for i, instr in enumerate(reversed(self.source[start : end + 1])):
                 instrLength = instr.pathLength()
 
-                if Path.Geom.isRoughly(measuredLength + instrLength, length, 1):
-                    # get needed length and not need to cut last command
-                    commands = source[end - i : end + 1]
+                if Path.Geom.isRoughly(measuredLength + instrLength, length):
+                    # get needed length without needing to cut last command
+                    commands = self.source[end - i : end + 1]
                     return commands
 
                 elif measuredLength + instrLength > length:
-                    # measured length exceed needed length and need cut command
-                    commands = source[end - i + 1 : end + 1]
+                    # measured length exceeds needed length and needs cut command
+                    commands = self.source[end - i + 1 : end + 1]
                     newLength = length - measuredLength
                     newInstr = self.cutInstrBegin(obj, instr, newLength)
                     commands.insert(0, newInstr)
@@ -918,33 +943,32 @@ class ObjectDressup:
         else:
             # open profile
             # extend first move
-            instr = source[start]
+            instr = self.source[start]
             newLength = length + instr.pathLength()
             newInstr = self.cutInstrBegin(obj, instr, newLength)
             return [newInstr]
 
         return None
 
-    # Increase travel length from end
-    def getOvertravelOut(self, obj, source, length, start, end):
-        startPoint = source[start].positionBegin()
-        endPoint = source[end].positionEnd()
-
-        if Path.Geom.pointsCoincide(startPoint, endPoint):
+    # Increase travel length from end, take commands from profile start
+    def getOvertravelOut(self, obj, length):
+        start = self.firstMillIndex
+        end = self.lastMillIndex
+        if self.closedProfile:
             # closed profile
             # get extra commands from begin of the closed profile
             measuredLength = 0
-            for i, instr in enumerate(source[start:end]):
+            for i, instr in enumerate(self.source[start : end + 1]):
                 instrLength = instr.pathLength()
 
-                if Path.Geom.isRoughly(measuredLength + instrLength, length, 1):
-                    # get needed length and not need to cut last command
-                    commands = source[start : start + i + 1]
+                if Path.Geom.isRoughly(measuredLength + instrLength, length):
+                    # get needed length without needing to cut last command
+                    commands = self.source[start : start + i + 1]
                     return commands
 
                 elif measuredLength + instrLength > length:
-                    # measured length exceed needed length and need cut command
-                    commands = source[start : start + i]
+                    # measured length exceeds needed length and needs cut command
+                    commands = self.source[start : start + i]
                     newLength = length - measuredLength
                     newInstr = self.cutInstrEnd(obj, instr, newLength)
                     commands.append(newInstr)
@@ -955,7 +979,7 @@ class ObjectDressup:
         else:
             # open profile
             # extend last move
-            instr = source[end]
+            instr = self.source[end]
             newLength = length + instr.pathLength()
             newInstr = self.cutInstrEnd(obj, instr, newLength)
             return [newInstr]
@@ -963,25 +987,29 @@ class ObjectDressup:
         return None
 
     # Cut travel end by distance (negative overtravel out)
-    def cutTravelEnd(self, obj, source, cutLength):
+    def cutTravelEnd(self, obj, commands, cutLength):
         measuredLength = 0
+        for i, instr in enumerate(reversed(commands)):
+            if instr.positionBegin() is None:
+                # workaround if cut whole profile by negative offset
+                cmds = commands[:-i]
+                newInstr = self.cutInstrEnd(obj, commands[-i], 0.1)
+                cmds.append(newInstr)
+                return cmds
 
-        for i, instr in enumerate(reversed(source)):
             instrLength = instr.pathLength()
             measuredLength += instrLength
-
             if Path.Geom.isRoughly(measuredLength, cutLength):
                 # get needed length and not need to cut any command
-                commands = source[: -i - 1]
-                return commands
+                return commands[: -i - 1]
 
             elif measuredLength > cutLength:
                 # measured length exceed needed cut length and need cut command
-                commands = source[: -i - 1]
+                cmds = commands[: -i - 1]
                 newLength = measuredLength - cutLength
                 newInstr = self.cutInstrEnd(obj, instr, newLength)
-                commands.append(newInstr)
-                return commands
+                cmds.append(newInstr)
+                return cmds
 
         return None
 
@@ -1000,6 +1028,7 @@ class ObjectDressup:
 
         # Cut arc move from begin
         elif instr.isArc():
+            cmdName = instr.cmd
             angleTangent = instr.anglesOfTangents()[0]
             arcBegin = instr.positionBegin()
             arcOffset = App.Vector(instr.i(), instr.j(), instr.k())
@@ -1008,9 +1037,10 @@ class ObjectDressup:
             tangentLength = math.sin(arcAngle) * arcRadius
             normalLength = arcRadius * (1 - math.cos(arcAngle))
             tangent = self.angleToVector(angleTangent) * tangentLength
-            normal = self.angleToVector(angleTangent + self.getPathDir(obj)) * normalLength
+            normal = (
+                self.angleToVector(angleTangent + self.getArcPathDir(obj, cmdName)) * normalLength
+            )
             arcEnd = arcBegin + tangent + normal
-            cmdName = "G2" if instr.isCW() else "G3"
             command = self.createArcMoveN(obj, arcBegin, arcEnd, arcOffset, cmdName)
 
         return command
@@ -1030,6 +1060,7 @@ class ObjectDressup:
 
         # Cut arc move from begin
         elif instr.isArc():
+            cmdName = instr.cmd
             angleTangent = instr.anglesOfTangents()[1]
             arcEnd = instr.positionEnd()
             arcCenter = instr.xyCenter()
@@ -1038,10 +1069,11 @@ class ObjectDressup:
             tangentLength = math.sin(arcAngle) * arcRadius
             normalLength = arcRadius * (1 - math.cos(arcAngle))
             tangent = -self.angleToVector(angleTangent) * tangentLength
-            normal = self.angleToVector(angleTangent + self.getPathDir(obj)) * normalLength
+            normal = (
+                self.angleToVector(angleTangent + self.getArcPathDir(obj, cmdName)) * normalLength
+            )
             arcBegin = arcEnd + tangent + normal
             arcOffset = arcCenter - arcBegin
-            cmdName = "G2" if instr.isCW() else "G3"
             command = self.createArcMoveN(obj, arcBegin, arcEnd, arcOffset, cmdName)
             return command
 
@@ -1049,28 +1081,30 @@ class ObjectDressup:
 
     def generateLeadInOutCurve(self, obj):
         source = PathLanguage.Maneuver.FromPath(PathUtils.getPathWithPlacement(obj.Base)).instr
+        self.source = source
         maneuver = PathLanguage.Maneuver()
 
-        # Knowing weather a given instruction is the first cutting move is easy,
+        # Knowing whether a given instruction is the first cutting move is easy,
         # we just use a flag and set it to false afterwards. To find the last
         # cutting move we need to search the list in reverse order.
 
+        commands = []
         first = True  # prepare first move at clearance height
-        firstMillIndex = None  # Index start mill instruction for one profile
-        lastCuttingMoveIndex = self.findLastCuttingMoveIndex(source)
-        inInstrPrev = None
-        outInstrPrev = None
+        self.firstMillIndex = None  # Index start mill instruction for one profile
+        self.lastMillIndex = None  # Index end mill instruction for one profile
+        self.lastCuttingMoveIndex = self.findLastCuttingMoveIndex()
+        inInstrPrev = None  # for RetractThreshold
+        outInstrPrev = None  # for RetractThreshold
         measuredLength = 0  # for negative OffsetIn
         skipCounter = 0  # for negative OffsetIn
-        commands = []
         moveDir = None
 
         # Process all instructions
         for i, instr in enumerate(source):
-            # Process not mill instruction
+            # Process without mill instruction
             if not self.isCuttingMove(instr):
                 if not instr.isMove():
-                    # non-move instruction get added verbatim
+                    # non-move instruction gets added verbatim
                     commands.append(instr)
                 else:
                     moveDir = self.getMoveDir(instr)
@@ -1095,8 +1129,17 @@ class ObjectDressup:
                 if obj.LeadIn or obj.LeadOut:
                     # can not skip leadin if leadout
 
-                    # Process negative Offset Lead-In (cut travel from begin)
+                    self.firstMillIndex = i if self.firstMillIndex is None else self.firstMillIndex
+                    self.lastMillIndex = (
+                        self.findLastCutMultiProfileIndex()
+                        if self.lastMillIndex is None
+                        else self.lastMillIndex
+                    )
+                    self.isProfileClosed()
+
+                    overtravelIn = None
                     if obj.OffsetIn.Value < 0 and obj.StyleIn != "No Retract":
+                        # Process negative Offset Lead-In (cut travel from begin)
                         if measuredLength <= abs(obj.OffsetIn.Value):
                             # skip mill instruction
                             skipCounter += 1  # count skipped instructions
@@ -1107,18 +1150,9 @@ class ObjectDressup:
                             newLength = measuredLength - abs(obj.OffsetIn.Value)
                             instr = self.cutInstrBegin(obj, instr, newLength)
 
-                    # Process positive offset Lead-In (overtravel)
-                    firstMillIndex = i
-                    lastMillIndex = self.findLastCutMultiProfileIndex(source, i + 1)
-                    overtravelIn = None
-                    if obj.OffsetIn.Value > 0 and obj.StyleIn != "No Retract":
-                        overtravelIn = self.getOvertravelIn(
-                            obj,
-                            source,
-                            obj.OffsetIn.Value,
-                            firstMillIndex,
-                            lastMillIndex,
-                        )
+                    elif obj.OffsetIn.Value > 0 and obj.StyleIn != "No Retract":
+                        # Process positive offset Lead-In (overtravel)
+                        overtravelIn = self.getOvertravelIn(obj, obj.OffsetIn.Value)
                     if overtravelIn:
                         commands.extend(
                             self.getLeadStart(
@@ -1130,7 +1164,6 @@ class ObjectDressup:
                         commands.extend(
                             self.getLeadStart(obj, instr, first, inInstrPrev, outInstrPrev)
                         )
-                    firstMillIndex = i if not firstMillIndex else firstMillIndex
                     inInstrPrev = commands[-1]
                 first = False
 
@@ -1138,10 +1171,9 @@ class ObjectDressup:
             commands.append(instr)
 
             # Process Lead-Out
-            last = bool(i == lastCuttingMoveIndex)
+            last = bool(i == self.lastCuttingMoveIndex)
             if (last or not self.isCuttingMove(source[i + 1])) and obj.LeadOut:
                 measuredLength = 0  # reset measured length for last profile
-                lastMillIndex = i  # index last mill instruction for last profile
 
                 # Process negative Offset Lead-Out (cut travel from end)
                 if obj.OffsetOut.Value < 0 and obj.StyleOut != "No Retract":
@@ -1149,14 +1181,7 @@ class ObjectDressup:
 
                 # Process positive Offset Lead-Out (overtravel)
                 if obj.OffsetOut.Value > 0 and obj.StyleOut != "No Retract":
-                    overtravelOut = self.getOvertravelOut(
-                        obj,
-                        source,
-                        obj.OffsetOut.Value,
-                        firstMillIndex,
-                        lastMillIndex,
-                    )
-                    firstMillIndex = None
+                    overtravelOut = self.getOvertravelOut(obj, obj.OffsetOut.Value)
                     if overtravelOut:
                         commands.extend(overtravelOut)
 
@@ -1169,6 +1194,10 @@ class ObjectDressup:
                     outInstrPrev = leadEndInstr[-1]
                 else:
                     outInstrPrev = instr
+
+                self.firstMillIndex = None
+                self.lastMillIndex = None
+                self.invertAlt = not self.invertAlt if getattr(obj, "InvertAlt", None) else False
 
         maneuver.addInstructions(commands)
         return maneuver.toPath()
@@ -1372,7 +1401,12 @@ class CommandPathDressupLeadInOut:
             return False
         if not selection[0].isDerivedFrom("Path::Feature"):
             return False
-        if selection[0].Name.startswith("Job"):
+        baseOp = PathDressup.baseOp(selection[0])
+        if not hasattr(baseOp, "ClearanceHeight"):
+            return False
+        if not hasattr(baseOp, "SafeHeight"):
+            return False
+        if not hasattr(baseOp, "StartDepth"):
             return False
 
         return True
