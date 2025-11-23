@@ -1457,4 +1457,3 @@ if App.GuiUp:
     FreeCADGui.addCommand("CAM_DressupLeadInOut", CommandPathDressupLeadInOut())
 
 Path.Log.notice("Loading CAM_DressupLeadInOut… done\n")
-
