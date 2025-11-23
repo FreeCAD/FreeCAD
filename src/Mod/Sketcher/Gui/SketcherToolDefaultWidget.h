@@ -156,29 +156,28 @@ public:
     template<typename F>
     fastsignals::advanced_connection registerParameterTabOrEnterPressed(F&& fn)
     {
-        return signalParameterTabOrEnterPressed.connect(std::forward<F>(fn),
-                                                        fastsignals::advanced_tag());
+        return signalParameterTabOrEnterPressed.connect(
+            std::forward<F>(fn),
+            fastsignals::advanced_tag()
+        );
     }
 
     template<typename F>
     fastsignals::advanced_connection registerParameterValueChanged(F&& fn)
     {
-        return signalParameterValueChanged.connect(std::forward<F>(fn),
-                                                   fastsignals::advanced_tag());
+        return signalParameterValueChanged.connect(std::forward<F>(fn), fastsignals::advanced_tag());
     }
 
     template<typename F>
     fastsignals::advanced_connection registerCheckboxCheckedChanged(F&& fn)
     {
-        return signalCheckboxCheckedChanged.connect(std::forward<F>(fn),
-                                                    fastsignals::advanced_tag());
+        return signalCheckboxCheckedChanged.connect(std::forward<F>(fn), fastsignals::advanced_tag());
     }
 
     template<typename F>
     fastsignals::advanced_connection registerComboboxSelectionChanged(F&& fn)
     {
-        return signalComboboxSelectionChanged.connect(std::forward<F>(fn),
-                                                      fastsignals::advanced_tag());
+        return signalComboboxSelectionChanged.connect(std::forward<F>(fn), fastsignals::advanced_tag());
     }
 
 
