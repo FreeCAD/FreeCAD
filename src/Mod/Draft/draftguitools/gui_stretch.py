@@ -496,7 +496,7 @@ class Stretch(gui_base_original.Modifier):
                         # Reconstruct the new endpoints after applying displacement
                         for i, pt in enumerate(ops[0].Proxy.calc_endpoints(ops[0])):
                             if ops[1][i]:
-                                npts.append(pt.add(localdisp))
+                                npts.append(pt.add(self.displacement))
                             else:
                                 npts.append(pt)
                         # Construct the points list string
