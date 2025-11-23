@@ -1,0 +1,44 @@
+# SPDX-license-identifier: CC0-1.0
+
+package:
+  name: nsis-largestring-advancedlogging
+  version: "3.11.0"
+
+build:
+  number: 0
+  script:
+    - if: win
+      then:
+        - bld.bat
+
+source:
+  - path: third_party/nsis-3.11-src.tar.bz2
+    target_directory: nsis-src
+
+  - path: third_party/Zlib-1.2.7-win32-x86.zip
+    target_directory: zlib-w32
+
+  - path: third_party/NsProcess.zip
+    target_directory: nsprocess-src
+
+requirements:
+  build:
+    - if: win
+      then:
+        - python
+        - scons
+        - vs2022_win-64
+
+  run:
+    - if: win
+      then:
+        - vs2022_win-64
+
+about:
+  homepage: https://nsis.sourceforge.io/Main_Page
+  summary: "NSIS 3.11 built with large strings and advanced logging."
+  license: Zlib
+
+extra:
+  recipe-maintainers:
+    - Chris Hennes (chennes@freecad.org)

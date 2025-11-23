@@ -77,3 +77,35 @@ sha256sum ${version_name}.7z > ${version_name}.7z-SHA256.txt
 if [ "${UPLOAD_RELEASE}" == "true" ]; then
     gh release upload --clobber ${BUILD_TAG} "${version_name}.7z" "${version_name}.7z-SHA256.txt"
 fi
+
+
+# Windows Installer (NSIS) - WIP
+
+installer_exe_name="${version_name}-Installer.exe"
+cmake_install_prefix="${copy_dir}"
+
+# Escape characters that are special in sed replacement
+escape_sed() {
+    printf '%s' "$1" | sed -e 's/[&/\]/\\&/g'
+}
+
+installer_escaped="$(escape_sed "$installer_exe_name")"
+prefix_escaped="$(escape_sed "$cmake_install_prefix")"
+
+sed \
+  -e "s/@INSTALLER_EXE_NAME@/${installer_escaped}/g" \
+  -e "s/@CMAKE_INSTALL_PREFIX@/${prefix_escaped}/g" \
+  "Settings.nsh.in" > "Settings.nsh"
+
+# Copy the required MSVC redist files:
+# vcruntime140.dll
+# concrt140.dll
+# msvcp140.dll
+# vcamp140.dll
+# vccorlib140.dll
+# vcomp140.dll
+# ... into ${prefix_escaped}\MSVCRedist
+
+# Now run the NSIS installer-creation script
+
+# And upload the resulting installer to GitHub
