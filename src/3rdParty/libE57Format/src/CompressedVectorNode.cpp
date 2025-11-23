@@ -197,12 +197,12 @@ prototype.isRoot())
 @post prototype.isAttached()
 @post codecs.isAttached()
 
-@throw ::ErrorImageFileNotOpen
-@throw ::ErrorFileReadOnly
-@throw ::ErrorBadPrototype
-@throw ::ErrorBadCodecs
-@throw ::ErrorAlreadyHasParent
-@throw ::ErrorDifferentDestImageFile
+@throw ::ErrorImageFileNotOpen (n/c)
+@throw ::ErrorFileReadOnly (n/c)
+@throw ::ErrorBadPrototype (n/c)
+@throw ::ErrorBadCodecs (n/c)
+@throw ::ErrorAlreadyHasParent (n/c)
+@throw ::ErrorDifferentDestImageFile (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see SourceDestBuffer, Node, CompressedVectorNode::reader, CompressedVectorNode::writer
@@ -275,7 +275,7 @@ any writes completed.
 
 @return Current number of records in CompressedVectorNode.
 
-@throw ::ErrorImageFileNotOpen
+@throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see CompressedVectorNode::reader, CompressedVectorNode::writer
@@ -293,7 +293,7 @@ int64_t CompressedVectorNode::childCount() const
 
 @return A smart Node handle referencing the root of the prototype tree.
 
-@throw ::ErrorImageFileNotOpen
+@throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see CompressedVectorNode::CompressedVectorNode, SourceDestBuffer, CompressedVectorNode::reader,
@@ -313,7 +313,7 @@ CompressedVectorNode.
 
 @return A smart VectorNode handle referencing the root of the codecs tree.
 
-@throw ::ErrorImageFileNotOpen
+@throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see CompressedVectorNode::CompressedVectorNode, SourceDestBuffer, CompressedVectorNode::reader,
@@ -372,7 +372,7 @@ designs that need to avoid the exception, use Node::type() to determine the actu
 before downcasting. This function must be explicitly called (c++ compiler cannot insert it
 automatically).
 
-@throw ::ErrorBadNodeDowncast
+@throw ::ErrorBadNodeDowncast (n/c)
 
 @see Node::type(), CompressedVectorNode::operator, Node()
 */
@@ -422,17 +422,17 @@ CompressedVectorNode cannot be set twice).
 
 @return A smart CompressedVectorWriter handle referencing the underlying iterator object.
 
-@throw ::ErrorBadAPIArgument
-@throw ::ErrorImageFileNotOpen
-@throw ::ErrorFileReadOnly
-@throw ::ErrorSetTwice
-@throw ::ErrorTooManyWriters
-@throw ::ErrorTooManyReaders
-@throw ::ErrorNodeUnattached
-@throw ::ErrorPathUndefined
-@throw ::ErrorBufferSizeMismatch
-@throw ::ErrorBufferDuplicatePathName
-@throw ::ErrorNoBufferForElement
+@throw ::ErrorBadAPIArgument (n/c)
+@throw ::ErrorImageFileNotOpen (n/c)
+@throw ::ErrorFileReadOnly (n/c)
+@throw ::ErrorSetTwice (n/c)
+@throw ::ErrorTooManyWriters (n/c)
+@throw ::ErrorTooManyReaders (n/c)
+@throw ::ErrorNodeUnattached (n/c)
+@throw ::ErrorPathUndefined (n/c)
+@throw ::ErrorBufferSizeMismatch (n/c)
+@throw ::ErrorBufferDuplicatePathName (n/c)
+@throw ::ErrorNoBufferForElement (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see CompressedVectorWriter, SourceDestBuffer, CompressedVectorNode::CompressedVectorNode,
@@ -461,14 +461,14 @@ prototype. It is not an error to create a CompressedVectorReader for an empty Co
 
 @return A smart CompressedVectorReader handle referencing the underlying iterator object.
 
-@throw ::ErrorBadAPIArgument
-@throw ::ErrorImageFileNotOpen
-@throw ::ErrorTooManyWriters
-@throw ::ErrorNodeUnattached
-@throw ::ErrorPathUndefined
-@throw ::ErrorBufferSizeMismatch
-@throw ::ErrorBufferDuplicatePathName
-@throw ::ErrorBadCVHeader
+@throw ::ErrorBadAPIArgument (n/c)
+@throw ::ErrorImageFileNotOpen (n/c)
+@throw ::ErrorTooManyWriters (n/c)
+@throw ::ErrorNodeUnattached (n/c)
+@throw ::ErrorPathUndefined (n/c)
+@throw ::ErrorBufferSizeMismatch (n/c)
+@throw ::ErrorBufferDuplicatePathName (n/c)
+@throw ::ErrorBadCVHeader (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see CompressedVectorReader, SourceDestBuffer, CompressedVectorNode::CompressedVectorNode,
