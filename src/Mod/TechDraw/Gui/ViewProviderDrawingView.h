@@ -28,10 +28,12 @@
 
 #include <boost/signals2.hpp>
 
+#include <Gui/Document.h>
 #include <Gui/ViewProviderDocumentObject.h>
 #include <Mod/TechDraw/App/DrawView.h>
 
 #include "ViewProviderDrawingViewExtension.h"
+
 
 namespace TechDraw {
 class DrawView;
@@ -101,6 +103,11 @@ public:
 
     virtual void fixSceneDependencies();
     std::vector<App::DocumentObject*> claimChildren() const override;
+
+    void fixColorAlphaValues();
+    bool checkMiniumumDocumentVersion(int minMajor, int minMinor) const
+        { return checkMiniumumDocumentVersion(this->getDocument()->getDocument(), minMajor, minMinor); }
+    static bool checkMiniumumDocumentVersion(App::Document* toBeChecked, int minMajor, int minMinor);
 
 
 private:
