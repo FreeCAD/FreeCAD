@@ -166,6 +166,8 @@ public:
     static bool snapDetailHighlights();
     static double detailSnapRadius();
 
+    static bool fixColorAlphaOnLoad();
+
 };
 
 
