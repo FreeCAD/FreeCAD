@@ -426,10 +426,7 @@ TDF_Label ExportOCAF2::exportObject(
         App::DocumentObject* tip = body->Tip.getValue();
         if (tip) {
             // reget shape from tip to ensure latest feature is included
-            auto tipShape = Part::Feature::getTopoShape(
-                    tip,
-                    Part::ShapeOption::Transform
-                    );
+            auto tipShape = Part::Feature::getTopoShape(tip, Part::ShapeOption::Transform);
             if (!tipShape.isNull()) {
                 shape = tipShape;
             }
@@ -515,9 +512,8 @@ TDF_Label ExportOCAF2::exportObject(
     // 1. no subobjects (subs.empty())
     // 2. is a partdesign feature ie. pad, pocket, boolean
     // 3. is a partdesign body, should export as single shape via its tip, not as assembly
-    if (subs.empty()
-            || obj->isDerivedFrom(PartDesign::Feature::getClassTypeId())
-            || obj->isDerivedFrom(PartDesign::Body::getClassTypeId())) {
+    if (subs.empty() || obj->isDerivedFrom(PartDesign::Feature::getClassTypeId())
+        || obj->isDerivedFrom(PartDesign::Body::getClassTypeId())) {
 
         if (!parent.IsNull()) {
             // Search for non-located shape to see if we've stored the original shape before
