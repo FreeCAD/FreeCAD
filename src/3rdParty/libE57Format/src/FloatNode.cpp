@@ -141,10 +141,10 @@ if 0 is within bounds, or a @a value = @a minimum if 0 is not within bounds.
 be true).
 @pre minimum <= value <= maximum
 
-@throw ::ErrorBadAPIArgument
-@throw ::ErrorImageFileNotOpen
-@throw ::ErrorFileReadOnly
-@throw ::ErrorValueOutOfBounds
+@throw ::ErrorBadAPIArgument (n/c)
+@throw ::ErrorImageFileNotOpen (n/c)
+@throw ::ErrorFileReadOnly (n/c)
+@throw ::ErrorValueOutOfBounds (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see FloatPrecision, FloatNode::value, Node, CompressedVectorNode, CompressedVectorNode::prototype
@@ -222,7 +222,7 @@ is ::PrecisionDouble, the double precision value is returned as a double.
 
 @return The IEEE floating point value stored, represented as a double.
 
-@throw ::ErrorImageFileNotOpen
+@throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal           All objects in undocumented state
 
 @see FloatNode::minimum, FloatNode::maximum
@@ -241,7 +241,7 @@ double FloatNode::value() const
 @return The declared precision of the floating point number, either ::PrecisionSingle or
 ::PrecisionDouble.
 
-@throw ::ErrorImageFileNotOpen
+@throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see FloatPrecision
@@ -263,7 +263,7 @@ precision is ::PrecisionDouble, the double precision minimum is returned as a do
 
 @return The declared minimum that the value may take.
 
-@throw ::ErrorImageFileNotOpen
+@throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see FloatNode::maximum, FloatNode::value
@@ -285,7 +285,7 @@ precision is ::PrecisionDouble, the double precision maximum is returned as a do
 
 @return The declared maximum that the value may take.
 
-@throw ::ErrorImageFileNotOpen
+@throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see FloatNode::minimum, FloatNode::value
@@ -340,7 +340,7 @@ The handle @a n must be for an underlying FloatNode, otherwise an exception is t
 that need to avoid the exception, use Node::type() to determine the actual type of the @a n before
 downcasting. This function must be explicitly called (c++ compiler cannot insert it automatically).
 
-@throw ::ErrorBadNodeDowncast
+@throw ::ErrorBadNodeDowncast (n/c)
 
 @see Node::type(), FloatNode::operator Node()
 */
