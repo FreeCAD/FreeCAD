@@ -8180,6 +8180,16 @@ void processEdge(const TopoDS_Edge& edge,
         geos.emplace_back(projectLine(curve, gPlane, invPlm));
     }
     else if (curve.GetType() == GeomAbs_Circle) {
+        auto isFullCircle = [](const BRepAdaptor_Curve& curve) {
+            double f = curve.FirstParameter();
+            double l = curve.LastParameter();
+            gp_Circ c;
+            c.SetRadius(1.0);
+            // for a full circle this is ~ 0.0
+            double diff = std::abs(l - f - c.Length());
+            return diff < gp::Resolution();
+        };
+
         gp_Dir vec1 = sketchPlane.Axis().Direction();
         gp_Dir vec2 = curve.Circle().Axis().Direction();
 
@@ -8365,7 +8375,7 @@ void processEdge(const TopoDS_Edge& edge,
 
                 Handle(Geom_Ellipse) projCurve = new Geom_Ellipse(elipsDest);
 
-                if (beg.SquareDistance(end) < Precision::Confusion()) {
+                if (isFullCircle(curve)) {
                     // projection is an ellipse
                     auto* ellipse = new Part::GeomEllipse();
                     ellipse->setHandle(projCurve);
