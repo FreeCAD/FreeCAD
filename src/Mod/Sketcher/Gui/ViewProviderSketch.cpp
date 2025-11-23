@@ -3366,6 +3366,9 @@ bool ViewProviderSketch::setEdit(int ModNum)
     addNodeToRoot(gridnode);
     setGridEnabled(true);
 
+    // update the documents stored transform
+    getDocument()->setEditingTransform(plm.toMatrix());
+
     // create the container for the additional edit data
     assert(!isInEditMode());
     preselection.reset();
