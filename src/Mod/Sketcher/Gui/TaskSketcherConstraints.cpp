@@ -822,6 +822,7 @@ TaskSketcherConstraints::TaskSketcherConstraints(ViewProviderSketch* sketchView)
     , specialFilterMode{SpecialFilterType::None}
     , sketchView(sketchView)
     , inEditMode(false)
+    , updateListPending(false)
     , ui(new Ui_TaskSketcherConstraints)
 {
     // we need a separate container widget to add all controls to
@@ -1304,76 +1305,88 @@ void TaskSketcherConstraints::onSelectionChanged(const Gui::SelectionChanges& ms
         ui->listWidgetConstraints->clearSelection();
         ui->listWidgetConstraints->blockSignals(tmpBlock);
 
-        if (specialFilterMode == SpecialFilterType::Selected) {
-            updateSelectionFilter();
+        if (ui->filterBox->checkState() == Qt::Checked) {
+            if (specialFilterMode == SpecialFilterType::Selected) {
+                updateSelectionFilter();
 
-            bool block = this->blockSelection(true);// avoid to be notified by itself
-            updateList();
-            this->blockSelection(block);
+                bool block = this->blockSelection(true);// avoid to be notified by itself
+                updateList();
+                this->blockSelection(block);
+            }
+            else if (specialFilterMode == SpecialFilterType::Associated) {
+                associatedConstraintsFilter.clear();
+                updateList();
+            }
         }
-        else if (specialFilterMode == SpecialFilterType::Associated) {
-            associatedConstraintsFilter.clear();
-            updateList();
-        }
+        return;
     }
-    else if (msg.Type == Gui::SelectionChanges::AddSelection
-             || msg.Type == Gui::SelectionChanges::RmvSelection) {
-        bool select = (msg.Type == Gui::SelectionChanges::AddSelection);
-        // is it this object??
-        if (strcmp(msg.pDocName, sketchView->getSketchObject()->getDocument()->getName()) == 0
-            && strcmp(msg.pObjectName, sketchView->getSketchObject()->getNameInDocument()) == 0) {
-            if (msg.pSubName) {
-                QRegularExpression rx(QStringLiteral("^Constraint(\\d+)$"));
-                QRegularExpressionMatch match;
-                QString expr = QString::fromLatin1(msg.pSubName);
-                boost::ignore_unused(expr.indexOf(rx, 0, &match));
-                if (match.hasMatch()) {// is a constraint
-                    bool ok;
-                    int ConstrId = match.captured(1).toInt(&ok) - 1;
-                    if (ok) {
-                        int countItems = ui->listWidgetConstraints->count();
-                        for (int i = 0; i < countItems; i++) {
-                            ConstraintItem* item =
-                                static_cast<ConstraintItem*>(ui->listWidgetConstraints->item(i));
-                            if (item->ConstraintNbr == ConstrId) {
-                                auto tmpBlock = ui->listWidgetConstraints->blockSignals(true);
-                                item->setSelected(select);
-                                ui->listWidgetConstraints->blockSignals(tmpBlock);
-                                SketcherGui::scrollTo(ui->listWidgetConstraints, i, select);
-                                break;
-                            }
-                        }
 
-                        if (specialFilterMode == SpecialFilterType::Selected) {
-                            updateSelectionFilter();
-                            bool block =
-                                this->blockSelection(true);// avoid to be notified by itself
-                            updateList();
-                            this->blockSelection(block);
-                        }
-                    }
-                }
-                else if (specialFilterMode == SpecialFilterType::Associated) {// is NOT a constraint
-                    int geoid = Sketcher::GeoEnum::GeoUndef;
-                    Sketcher::PointPos pointpos = Sketcher::PointPos::none;
-                    getSelectionGeoId(expr, geoid, pointpos);
+    bool select = msg.Type == Gui::SelectionChanges::AddSelection;
+    if (!select && msg.Type != Gui::SelectionChanges::RmvSelection) {
+        return;
+    }
 
-                    if (geoid != Sketcher::GeoEnum::GeoUndef
-                        && pointpos == Sketcher::PointPos::none) {
-                        // It is not possible to update on single addition/removal of a geometric
-                        // element, as one removal may imply removing a constraint that should be
-                        // added by a different element that is still selected. The necessary checks
-                        // outweigh a full rebuild of the filter.
-                        updateAssociatedConstraintsFilter();
-                        updateList();
-                    }
+    // is it this object??
+    if (strcmp(msg.pDocName, sketchView->getSketchObject()->getDocument()->getName()) != 0
+        || strcmp(msg.pObjectName, sketchView->getSketchObject()->getNameInDocument()) != 0
+        || !msg.pSubName) {
+        return;
+    }
+
+    QRegularExpression rx(QStringLiteral("^Constraint(\\d+)$"));
+    QRegularExpressionMatch match;
+    QString expr = QString::fromLatin1(msg.pSubName);
+    boost::ignore_unused(expr.indexOf(rx, 0, &match));
+    if (match.hasMatch()) {// is a constraint
+        bool ok;
+        int ConstrId = match.captured(1).toInt(&ok) - 1;
+        if (ok) {
+            int countItems = ui->listWidgetConstraints->count();
+            for (int i = 0; i < countItems; i++) {
+                ConstraintItem* item =
+                    static_cast<ConstraintItem*>(ui->listWidgetConstraints->item(i));
+                if (item->ConstraintNbr == ConstrId) {
+                    auto tmpBlock = ui->listWidgetConstraints->blockSignals(true);
+                    item->setSelected(select);
+                    ui->listWidgetConstraints->blockSignals(tmpBlock);
+                    SketcherGui::scrollTo(ui->listWidgetConstraints, i, select);
+                    break;
                 }
+            }
+
+            if (specialFilterMode == SpecialFilterType::Selected) {
+                updateSelectionFilter();
+                bool block =
+                    this->blockSelection(true);// avoid to be notified by itself
+                updateList();
+                this->blockSelection(block);
             }
         }
     }
-    else if (msg.Type == Gui::SelectionChanges::SetSelection) {
-        // do nothing here
+    else if (ui->filterBox->checkState() == Qt::Checked && specialFilterMode == SpecialFilterType::Associated) {
+        int geoid = Sketcher::GeoEnum::GeoUndef;
+        Sketcher::PointPos pointpos = Sketcher::PointPos::none;
+        getSelectionGeoId(expr, geoid, pointpos);
+
+        if (geoid != Sketcher::GeoEnum::GeoUndef
+            && pointpos == Sketcher::PointPos::none) {
+            // It is not possible to update on single addition/removal of a geometric
+            // element, as one removal may imply removing a constraint that should be
+            // added by a different element that is still selected. The necessary checks
+            // outweigh a full rebuild of the filter.
+            if (!updateListPending) {
+                updateListPending = true;
+                QTimer::singleShot(0, this, &TaskSketcherConstraints::deferredUpdateList);
+            }
+        }
     }
+}
+
+void TaskSketcherConstraints::deferredUpdateList()
+{
+    updateAssociatedConstraintsFilter();
+    updateList();
+    updateListPending = false;
 }
 
 void TaskSketcherConstraints::OnChange(Base::Subject<const char*>& rCaller, const char* rcReason)
@@ -1554,26 +1567,13 @@ bool TaskSketcherConstraints::doSetVisible(const std::vector<int>& constrIds, bo
 
     std::string constrIdList = stream.str();
 
-    // Do not create a command if there is already a command (ea Dimension tool) running
-    bool createCommand = !Gui::Command::hasPendingCommand();
-    if (createCommand) {
-        Gui::Command::openCommand(
-                QT_TRANSLATE_NOOP("Command", "Update constraint's visibility"));
-    }
     try {
         Gui::cmdAppObjectArgs(sketch,
             "setVisibility(%s, %s)",
             constrIdList,
             isVisible ? "True" : "False");
-        if (createCommand) {
-            Gui::Command::commitCommand();
-        }
     }
     catch (const Base::Exception& e) {
-        if (createCommand) {
-            Gui::Command::abortCommand();
-        }
-
         Gui::TranslatedUserError(
             sketch, tr("Error"), tr("Impossible to update visibility:") + QLatin1String(" ") + QLatin1String(e.what()));
         return false;

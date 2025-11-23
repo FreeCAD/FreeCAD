@@ -57,7 +57,7 @@
     <message>
       <location filename="../../Manipulator.cpp" line="47"/>
       <source>Displays the start page</source>
-      <translation>Отображает стартовую страницу</translation>
+      <translation>Отображать начальную страницу</translation>
     </message>
   </context>
   <context>
@@ -75,12 +75,12 @@
     <message>
       <location filename="../../StartView.cpp" line="221"/>
       <source>2D Draft</source>
-      <translation>2D Набросок</translation>
+      <translation>Двухмерный набросок</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="222"/>
       <source>Creates a 2D Draft document</source>
-      <translation>Создаёт 2D документ верстака Набросок</translation>
+      <translation>Создать двухмерный документ верстака Набросок</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="225"/>
@@ -90,12 +90,12 @@
     <message>
       <location filename="../../StartView.cpp" line="205"/>
       <source>Empty File</source>
-      <translation>Новый пустой файл</translation>
+      <translation>Пустой файл</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="206"/>
       <source>Creates a new empty FreeCAD file</source>
-      <translation>Создаёт новый пустой файл FreeCAD</translation>
+      <translation>Создать новый пустой файл FreeCAD</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="210"/>
@@ -105,17 +105,17 @@
     <message>
       <location filename="../../StartView.cpp" line="213"/>
       <source>Parametric Body</source>
-      <translation>Параметрическое тело</translation>
+      <translation>Параметрическая деталь</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="214"/>
       <source>Creates a body with the Part Design workbench</source>
-      <translation>Создаёт тело с верстаком Проектная Деталь</translation>
+      <translation>Создать деталь в верстаке Проектирование детали</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="218"/>
       <source>Creates an assembly project</source>
-      <translation>Создаёт проект сборки деталей</translation>
+      <translation>Создать проект сборки деталей</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="226"/>
@@ -212,7 +212,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="20"/>
       <source>Contents</source>
-      <translation>Содержание</translation>
+      <translation>Содержимое</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="26"/>
@@ -223,7 +223,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="33"/>
       <source>Show examples folder contents</source>
-      <translation>Показать содержимое папки примеров </translation>
+      <translation>Показывать содержимое папки примеров</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="40"/>
@@ -242,12 +242,12 @@ Multiple folders can be added using ";;" to separate paths.</source>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="64"/>
       <source>Shows example files on the start page</source>
-      <translation>Показывает файлы с примерами на стартовой странице</translation>
+      <translation>Показывать файлы с примерами на начальной странице</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="114"/>
       <source>The start page is closed automatically when FreeCAD launches</source>
-      <translation>Стартовая страница будет закрыта автоматически при запуске FreeCAD</translation>
+      <translation>Начальная страница будет автоматически закрыта при запуске FreeCAD</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="108"/>
@@ -257,7 +257,7 @@ Multiple folders can be added using ";;" to separate paths.</source>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="133"/>
       <source>Close start page after loading</source>
-      <translation>Закрыть стартовую страницу после загрузки </translation>
+      <translation>Закрыть начальную страницу после загрузки</translation>
     </message>
   </context>
   <context>

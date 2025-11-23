@@ -26,21 +26,28 @@
 
 #include <QDialog>
 
-namespace App {
+namespace App
+{
 class Document;
 }
 
-namespace Gui {
+namespace Gui
+{
 
-namespace Dialog {
+namespace Dialog
+{
 
 class Ui_DlgProjectInformation;
-class DlgProjectInformationImp : public QDialog
+class DlgProjectInformationImp: public QDialog
 {
     Q_OBJECT
 
 public:
-    DlgProjectInformationImp(App::Document* doc, QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    DlgProjectInformationImp(
+        App::Document* doc,
+        QWidget* parent = nullptr,
+        Qt::WindowFlags fl = Qt::WindowFlags()
+    );
     ~DlgProjectInformationImp() override;
     void accept() override;
 
@@ -53,9 +60,8 @@ private:
     Ui_DlgProjectInformation* ui;
 };
 
-} // namespace Dialog
-} // namespace Gui
+}  // namespace Dialog
+}  // namespace Gui
 
 
-#endif // GUI_DIALOG_DLGPROJECTINFORMATIONIMP_H
-
+#endif  // GUI_DIALOG_DLGPROJECTINFORMATIONIMP_H

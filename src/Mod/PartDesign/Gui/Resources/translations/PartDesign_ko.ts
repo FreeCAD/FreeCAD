@@ -203,17 +203,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="2315"/>
+      <location filename="../../Command.cpp" line="2317"/>
       <source>PartDesign</source>
       <translation>단품설계</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2316"/>
+      <location filename="../../Command.cpp" line="2318"/>
       <source>Boolean Operation</source>
       <translation>부울 작업</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2317"/>
+      <location filename="../../Command.cpp" line="2319"/>
       <source>Applies boolean operations with the selected objects and the active body</source>
       <translation>선택한 대상체들에 부울 연산을 적용하고 몸틍을 활성화 합니다</translation>
     </message>
@@ -923,7 +923,7 @@ so that self intersection is avoided.</source>
       <translation>새 스케치</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2333"/>
+      <location filename="../../Command.cpp" line="2335"/>
       <source>Create Boolean</source>
       <translation>부울 생성</translation>
     </message>
@@ -1669,13 +1669,13 @@ Please adjust the parameters and try again.</translation>
   <context>
     <name>PartDesignGui::TaskExtrudeParameters</name>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1355"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1357"/>
       <source>No face selected</source>
       <translation>선택된 면 없음</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="161"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1135"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="159"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1137"/>
       <source>Face</source>
       <translation>면</translation>
     </message>
@@ -1685,63 +1685,63 @@ Please adjust the parameters and try again.</translation>
       <translation>제거</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="349"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="345"/>
       <source>Preview</source>
       <translation>미리보기</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="353"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="349"/>
       <source>Select Faces</source>
       <translation>면 선택</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="688"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="684"/>
       <source>Select reference…</source>
       <translation>참조 선택…</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="596"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="592"/>
       <source>No shape selected</source>
       <translation>선택된 형상이 없습니다.</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="681"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="677"/>
       <source>Sketch normal</source>
       <translation>스케치면에 수직</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="684"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="680"/>
       <source>Face normal</source>
       <translation>면에 수직</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="692"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="697"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="688"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="693"/>
       <source>Custom direction</source>
       <translation>사용자 정의 방향</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1081"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1083"/>
       <source>Click on a shape in the model</source>
       <translation>모형에서 형상을 클릭하세요</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1342"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1344"/>
       <source>One sided</source>
       <translation type="unfinished">One sided</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1343"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1345"/>
       <source>Two sided</source>
       <translation type="unfinished">Two sided</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1344"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1346"/>
       <source>Symmetric</source>
       <translation>대칭</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1350"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1352"/>
       <source>Click on a face in the model</source>
       <translation>모형의 면을 클릭하세요</translation>
     </message>
@@ -2027,130 +2027,130 @@ Please adjust the parameters and try again.</translation>
   <context>
     <name>PartDesignGui::TaskHoleParameters</name>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="52"/>
+      <location filename="../../TaskHoleParameters.cpp" line="55"/>
       <source>Counterbore</source>
       <translation>카운터보어(Counterbore)</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="53"/>
+      <location filename="../../TaskHoleParameters.cpp" line="56"/>
       <source>Countersink</source>
       <translation>접시형 구멍</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="54"/>
+      <location filename="../../TaskHoleParameters.cpp" line="57"/>
       <source>Counterdrill</source>
       <translation>카운터드릴</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="58"/>
+      <location filename="../../TaskHoleParameters.cpp" line="61"/>
       <source>Hole Parameters</source>
       <translation>구멍 매개변수</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="67"/>
+      <location filename="../../TaskHoleParameters.cpp" line="70"/>
       <source>None</source>
       <translation>없음</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="68"/>
+      <location filename="../../TaskHoleParameters.cpp" line="71"/>
       <source>ISO metric regular</source>
       <translation type="unfinished">ISO metric regular</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="69"/>
+      <location filename="../../TaskHoleParameters.cpp" line="72"/>
       <source>ISO metric fine</source>
       <translation type="unfinished">ISO metric fine</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="70"/>
+      <location filename="../../TaskHoleParameters.cpp" line="73"/>
       <source>UTS coarse</source>
       <translation type="unfinished">UTS coarse</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="71"/>
+      <location filename="../../TaskHoleParameters.cpp" line="74"/>
       <source>UTS fine</source>
       <translation type="unfinished">UTS fine</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="72"/>
+      <location filename="../../TaskHoleParameters.cpp" line="75"/>
       <source>UTS extra fine</source>
       <translation type="unfinished">UTS extra fine</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="73"/>
+      <location filename="../../TaskHoleParameters.cpp" line="76"/>
       <source>ANSI pipes</source>
       <translation type="unfinished">ANSI pipes</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="74"/>
+      <location filename="../../TaskHoleParameters.cpp" line="77"/>
       <source>ISO/BSP pipes</source>
       <translation type="unfinished">ISO/BSP pipes</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="75"/>
+      <location filename="../../TaskHoleParameters.cpp" line="78"/>
       <source>BSW whitworth</source>
       <translation type="unfinished">BSW whitworth</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="76"/>
+      <location filename="../../TaskHoleParameters.cpp" line="79"/>
       <source>BSF whitworth fine</source>
       <translation type="unfinished">BSF whitworth fine</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="77"/>
+      <location filename="../../TaskHoleParameters.cpp" line="80"/>
       <source>ISO tyre valves</source>
       <translation type="unfinished">ISO tyre valves</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="671"/>
+      <location filename="../../TaskHoleParameters.cpp" line="674"/>
       <source>Medium</source>
       <comment>Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible</comment>
       <translation type="unfinished">Medium</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="672"/>
+      <location filename="../../TaskHoleParameters.cpp" line="675"/>
       <source>Fine</source>
       <comment>Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible</comment>
       <translation>세밀한</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="673"/>
+      <location filename="../../TaskHoleParameters.cpp" line="676"/>
       <source>Coarse</source>
       <comment>Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible</comment>
       <translation>거친</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="676"/>
+      <location filename="../../TaskHoleParameters.cpp" line="679"/>
       <source>Normal</source>
       <comment>Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible</comment>
       <translation>일반</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="677"/>
+      <location filename="../../TaskHoleParameters.cpp" line="680"/>
       <source>Close</source>
       <comment>Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible</comment>
       <translation>닫기</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="678"/>
+      <location filename="../../TaskHoleParameters.cpp" line="681"/>
       <source>Loose</source>
       <comment>Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible</comment>
       <translation type="unfinished">Loose</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="681"/>
+      <location filename="../../TaskHoleParameters.cpp" line="684"/>
       <source>Normal</source>
       <comment>Distance between thread crest and hole wall</comment>
       <translation>일반</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="682"/>
+      <location filename="../../TaskHoleParameters.cpp" line="685"/>
       <source>Close</source>
       <comment>Distance between thread crest and hole wall</comment>
       <translation>닫기</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="683"/>
+      <location filename="../../TaskHoleParameters.cpp" line="686"/>
       <source>Wide</source>
       <comment>Distance between thread crest and hole wall</comment>
       <translation>넓다</translation>
@@ -2382,40 +2382,35 @@ Please adjust the parameters and try again.</translation>
       <translation>방향</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="527"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="541"/>
       <source>Set a direction or select an edge
 from the model as reference</source>
       <translation>방향을 설정하거나 참조로 모형의 모서리를 선택하시오</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="532"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="546"/>
       <source>Sketch normal</source>
       <translation>스케치면에 수직</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="542"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="556"/>
       <source>Custom direction</source>
       <translation>사용자 정의 방향</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="552"/>
-      <source>Show direction</source>
-      <translation>방향 보기</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="562"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="569"/>
       <source>Use custom vector for pad direction, otherwise
 the sketch plane's normal vector will be used</source>
       <translation>깔판의 생성방향으로 사용자정의 향량을 사용하세요, 그렇지 않으면 스케치 평면에 법선 향량이 사용될 것입니다</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="671"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="521"/>
       <source>If unchecked, the length will be
 measured along the specified direction</source>
       <translation>체크를 해제하면, 지정된 방향을 따라 길이가 측정됩니다.</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="675"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="525"/>
       <source>Length along sketch normal</source>
       <translation>스케치의 법선을 따른 길이</translation>
     </message>
@@ -2431,42 +2426,42 @@ measured along the specified direction</source>
       <translation>반전</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="520"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="534"/>
       <source>Direction/edge</source>
       <translation>방향/모서리</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="537"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="551"/>
       <source>Select reference…</source>
       <translation>참조 선택…</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="575"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="582"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="582"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="589"/>
       <source>X-component of direction vector</source>
       <translation>향량의 X성분</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="604"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="611"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="611"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="618"/>
       <source>Y-component of direction vector</source>
       <translation>향량의 Y성분</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="633"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="640"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="640"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="647"/>
       <source>Z-component of direction vector</source>
       <translation>향량의 Z성분</translation>
     </message>
@@ -2505,7 +2500,7 @@ measured along the specified direction</source>
       <translation>형상의 모든 면을 선택합니다</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="685"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="678"/>
       <source>Recompute on change</source>
       <translation>변경시 재계산</translation>
     </message>
@@ -3187,11 +3182,11 @@ measured along the specified direction</source>
       <translation>이 문서에는 유효한 평면이 없습니다.</translation>
     </message>
     <message>
+      <location filename="../../ViewProviderDatum.cpp" line="248"/>
       <location filename="../../ViewProvider.cpp" line="134"/>
-      <location filename="../../SketchWorkflow.cpp" line="704"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="94"/>
       <location filename="../../Command.cpp" line="1020"/>
-      <location filename="../../ViewProviderDatum.cpp" line="248"/>
+      <location filename="../../SketchWorkflow.cpp" line="704"/>
       <source>A dialog is already open in the task panel</source>
       <translation>작업창에 이미 대화상자가 열려 있습니다.</translation>
     </message>
@@ -3231,11 +3226,11 @@ measured along the specified direction</source>
       <translation>이 문서에는 사용할 수 있는 스케치가 없습니다.</translation>
     </message>
     <message>
+      <location filename="../../ViewProviderDatum.cpp" line="249"/>
       <location filename="../../ViewProvider.cpp" line="135"/>
-      <location filename="../../SketchWorkflow.cpp" line="705"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="95"/>
       <location filename="../../Command.cpp" line="1021"/>
-      <location filename="../../ViewProviderDatum.cpp" line="249"/>
+      <location filename="../../SketchWorkflow.cpp" line="705"/>
       <source>Close this dialog?</source>
       <translation>이 대화창을 닫을까요?</translation>
     </message>
@@ -3529,10 +3524,10 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
       <translation>이 도형특징을 사용하기 위해서는, 현재 문서에 있는 부품에 속해야 합니다.</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="91"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="208"/>
       <location filename="../../ViewProviderDressUp.cpp" line="63"/>
       <location filename="../../ViewProviderTransformed.cpp" line="64"/>
+      <location filename="../../ViewProvider.cpp" line="91"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="208"/>
       <source>Edit %1</source>
       <translation>수정</translation>
     </message>
@@ -4473,20 +4468,20 @@ over 90: larger hole radius at the bottom</translation>
       <translation>기초 형상이 비어 있습니다</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2194"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="116"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="690"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="703"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="713"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="171"/>
+      <location filename="../../../App/FeatureDraft.cpp" line="293"/>
       <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="231"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="116"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2194"/>
       <location filename="../../../App/FeatureLoft.cpp" line="272"/>
       <location filename="../../../App/FeatureLoft.cpp" line="307"/>
       <location filename="../../../App/FeaturePipe.cpp" line="400"/>
       <location filename="../../../App/FeaturePipe.cpp" line="439"/>
-      <location filename="../../../App/FeatureChamfer.cpp" line="171"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="234"/>
-      <location filename="../../../App/FeatureDraft.cpp" line="293"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="231"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="690"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="703"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="713"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation type="unfinished">Result has multiple solids: enable 'Allow Compound' in the active body.</translation>
     </message>
@@ -4522,10 +4517,10 @@ over 90: larger hole radius at the bottom</translation>
       <translation type="unfinished">Resulting fused extrusion is null.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="682"/>
       <location filename="../../../App/FeatureLoft.cpp" line="301"/>
       <location filename="../../../App/FeaturePipe.cpp" line="433"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="127"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="682"/>
       <source>Resulting shape is not a solid</source>
       <translation>결과 형상이 고체가 아닙니다</translation>
     </message>
@@ -4535,8 +4530,8 @@ over 90: larger hole radius at the bottom</translation>
       <translation>모따기 실패</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureFillet.cpp" line="99"/>
       <location filename="../../../App/FeatureDraft.cpp" line="289"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="99"/>
       <source>Resulting shape is null</source>
       <translation>결과 형상이 비어 있습니다</translation>
     </message>
@@ -4601,9 +4596,9 @@ over 90: larger hole radius at the bottom</translation>
       <translation>방향이 스케치의 법선 향량에 직교하므로 만들지 못했습니다.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="446"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="138"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="141"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="138"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="446"/>
       <source>Creating a face from sketch failed</source>
       <translation>스케치로부터 면생성 실패</translation>
     </message>
@@ -4613,20 +4608,20 @@ over 90: larger hole radius at the bottom</translation>
       <translation type="unfinished">Angles of groove nullify each other</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureGroove.cpp" line="154"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="157"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="154"/>
       <source>Revolve axis intersects the sketch</source>
       <translation>공전축이 스케치와 교차합니다</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureGroove.cpp" line="238"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="241"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="238"/>
       <source>Could not revolve the sketch!</source>
       <translation>스케치를 공전시킬 수 없음!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureGroove.cpp" line="250"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="253"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="250"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>스케치로부터 면을 생성할 수 없습니다.
@@ -5078,8 +5073,8 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <translation type="unfinished">Angles of revolution nullify each other</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureGroove.cpp" line="131"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="134"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="131"/>
       <source>Reference axis is invalid</source>
       <translation>참조 축이 잘못되었습니다</translation>
     </message>
@@ -5192,12 +5187,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>CmdPartDesignCompDatums</name>
     <message>
-      <location filename="../../Command.cpp" line="2378"/>
+      <location filename="../../Command.cpp" line="2380"/>
       <source>Create Datum</source>
       <translation>작업기준 생성</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2379"/>
+      <location filename="../../Command.cpp" line="2381"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>작업기준 대상체 또는 지역 좌표계 생성</translation>
     </message>
@@ -5205,12 +5200,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>CmdPartDesignCompSketches</name>
     <message>
-      <location filename="../../Command.cpp" line="2413"/>
+      <location filename="../../Command.cpp" line="2415"/>
       <source>Create Datum</source>
       <translation>작업기준 생성</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2414"/>
+      <location filename="../../Command.cpp" line="2416"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>작업기준 대상체 또는 지역 좌표계 생성</translation>
     </message>

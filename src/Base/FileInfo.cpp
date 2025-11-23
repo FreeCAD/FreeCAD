@@ -32,9 +32,9 @@
 #include <iostream>
 #include <system_error>
 #ifdef FC_OS_WIN32
-#include <Windows.h>
+# include <Windows.h>
 #else
-#include <unistd.h>
+# include <unistd.h>
 #endif
 
 #include "FileInfo.h"
@@ -285,9 +285,7 @@ bool FileInfo::hasExtension(const char* Ext) const
 
 bool FileInfo::hasExtension(std::initializer_list<const char*> Exts) const
 {
-    return std::ranges::any_of(Exts, [this](const char* ext) {
-        return hasExtension(ext);
-    });
+    return std::ranges::any_of(Exts, [this](const char* ext) { return hasExtension(ext); });
 }
 
 bool FileInfo::exists() const
@@ -338,6 +336,44 @@ bool FileInfo::isWritable() const
     if (fs::is_directory(path)) {
         return directoryIsWritable(path);
     }
+#ifdef FC_OS_WIN32
+    // convert filename from UTF-8 to windows WSTRING
+    std::wstring fileNameWstring = toStdWString();
+    // requires import of <windows.h>
+    DWORD attributes = GetFileAttributes(fileNameWstring.c_str());
+    if (attributes == INVALID_FILE_ATTRIBUTES) {
+        // Log the error?
+        std::clog << "GetFileAttributes failed for file: " << FileName << '\n';
+        // usually indicates some kind of network file issue, so the file is probably not writable
+        return false;
+    }
+    if ((attributes & FILE_ATTRIBUTE_READONLY) != 0) {
+        return false;
+    }
+    // TEST if file is truly writable, because windows ACL does not map well to POSIX perms,
+    //  and there are other potential blockers (app or shared file locks, etc)
+    HANDLE hFile = CreateFileW(
+        fileNameWstring.c_str(),
+        GENERIC_WRITE,
+        0,  // ----> no sharing: fail if anyone else has it open
+        nullptr,
+        OPEN_EXISTING,
+        FILE_ATTRIBUTE_NORMAL,
+        nullptr
+    );
+
+    if (hFile == INVALID_HANDLE_VALUE) {
+        DWORD err = GetLastError();
+        if (err == ERROR_SHARING_VIOLATION || err == ERROR_LOCK_VIOLATION) {
+            return false;
+        }
+        return false;
+    }
+    if (!CloseHandle(hFile)) {
+        std::clog << "CloseHandle failed for file: " << FileName
+                  << " while checking for write access." << '\n';
+    }
+#endif
     fs::file_status stat = fs::status(path);
     fs::perms perms = stat.permissions();
     return (perms & fs::perms::owner_write) == fs::perms::owner_write;
@@ -404,8 +440,7 @@ template<typename TP>
 std::time_t to_time_t(TP tp)
 {
     using namespace std::chrono;
-    auto sctp =
-        time_point_cast<system_clock::duration>(tp - TP::clock::now() + system_clock::now());
+    auto sctp = time_point_cast<system_clock::duration>(tp - TP::clock::now() + system_clock::now());
     return system_clock::to_time_t(sctp);
 }
 

@@ -168,7 +168,6 @@ void QGIView::alignTo(QGraphicsItem*item, const QString &alignment)
 
 QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
 {
-    //    Base::Console().message("QGIV::itemChange(%d)\n", change);
     if(change == ItemPositionChange && scene()) {
         QPointF newPos = value.toPointF();            //position within parent!
         TechDraw::DrawView* viewObj = getViewObject();
@@ -196,13 +195,10 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
         return newPos;
     }
 
+    // wf: why scene()? because if our selected state has changed because we have been removed from
+    //     the scene, we don't do anything except wait to be deleted.
     if (change == ItemSelectedHasChanged && scene()) {
-        std::vector<Gui::SelectionObject> currentSelection = Gui::Selection().getSelectionEx();
-        bool isViewObjectSelected = Gui::Selection().isSelected(getViewObject());
-        bool hasSelectedSubElements =
-            !DrawGuiUtil::getSubsForSelectedObject(currentSelection, getViewObject()).empty();
-
-        if (isViewObjectSelected || hasSelectedSubElements) {
+        if (isSelected() || hasSelectedChildren(this)) {
             m_colCurrent = getSelectColor();
             m_border->show();
             m_label->show();
@@ -220,7 +216,6 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
             }
         }
         drawBorder();
-        update();
     }
 
     return QGraphicsItemGroup::itemChange(change, value);
@@ -537,7 +532,6 @@ void QGIView::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
     m_lock->setVisible(getViewObject()->isLocked() && getViewObject()->showLock());
 
     drawBorder();
-    update();
 }
 
 
@@ -560,13 +554,11 @@ void QGIView::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
     }
 
     drawBorder();
-    update();
 }
 
 //sets position in /Gui(graphics), not /App
 void QGIView::setPosition(qreal xPos, qreal yPos)
 {
-    //    Base::Console().message("QGIV::setPosition(%.3f, %.3f) (gui)\n", x, y);
     double newX = xPos;
     double newY = -yPos;
     double oldX = pos().x();
@@ -595,8 +587,6 @@ QGIViewClip* QGIView::getClipGroup()
 
 void QGIView::updateView(bool forceUpdate)
 {
-    //    Base::Console().message("QGIV::updateView() - %s\n", getViewObject()->getNameInDocument());
-
             //allow/prevent dragging
     if (getViewObject()->isLocked()) {
         setFlag(QGraphicsItem::ItemIsMovable, false);
@@ -678,7 +668,6 @@ void QGIView::toggleCache(bool state)
 
 void QGIView::draw()
 {
-    //    Base::Console().message("QGIV::draw()\n");
     double xFeat, yFeat;
     if (getViewObject()) {
         xFeat = Rez::guiX(getViewObject()->X.getValue());
@@ -714,23 +703,27 @@ void QGIView::layoutDecorations(const QRectF& contentArea,
                               QPointF& outLabelPos,
                               QPointF& outLockPos) const
 {
-    const qreal padding = 100.0;
+    constexpr double padding{10};
     QRectF paddedContentArea = contentArea.adjusted(-padding, -padding, padding, padding);
 
     double frameWidth = qMax(paddedContentArea.width(), labelRect.width());
-    double frameHeight = paddedContentArea.height() + (captionRect.height() / 2) + labelRect.height();
+    double frameHeight = paddedContentArea.height();
 
     outFrameRect = QRectF(paddedContentArea.center().x() - (frameWidth / 2),
                           paddedContentArea.top(),
                           frameWidth,
-                          frameHeight);
+                          frameHeight).adjusted(-padding, - padding, padding, padding);
 
-    outLabelPos = QPointF(outFrameRect.center().x() - (labelRect.width() / 2),
-                          outFrameRect.bottom() - labelRect.height());
-
-    double view_width = getViewObject()->getRect().x();
-    outCaptionPos = QPointF(view_width - (captionRect.width() / 2),
-                            outLabelPos.y() - captionRect.height());
+    double firstTextVerticalPos = outFrameRect.bottom();
+    if (m_caption->toPlainText().isEmpty()) {
+        outLabelPos = QPointF(outFrameRect.center().x() - (labelRect.width() / 2),
+                              firstTextVerticalPos);
+    } else {
+        outCaptionPos = QPointF(outFrameRect.center().x() - (captionRect.width() / 2),
+                                firstTextVerticalPos);
+        outLabelPos = QPointF(outFrameRect.center().x() - (labelRect.width() / 2),
+                              firstTextVerticalPos + captionRect.height());
+    }
 
     outLockPos = QPointF(outFrameRect.left(), outFrameRect.bottom() - m_lockHeight);
 }
@@ -738,10 +731,10 @@ void QGIView::layoutDecorations(const QRectF& contentArea,
 
 void QGIView::drawBorder()
 {
-    // Base::Console().message("QGIV::drawBorder() - %s\n", getViewName());
     auto feat = getViewObject();
-    if (!feat)
+    if (!feat) {
         return;
+    }
 
     prepareCaption();
 
@@ -754,7 +747,7 @@ void QGIView::drawBorder()
     QString labelStr = QString::fromStdString(getViewObject()->Label.getValue());
     m_label->setPlainText(labelStr);
 
-    QRectF contentArea = customChildrenBoundingRect();
+    QRectF contentArea = frameRect();
     QRectF captionRect = m_caption->boundingRect();
     QRectF labelRect = m_label->boundingRect();
 
@@ -775,8 +768,7 @@ void QGIView::drawBorder()
     m_decorPen.setColor(m_colCurrent);
     m_border->setPen(m_decorPen);
     m_border->setPos(0., 0.);
-    // Adjust the final border to make space for the label
-    m_border->setRect(finalFrameRect.adjusted(-2, -2, 2, -labelRect.height() + 2));
+    m_border->setRect(finalFrameRect);
 
     prepareGeometryChange();
 }
@@ -792,6 +784,41 @@ void QGIView::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
     QGraphicsItemGroup::paint(painter, &myOption, widget);
 }
 
+
+//! this is a specialized version of customChildrenBoundingRect used only for calculating the size
+//! of the frame around selected views.
+//! we could reduce code duplication here, but would incur an execution time cost to make a second
+//! pass through the child items to add/subtract to the result of customChildrenBoundingRect.
+QRectF QGIView::frameRect() const
+{
+    QList<QGraphicsItem*> children = childItems();
+    // exceptions not to be included in determining the frame rectangle
+    QRectF result;
+    for (auto& child : children) {
+        if (!child->isVisible()) {
+            continue;
+        }
+        if (
+            // we only want the area defined by the edges
+            child->type() != UserType::QGIRichAnno &&
+            child->type() != UserType::QGEPath &&
+            child->type() != UserType::QGMText &&
+            child->type() != UserType::QGCustomBorder &&
+            child->type() != UserType::QGCustomLabel &&
+            child->type() != UserType::QGICaption &&
+            child->type() != UserType::QGIVertex &&
+            child->type() != UserType::QGICMark  &&
+            child->type() != UserType::QGIViewDimension &&
+            child->type() != UserType::QGIViewBalloon) {
+            QRectF childRect = mapFromItem(child, child->boundingRect()).boundingRect();
+            result = result.united(childRect);
+        }
+    }
+    return result;
+}
+
+//! this is the original customChildrenBoundingRect - used for calculating the bounding rect of
+//! all the items that have to move with this view.
 QRectF QGIView::customChildrenBoundingRect() const
 {
     QList<QGraphicsItem*> children = childItems();
@@ -808,7 +835,9 @@ QRectF QGIView::customChildrenBoundingRect() const
             child->type() != UserType::QGCustomBorder &&
             child->type() != UserType::QGCustomLabel &&
             child->type() != UserType::QGICaption &&
-            child->type() != UserType::QGIVertex &&
+            // we treat vertices as part of the boundingRect to allow loose vertices outside of the
+            // area defined by the edges as in frameRect()
+            // child->type() != UserType::QGIVertex &&
             child->type() != UserType::QGICMark) {
             QRectF childRect = mapFromItem(child, child->boundingRect()).boundingRect();
             result = result.united(childRect);
@@ -1023,6 +1052,20 @@ void QGIView::makeMark(double xPos, double yPos, QColor color)
     vItem->setZValue(ZVALUE::VERTEX);
 }
 
+//! true if parent has any children which are selected
+bool QGIView::hasSelectedChildren(QGIView* parent)
+{
+    QList<QGraphicsItem*> children = parent->childItems();
+
+    auto itMatch = std::find_if(children.begin(), children.end(),
+             [&](QGraphicsItem* child) {
+                return child->isSelected();
+             });
+
+    return itMatch != children.end();
+}
+
+
 void QGIView::makeMark(Base::Vector3d pos, QColor color)
 {
     makeMark(pos.x, pos.y, color);
@@ -1032,6 +1075,7 @@ void QGIView::makeMark(QPointF pos, QColor color)
 {
     makeMark(pos.x(), pos.y(), color);
 }
+
 
 //! Retrieves objects of type T with given indexes
 template <typename T>

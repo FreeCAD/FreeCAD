@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2014 Dan Falck <ddfalck@gmail.com>                      *
 # *                                                                         *
@@ -109,6 +111,17 @@ def loopdetect(obj, edge1, edge2):
     return loopwire.Edges
 
 
+def wiredetect(obj, edgeName):
+    """Returns all edges from wire which includes the edge."""
+    edge = obj.Shape.getElement(edgeName)
+    for wire in obj.Shape.Wires:
+        for e in wire.Edges:
+            if e.hashCode() == edge.hashCode():
+                return wire.Edges
+
+    return None
+
+
 def horizontalEdgeLoop(obj, edge, verbose=False):
     """Returns a loop of edges in the horizontal plane that includes one edge"""
 
@@ -194,7 +207,8 @@ def tangentEdgeLoop(obj, edge):
             # stop because next tangency edge was not found
             break
 
-    if loop:
+    if len(loop) > 1:
+        # only if found tangent edges
         return loop
 
     return None

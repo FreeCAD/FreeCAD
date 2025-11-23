@@ -21,7 +21,6 @@
  ***************************************************************************/
 
 
-
 #include <QApplication>
 #include <QPalette>
 
@@ -30,7 +29,8 @@
 
 using namespace Gui;
 
-namespace Gui {
+namespace Gui
+{
 class SyntaxHighlighterP
 {
 public:
@@ -49,10 +49,10 @@ public:
         cError.setRgb(255, 0, 0);
     }
 
-    QColor cNormalText, cComment, cBlockcomment, cLiteral, cNumber,
-    cOperator, cKeyword, cClassName, cDefineName, cOutput, cError;
+    QColor cNormalText, cComment, cBlockcomment, cLiteral, cNumber, cOperator, cKeyword, cClassName,
+        cDefineName, cOutput, cError;
 };
-} // namespace Gui
+}  // namespace Gui
 
 /**
  * Constructs a syntax highlighter.
@@ -77,89 +77,126 @@ void SyntaxHighlighter::setColor(const QString& type, const QColor& col)
 {
     // Rehighlighting is very expensive, thus avoid it if this color is already set
     QColor old = color(type);
-    if (!old.isValid())
-        return; // no such type
-    if (old == col)
+    if (!old.isValid()) {
+        return;  // no such type
+    }
+    if (old == col) {
         return;
-    if (type == QLatin1String("Text"))
+    }
+    if (type == QLatin1String("Text")) {
         d->cNormalText = col;
-    else if (type == QLatin1String("Comment"))
+    }
+    else if (type == QLatin1String("Comment")) {
         d->cComment = col;
-    else if (type == QLatin1String("Block comment"))
+    }
+    else if (type == QLatin1String("Block comment")) {
         d->cBlockcomment = col;
-    else if (type == QLatin1String("Number"))
+    }
+    else if (type == QLatin1String("Number")) {
         d->cNumber = col;
-    else if (type == QLatin1String("String"))
+    }
+    else if (type == QLatin1String("String")) {
         d->cLiteral = col;
-    else if (type == QLatin1String("Keyword"))
+    }
+    else if (type == QLatin1String("Keyword")) {
         d->cKeyword = col;
-    else if (type == QLatin1String("Class name"))
+    }
+    else if (type == QLatin1String("Class name")) {
         d->cClassName = col;
-    else if (type == QLatin1String("Define name"))
+    }
+    else if (type == QLatin1String("Define name")) {
         d->cDefineName = col;
-    else if (type == QLatin1String("Operator"))
+    }
+    else if (type == QLatin1String("Operator")) {
         d->cOperator = col;
-    else if (type == QLatin1String("Python output"))
+    }
+    else if (type == QLatin1String("Python output")) {
         d->cOutput = col;
-    else if (type == QLatin1String("Python error"))
+    }
+    else if (type == QLatin1String("Python error")) {
         d->cError = col;
+    }
     colorChanged(type, col);
 }
 
 QColor SyntaxHighlighter::color(const QString& type)
 {
-    if (type == QLatin1String("Text"))
+    if (type == QLatin1String("Text")) {
         return d->cNormalText;
-    else if (type == QLatin1String("Comment"))
+    }
+    else if (type == QLatin1String("Comment")) {
         return d->cComment;
-    else if (type == QLatin1String("Block comment"))
+    }
+    else if (type == QLatin1String("Block comment")) {
         return d->cBlockcomment;
-    else if (type == QLatin1String("Number"))
+    }
+    else if (type == QLatin1String("Number")) {
         return d->cNumber;
-    else if (type == QLatin1String("String"))
+    }
+    else if (type == QLatin1String("String")) {
         return d->cLiteral;
-    else if (type == QLatin1String("Keyword"))
+    }
+    else if (type == QLatin1String("Keyword")) {
         return d->cKeyword;
-    else if (type == QLatin1String("Class name"))
+    }
+    else if (type == QLatin1String("Class name")) {
         return d->cClassName;
-    else if (type == QLatin1String("Define name"))
+    }
+    else if (type == QLatin1String("Define name")) {
         return d->cDefineName;
-    else if (type == QLatin1String("Operator"))
+    }
+    else if (type == QLatin1String("Operator")) {
         return d->cOperator;
-    else if (type == QLatin1String("Python output"))
+    }
+    else if (type == QLatin1String("Python output")) {
         return d->cOutput;
-    else if (type == QLatin1String("Python error"))
+    }
+    else if (type == QLatin1String("Python error")) {
         return d->cError;
-    else
-        return {}; // not found
+    }
+    else {
+        return {};  // not found
+    }
 }
 
 QColor SyntaxHighlighter::colorByType(SyntaxHighlighter::TColor type)
 {
-    if (type == SyntaxHighlighter::Text)
+    if (type == SyntaxHighlighter::Text) {
         return d->cNormalText;
-    else if (type == SyntaxHighlighter::Comment)
+    }
+    else if (type == SyntaxHighlighter::Comment) {
         return d->cComment;
-    else if (type == SyntaxHighlighter::BlockComment)
+    }
+    else if (type == SyntaxHighlighter::BlockComment) {
         return d->cBlockcomment;
-    else if (type == SyntaxHighlighter::Number)
+    }
+    else if (type == SyntaxHighlighter::Number) {
         return d->cNumber;
-    else if (type == SyntaxHighlighter::String)
+    }
+    else if (type == SyntaxHighlighter::String) {
         return d->cLiteral;
-    else if (type == SyntaxHighlighter::Keyword)
+    }
+    else if (type == SyntaxHighlighter::Keyword) {
         return d->cKeyword;
-    else if (type == SyntaxHighlighter::Classname)
+    }
+    else if (type == SyntaxHighlighter::Classname) {
         return d->cClassName;
-    else if (type == SyntaxHighlighter::Defname)
+    }
+    else if (type == SyntaxHighlighter::Defname) {
         return d->cDefineName;
-    else if (type == SyntaxHighlighter::Operator)
+    }
+    else if (type == SyntaxHighlighter::Operator) {
         return d->cOperator;
-    else if (type == SyntaxHighlighter::Output)
+    }
+    else if (type == SyntaxHighlighter::Output) {
         return d->cOutput;
-    else if (type == SyntaxHighlighter::Error)
+    }
+    else if (type == SyntaxHighlighter::Error) {
         return d->cError;
-    else
-        return {}; // not found
+    }
+    else {
+        return {};  // not found
+    }
 }
 
 void SyntaxHighlighter::colorChanged(const QString& type, const QColor& col)

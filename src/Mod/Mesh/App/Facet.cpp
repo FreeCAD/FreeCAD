@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2007 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -29,9 +31,11 @@
 
 using namespace Mesh;
 
-Facet::Facet(const MeshCore::MeshFacet& face,  // NOLINT
-             const MeshObject* obj,
-             MeshCore::FacetIndex index)
+Facet::Facet(
+    const MeshCore::MeshFacet& face,  // NOLINT
+    const MeshObject* obj,
+    MeshCore::FacetIndex index
+)
     : Index(index)
     , Mesh(obj)
 {

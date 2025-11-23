@@ -1520,6 +1520,55 @@ class _Wall(ArchComponent.Component):
             return (base, extrusion, placement)
         return None
 
+    def handleComponentRemoval(self, obj, subobject):
+        """
+        Overrides the default component removal to implement smart debasing
+        when the Base object is being removed.
+        """
+        import Arch
+        from PySide import QtGui
+
+        # Check if the component being removed is this wall's Base
+        if hasattr(obj, "Base") and obj.Base == subobject:
+            if Arch.is_debasable(obj):
+                # This is a valid, single-line wall. Perform a clean debase.
+                Arch.debaseWall(obj)
+            else:
+                # This is a complex wall. Behavior depends on GUI availability.
+                if FreeCAD.GuiUp:
+                    # --- GUI Path: Warn the user and ask for confirmation. ---
+                    from PySide import QtGui
+
+                    msg_box = QtGui.QMessageBox()
+                    msg_box.setWindowTitle(translate("ArchComponent", "Unsupported Base"))
+                    msg_box.setText(
+                        translate(
+                            "ArchComponent", "The base of this wall is not a single straight line."
+                        )
+                    )
+                    msg_box.setInformativeText(
+                        translate(
+                            "ArchComponent",
+                            "Removing the base of this complex wall will alter its shape and reset its position.\n\n"
+                            "Do you want to proceed?",
+                        )
+                    )
+                    msg_box.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.Cancel)
+                    msg_box.setDefaultButton(QtGui.QMessageBox.Cancel)
+                    if msg_box.exec_() == QtGui.QMessageBox.Yes:
+                        # User confirmed, perform the standard removal
+                        super(_Wall, self).handleComponentRemoval(obj, subobject)
+                else:
+                    # --- Headless Path: Do not perform the destructive action. Print a warning. ---
+                    FreeCAD.Console.PrintWarning(
+                        f"Skipping removal of complex base for wall '{obj.Label}'. "
+                        "This interactive action is not supported in headless mode.\n"
+                    )
+        else:
+            # If it's not the base (e.g., an Addition), use the default behavior
+            # from the parent Component class.
+            super(_Wall, self).handleComponentRemoval(obj, subobject)
+
 
 class _ViewProviderWall(ArchComponent.ViewProviderComponent):
     """The view provider for the wall object.

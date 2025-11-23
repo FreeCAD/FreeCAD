@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
@@ -703,7 +705,7 @@ class ObjectJob:
                 "VertRapid",
                 "%s.%s"
                 % (
-                    self.setupSheet.expressionReference(),
+                    self.obj.SetupSheet.Proxy.expressionReference(),
                     PathSetupSheet.Template.VertRapid,
                 ),
             )
@@ -711,7 +713,7 @@ class ObjectJob:
                 "HorizRapid",
                 "%s.%s"
                 % (
-                    self.setupSheet.expressionReference(),
+                    self.obj.SetupSheet.Proxy.expressionReference(),
                     PathSetupSheet.Template.HorizRapid,
                 ),
             )

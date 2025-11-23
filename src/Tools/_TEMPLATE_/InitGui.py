@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # _TEMPLATE_ gui init module
 # (c) 2001 Juergen Riegel LGPL
 

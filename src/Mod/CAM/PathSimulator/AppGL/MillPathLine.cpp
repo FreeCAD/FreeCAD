@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 #include "MillPathLine.h"
 #include "OpenGlWrapper.h"
 #include "GlUtils.h"
@@ -28,18 +30,22 @@ void MillPathLine::GenerateModel()
 
     // vertex attribs
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0,
-                          3,
-                          GL_FLOAT,
-                          GL_FALSE,
-                          sizeof(MillPathPosition),
-                          (void*)offsetof(MillPathPosition, X));
+    glVertexAttribPointer(
+        0,
+        3,
+        GL_FLOAT,
+        GL_FALSE,
+        sizeof(MillPathPosition),
+        (void*)offsetof(MillPathPosition, X)
+    );
     glEnableVertexAttribArray(1);
-    glVertexAttribIPointer(1,
-                           1,
-                           GL_INT,
-                           sizeof(MillPathPosition),
-                           (void*)offsetof(MillPathPosition, SegmentId));
+    glVertexAttribIPointer(
+        1,
+        1,
+        GL_INT,
+        sizeof(MillPathPosition),
+        (void*)offsetof(MillPathPosition, SegmentId)
+    );
 
     // unbind and free
     glBindVertexArray(0);

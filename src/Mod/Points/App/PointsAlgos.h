@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -95,19 +97,23 @@ public:
     void read(const std::string& filename) override;
 
 private:
-    std::size_t readHeader(std::istream&,
-                           std::string& format,
-                           std::size_t& offset,
-                           std::vector<std::string>& fields,
-                           std::vector<std::string>& types,
-                           std::vector<int>& sizes);
+    std::size_t readHeader(
+        std::istream&,
+        std::string& format,
+        std::size_t& offset,
+        std::vector<std::string>& fields,
+        std::vector<std::string>& types,
+        std::vector<int>& sizes
+    );
     void readAscii(std::istream&, std::size_t offset, Eigen::MatrixXd& data);
-    void readBinary(bool swapByteOrder,
-                    std::istream&,
-                    std::size_t offset,
-                    const std::vector<std::string>& types,
-                    const std::vector<int>& sizes,
-                    Eigen::MatrixXd& data);
+    void readBinary(
+        bool swapByteOrder,
+        std::istream&,
+        std::size_t offset,
+        const std::vector<std::string>& types,
+        const std::vector<int>& sizes,
+        Eigen::MatrixXd& data
+    );
 };
 
 class PointsExport PcdReader: public Reader
@@ -117,17 +123,21 @@ public:
     void read(const std::string& filename) override;
 
 private:
-    std::size_t readHeader(std::istream&,
-                           std::string& format,
-                           std::vector<std::string>& fields,
-                           std::vector<std::string>& types,
-                           std::vector<int>& sizes);
+    std::size_t readHeader(
+        std::istream&,
+        std::string& format,
+        std::vector<std::string>& fields,
+        std::vector<std::string>& types,
+        std::vector<int>& sizes
+    );
     void readAscii(std::istream&, Eigen::MatrixXd& data);
-    void readBinary(bool transpose,
-                    std::istream&,
-                    const std::vector<std::string>& types,
-                    const std::vector<int>& sizes,
-                    Eigen::MatrixXd& data);
+    void readBinary(
+        bool transpose,
+        std::istream&,
+        const std::vector<std::string>& types,
+        const std::vector<int>& sizes,
+        Eigen::MatrixXd& data
+    );
 };
 
 class PointsExport E57Reader: public Reader

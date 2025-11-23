@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # -*- coding: utf8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2009 Yorik van Havre <yorik@uncreated.net>              *
@@ -434,7 +436,7 @@ class DraftToolBar:
             FreeCAD.activeDraftCommand, "featureName", None
         ):
             self.continueMode = params.get_param(
-                FreeCAD.activeDraftCommand.featureName, "Mod/ContinueMode", silent=True
+                FreeCAD.activeDraftCommand.featureName, "Mod/Draft/ContinueMode", silent=True
             )
 
         self.chainedMode = params.get_param("ChainedMode")

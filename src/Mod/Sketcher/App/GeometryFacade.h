@@ -118,8 +118,7 @@ protected:
     friend class GeometryFacadePy;
 
 public:  // Factory methods
-    static std::unique_ptr<GeometryFacade> getFacade(const Part::Geometry* geometry,
-                                                     bool owner = false);
+    static std::unique_ptr<GeometryFacade> getFacade(const Part::Geometry* geometry, bool owner = false);
 
 public:  // Utility methods
     static void ensureSketchGeometryExtension(Part::Geometry* geometry);
@@ -396,9 +395,11 @@ private:
 template<typename GeometryT>
 class SketcherExport GeometryTypedFacade: public GeometryFacade
 {
-    static_assert(std::is_base_of<Part::Geometry, typename std::decay<GeometryT>::type>::value
-                      && !std::is_same<Part::Geometry, typename std::decay<GeometryT>::type>::value,
-                  "Only for classes derived from Geometry!");
+    static_assert(
+        std::is_base_of<Part::Geometry, typename std::decay<GeometryT>::type>::value
+            && !std::is_same<Part::Geometry, typename std::decay<GeometryT>::type>::value,
+        "Only for classes derived from Geometry!"
+    );
 
 private:
     explicit GeometryTypedFacade(const Part::Geometry* geometry, bool owner = false)
@@ -409,23 +410,28 @@ private:
     {}
 
 public:  // Factory methods
-    static std::unique_ptr<GeometryTypedFacade<GeometryT>> getTypedFacade(GeometryT* geometry,
-                                                                          bool owner = false)
+    static std::unique_ptr<GeometryTypedFacade<GeometryT>> getTypedFacade(
+        GeometryT* geometry,
+        bool owner = false
+    )
     {
         if (geometry) {
             return std::unique_ptr<GeometryTypedFacade<GeometryT>>(
-                new GeometryTypedFacade(geometry, owner));
+                new GeometryTypedFacade(geometry, owner)
+            );
         }
         else {
             return std::unique_ptr<GeometryTypedFacade<GeometryT>>(nullptr);
         }
     }
-    static std::unique_ptr<const GeometryTypedFacade<GeometryT>>
-    getTypedFacade(const GeometryT* geometry)
+    static std::unique_ptr<const GeometryTypedFacade<GeometryT>> getTypedFacade(
+        const GeometryT* geometry
+    )
     {
         if (geometry) {
             return std::unique_ptr<const GeometryTypedFacade<GeometryT>>(
-                new GeometryTypedFacade(geometry));
+                new GeometryTypedFacade(geometry)
+            );
         }
         else {
             return std::unique_ptr<const GeometryTypedFacade<GeometryT>>(nullptr);
@@ -436,8 +442,7 @@ public:  // Factory methods
     template<typename... Args>
     static std::unique_ptr<GeometryTypedFacade<GeometryT>> getTypedFacade(Args&&... args)
     {
-        return GeometryTypedFacade::getTypedFacade(new GeometryT(std::forward<Args>(args)...),
-                                                   true);
+        return GeometryTypedFacade::getTypedFacade(new GeometryT(std::forward<Args>(args)...), true);
     }
 
     // Geometry Element

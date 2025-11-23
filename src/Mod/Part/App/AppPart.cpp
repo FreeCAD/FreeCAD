@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
@@ -21,10 +23,10 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <Interface_Static.hxx>
-# include <IGESControl_Controller.hxx>
-# include <STEPControl_Controller.hxx>
-# include <Standard_Version.hxx>
+#include <Interface_Static.hxx>
+#include <IGESControl_Controller.hxx>
+#include <STEPControl_Controller.hxx>
+#include <Standard_Version.hxx>
 
 #include <FCConfig.h>
 
@@ -194,7 +196,8 @@
 #include <App/Services.h>
 #include <Services.h>
 
-namespace Part {
+namespace Part
+{
 extern PyObject* initModule();
 }
 

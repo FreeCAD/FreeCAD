@@ -4,17 +4,17 @@
   <context>
     <name>CmdInspectAppearance</name>
     <message>
-      <location filename="../../Command.cpp" line="144"/>
+      <location filename="../../Command.cpp" line="146"/>
       <source>Inspect Appearance</source>
       <translation type="unfinished">Inspect Appearance</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="145"/>
+      <location filename="../../Command.cpp" line="147"/>
       <source>Inspects the appearance properties of the selected object</source>
       <translation type="unfinished">Inspects the appearance properties of the selected object</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="147"/>
+      <location filename="../../Command.cpp" line="149"/>
       <source>Inspect the appearance properties of the selected object</source>
       <translation>선택된 대상체의 외관 속성을 검토</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdInspectMaterial</name>
     <message>
-      <location filename="../../Command.cpp" line="171"/>
+      <location filename="../../Command.cpp" line="173"/>
       <source>Inspect Material</source>
       <translation type="unfinished">Inspect Material</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="172"/>
+      <location filename="../../Command.cpp" line="174"/>
       <source>Inspects the material properties of the selected object</source>
       <translation type="unfinished">Inspects the material properties of the selected object</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="174"/>
+      <location filename="../../Command.cpp" line="176"/>
       <source>Inspect the material properties of the selected object</source>
       <translation>선택된 대상체의 재료 속성을 검토</translation>
     </message>
@@ -45,12 +45,12 @@
       <translation>2차원 배열</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="77"/>
+      <location filename="../../Array2D.cpp" line="79"/>
       <source>Delete Row</source>
       <translation>행 삭제</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="136"/>
+      <location filename="../../Array2D.cpp" line="138"/>
       <source>Context Menu</source>
       <translation type="unfinished">Context Menu</translation>
     </message>
@@ -63,31 +63,31 @@
       <translation>3차원 배열</translation>
     </message>
     <message>
-      <location filename="../../Array3D.cpp" line="75"/>
-      <location filename="../../Array3D.cpp" line="79"/>
+      <location filename="../../Array3D.cpp" line="77"/>
+      <location filename="../../Array3D.cpp" line="81"/>
       <source>Delete Row</source>
       <translation>행 삭제</translation>
     </message>
     <message>
-      <location filename="../../Array3D.cpp" line="229"/>
-      <location filename="../../Array3D.cpp" line="300"/>
+      <location filename="../../Array3D.cpp" line="231"/>
+      <location filename="../../Array3D.cpp" line="302"/>
       <source>Context Menu</source>
       <translation type="unfinished">Context Menu</translation>
     </message>
     <message>
-      <location filename="../../Array3D.cpp" line="261"/>
-      <location filename="../../Array3D.cpp" line="333"/>
+      <location filename="../../Array3D.cpp" line="263"/>
+      <location filename="../../Array3D.cpp" line="335"/>
       <source>Confirm Delete</source>
       <translation>삭제 여부 확인</translation>
     </message>
     <message>
-      <location filename="../../Array3D.cpp" line="263"/>
-      <location filename="../../Array3D.cpp" line="335"/>
+      <location filename="../../Array3D.cpp" line="265"/>
+      <location filename="../../Array3D.cpp" line="337"/>
       <source>Delete the row?</source>
       <translation type="unfinished">Delete the row?</translation>
     </message>
     <message>
-      <location filename="../../Array3D.cpp" line="265"/>
+      <location filename="../../Array3D.cpp" line="267"/>
       <source>Removing this will also remove all 2D contents.</source>
       <translation>이 항목을 지울 시 해당 항목과 관련된 2차원 콘텐츠가 삭제됩니다</translation>
     </message>
@@ -95,12 +95,12 @@
   <context>
     <name>MatGui::ArrayDelegate</name>
     <message>
-      <location filename="../../ArrayDelegate.cpp" line="146"/>
+      <location filename="../../ArrayDelegate.cpp" line="148"/>
       <source>False</source>
       <translation>거짓</translation>
     </message>
     <message>
-      <location filename="../../ArrayDelegate.cpp" line="147"/>
+      <location filename="../../ArrayDelegate.cpp" line="149"/>
       <source>True</source>
       <translation>참</translation>
     </message>
@@ -108,12 +108,12 @@
   <context>
     <name>MatGui::BaseDelegate</name>
     <message>
-      <location filename="../../BaseDelegate.cpp" line="437"/>
+      <location filename="../../BaseDelegate.cpp" line="439"/>
       <source>False</source>
       <translation>거짓</translation>
     </message>
     <message>
-      <location filename="../../BaseDelegate.cpp" line="438"/>
+      <location filename="../../BaseDelegate.cpp" line="440"/>
       <source>True</source>
       <translation>참</translation>
     </message>
@@ -244,32 +244,32 @@
       <translation>탭 2</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectAppearance.cpp" line="200"/>
+      <location filename="../../DlgInspectAppearance.cpp" line="202"/>
       <source>Diffuse color</source>
       <translation type="unfinished">Diffuse color</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectAppearance.cpp" line="209"/>
+      <location filename="../../DlgInspectAppearance.cpp" line="211"/>
       <source>Ambient color</source>
       <translation type="unfinished">Ambient color</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectAppearance.cpp" line="218"/>
+      <location filename="../../DlgInspectAppearance.cpp" line="220"/>
       <source>Emissive color</source>
       <translation type="unfinished">Emissive color</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectAppearance.cpp" line="227"/>
+      <location filename="../../DlgInspectAppearance.cpp" line="229"/>
       <source>Specular color</source>
       <translation type="unfinished">Specular color</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectAppearance.cpp" line="236"/>
+      <location filename="../../DlgInspectAppearance.cpp" line="238"/>
       <source>Shininess</source>
       <translation>광택</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectAppearance.cpp" line="246"/>
+      <location filename="../../DlgInspectAppearance.cpp" line="248"/>
       <source>Transparency</source>
       <translation>투명도</translation>
     </message>
@@ -322,119 +322,119 @@
       <translation>오림판에 복사</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="149"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="151"/>
       <source>Document: </source>
       <translation>문서:</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="164"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="166"/>
       <source>Label: </source>
       <translation>라벨: </translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="170"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="172"/>
       <source>Internal name: </source>
       <translation type="unfinished">Internal name: </translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="188"/>
-      <location filename="../../DlgInspectMaterial.cpp" line="329"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="190"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="331"/>
       <source>Type: </source>
       <translation>타입:</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="190"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="192"/>
       <source>TypeID: </source>
       <translation>타입ID:</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="219"/>
-      <location filename="../../DlgInspectMaterial.cpp" line="231"/>
-      <location filename="../../DlgInspectMaterial.cpp" line="250"/>
-      <location filename="../../DlgInspectMaterial.cpp" line="290"/>
-      <location filename="../../DlgInspectMaterial.cpp" line="312"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="221"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="233"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="252"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="292"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="314"/>
       <source>Name: </source>
       <translation>이름:</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="244"/>
-      <location filename="../../DlgInspectMaterial.cpp" line="283"/>
-      <location filename="../../DlgInspectMaterial.cpp" line="307"/>
-      <location filename="../../DlgInspectMaterial.cpp" line="358"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="246"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="285"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="309"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="360"/>
       <source>None</source>
       <translation>없음</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="264"/>
-      <location filename="../../DlgInspectMaterial.cpp" line="339"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="266"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="341"/>
       <source>UUID: </source>
       <translation>범용 고유 식별자: </translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="267"/>
-      <location filename="../../DlgInspectMaterial.cpp" line="342"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="269"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="344"/>
       <source>Library: </source>
       <translation>라이브러리: </translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="271"/>
-      <location filename="../../DlgInspectMaterial.cpp" line="344"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="273"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="346"/>
       <source>Library directory: </source>
       <translation type="unfinished">Library directory: </translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="274"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="276"/>
       <source>Subdirectory: </source>
       <translation type="unfinished">Subdirectory: </translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="346"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="348"/>
       <source>Sub directory: </source>
       <translation type="unfinished">Sub directory: </translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="363"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="365"/>
       <source>Appearance models:</source>
       <translation type="unfinished">Appearance models:</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="369"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="371"/>
       <source>Physical models:</source>
       <translation type="unfinished">Physical models:</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="375"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="377"/>
       <source>Appearance properties:</source>
       <translation type="unfinished">Appearance properties:</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="381"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="383"/>
       <source>Physical properties:</source>
       <translation type="unfinished">Physical properties:</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="277"/>
-      <location filename="../../DlgInspectMaterial.cpp" line="348"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="279"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="350"/>
       <source>Inherits:</source>
       <translation>상속:</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="327"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="329"/>
       <source>Model UUID: </source>
       <translation>모형의 범용 고유 식별자:</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="331"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="333"/>
       <source>Has value: </source>
       <translation>보유 값:</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="331"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="333"/>
       <source>No</source>
       <translation>아니오</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="331"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="333"/>
       <source>Yes</source>
       <translation>네</translation>
     </message>
@@ -456,7 +456,7 @@
       <translation>기본 재료</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsDefaultMaterial.cpp" line="50"/>
+      <location filename="../../DlgSettingsDefaultMaterial.cpp" line="52"/>
       <source>Physical</source>
       <translation>물리적인</translation>
     </message>
@@ -613,17 +613,17 @@ If unchecked, they will be sorted by their name.</source>
       <translation>너비</translation>
     </message>
     <message>
-      <location filename="../../ImageEdit.cpp" line="193"/>
+      <location filename="../../ImageEdit.cpp" line="195"/>
       <source>Select an image</source>
       <translation>이미지 선택</translation>
     </message>
     <message>
-      <location filename="../../ImageEdit.cpp" line="204"/>
+      <location filename="../../ImageEdit.cpp" line="206"/>
       <source>Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)</source>
       <translation>이미지 파일 형식(*.jpg  *.jpeg *.png *.bmp);;모든 형식(*)</translation>
     </message>
     <message>
-      <location filename="../../ImageEdit.cpp" line="216"/>
+      <location filename="../../ImageEdit.cpp" line="218"/>
       <source>Image files (*.svg);;All files (*)</source>
       <translation>화상 파일 (*.svg);;모든 파일 (*)</translation>
     </message>
@@ -644,12 +644,12 @@ If unchecked, they will be sorted by their name.</source>
   <context>
     <name>MatGui::MaterialDelegate</name>
     <message>
-      <location filename="../../MaterialDelegate.cpp" line="473"/>
+      <location filename="../../MaterialDelegate.cpp" line="475"/>
       <source>False</source>
       <translation>거짓</translation>
     </message>
     <message>
-      <location filename="../../MaterialDelegate.cpp" line="474"/>
+      <location filename="../../MaterialDelegate.cpp" line="476"/>
       <source>True</source>
       <translation>참</translation>
     </message>
@@ -682,68 +682,68 @@ If unchecked, they will be sorted by their name.</source>
       <translation>새 폴더</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="94"/>
+      <location filename="../../MaterialSave.cpp" line="96"/>
       <source>Delete</source>
       <translation>삭제</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="194"/>
+      <location filename="../../MaterialSave.cpp" line="196"/>
       <source>Saving over the original file may cause other documents to break. This is not recommended.</source>
       <translation>원본파일에 덮어쓰기 하면 다른 문서가 손상을 입을 수 있으므로 추천하지 않습니다. </translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="218"/>
+      <location filename="../../MaterialSave.cpp" line="220"/>
       <source>Save as new material</source>
       <translation>새로운 재료로 저장</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="191"/>
+      <location filename="../../MaterialSave.cpp" line="193"/>
       <source>Save over &apos;%1&apos;?</source>
       <translation type="unfinished">Save over &apos;%1&apos;?</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="216"/>
+      <location filename="../../MaterialSave.cpp" line="218"/>
       <source>Confirm Save as New Material</source>
       <translation type="unfinished">Confirm Save as New Material</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="221"/>
+      <location filename="../../MaterialSave.cpp" line="223"/>
       <source>This material already exists in this library. Save as a new material?</source>
       <translation type="unfinished">This material already exists in this library. Save as a new material?</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="243"/>
+      <location filename="../../MaterialSave.cpp" line="245"/>
       <source>Confirm Save as Copy</source>
       <translation type="unfinished">Confirm Save as Copy</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="245"/>
+      <location filename="../../MaterialSave.cpp" line="247"/>
       <source>Save as copy</source>
       <translation type="unfinished">Save as copy</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="248"/>
+      <location filename="../../MaterialSave.cpp" line="250"/>
       <source>Saving a copy is not recommended as it can break other documents. It is recommended to save as a new material.</source>
       <translation type="unfinished">Saving a copy is not recommended as it can break other documents. It is recommended to save as a new material.</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="251"/>
+      <location filename="../../MaterialSave.cpp" line="253"/>
       <source>Save Copy</source>
       <translation>사본 저장</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="252"/>
+      <location filename="../../MaterialSave.cpp" line="254"/>
       <source>Save As New</source>
       <translation>새로운 이름으로 저장</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="484"/>
-      <location filename="../../MaterialSave.cpp" line="494"/>
+      <location filename="../../MaterialSave.cpp" line="486"/>
+      <location filename="../../MaterialSave.cpp" line="496"/>
       <source>New folder</source>
       <translation type="unfinished">New folder</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="534"/>
+      <location filename="../../MaterialSave.cpp" line="536"/>
       <source>Context Menu</source>
       <translation type="unfinished">Context Menu</translation>
     </message>
@@ -751,19 +751,19 @@ If unchecked, they will be sorted by their name.</source>
   <context>
     <name>MatGui::MaterialTreeWidget</name>
     <message>
-      <location filename="../../MaterialTreeWidget.cpp" line="138"/>
+      <location filename="../../MaterialTreeWidget.cpp" line="140"/>
       <source>Launch Editor</source>
       <translation type="unfinished">Launch Editor</translation>
     </message>
     <message>
-      <location filename="../../MaterialTreeWidget.cpp" line="311"/>
-      <location filename="../../MaterialTreeWidget.cpp" line="532"/>
+      <location filename="../../MaterialTreeWidget.cpp" line="313"/>
+      <location filename="../../MaterialTreeWidget.cpp" line="534"/>
       <source>Favorites</source>
       <translation>즐겨찾기</translation>
     </message>
     <message>
-      <location filename="../../MaterialTreeWidget.cpp" line="311"/>
-      <location filename="../../MaterialTreeWidget.cpp" line="539"/>
+      <location filename="../../MaterialTreeWidget.cpp" line="313"/>
+      <location filename="../../MaterialTreeWidget.cpp" line="541"/>
       <source>Recent</source>
       <translation>최근 항목</translation>
     </message>
@@ -871,76 +871,76 @@ If unchecked, they will be sorted by their name.</source>
       <translation>외형 모형 삭제</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="482"/>
+      <location filename="../../MaterialsEditor.cpp" line="484"/>
       <source>Unnamed</source>
       <translation>이름없음</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="604"/>
+      <location filename="../../MaterialsEditor.cpp" line="606"/>
       <source>Old Format Material</source>
       <translation>오래된 형식의 재료</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="606"/>
+      <location filename="../../MaterialsEditor.cpp" line="608"/>
       <source>This file is in the old material card format.</source>
       <translation>이 파일은 오래된 재료 카드 형식입니다.</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="692"/>
+      <location filename="../../MaterialsEditor.cpp" line="694"/>
       <source>This card uses the old format and must be saved before use</source>
       <translation>이 카드는 오래된 형식을 사용하고 있으므로 사용 전 반드시 저장해야 합니다</translation>
-    </message>
-    <message>
-      <location filename="../../MaterialsEditor.cpp" line="752"/>
-      <location filename="../../MaterialsEditor.cpp" line="784"/>
-      <location filename="../../MaterialsEditor.cpp" line="1086"/>
-      <location filename="../../MaterialsEditor.cpp" line="1148"/>
-      <source>Property</source>
-      <translation>속성</translation>
-    </message>
-    <message>
-      <location filename="../../MaterialsEditor.cpp" line="753"/>
-      <location filename="../../MaterialsEditor.cpp" line="785"/>
-      <location filename="../../MaterialsEditor.cpp" line="1087"/>
-      <location filename="../../MaterialsEditor.cpp" line="1149"/>
-      <source>Value</source>
-      <translation>값</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="754"/>
       <location filename="../../MaterialsEditor.cpp" line="786"/>
       <location filename="../../MaterialsEditor.cpp" line="1088"/>
       <location filename="../../MaterialsEditor.cpp" line="1150"/>
+      <source>Property</source>
+      <translation>속성</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialsEditor.cpp" line="755"/>
+      <location filename="../../MaterialsEditor.cpp" line="787"/>
+      <location filename="../../MaterialsEditor.cpp" line="1089"/>
+      <location filename="../../MaterialsEditor.cpp" line="1151"/>
+      <source>Value</source>
+      <translation>값</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialsEditor.cpp" line="756"/>
+      <location filename="../../MaterialsEditor.cpp" line="788"/>
+      <location filename="../../MaterialsEditor.cpp" line="1090"/>
+      <location filename="../../MaterialsEditor.cpp" line="1152"/>
       <source>Type</source>
       <translation>유형</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="877"/>
+      <location filename="../../MaterialsEditor.cpp" line="879"/>
       <source>Favorites</source>
       <translation>즐겨찾기</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="884"/>
+      <location filename="../../MaterialsEditor.cpp" line="886"/>
       <source>Recent</source>
       <translation>최근 항목</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1151"/>
+      <location filename="../../MaterialsEditor.cpp" line="1153"/>
       <source>Units</source>
       <translation>단위</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1318"/>
+      <location filename="../../MaterialsEditor.cpp" line="1320"/>
       <source>Context Menu</source>
       <translation type="unfinished">Context Menu</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1320"/>
+      <location filename="../../MaterialsEditor.cpp" line="1322"/>
       <source>Inherit From</source>
       <translation type="unfinished">Inherit From</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1324"/>
+      <location filename="../../MaterialsEditor.cpp" line="1326"/>
       <source>Inherit New Material</source>
       <translation type="unfinished">Inherit New Material</translation>
     </message>
@@ -959,13 +959,13 @@ If unchecked, they will be sorted by their name.</source>
     </message>
     <message>
       <location filename="../../ModelSelect.ui" line="49"/>
-      <location filename="../../ModelSelect.cpp" line="363"/>
+      <location filename="../../ModelSelect.cpp" line="365"/>
       <source>URL</source>
       <translation>URL</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.ui" line="56"/>
-      <location filename="../../ModelSelect.cpp" line="362"/>
+      <location filename="../../ModelSelect.cpp" line="364"/>
       <source>Description</source>
       <translation>설명</translation>
     </message>
@@ -991,38 +991,38 @@ If unchecked, they will be sorted by their name.</source>
     </message>
     <message>
       <location filename="../../ModelSelect.ui" line="172"/>
-      <location filename="../../ModelSelect.cpp" line="441"/>
-      <location filename="../../ModelSelect.cpp" line="457"/>
+      <location filename="../../ModelSelect.cpp" line="443"/>
+      <location filename="../../ModelSelect.cpp" line="459"/>
       <source>Properties</source>
       <translation> 속성</translation>
     </message>
     <message>
-      <location filename="../../ModelSelect.cpp" line="335"/>
+      <location filename="../../ModelSelect.cpp" line="337"/>
       <source>Favorites</source>
       <translation>즐겨찾기</translation>
     </message>
     <message>
-      <location filename="../../ModelSelect.cpp" line="340"/>
+      <location filename="../../ModelSelect.cpp" line="342"/>
       <source>Recent</source>
       <translation>최근 항목</translation>
     </message>
     <message>
-      <location filename="../../ModelSelect.cpp" line="359"/>
+      <location filename="../../ModelSelect.cpp" line="361"/>
       <source>Inherited</source>
       <translation>상속된</translation>
     </message>
     <message>
-      <location filename="../../ModelSelect.cpp" line="360"/>
+      <location filename="../../ModelSelect.cpp" line="362"/>
       <source>Property</source>
       <translation>속성</translation>
     </message>
     <message>
-      <location filename="../../ModelSelect.cpp" line="361"/>
+      <location filename="../../ModelSelect.cpp" line="363"/>
       <source>Units</source>
       <translation>단위</translation>
     </message>
     <message>
-      <location filename="../../ModelSelect.cpp" line="444"/>
+      <location filename="../../ModelSelect.cpp" line="446"/>
       <source>Appearance</source>
       <translation>외관</translation>
     </message>
@@ -1101,7 +1101,7 @@ If unchecked, they will be sorted by their name.</source>
   <context>
     <name>QDockWidget</name>
     <message>
-      <location filename="../../DlgMaterialImp.cpp" line="54"/>
+      <location filename="../../DlgMaterialImp.cpp" line="56"/>
       <source>Material</source>
       <translation>재료</translation>
     </message>
@@ -1109,68 +1109,68 @@ If unchecked, they will be sorted by their name.</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppMatGui.cpp" line="106"/>
+      <location filename="../../AppMatGui.cpp" line="108"/>
       <source>Material Workbench</source>
       <translation type="unfinished">Material Workbench</translation>
     </message>
     <message>
-      <location filename="../../AppMatGui.cpp" line="108"/>
       <location filename="../../AppMatGui.cpp" line="110"/>
-      <location filename="../../AppMatGui.cpp" line="113"/>
+      <location filename="../../AppMatGui.cpp" line="112"/>
+      <location filename="../../AppMatGui.cpp" line="115"/>
       <source>Material</source>
       <translation>재료</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="188"/>
+      <location filename="../../MaterialSave.cpp" line="190"/>
       <source>Confirm Overwrite</source>
       <translation>덮어쓰기 확인</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="378"/>
-      <location filename="../../MaterialSave.cpp" line="379"/>
+      <location filename="../../MaterialSave.cpp" line="380"/>
+      <location filename="../../MaterialSave.cpp" line="381"/>
       <source>No writeable library</source>
       <translation>쓰기 가능한 라이브러리가 없습니다</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="566"/>
+      <location filename="../../MaterialSave.cpp" line="568"/>
       <source>Delete &apos;%1&apos;?</source>
       <translation type="unfinished">Delete &apos;%1&apos;?</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="570"/>
+      <location filename="../../MaterialSave.cpp" line="572"/>
       <source>Removing this will also remove all contents.</source>
       <translation>이것을 지우면 관련된 모든 컨텐츠들이 제거됩니다.</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="607"/>
+      <location filename="../../MaterialsEditor.cpp" line="609"/>
       <source>Save the material before using it.</source>
       <translation type="unfinished">Save the material before using it.</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1345"/>
+      <location filename="../../MaterialsEditor.cpp" line="1347"/>
       <source>Unsaved Material</source>
       <translation>저장되지 않은 재료</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1346"/>
+      <location filename="../../MaterialsEditor.cpp" line="1348"/>
       <source>Save changes to the material before closing?</source>
       <translation type="unfinished">Save changes to the material before closing?</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1347"/>
+      <location filename="../../MaterialsEditor.cpp" line="1349"/>
       <source>Otherwise, all changes will be lost.</source>
       <translation>그렇지 않으면, 모든 변경사항을 잃게 됩니다.</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="168"/>
-      <location filename="../../ListEdit.cpp" line="140"/>
-      <location filename="../../MaterialSave.cpp" line="563"/>
+      <location filename="../../Array2D.cpp" line="170"/>
+      <location filename="../../ListEdit.cpp" line="142"/>
+      <location filename="../../MaterialSave.cpp" line="565"/>
       <source>Confirm Delete</source>
       <translation>삭제 여부 확인</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="170"/>
-      <location filename="../../ListEdit.cpp" line="142"/>
+      <location filename="../../Array2D.cpp" line="172"/>
+      <location filename="../../ListEdit.cpp" line="144"/>
       <source>Delete the row?</source>
       <translation type="unfinished">Delete the row?</translation>
     </message>
@@ -1178,13 +1178,13 @@ If unchecked, they will be sorted by their name.</source>
   <context>
     <name>StdCmdSetAppearance</name>
     <message>
-      <location filename="../../Command.cpp" line="86"/>
+      <location filename="../../Command.cpp" line="88"/>
       <source>&amp;Appearance</source>
       <translation type="unfinished">&amp;Appearance</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="87"/>
       <location filename="../../Command.cpp" line="89"/>
+      <location filename="../../Command.cpp" line="91"/>
       <source>Sets the display properties of the selected object</source>
       <translation>선택한 대상체의 표시 속성 설정</translation>
     </message>
@@ -1192,13 +1192,13 @@ If unchecked, they will be sorted by their name.</source>
   <context>
     <name>StdCmdSetMaterial</name>
     <message>
-      <location filename="../../Command.cpp" line="115"/>
+      <location filename="../../Command.cpp" line="117"/>
       <source>&amp;Material</source>
       <translation type="unfinished">&amp;Material</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="116"/>
       <location filename="../../Command.cpp" line="118"/>
+      <location filename="../../Command.cpp" line="120"/>
       <source>Sets the material of the selected object</source>
       <translation>선택한 대상체의 재료 설정</translation>
     </message>
@@ -1206,12 +1206,12 @@ If unchecked, they will be sorted by their name.</source>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="33"/>
+      <location filename="../../Workbench.cpp" line="35"/>
       <source>&amp;Materials</source>
       <translation>재료(&amp;M)</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="34"/>
+      <location filename="../../Workbench.cpp" line="36"/>
       <source>Materials</source>
       <translation>재료</translation>
     </message>
@@ -1249,7 +1249,7 @@ If unchecked, they will be sorted by their name.</source>
       <translation>상태</translation>
     </message>
     <message>
-      <location filename="../../TaskMigrateExternal.cpp" line="176"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="178"/>
       <source>&amp;Migrate</source>
       <translation type="unfinished">&amp;Migrate</translation>
     </message>
@@ -1293,7 +1293,7 @@ If unchecked, they will be sorted by their name.</source>
       <translation type="unfinished">Material cache size</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsExternal.cpp" line="93"/>
+      <location filename="../../DlgSettingsExternal.cpp" line="95"/>
       <source>None</source>
       <translation>없음</translation>
     </message>
@@ -1301,53 +1301,53 @@ If unchecked, they will be sorted by their name.</source>
   <context>
     <name>MatGui::DlgMigrateExternal</name>
     <message>
-      <location filename="../../TaskMigrateExternal.cpp" line="73"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="75"/>
       <source>Migrating models…</source>
       <translation type="unfinished">Migrating models…</translation>
     </message>
     <message>
-      <location filename="../../TaskMigrateExternal.cpp" line="79"/>
-      <location filename="../../TaskMigrateExternal.cpp" line="91"/>
-      <location filename="../../TaskMigrateExternal.cpp" line="103"/>
-      <location filename="../../TaskMigrateExternal.cpp" line="115"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="81"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="93"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="105"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="117"/>
       <source>  Library: </source>
       <translation type="unfinished">  Library: </translation>
     </message>
     <message>
-      <location filename="../../TaskMigrateExternal.cpp" line="83"/>
-      <location filename="../../TaskMigrateExternal.cpp" line="95"/>
-      <location filename="../../TaskMigrateExternal.cpp" line="107"/>
-      <location filename="../../TaskMigrateExternal.cpp" line="119"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="85"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="97"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="109"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="121"/>
       <source>done</source>
       <translation type="unfinished">done</translation>
     </message>
     <message>
-      <location filename="../../TaskMigrateExternal.cpp" line="85"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="87"/>
       <source>Validating models…</source>
       <translation type="unfinished">Validating models…</translation>
     </message>
     <message>
-      <location filename="../../TaskMigrateExternal.cpp" line="97"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="99"/>
       <source>Migrating materials…</source>
       <translation type="unfinished">Migrating materials…</translation>
     </message>
     <message>
-      <location filename="../../TaskMigrateExternal.cpp" line="109"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="111"/>
       <source>Validating materials…</source>
       <translation type="unfinished">Validating materials…</translation>
     </message>
     <message>
-      <location filename="../../TaskMigrateExternal.cpp" line="143"/>
-      <location filename="../../TaskMigrateExternal.cpp" line="146"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="145"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="148"/>
       <source>Unknown exception - aborted</source>
       <translation type="unfinished">Unknown exception - aborted</translation>
     </message>
     <message>
-      <location filename="../../TaskMigrateExternal.cpp" line="123"/>
-      <location filename="../../TaskMigrateExternal.cpp" line="127"/>
-      <location filename="../../TaskMigrateExternal.cpp" line="131"/>
-      <location filename="../../TaskMigrateExternal.cpp" line="135"/>
-      <location filename="../../TaskMigrateExternal.cpp" line="139"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="125"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="129"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="133"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="137"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="141"/>
       <source>Aborted</source>
       <translation type="unfinished">Aborted</translation>
     </message>
@@ -1355,17 +1355,17 @@ If unchecked, they will be sorted by their name.</source>
   <context>
     <name>CmdMaterialEdit</name>
     <message>
-      <location filename="../../Command.cpp" line="51"/>
+      <location filename="../../Command.cpp" line="53"/>
       <source>Material</source>
       <translation>재료</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="52"/>
+      <location filename="../../Command.cpp" line="54"/>
       <source>Edit</source>
       <translation>편집</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="53"/>
+      <location filename="../../Command.cpp" line="55"/>
       <source>Edits material properties</source>
       <translation type="unfinished">Edits material properties</translation>
     </message>
@@ -1373,17 +1373,17 @@ If unchecked, they will be sorted by their name.</source>
   <context>
     <name>CmdMigrateToExternal</name>
     <message>
-      <location filename="../../Command.cpp" line="200"/>
+      <location filename="../../Command.cpp" line="202"/>
       <source>Migrate</source>
       <translation>이전하기</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="201"/>
+      <location filename="../../Command.cpp" line="203"/>
       <source>Migrates the materials to the external materials manager</source>
       <translation type="unfinished">Migrates the materials to the external materials manager</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="203"/>
+      <location filename="../../Command.cpp" line="205"/>
       <source>Migrate existing materials to the external materials manager</source>
       <translation type="unfinished">Migrate existing materials to the external materials manager</translation>
     </message>
@@ -1391,17 +1391,17 @@ If unchecked, they will be sorted by their name.</source>
   <context>
     <name>MatGui::DlgDisplayPropertiesImp</name>
     <message>
-      <location filename="../../DlgDisplayPropertiesImp.cpp" line="178"/>
+      <location filename="../../DlgDisplayPropertiesImp.cpp" line="180"/>
       <source>Basic appearance</source>
       <translation type="unfinished">Basic appearance</translation>
     </message>
     <message>
-      <location filename="../../DlgDisplayPropertiesImp.cpp" line="183"/>
+      <location filename="../../DlgDisplayPropertiesImp.cpp" line="185"/>
       <source>Texture appearance</source>
       <translation type="unfinished">Texture appearance</translation>
     </message>
     <message>
-      <location filename="../../DlgDisplayPropertiesImp.cpp" line="188"/>
+      <location filename="../../DlgDisplayPropertiesImp.cpp" line="190"/>
       <source>All materials</source>
       <translation type="unfinished">All materials</translation>
     </message>

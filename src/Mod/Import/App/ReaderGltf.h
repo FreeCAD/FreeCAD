@@ -45,8 +45,7 @@ public:
 private:
     TopoDS_Shape fixShape(TopoDS_Shape);
     void processDocument(Handle(TDocStd_Document) hDoc);
-    TopoDS_Shape processSubShapes(Handle(TDocStd_Document) hDoc,
-                                  const TDF_LabelSequence& subShapeLabels);
+    TopoDS_Shape processSubShapes(Handle(TDocStd_Document) hDoc, const TDF_LabelSequence& subShapeLabels);
 
 private:
     Base::FileInfo file;

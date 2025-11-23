@@ -174,6 +174,8 @@ public:
 
     bool pseudoEventFilter(QGraphicsItem *watched, QEvent *event) { return sceneEventFilter(watched, event); }
 
+    static bool hasSelectedChildren(QGIView* parent);
+
 protected:
     QGIView* getQGIVByName(std::string name) const;
 
@@ -184,6 +186,7 @@ protected:
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
     virtual QRectF customChildrenBoundingRect() const;
+    virtual QRectF frameRect() const;
     void dumpRect(const char* text, QRectF rect);
     bool m_isHovered;
 

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -32,7 +34,8 @@
 class TopoDS_Shape;
 class TopoDS_Wire;
 
-namespace Part {
+namespace Part
+{
 
 class PartExport CrossSection
 {
@@ -43,13 +46,13 @@ public:
 private:
     void sliceNonSolid(double d, const TopoDS_Shape&, std::list<TopoDS_Wire>& wires) const;
     void sliceSolid(double d, const TopoDS_Shape&, std::list<TopoDS_Wire>& wires) const;
-    void connectEdges (const std::list<TopoDS_Edge>& edges, std::list<TopoDS_Wire>& wires) const;
-    void connectWires (const TopTools_IndexedMapOfShape& wireMap, std::list<TopoDS_Wire>& wires) const;
+    void connectEdges(const std::list<TopoDS_Edge>& edges, std::list<TopoDS_Wire>& wires) const;
+    void connectWires(const TopTools_IndexedMapOfShape& wireMap, std::list<TopoDS_Wire>& wires) const;
     TopoDS_Wire fixWire(const TopoDS_Wire& wire) const;
     std::list<TopoDS_Wire> removeDuplicates(const std::list<TopoDS_Wire>& wires) const;
 
 private:
-    double a,b,c;
+    double a, b, c;
     const TopoDS_Shape& s;
 };
 
@@ -72,4 +75,4 @@ private:
 
 }  // namespace Part
 
-#endif // PART_CROSSSECTION_H
+#endif  // PART_CROSSSECTION_H

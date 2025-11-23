@@ -91,9 +91,9 @@ class GuiExport SoLinearGeometryBaseKit: public SoBaseKit
 public:
     static void initClass();
 
-    SoSFVec3f translation; //!< set from the parent dragger
-    SoSFVec3f geometryScale; //!< set from the parent dragger
-    SoSFBool active; //!< set from the parent dragger
+    SoSFVec3f translation;    //!< set from the parent dragger
+    SoSFVec3f geometryScale;  //!< set from the parent dragger
+    SoSFBool active;          //!< set from the parent dragger
 
 protected:
     SoLinearGeometryBaseKit();
@@ -131,6 +131,6 @@ private:
     using inherited = SoLinearGeometryBaseKit;
 };
 
-}
+}  // namespace Gui
 
 #endif /* GUI_LINEAR_DRAGGER_GEOMETRY_H */

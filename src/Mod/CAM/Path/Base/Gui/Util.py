@@ -131,6 +131,21 @@ class QuantitySpinBox(QtCore.QObject):
         self.widget.installEventFilter(self)
         # Connect local class method as slot
         self.widget.textChanged.connect(self.onWidgetValueChanged)
+        # Connect to showFormulaDialog signal to track dialog open/close
+        try:
+            self.widget.showFormulaDialog.connect(self.onFormulaDialogStateChanged)
+        except AttributeError:
+            # Widget may not have this signal
+            pass
+
+    def onFormulaDialogStateChanged(self, isOpen):
+        """
+        Slot called when the formula dialog is opened or closed.
+        When the dialog closes (isOpen=False), refresh the widget.
+        """
+        if not isOpen:
+            # Dialog has closed, update the widget to reflect any changes
+            self.updateWidget()
 
     def eventFilter(self, obj, event):
         if event.type() == QtCore.QEvent.Type.FocusIn:
