@@ -1792,6 +1792,12 @@ bool Document::saveToFile(const char* filename) const
     // realpath is canonical filename i.e. without symlink
     std::string nativePath = canonical_path(filename);
 
+    // check if file is writeable, then block the save if it is not.
+    Base::FileInfo originalFileInfo(nativePath);
+    if (originalFileInfo.exists() && !originalFileInfo.isWritable()) {
+        throw Base::FileException("Unable to save document because file is marked as read-only or write permission is not available.", originalFileInfo);
+    }
+
     // make a tmp. file where to save the project data first and then rename to
     // the actual file name. This may be useful if overwriting an existing file
     // fails so that the data of the work up to now isn't lost.
