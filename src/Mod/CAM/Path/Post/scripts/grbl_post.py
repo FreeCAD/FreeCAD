@@ -140,6 +140,14 @@ M2"""
         #
         values["SHOW_MACHINE_UNITS"] = False
         #
+        # If true, G81, G82 & G83 drill moves are translated into G0/G1 moves.
+        #
+        # Note:  This is a recent change (about the same time as the refactored
+        #        version of this postprocessor became named "grbl" rather than
+        #        "refactored_grbl").  The default used to be "don't translate".
+        #
+        values["TRANSLATE_DRILL_CYCLES"] = True
+        #
         # Default to not outputting a G43 following tool changes
         #
         values["USE_TLO"] = False
@@ -164,6 +172,7 @@ M2"""
         #
         argument_defaults["tlo"] = False
         argument_defaults["tool_change"] = False
+        argument_defaults["translate_drill"] = True
 
     def init_arguments_visible(self, arguments_visible: Visible) -> None:
         """Initialize which argument pairs are visible in TOOLTIP_ARGS."""
