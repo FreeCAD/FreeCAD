@@ -181,6 +181,8 @@ class ToolBit(Asset, ABC):
         # Update parameters.
         for param_name, param_value in params.items():
             tool_bit_shape.set_parameter(param_name, param_value)
+            if hasattr(toolbit.obj, param_name):
+                PathUtil.setProperty(toolbit.obj, param_name, param_value)
 
         # Update attributes; the separation between parameters and attributes
         # is currently not well defined, so for now we add them to the
