@@ -188,6 +188,7 @@ protected:
     void dumpRect(const char* text, QRectF rect);
     bool m_isHovered;
 
+    void updateFrameVisibility();
 
     Base::Reference<ParameterGrp> getParmGroupCol();
 
