@@ -28,11 +28,10 @@
 These are common functions and classes for creating custom post processors.
 """
 
-
 from Path.Base.MachineState import MachineState
+from Path.Geom import CmdMove, CmdMoveRapid, CmdMoveStraight, CmdMoveArc, CmdMoveDrill
 from PySide import QtCore, QtGui
 import FreeCAD
-import Part
 import Path
 import os
 import re
@@ -373,3 +372,85 @@ def splitArcs(path, deflection=None):
         machine.addCommand(command)
 
     return Path.Path(results)
+
+
+AXES = ("X","Y","Z","A","B","C")
+
+SIDE_EFFECT_KEYS = {
+    "tool", "tool_change", "spindle", "spindle_on", "spindle_off",
+    "coolant", "dwell", "feed", "F", "M"
+}
+
+def is_rapid(cmd):
+    return cmd.Name in CmdMoveRapid
+
+
+def has_side_effects(cmd):
+    return any(k in cmd.Parameters for k in SIDE_EFFECT_KEYS)
+
+
+def full_position(cmd, last):
+    pos = {}
+    for ax in AXES:
+        if ax in cmd.Parameters and cmd.Parameters[ax] is not None:
+            pos[ax] = cmd.Parameters[ax]
+        else:
+            pos[ax] = last.get(ax)
+    return pos
+
+
+def collapse_rapid_chain(chain):
+    """
+    chain = list of dicts that include a 'pos' key holding full XYZABC.
+    """
+    if not chain:
+        return []
+
+    # Check which axes change across the chain.
+    first = chain[0]["pos"]
+    axes_changed = {ax for ax in AXES
+                    if any(c["pos"][ax] != first[ax] for c in chain)}
+
+    # If the chain only varies along ONE axis → keep last
+    if len(axes_changed) == 1:
+        return [chain[-1]["cmd"]]
+
+    # If the chain varies along multiple axes but *only* within one group:
+    # - Linear: (X,Y,Z)
+    # - Rotary: (A,B,C)
+    lin = {"X","Y","Z"}
+    rot = {"A","B","C"}
+
+    if axes_changed <= lin or axes_changed <= rot:
+        return [chain[-1]["cmd"]]
+
+    # Mixed changes → can't collapse
+    return [c["cmd"] for c in chain]
+
+
+def optimize_cam_path(cmds):
+    out = []
+    rapid_chain = []
+
+    # Running full position
+    last_full = {ax: None for ax in AXES}
+
+    def flush_chain():
+        nonlocal rapid_chain
+        if rapid_chain:
+            out.extend(collapse_rapid_chain(rapid_chain))
+            rapid_chain = []
+
+    for cmd in cmds:
+        # Use original command directly to avoid pickling issues; ensure no mutations occur
+        pos = full_position(cmd, last_full)
+        last_full = pos
+
+        if is_rapid(cmd) and not has_side_effects(cmd):
+            rapid_chain.append({"cmd": cmd, "pos": pos})
+        else:
+            flush_chain()
+            out.append(cmd)
+
+    flush_chain()
+    return out

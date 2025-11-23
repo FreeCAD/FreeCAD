@@ -503,6 +503,70 @@ class TestPathPostUtils(unittest.TestCase):
         # self.assertTrue(len(results.Commands) == 117)
         self.assertTrue(len([c for c in results.Commands if c.Name in ["G2", "G3"]]) == 0)
 
+    def test020_optimize_single_axis_collapse(self):
+        # Test collapsing rapid chain with single-axis changes
+        cmds = [
+            Path.Command('G0 X10.0'),
+            Path.Command('G0 X20.0'),
+            Path.Command('G0 X30.0')
+        ]
+        optimized = PostUtils.optimize_cam_path(cmds)
+        self.assertEqual(len(optimized), 1)
+        self.assertEqual(optimized[0].Name, 'G0')
+        self.assertAlmostEqual(optimized[0].X, 30.0)  # Last position
+
+    def test030_optimize_multi_axis_collapse(self):
+        # Test collapsing for multi-axis rapid chain
+        cmds = [
+            Path.Command('G0 X10.0 Y10.0'),
+            Path.Command('G0 X20.0 Y20.0')
+        ]
+        optimized = PostUtils.optimize_cam_path(cmds)
+        self.assertEqual(len(optimized), 1)  # Should not collapse
+
+    def test040_optimize_with_side_effects(self):
+        # Test no collapsing when side effects are present
+        cmds = [
+            Path.Command('G0 Z10.0'),
+            Path.Command('M6 T1'),  # Tool change, has side effect
+            Path.Command('G0 Z5.0')
+        ]
+        optimized = PostUtils.optimize_cam_path(cmds)
+        self.assertEqual(len(optimized), 3)  # Side effect should flush chain
+
+    def test045_optimize_with_fixture_side_effects(self):
+        # Test no collapsing when fixture side effects are present
+        cmds = [
+            Path.Command('G0 X10.0'),
+            Path.Command('G56'),  # Fixture change, has side effect
+            Path.Command('G0 X20.0')
+        ]
+        optimized = PostUtils.optimize_cam_path(cmds)
+        self.assertEqual(len(optimized), 3)  # Side effect should flush chain
+
+    def test050_optimize_empty_list(self):
+        # Test optimization with empty command list
+        optimized = PostUtils.optimize_cam_path([])
+        self.assertEqual(len(optimized), 0)
+
+    def test060_optimize_single_command(self):
+        # Test optimization with a single command
+        cmds = [Path.Command('G0 X10.0')]
+        optimized = PostUtils.optimize_cam_path(cmds)
+        self.assertEqual(len(optimized), 1)
+        self.assertEqual(optimized[0].Name, 'G0')
+
+    def test070_optimize_mixed_sequence(self):
+        # Test mixed sequence with rapid and side effect commands
+        cmds = [
+            Path.Command('G0 X10.0'),
+            Path.Command('G0 X20.0'),
+            Path.Command('M3 S1000'),  # Spindle on, side effect
+            Path.Command('G0 X30.0')
+        ]
+        optimized = PostUtils.optimize_cam_path(cmds)
+        self.assertEqual(len(optimized), 3)  # First chain collapses, then side effect and new move
+
 
 class TestBuildPostList(unittest.TestCase):
     """
