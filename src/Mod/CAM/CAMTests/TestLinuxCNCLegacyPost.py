@@ -179,15 +179,16 @@ M2
 
     def test040(self):
         """
-        Test Post-amble
+        Test Post-amble. Ensure M2 is last.
         """
         self.docobj.Path = Path.Path([])
         postables = [self.docobj]
-        args = "--no-header --no-comments --postamble='G0 Z50\nM2' --no-show-editor"
+        args = "--no-header --no-comments --postamble='G0 Z50' --no-show-editor"
         gcode = postprocessor.export(postables, "-", args)
         result = gcode.splitlines()[-2]
         self.assertEqual(result, "G0 Z50")
         self.assertEqual(gcode.splitlines()[-1], "M2")
+
 
     def test050(self):
         """
