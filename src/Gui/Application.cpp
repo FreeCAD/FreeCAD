@@ -379,30 +379,36 @@ struct PyMethodDef FreeCADGui_methods[] = {
     {nullptr, nullptr, 0, nullptr} /* sentinel */
 };
 
-class MainThreadInvoker final : public QObject {
+class MainThreadInvoker final: public QObject
+{
 public:
-    static MainThreadInvoker* instance() {
-        static MainThreadInvoker* inst = []{
+    static MainThreadInvoker* instance()
+    {
+        static MainThreadInvoker* inst = [] {
             auto* obj = new MainThreadInvoker();
             // Ensure the object lives on the GUI thread
-            if (qApp && qApp->thread() && QThread::currentThread() != qApp->thread())
+            if (qApp && qApp->thread() && QThread::currentThread() != qApp->thread()) {
                 obj->moveToThread(qApp->thread());
+            }
             return obj;
         }();
         return inst;
     }
+
 private:
     MainThreadInvoker() = default;
     ~MainThreadInvoker() override = default;
 };
 
 // Hook: are we currently on the GUI (main) thread?
-bool qt_is_main_thread() {
+bool qt_is_main_thread()
+{
     return !qApp || (QThread::currentThread() == qApp->thread());
 }
 
 // Hook: invoke a functor on the GUI thread, either blocking or queued.
-void qt_invoke_on_main(std::function<void()>&& fn, bool blocking) {
+void qt_invoke_on_main(std::function<void()>&& fn, bool blocking)
+{
     if (!qApp) {
         fn();
         return;
@@ -410,9 +416,7 @@ void qt_invoke_on_main(std::function<void()>&& fn, bool blocking) {
 
     QMetaObject::invokeMethod(
         MainThreadInvoker::instance(),
-        [f = std::move(fn)]() mutable {
-            f();
-        },
+        [f = std::move(fn)]() mutable { f(); },
         blocking ? Qt::BlockingQueuedConnection : Qt::QueuedConnection
     );
 }
