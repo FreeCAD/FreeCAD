@@ -374,12 +374,21 @@ def splitArcs(path, deflection=None):
     return Path.Path(results)
 
 
-AXES = ("X","Y","Z","A","B","C")
+AXES = ("X", "Y", "Z", "A", "B", "C")
 
 SIDE_EFFECT_KEYS = {
-    "tool", "tool_change", "spindle", "spindle_on", "spindle_off",
-    "coolant", "dwell", "feed", "F", "M"
+    "tool",
+    "tool_change",
+    "spindle",
+    "spindle_on",
+    "spindle_off",
+    "coolant",
+    "dwell",
+    "feed",
+    "F",
+    "M",
 }
+
 
 def is_rapid(cmd):
     return cmd.Name in CmdMoveRapid
@@ -408,8 +417,7 @@ def collapse_rapid_chain(chain):
 
     # Check which axes change across the chain.
     first = chain[0]["pos"]
-    axes_changed = {ax for ax in AXES
-                    if any(c["pos"][ax] != first[ax] for c in chain)}
+    axes_changed = {ax for ax in AXES if any(c["pos"][ax] != first[ax] for c in chain)}
 
     # If the chain only varies along ONE axis → keep last
     if len(axes_changed) == 1:
@@ -418,8 +426,8 @@ def collapse_rapid_chain(chain):
     # If the chain varies along multiple axes but *only* within one group:
     # - Linear: (X,Y,Z)
     # - Rotary: (A,B,C)
-    lin = {"X","Y","Z"}
-    rot = {"A","B","C"}
+    lin = {"X", "Y", "Z"}
+    rot = {"A", "B", "C"}
 
     if axes_changed <= lin or axes_changed <= rot:
         return [chain[-1]["cmd"]]
