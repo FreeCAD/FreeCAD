@@ -350,7 +350,7 @@ bool FileInfo::isWritable() const
     if ((attributes & FILE_ATTRIBUTE_READONLY) != 0) {
         return false;
     }
-    // TEST if file is truley writable, because windows ACL does not map well to POSIX perms,
+    // TEST if file is truly writable, because windows ACL does not map well to POSIX perms,
     //  and there are other potential blockers (app or shared file locks, etc)
     HANDLE hFile = CreateFileW(
         fileNameWstring.c_str(),
