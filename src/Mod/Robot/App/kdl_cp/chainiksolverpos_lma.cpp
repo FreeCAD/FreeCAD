@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /**
  \file   chainiksolverpos_lma.cpp
  \brief  computing inverse position kinematics using Levenberg-Marquardt.
