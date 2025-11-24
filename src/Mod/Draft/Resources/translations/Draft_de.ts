@@ -5846,14 +5846,14 @@ Please either allow FreeCAD to download these libraries:
 Or download these libraries manually, as explained on
 https://github.com/yorikvanhavre/Draft-dxf-importer
 To enabled FreeCAD to download these libraries, answer Yes.</source>
-      <translation type="unfinished">The DXF import/export libraries needed by FreeCAD to handle
-the DXF format were not found on this system.
-Please either allow FreeCAD to download these libraries:
-  1 - Load Draft workbench
-  2 - Menu Edit → Preferences → Import-Export → DXF → Enable downloads
-Or download these libraries manually, as explained on
-https://github.com/yorikvanhavre/Draft-dxf-importer
-To enabled FreeCAD to download these libraries, answer Yes.</translation>
+      <translation>Die von FreeCAD für die Verarbeitung des DXF-Formats benötigten
+DXF-Import-/Export-Bibliotheken wurden auf diesem System nicht gefunden.
+FreeCAD erlauben, diese Bibliotheken herunterzuladen:
+  1 - Arbeitsbereich Draft laden
+  2 - Menu Bearbeiten → Einstellungen → Import/Export → DXF → Automatische Aktualisierung (Nur Legacy-Modul)
+Oder diese Bibliotheken manuell herunterladen, wie unter
+https://github.com/yorikvanhavre/Draft-dxf-importer beschriegen
+Um FreeCAD das Herunterladen dieser Bibliotheken zu ermöglichen, mit Ja antworten.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/hatch.py" line="140"/>

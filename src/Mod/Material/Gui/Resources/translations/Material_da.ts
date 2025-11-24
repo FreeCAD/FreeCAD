@@ -188,7 +188,7 @@
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="338"/>
       <source>Material</source>
-      <translation>Materiel</translation>
+      <translation>Materiale</translation>
     </message>
   </context>
   <context>
@@ -221,12 +221,12 @@
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="74"/>
       <source>Sub.Shape / Type</source>
-      <translation type="unfinished">Sub.Shape / Type</translation>
+      <translation>Underliggende geometri / Type</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="81"/>
       <source>Shape.TypeID / TypeID</source>
-      <translation type="unfinished">Shape.TypeID / TypeID</translation>
+      <translation>Geometri-typeID / TypeID</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="100"/>
@@ -256,17 +256,17 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="220"/>
       <source>Emissive color</source>
-      <translation type="unfinished">Emissive color</translation>
+      <translation>Fluorescerende farve</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="229"/>
       <source>Specular color</source>
-      <translation type="unfinished">Specular color</translation>
+      <translation>Blank farve</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="238"/>
       <source>Shininess</source>
-      <translation type="unfinished">Shininess</translation>
+      <translation>Glans</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="248"/>
@@ -304,17 +304,17 @@
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="74"/>
       <source>Sub.Shape / Type</source>
-      <translation type="unfinished">Sub.Shape / Type</translation>
+      <translation>Geometri-typeID / TypeID</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="81"/>
       <source>Shape.TypeID / TypeID</source>
-      <translation type="unfinished">Shape.TypeID / TypeID</translation>
+      <translation>Geometri-typeID / TypeID</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="94"/>
       <source>Material</source>
-      <translation>Materiel</translation>
+      <translation>Materiale</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="128"/>
@@ -368,7 +368,7 @@
       <location filename="../../DlgInspectMaterial.cpp" line="266"/>
       <location filename="../../DlgInspectMaterial.cpp" line="341"/>
       <source>UUID: </source>
-      <translation type="unfinished">UUID: </translation>
+      <translation>UUID: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="269"/>
@@ -421,7 +421,7 @@
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="329"/>
       <source>Model UUID: </source>
-      <translation type="unfinished">Model UUID: </translation>
+      <translation>Model UUID: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="333"/>
@@ -444,7 +444,7 @@
     <message>
       <location filename="../../DlgMaterial.ui" line="14"/>
       <source>Material</source>
-      <translation>Materiel</translation>
+      <translation>Materiale</translation>
     </message>
   </context>
   <context>
@@ -458,7 +458,7 @@
     <message>
       <location filename="../../DlgSettingsDefaultMaterial.cpp" line="52"/>
       <source>Physical</source>
-      <translation>Fysisk</translation>
+      <translation>Egenskaber</translation>
     </message>
   </context>
   <context>
@@ -685,7 +685,7 @@ Hvis ikke markeret, vil de blive sorteret efter deres navn.</translation>
     <message>
       <location filename="../../MaterialSave.cpp" line="96"/>
       <source>Delete</source>
-      <translation>Slette</translation>
+      <translation>Slet</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="196"/>
@@ -754,7 +754,7 @@ Hvis ikke markeret, vil de blive sorteret efter deres navn.</translation>
     <message>
       <location filename="../../MaterialTreeWidget.cpp" line="140"/>
       <source>Launch Editor</source>
-      <translation type="unfinished">Launch Editor</translation>
+      <translation>Rediger</translation>
     </message>
     <message>
       <location filename="../../MaterialTreeWidget.cpp" line="313"/>
@@ -784,7 +784,7 @@ Hvis ikke markeret, vil de blive sorteret efter deres navn.</translation>
     <message>
       <location filename="../../MaterialsEditor.ui" line="74"/>
       <source>Parent</source>
-      <translation type="unfinished">Parent</translation>
+      <translation>Overordnet</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="84"/>
@@ -844,7 +844,7 @@ Hvis ikke markeret, vil de blive sorteret efter deres navn.</translation>
     <message>
       <location filename="../../MaterialsEditor.ui" line="215"/>
       <source>Physical</source>
-      <translation>Fysisk</translation>
+      <translation>Egenskaber</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="236"/>
@@ -973,7 +973,7 @@ Hvis ikke markeret, vil de blive sorteret efter deres navn.</translation>
     <message>
       <location filename="../../ModelSelect.ui" line="63"/>
       <source>DOI</source>
-      <translation type="unfinished">DOI</translation>
+      <translation>DOI</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.ui" line="87"/>
@@ -1104,7 +1104,7 @@ Hvis ikke markeret, vil de blive sorteret efter deres navn.</translation>
     <message>
       <location filename="../../DlgMaterialImp.cpp" line="56"/>
       <source>Material</source>
-      <translation>Materiel</translation>
+      <translation>Materiale</translation>
     </message>
   </context>
   <context>
@@ -1119,7 +1119,7 @@ Hvis ikke markeret, vil de blive sorteret efter deres navn.</translation>
       <location filename="../../AppMatGui.cpp" line="112"/>
       <location filename="../../AppMatGui.cpp" line="115"/>
       <source>Material</source>
-      <translation>Materiel</translation>
+      <translation>Materiale</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="190"/>
@@ -1286,7 +1286,7 @@ Hvis ikke markeret, vil de blive sorteret efter deres navn.</translation>
       <location filename="../../DlgSettingsExternal.ui" line="98"/>
       <location filename="../../DlgSettingsExternal.ui" line="124"/>
       <source>Hit rate</source>
-      <translation type="unfinished">Hit rate</translation>
+      <translation>Hitrate</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="134"/>
@@ -1358,7 +1358,7 @@ Hvis ikke markeret, vil de blive sorteret efter deres navn.</translation>
     <message>
       <location filename="../../Command.cpp" line="53"/>
       <source>Material</source>
-      <translation>Materiel</translation>
+      <translation>Materiale</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="54"/>
