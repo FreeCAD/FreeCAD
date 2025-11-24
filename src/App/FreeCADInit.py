@@ -1,5 +1,6 @@
 #***************************************************************************
 #*   Copyright (c) 2001,2002 Jürgen Riegel <juergen.riegel@web.de>         *
+#*   Copyright (c) 2025 Frank Martínez <mnesarco at gmail dot com>         *
 #*                                                                         *
 #*   This file is part of the FreeCAD CAx development system.              *
 #*                                                                         *
