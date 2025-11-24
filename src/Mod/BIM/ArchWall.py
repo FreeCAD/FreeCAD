@@ -1397,15 +1397,55 @@ class _Wall(ArchComponent.Component):
                                 )
                             elif curAligns == "Center":
                                 if layers:
+                                    # TODO Current, the order of layers follow
+                                    # "Right" align.  Option for the order of
+                                    # layers follow "Left" align should be
+                                    # provided for users.
+                                    dvec = dvec.negative()
                                     totalwidth = sum([abs(l) for l in layers])
-                                    curWidth = abs(layers[i])
                                     off = totalwidth / 2 - layeroffset
-                                    d1 = Vector(dvec).multiply(off)
-                                    wNe1 = DraftGeomUtils.offsetWire(wire, d1, wireNedge=True)
-                                    layeroffset += curWidth
-                                    off = totalwidth / 2 - layeroffset
-                                    d1 = Vector(dvec).multiply(off)
-                                    wNe2 = DraftGeomUtils.offsetWire(wire, d1, wireNedge=True)
+                                    # TODO To consider offset per edge?
+                                    #
+                                    # Offset follows direction of align "Right".
+                                    # Needs to be reversed in this case.
+                                    off = -off
+                                    # d1 = Vector(dvec).multiply(off)
+                                    curWidth = []
+                                    alignListC = []
+                                    offsetListC = []
+                                    for n in range(edgeNum):
+                                        curWidth.append(abs(layers[i]))
+                                        alignListC.append("Right")  # ("Left")
+                                        offsetListC.append(off)
+                                    # wNe1 = DraftGeomUtils.offsetWire(wire, d1, wireNedge=True)
+                                    # See https://github.com/FreeCAD/FreeCAD/issues/25485#issuecomment-3566734050
+                                    # d1 may be Vector (0,0,0), offsetWire()
+                                    # in draftgeoutils\offsets.py:-
+                                    # v1 = App.Vector(dvec).normalize() return
+                                    # error.  Provide widthList, alignList etc.
+                                    # so no need to run above code to deduce
+                                    # v1 in offsetWire()
+                                    wNe1 = DraftGeomUtils.offsetWire(
+                                        wire,
+                                        dvec,
+                                        widthList=curWidth,
+                                        offsetMode="BasewireMode",
+                                        alignList=alignListC,
+                                        normal=normal,
+                                        basewireOffset=offsetListC,
+                                        wireNedge=True,
+                                    )
+                                    wNe2 = DraftGeomUtils.offsetWire(
+                                        wire,
+                                        dvec,
+                                        widthList=curWidth,
+                                        offsetMode=None,
+                                        alignList=alignListC,
+                                        normal=normal,
+                                        basewireOffset=offsetListC,
+                                        wireNedge=True,
+                                    )
+                                    layeroffset += abs(curWidth[0])
                                 else:
                                     dvec.multiply(width)
                                     wNe2 = DraftGeomUtils.offsetWire(
