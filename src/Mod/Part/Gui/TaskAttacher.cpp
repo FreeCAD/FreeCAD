@@ -975,7 +975,8 @@ void TaskAttacher::onRefName(const QString& text, unsigned idx)
     if (idx < refs.size()) {
         refs[idx] = obj;
         refnames[idx] = subName;
-    } else {
+    }
+    else {
         refs.push_back(obj);
         refnames.push_back(subName);
     }
