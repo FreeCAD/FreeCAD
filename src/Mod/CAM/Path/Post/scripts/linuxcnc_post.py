@@ -172,7 +172,7 @@ M2"""
 
             # Update PREAMBLE with blend command
             blend_cmd = self._get_blend_command()
-            self.values["PREAMBLE"] += f'\n{blend_cmd}'
+            self.values["PREAMBLE"] += f"\n{blend_cmd}"
 
         return flag, args
 
