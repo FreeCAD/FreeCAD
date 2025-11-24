@@ -48,37 +48,37 @@
       <translation type="unfinished">Assembly</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="138"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="140"/>
       <source>Active object</source>
       <translation>Objecte actiu</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssemblyLink.cpp" line="123"/>
+      <location filename="../../ViewProviderAssemblyLink.cpp" line="125"/>
       <source>Turn flexible</source>
       <translation>Fer-ho flexible</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssemblyLink.cpp" line="124"/>
+      <location filename="../../ViewProviderAssemblyLink.cpp" line="127"/>
       <source>Your sub-assembly is currently rigid. This will make it flexible instead.</source>
       <translation>Actualment, el vostre sub-assemblatge és rígid. Això ho farà flexible.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssemblyLink.cpp" line="128"/>
+      <location filename="../../ViewProviderAssemblyLink.cpp" line="131"/>
       <source>Turn rigid</source>
       <translation>Fer-ho rígid</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssemblyLink.cpp" line="129"/>
+      <location filename="../../ViewProviderAssemblyLink.cpp" line="133"/>
       <source>Your sub-assembly is currently flexible. This will make it rigid instead.</source>
       <translation>Actualment, el vostre sub-assemblatge és flexible. Això ho farà rígid.</translation>
     </message>
     <message>
-      <location filename="../../../App/BomObject.cpp" line="270"/>
+      <location filename="../../../App/BomObject.cpp" line="279"/>
       <source>N/A</source>
       <translation>N/D</translation>
     </message>
     <message>
-      <location filename="../../../App/BomObject.cpp" line="294"/>
+      <location filename="../../../App/BomObject.cpp" line="303"/>
       <source>Not supported</source>
       <translation>No suportat</translation>
     </message>
@@ -235,67 +235,67 @@
       <translation>Quantitat (automàtic)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="190"/>
+      <location filename="../../../CommandCreateBom.py" line="188"/>
       <source>Default</source>
       <translation>Per defecte</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="286"/>
+      <location filename="../../../CommandCreateBom.py" line="284"/>
       <source>Duplicate Name</source>
       <translation>Duplica el Nom</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="287"/>
+      <location filename="../../../CommandCreateBom.py" line="285"/>
       <source>This name is already used. Please choose a different name.</source>
       <translation>Aquest nom ja està en ús. Si us plau, escull un nom diferent.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="366"/>
+      <location filename="../../../CommandCreateBom.py" line="364"/>
       <source>Options</source>
       <translation>Opcions</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="373"/>
+      <location filename="../../../CommandCreateBom.py" line="371"/>
       <source>Sub-assembly children: the children of sub-assemblies will be included in the bill of materials</source>
       <translation>Fills de subconjunts: els fills dels subconjunts s'inclouran a la llista de materials</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="379"/>
+      <location filename="../../../CommandCreateBom.py" line="377"/>
       <source>Parts children: the children of parts will be added to the bill of materials</source>
       <translation>Fills de peces: els fills de peces s'afegiran al llistat de materials</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="385"/>
+      <location filename="../../../CommandCreateBom.py" line="383"/>
       <source>Only parts: adds only part containers and sub-assemblies to the bill of materials. Solids like Part Design bodies, fasteners, or Part workbench primitives are ignored.</source>
       <translation>Només peces: només s'afegiran al llistat de materials contenidors de Peces i submostratges.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="387"/>
+      <location filename="../../../CommandCreateBom.py" line="385"/>
       <source>Columns</source>
       <translation>Columnes</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="400"/>
+      <location filename="../../../CommandCreateBom.py" line="398"/>
       <source>Custom columns : 'Description' and other custom columns you add by clicking on 'Add column' will not have their data overwritten. If a column name starts with '.' followed by a property name (e.g. '.Length'), it will be auto-populated with that property value. These columns can be renamed by double-clicking or pressing F2 (renaming a column will currently lose its data).</source>
       <translation>Columnes Personalitzades: s'afegiran 'Descripció' i altres columnes personalitzades prement 'Afegeix columna', no se'ls hi sobreescriuran les seves dades. Si una columna comença per '.' seguit per un nom de propietat (p.ex. '.Longitud'), s'omplirà automáticament amb el valor d'aquesta propietat. Es poden canviar el nom d'aquestes columnes fent doble clic o prement F2 (en canviar el nom d'una columna es perdran les seves dades).</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="406"/>
+      <location filename="../../../CommandCreateBom.py" line="404"/>
       <source>Any column (custom or not), can be deleted by pressing the Delete key</source>
       <translation>Qualsevol columna (personalitzada o no) pot ser esborrada prement Supr.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="408"/>
+      <location filename="../../../CommandCreateBom.py" line="406"/>
       <source>Export</source>
       <translation>Exportar</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="415"/>
+      <location filename="../../../CommandCreateBom.py" line="413"/>
       <source>The exported file format can be customized in the Spreadsheet workbench preferences</source>
       <translation>El format de fitxer exportat es pot personalitzar a les preferències de l'àrea de treball 'Full de càlcul'</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="394"/>
+      <location filename="../../../CommandCreateBom.py" line="392"/>
       <source>Auto columns :  (Index, Quantity, Name...) are populated automatically. Any modification you make will be overridden. These columns cannot be renamed.</source>
       <translation>Columnes Automàtiques: (Índex, Quantitat, Nom...) són emplenats automàticament. Qualsevol modificació que feu serà sobreescrita. Aquestes columnes no poden ser reanomenades.</translation>
     </message>
@@ -624,18 +624,18 @@ SLOPE defineix la inclinació de la transició entre 0 i H1 i H2 a 0 al voltant 
       <translation>L'objecte a bloquejar</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="354"/>
-      <location filename="../../../CommandCreateView.py" line="391"/>
+      <location filename="../../../CommandCreateView.py" line="358"/>
+      <location filename="../../../CommandCreateView.py" line="395"/>
       <source>The objects moved by the move</source>
       <translation>Els objectes desplaçats pel moviment</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="366"/>
+      <location filename="../../../CommandCreateView.py" line="370"/>
       <source>This is the movement of the move. The end placement is the result of the start placement * this placement.</source>
       <translation>Aquest és el desplaçament del moviment. La ubicació final és el resultat de la ubicació inicial * aquesta ubicació.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="375"/>
+      <location filename="../../../CommandCreateView.py" line="379"/>
       <source>The type of the move</source>
       <translation>El tipus de moviment</translation>
     </message>
@@ -882,63 +882,63 @@ Els fitxers s'anomenen "runPreDrag.asmt" i "dragging.log" i es troben al directo
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="207"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="206"/>
       <source>The object is associated to one or more joints.</source>
       <translation>L'objecte està associat a una o més juntures.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="209"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="208"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>Vols moure l'objecte i eliminar les juntures associades?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1012"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1030"/>
       <source>Move part</source>
       <translation>Moure peça</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1548"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1575"/>
       <source>ViewProviderAssembly</source>
       <comment>and %1 more</comment>
       <translation>Proveïdor del visualitzador de muntatge</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1565"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1592"/>
       <source>Empty Assembly</source>
       <translation>Muntatge buit</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1569"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1597"/>
       <source>Over-constrained:</source>
       <translation>Sobre-restringit:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1576"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1605"/>
       <source>Malformed joints:</source>
       <translation>Juntures mal formades:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1582"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1613"/>
       <source>Redundant joints:</source>
       <translation>Juntures redundants:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1589"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1621"/>
       <source>Partially redundant:</source>
       <translation>Parcialment redundant:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1595"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1629"/>
       <source>Solver failed to converge</source>
       <translation>El solucionador no ha pogut convergir</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1601"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1637"/>
       <source>Under-constrained:</source>
       <translation>Sub-restringit:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1603"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1639"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n grau de llibertat</numerusform>
@@ -946,7 +946,7 @@ Els fitxers s'anomenen "runPreDrag.asmt" i "dragging.log" i es troben al directo
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1607"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1643"/>
       <source>Fully constrained</source>
       <translation>Esbós completament restringit</translation>
     </message>
@@ -1081,7 +1081,7 @@ Els fitxers s'anomenen "runPreDrag.asmt" i "dragging.log" i es troben al directo
   <context>
     <name>Assembly::AssemblyLink</name>
     <message>
-      <location filename="../../../App/AssemblyLink.cpp" line="604"/>
+      <location filename="../../../App/AssemblyLink.cpp" line="651"/>
       <source>Joints</source>
       <translation>Juntures</translation>
     </message>
@@ -1089,7 +1089,7 @@ Els fitxers s'anomenen "runPreDrag.asmt" i "dragging.log" i es troben al directo
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../ViewProviderAssemblyLink.cpp" line="135"/>
+      <location filename="../../ViewProviderAssemblyLink.cpp" line="139"/>
       <source>Toggle Rigid</source>
       <translation>Commuta rígid</translation>
     </message>
@@ -1463,6 +1463,16 @@ Els fitxers s'anomenen "runPreDrag.asmt" i "dragging.log" i es troben al directo
       <source>Insert Component</source>
       <translation>Insereix un Component</translation>
     </message>
+    <message>
+      <location filename="../../../CommandInsertLink.py" line="202"/>
+      <source>Partially loaded</source>
+      <translation type="unfinished">Partially loaded</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandInsertLink.py" line="556"/>
+      <source>Fully load document</source>
+      <translation type="unfinished">Fully load document</translation>
+    </message>
   </context>
   <context>
     <name>AssemblyGui::TaskAssemblyMessages</name>
@@ -1472,22 +1482,22 @@ Els fitxers s'anomenen "runPreDrag.asmt" i "dragging.log" i es troben al directo
       <translation>Missatges del solucionador</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="55"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="56"/>
       <source>Click to select these conflicting joints.</source>
       <translation>Prem-ho per a seleccionar aquestes juntures en conflicte.</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="58"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="59"/>
       <source>Click to select these redundant joints.</source>
       <translation>Prem-ho per a seleccionar aquestes juntures redundants.</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="61"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="63"/>
       <source>The assembly has unconstrained components giving rise to those Degrees Of Freedom. Click to select these unconstrained components.</source>
       <translation>El muntatge té components sense restriccions que donen lloc a aquests graus de llibertat. Prem-ho per a seleccionar aquests components sense restriccions.</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="65"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="68"/>
       <source>Click to select these malformed joints.</source>
       <translation>Prem-ho per a seleccionar aquestes juntures mal formades.</translation>
     </message>

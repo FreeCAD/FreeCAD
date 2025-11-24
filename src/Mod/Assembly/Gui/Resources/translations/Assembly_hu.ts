@@ -48,37 +48,37 @@
       <translation>Összeállítás</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="138"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="140"/>
       <source>Active object</source>
       <translation>Aktív objektum</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssemblyLink.cpp" line="123"/>
+      <location filename="../../ViewProviderAssemblyLink.cpp" line="125"/>
       <source>Turn flexible</source>
       <translation>Rugalmasra váltás</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssemblyLink.cpp" line="124"/>
+      <location filename="../../ViewProviderAssemblyLink.cpp" line="127"/>
       <source>Your sub-assembly is currently rigid. This will make it flexible instead.</source>
       <translation>A felosztás jelenleg merev. Ez rugalmasabbá teszi.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssemblyLink.cpp" line="128"/>
+      <location filename="../../ViewProviderAssemblyLink.cpp" line="131"/>
       <source>Turn rigid</source>
       <translation>Merevvé teszi</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssemblyLink.cpp" line="129"/>
+      <location filename="../../ViewProviderAssemblyLink.cpp" line="133"/>
       <source>Your sub-assembly is currently flexible. This will make it rigid instead.</source>
       <translation>Jelenleg a részegysége rugalmas. Ez merevvé teszi.</translation>
     </message>
     <message>
-      <location filename="../../../App/BomObject.cpp" line="270"/>
+      <location filename="../../../App/BomObject.cpp" line="279"/>
       <source>N/A</source>
       <translation>N/A</translation>
     </message>
     <message>
-      <location filename="../../../App/BomObject.cpp" line="294"/>
+      <location filename="../../../App/BomObject.cpp" line="303"/>
       <source>Not supported</source>
       <translation>Nem támogatott</translation>
     </message>
@@ -235,67 +235,67 @@
       <translation>Mennyiség (automatikus)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="190"/>
+      <location filename="../../../CommandCreateBom.py" line="188"/>
       <source>Default</source>
       <translation>Alapértelmezett</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="286"/>
+      <location filename="../../../CommandCreateBom.py" line="284"/>
       <source>Duplicate Name</source>
       <translation>Ismételt név</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="287"/>
+      <location filename="../../../CommandCreateBom.py" line="285"/>
       <source>This name is already used. Please choose a different name.</source>
       <translation>Ez a név már használatban van. Kérjük, válasszon másik nevet.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="366"/>
+      <location filename="../../../CommandCreateBom.py" line="364"/>
       <source>Options</source>
       <translation>Beállítások</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="373"/>
+      <location filename="../../../CommandCreateBom.py" line="371"/>
       <source>Sub-assembly children: the children of sub-assemblies will be included in the bill of materials</source>
       <translation>Alkatrészek alpontjai: a felosztás alkatrészek alpontjait be fognak kerülni az anyagjegyzékbe</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="379"/>
+      <location filename="../../../CommandCreateBom.py" line="377"/>
       <source>Parts children: the children of parts will be added to the bill of materials</source>
       <translation>Alkatrészek alpontjai: az Alkatrészek alpontjai hozzáadásra kerülnek az anyagjegyzékhez</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="385"/>
+      <location filename="../../../CommandCreateBom.py" line="383"/>
       <source>Only parts: adds only part containers and sub-assemblies to the bill of materials. Solids like Part Design bodies, fasteners, or Part workbench primitives are ignored.</source>
-      <translation>Csak alkatrészek: csak alkatrész-tárolók és összetevőket ad hozzá az anyagjegyzékhez. Az olyan szilárd testek, mint az alkatrész tervetés testei, rögzítők vagy az alkatrész munkafelület alaptestjei figyelmen kívül maradnak.</translation>
+      <translation>Csak alkatrészek: csak alkatrész-tárolók és összetevőket ad hozzá az anyagjegyzékhez. Az olyan szilárd testek, mint az alkatrész tervezés testei, rögzítők vagy az alkatrész munkafelület alaptestei figyelmen kívül maradnak.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="387"/>
+      <location filename="../../../CommandCreateBom.py" line="385"/>
       <source>Columns</source>
       <translation>Oszlopok</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="400"/>
+      <location filename="../../../CommandCreateBom.py" line="398"/>
       <source>Custom columns : 'Description' and other custom columns you add by clicking on 'Add column' will not have their data overwritten. If a column name starts with '.' followed by a property name (e.g. '.Length'), it will be auto-populated with that property value. These columns can be renamed by double-clicking or pressing F2 (renaming a column will currently lose its data).</source>
       <translation>Személyre szabott oszlopok: a 'Leírás' és más személyre szabott oszlopok, amelyeket az 'Oszlop hozzáadása' gombra kattintva ad hozzá, nem fognak felülíródni. Ha egy oszlop neve '.'-kal kezdődik, amelyet egy tulajdonság neve követ (pl. '.Hossz'), akkor automatikusan kitöltődik az adott tulajdonság értékével. Ezeket az oszlopokat átnevezheti dupla kattintással vagy az F2 billentyű megnyomásával (egy oszlop átnevezése jelenleg az adatainak elvesztésével jár).</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="406"/>
+      <location filename="../../../CommandCreateBom.py" line="404"/>
       <source>Any column (custom or not), can be deleted by pressing the Delete key</source>
       <translation>Bármelyik oszlop (akár személyre szabott, akár nem) törölhető a Töröl gomb megnyomásával</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="408"/>
+      <location filename="../../../CommandCreateBom.py" line="406"/>
       <source>Export</source>
       <translation>Export</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="415"/>
+      <location filename="../../../CommandCreateBom.py" line="413"/>
       <source>The exported file format can be customized in the Spreadsheet workbench preferences</source>
-      <translation>Az exportált fájlformátum testreszabható a Táblázatkezelő munkafelület beállításaiban</translation>
+      <translation>Az exportált fájlformátum testre szabható a Táblázatkezelő munkafelület beállításaiban</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="394"/>
+      <location filename="../../../CommandCreateBom.py" line="392"/>
       <source>Auto columns :  (Index, Quantity, Name...) are populated automatically. Any modification you make will be overridden. These columns cannot be renamed.</source>
       <translation>Automatikus oszlopok : (Index, mennyiség, név...) automatikusan feltöltődnek. Bármely módosítás, amelyet végez, felülírásra kerül. Ezeket az oszlopokat nem lehet átnevezni.</translation>
     </message>
@@ -567,7 +567,7 @@ A SLOPE határozza meg a 0 és H1, illetve H2 és 0 közötti átmenet meredeks�
     <message>
       <location filename="../../../JointObject.py" line="386"/>
       <source>This is the angle of the joint. It is used only by the Angle joint.</source>
-      <translation>Ez a csatlakozás szöge. Csak a szüg csatlakozás használja.</translation>
+      <translation>Ez a csatlakozás szöge. Csak a szög csatlakozás használja.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="422"/>
@@ -626,18 +626,18 @@ Ezt csak a fogaskerék csatlakozás használja a második sugár megtartására.
       <translation>A rögzitendő objektum</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="354"/>
-      <location filename="../../../CommandCreateView.py" line="391"/>
+      <location filename="../../../CommandCreateView.py" line="358"/>
+      <location filename="../../../CommandCreateView.py" line="395"/>
       <source>The objects moved by the move</source>
       <translation>Az elmozdulás által mozgatott objektumok</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="366"/>
+      <location filename="../../../CommandCreateView.py" line="370"/>
       <source>This is the movement of the move. The end placement is the result of the start placement * this placement.</source>
       <translation>Ez a mozgás a mozgás mozdulata. A véghelyzet a kezdőhelyzet * ennek a helyzetnek az eredménye.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="375"/>
+      <location filename="../../../CommandCreateView.py" line="379"/>
       <source>The type of the move</source>
       <translation>A mozgás típusa</translation>
     </message>
@@ -883,63 +883,63 @@ A fájlok neve "runPreDrag.asmt" és "dragging.log", és az std::ofstream alapé
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="207"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="206"/>
       <source>The object is associated to one or more joints.</source>
       <translation>Az objektum egy vagy több csatlakozással rendelkezik.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="209"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="208"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>El akarja mozgatni az objektumot és törölni a hozzá tartozó csatlakozásokat?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1012"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1030"/>
       <source>Move part</source>
       <translation>Mozgassa a részt</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1548"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1575"/>
       <source>ViewProviderAssembly</source>
       <comment>and %1 more</comment>
       <translation>A szerkesztő néző szolgáltatója</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1565"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1592"/>
       <source>Empty Assembly</source>
       <translation>Üres összeállítás</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1569"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1597"/>
       <source>Over-constrained:</source>
       <translation>Eltúlzott kényszer:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1576"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1605"/>
       <source>Malformed joints:</source>
       <translation>Hibás csatlakozás:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1582"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1613"/>
       <source>Redundant joints:</source>
       <translation>Felesleges csatlakozás:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1589"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1621"/>
       <source>Partially redundant:</source>
       <translation>Részben felesleges:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1595"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1629"/>
       <source>Solver failed to converge</source>
       <translation>A megoldó nem tudott hasonlítani</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1601"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1637"/>
       <source>Under-constrained:</source>
       <translation>Nem eléggé kényszerített:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1603"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1639"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n Szabadsági fok</numerusform>
@@ -947,7 +947,7 @@ A fájlok neve "runPreDrag.asmt" és "dragging.log", és az std::ofstream alapé
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1607"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1643"/>
       <source>Fully constrained</source>
       <translation>Teljesen kényszertett</translation>
     </message>
@@ -1082,7 +1082,7 @@ A fájlok neve "runPreDrag.asmt" és "dragging.log", és az std::ofstream alapé
   <context>
     <name>Assembly::AssemblyLink</name>
     <message>
-      <location filename="../../../App/AssemblyLink.cpp" line="604"/>
+      <location filename="../../../App/AssemblyLink.cpp" line="651"/>
       <source>Joints</source>
       <translation>Csatlakozások</translation>
     </message>
@@ -1090,7 +1090,7 @@ A fájlok neve "runPreDrag.asmt" és "dragging.log", és az std::ofstream alapé
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../ViewProviderAssemblyLink.cpp" line="135"/>
+      <location filename="../../ViewProviderAssemblyLink.cpp" line="139"/>
       <source>Toggle Rigid</source>
       <translation>Merevet kapcsolja</translation>
     </message>
@@ -1272,7 +1272,7 @@ A fájlok neve "runPreDrag.asmt" és "dragging.log", és az std::ofstream alapé
     <message>
       <location filename="../../../CommandCreateJoint.py" line="83"/>
       <source>&lt;p&gt;1 - If an assembly is active : Creates a joint permanently locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</source>
-      <translation>&lt;p&gt;1 - Ha egy sszeállítás aktív, egy merev kapcsolat jön létre, amely két alkatrészt tartósan összekapcsol, és megakadályoz minden elmozdulást vagy elforgatást.&lt;/p&gt;&lt;p&gt;2 - Ha egy alkatrész objektum aktív, az alkatrészeket a kiválasztott koordinátarendszerek egymáshoz igazításával helyezik el. Ebben az esetben a másodikként kiválasztott alkatrész fog mozogni.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;1 - Ha egy összeállítás aktív, egy merev kapcsolat jön létre, amely két alkatrészt tartósan összekapcsol, és megakadályoz minden elmozdulást vagy elforgatást.&lt;/p&gt;&lt;p&gt;2 - Ha egy alkatrész objektum aktív, az alkatrészeket a kiválasztott koordináta rendszerek egymáshoz igazításával helyezik el. Ebben az esetben a másodikként kiválasztott alkatrész fog mozogni.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1376,7 +1376,7 @@ A fájlok neve "runPreDrag.asmt" és "dragging.log", és az std::ofstream alapé
     <message>
       <location filename="../../../CommandCreateJoint.py" line="274"/>
       <source>Creates an angle joint that fixes the angle between the Z-axis of the selected coordinate systems</source>
-      <translation>Létrehoz egy sarkos csatlakozást, amely rögzíti a kiválasztott koordinátarendszerek Z-tengelye közötti szöget</translation>
+      <translation>Létrehoz egy sarkos csatlakozást, amely rögzíti a kiválasztott koordináta rendszerek Z-tengelye közötti szöget</translation>
     </message>
   </context>
   <context>
@@ -1389,7 +1389,7 @@ A fájlok neve "runPreDrag.asmt" és "dragging.log", és az std::ofstream alapé
     <message>
       <location filename="../../../CommandCreateJoint.py" line="300"/>
       <source>&lt;p&gt;Creates a rack and pinion joint that links a part with a sliding joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Selects the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rack and the pinion.&lt;/p&gt;</source>
-      <translation>&lt;p&gt;Hozzon létre egy fogasléc, fogaskerés hajtóművet, amely összekapcsol egy csúszó csatlakozás és egy forgócsatlakozás mozgásait.&lt;/p&gt;&lt;p&gt;Ehhez válassza ki ugyanazokat a koordináta-rendszereket, a csúszó csatlakozás és a forgó csatlakozás esetében. A emelkedési sugár tulajdonság meghatározza az elmozdulás és a forgás közötti mozgásarányt.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;Hozzon létre egy fogasléc, fogaskerék hajtóművet, amely összekapcsol egy csúszó csatlakozás és egy forgócsatlakozás mozgásait.&lt;/p&gt;&lt;p&gt;Ehhez válassza ki ugyanazokat a koordináta-rendszereket, a csúszó csatlakozás és a forgó csatlakozás esetében. A emelkedési sugár tulajdonság meghatározza az elmozdulás és a forgás közötti mozgásarányt.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1402,7 +1402,7 @@ A fájlok neve "runPreDrag.asmt" és "dragging.log", és az std::ofstream alapé
     <message>
       <location filename="../../../CommandCreateJoint.py" line="348"/>
       <source>&lt;p&gt;Creates a gears joint that links 2 rotating gears together. They will have inverse rotation direction.&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</source>
-      <translation>&lt;p&gt;Készítsen egy fogaskerék-hajtóművet, amely 2 fogaskerék mozgásait összekapcsolja. A forgási irányuk ellentétes.&lt;/p&gt;&lt;p&gt;Ehhez válassza ki ugyanazokat a koordinátarendszereket, mint a forgócsatlakozásé.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;Készítsen egy fogaskerék-hajtóművet, amely 2 fogaskerék mozgásait összekapcsolja. A forgási irányuk ellentétes.&lt;/p&gt;&lt;p&gt;Ehhez válassza ki ugyanazokat a koordináta rendszereket, mint a forgócsatlakozásé.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1415,7 +1415,7 @@ A fájlok neve "runPreDrag.asmt" és "dragging.log", és az std::ofstream alapé
     <message>
       <location filename="../../../CommandCreateJoint.py" line="372"/>
       <source>&lt;p&gt;Creates a belt joint that links 2 rotating objects together. They will have the same rotation direction.&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</source>
-      <translation>&lt;p&gt;Hozzon létre egy szíjmeghajtást, amely 2 forgó objelktum mozgását összekapcsolja. Forgásirányuk egyenirányú.&lt;/p&gt;&lt;p&gt;Ehhez válassza ugyanazokat a koordinátarendszereket, mint a forgócsatlakozásoké.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;Hozzon létre egy szíjmeghajtást, amely 2 forgó objektum mozgását összekapcsolja. Forgásirányuk egyenirányú.&lt;/p&gt;&lt;p&gt;Ehhez válassza ugyanazokat a koordináta rendszereket, mint a forgócsatlakozásoké.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1423,7 +1423,7 @@ A fájlok neve "runPreDrag.asmt" és "dragging.log", és az std::ofstream alapé
     <message>
       <location filename="../../../CommandCreateJoint.py" line="429"/>
       <source>Toggle Grounded</source>
-      <translation>Kapcsolja be a zérolsás módot</translation>
+      <translation>Kapcsolja zárolást</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="435"/>
@@ -1464,6 +1464,16 @@ A fájlok neve "runPreDrag.asmt" és "dragging.log", és az std::ofstream alapé
       <source>Insert Component</source>
       <translation>Összetevő beszúrás</translation>
     </message>
+    <message>
+      <location filename="../../../CommandInsertLink.py" line="202"/>
+      <source>Partially loaded</source>
+      <translation type="unfinished">Partially loaded</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandInsertLink.py" line="556"/>
+      <source>Fully load document</source>
+      <translation type="unfinished">Fully load document</translation>
+    </message>
   </context>
   <context>
     <name>AssemblyGui::TaskAssemblyMessages</name>
@@ -1473,22 +1483,22 @@ A fájlok neve "runPreDrag.asmt" és "dragging.log", és az std::ofstream alapé
       <translation>Megoldó üzenetei</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="55"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="56"/>
       <source>Click to select these conflicting joints.</source>
       <translation>Kattintson az ütköző csatlakozások kijelöléséhez.</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="58"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="59"/>
       <source>Click to select these redundant joints.</source>
       <translation>Kattintással jelölje ki ezeket a felesleges csatlakozásokat.</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="61"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="63"/>
       <source>The assembly has unconstrained components giving rise to those Degrees Of Freedom. Click to select these unconstrained components.</source>
       <translation>A szerkezetnek korlátlan összetevői vannak, amelyek szabadságfokokat adnak. Kattintson az ezen korlátlan alkatrészek kiválasztásához.</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="65"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="68"/>
       <source>Click to select these malformed joints.</source>
       <translation>Kattintson a hibás csatlakozások kiválasztásához.</translation>
     </message>

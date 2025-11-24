@@ -3023,14 +3023,14 @@ wyrażona w jednostkach wewnętrznych (milimetrach)</translation>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="147"/>
       <source>Join Arch::Wall</source>
-      <translation>Dołącz do Arch::Mur</translation>
+      <translation>Połącz Arch::Wall</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="160"/>
       <source>Whether to import the model's lights. Note that you also need to import
                     the model's furnitures.</source>
-      <translation>Czy zaimportować światła modelu. Należy pamiętać, że należy również zaimportować
-                    meble modelu.</translation>
+      <translation>Czy importować światła z modelu. 
+Zwróć uwagę, że musisz również zaimportować meble z modelu.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="164"/>
@@ -3045,7 +3045,7 @@ wyrażona w jednostkach wewnętrznych (milimetrach)</translation>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="180"/>
       <source>Cameras (requires Render)</source>
-      <translation>Kamery (wymaga Renderowania)</translation>
+      <translation>Ujęcia widoku (wymaga Renderowania)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="193"/>
@@ -3219,9 +3219,11 @@ if crashes occur when multiple cores are set.</source>
       <translation>OPCJA EKSPERYMENTALNA
 Liczba rdzeni procesora używanych w trybie wielordzeniowym.
 Pozostaw wartość 0, aby wyłączyć tryb wielordzeniowy.
-Maksymalną wartością powinna być liczba rdzeni pomniejszona o 1, na przykład 3 jeśli posiadasz procesor czterordzeniowy.
+Maksymalną wartością powinna być liczba rdzeni pomniejszona o 1, 
+na przykład 3 jeśli posiadasz procesor czterordzeniowy.
 
-Ustaw na 1, aby użyć trybu wielordzeniowego w trybie jednordzeniowym. To jest bezpieczniejsze, gdy występują problemy przy ustawieniu wielu rdzeni.</translation>
+Ustaw na 1, aby użyć trybu wielordzeniowego w trybie jednordzeniowym. 
+To jest bezpieczniejsze, gdy występują problemy przy ustawieniu wielu rdzeni.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="67"/>
@@ -3237,7 +3239,7 @@ Ustaw na 1, aby użyć trybu wielordzeniowego w trybie jednordzeniowym. To jest 
     <message>
       <location filename="../ui/preferences-ifc.ui" line="192"/>
       <source>Import structure IFC objects as</source>
-      <translation>Importuj obiekty IFC struktury jako</translation>
+      <translation>Importuj strukturę obiektów IFC jako</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="219"/>
@@ -3247,7 +3249,7 @@ Ustaw na 1, aby użyć trybu wielordzeniowego w trybie jednordzeniowym. To jest 
     <message>
       <location filename="../ui/preferences-ifc.ui" line="224"/>
       <source>Do not import structural objects</source>
-      <translation>Nie importuj obiektów konstrukcyjnych</translation>
+      <translation>Nie importuj obiektów konstrukcji</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="236"/>
@@ -3330,7 +3332,8 @@ będą traktowane jako całość.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="361"/>
       <source>IFC files can contain unclean or non-solid geometry. If this option is checked, all the geometry is imported, regardless of their validity.</source>
-      <translation>Pliki IFC mogą zawierać geometrię niewłaściwą lub nie będącą bryłą. Jeżeli ta opcja jest zaznaczona, cała geometria zostanie zaimportowana, niezależnie od jej poprawności.</translation>
+      <translation>Pliki IFC mogą zawierać geometrię niewłaściwą lub niebędącą bryłą. 
+Jeżeli ta opcja jest zaznaczona, cała geometria zostanie zaimportowana, niezależnie od jej poprawności.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="364"/>
@@ -3646,7 +3649,7 @@ z którymi jednostkami pracować podczas otwierania pliku.</translation>
       <location filename="../ui/preferences-ifc-export.ui" line="353"/>
       <location filename="../ui/preferences-ifc.ui" line="460"/>
       <source>Check also native-IFC-specific preferences under BIM -&gt; Native IFC</source>
-      <translation>Sprawdź również preferencje specyficzne dla Native IFC w menu BIM → Native IFC.</translation>
+      <translation>Sprawdź również preferencje specyficzne dla Native IFC w menu BIM → Natywny IFC.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="369"/>
@@ -3762,7 +3765,9 @@ Ich elementy podrzędne zostaną przeniesione do kontenera pominiętej grupy w s
       <location filename="../ui/preferences-ifc-export.ui" line="410"/>
       <source>In FreeCAD, it is possible to nest groups inside buildings or storeys. If this option is disabled, FreeCAD groups will be saved as IfcGroups and aggregated to the building structure. Aggregating non-building elements such as IfcGroups is however not recommended by the IFC standards. It is therefore also possible to export these groups as IfcElementAssemblies, which produces an IFC-compliant file.</source>
       <translation>W FreeCAD możliwe jest zagnieżdżanie grup wewnątrz budynków lub kondygnacji. 
-Jeśli ta opcja jest wyłączona, grupy FreeCAD zostaną zapisane jako IfcGroups i przypisane do struktury budynku. Agregowanie elementów niebędących budynkami, takich jak IfcGroups, nie jest jednak zalecane przez standardy IFC. Dlatego możliwy jest również eksport tych grup jako IfcElementAssemblies, co daje plik zgodny ze standardem IFC.</translation>
+Jeśli ta opcja jest wyłączona, grupy FreeCAD zostaną zapisane jako IfcGroups i przypisane do struktury budynku. 
+Agregowanie elementów niebędących budynkami, takich jak IfcGroups, nie jest jednak zalecane przez standardy IFC. 
+Dlatego możliwy jest również eksport tych grup jako IfcElementAssemblies, co daje plik zgodny ze standardem IFC.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="363"/>
@@ -6368,7 +6373,8 @@ jeśli wysokość tych obiektów jest ustawiona na 0</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="684"/>
       <source>A slot to save the OpenInventor representation of this object, if enabled</source>
-      <translation>Miejsce do zapisania reprezentacji OpenInventor tego obiektu, o ile opcja ta jest włączona.</translation>
+      <translation>Miejsce do zapisania reprezentacji OpenInventor tego obiektu, 
+o ile opcja ta jest włączona.</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="698"/>
@@ -6520,7 +6526,7 @@ jeśli wysokość tych obiektów jest ustawiona na 0</translation>
     <message>
       <location filename="../../ArchProfile.py" line="507"/>
       <source>Slot size</source>
-      <translation>Rozmiar gniazda</translation>
+      <translation>Rozmiar wpustu</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="514"/>
@@ -10023,78 +10029,78 @@ Pamiętaj, aby usunąć obiekt TinyLinesResult po zakończeniu!</translation>
       <translation>Wskazówka: Wyniki najlepiej oglądać w trybie szkieletowym (menu Widok → Styl kreślenia → Szkieletowy)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="294"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="295"/>
       <source>Building Layout</source>
       <translation>Układ budynku</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="320"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="321"/>
       <source>Building Outline</source>
       <translation>Kontur budynku</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="339"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="340"/>
       <source>Building Label</source>
       <translation>Nazwa budynku</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="349"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="350"/>
       <source>Vertical Axes</source>
       <translation>Osie pionowe</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="360"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="361"/>
       <source>Horizontal Axes</source>
       <translation>Osie poziome</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="370"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="371"/>
       <source>Axes</source>
       <translation>Osie</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="384"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="385"/>
       <source>Level</source>
       <translation>Kondygnacja</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="445"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="446"/>
       <source>Save Preset</source>
       <translation>Zapisz ustawienia</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="446"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="447"/>
       <source>Preset name</source>
       <translation>Nazwa konfiguracji wstępnej</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="495"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="496"/>
       <source>User preset</source>
       <translation>Konfiguracja wstępna użytkownika</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="785"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="786"/>
       <source>Template successfully loaded into the current document</source>
       <translation>Szablon pomyślnie załadowano do bieżącego dokumentu</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="430"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="431"/>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="156"/>
       <source>New Group</source>
       <translation>Nowa grupa</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="649"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="650"/>
       <source>Save template file</source>
       <translation>Zapisz plik szablonu</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="658"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="659"/>
       <source>Template saved successfully</source>
       <translation>Szablon zapisano pomyślnie</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="671"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="672"/>
       <source>Open template file</source>
       <translation>Otwórz plik szablonu</translation>
     </message>
@@ -11552,7 +11558,10 @@ Lokalizacja w preferencjach: &lt;span style=" font-weight:600;"&gt;Część / Pr
     <message>
       <location filename="../ui/dialogSetup.ui" line="463"/>
       <source>The altitude of the camera when a blank file is created. Recommended values are between 5 (view a few centimeters wide) and 5000 (view a few meters wide)</source>
-      <translation>Wysokość kamery podczas tworzenia pustego pliku. Zalecane wartości to od 5 (widok o szerokości kilku centymetrów) do 5000 (widok o szerokości kilku metrów)</translation>
+      <translation>Wysokość ujęcia widoku podczas tworzenia pustego pliku. 
+Zalecane wartości to: 
+od 5 (widok o szerokości kilku centymetrów) 
+do 5000 (widok o szerokości kilku metrów).</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="476"/>
