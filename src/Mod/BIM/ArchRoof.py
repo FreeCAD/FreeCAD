@@ -1108,13 +1108,5 @@ if FreeCAD.GuiUp:
 
         def eventFilter(self, widget, event):
             if event.type() == QtCore.QEvent.FocusIn:
-                widget.setSelection(0, self.number_length(widget.text()))
+                widget.setSelection(0, FreeCADGui.draftToolBar.number_length(widget.text()))
             return super().eventFilter(widget, event)
-
-        def number_length(self, str):
-            # Code taken from DraftGui.py.
-            nl = 0
-            for char in str:
-                if char in "0123456789.,-":
-                    nl += 1
-            return nl
