@@ -3229,4 +3229,47 @@ void ConstraintArcLength::evaluate()
     *distance() = (endA - startA) * *arc.rad;
 }
 
+// --------------------------------------------------------
+// ConstraintOffset
+ConstraintOffset::ConstraintOffset(OffsetCurve& offc, double* offValue)
+    : _offCurve(offc)
+{
+    pvec.push_back(offValue);
+    this->_offCurve.PushOwnParams(pvec);
+
+    origpvec = pvec;
+    reconstructGeomPointers();
+    rescale();
+}
+
+void ConstraintOffset::reconstructGeomPointers()
+{
+    int i = 0;
+    i++;  // skip the first parameter as there is the inline function offset for it
+    _offCurve.ReconstructOnNewPvec(pvec, i);
+}
+
+ConstraintType ConstraintOffset::getTypeId()
+{
+    return OffsetValue;
+}
+
+void ConstraintOffset::errorgrad(double* err, double* grad, double* param)
+{
+    if (err) {
+        *err = *offset() - *(_offCurve.offset);
+    }
+
+    if (grad) {
+        if (param == offset()) {
+            *grad = 1.0;
+        }
+        if (param == _offCurve.offset) {
+            *grad = -1.0;
+        }
+    }
+
+    return;
+}
+
 }  // namespace GCS
