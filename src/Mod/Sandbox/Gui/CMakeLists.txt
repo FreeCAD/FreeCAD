@@ -10,7 +10,6 @@ if(BUILD_QT5)
         ${Qt5Core_INCLUDE_DIRS}
     )
 else()
-    SYSTEM
     include_directories(
         SYSTEM
         ${QT_INCLUDE_DIR}
