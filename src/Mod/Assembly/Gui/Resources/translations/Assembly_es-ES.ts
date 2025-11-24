@@ -19,7 +19,7 @@
     <message>
       <location filename="../../../CommandInsertLink.py" line="56"/>
       <source>&lt;p&gt;Inserts a component into the active assembly. This will create dynamic links to parts, bodies, primitives, and assemblies. To insert external components, make sure that the file is &lt;b&gt;open in the current session&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Insert by left clicking items in the list.&lt;/li&gt;&lt;li&gt;Remove by right clicking items in the list.&lt;/li&gt;&lt;li&gt;Press shift to add several instances of the component while clicking on the view.&lt;/li&gt;&lt;/ul&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Inserts a component into the active assembly. This will create dynamic links to parts, bodies, primitives, and assemblies. To insert external components, make sure that the file is &lt;b&gt;open in the current session&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Insert by left clicking items in the list.&lt;/li&gt;&lt;li&gt;Remove by right clicking items in the list.&lt;/li&gt;&lt;li&gt;Press shift to add several instances of the component while clicking on the view.&lt;/li&gt;&lt;/ul&gt;</translation>
+      <translation>&lt;p&gt;Inserta un componente en el ensamblaje activo. Esto creará enlaces dinámicos a piezas, cuerpos, primitivos y ensamblajes. Para insertar componentes externos, asegúrese de que el archivo esté &lt;b&gt;abierto en la sesión actual&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Inserte haciendo clic izquierdo en los elementos de la lista.&lt;/li&gt;&lt;li&gt;Elimine haciendo clic derecho en los elementos de la lista.&lt;/li&gt;&lt;li&gt;Pulse Shift para añadir varias instancias del componente mientras hace clic en la vista.&lt;/li&gt;&lt;/ul&gt;</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertLink.py" line="81"/>
@@ -48,39 +48,39 @@
       <translation>Ensamblaje</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="138"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="140"/>
       <source>Active object</source>
       <translation>Objeto activo</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssemblyLink.cpp" line="123"/>
+      <location filename="../../ViewProviderAssemblyLink.cpp" line="125"/>
       <source>Turn flexible</source>
       <translation>Hacer flexible</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssemblyLink.cpp" line="124"/>
+      <location filename="../../ViewProviderAssemblyLink.cpp" line="127"/>
       <source>Your sub-assembly is currently rigid. This will make it flexible instead.</source>
       <translation>Tu subensamblaje es actualmente rígido. Esto lo hará flexible en su lugar.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssemblyLink.cpp" line="128"/>
+      <location filename="../../ViewProviderAssemblyLink.cpp" line="131"/>
       <source>Turn rigid</source>
       <translation>Hacer rígido</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssemblyLink.cpp" line="129"/>
+      <location filename="../../ViewProviderAssemblyLink.cpp" line="133"/>
       <source>Your sub-assembly is currently flexible. This will make it rigid instead.</source>
       <translation>Tu subensamblaje es actualmente flexible. Esto lo hará rígido en su lugar.</translation>
     </message>
     <message>
-      <location filename="../../../App/BomObject.cpp" line="270"/>
+      <location filename="../../../App/BomObject.cpp" line="279"/>
       <source>N/A</source>
-      <translation type="unfinished">N/A</translation>
+      <translation>N/A</translation>
     </message>
     <message>
-      <location filename="../../../App/BomObject.cpp" line="294"/>
+      <location filename="../../../App/BomObject.cpp" line="303"/>
       <source>Not supported</source>
-      <translation type="unfinished">Not supported</translation>
+      <translation>No soportado</translation>
     </message>
   </context>
   <context>
@@ -172,7 +172,7 @@
     <message>
       <location filename="../../../JointObject.py" line="759"/>
       <source>Broken link in: </source>
-      <translation type="unfinished">Broken link in: </translation>
+      <translation>Enlace roto en: </translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="1531"/>
@@ -235,67 +235,67 @@
       <translation>Cantidad (auto)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="190"/>
+      <location filename="../../../CommandCreateBom.py" line="188"/>
       <source>Default</source>
       <translation>Por defecto</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="286"/>
+      <location filename="../../../CommandCreateBom.py" line="284"/>
       <source>Duplicate Name</source>
       <translation>Duplicar nombre</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="287"/>
+      <location filename="../../../CommandCreateBom.py" line="285"/>
       <source>This name is already used. Please choose a different name.</source>
       <translation>Este nombre ya está en uso. Por favor, elija un nombre diferente.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="366"/>
+      <location filename="../../../CommandCreateBom.py" line="364"/>
       <source>Options</source>
       <translation>Opciones</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="373"/>
+      <location filename="../../../CommandCreateBom.py" line="371"/>
       <source>Sub-assembly children: the children of sub-assemblies will be included in the bill of materials</source>
       <translation type="unfinished">Sub-assembly children: the children of sub-assemblies will be included in the bill of materials</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="379"/>
+      <location filename="../../../CommandCreateBom.py" line="377"/>
       <source>Parts children: the children of parts will be added to the bill of materials</source>
       <translation type="unfinished">Parts children: the children of parts will be added to the bill of materials</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="385"/>
+      <location filename="../../../CommandCreateBom.py" line="383"/>
       <source>Only parts: adds only part containers and sub-assemblies to the bill of materials. Solids like Part Design bodies, fasteners, or Part workbench primitives are ignored.</source>
       <translation type="unfinished">Only parts: adds only part containers and sub-assemblies to the bill of materials. Solids like Part Design bodies, fasteners, or Part workbench primitives are ignored.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="387"/>
+      <location filename="../../../CommandCreateBom.py" line="385"/>
       <source>Columns</source>
       <translation>Columnas</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="400"/>
+      <location filename="../../../CommandCreateBom.py" line="398"/>
       <source>Custom columns : 'Description' and other custom columns you add by clicking on 'Add column' will not have their data overwritten. If a column name starts with '.' followed by a property name (e.g. '.Length'), it will be auto-populated with that property value. These columns can be renamed by double-clicking or pressing F2 (renaming a column will currently lose its data).</source>
       <translation type="unfinished">Custom columns : 'Description' and other custom columns you add by clicking on 'Add column' will not have their data overwritten. If a column name starts with '.' followed by a property name (e.g. '.Length'), it will be auto-populated with that property value. These columns can be renamed by double-clicking or pressing F2 (renaming a column will currently lose its data).</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="406"/>
+      <location filename="../../../CommandCreateBom.py" line="404"/>
       <source>Any column (custom or not), can be deleted by pressing the Delete key</source>
       <translation type="unfinished">Any column (custom or not), can be deleted by pressing the Delete key</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="408"/>
+      <location filename="../../../CommandCreateBom.py" line="406"/>
       <source>Export</source>
       <translation>Exportar</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="415"/>
+      <location filename="../../../CommandCreateBom.py" line="413"/>
       <source>The exported file format can be customized in the Spreadsheet workbench preferences</source>
       <translation type="unfinished">The exported file format can be customized in the Spreadsheet workbench preferences</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="394"/>
+      <location filename="../../../CommandCreateBom.py" line="392"/>
       <source>Auto columns :  (Index, Quantity, Name...) are populated automatically. Any modification you make will be overridden. These columns cannot be renamed.</source>
       <translation>Columnas automáticas: (Índice, Cantidad, Nombre...) son llenadas automáticamente. Cualquier modificación que realice será sobreescrita. Estas columnas no pueden ser renombradas.</translation>
     </message>
@@ -337,7 +337,7 @@
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="144"/>
       <source>Do not Link</source>
-      <translation type="unfinished">Do not Link</translation>
+      <translation>No enlazar</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="488"/>
@@ -347,7 +347,7 @@
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="541"/>
       <source>In capital are variables that you need to replace with actual values. More details about each example in its tooltip.</source>
-      <translation type="unfinished">In capital are variables that you need to replace with actual values. More details about each example in its tooltip.</translation>
+      <translation>En mayúsculas hay variables que necesita reemplazar con valores reales. Más detalles sobre cada ejemplo en su información de herramienta.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="544"/>
@@ -389,7 +389,7 @@
       <source>C is a constant offset.
 VEL is a velocity or slope or gradient of the straight line.</source>
       <translation>C es un desplazamiento constante.
-VEL es una velocidad o pendiente o gradiente de la línea recta.</translation>
+VEL es una velocidad o pendiente o degradado de la línea recta.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="590"/>
@@ -446,12 +446,13 @@ T2 is the end of the impulse.
 H1 is the height at T1 at the beginning of the ramp.
 H2 is the height at T2 at the end of the ramp.
 SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about time = T1 and T2 respectively. Higher values gives sharper cornered impulses. SLOPE = 1000 or greater are suitable.</source>
-      <translation type="unfinished">This is similar to the square impulse but the top has a sloping ramp. It is good for building a smooth piecewise linear function by adding a series of these.
-T1 is the start of the impulse.
-T2 is the end of the impulse.
-H1 is the height at T1 at the beginning of the ramp.
-H2 is the height at T2 at the end of the ramp.
-SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about time = T1 and T2 respectively. Higher values gives sharper cornered impulses. SLOPE = 1000 or greater are suitable.</translation>
+      <translation>Esto es similar al impulso cuadrado, pero la parte superior tiene un rampa. Es bueno para construir una función lineal en sentido de las piezas, añadiendo una serie de estos.
+
+T1 es el comienzo del impulso.
+T2 es el final del impulso.
+H1 es la altura en T1 al principio de la rampa.
+H2 es la altura en T2 al final de la rampa.
+SLOPE define la agudeza de la transición entre 0 y H1 y H2 a 0 sobre el tiempo = T1 y T2 respectivamente. Valores más altos dan impulsos más nítidos. SLOPE = 1000 o más son adecuados.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="672"/>
@@ -625,18 +626,18 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
       <translation>El objeto a fijar</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="354"/>
-      <location filename="../../../CommandCreateView.py" line="391"/>
+      <location filename="../../../CommandCreateView.py" line="358"/>
+      <location filename="../../../CommandCreateView.py" line="395"/>
       <source>The objects moved by the move</source>
       <translation>Los objetos movidos por el movimiento</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="366"/>
+      <location filename="../../../CommandCreateView.py" line="370"/>
       <source>This is the movement of the move. The end placement is the result of the start placement * this placement.</source>
       <translation>Este es el rango del movimiento. La posición final es el resultado de la posición inicial * esta posición.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="375"/>
+      <location filename="../../../CommandCreateView.py" line="379"/>
       <source>The type of the move</source>
       <translation>El tipo de movimiento</translation>
     </message>
@@ -804,7 +805,7 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="39"/>
       <source>Cannot find the part? </source>
-      <translation type="unfinished">Cannot find the part? </translation>
+      <translation>¿No encuentra la parte? </translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="46"/>
@@ -814,7 +815,7 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="55"/>
       <source>Shows only parts in the list</source>
-      <translation type="unfinished">Shows only parts in the list</translation>
+      <translation>Muestra solo partes en la lista</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="58"/>
@@ -883,71 +884,71 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="207"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="206"/>
       <source>The object is associated to one or more joints.</source>
       <translation>El objeto es asociado a una o más articulaciones.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="209"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="208"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>¿Quiere mover el objeto y eliminar las articulaciones asociadas?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1012"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1030"/>
       <source>Move part</source>
       <translation>Mover parte</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1548"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1575"/>
       <source>ViewProviderAssembly</source>
       <comment>and %1 more</comment>
       <translation type="unfinished">ViewProviderAssembly</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1565"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1592"/>
       <source>Empty Assembly</source>
-      <translation type="unfinished">Empty Assembly</translation>
+      <translation>Ensamblaje vacío</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1569"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1597"/>
       <source>Over-constrained:</source>
       <translation>Sobre-restringido:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1576"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1605"/>
       <source>Malformed joints:</source>
-      <translation type="unfinished">Malformed joints:</translation>
+      <translation>Articulaciones malformadas:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1582"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1613"/>
       <source>Redundant joints:</source>
-      <translation type="unfinished">Redundant joints:</translation>
+      <translation>Articulaciones redundantes:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1589"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1621"/>
       <source>Partially redundant:</source>
       <translation>Parcialmente redundante:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1595"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1629"/>
       <source>Solver failed to converge</source>
       <translation>El solver falló al converger</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1601"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1637"/>
       <source>Under-constrained:</source>
       <translation>Sub-restringido:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1603"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1639"/>
       <source>%n Degrees of Freedom</source>
-      <translation type="unfinished">
-        <numerusform>%n Degrees of Freedom</numerusform>
-        <numerusform>%n Degrees of Freedom</numerusform>
+      <translation>
+        <numerusform>%n grado de libertad</numerusform>
+        <numerusform>%n grados de libertad</numerusform>
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1607"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1643"/>
       <source>Fully constrained</source>
       <translation>Totalmente restringido</translation>
     </message>
@@ -983,12 +984,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../panels/TaskAssemblyCreateView.ui" line="14"/>
       <source>Exploded View</source>
-      <translation type="unfinished">Exploded View</translation>
+      <translation>Vista explotada</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateView.ui" line="20"/>
       <source>If checked, parts will be selected as a single solid</source>
-      <translation type="unfinished">If checked, parts will be selected as a single solid</translation>
+      <translation>Si está marcado, las partes se seleccionarán como un solo sólido</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateView.ui" line="23"/>
@@ -998,17 +999,17 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../panels/TaskAssemblyCreateView.ui" line="42"/>
       <source>Align Dragger</source>
-      <translation type="unfinished">Align Dragger</translation>
+      <translation>Alinear manipulador</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateView.ui" line="49"/>
       <source>Select a feature to align. Press Esc to cancel.</source>
-      <translation type="unfinished">Select a feature to align. Press Esc to cancel.</translation>
+      <translation>Seleccione una característica para alinear. Presione Esc para cancelar.</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateView.ui" line="56"/>
       <source>Explode Radially</source>
-      <translation type="unfinished">Explode Radially</translation>
+      <translation>Explosionar radialmente</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="23"/>
@@ -1053,7 +1054,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="86"/>
       <source>Add Column</source>
-      <translation type="unfinished">Add Column</translation>
+      <translation>Añadir columna</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="96"/>
@@ -1082,7 +1083,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly::AssemblyLink</name>
     <message>
-      <location filename="../../../App/AssemblyLink.cpp" line="604"/>
+      <location filename="../../../App/AssemblyLink.cpp" line="651"/>
       <source>Joints</source>
       <translation>Articulaciones</translation>
     </message>
@@ -1090,7 +1091,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../ViewProviderAssemblyLink.cpp" line="135"/>
+      <location filename="../../ViewProviderAssemblyLink.cpp" line="139"/>
       <source>Toggle Rigid</source>
       <translation>Activar/desactivar Rígido</translation>
     </message>
@@ -1100,12 +1101,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="54"/>
       <source>New Part</source>
-      <translation type="unfinished">New Part</translation>
+      <translation>Nueva pieza</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="59"/>
       <source>Insert a new part into the active assembly. The new part's origin can be positioned in the assembly.</source>
-      <translation type="unfinished">Insert a new part into the active assembly. The new part's origin can be positioned in the assembly.</translation>
+      <translation>Inserta una nueva pieza en el ensamblaje activo. El origen de la nueva pieza puede colocarse en el ensamble.</translation>
     </message>
   </context>
   <context>
@@ -1133,7 +1134,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="89"/>
       <source>Simulation Settings</source>
-      <translation type="unfinished">Simulation Settings</translation>
+      <translation>Configuración de simulación</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="95"/>
@@ -1166,23 +1167,23 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="132"/>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="139"/>
       <source>Time step</source>
-      <translation type="unfinished">Time step</translation>
+      <translation>Paso de tiempo</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="149"/>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="156"/>
       <source>Global error tolerance</source>
-      <translation type="unfinished">Global error tolerance</translation>
+      <translation>Tolerancia global de errores</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="173"/>
       <source>Animation Player</source>
-      <translation type="unfinished">Animation Player</translation>
+      <translation>Reproductor de animación</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="212"/>
       <source>Frames per second</source>
-      <translation type="unfinished">Frames per second</translation>
+      <translation>Fotogramas por segundo</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="146"/>
@@ -1235,7 +1236,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateAssembly.py" line="49"/>
       <source>New Assembly</source>
-      <translation type="unfinished">New Assembly</translation>
+      <translation>Nuevo ensamblaje</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateAssembly.py" line="54"/>
@@ -1249,7 +1250,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <location filename="../../../CommandCreateAssembly.py" line="101"/>
       <location filename="../../../CommandCreateAssembly.py" line="135"/>
       <source>Activate Assembly</source>
-      <translation type="unfinished">Activate Assembly</translation>
+      <translation>Activar ensamblaje</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateAssembly.py" line="106"/>
@@ -1358,12 +1359,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="246"/>
       <source>Perpendicular Joint</source>
-      <translation type="unfinished">Perpendicular Joint</translation>
+      <translation>Articulación perpendicular</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="251"/>
       <source>Creates a perpendicular joint that makes the Z-axis of the selected coordinate systems perpendicular</source>
-      <translation type="unfinished">Creates a perpendicular joint that makes the Z-axis of the selected coordinate systems perpendicular</translation>
+      <translation>Crea una articulación perpendicular que hace el eje Z de los sistemas de coordenadas seleccionados perpendiculares</translation>
     </message>
   </context>
   <context>
@@ -1371,12 +1372,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="269"/>
       <source>Angle Joint</source>
-      <translation type="unfinished">Angle Joint</translation>
+      <translation>Articulación angular</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="274"/>
       <source>Creates an angle joint that fixes the angle between the Z-axis of the selected coordinate systems</source>
-      <translation type="unfinished">Creates an angle joint that fixes the angle between the Z-axis of the selected coordinate systems</translation>
+      <translation>Crea una articulación angular que corrige el ángulo entre el eje Z de los sistemas de coordenadas seleccionados</translation>
     </message>
   </context>
   <context>
@@ -1441,7 +1442,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="72"/>
       <source>Creates a new simulation of the current assembly</source>
-      <translation type="unfinished">Creates a new simulation of the current assembly</translation>
+      <translation>Crea una nueva simulación del ensamble actual</translation>
     </message>
   </context>
   <context>
@@ -1449,12 +1450,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateView.py" line="54"/>
       <source>Exploded View</source>
-      <translation type="unfinished">Exploded View</translation>
+      <translation>Vista explotada</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateView.py" line="59"/>
       <source>Creates an exploded view of the current assembly</source>
-      <translation type="unfinished">Creates an exploded view of the current assembly</translation>
+      <translation>Crea una vista explotada del ensamblaje actual</translation>
     </message>
   </context>
   <context>
@@ -1464,33 +1465,43 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <source>Insert Component</source>
       <translation>Insertar componente</translation>
     </message>
+    <message>
+      <location filename="../../../CommandInsertLink.py" line="202"/>
+      <source>Partially loaded</source>
+      <translation type="unfinished">Partially loaded</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandInsertLink.py" line="556"/>
+      <source>Fully load document</source>
+      <translation type="unfinished">Fully load document</translation>
+    </message>
   </context>
   <context>
     <name>AssemblyGui::TaskAssemblyMessages</name>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="38"/>
       <source>Solver messages</source>
-      <translation type="unfinished">Solver messages</translation>
+      <translation>Mensajes del solucionador</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="55"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="56"/>
       <source>Click to select these conflicting joints.</source>
-      <translation type="unfinished">Click to select these conflicting joints.</translation>
+      <translation>Haga clic para seleccionar estas articulaciones en conflicto.</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="58"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="59"/>
       <source>Click to select these redundant joints.</source>
-      <translation type="unfinished">Click to select these redundant joints.</translation>
+      <translation>Haga clic para seleccionar estas articulaciones redundantes.</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="61"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="63"/>
       <source>The assembly has unconstrained components giving rise to those Degrees Of Freedom. Click to select these unconstrained components.</source>
-      <translation type="unfinished">The assembly has unconstrained components giving rise to those Degrees Of Freedom. Click to select these unconstrained components.</translation>
+      <translation>El ensamblaje tiene componentes sin restricciones que dan lugar a esos grados de libertad. Haga clic para seleccionar estos componentes sin restricciones.</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="65"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="68"/>
       <source>Click to select these malformed joints.</source>
-      <translation type="unfinished">Click to select these malformed joints.</translation>
+      <translation>Haga clic para seleccionar estas articulaciones mal formadas.</translation>
     </message>
   </context>
 </TS>
