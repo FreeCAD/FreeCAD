@@ -587,24 +587,11 @@ void TaskAttacher::handleInitialSelection()
 
 void TaskAttacher::sanitizeNames(std::string& objName, std::string& subName)
 {
-    Base::Console().message(">> ORIGINAL objName: '%s'\n", subName.c_str());
-
-    // Remove "OriginXXX:" prefix from object name
-    // if (objName.rfind("Origin", 0) == 0) { // starts with "Origin"
-    //     auto colon = objName.find(':');
-    //     if (colon != std::string::npos) {
-    //         objName = objName.substr(colon + 1);
-    //         Base::Console().message("Sanitized Origin prefix: '%s'\n", objName.c_str());
-    //     }
-    // }
-
     // Remove trailing dot from subName if present
     if (!subName.empty() && subName.back() == '.') {
         subName.pop_back();
-        Base::Console().message("Removed trailing dot from subName: '%s'\n", subName.c_str());
     }
 }
-
 
 void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
@@ -1442,8 +1429,6 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
     }
 }
 
-
-
 //**************************************************************************
 //**************************************************************************
 // TaskDialog
@@ -1577,7 +1562,5 @@ bool TaskDlgAttacher::reject()
 
     return true;
 }
-
-
 
 #include "moc_TaskAttacher.cpp"
