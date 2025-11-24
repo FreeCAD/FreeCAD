@@ -4152,6 +4152,8 @@ protected:
     // returns true if a substitution took place
     static bool substituteConstraintCombinationsPointOnObject(SketchObject* Obj, int GeoId1, PointPos PosId1, int GeoId2);
     static bool substituteConstraintCombinationsCoincident(SketchObject* Obj, int GeoId1, PointPos PosId1, int GeoId2, PointPos PosId2);
+
+    bool isCoincidentSelectionValid(SketchObject* obj, int GeoId1, PointPos PosId1, int GeoId2, PointPos PosId2);
 };
 
 CmdSketcherConstrainCoincidentUnified::CmdSketcherConstrainCoincidentUnified(const char* initName)
@@ -4460,10 +4462,7 @@ void CmdSketcherConstrainCoincidentUnified::activatedCoincident(SketchObject* ob
             break;
         }
 
-        // check if this coincidence is already enforced (even indirectly)
-        bool constraintExists = obj->arePointsCoincident(GeoId1, PosId1, GeoId2, PosId2);
-
-        if (!constraintExists) {
+        if (isCoincidentSelectionValid(obj, GeoId1, PosId1, GeoId2, PosId2)) {
             constraintsAdded = true;
             Gui::cmdAppObjectArgs(obj,
                 "addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d))",
@@ -4625,13 +4624,10 @@ void CmdSketcherConstrainCoincidentUnified::applyConstraintCoincident(std::vecto
         return;
     }
 
-    // undo command open
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add coincident constraint"));
 
-    // check if this coincidence is already enforced (even indirectly)
-    bool constraintExists = Obj->arePointsCoincident(GeoId1, PosId1, GeoId2, PosId2);
     if (substituteConstraintCombinationsCoincident(Obj, GeoId1, PosId1, GeoId2, PosId2)) {}
-    else if (!constraintExists && (GeoId1 != GeoId2)) {
+    else if (isCoincidentSelectionValid(Obj, GeoId1, PosId1, GeoId2, PosId2)) {
         Gui::cmdAppObjectArgs(sketchgui->getObject(),
             "addConstraint(Sketcher.Constraint('Coincident', %d, %d, %d, %d))",
             GeoId1,
@@ -4647,6 +4643,17 @@ void CmdSketcherConstrainCoincidentUnified::applyConstraintCoincident(std::vecto
     tryAutoRecompute(Obj);
 }
 
+bool CmdSketcherConstrainCoincidentUnified::isCoincidentSelectionValid(SketchObject* obj, int GeoId1, PointPos PosId1, int GeoId2, PointPos PosId2)
+{
+    // check if this coincidence is already enforced (even indirectly)
+    bool constraintExists = obj->arePointsCoincident(GeoId1, PosId1, GeoId2, PosId2);
+    bool sameGeo = GeoId1 == GeoId2;
+
+    const Part::Geometry* geo = obj->getGeometry(GeoId1);
+    bool isBSpline = geo && geo->is<Part::GeomBSplineCurve>();
+
+    return !constraintExists && (!sameGeo || isBSpline);
+}
 
 // ======================================================================================
 
