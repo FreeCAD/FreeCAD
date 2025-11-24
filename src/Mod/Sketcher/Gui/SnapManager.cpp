@@ -192,21 +192,30 @@ Base::Vector2d SnapManager::snap(Base::Vector2d inputPos, SnapType mask)
         lastMouseAngle = 0.0;
     }
 
-    // 2 - Snap to objects
+    // 2 - Snap to objects (may partially snap to axis, leaving other coordinate for grid)
+    bool snappedToObject = false;
     if ((static_cast<int>(mask)
          & (static_cast<int>(SnapType::Point) | static_cast<int>(SnapType::Edge)))
-        && snapToObjectsRequested && snapToObject(inputPos, snapPos, mask)) {
-        return snapPos;
+        && snapToObjectsRequested) {
+        snappedToObject = snapToObject(inputPos, snapPos, mask);
+        if (snappedToObject) {
+            return snapPos;  // Full snap (point or curve) - done
+        }
+        // if false was returned but snapPos was modified (axis case), continue to grid snap
     }
 
-    // 3 - Snap to grid
+    // 3 - Snap to grid (will work on coordinates not already locked by axis snap)
     if ((static_cast<int>(mask) & static_cast<int>(SnapType::Grid)) && snapToGridRequested
-        && snapToGrid(inputPos, snapPos)
-        /*&& viewProvider.ShowGrid.getValue() */) {  // Snap to grid is
-                                                     // enabled
-                                                     // even if the grid is not
-                                                     // visible.
+        /*&& viewProvider.ShowGrid.getValue() */) {  // Snap to grid is enabled
+                                                     // even if the grid is not visible.
 
+        // use snapPos as input (which may have one coordinate locked by axis)
+        Base::Vector2d gridSnapResult = snapPos;
+        if (snapToGrid(snapPos, gridSnapResult)) {
+            return gridSnapResult;
+        }
+        // if grid snap happened, return the result which combines axis + grid
+        // if axis locked a coordinate, snapPos already had it, and grid snap respected it
         return snapPos;
     }
 
@@ -253,11 +262,13 @@ bool SnapManager::snapToObject(Base::Vector2d inputPos, Base::Vector2d& snapPos,
     else if (static_cast<int>(mask) & static_cast<int>(SnapType::Edge)) {
         if (CrsId == 1) {  // H_Axis
             snapPos.y = 0;
-            return true;
+            // dont return true, allow grid snap to handle X coordinate
+            return false;
         }
         else if (CrsId == 2) {  // V_Axis
             snapPos.x = 0;
-            return true;
+            // dont return true, allow grid snap to handle Y coordinate
+            return false;
         }
         else if (CrvId >= 0 || CrvId <= Sketcher::GeoEnum::RefExt) {  // Curves
 
