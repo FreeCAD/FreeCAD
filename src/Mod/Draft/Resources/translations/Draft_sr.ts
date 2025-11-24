@@ -3858,12 +3858,12 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftguitools/gui_draft2sketch.py" line="121"/>
       <source>Convert to Draft</source>
-      <translation>Претвори у Draft</translation>
+      <translation>Претвори у Жичани оквир</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_draft2sketch.py" line="150"/>
       <source>Convert Draft/Sketch</source>
-      <translation>Претвори Draft/Скица</translation>
+      <translation>Претвори Жичани оквир/Скица</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_move.py" line="80"/>
@@ -8044,16 +8044,16 @@ If other objects are selected they are ignored.</source>
     <message>
       <location filename="../../draftguitools/gui_draft2sketch.py" line="60"/>
       <source>Draft to Sketch</source>
-      <translation>Цртеж у скицу</translation>
+      <translation>Жичани оквир у скицу</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_draft2sketch.py" line="64"/>
       <source>Converts bidirectionally between Draft objects and sketches.
 Multiple selected Draft objects are converted into a single sketch.
 However, a single sketch with disconnected traces is converted into several individual Draft objects.</source>
-      <translation>Претвори објекте окружења Цртање у објекте окружења Скице и обратно.
+      <translation>Претвори објекте окружења Цртање (жичане оквире) у објекте окружења Скице и обратно.
 Многи објекти окружења Цртање ће бити конвертовани у скицу на којој нема ограничења.
-Међутим, једна скица са неспојеним елементима биће конвертована у неколико појединачних објеката окружења Цртање.</translation>
+Међутим, једна скица са неспојеним елементима биће конвертована у неколико жичаних елемената.</translation>
     </message>
   </context>
   <context>

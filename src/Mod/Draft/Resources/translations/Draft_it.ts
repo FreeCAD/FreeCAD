@@ -37,7 +37,7 @@
     <message>
       <location filename="../ui/dialogLayers.ui" line="14"/>
       <source>Layers Manager</source>
-      <translation>Gestore Livelli</translation>
+      <translation>Gestore layer</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayers.ui" line="43"/>
@@ -380,7 +380,7 @@
       <location filename="../ui/TaskPanel_CircularArray.ui" line="34"/>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="44"/>
       <source>Distance from one layer of objects to the next layer of objects</source>
-      <translation>Distanza da un livello di oggetti al livello successivo di oggetti</translation>
+      <translation>Distanza da un layer di oggetti al successivo layer di oggetti</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="37"/>
@@ -2330,9 +2330,9 @@ objects, maintaining the block structure. Good for referencing and measuring.</t
       <source>Merges all geometry per layer into a single, non-editable shape. Block
 structures are not preserved; their geometry becomes part of the layer's
 shape. Best for importing and viewing very large files with maximum performance.</source>
-      <translation type="unfinished">Merges all geometry per layer into a single, non-editable shape. Block
-structures are not preserved; their geometry becomes part of the layer's
-shape. Best for importing and viewing very large files with maximum performance.</translation>
+      <translation>Unisce tutte le geometrie per layer in una singola forma non modificabile. Le strutture del blocco
+non sono conservate; la loro geometria diventa parte della forma
+del layer. Ideale per l'importazione e la visualizzazione di file molto grandi con le massime prestazioni.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="202"/>
@@ -4267,13 +4267,13 @@ L'angolo finale sarà l'angolo base più questa quantità.</translation>
       <location filename="../../draftguitools/gui_groups.py" line="317"/>
       <location filename="../../draftguitools/gui_layers.py" line="165"/>
       <source>New Layer</source>
-      <translation>Nuovo Layer</translation>
+      <translation>Nuovo layer</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="318"/>
       <location filename="../../draftguitools/gui_layers.py" line="166"/>
       <source>Layer name</source>
-      <translation>Nome livello</translation>
+      <translation>Nome layer</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="319"/>
@@ -4990,7 +4990,7 @@ L'angolo finale sarà l'angolo base più questa quantità.</translation>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="177"/>
       <source>Number of layers must be at least 2</source>
-      <translation type="unfinished">Number of layers must be at least 2</translation>
+      <translation>Il numero di layer deve essere almeno 2</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="163"/>
@@ -5687,37 +5687,37 @@ degli oggetti esistenti in tutti i documenti aperti?</translation>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="87"/>
       <source>Create layer</source>
-      <translation type="unfinished">Create layer</translation>
+      <translation>Crea layer</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="126"/>
       <source>Remove From Layer</source>
-      <translation>Rimuovi da Livello</translation>
+      <translation>Rimuovi dal layer</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="130"/>
       <source>Add to New Layer</source>
-      <translation>Aggiungi un nuovo Livello</translation>
+      <translation>Aggiungi a un nuovo layer</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="151"/>
       <source>Remove from layer</source>
-      <translation type="unfinished">Remove from layer</translation>
+      <translation>Rimuovi dal layer</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="173"/>
       <source>Add to new layer</source>
-      <translation type="unfinished">Add to new layer</translation>
+      <translation>Aggiungi al nuovo layer</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="191"/>
       <source>Add to layer</source>
-      <translation type="unfinished">Add to layer</translation>
+      <translation>Aggiungi al layer</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="279"/>
       <source>Layers change</source>
-      <translation type="unfinished">Layers change</translation>
+      <translation>Cambia i layer</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimension_ops.py" line="57"/>
@@ -5818,34 +5818,34 @@ degli oggetti esistenti in tutti i documenti aperti?</translation>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="489"/>
       <source>Activate Layer</source>
-      <translation type="unfinished">Activate Layer</translation>
+      <translation>Attiva il layer</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="496"/>
       <source>Reassign Properties of Layer</source>
-      <translation type="unfinished">Reassign Properties of Layer</translation>
+      <translation>Riassegna le proprietà di tutti i layer</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="504"/>
       <source>Select Layer Contents</source>
-      <translation type="unfinished">Select Layer Contents</translation>
+      <translation>Seleziona il contenuto del layer</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="547"/>
       <location filename="../../draftviewproviders/view_layer.py" line="573"/>
       <source>Add New Layer</source>
-      <translation type="unfinished">Add New Layer</translation>
+      <translation>Aggiungi un nuovo layer</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="554"/>
       <source>Reassign Properties of All Layers</source>
-      <translation type="unfinished">Reassign Properties of All Layers</translation>
+      <translation>Riassegna le proprietà di tutti i layer</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="562"/>
       <location filename="../../draftviewproviders/view_layer.py" line="595"/>
       <source>Merge Layer Duplicates</source>
-      <translation type="unfinished">Merge Layer Duplicates</translation>
+      <translation>Unisci i layer duplicati</translation>
     </message>
     <message>
       <location filename="../../importDXF.py" line="168"/>
@@ -6126,7 +6126,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="427"/>
       <source>New Layer</source>
-      <translation>Nuovo Layer</translation>
+      <translation>Nuovo layer</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="315"/>
@@ -6528,7 +6528,7 @@ If the "Copy" option is active, it will create rotated copies.</translation>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="73"/>
       <source>New Layer</source>
-      <translation>Nuovo Layer</translation>
+      <translation>Nuovo layer</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="77"/>

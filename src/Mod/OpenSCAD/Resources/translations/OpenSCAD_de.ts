@@ -445,7 +445,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="191"/>
       <source>Mirrors the mesh</source>
-      <translation>Das Netz spiegeln</translation>
+      <translation>Spiegelt das Netz</translation>
     </message>
   </context>
   <context>

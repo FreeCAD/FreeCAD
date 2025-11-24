@@ -4,37 +4,37 @@
   <context>
     <name>CmdMeshPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="273"/>
+      <location filename="../../Command.cpp" line="276"/>
       <source>MeshPart</source>
       <translation>RészekKapcsolása</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="274"/>
+      <location filename="../../Command.cpp" line="277"/>
       <source>Cross-Sections</source>
-      <translation type="unfinished">Cross-Sections</translation>
+      <translation>Keresztmetszet</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="275"/>
+      <location filename="../../Command.cpp" line="278"/>
       <source>Applies cross-sections to the mesh</source>
-      <translation type="unfinished">Applies cross-sections to the mesh</translation>
+      <translation>Alkalmazza a keresztmetszeteket a hálóra</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshPartCurveOnMesh</name>
     <message>
-      <location filename="../../Command.cpp" line="309"/>
+      <location filename="../../Command.cpp" line="312"/>
       <source>Mesh</source>
       <translation>Háló</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="310"/>
+      <location filename="../../Command.cpp" line="313"/>
       <source>Curve on Mesh</source>
-      <translation type="unfinished">Curve on Mesh</translation>
+      <translation>Görbe a hálón</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="311"/>
+      <location filename="../../Command.cpp" line="314"/>
       <source>Creates an approximated curve on top of a mesh object</source>
-      <translation type="unfinished">Creates an approximated curve on top of a mesh object</translation>
+      <translation>Körülbelüli görbét hoz létre egy hálóobjektum tetején</translation>
     </message>
   </context>
   <context>
@@ -47,7 +47,7 @@
     <message>
       <location filename="../../Command.cpp" line="59"/>
       <source>Mesh From Shape</source>
-      <translation type="unfinished">Mesh From Shape</translation>
+      <translation>Formából háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="61"/>
@@ -58,17 +58,17 @@
   <context>
     <name>CmdMeshPartSection</name>
     <message>
-      <location filename="../../Command.cpp" line="189"/>
+      <location filename="../../Command.cpp" line="190"/>
       <source>Mesh</source>
       <translation>Háló</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="191"/>
+      <location filename="../../Command.cpp" line="192"/>
       <source>Creates a section from a mesh and plane</source>
-      <translation type="unfinished">Creates a section from a mesh and plane</translation>
+      <translation>Létrehoz egy szakaszt a hálóból és a síkból</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="190"/>
+      <location filename="../../Command.cpp" line="191"/>
       <source>Section</source>
       <translation>Szakasz</translation>
     </message>
@@ -83,7 +83,7 @@
     <message>
       <location filename="../../Command.cpp" line="85"/>
       <source>Trim Mesh</source>
-      <translation type="unfinished">Trim Mesh</translation>
+      <translation>Háló levágása</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="86"/>
@@ -99,7 +99,7 @@
       <translation>Síkkal metsz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="213"/>
+      <location filename="../../Command.cpp" line="215"/>
       <source>Section with plane</source>
       <translation>Síkkal szakaszt</translation>
     </message>
@@ -109,12 +109,12 @@
     <message>
       <location filename="../../CrossSections.ui" line="14"/>
       <source>Cross Sections</source>
-      <translation type="unfinished">Cross Sections</translation>
+      <translation>Keresztmetszet</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="20"/>
       <source>Guiding Plane</source>
-      <translation type="unfinished">Guiding Plane</translation>
+      <translation>Irányadó sík</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="26"/>
@@ -167,7 +167,7 @@
       <translation>Csatlakoztassa az éleket, ha a távolság kisebb, mint</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="383"/>
+      <location filename="../../CrossSections.cpp" line="390"/>
       <source>Failure</source>
       <translation>Hiba</translation>
     </message>
@@ -175,34 +175,34 @@
   <context>
     <name>MeshPartGui::CurveOnMeshHandler</name>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="361"/>
+      <location filename="../../CurveOnMesh.cpp" line="357"/>
       <source>Create</source>
       <translation>Létrehozás</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="363"/>
+      <location filename="../../CurveOnMesh.cpp" line="359"/>
       <source>Close wire</source>
       <translation>Drótháló lezárása</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="365"/>
+      <location filename="../../CurveOnMesh.cpp" line="361"/>
       <source>Clear</source>
       <translation>Törlés</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="366"/>
+      <location filename="../../CurveOnMesh.cpp" line="362"/>
       <source>Cancel</source>
       <translation>Mégse</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="622"/>
+      <location filename="../../CurveOnMesh.cpp" line="615"/>
       <source>Wrong mesh selected</source>
-      <translation type="unfinished">Wrong mesh selected</translation>
+      <translation>Rossz háló választva</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="661"/>
+      <location filename="../../CurveOnMesh.cpp" line="655"/>
       <source>No point was selected</source>
-      <translation type="unfinished">No point was selected</translation>
+      <translation>Nem lett pont kiválasztva</translation>
     </message>
   </context>
   <context>
@@ -210,16 +210,16 @@
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="14"/>
       <source>Curve on Mesh</source>
-      <translation type="unfinished">Curve on Mesh</translation>
+      <translation>Görbe a hálón</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="23"/>
       <source>Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
 
 This command only works with a Mesh object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh workbench.</source>
-      <translation type="unfinished">Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
+      <translation>Nyomja le a 'Start' gombot, majd válasszon pontokat a hálón; ha elegendő pont van beállítva, kattintson a jobb gombbal, és válassza a 'Létrehozás' parancsot. Ismételje meg ezt a folyamatot több görbe létrehozásához. A művelet végrehajtásához zárja be ezt a feladatpanelt.
 
-This command only works with a Mesh object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh workbench.</translation>
+Ez a parancs csak háló objektummal működik, normál felülettel vagy felszínnel nem. Az objektum hálóvá alakításához használja a Háló munkafelület eszközeit.</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="38"/>
@@ -336,29 +336,29 @@ támogatják ezt a tulajdonságot (pl. OBJ formátum).</translation>
     <message>
       <location filename="../../Tessellation.ui" line="20"/>
       <source>Meshing Options</source>
-      <translation type="unfinished">Meshing Options</translation>
+      <translation>Hálózási beállítások</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="41"/>
       <source>Surface deviation</source>
-      <translation type="unfinished">Surface deviation</translation>
+      <translation>Felületi eltérés</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="67"/>
       <source>Angular deviation</source>
-      <translation type="unfinished">Angular deviation</translation>
+      <translation>Szögeltérés</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="98"/>
       <source>The maximal linear deviation of a mesh segment will be the specified
 surface deviation multiplied by the length of the current mesh segment (edge)</source>
-      <translation type="unfinished">The maximal linear deviation of a mesh segment will be the specified
-surface deviation multiplied by the length of the current mesh segment (edge)</translation>
+      <translation>A hálószegmens maximális lineáris eltérése a megadott
+felületeltérés szorozva az aktuális hálószakasz hosszával (él)</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="156"/>
       <source>Maximum edge length</source>
-      <translation type="unfinished">Maximum edge length</translation>
+      <translation>Maximális élhossz</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="162"/>
@@ -420,17 +420,17 @@ A legkisebb érték 0.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="269"/>
       <source>Mesh size grading</source>
-      <translation type="unfinished">Mesh size grading</translation>
+      <translation>Háló nagyság osztályozása</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="302"/>
       <source>Elements per edge</source>
-      <translation type="unfinished">Elements per edge</translation>
+      <translation>Élenkénti elemek</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="335"/>
       <source>Elements per curvature radius</source>
-      <translation type="unfinished">Elements per curvature radius</translation>
+      <translation>Ív sugáronkénti elemek</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="279"/>
@@ -494,21 +494,21 @@ A value in the range of 0.2-10.</source>
       <translation>Nincs aktív dokumentum</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="279"/>
+      <location filename="../../Tessellation.cpp" line="280"/>
       <source>Error: body without a tip selected.
 Either set the tip of the body or select a different shape.</source>
-      <translation type="unfinished">Error: body without a tip selected.
-Either set the tip of the body or select a different shape.</translation>
+      <translation>Hiba: a testnek nincs kiválasztott csúcsa. 
+Vagy állítsa be a test csúcsát, vagy válasszon más formát.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="285"/>
+      <location filename="../../Tessellation.cpp" line="288"/>
       <source>Error: shape without faces selected.
 Select a different shape.</source>
-      <translation type="unfinished">Error: shape without faces selected.
-Select a different shape.</translation>
+      <translation>Hiba: olyan forma van kiválasztva, amelynek nincsenek felületei. 
+Válassz egy másik formát.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="289"/>
+      <location filename="../../Tessellation.cpp" line="293"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Válassza ki a formát kapcsolás előtt.</translation>
     </message>
@@ -516,14 +516,14 @@ Select a different shape.</translation>
   <context>
     <name>MeshPart_Section</name>
     <message>
-      <location filename="../../Command.cpp" line="203"/>
+      <location filename="../../Command.cpp" line="204"/>
       <source>Select plane</source>
       <translation>Sík kijelölése</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="204"/>
+      <location filename="../../Command.cpp" line="205"/>
       <source>Select a plane to section the mesh with.</source>
-      <translation type="unfinished">Select a plane to section the mesh with.</translation>
+      <translation>Válasszon egy síkot a háló metszéséhez.</translation>
     </message>
   </context>
   <context>
@@ -536,30 +536,30 @@ Select a different shape.</translation>
     <message>
       <location filename="../../Command.cpp" line="98"/>
       <source>Select a plane to trim the mesh with.</source>
-      <translation type="unfinished">Select a plane to trim the mesh with.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="104"/>
-      <source>Trim With Plane</source>
-      <translation type="unfinished">Trim With Plane</translation>
+      <translation>Válasszon egy síkot a háló vágásához.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="105"/>
-      <source>Select the side to keep</source>
-      <translation type="unfinished">Select the side to keep</translation>
+      <source>Trim With Plane</source>
+      <translation>Síkkal metsz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="107"/>
+      <location filename="../../Command.cpp" line="106"/>
+      <source>Select the side to keep</source>
+      <translation>Jelölje a megtartani kívánt oldalt</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="108"/>
       <source>Below</source>
       <translation>Alá</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="109"/>
+      <location filename="../../Command.cpp" line="110"/>
       <source>Above</source>
       <translation>Fölé</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="111"/>
+      <location filename="../../Command.cpp" line="112"/>
       <source>Split</source>
       <translation>Feloszt</translation>
     </message>
@@ -577,12 +577,12 @@ Select a different shape.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="51"/>
       <source>Unwrap Mesh</source>
-      <translation type="unfinished">Unwrap Mesh</translation>
+      <translation>Háló kiterítése</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="54"/>
       <source>Finds a flat representation of a mesh</source>
-      <translation type="unfinished">Finds a flat representation of a mesh</translation>
+      <translation>Háló sík ábrázolásának keresése</translation>
     </message>
   </context>
   <context>
@@ -590,12 +590,12 @@ Select a different shape.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="90"/>
       <source>Unwrap Face</source>
-      <translation type="unfinished">Unwrap Face</translation>
+      <translation>Felület kiterítése</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="93"/>
       <source>Finds a flat representation of a face</source>
-      <translation type="unfinished">Finds a flat representation of a face</translation>
+      <translation>Felület sík ábrázolásának keresése</translation>
     </message>
   </context>
 </TS>

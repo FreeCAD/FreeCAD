@@ -1428,7 +1428,7 @@ lineáris méretek esetén.</translation>
     <message>
       <location filename="../ui/dialogHatch.ui" line="81"/>
       <source>Align to face</source>
-      <translation>Felülethez igahítás</translation>
+      <translation>Felülethez igazítás</translation>
     </message>
     <message>
       <location filename="../ui/dialogHatch.ui" line="88"/>
@@ -1436,7 +1436,7 @@ lineáris méretek esetén.</translation>
 Otherwise, the pattern aligns with the global coordinate system.
 This setting modifies the Translate property.</source>
       <translation>A mintát az alapobjektumhoz igazítja.
-Ellenkező esetben a minta a globális koordinátarendszerhez igazodik.
+Ellenkező esetben a minta a globális koordináta rendszerhez igazodik.
 Ez a beállítás módosítja a fordítás tulajdonságot.</translation>
     </message>
     <message>
@@ -3872,7 +3872,7 @@ vagy próbáld meg alacsonyabb DWG verzióra menteni.</translation>
     <message>
       <location filename="../../draftguitools/gui_draft2sketch.py" line="74"/>
       <source>Select an object to convert</source>
-      <translation>Jelölje ki az átalakítandó objektmot</translation>
+      <translation>Jelölje ki az átalakítandó objektumot</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_draft2sketch.py" line="107"/>

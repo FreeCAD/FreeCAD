@@ -48,37 +48,37 @@
       <translation type="unfinished">Assembly</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="138"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="140"/>
       <source>Active object</source>
       <translation>აქტიური ობიექტი</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssemblyLink.cpp" line="123"/>
+      <location filename="../../ViewProviderAssemblyLink.cpp" line="125"/>
       <source>Turn flexible</source>
       <translation>მოქნილზე გადართვა</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssemblyLink.cpp" line="124"/>
+      <location filename="../../ViewProviderAssemblyLink.cpp" line="127"/>
       <source>Your sub-assembly is currently rigid. This will make it flexible instead.</source>
       <translation>თქვენი ქვეანაწყობი ამჟამად მყარია. ეს მას მოქნილად გახდის.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssemblyLink.cpp" line="128"/>
+      <location filename="../../ViewProviderAssemblyLink.cpp" line="131"/>
       <source>Turn rigid</source>
       <translation>მყარზე გადართვა</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssemblyLink.cpp" line="129"/>
+      <location filename="../../ViewProviderAssemblyLink.cpp" line="133"/>
       <source>Your sub-assembly is currently flexible. This will make it rigid instead.</source>
       <translation>თქვენი ქვეანაწყობი ამჟამად მოქნილია. ეს მას მყარად გახდის.</translation>
     </message>
     <message>
-      <location filename="../../../App/BomObject.cpp" line="270"/>
+      <location filename="../../../App/BomObject.cpp" line="279"/>
       <source>N/A</source>
       <translation>N/A</translation>
     </message>
     <message>
-      <location filename="../../../App/BomObject.cpp" line="294"/>
+      <location filename="../../../App/BomObject.cpp" line="303"/>
       <source>Not supported</source>
       <translation>მხარდაჭერილი არაა</translation>
     </message>
@@ -235,67 +235,67 @@
       <translation>რაოდენობა (ავტო)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="190"/>
+      <location filename="../../../CommandCreateBom.py" line="188"/>
       <source>Default</source>
       <translation>ნაგულისხმევი</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="286"/>
+      <location filename="../../../CommandCreateBom.py" line="284"/>
       <source>Duplicate Name</source>
       <translation>გამეორებული სახელი</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="287"/>
+      <location filename="../../../CommandCreateBom.py" line="285"/>
       <source>This name is already used. Please choose a different name.</source>
       <translation>სახელი უკვე გამოიყენება. აირჩიეთ სხვა სახელი.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="366"/>
+      <location filename="../../../CommandCreateBom.py" line="364"/>
       <source>Options</source>
       <translation>პარამეტრები</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="373"/>
+      <location filename="../../../CommandCreateBom.py" line="371"/>
       <source>Sub-assembly children: the children of sub-assemblies will be included in the bill of materials</source>
       <translation>ქვეანაწყობის შვილები: ქვეანაწყობის შვილები ჩასმული იქნება ზედნადებში</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="379"/>
+      <location filename="../../../CommandCreateBom.py" line="377"/>
       <source>Parts children: the children of parts will be added to the bill of materials</source>
       <translation>ნაწილის შვილები: ნაწილის შვილები დაემატება ზედნადებს</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="385"/>
+      <location filename="../../../CommandCreateBom.py" line="383"/>
       <source>Only parts: adds only part containers and sub-assemblies to the bill of materials. Solids like Part Design bodies, fasteners, or Part workbench primitives are ignored.</source>
       <translation>მხოლოდ ნაწილები: ჩასვამს, მხოლოდ, ნაწილის კონტეინერებს და ქვეანაწყობებს ზედნადებში. ისეთი მყარი სხეულები, როგორიცაა ნაწილის დიზაინის სხეულები, დამჭერები, ან ნაწილის სამუშაო მაგიდის პრიმიტივები, გამოტოვებულია.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="387"/>
+      <location filename="../../../CommandCreateBom.py" line="385"/>
       <source>Columns</source>
       <translation>სვეტები</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="400"/>
+      <location filename="../../../CommandCreateBom.py" line="398"/>
       <source>Custom columns : 'Description' and other custom columns you add by clicking on 'Add column' will not have their data overwritten. If a column name starts with '.' followed by a property name (e.g. '.Length'), it will be auto-populated with that property value. These columns can be renamed by double-clicking or pressing F2 (renaming a column will currently lose its data).</source>
       <translation>მორგებული სვეტები : 'აღწერა' და სხვა მორებული სვეტები, რომლებსაც თქვენ დაამატებთ 'სვეტის დამატებაზე' დაწკაპუნებით, თავიანთ მონაცემებს არ დაკარგავენ. თუ სვეტის სახელიიწყება '.'-ით, რომელსაც თვისების სახელი მოჰყვება (მაგ: '.სიგრძე'), ის ავტომატურად შეივსება ამ თვისების მნიშვნელობით. ამ სვეტების სახელის გადარქმევა მათზე ორმაგი დაწკაპუნებით ან F2-ზე დაჭერით შეგიძლიათ (ამჟამად სვეტის სახელის გადარქმევა მის მონაცემებს დაკარგავს).</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="406"/>
+      <location filename="../../../CommandCreateBom.py" line="404"/>
       <source>Any column (custom or not), can be deleted by pressing the Delete key</source>
       <translation>ნებისმიერი სვეტი (მორგებული, თუ არა) შეიძლება წაიშალოს დაჭერით ღილაკზე 'Del'</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="408"/>
+      <location filename="../../../CommandCreateBom.py" line="406"/>
       <source>Export</source>
       <translation>გატანა</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="415"/>
+      <location filename="../../../CommandCreateBom.py" line="413"/>
       <source>The exported file format can be customized in the Spreadsheet workbench preferences</source>
       <translation>გატანილი ფაილის ფორმატის მორგება ელცხრილის სამუშაო მაგიდის მორგების ფანჯარაში შეგიძლიათ</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="394"/>
+      <location filename="../../../CommandCreateBom.py" line="392"/>
       <source>Auto columns :  (Index, Quantity, Name...) are populated automatically. Any modification you make will be overridden. These columns cannot be renamed.</source>
       <translation>ავტომატური სვეტები : (ინდექსი, რაოდენობა, სახელი...) ავტომატურად შეივსება. ცვლილებებს, რომელსაც თქვენ შეიტანთ, გადაიფარება. ამ სვეტების სახელის შეცვლა შეუძლებელია.</translation>
     </message>
@@ -625,18 +625,18 @@ SLOPE აღწერს დახრილობას 0-დან H1-მდე
       <translation>ობიექტი დამაგრებამდე</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="354"/>
-      <location filename="../../../CommandCreateView.py" line="391"/>
+      <location filename="../../../CommandCreateView.py" line="358"/>
+      <location filename="../../../CommandCreateView.py" line="395"/>
       <source>The objects moved by the move</source>
       <translation>გადატანით გადატანილი ობიექტები</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="366"/>
+      <location filename="../../../CommandCreateView.py" line="370"/>
       <source>This is the movement of the move. The end placement is the result of the start placement * this placement.</source>
       <translation>ეს გადაადგილების მოძრაობაა. საბოლოო მოთავსება არის შედეგი საწყისი მოთავსება * ეს მოთავსება.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="375"/>
+      <location filename="../../../CommandCreateView.py" line="379"/>
       <source>The type of the move</source>
       <translation>გადაადგილების ტიპი</translation>
     </message>
@@ -882,63 +882,63 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="207"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="206"/>
       <source>The object is associated to one or more joints.</source>
       <translation>ობიექტი ასოცირებულია ერთ ან მეტ სახსართან.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="209"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="208"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>გნებავთ გადაიტანოთ ობიექტი და წაშალოთ ასოცირებული სახსრები?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1012"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1030"/>
       <source>Move part</source>
       <translation>ნაწილის გადატანა</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1548"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1575"/>
       <source>ViewProviderAssembly</source>
       <comment>and %1 more</comment>
       <translation>მომწოდებლის ანაწყობის ხედი</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1565"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1592"/>
       <source>Empty Assembly</source>
       <translation>სარიელი ანაწყობი</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1569"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1597"/>
       <source>Over-constrained:</source>
       <translation>ზედმეტად-შეზღუდული:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1576"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1605"/>
       <source>Malformed joints:</source>
       <translation>არასწორად შექმნილი სახსრები:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1582"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1613"/>
       <source>Redundant joints:</source>
       <translation>დამატებითი სახსრები:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1589"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1621"/>
       <source>Partially redundant:</source>
       <translation>ნაწილობრივ დამატებითი:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1595"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1629"/>
       <source>Solver failed to converge</source>
       <translation>ამომხსნელის შეცდომა შეერთების დროს</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1601"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1637"/>
       <source>Under-constrained:</source>
       <translation>საკმარისზე ნაკლებად შეზღუდული:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1603"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1639"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n თავისუფლების ხარისხი</numerusform>
@@ -946,7 +946,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1607"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1643"/>
       <source>Fully constrained</source>
       <translation>სრულად შეზღუდული</translation>
     </message>
@@ -1081,7 +1081,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly::AssemblyLink</name>
     <message>
-      <location filename="../../../App/AssemblyLink.cpp" line="604"/>
+      <location filename="../../../App/AssemblyLink.cpp" line="651"/>
       <source>Joints</source>
       <translation>შეერთებები</translation>
     </message>
@@ -1089,7 +1089,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../ViewProviderAssemblyLink.cpp" line="135"/>
+      <location filename="../../ViewProviderAssemblyLink.cpp" line="139"/>
       <source>Toggle Rigid</source>
       <translation>სიმყარის გადართვა</translation>
     </message>
@@ -1463,6 +1463,16 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <source>Insert Component</source>
       <translation>კომპონენტის ჩასმა</translation>
     </message>
+    <message>
+      <location filename="../../../CommandInsertLink.py" line="202"/>
+      <source>Partially loaded</source>
+      <translation type="unfinished">Partially loaded</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandInsertLink.py" line="556"/>
+      <source>Fully load document</source>
+      <translation type="unfinished">Fully load document</translation>
+    </message>
   </context>
   <context>
     <name>AssemblyGui::TaskAssemblyMessages</name>
@@ -1472,22 +1482,22 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <translation>ამომხსნელის შეტყობინებები</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="55"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="56"/>
       <source>Click to select these conflicting joints.</source>
       <translation>დააწკაპუნეთ ამ კონფლიქტური სახსრების მოსანიშნად.</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="58"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="59"/>
       <source>Click to select these redundant joints.</source>
       <translation>დააწკაპუნეთ დამატებითი სახსრების მოსანიშნად.</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="61"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="63"/>
       <source>The assembly has unconstrained components giving rise to those Degrees Of Freedom. Click to select these unconstrained components.</source>
       <translation type="unfinished">The assembly has unconstrained components giving rise to those Degrees Of Freedom. Click to select these unconstrained components.</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="65"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="68"/>
       <source>Click to select these malformed joints.</source>
       <translation>დააწკაპუნეთ არასწორად ჩამოყალიბებული სახსრების მოსანიშნად.</translation>
     </message>

@@ -40,7 +40,7 @@
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../VisualInspection.cpp" line="236"/>
+      <location filename="../../VisualInspection.cpp" line="234"/>
       <source>Visual Inspection</source>
       <translation>ვიზუალური შემოწმება</translation>
     </message>
@@ -93,38 +93,38 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="501"/>
+      <location filename="../../ViewProviderInspection.cpp" line="510"/>
       <source>Remove annotations</source>
       <translation>ანოტაციების წაშლა</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="502"/>
+      <location filename="../../ViewProviderInspection.cpp" line="511"/>
       <source>Do you want to remove all annotations?</source>
       <translation>გსურთ, წაშალოთ ყველა ანოტაცია?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="560"/>
+      <location filename="../../ViewProviderInspection.cpp" line="569"/>
       <source>Annotation</source>
       <translation>ანოტაცია</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="563"/>
+      <location filename="../../ViewProviderInspection.cpp" line="572"/>
       <source>Leave Info Mode</source>
       <translation>ინფორმაციის რეჟიმიდან გასვლა</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="694"/>
+      <location filename="../../ViewProviderInspection.cpp" line="708"/>
       <source>Distance: &gt; %1</source>
       <translation>დაშორება: &gt; %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="698"/>
+      <location filename="../../ViewProviderInspection.cpp" line="711"/>
       <source>Distance: &lt; %1</source>
       <translation>დაშორება: &lt; %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="718"/>
-      <location filename="../../ViewProviderInspection.cpp" line="735"/>
+      <location filename="../../ViewProviderInspection.cpp" line="730"/>
+      <location filename="../../ViewProviderInspection.cpp" line="748"/>
       <source>Distance: %1</source>
       <translation>დაშორება: %1</translation>
     </message>

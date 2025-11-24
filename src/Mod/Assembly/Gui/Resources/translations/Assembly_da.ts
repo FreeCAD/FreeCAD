@@ -24,7 +24,7 @@
     <message>
       <location filename="../../../CommandInsertLink.py" line="81"/>
       <source>Component</source>
-      <translation type="unfinished">Component</translation>
+      <translation>Komponent</translation>
     </message>
   </context>
   <context>
@@ -48,37 +48,37 @@
       <translation type="unfinished">Assembly</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="138"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="140"/>
       <source>Active object</source>
       <translation>Aktivt objekt</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssemblyLink.cpp" line="123"/>
+      <location filename="../../ViewProviderAssemblyLink.cpp" line="125"/>
       <source>Turn flexible</source>
       <translation type="unfinished">Turn flexible</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssemblyLink.cpp" line="124"/>
+      <location filename="../../ViewProviderAssemblyLink.cpp" line="127"/>
       <source>Your sub-assembly is currently rigid. This will make it flexible instead.</source>
       <translation type="unfinished">Your sub-assembly is currently rigid. This will make it flexible instead.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssemblyLink.cpp" line="128"/>
+      <location filename="../../ViewProviderAssemblyLink.cpp" line="131"/>
       <source>Turn rigid</source>
       <translation type="unfinished">Turn rigid</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssemblyLink.cpp" line="129"/>
+      <location filename="../../ViewProviderAssemblyLink.cpp" line="133"/>
       <source>Your sub-assembly is currently flexible. This will make it rigid instead.</source>
       <translation type="unfinished">Your sub-assembly is currently flexible. This will make it rigid instead.</translation>
     </message>
     <message>
-      <location filename="../../../App/BomObject.cpp" line="270"/>
+      <location filename="../../../App/BomObject.cpp" line="279"/>
       <source>N/A</source>
       <translation type="unfinished">N/A</translation>
     </message>
     <message>
-      <location filename="../../../App/BomObject.cpp" line="294"/>
+      <location filename="../../../App/BomObject.cpp" line="303"/>
       <source>Not supported</source>
       <translation>Ikke understøttet</translation>
     </message>
@@ -177,7 +177,7 @@
     <message>
       <location filename="../../../JointObject.py" line="1531"/>
       <source>Select 2 elements from 2 separate parts</source>
-      <translation type="unfinished">Select 2 elements from 2 separate parts</translation>
+      <translation>Vælg 2 elementer fra 2 forskellige komponenter</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="1696"/>
@@ -235,67 +235,67 @@
       <translation>Antal (auto)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="190"/>
+      <location filename="../../../CommandCreateBom.py" line="188"/>
       <source>Default</source>
       <translation>Standard</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="286"/>
+      <location filename="../../../CommandCreateBom.py" line="284"/>
       <source>Duplicate Name</source>
       <translation>Eksistrende navn</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="287"/>
+      <location filename="../../../CommandCreateBom.py" line="285"/>
       <source>This name is already used. Please choose a different name.</source>
       <translation>Dette navn er allerede i brug. Vælg venligst et andet navn.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="366"/>
+      <location filename="../../../CommandCreateBom.py" line="364"/>
       <source>Options</source>
       <translation>Indstillinger</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="373"/>
+      <location filename="../../../CommandCreateBom.py" line="371"/>
       <source>Sub-assembly children: the children of sub-assemblies will be included in the bill of materials</source>
       <translation type="unfinished">Sub-assembly children: the children of sub-assemblies will be included in the bill of materials</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="379"/>
+      <location filename="../../../CommandCreateBom.py" line="377"/>
       <source>Parts children: the children of parts will be added to the bill of materials</source>
       <translation type="unfinished">Parts children: the children of parts will be added to the bill of materials</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="385"/>
+      <location filename="../../../CommandCreateBom.py" line="383"/>
       <source>Only parts: adds only part containers and sub-assemblies to the bill of materials. Solids like Part Design bodies, fasteners, or Part workbench primitives are ignored.</source>
       <translation type="unfinished">Only parts: adds only part containers and sub-assemblies to the bill of materials. Solids like Part Design bodies, fasteners, or Part workbench primitives are ignored.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="387"/>
+      <location filename="../../../CommandCreateBom.py" line="385"/>
       <source>Columns</source>
       <translation>Kolonner</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="400"/>
+      <location filename="../../../CommandCreateBom.py" line="398"/>
       <source>Custom columns : 'Description' and other custom columns you add by clicking on 'Add column' will not have their data overwritten. If a column name starts with '.' followed by a property name (e.g. '.Length'), it will be auto-populated with that property value. These columns can be renamed by double-clicking or pressing F2 (renaming a column will currently lose its data).</source>
       <translation>Brugerdefinerede kolonner: 'Beskrivelse' og andre brugerdefinerede kolonner som du tilføjer ved at klikke på 'Tilføj kolonne' vil ikke få data overskrevet. Hvis et kolonnenavn starter med '.' efterfulgt af et egenskabsnavn (f. eks. . '.Længde'), vil kolonnen blive udfyldt automatisk. Disse kolonner kan omdøbes ved at dobbeltklikke på dem eller ved at taste F2 (omdøbning af kolonner vil for nærværende medføre tab af data).</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="406"/>
+      <location filename="../../../CommandCreateBom.py" line="404"/>
       <source>Any column (custom or not), can be deleted by pressing the Delete key</source>
       <translation>Enhver kolonne (brugerdefineret eller ej), kan slettes ved at trykke på Delete-tasten</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="408"/>
+      <location filename="../../../CommandCreateBom.py" line="406"/>
       <source>Export</source>
       <translation>Eksport</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="415"/>
+      <location filename="../../../CommandCreateBom.py" line="413"/>
       <source>The exported file format can be customized in the Spreadsheet workbench preferences</source>
       <translation>Det eksporterede filformat kan tilpasses i indstillingerne for værktøjskassen Spreadsheet</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="394"/>
+      <location filename="../../../CommandCreateBom.py" line="392"/>
       <source>Auto columns :  (Index, Quantity, Name...) are populated automatically. Any modification you make will be overridden. These columns cannot be renamed.</source>
       <translation>Auto-kolonner: (Indeks, Antal, Navn...) udfyldes automatisk. Enhver ændring du foretager vil blive overskrevet. Disse kolonner kan ikke omdøbes.</translation>
     </message>
@@ -342,7 +342,7 @@
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="488"/>
       <source>Enter your formula...</source>
-      <translation type="unfinished">Enter your formula...</translation>
+      <translation>Indtast din formel...</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="541"/>
@@ -515,7 +515,7 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
     <message>
       <location filename="../../../JointObject.py" line="225"/>
       <source>This is the local coordinate system within Reference1's object that will be used for the joint</source>
-      <translation type="unfinished">This is the local coordinate system within Reference1's object that will be used for the joint</translation>
+      <translation>Dette er det lokale koordinatsystem for objektet Reference1, der vil blive brugt til forbindelse</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="237"/>
@@ -531,7 +531,7 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
     <message>
       <location filename="../../../JointObject.py" line="271"/>
       <source>This is the local coordinate system within Reference2's object that will be used for the joint</source>
-      <translation type="unfinished">This is the local coordinate system within Reference2's object that will be used for the joint</translation>
+      <translation>Dette er det lokale koordinatsystem for objektet Reference2, der vil blive brugt til forbindelse</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="283"/>
@@ -547,47 +547,47 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
     <message>
       <location filename="../../../JointObject.py" line="317"/>
       <source>Enable the minimum length limit of the joint</source>
-      <translation type="unfinished">Enable the minimum length limit of the joint</translation>
+      <translation>Aktiver minimumslængden for forbindelsen</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="330"/>
       <source>Enable the maximum length limit of the joint</source>
-      <translation type="unfinished">Enable the maximum length limit of the joint</translation>
+      <translation>Aktiver maksimumslængden for forbindelsen</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="343"/>
       <source>Enable the minimum angle limit of the joint</source>
-      <translation type="unfinished">Enable the minimum angle limit of the joint</translation>
+      <translation>Aktiver minimumsvinklen for forbindelsen</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="356"/>
       <source>Enable the maximum angle limit of the joint</source>
-      <translation type="unfinished">Enable the maximum angle limit of the joint</translation>
+      <translation>Aktiver maksimumsvinklen for forbindelsen</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="386"/>
       <source>This is the angle of the joint. It is used only by the Angle joint.</source>
-      <translation type="unfinished">This is the angle of the joint. It is used only by the Angle joint.</translation>
+      <translation>Dette er vinklen for forbindelsen. Den bruges kun for vinkelforbindelser.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="422"/>
       <source>This is the minimum limit for the length between both coordinate systems (along their z-axis)</source>
-      <translation type="unfinished">This is the minimum limit for the length between both coordinate systems (along their z-axis)</translation>
+      <translation>Dette er den minimale afstand mellem de to koordinatsystemer (langs deres z-akser)</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="434"/>
       <source>This is the maximum limit for the length between both coordinate systems (along their z-axis)</source>
-      <translation type="unfinished">This is the maximum limit for the length between both coordinate systems (along their z-axis)</translation>
+      <translation>Dette er den maksimale afstand mellem de to koordinatsystemer (langs deres z-akser)</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="446"/>
       <source>This is the minimum limit for the angle between both coordinate systems (between their x-axis)</source>
-      <translation type="unfinished">This is the minimum limit for the angle between both coordinate systems (between their x-axis)</translation>
+      <translation>Dette er den minimale vinkel mellem de to koordinatsystemer (mellem deres x-akser)</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="458"/>
       <source>This is the maximum limit for the angle between both coordinate systems (between their x-axis)</source>
-      <translation type="unfinished">This is the maximum limit for the angle between both coordinate systems (between their x-axis)</translation>
+      <translation>Dette er den maksimale vinkel mellem de to koordinatsystemer (mellem deres x-akser)</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="259"/>
@@ -597,12 +597,12 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
     <message>
       <location filename="../../../JointObject.py" line="477"/>
       <source>The first object of the joint</source>
-      <translation type="unfinished">The first object of the joint</translation>
+      <translation>Første objekt i forbindelsen</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="497"/>
       <source>The second object of the joint</source>
-      <translation type="unfinished">The second object of the joint</translation>
+      <translation>Det andet objekt i forbindelsen</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="398"/>
@@ -625,18 +625,18 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
       <translation type="unfinished">The object to ground</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="354"/>
-      <location filename="../../../CommandCreateView.py" line="391"/>
+      <location filename="../../../CommandCreateView.py" line="358"/>
+      <location filename="../../../CommandCreateView.py" line="395"/>
       <source>The objects moved by the move</source>
       <translation type="unfinished">The objects moved by the move</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="366"/>
+      <location filename="../../../CommandCreateView.py" line="370"/>
       <source>This is the movement of the move. The end placement is the result of the start placement * this placement.</source>
       <translation type="unfinished">This is the movement of the move. The end placement is the result of the start placement * this placement.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="375"/>
+      <location filename="../../../CommandCreateView.py" line="379"/>
       <source>The type of the move</source>
       <translation type="unfinished">The type of the move</translation>
     </message>
@@ -883,63 +883,63 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="207"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="206"/>
       <source>The object is associated to one or more joints.</source>
       <translation type="unfinished">The object is associated to one or more joints.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="209"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="208"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation type="unfinished">Do you want to move the object and delete associated joints?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1012"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1030"/>
       <source>Move part</source>
       <translation>Flyt komponent</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1548"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1575"/>
       <source>ViewProviderAssembly</source>
       <comment>and %1 more</comment>
       <translation type="unfinished">ViewProviderAssembly</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1565"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1592"/>
       <source>Empty Assembly</source>
       <translation>Tom samling</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1569"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1597"/>
       <source>Over-constrained:</source>
       <translation>For mange låse:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1576"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1605"/>
       <source>Malformed joints:</source>
       <translation type="unfinished">Malformed joints:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1582"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1613"/>
       <source>Redundant joints:</source>
       <translation type="unfinished">Redundant joints:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1589"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1621"/>
       <source>Partially redundant:</source>
       <translation>Delvis overflødig:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1595"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1629"/>
       <source>Solver failed to converge</source>
-      <translation type="unfinished">Solver failed to converge</translation>
+      <translation>Løsningen konvergerer ikke</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1601"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1637"/>
       <source>Under-constrained:</source>
       <translation>Ulåst:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1603"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1639"/>
       <source>%n Degrees of Freedom</source>
       <translation type="unfinished">
         <numerusform>%n Frihedsgrader</numerusform>
@@ -947,7 +947,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1607"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1643"/>
       <source>Fully constrained</source>
       <translation>Låst:</translation>
     </message>
@@ -1082,7 +1082,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly::AssemblyLink</name>
     <message>
-      <location filename="../../../App/AssemblyLink.cpp" line="604"/>
+      <location filename="../../../App/AssemblyLink.cpp" line="651"/>
       <source>Joints</source>
       <translation>Forbindelser</translation>
     </message>
@@ -1090,7 +1090,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../ViewProviderAssemblyLink.cpp" line="135"/>
+      <location filename="../../ViewProviderAssemblyLink.cpp" line="139"/>
       <source>Toggle Rigid</source>
       <translation type="unfinished">Toggle Rigid</translation>
     </message>
@@ -1235,7 +1235,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateAssembly.py" line="49"/>
       <source>New Assembly</source>
-      <translation type="unfinished">New Assembly</translation>
+      <translation>Ny samling</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateAssembly.py" line="54"/>
@@ -1376,7 +1376,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="274"/>
       <source>Creates an angle joint that fixes the angle between the Z-axis of the selected coordinate systems</source>
-      <translation type="unfinished">Creates an angle joint that fixes the angle between the Z-axis of the selected coordinate systems</translation>
+      <translation>Opretter en vinkelforbindelse, der fastholder vinklen mellem Z-akserne for de valgte koordinatsystemer</translation>
     </message>
   </context>
   <context>
@@ -1415,7 +1415,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="372"/>
       <source>&lt;p&gt;Creates a belt joint that links 2 rotating objects together. They will have the same rotation direction.&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Creates a belt joint that links 2 rotating objects together. They will have the same rotation direction.&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;Opretter en bælteforbindelse, der forbinder 2 roterende objekter. De to objekter vil få samme rotationsretning.&lt;/p&gt;&lt;p&gt;Vælg de samme koordinatsystemer som revolute samlinger.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1464,6 +1464,16 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <source>Insert Component</source>
       <translation>Indsæt komponent</translation>
     </message>
+    <message>
+      <location filename="../../../CommandInsertLink.py" line="202"/>
+      <source>Partially loaded</source>
+      <translation type="unfinished">Partially loaded</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandInsertLink.py" line="556"/>
+      <source>Fully load document</source>
+      <translation type="unfinished">Fully load document</translation>
+    </message>
   </context>
   <context>
     <name>AssemblyGui::TaskAssemblyMessages</name>
@@ -1473,22 +1483,22 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <translation type="unfinished">Solver messages</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="55"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="56"/>
       <source>Click to select these conflicting joints.</source>
       <translation type="unfinished">Click to select these conflicting joints.</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="58"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="59"/>
       <source>Click to select these redundant joints.</source>
       <translation type="unfinished">Click to select these redundant joints.</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="61"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="63"/>
       <source>The assembly has unconstrained components giving rise to those Degrees Of Freedom. Click to select these unconstrained components.</source>
       <translation type="unfinished">The assembly has unconstrained components giving rise to those Degrees Of Freedom. Click to select these unconstrained components.</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="65"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="68"/>
       <source>Click to select these malformed joints.</source>
       <translation type="unfinished">Click to select these malformed joints.</translation>
     </message>
