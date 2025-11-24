@@ -51,6 +51,27 @@ if FreeCAD.GuiUp:
     import FreeCADGui
 
 
+def apply_path_substitutions(file_path, job):
+    """Substitute %D, %d, %j and %M in file_path.
+
+    - %D: directory of the job's document
+    - %d: label of the job's document
+    - %j: label of the job
+    - %M: user macro directory
+    """
+    substitutions = {
+        "%D": os.path.dirname(job.Document.FileName or "."),
+        "%d": job.Document.Label,
+        "%j": job.Label,
+        "%M": os.path.dirname(FreeCAD.getUserMacroDir()),
+    }
+    for key, value in substitutions.items():
+        file_path = file_path.replace(key, value)
+
+    Path.Log.debug(f"file_path: {file_path}")
+    return file_path
+
+
 class FilenameGenerator:
     def __init__(self, job, file_extension=None):
         self.job = job
@@ -132,17 +153,7 @@ class FilenameGenerator:
 
     def _apply_path_substitutions(self, file_path):
         """Apply substitutions based on job settings and other parameters."""
-        substitutions = {
-            "%D": os.path.dirname(self.job.Document.FileName or "."),
-            "%d": self.job.Document.Label,
-            "%j": self.job.Label,
-            "%M": os.path.dirname(FreeCAD.getUserMacroDir()),
-        }
-        for key, value in substitutions.items():
-            file_path = file_path.replace(key, value)
-
-        Path.Log.debug(f"file_path: {file_path}")
-        return file_path
+        return apply_path_substitutions(file_path, self.job)
 
     def _apply_filename_substitutions(self, file_name):
         Path.Log.debug(f"file_name: {file_name}")
