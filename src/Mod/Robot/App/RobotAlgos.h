@@ -28,7 +28,6 @@
 #include <Base/Vector3D.h>
 #include <Mod/Robot/RobotGlobal.h>
 
-
 namespace Robot
 {
 
@@ -45,26 +44,10 @@ public:
     void Test();
 };
 
-inline KDL::Frame toFrame(const Base::Placement& To)
-{
-    return KDL::Frame(
-        KDL::Rotation::Quaternion(
-            To.getRotation()[0],
-            To.getRotation()[1],
-            To.getRotation()[2],
-            To.getRotation()[3]
-        ),
-        KDL::Vector(To.getPosition()[0], To.getPosition()[1], To.getPosition()[2])
-    );
-}
-inline Base::Placement toPlacement(const KDL::Frame& To)
-{
-    double x, y, z, w;
-    To.M.GetQuaternion(x, y, z, w);
-    return Base::Placement(Base::Vector3d(To.p[0], To.p[1], To.p[2]), Base::Rotation(x, y, z, w));
-}
+KDL::Frame toFrame(const Base::Placement& To);
+
+Base::Placement toPlacement(const KDL::Frame& frame);
 
 }  // namespace Robot
-
 
 #endif

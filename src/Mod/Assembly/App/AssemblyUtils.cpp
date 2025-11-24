@@ -544,10 +544,22 @@ App::DocumentObject* getObjFromRef(const App::DocumentObject* obj, const std::st
     const auto handlePartDesignBody =
         [&](App::DocumentObject* obj,
             std::vector<std::string>::const_iterator it) -> App::DocumentObject* {
-        const auto nextIt = std::next(it);
+        auto nextIt = std::next(it);
         if (nextIt != names.end()) {
             for (auto* obji : obj->getOutList()) {
                 if (*nextIt == obji->getNameInDocument() && isBodySubObject(obji)) {
+                    // if obji is a LCS then perhaps we need to resolve one more level
+                    if (auto* lcs = freecad_cast<App::LocalCoordinateSystem*>(obji)) {
+                        nextIt = std::next(nextIt);
+                        if (nextIt != names.end()) {
+                            for (auto* objj : lcs->baseObjects()) {
+                                if (*nextIt == objj->getNameInDocument()
+                                    && objj->isDerivedFrom<App::DatumElement>()) {
+                                    return objj;
+                                }
+                            }
+                        }
+                    }
                     return obji;
                 }
             }

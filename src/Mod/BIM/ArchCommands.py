@@ -245,6 +245,15 @@ def removeComponents(objectsList, host=None):
         for o in objectsList:
             if o.InList:
                 h = o.InList[0]
+
+                is_base_removal = hasattr(h, "Base") and h.Base == o
+                has_handler = hasattr(h, "Proxy") and hasattr(h.Proxy, "handleComponentRemoval")
+
+                if is_base_removal and has_handler:
+                    # Dispatch to the object's own smart removal logic and skip the old code path.
+                    h.Proxy.handleComponentRemoval(h, o)
+                    continue
+
                 tp = Draft.getType(h)
                 if tp in ["Floor", "Building", "Site", "BuildingPart"]:
                     c = h.Group

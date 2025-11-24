@@ -156,6 +156,8 @@ private:
     QList<QGraphicsItem*> m_orderedSceneSelection;        //items in selection order
 
     QString defaultFileName();
+
+    bool m_previewState{false};
 };
 
 class MDIViewPagePy : public Py::PythonExtension<MDIViewPagePy>

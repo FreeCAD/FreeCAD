@@ -233,10 +233,9 @@ void Boolean::updatePreviewShape()
         std::vector<TopoShape> shapes;
 
         for (auto& obj : Group.getValues()) {
-            auto shape
-                = getTopoShape(obj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
-            shape.setPlacement(shape.getPlacement().inverse() * globalPlacement());
-            shapes.push_back(shape);
+            shapes.push_back(
+                getTopoShape(obj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform)
+            );
         }
 
         TopoShape result;

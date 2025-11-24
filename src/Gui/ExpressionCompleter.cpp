@@ -413,7 +413,7 @@ public:
                         res = QString::fromUtf8(quote(doc->Label.getStrValue()).c_str());
                     }
                     else {
-                        res = QString::fromLatin1(doc->getName());
+                        res = QString::fromUtf8(doc->getName());
                     }
                     if (sep) {
                         res += QLatin1Char('#');
@@ -1013,7 +1013,7 @@ void ExpressionLineEdit::slotTextChanged(const QString& text)
     }
 }
 
-void ExpressionLineEdit::slotCompleteText(const QString& completionPrefix, bool isActivated)
+void ExpressionLineEdit::slotCompleteText(const QString& completionPrefix, ActivationMode mode)
 {
     int start, end;
     completer->getPrefixRange(start, end);
@@ -1030,7 +1030,7 @@ void ExpressionLineEdit::slotCompleteText(const QString& completionPrefix, bool 
 
     // chain completions if we select an entry from the completer drop down
     // and that entry ends with '.' or '#'
-    if (isActivated) {
+    if (mode == ActivationMode::Activated) {
         std::string textToComplete = completionPrefix.toUtf8().constData();
         if (textToComplete.size()
             && (*textToComplete.crbegin() == '.' || *textToComplete.crbegin() == '#')) {
@@ -1042,12 +1042,12 @@ void ExpressionLineEdit::slotCompleteText(const QString& completionPrefix, bool 
 
 void ExpressionLineEdit::slotCompleteTextHighlighted(const QString& completionPrefix)
 {
-    slotCompleteText(completionPrefix, false);
+    slotCompleteText(completionPrefix, ActivationMode::Highlighted);
 }
 
 void ExpressionLineEdit::slotCompleteTextSelected(const QString& completionPrefix)
 {
-    slotCompleteText(completionPrefix, true);
+    slotCompleteText(completionPrefix, ActivationMode::Activated);
 }
 
 
@@ -1116,13 +1116,13 @@ void ExpressionTextEdit::setDocumentObject(const App::DocumentObject* currentDoc
             completer,
             qOverload<const QString&>(&QCompleter::activated),
             this,
-            &ExpressionTextEdit::slotCompleteText
+            &ExpressionTextEdit::slotCompleteTextSelected
         );
         connect(
             completer,
             qOverload<const QString&>(&QCompleter::highlighted),
             this,
-            &ExpressionTextEdit::slotCompleteText
+            &ExpressionTextEdit::slotCompleteTextHighlighted
         );
         connect(this, &ExpressionTextEdit::textChanged2, completer, &ExpressionCompleter::slotUpdate);
         connect(
@@ -1155,7 +1155,7 @@ void ExpressionTextEdit::slotTextChanged()
     }
 }
 
-void ExpressionTextEdit::slotCompleteText(const QString& completionPrefix)
+void ExpressionTextEdit::slotCompleteText(const QString& completionPrefix, ActivationMode mode)
 {
     QTextCursor cursor = textCursor();
     int start, end;
@@ -1165,15 +1165,29 @@ void ExpressionTextEdit::slotCompleteText(const QString& completionPrefix)
         cursor.movePosition(QTextCursor::NextCharacter, QTextCursor::MoveAnchor, end - pos);
     }
     cursor.movePosition(QTextCursor::PreviousCharacter, QTextCursor::KeepAnchor, end - start);
+
     Base::FlagToggler<bool> flag(block, false);
     cursor.insertText(completionPrefix);
     completer->updatePrefixEnd(cursor.positionInBlock());
 
-    std::string textToComplete = completionPrefix.toUtf8().constData();
-    if (textToComplete.size()
-        && (*textToComplete.crbegin() == '.' || *textToComplete.crbegin() == '#')) {
-        completer->slotUpdate(cursor.block().text(), cursor.positionInBlock());
+    // chain completions only when activated (Enter/Click), not when highlighted (arrow keys)
+    if (mode == ActivationMode::Activated) {
+        std::string textToComplete = completionPrefix.toUtf8().constData();
+        if (!textToComplete.empty()
+            && (*textToComplete.crbegin() == '.' || *textToComplete.crbegin() == '#')) {
+            completer->slotUpdate(cursor.block().text(), cursor.positionInBlock());
+        }
     }
+}
+
+void ExpressionTextEdit::slotCompleteTextHighlighted(const QString& completionPrefix)
+{
+    slotCompleteText(completionPrefix, ActivationMode::Highlighted);
+}
+
+void ExpressionTextEdit::slotCompleteTextSelected(const QString& completionPrefix)
+{
+    slotCompleteText(completionPrefix, ActivationMode::Activated);
 }
 
 void ExpressionTextEdit::keyPressEvent(QKeyEvent* e)
@@ -1208,9 +1222,8 @@ void ExpressionTextEdit::keyPressEvent(QKeyEvent* e)
                 if (!completer->popup()->currentIndex().isValid()) {
                     completer->popup()->setCurrentIndex(completer->popup()->model()->index(0, 0));
                 }
-                // insert completion
                 completer->setCurrentRow(completer->popup()->currentIndex().row());
-                slotCompleteText(completer->currentCompletion());
+                slotCompleteText(completer->currentCompletion(), ActivationMode::Highlighted);
 
                 // refresh completion list
                 completer->setCompletionPrefix(completer->currentCompletion());

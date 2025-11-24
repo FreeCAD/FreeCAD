@@ -23,6 +23,7 @@
 import pathlib
 from typing import Optional, Tuple, Type, Iterable
 from PySide.QtWidgets import QFileDialog, QMessageBox
+from ...camassets import cam_assets
 from ..manager import AssetManager
 from ..serializer import AssetSerializer, Asset
 from .util import (
@@ -30,6 +31,7 @@ from .util import (
     make_export_filters,
     get_serializer_from_extension,
 )
+import Path
 import Path.Preferences as Preferences
 
 
@@ -56,7 +58,7 @@ class AssetOpenDialog(QFileDialog):
         if filters:
             self.selectNameFilter(filters[0])  # Default to "All supported files"
 
-    def _deserialize_selected_file(self, file_path: pathlib.Path) -> Optional[Asset]:
+    def deserialize_file(self, file_path: pathlib.Path, quiet=False) -> Optional[Asset]:
         """Deserialize the selected file using the appropriate serializer."""
         # Find the correct serializer for the file.
         file_extension = file_path.suffix.lower()
@@ -64,11 +66,15 @@ class AssetOpenDialog(QFileDialog):
             self.serializers, file_extension, for_import=True
         )
         if not serializer_class:
-            QMessageBox.critical(
-                self,
-                "Error",
-                f"No supported serializer found for file extension '{file_extension}'",
-            )
+            message = f"No supported serializer found for file extension '{file_extension}'"
+            if quiet:
+                Path.Log.error(message)
+            else:
+                QMessageBox.critical(
+                    self,
+                    "Error",
+                    message,
+                )
             return None
 
         # Check whether all dependencies for importing the file exist.
@@ -101,32 +107,38 @@ class AssetOpenDialog(QFileDialog):
                                 break
 
                 if not dependency_found:
-                    QMessageBox.critical(
-                        self,
-                        "Error",
-                        f"Failed to import {file_path}: required dependency {dependency_uri} not found in stores or in parallel Bit directory",
-                    )
+                    message = f"Failed to import {file_path}: required dependency {dependency_uri} not found in stores or in parallel Bit directory"
+                    if quiet:
+                        Path.Log.error(message)
+                    else:
+                        QMessageBox.critical(
+                            self,
+                            "Error",
+                            message,
+                        )
                     return None
 
             # If we found external toolbits, ask user if they want to import them
             if external_toolbits:
-                from PySide.QtGui import QMessageBox
-
                 toolbit_names = [uri.asset_id for uri, _ in external_toolbits]
-                reply = QMessageBox.question(
-                    self,
-                    "Import External Toolbits",
-                    f"This library references {len(external_toolbits)} toolbit(s) that are not in your local store:\n\n"
-                    + "\n".join(f"• {name}" for name in toolbit_names)
-                    + f"\n\nWould you like to import these toolbits into your local store?\n"
-                    + "This will make them permanently available for use in other libraries.",
-                    QMessageBox.Yes | QMessageBox.No,
-                    QMessageBox.Yes,
-                )
+                if quiet:
+                    Path.Log.info("Importing tool bits for the library")
+                    reply = QMessageBox.Yes
+                else:
+                    reply = QMessageBox.question(
+                        self,
+                        "Import External Toolbits",
+                        f"This library references {len(external_toolbits)} toolbit(s) that are not in your local store:\n\n"
+                        + "\n".join(f"• {name}" for name in toolbit_names)
+                        + f"\n\nWould you like to import these toolbits into your local store?\n"
+                        + "This will make them permanently available for use in other libraries.",
+                        QMessageBox.Yes | QMessageBox.No,
+                        QMessageBox.Yes,
+                    )
 
                 if reply == QMessageBox.Yes:
                     # Import the external toolbits into local store
-                    self._import_external_toolbits(external_toolbits)
+                    self._import_external_toolbits(external_toolbits, quiet=quiet)
                     # After importing, use regular deserialization since toolbits are now in local store
                 else:
                     # User declined import, use context-aware deserialization for external loading
@@ -160,7 +172,7 @@ class AssetOpenDialog(QFileDialog):
             filenames = self.selectedFiles()
             if filenames:
                 file_path = pathlib.Path(filenames[0])
-                asset = self._deserialize_selected_file(file_path)
+                asset = self.deserialize_file(file_path)
                 if asset:
                     return file_path, asset
         return None
@@ -183,7 +195,7 @@ class AssetOpenDialog(QFileDialog):
             # Fallback to home directory if anything goes wrong
             return pathlib.Path.home()
 
-    def _import_external_toolbits(self, external_toolbits):
+    def _import_external_toolbits(self, external_toolbits, quiet=False):
         """Import external toolbits into the local asset store."""
         from ...toolbit.serializers import all_serializers as toolbit_serializers
         from .util import get_serializer_from_extension
@@ -214,6 +226,7 @@ class AssetOpenDialog(QFileDialog):
                     toolbit.id = dependency_uri.asset_id
 
                 # Import the toolbit into local store
+                cam_assets.add(toolbit)
                 imported_count += 1
 
             except Exception as e:
@@ -226,12 +239,18 @@ class AssetOpenDialog(QFileDialog):
                 message += f"\n\nFailed to import {len(failed_imports)} toolbit(s):\n" + "\n".join(
                     failed_imports
                 )
-            QMessageBox.information(self, "Import Results", message)
+            if quiet:
+                Path.Log.info(message)
+            else:
+                QMessageBox.information(self, "Import Results", message)
         elif failed_imports:
             message = f"Failed to import all {len(failed_imports)} toolbit(s):\n" + "\n".join(
                 failed_imports
             )
-            QMessageBox.warning(self, "Import Failed", message)
+            if quiet:
+                Path.Log.error(message)
+            else:
+                QMessageBox.warning(self, "Import Failed", message)
 
 
 class AssetSaveDialog(QFileDialog):

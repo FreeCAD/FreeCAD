@@ -45,6 +45,7 @@
 
 
 #include "AssemblyObject.h"
+#include "AssemblyLink.h"
 #include "BomObject.h"
 #include "BomObjectPy.h"
 
@@ -185,7 +186,13 @@ void BomObject::addObjectChildrenToBom(
         if (!child) {
             continue;
         }
-        if (child->isDerivedFrom<App::Link>()) {
+        if (auto* asmLink = freecad_cast<AssemblyLink*>(child)) {
+            child = asmLink->getLinkedAssembly();
+            if (!child) {
+                continue;
+            }
+        }
+        else if (child->isDerivedFrom<App::Link>()) {
             child = static_cast<App::Link*>(child)->getLinkedObject();
             if (!child) {
                 continue;
@@ -224,7 +231,8 @@ void BomObject::addObjectChildrenToBom(
         ++row;
 
         if ((child->isDerivedFrom<AssemblyObject>() && detailSubAssemblies.getValue())
-            || (child->isDerivedFrom<App::Part>() && detailParts.getValue())) {
+            || (!child->isDerivedFrom<AssemblyObject>() && child->isDerivedFrom<App::Part>()
+                && detailParts.getValue())) {
             addObjectChildrenToBom(child->getOutList(), row, sub_index);
         }
     }
