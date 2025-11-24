@@ -585,6 +585,27 @@ void TaskAttacher::handleInitialSelection()
     addToReference(subAndObjNamePairs);
 }
 
+void TaskAttacher::sanitizeNames(std::string& objName, std::string& subName)
+{
+    Base::Console().message(">> ORIGINAL objName: '%s'\n", subName.c_str());
+
+    // Remove "OriginXXX:" prefix from object name
+    // if (objName.rfind("Origin", 0) == 0) { // starts with "Origin"
+    //     auto colon = objName.find(':');
+    //     if (colon != std::string::npos) {
+    //         objName = objName.substr(colon + 1);
+    //         Base::Console().message("Sanitized Origin prefix: '%s'\n", objName.c_str());
+    //     }
+    // }
+
+    // Remove trailing dot from subName if present
+    if (!subName.empty() && subName.back() == '.') {
+        subName.pop_back();
+        Base::Console().message("Removed trailing dot from subName: '%s'\n", subName.c_str());
+    }
+}
+
+
 void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (!ViewProvider) {
@@ -592,7 +613,17 @@ void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
     }
 
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
-        SubAndObjName pair = {msg.pObjectName, msg.pSubName};
+        // Extract the object and sub-element names
+        std::string objName = msg.pObjectName ? msg.pObjectName : "";
+        std::string subName = msg.pSubName ? msg.pSubName : "";
+
+        // Sanitize names
+        sanitizeNames(objName, subName);
+
+        // Create the filtered pair
+        SubAndObjName pair = {objName, subName};
+
+        // Add to the reference list
         addToReference(pair);
     }
 }
@@ -839,7 +870,7 @@ void TaskAttacher::onRefName(const QString& text, unsigned idx)
         return;
     }
 
-    if (text.length() == 0) {
+    if (text.isEmpty()) {
         // Reference was removed
         // Update the reference list
         Part::AttachExtension* pcAttach
@@ -938,24 +969,28 @@ void TaskAttacher::onRefName(const QString& text, unsigned idx)
             ss << part.toLatin1().constData();
             return ss.str();
         };
-
-        auto name = getSubshapeName(parts[1]);
-
-        line->setProperty("RefName", QByteArray(name.c_str()));
-        subElement = name;
     }
 
+    std::string objName = parts[0].toStdString();
+    std::string subName = parts[1].toStdString();
+
+    // Sanitize object/sub-element names
+    sanitizeNames(objName, subName);
+
+    // Update the line edit property
+    line->setProperty("RefName", QByteArray(subName.c_str()));
+
+    // Update AttachmentSupport
     Part::AttachExtension* pcAttach
         = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
     std::vector<App::DocumentObject*> refs = pcAttach->AttachmentSupport.getValues();
     std::vector<std::string> refnames = pcAttach->AttachmentSupport.getSubValues();
     if (idx < refs.size()) {
         refs[idx] = obj;
-        refnames[idx] = subElement;
-    }
-    else {
+        refnames[idx] = subName;
+    } else {
         refs.push_back(obj);
-        refnames.emplace_back(subElement);
+        refnames.push_back(subName);
     }
     pcAttach->AttachmentSupport.setValues(refs, refnames);
     updateListOfModes();
@@ -1407,6 +1442,8 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
     }
 }
 
+
+
 //**************************************************************************
 //**************************************************************************
 // TaskDialog
@@ -1540,5 +1577,7 @@ bool TaskDlgAttacher::reject()
 
     return true;
 }
+
+
 
 #include "moc_TaskAttacher.cpp"

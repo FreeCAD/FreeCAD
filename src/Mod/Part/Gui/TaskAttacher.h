@@ -39,6 +39,9 @@
 
 #include <Mod/Part/PartGlobal.h>
 
+#include <QTreeWidget>
+#include <QTreeWidgetItem>
+
 class Ui_TaskAttacher;
 class QLineEdit;
 
@@ -89,6 +92,7 @@ public:
     {
         return completed;
     }
+
 
 private Q_SLOTS:
     void onAttachmentOffsetChanged(double, int idx);
@@ -154,6 +158,10 @@ private:
     void selectMapMode(Attacher::eMapMode mmode);
 
     void showPlacementUtilities();
+
+    /// Sanitize object and sub-element names
+    /// Removes "OriginXXX:" prefix and trailing dot
+    static void sanitizeNames(std::string& objName, std::string& subName);
 
 protected:
     Gui::ViewProviderDocumentObject* ViewProvider;
