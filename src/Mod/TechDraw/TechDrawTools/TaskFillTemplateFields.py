@@ -565,5 +565,4 @@ class TaskFillTemplateFields:
     def close(self):
         self.dialog.hide()
         keyLst.clear()
-        projgrp_view = None
         return True
