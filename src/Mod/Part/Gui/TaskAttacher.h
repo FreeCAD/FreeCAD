@@ -90,7 +90,6 @@ public:
         return completed;
     }
 
-
 private Q_SLOTS:
     void onAttachmentOffsetChanged(double, int idx);
     void onAttachmentOffsetXChanged(double);
