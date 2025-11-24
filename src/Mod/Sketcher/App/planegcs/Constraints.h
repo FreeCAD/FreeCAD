@@ -85,6 +85,7 @@ enum ConstraintType
     AngleViaPointAndTwoParams = 34,
     AngleViaTwoPoints = 35,
     ArcLength = 36,
+    OffsetValue = 37,
 };
 
 enum InternalAlignmentType
@@ -1354,6 +1355,23 @@ private:
 
 public:
     ConstraintArcLength(Arc& a, double* d);
+    ConstraintType getTypeId() override;
+};
+
+// Offset
+class ConstraintOffset: public Constraint
+{
+private:
+    OffsetCurve _offCurve;
+    double* offset()
+    {
+        return pvec[0];
+    }
+    void ReconstructGeomPointers();  // writes pointers in pvec to the parameters of _offCurve
+    void errorgrad(double* err, double* grad, double* param) override;
+
+public:
+    ConstraintOffset(OffsetCurve& offc, double* offValue);
     ConstraintType getTypeId() override;
 };
 
