@@ -166,7 +166,7 @@ M2"""
             action="store_true",
             help="Retract tool in Z-axis for every tool change",
         )
-        
+
         return parser
 
     def process_arguments(self):

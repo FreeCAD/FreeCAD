@@ -189,7 +189,6 @@ M2
         self.assertEqual(result, "G0 Z50")
         self.assertEqual(gcode.splitlines()[-1], "M2")
 
-
     def test050(self):
         """
         Test inches

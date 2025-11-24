@@ -77,7 +77,9 @@ parser.add_argument(
     action="store_true",
     help="suppress tool length offset (G43) following tool changes",
 )
-parser.add_argument("--tool-retraction", action="store_true", help="Retract tool in Z-axis for every tool change")
+parser.add_argument(
+    "--tool-retraction", action="store_true", help="Retract tool in Z-axis for every tool change"
+)
 
 TOOLTIP_ARGS = parser.format_help()
 
