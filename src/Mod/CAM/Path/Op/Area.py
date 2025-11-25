@@ -307,8 +307,8 @@ class ObjectOp(PathOp.ObjectOp):
         ):
             pathParams["sort_mode"] = 0
 
-        if not self.areaOpRetractTool(obj):
-            pathParams["threshold"] = 2.001 * self.radius
+        if hasattr(obj, "RetractThreshold"):
+            pathParams["threshold"] = obj.RetractThreshold.Value
 
         if (
             not obj.UseStartPoint
@@ -477,11 +477,7 @@ class ObjectOp(PathOp.ObjectOp):
                 self.commandlist.extend(ppCmds)
                 sims.append(sim)
 
-            if (
-                self.areaOpRetractTool(obj)
-                and self.endVector is not None
-                and len(self.commandlist) > 1
-            ):
+            if self.endVector is not None and len(self.commandlist) > 1:
                 self.endVector[2] = obj.ClearanceHeight.Value
                 self.commandlist.append(
                     Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid})
@@ -489,10 +485,6 @@ class ObjectOp(PathOp.ObjectOp):
 
         Path.Log.debug("obj.Name: " + str(obj.Name) + "\n\n")
         return sims
-
-    def areaOpRetractTool(self, obj):
-        """areaOpRetractTool(obj) ... return False to keep the tool at current level between shapes. Default is True."""
-        return True
 
     def areaOpAreaParams(self, obj, isHole):
         """areaOpAreaParams(obj, isHole) ... return operation specific area parameters in a dictionary.
