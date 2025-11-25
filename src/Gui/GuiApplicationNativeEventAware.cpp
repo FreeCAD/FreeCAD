@@ -143,11 +143,9 @@ void Gui::GUIApplicationNativeEventAware::postButtonEvent(int buttonNumber, int 
 float Gui::GUIApplicationNativeEventAware::convertPrefToSensitivity(int value)
 {
     if (value < 0) {
-        return ((0.9 / 50) * float(value) + 1);
+        return (static_cast<float>(0.9 / 50) * float(value) + 1);
     }
-    else {
-        return ((2.5 / 50) * float(value) + 1);
-    }
+    return (static_cast<float>(2.5 / 50) * float(value) + 1);
 }
 
 void Gui::GUIApplicationNativeEventAware::importSettings(std::vector<int>& motionDataArray)
@@ -228,15 +226,12 @@ void Gui::GUIApplicationNativeEventAware::importSettings(std::vector<int>& motio
 
         return;
     }
-    else {
-        motionDataArray[0] = motionDataArray[0] - group->GetInt("CalibrationX");
-        motionDataArray[1] = motionDataArray[1] - group->GetInt("CalibrationY");
-        motionDataArray[2] = motionDataArray[2] - group->GetInt("CalibrationZ");
-        motionDataArray[3] = motionDataArray[3] - group->GetInt("CalibrationXr");
-        motionDataArray[4] = motionDataArray[4] - group->GetInt("CalibrationYr");
-        motionDataArray[5] = motionDataArray[5] - group->GetInt("CalibrationZr");
-    }
-
+    motionDataArray[0] = motionDataArray[0] - group->GetInt("CalibrationX");
+    motionDataArray[1] = motionDataArray[1] - group->GetInt("CalibrationY");
+    motionDataArray[2] = motionDataArray[2] - group->GetInt("CalibrationZ");
+    motionDataArray[3] = motionDataArray[3] - group->GetInt("CalibrationXr");
+    motionDataArray[4] = motionDataArray[4] - group->GetInt("CalibrationYr");
+    motionDataArray[5] = motionDataArray[5] - group->GetInt("CalibrationZr");
 
     if (flipXY) {
 

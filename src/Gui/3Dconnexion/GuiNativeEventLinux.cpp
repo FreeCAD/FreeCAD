@@ -52,14 +52,12 @@ void Gui::GuiNativeEvent::initSpaceball([[maybe_unused]] QMainWindow* window)
         Base::Console().log(
             "Couldn't connect to spacenav daemon. Please ignore if you don't have a spacemouse.\n"
         );
+        return;
     }
-    else {
-        Base::Console().log("Connected to spacenav daemon\n");
-        QSocketNotifier* SpacenavNotifier
-            = new QSocketNotifier(spnav_fd(), QSocketNotifier::Read, this);
-        connect(SpacenavNotifier, SIGNAL(activated(int)), this, SLOT(pollSpacenav()));
-        mainApp->setSpaceballPresent(true);
-    }
+    Base::Console().log("Connected to spacenav daemon\n");
+    const auto SpacenavNotifier = new QSocketNotifier(spnav_fd(), QSocketNotifier::Read, this);
+    connect(SpacenavNotifier, SIGNAL(activated(int)), this, SLOT(pollSpacenav()));
+    mainApp->setSpaceballPresent(true);
 }
 
 void Gui::GuiNativeEvent::pollSpacenav()

@@ -283,9 +283,7 @@ QString ButtonModel::getLabel(const int& number) const
         }
         return tr("Button %1").arg(number + 1) + desc;
     }
-    else {
-        return tr("Out of range");
-    }
+    return tr("Out of range");
 }
 
 void ButtonModel::loadConfig(const char* RequiredDeviceName)

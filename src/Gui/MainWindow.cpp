@@ -1146,9 +1146,7 @@ bool MainWindow::event(QEvent* e)
             if (commandName.empty()) {
                 return true;
             }
-            else {
-                Application::Instance->commandManager().runCommandByName(commandName.c_str());
-            }
+            Application::Instance->commandManager().runCommandByName(commandName.c_str());
         }
         else {
             return true;
