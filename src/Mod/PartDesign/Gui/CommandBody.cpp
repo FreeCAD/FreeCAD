@@ -674,8 +674,7 @@ void CmdPartDesignMoveTip::activated(int iMsg)
     );
 
     // Guard against invalid selection size
-    if (allSelObj.size() != 1)
-    {
+    if (allSelObj.size() != 1) {
         QMessageBox::warning(
             nullptr,
             QObject::tr("Selection error"),
@@ -692,14 +691,15 @@ void CmdPartDesignMoveTip::activated(int iMsg)
      * If the selected object is a body, then it will be used directly.
      * Otherwise it will try to find the body.
      */
-    if (selFeature->isDerivedFrom<PartDesign::Body>())
+    if (selFeature->isDerivedFrom<PartDesign::Body>()) {
         body = static_cast<PartDesign::Body*>(selFeature);
-    else
+    }
+    else {
         body = PartDesignGui::getBodyFor(selFeature, /* messageIfNot =*/false);
+    }
 
     // Guard for invalid selection without a body
-    if (!body)
-    {
+    if (!body) {
         QMessageBox::warning(
             nullptr,
             QObject::tr("Selection error"),
@@ -712,8 +712,7 @@ void CmdPartDesignMoveTip::activated(int iMsg)
     }
 
     // Early exit if the selected object is already the current tip
-    if (selFeature == body->Tip.getValue())
-    {
+    if (selFeature == body->Tip.getValue()) {
         Base::Console().message("%s is already the tip of the body\n", selFeature->getNameInDocument());
         return;
     }
@@ -728,17 +727,17 @@ void CmdPartDesignMoveTip::activated(int iMsg)
      */
     bool isTipValid = false;
 
-    if (selFeature == body)
+    if (selFeature == body) {
         isTipValid = true;
+    }
 
-    else if (selFeature->isDerivedFrom<App::Origin>())
-    {
+    else if (selFeature->isDerivedFrom<App::Origin>()) {
         // Make sure that this Origin is part of the body
-        if (body->getOrigin() == selFeature)
+        if (body->getOrigin() == selFeature) {
             isTipValid = true;
+        }
 
-        else
-        {
+        else {
             QMessageBox::warning(
                 nullptr,
                 QObject::tr("Selection error"),
@@ -748,15 +747,16 @@ void CmdPartDesignMoveTip::activated(int iMsg)
         }
     }
 
-    else if (selFeature->isDerivedFrom<PartDesign::Feature>())
+    else if (selFeature->isDerivedFrom<PartDesign::Feature>()) {
         isTipValid = true;
+    }
 
-    else if (selFeature == body->BaseFeature.getValue())
+    else if (selFeature == body->BaseFeature.getValue()) {
         isTipValid = true;
+    }
 
     // If tip is determined invalid, then show warninng
-    if (!isTipValid)
-    {
+    if (!isTipValid) {
         QMessageBox::warning(
             nullptr,
             QObject::tr("Selection error"),
