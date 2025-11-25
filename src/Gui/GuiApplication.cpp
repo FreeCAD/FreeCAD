@@ -99,9 +99,7 @@ bool GUIApplication::notify(QObject* receiver, QEvent* event)
             || event->type() == Spaceball::MotionEvent::MotionEventType) {
             return processSpaceballEvent(receiver, event);
         }
-        else {
-            return QApplication::notify(receiver, event);
-        }
+        return QApplication::notify(receiver, event);
     }
     catch (const Base::SystemExitException& e) {
         caughtException.reset(new Base::SystemExitException(e));
