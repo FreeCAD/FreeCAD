@@ -4238,6 +4238,7 @@ StdCmdClarifySelection::StdCmdClarifySelection()
     sWhatsThis = "Std_ClarifySelection";
     sStatusTip = sToolTipText;
     sAccel = "G, G";
+    sPixmap = "tree-pre-sel";
     eType = NoTransaction | AlterSelection;
 }
 
