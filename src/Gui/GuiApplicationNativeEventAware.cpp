@@ -225,7 +225,7 @@ void Gui::GUIApplicationNativeEventAware::postButtonEvent(int buttonNumber, int 
     Gui::GUIApplicationNativeEventAware::postEvent(currentWidget, buttonEvent);
 }
 
-float Gui::GUIApplicationNativeEventAware::convertPrefToSensitivity(int value)
+float Gui::GUIApplicationNativeEventAware::convertPrefToSensitivity(long value)
 {
     if (value < 0) {
         return (static_cast<float>(0.9 / 50) * float(value) + 1);
