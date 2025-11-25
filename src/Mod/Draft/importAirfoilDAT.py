@@ -41,10 +41,10 @@ __url__ = "https://www.freecad.org"
 import re
 import os
 import FreeCAD
-import Draft
 import Part
 from FreeCAD import Vector
 from FreeCAD import Console as FCC
+from draftmake import make_wire
 from draftutils.utils import pyopen
 
 if FreeCAD.GuiUp:
@@ -175,7 +175,7 @@ def process(filename):
 
     # do we use the parametric Draft Wire?
     if useDraftWire:
-        obj = Draft.make_wire(coords, True)
+        obj = make_wire.make_wire(coords, True)
         # obj.label = airfoilname
     else:
         # alternate solution, uses common Part Faces

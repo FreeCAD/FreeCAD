@@ -48,7 +48,6 @@ import PySide.QtWidgets as QtWidgets
 
 import FreeCAD
 import FreeCADGui
-import Draft
 import DraftVecUtils
 import WorkingPlane
 from draftutils import params
