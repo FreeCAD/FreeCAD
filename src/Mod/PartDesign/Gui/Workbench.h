@@ -64,7 +64,7 @@ protected:
 private:
     /**
      * Check whether a given feature is eligible for the "Move Tip" command.
-     * 
+     *
      * @param feature The DocumentObject to check.
      * @param relatedBody The Body related to the feature.
      * @return true if the feature is eligible, false otherwise.

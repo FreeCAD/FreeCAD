@@ -475,16 +475,10 @@ bool Workbench::isFeatureEligibleForMoveTip(
     const PartDesign::Body* const relatedBody
 ) const
 {
-    return  feature     &&
-            relatedBody &&
-            (
-                feature->isDerivedFrom<PartDesign::Feature>()           ||
-                feature->isDerivedFrom<App::Origin>()                   ||
-                (
-                    feature->isDerivedFrom<Part::Feature>()             &&
-                    relatedBody->BaseFeature.getValue() == feature
-                )
-            );
+    return feature && relatedBody
+        && (feature->isDerivedFrom<PartDesign::Feature>() || feature->isDerivedFrom<App::Origin>()
+            || (feature->isDerivedFrom<Part::Feature>()
+                && relatedBody->BaseFeature.getValue() == feature));
 }
 
 Gui::MenuItem* Workbench::setupMenuBar() const
