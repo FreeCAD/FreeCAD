@@ -677,6 +677,7 @@ void CmdPartDesignMoveTip::activated(int iMsg)
     App::DocumentObject* selFeature;
     PartDesign::Body* body = nullptr;
 
+    // Determine selected feature body
     if (features.size() == 1) {
         selFeature = features.front();
         if (selFeature->isDerivedFrom<PartDesign::Body>()) {
@@ -690,6 +691,7 @@ void CmdPartDesignMoveTip::activated(int iMsg)
         selFeature = nullptr;
     }
 
+    // If selection is invalid, show error message
     if (!selFeature) {
         QMessageBox::warning(
             nullptr,
@@ -698,6 +700,8 @@ void CmdPartDesignMoveTip::activated(int iMsg)
         );
         return;
     }
+
+    // If no body could be determined, then show error message
     else if (!body) {
         QMessageBox::warning(
             nullptr,
@@ -709,10 +713,10 @@ void CmdPartDesignMoveTip::activated(int iMsg)
         );
         return;
     }
-    else if (
-        !selFeature->isDerivedFrom(PartDesign::Feature::getClassTypeId()) && selFeature != body
-        && body->BaseFeature.getValue() != selFeature
-    ) {
+
+    // Check the selected tips validity
+    else if (!selFeature->isDerivedFrom(PartDesign::Feature::getClassTypeId()) && selFeature != body
+             && body->BaseFeature.getValue() != selFeature) {
         QMessageBox::warning(
             nullptr,
             QObject::tr("Selection error"),
@@ -721,12 +725,14 @@ void CmdPartDesignMoveTip::activated(int iMsg)
         return;
     }
 
+    // If selected tip is already the current tip, just return
     App::DocumentObject* oldTip = body->Tip.getValue();
     if (oldTip == selFeature) {  // it's not generally an error, so print only a console message
         Base::Console().message("%s is already the tip of the body\n", selFeature->getNameInDocument());
         return;
     }
 
+    // Move tip to selected feature
     openCommand(QT_TRANSLATE_NOOP("Command", "Move tip to selected feature"));
 
     if (selFeature == body) {
