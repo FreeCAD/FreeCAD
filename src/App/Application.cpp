@@ -527,8 +527,8 @@ bool Application::closeDocument(const char* name)
     try {
         dependencies = pos->second->getDependentDocuments();
     }
-    catch (...) {
-        // Ignore errors during dependency retrieval
+    catch (Base::Exception &e) {
+        e.reportException();
     }
 
     Base::ConsoleRefreshDisabler disabler;
@@ -574,7 +574,8 @@ bool Application::closeDocument(const char* name)
                     break;
                 }
             }
-            catch (...) {
+            catch (Base::Exception& e) {
+                e.reportException();
                 continue;
             }
         }
@@ -3840,4 +3841,5 @@ void Application::getVerboseAddOnsInfo(QTextStream& str, const std::map<std::str
         }
     }
 }
+
 
