@@ -410,6 +410,15 @@ class ObjectOp:
             )
             obj.addProperty(
                 "App::PropertyDistance",
+                "ClearanceHeightOut",
+                "Depth",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Move to this height at the end of the operation",
+                ),
+            )
+            obj.addProperty(
+                "App::PropertyDistance",
                 "SafeHeight",
                 "Depth",
                 QT_TRANSLATE_NOOP("App::Property", "Rapid Safety Height between locations."),
@@ -620,6 +629,18 @@ class ObjectOp:
             )
             obj.Workplane = FreeCAD.Vector(0, 0, 1)
 
+        if FeatureHeights & features and not hasattr(obj, "ClearanceHeightOut"):
+            obj.addProperty(
+                "App::PropertyDistance",
+                "ClearanceHeightOut",
+                "Depth",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Move to this height at the end of the operation",
+                ),
+            )
+            self.applyExpression(obj, "ClearanceHeightOut", "ClearanceHeight")
+
         self.setEditorModes(obj, features)
         self.opOnDocumentRestored(obj)
 
@@ -825,6 +846,7 @@ class ObjectOp:
                 obj, "ClearanceHeight", job.SetupSheet.ClearanceHeightExpression
             ):
                 obj.ClearanceHeight = "5 mm"
+                self.applyExpression(obj, "ClearanceHeightOut", "ClearanceHeight")
 
         if FeatureDiameters & features:
             obj.MinDiameter = "0 mm"
@@ -1272,7 +1294,7 @@ class ObjectOp:
 
         if self.commandlist and (FeatureHeights & self.opFeatures(obj)):
             # Let's finish by rapid to clearance...just for safety
-            self.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
+            self.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeightOut.Value}))
 
         path = Path.Path(self.commandlist)
 
