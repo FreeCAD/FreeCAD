@@ -208,7 +208,7 @@ class GCodeHighlighter(QtGui.QSyntaxHighlighter):
 
 
 class GCodeEditorDialog(QtGui.QDialog):
-    def __init__(self, parent=None, refactored=False):
+    def __init__(self, text="", parent=None, refactored=False):
         if parent is None:
             parent = FreeCADGui.getMainWindow()
         QtGui.QDialog.__init__(self, parent)
@@ -222,24 +222,35 @@ class GCodeEditorDialog(QtGui.QDialog):
         font.setFixedPitch(True)
         font.setPointSize(10)
         self.editor.setFont(font)
-        self.editor.setText("G01 X55 Y4.5 F300.0")
+        self.editor.setText(text)
         layout.addWidget(self.editor)
 
         # buttons depending on the post processor used
         if refactored:
             self.buttons = QtGui.QDialogButtonBox(
-                QtGui.QDialogButtonBox.Apply
+                QtGui.QDialogButtonBox.Ok
                 | QtGui.QDialogButtonBox.Discard
                 | QtGui.QDialogButtonBox.Cancel,
                 QtCore.Qt.Horizontal,
                 self,
             )
+            # Swap the button text as to not change the old cancel behaviour for the user
+            self.buttons.button(QtGui.QDialogButtonBox.Discard).setIcon(
+                self.buttons.button(QtGui.QDialogButtonBox.Cancel).icon()
+            )
+            self.buttons.button(QtGui.QDialogButtonBox.Discard).setText(
+                self.buttons.button(QtGui.QDialogButtonBox.Cancel).text()
+            )
+            self.buttons.button(QtGui.QDialogButtonBox.Cancel).setIcon(QtGui.QIcon())
+            self.buttons.button(QtGui.QDialogButtonBox.Cancel).setText("Abort")
         else:
             self.buttons = QtGui.QDialogButtonBox(
                 QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel,
                 QtCore.Qt.Horizontal,
                 self,
             )
+
+        self.buttons.button(QtGui.QDialogButtonBox.Ok).setDisabled(True)
         layout.addWidget(self.buttons)
 
         # restore placement and size
@@ -254,7 +265,12 @@ class GCodeEditorDialog(QtGui.QDialog):
         if width > 0 and height > 0:
             self.resize(width, height)
 
+        # connect signals
+        self.editor.textChanged.connect(self.text_changed)
         self.buttons.clicked.connect(self.clicked)
+
+    def text_changed(self):
+        self.buttons.button(QtGui.QDialogButtonBox.Ok).setDisabled(False)
 
     def clicked(self, button):
         match self.buttons.buttonRole(button):
@@ -320,6 +336,7 @@ def editor(gcode):
 
     dia = GCodeEditorDialog()
     dia.editor.setText(gcode)
+    dia.buttons.button(QtGui.QDialogButtonBox.Ok).setDisabled(True)
     gcodeSize = len(dia.editor.toPlainText())
     if gcodeSize <= mhs:
         # because of poor performance, syntax highlighting is
