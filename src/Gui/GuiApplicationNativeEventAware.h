@@ -57,12 +57,29 @@ public:
     void postMotionEvent(std::vector<int> motionDataArray);
     void postButtonEvent(int buttonNumber, int buttonPress);
 
+protected:
+    [[nodiscard]] bool isSpaceballAltPressed() const
+    {
+        return spaceballAltIsPressed;
+    }
+    [[nodiscard]] bool isSpaceballShiftPressed() const
+    {
+        return spacebackShiftIsPressed;
+    }
+    [[nodiscard]] bool isSpaceballCtrlPressed() const
+    {
+        return spaceballCtrlIsPressed;
+    }
+
 private:
     bool spaceballPresent;
     void importSettings(std::vector<int>& motionDataArray);
     float convertPrefToSensitivity(int value);
 #if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
     GuiNativeEvent* nativeEvent;
+    bool spaceballAltIsPressed = false;
+    bool spacebackShiftIsPressed = false;
+    bool spaceballCtrlIsPressed = false;
 #endif
 };  // end class GUIApplicationNativeEventAware
 

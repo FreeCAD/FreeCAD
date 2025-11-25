@@ -21,8 +21,13 @@
  ***************************************************************************/
 
 
+#include <algorithm>
+#include <array>
+#include <cstddef>
 #include <iomanip>
+#include <qapplication.h>
 #include <sstream>
+#include <vector>
 
 #include <QMainWindow>
 #include <FCConfig.h>
@@ -44,6 +49,60 @@
 #  include "3Dconnexion/GuiNativeEventMac.h"
 # endif  // Platform switch
 #endif   // Spacemice
+
+#if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
+namespace {
+
+// Strings found in `src/Gui/3Dconnexion/3DConnexion.xml`.
+constexpr auto ctrlString = "CTRL";
+constexpr auto altString = "ALT";
+constexpr auto shiftString = "SHIFT";
+constexpr auto escString = "ESC";
+
+enum class SpecialKey {
+  None = 0,
+  Ctrl,
+  Alt,
+  Shift,
+  Esc
+};
+
+// @brief Pressed or released special key on Spaceball
+//
+// @Return {"Ctrl", "Alt", "Shift", "Esc"} or None if not a special
+// or if mapped to a command (what makes is unspecial).
+SpecialKey getSpecialKey(int buttonNumber) {
+  const ParameterGrp::handle group = App::GetApplication()
+      .GetUserParameter()
+      .GetGroup("BaseApp")
+      ->GetGroup("Spaceball")
+      ->GetGroup("Buttons");
+  QByteArray groupName(QVariant(buttonNumber).toByteArray());
+  if (group->HasGroup(groupName.data())) {
+      ParameterGrp::handle commandGroup = group->GetGroup(groupName.data());
+      const std::string commandName(commandGroup->GetASCII("Command"));
+      if (!commandName.empty()) {
+          return SpecialKey::None;
+      }
+      const std::string buttonName(commandGroup->GetASCII("Description"));
+      if (buttonName == escString) {
+          return SpecialKey::Esc;
+      }
+      if (buttonName == altString) {
+          return SpecialKey::Alt;
+      }
+      if (buttonName == shiftString) {
+          return SpecialKey::Shift;
+      }
+      if (buttonName == ctrlString) {
+          return SpecialKey::Ctrl;
+      }
+  }
+  return SpecialKey::None;
+}
+
+} // Anonymous namespace
+#endif
 
 Gui::GUIApplicationNativeEventAware::GUIApplicationNativeEventAware(int& argc, char* argv[])
     : QApplication(argc, argv)
@@ -100,9 +159,35 @@ bool Gui::GUIApplicationNativeEventAware::processSpaceballEvent(QObject* object,
             return true;
         }
         if (!buttonEvent->isHandled()) {
-            // make a new event and post to parent.
-            auto newEvent = new Spaceball::ButtonEvent(*buttonEvent);
-            postEvent(object->parent(), newEvent);
+            const auto specialKey = getSpecialKey(buttonEvent->buttonNumber());
+            if (specialKey == SpecialKey::Esc) {
+                /* If button number is 10, create and send a keyboard event, Esc key. */
+                auto keyEvent = QKeyEvent{
+                    buttonEvent->buttonStatus() == Spaceball::ButtonState::Pressed ? QEvent::KeyPress : QEvent::KeyRelease,
+                    Qt::Key_Escape,
+                    Qt::KeyboardModifier::NoModifier
+                };
+                QWidget *focusWidget = QApplication::focusWidget();
+                if (focusWidget) {
+                    QApplication::postEvent(focusWidget, new QKeyEvent(keyEvent));
+                }
+            }
+            else if (specialKey == SpecialKey::Alt) {
+                spaceballAltIsPressed = (buttonEvent->buttonStatus() == Spaceball::ButtonState::Pressed);
+            }
+            else if (specialKey == SpecialKey::Shift) {
+                spacebackShiftIsPressed = (buttonEvent->buttonStatus() == Spaceball::ButtonState::Pressed);
+            }
+            else if (specialKey == SpecialKey::Ctrl) {
+                spaceballCtrlIsPressed = (buttonEvent->buttonStatus() == Spaceball::ButtonState::Pressed);
+            }
+            else
+            {
+                // Other buttons.
+                // make a new event and post to parent.
+                auto newEvent = new Spaceball::ButtonEvent(*buttonEvent);
+                postEvent(object->parent(), newEvent);
+            }
         }
     }
     return true;

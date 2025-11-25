@@ -99,6 +99,18 @@ bool GUIApplication::notify(QObject* receiver, QEvent* event)
             || event->type() == Spaceball::MotionEvent::MotionEventType) {
             return processSpaceballEvent(receiver, event);
         }
+        // If the event is a pointer device event, modify according to `isSpaceballCtrlPressed`.
+        if (isSpaceballCtrlPressed()) {
+            if (event->type() == QEvent::MouseMove
+                    || event->type() == QEvent::Wheel
+                    || event->type() == QEvent::MouseButtonPress
+                    || event->type() == QEvent::MouseButtonRelease) {
+                auto inputEvent = static_cast<QInputEvent*>(event);
+                Qt::KeyboardModifiers mods = inputEvent->modifiers();
+                mods |= Qt::ControlModifier;
+                inputEvent->setModifiers(mods);
+            }
+        }
         return QApplication::notify(receiver, event);
     }
     catch (const Base::SystemExitException& e) {
