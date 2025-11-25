@@ -253,7 +253,9 @@ void ImportOCAF::loadShapes(
             if (!localValue.empty()) {
                 if (aShapeTool->IsAssembly(label)) {
                     App::Part* pcPart = nullptr;
-                    pcPart = freecad_cast<App::Part*>(doc->addObject("Assembly::AssemblyObject", asm_name.c_str()));
+                    pcPart = freecad_cast<App::Part*>(
+                        doc->addObject("Assembly::AssemblyObject", asm_name.c_str())
+                    );
                     pcPart->Label.setValue(asm_name);
                     pcPart->addObjects(localValue);
 
