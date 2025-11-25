@@ -54,8 +54,6 @@ Gui::GUIApplicationNativeEventAware::GUIApplicationNativeEventAware(int& argc, c
 #endif
 }
 
-Gui::GUIApplicationNativeEventAware::~GUIApplicationNativeEventAware() = default;
-
 void Gui::GUIApplicationNativeEventAware::initSpaceball(QMainWindow* window)
 {
 #if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
@@ -121,7 +119,7 @@ void Gui::GUIApplicationNativeEventAware::postMotionEvent(std::vector<int> motio
     auto motionEvent = new Spaceball::MotionEvent();
     motionEvent->setTranslations(motionDataArray[0], motionDataArray[1], motionDataArray[2]);
     motionEvent->setRotations(motionDataArray[3], motionDataArray[4], motionDataArray[5]);
-    this->postEvent(currentWidget, motionEvent);
+    Gui::GUIApplicationNativeEventAware::postEvent(currentWidget, motionEvent);
 }
 
 void Gui::GUIApplicationNativeEventAware::postButtonEvent(int buttonNumber, int buttonPress)
@@ -139,7 +137,7 @@ void Gui::GUIApplicationNativeEventAware::postButtonEvent(int buttonNumber, int 
     else {
         buttonEvent->setButtonStatus(Spaceball::ButtonState::Released);
     }
-    this->postEvent(currentWidget, buttonEvent);
+    Gui::GUIApplicationNativeEventAware::postEvent(currentWidget, buttonEvent);
 }
 
 float Gui::GUIApplicationNativeEventAware::convertPrefToSensitivity(int value)
@@ -190,7 +188,7 @@ void Gui::GUIApplicationNativeEventAware::importSettings(std::vector<int>& motio
     float generalSensitivity = convertPrefToSensitivity(group->GetInt("GlobalSensitivity"));
 
     // array that has stored info about "Enabled" checkboxes of all axes
-    bool enabled[6];
+    std::array<bool, 6> enabled{};
     enabled[0] = group->GetBool("Translations", true) && group->GetBool("PanLREnable", true);
     enabled[1] = group->GetBool("Translations", true) && group->GetBool("PanUDEnable", true);
     enabled[2] = group->GetBool("Translations", true) && group->GetBool("ZoomEnable", true);
@@ -199,7 +197,7 @@ void Gui::GUIApplicationNativeEventAware::importSettings(std::vector<int>& motio
     enabled[5] = group->GetBool("Rotations", true) && group->GetBool("SpinEnable", true);
 
     // array that has stored info about "Reversed" checkboxes of all axes
-    bool reversed[6];
+    std::array<bool, 6> reversed{};
     reversed[0] = group->GetBool("PanLRReverse");
     reversed[1] = group->GetBool("PanUDReverse");
     reversed[2] = group->GetBool("ZoomReverse");
@@ -210,7 +208,7 @@ void Gui::GUIApplicationNativeEventAware::importSettings(std::vector<int>& motio
     // array that has stored info about sliders - on each slider you need to use method
     // DlgSpaceballSettings::GetValuefromSlider which will convert <-50, 50> linear integers from
     // slider to <0.1, 10> exponential floating values
-    float sensitivity[6];
+    std::array<float, 6> sensitivity{};
     sensitivity[0] = convertPrefToSensitivity(group->GetInt("PanLRSensitivity"));
     sensitivity[1] = convertPrefToSensitivity(group->GetInt("PanUDSensitivity"));
     sensitivity[2] = convertPrefToSensitivity(group->GetInt("ZoomSensitivity"));
@@ -239,57 +237,36 @@ void Gui::GUIApplicationNativeEventAware::importSettings(std::vector<int>& motio
         motionDataArray[5] = motionDataArray[5] - group->GetInt("CalibrationZr");
     }
 
-    int i;
 
     if (flipXY) {
-        bool tempBool;
-        float tempFloat;
 
-        tempBool = enabled[1];
-        enabled[1] = enabled[2];
-        enabled[2] = tempBool;
+        std::swap(enabled[1], enabled[2]);
+        std::swap(enabled[4], enabled[5]);
 
-        tempBool = enabled[4];
-        enabled[4] = enabled[5];
-        enabled[5] = tempBool;
+        std::swap(reversed[1], reversed[2]);
+        std::swap(reversed[4], reversed[5]);
 
+        std::swap(sensitivity[1], sensitivity[2]);
+        std::swap(sensitivity[4], sensitivity[5]);
 
-        tempBool = reversed[1];
-        reversed[1] = reversed[2];
-        reversed[2] = tempBool;
-
-        tempBool = reversed[4];
-        reversed[4] = reversed[5];
-        reversed[5] = tempBool;
-
-
-        tempFloat = sensitivity[1];
-        sensitivity[1] = sensitivity[2];
-        sensitivity[2] = tempFloat;
-
-        tempFloat = sensitivity[4];
-        sensitivity[4] = sensitivity[5];
-        sensitivity[5] = tempFloat;
-
-
-        i = motionDataArray[1];
+        const int motion_data_1 = motionDataArray[1];
         motionDataArray[1] = motionDataArray[2];
-        motionDataArray[2] = -i;
+        motionDataArray[2] = -motion_data_1;
 
-        i = motionDataArray[4];
+        const int motion_data_4 = motionDataArray[4];
         motionDataArray[4] = motionDataArray[5];
-        motionDataArray[5] = -i;
+        motionDataArray[5] = -motion_data_4;
     }
 
     if (dominant) {  // if dominant is checked
         int max = 0;
         bool flag = false;
-        for (i = 0; i < 6; ++i) {
+        for (std::size_t i = 0; i < 6; ++i) {
             if (abs(motionDataArray[i]) > abs(max)) {
                 max = motionDataArray[i];
             }
         }
-        for (i = 0; i < 6; ++i) {
+        for (std::size_t i = 0; i < 6; ++i) {
             if ((motionDataArray[i] != max) || (flag)) {
                 motionDataArray[i] = 0;
             }
@@ -299,7 +276,7 @@ void Gui::GUIApplicationNativeEventAware::importSettings(std::vector<int>& motio
         }
     }
 
-    for (i = 0; i < 6; ++i) {
+    for (std::size_t i = 0; i < 6; ++i) {
         if (motionDataArray[i] != 0) {
             if (!enabled[i]) {
                 motionDataArray[i] = 0;
