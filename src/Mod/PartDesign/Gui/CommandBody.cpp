@@ -755,8 +755,9 @@ void CmdPartDesignMoveTip::activated(int iMsg)
         isTipValid = true;
     }
 
-    // If tip is determined invalid, then show warninng
-    if (!isTipValid) {
+    // If tip is determined invalid, then show warning
+    if (!isTipValid)
+    {
         QMessageBox::warning(
             nullptr,
             QObject::tr("Selection error"),
