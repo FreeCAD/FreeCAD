@@ -1270,13 +1270,15 @@ public:
 
 class ConstraintC2CDistance: public Constraint
 {
-private:
+public:
     Circle c1;
     Circle c2;
     double* distance()
     {
         return pvec[0];
     }
+
+private:
     // writes pointers in pvec to the parameters of c1, c2
     void ReconstructGeomPointers();
     void errorgrad(double* err, double* grad, double* param) override;
@@ -1308,13 +1310,15 @@ public:
 // P2CDistance
 class ConstraintP2CDistance: public Constraint
 {
-private:
+public:
     Circle circle;
     Point pt;
     double* distance()
     {
         return pvec[0];
     }
+
+private:
     void ReconstructGeomPointers();  // writes pointers in pvec to the parameters of c
     void errorgrad(double* err, double* grad, double* param) override;
 

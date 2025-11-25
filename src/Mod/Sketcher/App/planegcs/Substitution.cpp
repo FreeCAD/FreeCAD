@@ -426,7 +426,7 @@ struct SubstitutionFactory
         }
         return Attempt::No;
     }
-    Attempt trySubstitute(ConstraintPerpendicular* constr, Attempt previousAttempt)
+    Attempt trySubstitute(ConstraintPerpendicular* constr)
     {
         Line line1(
             Point(constr->origParams()[0], constr->origParams()[1]),
@@ -458,31 +458,86 @@ struct SubstitutionFactory
                 addEqual(line2.p1.y, line2.p2.y);  // Make line2 horizontal
                 return Attempt::Yes;
             }
-            else if (line2Desc.orientation == Orientation::Horizontal) {
+            if (line2Desc.orientation == Orientation::Horizontal) {
                 addEqual(line2.p1.x, line2.p2.x);  // Make line2 vertical
                 return Attempt::Yes;
             }
             return Attempt::No;  // Line1 is external, so will never become horizontal/vertical
         }
-        else {
+        if (line1Desc.orientation == Orientation::Vertical) {
+            addEqual(line2.p1.y, line2.p2.y);  // Make line2 horizontal
+            return Attempt::Yes;
+        }
+        if (line1Desc.orientation == Orientation::Horizontal) {
+            addEqual(line2.p1.x, line2.p2.x);  // Make line2 vertical
+            return Attempt::Yes;
+        }
+        if (line2Desc.orientation == Orientation::Vertical) {
+            addEqual(line1.p1.y, line1.p2.y);  // Make line1 horizontal
+            return Attempt::Yes;
+        }
+        if (line2Desc.orientation == Orientation::Horizontal) {
+            addEqual(line1.p1.x, line1.p2.x);  // Make line1 vertical
+            return Attempt::Yes;
+        }
+        return Attempt::Maybe;
+    }
+    Attempt trySubstitute(ConstraintParallel* constr)
+    {
+        Line line1(
+            Point(constr->origParams()[0], constr->origParams()[1]),
+            Point(constr->origParams()[2], constr->origParams()[3])
+        );
+        Line line2(
+            Point(constr->origParams()[4], constr->origParams()[5]),
+            Point(constr->origParams()[6], constr->origParams()[7])
+        );
+
+        LineDesc line1Desc = lineDescription(line1);
+        LineDesc line2Desc = lineDescription(line2);
+
+        if (line1Desc.isExternal && line2Desc.isExternal) {
+            return Attempt::No;
+        }
+
+        if (line1Desc.orientation != Orientation::None && line2Desc.orientation != Orientation::None) {
+            return Attempt::No;
+        }
+
+        if (line2Desc.isExternal) {
+            std::swap(line1, line2);
+            std::swap(line1Desc, line2Desc);
+        }
+
+        if (line1Desc.isExternal) {
             if (line1Desc.orientation == Orientation::Vertical) {
-                addEqual(line2.p1.y, line2.p2.y);  // Make line2 horizontal
-                return Attempt::Yes;
-            }
-            else if (line1Desc.orientation == Orientation::Horizontal) {
                 addEqual(line2.p1.x, line2.p2.x);  // Make line2 vertical
                 return Attempt::Yes;
             }
-            else if (line2Desc.orientation == Orientation::Vertical) {
-                addEqual(line1.p1.y, line1.p2.y);  // Make line1 horizontal
+            if (line2Desc.orientation == Orientation::Horizontal) {
+                addEqual(line2.p1.y, line2.p2.y);  // Make line2 horizontal
                 return Attempt::Yes;
             }
-            else if (line2Desc.orientation == Orientation::Horizontal) {
-                addEqual(line1.p1.x, line1.p2.x);  // Make line1 vertical
-                return Attempt::Yes;
-            }
-            return Attempt::Maybe;
+            return Attempt::No;  // Line1 is external, so will never become horizontal/vertical
         }
+
+        if (line1Desc.orientation == Orientation::Vertical) {
+            addEqual(line2.p1.x, line2.p2.x);  // Make line2 vertical
+            return Attempt::Yes;
+        }
+        if (line1Desc.orientation == Orientation::Horizontal) {
+            addEqual(line2.p1.y, line2.p2.y);  // Make line2 horizontal
+            return Attempt::Yes;
+        }
+        if (line2Desc.orientation == Orientation::Vertical) {
+            addEqual(line1.p1.x, line1.p2.x);  // Make line1 vertical
+            return Attempt::Yes;
+        }
+        if (line2Desc.orientation == Orientation::Horizontal) {
+            addEqual(line1.p1.y, line1.p2.y);  // Make line1 horizontal
+            return Attempt::Yes;
+        }
+        return Attempt::Maybe;
     }
     Attempt trySubstitute(ConstraintP2PDistance* constr, Attempt previousAttempt)
     {
@@ -539,35 +594,36 @@ struct SubstitutionFactory
                 addConst(point.x, *line.p1.x);
                 return Attempt::Yes;
             }
-            else if (lineDesc.orientation == Orientation::Horizontal) {
+            if (lineDesc.orientation == Orientation::Horizontal) {
                 addConst(point.y, *line.p1.y);
                 return Attempt::Yes;
             }
             return Attempt::No;  // No coming back since the line is external
         }
-        else if (pointExternal) {
+        if (pointExternal) {
             if (lineDesc.orientation == Orientation::Vertical) {
                 addConst(line.p1.x, *point.x);
                 return Attempt::Yes;
             }
-            else if (lineDesc.orientation == Orientation::Horizontal) {
+            if (lineDesc.orientation == Orientation::Horizontal) {
                 addConst(line.p1.y, *point.y);
                 return Attempt::Yes;
             }
             return Attempt::Maybe;  // The line may become horizontal/vertical at some point
         }
-        else {
-            if (lineDesc.orientation == Orientation::Vertical) {
-                addEqual(point.x, line.p1.x);
-                return Attempt::Yes;
-            }
-            else if (lineDesc.orientation == Orientation::Horizontal) {
-                addEqual(point.y, line.p1.y);
-                return Attempt::Yes;
-            }
-            return Attempt::Maybe;
+
+        // None of the geometries are external
+        if (lineDesc.orientation == Orientation::Vertical) {
+            addEqual(point.x, line.p1.x);
+            return Attempt::Yes;
         }
+        else if (lineDesc.orientation == Orientation::Horizontal) {
+            addEqual(point.y, line.p1.y);
+            return Attempt::Yes;
+        }
+        return Attempt::Maybe;
     }
+
     Attempt trySubstitute(ConstraintP2LDistance* constr)
     {
         Point point(constr->origParams()[0], constr->origParams()[1]);
@@ -595,34 +651,35 @@ struct SubstitutionFactory
                 addConstDifference(point.x, *line.p1.x, *dist);
                 return Attempt::Yes;
             }
-            else if (lineDesc.orientation == Orientation::Horizontal) {
+            if (lineDesc.orientation == Orientation::Horizontal) {
                 addConstDifference(point.y, *line.p1.y, *dist);
                 return Attempt::Yes;
             }
             return Attempt::No;  // No coming back since the line is external
         }
-        else if (pointExternal) {
+
+        if (pointExternal) {
             if (lineDesc.orientation == Orientation::Vertical) {
                 addConstDifference(line.p1.x, *point.x, *dist);
                 return Attempt::Yes;
             }
-            else if (lineDesc.orientation == Orientation::Horizontal) {
+            if (lineDesc.orientation == Orientation::Horizontal) {
                 addConstDifference(line.p1.y, *point.y, *dist);
                 return Attempt::Yes;
             }
             return Attempt::Maybe;  // The line may become horizontal/vertical at some point
         }
-        else {
-            if (lineDesc.orientation == Orientation::Vertical) {
-                addRelationship(point.x, line.p1.x, *dist);
-                return Attempt::Yes;
-            }
-            else if (lineDesc.orientation == Orientation::Horizontal) {
-                addRelationship(point.y, line.p1.y, *dist);
-                return Attempt::Yes;
-            }
-            return Attempt::Maybe;
+
+        // None of the geometries are external
+        if (lineDesc.orientation == Orientation::Vertical) {
+            addRelationship(point.x, line.p1.x, *dist);
+            return Attempt::Yes;
         }
+        if (lineDesc.orientation == Orientation::Horizontal) {
+            addRelationship(point.y, line.p1.y, *dist);
+            return Attempt::Yes;
+        }
+        return Attempt::Maybe;
     }
     double circleDistanceToCenterDistance(double centerPos, double refPos, double dist, double radius)
     {
@@ -633,7 +690,7 @@ struct SubstitutionFactory
             return radius + dist;
         }
     }
-    Attempt trySubstitute(ConstraintC2LDistance* constr, Attempt previousAttempt)
+    Attempt trySubstitute(ConstraintC2LDistance* constr)
     {
         double* dist = constr->origParams()[0];
         Circle circle = constr->circle;
@@ -667,7 +724,7 @@ struct SubstitutionFactory
                 );
                 return Attempt::Yes;
             }
-            else if (lineDesc.orientation == Orientation::Horizontal) {
+            if (lineDesc.orientation == Orientation::Horizontal) {
                 addConstDifference(
                     circle.center.y,
                     *line.p1.y,
@@ -686,7 +743,7 @@ struct SubstitutionFactory
                 );
                 return Attempt::Yes;
             }
-            else if (lineDesc.orientation == Orientation::Horizontal) {
+            if (lineDesc.orientation == Orientation::Horizontal) {
                 addConstDifference(
                     line.p1.y,
                     *circle.center.y,
@@ -705,7 +762,7 @@ struct SubstitutionFactory
                 );
                 return Attempt::Yes;
             }
-            else if (lineDesc.orientation == Orientation::Horizontal) {
+            if (lineDesc.orientation == Orientation::Horizontal) {
                 addRelationship(
                     line.p1.y,
                     circle.center.y,
@@ -716,6 +773,167 @@ struct SubstitutionFactory
             return Attempt::Maybe;
         }
     }
+    Attempt trySubstitute(ConstraintC2CDistance* constr)
+    {
+        double* dist = constr->distance();
+        Circle c1 = constr->c1;
+        Circle c2 = constr->c2;
+
+        bool c1External = isExternal(c1);
+        bool c2External = isExternal(c2);
+
+        if (c1External && c2External) {
+            return Attempt::No;
+        }
+
+        LineDesc relPos = lineDescription(Line(c1.center, c2.center));
+
+        if (relPos.orientation == Orientation::None) {
+            return Attempt::Maybe;
+        }
+
+
+        std::optional<double> c1Rad = std::nullopt;
+        std::optional<double> c2Rad = std::nullopt;
+        if (!c1External) {
+            c1Rad = value(c1.rad);
+            if (!c1Rad.has_value()) {
+                return Attempt::No;
+            }
+        }
+        else {
+            c1Rad = *c1.rad;
+        }
+        if (!c2External) {
+            c2Rad = value(c2.rad);
+            if (!c2Rad.has_value()) {
+                return Attempt::No;
+            }
+        }
+        else {
+            c2Rad = *c2.rad;
+        }
+        if (c2External) {
+            std::swap(c1, c2);
+            std::swap(c1Rad, c2Rad);
+            std::swap(c1External, c2External);
+        }
+
+        if (c1External) {
+            if (relPos.orientation == Orientation::Vertical) {
+                addConstDifference(
+                    c1.center.y,
+                    *c2.center.y,
+                    circleDistanceToCenterDistance(*c1.center.y, *c2.center.y, *dist, *c1Rad + *c2Rad)
+                );
+                return Attempt::Yes;
+            }
+            if (relPos.orientation == Orientation::Horizontal) {
+                addConstDifference(
+                    c1.center.x,
+                    *c2.center.x,
+                    circleDistanceToCenterDistance(*c1.center.x, *c2.center.x, *dist, *c1Rad + *c2Rad)
+                );
+                return Attempt::Yes;
+            }
+            return Attempt::No;
+        }
+
+        // None of the circles are external
+        if (relPos.orientation == Orientation::Vertical) {
+            addRelationship(
+                c1.center.y,
+                c2.center.y,
+                circleDistanceToCenterDistance(*c1.center.y, *c2.center.y, *dist, *c1Rad + *c2Rad)
+            );
+            return Attempt::Yes;
+        }
+        if (relPos.orientation == Orientation::Horizontal) {
+            addRelationship(
+                c1.center.x,
+                c2.center.x,
+                circleDistanceToCenterDistance(*c1.center.x, *c2.center.x, *dist, *c1Rad + *c2Rad)
+            );
+            return Attempt::Yes;
+        }
+
+        return Attempt::Maybe;
+    }
+    Attempt trySubstitute(ConstraintP2CDistance* constr)
+    {
+        double* dist = constr->distance();
+        Circle circle = constr->circle;
+        Point point = constr->pt;
+
+        bool circleExternal = isExternal(circle);
+        bool pointExternal = isExternal(point);
+
+        if (circleExternal && pointExternal) {
+            return Attempt::No;
+        }
+
+        LineDesc relPos = lineDescription(Line(circle.center, point));
+
+        if (relPos.orientation == Orientation::None) {
+            return Attempt::Maybe;
+        }
+
+
+        std::optional<double> rad = std::nullopt;
+        if (!circleExternal) {
+            rad = value(circle.rad);
+            if (!rad.has_value()) {
+                return Attempt::No;
+            }
+        }
+        else {
+            rad = *circle.rad;
+        }
+        if (pointExternal) {
+            std::swap(circle.center, point);
+        }
+
+        if (circleExternal) {
+            if (relPos.orientation == Orientation::Vertical) {
+                addConstDifference(
+                    circle.center.y,
+                    *point.y,
+                    circleDistanceToCenterDistance(*circle.center.y, *point.y, *dist, *rad)
+                );
+                return Attempt::Yes;
+            }
+            if (relPos.orientation == Orientation::Horizontal) {
+                addConstDifference(
+                    circle.center.x,
+                    *point.x,
+                    circleDistanceToCenterDistance(*circle.center.x, *point.x, *dist, *rad)
+                );
+                return Attempt::Yes;
+            }
+            return Attempt::No;
+        }
+
+        // None of the circles are external
+        if (relPos.orientation == Orientation::Vertical) {
+            addRelationship(
+                circle.center.y,
+                point.y,
+                circleDistanceToCenterDistance(*circle.center.y, *point.y, *dist, *rad)
+            );
+            return Attempt::Yes;
+        }
+        if (relPos.orientation == Orientation::Horizontal) {
+            addRelationship(
+                circle.center.x,
+                point.x,
+                circleDistanceToCenterDistance(*circle.center.x, *point.x, *dist, *rad)
+            );
+            return Attempt::Yes;
+        }
+
+        return Attempt::Maybe;
+    }
+
     Attempt trySubstitute(ConstraintEqualLineLength* constr, Attempt previousAttempt)
     {
         Line line1 = constr->l1;
@@ -777,7 +995,7 @@ struct SubstitutionFactory
                 addRelationship(line2.p1.y, line2.p2.y, *l1length);
                 return Attempt::Yes;
             }
-            else if (line2Desc.orientation == Orientation::Horizontal) {
+            if (line2Desc.orientation == Orientation::Horizontal) {
                 addRelationship(line2.p1.x, line2.p2.x, *l1length);
                 return Attempt::Yes;
             }
@@ -866,23 +1084,11 @@ Substitution::Substitution(
 
             SubstitutionFactory::Attempt attempt = SubstitutionFactory::Attempt::No;
             switch (constr->getTypeId()) {
-                case Perpendicular:
+                case Difference:
                     attempt = factory.trySubstitute(
-                        static_cast<ConstraintPerpendicular*>(constr),
+                        static_cast<ConstraintDifference*>(constr),
                         attempts[i]
                     );
-                    break;
-                case PointOnLine:
-                    attempt = factory.trySubstitute(static_cast<ConstraintPointOnLine*>(constr));
-                    break;
-                case C2LDistance:
-                    attempt = factory.trySubstitute(
-                        static_cast<ConstraintC2LDistance*>(constr),
-                        attempts[i]
-                    );
-                    break;
-                case P2LDistance:
-                    attempt = factory.trySubstitute(static_cast<ConstraintP2LDistance*>(constr));
                     break;
                 case P2PDistance:
                     attempt = factory.trySubstitute(
@@ -890,15 +1096,30 @@ Substitution::Substitution(
                         attempts[i]
                     );
                     break;
+                case PointOnLine:
+                    attempt = factory.trySubstitute(static_cast<ConstraintPointOnLine*>(constr));
+                    break;
+                case Parallel:
+                    attempt = factory.trySubstitute(static_cast<ConstraintParallel*>(constr));
+                    break;
+                case Perpendicular:
+                    attempt = factory.trySubstitute(static_cast<ConstraintPerpendicular*>(constr));
+                    break;
+                case C2CDistance:
+                    attempt = factory.trySubstitute(static_cast<ConstraintC2CDistance*>(constr));
+                    break;
+                case C2LDistance:
+                    attempt = factory.trySubstitute(static_cast<ConstraintC2LDistance*>(constr));
+                    break;
+                case P2CDistance:
+                    attempt = factory.trySubstitute(static_cast<ConstraintC2CDistance*>(constr));
+                    break;
+                case P2LDistance:
+                    attempt = factory.trySubstitute(static_cast<ConstraintP2LDistance*>(constr));
+                    break;
                 case EqualLineLength:
                     attempt = factory.trySubstitute(
                         static_cast<ConstraintEqualLineLength*>(constr),
-                        attempts[i]
-                    );
-                    break;
-                case Difference:
-                    attempt = factory.trySubstitute(
-                        static_cast<ConstraintDifference*>(constr),
                         attempts[i]
                     );
                     break;
