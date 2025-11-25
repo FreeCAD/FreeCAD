@@ -522,6 +522,15 @@ bool Application::closeDocument(const char* name)
     if (pos == DocMap.end()) // no such document
         return false;
 
+    // We must get dependencies before the document is destroyed.
+    std::vector<Document*> dependencies;
+    try {
+        dependencies = pos->second->getDependentDocuments();
+    }
+    catch (...) {
+        // Ignore errors during dependency retrieval
+    }
+
     Base::ConsoleRefreshDisabler disabler;
 
     // Trigger observers before removing the document from the internal map.
@@ -540,6 +549,41 @@ bool Application::closeDocument(const char* name)
 
     // Trigger observers after removing the document from the internal map.
     signalDeletedDocument();
+
+    // Check for orphaned dependencies (Partial documents that are no longer needed)
+    for (Document* child : dependencies) {
+        if (!getDocumentName(child)) {
+            continue;
+        }
+
+        if (!child->testStatus(Document::PartialDoc) || child->isTouched()) {
+            continue;
+        }
+
+        // Orphan Check
+        bool isStillReferenced = false;
+        for (const auto& entry : DocMap) {
+            if (entry.second == child) {
+                continue;
+            }
+
+            try {
+                std::vector<Document*> otherDeps = entry.second->getDependentDocuments();
+                if (std::find(otherDeps.begin(), otherDeps.end(), child) != otherDeps.end()) {
+                    isStillReferenced = true;
+                    break;
+                }
+            }
+            catch (...) {
+                continue;
+            }
+        }
+
+        // Close if orphan
+        if (!isStillReferenced) {
+            closeDocument(child->getName());
+        }
+    }
 
     return true;
 }
@@ -3796,3 +3840,4 @@ void Application::getVerboseAddOnsInfo(QTextStream& str, const std::map<std::str
         }
     }
 }
+
