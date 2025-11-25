@@ -181,6 +181,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         obj.ZigZagAngle = 45
         obj.UseOutline = False
         FeatureExtensions.set_default_property_values(obj, job)
+        obj.setExpression("RetractThreshold", "0 * OpToolDiameter")
 
     def areaOpShapes(self, obj):
         """areaOpShapes(obj) ... return shapes representing the solids to be removed."""
