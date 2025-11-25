@@ -74,7 +74,7 @@ protected:
 private:
     bool spaceballPresent;
     void importSettings(std::vector<int>& motionDataArray);
-    float convertPrefToSensitivity(int value);
+    float convertPrefToSensitivity(long value);
 #if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
     GuiNativeEvent* nativeEvent;
     bool spaceballAltIsPressed = false;
