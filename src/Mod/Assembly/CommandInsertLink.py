@@ -656,15 +656,15 @@ class TaskAssemblyInsertLink(QtCore.QObject):
         # Iterate backwards to safely delete
         for i in reversed(range(len(self.insertionStack))):
             stack_item = self.insertionStack[i]
-            
+
             if stack_item["addedObject"] == obj:
                 # 1. Revert translation
                 self.totalTranslation -= stack_item["translation"]
-                
+
                 # 2. Update UI counter
                 item = stack_item["item"]
                 self.decrement_counter(item)
-                
+
                 # 3. Handle Grounded Joint cleanup
                 if self.groundedObj == obj:
                     if self.groundedJoint:
@@ -676,13 +676,14 @@ class TaskAssemblyInsertLink(QtCore.QObject):
                             pass
                     self.groundedObj = None
                     self.groundedJoint = None
-                
+
                 # 4. Remove from stack
                 del self.insertionStack[i]
-                
+
                 # 5. Clear selection
                 if item:
                     item.setSelected(False)
+
 
 if App.GuiUp:
     Gui.addCommand("Assembly_InsertLink", CommandInsertLink())
