@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <Inventor/nodes/SoCamera.h>
-# include <string>
+#include <Inventor/nodes/SoCamera.h>
+#include <string>
 
 #include <Base/GeometryPyCXX.h>
 #include <Base/Interpreter.h>
@@ -45,96 +45,178 @@ void View3DInventorViewerPy::init_type()
     behaviors().supportGetattr();
     behaviors().supportSetattr();
 
-    add_varargs_method("getSoRenderManager",&View3DInventorViewerPy::getSoRenderManager,"getSoRenderManager() -> SoRenderManager\n"
+    add_varargs_method(
+        "getSoRenderManager",
+        &View3DInventorViewerPy::getSoRenderManager,
+        "getSoRenderManager() -> SoRenderManager\n"
         "Returns the render manager which is used to handle everything related to\n"
         "rendering the scene graph. It can be used to get full control over the\n"
         "render process\n"
     );
-    add_varargs_method("getSoEventManager",&View3DInventorViewerPy::getSoEventManager,"getSoEventManager() -> SoEventManager\n"
+    add_varargs_method(
+        "getSoEventManager",
+        &View3DInventorViewerPy::getSoEventManager,
+        "getSoEventManager() -> SoEventManager\n"
         "Returns the event manager which is used to handle everything event related in\n"
         "the viewer. It can be used to change the event processing. This must however be\n"
         "done very carefully to not change the user interaction in an unpredictable manner.\n"
     );
-    add_varargs_method("getSceneGraph", &View3DInventorViewerPy::getSceneGraph, "getSceneGraph() -> SoNode");
+    add_varargs_method(
+        "getSceneGraph",
+        &View3DInventorViewerPy::getSceneGraph,
+        "getSceneGraph() -> SoNode"
+    );
     add_varargs_method("setSceneGraph", &View3DInventorViewerPy::setSceneGraph, "setSceneGraph(SoNode)");
 
-    add_varargs_method("seekToPoint",&View3DInventorViewerPy::seekToPoint,"seekToPoint(tuple) -> None\n"
-     "Initiate a seek action towards the 3D intersection of the scene and the\n"
-     "ray from the screen coordinate's point and in the same direction as the\n"
-     "camera is pointing. If the tuple has two entries it is interpreted as the\n"
-     "screen coordinates xy and the intersection point with the scene is\n"
-     "calculated. If three entries are given it is interpreted as the intersection\n"
-     "point xyz and the seek is done towards this point"
+    add_varargs_method(
+        "seekToPoint",
+        &View3DInventorViewerPy::seekToPoint,
+        "seekToPoint(tuple) -> None\n"
+        "Initiate a seek action towards the 3D intersection of the scene and the\n"
+        "ray from the screen coordinate's point and in the same direction as the\n"
+        "camera is pointing. If the tuple has two entries it is interpreted as the\n"
+        "screen coordinates xy and the intersection point with the scene is\n"
+        "calculated. If three entries are given it is interpreted as the intersection\n"
+        "point xyz and the seek is done towards this point"
     );
-    add_varargs_method("setFocalDistance",&View3DInventorViewerPy::setFocalDistance,"setFocalDistance(float) -> None\n");
-    add_varargs_method("getFocalDistance",&View3DInventorViewerPy::getFocalDistance,"getFocalDistance() -> float\n");
-    add_varargs_method("getPoint", &View3DInventorViewerPy::getPointOnFocalPlane, "Same as getPointOnFocalPlane");
-    add_varargs_method("getPointOnFocalPlane", &View3DInventorViewerPy::getPointOnFocalPlane, "getPointOnFocalPlane(x, y) -> Base::Vector(x,y,z)");
-    add_varargs_method("getPickRadius", &View3DInventorViewerPy::getPickRadius,
-        "getPickRadius(): returns radius of confusion in pixels for picking objects on screen (selection).");
-    add_varargs_method("setPickRadius", &View3DInventorViewerPy::setPickRadius,
-        "setPickRadius(new_radius): sets radius of confusion in pixels for picking objects on screen (selection).");
-    add_varargs_method("setupEditingRoot", &View3DInventorViewerPy::setupEditingRoot,
+    add_varargs_method(
+        "setFocalDistance",
+        &View3DInventorViewerPy::setFocalDistance,
+        "setFocalDistance(float) -> None\n"
+    );
+    add_varargs_method(
+        "getFocalDistance",
+        &View3DInventorViewerPy::getFocalDistance,
+        "getFocalDistance() -> float\n"
+    );
+    add_varargs_method(
+        "getPoint",
+        &View3DInventorViewerPy::getPointOnFocalPlane,
+        "Same as getPointOnFocalPlane"
+    );
+    add_varargs_method(
+        "getPointOnFocalPlane",
+        &View3DInventorViewerPy::getPointOnFocalPlane,
+        "getPointOnFocalPlane(x, y) -> Base::Vector(x,y,z)"
+    );
+    add_varargs_method(
+        "getPickRadius",
+        &View3DInventorViewerPy::getPickRadius,
+        "getPickRadius(): returns radius of confusion in pixels for picking objects on screen "
+        "(selection)."
+    );
+    add_varargs_method(
+        "setPickRadius",
+        &View3DInventorViewerPy::setPickRadius,
+        "setPickRadius(new_radius): sets radius of confusion in pixels for picking objects on "
+        "screen (selection)."
+    );
+    add_varargs_method(
+        "setupEditingRoot",
+        &View3DInventorViewerPy::setupEditingRoot,
         "setupEditingRoot(matrix=None): setup the editing ViewProvider's root node.\n"
         "All child coin nodes of the current editing ViewProvider will be transferred to\n"
         "an internal editing node of this viewer, with a new transformation node specified\n"
         "by 'matrix'. All ViewProviderLink to the editing ViewProvider will be temporary\n"
-        "hidden. Call resetEditingRoot() to restore everything back to normal");
-    add_varargs_method("resetEditingRoot", &View3DInventorViewerPy::resetEditingRoot,
-        "resetEditingRoot(updateLinks=True): restore the editing ViewProvider's root node");
-    add_varargs_method("setBackgroundColor", &View3DInventorViewerPy::setBackgroundColor,
-        "setBackgroundColor(r,g,b): sets the background color of the current viewer.");
-    add_varargs_method("setGradientBackground", &View3DInventorViewerPy::setGradientBackground,
-        "setGradientBackground(str): sets the background gradient of the current viewer.");
-    add_varargs_method("setGradientBackgroundColor", &View3DInventorViewerPy::setGradientBackgroundColor,
-        "setGradientBackgroundColor(tuple,tuple,[tuple]): sets the gradient colors of the current viewer.");
-    add_varargs_method("setRedirectToSceneGraph", &View3DInventorViewerPy::setRedirectToSceneGraph,
-        "setRedirectToSceneGraph(bool): enables or disables to redirect events directly to the scene graph.");
-    add_varargs_method("isRedirectedToSceneGraph", &View3DInventorViewerPy::isRedirectedToSceneGraph,
-        "isRedirectedToSceneGraph() -> bool: check whether event redirection is enabled.");
-    add_varargs_method("grabFramebuffer", &View3DInventorViewerPy::grabFramebuffer,
-        "grabFramebuffer() -> QImage: renders and returns a 32-bit RGB image of the framebuffer.");
+        "hidden. Call resetEditingRoot() to restore everything back to normal"
+    );
+    add_varargs_method(
+        "resetEditingRoot",
+        &View3DInventorViewerPy::resetEditingRoot,
+        "resetEditingRoot(updateLinks=True): restore the editing ViewProvider's root node"
+    );
+    add_varargs_method(
+        "setBackgroundColor",
+        &View3DInventorViewerPy::setBackgroundColor,
+        "setBackgroundColor(r,g,b): sets the background color of the current viewer."
+    );
+    add_varargs_method(
+        "setGradientBackground",
+        &View3DInventorViewerPy::setGradientBackground,
+        "setGradientBackground(str): sets the background gradient of the current viewer."
+    );
+    add_varargs_method(
+        "setGradientBackgroundColor",
+        &View3DInventorViewerPy::setGradientBackgroundColor,
+        "setGradientBackgroundColor(tuple,tuple,[tuple]): sets the gradient colors of the current "
+        "viewer."
+    );
+    add_varargs_method(
+        "setRedirectToSceneGraph",
+        &View3DInventorViewerPy::setRedirectToSceneGraph,
+        "setRedirectToSceneGraph(bool): enables or disables to redirect events directly to the "
+        "scene graph."
+    );
+    add_varargs_method(
+        "isRedirectedToSceneGraph",
+        &View3DInventorViewerPy::isRedirectedToSceneGraph,
+        "isRedirectedToSceneGraph() -> bool: check whether event redirection is enabled."
+    );
+    add_varargs_method(
+        "grabFramebuffer",
+        &View3DInventorViewerPy::grabFramebuffer,
+        "grabFramebuffer() -> QImage: renders and returns a 32-bit RGB image of the framebuffer."
+    );
 
-    add_varargs_method("setOverrideMode", &View3DInventorViewerPy::setOverrideMode,
-        "setOverrideMode(mode): sets the display override mode.");
+    add_varargs_method(
+        "setOverrideMode",
+        &View3DInventorViewerPy::setOverrideMode,
+        "setOverrideMode(mode): sets the display override mode."
+    );
 
-    add_varargs_method("setEnabledNaviCube", &View3DInventorViewerPy::setEnabledNaviCube,
-        "setEnabledNaviCube(bool): enables or disables the navi cube of the viewer.");
-    add_varargs_method("isEnabledNaviCube", &View3DInventorViewerPy::isEnabledNaviCube,
-        "isEnabledNaviCube() -> bool: check whether the navi cube is enabled.");
-    add_varargs_method("setNaviCubeCorner", &View3DInventorViewerPy::setNaviCubeCorner,
+    add_varargs_method(
+        "setEnabledNaviCube",
+        &View3DInventorViewerPy::setEnabledNaviCube,
+        "setEnabledNaviCube(bool): enables or disables the navi cube of the viewer."
+    );
+    add_varargs_method(
+        "isEnabledNaviCube",
+        &View3DInventorViewerPy::isEnabledNaviCube,
+        "isEnabledNaviCube() -> bool: check whether the navi cube is enabled."
+    );
+    add_varargs_method(
+        "setNaviCubeCorner",
+        &View3DInventorViewerPy::setNaviCubeCorner,
         "setNaviCubeCorner(int): sets the corner where to show the navi cube:\n"
-        "0=top left, 1=top right, 2=bottom left, 3=bottom right");
+        "0=top left, 1=top right, 2=bottom left, 3=bottom right"
+    );
 
-    add_varargs_method("getNavigationStyle",&View3DInventorViewerPy::getNavigationStyle,
-    "getNavigationStyle() -> NavigationStyle\n" "Returns the current viewer navigation style class.\n"
+    add_varargs_method(
+        "getNavigationStyle",
+        &View3DInventorViewerPy::getNavigationStyle,
+        "getNavigationStyle() -> NavigationStyle\n"
+        "Returns the current viewer navigation style class.\n"
     );
 }
 
-View3DInventorViewerPy::View3DInventorViewerPy(View3DInventorViewer *vi)
-  : _viewer(vi)
-{
-}
+View3DInventorViewerPy::View3DInventorViewerPy(View3DInventorViewer* vi)
+    : _viewer(vi)
+{}
 
 View3DInventorViewerPy::~View3DInventorViewerPy()
 {
     Base::PyGILStateLocker lock;
-    for (auto it : callbacks)
+    for (auto it : callbacks) {
         Py_DECREF(it);
+    }
 }
 
 
 Py::Object View3DInventorViewerPy::repr()
 {
-    if (!_viewer)
+    if (!_viewer) {
         throw Py::RuntimeError("Cannot print representation of deleted object");
+    }
 
     return Py::String("View3DInventorViewer");
 }
 
 View3DInventorViewerPy::method_varargs_handler View3DInventorViewerPy::pycxx_handler = nullptr;
 
-PyObject *View3DInventorViewerPy::method_varargs_ext_handler(PyObject *_self_and_name_tuple, PyObject *_args)
+PyObject* View3DInventorViewerPy::method_varargs_ext_handler(
+    PyObject* _self_and_name_tuple,
+    PyObject* _args
+)
 {
     try {
         return pycxx_handler(_self_and_name_tuple, _args);
@@ -145,12 +227,12 @@ PyObject *View3DInventorViewerPy::method_varargs_ext_handler(PyObject *_self_and
     catch (const std::exception& e) {
         throw Py::RuntimeError(e.what());
     }
-    catch(...) {
+    catch (...) {
         throw Py::RuntimeError("Unknown C++ exception");
     }
 }
 
-Py::Object View3DInventorViewerPy::getattr(const char * attr)
+Py::Object View3DInventorViewerPy::getattr(const char* attr)
 {
     if (!_viewer) {
         std::string s;
@@ -162,15 +244,16 @@ Py::Object View3DInventorViewerPy::getattr(const char * attr)
         Py::Object obj = Py::PythonExtension<View3DInventorViewerPy>::getattr(attr);
         if (PyCFunction_Check(obj.ptr())) {
             auto op = reinterpret_cast<PyCFunctionObject*>(obj.ptr());
-            if (!pycxx_handler)
+            if (!pycxx_handler) {
                 pycxx_handler = op->m_ml->ml_meth;
+            }
             op->m_ml->ml_meth = method_varargs_ext_handler;
         }
         return obj;
     }
 }
 
-int View3DInventorViewerPy::setattr(const char * attr, const Py::Object & value)
+int View3DInventorViewerPy::setattr(const char* attr, const Py::Object& value)
 {
     if (!_viewer) {
         std::string s;
@@ -185,13 +268,19 @@ int View3DInventorViewerPy::setattr(const char * attr, const Py::Object & value)
 
 Py::Object View3DInventorViewerPy::getSoRenderManager(const Py::Tuple& args)
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
+    if (!PyArg_ParseTuple(args.ptr(), "")) {
         throw Py::Exception();
+    }
 
     try {
         SoRenderManager* manager = _viewer->getSoRenderManager();
         PyObject* proxy = nullptr;
-        proxy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoRenderManager *", static_cast<void*>(manager), 0);
+        proxy = Base::Interpreter().createSWIGPointerObj(
+            "pivy.coin",
+            "SoRenderManager *",
+            static_cast<void*>(manager),
+            0
+        );
         return Py::Object(proxy, true);
     }
     catch (const Base::Exception& e) {
@@ -201,13 +290,15 @@ Py::Object View3DInventorViewerPy::getSoRenderManager(const Py::Tuple& args)
 
 Py::Object View3DInventorViewerPy::getSceneGraph(const Py::Tuple& args)
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
+    if (!PyArg_ParseTuple(args.ptr(), "")) {
         throw Py::Exception();
+    }
 
     try {
         SoNode* scene = _viewer->getSceneGraph();
         PyObject* proxy = nullptr;
-        proxy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoSeparator *", static_cast<void*>(scene), 1);
+        proxy = Base::Interpreter()
+                    .createSWIGPointerObj("pivy.coin", "SoSeparator *", static_cast<void*>(scene), 1);
         scene->ref();
         return Py::Object(proxy, true);
     }
@@ -219,8 +310,9 @@ Py::Object View3DInventorViewerPy::getSceneGraph(const Py::Tuple& args)
 Py::Object View3DInventorViewerPy::setSceneGraph(const Py::Tuple& args)
 {
     PyObject* proxy;
-    if (!PyArg_ParseTuple(args.ptr(), "O", &proxy))
+    if (!PyArg_ParseTuple(args.ptr(), "O", &proxy)) {
         throw Py::Exception();
+    }
 
     void* ptr = nullptr;
     try {
@@ -239,13 +331,19 @@ Py::Object View3DInventorViewerPy::setSceneGraph(const Py::Tuple& args)
 
 Py::Object View3DInventorViewerPy::getSoEventManager(const Py::Tuple& args)
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
+    if (!PyArg_ParseTuple(args.ptr(), "")) {
         throw Py::Exception();
+    }
 
     try {
         SoEventManager* manager = _viewer->getSoEventManager();
         PyObject* proxy = nullptr;
-        proxy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoEventManager *", static_cast<void*>(manager), 0);
+        proxy = Base::Interpreter().createSWIGPointerObj(
+            "pivy.coin",
+            "SoEventManager *",
+            static_cast<void*>(manager),
+            0
+        );
         return Py::Object(proxy, true);
     }
     catch (const Base::Exception& e) {
@@ -256,10 +354,11 @@ Py::Object View3DInventorViewerPy::getSoEventManager(const Py::Tuple& args)
 Py::Object View3DInventorViewerPy::seekToPoint(const Py::Tuple& args)
 {
     PyObject* object;
-    if (!PyArg_ParseTuple(args.ptr(), "O", &object))
+    if (!PyArg_ParseTuple(args.ptr(), "O", &object)) {
         throw Py::Exception();
+    }
 
-   try {
+    try {
         const Py::Tuple tuple(object);
 
         // If the 3d point is given
@@ -268,14 +367,14 @@ Py::Object View3DInventorViewerPy::seekToPoint(const Py::Tuple& args)
             Py::Float y = tuple[1];
             Py::Float z = tuple[2];
 
-            SbVec3f hitpoint((float)x,(float)y,(float)z);
+            SbVec3f hitpoint((float)x, (float)y, (float)z);
             _viewer->seekToPoint(hitpoint);
         }
         else {
             Py::Long x(tuple[0]);
             Py::Long y(tuple[1]);
 
-            SbVec2s hitpoint ((long)x,(long)y);
+            SbVec2s hitpoint((long)x, (long)y);
             _viewer->seekToPoint(hitpoint);
         }
 
@@ -289,16 +388,18 @@ Py::Object View3DInventorViewerPy::seekToPoint(const Py::Tuple& args)
 Py::Object View3DInventorViewerPy::setFocalDistance(const Py::Tuple& args)
 {
     float distance;
-    if (!PyArg_ParseTuple(args.ptr(), "f", &distance))
+    if (!PyArg_ParseTuple(args.ptr(), "f", &distance)) {
         throw Py::Exception();
+    }
 
     try {
         SoCamera* cam = _viewer->getSoRenderManager()->getCamera();
-        if (cam)
+        if (cam) {
             cam->focalDistance.setValue(distance);
+        }
     }
     catch (const Py::Exception&) {
-        throw; // re-throw
+        throw;  // re-throw
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -306,7 +407,7 @@ Py::Object View3DInventorViewerPy::setFocalDistance(const Py::Tuple& args)
     catch (const std::exception& e) {
         throw Py::RuntimeError(e.what());
     }
-    catch(...) {
+    catch (...) {
         throw Py::RuntimeError("Unknown C++ exception");
     }
 
@@ -315,8 +416,9 @@ Py::Object View3DInventorViewerPy::setFocalDistance(const Py::Tuple& args)
 
 Py::Object View3DInventorViewerPy::getFocalDistance(const Py::Tuple& args)
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
+    if (!PyArg_ParseTuple(args.ptr(), "")) {
         throw Py::Exception();
+    }
 
     try {
         double d = _viewer->getSoRenderManager()->getCamera()->focalDistance.getValue();
@@ -328,14 +430,14 @@ Py::Object View3DInventorViewerPy::getFocalDistance(const Py::Tuple& args)
     catch (const std::exception& e) {
         throw Py::RuntimeError(e.what());
     }
-    catch(...) {
+    catch (...) {
         throw Py::RuntimeError("Unknown C++ exception");
     }
 }
 
 Py::Object View3DInventorViewerPy::getPointOnFocalPlane(const Py::Tuple& args)
 {
-    short x,y;
+    short x, y;
     if (!PyArg_ParseTuple(args.ptr(), "hh", &x, &y)) {
         PyErr_Clear();
         Py::Tuple t(args[0]);
@@ -343,7 +445,7 @@ Py::Object View3DInventorViewerPy::getPointOnFocalPlane(const Py::Tuple& args)
         y = (int)Py::Long(t[1]);
     }
     try {
-        SbVec3f pt = _viewer->getPointOnFocalPlane(SbVec2s(x,y));
+        SbVec3f pt = _viewer->getPointOnFocalPlane(SbVec2s(x, y));
         return Py::Vector(Base::Vector3f(pt[0], pt[1], pt[2]));
     }
     catch (const Base::Exception& e) {
@@ -356,8 +458,9 @@ Py::Object View3DInventorViewerPy::getPointOnFocalPlane(const Py::Tuple& args)
 
 Py::Object View3DInventorViewerPy::getPickRadius(const Py::Tuple& args)
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
+    if (!PyArg_ParseTuple(args.ptr(), "")) {
         throw Py::Exception();
+    }
 
     double d = _viewer->getPickRadius();
     return Py::Float(d);
@@ -370,8 +473,10 @@ Py::Object View3DInventorViewerPy::setPickRadius(const Py::Tuple& args)
         throw Py::Exception();
     }
 
-    if (r < 0.001){
-        throw Py::ValueError(std::string("Pick radius is zero or negative; positive number is required."));
+    if (r < 0.001) {
+        throw Py::ValueError(
+            std::string("Pick radius is zero or negative; positive number is required.")
+        );
     }
     try {
         _viewer->setPickRadius(r);
@@ -383,26 +488,27 @@ Py::Object View3DInventorViewerPy::setPickRadius(const Py::Tuple& args)
     catch (const std::exception& e) {
         throw Py::RuntimeError(e.what());
     }
-    catch(...) {
+    catch (...) {
         throw Py::RuntimeError("Unknown C++ exception");
     }
 }
 
 Py::Object View3DInventorViewerPy::setupEditingRoot(const Py::Tuple& args)
 {
-    PyObject *pynode = Py_None;
-    PyObject *pymat = Py_None;
-    if (!PyArg_ParseTuple(args.ptr(), "|OO!", &pynode,&Base::MatrixPy::Type,&pymat)) {
+    PyObject* pynode = Py_None;
+    PyObject* pymat = Py_None;
+    if (!PyArg_ParseTuple(args.ptr(), "|OO!", &pynode, &Base::MatrixPy::Type, &pymat)) {
         throw Py::Exception();
     }
 
-    Base::Matrix4D *mat = nullptr;
-    if(pymat != Py_None)
+    Base::Matrix4D* mat = nullptr;
+    if (pymat != Py_None) {
         mat = static_cast<Base::MatrixPy*>(pymat)->getMatrixPtr();
+    }
 
     try {
-        SoNode *node = nullptr;
-        if(pynode!=Py_None) {
+        SoNode* node = nullptr;
+        if (pynode != Py_None) {
             void* ptr = nullptr;
             Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoNode *", pynode, &ptr, 0);
             if (!ptr) {
@@ -410,7 +516,7 @@ Py::Object View3DInventorViewerPy::setupEditingRoot(const Py::Tuple& args)
             }
             node = static_cast<SoNode*>(ptr);
         }
-        _viewer->setupEditingRoot(node,mat);
+        _viewer->setupEditingRoot(node, mat);
         return Py::None();
     }
     catch (const Base::Exception& e) {
@@ -420,14 +526,14 @@ Py::Object View3DInventorViewerPy::setupEditingRoot(const Py::Tuple& args)
     catch (const std::exception& e) {
         throw Py::RuntimeError(e.what());
     }
-    catch(...) {
+    catch (...) {
         throw Py::RuntimeError("Unknown C++ exception");
     }
 }
 
 Py::Object View3DInventorViewerPy::resetEditingRoot(const Py::Tuple& args)
 {
-    PyObject *updateLinks = Py_True;
+    PyObject* updateLinks = Py_True;
     if (!PyArg_ParseTuple(args.ptr(), "|O!", &PyBool_Type, &updateLinks)) {
         throw Py::Exception();
     }
@@ -442,7 +548,7 @@ Py::Object View3DInventorViewerPy::resetEditingRoot(const Py::Tuple& args)
     catch (const std::exception& e) {
         throw Py::RuntimeError(e.what());
     }
-    catch(...) {
+    catch (...) {
         throw Py::RuntimeError("Unknown C++ exception");
     }
 }
@@ -472,7 +578,7 @@ Py::Object View3DInventorViewerPy::setGradientBackground(const Py::Tuple& args)
     catch (const std::exception& e) {
         throw Py::RuntimeError(e.what());
     }
-    catch(...) {
+    catch (...) {
         throw Py::RuntimeError("Unknown C++ exception");
     }
 }
@@ -482,17 +588,23 @@ Py::Object View3DInventorViewerPy::setGradientBackgroundColor(const Py::Tuple& a
     PyObject* col1;
     PyObject* col2;
     PyObject* col3 = nullptr;
-    if (!PyArg_ParseTuple(args.ptr(), "O!O!|O!",
-                          &PyTuple_Type, &col1,
-                          &PyTuple_Type, &col2,
-                          &PyTuple_Type, &col3)) {
+    if (!PyArg_ParseTuple(
+            args.ptr(),
+            "O!O!|O!",
+            &PyTuple_Type,
+            &col1,
+            &PyTuple_Type,
+            &col2,
+            &PyTuple_Type,
+            &col3
+        )) {
         throw Py::Exception();
     }
 
     auto tupleToColor = [](PyObject* col) {
         SbColor color;
         Py::Tuple tuple(col);
-        for (int i=0; i<3; i++) {
+        for (int i = 0; i < 3; i++) {
             color[i] = static_cast<float>(Py::Float(tuple[i]));
         }
 
@@ -517,7 +629,7 @@ Py::Object View3DInventorViewerPy::setGradientBackgroundColor(const Py::Tuple& a
     catch (const std::exception& e) {
         throw Py::RuntimeError(e.what());
     }
-    catch(...) {
+    catch (...) {
         throw Py::RuntimeError("Unknown C++ exception");
     }
 }
@@ -548,32 +660,35 @@ Py::Object View3DInventorViewerPy::setBackgroundColor(const Py::Tuple& args)
     catch (const std::exception& e) {
         throw Py::RuntimeError(e.what());
     }
-    catch(...) {
+    catch (...) {
         throw Py::RuntimeError("Unknown C++ exception");
     }
 }
 
 Py::Object View3DInventorViewerPy::setRedirectToSceneGraph(const Py::Tuple& args)
 {
-    PyObject* m=Py_False;
-    if (!PyArg_ParseTuple(args.ptr(), "O!", &PyBool_Type, &m))
+    PyObject* m = Py_False;
+    if (!PyArg_ParseTuple(args.ptr(), "O!", &PyBool_Type, &m)) {
         throw Py::Exception();
+    }
     _viewer->setRedirectToSceneGraph(Base::asBoolean(m));
     return Py::None();
 }
 
 Py::Object View3DInventorViewerPy::isRedirectedToSceneGraph(const Py::Tuple& args)
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
+    if (!PyArg_ParseTuple(args.ptr(), "")) {
         throw Py::Exception();
+    }
     bool ok = _viewer->isRedirectedToSceneGraph();
     return Py::Boolean(ok);
 }
 
 Py::Object View3DInventorViewerPy::grabFramebuffer(const Py::Tuple& args)
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
+    if (!PyArg_ParseTuple(args.ptr(), "")) {
         throw Py::Exception();
+    }
     QImage img = _viewer->grabFramebuffer();
 
     PythonWrapper wrap;
@@ -594,17 +709,19 @@ Py::Object View3DInventorViewerPy::setOverrideMode(const Py::Tuple& args)
 
 Py::Object View3DInventorViewerPy::setEnabledNaviCube(const Py::Tuple& args)
 {
-    PyObject* m=Py_False;
-    if (!PyArg_ParseTuple(args.ptr(), "O!", &PyBool_Type, &m))
+    PyObject* m = Py_False;
+    if (!PyArg_ParseTuple(args.ptr(), "O!", &PyBool_Type, &m)) {
         throw Py::Exception();
+    }
     _viewer->setEnabledNaviCube(Base::asBoolean(m));
     return Py::None();
 }
 
 Py::Object View3DInventorViewerPy::isEnabledNaviCube(const Py::Tuple& args)
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
+    if (!PyArg_ParseTuple(args.ptr(), "")) {
         throw Py::Exception();
+    }
     bool ok = _viewer->isEnabledNaviCube();
     return Py::Boolean(ok);
 }
@@ -612,18 +729,21 @@ Py::Object View3DInventorViewerPy::isEnabledNaviCube(const Py::Tuple& args)
 Py::Object View3DInventorViewerPy::setNaviCubeCorner(const Py::Tuple& args)
 {
     int pos;
-    if (!PyArg_ParseTuple(args.ptr(), "i", &pos))
+    if (!PyArg_ParseTuple(args.ptr(), "i", &pos)) {
         throw Py::Exception();
-    if (pos < 0 || pos > 3)
+    }
+    if (pos < 0 || pos > 3) {
         throw Py::IndexError("Value out of range");
+    }
     _viewer->setNaviCubeCorner(pos);
     return Py::None();
 }
 
 Py::Object View3DInventorViewerPy::getNavigationStyle(const Py::Tuple& args)
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
+    if (!PyArg_ParseTuple(args.ptr(), "")) {
         throw Py::Exception();
+    }
 
     NavigationStyle* navigationStyle = _viewer->navigationStyle();
     if (navigationStyle) {

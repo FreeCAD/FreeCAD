@@ -8,9 +8,9 @@ SET(Examples_Files
     FEMExample.FCStd
     AssemblyExample.FCStd
     ArchDetail.FCStd
-    draft_test_objects_files/FCPAT.pat
-    draft_test_objects_files/osifont.license
-    draft_test_objects_files/osifont-lgpl3fe.ttf
+    FCPAT.pat
+    osifont.license
+    osifont-lgpl3fe.ttf
 )
 
 ADD_CUSTOM_TARGET(Example_data ALL

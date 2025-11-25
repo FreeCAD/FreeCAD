@@ -87,8 +87,7 @@ public:
      * @param isForce  If true, indicates a forced update even if the change threshold (≈1%) hasn’t
      * been met.
      */
-    virtual void show([[maybe_unused]] float position,
-                      [[maybe_unused]] ShowFlags flags = ShowFlags::None)
+    virtual void show([[maybe_unused]] float position, [[maybe_unused]] ShowFlags flags = ShowFlags::None)
     {}
 };
 

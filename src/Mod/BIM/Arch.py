@@ -2206,21 +2206,26 @@ def is_debasable(wall):
 
 def debaseWall(wall):
     """
-    Converts a line-based Arch Wall to be parametrically driven by its own
-    properties and Placement, removing its dependency on a Base object.
+        Converts a line-based Arch Wall to be parametrically driven by its own
+    <<<<<<< HEAD
+        properties and Placement, removing its dependency on a Base object.
+    =======
+        properties (Length, Width, Height) and Placement, removing its dependency
+        on a Base object.
+    >>>>>>> bim-create-baseless-walls
 
-    This operation preserves the wall's exact size and global position.
-    It is only supported for walls based on a single, straight line.
+        This operation preserves the wall's exact size and global position.
+        It is only supported for walls based on a single, straight line.
 
-    Parameters
-    ----------
-    wall : FreeCAD.DocumentObject
-        The Arch Wall object to debase.
+        Parameters
+        ----------
+        wall : FreeCAD.DocumentObject
+            The Arch Wall object to debase.
 
-    Returns
-    -------
-    bool
-        True on success, False otherwise.
+        Returns
+        -------
+        bool
+            True on success, False otherwise.
     """
     import FreeCAD
 
@@ -2265,16 +2270,9 @@ def debaseWall(wall):
         # The new placement's Base must be the global coordinate of the final wall's center.
         centerline_position = (p1_global + p2_global) * 0.5
 
-        # Calculate the offset directly in global coordinates.
-        align_offset_global = FreeCAD.Vector()
-        if wall.Align == "Left":
-            # Baseline is Left. Center must be shifted to the Right (positive Y-axis direction).
-            align_offset_global = y_axis * (wall.Width.Value / 2.0)
-        elif wall.Align == "Right":
-            # Baseline is Right. Center must be shifted to the Left (negative Y-axis direction).
-            align_offset_global = y_axis.negative() * (wall.Width.Value / 2.0)
-
-        final_position = centerline_position.add(align_offset_global)
+        # The new placement's Base is the center of the baseline. The alignment is handled by the
+        # geometry generation itself, not by shifting the placement.
+        final_position = centerline_position
         final_placement = FreeCAD.Placement(final_position, final_rotation)
 
         # Store properties before unlinking
@@ -2282,18 +2280,22 @@ def debaseWall(wall):
         length = wall.Length.Value
         width = wall.Width.Value
 
-        # Apply changes
+        # 1. Apply the final placement first.
         wall.Placement = final_placement
 
-        # Remove the base. The recompute triggered by this change will already have the correct
-        # placement to work with.
+        # 2. Now, remove the base. The recompute triggered by this change
+        #    will already have the correct placement to work with.
         wall.Base = None
-        # Clear internal caches that might reference the old base geometry.
+
+        # 3. Clear internal caches and set final properties.
         if hasattr(wall.Proxy, "connectEdges"):
             wall.Proxy.connectEdges = []
+
         wall.Height = height
         wall.Length = length
         wall.Width = width
+
+        # 4. Add an explicit recompute to ensure the final state is settled.
         doc.recompute()
 
     except Exception as e:

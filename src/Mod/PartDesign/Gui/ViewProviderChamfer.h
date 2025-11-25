@@ -27,9 +27,10 @@
 #include "ViewProviderDressUp.h"
 
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
-class PartDesignGuiExport ViewProviderChamfer : public ViewProviderDressUp
+class PartDesignGuiExport ViewProviderChamfer: public ViewProviderDressUp
 {
     Q_DECLARE_TR_FUNCTIONS(PartDesignGui::ViewProviderChamfer)
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderChamfer);
@@ -37,21 +38,22 @@ class PartDesignGuiExport ViewProviderChamfer : public ViewProviderDressUp
 public:
     /// constructor
     ViewProviderChamfer()
-        { sPixmap = "PartDesign_Chamfer.svg";
-          menuName = tr("Chamfer Parameters");}
+    {
+        sPixmap = "PartDesign_Chamfer.svg";
+        menuName = tr("Chamfer Parameters");
+    }
 
     /// return "Chamfer"
-    const std::string & featureName() const override;
+    const std::string& featureName() const override;
     void setupContextMenu(QMenu*, QObject*, const char*) override;
 
 protected:
     /// Returns a newly create dialog for the part to be placed in the task view
-    TaskDlgFeatureParameters *getEditDialog() override;
+    TaskDlgFeatureParameters* getEditDialog() override;
 };
 
 
+}  // namespace PartDesignGui
 
-} // namespace PartDesignGui
 
-
-#endif // PARTGUI_ViewProviderChamfer_H
+#endif  // PARTGUI_ViewProviderChamfer_H

@@ -50,25 +50,29 @@ FileCardDelegate::FileCardDelegate(QObject* parent)
     : QStyledItemDelegate(parent)
 {
     _parameterGroup = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Start");
+        "User parameter:BaseApp/Preferences/Mod/Start"
+    );
     setObjectName(QStringLiteral("thumbnailWidget"));
 
     // Initialize cache size based on thumbnail size (only once)
     if (_thumbnailCache.maxCost() == 0) {
-        int thumbnailSize =
-            static_cast<int>(_parameterGroup->GetInt("FileThumbnailIconsSize", 128));
+        int thumbnailSize = static_cast<int>(_parameterGroup->GetInt("FileThumbnailIconsSize", 128));
         int thumbnailMemory = thumbnailSize * thumbnailSize * 4;  // rgba
         int maxCacheItems = (CACHE_SIZE_MB * 1024 * 1024) / thumbnailMemory;
         _thumbnailCache.setMaxCost(maxCacheItems);
-        Base::Console().log("FileCardDelegate: Initialized thumbnail cache for %d items (%d MB)\n",
-                            maxCacheItems,
-                            CACHE_SIZE_MB);
+        Base::Console().log(
+            "FileCardDelegate: Initialized thumbnail cache for %d items (%d MB)\n",
+            maxCacheItems,
+            CACHE_SIZE_MB
+        );
     }
 }
 
-void FileCardDelegate::paint(QPainter* painter,
-                             const QStyleOptionViewItem& option,
-                             const QModelIndex& index) const
+void FileCardDelegate::paint(
+    QPainter* painter,
+    const QStyleOptionViewItem& option,
+    const QModelIndex& index
+) const
 {
     painter->save();
     // Step 1: Styling
@@ -89,8 +93,7 @@ void FileCardDelegate::paint(QPainter* painter,
     qApp->style()->drawControl(QStyle::CE_PushButton, &buttonOption, painter, &styleButton);
 
     // Step 2: Fetch required data
-    auto thumbnailSize =
-        static_cast<int>(_parameterGroup->GetInt("FileThumbnailIconsSize", 128));  // NOLINT
+    auto thumbnailSize = static_cast<int>(_parameterGroup->GetInt("FileThumbnailIconsSize", 128));  // NOLINT
     auto baseName = index.data(static_cast<int>(DisplayedFilesModelRoles::baseName)).toString();
     auto elidedName = painter->fontMetrics().elidedText(baseName, Qt::ElideRight, thumbnailSize);
     auto size = index.data(static_cast<int>(DisplayedFilesModelRoles::size)).toString();
@@ -105,24 +108,27 @@ void FileCardDelegate::paint(QPainter* painter,
         pixmap = generateThumbnail(path);
     }
 
-    QPixmap scaledPixmap = pixmap.scaled(QSize(thumbnailSize, thumbnailSize),
-                                         Qt::KeepAspectRatio,
-                                         Qt::SmoothTransformation);
+    QPixmap scaledPixmap = pixmap.scaled(
+        QSize(thumbnailSize, thumbnailSize),
+        Qt::KeepAspectRatio,
+        Qt::SmoothTransformation
+    );
 
     // Step 4: Positioning
-    QRect thumbnailRect(option.rect.x() + margin,
-                        option.rect.y() + margin,
-                        thumbnailSize,
-                        thumbnailSize);
-    QRect textRect(option.rect.x() + margin,
-                   thumbnailRect.bottom() + margin,
-                   thumbnailSize,
-                   painter->fontMetrics().lineSpacing());
+    QRect thumbnailRect(option.rect.x() + margin, option.rect.y() + margin, thumbnailSize, thumbnailSize);
+    QRect textRect(
+        option.rect.x() + margin,
+        thumbnailRect.bottom() + margin,
+        thumbnailSize,
+        painter->fontMetrics().lineSpacing()
+    );
 
-    QRect sizeRect(option.rect.x() + margin,
-                   textRect.bottom() + textspacing,
-                   thumbnailSize,
-                   painter->fontMetrics().lineSpacing() + margin);
+    QRect sizeRect(
+        option.rect.x() + margin,
+        textRect.bottom() + textspacing,
+        thumbnailSize,
+        painter->fontMetrics().lineSpacing() + margin
+    );
 
     // Step 5: Draw
     QRect pixmapRect(thumbnailRect.topLeft(), scaledPixmap.size());
@@ -151,8 +157,7 @@ QSize FileCardDelegate::sizeHint(const QStyleOptionViewItem& option, const QMode
 
 QPixmap FileCardDelegate::generateThumbnail(const QString& path) const
 {
-    auto thumbnailSize =
-        static_cast<int>(_parameterGroup->GetInt("FileThumbnailIconsSize", 128));  // NOLINT
+    auto thumbnailSize = static_cast<int>(_parameterGroup->GetInt("FileThumbnailIconsSize", 128));  // NOLINT
 
     // check if we have this thumbnail already inside cache, don't load it once again
     QString cacheKey = getCacheKey(path, thumbnailSize);
@@ -201,8 +206,7 @@ QPixmap FileCardDelegate::loadAndCacheThumbnail(const QString& path, int thumbna
         // get original size to calculate proper aspect-preserving scaled size
         QSize originalSize = reader.size();
         if (originalSize.isValid()) {
-            QSize scaledSize =
-                originalSize.scaled(thumbnailSize, thumbnailSize, Qt::KeepAspectRatio);
+            QSize scaledSize = originalSize.scaled(thumbnailSize, thumbnailSize, Qt::KeepAspectRatio);
             reader.setScaledSize(scaledSize);
         }
 
@@ -211,9 +215,11 @@ QPixmap FileCardDelegate::loadAndCacheThumbnail(const QString& path, int thumbna
             thumbnail = QPixmap::fromImage(image);
         }
         else {
-            Base::Console().log("FileCardDelegate: Failed to load image %s: %s\n",
-                                path.toStdString().c_str(),
-                                reader.errorString().toStdString().c_str());
+            Base::Console().log(
+                "FileCardDelegate: Failed to load image %s: %s\n",
+                path.toStdString().c_str(),
+                reader.errorString().toStdString().c_str()
+            );
         }
     }
 

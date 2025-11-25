@@ -51,19 +51,15 @@
       <item>
        <layout class="QHBoxLayout" name="hbl_working_directory">
         <item>
-         <widget class="QLineEdit" name="let_working_directory">
+         <widget class="Gui::FileChooser" name="fc_working_directory">
           <property name="toolTip">
            <string>Path to working directory</string>
           </property>
           <property name="readOnly">
-           <bool>true</bool>
+           <bool>false</bool>
           </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QToolButton" name="pb_working_directory">
-          <property name="text">
-           <string>…</string>
+          <property name="mode">
+            <enum>Gui::FileChooser::Mode::Directory</enum>
           </property>
          </widget>
         </item>

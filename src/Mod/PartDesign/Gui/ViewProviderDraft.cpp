@@ -22,16 +22,16 @@
  ***************************************************************************/
 
 
-
 #include "TaskDraftParameters.h"
 #include "ViewProviderDraft.h"
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderDraft,PartDesignGui::ViewProviderDressUp)
+PROPERTY_SOURCE(PartDesignGui::ViewProviderDraft, PartDesignGui::ViewProviderDressUp)
 
 
-const std::string & ViewProviderDraft::featureName() const {
+const std::string& ViewProviderDraft::featureName() const
+{
     static const std::string name = "Draft";
     return name;
 }
@@ -42,6 +42,7 @@ void ViewProviderDraft::setupContextMenu(QMenu* menu, QObject* receiver, const c
     PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
 }
 
-TaskDlgFeatureParameters *ViewProviderDraft::getEditDialog() {
-    return new TaskDlgDraftParameters (this);
+TaskDlgFeatureParameters* ViewProviderDraft::getEditDialog()
+{
+    return new TaskDlgDraftParameters(this);
 }

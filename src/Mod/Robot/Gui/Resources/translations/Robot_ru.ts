@@ -16,7 +16,7 @@
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="240"/>
       <source>Adds a tool shape to the robot</source>
-      <translation>Добавляет форму инструмента к роботу</translation>
+      <translation>Добавляет инструмент к роботу</translation>
     </message>
   </context>
   <context>
@@ -110,78 +110,6 @@
     </message>
   </context>
   <context>
-    <name>CmdRobotInsertKukaIR125</name>
-    <message>
-      <location filename="../../CommandInsertRobot.cpp" line="190"/>
-      <source>Robot</source>
-      <translation>Робот</translation>
-    </message>
-    <message>
-      <location filename="../../CommandInsertRobot.cpp" line="191"/>
-      <source>Kuka IR125</source>
-      <translation>Kuka IR125</translation>
-    </message>
-    <message>
-      <location filename="../../CommandInsertRobot.cpp" line="192"/>
-      <source>Inserts a Kuka IR125 robot into the scene</source>
-      <translation>Вставляет робота Kuka IR125 в сцену</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdRobotInsertKukaIR16</name>
-    <message>
-      <location filename="../../CommandInsertRobot.cpp" line="95"/>
-      <source>Robot</source>
-      <translation>Робот</translation>
-    </message>
-    <message>
-      <location filename="../../CommandInsertRobot.cpp" line="96"/>
-      <source>Kuka IR16</source>
-      <translation>Kuka IR16</translation>
-    </message>
-    <message>
-      <location filename="../../CommandInsertRobot.cpp" line="97"/>
-      <source>Inserts a Kuka IR16 robot into the scene</source>
-      <translation>Вставляет робота Kuka IR16 в сцену</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdRobotInsertKukaIR210</name>
-    <message>
-      <location filename="../../CommandInsertRobot.cpp" line="143"/>
-      <source>Robot</source>
-      <translation>Робот</translation>
-    </message>
-    <message>
-      <location filename="../../CommandInsertRobot.cpp" line="144"/>
-      <source>Kuka IR210</source>
-      <translation>Kuka IR210</translation>
-    </message>
-    <message>
-      <location filename="../../CommandInsertRobot.cpp" line="145"/>
-      <source>Inserts a Kuka IR210 robot into the scene</source>
-      <translation>Вставляет робота Kuka IR210 в сцену</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdRobotInsertKukaIR500</name>
-    <message>
-      <location filename="../../CommandInsertRobot.cpp" line="44"/>
-      <source>Robot</source>
-      <translation>Робот</translation>
-    </message>
-    <message>
-      <location filename="../../CommandInsertRobot.cpp" line="45"/>
-      <source>Kuka IR500</source>
-      <translation>Kuka IR500</translation>
-    </message>
-    <message>
-      <location filename="../../CommandInsertRobot.cpp" line="46"/>
-      <source>Inserts a Kuka IR500 into the document</source>
-      <translation>Вставляет в документ Kuka IR500</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdRobotInsertWaypoint</name>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="87"/>
@@ -196,7 +124,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="89"/>
       <source>Inserts the robot tool location into the trajectory</source>
-      <translation>Вставляет расположение инструмента робота в траекторию</translation>
+      <translation>Вставляет положение инструмента робота в траекторию</translation>
     </message>
   </context>
   <context>
@@ -214,7 +142,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="158"/>
       <source>Inserts the preselection position into the trajectory (W)</source>
-      <translation>Вставляет предварительную позицию в траекторию (W)</translation>
+      <translation>Вставляет предварительно выбранную позицию в траекторию (W)</translation>
     </message>
   </context>
   <context>
@@ -250,7 +178,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="236"/>
       <source>Sets the default orientation for subsequent commands for waypoint creation</source>
-      <translation>Устанавливает ориентацию по умолчанию для последующих команд для создания путевых точек</translation>
+      <translation>Устанавливает ориентацию по умолчанию для последующих команд создания путевых точек</translation>
     </message>
   </context>
   <context>
@@ -268,7 +196,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="279"/>
       <source>Sets the default values for speed, acceleration, and continuity for subsequent commands of waypoint creation</source>
-      <translation>Устанавливает значения по умолчанию для скорости, ускорения и непрерывности для последующих команд создания путевых точек</translation>
+      <translation>Устанавливает значения по умолчанию для скорости, ускорения и непрерывности последующих команд создания путевых точек</translation>
     </message>
   </context>
   <context>
@@ -281,12 +209,12 @@
     <message>
       <location filename="../../Command.cpp" line="50"/>
       <source>Set Home Position</source>
-      <translation>Задать позицию дома</translation>
+      <translation>Задать исходную позицию</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="51"/>
       <source>Sets the home position</source>
-      <translation>Устанавливает исходную, домашнюю позицию робота</translation>
+      <translation>Устанавливает исходную позицию робота</translation>
     </message>
   </context>
   <context>
@@ -335,12 +263,12 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="425"/>
       <source>Dress-Up Trajectory</source>
-      <translation>Отделка траектории</translation>
+      <translation>Модификация траектории</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="426"/>
       <source>Creates a dress-up object that overrides aspects of a trajectory</source>
-      <translation>Создаёт корректирующий объект, который переопределяет аспекты траектории</translation>
+      <translation>Создаёт модифицирующий объект, который переопределяет аспекты траектории</translation>
     </message>
   </context>
   <context>
@@ -364,16 +292,16 @@
   <context>
     <name>QObject</name>
     <message>
+      <location filename="../../CommandInsertRobot.cpp" line="258"/>
       <location filename="../../CommandExport.cpp" line="60"/>
       <location filename="../../CommandExport.cpp" line="135"/>
+      <location filename="../../Command.cpp" line="69"/>
+      <location filename="../../Command.cpp" line="128"/>
+      <location filename="../../Command.cpp" line="234"/>
       <location filename="../../CommandTrajectory.cpp" line="104"/>
       <location filename="../../CommandTrajectory.cpp" line="171"/>
       <location filename="../../CommandTrajectory.cpp" line="190"/>
       <location filename="../../CommandTrajectory.cpp" line="461"/>
-      <location filename="../../CommandInsertRobot.cpp" line="258"/>
-      <location filename="../../Command.cpp" line="69"/>
-      <location filename="../../Command.cpp" line="128"/>
-      <location filename="../../Command.cpp" line="234"/>
       <source>Wrong selection</source>
       <translation>Некорректный выбор</translation>
     </message>
@@ -390,8 +318,8 @@
     <message>
       <location filename="../../CommandExport.cpp" line="61"/>
       <location filename="../../CommandExport.cpp" line="136"/>
-      <location filename="../../CommandTrajectory.cpp" line="105"/>
       <location filename="../../Command.cpp" line="235"/>
+      <location filename="../../CommandTrajectory.cpp" line="105"/>
       <source>Select one Robot and one Trajectory object.</source>
       <translation>Выберите одного робота и одну траекторию движения.</translation>
     </message>
@@ -483,16 +411,6 @@
       <location filename="../../ViewProviderTrajectory.cpp" line="142"/>
       <source>Modify</source>
       <translation>Изменить</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="71"/>
-      <source>No robot files installed</source>
-      <translation>Файлы роботов не установлены</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="72"/>
-      <source>Visit %1 and copy the robot VRML and CSV files to %2</source>
-      <translation>Посетите %1 и скопируйте файлы VRML и CSV на %2</translation>
     </message>
   </context>
   <context>

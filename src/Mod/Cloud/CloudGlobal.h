@@ -28,20 +28,20 @@
 
 // Cloud
 #ifndef CloudAppExport
-#ifdef CloudApp_EXPORTS
-#define CloudAppExport FREECAD_DECL_EXPORT
-#else
-#define CloudAppExport FREECAD_DECL_IMPORT
-#endif
+# ifdef CloudApp_EXPORTS
+#  define CloudAppExport FREECAD_DECL_EXPORT
+# else
+#  define CloudAppExport FREECAD_DECL_IMPORT
+# endif
 #endif
 
 // Cloud
 #ifndef CloudGuiExport
-#ifdef CloudGui_EXPORTS
-#define CloudGuiExport FREECAD_DECL_EXPORT
-#else
-#define CloudGuiExport FREECAD_DECL_IMPORT
-#endif
+# ifdef CloudGui_EXPORTS
+#  define CloudGuiExport FREECAD_DECL_EXPORT
+# else
+#  define CloudGuiExport FREECAD_DECL_IMPORT
+# endif
 #endif
 
 

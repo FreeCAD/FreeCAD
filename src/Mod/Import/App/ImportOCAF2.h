@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /****************************************************************************
  *   Copyright (c) 2018 Zheng, Lei (realthunder) <realthunder.dev@gmail.com>*
  *                                                                          *
@@ -136,36 +138,41 @@ private:
         int free = true;
     };
 
-    App::DocumentObject* loadShape(App::Document* doc,
-                                   TDF_Label label,
-                                   const TopoDS_Shape& shape,
-                                   bool baseOnly = false,
-                                   bool newDoc = true);
+    App::DocumentObject* loadShape(
+        App::Document* doc,
+        TDF_Label label,
+        const TopoDS_Shape& shape,
+        bool baseOnly = false,
+        bool newDoc = true
+    );
     App::Document* getDocument(App::Document* doc, TDF_Label label);
-    bool createAssembly(App::Document* doc,
-                        TDF_Label label,
-                        const TopoDS_Shape& shape,
-                        Info& info,
-                        bool newDoc);
-    bool createObject(App::Document* doc,
-                      TDF_Label label,
-                      const TopoDS_Shape& shape,
-                      Info& info,
-                      bool newDoc);
-    bool createGroup(App::Document* doc,
-                     Info& info,
-                     const TopoDS_Shape& shape,
-                     std::vector<App::DocumentObject*>& children,
-                     const boost::dynamic_bitset<>& visibilities,
-                     bool canReduce = false);
-    bool
-    getColor(const TopoDS_Shape& shape, Info& info, bool check = false, bool noDefault = false);
-    void
-    getSHUOColors(TDF_Label label, std::map<std::string, Base::Color>& colors, bool appendFirst);
+    bool createAssembly(
+        App::Document* doc,
+        TDF_Label label,
+        const TopoDS_Shape& shape,
+        Info& info,
+        bool newDoc
+    );
+    bool createObject(
+        App::Document* doc,
+        TDF_Label label,
+        const TopoDS_Shape& shape,
+        Info& info,
+        bool newDoc
+    );
+    bool createGroup(
+        App::Document* doc,
+        Info& info,
+        const TopoDS_Shape& shape,
+        std::vector<App::DocumentObject*>& children,
+        const boost::dynamic_bitset<>& visibilities,
+        bool canReduce = false
+    );
+    bool getColor(const TopoDS_Shape& shape, Info& info, bool check = false, bool noDefault = false);
+    void getSHUOColors(TDF_Label label, std::map<std::string, Base::Color>& colors, bool appendFirst);
     void setObjectName(Info& info, TDF_Label label);
     std::string getLabelName(TDF_Label label);
-    App::DocumentObject*
-    expandShape(App::Document* doc, TDF_Label label, const TopoDS_Shape& shape);
+    App::DocumentObject* expandShape(App::Document* doc, TDF_Label label, const TopoDS_Shape& shape);
 
     virtual void applyEdgeColors(Part::Feature*, const std::vector<Base::Color>&)
     {}
@@ -233,10 +240,9 @@ struct ImportExport ExportOCAFOptions
 class ImportExport ExportOCAF2
 {
 public:
-    using GetShapeColorsFunc =
-        std::function<std::map<std::string, Base::Color>(App::DocumentObject*, const char*)>;
-    explicit ExportOCAF2(Handle(TDocStd_Document) h,
-                         GetShapeColorsFunc func = GetShapeColorsFunc());
+    using GetShapeColorsFunc
+        = std::function<std::map<std::string, Base::Color>(App::DocumentObject*, const char*)>;
+    explicit ExportOCAF2(Handle(TDocStd_Document) h, GetShapeColorsFunc func = GetShapeColorsFunc());
 
     static ExportOCAFOptions customExportOptions();
     void setExportOptions(ExportOCAFOptions opts)
@@ -255,16 +261,20 @@ public:
     bool canFallback(std::vector<App::DocumentObject*> objs);
 
 private:
-    TDF_Label exportObject(App::DocumentObject* obj,
-                           const char* sub,
-                           TDF_Label parent,
-                           const char* name = nullptr);
-    void setupObject(TDF_Label label,
-                     App::DocumentObject* obj,
-                     const Part::TopoShape& shape,
-                     const std::string& prefix,
-                     const char* name = nullptr,
-                     bool force = false);
+    TDF_Label exportObject(
+        App::DocumentObject* obj,
+        const char* sub,
+        TDF_Label parent,
+        const char* name = nullptr
+    );
+    void setupObject(
+        TDF_Label label,
+        App::DocumentObject* obj,
+        const Part::TopoShape& shape,
+        const std::string& prefix,
+        const char* name = nullptr,
+        bool force = false
+    );
     void setName(TDF_Label label, App::DocumentObject* obj, const char* name = nullptr);
     TDF_Label findComponent(const char* subname, TDF_Label label, TDF_LabelSequence& labels);
 

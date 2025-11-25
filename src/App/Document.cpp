@@ -3221,6 +3221,10 @@ bool Document::containsObject(const DocumentObject* pcObject) const
 void Document::removeObject(const char* sName)
 {
     auto pos = d->objectMap.find(sName);
+    if (pos == d->objectMap.end()){
+        FC_MSG("Object " << sName << " already deleted in document " << getName());
+        return;
+    }
 
     if (pos->second->testStatus(ObjectStatus::PendingRecompute)) {
         // TODO: shall we allow removal if there is active undo transaction?

@@ -57,18 +57,14 @@ using namespace Fem;
 // also defined in FemConstrainFluidBoundary and foamcasebuilder/basicbuilder.py, please update
 // simultaneously the second (index 1) is the default enum, as index 0 causes compiling error static
 // const char* BoundaryTypes[] = {"inlet","wall","outlet","freestream", "interface", NULL};
-static const char* WallSubtypes[] =
-    {"unspecific", "fixed", "slip", "partialSlip", "moving", "rough", nullptr};
-static const char* InletSubtypes[] = {"unspecific",
-                                      "totalPressure",
-                                      "uniformVelocity",
-                                      "volumetricFlowRate",
-                                      "massFlowRate",
-                                      nullptr};
-static const char* OutletSubtypes[] =
-    {"unspecific", "totalPressure", "staticPressure", "uniformVelocity", "outFlow", nullptr};
-static const char* InterfaceSubtypes[] =
-    {"unspecific", "symmetry", "wedge", "cyclic", "empty", "coupled", nullptr};
+static const char* WallSubtypes[]
+    = {"unspecific", "fixed", "slip", "partialSlip", "moving", "rough", nullptr};
+static const char* InletSubtypes[]
+    = {"unspecific", "totalPressure", "uniformVelocity", "volumetricFlowRate", "massFlowRate", nullptr};
+static const char* OutletSubtypes[]
+    = {"unspecific", "totalPressure", "staticPressure", "uniformVelocity", "outFlow", nullptr};
+static const char* InterfaceSubtypes[]
+    = {"unspecific", "symmetry", "wedge", "cyclic", "empty", "coupled", nullptr};
 static const char* FreestreamSubtypes[] = {"unspecific", "freestream", nullptr};
 
 static const char* InterfaceSubtypeHelpTexts[] = {
@@ -78,7 +74,8 @@ static const char* InterfaceSubtypeHelpTexts[] = {
     "periodic boundary in pair, treated as physical connected",
     "front and back for single layer 2D mesh, also axis-sym axis line",
     "exchange boundary vale with external program, need extra manual setup like file name",
-    nullptr};
+    nullptr
+};
 
 // defined in file FemConstraintFluidBoundary:
 // see Ansys fluet manual: Turbulence Specification method
@@ -90,24 +87,25 @@ static const char* TurbulenceSpecificationHelpTexts[] = {
     "intensity (0.05 ~ 0.15) and characteristic length scale of max eddy [m]",
     "intensity (0.05 ~ 0.15) and turbulent viscosity ratio",
     "for fully developed internal flow, Turbulence intensity (0-1.0) 0.05 typical",
-    nullptr};
+    nullptr
+};
 
 // static const char* ThermalBoundaryTypes[] = {"fixedValue","zeroGradient", "fixedGradient",
 // "mixed", "heatFlux", "HTC","coupled", NULL};
-static const char* ThermalBoundaryHelpTexts[] = {"fixed Temperature [K]",
-                                                 "no heat transfer on boundary",
-                                                 "fixed value gradient [K/m]",
-                                                 "mixed fixedGradient and fixedValue",
-                                                 "fixed heat flux [W/m2]",
-                                                 "Heat transfer coeff [W/(M2)/K]",
-                                                 "conjugate heat transfer with solid",
-                                                 nullptr};
+static const char* ThermalBoundaryHelpTexts[] = {
+    "fixed Temperature [K]",
+    "no heat transfer on boundary",
+    "fixed value gradient [K/m]",
+    "mixed fixedGradient and fixedValue",
+    "fixed heat flux [W/m2]",
+    "Heat transfer coeff [W/(M2)/K]",
+    "conjugate heat transfer with solid",
+    nullptr
+};
 // enable & disable quantityUI once valueType is selected
 
 // internal function not declared in header file
-void initComboBox(QComboBox* combo,
-                  const std::vector<std::string>& textItems,
-                  const std::string& sItem)
+void initComboBox(QComboBox* combo, const std::vector<std::string>& textItems, const std::string& sItem)
 {
     combo->blockSignals(true);
 
@@ -126,7 +124,8 @@ void initComboBox(QComboBox* combo,
 /* TRANSLATOR FemGui::TaskFemConstraintFluidBoundary */
 TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(
     ViewProviderFemConstraintFluidBoundary* ConstraintView,
-    QWidget* parent)
+    QWidget* parent
+)
     : TaskFemConstraintOnBoundary(ConstraintView, parent, "FEM_ConstraintFluidBoundary")
     , ui(new Ui_TaskFemConstraintFluidBoundary)
     , dimension(-1)
@@ -138,10 +137,7 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(
 
     // create a context menu for the listview of the references
     createActions(ui->listReferences);
-    connect(deleteAction,
-            &QAction::triggered,
-            this,
-            &TaskFemConstraintFluidBoundary::onReferenceDeleted);
+    connect(deleteAction, &QAction::triggered, this, &TaskFemConstraintFluidBoundary::onReferenceDeleted);
 
     // setup ranges
     constexpr float max = std::numeric_limits<float>::max();
@@ -158,40 +154,47 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(
     ui->spinHTCoeffValue->setMinimum(0.0);
     ui->spinHTCoeffValue->setMaximum(max);
 
-    connect(ui->comboBoundaryType,
-            qOverload<int>(&QComboBox::currentIndexChanged),
-            this,
-            &TaskFemConstraintFluidBoundary::onBoundaryTypeChanged);
-    connect(ui->comboSubtype,
-            qOverload<int>(&QComboBox::currentIndexChanged),
-            this,
-            &TaskFemConstraintFluidBoundary::onSubtypeChanged);
-    connect(ui->spinBoundaryValue,
-            qOverload<double>(&QDoubleSpinBox::valueChanged),
-            this,
-            &TaskFemConstraintFluidBoundary::onBoundaryValueChanged);
+    connect(
+        ui->comboBoundaryType,
+        qOverload<int>(&QComboBox::currentIndexChanged),
+        this,
+        &TaskFemConstraintFluidBoundary::onBoundaryTypeChanged
+    );
+    connect(
+        ui->comboSubtype,
+        qOverload<int>(&QComboBox::currentIndexChanged),
+        this,
+        &TaskFemConstraintFluidBoundary::onSubtypeChanged
+    );
+    connect(
+        ui->spinBoundaryValue,
+        qOverload<double>(&QDoubleSpinBox::valueChanged),
+        this,
+        &TaskFemConstraintFluidBoundary::onBoundaryValueChanged
+    );
 
-    connect(ui->comboTurbulenceSpecification,
-            qOverload<int>(&QComboBox::currentIndexChanged),
-            this,
-            &TaskFemConstraintFluidBoundary::onTurbulenceSpecificationChanged);
-    connect(ui->comboThermalBoundaryType,
-            qOverload<int>(&QComboBox::currentIndexChanged),
-            this,
-            &TaskFemConstraintFluidBoundary::onThermalBoundaryTypeChanged);
+    connect(
+        ui->comboTurbulenceSpecification,
+        qOverload<int>(&QComboBox::currentIndexChanged),
+        this,
+        &TaskFemConstraintFluidBoundary::onTurbulenceSpecificationChanged
+    );
+    connect(
+        ui->comboThermalBoundaryType,
+        qOverload<int>(&QComboBox::currentIndexChanged),
+        this,
+        &TaskFemConstraintFluidBoundary::onThermalBoundaryTypeChanged
+    );
 
-    connect(ui->buttonDirection, &QPushButton::pressed, this, [this] {
-        onButtonDirection(true);
-    });
-    connect(ui->checkReverse,
-            &QCheckBox::toggled,
-            this,
-            &TaskFemConstraintFluidBoundary::onCheckReverse);
+    connect(ui->buttonDirection, &QPushButton::pressed, this, [this] { onButtonDirection(true); });
+    connect(ui->checkReverse, &QCheckBox::toggled, this, &TaskFemConstraintFluidBoundary::onCheckReverse);
 
-    connect(ui->listReferences,
-            &QListWidget::itemClicked,
-            this,
-            &TaskFemConstraintFluidBoundary::setSelection);
+    connect(
+        ui->listReferences,
+        &QListWidget::itemClicked,
+        this,
+        &TaskFemConstraintFluidBoundary::setSelection
+    );
 
     this->groupLayout()->addWidget(proxy);
 
@@ -207,8 +210,8 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(
     buttonGroup->addButton(ui->btnRemove, (int)SelectionChangeModes::refRemove);
 
     // Get the feature data
-    Fem::ConstraintFluidBoundary* pcConstraint =
-        ConstraintView->getObject<Fem::ConstraintFluidBoundary>();
+    Fem::ConstraintFluidBoundary* pcConstraint
+        = ConstraintView->getObject<Fem::ConstraintFluidBoundary>();
 
     Fem::FemAnalysis* pcAnalysis = nullptr;
     if (FemGui::ActiveAnalysisObserver::instance()->hasActiveObject()) {
@@ -216,8 +219,9 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(
     }
     else {
         App::Document* aDoc = pcConstraint->getDocument();
-        std::vector<App::DocumentObject*> fem =
-            aDoc->getObjectsOfType(Fem::FemAnalysis::getClassTypeId());
+        std::vector<App::DocumentObject*> fem = aDoc->getObjectsOfType(
+            Fem::FemAnalysis::getClassTypeId()
+        );
         if (!fem.empty()) {
             pcAnalysis = static_cast<Fem::FemAnalysis*>(fem[0]);  // get the first
         }
@@ -233,8 +237,10 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(
         }
     }
     else {
-        Base::Console().log("FemAnalysis object is not activated or no FemAnalysis in the active "
-                            "document, mesh dimension is unknown\n");
+        Base::Console().log(
+            "FemAnalysis object is not activated or no FemAnalysis in the active "
+            "document, mesh dimension is unknown\n"
+        );
         dimension = -1;  // unknown dimension of mesh
     }
     if (pcMesh) {
@@ -244,8 +250,8 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(
             Part::Feature* pcPart = dynamic_cast<Part::Feature*>(pcLink->getValue());
             if (pcPart) {  // deduct dimension from part_obj.Shape.ShapeType
                 const TopoDS_Shape& pShape = pcPart->Shape.getShape().getShape();
-                const TopAbs_ShapeEnum shapeType =
-                    pShape.IsNull() ? TopAbs_SHAPE : pShape.ShapeType();
+                const TopAbs_ShapeEnum shapeType = pShape.IsNull() ? TopAbs_SHAPE
+                                                                   : pShape.ShapeType();
                 if (shapeType == TopAbs_SOLID
                     || shapeType == TopAbs_COMPSOLID) {  // COMPSOLID is solids connected by faces
                     dimension = 3;
@@ -257,8 +263,8 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(
                     dimension = 1;
                 }
                 else {
-                    dimension =
-                        -1;  // Vertex (0D) can not make mesh, Compound type might contain any types
+                    dimension = -1;  // Vertex (0D) can not make mesh, Compound type might contain
+                                     // any types
                 }
             }
         }
@@ -280,13 +286,16 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(
         // if only it is CFD solver, otherwise exit by SIGSEGV error, detect getPropertyByName() !=
         // NULL
         if (pcSolver->getPropertyByName("HeatTransferring")) {
-            pHeatTransferring =
-                static_cast<App::PropertyBool*>(pcSolver->getPropertyByName("HeatTransferring"));
+            pHeatTransferring = static_cast<App::PropertyBool*>(
+                pcSolver->getPropertyByName("HeatTransferring")
+            );
             if (pHeatTransferring->getValue()) {
                 ui->tabThermalBoundary->setEnabled(true);
-                initComboBox(ui->comboThermalBoundaryType,
-                             pcConstraint->ThermalBoundaryType.getEnumVector(),
-                             pcConstraint->ThermalBoundaryType.getValueAsString());
+                initComboBox(
+                    ui->comboThermalBoundaryType,
+                    pcConstraint->ThermalBoundaryType.getEnumVector(),
+                    pcConstraint->ThermalBoundaryType.getValueAsString()
+                );
                 ui->spinHTCoeffValue->setValue(pcConstraint->HTCoeffValue.getValue());
                 ui->spinHeatFluxValue->setValue(pcConstraint->HeatFluxValue.getValue());
                 ui->spinTemperatureValue->setValue(pcConstraint->TemperatureValue.getValue());
@@ -302,21 +311,25 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(
         }
         if (pcSolver->getPropertyByName("TurbulenceModel")) {
             pTurbulenceModel = static_cast<App::PropertyEnumeration*>(
-                pcSolver->getPropertyByName("TurbulenceModel"));
+                pcSolver->getPropertyByName("TurbulenceModel")
+            );
             if (pTurbulenceModel->getValueAsString() == std::string("laminar")) {
                 ui->tabTurbulenceBoundary->setEnabled(false);
             }
             else {
                 ui->tabTurbulenceBoundary->setEnabled(true);
                 ui->labelTurbulenceSpecification->setText(
-                    QString::fromStdString(pTurbulenceModel->getValueAsString()));
-                initComboBox(ui->comboTurbulenceSpecification,
-                             pcConstraint->TurbulenceSpecification.getEnumVector(),
-                             pcConstraint->TurbulenceSpecification.getValueAsString());
+                    QString::fromStdString(pTurbulenceModel->getValueAsString())
+                );
+                initComboBox(
+                    ui->comboTurbulenceSpecification,
+                    pcConstraint->TurbulenceSpecification.getEnumVector(),
+                    pcConstraint->TurbulenceSpecification.getValueAsString()
+                );
                 ui->spinTurbulentIntensityValue->setValue(
-                    pcConstraint->TurbulentIntensityValue.getValue());
-                ui->spinTurbulentLengthValue->setValue(
-                    pcConstraint->TurbulentLengthValue.getValue());
+                    pcConstraint->TurbulentIntensityValue.getValue()
+                );
+                ui->spinTurbulentLengthValue->setValue(pcConstraint->TurbulentLengthValue.getValue());
                 updateTurbulenceUI();
             }
         }
@@ -326,7 +339,8 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(
     }
     else {
         Base::Console().warning(
-            "No solver object inside FemAnalysis object, default to non-thermal, non-turbulence\n");
+            "No solver object inside FemAnalysis object, default to non-thermal, non-turbulence\n"
+        );
     }
     ui->tabWidget->setTabText(0, tr("Basic"));
     ui->tabWidget->setTabText(1, tr("Turbulence"));
@@ -334,9 +348,11 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(
     ui->tabWidget->setCurrentIndex(0);
     ui->labelHelpText->setText(tr("select boundary type, faces and set value"));
 
-    initComboBox(ui->comboBoundaryType,
-                 pcConstraint->BoundaryType.getEnumVector(),
-                 pcConstraint->BoundaryType.getValueAsString());
+    initComboBox(
+        ui->comboBoundaryType,
+        pcConstraint->BoundaryType.getEnumVector(),
+        pcConstraint->BoundaryType.getValueAsString()
+    );
     updateBoundaryTypeUI();
     std::vector<std::string> subtypes = pcConstraint->Subtype.getEnumVector();
     initComboBox(ui->comboSubtype, subtypes, pcConstraint->Subtype.getValueAsString());
@@ -370,8 +386,9 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(
     ui->buttonDirection->blockSignals(false);
     ui->checkReverse->blockSignals(false);
 
-    ui->lbl_info->setText(tr("Select geometry of type: ")
-                          + QString::fromUtf8("<b>%1</b>").arg(tr("Face")));
+    ui->lbl_info->setText(
+        tr("Select geometry of type: ") + QString::fromUtf8("<b>%1</b>").arg(tr("Face"))
+    );
 
     updateUI();
 }
@@ -383,8 +400,8 @@ const Fem::FemSolverObject* TaskFemConstraintFluidBoundary::getFemSolver() const
 
 void TaskFemConstraintFluidBoundary::updateBoundaryTypeUI()
 {
-    Fem::ConstraintFluidBoundary* pcConstraint =
-        ConstraintView->getObject<Fem::ConstraintFluidBoundary>();
+    Fem::ConstraintFluidBoundary* pcConstraint
+        = ConstraintView->getObject<Fem::ConstraintFluidBoundary>();
     std::string boundaryType = ui->comboBoundaryType->currentText().toStdString();
     // std::string boundaryType = pcConstraint->BoundaryType.getValueAsString();
 
@@ -418,8 +435,7 @@ void TaskFemConstraintFluidBoundary::updateBoundaryTypeUI()
         pcConstraint->Reversed.setValue(false);  // outlet must point outward
     }
     else {
-        Base::Console().error("Error: Fluid boundary type `%s` is not defined\n",
-                              boundaryType.c_str());
+        Base::Console().error("Error: Fluid boundary type `%s` is not defined\n", boundaryType.c_str());
     }
     // std::string subtypeLabel = boundaryType + std::string(" type");
     // ui->labelSubtype->setText(QString::fromUtf8(subtypeLabel)); // too long to show in UI
@@ -503,7 +519,8 @@ void TaskFemConstraintFluidBoundary::updateSubtypeUI()
 void TaskFemConstraintFluidBoundary::updateTurbulenceUI()
 {
     ui->labelHelpText->setText(
-        tr(TurbulenceSpecificationHelpTexts[ui->comboTurbulenceSpecification->currentIndex()]));
+        tr(TurbulenceSpecificationHelpTexts[ui->comboTurbulenceSpecification->currentIndex()])
+    );
     /// hide/disable UI only happened in constructor, update helptext and label text here
     std::string turbulenceSpec = ui->comboTurbulenceSpecification->currentText().toStdString();
     ui->labelTurbulentIntensityValue->setText(tr("Intensity [0~1]"));
@@ -531,7 +548,8 @@ void TaskFemConstraintFluidBoundary::updateThermalBoundaryUI()
     // thermalBoundaryType = pcConstraint->ThermalBoundaryType.getValueAsString();
 
     ui->labelHelpText->setText(
-        tr(ThermalBoundaryHelpTexts[ui->comboThermalBoundaryType->currentIndex()]));
+        tr(ThermalBoundaryHelpTexts[ui->comboThermalBoundaryType->currentIndex()])
+    );
     // to hide/disable UI according to subtype
     std::string thermalBoundaryType = ui->comboThermalBoundaryType->currentText().toStdString();
     ui->spinHTCoeffValue->setEnabled(false);
@@ -561,15 +579,17 @@ void TaskFemConstraintFluidBoundary::updateThermalBoundaryUI()
         ui->spinTemperatureValue->setEnabled(true);
     }
     else {
-        Base::Console().error("Thermal boundary type `%s` is not defined\n",
-                              thermalBoundaryType.c_str());
+        Base::Console().error(
+            "Thermal boundary type `%s` is not defined\n",
+            thermalBoundaryType.c_str()
+        );
     }
 }
 
 void TaskFemConstraintFluidBoundary::onBoundaryTypeChanged()
 {
-    Fem::ConstraintFluidBoundary* pcConstraint =
-        ConstraintView->getObject<Fem::ConstraintFluidBoundary>();
+    Fem::ConstraintFluidBoundary* pcConstraint
+        = ConstraintView->getObject<Fem::ConstraintFluidBoundary>();
     // temporarily change BoundaryType property, but command transaction should reset it back if you
     // 'reject' late
     pcConstraint->BoundaryType.setValue(ui->comboBoundaryType->currentIndex());
@@ -582,8 +602,10 @@ void TaskFemConstraintFluidBoundary::onBoundaryTypeChanged()
     bool ret = pcConstraint->recomputeFeature();
     if (!ret) {
         std::string boundaryType = ui->comboBoundaryType->currentText().toStdString();
-        Base::Console().error("Fluid boundary recomputationg failed for boundaryType `%s` \n",
-                              boundaryType.c_str());
+        Base::Console().error(
+            "Fluid boundary recomputationg failed for boundaryType `%s` \n",
+            boundaryType.c_str()
+        );
     }
 }
 
@@ -599,17 +621,16 @@ void TaskFemConstraintFluidBoundary::onBoundaryValueChanged(double)
 }
 void TaskFemConstraintFluidBoundary::onTurbulenceSpecificationChanged()
 {
-    Fem::ConstraintFluidBoundary* pcConstraint =
-        ConstraintView->getObject<Fem::ConstraintFluidBoundary>();
-    pcConstraint->TurbulenceSpecification.setValue(
-        ui->comboTurbulenceSpecification->currentIndex());
+    Fem::ConstraintFluidBoundary* pcConstraint
+        = ConstraintView->getObject<Fem::ConstraintFluidBoundary>();
+    pcConstraint->TurbulenceSpecification.setValue(ui->comboTurbulenceSpecification->currentIndex());
     updateTurbulenceUI();
 }
 
 void TaskFemConstraintFluidBoundary::onThermalBoundaryTypeChanged()
 {
-    Fem::ConstraintFluidBoundary* pcConstraint =
-        ConstraintView->getObject<Fem::ConstraintFluidBoundary>();
+    Fem::ConstraintFluidBoundary* pcConstraint
+        = ConstraintView->getObject<Fem::ConstraintFluidBoundary>();
     pcConstraint->ThermalBoundaryType.setValue(ui->comboThermalBoundaryType->currentIndex());
     updateThermalBoundaryUI();
 }
@@ -634,26 +655,26 @@ void TaskFemConstraintFluidBoundary::onButtonDirection(const bool pressed)
         QMessageBox::warning(this, tr("Empty selection"), tr("Select an edge or a face."));
         return;
     }
-    Fem::ConstraintFluidBoundary* pcConstraint =
-        ConstraintView->getObject<Fem::ConstraintFluidBoundary>();
+    Fem::ConstraintFluidBoundary* pcConstraint
+        = ConstraintView->getObject<Fem::ConstraintFluidBoundary>();
 
     // we only handle the first selected object
     Gui::SelectionObject& selectionElement = selection.at(0);
 
     // we can only handle part objects
     if (!selectionElement.isObjectTypeOf(Part::Feature::getClassTypeId())) {
-        QMessageBox::warning(this,
-                             tr("Wrong selection"),
-                             tr("Selected object is not a part object!"));
+        QMessageBox::warning(this, tr("Wrong selection"), tr("Selected object is not a part object!"));
         return;
     }
     // get the names of the subobjects
     const std::vector<std::string>& subNames = selectionElement.getSubNames();
 
     if (subNames.size() != 1) {
-        QMessageBox::warning(this,
-                             tr("Wrong selection"),
-                             tr("Only one planar face or edge can be selected!"));
+        QMessageBox::warning(
+            this,
+            tr("Wrong selection"),
+            tr("Only one planar face or edge can be selected!")
+        );
         return;
     }
 
@@ -667,24 +688,30 @@ void TaskFemConstraintFluidBoundary::onButtonDirection(const bool pressed)
 
     if (subNamesElement.substr(0, 4) == "Face") {
         if (!Fem::Tools::isPlanar(TopoDS::Face(ref))) {
-            QMessageBox::warning(this,
-                                 tr("Wrong selection"),
-                                 tr("Only planar faces can be picked for 3D"));
+            QMessageBox::warning(
+                this,
+                tr("Wrong selection"),
+                tr("Only planar faces can be picked for 3D")
+            );
             return;
         }
     }
     else if (subNamesElement.substr(0, 4) == "Edge") {  // 2D or 3D can use edge as direction vector
         if (!Fem::Tools::isLinear(TopoDS::Edge(ref))) {
-            QMessageBox::warning(this,
-                                 tr("Wrong selection"),
-                                 tr("Only planar edges can be picked for 2D"));
+            QMessageBox::warning(
+                this,
+                tr("Wrong selection"),
+                tr("Only planar edges can be picked for 2D")
+            );
             return;
         }
     }
     else {
-        QMessageBox::warning(this,
-                             tr("Wrong selection"),
-                             tr("Only faces for 3D part or edges for 2D can be picked"));
+        QMessageBox::warning(
+            this,
+            tr("Wrong selection"),
+            tr("Only faces for 3D part or edges for 2D can be picked")
+        );
         return;
     }
 
@@ -698,8 +725,8 @@ void TaskFemConstraintFluidBoundary::onButtonDirection(const bool pressed)
 
 void TaskFemConstraintFluidBoundary::onCheckReverse(const bool pressed)
 {
-    Fem::ConstraintFluidBoundary* pcConstraint =
-        ConstraintView->getObject<Fem::ConstraintFluidBoundary>();
+    Fem::ConstraintFluidBoundary* pcConstraint
+        = ConstraintView->getObject<Fem::ConstraintFluidBoundary>();
     pcConstraint->Reversed.setValue(pressed);
 }
 
@@ -816,14 +843,14 @@ TaskFemConstraintFluidBoundary::~TaskFemConstraintFluidBoundary() = default;
 
 void TaskFemConstraintFluidBoundary::addToSelection()
 {
-    std::vector<Gui::SelectionObject> selection =
-        Gui::Selection().getSelectionEx();  // gets vector of selected objects of active document
+    std::vector<Gui::SelectionObject> selection
+        = Gui::Selection().getSelectionEx();  // gets vector of selected objects of active document
     if (selection.empty()) {
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
     }
-    Fem::ConstraintFluidBoundary* pcConstraint =
-        ConstraintView->getObject<Fem::ConstraintFluidBoundary>();
+    Fem::ConstraintFluidBoundary* pcConstraint
+        = ConstraintView->getObject<Fem::ConstraintFluidBoundary>();
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
@@ -835,25 +862,28 @@ void TaskFemConstraintFluidBoundary::addToSelection()
 
         App::DocumentObject* obj = it.getObject();
         if (obj->getDocument() != pcConstraint->getDocument()) {
-            QMessageBox::warning(this,
-                                 tr("Selection error"),
-                                 tr("External object selection is not supported"));
+            QMessageBox::warning(
+                this,
+                tr("Selection error"),
+                tr("External object selection is not supported")
+            );
             return;
         }
 
         const std::vector<std::string>& subNames = it.getSubNames();
         for (const auto& subName : subNames) {  // for every selected sub element
             bool addMe = true;
-            for (auto itr = std::ranges::find(SubElements, subName); itr != SubElements.end();
-                 itr = std::find(++itr,
-                                 SubElements.end(),
-                                 subName)) {  // for every sub element in selection that
-                                              // matches one in old list
+            for (auto itr = std::ranges::find(SubElements, subName); itr != SubElements.end(); itr
+                 = std::find(++itr,
+                             SubElements.end(),
+                             subName)) {  // for every sub element in selection that
+                                          // matches one in old list
                 if (obj
                     == Objects[std::distance(
                         SubElements.begin(),
-                        itr)]) {  // if selected sub element's object equals the one in old list
-                                  // then it was added before so don't add
+                        itr
+                    )]) {  // if selected sub element's object equals the one in old list
+                           // then it was added before so don't add
                     addMe = false;
                 }
             }
@@ -872,8 +902,10 @@ void TaskFemConstraintFluidBoundary::addToSelection()
 
             for (const auto& SubElement : SubElements) {
                 if (SubElement.find(searchStr) == std::string::npos) {
-                    QString msg = tr("Only one type of selection (vertex, face or edge) per "
-                                     "analysis feature allowed!");
+                    QString msg = tr(
+                        "Only one type of selection (vertex, face or edge) per "
+                        "analysis feature allowed!"
+                    );
                     QMessageBox::warning(this, tr("Selection error"), msg);
                     addMe = false;
                     break;
@@ -894,14 +926,14 @@ void TaskFemConstraintFluidBoundary::addToSelection()
 
 void TaskFemConstraintFluidBoundary::removeFromSelection()
 {
-    std::vector<Gui::SelectionObject> selection =
-        Gui::Selection().getSelectionEx();  // gets vector of selected objects of active document
+    std::vector<Gui::SelectionObject> selection
+        = Gui::Selection().getSelectionEx();  // gets vector of selected objects of active document
     if (selection.empty()) {
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
     }
-    Fem::ConstraintFluidBoundary* pcConstraint =
-        ConstraintView->getObject<Fem::ConstraintFluidBoundary>();
+    Fem::ConstraintFluidBoundary* pcConstraint
+        = ConstraintView->getObject<Fem::ConstraintFluidBoundary>();
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
     std::vector<size_t> itemsToDel;
@@ -914,16 +946,17 @@ void TaskFemConstraintFluidBoundary::removeFromSelection()
         const App::DocumentObject* obj = it.getObject();
 
         for (const auto& subName : subNames) {  // for every selected sub element
-            for (auto itr = std::ranges::find(SubElements, subName); itr != SubElements.end();
-                 itr = std::find(++itr,
-                                 SubElements.end(),
-                                 subName)) {  // for every sub element in selection that
-                                              // matches one in old list
+            for (auto itr = std::ranges::find(SubElements, subName); itr != SubElements.end(); itr
+                 = std::find(++itr,
+                             SubElements.end(),
+                             subName)) {  // for every sub element in selection that
+                                          // matches one in old list
                 if (obj
                     == Objects[std::distance(
                         SubElements.begin(),
-                        itr)]) {  // if selected sub element's object equals the one in old list
-                                  // then it was added before so mark for deletion
+                        itr
+                    )]) {  // if selected sub element's object equals the one in old list
+                           // then it was added before so mark for deletion
                     itemsToDel.push_back(std::distance(SubElements.begin(), itr));
                 }
             }
@@ -984,7 +1017,8 @@ void TaskFemConstraintFluidBoundary::clearButtons(const SelectionChangeModes not
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskDlgFemConstraintFluidBoundary::TaskDlgFemConstraintFluidBoundary(
-    ViewProviderFemConstraintFluidBoundary* ConstraintView)
+    ViewProviderFemConstraintFluidBoundary* ConstraintView
+)
 {
     this->ConstraintView = ConstraintView;
     assert(ConstraintView);
@@ -998,26 +1032,32 @@ TaskDlgFemConstraintFluidBoundary::TaskDlgFemConstraintFluidBoundary(
 bool TaskDlgFemConstraintFluidBoundary::accept()
 {
     std::string name = ConstraintView->getObject()->getNameInDocument();
-    const TaskFemConstraintFluidBoundary* boundary =
-        static_cast<const TaskFemConstraintFluidBoundary*>(parameter);
+    const TaskFemConstraintFluidBoundary* boundary
+        = static_cast<const TaskFemConstraintFluidBoundary*>(parameter);
 
     // no need to backup pcConstraint object content, if rejected, content can be recovered by
     // transaction manager
     try {
         // Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Fluid boundary condition
         // changed"));
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.BoundaryType = '%s'",
-                                name.c_str(),
-                                boundary->getBoundaryType().c_str());
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.Subtype = '%s'",
-                                name.c_str(),
-                                boundary->getSubtype().c_str());
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.BoundaryValue = %f",
-                                name.c_str(),
-                                boundary->getBoundaryValue());
+        Gui::Command::doCommand(
+            Gui::Command::Doc,
+            "App.ActiveDocument.%s.BoundaryType = '%s'",
+            name.c_str(),
+            boundary->getBoundaryType().c_str()
+        );
+        Gui::Command::doCommand(
+            Gui::Command::Doc,
+            "App.ActiveDocument.%s.Subtype = '%s'",
+            name.c_str(),
+            boundary->getSubtype().c_str()
+        );
+        Gui::Command::doCommand(
+            Gui::Command::Doc,
+            "App.ActiveDocument.%s.BoundaryValue = %f",
+            name.c_str(),
+            boundary->getBoundaryValue()
+        );
 
         std::string dirname = boundary->getDirectionName().data();
         std::string dirobj = boundary->getDirectionObject().data();
@@ -1026,15 +1066,19 @@ bool TaskDlgFemConstraintFluidBoundary::accept()
             QString buf = QStringLiteral("(App.ActiveDocument.%1,[\"%2\"])");
             buf = buf.arg(QString::fromStdString(dirname));
             buf = buf.arg(QString::fromStdString(dirobj));
-            Gui::Command::doCommand(Gui::Command::Doc,
-                                    "App.ActiveDocument.%s.Direction = %s",
-                                    name.c_str(),
-                                    buf.toStdString().c_str());
+            Gui::Command::doCommand(
+                Gui::Command::Doc,
+                "App.ActiveDocument.%s.Direction = %s",
+                name.c_str(),
+                buf.toStdString().c_str()
+            );
         }
         else {
-            Gui::Command::doCommand(Gui::Command::Doc,
-                                    "App.ActiveDocument.%s.Direction = None",
-                                    name.c_str());
+            Gui::Command::doCommand(
+                Gui::Command::Doc,
+                "App.ActiveDocument.%s.Direction = None",
+                name.c_str()
+            );
         }
         // Reverse control is done at BoundaryType selection, this UI is hidden from user
         // Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %s",
@@ -1046,51 +1090,69 @@ bool TaskDlgFemConstraintFluidBoundary::accept()
         if (pcSolver) {
             App::PropertyBool* pHeatTransferring = nullptr;
             App::PropertyEnumeration* pTurbulenceModel = nullptr;
-            pHeatTransferring =
-                static_cast<App::PropertyBool*>(pcSolver->getPropertyByName("HeatTransferring"));
+            pHeatTransferring = static_cast<App::PropertyBool*>(
+                pcSolver->getPropertyByName("HeatTransferring")
+            );
             pTurbulenceModel = static_cast<App::PropertyEnumeration*>(
-                pcSolver->getPropertyByName("TurbulenceModel"));
+                pcSolver->getPropertyByName("TurbulenceModel")
+            );
 
             if (pHeatTransferring && pHeatTransferring->getValue()) {
-                Gui::Command::doCommand(Gui::Command::Doc,
-                                        "App.ActiveDocument.%s.ThermalBoundaryType = '%s'",
-                                        name.c_str(),
-                                        boundary->getThermalBoundaryType().c_str());
-                Gui::Command::doCommand(Gui::Command::Doc,
-                                        "App.ActiveDocument.%s.TemperatureValue = %f",
-                                        name.c_str(),
-                                        boundary->getTemperatureValue());
-                Gui::Command::doCommand(Gui::Command::Doc,
-                                        "App.ActiveDocument.%s.HeatFluxValue = %f",
-                                        name.c_str(),
-                                        boundary->getHeatFluxValue());
-                Gui::Command::doCommand(Gui::Command::Doc,
-                                        "App.ActiveDocument.%s.HTCoeffValue = %f",
-                                        name.c_str(),
-                                        boundary->getHTCoeffValue());
+                Gui::Command::doCommand(
+                    Gui::Command::Doc,
+                    "App.ActiveDocument.%s.ThermalBoundaryType = '%s'",
+                    name.c_str(),
+                    boundary->getThermalBoundaryType().c_str()
+                );
+                Gui::Command::doCommand(
+                    Gui::Command::Doc,
+                    "App.ActiveDocument.%s.TemperatureValue = %f",
+                    name.c_str(),
+                    boundary->getTemperatureValue()
+                );
+                Gui::Command::doCommand(
+                    Gui::Command::Doc,
+                    "App.ActiveDocument.%s.HeatFluxValue = %f",
+                    name.c_str(),
+                    boundary->getHeatFluxValue()
+                );
+                Gui::Command::doCommand(
+                    Gui::Command::Doc,
+                    "App.ActiveDocument.%s.HTCoeffValue = %f",
+                    name.c_str(),
+                    boundary->getHTCoeffValue()
+                );
             }
             if (pTurbulenceModel
                 && std::string(pTurbulenceModel->getValueAsString())
                     != "laminar") {  // Invisic and DNS flow also does not need this
                 // update turbulence and thermal boundary settings, only if those models are
                 // activated
-                Gui::Command::doCommand(Gui::Command::Doc,
-                                        "App.ActiveDocument.%s.TurbulenceSpecification = '%s'",
-                                        name.c_str(),
-                                        boundary->getTurbulenceSpecification().c_str());
-                Gui::Command::doCommand(Gui::Command::Doc,
-                                        "App.ActiveDocument.%s.TurbulentIntensityValue = %f",
-                                        name.c_str(),
-                                        boundary->getTurbulentIntensityValue());
-                Gui::Command::doCommand(Gui::Command::Doc,
-                                        "App.ActiveDocument.%s.TurbulentLengthValue = %f",
-                                        name.c_str(),
-                                        boundary->getTurbulentLengthValue());
+                Gui::Command::doCommand(
+                    Gui::Command::Doc,
+                    "App.ActiveDocument.%s.TurbulenceSpecification = '%s'",
+                    name.c_str(),
+                    boundary->getTurbulenceSpecification().c_str()
+                );
+                Gui::Command::doCommand(
+                    Gui::Command::Doc,
+                    "App.ActiveDocument.%s.TurbulentIntensityValue = %f",
+                    name.c_str(),
+                    boundary->getTurbulentIntensityValue()
+                );
+                Gui::Command::doCommand(
+                    Gui::Command::Doc,
+                    "App.ActiveDocument.%s.TurbulentLengthValue = %f",
+                    name.c_str(),
+                    boundary->getTurbulentLengthValue()
+                );
             }
         }
         else {
-            Base::Console().warning("FemSolverObject is not found in the FemAnalysis object, "
-                                    "thermal and turbulence setting is not accepted\n");
+            Base::Console().warning(
+                "FemSolverObject is not found in the FemAnalysis object, "
+                "thermal and turbulence setting is not accepted\n"
+            );
         }
     }
     catch (const Base::Exception& e) {

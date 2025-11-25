@@ -35,8 +35,10 @@
 #include <QMessageBox>
 #include <FCGlobal.h>
 
-namespace Gui {
-namespace Dialog {
+namespace Gui
+{
+namespace Dialog
+{
 
 struct DlgCheckableMessageBoxPrivate;
 
@@ -44,31 +46,40 @@ struct DlgCheckableMessageBoxPrivate;
  * "Do not ask me again" checkbox. Emulates the QMessageBox API with
  * static conveniences. */
 
-class GuiExport DlgCheckableMessageBox : public QDialog
+class GuiExport DlgCheckableMessageBox: public QDialog
 {
     Q_OBJECT
-    Q_PROPERTY(QString text READ text WRITE setText) // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(QPixmap iconPixmap READ iconPixmap WRITE setIconPixmap) // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(bool isChecked READ isChecked WRITE setChecked) // clazy:exclude=qproperty-without-notify
-  //Q_PROPERTY(QString prefEntry WRITE setPrefEntry) // Must have a READ accessor!
-    Q_PROPERTY(QString checkBoxText READ checkBoxText WRITE setCheckBoxText) // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(QDialogButtonBox::StandardButtons buttons READ standardButtons WRITE setStandardButtons) // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(QDialogButtonBox::StandardButton defaultButton READ defaultButton WRITE setDefaultButton) // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(QString text READ text WRITE setText)  // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(
+        QPixmap iconPixmap READ iconPixmap WRITE setIconPixmap
+    )  // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(bool isChecked READ isChecked WRITE setChecked)  // clazy:exclude=qproperty-without-notify
+    // Q_PROPERTY(QString prefEntry WRITE setPrefEntry) // Must have a READ accessor!
+    Q_PROPERTY(
+        QString checkBoxText READ checkBoxText WRITE setCheckBoxText
+    )  // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(
+        QDialogButtonBox::StandardButtons buttons READ standardButtons WRITE setStandardButtons
+    )  // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(
+        QDialogButtonBox::StandardButton defaultButton READ defaultButton WRITE setDefaultButton
+    )  // clazy:exclude=qproperty-without-notify
 public:
-    explicit DlgCheckableMessageBox(QWidget *parent);
+    explicit DlgCheckableMessageBox(QWidget* parent);
     ~DlgCheckableMessageBox() override;
 
-    static QDialogButtonBox::StandardButton
-        question(QWidget *parent,
-                 const QString &title,
-                 const QString &question,
-                 const QString &checkBoxText,
-                 bool *checkBoxSetting,
-                 QDialogButtonBox::StandardButtons buttons = QDialogButtonBox::Yes|QDialogButtonBox::No,
-                 QDialogButtonBox::StandardButton defaultButton = QDialogButtonBox::No);
+    static QDialogButtonBox::StandardButton question(
+        QWidget* parent,
+        const QString& title,
+        const QString& question,
+        const QString& checkBoxText,
+        bool* checkBoxSetting,
+        QDialogButtonBox::StandardButtons buttons = QDialogButtonBox::Yes | QDialogButtonBox::No,
+        QDialogButtonBox::StandardButton defaultButton = QDialogButtonBox::No
+    );
 
     QString text() const;
-    void setText(const QString &);
+    void setText(const QString&);
 
     void setPrefEntry(const QString& entry);
 
@@ -81,7 +92,7 @@ public:
     void setChecked(bool s);
 
     QString checkBoxText() const;
-    void setCheckBoxText(const QString &);
+    void setCheckBoxText(const QString&);
 
     QDialogButtonBox::StandardButtons standardButtons() const;
     void setStandardButtons(QDialogButtonBox::StandardButtons s);
@@ -91,35 +102,51 @@ public:
 
     // see static QMessageBox::standardPixmap()
     QPixmap iconPixmap() const;
-    void setIconPixmap (const QPixmap &p);
+    void setIconPixmap(const QPixmap& p);
 
     // Query the result
-    QAbstractButton *clickedButton() const;
+    QAbstractButton* clickedButton() const;
     QDialogButtonBox::StandardButton clickedStandardButton() const;
 
     // Conversion convenience
-    static QMessageBox::StandardButton dialogButtonBoxToMessageBoxButton(QDialogButtonBox::StandardButton);
+    static QMessageBox::StandardButton dialogButtonBoxToMessageBoxButton(
+        QDialogButtonBox::StandardButton
+    );
 
     /// convenient show method
-    /// It shows a dialog with header and message provided and a checkbox in check state with the message provided.
-    /// It uses a parameter in path "User parameter:BaseApp/CheckMessages" derived from the header test, defaulting to false,
-    /// to store the status of the checkbox, when the user exits the modal dialog.
-    static void showMessage(const QString& header, const QString& message, bool check = false, const QString& checkText = QStringLiteral("Don't show me again"));
+    /// It shows a dialog with header and message provided and a checkbox in check state with the
+    /// message provided. It uses a parameter in path "User parameter:BaseApp/CheckMessages" derived
+    /// from the header test, defaulting to false, to store the status of the checkbox, when the
+    /// user exits the modal dialog.
+    static void showMessage(
+        const QString& header,
+        const QString& message,
+        bool check = false,
+        const QString& checkText = QStringLiteral("Don't show me again")
+    );
 
-    /// Same as showMessage above, but it checks the specific preference path and parameter provided, defaulting to entryDefault value if the parameter is not present.
-    static void showMessage(const QString& header, const QString& message, const QString& prefPath, const QString& paramEntry, bool entryDefault = false,
-                            bool check = false, const QString& checkText = QStringLiteral("Don't show me again"));
+    /// Same as showMessage above, but it checks the specific preference path and parameter
+    /// provided, defaulting to entryDefault value if the parameter is not present.
+    static void showMessage(
+        const QString& header,
+        const QString& message,
+        const QString& prefPath,
+        const QString& paramEntry,
+        bool entryDefault = false,
+        bool check = false,
+        const QString& checkText = QStringLiteral("Don't show me again")
+    );
 
 private Q_SLOTS:
-    void slotClicked(QAbstractButton *b);
+    void slotClicked(QAbstractButton* b);
 
 private:
-    DlgCheckableMessageBoxPrivate *m_d;
+    DlgCheckableMessageBoxPrivate* m_d;
     QByteArray paramEntry;
     QString prefPath;
 };
 
-} // namespace Dialog
-} // namespace Gui
+}  // namespace Dialog
+}  // namespace Gui
 
-#endif // CHECKABLEMESSAGEBOX_H
+#endif  // CHECKABLEMESSAGEBOX_H

@@ -3,7 +3,6 @@ from Base.Vector import Vector
 from BoundedCurve import BoundedCurve
 from typing import Final, List, overload
 
-
 @export(
     PythonName="Part.BSplineCurve",
     Twin="GeomBSplineCurve",
@@ -102,10 +101,8 @@ class BSplineCurve(BoundedCurve):
 
     @overload
     def increaseMultiplicity(self, index: int, mult: int) -> None: ...
-
     @overload
     def increaseMultiplicity(self, start: int, end: int, mult: int) -> None: ...
-
     def increaseMultiplicity(self, *args, **kwargs) -> None:
         """
         increaseMultiplicity(int index, int mult)
@@ -276,9 +273,7 @@ class BSplineCurve(BoundedCurve):
         """
         ...
 
-    def movePoint(
-        self, U: float, P: Vector, Index1: int, Index2: int
-    ) -> tuple[int, int]:
+    def movePoint(self, U: float, P: Vector, Index1: int, Index2: int) -> tuple[int, int]:
         """
         movePoint(U, P, Index1, Index2)
 
@@ -341,7 +336,6 @@ class BSplineCurve(BoundedCurve):
         Parameters: List[float] = None,
         ParamType: str = "Uniform",
     ) -> None: ...
-
     def approximate(self, **kwargs) -> None:
         """
         Replaces this B-Spline curve by approximating a set of points.
@@ -379,7 +373,6 @@ class BSplineCurve(BoundedCurve):
     @overload
     @constmethod
     def getCardinalSplineTangents(self, **kwargs) -> List[Vector]: ...
-
     @constmethod
     def getCardinalSplineTangents(self, **kwargs) -> List[Vector]:
         """
@@ -399,7 +392,6 @@ class BSplineCurve(BoundedCurve):
         Tangents: List[Vector] = None,
         TangentFlags: List[bool] = None,
     ) -> None: ...
-
     def interpolate(self, **kwargs) -> None:
         """
         Replaces this B-Spline curve by interpolating a set of points.
@@ -476,7 +468,6 @@ class BSplineCurve(BoundedCurve):
         weights: List[float] = None,
         CheckRational: bool = False,
     ) -> None: ...
-
     def buildFromPolesMultsKnots(self, **kwargs) -> None:
         """
         Builds a B-Spline by a lists of Poles, Mults, Knots.
@@ -526,9 +517,7 @@ class BSplineCurve(BoundedCurve):
         """
         ...
 
-    def makeC1Continuous(
-        self, tol: float = 1e-6, ang_tol: float = 1e-7
-    ) -> "BSplineCurve":
+    def makeC1Continuous(self, tol: float = 1e-6, ang_tol: float = 1e-7) -> "BSplineCurve":
         """
         makeC1Continuous(tol = 1e-6, ang_tol = 1e-7)
         Reduces as far as possible the multiplicities of the knots of this BSpline

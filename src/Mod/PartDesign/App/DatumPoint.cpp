@@ -22,8 +22,8 @@
  ***************************************************************************/
 
 
-# include <BRepBuilderAPI_MakeVertex.hxx>
-# include <Standard_Version.hxx>
+#include <BRepBuilderAPI_MakeVertex.hxx>
+#include <Standard_Version.hxx>
 
 
 #include "DatumPoint.h"
@@ -45,10 +45,10 @@ Point::~Point() = default;
 
 void Point::onChanged(const App::Property* prop)
 {
-    if(prop == &(this->Shape)){
-        //fix for #0002758 Datum point moves to (0,0,0) when reopening the file.
-        //bypass Part::Feature's onChanged, which may alter Placement property to match shape's placement.
-        //This is to prevent loss of correct Placement when restoring Shape from file.
+    if (prop == &(this->Shape)) {
+        // fix for #0002758 Datum point moves to (0,0,0) when reopening the file.
+        // bypass Part::Feature's onChanged, which may alter Placement property to match shape's
+        // placement. This is to prevent loss of correct Placement when restoring Shape from file.
         App::GeoFeature::onChanged(prop);
         return;
     }
@@ -57,19 +57,20 @@ void Point::onChanged(const App::Property* prop)
 
 void Point::onDocumentRestored()
 {
-    //fix for #0002758 Datum point moves to (0,0,0) when reopening the file.
-    //recreate shape, as the restored one has old Placement burned into it.
+    // fix for #0002758 Datum point moves to (0,0,0) when reopening the file.
+    // recreate shape, as the restored one has old Placement burned into it.
     this->makeShape();
     Superclass::onDocumentRestored();
 }
 
 void Point::makeShape()
 {
-    // Create a shape, which will be used by Sketcher, attachables, and whatever. Them main function is to avoid a dependency of
-    // Sketcher on the PartDesign module
-    BRepBuilderAPI_MakeVertex builder(gp_Pnt(0,0,0));
-    if (!builder.IsDone())
+    // Create a shape, which will be used by Sketcher, attachables, and whatever. Them main function
+    // is to avoid a dependency of Sketcher on the PartDesign module
+    BRepBuilderAPI_MakeVertex builder(gp_Pnt(0, 0, 0));
+    if (!builder.IsDone()) {
         return;
+    }
     Part::TopoShape tshape(builder.Shape());
     tshape.setPlacement(this->Placement.getValue());
     Shape.setValue(tshape);

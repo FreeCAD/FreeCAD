@@ -3,7 +3,6 @@ from Base.Vector import Vector
 from GeometryCurve import GeometryCurve
 from typing import overload, Final
 
-
 @export(
     PythonName="Part.Line",
     Twin="GeomLine",
@@ -37,9 +36,7 @@ class Line(GeometryCurve):
 
     @overload
     def __init__(self) -> None: ...
-
     @overload
     def __init__(self, line: "Line") -> None: ...
-
     @overload
     def __init__(self, point1: Vector, point2: Vector) -> None: ...

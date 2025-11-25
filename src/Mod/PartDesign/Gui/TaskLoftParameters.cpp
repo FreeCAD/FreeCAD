@@ -21,7 +21,6 @@
  ***************************************************************************/
 
 
-
 #include <QAction>
 
 
@@ -79,10 +78,12 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft* LoftView, bool /*newObj
     ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
     connect(remove, &QAction::triggered, this, &TaskLoftParameters::onDeleteSection);
 
-    connect(ui->listWidgetReferences->model(),
-            &QAbstractListModel::rowsMoved,
-            this,
-            &TaskLoftParameters::indexesMoved);
+    connect(
+        ui->listWidgetReferences->model(),
+        &QAbstractListModel::rowsMoved,
+        this,
+        &TaskLoftParameters::indexesMoved
+    );
 
     this->groupLayout()->addWidget(proxy);
 
@@ -161,7 +162,9 @@ void TaskLoftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
                     item->setData(
                         Qt::UserRole,
                         QVariant::fromValue(
-                            std::make_pair(object, std::vector<std::string>(1, msg.pSubName))));
+                            std::make_pair(object, std::vector<std::string>(1, msg.pSubName))
+                        )
+                    );
                     ui->listWidgetReferences->addItem(item);
                 }
                 else if (selectionMode == refRemove) {
@@ -254,9 +257,9 @@ void TaskLoftParameters::onDeleteSection()
     int row = ui->listWidgetReferences->currentRow();
     QListWidgetItem* item = ui->listWidgetReferences->takeItem(row);
     if (item) {
-        QByteArray data(item->data(Qt::UserRole)
-                            .value<App::PropertyLinkSubList::SubSet>()
-                            .first->getNameInDocument());
+        QByteArray data(
+            item->data(Qt::UserRole).value<App::PropertyLinkSubList::SubSet>().first->getNameInDocument()
+        );
         delete item;
 
         // search inside the list of sections

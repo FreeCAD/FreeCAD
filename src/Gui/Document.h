@@ -35,19 +35,22 @@
 class SoNode;
 class SoPath;
 
-namespace Base {
+namespace Base
+{
 class Matrix4D;
 }
 
-namespace App {
+namespace App
+{
 class Document;
 class DocumentObject;
 class DocumentObjectGroup;
 class Property;
 class Transaction;
-}
+}  // namespace App
 
-namespace Gui {
+namespace Gui
+{
 
 class BaseView;
 class MDIView;
@@ -72,10 +75,10 @@ enum class CreateViewMode
  *  @see MDIView
  *  @author Jürgen Riegel
  */
-class GuiExport Document : public Base::Persistence
+class GuiExport Document: public Base::Persistence
 {
 public:
-    Document(App::Document* pcDocument, Application * app);
+    Document(App::Document* pcDocument, Application* app);
     ~Document() override;
 
 protected:
@@ -94,12 +97,12 @@ protected:
     void slotUndoDocument(const App::Document&);
     void slotRedoDocument(const App::Document&);
     void slotShowHidden(const App::Document&);
-    void slotFinishImportObjects(const std::vector<App::DocumentObject*> &);
-    void slotFinishRestoreObject(const App::DocumentObject &obj);
+    void slotFinishImportObjects(const std::vector<App::DocumentObject*>&);
+    void slotFinishRestoreObject(const App::DocumentObject& obj);
     void slotRecomputed(const App::Document&);
-    void slotSkipRecompute(const App::Document &doc, const std::vector<App::DocumentObject*> &objs);
-    void slotTouchedObject(const App::DocumentObject &);
-    void slotChangePropertyEditor(const App::Document&, const App::Property &);
+    void slotSkipRecompute(const App::Document& doc, const std::vector<App::DocumentObject*>& objs);
+    void slotTouchedObject(const App::DocumentObject&);
+    void slotChangePropertyEditor(const App::Document&, const App::Property&);
     void callSignalBeforeRecompute();
     //@}
 
@@ -109,47 +112,53 @@ public:
     /** @name Signals of the document */
     //@{
     /// signal on new Object
-    mutable boost::signals2::signal<void (const Gui::ViewProviderDocumentObject&)> signalNewObject;
+    mutable boost::signals2::signal<void(const Gui::ViewProviderDocumentObject&)> signalNewObject;
     /// signal on deleted Object
-    mutable boost::signals2::signal<void (const Gui::ViewProviderDocumentObject&)> signalDeletedObject;
+    mutable boost::signals2::signal<void(const Gui::ViewProviderDocumentObject&)> signalDeletedObject;
     /** signal on changed Object, the 2nd argument is the changed property
         of the referenced document object, not of the view provider */
-    mutable boost::signals2::signal<void (const Gui::ViewProviderDocumentObject&,
-                                          const App::Property&)>                   signalChangedObject;
+    mutable boost::signals2::signal<void(const Gui::ViewProviderDocumentObject&, const App::Property&)>
+        signalChangedObject;
     /// signal on renamed Object
-    mutable boost::signals2::signal<void (const Gui::ViewProviderDocumentObject&)> signalRelabelObject;
+    mutable boost::signals2::signal<void(const Gui::ViewProviderDocumentObject&)> signalRelabelObject;
     /// signal on activated Object
-    mutable boost::signals2::signal<void (const Gui::ViewProviderDocumentObject&)> signalActivatedObject;
+    mutable boost::signals2::signal<void(const Gui::ViewProviderDocumentObject&)> signalActivatedObject;
     /// signal on entering in edit mode
-    mutable boost::signals2::signal<void (const Gui::ViewProviderDocumentObject&)> signalInEdit;
+    mutable boost::signals2::signal<void(const Gui::ViewProviderDocumentObject&)> signalInEdit;
     /// signal on leaving edit mode
-    mutable boost::signals2::signal<void (const Gui::ViewProviderDocumentObject&)> signalResetEdit;
+    mutable boost::signals2::signal<void(const Gui::ViewProviderDocumentObject&)> signalResetEdit;
     /// signal on changed Object, the 2nd argument is the highlite mode to use
-    mutable boost::signals2::signal<void (const Gui::ViewProviderDocumentObject&,
-                                          const Gui::HighlightMode&,
-                                          bool,
-                                          App::DocumentObject *parent,
-                                          const char *subname)> signalHighlightObject;
+    mutable boost::signals2::signal<void(
+        const Gui::ViewProviderDocumentObject&,
+        const Gui::HighlightMode&,
+        bool,
+        App::DocumentObject* parent,
+        const char* subname
+    )>
+        signalHighlightObject;
     /// signal on changed Object, the 2nd argument is the highlite mode to use
-    mutable boost::signals2::signal<void (const Gui::ViewProviderDocumentObject&,
-                                          const Gui::TreeItemMode&,
-                                          App::DocumentObject *parent,
-                                          const char *subname)> signalExpandObject;
+    mutable boost::signals2::signal<void(
+        const Gui::ViewProviderDocumentObject&,
+        const Gui::TreeItemMode&,
+        App::DocumentObject* parent,
+        const char* subname
+    )>
+        signalExpandObject;
     /// signal on changed ShowInTree property in view provider
-    mutable boost::signals2::signal<void (const Gui::ViewProviderDocumentObject&)> signalShowItem;
+    mutable boost::signals2::signal<void(const Gui::ViewProviderDocumentObject&)> signalShowItem;
     /// signal on scrolling to an object
-    mutable boost::signals2::signal<void (const Gui::ViewProviderDocumentObject&)> signalScrollToObject;
+    mutable boost::signals2::signal<void(const Gui::ViewProviderDocumentObject&)> signalScrollToObject;
     /// signal on undo Document
-    mutable boost::signals2::signal<void (const Gui::Document& doc)> signalUndoDocument;
+    mutable boost::signals2::signal<void(const Gui::Document& doc)> signalUndoDocument;
     /// signal on redo Document
-    mutable boost::signals2::signal<void (const Gui::Document& doc)> signalRedoDocument;
+    mutable boost::signals2::signal<void(const Gui::Document& doc)> signalRedoDocument;
     /// signal on deleting Document
-    mutable boost::signals2::signal<void (const Gui::Document& doc)> signalDeleteDocument;
+    mutable boost::signals2::signal<void(const Gui::Document& doc)> signalDeleteDocument;
     //@}
 
     /** @name I/O of the document */
     //@{
-    unsigned int getMemSize () const override;
+    unsigned int getMemSize() const override;
     /// Save the document
     bool save();
     /// Save the document under a new file name
@@ -159,16 +168,19 @@ public:
     /// Save all open document
     static void saveAll();
     /// This method is used to save properties or very small amounts of data to an XML document.
-    void Save (Base::Writer &writer) const override;
+    void Save(Base::Writer& writer) const override;
     /// This method is used to restore properties from an XML document.
-    void Restore(Base::XMLReader &reader) override;
+    void Restore(Base::XMLReader& reader) override;
     /// This method is used to save large amounts of data to a binary file.
-    void SaveDocFile (Base::Writer &writer) const override;
+    void SaveDocFile(Base::Writer& writer) const override;
     /// This method is used to restore large amounts of data from a binary file.
-    void RestoreDocFile(Base::Reader &reader) override;
+    void RestoreDocFile(Base::Reader& reader) override;
     void exportObjects(const std::vector<App::DocumentObject*>&, Base::Writer&);
-    void importObjects(const std::vector<App::DocumentObject*>&, Base::Reader&,
-                       const std::map<std::string, std::string>& nameMapping);
+    void importObjects(
+        const std::vector<App::DocumentObject*>&,
+        Base::Reader&,
+        const std::map<std::string, std::string>& nameMapping
+    );
     /// Add all root objects of the given array to a group
     void addRootObjectsToGroup(const std::vector<App::DocumentObject*>&, App::DocumentObjectGroup*);
     //@}
@@ -181,7 +193,7 @@ public:
     bool isAboutToClose() const;
 
     /// Getter for the App Document
-    App::Document*  getDocument() const;
+    App::Document* getDocument() const;
 
     /** @name methods for View handling */
     //@{
@@ -206,15 +218,15 @@ public:
      */
     bool sendMsgToFirstView(const Base::Type& typeId, const char* pMsg, const char** ppReturn);
     /// Attach a view (get called by the MDIView constructor)
-    void attachView(Gui::BaseView* pcView, bool bPassiv=false);
+    void attachView(Gui::BaseView* pcView, bool bPassiv = false);
     /// Detach a view (get called by the MDIView destructor)
-    void detachView(Gui::BaseView* pcView, bool bPassiv=false);
+    void detachView(Gui::BaseView* pcView, bool bPassiv = false);
     /// helper for selection
-    ViewProviderDocumentObject* getViewProviderByPathFromTail(SoPath * path) const;
+    ViewProviderDocumentObject* getViewProviderByPathFromTail(SoPath* path) const;
     /// helper for selection
-    ViewProviderDocumentObject* getViewProviderByPathFromHead(SoPath * path) const;
+    ViewProviderDocumentObject* getViewProviderByPathFromHead(SoPath* path) const;
     /// Get all view providers along the path and the corresponding node index in the path
-    std::vector<std::pair<ViewProviderDocumentObject*,int> > getViewProvidersByPath(SoPath * path) const;
+    std::vector<std::pair<ViewProviderDocumentObject*, int>> getViewProvidersByPath(SoPath* path) const;
     /// call update on all attached views
     void onUpdate();
     /// call relabel to all attached views
@@ -223,7 +235,10 @@ public:
     std::list<MDIView*> getMDIViews() const;
     /// returns a list of all MDI views of a certain type
     std::list<MDIView*> getMDIViewsOfType(const Base::Type& typeId) const;
-    MDIView *setActiveView(const ViewProviderDocumentObject* vp = nullptr, Base::Type typeId = Base::Type());
+    MDIView* setActiveView(
+        const ViewProviderDocumentObject* vp = nullptr,
+        Base::Type typeId = Base::Type()
+    );
     View3DInventor* openEditingView3D(const ViewProviderDocumentObject* vp);
     View3DInventor* openEditingView3D(const App::DocumentObject* obj);
     //@}
@@ -231,12 +246,12 @@ public:
     /** @name View provider handling  */
     //@{
     /// Get the view provider for that object
-    ViewProvider* getViewProvider(const App::DocumentObject *) const;
-    ViewProviderDocumentObject *getViewProvider(SoNode *node) const;
+    ViewProvider* getViewProvider(const App::DocumentObject*) const;
+    ViewProviderDocumentObject* getViewProvider(SoNode* node) const;
     /// set an annotation view provider
-    void setAnnotationViewProvider(const char* name, ViewProvider *pcProvider);
+    void setAnnotationViewProvider(const char* name, ViewProvider* pcProvider);
     /// get an annotation view provider
-    ViewProvider * getAnnotationViewProvider(const char* name) const;
+    ViewProvider* getAnnotationViewProvider(const char* name) const;
     /// return true if the view provider is added as an annotation view provider
     bool isAnnotationViewProvider(const ViewProvider* vp) const;
     /// remove an annotation view provider from the document and return it
@@ -252,11 +267,11 @@ public:
     /// set the feature transformation (only viewing)
     void setPos(const char* name, const Base::Matrix4D& rclMtrx);
     std::vector<ViewProvider*> getViewProvidersOfType(const Base::Type& typeId) const;
-    ViewProvider *getViewProviderByName(const char* name) const;
+    ViewProvider* getViewProviderByName(const char* name) const;
     /// set the ViewProvider in special edit mode
-    bool setEdit(Gui::ViewProvider* p, int ModNum=0, const char *subname=nullptr);
-    const Base::Matrix4D &getEditingTransform() const;
-    void setEditingTransform(const Base::Matrix4D &mat);
+    bool setEdit(Gui::ViewProvider* p, int ModNum = 0, const char* subname = nullptr);
+    const Base::Matrix4D& getEditingTransform() const;
+    void setEditingTransform(const Base::Matrix4D& mat);
     /// reset from edit mode, this cause all document to reset edit
     void resetEdit();
     /// reset edit of this document
@@ -264,22 +279,26 @@ public:
     /// set if the edit asks for restore or not.
     void setEditRestore(bool val);
     /// get the in edit ViewProvider or NULL
-    ViewProvider *getInEdit(ViewProviderDocumentObject **parentVp=nullptr,
-            std::string *subname=nullptr, int *mode=nullptr, std::string *subElement=nullptr) const;
+    ViewProvider* getInEdit(
+        ViewProviderDocumentObject** parentVp = nullptr,
+        std::string* subname = nullptr,
+        int* mode = nullptr,
+        std::string* subElement = nullptr
+    ) const;
     /// set the in edit ViewProvider subname reference
-    void setInEdit(ViewProviderDocumentObject *parentVp, const char *subname);
+    void setInEdit(ViewProviderDocumentObject* parentVp, const char* subname);
     /** Add or remove view provider from scene graphs of all views
      *
      * It calls ViewProvider::canAddToSceneGraph() to decide whether to add the
      * view provider or remove it
      */
-    void toggleInSceneGraph(ViewProvider *vp);
+    void toggleInSceneGraph(ViewProvider* vp);
     //@}
 
     /** @name methods for the UNDO REDO handling */
     //@{
     /// Open a new Undo transaction on the document
-    void openCommand(const char* sName=nullptr);
+    void openCommand(const char* sName = nullptr);
     /// Commit the Undo transaction on the document
     void commitCommand();
     /// Abort the Undo transaction on the document
@@ -293,7 +312,7 @@ public:
     /// Will UNDO one or more steps
     void undo(int iSteps);
     /// Will REDO one or more steps
-    void redo(int iSteps) ;
+    void redo(int iSteps);
     /** Check if the document is performing undo/redo transaction
      *
      * Unlike App::Document::isPerformingTransaction(), Gui::Document will
@@ -303,29 +322,29 @@ public:
     //@}
 
     /// handles the application close event
-    bool canClose(bool checkModify=true, bool checkLink=false);
+    bool canClose(bool checkModify = true, bool checkLink = false);
     bool isLastView();
 
     /// called by Application before being deleted
     void beforeDelete();
 
-    PyObject *getPyObject() override;
+    PyObject* getPyObject() override;
 
-    const char *getCameraSettings() const;
-    bool saveCameraSettings(const char *) const;
+    const char* getCameraSettings() const;
+    bool saveCameraSettings(const char*) const;
 
     /// get all tree root objects (objects that are at the root of the object tree)
     std::vector<App::DocumentObject*> getTreeRootObjects() const;
 
 protected:
     // pointer to the python class
-    Gui::DocumentPy *_pcDocPy;
+    Gui::DocumentPy* _pcDocPy;
 
 private:
-    bool trySetEdit(Gui::ViewProvider* p, int ModNum, const char *subname);
+    bool trySetEdit(Gui::ViewProvider* p, int ModNum, const char* subname);
     void resetIfEditing();
-    //handles the scene graph nodes to correctly group child and parents
-    void handleChildren3D(ViewProvider* viewProvider, bool deleting=false);
+    // handles the scene graph nodes to correctly group child and parents
+    void handleChildren3D(ViewProvider* viewProvider, bool deleting = false);
 
     /// Check other documents for the same transaction ID
     bool checkTransactionID(bool undo, int iSteps);
@@ -349,7 +368,7 @@ private:
     friend class TransactionViewProvider;
 };
 
-} // namespace Gui
+}  // namespace Gui
 
 
-#endif // GUI_DOCUMENT_H
+#endif  // GUI_DOCUMENT_H

@@ -147,8 +147,9 @@ void TKJtReader::readShapeVertex(const Handle(JtNode_Shape_Vertex) & aShape)
             anObject = aLateLoaded[index]->DefferedObject();
         }
         if (!anObject.IsNull()) {
-            Handle(JtElement_ShapeLOD_TriStripSet) aLOD =
-                Handle(JtElement_ShapeLOD_TriStripSet)::DownCast(anObject);
+            Handle(JtElement_ShapeLOD_TriStripSet) aLOD = Handle(
+                JtElement_ShapeLOD_TriStripSet
+            )::DownCast(anObject);
             if (!aLOD.IsNull()) {
                 getTriangleStripSet(aLOD);
             }
@@ -224,8 +225,9 @@ void TKJtReader::readAttributes(const JtData_Object::VectorOfObjects& attr)
     for (std::size_t aAttrIdx = 0; aAttrIdx < attr.Count(); ++aAttrIdx) {
         Handle(JtData_Object) anAttr = attr[aAttrIdx];
         if (anAttr->IsKind(Type_JtAttribute_GeometricTransform)) {
-            Handle(JtAttribute_GeometricTransform) aTransform =
-                Handle(JtAttribute_GeometricTransform)::DownCast(anAttr);
+            Handle(JtAttribute_GeometricTransform) aTransform = Handle(
+                JtAttribute_GeometricTransform
+            )::DownCast(anAttr);
             readTransformAttribute(aTransform);
         }
         else if (anAttr->IsKind(Type_JtAttribute_Material)) {

@@ -20,9 +20,9 @@
  *                                                                          *
  ****************************************************************************/
 
-# include <Inventor/nodes/SoGroup.h>
-# include <Inventor/details/SoDetail.h>
-# include <Inventor/SoFullPath.h>
+#include <Inventor/nodes/SoGroup.h>
+#include <Inventor/details/SoDetail.h>
+#include <Inventor/SoFullPath.h>
 
 #include "AxisOriginPy.h"
 #include "AxisOriginPy.cpp"
@@ -30,7 +30,7 @@
 
 using namespace Gui;
 
-PyObject *AxisOriginPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject* AxisOriginPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     return new AxisOriginPy(new AxisOrigin);
 }
@@ -49,11 +49,12 @@ std::string AxisOriginPy::representation() const
 
 PyObject* AxisOriginPy::getElementPicked(PyObject* args) const
 {
-    PyObject *obj;
-    if (!PyArg_ParseTuple(args, "O", &obj))
+    PyObject* obj;
+    if (!PyArg_ParseTuple(args, "O", &obj)) {
         return nullptr;
+    }
 
-    void *ptr = nullptr;
+    void* ptr = nullptr;
     Base::Interpreter().convertSWIGPointerObj("pivy.coin", "_p_SoPickedPoint", obj, &ptr, 0);
     if (!ptr) {
         PyErr_SetString(PyExc_TypeError, "'pickedPoint' must be a coin.SoPickedPoint");
@@ -62,20 +63,22 @@ PyObject* AxisOriginPy::getElementPicked(PyObject* args) const
 
     auto pp = static_cast<SoPickedPoint*>(ptr);
     std::string name;
-    if (!getAxisOriginPtr()->getElementPicked(pp,name))
+    if (!getAxisOriginPtr()->getElementPicked(pp, name)) {
         Py_Return;
+    }
 
     return Py::new_reference_to(Py::String(name));
 }
 
 PyObject* AxisOriginPy::getDetailPath(PyObject* args) const
 {
-    const char *sub;
-    PyObject *path;
-    if (!PyArg_ParseTuple(args, "sO", &sub,&path))
+    const char* sub;
+    PyObject* path;
+    if (!PyArg_ParseTuple(args, "sO", &sub, &path)) {
         return nullptr;
+    }
 
-    void *ptr = nullptr;
+    void* ptr = nullptr;
     Base::Interpreter().convertSWIGPointerObj("pivy.coin", "_p_SoPath", path, &ptr, 0);
     if (!ptr) {
         PyErr_SetString(PyExc_TypeError, "'path' must be a coin.SoPath");
@@ -83,15 +86,17 @@ PyObject* AxisOriginPy::getDetailPath(PyObject* args) const
     }
 
     auto pPath = static_cast<SoPath*>(ptr);
-    SoDetail *det = nullptr;
+    SoDetail* det = nullptr;
     if (!getAxisOriginPtr()->getDetailPath(sub, static_cast<SoFullPath*>(pPath), det)) {
         delete det;
         Py_Return;
     }
-    if (!det)
+    if (!det) {
         Py_Return;
+    }
 
-    return Base::Interpreter().createSWIGPointerObj("pivy.coin", "_p_SoDetail", static_cast<void*>(det), 0);
+    return Base::Interpreter()
+        .createSWIGPointerObj("pivy.coin", "_p_SoDetail", static_cast<void*>(det), 0);
 }
 
 Py::Float AxisOriginPy::getAxisLength() const
@@ -138,35 +143,37 @@ Py::Tuple AxisOriginPy::getPlane() const
 {
     auto info = getAxisOriginPtr()->getPlane();
     Py::Tuple ret(2);
-    ret.setItem(0,Py::Float(info.first));
-    ret.setItem(1,Py::Float(info.second));
+    ret.setItem(0, Py::Float(info.first));
+    ret.setItem(1, Py::Float(info.second));
 
     return ret;
 }
 
 void AxisOriginPy::setPlane(Py::Tuple tuple)
 {
-    float s,d;
-    if (!PyArg_ParseTuple(*tuple, "ff",&s,&d))
+    float s, d;
+    if (!PyArg_ParseTuple(*tuple, "ff", &s, &d)) {
         throw Py::Exception();
+    }
 
-    getAxisOriginPtr()->setPlane(s,d);
+    getAxisOriginPtr()->setPlane(s, d);
 }
 
 Py::Dict AxisOriginPy::getLabels() const
 {
     Py::Dict dict;
-    for (auto &v : getAxisOriginPtr()->getLabels())
-        dict.setItem(Py::String(v.first),Py::String(v.second));
+    for (auto& v : getAxisOriginPtr()->getLabels()) {
+        dict.setItem(Py::String(v.first), Py::String(v.second));
+    }
 
     return dict;
 }
 
 void AxisOriginPy::setLabels(Py::Dict dict)
 {
-    std::map<std::string,std::string> labels;
-    for (auto it=dict.begin(); it!=dict.end(); ++it) {
-        const auto &value = *it;
+    std::map<std::string, std::string> labels;
+    for (auto it = dict.begin(); it != dict.end(); ++it) {
+        const auto& value = *it;
         labels[value.first.as_string()] = Py::Object(value.second).as_string();
     }
     getAxisOriginPtr()->setLabels(labels);
@@ -175,12 +182,12 @@ void AxisOriginPy::setLabels(Py::Dict dict)
 Py::Object AxisOriginPy::getNode() const
 {
     SoGroup* node = getAxisOriginPtr()->getNode();
-    PyObject* Ptr = Base::Interpreter().createSWIGPointerObj("pivy.coin","SoGroup *", node, 1);
+    PyObject* Ptr = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoGroup *", node, 1);
     node->ref();
     return Py::Object(Ptr, true);
 }
 
-PyObject *AxisOriginPy::getCustomAttributes(const char* /*attr*/) const
+PyObject* AxisOriginPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }

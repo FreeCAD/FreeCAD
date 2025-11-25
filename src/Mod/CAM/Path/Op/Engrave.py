@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
@@ -131,11 +133,14 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
                 elif hasattr(base, "ArrayType"):
                     jobshapes.append(base.Shape)
 
-        if len(jobshapes) > 0:
+        if jobshapes:
             Path.Log.debug("processing {} jobshapes".format(len(jobshapes)))
             wires = []
             for shape in jobshapes:
-                shapeWires = shape.Wires
+                if isinstance(shape, Part.Edge):
+                    shapeWires = [Part.Wire(shape)]
+                else:
+                    shapeWires = shape.Wires
                 Path.Log.debug("jobshape has {} edges".format(len(shape.Edges)))
                 self.commandlist.append(
                     Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid})

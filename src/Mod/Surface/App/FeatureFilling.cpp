@@ -106,11 +106,13 @@ short Filling::mustExecute() const
     return 0;
 }
 
-void Filling::addConstraints(BRepFill_Filling& builder,
-                             const App::PropertyLinkSubList& edges,
-                             const App::PropertyStringList& faces,
-                             const App::PropertyIntegerList& orders,
-                             Standard_Boolean bnd)
+void Filling::addConstraints(
+    BRepFill_Filling& builder,
+    const App::PropertyLinkSubList& edges,
+    const App::PropertyStringList& faces,
+    const App::PropertyIntegerList& orders,
+    Standard_Boolean bnd
+)
 {
     auto edge_obj = edges.getValues();
     auto edge_sub = edges.getSubValues();
@@ -164,7 +166,8 @@ void Filling::addConstraints(BRepFill_Filling& builder,
                             }
                             else {
                                 Standard_Failure::Raise(
-                                    "Boundary edges must be added in a consecutive order");
+                                    "Boundary edges must be added in a consecutive order"
+                                );
                             }
                         }
                     }
@@ -183,7 +186,8 @@ void Filling::addConstraints(BRepFill_Filling& builder,
                                 }
                                 else {
                                     Standard_Failure::Raise(
-                                        "Boundary edges must be added in a consecutive order");
+                                        "Boundary edges must be added in a consecutive order"
+                                    );
                                 }
                             }
                         }
@@ -204,9 +208,11 @@ void Filling::addConstraints(BRepFill_Filling& builder,
 }
 
 // Add free support faces with their continuities
-void Filling::addConstraints(BRepFill_Filling& builder,
-                             const App::PropertyLinkSubList& faces,
-                             const App::PropertyIntegerList& orders)
+void Filling::addConstraints(
+    BRepFill_Filling& builder,
+    const App::PropertyLinkSubList& faces,
+    const App::PropertyIntegerList& orders
+)
 {
     auto face_obj = faces.getValues();
     auto face_sub = faces.getSubValues();
@@ -268,20 +274,11 @@ App::DocumentObjectExecReturn* Filling::execute()
     unsigned int maxseg = MaximumSegments.getValue();
 
     try {
-        BRepFill_Filling builder(degree,
-                                 ptsoncurve,
-                                 numIter,
-                                 anisotropy,
-                                 tol2d,
-                                 tol3d,
-                                 tolG1,
-                                 tolG2,
-                                 maxdeg,
-                                 maxseg);
+        BRepFill_Filling
+            builder(degree, ptsoncurve, numIter, anisotropy, tol2d, tol3d, tolG1, tolG2, maxdeg, maxseg);
 
         if ((BoundaryEdges.getSize()) < 1) {
-            return new App::DocumentObjectExecReturn(
-                "Border must have at least one curve defined.");
+            return new App::DocumentObjectExecReturn("Border must have at least one curve defined.");
         }
 
         // Load the initial surface if set

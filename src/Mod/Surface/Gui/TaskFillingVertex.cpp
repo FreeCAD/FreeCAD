@@ -146,14 +146,13 @@ FillingVertexPanel::~FillingVertexPanel()
 
 void FillingVertexPanel::setupConnections()
 {
-    connect(ui->buttonVertexAdd,
-            &QToolButton::toggled,
-            this,
-            &FillingVertexPanel::onButtonVertexAddToggled);
-    connect(ui->buttonVertexRemove,
-            &QToolButton::toggled,
-            this,
-            &FillingVertexPanel::onButtonVertexRemoveToggled);
+    connect(ui->buttonVertexAdd, &QToolButton::toggled, this, &FillingVertexPanel::onButtonVertexAddToggled);
+    connect(
+        ui->buttonVertexRemove,
+        &QToolButton::toggled,
+        this,
+        &FillingVertexPanel::onButtonVertexRemoveToggled
+    );
 }
 
 void FillingVertexPanel::appendButtons(Gui::ButtonGroup* buttonGroup)
@@ -177,8 +176,10 @@ void FillingVertexPanel::setEditedObject(Surface::Filling* obj)
         QListWidgetItem* item = new QListWidgetItem(ui->listFreeVertex);
         ui->listFreeVertex->addItem(item);
 
-        QString text = QStringLiteral("%1.%2").arg(QString::fromUtf8((*it)->Label.getValue()),
-                                                   QString::fromStdString(*jt));
+        QString text = QStringLiteral("%1.%2").arg(
+            QString::fromUtf8((*it)->Label.getValue()),
+            QString::fromStdString(*jt)
+        );
         item->setText(text);
 
         QList<QVariant> data;
@@ -203,17 +204,21 @@ void FillingVertexPanel::changeEvent(QEvent* e)
 void FillingVertexPanel::open()
 {
     checkOpenCommand();
-    this->vp->highlightReferences(ViewProviderFilling::Vertex,
-                                  editedObject->Points.getSubListValues(),
-                                  true);
+    this->vp->highlightReferences(
+        ViewProviderFilling::Vertex,
+        editedObject->Points.getSubListValues(),
+        true
+    );
     Gui::Selection().clearSelection();
 }
 
 void FillingVertexPanel::reject()
 {
-    this->vp->highlightReferences(ViewProviderFilling::Vertex,
-                                  editedObject->Points.getSubListValues(),
-                                  false);
+    this->vp->highlightReferences(
+        ViewProviderFilling::Vertex,
+        editedObject->Points.getSubListValues(),
+        false
+    );
 }
 
 void FillingVertexPanel::clearSelection()
@@ -246,9 +251,11 @@ void FillingVertexPanel::slotDeletedObject(const Gui::ViewProviderDocumentObject
     // If this view provider is being deleted then reset the colors of
     // referenced part objects. The dialog will be deleted later.
     if (this->vp == &Obj) {
-        this->vp->highlightReferences(ViewProviderFilling::Vertex,
-                                      editedObject->Points.getSubListValues(),
-                                      false);
+        this->vp->highlightReferences(
+            ViewProviderFilling::Vertex,
+            editedObject->Points.getSubListValues(),
+            false
+        );
     }
 }
 
@@ -289,9 +296,10 @@ void FillingVertexPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
             ui->listFreeVertex->addItem(item);
 
             Gui::SelectionObject sel(msg);
-            QString text =
-                QStringLiteral("%1.%2").arg(QString::fromUtf8(sel.getObject()->Label.getValue()),
-                                            QString::fromLatin1(msg.pSubName));
+            QString text = QStringLiteral("%1.%2").arg(
+                QString::fromUtf8(sel.getObject()->Label.getValue()),
+                QString::fromLatin1(msg.pSubName)
+            );
             item->setText(text);
 
             QList<QVariant> data;
@@ -305,9 +313,11 @@ void FillingVertexPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
             auto element = editedObject->Points.getSubValues();
             element.emplace_back(msg.pSubName);
             editedObject->Points.setValues(objects, element);
-            this->vp->highlightReferences(ViewProviderFilling::Vertex,
-                                          editedObject->Points.getSubListValues(),
-                                          true);
+            this->vp->highlightReferences(
+                ViewProviderFilling::Vertex,
+                editedObject->Points.getSubListValues(),
+                true
+            );
         }
         else if (selectionMode == RemoveVertex) {
             Gui::SelectionObject sel(msg);
@@ -323,9 +333,11 @@ void FillingVertexPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
                 }
             }
 
-            this->vp->highlightReferences(ViewProviderFilling::Vertex,
-                                          editedObject->Points.getSubListValues(),
-                                          false);
+            this->vp->highlightReferences(
+                ViewProviderFilling::Vertex,
+                editedObject->Points.getSubListValues(),
+                false
+            );
             App::DocumentObject* obj = sel.getObject();
             std::string sub = msg.pSubName;
             auto objects = editedObject->Points.getValues();
@@ -340,9 +352,11 @@ void FillingVertexPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
                     break;
                 }
             }
-            this->vp->highlightReferences(ViewProviderFilling::Vertex,
-                                          editedObject->Points.getSubListValues(),
-                                          true);
+            this->vp->highlightReferences(
+                ViewProviderFilling::Vertex,
+                editedObject->Points.getSubListValues(),
+                true
+            );
         }
 
         editedObject->recomputeFeature();
@@ -368,9 +382,11 @@ void FillingVertexPanel::onDeleteVertex()
         auto element = editedObject->Points.getSubValues();
         auto it = objects.begin();
         auto jt = element.begin();
-        this->vp->highlightReferences(ViewProviderFilling::Vertex,
-                                      editedObject->Points.getSubListValues(),
-                                      false);
+        this->vp->highlightReferences(
+            ViewProviderFilling::Vertex,
+            editedObject->Points.getSubListValues(),
+            false
+        );
 
         for (; it != objects.end() && jt != element.end(); ++it, ++jt) {
             if (*it == obj && *jt == sub) {
@@ -382,9 +398,11 @@ void FillingVertexPanel::onDeleteVertex()
             }
         }
 
-        this->vp->highlightReferences(ViewProviderFilling::Vertex,
-                                      editedObject->Points.getSubListValues(),
-                                      true);
+        this->vp->highlightReferences(
+            ViewProviderFilling::Vertex,
+            editedObject->Points.getSubListValues(),
+            true
+        );
     }
 }
 

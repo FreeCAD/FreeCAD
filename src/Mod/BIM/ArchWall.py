@@ -583,45 +583,41 @@ class _Wall(ArchComponent.Component):
 
         extdata = self.getExtrusionData(obj)
         if extdata:
-            bplates = extdata[0]
+            base_faces = extdata[0]
             extv = extdata[2].Rotation.multVec(extdata[1])
-            if isinstance(bplates, list):
-                shps = []
-                # Test : if base is Sketch, then fuse all solid; otherwise, makeCompound
-                sketchBaseToFuse = obj.Base.getLinkedObject().isDerivedFrom(
-                    "Sketcher::SketchObject"
-                )
-                # but turn this off if we have layers, otherwise layers get merged
-                if (
+
+            # Normalize geometry: getExtrusionData can return a single face or a list of faces.
+            # Normalize it to always be a list to simplify the logic below.
+            if not isinstance(base_faces, list):
+                base_faces = [base_faces]
+
+            # Determine the fusion strategy: solids should only be fused if the base is a Sketch and
+            # it is not a multi-layer wall.
+            should_fuse_solids = False
+            if obj.Base and obj.Base.isDerivedFrom("Sketcher::SketchObject"):
+                is_multi_layer = (
                     hasattr(obj, "Material")
                     and obj.Material
                     and hasattr(obj.Material, "Materials")
                     and obj.Material.Materials
-                ):
-                    sketchBaseToFuse = False
-                for b in bplates:
-                    b.Placement = extdata[2].multiply(b.Placement)
-                    b = b.extrude(extv)
+                )
+                if not is_multi_layer:
+                    should_fuse_solids = True
 
-                    # See getExtrusionData() - not fusing baseplates there - fuse solids here
-                    # Remarks - If solids are fused, but exportIFC.py use underlying baseplates w/o fuse, the result in ifc look slightly different from in FC.
+            # Generate solids
+            solids = []
+            for face in base_faces:
+                face.Placement = extdata[2].multiply(face.Placement)
+                solids.append(face.extrude(extv))
 
-                    if sketchBaseToFuse:
-                        if shps:
-                            shps = shps.fuse(b)  # shps.fuse(b)
-                        else:
-                            shps = b
-                    else:
-                        shps.append(b)
-                    # TODO - To let user to select whether to fuse (slower) or to do a compound (faster) only ?
-
-                if sketchBaseToFuse:
-                    base = shps
-                else:
-                    base = Part.makeCompound(shps)
+            # Apply the fusion strategy
+            if should_fuse_solids:
+                fused_shape = None
+                for solid in solids:
+                    fused_shape = fused_shape.fuse(solid) if fused_shape else solid
+                base = fused_shape
             else:
-                bplates.Placement = extdata[2].multiply(bplates.Placement)
-                base = bplates.extrude(extv)
+                base = Part.makeCompound(solids)
         if obj.Base:
             if hasattr(obj.Base, "Shape"):
                 if obj.Base.Shape.isNull():
@@ -1586,7 +1582,7 @@ class _Wall(ArchComponent.Component):
                         translate(
                             "ArchComponent",
                             "Removing the base of this complex wall will alter its shape and reset its position.\n\n"
-                            "This operation cannot be undone. Do you want to proceed?",
+                            "Do you want to proceed?",
                         )
                     )
                     msg_box.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.Cancel)
@@ -1665,39 +1661,83 @@ class _Wall(ArchComponent.Component):
         return layers
 
     def build_base_from_scratch(self, obj):
-        """Builds a simple, origin-centered base face for a baseless wall."""
+        """Generate the 2D profile for extruding a baseless Arch Wall.
+
+        This function creates the rectangular face or faces that form the wall's cross-section,
+        which is then used by the caller for extrusion. It handles both single- and multi-layer wall
+        configurations.
+
+        Parameters
+        ----------
+        obj : FreeCAD.DocumentObject
+            The wall object being built. Its Length, Align, and layer
+            properties are used.
+
+        Returns
+        -------
+        tuple of (list of Part.Face, FreeCAD.Placement)
+            A tuple containing two elements:
+            1. A list of one or more Part.Face objects representing the cross-section.
+            2. An identity Placement, as the geometry is in local coordinates.
+
+        Notes
+        -----
+        The geometry follows the convention where `Align='Left'` offsets the wall in the negative-Y
+        direction (the geometric right).
+        """
         import Part
+
+        def _create_face_from_coords(half_length, y_min, y_max):
+            """Creates a rectangular Part.Face centered on the X-axis, defined by Y coordinates."""
+            bottom_left = Vector(-half_length, y_min, 0)
+            bottom_right = Vector(half_length, y_min, 0)
+            top_right = Vector(half_length, y_max, 0)
+            top_left = Vector(-half_length, y_max, 0)
+            return Part.Face(
+                Part.makePolygon([bottom_left, bottom_right, top_right, top_left, bottom_left])
+            )
 
         layers = self.get_layers(obj)
         width = self.get_width(obj, widths=False)
-        length = obj.Length.Value
+        align = obj.Align
 
-        base = []
-        if layers:
-            totalwidth = sum([abs(layer) for layer in layers])
-            offset = 0
-            for layer in layers:
-                if layer > 0:
-                    l2 = length / 2 or 0.5
-                    w1 = -totalwidth / 2 + offset
-                    w2 = w1 + layer
-                    v1 = Vector(-l2, w1, 0)
-                    v2 = Vector(l2, w1, 0)
-                    v3 = Vector(l2, w2, 0)
-                    v4 = Vector(-l2, w2, 0)
-                    base.append(Part.Face(Part.makePolygon([v1, v2, v3, v4, v1])))
-                offset += abs(layer)
-        else:
-            l2 = length / 2 or 0.5
-            w2 = width / 2 or 0.5
-            v1 = Vector(-l2, -w2, 0)
-            v2 = Vector(l2, -w2, 0)
-            v3 = Vector(l2, w2, 0)
-            v4 = Vector(-l2, w2, 0)
-            base = Part.Face(Part.makePolygon([v1, v2, v3, v4, v1]))
+        # Use a small default for zero dimensions to ensure a valid shape can be created.
+        safe_length = obj.Length.Value or 0.5
+
+        if not layers:
+            safe_width = width or 0.5
+            layers = [safe_width]  # Treat a single-layer wall as a multi-layer wall with one layer.
+
+        # --- Calculate and Create Geometry ---
+        base_faces = []
+
+        # The total width is needed to calculate the starting offset for alignment.
+        totalwidth = sum([abs(layer) for layer in layers])
+
+        # The offset acts as a cursor, tracking the current position along the Y-axis.
+        offset = 0
+        if align == "Center":
+            offset = -totalwidth / 2
+        elif align == "Left":
+            # Per convention, 'Left' is on the geometric right (-Y direction).
+            offset = -totalwidth
+
+        # Loop through all layers and create a face for each.
+        for layer in layers:
+            # A negative layer value is not drawn, so its geometry is skipped.
+            if layer > 0:
+                half_length = safe_length / 2
+                layer_y_min = offset
+                layer_y_max = offset + layer
+                face = _create_face_from_coords(half_length, layer_y_min, layer_y_max)
+                base_faces.append(face)
+
+            # The offset is always increased by the absolute thickness of the layer.
+            offset += abs(layer)
 
         placement = FreeCAD.Placement()
-        return base, placement
+
+        return base_faces, placement
 
     def get_baseline(self, obj):
         """

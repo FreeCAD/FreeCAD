@@ -85,8 +85,7 @@ BaseExport std::array<const signed char, base64DecodeTableSize> base64_decode_ta
  * @return Return a pair of output size and input read size. Compare the
  * read size to input size to check for error.
  */
-BaseExport std::pair<std::size_t, std::size_t>
-base64_decode(void* out, char const*, std::size_t len);
+BaseExport std::pair<std::size_t, std::size_t> base64_decode(void* out, char const*, std::size_t len);
 
 /** Encode input binary into base64 string
  * @param out: output string. Note that the string is not cleared before

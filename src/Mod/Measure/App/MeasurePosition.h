@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 David Friedli <david[at]friedli-be.ch>             *
  *                                                                         *
@@ -40,8 +42,7 @@ namespace Measure
 {
 
 
-class MeasureExport MeasurePosition
-    : public Measure::MeasureBaseExtendable<Part::MeasurePositionInfo>
+class MeasureExport MeasurePosition: public Measure::MeasureBaseExtendable<Part::MeasurePositionInfo>
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Measure::MeasurePosition);
 
