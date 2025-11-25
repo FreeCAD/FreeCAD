@@ -112,10 +112,16 @@ PyObject* SketchObjectPy::addGeometry(PyObject* args)
             }
         }
         else if (
-            geo->is<Part::GeomPoint>() || geo->is<Part::GeomCircle>() || geo->is<Part::GeomEllipse>()
-            || geo->is<Part::GeomArcOfCircle>() || geo->is<Part::GeomArcOfEllipse>()
-            || geo->is<Part::GeomArcOfHyperbola>() || geo->is<Part::GeomArcOfParabola>()
-            || geo->is<Part::GeomBSplineCurve>() || geo->is<Part::GeomLineSegment>()
+            geo->is<Part::GeomPoint>()              //
+            || geo->is<Part::GeomCircle>()          //
+            || geo->is<Part::GeomEllipse>()         //
+            || geo->is<Part::GeomArcOfCircle>()     //
+            || geo->is<Part::GeomArcOfEllipse>()    //
+            || geo->is<Part::GeomArcOfHyperbola>()  //
+            || geo->is<Part::GeomArcOfParabola>()   //
+            || geo->is<Part::GeomBSplineCurve>()    //
+            || geo->is<Part::GeomLineSegment>()     //
+            || geo->is<Part::GeomOffsetCurve>()     //
         ) {
             ret = this->getSketchObjectPtr()->addGeometry(geo, isConstruction);
         }
@@ -137,8 +143,7 @@ PyObject* SketchObjectPy::addGeometry(PyObject* args)
 
                 // An arc created with Part.Arc will be converted into a Part.ArcOfCircle
                 if (geo->is<Part::GeomTrimmedCurve>()) {
-                    Handle(Geom_TrimmedCurve)
-                        trim = Handle(Geom_TrimmedCurve)::DownCast(geo->handle());
+                    Handle(Geom_TrimmedCurve) trim = Handle(Geom_TrimmedCurve)::DownCast(geo->handle());
                     Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(trim->BasisCurve());
                     Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(trim->BasisCurve());
                     if (!circle.IsNull()) {
@@ -163,11 +168,16 @@ PyObject* SketchObjectPy::addGeometry(PyObject* args)
                     }
                 }
                 else if (
-                    geo->is<Part::GeomPoint>() || geo->is<Part::GeomCircle>()
-                    || geo->is<Part::GeomEllipse>() || geo->is<Part::GeomArcOfCircle>()
-                    || geo->is<Part::GeomArcOfEllipse>() || geo->is<Part::GeomArcOfHyperbola>()
-                    || geo->is<Part::GeomArcOfParabola>() || geo->is<Part::GeomBSplineCurve>()
-                    || geo->is<Part::GeomLineSegment>()
+                    geo->is<Part::GeomPoint>()              //
+                    || geo->is<Part::GeomCircle>()          //
+                    || geo->is<Part::GeomEllipse>()         //
+                    || geo->is<Part::GeomArcOfCircle>()     //
+                    || geo->is<Part::GeomArcOfEllipse>()    //
+                    || geo->is<Part::GeomArcOfHyperbola>()  //
+                    || geo->is<Part::GeomArcOfParabola>()   //
+                    || geo->is<Part::GeomBSplineCurve>()    //
+                    || geo->is<Part::GeomLineSegment>()     //
+                    || geo->is<Part::GeomOffsetCurve>()     //
                 ) {
                     geoList.push_back(geo);
                 }
