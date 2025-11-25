@@ -191,6 +191,15 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     "If doing multiple passes, the extra offset of each additional pass",
                 ),
             ),
+            (
+                "App::PropertyLength",
+                "RetractThreshold",
+                "Profile",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Set distance which will attempts to avoid unnecessary retractions",
+                ),
+            ),
         ]
 
     @classmethod
