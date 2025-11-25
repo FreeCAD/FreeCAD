@@ -81,9 +81,8 @@ void Gui::GuiNativeEvent::initSpaceball(QMainWindow* window)
     }
 }
 
-bool Gui::GuiNativeEvent::xcbEventFilter(void* xcb_void, long* result)
+bool Gui::GuiNativeEvent::xcbEventFilter(void* xcb_void, [[maybe_unused]] long* result)
 {
-    Q_UNUSED(result);
     auto inst(dynamic_cast<Gui::GUIApplicationNativeEventAware*>(QApplication::instance()));
     if (!inst) {
         return false;

@@ -86,12 +86,12 @@ bool GUIApplication::notify(QObject* receiver, QEvent* event)
     }
 
     // https://github.com/FreeCAD/FreeCAD/issues/16905
-    std::string exceptionWarning =
 #if FC_DEBUG
+    const std::string exceptionWarning =
         "Exceptions must be caught before they go through Qt."
         " Ignoring this will cause crashes on some systems.\n";
 #else
-        "";
+    const std::string exceptionWarning;
 #endif
 
     try {
