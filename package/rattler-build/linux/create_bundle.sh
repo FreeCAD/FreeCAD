@@ -1,16 +1,13 @@
 #!/bin/bash
 
 set -e
-set -x 
+set -x
 
 conda_env="AppDir/usr"
 
 mkdir -p ${conda_env}
 
 cp -a ../.pixi/envs/default/* ${conda_env}
-
-export PATH="${PWD}/${conda_env}/bin:${PATH}"
-export CONDA_PREFIX="${PWD}/${conda_env}"
 
 echo -e "\nDelete unnecessary stuff"
 rm -rf ${conda_env}/include
@@ -49,7 +46,7 @@ rm -rf ${conda_env}/lib/cmake/
 find . -name "*.h" -type f -delete
 find . -name "*.cmake" -type f -delete
 
-python_version=$(python -c 'import platform; print("py" + platform.python_version_tuple()[0] + platform.python_version_tuple()[1])')
+python_version=$(${conda_env}/bin/python -c 'import platform; print("py" + platform.python_version_tuple()[0] + platform.python_version_tuple()[1])')
 version_name="FreeCAD_${BUILD_TAG}-Linux-$(uname -m)-${python_version}"
 
 echo -e "\################"
@@ -62,6 +59,20 @@ sed -i "1s/.*/\nLIST OF PACKAGES:/" AppDir/packages.txt
 curl -LO https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-$(uname -m).AppImage
 chmod a+x appimagetool-$(uname -m).AppImage
 
+if [ "${UPLOAD_RELEASE}" == "true" ]; then
+    case "${BUILD_TAG}" in
+        *weekly*)
+            GH_UPDATE_TAG="weeklies"
+            ;;
+        *rc*)
+            GH_UPDATE_TAG="${BUILD_TAG}"
+            ;;
+        *)
+            GH_UPDATE_TAG="latest"
+            ;;
+    esac
+fi
+
 echo -e "\nCreate the appimage"
 # export GPG_TTY=$(tty)
 chmod a+x ./AppDir/AppRun
@@ -69,7 +80,7 @@ chmod a+x ./AppDir/AppRun
   --comp zstd \
   --mksquashfs-opt -Xcompression-level \
   --mksquashfs-opt 22 \
-  -u "gh-releases-zsync|FreeCAD|FreeCAD|${BUILD_TAG}|FreeCAD*$(uname -m)*.AppImage.zsync" \
+  -u "gh-releases-zsync|FreeCAD|FreeCAD|${GH_UPDATE_TAG}|FreeCAD*$(uname -m)*.AppImage.zsync" \
   AppDir ${version_name}.AppImage
   # -s --sign-key ${GPG_KEY_ID} \
 
@@ -77,5 +88,13 @@ echo -e "\nCreate hash"
 sha256sum ${version_name}.AppImage > ${version_name}.AppImage-SHA256.txt
 
 if [ "${UPLOAD_RELEASE}" == "true" ]; then
-    gh release upload --clobber ${BUILD_TAG} "${version_name}.AppImage" "${version_name}.AppImage-SHA256.txt"
+    gh release upload --clobber ${BUILD_TAG} "${version_name}.AppImage" "${version_name}.AppImage.zsync" "${version_name}.AppImage-SHA256.txt"
+    if [ "${GH_UPDATE_TAG}" == "weeklies" ]; then
+        generic_name="FreeCAD_weekly-Linux-$(uname -m)"
+        mv "${version_name}.AppImage" "${generic_name}.AppImage"
+        mv "${version_name}.AppImage.zsync" "${generic_name}.AppImage.zsync"
+        mv "${version_name}.AppImage-SHA256.txt" "${generic_name}.AppImage-SHA256.txt"
+        gh release create weeklies --prerelease | true
+        gh release upload --clobber weeklies "${generic_name}.AppImage" "${generic_name}.AppImage.zsync" "${generic_name}.AppImage-SHA256.txt"
+    fi
 fi

@@ -1792,6 +1792,12 @@ bool Document::saveToFile(const char* filename) const
     // realpath is canonical filename i.e. without symlink
     std::string nativePath = canonical_path(filename);
 
+    // check if file is writeable, then block the save if it is not.
+    Base::FileInfo originalFileInfo(nativePath);
+    if (originalFileInfo.exists() && !originalFileInfo.isWritable()) {
+        throw Base::FileException("Unable to save document because file is marked as read-only or write permission is not available.", originalFileInfo);
+    }
+
     // make a tmp. file where to save the project data first and then rename to
     // the actual file name. This may be useful if overwriting an existing file
     // fails so that the data of the work up to now isn't lost.
@@ -2086,6 +2092,16 @@ bool Document::afterRestore(const std::vector<DocumentObject*>& objArray, bool c
             FC_ERR("Failed to restore " << obj->getFullName() << ": " << e.what());
         }
         catch (...) {
+
+            // If a Python exception occurred, it must be cleared immediately.
+            // Otherwise, the interpreter remains in a dirty state, causing
+            // Segfaults later when FreeCAD interacts with Python.
+            if (PyErr_Occurred()) {
+                Base::Console().error("Python error during object restore:\n");
+                PyErr_Print(); // Print the traceback to stderr/Console
+                PyErr_Clear(); // Reset the interpreter state
+            }
+
             d->addRecomputeLog("Unknown exception on restore", obj);
             FC_ERR("Failed to restore " << obj->getFullName() << ": " << "unknown exception");
         }

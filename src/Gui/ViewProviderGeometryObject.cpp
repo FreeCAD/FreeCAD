@@ -195,8 +195,9 @@ void ViewProviderGeometryObject::updateData(const App::Property* prop)
              */
             App::Material defaultMaterial;
             auto material = geometry->getMaterialAppearance();
-            if ((materialAppearance == defaultMaterial)
-                || (ShapeAppearance.getSize() == 1 && ShapeAppearance[0] == materialAppearance)) {
+            if ((ShapeAppearance.getSize() == 1)
+                && (ShapeAppearance[0] == defaultMaterial || ShapeAppearance[0] == materialAppearance)
+                && (material != defaultMaterial)) {
                 ShapeAppearance.setValue(material);
             }
             materialAppearance = material;
