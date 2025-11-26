@@ -1856,21 +1856,24 @@ QString PreferencesSearchController::getHighlightStyleForWidget(QWidget* widget)
     if (qobject_cast<QLabel*>(widget)) {
         return QStringLiteral("QLabel { ") + baseStyle + QStringLiteral(" padding: 2px; }");
     }
-    else if (qobject_cast<QCheckBox*>(widget)) {
+    
+    if (qobject_cast<QCheckBox*>(widget)) {
         return QStringLiteral("QCheckBox { ") + baseStyle + QStringLiteral(" padding: 2px; }");
     }
-    else if (qobject_cast<QRadioButton*>(widget)) {
+
+    if (qobject_cast<QRadioButton*>(widget)) {
         return QStringLiteral("QRadioButton { ") + baseStyle + QStringLiteral(" padding: 2px; }");
     }
-    else if (qobject_cast<QGroupBox*>(widget)) {
+
+    if (qobject_cast<QGroupBox*>(widget)) {
         return QStringLiteral("QGroupBox::title { ") + baseStyle + QStringLiteral(" padding: 2px; }");
     }
-    else if (qobject_cast<QPushButton*>(widget)) {
+
+    if (qobject_cast<QPushButton*>(widget)) {
         return QStringLiteral("QPushButton { ") + baseStyle + QStringLiteral(" }");
     }
-    else {
-        return QStringLiteral("QWidget { ") + baseStyle + QStringLiteral(" padding: 2px; }");
-    }
+
+    return QStringLiteral("QWidget { ") + baseStyle + QStringLiteral(" padding: 2px; }");
 }
 
 void PreferencesSearchController::applyHighlightToWidget(QWidget* widget)
