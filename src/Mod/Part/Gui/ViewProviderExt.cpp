@@ -604,10 +604,48 @@ std::string ViewProviderPartExt::getElement(const SoDetail* detail) const
 
 SoDetail* ViewProviderPartExt::getDetail(const char* subelement) const
 {
+    // 1. Try standard string parsing (FaceN, EdgeN...)
     auto type = Part::TopoShape::getElementTypeAndIndex(subelement);
     std::string element = type.first;
     int index = type.second;
 
+    // 2. If standard parsing failed, try resolving as a Topological Name
+    if (index <= 0 && subelement && *subelement) {
+        try {
+            // Get the underlying shape
+            const Part::TopoShape& shape = Part::Feature::getTopoShape(
+                getObject(),
+                Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform
+            );
+            // Attempt to resolve the complex string to a sub-shape
+            TopoDS_Shape subShape = shape.getSubShape(subelement);
+
+            if (!subShape.IsNull()) {
+                // If found, identify what type it is and find its 1-based index
+                if (subShape.ShapeType() == TopAbs_FACE) {
+                    element = "Face";
+                    index = shape.findShape(subShape);
+                }
+                else if (subShape.ShapeType() == TopAbs_EDGE) {
+                    element = "Edge";
+                    index = shape.findShape(subShape);
+                }
+                else if (subShape.ShapeType() == TopAbs_VERTEX) {
+                    element = "Vertex";
+                    index = shape.findShape(subShape);
+                }
+            }
+        }
+        catch (...) {
+        }
+    }
+
+    // 3. If we still don't have a valid index, return null
+    if (index <= 0) {
+        return nullptr;
+    }
+
+    // 4. Create the Coin3D Detail
     if (element == "Face") {
         SoFaceDetail* detail = new SoFaceDetail();
         detail->setPartIndex(index - 1);
@@ -1536,3 +1574,4 @@ void ViewProviderPartExt::handleChangedPropertyName(
         Gui::ViewProviderGeometryObject::handleChangedPropertyName(reader, TypeName, PropName);
     }
 }
+
