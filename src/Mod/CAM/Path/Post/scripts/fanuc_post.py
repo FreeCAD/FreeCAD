@@ -67,7 +67,7 @@ parser.add_argument(
 )
 parser.add_argument(
     "--postamble",
-    help='set commands to be issued after the last command, default="M05\\nG17 G54 G90 G80 G40\\nM6 T0\\nM2\\n"',
+    help='set commands to be issued after the last command, default="M05\\nG17 G54 G90 G80 G40\\nM2\\n"',
 )
 parser.add_argument(
     "--inches", action="store_true", help="Convert output for US imperial mode (G20)"
@@ -85,6 +85,11 @@ parser.add_argument(
     action="store_true",
     help="suppress tool length offset (G43) following tool changes",
 )
+parser.add_argument(
+    "--no-end-spindle-empty",
+    action="store_true",
+    help="suppress putting last tool in tool change carousel before postamble",
+)
 
 TOOLTIP_ARGS = parser.format_help()
 
@@ -100,6 +105,8 @@ OUTPUT_DOUBLES = (
 )
 COMMAND_SPACE = " "
 LINENR = 100  # line number starting value
+
+END_SPINDLE_EMPTY = True
 
 # These globals will be reflected in the Machine configuration of the project
 UNITS = "G21"  # G21 for metric, G20 for us standard
@@ -122,7 +129,6 @@ PREAMBLE = """G17 G54 G40 G49 G80 G90
 # Postamble text will appear following the last operation.
 POSTAMBLE = """M05
 G17 G54 G90 G80 G40
-M6 T0
 M2
 """
 
@@ -149,6 +155,7 @@ def processArguments(argstring):
     global UNIT_FORMAT
     global MODAL
     global USE_TLO
+    global END_SPINDLE_EMPTY
     global OUTPUT_DOUBLES
 
     try:
@@ -178,6 +185,10 @@ def processArguments(argstring):
             USE_TLO = False
         if args.no_axis_modal:
             OUTPUT_DOUBLES = True
+        if args.no_end_spindle_empty:
+            END_SPINDLE_EMPTY = False
+        else:
+            END_SPINDLE_EMPTY = True
 
     except Exception:
         return False
@@ -267,6 +278,10 @@ def export(objectslist, filename, argstring):
                 gcode += linenumber() + "(COOLANT OFF:" + coolantMode.upper() + ")\n"
             gcode += linenumber() + "M9" + "\n"
 
+    if END_SPINDLE_EMPTY:
+        if OUTPUT_COMMENTS:
+            gcode += "(BEGIN MAKING SPINDLE EMPTY)\n"
+        gcode += "M6 T0\n"
     # do the post_amble
     if OUTPUT_COMMENTS:
         gcode += "(BEGIN POSTAMBLE)\n"
