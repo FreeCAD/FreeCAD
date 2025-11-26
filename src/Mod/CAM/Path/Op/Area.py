@@ -28,6 +28,7 @@ import Path.Op.Base as PathOp
 import PathScripts.PathUtils as PathUtils
 import Path.Dressup.Utils as PathDressup
 
+import math
 import re
 
 # lazily loaded modules
@@ -134,28 +135,52 @@ class ObjectOp(PathOp.ObjectOp):
         if prop in ["AreaParams", "PathParams", "removalshape"]:
             obj.setEditorMode(prop, 2)
 
-        if hasattr(obj, "Side") and prop == "Base" and len(obj.Base) == 1:
+        if (
+            getattr(self, "init", None)
+            and hasattr(obj, "Side")
+            and prop == "FinalDepth"
+            and len(obj.Base) == 1
+        ):
+            """Offer side only while creating new operation
+            if prop is 'Base', only 1 shape saved to 'obj.Base'
+            if prop is 'FinalDepth', all selected shapes saved to 'obj.Base'"""
+            self.init = False
+
             (base, subNames) = obj.Base[0]
-            bb = base.Shape.BoundBox  # parent boundbox
+
+            # find parent boundbox
+            # shape can be compound, so use list
+            if isinstance(base.Shape, Part.Compound):
+                bbs = [Part.Shape(shape).BoundBox for shape in base.Shape.SubShapes]
+            else:
+                bbs = [base.Shape.BoundBox]
 
             if "Face" in subNames[0]:
-                face = base.Shape.getElement(subNames[0])
-                fbb = face.BoundBox  # face boundbox
-                if bb.XLength == fbb.XLength and bb.YLength == fbb.YLength:
-                    obj.Side = "Outside"
-                else:
-                    obj.Side = "Inside"
+                faces = [base.Shape.getElement(sub) for sub in subNames if sub.startswith("Face")]
+                shape = Part.Compound(faces)
+                fbb = shape.BoundBox
+                for bb in bbs:
+                    if bb.isInside(fbb):
+                        if bb.XLength == fbb.XLength and bb.YLength == fbb.YLength:
+                            obj.Side = "Outside"
+                        else:
+                            obj.Side = "Inside"
+                        break
 
             elif "Edge" in subNames[0]:
-                edges = [
-                    base.Shape.getElement(sub).copy() for sub in subNames if sub.startswith("Edge")
-                ]
+                edges = [base.Shape.getElement(sub) for sub in subNames if sub.startswith("Edge")]
                 wire = Part.Wire(Part.__sortEdges__(edges))
-                wbb = wire.BoundBox  # wire boundbox
-                if not wire.isClosed() or (bb.XLength == wbb.XLength and bb.YLength == wbb.YLength):
-                    obj.Side = "Outside"
-                else:
-                    obj.Side = "Inside"
+                wbb = wire.BoundBox
+                for bb in bbs:
+                    if bb.isInside(wbb):
+                        if not wire.isClosed() or (
+                            bb.XLength == wbb.XLength and bb.YLength == wbb.YLength
+                        ):
+                            # for open wire always offer Outside
+                            obj.Side = "Outside"
+                        else:
+                            obj.Side = "Inside"
+                        break
 
         self.areaOpOnChanged(obj, prop)
 
@@ -215,11 +240,88 @@ class ObjectOp(PathOp.ObjectOp):
             )
 
         self.areaOpSetDefaultValues(obj, job)
+        self.init = True  # using for offer 'Side' while creating 'Profile' operation
 
     def areaOpSetDefaultValues(self, obj, job):
         """areaOpSetDefaultValues(obj, job) ... overwrite to set initial values of operation specific properties.
         Can safely be overwritten by subclasses."""
         pass
+
+    def getCornerPoint(self, edges):
+        """Use point intersection of the edges
+        and two points by distance 1 mm from intersection
+        to determine angle between edge"""
+
+        candidate = edges[0].Vertexes[0].Point
+        lastAngle = math.pi
+        for i, _ in enumerate(edges):
+            p1, p2, p3 = None, None, None
+            e1 = edges[i]
+            if i < len(edges) - 1:
+                e2 = edges[i + 1]
+            else:
+                # compare last edge with first
+                e2 = edges[0]
+
+            if Path.Geom.pointsCoincide(e1.Vertexes[-1].Point, e2.Vertexes[0].Point):
+                p2, p1 = e1.discretize(Distance=1)[-2:]
+                p3 = e2.discretize(Distance=1)[1]
+            elif Path.Geom.pointsCoincide(e1.Vertexes[0].Point, e2.Vertexes[-1].Point):
+                p1, p2 = e1.discretize(Distance=1)[:2]
+                p3 = e2.discretize(Distance=1)[-2]
+            if p1 and p2 and p3:
+                pa = p2 - p1
+                pb = p3 - p1
+                angle = pa.getAngle(pb)
+                if abs(angle - math.pi / 2) < abs(lastAngle - math.pi / 2):
+                    lastAngle = angle
+                    candidate = p1
+
+        return candidate
+
+    def isStraightEdge(self, edge, key=None):
+        tol = self.job.GeometryTolerance.getValueAs("mm")
+        if Path.Geom.isRoughly(edge.Length, tol):
+            # skip too short edge
+            return False
+        if isinstance(edge.Curve, Part.Line):
+            # line is always straight
+            return True
+        elif key == "line":
+            return False
+        # check bspline
+        p1 = edge.Vertexes[0].Point
+        p2 = edge.Vertexes[-1].Point
+        if Path.Geom.isRoughly(edge.Length, p1.distanceToPoint(p2), tol):
+            return True
+
+        return False
+
+    def getMiddleLongPoint(self, shape, key=None):
+        candidate = None
+        for edge in shape.Edges:
+            if key and not self.isStraightEdge(edge, key):
+                continue
+            if candidate is None or edge.Length > candidate.Length:
+                candidate = edge
+
+        if candidate is None:
+            return shape.Edges[0].Vertexes[0].Point
+
+        return candidate.discretize(3)[1]
+
+    def getMiddleShortPoint(self, shape, key=None):
+        candidate = None
+        for edge in shape.Edges:
+            if key and not self.isStraightEdge(edge, key):
+                continue
+            if candidate is None or edge.Length < candidate.Length:
+                candidate = edge
+
+        if candidate is None:
+            return shape.Edges[0].Vertexes[0].Point
+
+        return candidate.discretize(3)[1]
 
     def _buildPathArea(self, obj, baseobject, isHole, start, getsim):
         """_buildPathArea(obj, baseobject, isHole, start, getsim) ... internal function."""
@@ -227,7 +329,7 @@ class ObjectOp(PathOp.ObjectOp):
 
         areaParamsList = []
         if getattr(obj, "ClearingPattern", None) == "ZigZagOffset" and obj.ExtraOffsetZigZag:
-            # split area and get order 'ZigZag' -> 'Offset'
+            # Pocket operation: split area and get order 'ZigZag' -> 'Offset'
             # 'ZigZag' area parameters
             areaParamsList.append(self.areaOpAreaParams(obj, isHole))
             areaParamsList[-1]["PocketMode"] = 1
@@ -236,6 +338,13 @@ class ObjectOp(PathOp.ObjectOp):
             if getattr(obj, "StartAt", None) == "Edge":
                 # reverse order to 'Offset' -> 'ZigZag'
                 areaParamsList.reverse()
+        elif obj.Proxy and obj.Proxy.__module__ == "Path.Op.Profile":
+            # Profile operation: split area for multiple passes
+            areaParams = self.areaOpAreaParams(obj, isHole)
+            offsets = areaParams["Offset"]
+            for offset in offsets:
+                areaParams["Offset"] = offset
+                areaParamsList.append(areaParams.copy())
         else:
             areaParamsList.append(self.areaOpAreaParams(obj, isHole))
 
@@ -246,8 +355,6 @@ class ObjectOp(PathOp.ObjectOp):
             area.setPlane(PathUtils.makeWorkplane(baseobject))
             area.add(baseobject)
             areaParams["SectionTolerance"] = FreeCAD.Base.Precision.confusion() * 10
-            print()
-            print("areaParams\n", areaParams)
 
             heights = [i for i in self.depthparams]
             Path.Log.debug("depths: {}".format(heights))
@@ -340,14 +447,31 @@ class ObjectOp(PathOp.ObjectOp):
             if hasattr(obj, "RetractThreshold"):
                 pathParams["threshold"] = obj.RetractThreshold.Value
 
-            if self.endVector is not None:
+            if (
+                not obj.UseStartPoint
+                and getattr(obj, "HandleMultipleFeatures", None) == "Individually"
+                and hasattr(obj, "StartPointOverride")
+                and obj.StartPointOverride != "No"
+            ):
+                if obj.StartPointOverride == "Corner":
+                    pathParams["start"] = self.getCornerPoint(pathParams["shapes"][0].Edges)
+                elif obj.StartPointOverride == "Middle-Long":
+                    pathParams["start"] = self.getMiddleLongPoint(shapelist[0])
+                elif obj.StartPointOverride == "Middle-Long-Line":
+                    pathParams["start"] = self.getMiddleLongPoint(shapelist[0], key="line")
+                elif obj.StartPointOverride == "Middle-Long-Straight":
+                    pathParams["start"] = self.getMiddleLongPoint(shapelist[0], key="straight")
+                elif obj.StartPointOverride == "Middle-Short":
+                    pathParams["start"] = self.getMiddleShortPoint(shapelist[0])
+                elif obj.StartPointOverride == "Middle-Short-Line":
+                    pathParams["start"] = self.getMiddleShortPoint(shapelist[0], key="line")
+                elif obj.StartPointOverride == "Middle-Short-Straight":
+                    pathParams["start"] = self.getMiddleShortPoint(shapelist[0], key="straight")
+            elif self.endVector is not None:
                 if self.endVector[:2] != (0, 0):
                     pathParams["start"] = self.endVector
             elif PathOp.FeatureStartPoint & self.opFeatures(obj) and obj.UseStartPoint:
                 pathParams["start"] = obj.StartPoint
-
-            print()
-            print("pathParams\n", pathParams)
 
             obj.PathParams = str(
                 {key: value for key, value in pathParams.items() if key != "shapes"}
@@ -355,7 +479,6 @@ class ObjectOp(PathOp.ObjectOp):
             Path.Log.debug("Path with params: {}".format(obj.PathParams))
 
             (pp, end_vector) = Path.fromShapes(**pathParams)
-            print(" >> end_vector", end_vector)
             Path.Log.debug("pp: {}, end vector: {}".format(pp, end_vector))
 
             # Keep track of this segment's end only if it has movement (otherwise end_vector is 0,0,0 and the next segment will unnecessarily start there)
@@ -514,7 +637,6 @@ class ObjectOp(PathOp.ObjectOp):
                 else:
                     shp = s[0]
                 locations.append({"x": shp.BoundBox.XMax, "y": shp.BoundBox.YMax, "shape": s})
-
             locations = PathUtils.sort_locations(locations, ["x", "y"])
 
             shapes = [j["shape"] for j in locations]
@@ -559,7 +681,7 @@ class ObjectOp(PathOp.ObjectOp):
             ):
                 self.endVector[2] = obj.ClearanceHeight.Value
                 self.commandlist.append(
-                    Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid})
+                    Path.Command("G0", {"Z": obj.ClearanceHeightOut.Value, "F": self.vertRapid})
                 )
 
         Path.Log.debug("obj.Name: " + str(obj.Name) + "\n\n")
