@@ -96,8 +96,8 @@ public:
 
     // Event handling
     bool handleSearchBoxKeyPress(QKeyEvent* keyEvent);
-    bool handlePopupKeyPress(QKeyEvent* keyEvent);
-    bool isClickOutsidePopup(QMouseEvent* mouseEvent);
+    bool handlePopupKeyPress(const QKeyEvent* keyEvent);
+    bool isClickOutsidePopup(const QMouseEvent* mouseEvent) const;
 
     // Focus management
     void ensureSearchBoxFocus();
@@ -144,7 +144,7 @@ private:
 
     // UI helpers
     void configurePopupSize();
-    int calculatePopupHeight(int popupWidth);
+    int calculatePopupHeight(int popupWidth) const;
     void applyHighlightToWidget(QWidget* widget);
     QString getHighlightStyleForWidget(QWidget* widget);
 

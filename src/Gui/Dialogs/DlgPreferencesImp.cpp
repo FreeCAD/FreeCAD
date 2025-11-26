@@ -1667,7 +1667,7 @@ void PreferencesSearchController::searchWidgetType(
     }
 }
 
-int PreferencesSearchController::calculatePopupHeight(int popupWidth)
+int PreferencesSearchController::calculatePopupHeight(int popupWidth) const
 {
     int totalHeight = 0;
     int itemCount = m_searchResultsList->count();
@@ -1893,12 +1893,12 @@ bool PreferencesSearchController::handleSearchBoxKeyPress(QKeyEvent* keyEvent)
     switch (keyEvent->key()) {
         case Qt::Key_Down: {
             // Move selection down in popup, skipping separators
-            int currentRow = m_searchResultsList->currentRow();
-            int totalItems = m_searchResultsList->count();
+            const int currentRow = m_searchResultsList->currentRow();
+            const int totalItems = m_searchResultsList->count();
             for (int i = 1; i < totalItems; ++i) {
-                int nextRow = (currentRow + i) % totalItems;
-                QListWidgetItem* item = m_searchResultsList->item(nextRow);
-                if (item && (item->flags() & Qt::ItemIsSelectable)) {
+                const int nextRow = (currentRow + i) % totalItems;
+                if (QListWidgetItem* item = m_searchResultsList->item(nextRow);
+                    item && (item->flags() & Qt::ItemIsSelectable)) {
                     m_searchResultsList->setCurrentRow(nextRow);
                     break;
                 }
@@ -1907,8 +1907,8 @@ bool PreferencesSearchController::handleSearchBoxKeyPress(QKeyEvent* keyEvent)
         }
         case Qt::Key_Up: {
             // Move selection up in popup, skipping separators
-            int currentRow = m_searchResultsList->currentRow();
-            int totalItems = m_searchResultsList->count();
+            const int currentRow = m_searchResultsList->currentRow();
+            const int totalItems = m_searchResultsList->count();
             for (int i = 1; i < totalItems; ++i) {
                 int prevRow = (currentRow - i + totalItems) % totalItems;
                 QListWidgetItem* item = m_searchResultsList->item(prevRow);
@@ -1931,7 +1931,7 @@ bool PreferencesSearchController::handleSearchBoxKeyPress(QKeyEvent* keyEvent)
     }
 }
 
-bool PreferencesSearchController::handlePopupKeyPress(QKeyEvent* keyEvent)
+bool PreferencesSearchController::handlePopupKeyPress(const QKeyEvent* keyEvent)
 {
     switch (keyEvent->key()) {
         case Qt::Key_Return:
@@ -1947,14 +1947,14 @@ bool PreferencesSearchController::handlePopupKeyPress(QKeyEvent* keyEvent)
     }
 }
 
-bool PreferencesSearchController::isClickOutsidePopup(QMouseEvent* mouseEvent)
+bool PreferencesSearchController::isClickOutsidePopup(const QMouseEvent* mouseEvent) const
 {
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QPoint globalPos = mouseEvent->globalPos();
 #else
-    QPoint globalPos = mouseEvent->globalPosition().toPoint();
+    const QPoint globalPos = mouseEvent->globalPosition().toPoint();
 #endif
-    QRect searchBoxRect = QRect(m_searchBox->mapToGlobal(QPoint(0, 0)), m_searchBox->size());
+    const QRect searchBoxRect = QRect(m_searchBox->mapToGlobal(QPoint(0, 0)), m_searchBox->size());
     QRect popupRect
         = QRect(m_searchResultsList->mapToGlobal(QPoint(0, 0)), m_searchResultsList->size());
 
