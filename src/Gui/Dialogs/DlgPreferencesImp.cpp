@@ -1273,7 +1273,7 @@ PreferencesSearchController::PreferencesSearchController(DlgPreferencesImp* pare
     // Create the search results popup list
     m_searchResultsList = new QListWidget(m_parentDialog);
     m_searchResultsList->setWindowFlags(
-        Qt::Tool | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint
+        Qt::ToolTip | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint
     );
     m_searchResultsList->setVisible(false);
     m_searchResultsList->setMinimumWidth(300);
