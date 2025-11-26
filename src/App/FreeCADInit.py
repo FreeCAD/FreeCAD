@@ -158,6 +158,13 @@ class FCADLogger:
         ('title', 'FreeCAD'),
     )
 
+    printTag: bool
+    noUpdateUI: bool
+    timing: bool
+    lineno: bool
+    parent: "FCADLogger"
+    title: str
+
     def __init__(self, tag: str, **kwargs) -> None:
         """
         Construct a logger instance.
@@ -211,7 +218,7 @@ class FCADLogger:
             level = self.__class__._levels[level]
         return self._isEnabledFor(level)
 
-    def _logger_method(name: str, level: int, level_name: str):
+    def _logger_method(name: str, level: int, level_name: str):  # pylint: disable=no-self-argument
         """
         Create level logger.
         """
@@ -298,7 +305,7 @@ class FCADLogger:
             except Exception:
                 pass
 
-    def _catch_logger_method(name: str, level: int, level_name: str):
+    def _catch_logger_method(name: str, level: int, level_name: str):  # pylint: disable=no-self-argument
         """
         Create level catch logger.
         """
