@@ -101,7 +101,7 @@ long NlLoadLibrary() {
   void *libHandle = dlopen(TheLibrary, RTLD_LAZY | RTLD_LOCAL);
   if (NULL == libHandle) {
     error = -1; // whatever error it's an error dlopen() does not set errno
-    fprintf(stderr, "Error: Failed to open library \"%s\"! Error: %s!\n", TheLibrary, dlerror());
+    //fprintf(stderr, "Error: Failed to open library \"%s\"! Error: %s!\n", TheLibrary, dlerror());
   }
   else {
     /* load up the function pointer table */
