@@ -82,6 +82,9 @@ private:
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/View/LightSources"
     );
+    ParameterGrp::handle hGrpView = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/View"
+    );
 
     float zoomStep = 3.0f;
 };
