@@ -1551,7 +1551,7 @@ void PreferencesSearchController::populateSearchResultsList()
         const SearchResult& result = m_searchResults.at(i);
 
         // Create item without setting DisplayRole
-        QListWidgetItem* item = new QListWidgetItem();
+        auto* item = new QListWidgetItem();
 
         // Store path and widget text in separate roles
         if (result.isPageLevelMatch) {
@@ -1608,7 +1608,7 @@ QString PreferencesSearchController::findGroupBoxForWidget(QWidget* widget)
     // Walk up the parent hierarchy to find a QGroupBox
     QWidget* parent = widget->parentWidget();
     while (parent) {
-        QGroupBox* groupBox = qobject_cast<QGroupBox*>(parent);
+        auto* groupBox = qobject_cast<QGroupBox*>(parent);
         if (groupBox) {
             return groupBox->title();
         }
@@ -1849,7 +1849,7 @@ void PreferencesSearchController::ensureSearchBoxFocus()
 
 QString PreferencesSearchController::getHighlightStyleForWidget(QWidget* widget)
 {
-    const QString baseStyle = QStringLiteral(
+    const auto baseStyle = QStringLiteral(
         "background-color: #E3F2FD; color: #1565C0; border: 2px solid #2196F3; border-radius: 3px;"
     );
 
@@ -1954,8 +1954,8 @@ bool PreferencesSearchController::isClickOutsidePopup(const QMouseEvent* mouseEv
 #else
     const QPoint globalPos = mouseEvent->globalPosition().toPoint();
 #endif
-    const QRect searchBoxRect = QRect(m_searchBox->mapToGlobal(QPoint(0, 0)), m_searchBox->size());
-    QRect popupRect
+    const auto searchBoxRect = QRect(m_searchBox->mapToGlobal(QPoint(0, 0)), m_searchBox->size());
+    auto popupRect
         = QRect(m_searchResultsList->mapToGlobal(QPoint(0, 0)), m_searchResultsList->size());
 
     return !searchBoxRect.contains(globalPos) && !popupRect.contains(globalPos);
@@ -1965,13 +1965,13 @@ bool DlgPreferencesImp::eventFilter(QObject* obj, QEvent* event)
 {
     // Handle search box key presses
     if (obj == ui->searchBox && event->type() == QEvent::KeyPress) {
-        QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
+        auto* keyEvent = static_cast<QKeyEvent*>(event);
         return m_searchController->handleSearchBoxKeyPress(keyEvent);
     }
 
     // Handle popup key presses
     if (obj == m_searchController->getSearchResultsList() && event->type() == QEvent::KeyPress) {
-        QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
+        auto* keyEvent = static_cast<QKeyEvent*>(event);
         return m_searchController->handlePopupKeyPress(keyEvent);
     }
 
@@ -1983,7 +1983,7 @@ bool DlgPreferencesImp::eventFilter(QObject* obj, QEvent* event)
 
     // Handle search box focus loss
     if (obj == ui->searchBox && event->type() == QEvent::FocusOut) {
-        QFocusEvent* focusEvent = static_cast<QFocusEvent*>(event);
+        auto* focusEvent = static_cast<QFocusEvent*>(event);
         if (focusEvent->reason() != Qt::PopupFocusReason
             && focusEvent->reason() != Qt::MouseFocusReason) {
             // Only hide if focus is going somewhere else, not due to popup interaction
@@ -1997,8 +1997,8 @@ bool DlgPreferencesImp::eventFilter(QObject* obj, QEvent* event)
 
     // Handle clicks outside popup
     if (event->type() == QEvent::MouseButtonPress) {
-        QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
-        QWidget* widget = qobject_cast<QWidget*>(obj);
+        auto* mouseEvent = static_cast<QMouseEvent*>(event);
+        auto widget = qobject_cast<QWidget*>(obj);
 
         // Check if click is outside search area
         if (m_searchController->isPopupVisible() && obj != m_searchController->getSearchResultsList()
