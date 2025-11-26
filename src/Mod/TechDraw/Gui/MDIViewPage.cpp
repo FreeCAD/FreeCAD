@@ -25,6 +25,7 @@
 #include <QAction>
 #include <QApplication>
 #include <QContextMenuEvent>
+#include <QIODeviceBase>
 #include <QMenu>
 #include <QMessageBox>
 #include <QPageLayout>
@@ -99,7 +100,7 @@ MDIViewPage::MDIViewPage(ViewProviderPage* pageVp, Gui::Document* doc, QWidget* 
 
     m_exportPDFAction = new QAction(tr("Export PDF"), this);
 
-    connect(m_exportPDFAction, &QAction::triggered, this, qOverload<>(&MDIViewPage::savePDF));
+    connect(m_exportPDFAction, &QAction::triggered, this, qOverload<>(&MDIViewPage::slotContextExportPdf));
 
     m_printAllAction = new QAction(tr("Print All Pages"), this);
 
@@ -306,23 +307,11 @@ void MDIViewPage::fixSceneDependencies()
 
 /// overrides of MDIView print methods so that they print the QGraphicsScene instead
 /// of the COIN3d scenegraph.
+
+/// This is invoked by File > Export Pdf.
 void MDIViewPage::printPdf()
 {
-    QStringList filter;
-    filter << QObject::tr("PDF (*.pdf)");
-    filter << QObject::tr("All Files (*.*)");
-    QString fn =
-        Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export Page as PDF"),
-
-                                         QString(), filter.join(QLatin1String(";;")));
-    if (fn.isEmpty()) {
-        return;
-    }
-
-    Gui::WaitCursor wc;
-
-    std::string utf8Content = fn.toUtf8().constData();
-    PagePrinter::printPdf(getViewProviderPage(), utf8Content);
+    exportAsPdf();
 }
 
 void MDIViewPage::print()
@@ -522,7 +511,7 @@ void MDIViewPage::saveDXF()
     saveDXF(sFileName);
 }
 
-void MDIViewPage::savePDF(std::string filename)
+void MDIViewPage::savePDF(const std::string& filename) const
 {
     auto vpp = getViewProviderPage();
     if (!vpp) {
@@ -531,21 +520,52 @@ void MDIViewPage::savePDF(std::string filename)
     PagePrinter::savePDF(vpp, filename);
 }
 
-void MDIViewPage::savePDF()
-{
-    QStringList filter;
-    filter << QStringLiteral("PDF (*.pdf)");
-    filter << QObject::tr("All Files (*.*)");
-    QString fn =
-        Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export page as PDF"),
 
-                                         defaultFileName(), filter.join(QLatin1String(";;")));
-    if (fn.isEmpty()) {
+// this is invoked by context menu "export pdf"
+void MDIViewPage::slotContextExportPdf()
+{
+    exportAsPdf();
+}
+
+/// common pdf export from all commands
+void MDIViewPage::exportAsPdf() const
+{
+    QString filename = getPdfFileName();
+    if (filename.isEmpty()) {
         return;
     }
-    std::string sFileName = fn.toUtf8().constData();
-    savePDF(sFileName);
+    Base::FileInfo fi{filename.toStdString()};
+
+    if (fi.exists() && !fi.isWritable()) {
+        // Note: this does not protect against the case where the proposed file does not exist yet
+        //       and creation of the file will not be permitted (ex attempt to write to restricted
+        //       directory).
+        QMessageBox::critical(
+            Gui::getMainWindow(),
+            QObject::tr("Unable to Write File"),
+            QObject::tr("FreeCAD is unable to open file %1 for writing.  The file may be open in another program.").arg(filename));
+        return;
+    }
+
+    savePDF(filename.toUtf8().constData());
 }
+
+
+QString MDIViewPage::getPdfFileName() const
+{
+    QStringList filter;
+    filter << QObject::tr("PDF (*.pdf)");
+    filter << QObject::tr("All Files (*.*)");
+    QString fn =
+        Gui::FileDialog::getSaveFileName(Gui::getMainWindow(),
+                                         QObject::tr("Export Page as PDF"),
+                                         QString(), filter.join(QLatin1String(";;")));
+    if (fn.isEmpty()) {
+        return {};
+    }
+    return fn;
+}
+
 
 /// a slot for printing all the pages. just redirects to printAllPages
 void MDIViewPage::printAll()
