@@ -96,8 +96,6 @@ JointUsingDistance2 = [
 ]
 
 JointNoNegativeDistance = [
-    "RackPinion",
-    "Screw",
     "Gears",
     "Belt",
 ]
