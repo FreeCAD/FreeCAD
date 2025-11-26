@@ -324,7 +324,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         }
         // ConstraintType, GeoIndex1, GeoIndex2, Value
         // ConstraintType, GeoIndex, PosIndex, Value
-        if (PyNumber_Check(index_or_value)) {  // can be float or int
+        else if (PyNumber_Check(index_or_value)) {  // can be float or int
             SecondIndex = any_index;
             Value = PyFloat_AsDouble(index_or_value);
             if (strcmp("Angle", ConstraintType) == 0) {
@@ -354,6 +354,10 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 SecondIndex = -1;
                 constraint->Type = DistanceY;
                 constraint->FirstPos = static_cast<Sketcher::PointPos>(FirstPos);
+            }
+            else if (strcmp("Offset", ConstraintType) == 0) {
+                constraint->Type = Offset;
+                constraint->Second = SecondIndex;
             }
             else {
                 return false;
@@ -893,6 +897,10 @@ std::string ConstraintPy::representation() const
             result << "'PointOnObject' (" << getConstraintPtr()->First << ","
                    << getConstraintPtr()->Second << ")>";
             break;
+        case Offset:
+            result << "'Offset' (" << getConstraintPtr()->First << "," << getConstraintPtr()->Second
+                   << ")>";
+            break;
         default:
             result << "'?'>";
             break;
@@ -962,6 +970,9 @@ Py::String ConstraintPy::getType() const
             break;
         case PointOnObject:
             return Py::String("PointOnObject");
+            break;
+        case Offset:
+            return Py::String("Offset");
             break;
         default:
             return Py::String("Undefined");
