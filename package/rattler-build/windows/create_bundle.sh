@@ -68,11 +68,10 @@ sed -i '1s/.*/\nLIST OF PACKAGES:/' ${copy_dir}/packages.txt
 mv ${copy_dir} ${version_name}
 
 7z a -t7z -mx9 -mmt=${NUMBER_OF_PROCESSORS} ${version_name}.7z ${version_name} -bb
-# create hash
-sha256sum ${version_name}.7z > ${version_name}.7z-SHA256.txt
 
 if [ "${MAKE_INSTALLER}" == "true" ]; then
     FILES_FREECAD="$(cygpath -w $(pwd))\\${version_name}"
+    INSTALLER_NAME="${version_name}-installer.exe"
     nsis_cpdir=$(pwd)/.nsis_tmp
     cp -r "${CONDA_PREFIX}/NSIS" "${nsis_cpdir}"
     # curl -L -o ".nsis-log.zip" http://prdownloads.sourceforge.net/nsis/nsis-3.11-log.zip # we use the log variant of the package already
@@ -83,21 +82,20 @@ if [ "${MAKE_INSTALLER}" == "true" ]; then
         mv "${nsis_cpdir}"/Plugin/nsProcess.dll "${nsis_cpdir}"/Plugins/x86-ansi/nsProcess.dll
         mv "${nsis_cpdir}"/Plugin/nsProcessW.dll "${nsis_cpdir}"/Plugins/x86-unicode/nsProcess.dll
         "${nsis_cpdir}"/makensis.exe -V4 \
-            -D"ExeFile=${version_name}-installer.exe" \
+            -D"ExeFile=${INSTALLER_NAME}" \
             -D"FILES_FREECAD=${FILES_FREECAD}" \
             -X'SetCompressor /FINAL lzma' \
             ../../WindowsInstaller/FreeCAD-installer.nsi
-        mv ../../WindowsInstaller/${version_name}-installer.exe .
-        sha256sum ${version_name}-installer.exe > ${version_name}-installer.exe-SHA256.txt
+        mv ../../WindowsInstaller/${INSTALLER_NAME} .
     else
         echo "Error: Failed to get NsProcess plugin. Aborting installer creation..."
     fi
     rm -rf "${nsis_cpdir}"
 fi
 
-if [ "${UPLOAD_RELEASE}" == "true" ]; then
-    gh release upload --clobber ${BUILD_TAG} "${version_name}.7z" "${version_name}.7z-SHA256.txt"
-    if [ "${MAKE_INSTALLER}" == "true" ]; then
-        gh release upload --clobber ${BUILD_TAG} "${version_name}-installer.exe" "${version_name}-installer.exe-SHA256.txt"
-    fi
-fi
+INSTALLER_PATH=$(cygpath -w "$(pwd)/${INSTALLER_NAME}")
+echo "# bundle info
+version_name='${version_name}'
+BUILD_TAG='${BUILD_TAG}'
+INSTALLER_PATH='${INSTALLER_PATH}'
+" > .bundle-vars

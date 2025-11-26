@@ -66,7 +66,7 @@ sed -i '1s/.*/\nLIST OF PACKAGES:/' FreeCAD.app/Contents/packages.txt
 cp -a ${conda_env}/Library ${conda_env}/..
 rm -rf ${conda_env}/Library
 
-if [[ "${SIGN_RELEASE}" == "true" ]]; then
+if [[ "${SIGN_MAC_RELEASE}" == "true" ]]; then
     # create the signed dmg
     ../../scripts/macos_sign_and_notarize.zsh -p "FreeCAD" -k ${SIGNING_KEY_ID} -o "${version_name}.dmg"
 else
@@ -74,9 +74,7 @@ else
     dmgbuild -s dmg_settings.py "FreeCAD" "${version_name}.dmg"
 fi
 
-# create hash
-sha256sum ${version_name}.dmg > ${version_name}.dmg-SHA256.txt
-
-if [[ "${UPLOAD_RELEASE}" == "true" ]]; then
-    gh release upload --clobber ${BUILD_TAG} "${version_name}.dmg" "${version_name}.dmg-SHA256.txt"
-fi
+echo "# bundle info
+version_name='${version_name}'
+BUILD_TAG='${BUILD_TAG}'
+" > .bundle-vars
