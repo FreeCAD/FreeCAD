@@ -527,9 +527,10 @@ App::DocumentObject* getObjFromRef(App::DocumentObject* comp, const std::string&
     }
 
     const auto* doc = comp->getDocument();
-    const auto names = Base::Tools::splitSubName(sub);
+    auto names = Base::Tools::splitSubName(sub);
+    names.insert(names.begin(), comp->getNameInDocument());
 
-    if (names.size() <= 1) {
+    if (names.size() <= 2) {
         return comp;
     }
 
