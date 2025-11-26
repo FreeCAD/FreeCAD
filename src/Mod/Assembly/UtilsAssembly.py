@@ -271,10 +271,10 @@ def addTipNameToSub(ref):
         return ""
 
     sub = ref[1][0]
-    
+
     # Resolve the actual object being pointed to
     obj = getObject(ref)
-    
+
     target_body = None
 
     if obj:
@@ -284,18 +284,18 @@ def addTipNameToSub(ref):
             linked = obj.getLinkedObject()
             if linked and linked.TypeId == "PartDesign::Body":
                 target_body = linked
-    
+
     if target_body and target_body.Tip:
         split_sub = sub.split(".")
         if len(split_sub) > 0:
             element = split_sub.pop()
-            if not element: # Empty element name means the whole body is selected
+            if not element:  # Empty element name means the whole body is selected
                 return sub
 
             split_sub.append(target_body.Tip.Name)
             split_sub.append(element)
             return ".".join(split_sub)
-    
+
     return sub
 
 
