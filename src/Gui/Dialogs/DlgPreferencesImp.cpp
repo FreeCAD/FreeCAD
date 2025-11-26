@@ -1602,7 +1602,7 @@ void PreferencesSearchController::showSearchResultsList()
 QString PreferencesSearchController::findGroupBoxForWidget(QWidget* widget)
 {
     if (!widget) {
-        return QString();
+        return {};
     }
 
     // Walk up the parent hierarchy to find a QGroupBox
@@ -1615,7 +1615,7 @@ QString PreferencesSearchController::findGroupBoxForWidget(QWidget* widget)
         parent = parent->parentWidget();
     }
 
-    return QString();
+    return {};
 }
 
 
