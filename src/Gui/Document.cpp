@@ -1780,16 +1780,19 @@ void Document::Save(Base::Writer& writer) const
             int size = hGrp->GetInt("ThumbnailSize", 256);
             size = Base::clamp<int>(size, 64, 512);
             std::list<MDIView*> mdi = getMDIViews();
+
+            View3DInventorViewer* view = nullptr;
             for (const auto& it : mdi) {
                 if (it->isDerivedFrom<View3DInventor>()) {
-                    View3DInventorViewer* view = static_cast<View3DInventor*>(it)->getViewer();
-                    d->thumb.setFileName(d->_pcDocument->FileName.getValue());
-                    d->thumb.setSize(size);
-                    d->thumb.setViewer(view);
-                    d->thumb.Save(writer);
+                    view = static_cast<View3DInventor*>(it)->getViewer();
                     break;
                 }
             }
+
+            d->thumb.setFileName(d->_pcDocument->FileName.getValue());
+            d->thumb.setSize(size);
+            d->thumb.setViewer(view);
+            d->thumb.Save(writer);
         }
     }
 }
