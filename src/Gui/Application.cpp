@@ -2667,6 +2667,18 @@ void Application::setStyleSheet(const QString& qssFile, bool tiledBackground)
     mw->setProperty("fc_currentStyleSheet", qssFile);
     mw->setProperty("fc_tiledBackground", tiledBackground);
 
+    QString defaultStyleSheet = [this]() {
+        QFile f("qss:defaults.qss");
+
+        if (!f.open(QFile::ReadOnly)) {
+            return QString();
+        }
+
+        QTextStream in(&f);
+
+        return replaceVariablesInQss(in.readAll());
+    }();
+
     if (!qssFile.isEmpty()) {
         // Search for stylesheet in user-defined search paths.
         // For qss they are set-up in runApplication() with the prefix "qss"
@@ -2686,7 +2698,7 @@ void Application::setStyleSheet(const QString& qssFile, bool tiledBackground)
 
             QString styleSheetContent = replaceVariablesInQss(str.readAll());
 
-            qApp->setStyleSheet(styleSheetContent);
+            qApp->setStyleSheet(defaultStyleSheet + QStringLiteral("\n") + styleSheetContent);
 
             ActionStyleEvent e(ActionStyleEvent::Clear);
             qApp->sendEvent(mw, &e);
@@ -2714,13 +2726,13 @@ void Application::setStyleSheet(const QString& qssFile, bool tiledBackground)
     }
     else {
         if (tiledBackground) {
-            qApp->setStyleSheet(QString());
+            qApp->setStyleSheet(defaultStyleSheet);
             ActionStyleEvent e(ActionStyleEvent::Restore);
             qApp->sendEvent(getMainWindow(), &e);
             mdi->setBackground(QPixmap(QLatin1String("images:background.png")));
         }
         else {
-            qApp->setStyleSheet(QString());
+            qApp->setStyleSheet(defaultStyleSheet);
             ActionStyleEvent e(ActionStyleEvent::Restore);
             qApp->sendEvent(getMainWindow(), &e);
             mdi->setBackground(QBrush(QColor(160, 160, 160)));
