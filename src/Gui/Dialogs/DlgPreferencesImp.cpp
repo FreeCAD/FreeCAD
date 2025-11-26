@@ -1521,7 +1521,7 @@ void PreferencesSearchController::navigateToCurrentSearchResult(PopupAction acti
     }
 
     // Get the result index directly from the item data
-    bool ok;
+    bool ok = false;
     int resultIndex = currentItem->data(Qt::UserRole).toInt(&ok);
 
     if (ok && resultIndex >= 0 && resultIndex < m_searchResults.size()) {
