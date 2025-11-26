@@ -1432,8 +1432,7 @@ void PreferencesSearchController::performSearch(const QString& searchText)
 void PreferencesSearchController::clearHighlights()
 {
     // Restore original styles for all highlighted widgets
-    for (int i = 0; i < m_highlightedWidgets.size(); ++i) {
-        QWidget* widget = m_highlightedWidgets.at(i);
+    for (auto widget : m_highlightedWidgets) {
         if (widget && m_originalStyles.contains(widget)) {
             widget->setStyleSheet(m_originalStyles[widget]);
         }
