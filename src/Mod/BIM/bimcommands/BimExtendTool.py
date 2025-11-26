@@ -335,4 +335,3 @@ class Bim_Extend:
 
 #This file not work for some reason
 # FreeCADGui.addCommand("BIM_Extend", Bim_Extend())
-
