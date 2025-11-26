@@ -1454,8 +1454,6 @@ void PreferencesSearchController::collectSearchResults(
         return;
     }
 
-    const QString lowerSearchText = searchText.toLower();
-
     // First, check if the page display name itself matches (highest priority)
     int pageScore = 0;
     if (fuzzyMatch(searchText, pageDisplayName, pageScore)) {
