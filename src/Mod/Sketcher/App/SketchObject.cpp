@@ -7163,7 +7163,7 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
             };
 
             if (xinv && yinv) { // rotation 180 degrees around normal axis
-                if (newConstr->First ==-1 || newConstr->Second == -1 
+                if (newConstr->First ==-1 || newConstr->Second == -1
                     || newConstr->First == -2 || newConstr->Second == -2
                     || newConstr->Second == GeoEnum::GeoUndef) {
                     // angle to horizontal or vertical axis
@@ -7253,7 +7253,7 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
         // Angle
         if (constr->Type == Sketcher::Angle) {
             if (xinv && yinv) { // rotation 180 degrees around normal axis
-                if (constr->First ==-1 || constr->Second == -1 
+                if (constr->First ==-1 || constr->Second == -1
                     || constr->First == -2 || constr->Second == -2
                     || constr->Second == GeoEnum::GeoUndef) {
                     // angle to horizontal or vertical axis
