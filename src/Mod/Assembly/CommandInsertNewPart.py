@@ -204,9 +204,9 @@ class TaskAssemblyNewPart(JointObject.TaskAssemblyCreateJoint):
             cmds = UtilsAssembly.generatePropertySettings(self.joint)
             Gui.doCommand(cmds)
 
-        self.createPart()
-
         self.deactivate()
+
+        self.createPart()
 
         App.closeActiveTransaction()
 
