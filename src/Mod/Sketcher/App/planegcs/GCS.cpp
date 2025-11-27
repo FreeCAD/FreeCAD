@@ -883,6 +883,14 @@ int System::addConstraintP2CDistance(Point& p, Circle& c, double* distance, int 
     return addConstraint(constr);
 }
 
+int System::addConstraintOffset(OffsetCurve& cOffset, double* dist, int tagId, bool driving)
+{
+    Constraint* constr = new ConstraintOffset(cOffset, dist);
+    constr->setTag(tagId);
+    constr->setDriving(driving);
+    return addConstraint(constr);
+}
+
 int System::addConstraintArcLength(Arc& a, double* distance, int tagId, bool driving)
 {
     Constraint* constr = new ConstraintArcLength(a, distance);
