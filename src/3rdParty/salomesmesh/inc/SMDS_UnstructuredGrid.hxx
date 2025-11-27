@@ -95,14 +95,10 @@ public:
                                        std::map<int, std::map<long,int> >& nodeQuadDomains);
   vtkCellLinks* GetLinks()
   {
-#ifdef VTK_CELL_ARRAY_V2
-  #if VTK_VERSION_NUMBER_QUICK >= 90300000000
+#if VTK_VERSION_NUMBER_QUICK >= 90300000000
     return static_cast<vtkCellLinks*>(vtkUnstructuredGrid::GetLinks());
-  #else
-    return static_cast<vtkCellLinks*>(GetCellLinks());
-  #endif
 #else
-    return Links;
+    return static_cast<vtkCellLinks*>(GetCellLinks());
 #endif
   }
   SMDS_Downward* getDownArray(unsigned char vtkType)

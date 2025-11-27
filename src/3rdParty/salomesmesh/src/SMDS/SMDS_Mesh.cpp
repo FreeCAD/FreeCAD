@@ -4712,14 +4712,10 @@ void SMDS_Mesh::dumpGrid(string ficdump)
         ficcon << endl;
   }
   ficcon << "-------------------------------- connectivity " <<  nbPoints << endl;
-#ifdef VTK_CELL_ARRAY_V2
-  #if VTK_VERSION_NUMBER_QUICK >= 90300000000
+#if VTK_VERSION_NUMBER_QUICK >= 90300000000
   vtkCellLinks *links = static_cast<vtkCellLinks*>(myGrid->GetLinks());
-  #else
-  vtkCellLinks *links = static_cast<vtkCellLinks*>(myGrid->GetCellLinks());
-  #endif
 #else
-  vtkCellLinks *links = myGrid->GetCellLinks();
+  vtkCellLinks *links = static_cast<vtkCellLinks*>(myGrid->GetCellLinks());
 #endif
   for (int i=0; i<nbPoints; i++)
   {

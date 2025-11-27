@@ -133,7 +133,6 @@ void SMDS_VtkVolume::initPoly(const std::vector<vtkIdType>& nodeIds,
 bool SMDS_VtkVolume::ChangeNodes(const SMDS_MeshNode* nodes[], const int nbNodes)
 {
   vtkUnstructuredGrid* grid = SMDS_Mesh::_meshList[myMeshId]->getGrid();
-#ifdef VTK_CELL_ARRAY_V2
   vtkNew<vtkIdList> cellPoints;
   grid->GetCellPoints(myVtkID, cellPoints.GetPointer());
   if (nbNodes != cellPoints->GetNumberOfIds())
@@ -145,20 +144,6 @@ bool SMDS_VtkVolume::ChangeNodes(const SMDS_MeshNode* nodes[], const int nbNodes
     {
       cellPoints->SetId(i, nodes[i]->getVtkId());
     }
-#else
-  vtkIdType npts = 0;
-  vtkIdType* pts = 0;
-  grid->GetCellPoints(myVtkID, npts, pts);
-  if (nbNodes != npts)
-    {
-      MESSAGE("ChangeNodes problem: not the same number of nodes " << npts << " -> " << nbNodes);
-      return false;
-    }
-  for (int i = 0; i < nbNodes; i++)
-    {
-      pts[i] = nodes[i]->getVtkId();
-    }
-#endif
   SMDS_Mesh::_meshList[myMeshId]->setMyModified();
   return true;
 }

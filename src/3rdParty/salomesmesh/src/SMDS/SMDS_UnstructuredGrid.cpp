@@ -341,11 +341,7 @@ void SMDS_UnstructuredGrid::copyBloc(vtkUnsignedCharArray *newTypes,
       // (n1,n2,n3) and (id1,id2,...,idn1,id1,id2,...,idn2, ...)
       // The Locations array in vtk 7.x kept the positions of the n's of the above array: (0, idn1 + 1, idn2 + 2).
       // In vtk 9.x this array doesn't exist any more but its values can be determined with idni + i
-#ifdef VTK_CELL_ARRAY_V2
       vtkIdType oldLoc = ((vtkIdTypeArray *)(this->Connectivity->GetOffsetsArray()))->GetValue( j ) + j;
-#else
-      vtkIdType oldLoc = this->Locations->GetValue(j);
-#endif
       vtkIdType nbpts;
       vtkIdTypePtr oldPtsCell = 0;
       this->Connectivity->GetCell(oldLoc, nbpts, oldPtsCell);
@@ -965,7 +961,6 @@ void SMDS_UnstructuredGrid::GetNodeIds(std::set<int>& nodeSet, int downId, unsig
  */
 void SMDS_UnstructuredGrid::ModifyCellNodes(int vtkVolId, std::map<int, int> localClonedNodeIds)
 {
-#ifdef VTK_CELL_ARRAY_V2
   vtkNew<vtkIdList> cellPoints;
   this->GetCellPoints(vtkVolId, cellPoints.GetPointer());
   for (vtkIdType i = 0; i < cellPoints->GetNumberOfIds(); i++)
@@ -979,22 +974,6 @@ void SMDS_UnstructuredGrid::ModifyCellNodes(int vtkVolId, std::map<int, int> loc
           //this->AddReferenceToCell(pts[i], vtkVolId);
         }
     }
-#else
-  vtkIdType npts = 0;
-  vtkIdType *pts; // will refer to the point id's of the face
-  this->GetCellPoints(vtkVolId, npts, pts);
-  for (int i = 0; i < npts; i++)
-    {
-      if (localClonedNodeIds.count(pts[i]))
-        {
-          vtkIdType oldpt = pts[i];
-          pts[i] = localClonedNodeIds[oldpt];
-          //MESSAGE(oldpt << " --> " << pts[i]);
-          //this->RemoveReferenceToCell(oldpt, vtkVolId);
-          //this->AddReferenceToCell(pts[i], vtkVolId);
-        }
-    }
-#endif
 }
 
 /*! reorder the nodes of a face
@@ -1024,25 +1003,16 @@ void SMDS_UnstructuredGrid::BuildLinks()
     this->Links->UnRegister(this);
     }
 
-#ifdef VTK_CELL_ARRAY_V2
   this->Links = SMDS_CellLinks::New();
   GetLinks()->Allocate(this->GetNumberOfPoints());
   GetLinks()->Register(this);
-//FIXME: vtk9
-  #if VTK_VERSION_NUMBER < VTK_VERSION_CHECK(9,3,0)
+#if VTK_VERSION_NUMBER < VTK_VERSION_CHECK(9,3,0)
   GetLinks()->BuildLinks(this);
-  #else
+#else
   GetLinks()->SetDataSet(this);
   GetLinks()->BuildLinks();
-  #endif
-  GetLinks()->Delete();
-#else
-  this->Links = SMDS_CellLinks::New();
-  this->Links->Allocate(this->GetNumberOfPoints());
-  this->Links->Register(this);
-  this->Links->BuildLinks(this, this->Connectivity);
-  this->Links->Delete();
 #endif
+  GetLinks()->Delete();
 }
 
 /*! Create a volume (prism or hexahedron) by duplication of a face.
