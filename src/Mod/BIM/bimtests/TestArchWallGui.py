@@ -25,6 +25,7 @@
 """GUI tests for the ArchWall module."""
 
 import FreeCAD
+import FreeCADGui
 import Draft
 import WorkingPlane
 from bimtests import TestArchBaseGui
@@ -182,3 +183,79 @@ class TestArchWallGui(TestArchBaseGui.TestArchBaseGui):
         self.assertEqual(Draft.get_type(wall), "Wall")
         self.assertEqual(base.TypeId, "Sketcher::SketchObject")
         self.assertEqual(wall.Base, base, "The wall's Base should be the newly created sketch.")
+
+    def test_stretch_rotated_baseless_wall(self):
+        """Tests that the Draft_Stretch tool correctly handles a rotated baseless wall."""
+        self.printTestMessage("Testing stretch on a rotated baseless wall...")
+
+        from draftguitools.gui_stretch import Stretch
+        import Arch
+
+        # 1. Arrange: Create a rotated baseless wall
+        wall = Arch.makeWall(length=2000, width=200, height=1500)
+
+        rotation = FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), 45)
+        placement = FreeCAD.Placement(FreeCAD.Vector(1000, 1000, 0), rotation)
+        wall.Placement = placement
+        self.document.recompute()
+
+        # Ensure the view is scaled to the object so selection logic works correctly
+        FreeCADGui.ActiveDocument.ActiveView.fitAll()
+
+        # Get initial state for assertion later
+        initial_endpoints = wall.Proxy.calc_endpoints(wall)
+        p_start_initial = initial_endpoints[0]
+        p_end_initial = initial_endpoints[1]
+
+        # 2. Act: Simulate the Stretch command
+        cmd = Stretch()
+        cmd.doc = self.document
+        FreeCADGui.Selection.addSelection(self.document.Name, wall.Name)
+
+        # Activate the command. It will detect the existing selection and
+        # call proceed() internally after performing necessary setup.
+        cmd.Activated()
+
+        # Simulate user clicks:
+        # Define a selection rectangle that encloses only the end point
+        cmd.addPoint(FreeCAD.Vector(p_end_initial.x - 1, p_end_initial.y - 1, 0))
+        cmd.addPoint(FreeCAD.Vector(p_end_initial.x + 1, p_end_initial.y + 1, 0))
+
+        # Manually inject the selection state to bypass the view-dependent tracker,
+        # which acts inconsistently in a headless test environment.
+        # [False, True] selects the end point while keeping the start point anchored.
+        cmd.ops = [[wall, [False, True]]]
+
+        # Define the displacement vector
+        displacement_vector = FreeCAD.Vector(500, -500, 0)
+        cmd.addPoint(FreeCAD.Vector(0, 0, 0))  # Start of displacement
+        cmd.addPoint(displacement_vector)  # End of displacement
+
+        # Allow the GUI command's macro to be processed
+        self.pump_gui_events()
+
+        # 3. Assert: Verify the new position of the endpoints
+        final_endpoints = wall.Proxy.calc_endpoints(wall)
+        p_start_final = final_endpoints[0]
+        p_end_final = final_endpoints[1]
+
+        # Calculate the error vector for diagnosis
+        diff = p_start_final.sub(p_start_initial)
+
+        error_message = (
+            f"\nThe unselected start point moved!\n"
+            f"Initial:  {p_start_initial}\n"
+            f"Final:    {p_start_final}\n"
+            f"Diff Vec: {diff}\n"
+            f"Error Mag: {diff.Length:.12f}"
+        )
+
+        # The start point should not have moved
+        self.assertTrue(p_start_final.isEqual(p_start_initial, 1e-6), error_message)
+
+        # The end point should have moved by the global displacement vector
+        expected_end_point = p_end_initial.add(displacement_vector)
+        self.assertTrue(
+            p_end_final.isEqual(expected_end_point, 1e-6),
+            f"Stretched endpoint {p_end_final} does not match expected {expected_end_point}",
+        )
