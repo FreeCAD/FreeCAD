@@ -250,6 +250,71 @@ void SMDS_UnstructuredGrid::compactGrid(std::vector<int>& idNodesOldToNew, int n
     }
   }
 
+#if VTK_VERSION_NUMBER >= VTK_VERSION_CHECK(9, 3, 20240112)
+  if ( this->FaceLocations )
+  {
+    vtkIdTypeArray *iniFaceLocO = (vtkIdTypeArray *)this->FaceLocations->GetOffsetsArray();
+    vtkIdTypeArray *iniFaceLocC = (vtkIdTypeArray *)this->FaceLocations->GetConnectivityArray();
+    vtkIdTypeArray *iniFaceO = (vtkIdTypeArray *)this->Faces->GetOffsetsArray();
+    vtkIdTypeArray *iniFaceC = (vtkIdTypeArray *)this->Faces->GetConnectivityArray();
+    //
+    vtkNew<vtkIdTypeArray> facesLoc_o; facesLoc_o->Initialize(); facesLoc_o->InsertNextValue(0);
+    vtkNew<vtkIdTypeArray> facesLoc_c; facesLoc_c->Initialize();
+    vtkNew<vtkIdTypeArray> faces_o; faces_o->Initialize(); faces_o->InsertNextValue(0);
+    vtkNew<vtkIdTypeArray> faces_c; faces_c->Initialize();
+    int newFaceId( 0 );
+    vtkIdType facesLoc_o_cur(0),faces_o_cur(0);
+    // for ( vtkIdType newCellID = 0; newCellID < newCellSize; newCellID++ )
+    for (int oldCellId = 0; oldCellId < oldCellSize; oldCellId++)
+    {
+      int newCellId = idCellsOldToNew[oldCellId];
+      if ( this->Types->GetValue(newCellId) == VTK_POLYHEDRON )
+      {
+        vtkIdType oldStartFaceLocOff = iniFaceLocO->GetValue( oldCellId );
+        vtkIdType nCellFaces = iniFaceLocO->GetValue( oldCellId + 1 ) - oldStartFaceLocOff;
+        facesLoc_o_cur += nCellFaces;
+        facesLoc_o->InsertNextValue( facesLoc_o_cur );
+        for ( int n = 0; n < nCellFaces; n++ )
+        {
+          facesLoc_c->InsertNextValue( newFaceId++ );
+          int curFaceId = iniFaceLocC->GetValue( oldStartFaceLocOff + n );
+          int oldStartPtOfFaceOff = iniFaceO->GetValue( curFaceId );
+          int nbOfPts = iniFaceO->GetValue( curFaceId + 1 ) - oldStartPtOfFaceOff;
+          faces_o_cur += nbOfPts;
+          faces_o->InsertNextValue( faces_o_cur );
+          for( int m = 0 ; m < nbOfPts ; m++ )
+          {
+            vtkIdType oldpt = iniFaceC->GetValue( oldStartPtOfFaceOff + m );
+            int curPt = idNodesOldToNew[ oldpt ];
+            faces_c->InsertNextValue( curPt );
+          }
+        }
+      }
+      else
+      {
+        facesLoc_o->InsertNextValue(facesLoc_o_cur);
+      }
+    }
+    {
+      faces_o->Squeeze(); faces_c->Squeeze();
+      facesLoc_o->Squeeze(); facesLoc_c->Squeeze();
+      //
+      vtkNew<vtkCellArray> outFaces;
+      outFaces->SetData( faces_o, faces_c );
+      vtkNew<vtkCellArray> outFaceLocations;
+      outFaceLocations->SetData( facesLoc_o, facesLoc_c );
+      //
+      this->SetPolyhedralCells(newTypes, newConnectivity, outFaceLocations, outFaces);
+    }
+  }
+  else
+  {
+    {
+      this->SetCells(newTypes,newConnectivity);
+    }
+    //this->CellLocations = newLocations;
+  }
+#else
   vtkIdTypeArray* thisFaceLocations = GetFaceLocations();
   vtkIdTypeArray* thisFaces = GetFaces();
   if (thisFaceLocations)
@@ -297,6 +362,7 @@ void SMDS_UnstructuredGrid::compactGrid(std::vector<int>& idNodesOldToNew, int n
   {
     this->SetCells(newTypes, newLocations, newConnectivity, thisFaceLocations, thisFaces);
   }
+#endif
 
   newPoints->Delete();
   newTypes->Delete();
