@@ -257,6 +257,9 @@ const std::list<gp_Trsf> PolarPattern::getTransformations(const std::vector<App:
         }
 
         angle = Base::toRadians(angle);
+        if (fabs(angle) < Precision::Angular()) {
+            throw Base::ValueError("Pattern angle can't be null");
+        }
     }
 
     // make sure spacings are correct size :
@@ -365,3 +368,4 @@ void PolarPattern::updateSpacings()
 }
 
 }  // namespace PartDesign
+
