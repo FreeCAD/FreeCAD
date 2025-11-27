@@ -1856,7 +1856,7 @@ QString PreferencesSearchController::getHighlightStyleForWidget(QWidget* widget)
     if (qobject_cast<QLabel*>(widget)) {
         return QStringLiteral("QLabel { ") + baseStyle + QStringLiteral(" padding: 2px; }");
     }
-    
+
     if (qobject_cast<QCheckBox*>(widget)) {
         return QStringLiteral("QCheckBox { ") + baseStyle + QStringLiteral(" padding: 2px; }");
     }
@@ -1958,8 +1958,7 @@ bool PreferencesSearchController::isClickOutsidePopup(const QMouseEvent* mouseEv
     const QPoint globalPos = mouseEvent->globalPosition().toPoint();
 #endif
     const auto searchBoxRect = QRect(m_searchBox->mapToGlobal(QPoint(0, 0)), m_searchBox->size());
-    auto popupRect
-        = QRect(m_searchResultsList->mapToGlobal(QPoint(0, 0)), m_searchResultsList->size());
+    auto popupRect = QRect(m_searchResultsList->mapToGlobal(QPoint(0, 0)), m_searchResultsList->size());
 
     return !searchBoxRect.contains(globalPos) && !popupRect.contains(globalPos);
 }
