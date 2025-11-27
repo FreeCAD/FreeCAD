@@ -47,6 +47,7 @@
 #include <Mod/Part/App/EllipsePy.h>
 #include <Mod/Part/App/HyperbolaPy.h>
 #include <Mod/Part/App/LineSegmentPy.h>
+#include <Mod/Part/App/OffsetCurvePy.h>
 #include <Mod/Part/App/ParabolaPy.h>
 
 #include "Constraint.h"
@@ -662,6 +663,8 @@ const char* nameByType(Sketch::GeoType type)
             return "arcofparabola";
         case Sketch::BSpline:
             return "bspline";
+        case Sketch::OffsetCurve:
+            return "offsetcurve";
         case Sketch::None:
         default:
             return "unknown";
@@ -1912,6 +1915,11 @@ Py::Tuple Sketch::getPyGeometry() const
                 tuple[i] = Py::asObject(new BSplineCurvePy(bsp));
                 break;
             }
+            case OffsetCurve: {
+                auto* offc = static_cast<GeomOffsetCurve*>(it->geo->clone());
+                tuple[i] = Py::asObject(new OffsetCurvePy(offc));
+                break;
+            }
             default:
                 // not implemented type in the sketch!
                 break;
@@ -1951,6 +1959,8 @@ GCS::Curve* Sketch::getGCSCurveByGeoId(int geoId)
             return &ArcsOfParabola[Geoms[geoId].index];
         case BSpline:
             return &BSplines[Geoms[geoId].index];
+        case OffsetCurve:
+            return &OffsetCurves[Geoms[geoId].index];
         default:
             return nullptr;
     };
@@ -2507,6 +2517,18 @@ int Sketch::addConstraint(const Constraint* constraint)
                 c.secondvalue,
                 c.driving
             );
+        } break;
+        case Offset: {
+            c.value = new double(constraint->getValue());
+            if (c.driving) {
+                FixParameters.push_back(c.value);
+            }
+            else {
+                Parameters.push_back(c.value);
+                DrivenParameters.push_back(c.value);
+            }
+
+            rtn = addOffsetConstraint(constraint->First, constraint->Second, c.value, c.driving);
         } break;
         case Sketcher::None:   // ambiguous enum value
         case Sketcher::Block:  // handled separately while adding geometry
@@ -3581,6 +3603,37 @@ int Sketch::addDistanceConstraint(int geoId1, int geoId2, double* value, bool dr
     }
 }
 
+int Sketch::addOffsetConstraint(int geoIdBasis, int geoIdOffCurve, double* value, bool driving)
+{
+    geoIdBasis = checkGeoId(geoIdBasis);
+    geoIdOffCurve = checkGeoId(geoIdOffCurve);
+
+    if (Geoms[geoIdOffCurve].type != OffsetCurve) {
+        throw Base::TypeError("Sketch::addOffsetConstraint(): second curve must be an offsetcurve");
+    }
+
+    Geoms[geoIdOffCurve].basisId = geoIdBasis;
+
+    GCS::Curve* cBasis = getGCSCurveByGeoId(geoIdBasis);
+    GCS::OffsetCurve* cOffset = &OffsetCurves[Geoms[geoIdOffCurve].index];
+    if (!cBasis) {
+        throw Base::ValueError("addOffsetConstraint: getGCSCurveByGeoId returned NULL for basis!\n");
+    }
+    if (!cOffset) {
+        throw Base::ValueError("addOffsetConstraint: getGCSCurveByGeoId returned NULL for offset!\n");
+    }
+
+    // TODO: Check somewhere that an additional offset constraint does not exist on the same curve
+    if (cOffset->basis != nullptr && cOffset->basis != cBasis) {
+        throw Base::ValueError("addOffsetConstraint: this offset curve already has a different basis");
+    }
+
+    cOffset->basis = cBasis;
+
+    int tag = ++ConstraintsCounter;
+    GCSsys.addConstraintOffset(*cOffset, value, tag, driving);
+    return ConstraintsCounter;
+}
 
 int Sketch::addRadiusConstraint(int geoId, double* value, bool driving)
 {
@@ -4575,6 +4628,9 @@ void Sketch::updateGeometry(const GeoDef& it)
     else if (it.type == BSpline) {
         updateBSpline(it);
     }
+    else if (it.type == OffsetCurve) {
+        updateOffsetCurve(it);
+    }
 }
 
 void Sketch::updatePoint(const GeoDef& def)
@@ -4747,6 +4803,17 @@ void Sketch::updateBSpline(const GeoDef& def)
     }
 
     bsp->setKnots(knots,mult);*/
+}
+
+void Sketch::updateOffsetCurve(const GeoDef& def)
+{
+    auto* offc = static_cast<GeomOffsetCurve*>(def.geo);
+
+    // Find basis and update
+    // TODO: Basis can be stored in Geoms
+    // FIXME: It is assumed that basis curve is already updated.
+    auto* basis = static_cast<GeomCurve*>(Geoms[def.basisId].geo);
+    offc->setBasis(basis);
 }
 
 bool Sketch::updateNonDrivingConstraints()
