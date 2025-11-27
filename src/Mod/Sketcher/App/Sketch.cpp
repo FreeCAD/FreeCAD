@@ -1968,28 +1968,20 @@ GCS::Curve* Sketch::getGCSCurveByGeoId(int geoId)
     switch (Geoms[geoId].type) {
         case Line:
             return &Lines[Geoms[geoId].index];
-            break;
         case Circle:
             return &Circles[Geoms[geoId].index];
-            break;
         case Arc:
             return &Arcs[Geoms[geoId].index];
-            break;
         case Ellipse:
             return &Ellipses[Geoms[geoId].index];
-            break;
         case ArcOfEllipse:
             return &ArcsOfEllipse[Geoms[geoId].index];
-            break;
         case ArcOfHyperbola:
             return &ArcsOfHyperbola[Geoms[geoId].index];
-            break;
         case ArcOfParabola:
             return &ArcsOfParabola[Geoms[geoId].index];
-            break;
         case BSpline:
             return &BSplines[Geoms[geoId].index];
-            break;
         default:
             return nullptr;
     };
@@ -2018,7 +2010,7 @@ int Sketch::addConstraint(const Constraint* constraint)
     c.driving = constraint->isDriving;
 
     switch (constraint->Type) {
-        case DistanceX:
+        case DistanceX: {
             if (constraint->FirstPos == PointPos::none) {  // horizontal length of a line
                 c.value = new double(constraint->getValue());
                 if (c.driving) {
@@ -2062,8 +2054,8 @@ int Sketch::addConstraint(const Constraint* constraint)
                     c.driving
                 );
             }
-            break;
-        case DistanceY:
+        } break;
+        case DistanceY: {
             if (constraint->FirstPos == PointPos::none) {  // vertical length of a line
                 c.value = new double(constraint->getValue());
                 if (c.driving) {
@@ -2107,8 +2099,8 @@ int Sketch::addConstraint(const Constraint* constraint)
                     c.driving
                 );
             }
-            break;
-        case Horizontal:
+        } break;
+        case Horizontal: {
             if (constraint->Second == GeoEnum::GeoUndef) {  // horizontal line
                 rtn = addHorizontalConstraint(constraint->First);
             }
@@ -2120,8 +2112,8 @@ int Sketch::addConstraint(const Constraint* constraint)
                     constraint->SecondPos
                 );
             }
-            break;
-        case Vertical:
+        } break;
+        case Vertical: {
             if (constraint->Second == GeoEnum::GeoUndef) {  // vertical line
                 rtn = addVerticalConstraint(constraint->First);
             }
@@ -2133,16 +2125,16 @@ int Sketch::addConstraint(const Constraint* constraint)
                     constraint->SecondPos
                 );
             }
-            break;
-        case Coincident:
+        } break;
+        case Coincident: {
             rtn = addPointCoincidentConstraint(
                 constraint->First,
                 constraint->FirstPos,
                 constraint->Second,
                 constraint->SecondPos
             );
-            break;
-        case PointOnObject:
+        } break;
+        case PointOnObject: {
             if (Geoms[checkGeoId(constraint->Second)].type == BSpline) {
                 c.value = new double(constraint->getValue());
                 // Driving doesn't make sense here
@@ -2162,11 +2154,11 @@ int Sketch::addConstraint(const Constraint* constraint)
                     constraint->Second
                 );
             }
-            break;
+        } break;
         case Parallel:
             rtn = addParallelConstraint(constraint->First, constraint->Second);
             break;
-        case Perpendicular:
+        case Perpendicular: {
             if (constraint->FirstPos == PointPos::none && constraint->SecondPos == PointPos::none
                 && constraint->Third == GeoEnum::GeoUndef) {
                 // simple perpendicularity
@@ -2195,7 +2187,7 @@ int Sketch::addConstraint(const Constraint* constraint)
                     c.driving
                 );
             }
-            break;
+        } break;
         case Tangent: {
             bool isSpecialCase = false;
 
@@ -2269,9 +2261,8 @@ int Sketch::addConstraint(const Constraint* constraint)
                     c.driving
                 );
             }
-            break;
-        }
-        case Distance:
+        } break;
+        case Distance: {
             if (constraint->SecondPos != PointPos::none) {  // point to point distance
                 c.value = new double(constraint->getValue());
                 if (c.driving) {
@@ -2336,8 +2327,8 @@ int Sketch::addConstraint(const Constraint* constraint)
 
                 rtn = addDistanceConstraint(constraint->First, c.value, c.driving);
             }
-            break;
-        case Angle:
+        } break;
+        case Angle: {
             if (constraint->Third != GeoEnum::GeoUndef) {
                 c.value = new double(constraint->getValue());
                 if (c.driving) {
@@ -2404,7 +2395,7 @@ int Sketch::addConstraint(const Constraint* constraint)
 
                 rtn = addAngleConstraint(constraint->First, c.value, c.driving);
             }
-            break;
+        } break;
         case Radius: {
             c.value = new double(constraint->getValue());
             if (c.driving) {
@@ -2416,8 +2407,7 @@ int Sketch::addConstraint(const Constraint* constraint)
             }
 
             rtn = addRadiusConstraint(constraint->First, c.value, c.driving);
-            break;
-        }
+        } break;
         case Diameter: {
             c.value = new double(constraint->getValue());
             if (c.driving) {
@@ -2429,8 +2419,7 @@ int Sketch::addConstraint(const Constraint* constraint)
             }
 
             rtn = addDiameterConstraint(constraint->First, c.value, c.driving);
-            break;
-        }
+        } break;
         case Weight: {
             c.value = new double(constraint->getValue());
             if (c.driving) {
@@ -2442,12 +2431,11 @@ int Sketch::addConstraint(const Constraint* constraint)
             }
 
             rtn = addRadiusConstraint(constraint->First, c.value, c.driving);
-            break;
-        }
+        } break;
         case Equal:
             rtn = addEqualConstraint(constraint->First, constraint->Second);
             break;
-        case Symmetric:
+        case Symmetric: {
             if (constraint->ThirdPos != PointPos::none) {
                 rtn = addSymmetricConstraint(
                     constraint->First,
@@ -2467,8 +2455,8 @@ int Sketch::addConstraint(const Constraint* constraint)
                     constraint->Third
                 );
             }
-            break;
-        case InternalAlignment:
+        } break;
+        case InternalAlignment: {
             switch (constraint->AlignmentType) {
                 case EllipseMajorDiameter:
                     rtn = addInternalAlignmentEllipseMajorDiameter(constraint->First, constraint->Second);
@@ -2523,7 +2511,7 @@ int Sketch::addConstraint(const Constraint* constraint)
                 default:
                     break;
             }
-            break;
+        } break;
         case SnellsLaw: {
             c.value = new double(constraint->getValue());
             c.secondvalue = new double(constraint->getValue());
@@ -5040,9 +5028,8 @@ int Sketch::initMove(const std::vector<GeoElementId>& geoEltIds, bool fine)
 
     MoveParameters.clear();
 
-    // We need to reserve enough size in the vec or the dynamic resizing
-    // (emplace_back in the for loop below) will trigger reallocation.
-    // Which will corrupt pointers we're storing.
+    // We need to reserve enough size in the vec or the dynamic resizing (emplace_back in the for
+    // loop below) will trigger reallocation. Which will corrupt pointers we're storing.
     size_t reserveSize = 0;
     for (auto& pair : geoEltIds) {
         int geoId = checkGeoId(pair.GeoId);
