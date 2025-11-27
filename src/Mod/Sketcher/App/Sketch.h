@@ -359,6 +359,15 @@ public:
      */
     int addDistanceConstraint(int geoId1, int geoId2, double* value, bool driving = true);
 
+    /**
+     *   add an offset constraint
+     *
+     *   double * value is a pointer to double allocated in the heap, containing the
+     *   constraint value and already inserted into either the FixParameters or
+     *   Parameters array, as the case may be.
+     */
+    int addOffsetConstraint(int geoIdBasis, int geoIdOffCurve, double* value, bool driving = true);
+
     /// add a parallel constraint between two lines
     int addParallelConstraint(int geoId1, int geoId2);
     /// add a perpendicular constraint between two lines
@@ -573,6 +582,7 @@ private:
         int startPointId = -1;   ///< Index in Points of the start point of this geometry
         int midPointId = -1;     ///< Index in Points of the mid point of this geometry
         int endPointId = -1;     ///< Index in Points of the end point of this geometry
+        int basisId = GeoEnum::GeoUndef;  ///< Index of basis geometry (if relevant)
     };
     /// container element to store and work with the constraints of this sketch
     struct ConstrDef
@@ -754,6 +764,7 @@ private:
     void updateCircle(const GeoDef&);
     void updateEllipse(const GeoDef&);
     void updateBSpline(const GeoDef&);
+    void updateOffsetCurve(const GeoDef&);
     bool updateNonDrivingConstraints();
 
     void calculateDependentParametersElements();
