@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>676</width>
-    <height>1200</height>
+    <height>1302</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -839,27 +839,6 @@ for ProjectionGroups</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>UseCameraDirection</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>/Mod/TechDraw/General</cstring>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="Gui::PrefCheckBox" name="cb_alwaysShowLabel">
-          <property name="font">
-           <font>
-            <italic>true</italic>
-           </font>
-          </property>
-          <property name="toolTip">
-           <string>Displays view labels even when frames are suppressed</string>
-          </property>
-          <property name="text">
-           <string>Always Show Label</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>AlwaysShowLabel</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>/Mod/TechDraw/General</cstring>
