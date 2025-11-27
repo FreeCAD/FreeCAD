@@ -940,9 +940,9 @@ public:
 
     void setBasis(const GeomCurve* newBasis)
     {
-      setBasis(Handle(Geom_Curve)::DownCast(newBasis->handle()));
+        setBasis(Handle(Geom_Curve)::DownCast(newBasis->handle()));
     }
-    void setBasis(const Handle(Geom_Curve)& newBasis);
+    void setBasis(const Handle(Geom_Curve) & newBasis);
 
     // Persistence implementer ---------------------
     unsigned int getMemSize() const override;
