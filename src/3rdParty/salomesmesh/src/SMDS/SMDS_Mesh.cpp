@@ -53,6 +53,7 @@
 #include <vtkCell.h>
 #include <vtkCellLinks.h>
 #include <vtkIdList.h>
+#include <vtkVersion.h>
 
 #include <algorithm>
 #include <map>
@@ -4712,7 +4713,7 @@ void SMDS_Mesh::dumpGrid(string ficdump)
         ficcon << endl;
   }
   ficcon << "-------------------------------- connectivity " <<  nbPoints << endl;
-#if VTK_VERSION_NUMBER_QUICK >= 90300000000
+#if VTK_VERSION_NUMBER >= VTK_VERSION_CHECK(9, 2, 20221112)
   vtkCellLinks *links = static_cast<vtkCellLinks*>(myGrid->GetLinks());
 #else
   vtkCellLinks *links = static_cast<vtkCellLinks*>(myGrid->GetCellLinks());

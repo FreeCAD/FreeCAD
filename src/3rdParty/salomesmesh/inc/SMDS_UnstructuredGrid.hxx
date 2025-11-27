@@ -28,6 +28,7 @@
 
 #include <vtkUnstructuredGrid.h>
 #include <vtkCellLinks.h>
+#include <vtkVersion.h>
 
 #include <vector>
 #include <set>
@@ -95,7 +96,7 @@ public:
                                        std::map<int, std::map<long,int> >& nodeQuadDomains);
   vtkCellLinks* GetLinks()
   {
-#if VTK_VERSION_NUMBER_QUICK >= 90300000000
+#if VTK_VERSION_NUMBER >= VTK_VERSION_CHECK(9, 2, 20221112)
     return static_cast<vtkCellLinks*>(vtkUnstructuredGrid::GetLinks());
 #else
     return static_cast<vtkCellLinks*>(GetCellLinks());

@@ -1006,7 +1006,7 @@ void SMDS_UnstructuredGrid::BuildLinks()
   this->Links = SMDS_CellLinks::New();
   GetLinks()->Allocate(this->GetNumberOfPoints());
   GetLinks()->Register(this);
-#if VTK_VERSION_NUMBER < VTK_VERSION_CHECK(9,3,0)
+#if VTK_VERSION_NUMBER < VTK_VERSION_CHECK(9, 2, 20221112)
   GetLinks()->BuildLinks(this);
 #else
   GetLinks()->SetDataSet(this);
