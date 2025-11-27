@@ -368,4 +368,3 @@ void PolarPattern::updateSpacings()
 }
 
 }  // namespace PartDesign
-
