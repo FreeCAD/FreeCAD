@@ -1570,4 +1570,3 @@ void ViewProviderPartExt::handleChangedPropertyName(
         Gui::ViewProviderGeometryObject::handleChangedPropertyName(reader, TypeName, PropName);
     }
 }
-
