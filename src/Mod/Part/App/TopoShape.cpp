@@ -3267,6 +3267,30 @@ void TopoShape::transformGeometry(const Base::Matrix4D& rclMat)
     }
 }
 
+void TopoShape::bakeInTransform()
+{
+    if (getShape().IsNull()) {
+        return;
+    }
+
+    if (shapeType() != TopAbs_COMPOUND) {
+        transformGeometry(getTransform());
+        setTransform(Base::Matrix4D {});
+        return;
+    }
+
+    TopoShape result;
+    std::vector<TopoShape> shapes;
+
+    for (auto& subshape : getSubTopoShapes()) {
+        subshape.bakeInTransform();
+        shapes.push_back(subshape);
+    }
+
+    result.makeCompound(shapes);
+    *this = result;
+}
+
 TopoDS_Shape TopoShape::transformGShape(const Base::Matrix4D& rclTrf, bool copy) const
 {
     if (this->_Shape.IsNull()) {
