@@ -25,7 +25,6 @@
 #include <QAction>
 #include <QApplication>
 #include <QContextMenuEvent>
-#include <QIODeviceBase>
 #include <QMenu>
 #include <QMessageBox>
 #include <QPageLayout>
