@@ -25,7 +25,7 @@
 # FreeCAD init module - Tests
 #
 # Gathering all the information to start FreeCAD.
-# This is the last of four init scripts:
+# This is the third of four init scripts:
 # +------+------------------+-----------------------------+
 # | This | Script           | Runs                        |
 # +------+------------------+-----------------------------+

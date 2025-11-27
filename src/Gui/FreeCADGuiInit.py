@@ -57,7 +57,9 @@ App.Console.PrintLog("░░░▀▀▀░▀░▀░▀▀▀░░▀░░�
 
 # Declare symbols already defined in global by previous scripts to make linter happy.
 if typing.TYPE_CHECKING:
-    from __main__ import Log, Err, ModState
+    Log: typing.Callable = None
+    Err: typing.Callable = None
+    ModState: typing.Any = None
 
 
 # The values must match with that of the C++ enum class ResolveMode
@@ -101,6 +103,8 @@ class Workbench:
     MenuText = ""
     ToolTip = ""
     Icon = None
+
+    __Workbench__: "Workbench"  # Injected by FreeCAD, see: Application::activateWorkbench
 
     def Initialize(self):
         """Initializes this workbench."""
@@ -250,6 +254,8 @@ class ModGui:
     """
     Mod Gui Loader.
     """
+
+    mod: typing.Any
 
     def run_init_gui(self, sub_workbench: Path | None = None) -> bool:
         return False
@@ -457,8 +463,9 @@ Log("Init: Running FreeCADGuiInit.py start script... done\n")
 # │ Cleanup                                        │
 # └────────────────────────────────────────────────┘
 
-del InitApplications
-del NoneWorkbench
-del StandardWorkbench
-del App.__ModCache__, ModGui, DirModGui, ExtModGui
-del typing, re, Path, importlib
+if not typing.TYPE_CHECKING:
+    del InitApplications
+    del NoneWorkbench
+    del StandardWorkbench
+    del App.__ModCache__, ModGui, DirModGui, ExtModGui
+    del typing, re, Path, importlib
