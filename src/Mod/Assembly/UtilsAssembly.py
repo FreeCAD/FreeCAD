@@ -1210,13 +1210,20 @@ def getComponentReference(assembly, root_obj, sub_string):
         if not obj:
             continue
 
-        # Skips (Groups / Flexible Links / LinkGroups)
-        if obj.TypeId == "App::DocumentObjectGroup":
+        # Skips (Groups / Flexible Links / LinkGroups / non-geofeature objects)
+        if obj.isDerivedFrom("App::DocumentObjectGroup"):
             continue
         if obj.isDerivedFrom("Assembly::AssemblyLink"):
             if hasattr(obj, "Rigid") and not obj.Rigid:
                 continue
         if isLinkGroup(obj):
+            continue
+
+        if obj.isDerivedFrom("App::Link"):
+            linkedObj = obj.getLinkedObject()
+            if linkedObj and not linkedObj.isDerivedFrom("App::GeoFeature"):
+                continue
+        elif not obj.isDerivedFrom("App::GeoFeature"):
             continue
 
         component = obj
