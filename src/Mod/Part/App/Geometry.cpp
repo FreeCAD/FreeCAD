@@ -4939,7 +4939,7 @@ Base::Vector3d GeomOffsetCurve::getEndPoint() const
     return this->value(endParam);
 }
 
-void GeomOffsetCurve::setBasis(const Handle(Geom_Curve)& newBasis)
+void GeomOffsetCurve::setBasis(const Handle(Geom_Curve) & newBasis)
 {
     Handle(Geom_OffsetCurve) myOffsetCurve = Handle(Geom_OffsetCurve)::DownCast(myCurve);
     myOffsetCurve->SetBasisCurve(newBasis);
