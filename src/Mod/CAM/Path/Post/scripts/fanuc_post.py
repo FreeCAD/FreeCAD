@@ -60,7 +60,7 @@ parser.add_argument(
     action="store_true",
     help="don't pop up editor before writing output",
 )
-parser.add_argument("--precision", default="3", help="number of digits of precision, default=3")
+parser.add_argument("--precision", help="number of digits of precision, default=3 (mm) or 4 (in)")
 parser.add_argument(
     "--preamble",
     help='set commands to be issued before the first command, default="G17 G54 G40 G49 G80 G90\\n"',
@@ -116,11 +116,11 @@ PRECISION = 3
 tapSpeed = 0
 
 # Preamble text will appear at the beginning of the GCODE output file.
-PREAMBLE = """G17 G54 G40 G49 G80 G90
+DEFAULT_PREAMBLE = """G17 G54 G40 G49 G80 G90
 """
 
 # Postamble text will appear following the last operation.
-POSTAMBLE = """M05
+DEFAULT_POSTAMBLE = """M05
 G17 G54 G90 G80 G40
 M6 T0
 M2
@@ -155,29 +155,54 @@ def processArguments(argstring):
         args = parser.parse_args(shlex.split(argstring))
         if args.no_header:
             OUTPUT_HEADER = False
+        else:
+            OUTPUT_HEADER = True
         if args.no_comments:
             OUTPUT_COMMENTS = False
+        else:
+            OUTPUT_COMMENTS = True
         if args.line_numbers:
             OUTPUT_LINE_NUMBERS = True
+            LINENR = 100
+        else:
+            OUTPUT_LINE_NUMBERS = False
         if args.no_show_editor:
             SHOW_EDITOR = False
+        else:
+            SHOW_EDITOR = True
         print("Show editor = %d" % SHOW_EDITOR)
-        PRECISION = args.precision
         if args.preamble is not None:
             PREAMBLE = args.preamble.replace("\\n", "\n")
+        else:
+            PREAMBLE = DEFAULT_PREAMBLE
         if args.postamble is not None:
             POSTAMBLE = args.postamble.replace("\\n", "\n")
+        else:
+            POSTAMBLE = DEFAULT_POSTAMBLE
         if args.inches:
             UNITS = "G20"
             UNIT_SPEED_FORMAT = "in/min"
             UNIT_FORMAT = "in"
             PRECISION = 4
+        else:
+            UNITS = "G21"
+            UNIT_SPEED_FORMAT = "mm/min"
+            UNIT_FORMAT = "mm"
+            PRECISION = 3
+        if args.precision:
+            PRECISION = int(args.precision)
         if args.no_modal:
             MODAL = False
+        else:
+            MODAL = True
         if args.no_tlo:
             USE_TLO = False
+        else:
+            USE_TLO = True
         if args.no_axis_modal:
             OUTPUT_DOUBLES = True
+        else:
+            OUTPUT_DOUBLES = False
 
     except Exception:
         return False
