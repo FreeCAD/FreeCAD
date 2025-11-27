@@ -120,7 +120,7 @@ class DebianChangelog(VersionControl):
         return True
 
     def printInfo(self):
-        print("debian/changelog")
+        print("found RCS: debian/changelog")
 
 
 class BazaarControl(VersionControl):
@@ -141,7 +141,7 @@ class BazaarControl(VersionControl):
         return True
 
     def printInfo(self):
-        print("bazaar")
+        print("found RCS: bazaar")
 
 
 class DebianGitHub(VersionControl):
@@ -239,7 +239,7 @@ class DebianGitHub(VersionControl):
         return content
 
     def printInfo(self):
-        print("Debian/GitHub")
+        print("found RCS: Debian/GitHub")
 
 
 class GitControl(VersionControl):
@@ -363,6 +363,7 @@ class GitControl(VersionControl):
                 self.branch = ",".join(names)
 
     def extractInfo(self, srcdir, bindir):
+        os.chdir(srcdir)
         self.hash = os.popen("git log -1 --pretty=format:%H").read().strip()
         if self.hash == "":
             return False  # not a git repo
@@ -413,7 +414,7 @@ class GitControl(VersionControl):
         return True
 
     def printInfo(self):
-        print("git")
+        print("found RCS: git")
 
     def writeVersion(self, lines):
         content = VersionControl.writeVersion(self, lines)
@@ -428,7 +429,7 @@ class MercurialControl(VersionControl):
         return False
 
     def printInfo(self):
-        print("mercurial")
+        print("found RCS: mercurial")
 
 
 class Subversion(VersionControl):
@@ -495,7 +496,7 @@ class Subversion(VersionControl):
         return True
 
     def printInfo(self):
-        print("subversion")
+        print("found RCS: subversion")
 
 
 def main():
@@ -537,6 +538,26 @@ def main():
             out.close()
             i.printInfo()
             sys.stdout.write("%s/src/Build/Version.h.out written\n" % (bindir))
+
+            # same procedure for the rc files
+            inp = open("%s/src/Main/freecad.rc.in" % (bindir))
+            lines = inp.readlines()
+            inp.close()
+            lines = VersionControl.writeVersion(i, lines)
+            out = open("%s/src/Main/freecad.rc.out" % (bindir), "w")
+            out.writelines(lines)
+            out.close()
+
+            inp = open("%s/src/Main/freecadCMD.rc.in" % (bindir))
+            lines = inp.readlines()
+            inp.close()
+            lines = VersionControl.writeVersion(i, lines)
+            out = open("%s/src/Main/freecadCMD.rc.out" % (bindir), "w")
+            out.writelines(lines)
+            out.close()
+
+            sys.stdout.write("%s/src/Main/freecad.rc files saved\n" % (bindir))
+
             break
 
 
