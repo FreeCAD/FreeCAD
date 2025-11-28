@@ -1,6 +1,7 @@
 from KinematicModelBase import KinematicModelBase
 import math
 
+
 class MachineKinematics4Axis(KinematicModelBase):
     def inverse(self, tool_pos, tool_orient):
         # naive: compute rotation A about Z to align X axis with tool_orient XY projection

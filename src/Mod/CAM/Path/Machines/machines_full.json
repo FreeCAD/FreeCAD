@@ -1,546 +1,814 @@
 {
-  "version": "1.0",
-  "description": "FreeCAD Multi-Axis CAM Machine Library",
-  "machines": {
-    "Langmuir_MR1": {
-      "description": "Langmuir Systems MR-1 - Compact 3-axis CNC router",
-      "manufacturer": "Langmuir Systems",
-      "model": "MR-1",
-      "category": "hobbyist",
-      "axes": ["X", "Y", "Z"],
-      "limits": {
-        "X": {"min": 0.0, "max": 300.0, "unit": "mm"},
-        "Y": {"min": 0.0, "max": 170.0, "unit": "mm"},
-        "Z": {"min": 0.0, "max": 50.0, "unit": "mm"}
-      },
-      "feed_rate": {
-        "max": 3000.0,
-        "default": 1500.0,
-        "unit": "mm/min"
-      },
-      "spindle": {
-        "max_rpm": 30000,
-        "default_rpm": 18000,
-        "min_rpm": 5000
-      },
-      "rtcp_support": false,
-      "post_processor": "generic_pp",
-      "notes": "Langmuir MR1 3-axis CNC mill. No rotary axes. Good baseline test machine for PCB milling and small parts."
+    "version": "1.0",
+    "description": "FreeCAD Multi-Axis CAM Machine Library",
+    "machines": {
+        "Langmuir_MR1": {
+            "description": "Langmuir Systems MR-1 - Compact 3-axis CNC router",
+            "manufacturer": "Langmuir Systems",
+            "model": "MR-1",
+            "category": "hobbyist",
+            "axes": [
+                "X",
+                "Y",
+                "Z"
+            ],
+            "limits": {
+                "X": {
+                    "min": 0.0,
+                    "max": 300.0,
+                    "unit": "mm"
+                },
+                "Y": {
+                    "min": 0.0,
+                    "max": 170.0,
+                    "unit": "mm"
+                },
+                "Z": {
+                    "min": 0.0,
+                    "max": 50.0,
+                    "unit": "mm"
+                }
+            },
+            "feed_rate": {
+                "max": 3000.0,
+                "default": 1500.0,
+                "unit": "mm/min"
+            },
+            "spindle": {
+                "max_rpm": 30000,
+                "default_rpm": 18000,
+                "min_rpm": 5000
+            },
+            "rtcp_support": false,
+            "post_processor": "generic_pp",
+            "notes": "Langmuir MR1 3-axis CNC mill. No rotary axes. Good baseline test machine for PCB milling and small parts."
+        },
+        "GhostGunner2": {
+            "description": "Ghost Gunner 2 - Original 3-axis desktop CNC mill",
+            "manufacturer": "Defense Distributed",
+            "model": "Ghost Gunner 2 (GG2)",
+            "category": "3axis_micro",
+            "axes": [
+                "X",
+                "Y",
+                "Z"
+            ],
+            "limits": {
+                "X": {
+                    "min": 0.0,
+                    "max": 150.0,
+                    "unit": "mm"
+                },
+                "Y": {
+                    "min": 0.0,
+                    "max": 150.0,
+                    "unit": "mm"
+                },
+                "Z": {
+                    "min": 0.0,
+                    "max": 80.0,
+                    "unit": "mm"
+                }
+            },
+            "feed_rate": {
+                "max": 1000.0,
+                "default": 600.0,
+                "rapid": 2000.0,
+                "unit": "mm/min"
+            },
+            "acceleration": {
+                "max": 500.0,
+                "default": 300.0,
+                "unit": "mm/s^2"
+            },
+            "spindle": {
+                "max_rpm": 10000,
+                "default_rpm": 6000,
+                "min_rpm": 1000,
+                "type": "DC_motor",
+                "control": "PWM"
+            },
+            "controller": {
+                "type": "GRBL_Legacy",
+                "version": "0.9",
+                "dialect": "GG2_GRBL"
+            },
+            "rtcp_support": false,
+            "post_processor": "ghostgunner_3axis_post",
+            "safe_height": 10.0,
+            "default_tool": {
+                "diameter": 3.175,
+                "length": 25.0,
+                "flutes": 2,
+                "material": "carbide"
+            },
+            "notes": "Original Ghost Gunner with GRBL 0.9 controller. No tool changer. Fixed spindle motor."
+        },
+        "GhostGunner3": {
+            "description": "Ghost Gunner 3 - Enhanced 3-axis desktop CNC mill",
+            "manufacturer": "Defense Distributed",
+            "model": "Ghost Gunner 3 (GG3)",
+            "category": "3axis_micro",
+            "axes": [
+                "X",
+                "Y",
+                "Z"
+            ],
+            "limits": {
+                "X": {
+                    "min": 0.0,
+                    "max": 150.0,
+                    "unit": "mm"
+                },
+                "Y": {
+                    "min": 0.0,
+                    "max": 150.0,
+                    "unit": "mm"
+                },
+                "Z": {
+                    "min": 0.0,
+                    "max": 100.0,
+                    "unit": "mm"
+                }
+            },
+            "feed_rate": {
+                "max": 1200.0,
+                "default": 800.0,
+                "rapid": 2500.0,
+                "unit": "mm/min"
+            },
+            "acceleration": {
+                "max": 600.0,
+                "default": 400.0,
+                "unit": "mm/s^2"
+            },
+            "spindle": {
+                "max_rpm": 10000,
+                "default_rpm": 6000,
+                "min_rpm": 1000,
+                "type": "DC_motor",
+                "control": "PWM"
+            },
+            "controller": {
+                "type": "GGC_Dreamer",
+                "version": "1.0",
+                "dialect": "GG3_GGC"
+            },
+            "rtcp_support": false,
+            "post_processor": "ghostgunner_3axis_post",
+            "safe_height": 10.0,
+            "default_tool": {
+                "diameter": 3.175,
+                "length": 25.0,
+                "flutes": 2,
+                "material": "carbide"
+            },
+            "notes": "Ghost Gunner 3 with improved GGC/Dreamer controller. No tool changer. Enhanced rigidity."
+        },
+        "GhostGunner3S": {
+            "description": "Ghost Gunner 3S - Premium 3-axis desktop CNC mill",
+            "manufacturer": "Defense Distributed",
+            "model": "Ghost Gunner 3S (GG3-S)",
+            "category": "3axis_micro",
+            "axes": [
+                "X",
+                "Y",
+                "Z"
+            ],
+            "limits": {
+                "X": {
+                    "min": 0.0,
+                    "max": 150.0,
+                    "unit": "mm"
+                },
+                "Y": {
+                    "min": 0.0,
+                    "max": 150.0,
+                    "unit": "mm"
+                },
+                "Z": {
+                    "min": 0.0,
+                    "max": 100.0,
+                    "unit": "mm"
+                }
+            },
+            "feed_rate": {
+                "max": 1200.0,
+                "default": 800.0,
+                "rapid": 2500.0,
+                "unit": "mm/min"
+            },
+            "acceleration": {
+                "max": 600.0,
+                "default": 400.0,
+                "unit": "mm/s^2"
+            },
+            "spindle": {
+                "max_rpm": 10000,
+                "default_rpm": 6000,
+                "min_rpm": 1000,
+                "type": "DC_motor",
+                "control": "PWM"
+            },
+            "controller": {
+                "type": "GGC_Dreamer",
+                "version": "1.0",
+                "dialect": "GG3S_GGC"
+            },
+            "rtcp_support": false,
+            "post_processor": "ghostgunner_3axis_post",
+            "safe_height": 10.0,
+            "default_tool": {
+                "diameter": 3.175,
+                "length": 25.0,
+                "flutes": 2,
+                "material": "carbide"
+            },
+            "notes": "Ghost Gunner 3S premium model with GGC/Dreamer controller. No tool changer. Highest rigidity."
+        },
+        "GhostGunnerDefense": {
+            "description": "Ghost Gunner Defense - Industrial 3-axis desktop CNC mill",
+            "manufacturer": "Defense Distributed",
+            "model": "Ghost Gunner Defense (GGD)",
+            "category": "3axis_micro",
+            "axes": [
+                "X",
+                "Y",
+                "Z"
+            ],
+            "limits": {
+                "X": {
+                    "min": 0.0,
+                    "max": 150.0,
+                    "unit": "mm"
+                },
+                "Y": {
+                    "min": 0.0,
+                    "max": 150.0,
+                    "unit": "mm"
+                },
+                "Z": {
+                    "min": 0.0,
+                    "max": 100.0,
+                    "unit": "mm"
+                }
+            },
+            "feed_rate": {
+                "max": 1500.0,
+                "default": 1000.0,
+                "rapid": 3000.0,
+                "unit": "mm/min"
+            },
+            "acceleration": {
+                "max": 800.0,
+                "default": 500.0,
+                "unit": "mm/s^2"
+            },
+            "spindle": {
+                "max_rpm": 12000,
+                "default_rpm": 8000,
+                "min_rpm": 1000,
+                "type": "DC_motor",
+                "control": "PWM"
+            },
+            "controller": {
+                "type": "GGC_Dreamer",
+                "version": "1.0",
+                "dialect": "GGD_GGC"
+            },
+            "rtcp_support": false,
+            "post_processor": "ghostgunner_3axis_post",
+            "safe_height": 10.0,
+            "default_tool": {
+                "diameter": 3.175,
+                "length": 25.0,
+                "flutes": 2,
+                "material": "carbide"
+            },
+            "notes": "Ghost Gunner Defense industrial model with enhanced performance. No tool changer. Maximum rigidity and speed."
+        },
+        "GhostGunnerR": {
+            "description": "Ghost Gunner R - 4-axis rotary desktop CNC mill",
+            "manufacturer": "Defense Distributed",
+            "model": "Ghost Gunner R (GGR)",
+            "category": "4axis_micro",
+            "axes": [
+                "X",
+                "Y",
+                "Z",
+                "A"
+            ],
+            "limits": {
+                "X": {
+                    "min": 0.0,
+                    "max": 150.0,
+                    "unit": "mm"
+                },
+                "Y": {
+                    "min": 0.0,
+                    "max": 150.0,
+                    "unit": "mm"
+                },
+                "Z": {
+                    "min": 0.0,
+                    "max": 100.0,
+                    "unit": "mm"
+                },
+                "A": {
+                    "min": -360.0,
+                    "max": 360.0,
+                    "unit": "deg"
+                }
+            },
+            "feed_rate": {
+                "max": 1200.0,
+                "default": 800.0,
+                "rapid": 2500.0,
+                "unit": "mm/min"
+            },
+            "acceleration": {
+                "max": 600.0,
+                "default": 400.0,
+                "unit": "mm/s^2"
+            },
+            "rotary_acceleration": {
+                "max": 180.0,
+                "default": 90.0,
+                "unit": "deg/s^2"
+            },
+            "spindle": {
+                "max_rpm": 10000,
+                "default_rpm": 6000,
+                "min_rpm": 1000,
+                "type": "DC_motor",
+                "control": "PWM"
+            },
+            "controller": {
+                "type": "GGC_Dreamer",
+                "version": "1.0",
+                "dialect": "GGR_GGC_4AXIS"
+            },
+            "rtcp_support": false,
+            "post_processor": "ghostgunner_4axis_post",
+            "rotary_config": {
+                "type": "4axis_A",
+                "axis": "A",
+                "orientation": "horizontal",
+                "center_height": 50.0,
+                "max_diameter": 80.0
+            },
+            "safe_height": 10.0,
+            "default_tool": {
+                "diameter": 3.175,
+                "length": 25.0,
+                "flutes": 2,
+                "material": "carbide"
+            },
+            "notes": "Ghost Gunner R with 4-axis rotary table. A-axis horizontal rotation. No tool changer. Supports cylindrical machining."
+        },
+        "Pocket_NC_V2": {
+            "description": "Pocket NC V2-10 - 5-axis desktop CNC mill",
+            "manufacturer": "Pocket NC",
+            "model": "V2-10",
+            "category": "hobbyist",
+            "axes": [
+                "X",
+                "Y",
+                "Z",
+                "A",
+                "B"
+            ],
+            "limits": {
+                "X": {
+                    "min": -100.0,
+                    "max": 100.0,
+                    "unit": "mm"
+                },
+                "Y": {
+                    "min": -100.0,
+                    "max": 100.0,
+                    "unit": "mm"
+                },
+                "Z": {
+                    "min": -75.0,
+                    "max": 75.0,
+                    "unit": "mm"
+                },
+                "A": {
+                    "min": -360.0,
+                    "max": 360.0,
+                    "unit": "deg"
+                },
+                "B": {
+                    "min": -135.0,
+                    "max": 135.0,
+                    "unit": "deg"
+                }
+            },
+            "feed_rate": {
+                "max": 1000.0,
+                "default": 600.0,
+                "unit": "mm/min"
+            },
+            "spindle": {
+                "max_rpm": 10000,
+                "default_rpm": 6000,
+                "min_rpm": 1000
+            },
+            "rtcp_support": false,
+            "post_processor": "pocketnc_pp",
+            "rotary_config": {
+                "type": "5axis_AB",
+                "primary_axis": "A",
+                "secondary_axis": "B",
+                "configuration": "tilted_head"
+            },
+            "notes": "Compact 5-axis mill with tilted trunnion design"
+        },
+        "Taig_4axis": {
+            "description": "Taig 4-axis CNC mill with rotary table",
+            "manufacturer": "Taig Tools",
+            "model": "4-Axis Mill",
+            "category": "hobbyist",
+            "axes": [
+                "X",
+                "Y",
+                "Z",
+                "A"
+            ],
+            "limits": {
+                "X": {
+                    "min": 0.0,
+                    "max": 280.0,
+                    "unit": "mm"
+                },
+                "Y": {
+                    "min": 0.0,
+                    "max": 180.0,
+                    "unit": "mm"
+                },
+                "Z": {
+                    "min": 0.0,
+                    "max": 180.0,
+                    "unit": "mm"
+                },
+                "A": {
+                    "min": -360.0,
+                    "max": 360.0,
+                    "unit": "deg"
+                }
+            },
+            "feed_rate": {
+                "max": 1000.0,
+                "default": 600.0,
+                "unit": "mm/min"
+            },
+            "spindle": {
+                "max_rpm": 10000,
+                "default_rpm": 6000,
+                "min_rpm": 1000
+            },
+            "rtcp_support": false,
+            "post_processor": "generic_pp",
+            "rotary_config": {
+                "type": "4axis_A",
+                "axis": "A",
+                "orientation": "horizontal"
+            },
+            "notes": "Popular hobbyist 4-axis mill"
+        },
+        "Sherline_4axis": {
+            "description": "Sherline 4-axis CNC mill",
+            "manufacturer": "Sherline Products",
+            "model": "4-Axis Mill",
+            "category": "hobbyist",
+            "axes": [
+                "X",
+                "Y",
+                "Z",
+                "A"
+            ],
+            "limits": {
+                "X": {
+                    "min": 0.0,
+                    "max": 200.0,
+                    "unit": "mm"
+                },
+                "Y": {
+                    "min": 0.0,
+                    "max": 150.0,
+                    "unit": "mm"
+                },
+                "Z": {
+                    "min": 0.0,
+                    "max": 150.0,
+                    "unit": "mm"
+                },
+                "A": {
+                    "min": -360.0,
+                    "max": 360.0,
+                    "unit": "deg"
+                }
+            },
+            "feed_rate": {
+                "max": 800.0,
+                "default": 500.0,
+                "unit": "mm/min"
+            },
+            "spindle": {
+                "max_rpm": 10000,
+                "default_rpm": 6000,
+                "min_rpm": 1000
+            },
+            "rtcp_support": false,
+            "post_processor": "generic_pp",
+            "rotary_config": {
+                "type": "4axis_A",
+                "axis": "A",
+                "orientation": "horizontal"
+            },
+            "notes": "Precision hobbyist 4-axis mill"
+        },
+        "Cylindrical_4axis": {
+            "description": "Generic 4-axis cylindrical machining center",
+            "manufacturer": "Generic",
+            "model": "4-Axis Cylindrical",
+            "category": "generic",
+            "axes": [
+                "X",
+                "Y",
+                "Z",
+                "A"
+            ],
+            "limits": {
+                "X": {
+                    "min": 0.0,
+                    "max": 500.0,
+                    "unit": "mm"
+                },
+                "Y": {
+                    "min": 0.0,
+                    "max": 500.0,
+                    "unit": "mm"
+                },
+                "Z": {
+                    "min": 0.0,
+                    "max": 300.0,
+                    "unit": "mm"
+                },
+                "A": {
+                    "min": -360.0,
+                    "max": 360.0,
+                    "unit": "deg"
+                }
+            },
+            "feed_rate": {
+                "max": 2000.0,
+                "default": 1000.0,
+                "unit": "mm/min"
+            },
+            "spindle": {
+                "max_rpm": 12000,
+                "default_rpm": 8000,
+                "min_rpm": 500
+            },
+            "rtcp_support": false,
+            "post_processor": "generic_pp",
+            "rotary_config": {
+                "type": "4axis_A",
+                "axis": "A",
+                "orientation": "horizontal"
+            },
+            "notes": "Generic 4-axis configuration for cylindrical work"
+        },
+        "5axis_AC": {
+            "description": "Generic 5-axis AC table configuration",
+            "manufacturer": "Generic",
+            "model": "5-Axis AC",
+            "category": "generic",
+            "axes": [
+                "X",
+                "Y",
+                "Z",
+                "A",
+                "C"
+            ],
+            "limits": {
+                "X": {
+                    "min": -300.0,
+                    "max": 300.0,
+                    "unit": "mm"
+                },
+                "Y": {
+                    "min": -300.0,
+                    "max": 300.0,
+                    "unit": "mm"
+                },
+                "Z": {
+                    "min": -200.0,
+                    "max": 200.0,
+                    "unit": "mm"
+                },
+                "A": {
+                    "min": -120.0,
+                    "max": 120.0,
+                    "unit": "deg"
+                },
+                "C": {
+                    "min": -360.0,
+                    "max": 360.0,
+                    "unit": "deg"
+                }
+            },
+            "feed_rate": {
+                "max": 3000.0,
+                "default": 1500.0,
+                "unit": "mm/min"
+            },
+            "spindle": {
+                "max_rpm": 15000,
+                "default_rpm": 10000,
+                "min_rpm": 500
+            },
+            "rtcp_support": true,
+            "post_processor": "generic_5axis_pp",
+            "rotary_config": {
+                "type": "5axis_AC",
+                "primary_axis": "A",
+                "secondary_axis": "C",
+                "configuration": "table_table"
+            },
+            "notes": "Generic 5-axis AC table configuration with RTCP"
+        },
+        "DMG_Mori_5axis": {
+            "description": "DMG Mori 5-axis machining center",
+            "manufacturer": "DMG Mori",
+            "model": "DMU 50",
+            "category": "industrial",
+            "axes": [
+                "X",
+                "Y",
+                "Z",
+                "B",
+                "C"
+            ],
+            "limits": {
+                "X": {
+                    "min": -400.0,
+                    "max": 400.0,
+                    "unit": "mm"
+                },
+                "Y": {
+                    "min": -400.0,
+                    "max": 400.0,
+                    "unit": "mm"
+                },
+                "Z": {
+                    "min": -250.0,
+                    "max": 250.0,
+                    "unit": "mm"
+                },
+                "B": {
+                    "min": -120.0,
+                    "max": 120.0,
+                    "unit": "deg"
+                },
+                "C": {
+                    "min": -360.0,
+                    "max": 360.0,
+                    "unit": "deg"
+                }
+            },
+            "feed_rate": {
+                "max": 5000.0,
+                "default": 2500.0,
+                "unit": "mm/min"
+            },
+            "spindle": {
+                "max_rpm": 20000,
+                "default_rpm": 12000,
+                "min_rpm": 100
+            },
+            "rtcp_support": true,
+            "post_processor": "dmg_mori_pp",
+            "rotary_config": {
+                "type": "5axis_BC",
+                "primary_axis": "B",
+                "secondary_axis": "C",
+                "configuration": "head_table"
+            },
+            "notes": "Industrial 5-axis with BC head configuration and full RTCP"
+        },
+        "Haas_UMC750_5axis": {
+            "description": "Haas UMC-750 5-axis universal machining center",
+            "manufacturer": "Haas Automation",
+            "model": "UMC-750",
+            "category": "industrial",
+            "axes": [
+                "X",
+                "Y",
+                "Z",
+                "B",
+                "C"
+            ],
+            "limits": {
+                "X": {
+                    "min": 0.0,
+                    "max": 762.0,
+                    "unit": "mm"
+                },
+                "Y": {
+                    "min": 0.0,
+                    "max": 508.0,
+                    "unit": "mm"
+                },
+                "Z": {
+                    "min": 0.0,
+                    "max": 508.0,
+                    "unit": "mm"
+                },
+                "B": {
+                    "min": -35.0,
+                    "max": 110.0,
+                    "unit": "deg"
+                },
+                "C": {
+                    "min": -360.0,
+                    "max": 360.0,
+                    "unit": "deg"
+                }
+            },
+            "feed_rate": {
+                "max": 1016.0,
+                "default": 800.0,
+                "unit": "mm/min"
+            },
+            "spindle": {
+                "max_rpm": 12000,
+                "default_rpm": 8000,
+                "min_rpm": 100
+            },
+            "rtcp_support": true,
+            "post_processor": "haas_pp",
+            "rotary_config": {
+                "type": "5axis_BC",
+                "primary_axis": "B",
+                "secondary_axis": "C",
+                "configuration": "trunnion"
+            },
+            "notes": "Industrial 5-axis trunnion configuration with G234 RTCP support"
+        }
     },
-    "GhostGunner2": {
-      "description": "Ghost Gunner 2 - Original 3-axis desktop CNC mill",
-      "manufacturer": "Defense Distributed",
-      "model": "Ghost Gunner 2 (GG2)",
-      "category": "3axis_micro",
-      "axes": ["X", "Y", "Z"],
-      "limits": {
-        "X": {"min": 0.0, "max": 150.0, "unit": "mm"},
-        "Y": {"min": 0.0, "max": 150.0, "unit": "mm"},
-        "Z": {"min": 0.0, "max": 80.0, "unit": "mm"}
-      },
-      "feed_rate": {
-        "max": 1000.0,
-        "default": 600.0,
-        "rapid": 2000.0,
-        "unit": "mm/min"
-      },
-      "acceleration": {
-        "max": 500.0,
-        "default": 300.0,
-        "unit": "mm/s^2"
-      },
-      "spindle": {
-        "max_rpm": 10000,
-        "default_rpm": 6000,
-        "min_rpm": 1000,
-        "type": "DC_motor",
-        "control": "PWM"
-      },
-      "controller": {
-        "type": "GRBL_Legacy",
-        "version": "0.9",
-        "dialect": "GG2_GRBL"
-      },
-      "rtcp_support": false,
-      "post_processor": "ghostgunner_3axis_post",
-      "safe_height": 10.0,
-      "default_tool": {
-        "diameter": 3.175,
-        "length": 25.0,
-        "flutes": 2,
-        "material": "carbide"
-      },
-      "notes": "Original Ghost Gunner with GRBL 0.9 controller. No tool changer. Fixed spindle motor."
+    "machine_categories": {
+        "hobbyist": [
+            "Langmuir_MR1",
+            "Pocket_NC_V2",
+            "Taig_4axis",
+            "Sherline_4axis"
+        ],
+        "3axis_micro": [
+            "GhostGunner2",
+            "GhostGunner3",
+            "GhostGunner3S",
+            "GhostGunnerDefense"
+        ],
+        "4axis_micro": [
+            "GhostGunnerR"
+        ],
+        "generic": [
+            "Cylindrical_4axis",
+            "5axis_AC"
+        ],
+        "industrial": [
+            "DMG_Mori_5axis",
+            "Haas_UMC750_5axis"
+        ],
+        "3-axis": [
+            "Langmuir_MR1",
+            "GhostGunner2",
+            "GhostGunner3",
+            "GhostGunner3S",
+            "GhostGunnerDefense"
+        ],
+        "4-axis": [
+            "GhostGunnerR",
+            "Taig_4axis",
+            "Sherline_4axis",
+            "Cylindrical_4axis"
+        ],
+        "5-axis": [
+            "Pocket_NC_V2",
+            "5axis_AC",
+            "DMG_Mori_5axis",
+            "Haas_UMC750_5axis"
+        ],
+        "ghost_gunner": [
+            "GhostGunner2",
+            "GhostGunner3",
+            "GhostGunner3S",
+            "GhostGunnerDefense",
+            "GhostGunnerR"
+        ]
     },
-    "GhostGunner3": {
-      "description": "Ghost Gunner 3 - Enhanced 3-axis desktop CNC mill",
-      "manufacturer": "Defense Distributed",
-      "model": "Ghost Gunner 3 (GG3)",
-      "category": "3axis_micro",
-      "axes": ["X", "Y", "Z"],
-      "limits": {
-        "X": {"min": 0.0, "max": 150.0, "unit": "mm"},
-        "Y": {"min": 0.0, "max": 150.0, "unit": "mm"},
-        "Z": {"min": 0.0, "max": 100.0, "unit": "mm"}
-      },
-      "feed_rate": {
-        "max": 1200.0,
-        "default": 800.0,
-        "rapid": 2500.0,
-        "unit": "mm/min"
-      },
-      "acceleration": {
-        "max": 600.0,
-        "default": 400.0,
-        "unit": "mm/s^2"
-      },
-      "spindle": {
-        "max_rpm": 10000,
-        "default_rpm": 6000,
-        "min_rpm": 1000,
-        "type": "DC_motor",
-        "control": "PWM"
-      },
-      "controller": {
-        "type": "GGC_Dreamer",
-        "version": "1.0",
-        "dialect": "GG3_GGC"
-      },
-      "rtcp_support": false,
-      "post_processor": "ghostgunner_3axis_post",
-      "safe_height": 10.0,
-      "default_tool": {
-        "diameter": 3.175,
-        "length": 25.0,
-        "flutes": 2,
-        "material": "carbide"
-      },
-      "notes": "Ghost Gunner 3 with improved GGC/Dreamer controller. No tool changer. Enhanced rigidity."
-    },
-    "GhostGunner3S": {
-      "description": "Ghost Gunner 3S - Premium 3-axis desktop CNC mill",
-      "manufacturer": "Defense Distributed",
-      "model": "Ghost Gunner 3S (GG3-S)",
-      "category": "3axis_micro",
-      "axes": ["X", "Y", "Z"],
-      "limits": {
-        "X": {"min": 0.0, "max": 150.0, "unit": "mm"},
-        "Y": {"min": 0.0, "max": 150.0, "unit": "mm"},
-        "Z": {"min": 0.0, "max": 100.0, "unit": "mm"}
-      },
-      "feed_rate": {
-        "max": 1200.0,
-        "default": 800.0,
-        "rapid": 2500.0,
-        "unit": "mm/min"
-      },
-      "acceleration": {
-        "max": 600.0,
-        "default": 400.0,
-        "unit": "mm/s^2"
-      },
-      "spindle": {
-        "max_rpm": 10000,
-        "default_rpm": 6000,
-        "min_rpm": 1000,
-        "type": "DC_motor",
-        "control": "PWM"
-      },
-      "controller": {
-        "type": "GGC_Dreamer",
-        "version": "1.0",
-        "dialect": "GG3S_GGC"
-      },
-      "rtcp_support": false,
-      "post_processor": "ghostgunner_3axis_post",
-      "safe_height": 10.0,
-      "default_tool": {
-        "diameter": 3.175,
-        "length": 25.0,
-        "flutes": 2,
-        "material": "carbide"
-      },
-      "notes": "Ghost Gunner 3S premium model with GGC/Dreamer controller. No tool changer. Highest rigidity."
-    },
-    "GhostGunnerDefense": {
-      "description": "Ghost Gunner Defense - Industrial 3-axis desktop CNC mill",
-      "manufacturer": "Defense Distributed",
-      "model": "Ghost Gunner Defense (GGD)",
-      "category": "3axis_micro",
-      "axes": ["X", "Y", "Z"],
-      "limits": {
-        "X": {"min": 0.0, "max": 150.0, "unit": "mm"},
-        "Y": {"min": 0.0, "max": 150.0, "unit": "mm"},
-        "Z": {"min": 0.0, "max": 100.0, "unit": "mm"}
-      },
-      "feed_rate": {
-        "max": 1500.0,
-        "default": 1000.0,
-        "rapid": 3000.0,
-        "unit": "mm/min"
-      },
-      "acceleration": {
-        "max": 800.0,
-        "default": 500.0,
-        "unit": "mm/s^2"
-      },
-      "spindle": {
-        "max_rpm": 12000,
-        "default_rpm": 8000,
-        "min_rpm": 1000,
-        "type": "DC_motor",
-        "control": "PWM"
-      },
-      "controller": {
-        "type": "GGC_Dreamer",
-        "version": "1.0",
-        "dialect": "GGD_GGC"
-      },
-      "rtcp_support": false,
-      "post_processor": "ghostgunner_3axis_post",
-      "safe_height": 10.0,
-      "default_tool": {
-        "diameter": 3.175,
-        "length": 25.0,
-        "flutes": 2,
-        "material": "carbide"
-      },
-      "notes": "Ghost Gunner Defense industrial model with enhanced performance. No tool changer. Maximum rigidity and speed."
-    },
-    "GhostGunnerR": {
-      "description": "Ghost Gunner R - 4-axis rotary desktop CNC mill",
-      "manufacturer": "Defense Distributed",
-      "model": "Ghost Gunner R (GGR)",
-      "category": "4axis_micro",
-      "axes": ["X", "Y", "Z", "A"],
-      "limits": {
-        "X": {"min": 0.0, "max": 150.0, "unit": "mm"},
-        "Y": {"min": 0.0, "max": 150.0, "unit": "mm"},
-        "Z": {"min": 0.0, "max": 100.0, "unit": "mm"},
-        "A": {"min": -360.0, "max": 360.0, "unit": "deg"}
-      },
-      "feed_rate": {
-        "max": 1200.0,
-        "default": 800.0,
-        "rapid": 2500.0,
-        "unit": "mm/min"
-      },
-      "acceleration": {
-        "max": 600.0,
-        "default": 400.0,
-        "unit": "mm/s^2"
-      },
-      "rotary_acceleration": {
-        "max": 180.0,
-        "default": 90.0,
-        "unit": "deg/s^2"
-      },
-      "spindle": {
-        "max_rpm": 10000,
-        "default_rpm": 6000,
-        "min_rpm": 1000,
-        "type": "DC_motor",
-        "control": "PWM"
-      },
-      "controller": {
-        "type": "GGC_Dreamer",
-        "version": "1.0",
-        "dialect": "GGR_GGC_4AXIS"
-      },
-      "rtcp_support": false,
-      "post_processor": "ghostgunner_4axis_post",
-      "rotary_config": {
-        "type": "4axis_A",
-        "axis": "A",
-        "orientation": "horizontal",
-        "center_height": 50.0,
-        "max_diameter": 80.0
-      },
-      "safe_height": 10.0,
-      "default_tool": {
-        "diameter": 3.175,
-        "length": 25.0,
-        "flutes": 2,
-        "material": "carbide"
-      },
-      "notes": "Ghost Gunner R with 4-axis rotary table. A-axis horizontal rotation. No tool changer. Supports cylindrical machining."
-    },
-    "Pocket_NC_V2": {
-      "description": "Pocket NC V2-10 - 5-axis desktop CNC mill",
-      "manufacturer": "Pocket NC",
-      "model": "V2-10",
-      "category": "hobbyist",
-      "axes": ["X", "Y", "Z", "A", "B"],
-      "limits": {
-        "X": {"min": -100.0, "max": 100.0, "unit": "mm"},
-        "Y": {"min": -100.0, "max": 100.0, "unit": "mm"},
-        "Z": {"min": -75.0, "max": 75.0, "unit": "mm"},
-        "A": {"min": -360.0, "max": 360.0, "unit": "deg"},
-        "B": {"min": -135.0, "max": 135.0, "unit": "deg"}
-      },
-      "feed_rate": {
-        "max": 1000.0,
-        "default": 600.0,
-        "unit": "mm/min"
-      },
-      "spindle": {
-        "max_rpm": 10000,
-        "default_rpm": 6000,
-        "min_rpm": 1000
-      },
-      "rtcp_support": false,
-      "post_processor": "pocketnc_pp",
-      "rotary_config": {
-        "type": "5axis_AB",
-        "primary_axis": "A",
-        "secondary_axis": "B",
-        "configuration": "tilted_head"
-      },
-      "notes": "Compact 5-axis mill with tilted trunnion design"
-    },
-    "Taig_4axis": {
-      "description": "Taig 4-axis CNC mill with rotary table",
-      "manufacturer": "Taig Tools",
-      "model": "4-Axis Mill",
-      "category": "hobbyist",
-      "axes": ["X", "Y", "Z", "A"],
-      "limits": {
-        "X": {"min": 0.0, "max": 280.0, "unit": "mm"},
-        "Y": {"min": 0.0, "max": 180.0, "unit": "mm"},
-        "Z": {"min": 0.0, "max": 180.0, "unit": "mm"},
-        "A": {"min": -360.0, "max": 360.0, "unit": "deg"}
-      },
-      "feed_rate": {
-        "max": 1000.0,
-        "default": 600.0,
-        "unit": "mm/min"
-      },
-      "spindle": {
-        "max_rpm": 10000,
-        "default_rpm": 6000,
-        "min_rpm": 1000
-      },
-      "rtcp_support": false,
-      "post_processor": "generic_pp",
-      "rotary_config": {
-        "type": "4axis_A",
-        "axis": "A",
-        "orientation": "horizontal"
-      },
-      "notes": "Popular hobbyist 4-axis mill"
-    },
-    "Sherline_4axis": {
-      "description": "Sherline 4-axis CNC mill",
-      "manufacturer": "Sherline Products",
-      "model": "4-Axis Mill",
-      "category": "hobbyist",
-      "axes": ["X", "Y", "Z", "A"],
-      "limits": {
-        "X": {"min": 0.0, "max": 200.0, "unit": "mm"},
-        "Y": {"min": 0.0, "max": 150.0, "unit": "mm"},
-        "Z": {"min": 0.0, "max": 150.0, "unit": "mm"},
-        "A": {"min": -360.0, "max": 360.0, "unit": "deg"}
-      },
-      "feed_rate": {
-        "max": 800.0,
-        "default": 500.0,
-        "unit": "mm/min"
-      },
-      "spindle": {
-        "max_rpm": 10000,
-        "default_rpm": 6000,
-        "min_rpm": 1000
-      },
-      "rtcp_support": false,
-      "post_processor": "generic_pp",
-      "rotary_config": {
-        "type": "4axis_A",
-        "axis": "A",
-        "orientation": "horizontal"
-      },
-      "notes": "Precision hobbyist 4-axis mill"
-    },
-    "Cylindrical_4axis": {
-      "description": "Generic 4-axis cylindrical machining center",
-      "manufacturer": "Generic",
-      "model": "4-Axis Cylindrical",
-      "category": "generic",
-      "axes": ["X", "Y", "Z", "A"],
-      "limits": {
-        "X": {"min": 0.0, "max": 500.0, "unit": "mm"},
-        "Y": {"min": 0.0, "max": 500.0, "unit": "mm"},
-        "Z": {"min": 0.0, "max": 300.0, "unit": "mm"},
-        "A": {"min": -360.0, "max": 360.0, "unit": "deg"}
-      },
-      "feed_rate": {
-        "max": 2000.0,
-        "default": 1000.0,
-        "unit": "mm/min"
-      },
-      "spindle": {
-        "max_rpm": 12000,
-        "default_rpm": 8000,
-        "min_rpm": 500
-      },
-      "rtcp_support": false,
-      "post_processor": "generic_pp",
-      "rotary_config": {
-        "type": "4axis_A",
-        "axis": "A",
-        "orientation": "horizontal"
-      },
-      "notes": "Generic 4-axis configuration for cylindrical work"
-    },
-    "5axis_AC": {
-      "description": "Generic 5-axis AC table configuration",
-      "manufacturer": "Generic",
-      "model": "5-Axis AC",
-      "category": "generic",
-      "axes": ["X", "Y", "Z", "A", "C"],
-      "limits": {
-        "X": {"min": -300.0, "max": 300.0, "unit": "mm"},
-        "Y": {"min": -300.0, "max": 300.0, "unit": "mm"},
-        "Z": {"min": -200.0, "max": 200.0, "unit": "mm"},
-        "A": {"min": -120.0, "max": 120.0, "unit": "deg"},
-        "C": {"min": -360.0, "max": 360.0, "unit": "deg"}
-      },
-      "feed_rate": {
-        "max": 3000.0,
-        "default": 1500.0,
-        "unit": "mm/min"
-      },
-      "spindle": {
-        "max_rpm": 15000,
-        "default_rpm": 10000,
-        "min_rpm": 500
-      },
-      "rtcp_support": true,
-      "post_processor": "generic_5axis_pp",
-      "rotary_config": {
-        "type": "5axis_AC",
-        "primary_axis": "A",
-        "secondary_axis": "C",
-        "configuration": "table_table"
-      },
-      "notes": "Generic 5-axis AC table configuration with RTCP"
-    },
-    "DMG_Mori_5axis": {
-      "description": "DMG Mori 5-axis machining center",
-      "manufacturer": "DMG Mori",
-      "model": "DMU 50",
-      "category": "industrial",
-      "axes": ["X", "Y", "Z", "B", "C"],
-      "limits": {
-        "X": {"min": -400.0, "max": 400.0, "unit": "mm"},
-        "Y": {"min": -400.0, "max": 400.0, "unit": "mm"},
-        "Z": {"min": -250.0, "max": 250.0, "unit": "mm"},
-        "B": {"min": -120.0, "max": 120.0, "unit": "deg"},
-        "C": {"min": -360.0, "max": 360.0, "unit": "deg"}
-      },
-      "feed_rate": {
-        "max": 5000.0,
-        "default": 2500.0,
-        "unit": "mm/min"
-      },
-      "spindle": {
-        "max_rpm": 20000,
-        "default_rpm": 12000,
-        "min_rpm": 100
-      },
-      "rtcp_support": true,
-      "post_processor": "dmg_mori_pp",
-      "rotary_config": {
-        "type": "5axis_BC",
-        "primary_axis": "B",
-        "secondary_axis": "C",
-        "configuration": "head_table"
-      },
-      "notes": "Industrial 5-axis with BC head configuration and full RTCP"
-    },
-    "Haas_UMC750_5axis": {
-      "description": "Haas UMC-750 5-axis universal machining center",
-      "manufacturer": "Haas Automation",
-      "model": "UMC-750",
-      "category": "industrial",
-      "axes": ["X", "Y", "Z", "B", "C"],
-      "limits": {
-        "X": {"min": 0.0, "max": 762.0, "unit": "mm"},
-        "Y": {"min": 0.0, "max": 508.0, "unit": "mm"},
-        "Z": {"min": 0.0, "max": 508.0, "unit": "mm"},
-        "B": {"min": -35.0, "max": 110.0, "unit": "deg"},
-        "C": {"min": -360.0, "max": 360.0, "unit": "deg"}
-      },
-      "feed_rate": {
-        "max": 1016.0,
-        "default": 800.0,
-        "unit": "mm/min"
-      },
-      "spindle": {
-        "max_rpm": 12000,
-        "default_rpm": 8000,
-        "min_rpm": 100
-      },
-      "rtcp_support": true,
-      "post_processor": "haas_pp",
-      "rotary_config": {
-        "type": "5axis_BC",
-        "primary_axis": "B",
-        "secondary_axis": "C",
-        "configuration": "trunnion"
-      },
-      "notes": "Industrial 5-axis trunnion configuration with G234 RTCP support"
-    }
-  },
-  "machine_categories": {
-    "hobbyist": [
-      "Langmuir_MR1",
-      "Pocket_NC_V2",
-      "Taig_4axis",
-      "Sherline_4axis"
-    ],
-    "3axis_micro": [
-      "GhostGunner2",
-      "GhostGunner3",
-      "GhostGunner3S",
-      "GhostGunnerDefense"
-    ],
-    "4axis_micro": [
-      "GhostGunnerR"
-    ],
-    "generic": [
-      "Cylindrical_4axis",
-      "5axis_AC"
-    ],
-    "industrial": [
-      "DMG_Mori_5axis",
-      "Haas_UMC750_5axis"
-    ],
-    "3-axis": [
-      "Langmuir_MR1",
-      "GhostGunner2",
-      "GhostGunner3",
-      "GhostGunner3S",
-      "GhostGunnerDefense"
-    ],
-    "4-axis": [
-      "GhostGunnerR",
-      "Taig_4axis",
-      "Sherline_4axis",
-      "Cylindrical_4axis"
-    ],
-    "5-axis": [
-      "Pocket_NC_V2",
-      "5axis_AC",
-      "DMG_Mori_5axis",
-      "Haas_UMC750_5axis"
-    ],
-    "ghost_gunner": [
-      "GhostGunner2",
-      "GhostGunner3",
-      "GhostGunner3S",
-      "GhostGunnerDefense",
-      "GhostGunnerR"
-    ]
-  },
-  "default_machine": "Langmuir_MR1"
+    "default_machine": "Langmuir_MR1"
 }

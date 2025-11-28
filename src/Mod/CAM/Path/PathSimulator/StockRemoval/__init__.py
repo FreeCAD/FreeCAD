@@ -9,18 +9,8 @@ This module provides advanced stock removal simulation for multi-axis machining
 with CUDA acceleration and real-time collision detection.
 """
 
-from .StockRemoval5Axis import (
-    StockRemoval5Axis,
-    VolumetricStock,
-    ToolGeometry,
-    CollisionDetector
-)
+from .StockRemoval5Axis import StockRemoval5Axis, VolumetricStock, ToolGeometry, CollisionDetector
 
-__all__ = [
-    'StockRemoval5Axis',
-    'VolumetricStock',
-    'ToolGeometry',
-    'CollisionDetector'
-]
+__all__ = ["StockRemoval5Axis", "VolumetricStock", "ToolGeometry", "CollisionDetector"]
 
-__version__ = '1.0.0'
+__version__ = "1.0.0"
