@@ -758,7 +758,7 @@ void TaskRevolutionParameters::setGizmoPositions()
     bool symmetric = false;
     std::string sideType;
 
-    auto getFeatureProps = [&] (auto* feature) {
+    auto getFeatureProps = [&](auto* feature) {
         if (!feature || feature->isError()) {
             return false;
         }
@@ -806,8 +806,9 @@ void TaskRevolutionParameters::setGizmoPositions()
 
     if (sideType == "TwoAngles" || !symmetric) {
         rotationGizmo->setMultFactor(defaultGizmoMultFactor);
-    } else {
-        rotationGizmo->setMultFactor(defaultGizmoMultFactor/2.0);
+    }
+    else {
+        rotationGizmo->setMultFactor(defaultGizmoMultFactor / 2.0);
     }
 }
 
