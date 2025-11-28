@@ -8,7 +8,7 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Version.h.template
 
 # add data from RCS to version and rc files
 add_custom_command(
-    OUTPUT Version.h
+    OUTPUT version_file
     BYPRODUCTS ${CMAKE_CURRENT_BINARY_DIR}/Version.h
     COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/src/Tools/SubWCRev.py
         --srcdir=${CMAKE_SOURCE_DIR} --bindir=${CMAKE_BINARY_DIR}
@@ -23,4 +23,4 @@ add_custom_command(
 
 set_source_files_properties(Version.h PROPERTIES SYMBOLIC true)
 
-add_custom_target(fc_version DEPENDS Version.h)
+add_custom_target(fc_version DEPENDS version_file)
