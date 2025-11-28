@@ -321,7 +321,9 @@ class ObjectMillFacing(PathOp.ObjectOp):
             Path.Log.error("No stock found for facing operation")
             raise ValueError("No stock found for facing operation")
 
-        boundary_wire = boundary_wire.makeOffset2D(obj.StockExtension.Value, 2) #offset with interesection joins
+        boundary_wire = boundary_wire.makeOffset2D(
+            obj.StockExtension.Value, 2
+        )  # offset with interesection joins
 
         # Determine milling direction
         milling_direction = "climb" if obj.CutMode == "Climb" else "conventional"
@@ -394,7 +396,7 @@ class ObjectMillFacing(PathOp.ObjectOp):
 
         # clear commandlist
         self.commandlist = []
-        
+
         # Be safe. Add first G0 to clearance height
         targetZ = obj.ClearanceHeight.Value
         self.commandlist.append(Path.Command("G0", {"Z": targetZ}))
@@ -427,19 +429,26 @@ class ObjectMillFacing(PathOp.ObjectOp):
                         # 1) G0 to XY position at current height (ClearanceHeight from line 401)
                         pre1 = {"X": first_xy[0], "Y": first_xy[1]}
                         if not self.commandlist or any(
-                            abs(pre1[k] - self.commandlist[-1].Parameters.get(k, pre1[k] + 1)) > 1e-9
+                            abs(pre1[k] - self.commandlist[-1].Parameters.get(k, pre1[k] + 1))
+                            > 1e-9
                             for k in ("X", "Y")
                         ):
                             self.commandlist.append(Path.Command("G0", pre1))
-                            
+
                         # 2) G0 down to SafeHeight
                         pre2 = {"Z": obj.SafeHeight.Value}
-                        if abs(pre2["Z"] - self.commandlist[-1].Parameters.get("Z", pre2["Z"] + 1)) > 1e-9:
+                        if (
+                            abs(pre2["Z"] - self.commandlist[-1].Parameters.get("Z", pre2["Z"] + 1))
+                            > 1e-9
+                        ):
                             self.commandlist.append(Path.Command("G0", pre2))
-                            
+
                         # 3) G0 down to cutting depth
                         pre3 = {"Z": depth}
-                        if abs(pre3["Z"] - self.commandlist[-1].Parameters.get("Z", pre3["Z"] + 1)) > 1e-9:
+                        if (
+                            abs(pre3["Z"] - self.commandlist[-1].Parameters.get("Z", pre3["Z"] + 1))
+                            > 1e-9
+                        ):
                             self.commandlist.append(Path.Command("G0", pre3))
 
                     # Now append the base commands, skipping the generator's initial positioning move

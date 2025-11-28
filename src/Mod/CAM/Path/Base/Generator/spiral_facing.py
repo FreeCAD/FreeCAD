@@ -171,6 +171,7 @@ def generate_layer_path(
 
     return commands
 
+
 def spiral(
     polygon,
     tool_diameter,
@@ -222,7 +223,9 @@ def spiral(
         number_of_intervals = math.ceil(total_radial_distance / stepover_dist)
         actual_stepover = total_radial_distance / number_of_intervals
 
-    Path.Log.debug(f"Spiral: adjusted stepover {stepover_dist:.4f} → {actual_stepover:.4f} mm, intervals={number_of_intervals if total_radial_distance > 0 else 0}")
+    Path.Log.debug(
+        f"Spiral: adjusted stepover {stepover_dist:.4f} → {actual_stepover:.4f} mm, intervals={number_of_intervals if total_radial_distance > 0 else 0}"
+    )
 
     # Standard initial_offset (preserves first engagement exactly)
     initial_offset = -tool_radius + stepover_dist
@@ -285,18 +288,28 @@ def spiral(
             # Determine which edge we are on for the 4th side and compute intersection
             # the transition point on that edge
             if clockwise:
-                if start_corner_index == 0:   transition_xy = st_to_xy(s0, t0n)
-                elif start_corner_index == 1: transition_xy = st_to_xy(s1n, t0)
-                elif start_corner_index == 2:   transition_xy = st_to_xy(s1, t1n)
-                else:                        transition_xy = st_to_xy(s0n, t1)
+                if start_corner_index == 0:
+                    transition_xy = st_to_xy(s0, t0n)
+                elif start_corner_index == 1:
+                    transition_xy = st_to_xy(s1n, t0)
+                elif start_corner_index == 2:
+                    transition_xy = st_to_xy(s1, t1n)
+                else:
+                    transition_xy = st_to_xy(s0n, t1)
             else:  # counter-clockwise
-                if start_corner_index == 0:   transition_xy = st_to_xy(s0n, t0)
-                elif start_corner_index == 1: transition_xy = st_to_xy(s1, t0n)
-                elif start_corner_index == 2: transition_xy = st_to_xy(s1n, t1)
-                else:                        transition_xy = st_to_xy(s0, t1n)
+                if start_corner_index == 0:
+                    transition_xy = st_to_xy(s0n, t0)
+                elif start_corner_index == 1:
+                    transition_xy = st_to_xy(s1, t0n)
+                elif start_corner_index == 2:
+                    transition_xy = st_to_xy(s1n, t1)
+                else:
+                    transition_xy = st_to_xy(s0, t1n)
 
             transition_xy.z = z
-            commands.append(Path.Command("G1", {"X": transition_xy.x, "Y": transition_xy.y, "Z": z}))
+            commands.append(
+                Path.Command("G1", {"X": transition_xy.x, "Y": transition_xy.y, "Z": z})
+            )
             k += 1
         else:
             # Final layer - close back to start

@@ -102,13 +102,15 @@ def bidirectional(
             step_positions.insert(0, step_positions[0] - stepover_distance)
             added = True
         if added:
-            Path.Log.info("Bidirectional facing: Added extra pass(es) for full coverage at ≥100% stepover")
+            Path.Log.info(
+                "Bidirectional facing: Added extra pass(es) for full coverage at ≥100% stepover"
+            )
 
     center = (min_t + max_t) / 2.0
 
     # Split into bottom (≤ center) and top (> center)
-    bottom_positions = [t for t in step_positions if t <= center]          # ascending = outer → inner
-    top_positions    = [t for t in step_positions if t > center][::-1]      # descending = outer → inner
+    bottom_positions = [t for t in step_positions if t <= center]  # ascending = outer → inner
+    top_positions = [t for t in step_positions if t > center][::-1]  # descending = outer → inner
 
     # Interleave, starting with top if reverse=True
     all_passes = []
@@ -135,27 +137,29 @@ def bidirectional(
     total_extension = pass_extension + tool_radius + engagement_offset
 
     start_s = min_s - total_extension
-    end_s   = max_s + total_extension
+    end_s = max_s + total_extension
 
     for side, t in all_passes:
         # Same direction for all passes on the same side → short outside rapids
         if side == "bottom":
             if milling_direction == "climb":
-                p_start, p_end = end_s, start_s    # right → left
+                p_start, p_end = end_s, start_s  # right → left
             else:
-                p_start, p_end = start_s, end_s    # left → right
+                p_start, p_end = start_s, end_s  # left → right
         else:  # top
             if milling_direction == "climb":
-                p_start, p_end = start_s, end_s    # left → right
+                p_start, p_end = start_s, end_s  # left → right
             else:
-                p_start, p_end = end_s, start_s    # right → left
+                p_start, p_end = end_s, start_s  # right → left
 
         start_point = origin + primary_vec * p_start + step_vec * t
-        end_point   = origin + primary_vec * p_end   + step_vec * t
+        end_point = origin + primary_vec * p_end + step_vec * t
         start_point.z = z
         end_point.z = z
 
-        if not all(math.isfinite(c) for c in [start_point.x, start_point.y, end_point.x, end_point.y]):
+        if not all(
+            math.isfinite(c) for c in [start_point.x, start_point.y, end_point.x, end_point.y]
+        ):
             continue
 
         if commands:

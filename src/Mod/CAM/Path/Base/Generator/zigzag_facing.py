@@ -192,6 +192,7 @@ def _create_link(
     cmd_string = f"{arc_cmd} I{I:.6f} J{J:.6f} K0.0 X{Q.x:.6f} Y{Q.y:.6f} Z{z:.6f}"
     return [Path.Command(cmd_string)]
 
+
 def zigzag(
     polygon,
     tool_diameter,
@@ -221,7 +222,12 @@ def zigzag(
     min_s, max_s = facing_common.project_bounds(polygon, primary_vec, origin)
     min_t, max_t = facing_common.project_bounds(polygon, step_vec, origin)
 
-    if not (math.isfinite(min_s) and math.isfinite(max_s) and math.isfinite(min_t) and math.isfinite(max_t)):
+    if not (
+        math.isfinite(min_s)
+        and math.isfinite(max_s)
+        and math.isfinite(min_t)
+        and math.isfinite(max_t)
+    ):
         Path.Log.error("Zigzag: non-finite projection bounds; aborting")
         return []
 
@@ -252,13 +258,19 @@ def zigzag(
     if reverse:
         step_positions = step_positions[::-1]
 
-    Path.Log.debug(f"Zigzag: {len(step_positions)} passes generated (now identical to bidirectional)")
+    Path.Log.debug(
+        f"Zigzag: {len(step_positions)} passes generated (now identical to bidirectional)"
+    )
 
     # Determine if first pass should cut negative primary direction to maintain climb/conventional preference
-    base_negative = (milling_direction == "climb") ^ reverse   # True → negative primary for first pass
+    base_negative = (
+        milling_direction == "climb"
+    ) ^ reverse  # True → negative primary for first pass
 
-    total_extension = pass_extension + tool_radius + facing_common.calculate_engagement_offset(
-        tool_diameter, stepover_percent
+    total_extension = (
+        pass_extension
+        + tool_radius
+        + facing_common.calculate_engagement_offset(tool_diameter, stepover_percent)
     )
     start_s = min_s - total_extension
     end_s = max_s + total_extension

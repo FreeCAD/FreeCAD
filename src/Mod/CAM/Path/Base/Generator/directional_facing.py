@@ -27,10 +27,10 @@ Directional (unidirectional) facing toolpath generator.
 This module implements the unidirectional clearing pattern that cuts in the same
 direction for every pass, providing consistent surface finish.
 
-Feed moves (cutting) are aligned with the angle_degrees argument direction. 
+Feed moves (cutting) are aligned with the angle_degrees argument direction.
 
 At the end of each cutting pass, the cutter retracts to safe height and moves laterally to
-the start position of the next pass. 
+the start position of the next pass.
 
 This strategy always maintains either climb or conventional milling direction.
 """
@@ -109,12 +109,14 @@ def directional(
     Path.Log.debug(f"Directional (fixed): {len(step_positions)} passes")
 
     # Use full-length passes exactly like bidirectional (no slice_wire_segments)
-    total_extension = pass_extension + tool_radius + facing_common.calculate_engagement_offset(
-        tool_diameter, stepover_percent
+    total_extension = (
+        pass_extension
+        + tool_radius
+        + facing_common.calculate_engagement_offset(tool_diameter, stepover_percent)
     )
 
     start_s = min_s - total_extension
-    end_s   = max_s + total_extension
+    end_s = max_s + total_extension
 
     commands = []
     kept_segments = 0
@@ -133,7 +135,7 @@ def directional(
                 p_start, p_end = start_s, end_s
 
         start_point = origin + primary_vec * p_start + step_vec * t
-        end_point   = origin + primary_vec * p_end   + step_vec * t
+        end_point = origin + primary_vec * p_end + step_vec * t
         start_point.z = z
         end_point.z = z
 
@@ -143,7 +145,9 @@ def directional(
                 commands.append(Path.Command("G0", {"X": start_point.x, "Y": start_point.y}))
                 commands.append(Path.Command("G0", {"Z": z}))
             else:
-                commands.append(Path.Command("G0", {"X": start_point.x, "Y": start_point.y, "Z": z}))
+                commands.append(
+                    Path.Command("G0", {"X": start_point.x, "Y": start_point.y, "Z": z})
+                )
         else:
             commands.append(Path.Command("G0", {"X": start_point.x, "Y": start_point.y, "Z": z}))
 
