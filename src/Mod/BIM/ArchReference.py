@@ -101,7 +101,7 @@ class ArchReference:
 
     def onDocumentRestored(self, obj):
 
-        ArchReference.setProperties(self,obj)
+        ArchReference.setProperties(self, obj)
         if obj.ReferenceMode == "Lightweight":
             self.reload = False
             if obj.ViewObject and obj.ViewObject.Proxy:
