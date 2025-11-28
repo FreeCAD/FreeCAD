@@ -25,6 +25,7 @@
 import TestApp
 
 from CAMTests.TestCAMSanity import TestCAMSanity
+from CAMTests.TestLinkingGenerator import TestGetLinkingMoves
 from CAMTests.TestPathProfile import TestPathProfile
 
 from CAMTests.TestPathAdaptive import TestPathAdaptive
@@ -36,6 +37,7 @@ from CAMTests.TestPathDressupDogboneII import TestDressupDogboneII
 from CAMTests.TestPathDressupHoldingTags import TestHoldingTags
 from CAMTests.TestPathDrillable import TestPathDrillable
 from CAMTests.TestPathDrillGenerator import TestPathDrillGenerator
+from CAMTests.TestPathFacingGenerator import TestPathFacingGenerator
 from CAMTests.TestPathGeneratorDogboneII import TestGeneratorDogboneII
 from CAMTests.TestPathGeom import TestPathGeom
 from CAMTests.TestPathLanguage import TestPathLanguage
