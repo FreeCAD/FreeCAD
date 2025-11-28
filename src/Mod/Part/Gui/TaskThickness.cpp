@@ -282,19 +282,18 @@ bool ThicknessWidget::accept()
             d->ui.selfIntersection->isChecked() ? "True" : "False"
         );
 
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
         if (!d->thickness->isValid()) {
             throw Base::CADKernelError(d->thickness->getStatusString());
         }
-        Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
-        Gui::Command::commitCommand();
+        Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+        d->thickness->getDocument()->commitTransaction(); // Opened in ViewProviderDocumentObject::startDefaultEditMode()
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(
-            this,
-            tr("Input error"),
-            QCoreApplication::translate("Exception", e.what())
-        );
+        d->thickness->getDocument()->abortTransaction(); // ViewProviderDocumentObject::startDefaultEditMode()
+        QMessageBox::warning(this,
+                             tr("Input error"),
+                             QCoreApplication::translate("Exception", e.what()));
         return false;
     }
 
@@ -313,8 +312,8 @@ bool ThicknessWidget::reject()
     App::DocumentObject* source = d->thickness->Faces.getValue();
 
     // roll back the done things
-    Gui::Command::abortCommand();
-    Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
+    d->thickness->getDocument()->abortTransaction(); // ViewProviderDocumentObject::startDefaultEditMode()
+    Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
     Gui::Command::updateActive();
 
     // Thickness object was deleted

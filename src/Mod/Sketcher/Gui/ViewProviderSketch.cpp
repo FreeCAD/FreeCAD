@@ -737,7 +737,13 @@ void ViewProviderSketch::purgeHandler()
     Gui::Selection().clearSelection();
 
     // ensure that we are in sketch only selection mode
-    auto* view = dynamic_cast<Gui::View3DInventor*>(Gui::Application::Instance->editDocument()->getActiveView());
+    auto editDoc = Gui::Application::Instance->editDocument([this](Gui::Document* editdoc) {
+        return editdoc->getEditViewProvider() == this;
+    });
+    Gui::View3DInventor* view = nullptr;
+    if (!editDoc) {
+        view = dynamic_cast<Gui::View3DInventor*>(editDoc->getActiveView());
+    }
 
     if(view) {
         Gui::View3DInventorViewer* viewer;
@@ -926,12 +932,15 @@ void ViewProviderSketch::getProjectingLine(const SbVec2s& pnt,
 
 Base::Placement ViewProviderSketch::getEditingPlacement() const
 {
-    auto doc = Gui::Application::Instance->editDocument();
-    if (!doc || doc->getInEdit() != this)
+    auto editDoc = Gui::Application::Instance->editDocument([this](Gui::Document* editdoc) {
+        return editdoc->getInEdit() == this;
+    });
+    if (!editDoc) {
         return getSketchObject()->globalPlacement();
+    }
 
     // TODO: won't work if there is scale. Hmm... what to do...
-    return Base::Placement(doc->getEditingTransform());
+    return Base::Placement(editDoc->getEditingTransform());
 }
 
 void ViewProviderSketch::getCoordsOnSketchPlane(const SbVec3f& point, const SbVec3f& normal,
@@ -1371,9 +1380,9 @@ void ViewProviderSketch::editDoubleClicked()
 
             // if its the right constraint
             if (Constr->isDimensional()) {
-                Gui::Command::openCommand(
+                int tid = getDocument()->openCommand(
                     QT_TRANSLATE_NOOP("Command", "Modify sketch constraints"));
-                EditDatumDialog editDatumDialog(this, id);
+                EditDatumDialog editDatumDialog(tid, this, id);
                 editDatumDialog.exec();
             }
         }
@@ -2260,11 +2269,11 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
 
         bool handled = false;
         if (Mode == STATUS_SKETCH_UseHandler) {
-            App::AutoTransaction committer;
             handled = sketchHandler->onSelectionChanged(msg);
         }
-        if (handled)
+        if (handled) {
             return;
+        }
 
         std::string temp;
         if (msg.Type == Gui::SelectionChanges::ClrSelection) {
@@ -3227,8 +3236,9 @@ void ViewProviderSketch::updateData(const App::Property* prop) {
 
 void ViewProviderSketch::slotSolverUpdate()
 {
-    if (!isInEditMode() )
+    if (!isInEditMode()) {
         return;
+    }
 
     // At this point, we do not need to solve the Sketch
     // If we are adding geometry an update can be triggered before the sketch is actually
@@ -3245,9 +3255,19 @@ void ViewProviderSketch::slotSolverUpdate()
     if (getSketchObject()->getExternalGeometryCount()
             + getSketchObject()->getHighestCurveIndex() + 1
         == getSolvedSketch().getGeometrySize()) {
-        Gui::MDIView* mdi = Gui::Application::Instance->editDocument()->getActiveView();
-        if (mdi->isDerivedFrom<Gui::View3DInventor>())
+
+        auto editDoc = Gui::Application::Instance->editDocument([this](Gui::Document* editdoc) {
+            return editdoc->getEditViewProvider() == this;
+        });
+
+        Gui::MDIView* mdi = nullptr;
+
+        if (editDoc) {
+            mdi = editDoc->getActiveView();
+        }
+        if (mdi->isDerivedFrom<Gui::View3DInventor>()) {
             draw(false, true);
+        }
 
         signalConstraintsChanged();
     }
@@ -3418,8 +3438,9 @@ bool ViewProviderSketch::setEdit(int ModNum)
     // the task panel
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     TaskDlgEditSketch* sketchDlg = qobject_cast<TaskDlgEditSketch*>(dlg);
-    if (sketchDlg && sketchDlg->getSketchView() != this)
+    if (sketchDlg && sketchDlg->getSketchView() != this) {
         sketchDlg = nullptr;// another sketch left open its task panel
+    }
     if (dlg && !sketchDlg) {
         QMessageBox msgBox(Gui::getMainWindow());
         msgBox.setText(tr("A dialog is already open in the task panel"));
@@ -3427,10 +3448,12 @@ bool ViewProviderSketch::setEdit(int ModNum)
         msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         msgBox.setDefaultButton(QMessageBox::Yes);
         int ret = msgBox.exec();
-        if (ret == QMessageBox::Yes)
+        if (ret == QMessageBox::Yes) {
             Gui::Control().closeDialog();
-        else
+        }
+        else {
             return false;
+        }
     }
 
     Sketcher::SketchObject* sketch = getSketchObject();
@@ -3461,13 +3484,10 @@ bool ViewProviderSketch::setEdit(int ModNum)
     Gui::Selection().clearSelection();
     Gui::Selection().rmvPreselect();
 
-    this->attachSelection();
-
     auto gridnode = getGridNode();
     Base::Placement plm = getEditingPlacement();
     setGridOrientation(plm.getPosition(), plm.getRotation());
     addNodeToRoot(gridnode);
-    setGridEnabled(true);
 
     // create the container for the additional edit data
     assert(!isInEditMode());
@@ -3476,14 +3496,21 @@ bool ViewProviderSketch::setEdit(int ModNum)
     editCoinManager = std::make_unique<EditModeCoinManager>(*this);
     snapManager = std::make_unique<SnapManager>(*this);
 
-    auto editDoc = Gui::Application::Instance->editDocument();
+
     App::DocumentObject* editObj = getSketchObject();
     std::string editSubName;
     ViewProviderDocumentObject* editVp = nullptr;
+
+    auto editDoc = Gui::Application::Instance->editDocument([this](Gui::Document* editdoc) {
+        return editdoc->getEditViewProvider() == this;
+    });
+
     if (editDoc) {
         editDoc->getInEdit(&editVp, &editSubName);
-        if (editVp)
+        if (editVp) {
             editObj = editVp->getObject();
+        }
+        setGridEnabled(dynamic_cast<Gui::View3DInventor*>(editDoc->getActiveView()));
     }
 
     // visibility automation
@@ -3503,7 +3530,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
                     "  tv.show([ref[0] for ref in ActiveSketch.AttachmentSupport if not (ref[0].isDerivedFrom(\"App::Plane\") or ref[0].isDerivedFrom(\"App::LocalCoordinateSystem\"))])\n"
                     "if ActiveSketch.ViewObject.ShowLinks:\n"
                     "  tv.show([ref[0] for ref in ActiveSketch.ExternalGeometry])\n"
-                    "tv.sketchClipPlane(ActiveSketch, ActiveSketch.ViewObject.SectionView)\n"
+                    "tv.sketchClipPlane(ActiveSketch, Gui.ActiveDocument, ActiveSketch.ViewObject.SectionView)\n"
                     "tv.hide(ActiveSketch)\n"
                     "del(tv)\n"
                     "del(ActiveSketch)\n")
@@ -3527,8 +3554,9 @@ bool ViewProviderSketch::setEdit(int ModNum)
     }
 
     // start the edit dialog
-    if (!sketchDlg)
+    if (!sketchDlg) {
         sketchDlg = new TaskDlgEditSketch(this);
+    }
 
     connectionToolWidget = sketchDlg->registerToolWidgetChanged(std::bind(&SketcherGui::ViewProviderSketch::slotToolWidgetChanged, this, sp::_1));
 
@@ -3571,18 +3599,47 @@ bool ViewProviderSketch::setEdit(int ModNum)
     getSketchObject()->setRecalculateInitialSolutionWhileMovingPoint(
         viewProviderParameters.recalculateInitialSolutionWhileDragging);
 
-    // intercept del key press from main app
-    listener = new ShortcutListener(this);
+    if (editDoc->isActive()) {
+        setupActiveAndInEdit();
+    }
 
-    Gui::getMainWindow()->installEventFilter(listener);
+    return true;
+}
+void ViewProviderSketch::setupActiveAndInEdit()
+{
+    if (!listener) {
+        // intercept del key press from main app
+        listener = new ShortcutListener(this);
+
+        Gui::getMainWindow()->installEventFilter(listener);
+    }
+    attachSelection();
 
     Workbench::enterEditMode();
 
     // Give focus to the MDI so that keyboard events are caught after starting edit.
     // Else pressing ESC right after starting edit will not be caught to exit edit mode.
     ensureFocus();
+}
+void ViewProviderSketch::unsetupActiveAndInEdit()
+{
+    if (listener) {
+        Gui::getMainWindow()->removeEventFilter(listener);
+        delete listener;
+        listener = nullptr;
+    }
+    detachSelection();
 
-    return true;
+    Workbench::leaveEditMode();
+}
+void ViewProviderSketch::setActive(bool active)
+{
+    bool inEdit = isInEditMode();
+    if (active && inEdit) {
+        setupActiveAndInEdit();
+    } else {
+        unsetupActiveAndInEdit();
+    }
 }
 
 QString ViewProviderSketch::appendConflictMsg(const std::vector<int>& conflicting)
@@ -3722,28 +3779,21 @@ void ViewProviderSketch::unsetEdit(int ModNum)
         return PartGui::ViewProvider2DObject::unsetEdit(ModNum);
     }
 
-    setGridEnabled(false);
+    setGridEnabled(nullptr);
     auto gridnode = getGridNode();
     pcRoot->removeChild(gridnode);
 
-    Workbench::leaveEditMode();
-
-    if (listener) {
-        Gui::getMainWindow()->removeEventFilter(listener);
-        delete listener;
-    }
-
     if (isInEditMode()) {
-        if (sketchHandler)
+        if (sketchHandler) {
             deactivateHandler();
+        }
 
         editCoinManager = nullptr;
         snapManager = nullptr;
         preselection.reset();
         selection.reset();
-        this->detachSelection();
 
-        App::AutoTransaction trans("Sketch recompute");
+        App::AutoTransaction trans(getDocument()->openCommand("Sketch recompute"));
         try {
             // and update the sketch
             // getSketchObject()->getDocument()->recompute();
@@ -3763,6 +3813,7 @@ void ViewProviderSketch::unsetEdit(int ModNum)
 
     // when pressing ESC make sure to close the dialog
     Gui::Control().closeDialog();
+    unsetupActiveAndInEdit();
 
     // visibility automation
     try {
@@ -3818,7 +3869,9 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
         }
     }
 
-    auto editDoc = Gui::Application::Instance->editDocument();
+    auto editDoc = Gui::Application::Instance->editDocument([this](Gui::Document* editdoc) {
+        return editdoc->getEditViewProvider() == this;
+    });
     editDocName.clear();
     if (editDoc) {
         ViewProviderDocumentObject* parent = nullptr;
@@ -3963,7 +4016,7 @@ void ViewProviderSketch::onCameraChanged(SoCamera* cam)
         draw();
 
         QString cmdStr = QStringLiteral("ActiveSketch.ViewObject.TempoVis.sketchClipPlane("
-                                        "ActiveSketch, ActiveSketch.ViewObject.SectionView, %1)\n")
+                                        "ActiveSketch, Gui.ActiveDocument, ActiveSketch.ViewObject.SectionView, %1)\n")
                              .arg(tmpFactor < 0 ? QLatin1String("True") : QLatin1String("False"));
         Base::Interpreter().runStringObject(cmdStr.toLatin1());
     }

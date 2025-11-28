@@ -207,7 +207,8 @@ public:
 
         if constexpr (PFirstComboboxIsConstructionMethod == true) {
 
-            if (comboboxindex == WCombobox::FirstCombo && handler->ConstructionMethodsCount() > 1) {
+            if (handler && comboboxindex == WCombobox::FirstCombo
+                && handler->ConstructionMethodsCount() > 1) {
                 handler->setConstructionMethod(static_cast<ConstructionMethodT>(value));
             }
         }

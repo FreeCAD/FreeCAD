@@ -158,5 +158,12 @@ void TaskDialog::onUndo()
 void TaskDialog::onRedo()
 {}
 
+void TaskDialog::activate()
+{}
+
+void TaskDialog::deactivate()
+{}
+
+
 
 #include "moc_TaskDialog.cpp"

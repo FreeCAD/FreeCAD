@@ -662,6 +662,8 @@ public:
     void attach(App::DocumentObject*) override;
     void updateData(const App::Property*) override;
 
+    void setActive(bool active) override;
+
     void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
     /// is called when the Provider is in edit and a deletion request occurs
     bool onDelete(const std::vector<std::string>&) override;
@@ -859,6 +861,13 @@ private:
         OffsetMode offset = NoOffset
     );
     void moveAngleConstraint(Sketcher::Constraint*, int constNum, const Base::Vector2d& toPos);
+
+    /// returns whether the sketch is in edit mode.
+    bool isInEditMode() const;
+    //@}
+
+    void setupActiveAndInEdit();
+    void unsetupActiveAndInEdit();
 
     /** @name signals*/
     //@{

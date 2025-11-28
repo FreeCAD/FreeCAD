@@ -352,9 +352,9 @@ void TaskDlgPost::connectSlots()
 void TaskDlgPost::open()
 {
     // only open a new command if none is pending (e.g. if the object was newly created)
-    if (!Gui::Command::hasPendingCommand()) {
+    if (!m_view->getDocument()->hasPendingCommand()) {
         auto text = std::string("Edit ") + m_view->getObject()->Label.getValue();
-        Gui::Command::openCommand(text.c_str());
+        m_view->getDocument()->openCommand(text.c_str());
     }
 }
 
@@ -386,8 +386,10 @@ bool TaskDlgPost::accept()
                 }
             }
         }
+        m_view->getDocument()->commitCommand();
     }
     catch (const Base::Exception& e) {
+        m_view->getDocument()->abortCommand();
         QMessageBox::warning(nullptr, tr("Input error"), QString::fromLatin1(e.what()));
         return false;
     }
@@ -399,7 +401,7 @@ bool TaskDlgPost::accept()
 bool TaskDlgPost::reject()
 {
     // roll back the done things
-    Gui::Command::abortCommand();
+    m_view->getDocument()->abortCommand();
     Gui::cmdGuiDocument(getDocumentName(), "resetEdit()");
 
     return true;

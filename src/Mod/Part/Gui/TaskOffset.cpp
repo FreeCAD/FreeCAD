@@ -213,19 +213,17 @@ bool OffsetWidget::accept()
         );
         Gui::cmdAppObjectArgs(d->offset, "Fill = %s", d->ui.fillOffset->isChecked() ? "True" : "False");
 
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
         if (!d->offset->isValid()) {
             throw Base::CADKernelError(d->offset->getStatusString());
         }
-        Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
-        Gui::Command::commitCommand();
+
+        Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+        d->offset->getDocument()->commitTransaction(); // ViewProviderDocumentObject::startDefaultEditMode()
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(
-            this,
-            tr("Input error"),
-            QCoreApplication::translate("Exception", e.what())
-        );
+        d->offset->getDocument()->abortTransaction(); // ViewProviderDocumentObject::startDefaultEditMode()
+        QMessageBox::warning(this, tr("Input error"), QCoreApplication::translate("Exception", e.what()));
         return false;
     }
 
@@ -241,8 +239,8 @@ bool OffsetWidget::reject()
     }
 
     // roll back the done things
-    Gui::Command::abortCommand();
-    Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
+    d->offset->getDocument()->abortTransaction(); // ViewProviderDocumentObject::startDefaultEditMode()
+    Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
     Gui::Command::updateActive();
 
     return true;

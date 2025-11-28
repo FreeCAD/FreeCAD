@@ -1508,7 +1508,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             self.creating = False
             self.joint = jointObj
             self.jointName = jointObj.Label
-            App.setActiveTransaction("Edit " + self.jointName + " Joint")
+            Gui.ActiveDocument.openCommand("Edit " + self.jointName + " Joint")
 
             self.updateTaskboxFromJoint()
             self.visibilityBackup = self.joint.Visibility
@@ -1518,9 +1518,9 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             self.creating = True
             self.jointName = self.jForm.jointType.currentText().replace(" ", "")
             if self.activeType == "Part":
-                App.setActiveTransaction("Transform")
+                Gui.ActiveDocument.openCommand("Transform")
             else:
-                App.setActiveTransaction("Create " + self.jointName + " Joint")
+                Gui.ActiveDocument.openCommand("Create " + self.jointName + " Joint")
 
             self.refs = []
             self.presel_ref = None
@@ -1608,12 +1608,12 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
 
         self.assembly.recompute(True)
 
-        App.closeActiveTransaction()
+        Gui.ActiveDocument.commitCommand()
         return True
 
     def reject(self):
         self.deactivate()
-        App.closeActiveTransaction(True)
+        Gui.ActiveDocument.abortCommand()
         self.assembly.recompute(True)
         return True
 

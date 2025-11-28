@@ -67,6 +67,8 @@ public:
         return transactionID;
     }
 
+    void setSelectionGate();
+
     bool event(QEvent* event) override;
 
 protected Q_SLOTS:
@@ -136,6 +138,8 @@ public:
     /// is called by the framework if the dialog is accepted (Ok)
     bool accept() override;
     bool reject() override;
+    void activate() override;
+    void deactivate() override;
 
 protected:
     TaskDressUpParameters* parameter;
