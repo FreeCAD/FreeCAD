@@ -25,6 +25,7 @@ from PySide import QtCore, QtGui
 from collections import Counter
 import FreeCAD
 import FreeCADGui
+import json
 import Path
 import Path.Base.Util as PathUtil
 import Path.Main.Job as PathJob
@@ -65,6 +66,15 @@ class JobCreate:
         self.itemsJob = QtGui.QStandardItem(translate("CAM_Job", "Jobs"))
         self.dialog.templateGroup.hide()
         self.dialog.modelGroup.hide()
+        self.dialog.machineGroup.show()
+        self._allTemplates = []
+
+        # Populate machine combo box
+        machines = Path.Preferences.getAvailableMachines()
+        display_machines = ["<any>" if m == "" else m for m in machines]
+        self.dialog.machineComboBox.clear()
+        self.dialog.machineComboBox.addItems(display_machines)
+        self.dialog.machineComboBox.setCurrentIndex(0)  # Default to <any>
 
         # debugging support
         self.candidates = None
@@ -255,11 +265,64 @@ class JobCreate:
         Path.Preferences.preferences().SetBool(Path.Preferences.WarningSuppressVelocity, True)
         dialog.reject()
 
+    def _gatherAllTemplates(self):
+        """Collect all available job templates with machine associations.
+
+        Scans all search paths for job_*.json files, parses each template,
+        and extracts machine associations. Normalizes path separators for consistency.
+
+        Returns:
+            list: List of dicts with keys 'name', 'file', and 'machine' for each template
+        """
+        templateFiles = []
+        for path in Path.Preferences.searchPaths():
+            cleanPaths = [f.replace("\\", "/") for f in self.templateFilesIn(path)]
+            templateFiles.extend(cleanPaths)
+        templates = []
+        for tFile in templateFiles:
+            machine = None
+            try:
+                with open(tFile, "r") as f:
+                    data = json.load(f)
+                machine_data = data.get("machine", None)
+                if isinstance(machine_data, str):
+                    machine = machine_data
+                # else remains None
+            except Exception:
+                machine = None
+            name = os.path.split(os.path.splitext(tFile)[0])[1][4:]
+            templates.append({"name": name, "file": tFile, "machine": machine})
+        return templates
+
+    def _updateTemplateList(self):
+        """Update the template dropdown based on selected machine.
+
+        Filters templates to show only those associated with the selected machine,
+        plus unassociated templates. Uses case-insensitive matching.
+        Unassociated templates are marked with "(unassociated)".
+        """
+        selected_machine = (
+            self.dialog.machineComboBox.currentText()
+            if hasattr(self.dialog, "machineComboBox")
+            else "<any>"
+        )
+        self.dialog.jobTemplate.clear()
+        self.dialog.jobTemplate.addItem(translate("CAM_Job", "<none>"), "")
+        for tpl in sorted(self._allTemplates, key=lambda t: t["name"]):
+            if selected_machine == "<any>":
+                self.dialog.jobTemplate.addItem(tpl["name"], tpl["file"])
+            elif (tpl["machine"] and tpl["machine"].lower() == selected_machine.lower()) or tpl[
+                "machine"
+            ] is None:
+                label = tpl["name"]
+                if tpl["machine"] is None:
+                    label += " (unassociated)"
+                self.dialog.jobTemplate.addItem(label, tpl["file"])
+
     def setupTitle(self, title):
         self.dialog.setWindowTitle(title)
 
     def setupModel(self, job=None):
-
         if job:
             preSelected = Counter(
                 [
@@ -408,32 +471,21 @@ class JobCreate:
         editor.valueChanged.connect(self.item1ValueChanged)
 
     def setupTemplate(self):
-        templateFiles = []
-        for path in Path.Preferences.searchPaths():
-            cleanPaths = [
-                f.replace("\\", "/") for f in self.templateFilesIn(path)
-            ]  # Standardize slashes used across os platforms
-            templateFiles.extend(cleanPaths)
+        # Populate machine combo box
+        if hasattr(self.dialog, "machineComboBox"):
+            self.dialog.machineComboBox.clear()
+            machines = Path.Preferences.getAvailableMachines()
+            for machine in machines:
+                self.dialog.machineComboBox.addItem(machine)
+            self.dialog.machineComboBox.setCurrentText("<any>")
+            self.dialog.machineComboBox.currentIndexChanged.connect(self._updateTemplateList)
 
-        template = {}
-        for tFile in templateFiles:
-            name = os.path.split(os.path.splitext(tFile)[0])[1][4:]
-            if name in template:
-                basename = name
-                i = 0
-                while name in template:
-                    i = i + 1
-                    name = basename + " (%s)" % i
-            Path.Log.track(name, tFile)
-            template[name] = tFile
-        selectTemplate = Path.Preferences.defaultJobTemplate()
-        index = 0
-        self.dialog.jobTemplate.addItem(translate("CAM_Job", "<none>"), "")
-        for name in sorted(template):
-            if template[name] == selectTemplate:
-                index = self.dialog.jobTemplate.count()
-            self.dialog.jobTemplate.addItem(name, template[name])
-        self.dialog.jobTemplate.setCurrentIndex(index)
+        # Gather all templates
+        self._allTemplates = self._gatherAllTemplates()
+
+        # Update template list
+        self._updateTemplateList()
+
         self.dialog.templateGroup.show()
 
     def templateFilesIn(self, path):
@@ -465,6 +517,13 @@ class JobCreate:
     def getTemplate(self):
         """answer the file name of the template to be assigned"""
         return self.dialog.jobTemplate.itemData(self.dialog.jobTemplate.currentIndex())
+
+    def getMachine(self):
+        """answer the selected machine name"""
+        if hasattr(self.dialog, "machineComboBox"):
+            machine = self.dialog.machineComboBox.currentText()
+            return machine if machine != "<any>" else ""
+        return ""
 
     def exec_(self):
         # ml: For some reason the callback has to be unregistered, otherwise there is a
