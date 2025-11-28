@@ -101,11 +101,14 @@ class ArchReference:
 
     def onDocumentRestored(self, obj):
 
-        ArchReference.setProperties(self, obj)
-        self.reload = False
+        ArchReference.setProperties(self,obj)
         if obj.ReferenceMode == "Lightweight":
+            self.reload = False
             if obj.ViewObject and obj.ViewObject.Proxy:
                 obj.ViewObject.Proxy.loadInventor(obj)
+        else:
+            self.reload = True
+            self.execute(obj)  # sets self.reload to False again
 
     def dumps(self):
 
