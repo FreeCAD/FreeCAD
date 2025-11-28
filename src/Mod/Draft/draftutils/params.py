@@ -622,6 +622,12 @@ def _get_param_dictionary():
         "WindowWidth":                 ("float",     1000.0),
     }
 
+    # BIM parameters that are not in the preferences:
+    # Note: incomplete!
+    param_dict["Mod/BIM"] = {
+        "BIMSketchPlacementOnly":      ("bool",      False),
+    }
+
     # For the Mod/Mesh parameters we do not check the preferences:
     param_dict["Mod/Mesh"] = {
         "MaxDeviationExport":          ("float",     0.1),
