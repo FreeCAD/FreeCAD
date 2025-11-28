@@ -438,6 +438,7 @@ const Quantity Quantity::MegaOhm                ( 1e+12                 , Unit::
 const Quantity Quantity::Coulomb                ( 1.0                   , Unit::ElectricCharge          );  // Coulomb (A*s)
 
 const Quantity Quantity::Tesla                  ( 1.0                   , Unit::MagneticFluxDensity     );  // Tesla (kg/s^2/A)
+const Quantity Quantity::MilliTesla             ( 1e-3                  , Unit::MagneticFluxDensity     );
 const Quantity Quantity::Gauss                  ( 1e-4                  , Unit::MagneticFluxDensity     );  // 1 G = 1e-4 T
 
 const Quantity Quantity::Weber                  ( 1e6                   , Unit::MagneticFlux            );  // Weber (kg*m^2/s^2/A)
