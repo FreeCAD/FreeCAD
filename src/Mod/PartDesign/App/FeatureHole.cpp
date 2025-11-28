@@ -2106,37 +2106,44 @@ App::DocumentObjectExecReturn* Hole::execute()
                             }
                         }
                     }
-                    if (targetShape.IsNull())
+                    if (targetShape.IsNull()) {
                         targetShape = body->Shape.getValue();
+                    }
                 }
-                if (targetShape.IsNull())
-                    targetShape = result.getShape(); // fallback
-                    // Add trimmed thread edges for each hole
-                    for (const auto& h : holes) {
-                        if (h.isNull())
-                            continue;
-                        // Compute ring center at threaded depth
-                        gp_Pnt ringCenter = firstPoint.Translated(gp_Vec(zDir) * -threadDepth);
-                        ringCenter.Transform(h.getShape().Location().Transformation());
-                        double ringRadius = (Tapered.getValue() ? radiusBottom : radius);
-                        if (ringRadius <= Precision::Confusion())
-                            continue;
-                        gp_Ax2 circAx2(ringCenter, gp_Dir(zDir));
-                        gp_Circ circ(circAx2, ringRadius);
-                        TopoDS_Edge fullCircleEdge = BRepBuilderAPI_MakeEdge(circ);
-                        // Trim edge against last shown shape
-                        BRepAlgoAPI_Section section(targetShape, fullCircleEdge, Precision::Confusion());
-                        section.Build();
-                        if (section.IsDone() && !section.Shape().IsNull()) {
-                            for (TopExp_Explorer exp(section.Shape(), TopAbs_EDGE); exp.More(); exp.Next()) {
-                                builder.Add(comp, exp.Current());
-                            }
-                        } else {
-                            builder.Add(comp, fullCircleEdge); // fallback
+                if (targetShape.IsNull()) {
+                    targetShape = result.getShape();  // fallback
+                }
+                // Add trimmed thread edges for each hole
+                for (const auto& h : holes) {
+                    if (h.isNull()) {
+                        continue;
+                    }
+                    // Compute ring center at threaded depth
+                    gp_Pnt ringCenter = firstPoint.Translated(gp_Vec(zDir) * -threadDepth);
+                    ringCenter.Transform(h.getShape().Location().Transformation());
+                    double ringRadius = (Tapered.getValue() ? radiusBottom : radius);
+                    if (ringRadius <= Precision::Confusion()) {
+                        continue;
+                    }
+                    gp_Ax2 circAx2(ringCenter, gp_Dir(zDir));
+                    gp_Circ circ(circAx2, ringRadius);
+                    TopoDS_Edge fullCircleEdge = BRepBuilderAPI_MakeEdge(circ);
+                    // Trim edge against last shown shape
+                    BRepAlgoAPI_Section section(targetShape, fullCircleEdge, Precision::Confusion());
+                    section.Build();
+                    if (section.IsDone() && !section.Shape().IsNull()) {
+                        for (TopExp_Explorer exp(section.Shape(), TopAbs_EDGE); exp.More();
+                             exp.Next()) {
+                            builder.Add(comp, exp.Current());
                         }
                     }
-                    result = TopoShape(comp);
-            } catch (...) {
+                    else {
+                        builder.Add(comp, fullCircleEdge);  // fallback
+                    }
+                }
+                result = TopoShape(comp);
+            }
+            catch (...) {
                 FC_WARN(getFullName() << ": Cosmetic thread generation failed");
             }
         }
