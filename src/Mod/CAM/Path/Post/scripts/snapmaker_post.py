@@ -1,42 +1,41 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: EUPL-1.2
 # A FreeCAD postprocessor targeting Snapmaker machines with CNC capabilities
-# ***************************************************************************
-# *  Copyright (c) 2025 Clair-Loup Sergent <clsergent@free.fr>              *
-# *                                                                         *
-# *  Licensed under the EUPL-1.2 with the specific provision                *
-# *  (EUPL articles 14 & 15) that the applicable law is the French law.     *
-# *  and the Jurisdiction Paris.                                            *
-# *  Any redistribution must include the specific provision above.          *
-# *                                                                         *
-# *  You may obtain a copy of the Licence at:                               *
+# ********************************************************************************
+# *  Copyright (c) 2025 Clair-Loup Sergent <clsergent@free.fr>                   *
+# *                                                                              *
+# *  Licensed under the EUPL-1.2 with the specific provision                     *
+# *  (EUPL articles 14 & 15) that the applicable law is the French law           *
+# *  and the Jurisdiction Paris.                                                 *
+# *  Any redistribution must include the specific provision above.               *
+# *                                                                              *
+# *  You may obtain a copy of the Licence at:                                    *
 # *  https://interoperable-europe.ec.europa.eu/collection/eupl/eupl-text-eupl-12 *
-# *                                                                         *
-# *  Unless required by applicable law or agreed to in writing, software    *
-# *  distributed under the Licence is distributed on an "AS IS" basis,      *
-# *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or        *
-# *  implied. See the Licence for the specific language governing           *
-# *  permissions and limitations under the Licence.                         *
-# ***************************************************************************
+# *                                                                              *
+# *  Unless required by applicable law or agreed to in writing, software         *
+# *  distributed under the Licence is distributed on an "AS IS" basis,           *
+# *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or             *
+# *  implied. See the Licence for the specific language governing                *
+# *  permissions and limitations under the Licence.                              *
+# ********************************************************************************
 
 
 import argparse
 import base64
-import copy
 import datetime
 import os
 import pathlib
 import re
 import tempfile
-from typing import Any, List, Tuple
+from copy import deepcopy
 
 import FreeCAD
 import Path
-import Path.Base.Util as PathUtil
+import Path.Base.Util
 import Path.Post.Processor
 import Path.Post.UtilsArguments
 import Path.Post.UtilsExport
-import Path.Post.Utils as PostUtils
+import Path.Post.Utils
 import Path.Post.UtilsParse
 import Path.Main.Job
 
@@ -49,125 +48,76 @@ else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
-def convert_option_to_attr(option_name):
-    # transforms argparse options into identifiers
-    if option_name.startswith("--"):
-        option_name = option_name[2:]
-    elif option_name.startswith("-"):
-        option_name = option_name[1:]
-
-    return option_name.replace("-", "_")
-
-
-SNAPMAKER_MACHINES = dict(
-    Original=dict(
-        key="Original",
+SNAPMAKER_MACHINES = {
+    "Original": dict(
         name="Snapmaker Original",
-        boundaries_table=[
-            # https://forum.snapmaker.com/t/cnc-work-area-size/5178
-            dict(boundaries=dict(X=125, Y=125, Z=50), toolhead="Original_CNC", mods=set()),
-        ],
+        # https://forum.snapmaker.com/t/cnc-work-area-size/5178
+        boundaries=dict(X=125, Y=125, Z=50),
         lead=dict(X=8, Y=8, Z=8),  # Linear module screw pitch (mm/turn)
     ),
-    Original_Z_Extension=dict(
-        key="Original_Z_Extension",
-        name="Snapmaker Original with Z extension",
-        boundaries_table=[
-            # https://forum.snapmaker.com/t/cnc-work-area-size/5178
-            dict(boundaries=dict(X=125, Y=125, Z=146), toolhead="Original_CNC", mods=set()),
-        ],
-        lead=dict(X=8, Y=8, Z=8),  # Linear module screw pitch (mm/turn)
-    ),
-    A150=dict(
-        key="A150",
+    "A150": dict(
         name="Snapmaker 2 A150",
-        boundaries_table=[
-            # [1] https://support.snapmaker.com/hc/en-us/articles/20786910972311-FAQ-for-Bracing-Kit-for-Snapmaker-2-0-Linear-Modules#h_01HN4Z7S9WJE5BRT492WR0CKH1
-            dict(boundaries=dict(X=145, Y=160, Z=90), toolhead="50W_CNC", mods=set()),
-            dict(boundaries=dict(X=145, Y=148, Z=90), toolhead="50W_CNC", mods={"BK"}),
-        ],
+        boundaries=dict(X=145, Y=160, Z=90),
         lead=dict(X=8, Y=8, Z=8),  # Linear module screw pitch (mm/turn)
     ),
-    A250=dict(
-        key="A250",
+    "A250": dict(
+        # [1] https://support.snapmaker.com/hc/en-us/articles/20786910972311-FAQ-for-Bracing-Kit-for-Snapmaker-2-0-Linear-Modules#h_01HN4Z7S9WJE5BRT492WR0CKH1
         name="Snapmaker 2 A250",
-        boundaries_table=[
-            # [1] https://support.snapmaker.com/hc/en-us/articles/20786910972311-FAQ-for-Bracing-Kit-for-Snapmaker-2-0-Linear-Modules#h_01HN4Z7S9WJE5BRT492WR0CKH1
-            dict(boundaries=dict(X=230, Y=250, Z=180), toolhead="50W_CNC", mods=set()),
-            dict(boundaries=dict(X=230, Y=238, Z=180), toolhead="50W_CNC", mods={"BK"}),
-            dict(boundaries=dict(X=230, Y=235, Z=180), toolhead="50W_CNC", mods={"QS"}),
-            dict(boundaries=dict(X=230, Y=223, Z=180), toolhead="50W_CNC", mods={"BK", "QS"}),
-            dict(boundaries=dict(X=230, Y=225, Z=180), toolhead="200W_CNC", mods={"BK"}),
-            dict(boundaries=dict(X=230, Y=210, Z=180), toolhead="200W_CNC", mods={"BK", "QS"}),
-        ],
+        boundaries=dict(X=230, Y=250, Z=180),
         lead=dict(X=8, Y=8, Z=8),  # Linear module screw pitch (mm/turn)
     ),
-    A250T=dict(
-        key="A250T",
+    "A250T": dict(
         name="Snapmaker 2 A250T",
-        boundaries_table=[
-            # [1] https://support.snapmaker.com/hc/en-us/articles/20786910972311-FAQ-for-Bracing-Kit-for-Snapmaker-2-0-Linear-Modules#h_01HN4Z7S9WJE5BRT492WR0CKH1
-            dict(boundaries=dict(X=230, Y=250, Z=180), toolhead="50W_CNC", mods=set()),
-            dict(boundaries=dict(X=230, Y=238, Z=180), toolhead="50W_CNC", mods={"BK"}),
-            dict(boundaries=dict(X=230, Y=235, Z=180), toolhead="50W_CNC", mods={"QS"}),
-            dict(boundaries=dict(X=230, Y=223, Z=180), toolhead="50W_CNC", mods={"BK", "QS"}),
-            dict(boundaries=dict(X=230, Y=225, Z=180), toolhead="200W_CNC", mods={"BK"}),
-            dict(boundaries=dict(X=230, Y=210, Z=180), toolhead="200W_CNC", mods={"BK", "QS"}),
-        ],
+        boundaries=dict(X=230, Y=250, Z=180),
         lead=dict(X=20, Y=20, Z=8),  # Linear module screw pitch (mm/turn)
     ),
-    A350=dict(
-        key="A350",
+    "A350": dict(
+        # [1] https://support.snapmaker.com/hc/en-us/articles/20786910972311-FAQ-for-Bracing-Kit-for-Snapmaker-2-0-Linear-Modules#h_01HN4Z7S9WJE5BRT492WR0CKH1
         name="Snapmaker 2 A350",
-        boundaries_table=[
-            # [1] https://support.snapmaker.com/hc/en-us/articles/20786910972311-FAQ-for-Bracing-Kit-for-Snapmaker-2-0-Linear-Modules#h_01HN4Z7S9WJE5BRT492WR0CKH1
-            dict(boundaries=dict(X=320, Y=350, Z=275), toolhead="50W_CNC", mods=set()),
-            dict(boundaries=dict(X=320, Y=338, Z=275), toolhead="50W_CNC", mods={"BK"}),
-            dict(boundaries=dict(X=320, Y=335, Z=275), toolhead="50W_CNC", mods={"QS"}),
-            dict(boundaries=dict(X=320, Y=323, Z=275), toolhead="50W_CNC", mods={"BK", "QS"}),
-            dict(boundaries=dict(X=320, Y=325, Z=275), toolhead="200W_CNC", mods={"BK"}),
-            dict(boundaries=dict(X=320, Y=310, Z=275), toolhead="200W_CNC", mods={"BK", "QS"}),
-        ],
+        boundaries=dict(X=320, Y=350, Z=275),
         lead=dict(X=8, Y=8, Z=8),  # Linear module screw pitch (mm/turn)
     ),
-    A350T=dict(
-        key="A350T",
+    "A350T": dict(
+        # [1] https://support.snapmaker.com/hc/en-us/articles/20786910972311-FAQ-for-Bracing-Kit-for-Snapmaker-2-0-Linear-Modules#h_01HN4Z7S9WJE5BRT492WR0CKH1
         name="Snapmaker 2 A350T",
-        boundaries_table=[
-            # [1] https://support.snapmaker.com/hc/en-us/articles/20786910972311-FAQ-for-Bracing-Kit-for-Snapmaker-2-0-Linear-Modules#h_01HN4Z7S9WJE5BRT492WR0CKH1
-            dict(boundaries=dict(X=320, Y=350, Z=275), toolhead="50W_CNC", mods=set()),
-            dict(boundaries=dict(X=320, Y=338, Z=275), toolhead="50W_CNC", mods={"BK"}),
-            dict(boundaries=dict(X=320, Y=335, Z=275), toolhead="50W_CNC", mods={"QS"}),
-            dict(boundaries=dict(X=320, Y=323, Z=275), toolhead="50W_CNC", mods={"BK", "QS"}),
-            dict(boundaries=dict(X=320, Y=325, Z=275), toolhead="200W_CNC", mods={"BK"}),
-            dict(boundaries=dict(X=320, Y=310, Z=275), toolhead="200W_CNC", mods={"BK", "QS"}),
-        ],
+        boundaries=dict(X=320, Y=350, Z=275),
         lead=dict(X=20, Y=20, Z=8),  # Linear module screw pitch (mm/turn)
     ),
-    Artisan=dict(
-        key="Artisan",
+    "Artisan": dict(
         name="Snapmaker Artisan",
-        boundaries_table=[
-            dict(boundaries=dict(X=400, Y=400, Z=400), toolhead="200W_CNC", mods=set()),
-        ],
+        boundaries=dict(X=400, Y=413, Z=400),  # Y is modified to accomodate 200W_CNC toolhead
         lead=dict(X=40, Y=40, Z=8),  # Linear module screw pitch (mm/turn)
     ),
-)
+}
 
-# These modifications were released to upgrade the Snapmaker 2.0 machines
-# which started on Kickstarter.
-SNAPMAKER_MOD_KITS = {
-    "QS": dict(
-        key="QS",
+# modifications for various machines
+SNAPMAKER_MODKITS = {
+    "quick_swap": dict(
         name="Quick Swap Kit",
-        option_name="--quick-swap",
-        option_help_text="Indicates that the quick swap kit is installed. Only compatible with Snapmaker 2 machines.",
+        arg=(
+            "quick_swap",
+            "QS",
+        ),
+        help="quick swap kit (Snapmaker 2 only)",
+        boundaries_delta=dict(X=0, Y=-15, Z=0),
+        machines={"A250", "A250T", "A350", "A350T"},
     ),
-    "BK": dict(
-        key="BK",
+    "bracing_kit": dict(
         name="Bracing Kit",
-        option_name="--bracing-kit",
-        option_help_text="Indicates that the bracing kit is installed. Only compatible with Snapmaker 2 machines.",
+        arg=(
+            "bracing_kit",
+            "BK",
+        ),
+        help="Bracing kit (Snapmaker 2 only)",
+        boundaries_delta=dict(X=0, Y=-12, Z=0),
+        machines={"A150", "A250", "A250T", "A350", "A350T"},
+    ),
+    "z_extension": dict(
+        name="Extended Z linear rail",
+        arg=("z_extension", "z_ext"),
+        help="Extended 2 linear rail (Snapmaker Original only)",
+        boundaries_delta=dict(X=0, Y=0, Z=96),
+        machines={"Original"},
     ),
 }
 
@@ -175,28 +125,31 @@ SNAPMAKER_MOD_KITS = {
 # https://wiki.snapmaker.com/en/Snapmaker_Luban/manual/2_supported_gcode_references#m3m4-modified-cnclaser-on
 SNAPMAKER_TOOLHEADS = {
     "Original_CNC": dict(
-        key="Original_CNC",
         name="Original CNC module",
-        speed_rpm=dict(min=0, max=7000),
+        arg=("Original_CNC", "SM1_CNC"),
         boundaries_delta=dict(X=0, Y=0, Z=0),
-        has_percent=True,
-        has_speed_s=False,
+        spindle_speeds=dict(min=0, max=7000),
+        spindle_percent=True,
+        spindle_rpm=False,
+        machines={"Original"},
     ),
     "50W_CNC": dict(
-        key="50W_CNC",
         name="50W CNC module",
-        speed_rpm=dict(min=0, max=12000),
+        arg=("50W_CNC",),
         boundaries_delta=dict(X=0, Y=0, Z=0),
-        has_percent=True,
-        has_speed_s=False,
+        spindle_speeds=dict(min=0, max=12000),
+        spindle_percent=True,
+        spindle_rpm=False,
+        machines={"A150", "A250", "A250T", "A350", "A350T"},
     ),
     "200W_CNC": dict(
-        key="200W_CNC",
         name="200W CNC module",
-        speed_rpm=dict(min=0, max=18000),
+        arg=("200W_CNC",),
         boundaries_delta=dict(X=0, Y=-13, Z=0),
-        has_percent=True,
-        has_speed_s=True,
+        spindle_speeds=dict(min=0, max=18000),
+        spindle_percent=True,
+        spindle_rpm=True,
+        machines={"A150", "A250", "A250T", "A350", "A350T", "Artisan"},
     ),
 }
 
@@ -252,7 +205,7 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
 
     def initialize(self):
         """initialize values and arguments"""
-        self.values: dict[str, Any] = dict()
+        self.values: dict[str, object] = dict()
         self.argument_defaults: dict[str, bool] = dict()
         self.arguments_visible: dict[str, bool] = dict()
         self.parser = argparse.ArgumentParser()
@@ -327,12 +280,14 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
         self.values["THUMBNAIL"] = True
         self.values["BOUNDARIES"] = None
         self.values["BOUNDARIES_CHECK"] = False
-        self.values["MACHINES"] = SNAPMAKER_MACHINES
-        self.values["MOD_KITS_ALL"] = SNAPMAKER_MOD_KITS
-        self.values["TOOLHEADS"] = SNAPMAKER_TOOLHEADS
-        self.values["TOOLHEAD_NAME"] = None
-        self.values["SPINDLE_SPEEDS"] = dict()
+        self.values["MACHINE"] = None
+        self.values["TOOLHEAD"] = None
+        self.values["MODKITS"] = dict()
+        self.values["SPINDLE_SPEEDS"] = None
         self.values["SPINDLE_PERCENT"] = None
+        self.values["MACHINES_LIST"] = SNAPMAKER_MACHINES
+        self.values["TOOLHEADS_LIST"] = SNAPMAKER_TOOLHEADS
+        self.values["MODKITS_LIST"] = SNAPMAKER_MODKITS
 
     def snapmaker_init_argument_defaults(self) -> None:
         """Initialize which arguments (in a pair) are shown as the default argument."""
@@ -427,37 +382,51 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
             "--machine",
             default=None,
             required=True,
-            choices=self.values["MACHINES"].keys(),
-            help=f"Snapmaker machine. Choose from [{self.values['MACHINES'].keys()}].",
+            choices=self.values["MACHINES_LIST"].keys(),
+            help=f"Snapmaker machine",
         )
 
-        for key, value in SNAPMAKER_MOD_KITS.items():
-            group.add_argument(
-                value["option_name"],
-                default=False,
-                action="store_true",
-                help=value["option_help_text"],
-            )
+        group.add_argument(
+            "--modkits",
+            default=(),
+            choices=[arg for kit in self.values["MODKITS_LIST"].values() for arg in kit["arg"]],
+            nargs="+",
+            # action='append',
+            help="Modification kits added to the machine:\n"
+            + ", ".join(
+                [
+                    f"{set(kit['arg'])}: {kit['help']}"
+                    for kit in self.values["MODKITS_LIST"].values()
+                ]
+            ),
+        )
 
         group.add_argument(
             "--toolhead",
             default=None,
-            choices=self.values["TOOLHEADS"].keys(),
-            help=f"Snapmaker toolhead. Choose from [{self.values['TOOLHEADS'].keys()}].",
+            choices=self.values["TOOLHEADS_LIST"].keys(),
+            help=f"Snapmaker toolhead",
         )
 
         group.add_argument(
             "--spindle-speeds",
             action=ExtremaAction,
-            default=None,
+            default=self.values["SPINDLE_SPEEDS"],
             help="Set minimum/maximum spindle speeds as --spindle-speeds='min,max'",
         )
 
         group.add_argument(
             "--spindle-percent",
             action="store_true",
-            default=None,
+            default=self.values["SPINDLE_PERCENT"],
             help="use percent as toolhead spindle speed unit (default: use RPM if supported by toolhead, otherwise percent)",
+        )
+
+        group.add_argument(
+            "--spindle-rpm",
+            action="store_false",
+            dest="spindle_percent",
+            help="Use RPM as toolhead spindle speed unit",
         )
 
         group.add_argument(
@@ -478,7 +447,7 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
 
     def snapmaker_process_arguments(
         self, filename: str = "-"
-    ) -> Tuple[bool, str | argparse.Namespace]:
+    ) -> tuple[bool, str | argparse.Namespace]:
         """Process any arguments to the postprocessor."""
         (flag, args) = Path.Post.UtilsArguments.process_shared_arguments(
             self.values, self.parser, self._job.PostProcessorArgs, self.visible_parser, filename
@@ -487,102 +456,116 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
             self._units = self.values["UNITS"]
 
             # --machine is a required "option"
-            machine = self.values["MACHINES"][args.machine]
-            self.values["MACHINE_KEY"] = machine["key"]
+            machine = deepcopy(self.values["MACHINES_LIST"][args.machine])
+            self.values["MACHINE"] = machine
             self.values["MACHINE_NAME"] = machine["name"]
 
-            compatible_toolheads = {bt["toolhead"] for bt in machine["boundaries_table"]}
+            # get toolhead
+            compatible_toolheads = {
+                n: th
+                for n, th in self.values["TOOLHEADS_LIST"].items()
+                if args.machine in th["machines"]
+            }
+            toolheads_args = {arg: n for n, th in compatible_toolheads.items() for arg in th["arg"]}
 
             if args.toolhead:
-                if args.toolhead not in compatible_toolheads:
+                if args.toolhead in toolheads_args:
+                    toolhead_key = toolheads_args[args.toolhead]
+                else:
                     FreeCAD.Console.PrintError(
-                        f"Selected --toolhead={args.toolhead} is not compatible with machine {machine['name']}."
-                        + f" Choose from [{compatible_toolheads}]\n"
+                        f"{args.toolhead} is not compatible with {machine['name']}.\n"
+                        f"\tAllowed values: {[th['arg'] for th in compatible_toolheads.values()]}\n"
                     )
-                    flag = False
-                    return (flag, args)
-                toolhead = self.values["TOOLHEADS"][args.toolhead]
+                    return False, args
             elif len(compatible_toolheads) == 1:
                 toolhead_key = next(iter(compatible_toolheads))
-                toolhead = self.values["TOOLHEADS"][toolhead_key]
+                FreeCAD.Console.PrintWarning(
+                    f"No toolhead argument provided. Using  "
+                    f"{self.values['TOOLHEADS_LIST'][toolhead_key]['name']}.\n"
+                )
             else:
                 FreeCAD.Console.PrintError(
-                    f"Machine {machine['name']} has multiple compatible toolheads:\n"
-                    f"{compatible_toolheads}\n"
-                    "Please add --toolhead argument.\n"
+                    f"Missing --toolhead argument.\n"
+                    + f"Compatible toolheads for {machine['name']}: "
+                    + f"{set(compatible_toolheads)}\n"
                 )
-                flag = False
-                return (flag, args)
-            self.values["TOOLHEAD_KEY"] = toolhead["key"]
-            self.values["TOOLHEAD_NAME"] = toolhead["name"]
+                return False, args
+            toolhead = deepcopy(self.values["TOOLHEADS_LIST"][toolhead_key])
+            self.values["TOOLHEAD"] = toolhead
+            self.values["MACHINE_NAME"] += " " + toolhead["name"]
 
-            self.values["SPINDLE_SPEEDS"] = toolhead["speed_rpm"]
-
+            self.values["SPINDLE_SPEEDS"] = toolhead["spindle_speeds"]
             if args.spindle_speeds:  # may override toolhead value, which is expected
                 self.values["SPINDLE_SPEEDS"] = args.spindle_speeds
 
-            if args.spindle_percent is not None:
-                if toolhead["has_percent"]:
+            # spindle in RPM or percent
+            if args.spindle_percent is not None:  # spindle mode requested by the user
+                if toolhead["spindle_percent"]:
                     self.values["SPINDLE_PERCENT"] = True
                 else:
                     FreeCAD.Console.PrintError(
                         f"Requested spindle speed in percent, but toolhead {toolhead['name']}"
                         + " does not support speed as percent.\n"
                     )
-                    flag = False
-                    return (flag, args)
-            else:
-                # Prefer speed S over percent P
+                    return False, args
+            else:  # default is RPM, percent otherwise
                 self.values["SPINDLE_PERCENT"] = (
-                    toolhead["has_percent"] and not toolhead["has_speed_s"]
+                    toolhead["spindle_percent"] and not toolhead["spindle_rpm"]
                 )
-            if self.values["SPINDLE_PERCENT"]:
-                FreeCAD.Console.PrintWarning(
-                    "Spindle speed will be controlled using using percentages.\n"
-                )
-            else:
-                FreeCAD.Console.PrintWarning("Spindle speed will be controlled using using RPM.\n")
 
-            self.values["MOD_KITS_INSTALLED"] = []
+            # display warning only if there is a mismatch between the request and the result
+            if args.spindle_percent is not self.values["SPINDLE_PERCENT"]:
+                if self.values["SPINDLE_PERCENT"]:
+                    FreeCAD.Console.PrintWarning(
+                        "Spindle speed will be controlled using using percentages.\n"
+                    )
+                else:
+                    FreeCAD.Console.PrintWarning(
+                        "Spindle speed will be controlled using using RPM.\n"
+                    )
+
+            # addons
+            compatible_modkits = {
+                n: kit for n, kit in SNAPMAKER_MODKITS.items() if args.machine in kit["machines"]
+            }
+            modkits_args = {arg: n for n, th in compatible_modkits.items() for arg in th["arg"]}
+
+            self.values["MODKITS"] = modkits = dict()
+            for kit in args.modkits:
+                if kit in modkits_args:
+                    modkit_key = modkits_args[kit]
+                    if modkit_key in modkits:
+                        FreeCAD.Console.PrintWarning(
+                            f"modkit {compatible_modkits[modkit_key]['name']} already provided"
+                        )
+                    else:
+                        modkits[modkit_key] = deepcopy(compatible_modkits[modkit_key])
+                else:
+                    FreeCAD.Console.PrintError(
+                        f"Modkit {kit} incompatible with {machine['name']}."
+                        + f"\tAllowed modkits: {[k['arg'] for k in compatible_modkits.values()]}\n"
+                    )
+                    return False, args
+
+            # update machine boundaries using toolhead and modkits
+            for mod in (*modkits.values(), toolhead):
+                machine["boundaries"]["X"] += mod["boundaries_delta"]["X"]
+                machine["boundaries"]["Y"] += mod["boundaries_delta"]["Y"]
+                machine["boundaries"]["Z"] += mod["boundaries_delta"]["Z"]
+
             if args.boundaries:  # may override machine boundaries, which is expected
                 self.values["BOUNDARIES"] = args.boundaries
                 self.values["MACHINE_NAME"] += " Boundaries override=" + str(args.boundaries)
+                for (axis, calculated), custom in zip(
+                    machine["boundaries"].items(), args.boundaries.values()
+                ):
+                    if custom > calculated:
+                        FreeCAD.Console.PrintWarning(
+                            f"Custom {axis} boundary ({custom}) exceed calculated {axis} boundary "
+                            + f"({calculated})"
+                        )
             else:
-                compatible_modkit_combos = [
-                    bt["mods"]
-                    for bt in machine["boundaries_table"]
-                    if toolhead["key"] == bt["toolhead"]
-                ]
-                configured_modkits = set()
-
-                # Determine which mod kits are requested from the options
-                for mod_kit in self.values["MOD_KITS_ALL"].values():
-                    if getattr(args, convert_option_to_attr(mod_kit["option_name"])):
-                        configured_modkits.add(mod_kit["key"])
-                        self.values["MACHINE_NAME"] += " " + mod_kit["name"]
-                        self.values["MOD_KITS_INSTALLED"].append(mod_kit["key"])
-
-                if configured_modkits not in compatible_modkit_combos:
-                    FreeCAD.Console.PrintError(
-                        f"Machine {machine['name']} with toolhead {toolhead['name']}"
-                        + f" is not compatible with modkit {configured_modkits if configured_modkits else None}.\n"
-                        + f" Choose from {compatible_modkit_combos}."
-                    )
-                    flag = False
-                    return (flag, args)
-
-                # Update machine dimensions based on installed toolhead and mod kits
-                boundaries_table_entry_l = [
-                    bt
-                    for bt in machine["boundaries_table"]
-                    if bt["toolhead"] == toolhead["key"] and bt["mods"] == configured_modkits
-                ]
-                assert len(boundaries_table_entry_l) == 1
-                boundaries_table_entry = boundaries_table_entry_l[0]
-
-                # The deepcopy is necessary to avoid modifying the boundaries in the MACHINES dict.
-                self.values["BOUNDARIES"] = copy.deepcopy(boundaries_table_entry["boundaries"])
-                self.values["MACHINE_NAME"] += " " + toolhead["name"]
+                self.values["BOUNDARIES"] = machine["boundaries"]
 
             self.values["THUMBNAIL"] = args.thumbnail
             self.values["ALLOW_GUI"] = args.gui
@@ -597,9 +580,9 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
 
         return flag, args
 
-    def snapmaker_process_postables(self, filename: str = "-") -> List[Tuple[str, str]]:
+    def snapmaker_process_postables(self, filename: str = "-") -> list[tuple[str, str]]:
         """process job sections to gcode"""
-        sections: List[Tuple[str, str]] = list()
+        sections: list[tuple[str, str]] = list()
 
         postables = self._buildPostList()
 
@@ -616,7 +599,7 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
 
     def get_thumbnail(self) -> str:
         """generate a thumbnail of the job from the given objects"""
-        if self.values["THUMBNAIL"] is False:
+        if not self.values["THUMBNAIL"]:
             return "thumbnail: deactivated."
 
         if not (self.values["ALLOW_GUI"] and FreeCAD.GuiUp):
@@ -627,6 +610,7 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
 
         # get FreeCAD references
         import FreeCADGui
+        from PySide import QtGui
 
         view = FreeCADGui.activeDocument().activeView()
         selection = FreeCADGui.Selection
@@ -653,6 +637,10 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
         view.viewIsometric()  # display as isometric
         selection.clearSelection()
 
+        # update GUI to avoid a blank picture
+        FreeCADGui.updateGui()
+        QtGui.QApplication.processEvents()
+
         # generate thumbnail
         with tempfile.TemporaryDirectory() as temp:
             path = os.path.join(temp, "thumbnail.png")
@@ -672,7 +660,7 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
 
         return f"thumbnail: data:image/png;base64,{base64.b64encode(data).decode()}"
 
-    def output_header(self, gcode: List[str]):
+    def output_header(self, gcode: list[str]):
         """custom method derived from Path.Post.UtilsExport.output_header"""
         cam_file: str
         comment: str
@@ -699,9 +687,9 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
         add_comment(f"Output Time: {datetime.datetime.now()}")
         add_comment(self.get_thumbnail())
 
-    def convert_spindle(self, gcode: List[str]) -> List[str]:
+    def convert_spindle(self, gcode: list[str]) -> list[str]:
         """convert spindle speed values from RPM to percent (%) (M3/M4 commands)"""
-        if self.values["SPINDLE_PERCENT"] is False:
+        if not self.values["SPINDLE_PERCENT"]:
             return gcode
 
         # https://wiki.snapmaker.com/en/Snapmaker_Luban/manual/2_supported_gcode_references#m3m4-modified-cnclaser-on
@@ -720,10 +708,9 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
                 )
         return gcode
 
-    def check_boundaries(self, gcode: List[str]) -> bool:
+    def check_boundaries(self, gcode: list[str]) -> bool:
         """Check boundaries and return whether it succeeded"""
         status = True
-        FreeCAD.Console.PrintLog("Boundaries check\n")
 
         extrema = dict(X=[0, 0], Y=[0, 0], Z=[0, 0])
         position = dict(X=0, Y=0, Z=0)
@@ -752,13 +739,13 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
                     f"Boundary check: job exceeds machine limit on {axis} axis\n"
                 )
                 status = False
-
+        FreeCAD.Console.PrintLog("Boundaries checked\n")
         return status
 
-    def export_common(self, objects: List, filename: str | pathlib.Path) -> str:
+    def export_common(self, objects: list, filename: str | pathlib.Path) -> str:
         """custom method derived from Path.Post.UtilsExport.export_common"""
         final: str
-        gcode: List = []
+        gcode: list = []
         result: bool
 
         for obj in objects:
@@ -777,9 +764,9 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
 
         for obj in objects:
             # Skip inactive operations
-            if not PathUtil.activeForOp(obj):
+            if not Path.Base.Util.activeForOp(obj):
                 continue
-            coolant_mode = PathUtil.coolantModeForOp(obj)
+            coolant_mode = Path.Base.Util.coolantModeForOp(obj)
             Path.Post.UtilsExport.output_start_bcnc(self.values, gcode, obj)
             Path.Post.UtilsExport.output_preop(self.values, gcode, obj)
             Path.Post.UtilsExport.output_coolant_on(self.values, gcode, coolant_mode)
@@ -806,25 +793,19 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
         if self.values["BOUNDARIES_CHECK"]:
             self.check_boundaries(gcode)
 
-        # add the appropriate end-of-line characters to the gcode, including after the last line
+        # EOL is "\n" for the editor, it will eventually be replaced after
         gcode.append("")
-        final = self.values["END_OF_LINE_CHARACTERS"].join(gcode)
+        final = "\n".join(gcode)
 
         if FreeCAD.GuiUp and self.values["SHOW_EDITOR"]:
             # size limit removed as irrelevant on my computer - see if issues occur
-            dia = PostUtils.GCodeEditorDialog()
-            # the editor expects lines to end in "\n", and returns lines ending in "\n"
-            if self.values["END_OF_LINE_CHARACTERS"] == "\n":
-                dia.editor.setText(final)
-                if dia.exec_():
-                    final = dia.editor.toPlainText()
-            else:
-                final_for_editor = "\n".join(gcode)
-                dia.editor.setText(final_for_editor)
-                if dia.exec_():
-                    final_for_editor = dia.editor.toPlainText()
-                    # convert all "\n" to the appropriate end-of-line characters
-                    final = final_for_editor.replace("\n", self.values["END_OF_LINE_CHARACTERS"])
+            dia = Path.Post.Utils.GCodeEditorDialog()
+            dia.editor.setText(final)
+            if dia.exec_():
+                final = dia.editor.toPlainText()
+
+        if self.values["END_OF_LINE_CHARACTERS"] != "\n":
+            final = final.replace("\n", self.values["END_OF_LINE_CHARACTERS"])
 
         if not filename == "-":
             with open(filename, "w", encoding="utf-8", newline="") as gfile:
