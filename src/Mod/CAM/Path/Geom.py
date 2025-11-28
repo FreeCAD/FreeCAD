@@ -177,11 +177,14 @@ def isVertical(obj):
             return isVertical(obj.Surface.Direction)
         if isinstance(obj.Surface, Part.SurfaceOfRevolution):
             return isHorizontal(obj.Surface.Direction)
-        if not isinstance(obj.Surface, Part.BSplineSurface):
-            Path.Log.info(
-                translate("PathGeom", "face %s not handled, assuming not vertical")
-                % type(obj.Surface)
-            )
+        if isinstance(obj.Surface, Part.BSplineSurface):
+            # simple face after scale
+            vertEdges = [e for e in obj.Edges if isVertical(e)]
+            return len(vertEdges) == 2 and len(obj.Edges) == 4
+
+        Path.Log.info(
+            translate("PathGeom", "face %s not handled, assuming not vertical") % type(obj.Surface)
+        )
         return None
 
     if obj.ShapeType == "Edge":
@@ -189,14 +192,14 @@ def isVertical(obj):
             return isVertical(obj.Vertexes[1].Point - obj.Vertexes[0].Point)
         if isinstance(obj.Curve, (Part.Circle, Part.Ellipse)):
             return isHorizontal(obj.Curve.Axis)
-        if isinstance(obj.Curve, Part.BezierCurve):
-            # the current assumption is that a bezier curve is vertical if its end points are vertical
+        if isinstance(obj.Curve, (Part.BezierCurve, Part.BSplineCurve)):
+            # the current assumption is that
+            # a curve is vertical if its end points are vertical
             return isVertical(obj.Curve.EndPoint - obj.Curve.StartPoint)
-        if isinstance(obj.Curve, Part.BSplineCurve):
-            Path.Log.info(
-                translate("PathGeom", "edge %s not handled, assuming not vertical")
-                % type(obj.Curve)
-            )
+
+        Path.Log.info(
+            translate("PathGeom", "edge %s not handled, assuming not vertical") % type(obj.Curve)
+        )
         return None
 
     Path.Log.error(translate("PathGeom", "isVertical(%s) not supported") % obj)
