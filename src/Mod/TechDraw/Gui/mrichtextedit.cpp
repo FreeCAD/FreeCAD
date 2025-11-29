@@ -830,5 +830,15 @@ void MRichTextEdit::addFontSize(QString fontSize)
     f_fontsize->addItems(newList);
 }
 
+
+void MRichTextEdit::setMinimalMode(bool on)
+{
+    f_save->setVisible(!on);
+    f_exit->setVisible(!on);
+    f_cut->setVisible(!on);
+    f_copy->setVisible(!on);
+    f_paste->setVisible(!on);
+}
+
 #include <Mod/TechDraw/Gui/moc_mrichtextedit.cpp>
 
