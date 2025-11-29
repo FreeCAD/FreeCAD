@@ -1388,7 +1388,10 @@ bool MeshOutput::SaveAny(const char* FileName, MeshIO::Format format) const
     // ask for write permission
     Base::FileInfo file(FileName);
     Base::FileInfo directory(file.dirPath());
-    if ((file.exists() && !file.isWritable()) || !directory.exists() || !directory.isWritable()) {
+    if (!directory.exists()) {
+        throw Base::FileException("Directory does not exist", FileName);
+    }
+    if ((file.exists() && !file.isWritable()) || !directory.isWritable()) {
         throw Base::FileException("No write permission for file", FileName);
     }
 
