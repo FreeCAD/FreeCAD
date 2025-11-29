@@ -651,6 +651,20 @@ def getSimulationGroup(assembly):
     return sim_group
 
 
+def getSnapshotGroup(assembly):
+    snapshot_group = None
+
+    for obj in assembly.OutList:
+        if obj.TypeId == "Assembly::SnapshotGroup":
+            snapshot_group = obj
+            break
+
+    if not snapshot_group:
+        snapshot_group = assembly.newObject("Assembly::SnapshotGroup", "Snapshots")
+
+    return snapshot_group
+
+
 def isAssemblyGrounded():
     assembly = activeAssembly()
     if not assembly:

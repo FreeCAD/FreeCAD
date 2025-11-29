@@ -21,38 +21,44 @@
  *                                                                          *
  ***************************************************************************/
 
+#include <App/Document.h>
+#include <App/DocumentObject.h>
+#include <Gui/Application.h>
+#include <Gui/BitmapFactory.h>
 
-#ifndef ASSEMBLY_BomGroup_H
-#define ASSEMBLY_BomGroup_H
-
-#include <Mod/Assembly/AssemblyGlobal.h>
-
-#include <App/DocumentObjectGroup.h>
-#include <App/PropertyLinks.h>
+#include "ViewProviderGroups.h"
 
 
-namespace Assembly
+using namespace AssemblyGui;
+
+PROPERTY_SOURCE(AssemblyGui::ViewProviderGroupBase, Gui::ViewProviderDocumentObjectGroup)
+PROPERTY_SOURCE(AssemblyGui::ViewProviderBomGroup, AssemblyGui::ViewProviderGroupBase)
+PROPERTY_SOURCE(AssemblyGui::ViewProviderJointGroup, AssemblyGui::ViewProviderGroupBase)
+PROPERTY_SOURCE(AssemblyGui::ViewProviderSimulationGroup, AssemblyGui::ViewProviderGroupBase)
+PROPERTY_SOURCE(AssemblyGui::ViewProviderSnapshotGroup, AssemblyGui::ViewProviderGroupBase)
+PROPERTY_SOURCE(AssemblyGui::ViewProviderViewGroup, AssemblyGui::ViewProviderGroupBase)
+
+QIcon ViewProviderBomGroup::getIcon() const
 {
+    return Gui::BitmapFactory().pixmap("Assembly_BillOfMaterialsGroup.svg");
+}
 
-class AssemblyExport BomGroup: public App::DocumentObjectGroup
+QIcon ViewProviderJointGroup::getIcon() const
 {
-    PROPERTY_HEADER_WITH_OVERRIDE(Assembly::BomGroup);
+    return Gui::BitmapFactory().pixmap("Assembly_JointGroup.svg");
+}
 
-public:
-    BomGroup();
-    ~BomGroup() override;
+QIcon ViewProviderSimulationGroup::getIcon() const
+{
+    return Gui::BitmapFactory().pixmap("Assembly_SimulationGroup.svg");
+}
 
-    PyObject* getPyObject() override;
+QIcon ViewProviderSnapshotGroup::getIcon() const
+{
+    return Gui::BitmapFactory().pixmap("Assembly_SnapshotGroup.svg");
+}
 
-    /// returns the type name of the ViewProvider
-    const char* getViewProviderName() const override
-    {
-        return "AssemblyGui::ViewProviderBomGroup";
-    }
-};
-
-
-}  // namespace Assembly
-
-
-#endif  // ASSEMBLY_BomGroup_H
+QIcon ViewProviderViewGroup::getIcon() const
+{
+    return Gui::BitmapFactory().pixmap("Assembly_ExplodedViewGroup.svg");
+}

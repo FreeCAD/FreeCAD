@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 /****************************************************************************
  *                                                                          *
- *   Copyright (c) 2023 Ondsel <development@ondsel.com>                     *
+ *   Copyright (c) 2024 Ondsel <development@ondsel.com>                     *
  *                                                                          *
  *   This file is part of FreeCAD.                                          *
  *                                                                          *
@@ -22,8 +22,8 @@
  ***************************************************************************/
 
 
-#ifndef ASSEMBLY_ViewGroup_H
-#define ASSEMBLY_ViewGroup_H
+#ifndef ASSEMBLY_Groups_H
+#define ASSEMBLY_Groups_H
 
 #include <Mod/Assembly/AssemblyGlobal.h>
 
@@ -34,13 +34,87 @@
 namespace Assembly
 {
 
+class AssemblyExport BomGroup: public App::DocumentObjectGroup
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(Assembly::BomGroup);
+
+public:
+    BomGroup() = default;
+    ~BomGroup() override = default;
+
+    PyObject* getPyObject() override;
+
+    /// returns the type name of the ViewProvider
+    const char* getViewProviderName() const override
+    {
+        return "AssemblyGui::ViewProviderBomGroup";
+    }
+};
+
+
+class AssemblyExport JointGroup: public App::DocumentObjectGroup
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(Assembly::JointGroup);
+
+public:
+    JointGroup() = default;
+    ~JointGroup() override = default;
+
+    PyObject* getPyObject() override;
+
+    /// returns the type name of the ViewProvider
+    const char* getViewProviderName() const override
+    {
+        return "AssemblyGui::ViewProviderJointGroup";
+    }
+
+    std::vector<App::DocumentObject*> getJoints();
+};
+
+
+class AssemblyExport SimulationGroup: public App::DocumentObjectGroup
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(Assembly::SimulationGroup);
+
+public:
+    SimulationGroup() = default;
+    ~SimulationGroup() override = default;
+
+    PyObject* getPyObject() override;
+
+    /// returns the type name of the ViewProvider
+    const char* getViewProviderName() const override
+    {
+        return "AssemblyGui::ViewProviderSimulationGroup";
+    }
+};
+
+
+class AssemblyExport SnapshotGroup: public App::DocumentObjectGroup
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(Assembly::SnapshotGroup);
+
+public:
+    SnapshotGroup() = default;
+    ~SnapshotGroup() override = default;
+
+    PyObject* getPyObject() override;
+
+    /// returns the type name of the ViewProvider
+    const char* getViewProviderName() const override
+    {
+        return "AssemblyGui::ViewProviderSnapshotGroup";
+    }
+};
+
+
 class AssemblyExport ViewGroup: public App::DocumentObjectGroup
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Assembly::ViewGroup);
 
 public:
-    ViewGroup();
-    ~ViewGroup() override;
+    ViewGroup() = default;
+    ~ViewGroup() override = default;
 
     PyObject* getPyObject() override;
 
@@ -51,8 +125,7 @@ public:
     }
 };
 
-
 }  // namespace Assembly
 
 
-#endif  // ASSEMBLY_ViewGroup_H
+#endif  // ASSEMBLY_Groups_H

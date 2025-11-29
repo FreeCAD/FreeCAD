@@ -81,8 +81,7 @@
 #include "AssemblyObject.h"
 #include "AssemblyObjectPy.h"
 #include "AssemblyUtils.h"
-#include "JointGroup.h"
-#include "ViewGroup.h"
+#include "Groups.h"
 
 FC_LOG_LEVEL_INIT("Assembly", true, true, true)
 

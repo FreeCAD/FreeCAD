@@ -49,14 +49,8 @@ SET(AssemblyGui_SRCS_Module
     ViewProviderAssemblyLink.h
     ViewProviderBom.cpp
     ViewProviderBom.h
-    ViewProviderBomGroup.cpp
-    ViewProviderBomGroup.h
-    ViewProviderJointGroup.cpp
-    ViewProviderJointGroup.h
-    ViewProviderViewGroup.cpp
-    ViewProviderViewGroup.h
-    ViewProviderSimulationGroup.cpp
-    ViewProviderSimulationGroup.h
+    ViewProviderGroups.cpp
+    ViewProviderGroups.h
     ${Assembly_QRC_SRCS}
 )
 

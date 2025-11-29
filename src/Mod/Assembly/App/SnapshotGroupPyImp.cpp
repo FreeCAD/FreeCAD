@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 /****************************************************************************
  *                                                                          *
- *   Copyright (c) 2023 Ondsel <development@ondsel.com>                     *
+ *   Copyright (c) 2024 Ondsel <development@ondsel.com>                     *
  *                                                                          *
  *   This file is part of FreeCAD.                                          *
  *                                                                          *
@@ -21,24 +21,25 @@
  *                                                                          *
  ***************************************************************************/
 
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
 
-#include "ViewProviderBomGroup.h"
+// inclusion of the generated files (generated out of SnapshotGroup.pyi)
+#include "SnapshotGroupPy.h"
+#include "SnapshotGroupPy.cpp"
 
+using namespace Assembly;
 
-using namespace AssemblyGui;
-
-PROPERTY_SOURCE(AssemblyGui::ViewProviderBomGroup, Gui::ViewProviderDocumentObjectGroup)
-
-ViewProviderBomGroup::ViewProviderBomGroup()
-{}
-
-ViewProviderBomGroup::~ViewProviderBomGroup() = default;
-
-QIcon ViewProviderBomGroup::getIcon() const
+// returns a string which represents the object e.g. when printed in python
+std::string SnapshotGroupPy::representation() const
 {
-    return Gui::BitmapFactory().pixmap("Assembly_BillOfMaterialsGroup.svg");
+    return {"<Snapshot Group>"};
+}
+
+PyObject* SnapshotGroupPy::getCustomAttributes(const char* /*attr*/) const
+{
+    return nullptr;
+}
+
+int SnapshotGroupPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
+{
+    return 0;
 }
