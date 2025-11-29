@@ -550,7 +550,8 @@ class ObjectOp(object):
             job = self.job
         else:
             job = PathUtils.addToJob(obj)
-
+        if not job:
+            raise ValueError("No job associated with the operation. Please ensure the operation is part of a job.")
         obj.Active = True
 
         features = self.opFeatures(obj)
