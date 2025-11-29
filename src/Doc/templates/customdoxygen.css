@@ -1,7 +1,7 @@
-@font-face {
+ @font-face {
     font-family: 'Fira Sans';
     src: url('/fonts/FiraSans-Regular.eot');
-    src: local('☺'), url('/fonts/FiraSans-Regular.woff') format('woff'), url('/fonts/FiraSans-Regular.ttf') format('truetype'), url('/fonts/FiraSans-Regular.svg') format('svg');
+    src: local('☺'), url('FiraSans-Regular.woff2') format('woff2'), url('/fonts/FiraSans-Regular.ttf') format('truetype'), url('/fonts/FiraSans-Regular.svg') format('svg');
     font-weight: 400;
     font-style: normal;
 }
@@ -9,7 +9,7 @@
 @font-face {
     font-family: 'Roboto';
     src: url('/fonts/Roboto.eot');
-    src: local('☺'), url('/fonts/Roboto.woff') format('woff'), url('/fonts/Roboto.ttf') format('truetype'), url('/fonts/Roboto.svg') format('svg');
+    src: local('☺'), url('Roboto-Regular.woff2') format('woff2'), url('/fonts/Roboto.ttf') format('truetype'), url('/fonts/Roboto.svg') format('svg');
     font-weight: 400;
     font-style: normal;
 }
@@ -367,4 +367,14 @@ body, table, div, p, dl {
 }
 .sm.sm-dox {
     display: none;
+}
+
+div.textblock,
+.group-page div.contents {
+    max-width: 80ch;
+    margin-left: 0;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    box-sizing: border-box;
 }
