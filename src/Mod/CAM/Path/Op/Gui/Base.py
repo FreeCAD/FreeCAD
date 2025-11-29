@@ -193,11 +193,10 @@ class ViewProvider(object):
             return i
         return 0
 
-
     def updateData(self, obj, prop):
         """updateData(obj, prop) ... callback whenever a property of the receiver's model is assigned.
         The callback is forwarded to the task panel - in case an editing session is ongoing."""
-        #Path.Log.track(obj.Label, prop) # Creates a lot of noise
+        # Path.Log.track(obj.Label, prop) # Creates a lot of noise
 
         # This is experimental.  If it works, it should be turned into a preference setting
         if prop == "Path":
