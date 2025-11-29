@@ -246,6 +246,18 @@ def _get_opposing_surface(surface_map, solid, face):
     raise Exception("Could not find opposing edge")
 
 
+def _connected(shape, vertex1, vertex2):
+
+    # returns true if the two vertices are connected via a single edge
+    v1edges = shape.ancestorsOfType(vertex1, Part.Edge)
+    v2edges = shape.ancestorsOfType(vertex2, Part.Edge)
+    for v1edge in v1edges:
+        for v2edge in v2edges:
+            if v1edge.isSame(v2edge):
+                return True
+
+    return False
+
 def _propagate_edge(surfaces_map, edges_map, shape, faces, edge_key, origin_face, creator):
     # Propagates the edge values through the map
     #
@@ -282,8 +294,19 @@ def _propagate_edge(surfaces_map, edges_map, shape, faces, edge_key, origin_face
             continue
 
         else:
+            # check if we propagate a Progression edge, and if we need to change the invertion
+            data = edges_map[edge_key].Data
+            if data.Distribution == "Progression":
+                # progression goes towards edge.V0. Therefore, we may need to invert
+                # if the opposite edge has turned vertices
+                if not _connected(shape, edge_key.Shape.Vertexes[0], opposite_key.Shape.Vertexes[0]):
+                    data = TFCurveDefinition(Nodes=data.Nodes,
+                                             Coefficient=data.Coefficient,
+                                             Distribution=data.Distribution,
+                                             Invert=(not data.Invert))
+
             # transfer the data as automatic definition
-            edges_map[opposite_key].Data = edges_map[edge_key].Data
+            edges_map[opposite_key].Data = data
             edges_map[opposite_key].Creation = creator
 
             # propagate the opposite edge further
