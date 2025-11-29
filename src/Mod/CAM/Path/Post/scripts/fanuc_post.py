@@ -618,8 +618,7 @@ def parse(pathobj):
                     outstring.insert(0, (linenumber()))
 
                 # append the line to the final output
-                for w in outstring:
-                    out += w.upper() + COMMAND_SPACE
+                out += COMMAND_SPACE.join(outstring).upper()
                 out = out.strip() + "\n"
 
         return out
