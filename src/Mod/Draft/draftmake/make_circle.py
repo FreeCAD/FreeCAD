@@ -126,15 +126,16 @@ def make_circle(radius, placement=None, face=None, startangle=None, endangle=Non
         axis = edge.Curve.Axis
         ref_rot = App.Rotation() if placement is None else placement.Rotation
         normal = _get_normal(axis, ref_rot)
-        x_axis = ref_rot.multVec(App.Vector(1, 0, 0))
-        y_axis = ref_rot.multVec(App.Vector(0, 1, 0))
-        rot = App.Rotation(x_axis, y_axis, normal, "ZXY")
+        ref_x_axis = ref_rot.multVec(App.Vector(1, 0, 0))
+        ref_y_axis = ref_rot.multVec(App.Vector(0, 1, 0))
+        rot = App.Rotation(ref_x_axis, ref_y_axis, normal, "ZXY")
         placement = App.Placement(edge.Curve.Center, rot)
         if len(edge.Vertexes) > 1:
             v1 = (edge.Vertexes[0].Point).sub(edge.Curve.Center)
             v2 = (edge.Vertexes[-1].Point).sub(edge.Curve.Center)
             if not axis.isEqual(normal, 1e-4):
                 v1, v2 = v2, v1
+            x_axis = rot.multVec(App.Vector(1, 0, 0))
             obj.FirstAngle = math.degrees(DraftVecUtils.angle(x_axis, v1, normal))
             obj.LastAngle = math.degrees(DraftVecUtils.angle(x_axis, v2, normal))
     else:
