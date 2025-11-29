@@ -437,6 +437,7 @@ def parse(pathobj):
         for index, c in enumerate(commands):
 
             outstring = []
+            outsuffix = []
             command = c.Name
             if index + 1 == len(commands):
                 nextcommand = ""
@@ -622,8 +623,7 @@ def parse(pathobj):
 
                 # add height offset
                 if USE_TLO:
-                    tool_height = "\nG43 H" + str(int(c.Parameters["T"]))
-                    outstring.append(tool_height)
+                    outsuffix.append("G43 H" + str(int(c.Parameters["T"]))
 
             if command == "message":
                 if OUTPUT_COMMENTS is False:
@@ -637,9 +637,11 @@ def parse(pathobj):
                     outstring.insert(0, (linenumber()))
 
                 # append the line to the final output
-                for w in outstring:
-                    out += w.upper() + COMMAND_SPACE
+                out += COMMAND_SPACE.join(outstring).upper()
                 out = out.strip() + "\n"
+            if len(outsuffix) >= 1:
+                for line in outsuffix:
+                    out += linenumber() + line + "\n"
 
         return out
 
