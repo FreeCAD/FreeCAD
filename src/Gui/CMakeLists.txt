@@ -528,6 +528,7 @@ SET(Command_CPP_SRCS
     CommandPyImp.cpp
     ShortcutManager.cpp
     CommandCompleter.cpp
+    CommandPalette.cpp
     CommandActionPy.cpp
 )
 SET(Command_SRCS
@@ -538,6 +539,7 @@ SET(Command_SRCS
     CommandT.h
     ShortcutManager.h
     CommandCompleter.h
+    CommandPalette.h
     CommandActionPy.h
 )
 SOURCE_GROUP("Command" FILES ${Command_SRCS})
