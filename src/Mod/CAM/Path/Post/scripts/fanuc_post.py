@@ -435,17 +435,19 @@ def parse(pathobj):
                 if command == "G0":
                     continue
 
-            # if it's a tap, we rigid tap, so don't start the spindle yet...
+            # if tool a tap, we thread tap, so stop the spindle for now.
+            # This only trigger when pathobj is a ToolController.
             if command == "M03" or command == "M3":
-                if pathobj.Tool.ShapeID.lower() == "tap":
+                if hasattr(pathobj, "Tool") and pathobj.Tool.ShapeName.lower() == "tap":
                     tapSpeed = int(pathobj.SpindleSpeed)
                     continue
 
-            # convert drill cycles to tap cycles if tool is a tap
+            # Convert drill cycles to tap cycles if tool is a tap.
+            # This only trigger when pathobj is a Operation.
             if command == "G81" or command == "G83":
                 if (
                     hasattr(pathobj, "ToolController")
-                    and pathobj.ToolController.Tool.ShapeID.lower() == "tap"
+                    and pathobj.ToolController.Tool.ShapeName.lower() == "tap"
                 ):
                     command = "G84"
                     out += linenumber() + "G95\n"
