@@ -656,11 +656,11 @@ bool MainWindow::setupPythonConsole()
 bool MainWindow::checkFirstRun()
 {
     ParameterGrp::handle hGrpRF = App::GetApplication().GetParameterGroupByPath(
-       "User parameter:BaseApp/Preferences/RecentFiles"
+        "User parameter:BaseApp/Preferences/RecentFiles"
     );
     int RecentFilesCount = hGrpRF->GetInt("RecentFiles");
     ParameterGrp::handle hGrpFS2024 = App::GetApplication().GetParameterGroupByPath(
-       "User parameter:BaseApp/Preferences/Mod/Start"
+        "User parameter:BaseApp/Preferences/Mod/Start"
     );
     auto firstStart = hGrpFS2024->GetBool("FirstStart2024", true);  // NOLINT
     if (firstStart && RecentFilesCount == 0) {
