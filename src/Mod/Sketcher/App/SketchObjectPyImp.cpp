@@ -566,6 +566,18 @@ PyObject* SketchObjectPy::getIndexByName(PyObject* args) const
     return nullptr;
 }
 
+PyObject* SketchObjectPy::setAllowUnaligned(PyObject* args)
+{
+    PyObject* allowObj;
+    if (!PyArg_ParseTuple(args, "O!", &PyBool_Type, &allowObj)) {
+        return nullptr;
+    }
+    bool allow = Base::asBoolean(allowObj);
+    this->getSketchObjectPtr()->setAllowUnaligned(allow);
+
+    Py_Return;
+}
+
 PyObject* SketchObjectPy::carbonCopy(PyObject* args)
 {
     char* ObjectName;

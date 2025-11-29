@@ -17,6 +17,8 @@ set(Sketcher_TestScripts
     SketcherTests/TestSketcherSolver.py
     SketcherTests/TestSketchExpression.py
     SketcherTests/TestSketchValidateCoincidents.py
+    SketcherTests/TestSketchCarbonCopyReverseMapping.py
+    SketcherTests/TestSketchCarbonCopyReverseMapping.FCStd
 )
 
 if(BUILD_GUI)

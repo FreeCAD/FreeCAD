@@ -295,6 +295,18 @@ class SketchObject(Part2DObject):
         """
         ...
 
+    def setAllowUnaligned(state: bool) -> None:
+        """
+        Set whether unaligned geometry is allowed in the sketch.
+
+        setAllowUnaligned(state:bool)
+
+            Args:
+                state: `True` allows unaligned geometry,
+                    `False` enforces aligned geometry.
+        """
+        ...
+
     def carbonCopy(self, objName: str, asConstruction: bool = True) -> None:
         """
         Copy another sketch's geometry and constraints into this sketch.
