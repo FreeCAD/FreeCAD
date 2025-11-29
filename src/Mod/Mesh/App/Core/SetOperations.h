@@ -232,7 +232,6 @@ public:
         , minDistance(dist)
     {}
 
-    bool hasIntersection() const;
     void getIntersection(std::list<Tuple>&) const;
     /*!
       From an unsorted list of intersection points make a list of sorted intersection points. If
