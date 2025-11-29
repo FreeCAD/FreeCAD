@@ -1839,8 +1839,11 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         self.refs.append(ref1)
         self.refs.append(ref2)
 
-        Gui.Selection.addSelection(ref1[0].Document.Name, ref1[0].Name, ref1[1][0])
-        Gui.Selection.addSelection(ref2[0].Document.Name, ref2[0].Name, ref2[1][0])
+        sub1 = UtilsAssembly.addTipNameToSub(ref1)
+        sub2 = UtilsAssembly.addTipNameToSub(ref2)
+
+        Gui.Selection.addSelection(ref1[0].Document.Name, ref1[0].Name, sub1)
+        Gui.Selection.addSelection(ref2[0].Document.Name, ref2[0].Name, sub2)
 
         self.jForm.angleSpinbox.setProperty("rawValue", self.joint.Angle.Value)
         self.jForm.distanceSpinbox.setProperty("rawValue", self.joint.Distance.Value)
