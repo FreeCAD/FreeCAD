@@ -939,6 +939,12 @@ public:
     Base::Vector3d getStartPoint() const;
     Base::Vector3d getEndPoint() const;
 
+    void setBasis(const GeomCurve* newBasis)
+    {
+        setBasis(Handle(Geom_Curve)::DownCast(newBasis->handle()));
+    }
+    void setBasis(const Handle(Geom_Curve) & newBasis);
+
     // Persistence implementer ---------------------
     unsigned int getMemSize() const override;
     void Save(Base::Writer& /*writer*/) const override;

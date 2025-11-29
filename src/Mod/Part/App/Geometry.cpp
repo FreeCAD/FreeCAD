@@ -501,7 +501,7 @@ void Geometry::copyNonTag(const Part::Geometry* src)
         extensions.back()->notifyAttachment(this);
     }
 }
-
+
 Geometry* Geometry::clone() const
 {
     Geometry* cpy = this->copy();
@@ -4937,6 +4937,12 @@ Base::Vector3d GeomOffsetCurve::getEndPoint() const
         throw Base::ValueError("GeomOffsetCurve::getEndPoint: curve is infinite");
     }
     return this->value(endParam);
+}
+
+void GeomOffsetCurve::setBasis(const Handle(Geom_Curve) & newBasis)
+{
+    Handle(Geom_OffsetCurve) myOffsetCurve = Handle(Geom_OffsetCurve)::DownCast(myCurve);
+    myOffsetCurve->SetBasisCurve(newBasis);
 }
 
 void GeomOffsetCurve::setHandle(const Handle(Geom_OffsetCurve) & c)
