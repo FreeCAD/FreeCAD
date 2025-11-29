@@ -204,9 +204,10 @@ def export(objectslist, filename, argstring):
     print("postprocessing...")
     gcode = ""
 
+    gcode += "%\n"
+
     # write header
     if OUTPUT_HEADER:
-        gcode += "%\n"
         gcode += ";\n"
         gcode += (
             os.path.split(filename)[-1]
