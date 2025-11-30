@@ -65,8 +65,13 @@ void CommandItemDelegate::paint(
     initStyleOption(&opt, index);
     option.widget->style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &opt, painter, option.widget);
 
-    QString title = index.data(Qt::DisplayRole).toString();
+    // use custom roles
+    const int CommandMenuTextRole = Qt::UserRole + 1;
+    const int CommandGroupRole = Qt::UserRole + 2;
+
+    QString title = index.data(CommandMenuTextRole).toString();
     QString tooltip = index.data(Qt::ToolTipRole).toString();
+    QString groupName = index.data(CommandGroupRole).toString();
     QIcon icon = index.data(Qt::DecorationRole).value<QIcon>();
 
     QRect rect = option.rect;
@@ -107,6 +112,33 @@ void CommandItemDelegate::paint(
     QRect titleRect = textRect;
     if (!tooltip.isEmpty()) {
         titleRect.setHeight(textRect.height() / 2);
+    }
+
+    // draw group name on the right if available
+    if (!groupName.isEmpty()) {
+        QFont groupFont = titleFont;
+        groupFont.setPointSize(qMax(groupFont.pointSize() - 1, 8));
+        painter->setFont(groupFont);
+
+        QColor groupColor = textColor;
+        // make group name transparent
+        groupColor.setAlpha(150);
+        painter->setPen(groupColor);
+
+        QFontMetrics groupFm(groupFont);
+        int groupWidth = groupFm.horizontalAdvance(groupName);
+
+        QRect groupRect = titleRect;
+        groupRect.setLeft(titleRect.right() - groupWidth);
+
+        painter->drawText(groupRect, Qt::AlignRight | Qt::AlignVCenter, groupName);
+
+        // adjust title rect to not overlap with group name
+        titleRect.setRight(groupRect.left() - 10);
+
+        // reset font and color for title
+        painter->setFont(titleFont);
+        painter->setPen(textColor);
     }
 
     painter->drawText(titleRect, Qt::AlignLeft | Qt::AlignVCenter, title);
