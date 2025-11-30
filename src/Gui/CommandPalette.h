@@ -26,14 +26,31 @@
 
 #include <FCGlobal.h>
 #include <QDialog>
-#include <QLineEdit>
 #include <QListView>
+#include <QStyledItemDelegate>
 #include <QVBoxLayout>
 
 namespace Gui
 {
 
 class CommandCompleter;
+
+/**
+ * CommandItemDelegate - Custom delegate to display command name and tooltip
+ */
+class CommandItemDelegate: public QStyledItemDelegate
+{
+    Q_OBJECT
+
+public:
+    explicit CommandItemDelegate(QObject* parent = nullptr);
+
+    void paint(QPainter* painter,
+               const QStyleOptionViewItem& option,
+               const QModelIndex& index) const override;
+
+    QSize sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const override;
+};
 
 /**
  * CommandPalette - A quick command search and execution dialog
