@@ -1,7 +1,13 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+set(PACKAGE_WCREF "$WCREV$")		# keep name in *.rc.in file
 
-configure_file(freecad.rc.cmake ${CMAKE_CURRENT_BINARY_DIR}/freecad.rc)
-configure_file(freecadCmd.rc.cmake ${CMAKE_CURRENT_BINARY_DIR}/freecadCmd.rc)
+#replace all variables, but replace PACKAGE_WCREF with $WCREV$ to be set from py file when version is fetched
+configure_file(freecad.rc.template ${CMAKE_CURRENT_BINARY_DIR}/freecad.rc.in)
+configure_file(freecadCMD.rc.template ${CMAKE_CURRENT_BINARY_DIR}/freecadCMD.rc.in)
+
+# copy as is at config time, will be overwritten at build time with correct version data
+configure_file(${CMAKE_CURRENT_BINARY_DIR}/freecad.rc.in ${CMAKE_CURRENT_BINARY_DIR}/freecad.rc)
+configure_file(${CMAKE_CURRENT_BINARY_DIR}/freecadCMD.rc.in ${CMAKE_CURRENT_BINARY_DIR}/freecadCMD.rc)
 file(COPY icon.ico DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 ######################## FreeCADMain ########################
@@ -52,7 +58,7 @@ endif(BUILD_GUI)
 ######################## FreeCADMainCmd ########################
 
 SET(FreeCADMainCmd_SRCS
-    ${CMAKE_CURRENT_BINARY_DIR}/freecadCmd.rc
+    ${CMAKE_CURRENT_BINARY_DIR}/freecadCMD.rc
     icon.ico
     MainCmd.cpp
 )
