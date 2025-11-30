@@ -118,7 +118,7 @@ def discretize(edge, flipDirection=False):
     return pts
 
 
-def GenerateGCode(op, obj, adaptiveResults, helixDiameter):
+def GenerateGCode(op, obj, adaptiveResults):
     if not adaptiveResults or not adaptiveResults[0]["AdaptivePaths"]:
         return
 
@@ -138,6 +138,8 @@ def GenerateGCode(op, obj, adaptiveResults, helixDiameter):
 
     helixAngleRad = math.radians(obj.HelixAngle)
     depthPerOneCircle = length * math.tan(helixAngleRad)
+    if obj.HelixMaxStepdown.Value != 0 and obj.HelixMaxStepdown.Value < depthPerOneCircle:
+        depthPerOneCircle = obj.HelixMaxStepdown.Value
 
     stepUp = max(obj.LiftDistance.Value, 0)
 
@@ -538,7 +540,13 @@ def Execute(op, obj):
         FreeCADGui.updateGui()
 
     try:
-        helixDiameter = obj.HelixDiameterLimit.Value
+        obj.HelixMinDiameterPercent = max(obj.HelixMinDiameterPercent, 10)
+        obj.HelixIdealDiameterPercent = max(
+            obj.HelixIdealDiameterPercent, obj.HelixMinDiameterPercent
+        )
+
+        helixDiameter = obj.HelixIdealDiameterPercent / 100 * op.tool.Diameter.Value
+        helixMinDiameter = obj.HelixMinDiameterPercent / 100 * op.tool.Diameter.Value
         topZ = op.stock.Shape.BoundBox.ZMax
         obj.Stopped = False
         obj.StopProcessing = False
@@ -592,6 +600,7 @@ def Execute(op, obj):
             "stockGeometry": stockPath2d,
             "stepover": float(obj.StepOver),
             "effectiveHelixDiameter": float(helixDiameter),
+            "helixMinDiameter": float(helixMinDiameter),
             "operationType": obj.OperationType,
             "side": obj.Side,
             "forceInsideOut": obj.ForceInsideOut,
@@ -633,7 +642,8 @@ def Execute(op, obj):
             a2d = area.Adaptive2d()
             a2d.stepOverFactor = 0.01 * obj.StepOver
             a2d.toolDiameter = float(op.tool.Diameter)
-            a2d.helixRampDiameter = helixDiameter
+            a2d.helixRampTargetDiameter = helixDiameter
+            a2d.helixRampMinDiameter = helixMinDiameter
             a2d.keepToolDownDistRatio = keepToolDownRatio
             a2d.stockToLeave = float(obj.StockToLeave)
             a2d.tolerance = float(obj.Tolerance)
@@ -657,7 +667,7 @@ def Execute(op, obj):
                 )
 
         # GENERATE
-        GenerateGCode(op, obj, adaptiveResults, helixDiameter)
+        GenerateGCode(op, obj, adaptiveResults)
 
         if not obj.StopProcessing:
             Path.Log.info("*** Done. Elapsed time: %f sec\n\n" % (time.time() - start))
@@ -699,7 +709,14 @@ def ExecuteModelAware(op, obj):
         FreeCADGui.updateGui()
 
     try:
-        helixDiameter = obj.HelixDiameterLimit.Value
+        obj.HelixMinDiameterPercent = max(obj.HelixMinDiameterPercent, 10)
+        obj.HelixIdealDiameterPercent = max(
+            obj.HelixIdealDiameterPercent, obj.HelixMinDiameterPercent
+        )
+        obj.StepOver = max(obj.StepOver, 1)
+
+        helixDiameter = obj.HelixIdealDiameterPercent / 100 * op.tool.Diameter.Value
+        helixMinDiameter = obj.HelixMinDiameterPercent / 100 * op.tool.Diameter.Value
         topZ = op.stock.Shape.BoundBox.ZMax
         obj.Stopped = False
         obj.StopProcessing = False
@@ -774,6 +791,7 @@ def ExecuteModelAware(op, obj):
             "stockGeometry": stockPaths,
             "stepover": obj.StepOver,
             "effectiveHelixDiameter": helixDiameter,
+            "helixMinDiameter": helixMinDiameter,
             "operationType": "Clearing",
             "side": "Outside",
             "forceInsideOut": obj.ForceInsideOut,
@@ -793,6 +811,7 @@ def ExecuteModelAware(op, obj):
             "stockGeometry": stockPaths,
             "stepover": obj.StepOver,
             "effectiveHelixDiameter": helixDiameter,
+            "helixMinDiameter": helixMinDiameter,
             "operationType": "Clearing",
             "side": "Inside",
             "forceInsideOut": obj.ForceInsideOut,
@@ -857,7 +876,8 @@ def ExecuteModelAware(op, obj):
                 a2d = area.Adaptive2d()
                 a2d.stepOverFactor = 0.01 * obj.StepOver
                 a2d.toolDiameter = op.tool.Diameter.Value
-                a2d.helixRampDiameter = helixDiameter
+                a2d.helixRampTargetDiameter = helixDiameter
+                a2d.helixRampMinDiameter = helixMinDiameter
                 a2d.keepToolDownDistRatio = keepToolDownRatio
                 # NOTE: Z stock is handled in our stepdowns
                 a2d.stockToLeave = obj.StockToLeave.Value
@@ -946,7 +966,7 @@ def ExecuteModelAware(op, obj):
                     )
 
         # GENERATE
-        GenerateGCode(op, obj, adaptiveResults, helixDiameter)
+        GenerateGCode(op, obj, adaptiveResults)
 
         if not obj.StopProcessing:
             Path.Log.info("*** Done. Elapsed time: %f sec\n\n" % (time.time() - start))
@@ -1801,6 +1821,15 @@ class PathAdaptive(PathOp.ObjectOp):
             ),
         )
         obj.addProperty(
+            "App::PropertyLength",
+            "HelixMaxStepdown",
+            "Adaptive",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "The maximum allowable descent in a single revolution of the helix.",
+            ),
+        )
+        obj.addProperty(
             "App::PropertyAngle",
             "HelixConeAngle",
             "Adaptive",
@@ -1810,12 +1839,21 @@ class PathAdaptive(PathOp.ObjectOp):
             ),
         )
         obj.addProperty(
-            "App::PropertyLength",
-            "HelixDiameterLimit",
+            "App::PropertyPercent",
+            "HelixIdealDiameterPercent",
             "Adaptive",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Limit helix entry diameter, if limit larger than tool diameter or 0, tool diameter is used",
+                "Ideal helix entry diameter, as a percentage of the tool diameter",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyPercent",
+            "HelixMinDiameterPercent",
+            "Adaptive",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Minimum acceptable helix entry diameter, as a percentage of the tool diameter",
             ),
         )
         obj.addProperty(
@@ -1874,7 +1912,8 @@ class PathAdaptive(PathOp.ObjectOp):
         obj.StopProcessing = False
         obj.HelixAngle = 5
         obj.HelixConeAngle = 0
-        obj.HelixDiameterLimit = 0.0
+        obj.HelixIdealDiameterPercent = 100
+        obj.HelixMinDiameterPercent = 10
         obj.AdaptiveInputState = ""
         obj.AdaptiveOutputState = ""
         obj.StockToLeave = 0
@@ -1964,6 +2003,44 @@ class PathAdaptive(PathOp.ObjectOp):
             obj.addProperty("Part::PropertyPartShape", "removalshape", "Path", "")
         obj.setEditorMode("removalshape", 2)  # hide
 
+        if hasattr(obj, "HelixDiameterLimit"):
+            oldD = obj.HelixDiameterLimit.Value
+            obj.removeProperty("HelixDiameterLimit")
+            obj.addProperty(
+                "App::PropertyPercent",
+                "HelixIdealDiameterPercent",
+                "Adaptive",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Ideal helix entry diameter, as a percentage of the tool diameter",
+                ),
+            )
+            obj.addProperty(
+                "App::PropertyPercent",
+                "HelixMinDiameterPercent",
+                "Adaptive",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Minimum acceptable helix entry diameter, as a percentage of the tool diameter",
+                ),
+            )
+            obj.HelixMinDiameterPercent = 10
+            if hasattr(obj, "ToolController"):
+                obj.HelixIdealDiameterPercent = int(
+                    75 if oldD == 0 else 100 * oldD / obj.ToolController.Tool.Diameter.Value
+                )
+
+        if not hasattr(obj, "HelixMaxStepdown"):
+            obj.addProperty(
+                "App::PropertyLength",
+                "HelixMaxStepdown",
+                "Adaptive",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "The maximum allowable descent in a single revolution of the helix.",
+                ),
+            )
+
         FeatureExtensions.initialize_properties(obj)
 
 
@@ -1986,7 +2063,8 @@ def SetupProperties():
         "AdaptiveOutputState",
         "HelixAngle",
         "HelixConeAngle",
-        "HelixDiameterLimit",
+        "HelixIdealDiameterPercent",
+        "HelixMinDiameterPercent",
         "UseOutline",
         "OrderCutsByRegion",
     ]
