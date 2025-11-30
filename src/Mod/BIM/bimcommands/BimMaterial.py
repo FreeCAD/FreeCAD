@@ -545,7 +545,7 @@ class Arch_Material:
         FreeCADGui.Control.closeDialog()
         FreeCADGui.doCommand("mat = Arch.makeMaterial()")
         for obj in sel:
-            if hasattr(obj, "Material"):
+            if hasattr(obj, "Material") and hasattr(obj, "MoveWithHost"):  # 'isComponent' check
                 FreeCADGui.doCommand(
                     'FreeCAD.ActiveDocument.getObject("' + obj.Name + '").Material = mat'
                 )
