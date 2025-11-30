@@ -273,13 +273,13 @@ void QGIViewDimension::updateDim()
         return;
     }
 
-    QString labelText =
-        // what about fromStdString?
-        QString::fromUtf8(dim->getFormattedDimensionValue(Format::FORMATTED).c_str());// pre value [unit] post
+    Format fmt = Format::FORMATTED;
     if (dim->isMultiValueSchema()) {
-        labelText =
-            QString::fromUtf8(dim->getFormattedDimensionValue(Format::UNALTERED).c_str());//don't format multis
+        fmt = Format::UNALTERED;
     }
+
+    std::string formattedValue = dim->getFormattedDimensionValue(fmt);
+    QString labelText = QString::fromStdString(formattedValue);         // <<<< here
 
     QFont font = datumLabel->getFont();
     font.setFamily(QString::fromUtf8(vp->Font.getValue()));
