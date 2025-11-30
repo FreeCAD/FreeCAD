@@ -345,6 +345,9 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             if hasattr(self, "propertiesReady") and self.propertiesReady:
                 self.setOpEditorProperties(obj)
 
+        if prop == "NumPasses" and obj.NumPasses < 1:
+            obj.NumPasses = 1
+
     def areaOpAreaParams(self, obj, isHole):
         """areaOpAreaParams(obj, isHole) ... returns dictionary with area parameters.
         Do not overwrite."""
@@ -357,7 +360,8 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         num_passes = max(1, obj.NumPasses)
         stepover = obj.Stepover.Value
         if num_passes > 1 and stepover == 0:
-            # This check is important because C++ code has a default value for stepover if it's 0 and extra passes are requested
+            # This check is important because C++ code has a default value for stepover
+            # if it's 0 and extra passes are requested
             num_passes = 1
             Path.Log.warning(
                 "Multipass profile requires a non-zero stepover. Reducing to a single pass."
