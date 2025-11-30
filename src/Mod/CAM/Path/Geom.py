@@ -278,13 +278,14 @@ def speedBetweenPoints(p0, p1, hSpeed, vSpeed):
     return speed
 
 
-def cmdsForEdge(edge, flip=False, useHelixForBSpline=True, hSpeed=0, vSpeed=0):
-    """cmdsForEdge(edge, flip=False, useHelixForBSpline=True) -> List(Path.Command)
+def cmdsForEdge(edge, flip=False, hSpeed=0, vSpeed=0):
+    """cmdsForEdge(edge, flip=False) -> List(Path.Command)
     Returns a list of Path.Command representing the given edge.
     If flip is True the edge is considered to be backwards.
-    If useHelixForBSpline is True an Edge based on a BSplineCurve is considered
-    to represent a helix and results in G2 or G3 command. Otherwise edge has
-    no direct Path.Command mapping and will be approximated by straight segments."""
+    Edge based on a Part.Line is results in G1 command.
+    Horizontal Edge based on a Part.Circle is results in G2 or G3 command.
+    Other edge has no direct Path.Command mapping
+    and will be approximated by straight segments."""
     pt = edge.valueAt(edge.LastParameter) if not flip else edge.valueAt(edge.FirstParameter)
     params = {"X": pt.x, "Y": pt.y, "Z": pt.z}
     if isinstance(edge.Curve, (Part.Line, Part.LineSegment)):
@@ -299,13 +300,11 @@ def cmdsForEdge(edge, flip=False, useHelixForBSpline=True, hSpeed=0, vSpeed=0):
         p2 = edge.valueAt((edge.FirstParameter + edge.LastParameter) / 2)
         p3 = pt
 
-        if hasattr(edge.Curve, "Axis") and (
-            (
-                isinstance(edge.Curve, Part.Circle)
-                and isRoughly(edge.Curve.Axis.x, 0)
-                and isRoughly(edge.Curve.Axis.y, 0)
-            )
-            or (useHelixForBSpline and isinstance(edge.Curve, Part.BSplineCurve))
+        if (
+            hasattr(edge.Curve, "Axis")
+            and isinstance(edge.Curve, Part.Circle)
+            and isRoughly(edge.Curve.Axis.x, 0)
+            and isRoughly(edge.Curve.Axis.y, 0)
         ):
             # This is an arc or a helix and it should be represented by a simple G2/G3 command
             if edge.Curve.Axis.z < 0:
