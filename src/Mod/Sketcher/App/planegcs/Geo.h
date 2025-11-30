@@ -433,6 +433,26 @@ public:
     OffsetCurve* Copy() override;
 };
 
+class SketcherExport RestrictedCurve: public Curve
+{
+public:
+    // parameters:
+    double* firstParam;
+    double* lastParam;
+
+    Curve* basis {nullptr};
+
+    Point start;
+    Point end;
+
+    // implement virtual methods
+    DeriVector2 Value(double u, double du, const double* derivparam = nullptr) const override;
+    DeriVector2 CalculateNormal(const Point& p, const double* derivparam = nullptr) const override;
+    int PushOwnParams(VEC_pD& pvec) override;
+    void ReconstructOnNewPvec(VEC_pD& pvec, int& cnt) override;
+    RestrictedCurve* Copy() override;
+};
+
 }  // namespace GCS
 // NOLINTEND(readability-math-missing-parentheses)
 
