@@ -2215,7 +2215,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../Command.cpp" line="1634"/>
       <source>Create DraftView</source>
-      <translation>Создать Draft Вид</translation>
+      <translation>Вид из верстака Набросок</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="342"/>
@@ -7988,8 +7988,8 @@ You can pick further points to get line segments.</source>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="362"/>
-      <location filename="../../TaskProjGroup.cpp" line="658"/>
-      <location filename="../../TaskProjGroup.cpp" line="665"/>
+      <location filename="../../TaskProjGroup.cpp" line="659"/>
+      <location filename="../../TaskProjGroup.cpp" line="666"/>
       <source>Top</source>
       <translation>Сверху</translation>
     </message>
@@ -8000,8 +8000,8 @@ You can pick further points to get line segments.</source>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="409"/>
-      <location filename="../../TaskProjGroup.cpp" line="660"/>
-      <location filename="../../TaskProjGroup.cpp" line="662"/>
+      <location filename="../../TaskProjGroup.cpp" line="661"/>
+      <location filename="../../TaskProjGroup.cpp" line="663"/>
       <source>Left</source>
       <translation>Слева</translation>
     </message>
@@ -8012,14 +8012,14 @@ You can pick further points to get line segments.</source>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="449"/>
-      <location filename="../../TaskProjGroup.cpp" line="660"/>
-      <location filename="../../TaskProjGroup.cpp" line="662"/>
+      <location filename="../../TaskProjGroup.cpp" line="661"/>
+      <location filename="../../TaskProjGroup.cpp" line="663"/>
       <source>Right</source>
       <translation>Справа</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="466"/>
-      <location filename="../../TaskProjGroup.cpp" line="663"/>
+      <location filename="../../TaskProjGroup.cpp" line="664"/>
       <source>Rear</source>
       <translation>Сзади</translation>
     </message>
@@ -8030,8 +8030,8 @@ You can pick further points to get line segments.</source>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="516"/>
-      <location filename="../../TaskProjGroup.cpp" line="658"/>
-      <location filename="../../TaskProjGroup.cpp" line="665"/>
+      <location filename="../../TaskProjGroup.cpp" line="659"/>
+      <location filename="../../TaskProjGroup.cpp" line="666"/>
       <source>Bottom</source>
       <translation>Снизу</translation>
     </message>
@@ -8088,31 +8088,31 @@ using the given X/Y spacings</source>
       <translation>Вертикальное пространство между границами проекций</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="657"/>
-      <location filename="../../TaskProjGroup.cpp" line="666"/>
+      <location filename="../../TaskProjGroup.cpp" line="658"/>
+      <location filename="../../TaskProjGroup.cpp" line="667"/>
       <source>FrontTopLeft</source>
       <translation>Спереди Сверху Слева</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="657"/>
-      <location filename="../../TaskProjGroup.cpp" line="666"/>
+      <location filename="../../TaskProjGroup.cpp" line="658"/>
+      <location filename="../../TaskProjGroup.cpp" line="667"/>
       <source>FrontBottomRight</source>
       <translation>Спереди Снизу Справа</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="659"/>
-      <location filename="../../TaskProjGroup.cpp" line="664"/>
+      <location filename="../../TaskProjGroup.cpp" line="660"/>
+      <location filename="../../TaskProjGroup.cpp" line="665"/>
       <source>FrontTopRight</source>
       <translation>Спереди Сверху Справа</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="659"/>
-      <location filename="../../TaskProjGroup.cpp" line="664"/>
+      <location filename="../../TaskProjGroup.cpp" line="660"/>
+      <location filename="../../TaskProjGroup.cpp" line="665"/>
       <source>FrontBottomLeft</source>
       <translation>Спереди Снизу Слева</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="661"/>
+      <location filename="../../TaskProjGroup.cpp" line="662"/>
       <source>Front</source>
       <translation>Спереди</translation>
     </message>
@@ -9217,7 +9217,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../../App/DrawView.cpp" line="68"/>
       <source>Draft</source>
-      <translation>Эскиз</translation>
+      <translation>Набросок</translation>
     </message>
   </context>
   <context>
@@ -9498,7 +9498,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="528"/>
       <source>Fill template fields</source>
-      <translation type="unfinished">Fill template fields</translation>
+      <translation>Заполнить поля шаблона</translation>
     </message>
   </context>
   <context>
@@ -9810,22 +9810,22 @@ there is an open task dialog.</source>
   <context>
     <name>TechDrawGui::DirectionEditDialog</name>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="965"/>
+      <location filename="../../TaskProjGroup.cpp" line="966"/>
       <source>Direction</source>
       <translation>Направление</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="1002"/>
+      <location filename="../../TaskProjGroup.cpp" line="1003"/>
       <source>OK</source>
       <translation>OK</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="1003"/>
+      <location filename="../../TaskProjGroup.cpp" line="1004"/>
       <source>Cancel</source>
       <translation>Отмена</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="1009"/>
+      <location filename="../../TaskProjGroup.cpp" line="1010"/>
       <source>Rotate by</source>
       <translation>Повернуть на</translation>
     </message>

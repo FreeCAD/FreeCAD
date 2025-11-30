@@ -96,6 +96,14 @@ class CommandInsertLink:
         Gui.Control.showDialog(self.panel)
 
 
+class InsertLinkObserver:
+    def __init__(self, callback):
+        self.callback = callback
+
+    def slotDeletedObject(self, obj):
+        self.callback(obj)
+
+
 class TaskAssemblyInsertLink(QtCore.QObject):
     def __init__(self, assembly, view):
         super().__init__()
@@ -128,10 +136,15 @@ class TaskAssemblyInsertLink(QtCore.QObject):
         self.groundedObj = None
 
         self.insertionStack = []  # used to handle cancellation of insertions.
+        self.doc_item_map = {}
 
         self.buildPartList()
 
         App.setActiveTransaction("Insert Component")
+
+        # Listen for external deletions to keep the list in sync
+        self.docObserver = InsertLinkObserver(self.onObjectDeleted)
+        App.addDocumentObserver(self.docObserver)
 
     def accept(self):
         self.deactivated()
@@ -181,6 +194,10 @@ class TaskAssemblyInsertLink(QtCore.QObject):
         return True
 
     def deactivated(self):
+        if hasattr(self, "docObserver") and self.docObserver:
+            App.removeDocumentObserver(self.docObserver)
+            self.docObserver = None
+
         pref = Preferences.preferences()
         pref.SetBool("InsertShowOnlyParts", self.form.CheckBox_ShowOnlyParts.isChecked())
         pref.SetBool("InsertRigidSubAssemblies", self.form.CheckBox_RigidSubAsm.isChecked())
@@ -194,8 +211,16 @@ class TaskAssemblyInsertLink(QtCore.QObject):
         for doc in docList:
             # Create a new tree item for the document
             docItem = QtGui.QTreeWidgetItem()
-            docItem.setText(0, doc.Label + ".FCStd")
-            docItem.setIcon(0, QIcon.fromTheme("add", QIcon(":/icons/Document.svg")))
+            itemName = doc.Label
+            icon = QIcon.fromTheme("add", QIcon(":/icons/Document.svg"))
+            if doc.Partial:
+                itemName = (
+                    itemName + " (" + QT_TRANSLATE_NOOP("Assembly_Insert", "Partially loaded") + ")"
+                )
+                icon = self.createDisabledIcon(icon)
+            docItem.setText(0, itemName)
+            docItem.setIcon(0, icon)
+            self.doc_item_map[docItem] = doc
 
             if not any(
                 (child.isDerivedFrom("Part::Feature") or child.isDerivedFrom("App::Part"))
@@ -446,7 +471,7 @@ class TaskAssemblyInsertLink(QtCore.QObject):
             msgBox.setIcon(QtWidgets.QMessageBox.Question)
 
             yesButton = msgBox.addButton("Yes", QtWidgets.QMessageBox.YesRole)
-            noButton = msgBox.addButton("No", QtWidgets.QMessageBox.NoRole)
+            noButton = msgBox.addButton("No", QtWidgets.QMessageBox.RejectRole)
             yesAlwaysButton = msgBox.addButton("Always", QtWidgets.QMessageBox.YesRole)
             noAlwaysButton = msgBox.addButton("Never", QtWidgets.QMessageBox.NoRole)
 
@@ -537,21 +562,29 @@ class TaskAssemblyInsertLink(QtCore.QObject):
             item = watched.itemAt(event.pos())
 
             if item:
+                if item.parent() is None:
+                    doc = self.doc_item_map.get(item)
+                    if doc and doc.Partial:
+                        menu = QtWidgets.QMenu()
+                        load_action_text = QT_TRANSLATE_NOOP(
+                            "Assembly_Insert", "Fully load document"
+                        )
+                        load_action = menu.addAction(load_action_text)
+                        load_action.triggered.connect(lambda: self.fullyLoadDocument(doc))
+                        menu.exec_(event.globalPos())
+                        return True  # Event was handled
+
                 # Iterate through the insertionStack in reverse
                 for i in reversed(range(len(self.insertionStack))):
                     stack_item = self.insertionStack[i]
 
                     if stack_item["item"] == item:
-
-                        self.totalTranslation -= stack_item["translation"]
                         obj = stack_item["addedObject"]
-                        if self.groundedObj == obj:
-                            self.groundedJoint.Document.removeObject(self.groundedJoint.Name)
-                        UtilsAssembly.removeObjAndChilds(obj)
 
-                        self.decrement_counter(item)
-                        del self.insertionStack[i]
-                        item.setSelected(False)
+                        # ONLY remove the object from the document.
+                        # The Observer (onObjectDeleted) will handle the rest.
+                        if obj and obj.Document:
+                            UtilsAssembly.removeObjAndChilds(obj)
 
                         return True
             else:
@@ -570,6 +603,40 @@ class TaskAssemblyInsertLink(QtCore.QObject):
 
         return super().eventFilter(watched, event)
 
+    def fullyLoadDocument(self, doc_to_load):
+        """Closes and re-opens a document to load it fully."""
+        if not doc_to_load.FileName:
+            return
+
+        # Save UI state
+        scrollbar = self.form.partList.verticalScrollBar()
+        scroll_position = scrollbar.value()
+
+        # Perform the reload
+        App.open(doc_to_load.FileName)
+        App.setActiveDocument(self.doc.Name)
+
+        # Refresh the UI
+        self.buildPartList()
+
+        # Restore UI state
+        scrollbar.setValue(scroll_position)
+
+    def createDisabledIcon(self, icon):
+        if icon.isNull():
+            return QIcon()
+
+        # Get a pixmap from the icon at a standard size
+        pixmap = icon.pixmap(icon.actualSize(QtCore.QSize(16, 16)))
+
+        # Ask the application's style to generate a disabled version of the pixmap
+        style = QtWidgets.QApplication.style()
+        disabled_pixmap = style.generatedIconPixmap(
+            QtGui.QIcon.Disabled, pixmap, QtWidgets.QStyleOption()
+        )
+
+        return QIcon(disabled_pixmap)
+
     def toggleShowHidden(self, checked):
         self.showHidden = checked
         self.buildPartList()
@@ -581,6 +648,41 @@ class TaskAssemblyInsertLink(QtCore.QObject):
         else:
             translation = 10
         return App.Vector(translation, translation, translation)
+
+    def onObjectDeleted(self, obj):
+        """
+        Handles cleanup when an object is deleted (via Right Click OR Tree View).
+        """
+        # Iterate backwards to safely delete
+        for i in reversed(range(len(self.insertionStack))):
+            stack_item = self.insertionStack[i]
+
+            if stack_item["addedObject"] == obj:
+                # 1. Revert translation
+                self.totalTranslation -= stack_item["translation"]
+
+                # 2. Update UI counter
+                item = stack_item["item"]
+                self.decrement_counter(item)
+
+                # 3. Handle Grounded Joint cleanup
+                if self.groundedObj == obj:
+                    if self.groundedJoint:
+                        try:
+                            # Remove the joint if it still exists
+                            if self.groundedJoint.Document:
+                                self.groundedJoint.Document.removeObject(self.groundedJoint.Name)
+                        except Exception:
+                            pass
+                    self.groundedObj = None
+                    self.groundedJoint = None
+
+                # 4. Remove from stack
+                del self.insertionStack[i]
+
+                # 5. Clear selection
+                if item:
+                    item.setSelected(False)
 
 
 if App.GuiUp:

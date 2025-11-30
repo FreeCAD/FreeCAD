@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
+from __future__ import annotations
+
 from Metadata import export, forward_declarations, constmethod
 from PyObjectBase import PyObjectBase
 from typing import List, Final
@@ -35,10 +37,8 @@ class Type(PyObjectBase):
     """Module in which this class is defined."""
 
     @staticmethod
-    def fromName(name: str) -> "Type":
+    def fromName(name: str, /) -> "Type":
         """
-        fromName(name) -> Base.BaseType
-
         Returns a type object by name.
 
         name : str
@@ -46,10 +46,8 @@ class Type(PyObjectBase):
         ...
 
     @staticmethod
-    def fromKey(key: int) -> "Type":
+    def fromKey(key: int, /) -> "Type":
         """
-        fromKey(key) -> Base.BaseType
-
         Returns a type id object by key.
 
         key : int
@@ -59,8 +57,6 @@ class Type(PyObjectBase):
     @staticmethod
     def getNumTypes() -> int:
         """
-        getNumTypes() -> int
-
         Returns the number of type ids created so far.
         """
         ...
@@ -68,17 +64,13 @@ class Type(PyObjectBase):
     @staticmethod
     def getBadType() -> "Type":
         """
-        getBadType() -> Base.BaseType
-
         Returns an invalid type id.
         """
         ...
 
     @staticmethod
-    def getAllDerivedFrom(type: str) -> List[str]:
+    def getAllDerivedFrom(type: str, /) -> List[str]:
         """
-        getAllDerivedFrom(type) -> list
-
         Returns all descendants from the given type id.
 
         type : str, Base.BaseType
@@ -88,8 +80,6 @@ class Type(PyObjectBase):
     @constmethod
     def getParent(self) -> "Type":
         """
-        getParent() -> Base.BaseType
-
         Returns the parent type id.
         """
         ...
@@ -97,17 +87,13 @@ class Type(PyObjectBase):
     @constmethod
     def isBad(self) -> bool:
         """
-        isBad() -> bool
-
         Checks if the type id is invalid.
         """
         ...
 
     @constmethod
-    def isDerivedFrom(self, type: str) -> bool:
+    def isDerivedFrom(self, type: str, /) -> bool:
         """
-        isDerivedFrom(type) -> bool
-
         Returns true if given type id is a father of this type id.
 
         type : str, Base.BaseType
@@ -117,25 +103,19 @@ class Type(PyObjectBase):
     @constmethod
     def getAllDerived(self) -> List[object]:
         """
-        getAllDerived() -> list
-
         Returns all descendants from this type id.
         """
         ...
 
     def createInstance(self) -> object:
         """
-        createInstance() -> object
-
         Creates an instance of this type id.
         """
         ...
 
     @staticmethod
-    def createInstanceByName(name: str, load: bool = False) -> object:
+    def createInstanceByName(name: str, load: bool = False, /) -> object:
         """
-        createInstanceByName(name, load=False) -> object
-
         Creates an instance of the named type id.
 
         name : str

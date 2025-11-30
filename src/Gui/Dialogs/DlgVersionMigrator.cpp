@@ -133,8 +133,8 @@ DlgVersionMigrator::DlgVersionMigrator(MainWindow* mw)
     // NOTE: All rich-text strings are generated programmatically so that translators don't have to
     // deal with the markup. The two strings in the middle of the dialog are set in the UI file.
 
-    auto programNameString = tr("Welcome to %1 %2.%3\n\n")
-                                 .arg(programName, QString::number(major), QString::number(minor));
+    auto programNameString
+        = tr("Welcome to %1 %2.%3").arg(programName, QString::number(major), QString::number(minor));
     auto welcomeString = QStringLiteral("<b>") + programNameString + QStringLiteral("</b>");
 
     auto calculatingSizeString = QStringLiteral("<b>") + tr("Calculating size…")

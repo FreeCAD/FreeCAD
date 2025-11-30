@@ -184,7 +184,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="94"/>
       <source>Unable to explode %s</source>
-      <translation>Impossible de dégrouper %s</translation>
+      <translation>Impossible de décomposer %s</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="335"/>
@@ -227,7 +227,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="141"/>
       <source>Converts edges to faces</source>
-      <translation>Convertit les arêtes en faces</translation>
+      <translation>Convertit des arêtes en faces</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="303"/>
@@ -315,12 +315,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="102"/>
       <source>Explode Group</source>
-      <translation>Dégrouper le groupe</translation>
+      <translation>Décomposer un groupe</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="105"/>
       <source>Explodes a fusion or compound and applies random colors</source>
-      <translation>Dégroupe une fusion ou un composé et applique des couleurs aléatoires.</translation>
+      <translation>Décompose une fusion ou un composé et applique des couleurs aléatoires.</translation>
     </message>
   </context>
   <context>
@@ -367,7 +367,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="285"/>
       <source>Expand Placements</source>
-      <translation>Développer les emplacements</translation>
+      <translation>Développer tous les emplacements</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="288"/>
@@ -393,7 +393,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="319"/>
       <source>Remove Objects and Children</source>
-      <translation>Supprimer un/des objet(s) et leurs enfants</translation>
+      <translation>Supprimer un/des objet(s) et ses enfants</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="322"/>
@@ -411,7 +411,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="570"/>
       <source>Creates a hull</source>
-      <translation>Crée une enveloppe</translation>
+      <translation>Crée une enveloppe.</translation>
     </message>
   </context>
   <context>
@@ -432,7 +432,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="138"/>
       <source>Convert Edges to Faces</source>
-      <translation>Convertir les arêtes en faces</translation>
+      <translation>Convertir des arêtes en faces</translation>
     </message>
   </context>
   <context>
@@ -453,12 +453,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="217"/>
       <source>Scale Mesh Feature</source>
-      <translation>Changer l'échelle du maillage</translation>
+      <translation>Changer l'échelle d'un maillage</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="221"/>
       <source>Scales the mesh</source>
-      <translation>Mets à l'échelle le maillage.</translation>
+      <translation>Change l'échelle d'un maillage.</translation>
     </message>
   </context>
   <context>
@@ -466,12 +466,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="247"/>
       <source>Resize Mesh Feature</source>
-      <translation>Redimensionner le maillage</translation>
+      <translation>Redimensionner un maillage</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="251"/>
       <source>Resizes the mesh</source>
-      <translation>Redimensionne le maillage</translation>
+      <translation>Redimensionne un maillage.</translation>
     </message>
   </context>
   <context>
@@ -497,7 +497,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="550"/>
       <source>Performs a boolean operation using the OpenSCAD binary</source>
-      <translation>Effectue une opération booléenne en utilisant le binaire d'OpenSCAD.</translation>
+      <translation>Exécute une opération booléenne en utilisant le binaire d'OpenSCAD.</translation>
     </message>
   </context>
   <context>
@@ -505,12 +505,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="587"/>
       <source>Minkowski Sum</source>
-      <translation>Appliquer la somme de Minkowski</translation>
+      <translation>Créer une somme de Minkowski</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="590"/>
       <source>Creates a Minkowski sum</source>
-      <translation>Applique la somme de Minkowski.</translation>
+      <translation>Crée une somme de Minkowski.</translation>
     </message>
   </context>
 </TS>

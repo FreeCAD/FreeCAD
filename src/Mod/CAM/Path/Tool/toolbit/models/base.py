@@ -128,6 +128,8 @@ class ToolBit(Asset, ABC):
             raise ValueError("ToolBit dictionary is missing 'shape' key")
 
         # Try to find the shape type. Default to Unknown if necessary.
+        if "shape" in attrs and "shape-type" not in attrs:
+            attrs["shape-type"] = attrs["shape"]
         shape_type = attrs.get("shape-type")
         shape_class = ToolBitShape.get_shape_class_from_id(shape_id, shape_type)
         if not shape_class:
@@ -179,6 +181,8 @@ class ToolBit(Asset, ABC):
         # Update parameters.
         for param_name, param_value in params.items():
             tool_bit_shape.set_parameter(param_name, param_value)
+            if hasattr(toolbit.obj, param_name):
+                PathUtil.setProperty(toolbit.obj, param_name, param_value)
 
         # Update attributes; the separation between parameters and attributes
         # is currently not well defined, so for now we add them to the

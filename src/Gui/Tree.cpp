@@ -1357,7 +1357,7 @@ void TreeWidget::onCreateGroup()
                           "App.getDocument(\"%1\").addObject"
                           "(\"App::DocumentObjectGroup\",\"Group\").Label=\"%2\""
         )
-                          .arg(QString::fromLatin1(doc->getName()), name);
+                          .arg(QString::fromUtf8(doc->getName()), name);
         Gui::Command::runCommand(Gui::Command::App, cmd.toUtf8());
     }
     else if (this->contextItem->type() == ObjectType) {
@@ -1369,8 +1369,8 @@ void TreeWidget::onCreateGroup()
                           ".newObject(\"App::DocumentObjectGroup\",\"Group\").Label=\"%3\""
         )
                           .arg(
-                              QString::fromLatin1(doc->getName()),
-                              QString::fromLatin1(obj->getNameInDocument()),
+                              QString::fromUtf8(doc->getName()),
+                              QString::fromUtf8(obj->getNameInDocument()),
                               name
                           );
         Gui::Command::runCommand(Gui::Command::App, cmd.toUtf8());
@@ -6539,20 +6539,37 @@ int DocumentObjectItem::getSubName(std::ostringstream& str, App::DocumentObject*
         int group = parent->isGroup();
         if (group == NotGroup) {
             if (ret != PartGroup) {
-                // Handle this situation,
-                //
-                // LinkGroup
-                //    |--PartExtrude
-                //           |--Sketch
-                //
-                // This function traverse from top down, so, when seeing a
-                // non-group object 'PartExtrude', its following children should
-                // not be grouped, so must reset any previous parents here.
-                topParent = nullptr;
-                str.str("");  // reset the current subname
-                return NotGroup;
+                // check if the parent explicitly claims this child,
+                // if so, we should include the parent in the subname path
+                auto children = parent->object()->claimChildren();
+                bool parentClaimsThis = false;
+                for (auto child : children) {
+                    if (child == object()->getObject()) {
+                        parentClaimsThis = true;
+                        break;
+                    }
+                }
+
+                if (!parentClaimsThis) {
+                    // Handle this situation,
+                    //
+                    // LinkGroup
+                    //    |--PartExtrude
+                    //           |--Sketch
+                    //
+                    // This function traverse from top down, so, when seeing a
+                    // non-group object 'PartExtrude', its following children should
+                    // not be grouped, so must reset any previous parents here.
+                    topParent = nullptr;
+                    str.str("");  // reset the current subname
+                    return NotGroup;
+                }
+                // if parent claims this child, treat it like a PartGroup
+                group = PartGroup;
             }
-            group = PartGroup;
+            else {
+                group = PartGroup;
+            }
         }
         ret = group;
     }

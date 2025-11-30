@@ -835,6 +835,13 @@ class Component(ArchIFC.IfcProduct):
                     if o:
                         o.ViewObject.hide()
 
+    def handleComponentRemoval(self, obj, subobject):
+        """
+        Default handler for when a component is removed via the Task Panel.
+        Subclasses can override this to provide special behavior.
+        """
+        removeFromComponent(obj, subobject)
+
     def processSubShapes(self, obj, base, placement=None):
         """Add Additions and Subtractions to a base shape.
 
@@ -2284,18 +2291,24 @@ class ComponentTaskPanel:
         self.update()
 
     def removeElement(self):
-        """This method is run as a callback when the user selects the remove button.
-
-        Get the object selected in the tree widget. If there is an object in
-        the document with the same Name as the selected item in the tree,
-        remove it from the object being edited, with the removeFromComponent()
-        function.
         """
+        This method is run as a callback when the user selects the remove button.
+        It calls a handler on the object's proxy to perform the removal.
+        """
+        element_selected = self.tree.currentItem()
+        if not element_selected:
+            return
 
-        it = self.tree.currentItem()
-        if it:
-            comp = FreeCAD.ActiveDocument.getObject(str(it.toolTip(0)))
-            removeFromComponent(self.obj, comp)
+        element_to_remove = FreeCAD.ActiveDocument.getObject(str(element_selected.toolTip(0)))
+
+        # Call the polymorphic handler on the object's proxy.
+        # This is generic and works for any Arch object.
+        if hasattr(self.obj.Proxy, "handleComponentRemoval"):
+            self.obj.Proxy.handleComponentRemoval(self.obj, element_to_remove)
+        else:
+            # Fallback for older proxies that might not have the method
+            removeFromComponent(self.obj, element_to_remove)
+
         self.update()
 
     def accept(self):

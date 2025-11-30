@@ -9888,78 +9888,78 @@ CTRL+PgUp 延长拉伸 CTRL+PgDown 缩短拉伸 CTRL+/ 在自动和手动模式�
       <translation>提示：在线框模式下查看结果最佳（菜单视图-&gt;绘制样式-&gt;线框）</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="294"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="295"/>
       <source>Building Layout</source>
       <translation>建筑布局</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="320"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="321"/>
       <source>Building Outline</source>
       <translation>建筑轮廓</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="339"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="340"/>
       <source>Building Label</source>
       <translation>建筑标签</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="349"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="350"/>
       <source>Vertical Axes</source>
       <translation>垂直轴线</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="360"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="361"/>
       <source>Horizontal Axes</source>
       <translation>水平轴线</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="370"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="371"/>
       <source>Axes</source>
       <translation>轴</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="384"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="385"/>
       <source>Level</source>
       <translation>层级</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="445"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="446"/>
       <source>Save Preset</source>
       <translation>保存预设</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="446"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="447"/>
       <source>Preset name</source>
       <translation>预设名称</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="495"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="496"/>
       <source>User preset</source>
       <translation>用户预设</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="785"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="786"/>
       <source>Template successfully loaded into the current document</source>
       <translation>模板已成功加载到当前文档</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="430"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="431"/>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="156"/>
       <source>New Group</source>
       <translation>新建组</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="649"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="650"/>
       <source>Save template file</source>
       <translation>保存模板文件</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="658"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="659"/>
       <source>Template saved successfully</source>
       <translation>模板保存成功</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="671"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="672"/>
       <source>Open template file</source>
       <translation>打开模板文件</translation>
     </message>

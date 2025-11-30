@@ -1397,15 +1397,55 @@ class _Wall(ArchComponent.Component):
                                 )
                             elif curAligns == "Center":
                                 if layers:
+                                    # TODO Current, the order of layers follow
+                                    # "Right" align.  Option for the order of
+                                    # layers follow "Left" align should be
+                                    # provided for users.
+                                    dvec = dvec.negative()
                                     totalwidth = sum([abs(l) for l in layers])
-                                    curWidth = abs(layers[i])
                                     off = totalwidth / 2 - layeroffset
-                                    d1 = Vector(dvec).multiply(off)
-                                    wNe1 = DraftGeomUtils.offsetWire(wire, d1, wireNedge=True)
-                                    layeroffset += curWidth
-                                    off = totalwidth / 2 - layeroffset
-                                    d1 = Vector(dvec).multiply(off)
-                                    wNe2 = DraftGeomUtils.offsetWire(wire, d1, wireNedge=True)
+                                    # TODO To consider offset per edge?
+                                    #
+                                    # Offset follows direction of align "Right".
+                                    # Needs to be reversed in this case.
+                                    off = -off
+                                    # d1 = Vector(dvec).multiply(off)
+                                    curWidth = []
+                                    alignListC = []
+                                    offsetListC = []
+                                    for n in range(edgeNum):
+                                        curWidth.append(abs(layers[i]))
+                                        alignListC.append("Right")  # ("Left")
+                                        offsetListC.append(off)
+                                    # wNe1 = DraftGeomUtils.offsetWire(wire, d1, wireNedge=True)
+                                    # See https://github.com/FreeCAD/FreeCAD/issues/25485#issuecomment-3566734050
+                                    # d1 may be Vector (0,0,0), offsetWire()
+                                    # in draftgeoutils\offsets.py:-
+                                    # v1 = App.Vector(dvec).normalize() return
+                                    # error.  Provide widthList, alignList etc.
+                                    # so no need to run above code to deduce
+                                    # v1 in offsetWire()
+                                    wNe1 = DraftGeomUtils.offsetWire(
+                                        wire,
+                                        dvec,
+                                        widthList=curWidth,
+                                        offsetMode="BasewireMode",
+                                        alignList=alignListC,
+                                        normal=normal,
+                                        basewireOffset=offsetListC,
+                                        wireNedge=True,
+                                    )
+                                    wNe2 = DraftGeomUtils.offsetWire(
+                                        wire,
+                                        dvec,
+                                        widthList=curWidth,
+                                        offsetMode=None,
+                                        alignList=alignListC,
+                                        normal=normal,
+                                        basewireOffset=offsetListC,
+                                        wireNedge=True,
+                                    )
+                                    layeroffset += abs(curWidth[0])
                                 else:
                                     dvec.multiply(width)
                                     wNe2 = DraftGeomUtils.offsetWire(
@@ -1519,6 +1559,55 @@ class _Wall(ArchComponent.Component):
                 extrusion = placement.inverse().Rotation.multVec(extrusion)
             return (base, extrusion, placement)
         return None
+
+    def handleComponentRemoval(self, obj, subobject):
+        """
+        Overrides the default component removal to implement smart debasing
+        when the Base object is being removed.
+        """
+        import Arch
+        from PySide import QtGui
+
+        # Check if the component being removed is this wall's Base
+        if hasattr(obj, "Base") and obj.Base == subobject:
+            if Arch.is_debasable(obj):
+                # This is a valid, single-line wall. Perform a clean debase.
+                Arch.debaseWall(obj)
+            else:
+                # This is a complex wall. Behavior depends on GUI availability.
+                if FreeCAD.GuiUp:
+                    # --- GUI Path: Warn the user and ask for confirmation. ---
+                    from PySide import QtGui
+
+                    msg_box = QtGui.QMessageBox()
+                    msg_box.setWindowTitle(translate("ArchComponent", "Unsupported Base"))
+                    msg_box.setText(
+                        translate(
+                            "ArchComponent", "The base of this wall is not a single straight line."
+                        )
+                    )
+                    msg_box.setInformativeText(
+                        translate(
+                            "ArchComponent",
+                            "Removing the base of this complex wall will alter its shape and reset its position.\n\n"
+                            "Do you want to proceed?",
+                        )
+                    )
+                    msg_box.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.Cancel)
+                    msg_box.setDefaultButton(QtGui.QMessageBox.Cancel)
+                    if msg_box.exec_() == QtGui.QMessageBox.Yes:
+                        # User confirmed, perform the standard removal
+                        super(_Wall, self).handleComponentRemoval(obj, subobject)
+                else:
+                    # --- Headless Path: Do not perform the destructive action. Print a warning. ---
+                    FreeCAD.Console.PrintWarning(
+                        f"Skipping removal of complex base for wall '{obj.Label}'. "
+                        "This interactive action is not supported in headless mode.\n"
+                    )
+        else:
+            # If it's not the base (e.g., an Addition), use the default behavior
+            # from the parent Component class.
+            super(_Wall, self).handleComponentRemoval(obj, subobject)
 
 
 class _ViewProviderWall(ArchComponent.ViewProviderComponent):

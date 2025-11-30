@@ -508,8 +508,8 @@ QMenu::item:disabled {
 }
 
 QMenu::separator {
-  height: 2px;
-  background-color: @PrimaryColor;
+  height: 1px;
+  background-color: @GroupboxBorderColor;
 }
 
 QMenu::item {
@@ -1460,6 +1460,7 @@ QComboBox::drop-down {
   width: 20px;
   border-right: 1px solid transparent;
   padding-right: 2px;
+  padding-left: 12px;
 }
 
 QComboBox::drop-down:hover {}

@@ -1414,11 +1414,11 @@ static bool checkCanonicalPath(const std::map<App::Document*, bool>& docs)
 
     auto docName = [](App::Document* doc) -> QString {
         if (doc->Label.getStrValue() == doc->getName()) {
-            return QString::fromLatin1(doc->getName());
+            return QString::fromUtf8(doc->getName());
         }
         return QStringLiteral("%1 (%2)").arg(
             QString::fromUtf8(doc->Label.getValue()),
-            QString::fromLatin1(doc->getName())
+            QString::fromUtf8(doc->getName())
         );
     };
     int count = 0;
@@ -1780,16 +1780,19 @@ void Document::Save(Base::Writer& writer) const
             int size = hGrp->GetInt("ThumbnailSize", 256);
             size = Base::clamp<int>(size, 64, 512);
             std::list<MDIView*> mdi = getMDIViews();
+
+            View3DInventorViewer* view = nullptr;
             for (const auto& it : mdi) {
                 if (it->isDerivedFrom<View3DInventor>()) {
-                    View3DInventorViewer* view = static_cast<View3DInventor*>(it)->getViewer();
-                    d->thumb.setFileName(d->_pcDocument->FileName.getValue());
-                    d->thumb.setSize(size);
-                    d->thumb.setViewer(view);
-                    d->thumb.Save(writer);
+                    view = static_cast<View3DInventor*>(it)->getViewer();
                     break;
                 }
             }
+
+            d->thumb.setFileName(d->_pcDocument->FileName.getValue());
+            d->thumb.setSize(size);
+            d->thumb.setViewer(view);
+            d->thumb.Save(writer);
         }
     }
 }
@@ -1823,6 +1826,7 @@ void Document::RestoreDocFile(Base::Reader& reader)
     localreader->readElement("Document");
     long scheme = localreader->getAttribute<long>("SchemaVersion");
     localreader->DocumentSchema = scheme;
+    localreader->ProgramVersion = d->_pcDocument->getProgramVersion();
 
     bool hasExpansion = localreader->hasAttribute("HasExpansion");
     if (hasExpansion) {

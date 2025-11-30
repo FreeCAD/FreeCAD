@@ -2824,6 +2824,24 @@ int SketchObject::transferConstraints(
 }
 // clang-format off
 
+std::vector<int> SketchObject::chooseFilletsEdges(const std::vector<int>& GeoIdList) const
+{
+    if (GeoIdList.size() == 2) {
+        return GeoIdList;
+    }
+
+    std::vector<int> dst;
+    for (auto id : GeoIdList) {
+        if (!GeometryFacade::getFacade(getGeometry(id))->getConstruction()) {
+            dst.push_back(id);
+
+            if (dst.size() > 2) {
+                return {};
+            }
+        }
+    }
+    return dst;
+}
 int SketchObject::fillet(int GeoId, PointPos PosId, double radius, bool trim, bool createCorner, bool chamfer)
 {
     if (GeoId < 0 || GeoId > getHighestCurveIndex())
@@ -2833,6 +2851,8 @@ int SketchObject::fillet(int GeoId, PointPos PosId, double radius, bool trim, bo
     std::vector<int> GeoIdList;
     std::vector<PointPos> PosIdList;
     getDirectlyCoincidentPoints(GeoId, PosId, GeoIdList, PosIdList);
+
+    GeoIdList = chooseFilletsEdges(GeoIdList);
 
     // only coincident points between two (non-external) edges can be filleted
     if (GeoIdList.size() == 2 && GeoIdList[0] >= 0 && GeoIdList[1] >= 0) {
@@ -8806,6 +8826,22 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
 {
     Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
 
+    // Analyze the state of existing external geometries to infer the desired state for new ones.
+    // If any geometry from a source link is "defining", we'll treat the whole link as "defining".
+    std::map<std::string, bool> linkIsDefiningMap;
+    for (const auto& geo : ExternalGeo.getValues()) {
+        auto egf = ExternalGeometryFacade::getFacade(geo);
+        if (!egf->getRef().empty()) {
+            bool isDefining = egf->testFlag(ExternalGeometryExtension::Defining);
+            if (linkIsDefiningMap.find(egf->getRef()) == linkIsDefiningMap.end()) {
+                linkIsDefiningMap[egf->getRef()] = isDefining;
+            }
+            else {
+                linkIsDefiningMap[egf->getRef()] = linkIsDefiningMap[egf->getRef()] && isDefining;
+            }
+        }
+    }
+
     // get the actual lists of the externals
     auto Types       = ExternalTypes.getValues();
     auto Objects     = ExternalGeometry.getValues();
@@ -9115,10 +9151,20 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
 
     // now update the geometries
     for(auto &geos : newGeos) {
+        if (geos.empty()) {
+            continue;
+        }
+
+        // Get the reference key for this group of geometries. All geos in this vector share the same ref.
+        const std::string& key = ExternalGeometryFacade::getFacade(geos.front().get())->getRef();
+        bool isLinkDefining = linkIsDefiningMap.count(key) ? linkIsDefiningMap[key] : false;
+
         for(auto &geo : geos) {
             auto it = externalGeoMap.find(GeometryFacade::getId(geo.get()));
             if(it == externalGeoMap.end()) {
                 // This is a new geometries.
+                // Set its defining state based on the inferred state of its parent link.
+                ExternalGeometryFacade::getFacade(geo.get())->setFlag(ExternalGeometryExtension::Defining, isLinkDefining);
                 geoms.push_back(geo.release());
                 continue;
             }

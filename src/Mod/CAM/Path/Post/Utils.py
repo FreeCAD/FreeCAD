@@ -30,12 +30,15 @@ These are common functions and classes for creating custom post processors.
 
 
 from Path.Base.MachineState import MachineState
+from Path.Main.Gui.Editor import CodeEditor
+
 from PySide import QtCore, QtGui
+
 import FreeCAD
-import Part
 import Path
 import os
 import re
+
 
 debug = False
 if debug:
@@ -215,14 +218,16 @@ class GCodeEditorDialog(QtGui.QDialog):
 
         layout = QtGui.QVBoxLayout(self)
 
-        # nice text editor widget for editing the gcode
-        self.editor = QtGui.QTextEdit()
+        # self.editor = QtGui.QTextEdit()  # without lines enumeration
+        self.editor = CodeEditor()  # with lines enumeration
+
+        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Editor")
         font = QtGui.QFont()
-        font.setFamily("Courier")
+        font.setFamily(p.GetString("Font", "Courier"))
         font.setFixedPitch(True)
-        font.setPointSize(10)
+        font.setPointSize(p.GetInt("FontSize", 10))
         self.editor.setFont(font)
-        self.editor.setText(text)
+        self.editor.setPlainText(text)
         layout.addWidget(self.editor)
 
         # buttons depending on the post processor used
@@ -369,31 +374,40 @@ def fcoms(string, commentsym):
     return comment
 
 
-def splitArcs(path):
+def splitArcs(path, deflection=None):
     """Filter a path object and replace all G2/G3 moves with discrete G1 moves.
 
-    Returns a Path object.
-    """
-    prefGrp = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/CAM")
-    deflection = prefGrp.GetFloat("LibAreaCurveAccuarcy", 0.01)
+    Args:
+        path: Path.Path object to process
+        deflection: Curve deflection tolerance (default: from preferences)
 
-    results = []
+    Returns:
+        Path.Path object with arcs replaced by G1 segments.
+    """
     if not isinstance(path, Path.Path):
         raise TypeError("path must be a Path object")
 
+    if deflection is None:
+        prefGrp = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/CAM")
+        deflection = prefGrp.GetFloat("LibAreaCurveAccuracy", 0.01)
+
+    results = []
     machine = MachineState()
+
     for command in path.Commands:
-
         if command.Name not in Path.Geom.CmdMoveArc:
-            machine.addCommand(command)
             results.append(command)
-            continue
+        else:
+            # Discretize arc into line segments
+            edge = Path.Geom.edgeForCmd(command, machine.getPosition())
+            pts = edge.discretize(Deflection=deflection)
 
-        edge = Path.Geom.edgeForCmd(command, machine.getPosition())
-        pts = edge.discretize(Deflection=deflection)
-        edges = [Part.makeLine(v1, v2) for v1, v2 in zip(pts, pts[1:])]
-        for edge in edges:
-            results.extend(Path.Geom.cmdsForEdge(edge))
+            # Convert points directly to G1 commands
+            feed_params = {"F": command.Parameters["F"]} if "F" in command.Parameters else {}
+            for pt in pts[1:]:  # Skip first point (already at that position)
+                params = {"X": pt.x, "Y": pt.y, "Z": pt.z}
+                params.update(feed_params)
+                results.append(Path.Command("G1", params))
 
         machine.addCommand(command)
 
