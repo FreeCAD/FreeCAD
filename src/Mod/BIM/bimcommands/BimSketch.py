@@ -56,16 +56,16 @@ class BIM_Sketch:
         sk.Placement = wp.get_placement()
         sk.MapMode = "Deactivated"
 
-        sk.ViewObject.LineWidth = params.get_param_view("DefaultShapeLineWidth")
-        sk.ViewObject.PointSize = params.get_param_view("DefaultShapePointSize")
-        sk.ViewObject.AutoColor = False
-        sk.ViewObject.LineColor = params.get_param_view("DefaultShapeLineColor")
-        sk.ViewObject.PointColor = params.get_param_view("DefaultShapeVertexColor")
-        sk.ViewObject.ShapeAppearance = [utils.get_view_material()]
-
-        if getattr(FreeCADGui, "Snapper", None) and FreeCADGui.Snapper.grid.Visible:
-            sk.ViewObject.GridSize = Units.Quantity(params.get_param("gridSpacing"))
-            sk.ViewObject.ShowGrid = True
+        if not params.get_param("BIMSketchPlacementOnly", path="Mod/BIM"):
+            sk.ViewObject.LineWidth = params.get_param_view("DefaultShapeLineWidth")
+            sk.ViewObject.PointSize = params.get_param_view("DefaultShapePointSize")
+            sk.ViewObject.AutoColor = False
+            sk.ViewObject.LineColor = params.get_param_view("DefaultShapeLineColor")
+            sk.ViewObject.PointColor = params.get_param_view("DefaultShapeVertexColor")
+            sk.ViewObject.ShapeAppearance = [utils.get_view_material()]
+            if getattr(FreeCADGui, "Snapper", None) and FreeCADGui.Snapper.grid.Visible:
+                sk.ViewObject.GridSize = Units.Quantity(params.get_param("gridSpacing"))
+                sk.ViewObject.ShowGrid = True
 
         FreeCADGui.ActiveDocument.setEdit(sk.Name)
         FreeCADGui.activateWorkbench("SketcherWorkbench")
