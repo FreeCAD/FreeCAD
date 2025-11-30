@@ -176,9 +176,17 @@ void PagePrinter::printAll(QPrinter* printer, App::Document* doc)
 //! print all pages in a document to pdf
 void PagePrinter::printAllPdf(QPrinter* printer, App::Document* doc)
 {
-    double dpmm = printer->resolution() / mmPerInch;
-
     QString outputFile = printer->outputFileName();
+    Base::FileInfo fi{outputFile.toStdString()};
+    if (fi.exists() && !fi.isWritable()) {
+        // this guards against a no-write situation on Win (issue #25299)
+        // Note: this does not protect against the case where the proposed file does not exist yet
+        //       and creation of the file will not be permitted (ex attempt to write to restricted
+        //       directory).
+        Base::Console().error("File %s is not available for writing.\n", qPrintable(outputFile));
+        return;
+    }
+
     QString documentName = QString::fromUtf8(doc->getName());
     QPdfWriter pdfWriter(outputFile);
 
@@ -235,6 +243,7 @@ void PagePrinter::printAllPdf(QPrinter* printer, App::Document* doc)
         }
         firstTime = false;
 
+        double dpmm = printer->resolution() / mmPerInch;
         QRectF sourceRect(0.0, Rez::guiX(-height), Rez::guiX(width), Rez::guiX(height));
         QRect targetRect(0, 0, width * dpmm, height * dpmm);
         renderPage(vpp, painter, sourceRect, targetRect);
@@ -339,33 +348,37 @@ void PagePrinter::print(ViewProviderPage* vpPage, QPrinter* printer, bool isPrev
 void PagePrinter::printPdf(ViewProviderPage* vpPage, const std::string& file)
 {
     if (file.empty()) {
-        Base::Console().warning("PagePrinter - no file specified\n");
+        return;
+    }
+
+    Base::FileInfo fi{file};
+    if (fi.exists() && !fi.isWritable()) {
+         // this guards against a no-write situation on Win (issue #25299)
+         // See comment in printAllPdf re new file creaion
+        Base::Console().error("File %s is not available for writing.\n", file.c_str());
         return;
     }
 
     auto filespec = Base::Tools::escapeEncodeFilename(file);
     filespec = DU::cleanFilespecBackslash(filespec);
+    QString outputFile = QString::fromStdString(filespec);
 
     // set up the pdfwriter
-    QString outputFile = QString::fromStdString(filespec);
     QPdfWriter pdfWriter(outputFile);
     pdfWriter.setPdfVersion(Gui::Dialog::DlgSettingsPDF::evaluatePDFVersion());
-    QPageLayout pageLayout = pdfWriter.pageLayout();
-    auto marginsdb = pageLayout.margins(QPageLayout::Millimeter);
     QString documentName = QString::fromUtf8(vpPage->getDrawPage()->getNameInDocument());
     pdfWriter.setTitle(documentName);
-    // default pdfWriter dpi is 1200.
-
+    // default pdfWriter dpi is 1200. no need to set?
     pdfWriter.setCreator(QString::fromStdString(App::Application::getNameWithVersion())
                        + QLatin1String(" TechDraw"));
 
-    // set up the page layout
+    // set up the page layout by modifying the default
+    QPageLayout pageLayout = pdfWriter.pageLayout();
     auto dPage = vpPage->getDrawPage();
     double width = A4Heightmm;  // default to A4 Landscape 297 x 210
     double height = A4Widthmm;
     makePageLayout(dPage, pageLayout, width, height);
     pdfWriter.setPageLayout(pageLayout);
-    marginsdb = pageLayout.margins(QPageLayout::Millimeter);
 
     // first page does not respect page layout unless painter is created after
     // pdfWriter layout is established.
