@@ -33,6 +33,7 @@
 #include "Action.h"
 #include "BitmapFactory.h"
 #include "CommandCompleter.h"
+#include "WorkbenchManager.h"
 
 using namespace Gui;
 
@@ -230,16 +231,38 @@ protected:
             return QSortFilterProxyModel::lessThan(left, right);
         }
 
-        // check if commands are active or not
+        std::string activeWorkbench = WorkbenchManager::instance()->activeName();
+        if (left.row() < 0 || left.row() >= static_cast<int>(_Commands.size()) || right.row() < 0
+            || right.row() >= static_cast<int>(_Commands.size())) {
+            return QSortFilterProxyModel::lessThan(left, right);
+        }
+
+        const Command* leftCmd = _Commands[left.row()].cmd;
+        const Command* rightCmd = _Commands[right.row()].cmd;
+
+        if (!leftCmd || !rightCmd) {
+            return QSortFilterProxyModel::lessThan(left, right);
+        }
+
+        // check if command is active and prioritize active one if the other is not
         bool leftActive = (sourceModel->flags(left) & Qt::ItemIsEnabled) != 0;
         bool rightActive = (sourceModel->flags(right) & Qt::ItemIsEnabled) != 0;
-
-        // if one of the commands is active but other is not, just
-        // prioritize active one - otherwise, sort alphabetically
         if (leftActive != rightActive) {
             return leftActive > rightActive;
         }
 
+        // next prioritize commands that are from the same workbench
+        // (currently used)
+        std::string leftGroup = leftCmd->getGroupName();
+        std::string rightGroup = rightCmd->getGroupName();
+        bool leftIsActiveWB = (leftGroup == activeWorkbench);
+        bool rightIsActiveWB = (rightGroup == activeWorkbench);
+
+        if (leftIsActiveWB != rightIsActiveWB) {
+            return leftIsActiveWB > rightIsActiveWB;
+        }
+
+        // use alphabetic sorting as last resort
         return QSortFilterProxyModel::lessThan(left, right);
     }
 };
