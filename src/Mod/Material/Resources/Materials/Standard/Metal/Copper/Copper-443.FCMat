@@ -1,0 +1,29 @@
+﻿---
+# File created by FreeCAD 1.0.2 Revision: 39319 (Git)
+General:
+  UUID: "231a3664-7285-4340-b5af-63a9e9a2d7af"
+  Name: "Copper-443"
+  Author: "Joe Da Silva"
+  License: "LGPL-2.0-or-later"
+  Description: "Copper-443, CuZn28Sn1, Admiralty Arsenical, Annealed 575°C 1hr. Cu≥70% Zn=27.56% Sn=0.97% Pb=0.04% Fe=0.03% As=0.041%. These values for 295°K were imported from file 'cda144-8-mechanical-low-temperature.pdf' with permission and credit to the 'Copper Development Association' (CDA). For your own production accuracy, please use values provided by the material vendors you are working with."
+Inherits:
+  Brass:
+    UUID: "4151e19c-fd6a-4ca4-83d4-d5e17d76cb9c"
+Models:
+  Father:
+    UUID: '9cdda8b6-b606-4778-8f13-3934d8668e67'
+    Father: "Metal"
+  MaterialStandard:
+    UUID: '1e2c0088-904a-4537-925f-64064c07d700'
+    StandardCode: "Copper-443"
+  LinearElastic:
+    UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
+    ShearModulus: "41.0 GPa"
+    UltimateStrain: "1626 MPa"
+    UltimateTensileStrength: "309 MPa"
+    YieldStrength: "73.1 MPa"
+    YoungsModulus: "101 GPa"
+  Hardness:
+    UUID: '3d1a6141-d032-4d82-8bb5-a8f339fff8ad'
+    Hardness: "55"
+    HardnessUnits: "HRF"
