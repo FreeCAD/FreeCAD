@@ -1,3 +1,7 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import no_args
 from ViewProviderDocumentObject import ViewProviderDocumentObject
 
@@ -13,8 +17,6 @@ class ViewProviderGeometryObject(ViewProviderDocumentObject):
     @no_args
     def getUserDefinedMaterial() -> object:
         """
-        getUserDefinedMaterial() -> object
-
         Get a material object with the user-defined colors.
         """
         ...

@@ -1,6 +1,10 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export, no_args, sequence_protocol
 from Base.BaseClass import BaseClass
-from typing import Final, Dict
+from typing import Final
 
 
 @export(
