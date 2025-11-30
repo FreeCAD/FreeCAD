@@ -117,12 +117,13 @@ struct DocumentP
     std::map<std::string, ViewProvider*> _ViewProviderMapAnnotation;
     std::list<ViewProviderDocumentObject*> _redoViewProviders;
 
-    using Connection = boost::signals2::connection;
+    using Connection = fastsignals::connection;
+    using AdvancedConnection = fastsignals::advanced_connection;
     Connection connectNewObject;
     Connection connectDelObject;
     Connection connectCngObject;
     Connection connectRenObject;
-    Connection connectActObject;
+    AdvancedConnection connectActObject;
     Connection connectSaveDocument;
     Connection connectRestDocument;
     Connection connectStartLoadDocument;
@@ -141,9 +142,9 @@ struct DocumentP
     Connection connectTransactionRemove;
     Connection connectTouchedObject;
     Connection connectChangePropertyEditor;
-    Connection connectChangeDocument;
+    AdvancedConnection connectChangeDocument;
 
-    using ConnectionBlock = boost::signals2::shared_connection_block;
+    using ConnectionBlock = fastsignals::shared_connection_block;
     ConnectionBlock connectActObjectBlocker;
     ConnectionBlock connectChangeDocumentBlocker;
 
@@ -458,9 +459,10 @@ Document::Document(App::Document* pcDocument, Application* app)
         std::bind(&Gui::Document::slotRelabelObject, this, sp::_1)
     );
     d->connectActObject = pcDocument->signalActivatedObject.connect(
-        std::bind(&Gui::Document::slotActivatedObject, this, sp::_1)
+        std::bind(&Gui::Document::slotActivatedObject, this, sp::_1),
+        fastsignals::advanced_tag()
     );
-    d->connectActObjectBlocker = boost::signals2::shared_connection_block(d->connectActObject, false);
+    d->connectActObjectBlocker = fastsignals::shared_connection_block(d->connectActObject, false);
     d->connectSaveDocument = pcDocument->signalSaveDocument.connect(
         std::bind(&Gui::Document::Save, this, sp::_1)
     );
@@ -482,9 +484,10 @@ Document::Document(App::Document* pcDocument, Application* app)
     );
     d->connectChangeDocument
         = d->_pcDocument->signalChanged.connect  // use the same slot function
-          (std::bind(&Gui::Document::slotChangePropertyEditor, this, sp::_1, sp::_2));
+          (std::bind(&Gui::Document::slotChangePropertyEditor, this, sp::_1, sp::_2),
+           fastsignals::advanced_tag());
     d->connectChangeDocumentBlocker
-        = boost::signals2::shared_connection_block(d->connectChangeDocument, true);
+        = fastsignals::shared_connection_block(d->connectChangeDocument, true);
     d->connectFinishRestoreObject = pcDocument->signalFinishRestoreObject.connect(
         std::bind(&Gui::Document::slotFinishRestoreObject, this, sp::_1)
     );
@@ -521,8 +524,6 @@ Document::Document(App::Document* pcDocument, Application* app)
         std::bind(&Gui::Document::slotTransactionRemove, this, sp::_1, sp::_2)
     );
     // NOLINTEND
-
-    pcDocument->setPreRecomputeHook([this] { callSignalBeforeRecompute(); });
 
     // pointer to the python class
     // NOTE: As this Python object doesn't get returned to the interpreter we
@@ -1263,29 +1264,6 @@ void Document::slotTouchedObject(const App::DocumentObject& Obj)
     if (!isModified()) {
         FC_LOG(Obj.getFullName() << " touched");
         setModified(true);
-    }
-}
-
-// helper that guarantees signalBeforeRecompute call is executed in the GUI thread and
-// that the worker waits until it finishes
-void Document::callSignalBeforeRecompute()
-{
-    auto invokeSignalBeforeRecompute = [this] {
-        // this runs in the GUI thread
-        this->getDocument()->signalBeforeRecompute(*this->getDocument());
-    };
-
-    if (QThread::currentThread() == qApp->thread()) {
-        // already on GUI thread – no hop, just call it
-        invokeSignalBeforeRecompute();
-    }
-    else {
-        // hop to GUI and *block* until it returns
-        QMetaObject::invokeMethod(
-            qApp,
-            std::move(invokeSignalBeforeRecompute),
-            Qt::BlockingQueuedConnection
-        );
     }
 }
 

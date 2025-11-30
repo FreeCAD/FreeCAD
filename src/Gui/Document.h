@@ -26,7 +26,7 @@
 #include <list>
 #include <map>
 #include <string>
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 #include <QString>
 
 #include <Base/Persistence.h>
@@ -103,7 +103,6 @@ protected:
     void slotSkipRecompute(const App::Document& doc, const std::vector<App::DocumentObject*>& objs);
     void slotTouchedObject(const App::DocumentObject&);
     void slotChangePropertyEditor(const App::Document&, const App::Property&);
-    void callSignalBeforeRecompute();
     //@}
 
 public:
@@ -112,23 +111,23 @@ public:
     /** @name Signals of the document */
     //@{
     /// signal on new Object
-    mutable boost::signals2::signal<void(const Gui::ViewProviderDocumentObject&)> signalNewObject;
+    mutable fastsignals::signal<void(const Gui::ViewProviderDocumentObject&)> signalNewObject;
     /// signal on deleted Object
-    mutable boost::signals2::signal<void(const Gui::ViewProviderDocumentObject&)> signalDeletedObject;
+    mutable fastsignals::signal<void(const Gui::ViewProviderDocumentObject&)> signalDeletedObject;
     /** signal on changed Object, the 2nd argument is the changed property
         of the referenced document object, not of the view provider */
-    mutable boost::signals2::signal<void(const Gui::ViewProviderDocumentObject&, const App::Property&)>
+    mutable fastsignals::signal<void(const Gui::ViewProviderDocumentObject&, const App::Property&)>
         signalChangedObject;
     /// signal on renamed Object
-    mutable boost::signals2::signal<void(const Gui::ViewProviderDocumentObject&)> signalRelabelObject;
+    mutable fastsignals::signal<void(const Gui::ViewProviderDocumentObject&)> signalRelabelObject;
     /// signal on activated Object
-    mutable boost::signals2::signal<void(const Gui::ViewProviderDocumentObject&)> signalActivatedObject;
+    mutable fastsignals::signal<void(const Gui::ViewProviderDocumentObject&)> signalActivatedObject;
     /// signal on entering in edit mode
-    mutable boost::signals2::signal<void(const Gui::ViewProviderDocumentObject&)> signalInEdit;
+    mutable fastsignals::signal<void(const Gui::ViewProviderDocumentObject&)> signalInEdit;
     /// signal on leaving edit mode
-    mutable boost::signals2::signal<void(const Gui::ViewProviderDocumentObject&)> signalResetEdit;
+    mutable fastsignals::signal<void(const Gui::ViewProviderDocumentObject&)> signalResetEdit;
     /// signal on changed Object, the 2nd argument is the highlite mode to use
-    mutable boost::signals2::signal<void(
+    mutable fastsignals::signal<void(
         const Gui::ViewProviderDocumentObject&,
         const Gui::HighlightMode&,
         bool,
@@ -137,7 +136,7 @@ public:
     )>
         signalHighlightObject;
     /// signal on changed Object, the 2nd argument is the highlite mode to use
-    mutable boost::signals2::signal<void(
+    mutable fastsignals::signal<void(
         const Gui::ViewProviderDocumentObject&,
         const Gui::TreeItemMode&,
         App::DocumentObject* parent,
@@ -145,15 +144,15 @@ public:
     )>
         signalExpandObject;
     /// signal on changed ShowInTree property in view provider
-    mutable boost::signals2::signal<void(const Gui::ViewProviderDocumentObject&)> signalShowItem;
+    mutable fastsignals::signal<void(const Gui::ViewProviderDocumentObject&)> signalShowItem;
     /// signal on scrolling to an object
-    mutable boost::signals2::signal<void(const Gui::ViewProviderDocumentObject&)> signalScrollToObject;
+    mutable fastsignals::signal<void(const Gui::ViewProviderDocumentObject&)> signalScrollToObject;
     /// signal on undo Document
-    mutable boost::signals2::signal<void(const Gui::Document& doc)> signalUndoDocument;
+    mutable fastsignals::signal<void(const Gui::Document& doc)> signalUndoDocument;
     /// signal on redo Document
-    mutable boost::signals2::signal<void(const Gui::Document& doc)> signalRedoDocument;
+    mutable fastsignals::signal<void(const Gui::Document& doc)> signalRedoDocument;
     /// signal on deleting Document
-    mutable boost::signals2::signal<void(const Gui::Document& doc)> signalDeleteDocument;
+    mutable fastsignals::signal<void(const Gui::Document& doc)> signalDeleteDocument;
     //@}
 
     /** @name I/O of the document */

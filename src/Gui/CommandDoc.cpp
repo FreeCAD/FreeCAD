@@ -1626,6 +1626,37 @@ StdCmdRefresh::StdCmdRefresh()
     }
 }
 
+static void handleDocumentRecomputeResult(App::RecomputeRequest& request, App::RecomputeResult& result)
+{
+    if (result.success) {
+        return;
+    }
+
+    auto ret = QMessageBox::warning(
+        getMainWindow(),
+        QObject::tr("Dependency error"),
+        qApp->translate(
+            "Std_Refresh",
+            "The document contains dependency cycles.\n"
+            "Check the report view for more details.\n\n"
+            "Proceed?"
+        ),
+        QMessageBox::Yes,
+        QMessageBox::No
+    );
+
+    if (ret == QMessageBox::No) {
+        return;
+    }
+
+    // If the user wants to proceed, enqueue another recompute request.
+    App::RecomputeRequest newRequest = {
+        .document = request.document,
+    };
+
+    App::GetApplication().queueRecomputeRequest(newRequest);
+}
+
 void StdCmdRefresh::activated([[maybe_unused]] int iMsg)
 {
     if (!getActiveGuiDocument()) {
@@ -1633,27 +1664,22 @@ void StdCmdRefresh::activated([[maybe_unused]] int iMsg)
     }
 
     App::AutoTransaction trans((eType & NoTransaction) ? nullptr : "Recompute");
-    try {
-        doCommand(Doc, "App.activeDocument().recompute(None,True,True)");
-    }
-    catch (Base::Exception& /*e*/) {
-        auto ret = QMessageBox::warning(
-            getMainWindow(),
-            QObject::tr("Dependency Error"),
-            qApp->translate(
-                "Std_Refresh",
-                "The document contains dependency cycles.\n"
-                "Check the report view for more details.\n\n"
-                "Proceed?"
-            ),
-            QMessageBox::Yes,
-            QMessageBox::No
-        );
-        if (ret == QMessageBox::No) {
-            return;
+    auto doc = getActiveGuiDocument()->getDocument();
+
+    // Enqueue a recompute request.
+    App::RecomputeRequest request = {
+        .document = doc,
+        .callback = [](App::RecomputeRequest& request, App::RecomputeResult& result) {
+            // Handle the result in the UI thread.
+            QMetaObject::invokeMethod(
+                qApp,
+                [&request, &result]() { handleDocumentRecomputeResult(request, result); },
+                Qt::QueuedConnection
+            );
         }
-        doCommand(Doc, "App.activeDocument().recompute(None,True)");
-    }
+    };
+
+    App::GetApplication().queueRecomputeRequest(request);
 }
 
 bool StdCmdRefresh::isActive()

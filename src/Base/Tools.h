@@ -29,22 +29,13 @@
 #ifndef FC_GLOBAL_H
 # include <FCGlobal.h>
 #endif
+#include <algorithm>
 #include <cmath>
 #include <numbers>
 #include <ostream>
 #include <string>
 #include <vector>
-
-#include <boost/signals2/shared_connection_block.hpp>
-
-namespace boost
-{
-namespace signals2
-{
-class connection;
-}
-}  // namespace boost
-
+#include <fastsignals/signal.h>
 
 class QString;
 
@@ -332,12 +323,10 @@ private:
 
 class ConnectionBlocker
 {
-    using Connection = boost::signals2::connection;
-    using ConnectionBlock = boost::signals2::shared_connection_block;
-    ConnectionBlock blocker;
+    fastsignals::shared_connection_block blocker;
 
 public:
-    ConnectionBlocker(Connection& c)
+    ConnectionBlocker(fastsignals::advanced_connection& c)
         : blocker(c)
     {}
     ~ConnectionBlocker() = default;

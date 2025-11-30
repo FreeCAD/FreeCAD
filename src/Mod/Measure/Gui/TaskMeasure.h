@@ -43,7 +43,7 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection/Selection.h>
 
-#include <boost/signals2/connection.hpp>
+#include <fastsignals/connection.h>
 
 namespace MeasureGui
 {
@@ -90,7 +90,7 @@ private:
     QAction* newMeasurementBehaviourAction {nullptr};
     QToolButton* mSettings {nullptr};
 
-    boost::signals2::connection m_deletedConnection;
+    fastsignals::connection m_deletedConnection;
 
     void removeObject();
     void onModeChanged(int index);

@@ -51,7 +51,7 @@ class ComboView;
 namespace TaskView
 {
 
-using Connection = boost::signals2::connection;
+using Connection = fastsignals::connection;
 class TaskEditControl;
 class TaskDialog;
 
