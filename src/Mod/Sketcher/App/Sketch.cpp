@@ -47,6 +47,7 @@
 #include <Mod/Part/App/EllipsePy.h>
 #include <Mod/Part/App/HyperbolaPy.h>
 #include <Mod/Part/App/LineSegmentPy.h>
+#include <Mod/Part/App/OffsetCurvePy.h>
 #include <Mod/Part/App/ParabolaPy.h>
 
 #include "Constraint.h"
@@ -662,6 +663,8 @@ const char* nameByType(Sketch::GeoType type)
             return "arcofparabola";
         case Sketch::BSpline:
             return "bspline";
+        case Sketch::OffsetCurve:
+            return "offsetcurve";
         case Sketch::None:
         default:
             return "unknown";
@@ -673,54 +676,59 @@ const char* nameByType(Sketch::GeoType type)
 int Sketch::addGeometry(const Part::Geometry* geo, bool fixed)
 {
     if (geo->is<GeomPoint>()) {  // add a point
-        const GeomPoint* point = static_cast<const GeomPoint*>(geo);
+        const auto* point = static_cast<const GeomPoint*>(geo);
         auto pointf = GeometryFacade::getFacade(point);
         // create the definition struct for that geom
         return addPoint(*point, fixed);
     }
     else if (geo->is<GeomLineSegment>()) {  // add a line
-        const GeomLineSegment* lineSeg = static_cast<const GeomLineSegment*>(geo);
+        const auto* lineSeg = static_cast<const GeomLineSegment*>(geo);
         // create the definition struct for that geom
         return addLineSegment(*lineSeg, fixed);
     }
     else if (geo->is<GeomCircle>()) {  // add a circle
-        const GeomCircle* circle = static_cast<const GeomCircle*>(geo);
+        const auto* circle = static_cast<const GeomCircle*>(geo);
         // create the definition struct for that geom
         return addCircle(*circle, fixed);
     }
     else if (geo->is<GeomEllipse>()) {  // add a ellipse
-        const GeomEllipse* ellipse = static_cast<const GeomEllipse*>(geo);
+        const auto* ellipse = static_cast<const GeomEllipse*>(geo);
         // create the definition struct for that geom
         return addEllipse(*ellipse, fixed);
     }
     else if (geo->is<GeomArcOfCircle>()) {  // add an arc
-        const GeomArcOfCircle* aoc = static_cast<const GeomArcOfCircle*>(geo);
+        const auto* aoc = static_cast<const GeomArcOfCircle*>(geo);
         // create the definition struct for that geom
         return addArc(*aoc, fixed);
     }
     else if (geo->is<GeomArcOfEllipse>()) {  // add an arc
-        const GeomArcOfEllipse* aoe = static_cast<const GeomArcOfEllipse*>(geo);
+        const auto* aoe = static_cast<const GeomArcOfEllipse*>(geo);
         // create the definition struct for that geom
         return addArcOfEllipse(*aoe, fixed);
     }
     else if (geo->is<GeomArcOfHyperbola>()) {  // add an arc of hyperbola
-        const GeomArcOfHyperbola* aoh = static_cast<const GeomArcOfHyperbola*>(geo);
+        const auto* aoh = static_cast<const GeomArcOfHyperbola*>(geo);
         // create the definition struct for that geom
         return addArcOfHyperbola(*aoh, fixed);
     }
     else if (geo->is<GeomArcOfParabola>()) {  // add an arc of parabola
-        const GeomArcOfParabola* aop = static_cast<const GeomArcOfParabola*>(geo);
+        const auto* aop = static_cast<const GeomArcOfParabola*>(geo);
         // create the definition struct for that geom
         return addArcOfParabola(*aop, fixed);
     }
     else if (geo->is<GeomBSplineCurve>()) {  // add a bspline
-        const GeomBSplineCurve* bsp = static_cast<const GeomBSplineCurve*>(geo);
+        const auto* bsp = static_cast<const GeomBSplineCurve*>(geo);
 
         // Current B-Spline implementation relies on OCCT calculations, so a second solve
         // is necessary to update actual solver implementation to account for changes in B-Spline
         // geometry
         resolveAfterGeometryUpdated = true;
         return addBSpline(*bsp, fixed);
+    }
+    else if (geo->is<GeomOffsetCurve>()) {  // add an offset curve
+        const auto* offc = static_cast<const GeomOffsetCurve*>(geo);
+        // create the definition struct for that geom
+        return addOffsetCurve(*offc, fixed);
     }
     else {
         throw Base::TypeError("Sketch::addGeometry(): Unknown or unsupported type added to a sketch");
@@ -1764,6 +1772,55 @@ int Sketch::addEllipse(const Part::GeomEllipse& elip, bool fixed)
     return Geoms.size() - 1;
 }
 
+int Sketch::addOffsetCurve(const Part::GeomOffsetCurve& offc, bool fixed)
+{
+    std::vector<double*>& params = fixed ? FixParameters : Parameters;
+
+    // create our own copy
+    auto* offcClone = static_cast<GeomOffsetCurve*>(offc.clone());
+    // create the definition struct for that geom
+    GeoDef def;
+    def.geo = offcClone;
+    def.type = OffsetCurve;
+
+    double offset = offcClone->getOffset();
+    Base::Vector3d startPnt = offcClone->value(offcClone->getFirstParameter());
+    Base::Vector3d endPnt = offcClone->value(offcClone->getLastParameter());
+
+    GCS::Point p1, p2;
+
+    params.push_back(new double(offset));
+    double* offsetForGcs = params[params.size() - 1];
+
+    params.push_back(new double(startPnt.x));
+    params.push_back(new double(startPnt.y));
+    p1.x = params[params.size() - 2];
+    p1.y = params[params.size() - 1];
+
+    params.push_back(new double(endPnt.x));
+    params.push_back(new double(endPnt.y));
+    p2.x = params[params.size() - 2];
+    p2.y = params[params.size() - 1];
+
+    def.startPointId = Points.size();
+    Points.push_back(p1);
+    def.endPointId = Points.size();
+    Points.push_back(p2);
+
+    GCS::OffsetCurve curveGcs;
+    curveGcs.offset = offsetForGcs;
+    curveGcs.start = p1;
+    curveGcs.end = p2;
+    def.index = OffsetCurves.size();
+    OffsetCurves.push_back(curveGcs);
+
+    // store complete set
+    Geoms.push_back(def);
+
+    // return the position of the newly added geometry
+    return Geoms.size() - 1;
+}
+
 std::vector<Part::Geometry*> Sketch::extractGeometry(
     bool withConstructionElements,
     bool withExternalElements
@@ -1858,6 +1915,11 @@ Py::Tuple Sketch::getPyGeometry() const
                 tuple[i] = Py::asObject(new BSplineCurvePy(bsp));
                 break;
             }
+            case OffsetCurve: {
+                auto* offc = static_cast<GeomOffsetCurve*>(it->geo->clone());
+                tuple[i] = Py::asObject(new OffsetCurvePy(offc));
+                break;
+            }
             default:
                 // not implemented type in the sketch!
                 break;
@@ -1883,28 +1945,22 @@ GCS::Curve* Sketch::getGCSCurveByGeoId(int geoId)
     switch (Geoms[geoId].type) {
         case Line:
             return &Lines[Geoms[geoId].index];
-            break;
         case Circle:
             return &Circles[Geoms[geoId].index];
-            break;
         case Arc:
             return &Arcs[Geoms[geoId].index];
-            break;
         case Ellipse:
             return &Ellipses[Geoms[geoId].index];
-            break;
         case ArcOfEllipse:
             return &ArcsOfEllipse[Geoms[geoId].index];
-            break;
         case ArcOfHyperbola:
             return &ArcsOfHyperbola[Geoms[geoId].index];
-            break;
         case ArcOfParabola:
             return &ArcsOfParabola[Geoms[geoId].index];
-            break;
         case BSpline:
             return &BSplines[Geoms[geoId].index];
-            break;
+        case OffsetCurve:
+            return &OffsetCurves[Geoms[geoId].index];
         default:
             return nullptr;
     };
@@ -1933,7 +1989,7 @@ int Sketch::addConstraint(const Constraint* constraint)
     c.driving = constraint->isDriving;
 
     switch (constraint->Type) {
-        case DistanceX:
+        case DistanceX: {
             if (constraint->FirstPos == PointPos::none) {  // horizontal length of a line
                 c.value = new double(constraint->getValue());
                 if (c.driving) {
@@ -1977,8 +2033,8 @@ int Sketch::addConstraint(const Constraint* constraint)
                     c.driving
                 );
             }
-            break;
-        case DistanceY:
+        } break;
+        case DistanceY: {
             if (constraint->FirstPos == PointPos::none) {  // vertical length of a line
                 c.value = new double(constraint->getValue());
                 if (c.driving) {
@@ -2022,8 +2078,8 @@ int Sketch::addConstraint(const Constraint* constraint)
                     c.driving
                 );
             }
-            break;
-        case Horizontal:
+        } break;
+        case Horizontal: {
             if (constraint->Second == GeoEnum::GeoUndef) {  // horizontal line
                 rtn = addHorizontalConstraint(constraint->First);
             }
@@ -2035,8 +2091,8 @@ int Sketch::addConstraint(const Constraint* constraint)
                     constraint->SecondPos
                 );
             }
-            break;
-        case Vertical:
+        } break;
+        case Vertical: {
             if (constraint->Second == GeoEnum::GeoUndef) {  // vertical line
                 rtn = addVerticalConstraint(constraint->First);
             }
@@ -2048,16 +2104,16 @@ int Sketch::addConstraint(const Constraint* constraint)
                     constraint->SecondPos
                 );
             }
-            break;
-        case Coincident:
+        } break;
+        case Coincident: {
             rtn = addPointCoincidentConstraint(
                 constraint->First,
                 constraint->FirstPos,
                 constraint->Second,
                 constraint->SecondPos
             );
-            break;
-        case PointOnObject:
+        } break;
+        case PointOnObject: {
             if (Geoms[checkGeoId(constraint->Second)].type == BSpline) {
                 c.value = new double(constraint->getValue());
                 // Driving doesn't make sense here
@@ -2077,11 +2133,11 @@ int Sketch::addConstraint(const Constraint* constraint)
                     constraint->Second
                 );
             }
-            break;
+        } break;
         case Parallel:
             rtn = addParallelConstraint(constraint->First, constraint->Second);
             break;
-        case Perpendicular:
+        case Perpendicular: {
             if (constraint->FirstPos == PointPos::none && constraint->SecondPos == PointPos::none
                 && constraint->Third == GeoEnum::GeoUndef) {
                 // simple perpendicularity
@@ -2110,7 +2166,7 @@ int Sketch::addConstraint(const Constraint* constraint)
                     c.driving
                 );
             }
-            break;
+        } break;
         case Tangent: {
             bool isSpecialCase = false;
 
@@ -2184,9 +2240,8 @@ int Sketch::addConstraint(const Constraint* constraint)
                     c.driving
                 );
             }
-            break;
-        }
-        case Distance:
+        } break;
+        case Distance: {
             if (constraint->SecondPos != PointPos::none) {  // point to point distance
                 c.value = new double(constraint->getValue());
                 if (c.driving) {
@@ -2251,8 +2306,8 @@ int Sketch::addConstraint(const Constraint* constraint)
 
                 rtn = addDistanceConstraint(constraint->First, c.value, c.driving);
             }
-            break;
-        case Angle:
+        } break;
+        case Angle: {
             if (constraint->Third != GeoEnum::GeoUndef) {
                 c.value = new double(constraint->getValue());
                 if (c.driving) {
@@ -2319,7 +2374,7 @@ int Sketch::addConstraint(const Constraint* constraint)
 
                 rtn = addAngleConstraint(constraint->First, c.value, c.driving);
             }
-            break;
+        } break;
         case Radius: {
             c.value = new double(constraint->getValue());
             if (c.driving) {
@@ -2331,8 +2386,7 @@ int Sketch::addConstraint(const Constraint* constraint)
             }
 
             rtn = addRadiusConstraint(constraint->First, c.value, c.driving);
-            break;
-        }
+        } break;
         case Diameter: {
             c.value = new double(constraint->getValue());
             if (c.driving) {
@@ -2344,8 +2398,7 @@ int Sketch::addConstraint(const Constraint* constraint)
             }
 
             rtn = addDiameterConstraint(constraint->First, c.value, c.driving);
-            break;
-        }
+        } break;
         case Weight: {
             c.value = new double(constraint->getValue());
             if (c.driving) {
@@ -2357,12 +2410,11 @@ int Sketch::addConstraint(const Constraint* constraint)
             }
 
             rtn = addRadiusConstraint(constraint->First, c.value, c.driving);
-            break;
-        }
+        } break;
         case Equal:
             rtn = addEqualConstraint(constraint->First, constraint->Second);
             break;
-        case Symmetric:
+        case Symmetric: {
             if (constraint->ThirdPos != PointPos::none) {
                 rtn = addSymmetricConstraint(
                     constraint->First,
@@ -2382,8 +2434,8 @@ int Sketch::addConstraint(const Constraint* constraint)
                     constraint->Third
                 );
             }
-            break;
-        case InternalAlignment:
+        } break;
+        case InternalAlignment: {
             switch (constraint->AlignmentType) {
                 case EllipseMajorDiameter:
                     rtn = addInternalAlignmentEllipseMajorDiameter(constraint->First, constraint->Second);
@@ -2438,7 +2490,7 @@ int Sketch::addConstraint(const Constraint* constraint)
                 default:
                     break;
             }
-            break;
+        } break;
         case SnellsLaw: {
             c.value = new double(constraint->getValue());
             c.secondvalue = new double(constraint->getValue());
@@ -2465,6 +2517,18 @@ int Sketch::addConstraint(const Constraint* constraint)
                 c.secondvalue,
                 c.driving
             );
+        } break;
+        case Offset: {
+            c.value = new double(constraint->getValue());
+            if (c.driving) {
+                FixParameters.push_back(c.value);
+            }
+            else {
+                Parameters.push_back(c.value);
+                DrivenParameters.push_back(c.value);
+            }
+
+            rtn = addOffsetConstraint(constraint->First, constraint->Second, c.value, c.driving);
         } break;
         case Sketcher::None:   // ambiguous enum value
         case Sketcher::Block:  // handled separately while adding geometry
@@ -3539,6 +3603,37 @@ int Sketch::addDistanceConstraint(int geoId1, int geoId2, double* value, bool dr
     }
 }
 
+int Sketch::addOffsetConstraint(int geoIdBasis, int geoIdOffCurve, double* value, bool driving)
+{
+    geoIdBasis = checkGeoId(geoIdBasis);
+    geoIdOffCurve = checkGeoId(geoIdOffCurve);
+
+    if (Geoms[geoIdOffCurve].type != OffsetCurve) {
+        throw Base::TypeError("Sketch::addOffsetConstraint(): second curve must be an offsetcurve");
+    }
+
+    Geoms[geoIdOffCurve].basisId = geoIdBasis;
+
+    GCS::Curve* cBasis = getGCSCurveByGeoId(geoIdBasis);
+    GCS::OffsetCurve* cOffset = &OffsetCurves[Geoms[geoIdOffCurve].index];
+    if (!cBasis) {
+        throw Base::ValueError("addOffsetConstraint: getGCSCurveByGeoId returned NULL for basis!\n");
+    }
+    if (!cOffset) {
+        throw Base::ValueError("addOffsetConstraint: getGCSCurveByGeoId returned NULL for offset!\n");
+    }
+
+    // TODO: Check somewhere that an additional offset constraint does not exist on the same curve
+    if (cOffset->basis != nullptr && cOffset->basis != cBasis) {
+        throw Base::ValueError("addOffsetConstraint: this offset curve already has a different basis");
+    }
+
+    cOffset->basis = cBasis;
+
+    int tag = ++ConstraintsCounter;
+    GCSsys.addConstraintOffset(*cOffset, value, tag, driving);
+    return ConstraintsCounter;
+}
 
 int Sketch::addRadiusConstraint(int geoId, double* value, bool driving)
 {
@@ -4533,6 +4628,9 @@ void Sketch::updateGeometry(const GeoDef& it)
     else if (it.type == BSpline) {
         updateBSpline(it);
     }
+    else if (it.type == OffsetCurve) {
+        updateOffsetCurve(it);
+    }
 }
 
 void Sketch::updatePoint(const GeoDef& def)
@@ -4705,6 +4803,17 @@ void Sketch::updateBSpline(const GeoDef& def)
     }
 
     bsp->setKnots(knots,mult);*/
+}
+
+void Sketch::updateOffsetCurve(const GeoDef& def)
+{
+    auto* offc = static_cast<GeomOffsetCurve*>(def.geo);
+
+    // Find basis and update
+    // TODO: Basis can be stored in Geoms
+    // FIXME: It is assumed that basis curve is already updated.
+    auto* basis = static_cast<GeomCurve*>(Geoms[def.basisId].geo);
+    offc->setBasis(basis);
 }
 
 bool Sketch::updateNonDrivingConstraints()
@@ -4955,9 +5064,8 @@ int Sketch::initMove(const std::vector<GeoElementId>& geoEltIds, bool fine)
 
     MoveParameters.clear();
 
-    // We need to reserve enough size in the vec or the dynamic resizing
-    // (emplace_back in the for loop below) will trigger reallocation.
-    // Which will corrupt pointers we're storing.
+    // We need to reserve enough size in the vec or the dynamic resizing (emplace_back in the for
+    // loop below) will trigger reallocation. Which will corrupt pointers we're storing.
     size_t reserveSize = 0;
     for (auto& pair : geoEltIds) {
         int geoId = checkGeoId(pair.GeoId);
