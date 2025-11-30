@@ -24,6 +24,7 @@
 import FreeCAD
 import Path
 import glob
+import json
 import os
 import pathlib
 from collections import defaultdict
@@ -376,3 +377,70 @@ def setPreferencesAdvanced(ocl, warnSpeeds, warnRapids, warnModes, warnOCL, warn
     preferences().SetBool(WarningSuppressSelectionMode, warnModes)
     preferences().SetBool(WarningSuppressOpenCamLib, warnOCL)
     preferences().SetBool(WarningSuppressVelocity, warnVelocity)
+
+
+def getAvailableMachines() -> list[str]:
+    """Get list of available machines from the asset directory.
+
+    Scans the Machine subdirectory of the asset path for .fcm files
+    and extracts machine names. Returns ["<any>"] plus discovered machine names.
+
+    Returns:
+        list: List of machine names starting with "<any>"
+    """
+    machines = ["<any>"]
+    try:
+        asset_base = getAssetPath() / "Machine"
+        if asset_base.exists():
+            for p in sorted(asset_base.glob("*.fcm")):
+                name = p.stem
+                try:
+                    text = p.read_text(encoding="utf-8")
+                    data = json.loads(text)
+                    # Try to find display name inside JSON
+                    display = None
+                    if isinstance(data, dict):
+                        display = data.get("machine", {}).get("name") or data.get("name")
+                    if display:
+                        name = display
+                except Exception:
+                    # fallback to filename stem
+                    pass
+                machines.append(name)
+    except Exception:
+        # Ignore errors when scanning machine directory; return machines found so far
+        pass
+    return machines
+
+
+def getAvailableMachineFiles() -> list[tuple[str, pathlib.Path]]:
+    """Get list of available machine files from the asset directory.
+
+    Scans the Machine subdirectory of the asset path for .fcm files
+    and returns tuples of (display_name, file_path).
+
+    Returns:
+        list: List of (name, path) tuples for discovered machine files
+    """
+    machines = []
+    try:
+        asset_base = getAssetPath() / "Machine"
+        if asset_base.exists():
+            for p in sorted(asset_base.glob("*.fcm")):
+                name = p.stem
+                try:
+                    text = p.read_text(encoding="utf-8")
+                    data = json.loads(text)
+                    # Try to find display name inside JSON
+                    display = None
+                    if isinstance(data, dict):
+                        display = data.get("machine", {}).get("name") or data.get("name")
+                    if display:
+                        name = display
+                except Exception:
+                    # fallback to filename stem
+                    pass
+                machines.append((name, p))
+    except Exception:
+        pass
+    return machines
