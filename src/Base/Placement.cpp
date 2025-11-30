@@ -22,7 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <fmt/format.h>
+#include <format>
 
 #include "Placement.h"
 #include "Matrix.h"
@@ -222,7 +222,7 @@ std::string Placement::toString() const
     rot.getRawValue(axis, angle);
 
     // clang-format off
-    return fmt::format("position ({:.1f}, {:.1f}, {:.1f}), axis ({:.1f}, {:.1f}, {:.1f}), angle {:.1f}\n",
+    return std::format("position ({:.1f}, {:.1f}, {:.1f}), axis ({:.1f}, {:.1f}, {:.1f}), angle {:.1f}\n",
                        pos.x, pos.y, pos.z, axis.x, axis.y, axis.z, angle);
     // clang-format on
 }

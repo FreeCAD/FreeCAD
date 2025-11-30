@@ -7,6 +7,7 @@
 
 
 #include <cmath>
+#include <format>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
@@ -2433,10 +2434,9 @@ bool CDxfRead::SkipBlockContents()
 }
 
 template<typename... args>
-void CDxfRead::UnsupportedFeature(const char* format, args&&... argValuess)
+void CDxfRead::UnsupportedFeature(const char* format, args&&... argValues)
 {
-    // NOLINTNEXTLINE(runtime/printf)
-    std::string formattedMessage = fmt::sprintf(format, std::forward<args>(argValuess)...);
+    std::string formattedMessage = std::vformat(format, std::make_format_args(argValues...));
     m_stats.unsupportedFeatures[formattedMessage].emplace_back(
         m_current_entity_line_number,
         m_current_entity_handle
