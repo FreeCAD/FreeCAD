@@ -32,7 +32,7 @@ class Command(Persistence):
         """returns a copy of this command transformed by the given placement"""
         ...
 
-    def addAnnotations(self, annotations) -> "Command":
+    def addAnnotations(self, annotations, /) -> "Command":
         """addAnnotations(annotations): adds annotations from dictionary or string and returns self for chaining"""
         ...
     Name: str
