@@ -141,12 +141,12 @@
       <item row="5" column="0">
        <widget class="QLabel" name="label_6">
         <property name="text">
-         <string>Extra offset</string>
+         <string>Stock to leave (outer radial)</string>
         </property>
        </widget>
       </item>
       <item row="5" column="1">
-       <widget class="Gui::InputField" name="extraOffset">
+       <widget class="Gui::InputField" name="RadialStockToLeaveOuter">
         <property name="unit" stdset="0">
          <string notr="true"/>
         </property>
