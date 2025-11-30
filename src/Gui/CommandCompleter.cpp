@@ -141,7 +141,9 @@ public:
                 return title;
             }
             case Qt::ToolTipRole:
-                return Action::commandToolTip(info.cmd);
+                // return just the tooltip text without formatting for the description line
+                // (richFormat = false)
+                return Action::commandToolTip(info.cmd, false);
 
             case Qt::DecorationRole:
                 if (!info.iconChecked) {

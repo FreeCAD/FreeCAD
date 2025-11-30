@@ -26,6 +26,8 @@
 #include <QApplication>
 #include <QGuiApplication>
 #include <QKeyEvent>
+#include <QPainter>
+#include <QTextDocument>
 #include <QTimer>
 #include <QVBoxLayout>
 #include <QWindow>
@@ -39,6 +41,116 @@
 #include "MainWindow.h"
 
 using namespace Gui;
+
+////////////////////// CommandItemDelegate implementation //////////////////////
+CommandItemDelegate::CommandItemDelegate(QObject* parent)
+    : QStyledItemDelegate(parent)
+{}
+
+void CommandItemDelegate::paint(
+    QPainter* painter,
+    const QStyleOptionViewItem& option,
+    const QModelIndex& index
+) const
+{
+    if (!index.isValid()) {
+        QStyledItemDelegate::paint(painter, option, index);
+        return;
+    }
+
+    painter->save();
+
+    // draw bg and selection
+    QStyleOptionViewItem opt = option;
+    initStyleOption(&opt, index);
+    option.widget->style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &opt, painter, option.widget);
+
+    QString title = index.data(Qt::DisplayRole).toString();
+    QString tooltip = index.data(Qt::ToolTipRole).toString();
+    QIcon icon = index.data(Qt::DecorationRole).value<QIcon>();
+
+    QRect rect = option.rect;
+    constexpr int iconSize = 24;
+    constexpr int margin = 8;
+    constexpr int spacing = 8;
+
+    // check if item is enabled (for graying out)
+    bool isEnabled = (index.flags() & Qt::ItemIsEnabled);
+
+    // draw icon
+    QRect iconRect = rect;
+    iconRect.setLeft(rect.left() + margin);
+    iconRect.setTop(rect.top() + ((rect.height() - iconSize) / 2));
+    iconRect.setSize(QSize(iconSize, iconSize));
+
+    if (!icon.isNull()) {
+        QIcon::Mode mode = isEnabled ? QIcon::Normal : QIcon::Disabled;
+        icon.paint(painter, iconRect, Qt::AlignCenter, mode);
+    }
+
+    // adjust rect for text (after icon)
+    QRect textRect = rect;
+    textRect.setLeft(iconRect.right() + spacing);
+    textRect.setRight(rect.right() - margin);
+    textRect.adjust(0, 4, 0, -4);
+
+    // draw title
+    QFont titleFont = option.font;
+    painter->setFont(titleFont);
+
+    QColor textColor = option.palette.color(
+        isEnabled ? QPalette::Normal : QPalette::Disabled,
+        option.state & QStyle::State_Selected ? QPalette::HighlightedText : QPalette::Text
+    );
+    painter->setPen(textColor);
+
+    QRect titleRect = textRect;
+    if (!tooltip.isEmpty()) {
+        titleRect.setHeight(textRect.height() / 2);
+    }
+
+    painter->drawText(titleRect, Qt::AlignLeft | Qt::AlignVCenter, title);
+
+    // draw tooltip/description and description if it is avaialble
+    if (!tooltip.isEmpty()) {
+        QFont tooltipFont = option.font;
+        tooltipFont.setPointSize(qMax(tooltipFont.pointSize() - 1, 8));
+        painter->setFont(tooltipFont);
+
+        QColor tooltipColor = textColor;
+        // make the tooltip a bit transparent
+        tooltipColor.setAlpha(180);
+        painter->setPen(tooltipColor);
+
+        QRect tooltipRect = textRect;
+        tooltipRect.setTop(titleRect.bottom());
+
+        // strip HTML tags from tooltip
+        QTextDocument doc;
+        doc.setHtml(tooltip);
+        QString plainText = doc.toPlainText();
+
+        // elide if desc is too long
+        QFontMetrics fm(tooltipFont);
+        QString elidedTooltip = fm.elidedText(plainText, Qt::ElideRight, tooltipRect.width());
+
+        painter->drawText(tooltipRect, Qt::AlignLeft | Qt::AlignVCenter, elidedTooltip);
+    }
+
+    painter->restore();
+}
+
+QSize CommandItemDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const
+{
+    const QString tooltip = index.data(Qt::ToolTipRole).toString();
+
+    // if there's a tooltip, make the item taller
+    const double height = option.fontMetrics.height() * (tooltip.isEmpty() ? 1.5 : 2.8);
+
+    return {option.rect.width(), static_cast<int>(height)};
+}
+
+////////////////////// CommandPalette implementation //////////////////////
 
 CommandPalette::CommandPalette(QWidget* parent)
     : QDialog(parent)
@@ -86,6 +198,9 @@ void CommandPalette::setupUi()
     commandListView->setMaximumHeight(600);
     commandListView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     commandListView->setSelectionMode(QAbstractItemView::SingleSelection);
+
+    // set custom delegate to show command name and description
+    commandListView->setItemDelegate(new CommandItemDelegate(this));
 
     mainLayout->addWidget(searchLineEdit);
     mainLayout->addWidget(commandListView);
