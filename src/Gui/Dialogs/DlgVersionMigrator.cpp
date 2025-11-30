@@ -40,6 +40,8 @@
 #include <cstdlib>
 
 #include "DlgVersionMigrator.h"
+#include "SplitButton.h"
+
 #include "ui_DlgVersionMigrator.h"
 
 #include "../MainWindow.h"
@@ -152,19 +154,22 @@ DlgVersionMigrator::DlgVersionMigrator(MainWindow* mw)
 #endif
     ui->sizeLabel->setText(calculatingSizeString);
 
-    connect(ui->copyButton, &QPushButton::clicked, this, &DlgVersionMigrator::migrate);
+    ui->copyButton->mainButton()->setDefault(true);
+    ui->copyButton->mainButton()->setAutoDefault(true);
+
+    ui->copyButton->mainButton()->setText(tr("Copy Configuration (Recommended)"));
+
+    connect(ui->copyButton, &SplitButton::defaultClicked, this, &DlgVersionMigrator::migrate);
     connect(ui->helpButton, &QPushButton::clicked, this, &DlgVersionMigrator::help);
 
     // Set up the menu actions for the two hidden options
-    auto* menu = new QMenu(ui->menuButton);
+    connect(ui->copyButton->mainButton(), &QPushButton::clicked, this, &DlgVersionMigrator::migrate);
+
+    auto* menu = ui->copyButton->menu();
+
     QAction* share = menu->addAction(tr("Share configuration with previous version"));
     QAction* reset = menu->addAction(tr("Use a new default configuration"));
-    ui->menuButton->setMenu(menu);
-    ui->menuButton->setPopupMode(QToolButton::InstantPopup);
-    ui->menuButton->setStyleSheet(
-        QStringLiteral("QToolButton::menu-indicator { image: none; width: 0px; }")
-    );
-    ui->menuButton->setProperty("flat", true);
+
     connect(share, &QAction::triggered, this, &DlgVersionMigrator::share);
     connect(reset, &QAction::triggered, this, &DlgVersionMigrator::freshStart);
 }
