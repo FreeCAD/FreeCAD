@@ -245,7 +245,7 @@ def defaultFilePath():
 def filePath():
     path = defaultFilePath()
     if not path:
-        path = getAssetPath()
+        path = str(getAssetPath())
     return path
 
 
