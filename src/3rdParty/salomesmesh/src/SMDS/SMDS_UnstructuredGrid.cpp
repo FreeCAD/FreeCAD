@@ -193,8 +193,8 @@ void SMDS_UnstructuredGrid::compactGrid(std::vector<int>& idNodesOldToNew, int n
 
   vtkCellArray *newConnectivity = vtkCellArray::New();
   newConnectivity->Initialize();
-  int oldCellDataSize = this->Connectivity->GetData()->GetSize();
-  newConnectivity->Allocate(oldCellDataSize);
+  int oldCellDataSize = this->GetCells()->GetConnectivityArray()->GetSize();
+  newConnectivity->AllocateExact(oldCellDataSize, oldCellDataSize);
   MESSAGE("oldCellSize="<< oldCellSize << " oldCellDataSize=" << oldCellDataSize);
 
   vtkUnsignedCharArray *newTypes = vtkUnsignedCharArray::New();
@@ -410,7 +410,7 @@ void SMDS_UnstructuredGrid::copyBloc(vtkUnsignedCharArray *newTypes,
       vtkIdType oldLoc = ((vtkIdTypeArray *)(this->Connectivity->GetOffsetsArray()))->GetValue( j ) + j;
       vtkIdType nbpts;
       vtkIdTypePtr oldPtsCell = 0;
-      this->Connectivity->GetCell(oldLoc, nbpts, oldPtsCell);
+      this->Connectivity->GetCellAtId(oldLoc, nbpts, oldPtsCell);
       assert(nbpts < NBMAXNODESINCELL);
       //MESSAGE(j << " " << alreadyCopied << " " << (int)this->GetCellType(j) << " " << oldLoc << " " << nbpts );
       for (int l = 0; l < nbpts; l++)
@@ -420,7 +420,8 @@ void SMDS_UnstructuredGrid::copyBloc(vtkUnsignedCharArray *newTypes,
           //MESSAGE("   " << oldval << " " << pointsCell[l]);
         }
       /*int newcnt = */newConnectivity->InsertNextCell(nbpts, pointsCell);
-      int newLoc = newConnectivity->GetInsertLocation(nbpts);
+      int newLoc = this->GetCells()->GetOffsetsArray()->GetNumberOfValues() - 1
+        + this->GetCells()->GetConnectivityArray()->GetNumberOfValues() - nbpts - 1;
       //MESSAGE(newcnt << " " << newLoc);
       newLocations->SetValue(alreadyCopied, newLoc);
       alreadyCopied++;
