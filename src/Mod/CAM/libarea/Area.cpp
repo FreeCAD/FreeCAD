@@ -629,7 +629,14 @@ void CArea::MakePocketToolpath(std::list<CCurve>& curve_list, const CAreaPocketP
 
     if (params.mode == ZigZagPocketMode || params.mode == ZigZagThenSingleOffsetPocketMode) {
         curve_list_for_zigs = &curve_list;
-        zigzag(a_offset);
+        if (params.mode == ZigZagThenSingleOffsetPocketMode && params.extra_offsetzz != 0) {
+            CArea a_offset_zz = a_offset;
+            a_offset_zz.Offset(params.extra_offsetzz);
+            zigzag(a_offset_zz);
+        }
+        else {
+            zigzag(a_offset);
+        }
     }
     else if (params.mode == SpiralPocketMode) {
         std::list<CArea> m_areas;
@@ -660,7 +667,7 @@ void CArea::MakePocketToolpath(std::list<CCurve>& curve_list, const CAreaPocketP
             double dmin = Point::tolerance;
             for (auto it = a_offset.m_curves.begin(); it != a_offset.m_curves.end(); it++) {
                 const double dist = it->NearestPoint(start).dist(start);
-                if (dist < dmin) {
+                if (dist < dmin + params.extra_offsetzz) {
                     dmin = dist;
                     curve_itmin = it;
                 }
@@ -668,7 +675,7 @@ void CArea::MakePocketToolpath(std::list<CCurve>& curve_list, const CAreaPocketP
 
             // if the start point is on that curve (within Point::tolerance), do the profile
             // starting on that curve
-            if (dmin < Point::tolerance) {
+            if (dmin < Point::tolerance + params.extra_offsetzz) {
                 // split the curve into two parts -- starting with this point, and ending with this
                 // point
                 CCurve startCurve;

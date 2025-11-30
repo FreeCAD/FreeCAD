@@ -103,6 +103,8 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         pass
 
     def opExecute(self, obj):
+        extraOffsetZigZagMode = 0 if obj.ClearingPattern == "ZigZagOffset" else 2
+        obj.setEditorMode("ExtraOffsetZigZag", extraOffsetZigZagMode)
         if len(obj.Base) == 0:
             return
         super().opExecute(obj)
@@ -137,6 +139,15 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             QT_TRANSLATE_NOOP(
                 "App::Property",
                 "Extra offset to apply to the operation. Direction is operation dependent.",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyDistance",
+            "ExtraOffsetZigZag",
+            "Pocket",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Extra offset to apply to the ZigZag path with pattern ZigZagOffset.",
             ),
         )
         obj.addProperty(
@@ -222,8 +233,9 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         params["PocketStepover"] = (self.radius * 2) * (float(obj.StepOver) / 100)
         extraOffset = obj.ExtraOffset.Value
         if self.pocketInvertExtraOffset():
-            extraOffset = 0 - extraOffset
+            extraOffset = -extraOffset
         params["PocketExtraOffset"] = extraOffset
+        params["PocketExtraOffsetzz"] = obj.ExtraOffsetZigZag.Value
         params["ToolRadius"] = self.radius
         params["PocketLastStepover"] = obj.PocketLastStepOver
 
@@ -265,6 +277,16 @@ class ObjectPocket(PathAreaOp.ObjectOp):
                 QT_TRANSLATE_NOOP(
                     "App::Property",
                     "Skips machining regions that have already been cleared by previous operations.",
+                ),
+            )
+        if not hasattr(obj, "ExtraOffsetZigZag"):
+            obj.addProperty(
+                "App::PropertyDistance",
+                "ExtraOffsetZigZag",
+                "Pocket",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Extra offset to apply to the ZigZag path with pattern ZigZagOffset.",
                 ),
             )
 
