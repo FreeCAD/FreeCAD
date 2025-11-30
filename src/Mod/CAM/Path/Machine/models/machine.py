@@ -101,7 +101,7 @@ def create_default_machine_data() -> Dict[str, Any]:
             "manufacturer": "",
             "description": "",
             "units": "metric",
-            "type": "custom"
+            "type": "custom",
         },
         "post": {
             "output_unit": "metric",

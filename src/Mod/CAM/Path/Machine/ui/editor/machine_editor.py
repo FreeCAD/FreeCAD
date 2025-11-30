@@ -52,7 +52,7 @@ class MachineEditorDialog(QtGui.QDialog):
         },
         "xyyz": {
             "name": translate("CAM_MachineEditor", "3-Axis Mill (XYYZ)"),
-            "linear": ["X", "Y1","Y2", "Z"],
+            "linear": ["X", "Y1", "Y2", "Z"],
             "rotary": [],
         },
         "xyza": {
