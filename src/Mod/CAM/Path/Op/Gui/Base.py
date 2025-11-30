@@ -912,6 +912,10 @@ class TaskPanelHeightsPage(TaskPanelPage):
         # members initialized later
         self.clearanceHeight = None
         self.safeHeight = None
+        self.startDepth = None
+        self.finalDepth = None
+        self.finishDepth = None
+        self.stepDown = None
         self.panelTitle = "Heights"
         self.OpIcon = ":/icons/CAM_Heights.svg"
         self.setIcon(self.OpIcon)
@@ -924,62 +928,6 @@ class TaskPanelHeightsPage(TaskPanelPage):
         self.clearanceHeight = PathGuiUtil.QuantitySpinBox(
             self.form.clearanceHeight, obj, "ClearanceHeight"
         )
-
-    def getTitle(self, obj):
-        return translate("PathOp", "Heights")
-
-    def getFields(self, obj):
-        self.safeHeight.updateProperty()
-        self.clearanceHeight.updateProperty()
-
-    def setFields(self, obj):
-        self.safeHeight.updateWidget()
-        self.clearanceHeight.updateWidget()
-
-    def getSignalsForUpdate(self, obj):
-        signals = []
-        signals.append(self.form.safeHeight.editingFinished)
-        signals.append(self.form.clearanceHeight.editingFinished)
-        return signals
-
-    def pageUpdateData(self, obj, prop):
-        if prop in ["SafeHeight", "ClearanceHeight"]:
-            self.setFields(obj)
-
-
-class TaskPanelDepthsPage(TaskPanelPage):
-    """Page controller for depths."""
-
-    def __init__(self, obj, features):
-        super(TaskPanelDepthsPage, self).__init__(obj, features)
-
-        # members initialized later
-        self.startDepth = None
-        self.finalDepth = None
-        self.finishDepth = None
-        self.stepDown = None
-        self.panelTitle = "Depths"
-        self.OpIcon = ":/icons/CAM_Depths.svg"
-        self.setIcon(self.OpIcon)
-
-    def getForm(self):
-        return FreeCADGui.PySideUic.loadUi(":/panels/PageDepthsEdit.ui")
-
-    def haveStartDepth(self):
-        return PathOp.FeatureDepths & self.features
-
-    def haveFinalDepth(self):
-        return (
-            PathOp.FeatureDepths & self.features and not PathOp.FeatureNoFinalDepth & self.features
-        )
-
-    def haveFinishDepth(self):
-        return PathOp.FeatureDepths & self.features and PathOp.FeatureFinishDepth & self.features
-
-    def haveStepDown(self):
-        return PathOp.FeatureStepDown & self.features
-
-    def initPage(self, obj):
 
         if self.haveStartDepth():
             self.startDepth = PathGuiUtil.QuantitySpinBox(self.form.startDepth, obj, "StartDepth")
@@ -1019,9 +967,11 @@ class TaskPanelDepthsPage(TaskPanelPage):
             self.form.finishDepthLabel.hide()
 
     def getTitle(self, obj):
-        return translate("PathOp", "Depths")
+        return translate("PathOp", "Heights")
 
     def getFields(self, obj):
+        self.safeHeight.updateProperty()
+        self.clearanceHeight.updateProperty()
         if self.haveStartDepth():
             self.startDepth.updateProperty()
         if self.haveFinalDepth():
@@ -1032,6 +982,8 @@ class TaskPanelDepthsPage(TaskPanelPage):
             self.finishDepth.updateProperty()
 
     def setFields(self, obj):
+        self.safeHeight.updateWidget()
+        self.clearanceHeight.updateWidget()
         if self.haveStartDepth():
             self.startDepth.updateWidget()
         if self.haveFinalDepth():
@@ -1044,6 +996,8 @@ class TaskPanelDepthsPage(TaskPanelPage):
 
     def getSignalsForUpdate(self, obj):
         signals = []
+        signals.append(self.form.safeHeight.editingFinished)
+        signals.append(self.form.clearanceHeight.editingFinished)
         if self.haveStartDepth():
             signals.append(self.form.startDepth.editingFinished)
         if self.haveFinalDepth():
@@ -1054,6 +1008,31 @@ class TaskPanelDepthsPage(TaskPanelPage):
             signals.append(self.form.finishDepth.editingFinished)
         return signals
 
+    def pageUpdateData(self, obj, prop):
+        if prop in [
+            "SafeHeight",
+            "ClearanceHeight",
+            "StartDepth",
+            "FinalDepth",
+            "StepDown",
+            "FinishDepth",
+        ]:
+            self.setFields(obj)
+
+    def haveStartDepth(self):
+        return PathOp.FeatureDepths & self.features
+
+    def haveFinalDepth(self):
+        return (
+            PathOp.FeatureDepths & self.features and not PathOp.FeatureNoFinalDepth & self.features
+        )
+
+    def haveFinishDepth(self):
+        return PathOp.FeatureDepths & self.features and PathOp.FeatureFinishDepth & self.features
+
+    def haveStepDown(self):
+        return PathOp.FeatureStepDown & self.features
+
     def registerSignalHandlers(self, obj):
         if self.haveStartDepth():
             self.form.startDepthSet.clicked.connect(
@@ -1063,10 +1042,6 @@ class TaskPanelDepthsPage(TaskPanelPage):
             self.form.finalDepthSet.clicked.connect(
                 lambda: self.depthSet(obj, self.finalDepth, "FinalDepth")
             )
-
-    def pageUpdateData(self, obj, prop):
-        if prop in ["StartDepth", "FinalDepth", "StepDown", "FinishDepth"]:
-            self.setFields(obj)
 
     def depthSet(self, obj, spinbox, prop):
         z = self.selectionZLevel(FreeCADGui.Selection.getSelectionEx())
@@ -1100,6 +1075,10 @@ class TaskPanelDepthsPage(TaskPanelPage):
         else:
             self.form.startDepthSet.setEnabled(False)
             self.form.finalDepthSet.setEnabled(False)
+
+
+# class TaskPanelDepthsPage(TaskPanelPage):
+#     """Page controller for depths."""
 
 
 class TaskPanelDiametersPage(TaskPanelPage):
@@ -1186,11 +1165,11 @@ class TaskPanel(object):
             else:
                 self.featurePages.append(TaskPanelBaseLocationPage(obj, features))
 
-        if PathOp.FeatureDepths & features or PathOp.FeatureStepDown & features:
-            if hasattr(opPage, "taskPanelDepthsPage"):
-                self.featurePages.append(opPage.taskPanelDepthsPage(obj, features))
-            else:
-                self.featurePages.append(TaskPanelDepthsPage(obj, features))
+        # if PathOp.FeatureDepths & features or PathOp.FeatureStepDown & features:
+        #     if hasattr(opPage, "taskPanelDepthsPage"):
+        #         self.featurePages.append(opPage.taskPanelDepthsPage(obj, features))
+        #     else:
+        #         self.featurePages.append(TaskPanelDepthsPage(obj, features))
 
         if PathOp.FeatureHeights & features:
             if hasattr(opPage, "taskPanelHeightsPage"):
