@@ -54,7 +54,7 @@ public:
     void setupContextMenu(QMenu*, QObject*, const char*) override;
 
     /// signals if the transformation contains errors
-    boost::signals2::signal<void(QString msg)> signalDiagnosis;
+    fastsignals::signal<void(QString msg)> signalDiagnosis;
 
     // Name of menu dialog
     QString menuName;

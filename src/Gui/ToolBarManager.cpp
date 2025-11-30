@@ -503,7 +503,8 @@ void ToolBarManager::setupConnection()
                     timer.start(100);
                 }
             }
-        }
+        },
+        fastsignals::advanced_tag()
     );
 }
 
