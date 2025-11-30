@@ -75,15 +75,14 @@ class DressupPathBoundary(object):
         )
         obj.Inside = True
         obj.addProperty(
-            "App::PropertyBool",
-            "KeepToolDown",
+            "App::PropertyLength",
+            "RetractThreshold",
             "Boundary",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Keep tool down.",
+                "Set distance which will attempts to avoid unnecessary retractions.",
             ),
         )
-        obj.KeepToolDown = False
 
         self.obj = obj
         self.safeHeight = None
@@ -101,16 +100,22 @@ class DressupPathBoundary(object):
 
     def onDocumentRestored(self, obj):
         self.obj = obj
-        if not hasattr(obj, "KeepToolDown"):
+        if not hasattr(obj, "RetractThreshold"):
             obj.addProperty(
-                "App::PropertyBool",
-                "KeepToolDown",
+                "App::PropertyLength",
+                "RetractThreshold",
                 "Boundary",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Keep tool down.",
+                    "Set distance which will attempts to avoid unnecessary retractions.",
                 ),
             )
+        if hasattr(obj, "KeepToolDown"):
+            if obj.KeepToolDown:
+                baseOp = PathDressup.baseOp(obj.Base)
+                expr = f"{baseOp.Name}.ToolController.Tool.Diameter.Value"
+                obj.setExpression("RetractThreshold", expr)
+            obj.removeProperty("KeepToolDown")
 
     def onDelete(self, obj, args):
         if obj.Base:
@@ -126,7 +131,7 @@ class DressupPathBoundary(object):
         return True
 
     def execute(self, obj):
-        pb = PathBoundary(obj.Base, obj.Stock.Shape, obj.Inside, obj.KeepToolDown)
+        pb = PathBoundary(obj.Base, obj.Stock.Shape, obj.Inside, obj.RetractThreshold)
         obj.Path = pb.execute()
 
 
@@ -140,7 +145,7 @@ class PathBoundary:
     the provided boundary shape.
     """
 
-    def __init__(self, baseOp, boundaryShape, inside=True, keepToolDown=False):
+    def __init__(self, baseOp, boundaryShape, inside=True, retractThreshold=0):
         self.baseOp = baseOp
         self.boundary = boundaryShape
         self.inside = inside
@@ -148,17 +153,14 @@ class PathBoundary:
         self.clearanceHeight = None
         self.strG0ZsafeHeight = None
         self.strG0ZclearanceHeight = None
-        self.keepToolDown = keepToolDown
+        self.retractThreshold = retractThreshold
 
-    def boundaryCommands(
-        self, begin, end, verticalFeed, horizFeed=None, keepToolDown=False, isStartMovements=False
-    ):
+    def boundaryCommands(self, begin, end, vertFeed, horizFeed=None, isStart=False):
         Path.Log.track(_vstr(begin), _vstr(end))
         if end and Path.Geom.pointsCoincide(begin, end):
             return []
         cmds = []
-
-        if isStartMovements or not keepToolDown:
+        if isStart or not (end and begin.distanceToPoint(end) < self.retractThreshold):
             if begin.z < self.safeHeight:
                 cmds.append(self.strG0ZsafeHeight)
             if begin.z < self.clearanceHeight:
@@ -168,13 +170,13 @@ class PathBoundary:
                 if end.z < self.clearanceHeight:
                     cmds.append(Path.Command("G0", {"Z": max(self.safeHeight, end.z)}))
                 if end.z < self.safeHeight:
-                    cmds.append(Path.Command("G1", {"Z": end.z, "F": verticalFeed}))
+                    cmds.append(Path.Command("G1", {"Z": end.z, "F": vertFeed}))
         else:
             if end:
                 if horizFeed and Path.Geom.isRoughly(begin.z, end.z, 0.001):
                     speed = horizFeed
                 else:
-                    verticalFeed
+                    speed = vertFeed
                 cmds.append(Path.Command("G1", {"X": end.x, "Y": end.y, "Z": end.z, "F": speed}))
 
         return cmds
@@ -207,7 +209,7 @@ class PathBoundary:
         bogusY = True
         commands = [cmd]
         lastExit = None
-        isStartMovements = True
+        isStart = True
         for cmd in path.Commands[1:]:
             if cmd.Name in Path.Geom.CmdMoveAll:
                 if bogusX:
@@ -220,7 +222,7 @@ class PathBoundary:
                     outside = edge.cut(self.boundary).Edges
                     if 1 == len(inside) and 0 == len(outside):
                         commands.append(cmd)
-                if edge and not cmd.Name in Path.Geom.CmdMoveDrill:
+                if edge and cmd.Name not in Path.Geom.CmdMoveDrill:
                     inside = edge.common(self.boundary).Edges
                     outside = edge.cut(self.boundary).Edges
                     if not self.inside:  # UI "inside boundary" param
@@ -265,15 +267,14 @@ class PathBoundary:
                                     if not (bogusX or bogusY):
                                         commands.extend(
                                             self.boundaryCommands(
-                                                lastExit,
-                                                pos,
-                                                tc.VertFeed.Value,
-                                                tc.HorizFeed.Value,
-                                                self.keepToolDown,
-                                                isStartMovements,
+                                                begin=lastExit,
+                                                end=pos,
+                                                vertFeed=tc.VertFeed.Value,
+                                                horizFeed=tc.HorizFeed.Value,
+                                                isStart=isStart,
                                             )
                                         )
-                                        isStartMovements = False
+                                        isStart = False
                                     lastExit = None
                                 Path.Log.track(e, flip)
                                 if not (
