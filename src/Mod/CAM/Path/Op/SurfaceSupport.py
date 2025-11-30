@@ -2589,8 +2589,12 @@ class OCL_Tool:
             return False
         if hasattr(self.tool, "LengthOffset"):
             self.lengthOffset = float(self.tool.LengthOffset)
+        # Derive flatRadius from diameter and cornerRadius if both are present
         if hasattr(self.tool, "FlatRadius"):
             self.flatRadius = float(self.tool.FlatRadius)
+        if hasattr(self.tool, "CornerRadius") and hasattr(self.tool, "Diameter"):
+            self.cornerRadius = float(self.tool.CornerRadius)
+            self.flatRadius = (self.diameter / 2.0) - self.cornerRadius
         if hasattr(self.tool, "CuttingEdgeHeight"):
             self.cutEdgeHeight = float(self.tool.CuttingEdgeHeight)
         if hasattr(self.tool, "CuttingEdgeAngle"):

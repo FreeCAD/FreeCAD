@@ -39,6 +39,7 @@ from ...assets.asset import Asset
 from ...camassets import cam_assets
 from ...shape import ToolBitShape, ToolBitShapeCustom, ToolBitShapeIcon
 from ..util import to_json, format_value
+from ..migration import ParameterAccessor, migrate_parameters
 
 
 ToolBitView = LazyLoader("Path.Tool.toolbit.ui.view", globals(), "Path.Tool.toolbit.ui.view")
@@ -177,6 +178,14 @@ class ToolBit(Asset, ABC):
         # Get params and attributes.
         params = attrs.get("parameter", {})
         attr = attrs.get("attribute", {})
+
+        # Filter parameters if method exists
+        if (
+            hasattr(tool_bit_shape.__class__, "filter_parameters")
+            and callable(getattr(tool_bit_shape.__class__, "filter_parameters"))
+            and isinstance(params, dict)
+        ):
+            params = tool_bit_shape.__class__.filter_parameters(params)
 
         # Update parameters.
         for param_name, param_value in params.items():
@@ -508,6 +517,20 @@ class ToolBit(Asset, ABC):
             ):
                 Path.Log.debug(f"onDocumentRestored: Attaching ViewProvider for {self.obj.Label}")
                 ToolBitView.ViewProvider(self.obj.ViewObject, "ToolBit")
+
+        # Migrate legacy parameters using unified accessor
+        migrate_parameters(ParameterAccessor(obj))
+
+        # Filter parameters if method exists (removes FlatRadius from obj)
+        filter_func = getattr(self._tool_bit_shape.__class__, "filter_parameters", None)
+        if callable(filter_func):
+            # Only filter if FlatRadius is present
+            if "FlatRadius" in self.obj.PropertiesList:
+                try:
+                    self.obj.removeProperty("FlatRadius")
+                    Path.Log.info(f"Filtered out FlatRadius for {self.obj.Label}")
+                except Exception as e:
+                    Path.Log.error(f"Failed to remove FlatRadius for {self.obj.Label}: {e}")
 
         # Copy properties from the restored object to the ToolBitShape.
         for name, item in self._tool_bit_shape.schema().items():
