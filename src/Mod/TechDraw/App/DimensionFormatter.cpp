@@ -77,7 +77,7 @@ std::string DimensionFormatter::formatValue(const qreal value,
     // won't give more than Global_Decimals precision
     std::string basicString = formatPrefix + asQuantity.getUserString() + formatSuffix;
 
-    if (isMultiValueSchema() && partial == Format::UNALTERED) {
+    if (isMultiValueSchema() || partial == Format::UNALTERED) {
         return basicString;  // Don't even try to use Alt Decimals or hide units
     }
 
