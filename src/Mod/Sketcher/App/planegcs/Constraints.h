@@ -1375,6 +1375,23 @@ public:
     ConstraintType getTypeId() override;
 };
 
+// Restriction
+class ConstraintRestriction: public Constraint
+{
+private:
+    RestrictedCurve _offCurve;
+    double* myParam()
+    {
+        return pvec[0];
+    }
+    void ReconstructGeomPointers();  // writes pointers in pvec to the parameters of _offCurve
+    void errorgrad(double* err, double* grad, double* param) override;
+
+public:
+    ConstraintRestriction(RestrictedCurve& offc, double* offValue);
+    ConstraintType getTypeId() override;
+};
+
 }  // namespace GCS
 
 #endif  // PLANEGCS_CONSTRAINTS_H
