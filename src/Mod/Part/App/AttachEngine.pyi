@@ -1,3 +1,7 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export, constmethod
 from Base.BaseClass import BaseClass
 from Base.Placement import Placement
@@ -46,31 +50,31 @@ class AttachEngine(BaseClass):
     CompleteRefTypeList: Final[list] = []
     """List of all reference shape types recognized by AttachEngine."""
 
-    def getModeInfo(self, mode: str) -> dict:
+    def getModeInfo(self, mode: str, /) -> dict:
         """
         getModeInfo(mode): returns supported reference combinations, user-friendly name, and so on.
         """
         ...
 
-    def getRefTypeOfShape(self, shape: str) -> str:
+    def getRefTypeOfShape(self, shape: str, /) -> str:
         """
         getRefTypeOfShape(shape): returns shape type as interpreted by AttachEngine. Returns a string.
         """
         ...
 
-    def isFittingRefType(self, type_shape: str, type_needed: str) -> bool:
+    def isFittingRefType(self, type_shape: str, type_needed: str, /) -> bool:
         """
         isFittingRefType(type_shape, type_needed): tests if shape type, specified by type_shape (string), fits a type required by attachment mode type_needed (string). e.g. 'Circle' fits a requirement of 'Edge', and 'Curve' doesn't fit if a 'Circle' is required.
         """
         ...
 
-    def downgradeRefType(self, type: str) -> str:
+    def downgradeRefType(self, type: str, /) -> str:
         """
         downgradeRefType(type): returns next more general type. E.g. downgradeType('Circle') yields 'Curve'.
         """
         ...
 
-    def getRefTypeInfo(self, type: str) -> dict:
+    def getRefTypeInfo(self, type: str, /) -> dict:
         """
         getRefTypeInfo(type): returns information (dict) on shape type. Keys:'UserFriendlyName', 'TypeIndex', 'Rank'. Rank is the number of times reftype can be downgraded, before it becomes 'Any'.
         """
@@ -84,7 +88,7 @@ class AttachEngine(BaseClass):
         ...
 
     @constmethod
-    def calculateAttachedPlacement(self, orig_placement: Placement) -> Optional[Placement]:
+    def calculateAttachedPlacement(self, orig_placement: Placement, /) -> Optional[Placement]:
         """
         calculateAttachedPlacement(orig_placement): returns result of attachment, based
         on current Mode, References, etc. AttachmentOffset is included.
@@ -130,13 +134,13 @@ class AttachEngine(BaseClass):
         """
         ...
 
-    def readParametersFromFeature(self, document_object: DocumentObject) -> None:
+    def readParametersFromFeature(self, document_object: DocumentObject, /) -> None:
         """
         readParametersFromFeature(document_object): sets AttachEngine parameters (References, Mode, etc.) by reading out properties of AttachableObject-derived feature.
         """
         ...
 
-    def writeParametersToFeature(self, document_object: DocumentObject) -> None:
+    def writeParametersToFeature(self, document_object: DocumentObject, /) -> None:
         """
         writeParametersToFeature(document_object): updates properties of
         AttachableObject-derived feature with current AttachEngine parameters

@@ -593,7 +593,7 @@ get date suffix according to the specified format</string>
       <item row="1" column="0">
        <widget class="Gui::PrefCheckBox" name="prefPartialLoading">
         <property name="toolTip">
-         <string>Enable partial loading of external linked documents.
+         <string>Disable partial loading of external linked documents.
 Then only referenced objects and their dependencies will be loaded
 when a linked document is auto-opened together with the main document.
 A partially loaded document cannot be edited. Double click the document

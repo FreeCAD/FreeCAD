@@ -32,6 +32,10 @@
 #include <App/Application.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
+#ifdef _MSC_VER
+# include <zipios++/zipios-config.h>
+#endif
+#include <zipios++/zipfile.h>
 
 #include "Thumbnail.h"
 #include "BitmapFactory.h"
@@ -82,17 +86,56 @@ void Thumbnail::Restore(Base::XMLReader& reader)
 
 void Thumbnail::SaveDocFile(Base::Writer& writer) const
 {
+    QImage img;
+    bool created = false;
+
+    // 1. Try to create the thumbnail from the viewer
+    if (this->viewer) {
+        if (this->viewer->thread() != QThread::currentThread()) {
+            qWarning("Cannot create a thumbnail from non-GUI thread");
+        }
+        else {
+            QColor invalid;
+            this->viewer->imageFromFramebuffer(this->size, this->size, 4, invalid, img);
+            created = !img.isNull();
+        }
+    }
+
+    // 2. If creation failed (e.g. no viewer or background thread), try to restore from the existing file
+    if (!created) {
+        QString filename = this->uri.toLocalFile();
+        Base::FileInfo fi(filename.toUtf8().constData());
+        if (fi.exists()) {
+            try {
+                zipios::ZipFile zf(fi.filePath());
+                // getEntry uses default MatchPath=MATCH.
+                zipios::ConstEntryPointer entry = zf.getEntry("thumbnails/Thumbnail.png");
+                if (entry && entry->isValid()) {
+                    // getInputStream returns a pointer that must be deleted
+                    std::istream* is = zf.getInputStream(entry);
+                    if (is) {
+                        if (is->good()) {
+                            writer.Stream() << is->rdbuf();
+                            delete is;
+                            return;
+                        }
+                        delete is;
+                    }
+                }
+            }
+            catch (const std::exception&) {
+                // If the file isn't a zip or is locked, we ignore it and proceed to fallback
+            }
+            catch (...) {
+                // Ignore unknown exceptions
+            }
+        }
+    }
+
+    // If we still have no image and no viewer to generate one, we can do nothing more
     if (!this->viewer) {
         return;
     }
-    QImage img;
-    if (this->viewer->thread() != QThread::currentThread()) {
-        qWarning("Cannot create a thumbnail from non-GUI thread");
-        return;
-    }
-
-    QColor invalid;
-    this->viewer->imageFromFramebuffer(this->size, this->size, 4, invalid, img);
 
     // Get app icon and resize to half size to insert in topbottom position over the current view
     // snapshot

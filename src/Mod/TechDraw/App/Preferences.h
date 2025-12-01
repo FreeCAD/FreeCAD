@@ -169,6 +169,8 @@ public:
     static bool showCenterMarks();
     static bool printCenterMarks();
 
+    static bool fixColorAlphaOnLoad();
+
 };
 
 
