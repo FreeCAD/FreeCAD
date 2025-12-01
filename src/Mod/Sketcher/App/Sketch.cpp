@@ -98,6 +98,7 @@ void Sketch::clear()
     ArcsOfHyperbola.clear();
     ArcsOfParabola.clear();
     BSplines.clear();
+    RestrictedCurves.clear();
     OffsetCurves.clear();
     resolveAfterGeometryUpdated = false;
 
@@ -732,6 +733,11 @@ int Sketch::addGeometry(const Part::Geometry* geo, bool fixed)
         const auto* offc = static_cast<const GeomOffsetCurve*>(geo);
         // create the definition struct for that geom
         return addOffsetCurve(*offc, fixed);
+    }
+    else if (geo->is<GeomRestrictedCurve>()) {  // add a restricted curve
+        const auto* offc = static_cast<const GeomRestrictedCurve*>(geo);
+        // create the definition struct for that geom
+        return addRestrictedCurve(*offc, fixed);
     }
     else {
         throw Base::TypeError("Sketch::addGeometry(): Unknown or unsupported type added to a sketch");
@@ -1825,6 +1831,92 @@ int Sketch::addOffsetCurve(const Part::GeomOffsetCurve& offc, bool fixed)
             std::piecewise_construct,
             std::forward_as_tuple(offsetForGcs),
             std::forward_as_tuple(Geoms.size() - 1, Sketcher::PointPos::none, 0)
+        );
+        param2geoelement.emplace(
+            std::piecewise_construct,
+            std::forward_as_tuple(p1.x),
+            std::forward_as_tuple(Geoms.size() - 1, Sketcher::PointPos::start, 0)
+        );
+        param2geoelement.emplace(
+            std::piecewise_construct,
+            std::forward_as_tuple(p1.y),
+            std::forward_as_tuple(Geoms.size() - 1, Sketcher::PointPos::start, 1)
+        );
+        param2geoelement.emplace(
+            std::piecewise_construct,
+            std::forward_as_tuple(p2.x),
+            std::forward_as_tuple(Geoms.size() - 1, Sketcher::PointPos::end, 0)
+        );
+        param2geoelement.emplace(
+            std::piecewise_construct,
+            std::forward_as_tuple(p2.y),
+            std::forward_as_tuple(Geoms.size() - 1, Sketcher::PointPos::end, 1)
+        );
+    }
+
+    // return the position of the newly added geometry
+    return Geoms.size() - 1;
+}
+
+int Sketch::addRestrictedCurve(const Part::GeomRestrictedCurve& resc, bool fixed)
+{
+    std::vector<double*>& params = fixed ? FixParameters : Parameters;
+
+    // create our own copy
+    auto* rescClone = static_cast<GeomRestrictedCurve*>(resc.clone());
+    // create the definition struct for that geom
+    GeoDef def;
+    def.geo = rescClone;
+    def.type = RestrictedCurve;
+
+    double firstParam = rescClone->getFirstParameter();
+    double lastParam = rescClone->getLastParameter();
+    Base::Vector3d startPnt = rescClone->value(firstParam);
+    Base::Vector3d endPnt = rescClone->value(lastParam);
+
+    GCS::Point p1, p2;
+
+    params.push_back(new double(firstParam));
+    double* firstParamForGcs = params[params.size() - 1];
+    params.push_back(new double(lastParam));
+    double* lastParamForGcs = params[params.size() - 1];
+
+    params.push_back(new double(startPnt.x));
+    params.push_back(new double(startPnt.y));
+    p1.x = params[params.size() - 2];
+    p1.y = params[params.size() - 1];
+
+    params.push_back(new double(endPnt.x));
+    params.push_back(new double(endPnt.y));
+    p2.x = params[params.size() - 2];
+    p2.y = params[params.size() - 1];
+
+    def.startPointId = Points.size();
+    Points.push_back(p1);
+    def.endPointId = Points.size();
+    Points.push_back(p2);
+
+    GCS::RestrictedCurve curveGcs;
+    curveGcs.firstParam = firstParamForGcs;
+    curveGcs.lastParam = firstParamForGcs;
+    curveGcs.start = p1;
+    curveGcs.end = p2;
+    def.index = RestrictedCurves.size();
+    RestrictedCurves.push_back(curveGcs);
+
+    // store complete set
+    Geoms.push_back(def);
+
+    if (!fixed) {
+        param2geoelement.emplace(
+            std::piecewise_construct,
+            std::forward_as_tuple(firstParamForGcs),
+            std::forward_as_tuple(Geoms.size() - 1, Sketcher::PointPos::none, 0)
+        );
+        param2geoelement.emplace(
+            std::piecewise_construct,
+            std::forward_as_tuple(lastParamForGcs),
+            std::forward_as_tuple(Geoms.size() - 1, Sketcher::PointPos::none, 1)
         );
         param2geoelement.emplace(
             std::piecewise_construct,
