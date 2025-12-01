@@ -266,8 +266,20 @@ def export(objectslist, filename, argstring):
 
     for obj in objectslist:
 
+        # to stay compatible with FreeCAD 1.0
+        def activeForOp(obj):
+            # The activeForOp method is available since 2025-05-04 /
+            # commit 1e87d8e6681b755b9757f94b1201e50eb84b28a2
+            if hasattr(PathUtil, "activeForOp"):
+                return PathUtil.activeForOp(obj)
+            if hasattr(obj, "Active"):
+                return obj.Active
+            if hasattr(obj, "Base") and hasattr(obj.Base, "Active"):
+                return obj.Base.Active
+            return True
+
         # Skip inactive operations
-        if not PathUtil.activeForOp(obj):
+        if not activeForOp(obj):
             continue
 
         # do the pre_op
@@ -277,8 +289,26 @@ def export(objectslist, filename, argstring):
         for line in PRE_OPERATION.splitlines(True):
             gcode += linenumber() + line
 
+        # to stay compatible with FreeCAD 1.0
+        def coolantModeForOp(obj):
+            # The coolantModeForOp method is available since
+            # 2025-05-04 / commit
+            # 1e87d8e6681b755b9757f94b1201e50eb84b28a2
+            if hasattr(PathUtil, "coolantModeForOp"):
+                return PathUtil.coolantModeForOp(obj)
+            if (
+                hasattr(obj, "CoolantMode")
+                or hasattr(obj, "Base")
+                and hasattr(obj.Base, "CoolantMode")
+            ):
+                if hasattr(obj, "CoolantMode"):
+                    return obj.CoolantMode
+                else:
+                    return obj.Base.CoolantMode
+            return "None"
+
         # get coolant mode
-        coolantMode = PathUtil.coolantModeForOp(obj)
+        coolantMode = coolantModeForOp(obj)
 
         # turn coolant on if required
         if OUTPUT_COMMENTS:
