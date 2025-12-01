@@ -1964,7 +1964,8 @@ void MainWindow::loadWindowSettings()
     }
 #else
     // TODO: Hotfix to be removed as soon as possible after 1.1.0 Release
-    if (getenv("WAYLAND_DISPLAY") && checkFirstRun()) {
+  if (QGuiApplication::platformName() == QString::fromStdString("wayland") &&
+      checkFirstRun()) {
         const int topLeftXY = 10;
         this->move(topLeftXY, topLeftXY);
     }
