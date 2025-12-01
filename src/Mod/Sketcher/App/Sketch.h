@@ -237,6 +237,8 @@ public:
     int addBSpline(const Part::GeomBSplineCurve& spline, bool fixed = false);
     /// add an offset curve
     int addOffsetCurve(const Part::GeomOffsetCurve& offc, bool fixed = false);
+    /// add a restricted curve
+    int addRestrictedCurve(const Part::GeomRestrictedCurve& offc, bool fixed = false);
     //@}
 
 
@@ -583,7 +585,8 @@ public:
         ArcOfHyperbola = 7,
         ArcOfParabola = 8,
         BSpline = 9,
-        OffsetCurve = 10
+        OffsetCurve = 10,
+        RestrictedCurve = 11
     };
 
 private:
@@ -657,6 +660,7 @@ private:
     std::vector<GCS::ArcOfParabola> ArcsOfParabola;
     std::vector<GCS::BSpline> BSplines;
     std::vector<GCS::OffsetCurve> OffsetCurves;
+    std::vector<GCS::RestrictedCurve> RestrictedCurves;
 
     bool isInitMove;
     bool isFine;
