@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 #include <unordered_map>
 #ifndef FC_DEBUG
 #include <random>
