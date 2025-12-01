@@ -124,12 +124,11 @@ class TaskFillTemplateFields:
 
                 projgrp_view = None
                 for pageObj in obj.Views:
-                    for viewtype in listofviewtypes:
-                        if pageObj.isDerivedFrom(viewtype):
-                            # use the scale from the first DVP or DPG encountered to fill the template's
-                            # Scale editable text.
-                            projgrp_view = pageObj
-                            break
+                    if (hasattr(pageObj, "Scale")):
+                        # use the scale from the first DVP or DPG encountered to fill the template's
+                        # Scale editable text.
+                        projgrp_view = pageObj
+                        break
                     if projgrp_view:
                         break
 
@@ -216,11 +215,8 @@ class TaskFillTemplateFields:
                                     int(projgrp_view.Scale * x)
                                     == projgrp_view.Scale * x
                                 ):
-                                    self.s2.setText(
-                                        str(int(projgrp_view.Scale * x))
-                                        + " : "
-                                        + str(x)
-                                    )
+                                    fracScale = Fraction(projgrp_view.Scale)
+                                    self.s2.setText(str(fracScale.numerator) + " : " + str(fracScale.denominator))
                                     break
                         dialogRow += 1
                     if str(key).lower() in LabelChkLst:
