@@ -114,16 +114,15 @@ App::OriginGroupExtension* ReferenceSelection::getBoundaryOriginGroupExtension()
 {
     const App::DocumentObject* originGroupObject = nullptr;
 
-    auto* body = support ? PartDesign::Body::findBodyOf(support)
-                         : PartDesignGui::getBody(false);
-    if (body) { // Search for Part of the body
+    auto* body = support ? PartDesign::Body::findBodyOf(support) : PartDesignGui::getBody(false);
+    if (body) {  // Search for Part of the body
         originGroupObject = App::OriginGroupExtension::getBoundaryGroupOfObject(body);
     }
-    else if (support) { // if no body search part for support
+    else if (support) {  // if no body search part for support
         originGroupObject = App::OriginGroupExtension::getBoundaryGroupOfObject(support);
     }
-    else { // fallback to active part
-        App::DocumentObject* part=PartDesignGui::getActivePart();
+    else {  // fallback to active part
+        App::DocumentObject* part = PartDesignGui::getActivePart();
         originGroupObject = App::OriginGroupExtension::getBoundaryGroupOfObject(part);
     }
 
@@ -136,8 +135,7 @@ App::OriginGroupExtension* ReferenceSelection::getBoundaryOriginGroupExtension()
 }
 
 
-bool ReferenceSelection::allowOrigin(App::OriginGroupExtension* originGroup,
-                                     App::DocumentObject* pObj) const
+bool ReferenceSelection::allowOrigin(App::OriginGroupExtension* originGroup, App::DocumentObject* pObj) const
 {
     bool fits = false;
     if (type.testFlag(AllowSelection::FACE) && pObj->isDerivedFrom<App::Plane>()) {
@@ -162,8 +160,7 @@ bool ReferenceSelection::allowOrigin(App::OriginGroupExtension* originGroup,
     return false;  // The Plane/Axis doesn't fits our needs
 }
 
-bool ReferenceSelection::allowDatum(App::OriginGroupExtension* originGroup,
-                                    App::DocumentObject* pObj) const
+bool ReferenceSelection::allowDatum(App::OriginGroupExtension* originGroup, App::DocumentObject* pObj) const
 {
     if (!originGroup) {
         return true;

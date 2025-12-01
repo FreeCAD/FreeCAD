@@ -1129,9 +1129,11 @@ std::vector<App::DocumentObject*> AttachEngine::getRefObjects() const
 }
 
 
-Base::Placement AttachEngine::calculateAttachedPlacement(const Base::Placement& origPlacement,
-                                                         Base::Placement *groupPlacement,
-                                                         bool* subChanged)
+Base::Placement AttachEngine::calculateAttachedPlacement(
+    const Base::Placement& origPlacement,
+    Base::Placement* groupPlacement,
+    bool* subChanged
+)
 {
     std::map<int, std::pair<std::string, std::string>> subChanges;
     int i = -1;
@@ -1197,7 +1199,11 @@ Base::Placement AttachEngine::calculateAttachedPlacement(const Base::Placement& 
             return pla;
         }
     }
-    if(objs.size()>0) if(groupPlacement) *groupPlacement= App::GeoFeatureGroupExtension::globalGroupPlacementInBoundary(objs[0]);
+    if (objs.size() > 0) {
+        if (groupPlacement) {
+            *groupPlacement = App::GeoFeatureGroupExtension::globalGroupPlacementInBoundary(objs[0]);
+        }
+    }
     return _calculateAttachedPlacement(objs, subnames, origPlacement);
 }
 

@@ -851,11 +851,11 @@ TopoShape FeatureExtrude::generateSingleExtrusionSide(
         || method == "UpToShape") {
         // Note: This will return an unlimited planar face if support is a datum plane
         TopoShape supportface = getTopoShapeSupportFace();
-        auto objLoc=getLocation();
+        auto objLoc = getLocation();
         auto invObjLoc = objLoc.Inverted();
-        Base::Placement groupPla=App::GeoFeatureGroupExtension::globalGroupPlacementInBoundary(this);
-        TopLoc_Location groupLoc=Part::Tools::fromPlacement(groupPla);
-        auto globalObjLoc=groupLoc*objLoc;
+        Base::Placement groupPla = App::GeoFeatureGroupExtension::globalGroupPlacementInBoundary(this);
+        TopLoc_Location groupLoc = Part::Tools::fromPlacement(groupPla);
+        auto globalObjLoc = groupLoc * objLoc;
         auto invGlobalObjLoc = globalObjLoc.Inverted();
 
         supportface.move(invObjLoc);

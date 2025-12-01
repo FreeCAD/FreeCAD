@@ -1743,16 +1743,20 @@ bool StdCmdPlacement::isActive()
     std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType(
         App::GeoFeature::getClassTypeId()
     );
-    if (sel.empty())
-       return false;
-    for (auto* obj : sel) {
-       if (obj->isFreezed())
+    if (sel.empty()) {
         return false;
-       App::Property* prop = obj->getPropertyByName("Placement");
-       if (!prop)
-          return false;
-       if (prop->testStatus(App::Property::Hidden))
-          return false;
+    }
+    for (auto* obj : sel) {
+        if (obj->isFreezed()) {
+            return false;
+        }
+        App::Property* prop = obj->getPropertyByName("Placement");
+        if (!prop) {
+            return false;
+        }
+        if (prop->testStatus(App::Property::Hidden)) {
+            return false;
+        }
     }
     return true;
 }

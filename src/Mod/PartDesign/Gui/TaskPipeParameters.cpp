@@ -453,7 +453,8 @@ bool TaskPipeParameters::accept()
     App::DocumentObject* auxSpine = pipe->AuxiliarySpine.getValue();
 
     // Determine the “owner boundary” from the active Body, but make Body transparent.
-    const App::DocumentObject* pcActiveGroupObject =App::OriginGroupExtension::getBoundaryGroupOfObject(pcActiveBody);
+    const App::DocumentObject* pcActiveGroupObject
+        = App::OriginGroupExtension::getBoundaryGroupOfObject(pcActiveBody);
     auto pcActiveGroup = pcActiveGroupObject->getExtensionByType<App::OriginGroupExtension>();
 
 
@@ -472,17 +473,23 @@ bool TaskPipeParameters::accept()
         }
     }
 
-    if (spine && !pcActiveBody->hasObject(spine) && pcActiveGroup) if(!pcActiveGroup->hasObject(spine)) {
-        extReference = true;
-    }
-    else if (auxSpine && !pcActiveBody->hasObject(auxSpine) && pcActiveGroup) if(!pcActiveGroup->hasObject(auxSpine)) {
-        extReference = true;
-    }
-    else {
-        for (App::DocumentObject* obj : pipe->Sections.getValues()) {
-            if (!pcActiveBody->hasObject(obj)  && pcActiveGroup) if(!pcActiveGroup->hasObject(obj)) {
+    if (spine && !pcActiveBody->hasObject(spine) && pcActiveGroup) {
+        if (!pcActiveGroup->hasObject(spine)) {
+            extReference = true;
+        }
+        else if (auxSpine && !pcActiveBody->hasObject(auxSpine) && pcActiveGroup) {
+            if (!pcActiveGroup->hasObject(auxSpine)) {
                 extReference = true;
-                break;
+            }
+            else {
+                for (App::DocumentObject* obj : pipe->Sections.getValues()) {
+                    if (!pcActiveBody->hasObject(obj) && pcActiveGroup) {
+                        if (!pcActiveGroup->hasObject(obj)) {
+                            extReference = true;
+                            break;
+                        }
+                    }
+                }
             }
         }
     }
@@ -498,23 +505,31 @@ bool TaskPipeParameters::accept()
         }
 
         if (!dlg.radioXRef->isChecked()) {
-            if (spine && !pcActiveBody->hasObject(spine) && pcActiveGroup) if(!pcActiveGroup->hasObject(spine)) {
-                pipe->Spine.setValue(
-                    PartDesignGui::TaskFeaturePick::makeCopy(spine, "", dlg.radioIndependent->isChecked()),
-                    pipe->Spine.getSubValues()
-                );
-                copies.push_back(pipe->Spine.getValue());
-            }
-            else if (auxSpine && !pcActiveBody->hasObject(auxSpine) && pcActiveGroup) if(!pcActiveGroup->hasObject(auxSpine)) {
-                pipe->AuxiliarySpine.setValue(
-                    PartDesignGui::TaskFeaturePick::makeCopy(
-                        auxSpine,
-                        "",
-                        dlg.radioIndependent->isChecked()
-                    ),
-                    pipe->AuxiliarySpine.getSubValues()
-                );
-                copies.push_back(pipe->AuxiliarySpine.getValue());
+            if (spine && !pcActiveBody->hasObject(spine) && pcActiveGroup) {
+                if (!pcActiveGroup->hasObject(spine)) {
+                    pipe->Spine.setValue(
+                        PartDesignGui::TaskFeaturePick::makeCopy(
+                            spine,
+                            "",
+                            dlg.radioIndependent->isChecked()
+                        ),
+                        pipe->Spine.getSubValues()
+                    );
+                    copies.push_back(pipe->Spine.getValue());
+                }
+                else if (auxSpine && !pcActiveBody->hasObject(auxSpine) && pcActiveGroup) {
+                    if (!pcActiveGroup->hasObject(auxSpine)) {
+                        pipe->AuxiliarySpine.setValue(
+                            PartDesignGui::TaskFeaturePick::makeCopy(
+                                auxSpine,
+                                "",
+                                dlg.radioIndependent->isChecked()
+                            ),
+                            pipe->AuxiliarySpine.getSubValues()
+                        );
+                        copies.push_back(pipe->AuxiliarySpine.getValue());
+                    }
+                }
             }
 
             std::vector<App::PropertyLinkSubList::SubSet> subSets;

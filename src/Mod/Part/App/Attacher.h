@@ -253,9 +253,10 @@ public:  // methods
     virtual AttachEngine* copy() const = 0;
 
     Base::Placement calculateAttachedPlacement(
-        const Base::Placement &origPlacement,
-        Base::Placement *origGroupPlacement=nullptr, 
-        bool *subChanged=0);
+        const Base::Placement& origPlacement,
+        Base::Placement* origGroupPlacement = nullptr,
+        bool* subChanged = 0
+    );
 
     virtual Base::Placement _calculateAttachedPlacement(
         const std::vector<App::DocumentObject*>& objs,

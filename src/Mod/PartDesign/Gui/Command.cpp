@@ -398,30 +398,32 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    App::DocumentObject *topParent = nullptr;
+    App::DocumentObject* topParent = nullptr;
     std::string parentSub;
-    std::set<App::DocumentObject *> valueSet;
-    std::map<App::DocumentObject *, std::vector<std::string> > values;
-    for (auto &sel : Gui::Selection().getCompleteSelection(Gui::ResolveMode::NoResolve)) {
+    std::set<App::DocumentObject*> valueSet;
+    std::map<App::DocumentObject*, std::vector<std::string>> values;
+    for (auto& sel : Gui::Selection().getCompleteSelection(Gui::ResolveMode::NoResolve)) {
         if (!sel.pObject) {
             continue;
         }
-        auto &subs = values[sel.pObject];
+        auto& subs = values[sel.pObject];
         if (sel.SubName && sel.SubName[0]) {
             subs.emplace_back(sel.SubName);
             valueSet.insert(sel.pObject->getSubObject(sel.SubName));
-        } else {
+        }
+        else {
             valueSet.insert(sel.pObject);
         }
     }
 
-    auto checkContainer = [&](App::DocumentObject *container) {
+    auto checkContainer = [&](App::DocumentObject* container) {
         // Check the potential container to add in the newly created binder.
         // We check if the container or any of its parent objects is selected
         // (i.e. for binding), and exclude the container to avoid cyclic
         // reference.
-        if (!container)
+        if (!container) {
             return false;
+        }
         if (valueSet.count(container)) {
             topParent = nullptr;
             parentSub.clear();
@@ -439,26 +441,33 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
     };
 
     std::string FeatName;
-    Gui::MDIView *activeView = Gui::Application::Instance->activeView();
-    PartDesign::Body *pcActiveBody= nullptr;
-    if (activeView)
-        pcActiveBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY, &topParent, &parentSub);
-    if (!checkContainer(pcActiveBody)) pcActiveBody = nullptr;
-    
-    App::Part *pcActivePart = nullptr;
-    if (!pcActiveBody && activeView) {
-        pcActivePart = activeView->getActiveObject<App::Part*>(PARTKEY, &topParent, &parentSub);
-        if (!checkContainer(pcActivePart))
-            pcActivePart = nullptr;
+    Gui::MDIView* activeView = Gui::Application::Instance->activeView();
+    PartDesign::Body* pcActiveBody = nullptr;
+    if (activeView) {
+        pcActiveBody
+            = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY, &topParent, &parentSub);
+    }
+    if (!checkContainer(pcActiveBody)) {
+        pcActiveBody = nullptr;
     }
 
-    FeatName = Gui::Command::getUniqueObjectName("Binder", pcActiveBody ?
-            static_cast<App::DocumentObject*>(pcActiveBody) : pcActivePart);
+    App::Part* pcActivePart = nullptr;
+    if (!pcActiveBody && activeView) {
+        pcActivePart = activeView->getActiveObject<App::Part*>(PARTKEY, &topParent, &parentSub);
+        if (!checkContainer(pcActivePart)) {
+            pcActivePart = nullptr;
+        }
+    }
+
+    FeatName = Gui::Command::getUniqueObjectName(
+        "Binder",
+        pcActiveBody ? static_cast<App::DocumentObject*>(pcActiveBody) : pcActivePart
+    );
 
     if (topParent) {
         decltype(values) links;
-        for (auto &v : values) {
-            App::DocumentObject *obj = v.first;
+        for (auto& v : values) {
+            App::DocumentObject* obj = v.first;
             if (v.second.empty()) {
                 links.emplace(obj, v.second);
                 continue;
@@ -466,7 +475,7 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
             for (auto& sub : v.second) {
                 auto link = obj;
                 auto linkSub = parentSub;
-                topParent->resolveRelativeLink(linkSub,link,sub);
+                topParent->resolveRelativeLink(linkSub, link, sub);
                 if (link) {
                     links[link].push_back(sub);
                 }
@@ -479,14 +488,26 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
     try {
         openCommand(QT_TRANSLATE_NOOP("Command", "Create Sub-Shape Binder"));
         if (pcActiveBody) {
-            FCMD_OBJ_CMD(pcActiveBody,"newObject('PartDesign::SubShapeBinder','" << FeatName << "')");
-            binder = dynamic_cast<PartDesign::SubShapeBinder*>(pcActiveBody->getObject(FeatName.c_str()));
-        } else {
-            doCommand(Command::Doc,
-                    "App.ActiveDocument.addObject('PartDesign::SubShapeBinder','%s')",FeatName.c_str());
-            binder = dynamic_cast<PartDesign::SubShapeBinder*>(App::GetApplication().getActiveDocument()->getObject(FeatName.c_str()));
-            if (pcActivePart)
-                Gui::cmdAppObject(pcActivePart, std::ostringstream() << "addObject(" << Gui::Command::getObjectCmd(binder) << ")");
+            FCMD_OBJ_CMD(pcActiveBody, "newObject('PartDesign::SubShapeBinder','" << FeatName << "')");
+            binder = dynamic_cast<PartDesign::SubShapeBinder*>(
+                pcActiveBody->getObject(FeatName.c_str())
+            );
+        }
+        else {
+            doCommand(
+                Command::Doc,
+                "App.ActiveDocument.addObject('PartDesign::SubShapeBinder','%s')",
+                FeatName.c_str()
+            );
+            binder = dynamic_cast<PartDesign::SubShapeBinder*>(
+                App::GetApplication().getActiveDocument()->getObject(FeatName.c_str())
+            );
+            if (pcActivePart) {
+                Gui::cmdAppObject(
+                    pcActivePart,
+                    std::ostringstream() << "addObject(" << Gui::Command::getObjectCmd(binder) << ")"
+                );
+            }
         }
         if (!binder) {
             return;
@@ -1105,13 +1126,16 @@ void prepareProfileBased(
         base_worker(features.front(), {});
     };
 
-    //if there is a sketch selected which is from another body or part we need to bring up the
-    //pick task dialog to decide how those are handled
-    bool extReference = std::find_if( status.begin(), status.end(),
-            [] (const PartDesignGui::TaskFeaturePick::featureStatus& s) {
-                return s == PartDesignGui::TaskFeaturePick::otherPart;
-            }
-        ) != status.end();
+    // if there is a sketch selected which is from another body or part we need to bring up the
+    // pick task dialog to decide how those are handled
+    bool extReference = std::find_if(
+                            status.begin(),
+                            status.end(),
+                            [](const PartDesignGui::TaskFeaturePick::featureStatus& s) {
+                                return s == PartDesignGui::TaskFeaturePick::otherPart;
+                            }
+                        )
+        != status.end();
 
     // TODO Clean this up (2015-10-20, Fat-Zer)
     if (pcActiveBody && !bNoSketchWasSelected && extReference) {

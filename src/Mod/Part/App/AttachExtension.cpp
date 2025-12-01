@@ -160,7 +160,8 @@ AttachExtension::AttachExtension()
         (Base::Placement()),
         "Attachment",
         App::Prop_Transient,
-        "Cumulative placement of the group hierarchy above the object, up to the boundary");
+        "Cumulative placement of the group hierarchy above the object, up to the boundary"
+    );
 
     // Only show these properties when applicable. Controlled by extensionOnChanged
     this->MapPathParameter.setStatus(App::Property::Status::Hidden, true);
@@ -343,7 +344,6 @@ bool AttachExtension::changeAttacherType(const char* typeName, bool base)
 }
 
 
-
 bool AttachExtension::positionBySupport()
 {
     _active = 0;
@@ -365,8 +365,11 @@ bool AttachExtension::positionBySupport()
 
         Base::Placement basePlacement;
         if (_baseProps.attacher && _baseProps.attacher->mapMode != mmDeactivated) {
-            basePlacement =
-                _baseProps.attacher->calculateAttachedPlacement(Base::Placement(),nullptr,&subChanged);
+            basePlacement = _baseProps.attacher->calculateAttachedPlacement(
+                Base::Placement(),
+                nullptr,
+                &subChanged
+            );
             if (subChanged) {
                 _baseProps.attachment->setValues(
                     _baseProps.attachment->getValues(),
@@ -376,13 +379,14 @@ bool AttachExtension::positionBySupport()
         }
         Base::Placement groupPla;
         if (auto* obj = dynamic_cast<App::DocumentObject*>(getExtendedObject())) {
-            groupPla=App::GeoFeatureGroupExtension::globalGroupPlacementInBoundary(obj);
+            groupPla = App::GeoFeatureGroupExtension::globalGroupPlacementInBoundary(obj);
         }
         subChanged = false;
         _props.attacher->setOffset(AttachmentOffset.getValue() * basePlacement.inverse());
         Base::Placement refGroupPla;
-        auto refPla = _props.attacher->calculateAttachedPlacement(refPlaOriginal, &refGroupPla, &subChanged);
-        Base::Placement placement=groupPla.inverse()*refGroupPla*refPla;
+        auto refPla
+            = _props.attacher->calculateAttachedPlacement(refPlaOriginal, &refGroupPla, &subChanged);
+        Base::Placement placement = groupPla.inverse() * refGroupPla * refPla;
         if (subChanged) {
             Base::ObjectStatusLocker<App::Property::Status, App::Property> guard(
                 App::Property::User3,
@@ -842,13 +846,13 @@ App::PropertyPlacement& AttachExtension::getPlacement() const
 App::PropertyPlacement& AttachExtension::getRefPlacement() const
 {
     auto pla = freecad_cast<App::PropertyPlacement*>(
-        getExtendedObject()->getPropertyByName("RefPlacement"));
+        getExtendedObject()->getPropertyByName("RefPlacement")
+    );
     if (!pla) {
         throw Base::RuntimeError("AttachExtension cannot find placement property");
     }
     return *pla;
 }
-
 
 
 PyObject* AttachExtension::getExtensionPyObject()
