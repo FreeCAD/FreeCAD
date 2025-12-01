@@ -636,7 +636,8 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint, Geo
                 std::string& geoId1,
                 std::string& geoId2,
                 [[maybe_unused]] std::string& geoId3) {
-                 if (constr->Second == GeoEnum::GeoUndef) {
+                 if (constr->FirstPos == Sketcher::PointPos::none
+                     && constr->Second == GeoEnum::GeoUndef) {
                      return boost::str(
                          boost::format("Sketcher.Constraint('DistanceX', %s, %f") % geoId1
                          % constr->getValue()
@@ -661,7 +662,8 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint, Geo
                 std::string& geoId1,
                 std::string& geoId2,
                 [[maybe_unused]] std::string& geoId3) {
-                 if (constr->Second == GeoEnum::GeoUndef) {
+                 if (constr->FirstPos == Sketcher::PointPos::none
+                     && constr->Second == GeoEnum::GeoUndef) {
                      return boost::str(
                          boost::format("Sketcher.Constraint('DistanceY', %s, %f") % geoId1
                          % constr->getValue()
