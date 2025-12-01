@@ -372,7 +372,7 @@ relationship (see Node::isAttached and CompressedVectorNode::CompressedVectorNod
 
 @return true if this node is a root node.
 
-@throw ::ErrorImageFileNotOpen
+@throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see Node::parent, Node::isAttached, CompressedVectorNode::CompressedVectorNode
@@ -407,7 +407,7 @@ infinite recursion.
 
 @return A smart Node handle referencing the parent node or this node if is a root node.
 
-@throw ::ErrorImageFileNotOpen
+@throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see Node::isRoot, Node::isAttached, CompressedVectorNode::CompressedVectorNode, Node::elementName
@@ -441,7 +441,7 @@ root node has the empty string ("") as its elementName.
 
 @return The absolute path name of the node.
 
-@throw ::ErrorImageFileNotOpen
+@throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see Node::elementName, Node::parent, Node::isRoot
@@ -473,7 +473,7 @@ by the position of the child.
 
 @return The element name of the node, or "" if a root node.
 
-@throw ::ErrorImageFileNotOpen
+@throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see Node::pathName, Node::parent, Node::isRoot
@@ -524,7 +524,7 @@ eventually attached to the ImageFile.
 @return @c true if node is child of (or in codecs or prototype of a child CompressedVectorNode of)
 the root node of an ImageFile.
 
-@throw ::ErrorImageFileNotOpen
+@throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see Node::destImageFile, ImageFile::root

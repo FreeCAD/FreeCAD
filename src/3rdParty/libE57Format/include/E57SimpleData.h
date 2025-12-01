@@ -634,8 +634,8 @@ namespace e57
 
       @param [in] data3D Completed header which indicates the fields we are using
 
-      @throw ::ErrorValueOutOfBounds
-      @throw ::ErrorInvalidNodeType
+      @throw ::ErrorValueOutOfBounds (n/c)
+      @throw ::ErrorInvalidNodeType (n/c)
       */
       explicit Data3DPointsData_t( e57::Data3D &data3D );
 
