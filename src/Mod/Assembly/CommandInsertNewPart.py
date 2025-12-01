@@ -79,7 +79,7 @@ class CommandInsertNewPart:
             saveButton = msgBox.addButton(
                 translate("Assembly", "Save"), QtWidgets.QMessageBox.AcceptRole
             )
-            cancelButton = msgBox.addButton(QtWidgets.QMessageBox.Cancel)
+            msgBox.addButton(QtWidgets.QMessageBox.Cancel)
             msgBox.exec_()
             if msgBox.clickedButton() == saveButton:
                 if not Gui.getDocument(doc).saveAs():
