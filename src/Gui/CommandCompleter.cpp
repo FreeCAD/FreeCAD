@@ -77,8 +77,7 @@ public:
             filterInactive = filter;
             // notify views that all data has changed (for greying out)
             if (!_Commands.empty()) {
-                QAbstractItemModel::dataChanged(createIndex(0, 0), 
-                                               createIndex(_Commands.size() - 1, 0));
+                QAbstractItemModel::dataChanged(createIndex(0, 0), createIndex(_Commands.size() - 1, 0));
             }
         }
     }
@@ -116,7 +115,7 @@ public:
         }
 
         auto& info = _Commands[index.row()];
-        
+
         // check if command is active to grey out if not
         bool isActive = true;
         if (filterInactive) {
@@ -155,7 +154,7 @@ public:
                     }
                 }
                 return info.icon;
-            
+
             case Qt::ForegroundRole:
                 // grey out inactive commands
                 if (!isActive) {
@@ -231,7 +230,7 @@ public:
 };
 
 // proxy sort model to prioritize active commands before inactive ones
-class CommandSortFilterProxyModel : public QSortFilterProxyModel
+class CommandSortFilterProxyModel: public QSortFilterProxyModel
 {
 public:
     explicit CommandSortFilterProxyModel(QObject* parent = nullptr)
@@ -296,7 +295,7 @@ CommandCompleter::CommandCompleter(QLineEdit* lineedit, QObject* parent)
     auto proxyModel = new CommandSortFilterProxyModel(this);
     proxyModel->setSourceModel(sourceModel);
     proxyModel->sort(0);
-    
+
     this->setModel(proxyModel);
     this->setFilterMode(Qt::MatchContains);
     this->setCaseSensitivity(Qt::CaseInsensitive);
