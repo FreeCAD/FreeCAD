@@ -95,7 +95,6 @@ void Document::exportGraphviz(std::ostream& out) const
      * This class creates the dependency graph for a document.
      *
      */
-
     class GraphCreator
     {
     public:
@@ -130,7 +129,6 @@ void Document::exportGraphviz(std::ostream& out) const
          * @param docObj Document object to get an ID from
          * @return A string
          */
-
         std::string getId(const DocumentObject* docObj)
         {
             std::string id;
@@ -148,7 +146,6 @@ void Document::exportGraphviz(std::ostream& out) const
          * @param path
          * @return A string
          */
-
         std::string getId(const ObjectIdentifier& path)
         {
             DocumentObject* docObj = path.getDocumentObject();
@@ -181,7 +178,6 @@ void Document::exportGraphviz(std::ostream& out) const
          * @brief setGraphAttributes Set graph attributes on a subgraph for a DocumentObject node.
          * @param obj DocumentObject
          */
-
         void setGraphAttributes(const DocumentObject* obj)
         {
             assert(GraphList.find(obj) != GraphList.end());
@@ -199,7 +195,6 @@ void Document::exportGraphviz(std::ostream& out) const
          * @param vertex Property node
          * @param name Name of node
          */
-
         void setPropertyVertexAttributes(Graph& g, Vertex vertex, const std::string& name)
         {
             get(vertex_attribute, g)[vertex]["label"] = name;
@@ -215,7 +210,6 @@ void Document::exportGraphviz(std::ostream& out) const
          * @param obj DocumentObject to assess.
          * @param CSSubgraphs Boolean if the GeoFeatureGroups are created as subgraphs
          */
-
         void addExpressionSubgraphIfNeeded(DocumentObject* obj, bool CSsubgraphs)
         {
 
@@ -281,7 +275,6 @@ void Document::exportGraphviz(std::ostream& out) const
          * @param docObj The document object to add.
          * @param name Name of node.
          */
-
         void add(DocumentObject* docObj,
                  const std::string& name,
                  const std::string& label,
