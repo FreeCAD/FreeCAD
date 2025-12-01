@@ -761,6 +761,7 @@ protected:
     void slotUndoDocument(const Gui::Document&);
     void slotRedoDocument(const Gui::Document&);
     void slotSolverUpdate();
+    void slotConstraintAdded(Sketcher::Constraint* constraint);
     void forceUpdateData();
     //@}
 
@@ -968,6 +969,7 @@ private:
     boost::signals2::connection connectUndoDocument;
     boost::signals2::connection connectRedoDocument;
     boost::signals2::connection connectSolverUpdate;
+    boost::signals2::connection connectConstraintAdded;
 
     QMetaObject::Connection screenChangeConnection;
 
