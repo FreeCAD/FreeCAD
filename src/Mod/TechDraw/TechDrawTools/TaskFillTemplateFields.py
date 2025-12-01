@@ -35,6 +35,7 @@ import datetime
 from datetime import date
 import csv
 import codecs
+from fractions import Fraction
 import os.path
 
 CreatedByChkLst = []
@@ -54,13 +55,6 @@ listofkeys = [
     "LicenseChkLst",
     "CreatedDateChkLst",
     "LastModifiedDateChkLst",
-]
-listofviewtypes = [
-    "TechDraw::DrawViewPart",
-    "TechDraw::DrawProjGroup",
-    "TechDraw::DrawViewDraft",
-    "TechDraw::DrawViewArch",
-    "TechDraw::DrawViewImage",
 ]
 
 """Run the following code when the command is activated (button press)."""
@@ -124,12 +118,10 @@ class TaskFillTemplateFields:
 
                 projgrp_view = None
                 for pageObj in obj.Views:
-                    if (hasattr(pageObj, "Scale")):
+                    if hasattr(pageObj, "Scale"):
                         # use the scale from the first DVP or DPG encountered to fill the template's
                         # Scale editable text.
                         projgrp_view = pageObj
-                        break
-                    if projgrp_view:
                         break
 
                 self.texts = self.page.Template.EditableTexts
@@ -180,7 +172,9 @@ class TaskFillTemplateFields:
                         self.checkBoxList.append(self.cb1)
                         self.lineTextList.append(self.s1)
                         self.cb1.clicked.connect(self.on_cb1_clicked)
-                        longestText = max(longestText, len(App.ActiveDocument.CreatedBy))
+                        longestText = max(
+                            longestText, len(App.ActiveDocument.CreatedBy)
+                        )
                         dialogRow += 1
                     if str(key).lower() in ScaleChkLst and projgrp_view:
                         t2 = QtGui.QLabel(value)
@@ -203,7 +197,12 @@ class TaskFillTemplateFields:
                         self.lineTextList.append(self.s2)
                         self.cb2.clicked.connect(self.on_cb2_clicked)
                         if projgrp_view.Scale < 1:
-                            self.s2.setText("1 : " + str(int(1 / projgrp_view.Scale)))
+                            fracScale = Fraction(projgrp_view.Scale).limit_denominator()
+                            self.s2.setText(
+                                str(fracScale.numerator)
+                                + " : "
+                                + str(fracScale.denominator)
+                            )
                         elif int(projgrp_view.Scale) == 1 or (
                             projgrp_view.Scale > 1
                             and int(projgrp_view.Scale) == projgrp_view.Scale
@@ -216,7 +215,11 @@ class TaskFillTemplateFields:
                                     == projgrp_view.Scale * x
                                 ):
                                     fracScale = Fraction(projgrp_view.Scale)
-                                    self.s2.setText(str(fracScale.numerator) + " : " + str(fracScale.denominator))
+                                    self.s2.setText(
+                                        str(fracScale.numerator)
+                                        + " : "
+                                        + str(fracScale.denominator)
+                                    )
                                     break
                         dialogRow += 1
                     if str(key).lower() in LabelChkLst:
@@ -452,7 +455,7 @@ class TaskFillTemplateFields:
                     self.dialog.show()
                     self.dialog.exec_()
 
-#                    App.setActiveTransaction("Fill template fields")
+                # App.setActiveTransaction("Fill template fields")
                 else:
                     msgBox = QtGui.QMessageBox()
                     msgTitle = QtCore.QT_TRANSLATE_NOOP(
@@ -545,7 +548,9 @@ class TaskFillTemplateFields:
             self.button.setEnabled(False)
 
     def proceed(self):
-        transactionName = QtCore.QT_TRANSLATE_NOOP("Techdraw_FillTemplateFields", "Fill template fields")
+        transactionName = QtCore.QT_TRANSLATE_NOOP(
+            "Techdraw_FillTemplateFields", "Fill template fields"
+        )
         App.setActiveTransaction(transactionName)
         i = 0
         for cb in self.checkBoxList:
