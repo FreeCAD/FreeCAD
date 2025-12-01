@@ -1048,6 +1048,33 @@ void Application::slotNewDocument(const App::Document& Doc, bool isMainDoc)
 
 void Application::slotDeleteDocument(const App::Document& Doc)
 {
+    // Capture dependencies and their CURRENT view state before the document is destroyed.
+    struct Candidate
+    {
+        std::string name;
+        bool hadViews;
+    };
+    std::vector<Candidate> candidates;
+
+    try {
+        std::vector<App::Document*> deps = const_cast<App::Document&>(Doc).getDependentDocuments();
+
+        for (auto d : deps) {
+            if (d == &Doc) {  // Skip self
+                continue;
+            }
+
+            // Check if this dependency currently has a visible tab/view
+            Gui::Document* gDoc = getDocument(d);
+            bool hasViews = (gDoc && !gDoc->getMDIViews().empty());
+
+            candidates.push_back({d->getName(), hasViews});
+        }
+    }
+    catch (Base::Exception& e) {
+        e.reportException();
+    }
+
     std::map<const App::Document*, Gui::Document*>::iterator doc = d->documents.find(&Doc);
     if (doc == d->documents.end()) {
         Base::Console().log("GUI document '%s' already deleted\n", Doc.getName());
@@ -1077,6 +1104,43 @@ void Application::slotDeleteDocument(const App::Document& Doc)
     // For exception-safety use a smart pointer
     unique_ptr<Document> delDoc(doc->second);
     d->documents.erase(doc);
+
+    if (!candidates.empty()) {
+        QTimer::singleShot(0, [candidates]() {
+            for (const auto& cand : candidates) {
+                App::Document* child = App::GetApplication().getDocument(cand.name.c_str());
+                if (!child || child->isTouched() || cand.hadViews) {
+                    continue;
+                }
+
+                // Reference Check: Is it used by any OTHER open document?
+                bool isStillReferenced = false;
+                std::vector<App::Document*> openDocs = App::GetApplication().getDocuments();
+                for (App::Document* openDoc : openDocs) {
+                    if (openDoc == child) {
+                        continue;  // Don't check self-reference
+                    }
+
+                    try {
+                        std::vector<App::Document*> otherDeps = openDoc->getDependentDocuments();
+                        if (std::find(otherDeps.begin(), otherDeps.end(), child) != otherDeps.end()) {
+                            isStillReferenced = true;
+                            break;
+                        }
+                    }
+                    catch (Base::Exception& e) {
+                        e.reportException();
+                        continue;
+                    }
+                }
+
+                // 5. Close if truly orphan
+                if (!isStillReferenced) {
+                    App::GetApplication().closeDocument(cand.name.c_str());
+                }
+            }
+        });
+    }
 }
 
 void Application::slotRelabelDocument(const App::Document& Doc)
