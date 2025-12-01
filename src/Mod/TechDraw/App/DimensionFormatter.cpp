@@ -51,7 +51,7 @@ std::string DimensionFormatter::formatValue(const qreal value,
                                             const Format partial,
                                             const bool isDim) const
 {
-   bool distanceMeasure{true};
+    bool distanceMeasure{true};
     const bool angularMeasure =
         m_dimension->Type.isValue("Angle") || m_dimension->Type.isValue("Angle3Pt");
     const bool areaMeasure = m_dimension->Type.isValue("Area");
@@ -101,7 +101,9 @@ std::string DimensionFormatter::formatValue(const qreal value,
         formatSpecifier.replace(QStringLiteral("%g"), newSpecifier, Qt::CaseInsensitive);
     }
 
-    std::string unitText = Base::UnitsApi::getUnitText(asQuantity);
+    double factor{1.0};
+    std::string unitText{""};
+    asQuantity.getUserString(factor, unitText);
     std::string super2{"²"};
     std::string squareTag{"^2"};
 
@@ -118,8 +120,7 @@ std::string DimensionFormatter::formatValue(const qreal value,
     double userVal = asQuantity.getValue();
 
     if (distanceMeasure || areaMeasure) {
-        const double convertValue = Base::Quantity::parse("1" + unitText).getValue();
-        userVal /= convertValue;
+        userVal /= factor;
     }
 
     // convert ^2 to superscript 2 for display
