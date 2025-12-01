@@ -67,7 +67,7 @@ parser.add_argument(
 )
 parser.add_argument(
     "--postamble",
-    help='set commands to be issued after the last command, default="M05\\nG17 G54 G90 G80 G40\\nM2\\n"',
+    help='set commands to be issued after the last command, default="M05\\nG17 G54 G90 G80 G40\\nM30\\n"',
 )
 parser.add_argument(
     "--inches", action="store_true", help="Convert output for US imperial mode (G20)"
@@ -129,7 +129,7 @@ DEFAULT_PREAMBLE = """G17 G54 G40 G49 G80 G90
 # Postamble text will appear following the last operation.
 DEFAULT_POSTAMBLE = """M05
 G17 G54 G90 G80 G40
-M2
+M30
 """
 
 # Pre operation text will be inserted before every operation
