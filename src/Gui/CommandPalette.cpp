@@ -23,14 +23,14 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QApplication>
-#include <QGuiApplication>
-#include <QKeyEvent>
-#include <QPainter>
-#include <QTextDocument>
-#include <QTimer>
-#include <QVBoxLayout>
-#include <QWindow>
+# include <QApplication>
+# include <QGuiApplication>
+# include <QKeyEvent>
+# include <QPainter>
+# include <QTextDocument>
+# include <QTimer>
+# include <QVBoxLayout>
+# include <QWindow>
 #endif
 
 #include "CommandPalette.h"
@@ -320,7 +320,7 @@ bool CommandPalette::eventFilter(QObject* obj, QEvent* event)
             QPoint globalPos = mouseEvent->globalPosition().toPoint();
             if (isClickOutside(globalPos)) {
                 close();
-                return false; // propagate further to target widget
+                return false;  // propagate further to target widget
             }
         }
     }
