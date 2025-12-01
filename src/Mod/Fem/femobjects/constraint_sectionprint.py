@@ -57,7 +57,7 @@ class ConstraintSectionPrint(base_fempythonobject.BaseFemPythonObject):
                 name="Variable",
                 group="Constraint Section Print",
                 doc="Set facial variable",
-                value=["Section Force", "Heat Flux", "Drag Stress"],
+                value=["Section Force", "Heat Flux", "Drag Stress", "Electric Flux"],
             )
         )
 
