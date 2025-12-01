@@ -30,12 +30,15 @@ These are common functions and classes for creating custom post processors.
 
 
 from Path.Base.MachineState import MachineState
+from Path.Main.Gui.Editor import CodeEditor
+
 from PySide import QtCore, QtGui
+
 import FreeCAD
-import Part
 import Path
 import os
 import re
+
 
 debug = False
 if debug:
@@ -208,29 +211,51 @@ class GCodeHighlighter(QtGui.QSyntaxHighlighter):
 
 
 class GCodeEditorDialog(QtGui.QDialog):
-    def __init__(self, parent=None):
+    def __init__(self, text="", parent=None, refactored=False):
         if parent is None:
             parent = FreeCADGui.getMainWindow()
         QtGui.QDialog.__init__(self, parent)
 
         layout = QtGui.QVBoxLayout(self)
 
-        # nice text editor widget for editing the gcode
-        self.editor = QtGui.QTextEdit()
+        # self.editor = QtGui.QTextEdit()  # without lines enumeration
+        self.editor = CodeEditor()  # with lines enumeration
+
+        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Editor")
         font = QtGui.QFont()
-        font.setFamily("Courier")
+        font.setFamily(p.GetString("Font", "Courier"))
         font.setFixedPitch(True)
-        font.setPointSize(10)
+        font.setPointSize(p.GetInt("FontSize", 10))
         self.editor.setFont(font)
-        self.editor.setText("G01 X55 Y4.5 F300.0")
+        self.editor.setPlainText(text)
         layout.addWidget(self.editor)
 
-        # OK and Cancel buttons
-        self.buttons = QtGui.QDialogButtonBox(
-            QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel,
-            QtCore.Qt.Horizontal,
-            self,
-        )
+        # buttons depending on the post processor used
+        if refactored:
+            self.buttons = QtGui.QDialogButtonBox(
+                QtGui.QDialogButtonBox.Ok
+                | QtGui.QDialogButtonBox.Discard
+                | QtGui.QDialogButtonBox.Cancel,
+                QtCore.Qt.Horizontal,
+                self,
+            )
+            # Swap the button text as to not change the old cancel behaviour for the user
+            self.buttons.button(QtGui.QDialogButtonBox.Discard).setIcon(
+                self.buttons.button(QtGui.QDialogButtonBox.Cancel).icon()
+            )
+            self.buttons.button(QtGui.QDialogButtonBox.Discard).setText(
+                self.buttons.button(QtGui.QDialogButtonBox.Cancel).text()
+            )
+            self.buttons.button(QtGui.QDialogButtonBox.Cancel).setIcon(QtGui.QIcon())
+            self.buttons.button(QtGui.QDialogButtonBox.Cancel).setText("Abort")
+        else:
+            self.buttons = QtGui.QDialogButtonBox(
+                QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel,
+                QtCore.Qt.Horizontal,
+                self,
+            )
+
+        self.buttons.button(QtGui.QDialogButtonBox.Ok).setDisabled(True)
         layout.addWidget(self.buttons)
 
         # restore placement and size
@@ -245,8 +270,21 @@ class GCodeEditorDialog(QtGui.QDialog):
         if width > 0 and height > 0:
             self.resize(width, height)
 
-        self.buttons.accepted.connect(self.accept)
-        self.buttons.rejected.connect(self.reject)
+        # connect signals
+        self.editor.textChanged.connect(self.text_changed)
+        self.buttons.clicked.connect(self.clicked)
+
+    def text_changed(self):
+        self.buttons.button(QtGui.QDialogButtonBox.Ok).setDisabled(False)
+
+    def clicked(self, button):
+        match self.buttons.buttonRole(button):
+            case QtGui.QDialogButtonBox.RejectRole:
+                self.done(0)
+            case QtGui.QDialogButtonBox.ApplyRole | QtGui.QDialogButtonBox.AcceptRole:
+                self.done(1)
+            case QtGui.QDialogButtonBox.DestructiveRole:
+                self.done(2)
 
     def done(self, *args, **kwargs):
         params = FreeCAD.ParamGet(self.paramKey)
@@ -303,6 +341,7 @@ def editor(gcode):
 
     dia = GCodeEditorDialog()
     dia.editor.setText(gcode)
+    dia.buttons.button(QtGui.QDialogButtonBox.Ok).setDisabled(True)
     gcodeSize = len(dia.editor.toPlainText())
     if gcodeSize <= mhs:
         # because of poor performance, syntax highlighting is

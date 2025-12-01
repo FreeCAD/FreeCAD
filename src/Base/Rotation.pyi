@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
+from __future__ import annotations
+
 from Metadata import export, constmethod, class_declarations
 from PyObjectBase import PyObjectBase
 from Vector import Vector
@@ -129,8 +131,6 @@ class Rotation(PyObjectBase):
 
     def invert(self) -> None:
         """
-        invert() -> None
-
         Sets the rotation to its inverse.
         """
         ...
@@ -138,16 +138,12 @@ class Rotation(PyObjectBase):
     @constmethod
     def inverted(self) -> "Rotation":
         """
-        inverted() -> Base.Rotation
-
         Returns the inverse of the rotation.
         """
         ...
 
-    def isSame(self, rotation: "Rotation", tol: float = 0) -> bool:
+    def isSame(self, rotation: "Rotation", tol: float = 0, /) -> bool:
         """
-        isSame(rotation, tol=0) -> bool
-
         Checks if `rotation` perform the same transformation as this rotation.
 
         rotation : Base.Rotation
@@ -158,10 +154,8 @@ class Rotation(PyObjectBase):
         ...
 
     @constmethod
-    def multiply(self, rotation: "Rotation") -> "Rotation":
+    def multiply(self, rotation: "Rotation", /) -> "Rotation":
         """
-        multiply(rotation) -> Base.Rotation
-
         Right multiply this rotation with another rotation.
 
         rotation : Base.Rotation
@@ -170,10 +164,8 @@ class Rotation(PyObjectBase):
         ...
 
     @constmethod
-    def multVec(self, vector: Vector) -> Vector:
+    def multVec(self, vector: Vector, /) -> Vector:
         """
-        multVec(vector) -> Base.Vector
-
         Compute the transformed vector using the rotation.
 
         vector : Base.Vector
@@ -182,10 +174,8 @@ class Rotation(PyObjectBase):
         ...
 
     @constmethod
-    def slerp(self, rotation2: "Rotation", t: float) -> "Rotation":
+    def slerp(self, rotation2: "Rotation", t: float, /) -> "Rotation":
         """
-        slerp(rotation2, t) -> Base.Rotation
-
         Spherical Linear Interpolation (SLERP) of this rotation and `rotation2`.
 
         t : float
@@ -193,10 +183,8 @@ class Rotation(PyObjectBase):
         """
         ...
 
-    def setYawPitchRoll(self, angle1: float, angle2: float, angle3: float) -> None:
+    def setYawPitchRoll(self, angle1: float, angle2: float, angle3: float, /) -> None:
         """
-        setYawPitchRoll(angle1, angle2, angle3) -> None
-
         Set the Euler angles of this rotation as yaw-pitch-roll in XY'Z'' convention.
 
         angle1 : float
@@ -211,17 +199,13 @@ class Rotation(PyObjectBase):
     @constmethod
     def getYawPitchRoll(self) -> Tuple[float, float, float]:
         """
-        getYawPitchRoll() -> tuple
-
         Get the Euler angles of this rotation as yaw-pitch-roll in XY'Z'' convention.
         The angles are given in degrees.
         """
         ...
 
-    def setEulerAngles(self, seq: str, angle1: float, angle2: float, angle3: float) -> None:
+    def setEulerAngles(self, seq: str, angle1: float, angle2: float, angle3: float, /) -> None:
         """
-        setEulerAngles(seq, angle1, angle2, angle3) -> None
-
         Set the Euler angles in a given sequence for this rotation.
         The angles must be given in degrees.
 
@@ -234,10 +218,8 @@ class Rotation(PyObjectBase):
         ...
 
     @constmethod
-    def toEulerAngles(self, seq: str = "") -> List[float]:
+    def toEulerAngles(self, seq: str = "", /) -> List[float]:
         """
-        toEulerAngles(seq) -> list
-
         Get the Euler angles in a given sequence for this rotation.
 
         seq : str
@@ -249,8 +231,6 @@ class Rotation(PyObjectBase):
     @constmethod
     def toMatrix(self) -> Matrix:
         """
-        toMatrix() -> Base.Matrix
-
         Convert the rotation to a 4D matrix representation.
         """
         ...
@@ -258,17 +238,13 @@ class Rotation(PyObjectBase):
     @constmethod
     def isNull(self) -> bool:
         """
-        isNull() -> bool
-
         Returns True if all values in the quaternion representation are zero.
         """
         ...
 
     @constmethod
-    def isIdentity(self, tol: float = 0) -> bool:
+    def isIdentity(self, tol: float = 0, /) -> bool:
         """
-        isIdentity(tol=0) -> bool
-
         Returns True if the rotation equals the 4D identity matrix.
         tol : float
             Tolerance used to check for identity.

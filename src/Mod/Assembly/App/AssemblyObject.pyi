@@ -1,8 +1,13 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from typing import Any, Final
 
 from Base.Metadata import constmethod, export
 
 from App.Part import Part
+from App.DocumentObject import DocumentObject
 
 @export(Include="Mod/Assembly/App/AssemblyObject.h", Namespace="Assembly")
 class AssemblyObject(Part):
@@ -14,10 +19,9 @@ class AssemblyObject(Part):
     """
 
     @constmethod
-    def solve(self) -> Any:
-        """Solve the assembly and update part placements.
-
-        solve(enableRedo=False) -> int
+    def solve(self, enableUndo: bool = False, /) -> int:
+        """
+        Solve the assembly and update part placements.
 
         Args:
         enableRedo: Whether the solve save the initial position of parts
@@ -33,14 +37,14 @@ class AssemblyObject(Part):
         -3 if conflicting constraints,
         -5 if malformed constraints
         -1 if solver error,
-        -2 if redundant constraints."""
+        -2 if redundant constraints.
+        """
         ...
 
     @constmethod
-    def generateSimulation(self) -> Any:
-        """Generate the simulation.
-
-        solve(simulationObject) -> int
+    def generateSimulation(self, simulationObject: DocumentObject, /) -> int:
+        """
+        Generate the simulation.
 
         Args:
         simulationObject: The simulation Object.
@@ -53,111 +57,98 @@ class AssemblyObject(Part):
         -3 if conflicting constraints,
         -5 if malformed constraints
         -1 if solver error,
-        -2 if redundant constraints."""
+        -2 if redundant constraints.
+        """
         ...
 
     @constmethod
-    def updateForFrame(self) -> Any:
-        """Update entire assembly to frame number specified.
+    def updateForFrame(self, index: int, /) -> None:
+        """
+        Update entire assembly to frame number specified.
 
-        updateForFrame(index)
+        Args:
+            index: index of frame.
 
-        Args: index of frame.
-
-        Returns: None"""
+        Returns: None
+        """
         ...
 
     @constmethod
-    def numberOfFrames(self) -> Any:
-        """numberOfFrames()
-
-        Args: None
-
-        Returns: Number of frames"""
+    def numberOfFrames(self) -> int:
+        """Return Number of frames"""
         ...
 
     @constmethod
-    def undoSolve(self) -> Any:
-        """Undo the last solve of the assembly and return part placements to their initial position.
-
-        undoSolve()
-
-        Returns: None"""
+    def undoSolve(self) -> None:
+        """
+        Undo the last solve of the assembly and return part placements to their initial position.
+        """
         ...
 
     @constmethod
-    def ensureIdentityPlacements(self) -> Any:
-        """Makes sure that LinkGroups or sub-assemblies have identity placements.
-
-        ensureIdentityPlacements()
-
-        Returns: None"""
+    def ensureIdentityPlacements(self) -> None:
+        """
+        Makes sure that LinkGroups or sub-assemblies have identity placements.
+        """
         ...
 
     @constmethod
-    def clearUndo(self) -> Any:
-        """Clear the registered undo positions.
-
-        clearUndo()
-
-        Returns: None"""
+    def clearUndo(self) -> None:
+        """
+        Clear the registered undo positions.
+        """
         ...
 
     @constmethod
-    def isPartConnected(self) -> Any:
-        """Check if a part is connected to the ground through joints.
-
-        isPartConnected(obj) -> bool
-
-        Args: document object to check.
-
-        Returns: True if part is connected to ground"""
+    def isPartConnected(self, obj: DocumentObject, /) -> bool:
+        """
+        Check if a part is connected to the ground through joints.
+        Returns: True if part is connected to ground.
+        """
         ...
 
     @constmethod
-    def isJointConnectingPartToGround(self) -> Any:
-        """Check if a joint is connecting a part to the ground.
-
-        isJointConnectingPartToGround(joint, propName) -> bool
+    def isJointConnectingPartToGround(self, joint: DocumentObject, prop_name: str, /) -> Any:
+        """
+        Check if a joint is connecting a part to the ground.
 
         Args:
         - joint: document object of the joint to check.
-        - propName: string 'Part1' or 'Part2' of the joint.
+        - prop_name: string 'Part1' or 'Part2' of the joint.
 
-        Returns: True if part is connected to ground"""
+        Returns: True if part is connected to ground.
+        """
         ...
 
     @constmethod
-    def isPartGrounded(self) -> Any:
-        """Check if a part has a grounded joint.
-
-        isPartGrounded(obj) -> bool
+    def isPartGrounded(self, obj: DocumentObject, /) -> Any:
+        """
+        Check if a part has a grounded joint.
 
         Args:
         - obj: document object of the part to check.
 
-        Returns: True if part has grounded joint"""
+        Returns: True if part has grounded joint.
+        """
         ...
 
     @constmethod
-    def exportAsASMT(self) -> Any:
-        """Export the assembly in a text format called ASMT.
-
-        exportAsASMT(fileName:str)
+    def exportAsASMT(self, file_name: str, /) -> None:
+        """
+        Export the assembly in a text format called ASMT.
 
         Args:
-        fileName: The name of the file where the ASMT will be exported."""
+        - fileName: The name of the file where the ASMT will be exported.
+        """
         ...
 
     @constmethod
     def getDownstreamParts(
-        self, start_part: "App.DocumentObject", joint_to_ignore: "App.DocumentObject", /
-    ) -> list["App.DocumentObject"]:
+        self, start_part: DocumentObject, joint_to_ignore: DocumentObject, /
+    ) -> list[DocumentObject]:
         """
         Finds all parts connected to a start_part that are not connected to ground
         when a specific joint is ignored.
-
-        getDownstreamParts(start_part, joint_to_ignore) -> list
 
         This is used to find the entire rigid group of unconstrained components that
         should be moved together during a pre-solve operation or a drag.
