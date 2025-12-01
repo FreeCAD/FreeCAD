@@ -467,7 +467,7 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
                 auto link = obj;
                 auto linkSub = parentSub;
                 topParent->resolveRelativeLink(linkSub,link,sub);
-                if (link)
+                if (link) {
                     links[link].push_back(sub);
                 }
             }
@@ -487,16 +487,6 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
             binder = dynamic_cast<PartDesign::SubShapeBinder*>(App::GetApplication().getActiveDocument()->getObject(FeatName.c_str()));
             if (pcActivePart)
                 Gui::cmdAppObject(pcActivePart, std::ostringstream() << "addObject(" << Gui::Command::getObjectCmd(binder) << ")");
-        }
-        else {
-            doCommand(
-                Command::Doc,
-                "App.ActiveDocument.addObject('PartDesign::SubShapeBinder','%s')",
-                FeatName.c_str()
-            );
-            binder = dynamic_cast<PartDesign::SubShapeBinder*>(
-                App::GetApplication().getActiveDocument()->getObject(FeatName.c_str())
-            );
         }
         if (!binder) {
             return;
