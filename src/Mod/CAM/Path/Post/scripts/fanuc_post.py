@@ -623,7 +623,8 @@ def parse(pathobj):
 
                 # add height offset
                 if USE_TLO:
-                    outsuffix.append("G43 H" + str(int(c.Parameters["T"]))
+                    outsuffix.append("G91 G0 G43 G54 Z-[#[2000+#4120]] H#4120")
+                    outsuffix.append("G90")
 
             if command == "message":
                 if OUTPUT_COMMENTS is False:
