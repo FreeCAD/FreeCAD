@@ -245,17 +245,16 @@ def export(objectslist, filename, argstring):
 
     # write header
     if OUTPUT_HEADER:
-        gcode += ";\n"
+        # Get current version info
+        major = int(FreeCAD.ConfigGet("BuildVersionMajor"))
+        minor = int(FreeCAD.ConfigGet("BuildVersionMinor"))
+
+        # the filename variable always contain "-", so unable to
+        # provide more accurate information.
+        gcode += "(" + "FREECAD-FILENAME-GOES-HERE" + ", " + "JOB-NAME-GOES-HERE" + ")\n"
         gcode += (
-            os.path.split(filename)[-1]
-            + " ("
-            + "FREECAD-FILENAME-GOES-HERE"
-            + ", "
-            + "JOB-NAME-GOES-HERE"
-            + ")\n"
+            linenumber() + "(POST PROCESSOR: FANUC USING FREECAD %d.%d" % (major, minor) + ")\n"
         )
-        gcode += linenumber() + "(" + filename.upper() + ",EXPORTED BY FREECAD!)\n"
-        gcode += linenumber() + "(POST PROCESSOR: " + __name__.upper() + ")\n"
         gcode += linenumber() + "(OUTPUT TIME:" + str(now).upper() + ")\n"
 
     # Write the preamble
