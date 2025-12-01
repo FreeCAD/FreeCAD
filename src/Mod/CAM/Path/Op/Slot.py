@@ -564,6 +564,10 @@ class ObjectSlot(PathOp.ObjectOp):
         cmds = self._makeOperation(obj)
         if cmds:
             self.commandlist.extend(cmds)
+        else:
+            # clear Path if can not create slot
+            self.commandlist.clear()
+            return False
 
         # Final move to clearance height
         self.commandlist.append(
