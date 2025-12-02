@@ -9157,14 +9157,18 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
 
         // Get the reference key for this group of geometries. All geos in this vector share the same ref.
         const std::string& key = ExternalGeometryFacade::getFacade(geos.front().get())->getRef();
-        bool isLinkDefining = linkIsDefiningMap.count(key) ? linkIsDefiningMap[key] : false;
+        auto itKey = linkIsDefiningMap.find(key);
+        bool hasLinkState = itKey != linkIsDefiningMap.end();
+        bool isLinkDefining = hasLinkState ? itKey->second : false;
 
         for(auto &geo : geos) {
             auto it = externalGeoMap.find(GeometryFacade::getId(geo.get()));
             if(it == externalGeoMap.end()) {
                 // This is a new geometries.
                 // Set its defining state based on the inferred state of its parent link.
-                ExternalGeometryFacade::getFacade(geo.get())->setFlag(ExternalGeometryExtension::Defining, isLinkDefining);
+                if (hasLinkState) {
+                    ExternalGeometryFacade::getFacade(geo.get())->setFlag(ExternalGeometryExtension::Defining, isLinkDefining);
+                }
                 geoms.push_back(geo.release());
                 continue;
             }
