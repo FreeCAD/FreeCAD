@@ -923,7 +923,6 @@ bool CmdPartCompCompoundTools::isActive()
 }
 
 
-
 //===========================================================================
 // Part_Compound
 //===========================================================================
@@ -965,7 +964,7 @@ void CmdPartCompound::activated(int iMsg)
     // avoid duplicates without changing the order
     std::set<std::string> tempSelNames;
     str << "App.activeDocument()." << FeatName << ".Links = [";
-    for (const auto & it : Sel) {
+    for (const auto& it : Sel) {
         auto pos = tempSelNames.insert(it.FeatName);
         if (pos.second) {
             str << "App.activeDocument()." << it.FeatName << ",";
@@ -974,9 +973,9 @@ void CmdPartCompound::activated(int iMsg)
     str << "]";
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Compound"));
-    doCommand(Doc,"obj = App.activeDocument().addObject(\"Part::Compound\",\"%s\")",FeatName.c_str());
+    doCommand(Doc, "obj = App.activeDocument().addObject(\"Part::Compound\",\"%s\")", FeatName.c_str());
     doCommand(Doc, PartGui::getAutoGroupCommandStr().toUtf8());
-    runCommand(Doc,str.str().c_str());
+    runCommand(Doc, str.str().c_str());
     updateActive();
     commitCommand();
 }
