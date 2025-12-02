@@ -59,7 +59,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
     def areaOpFeatures(self, obj):
         """areaOpFeatures(obj) ... returns operation-specific features"""
-        return PathOp.FeatureBaseFaces | PathOp.FeatureBaseEdges
+        return PathOp.FeatureBaseFaces | PathOp.FeatureBaseEdges | PathOp.FeatureBaseModels
 
     def initAreaOp(self, obj):
         """initAreaOp(obj) ... creates all profile specific properties."""
@@ -191,6 +191,34 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     "If doing multiple passes, the extra offset of each additional pass",
                 ),
             ),
+            (
+                "App::PropertyLength",
+                "RetractThreshold",
+                "Profile",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Set distance which will attempts to avoid unnecessary retractions",
+                ),
+            ),
+            (
+                "App::PropertyEnumeration",
+                "StartPointOverride",
+                "Start Point",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Override start point"
+                    "\nShoud be used only with Individually HandleMultipleFeatures",
+                ),
+            ),
+            (
+                "App::PropertyEnumeration",
+                "StartAt",
+                "Profile",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Start multiple profile at center or edge",
+                ),
+            ),
         ]
 
     @classmethod
@@ -223,6 +251,20 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 (translate("PathProfile", "Outside"), "Outside"),
                 (translate("PathProfile", "Inside"), "Inside"),
             ],  # side of profile that cutter is on in relation to direction of profile
+            "StartPointOverride": [
+                (translate("PathProfile", "No"), "No"),
+                (translate("PathProfile", "Corner"), "Corner"),
+                (translate("PathProfile", "Middle-Long"), "Middle-Long"),
+                (translate("PathProfile", "Middle-Long-Line"), "Middle-Long-Line"),
+                (translate("PathProfile", "Middle-Long-Straight"), "Middle-Long-Straight"),
+                (translate("PathProfile", "Middle-Short"), "Middle-Short"),
+                (translate("PathProfile", "Middle-Short-Line"), "Middle-Short-Line"),
+                (translate("PathProfile", "Middle-Short-Straight"), "Middle-Short-Straight"),
+            ],
+            "StartAt": [
+                (translate("CAM_Pocket", "Center"), "Center"),
+                (translate("CAM_Pocket", "Edge"), "Edge"),
+            ],
         }
 
         if dataType == "raw":
@@ -294,6 +336,8 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         elif opType == "Edge":
             pass
 
+        startPointOverrideMode = 0 if obj.HandleMultipleFeatures == "Individually" else 2
+
         obj.setEditorMode("JoinType", 2)
         obj.setEditorMode("MiterLimit", 2)  # ml
         obj.setEditorMode("Side", side)
@@ -301,6 +345,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         obj.setEditorMode("processCircles", fc)
         obj.setEditorMode("processHoles", fc)
         obj.setEditorMode("processPerimeter", fc)
+        obj.setEditorMode("StartPointOverride", startPointOverrideMode)
 
     def _getOperationType(self, obj):
         if len(obj.Base) == 0:
@@ -312,36 +357,13 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
     def areaOpOnDocumentRestored(self, obj):
         self.propertiesReady = False
-
-        if not hasattr(obj, "NumPasses"):
-            obj.addProperty(
-                "App::PropertyInteger",
-                "NumPasses",
-                "Profile",
-                QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "The number of passes to do. Requires a non-zero value for Stepover",
-                ),
-            )
-
-        if not hasattr(obj, "Stepover"):
-            obj.addProperty(
-                "App::PropertyDistance",
-                "Stepover",
-                "Profile",
-                QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "If doing multiple passes, the extra offset of each additional pass",
-                ),
-            )
-
         self.initAreaOpProperties(obj, warn=True)
         self.areaOpSetDefaultValues(obj, PathUtils.findParentJob(obj))
         self.setOpEditorProperties(obj)
 
     def areaOpOnChanged(self, obj, prop):
         """areaOpOnChanged(obj, prop) ... updates certain property visibilities depending on changed properties."""
-        if prop in ["UseComp", "JoinType", "Base"]:
+        if prop in ["UseComp", "JoinType", "Base", "HandleMultipleFeatures"]:
             if hasattr(self, "propertiesReady") and self.propertiesReady:
                 self.setOpEditorProperties(obj)
 
@@ -366,19 +388,15 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         if obj.UseComp:
             offset = self.radius + obj.OffsetExtra.Value
         if obj.Side == "Inside":
-            offset = 0 - offset
+            offset = -offset
             stepover = -stepover
         if isHole:
-            offset = 0 - offset
+            offset = -offset
             stepover = -stepover
 
-        # Modify offset and stepover to do passes from most-offset to least
-        offset += stepover * (num_passes - 1)
-        stepover = -stepover
-
+        # Create list of offsets for multiple passes
+        offset = [offset + i * stepover for i in range(num_passes)]
         params["Offset"] = offset
-        params["ExtraPass"] = num_passes - 1
-        params["Stepover"] = stepover
 
         jointype = ["Round", "Square", "Miter"]
         params["JoinType"] = jointype.index(obj.JoinType)
@@ -416,10 +434,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 params["orientation"] = 1
             else:
                 params["orientation"] = 0
-
-        if obj.NumPasses > 1:
-            # Disable path sorting to ensure that offsets appear in order, from farthest offset to closest, on all layers
-            params["sort_mode"] = 0
 
         return params
 
@@ -468,9 +482,10 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             self.commandlist.append(Path.Command("(Uncompensated Tool Path)"))
 
         # Pre-process Base Geometry to process edges
-        if (
-            obj.Base and len(obj.Base) > 0
-        ):  # The user has selected subobjects from the base.  Process each.
+        if obj.Base and len(obj.Base) > 0:
+            # Processing models without subobjects (selection in tree)
+            shapes.extend(self._processEachBaseModel(obj))
+            # Processing edges from subobjects
             shapes.extend(self._processEdges(obj, remainingObjBaseFeatures))
             Path.Log.track("returned {} shapes".format(len(shapes)))
 
@@ -591,6 +606,26 @@ class ObjectProfile(PathAreaOp.ObjectOp):
     def _processEachModel(self, obj):
         shapeTups = []
         for base in self.model:
+            if hasattr(base, "Shape"):
+                env = PathUtils.getEnvelope(
+                    partshape=base.Shape, subshape=None, depthparams=self.depthparams
+                )
+                if env:
+                    shapeTups.append((env, False))
+        return shapeTups
+
+    # Method to handle each model as a whole, when no faces are selected
+    def _processEachBaseModel(self, obj):
+        shapeTups = []
+        for base in obj.Base:
+            if (
+                isinstance(base, tuple)
+                and len(base) == 2
+                and isinstance(base[1], tuple)
+                and base[1][0] == ""
+            ):
+                base = base[0]
+
             if hasattr(base, "Shape"):
                 env = PathUtils.getEnvelope(
                     partshape=base.Shape, subshape=None, depthparams=self.depthparams
