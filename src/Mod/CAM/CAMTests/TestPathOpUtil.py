@@ -814,24 +814,31 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         self.assertEqual(0, len(rEdges))
 
     def test47(self):
-        """Check offsetting multiple backwards inside edges."""
-        # This is exactly the same as test36 except that the wire is flipped to make
-        # sure it's orientation doesn't matter
+        """Check offsetting wire with multiple backwards inside edges, ie. a flipped wire."""
         obj = self.doc.getObjectsByLabel("offset-edge")[0]
-
         w = getWireInside(obj)
         length = 20 * math.cos(math.pi / 6)
 
-        # let's offset the other two legs
         lEdges = [
-            e
-            for e in w.Edges
+            e for e in w.Edges
             if not Path.Geom.isRoughly(e.Vertexes[0].Point.y, e.Vertexes[1].Point.y)
         ]
         self.assertEqual(2, len(lEdges))
 
+        # flip the wire
         w = Path.Geom.flipWire(Part.Wire(lEdges))
+        
+        # offset the flipped wire
+        # NOTE: depending on geometry, flipping the wire might require flipping 
+        # the boolean side (True -> False) to keep the offset "inside" the shape.
         wire = PathOpUtil.offsetWire(w, obj.Shape, 2, True)
+
+        # print actual wire info
+        print(f"debug: test47: wire has {len(wire.Edges)} edges")
+        for i, edge in enumerate(wire.Edges):
+            v0 = edge.Vertexes[0].Point
+            v1 = edge.Vertexes[1].Point
+            print(f" Edge[{i}]: v0={v0}, v1={v1}")
 
         x = length / 2 - 2 * math.cos(math.pi / 6)
         y = -5 - 2 * math.sin(math.pi / 6)
@@ -843,8 +850,10 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         self.assertEqual(0, len(rEdges))
 
         # offset the other way
-        wire = PathOpUtil.offsetWire(Part.Wire(lEdges), obj.Shape, 2, False)
+        # use 'w' (the flipped wire), not Part.Wire(lEdges)
+        wire = PathOpUtil.offsetWire(w, obj.Shape, 2, False)
 
+        # second offset: wire goes from -x to +x
         self.assertCoincide(Vector(-x, y, 0), wire.Edges[0].Vertexes[0].Point)
         self.assertCoincide(Vector(+x, y, 0), wire.Edges[-1].Vertexes[1].Point)
 
