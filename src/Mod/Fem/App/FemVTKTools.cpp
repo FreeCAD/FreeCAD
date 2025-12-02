@@ -170,6 +170,10 @@ void FemVTKTools::importVTKMesh(vtkSmartPointer<vtkDataSet> dataset, FemMesh* me
         std::vector<int> ids;
         fillMeshElementIds(cell, ids);
         switch (cell->GetCellType()) {
+            // 0D vertex
+            case VTK_VERTEX:
+                // we ignore it, internally we do not store separate data for a vertex
+                break;
             // 1D edges
             case VTK_LINE:  // seg2
                 meshds->AddEdgeWithID(ids[0], ids[1], iCell + 1);
