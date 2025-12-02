@@ -22,16 +22,16 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <BRepAdaptor_Curve.hxx>
-#include <BRep_Tool.hxx>
-#include <Precision.hxx>
-#include <ShapeExtend_Explorer.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopoDS.hxx>
-#include <TopTools_HSequenceOfShape.hxx>
-#include <QKeyEvent>
-#include <QMessageBox>
-
+# include <BRepAdaptor_Curve.hxx>
+# include <BRep_Tool.hxx>
+# include <Precision.hxx>
+# include <ShapeExtend_Explorer.hxx>
+# include <TopExp_Explorer.hxx>
+# include <TopoDS.hxx>
+# include <TopTools_HSequenceOfShape.hxx>
+# include <QKeyEvent>
+# include <QMessageBox>
+# include <QString>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -49,6 +49,7 @@
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
 #include <Gui/MDIView.h>
+#include "Utils.h"
 
 #include <Mod/Part/App/Part2DObject.h>
 
@@ -484,28 +485,6 @@ void DlgExtrusion::accept()
     };
 }
 
-namespace
-{
-QString getAutoGroupCommandStr(std::string name)
-// Helper function to get the python code to add the newly created object to the active Part object
-// if present
-{
-    App::Part* activePart = Gui::Application::Instance->activeView()->getActiveObject<App::Part*>(
-        "part"
-    );
-    if (activePart) {
-        QString activePartName = QString::fromLatin1(activePart->getNameInDocument());
-        QString objName = QString::fromLatin1(name.c_str());
-        return QStringLiteral(
-                   "App.ActiveDocument.getObject('%1\')."
-                   "addObject(App.ActiveDocument.getObject('%2\'))\n"
-        )
-            .arg(activePartName)
-            .arg(objName);
-    }
-    return QStringLiteral("# Object created at document root.");
-}
-}  // namespace
 
 void DlgExtrusion::apply()
 {
@@ -562,7 +541,8 @@ void DlgExtrusion::apply()
             }
 
             FCMD_OBJ_DOC_CMD(sourceObj, "addObject('Part::Extrusion','" << name << "')");
-            Gui::Command::runCommand(Gui::Command::Doc, getAutoGroupCommandStr(name).toUtf8());
+            QString qname=QString::fromUtf8(name.c_str());
+            Gui::Command::runCommand(Gui::Command::Doc, PartGui::getAutoGroupCommandStr(qname).toUtf8());
             auto newObj = sourceObj->getDocument()->getObject(name.c_str());
 
             this->writeParametersToFeature(*newObj, sourceObj);

@@ -394,19 +394,80 @@ CmdPartDesignSubShapeBinder::CmdPartDesignSubShapeBinder()
     sPixmap = "PartDesign_SubShapeBinder";
 }
 
+
+namespace
+{
+
+using ObjSet = std::set<App::DocumentObject*>;
+// Pure validation helper (no hidden deps).
+// Validates 'container' against the binding set to avoid cycles or self-inclusion.
+static bool checkContainer(App::DocumentObject* container, const ObjSet& valueSet)
+{
+    if (!container) {
+        return false;
+    }
+
+    if (valueSet.count(container)) {
+        return false;
+    }
+
+    auto inlist = container->getInListEx(true);
+    for (auto obj : valueSet) {
+        if (inlist.count(obj)) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+// Centralized container lookup with explicit parameters (no hidden deps).
+// Writes: container, parent, parentSub. Returns void; container==nullptr if none.
+static void findContainerForNewSubShapeBinder(App::Document* doc,
+                                              const ObjSet& valueSet,
+                                              App::DocumentObject*& container,
+                                              App::DocumentObject*& parent,
+                                              std::string& parentSub)
+{
+    container = nullptr;
+    if (!doc) {
+        parent = nullptr;
+        parentSub.clear();
+        return;
+    }
+
+    auto* view = Gui::Application::Instance ? Gui::Application::Instance->activeView() : nullptr;
+
+    // Try active Body first
+    if (view) {
+        if (auto* body = view->getActiveObject<PartDesign::Body*>(PDBODYKEY, &parent, &parentSub)) {
+            if (checkContainer(body, valueSet)) {
+                container = body;
+                return;
+            }
+        }
+        // Then active Part
+        if (auto* part = view->getActiveObject<App::Part*>(PARTKEY, &parent, &parentSub)) {
+            if (checkContainer(part, valueSet)) {
+                container = part;
+                return;
+            }
+        }
+    }
+}
+}  // anonymous namespace
+
 void CmdPartDesignSubShapeBinder::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    App::DocumentObject* topParent = nullptr;
+    App::DocumentObject* parent = nullptr;
     std::string parentSub;
     std::set<App::DocumentObject*> valueSet;
     std::map<App::DocumentObject*, std::vector<std::string>> values;
-    for (auto& sel : Gui::Selection().getCompleteSelection(Gui::ResolveMode::NoResolve)) {
-        if (!sel.pObject) {
-            continue;
-        }
-        auto& subs = values[sel.pObject];
+    for (auto &sel : Gui::Selection().getCompleteSelection(Gui::ResolveMode::NoResolve)) {
+        if (!sel.pObject) continue;
+        auto &subs = values[sel.pObject];
         if (sel.SubName && sel.SubName[0]) {
             subs.emplace_back(sel.SubName);
             valueSet.insert(sel.pObject->getSubObject(sel.SubName));
@@ -416,107 +477,64 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
         }
     }
 
-    auto checkContainer = [&](App::DocumentObject* container) {
-        // Check the potential container to add in the newly created binder.
-        // We check if the container or any of its parent objects is selected
-        // (i.e. for binding), and exclude the container to avoid cyclic
-        // reference.
-        if (!container) {
-            return false;
-        }
-        if (valueSet.count(container)) {
-            topParent = nullptr;
-            parentSub.clear();
-            return false;
-        }
-        auto inlist = container->getInListEx(true);
-        for (auto obj : valueSet) {
-            if (inlist.count(obj)) {
-                topParent = nullptr;
-                parentSub.clear();
-                return false;
-            }
-        }
-        return true;
-    };
-
-    std::string FeatName;
-    Gui::MDIView* activeView = Gui::Application::Instance->activeView();
     PartDesign::Body* pcActiveBody = nullptr;
-    if (activeView) {
-        pcActiveBody
-            = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY, &topParent, &parentSub);
-    }
-    if (!checkContainer(pcActiveBody)) {
-        pcActiveBody = nullptr;
-    }
-
     App::Part* pcActivePart = nullptr;
-    if (!pcActiveBody && activeView) {
-        pcActivePart = activeView->getActiveObject<App::Part*>(PARTKEY, &topParent, &parentSub);
-        if (!checkContainer(pcActivePart)) {
-            pcActivePart = nullptr;
-        }
-    }
 
-    FeatName = Gui::Command::getUniqueObjectName(
-        "Binder",
-        pcActiveBody ? static_cast<App::DocumentObject*>(pcActiveBody) : pcActivePart
-    );
+    App::DocumentObject* targetContainer = nullptr;
+    findContainerForNewSubShapeBinder(getDocument(), valueSet, targetContainer, parent, parentSub);
 
-    if (topParent) {
+    if (targetContainer && parent) {
         decltype(values) links;
-        for (auto& v : values) {
-            App::DocumentObject* obj = v.first;
+        for (auto &v : values) {
+            App::DocumentObject *obj = v.first;
             if (v.second.empty()) {
                 links.emplace(obj, v.second);
                 continue;
             }
-            for (auto& sub : v.second) {
+            for (auto &sub : v.second) {
                 auto link = obj;
                 auto linkSub = parentSub;
-                topParent->resolveRelativeLink(linkSub, link, sub);
-                if (link) {
+                parent->resolveRelativeLink(linkSub,link,sub);
+                if (link)
                     links[link].push_back(sub);
-                }
             }
         }
         values = std::move(links);
     }
 
-    PartDesign::SubShapeBinder* binder = nullptr;
+    // Identify concrete type for naming/creation convenience
+    pcActiveBody = dynamic_cast<PartDesign::Body*>(targetContainer);
+    if (!pcActiveBody) {
+        pcActivePart = dynamic_cast<App::Part*>(targetContainer);
+    }
+
+    std::string FeatName = Gui::Command::getUniqueObjectName(
+        "Binder",
+        pcActiveBody ? static_cast<App::DocumentObject*>(pcActiveBody) : pcActivePart);
+
+    PartDesign::SubShapeBinder *binder = nullptr;
     try {
         openCommand(QT_TRANSLATE_NOOP("Command", "Create Sub-Shape Binder"));
         if (pcActiveBody) {
-            FCMD_OBJ_CMD(pcActiveBody, "newObject('PartDesign::SubShapeBinder','" << FeatName << "')");
+            FCMD_OBJ_CMD(pcActiveBody,"newObject('PartDesign::SubShapeBinder','" << FeatName << "')");
+            binder = dynamic_cast<PartDesign::SubShapeBinder*>(pcActiveBody->getObject(FeatName.c_str()));
+        } else {
+            doCommand(Command::Doc,
+                    "App.ActiveDocument.addObject('PartDesign::SubShapeBinder','%s')",FeatName.c_str());
             binder = dynamic_cast<PartDesign::SubShapeBinder*>(
-                pcActiveBody->getObject(FeatName.c_str())
-            );
-        }
-        else {
-            doCommand(
-                Command::Doc,
-                "App.ActiveDocument.addObject('PartDesign::SubShapeBinder','%s')",
-                FeatName.c_str()
-            );
-            binder = dynamic_cast<PartDesign::SubShapeBinder*>(
-                App::GetApplication().getActiveDocument()->getObject(FeatName.c_str())
-            );
+                    App::GetApplication().getActiveDocument()->getObject(FeatName.c_str()));
             if (pcActivePart) {
-                Gui::cmdAppObject(
-                    pcActivePart,
-                    std::ostringstream() << "addObject(" << Gui::Command::getObjectCmd(binder) << ")"
-                );
+                Gui::cmdAppObject(pcActivePart,
+                                  std::ostringstream()
+                                      << "addObject(" << Gui::Command::getObjectCmd(binder) << ")");
             }
         }
-        if (!binder) {
+        if (!binder)
             return;
-        }
         binder->setLinks(std::move(values));
         updateActive();
         commitCommand();
-    }
-    catch (Base::Exception& e) {
+    } catch (Base::Exception &e) {
         e.reportException();
         QMessageBox::critical(
             Gui::getMainWindow(),
