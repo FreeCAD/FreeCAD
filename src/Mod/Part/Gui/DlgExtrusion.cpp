@@ -22,16 +22,16 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <BRepAdaptor_Curve.hxx>
-# include <BRep_Tool.hxx>
-# include <Precision.hxx>
-# include <ShapeExtend_Explorer.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopoDS.hxx>
-# include <TopTools_HSequenceOfShape.hxx>
-# include <QKeyEvent>
-# include <QMessageBox>
-# include <QString>
+#include <BRepAdaptor_Curve.hxx>
+#include <BRep_Tool.hxx>
+#include <Precision.hxx>
+#include <ShapeExtend_Explorer.hxx>
+#include <TopExp_Explorer.hxx>
+#include <TopoDS.hxx>
+#include <TopTools_HSequenceOfShape.hxx>
+#include <QKeyEvent>
+#include <QMessageBox>
+#include <QString>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -541,7 +541,7 @@ void DlgExtrusion::apply()
             }
 
             FCMD_OBJ_DOC_CMD(sourceObj, "addObject('Part::Extrusion','" << name << "')");
-            QString qname=QString::fromUtf8(name.c_str());
+            QString qname = QString::fromUtf8(name.c_str());
             Gui::Command::runCommand(Gui::Command::Doc, PartGui::getAutoGroupCommandStr(qname).toUtf8());
             auto newObj = sourceObj->getDocument()->getObject(name.c_str());
 
