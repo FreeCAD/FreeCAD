@@ -727,10 +727,14 @@ class _Wall(ArchComponent.Component):
         if not base and (self.noWidths or self.noHeight):
             print("Wall object.Label : ", obj.Label)
             if self.noWidths:
-                print("- Found 0 in Width, OverrideWidth and return width 0 from Base ArchSketch (if using).")
+                print(
+                    "- Found 0 in Width, OverrideWidth and return width 0 from Base ArchSketch (if using)."
+                )
             if self.noHeight:
                 print("- Found 0 in Height.")
-            print("- In this case, the Wall object would have no volume if  1) its Base has no object which has Solid and  2) its Additions has no object etc.")
+            print(
+                "- In this case, the Wall object would have no volume if  1) its Base has no object which has Solid and  2) its Additions has no object etc."
+            )
         if not base:
             # FreeCAD.Console.PrintError(translate("Arch","Error: Invalid base object")+"\n")
             # return
@@ -998,7 +1002,7 @@ class _Wall(ArchComponent.Component):
                 # i.e. return None.
                 # Also should check Height.
                 self.noWidths = True
-                #return None
+                # return None
 
         # Set 'default' width - for filling in any item in the list == 0 or None
         if obj.Width.Value:
