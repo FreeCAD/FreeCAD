@@ -34,16 +34,15 @@
 #include "Utils.h"
 
 
-FC_LOG_LEVEL_INIT("PartGui",true,true)
-
-
+FC_LOG_LEVEL_INIT("PartGui", true, true)
 
 
 //===========================================================================
 // Helper for Body
 //===========================================================================
 
-namespace PartGui {
+namespace PartGui
+{
 
 QString getAutoGroupCommandStr(bool useActiveBody)
 // Helper function to get the python code to add the newly created object to the active Part/Body
@@ -51,10 +50,14 @@ QString getAutoGroupCommandStr(bool useActiveBody)
 {
     App::GeoFeature* activeObj = nullptr;
     if (useActiveBody) {
-        activeObj = Gui::Application::Instance->activeView()->getActiveObject<App::GeoFeature*>(PDBODYKEY);
+        activeObj = Gui::Application::Instance->activeView()->getActiveObject<App::GeoFeature*>(
+            PDBODYKEY
+        );
     }
     if (!activeObj) {
-        activeObj = Gui::Application::Instance->activeView()->getActiveObject<App::GeoFeature*>(PARTKEY);
+        activeObj = Gui::Application::Instance->activeView()->getActiveObject<App::GeoFeature*>(
+            PARTKEY
+        );
     }
     if (activeObj) {
         QString activeName = QString::fromLatin1(activeObj->getNameInDocument());
@@ -67,16 +70,19 @@ QString getAutoGroupCommandStr(QString objectName)
 // Helper function to get the python code to add the newly created object to the active Part object
 // if present
 {
-    App::Part* activePart =
-        Gui::Application::Instance->activeView()->getActiveObject<App::Part*>("part");
+    App::Part* activePart = Gui::Application::Instance->activeView()->getActiveObject<App::Part*>(
+        "part"
+    );
     if (activePart) {
         QString activeObjectName = QString::fromLatin1(activePart->getNameInDocument());
-        return QStringLiteral("App.ActiveDocument.getObject('%1\')."
-                              "addObject(App.ActiveDocument.getObject('%2\'))\n")
+        return QStringLiteral(
+                   "App.ActiveDocument.getObject('%1\')."
+                   "addObject(App.ActiveDocument.getObject('%2\'))\n"
+        )
             .arg(activeObjectName, objectName);
     }
     return QStringLiteral("# Object %1 created at document root").arg(objectName);
 }
 
 
-} /* PartDesignGui */
+}  // namespace PartGui

@@ -36,20 +36,26 @@
 //===========================================================================
 // Utils
 //===========================================================================
-namespace {
-QString getAutoGroupCommandStr()
-// Helper function to get the python code to add the newly created object to the active Part object if present
+namespace
 {
-    App::Part* activePart = Gui::Application::Instance->activeView()->getActiveObject<App::Part*>("part");
+QString getAutoGroupCommandStr()
+// Helper function to get the python code to add the newly created object to the active Part object
+// if present
+{
+    App::Part* activePart = Gui::Application::Instance->activeView()->getActiveObject<App::Part*>(
+        "part"
+    );
     if (activePart) {
         QString activePartName = QString::fromLatin1(activePart->getNameInDocument());
-        return QStringLiteral("App.ActiveDocument.getObject('%1\')."
-            "addObject(App.ActiveDocument.ActiveObject)\n")
+        return QStringLiteral(
+                   "App.ActiveDocument.getObject('%1\')."
+                   "addObject(App.ActiveDocument.ActiveObject)\n"
+        )
             .arg(activePartName);
     }
     return QStringLiteral("# Object created at document root.");
 }
-}
+}  // namespace
 
 //===========================================================================
 // Part_Cylinder
@@ -77,8 +83,8 @@ void CmdPartCylinder::activated(int iMsg)
 
     runCommand(Doc, "App.ActiveDocument.addObject(\"Part::Cylinder\",\"Cylinder\")");
     cmd = QStringLiteral("App.ActiveDocument.ActiveObject.Label = \"%1\"")
-        .arg(qApp->translate("CmdPartCylinder","Cylinder"));
-    runCommand(Doc,cmd.toUtf8());
+              .arg(qApp->translate("CmdPartCylinder", "Cylinder"));
+    runCommand(Doc, cmd.toUtf8());
     runCommand(Doc, getAutoGroupCommandStr().toUtf8());
     commitCommand();
     updateActive();
@@ -121,8 +127,8 @@ void CmdPartBox::activated(int iMsg)
 
     runCommand(Doc, "App.ActiveDocument.addObject(\"Part::Box\",\"Box\")");
     cmd = QStringLiteral("App.ActiveDocument.ActiveObject.Label = \"%1\"")
-        .arg(qApp->translate("CmdPartBox","Cube"));
-    runCommand(Doc,cmd.toUtf8());
+              .arg(qApp->translate("CmdPartBox", "Cube"));
+    runCommand(Doc, cmd.toUtf8());
     runCommand(Doc, getAutoGroupCommandStr().toUtf8());
     commitCommand();
     updateActive();
@@ -165,8 +171,8 @@ void CmdPartSphere::activated(int iMsg)
 
     runCommand(Doc, "App.ActiveDocument.addObject(\"Part::Sphere\",\"Sphere\")");
     cmd = QStringLiteral("App.ActiveDocument.ActiveObject.Label = \"%1\"")
-        .arg(qApp->translate("CmdPartSphere","Sphere"));
-    runCommand(Doc,cmd.toUtf8());
+              .arg(qApp->translate("CmdPartSphere", "Sphere"));
+    runCommand(Doc, cmd.toUtf8());
     runCommand(Doc, getAutoGroupCommandStr().toUtf8());
     commitCommand();
     updateActive();
@@ -209,8 +215,8 @@ void CmdPartCone::activated(int iMsg)
 
     runCommand(Doc, "App.ActiveDocument.addObject(\"Part::Cone\",\"Cone\")");
     cmd = QStringLiteral("App.ActiveDocument.ActiveObject.Label = \"%1\"")
-        .arg(qApp->translate("CmdPartCone","Cone"));
-    runCommand(Doc,cmd.toUtf8());
+              .arg(qApp->translate("CmdPartCone", "Cone"));
+    runCommand(Doc, cmd.toUtf8());
     runCommand(Doc, getAutoGroupCommandStr().toUtf8());
     commitCommand();
     updateActive();
@@ -253,8 +259,8 @@ void CmdPartTorus::activated(int iMsg)
 
     runCommand(Doc, "App.ActiveDocument.addObject(\"Part::Torus\",\"Torus\")");
     cmd = QStringLiteral("App.ActiveDocument.ActiveObject.Label = \"%1\"")
-        .arg(qApp->translate("CmdPartTorus","Torus"));
-    runCommand(Doc,cmd.toUtf8());
+              .arg(qApp->translate("CmdPartTorus", "Torus"));
+    runCommand(Doc, cmd.toUtf8());
     runCommand(Doc, getAutoGroupCommandStr().toUtf8());
     commitCommand();
     updateActive();
