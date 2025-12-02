@@ -55,7 +55,7 @@
 #include <BRepTopAdaptor_FClass2d.hxx>
 #include <BRep_Builder.hxx>
 #include <BRep_Tool.hxx>
-#include <Bnd_B3d.hxx>
+#include <Bnd_B3.hxx>
 #include <Bnd_Box.hxx>
 #include <ElSLib.hxx>
 #include <GCPnts_UniformDeflection.hxx>
@@ -3462,7 +3462,7 @@ namespace
         double dist = GEOMUtils::GetMinDistance( plane, allFacesComp, pPlane, pFaces );
         if ( dist < 0 )
         {
-          Bnd_B3d bb;
+          Bnd_B3<double> bb;
           gp_XYZ corner;
           for ( int i = 0; i < 2; ++i ) {
             corner.SetCoord( 1, sP[ i*3 ]);
