@@ -77,31 +77,23 @@ class ObjectOp(PathOp.ObjectOp):
 
         wires = decomposewires
         for wire in wires:
-            # offset = wire
-
             # reorder the wire
             if hasattr(obj, "StartVertex"):
                 start_idx = obj.StartVertex
             edges = wire.Edges
 
-            # edges = copy.copy(PathOpUtil.orientWire(offset, forward).Edges)
-            # Path.Log.track("wire: {} offset: {}".format(len(wire.Edges), len(edges)))
-            # edges = Part.sortEdges(edges)[0]
-            # Path.Log.track("edges: {}".format(len(edges)))
-
             lastPoint = None
             reverseDir = False
-            dualDir = False
+            biDir = False
 
-            if hasattr(obj, "Direction"):
-                if obj.Direction == "Reversed":
-                    reverseDir = True
-                if obj.Direction == "Dual":
-                    dualDir = True
+            if getattr(obj, "Reverse", False):
+                reverseDir = True
+            if hasattr(obj, "Pattern") and obj.Pattern == "Bidirectional":
+                biDir = True
 
             for z in zValues:
                 Path.Log.debug(z)
-                if lastPoint and (wire.isClosed() or dualDir):
+                if lastPoint and (wire.isClosed() or biDir):
                     # Add step down to next Z for closed profile
                     self.appendCommand(
                         Path.Command("G01", {"X": lastPoint.x, "Y": lastPoint.y, "Z": lastPoint.z}),
@@ -135,7 +127,7 @@ class ObjectOp(PathOp.ObjectOp):
                             edge.valueAt(edge.LastParameter),
                         )
                     )
-                    if first and (not lastPoint or (not wire.isClosed() and not dualDir)):
+                    if first and (not lastPoint or (not wire.isClosed() and not biDir)):
                         Path.Log.debug("processing first edge entry")
                         # Add moves to first point of wire
                         lastPoint = edge.Vertexes[sIndex].Point
@@ -180,7 +172,7 @@ class ObjectOp(PathOp.ObjectOp):
                         # Add gcode for edge
                         self.appendCommand(cmd, z, relZ, self.horizFeed)
 
-                if dualDir:
+                if biDir:
                     reverseDir = not reverseDir
 
             self.commandlist.append(
