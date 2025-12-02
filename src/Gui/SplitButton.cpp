@@ -57,6 +57,6 @@ SplitButton::SplitButton(const QString& text, QWidget* parent)
     connect(m_menu, &QMenu::triggered, this, &SplitButton::triggered);
 
     // Styling to make it look like a single split button
-    m_main->setProperty("splitRole", "main");
-    m_menuButton->setProperty("splitRole", "menu");
+    m_main->setProperty("splitRole", QString::fromLatin1("main"));
+    m_menuButton->setProperty("splitRole", QString::fromLatin1("menu"));
 }
