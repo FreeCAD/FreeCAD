@@ -822,7 +822,7 @@ bool TaskBoxPrimitives::setPrimitive(App::DocumentObject* obj)
         Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
         switch (ui->widgetStack->currentIndex()) {
             case 1:  // box
-                cmd = fmt::format(
+                cmd = std::format(
                     "{0}.Length='{1}'\n"
                     "{0}.Width='{2}'\n"
                     "{0}.Height='{3}'\n",
@@ -834,7 +834,7 @@ bool TaskBoxPrimitives::setPrimitive(App::DocumentObject* obj)
                 break;
 
             case 2:  // cylinder
-                cmd = fmt::format(
+                cmd = std::format(
                     "{0}.Radius='{1}'\n"
                     "{0}.Height='{2}'\n"
                     "{0}.Angle='{3}'\n"
@@ -850,7 +850,7 @@ bool TaskBoxPrimitives::setPrimitive(App::DocumentObject* obj)
                 break;
 
             case 3:  // cone
-                cmd = fmt::format(
+                cmd = std::format(
                     "{0}.Radius1='{1}'\n"
                     "{0}.Radius2='{2}'\n"
                     "{0}.Height='{3}'\n"
@@ -864,7 +864,7 @@ bool TaskBoxPrimitives::setPrimitive(App::DocumentObject* obj)
                 break;
 
             case 4:  // sphere
-                cmd = fmt::format(
+                cmd = std::format(
                     "{0}.Radius='{1}'\n"
                     "{0}.Angle1='{2}'\n"
                     "{0}.Angle2='{3}'\n"
@@ -877,7 +877,7 @@ bool TaskBoxPrimitives::setPrimitive(App::DocumentObject* obj)
                 );
                 break;
             case 5:  // ellipsoid
-                cmd = fmt::format(
+                cmd = std::format(
                     "{0}.Radius1='{1}'\n"
                     "{0}.Radius2='{2}'\n"
                     "{0}.Radius3='{3}'\n"
@@ -895,7 +895,7 @@ bool TaskBoxPrimitives::setPrimitive(App::DocumentObject* obj)
                 break;
 
             case 6:  // torus
-                cmd = fmt::format(
+                cmd = std::format(
                     "{0}.Radius1='{1}'\n"
                     "{0}.Radius2='{2}'\n"
                     "{0}.Angle1='{3}'\n"
@@ -910,7 +910,7 @@ bool TaskBoxPrimitives::setPrimitive(App::DocumentObject* obj)
                 );
                 break;
             case 7:  // prism
-                cmd = fmt::format(
+                cmd = std::format(
                     "{0}.Polygon={1}\n"
                     "{0}.Circumradius='{2}'\n"
                     "{0}.Height='{3}'\n"
@@ -950,7 +950,7 @@ bool TaskBoxPrimitives::setPrimitive(App::DocumentObject* obj)
                     );
                     return false;
                 }
-                cmd = fmt::format(
+                cmd = std::format(
                     "{0}.Xmin='{1}'\n"
                     "{0}.Ymin='{2}'\n"
                     "{0}.Zmin='{3}'\n"
