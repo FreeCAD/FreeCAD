@@ -721,14 +721,22 @@ class _Wall(ArchComponent.Component):
                                 translate("Arch", "This mesh is an invalid solid") + "\n"
                             )
                             obj.Base.ViewObject.show()
+
+        # Check if there is base, and if width and height is provided or not
+        # Provide users message below to check the setting of the Wall object
+        if not base and (self.noWidths or self.noHeight):
+            print("Wall object.Label : ", obj.Label)
+            if self.noWidths:
+                print("- Found 0 in Width, OverrideWidth and return width 0 from Base ArchSketch (if using).")
+            if self.noHeight:
+                print("- Found 0 in Height.")
+            print("- In this case, the Wall object would have no volume if  1) its Base has no object which has Solid and  2) its Additions has no object etc.")
         if not base:
             # FreeCAD.Console.PrintError(translate("Arch","Error: Invalid base object")+"\n")
             # return
             # walls can be made of only a series of additions and have no base shape
             base = Part.Shape()
-
         base = self.processSubShapes(obj, base, pl)
-
         self.applyShape(obj, base, pl)
 
         # count blocks
@@ -936,6 +944,9 @@ class _Wall(ArchComponent.Component):
                 return data
         length = obj.Length.Value
         # TODO currently layers were not supported when len(basewires) > 0	##( or 1 ? )
+
+        self.noWidths = False
+        self.noHeight = False
         width = 0
         # Get width of each edge segment from Base Objects if they store it
         # (Adding support in SketchFeaturePython, DWire...)
@@ -975,16 +986,36 @@ class _Wall(ArchComponent.Component):
             elif obj.Width:
                 widths = [obj.Width.Value]
             else:
-                # having no width is valid for walls so the user doesn't need to be warned
-                # it just disables extrusions and return none
-                # print ("Width & OverrideWidth & base.getWidths() should not be all 0 or None or [] empty list ")
-                return None
+                ## having no width is valid for walls so the user doesn't need to be warned
+                ## it just disables extrusions and return none
+                ## print ("Width & OverrideWidth & base.getWidths() should not be all 0 or None or [] empty list ")
+                #
+                # Having no width is valid for walls for a few cases, e.g.-
+                # - it has Base with solid
+                # - it has Additions
+                # A message could be provided in the Report panel for users
+                # to note if this is intended, then ignore extrusion afterwards,
+                # i.e. return None.
+                # Also should check Height.
+                self.noWidths = True
+                #return None
 
         # Set 'default' width - for filling in any item in the list == 0 or None
         if obj.Width.Value:
             width = obj.Width.Value
         else:
             width = 200  # 'Default' width value
+
+        # Check height
+        height = obj.Height.Value
+        if not height:
+            height = self.getParentHeight(obj)
+        if not height:
+            self.noHeight = True
+
+        # Check width and height is provided or not
+        if self.noWidths or self.noHeight:
+            return None
 
         # Get align of each edge segment from Base Objects if they store it.
         # (Adding support in SketchFeaturePython, DWire...)
@@ -1066,11 +1097,6 @@ class _Wall(ArchComponent.Component):
         # Set 'default' offset - for filling in any item in the list == 0 or None
         offset = obj.Offset.Value  # could be 0
 
-        height = obj.Height.Value
-        if not height:
-            height = self.getParentHeight(obj)
-        if not height:
-            return None
         if obj.Normal == Vector(0, 0, 0):
             if obj.Base and hasattr(obj.Base, "Shape"):
                 normal = DraftGeomUtils.get_shape_normal(obj.Base.Shape)
@@ -1180,7 +1206,6 @@ class _Wall(ArchComponent.Component):
                                     (Part.LineSegment, Part.Circle, Part.ArcOfCircle, Part.Ellipse),
                                 ):
                                     skGeomEdgesI = geom.Geometry.toShape()
-
                                     skGeomEdges.append(skGeomEdgesI)
                         for cluster in Part.getSortedClusters(skGeomEdges):
                             clusterTransformed = []
@@ -1190,7 +1215,6 @@ class _Wall(ArchComponent.Component):
                                 edge.Placement = edge.Placement.multiply(
                                     skPlacement
                                 )  ## TODO add attribute to skip Transform...
-
                                 clusterTransformed.append(edge)
                             # Only use cluster of edges rather than turning into wire
                             self.basewires.append(clusterTransformed)
