@@ -64,6 +64,29 @@ class CommandInsertNewPart:
         return UtilsAssembly.isAssemblyCommandActive()
 
     def Activated(self):
+        # Check if document is saved before proceeding
+        doc = App.ActiveDocument
+        if not doc.FileName:
+            msgBox = QtWidgets.QMessageBox()
+            msgBox.setIcon(QtWidgets.QMessageBox.Warning)
+            msgBox.setText(
+                translate(
+                    "Assembly",
+                    "The assembly document must be saved before inserting a new part.",
+                )
+            )
+            msgBox.setWindowTitle(translate("Assembly", "Save Document"))
+            saveButton = msgBox.addButton(
+                translate("Assembly", "Save"), QtWidgets.QMessageBox.AcceptRole
+            )
+            msgBox.addButton(QtWidgets.QMessageBox.Cancel)
+            msgBox.exec_()
+            if msgBox.clickedButton() == saveButton:
+                if not Gui.getDocument(doc).saveAs():
+                    return
+            else:
+                return
+
         panel = TaskAssemblyNewPart()
         dialog = Gui.Control.showDialog(panel)
         if dialog is not None:
@@ -181,9 +204,9 @@ class TaskAssemblyNewPart(JointObject.TaskAssemblyCreateJoint):
             cmds = UtilsAssembly.generatePropertySettings(self.joint)
             Gui.doCommand(cmds)
 
-        self.createPart()
-
         self.deactivate()
+
+        self.createPart()
 
         App.closeActiveTransaction()
 
