@@ -820,16 +820,17 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         length = 20 * math.cos(math.pi / 6)
 
         lEdges = [
-            e for e in w.Edges
+            e
+            for e in w.Edges
             if not Path.Geom.isRoughly(e.Vertexes[0].Point.y, e.Vertexes[1].Point.y)
         ]
         self.assertEqual(2, len(lEdges))
 
         # flip the wire
         w = Path.Geom.flipWire(Part.Wire(lEdges))
-        
+
         # offset the flipped wire
-        # NOTE: depending on geometry, flipping the wire might require flipping 
+        # NOTE: depending on geometry, flipping the wire might require flipping
         # the boolean side (True -> False) to keep the offset "inside" the shape.
         wire = PathOpUtil.offsetWire(w, obj.Shape, 2, True)
 

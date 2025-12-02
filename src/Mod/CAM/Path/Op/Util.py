@@ -197,7 +197,6 @@ def offsetWire(wire, base, offset, forward, Side=None):
                 print(f"cannot make face: {e}")
             return True  # assume clockwise if we cannot make a face
 
-
     if debug_build:
         print(f"wire orientation - clockwise: {isWireClockwise(wire)}")
         print(f"inside parameter: {forward}")
@@ -218,7 +217,7 @@ def offsetWire(wire, base, offset, forward, Side=None):
         normalizedForward = not forward
 
     Path.Log.track("offsetWire")
-    
+
     # special handling for single-edge circular wires
     if len(wire.Edges) == 1:
         edge = wire.Edges[0]
