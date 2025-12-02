@@ -923,7 +923,6 @@ bool CmdPartCompCompoundTools::isActive()
 }
 
 
-
 //===========================================================================
 // Part_Compound
 //===========================================================================
@@ -974,7 +973,7 @@ void CmdPartCompound::activated(int iMsg)
     str << "]";
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Compound"));
-    doCommand(Doc, "obj = App.activeDocument().addObject(\"Part::Compound\",\"%s\")",FeatName.c_str());
+    doCommand(Doc, "obj = App.activeDocument().addObject(\"Part::Compound\",\"%s\")", FeatName.c_str());
     doCommand(Doc, PartGui::getAutoGroupCommandStr().toUtf8());
     runCommand(Doc, str.str().c_str());
     updateActive();

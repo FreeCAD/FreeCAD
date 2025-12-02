@@ -423,11 +423,13 @@ static bool checkContainer(App::DocumentObject* container, const ObjSet& valueSe
 
 // Centralized container lookup with explicit parameters (no hidden deps).
 // Writes: container, parent, parentSub. Returns void; container==nullptr if none.
-static void findContainerForNewSubShapeBinder(App::Document* doc,
-                                              const ObjSet& valueSet,
-                                              App::DocumentObject*& container,
-                                              App::DocumentObject*& parent,
-                                              std::string& parentSub)
+static void findContainerForNewSubShapeBinder(
+    App::Document* doc,
+    const ObjSet& valueSet,
+    App::DocumentObject*& container,
+    App::DocumentObject*& parent,
+    std::string& parentSub
+)
 {
     container = nullptr;
     if (!doc) {
@@ -465,9 +467,11 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
     std::string parentSub;
     std::set<App::DocumentObject*> valueSet;
     std::map<App::DocumentObject*, std::vector<std::string>> values;
-    for (auto &sel : Gui::Selection().getCompleteSelection(Gui::ResolveMode::NoResolve)) {
-        if (!sel.pObject) continue;
-        auto &subs = values[sel.pObject];
+    for (auto& sel : Gui::Selection().getCompleteSelection(Gui::ResolveMode::NoResolve)) {
+        if (!sel.pObject) {
+            continue;
+        }
+        auto& subs = values[sel.pObject];
         if (sel.SubName && sel.SubName[0]) {
             subs.emplace_back(sel.SubName);
             valueSet.insert(sel.pObject->getSubObject(sel.SubName));
@@ -485,18 +489,19 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
 
     if (targetContainer && parent) {
         decltype(values) links;
-        for (auto &v : values) {
-            App::DocumentObject *obj = v.first;
+        for (auto& v : values) {
+            App::DocumentObject* obj = v.first;
             if (v.second.empty()) {
                 links.emplace(obj, v.second);
                 continue;
             }
-            for (auto &sub : v.second) {
+            for (auto& sub : v.second) {
                 auto link = obj;
                 auto linkSub = parentSub;
-                parent->resolveRelativeLink(linkSub,link,sub);
-                if (link)
+                parent->resolveRelativeLink(linkSub, link, sub);
+                if (link) {
                     links[link].push_back(sub);
+                }
             }
         }
         values = std::move(links);
@@ -510,31 +515,42 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
 
     std::string FeatName = Gui::Command::getUniqueObjectName(
         "Binder",
-        pcActiveBody ? static_cast<App::DocumentObject*>(pcActiveBody) : pcActivePart);
+        pcActiveBody ? static_cast<App::DocumentObject*>(pcActiveBody) : pcActivePart
+    );
 
-    PartDesign::SubShapeBinder *binder = nullptr;
+    PartDesign::SubShapeBinder* binder = nullptr;
     try {
         openCommand(QT_TRANSLATE_NOOP("Command", "Create Sub-Shape Binder"));
         if (pcActiveBody) {
-            FCMD_OBJ_CMD(pcActiveBody,"newObject('PartDesign::SubShapeBinder','" << FeatName << "')");
-            binder = dynamic_cast<PartDesign::SubShapeBinder*>(pcActiveBody->getObject(FeatName.c_str()));
-        } else {
-            doCommand(Command::Doc,
-                    "App.ActiveDocument.addObject('PartDesign::SubShapeBinder','%s')",FeatName.c_str());
+            FCMD_OBJ_CMD(pcActiveBody, "newObject('PartDesign::SubShapeBinder','" << FeatName << "')");
             binder = dynamic_cast<PartDesign::SubShapeBinder*>(
-                    App::GetApplication().getActiveDocument()->getObject(FeatName.c_str()));
+                pcActiveBody->getObject(FeatName.c_str())
+            );
+        }
+        else {
+            doCommand(
+                Command::Doc,
+                "App.ActiveDocument.addObject('PartDesign::SubShapeBinder','%s')",
+                FeatName.c_str()
+            );
+            binder = dynamic_cast<PartDesign::SubShapeBinder*>(
+                App::GetApplication().getActiveDocument()->getObject(FeatName.c_str())
+            );
             if (pcActivePart) {
-                Gui::cmdAppObject(pcActivePart,
-                                  std::ostringstream()
-                                      << "addObject(" << Gui::Command::getObjectCmd(binder) << ")");
+                Gui::cmdAppObject(
+                    pcActivePart,
+                    std::ostringstream() << "addObject(" << Gui::Command::getObjectCmd(binder) << ")"
+                );
             }
         }
-        if (!binder)
+        if (!binder) {
             return;
+        }
         binder->setLinks(std::move(values));
         updateActive();
         commitCommand();
-    } catch (Base::Exception &e) {
+    }
+    catch (Base::Exception& e) {
         e.reportException();
         QMessageBox::critical(
             Gui::getMainWindow(),
