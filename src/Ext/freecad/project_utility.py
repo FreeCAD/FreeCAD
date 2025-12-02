@@ -1,22 +1,43 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2022-2023 FreeCAD Project Association                   *
+# *   Copyright (c) 2023 Werner Mayer                                       *
+# *                                                                         *
+# *   This file is part of FreeCAD.                                         *
+# *                                                                         *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
+# *                                                                         *
+# ***************************************************************************
 
-# (c) 2023 Werner Mayer LGPL
+"""
+Document handling module.
 
-__title__="Document handling module"
-__author__ = "Werner Mayer"
-__url__ = "https://www.freecad.org"
-__doc__ = "Tools for extracting or creating project files"
+Tools for extracting or creating project files.
+"""
 
 
 import os
 import xml.sax
 import xml.sax.handler
-import xml.sax.xmlreader
 import zipfile
 
 # SAX handler to parse the Document.xml
 class DocumentHandler(xml.sax.handler.ContentHandler):
-    """ Parse content of Document.xml or GuiDocument.xml """
+    """Parse content of Document.xml or GuiDocument.xml."""
+
     def __init__(self, dirname):
         """ Init parser """
         super().__init__()
@@ -35,7 +56,8 @@ class DocumentHandler(xml.sax.handler.ContentHandler):
         return
 
 def extractDocument(filename, outpath):
-    """ Extract files from project archive """
+    """Extract files from project archive."""
+
     zfile = zipfile.ZipFile(filename)
     files = zfile.namelist()
 
@@ -53,7 +75,7 @@ def extractDocument(filename, outpath):
         output.close()
 
 def createDocument(filename, outpath):
-    """ Create project archive """
+    """Create project archive."""
     files = getFilesList(filename)
     dirname = os.path.dirname(filename)
     guixml = os.path.join(dirname, "GuiDocument.xml")
@@ -67,7 +89,7 @@ def createDocument(filename, outpath):
     compress.close()
 
 def getFilesList(filename):
-    """ Determine list of files referenced in a Document.xml or GuiDocument.xml """
+    """Determine list of files referenced in a Document.xml or GuiDocument.xml."""
     dirname = os.path.dirname(filename)
     handler = DocumentHandler(dirname)
     parser = xml.sax.make_parser()
