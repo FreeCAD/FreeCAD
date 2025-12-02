@@ -21,10 +21,11 @@
  *                                                                          *
  ***************************************************************************/
 
-#pragma once
-
+#ifndef PARTGUI_UTILS_H
+#define PARTGUI_UTILS_H
 namespace PartGui
 {
-QString getAutoGroupCommandStr(bool useActiveBody = true);
-QString getAutoGroupCommandStr(QString objectName);
+QString PartGuiExport getAutoGroupCommandStr(bool useActiveBody = true);
+QString PartGuiExport getAutoGroupCommandStr(QString objectName);
 }  // namespace PartGui
+#endif
