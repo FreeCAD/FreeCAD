@@ -135,7 +135,7 @@ def RefsFromStrList(strings, document):
 
 
 def GetSelectionAsLinkSubList():
-    sel = Gui.Selection.getSelectionEx()
+    sel = Gui.Selection.getSelectionEx("", 0)
     result = []
     for selobj in sel:
         for subname in selobj.SubElementNames:
@@ -372,7 +372,7 @@ class AttachmentEditorTaskPanel(FrozenClass):
             self.i_active_ref = -1
             self.auto_next = False
 
-        Gui.Selection.addObserver(self)
+        Gui.Selection.addObserver(self, 0)
 
         self.updatePreview()
         self.updateRefButtons()
