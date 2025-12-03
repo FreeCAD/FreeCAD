@@ -3417,7 +3417,7 @@ void createNewConstraintsForTrim(
         }
         // We have already transferred all constraints on endpoints to the new pieces.
         // If there is still any left, this means one of the remaining pieces was degenerate.
-        if (!con->involvesGeoIdAndPosId(GeoId, PointPos::none)) {
+        if (!(con->Type == Angle || con->involvesGeoIdAndPosId(GeoId, PointPos::none))) {
             continue;
         }
         // constraint has not yet been changed
@@ -3693,8 +3693,7 @@ bool SketchObject::deriveConstraintsForPieces(
         case Vertical:
         case Parallel: {
             transferToAll = geo->is<Part::GeomLineSegment>();
-            break;
-        }
+        } break;
         case Tangent:
         case Perpendicular: {
             if (geo->is<Part::GeomLineSegment>()) {
@@ -3728,9 +3727,53 @@ bool SketchObject::deriveConstraintsForPieces(
                     return true;
                 }
             }
+        } break;
+        case Angle: {
+            const auto [thirdGeo, thirdPos] = con->getElement(2);
+            if (thirdGeo == oldId) {
+                // TODO: transfer to a coincident point,
+                // is it possible to do it somewhere else and avoid?
+                std::vector<int> GeoIdList;
+                std::vector<PointPos> PosIdList;
+                getDirectlyCoincidentPoints(thirdGeo, thirdPos, GeoIdList, PosIdList);
+                if (GeoIdList.size() <= 1) {
+                    // TODO: Even in this case we can add a point
+                    return false;
+                }
 
-            break;
-        }
+                // TODO: transfer only to the curve that actually intersects
+                for (auto& newId : newIds) {
+                    Constraint* trans = con->copy();
+                    trans->substituteIndexAndPos(GeoIdList[0], PosIdList[0], GeoIdList[1], PosIdList[1]);
+                    trans->substituteIndex(oldId, newId);
+                    newConstraints.push_back(trans);
+                }
+
+                return true;
+            }
+            else if (thirdGeo != GeoEnum::GeoUndef) {
+                // Angle via point but the point won't change, can transfer to all or first
+                // TODO: transfer only to the curve that actually intersects
+                transferToAll = true;
+                break;
+            }
+            else if (std::ranges::any_of(newGeos, [](const Part::Geometry* geo) {
+                         return !geo->is<Part::GeomLineSegment>();
+                     })) {
+                // Angle without a specific point is only supported when _all_ geometries are lines.
+                // If the original was a line, we may reach this point, for example, when converting
+                // it to NURBS.
+
+                // NOTE: We may decide to change this logic in the future. Follows
+                // `Sketch::addConstraint`.
+                return false;
+            }
+            else {
+                // Straight up angle, can transfer to all or first
+                transferToAll = true;
+                break;
+            }
+        } break;
         case Distance:
         case DistanceX:
         case DistanceY:
@@ -3778,9 +3821,7 @@ bool SketchObject::deriveConstraintsForPieces(
                     return true;
                 }
             }
-
-            break;
-        }
+        } break;
         case Radius:
         case Diameter:
         case Equal: {
@@ -3794,7 +3835,7 @@ bool SketchObject::deriveConstraintsForPieces(
                 newConstraints.push_back(trans);
                 break;
             }
-        }
+        } break;
         default:
             // Release other constraints
             break;
@@ -9493,7 +9534,7 @@ const std::map<int, Sketcher::PointPos> SketchObject::getAllCoincidentPoints(int
 
 void SketchObject::getDirectlyCoincidentPoints(int GeoId, PointPos PosId,
                                                std::vector<int>& GeoIdList,
-                                               std::vector<PointPos>& PosIdList)
+                                               std::vector<PointPos>& PosIdList) const
 {
     const std::vector<Constraint*>& constraints = this->Constraints.getValues();
 
@@ -9535,7 +9576,7 @@ void SketchObject::getDirectlyCoincidentPoints(int GeoId, PointPos PosId,
 }
 
 void SketchObject::getDirectlyCoincidentPoints(int VertexId, std::vector<int>& GeoIdList,
-                                               std::vector<PointPos>& PosIdList)
+                                               std::vector<PointPos>& PosIdList) const
 {
     int GeoId;
     PointPos PosId;
