@@ -1948,9 +1948,7 @@ public:
 
             if (selAllowed) {
                 // If mouse is released on something allowed, select it
-                Gui::Selection().addSelection(Obj->getDocument()->getName(),
-                    Obj->getNameInDocument(),
-                    ss.str().c_str(), onSketchPos.x, onSketchPos.y, 0.f);
+                sketchgui->addSelection2(ss.str().c_str(), onSketchPos.x, onSketchPos.y, 0.f);
                 sketchgui->draw(false, false); // Redraw
             }
             else {
@@ -1967,9 +1965,7 @@ public:
                 restartCommand(QT_TRANSLATE_NOOP("Command", "Dimension"));
             }
 
-            Gui::Selection().rmvSelection(Obj->getDocument()->getName(),
-                Obj->getNameInDocument(),
-                ss.str().c_str());
+            sketchgui->rmvSelection(ss.str().c_str());
             sketchgui->draw(false, false); // Redraw
         }
 
