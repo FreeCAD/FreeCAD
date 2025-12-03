@@ -333,21 +333,29 @@ void GeoFeatureGroupExtension::extensionOnChanged(const Property* p)
 
 void GeoFeatureGroupExtension::onCommitTransaction(const App::Document& doc)
 {
-    // Siamo *fuori* dal primo Document::recompute()
     App::Document* d = const_cast<App::Document*>(&doc);
 
+    // Cerchiamo i pending touches per questo documento
     auto it = s_docPendingPlacementTouches.find(d);
-    if (it == s_docPendingPlacementTouches.end() || it->second.empty())
+    if (it == s_docPendingPlacementTouches.end())
         return;
 
-    // Copia locale e pulizia immediata per evitare ri-entrate
-    auto pending = it->second;
-    it->second.clear();
+    auto &pending = it->second;
+    if (pending.empty()) {
+        s_docPendingPlacementTouches.erase(it);
+        return;
+    }
 
-    // 1) Tocchiamo gli oggetti accodati
+    // Tocchiamo gli oggetti in sospeso
     for (auto* obj : pending) {
         if (!obj) continue;
+        if (obj->getDocument() != d) continue; // oggetto eliminato?
 
+        // Touch delle properties rilevanti
+        if (auto* prop = obj->getPropertyByName("Placement"))
+            prop->touch();
+
+        // Per gli sketch aggiorniamo la ExternalGeometry
         std::string tid = obj->getTypeId().getName();
         bool isSketch =
             (tid == "Sketcher::SketchObject") ||
@@ -358,18 +366,17 @@ void GeoFeatureGroupExtension::onCommitTransaction(const App::Document& doc)
         if (isSketch) {
             if (auto* ext = obj->getPropertyByName("ExternalGeometry"))
                 ext->touch();
-            // Per gli Sketch serve il touch completo: forza execute() + ExternalGeo update
-            //obj->touch();
         }
-        // Per le altre GeoFeature basta ritoccare il Placement, se presente
-        if (auto* prop = obj->getPropertyByName("Placement"))
-            prop->touch();
     }
 
-    // 2) Eseguiamo il *secondo* recompute, ora NON ricorsivo
-    d->recompute();
-}
+    pending.clear();
+    s_docPendingPlacementTouches.erase(it);
 
+    if (!d->testStatus(App::Document::Recomputing)) {
+        d->recompute();
+    }
+
+}
 
 
 std::vector<DocumentObject*>
