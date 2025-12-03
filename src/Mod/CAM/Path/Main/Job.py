@@ -636,8 +636,11 @@ class ObjectJob:
         return None
 
     def execute(self, obj):
+        obj.Path = Path.Path()
         if getattr(obj, "Operations", None):
-            # obj.Path = obj.Operations.Path
+            for op in obj.Operations.Group:
+                op.Visibility = False
+                obj.Path.addCommands(op.Path.Commands)
             self.getCycleTime()
             if hasattr(obj, "PathChanged"):
                 obj.PathChanged = True
