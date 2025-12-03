@@ -34,9 +34,12 @@
 
 #include <cstring> // for std::strcmp
 
-
 using namespace App;
 
+std::map<App::Document*, std::vector<App::DocumentObject*>> 
+    GeoFeatureGroupExtension::s_docPendingPlacementTouches;
+
+bool GeoFeatureGroupExtension::s_appSignalsConnected = false;
 
 EXTENSION_PROPERTY_SOURCE(App::GeoFeatureGroupExtension, App::GroupExtension)
 
@@ -49,6 +52,7 @@ GeoFeatureGroupExtension::GeoFeatureGroupExtension()
 {
     initExtensionType(GeoFeatureGroupExtension::getExtensionClassTypeId());
     Group.setScope(LinkScope::Child);
+
 }
 
 GeoFeatureGroupExtension::~GeoFeatureGroupExtension() = default;
@@ -61,7 +65,19 @@ void GeoFeatureGroupExtension::initExtension(ExtensionContainer* obj)
     }
 
     App::GroupExtension::initExtension(obj);
+
+    // Colleghiamo Application::signalCommitTransaction una sola volta
+    if (!s_appSignalsConnected) {
+        App::Application& app = App::GetApplication();
+        app.signalCommitTransaction.connect(
+            boost::bind(&GeoFeatureGroupExtension::onCommitTransaction,
+                        boost::placeholders::_1)
+        );
+        s_appSignalsConnected = true;
+    }
+
 }
+
 
 PropertyPlacement& GeoFeatureGroupExtension::placement()
 {
@@ -258,6 +274,7 @@ GeoFeatureGroupExtension::removeObjects(std::vector<App::DocumentObject*> object
     return removed;
 }
 
+
 void GeoFeatureGroupExtension::extensionOnChanged(const Property* p)
 {
 
@@ -304,15 +321,55 @@ void GeoFeatureGroupExtension::extensionOnChanged(const Property* p)
 
         for (auto* obj : this->Group.getValues()) {
             if (!obj) continue;
-
-            if (auto* prop = obj->getPropertyByName("Placement"))
-                prop->touch();
+            if (obj->getTypeId().isDerivedFrom(App::GeoFeature::getClassTypeId()))
+               if (auto* prop = obj->getPropertyByName("Placement"))
+                  if (App::Document* doc = obj->getDocument())
+                      GeoFeatureGroupExtension::s_docPendingPlacementTouches[doc].push_back(obj);
         }
     }
 
-
     App::GroupExtension::extensionOnChanged(p);
 }
+
+void GeoFeatureGroupExtension::onCommitTransaction(const App::Document& doc)
+{
+    // Siamo *fuori* dal primo Document::recompute()
+    App::Document* d = const_cast<App::Document*>(&doc);
+
+    auto it = s_docPendingPlacementTouches.find(d);
+    if (it == s_docPendingPlacementTouches.end() || it->second.empty())
+        return;
+
+    // Copia locale e pulizia immediata per evitare ri-entrate
+    auto pending = it->second;
+    it->second.clear();
+
+    // 1) Tocchiamo gli oggetti accodati
+    for (auto* obj : pending) {
+        if (!obj) continue;
+
+        std::string tid = obj->getTypeId().getName();
+        bool isSketch =
+            (tid == "Sketcher::SketchObject") ||
+            (tid == "Sketcher::SketchObjectPython") ||
+            (tid == "PartDesign::Sketch") ||
+            (tid == "PartDesign::SketchPython");
+
+        if (isSketch) {
+            if (auto* ext = obj->getPropertyByName("ExternalGeometry"))
+                ext->touch();
+            // Per gli Sketch serve il touch completo: forza execute() + ExternalGeo update
+            //obj->touch();
+        }
+        // Per le altre GeoFeature basta ritoccare il Placement, se presente
+        if (auto* prop = obj->getPropertyByName("Placement"))
+            prop->touch();
+    }
+
+    // 2) Eseguiamo il *secondo* recompute, ora NON ricorsivo
+    d->recompute();
+}
+
 
 
 std::vector<DocumentObject*>

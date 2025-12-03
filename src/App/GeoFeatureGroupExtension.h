@@ -31,6 +31,8 @@
 #include "DocumentObject.h"
 #include "GroupExtension.h"
 #include "PropertyGeo.h"
+#include <map>
+#include <vector>
 
 
 namespace App
@@ -141,6 +143,7 @@ public:
     static void getInvalidLinkObjects(const App::DocumentObject* obj,
                                       std::vector<App::DocumentObject*>& vec);
 
+
 private:
     Base::Placement recursiveGroupPlacement(GeoFeatureGroupExtension* group,
                                             std::unordered_set<GeoFeatureGroupExtension*>& history);
@@ -163,6 +166,14 @@ private:
     static void recursiveCSRelevantLinks(const App::DocumentObject* obj,
                                          std::vector<App::DocumentObject*>& vec);
     bool m_actsAsGroupBoundary = true;
+
+    static std::map<App::Document*, std::vector<App::DocumentObject*>> s_docPendingPlacementTouches;
+
+    static bool s_appSignalsConnected;
+
+    // Slot statico chiamato alla fine di una transazione
+    static void onCommitTransaction(const App::Document& doc);
+
 };
 
 using GeoFeatureGroupExtensionPython =
