@@ -2668,7 +2668,7 @@ void Application::setStyleSheet(const QString& qssFile, bool tiledBackground)
     mw->setProperty("fc_tiledBackground", tiledBackground);
 
     QString defaultStyleSheet = [this]() {
-        QFile f("qss:defaults.qss");
+        QFile f(QLatin1String("qss:defaults.qss"));
 
         if (!f.open(QFile::ReadOnly)) {
             return QString();
