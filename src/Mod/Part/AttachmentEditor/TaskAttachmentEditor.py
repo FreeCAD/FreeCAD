@@ -476,17 +476,17 @@ class AttachmentEditorTaskPanel(FrozenClass):
         plm = self.attacher.AttachmentOffset
         pos = plm.Base
         if index == 0:
-            pos.x = Q(self.form.attachmentOffsetX.text()).getValueAs(mm)
+            pos.x = Q(self.form.attachmentOffsetX.text()).Value
         if index == 1:
-            pos.y = Q(self.form.attachmentOffsetY.text()).getValueAs(mm)
+            pos.y = Q(self.form.attachmentOffsetY.text()).Value
         if index == 2:
-            pos.z = Q(self.form.attachmentOffsetZ.text()).getValueAs(mm)
+            pos.z = Q(self.form.attachmentOffsetZ.text()).Value
         if index >= 0 and index <= 2:
             plm.Base = pos
         if index >= 3 and index <= 5:
-            yaw = Q(self.form.attachmentOffsetYaw.text()).getValueAs(deg)
-            pitch = Q(self.form.attachmentOffsetPitch.text()).getValueAs(deg)
-            roll = Q(self.form.attachmentOffsetRoll.text()).getValueAs(deg)
+            yaw = Q(self.form.attachmentOffsetYaw.text()).Value
+            pitch = Q(self.form.attachmentOffsetPitch.text()).Value
+            roll = Q(self.form.attachmentOffsetRoll.text()).Value
             rot = App.Rotation(yaw, pitch, roll)
             plm.Rotation = rot
 
@@ -741,3 +741,4 @@ class AttachmentEditorTaskPanel(FrozenClass):
         Gui.Selection.removeObserver(self)
         if self.tv:
             self.tv.restore()
+
