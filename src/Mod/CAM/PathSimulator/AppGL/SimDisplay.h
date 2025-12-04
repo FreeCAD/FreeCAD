@@ -47,17 +47,17 @@ class SimDisplay
 {
 public:
     ~SimDisplay();
-    void InitGL(qreal devicePixelRatio);
+    void InitGL();
     void CleanGL();
     void CleanFbos();
-    void PrepareDisplay(vec3 objCenter);
+    void PrepareDisplay(const vec3& objCenter);
     void PrepareFrameBuffer();
     void StartDepthPass();
-    void StartGeometryPass(vec3 objColor, bool invertNormals);
-    void StartCloserGeometryPass(vec3 objColor);
+    void StartGeometryPass(const vec3& objColor, bool invertNormals);
+    void StartCloserGeometryPass(const vec3& objColor);
     void RenderLightObject();
     void ScaleViewToStock(StockObject* obj);
-    void RenderResult(bool recalculate);
+    void RenderResult(bool recalculate, bool ssao);
     void RenderResultStandard();
     void RenderResultSSAO(bool recalculate);
     void SetupLinePathPass(int curSegment, bool isHidden);
@@ -66,16 +66,12 @@ public:
     void MoveEye(float x, float z);
     void MoveEyeCenter();
     void UpdateEyeFactor(float factor);
-    void UpdateWindowScale();
+    void UpdateWindowScale(int width, int height);
 
     void UpdateProjection();
-    float GetEyeFactor()
-    {
-        return mEyeDistFactor;
-    }
+    float GetEyeFactor();
 
 public:
-    bool applySSAO = false;
     bool updateDisplay = false;
     float maxFar = 100;
     bool displayInitiated = false;
@@ -108,13 +104,11 @@ protected:
     mat4x4 mMatLookAt;
     StockObject mlightObject;
 
-    qreal mDevicePixelRatio;
-    int mWidth;
-    int mHeight;
+    int mWidth = -1;
+    int mHeight = -1;
 
     std::mt19937 generator;
     std::uniform_real_distribution<float> distr01;
-
 
     float mEyeDistance = 30;
     float mEyeRoration = 0;
@@ -129,22 +123,23 @@ protected:
     float mEyeZ = 0.0f;
 
     // base frame buffer
-    unsigned int mFbo;
-    unsigned int mFboColTexture;
-    unsigned int mFboPosTexture;
-    unsigned int mFboNormTexture;
-    unsigned int mRboDepthStencil;
-    unsigned int mFboQuadVAO, mFboQuadVBO;
+    unsigned int mFbo = 0;
+    unsigned int mFboColTexture = 0;
+    unsigned int mFboPosTexture = 0;
+    unsigned int mFboNormTexture = 0;
+    unsigned int mRboDepthStencil = 0;
+    unsigned int mFboQuadVAO = 0, mFboQuadVBO = 0;
 
     // ssao frame buffers
     bool mSsaoValid = false;
     std::vector<Point3D> mSsaoKernel;
-    unsigned int mSsaoFbo;
-    unsigned int mSsaoBlurFbo;
-    unsigned int mFboSsaoTexture;
-    unsigned int mFboSsaoBlurTexture;
-    unsigned int mFboRandTexture;
+    unsigned int mSsaoFbo = 0;
+    unsigned int mSsaoBlurFbo = 0;
+    unsigned int mFboSsaoTexture = 0;
+    unsigned int mFboSsaoBlurTexture = 0;
+    unsigned int mFboRandTexture = 0;
 };
 
 }  // namespace MillSim
+
 #endif  // !__simdisplay_h__
