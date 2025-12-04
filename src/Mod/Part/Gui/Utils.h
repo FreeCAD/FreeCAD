@@ -23,9 +23,13 @@
 
 #ifndef PARTGUI_UTILS_H
 #define PARTGUI_UTILS_H
+
+#include <Mod/Part/PartGlobal.h>
+
 namespace PartGui
 {
 QString PartGuiExport getAutoGroupCommandStr(bool useActiveBody = true);
 QString PartGuiExport getAutoGroupCommandStr(QString objectName);
 }  // namespace PartGui
+
 #endif
