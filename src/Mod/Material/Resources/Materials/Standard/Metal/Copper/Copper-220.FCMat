@@ -5,7 +5,22 @@ General:
   Name: "Copper-220"
   Author: "Joe Da Silva"
   License: "LGPL-2.0-or-later"
-  Description: "Copper-220, Commercial Bronze 90%, CuZn10, Annealed 573°C 3hr. Cu=90% Zn=10% Pb=0.005% Fe=0.01%. These values for 295°K were imported from file 'cda144-8-mechanical-low-temperature.pdf' with permission and credit to the 'Copper Development Association' (CDA). For your own production accuracy, please use values provided by the material vendors you are working with."
+  SourceURL: "https://github.com/FreeCAD/FreeCAD/pull/25832"
+  ReferenceSource: "144-8-mechanical.pdf"
+  Tags:
+    - "C22000"
+    - "Brasses"
+    - "Annealed"
+    - "Commercial Bronze"
+    - "Cu90Zn10"
+  Description: >
+    Copper-220, Commercial Bronze 90%, CuZn10, Annealed 573°C 3hr.
+    Cu=90% Zn=10% Pb=0.005% Fe=0.01%.
+    IACS = 44%.
+    Values for 295°K imported from 'cda144-8-mechanical-low-temperature.pdf'
+    with permission and credit to the 'Copper Development Association' (CDA).
+    For your own production accuracy, please use values provided by the
+    material vendors you are working with.
 Inherits:
   Brass:
     UUID: "4151e19c-fd6a-4ca4-83d4-d5e17d76cb9c"
@@ -18,11 +33,20 @@ Models:
     StandardCode: "Copper-220"
   LinearElastic:
     UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
+    Density: "8800 kg/m^3"
     ShearModulus: "45.4 GPa"
-    UltimateStrain: "1659 MPa"
     UltimateTensileStrength: "265 MPa"
     YieldStrength: "66.2 MPa"
     YoungsModulus: "104 GPa"
+  Thermal:
+    UUID: '9959d007-a970-4ea7-bae4-3eb1b8b883c7'
+    SpecificHeat: "377 J/kg/K"
+    ThermalConductivity: "189 W/m/K"
+    ThermalExpansionCoefficient: "18.4 µm/m/K"
+    ThermalExpansionReferenceTemperature: "293.00 K"
+  Electromagnetic:
+    UUID: 'b2eb5f48-74b3-4193-9fbb-948674f427f3'
+    ElectricalConductivity: "25.52 MS/m"
   Hardness:
     UUID: '3d1a6141-d032-4d82-8bb5-a8f339fff8ad'
     Hardness: "49"

@@ -5,7 +5,21 @@ General:
   Name: "Copper-122a"
   Author: "Joe Da Silva"
   License: "LGPL-2.0-or-later"
-  Description: "Copper-122, Phosphorus Deoxidized (DHP), High Residual Phosphorus, Annealed. Cu≥99.9% Pb=0.0002% Fe=0.003% Sn=0.00035% Zn=0.001% P=0.028%. These values for 295°K were imported from file 'cda144-8-mechanical-low-temperature.pdf' with permission and credit to the 'Copper Development Association' (CDA). For your own production accuracy, please use values provided by the material vendors you are working with."
+  SourceURL: "https://github.com/FreeCAD/FreeCAD/pull/25832"
+  ReferenceSource: "144-8-mechanical.pdf"
+  Tags:
+    - "C12200"
+    - "Annealed"
+    - "Coppers"
+    - "Phosphorus"
+  Description: >
+    Copper-122, Phosphorus Deoxidized (DHP), High Residual Phosphorus, Annealed.
+    Cu≥99.9% Pb=0.0002% Fe=0.003% Sn=0.00035% Zn=0.001% P=0.028%.
+    IACS = 85%.
+    Values for 295°K imported from 'cda144-8-mechanical-low-temperature.pdf'
+    with permission and credit to the 'Copper Development Association' (CDA).
+    For your own production accuracy, please use values provided by the
+    material vendors you are working with.
 Inherits:
   Copper:
     UUID: "524cad9b-b841-4037-9851-badeca7dcee2"
@@ -18,11 +32,20 @@ Models:
     StandardCode: "Copper-122"
   LinearElastic:
     UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
+    Density: "8940 kg/m^3"
     ShearModulus: "44.5 GPa"
-    UltimateStrain: "899 MPa"
     UltimateTensileStrength: "216 MPa"
     YieldStrength: "46.2 MPa"
     YoungsModulus: "104 GPa"
+  Thermal:
+    UUID: '9959d007-a970-4ea7-bae4-3eb1b8b883c7'
+    SpecificHeat: "385 J/kg/K"
+    ThermalConductivity: "339 W/m/K"
+    ThermalExpansionCoefficient: "16.9 µm/m/K"
+    ThermalExpansionReferenceTemperature: "293.00 K"
+  Electromagnetic:
+    UUID: 'b2eb5f48-74b3-4193-9fbb-948674f427f3'
+    ElectricalConductivity: "49.3 MS/m"
   Hardness:
     UUID: '3d1a6141-d032-4d82-8bb5-a8f339fff8ad'
     Hardness: "35"

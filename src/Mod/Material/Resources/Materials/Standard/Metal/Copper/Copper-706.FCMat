@@ -5,7 +5,20 @@ General:
   Name: "Copper-706"
   Author: "Joe Da Silva"
   License: "LGPL-2.0-or-later"
-  Description: "Copper-706, 90-10, Cu90Ni10, Copper Nickel 10%, Annealed 677°C 40min. Cu=90% Pb=0.02% Fe=1.16% Zn=0.07% Ni=9.98%. These values for 295°K were imported from file 'cda144-8-mechanical-low-temperature.pdf' with permission and credit to the 'Copper Development Association' (CDA). For your own production accuracy, please use values provided by the material vendors you are working with."
+  SourceURL: "https://github.com/FreeCAD/FreeCAD/pull/25832"
+  ReferenceSource: "144-8-mechanical.pdf"
+  Tags:
+    - "C70600"
+    - "Annealed"
+    - "Cupro nickel"
+  Description: >
+    Copper-706, 90-10, Cu90Ni10, Copper Nickel 10%, Annealed 677°C 40min.
+    Cu=89% Pb=0.02% Fe=1.16% Zn=0.07% Ni=9.98%.
+    IACS = 9%.
+    Values for 295°K imported from 'cda144-8-mechanical-low-temperature.pdf'
+    with permission and credit to the 'Copper Development Association' (CDA).
+    For your own production accuracy, please use values provided by the
+    material vendors you are working with.
 Inherits:
   Silver:
     UUID: "62839fb0-d854-4b44-92df-b7249213de49"
@@ -18,10 +31,19 @@ Models:
     StandardCode: "Copper-706"
   LinearElastic:
     UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
-    UltimateStrain: "1628 MPa"
+    Density: "8940 kg/m^3"
     UltimateTensileStrength: "342 MPa"
     YieldStrength: "148 MPa"
     YoungsModulus: "122 GPa"
+  Thermal:
+    UUID: '9959d007-a970-4ea7-bae4-3eb1b8b883c7'
+    SpecificHeat: "377 J/kg/K"
+    ThermalConductivity: "45 W/m/K"
+    ThermalExpansionCoefficient: "17.1 µm/m/K"
+    ThermalExpansionReferenceTemperature: "293.00 K"
+  Electromagnetic:
+    UUID: 'b2eb5f48-74b3-4193-9fbb-948674f427f3'
+    ElectricalConductivity: "5.22 MS/m"
   Hardness:
     UUID: '3d1a6141-d032-4d82-8bb5-a8f339fff8ad'
     Hardness: "33"

@@ -5,7 +5,19 @@ General:
   Name: "Copper-647"
   Author: "Joe Da Silva"
   License: "LGPL-2.0-or-later"
-  Description: "Copper-647, CuSn5, Copper-nickel silicon, Aged 450°C 2hr. Cu≥97% Fe=0.01% Ni=1.97. These values for 295°K were imported from file 'cda144-8-mechanical-low-temperature.pdf' with permission and credit to the 'Copper Development Association' (CDA). For your own production accuracy, please use values provided by the material vendors you are working with."
+  SourceURL: "https://github.com/FreeCAD/FreeCAD/pull/25832"
+  ReferenceSource: "144-8-mechanical.pdf"
+  Tags:
+    - "C64700"
+    - "Aged"
+    - "Copper-nickel silicon"
+  Description: >
+    Copper-647, Copper-nickel silicon, Aged 450°C 2hr.
+    Cu≥97% Fe=0.01% Ni=1.97.
+    Values for 295°K imported from 'cda144-8-mechanical-low-temperature.pdf'
+    with permission and credit to the 'Copper Development Association' (CDA).
+    For your own production accuracy, please use values provided by the
+    material vendors you are working with.
 Inherits:
   Bronze:
     UUID: "ae194589-02d4-4e9b-98a7-f523f660d510"
@@ -18,7 +30,7 @@ Models:
     StandardCode: "Copper-647"
   LinearElastic:
     UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
-    UltimateStrain: "1937 MPa"
+    Density: "8910 kg/m^3"
     UltimateTensileStrength: "775 MPa"
     YieldStrength: "724 MPa"
     YoungsModulus: "148 GPa"
