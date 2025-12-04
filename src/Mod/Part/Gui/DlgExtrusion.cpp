@@ -531,7 +531,10 @@ void DlgExtrusion::apply()
 
                 continue;
             }
-
+            if (sourceObj->isDerivedFrom<App::Part>()){
+                 FC_WARN("Cannot extrude a Part. Select a Sketch or Shape.");
+                 return;
+            }
             std::string name;
             name = sourceObj->getDocument()->getUniqueObjectName("Extrude").c_str();
             if (addBaseName) {
