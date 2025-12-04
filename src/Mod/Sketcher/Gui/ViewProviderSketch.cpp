@@ -32,11 +32,13 @@
 
 #include <QApplication>
 #include <QFontMetricsF>
+#include <QHelpEvent>
 #include <QListWidget>
 #include <QMenu>
 #include <QMessageBox>
 #include <QScreen>
 #include <QTextStream>
+#include <QToolTip>
 #include <QWindow>
 
 #include <limits>
@@ -2376,6 +2378,48 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
 bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point)
 {
     assert(isInEditMode());
+    
+    // Event filter to intercept the delayed tooltip event from Qt
+    class ToolTipFilter : public QObject {
+    public:
+        bool eventFilter(QObject *obj, QEvent *event) override {
+            if (event->type() == QEvent::ToolTip) {
+                // When Qt's idle timer fires, this event is sent.
+                // We intercept it to show the tooltip with a custom long duration (60s).
+                QHelpEvent *helpEvent = static_cast<QHelpEvent *>(event);
+                QWidget *widget = qobject_cast<QWidget *>(obj);
+                if (widget && !widget->toolTip().isEmpty()) {
+                    QToolTip::showText(helpEvent->globalPos(), widget->toolTip(), widget, QRect(), 60000);
+                    return true; // Mark as handled so default processing doesn't hide it
+                }
+            }
+            return QObject::eventFilter(obj, event);
+        }
+    };
+    static ToolTipFilter filter;
+
+    auto updateToolTip = [this](const QString& text = QString()) {
+        auto* view = qobject_cast<Gui::View3DInventor*>(this->getActiveView());
+        QWidget* widget = view ? view->getViewer()->getGLWidget() : nullptr;
+
+        if (!widget) return;
+
+        if (text.isEmpty()) {
+            // Hide tooltip and cleanup
+            QToolTip::hideText();
+            widget->removeEventFilter(&filter);
+            widget->setToolTip(QString());
+        } else {
+            // 1. Set the tooltip text on the widget. 
+            // This arm's Qt's internal timer to fire QEvent::ToolTip after the standard delay.
+            widget->setToolTip(text);
+
+            // 2. Install the filter to catch that event.
+            // We remove it first to ensure we don't install it multiple times.
+            widget->removeEventFilter(&filter);
+            widget->installEventFilter(&filter);
+        }
+    };
 
     if (Point) {
 
@@ -2392,6 +2436,7 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point)
             preselection.blockedPreselection = !accepted;
             if (accepted) {
                 setPreselectPoint(result.PointIndex);
+                updateToolTip(); // Clear tooltip on point selection
 
                 return true;
             }
@@ -2413,6 +2458,7 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point)
             if (accepted) {
                 resetPreselectPoint();
                 preselection.PreselectCurve = result.GeoIndex;
+                updateToolTip(); // Clear tooltip on curve selection
 
                 return true;
             }
@@ -2446,6 +2492,7 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point)
                     resetPreselectPoint();
                 preselection.PreselectCross =
                     static_cast<Preselection::Axes>(static_cast<int>(result.Cross));
+                updateToolTip(); // Clear tooltip on axis selection
 
                 return true;
             }
@@ -2466,11 +2513,23 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point)
                     != 0;
 
                 preselection.blockedPreselection = !accepted;
-                // TODO: Should we clear preselections that went through, if one fails?
             }
             if (accepted) {
                 resetPreselectPoint();
                 preselection.PreselectConstraintSet = result.ConstrIndices;
+
+                // Build tooltip text for expressions
+                QString tooltipText;
+                for (int id : result.ConstrIndices) {
+                    if (constraintHasExpression(id)) {
+                        std::string expr = getSketchObject()->getConstraintExpression(id);
+                        if (!expr.empty()) {
+                            tooltipText = QString::fromUtf8("\U0001D453\U0001D465 = ") + QString::fromStdString(expr);
+                            break;
+                        }
+                    }
+                }
+                updateToolTip(tooltipText);
 
                 return true;// Preselection changed
             }
@@ -2485,6 +2544,7 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point)
             // we have just left a preselection
             resetPreselectPoint();
             preselection.blockedPreselection = false;
+            updateToolTip(); // Clear tooltip when leaving preselection
 
             return true;
         }
@@ -2496,6 +2556,7 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point)
              || preselection.blockedPreselection) {
         resetPreselectPoint();
         preselection.blockedPreselection = false;
+        updateToolTip(); // Clear tooltip when no point picked
 
         return true;
     }
