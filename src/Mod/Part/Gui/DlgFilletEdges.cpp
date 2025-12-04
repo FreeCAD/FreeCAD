@@ -63,6 +63,7 @@
 #include <Gui/Window.h>
 #include <Mod/Part/App/FeatureChamfer.h>
 #include <Mod/Part/App/FeatureFillet.h>
+#include "Utils.h"
 
 #include "DlgFilletEdges.h"
 #include "ui_DlgFilletEdges.h"
@@ -1065,10 +1066,11 @@ bool DlgFilletEdges::accept()
     QString code;
     if (!d->fillet) {
         code = QStringLiteral(
-                   "FreeCAD.ActiveDocument.addObject(\"%1\",\"%2\")\n"
+                   "obj = FreeCAD.ActiveDocument.addObject(\"%1\",\"%2\")\n"
                    "FreeCAD.ActiveDocument.%2.Base = FreeCAD.ActiveDocument.%3\n"
         )
                    .arg(type, name, shape);
+        code += PartGui::getAutoGroupCommandStr(false).toUtf8();
     }
     code += QStringLiteral("__fillets__ = []\n");
     for (int i = 0; i < model->rowCount(); ++i) {
