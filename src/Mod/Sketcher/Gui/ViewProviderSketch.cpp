@@ -2385,11 +2385,11 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point)
         bool eventFilter(QObject *obj, QEvent *event) override {
             if (event->type() == QEvent::ToolTip) {
                 // When Qt's idle timer fires, this event is sent.
-                // We intercept it to show the tooltip with a custom long duration (60s).
+                // We intercept it to show the tooltip.
                 QHelpEvent *helpEvent = static_cast<QHelpEvent *>(event);
                 QWidget *widget = qobject_cast<QWidget *>(obj);
                 if (widget && !widget->toolTip().isEmpty()) {
-                    QToolTip::showText(helpEvent->globalPos(), widget->toolTip(), widget, QRect(), 60000);
+                    QToolTip::showText(helpEvent->globalPos(), widget->toolTip(), widget);
                     return true; // Mark as handled so default processing doesn't hide it
                 }
             }
