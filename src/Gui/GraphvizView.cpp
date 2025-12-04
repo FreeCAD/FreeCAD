@@ -504,7 +504,7 @@ bool GraphvizView::onMsg(const char* pMsg, const char**)
             this,
             tr("Export Graph"),
             QString(),
-            filter.join(QLatin1String(";;")),
+            filter,
             &selectedFilter
         );
         if (!fn.isEmpty()) {
@@ -602,13 +602,8 @@ void GraphvizView::printPdf()
     filter << QStringLiteral("%1 (*.pdf)").arg(tr("PDF format"));
 
     QString selectedFilter;
-    QString fn = Gui::FileDialog::getSaveFileName(
-        this,
-        tr("Export Graph"),
-        QString(),
-        filter.join(QLatin1String(";;")),
-        &selectedFilter
-    );
+    QString fn
+        = Gui::FileDialog::getSaveFileName(this, tr("Export graph"), QString(), filter, &selectedFilter);
     if (!fn.isEmpty()) {
         QByteArray buffer = exportGraph(selectedFilter);
         if (buffer.isEmpty()) {

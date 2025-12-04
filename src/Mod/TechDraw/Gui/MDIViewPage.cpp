@@ -314,7 +314,7 @@ void MDIViewPage::printPdf()
     QString fn =
         Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export Page as PDF"),
 
-                                         QString(), filter.join(QLatin1String(";;")));
+                                         QString(), filter);
     if (fn.isEmpty()) {
         return;
     }
@@ -492,7 +492,7 @@ void MDIViewPage::saveSVG()
     QString fn =
         Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export page as SVG"),
 
-                                         defaultFileName(), filter.join(QLatin1String(";;")));
+                                         defaultFileName(), filter);
     if (fn.isEmpty()) {
         return;
     }
@@ -514,7 +514,7 @@ void MDIViewPage::saveDXF()
     QString fn =
         Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export page as DXF"),
 
-                                         defaultFileName(), filter.join(QLatin1String(";;")));
+                                         defaultFileName(), filter);
     if (fn.isEmpty()) {
         return;
     }
@@ -539,7 +539,7 @@ void MDIViewPage::savePDF()
     QString fn =
         Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export page as PDF"),
 
-                                         defaultFileName(), filter.join(QLatin1String(";;")));
+                                         defaultFileName(), filter);
     if (fn.isEmpty()) {
         return;
     }
