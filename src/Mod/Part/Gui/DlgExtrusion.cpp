@@ -548,11 +548,8 @@ void DlgExtrusion::apply()
 
             auto newObj = sourceObj->getDocument()->getObject(name.c_str());
             this->writeParametersToFeature(*newObj, sourceObj);
-            
-            Gui::Command::runCommand(
-                Gui::Command::Doc,
-                PartGui::getAutoGroupCommandStr(false).toUtf8()
-            );
+
+            Gui::Command::runCommand(Gui::Command::Doc, PartGui::getAutoGroupCommandStr(false).toUtf8());
 
             if (!sourceObj->isDerivedFrom<Part::Part2DObject>()) {
                 Gui::Command::copyVisual(newObj, "ShapeAppearance", sourceObj);
