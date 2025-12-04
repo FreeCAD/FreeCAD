@@ -540,12 +540,19 @@ void DlgExtrusion::apply()
                 // label = QStringLiteral("%1_Extrude").arg((*it)->text(0));
             }
 
-            FCMD_OBJ_DOC_CMD(sourceObj, "addObject('Part::Extrusion','" << name << "')");
-            QString qname = QString::fromUtf8(name.c_str());
-            Gui::Command::runCommand(Gui::Command::Doc, PartGui::getAutoGroupCommandStr(qname).toUtf8());
-            auto newObj = sourceObj->getDocument()->getObject(name.c_str());
+            Gui::Command::doCommand(
+                Gui::Command::Doc,
+                "obj = App.ActiveDocument.addObject('Part::Extrusion','%s')",
+                name.c_str()
+            );
 
+            auto newObj = sourceObj->getDocument()->getObject(name.c_str());
             this->writeParametersToFeature(*newObj, sourceObj);
+            
+            Gui::Command::runCommand(
+                Gui::Command::Doc,
+                PartGui::getAutoGroupCommandStr(false).toUtf8()
+            );
 
             if (!sourceObj->isDerivedFrom<Part::Part2DObject>()) {
                 Gui::Command::copyVisual(newObj, "ShapeAppearance", sourceObj);
