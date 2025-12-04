@@ -63,7 +63,7 @@ QString getAutoGroupCommandStr(bool useActiveBody)
         QString activeName = QString::fromLatin1(activeObj->getNameInDocument());
         return QStringLiteral("App.ActiveDocument.getObject('%1\').addObject(obj)\n").arg(activeName);
     }
-    return QStringLiteral("# Object created at document root.");
+    return QStringLiteral("# Object created at document root.\n");
 }
 
 QString getAutoGroupCommandStr(QString objectName)
