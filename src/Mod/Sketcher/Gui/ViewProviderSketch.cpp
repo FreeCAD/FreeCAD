@@ -2378,7 +2378,7 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
 bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point)
 {
     assert(isInEditMode());
-    
+
     // Event filter to intercept the delayed tooltip event from Qt
     class ToolTipFilter : public QObject {
     public:
@@ -2410,7 +2410,7 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point)
             widget->removeEventFilter(&filter);
             widget->setToolTip(QString());
         } else {
-            // 1. Set the tooltip text on the widget. 
+            // 1. Set the tooltip text on the widget.
             // This arm's Qt's internal timer to fire QEvent::ToolTip after the standard delay.
             widget->setToolTip(text);
 
