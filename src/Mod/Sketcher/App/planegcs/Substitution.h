@@ -122,10 +122,10 @@ struct Substitution
     std::vector<double> differences;
 
     Substitution(const VEC_pD& initialUnknowns, const std::vector<Constraint*>& initialConstraints);
-    Substitution(Substitution&& other);
+    Substitution(Substitution&& other) noexcept;
     Substitution() = default;
 
-    Substitution& operator=(Substitution&& other);
+    Substitution& operator=(Substitution&& other) noexcept;
 
     static Substitution makeTrivial(
         const VEC_pD& initialUnknowns,
