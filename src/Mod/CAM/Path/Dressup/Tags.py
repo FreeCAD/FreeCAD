@@ -284,12 +284,22 @@ class MapWireToTag:
             debugEdge(tail, ".........=")
         elif Path.Geom.pointsCoincide(edge.valueAt(edge.LastParameter), i):
             debugEdge(edge, "++++++++ .")
-            self.commands = Path.Geom.cmdsForEdge(edge, hSpeed=self.hSpeed, vSpeed=self.vSpeed)
+            self.commands = Path.Geom.cmdsForEdge(
+                edge,
+                approximation=approximation,
+                hSpeed=self.hSpeed,
+                vSpeed=self.vSpeed,
+            )
             tail = None
         else:
             e, tail = Path.Geom.splitEdgeAt(edge, i)
             debugEdge(e, "++++++++ .")
-            self.commands = Path.Geom.cmdsForEdge(e, hSpeed=self.hSpeed, vSpeed=self.vSpeed)
+            self.commands = Path.Geom.cmdsForEdge(
+                e,
+                approximation=approximation,
+                hSpeed=self.hSpeed,
+                vSpeed=self.vSpeed,
+            )
             debugEdge(tail, ".........-")
             self.initialEdge = edge
         self.tail = tail
@@ -555,7 +565,8 @@ class MapWireToTag:
                         commands.extend(
                             Path.Geom.cmdsForEdge(
                                 e,
-                                False,
+                                flip=False,
+                                approximation=self.approximation,
                                 hSpeed=self.hSpeed,
                                 vSpeed=self.vSpeed,
                             )
@@ -573,7 +584,12 @@ class MapWireToTag:
                 commands = []
                 for e in self.edges:
                     commands.extend(
-                        Path.Geom.cmdsForEdge(e, hSpeed=self.hSpeed, vSpeed=self.vSpeed)
+                        Path.Geom.cmdsForEdge(
+                            e,
+                            approximation=self.approximation,
+                            hSpeed=self.hSpeed,
+                            vSpeed=self.vSpeed,
+                        )
                     )
                 return commands
         return []
@@ -933,6 +949,16 @@ class ObjectTagDressup:
             "Tag",
             QT_TRANSLATE_NOOP("App::Property", "IDs of disabled holding tags"),
         )
+        obj.addProperty(
+            "App::PropertyBool",
+            "Approximation",
+            "Path",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Split B-Spline by arcs and ignore not vertical arcs axis (experimental).",
+            ),
+        )
+        obj.setEditorMode("Approximation", 2)  # hide
 
         self.obj = obj
         self.solids = []
@@ -962,6 +988,17 @@ class ObjectTagDressup:
 
     def onDocumentRestored(self, obj):
         self.obj = obj
+        if not hasattr(obj, "Approximation"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "Approximation",
+                "Path",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Split B-Spline by arcs and ignore not vertical arcs axis (experimental).",
+                ),
+            )
+            obj.setEditorMode("Approximation", 2)  # hide
 
     def supportsTagGeneration(self, obj):
         if not self.pathData:
@@ -1062,6 +1099,7 @@ class ObjectTagDressup:
                         pathData.maxZ,
                         hSpeed=horizFeed,
                         vSpeed=vertFeed,
+                        approximation=False,
                     )
                     self.mappers.append(mapper)
                     edge = mapper.tail
@@ -1086,7 +1124,12 @@ class ObjectTagDressup:
                             )
                     else:
                         commands.extend(
-                            Path.Geom.cmdsForEdge(edge, hSpeed=horizFeed, vSpeed=vertFeed)
+                            Path.Geom.cmdsForEdge(
+                                edge,
+                                approximation=obj.Approximation,
+                                hSpeed=horizFeed,
+                                vSpeed=vertFeed,
+                            )
                         )
                 edge = None
                 t = 0
