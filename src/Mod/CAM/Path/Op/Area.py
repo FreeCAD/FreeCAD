@@ -27,6 +27,7 @@ import Path
 import Path.Op.Base as PathOp
 import PathScripts.PathUtils as PathUtils
 
+import math
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -219,6 +220,89 @@ class ObjectOp(PathOp.ObjectOp):
         Can safely be overwritten by subclasses."""
         pass
 
+    def getCorner(self, edges):
+        """Use point intersection of the edges
+        and two points by distance 1 mm from intersection
+        to determine angle between edge"""
+
+        candidate = edges[0].Vertexes[0].Point
+        lastAngle = math.pi
+        for i, _ in enumerate(edges):
+            p1, p2, p3 = None, None, None
+            e1 = edges[i]
+            if i < len(edges) - 1:
+                e2 = edges[i + 1]
+            else:
+                # compare last edge with first
+                e2 = edges[0]
+
+            if Path.Geom.pointsCoincide(e1.Vertexes[-1].Point, e2.Vertexes[0].Point):
+                p2, p1 = e1.discretize(Distance=1)[-2:]
+                p3 = e2.discretize(Distance=1)[1]
+            elif Path.Geom.pointsCoincide(e1.Vertexes[0].Point, e2.Vertexes[-1].Point):
+                p1, p2 = e1.discretize(Distance=1)[:2]
+                p3 = e2.discretize(Distance=1)[-2]
+            if p1 and p2 and p3:
+                print(p1)
+                print(p2)
+                print(p3)
+                pa = p2 - p1
+                pb = p3 - p1
+                angle = pa.getAngle(pb)
+                if abs(angle - math.pi / 2) < abs(lastAngle - math.pi / 2):
+                    lastAngle = angle
+                    candidate = p1
+                print(round(math.degrees(angle), 1))
+            else:
+                print("error corner")
+        print()
+        print(f"angle={round(math.degrees(lastAngle), 1)}  {candidate}")
+        return candidate
+
+    def isStraightEdge(self, edge, key=None):
+        tol = self.job.GeometryTolerance.getValueAs("mm")
+        if Path.Geom.isRoughly(edge.Length, tol):
+            # skip too short edge
+            return False
+        if isinstance(edge.Curve, Part.Line):
+            # line is always straight
+            return True
+        elif key == "line":
+            return False
+        # check bspline
+        p1 = edge.Vertexes[0].Point
+        p2 = edge.Vertexes[-1].Point
+        if Path.Geom.isRoughly(edge.Length, p1.distanceToPoint(p2), tol):
+            return True
+
+        return False
+
+    def getMiddleLongPoint(self, shape, key=None):
+        candidate = None
+        for edge in shape.Edges:
+            if key and not self.isStraightEdge(edge, key):
+                continue
+            if candidate is None or edge.Length > candidate.Length:
+                candidate = edge
+
+        if candidate is None:
+            return shape.Vertexes[0].Point
+
+        return candidate.discretize(3)[1]
+
+    def getMiddleShortPoint(self, shape, key=None):
+        candidate = None
+        for edge in shape.Edges:
+            if key and not self.isStraightEdge(edge, key):
+                continue
+            if candidate is None or edge.Length < candidate.Length:
+                candidate = edge
+
+        if candidate is None:
+            return shape.Vertexes[0].Point
+
+        return candidate.discretize(3)[1]
+
     def _buildPathArea(self, obj, baseobject, isHole, start, getsim):
         """_buildPathArea(obj, baseobject, isHole, start, getsim) ... internal function."""
         Path.Log.track()
@@ -301,11 +385,34 @@ class ObjectOp(PathOp.ObjectOp):
         if not self.areaOpRetractTool(obj):
             pathParams["threshold"] = 2.001 * self.radius
 
-        if self.endVector is not None:
+        if (
+            not obj.UseStartPoint
+            and hasattr(obj, "HandleMultipleFeatures")
+            and obj.HandleMultipleFeatures == "Individually"
+            and hasattr(obj, "StartPointOverride")
+            and obj.StartPointOverride != "No"
+        ):
+            if obj.StartPointOverride == "Corner":
+                pathParams["start"] = self.getCorner(pathParams["shapes"][0].Edges)
+            elif obj.StartPointOverride == "Middle-Long":
+                pathParams["start"] = self.getMiddleLongPoint(shapelist[0])
+            elif obj.StartPointOverride == "Middle-Long-Line":
+                pathParams["start"] = self.getMiddleLongPoint(shapelist[0], key="line")
+            elif obj.StartPointOverride == "Middle-Long-Straight":
+                pathParams["start"] = self.getMiddleLongPoint(shapelist[0], key="straight")
+            elif obj.StartPointOverride == "Middle-Short":
+                pathParams["start"] = self.getMiddleShortPoint(shapelist[0])
+            elif obj.StartPointOverride == "Middle-Short-Line":
+                pathParams["start"] = self.getMiddleShortPoint(shapelist[0], key="line")
+            elif obj.StartPointOverride == "Middle-Short-Straight":
+                pathParams["start"] = self.getMiddleShortPoint(shapelist[0], key="straight")
+        elif self.endVector is not None:
             if self.endVector[:2] != (0, 0):
                 pathParams["start"] = self.endVector
         elif PathOp.FeatureStartPoint & self.opFeatures(obj) and obj.UseStartPoint:
             pathParams["start"] = obj.StartPoint
+
+        print("start", pathParams.get("start"))
 
         obj.PathParams = str({key: value for key, value in pathParams.items() if key != "shapes"})
         Path.Log.debug("Path with params: {}".format(obj.PathParams))
@@ -434,6 +541,7 @@ class ObjectOp(PathOp.ObjectOp):
 
         sims = []
         self.sectionShapes = []
+        print(shapes)
         for shape, isHole, sub in shapes:
             profileEdgesIsOpen = False
 
