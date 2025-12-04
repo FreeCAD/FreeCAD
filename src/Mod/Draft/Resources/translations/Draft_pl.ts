@@ -2433,7 +2433,9 @@ W przeciwnym razie zostaną zastosowane domyślne kolory FreeCAD.</translation>
       <location filename="../ui/preferences-dxf.ui" line="411"/>
       <source>If checked, imported texts will get the standard Draft text size, instead of
 the size defined in the DXF document. (Legacy importer only)</source>
-      <translation>Jeśli ta opcja jest zaznaczona, importowany tekst otrzyma standardowy rozmiar tekstu ze środowiska Rysunek Roboczy, zamiast rozmiaru zdefiniowanego w dokumencie DXF. (Tylko starszy importer)</translation>
+      <translation>Jeśli ta opcja jest zaznaczona, importowany tekst otrzyma standardowy rozmiar 
+ze środowiska Rysunek Roboczy, 
+zamiast rozmiaru zdefiniowanego w dokumencie DXF. (Tylko starszy importer)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="430"/>
@@ -7968,7 +7970,7 @@ beyond the dimension line</source>
       <location filename="../../InitGui.py" line="156"/>
       <location filename="../../InitGui.py" line="159"/>
       <source>Draft</source>
-      <translation>Pochylenie ścian</translation>
+      <translation>Rysunek Roboczy</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="237"/>

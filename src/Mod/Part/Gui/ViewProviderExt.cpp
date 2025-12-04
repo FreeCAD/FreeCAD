@@ -604,10 +604,12 @@ std::string ViewProviderPartExt::getElement(const SoDetail* detail) const
 
 SoDetail* ViewProviderPartExt::getDetail(const char* subelement) const
 {
+    // 1. Try standard string parsing (FaceN, EdgeN...)
     auto type = Part::TopoShape::getElementTypeAndIndex(subelement);
     std::string element = type.first;
     int index = type.second;
 
+    // 2. Create the Coin3D Detail
     if (element == "Face") {
         SoFaceDetail* detail = new SoFaceDetail();
         detail->setPartIndex(index - 1);

@@ -668,6 +668,7 @@ public:
     /** @name Manipulation*/
     //@{
     void transformGeometry(const Base::Matrix4D& rclMat) override;
+    void bakeInTransform();
     TopoDS_Shape transformGShape(const Base::Matrix4D&, bool copy = false) const;
     bool transformShape(const Base::Matrix4D&, bool copy, bool checkScale = false);
     TopoDS_Shape mirror(const gp_Ax2&) const;

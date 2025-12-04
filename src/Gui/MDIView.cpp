@@ -527,4 +527,11 @@ QString MDIView::buildWindowTitle() const
     return windowTitle;
 }
 
+void MDIView::setWindowTitle(const QString& title)
+{
+    QString newerTitle {title};
+    newerTitle.replace(QLatin1Char('&'), QStringLiteral("&&"));
+    QMainWindow::setWindowTitle(newerTitle);
+}
+
 #include "moc_MDIView.cpp"

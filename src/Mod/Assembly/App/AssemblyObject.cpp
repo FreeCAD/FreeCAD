@@ -269,6 +269,11 @@ void AssemblyObject::preDrag(std::vector<App::DocumentObject*> dragParts)
             continue;
         }
 
+        // Free-floating parts should not be added since they are ignored by the solver!
+        if (!isPartConnected(part)) {
+            continue;
+        }
+
         // Some objects have been bundled, we don't want to add these to dragged parts
         Base::Placement plc;
         for (auto& pair : objectPartMap) {

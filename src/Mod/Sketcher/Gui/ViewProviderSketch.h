@@ -690,6 +690,11 @@ public:
 
     void deleteSelected();
 
+    bool isSelected(const std::string& ss) const;
+    void rmvSelection(const std::string& subNameSuffix);
+    bool addSelection(const std::string& subNameSuffix, float x = 0, float y = 0, float z = 0);
+    bool addSelection2(const std::string& subNameSuffix, float x = 0, float y = 0, float z = 0);
+
     /// Control the overlays appearing on the Tree and reflecting different sketcher states
     QIcon mergeColorfulOverlayIcons(const QIcon& orig) const override;
 
@@ -829,10 +834,6 @@ private:
     void removeSelectPoint(int SelectPoint);
     void clearSelectPoints();
 
-    bool isSelected(const std::string& ss) const;
-    void rmvSelection(const std::string& subNameSuffix);
-    bool addSelection(const std::string& subNameSuffix, float x = 0, float y = 0, float z = 0);
-    bool addSelection2(const std::string& subNameSuffix, float x = 0, float y = 0, float z = 0);
     void preselectToSelection(
         const std::stringstream& ss,
         boost::scoped_ptr<SoPickedPoint>& pp,

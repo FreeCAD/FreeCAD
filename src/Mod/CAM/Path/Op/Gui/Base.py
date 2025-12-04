@@ -33,7 +33,6 @@ import Path.Op.Base as PathOp
 import Path.Op.Gui.Selection as PathSelection
 import Path.Tool.Controller as PathToolController
 from Path.Tool.library.ui.dock import ToolBitLibraryDock
-import PathGui
 import PathScripts.PathUtils as PathUtils
 import importlib
 from PySide.QtCore import QT_TRANSLATE_NOOP
@@ -422,9 +421,10 @@ class TaskPanelPage(object):
             self.tcEditor.controller.hide()
 
     def resetToolController(self, job, tc):
-        if self.obj is not None:
-            self.obj.ToolController = tc
-            self.setupToolController()
+        if self.obj is None:
+            return
+        self.obj.ToolController = tc
+        self.setupToolController()
 
     def copyToolController(self):
         oldTc = self.tcEditor.obj
@@ -602,15 +602,23 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         # Load available operations into combobox
         if len(availableOps) > 0:
             # Populate the operations list
-            panel.geometryImportList.blockSignals(True)
-            panel.geometryImportList.clear()
-            availableOps.sort()
-            for opLbl in availableOps:
-                panel.geometryImportList.addItem(opLbl)
-            panel.geometryImportList.blockSignals(False)
+            try:
+                panel.geometryImportList.blockSignals(True)
+                panel.geometryImportList.clear()
+                availableOps.sort()
+                for opLbl in availableOps:
+                    panel.geometryImportList.addItem(opLbl)
+                panel.geometryImportList.blockSignals(False)
+            except (AttributeError, RuntimeError):
+                # Widget doesn't exist in UI or C++ object already deleted
+                pass
         else:
-            panel.geometryImportList.hide()
-            panel.geometryImportButton.hide()
+            try:
+                panel.geometryImportList.hide()
+                panel.geometryImportButton.hide()
+            except (AttributeError, RuntimeError):
+                # Widget doesn't exist in UI or C++ object already deleted
+                pass
 
     def getTitle(self, obj):
         return translate("PathOp", "Base Geometry")
@@ -1446,6 +1454,9 @@ def Create(res):
     this function directly, but calls the Activated() function of the Command object
     that is created in each operations Gui implementation."""
     FreeCAD.ActiveDocument.openTransaction("Create %s" % res.name)
+    if res.job is None:
+        FreeCAD.ActiveDocument.abortTransaction()
+        raise ValueError("No job selected. Operation creation aborted.")
     try:
         obj = res.objFactory(res.name, obj=None, parentJob=res.job)
         if obj.Proxy:
@@ -1494,6 +1505,17 @@ class CommandPathOp:
         return False
 
     def Activated(self):
+        jobs = PathUtils.GetJobs()
+        if not jobs:
+            return
+        job = PathUtils.UserInput.chooseJob(jobs)
+        if job is None:
+            return  # Abort if no job selected or canceled
+        self.res.job = job
+        return Create(self.res)
+
+    def setJob(self, job):
+        self.res.job = job
         return Create(self.res)
 
 

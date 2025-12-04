@@ -588,9 +588,7 @@ void TaskRevolutionParameters::onAxisChanged(int num)
 
         recomputeFeature();
 
-        if (gizmoContainer) {
-            setGizmoPositions();
-        }
+        setGizmoPositions();
     }
     catch (const Base::Exception& e) {
         e.reportException();
@@ -603,9 +601,7 @@ void TaskRevolutionParameters::onMidplane(bool on)
         propMidPlane->setValue(on);
         recomputeFeature();
 
-        if (gizmoContainer) {
-            rotationGizmo->setMultFactor(rotationGizmo->getMultFactor() * (on ? 0.5 : 2));
-        }
+        setGizmoPositions();
     }
 }
 
@@ -615,9 +611,7 @@ void TaskRevolutionParameters::onReversed(bool on)
         propReversed->setValue(on);
         recomputeFeature();
 
-        if (gizmoContainer) {
-            reverseGizmoDir();
-        }
+        setGizmoPositions();
     }
 }
 
@@ -647,9 +641,7 @@ void TaskRevolutionParameters::onModeChanged(int index)
     updateUI(index);
     recomputeFeature();
 
-    if (gizmoContainer) {
-        setGizmoVisibility();
-    }
+    setGizmoPositions();
 }
 
 void TaskRevolutionParameters::getReferenceAxis(
@@ -748,11 +740,9 @@ void TaskRevolutionParameters::setupGizmos(ViewProvider* vp)
     rotationGizmo->flipArrow();
     rotationGizmo2->flipArrow();
 
+    defaultGizmoMultFactor = rotationGizmo->getMultFactor();
+
     setGizmoPositions();
-    if (getReversed()) {
-        reverseGizmoDir();
-    }
-    setGizmoVisibility();
 }
 
 void TaskRevolutionParameters::setGizmoPositions()
@@ -764,71 +754,61 @@ void TaskRevolutionParameters::setGizmoPositions()
     Base::Vector3d profileCog;
     Base::Vector3d basePos;
     Base::Vector3d axisDir;
+    bool reversed = false;
+    bool symmetric = false;
+    std::string sideType;
 
+    auto getFeatureProps = [&](auto* feature) {
+        if (!feature || feature->isError()) {
+            return false;
+        }
+        Part::TopoShape profile = feature->getProfileShape();
+
+        profile.getCenterOfGravity(profileCog);
+        basePos = feature->Base.getValue();
+        axisDir = feature->Axis.getValue();
+        reversed = feature->Reversed.getValue();
+        symmetric = feature->Midplane.getValue();
+        sideType = std::string(feature->Type.getValueAsString());
+        return true;
+    };
+
+    bool ret;
     if (isGroove) {
         auto groove = getObject<PartDesign::Groove>();
-        if (!groove || groove->isError()) {
-            gizmoContainer->visible = false;
-            return;
-        }
-        Part::TopoShape profile = groove->getProfileShape();
-
-        profile.getCenterOfGravity(profileCog);
-        basePos = groove->Base.getValue();
-        axisDir = groove->Axis.getValue();
+        ret = getFeatureProps(getObject<PartDesign::Groove>());
     }
     else {
-        auto revolution = getObject<PartDesign::Revolution>();
-        if (!revolution || revolution->isError()) {
-            gizmoContainer->visible = false;
-            return;
-        }
-        Part::TopoShape profile = revolution->getProfileShape();
-
-        profile.getCenterOfGravity(profileCog);
-        basePos = revolution->Base.getValue();
-        axisDir = revolution->Axis.getValue();
+        ret = getFeatureProps(getObject<PartDesign::Revolution>());
     }
-    gizmoContainer->visible = true;
+
+    gizmoContainer->visible = ret;
+    if (!ret) {
+        return;
+    }
 
     auto diff = profileCog - basePos;
     axisDir.Normalize();
     auto axisComp = axisDir * diff.Dot(axisDir);
     auto normalComp = diff - axisComp;
 
+    if (reversed) {
+        axisDir = -axisDir;
+    }
+
     rotationGizmo->Gizmo::setDraggerPlacement(basePos + axisComp, normalComp);
     rotationGizmo->getDraggerContainer()->setArcNormalDirection(Base::convertTo<SbVec3f>(axisDir));
+    rotationGizmo->setVisibility(sideType == "Angle" || sideType == "TwoAngles");
 
     rotationGizmo2->Gizmo::setDraggerPlacement(basePos + axisComp, normalComp);
     rotationGizmo2->getDraggerContainer()->setArcNormalDirection(Base::convertTo<SbVec3f>(-axisDir));
-}
+    rotationGizmo2->setVisibility(sideType == "TwoAngles");
 
-void TaskRevolutionParameters::reverseGizmoDir()
-{
-    rotationGizmo->setMultFactor(-rotationGizmo->getMultFactor());
-    rotationGizmo->flipArrow();
-
-    rotationGizmo2->setMultFactor(-rotationGizmo2->getMultFactor());
-    rotationGizmo2->flipArrow();
-}
-
-void TaskRevolutionParameters::setGizmoVisibility()
-{
-    auto type = static_cast<PartDesign::Revolution::RevolMethod>(ui->changeMode->currentIndex());
-
-    switch (type) {
-        case PartDesign::Revolution::RevolMethod::Angle:
-            gizmoContainer->visible = true;
-            rotationGizmo->setVisibility(true);
-            rotationGizmo2->setVisibility(false);
-            break;
-        case PartDesign::Revolution::RevolMethod::TwoAngles:
-            gizmoContainer->visible = true;
-            rotationGizmo->setVisibility(true);
-            rotationGizmo2->setVisibility(true);
-            break;
-        default:
-            gizmoContainer->visible = false;
+    if (sideType == "TwoAngles" || !symmetric) {
+        rotationGizmo->setMultFactor(defaultGizmoMultFactor);
+    }
+    else {
+        rotationGizmo->setMultFactor(defaultGizmoMultFactor / 2.0);
     }
 }
 

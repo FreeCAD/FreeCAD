@@ -653,6 +653,14 @@ ViewProviderSketch::~ViewProviderSketch()
 
 void ViewProviderSketch::slotUndoDocument(const Gui::Document& /*doc*/)
 {
+    // If undo is triggered during a drag operation, the drag must be canceled to avoid using
+    // stale geometry IDs, which would lead to a crash.
+    if (!drag.Dragged.empty() || !drag.DragConstraintSet.empty()) {
+        drag.reset();
+        setSketchMode(STATUS_NONE);
+        resetPositionText();
+    }
+
     // Note 1: this slot is only operative during edit mode (see signal connection/disconnection)
     // Note 2: ViewProviderSketch::UpdateData does not generate updates during undo/redo
     //         transactions as mid-transaction data may not be in a valid state (e.g. constraints
@@ -664,6 +672,14 @@ void ViewProviderSketch::slotUndoDocument(const Gui::Document& /*doc*/)
 
 void ViewProviderSketch::slotRedoDocument(const Gui::Document& /*doc*/)
 {
+    // If redo is triggered during a drag operation, the drag must be canceled to avoid using
+    // stale geometry IDs, which would lead to a crash.
+    if (!drag.Dragged.empty() || !drag.DragConstraintSet.empty()) {
+        drag.reset();
+        setSketchMode(STATUS_NONE);
+        resetPositionText();
+    }
+
     // Note 1: this slot is only operative during edit mode (see signal connection/disconnection)
     // Note 2: ViewProviderSketch::UpdateData does not generate updates during undo/redo
     //         transactions as mid-transaction data may not be in a valid state (e.g. constraints
@@ -1030,8 +1046,10 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
 
                     return done;
                 }
-                case STATUS_SKETCH_UseHandler:
-                    return sketchHandler->pressButton(Base::Vector2d(x, y));
+                case STATUS_SKETCH_UseHandler: {
+                    Base::Vector2d snappedPos = snapHandle->compute();
+                    return sketchHandler->pressButton(snappedPos);
+                }
                 default:
                     return false;
             }
@@ -1153,7 +1171,8 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     return true;
                 case STATUS_SKETCH_UseHandler: {
                     sketchHandler->applyCursor();
-                    return sketchHandler->releaseButton(Base::Vector2d(x, y));
+                    Base::Vector2d snappedPos = snapHandle->compute();
+                    return sketchHandler->releaseButton(snappedPos);
                 }
                 case STATUS_NONE:
                 default:
@@ -3362,6 +3381,9 @@ bool ViewProviderSketch::setEdit(int ModNum)
     setGridOrientation(plm.getPosition(), plm.getRotation());
     addNodeToRoot(gridnode);
     setGridEnabled(true);
+
+    // update the documents stored transform
+    getDocument()->setEditingTransform(plm.toMatrix());
 
     // create the container for the additional edit data
     assert(!isInEditMode());

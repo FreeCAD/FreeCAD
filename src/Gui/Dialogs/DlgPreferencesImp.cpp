@@ -27,6 +27,9 @@
 #include <QAbstractButton>
 #include <QApplication>
 #include <QCheckBox>
+#include <QDoubleSpinBox>
+#include <QSpinBox>
+#include <QComboBox>
 #include <QCursor>
 #include <QDebug>
 #include <QFrame>
@@ -1480,6 +1483,10 @@ void PreferencesSearchController::collectSearchResults(
     searchWidgetType<QCheckBox>(widget, searchText, groupName, pageName, pageDisplayName, tabName);
     searchWidgetType<QRadioButton>(widget, searchText, groupName, pageName, pageDisplayName, tabName);
     searchWidgetType<QPushButton>(widget, searchText, groupName, pageName, pageDisplayName, tabName);
+    searchWidgetType<QGroupBox>(widget, searchText, groupName, pageName, pageDisplayName, tabName);
+    searchWidgetType<QComboBox>(widget, searchText, groupName, pageName, pageDisplayName, tabName);
+    searchWidgetType<QSpinBox>(widget, searchText, groupName, pageName, pageDisplayName, tabName);
+    searchWidgetType<QDoubleSpinBox>(widget, searchText, groupName, pageName, pageDisplayName, tabName);
 }
 
 void PreferencesSearchController::onSearchResultSelected()
@@ -1644,6 +1651,9 @@ void PreferencesSearchController::searchWidgetType(
         else if constexpr (std::is_same_v<WidgetType, QCheckBox>) {
             widgetText = widget->text();
         }
+        else if constexpr (std::is_same_v<WidgetType, QGroupBox>) {
+            widgetText = widget->title();
+        }
         else if constexpr (std::is_same_v<WidgetType, QRadioButton>) {
             widgetText = widget->text();
         }
@@ -1651,21 +1661,66 @@ void PreferencesSearchController::searchWidgetType(
             widgetText = widget->text();
         }
 
-        // Use fuzzy matching instead of simple contains
-        int score = 0;
-        if (fuzzyMatch(searchText, widgetText, score)) {
-            SearchResult result {
-                .groupName = groupName,
-                .pageName = pageName,
-                .widget = widget,
-                .matchText = widgetText,
-                .groupBoxName = findGroupBoxForWidget(widget),
-                .tabName = tabName,
-                .pageDisplayName = pageDisplayName,
-                .isPageLevelMatch = false,
-                .score = score
-            };
-            m_searchResults.append(result);
+        if (!widgetText.isEmpty()) {
+            int score = 0;
+            if (fuzzyMatch(searchText, widgetText, score)) {
+                SearchResult result {
+                    .groupName = groupName,
+                    .pageName = pageName,
+                    .widget = widget,
+                    .matchText = widgetText,
+                    .groupBoxName = findGroupBoxForWidget(widget),
+                    .tabName = tabName,
+                    .pageDisplayName = pageDisplayName,
+                    .isPageLevelMatch = false,
+                    .score = score
+                };
+                m_searchResults.append(result);
+            }
+        }
+
+        // search tooltip text for all widget types
+        QString tooltip = widget->toolTip();
+        if (!tooltip.isEmpty()) {
+            int tooltipScore = 0;
+            if (fuzzyMatch(searchText, tooltip, tooltipScore)) {
+                SearchResult result {
+                    .groupName = groupName,
+                    .pageName = pageName,
+                    .widget = widget,
+                    .matchText = QStringLiteral("Tooltip: ") + tooltip,
+                    .groupBoxName = findGroupBoxForWidget(widget),
+                    .tabName = tabName,
+                    .pageDisplayName = pageDisplayName,
+                    .isPageLevelMatch = false,
+                    .score = tooltipScore - 100  // lower score for tooltip match
+                };
+                m_searchResults.append(result);
+            }
+        }
+
+        // search throughout combobox items
+        if constexpr (std::is_same_v<WidgetType, QComboBox>) {
+            for (int i = 0; i < widget->count(); ++i) {
+                QString itemText = widget->itemText(i);
+                if (!itemText.isEmpty()) {
+                    int itemScore = 0;
+                    if (fuzzyMatch(searchText, itemText, itemScore)) {
+                        SearchResult result {
+                            .groupName = groupName,
+                            .pageName = pageName,
+                            .widget = widget,
+                            .matchText = QStringLiteral("Option: ") + itemText,
+                            .groupBoxName = findGroupBoxForWidget(widget),
+                            .tabName = tabName,
+                            .pageDisplayName = pageDisplayName,
+                            .isPageLevelMatch = false,
+                            .score = itemScore + 50  // boost score for combo item
+                        };
+                        m_searchResults.append(result);
+                    }
+                }
+            }
         }
     }
 }

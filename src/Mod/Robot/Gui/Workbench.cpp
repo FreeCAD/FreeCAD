@@ -60,41 +60,11 @@ Workbench::~Workbench() = default;
 
 void Workbench::activated()
 {
-    std::string res = App::Application::getResourceDir();
-    QString dir = QStringLiteral("%1/Mod/Robot/Lib/Kuka").arg(QString::fromUtf8(res.c_str()));
-    QFileInfo fi(dir, QStringLiteral("kr_16.csv"));
-
-    if (!fi.exists()) {
-        Gui::WaitCursor wc;
-        wc.restoreCursor();
-        QMessageBox::warning(
-            Gui::getMainWindow(),
-            QObject::tr("No robot files installed"),
-            QObject::tr("Visit %1 and copy the robot VRML and CSV files to %2")
-                .arg(
-                    QStringLiteral(
-                        "https://www.kuka.com/en-us/services/downloads"
-                        "/src/Mod/Robot/Lib/Kuka"
-                    ),
-                    dir
-                )
-        );
-        wc.setWaitCursor();
-    }
-
     Gui::Workbench::activated();
 
     const char* RobotAndTrac[] = {"Robot_InsertWaypoint", "Robot_InsertWaypointPreselect", nullptr};
 
     const char* Robot[] = {"Robot_AddToolShape", "Robot_SetHomePos", "Robot_RestoreHomePos", nullptr};
-
-    const char* Empty[] = {
-        "Robot_InsertKukaIR500",
-        "Robot_InsertKukaIR16",
-        "Robot_InsertKukaIR210",
-        "Robot_InsertKukaIR125",
-        nullptr
-    };
 
     const char* TracSingle[] = {"Robot_TrajectoryDressUp", nullptr};
 
@@ -132,11 +102,6 @@ void Workbench::activated()
         "Trajectory Tools",
         "Robot_CreateRobot"
     ));
-
-    Watcher.push_back(
-        new Gui::TaskView::TaskWatcherCommandsEmptyDoc(Empty, "Insert Robot", "Robot_CreateRobot")
-    );
-
 
     addTaskWatcher(Watcher);
     Gui::Control().showTaskView();
@@ -182,12 +147,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     // analyze
     Gui::MenuItem* insertRobots = new Gui::MenuItem;
     insertRobots->setCommand("Insert Robot");
-    *insertRobots << "Robot_InsertKukaIR500"
-                  << "Robot_InsertKukaIR210"
-                  << "Robot_InsertKukaIR125"
-                  << "Robot_InsertKukaIR16"
-                  << "Separator"
-                  << "Robot_AddToolShape";
+    *insertRobots << "Robot_AddToolShape";
 
     // boolean
     Gui::MenuItem* exportM = new Gui::MenuItem;

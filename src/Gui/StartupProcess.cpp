@@ -225,6 +225,7 @@ void StartupPostProcess::execute()
     setLocale();
     setCursorFlashing();
     setQtStyle();
+    setStyleSheet();
     checkOpenGL();
     loadOpenInventor();
     setBranding();
@@ -502,8 +503,6 @@ void StartupPostProcess::activateWorkbench()
     if (auto fcApp = qobject_cast<GUIApplicationNativeEventAware*>(qtApp)) {
         fcApp->initSpaceball(mainWindow);
     }
-
-    setStyleSheet();
 
     // Now run the background autoload, for workbenches that should be loaded at startup, but not
     // displayed to the user immediately

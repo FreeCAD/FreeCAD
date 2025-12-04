@@ -106,3 +106,31 @@ void RobotAlgos::Test()
         printf("Axle %i: %f \n", i, result(i));
     }
 }
+
+namespace Robot
+{
+
+KDL::Frame toFrame(const Base::Placement& To)
+{
+    return {
+        KDL::Rotation::Quaternion(
+            To.getRotation()[0],
+            To.getRotation()[1],
+            To.getRotation()[2],
+            To.getRotation()[3]
+        ),
+        KDL::Vector(To.getPosition()[0], To.getPosition()[1], To.getPosition()[2])
+    };
+}
+
+Base::Placement toPlacement(const KDL::Frame& frame)
+{
+    double x;
+    double y;
+    double z;
+    double w;
+    frame.M.GetQuaternion(x, y, z, w);
+    return {Base::Vector3d(frame.p[0], frame.p[1], frame.p[2]), Base::Rotation(x, y, z, w)};
+}
+
+}  // namespace Robot

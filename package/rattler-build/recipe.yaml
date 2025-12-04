@@ -145,7 +145,6 @@ requirements:
     - gmsh
     - graphviz
     - ifcopenshell
-    - jinja2
     - lark
     - lxml
     - matplotlib-base

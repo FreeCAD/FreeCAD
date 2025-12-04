@@ -120,7 +120,9 @@ void DlgSettingsUI::loadSettings()
 
 void DlgSettingsUI::loadStyleSheet()
 {
-    populateStylesheets("StyleSheet", "qss", ui->StyleSheets, "No style sheet");
+    static std::string translatedString;  // Make sure the memory doesn't disappear on us
+    translatedString = tr("No style sheet").toStdString();
+    populateStylesheets("StyleSheet", "qss", ui->StyleSheets, translatedString.c_str());
     populateStylesheets("OverlayActiveStyleSheet", "overlay", ui->OverlayStyleSheets, "Auto");
 }
 
