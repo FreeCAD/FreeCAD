@@ -53,6 +53,7 @@
 #include <Gui/WaitCursor.h>
 #include <Mod/Part/App/PartFeature.h>
 
+#include "Utils.h"
 #include "TaskSweep.h"
 #include "ui_TaskSweep.h"
 
@@ -402,7 +403,8 @@ bool SweepWidget::accept()
         Gui::WaitCursor wc;
         QString cmd;
         cmd = QStringLiteral(
-                  "App.getDocument('%5').addObject('Part::Sweep','Sweep')\n"
+                  "obj = App.getDocument('%5').addObject('Part::Sweep','Sweep')\n"
+                  "%6"  // auto-grouping
                   "App.getDocument('%5').ActiveObject.Sections=[%1]\n"
                   "App.getDocument('%5').ActiveObject.Spine=%2\n"
                   "App.getDocument('%5').ActiveObject.Solid=%3\n"
@@ -413,7 +415,8 @@ bool SweepWidget::accept()
                       QLatin1String(selection.c_str()),
                       solid,
                       frenet,
-                      QString::fromLatin1(d->document.c_str())
+                      QString::fromLatin1(d->document.c_str()),
+                      PartGui::getAutoGroupCommandStr(false)
                   );
 
         Gui::Document* doc = Gui::Application::Instance->getDocument(d->document.c_str());
