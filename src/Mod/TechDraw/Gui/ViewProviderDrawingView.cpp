@@ -22,8 +22,8 @@
  ***************************************************************************/
 
 #include <limits>
-#include <boost/signals2.hpp>
-#include <boost/signals2/connection.hpp>
+#include <fastsignals/signal.h>
+#include <fastsignals/connection.h>
 
 #include <App/Application.h>
 #include <App/Document.h>

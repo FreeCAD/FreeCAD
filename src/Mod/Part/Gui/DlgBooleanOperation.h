@@ -39,7 +39,7 @@ class Property;
 namespace PartGui
 {
 
-using Connection = boost::signals2::connection;
+using Connection = fastsignals::connection;
 class Ui_DlgBooleanOperation;
 class DlgBooleanOperation: public QWidget
 {

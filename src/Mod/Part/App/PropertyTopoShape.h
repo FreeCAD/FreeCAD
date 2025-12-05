@@ -310,7 +310,7 @@ private:
 
 private:
     std::unordered_map<std::string, TopoShape> cache;
-    boost::signals2::scoped_connection connChanged;
+    fastsignals::scoped_connection connChanged;
 };
 
 }  // namespace Part
