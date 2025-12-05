@@ -288,7 +288,7 @@ PyObject* DrawViewPartPy::makeCosmeticVertex3d(PyObject *args)
 //get by unique tag
 PyObject* DrawViewPartPy::getCosmeticVertex(PyObject *args)
 {
-    const char* id{""};                      //unique tag
+    const char* id{};                      //unique tag
     if (!PyArg_ParseTuple(args, "s", &id)) {
         return nullptr;
     }
@@ -322,7 +322,7 @@ PyObject* DrawViewPartPy::getCosmeticVertexBySelection(PyObject *args)
 PyObject* DrawViewPartPy::removeCosmeticVertex(PyObject *args)
 {
     DrawViewPart* dvp = getDrawViewPartPtr();
-    const char* tag{""};
+    const char* tag{};
     if (PyArg_ParseTuple(args, "s", &tag)) {
         dvp->removeCosmeticVertex(tag);
         dvp->refreshCVGeoms();
@@ -670,7 +670,7 @@ PyObject* DrawViewPartPy::makeCosmeticCircleArc3d(PyObject *args)
 
 PyObject* DrawViewPartPy::getCosmeticEdge(PyObject *args)
 {
-    char* tag{""};
+    char* tag{};
     if (!PyArg_ParseTuple(args, "s", &tag)) {
         return nullptr;
     }
@@ -687,7 +687,7 @@ PyObject* DrawViewPartPy::getCosmeticEdge(PyObject *args)
 
 PyObject* DrawViewPartPy::getCosmeticEdgeBySelection(PyObject *args)
 {
-    char* name{""};
+    char* name{};
     if (!PyArg_ParseTuple(args, "s", &name)) {
         return nullptr;
     }
@@ -705,7 +705,7 @@ PyObject* DrawViewPartPy::getCosmeticEdgeBySelection(PyObject *args)
 
 PyObject* DrawViewPartPy::removeCosmeticEdge(PyObject *args)
 {
-    char* tag{""};
+    char* tag{};
     if (!PyArg_ParseTuple(args, "s", &tag)) {
         return nullptr;
     }
@@ -769,7 +769,7 @@ PyObject* DrawViewPartPy::makeCenterLine(PyObject *args)
 
 PyObject* DrawViewPartPy::getCenterLine(PyObject *args)
 {
-    char* tag{""};
+    char* tag{};
     if (!PyArg_ParseTuple(args, "s", &tag)) {
         return nullptr;
     }
@@ -785,7 +785,7 @@ PyObject* DrawViewPartPy::getCenterLine(PyObject *args)
 
 PyObject* DrawViewPartPy::getCenterLineBySelection(PyObject *args)
 {
-    char* tag{""};
+    char* tag{};
     if (!PyArg_ParseTuple(args, "s", &tag)) {
         return nullptr;
     }
@@ -903,7 +903,7 @@ PyObject* DrawViewPartPy::getVertexByIndex(PyObject *args)
 PyObject* DrawViewPartPy::getEdgeBySelection(PyObject *args)
 {
     int edgeIndex = 0;
-    char* selName{""};           //Selection routine name - "Edge0"
+    char* selName{};           //Selection routine name - "Edge0"
     if (!PyArg_ParseTuple(args, "s", &selName)) {
         return nullptr;
     }
@@ -931,7 +931,7 @@ PyObject* DrawViewPartPy::getEdgeBySelection(PyObject *args)
 PyObject* DrawViewPartPy::getVertexBySelection(PyObject *args)
 {
     int vertexIndex = 0;
-    const char* selName{""};           //Selection routine name - "Vertex0"
+    const char* selName{};           //Selection routine name - "Vertex0"
     if (!PyArg_ParseTuple(args, "s", &selName)) {
         return nullptr;
     }
