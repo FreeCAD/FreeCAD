@@ -120,7 +120,7 @@ private:
 private:
     ViewProviderGridExtension* vp;
 
-    Gui::View3DInventor* view { nullptr };
+    Gui::View3DInventor* view {nullptr};
     double computedGridValue = 10;
 
     bool isTooManySegmentsNotified = false;
@@ -244,7 +244,7 @@ void GridExtensionP::computeGridSize(const Gui::View3DInventorViewer* viewer)
 
 void GridExtensionP::createGrid(bool cameraUpdate)
 {
-    if(!view) {
+    if (!view) {
         return;
     }
 
@@ -448,7 +448,7 @@ SoSeparator* GridExtensionP::getGridRoot()
     return GridRoot;
 }
 
-void GridExtensionP::drawGrid(bool cameraUpdate) 
+void GridExtensionP::drawGrid(bool cameraUpdate)
 {
     if (vp->ShowGrid.getValue() && getEnabled()) {
         createGrid(cameraUpdate);

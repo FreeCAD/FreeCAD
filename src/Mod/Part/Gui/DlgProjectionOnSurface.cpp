@@ -300,7 +300,8 @@ void PartGui::DlgProjectionOnSurface::setSelectionGate()
 {
     if (selectionMode == SelectionMode::Face) {
         Gui::Selection().addSelectionGate(new FaceSelection());
-    } else if (selectionMode == SelectionMode::Edge) {
+    }
+    else if (selectionMode == SelectionMode::Edge) {
         Gui::Selection().addSelectionGate(new EdgeSelection());
     }
 }
@@ -1405,7 +1406,8 @@ void DlgProjectOnSurface::setSelectionGate()
 {
     if (selectionMode == SelectionMode::SupportFace || selectionMode == SelectionMode::AddFace) {
         Gui::Selection().addSelectionGate(new FaceSelection());
-    } else if (selectionMode == SelectionMode::AddEdge || selectionMode == SelectionMode::AddWire) {
+    }
+    else if (selectionMode == SelectionMode::AddEdge || selectionMode == SelectionMode::AddWire) {
         Gui::Selection().addSelectionGate(new EdgeSelection());
     }
 }

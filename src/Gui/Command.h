@@ -478,7 +478,7 @@ public:
     static int openActiveDocumentCommand(std::string name = "", bool tmpName = false, int tid = 0);
 
     void rename(const std::string& name);
-    
+
     /// Commit the Undo transaction on the active document
     void commitCommand();
     static void commitCommand(int tid);
@@ -728,7 +728,7 @@ protected:
     bool bCanLog;
     //@}
 
-    int currentTransactionID { 0 }; // TransactionID created in _invoke 
+    int currentTransactionID {0};  // TransactionID created in _invoke
 private:
     static int _busy;
     bool bEnabled;

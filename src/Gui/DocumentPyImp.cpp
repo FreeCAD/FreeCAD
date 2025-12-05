@@ -580,7 +580,7 @@ Py::Long DocumentPy::getEditMode() const
 
 PyObject* DocumentPy::openCommand(PyObject* arg, PyObject *kwd)
 {
-    const char *name = nullptr;
+    const char* name = nullptr;
     if (!PyArg_ParseTuple(arg, "s", &name)) {
         throw Py::Exception();
     }

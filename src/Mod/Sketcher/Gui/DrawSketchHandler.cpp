@@ -816,7 +816,8 @@ void DrawSketchHandler::createAutoConstraints(
                     geoId1,
                     static_cast<int>(posId1),
                     cstr.GeoId,
-                    static_cast<int>(cstr.PosId));
+                    static_cast<int>(cstr.PosId)
+                );
             } break;
             case Sketcher::PointOnObject: {
                 Sketcher::PointPos posId2 = cstr.PosId;
@@ -831,7 +832,8 @@ void DrawSketchHandler::createAutoConstraints(
                     "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
                     geoId1,
                     static_cast<int>(posId1),
-                    geoId2);
+                    geoId2
+                );
             } break;
             case Sketcher::Symmetric: {
                 Gui::cmdAppObjectArgs(
@@ -840,7 +842,8 @@ void DrawSketchHandler::createAutoConstraints(
                     geoId2,
                     geoId2,
                     geoId1,
-                    static_cast<int>(posId1));
+                    static_cast<int>(posId1)
+                );
             } break;
                 // In special case of Horizontal/Vertical constraint, geoId2 is normally unused
                 // and should be 'Constraint::GeoUndef' However it can be used as a way to
@@ -848,14 +851,18 @@ void DrawSketchHandler::createAutoConstraints(
                 // case the caller as to set geoId2, then it will be used as target instead of
                 // geoId2
             case Sketcher::Horizontal: {
-                Gui::cmdAppObjectArgs(sketchgui->getObject(),
-                                      "addConstraint(Sketcher.Constraint('Horizontal',%d)) ",
-                                      geoId2 != GeoEnum::GeoUndef ? geoId2 : geoId1);
+                Gui::cmdAppObjectArgs(
+                    sketchgui->getObject(),
+                    "addConstraint(Sketcher.Constraint('Horizontal',%d)) ",
+                    geoId2 != GeoEnum::GeoUndef ? geoId2 : geoId1
+                );
             } break;
             case Sketcher::Vertical: {
-                Gui::cmdAppObjectArgs(sketchgui->getObject(),
-                                      "addConstraint(Sketcher.Constraint('Vertical',%d)) ",
-                                      geoId2 != GeoEnum::GeoUndef ? geoId2 : geoId1);
+                Gui::cmdAppObjectArgs(
+                    sketchgui->getObject(),
+                    "addConstraint(Sketcher.Constraint('Vertical',%d)) ",
+                    geoId2 != GeoEnum::GeoUndef ? geoId2 : geoId1
+                );
             } break;
             case Sketcher::Tangent: {
                 Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
@@ -883,7 +890,8 @@ void DrawSketchHandler::createAutoConstraints(
                             static_cast<const Part::GeomEllipse*>(geom1),
                             geom2,
                             geoId1,
-                            geoId2);
+                            geoId2
+                        );
 
                         if (createowncommand) {
                             closeAndRecompute(currentTransactionID, !success, Obj);
@@ -898,8 +906,7 @@ void DrawSketchHandler::createAutoConstraints(
 
                 // arc of ellipse tangency support using external elements
                 if (geom1 && geom2
-                    && (geom1->is<Part::GeomArcOfEllipse>()
-                        || geom2->is<Part::GeomArcOfEllipse>())) {
+                    && (geom1->is<Part::GeomArcOfEllipse>() || geom2->is<Part::GeomArcOfEllipse>())) {
 
                     if (!geom1->is<Part::GeomArcOfEllipse>()) {
                         std::swap(geoId1, geoId2);
@@ -917,7 +924,8 @@ void DrawSketchHandler::createAutoConstraints(
                             static_cast<const Part::GeomArcOfEllipse*>(geom1),
                             geom2,
                             geoId1,
-                            geoId2);
+                            geoId2
+                        );
 
                         if (createowncommand) {
                             closeAndRecompute(currentTransactionID, !success, Obj);
@@ -930,10 +938,12 @@ void DrawSketchHandler::createAutoConstraints(
                     }
                 }
 
-                Gui::cmdAppObjectArgs(sketchgui->getObject(),
-                                      "addConstraint(Sketcher.Constraint('Tangent',%d, %d)) ",
-                                      geoId1,
-                                      cstr.GeoId);
+                Gui::cmdAppObjectArgs(
+                    sketchgui->getObject(),
+                    "addConstraint(Sketcher.Constraint('Tangent',%d, %d)) ",
+                    geoId1,
+                    cstr.GeoId
+                );
             } break;
             default:
                 break;

@@ -1041,7 +1041,7 @@ void Application::slotNewDocument(const App::Document& Doc, bool isMainDoc)
     pDoc->signalInEdit.connect(std::bind(&Gui::Application::slotInEdit, this, sp::_1));
     pDoc->signalResetEdit.connect(std::bind(&Gui::Application::slotResetEdit, this, sp::_1));
     // NOLINTEND
-    
+
     const std::map<std::string, std::string>& config = App::Application::Config();
     auto st = config.find("StartWorkbench");
     const char* start = (st != config.end() ? st->second.c_str() : "<none>");
@@ -1558,7 +1558,8 @@ void Application::setEditDocument(Gui::Document* pcDocument)
     if (pcDocument == nullptr) {
         return;
     }
-    if (std::ranges::find(d->editDocuments.begin(), d->editDocuments.end(), pcDocument) != d->editDocuments.end()) {
+    if (std::ranges::find(d->editDocuments.begin(), d->editDocuments.end(), pcDocument)
+        != d->editDocuments.end()) {
         return;
     }
     d->editDocuments.push_back(pcDocument);

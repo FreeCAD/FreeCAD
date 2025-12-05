@@ -145,8 +145,7 @@ void WorkbenchHelper::setForegroundColor(const QColor& color)
             if (!ranges.empty()) {
                 std::vector<Range>::const_iterator i = ranges.begin();
 
-                sheet->getDocument()->openTransaction(
-                    QT_TRANSLATE_NOOP("Command", "Set text color"));
+                sheet->getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Set text color"));
                 for (; i != ranges.end(); ++i) {
                     Gui::Command::doCommand(
                         Gui::Command::Doc,
@@ -182,7 +181,8 @@ void WorkbenchHelper::setBackgroundColor(const QColor& color)
                 std::vector<Range>::const_iterator i = ranges.begin();
 
                 sheet->getDocument()->openTransaction(
-                    QT_TRANSLATE_NOOP("Command", "Set background color"));
+                    QT_TRANSLATE_NOOP("Command", "Set background color")
+                );
                 for (; i != ranges.end(); ++i) {
                     Gui::Command::doCommand(
                         Gui::Command::Doc,

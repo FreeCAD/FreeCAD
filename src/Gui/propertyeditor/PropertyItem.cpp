@@ -2646,7 +2646,9 @@ PlacementEditor::~PlacementEditor() = default;
 
 void PlacementEditor::browse()
 {
-    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog(Gui::Application::Instance->activeDocument()->getDocument());
+    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog(
+        Gui::Application::Instance->activeDocument()->getDocument()
+    );
     Gui::Dialog::TaskPlacement* task {};
     task = qobject_cast<Gui::Dialog::TaskPlacement*>(dlg);
     if (dlg && !task) {

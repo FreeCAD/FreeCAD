@@ -569,11 +569,11 @@ void ViewProviderOffset::setupContextMenu(QMenu* menu, QObject* receiver, const 
 
 bool ViewProviderOffset::setEdit(int ModNum)
 {
-    if (ModNum == ViewProvider::Default ) {
-        Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog(getDocument()->getDocument());
+    if (ModNum == ViewProvider::Default) {
+        Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog(getDocument()->getDocument());
         TaskOffset* offsetDlg = qobject_cast<TaskOffset*>(dlg);
         if (offsetDlg && offsetDlg->getObject() != this->getObject()) {
-            offsetDlg = nullptr; // another pad left open its task panel
+            offsetDlg = nullptr;  // another pad left open its task panel
         }
         if (dlg && !offsetDlg) {
             if (dlg->canClose()) {
@@ -592,7 +592,10 @@ bool ViewProviderOffset::setEdit(int ModNum)
             Gui::Control().showDialog(offsetDlg, getDocument()->getDocument());
         }
         else {
-            Gui::Control().showDialog(new TaskOffset(getObject<Part::Offset>()), getDocument()->getDocument());
+            Gui::Control().showDialog(
+                new TaskOffset(getObject<Part::Offset>()),
+                getDocument()->getDocument()
+            );
         }
 
         return true;
@@ -656,11 +659,11 @@ void ViewProviderThickness::setupContextMenu(QMenu* menu, QObject* receiver, con
 
 bool ViewProviderThickness::setEdit(int ModNum)
 {
-    if (ModNum == ViewProvider::Default ) {
-        Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog(getDocument()->getDocument());
+    if (ModNum == ViewProvider::Default) {
+        Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog(getDocument()->getDocument());
         TaskThickness* thicknessDlg = qobject_cast<TaskThickness*>(dlg);
         if (thicknessDlg && thicknessDlg->getObject() != this->getObject()) {
-            thicknessDlg = nullptr; // another pad left open its task panel
+            thicknessDlg = nullptr;  // another pad left open its task panel
         }
         if (dlg && !thicknessDlg) {
             if (dlg->canClose()) {
@@ -679,7 +682,10 @@ bool ViewProviderThickness::setEdit(int ModNum)
             Gui::Control().showDialog(thicknessDlg, getDocument()->getDocument());
         }
         else {
-            Gui::Control().showDialog(new TaskThickness(getObject<Part::Thickness>()), getDocument()->getDocument());
+            Gui::Control().showDialog(
+                new TaskThickness(getObject<Part::Thickness>()),
+                getDocument()->getDocument()
+            );
         }
 
         return true;

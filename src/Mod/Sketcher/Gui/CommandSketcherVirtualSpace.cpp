@@ -174,8 +174,7 @@ void CmdSketcherSwitchVirtualSpace::activated(int iMsg)
         for (const std::string& subName : SubNames) {
             // only handle constraints
             if (subName.size() > 10 && subName.substr(0, 10) == "Constraint") {
-                int ConstrId =
-                    Sketcher::PropertyConstraintList::getIndexFromConstraintName(subName);
+                int ConstrId = Sketcher::PropertyConstraintList::getIndexFromConstraintName(subName);
                 try {
                     Gui::cmdAppObjectArgs(Obj, "toggleVirtualSpace(%d)", ConstrId);
                 }

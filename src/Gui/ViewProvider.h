@@ -555,7 +555,7 @@ protected:
     virtual void unsetEdit(int ModNum);
     /// return the edit mode or -1 if nothing is being edited
     int getEditingMode() const;
-    
+
 public:
     virtual ViewProvider* startEditing(int ModNum = 0);
     bool isEditing() const;

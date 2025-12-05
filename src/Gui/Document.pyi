@@ -196,6 +196,7 @@ class Document(Persistence):
         id or 0 on failure
         """
         ...
+
     def commitCommand(self) -> None:
         """
         commitCommand() -> None
@@ -203,6 +204,7 @@ class Document(Persistence):
         Commits the current transaction of the document
         """
         ...
+
     def abortCommand(self) -> None:
         """
         abortCommand() -> None
@@ -210,7 +212,6 @@ class Document(Persistence):
         Aborts the current transaction of the document
         """
         ...
-
     ActiveObject: Any = ...
     """The active object of the document."""
 

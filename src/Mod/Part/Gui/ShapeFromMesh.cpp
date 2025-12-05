@@ -72,7 +72,9 @@ void ShapeFromMesh::perform()
     meshes = Gui::Selection().getObjectsOfType(meshid);
 
     Gui::doCommandT(Gui::Command::Doc, "import Part");
-    Gui::Application::Instance->activeDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Convert mesh"));
+    Gui::Application::Instance->activeDocument()->openCommand(
+        QT_TRANSLATE_NOOP("Command", "Convert mesh")
+    );
 
     for (auto it : meshes) {
         App::Document* doc = it->getDocument();

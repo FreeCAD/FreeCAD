@@ -157,8 +157,7 @@ void FitBSplineSurfaceWidget::onMakePlacementClicked()
                     )
                                           .arg(document, argument);
 
-                    d->obj.getDocument()->openTransaction(
-                        QT_TRANSLATE_NOOP("Command", "Placement"));
+                    d->obj.getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Placement"));
                     Gui::Command::runCommand(Gui::Command::Doc, "from FreeCAD import Base");
                     Gui::Command::runCommand(Gui::Command::Doc, command.toLatin1());
                     d->obj.getDocument()->commitTransaction();

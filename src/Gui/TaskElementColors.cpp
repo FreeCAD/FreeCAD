@@ -64,7 +64,7 @@ public:
     bool busy;
     long onTopMode;
     bool touched;
-    int tid {0}; // Transaction id
+    int tid {0};  // Transaction id
 
     std::string editDoc;
     std::string editObj;
@@ -79,8 +79,8 @@ public:
         , editElement(element)
     {
         if (auto editDoc = Application::Instance->editDocument([this, &vp](Gui::Document* editDoc) {
-            return editDoc->getInEdit(&vpParent, &editSub) == vp;
-        })) {
+                return editDoc->getInEdit(&vpParent, &editSub) == vp;
+            })) {
             auto obj = vpParent->getObject();
             this->editDoc = obj->getDocument()->getName();
             this->editObj = obj->getNameInDocument();

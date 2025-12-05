@@ -475,7 +475,7 @@ static void linkConvert(bool unlink)
     Selection().clearCompleteSelection();
 
     // now, do actual operation
-    const char *transactionName = unlink ? "Unlink" : "Replace with link";
+    const char* transactionName = unlink ? "Unlink" : "Replace with link";
     int tid = 0;
     try {
         std::unordered_map<App::DocumentObject*, App::DocumentObjectT> recomputeSet;
@@ -497,7 +497,7 @@ static void linkConvert(bool unlink)
             tid = doc->openTransaction(transactionName, false, tid);
 
             App::DocumentObject* replaceObj;
-            if(unlink) {
+            if (unlink) {
                 replaceObj = obj->getLinkedObject(false);
                 if (!replaceObj || !replaceObj->isAttachedToDocument() || replaceObj == obj) {
                     continue;

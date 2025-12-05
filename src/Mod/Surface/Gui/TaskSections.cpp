@@ -94,9 +94,7 @@ void ViewProviderSections::unsetEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
         // when pressing ESC make sure to close the dialog
-        QTimer::singleShot(0, [] {
-            Gui::Control().closeDialog(nullptr);
-        });
+        QTimer::singleShot(0, [] { Gui::Control().closeDialog(nullptr); });
     }
     else {
         PartGui::ViewProviderSpline::unsetEdit(ModNum);

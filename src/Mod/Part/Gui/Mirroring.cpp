@@ -234,7 +234,8 @@ void Mirroring::onSelectButtonClicked()
         Gui::Selection().rmvSelectionGate();
         filterSelection = false;
         ui->selectButton->setText(tr("Select Reference"));
-    } else {
+    }
+    else {
         filterSelection = true;
         setSelectionGate();
         ui->selectButton->setText(tr("Selecting"));

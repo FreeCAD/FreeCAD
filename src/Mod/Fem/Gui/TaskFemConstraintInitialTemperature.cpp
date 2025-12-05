@@ -111,13 +111,13 @@ bool TaskDlgFemConstraintInitialTemperature::accept()
             throw Base::RuntimeError(ConstraintView->getObject()->getStatusString());
         }
 
-        ConstraintView->getDocument()
-            ->commitCommand();  // Opened in ViewProviderDocumentObject::startDefaultEditMode()
+        ConstraintView->getDocument()->commitCommand();  // Opened in
+                                                         // ViewProviderDocumentObject::startDefaultEditMode()
         Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
     }
     catch (const Base::Exception& e) {
-        ConstraintView->getDocument()
-            ->abortCommand();  // Opened in ViewProviderDocumentObject::startDefaultEditMode()
+        ConstraintView->getDocument()->abortCommand();  // Opened in
+                                                        // ViewProviderDocumentObject::startDefaultEditMode()
         QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
         return false;
     }

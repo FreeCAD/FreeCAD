@@ -202,7 +202,7 @@ public:
     /// Getter for the App Document
     App::Document* getDocument() const;
 
-    /// Notify the document when it becomes 
+    /// Notify the document when it becomes
     /// the active document/stops being the active document
     void setIsActive(bool active);
     bool isActive() const;
@@ -297,7 +297,8 @@ public:
         int* mode = nullptr,
         std::string* subElement = nullptr
     ) const;
-    ViewProvider* getEditViewProvider() const; // Returns the _editViewProvider even if it is not in edit at the moment
+    ViewProvider* getEditViewProvider() const;  // Returns the _editViewProvider even if it is not
+                                                // in edit at the moment
     /// set the in edit ViewProvider subname reference
     void setInEdit(ViewProviderDocumentObject* parentVp, const char* subname);
     /** Add or remove view provider from scene graphs of all views
@@ -311,7 +312,7 @@ public:
     /** @name methods for the UNDO REDO handling */
     //@{
     /// Open a new Undo transaction on the document
-    int openCommand(const char* sName=nullptr);
+    int openCommand(const char* sName = nullptr);
     /// Commit the Undo transaction on the document
     void commitCommand();
     /// Abort the Undo transaction on the document

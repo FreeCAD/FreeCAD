@@ -494,7 +494,7 @@ void Command::_invoke(int id, bool disablelog)
         }
         // here we assume that the overriden activated() function
         // commited, aborted or gave the transaction id to a dialog
-        currentTransactionID = 0; // Get ready for next invoke
+        currentTransactionID = 0;  // Get ready for next invoke
     }
     catch (const Base::SystemExitException&) {
         throw;
@@ -678,8 +678,9 @@ int Command::openCommand(std::string name, bool tmpName)
 }
 int Command::openActiveDocumentCommand(std::string name, bool tmpName, int tid)
 {
-     if (name.empty())
+    if (name.empty()) {
         name = "Command";
+    }
     if (Gui::Document* guidoc = getGuiApplication()->activeDocument()) {
         return guidoc->getDocument()->setActiveTransaction(name, tmpName, tid);
     }

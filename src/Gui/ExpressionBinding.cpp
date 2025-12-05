@@ -213,7 +213,7 @@ bool ExpressionBinding::apply(const std::string& propName)
         if (!docObj) {
             throw Base::RuntimeError("Document object not found.");
         }
-        
+
         bool transaction = docObj->getDocument()->getBookedTransactionID() == 0;
         if (transaction) {
             std::ostringstream ss;

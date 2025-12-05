@@ -47,10 +47,8 @@ using namespace std;
 ControlSingleton* ControlSingleton::_pcSingleton = nullptr;
 
 ControlSingleton::ControlSingleton()
-  : oldTabIndex(-1)
-{
-
-}
+    : oldTabIndex(-1)
+{}
 
 ControlSingleton::~ControlSingleton() = default;
 
@@ -148,12 +146,13 @@ void ControlSingleton::showModelView()
     }
 }
 
-void ControlSingleton::showDialog(Gui::TaskView::TaskDialog *dlg, App::Document* attachTo)
+void ControlSingleton::showDialog(Gui::TaskView::TaskDialog* dlg, App::Document* attachTo)
 {
     if (!attachTo) {
         if (Application::Instance->activeDocument()) {
             attachTo = Application::Instance->activeDocument()->getDocument();
-        } else {
+        }
+        else {
             qWarning() << "ControlSingleton::showDialog: Cannot attach to nullptr document";
             return;
         }
@@ -188,11 +187,11 @@ void ControlSingleton::showDialog(Gui::TaskView::TaskDialog *dlg, App::Document*
         aboutToShowDialog(dw);
         dw->setVisible(true);
         dw->toggleViewAction()->setVisible(true);
-        dw->setFeatures(QDockWidget::DockWidgetMovable|QDockWidget::DockWidgetFloatable);
+        dw->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
     }
 
     if (!addedDialog) {
-        return; // dialog is already defined
+        return;  // dialog is already defined
     }
 
     connect(dlg, &TaskView::TaskDialog::aboutToBeDestroyed, this, [this, attachTo] {
@@ -205,7 +204,8 @@ Gui::TaskView::TaskDialog* ControlSingleton::activeDialog(App::Document* attache
     if (!attachedTo) {
         if (Application::Instance->activeDocument()) {
             attachedTo = Application::Instance->activeDocument()->getDocument();
-        } else {
+        }
+        else {
             return nullptr;
         }
     }
@@ -223,7 +223,8 @@ void ControlSingleton::accept(App::Document* attachedTo)
     if (!attachedTo) {
         if (Application::Instance->activeDocument()) {
             attachedTo = Application::Instance->activeDocument()->getDocument();
-        } else {
+        }
+        else {
             qWarning() << "ControlSingleton::accept: Cannot accept dialog of nullptr document";
             return;
         }
@@ -240,7 +241,8 @@ void ControlSingleton::reject(App::Document* attachedTo)
     if (!attachedTo) {
         if (Application::Instance->activeDocument()) {
             attachedTo = Application::Instance->activeDocument()->getDocument();
-        } else {
+        }
+        else {
             qWarning() << "ControlSingleton::reject: Cannot reject dialog of nullptr document";
             return;
         }
@@ -257,7 +259,8 @@ void ControlSingleton::closeDialog(App::Document* attachedTo)
     if (!attachedTo) {
         if (Application::Instance->activeDocument()) {
             attachedTo = Application::Instance->activeDocument()->getDocument();
-        } else {
+        }
+        else {
             qWarning() << "ControlSingleton::closeDialog: Cannot close dialog of nullptr document";
             return;
         }
@@ -289,7 +292,8 @@ bool ControlSingleton::isAllowedAlterDocument(App::Document* attachedTo) const
     if (!attachedTo) {
         if (Application::Instance->activeDocument()) {
             attachedTo = Application::Instance->activeDocument()->getDocument();
-        } else {
+        }
+        else {
             // qWarning() << "ControlSingleton::isAllowedAlterDocument: nullptr document";
             return true;
         }
@@ -303,7 +307,8 @@ bool ControlSingleton::isAllowedAlterView(App::Document* attachedTo) const
     if (!attachedTo) {
         if (Application::Instance->activeDocument()) {
             attachedTo = Application::Instance->activeDocument()->getDocument();
-        } else {
+        }
+        else {
             // qWarning() << "ControlSingleton::isAllowedAlterView: nullptr document";
             return true;
         }
@@ -317,7 +322,8 @@ bool ControlSingleton::isAllowedAlterSelection(App::Document* attachedTo) const
     if (!attachedTo) {
         if (Application::Instance->activeDocument()) {
             attachedTo = Application::Instance->activeDocument()->getDocument();
-        } else {
+        }
+        else {
             // qWarning() << "ControlSingleton::isAllowedAlterSelection: nullptr document";
             return true;
         }

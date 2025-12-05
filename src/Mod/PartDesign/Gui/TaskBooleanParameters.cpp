@@ -400,9 +400,11 @@ bool TaskDlgBooleanParameters::accept()
     }
     catch (const Base::Exception& e) {
         obj->getDocument()->abortTransaction();
-        QMessageBox::warning(parameter,
-                             tr("Boolean: Accept: Input error"),
-                             QCoreApplication::translate("Exception", e.what()));
+        QMessageBox::warning(
+            parameter,
+            tr("Boolean: Accept: Input error"),
+            QCoreApplication::translate("Exception", e.what())
+        );
         return false;
     }
     return true;

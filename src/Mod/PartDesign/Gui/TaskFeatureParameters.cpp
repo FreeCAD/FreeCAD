@@ -304,7 +304,6 @@ void TaskDlgFeatureParameters::deactivate()
             param->detachSelection();
         }
     }
-
 }
 
 #include "moc_TaskFeatureParameters.cpp"

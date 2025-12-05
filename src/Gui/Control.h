@@ -66,9 +66,9 @@ public:
     //@{
     /// This method starts a task dialog in the task view
     /// The dialog is relative to a specific document
-    void showDialog(Gui::TaskView::TaskDialog *dlg, App::Document* attachTo = nullptr);
+    void showDialog(Gui::TaskView::TaskDialog* dlg, App::Document* attachTo = nullptr);
     Gui::TaskView::TaskDialog* activeDialog(App::Document* attachedTo = nullptr) const;
-    //void closeDialog();
+    // void closeDialog();
     //@}
 
     /** @name task view handling
@@ -99,7 +99,7 @@ public Q_SLOTS:
     void accept(App::Document* attachedTo = nullptr);
     void reject(App::Document* attachedTo = nullptr);
     void closeDialog(App::Document* attachedTo = nullptr);
-    
+
     /// raises the task view panel
     void showTaskView();
 

@@ -1536,7 +1536,7 @@ bool TaskDlgAttacher::reject()
     if (document) {
         // roll back the done things
         Gui::Command::abortCommand(tid);
-        Gui::Command::doCommand(Gui::Command::Doc,"%s.recompute()", doc.getAppDocumentPython().c_str());
+        Gui::Command::doCommand(Gui::Command::Doc, "%s.recompute()", doc.getAppDocumentPython().c_str());
     }
 
     accepted = false;

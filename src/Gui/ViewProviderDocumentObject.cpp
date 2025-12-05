@@ -275,7 +275,8 @@ void ViewProviderDocumentObject::startDefaultEditMode()
     Gui::Document* document = this->getDocument();
     if (document) {
         QString text = QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue()));
-        document->openCommand(text.toUtf8()); // Command is opened here and individual dialogs have to close it
+        document->openCommand(text.toUtf8());  // Command is opened here and individual dialogs have
+                                               // to close it
         document->setEdit(this, ViewProvider::Default);
     }
 }

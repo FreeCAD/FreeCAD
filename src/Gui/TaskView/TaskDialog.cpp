@@ -165,5 +165,4 @@ void TaskDialog::deactivate()
 {}
 
 
-
 #include "moc_TaskDialog.cpp"

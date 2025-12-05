@@ -121,7 +121,7 @@ private:
     bool wasShown;
 };
 
-class GuiExport TaskPanel : public QWidget
+class GuiExport TaskPanel: public QWidget
 {
     Q_OBJECT
 
@@ -149,19 +149,20 @@ public:
     ~TaskWidget() override;
 };
 
-struct TaskInfo {
-    TaskPanel* taskPanel { nullptr };
-    TaskDialog *ActiveDialog { nullptr };
-    TaskEditControl *ActiveCtrl { nullptr };
+struct TaskInfo
+{
+    TaskPanel* taskPanel {nullptr};
+    TaskDialog* ActiveDialog {nullptr};
+    TaskEditControl* ActiveCtrl {nullptr};
     App::Document* Document {nullptr};
 };
 
 /** TaskView class
-  * handles the FreeCAD task view panel. Keeps track of the inserted content elements.
-  * This elements get injected mostly by the ViewProvider classes of the selected
-  * DocumentObjects. 
-  */
-class GuiExport TaskView : public QStackedWidget, public Gui::SelectionSingleton::ObserverType
+ * handles the FreeCAD task view panel. Keeps track of the inserted content elements.
+ * This elements get injected mostly by the ViewProvider classes of the selected
+ * DocumentObjects.
+ */
+class GuiExport TaskView: public QStackedWidget, public Gui::SelectionSingleton::ObserverType
 {
     Q_OBJECT
 
@@ -213,7 +214,7 @@ protected:
     void accept(App::Document* doc);
     void reject(App::Document* doc);
     void helpRequested(App::Document* doc);
-    void clicked (QAbstractButton * button, App::Document* doc);
+    void clicked(QAbstractButton* button, App::Document* doc);
 
 private:
     void triggerMinimumSizeHint();
@@ -237,7 +238,7 @@ protected:
     /// update the visibility of the TaskWatcher accordant to the selection
     void updateWatcher();
     /// used by Gui::Control to register Dialogs, returns true if the dialog was not already there
-    bool showDialog(TaskDialog *dlg, App::Document* doc);
+    bool showDialog(TaskDialog* dlg, App::Document* doc);
     // removes the running dialog after accept() or reject() from the TaskView
     void removeDialog(App::Document* doc);
     void removeDialog(std::vector<TaskInfo>::iterator infoIt);
