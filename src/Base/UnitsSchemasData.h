@@ -224,7 +224,7 @@ inline const UnitsSchemaSpec s3
             { 0               , "A/mm^2"     , 1               }}
         },
         { "MagneticFluxDensity", {
-            { 1e-3            , "G"          , 1e-4            },
+            { 1e-2            , "G"          , 1e-4            },
             { 0               , "T"          , 1.0             }}
         },
         { "MagneticFieldStrength", {
