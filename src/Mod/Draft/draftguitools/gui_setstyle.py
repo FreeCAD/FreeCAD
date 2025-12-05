@@ -422,6 +422,9 @@ class Draft_SetStyle_TaskPanel:
 
         properties = vobj.PropertiesList
         if "FontName" not in properties:  # Shapes
+            if "AutoColor" in properties:
+                # For sketches.
+                vobj.AutoColor = False
             if "ShapeAppearance" in properties:
                 material = App.Material()
                 material.DiffuseColor = self.form.ShapeColor.property("color").getRgbF()[
