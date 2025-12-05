@@ -26,7 +26,7 @@
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 
 #include <Gui/Document.h>
 #include <Gui/ViewProviderDocumentObject.h>
@@ -89,7 +89,7 @@ public:
     void onProgressMessage(const TechDraw::DrawView* dv,
                          const std::string featureName,
                          const std::string text);
-    using Connection = boost::signals2::scoped_connection;
+    using Connection = fastsignals::scoped_connection;
     Connection connectGuiRepaint;
     Connection connectProgressMessage;
 

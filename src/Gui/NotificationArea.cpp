@@ -52,7 +52,7 @@
 
 using namespace Gui;
 
-using Connection = boost::signals2::connection;
+using Connection = fastsignals::connection;
 
 namespace sp = std::placeholders;
 
