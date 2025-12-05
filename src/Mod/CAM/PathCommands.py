@@ -38,7 +38,6 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 if FreeCAD.GuiUp:
     import FreeCADGui
-    from PySide import QtCore
     from PySide import QtGui
 
 # translate = FreeCAD.Qt.translate
