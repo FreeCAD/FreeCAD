@@ -304,6 +304,28 @@ PyObject* FemPostPipelinePy::renameArrays(PyObject* args)
     Py_Return;
 }
 
+PyObject* FemPostPipelinePy::addArrayFromFunction(PyObject* args)
+{
+    PyObject* pyObj;
+    if (!PyArg_ParseTuple(args, "O!", &(PyDict_Type), &pyObj)) {
+        return nullptr;
+    }
+
+    Py::Dict pyFunctions {pyObj};
+    std::map<std::string, std::string> functions {};
+    for (auto&& [key, value] : pyFunctions) {
+        if (!key.isString() || !value.isString()) {
+            PyErr_SetString(PyExc_TypeError, "Functions must be string objects");
+            return nullptr;
+        }
+        functions.emplace(key.as_string(), static_cast<Py::Object>(value).as_string());
+    }
+
+    getFemPostPipelinePtr()->addArrayFromFunction(functions);
+
+    Py_Return;
+}
+
 PyObject* FemPostPipelinePy::getOutputAlgorithm(PyObject* args)
 {
 #ifdef FC_USE_VTK_PYTHON
