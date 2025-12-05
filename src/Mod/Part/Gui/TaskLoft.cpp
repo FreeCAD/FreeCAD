@@ -216,7 +216,7 @@ bool LoftWidget::accept()
                   "App.getDocument('%5').ActiveObject.Solid=%2\n"
                   "App.getDocument('%5').ActiveObject.Ruled=%3\n"
                   "App.getDocument('%5').ActiveObject.Closed=%4\n"
-                  "%5"  // auto-grouping
+                  "%6"  // auto-grouping
         )
                   .arg(
                       list,

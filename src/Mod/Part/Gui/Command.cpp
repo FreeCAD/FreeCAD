@@ -1842,7 +1842,7 @@ void CmdPartOffset::activated(int iMsg)
     );
     doCommand(Doc, "App.ActiveDocument.%s.Value = 1.0", offset.c_str());
 
-    doCommand(Doc, PartGui::getAutoGroupCommandStr(false).toUtf8().constData());
+    doCommand(Doc, PartGui::getAutoGroupCommandStr(false).toUtf8());
 
     updateActive();
 
@@ -1904,7 +1904,7 @@ void CmdPartOffset2D::activated(int iMsg)
     std::string offset = getUniqueObjectName("Offset2D");
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Make 2D Offset"));
-    doCommand(Doc, "obj =App.ActiveDocument.addObject(\"Part::Offset2D\",\"%s\")", offset.c_str());
+    doCommand(Doc, "obj = App.ActiveDocument.addObject(\"Part::Offset2D\",\"%s\")", offset.c_str());
     doCommand(
         Doc,
         "App.ActiveDocument.%s.Source = App.ActiveDocument.%s",
@@ -1912,7 +1912,7 @@ void CmdPartOffset2D::activated(int iMsg)
         shape->getNameInDocument()
     );
     doCommand(Doc, "App.ActiveDocument.%s.Value = 1.0", offset.c_str());
-    doCommand(Doc, PartGui::getAutoGroupCommandStr(false).toUtf8().constData());
+    doCommand(Doc, PartGui::getAutoGroupCommandStr(false).toUtf8());
 
     updateActive();
     doCommand(Gui, "Gui.ActiveDocument.setEdit('%s')", offset.c_str());
@@ -2118,7 +2118,7 @@ void CmdPartThickness::activated(int iMsg)
     doCommand(Doc, "obj = App.ActiveDocument.addObject(\"Part::Thickness\",\"%s\")", thick.c_str());
     doCommand(Doc, "App.ActiveDocument.%s.Faces = %s", thick.c_str(), selection.c_str());
     doCommand(Doc, "App.ActiveDocument.%s.Value = 1.0", thick.c_str());
-    doCommand(Doc, PartGui::getAutoGroupCommandStr(false).toUtf8().constData());
+    doCommand(Doc, PartGui::getAutoGroupCommandStr(false).toUtf8());
 
     updateActive();
     if (isActiveObjectValid()) {
@@ -2545,8 +2545,8 @@ void CmdPartCoordinateSystem::activated(int iMsg)
         name.c_str()
     );
     doCommand(Doc, "obj.Visibility = True");
-    doCommand(Doc, "obj.ViewObject.doubleClicked()");
     doCommand(Doc, PartGui::getAutoGroupCommandStr().toUtf8());
+    doCommand(Doc, "obj.ViewObject.doubleClicked()");
 }
 
 bool CmdPartCoordinateSystem::isActive()
@@ -2578,8 +2578,8 @@ void CmdPartDatumPlane::activated(int iMsg)
 
     std::string name = getUniqueObjectName("DatumPlane");
     doCommand(Doc, "obj = App.activeDocument().addObject('Part::DatumPlane','%s')", name.c_str());
-    doCommand(Doc, "obj.ViewObject.doubleClicked()");
     doCommand(Doc, PartGui::getAutoGroupCommandStr().toUtf8());
+    doCommand(Doc, "obj.ViewObject.doubleClicked()");
 }
 
 bool CmdPartDatumPlane::isActive()
@@ -2644,8 +2644,8 @@ void CmdPartDatumPoint::activated(int iMsg)
 
     std::string name = getUniqueObjectName("DatumPoint");
     doCommand(Doc, "obj = App.activeDocument().addObject('Part::DatumPoint','%s')", name.c_str());
-    doCommand(Doc, "obj.ViewObject.doubleClicked()");
     doCommand(Doc, PartGui::getAutoGroupCommandStr().toUtf8());
+    doCommand(Doc, "obj.ViewObject.doubleClicked()");
 }
 
 bool CmdPartDatumPoint::isActive()
