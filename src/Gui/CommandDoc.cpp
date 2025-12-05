@@ -1626,12 +1626,14 @@ StdCmdRefresh::StdCmdRefresh()
     }
 }
 
-static void handleDocumentRecomputeResult(App::RecomputeRequest& request, App::RecomputeResult& result) {
+static void handleDocumentRecomputeResult(App::RecomputeRequest& request, App::RecomputeResult& result)
+{
     if (result.success) {
         return;
     }
 
-    auto ret = QMessageBox::warning(getMainWindow(),
+    auto ret = QMessageBox::warning(
+        getMainWindow(),
         QObject::tr("Dependency error"),
         qApp->translate(
             "Std_Refresh",
@@ -1669,9 +1671,11 @@ void StdCmdRefresh::activated([[maybe_unused]] int iMsg)
         .document = doc,
         .callback = [](App::RecomputeRequest& request, App::RecomputeResult& result) {
             // Handle the result in the UI thread.
-            QMetaObject::invokeMethod(qApp, [&request, &result]() {
-                handleDocumentRecomputeResult(request, result);
-            }, Qt::QueuedConnection);
+            QMetaObject::invokeMethod(
+                qApp,
+                [&request, &result]() { handleDocumentRecomputeResult(request, result); },
+                Qt::QueuedConnection
+            );
         }
     };
 
