@@ -431,7 +431,7 @@ class CommandToggleGrounded:
             "ToolTip": QT_TRANSLATE_NOOP(
                 "Assembly_ToggleGrounded",
                 "<p>Toggles the grounding of a part.</p>"
-                "<p>Grounding a part permanently locks its position in the assembly, preventing any movement or rotation. You need at least one grounded part before starting to assemble.",
+                "<p>Grounding a part permanently locks its position in the assembly, preventing any movement or rotation.",
             ),
             "CmdType": "ForEdit",
         }
