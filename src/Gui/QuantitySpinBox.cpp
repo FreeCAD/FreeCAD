@@ -923,20 +923,18 @@ QSize QuantitySpinBox::sizeHintCalculator(int h) const
     Q_D(const QuantitySpinBox);
     ensurePolished();
 
+    // Calculate the length of the longest string allowed
     const QFontMetrics fm(fontMetrics());
-    int w = 0;
-    constexpr int maxStrLen = 9;
+    QString unit = d->unit.getString().c_str();
+    int decimals = App::GetApplication()
+                       .GetUserParameter()
+                       .GetGroup("BaseApp/Preferences/Units")
+                       ->GetInt("Decimals", 2);
+    constexpr int maxDigits = 5;
+    const int maxStrLen = maxDigits + 1 /*separator*/ + decimals + 1 /*space*/ + unit.length();
 
-    QString s;
-    QString fixedContent = QLatin1String(" ");
-
-    Base::Quantity q(d->quantity);
-    q.setValue(d->maximum);
-    s = textFromValue(q);
-    s.truncate(maxStrLen);
-    s += fixedContent;
-    w = qMax(w, QtTools::horizontalAdvance(fm, s));
-
+    QString longestString = QString("8").repeated(maxStrLen);
+    int w = qMax(0, QtTools::horizontalAdvance(fm, longestString));
     w += 2;  // cursor blinking space
     w += iconHeight;
 
