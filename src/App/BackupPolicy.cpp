@@ -232,7 +232,40 @@ void BackupPolicy::applyTimeStamp(const std::string& sourcename, const std::stri
                         const auto knownGoodFormat {"%Y-%m-%d_%H-%M-%S"};
                         std::strftime(buffer.data(), bufferLength, knownGoodFormat, &local_tm);
                     }
-                    str << bn << buffer.data();
+                    std::string timestamp = buffer.data();
+
+#if defined(_WIN32)
+                    // Windows doesn't allow: < > : " / \ | ? *
+                    const boost::regex re("[<>:\"/\\\\|?*]");
+                    if (boost::regex_search(timestamp, re)) {
+                        timestamp = boost::regex_replace(timestamp, re, "-");
+
+                        static bool warnedWindows = false;
+                        if (!warnedWindows) {
+                            Base::Console().warning(
+                                "Backup filename contained invalid characters for Windows. "
+                                "Automatically replaced with '-'. "
+                                "Consider using a different date format in Preferences/Document.\n");
+                            warnedWindows = true;
+                        }
+                    }
+#else
+                    // On POSIX systems, only / is invalid in filenames
+                    const boost::regex re("/");
+                    if (boost::regex_search(timestamp, re)) {
+                        timestamp = boost::regex_replace(timestamp, re, "-");
+
+                        static bool warnedPosix = false;
+                        if (!warnedPosix) {
+                            Base::Console().warning(
+                                "Backup filename contained '/' character. "
+                                "Automatically replaced with '-'.\n");
+                            warnedPosix = true;
+                        }
+                    }
+#endif
+
+                    str << bn << timestamp;
 
                     fn = str.str();
                     bool done = false;
