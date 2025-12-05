@@ -47,6 +47,8 @@
 #include <Gui/Utilities.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
+#include "Utils.h"
+
 #include <Mod/Part/App/FeatureRevolution.h>
 
 #include <Mod/Part/App/Part2DObject.h>
@@ -469,7 +471,8 @@ void DlgRevolution::accept()
 
 
             QString code = QStringLiteral(
-                               "FreeCAD.ActiveDocument.addObject(\"%1\",\"%2\")\n"
+                               "obj = FreeCAD.ActiveDocument.addObject(\"%1\",\"%2\")\n"
+                               "%14"  // auto-grouping
                                "FreeCAD.ActiveDocument.%2.Source = FreeCAD.ActiveDocument.%3\n"
                                "FreeCAD.ActiveDocument.%2.Axis = (%4,%5,%6)\n"
                                "FreeCAD.ActiveDocument.%2.Base = (%7,%8,%9)\n"
@@ -492,6 +495,8 @@ void DlgRevolution::accept()
                                    strAxisLink,  //%12
                                    symmetric
                                )  //%13
+                               .arg(PartGui::getAutoGroupCommandStr(false)) //%14
+
                 ;
             Gui::Command::runCommand(Gui::Command::App, code.toLatin1());
 
