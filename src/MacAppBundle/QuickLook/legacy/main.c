@@ -211,4 +211,3 @@ void *QuickLookGeneratorPluginFactory(CFAllocatorRef allocator,CFUUIDRef typeID)
         /* If the requested type is incorrect, return NULL. */
     return NULL;
 }
-
