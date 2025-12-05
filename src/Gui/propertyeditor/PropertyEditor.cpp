@@ -32,10 +32,10 @@
 #include <QActionGroup>
 
 #include <App/Application.h>
-#include <App/AutoTransaction.h>
 #include <App/Document.h>
 #include <Base/Console.h>
 #include <Base/Tools.h>
+#include <Gui/Document.h>
 
 #include "Document.h"
 #include "Tree.h"
@@ -407,7 +407,7 @@ void PropertyEditor::openEditor(const QModelIndex& index)
     if (items.size() > 1) {
         str << "...";
     }
-    transactionID = app.setActiveTransaction(str.str().c_str());
+    transactionID = obj->getDocument()->openTransaction(str.str().c_str());
     FC_LOG("editor transaction " << app.getActiveTransaction());
 }
 
@@ -462,13 +462,15 @@ void PropertyEditor::recomputeDocument(App::Document* doc)
 
 void PropertyEditor::closeTransaction()
 {
-    int tid = 0;
-    if (App::GetApplication().getActiveTransaction(&tid) && tid == transactionID) {
+    App::Document* doc = App::GetApplication().getActiveDocument();
+    if (!doc) {
+        return;
+    }
+    if (doc->getBookedTransactionID() == transactionID) {
         if (autoupdate) {
-            App::Document* doc = App::GetApplication().getActiveDocument();
             recomputeDocument(doc);
         }
-        App::GetApplication().closeActiveTransaction();
+        doc->commitTransaction();
     }
 }
 
@@ -941,15 +943,20 @@ std::unordered_set<App::Property*> PropertyEditor::acquireSelectedProperties() c
 
 void PropertyEditor::removeProperties(const std::unordered_set<App::Property*>& props)
 {
-    App::AutoTransaction committer("Remove property");
+    int tid = 0;
     for (auto prop : props) {
         try {
+            if (App::Document* doc = propertyDocument(prop->getContainer())) {
+                tid = doc->openTransaction("Remove property");
+            }
             prop->getContainer()->removeDynamicProperty(prop->getName());
         }
         catch (Base::Exception& e) {
+            App::GetApplication().abortTransaction(tid);
             e.reportException();
         }
     }
+    App::GetApplication().commitTransaction(tid);
 }
 
 void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
@@ -1148,9 +1155,14 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
             if (container == nullptr) {
                 return;
             }
-            App::AutoTransaction committer("Add property");
+            int tid = 0;
+            if (App::Document* doc = propertyDocument(container)) {
+                tid = doc->openTransaction("Add property");
+            }
             Gui::Dialog::DlgAddProperty dlg(Gui::getMainWindow(), container);
             dlg.exec();
+
+            App::GetApplication().commitTransaction(tid);
             return;
         }
         case MA_EditPropTooltip: {
@@ -1191,8 +1203,10 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
                 || prop->testStatus(App::Property::LockDynamic)) {
                 break;
             }
-
-            App::AutoTransaction committer("Rename property");
+            int tid = 0;
+            if (App::Document* doc = propertyDocument(prop->getContainer())) {
+                tid = doc->openTransaction("Rename property");
+            }
             const char* oldName = prop->getName();
             QString res = QInputDialog::getText(
                 Gui::getMainWindow(),
@@ -1210,9 +1224,11 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
                 prop->getContainer()->renameDynamicProperty(prop, newName.c_str());
             }
             catch (Base::Exception& e) {
+                App::GetApplication().abortTransaction(tid);
                 e.reportException();
                 break;
             }
+            App::GetApplication().commitTransaction(tid);
             break;
         }
         case MA_EditPropGroup: {
@@ -1311,6 +1327,19 @@ QModelIndex PropertyEditor::indexResizable(QPoint mouse_pos)
         }
     }
     return QModelIndex();
+}
+App::Document* PropertyEditor::propertyDocument(App::PropertyContainer* cont) const
+{
+    if (auto* doc = dynamic_cast<App::Document*>(cont)) {
+        return doc;
+    }
+    if (auto* docObj = dynamic_cast<App::DocumentObject*>(cont)) {
+        return docObj->getDocument();
+    }
+    if (auto* vp = dynamic_cast<ViewProviderDocumentObject*>(cont)) {
+        return vp->getDocument()->getDocument();
+    }
+    return nullptr;
 }
 
 #include "moc_PropertyEditor.cpp"

@@ -127,6 +127,10 @@ public:
     void setEditViewer(Gui::View3DInventorViewer*, int ModNum) override;
     bool isInEditMode() const;
 
+    void setActive(bool active) override;
+    void setupActiveAndInEdit();
+    void unsetupActiveAndInEdit();
+
     /// Ask the view provider if it accepts object deletions while in edit
     bool acceptDeletionsInEdit() override
     {

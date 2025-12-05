@@ -617,14 +617,15 @@ class TaskAssemblyCreateView(QtCore.QObject):
         self.initialPlcs = UtilsAssembly.saveAssemblyPartsPlacements(self.assembly)
 
         if viewObj:
-            App.setActiveTransaction("Edit Exploded View")
+            Gui.ActiveDocument.openCommand("Edit Exploded View")
+
             self.viewObj = viewObj
             for move in self.viewObj.Group:
                 move.Visibility = True
             self.onMovesChanged()
 
         else:
-            App.setActiveTransaction("Create Exploded View")
+            Gui.ActiveDocument.openCommand("Create Exploded View")
             self.createExplodedViewObject()
 
         Gui.Selection.addSelectionGate(
@@ -655,12 +656,12 @@ class TaskAssemblyCreateView(QtCore.QObject):
             more = UtilsAssembly.generatePropertySettings(move)
             commands = commands + more
         Gui.doCommand(commands[:-1])  # Don't use the last \n
-        App.closeActiveTransaction()
+        Gui.ActiveDocument.commitCommand()
         return True
 
     def reject(self):
         self.deactivate()
-        App.closeActiveTransaction(True)
+        Gui.ActiveDocument.abortCommand()
         return True
 
     def deactivate(self):
