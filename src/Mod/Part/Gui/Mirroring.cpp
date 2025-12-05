@@ -61,6 +61,7 @@
 #include <Mod/Part/App/DatumFeature.h>
 #include <Mod/Part/App/FeatureMirroring.h>
 #include <App/Datums.h>
+#include "Utils.h"
 
 #include "Mirroring.h"
 
@@ -368,6 +369,7 @@ bool Mirroring::accept()
         QString code = QStringLiteral(
                            "__doc__=FreeCAD.getDocument(\"%1\")\n"
                            "__doc__.addObject(\"Part::Mirroring\")\n"
+                           "%11"   //auto-grouping
                            "__doc__.ActiveObject.Source=__doc__.getObject(\"%2\")\n"
                            "__doc__.ActiveObject.Label=u\"%3\"\n"
                            "__doc__.ActiveObject.Normal=(%4,%5,%6)\n"
@@ -382,7 +384,8 @@ bool Mirroring::accept()
                            .arg(basex)
                            .arg(basey)
                            .arg(basez)
-                           .arg(selectionString);
+                           .arg(selectionString)
+                           .arg( PartGui::getAutoGroupCommandStr(false) );
         Gui::Command::runCommand(Gui::Command::App, code.toLatin1());
         QByteArray from = shape.toLatin1();
         Gui::Command::copyVisual("ActiveObject", "ShapeAppearance", from);
