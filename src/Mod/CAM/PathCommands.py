@@ -39,9 +39,8 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore
-    from PySide import QtGui
 
-# translate = FreeCAD.Qt.translate
+translate = FreeCAD.Qt.translate
 
 __title__ = "FreeCAD Path Commands"
 __author__ = "sliptonic"
@@ -143,13 +142,7 @@ class _CommandSelectLoop:
                         FreeCADGui.Selection.addSelection(obj, f"Edge{objEdges.index(eo) + 1}")
             return
 
-        # Final fallback
-        if FreeCAD.GuiUp:
-            QtGui.QMessageBox.information(
-                None,
-                QT_TRANSLATE_NOOP("CAM_SelectLoop", "Feature Completion"),
-                QT_TRANSLATE_NOOP("CAM_SelectLoop", "Closed loop detection failed."),
-            )
+        Path.Log.warning(translate("CAM_SelectLoop", "Closed loop detection failed."))
 
     def formsPartOfALoop(self, obj, sub, names):
         try:
