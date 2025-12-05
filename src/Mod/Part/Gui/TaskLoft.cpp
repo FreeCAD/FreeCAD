@@ -45,6 +45,7 @@
 
 #include <Mod/Part/App/PartFeature.h>
 
+#include "Utils.h"
 #include "TaskLoft.h"
 #include "ui_TaskLoft.h"
 
@@ -210,13 +211,20 @@ bool LoftWidget::accept()
     try {
         QString cmd;
         cmd = QStringLiteral(
-                  "App.getDocument('%5').addObject('Part::Loft','Loft')\n"
+                  "obj = App.getDocument('%5').addObject('Part::Loft','Loft')\n"
                   "App.getDocument('%5').ActiveObject.Sections=[%1]\n"
                   "App.getDocument('%5').ActiveObject.Solid=%2\n"
                   "App.getDocument('%5').ActiveObject.Ruled=%3\n"
                   "App.getDocument('%5').ActiveObject.Closed=%4\n"
+                  "%5"  // auto-grouping
         )
-                  .arg(list, solid, ruled, closed, QString::fromLatin1(d->document.c_str()));
+                  .arg(list, 
+                       solid, 
+                       ruled, 
+                       closed, 
+                       QString::fromLatin1(d->document.c_str()),
+                       PartGui::getAutoGroupCommandStr(false)
+                   );
 
         Gui::Document* doc = Gui::Application::Instance->getDocument(d->document.c_str());
         if (!doc) {
