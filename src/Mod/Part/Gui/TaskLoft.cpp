@@ -218,13 +218,14 @@ bool LoftWidget::accept()
                   "App.getDocument('%5').ActiveObject.Closed=%4\n"
                   "%5"  // auto-grouping
         )
-                  .arg(list, 
-                       solid, 
-                       ruled, 
-                       closed, 
-                       QString::fromLatin1(d->document.c_str()),
-                       PartGui::getAutoGroupCommandStr(false)
-                   );
+                  .arg(
+                      list,
+                      solid,
+                      ruled,
+                      closed,
+                      QString::fromLatin1(d->document.c_str()),
+                      PartGui::getAutoGroupCommandStr(false)
+                  );
 
         Gui::Document* doc = Gui::Application::Instance->getDocument(d->document.c_str());
         if (!doc) {

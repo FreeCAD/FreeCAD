@@ -494,8 +494,8 @@ void DlgRevolution::accept()
                                    solid,        //%11
                                    strAxisLink,  //%12
                                    symmetric
-                               )  //%13
-                               .arg(PartGui::getAutoGroupCommandStr(false)) //%14
+                               )                                             //%13
+                               .arg(PartGui::getAutoGroupCommandStr(false))  //%14
 
                 ;
             Gui::Command::runCommand(Gui::Command::App, code.toLatin1());
