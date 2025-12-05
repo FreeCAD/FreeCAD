@@ -922,7 +922,12 @@ QSize QuantitySpinBox::sizeHintCalculator(int h) const
 
     const QFontMetrics fm(fontMetrics());
     int w = 0;
-    constexpr int maxStrLen = 9;
+
+    int decimals = App::GetApplication()
+                       .GetUserParameter()
+                       .GetGroup("BaseApp/Preferences/Units")
+                       ->GetInt("Decimals", 2);
+    const int maxStrLen = 6 + decimals;
 
     QString s;
     QString fixedContent = QLatin1String(" ");
