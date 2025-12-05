@@ -303,16 +303,16 @@ class ObjectSlot(PathOp.ObjectOp):
         """opPropertyDefaults(obj, job) ... returns a dictionary of default values
         for the operation's properties."""
         defaults = {
-            "CustomPoint1": FreeCAD.Vector(0.0, 0.0, 0.0),
-            "ExtendPathStart": 0.0,
+            "CustomPoint1": FreeCAD.Vector(0, 0, 0),
+            "ExtendPathStart": 0,
             "Reference1": "Center of Mass",
-            "CustomPoint2": FreeCAD.Vector(0.0, 0.0, 0.0),
-            "ExtendPathEnd": 0.0,
+            "CustomPoint2": FreeCAD.Vector(0, 0, 0),
+            "ExtendPathEnd": 0,
             "Reference2": "Center of Mass",
             "LayerMode": "Multi-pass",
             "CutPattern": "ZigZag",
             "PathOrientation": "Start to End",
-            "ExtendRadius": 0.0,
+            "ExtendRadius": 0,
             "ReverseDirection": False,
             # For debugging
             "ShowTempObjects": False,
@@ -502,8 +502,8 @@ class ObjectSlot(PathOp.ObjectOp):
         self.isArc = 0
         self.arcCenter = None
         self.arcMidPnt = None
-        self.arcRadius = 0.0
-        self.newRadius = 0.0
+        self.arcRadius = 0
+        self.newRadius = 0
         self.featureDetails = ["", ""]
         self.commandlist = []
         self.stockZMin = self.job.Stock.Shape.BoundBox.ZMin
@@ -556,7 +556,7 @@ class ObjectSlot(PathOp.ObjectOp):
             obj.SafeHeight.Value,
             obj.StartDepth.Value,
             obj.StepDown.Value,
-            0.0,
+            0,
             obj.FinalDepth.Value,
         )
 
@@ -564,6 +564,10 @@ class ObjectSlot(PathOp.ObjectOp):
         cmds = self._makeOperation(obj)
         if cmds:
             self.commandlist.extend(cmds)
+        else:
+            # clear Path if can not create slot
+            self.commandlist.clear()
+            return False
 
         # Final move to clearance height
         self.commandlist.append(
@@ -762,7 +766,7 @@ class ObjectSlot(PathOp.ObjectOp):
             elif obj.CutPattern == "ZigZag":
                 i = 0
                 for depth in self.depthParams:
-                    if i % 2.0 == 0:  # even
+                    if i % 2 == 0:  # even
                         CMDS.extend(arcPass(PATHS[path_index], depth))
                     else:  # odd
                         CMDS.extend(arcPass(PATHS[not path_index], depth))
@@ -805,7 +809,7 @@ class ObjectSlot(PathOp.ObjectOp):
                     edg1_len = self.shape1.Length
                     edg2_len = self.shape2.Length
                     set_length = max(edg1_len, edg2_len)
-                    pnts = self._makePerpendicular(p1, p2, 10.0 + set_length)  # 10.0 offset below
+                    pnts = self._makePerpendicular(p1, p2, 10 + set_length)  # 10.0 offset below
                     if edg1_len != edg2_len:
                         msg = obj.Label + " "
                         msg += translate("CAM_Slot", "Verify slot path start and end points.")
@@ -824,8 +828,8 @@ class ObjectSlot(PathOp.ObjectOp):
         endExt = obj.ExtendPathEnd.Value
         if perpZero:
             # Offsets for 10.0 value above in _makePerpendicular()
-            begExt -= 5.0
-            endExt -= 5.0
+            begExt -= 5
+            endExt -= 5
         pnts = self._extendLineSlot(p1, p2, begExt, endExt)
 
         if not pnts:
@@ -878,7 +882,7 @@ class ObjectSlot(PathOp.ObjectOp):
                 CMDS.append(Path.Command("G0", {"X": p1.x, "Y": p1.y, "F": self.horizRapid}))
                 i = 0
                 for dep in self.depthParams:
-                    if i % 2.0 == 0:  # even
+                    if i % 2 == 0:  # even
                         CMDS.append(Path.Command("G1", {"Z": dep, "F": self.vertFeed}))
                         CMDS.append(Path.Command("G1", {"X": p2.x, "Y": p2.y, "F": self.horizFeed}))
                     else:  # odd
@@ -898,7 +902,7 @@ class ObjectSlot(PathOp.ObjectOp):
 
         if cat1 == "Face":
             pnts = False
-            norm = shape_1.normalAt(0.0, 0.0)
+            norm = shape_1.normalAt(0, 0)
             Path.Log.debug("{}.normalAt(): {}".format(sub1, norm))
 
             if Path.Geom.isRoughly(shape_1.BoundBox.ZMax, shape_1.BoundBox.ZMin):
@@ -959,8 +963,8 @@ class ObjectSlot(PathOp.ObjectOp):
             norm = self._normalizeVector(vect)
             rads = self._getVectorAngle(norm)
             deg = math.degrees(rads)
-            if deg >= 180.0:
-                deg -= 180.0
+            if deg >= 180:
+                deg -= 180
             return deg
 
         # Reject incorrect faces
@@ -1086,7 +1090,7 @@ class ObjectSlot(PathOp.ObjectOp):
         temp = FreeCAD.Vector(dX, dY, dZ)
         slope = self._normalizeVector(temp)
         perpVect = FreeCAD.Vector(-1 * slope.y, slope.x, slope.z)
-        perpVect.multiply(self.tool.Diameter / 2.0)
+        perpVect.multiply(self.tool.Diameter / 2)
 
         # Create offset endpoints for raw slot path
         a1 = v0.add(perpVect)
@@ -1123,7 +1127,7 @@ class ObjectSlot(PathOp.ObjectOp):
             v2 = P3 - P2
             v3 = P1 - P3
             L = v1.cross(v2).Length
-            if round(L, 8) == 0.0:
+            if round(L, 8) == 0:
                 Path.Log.error("Three points are colinear. Arc is straight.")
                 return False
             twoL2 = 2 * L * L
@@ -1134,8 +1138,8 @@ class ObjectSlot(PathOp.ObjectOp):
 
         verts = edge.Vertexes
         V1 = verts[0]
-        p1 = FreeCAD.Vector(V1.X, V1.Y, 0.0)
-        p2 = p1 if len(verts) == 1 else FreeCAD.Vector(verts[1].X, verts[1].Y, 0.0)
+        p1 = FreeCAD.Vector(V1.X, V1.Y, 0)
+        p2 = p1 if len(verts) == 1 else FreeCAD.Vector(verts[1].X, verts[1].Y, 0)
 
         curveType = edge.Curve.TypeId
         if curveType in lineTypes:
@@ -1154,28 +1158,28 @@ class ObjectSlot(PathOp.ObjectOp):
                     return False
 
                 center = edge.BoundBox.Center
-                self.arcCenter = FreeCAD.Vector(center.x, center.y, 0.0)
-                mid = edge.valueAt(edge.getParameterByLength(edge.Length / 2.0))
-                self.arcMidPnt = FreeCAD.Vector(mid.x, mid.y, 0.0)
-                self.arcRadius = edge.BoundBox.XLength / 2.0
+                self.arcCenter = FreeCAD.Vector(center.x, center.y, 0)
+                mid = edge.valueAt(edge.getParameterByLength(edge.Length / 2))
+                self.arcMidPnt = FreeCAD.Vector(mid.x, mid.y, 0)
+                self.arcRadius = edge.BoundBox.XLength / 2
             else:
                 # Arc segment
                 Path.Log.debug("Arc with multiple vertices.")
                 V2 = verts[1]
-                mid = edge.valueAt(edge.getParameterByLength(edge.Length / 2.0))
+                mid = edge.valueAt(edge.getParameterByLength(edge.Length / 2))
                 if not isHorizontal(V1.Z, V2.Z, mid.z):
                     return False
-                mid.z = 0.0
-                center = circumCircleFrom3Points(p1, p2, FreeCAD.Vector(mid.x, mid.y, 0.0))
+                mid.z = 0
+                center = circumCircleFrom3Points(p1, p2, FreeCAD.Vector(mid.x, mid.y, 0))
                 if not center:
                     return False
 
                 self.isArc = 2
-                self.arcMidPnt = FreeCAD.Vector(mid.x, mid.y, 0.0)
+                self.arcMidPnt = FreeCAD.Vector(mid.x, mid.y, 0)
                 self.arcCenter = center
                 self.arcRadius = (p1 - center).Length
 
-                if oversizedTool(self.arcRadius * 2.0):
+                if oversizedTool(self.arcRadius * 2):
                     return False
 
             return (p1, p2)
@@ -1249,9 +1253,9 @@ class ObjectSlot(PathOp.ObjectOp):
 
         def snap(val):
             if abs(val) < tol:
-                return 0.0
-            if abs(1.0 - abs(val)) < tol:
-                return 1.0 if val > 0 else -1.0
+                return 0
+            if abs(1 - abs(val)) < tol:
+                return 1 if val > 0 else -1
             return val
 
         return FreeCAD.Vector(snap(V.x), snap(V.y), snap(V.z))
@@ -1292,11 +1296,11 @@ class ObjectSlot(PathOp.ObjectOp):
             # Get slope from first vertex to center of mass
             V0 = shape.Vertexes[0]
             v1 = shape.CenterOfMass
-            temp = FreeCAD.Vector(v1.x - V0.X, v1.y - V0.Y, 0.0)
+            temp = FreeCAD.Vector(v1.x - V0.X, v1.y - V0.Y, 0)
             dYdX = self._normalizeVector(temp) if temp.Length != 0 else FreeCAD.Vector(0, 0, 0)
 
             # Face normal must be vertical
-            norm = shape.normalAt(0.0, 0.0)
+            norm = shape.normalAt(0, 0)
             if norm.z != 0:
                 msg = translate("CAM_Slot", "The selected face is not oriented vertically:")
                 FreeCAD.Console.PrintError(f"{msg} {sub}.\n")
@@ -1305,10 +1309,10 @@ class ObjectSlot(PathOp.ObjectOp):
             # Choose working point
             if Ref == "Center of Mass":
                 com = shape.CenterOfMass
-                p = FreeCAD.Vector(com.x, com.y, 0.0)
+                p = FreeCAD.Vector(com.x, com.y, 0)
             elif Ref == "Center of BoundBox":
                 bbox = shape.BoundBox.Center
-                p = FreeCAD.Vector(bbox.x, bbox.y, 0.0)
+                p = FreeCAD.Vector(bbox.x, bbox.y, 0)
             elif Ref == "Lowest Point":
                 p = self._getLowestPoint(shape)
             elif Ref == "Highest Point":
@@ -1323,15 +1327,15 @@ class ObjectSlot(PathOp.ObjectOp):
             edge = shape.Edges[0] if hasattr(shape, "Edges") else shape
             v0 = edge.Vertexes[0]
             v1 = edge.Vertexes[1]
-            temp = FreeCAD.Vector(v1.X - v0.X, v1.Y - v0.Y, 0.0)
+            temp = FreeCAD.Vector(v1.X - v0.X, v1.Y - v0.Y, 0)
             dYdX = self._normalizeVector(temp) if temp.Length != 0 else FreeCAD.Vector(0, 0, 0)
 
             if Ref == "Center of Mass":
                 com = shape.CenterOfMass
-                p = FreeCAD.Vector(com.x, com.y, 0.0)
+                p = FreeCAD.Vector(com.x, com.y, 0)
             elif Ref == "Center of BoundBox":
                 bbox = shape.BoundBox.Center
-                p = FreeCAD.Vector(bbox.x, bbox.y, 0.0)
+                p = FreeCAD.Vector(bbox.x, bbox.y, 0)
             elif Ref == "Lowest Point":
                 p = self._findLowestPointOnEdge(shape)
             elif Ref == "Highest Point":
@@ -1340,7 +1344,7 @@ class ObjectSlot(PathOp.ObjectOp):
         elif sub.startswith("Vert"):
             cat = "Vert"
             V = shape.Vertexes[0]
-            p = FreeCAD.Vector(V.X, V.Y, 0.0)
+            p = FreeCAD.Vector(V.X, V.Y, 0)
 
         else:
             Path.Log.warning(f"Unrecognized subfeature type: {sub}")
@@ -1422,8 +1426,8 @@ class ObjectSlot(PathOp.ObjectOp):
         Find mid-points between ends of equal, oppossing edges passed in tuple (edge1, edge2)."""
         com1 = same[0].CenterOfMass
         com2 = same[1].CenterOfMass
-        p1 = FreeCAD.Vector(com1.x, com1.y, 0.0)
-        p2 = FreeCAD.Vector(com2.x, com2.y, 0.0)
+        p1 = FreeCAD.Vector(com1.x, com1.y, 0)
+        p2 = FreeCAD.Vector(com2.x, com2.y, 0)
         return (p1, p2)
 
     def _isParallel(self, dYdX1, dYdX2):
@@ -1435,23 +1439,23 @@ class ObjectSlot(PathOp.ObjectOp):
         centered at the midpoint of the line, with given length."""
 
         midPnt = (p1.add(p2)).multiply(0.5)
-        halfDist = length / 2.0
+        halfDist = length / 2
 
         if getattr(self, "dYdX1", None):
-            half = FreeCAD.Vector(self.dYdX1.x, self.dYdX1.y, 0.0).multiply(halfDist)
+            half = FreeCAD.Vector(self.dYdX1.x, self.dYdX1.y, 0).multiply(halfDist)
             n1 = midPnt.add(half)
             n2 = midPnt.sub(half)
             return (n1, n2)
 
         elif getattr(self, "dYdX2", None):
-            half = FreeCAD.Vector(self.dYdX2.x, self.dYdX2.y, 0.0).multiply(halfDist)
+            half = FreeCAD.Vector(self.dYdX2.x, self.dYdX2.y, 0).multiply(halfDist)
             n1 = midPnt.add(half)
             n2 = midPnt.sub(half)
             return (n1, n2)
 
         else:
             toEnd = p2.sub(p1)
-            perp = FreeCAD.Vector(-toEnd.y, toEnd.x, 0.0)
+            perp = FreeCAD.Vector(-toEnd.y, toEnd.x, 0)
             perp = perp.normalize()  # normalize() returns the vector normalized
             perp = perp.multiply(halfDist)
             n1 = midPnt.add(perp)
@@ -1468,7 +1472,7 @@ class ObjectSlot(PathOp.ObjectOp):
                 return FreeCAD.Vector(v.X, v.Y, v.Z)
 
         # Try midpoint
-        mid = E.valueAt(E.getParameterByLength(E.Length / 2.0))
+        mid = E.valueAt(E.getParameterByLength(E.Length / 2))
         if abs(mid.z - zMin) < tol or E.BoundBox.ZLength < 1e-9:
             return mid
 
@@ -1477,7 +1481,7 @@ class ObjectSlot(PathOp.ObjectOp):
 
     def _findLowestEdgePoint(self, E):
         zMin = E.BoundBox.ZMin
-        L0, L1 = 0.0, E.Length
+        L0, L1 = 0, E.Length
         tol = 1e-5
         max_iter = 2000
         cnt = 0
@@ -1500,7 +1504,7 @@ class ObjectSlot(PathOp.ObjectOp):
                 L1 -= adj
             cnt += 1
 
-        midLen = (L0 + L1) / 2.0
+        midLen = (L0 + L1) / 2
         return E.valueAt(E.getParameterByLength(midLen))
 
     def _findHighestPointOnEdge(self, E):
@@ -1518,7 +1522,7 @@ class ObjectSlot(PathOp.ObjectOp):
             return FreeCAD.Vector(v.X, v.Y, v.Z)
 
         # Check midpoint on edge
-        midLen = E.Length / 2.0
+        midLen = E.Length / 2
         midPnt = E.valueAt(E.getParameterByLength(midLen))
         if abs(zMax - midPnt.z) < tol or E.BoundBox.ZLength < 1e-9:
             return midPnt
@@ -1528,7 +1532,7 @@ class ObjectSlot(PathOp.ObjectOp):
     def _findHighestEdgePoint(self, E):
         zMax = E.BoundBox.ZMax
         eLen = E.Length
-        L0 = 0.0
+        L0 = 0
         L1 = eLen
         cnt = 0
         while L1 - L0 > 1e-5 and cnt < 2000:
@@ -1552,7 +1556,7 @@ class ObjectSlot(PathOp.ObjectOp):
 
             cnt += 1
 
-        midLen = (L0 + L1) / 2.0
+        midLen = (L0 + L1) / 2
         return E.valueAt(E.getParameterByLength(midLen))
 
     def _getVectorAngle(self, v):
@@ -1564,14 +1568,14 @@ class ObjectSlot(PathOp.ObjectOp):
         ea3 = Part.makeLine(a2, v1)
         ea4 = Part.makeLine(v1, v0)
         boxA = Part.Face(Part.Wire([ea1, ea2, ea3, ea4]))
-        cubeA = boxA.extrude(FreeCAD.Vector(0.0, 0.0, 1.0))
+        cubeA = boxA.extrude(FreeCAD.Vector(0, 0, 1))
         cmnA = self.base.Shape.common(cubeA)
         eb1 = Part.makeLine(v0, b1)
         eb2 = Part.makeLine(b1, b2)
         eb3 = Part.makeLine(b2, v1)
         eb4 = Part.makeLine(v1, v0)
         boxB = Part.Face(Part.Wire([eb1, eb2, eb3, eb4]))
-        cubeB = boxB.extrude(FreeCAD.Vector(0.0, 0.0, 1.0))
+        cubeB = boxB.extrude(FreeCAD.Vector(0, 0, 1))
         cmnB = self.base.Shape.common(cubeB)
         if cmnA.Volume > cmnB.Volume:
             return (b1, b2)
@@ -1601,7 +1605,7 @@ class ObjectSlot(PathOp.ObjectOp):
         extruded = shape.extrude(extrude_vec)
 
         # Slice halfway up the extrusion
-        slice_z = shape.BoundBox.ZMin + extrude_vec.z / 2.0
+        slice_z = shape.BoundBox.ZMin + extrude_vec.z / 2
         slices = extruded.slice(FreeCAD.Vector(0, 0, 1), slice_z)
 
         if not slices:
@@ -1640,8 +1644,8 @@ class ObjectSlot(PathOp.ObjectOp):
 
     def _lineCollisionCheck(self, obj, p1, p2):
         """Model the swept volume of a linear tool move and check for collision with the model."""
-        rad = getattr(self.tool.Diameter, "Value", self.tool.Diameter) / 2.0
-        extVect = FreeCAD.Vector(0.0, 0.0, obj.StartDepth.Value - obj.FinalDepth.Value)
+        rad = getattr(self.tool.Diameter, "Value", self.tool.Diameter) / 2
+        extVect = FreeCAD.Vector(0, 0, obj.StartDepth.Value - obj.FinalDepth.Value)
 
         def make_cylinder(point):
             circle = Part.makeCircle(rad, point)
@@ -1653,7 +1657,7 @@ class ObjectSlot(PathOp.ObjectOp):
             toEnd = p2.sub(p1)
             if toEnd.Length == 0:
                 return None
-            perp = FreeCAD.Vector(-toEnd.y, toEnd.x, 0.0)
+            perp = FreeCAD.Vector(-toEnd.y, toEnd.x, 0)
             if perp.Length == 0:
                 return None
             perp.normalize()
@@ -1709,10 +1713,10 @@ class ObjectSlot(PathOp.ObjectOp):
             (pC, pD) = self._makeOffsetArc(p1, p2, center, outer_radius)
             arc_outside = Arcs.arcFrom2Pts(pC, pD, center)
 
-            pa = FreeCAD.Vector(*arc_inside.Vertexes[0].Point[:2], 0.0)
-            pb = FreeCAD.Vector(*arc_inside.Vertexes[1].Point[:2], 0.0)
-            pc = FreeCAD.Vector(*arc_outside.Vertexes[1].Point[:2], 0.0)
-            pd = FreeCAD.Vector(*arc_outside.Vertexes[0].Point[:2], 0.0)
+            pa = FreeCAD.Vector(*arc_inside.Vertexes[0].Point[:2], 0)
+            pb = FreeCAD.Vector(*arc_inside.Vertexes[1].Point[:2], 0)
+            pc = FreeCAD.Vector(*arc_outside.Vertexes[1].Point[:2], 0)
+            pd = FreeCAD.Vector(*arc_outside.Vertexes[0].Point[:2], 0)
 
             e1 = Part.makeLine(pb, pc)
             e2 = Part.makeLine(pd, pa)
@@ -1720,7 +1724,7 @@ class ObjectSlot(PathOp.ObjectOp):
             return Part.Face(Part.Wire(edges))
 
         # Radius and extrusion direction
-        rad = getattr(self.tool.Diameter, "Value", self.tool.Diameter) / 2.0
+        rad = getattr(self.tool.Diameter, "Value", self.tool.Diameter) / 2
         extVect = FreeCAD.Vector(0, 0, obj.StartDepth.Value - obj.FinalDepth.Value)
 
         if self.isArc == 1:
