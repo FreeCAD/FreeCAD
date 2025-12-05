@@ -32,6 +32,7 @@
 
 #include <BRep_Tool.hxx>
 #include <BRepAdaptor_Curve.hxx>
+#include <BRepAdaptor_Surface.hxx>
 #include <BRepClass_FaceClassifier.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
 #include <BRepOffsetAPI_MakeOffset.hxx>
@@ -965,12 +966,29 @@ private:
                 mkWire.Add(TopoDS::Edge(geo->toShape()));
             }
 
+            TopoDS_Wire wire = mkWire.Wire();
+
+            // Fix orientation: ensure all closed wires are CCW relative to Sketch Plane (+Z)
+            if (wire.Closed()) {
+                BRepBuilderAPI_MakeFace mkFace(wire);
+                if (mkFace.IsDone()) {
+                    TopoDS_Face face = mkFace.Face();
+                    BRepAdaptor_Surface surf(face);
+                    if (surf.GetType() == GeomAbs_Plane) {
+                        gp_Dir norm = surf.Plane().Axis().Direction();
+                        if (norm.Z() < 0) {
+                            wire.Reverse();
+                        }
+                    }
+                }
+            }
+
             // Here we make sure that if possible the first wire is not a single line.
             if (CC.size() == 1 && isLineSegment(*Obj->getGeometry(CC[0]))) {
-                sourceWires.push_back(mkWire.Wire());
+                sourceWires.push_back(wire);
             }
             else {
-                sourceWires.insert(sourceWires.begin(), mkWire.Wire());
+                sourceWires.insert(sourceWires.begin(), wire);
                 onlySingleLines = false;
             }
         }
