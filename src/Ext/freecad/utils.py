@@ -23,41 +23,49 @@
 # *                                                                         *
 # ***************************************************************************
 
-import os
 import platform
 import shutil
-
+from pathlib import Path
 import FreeCAD
 
 
 def get_python_exe() -> str:
-    """Find Python. In preference order
+    """
+    Find Python. In preference order.
+
     A) The value of the BaseApp/Preferences/PythonConsole/PathToPythonExecutable user preference
     B) The executable located in the same bin directory as FreeCAD and called "python3"
     C) The executable located in the same bin directory as FreeCAD and called "python"
     D) The result of a shutil search for your system's "python3" executable
-    E) The result of a shutil search for your system's "python" executable"""
-    prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/PythonConsole")
-    python_exe = prefs.GetString("PathToPythonExecutable", "")
-    fc_dir = FreeCAD.getHomePath()
-    if not python_exe or not os.path.exists(python_exe):
-        python_exe = os.path.join(fc_dir, "bin", "python3")
-        if "Windows" in platform.system():
-            python_exe += ".exe"
+    E) The result of a shutil search for your system's "python" executable
+    """
 
-    if not python_exe or not os.path.exists(python_exe):
-        python_exe = os.path.join(fc_dir, "bin", "python")
-        if "Windows" in platform.system():
-            python_exe += ".exe"
+    preferences = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/PythonConsole")
 
-    if not python_exe or not os.path.exists(python_exe):
-        python_exe = shutil.which("python3")
+    if python_exe := preferences.GetString("PathToPythonExecutable", ""):
+        python_exe = Path(python_exe)
+        if python_exe.exists():
+            return str(python_exe)
 
-    if not python_exe or not os.path.exists(python_exe):
-        python_exe = shutil.which("python")
+    windows = "Windows" in platform.system()
+    fc_dir = Path(FreeCAD.getHomePath()) / "bin"
 
-    if not python_exe or not os.path.exists(python_exe):
-        return ""
+    python_exe = fc_dir / ("python3.exe" if windows else "python3")
+    if python_exe.exists():
+        return str(python_exe)
 
-    python_exe = python_exe.replace("/", os.path.sep)
-    return python_exe
+    python_exe = fc_dir / ("python.exe" if windows else "python")
+    if python_exe.exists():
+        return str(python_exe)
+
+    if python_exe := shutil.which("python3"):
+        python_exe = Path(python_exe)
+        if python_exe.exists():
+            return str(python_exe)
+
+    if python_exe := shutil.which("python"):
+        python_exe = Path(python_exe)
+        if python_exe.exists():
+            return str(python_exe)
+
+    return ""
