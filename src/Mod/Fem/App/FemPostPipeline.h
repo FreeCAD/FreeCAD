@@ -76,6 +76,7 @@ public:
     );
     void scale(double s);
     void renameArrays(const std::map<std::string, std::string>& names);
+    void addArrayFromFunction(const std::map<std::string, std::string>& functions);
 
     // load from results
     void load(FemResultObject* res);
