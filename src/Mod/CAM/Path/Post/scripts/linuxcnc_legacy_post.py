@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2014 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -77,6 +79,7 @@ parser.add_argument(
     action="store_true",
     help="suppress tool length offset (G43) following tool changes",
 )
+parser.add_argument("--rigid-tap", action="store_true", help="Enable G33.1 rigid tapping cycle")
 
 TOOLTIP_ARGS = parser.format_help()
 
@@ -100,6 +103,8 @@ MACHINE_NAME = "LinuxCNC"
 CORNER_MIN = {"x": 0, "y": 0, "z": 0}
 CORNER_MAX = {"x": 500, "y": 300, "z": 300}
 PRECISION = 3
+
+RIGID_TAP = False
 
 # Preamble text will appear at the beginning of the GCODE output file.
 PREAMBLE = """G17 G54 G40 G49 G80 G90
@@ -135,6 +140,7 @@ def processArguments(argstring):
     global MODAL
     global USE_TLO
     global OUTPUT_DOUBLES
+    global RIGID_TAP
 
     try:
         args = parser.parse_args(shlex.split(argstring))
@@ -164,6 +170,8 @@ def processArguments(argstring):
         if args.axis_modal:
             print("here")
             OUTPUT_DOUBLES = False
+        if args.rigid_tap:
+            RIGID_TAP = True
 
     except Exception:
         return False
@@ -347,6 +355,15 @@ def parse(pathobj):
             if c.Name.startswith("(") and not OUTPUT_COMMENTS:  # command is a comment
                 continue
 
+            # Check for G80, G98, G99 with rigid tapping and annotation
+            if (
+                command in ("G80", "G98", "G99")
+                and RIGID_TAP
+                and hasattr(c, "Annotations")
+                and c.Annotations.get("operation") == "tapping"
+            ):
+                continue  # Skip this command
+
             # Handle G84/G74 tapping cycles
             if command in ("G84", "G74") and "F" in c.Parameters:
                 pitch_mm = float(c.Parameters["F"])
@@ -364,16 +381,77 @@ def parse(pathobj):
                 else:
                     pitch = pitch_mm
 
-                # Calculate feed rate
-                if spindle_speed is not None:
-                    feed_rate = pitch * spindle_speed
-                    speed = Units.Quantity(feed_rate, UNIT_SPEED_FORMAT)
-                    outstring.append(
-                        "F" + format(float(speed.getValueAs(UNIT_SPEED_FORMAT)), precision_string)
-                    )
+                # Rigid tapping logic
+                if RIGID_TAP:
+                    # Output initial tapping command
+                    outstring[0] = "G33.1"
+                    outstring.append("K" + format(pitch, precision_string))
+
+                    if "Z" in c.Parameters:
+                        outstring.append("Z" + format(float(c.Parameters["Z"]), precision_string))
+
+                    # Output the tapping line
+                    if len(outstring) >= 1:
+                        if OUTPUT_LINE_NUMBERS:
+                            outstring.insert(0, (linenumber()))
+                        for w in outstring:
+                            out += w + COMMAND_SPACE
+                        out += "\n"
+
+                    if "P" in c.Parameters:
+                        # Issue spindle stop
+                        out += linenumber() + "M5\n"
+                        # Issue dwell with P value
+                        out += linenumber() + f"G04 P{c.Parameters['P']}\n"
+
+                    # Now handle reverse out and spindle restore
+                    if command == "G84":
+                        # Reverse spindle (M4) with spindle speed
+                        out += linenumber() + "M4\n"
+                        # Repeat tapping command to reverse out, use R for Z
+                        reverse_z = c.Parameters.get("R")
+                        if reverse_z is not None:
+                            pos = Units.Quantity(reverse_z, FreeCAD.Units.Length)
+                            reverse_z = float(pos.getValueAs(UNIT_FORMAT))
+                            out += (
+                                linenumber()
+                                + f"G33.1 K{format(pitch, precision_string)} Z{format(float(reverse_z), precision_string)}\n"
+                            )
+                        else:
+                            out += linenumber() + f"G33.1 K{format(pitch, precision_string)}\n"
+                        # Restore original spindle direction (M3) with spindle speed
+                        out += linenumber() + "M3\n"
+                    elif command == "G74":
+                        # Forward spindle (M3) with spindle speed
+                        out += linenumber() + "M3\n"
+                        # Repeat tapping command to reverse out, use R for Z
+                        reverse_z = c.Parameters.get("R")
+                        if reverse_z is not None:
+                            pos = Units.Quantity(reverse_z, FreeCAD.Units.Length)
+                            reverse_z = float(pos.getValueAs(UNIT_FORMAT))
+                            out += (
+                                linenumber()
+                                + f"G33.1 K{format(pitch, precision_string)} Z{format(float(reverse_z), precision_string)}\n"
+                            )
+                        else:
+                            out += linenumber() + f"G33.1 K{format(pitch, precision_string)}\n"
+                        # Restore original spindle direction (M4) with spindle speed
+                        out += linenumber() + "M4\n"
+
+                    continue  # Skip the rest of the parameter output for this command
+
                 else:
-                    # No spindle speed found, output pitch as F
-                    outstring.append("F" + format(pitch, precision_string))
+                    # Calculate feed rate
+                    if spindle_speed is not None:
+                        feed_rate = pitch * spindle_speed
+                        speed = Units.Quantity(feed_rate, UNIT_SPEED_FORMAT)
+                        outstring.append(
+                            "F"
+                            + format(float(speed.getValueAs(UNIT_SPEED_FORMAT)), precision_string)
+                        )
+                    else:
+                        # No spindle speed found, output pitch as F
+                        outstring.append("F" + format(pitch, precision_string))
 
             # Now add the remaining parameters in order
             for param in params:
