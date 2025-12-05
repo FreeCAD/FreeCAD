@@ -382,6 +382,12 @@ class ExtModGui(ModGui):
 
 
 def InitApplications():
+
+    # Patch freecad module with gui alias of FreeCADGui
+    import freecad
+
+    freecad.gui = FreeCADGui
+
     Log("Init:   Searching modules\n")
 
     def mod_gui_init(kind: str, mod_type: type, output: list[str]) -> None:
