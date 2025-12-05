@@ -367,12 +367,12 @@ bool Mirroring::accept()
         QString code = QStringLiteral(
                            "__doc__=FreeCAD.getDocument(\"%1\")\n"
                            "obj = __doc__.addObject(\"Part::Mirroring\")\n"
-                           "%11"  // auto-grouping
                            "__doc__.ActiveObject.Source=__doc__.getObject(\"%2\")\n"
                            "__doc__.ActiveObject.Label=u\"%3\"\n"
                            "__doc__.ActiveObject.Normal=(%4,%5,%6)\n"
                            "__doc__.ActiveObject.Base=(%7,%8,%9)\n"
                            "__doc__.ActiveObject.MirrorPlane=(%10)\n"
+                           "%11"  // auto-grouping
                            "del __doc__"
         )
                            .arg(this->document, shape, label)

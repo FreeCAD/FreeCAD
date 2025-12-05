@@ -404,11 +404,11 @@ bool SweepWidget::accept()
         QString cmd;
         cmd = QStringLiteral(
                   "obj = App.getDocument('%5').addObject('Part::Sweep','Sweep')\n"
-                  "%6"  // auto-grouping
                   "App.getDocument('%5').ActiveObject.Sections=[%1]\n"
                   "App.getDocument('%5').ActiveObject.Spine=%2\n"
                   "App.getDocument('%5').ActiveObject.Solid=%3\n"
                   "App.getDocument('%5').ActiveObject.Frenet=%4\n"
+                  "%6"  // auto-grouping
         )
                   .arg(
                       list,
