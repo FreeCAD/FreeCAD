@@ -45,6 +45,7 @@
 #include <Gui/Selection/SelectionObject.h>
 #include <Mod/Part/App/PartFeature.h>
 
+#include "Utils.h"
 #include "TaskShapeBuilder.h"
 #include "ui_TaskShapeBuilder.h"
 #include "BoxSelection.h"
@@ -258,10 +259,14 @@ void ShapeBuilderWidget::createEdgeFromVertex()
     cmd = QStringLiteral(
               "_=Part.makeLine(%1, %2)\n"
               "if _.isNull(): raise RuntimeError('Failed to create edge')\n"
-              "App.ActiveDocument.addObject('Part::Feature','Edge').Shape=_\n"
+              "obj = App.ActiveDocument.addObject('Part::Feature','Edge').Shape=_\n"
+              "%3"  // auto-grouping
               "del _\n"
     )
-              .arg(elements[0], elements[1]);
+              .arg(elements[0], 
+                   elements[1], 
+                   PartGui::getAutoGroupCommandStr(false)
+              );
 
     try {
         Gui::Application::Instance->activeDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Edge"));
@@ -301,10 +306,13 @@ void ShapeBuilderWidget::createWireFromEdge()
     cmd = QStringLiteral(
               "_=Part.Wire(Part.__sortEdges__(%1))\n"
               "if _.isNull(): raise RuntimeError('Failed to create a wire')\n"
-              "App.ActiveDocument.addObject('Part::Feature','Wire').Shape=_\n"
+              "obj = App.ActiveDocument.addObject('Part::Feature','Wire').Shape=_\n"
+              "%2"  // auto-grouping
               "del _\n"
     )
-              .arg(list);
+              .arg(list, 
+                   PartGui::getAutoGroupCommandStr(false)
+               );
     try {
         Gui::Application::Instance->activeDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Wire"));
         Gui::Command::runCommand(Gui::Command::App, cmd.toLatin1());
@@ -345,19 +353,25 @@ void ShapeBuilderWidget::createFaceFromVertex()
         cmd = QStringLiteral(
                   "_=Part.Face(Part.makePolygon(%1, True))\n"
                   "if _.isNull(): raise RuntimeError('Failed to create face')\n"
-                  "App.ActiveDocument.addObject('Part::Feature','Face').Shape=_\n"
+                  "obj = App.ActiveDocument.addObject('Part::Feature','Face').Shape=_\n"
+                  "%2"  // auto-grouping
                   "del _\n"
         )
-                  .arg(list);
+                  .arg(list,
+                       PartGui::getAutoGroupCommandStr(false)
+                   );
     }
     else {
         cmd = QStringLiteral(
                   "_=Part.makeFilledFace(Part.makePolygon(%1, True).Edges)\n"
                   "if _.isNull(): raise RuntimeError('Failed to create face')\n"
-                  "App.ActiveDocument.addObject('Part::Feature','Face').Shape=_\n"
+                  "obj = App.ActiveDocument.addObject('Part::Feature','Face').Shape=_\n"
+                  "%2"  // auto-grouping
                   "del _\n"
         )
-                  .arg(list);
+                  .arg(list,
+                       PartGui::getAutoGroupCommandStr(false)
+                   );
     }
 
     try {
@@ -399,19 +413,25 @@ void ShapeBuilderWidget::createFaceFromEdge()
         cmd = QStringLiteral(
                   "_=Part.Face(Part.Wire(Part.__sortEdges__(%1)))\n"
                   "if _.isNull(): raise RuntimeError('Failed to create face')\n"
-                  "App.ActiveDocument.addObject('Part::Feature','Face').Shape=_\n"
+                  "obj = App.ActiveDocument.addObject('Part::Feature','Face').Shape=_\n"
+                  "%2"  // auto-grouping
                   "del _\n"
         )
-                  .arg(list);
+                  .arg(list,
+                       PartGui::getAutoGroupCommandStr(false)
+                   );
     }
     else {
         cmd = QStringLiteral(
                   "_=Part.makeFilledFace(Part.__sortEdges__(%1))\n"
                   "if _.isNull(): raise RuntimeError('Failed to create face')\n"
-                  "App.ActiveDocument.addObject('Part::Feature','Face').Shape=_\n"
+                  "obj = App.ActiveDocument.addObject('Part::Feature','Face').Shape=_\n"
+                  "%2"  // auto-grouping
                   "del _\n"
         )
-                  .arg(list);
+                  .arg(list,
+                       PartGui::getAutoGroupCommandStr(false)
+                   );
     }
 
     try {
@@ -463,19 +483,25 @@ void ShapeBuilderWidget::createShellFromFace()
         cmd = QStringLiteral(
                   "_=Part.Shell(%1)\n"
                   "if _.isNull(): raise RuntimeError('Failed to create shell')\n"
-                  "App.ActiveDocument.addObject('Part::Feature','Shell').Shape=_.removeSplitter()\n"
+                  "obj = App.ActiveDocument.addObject('Part::Feature','Shell').Shape=_.removeSplitter()\n"
+                  "%2"  // auto-grouping
                   "del _\n"
         )
-                  .arg(list);
+                  .arg(list,
+                       PartGui::getAutoGroupCommandStr(false)
+                   );
     }
     else {
         cmd = QStringLiteral(
                   "_=Part.Shell(%1)\n"
                   "if _.isNull(): raise RuntimeError('Failed to create shell')\n"
-                  "App.ActiveDocument.addObject('Part::Feature','Shell').Shape=_\n"
+                  "obj = App.ActiveDocument.addObject('Part::Feature','Shell').Shape=_\n"
+                  "%2"  // auto-grouping
                   "del _\n"
         )
-                  .arg(list);
+                  .arg(list,
+                       PartGui::getAutoGroupCommandStr(false)
+                   );
     }
 
     try {
@@ -518,10 +544,13 @@ void ShapeBuilderWidget::createSolidFromShell()
                   "shell')\n"
                   "_=Part.Solid(shell)\n"
                   "if _.isNull(): raise RuntimeError('Failed to create solid')\n"
-                  "App.ActiveDocument.addObject('Part::Feature','Solid').Shape=_.removeSplitter()\n"
+                  "obj = App.ActiveDocument.addObject('Part::Feature','Solid').Shape=_.removeSplitter()\n"
+                  "%2"  // auto-grouping
                   "del _\n"
         )
-                  .arg(line);
+                  .arg(line,
+                       PartGui::getAutoGroupCommandStr(false)
+                   );
     }
     else {
         cmd = QStringLiteral(
@@ -530,10 +559,13 @@ void ShapeBuilderWidget::createSolidFromShell()
                   "shell')\n"
                   "_=Part.Solid(shell)\n"
                   "if _.isNull(): raise RuntimeError('Failed to create solid')\n"
-                  "App.ActiveDocument.addObject('Part::Feature','Solid').Shape=_\n"
+                  "obj = App.ActiveDocument.addObject('Part::Feature','Solid').Shape=_\n"
+                  "%2"  // auto-grouping
                   "del _\n"
         )
-                  .arg(line);
+                  .arg(line,
+                       PartGui::getAutoGroupCommandStr(false)
+                   );
     }
 
     try {
