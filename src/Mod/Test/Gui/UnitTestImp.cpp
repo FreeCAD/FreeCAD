@@ -192,7 +192,6 @@ void UnitTestDialog::onAboutButtonClicked()
 void UnitTestDialog::onCopyButtonClicked()
 {
     QString text;
-    QString text2;
     QTreeWidgetItemIterator it(ui->treeViewFailure);
     while (*it) {
         text += (*it)->data(0, Qt::UserRole).toString() + "\n\n";
