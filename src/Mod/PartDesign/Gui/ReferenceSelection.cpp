@@ -62,8 +62,7 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
     if (!pObj) {
         return false;
     }
-    PartDesign::Body* body = getBody();
-    App::OriginGroupExtension* originGroup = getOriginGroupExtension(body);
+    App::OriginGroupExtension* originGroup = getBoundaryOriginGroupExtension();
 
     // Don't allow selection in other document
     if (support && pDoc != support->getDocument()) {
@@ -72,11 +71,11 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
 
     // Enable selection from origin of current part/
     if (pObj->isDerivedFrom<App::DatumElement>()) {
-        return allowOrigin(body, originGroup, pObj);
+        return allowOrigin(originGroup, pObj);
     }
 
     if (pObj->isDerivedFrom<Part::Datum>()) {
-        return allowDatum(body, pObj);
+        return allowDatum(originGroup, pObj);
     }
 
     // The flag was used to be set. So, this block will never be treated and really doesn't make
@@ -110,24 +109,21 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
     return false;
 }
 
-PartDesign::Body* ReferenceSelection::getBody() const
+
+App::OriginGroupExtension* ReferenceSelection::getBoundaryOriginGroupExtension() const
 {
+    const App::DocumentObject* originGroupObject = nullptr;
+
     auto* body = support ? PartDesign::Body::findBodyOf(support) : PartDesignGui::getBody(false);
-    return body;
-}
-
-App::OriginGroupExtension* ReferenceSelection::getOriginGroupExtension(PartDesign::Body* body) const
-{
-    App::DocumentObject* originGroupObject = nullptr;
-
     if (body) {  // Search for Part of the body
-        originGroupObject = App::OriginGroupExtension::getGroupOfObject(body);
+        originGroupObject = App::OriginGroupExtension::getBoundaryGroupOfObject(body);
     }
     else if (support) {  // if no body search part for support
-        originGroupObject = App::OriginGroupExtension::getGroupOfObject(support);
+        originGroupObject = App::OriginGroupExtension::getBoundaryGroupOfObject(support);
     }
     else {  // fallback to active part
-        originGroupObject = PartDesignGui::getActivePart();
+        App::DocumentObject* part = PartDesignGui::getActivePart();
+        originGroupObject = App::OriginGroupExtension::getBoundaryGroupOfObject(part);
     }
 
     App::OriginGroupExtension* originGroup = nullptr;
@@ -138,11 +134,8 @@ App::OriginGroupExtension* ReferenceSelection::getOriginGroupExtension(PartDesig
     return originGroup;
 }
 
-bool ReferenceSelection::allowOrigin(
-    PartDesign::Body* body,
-    App::OriginGroupExtension* originGroup,
-    App::DocumentObject* pObj
-) const
+
+bool ReferenceSelection::allowOrigin(App::OriginGroupExtension* originGroup, App::DocumentObject* pObj) const
 {
     bool fits = false;
     if (type.testFlag(AllowSelection::FACE) && pObj->isDerivedFrom<App::Plane>()) {
@@ -152,17 +145,13 @@ bool ReferenceSelection::allowOrigin(
         fits = true;
     }
 
-    if (fits) {  // check that it actually belongs to the chosen body or part
+    if (fits) {  // check that it actually belongs to the chosen group
         try {    // here are some throwers
-            if (body) {
-                if (body->hasObject(pObj, true)) {
-                    return true;
-                }
+            if (!originGroup) {
+                return true;
             }
-            else if (originGroup) {
-                if (originGroup->hasObject(pObj, true)) {
-                    return true;
-                }
+            if (originGroup->hasObject(pObj, true)) {
+                return true;
             }
         }
         catch (const Base::Exception&) {
@@ -171,15 +160,14 @@ bool ReferenceSelection::allowOrigin(
     return false;  // The Plane/Axis doesn't fits our needs
 }
 
-bool ReferenceSelection::allowDatum(PartDesign::Body* body, App::DocumentObject* pObj) const
+bool ReferenceSelection::allowDatum(App::OriginGroupExtension* originGroup, App::DocumentObject* pObj) const
 {
-    if (!body) {  // Allow selecting Part::Datum features from the active Body
-        return false;
+    if (!originGroup) {
+        return true;
     }
-    else if (!type.testFlag(AllowSelection::OTHERBODY) && !body->hasObject(pObj)) {
-        return false;
+    if (originGroup->hasObject(pObj, true)) {
+        return true;
     }
-
     if (type.testFlag(AllowSelection::FACE) && (pObj->isDerivedFrom<PartDesign::Plane>())) {
         return true;
     }
@@ -189,7 +177,6 @@ bool ReferenceSelection::allowDatum(PartDesign::Body* body, App::DocumentObject*
     if (type.testFlag(AllowSelection::POINT) && (pObj->isDerivedFrom<PartDesign::Point>())) {
         return true;
     }
-
     return false;
 }
 
@@ -318,41 +305,6 @@ bool getReferencedSelection(
     }
 
     std::string subname = msg.pSubName;
-
-    // check if the selection is an external reference and ask the user what to do
-    // of course only if thisObj is in a body, as otherwise the old workflow would not
-    // be supported
-    PartDesign::Body* body = PartDesignGui::getBodyFor(thisObj, false);
-    bool originfeature = selObj->isDerivedFrom<App::DatumElement>();
-    if (!originfeature && body) {
-        PartDesign::Body* selBody = PartDesignGui::getBodyFor(selObj, false);
-        if (!selBody || body != selBody) {
-            QDialog dia(Gui::getMainWindow());
-            Ui_DlgReference dlg;
-            dlg.setupUi(&dia);
-            dia.setModal(true);
-            int result = dia.exec();
-            if (result == QDialog::DialogCode::Rejected) {
-                selObj = nullptr;
-                return false;
-            }
-
-            if (!dlg.radioXRef->isChecked()) {
-                App::Document* document = thisObj->getDocument();
-                document->openTransaction("Make copy");
-                auto copy = PartDesignGui::TaskFeaturePick::makeCopy(
-                    selObj,
-                    subname,
-                    dlg.radioIndependent->isChecked()
-                );
-                body->addObject(copy);
-
-                selObj = copy;
-                subname.erase(std::remove_if(subname.begin(), subname.end(), &isdigit), subname.end());
-                subname.append("1");
-            }
-        }
-    }
 
     // Remove subname for planes and datum features
     if (PartDesign::Feature::isDatum(selObj)) {
