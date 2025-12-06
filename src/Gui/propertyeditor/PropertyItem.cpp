@@ -650,6 +650,11 @@ void PropertyItem::setPropertyValue(const std::string& value)
     }
 }
 
+void PropertyItem::setNameToolTipOverride(const QString& name)
+{
+    nameToolTipOverride = name;
+}
+
 void PropertyItem::setPropertyValue(const QString& value)
 {
     setPropertyValue(value.toStdString());
@@ -676,6 +681,9 @@ QVariant PropertyItem::dataPropertyName(int role) const
     }
     // no properties set
     if (propertyItems.empty()) {
+        if (role == Qt::ToolTipRole && nameToolTipOverride.size()) {
+            return nameToolTipOverride;
+        }
         return {};
     }
     if (role == Qt::ToolTipRole) {
@@ -3557,21 +3565,41 @@ PropertyMaterialItem::PropertyMaterialItem()
     diffuse = static_cast<PropertyColorItem*>(PropertyColorItem::create());
     diffuse->setParent(this);
     diffuse->setPropertyName(QLatin1String("DiffuseColor"));
+    diffuse->setNameToolTipOverride(
+        tr("Defines the base color of a surface when illuminated by light. It represents how the "
+           "object scatters light evenly in all directions, independent of the viewer’s angle. "
+           "This property will influence the material color the most.")
+    );
     this->appendChild(diffuse);
 
     ambient = static_cast<PropertyColorItem*>(PropertyColorItem::create());
     ambient->setParent(this);
     ambient->setPropertyName(QLatin1String("AmbientColor"));
+    ambient->setNameToolTipOverride(
+        tr("Defines the color of a surface under indirect, uniform lighting, representing how it "
+           "appears when illuminated only by ambient light in a scene, without directional light, "
+           "shading, or highlights")
+    );
     this->appendChild(ambient);
 
     specular = static_cast<PropertyColorItem*>(PropertyColorItem::create());
     specular->setParent(this);
     specular->setPropertyName(QLatin1String("SpecularColor"));
+    specular->setNameToolTipOverride(
+        tr("Defines the color and intensity of the bright, mirror-like highlights that appear on "
+           "shiny or reflective surfaces when light hits them directly. Set to bright colors for "
+           "shiny objects.")
+    );
     this->appendChild(specular);
 
     emissive = static_cast<PropertyColorItem*>(PropertyColorItem::create());
     emissive->setParent(this);
     emissive->setPropertyName(QLatin1String("EmissiveColor"));
+    emissive->setNameToolTipOverride(
+        tr("Defines the color of a surface that appears to emit as if it were a light source, "
+           "independent of external lighting, making the object look self-illuminated. Set to "
+           "black to have no emissive color.")
+    );
     this->appendChild(emissive);
 
     shininess = static_cast<PropertyIntegerConstraintItem*>(PropertyIntegerConstraintItem::create());
@@ -3579,6 +3607,11 @@ PropertyMaterialItem::PropertyMaterialItem()
     shininess->setStepSize(steps);
     shininess->setParent(this);
     shininess->setPropertyName(QLatin1String("Shininess"));
+    shininess->setNameToolTipOverride(
+        tr("Defines the size and sharpness of specular highlights on a surface. Higher values "
+           "produce small, sharp highlights, while lower values create broad, soft highlights. "
+           "Note that the highlight intensity is defined by specular color.")
+    );
     this->appendChild(shininess);
 
     transparency = static_cast<PropertyIntegerConstraintItem*>(PropertyIntegerConstraintItem::create());
@@ -3586,6 +3619,10 @@ PropertyMaterialItem::PropertyMaterialItem()
     transparency->setStepSize(steps);
     transparency->setParent(this);
     transparency->setPropertyName(QLatin1String("Transparency"));
+    transparency->setNameToolTipOverride(
+        tr("Defines how much light passes through an object, making it "
+           "partially or fully see-through")
+    );
     this->appendChild(transparency);
 }
 
@@ -3894,21 +3931,41 @@ PropertyMaterialListItem::PropertyMaterialListItem()
     diffuse = static_cast<PropertyColorItem*>(PropertyColorItem::create());
     diffuse->setParent(this);
     diffuse->setPropertyName(QLatin1String("DiffuseColor"));
+    diffuse->setNameToolTipOverride(
+        tr("Defines the base color of a surface when illuminated by light. It represents how the "
+           "object scatters light evenly in all directions, independent of the viewer’s angle. "
+           "This property will influence the material color the most.")
+    );
     this->appendChild(diffuse);
 
     ambient = static_cast<PropertyColorItem*>(PropertyColorItem::create());
     ambient->setParent(this);
     ambient->setPropertyName(QLatin1String("AmbientColor"));
+    ambient->setNameToolTipOverride(
+        tr("Defines the color of a surface under indirect, uniform lighting, representing how it "
+           "appears when illuminated only by ambient light in a scene, without directional light, "
+           "shading, or highlights")
+    );
     this->appendChild(ambient);
 
     specular = static_cast<PropertyColorItem*>(PropertyColorItem::create());
     specular->setParent(this);
     specular->setPropertyName(QLatin1String("SpecularColor"));
+    specular->setNameToolTipOverride(
+        tr("Defines the color and intensity of the bright, mirror-like highlights that appear on "
+           "shiny or reflective surfaces when light hits them directly. Set to bright colors for "
+           "shiny objects.")
+    );
     this->appendChild(specular);
 
     emissive = static_cast<PropertyColorItem*>(PropertyColorItem::create());
     emissive->setParent(this);
     emissive->setPropertyName(QLatin1String("EmissiveColor"));
+    emissive->setNameToolTipOverride(
+        tr("Defines the color of a surface that appears to emit as if it were a light source, "
+           "independent of external lighting, making the object look self-illuminated. Set to "
+           "black to have no emissive color.")
+    );
     this->appendChild(emissive);
 
     shininess = static_cast<PropertyIntegerConstraintItem*>(PropertyIntegerConstraintItem::create());
@@ -3916,6 +3973,11 @@ PropertyMaterialListItem::PropertyMaterialListItem()
     shininess->setStepSize(steps);
     shininess->setParent(this);
     shininess->setPropertyName(QLatin1String("Shininess"));
+    shininess->setNameToolTipOverride(
+        tr("Defines the size and sharpness of specular highlights on a surface. Higher values "
+           "produce small, sharp highlights, while lower values create broad, soft highlights. "
+           "Note that the highlight intensity is defined by specular color.")
+    );
     this->appendChild(shininess);
 
     transparency = static_cast<PropertyIntegerConstraintItem*>(PropertyIntegerConstraintItem::create());
@@ -3923,6 +3985,10 @@ PropertyMaterialListItem::PropertyMaterialListItem()
     transparency->setStepSize(steps);
     transparency->setParent(this);
     transparency->setPropertyName(QLatin1String("Transparency"));
+    transparency->setNameToolTipOverride(
+        tr("Defines how much light passes through an object, making it "
+           "partially or fully see-through")
+    );
     this->appendChild(transparency);
 }
 
