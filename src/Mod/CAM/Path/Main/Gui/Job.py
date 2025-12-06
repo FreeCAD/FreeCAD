@@ -261,6 +261,9 @@ class ViewProvider:
 
     def editObject(self, obj):
         if obj:
+            # Block editing for Boundary objects
+            if hasattr(obj, "IsBoundary") and getattr(obj, "IsBoundary", False):
+                return False
             if obj in self.obj.Model.Group:
                 return self.openTaskPanel("Model")
             if obj == self.obj.Stock:
