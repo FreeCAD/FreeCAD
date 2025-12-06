@@ -13,7 +13,7 @@
 # See also: http://git.salome-platform.org/gitweb/?p=NETGENPLUGIN_SRC.git;a=summary
 
 
-find_package(Netgen CONFIG)
+find_package(Netgen CONFIG QUIET)
 IF (Netgen_FOUND)
     set(NGLIB_INCLUDE_DIR ${NETGEN_INCLUDE_DIRS})
     set(NGLIB_LIBRARIES nglib)
@@ -147,3 +147,8 @@ IF (Netgen_FOUND)
     MESSAGE(STATUS "Found NETGEN version ${NETGEN_VERSION_MAJOR}.${NETGEN_VERSION_MINOR}, calculated: ${NETGEN_VERSION_C}")
     LIST(APPEND NETGEN_DEFINITIONS -DNETGEN_VERSION=${NETGEN_VERSION_C})
 ENDIF ()
+
+include(FindPackageHandleStandardArgs)
+find_package_handle_standard_args(NETGEN
+    REQUIRED_VARS NGLIB_INCLUDE_DIR NGLIB_LIBRARIES NETGEN_INCLUDE_DIRS 
+    VERSION_VAR NETGEN_VERSION)
