@@ -50,10 +50,6 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           python3 package/scripts/write_version_info.py ../freecad_version.txt
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git config user.name 'github-actions[bot]'
-          git apply package/disable_git_info.patch
-          git commit -a -m "Disable git info write to Version.h"
           git archive HEAD -o freecad_source_${BUILD_TAG}.tar
           git submodule foreach --recursive \
             "git archive HEAD --prefix=\$path/ -o \$sha1.tar && \
@@ -76,7 +72,7 @@ jobs:
       fail-fast: false
 
     runs-on: ${{ matrix.os }}
-    environment: weekly-build
+    environment: build-release
     steps:
       - name: Harden the runner (Audit all outbound calls)
         uses: step-security/harden-runner@df199fb7be9f65074067a9eb93f12bb4c5547cf2 # v2.13.3
@@ -92,16 +88,6 @@ jobs:
           remove-android: 'true'      # (frees ~9 GB)
           remove-cached-tools: 'true' # (frees ~8.3 GB)
 
-      - name: Set Platform Environment Variables
-        shell: bash -l {0}
-        env:
-          OPERATING_SYSTEM: ${{ runner.os }}
-        run: |
-          if [[ $OPERATING_SYSTEM == 'Windows' ]]; then
-            echo 'PIXI_CACHE_DIR=D:\rattler' >> "$GITHUB_ENV"
-            echo 'RATTLER_CACHE_DIR=D:\rattler' >> "$GITHUB_ENV"
-          fi
-
       - name: Checkout Source
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
@@ -110,14 +96,33 @@ jobs:
           fetch-tags: true
           submodules: 'recursive'
 
+      - name: setup
+        id: setup
+        shell: bash -l {0}
+        env:
+          ES_USERNAME: ${{ secrets.ES_USERNAME }}
+          BUILD_CERTIFICATE_BASE64: ${{ secrets.BUILD_CERTIFICATE_BASE64 }}
+        run: |
+          OS_DIR=$(bash package/rattler-build/scripts/get_os_dir.bash)
+          echo "OS_DIR=$OS_DIR" >> "$GITHUB_ENV"
+          if [[ $OS_DIR == 'windows' ]]; then
+            echo 'PIXI_CACHE_DIR=D:\rattler' >> "$GITHUB_ENV"
+            echo 'RATTLER_CACHE_DIR=D:\rattler' >> "$GITHUB_ENV"
+            if [ -n "$ES_USERNAME" ]; then
+              echo "has_esign=true" >> $GITHUB_OUTPUT
+            fi
+          fi
+          if [ -n "$BUILD_CERTIFICATE_BASE64" ]; then
+            echo "has_apple_cert=true" >> $GITHUB_OUTPUT
+          fi
+
       - uses: prefix-dev/setup-pixi@82d477f15f3a381dbcc8adc1206ce643fe110fb7 # v0.9.3
         with:
           pixi-version: v0.59.0
           cache: false
 
       - name: Install the Apple certificate and provisioning profile
-        id: get_cert
-        if: runner.os == 'macOS'
+        if: ${{ runner.os == 'macOS' && steps.setup.outputs.has_apple_cert }}
         env:
           APP_SPECIFIC_PASSWORD: ${{ secrets.APP_SPECIFIC_PASSWORD }}
           APPLE_ID: ${{ secrets.APPLE_ID }}
@@ -127,12 +132,6 @@ jobs:
           KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
           P12_PASSWORD: ${{ secrets.P12_PASSWORD }}
         run: |
-          if [ -z "$BUILD_CERTIFICATE_BASE64" ]; then
-            echo "has_cert=false" >> $GITHUB_OUTPUT
-            echo "No certificate avalable... skipping" && exit 0
-          else
-            echo "has_cert=true" >> $GITHUB_OUTPUT
-          fi
           # create variables
           CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
           PP_PATH=$RUNNER_TEMP/FreeCAD_bundle.provisionprofile
@@ -160,21 +159,67 @@ jobs:
 
           xcrun notarytool store-credentials "FreeCAD" --keychain "$KEYCHAIN_PATH" --apple-id "${APPLE_ID}" --password "${APP_SPECIFIC_PASSWORD}" --team-id "${DEVELOPER_TEAM_ID}"
 
-      - name: Build and Release Packages
+      - name: Build freecad
         shell: bash
-        env:
-          GH_TOKEN: ${{ github.token }}
-          SIGNING_KEY_ID: ${{ secrets.SIGNING_KEY_ID }}
-          SIGN_RELEASE: ${{ steps.get_cert.outputs.has_cert }}
-          TARGET_PLATFORM: ${{ matrix.target }}
-          MAKE_INSTALLER: "true"
-          UPLOAD_RELEASE: "true"
-          BUILD_TAG: ${{ needs.upload_src.outputs.build_tag }}
         run: |
           python3 package/scripts/write_version_info.py ../freecad_version.txt
           cd package/rattler-build
           pixi install
+          if [ ${OS_DIR} == "windows" ]; then
+            mkdir windows/.bin_to_sign
+            cp .pixi/envs/default/Library/bin/{freecad.exe,freecadcmd.exe} windows/.bin_to_sign
+          fi
+
+      - name: Sign windows binaries
+        if: ${{ runner.os == 'Windows' && steps.setup.outputs.has_esign }}
+        uses: sslcom/esigner-codesign@b7f8ff36fc0de8690fbbab8e5b4421d29802f747
+        with:
+          command: batch_sign
+          username: ${{ secrets.ES_USERNAME }}
+          password: ${{ secrets.ES_PASSWORD }}
+          credential_id: ${{ secrets.ES_CREDENTIAL_ID }}
+          totp_secret: ${{ secrets.ES_TOTP_SECRET }}
+          dir_path: ${GITHUB_WORKSPACE}/package/rattler-build/windows/.bin_to_sign
+          output_path: ${GITHUB_WORKSPACE}/package/rattler-build/windows/.bin_signed
+
+      - name: Build bundles
+        id: bundle
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SIGNING_KEY_ID: ${{ secrets.SIGNING_KEY_ID }}
+          SIGN_MAC_RELEASE: ${{ steps.setup.outputs.has_apple_cert }}
+          TARGET_PLATFORM: ${{ matrix.target }}
+          MAKE_INSTALLER: "true"
+          BUILD_TAG: ${{ needs.upload_src.outputs.build_tag }}
+        run: |
+          cd package/rattler-build
+          if [ ${OS_DIR} == "windows" ]; then
+            mv -f windows/.bin_signed/* .pixi/envs/default/Library/bin
+          fi
           pixi run -e package create_bundle
+          source ${OS_DIR}/.bundle-vars
+          echo "installer_path=${INSTALLER_PATH}" >> $GITHUB_OUTPUT
+
+      - name: Sign windows installer
+        if: ${{ runner.os == 'Windows' && steps.setup.outputs.has_esign }}
+        uses: sslcom/esigner-codesign@b7f8ff36fc0de8690fbbab8e5b4421d29802f747
+        with:
+          command: sign
+          username: ${{ secrets.ES_USERNAME }}
+          password: ${{ secrets.ES_PASSWORD }}
+          credential_id: ${{ secrets.ES_CREDENTIAL_ID }}
+          totp_secret: ${{ secrets.ES_TOTP_SECRET }}
+          file_path: ${{ steps.bundle.outputs.installer_path }}
+          override: true
+
+      - name: Upload bundles
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cd package/rattler-build
+          pixi run -e package upload_bundle
 
       ## Needed if running on a self-hosted runner:
       # - name: Clean up keychain and provisioning profile

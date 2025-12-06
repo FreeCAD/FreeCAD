@@ -21,9 +21,11 @@ freecad = { path = "." }
 
 [feature.package.dependencies]
 python = ">=3.11,<3.12"
+gh = "*"
 
 [feature.package.tasks]
-create_bundle = 'bash -c "cd $(bash scripts/get_os.bash) && bash create_bundle.sh"'
+create_bundle = 'bash -c "cd $(bash scripts/get_os_dir.bash) && bash create_bundle.sh"'
+upload_bundle = 'bash -c "cd $(bash scripts/get_os_dir.bash) && bash upload_bundle.sh"'
 
 ## Linux (x86-64)
 [feature.package.target.linux-64.dependencies]
