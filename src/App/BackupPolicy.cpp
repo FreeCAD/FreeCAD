@@ -253,7 +253,7 @@ void BackupPolicy::applyTimeStamp(const std::string& sourcename, const std::stri
 
                         static bool warnedWindows = false;
                         if (!warnedWindows) {
-                            Base::Console().error(
+                            Base::Console().warning(
                                 "Backup filename contained invalid characters for Windows. "
                                 "Automatically replaced with '-'. "
                                 "Consider using a different date format in Preferences/Document.\n"
@@ -269,8 +269,8 @@ void BackupPolicy::applyTimeStamp(const std::string& sourcename, const std::stri
 
                         static bool warnedPosix = false;
                         if (!warnedPosix) {
-                            Base::Console().error("Backup filename contained '/' character. "
-                                                  "Automatically replaced with '-'.\n");
+                            Base::Console().warning("Backup filename contained '/' character. "
+                                                    "Automatically replaced with '-'.\n");
                             warnedPosix = true;
                         }
                     }
