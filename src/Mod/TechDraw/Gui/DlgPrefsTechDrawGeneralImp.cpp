@@ -80,6 +80,7 @@ void DlgPrefsTechDrawGeneralImp::saveSettings()
 
     ui->cbMultiSelection->onSave();
 
+    ui->cb_viewFramesVisibility->onSave();
     ui->cb_useCameraDirection->onSave();
     ui->cb_alwaysShowLabel->onSave();
     ui->cb_SnapViews->onSave();
@@ -128,6 +129,7 @@ void DlgPrefsTechDrawGeneralImp::loadSettings()
     ui->cbMultiSelection->setChecked(multiSelectionDefault);
     ui->cbMultiSelection->onRestore();
 
+    ui->cb_viewFramesVisibility->onRestore();
     ui->cb_useCameraDirection->onRestore();
     ui->cb_alwaysShowLabel->onRestore();
 
