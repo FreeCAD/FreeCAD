@@ -24,6 +24,7 @@
 #include <QMessageBox>
 #include <QClipboard>
 #include <QApplication>
+#include <QTimer>
 
 
 #include <Base/Interpreter.h>
@@ -198,11 +199,10 @@ void UnitTestDialog::onCopyButtonClicked()
         ++it;
     }    
     if (text.isEmpty()) {
-        QMessageBox::information(this, tr("Clipboard"), tr("No errors to copy"));
-    } else {
-        QApplication::clipboard()->setText(text);
-        QMessageBox::information(this, tr("Clipboard"), tr("Errors copied to clipboard"));
+        return;
     }
+    QApplication::clipboard()->setText(text);
+    setStatusText(tr("Errors copied to clipboard"));    
 }
 
 /**

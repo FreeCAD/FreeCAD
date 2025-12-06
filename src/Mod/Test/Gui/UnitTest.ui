@@ -123,6 +123,19 @@
       </spacer>
      </item>
      <item>
+      <widget class="QPushButton" name="copyButton">
+       <property name="text">
+        <string>&amp;Copy</string>
+       </property>
+       <property name="shortcut">
+        <string>Ctrl+C</string>
+       </property>
+       <property name="autoDefault">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="helpButton">
        <property name="text">
         <string>&amp;Help</string>
@@ -155,19 +168,6 @@
        </property>
        <property name="shortcut">
         <string>Alt+C</string>
-       </property>
-       <property name="autoDefault">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="copyButton">
-       <property name="text">
-        <string>&amp;Copy</string>
-       </property>
-       <property name="shortcut">
-        <string>Ctrl+C</string>
        </property>
        <property name="autoDefault">
         <bool>true</bool>
