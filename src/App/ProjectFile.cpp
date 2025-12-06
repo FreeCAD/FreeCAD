@@ -55,13 +55,8 @@
 #include <Base/Stream.h>
 #include <Base/XMLTools.h>
 
-#ifndef XERCES_CPP_NAMESPACE_BEGIN
-#define XERCES_CPP_NAMESPACE_QUALIFIER
-using namespace XERCES_CPP_NAMESPACE;
-#else
-XERCES_CPP_NAMESPACE_USE
-#endif
 using namespace App;
+using namespace XERCES_CPP_NAMESPACE;
 
 namespace
 {
@@ -88,7 +83,7 @@ public:
 class DocumentMetadata
 {
 public:
-    explicit DocumentMetadata(XERCES_CPP_NAMESPACE_QUALIFIER DOMDocument* xmlDocument)
+    explicit DocumentMetadata(XERCES_CPP_NAMESPACE::DOMDocument* xmlDocument)
         : xmlDocument {xmlDocument}
     {}
 
@@ -199,7 +194,7 @@ private:
     }
 
 private:
-    XERCES_CPP_NAMESPACE_QUALIFIER DOMDocument* xmlDocument;
+    XERCES_CPP_NAMESPACE::DOMDocument* xmlDocument;
     ProjectFile::Metadata metadata;
 };
 }  // namespace
@@ -449,7 +444,7 @@ std::list<ProjectFile::PropertyFile> ProjectFile::getPropertyFiles(const std::st
     return files;
 }
 
-void ProjectFile::findFiles(XERCES_CPP_NAMESPACE_QUALIFIER DOMNode* node,
+void ProjectFile::findFiles(XERCES_CPP_NAMESPACE::DOMNode* node,
                             std::list<ProjectFile::PropertyFile>& files) const
 {
     if (node->hasAttributes()) {
@@ -528,7 +523,7 @@ std::list<std::string> ProjectFile::getInputFiles(const std::string& name) const
     return files;
 }
 
-void ProjectFile::findFiles(XERCES_CPP_NAMESPACE_QUALIFIER DOMNode* node,
+void ProjectFile::findFiles(XERCES_CPP_NAMESPACE::DOMNode* node,
                             std::list<std::string>& files) const
 {
     if (node->hasAttributes()) {
