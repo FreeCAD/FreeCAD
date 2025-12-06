@@ -66,32 +66,25 @@ public:
     void setMerge(bool);
 
 private:
-    void loadShapes(
+    App::DocumentObject* loadShapes(
         const TDF_Label& label,
         const TopLoc_Location&,
         const std::string& partname,
         const std::string& assembly,
-        bool isRef,
-        std::vector<App::DocumentObject*>&
+        bool isRef
     );
-    void createShape(
-        const TDF_Label& label,
+    App::DocumentObject* createShape(const TDF_Label& label, const TopLoc_Location&, const std::string&);
+    App::DocumentObject* createShape(
+        const TopoDS_Shape& shape,
+        const TDF_Label& labelHint,
         const TopLoc_Location&,
-        const std::string&,
-        std::vector<App::DocumentObject*>&,
-        bool
+        bool setPlacementFromLocation,
+        const std::string&
     );
-    void createShape(
-        const TopoDS_Shape& label,
-        const TopLoc_Location&,
-        const std::string&,
-        std::vector<App::DocumentObject*>&
-    );
-    void loadColors(Part::Feature* part, const TopoDS_Shape& aShape);
     virtual void applyColors(Part::Feature*, const std::vector<Base::Color>&)
     {}
     static void tryPlacementFromLoc(App::GeoFeature*, const TopLoc_Location&);
-    static void tryPlacementFromMatrix(App::GeoFeature*, const Base::Matrix4D&);
+    bool getShapeColour(const TopoDS_Shape& shape, TDF_Label labelHint, Base::Color& foundColour);
 
 private:
     Handle(TDocStd_Document) pDoc;
@@ -101,6 +94,7 @@ private:
     bool merge {true};
     std::string default_name;
     std::set<int> myRefShapes;
+    std::unordered_map<TopoDS_Shape, TDF_Label> shapeToLabelMap;
 };
 
 class ImportExport ImportOCAFCmd: public ImportOCAF
