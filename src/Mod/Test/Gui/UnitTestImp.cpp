@@ -196,12 +196,12 @@ void UnitTestDialog::onCopyButtonClicked()
     while (*it) {
         text += (*it)->data(0, Qt::UserRole).toString() + "\n\n";
         ++it;
-    }    
+    }
     if (text.isEmpty()) {
         return;
     }
     QApplication::clipboard()->setText(text);
-    setStatusText(tr("Errors copied to clipboard"));    
+    setStatusText(tr("Errors copied to clipboard"));
 }
 
 /**
