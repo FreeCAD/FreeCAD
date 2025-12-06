@@ -24,7 +24,6 @@
 #include <QMessageBox>
 #include <QClipboard>
 #include <QApplication>
-#include <QTimer>
 
 
 #include <Base/Interpreter.h>
