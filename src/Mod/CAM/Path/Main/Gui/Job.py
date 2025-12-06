@@ -778,6 +778,16 @@ class TaskPanel:
         self.obj.PostProcessor = postProcessors
         self.obj.PostProcessor = currentPostProcessor
 
+        machines = Path.Preferences.getAvailableMachines()
+        display_machines = ["<any>" if m == "" else m for m in machines]
+        self.form.machineComboBox.clear()
+        self.form.machineComboBox.addItems(display_machines)
+        if hasattr(self.obj, "Machine"):
+            print("Job Machine:", self.obj.Machine)
+            # Map "" to "<any>" for display
+            display_value = "<any>" if self.obj.Machine == "" else self.obj.Machine
+            self.selectComboBoxText(self.form.machineComboBox, display_value)
+
         self.postProcessorDefaultTooltip = self.form.postProcessor.toolTip()
         self.postProcessorArgsDefaultTooltip = self.form.postProcessorArguments.toolTip()
 
@@ -891,6 +901,11 @@ class TaskPanel:
             self.obj.PostProcessorArgs = str(self.form.postProcessorArguments.displayText())
             self.obj.PostProcessorOutputFile = str(self.form.postProcessorOutputFile.text())
 
+            if hasattr(self.obj, "Machine"):
+                machine = str(self.form.machineComboBox.currentText())
+                # Map "<any>" back to "" for storage
+                self.obj.Machine = "" if machine == "<any>" else machine
+
             self.obj.Label = str(self.form.jobLabel.text())
             self.obj.Description = str(self.form.jobDescription.toPlainText())
             self.obj.Operations.Group = [
@@ -928,7 +943,6 @@ class TaskPanel:
         # Search using currentData and return if found
         newindex = widget.findData(text)
         if newindex >= 0:
-
             widget.blockSignals(True)
             widget.setCurrentIndex(newindex)
             widget.blockSignals(False)
@@ -1027,6 +1041,8 @@ class TaskPanel:
         self.form.postProcessorOutputFile.setText(self.obj.PostProcessorOutputFile)
         self.selectComboBoxText(self.form.postProcessor, self.obj.PostProcessor)
         self.form.postProcessorArguments.setText(self.obj.PostProcessorArgs)
+        if hasattr(self.obj, "Machine"):
+            self.selectComboBoxText(self.form.machineComboBox, self.obj.Machine)
         # self.obj.Proxy.onChanged(self.obj, "PostProcessor")
         self.updateTooltips()
 
@@ -1697,13 +1713,13 @@ class TaskPanel:
         self.updateSelection()
 
 
-def Create(base, template=None, openTaskPanel=True):
-    """Create(base, template) ... creates a job instance for the given base object
-    using template to configure it."""
+def Create(base, template=None, machine="", openTaskPanel=True):
+    """Create(base, template, machine) ... creates a job instance for the given base object
+    using template to configure it and machine to set the associated machine."""
     FreeCADGui.addModule("Path.Main.Job")
     FreeCAD.ActiveDocument.openTransaction("Create Job")
     try:
-        obj = PathJob.Create("Job", base, template)
+        obj = PathJob.Create("Job", base, template, machine)
         obj.ViewObject.Proxy = ViewProvider(obj.ViewObject)
         obj.ViewObject.addExtension("Gui::ViewProviderGroupExtensionPython")
         FreeCAD.ActiveDocument.commitTransaction()
@@ -1717,6 +1733,7 @@ def Create(base, template=None, openTaskPanel=True):
         Path.Log.error(exc)
         traceback.print_exc()
         FreeCAD.ActiveDocument.abortTransaction()
+        return None
 
 
 # make sure the UI has been initialized
