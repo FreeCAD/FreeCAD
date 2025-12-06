@@ -151,7 +151,7 @@
      <item>
       <widget class="QPushButton" name="closeButton">
        <property name="text">
-        <string>&amp;Close</string>
+        <string>Close</string>
        </property>
        <property name="shortcut">
         <string>Alt+C</string>
@@ -164,7 +164,7 @@
      <item>
       <widget class="QPushButton" name="copyButton">
        <property name="text">
-        <string>&amp;Copy </string>
+        <string>&amp;Copy</string>
        </property>
        <property name="shortcut">
         <string>Ctrl+C</string>
