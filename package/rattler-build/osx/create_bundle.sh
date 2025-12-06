@@ -47,8 +47,7 @@ cmake --build build
 mkdir -p FreeCAD.app/Contents/MacOS
 cp build/FreeCAD FreeCAD.app/Contents/MacOS/FreeCAD
 
-python_version=$(${conda_env}/bin/python -c 'import platform; print("py" + platform.python_version_tuple()[0] + platform.python_version_tuple()[1])')
-version_name="FreeCAD_${BUILD_TAG}-macOS-$(uname -m)-${python_version}"
+version_name="FreeCAD_${BUILD_TAG}-macOS-$(uname -m)"
 application_menu_name="FreeCAD_${BUILD_TAG}"
 
 echo -e "\################"
