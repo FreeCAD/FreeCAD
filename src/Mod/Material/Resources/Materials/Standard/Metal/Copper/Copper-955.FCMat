@@ -5,7 +5,7 @@ General:
   Name: "Copper-955"
   Author: "Joe Da Silva"
   License: "LGPL-2.0-or-later"
-  SourceURL: "https://github.com/FreeCAD/FreeCAD/pull/25832"
+  SourceURL: "https://copper.org/publications/pub_list/pdf/144-8-mechanical.pdf"
   ReferenceSource: "144-8-mechanical.pdf"
   Tags:
     - "C95500"
