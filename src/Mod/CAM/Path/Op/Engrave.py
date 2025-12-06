@@ -70,14 +70,6 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
                 QT_TRANSLATE_NOOP("App::Property", "Additional base objects to be engraved"),
             )
         obj.setEditorMode("BaseShapes", 2)  # hide
-        if not hasattr(obj, "BaseObject"):
-            obj.addProperty(
-                "App::PropertyLink",
-                "BaseObject",
-                "Path",
-                QT_TRANSLATE_NOOP("App::Property", "Additional base objects to be engraved"),
-            )
-        obj.setEditorMode("BaseObject", 2)  # hide
 
     def initOperation(self, obj):
         """initOperation(obj) ... create engraving specific properties."""
@@ -87,10 +79,59 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "The vertex index to start the toolpath from"),
         )
+        obj.addProperty(
+            "App::PropertyBool",
+            "Reverse",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "Reverse wires"),
+        )
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "Pattern",
+            "Path",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Direction of the path\n"
+                "\nDirectional - use direction from wire"
+                "\nBidirectional - direction can be swapped while step down or optimizing path",
+            ),
+        )
+        pattern = [
+            QT_TRANSLATE_NOOP("CAM_Engrave", "Directional"),
+            QT_TRANSLATE_NOOP("CAM_Engrave", "Bidirectional"),
+        ]
+        obj.Pattern = pattern
+        obj.Pattern = "Bidirectional"
+
         self.setupAdditionalProperties(obj)
 
     def opOnDocumentRestored(self, obj):
         # upgrade ...
+        if not hasattr(obj, "Reverse"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "Reverse",
+                "Path",
+                QT_TRANSLATE_NOOP("App::Property", "Reverse wires"),
+            )
+        if not hasattr(obj, "Pattern"):
+            pattern = [
+                QT_TRANSLATE_NOOP("CAM_Engrave", "Directional"),
+                QT_TRANSLATE_NOOP("CAM_Engrave", "Bidirectional"),
+            ]
+            obj.addProperty(
+                "App::PropertyEnumeration",
+                "Pattern",
+                "Path",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Direction of the path\n"
+                    "\nDirectional - use direction from wire"
+                    "\nBidirectional - direction can be swapped while step down or optimizing path",
+                ),
+            )
+            obj.Pattern = pattern
+
         self.setupAdditionalProperties(obj)
 
     def opExecute(self, obj):
