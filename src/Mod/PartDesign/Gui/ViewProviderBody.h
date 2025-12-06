@@ -27,6 +27,7 @@
 #include <Mod/Part/Gui/ViewProvider.h>
 #include <Mod/PartDesign/PartDesignGlobal.h>
 #include <Mod/PartDesign/App/Feature.h>
+#include <Gui/ViewProviderPart.h>
 #include <Gui/ViewProviderOriginGroupExtension.h>
 #include <QCoreApplication>
 
@@ -96,6 +97,8 @@ public:
     {
         return true;
     };
+
+    void show();
 
 protected:
     /// Copy over all visual properties to the child features
