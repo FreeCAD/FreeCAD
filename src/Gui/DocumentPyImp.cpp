@@ -23,6 +23,7 @@
 #include <sstream>
 
 #include <App/Document.h>
+#include <App/DocumentObjectPy.h>
 #include <Base/Matrix.h>
 #include <Base/MatrixPy.h>
 #include <Base/Stream.h>
@@ -30,18 +31,16 @@
 #include "Application.h"
 #include "MergeDocuments.h"
 #include "MDIView.h"
-#include "ViewProviderExtern.h"
-
-// inclusion of the generated files (generated out of DocumentPy.pyi)
-#include "DocumentPy.h"
-#include "DocumentPy.cpp"
-#include <App/DocumentObjectPy.h>
 #include "Tree.h"
 #include "ViewProviderDocumentObject.h"
-#include "ViewProviderDocumentObjectPy.h"
+#include "ViewProviderExtern.h"
+
+// generated out of Document.pyi
+#include "DocumentPy.h"
+#include "DocumentPy.cpp"
+
 #include "ViewProviderPy.h"
 #include "ViewProviderDocumentObjectPy.h"
-
 
 using namespace Gui;
 
