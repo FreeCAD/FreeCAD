@@ -131,9 +131,11 @@ void TaskFeatureParameters::onUpdateView(bool on)
 void TaskFeatureParameters::recomputeFeature()
 {
     if (!blockUpdate) {
-        App::DocumentObject* obj = getObject();
-        assert(obj);
-        obj->recomputeFeature();
+        auto* feature = getObject<PartDesign::Feature>();
+        assert(feature);
+
+        feature->recomputeFeature();
+        feature->recomputePreview();
     }
 }
 
