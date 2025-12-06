@@ -25,6 +25,8 @@
 #include <Base/MatrixPy.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>
 
+#include "DepEdge.h"
+#include "DepEdgePy.h"
 #include "DocumentObject.h"
 #include "Document.h"
 #include "ExpressionParser.h"
@@ -328,6 +330,21 @@ Py::List DocumentObjectPy::getInListRecursive() const
     return ret;
 }
 
+Py::List DocumentObjectPy::getInListProp() const
+{
+    Py::List ret;
+    std::vector<DepEdge> list = getDocumentObjectPtr()->getInListProp();
+
+    for (const auto& edge : list) {
+        // copy will be deleted by DepEdgePy
+        auto* copy = new DepEdge(edge);
+        auto* depEdgePy = new DepEdgePy(copy);
+        ret.append(Py::Object(depEdgePy, true));
+    }
+
+    return ret;
+}
+
 Py::List DocumentObjectPy::getOutList() const
 {
     Py::List ret;
@@ -353,6 +370,21 @@ Py::List DocumentObjectPy::getOutListRecursive() const
     }
     catch (const Base::Exception& e) {
         throw Py::IndexError(e.what());
+    }
+
+    return ret;
+}
+
+Py::List DocumentObjectPy::getOutListProp() const
+{
+    Py::List ret;
+    std::vector<DepEdge> list = getDocumentObjectPtr()->getOutListProp();
+
+    for (const auto& edge : list) {
+        // copy will be deleted by DepEdgePy
+        auto* copy = new DepEdge(edge);
+        auto* depEdgePy = new DepEdgePy(copy);
+        ret.append(Py::Object(depEdgePy, true));
     }
 
     return ret;
