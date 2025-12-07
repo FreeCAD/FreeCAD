@@ -90,7 +90,8 @@ void SolverGeometryExtension::notifyAttachment(Part::Geometry* geo)
         {Part::GeomArcOfHyperbola::getClassTypeId(), 5},
         {Part::GeomArcOfParabola::getClassTypeId(), 4},
         {Part::GeomBSplineCurve::getClassTypeId(), 0},  // is dynamic
-        {Part::GeomOffsetCurve::getClassTypeId(), 1}
+        {Part::GeomOffsetCurve::getClassTypeId(), 1},
+        {Part::GeomRestrictedCurve::getClassTypeId(), 2},
     };
 
     GeometryType = geo->getTypeId();
