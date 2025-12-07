@@ -139,7 +139,9 @@ PRE_OPERATION = """"""
 POST_OPERATION = """"""
 
 # Tool Change commands will be inserted before a tool change
-TOOL_CHANGE = """"""
+# Move to tool change Z position
+TOOL_CHANGE = """G28 G91 Z0
+"""
 
 
 def processArguments(argstring):

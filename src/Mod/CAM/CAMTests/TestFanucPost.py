@@ -91,7 +91,7 @@ class TestFanucPost(PathTestUtils.PathTestBase):
         # Header contains a time stamp that messes up unit testing.
         # Only test length of result.
         gcode = self.post.export()[0][1]
-        self.assertEqual(30, len(gcode.splitlines()))
+        self.assertEqual(28, len(gcode.splitlines()))
         # Test without header
         expected = """%
 (BEGIN PREAMBLE)
@@ -100,6 +100,7 @@ G21
 (BEGIN OPERATION: TC: DEFAULT TOOL)
 (MACHINE UNITS: MM/MIN)
 M05
+G28 G91 Z0
 M6 T1
 G91 G0 G43 G54 Z-[#[2000+#4120]] H#4120
 G90
@@ -112,9 +113,6 @@ G54
 (BEGIN OPERATION: PROFILE)
 (MACHINE UNITS: MM/MIN)
 (FINISH OPERATION: PROFILE)
-(BEGIN MAKING SPINDLE EMPTY)
-M05
-M6 T0
 (BEGIN POSTAMBLE)
 M05
 G17 G54 G90 G80 G40
@@ -136,13 +134,12 @@ M30
 G17 G54 G40 G49 G80 G90
 G21
 M05
+G28 G91 Z0
 M6 T1
 G91 G0 G43 G54 Z-[#[2000+#4120]] H#4120
 G90
 M3 S1000
 G54
-M05
-M6 T0
 M05
 G17 G54 G90 G80 G40
 M30
@@ -157,6 +154,88 @@ M30
         gcode = self.post.export()[0][1]
         self.assertEqual(gcode, expected)
 
+    def test_empty_path_spindle_empty(self):
+        """Test Output Generation.
+        Empty path.  Produces only the preamble and postable.
+        """
+
+        self.profile_op.Path = Path.Path([])
+        self.job.PostProcessorArgs = "--no-show-editor --end-spindle-empty"
+
+        # Test generating with header
+        # Header contains a time stamp that messes up unit testing.
+        # Only test length of result.
+        gcode = self.post.export()[0][1]
+        self.assertEqual(32, len(gcode.splitlines()))
+        # Test without header
+        expected = """%
+(BEGIN PREAMBLE)
+G17 G54 G40 G49 G80 G90
+G21
+(BEGIN OPERATION: TC: DEFAULT TOOL)
+(MACHINE UNITS: MM/MIN)
+M05
+G28 G91 Z0
+M6 T1
+G91 G0 G43 G54 Z-[#[2000+#4120]] H#4120
+G90
+M3 S1000
+(FINISH OPERATION: TC: DEFAULT TOOL)
+(BEGIN OPERATION: FIXTURE)
+(MACHINE UNITS: MM/MIN)
+G54
+(FINISH OPERATION: FIXTURE)
+(BEGIN OPERATION: PROFILE)
+(MACHINE UNITS: MM/MIN)
+(FINISH OPERATION: PROFILE)
+(BEGIN MAKING SPINDLE EMPTY)
+M05
+G28 G91 Z0
+M6 T0
+(BEGIN POSTAMBLE)
+M05
+G17 G54 G90 G80 G40
+M30
+%
+"""
+
+        self.profile_op.Path = Path.Path([])
+        self.job.PostProcessorArgs = (
+            "--no-header --no-show-editor --end-spindle-empty"
+            # "--no-header --no-comments --no-show-editor --precision=2"
+        )
+
+        gcode = self.post.export()[0][1]
+        self.assertEqual(gcode, expected)
+
+        # test without comments
+        expected = """%
+G17 G54 G40 G49 G80 G90
+G21
+M05
+G28 G91 Z0
+M6 T1
+G91 G0 G43 G54 Z-[#[2000+#4120]] H#4120
+G90
+M3 S1000
+G54
+M05
+G28 G91 Z0
+M6 T0
+M05
+G17 G54 G90 G80 G40
+M30
+%
+"""
+
+        self.profile_op.Path = Path.Path([])
+        self.job.PostProcessorArgs = (
+            "--no-header --no-comments --no-show-editor --end-spindle-empty"
+            # "--no-header --no-comments --no-show-editor --precision=2"
+        )
+        gcode = self.post.export()[0][1]
+        self.assertEqual(gcode, expected)
+
     def test_precision(self):
         """Test command Generation.
         Test Precision
@@ -166,13 +245,13 @@ M30
         self.profile_op.Path = Path.Path([c])
         self.job.PostProcessorArgs = "--no-header --no-show-editor"
         gcode = self.post.export()[0][1]
-        result = gcode.splitlines()[18]
+        result = gcode.splitlines()[19]
         expected = "G0 X10.000 Y20.000 Z30.000"
         self.assertEqual(result, expected)
 
         self.job.PostProcessorArgs = "--no-header --precision=2 --no-show-editor"
         gcode = self.post.export()[0][1]
-        result = gcode.splitlines()[18]
+        result = gcode.splitlines()[19]
         expected = "G0 X10.00 Y20.00 Z30.00"
         self.assertEqual(result, expected)
 
@@ -185,8 +264,8 @@ M30
         self.profile_op.Path = Path.Path([c])
         self.job.PostProcessorArgs = "--no-header --line-numbers --no-show-editor"
         gcode = self.post.export()[0][1]
-        result = gcode.splitlines()[18]
-        expected = "N280  G0 X10.000 Y20.000 Z30.000"
+        result = gcode.splitlines()[19]
+        expected = "N290  G0 X10.000 Y20.000 Z30.000"
         self.assertEqual(result, expected)
 
     def test_pre_amble(self):
@@ -226,13 +305,13 @@ M30
         gcode = self.post.export()[0][1]
         self.assertEqual(gcode.splitlines()[3], "G20")
 
-        result = gcode.splitlines()[18]
+        result = gcode.splitlines()[19]
         expected = "G0 X0.3937 Y0.7874 Z1.1811"
         self.assertEqual(result, expected)
 
         self.job.PostProcessorArgs = "--no-header --inches --precision=2 --no-show-editor"
         gcode = self.post.export()[0][1]
-        result = gcode.splitlines()[18]
+        result = gcode.splitlines()[19]
         expected = "G0 X0.39 Y0.79 Z1.18"
         self.assertEqual(result, expected)
 
@@ -245,16 +324,17 @@ M30
         self.profile_op.Path = Path.Path([c, c2])
         self.job.PostProcessorArgs = "--no-header --no-show-editor"
         gcode = self.post.export()[0][1]
-        self.assertEqual(gcode.splitlines()[18], "M05")
-        self.assertEqual(gcode.splitlines()[19], "M6 T1")
-        self.assertEqual(gcode.splitlines()[20], "G91 G0 G43 G54 Z-[#[2000+#4120]] H#4120")
-        self.assertEqual(gcode.splitlines()[21], "G90")
-        self.assertEqual(gcode.splitlines()[22], "M3 S3000")
+        self.assertEqual(gcode.splitlines()[19], "M05")
+        self.assertEqual(gcode.splitlines()[20], "G28 G91 Z0")
+        self.assertEqual(gcode.splitlines()[21], "M6 T1")
+        self.assertEqual(gcode.splitlines()[22], "G91 G0 G43 G54 Z-[#[2000+#4120]] H#4120")
+        self.assertEqual(gcode.splitlines()[23], "G90")
+        self.assertEqual(gcode.splitlines()[24], "M3 S3000")
 
         # suppress TLO
         self.job.PostProcessorArgs = "--no-header --no-tlo --no-show-editor"
         gcode = self.post.export()[0][1]
-        self.assertEqual(gcode.splitlines()[18], "M3 S3000")
+        self.assertEqual(gcode.splitlines()[20], "M3 S3000")
 
     def test_thread_tap(self):
         """
@@ -267,12 +347,12 @@ M30
         self.profile_op.Path = Path.Path([c, c2])
         self.job.PostProcessorArgs = "--no-header --no-show-editor"
         gcode = self.post.export()[0][1]
-        self.assertEqual(gcode.splitlines()[17], "G0 X10.000 Y10.000")
-        self.assertEqual(gcode.splitlines()[18], "G95")
-        self.assertEqual(gcode.splitlines()[19], "M29 S1000")
-        self.assertEqual(gcode.splitlines()[20], "G84 Z-10.000 R20.000 F1.000 P1.000 Q1.000")
-        self.assertEqual(gcode.splitlines()[21], "G80")
-        self.assertEqual(gcode.splitlines()[22], "G94")
+        self.assertEqual(gcode.splitlines()[18], "G0 X10.000 Y10.000")
+        self.assertEqual(gcode.splitlines()[19], "G95")
+        self.assertEqual(gcode.splitlines()[20], "M29 S1000")
+        self.assertEqual(gcode.splitlines()[21], "G84 Z-10.000 R20.000 F1.000 P1.000 Q1.000")
+        self.assertEqual(gcode.splitlines()[22], "G80")
+        self.assertEqual(gcode.splitlines()[23], "G94")
 
     def test_comment(self):
         """
@@ -284,6 +364,6 @@ M30
         self.profile_op.Path = Path.Path([c])
         self.job.PostProcessorArgs = "--no-header --no-show-editor"
         gcode = self.post.export()[0][1]
-        result = gcode.splitlines()[18]
+        result = gcode.splitlines()[19]
         expected = "(COMMENT)"
         self.assertEqual(result, expected)
