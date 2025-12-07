@@ -775,7 +775,6 @@ void TaskRevolutionParameters::setGizmoPositions()
 
     bool ret;
     if (isGroove) {
-        auto groove = getObject<PartDesign::Groove>();
         ret = getFeatureProps(getObject<PartDesign::Groove>());
     }
     else {
@@ -838,3 +837,4 @@ TaskDlgGrooveParameters::TaskDlgGrooveParameters(ViewProviderGroove* GrooveView)
 
 
 #include "moc_TaskRevolutionParameters.cpp"
+
