@@ -837,4 +837,3 @@ TaskDlgGrooveParameters::TaskDlgGrooveParameters(ViewProviderGroove* GrooveView)
 
 
 #include "moc_TaskRevolutionParameters.cpp"
-
