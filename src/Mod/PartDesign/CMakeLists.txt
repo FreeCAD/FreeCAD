@@ -1,3 +1,7 @@
+include_directories(
+    SYSTEM
+    ${EIGEN3_INCLUDE_DIR}
+)
 
 add_subdirectory(App)
 if(BUILD_GUI)
