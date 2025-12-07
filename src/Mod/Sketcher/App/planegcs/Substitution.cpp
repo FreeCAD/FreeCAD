@@ -98,6 +98,10 @@ struct SubstitutionFactory
     {
         bool done = false;
         size_t numConstraintsDone = 0;
+
+        // First try substitutions on constraints which cannot
+        // yield an ambiguous result to resolve other constraints
+        // in less iterations in the second loop
         for (size_t i = 0; i < initialConstraints.size(); ++i) {
             auto constr = initialConstraints[i];
 
@@ -109,12 +113,15 @@ struct SubstitutionFactory
                 continue;
             }
 
-            // first pass handles all equalities
-            if (constr->getTypeId() != Equal) {
+            if (constr->getTypeId() == Equal) {
+                attempts[i] = trySubstitute(static_cast<ConstraintEqual*>(constr));
+            }
+            else if (constr->getTypeId() == Difference) {
+                attempts[i] = trySubstitute(static_cast<ConstraintDifference*>(constr));
+            }
+            else {
                 continue;
             }
-
-            attempts[i] = trySubstitute(static_cast<ConstraintEqual*>(constr));
 
             if (attempts[i] != Attempt::Maybe) {
                 numConstraintsDone++;
@@ -135,10 +142,6 @@ struct SubstitutionFactory
 
                 Attempt attempt = Attempt::No;
                 switch (constr->getTypeId()) {
-                    case Difference:
-                        attempt
-                            = trySubstitute(static_cast<ConstraintDifference*>(constr), attempts[i]);
-                        break;
                     case P2PDistance:
                         attempt
                             = trySubstitute(static_cast<ConstraintP2PDistance*>(constr), attempts[i]);
@@ -166,6 +169,37 @@ struct SubstitutionFactory
                         break;
                     case EqualLineLength:
                         attempt = trySubstitute(static_cast<ConstraintEqualLineLength*>(constr));
+                        break;
+                    case None:
+                    case Equal:       // Already handled in first loop
+                    case Difference:  // Already handled in first loop
+                    case P2PAngle:
+                    case PointOnPerpBisector:
+                    case L2LAngle:  // Not handled, if the user specified angles such as 90deg or
+                                    // 180deg, perhaps they are trying to prevent a flip, let's not
+                                    // disturb that
+                    case MidpointOnLine:
+                    case TangentCircumf:
+                    case PointOnEllipse:
+                    case TangentEllipseLine:
+                    case InternalAlignmentPoint2Ellipse:
+                    case EqualMajorAxesConic:
+                    case EllipticalArcRangeToEndPoints:
+                    case AngleViaPoint:
+                    case Snell:
+                    case CurveValue:
+                    case PointOnHyperbola:
+                    case InternalAlignmentPoint2Hyperbola:
+                    case PointOnParabola:
+                    case EqualFocalDistance:
+                    case CenterOfGravity:
+                    case WeightedLinearCombination:
+                    case SlopeAtBSplineKnot:
+                    case PointOnBSpline:
+                    case AngleViaPointAndParam:
+                    case AngleViaPointAndTwoParams:
+                    case AngleViaTwoPoints:
+                    case ArcLength:
                         break;
                 }
                 attempts[i] = attempt;
@@ -1021,14 +1055,16 @@ struct SubstitutionFactory
         }
         return Attempt::Maybe;
     }
-    Attempt trySubstitute(ConstraintDifference* constr, Attempt previousAttempt)
+    Attempt trySubstitute(ConstraintDifference* constr)
     {
         double* p1 = constr->origParams()[0];
         double* p2 = constr->origParams()[1];
         double* diff = constr->origParams()[2];
 
-        if (previousAttempt == Attempt::Unknown
-            && (!unknowns.contains(p1) || !unknowns.contains(p2) || unknowns.contains(diff))) {
+        bool p1External = !unknowns.contains(p1);
+        bool p2External = !unknowns.contains(p2);
+
+        if ((p1External && p2External) || unknowns.contains(diff)) {
             return Attempt::No;
         }
 
@@ -1038,7 +1074,15 @@ struct SubstitutionFactory
         // are defined from left to rigth such that p1 = p2 + diff
         // but in the constraint it is defined such that p2 = p1 + diff
         // so we have to negate the difference
-        addRelationship(p1, p2, -*diff, RelationshipOptions::Absolute);
+        if (p1External) {
+            addConst(p2, *p1 + *diff);
+        }
+        else if (p2External) {
+            addConst(p2, *p1 - *diff);
+        }
+        else {
+            addRelationship(p1, p2, -*diff, RelationshipOptions::Absolute);
+        }
         return Attempt::Yes;
     }
 };
