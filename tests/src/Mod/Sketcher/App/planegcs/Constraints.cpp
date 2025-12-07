@@ -691,3 +691,432 @@ TEST_F(ConstraintsTest, substitutionWithTangeant)  // NOLINT
     EXPECT_NEAR(sx, lhx2, 1e-12);
     EXPECT_NEAR(sy, vlinelength, 1e-12);
 }
+TEST_F(ConstraintsTest, substitutionCircleCircleDistance)  // NOLINT
+{
+    double c1x = 0;
+    double c1y = 0;
+    double c1r = 0;
+    GCS::Circle c1(GCS::Point(&c1x, &c1y), &c1r);
+
+    double c2x = 0;
+    double c2y = 0;
+    double c2r = 0;
+    GCS::Circle c2(GCS::Point(&c2x, &c2y), &c2r);
+
+    double zero = 0;
+
+    std::vector<double*> unknowns;
+    c1.PushOwnParams(unknowns);
+    c2.PushOwnParams(unknowns);
+
+    // Both circles with radius defined and aligned verticaly (substitution)
+    // circles overlap
+    {
+        c1x = 4;
+        c1y = -2;
+        double rad1 = 5;
+
+        c2x = 6;
+        c2y = 3;
+        double rad2 = 3;
+
+        double dist = -2;
+
+        System()->clear();
+
+        System()->addConstraintCircleRadius(c1, &rad1);
+        System()->addConstraintCircleRadius(c2, &rad2);
+        System()->addConstraintVertical(c1.center, c2.center);
+        System()->addConstraintC2CDistance(c1, c2, &dist);
+        System()->addConstraintEqual(&c1x, &zero);
+        System()->addConstraintEqual(&c1y, &zero);
+
+        int solveResult = System()->solve(unknowns);
+        if (solveResult == GCS::Success) {
+            System()->applySolution();
+        }
+
+        EXPECT_EQ(solveResult, GCS::Success);
+
+        EXPECT_NEAR(c1x, 0.0, 1e-12);
+        EXPECT_NEAR(c1y, 0.0, 1e-12);
+        EXPECT_NEAR(c2x, 0.0, 1e-12);
+        EXPECT_NEAR(c2y, 6.0, 1e-12);
+    }
+    // Both circles with radius defined and aligned verticaly (substitution)
+    // circles do not overlap
+    {
+        c1x = 4;
+        c1y = -2;
+        double rad1 = 5;
+
+        c2x = 6;
+        c2y = 3;
+        double rad2 = 3;
+
+        double dist = 2;
+
+        System()->clear();
+
+        System()->addConstraintCircleRadius(c1, &rad1);
+        System()->addConstraintCircleRadius(c2, &rad2);
+        System()->addConstraintVertical(c1.center, c2.center);
+        System()->addConstraintC2CDistance(c1, c2, &dist);
+        System()->addConstraintEqual(&c1x, &zero);
+        System()->addConstraintEqual(&c1y, &zero);
+
+        int solveResult = System()->solve(unknowns);
+        if (solveResult == GCS::Success) {
+            System()->applySolution();
+        }
+
+        EXPECT_EQ(solveResult, GCS::Success);
+
+        EXPECT_NEAR(c1x, 0.0, 1e-12);
+        EXPECT_NEAR(c1y, 0.0, 1e-12);
+        EXPECT_NEAR(c2x, 0.0, 1e-12);
+        EXPECT_NEAR(c2y, 10.0, 1e-12);
+    }
+    // Both circles with radius defined and aligned horizontaly (substitution)
+    // circle overlap
+    {
+        c1x = 4;
+        c1y = -2;
+        double rad1 = 5;
+
+        c2x = 6;
+        c2y = 3;
+        double rad2 = 3;
+
+        double dist = -2;
+
+        System()->clear();
+
+        System()->addConstraintCircleRadius(c1, &rad1);
+        System()->addConstraintCircleRadius(c2, &rad2);
+        System()->addConstraintHorizontal(c1.center, c2.center);
+        System()->addConstraintC2CDistance(c1, c2, &dist);
+        System()->addConstraintEqual(&c1x, &zero);
+        System()->addConstraintEqual(&c1y, &zero);
+
+        int solveResult = System()->solve(unknowns);
+        if (solveResult == GCS::Success) {
+            System()->applySolution();
+        }
+
+        EXPECT_EQ(solveResult, GCS::Success);
+
+        EXPECT_NEAR(c1x, 0.0, 1e-12);
+        EXPECT_NEAR(c1y, 0.0, 1e-12);
+        EXPECT_NEAR(c2x, 6.0, 1e-12);
+        EXPECT_NEAR(c2y, 0.0, 1e-12);
+    }
+    // Both circles with radius defined and aligned horizontaly (substitution)
+    // circle do not overlap
+    {
+        c1x = 4;
+        c1y = -2;
+        double rad1 = 5;
+
+        c2x = 6;
+        c2y = 3;
+        double rad2 = 3;
+
+        double dist = 2;
+
+        System()->clear();
+
+        System()->addConstraintCircleRadius(c1, &rad1);
+        System()->addConstraintCircleRadius(c2, &rad2);
+        System()->addConstraintHorizontal(c1.center, c2.center);
+        System()->addConstraintC2CDistance(c1, c2, &dist);
+        System()->addConstraintEqual(&c1x, &zero);
+        System()->addConstraintEqual(&c1y, &zero);
+
+        int solveResult = System()->solve(unknowns);
+        if (solveResult == GCS::Success) {
+            System()->applySolution();
+        }
+
+        EXPECT_EQ(solveResult, GCS::Success);
+
+        EXPECT_NEAR(c1x, 0.0, 1e-12);
+        EXPECT_NEAR(c1y, 0.0, 1e-12);
+        EXPECT_NEAR(c2x, 10.0, 1e-12);
+        EXPECT_NEAR(c2y, 0.0, 1e-12);
+    }
+}
+TEST_F(ConstraintsTest, substitutionLineCircleDistance)  // NOLINT
+{
+    double cx = 0.0;
+    double cy = 0.0;
+    double cr = 5.0;
+    GCS::Circle circle(GCS::Point(&cx, &cy), &cr);
+
+    double lx1 = 0.0;
+    double ly1 = 0.0;
+    double lx2 = 0.0;
+    double ly2 = 0.0;
+    GCS::Line line(GCS::Point(&lx1, &ly1), GCS::Point(&lx2, &ly2));
+
+    double zero = 0.0;
+
+    std::vector<double*> unknowns;
+    circle.PushOwnParams(unknowns);
+    line.PushOwnParams(unknowns);
+
+    // Circle radius defined, line vertical overlaps
+    {
+        double rad = 5.0;
+        double dist = 4;
+
+        lx1 = -0.8;
+        ly1 = 4.0;
+        lx2 = -2.3;
+        ly2 = -3.0;
+
+        System()->clear();
+
+        System()->addConstraintCircleRadius(circle, &rad);
+        System()->addConstraintVertical(line);
+        System()->addConstraintC2LDistance(circle, line, &dist);
+        System()->addConstraintEqual(&cx, &zero);
+        System()->addConstraintEqual(&cy, &zero);
+
+        int solveResult = System()->solve(unknowns);
+        if (solveResult == GCS::Success) {
+            System()->applySolution();
+        }
+
+        EXPECT_EQ(solveResult, GCS::Success);
+
+        EXPECT_NEAR(cx, 0.0, 1e-12);
+        EXPECT_NEAR(cy, 0.0, 1e-12);
+        EXPECT_NEAR(lx1, lx2, 1e-12);
+        EXPECT_NEAR(lx1, -1.0, 1e-12);
+    }
+    // Circle radius defined, line vertical does not overlaps
+    {
+        double rad = 5.0;
+        double dist = 4;
+
+        lx1 = -7.8;
+        ly1 = 4.0;
+        lx2 = -10.3;
+        ly2 = -3.0;
+
+        System()->clear();
+
+        System()->addConstraintCircleRadius(circle, &rad);
+        System()->addConstraintVertical(line);
+        System()->addConstraintC2LDistance(circle, line, &dist);
+        System()->addConstraintEqual(&cx, &zero);
+        System()->addConstraintEqual(&cy, &zero);
+
+        int solveResult = System()->solve(unknowns);
+        if (solveResult == GCS::Success) {
+            System()->applySolution();
+        }
+
+        EXPECT_EQ(solveResult, GCS::Success);
+
+        EXPECT_NEAR(cx, 0.0, 1e-12);
+        EXPECT_NEAR(cy, 0.0, 1e-12);
+        EXPECT_NEAR(lx1, lx2, 1e-12);
+        EXPECT_NEAR(lx1, -9.0, 1e-12);
+    }
+    // Circle radius defined, line horizontal overlaps
+    {
+        double rad = 5.0;
+        double dist = 4;
+
+        lx1 = 4.0;
+        ly1 = 0.8;
+        lx2 = -3.0;
+        ly2 = 2.0;
+
+        System()->clear();
+
+        System()->addConstraintCircleRadius(circle, &rad);
+        System()->addConstraintHorizontal(line);
+        System()->addConstraintC2LDistance(circle, line, &dist);
+        System()->addConstraintEqual(&cx, &zero);
+        System()->addConstraintEqual(&cy, &zero);
+
+        int solveResult = System()->solve(unknowns);
+        if (solveResult == GCS::Success) {
+            System()->applySolution();
+        }
+
+        EXPECT_EQ(solveResult, GCS::Success);
+
+        EXPECT_NEAR(cx, 0.0, 1e-12);
+        EXPECT_NEAR(cy, 0.0, 1e-12);
+        EXPECT_NEAR(ly1, ly2, 1e-12);
+        EXPECT_NEAR(ly1, 1.0, 1e-12);
+    }
+    // Circle radius defined, line horizontal does not overlaps
+    {
+        double rad = 5.0;
+        double dist = 4;
+
+        lx1 = 4.0;
+        ly1 = 6.0;
+        lx2 = -3.0;
+        ly2 = 6.0;
+
+        System()->clear();
+
+        System()->addConstraintCircleRadius(circle, &rad);
+        System()->addConstraintHorizontal(line);
+        System()->addConstraintC2LDistance(circle, line, &dist);
+        System()->addConstraintEqual(&cx, &zero);
+        System()->addConstraintEqual(&cy, &zero);
+
+        int solveResult = System()->solve(unknowns);
+        if (solveResult == GCS::Success) {
+            System()->applySolution();
+        }
+
+        EXPECT_EQ(solveResult, GCS::Success);
+
+        EXPECT_NEAR(cx, 0.0, 1e-12);
+        EXPECT_NEAR(cy, 0.0, 1e-12);
+        EXPECT_NEAR(ly1, ly2, 1e-12);
+        EXPECT_NEAR(ly1, 9.0, 1e-12);
+    }
+}
+TEST_F(ConstraintsTest, substitutionPointCircleDistance)  // NOLINT
+{
+    double cx = 0.0;
+    double cy = 0.0;
+    double cr = 5.0;
+    GCS::Circle circle(GCS::Point(&cx, &cy), &cr);
+
+    double px = 0.0;
+    double py = 0.0;
+    GCS::Point point(&px, &py);
+
+    double zero = 0.0;
+
+    std::vector<double*> unknowns;
+    circle.PushOwnParams(unknowns);
+    point.PushOwnParams(unknowns);
+
+    // Circle radius defined, point horizontaly aligned to center
+    // inside circle
+    {
+        double rad = 5.0;
+        double dist = 4;
+
+        px = 4.0;
+        py = 3.0;
+
+        System()->clear();
+
+        System()->addConstraintCircleRadius(circle, &rad);
+        System()->addConstraintHorizontal(point, circle.center);
+        System()->addConstraintP2CDistance(point, circle, &dist);
+        System()->addConstraintEqual(&cx, &zero);
+        System()->addConstraintEqual(&cy, &zero);
+
+        int solveResult = System()->solve(unknowns);
+        if (solveResult == GCS::Success) {
+            System()->applySolution();
+        }
+
+        EXPECT_EQ(solveResult, GCS::Success);
+
+        EXPECT_NEAR(cx, 0.0, 1e-12);
+        EXPECT_NEAR(cy, 0.0, 1e-12);
+        EXPECT_NEAR(px, 1.0, 1e-12);
+        EXPECT_NEAR(py, 0.0, 1e-12);
+    }
+    // Circle radius defined, point horizontaly aligned to center
+    // outside circle
+    {
+        double rad = 5.0;
+        double dist = 4;
+
+        px = 10.0;
+        py = 10.0;
+
+        System()->clear();
+
+        System()->addConstraintCircleRadius(circle, &rad);
+        System()->addConstraintHorizontal(point, circle.center);
+        System()->addConstraintP2CDistance(point, circle, &dist);
+        System()->addConstraintEqual(&cx, &zero);
+        System()->addConstraintEqual(&cy, &zero);
+
+        int solveResult = System()->solve(unknowns);
+        if (solveResult == GCS::Success) {
+            System()->applySolution();
+        }
+
+        EXPECT_EQ(solveResult, GCS::Success);
+
+        EXPECT_NEAR(cx, 0.0, 1e-12);
+        EXPECT_NEAR(cy, 0.0, 1e-12);
+        EXPECT_NEAR(px, 9.0, 1e-12);
+        EXPECT_NEAR(py, 0.0, 1e-12);
+    }
+    // Circle radius defined, point verticaly aligned to center
+    // inside circle
+    {
+        double rad = 5.0;
+        double dist = 4;
+
+        px = 4.0;
+        py = 3.0;
+
+        System()->clear();
+
+        System()->addConstraintCircleRadius(circle, &rad);
+        System()->addConstraintVertical(point, circle.center);
+        System()->addConstraintP2CDistance(point, circle, &dist);
+        System()->addConstraintEqual(&cx, &zero);
+        System()->addConstraintEqual(&cy, &zero);
+
+        int solveResult = System()->solve(unknowns);
+        if (solveResult == GCS::Success) {
+            System()->applySolution();
+        }
+
+        EXPECT_EQ(solveResult, GCS::Success);
+
+        EXPECT_NEAR(cx, 0.0, 1e-12);
+        EXPECT_NEAR(cy, 0.0, 1e-12);
+        EXPECT_NEAR(px, 0.0, 1e-12);
+        EXPECT_NEAR(py, 1.0, 1e-12);
+    }
+    // Circle radius defined, point verticaly aligned to center
+    // outside circle
+    {
+        double rad = 5.0;
+        double dist = 4;
+
+        px = 10.0;
+        py = 10.0;
+
+        System()->clear();
+
+        System()->addConstraintCircleRadius(circle, &rad);
+        System()->addConstraintVertical(point, circle.center);
+        System()->addConstraintP2CDistance(point, circle, &dist);
+        System()->addConstraintEqual(&cx, &zero);
+        System()->addConstraintEqual(&cy, &zero);
+
+        int solveResult = System()->solve(unknowns);
+        if (solveResult == GCS::Success) {
+            System()->applySolution();
+        }
+
+        EXPECT_EQ(solveResult, GCS::Success);
+
+        EXPECT_NEAR(cx, 0.0, 1e-12);
+        EXPECT_NEAR(cy, 0.0, 1e-12);
+        EXPECT_NEAR(px, 0.0, 1e-12);
+        EXPECT_NEAR(py, 9.0, 1e-12);
+    }
+}

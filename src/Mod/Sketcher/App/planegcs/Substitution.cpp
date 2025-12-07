@@ -159,7 +159,7 @@ struct SubstitutionFactory
                         attempt = trySubstitute(static_cast<ConstraintC2LDistance*>(constr));
                         break;
                     case P2CDistance:
-                        attempt = trySubstitute(static_cast<ConstraintC2CDistance*>(constr));
+                        attempt = trySubstitute(static_cast<ConstraintP2CDistance*>(constr));
                         break;
                     case P2LDistance:
                         attempt = trySubstitute(static_cast<ConstraintP2LDistance*>(constr));
@@ -622,6 +622,38 @@ struct SubstitutionFactory
         }
         return Attempt::Maybe;
     }
+
+    Attempt p2pDistHelper(
+        const Point& p1,
+        const Point& p2,
+        double dist,
+        Orientation orientation,
+        bool p1_external
+    )
+    {
+        if (p1_external) {
+            if (orientation == Orientation::Vertical) {
+                addConstDifference(p2.y, *p1.y, dist);
+                return Attempt::Yes;
+            }
+            if (orientation == Orientation::Horizontal) {
+                addConstDifference(p2.x, *p1.x, dist);
+                return Attempt::Yes;
+            }
+            return Attempt::Maybe;
+        }
+
+        // both p1 and p2 are sketcher geometries
+        if (orientation == Orientation::Vertical) {
+            addRelationship(p1.y, p2.y, dist);
+            return Attempt::Yes;
+        }
+        if (orientation == Orientation::Horizontal) {
+            addRelationship(p1.x, p2.x, dist);
+            return Attempt::Yes;
+        }
+        return Attempt::Maybe;
+    }
     Attempt trySubstitute(ConstraintP2PDistance* constr, Attempt previousAttempt)
     {
         Line line(
@@ -644,69 +676,44 @@ struct SubstitutionFactory
             return Attempt::No;
         }
 
-        // Line is vertical, constraint can be translated to a vertical distance constraint
-        if (lineDesc.orientation == Orientation::Vertical) {
-            addRelationship(line.p1.y, line.p2.y, *dist);
-            return Attempt::Yes;
-        }
-
-        // Line is horizontal, constraint can be translated to a horizontal distance constraint
-        if (lineDesc.orientation == Orientation::Horizontal) {
-            addRelationship(line.p1.x, line.p2.x, *dist);
-            return Attempt::Yes;
-        }
-        return Attempt::Maybe;
+        return p2pDistHelper(line.p1, line.p2, *dist, lineDesc.orientation, false);
     }
-    Attempt trySubstitute(ConstraintPointOnLine* constr)
-    {
-        Point point(constr->origParams()[0], constr->origParams()[1]);
-        Line line(
-            Point(constr->origParams()[2], constr->origParams()[3]),
-            Point(constr->origParams()[4], constr->origParams()[5])
-        );
 
+    Attempt p2lDistanceHelper(const Point& point, const Line& line, double dist)
+    {
         LineDesc lineDesc = lineDescription(line);
         bool pointExternal = isExternal(point);
 
+        // Invalid constraint, between 2 external geometries
         if (lineDesc.isExternal && pointExternal) {
             return Attempt::No;
         }
 
+        // This line will never be horizontal/vertical
+        if (lineDesc.isExternal && lineDesc.orientation == Orientation::None) {
+            return Attempt::No;
+        }
+
+        Point p1 = point;
+        Point p2 = line.p1;
+
         if (lineDesc.isExternal) {
-            if (lineDesc.orientation == Orientation::Vertical) {
-                addConst(point.x, *line.p1.x);
-                return Attempt::Yes;
-            }
-            if (lineDesc.orientation == Orientation::Horizontal) {
-                addConst(point.y, *line.p1.y);
-                return Attempt::Yes;
-            }
-            return Attempt::No;  // No coming back since the line is external
-        }
-        if (pointExternal) {
-            if (lineDesc.orientation == Orientation::Vertical) {
-                addConst(line.p1.x, *point.x);
-                return Attempt::Yes;
-            }
-            if (lineDesc.orientation == Orientation::Horizontal) {
-                addConst(line.p1.y, *point.y);
-                return Attempt::Yes;
-            }
-            return Attempt::Maybe;  // The line may become horizontal/vertical at some point
+            std::swap(p1, p2);
+            std::swap(lineDesc.isExternal, pointExternal);
         }
 
-        // None of the geometries are external
-        if (lineDesc.orientation == Orientation::Vertical) {
-            addEqual(point.x, line.p1.x);
-            return Attempt::Yes;
-        }
-        if (lineDesc.orientation == Orientation::Horizontal) {
-            addEqual(point.y, line.p1.y);
-            return Attempt::Yes;
-        }
-        return Attempt::Maybe;
+        // We swap the orientation because if the line is horizontal,
+        // the the distance with the point will be defined on the y axis
+        // and conversly
+        return p2pDistHelper(
+            p1,
+            p2,
+            dist,
+            lineDesc.orientation == Orientation::Horizontal ? Orientation::Vertical
+                                                            : Orientation::Horizontal,
+            pointExternal
+        );
     }
-
     Attempt trySubstitute(ConstraintP2LDistance* constr)
     {
         Point point(constr->origParams()[0], constr->origParams()[1]);
@@ -722,54 +729,131 @@ struct SubstitutionFactory
             return Attempt::No;
         }
 
-        LineDesc lineDesc = lineDescription(line);
-        bool pointExternal = isExternal(point);
+        return p2lDistanceHelper(point, line, *dist);
+    }
+    Attempt trySubstitute(ConstraintPointOnLine* constr)
+    {
+        Point point(constr->origParams()[0], constr->origParams()[1]);
+        Line line(
+            Point(constr->origParams()[2], constr->origParams()[3]),
+            Point(constr->origParams()[4], constr->origParams()[5])
+        );
 
-        if (lineDesc.isExternal && pointExternal) {
-            return Attempt::No;
+        return p2lDistanceHelper(point, line, 0.0);
+    }
+    std::optional<double> circleDistanceToCenterDistance(
+        double centerPos,
+        double refPos,
+        double dist,
+        double radius
+    )
+    {
+        if (std::abs(centerPos - refPos) < radius) {
+            if (dist > radius) {
+                return std::nullopt;  // Invalid!
+            }
+            return std::abs(radius - dist);
         }
-
-        if (lineDesc.isExternal) {
-            if (lineDesc.orientation == Orientation::Vertical) {
-                addConstDifference(point.x, *line.p1.x, *dist);
-                return Attempt::Yes;
+        return radius + dist;
+    }
+    Attempt p2cDistanceHelper(
+        const Point& point,
+        const Circle& circle,
+        double dist,
+        Orientation alignment,
+        bool pointExternal
+    )
+    {
+        std::optional<double> rad = std::nullopt;
+        if (!pointExternal) {
+            rad = value(circle.rad);
+            if (!rad.has_value()) {
+                return Attempt::No;
             }
-            if (lineDesc.orientation == Orientation::Horizontal) {
-                addConstDifference(point.y, *line.p1.y, *dist);
-                return Attempt::Yes;
-            }
-            return Attempt::No;  // No coming back since the line is external
+        }
+        else {
+            rad = *circle.rad;
         }
 
         if (pointExternal) {
-            if (lineDesc.orientation == Orientation::Vertical) {
-                addConstDifference(line.p1.x, *point.x, *dist);
+            if (alignment == Orientation::Vertical) {
+                std::optional<double> maybeDist
+                    = circleDistanceToCenterDistance(*circle.center.y, *point.y, dist, *circle.rad);
+                if (!maybeDist.has_value()) {
+                    return Attempt::No;  // Not dealing with invalid constraint
+                }
+
+                addConstDifference(circle.center.y, *point.y, *maybeDist);
                 return Attempt::Yes;
             }
-            if (lineDesc.orientation == Orientation::Horizontal) {
-                addConstDifference(line.p1.y, *point.y, *dist);
+            if (alignment == Orientation::Horizontal) {
+                std::optional<double> maybeDist
+                    = circleDistanceToCenterDistance(*circle.center.x, *point.x, dist, *circle.rad);
+
+                if (!maybeDist.has_value()) {
+                    return Attempt::No;  // Not dealing with invalid constraint
+                }
+                addConstDifference(circle.center.x, *point.x, *maybeDist);
                 return Attempt::Yes;
             }
-            return Attempt::Maybe;  // The line may become horizontal/vertical at some point
+            return Attempt::Maybe;
         }
 
-        // None of the geometries are external
-        if (lineDesc.orientation == Orientation::Vertical) {
-            addRelationship(point.x, line.p1.x, *dist);
+        if (alignment == Orientation::Vertical) {
+            std::optional<double> maybeDist
+                = circleDistanceToCenterDistance(*circle.center.y, *point.y, dist, *circle.rad);
+            if (!maybeDist.has_value()) {
+                return Attempt::No;
+            }
+            addRelationship(circle.center.y, point.y, *maybeDist);
             return Attempt::Yes;
         }
-        if (lineDesc.orientation == Orientation::Horizontal) {
-            addRelationship(point.y, line.p1.y, *dist);
+        if (alignment == Orientation::Vertical) {
+            std::optional<double> maybeDist
+                = circleDistanceToCenterDistance(*circle.center.y, *point.y, dist, *circle.rad);
+            if (!maybeDist.has_value()) {
+                return Attempt::No;
+            }
+            addRelationship(circle.center.y, point.y, *maybeDist);
             return Attempt::Yes;
         }
         return Attempt::Maybe;
     }
-    double circleDistanceToCenterDistance(double centerPos, double refPos, double dist, double radius)
+    Attempt trySubstitute(ConstraintP2CDistance* constr)
     {
-        if (std::abs(centerPos - refPos) < radius) {
-            return std::abs(radius - dist);
+        double* dist = constr->distance();
+        Circle circle = constr->circle;
+        Point point = constr->pt;
+
+        bool circleExternal = isExternal(circle);
+        bool pointExternal = isExternal(point);
+
+        if (circleExternal && pointExternal) {
+            return Attempt::No;
         }
-        return radius + dist;
+
+        LineDesc relPos = lineDescription(Line(circle.center, point));
+        if (relPos.orientation == Orientation::None) {
+            return Attempt::Maybe;
+        }
+
+
+        std::optional<double> rad = std::nullopt;
+        if (!circleExternal) {
+            rad = value(circle.rad);
+            if (!rad.has_value()) {
+                return Attempt::No;
+            }
+        }
+        else {
+            rad = *circle.rad;
+        }
+        if (pointExternal) {
+            std::swap(circle.center, point);
+            std::swap(pointExternal, circleExternal);
+        }
+
+        return p2cDistanceHelper(point, circle, *dist, relPos.orientation, pointExternal);
     }
     Attempt trySubstitute(ConstraintC2LDistance* constr)
     {
@@ -795,62 +879,23 @@ struct SubstitutionFactory
             rad = *circle.rad;
         }
 
+        Point point = line.p1;
         if (lineDesc.isExternal) {
-            // Line is vertical, the constraint can be translated into a horizontal distance
-            if (lineDesc.orientation == Orientation::Vertical) {
-                addConstDifference(
-                    circle.center.x,
-                    *line.p1.x,
-                    circleDistanceToCenterDistance(*circle.center.x, *line.p1.x, *dist, *rad)
-                );
-                return Attempt::Yes;
-            }
-            if (lineDesc.orientation == Orientation::Horizontal) {
-                addConstDifference(
-                    circle.center.y,
-                    *line.p1.y,
-                    circleDistanceToCenterDistance(*circle.center.y, *line.p1.y, *dist, *rad)
-                );
-                return Attempt::Yes;
-            }
-            return Attempt::No;
+            std::swap(circleExternal, lineDesc.isExternal);
+            std::swap(point, circle.center);
         }
-        if (circleExternal) {
-            if (lineDesc.orientation == Orientation::Vertical) {
-                addConstDifference(
-                    line.p1.x,
-                    *circle.center.x,
-                    circleDistanceToCenterDistance(*circle.center.x, *line.p1.x, *dist, *rad)
-                );
-                return Attempt::Yes;
-            }
-            if (lineDesc.orientation == Orientation::Horizontal) {
-                addConstDifference(
-                    line.p1.y,
-                    *circle.center.y,
-                    circleDistanceToCenterDistance(*circle.center.y, *line.p1.y, *dist, *rad)
-                );
-                return Attempt::Yes;
-            }
-            return Attempt::Maybe;
-        }
-        if (lineDesc.orientation == Orientation::Vertical) {
-            addRelationship(
-                line.p1.x,
-                circle.center.x,
-                circleDistanceToCenterDistance(*circle.center.x, *line.p1.x, *dist, *rad)
-            );
-            return Attempt::Yes;
-        }
-        if (lineDesc.orientation == Orientation::Horizontal) {
-            addRelationship(
-                line.p1.y,
-                circle.center.y,
-                circleDistanceToCenterDistance(*circle.center.y, *line.p1.y, *dist, *rad)
-            );
-            return Attempt::Yes;
-        }
-        return Attempt::Maybe;
+
+        // We swap the orientation because if the line is horizontal,
+        // the the distance with the point will be defined on the y axis
+        // and conversly
+        return p2cDistanceHelper(
+            point,
+            circle,
+            *dist,
+            lineDesc.orientation == Orientation::Horizontal ? Orientation::Vertical
+                                                            : Orientation::Horizontal,
+            lineDesc.isExternal
+        );
     }
     Attempt trySubstitute(ConstraintC2CDistance* constr)
     {
@@ -867,10 +912,10 @@ struct SubstitutionFactory
 
         LineDesc relPos = lineDescription(Line(c1.center, c2.center));
 
+        // No substitution can be made yet
         if (relPos.orientation == Orientation::None) {
             return Attempt::Maybe;
         }
-
 
         std::optional<double> c1Rad = std::nullopt;
         std::optional<double> c2Rad = std::nullopt;
@@ -898,119 +943,13 @@ struct SubstitutionFactory
             std::swap(c1External, c2External);
         }
 
-        if (c1External) {
-            if (relPos.orientation == Orientation::Vertical) {
-                addConstDifference(
-                    c1.center.y,
-                    *c2.center.y,
-                    circleDistanceToCenterDistance(*c1.center.y, *c2.center.y, *dist, *c1Rad + *c2Rad)
-                );
-                return Attempt::Yes;
-            }
-            if (relPos.orientation == Orientation::Horizontal) {
-                addConstDifference(
-                    c1.center.x,
-                    *c2.center.x,
-                    circleDistanceToCenterDistance(*c1.center.x, *c2.center.x, *dist, *c1Rad + *c2Rad)
-                );
-                return Attempt::Yes;
-            }
+        // Invalid constraint, not dealing with this
+        if (-*dist > *c1Rad || -*dist > *c2Rad) {
             return Attempt::No;
         }
 
-        // None of the circles are external
-        if (relPos.orientation == Orientation::Vertical) {
-            addRelationship(
-                c1.center.y,
-                c2.center.y,
-                circleDistanceToCenterDistance(*c1.center.y, *c2.center.y, *dist, *c1Rad + *c2Rad)
-            );
-            return Attempt::Yes;
-        }
-        if (relPos.orientation == Orientation::Horizontal) {
-            addRelationship(
-                c1.center.x,
-                c2.center.x,
-                circleDistanceToCenterDistance(*c1.center.x, *c2.center.x, *dist, *c1Rad + *c2Rad)
-            );
-            return Attempt::Yes;
-        }
-
-        return Attempt::Maybe;
-    }
-    Attempt trySubstitute(ConstraintP2CDistance* constr)
-    {
-        double* dist = constr->distance();
-        Circle circle = constr->circle;
-        Point point = constr->pt;
-
-        bool circleExternal = isExternal(circle);
-        bool pointExternal = isExternal(point);
-
-        if (circleExternal && pointExternal) {
-            return Attempt::No;
-        }
-
-        LineDesc relPos = lineDescription(Line(circle.center, point));
-
-        if (relPos.orientation == Orientation::None) {
-            return Attempt::Maybe;
-        }
-
-
-        std::optional<double> rad = std::nullopt;
-        if (!circleExternal) {
-            rad = value(circle.rad);
-            if (!rad.has_value()) {
-                return Attempt::No;
-            }
-        }
-        else {
-            rad = *circle.rad;
-        }
-        if (pointExternal) {
-            std::swap(circle.center, point);
-        }
-
-        if (circleExternal) {
-            if (relPos.orientation == Orientation::Vertical) {
-                addConstDifference(
-                    circle.center.y,
-                    *point.y,
-                    circleDistanceToCenterDistance(*circle.center.y, *point.y, *dist, *rad)
-                );
-                return Attempt::Yes;
-            }
-            if (relPos.orientation == Orientation::Horizontal) {
-                addConstDifference(
-                    circle.center.x,
-                    *point.x,
-                    circleDistanceToCenterDistance(*circle.center.x, *point.x, *dist, *rad)
-                );
-                return Attempt::Yes;
-            }
-            return Attempt::No;
-        }
-
-        // None of the circles are external
-        if (relPos.orientation == Orientation::Vertical) {
-            addRelationship(
-                circle.center.y,
-                point.y,
-                circleDistanceToCenterDistance(*circle.center.y, *point.y, *dist, *rad)
-            );
-            return Attempt::Yes;
-        }
-        if (relPos.orientation == Orientation::Horizontal) {
-            addRelationship(
-                circle.center.x,
-                point.x,
-                circleDistanceToCenterDistance(*circle.center.x, *point.x, *dist, *rad)
-            );
-            return Attempt::Yes;
-        }
-
-        return Attempt::Maybe;
+        double centerDist = *dist + *c1Rad + *c2Rad;
+        return p2pDistHelper(c1.center, c2.center, centerDist, relPos.orientation, c1External);
     }
 
     Attempt trySubstitute(ConstraintEqualLineLength* constr)
