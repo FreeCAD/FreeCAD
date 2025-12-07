@@ -378,6 +378,21 @@ public:
         }
     };
 
+    class RestrictedCurve: public EdgeParameterStatus
+    {
+    public:
+        RestrictedCurve() = default;
+
+        ParameterStatus getStartParameterStatus() const
+        {
+            return pstatus[0];
+        }
+        ParameterStatus getEndParameterStatus() const
+        {
+            return pstatus[1];
+        }
+    };
+
     SolverGeometryExtension();
     ~SolverGeometryExtension() override = default;
 
@@ -409,6 +424,7 @@ public:
     ArcOfParabola& getArcOfParabola();
     BSpline& getBSpline();
     OffsetCurve& getOffsetCurve();
+    RestrictedCurve& getRestrictedCurve();
     EdgeParameterStatus getEdgeParameters()
     {
         return Edge;
