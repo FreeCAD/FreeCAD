@@ -93,6 +93,7 @@ void SolverGeometryExtension::notifyAttachment(Part::Geometry* geo)
         {Part::GeomArcOfParabola::getClassTypeId(), 4},
         {Part::GeomBSplineCurve::getClassTypeId(), 0},  // is dynamic
         {Part::GeomOffsetCurve::getClassTypeId(), 1},
+        {Part::GeomRestrictedCurve::getClassTypeId(), 2},
     };
 
     GeometryType = geo->getTypeId();
@@ -178,4 +179,10 @@ SolverGeometryExtension::OffsetCurve& SolverGeometryExtension::getOffsetCurve()
 {
     ensureType(Part::GeomOffsetCurve::getClassTypeId());
     return static_cast<OffsetCurve&>(Edge);
+}
+
+SolverGeometryExtension::RestrictedCurve& SolverGeometryExtension::getRestrictedCurve()
+{
+    ensureType(Part::GeomRestrictedCurve::getClassTypeId());
+    return static_cast<RestrictedCurve&>(Edge);
 }
