@@ -86,9 +86,9 @@ parser.add_argument(
     help="suppress tool length offset (G43) following tool changes",
 )
 parser.add_argument(
-    "--no-end-spindle-empty",
+    "--end-spindle-empty",
     action="store_true",
-    help="suppress putting last tool in tool change carousel before postamble",
+    help="place last tool in tool change carousel before postamble",
 )
 
 TOOLTIP_ARGS = parser.format_help()
@@ -106,7 +106,7 @@ OUTPUT_DOUBLES = (
 COMMAND_SPACE = " "
 LINENR = 100  # line number starting value
 
-END_SPINDLE_EMPTY = True
+END_SPINDLE_EMPTY = False
 
 # These globals will be reflected in the Machine configuration of the project
 UNITS = "G21"  # G21 for metric, G20 for us standard
@@ -211,10 +211,10 @@ def processArguments(argstring):
             OUTPUT_DOUBLES = True
         else:
             OUTPUT_DOUBLES = False
-        if args.no_end_spindle_empty:
-            END_SPINDLE_EMPTY = False
-        else:
+        if args.end_spindle_empty:
             END_SPINDLE_EMPTY = True
+        else:
+            END_SPINDLE_EMPTY = False
 
     except Exception:
         return False
@@ -308,7 +308,10 @@ def export(objectslist, filename, argstring):
     if END_SPINDLE_EMPTY:
         if OUTPUT_COMMENTS:
             gcode += "(BEGIN MAKING SPINDLE EMPTY)\n"
-        gcode += "M05\nM6 T0\n"
+        gcode += linenumber() + "M05\n"
+        for line in TOOL_CHANGE.splitlines(True):
+            gcode += linenumber() + line
+        gcode += linenumber() + "M6 T0\n"
     # do the post_amble
     if OUTPUT_COMMENTS:
         gcode += "(BEGIN POSTAMBLE)\n"
