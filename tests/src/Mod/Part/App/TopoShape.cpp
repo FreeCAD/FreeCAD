@@ -78,6 +78,27 @@ TEST_F(TopoShapeTest, TestElementTypeNull)
               std::make_pair(std::string(), 0UL));
 }
 
+TEST_F(TopoShapeTest, TestElementTypeWithHash)
+{
+    EXPECT_EQ(Part::TopoShape::getElementTypeAndIndex(";#7:1;:G0;XTR;:H11a6:8,F.Face3"),
+              std::make_pair(std::string("Face"), 3UL));
+}
+
+TEST_F(TopoShapeTest, TestElementTypeWithSubelements)
+{
+    EXPECT_EQ(Part::TopoShape::getElementTypeAndIndex("Part.Body.Pad.Face3"),
+              std::make_pair(std::string("Face"), 3UL));
+}
+
+TEST_F(TopoShapeTest, TestElementTypeNonMatching)
+{
+    for (std::array elements = {"Face0", "Face01", "XFace3", "Face3extra"};
+         const auto& element : elements) {
+        EXPECT_EQ(Part::TopoShape::getElementTypeAndIndex(element),
+                  std::make_pair(std::string(), 0UL));
+    }
+}
+
 TEST_F(TopoShapeTest, TestTypeFace1)
 {
     EXPECT_EQ(Part::TopoShape::getTypeAndIndex("Face1"),
