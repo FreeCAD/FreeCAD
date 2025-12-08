@@ -327,18 +327,20 @@ void MDIViewPage::printPdf()
 
 void MDIViewPage::print()
 {
-    auto pageAttr = PagePrinter::getPaperAttributes(getViewProviderPage());
+    // auto pageAttr = PagePrinter::getPaperAttributes(getPage());
 
     QPrinter printer(QPrinter::HighResolution);
+    printer.setPageLayout(PagePrinter::getDefaultLayout(getPage()));
     printer.setFullPage(true);
-    if (pageAttr.pageSize() == QPageSize::Custom) {
-        printer.setPageSize(
-            QPageSize(QSizeF(pageAttr.pageWidth(), pageAttr.pageHeight()), QPageSize::Millimeter));
-    }
-    else {
-        printer.setPageSize(QPageSize(pageAttr.pageSize()));
-    }
-    printer.setPageOrientation(pageAttr.orientation());
+
+    // if (pageAttr.pageSize() == QPageSize::Custom) {
+    //     printer.setPageSize(
+    //         QPageSize(QSizeF(pageAttr.pageWidth(), pageAttr.pageHeight()), QPageSize::Millimeter));
+    // }
+    // else {
+    //     printer.setPageSize(QPageSize(pageAttr.pageSize()));
+    // }
+    // printer.setPageOrientation(pageAttr.orientation());
 
     QPrintDialog dlg(&printer, this);
     if (dlg.exec() == QDialog::Accepted) {
@@ -346,24 +348,38 @@ void MDIViewPage::print()
     }
 }
 
+// void MDIViewPage::printPreview()
+// {
+//     auto pageAttr = PagePrinter::getPaperAttributes(getPage());
+
+//     QPrinter printer(QPrinter::HighResolution);
+//     printer.setFullPage(true);
+//     if (pageAttr.pageSize() == QPageSize::Custom) {
+//         printer.setPageSize(
+//             QPageSize(QSizeF(pageAttr.pageWidth(), pageAttr.pageHeight()), QPageSize::Millimeter));
+//     }
+//     else {
+//         printer.setPageSize(QPageSize(pageAttr.pageSize()));
+//     }
+//     printer.setPageOrientation(pageAttr.orientation());
+
+//     QPrintPreviewDialog dlg(&printer, this);
+//     connect(&dlg, &QPrintPreviewDialog::paintRequested, this, qOverload<QPrinter*>(&MDIViewPage::print));
+//     m_previewState = true;
+//     dlg.exec();
+//     m_previewState = false;
+// }
+
+
 void MDIViewPage::printPreview()
 {
-    auto pageAttr = PagePrinter::getPaperAttributes(getViewProviderPage());
-
     QPrinter printer(QPrinter::HighResolution);
+    printer.setPageLayout(PagePrinter::getDefaultLayout(getPage()));
     printer.setFullPage(true);
-    if (pageAttr.pageSize() == QPageSize::Custom) {
-        printer.setPageSize(
-            QPageSize(QSizeF(pageAttr.pageWidth(), pageAttr.pageHeight()), QPageSize::Millimeter));
-    }
-    else {
-        printer.setPageSize(QPageSize(pageAttr.pageSize()));
-    }
-    printer.setPageOrientation(pageAttr.orientation());
 
     QPrintPreviewDialog dlg(&printer, this);
     connect(&dlg, &QPrintPreviewDialog::paintRequested, this, qOverload<QPrinter*>(&MDIViewPage::print));
-    m_previewState = true;
+    m_previewState = true;  // TBD: Figure out why?
     dlg.exec();
     m_previewState = false;
 }
@@ -383,36 +399,50 @@ void MDIViewPage::print(QPrinter* printer)
     // When showing the preview of a print paperRect() must be used because with pageRect()
     // a certain scaling effect can be observed and the content becomes smaller.
 
-    QPaintEngine::Type paintType = printer->paintEngine()->type();
-    auto pageAttr = PagePrinter::getPaperAttributes(getViewProviderPage());
-    if (printer->outputFormat() == QPrinter::NativeFormat) {
-        QPageSize::PageSizeId psPrtSetting = printer->pageLayout().pageSize().id();
 
-        // for the preview a 'Picture' paint engine is used which we don't
-        // care if it uses wrong printer settings
-        bool doPrint = paintType != QPaintEngine::Picture;
+    // TBD: Find home for the code below. I dont believe it belongs here
 
-        if (doPrint && printer->pageLayout().orientation() != pageAttr.orientation()) {
-            int ret = QMessageBox::warning(
-                this, tr("Different orientation"),
-                tr("The printer uses a different orientation than the drawing.\n"
-                   "Do you want to continue?"),
-                QMessageBox::Yes | QMessageBox::No);
-            if (ret != QMessageBox::Yes) {
-                return;
-            }
-        }
-        if (doPrint && psPrtSetting != pageAttr.pageSize()) {
-            int ret = QMessageBox::warning(
-                this, tr("Different paper size"),
-                tr("The printer uses a different paper size than the drawing.\n"
-                   "Do you want to continue?"),
-                QMessageBox::Yes | QMessageBox::No);
-            if (ret != QMessageBox::Yes) {
-                return;
-            }
-        }
-    }
+    // QPaintEngine::Type paintType = printer->paintEngine()->type();
+
+
+  
+    // TBD: Note Renderer should not force settings. Job of higher levels.
+    // auto pageAttr = PagePrinter::getPaperAttributes(getPage());
+
+    // if (printer->outputFormat() == QPrinter::NativeFormat) {
+
+    //     QPageSize::PageSizeId psPrtSetting = printer->pageLayout().pageSize().id();
+
+    // 	// TBD: Moved here to be able to compile. Should not be here.
+    //     auto pageAttr = PagePrinter::getPaperAttributes(getPage());
+
+    //     // for the preview a 'Picture' paint engine is used which we don't
+    //     // care if it uses wrong printer settings
+    //     bool doPrint = paintType != QPaintEngine::Picture;
+
+    // 	// TBD: This can not be correct. Fix. When is this called? Why not for pdf:s???
+	
+    //     if (doPrint && printer->pageLayout().orientation() != pageAttr.orientation()) {
+    //         int ret = QMessageBox::warning(
+    //             this, tr("Different orientation"),
+    //             tr("The printer uses a different orientation than the drawing.\n"
+    //                "Do you want to continue?"),
+    //             QMessageBox::Yes | QMessageBox::No);
+    //         if (ret != QMessageBox::Yes) {
+    //             return;
+    //         }
+    //     }
+    //     if (doPrint && psPrtSetting != pageAttr.pageSize()) {
+    //         int ret = QMessageBox::warning(
+    //             this, tr("Different paper size"),
+    //             tr("The printer uses a different paper size than the drawing.\n"
+    //                "Do you want to continue?"),
+    //             QMessageBox::Yes | QMessageBox::No);
+    //         if (ret != QMessageBox::Yes) {
+    //             return;
+    //         }
+    //     }
+    // }
 
     PagePrinter::print(getViewProviderPage(), printer, m_previewState);
 }

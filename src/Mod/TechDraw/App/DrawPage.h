@@ -77,12 +77,12 @@ public:
      * \return boolean answer to the question: "Doest thou have a valid template?"
      */
     bool hasValidTemplate() const;
-    /// Returns width of the template
+    /// Returns width of the template in mm
     /*!
      * \throws Base::Exception if no template is loaded.
      */
     double getPageWidth() const;
-    /// Returns height of the template
+    /// Returns height of the template in mm
     /*!
      * \throws Base::Exception if no template is loaded.
      */
