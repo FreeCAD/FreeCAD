@@ -245,12 +245,12 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="505"/>
       <source>Trajectory Compound</source>
-      <translation type="unfinished">Trajectory Compound</translation>
+      <translation>Trajectoire composée</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="506"/>
       <source>Groups and connects multiple trajectories into one</source>
-      <translation type="unfinished">Groups and connects multiple trajectories into one</translation>
+      <translation>Groupe et fusionne multiples trajectoires en une seule</translation>
     </message>
   </context>
   <context>

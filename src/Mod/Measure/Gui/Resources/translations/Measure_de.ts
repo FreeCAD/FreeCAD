@@ -11,7 +11,7 @@
     <message>
       <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="51"/>
       <source>Default Property Values</source>
-      <translation type="unfinished">Default Property Values</translation>
+      <translation>Standard-Eigenschaften-Werte</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="142"/>
@@ -21,7 +21,7 @@
     <message>
       <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="59"/>
       <source>Text size</source>
-      <translation type="unfinished">Text size</translation>
+      <translation>Textgröße</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="66"/>
@@ -52,7 +52,7 @@
     <message>
       <location filename="../../../MeasureCOM.py" line="69"/>
       <source>The result location</source>
-      <translation type="unfinished">The result location</translation>
+      <translation>Die Ergebnis-Position</translation>
     </message>
   </context>
   <context>
@@ -91,7 +91,7 @@
     <message>
       <location filename="../../QuickMeasure.cpp" line="248"/>
       <source>Total area: %1, Axis distance: %2, Axis angle: %3</source>
-      <translation type="unfinished">Total area: %1, Axis distance: %2, Axis angle: %3</translation>
+      <translation>Gesamtfläche: %1, Achsabstand: %2, Achswinkel: %3</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="257"/>
@@ -126,43 +126,43 @@
     <message>
       <location filename="../../QuickMeasure.cpp" line="279"/>
       <source>Minimum distance: %1</source>
-      <translation type="unfinished">Minimum distance: %1</translation>
+      <translation>Mindestabstand: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="283"/>
       <source>Minimum distance: %1, Axis distance: %2</source>
-      <translation type="unfinished">Minimum distance: %1, Axis distance: %2</translation>
+      <translation>Mindestabstand: %1, Achsabstand: %2</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="289"/>
       <source>Minimum distance: %1, Center distance: %2</source>
-      <translation type="unfinished">Minimum distance: %1, Center distance: %2</translation>
+      <translation>Mindestabstand: %1, Mittenabstand: %2</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="296"/>
       <location filename="../../QuickMeasure.cpp" line="313"/>
       <source>Total length: %1, Center distance: %2</source>
-      <translation type="unfinished">Total length: %1, Center distance: %2</translation>
+      <translation>Gesamtlänge: %1, Mittenabstand: %2</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="303"/>
       <source>Total length: %1, Center distance: %2, Axis angle: %3</source>
-      <translation type="unfinished">Total length: %1, Center distance: %2, Axis angle: %3</translation>
+      <translation>Gesamtlänge: %1, Mittenabstand: %2, Achswinkel: %3</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="318"/>
       <source>Center surface distance: %1</source>
-      <translation type="unfinished">Center surface distance: %1</translation>
+      <translation>Mittlerer Oberflächenabstand: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="323"/>
       <source>Center axis distance: %1</source>
-      <translation type="unfinished">Center axis distance: %1</translation>
+      <translation>Mittlerer Achsabstand: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="326"/>
       <source>Center axis distance: %1, Axis angle: %2</source>
-      <translation type="unfinished">Center axis distance: %1, Axis angle: %2</translation>
+      <translation>Mittlerer Achsabstand: %1, Achswinkel: %2</translation>
     </message>
   </context>
   <context>
@@ -184,7 +184,7 @@
       <location filename="../../Command.cpp" line="52"/>
       <location filename="../../Command.cpp" line="54"/>
       <source>Measure a feature</source>
-      <translation type="unfinished">Measure a feature</translation>
+      <translation>Formelement messen</translation>
     </message>
   </context>
   <context>
@@ -207,7 +207,7 @@
     <message>
       <location filename="../../TaskMeasure.cpp" line="98"/>
       <source>Auto saving of the last measurement when starting a new measurement. Use the Shift key to temporarily invert the behaviour.</source>
-      <translation type="unfinished">Auto saving of the last measurement when starting a new measurement. Use the Shift key to temporarily invert the behaviour.</translation>
+      <translation>Automatisches Speichern der letzten Messung beim Starten einer neuen Messung. Verwenden Sie die Umschalttaste, um das Verhalten vorübergehend umzukehren.</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="103"/>
@@ -217,12 +217,17 @@
     <message>
       <location filename="../../TaskMeasure.cpp" line="109"/>
       <source>If checked, new selection will be added to the measurement. If unchecked, the Ctrl key must be pressed to add a selection to the current measurement otherwise a new measurement will be started</source>
-      <translation type="unfinished">If checked, new selection will be added to the measurement. If unchecked, the Ctrl key must be pressed to add a selection to the current measurement otherwise a new measurement will be started</translation>
+      <translation>Wenn aktiviert, wird die neue Auswahl zur Messung hinzugefügt. Wenn deaktiviert, muss die Strg-Taste gedrückt werden, um eine Auswahl zur aktuellen Messung hinzuzufügen, andernfalls wird eine neue Messung gestartet</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="122"/>
       <source>Settings</source>
       <translation>Einstellungen</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMeasure.cpp" line="134"/>
+      <source>Auto</source>
+      <translation>Automatisch</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="160"/>
@@ -256,6 +261,49 @@
       <location filename="../../TaskMeasure.cpp" line="196"/>
       <source>Save</source>
       <translation>Speichern</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskMeasure</name>
+    <message>
+      <location filename="../../../InitGui.py" line="46"/>
+      <source>Center of mass</source>
+      <translation>Schwerpunkt</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="115"/>
+      <source>Distance</source>
+      <translation>Abstand</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="123"/>
+      <source>Distance Free</source>
+      <translation type="unfinished">Distance Free</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="131"/>
+      <source>Angle</source>
+      <translation>Winkel</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="139"/>
+      <source>Length</source>
+      <translation>Länge</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="147"/>
+      <source>Position</source>
+      <translation>Position</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="155"/>
+      <source>Area</source>
+      <translation>Fläche</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="163"/>
+      <source>Radius</source>
+      <translation>Radius</translation>
     </message>
   </context>
 </TS>

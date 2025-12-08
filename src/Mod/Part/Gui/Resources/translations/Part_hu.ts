@@ -1465,7 +1465,7 @@
     <message>
       <location filename="../../CommandParametric.cpp" line="203"/>
       <source>Creates a solid cone</source>
-      <translation>Szilárd kúpot hoz létre</translation>
+      <translation>Crea un con sòlid</translation>
     </message>
   </context>
   <context>
@@ -4686,7 +4686,7 @@ only created cuts will be visible</source>
       <location filename="../../TaskShapeBuilder.cpp" line="282"/>
       <location filename="../../TaskShapeBuilder.cpp" line="379"/>
       <source>Select at least 1 edge</source>
-      <translation>Jelölj legalább 1 tengelyt</translation>
+      <translation> legalább 1 tengelyt</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="433"/>
@@ -5973,7 +5973,7 @@ Folytassa?</translation>
       <translation>Csatolmány szerkesztő</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="1000"/>
+      <location filename="../../ViewProviderExt.cpp" line="1002"/>
       <source>Appearance per Face</source>
       <translation>Felületenkénti megjelenés</translation>
     </message>
@@ -6796,7 +6796,7 @@ A formák átfedő részei eltávolításra kerülnek.</translation>
     <message>
       <location filename="../../../App/Geometry.cpp" line="6656"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
-      <translation>Nem tudja meghatározni a görbék metszéspontját. Próbáljon meg hozzáadni egybeesés kényszerítést a görbék csúcsaihoz, melyeket le szeretné kerekíteni.</translation>
+      <translation>Nem tudja meghatározni a görbék metszéspontját. Próbáljon meg hozzáadni egybeesés kényszert a görbék csúcsaihoz, melyeket le szeretné kerekíteni.</translation>
     </message>
   </context>
   <context>
