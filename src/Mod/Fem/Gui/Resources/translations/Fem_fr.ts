@@ -11,7 +11,7 @@
     <message>
       <location filename="../../Command.cpp" line="244"/>
       <source>Bearing Constraint</source>
-      <translation type="unfinished">Bearing Constraint</translation>
+      <translation>Contrainte de roulement</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="245"/>
@@ -83,7 +83,7 @@
     <message>
       <location filename="../../Command.cpp" line="534"/>
       <source>Fluid Boundary Condition</source>
-      <translation type="unfinished">Fluid Boundary Condition</translation>
+      <translation>Conditions limites du fluide</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="535"/>
@@ -119,7 +119,7 @@
     <message>
       <location filename="../../Command.cpp" line="656"/>
       <source>Gear Constraint</source>
-      <translation type="unfinished">Gear Constraint</translation>
+      <translation>Contrainte d'engrenage</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="657"/>
@@ -209,7 +209,7 @@
     <message>
       <location filename="../../Command.cpp" line="1014"/>
       <source>Pulley Constraint</source>
-      <translation type="unfinished">Pulley Constraint</translation>
+      <translation>Contrainte de poulie</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1015"/>
@@ -281,7 +281,7 @@
     <message>
       <location filename="../../Command.cpp" line="1280"/>
       <source>Nodes Set</source>
-      <translation type="unfinished">Nodes Set</translation>
+      <translation>Ensemble de nœuds</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1281"/>
@@ -301,7 +301,7 @@
     <message>
       <location filename="../../Command.cpp" line="1480"/>
       <source>Select a single FEM Mesh.</source>
-      <translation type="unfinished">Select a single FEM Mesh.</translation>
+      <translation>Sélectionner un seul maillage FEM, svp.</translation>
     </message>
   </context>
   <context>
@@ -1429,6 +1429,41 @@ adding an analysis container</source>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="90"/>
       <source>Executable '%1' not found</source>
       <translation>L'exécutable « %1 » est introuvable.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGmshImp.cpp" line="97"/>
+      <source>Silent</source>
+      <translation>Silencieux</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGmshImp.cpp" line="98"/>
+      <source>Errors</source>
+      <translation>Erreurs</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGmshImp.cpp" line="99"/>
+      <source>Warnings</source>
+      <translation>Avertissements</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGmshImp.cpp" line="100"/>
+      <source>Direct</source>
+      <translation>Direct</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGmshImp.cpp" line="101"/>
+      <source>Information</source>
+      <translation>Informations</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGmshImp.cpp" line="102"/>
+      <source>Status</source>
+      <translation>État</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGmshImp.cpp" line="103"/>
+      <source>Debug</source>
+      <translation>Débogage</translation>
     </message>
   </context>
   <context>
@@ -8019,6 +8054,42 @@ visualisation des données de sommets.</translation>
       <location filename="../ui/SolverElmer.ui" line="129"/>
       <source>Solver Version</source>
       <translation>Version du solveur</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemToolsCcx</name>
+    <message>
+      <location filename="../../../femtools/ccxtools.py" line="405"/>
+      <source>No or wrong CalculiX binary ccx</source>
+      <translation type="unfinished">No or wrong CalculiX binary ccx</translation>
+    </message>
+    <message>
+      <location filename="../../../femtools/ccxtools.py" line="439"/>
+      <source>FEM: wrong ccx binary</source>
+      <translation type="unfinished">FEM: wrong ccx binary</translation>
+    </message>
+    <message>
+      <location filename="../../../femtools/ccxtools.py" line="452"/>
+      <source>FEM: CalculiX binary ccx '{}' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.</source>
+      <translation type="unfinished">FEM: CalculiX binary ccx '{}' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.</translation>
+    </message>
+    <message>
+      <location filename="../../../femtools/ccxtools.py" line="464"/>
+      <source>FEM: CalculiX ccx '{}' output '{}' doesn't contain expected phrase '{}'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.</source>
+      <translation type="unfinished">FEM: CalculiX ccx '{}' output '{}' doesn't contain expected phrase '{}'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::DlgSettingsFemInOutVtkImp</name>
+    <message>
+      <location filename="../../DlgSettingsFemInOutVtkImp.cpp" line="78"/>
+      <source>All</source>
+      <translation>Tout</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemInOutVtkImp.cpp" line="78"/>
+      <source>Highest</source>
+      <translation>Les plus élevés</translation>
     </message>
   </context>
 </TS>

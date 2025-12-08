@@ -101,7 +101,7 @@
     <message>
       <location filename="../../Command.cpp" line="593"/>
       <source>Force Load</source>
-      <translation>Betöltés kényszerítése</translation>
+      <translation>Erőterhelés</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="594"/>
@@ -506,12 +506,12 @@
     <message>
       <location filename="../../Command.cpp" line="2387"/>
       <source>Stress Linearization Plot</source>
-      <translation>Feszültséglineárisítási diagram</translation>
+      <translation>Feszültség linearizálási grafikon</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2388"/>
       <source>Defines a stress linearization plot</source>
-      <translation>Meghatározza a feszültséglineárisítási diagramot</translation>
+      <translation>Meghatároz egy feszültség linearizálási grafikont</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2427"/>
@@ -587,7 +587,7 @@
     <message>
       <location filename="../../Command.cpp" line="2505"/>
       <source>Warps the geometry along a vector field by a certain factor</source>
-      <translation>Térhajlítja a geometriát egy vektormező mentén egy bizonyos tényezővel</translation>
+      <translation>Deformálja a geometriát egy vektormező mentén egy bizonyos tényezővel</translation>
     </message>
   </context>
   <context>
@@ -731,7 +731,7 @@
     <message>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="23"/>
       <source>Mesh groups detected. Choose values for the different groups.</source>
-      <translation>A rendszer háló csoportokat észlelt. Vlassza ki a különböző csoportok értékeit.</translation>
+      <translation>A rendszer háló csoportokat észlelt. Válassza ki a különböző csoportok értékeit.</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="62"/>
@@ -916,7 +916,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="695"/>
       <source>Thermo-Mechanical Defaults</source>
-      <translation>Alapértelmezett termo mechanikai értékek</translation>
+      <translation>Alap hőmérséklet műszaki beállítások</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="731"/>
@@ -1094,12 +1094,12 @@ Ez csak akkor hatásos, ha a 'Csak folyamat' bekapcsolt</translation>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="44"/>
       <source>ElmerSolver path</source>
-      <translation>ElmerMegoldó útvonal</translation>
+      <translation>Elmer megoldó útvonal</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="75"/>
       <source>Leave blank to use default ElmerSolver binary file</source>
-      <translation>Hagyja üresen az alapértelmezett ElmerMegoldó bináris érték használatához</translation>
+      <translation>Hagyja üresen az alapértelmezett Elmer megoldó bináris érték használatához</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="94"/>
@@ -1427,6 +1427,41 @@ elemzési konténer hozzáadásakor</translation>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="90"/>
       <source>Executable '%1' not found</source>
       <translation>'%1' futtatható fájl nem található</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGmshImp.cpp" line="97"/>
+      <source>Silent</source>
+      <translation>Csendes</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGmshImp.cpp" line="98"/>
+      <source>Errors</source>
+      <translation>Hibaüzenetek</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGmshImp.cpp" line="99"/>
+      <source>Warnings</source>
+      <translation>Riasztások</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGmshImp.cpp" line="100"/>
+      <source>Direct</source>
+      <translation>Közvetlen</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGmshImp.cpp" line="101"/>
+      <source>Information</source>
+      <translation>Információ</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGmshImp.cpp" line="102"/>
+      <source>Status</source>
+      <translation>Állapot</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGmshImp.cpp" line="103"/>
+      <source>Debug</source>
+      <translation>Hibakeresés</translation>
     </message>
   </context>
   <context>
@@ -2454,7 +2489,7 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="104"/>
       <source>Select geometry of type: </source>
-      <translation>Válassza ki a következő típusok geometriáját </translation>
+      <translation>Válassza ki a következő típusok geometriáját:</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="104"/>
@@ -2580,7 +2615,7 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="424"/>
       <source>Only transformable faces can be selected! Apply a displacement boundary condition or a force load to a face first then apply local coordinate system to the face.</source>
-      <translation>Csak az átalakítható felületek választhatók ki! Először alkalmazzon elmozdulási határfeltételt vagy erőterhelést egy felületre, majd alkalmazza a helyi koordinátarendszert a felületre.</translation>
+      <translation>Csak az átalakítható felületek választhatók ki! Először alkalmazzon elmozdulási határfeltételt vagy erőterhelést egy felületre, majd alkalmazza a helyi koordináta rendszert a felületre.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="341"/>
@@ -2745,7 +2780,7 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
     <message>
       <location filename="../ui/Material.ui" line="346"/>
       <source>Reference temperature for thermal expansion</source>
-      <translation>Referenci hőmérséklet a hőtáguláshoz</translation>
+      <translation>Referencia hőmérséklet a hőtáguláshoz</translation>
     </message>
   </context>
   <context>
@@ -3369,7 +3404,7 @@ Megjegyzés: nincs hatása, ha egy testet választottak</translation>
       <source>Imaginary part is only used for equations
 with harmonic/oscillating driving current</source>
       <translation>A képzetes rész csak harmonikus/rezgő hajtóerővel rendelkező 
-egyenletek esetén hsználatos</translation>
+egyenletek esetén használatos</translation>
     </message>
     <message>
       <location filename="../ui/Magnetization.ui" line="66"/>
@@ -3506,7 +3541,7 @@ egyenletek esetén hsználatos</translation>
     <message>
       <location filename="../ui/MeshRegion.ui" line="37"/>
       <source>Maximum element size</source>
-      <translation>Maximale Elementgröße</translation>
+      <translation>Maximális elemméret</translation>
     </message>
     <message>
       <location filename="../ui/PostLineplotIndexAppEdit.ui" line="14"/>
@@ -3553,7 +3588,7 @@ egyenletek esetén hsználatos</translation>
     <message>
       <location filename="../ui/PostLineplotFieldAppEdit.ui" line="93"/>
       <source>One Y field for each frame</source>
-      <translation>Egy Y mező minden képkockához</translation>
+      <translation>Jedno pole Y dla każdej klatki</translation>
     </message>
   </context>
   <context>
@@ -8024,6 +8059,42 @@ Hagyja üresen az alapértelmezett Python futtatható fájl használatához</tra
       <location filename="../ui/SolverElmer.ui" line="129"/>
       <source>Solver Version</source>
       <translation>Megoldó verzió</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemToolsCcx</name>
+    <message>
+      <location filename="../../../femtools/ccxtools.py" line="405"/>
+      <source>No or wrong CalculiX binary ccx</source>
+      <translation type="unfinished">No or wrong CalculiX binary ccx</translation>
+    </message>
+    <message>
+      <location filename="../../../femtools/ccxtools.py" line="439"/>
+      <source>FEM: wrong ccx binary</source>
+      <translation type="unfinished">FEM: wrong ccx binary</translation>
+    </message>
+    <message>
+      <location filename="../../../femtools/ccxtools.py" line="452"/>
+      <source>FEM: CalculiX binary ccx '{}' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.</source>
+      <translation type="unfinished">FEM: CalculiX binary ccx '{}' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.</translation>
+    </message>
+    <message>
+      <location filename="../../../femtools/ccxtools.py" line="464"/>
+      <source>FEM: CalculiX ccx '{}' output '{}' doesn't contain expected phrase '{}'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.</source>
+      <translation type="unfinished">FEM: CalculiX ccx '{}' output '{}' doesn't contain expected phrase '{}'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::DlgSettingsFemInOutVtkImp</name>
+    <message>
+      <location filename="../../DlgSettingsFemInOutVtkImp.cpp" line="78"/>
+      <source>All</source>
+      <translation>Minden</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemInOutVtkImp.cpp" line="78"/>
+      <source>Highest</source>
+      <translation>Legmagasabb</translation>
     </message>
   </context>
 </TS>

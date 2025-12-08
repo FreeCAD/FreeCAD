@@ -295,17 +295,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignDuplicateSelection</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="756"/>
+      <location filename="../../CommandBody.cpp" line="755"/>
       <source>PartDesign</source>
       <translation>パートデザイン</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="757"/>
+      <location filename="../../CommandBody.cpp" line="756"/>
       <source>Duplicate &amp;Object</source>
       <translation>オブジェクトを複製(&amp;O)</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="758"/>
+      <location filename="../../CommandBody.cpp" line="757"/>
       <source>Duplicates the selected object and adds it to the active body</source>
       <translation>選択したオブジェクトを複製し、アクティブなボディーに追加</translation>
     </message>
@@ -403,17 +403,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignMigrate</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="386"/>
+      <location filename="../../CommandBody.cpp" line="385"/>
       <source>PartDesign</source>
       <translation>パートデザイン</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="387"/>
+      <location filename="../../CommandBody.cpp" line="386"/>
       <source>Migrate</source>
       <translation>移行</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="388"/>
+      <location filename="../../CommandBody.cpp" line="387"/>
       <source>Migrates the document to the modern Part Design workflow</source>
       <translation>新しいパートデザイン・ワークフローへドキュメントを移行</translation>
     </message>
@@ -439,17 +439,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignMoveFeature</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="822"/>
+      <location filename="../../CommandBody.cpp" line="821"/>
       <source>PartDesign</source>
       <translation>パートデザイン</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="823"/>
+      <location filename="../../CommandBody.cpp" line="822"/>
       <source>Move Object To…</source>
       <translation>オブジェクトを移動…</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="824"/>
+      <location filename="../../CommandBody.cpp" line="823"/>
       <source>Moves the selected object to another body</source>
       <translation>選択したオブジェクトを他のボディーへ移動</translation>
     </message>
@@ -457,17 +457,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignMoveFeatureInTree</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="1017"/>
+      <location filename="../../CommandBody.cpp" line="1016"/>
       <source>PartDesign</source>
       <translation>パートデザイン</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1018"/>
+      <location filename="../../CommandBody.cpp" line="1017"/>
       <source>Move Feature After…</source>
       <translation>フィーチャーを次の後ろへ移動…</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1019"/>
+      <location filename="../../CommandBody.cpp" line="1018"/>
       <source>Moves the selected feature after another feature in the same body</source>
       <translation>選択したフィーチャーを同じボディーの別のフィーチャーの後に移動</translation>
     </message>
@@ -475,17 +475,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignMoveTip</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="659"/>
+      <location filename="../../CommandBody.cpp" line="658"/>
       <source>PartDesign</source>
       <translation>パートデザイン</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="660"/>
+      <location filename="../../CommandBody.cpp" line="659"/>
       <source>Set Tip</source>
       <translation>TIPを設定</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="661"/>
+      <location filename="../../CommandBody.cpp" line="660"/>
       <source>Moves the tip of the body to the selected feature</source>
       <translation>選択したフィーチャーにボディーのTIPを移動</translation>
     </message>
@@ -930,33 +930,33 @@ so that self intersection is avoided.</source>
       <translation>Bool変数の作成</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="223"/>
+      <location filename="../../CommandBody.cpp" line="222"/>
       <location filename="../../DlgActiveBody.cpp" line="101"/>
       <source>Add a Body</source>
       <translation>ボディーを追加</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="524"/>
+      <location filename="../../CommandBody.cpp" line="523"/>
       <source>Migrate legacy Part Design features to bodies</source>
       <translation>過去のパートデザインのフィーチャーをボディーに移行</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="770"/>
+      <location filename="../../CommandBody.cpp" line="769"/>
       <source>Duplicate a Part Design object</source>
       <translation>パートデザイン・オブジェクトを複製</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1099"/>
+      <location filename="../../CommandBody.cpp" line="1105"/>
       <source>Move a feature inside body</source>
       <translation>ボディー内のフィーチャーを移動</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="724"/>
+      <location filename="../../CommandBody.cpp" line="723"/>
       <source>Move tip to selected feature</source>
       <translation>選択したフィーチャーにTIPを移動</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="927"/>
+      <location filename="../../CommandBody.cpp" line="926"/>
       <source>Move an object</source>
       <translation>オブジェクトを移動</translation>
     </message>
@@ -3091,12 +3091,12 @@ measured along the specified direction</source>
   <context>
     <name>PartDesign_MoveFeature</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="909"/>
+      <location filename="../../CommandBody.cpp" line="908"/>
       <source>Select Body</source>
       <translation>ボディーを選択</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="910"/>
+      <location filename="../../CommandBody.cpp" line="909"/>
       <source>Select a body from the list</source>
       <translation>リストからボディーを選択</translation>
     </message>
@@ -3104,27 +3104,27 @@ measured along the specified direction</source>
   <context>
     <name>PartDesign_MoveFeatureInTree</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="1084"/>
+      <location filename="../../CommandBody.cpp" line="1090"/>
       <source>Move Feature After…</source>
       <translation>フィーチャーを次の後ろへ移動…</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1085"/>
+      <location filename="../../CommandBody.cpp" line="1091"/>
       <source>Select a feature from the list</source>
       <translation>リストからフィーチャーを選択</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1172"/>
+      <location filename="../../CommandBody.cpp" line="1178"/>
       <source>Move Tip</source>
       <translation>TIPを移動</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1178"/>
+      <location filename="../../CommandBody.cpp" line="1184"/>
       <source>Set tip to last feature?</source>
       <translation>最後のフィーチャーにTIPを設定しますか？</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1173"/>
+      <location filename="../../CommandBody.cpp" line="1179"/>
       <source>The moved feature appears after the currently set tip.</source>
       <translation>移動したフィーチャは、現在設定されているTIPの後に表示されます。</translation>
     </message>
@@ -3356,98 +3356,98 @@ This may lead to unexpected results.</source>
       <translation>ボディーはベースとなるフィーチャーを1つだけ持ちます。</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="231"/>
+      <location filename="../../CommandBody.cpp" line="230"/>
       <source>Body</source>
       <translation>Body</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="422"/>
+      <location filename="../../CommandBody.cpp" line="421"/>
       <source>Nothing to migrate</source>
       <translation>移行対象がありません。</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="693"/>
+      <location filename="../../CommandBody.cpp" line="692"/>
       <source>Select exactly one Part Design feature or a body.</source>
       <translation>パートデザイン・フィーチャーまたはボディーを1つだけ選択してください。</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="701"/>
+      <location filename="../../CommandBody.cpp" line="700"/>
       <source>Could not determine a body for the selected feature '%s'.</source>
       <translation>選択したフィーチャー「%s」のボディーを特定できませんでした。</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="878"/>
+      <location filename="../../CommandBody.cpp" line="877"/>
       <source>Only features of a single source body can be moved</source>
       <translation>動かせるのは単一ボディーに含まれるフィーチャーだけです。</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="617"/>
+      <location filename="../../CommandBody.cpp" line="616"/>
       <source>Sketch plane cannot be migrated</source>
       <translation>スケッチ平面を移行できません。</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="423"/>
+      <location filename="../../CommandBody.cpp" line="422"/>
       <source>No Part Design features without body found Nothing to migrate.</source>
       <translation>ボディーのないパートデザインフィーチャーが見つかりません。移行は行われません。</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="618"/>
+      <location filename="../../CommandBody.cpp" line="617"/>
       <source>Please edit '%1' and redefine it to use a Base or Datum plane as the sketch plane.</source>
       <translation>'%1'を編集してベースまたはデータム平面をスケッチ平面として使用するよう再定義してください。</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="692"/>
-      <location filename="../../CommandBody.cpp" line="700"/>
-      <location filename="../../CommandBody.cpp" line="712"/>
-      <location filename="../../CommandBody.cpp" line="1050"/>
-      <location filename="../../CommandBody.cpp" line="1060"/>
+      <location filename="../../CommandBody.cpp" line="691"/>
+      <location filename="../../CommandBody.cpp" line="699"/>
+      <location filename="../../CommandBody.cpp" line="711"/>
+      <location filename="../../CommandBody.cpp" line="1056"/>
+      <location filename="../../CommandBody.cpp" line="1066"/>
       <source>Selection error</source>
       <translation>選択エラー</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="713"/>
+      <location filename="../../CommandBody.cpp" line="712"/>
       <source>Only a solid feature can be the tip of a body.</source>
       <translation>ボディーのTIPにできるのはソリッドフィーチャーだけです。</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="847"/>
-      <location filename="../../CommandBody.cpp" line="877"/>
-      <location filename="../../CommandBody.cpp" line="895"/>
+      <location filename="../../CommandBody.cpp" line="846"/>
+      <location filename="../../CommandBody.cpp" line="876"/>
+      <location filename="../../CommandBody.cpp" line="894"/>
       <source>Features cannot be moved</source>
       <translation>フィーチャーを移動できません。</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="848"/>
+      <location filename="../../CommandBody.cpp" line="847"/>
       <source>Some of the selected features have dependencies in the source body</source>
       <translation>選択したフィーチャーの一部がソースボディーに依存しています。　</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="896"/>
+      <location filename="../../CommandBody.cpp" line="895"/>
       <source>There are no other bodies to move to</source>
       <translation>移動先となる他のボディーがありません。</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1051"/>
+      <location filename="../../CommandBody.cpp" line="1057"/>
       <source>Impossible to move the base feature of a body.</source>
       <translation>ボディーのベースフィーチャーを動かすことはできません。</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1061"/>
+      <location filename="../../CommandBody.cpp" line="1067"/>
       <source>Select one or more features from the same body.</source>
       <translation>同一のボディーから1つ以上のフィーチャーを選択してください。</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1076"/>
+      <location filename="../../CommandBody.cpp" line="1082"/>
       <source>Beginning of the body</source>
       <translation>ボディーの先頭</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1157"/>
+      <location filename="../../CommandBody.cpp" line="1163"/>
       <source>Dependency violation</source>
       <translation>依存関係の違反</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1158"/>
+      <location filename="../../CommandBody.cpp" line="1164"/>
       <source>Early feature must not depend on later feature.
 
 </source>
@@ -4443,36 +4443,25 @@ over 90: larger hole radius at the bottom</source>
       <translation>BaseFeatureに空のシェイプがあります。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="85"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="75"/>
       <source>Cannot do boolean cut without BaseFeature</source>
       <translation>BaseFeatureなしでブーリアン演算のカットを行うことはできません。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="102"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="143"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="92"/>
       <source>Cannot do boolean with anything but Part::Feature and its derivatives</source>
       <translation>Part::Featureとその派生物以外ではブーリアン演算を行うことはできません。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="114"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="104"/>
       <source>Cannot do boolean operation with invalid base shape</source>
       <translation>無効なベースシェイプではブーリアン演算を行うことはできません。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="123"/>
-      <source>Cannot do boolean on feature which is not in a body</source>
-      <translation>ボディー内にないフィーチャーではブーリアン演算を行うことはできません。</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="159"/>
-      <source>Base shape is null</source>
-      <translation>ベースシェイプが null です。</translation>
-    </message>
-    <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="190"/>
       <location filename="../../../App/FeatureDraft.cpp" line="332"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="205"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="131"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="140"/>
       <location filename="../../../App/FeatureHole.cpp" line="2067"/>
       <location filename="../../../App/FeatureLoft.cpp" line="331"/>
       <location filename="../../../App/FeatureLoft.cpp" line="375"/>
@@ -4487,13 +4476,12 @@ over 90: larger hole radius at the bottom</source>
       <translation>結果に複数のソリッドがあります: アクティブなボディーで「コンパウンドを許可」を有効にしてください。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="133"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="165"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="114"/>
       <source>Tool shape is null</source>
       <translation>ツールシェイプが null です。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="187"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="141"/>
       <source>Unsupported boolean operation</source>
       <translation>サポートされていないブーリアン演算です。</translation>
     </message>
@@ -4532,7 +4520,7 @@ over 90: larger hole radius at the bottom</source>
     </message>
     <message>
       <location filename="../../../App/FeatureDraft.cpp" line="327"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="111"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="120"/>
       <source>Resulting shape is null</source>
       <translation>結果シェイプが null です。</translation>
     </message>
@@ -4557,14 +4545,19 @@ over 90: larger hole radius at the bottom</source>
       <translation>角度は0から180の間でなければなりません。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureFillet.cpp" line="92"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="95"/>
       <source>Fillet not possible on selected shapes</source>
       <translation>選択したシェイプではフィレットを作成できません。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureFillet.cpp" line="100"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="103"/>
       <source>Fillet radius must be greater than zero</source>
       <translation>フィレット半径は0より大きくなければなりません。</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureFillet.cpp" line="157"/>
+      <source>Fillet operation failed. The selected edges may contain geometry that cannot be filleted together. Try filleting edges individually or with a smaller radius.</source>
+      <translation>フィレット操作に失敗しました。選択したエッジに同時にはフィレットできないジオメトリーが含まれている可能性があります。個別にエッジをフィレットするか、半径を小さくしてみてください。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureGroove.cpp" line="101"/>
@@ -4792,7 +4785,7 @@ Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>ブーリアン演算によってプロファイルエッジ上で非ソリッドが生成</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="197"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="151"/>
       <source>Boolean operation failed</source>
       <translation>ブーリアン演算が失敗しました。</translation>
     </message>
@@ -5188,12 +5181,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>CmdPartDesignCompDatums</name>
     <message>
-      <location filename="../../Command.cpp" line="2645"/>
+      <location filename="../../Command.cpp" line="2644"/>
       <source>Create Datum</source>
       <translation>データムを作成</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2646"/>
+      <location filename="../../Command.cpp" line="2645"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>データムオブジェクトまたはローカル座標系を作成</translation>
     </message>
@@ -5201,12 +5194,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>CmdPartDesignCompSketches</name>
     <message>
-      <location filename="../../Command.cpp" line="2680"/>
+      <location filename="../../Command.cpp" line="2679"/>
       <source>Create Datum</source>
       <translation>データムを作成</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2681"/>
+      <location filename="../../Command.cpp" line="2680"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>データムオブジェクトまたはローカル座標系を作成</translation>
     </message>
@@ -5308,7 +5301,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>PartDesignGui::TaskDlgRevolutionParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="833"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="824"/>
       <source>Revolution Parameters</source>
       <translation>回転押し出しパラメーター</translation>
     </message>
@@ -5316,7 +5309,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>PartDesignGui::TaskDlgGrooveParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="843"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="834"/>
       <source>Groove Parameters</source>
       <translation>グルーブパラメーター</translation>
     </message>

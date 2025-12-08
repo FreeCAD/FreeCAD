@@ -2462,7 +2462,7 @@ Om inget objekt har valts öppnas en filbläddrare där du kan välja en SVG- el
       <translation>Dragballong</translation>
     </message>
     <message>
-      <location filename="../../QGIViewDimension.cpp" line="313"/>
+      <location filename="../../QGIViewDimension.cpp" line="306"/>
       <source>Drag Dimension</source>
       <translation>Dragdimension</translation>
     </message>
@@ -3476,7 +3476,7 @@ Om inget objekt har valts öppnas en filbläddrare där du kan välja en SVG- el
       <translation>Alla filer</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="549"/>
+      <location filename="../../TaskDimension.cpp" line="551"/>
       <location filename="../../CommandAlign.cpp" line="53"/>
       <location filename="../../CommandCreateDims.cpp" line="2014"/>
       <location filename="../../CommandCreateDims.cpp" line="2030"/>
@@ -4093,19 +4093,19 @@ Om inget objekt har valts öppnas en filbläddrare där du kan välja en SVG- el
       <translation>Färre än tre cirklar valda</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="195"/>
-      <location filename="../../TaskDimension.cpp" line="210"/>
+      <location filename="../../TaskDimension.cpp" line="197"/>
+      <location filename="../../TaskDimension.cpp" line="212"/>
       <source>Missing Dimension</source>
       <translation>Saknad dimension</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="196"/>
-      <location filename="../../TaskDimension.cpp" line="211"/>
+      <location filename="../../TaskDimension.cpp" line="198"/>
+      <location filename="../../TaskDimension.cpp" line="213"/>
       <source>Dimension not found. Was it deleted? Cannot continue.</source>
       <translation>Dimensionen hittades inte. Har den raderats? Kan inte fortsätta.</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="550"/>
+      <location filename="../../TaskDimension.cpp" line="552"/>
       <source>Select 2 vertices or 1 edge</source>
       <translation>Välj 2 hörn eller 1 kant</translation>
     </message>
@@ -9447,17 +9447,17 @@ det finns en dialogruta med en öppen uppgift.</translation>
   <context>
     <name>TechDraw_FillTemplateFields</name>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="140"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="138"/>
       <source>Fill Template Fields In </source>
       <translation>Fyll i mallens fält</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="147"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="145"/>
       <source>Update</source>
       <translation>Uppdatera</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="404"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="425"/>
       <source>Update All</source>
       <translation>Uppdatera alla</translation>
     </message>
@@ -9490,12 +9490,12 @@ det finns en dialogruta med en öppen uppgift.</translation>
       <translation>Visa eller projicera grupp saknas</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="443"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="465"/>
       <source>Corresponding template fields missing</source>
       <translation>Motsvarande mallfält saknas</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="528"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="554"/>
       <source>Fill template fields</source>
       <translation type="unfinished">Fill template fields</translation>
     </message>

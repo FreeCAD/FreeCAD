@@ -16,12 +16,12 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="14"/>
       <source>BIM Material</source>
-      <translation type="unfinished">BIM Material</translation>
+      <translation>BIM materiale</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="30"/>
       <source>Choose preset</source>
-      <translation type="unfinished">Choose preset</translation>
+      <translation>Scegli presentazione</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="48"/>
@@ -4198,90 +4198,90 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Aggiornamento</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="170"/>
+      <location filename="../../ArchReference.py" line="173"/>
       <source>Part not found in file</source>
       <translation>Parte non trovata nel file</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="192"/>
-      <location filename="../../ArchReference.py" line="237"/>
-      <location filename="../../ArchReference.py" line="433"/>
-      <location filename="../../ArchReference.py" line="868"/>
+      <location filename="../../ArchReference.py" line="195"/>
+      <location filename="../../ArchReference.py" line="240"/>
+      <location filename="../../ArchReference.py" line="436"/>
+      <location filename="../../ArchReference.py" line="871"/>
       <source>NativeIFC not available - unable to process IFC files</source>
       <translation>NativeIFC non disponibile - impossibile elaborare i file IFC</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="290"/>
+      <location filename="../../ArchReference.py" line="293"/>
       <source>Error removing splitter</source>
       <translation>Errore nella rimozione dello splitter</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="700"/>
+      <location filename="../../ArchReference.py" line="703"/>
       <source>Reload reference</source>
       <translation>Ricarica riferimento</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="706"/>
+      <location filename="../../ArchReference.py" line="709"/>
       <source>Open reference</source>
       <translation>Apri riferimento</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="744"/>
+      <location filename="../../ArchReference.py" line="747"/>
       <source>Unable to get lightWeight node for object referenced in</source>
       <translation>Impossibile ottenere il nodo lightWeight per l'oggetto a cui si fa riferimento</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="753"/>
-      <location filename="../../ArchReference.py" line="757"/>
+      <location filename="../../ArchReference.py" line="756"/>
+      <location filename="../../ArchReference.py" line="760"/>
       <source>Invalid lightWeight node for object referenced in</source>
       <translation>Nodo lightWeight non valido per l'oggetto a cui si fa riferimento</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="767"/>
-      <location filename="../../ArchReference.py" line="773"/>
-      <location filename="../../ArchReference.py" line="801"/>
-      <location filename="../../ArchReference.py" line="807"/>
+      <location filename="../../ArchReference.py" line="770"/>
+      <location filename="../../ArchReference.py" line="776"/>
+      <location filename="../../ArchReference.py" line="804"/>
+      <location filename="../../ArchReference.py" line="810"/>
       <source>Invalid root node in</source>
       <translation>Nodo radice non valido in</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="892"/>
+      <location filename="../../ArchReference.py" line="895"/>
       <source>External reference</source>
       <translation>Riferimento esterno</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="894"/>
+      <location filename="../../ArchReference.py" line="897"/>
       <source>External file</source>
       <translation>File esterno</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="898"/>
+      <location filename="../../ArchReference.py" line="901"/>
       <source>Open</source>
       <translation>Apri</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="905"/>
+      <location filename="../../ArchReference.py" line="908"/>
       <source>Part to use:</source>
       <translation>Parte da utilizzare:</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="910"/>
+      <location filename="../../ArchReference.py" line="913"/>
       <source>Choose File</source>
       <translation type="unfinished">Choose File</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="921"/>
-      <location filename="../../ArchReference.py" line="984"/>
+      <location filename="../../ArchReference.py" line="924"/>
+      <location filename="../../ArchReference.py" line="987"/>
       <source>None (Use whole object)</source>
       <translation>Nessuno (Usa l'oggetto intero)</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="972"/>
+      <location filename="../../ArchReference.py" line="975"/>
       <source>Reference files</source>
       <translation>File di riferimento</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="974"/>
+      <location filename="../../ArchReference.py" line="977"/>
       <source>Choose reference file</source>
       <translation>Scegli file di riferimento</translation>
     </message>
@@ -4494,7 +4494,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchSectionPlane.py" line="1503"/>
       <location filename="../../ArchGrid.py" line="384"/>
       <location filename="../../ArchSite.py" line="1294"/>
-      <location filename="../../ArchReference.py" line="695"/>
+      <location filename="../../ArchReference.py" line="698"/>
       <location filename="../../ArchAxisSystem.py" line="222"/>
       <location filename="../../ArchComponent.py" line="1874"/>
       <location filename="../../ArchSchedule.py" line="766"/>
@@ -4618,8 +4618,8 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../importers/importWebGL.py" line="371"/>
       <location filename="../../importers/importJSON.py" line="62"/>
-      <location filename="../../importers/importOBJ.py" line="302"/>
-      <location filename="../../importers/importOBJ.py" line="340"/>
+      <location filename="../../importers/importOBJ.py" line="301"/>
+      <location filename="../../importers/importOBJ.py" line="339"/>
       <source>Successfully written</source>
       <translation>Scritto correttamente</translation>
     </message>
@@ -5284,7 +5284,7 @@ Creazione del Piano interrotta.</translation>
       <translation>Trovata una forma contenente curve, sarà triangolata</translation>
     </message>
     <message>
-      <location filename="../../importers/importOBJ.py" line="451"/>
+      <location filename="../../importers/importOBJ.py" line="450"/>
       <source>Successfully imported</source>
       <translation>Importato con successo</translation>
     </message>
@@ -5715,7 +5715,7 @@ Creazione Edificio interrotta.</translation>
       <translation>Errore: impossibile modificare l'oggetto base di questo muro</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1715"/>
+      <location filename="../../ArchWall.py" line="1755"/>
       <source>Flip Direction</source>
       <translation type="unfinished">Flip Direction</translation>
     </message>
@@ -6746,12 +6746,12 @@ Creazione Edificio interrotta.</translation>
       <translation>Fondi oggetti dello stesso materiale</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="584"/>
+      <location filename="../../ArchReference.py" line="587"/>
       <source>The latest time stamp of the linked file</source>
       <translation>La marca temporale più recente del file collegato</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="590"/>
+      <location filename="../../ArchReference.py" line="593"/>
       <source>If true, the colors from the linked file will be kept updated</source>
       <translation>Se true, i colori dal file collegato verranno mantenuti aggiornati</translation>
     </message>

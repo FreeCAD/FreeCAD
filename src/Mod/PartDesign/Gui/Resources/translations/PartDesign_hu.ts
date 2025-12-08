@@ -296,17 +296,17 @@ az önmetszés elkerülése érdekében.</translation>
   <context>
     <name>CmdPartDesignDuplicateSelection</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="756"/>
+      <location filename="../../CommandBody.cpp" line="755"/>
       <source>PartDesign</source>
       <translation>AlkatrészTervezés</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="757"/>
+      <location filename="../../CommandBody.cpp" line="756"/>
       <source>Duplicate &amp;Object</source>
       <translation>&amp;Objektum másolás</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="758"/>
+      <location filename="../../CommandBody.cpp" line="757"/>
       <source>Duplicates the selected object and adds it to the active body</source>
       <translation>Kiválasztott tárgy megkettőzése és az aktív testhez adása</translation>
     </message>
@@ -404,17 +404,17 @@ az önmetszés elkerülése érdekében.</translation>
   <context>
     <name>CmdPartDesignMigrate</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="386"/>
+      <location filename="../../CommandBody.cpp" line="385"/>
       <source>PartDesign</source>
       <translation>AlkatrészTervezés</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="387"/>
+      <location filename="../../CommandBody.cpp" line="386"/>
       <source>Migrate</source>
       <translation>Áttelepítés</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="388"/>
+      <location filename="../../CommandBody.cpp" line="387"/>
       <source>Migrates the document to the modern Part Design workflow</source>
       <translation>Áthelyezi a dokumentumot a modern Alkatrésztervezés munkafolyamatba</translation>
     </message>
@@ -440,17 +440,17 @@ az önmetszés elkerülése érdekében.</translation>
   <context>
     <name>CmdPartDesignMoveFeature</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="822"/>
+      <location filename="../../CommandBody.cpp" line="821"/>
       <source>PartDesign</source>
       <translation>AlkatrészTervezés</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="823"/>
+      <location filename="../../CommandBody.cpp" line="822"/>
       <source>Move Object To…</source>
       <translation>Objektum áthelyezése ide…</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="824"/>
+      <location filename="../../CommandBody.cpp" line="823"/>
       <source>Moves the selected object to another body</source>
       <translation>A kiválasztott tárgy áthelyezése egy másik testre</translation>
     </message>
@@ -458,17 +458,17 @@ az önmetszés elkerülése érdekében.</translation>
   <context>
     <name>CmdPartDesignMoveFeatureInTree</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="1017"/>
+      <location filename="../../CommandBody.cpp" line="1016"/>
       <source>PartDesign</source>
       <translation>AlkatrészTervezés</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1018"/>
+      <location filename="../../CommandBody.cpp" line="1017"/>
       <source>Move Feature After…</source>
       <translation>Egy jellemző áthelyezése után…</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1019"/>
+      <location filename="../../CommandBody.cpp" line="1018"/>
       <source>Moves the selected feature after another feature in the same body</source>
       <translation>A kijelölt űrlapelem áthelyezése egy másik űrlapelem mögé ugyanabban a testben</translation>
     </message>
@@ -476,17 +476,17 @@ az önmetszés elkerülése érdekében.</translation>
   <context>
     <name>CmdPartDesignMoveTip</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="659"/>
+      <location filename="../../CommandBody.cpp" line="658"/>
       <source>PartDesign</source>
       <translation>AlkatrészTervezés</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="660"/>
+      <location filename="../../CommandBody.cpp" line="659"/>
       <source>Set Tip</source>
       <translation>Csúcs beállítás</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="661"/>
+      <location filename="../../CommandBody.cpp" line="660"/>
       <source>Moves the tip of the body to the selected feature</source>
       <translation>Mozgassa a test hegyét a kiválasztott jellemzőre</translation>
     </message>
@@ -722,7 +722,7 @@ az önmetszés elkerülése érdekében.</translation>
     <message>
       <location filename="../../Command.cpp" line="1613"/>
       <source>Lofts the selected sketch or profile along a path and removes it from the body</source>
-      <translation type="unfinished">Lofts the selected sketch or profile along a path and removes it from the body</translation>
+      <translation>A kiválasztott vázlatot vagy szelvényt egy görbék közti tárgy mentén végigvezeti, és eltávolítja a testből</translation>
     </message>
   </context>
   <context>
@@ -735,12 +735,12 @@ az önmetszés elkerülése érdekében.</translation>
     <message>
       <location filename="../../Command.cpp" line="1512"/>
       <source>Subtractive Pipe</source>
-      <translation type="unfinished">Subtractive Pipe</translation>
+      <translation>Kivonandó cső</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1513"/>
       <source>Sweeps the selected sketch or profile along a path and removes it from the body</source>
-      <translation type="unfinished">Sweeps the selected sketch or profile along a path and removes it from the body</translation>
+      <translation>A kiválasztott vázlatot vagy szelvényt egy görbék közti tárgy mentén végigpásztázza, és eltávolítja a testből</translation>
     </message>
   </context>
   <context>
@@ -758,7 +758,7 @@ az önmetszés elkerülése érdekében.</translation>
     <message>
       <location filename="../../Command.cpp" line="2088"/>
       <source>Applies thickness and removes the selected faces</source>
-      <translation type="unfinished">Applies thickness and removes the selected faces</translation>
+      <translation>Az objektumot állandó falvastagsággal látja el és eltávolítja a kiválasztott felületeket</translation>
     </message>
   </context>
   <context>
@@ -771,12 +771,12 @@ az önmetszés elkerülése érdekében.</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="75"/>
       <source>Additive Primitive</source>
-      <translation type="unfinished">Additive Primitive</translation>
+      <translation>Hozzáadott alaptest</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="76"/>
       <source>Creates an additive primitive</source>
-      <translation type="unfinished">Creates an additive primitive</translation>
+      <translation>Létrehoz egy alaptestet, amely megnöveli a test térfogatát</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="213"/>
@@ -829,12 +829,12 @@ az önmetszés elkerülése érdekében.</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="283"/>
       <source>Subtractive Primitive</source>
-      <translation type="unfinished">Subtractive Primitive</translation>
+      <translation>Kivonandó alaptest</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="284"/>
       <source>Creates a subtractive primitive</source>
-      <translation type="unfinished">Creates a subtractive primitive</translation>
+      <translation>Létrehoz egy kivonandó alaptestet</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="398"/>
@@ -882,17 +882,17 @@ az önmetszés elkerülése érdekében.</translation>
     <message>
       <location filename="../../Command.cpp" line="335"/>
       <source>Edit Shape Binder</source>
-      <translation type="unfinished">Edit Shape Binder</translation>
+      <translation>Csatolt forma szerkesztése</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="346"/>
       <source>Create Shape Binder</source>
-      <translation type="unfinished">Create Shape Binder</translation>
+      <translation>Forma kötés létrehozás</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="439"/>
       <source>Create Sub-Shape Binder</source>
-      <translation type="unfinished">Create Sub-Shape Binder</translation>
+      <translation>Létrehoz egy részegység kötést</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="508"/>
@@ -902,17 +902,17 @@ az önmetszés elkerülése érdekében.</translation>
     <message>
       <location filename="../../Command.cpp" line="1110"/>
       <source>Make Copy</source>
-      <translation type="unfinished">Make Copy</translation>
+      <translation>Másolat készítés</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2500"/>
       <source>Convert to Multi-Transform feature</source>
-      <translation type="unfinished">Convert to Multi-Transform feature</translation>
+      <translation>Többszörös átalakító jellemzők átalakítása</translation>
     </message>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="253"/>
       <source>Sketch on Face</source>
-      <translation type="unfinished">Sketch on Face</translation>
+      <translation>Rajz a felületen</translation>
     </message>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="314"/>
@@ -931,33 +931,33 @@ az önmetszés elkerülése érdekében.</translation>
       <translation>Logikai érték létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="223"/>
+      <location filename="../../CommandBody.cpp" line="222"/>
       <location filename="../../DlgActiveBody.cpp" line="101"/>
       <source>Add a Body</source>
       <translation>Test hozzáadás</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="524"/>
+      <location filename="../../CommandBody.cpp" line="523"/>
       <source>Migrate legacy Part Design features to bodies</source>
-      <translation type="unfinished">Migrate legacy Part Design features to bodies</translation>
+      <translation>Régi alkatrész tervezési funkciók áttelepítése a testekre</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="770"/>
+      <location filename="../../CommandBody.cpp" line="769"/>
       <source>Duplicate a Part Design object</source>
-      <translation type="unfinished">Duplicate a Part Design object</translation>
+      <translation>Egy alkatrész terv objektum másolása</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1099"/>
+      <location filename="../../CommandBody.cpp" line="1105"/>
       <source>Move a feature inside body</source>
-      <translation type="unfinished">Move a feature inside body</translation>
+      <translation>Mozgatni egy jellemzőt egy testen belül</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="724"/>
+      <location filename="../../CommandBody.cpp" line="723"/>
       <source>Move tip to selected feature</source>
       <translation>A csúcs átvitele a kiválasztott jellemzőbe</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="927"/>
+      <location filename="../../CommandBody.cpp" line="926"/>
       <source>Move an object</source>
       <translation>Tárgy mozgatása</translation>
     </message>
@@ -987,27 +987,27 @@ az önmetszés elkerülése érdekében.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
       <source>Face Tools</source>
-      <translation type="unfinished">Face Tools</translation>
+      <translation>Felület eszközök</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="54"/>
       <source>Edge Tools</source>
-      <translation type="unfinished">Edge Tools</translation>
+      <translation>Él eszközök</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="55"/>
       <source>Boolean Tools</source>
-      <translation type="unfinished">Boolean Tools</translation>
+      <translation>Logikai eszközök</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="56"/>
       <source>Helper Tools</source>
-      <translation type="unfinished">Helper Tools</translation>
+      <translation>Segédeszközök</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="57"/>
       <source>Modeling Tools</source>
-      <translation type="unfinished">Modeling Tools</translation>
+      <translation>Modellező eszközök</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="58"/>
@@ -1020,27 +1020,27 @@ az önmetszés elkerülése érdekében.</translation>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="14"/>
       <source>Involute Parameter</source>
-      <translation type="unfinished">Involute Parameter</translation>
+      <translation>Befelé görbítés paramétere</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="20"/>
       <source>Number of teeth</source>
-      <translation type="unfinished">Number of teeth</translation>
+      <translation>Fogak száma</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="40"/>
       <source>Module</source>
-      <translation type="unfinished">Module</translation>
+      <translation>Modul</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="84"/>
       <source>Pressure angle</source>
-      <translation type="unfinished">Pressure angle</translation>
+      <translation>Nyomásszög</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="125"/>
       <source>High precision</source>
-      <translation type="unfinished">High precision</translation>
+      <translation>Nagy pontosság</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="139"/>
@@ -1057,27 +1057,27 @@ az önmetszés elkerülése érdekében.</translation>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="152"/>
       <source>External gear</source>
-      <translation type="unfinished">External gear</translation>
+      <translation>Külső fogazás</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="179"/>
       <source>Addendum coefficient</source>
-      <translation type="unfinished">Addendum coefficient</translation>
+      <translation>Fejmagassági tényező</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="199"/>
       <source>Dedendum coefficient</source>
-      <translation type="unfinished">Dedendum coefficient</translation>
+      <translation>Fogmagassági arány</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="219"/>
       <source>Root fillet coefficient</source>
-      <translation type="unfinished">Root fillet coefficient</translation>
+      <translation>Lekerekítési tényező</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="239"/>
       <source>Profile shift coefficient</source>
-      <translation type="unfinished">Profile shift coefficient</translation>
+      <translation>Profileltolódási együttható</translation>
     </message>
   </context>
   <context>
@@ -1091,13 +1091,13 @@ az önmetszés elkerülése érdekében.</translation>
       <location filename="../../DlgActiveBody.ui" line="20"/>
       <source>To create a new Part Design object, there must be an active body in the document.
 Select a body from below, or create a new body.</source>
-      <translation type="unfinished">To create a new Part Design object, there must be an active body in the document.
-Select a body from below, or create a new body.</translation>
+      <translation>Új Alkatrész terv objektum létrehozásához a Test objektumnak aktívnak kell lennie a dokumentumban.
+Válasszon egy testet alulról, vagy hozzon létre újat.</translation>
     </message>
     <message>
       <location filename="../../DlgActiveBody.ui" line="35"/>
       <source>Create New Body</source>
-      <translation type="unfinished">Create New Body</translation>
+      <translation>Új test létrehozása</translation>
     </message>
     <message>
       <location filename="../../DlgActiveBody.cpp" line="52"/>
@@ -1188,12 +1188,12 @@ Select a body from below, or create a new body.</translation>
       <location filename="../../TaskPrimitiveParameters.ui" line="896"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="1091"/>
       <source>U parameter</source>
-      <translation type="unfinished">U parameter</translation>
+      <translation>U paraméter</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="694"/>
       <source>V parameters</source>
-      <translation type="unfinished">V parameters</translation>
+      <translation>V paraméterek</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="804"/>
@@ -1203,35 +1203,35 @@ Select a body from below, or create a new body.</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="827"/>
       <source>Radius in local X-direction</source>
-      <translation type="unfinished">Radius in local X-direction</translation>
+      <translation>Sugár a helyi X-irányban</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="843"/>
       <source>Radius 3</source>
-      <translation type="unfinished">Radius 3</translation>
+      <translation>3. sugár</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="850"/>
       <source>Radius in local Y-direction
 If zero, it is equal to Radius2</source>
-      <translation type="unfinished">Radius in local Y-direction
-If zero, it is equal to Radius2</translation>
+      <translation>Sugár a lokális Y-irányban
+Ha zérus, azonos a Radius2-vel</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="916"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="1111"/>
       <source>V parameter</source>
-      <translation type="unfinished">V parameter</translation>
+      <translation>V paraméter</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1023"/>
       <source>Radius in local XY-plane</source>
-      <translation type="unfinished">Radius in local XY-plane</translation>
+      <translation>Sugár a lokális XY-síkon</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1046"/>
       <source>Radius in local XZ-plane</source>
-      <translation type="unfinished">Radius in local XZ-plane</translation>
+      <translation>Sugár a lokális XZ-síkon</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1214"/>
@@ -1243,32 +1243,32 @@ If zero, it is equal to Radius2</translation>
       <location filename="../../TaskPrimitiveParameters.ui" line="1234"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="2313"/>
       <source>Circumradius</source>
-      <translation type="unfinished">Circumradius</translation>
+      <translation>Körsugár</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1353"/>
       <source>X min/max</source>
-      <translation type="unfinished">X min/max</translation>
+      <translation>X min/max</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1383"/>
       <source>Y min/max</source>
-      <translation type="unfinished">Y min/max</translation>
+      <translation>Y min/max</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1413"/>
       <source>Z min/max</source>
-      <translation type="unfinished">Z min/max</translation>
+      <translation>Z min/max</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1443"/>
       <source>X2 min/max</source>
-      <translation type="unfinished">X2 min/max</translation>
+      <translation>X2 min/max</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1476"/>
       <source>Z2 min/max</source>
-      <translation type="unfinished">Z2 min/max</translation>
+      <translation>Z2 min/max</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1560"/>
@@ -1278,7 +1278,7 @@ If zero, it is equal to Radius2</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1637"/>
       <source>Coordinate system</source>
-      <translation type="unfinished">Coordinate system</translation>
+      <translation>Koordináta rendszer</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1709"/>
@@ -1288,7 +1288,7 @@ If zero, it is equal to Radius2</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1729"/>
       <source>Number of rotations</source>
-      <translation type="unfinished">Number of rotations</translation>
+      <translation>Fordulatok száma</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1825"/>
@@ -2206,7 +2206,7 @@ Lehet, hogy a geometria érvénytelen, vagy a változók inkompatibilisek.
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="48"/>
       <source>Loft Parameters</source>
-      <translation type="unfinished">Loft Parameters</translation>
+      <translation>LOFT 3D paraméterei</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="72"/>
@@ -2252,37 +2252,37 @@ Lehet, hogy a geometria érvénytelen, vagy a változók inkompatibilisek.
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="75"/>
       <source>Add Mirror Transformation</source>
-      <translation type="unfinished">Add Mirror Transformation</translation>
+      <translation>Tükrözött átalakítás hozzáadása</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="83"/>
       <source>Add Linear Pattern</source>
-      <translation type="unfinished">Add Linear Pattern</translation>
+      <translation>Lineáris minta hozzáadása</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="91"/>
       <source>Add Polar Pattern</source>
-      <translation type="unfinished">Add Polar Pattern</translation>
+      <translation>Sarki minta hozzáadása</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="99"/>
       <source>Add Scale Transformation</source>
-      <translation type="unfinished">Add Scale Transformation</translation>
+      <translation>Méretezett átalakítás hozzáadása</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="102"/>
       <source>Move Up</source>
-      <translation type="unfinished">Move Up</translation>
+      <translation>Mozgatás felfelé</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="105"/>
       <source>Move Down</source>
-      <translation type="unfinished">Move Down</translation>
+      <translation>Mozgatás lefelé</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="137"/>
       <source>Right-click to add a transformation</source>
-      <translation type="unfinished">Right-click to add a transformation</translation>
+      <translation>Kattintson a jobb gombbal a transzformáció hozzáadásához</translation>
     </message>
   </context>
   <context>
@@ -2290,17 +2290,17 @@ Lehet, hogy a geometria érvénytelen, vagy a változók inkompatibilisek.
     <message>
       <location filename="../../TaskPadParameters.cpp" line="38"/>
       <source>Pad Parameters</source>
-      <translation type="unfinished">Pad Parameters</translation>
+      <translation>Blokk kiemelkedés paraméterei</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="40"/>
       <source>Offset the pad from the face at which the pad will end on side 1</source>
-      <translation type="unfinished">Offset the pad from the face at which the pad will end on side 1</translation>
+      <translation>Állítsa be a blokk kiemelkedés eltolását attól a felülettől, ahol a blokk kiemelkedés az 1. oldalon véget ér</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="41"/>
       <source>Offset the pad from the face at which the pad will end on side 2</source>
-      <translation type="unfinished">Offset the pad from the face at which the pad will end on side 2</translation>
+      <translation>Állítsa be a blokk kiemelkedés eltolását attól a felülettől, ahol a blokk kiemelkedés az 2. oldalon véget ér</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="42"/>
@@ -2374,12 +2374,12 @@ Lehet, hogy a geometria érvénytelen, vagy a változók inkompatibilisek.
       <location filename="../../TaskPadPocketParameters.ui" line="255"/>
       <location filename="../../TaskPadPocketParameters.ui" line="484"/>
       <source>Select Face</source>
-      <translation type="unfinished">Select Face</translation>
+      <translation>Felület kiválasztás</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="281"/>
       <source>Side 2</source>
-      <translation type="unfinished">Side 2</translation>
+      <translation>2. oldal</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="512"/>
@@ -2435,7 +2435,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="534"/>
       <source>Direction/edge</source>
-      <translation type="unfinished">Direction/edge</translation>
+      <translation>Irány / él</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="551"/>
@@ -2450,7 +2450,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="589"/>
       <source>X-component of direction vector</source>
-      <translation type="unfinished">X-component of direction vector</translation>
+      <translation>Irányvektor X komponense</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="611"/>
@@ -2460,7 +2460,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="618"/>
       <source>Y-component of direction vector</source>
-      <translation type="unfinished">Y-component of direction vector</translation>
+      <translation>Irányvektor Y komponense</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="640"/>
@@ -2470,7 +2470,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="647"/>
       <source>Z-component of direction vector</source>
-      <translation type="unfinished">Z-component of direction vector</translation>
+      <translation>Irányvektor Z komponense</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="118"/>
@@ -2486,7 +2486,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="46"/>
       <source>Side 1</source>
-      <translation type="unfinished">Side 1</translation>
+      <translation>1. oldal</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="121"/>
@@ -2498,13 +2498,13 @@ measured along the specified direction</source>
       <location filename="../../TaskPadPocketParameters.ui" line="174"/>
       <location filename="../../TaskPadPocketParameters.ui" line="403"/>
       <source>Select Shape</source>
-      <translation type="unfinished">Select Shape</translation>
+      <translation>Forma kiválasztása</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="189"/>
       <location filename="../../TaskPadPocketParameters.ui" line="418"/>
       <source>Selects all faces of the shape</source>
-      <translation type="unfinished">Selects all faces of the shape</translation>
+      <translation>Válassza ki az összes hasonló alakú felületet</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="678"/>
@@ -2547,7 +2547,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="76"/>
       <source>Curvilinear equivalence</source>
-      <translation type="unfinished">Curvilinear equivalence</translation>
+      <translation>Görbevonalú egyenértékűség</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="83"/>
@@ -2592,7 +2592,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="575"/>
       <source>Section Orientation</source>
-      <translation type="unfinished">Section Orientation</translation>
+      <translation>Szakasz tájolás</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="603"/>
@@ -2616,22 +2616,22 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="51"/>
       <source>Corner transition</source>
-      <translation type="unfinished">Corner transition</translation>
+      <translation>Sarok átmenet</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="70"/>
       <source>Right corner</source>
-      <translation type="unfinished">Right corner</translation>
+      <translation>Jobb sarok</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="75"/>
       <source>Round corner</source>
-      <translation type="unfinished">Round corner</translation>
+      <translation>Kerek sarok</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="85"/>
       <source>Path to Sweep Along</source>
-      <translation type="unfinished">Path to Sweep Along</translation>
+      <translation>Pálya mentén pásztázni</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="119"/>
@@ -2641,7 +2641,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="138"/>
       <source>Remove edge</source>
-      <translation type="unfinished">Remove edge</translation>
+      <translation>Él eltávolítás</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="65"/>
@@ -2651,7 +2651,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="67"/>
       <source>Pipe Parameters</source>
-      <translation type="unfinished">Pipe Parameters</translation>
+      <translation>Cső paraméterei</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="86"/>
@@ -2705,7 +2705,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="870"/>
       <source>Section Transformation</source>
-      <translation type="unfinished">Section Transformation</translation>
+      <translation>Szakasz átalakítás</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="889"/>
@@ -2718,17 +2718,17 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="38"/>
       <source>Pocket Parameters</source>
-      <translation type="unfinished">Pocket Parameters</translation>
+      <translation>Zseb paraméterei</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="41"/>
       <source>Offset from the selected face at which the pocket will end on side 1</source>
-      <translation type="unfinished">Offset from the selected face at which the pocket will end on side 1</translation>
+      <translation>Eltolás a kiválasztott felülettől, amelynél a zseb az 1. oldalon véget ér</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="44"/>
       <source>Offset from the selected face at which the pocket will end on side 2</source>
-      <translation type="unfinished">Offset from the selected face at which the pocket will end on side 2</translation>
+      <translation>Eltolás a kiválasztott felülettől, amelynél a zseb az 2. oldalon véget ér</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="46"/>
@@ -2863,7 +2863,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="204"/>
       <source>Two angles</source>
-      <translation type="unfinished">Two angles</translation>
+      <translation>Két szög</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="467"/>
@@ -2904,7 +2904,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskShapeBinder.cpp" line="59"/>
       <source>Shape Binder Parameters</source>
-      <translation type="unfinished">Shape Binder Parameters</translation>
+      <translation>Forma kötés paraméterei</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBinder.cpp" line="137"/>
@@ -2962,7 +2962,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="93"/>
       <source>Recto verso</source>
-      <translation type="unfinished">Recto verso</translation>
+      <translation>Dupla oldalas</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="101"/>
@@ -2989,7 +2989,7 @@ measured along the specified direction</source>
       <location filename="../../TaskThicknessParameters.cpp" line="267"/>
       <source>Empty thickness created!
 </source>
-      <translation type="unfinished">Empty thickness created!
+      <translation>Üres vastagságot hozott létre!
 </translation>
     </message>
   </context>
@@ -3039,17 +3039,17 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="456"/>
       <source>Base XY-plane</source>
-      <translation type="unfinished">Base XY-plane</translation>
+      <translation>Alap XY sík</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="457"/>
       <source>Base YZ-plane</source>
-      <translation type="unfinished">Base YZ-plane</translation>
+      <translation>Alap YZ sík</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="458"/>
       <source>Base XZ-plane</source>
-      <translation type="unfinished">Base XZ-plane</translation>
+      <translation>Alap XZ sík</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="430"/>
@@ -3070,12 +3070,12 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskTransformedParameters.ui" line="78"/>
       <source>Add Feature</source>
-      <translation type="unfinished">Add Feature</translation>
+      <translation>Jellemző hozzáadása</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.ui" line="88"/>
       <source>Remove Feature</source>
-      <translation type="unfinished">Remove Feature</translation>
+      <translation>Jellemző törlése</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.ui" line="122"/>
@@ -3091,12 +3091,12 @@ measured along the specified direction</source>
   <context>
     <name>PartDesign_MoveFeature</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="909"/>
+      <location filename="../../CommandBody.cpp" line="908"/>
       <source>Select Body</source>
-      <translation type="unfinished">Select Body</translation>
+      <translation>Test kiválasztás</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="910"/>
+      <location filename="../../CommandBody.cpp" line="909"/>
       <source>Select a body from the list</source>
       <translation>Test kiválasztása a listából</translation>
     </message>
@@ -3104,27 +3104,27 @@ measured along the specified direction</source>
   <context>
     <name>PartDesign_MoveFeatureInTree</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="1084"/>
+      <location filename="../../CommandBody.cpp" line="1090"/>
       <source>Move Feature After…</source>
       <translation>Egy jellemző áthelyezése után…</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1085"/>
+      <location filename="../../CommandBody.cpp" line="1091"/>
       <source>Select a feature from the list</source>
       <translation>Funkció kiválasztása a listából</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1172"/>
-      <source>Move Tip</source>
-      <translation type="unfinished">Move Tip</translation>
-    </message>
-    <message>
       <location filename="../../CommandBody.cpp" line="1178"/>
-      <source>Set tip to last feature?</source>
-      <translation type="unfinished">Set tip to last feature?</translation>
+      <source>Move Tip</source>
+      <translation>Csúcs mozgatása</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1173"/>
+      <location filename="../../CommandBody.cpp" line="1184"/>
+      <source>Set tip to last feature?</source>
+      <translation>Állítsa a kurzort az utolsó jellemzőre?</translation>
+    </message>
+    <message>
+      <location filename="../../CommandBody.cpp" line="1179"/>
       <source>The moved feature appears after the currently set tip.</source>
       <translation>A mozgatott jellemző a beállított csúcs mögött jelenik meg.</translation>
     </message>
@@ -3156,22 +3156,22 @@ measured along the specified direction</source>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="810"/>
       <source>Select a single face as support for a sketch!</source>
-      <translation type="unfinished">Select a single face as support for a sketch!</translation>
+      <translation>Válasszon egyetlen felületet a vázlat létrehozásához!</translation>
     </message>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="817"/>
       <source>Select a face as support for a sketch!</source>
-      <translation type="unfinished">Select a face as support for a sketch!</translation>
+      <translation>Válassz egy felületet, amelyre vázlatot készíthetsz!</translation>
     </message>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="824"/>
       <source>Need a planar face as support for a sketch!</source>
-      <translation type="unfinished">Need a planar face as support for a sketch!</translation>
+      <translation>Szükségem van egy sík felületre vázlat készítéséhez!</translation>
     </message>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="831"/>
       <source>Create a plane first or select a face to sketch on</source>
-      <translation type="unfinished">Create a plane first or select a face to sketch on</translation>
+      <translation>Először hozz létre egy síkot vagy válassz ki egy felületet, hogy rajta vázlatot készíts</translation>
     </message>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="816"/>
@@ -3215,12 +3215,12 @@ measured along the specified direction</source>
     <message>
       <location filename="../../Command.cpp" line="161"/>
       <source>There is no active body. Please activate a body before inserting a datum entity.</source>
-      <translation type="unfinished">There is no active body. Please activate a body before inserting a datum entity.</translation>
+      <translation>Nincs aktív test. Kérjük, aktiváljon egy testet, mielőtt egy referencia elemet beszúrna.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="467"/>
       <source>Sub-shape binder</source>
-      <translation type="unfinished">Sub-shape binder</translation>
+      <translation>Rész forma kötése</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1051"/>
@@ -3256,12 +3256,12 @@ measured along the specified direction</source>
       <location filename="../../Command.cpp" line="1829"/>
       <location filename="../../Command.cpp" line="2191"/>
       <source>Selection is not in the active body</source>
-      <translation type="unfinished">Selection is not in the active body</translation>
+      <translation>Kijelölés nincs az aktív testben</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1857"/>
       <source>Shape of the selected part is empty</source>
-      <translation type="unfinished">Shape of the selected part is empty</translation>
+      <translation>A kiválasztott alkatrész formája üres</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1830"/>
@@ -3271,7 +3271,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../Command.cpp" line="1022"/>
       <source>Consider using a shape binder or a base feature to reference external geometry in a body</source>
-      <translation type="unfinished">Consider using a shape binder or a base feature to reference external geometry in a body</translation>
+      <translation>Próbálja meg a forma csatoló vagy az alap jellemzők használatát testen belüli külső geometriára hivatkozáshoz</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1843"/>
@@ -3309,12 +3309,12 @@ measured along the specified direction</source>
     <message>
       <location filename="../../CommandBody.cpp" line="126"/>
       <source>A body cannot be based on a Part Design feature.</source>
-      <translation type="unfinished">A body cannot be based on a Part Design feature.</translation>
+      <translation>Egy test nem alapulhat az Alkatrész Tervező jellemzőin.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="134"/>
       <source>%1 already belongs to a body and cannot be used as a base feature for another body.</source>
-      <translation type="unfinished">%1 already belongs to a body and cannot be used as a base feature for another body.</translation>
+      <translation>%1 már egy testhez tartozik, nem lehet használni egy másik test alap jellemzőjének.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="150"/>
@@ -3360,98 +3360,98 @@ Ez nem várt eredményekhez vezethet.</translation>
       <translation>Test nem alapulhat több mint egy funkción.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="231"/>
+      <location filename="../../CommandBody.cpp" line="230"/>
       <source>Body</source>
       <translation>Test</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="422"/>
+      <location filename="../../CommandBody.cpp" line="421"/>
       <source>Nothing to migrate</source>
       <translation>Nincs mit áttelepíteni</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="693"/>
+      <location filename="../../CommandBody.cpp" line="692"/>
       <source>Select exactly one Part Design feature or a body.</source>
-      <translation type="unfinished">Select exactly one Part Design feature or a body.</translation>
+      <translation>Válasszon ki pontosan egy Alkatrész Tervezés szolgáltatást vagy egy testet.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="701"/>
+      <location filename="../../CommandBody.cpp" line="700"/>
       <source>Could not determine a body for the selected feature '%s'.</source>
-      <translation type="unfinished">Could not determine a body for the selected feature '%s'.</translation>
+      <translation>Nem tud testet meghatározni a kiválasztott jellemzőhöz '%s'.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="878"/>
+      <location filename="../../CommandBody.cpp" line="877"/>
       <source>Only features of a single source body can be moved</source>
-      <translation type="unfinished">Only features of a single source body can be moved</translation>
+      <translation>Egyetlen forrás testen alapuló jellemzőt lehet mozgatni</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="617"/>
+      <location filename="../../CommandBody.cpp" line="616"/>
       <source>Sketch plane cannot be migrated</source>
       <translation>Vázlat síkot nem lehet áttelepíteni</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="423"/>
+      <location filename="../../CommandBody.cpp" line="422"/>
       <source>No Part Design features without body found Nothing to migrate.</source>
-      <translation type="unfinished">No Part Design features without body found Nothing to migrate.</translation>
+      <translation>Nem találhatók test nélküli Alkatrész tervezési jellemzők. Nincs mit áttelepíteni.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="618"/>
+      <location filename="../../CommandBody.cpp" line="617"/>
       <source>Please edit '%1' and redefine it to use a Base or Datum plane as the sketch plane.</source>
       <translation>Szerkessze meg a '%1' nevet, és határozza meg újra, hogy egy alap- vagy dátumsíkot használjon vázlatsíkként.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="692"/>
-      <location filename="../../CommandBody.cpp" line="700"/>
-      <location filename="../../CommandBody.cpp" line="712"/>
-      <location filename="../../CommandBody.cpp" line="1050"/>
-      <location filename="../../CommandBody.cpp" line="1060"/>
+      <location filename="../../CommandBody.cpp" line="691"/>
+      <location filename="../../CommandBody.cpp" line="699"/>
+      <location filename="../../CommandBody.cpp" line="711"/>
+      <location filename="../../CommandBody.cpp" line="1056"/>
+      <location filename="../../CommandBody.cpp" line="1066"/>
       <source>Selection error</source>
       <translation>Kiválasztási hiba</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="713"/>
+      <location filename="../../CommandBody.cpp" line="712"/>
       <source>Only a solid feature can be the tip of a body.</source>
       <translation>Csak egy szilárd test tulajdonság lehet a test csúcsa.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="847"/>
-      <location filename="../../CommandBody.cpp" line="877"/>
-      <location filename="../../CommandBody.cpp" line="895"/>
+      <location filename="../../CommandBody.cpp" line="846"/>
+      <location filename="../../CommandBody.cpp" line="876"/>
+      <location filename="../../CommandBody.cpp" line="894"/>
       <source>Features cannot be moved</source>
       <translation>Jellemzők nem áthelyezhetőek</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="848"/>
+      <location filename="../../CommandBody.cpp" line="847"/>
       <source>Some of the selected features have dependencies in the source body</source>
       <translation>Néhány kijelölt jellemzőnek függősége van a forrás testben</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="896"/>
+      <location filename="../../CommandBody.cpp" line="895"/>
       <source>There are no other bodies to move to</source>
       <translation>Nincsenek más testek áthelyezéshez</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1051"/>
+      <location filename="../../CommandBody.cpp" line="1057"/>
       <source>Impossible to move the base feature of a body.</source>
       <translation>Nem lehet elmozdítani a test alap tulajdonságát.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1061"/>
+      <location filename="../../CommandBody.cpp" line="1067"/>
       <source>Select one or more features from the same body.</source>
       <translation>Jelöljön ki két vagy több jellemzőt ugyanabból a testből.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1076"/>
+      <location filename="../../CommandBody.cpp" line="1082"/>
       <source>Beginning of the body</source>
       <translation>Test kezdete</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1157"/>
+      <location filename="../../CommandBody.cpp" line="1163"/>
       <source>Dependency violation</source>
       <translation>Függőség megsértése</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1158"/>
+      <location filename="../../CommandBody.cpp" line="1164"/>
       <source>Early feature must not depend on later feature.
 
 </source>
@@ -3501,14 +3501,14 @@ Ez nem várt eredményekhez vezethet.</translation>
       <source>To use Part Design, an active body is required in the document. Activate a body (double-click) or create a new one.
 
 For legacy documents with Part Design objects lacking a body, use the migrate function in Part Design to place them into a body.</source>
-      <translation type="unfinished">To use Part Design, an active body is required in the document. Activate a body (double-click) or create a new one.
+      <translation>Az Alkatrész tervezés használatához aktív test szükséges a dokumentumban. Egy test aktiválása (dupla kattintás) vagy egy új test létrehozása szükséges.
 
-For legacy documents with Part Design objects lacking a body, use the migrate function in Part Design to place them into a body.</translation>
+Az örökölt dokumentumok esetében, amelyek Alkatrész tervezés objektumokat tartalmaznak test nélkül, használja az Alkatrész tervezés áttelepítő funkcióját azok testbe helyezéséhez.</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="207"/>
       <source>To create a new Part Design object, an active body is required in the document. Activate an existing body (double-click) or create a new one.</source>
-      <translation type="unfinished">To create a new Part Design object, an active body is required in the document. Activate an existing body (double-click) or create a new one.</translation>
+      <translation>Egy új Alkatrész tervezésű objektum létrehozásához aktív test szükséges a dokumentumban. Aktiváljon egy meglévő testet (dupla kattintás) vagy hozzon létre egy újat.</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="273"/>
@@ -3541,7 +3541,7 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
     <message>
       <location filename="../../ViewProvider.cpp" line="105"/>
       <source>Set Face Colors</source>
-      <translation type="unfinished">Set Face Colors</translation>
+      <translation>Felület szín beállítás</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="112"/>
@@ -3569,7 +3569,7 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="234"/>
       <source>Edit Datum</source>
-      <translation type="unfinished">Edit Datum</translation>
+      <translation>Referencia szerkesztése</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDressUp.cpp" line="91"/>
@@ -3580,13 +3580,13 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
       <location filename="../../ViewProviderDressUp.cpp" line="92"/>
       <source>%1 misses a base feature.
 This feature is broken and cannot be edited.</source>
-      <translation type="unfinished">%1 misses a base feature.
-This feature is broken and cannot be edited.</translation>
+      <translation>%1 -ből alap jellemző hiányzik.
+Ez a jellemző sérült, és nem szerkeszthető.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="220"/>
       <source>Edit Shape Binder</source>
-      <translation type="unfinished">Edit Shape Binder</translation>
+      <translation>Csatolt forma szerkesztése</translation>
     </message>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="350"/>
@@ -3596,27 +3596,27 @@ This feature is broken and cannot be edited.</translation>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="352"/>
       <source>Select Bound Object</source>
-      <translation type="unfinished">Select Bound Object</translation>
+      <translation>Jelölje ki a határérték objektumot</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="154"/>
       <source>The document "%1" you are editing was designed with an old version of Part Design workbench.</source>
-      <translation type="unfinished">The document "%1" you are editing was designed with an old version of Part Design workbench.</translation>
+      <translation>A szerkeszteni kívánt "%1" dokumentum egy régebbi Alkatrész Tervező munkafelületből származik.</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="161"/>
       <source>Migrate in order to use modern Part Design features?</source>
-      <translation type="unfinished">Migrate in order to use modern Part Design features?</translation>
+      <translation>Kíván áttérni a modern Alkatrész Tervező funkciók használatához?</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="166"/>
       <source>The document "%1" seems to be either in the middle of the migration process from legacy Part Design or have a slightly broken structure.</source>
-      <translation type="unfinished">The document "%1" seems to be either in the middle of the migration process from legacy Part Design or have a slightly broken structure.</translation>
+      <translation>A dokumentum "%1" úgy tűnik, hogy az áttelepítési folyamat közepén van a régi Alkatrész Tervezőből vagy kissé megtört szerkezetű.</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="173"/>
       <source>Make the migration automatically?</source>
-      <translation type="unfinished">Make the migration automatically?</translation>
+      <translation>Automatikusan végrehajtja az áttelepítést?</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="176"/>
@@ -3630,52 +3630,52 @@ Viszont később is bármikor áttelepítheti a 'AlkatrészTervező -&gt; Áttel
     <message>
       <location filename="../../WorkflowManager.cpp" line="189"/>
       <source>Migrate Manually</source>
-      <translation type="unfinished">Migrate Manually</translation>
+      <translation>Kézi áttelepítés</translation>
     </message>
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="67"/>
       <source>Edit Boolean</source>
-      <translation type="unfinished">Edit Boolean</translation>
+      <translation>Logikai művelet szerkesztése</translation>
     </message>
     <message>
       <location filename="../../ViewProviderChamfer.cpp" line="40"/>
       <source>Edit Chamfer</source>
-      <translation type="unfinished">Edit Chamfer</translation>
+      <translation>Letörés szerkesztése</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDraft.cpp" line="41"/>
       <source>Edit Draft</source>
-      <translation type="unfinished">Edit Draft</translation>
+      <translation>Piszkozat szerkesztése</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFillet.cpp" line="40"/>
       <source>Edit Fillet</source>
-      <translation type="unfinished">Edit Fillet</translation>
+      <translation>Lekerekítés szerkesztése</translation>
     </message>
     <message>
       <location filename="../../ViewProviderGroove.cpp" line="43"/>
       <source>Edit Groove</source>
-      <translation type="unfinished">Edit Groove</translation>
+      <translation>Horony megmunkálása</translation>
     </message>
     <message>
       <location filename="../../ViewProviderHelix.cpp" line="48"/>
       <source>Edit Helix</source>
-      <translation type="unfinished">Edit Helix</translation>
+      <translation>Spirál szerkesztés</translation>
     </message>
     <message>
       <location filename="../../ViewProviderHole.cpp" line="63"/>
       <source>Edit Hole</source>
-      <translation type="unfinished">Edit Hole</translation>
+      <translation>Furat szerkesztése</translation>
     </message>
     <message>
       <location filename="../../ViewProviderLinearPattern.cpp" line="38"/>
       <source>Edit Linear Pattern</source>
-      <translation type="unfinished">Edit Linear Pattern</translation>
+      <translation>Vonalminta szerkesztése</translation>
     </message>
     <message>
       <location filename="../../ViewProviderLoft.cpp" line="65"/>
       <source>Edit Loft</source>
-      <translation type="unfinished">Edit Loft</translation>
+      <translation>LOFT 3D szerkesztése</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirrored.cpp" line="38"/>
@@ -3685,47 +3685,47 @@ Viszont később is bármikor áttelepítheti a 'AlkatrészTervező -&gt; Áttel
     <message>
       <location filename="../../ViewProviderMultiTransform.cpp" line="47"/>
       <source>Edit Multi-Transform</source>
-      <translation type="unfinished">Edit Multi-Transform</translation>
+      <translation>Többszörös átalakítás szerkesztése</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPad.cpp" line="43"/>
       <source>Edit Pad</source>
-      <translation type="unfinished">Edit Pad</translation>
+      <translation>Kiemelkedés szerkesztése</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPipe.cpp" line="75"/>
       <source>Edit Pipe</source>
-      <translation type="unfinished">Edit Pipe</translation>
+      <translation>Cső szerkesztése</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPocket.cpp" line="45"/>
       <source>Edit Pocket</source>
-      <translation type="unfinished">Edit Pocket</translation>
+      <translation>Zseb szerkesztése</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPolarPattern.cpp" line="38"/>
       <source>Edit Polar Pattern</source>
-      <translation type="unfinished">Edit Polar Pattern</translation>
+      <translation>Sarki minta szerkesztése</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPrimitive.cpp" line="49"/>
       <source>Edit Primitive</source>
-      <translation type="unfinished">Edit Primitive</translation>
+      <translation>Alaptest szerkesztése</translation>
     </message>
     <message>
       <location filename="../../ViewProviderRevolution.cpp" line="43"/>
       <source>Edit Revolution</source>
-      <translation type="unfinished">Edit Revolution</translation>
+      <translation>Forgás szerkesztése</translation>
     </message>
     <message>
       <location filename="../../ViewProviderScaled.cpp" line="38"/>
       <source>Edit Scale</source>
-      <translation type="unfinished">Edit Scale</translation>
+      <translation>Méretezett szerkesztése</translation>
     </message>
     <message>
       <location filename="../../ViewProviderThickness.cpp" line="40"/>
       <source>Edit Thickness</source>
-      <translation type="unfinished">Edit Thickness</translation>
+      <translation>Vastagság szerkesztése</translation>
     </message>
   </context>
   <context>
@@ -3733,17 +3733,17 @@ Viszont később is bármikor áttelepítheti a 'AlkatrészTervező -&gt; Áttel
     <message>
       <location filename="../../../SprocketFeature.ui" line="14"/>
       <source>Sprocket Parameters</source>
-      <translation type="unfinished">Sprocket Parameters</translation>
+      <translation>Fogaskerék paraméterei</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="26"/>
       <source>Number of teeth</source>
-      <translation type="unfinished">Number of teeth</translation>
+      <translation>Fogak száma</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="52"/>
       <source>Sprocket reference</source>
-      <translation type="unfinished">Sprocket reference</translation>
+      <translation>Fogaskerék hivatkozás</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="66"/>
@@ -3818,27 +3818,27 @@ Viszont később is bármikor áttelepítheti a 'AlkatrészTervező -&gt; Áttel
     <message>
       <location filename="../../../SprocketFeature.ui" line="136"/>
       <source>Bicycle with derailleur</source>
-      <translation type="unfinished">Bicycle with derailleur</translation>
+      <translation>Váltó nélküli kerekpár</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="141"/>
       <source>Bicycle without derailleur</source>
-      <translation type="unfinished">Bicycle without derailleur</translation>
+      <translation>Váltó nélküli kerekpár</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="219"/>
       <source>Chain pitch</source>
-      <translation type="unfinished">Chain pitch</translation>
+      <translation>Lánc szegmens hossz</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="266"/>
       <source>Chain roller diameter</source>
-      <translation type="unfinished">Chain roller diameter</translation>
+      <translation>Lánc görgő átmérő</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="310"/>
       <source>Tooth width</source>
-      <translation type="unfinished">Tooth width</translation>
+      <translation>Fog szélesség</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="146"/>
@@ -3928,7 +3928,7 @@ Megjegyzés: a számítás eltarthat egy ideig</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="1006"/>
       <source>Thread Depth</source>
-      <translation type="unfinished">Thread Depth</translation>
+      <translation>Menet mélység</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="1059"/>
@@ -3943,42 +3943,42 @@ Megjegyzés: a számítás eltarthat egy ideig</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="65"/>
       <source>Head type</source>
-      <translation type="unfinished">Head type</translation>
+      <translation>Fej típus</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="153"/>
       <source>Depth type</source>
-      <translation type="unfinished">Depth type</translation>
+      <translation>Furat típusa</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="245"/>
       <source>Head diameter</source>
-      <translation type="unfinished">Head diameter</translation>
+      <translation>Fej átmérő</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="293"/>
       <source>Head depth</source>
-      <translation type="unfinished">Head depth</translation>
+      <translation>Fej mélység</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="678"/>
       <source>Clearance / Passthrough</source>
-      <translation type="unfinished">Clearance / Passthrough</translation>
+      <translation>Hézag / Átmenet</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="683"/>
       <source>Tap drill (to be threaded)</source>
-      <translation type="unfinished">Tap drill (to be threaded)</translation>
+      <translation>Magfurat (menetfúráshoz)</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="688"/>
       <source>Modeled thread</source>
-      <translation type="unfinished">Modeled thread</translation>
+      <translation>Menet megjelenítése</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="696"/>
       <source>Hole type</source>
-      <translation type="unfinished">Hole type</translation>
+      <translation>Furat típus</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="817"/>
@@ -4061,7 +4061,7 @@ Csak menet nélküli furatokhoz érhető el</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="95"/>
       <source>Base profile types</source>
-      <translation type="unfinished">Base profile types</translation>
+      <translation>Alap szelvény típusok</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="126"/>
@@ -4092,29 +4092,29 @@ Csak menet nélküli furatokhoz érhető el</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="197"/>
       <source>Custom head values</source>
-      <translation type="unfinished">Custom head values</translation>
+      <translation>Egyedi fej értékek</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="367"/>
       <source>Drill angle</source>
       <extracomment>Translate it as short as possible</extracomment>
-      <translation type="unfinished">Drill angle</translation>
+      <translation>Fúrási szög</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="403"/>
       <source>Include in depth</source>
       <extracomment>Translate it as short as possible</extracomment>
-      <translation type="unfinished">Include in depth</translation>
+      <translation>Beépíteni a mélységbe</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="610"/>
       <source>Switch direction</source>
-      <translation type="unfinished">Switch direction</translation>
+      <translation>Irány megfordítása</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="662"/>
       <source>&lt;b&gt;Threading&lt;/b&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Threading&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;Menetfúrás&lt;/b&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="783"/>
@@ -4124,17 +4124,17 @@ Csak menet nélküli furatokhoz érhető el</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="892"/>
       <source>&amp;Right hand</source>
-      <translation type="unfinished">&amp;Right hand</translation>
+      <translation>&amp;Jobb menet</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="908"/>
       <source>&amp;Left hand</source>
-      <translation type="unfinished">&amp;Left hand</translation>
+      <translation>&amp;Balmenet</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="957"/>
       <source>Thread Depth Type</source>
-      <translation type="unfinished">Thread Depth Type</translation>
+      <translation>Menet mélység típus</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="971"/>
@@ -4225,37 +4225,37 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
       <source>Additive Features</source>
-      <translation type="unfinished">Additive Features</translation>
+      <translation>Hozzáadandó jellemzők</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
       <source>Subtractive Features</source>
-      <translation type="unfinished">Subtractive Features</translation>
+      <translation>Kivonandó jellemzők</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="47"/>
       <source>Dress-Up Features</source>
-      <translation type="unfinished">Dress-Up Features</translation>
+      <translation>Felépítés jellemzői</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
       <source>Transformation Features</source>
-      <translation type="unfinished">Transformation Features</translation>
+      <translation>Mintázás jellemzői</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
       <source>Sprocket…</source>
-      <translation type="unfinished">Sprocket…</translation>
+      <translation>Fogaskerék…</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>Involute Gear</source>
-      <translation type="unfinished">Involute Gear</translation>
+      <translation>Evolvens, befelé görbülő fogaskerék</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
       <source>Shaft Design Wizard</source>
-      <translation type="unfinished">Shaft Design Wizard</translation>
+      <translation>Tengelytervező varázsló</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="60"/>
@@ -4328,7 +4328,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="67"/>
       <source>Shaft Wizard</source>
-      <translation type="unfinished">Shaft Wizard</translation>
+      <translation>Tengely varázsló</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="75"/>
@@ -4402,12 +4402,12 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../WizardShaft/WizardShaft.py" line="118"/>
       <source>Missing Module</source>
-      <translation type="unfinished">Missing Module</translation>
+      <translation>Hiányzó modul</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaft.py" line="124"/>
       <source>The Plot add-on is not installed. Install it to enable this feature.</source>
-      <translation type="unfinished">The Plot add-on is not installed. Install it to enable this feature.</translation>
+      <translation>A feltüntetett kiegészítő nincs telepítve. Telepítse a jellemző aktiválásához.</translation>
     </message>
   </context>
   <context>
@@ -4451,36 +4451,25 @@ over 90: larger hole radius at the bottom</source>
       <translation>Az Alapvető tulajdonság alakja üres</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="85"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="75"/>
       <source>Cannot do boolean cut without BaseFeature</source>
       <translation>Alaptulajdonság nélkül nem lehet logikai vágást végrehajtani</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="102"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="143"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="92"/>
       <source>Cannot do boolean with anything but Part::Feature and its derivatives</source>
       <translation>Logikai művelet csak a Part::Feature tulajdonsággal és származékaival hajtható végre</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="114"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="104"/>
       <source>Cannot do boolean operation with invalid base shape</source>
       <translation>Nem lehet logikai műveletet végrehajtani érvénytelen elsődleges alakzattal</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="123"/>
-      <source>Cannot do boolean on feature which is not in a body</source>
-      <translation>Nem hajthat végre logikai műveletet olyan szolgáltatáson, amely nem szerepel a tartalomban</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="159"/>
-      <source>Base shape is null</source>
-      <translation>Alapalakzat üres</translation>
-    </message>
-    <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="190"/>
       <location filename="../../../App/FeatureDraft.cpp" line="332"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="205"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="131"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="140"/>
       <location filename="../../../App/FeatureHole.cpp" line="2067"/>
       <location filename="../../../App/FeatureLoft.cpp" line="331"/>
       <location filename="../../../App/FeatureLoft.cpp" line="375"/>
@@ -4492,38 +4481,37 @@ over 90: larger hole radius at the bottom</source>
       <location filename="../../../App/FeatureExtrude.cpp" line="755"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="768"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
-      <translation type="unfinished">Result has multiple solids: enable 'Allow Compound' in the active body.</translation>
+      <translation>Az eredmény több szilárd testet tartalmaz: engedélyezze a 'Többszörös test engedélyezése' lehetrőséget az aktív testnél.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="133"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="165"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="114"/>
       <source>Tool shape is null</source>
       <translation>A szerszám alakja üres</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="187"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="141"/>
       <source>Unsupported boolean operation</source>
       <translation>Nem támogatott logikai művelet</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="326"/>
       <source>Cannot create a pad with a total length of zero.</source>
-      <translation type="unfinished">Cannot create a pad with a total length of zero.</translation>
+      <translation>Nem lehet nullához tartozó összhosszúságú blokk kiemelkedést létrehozni.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="331"/>
       <source>Cannot create a pocket with a total length of zero.</source>
-      <translation type="unfinished">Cannot create a pocket with a total length of zero.</translation>
+      <translation>Nem lehet nullához tartozó összhosszúságú zsebet létrehozni.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="670"/>
       <source>No extrusion geometry was generated.</source>
-      <translation type="unfinished">No extrusion geometry was generated.</translation>
+      <translation>Nem keletkezett kihúzott geometria.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="694"/>
       <source>Resulting fused extrusion is null.</source>
-      <translation type="unfinished">Resulting fused extrusion is null.</translation>
+      <translation>A létrejövő egybeolvasztott kihúzás nulla.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="368"/>
@@ -4540,7 +4528,7 @@ over 90: larger hole radius at the bottom</source>
     </message>
     <message>
       <location filename="../../../App/FeatureDraft.cpp" line="327"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="111"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="120"/>
       <source>Resulting shape is null</source>
       <translation>Üres az eredményül kapott alakzat</translation>
     </message>
@@ -4565,14 +4553,19 @@ over 90: larger hole radius at the bottom</source>
       <translation>A szögnek 0-nál nagyobbnak és 180-nál kisebbnek kell lennie</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureFillet.cpp" line="92"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="95"/>
       <source>Fillet not possible on selected shapes</source>
       <translation>Lekerekítés nem lehetséges a kiválasztott alakzatokon</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureFillet.cpp" line="100"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="103"/>
       <source>Fillet radius must be greater than zero</source>
       <translation>A lekerekítés sugarának nullánál nagyobbnak kell lennie</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureFillet.cpp" line="157"/>
+      <source>Fillet operation failed. The selected edges may contain geometry that cannot be filleted together. Try filleting edges individually or with a smaller radius.</source>
+      <translation>A lekerekítés művelete sikertelen volt. A kiválasztott élek olyan geometriai elemeket tartalmazhatnak, amelyeknél a lekerekítés nem alkalmazható együtt. Próbáljon meg lekerekítést létrehozni minden élen külön-külön, vagy kisebb sugarú lekerekítést alkalmazni.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureGroove.cpp" line="101"/>
@@ -4614,7 +4607,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../App/FeatureGroove.cpp" line="115"/>
       <source>Angles of groove nullify each other</source>
-      <translation type="unfinished">Angles of groove nullify each other</translation>
+      <translation>A horonyszögek kölcsönösen kioltják egymást</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureRevolution.cpp" line="180"/>
@@ -4721,7 +4714,7 @@ A vázlatelemek metszése egy vázlatban nem engedélyezett.</translation>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1224"/>
       <source>Thread type is invalid</source>
-      <translation type="unfinished">Thread type is invalid</translation>
+      <translation>A menet típusa érvénytelen</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1764"/>
@@ -4786,7 +4779,7 @@ A vázlatelemek metszése egy vázlatban nem engedélyezett.</translation>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1983"/>
       <source>Hole error: Finding axis failed</source>
-      <translation type="unfinished">Hole error: Finding axis failed</translation>
+      <translation>Hiba a furatnál: a tengely keresése sikertelen volt</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="2039"/>
@@ -4800,7 +4793,7 @@ A vázlatelemek metszése egy vázlatban nem engedélyezett.</translation>
       <translation>A logikai művelet nem eredményezett szilárd elemeket az élprofilon</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="197"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="151"/>
       <source>Boolean operation failed</source>
       <translation>A logikai művelet sikertelen</translation>
     </message>
@@ -4882,7 +4875,7 @@ A vázlatelemek vagy többszörös felületek metszése egy vázlatban nem enged
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="275"/>
       <source>Pipe: All sections need to be Part features</source>
-      <translation type="unfinished">Pipe: All sections need to be Part features</translation>
+      <translation>Cső: Minden szakasznak az alkatrész jellemzőinek kell lennie</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="283"/>
@@ -5079,7 +5072,7 @@ A vázlatelemek vagy többszörös felületek metszése egy vázlatban nem enged
     <message>
       <location filename="../../../App/FeatureRevolution.cpp" line="124"/>
       <source>Angles of revolution nullify each other</source>
-      <translation type="unfinished">Angles of revolution nullify each other</translation>
+      <translation>A forgóelem szögei kioltják egymást</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureRevolution.cpp" line="155"/>
@@ -5128,12 +5121,12 @@ A vázlatelemek vagy többszörös felületek metszése egy vázlatban nem enged
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="60"/>
       <source>Involute Gear</source>
-      <translation type="unfinished">Involute Gear</translation>
+      <translation>Evolvens, befelé görbülő fogaskerék</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="64"/>
       <source>Creates or edits the involute gear definition</source>
-      <translation type="unfinished">Creates or edits the involute gear definition</translation>
+      <translation>Létrehozza vagy szerkeszti a befelé görbülő fogaskerék definícióját</translation>
     </message>
   </context>
   <context>
@@ -5141,12 +5134,12 @@ A vázlatelemek vagy többszörös felületek metszése egy vázlatban nem enged
     <message>
       <location filename="../../../SprocketFeature.py" line="63"/>
       <source>Sprocket</source>
-      <translation type="unfinished">Sprocket</translation>
+      <translation>Fogaskerék</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.py" line="67"/>
       <source>Creates or edits the sprocket definition.</source>
-      <translation type="unfinished">Creates or edits the sprocket definition.</translation>
+      <translation>Létrehozza vagy szerkeszti a fogaskerék meghatározását.</translation>
     </message>
   </context>
   <context>
@@ -5154,12 +5147,12 @@ A vázlatelemek vagy többszörös felületek metszése egy vázlatban nem enged
     <message>
       <location filename="../../TaskPreviewParameters.ui" line="20"/>
       <source>Show final result</source>
-      <translation type="unfinished">Show final result</translation>
+      <translation>Végső eredmény megjelenítése</translation>
     </message>
     <message>
       <location filename="../../TaskPreviewParameters.ui" line="27"/>
       <source>Show preview overlay</source>
-      <translation type="unfinished">Show preview overlay</translation>
+      <translation>Előnézeti réteg megjelenítése</translation>
     </message>
     <message>
       <location filename="../../TaskFeatureParameters.cpp" line="48"/>
@@ -5172,12 +5165,12 @@ A vázlatelemek vagy többszörös felületek metszése egy vázlatban nem enged
     <message>
       <location filename="../../../WizardShaft/WizardShaft.py" line="223"/>
       <source>Shaft Design Wizard</source>
-      <translation type="unfinished">Shaft Design Wizard</translation>
+      <translation>Tengelytervező varázsló</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaft.py" line="226"/>
       <source>Starts the shaft design wizard</source>
-      <translation type="unfinished">Starts the shaft design wizard</translation>
+      <translation>Tengelytervező varázsló indítása</translation>
     </message>
   </context>
   <context>
@@ -5185,38 +5178,38 @@ A vázlatelemek vagy többszörös felületek metszése egy vázlatban nem enged
     <message>
       <location filename="../../../App/FeatureAddSub.cpp" line="84"/>
       <source>Failure while computing removed volume preview: %1</source>
-      <translation type="unfinished">Failure while computing removed volume preview: %1</translation>
+      <translation>Hiba a törölt térfogat előnézet számítása közben: %1</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureAddSub.cpp" line="105"/>
       <source>Resulting shape is empty. That may indicate that no material will be removed or a problem with the model.</source>
-      <translation type="unfinished">Resulting shape is empty. That may indicate that no material will be removed or a problem with the model.</translation>
+      <translation>A keletkező forma üres. Ez azt jelezheti, hogy nem kerül anyag eltávolításra, vagy probléma van a modellel.</translation>
     </message>
   </context>
   <context>
     <name>CmdPartDesignCompDatums</name>
     <message>
-      <location filename="../../Command.cpp" line="2645"/>
+      <location filename="../../Command.cpp" line="2644"/>
       <source>Create Datum</source>
-      <translation type="unfinished">Create Datum</translation>
+      <translation>Referencia létrehozása</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2646"/>
+      <location filename="../../Command.cpp" line="2645"/>
       <source>Creates a datum object or local coordinate system</source>
-      <translation type="unfinished">Creates a datum object or local coordinate system</translation>
+      <translation>Referencia objektumot vagy helyi koordináta rendszert hoz létre</translation>
     </message>
   </context>
   <context>
     <name>CmdPartDesignCompSketches</name>
     <message>
-      <location filename="../../Command.cpp" line="2680"/>
+      <location filename="../../Command.cpp" line="2679"/>
       <source>Create Datum</source>
-      <translation type="unfinished">Create Datum</translation>
+      <translation>Referencia létrehozása</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2681"/>
+      <location filename="../../Command.cpp" line="2680"/>
       <source>Creates a datum object or local coordinate system</source>
-      <translation type="unfinished">Creates a datum object or local coordinate system</translation>
+      <translation>Referencia objektumot vagy helyi koordináta rendszert hoz létre</translation>
     </message>
   </context>
   <context>
@@ -5224,42 +5217,42 @@ A vázlatelemek vagy többszörös felületek metszése egy vázlatban nem enged
     <message>
       <location filename="../../CommandPrimitive.cpp" line="215"/>
       <source>Creates an additive box by its width, height, and length</source>
-      <translation type="unfinished">Creates an additive box by its width, height, and length</translation>
+      <translation>Létrehoz egy hozzáadandó téglatestet a szélesség, magasság és hosszúság megadásával</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="224"/>
       <source>Creates an additive cylinder by its radius, height, and angle</source>
-      <translation type="unfinished">Creates an additive cylinder by its radius, height, and angle</translation>
+      <translation>Létrehoz egy hozzáadandó hengert a sugár, a magasság és a szög megadásával</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="233"/>
       <source>Creates an additive sphere by its radius and various angles</source>
-      <translation type="unfinished">Creates an additive sphere by its radius and various angles</translation>
+      <translation>Létrehoz egy hozzáadandó gömböt sugár és különböző szögek megadásával</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="242"/>
       <source>Creates an additive cone</source>
-      <translation type="unfinished">Creates an additive cone</translation>
+      <translation>Létrehoz egy kiegészítő kúpot</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="248"/>
       <source>Creates an additive ellipsoid</source>
-      <translation type="unfinished">Creates an additive ellipsoid</translation>
+      <translation>Létrehoz egy kiegészítő ellipszoidot</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="254"/>
       <source>Creates an additive torus</source>
-      <translation type="unfinished">Creates an additive torus</translation>
+      <translation>Létrehoz egy kiegészítő tóruszt</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="260"/>
       <source>Creates an additive prism</source>
-      <translation type="unfinished">Creates an additive prism</translation>
+      <translation>Létrehoz egy kiegészítő prizmát</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="266"/>
       <source>Creates an additive wedge</source>
-      <translation type="unfinished">Creates an additive wedge</translation>
+      <translation>Létrehoz egy kiegészítő éket</translation>
     </message>
   </context>
   <context>
@@ -5267,42 +5260,42 @@ A vázlatelemek vagy többszörös felületek metszése egy vázlatban nem enged
     <message>
       <location filename="../../CommandPrimitive.cpp" line="400"/>
       <source>Creates a subtractive box by its width, height and length</source>
-      <translation type="unfinished">Creates a subtractive box by its width, height and length</translation>
+      <translation>Létrehoz egy kivonandó mező dobozt a szélessége, magassága és hossza alapján</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="409"/>
       <source>Creates a subtractive cylinder by its radius, height and angle</source>
-      <translation type="unfinished">Creates a subtractive cylinder by its radius, height and angle</translation>
+      <translation>Létrehoz egy kiegészítő hengert a rádiusz, magasság és szög megadásával</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="418"/>
       <source>Creates a subtractive sphere by its radius and various angles</source>
-      <translation type="unfinished">Creates a subtractive sphere by its radius and various angles</translation>
+      <translation>Létrehoz egy kivonandó gömböt a sugár és különböző szögek megadásával</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="427"/>
       <source>Creates a subtractive cone</source>
-      <translation type="unfinished">Creates a subtractive cone</translation>
+      <translation>Létrehoz egy kivonandó kúpot</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="433"/>
       <source>Creates a subtractive ellipsoid</source>
-      <translation type="unfinished">Creates a subtractive ellipsoid</translation>
+      <translation>Létrehoz egy kivonandó ellipszoidot</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="439"/>
       <source>Creates a subtractive torus</source>
-      <translation type="unfinished">Creates a subtractive torus</translation>
+      <translation>Létrehoz egy kivonandó tóruszt</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="445"/>
       <source>Creates a subtractive prism</source>
-      <translation type="unfinished">Creates a subtractive prism</translation>
+      <translation>Létrehoz egy kivonandó prizmát</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="451"/>
       <source>Creates a subtractive wedge</source>
-      <translation type="unfinished">Creates a subtractive wedge</translation>
+      <translation>Létrehoz egy kivonandó éket</translation>
     </message>
   </context>
   <context>
@@ -5316,17 +5309,17 @@ A vázlatelemek vagy többszörös felületek metszése egy vázlatban nem enged
   <context>
     <name>PartDesignGui::TaskDlgRevolutionParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="833"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="824"/>
       <source>Revolution Parameters</source>
-      <translation type="unfinished">Revolution Parameters</translation>
+      <translation>Forgási paraméterek</translation>
     </message>
   </context>
   <context>
     <name>PartDesignGui::TaskDlgGrooveParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="843"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="834"/>
       <source>Groove Parameters</source>
-      <translation type="unfinished">Groove Parameters</translation>
+      <translation>Horony paraméterek</translation>
     </message>
   </context>
   <context>
@@ -5334,7 +5327,7 @@ A vázlatelemek vagy többszörös felületek metszése egy vázlatban nem enged
     <message>
       <location filename="../../TaskTransformedMessages.cpp" line="37"/>
       <source>Transformed Feature Messages</source>
-      <translation type="unfinished">Transformed Feature Messages</translation>
+      <translation>Üzenetek az átalakított jellemzőkről</translation>
     </message>
   </context>
   <context>
@@ -5342,7 +5335,7 @@ A vázlatelemek vagy többszörös felületek metszése egy vázlatban nem enged
     <message>
       <location filename="../../ViewProviderBody.cpp" line="122"/>
       <source>Active Body</source>
-      <translation type="unfinished">Active Body</translation>
+      <translation>Aktív test</translation>
     </message>
   </context>
   <context>
@@ -5358,22 +5351,22 @@ A vázlatelemek vagy többszörös felületek metszése egy vázlatban nem enged
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="113"/>
       <source>Datum Plane Parameters</source>
-      <translation type="unfinished">Datum Plane Parameters</translation>
+      <translation>Referenciasík paraméterei</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="118"/>
       <source>Datum Line Parameters</source>
-      <translation type="unfinished">Datum Line Parameters</translation>
+      <translation>Referencia egyenes paraméterei</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="123"/>
       <source>Datum Point Parameters</source>
-      <translation type="unfinished">Datum Point Parameters</translation>
+      <translation>Referencia pont paraméterei</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="128"/>
       <source>Local Coordinate System Parameters</source>
-      <translation type="unfinished">Local Coordinate System Parameters</translation>
+      <translation>Helyi koordináta rendszer paraméterei</translation>
     </message>
   </context>
   <context>
@@ -5381,7 +5374,7 @@ A vázlatelemek vagy többszörös felületek metszése egy vázlatban nem enged
     <message>
       <location filename="../../ViewProviderDraft.h" line="44"/>
       <source>Draft Parameters</source>
-      <translation type="unfinished">Draft Parameters</translation>
+      <translation>Tervrajz paraméterei</translation>
     </message>
   </context>
   <context>
@@ -5389,7 +5382,7 @@ A vázlatelemek vagy többszörös felületek metszése egy vázlatban nem enged
     <message>
       <location filename="../../ViewProviderFillet.h" line="43"/>
       <source>Fillet Parameters</source>
-      <translation type="unfinished">Fillet Parameters</translation>
+      <translation>Lekerekítés paraméterei</translation>
     </message>
   </context>
   <context>
@@ -5397,7 +5390,7 @@ A vázlatelemek vagy többszörös felületek metszése egy vázlatban nem enged
     <message>
       <location filename="../../ViewProviderLinearPattern.h" line="40"/>
       <source>Linear Pattern Parameters</source>
-      <translation type="unfinished">Linear Pattern Parameters</translation>
+      <translation>Minta paramétereI</translation>
     </message>
   </context>
   <context>
@@ -5405,7 +5398,7 @@ A vázlatelemek vagy többszörös felületek metszése egy vázlatban nem enged
     <message>
       <location filename="../../ViewProviderMirrored.h" line="40"/>
       <source>Mirror Parameters</source>
-      <translation type="unfinished">Mirror Parameters</translation>
+      <translation>Tükrözés paraméterei</translation>
     </message>
   </context>
   <context>
@@ -5413,7 +5406,7 @@ A vázlatelemek vagy többszörös felületek metszése egy vázlatban nem enged
     <message>
       <location filename="../../ViewProviderMultiTransform.h" line="40"/>
       <source>Multi-Transform Parameters</source>
-      <translation type="unfinished">Multi-Transform Parameters</translation>
+      <translation>Több átalakítási paraméterei</translation>
     </message>
   </context>
   <context>
@@ -5421,7 +5414,7 @@ A vázlatelemek vagy többszörös felületek metszése egy vázlatban nem enged
     <message>
       <location filename="../../ViewProviderPolarPattern.h" line="40"/>
       <source>Polar Pattern Parameters</source>
-      <translation type="unfinished">Polar Pattern Parameters</translation>
+      <translation>Kör alakú minta tömbparaméterek</translation>
     </message>
   </context>
   <context>
@@ -5429,7 +5422,7 @@ A vázlatelemek vagy többszörös felületek metszése egy vázlatban nem enged
     <message>
       <location filename="../../ViewProviderScaled.h" line="40"/>
       <source>Scale Parameters</source>
-      <translation type="unfinished">Scale Parameters</translation>
+      <translation>Méretezés paraméterei</translation>
     </message>
   </context>
   <context>
@@ -5437,7 +5430,7 @@ A vázlatelemek vagy többszörös felületek metszése egy vázlatban nem enged
     <message>
       <location filename="../../ViewProviderThickness.h" line="43"/>
       <source>Thickness Parameters</source>
-      <translation type="unfinished">Thickness Parameters</translation>
+      <translation>Vastagság paraméterei</translation>
     </message>
   </context>
   <context>
@@ -5445,17 +5438,17 @@ A vázlatelemek vagy többszörös felületek metszése egy vázlatban nem enged
     <message>
       <location filename="../../TaskPatternParameters.cpp" line="130"/>
       <source>Direction 2</source>
-      <translation type="unfinished">Direction 2</translation>
+      <translation>2. irány</translation>
     </message>
     <message>
       <location filename="../../TaskPatternParameters.cpp" line="246"/>
       <source>Select a direction reference (edge, face, datum line)</source>
-      <translation type="unfinished">Select a direction reference (edge, face, datum line)</translation>
+      <translation>Válasszon egy irányhivatkozást (él, felület, referencia egyenes)</translation>
     </message>
     <message>
       <location filename="../../TaskPatternParameters.cpp" line="332"/>
       <source>Invalid selection. Select an edge, planar face, or datum line.</source>
-      <translation type="unfinished">Invalid selection. Select an edge, planar face, or datum line.</translation>
+      <translation>Érvénytelen kiválasztás. Válasszon ki egy élt, egy sík felületet vagy egy referencia egyenest.</translation>
     </message>
   </context>
 </TS>

@@ -80,12 +80,12 @@
 Гэтае зробіць яго жорсткім.</translation>
     </message>
     <message>
-      <location filename="../../../App/BomObject.cpp" line="279"/>
+      <location filename="../../../App/BomObject.cpp" line="287"/>
       <source>N/A</source>
       <translation>Няма</translation>
     </message>
     <message>
-      <location filename="../../../App/BomObject.cpp" line="303"/>
+      <location filename="../../../App/BomObject.cpp" line="311"/>
       <source>Not supported</source>
       <translation>Не падтрымліваецца</translation>
     </message>
@@ -137,7 +137,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="1694"/>
+      <location filename="../../../JointObject.py" line="1700"/>
       <source>Distance</source>
       <translation>Адлегласць</translation>
     </message>
@@ -177,27 +177,27 @@
       <translation>Рэмень</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="759"/>
+      <location filename="../../../JointObject.py" line="757"/>
       <source>Broken link in: </source>
       <translation>Непрацуючы спасылак у: </translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1531"/>
+      <location filename="../../../JointObject.py" line="1529"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>Абраць два элемента з дзвюх асобных частак</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1696"/>
+      <location filename="../../../JointObject.py" line="1702"/>
       <source>Radius 1</source>
       <translation>Радыус 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1698"/>
+      <location filename="../../../JointObject.py" line="1704"/>
       <source>Thread pitch</source>
       <translation>Крок разьбы</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1700"/>
+      <location filename="../../../JointObject.py" line="1706"/>
       <source>Pitch radius</source>
       <translation>Радыус падачы</translation>
     </message>
@@ -313,42 +313,49 @@
 Дадзеныя слупкі нельга пераназваць.</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="85"/>
+      <location filename="../../../CommandInsertNewPart.py" line="108"/>
       <source>Part name</source>
       <translation>Назва дэталі</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="90"/>
+      <location filename="../../../CommandInsertNewPart.py" line="113"/>
       <source>Part</source>
       <translation>Дэталь</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="95"/>
+      <location filename="../../../CommandInsertNewPart.py" line="118"/>
       <source>Create part in new file</source>
       <translation>Стварыце дэталь у новым файле</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="102"/>
+      <location filename="../../../CommandInsertNewPart.py" line="125"/>
       <source>Joint new part origin</source>
       <translation>Пачатак каардынат новай дэталі злучэння</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="138"/>
+      <location filename="../../../CommandInsertNewPart.py" line="161"/>
       <source>If the new document is not saved the new part cannot be linked in the assembly.</source>
       <translation>Калі новы дакумент не захаваны, новая дэталь не можа быць звязаная ў зборцы.</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="139"/>
+      <location filename="../../../CommandInsertNewPart.py" line="78"/>
+      <location filename="../../../CommandInsertNewPart.py" line="162"/>
       <source>Save Document</source>
       <translation>Захаваць дакумент</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="141"/>
+      <location filename="../../../CommandInsertNewPart.py" line="77"/>
+      <source>The assembly document must be saved before inserting a new part.</source>
+      <translation>Перад устаўкай новай дэталі неабходна захаваць дакумент зборкі.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandInsertNewPart.py" line="80"/>
+      <location filename="../../../CommandInsertNewPart.py" line="164"/>
       <source>Save</source>
       <translation>Захаваць</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="144"/>
+      <location filename="../../../CommandInsertNewPart.py" line="167"/>
       <source>Do not Link</source>
       <translation>Не звязваць</translation>
     </message>
@@ -518,144 +525,144 @@ SLOPE - вызначае крутасць пераходу ад 0 да H1 і а�
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="../../../JointObject.py" line="186"/>
+      <location filename="../../../JointObject.py" line="184"/>
       <source>The type of the joint</source>
       <translation>Тып злучэння</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="213"/>
+      <location filename="../../../JointObject.py" line="211"/>
       <source>The first reference of the joint</source>
       <translation>Першы спасылак злучэння</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="225"/>
+      <location filename="../../../JointObject.py" line="223"/>
       <source>This is the local coordinate system within Reference1's object that will be used for the joint</source>
       <translation>Лакальная сістэма каардынат у аб'екце Спасылак1 (Reference1), які будзе ўжывацца для злучэння</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="237"/>
+      <location filename="../../../JointObject.py" line="235"/>
       <source>This prevents Placement1 from recomputing, enabling custom positioning of the placement</source>
       <translation>Прадухіляе паўторнае вылічэнне Размяшчэння1 (Placement1), якое дазваляе наладжваць месцазнаходжанне месца размяшчэння па сваім меркаванні</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="249"/>
-      <location filename="../../../JointObject.py" line="558"/>
+      <location filename="../../../JointObject.py" line="247"/>
+      <location filename="../../../JointObject.py" line="556"/>
       <source>This is the attachment offset of the first connector of the joint</source>
       <translation>Зрушэнне мацавання першага злучніка ў злучэнні</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="271"/>
+      <location filename="../../../JointObject.py" line="269"/>
       <source>This is the local coordinate system within Reference2's object that will be used for the joint</source>
       <translation>Лакальная сістэма каардынат у аб'екце Спасылак2 (Reference2), які будзе ўжывацца для злучэння</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="283"/>
+      <location filename="../../../JointObject.py" line="281"/>
       <source>This prevents Placement2 from recomputing, enabling custom positioning of the placement</source>
       <translation>Прадухіляе паўторнае вылічэнне Размяшчэння2 (Placement2), якое дазваляе наладжваць месцазнаходжанне месца размяшчэння па сваім меркаванні</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="295"/>
-      <location filename="../../../JointObject.py" line="569"/>
+      <location filename="../../../JointObject.py" line="293"/>
+      <location filename="../../../JointObject.py" line="567"/>
       <source>This is the attachment offset of the second connector of the joint</source>
       <translation>Зрушэнне мацавання другога злучніка ў злучэнні</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="317"/>
+      <location filename="../../../JointObject.py" line="315"/>
       <source>Enable the minimum length limit of the joint</source>
       <translation>Дазволіць абмежаванне па найменшай даўжыні злучэння</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="330"/>
+      <location filename="../../../JointObject.py" line="328"/>
       <source>Enable the maximum length limit of the joint</source>
       <translation>Дазволіць абмежаванне па найбольшай даўжыні злучэння</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="343"/>
+      <location filename="../../../JointObject.py" line="341"/>
       <source>Enable the minimum angle limit of the joint</source>
       <translation>Дазволіць абмежаванне па найменшым вуглу злучэння</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="356"/>
+      <location filename="../../../JointObject.py" line="354"/>
       <source>Enable the maximum angle limit of the joint</source>
       <translation>Дазволіць абмежаванне па найбольшым вуглу злучэння</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="386"/>
+      <location filename="../../../JointObject.py" line="384"/>
       <source>This is the angle of the joint. It is used only by the Angle joint.</source>
       <translation>Вугал злучэння.
 Ужываецца толькі для вуглавнога злучэння.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="422"/>
+      <location filename="../../../JointObject.py" line="420"/>
       <source>This is the minimum limit for the length between both coordinate systems (along their z-axis)</source>
       <translation>Найменшая мяжа адлегласці паміж абедзвюма сістэмамі каардынат (наўздоўж іх восі Z)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="434"/>
+      <location filename="../../../JointObject.py" line="432"/>
       <source>This is the maximum limit for the length between both coordinate systems (along their z-axis)</source>
       <translation>Найбольшая мяжа адлегласці паміж абедзвюма сістэмамі каардынат (наўздоўж іх восі Z)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="446"/>
+      <location filename="../../../JointObject.py" line="444"/>
       <source>This is the minimum limit for the angle between both coordinate systems (between their x-axis)</source>
       <translation>Найменшае абмежаванне вугла паміж абедзвюма сістэмамі каардынат (паміж іх воссю X)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="458"/>
+      <location filename="../../../JointObject.py" line="456"/>
       <source>This is the maximum limit for the angle between both coordinate systems (between their x-axis)</source>
       <translation>Найбольшае абмежаванне вугла паміж абедзвюма сістэмамі каардынат (паміж іх воссю X)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="259"/>
+      <location filename="../../../JointObject.py" line="257"/>
       <source>The second reference of the joint</source>
       <translation>Другі спасылак злучэння</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="477"/>
+      <location filename="../../../JointObject.py" line="475"/>
       <source>The first object of the joint</source>
       <translation>Першы аб'ект злучэння</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="497"/>
+      <location filename="../../../JointObject.py" line="495"/>
       <source>The second object of the joint</source>
       <translation>Другі аб'ект злучэння</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="398"/>
+      <location filename="../../../JointObject.py" line="396"/>
       <source>This is the distance of the joint. It is used only by the Distance joint and Rack and Pinion (pitch radius), Screw and Gears and Belt (radius1)</source>
       <translation>Адлегласць паміж шарнірамі.
 Ужываецца толькі ў дыстанцыйным злучэнні, і ў рэечнай шасцярні (радыус падачы), шрубе, шасцярнях і рамяні (радыус1)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="410"/>
+      <location filename="../../../JointObject.py" line="408"/>
       <source>This is the second distance of the joint. It is used only by the gear joint to store the second radius.</source>
       <translation>Другая адлегласць злучэння.
 Ужываецца толькі ў зубчастым злучэнні для захавання другога радыусу.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="511"/>
+      <location filename="../../../JointObject.py" line="509"/>
       <source>The {order} reference of the joint</source>
       <translation>{order} спасылак злучэння</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1153"/>
+      <location filename="../../../JointObject.py" line="1151"/>
       <source>The object to ground</source>
       <translation>Аб'ект для замацавання</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="358"/>
-      <location filename="../../../CommandCreateView.py" line="395"/>
+      <location filename="../../../CommandCreateView.py" line="368"/>
+      <location filename="../../../CommandCreateView.py" line="405"/>
       <source>The objects moved by the move</source>
       <translation>Аб'екты, які перамешчаныя пры перамяшчэнні</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="370"/>
+      <location filename="../../../CommandCreateView.py" line="380"/>
       <source>This is the movement of the move. The end placement is the result of the start placement * this placement.</source>
       <translation>Ход перамяшчэння.
 Канчатковае размяшчэнне з'яўляецца вынікам пачатковага размяшчэння * гэтае размяшчэння.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="379"/>
+      <location filename="../../../CommandCreateView.py" line="389"/>
       <source>The type of the move</source>
       <translation>Тып перамяшчэння</translation>
     </message>
@@ -1516,14 +1523,14 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <translation>Уставіць кампанент</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="202"/>
+      <location filename="../../../CommandInsertLink.py" line="218"/>
       <source>Partially loaded</source>
-      <translation type="unfinished">Partially loaded</translation>
+      <translation>Часткова загружаны</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="556"/>
+      <location filename="../../../CommandInsertLink.py" line="572"/>
       <source>Fully load document</source>
-      <translation type="unfinished">Fully load document</translation>
+      <translation>Дакумент цалкам загружаны</translation>
     </message>
   </context>
   <context>

@@ -4275,90 +4275,90 @@ Jeżeli Rozbieg = 0, rozbieg jest obliczany tak, aby wysokość była taka sama 
       <translation>Aktualizacja</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="170"/>
+      <location filename="../../ArchReference.py" line="173"/>
       <source>Part not found in file</source>
       <translation>Część nie została znaleziona w pliku</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="192"/>
-      <location filename="../../ArchReference.py" line="237"/>
-      <location filename="../../ArchReference.py" line="433"/>
-      <location filename="../../ArchReference.py" line="868"/>
+      <location filename="../../ArchReference.py" line="195"/>
+      <location filename="../../ArchReference.py" line="240"/>
+      <location filename="../../ArchReference.py" line="436"/>
+      <location filename="../../ArchReference.py" line="871"/>
       <source>NativeIFC not available - unable to process IFC files</source>
       <translation>Dodatek NativeIFC jest niedostępny – nie można przetworzyć plików IFC</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="290"/>
+      <location filename="../../ArchReference.py" line="293"/>
       <source>Error removing splitter</source>
       <translation>Błąd przy usuwaniu elementu rozdzielającego</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="700"/>
+      <location filename="../../ArchReference.py" line="703"/>
       <source>Reload reference</source>
       <translation>Odśwież odniesienie</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="706"/>
+      <location filename="../../ArchReference.py" line="709"/>
       <source>Open reference</source>
       <translation>Otwórz odniesienie</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="744"/>
+      <location filename="../../ArchReference.py" line="747"/>
       <source>Unable to get lightWeight node for object referenced in</source>
       <translation>Nie można uzyskać węzła "lekkaWaga" dla obiektu, do którego odwołuje się obiekt</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="753"/>
-      <location filename="../../ArchReference.py" line="757"/>
+      <location filename="../../ArchReference.py" line="756"/>
+      <location filename="../../ArchReference.py" line="760"/>
       <source>Invalid lightWeight node for object referenced in</source>
       <translation>Nieprawidłowy węzeł "lekkaWaga" dla obiektu, do którego występuje odwołanie</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="767"/>
-      <location filename="../../ArchReference.py" line="773"/>
-      <location filename="../../ArchReference.py" line="801"/>
-      <location filename="../../ArchReference.py" line="807"/>
+      <location filename="../../ArchReference.py" line="770"/>
+      <location filename="../../ArchReference.py" line="776"/>
+      <location filename="../../ArchReference.py" line="804"/>
+      <location filename="../../ArchReference.py" line="810"/>
       <source>Invalid root node in</source>
       <translation>Nieprawidłowy węzeł główny w</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="892"/>
+      <location filename="../../ArchReference.py" line="895"/>
       <source>External reference</source>
       <translation>Zewnętrzne odniesienie</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="894"/>
+      <location filename="../../ArchReference.py" line="897"/>
       <source>External file</source>
       <translation>Plik zewnętrzny</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="898"/>
+      <location filename="../../ArchReference.py" line="901"/>
       <source>Open</source>
       <translation>Otwórz</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="905"/>
+      <location filename="../../ArchReference.py" line="908"/>
       <source>Part to use:</source>
       <translation>Część do użycia:</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="910"/>
+      <location filename="../../ArchReference.py" line="913"/>
       <source>Choose File</source>
       <translation>Wybierz plik</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="921"/>
-      <location filename="../../ArchReference.py" line="984"/>
+      <location filename="../../ArchReference.py" line="924"/>
+      <location filename="../../ArchReference.py" line="987"/>
       <source>None (Use whole object)</source>
       <translation>Brak (Użyj całego obiektu)</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="972"/>
+      <location filename="../../ArchReference.py" line="975"/>
       <source>Reference files</source>
       <translation>Pliki odniesienia</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="974"/>
+      <location filename="../../ArchReference.py" line="977"/>
       <source>Choose reference file</source>
       <translation>Wybierz plik odniesienia</translation>
     </message>
@@ -4571,7 +4571,7 @@ Jeżeli Rozbieg = 0, rozbieg jest obliczany tak, aby wysokość była taka sama 
       <location filename="../../ArchSectionPlane.py" line="1503"/>
       <location filename="../../ArchGrid.py" line="384"/>
       <location filename="../../ArchSite.py" line="1294"/>
-      <location filename="../../ArchReference.py" line="695"/>
+      <location filename="../../ArchReference.py" line="698"/>
       <location filename="../../ArchAxisSystem.py" line="222"/>
       <location filename="../../ArchComponent.py" line="1874"/>
       <location filename="../../ArchSchedule.py" line="766"/>
@@ -4695,8 +4695,8 @@ Jeżeli Rozbieg = 0, rozbieg jest obliczany tak, aby wysokość była taka sama 
     <message>
       <location filename="../../importers/importWebGL.py" line="371"/>
       <location filename="../../importers/importJSON.py" line="62"/>
-      <location filename="../../importers/importOBJ.py" line="302"/>
-      <location filename="../../importers/importOBJ.py" line="340"/>
+      <location filename="../../importers/importOBJ.py" line="301"/>
+      <location filename="../../importers/importOBJ.py" line="339"/>
       <source>Successfully written</source>
       <translation>Zapisano pomyślnie</translation>
     </message>
@@ -5361,7 +5361,7 @@ Tworzenie piętra zostało przerwane.</translation>
       <translation>Znaleziono kształt zawierający krzywe, następuje triangulacja</translation>
     </message>
     <message>
-      <location filename="../../importers/importOBJ.py" line="451"/>
+      <location filename="../../importers/importOBJ.py" line="450"/>
       <source>Successfully imported</source>
       <translation>Pomyślnie zaimportowano</translation>
     </message>
@@ -5793,7 +5793,7 @@ Utwórz kilka, aby zdefiniować typy ścian.</translation>
       <translation>Błąd: Nie można zmodyfikować obiektu podstawowego tej ściany</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1715"/>
+      <location filename="../../ArchWall.py" line="1755"/>
       <source>Flip Direction</source>
       <translation>Odwróć kierunek</translation>
     </message>
@@ -6831,12 +6831,12 @@ ma pierwszeństwo przed automatycznie generowaną objętością podrzędną.</tr
       <translation>Łączenie obiektów z tego samego materiału</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="584"/>
+      <location filename="../../ArchReference.py" line="587"/>
       <source>The latest time stamp of the linked file</source>
       <translation>Data ostatniej modyfikacji połączonego pliku</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="590"/>
+      <location filename="../../ArchReference.py" line="593"/>
       <source>If true, the colors from the linked file will be kept updated</source>
       <translation>Jeśli parametr ma wartość Prawda, kolory z połączonego pliku będą aktualizowane</translation>
     </message>

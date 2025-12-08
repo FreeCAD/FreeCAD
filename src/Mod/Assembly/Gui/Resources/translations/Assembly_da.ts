@@ -6,12 +6,12 @@
     <message>
       <location filename="../../../CommandExportASMT.py" line="46"/>
       <source>Export ASMT File</source>
-      <translation type="unfinished">Export ASMT File</translation>
+      <translation>Eksporter ASMT-fil</translation>
     </message>
     <message>
       <location filename="../../../CommandExportASMT.py" line="50"/>
       <source>Export currently active assembly as a ASMT file.</source>
-      <translation type="unfinished">Export currently active assembly as a ASMT file.</translation>
+      <translation>Eksporter den aktive samling som en ASMT-fil.</translation>
     </message>
   </context>
   <context>
@@ -60,7 +60,7 @@
     <message>
       <location filename="../../ViewProviderAssemblyLink.cpp" line="127"/>
       <source>Your sub-assembly is currently rigid. This will make it flexible instead.</source>
-      <translation type="unfinished">Your sub-assembly is currently rigid. This will make it flexible instead.</translation>
+      <translation>Din komponentgruppe er sat til at være stiv. Dette vil gøre den fleksibel i stedet.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssemblyLink.cpp" line="131"/>
@@ -70,15 +70,15 @@
     <message>
       <location filename="../../ViewProviderAssemblyLink.cpp" line="133"/>
       <source>Your sub-assembly is currently flexible. This will make it rigid instead.</source>
-      <translation type="unfinished">Your sub-assembly is currently flexible. This will make it rigid instead.</translation>
+      <translation>Din komponentgruppe er sat til at være fleksibel. Dette vil gøre den stiv i stedet.</translation>
     </message>
     <message>
-      <location filename="../../../App/BomObject.cpp" line="279"/>
+      <location filename="../../../App/BomObject.cpp" line="287"/>
       <source>N/A</source>
       <translation type="unfinished">N/A</translation>
     </message>
     <message>
-      <location filename="../../../App/BomObject.cpp" line="303"/>
+      <location filename="../../../App/BomObject.cpp" line="311"/>
       <source>Not supported</source>
       <translation>Ikke understøttet</translation>
     </message>
@@ -93,7 +93,7 @@
     <message>
       <location filename="../../../InitGui.py" line="110"/>
       <source>Assembly Joints</source>
-      <translation type="unfinished">Assembly Joints</translation>
+      <translation>Forbindelser</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="113"/>
@@ -121,7 +121,7 @@
     <message>
       <location filename="../../../JointObject.py" line="53"/>
       <source>Slider</source>
-      <translation>Glider</translation>
+      <translation>Skyder</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="54"/>
@@ -130,7 +130,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="1694"/>
+      <location filename="../../../JointObject.py" line="1700"/>
       <source>Distance</source>
       <translation type="unfinished">Distance</translation>
     </message>
@@ -170,27 +170,27 @@
       <translation>Rem</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="759"/>
+      <location filename="../../../JointObject.py" line="757"/>
       <source>Broken link in: </source>
-      <translation type="unfinished">Broken link in: </translation>
+      <translation>Ødelagt forbindelse i: </translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1531"/>
+      <location filename="../../../JointObject.py" line="1529"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>Vælg 2 elementer fra 2 forskellige komponenter</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1696"/>
+      <location filename="../../../JointObject.py" line="1702"/>
       <source>Radius 1</source>
       <translation>Radius 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1698"/>
+      <location filename="../../../JointObject.py" line="1704"/>
       <source>Thread pitch</source>
-      <translation type="unfinished">Thread pitch</translation>
+      <translation>Gevindstigning</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1700"/>
+      <location filename="../../../JointObject.py" line="1706"/>
       <source>Pitch radius</source>
       <translation type="unfinished">Pitch radius</translation>
     </message>
@@ -267,7 +267,7 @@
     <message>
       <location filename="../../../CommandCreateBom.py" line="383"/>
       <source>Only parts: adds only part containers and sub-assemblies to the bill of materials. Solids like Part Design bodies, fasteners, or Part workbench primitives are ignored.</source>
-      <translation type="unfinished">Only parts: adds only part containers and sub-assemblies to the bill of materials. Solids like Part Design bodies, fasteners, or Part workbench primitives are ignored.</translation>
+      <translation>Kun komponenter: Tilføjer kun komponentbeholdere og komponentgrupper til styklisten. Massive elementer som PartDesign emner, befæstelseselementer eller Part basisgeometrier ignoreres.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="385"/>
@@ -300,44 +300,51 @@
       <translation>Auto-kolonner: (Indeks, Antal, Navn...) udfyldes automatisk. Enhver ændring du foretager vil blive overskrevet. Disse kolonner kan ikke omdøbes.</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="85"/>
+      <location filename="../../../CommandInsertNewPart.py" line="108"/>
       <source>Part name</source>
       <translation>Komponentnavn</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="90"/>
+      <location filename="../../../CommandInsertNewPart.py" line="113"/>
       <source>Part</source>
       <translation>Komponent</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="95"/>
+      <location filename="../../../CommandInsertNewPart.py" line="118"/>
       <source>Create part in new file</source>
       <translation>Opret en komponent i ny fil</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="102"/>
+      <location filename="../../../CommandInsertNewPart.py" line="125"/>
       <source>Joint new part origin</source>
       <translation type="unfinished">Joint new part origin</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="138"/>
+      <location filename="../../../CommandInsertNewPart.py" line="161"/>
       <source>If the new document is not saved the new part cannot be linked in the assembly.</source>
-      <translation type="unfinished">If the new document is not saved the new part cannot be linked in the assembly.</translation>
+      <translation>Hvis det nye dokument ikke gemmes, kan den nye komponent ikke forbindes til komponentsamlingen.</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="139"/>
+      <location filename="../../../CommandInsertNewPart.py" line="78"/>
+      <location filename="../../../CommandInsertNewPart.py" line="162"/>
       <source>Save Document</source>
       <translation>Gem dokument</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="141"/>
+      <location filename="../../../CommandInsertNewPart.py" line="77"/>
+      <source>The assembly document must be saved before inserting a new part.</source>
+      <translation type="unfinished">The assembly document must be saved before inserting a new part.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandInsertNewPart.py" line="80"/>
+      <location filename="../../../CommandInsertNewPart.py" line="164"/>
       <source>Save</source>
       <translation>Gem</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="144"/>
+      <location filename="../../../CommandInsertNewPart.py" line="167"/>
       <source>Do not Link</source>
-      <translation type="unfinished">Do not Link</translation>
+      <translation>Forbind ikke</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="488"/>
@@ -347,58 +354,58 @@
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="541"/>
       <source>In capital are variables that you need to replace with actual values. More details about each example in its tooltip.</source>
-      <translation type="unfinished">In capital are variables that you need to replace with actual values. More details about each example in its tooltip.</translation>
+      <translation>Med store bogstaver er anført variable, som skal erstattes med faktiske værdier. Der er flere detaljer om hvert eksempel i eksemplernes værktøjstip.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="544"/>
       <source> - Linear: C + VEL*time</source>
-      <translation type="unfinished"> - Linear: C + VEL*time</translation>
+      <translation> - Lineær: C + VEL*tid</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="546"/>
       <source> - Quadratic: C + VEL*time + ACC*time^2</source>
-      <translation type="unfinished"> - Quadratic: C + VEL*time + ACC*time^2</translation>
+      <translation> - Kvadratisk: C + VEL*tid + ACC*tid^2</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="549"/>
       <source> - Harmonic: C + AMP*sin(VEL*time - PHASE)</source>
-      <translation type="unfinished"> - Harmonic: C + AMP*sin(VEL*time - PHASE)</translation>
+      <translation> - Harmonisk: C + AMP*sin(VEL*tid - PHASE)</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="552"/>
       <source> - Exponential: C*exp(time/TIMEC)</source>
-      <translation type="unfinished"> - Exponential: C*exp(time/TIMEC)</translation>
+      <translation> - Eksponentiel: C*exp(tid/TIMEC)</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="558"/>
       <source> - Smooth Step: L1 + (L2 - L1)*((1/2) + (1/pi)*arctan(SLOPE*(time - T0)))</source>
-      <translation type="unfinished"> - Smooth Step: L1 + (L2 - L1)*((1/2) + (1/pi)*arctan(SLOPE*(time - T0)))</translation>
+      <translation> - Udglattet trin: L1 + (L2 - L1)*((1/2) + (1/pi)*arctan(SLOPE*(tid - T0)))</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="565"/>
       <source> - Smooth Square Impulse: (H/pi)*(arctan(SLOPE*(time - T1)) - arctan(SLOPE*(time - T2)))</source>
-      <translation type="unfinished"> - Smooth Square Impulse: (H/pi)*(arctan(SLOPE*(time - T1)) - arctan(SLOPE*(time - T2)))</translation>
+      <translation> - Udglattet firkantimpuls: (H/pi)*(arctan(SLOPE*(tid - T1)) - arctan(SLOPE*(tid - T2)))</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="572"/>
       <source> - Smooth Ramp Top Impulse: ((1/pi)*(arctan(1000*(time - T1)) - arctan(1000*(time - T2))))*(((H2 - H1)/(T2 - T1))*(time - T1) + H1)</source>
-      <translation type="unfinished"> - Smooth Ramp Top Impulse: ((1/pi)*(arctan(1000*(time - T1)) - arctan(1000*(time - T2))))*(((H2 - H1)/(T2 - T1))*(time - T1) + H1)</translation>
+      <translation> - Impuls med skrå top: ((1/pi)*(arctan(1000*(tid - T1)) - arctan(1000*(tid - T2))))*(((H2 - H1)/(T2 - T1))*(tid - T1) + H1)</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="582"/>
       <source>C is a constant offset.
 VEL is a velocity or slope or gradient of the straight line.</source>
-      <translation type="unfinished">C is a constant offset.
-VEL is a velocity or slope or gradient of the straight line.</translation>
+      <translation>C er en konstant forskydning.
+VEL er en hastighed, eller hældningen/stigningen af en lige linje.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="590"/>
       <source>C is a constant offset.
 VEL is the velocity or slope or gradient of the straight line.
 ACC is the acceleration or coefficient of the second order. The function is a parabola.</source>
-      <translation type="unfinished">C is a constant offset.
-VEL is the velocity or slope or gradient of the straight line.
-ACC is the acceleration or coefficient of the second order. The function is a parabola.</translation>
+      <translation>C er en konstant forskydning.
+VEL er en hastighed, eller hældningen/stigningen af en lige linje.
+ACC er accelerationen, eller koefficienten for en andenordens funktion. Funktionen er en parabol.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="599"/>
@@ -406,26 +413,26 @@ ACC is the acceleration or coefficient of the second order. The function is a pa
 AMP is the amplitude of the sine wave.
 VEL is the angular velocity in radians per second.
 PHASE is the phase of the sine wave.</source>
-      <translation type="unfinished">C is a constant offset.
-AMP is the amplitude of the sine wave.
-VEL is the angular velocity in radians per second.
-PHASE is the phase of the sine wave.</translation>
+      <translation>C er en konstant forskydning.
+AMP er amplituden af en sinusfunktion.
+VEL er vinkelhastigheden i radianer pr. sekund.
+PHASE er fasen af sinusfunktionen.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="606"/>
       <source>C is a constant.
 TIMEC is the time constant of the exponential function.</source>
-      <translation type="unfinished">C is a constant.
-TIMEC is the time constant of the exponential function.</translation>
+      <translation>C er en konstant.
+TIMEC er tidskonstanten for den eksponentielle funktion.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="614"/>
       <source>L1 is step level before time = T0.
 L2 is step level after time = T0.
 SLOPE defines the steepness of the transition between L1 and L2 about time = T0. Higher values gives sharper cornered steps. SLOPE = 1000 or greater are suitable.</source>
-      <translation type="unfinished">L1 is step level before time = T0.
-L2 is step level after time = T0.
-SLOPE defines the steepness of the transition between L1 and L2 about time = T0. Higher values gives sharper cornered steps. SLOPE = 1000 or greater are suitable.</translation>
+      <translation>L1 er trinet før tiden = T0.
+L2 er trinet efter tiden = T0.
+SLOPE definerer udglatningen for overgangen mellem L1 og L2 når tid = T0. Højere værdier giver skarpere hjørner på trinnene. Værdier for SLOPE på 1000 eller derover er egnede.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="623"/>
@@ -433,10 +440,10 @@ SLOPE defines the steepness of the transition between L1 and L2 about time = T0.
 T1 is the start of the impulse.
 T2 is the end of the impulse.
 SLOPE defines the steepness of the transition between 0 and H about time = T1 and T2. Higher values gives sharper cornered impulses. SLOPE = 1000 or greater are suitable.</source>
-      <translation type="unfinished">H is the height of the impulse.
-T1 is the start of the impulse.
-T2 is the end of the impulse.
-SLOPE defines the steepness of the transition between 0 and H about time = T1 and T2. Higher values gives sharper cornered impulses. SLOPE = 1000 or greater are suitable.</translation>
+      <translation>H er højden af impulsen.
+T1 er starten på impulsen.
+T2 er slutningen af impulsen.
+SLOPE definerer udglatningen af overgangen mellem 0 og H når tid = T1 og T2. Højere værdier giver skarpere hjørner på trinnene. Værdier for SLOPE på 1000 eller derover er egnede.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="634"/>
@@ -446,12 +453,12 @@ T2 is the end of the impulse.
 H1 is the height at T1 at the beginning of the ramp.
 H2 is the height at T2 at the end of the ramp.
 SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about time = T1 and T2 respectively. Higher values gives sharper cornered impulses. SLOPE = 1000 or greater are suitable.</source>
-      <translation type="unfinished">This is similar to the square impulse but the top has a sloping ramp. It is good for building a smooth piecewise linear function by adding a series of these.
-T1 is the start of the impulse.
-T2 is the end of the impulse.
-H1 is the height at T1 at the beginning of the ramp.
-H2 is the height at T2 at the end of the ramp.
-SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about time = T1 and T2 respectively. Higher values gives sharper cornered impulses. SLOPE = 1000 or greater are suitable.</translation>
+      <translation>Denne svarer til firkantimpulsen, men toppen er skrånende. Funktionen kan anvendes til opbygning af en stykvis lineær funktion, ved sammensætning af en række af disse funktioner.
+T1 er starten på impulsen.
+T2 er slutningen af impulsen.
+H1 er impulshøjden ved T1 i begyndelsen af impulsen.
+H2 er impulshøjden ved T2 i slutningen af impulsen.
+SLOPE definerer udglatnigen af overgangen mellem henholdsvis 0 og H1 og H2 til 0 når tid = T1 og T2. Højere værdier giver skarpere hjørnder på trinnene. Værdier for SLOPE på 1000 eller derover er egnede.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="672"/>
@@ -503,152 +510,152 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="../../../JointObject.py" line="186"/>
+      <location filename="../../../JointObject.py" line="184"/>
       <source>The type of the joint</source>
       <translation>Forbindelsestypen</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="213"/>
+      <location filename="../../../JointObject.py" line="211"/>
       <source>The first reference of the joint</source>
-      <translation>Første henvisning til forbindelsen</translation>
+      <translation>Den første reference i forbindelsen</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="225"/>
+      <location filename="../../../JointObject.py" line="223"/>
       <source>This is the local coordinate system within Reference1's object that will be used for the joint</source>
       <translation>Dette er det lokale koordinatsystem for objektet Reference1, der vil blive brugt til forbindelse</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="237"/>
+      <location filename="../../../JointObject.py" line="235"/>
       <source>This prevents Placement1 from recomputing, enabling custom positioning of the placement</source>
       <translation type="unfinished">This prevents Placement1 from recomputing, enabling custom positioning of the placement</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="249"/>
-      <location filename="../../../JointObject.py" line="558"/>
+      <location filename="../../../JointObject.py" line="247"/>
+      <location filename="../../../JointObject.py" line="556"/>
       <source>This is the attachment offset of the first connector of the joint</source>
-      <translation type="unfinished">This is the attachment offset of the first connector of the joint</translation>
+      <translation>Dette er forskydningen af fastgørelsen til det første element i forbindelsen</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="271"/>
+      <location filename="../../../JointObject.py" line="269"/>
       <source>This is the local coordinate system within Reference2's object that will be used for the joint</source>
-      <translation>Dette er det lokale koordinatsystem for objektet Reference2, der vil blive brugt til forbindelse</translation>
+      <translation>Dette er det lokale koordinatsystem for objektet Reference2, der vil blive brugt til forbindelsen</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="283"/>
+      <location filename="../../../JointObject.py" line="281"/>
       <source>This prevents Placement2 from recomputing, enabling custom positioning of the placement</source>
       <translation type="unfinished">This prevents Placement2 from recomputing, enabling custom positioning of the placement</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="295"/>
-      <location filename="../../../JointObject.py" line="569"/>
+      <location filename="../../../JointObject.py" line="293"/>
+      <location filename="../../../JointObject.py" line="567"/>
       <source>This is the attachment offset of the second connector of the joint</source>
-      <translation type="unfinished">This is the attachment offset of the second connector of the joint</translation>
+      <translation>Dette er forskydningen af fastgørelsen til det andet element i forbindelsen</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="317"/>
+      <location filename="../../../JointObject.py" line="315"/>
       <source>Enable the minimum length limit of the joint</source>
       <translation>Aktiver minimumslængden for forbindelsen</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="330"/>
+      <location filename="../../../JointObject.py" line="328"/>
       <source>Enable the maximum length limit of the joint</source>
       <translation>Aktiver maksimumslængden for forbindelsen</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="343"/>
+      <location filename="../../../JointObject.py" line="341"/>
       <source>Enable the minimum angle limit of the joint</source>
       <translation>Aktiver minimumsvinklen for forbindelsen</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="356"/>
+      <location filename="../../../JointObject.py" line="354"/>
       <source>Enable the maximum angle limit of the joint</source>
       <translation>Aktiver maksimumsvinklen for forbindelsen</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="386"/>
+      <location filename="../../../JointObject.py" line="384"/>
       <source>This is the angle of the joint. It is used only by the Angle joint.</source>
       <translation>Dette er vinklen for forbindelsen. Den bruges kun for vinkelforbindelser.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="422"/>
+      <location filename="../../../JointObject.py" line="420"/>
       <source>This is the minimum limit for the length between both coordinate systems (along their z-axis)</source>
       <translation>Dette er den minimale afstand mellem de to koordinatsystemer (langs deres z-akser)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="434"/>
+      <location filename="../../../JointObject.py" line="432"/>
       <source>This is the maximum limit for the length between both coordinate systems (along their z-axis)</source>
       <translation>Dette er den maksimale afstand mellem de to koordinatsystemer (langs deres z-akser)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="446"/>
+      <location filename="../../../JointObject.py" line="444"/>
       <source>This is the minimum limit for the angle between both coordinate systems (between their x-axis)</source>
       <translation>Dette er den minimale vinkel mellem de to koordinatsystemer (mellem deres x-akser)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="458"/>
+      <location filename="../../../JointObject.py" line="456"/>
       <source>This is the maximum limit for the angle between both coordinate systems (between their x-axis)</source>
       <translation>Dette er den maksimale vinkel mellem de to koordinatsystemer (mellem deres x-akser)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="259"/>
+      <location filename="../../../JointObject.py" line="257"/>
       <source>The second reference of the joint</source>
-      <translation type="unfinished">The second reference of the joint</translation>
+      <translation>Den anden reference i forbindelsen</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="477"/>
+      <location filename="../../../JointObject.py" line="475"/>
       <source>The first object of the joint</source>
       <translation>Første objekt i forbindelsen</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="497"/>
+      <location filename="../../../JointObject.py" line="495"/>
       <source>The second object of the joint</source>
       <translation>Det andet objekt i forbindelsen</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="398"/>
+      <location filename="../../../JointObject.py" line="396"/>
       <source>This is the distance of the joint. It is used only by the Distance joint and Rack and Pinion (pitch radius), Screw and Gears and Belt (radius1)</source>
-      <translation type="unfinished">This is the distance of the joint. It is used only by the Distance joint and Rack and Pinion (pitch radius), Screw and Gears and Belt (radius1)</translation>
+      <translation>Dette er afstanden mellem de forbundne elementer. Bruges ifm. afstandsforbindelser, tandstangsforbindelser, skrueforbindelser (stigningen), tandhjulsforbindelser og remforbindelser (radius1)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="410"/>
+      <location filename="../../../JointObject.py" line="408"/>
       <source>This is the second distance of the joint. It is used only by the gear joint to store the second radius.</source>
-      <translation type="unfinished">This is the second distance of the joint. It is used only by the gear joint to store the second radius.</translation>
+      <translation>Dette er anden afstand mellem de forbundne elementer. Den bruges kun ifm. tandhjulsforbindelser til at gemme radius2.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="511"/>
+      <location filename="../../../JointObject.py" line="509"/>
       <source>The {order} reference of the joint</source>
       <translation type="unfinished">The {order} reference of the joint</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1153"/>
+      <location filename="../../../JointObject.py" line="1151"/>
       <source>The object to ground</source>
       <translation type="unfinished">The object to ground</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="358"/>
-      <location filename="../../../CommandCreateView.py" line="395"/>
+      <location filename="../../../CommandCreateView.py" line="368"/>
+      <location filename="../../../CommandCreateView.py" line="405"/>
       <source>The objects moved by the move</source>
-      <translation type="unfinished">The objects moved by the move</translation>
+      <translation>Objekterne som påvirkes af bevægelsen</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="370"/>
+      <location filename="../../../CommandCreateView.py" line="380"/>
       <source>This is the movement of the move. The end placement is the result of the start placement * this placement.</source>
       <translation type="unfinished">This is the movement of the move. The end placement is the result of the start placement * this placement.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="379"/>
+      <location filename="../../../CommandCreateView.py" line="389"/>
       <source>The type of the move</source>
-      <translation type="unfinished">The type of the move</translation>
+      <translation>Bevægelsestypen</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="111"/>
       <source>Simulation start time.</source>
-      <translation type="unfinished">Simulation start time.</translation>
+      <translation>Simuleringens starttidspunkt.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="123"/>
       <source>Simulation end time.</source>
-      <translation type="unfinished">Simulation end time.</translation>
+      <translation>Simuleringens sluttidspunkt.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="135"/>
@@ -663,7 +670,7 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="159"/>
       <source>Frames Per Second.</source>
-      <translation type="unfinished">Frames Per Second.</translation>
+      <translation>Billeder pr. sekund.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="211"/>
@@ -673,17 +680,17 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="311"/>
       <source>The joint that is moved by the motion</source>
-      <translation type="unfinished">The joint that is moved by the motion</translation>
+      <translation>Forbindelsen, der påvirkes af bevægelsen</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="323"/>
       <source>This is the formula of the motion. For example '1.0*time'.</source>
-      <translation type="unfinished">This is the formula of the motion. For example '1.0*time'.</translation>
+      <translation>Dette er formlen for bevægelsen. For eksempel '1,0*tid'.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="332"/>
       <source>The type of the motion</source>
-      <translation type="unfinished">The type of the motion</translation>
+      <translation>Bevægelsestypen</translation>
     </message>
   </context>
   <context>
@@ -711,22 +718,22 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="175"/>
       <source>Offset1</source>
-      <translation type="unfinished">Offset1</translation>
+      <translation>Forskydning1</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="196"/>
       <source>Offset2</source>
-      <translation type="unfinished">Offset2</translation>
+      <translation>Forskydning2</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="215"/>
       <source>Show advanced offsets</source>
-      <translation type="unfinished">Show advanced offsets</translation>
+      <translation>Vis avancerede forskydninger</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="14"/>
       <source>Joint</source>
-      <translation type="unfinished">Joint</translation>
+      <translation>Forbindelse</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="25"/>
@@ -741,17 +748,17 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="182"/>
       <source>Sets the attachment offset of the joint’s first marker (coordinate system)</source>
-      <translation type="unfinished">Sets the attachment offset of the joint’s first marker (coordinate system)</translation>
+      <translation>Definerer forskydningen for forbindelsens første markerede element (koordinatsystem)</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="203"/>
       <source>Sets the attachment offset of the second marker (coordinate system) of the joint</source>
-      <translation type="unfinished">Sets the attachment offset of the second marker (coordinate system) of the joint</translation>
+      <translation>Definerer forskydning for forbindelsens andet markerede element (koordinatsystem)</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="231"/>
       <source>Reverse the direction of the joint</source>
-      <translation type="unfinished">Reverse the direction of the joint</translation>
+      <translation>Vend forbindelsesretningen</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="234"/>
@@ -786,7 +793,7 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="358"/>
       <source>Reverse rotation</source>
-      <translation type="unfinished">Reverse rotation</translation>
+      <translation>Vend rotation</translation>
     </message>
   </context>
   <context>
@@ -828,11 +835,10 @@ Rigid means that the added sub-assembly will be considered as a solid unit withi
 Flexible means that the added sub-assembly will allow movement of its individual components' joints within the parent assembly.
 You can change this behavior at any time by either right-clicking the sub-assembly on the document tree and toggling the
 'Turn rigid'/'Turn flexible' command there, or by editing its Rigid property in the property editor.</source>
-      <translation type="unfinished">Sets whether the inserted sub-assemblies will be rigid or flexible.
-Rigid means that the added sub-assembly will be considered as a solid unit within the parent assembly.
-Flexible means that the added sub-assembly will allow movement of its individual components' joints within the parent assembly.
-You can change this behavior at any time by either right-clicking the sub-assembly on the document tree and toggling the
-'Turn rigid'/'Turn flexible' command there, or by editing its Rigid property in the property editor.</translation>
+      <translation>Angiver om de indsatte komponentgrupper skal være stive eller fleksible.
+Stive betyder, at tilføjede komponentgrupper vil blive betragtet som massive komponenter i samlingen.
+Fleksibel betyder, at tilføjede komponentgrupper vil blive betragtet som individuelle komponenter, og tillader bevægelse af komponenternes forbindelser i samlingen.
+Du kan til enhver tid ændre denne opførsel ved enten at højreklikke på komponentgruppen i dokumenttræet og slå kommandoen 'Turn rigid'/'Turn flexible' til der, eller ved at redigere komponentgruppens stivhedsegenskab i egenskabsredigeringen.</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="81"/>
@@ -872,7 +878,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../preferences/Assembly.ui" line="23"/>
       <source>Esc leaves edit mode</source>
-      <translation type="unfinished">Esc leaves edit mode</translation>
+      <translation>Esc-tasten: forlad redigeringstilstand</translation>
     </message>
     <message>
       <location filename="../preferences/Assembly.ui" line="43"/>
@@ -890,7 +896,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="208"/>
       <source>Do you want to move the object and delete associated joints?</source>
-      <translation type="unfinished">Do you want to move the object and delete associated joints?</translation>
+      <translation>Vil du flytte objektet og slette tilknyttede forbindelser?</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="1030"/>
@@ -916,12 +922,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="1605"/>
       <source>Malformed joints:</source>
-      <translation type="unfinished">Malformed joints:</translation>
+      <translation>Fejlbehæftede forbindelser:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="1613"/>
       <source>Redundant joints:</source>
-      <translation type="unfinished">Redundant joints:</translation>
+      <translation>Overflødige forbindelser:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="1621"/>
@@ -962,7 +968,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="324"/>
       <source>&lt;p&gt;Creates a screw joint that links a part with a sliding joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rotating screw and the sliding part.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Creates a screw joint that links a part with a sliding joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rotating screw and the sliding part.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;Opretter en skrueforbindelse, der forbinder en komponent med et skydeled til en komponent med en drejeled&lt;/p&gt;&lt;p&gt;Vælg samme koordinatsystemer for skydeledet og for drejeleddet. Stigningen definerer forholdet mellem det roterende drejeled (skruen) og skydeleddet.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -970,12 +976,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="391"/>
       <source>Gears/Belt Joint</source>
-      <translation type="unfinished">Gears/Belt Joint</translation>
+      <translation>Tandhjuls-/remforbindelse</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="396"/>
       <source>&lt;p&gt;Creates a gears or belt joint that links 2 rotating gears together&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Creates a gears or belt joint that links 2 rotating gears together&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;Opretter en gear- eller et remforbindelse, der forbinder 2 roterende (tand)hjul&lt;/p&gt;&lt;p&gt;Vælg samme koordinatsystem for begge rotationsforbindelserne.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1038,7 +1044,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="58"/>
       <source>Adds only part containers and sub-assemblies to the bill of materials. Solids (e.g. bodies, fasteners, primitives) are excluded.</source>
-      <translation type="unfinished">Adds only part containers and sub-assemblies to the bill of materials. Solids (e.g. bodies, fasteners, primitives) are excluded.</translation>
+      <translation>Tilføjer kun komponentbeholdere og komponentgrupper til styklisten. Massive elementer (f.eks. emner, befæstelseselementer, basisgeometrier) udelades.</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="61"/>
@@ -1113,17 +1119,17 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="20"/>
       <source>Motions</source>
-      <translation type="unfinished">Motions</translation>
+      <translation>Bevægelser</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="50"/>
       <source>Add a prescribed motion</source>
-      <translation type="unfinished">Add a prescribed motion</translation>
+      <translation>Tilføj en fordefineret bevægelse</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="70"/>
       <source>Delete selected motions</source>
-      <translation type="unfinished">Delete selected motions</translation>
+      <translation>Slet valgte bevægelser</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="14"/>
@@ -1133,7 +1139,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="89"/>
       <source>Simulation Settings</source>
-      <translation type="unfinished">Simulation Settings</translation>
+      <translation>Simuleringsindstillinger</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="95"/>
@@ -1192,7 +1198,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="166"/>
       <source>Generate</source>
-      <translation type="unfinished">Generate</translation>
+      <translation>Generer</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="181"/>
@@ -1202,7 +1208,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="201"/>
       <source>0.00 s</source>
-      <translation type="unfinished">0.00 s</translation>
+      <translation>0,00 s</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="232"/>
@@ -1249,17 +1255,17 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <location filename="../../../CommandCreateAssembly.py" line="101"/>
       <location filename="../../../CommandCreateAssembly.py" line="135"/>
       <source>Activate Assembly</source>
-      <translation type="unfinished">Activate Assembly</translation>
+      <translation>Aktiver samling</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateAssembly.py" line="106"/>
       <source>Select an assembly to activate:</source>
-      <translation type="unfinished">Select an assembly to activate:</translation>
+      <translation>Vælg en samling, der skal aktiveres:</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateAssembly.py" line="138"/>
       <source>Sets an assembly as the active one for editing.</source>
-      <translation type="unfinished">Sets an assembly as the active one for editing.</translation>
+      <translation>Indstiller en samling og aktiver den for redigering.</translation>
     </message>
   </context>
   <context>
@@ -1272,7 +1278,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="83"/>
       <source>&lt;p&gt;1 - If an assembly is active : Creates a joint permanently locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;1 - If an assembly is active : Creates a joint permanently locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;1 - Hvis en samling er aktiv : Opretter en fast forbindelse som låser to komponenter sammen, og forhindrer enhver bevægelse eller rotation&lt;/p&gt;&lt;p&gt;2 - Hvis en komponent er aktiv: Positionerer komponentdele ved at matche de valgte koordinatsystemer. Den sidst valgte komponent vil blive flyttet.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1306,12 +1312,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="150"/>
       <source>Slider Joint</source>
-      <translation>Glidende forbindelse</translation>
+      <translation>Skydeled</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="155"/>
       <source>Creates a slider joint that allows linear movement along a single axis, but restricts rotation between selected parts</source>
-      <translation>Opretter et linært leje, der tillader lineær bevægelse langs en enkelt akse, men begrænser rotation mellem de valgte komponenter</translation>
+      <translation>Opretter et skydeled, der tillader lineær bevægelse langs en enkelt akse, men forhindrer rotation mellem de valgte komponenter</translation>
     </message>
   </context>
   <context>
@@ -1337,7 +1343,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="203"/>
       <source>&lt;p&gt;Creates a distance joint that fixes the distance between the selected objects&lt;/p&gt;&lt;p&gt;Creates one of several different joints based on the selection. For example, a distance of 0 between a plane and a cylinder creates a tangent joint. A distance of 0 between planes will make them co-planar.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Creates a distance joint that fixes the distance between the selected objects&lt;/p&gt;&lt;p&gt;Creates one of several different joints based on the selection. For example, a distance of 0 between a plane and a cylinder creates a tangent joint. A distance of 0 between planes will make them co-planar.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;Opretter en afstandsforbindelse, der fastholder afstanden mellem de valgte objekter&lt;/p&gt;&lt;p&gt;Der opretten en af flere forskellige forbindelser baseret på valget. For eksempel skaber en afstand på 0 mellem et plan og en cylinder en tangent-forbindelse. En afstand på 0 mellem flader vil samle dem.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1345,12 +1351,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="221"/>
       <source>Parallel Joint</source>
-      <translation>Parallel forbindelse</translation>
+      <translation>Parallel-forbindelse</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="226"/>
       <source>Creates a parallel joint that makes the Z-axis of the selected coordinate systems parallel</source>
-      <translation type="unfinished">Creates a parallel joint that makes the Z-axis of the selected coordinate systems parallel</translation>
+      <translation>Opretter en parallel-forbindelse, der holder Z-akserne for de valgte koordinatsystemer parallelle</translation>
     </message>
   </context>
   <context>
@@ -1358,12 +1364,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="246"/>
       <source>Perpendicular Joint</source>
-      <translation>Vinkelret forbindelse</translation>
+      <translation>Vinkelret-forbindelse</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="251"/>
       <source>Creates a perpendicular joint that makes the Z-axis of the selected coordinate systems perpendicular</source>
-      <translation type="unfinished">Creates a perpendicular joint that makes the Z-axis of the selected coordinate systems perpendicular</translation>
+      <translation>Opretter en vinkelret-forbindelse, der holder Z-akserne for de valgte koordinatsystemer vinkelrette</translation>
     </message>
   </context>
   <context>
@@ -1397,12 +1403,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="342"/>
       <source>Gears Joint</source>
-      <translation>Gearforbindelse</translation>
+      <translation>Tandhjulsforbindelse</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="348"/>
       <source>&lt;p&gt;Creates a gears joint that links 2 rotating gears together. They will have inverse rotation direction.&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Creates a gears joint that links 2 rotating gears together. They will have inverse rotation direction.&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;Opretter en tandhjulsforbindelse, der forbinder 2 roterende (tand)hjul&lt;/p&gt;&lt;p&gt;Vælg samme koordinatsystem for begge drejeleddene.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1415,7 +1421,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="372"/>
       <source>&lt;p&gt;Creates a belt joint that links 2 rotating objects together. They will have the same rotation direction.&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</source>
-      <translation>&lt;p&gt;Opretter en bælteforbindelse, der forbinder 2 roterende objekter. De to objekter vil få samme rotationsretning.&lt;/p&gt;&lt;p&gt;Vælg de samme koordinatsystemer som revolute samlinger.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;Opretter en remforbindelse, der forbinder 2 roterende objekter. Objekterne vil få samme rotationsretning.&lt;/p&gt;&lt;p&gt;Vælg det samme koordinatsystemer for de to drejeled.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1465,12 +1471,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <translation>Indsæt komponent</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="202"/>
+      <location filename="../../../CommandInsertLink.py" line="218"/>
       <source>Partially loaded</source>
-      <translation type="unfinished">Partially loaded</translation>
+      <translation>Delvist indlæst</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="556"/>
+      <location filename="../../../CommandInsertLink.py" line="572"/>
       <source>Fully load document</source>
       <translation type="unfinished">Fully load document</translation>
     </message>
@@ -1485,12 +1491,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="56"/>
       <source>Click to select these conflicting joints.</source>
-      <translation type="unfinished">Click to select these conflicting joints.</translation>
+      <translation>Klik for at vælge disse modstridende forbindelser.</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="59"/>
       <source>Click to select these redundant joints.</source>
-      <translation type="unfinished">Click to select these redundant joints.</translation>
+      <translation>Klik for at vælge disse overflødige forbindelser.</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="63"/>
@@ -1500,7 +1506,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="68"/>
       <source>Click to select these malformed joints.</source>
-      <translation type="unfinished">Click to select these malformed joints.</translation>
+      <translation>Klik for at vælge disse fejlbehæftede forbindelser.</translation>
     </message>
   </context>
 </TS>

@@ -5982,7 +5982,7 @@ Continue?</source>
       <translation>Уређивач придруживања</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="1000"/>
+      <location filename="../../ViewProviderExt.cpp" line="1002"/>
       <source>Appearance per Face</source>
       <translation>Офарбај појединачне странице</translation>
     </message>

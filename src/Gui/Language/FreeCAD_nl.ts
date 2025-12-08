@@ -4786,76 +4786,76 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Status</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="187"/>
+      <location filename="../DocumentRecovery.cpp" line="186"/>
       <source>Start Recovery</source>
       <translation>Herstel starten</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="203"/>
+      <location filename="../DocumentRecovery.cpp" line="202"/>
       <source>Original file corrupted</source>
       <translation type="unfinished">Original file corrupted</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="207"/>
+      <location filename="../DocumentRecovery.cpp" line="206"/>
       <source>Not yet recovered</source>
       <translation>Nog niet hersteld</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="281"/>
+      <location filename="../DocumentRecovery.cpp" line="280"/>
       <source>Unknown problem occurred</source>
       <translation>Een onbekend probleem is gebeurd</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="287"/>
-      <location filename="../DocumentRecovery.cpp" line="307"/>
+      <location filename="../DocumentRecovery.cpp" line="286"/>
+      <location filename="../DocumentRecovery.cpp" line="306"/>
       <source>Failed to recover</source>
       <translation>Herstellen mislukt</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="322"/>
+      <location filename="../DocumentRecovery.cpp" line="321"/>
       <source>Successfully recovered</source>
       <translation>Met success teruggehaald</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="361"/>
+      <location filename="../DocumentRecovery.cpp" line="360"/>
       <source>&amp;Finish</source>
       <translation type="unfinished">&amp;Finish</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="641"/>
-      <location filename="../DocumentRecovery.cpp" line="705"/>
+      <location filename="../DocumentRecovery.cpp" line="640"/>
+      <location filename="../DocumentRecovery.cpp" line="704"/>
       <source>Delete</source>
       <translation>Verwijderen</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="651"/>
+      <location filename="../DocumentRecovery.cpp" line="650"/>
       <source>Delete the selected transient directories?</source>
       <translation type="unfinished">Delete the selected transient directories?</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="653"/>
+      <location filename="../DocumentRecovery.cpp" line="652"/>
       <source>When deleting the selected transient directory it is not possible to recover any files afterwards.</source>
       <translation type="unfinished">When deleting the selected transient directory it is not possible to recover any files afterwards.</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="687"/>
+      <location filename="../DocumentRecovery.cpp" line="686"/>
       <source>Delete all transient directories?</source>
       <translation type="unfinished">Delete all transient directories?</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="688"/>
+      <location filename="../DocumentRecovery.cpp" line="687"/>
       <source>When deleting all transient directories it is not possible to recover any files afterwards.</source>
       <translation type="unfinished">When deleting all transient directories it is not possible to recover any files afterwards.</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.ui" line="42"/>
-      <location filename="../DocumentRecovery.cpp" line="650"/>
-      <location filename="../DocumentRecovery.cpp" line="686"/>
+      <location filename="../DocumentRecovery.cpp" line="649"/>
+      <location filename="../DocumentRecovery.cpp" line="685"/>
       <source>Cleanup</source>
       <translation>Opruimen</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="705"/>
+      <location filename="../DocumentRecovery.cpp" line="704"/>
       <source>Transient directories deleted.</source>
       <translation>Tijdelijke mappen verwijderd.</translation>
     </message>
@@ -5689,72 +5689,72 @@ originally selected prior to opening this dialog</translation>
       <translation>Gekozen objectlijst</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="659"/>
+      <location filename="../Selection/SelectionView.cpp" line="654"/>
       <source>Select Only</source>
       <translation type="unfinished">Select Only</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="667"/>
+      <location filename="../Selection/SelectionView.cpp" line="662"/>
       <source>Zoom Fit</source>
       <translation type="unfinished">Zoom Fit</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="671"/>
+      <location filename="../Selection/SelectionView.cpp" line="666"/>
       <source>Go to Selection</source>
       <translation type="unfinished">Go to Selection</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="674"/>
+      <location filename="../Selection/SelectionView.cpp" line="669"/>
       <source>Mark to Recompute</source>
       <translation type="unfinished">Mark to Recompute</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="676"/>
+      <location filename="../Selection/SelectionView.cpp" line="671"/>
       <source>Marks this object to be recomputed</source>
       <translation type="unfinished">Marks this object to be recomputed</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="678"/>
+      <location filename="../Selection/SelectionView.cpp" line="673"/>
       <source>To Python Console</source>
       <translation type="unfinished">To Python Console</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="685"/>
+      <location filename="../Selection/SelectionView.cpp" line="680"/>
       <source>Duplicate Subshape</source>
       <translation>Subvorm Dupliceren</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="661"/>
+      <location filename="../Selection/SelectionView.cpp" line="656"/>
       <source>Selects only this object</source>
       <translation>Hiermee selecteert u enkel dit object</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="663"/>
+      <location filename="../Selection/SelectionView.cpp" line="658"/>
       <source>Deselect</source>
       <translation>Deselecteer</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="665"/>
+      <location filename="../Selection/SelectionView.cpp" line="660"/>
       <source>Deselects this object</source>
       <translation>Dit object deselecteren</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="669"/>
+      <location filename="../Selection/SelectionView.cpp" line="664"/>
       <source>Selects and fits this object in the 3D window</source>
       <translation>Selecteert en past dit object in het 3D-venster</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="672"/>
+      <location filename="../Selection/SelectionView.cpp" line="667"/>
       <source>Selects and locates this object in the tree view</source>
       <translation>Dit object selecteren en in de documentstructuur vinden</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="680"/>
+      <location filename="../Selection/SelectionView.cpp" line="675"/>
       <source>Reveals this object and its subelements in the Python console.</source>
       <translation type="unfinished">Reveals this object and its subelements in the Python console.</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="687"/>
+      <location filename="../Selection/SelectionView.cpp" line="682"/>
       <source>Creates a standalone copy of this subshape in the document</source>
       <translation>Maakt een eigen kopie van deze subvorm in het document</translation>
     </message>
@@ -6793,7 +6793,7 @@ Exit without saving all data?</translation>
       <translation type="unfinished">Clear Recent Files</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="941"/>
+      <location filename="../Action.cpp" line="943"/>
       <source>Open file %1</source>
       <translation>Open bestand %1</translation>
     </message>
@@ -6801,12 +6801,12 @@ Exit without saving all data?</translation>
   <context>
     <name>Gui::RecentMacrosAction</name>
     <message>
-      <location filename="../Action.cpp" line="1115"/>
+      <location filename="../Action.cpp" line="1117"/>
       <source>none</source>
       <translation>geen</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1133"/>
+      <location filename="../Action.cpp" line="1135"/>
       <source>Run macro %1 (Shift+click to edit) keyboard shortcut: %2</source>
       <translation>Voer macro %1 uit (Shift+klik om te bewerken) sneltoets: %2</translation>
     </message>
@@ -7931,12 +7931,12 @@ Specify another directory?</translation>
       <translation>Kan onbekende bestandstype niet opslaan: %1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1134"/>
+      <location filename="../Application.cpp" line="1198"/>
       <source>Recomputation required</source>
       <translation>Herberekening vereist</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1135"/>
+      <location filename="../Application.cpp" line="1199"/>
       <source>Some documents require recomputation for migration purposes. It is highly recommended to perform a recomputation before any modification to avoid compatibility problems.
 
 Recompute now?</source>
@@ -7945,24 +7945,24 @@ Recompute now?</source>
 Recompute now?</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1161"/>
+      <location filename="../Application.cpp" line="1225"/>
       <source>Failed to recompute some documents.
 Check the report view for more details.</source>
       <translation type="unfinished">Failed to recompute some documents.
 Check the report view for more details.</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1160"/>
+      <location filename="../Application.cpp" line="1224"/>
       <source>Recompute error</source>
       <translation>Herberekenings fout</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1857"/>
+      <location filename="../Application.cpp" line="1921"/>
       <source>Workbench failure</source>
       <translation>Werkbank falen</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1858"/>
+      <location filename="../Application.cpp" line="1922"/>
       <source>%1</source>
       <translation>%1</translation>
     </message>
@@ -7977,37 +7977,37 @@ Check the report view for more details.</translation>
       <translation>Verkeerde OpenGL versie</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="316"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="321"/>
       <source>Migrating</source>
       <translation type="unfinished">Migrating</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="377"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="382"/>
       <source>Restarting</source>
       <translation type="unfinished">Restarting</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="331"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="336"/>
       <source>Migration failed</source>
       <translation type="unfinished">Migration failed</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="299"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="304"/>
       <source>Estimated size of data to copy: %1</source>
       <translation type="unfinished">Estimated size of data to copy: %1</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="317"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="322"/>
       <source>Migrating configuration data and addons…</source>
       <translation type="unfinished">Migrating configuration data and addons…</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="332"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="337"/>
       <source>Migration failed. See the Report View for details.</source>
       <translation type="unfinished">Migration failed. See the Report View for details.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="376"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="381"/>
       <source> → Restarting…</source>
       <translation type="unfinished"> → Restarting…</translation>
     </message>
@@ -8022,18 +8022,18 @@ Check the report view for more details.</translation>
       <translation>Document openen</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1174"/>
-      <location filename="../Application.cpp" line="1189"/>
+      <location filename="../Application.cpp" line="1238"/>
+      <location filename="../Application.cpp" line="1253"/>
       <source>Error</source>
       <translation>Fout</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1175"/>
+      <location filename="../Application.cpp" line="1239"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
       <translation>Er zijn fouten opgetreden tijdens het laden van het bestand. Sommige gegevens zijn misschien gewijzigd of helemaal hersteld. Kijk in de rapportweergave voor meer specifieke informatie over de objecten die hierbij zijn betrokken.</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1190"/>
+      <location filename="../Application.cpp" line="1254"/>
       <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
       <translation>Er zijn ernstige fouten opgetreden tijdens het laden van het bestand. Sommige gegevens zijn mogelijk gewijzigd of helemaal niet hersteld. Het opslaan van het project zal waarschijnlijk leiden tot data-verlies.</translation>
     </message>
@@ -8492,47 +8492,47 @@ Wilt u het bestand met een andere naam opslaan?</translation>
       <translation>%1 document (*.FCStd)</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2403"/>
+      <location filename="../Document.cpp" line="2406"/>
       <source>Document not closable</source>
       <translation>Document niet te sluiten</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2404"/>
+      <location filename="../Document.cpp" line="2407"/>
       <source>The document is not closable for the moment.</source>
       <translation>Het document kan nu niet gesloten worden.</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2444"/>
+      <location filename="../Document.cpp" line="2447"/>
       <source>Failed to save document '%1'. Would you like to cancel the closure?</source>
       <translation type="unfinished">Failed to save document '%1'. Would you like to cancel the closure?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2446"/>
+      <location filename="../Document.cpp" line="2449"/>
       <source>Document saving failed. Would you like to cancel the closure?</source>
       <translation type="unfinished">Document saving failed. Would you like to cancel the closure?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2451"/>
+      <location filename="../Document.cpp" line="2454"/>
       <source>Unable to save document</source>
       <translation type="unfinished">Unable to save document</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2808"/>
+      <location filename="../Document.cpp" line="2811"/>
       <source>Undo</source>
       <translation>Ongedaan maken</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2808"/>
+      <location filename="../Document.cpp" line="2811"/>
       <source>Redo</source>
       <translation>Herstel ongedaan maken</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2811"/>
+      <location filename="../Document.cpp" line="2814"/>
       <source>There are grouped transactions in the following documents with other preceding transactions</source>
       <translation>Er zijn gegroepeerde transacties in de volgende documenten met andere voorgaande transacties</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2816"/>
+      <location filename="../Document.cpp" line="2819"/>
       <source>Choose 'Yes' to roll back all preceding transactions.
 Choose 'No' to roll back in the active document only.
 Choose 'Abort' to abort</source>
@@ -9414,7 +9414,7 @@ the current copy will be lost.
     <name>StdCmdNew</name>
     <message>
       <location filename="../MainWindow.cpp" line="2391"/>
-      <location filename="../DocumentRecovery.cpp" line="413"/>
+      <location filename="../DocumentRecovery.cpp" line="412"/>
       <source>Unnamed</source>
       <translation>Naamloos</translation>
     </message>
@@ -10878,32 +10878,32 @@ after FreeCAD launches</translation>
   <context>
     <name>NaviCubeSettings</name>
     <message>
-      <location filename="../View3DSettings.cpp" line="684"/>
+      <location filename="../View3DSettings.cpp" line="660"/>
       <source>FRONT</source>
       <translation>VOORZIJDE</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="686"/>
+      <location filename="../View3DSettings.cpp" line="662"/>
       <source>TOP</source>
       <translation>BOVEN</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="688"/>
+      <location filename="../View3DSettings.cpp" line="664"/>
       <source>RIGHT</source>
       <translation>RECHTS</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="690"/>
+      <location filename="../View3DSettings.cpp" line="666"/>
       <source>REAR</source>
       <translation>ACHTERZIJDE</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="692"/>
+      <location filename="../View3DSettings.cpp" line="668"/>
       <source>BOTTOM</source>
       <translation>BODEM</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="694"/>
+      <location filename="../View3DSettings.cpp" line="670"/>
       <source>LEFT</source>
       <translation>LINKS</translation>
     </message>
@@ -14608,7 +14608,7 @@ This makes the docked panel stay transparent at all times.</translation>
   <context>
     <name>Gui::SelectionMenu</name>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="1181"/>
+      <location filename="../Selection/SelectionView.cpp" line="1176"/>
       <source>Whole Object</source>
       <translation type="unfinished">Whole Object</translation>
     </message>
@@ -14642,42 +14642,42 @@ This makes the docked panel stay transparent at all times.</translation>
       <translation>Help</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.ui" line="107"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="160"/>
       <source>Copy Configuration (Recommended)</source>
       <translation type="unfinished">Copy Configuration (Recommended)</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="137"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="139"/>
       <source>Welcome to %1 %2.%3</source>
       <translation type="unfinished">Welcome to %1 %2.%3</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="140"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="142"/>
       <source>Calculating size…</source>
       <translation type="unfinished">Calculating size…</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="144"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="146"/>
       <source>Share configuration between versions</source>
       <translation type="unfinished">Share configuration between versions</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="160"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="170"/>
       <source>Share configuration with previous version</source>
       <translation type="unfinished">Share configuration with previous version</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="161"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="171"/>
       <source>Use a new default configuration</source>
       <translation type="unfinished">Use a new default configuration</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="326"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="331"/>
       <source>Migration complete</source>
       <translation type="unfinished">Migration complete</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="363"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="368"/>
       <source>New default configuration created</source>
       <translation type="unfinished">New default configuration created</translation>
     </message>

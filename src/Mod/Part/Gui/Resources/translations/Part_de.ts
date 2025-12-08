@@ -136,7 +136,7 @@
       <location filename="../../AttacherTexts.cpp" line="728"/>
       <source>Attachment is disabled. Point can be moved by editing Placement property.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Befestigen ist deaktiviert. Der Punkt kann duch Bearbeitung der Platzierungseigenschaften verschoben werden.</translation>
+      <translation>Befestigen ist deaktiviert. Der Punkt kann duch Bearbeitung der Platzierungs-Eigenschaften verschoben werden.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="736"/>
@@ -148,7 +148,7 @@
       <location filename="../../AttacherTexts.cpp" line="737"/>
       <source>Point is put at object's placement position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Punkt ist auf Position der Objektplatzierung gesetzt. Dies funktioniert für Objekte mit Platzierungen oder Ellipsen/Parabeln/Hyperbeln.</translation>
+      <translation>Punkt ist auf Position der Objektpositionierung gesetzt. Dies funktioniert für Objekte mit Positionierung oder Ellipse-/Parabel-/Hyperbelkanten.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="746"/>
@@ -202,7 +202,7 @@
       <location filename="../../AttacherTexts.cpp" line="784"/>
       <source>Center of mass</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation>Massenmittelpunkt</translation>
+      <translation>Schwerpunkt</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="785"/>
@@ -271,7 +271,7 @@
       <location filename="../../AttacherTexts.cpp" line="538"/>
       <source>Attachment is disabled. Line can be moved by editing Placement property.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Befestigen ist deaktiviert. Zeile kann durch Bearbeiten von der Platzierungseigenschaft verschoben werden.</translation>
+      <translation>Befestigen ist deaktiviert. Zeile kann durch Bearbeiten von der Placement-Eigenschaft verschoben werden.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="546"/>
@@ -516,7 +516,7 @@
       <location filename="../../AttacherTexts.cpp" line="297"/>
       <source>Attachment is disabled. Object can be moved by editing Placement property.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Befestigen ist deaktiviert. Objekt kann durch Bearbeiten der Platzierungseigenschaft verschoben werden.</translation>
+      <translation>Befestigen ist deaktiviert. Objekt kann durch Bearbeiten der Placement-Eigenschaft verschoben werden.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="306"/>
@@ -725,7 +725,7 @@
       <location filename="../../AttacherTexts.cpp" line="55"/>
       <source>Attachment is disabled. Object can be moved by editing Placement property.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Befestigen ist deaktiviert. Objekt kann durch Bearbeiten der Platzierungseigenschaft verschoben werden.</translation>
+      <translation>Befestigen ist deaktiviert. Objekt kann durch Bearbeiten der Placement-Eigenschaft verschoben werden.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="64"/>
@@ -749,7 +749,7 @@
       <location filename="../../AttacherTexts.cpp" line="75"/>
       <source>Placement is made equal to Placement of linked object.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Die Platzierung erfolgt gleich zu der Platzierung des verknüpften Objekts.</translation>
+      <translation>Die Positionierung erfolgt gleich zu der Positionierung des verknüpften Objekts.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="83"/>
@@ -2099,7 +2099,7 @@ der Projektion.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="329"/>
       <source>Creates a non-parametric copy with transformed placement of the selected shapes</source>
-      <translation>Erstellt eine nicht-parametrische Kopie mit transformierter Platzierung der ausgewählten Formen</translation>
+      <translation>Erstellt eine nicht-parametrische Kopie mit transformierter Positionierung der ausgewählten Formen</translation>
     </message>
   </context>
   <context>
@@ -2641,7 +2641,7 @@ in der Eigenschaft Placement zu behalten.</translation>
     <message>
       <location filename="../../DlgExportStep.ui" line="110"/>
       <source>Export single object placement</source>
-      <translation>Einzelne Objektplatzierung exportieren</translation>
+      <translation>Einzelne Objektpositionierung exportieren</translation>
     </message>
     <message>
       <location filename="../../DlgExportStep.ui" line="91"/>
@@ -5574,7 +5574,7 @@ für die Spine-Kurve in der 3D-Ansicht auswählen.</translation>
       <location filename="../../AppPartGui.cpp" line="249"/>
       <location filename="../../AppPartGui.cpp" line="250"/>
       <source>Import-Export</source>
-      <translation>Import / Export</translation>
+      <translation>Import/Export</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="333"/>
@@ -5980,7 +5980,7 @@ Fortfahren?</translation>
       <translation>Befestigungs-Editor</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="1000"/>
+      <location filename="../../ViewProviderExt.cpp" line="1002"/>
       <source>Appearance per Face</source>
       <translation>Aussehen per Fläche</translation>
     </message>
@@ -6469,7 +6469,7 @@ für die Kollisions- oder Entfernungsfilterung.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="131"/>
       <source>Center of mass</source>
-      <translation>Massenmittelpunkt</translation>
+      <translation>Schwerpunkt</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="152"/>

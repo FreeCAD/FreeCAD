@@ -2074,7 +2074,7 @@ Siehe https://openscad.org/, um es zu installieren.</translation>
     <message>
       <location filename="../../AppMeshGui.cpp" line="159"/>
       <source>Import-Export</source>
-      <translation>Import / Export</translation>
+      <translation>Import/Export</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="357"/>

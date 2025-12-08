@@ -73,12 +73,12 @@
       <translation>你的子装配体目前是可动的。这将使其变成刚体。</translation>
     </message>
     <message>
-      <location filename="../../../App/BomObject.cpp" line="279"/>
+      <location filename="../../../App/BomObject.cpp" line="287"/>
       <source>N/A</source>
       <translation>N/A</translation>
     </message>
     <message>
-      <location filename="../../../App/BomObject.cpp" line="303"/>
+      <location filename="../../../App/BomObject.cpp" line="311"/>
       <source>Not supported</source>
       <translation>不支持</translation>
     </message>
@@ -130,7 +130,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="1694"/>
+      <location filename="../../../JointObject.py" line="1700"/>
       <source>Distance</source>
       <translation>距离</translation>
     </message>
@@ -170,27 +170,27 @@
       <translation>皮带</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="759"/>
+      <location filename="../../../JointObject.py" line="757"/>
       <source>Broken link in: </source>
       <translation>失效链接：</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1531"/>
+      <location filename="../../../JointObject.py" line="1529"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>从两个独立的零件中选择两个元素</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1696"/>
+      <location filename="../../../JointObject.py" line="1702"/>
       <source>Radius 1</source>
       <translation>半径 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1698"/>
+      <location filename="../../../JointObject.py" line="1704"/>
       <source>Thread pitch</source>
       <translation>螺距</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1700"/>
+      <location filename="../../../JointObject.py" line="1706"/>
       <source>Pitch radius</source>
       <translation>节距半径</translation>
     </message>
@@ -300,42 +300,49 @@
       <translation>自动列：（索引、数量、名称等）将自动填充。您所做的任何修改都将被覆盖。这些列无法重命名。</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="85"/>
+      <location filename="../../../CommandInsertNewPart.py" line="108"/>
       <source>Part name</source>
       <translation>零件名称</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="90"/>
+      <location filename="../../../CommandInsertNewPart.py" line="113"/>
       <source>Part</source>
       <translation>零件</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="95"/>
+      <location filename="../../../CommandInsertNewPart.py" line="118"/>
       <source>Create part in new file</source>
       <translation>在新文件中创建零件</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="102"/>
+      <location filename="../../../CommandInsertNewPart.py" line="125"/>
       <source>Joint new part origin</source>
       <translation>连接新零件原点</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="138"/>
+      <location filename="../../../CommandInsertNewPart.py" line="161"/>
       <source>If the new document is not saved the new part cannot be linked in the assembly.</source>
       <translation>如果新文档未保存，新部分无法链接到程序集中。</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="139"/>
+      <location filename="../../../CommandInsertNewPart.py" line="78"/>
+      <location filename="../../../CommandInsertNewPart.py" line="162"/>
       <source>Save Document</source>
       <translation>保存文档</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="141"/>
+      <location filename="../../../CommandInsertNewPart.py" line="77"/>
+      <source>The assembly document must be saved before inserting a new part.</source>
+      <translation type="unfinished">The assembly document must be saved before inserting a new part.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandInsertNewPart.py" line="80"/>
+      <location filename="../../../CommandInsertNewPart.py" line="164"/>
       <source>Save</source>
       <translation>保存</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="144"/>
+      <location filename="../../../CommandInsertNewPart.py" line="167"/>
       <source>Do not Link</source>
       <translation>不链接</translation>
     </message>
@@ -503,140 +510,140 @@ SLOPE 定义了在 time = T1 和 T2 附近，从 0 到 H1、从 H2 到 0 之间�
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="../../../JointObject.py" line="186"/>
+      <location filename="../../../JointObject.py" line="184"/>
       <source>The type of the joint</source>
       <translation>接头类型</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="213"/>
+      <location filename="../../../JointObject.py" line="211"/>
       <source>The first reference of the joint</source>
       <translation>配合的第一参考</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="225"/>
+      <location filename="../../../JointObject.py" line="223"/>
       <source>This is the local coordinate system within Reference1's object that will be used for the joint</source>
       <translation/>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="237"/>
+      <location filename="../../../JointObject.py" line="235"/>
       <source>This prevents Placement1 from recomputing, enabling custom positioning of the placement</source>
       <translation>这将阻止 Placement1 重新计算，从而允许对其位置进行自定义设置</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="249"/>
-      <location filename="../../../JointObject.py" line="558"/>
+      <location filename="../../../JointObject.py" line="247"/>
+      <location filename="../../../JointObject.py" line="556"/>
       <source>This is the attachment offset of the first connector of the joint</source>
       <translation>这是配合的第一个连接器的附着偏移</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="271"/>
+      <location filename="../../../JointObject.py" line="269"/>
       <source>This is the local coordinate system within Reference2's object that will be used for the joint</source>
       <translation>这是 参考2 对象内将被用于配合的局部坐标系</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="283"/>
+      <location filename="../../../JointObject.py" line="281"/>
       <source>This prevents Placement2 from recomputing, enabling custom positioning of the placement</source>
       <translation>这可以防止 Placement2 重新计算，从而实现对放置（Placement）的自定义定位</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="295"/>
-      <location filename="../../../JointObject.py" line="569"/>
+      <location filename="../../../JointObject.py" line="293"/>
+      <location filename="../../../JointObject.py" line="567"/>
       <source>This is the attachment offset of the second connector of the joint</source>
       <translation>这是配合的第二个连接器的附着偏移</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="317"/>
+      <location filename="../../../JointObject.py" line="315"/>
       <source>Enable the minimum length limit of the joint</source>
       <translation>启用此配合的最小长度限制</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="330"/>
+      <location filename="../../../JointObject.py" line="328"/>
       <source>Enable the maximum length limit of the joint</source>
       <translation>启用此配合的最大长度限制</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="343"/>
+      <location filename="../../../JointObject.py" line="341"/>
       <source>Enable the minimum angle limit of the joint</source>
       <translation>启用此配合的最小角度限制</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="356"/>
+      <location filename="../../../JointObject.py" line="354"/>
       <source>Enable the maximum angle limit of the joint</source>
       <translation>启用此配合的最大角度限制</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="386"/>
+      <location filename="../../../JointObject.py" line="384"/>
       <source>This is the angle of the joint. It is used only by the Angle joint.</source>
       <translation>这是关节的接合点，它仅由角度接合点使用。</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="422"/>
+      <location filename="../../../JointObject.py" line="420"/>
       <source>This is the minimum limit for the length between both coordinate systems (along their z-axis)</source>
       <translation>这是两个坐标系之间长度的最小限制（沿其 Z 轴）</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="434"/>
+      <location filename="../../../JointObject.py" line="432"/>
       <source>This is the maximum limit for the length between both coordinate systems (along their z-axis)</source>
       <translation>这是两个坐标系之间长度的最大限制（沿其 Z 轴）</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="446"/>
+      <location filename="../../../JointObject.py" line="444"/>
       <source>This is the minimum limit for the angle between both coordinate systems (between their x-axis)</source>
       <translation>这是两个坐标系之间角度的最小限制（沿其 X 轴）</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="458"/>
+      <location filename="../../../JointObject.py" line="456"/>
       <source>This is the maximum limit for the angle between both coordinate systems (between their x-axis)</source>
       <translation>这是两个坐标系之间角度的最大限制（沿其 X 轴）</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="259"/>
+      <location filename="../../../JointObject.py" line="257"/>
       <source>The second reference of the joint</source>
       <translation>配合的第二参考</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="477"/>
+      <location filename="../../../JointObject.py" line="475"/>
       <source>The first object of the joint</source>
       <translation>配合的第一个对象</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="497"/>
+      <location filename="../../../JointObject.py" line="495"/>
       <source>The second object of the joint</source>
       <translation>配合的第二个对象</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="398"/>
+      <location filename="../../../JointObject.py" line="396"/>
       <source>This is the distance of the joint. It is used only by the Distance joint and Rack and Pinion (pitch radius), Screw and Gears and Belt (radius1)</source>
       <translation>这是配合的距离。仅在距离配合、齿轮条配合（节距半径）、螺纹配合、齿轮和皮带配合（半径1）中使用</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="410"/>
+      <location filename="../../../JointObject.py" line="408"/>
       <source>This is the second distance of the joint. It is used only by the gear joint to store the second radius.</source>
       <translation>这是配合的第二个距离。仅在齿轮配合中作为第二半径。</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="511"/>
+      <location filename="../../../JointObject.py" line="509"/>
       <source>The {order} reference of the joint</source>
       <translation>配合的第 {order} 参考</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1153"/>
+      <location filename="../../../JointObject.py" line="1151"/>
       <source>The object to ground</source>
       <translation>要固定的对象</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="358"/>
-      <location filename="../../../CommandCreateView.py" line="395"/>
+      <location filename="../../../CommandCreateView.py" line="368"/>
+      <location filename="../../../CommandCreateView.py" line="405"/>
       <source>The objects moved by the move</source>
       <translation>对象已被移动操作移位</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="370"/>
+      <location filename="../../../CommandCreateView.py" line="380"/>
       <source>This is the movement of the move. The end placement is the result of the start placement * this placement.</source>
       <translation>这是移动操作的位移部分，结束位置由起始位置与此位置相乘得到。</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="379"/>
+      <location filename="../../../CommandCreateView.py" line="389"/>
       <source>The type of the move</source>
       <translation>移动类型</translation>
     </message>
@@ -1467,14 +1474,14 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <translation>插入零件</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="202"/>
+      <location filename="../../../CommandInsertLink.py" line="218"/>
       <source>Partially loaded</source>
-      <translation type="unfinished">Partially loaded</translation>
+      <translation>已部分加载</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="556"/>
+      <location filename="../../../CommandInsertLink.py" line="572"/>
       <source>Fully load document</source>
-      <translation type="unfinished">Fully load document</translation>
+      <translation>完全加载文档</translation>
     </message>
   </context>
   <context>

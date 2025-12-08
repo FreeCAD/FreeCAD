@@ -2465,7 +2465,7 @@ Ist kein Objekt ausgewählt, öffnet sich ein Datei-Browser, um eine SVG- oder e
       <translation>Hinweisfeld ziehen</translation>
     </message>
     <message>
-      <location filename="../../QGIViewDimension.cpp" line="313"/>
+      <location filename="../../QGIViewDimension.cpp" line="306"/>
       <source>Drag Dimension</source>
       <translation>Maß ziehen</translation>
     </message>
@@ -3479,7 +3479,7 @@ Ist kein Objekt ausgewählt, öffnet sich ein Datei-Browser, um eine SVG- oder e
       <translation>Alle Dateien</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="549"/>
+      <location filename="../../TaskDimension.cpp" line="551"/>
       <location filename="../../CommandAlign.cpp" line="53"/>
       <location filename="../../CommandCreateDims.cpp" line="2014"/>
       <location filename="../../CommandCreateDims.cpp" line="2030"/>
@@ -4096,19 +4096,19 @@ Ist kein Objekt ausgewählt, öffnet sich ein Datei-Browser, um eine SVG- oder e
       <translation>Weniger als drei Kreise ausgewählt</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="195"/>
-      <location filename="../../TaskDimension.cpp" line="210"/>
+      <location filename="../../TaskDimension.cpp" line="197"/>
+      <location filename="../../TaskDimension.cpp" line="212"/>
       <source>Missing Dimension</source>
       <translation>Fehlende Bemaßung</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="196"/>
-      <location filename="../../TaskDimension.cpp" line="211"/>
+      <location filename="../../TaskDimension.cpp" line="198"/>
+      <location filename="../../TaskDimension.cpp" line="213"/>
       <source>Dimension not found. Was it deleted? Cannot continue.</source>
       <translation>Maß nicht gefunden. Wurde es gelöscht? Kann nicht fortfahren.</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="550"/>
+      <location filename="../../TaskDimension.cpp" line="552"/>
       <source>Select 2 vertices or 1 edge</source>
       <translation>Wähle zwei Knoten oder eine Kante</translation>
     </message>
@@ -7310,7 +7310,7 @@ durch den negativen Wert des „Oberen Abmaßes“ ersetzt.</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="42"/>
       <source>Sets use of &apos;Format spec&apos; instead of the dimension value</source>
-      <translation type="unfinished">Sets use of &apos;Format spec&apos; instead of the dimension value</translation>
+      <translation>Legt die Verwendung von &apos;Format spec&apos; anstelle des Dimensionswerts fest</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="45"/>
@@ -9443,17 +9443,17 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
   <context>
     <name>TechDraw_FillTemplateFields</name>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="140"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="138"/>
       <source>Fill Template Fields In </source>
       <translation>Vorlagenfelder ausfüllen </translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="147"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="145"/>
       <source>Update</source>
       <translation>Aktualisierung</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="404"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="425"/>
       <source>Update All</source>
       <translation>Alle aktualisieren</translation>
     </message>
@@ -9486,12 +9486,12 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
       <translation>Ansicht oder Ansichtengruppe fehlt</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="443"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="465"/>
       <source>Corresponding template fields missing</source>
       <translation>Korrespondierende Vorlagenfelder fehlen</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="528"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="554"/>
       <source>Fill template fields</source>
       <translation>Vorlagenfelder ausfüllen</translation>
     </message>
@@ -9867,7 +9867,7 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
     <message>
       <location filename="../../../App/DrawBrokenView.cpp" line="102"/>
       <source>ZigZag</source>
-      <translation>ZickZack</translation>
+      <translation>Zick­zack</translation>
     </message>
     <message>
       <location filename="../../../App/DrawBrokenView.cpp" line="103"/>

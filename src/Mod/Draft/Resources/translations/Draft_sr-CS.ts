@@ -3017,7 +3017,7 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="641"/>
-      <location filename="../../DraftGui.py" line="997"/>
+      <location filename="../../DraftGui.py" line="998"/>
       <source>Continue</source>
       <translation>Nastavi</translation>
     </message>
@@ -3138,8 +3138,8 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     <message>
       <location filename="../../DraftGui.py" line="553"/>
       <location filename="../../DraftGui.py" line="582"/>
-      <location filename="../../DraftGui.py" line="1663"/>
-      <location filename="../../DraftGui.py" line="1681"/>
+      <location filename="../../DraftGui.py" line="1664"/>
+      <location filename="../../DraftGui.py" line="1682"/>
       <location filename="../../draftguitools/gui_groups.py" line="273"/>
       <source>None</source>
       <translation>Nijedan</translation>
@@ -3187,7 +3187,7 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="602"/>
-      <location filename="../../DraftGui.py" line="980"/>
+      <location filename="../../DraftGui.py" line="981"/>
       <source>Radius</source>
       <translation>Poluprečnik</translation>
     </message>
@@ -3207,12 +3207,12 @@ if they match the X, Y or Z axis of the global coordinate system</source>
       <translation>Uklj/Isklj režim pomoćne geometrije</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="934"/>
+      <location filename="../../DraftGui.py" line="935"/>
       <source>Label Type</source>
       <translation>Vrsta oznake</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="981"/>
+      <location filename="../../DraftGui.py" line="982"/>
       <source>Radius of Circle</source>
       <translation>Poluprečnik kruga</translation>
     </message>
@@ -3275,12 +3275,12 @@ Ako nije označeno koristi se koordinatni sistem radne ravni</translation>
       <translation>Završava trenutnu operaciju crtanja ili uređivanja</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1885"/>
+      <location filename="../../DraftGui.py" line="1886"/>
       <source>Modify Objects</source>
       <translation>Izmeni objekte</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2042"/>
+      <location filename="../../DraftGui.py" line="2043"/>
       <source>Facebinder Elements</source>
       <translation>Elementi Povezivača stranica</translation>
     </message>
@@ -3373,50 +3373,50 @@ Nije raspoloživo ako je u podešavanjima omogućena postavka 'Use Part Primitiv
     </message>
     <message>
       <location filename="../../DraftGui.py" line="738"/>
-      <location filename="../../DraftGui.py" line="1669"/>
-      <location filename="../../DraftGui.py" line="1687"/>
+      <location filename="../../DraftGui.py" line="1670"/>
+      <location filename="../../DraftGui.py" line="1688"/>
       <source>Autogroup off</source>
       <translation>Automatsko grupisanje isključeno</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="841"/>
+      <location filename="../../DraftGui.py" line="842"/>
       <location filename="../../draftguitools/gui_lines.py" line="71"/>
       <source>Line</source>
       <translation>Duž</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="856"/>
+      <location filename="../../DraftGui.py" line="857"/>
       <source>DWire</source>
       <translation>D-žičani okvir</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="879"/>
+      <location filename="../../DraftGui.py" line="880"/>
       <source>Circle</source>
       <translation>Krug</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="884"/>
+      <location filename="../../DraftGui.py" line="885"/>
       <source>Arc</source>
       <translation>Kružni luk</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="889"/>
+      <location filename="../../DraftGui.py" line="890"/>
       <location filename="../../draftguitools/gui_rotate.py" line="286"/>
       <source>Rotate</source>
       <translation>Okreni</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="895"/>
+      <location filename="../../DraftGui.py" line="896"/>
       <source>Point</source>
       <translation>Tačka</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="932"/>
+      <location filename="../../DraftGui.py" line="933"/>
       <source>Label</source>
       <translation>Oznaka</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="951"/>
+      <location filename="../../DraftGui.py" line="952"/>
       <location filename="../../draftguitools/gui_offset.py" line="243"/>
       <location filename="../../draftguitools/gui_offset.py" line="258"/>
       <location filename="../../draftguitools/gui_offset.py" line="321"/>
@@ -3424,31 +3424,31 @@ Nije raspoloživo ako je u podešavanjima omogućena postavka 'Use Part Primitiv
       <translation>Odmak</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="956"/>
-      <location filename="../../DraftGui.py" line="973"/>
+      <location filename="../../DraftGui.py" line="957"/>
+      <location filename="../../DraftGui.py" line="974"/>
       <location filename="../../draftguitools/gui_trimex.py" line="223"/>
       <source>Distance</source>
       <translation>Rastojanje</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="957"/>
-      <location filename="../../DraftGui.py" line="974"/>
+      <location filename="../../DraftGui.py" line="958"/>
+      <location filename="../../DraftGui.py" line="975"/>
       <location filename="../../draftguitools/gui_trimex.py" line="224"/>
       <source>Offset distance</source>
       <translation>Odmak rastojanje</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="970"/>
+      <location filename="../../DraftGui.py" line="971"/>
       <source>Trimex</source>
       <translation>Trimeks</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1053"/>
-      <location filename="../../DraftGui.py" line="1055"/>
+      <location filename="../../DraftGui.py" line="1054"/>
       <location filename="../../DraftGui.py" line="1056"/>
-      <location filename="../../DraftGui.py" line="1058"/>
+      <location filename="../../DraftGui.py" line="1057"/>
       <location filename="../../DraftGui.py" line="1059"/>
       <location filename="../../DraftGui.py" line="1060"/>
+      <location filename="../../DraftGui.py" line="1061"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="122"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="123"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="124"/>
@@ -3456,12 +3456,12 @@ Nije raspoloživo ako je u podešavanjima omogućena postavka 'Use Part Primitiv
       <translation>Lokalno {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1062"/>
       <location filename="../../DraftGui.py" line="1063"/>
       <location filename="../../DraftGui.py" line="1064"/>
-      <location filename="../../DraftGui.py" line="1066"/>
+      <location filename="../../DraftGui.py" line="1065"/>
       <location filename="../../DraftGui.py" line="1067"/>
       <location filename="../../DraftGui.py" line="1068"/>
+      <location filename="../../DraftGui.py" line="1069"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="118"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="119"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="120"/>
@@ -3469,22 +3469,22 @@ Nije raspoloživo ako je u podešavanjima omogućena postavka 'Use Part Primitiv
       <translation>Opšto {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1677"/>
+      <location filename="../../DraftGui.py" line="1678"/>
       <source>Autogroup:</source>
       <translation>Automatsko grupisanje:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2039"/>
+      <location filename="../../DraftGui.py" line="2040"/>
       <source>Faces</source>
       <translation>Stranice</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2040"/>
+      <location filename="../../DraftGui.py" line="2041"/>
       <source>Remove</source>
       <translation>Ukloni</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2041"/>
+      <location filename="../../DraftGui.py" line="2042"/>
       <source>Add</source>
       <translation>Dodaj</translation>
     </message>

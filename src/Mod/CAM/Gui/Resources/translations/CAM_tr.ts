@@ -4002,7 +4002,7 @@ Default: 3 mm</translation>
       <translation type="unfinished">Save Sanity Check Report</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathUtilsGui.py" line="92"/>
+      <location filename="../../../PathScripts/PathUtilsGui.py" line="91"/>
       <source>Choose a CAM Job</source>
       <translation type="unfinished">Choose a CAM Job</translation>
     </message>
@@ -4461,7 +4461,7 @@ Can be useful for multi profile operations, e.g. Pocket with ZigZagOffset patter
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="187"/>
-      <location filename="../../../Path/Op/Base.py" line="441"/>
+      <location filename="../../../Path/Op/Base.py" line="444"/>
       <location filename="../../../Path/Main/Job.py" line="487"/>
       <source>Operations Cycle Time Estimation</source>
       <translation type="unfinished">Operations Cycle Time Estimation</translation>
@@ -4748,7 +4748,7 @@ Larger values (further to the right) will calculate faster; smaller values (furt
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="260"/>
-      <location filename="../../../Path/Op/Base.py" line="449"/>
+      <location filename="../../../Path/Op/Base.py" line="452"/>
       <source>Incremental Step Down of Tool</source>
       <translation type="unfinished">Incremental Step Down of Tool</translation>
     </message>
@@ -4792,7 +4792,7 @@ Larger values (further to the right) will calculate faster; smaller values (furt
     </message>
     <message>
       <location filename="../../../CAMTests/TestRefactoredTestPost.py" line="665"/>
-      <location filename="../../../Path/Op/Base.py" line="421"/>
+      <location filename="../../../Path/Op/Base.py" line="424"/>
       <source>Coolant option for this operation</source>
       <translation type="unfinished">Coolant option for this operation</translation>
     </message>
@@ -6177,7 +6177,7 @@ Use property KeepToolDown to change this</translation>
       <translation type="unfinished">Make False, to prevent operation from generating code</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="192"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="191"/>
       <source>Edit</source>
       <translation>Düzenle</translation>
     </message>
@@ -6244,14 +6244,14 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <translation type="unfinished">Selects the start point</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1482"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1485"/>
       <source>No suitable tool controller found.
 Aborting op creation</source>
       <translation type="unfinished">No suitable tool controller found.
 Aborting op creation</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1486"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1489"/>
       <source>No tool controller, aborting op creation</source>
       <translation type="unfinished">No tool controller, aborting op creation</translation>
     </message>
@@ -6444,7 +6444,7 @@ Aborting op creation</translation>
       <translation>Yay</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1391"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1395"/>
       <source>Lead In/Out</source>
       <translation>Temel Giriş/Çıkış</translation>
     </message>
@@ -6504,22 +6504,22 @@ Aborting op creation</translation>
       <translation type="unfinished">Tool controller not selected for base operation: %s</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1395"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1399"/>
       <source>Creates entry and exit motions for a selected path</source>
       <translation type="unfinished">Creates entry and exit motions for a selected path</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1418"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1422"/>
       <source>Select one toolpath object</source>
       <translation type="unfinished">Select one toolpath object</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1427"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1431"/>
       <source>Select a Profile object</source>
       <translation type="unfinished">Select a Profile object</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1423"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1427"/>
       <source>The selected object is not a toolpath</source>
       <translation type="unfinished">The selected object is not a toolpath</translation>
     </message>
@@ -7475,17 +7475,17 @@ Aborting op creation</translation>
   <context>
     <name>CAM_Operation</name>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="359"/>
+      <location filename="../../../Path/Op/Base.py" line="362"/>
       <source>None</source>
       <translation>Hiçbiri</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="360"/>
+      <location filename="../../../Path/Op/Base.py" line="363"/>
       <source>Flood</source>
       <translation type="unfinished">Flood</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="361"/>
+      <location filename="../../../Path/Op/Base.py" line="364"/>
       <source>Mist</source>
       <translation type="unfinished">Mist</translation>
     </message>
@@ -7508,62 +7508,62 @@ Aborting op creation</translation>
   <context>
     <name>CAM</name>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="617"/>
+      <location filename="../../../Path/Op/Base.py" line="623"/>
       <source>No parent job found for operation.</source>
       <translation type="unfinished">No parent job found for operation.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="622"/>
+      <location filename="../../../Path/Op/Base.py" line="628"/>
       <source>Parent job %s doesn&apos;t have a base object</source>
       <translation type="unfinished">Parent job %s doesn&apos;t have a base object</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="764"/>
+      <location filename="../../../Path/Op/Base.py" line="770"/>
       <source>No Tool Controller is selected. We need a tool to build a Path.</source>
       <translation type="unfinished">No Tool Controller is selected. We need a tool to build a Path.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="778"/>
+      <location filename="../../../Path/Op/Base.py" line="784"/>
       <source>No Tool found or diameter is zero. We need a tool to build a Path.</source>
       <translation type="unfinished">No Tool found or diameter is zero. We need a tool to build a Path.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="848"/>
+      <location filename="../../../Path/Op/Base.py" line="854"/>
       <source>No Tool Controller selected.</source>
       <translation type="unfinished">No Tool Controller selected.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="851"/>
+      <location filename="../../../Path/Op/Base.py" line="857"/>
       <source>Tool Error</source>
       <translation type="unfinished">Tool Error</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="863"/>
+      <location filename="../../../Path/Op/Base.py" line="869"/>
       <source>Tool Controller feedrates required to calculate the cycle time.</source>
       <translation type="unfinished">Tool Controller feedrates required to calculate the cycle time.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="866"/>
+      <location filename="../../../Path/Op/Base.py" line="872"/>
       <source>Tool Feedrate Error</source>
       <translation type="unfinished">Tool Feedrate Error</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="872"/>
+      <location filename="../../../Path/Op/Base.py" line="878"/>
       <source>Add Tool Controller Rapid Speeds on the SetupSheet for more accurate cycle times.</source>
       <translation type="unfinished">Add Tool Controller Rapid Speeds on the SetupSheet for more accurate cycle times.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="881"/>
+      <location filename="../../../Path/Op/Base.py" line="887"/>
       <source>Cycletime Error</source>
       <translation type="unfinished">Cycletime Error</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="823"/>
+      <location filename="../../../Path/Op/Base.py" line="829"/>
       <source>Base object %s.%s already in the list</source>
       <translation type="unfinished">Base object %s.%s already in the list</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="833"/>
+      <location filename="../../../Path/Op/Base.py" line="839"/>
       <source>Base object %s.%s rejected by operation</source>
       <translation type="unfinished">Base object %s.%s rejected by operation</translation>
     </message>
