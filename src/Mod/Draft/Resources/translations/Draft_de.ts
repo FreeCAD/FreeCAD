@@ -3034,7 +3034,7 @@ gefärbt, wenn sie mit der X-, Y- oder Z-Achse des globalen Koordinatensystems �
     </message>
     <message>
       <location filename="../../DraftGui.py" line="641"/>
-      <location filename="../../DraftGui.py" line="997"/>
+      <location filename="../../DraftGui.py" line="998"/>
       <source>Continue</source>
       <translation>Fortsetzen</translation>
     </message>
@@ -3155,8 +3155,8 @@ gefärbt, wenn sie mit der X-, Y- oder Z-Achse des globalen Koordinatensystems �
     <message>
       <location filename="../../DraftGui.py" line="553"/>
       <location filename="../../DraftGui.py" line="582"/>
-      <location filename="../../DraftGui.py" line="1663"/>
-      <location filename="../../DraftGui.py" line="1681"/>
+      <location filename="../../DraftGui.py" line="1664"/>
+      <location filename="../../DraftGui.py" line="1682"/>
       <location filename="../../draftguitools/gui_groups.py" line="273"/>
       <source>None</source>
       <translation>Ohne</translation>
@@ -3204,7 +3204,7 @@ gefärbt, wenn sie mit der X-, Y- oder Z-Achse des globalen Koordinatensystems �
     </message>
     <message>
       <location filename="../../DraftGui.py" line="602"/>
-      <location filename="../../DraftGui.py" line="980"/>
+      <location filename="../../DraftGui.py" line="981"/>
       <source>Radius</source>
       <translation>Radius</translation>
     </message>
@@ -3224,12 +3224,12 @@ gefärbt, wenn sie mit der X-, Y- oder Z-Achse des globalen Koordinatensystems �
       <translation>Konstruktionsmodus umschalten</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="934"/>
+      <location filename="../../DraftGui.py" line="935"/>
       <source>Label Type</source>
       <translation>Hinweis-Typ</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="981"/>
+      <location filename="../../DraftGui.py" line="982"/>
       <source>Radius of Circle</source>
       <translation>Radius des Kreises</translation>
     </message>
@@ -3292,12 +3292,12 @@ Deaktivieren um das Koordinatensystem der aktuellen Arbeitsebene zu verwenden</t
       <translation>Beendet die aktuelle Zeichen- oder Bearbeitungsoperation</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1885"/>
+      <location filename="../../DraftGui.py" line="1886"/>
       <source>Modify Objects</source>
       <translation>Objekte ändern</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2042"/>
+      <location filename="../../DraftGui.py" line="2043"/>
       <source>Facebinder Elements</source>
       <translation>Flächenverbinder-Elemente</translation>
     </message>
@@ -3390,50 +3390,50 @@ Steht nicht zur Verfügung, wenn die Einstellung 'Part-Grundkörper verwenden' a
     </message>
     <message>
       <location filename="../../DraftGui.py" line="738"/>
-      <location filename="../../DraftGui.py" line="1669"/>
-      <location filename="../../DraftGui.py" line="1687"/>
+      <location filename="../../DraftGui.py" line="1670"/>
+      <location filename="../../DraftGui.py" line="1688"/>
       <source>Autogroup off</source>
       <translation>Autogruppe aus</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="841"/>
+      <location filename="../../DraftGui.py" line="842"/>
       <location filename="../../draftguitools/gui_lines.py" line="71"/>
       <source>Line</source>
       <translation>Linie</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="856"/>
+      <location filename="../../DraftGui.py" line="857"/>
       <source>DWire</source>
       <translation>Polygonzug</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="879"/>
+      <location filename="../../DraftGui.py" line="880"/>
       <source>Circle</source>
       <translation>Kreis</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="884"/>
+      <location filename="../../DraftGui.py" line="885"/>
       <source>Arc</source>
       <translation>Kreisbogen</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="889"/>
+      <location filename="../../DraftGui.py" line="890"/>
       <location filename="../../draftguitools/gui_rotate.py" line="286"/>
       <source>Rotate</source>
       <translation>Drehen</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="895"/>
+      <location filename="../../DraftGui.py" line="896"/>
       <source>Point</source>
       <translation>Punkt</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="932"/>
+      <location filename="../../DraftGui.py" line="933"/>
       <source>Label</source>
       <translation>Beschriftung</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="951"/>
+      <location filename="../../DraftGui.py" line="952"/>
       <location filename="../../draftguitools/gui_offset.py" line="243"/>
       <location filename="../../draftguitools/gui_offset.py" line="258"/>
       <location filename="../../draftguitools/gui_offset.py" line="321"/>
@@ -3441,31 +3441,31 @@ Steht nicht zur Verfügung, wenn die Einstellung 'Part-Grundkörper verwenden' a
       <translation>Versatz</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="956"/>
-      <location filename="../../DraftGui.py" line="973"/>
+      <location filename="../../DraftGui.py" line="957"/>
+      <location filename="../../DraftGui.py" line="974"/>
       <location filename="../../draftguitools/gui_trimex.py" line="223"/>
       <source>Distance</source>
       <translation>Entfernung</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="957"/>
-      <location filename="../../DraftGui.py" line="974"/>
+      <location filename="../../DraftGui.py" line="958"/>
+      <location filename="../../DraftGui.py" line="975"/>
       <location filename="../../draftguitools/gui_trimex.py" line="224"/>
       <source>Offset distance</source>
       <translation>Versatzabstand</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="970"/>
+      <location filename="../../DraftGui.py" line="971"/>
       <source>Trimex</source>
       <translation>Trimex</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1053"/>
-      <location filename="../../DraftGui.py" line="1055"/>
+      <location filename="../../DraftGui.py" line="1054"/>
       <location filename="../../DraftGui.py" line="1056"/>
-      <location filename="../../DraftGui.py" line="1058"/>
+      <location filename="../../DraftGui.py" line="1057"/>
       <location filename="../../DraftGui.py" line="1059"/>
       <location filename="../../DraftGui.py" line="1060"/>
+      <location filename="../../DraftGui.py" line="1061"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="122"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="123"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="124"/>
@@ -3473,12 +3473,12 @@ Steht nicht zur Verfügung, wenn die Einstellung 'Part-Grundkörper verwenden' a
       <translation>Lokales {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1062"/>
       <location filename="../../DraftGui.py" line="1063"/>
       <location filename="../../DraftGui.py" line="1064"/>
-      <location filename="../../DraftGui.py" line="1066"/>
+      <location filename="../../DraftGui.py" line="1065"/>
       <location filename="../../DraftGui.py" line="1067"/>
       <location filename="../../DraftGui.py" line="1068"/>
+      <location filename="../../DraftGui.py" line="1069"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="118"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="119"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="120"/>
@@ -3486,22 +3486,22 @@ Steht nicht zur Verfügung, wenn die Einstellung 'Part-Grundkörper verwenden' a
       <translation>Globales {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1677"/>
+      <location filename="../../DraftGui.py" line="1678"/>
       <source>Autogroup:</source>
       <translation>Autogruppe:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2039"/>
+      <location filename="../../DraftGui.py" line="2040"/>
       <source>Faces</source>
       <translation>Flächen</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2040"/>
+      <location filename="../../DraftGui.py" line="2041"/>
       <source>Remove</source>
       <translation>Entfernen</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2041"/>
+      <location filename="../../DraftGui.py" line="2042"/>
       <source>Add</source>
       <translation>Hinzufügen</translation>
     </message>
@@ -3710,7 +3710,7 @@ Bitte die DWG-Datei in einen Verzeichnispfad ohne Leerzeichen und nicht-lateinis
     <message>
       <location filename="../../draftutils/utils.py" line="637"/>
       <source>Objects have different placements. Distance between the two base points:</source>
-      <translation>Objekte haben unterschiedliche Platzierungen. Abstand zwischen den beiden Basispunkten:</translation>
+      <translation>Objekte haben unterschiedliche Positionierungen. Abstand zwischen den beiden Basispunkten:</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="899"/>
@@ -5139,7 +5139,7 @@ Der endgültige Winkel ergibt sich aus dem Basiswinkel plus diesem Wert.</transl
     <message>
       <location filename="../../draftmake/make_arc_3points.py" line="111"/>
       <source>Wrong input: incorrect type of placement.</source>
-      <translation>Falsche Eingabe: Falscher Art der Platzierung.</translation>
+      <translation>Falsche Eingabe: Falsche Art der Positionierung.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_arc_3points.py" line="103"/>
@@ -5239,7 +5239,7 @@ Der endgültige Winkel ergibt sich aus dem Basiswinkel plus diesem Wert.</transl
       <location filename="../../draftmake/make_pointarray.py" line="118"/>
       <location filename="../../draftmake/make_text.py" line="112"/>
       <source>Wrong input: must be a placement, a vector, or a rotation.</source>
-      <translation>Falsche Eingabe: muss eine Platzierung, ein Vektor oder eine Drehung sein.</translation>
+      <translation>Falsche Eingabe: muss eine Positionierung, ein Vektor oder eine Drehung sein.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="227"/>
@@ -6668,7 +6668,7 @@ Beispielsweise wird ein 3D-Volumenkörper in einzelne Flächen, Linienzüge und 
     <message>
       <location filename="../../draftobjects/text.py" line="57"/>
       <source>The placement of the base point of the first line</source>
-      <translation>Die Platzierung des Basispunkts der ersten Linie</translation>
+      <translation>Die Positionierung des Basispunkts der ersten Linie</translation>
     </message>
     <message>
       <location filename="../../draftobjects/text.py" line="68"/>
@@ -6887,7 +6887,7 @@ Wahr für Fusion oder Falsch für Verbund</translation>
       <location filename="../../draftobjects/pointarray.py" line="117"/>
       <location filename="../../draftobjects/array.py" line="147"/>
       <source>The placement for each array element</source>
-      <translation>Die Platzierung für jedes Anordnungs-Element</translation>
+      <translation>Die Positionierung für jedes Anordnungs-Element</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="70"/>
@@ -6922,7 +6922,7 @@ can be set as a list of arbitrary points.</source>
       <translation>Die Liste der Punkte, die die Hinweislinie definieren; normalerweise eine Liste 
 von drei Punkten.
 
-Der erste Punkt sollte die Position des Textes sein, also die 'Platzierung'
+Der erste Punkt sollte die Position des Textes sein, also die 'Positionierung'
 und der letzte Punkt sollte die Spitze der Linie sein, also der 'Zielpunkt'.
 Der mittlere Punkt wird abhängig von den gewählten Werten und Vorzeichen
 für 'gerade Richtung' und 'gerader Abstand' automatisch berechnet.
@@ -6957,7 +6957,7 @@ abhängig vom Wert der Eigenschaft 'Gerade Richtung' (Straight Direction).</tran
     <message>
       <location filename="../../draftobjects/label.py" line="158"/>
       <source>The placement of the 'Text' element in 3D space</source>
-      <translation>Platzierung des 'Text' Elements im 3D-Raum</translation>
+      <translation>Positionierung des 'Text'-Elements im 3D-Raum</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="165"/>
@@ -6988,14 +6988,14 @@ For other types, the string will be calculated automatically from the object def
 
 For 'Position', 'Length', and 'Area' these properties will be extracted from the main object in 'Target',
 or from the subelement 'VertexN', 'EdgeN', or 'FaceN', respectively, if it is specified.</source>
-      <translation type="unfinished">The type of information displayed by this label.
+      <translation>Die Art der Informationen, die durch diese Beschriftung angezeigt wird.
 
-If 'Custom' is chosen, the contents of 'Custom Text' will be used.
-For other types, the string will be calculated automatically from the object defined in 'Target'.
-'Tag' and 'Material' only work for objects that have these properties, like BIM objects.
+Wenn „Benutzerdefiniert“ ausgewählt wird, wird der Inhalt von „Benutzerdefinierter Text“ verwendet.
+Bei anderen Typen wird die Zeichenfolge automatisch aus dem in „Ziel“ definierten Objekt berechnet.
+„Tag“ und „Material“ funktionieren nur für Objekte, die über diese Eigenschaften verfügen, wie z. B. BIM-Objekte.
 
-For 'Position', 'Length', and 'Area' these properties will be extracted from the main object in 'Target',
-or from the subelement 'VertexN', 'EdgeN', or 'FaceN', respectively, if it is specified.</translation>
+Für „Position“, „Länge“ und „Fläche“ werden diese Eigenschaften aus dem Hauptobjekt in „Ziel“ extrahiert
+oder aus dem Unterelement „VertexN“, „EdgeN“ bzw. „FaceN“, sofern angegeben.</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="89"/>
@@ -7083,10 +7083,10 @@ Um mit 'Original' oder 'Tangente' bessere Ergebnisse zu erzielen, müssen Sie m�
  - Fixed count: available path length (minus start and end offsets) is evenly divided into n.
  - Fixed spacing: start at "Start offset" and place new copies after traveling a fixed distance along the path.
  - Fixed count and spacing: same as "Fixed spacing", but also stop at given number of copies.</source>
-      <translation type="unfinished">How copies are spaced.
- - Fixed count: available path length (minus start and end offsets) is evenly divided into n.
- - Fixed spacing: start at "Start offset" and place new copies after traveling a fixed distance along the path.
- - Fixed count and spacing: same as "Fixed spacing", but also stop at given number of copies.</translation>
+      <translation>Wie Kopien angeordnet sind.
+ - Feste Anzahl: Die verfügbare Pfadlänge (abzüglich Start- und End-Offsets) wird gleichmäßig in n unterteilt.
+ - Fester Abstand: Bei „Startversatz“ beginnen und neue Kopien platzieren, nachdem eine feste Strecke entlang des Pfades zurückgelegt wurde.
+ - Feste Anzahl und Abstand: Wie „Fester Abstand“, jedoch zusätzlich Stopp bei einer bestimmten Anzahl von Kopien.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="354"/>
@@ -7126,10 +7126,10 @@ Andernfalls haben die Kopien dieselbe Ausrichtung wie das ursprüngliche Basisob
 - Ortho: places the copies in the direction of the global X, Y, Z axes.
 - Polar: places the copies along a circular arc, up to a specified angle, and with certain orientation defined by a center and an axis.
 - Circular: places the copies in concentric circles around the base object.</source>
-      <translation type="unfinished">The type of array to create.
-- Ortho: places the copies in the direction of the global X, Y, Z axes.
-- Polar: places the copies along a circular arc, up to a specified angle, and with certain orientation defined by a center and an axis.
-- Circular: places the copies in concentric circles around the base object.</translation>
+      <translation>Der Typ der zu erstellenden Anordnung.
+- Ortho: Platziert die Kopien in Richtung der globalen X-, Y- und Z-Achsen.
+- Polar: Platziert die Kopien entlang eines Kreisbogens bis zu einem bestimmten Winkel und mit einer bestimmten Ausrichtung, die durch einen Mittelpunkt und eine Achse definiert ist.
+- Zirkulär: Platziert die Kopien in konzentrischen Kreisen um das Basisobjekt herum.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/pathtwistedarray.py" line="119"/>
@@ -7187,8 +7187,8 @@ Die 'Achse' geht durch diesen Punkt.</translation>
 Its placement, position and rotation, will be used when creating polar and circular arrays.
 Leave this property empty to be able to set 'Axis' and 'Center' manually.</source>
       <translation>Das Achsenobjekt, welches den Wert von „Achse“ und „Zentrum“ überschreibt, zum Beispiel eine Bezugslinie.
-Seine Platzierung, Position und Drehung werden beim Erstellen von Polar- und Kreisanordnungen verwendet.
-Lassen Sie diese Eigenschaft leer, um „Achse“ und „Zentrum“ manuell setzen zu können.</translation>
+Seine Positionierung, Position und Drehung werden beim Erstellen von Polar- und Kreisanordnungen verwendet.
+Diese Eigenschaft leer lassen, um „Achse“ und „Zentrum“ manuell setzen zu können.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="258"/>
@@ -7252,7 +7252,7 @@ Diese Eigenschaft ist schreibgeschützt, da die Zahl von den Punkten im 'Punkt O
     <message>
       <location filename="../../draftobjects/pointarray.py" line="102"/>
       <source>Additional placement, shift and rotation, that will be applied to each copy</source>
-      <translation>Zusätzliche Platzierung, Verschiebung und Drehung, die auf jede Kopie angewendet werden</translation>
+      <translation>Zusätzliche Positionierung, Verschiebung und Drehung, die auf jede Kopie angewendet werden</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="64"/>
@@ -7686,7 +7686,7 @@ den Werten der Eigenschaften 'Erster Winkel' und 'Letzter Winkel' berechnet wird
     <message>
       <location filename="../../draftobjects/draftlink.py" line="104"/>
       <source>Force sync pattern placements even when array elements are expanded</source>
-      <translation>Erzwinge Synchronisierungsmusterplatzierung, auch wenn Array Elemente erweitert werden</translation>
+      <translation>Erzwinge Synchronisierungsmuster-Positionierung, auch wenn Anordnungs-Elemente erweitert werden</translation>
     </message>
     <message>
       <location filename="../../draftobjects/draftlink.py" line="113"/>
@@ -7938,7 +7938,7 @@ beyond the dimension line</source>
       <location filename="../../InitGui.py" line="243"/>
       <location filename="../../InitGui.py" line="246"/>
       <source>Import-Export</source>
-      <translation>Import / Export</translation>
+      <translation>Import/Export</translation>
     </message>
   </context>
   <context>
@@ -8214,11 +8214,11 @@ If a polyline is selected, it will apply the slope transformation to each of its
 
 The slope will always change the Z value, therefore this command only works well for
 straight Draft lines that are drawn on the XY-plane.</source>
-      <translation type="unfinished">Sets the slope of the selected line by changing the value of the Z value of one of its points.
-If a polyline is selected, it will apply the slope transformation to each of its segments.
+      <translation>Legt die Neigung der ausgewählten Linie fest, indem der Z-Wert eines ihrer Punkte geändert wird.
+Wenn eine Polylinie ausgewählt ist, wird die Neigungstransformation auf jedes ihrer Segmente angewendet.
 
-The slope will always change the Z value, therefore this command only works well for
-straight Draft lines that are drawn on the XY-plane.</translation>
+Die Neigung ändert immer den Z-Wert, daher funktioniert dieser Befehl nur bei
+geraden Linienzügen, die auf der XY-Ebene gezeichnet sind.</translation>
     </message>
   </context>
   <context>
@@ -8270,7 +8270,7 @@ straight Draft lines that are drawn on the XY-plane.</translation>
     <message>
       <location filename="../../draftguitools/gui_pathtwistedarray.py" line="140"/>
       <source>Creates twisted linked copies of the selected object along a selected path</source>
-      <translation type="unfinished">Creates twisted linked copies of the selected object along a selected path</translation>
+      <translation>Erstellt verdrehte, verbundene Kopien des ausgewählten Objekts entlang eines ausgewählten Pfads</translation>
     </message>
   </context>
   <context>
@@ -8493,7 +8493,7 @@ Die anfängliche Projektionsrichtung ist entgegengesetzt zur aktuell aktiven Bli
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="218"/>
       <source>Snaps to the center point of faces and circular edges, and to the placement point of working plane proxies and building parts</source>
-      <translation>Rastet auf Mittelpunkte von Flächen und kreisförmigen Kanten sowie auf Positionierungspunkte von Arbeitsebenen-Proxies und Gebäudeteilen</translation>
+      <translation>Rastet auf Mittelpunkte von Flächen und kreisförmigen Kanten ein, sowie auf dem Positionierungspunkt von Arbeitsebenen-Proxies und Gebäudeteilen</translation>
     </message>
   </context>
   <context>
@@ -8683,10 +8683,9 @@ Die anfängliche Projektionsrichtung ist entgegengesetzt zur aktuell aktiven Bli
 reusable objects (Part Compounds) and instances become `App::Link` objects,
 maintaining the block structure. Best for full integration with the Draft
 workbench.</source>
-      <translation type="unfinished">Creates fully parametric Draft objects. Block definitions are imported as
-reusable objects (Part Compounds) and instances become `App::Link` objects,
-maintaining the block structure. Best for full integration with the Draft
-workbench.</translation>
+      <translation>Erstellt vollständig parametrische Draft-Objekte. Blockdefinitionen werden als
+wiederverwendbare Objekte (Part Compounds) importiert und Instanzen werden zu `App::Link`-Objekten,
+wobei die Blockstruktur beibehalten wird. Am besten geeignet für die vollständige Integration mit dem Arbeitsbereich Draft.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf-import.ui" line="32"/>
@@ -8699,10 +8698,10 @@ workbench.</translation>
 definitions are imported as reusable objects (Part Compounds) and instances
 become `App::Link` objects, maintaining the block structure. Best for
 script-based post-processing.</source>
-      <translation type="unfinished">Creates parametric Part objects (e.g., Part::Line, Part::Circle). Block
-definitions are imported as reusable objects (Part Compounds) and instances
-become `App::Link` objects, maintaining the block structure. Best for
-script-based post-processing.</translation>
+      <translation>Erstellt parametrische Teilobjekte (z. B. Teil::Linie, Teil::Kreis). Blockdefinitionen
+werden als wiederverwendbare Objekte (Teilkomponenten) importiert, und Instanzen
+werden zu `App::Link`-Objekten, wobei die Blockstruktur beibehalten wird. Am besten
+geeignet für die skriptbasierte Nachbearbeitung.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf-import.ui" line="45"/>

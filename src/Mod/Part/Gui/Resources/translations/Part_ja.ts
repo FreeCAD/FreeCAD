@@ -5961,7 +5961,7 @@ Continue?</source>
       <translation>アタッチメント・エディター</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="1000"/>
+      <location filename="../../ViewProviderExt.cpp" line="1002"/>
       <source>Appearance per Face</source>
       <translation>面ごとの外観</translation>
     </message>

@@ -5968,7 +5968,7 @@ Continue?</source>
       <translation>附着编辑器</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="1000"/>
+      <location filename="../../ViewProviderExt.cpp" line="1002"/>
       <source>Appearance per Face</source>
       <translation>每面外观</translation>
     </message>
