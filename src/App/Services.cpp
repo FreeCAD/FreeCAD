@@ -28,3 +28,8 @@ App::NullCenterOfMass::ofDocumentObject([[maybe_unused]] DocumentObject* object)
 {
     return std::nullopt;
 }
+
+bool App::NullCenterOfMass::supports(DocumentObject* object) const
+{
+    return false;
+}
