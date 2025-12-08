@@ -73,12 +73,12 @@
       <translation>Die Unterbaugruppe ist derzeit beweglich. Dies macht sie zu einem starren Verbund.</translation>
     </message>
     <message>
-      <location filename="../../../App/BomObject.cpp" line="279"/>
+      <location filename="../../../App/BomObject.cpp" line="287"/>
       <source>N/A</source>
       <translation>Keine Angaben</translation>
     </message>
     <message>
-      <location filename="../../../App/BomObject.cpp" line="303"/>
+      <location filename="../../../App/BomObject.cpp" line="311"/>
       <source>Not supported</source>
       <translation>Nicht unterstützt</translation>
     </message>
@@ -130,7 +130,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="1694"/>
+      <location filename="../../../JointObject.py" line="1700"/>
       <source>Distance</source>
       <translation>Abstand</translation>
     </message>
@@ -170,27 +170,27 @@
       <translation>Riemen</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="759"/>
+      <location filename="../../../JointObject.py" line="757"/>
       <source>Broken link in: </source>
       <translation>Defekte Verknüpfung in: </translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1531"/>
+      <location filename="../../../JointObject.py" line="1529"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>2 Elemente von 2 separaten Bauteilen auswählen</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1696"/>
+      <location filename="../../../JointObject.py" line="1702"/>
       <source>Radius 1</source>
       <translation>Radius 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1698"/>
+      <location filename="../../../JointObject.py" line="1704"/>
       <source>Thread pitch</source>
       <translation>Gewindesteigung</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1700"/>
+      <location filename="../../../JointObject.py" line="1706"/>
       <source>Pitch radius</source>
       <translation>Steigungsradius</translation>
     </message>
@@ -300,42 +300,49 @@
       <translation>Automatische Spalten: (Index, Menge, Name...) werden automatisch ausgefüllt. Jede Änderung wird überschrieben. Diese Spalten können nicht umbenannt werden.</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="85"/>
+      <location filename="../../../CommandInsertNewPart.py" line="108"/>
       <source>Part name</source>
       <translation>Bauteilname</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="90"/>
+      <location filename="../../../CommandInsertNewPart.py" line="113"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="95"/>
+      <location filename="../../../CommandInsertNewPart.py" line="118"/>
       <source>Create part in new file</source>
       <translation>Teil in neuer Datei erstellen</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="102"/>
+      <location filename="../../../CommandInsertNewPart.py" line="125"/>
       <source>Joint new part origin</source>
       <translation>Verbinde neuen Part-Ursprung</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="138"/>
+      <location filename="../../../CommandInsertNewPart.py" line="161"/>
       <source>If the new document is not saved the new part cannot be linked in the assembly.</source>
       <translation>Wurde das neue Dokument noch nicht gespeichert, kann das neue Bauteil nicht in der Baugruppe verknüpft werden.</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="139"/>
+      <location filename="../../../CommandInsertNewPart.py" line="78"/>
+      <location filename="../../../CommandInsertNewPart.py" line="162"/>
       <source>Save Document</source>
       <translation>Dokument speichern</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="141"/>
+      <location filename="../../../CommandInsertNewPart.py" line="77"/>
+      <source>The assembly document must be saved before inserting a new part.</source>
+      <translation>Das Dokument der Baugruppe muss vor dem Einfügen eines neuen Bauteils gespeichert worden sein.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandInsertNewPart.py" line="80"/>
+      <location filename="../../../CommandInsertNewPart.py" line="164"/>
       <source>Save</source>
       <translation>Speichern</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="144"/>
+      <location filename="../../../CommandInsertNewPart.py" line="167"/>
       <source>Do not Link</source>
       <translation>Nicht verknüpfen</translation>
     </message>
@@ -503,140 +510,140 @@ SLOPE definiert die Steilheit des Übergangs zwischen 0 und H1 und H2 auf 0 übe
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="../../../JointObject.py" line="186"/>
+      <location filename="../../../JointObject.py" line="184"/>
       <source>The type of the joint</source>
       <translation>Die Art der Verbindung</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="213"/>
+      <location filename="../../../JointObject.py" line="211"/>
       <source>The first reference of the joint</source>
       <translation>Die erste Referenz der Verbindung</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="225"/>
+      <location filename="../../../JointObject.py" line="223"/>
       <source>This is the local coordinate system within Reference1's object that will be used for the joint</source>
       <translation>Dies ist das lokale Koordinatensystem im Objekt von Reference1, das für die Verbindung verwendet wird</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="237"/>
+      <location filename="../../../JointObject.py" line="235"/>
       <source>This prevents Placement1 from recomputing, enabling custom positioning of the placement</source>
       <translation>Dies verhindert die Neuberechnung der Eigenschaft Placement1, wodurch eine benutzerdefinierte Einstellung dieser Positionierung ermöglicht wird</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="249"/>
-      <location filename="../../../JointObject.py" line="558"/>
+      <location filename="../../../JointObject.py" line="247"/>
+      <location filename="../../../JointObject.py" line="556"/>
       <source>This is the attachment offset of the first connector of the joint</source>
       <translation>Dies ist der Befestigungsversatz an der ersten Verbindungsstelle der Verbindung</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="271"/>
+      <location filename="../../../JointObject.py" line="269"/>
       <source>This is the local coordinate system within Reference2's object that will be used for the joint</source>
       <translation>Dies ist das lokale Koordinatensystem im Objekt von Reference2, das für die Verbindung verwendet wird</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="283"/>
+      <location filename="../../../JointObject.py" line="281"/>
       <source>This prevents Placement2 from recomputing, enabling custom positioning of the placement</source>
       <translation>Dies verhindert die Neuberechnung der Eigenschaft Placement2, wodurch eine benutzerdefinierte Einstellung dieser Positionierung ermöglicht wird</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="295"/>
-      <location filename="../../../JointObject.py" line="569"/>
+      <location filename="../../../JointObject.py" line="293"/>
+      <location filename="../../../JointObject.py" line="567"/>
       <source>This is the attachment offset of the second connector of the joint</source>
       <translation>Dies ist der Befestigungsversatz an der zweiten Verbindungsstelle der Verbindung</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="317"/>
+      <location filename="../../../JointObject.py" line="315"/>
       <source>Enable the minimum length limit of the joint</source>
       <translation>Aktiviert den unteren Längengrenzwert der Verbindung</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="330"/>
+      <location filename="../../../JointObject.py" line="328"/>
       <source>Enable the maximum length limit of the joint</source>
       <translation>Aktiviert den oberen Längengrenzwert der Verbindung</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="343"/>
+      <location filename="../../../JointObject.py" line="341"/>
       <source>Enable the minimum angle limit of the joint</source>
       <translation>Aktiviert den unteren Winkelgrenzwert der Verbindung</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="356"/>
+      <location filename="../../../JointObject.py" line="354"/>
       <source>Enable the maximum angle limit of the joint</source>
       <translation>Aktiviert den oberen Winkelgrenzwert der Verbindung</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="386"/>
+      <location filename="../../../JointObject.py" line="384"/>
       <source>This is the angle of the joint. It is used only by the Angle joint.</source>
       <translation>Dies ist der Winkel der Verbindung. Er wird nur durch die Winkelverbindung genutzt.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="422"/>
+      <location filename="../../../JointObject.py" line="420"/>
       <source>This is the minimum limit for the length between both coordinate systems (along their z-axis)</source>
       <translation>Dies ist der untere Grenzwert für den Abstand zwischen beiden Koordinatensystemen (entlang ihrer Z-Achse)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="434"/>
+      <location filename="../../../JointObject.py" line="432"/>
       <source>This is the maximum limit for the length between both coordinate systems (along their z-axis)</source>
       <translation>Dies ist der obere Grenzwert für den Abstand zwischen beiden Koordinatensystemen (entlang ihrer Z-Achse)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="446"/>
+      <location filename="../../../JointObject.py" line="444"/>
       <source>This is the minimum limit for the angle between both coordinate systems (between their x-axis)</source>
       <translation>Dies ist der untere Grenzwert für den Winkel zwischen beiden Koordinatensystemen (zwischen ihren X-Achsen)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="458"/>
+      <location filename="../../../JointObject.py" line="456"/>
       <source>This is the maximum limit for the angle between both coordinate systems (between their x-axis)</source>
       <translation>Dies ist der obere Grenzwert für den Winkel zwischen beiden Koordinatensystemen (zwischen ihren X-Achsen)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="259"/>
+      <location filename="../../../JointObject.py" line="257"/>
       <source>The second reference of the joint</source>
       <translation>Die zweite Referenz der Verbindung</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="477"/>
+      <location filename="../../../JointObject.py" line="475"/>
       <source>The first object of the joint</source>
       <translation>Das erste Objekt der Verbindung</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="497"/>
+      <location filename="../../../JointObject.py" line="495"/>
       <source>The second object of the joint</source>
       <translation>Das zweite Objekt der Verbindung</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="398"/>
+      <location filename="../../../JointObject.py" line="396"/>
       <source>This is the distance of the joint. It is used only by the Distance joint and Rack and Pinion (pitch radius), Screw and Gears and Belt (radius1)</source>
       <translation>Dies ist der Abstand der Verbindung. Dieser wird nur von der Abstandsverbindung, der Zahnstange-Ritzel-Verbindung und der Spindelverbindung (als Steigungsradius), sowie der Zahnrad- und der Riemenverbindung (als Radius 1) verwendet</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="410"/>
+      <location filename="../../../JointObject.py" line="408"/>
       <source>This is the second distance of the joint. It is used only by the gear joint to store the second radius.</source>
       <translation>Dies ist der zweite Abstand der Verbindung. Er wird nur von der Zahnrad- und der Riemenverbindung für den zweiten Radius verwendet.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="511"/>
+      <location filename="../../../JointObject.py" line="509"/>
       <source>The {order} reference of the joint</source>
       <translation>Die {order} Referenz der Verbindung</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1153"/>
+      <location filename="../../../JointObject.py" line="1151"/>
       <source>The object to ground</source>
       <translation>Das verankerndes Objekt</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="358"/>
-      <location filename="../../../CommandCreateView.py" line="395"/>
+      <location filename="../../../CommandCreateView.py" line="368"/>
+      <location filename="../../../CommandCreateView.py" line="405"/>
       <source>The objects moved by the move</source>
       <translation>Die durch die Verschiebung bewegten Objekte</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="370"/>
+      <location filename="../../../CommandCreateView.py" line="380"/>
       <source>This is the movement of the move. The end placement is the result of the start placement * this placement.</source>
-      <translation>Dies ist die Verschiebung der Bewegung. Die Endplatzierung ist das Ergebnis aus der Startplatzierung * dieser Platzierung.</translation>
+      <translation>Dies ist die Verschiebung der Bewegung. Die Endpositionierung ist das Ergebnis aus der Startpositionierung * dieser Positionierung.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="379"/>
+      <location filename="../../../CommandCreateView.py" line="389"/>
       <source>The type of the move</source>
       <translation>Die Art der Bewegung</translation>
     </message>
@@ -1466,14 +1473,14 @@ Das Verankern eines Bauteils setzt seine Position in der Baugruppe fest und verh
       <translation>Komponente einfügen</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="202"/>
+      <location filename="../../../CommandInsertLink.py" line="218"/>
       <source>Partially loaded</source>
-      <translation type="unfinished">Partially loaded</translation>
+      <translation>Teilweise geladen</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="556"/>
+      <location filename="../../../CommandInsertLink.py" line="572"/>
       <source>Fully load document</source>
-      <translation type="unfinished">Fully load document</translation>
+      <translation>Dokument vollständig laden</translation>
     </message>
   </context>
   <context>

@@ -11,12 +11,12 @@
     <message>
       <location filename="../../Command.cpp" line="955"/>
       <source>&amp;New Spreadsheet</source>
-      <translation type="unfinished">&amp;New Spreadsheet</translation>
+      <translation>&amp;Új táblázat</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="956"/>
       <source>Creates a new spreadsheet</source>
-      <translation type="unfinished">Creates a new spreadsheet</translation>
+      <translation>Létrehoz egy új táblázatot</translation>
     </message>
   </context>
   <context>
@@ -29,12 +29,12 @@
     <message>
       <location filename="../../Command.cpp" line="514"/>
       <source>Align &amp;Bottom</source>
-      <translation type="unfinished">Align &amp;Bottom</translation>
+      <translation>Alulra igazít</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="515"/>
       <source>Aligns cell contents to the bottom</source>
-      <translation type="unfinished">Aligns cell contents to the bottom</translation>
+      <translation>Igazítsa a cella tartalmát alulra</translation>
     </message>
   </context>
   <context>
@@ -47,7 +47,7 @@
     <message>
       <location filename="../../Command.cpp" line="343"/>
       <source>Align Horizontal &amp;Center</source>
-      <translation type="unfinished">Align Horizontal &amp;Center</translation>
+      <translation>Állítsa be a vízszintes középpontot</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="344"/>

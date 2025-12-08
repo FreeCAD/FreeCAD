@@ -1621,7 +1621,7 @@ des plans vertical et horizontal avec un sommet ou le long d'une ligne.</transla
     <message>
       <location filename="../../Command.cpp" line="1449"/>
       <source>Extrude</source>
-      <translation>Extruder</translation>
+      <translation>Extrusion</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1450"/>
@@ -2698,7 +2698,7 @@ la taille du fichier STEP résultant.</translation>
     <message>
       <location filename="../../DlgExtrusion.ui" line="14"/>
       <source>Extrude</source>
-      <translation>Extruder</translation>
+      <translation>Extrusion</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="26"/>
@@ -2955,7 +2955,7 @@ Si les deux longueurs sont nulles, la dimension de la direction est utilisée.</
     <message>
       <location filename="../../DlgFilletEdges.ui" line="63"/>
       <source>Select edges</source>
-      <translation>Sélectionner les arêtes</translation>
+      <translation>Sélectionnez les arêtes</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="73"/>
@@ -6017,7 +6017,7 @@ Voulez-vous continuer ?</translation>
       <translation>Éditeur de l'ancrage</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="1000"/>
+      <location filename="../../ViewProviderExt.cpp" line="1002"/>
       <source>Appearance per Face</source>
       <translation>Apparence par face</translation>
     </message>
