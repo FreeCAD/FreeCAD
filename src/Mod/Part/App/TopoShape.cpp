@@ -299,7 +299,9 @@ std::pair<std::string, unsigned long> TopoShape::getElementTypeAndIndex(const ch
 {
     int index = 0;
     std::string element;
-    boost::regex ex("^(Face|Edge|Vertex)([1-9][0-9]*)$");
+    // Regex modified to allow a prefix ending in a separator (e.g. TNP hash or Dot notation)
+    // Matches "Face3", "Part.Face3", or ";#7:1;:G0...F.Face3"
+    boost::regex ex("^(?:.*[.;:,])?(Face|Edge|Vertex)([1-9][0-9]*)$");
     boost::cmatch what;
 
     if (Name && boost::regex_match(Name, what, ex)) {
