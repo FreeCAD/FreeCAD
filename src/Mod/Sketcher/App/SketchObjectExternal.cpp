@@ -179,31 +179,35 @@ int SketchObject::toggleExternalGeometryFlag(
     return 0;
 }
 
-bool SketchObject::isExternalAllowed(App::Document* pDoc, App::DocumentObject* pObj,
-                                     eReasonList* rsn) const
+bool SketchObject::isExternalAllowed(App::Document* pDoc, App::DocumentObject* pObj, eReasonList* rsn) const
 {
-    if (rsn)
+    if (rsn) {
         *rsn = rlAllowed;
+    }
 
     // Externals outside of the Document are NOT allowed
     if (this->getDocument() != pDoc) {
-        if (rsn)
+        if (rsn) {
             *rsn = rlOtherDoc;
+        }
         return false;
     }
 
     // circular reference prevention
     try {
         if (!(this->testIfLinkDAGCompatible(pObj))) {
-            if (rsn)
+            if (rsn) {
                 *rsn = rlCircularReference;
+            }
             return false;
         }
     }
     catch (Base::Exception& e) {
         Base::Console().warning(
-            "Probably, there is a circular reference in the document. Error: %s\n", e.what());
-        return true;// prohibiting this reference won't remove the problem anyway...
+            "Probably, there is a circular reference in the document. Error: %s\n",
+            e.what()
+        );
+        return true;  // prohibiting this reference won't remove the problem anyway...
     }
 
 
@@ -213,7 +217,7 @@ bool SketchObject::isExternalAllowed(App::Document* pDoc, App::DocumentObject* p
     Part::BodyBase* body_obj = Part::BodyBase::findBodyOf(pObj);
     App::Part* part_this = App::Part::getPartOfObject(this);
     App::Part* part_obj = App::Part::getPartOfObject(pObj);
-    if (part_this == part_obj) {// either in the same part, or in the root of document
+    if (part_this == part_obj) {  // either in the same part, or in the root of document
         if (!body_this) {
             return true;
         }
@@ -221,31 +225,37 @@ bool SketchObject::isExternalAllowed(App::Document* pDoc, App::DocumentObject* p
             return true;
         }
         else {
-            if (rsn)
+            if (rsn) {
                 *rsn = rlOtherBody;
+            }
             return false;
         }
     }
     else {
         // cross-part link. Disallow, should be done via shapebinders only
-        if (rsn)
+        if (rsn) {
             *rsn = rlOtherPart;
+        }
         return false;
     }
 }
 
-bool SketchObject::isCarbonCopyAllowed(App::Document* pDoc, App::DocumentObject* pObj, bool& xinv,
-                                       bool& yinv, eReasonList* rsn) const
+bool SketchObject::isCarbonCopyAllowed(
+    App::Document* pDoc,
+    App::DocumentObject* pObj,
+    bool& xinv,
+    bool& yinv,
+    eReasonList* rsn
+) const
 {
     if (rsn) {
         *rsn = rlAllowed;
     }
 
-    std::string sketchArchType ("Sketcher::SketchObjectPython");
+    std::string sketchArchType("Sketcher::SketchObjectPython");
 
     // Only applicable to sketches
-    if (!pObj->is<Sketcher::SketchObject>()
-        && sketchArchType != pObj->getTypeId().getName()) {
+    if (!pObj->is<Sketcher::SketchObject>() && sketchArchType != pObj->getTypeId().getName()) {
         if (rsn) {
             *rsn = rlNotASketch;
         }
@@ -274,8 +284,10 @@ bool SketchObject::isCarbonCopyAllowed(App::Document* pDoc, App::DocumentObject*
     }
     catch (Base::Exception& e) {
         Base::Console().warning(
-            "Probably, there is a circular reference in the document. Error: %s\n", e.what());
-        return true;// prohibiting this reference won't remove the problem anyway...
+            "Probably, there is a circular reference in the document. Error: %s\n",
+            e.what()
+        );
+        return true;  // prohibiting this reference won't remove the problem anyway...
     }
 
 
@@ -285,19 +297,21 @@ bool SketchObject::isCarbonCopyAllowed(App::Document* pDoc, App::DocumentObject*
     Part::BodyBase* body_obj = Part::BodyBase::findBodyOf(pObj);
     App::Part* part_this = App::Part::getPartOfObject(this);
     App::Part* part_obj = App::Part::getPartOfObject(pObj);
-    if (part_this == part_obj) {// either in the same part, or in the root of document
+    if (part_this == part_obj) {  // either in the same part, or in the root of document
         if (body_this) {
             if (body_this != body_obj) {
                 if (!this->allowOtherBody) {
-                    if (rsn)
+                    if (rsn) {
                         *rsn = rlOtherBody;
+                    }
                     return false;
                 }
                 // if the original sketch has external geometry AND it is not in this body prevent
                 // link
                 else if (psObj->getExternalGeometryCount() > 2) {
-                    if (rsn)
+                    if (rsn) {
                         *rsn = rlOtherBodyWithLinks;
+                    }
                     return false;
                 }
             }
@@ -305,8 +319,9 @@ bool SketchObject::isCarbonCopyAllowed(App::Document* pDoc, App::DocumentObject*
     }
     else {
         // cross-part relation. Disallow, should be done via shapebinders only
-        if (rsn)
+        if (rsn) {
             *rsn = rlOtherPart;
+        }
         return false;
     }
 
@@ -334,8 +349,9 @@ bool SketchObject::isCarbonCopyAllowed(App::Document* pDoc, App::DocumentObject*
 
     // the planes of the sketches must be parallel
     if (!allowUnaligned && fabs(fabs(dot) - 1) > Precision::Confusion()) {
-        if (rsn)
+        if (rsn) {
             *rsn = rlNonParallel;
+        }
         return false;
     }
 
@@ -343,24 +359,25 @@ bool SketchObject::isCarbonCopyAllowed(App::Document* pDoc, App::DocumentObject*
     if (!allowUnaligned
         && ((fabs(fabs(dotx) - 1) > Precision::Confusion())
             || (fabs(fabs(doty) - 1) > Precision::Confusion()))) {
-        if (rsn)
+        if (rsn) {
             *rsn = rlAxesMisaligned;
+        }
         return false;
     }
 
 
     // the origins of the sketches must be aligned or be the same
-    Base::Vector3d ddir =
-        (psObj->Placement.getValue().getPosition() - this->Placement.getValue().getPosition())
-            .Normalize();
+    Base::Vector3d ddir = (psObj->Placement.getValue().getPosition()
+                           - this->Placement.getValue().getPosition())
+                              .Normalize();
 
     double alignment = ddir * lnormal;
 
     if (!allowUnaligned && (fabs(fabs(alignment) - 1) > Precision::Confusion())
-        && (psObj->Placement.getValue().getPosition()
-            != this->Placement.getValue().getPosition())) {
-        if (rsn)
+        && (psObj->Placement.getValue().getPosition() != this->Placement.getValue().getPosition())) {
+        if (rsn) {
             *rsn = rlOriginsMisaligned;
+        }
         return false;
     }
 
