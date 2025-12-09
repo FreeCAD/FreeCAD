@@ -420,6 +420,7 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject* feature,
                                                bool reverse,
                                                bool notify)
 {
+    FC_WARN("update reverse: " << reverse);
     if (!obj || !obj->getNameInDocument()) {
         return false;
     }
@@ -473,10 +474,15 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject* feature,
         const char* oldElement = Data::findElementName(shadow.oldName.c_str());
         if (!Data::hasMissingElement(oldElement)) {
             const auto& names = geo->searchElementCache(oldElement);
-            if (names.size()) {
+
+            if (names.size() || reverse) {
                 missing = false;
                 std::string newsub(subname, strlen(subname) - strlen(element));
-                newsub += names.front();
+                if (names.size()) {
+                    newsub += names.front();
+                } else if (reverse) {
+                    newsub += oldElement;
+                }
                 GeoFeature::resolveElement(obj,
                                            newsub.c_str(),
                                            elementName,
@@ -491,6 +497,8 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject* feature,
                            << " auto change element reference " << ret->getFullName() << " "
                            << oldName << " -> " << newName);
                 }
+            } else if (reverse) {
+                FC_WARN("not found in cache");
             }
         }
     }

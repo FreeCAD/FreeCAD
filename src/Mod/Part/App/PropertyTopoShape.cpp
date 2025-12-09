@@ -492,7 +492,8 @@ void PropertyPartShape::Restore(Base::XMLReader& reader)
             if (owner ? owner->checkElementMapVersion(this, _Ver.c_str())
                       : _Shape.checkElementMapVersion(_Ver.c_str())) {
                 auto ver = owner ? owner->getElementMapVersion(this) : _Shape.getElementMapVersion();
-                if (!owner || !owner->getNameInDocument() || !_Shape.getElementMapSize()) {
+                FC_WARN("ver: " << ver << " _Ver: " << _Ver);
+                if (!owner || !owner->getNameInDocument()) {
                     _Ver = ver;
                 }
                 else {
