@@ -186,8 +186,11 @@ def expand_part_containers(objectslist):
     """Recursively expand App::Part containers to include their Group contents.
 
     This function handles Part containers that are not recognized by
-    Draft.get_group_contents, by checking for hasattr(obj, 'Group') and
-    recursively extracting child objects.
+    Draft.get_group_contents. App::Part containers are treated as follows:
+    - If the Part has a valid Shape, it is added as a single object (the Part
+      itself will be exported with proper placement)
+    - If the Part has no Shape but has Group contents, the children are expanded
+      and their global placements are used to account for the Part's transformation
 
     Parameters
     ----------
@@ -205,8 +208,15 @@ def expand_part_containers(objectslist):
 
     for obj in objectslist:
         if obj:
-            # check if this is a Part container (has Group but might not be in Draft's group list)
-            if hasattr(obj, "Group") and obj.Group:
+            # check if this is an App::Part container - if it has shape, add it as is,
+            # otherwise expand its Group contents
+            if obj.isDerivedFrom("App::Part"):
+                if hasattr(obj, "Shape") and not obj.Shape.isNull():
+                    expanded.append(obj)
+                elif hasattr(obj, "Group") and obj.Group:
+                    expanded.extend(expand_part_containers(obj.Group))
+            # check for other group types (but not App::Part which is handled above)
+            elif hasattr(obj, "Group") and obj.Group and not obj.isDerivedFrom("App::Part"):
                 # recursively expand the Group contents
                 expanded.extend(expand_part_containers(obj.Group))
             else:
@@ -264,6 +274,10 @@ def export(
         if obj.isDerivedFrom("Part::Feature"):
             objShape = obj.Shape
             validObject = True
+        if obj.isDerivedFrom("App::Part"):
+            if hasattr(obj, "Shape") and not obj.Shape.isNull():
+                objShape = obj.Shape
+                validObject = True
         if obj.isDerivedFrom("App::Link"):
             linkPlacement = obj.LinkPlacement
             while True:  # drill down to get to the actual obj
@@ -302,7 +316,9 @@ def export(
             "floats": [],
         }
 
-        if obj.isDerivedFrom("Part::Feature"):
+        if obj.isDerivedFrom("Part::Feature") or (
+            obj.isDerivedFrom("App::Part") and hasattr(obj, "Shape")
+        ):
             deviation = 0.5
             if FreeCADGui and hasattr(obj.ViewObject, "Deviation"):
                 deviation = obj.ViewObject.Deviation
