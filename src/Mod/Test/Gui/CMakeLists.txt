@@ -32,7 +32,6 @@ SET(TestGui_SRCS
     ${Dialogs_SRCS}
     ${Resource_SRCS}
     AppTestGui.cpp
-    PreCompiled.cpp
     PreCompiled.h
 )
 SET(TestGuiPy_SRCS
@@ -43,13 +42,13 @@ SET(TestGuiIcon_SVG
     Resources/icons/TestWorkbench.svg
 )
 
-if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${TestGui_SRCS})
-    ADD_MSVC_PRECOMPILED_HEADER(QtUnitGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
-endif(FREECAD_USE_PCH)
-
 add_library(QtUnitGui SHARED ${TestGui_SRCS} ${TestGuiPy_SRCS} ${TestGuiIcon_SVG})
+
+if(FREECAD_USE_PCH)
+    target_precompile_headers(QtUnitGui PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
+endif(FREECAD_USE_PCH)
 
 target_include_directories(
     QtUnitGui

@@ -27,6 +27,7 @@ import Arch
 import Draft
 from bimtests import TestArchBase
 
+
 class TestArchGrid(TestArchBase.TestArchBase):
 
     def test_makeGrid(self):

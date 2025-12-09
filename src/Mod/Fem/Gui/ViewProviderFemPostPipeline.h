@@ -46,6 +46,7 @@ public:
 
     void updateData(const App::Property* prop) override;
     bool onDelete(const std::vector<std::string>& objs) override;
+    void beforeDelete() override;
     void onSelectionChanged(const Gui::SelectionChanges& sel) override;
     void updateColorBars();
     void transformField(char* FieldName, double FieldFactor);
@@ -58,8 +59,7 @@ protected:
 
     // change default group drag/drop behaviour slightly
     bool acceptReorderingObjects() const override;
-    bool canDragObjectToTarget(App::DocumentObject* obj,
-                               App::DocumentObject* target) const override;
+    bool canDragObjectToTarget(App::DocumentObject* obj, App::DocumentObject* target) const override;
 
     // override, to not show/hide children as the parent is shown/hidden like normal groups
     void extensionHide() override {};

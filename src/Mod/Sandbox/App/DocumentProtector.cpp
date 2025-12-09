@@ -21,8 +21,6 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QCoreApplication>
 # include <QObject>
 # include <QEvent>
@@ -31,7 +29,7 @@
 # include <QSemaphore>
 # include <QThread>
 # include <QWaitCondition>
-#endif
+
 
 #include "DocumentProtector.h"
 

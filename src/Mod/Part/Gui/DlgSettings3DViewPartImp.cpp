@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,10 +22,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QMessageBox>
-#endif
+#include <QMessageBox>
+
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -47,21 +47,26 @@ DlgSettings3DViewPart::DlgSettings3DViewPart(QWidget* parent)
     , checkValue(false)
 {
     ui->setupUi(this);
-    connect(ui->maxDeviation,
-            qOverload<double>(&QDoubleSpinBox::valueChanged),
-            this,
-            &DlgSettings3DViewPart::onMaxDeviationValueChanged);
-    connect(ui->maxAngularDeflection,
-            qOverload<double>(&QDoubleSpinBox::valueChanged),
-            this,
-            &DlgSettings3DViewPart::onMaxAngularDeflectionValueChanged);
+    connect(
+        ui->maxDeviation,
+        qOverload<double>(&QDoubleSpinBox::valueChanged),
+        this,
+        &DlgSettings3DViewPart::onMaxDeviationValueChanged
+    );
+    connect(
+        ui->maxAngularDeflection,
+        qOverload<double>(&QDoubleSpinBox::valueChanged),
+        this,
+        &DlgSettings3DViewPart::onMaxAngularDeflectionValueChanged
+    );
     ParameterGrp::handle hPart = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Part");
-    const double minDeviationlowerLimit = hPart->GetFloat(
-        "MinimumDeviation", ui->maxDeviation->minimum());
+        "User parameter:BaseApp/Preferences/Mod/Part"
+    );
+    const double minDeviationlowerLimit
+        = hPart->GetFloat("MinimumDeviation", ui->maxDeviation->minimum());
     ui->maxDeviation->setMinimum(minDeviationlowerLimit);
-    const double minAngleDeflectionlowerLimit = hPart->GetFloat(
-        "MinimumDeviation", ui->maxAngularDeflection->minimum());
+    const double minAngleDeflectionlowerLimit
+        = hPart->GetFloat("MinimumDeviation", ui->maxAngularDeflection->minimum());
     ui->maxAngularDeflection->setMinimum(minAngleDeflectionlowerLimit);
 }
 
@@ -82,7 +87,8 @@ void DlgSettings3DViewPart::onMaxDeviationValueChanged(double vMaxDev)
             this,
             tr("Deviation"),
             tr("Setting a too small deviation causes the tessellation to take longer"
-               " and thus freezes or slows down the GUI."));
+               " and thus freezes or slows down the GUI.")
+        );
     }
 }
 
@@ -103,7 +109,8 @@ void DlgSettings3DViewPart::onMaxAngularDeflectionValueChanged(double vMaxAngle)
             this,
             tr("Angle deflection"),
             tr("Setting a too small angle deviation causes the tessellation to take longer"
-               " and thus freezes or slows down the GUI."));
+               " and thus freezes or slows down the GUI.")
+        );
     }
 }
 
@@ -116,8 +123,9 @@ void DlgSettings3DViewPart::saveSettings()
     std::vector<App::Document*> docs = App::GetApplication().getDocuments();
     for (auto it : docs) {
         Gui::Document* doc = Gui::Application::Instance->getDocument(it);
-        std::vector<Gui::ViewProvider*> views =
-            doc->getViewProvidersOfType(ViewProviderPart::getClassTypeId());
+        std::vector<Gui::ViewProvider*> views = doc->getViewProvidersOfType(
+            ViewProviderPart::getClassTypeId()
+        );
         for (auto view : views) {
             static_cast<ViewProviderPart*>(view)->reload();
         }
@@ -132,7 +140,7 @@ void DlgSettings3DViewPart::loadSettings()
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgSettings3DViewPart::changeEvent(QEvent *e)
+void DlgSettings3DViewPart::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);

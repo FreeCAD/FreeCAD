@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "ViewProviderTorusParametric.h"
 
@@ -36,7 +37,7 @@ PROPERTY_SOURCE(PartGui::ViewProviderTorusParametric, PartGui::ViewProviderPrimi
 
 ViewProviderTorusParametric::ViewProviderTorusParametric()
 {
-  sPixmap = "Part_Torus_Parametric";
+    sPixmap = "Part_Torus_Parametric";
 }
 
 ViewProviderTorusParametric::~ViewProviderTorusParametric() = default;
@@ -45,14 +46,14 @@ ViewProviderTorusParametric::~ViewProviderTorusParametric() = default;
 
 std::vector<std::string> ViewProviderTorusParametric::getDisplayModes() const
 {
-  // get the modes of the father
-  std::vector<std::string> StrList;
+    // get the modes of the father
+    std::vector<std::string> StrList;
 
-  // add your own modes
-  StrList.emplace_back("Flat Lines");
-  StrList.emplace_back("Shaded");
-  StrList.emplace_back("Wireframe");
-  StrList.emplace_back("Points");
+    // add your own modes
+    StrList.emplace_back("Flat Lines");
+    StrList.emplace_back("Shaded");
+    StrList.emplace_back("Wireframe");
+    StrList.emplace_back("Points");
 
-  return StrList;
+    return StrList;
 }

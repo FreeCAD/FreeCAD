@@ -1,8 +1,14 @@
-from typing import Any
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
+from typing import Any, List, Tuple, TypeAlias
 
 from Base.Metadata import export
-
+from App.DocumentObject import DocumentObject
 from Gui.ViewProvider import ViewProvider
+
+SoTransformDragger: TypeAlias = Any
 
 @export(Include="Mod/Assembly/Gui/ViewProviderAssembly.h", Namespace="AssemblyGui")
 class ViewProviderAssembly(ViewProvider):
@@ -16,17 +22,34 @@ class ViewProviderAssembly(ViewProvider):
     def isInEditMode(self) -> Any:
         """
         Return true if the assembly object is currently in edit mode.
-
-                      isInEditMode() -> bool"""
+        """
         ...
 
-    def getDragger(self) -> Any:
+    def getDragger(self) -> SoTransformDragger:
+        """Return the assembly dragger coin object."""
+        ...
+
+    def isolateComponents(
+        self, components: List[DocumentObject] | Tuple[DocumentObject, ...], mode: int, /
+    ) -> None:
         """
-        Return the assembly dragger coin object.
+        Temporarily isolates a given set of components in the 3D view.
+        Other components are faded or hidden based on the specified mode.
 
-                      getDragger() -> SoTransformDragger
+        Args:
+            components (List[DocumentObject] | Tuple[DocumentObject, ...]):
+                A list or tuple of DocumentObjects to isolate.
+            mode (int): An integer specifying the isolation mode:
+                - 0: Transparent
+                - 1: Wireframe
+                - 2: Hidden
+        """
+        ...
 
-                      Returns: dragger coin object of the assembly"""
+    def clearIsolate(self) -> None:
+        """
+        Restores the visual state of all components, clearing any active isolation.
+        """
         ...
     EnableMovement: bool
     """Enable moving the parts by clicking and dragging."""

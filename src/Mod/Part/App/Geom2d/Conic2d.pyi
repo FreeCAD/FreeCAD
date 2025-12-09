@@ -1,3 +1,7 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export
 from typing import Final
 from Part.Geom2d import Curve2d
@@ -22,7 +26,7 @@ class Conic2d(Curve2d):
     """Location of the conic."""
 
     Eccentricity: Final[float] = ...
-    """                
+    """
     returns the eccentricity value of the conic e.
         e = 0 for a circle
         0 < e < 1 for an ellipse  (e = 0 if MajorRadius = MinorRadius)

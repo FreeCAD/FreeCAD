@@ -1,5 +1,6 @@
 #! python
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # (c) 2006 Juergen Riegel
 
 
@@ -334,6 +335,7 @@ public:
 
     /// getter for the object handled by this class
     @self.export.TwinPointer@ *get@self.export.Twin@Ptr() const;
+    @self.export.TwinPointer@ *getTwinPtr() const;
 
 + if(self.export.ClassDeclarations != ""):
     /** @name additional declarations and methods for the wrapper class */
@@ -891,6 +893,11 @@ int @self.export.Name@::_setattr(const char *attr, PyObject *value) // __setattr
     return static_cast<@self.export.TwinPointer@ *>(_pcTwinPointer);
 }
 
+@self.export.TwinPointer@ *@self.export.Name@::getTwinPtr() const
+{
+    return get@self.export.Twin@Ptr();
+}
+
 #if defined(__clang__)
 # pragma clang diagnostic pop
 #endif
@@ -1235,7 +1242,6 @@ int @self.export.Name@::descriptorSetter(PyObject* self, PyObject* obj, PyObject
 
     # Here's the template for the user part of the implementation. This does NOT get overridden if it already exists.
     TemplateImplement = """
-#include "PreCompiled.h"
 
 #include "@self.export.Include@"
 

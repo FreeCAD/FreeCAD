@@ -422,9 +422,9 @@ void CmdTechDrawView::activated(int iMsg)
             // If nothing was selected, then we offer to insert SVG or Images files.
             bool dontShowAgain = hGrp->GetBool("DontShowInsertFileMessage", false);
             if (!dontShowAgain) {
-                auto msgText = QObject::tr("to insert a view from existing objects, "
+                auto msgText = QObject::tr("To insert a view from existing objects, "
                         "select them before invoking this tool. Without a selection, a "
-                        "file browser will open to insert a SVG or image file.");
+                        "file browser will open to insert an SVG or image file.");
                 QMessageBox msgBox(Gui::getMainWindow());
                 msgBox.setText(msgText);
                 auto dontShowMsg = QObject::tr("Do not show this message again");
@@ -1403,7 +1403,7 @@ void CmdTechDrawClipGroupAdd::activated(int iMsg)
     }
     if (!view) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Select exactly one view to add to group"));
+                             QObject::tr("Select exactly one view to add to clip group"));
         return;
     }
     if (!clip) {
@@ -1470,7 +1470,7 @@ void CmdTechDrawClipGroupRemove::activated(int iMsg)
     auto dObj(getSelection().getObjectsOfType(TechDraw::DrawView::getClassTypeId()));
     if (dObj.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Select exactly one view to remove from group"));
+                             QObject::tr("Select exactly one view to remove from clip group"));
         return;
     }
 
@@ -1868,7 +1868,7 @@ void CmdTechDrawExportPageDXF::activated(int iMsg)
         if (v->isDerivedFrom<TechDraw::DrawViewArch>()) {
             QMessageBox::StandardButton rc = QMessageBox::question(
                 Gui::getMainWindow(), QObject::tr("Cannot export selection"),
-                QObject::tr("Page contains DrawViewBIM which will not be exported. Continue?"),
+                QObject::tr("Page contains a BIM view which will not be exported. Continue?"),
                 QMessageBox::StandardButtons(QMessageBox::Yes | QMessageBox::No));
             if (rc == QMessageBox::No) {
                 return;

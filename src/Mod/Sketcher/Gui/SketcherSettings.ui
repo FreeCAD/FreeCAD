@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>500</width>
-    <height>592</height>
+    <height>661</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -344,7 +344,7 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
         <property name="toolTip">
          <string>Choose a visibility mode for the On-View-Parameters:
 'Disabled': On-View-Parameters are completely disabled.
-'Only dimensional': Only dimensional On-View-Parameters are visible. They are the most useful. For example the radius of a circle.
+'Dimensional only': Only dimensional On-View-Parameters are visible. They are the most useful. For example, the radius of a circle.
 'All': Both dimensional and positional On-View-Parameters. Positionals are the (x,y) position of the cursor. For example for the center of a circle.</string>
         </property>
        </widget>
@@ -355,7 +355,7 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
    <item row="5" column="0">
     <spacer name="verticalSpacer">
      <property name="orientation">
-      <enum>Qt::Vertical</enum>
+      <enum>Qt::Orientation::Vertical</enum>
      </property>
      <property name="sizeHint" stdset="0">
       <size>

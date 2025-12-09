@@ -72,7 +72,9 @@ SET(FemExamples_SRCS
     femexamples/ccx_cantilever_faceload.py
     femexamples/ccx_cantilever_nodeload.py
     femexamples/ccx_cantilever_prescribeddisplacement.py
+    femexamples/ccx_disc_cyclic_symm_centrif.py
     femexamples/ccx_rigid_body.py
+    femexamples/ccx_pipe_pressure_2D.py
     femexamples/constraint_centrif.py
     femexamples/constraint_contact_shell_shell.py
     femexamples/constraint_contact_solid_solid.py
@@ -85,6 +87,7 @@ SET(FemExamples_SRCS
     femexamples/elmer_nonguitutorial01_eigenvalue_of_elastic_beam.py
     femexamples/equation_deformation_spring_elmer.py
     femexamples/equation_electrostatics_capacitance_two_balls.py
+    femexamples/equation_electrostatics_capacitance_two_balls_ccx.py
     femexamples/equation_electrostatics_electricforce_elmer_nongui6.py
     femexamples/equation_flow_elmer_2D.py
     femexamples/equation_flow_initial_elmer_2D.py
@@ -211,6 +214,7 @@ SET(FemObjects_SRCS
     femobjects/result_mechanical.py
     femobjects/solver_calculix.py
     femobjects/solver_ccxtools.py
+    femobjects/solver_elmer.py
 )
 
 if(BUILD_FEM_VTK_PYTHON)
@@ -285,9 +289,8 @@ SET(FemSolverCalculix_SRCS
 SET(FemSolverElmer_SRCS
     femsolver/elmer/__init__.py
     femsolver/elmer/sifio.py
-    femsolver/elmer/solver.py
-    femsolver/elmer/tasks.py
     femsolver/elmer/writer.py
+    femsolver/elmer/elmertools.py
 )
 
 SET(FemSolverElmerEquations_SRCS
@@ -631,6 +634,7 @@ SET(FemGuiTaskPanels_SRCS
     femtaskpanels/task_result_mechanical.py
     femtaskpanels/task_solver_calculix.py
     femtaskpanels/task_solver_ccxtools.py
+    femtaskpanels/task_solver_elmer.py
 )
 
 if(BUILD_FEM_VTK_PYTHON)
@@ -701,6 +705,7 @@ SET(FemGuiViewProvider_SRCS
     femviewprovider/view_result_mechanical.py
     femviewprovider/view_solver_calculix.py
     femviewprovider/view_solver_ccxtools.py
+    femviewprovider/view_solver_elmer.py
 )
 
 if(BUILD_FEM_VTK_PYTHON)

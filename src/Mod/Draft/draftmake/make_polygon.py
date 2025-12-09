@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
 # *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
@@ -63,8 +65,9 @@ def make_polygon(nfaces, radius=1, inscribed=True, placement=None, face=None, su
     if not App.ActiveDocument:
         App.Console.PrintError("No active document. Aborting\n")
         return
-    if nfaces < 3: return None
-    obj = App.ActiveDocument.addObject("Part::Part2DObjectPython","Polygon")
+    if nfaces < 3:
+        return None
+    obj = App.ActiveDocument.addObject("Part::Part2DObjectPython", "Polygon")
     Polygon(obj)
     obj.FacesNumber = nfaces
     obj.Radius = radius
@@ -75,7 +78,8 @@ def make_polygon(nfaces, radius=1, inscribed=True, placement=None, face=None, su
     else:
         obj.DrawMode = "circumscribed"
     obj.AttachmentSupport = support
-    if placement: obj.Placement = placement
+    if placement:
+        obj.Placement = placement
     if App.GuiUp:
         ViewProviderDraft(obj.ViewObject)
         gui_utils.format_object(obj)

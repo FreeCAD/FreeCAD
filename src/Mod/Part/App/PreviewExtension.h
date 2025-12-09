@@ -30,6 +30,8 @@
 #include <App/DocumentObjectExtension.h>
 #include <App/ExtensionPython.h>
 
+#include <Mod/Part/PartGlobal.h>
+
 namespace Part
 {
 

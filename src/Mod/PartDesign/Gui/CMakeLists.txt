@@ -203,7 +203,6 @@ SET(PartDesignGuiModule_SRCS
     CommandBody.cpp
     EnumFlags.h
     Resources/PartDesign.qrc
-    PreCompiled.cpp
     PreCompiled.h
     SketchWorkflow.cpp
     SketchWorkflow.h
@@ -234,18 +233,18 @@ SET(PartDesignGui_SRCS
     ${Python_SRCS}
 )
 
-if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${PartDesignGui_SRCS})
-    ADD_MSVC_PRECOMPILED_HEADER(PartDesignGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
-endif(FREECAD_USE_PCH)
-
-
 SET(PartDesignGuiIcon_SVG
     Resources/icons/PartDesignWorkbench.svg
 )
 
 add_library(PartDesignGui SHARED ${PartDesignGui_SRCS} ${PartDesignGuiIcon_SVG})
+
+if(FREECAD_USE_PCH)
+    target_precompile_headers(PartDesignGui PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
+endif(FREECAD_USE_PCH)
+
 target_include_directories(
     PartDesignGui
     PRIVATE

@@ -51,10 +51,10 @@ using namespace TechDrawGui;
 QGTracker::QGTracker(QGSPage* inScene, TrackerMode m):
     m_sleep(false),
     m_qgParent(nullptr),
+    m_trackerMode(m),
     m_lastClick(QPointF(std::numeric_limits<float>::max(),
                         std::numeric_limits<float>::max()))
 {
-    setTrackerMode(m);
     if (inScene) {
         inScene->addItem(this);
     } else {
@@ -71,25 +71,11 @@ QGTracker::QGTracker(QGSPage* inScene, TrackerMode m):
     setZValue(ZVALUE::TRACKER);
     setPos(0.0, 0.0);
 
-    QColor tColor = getTrackerColor();
-    QColor tailColor(Qt::blue);
+    setNormalColor(getTrackerColor());
     double tWeight = getTrackerWeight();
     setWidth(tWeight);
     setStyle(Qt::DashLine);
-    setNormalColor(tailColor);
     setPrettyNormal();
-
-    //m_track is the new segment of the line.
-    m_track = new QGraphicsPathItem();
-    m_track->setParentItem(this);
-    m_trackPen.setColor(tColor);
-    m_trackPen.setWidthF(tWeight);
-    m_trackPen.setStyle(Qt::DashLine);
-    m_track->setPen(m_trackPen);
-    m_track->setBrush(QBrush(Qt::NoBrush));
-    m_track->setFlag(QGraphicsItem::ItemSendsScenePositionChanges, true);
-    m_track->setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
-    m_track->setFocusProxy(this);
 
     setHandlesChildEvents(true);
     setVisible(true);
@@ -98,9 +84,6 @@ QGTracker::QGTracker(QGSPage* inScene, TrackerMode m):
     scene()->setFocusItem(this);
 }
 
-QGTracker::~QGTracker()
-{
-}
 
 void QGTracker::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
@@ -177,11 +160,13 @@ void QGTracker::sleep(bool b)
 QPointF QGTracker::snapToAngle(QPointF dumbPt)
 {
     // If no point selected yet, snapping has no sense
-    if (m_points.empty())
+    if (m_points.empty()) {
         return dumbPt;
+    }
 
     QPointF result(dumbPt);
-    double angleIncr = std::numbers::pi / 8.0;   //15*
+    constexpr double stepsInHalfCircle{8.0};
+    double angleIncr = std::numbers::pi / stepsInHalfCircle;
     //mirror last clicked point and event point to get sensible coords
     QPointF last(m_points.back().x(), -m_points.back().y());
     QPointF pt(dumbPt.x(), -dumbPt.y());
@@ -193,7 +178,7 @@ QPointF QGTracker::snapToAngle(QPointF dumbPt)
         actual = (2 * std::numbers::pi) + actual;          //map to +ve angle
     }
 
-    double intPart;
+    double intPart{0};
     double remain = modf(actual/angleIncr, &intPart);
     if (!TechDraw::DrawUtil::fpCompare(remain, 0.0)) {   //not n*15
         double low = intPart * angleIncr;
@@ -288,6 +273,10 @@ void QGTracker::onDoubleClick(QPointF pos)
 
 void QGTracker::getPickedQGIV(QPointF pos)
 {
+    if (m_qgParent) {
+        return;
+    }
+
     setVisible(false);
     m_qgParent = nullptr;
     QList<QGraphicsView *> views = scene()->views();
@@ -299,13 +288,12 @@ void QGTracker::getPickedQGIV(QPointF pos)
         if (topItem != pickedItem) {
             pickedItem = topItem;
         }                               //pickedItem sb a QGIV
-        QGIView* qgParent = dynamic_cast<QGIView*>(pickedItem);
+        auto* qgParent = dynamic_cast<QGIView*>(pickedItem);
         if (qgParent) {
             m_qgParent = qgParent;
         }
     }
     setVisible(true);
-    return;
 }
 
 QRectF QGTracker::boundingRect() const
@@ -324,40 +312,31 @@ QPainterPath QGTracker::shape() const
 //actual art routines
 void QGTracker::drawTrackLine(QPointF pos)
 {
-    m_segEnd = pos;
-    QPainterPath tail;
     if (!m_points.empty()) {
-        m_segBegin = m_points.back();
-        tail.moveTo(m_segBegin);
-        tail.lineTo(m_segEnd);
-        m_track->setPath(tail);
-        m_track->show();
+        std::vector<QPointF> entireTrack = m_points;
+        entireTrack.push_back(pos);
+        setPathFromPoints(entireTrack);
     }
 }
 
 void QGTracker::drawTrackSquare(QPointF pos)
 {
-    m_segEnd = pos;
-    QPainterPath tail;
     if (!m_points.empty()) {
-        m_segBegin = m_points.front();   //sb front? 1st point picked??
-        QRectF rect(m_segBegin, m_segEnd);
-        tail.addRect(rect);
-        m_track->setPath(tail);
-        m_track->show();
+        std::vector<QPointF> oppositeCorners;
+        oppositeCorners.push_back(m_points.front());
+        oppositeCorners.push_back(pos);
+        setSquareFromPoints(oppositeCorners);
     }
 }
 
 void QGTracker::drawTrackCircle(QPointF pos)
 {
-    QPointF circum = pos;
     QPainterPath tail;
     if (!m_points.empty()) {
-        QPointF center = m_points.front();             //not nec (0, 0);
-        QPointF ray = circum - center;
-        double radius =  sqrt(pow(ray.x(), 2.0) + pow(ray.y(), 2.0));
-        tail.addEllipse(center, radius, radius);
-        m_track->setPath(tail);
+        std::vector<QPointF> centerAndCircumference;
+        centerAndCircumference.push_back(m_points.front());
+        centerAndCircumference.push_back(pos);
+        setCircleFromPoints(centerAndCircumference);
     }
 }
 
@@ -407,7 +386,7 @@ void QGTracker::setCircleFromPoints(std::vector<QPointF> pts)
     QPointF center = pts.front();
     QPointF circum   = pts.back();
     QPointF ray    = circum - center;
-    double radius =  sqrt(pow(ray.x(), 2.0) + pow(ray.y(), 2.0));
+    double radius =  sqrt(pow(ray.x(), 2) + pow(ray.y(), 2));
     newPath.addEllipse(center, radius, radius);
     setPath(newPath);
     setPrettyNormal();
@@ -424,7 +403,7 @@ void QGTracker::setPoint(std::vector<QPointF> pts)
     auto point = new QGIVertex(-1);
     point->setParentItem(this);
     point->setPos(pts.front());
-    point->setRadius(static_cast<QGIViewPart *>(m_qgParent)->getVertexSize());
+    point->setRadius(Rez::guiX(getTrackerWeight()));
     point->setNormalColor(Qt::blue);
     point->setFillColor(Qt::blue);
     point->setPrettyNormal();
@@ -443,8 +422,8 @@ std::vector<Base::Vector3d> QGTracker::convertPoints()
 
 void QGTracker::terminateDrawing()
 {
-    m_track->hide();
     setCursor(Qt::ArrowCursor);
+    // should we care if m_qgParent is null?
     Q_EMIT drawingFinished(m_points, m_qgParent);
 }
 
@@ -460,7 +439,7 @@ void QGTracker::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 
 QColor QGTracker::getTrackerColor()
 {
-    Base::Color trackColor = Base::Color((uint32_t) Preferences::getPreferenceGroup("Tracker")->GetUnsigned("TrackerColor", 0xFF000000));
+    Base::Color trackColor = Base::Color((uint32_t) Preferences::getPreferenceGroup("Tracker")->GetUnsigned("TrackerColor", 0x0000FFFF));
     return PreferencesGui::getAccessibleQColor(trackColor.asValue<QColor>());
 }
 

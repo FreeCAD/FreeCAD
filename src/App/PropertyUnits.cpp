@@ -518,7 +518,12 @@ TYPESYSTEM_SOURCE(App::PropertyLength, App::PropertyQuantityConstraint)
 PropertyLength::PropertyLength()
 {
     setUnit(Base::Unit::Length);
-    setConstraints(&LengthStandard);
+    enableNegative(false);
+}
+
+void PropertyLength::enableNegative(bool on)
+{
+    setConstraints(on ? nullptr : &LengthStandard);
 }
 
 //**************************************************************************
@@ -863,3 +868,4 @@ PropertyYoungsModulus::PropertyYoungsModulus()
 {
     setUnit(Base::Unit::YoungsModulus);
 }
+

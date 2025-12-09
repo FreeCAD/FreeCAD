@@ -25,13 +25,9 @@
 
 #include <FCConfig.h>
 
-#ifdef _PreComp_
-
 // Qt Toolkit
 #include <QApplication>
 #include <QEventLoop>
 #include <QMessageBox>
 
-#endif  //_PreComp_
-
-#endif  // __PRECOMPILED_GUI__
+#endif  // TEST_GUI_PRECOMPILED_H

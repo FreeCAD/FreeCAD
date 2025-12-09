@@ -1,7 +1,10 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export, constmethod
 from TopoShape import TopoShape
 from typing import Final, Dict
-
 
 @export(
     Twin="TopoShape",
@@ -69,7 +72,7 @@ class TopoShapeShell(TopoShape):
     eigen vectors of the matrix of inertia of the system.
     """
 
-    def add(self, face: object) -> None:
+    def add(self, face: object, /) -> None:
         """
         Add a face to the shell.
         add(face)
@@ -93,7 +96,7 @@ class TopoShapeShell(TopoShape):
         ...
 
     @constmethod
-    def makeHalfSpace(self, point: object) -> object:
+    def makeHalfSpace(self, point: object, /) -> object:
         """
         Make a half-space solid by this shell and a reference point.
         makeHalfSpace(point) -> Solid

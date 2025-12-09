@@ -160,6 +160,15 @@ public:
         //surfaceFormat.setMajorVersion(3);
         //surfaceFormat.setMinorVersion(2);
         //surfaceFormat.setProfile(QSurfaceFormat::CoreProfile);
+
+        // On Wayland, we typically get a core profile unless we explicitly
+        // request a compatibility profile. On llvmpipe, this still seems to
+        // "just work" even if out of spec; on proprietary Nvidia drivers, it
+        // does not.
+        surfaceFormat.setRenderableType(QSurfaceFormat::OpenGL);
+        surfaceFormat.setProfile(QSurfaceFormat::CompatibilityProfile);
+        surfaceFormat.setOption(QSurfaceFormat::DeprecatedFunctions, true);
+
 #if defined (_DEBUG) && 0
         surfaceFormat.setOption(QSurfaceFormat::DebugContext);
 #endif

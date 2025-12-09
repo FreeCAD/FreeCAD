@@ -140,11 +140,11 @@ requirements:
     - blinker
     - calculix
     - debugpy
+    - defusedxml
     - docutils
     - gmsh
     - graphviz
     - ifcopenshell
-    - jinja2
     - lark
     - lxml
     - matplotlib-base

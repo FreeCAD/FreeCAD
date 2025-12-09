@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 from Base.Metadata import class_declarations, constmethod, export
 from Base.Persistence import Persistence
 from Base.Placement import Placement
@@ -19,21 +21,28 @@ class Command(Persistence):
 
     @constmethod
     def toGCode(self) -> str:
-        """toGCode(): returns a GCode representation of the command"""
+        """returns a GCode representation of the command"""
         ...
 
-    def setFromGCode(self, gcode: str) -> None:
-        """setFromGCode(): sets the path from the contents of the given GCode string"""
+    def setFromGCode(self, gcode: str, /) -> None:
+        """sets the path from the contents of the given GCode string"""
         ...
 
-    def transform(self, placement: Placement) -> "CommandPy":
-        """transform(Placement): returns a copy of this command transformed by the given placement"""
+    def transform(self, placement: Placement, /) -> Command:
+        """returns a copy of this command transformed by the given placement"""
+        ...
+
+    def addAnnotations(self, annotations, /) -> "Command":
+        """addAnnotations(annotations): adds annotations from dictionary or string and returns self for chaining"""
         ...
     Name: str
     """The name of the command"""
 
     Parameters: dict[str, float]
     """The parameters of the command"""
+
+    Annotations: dict[str, str]
+    """The annotations of the command"""
 
     Placement: Placement
     """The coordinates of the endpoint of the command"""

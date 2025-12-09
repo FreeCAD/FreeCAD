@@ -38,23 +38,23 @@ namespace Gui
 {
 class WorkbenchGroup;
 
-enum class WorkbenchItemStyle {
+enum class WorkbenchItemStyle
+{
     IconAndText = 0,
     IconOnly = 1,
     TextOnly = 2
 };
 
-class GuiExport WorkbenchComboBox : public QComboBox
+class GuiExport WorkbenchComboBox: public QComboBox
 {
-    Q_OBJECT  // NOLINT
+Q_OBJECT  // NOLINT
 
-public:
-    explicit WorkbenchComboBox(WorkbenchGroup* aGroup, QWidget* parent = nullptr);
+    public: explicit WorkbenchComboBox(WorkbenchGroup* aGroup, QWidget* parent = nullptr);
     ~WorkbenchComboBox() override = default;
-    WorkbenchComboBox(WorkbenchComboBox &&rhs) = delete;
+    WorkbenchComboBox(WorkbenchComboBox&& rhs) = delete;
     void showPopup() override;
 
-    WorkbenchComboBox operator=(WorkbenchComboBox &&rhs) = delete;
+    WorkbenchComboBox operator=(WorkbenchComboBox&& rhs) = delete;
 
 public Q_SLOTS:
     void refreshList(QList<QAction*>);
@@ -64,16 +64,20 @@ private:
 };
 
 
-class GuiExport WorkbenchTabWidget : public QWidget
+class GuiExport WorkbenchTabWidget: public QWidget
 {
     Q_OBJECT  // NOLINT
     Q_PROPERTY(Qt::LayoutDirection direction READ direction WRITE setDirection NOTIFY directionChanged)
 
-    class WbTabBar : public QTabBar {
+        class WbTabBar: public QTabBar
+    {
     public:
-        explicit WbTabBar(QWidget* parent) : QTabBar(parent) {}
+        explicit WbTabBar(QWidget* parent)
+            : QTabBar(parent)
+        {}
 
-        QSize tabSizeHint(int index) const override {
+        QSize tabSizeHint(int index) const override
+        {
             auto sizeFromParent = QTabBar::tabSizeHint(index);
 
             if (itemStyle() != WorkbenchItemStyle::IconOnly) {
@@ -91,7 +95,8 @@ class GuiExport WorkbenchTabWidget : public QWidget
 
             if (isHorizontal) {
                 csz.setWidth(csz.width() + padding);
-            } else {
+            }
+            else {
                 csz.setHeight(csz.height() + padding);
             }
 
@@ -99,7 +104,8 @@ class GuiExport WorkbenchTabWidget : public QWidget
 
             if (isHorizontal) {
                 size.setHeight(sizeFromParent.height());
-            } else {
+            }
+            else {
                 size.setWidth(sizeFromParent.width());
             }
 
@@ -120,23 +126,31 @@ class GuiExport WorkbenchTabWidget : public QWidget
             }
         }
 
-        WorkbenchItemStyle itemStyle() const { return _itemStyle; }
+        WorkbenchItemStyle itemStyle() const
+        {
+            return _itemStyle;
+        }
 
-        void setItemStyle(WorkbenchItemStyle itemStyle) {
+        void setItemStyle(WorkbenchItemStyle itemStyle)
+        {
             _itemStyle = itemStyle;
             setProperty("style", QString::fromUtf8(workbenchItemStyleToString(itemStyle)));
         }
 
     private:
-        WorkbenchItemStyle _itemStyle{WorkbenchItemStyle::IconAndText};
+        WorkbenchItemStyle _itemStyle {WorkbenchItemStyle::IconAndText};
 
         static const char* workbenchItemStyleToString(WorkbenchItemStyle style)
         {
             switch (style) {
-                case WorkbenchItemStyle::IconAndText: return "icon-and-text";
-                case WorkbenchItemStyle::IconOnly: return "icon-only";
-                case WorkbenchItemStyle::TextOnly: return "text-only";
-                default: return "WorkbenchItemStyle-internal-error";
+                case WorkbenchItemStyle::IconAndText:
+                    return "icon-and-text";
+                case WorkbenchItemStyle::IconOnly:
+                    return "icon-only";
+                case WorkbenchItemStyle::TextOnly:
+                    return "text-only";
+                default:
+                    return "WorkbenchItemStyle-internal-error";
             }
         }
     };
@@ -191,7 +205,6 @@ private:
 };
 
 
+}  // namespace Gui
 
-} // namespace Gui
-
-#endif // GUI_WORKBENCHSELECTOR_H
+#endif  // GUI_WORKBENCHSELECTOR_H

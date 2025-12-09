@@ -36,38 +36,56 @@
 #include <App/PropertyContainer.h>
 
 #include "propertyeditor/PropertyItem.h"
+#include "Macro.h"
 
-namespace Gui {
+namespace Gui
+{
 
 class ViewProviderVarSet;
 
-namespace Dialog {
+namespace Dialog
+{
 
-class EditFinishedComboBox : public QComboBox {
+class EditFinishedComboBox: public QComboBox
+{
     Q_OBJECT
 public:
-    explicit EditFinishedComboBox(QWidget *parent = nullptr) : QComboBox(parent) {
+    explicit EditFinishedComboBox(QWidget* parent = nullptr)
+        : QComboBox(parent)
+    {
         setEditable(true);
-        connect(this, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &EditFinishedComboBox::onIndexChanged);
-        connect(this->lineEdit(), &QLineEdit::editingFinished, this, &EditFinishedComboBox::onEditingFinished);
+        connect(
+            this,
+            QOverload<int>::of(&QComboBox::currentIndexChanged),
+            this,
+            &EditFinishedComboBox::onIndexChanged
+        );
+        connect(
+            this->lineEdit(),
+            &QLineEdit::editingFinished,
+            this,
+            &EditFinishedComboBox::onEditingFinished
+        );
     }
 
 Q_SIGNALS:
     void editFinished();
 
 private:
-    void onEditingFinished() {
+    void onEditingFinished()
+    {
         Q_EMIT editFinished();
     }
 
-    void onIndexChanged() {
+    void onIndexChanged()
+    {
         Q_EMIT editFinished();
     }
 };
 
 class Ui_DlgAddProperty;
 
-class GuiExport DlgAddProperty : public QDialog
+class GuiExport DlgAddProperty: public QDialog
 {
     Q_OBJECT
 
@@ -88,28 +106,29 @@ public:
     void changeEvent(QEvent* e) override;
     void accept() override;
     void reject() override;
-    static void populateGroup(EditFinishedComboBox& comboBox,
-                              const App::PropertyContainer* container);
-    static void setWidgetForLabel(const char* labelName, QWidget* widget,
-                                  QLayout* layout);
+    static void populateGroup(EditFinishedComboBox& comboBox, const App::PropertyContainer* container);
+    static void setWidgetForLabel(const char* labelName, QWidget* widget, QLayout* layout);
 
 public Q_SLOTS:
     void valueChanged();
     void valueChangedEnum();
 
 private:
-    enum class TransactionOption : bool {
+    enum class TransactionOption : bool
+    {
         Commit = false,
         Abort = true
     };
 
-    enum class FieldChange : std::uint8_t {
+    enum class FieldChange : std::uint8_t
+    {
         Name,
         Type
     };
 
-    DlgAddProperty(QWidget* parent, App::PropertyContainer* container,
-                         ViewProviderVarSet* viewProvider);
+    DlgAddProperty(QWidget* parent, App::PropertyContainer* container, ViewProviderVarSet* viewProvider);
+
+    void setupMacroRedirector();
 
     void initializeGroup();
 
@@ -119,6 +138,7 @@ private:
     void removeSelectionEditor();
     QVariant getEditorData() const;
     void setEditorData(const QVariant& data);
+    bool isSubLinkPropertyItem() const;
     bool isEnumPropertyItem() const;
     void addEnumEditor(PropertyEditor::PropertyItem* propertyItem);
     void addNormalEditor(PropertyEditor::PropertyItem* propertyItem);
@@ -156,6 +176,13 @@ private:
 
     void openTransaction();
     void critical(const QString& title, const QString& text);
+    void recordMacroAdd(
+        const App::PropertyContainer* container,
+        const std::string& type,
+        const std::string& name,
+        const std::string& group,
+        const std::string& doc
+    ) const;
     App::Property* createProperty();
     void closeTransaction(TransactionOption option);
     void clearFields();
@@ -181,9 +208,13 @@ private:
     QMetaObject::Connection connComboBoxGroup;
     QMetaObject::Connection connComboBoxType;
     QMetaObject::Connection connLineEditNameTextChanged;
+
+    std::unique_ptr<MacroManager::MacroRedirector> setValueRedirector;
+    std::string addCommand;
+    std::string setValueCommand;
 };
 
-} // namespace Dialog
-} // namespace Gui
+}  // namespace Dialog
+}  // namespace Gui
 
-#endif // GUI_DIALOG_DLG_ADD_PROPERTY_H
+#endif  // GUI_DIALOG_DLG_ADD_PROPERTY_H

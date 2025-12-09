@@ -21,10 +21,10 @@
  ****************************************************************************/
 
 
-# include <Inventor/details/SoDetail.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoPickStyle.h>
-# include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/details/SoDetail.h>
+#include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoPickStyle.h>
+#include <Inventor/nodes/SoSeparator.h>
 
 
 #include "Application.h"
@@ -37,7 +37,7 @@
 #include <App/GeoFeatureGroupExtension.h>
 #include <Base/Console.h>
 
-FC_LOG_LEVEL_INIT("3DViewerSelection",true,true)
+FC_LOG_LEVEL_INIT("3DViewerSelection", true, true)
 
 using namespace Gui;
 
@@ -92,49 +92,56 @@ View3DInventorSelection::~View3DInventorSelection()
     pcGroupOnTopSel->unref();
 }
 
-void View3DInventorSelection::checkGroupOnTop(const SelectionChanges &Reason)
+void View3DInventorSelection::checkGroupOnTop(const SelectionChanges& Reason)
 {
-    if (Reason.Type == SelectionChanges::SetSelection || Reason.Type == SelectionChanges::ClrSelection) {
+    if (Reason.Type == SelectionChanges::SetSelection
+        || Reason.Type == SelectionChanges::ClrSelection) {
         clearGroupOnTop();
-        if(Reason.Type == SelectionChanges::ClrSelection)
+        if (Reason.Type == SelectionChanges::ClrSelection) {
             return;
+        }
     }
-    if(Reason.Type == SelectionChanges::RmvPreselect ||
-       Reason.Type == SelectionChanges::RmvPreselectSignal)
-    {
-        SoSelectionElementAction action(SoSelectionElementAction::None,true);
+    if (Reason.Type == SelectionChanges::RmvPreselect
+        || Reason.Type == SelectionChanges::RmvPreselectSignal) {
+        SoSelectionElementAction action(SoSelectionElementAction::None, true);
         action.apply(pcGroupOnTopPreSel);
         coinRemoveAllChildren(pcGroupOnTopPreSel);
         objectsOnTopPreSel.clear();
         return;
     }
-    if(!getDocument() || !Reason.pDocName || !Reason.pDocName[0] || !Reason.pObjectName)
+    if (!getDocument() || !Reason.pDocName || !Reason.pDocName[0] || !Reason.pObjectName) {
         return;
+    }
     auto obj = getDocument()->getDocument()->getObject(Reason.pObjectName);
-    if(!obj || !obj->isAttachedToDocument())
+    if (!obj || !obj->isAttachedToDocument()) {
         return;
+    }
     std::string key(obj->getNameInDocument());
     key += '.';
     auto subname = Reason.pSubName;
     App::ElementNamePair element;
     App::GeoFeature::resolveElement(obj, Reason.pSubName, element);
-    if (Data::isMappedElement(subname)
-        && !element.oldName.empty()) {      // If we have a shortened element name
-        subname = element.oldName.c_str();  // use if
+    if (Data::isMappedElement(subname) && !element.oldName.empty()) {  // If we have a shortened
+                                                                       // element name
+        subname = element.oldName.c_str();                             // use if
     }
-    if(subname)
+    if (subname) {
         key += subname;
-    if(Reason.Type == SelectionChanges::RmvSelection) {
-        auto &objs = objectsOnTop;
+    }
+    if (Reason.Type == SelectionChanges::RmvSelection) {
+        auto& objs = objectsOnTop;
         auto pcGroup = pcGroupOnTopSel;
         auto it = objs.find(key.c_str());
-        if(it == objs.end())
+        if (it == objs.end()) {
             return;
+        }
         int index = pcGroup->findChild(it->second);
-        if(index >= 0) {
+        if (index >= 0) {
             auto node = static_cast<SoFCPathAnnotation*>(it->second);
-            SoSelectionElementAction action(node->getDetail()?
-                    SoSelectionElementAction::Remove:SoSelectionElementAction::None,true);
+            SoSelectionElementAction action(
+                node->getDetail() ? SoSelectionElementAction::Remove : SoSelectionElementAction::None,
+                true
+            );
             auto path = node->getPath();
             SoTempPath tmpPath(2 + (path ? path->getLength() : 0));
             tmpPath.ref();
@@ -146,81 +153,98 @@ void View3DInventorSelection::checkGroupOnTop(const SelectionChanges &Reason)
             tmpPath.unrefNoDelete();
             pcGroup->removeChild(index);
             FC_LOG("remove annotation " << Reason.Type << " " << key);
-        }else
+        }
+        else {
             FC_LOG("remove annotation object " << Reason.Type << " " << key);
+        }
         objs.erase(it);
         return;
     }
 
-    auto &objs = Reason.Type==SelectionChanges::SetPreselect?objectsOnTopPreSel:objectsOnTop;
-    auto pcGroup = Reason.Type==SelectionChanges::SetPreselect?pcGroupOnTopPreSel:pcGroupOnTopSel;
+    auto& objs = Reason.Type == SelectionChanges::SetPreselect ? objectsOnTopPreSel : objectsOnTop;
+    auto pcGroup = Reason.Type == SelectionChanges::SetPreselect ? pcGroupOnTopPreSel
+                                                                 : pcGroupOnTopSel;
 
-    if(objs.find(key.c_str())!=objs.end())
+    if (objs.find(key.c_str()) != objs.end()) {
         return;
-    auto vp = freecad_cast<ViewProviderDocumentObject*>(
-            Application::Instance->getViewProvider(obj));
-    if(!vp || !vp->isSelectable() || !vp->isShow())
+    }
+    auto vp = freecad_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(obj));
+    if (!vp || !vp->isSelectable() || !vp->isShow()) {
         return;
+    }
     auto svp = vp;
-    if(subname && *subname) {
+    if (subname && *subname) {
         auto sobj = obj->getSubObject(subname);
-        if(!sobj || !sobj->isAttachedToDocument())
+        if (!sobj || !sobj->isAttachedToDocument()) {
             return;
-        if(sobj!=obj) {
+        }
+        if (sobj != obj) {
             svp = freecad_cast<ViewProviderDocumentObject*>(
-                    Application::Instance->getViewProvider(sobj));
-            if(!svp || !svp->isSelectable())
+                Application::Instance->getViewProvider(sobj)
+            );
+            if (!svp || !svp->isSelectable()) {
                 return;
+            }
         }
     }
     int onTop;
     // onTop==2 means on top only if whole object is selected,
     // onTop==3 means on top only if some sub-element is selected
     // onTop==1 means either
-    if(Gui::Selection().needPickedList())
+    if (Gui::Selection().needPickedList()) {
         onTop = 1;
-    else if(vp->OnTopWhenSelected.getValue())
+    }
+    else if (vp->OnTopWhenSelected.getValue()) {
         onTop = vp->OnTopWhenSelected.getValue();
-    else
+    }
+    else {
         onTop = svp->OnTopWhenSelected.getValue();
-    if(Reason.Type == SelectionChanges::SetPreselect) {
+    }
+    if (Reason.Type == SelectionChanges::SetPreselect) {
         SoHighlightElementAction action;
         action.setHighlighted(true);
         action.setColor(selectionRoot->colorHighlight.getValue());
         action.apply(pcGroupOnTopPreSel);
-        if(!onTop)
+        if (!onTop) {
             onTop = 2;
-    }else {
-        if(!onTop)
+        }
+    }
+    else {
+        if (!onTop) {
             return;
+        }
         SoSelectionElementAction action(SoSelectionElementAction::All);
         action.setColor(selectionRoot->colorHighlight.getValue());
         action.apply(pcGroupOnTopSel);
     }
-    if(onTop==2 || onTop==3) {
-        if(subname && *subname) {
+    if (onTop == 2 || onTop == 3) {
+        if (subname && *subname) {
             size_t len = strlen(subname);
-            if(subname[len-1]=='.') {
+            if (subname[len - 1] == '.') {
                 // ending with '.' means whole object selection
-                if(onTop == 3)
+                if (onTop == 3) {
                     return;
-            }else if(onTop==2)
+                }
+            }
+            else if (onTop == 2) {
                 return;
-        }else if(onTop==3)
+            }
+        }
+        else if (onTop == 3) {
             return;
+        }
     }
 
     std::vector<ViewProvider*> groups;
     auto grpVp = vp;
     std::set<ViewProvider*> visited;
-    for(auto childVp=vp;;childVp=grpVp) {
+    for (auto childVp = vp;; childVp = grpVp) {
         auto grp = App::GeoFeatureGroupExtension::getGroupOfObject(childVp->getObject());
         if (!grp || !grp->isAttachedToDocument()) {
             break;
         }
 
-        grpVp = freecad_cast<ViewProviderDocumentObject*>(
-                Application::Instance->getViewProvider(grp));
+        grpVp = freecad_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(grp));
         if (!grpVp) {
             break;
         }
@@ -233,16 +257,18 @@ void View3DInventorSelection::checkGroupOnTop(const SelectionChanges &Reason)
         auto childRoot = grpVp->getChildRoot();
         auto modeSwitch = grpVp->getModeSwitch();
         auto idx = modeSwitch->whichChild.getValue();
-        if(idx<0 || idx>=modeSwitch->getNumChildren() ||
-           modeSwitch->getChild(idx)!=childRoot)
-        {
-            FC_LOG("skip " << obj->getFullName() << '.' << (subname?subname:"")
-                    << ", hidden inside geo group");
+        if (idx < 0 || idx >= modeSwitch->getNumChildren() || modeSwitch->getChild(idx) != childRoot) {
+            FC_LOG(
+                "skip " << obj->getFullName() << '.' << (subname ? subname : "")
+                        << ", hidden inside geo group"
+            );
             return;
         }
-        if(childRoot->findChild(childVp->getRoot())<0) {
-            FC_LOG("cannot find '" << childVp->getObject()->getFullName()
-                    << "' in geo group '" << grp->getNameInDocument() << "'");
+        if (childRoot->findChild(childVp->getRoot()) < 0) {
+            FC_LOG(
+                "cannot find '" << childVp->getObject()->getFullName() << "' in geo group '"
+                                << grp->getNameInDocument() << "'"
+            );
             break;
         }
         groups.push_back(grpVp);
@@ -251,22 +277,22 @@ void View3DInventorSelection::checkGroupOnTop(const SelectionChanges &Reason)
     SoTempPath path(10);
     path.ref();
 
-    for(auto it=groups.rbegin();it!=groups.rend();++it) {
+    for (auto it = groups.rbegin(); it != groups.rend(); ++it) {
         auto grpVp = *it;
         path.append(grpVp->getRoot());
         path.append(grpVp->getModeSwitch());
         path.append(grpVp->getChildRoot());
     }
 
-    SoDetail *det = nullptr;
-    if(vp->getDetailPath(subname, &path,true,det) && path.getLength()) {
+    SoDetail* det = nullptr;
+    if (vp->getDetailPath(subname, &path, true, det) && path.getLength()) {
         auto node = new SoFCPathAnnotation;
         node->setPath(&path);
         pcGroup->addChild(node);
-        if(det) {
-            SoSelectionElementAction action(SoSelectionElementAction::Append,true);
+        if (det) {
+            SoSelectionElementAction action(SoSelectionElementAction::Append, true);
             action.setElement(det);
-            SoTempPath tmpPath(path.getLength()+2);
+            SoTempPath tmpPath(path.getLength() + 2);
             tmpPath.ref();
             tmpPath.append(pcGroup);
             tmpPath.append(node);
@@ -285,10 +311,10 @@ void View3DInventorSelection::checkGroupOnTop(const SelectionChanges &Reason)
 
 void View3DInventorSelection::clearGroupOnTop()
 {
-    if(!objectsOnTop.empty() || !objectsOnTopPreSel.empty()) {
+    if (!objectsOnTop.empty() || !objectsOnTopPreSel.empty()) {
         objectsOnTop.clear();
         objectsOnTopPreSel.clear();
-        SoSelectionElementAction action(SoSelectionElementAction::None,true);
+        SoSelectionElementAction action(SoSelectionElementAction::None, true);
         action.apply(pcGroupOnTopPreSel);
         action.apply(pcGroupOnTopSel);
         coinRemoveAllChildren(pcGroupOnTopSel);

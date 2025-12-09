@@ -22,9 +22,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__  = "FreeCAD Arch Frame"
+__title__ = "FreeCAD Arch Frame"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecad.org"
+__url__ = "https://www.freecad.org"
 
 ## @package ArchFrame
 #  \ingroup ARCH
@@ -45,55 +45,122 @@ if FreeCAD.GuiUp:
     from draftutils.translate import translate
 else:
     # \cond
-    def translate(ctxt,txt):
+    def translate(ctxt, txt):
         return txt
-    def QT_TRANSLATE_NOOP(ctxt,txt):
+
+    def QT_TRANSLATE_NOOP(ctxt, txt):
         return txt
+
     # \endcond
 
 
 class _Frame(ArchComponent.Component):
-
     "A parametric frame object"
 
-    def __init__(self,obj):
-        ArchComponent.Component.__init__(self,obj)
+    def __init__(self, obj):
+        ArchComponent.Component.__init__(self, obj)
         self.Type = "Frame"
         self.setProperties(obj)
         obj.IfcType = "Railing"
 
-    def setProperties(self,obj):
+    def setProperties(self, obj):
 
         pl = obj.PropertiesList
         if not "Profile" in pl:
-            obj.addProperty("App::PropertyLink","Profile","Frame",QT_TRANSLATE_NOOP("App::Property","The profile used to build this frame"), locked=True)
+            obj.addProperty(
+                "App::PropertyLink",
+                "Profile",
+                "Frame",
+                QT_TRANSLATE_NOOP("App::Property", "The profile used to build this frame"),
+                locked=True,
+            )
         if not "Align" in pl:
-            obj.addProperty("App::PropertyBool","Align","Frame",QT_TRANSLATE_NOOP("App::Property","Specifies if the profile must be aligned with the extrusion wires"), locked=True)
+            obj.addProperty(
+                "App::PropertyBool",
+                "Align",
+                "Frame",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Specifies if the profile must be aligned with the extrusion wires",
+                ),
+                locked=True,
+            )
             obj.Align = True
         if not "Offset" in pl:
-            obj.addProperty("App::PropertyVectorDistance","Offset","Frame",QT_TRANSLATE_NOOP("App::Property","An offset vector between the base sketch and the frame"), locked=True)
+            obj.addProperty(
+                "App::PropertyVectorDistance",
+                "Offset",
+                "Frame",
+                QT_TRANSLATE_NOOP(
+                    "App::Property", "An offset vector between the base sketch and the frame"
+                ),
+                locked=True,
+            )
         if not "BasePoint" in pl:
-            obj.addProperty("App::PropertyInteger","BasePoint","Frame",QT_TRANSLATE_NOOP("App::Property","Crossing point of the path on the profile."), locked=True)
+            obj.addProperty(
+                "App::PropertyInteger",
+                "BasePoint",
+                "Frame",
+                QT_TRANSLATE_NOOP("App::Property", "Crossing point of the path on the profile."),
+                locked=True,
+            )
         if not "ProfilePlacement" in pl:
-            obj.addProperty("App::PropertyPlacement","ProfilePlacement","Frame",QT_TRANSLATE_NOOP("App::Property","An optional additional placement to add to the profile before extruding it"), locked=True)
+            obj.addProperty(
+                "App::PropertyPlacement",
+                "ProfilePlacement",
+                "Frame",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "An optional additional placement to add to the profile before extruding it",
+                ),
+                locked=True,
+            )
         if not "Rotation" in pl:
-            obj.addProperty("App::PropertyAngle","Rotation","Frame",QT_TRANSLATE_NOOP("App::Property","The rotation of the profile around its extrusion axis"), locked=True)
+            obj.addProperty(
+                "App::PropertyAngle",
+                "Rotation",
+                "Frame",
+                QT_TRANSLATE_NOOP(
+                    "App::Property", "The rotation of the profile around its extrusion axis"
+                ),
+                locked=True,
+            )
         if not "Edges" in pl:
-            obj.addProperty("App::PropertyEnumeration","Edges","Frame",QT_TRANSLATE_NOOP("App::Property","The type of edges to consider"), locked=True)
-            obj.Edges = ["All edges","Vertical edges","Horizontal edges","Bottom horizontal edges","Top horizontal edges"]
+            obj.addProperty(
+                "App::PropertyEnumeration",
+                "Edges",
+                "Frame",
+                QT_TRANSLATE_NOOP("App::Property", "The type of edges to consider"),
+                locked=True,
+            )
+            obj.Edges = [
+                "All edges",
+                "Vertical edges",
+                "Horizontal edges",
+                "Bottom horizontal edges",
+                "Top horizontal edges",
+            ]
         if not "Fuse" in pl:
-            obj.addProperty("App::PropertyBool","Fuse","Frame",QT_TRANSLATE_NOOP("App::Property","If true, geometry is fused, otherwise a compound"), locked=True)
+            obj.addProperty(
+                "App::PropertyBool",
+                "Fuse",
+                "Frame",
+                QT_TRANSLATE_NOOP(
+                    "App::Property", "If true, geometry is fused, otherwise a compound"
+                ),
+                locked=True,
+            )
 
-    def onDocumentRestored(self,obj):
+    def onDocumentRestored(self, obj):
 
-        ArchComponent.Component.onDocumentRestored(self,obj)
+        ArchComponent.Component.onDocumentRestored(self, obj)
         self.setProperties(obj)
 
-    def loads(self,state):
+    def loads(self, state):
 
         self.Type = "Frame"
 
-    def execute(self,obj):
+    def execute(self, obj):
 
         if self.clone(obj):
             return
@@ -128,8 +195,9 @@ class _Frame(ArchComponent.Component):
             import math
             import DraftGeomUtils
             import Part
+
             baseprofile = obj.Profile.Shape.copy()
-            if hasattr(obj,"ProfilePlacement"):
+            if hasattr(obj, "ProfilePlacement"):
                 if not obj.ProfilePlacement.isNull():
                     baseprofile.Placement = obj.ProfilePlacement.multiply(baseprofile.Placement)
             if not baseprofile.Faces:
@@ -143,30 +211,46 @@ class _Frame(ArchComponent.Component):
             shapes = []
             normal = DraftGeomUtils.getNormal(obj.Base.Shape)
             edges = obj.Base.Shape.Edges
-            if hasattr(obj,"Edges"):
+            if hasattr(obj, "Edges"):
                 if obj.Edges == "Vertical edges":
-                    rv = obj.Base.Placement.Rotation.multVec(FreeCAD.Vector(0,1,0))
-                    edges = [e for e in edges if round(rv.getAngle(e.tangentAt(e.FirstParameter)),4) in [0,3.1416]]
+                    rv = obj.Base.Placement.Rotation.multVec(FreeCAD.Vector(0, 1, 0))
+                    edges = [
+                        e
+                        for e in edges
+                        if round(rv.getAngle(e.tangentAt(e.FirstParameter)), 4) in [0, 3.1416]
+                    ]
                 elif obj.Edges == "Horizontal edges":
-                    rv = obj.Base.Placement.Rotation.multVec(FreeCAD.Vector(1,0,0))
-                    edges = [e for e in edges if round(rv.getAngle(e.tangentAt(e.FirstParameter)),4) in [0,3.1416]]
+                    rv = obj.Base.Placement.Rotation.multVec(FreeCAD.Vector(1, 0, 0))
+                    edges = [
+                        e
+                        for e in edges
+                        if round(rv.getAngle(e.tangentAt(e.FirstParameter)), 4) in [0, 3.1416]
+                    ]
                 elif obj.Edges == "Top horizontal edges":
-                    rv = obj.Base.Placement.Rotation.multVec(FreeCAD.Vector(1,0,0))
-                    edges = [e for e in edges if round(rv.getAngle(e.tangentAt(e.FirstParameter)),4) in [0,3.1416]]
-                    edges = sorted(edges,key=lambda x: x.CenterOfMass.z,reverse=True)
+                    rv = obj.Base.Placement.Rotation.multVec(FreeCAD.Vector(1, 0, 0))
+                    edges = [
+                        e
+                        for e in edges
+                        if round(rv.getAngle(e.tangentAt(e.FirstParameter)), 4) in [0, 3.1416]
+                    ]
+                    edges = sorted(edges, key=lambda x: x.CenterOfMass.z, reverse=True)
                     z = edges[0].CenterOfMass.z
-                    edges = [e for e in edges if abs(e.CenterOfMass.z-z) < 0.00001]
+                    edges = [e for e in edges if abs(e.CenterOfMass.z - z) < 0.00001]
                 elif obj.Edges == "Bottom horizontal edges":
-                    rv = obj.Base.Placement.Rotation.multVec(FreeCAD.Vector(1,0,0))
-                    edges = [e for e in edges if round(rv.getAngle(e.tangentAt(e.FirstParameter)),4) in [0,3.1416]]
-                    edges = sorted(edges,key=lambda x: x.CenterOfMass.z)
+                    rv = obj.Base.Placement.Rotation.multVec(FreeCAD.Vector(1, 0, 0))
+                    edges = [
+                        e
+                        for e in edges
+                        if round(rv.getAngle(e.tangentAt(e.FirstParameter)), 4) in [0, 3.1416]
+                    ]
+                    edges = sorted(edges, key=lambda x: x.CenterOfMass.z)
                     z = edges[0].CenterOfMass.z
-                    edges = [e for e in edges if abs(e.CenterOfMass.z-z) < 0.00001]
+                    edges = [e for e in edges if abs(e.CenterOfMass.z - z) < 0.00001]
             for e in edges:
                 bvec = DraftGeomUtils.vec(e)
                 bpoint = e.Vertexes[0].Point
                 profile = baseprofile.copy()
-                rot = None # New rotation.
+                rot = None  # New rotation.
                 # Supplying FreeCAD.Rotation() with two parallel vectors and
                 # a null vector may seem strange, but the function is perfectly
                 # able to handle this. Its algorithm will use default axes in
@@ -186,11 +270,13 @@ class _Frame(ArchComponent.Component):
                     try:
                         basepoint = basepointliste[obj.BasePoint]
                     except IndexError:
-                        FreeCAD.Console.PrintMessage(translate("Arch", "Crossing point not found in profile.")+"\n")
+                        FreeCAD.Console.PrintMessage(
+                            translate("Arch", "Crossing point not found in profile.") + "\n"
+                        )
                         basepoint = basepointliste[0]
                 else:
                     basepoint = profile.Placement.Base
-                delta = bpoint.sub(basepoint) # Translation vector.
+                delta = bpoint.sub(basepoint)  # Translation vector.
                 if obj.Offset and (not DraftVecUtils.isNull(obj.Offset)):
                     if rot is None:
                         delta = delta + obj.Offset
@@ -203,7 +289,7 @@ class _Frame(ArchComponent.Component):
                 profile = profile.extrude(bvec)
                 shapes.append(profile)
             if shapes:
-                if hasattr(obj,"Fuse"):
+                if hasattr(obj, "Fuse"):
                     if obj.Fuse:
                         if len(shapes) > 1:
                             s = shapes[0].multiFuse(shapes[1:])
@@ -216,22 +302,22 @@ class _Frame(ArchComponent.Component):
 
 
 class _ViewProviderFrame(ArchComponent.ViewProviderComponent):
-
     "A View Provider for the Frame object"
 
-    def __init__(self,vobj):
+    def __init__(self, vobj):
 
-        ArchComponent.ViewProviderComponent.__init__(self,vobj)
+        ArchComponent.ViewProviderComponent.__init__(self, vobj)
 
     def getIcon(self):
 
         import Arch_rc
+
         return ":/icons/Arch_Frame_Tree.svg"
 
     def claimChildren(self):
 
         p = []
-        if hasattr(self,"Object"):
+        if hasattr(self, "Object"):
             if self.Object.Profile:
                 p = [self.Object.Profile]
-        return ArchComponent.ViewProviderComponent.claimChildren(self)+p
+        return ArchComponent.ViewProviderComponent.claimChildren(self) + p

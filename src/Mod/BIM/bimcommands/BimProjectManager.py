@@ -41,12 +41,15 @@ class BIM_ProjectManager:
         return {
             "Pixmap": "BIM_ProjectManager",
             "MenuText": QT_TRANSLATE_NOOP("BIM_ProjectManager", "Setup Project"),
-            "ToolTip": QT_TRANSLATE_NOOP(
-                "BIM_ProjectManager", "Creates or manages a BIM project"
-            ),
+            "ToolTip": QT_TRANSLATE_NOOP("BIM_ProjectManager", "Creates or manages a BIM project"),
         }
 
     def Activated(self):
+
+        # only raise the dialog if it is already open
+        if getattr(self, "form", None):
+            self.form.raise_()
+            return
 
         import FreeCADGui
         import ArchBuildingPart
@@ -60,9 +63,7 @@ class BIM_ProjectManager:
         # center the dialog over FreeCAD window
         mw = FreeCADGui.getMainWindow()
         self.form.move(
-            mw.frameGeometry().topLeft()
-            + mw.rect().center()
-            - self.form.rect().center()
+            mw.frameGeometry().topLeft() + mw.rect().center() - self.form.rect().center()
         )
 
         # set things up
@@ -74,6 +75,7 @@ class BIM_ProjectManager:
         self.form.presets.currentIndexChanged.connect(self.getPreset)
         self.form.buttonOK.clicked.connect(self.accept)
         self.form.buttonCancel.clicked.connect(self.reject)
+        self.form.rejected.connect(self.reject)
         self.fillPresets()
 
         # Detect existing objects
@@ -92,6 +94,7 @@ class BIM_ProjectManager:
                     self.form.groupNewProject.setEnabled(False)
             if self.project:
                 from nativeifc import ifc_tools
+
                 sites = ifc_tools.get_children(self.project, ifctype="IfcSite")
                 sites = list(filter(None, [ifc_tools.get_object(s) for s in sites]))
                 self.form.projectName.setText(self.project.Label)
@@ -100,38 +103,45 @@ class BIM_ProjectManager:
             if sites:
                 self.site = sites[0]
                 self.form.siteName.setText(self.site.Label)
-                if hasattr(self.site,"Address"):
+                if hasattr(self.site, "Address"):
                     self.form.siteAddress.setText(self.site.Address)
-                elif hasattr(self.site,"SiteAddress"):
+                elif hasattr(self.site, "SiteAddress"):
                     self.form.siteAddress.setText(self.site.SiteAddress)
-                if hasattr(self.site,"Longitude"):
+                if hasattr(self.site, "Longitude"):
                     self.form.siteLongitude.setValue(self.site.Longitude)
-                elif hasattr(self.site,"RefLongitude"):
+                elif hasattr(self.site, "RefLongitude"):
                     self.form.siteLongitude.setValue(self.site.RefLongitude)
-                if hasattr(self.site,"Latitude"):
+                if hasattr(self.site, "Latitude"):
                     self.form.siteLatitude.setValue(self.site.Latitude)
-                elif hasattr(self.site,"RefLatitude"):
+                elif hasattr(self.site, "RefLatitude"):
                     self.form.siteLatitude.setValue(self.site.RefLatitude)
-                if hasattr(self.site,"Elevation"):
+                if hasattr(self.site, "Elevation"):
                     self.form.siteElevation.setText(self.site.Elevation.UserString)
-                elif hasattr(self.site,"RefElevation"):
+                elif hasattr(self.site, "RefElevation"):
                     self.form.siteElevation.setText(self.site.RefElevation.UserString)
                 if hasattr(self.site, "Declination"):
                     self.form.siteElevation.setText(str(self.site.Declination))
             buildings = []
             if self.site and self.project:
                 from nativeifc import ifc_tools
+
                 buildings = ifc_tools.get_children(self.site, ifctype="IfcBuilding")
                 buildings = list(filter(None, [ifc_tools.get_object(b) for b in buildings]))
             if not buildings:
                 buildings = [o for o in doc.Objects if getattr(o, "IfcType", "") == "Building"]
             if buildings:
-                from nativeifc import ifc_tools
                 self.building = buildings[0]
                 self.form.buildingName.setText(self.building.Label)
+            levels = []
+            if self.building and self.project:
+                from nativeifc import ifc_tools
+
                 levels = ifc_tools.get_children(self.building, ifctype="IfcBuildingStorey")
-                if levels:
-                    self.form.countLevels.setValue(len(levels))
+                levels = list(filter(None, [ifc_tools.get_object(l) for l in levels]))
+            if not levels:
+                levels = [o for o in doc.Objects if getattr(o, "IfcType", "") == "Building Storey"]
+            if levels:
+                self.form.countLevels.setValue(len(levels))
 
         # show dialog
         self.form.show()
@@ -139,6 +149,7 @@ class BIM_ProjectManager:
     def reject(self):
 
         self.form.hide()
+        del self.form
         return True
 
     def accept(self):
@@ -172,9 +183,11 @@ class BIM_ProjectManager:
         # Document creation
         doc = FreeCAD.ActiveDocument
         if self.form.groupNewProject.isChecked():
-            if self.form.radioNative1.isChecked() or \
-            self.form.radioNative3.isChecked() or \
-            (self.form.radioNative2.isChecked() and doc is None):
+            if (
+                self.form.radioNative1.isChecked()
+                or self.form.radioNative3.isChecked()
+                or (self.form.radioNative2.isChecked() and doc is None)
+            ):
                 doc = FreeCAD.newDocument()
                 if self.form.projectName.text():
                     doc.Label = self.form.projectName.text()
@@ -184,6 +197,7 @@ class BIM_ProjectManager:
         # Project creation
         if self.form.groupNewProject.isChecked():
             from nativeifc import ifc_tools
+
             if self.form.radioNative2.isChecked():
                 self.project = ifc_tools.create_document_object(doc, silent=True)
                 if self.form.projectName.text():
@@ -191,13 +205,14 @@ class BIM_ProjectManager:
             elif self.form.radioNative3.isChecked():
                 self.project = ifc_tools.convert_document(doc, silent=True)
 
-        # human
+        # Human
         human = None
         if self.form.addHumanFigure.isChecked():
-            humanshape = Part.Shape()
-            humanshape.importBrep(":/geometry/HumanFigure.brep")
+            from draftguitools import gui_trackers
+
+            pts = gui_trackers.gridTracker.get_human_figure(None)
             human = FreeCAD.ActiveDocument.addObject("Part::Feature", "Human")
-            human.Shape = humanshape
+            human.Shape = Part.makePolygon(pts)
             human.Placement.move(FreeCAD.Vector(500, 500, 0))
 
         # Site creation or edition
@@ -207,19 +222,20 @@ class BIM_ProjectManager:
                 self.site = Arch.makeSite()
                 if self.project:
                     from nativeifc import ifc_tools
+
                     self.site = ifc_tools.aggregate(self.site, self.project)
             self.site.Label = self.form.siteName.text()
-            if hasattr(self.site,"Address"):
+            if hasattr(self.site, "Address"):
                 self.site.Address = self.form.siteAddress.text()
-            elif hasattr(self.site,"SiteAddress"):
+            elif hasattr(self.site, "SiteAddress"):
                 self.site.SiteAddress = self.form.siteAddress.text()
-            if hasattr(self.site,"Longitude"):
+            if hasattr(self.site, "Longitude"):
                 self.site.Longitude = self.form.siteLongitude.value()
-            elif hasattr(self.site,"RefLongitude"):
+            elif hasattr(self.site, "RefLongitude"):
                 self.site.RefLongitude = self.form.siteLongitude.value()
-            if hasattr(self.site,"Latitude"):
+            if hasattr(self.site, "Latitude"):
                 self.site.Latitude = self.form.siteLatitude.value()
-            elif hasattr(self.site,"RefLatitude"):
+            elif hasattr(self.site, "RefLatitude"):
                 self.site.RefLatitude = self.form.siteLatitude.value()
             if hasattr(self.site, "NorthDeviation"):
                 self.site.NorthDeviation = self.form.siteDeviation.value()
@@ -237,6 +253,7 @@ class BIM_ProjectManager:
                 self.building = Arch.makeBuilding()
                 if self.project:
                     from nativeifc import ifc_tools
+
                     if self.site:
                         self.building = ifc_tools.aggregate(self.building, self.site)
                     else:
@@ -256,9 +273,9 @@ class BIM_ProjectManager:
                 axes = [o for o in grp.Group if o.Name.startswith("Axis")]
                 if axes:
                     for ax in axes:
-                        if round(math.degrees(ax.Placement.Rotation.Angle),0) in [0, 180, 360]:
+                        if round(math.degrees(ax.Placement.Rotation.Angle), 0) in [0, 180, 360]:
                             vaxes.append(ax)
-                        elif round(math.degrees(ax.Placement.Rotation.Angle),0) in [90, 270]:
+                        elif round(math.degrees(ax.Placement.Rotation.Angle), 0) in [90, 270]:
                             haxes.append(ax)
                 outline = [o for o in grp.Group if o.Name.startswith("Rectangle")]
                 if outline:
@@ -267,8 +284,12 @@ class BIM_ProjectManager:
                 if human:
                     human = human[0]
             else:
-                if self.form.addHumanFigure.isChecked() or self.form.countVAxes.value() \
-                or self.form.countHAxes.value() or (buildingWidth and buildingLength):
+                if (
+                    self.form.addHumanFigure.isChecked()
+                    or self.form.countVAxes.value()
+                    or self.form.countHAxes.value()
+                    or (buildingWidth and buildingLength)
+                ):
                     grp = doc.addObject("App::DocumentObjectGroup", "BuildingLayout")
                     grp.Label = translate("BIM", "Building Layout")
                     if self.building:
@@ -367,17 +388,17 @@ class BIM_ProjectManager:
                     lev.Placement.move(FreeCAD.Vector(0, 0, h))
                     if self.project and self.building:
                         from nativeifc import ifc_tools
+
                         lev = ifc_tools.aggregate(lev, self.building)
                     elif self.building:
                         self.building.addObject(lev)
                     h += levelHeight
                     for group in groups:
-                        levGroup = FreeCAD.ActiveDocument.addObject(
-                            "App::DocumentObjectGroup"
-                        )
+                        levGroup = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup")
                         levGroup.Label = group
                         if self.project:
                             from nativeifc import ifc_tools
+
                             ifc_tools.aggregate(levGroup, lev)
                         else:
                             lev.addObject(levGroup)
@@ -392,6 +413,7 @@ class BIM_ProjectManager:
         if self.building and grp:
             if hasattr(self.building, "IfcClass"):
                 from nativeifc import ifc_tools
+
                 ifc_tools.aggregate(grp, self.building)
         self.form.hide()
         FreeCAD.ActiveDocument.recompute()
@@ -399,8 +421,9 @@ class BIM_ProjectManager:
             FreeCADGui.Snapper.show()
         if self.form.radioNative3.isChecked():
             from nativeifc import ifc_status
-            ifc_status.set_button(True,True)
-        return True
+
+            ifc_status.set_button(True, True)
+        return self.reject()
 
     def addGroup(self):
         from PySide import QtCore, QtGui
@@ -435,48 +458,42 @@ class BIM_ProjectManager:
             for i in range(self.form.groupsList.count()):
                 groups.append(self.form.groupsList.item(i).text())
 
-            s = "# FreeCAD BIM Project setup preset " + name + "\n"
-            s += (
-                "groupNewDocument="
-                + str(int(self.form.groupNewProject.isChecked()))
-                + "\n"
-            )
-            s += "projectName=" + self.form.projectName.text() + "\n"
-            s += "groupSite=" + str(int(self.form.groupSite.isChecked())) + "\n"
+            form = self.form
 
-            s += "siteName=" + self.form.siteName.text() + "\n"
-            s += "siteAddress=" + self.form.siteAddress.text() + "\n"
-            s += "siteLongitude=" + str(self.form.siteLongitude.value()) + "\n"
-            s += "siteLatitude=" + str(self.form.siteLatitude.value()) + "\n"
-            s += "siteDeviation=" + str(self.form.siteDeviation.value()) + "\n"
-            s += "siteElevation=" + self.form.siteElevation.text() + "\n"
+            presets: dict[str, object] = {
+                "groupNewDocument": int(form.groupNewProject.isChecked()),
+                "projectName": form.projectName.text(),
+                "groupSite": int(form.groupSite.isChecked()),
+                "siteName": form.siteName.text(),
+                "siteAddress": form.siteAddress.text(),
+                "siteLongitude": form.siteLongitude.value(),
+                "siteLatitude": form.siteLatitude.value(),
+                "siteDeviation": form.siteDeviation.value(),
+                "siteElevation": form.siteElevation.text(),
+                "groupBuilding": int(form.groupBuilding.isChecked()),
+                "buildingName": form.buildingName.text(),
+                "buildingUse": form.buildingUse.currentIndex(),
+                "buildingLength": form.buildingLength.text(),
+                "buildingWidth": form.buildingWidth.text(),
+                "countVAxes": form.countVAxes.value(),
+                "distVAxes": form.distVAxes.text(),
+                "countHAxes": form.countHAxes.value(),
+                "distHAxes": form.distHAxes.text(),
+                "countLevels": form.countLevels.value(),
+                "levelHeight": form.levelHeight.text(),
+                "lineWidth": form.lineWidth.value(),
+                "lineColor": form.lineColor.property("color").getRgbF()[:3],
+                "groups": ";;".join(groups),
+                "addHumanFigure": int(form.addHumanFigure.isChecked()),
+            }
 
-            s += "groupBuilding=" + str(int(self.form.groupBuilding.isChecked())) + "\n"
-            s += "buildingName=" + self.form.buildingName.text() + "\n"
-            s += "buildingUse=" + str(self.form.buildingUse.currentIndex()) + "\n"
-            s += "buildingLength=" + self.form.buildingLength.text() + "\n"
-            s += "buildingWidth=" + self.form.buildingWidth.text() + "\n"
-            s += "countVAxes=" + str(self.form.countVAxes.value()) + "\n"
-            s += "distVAxes=" + self.form.distVAxes.text() + "\n"
-            s += "countHAxes=" + str(self.form.countHAxes.value()) + "\n"
-            s += "distHAxes=" + self.form.distHAxes.text() + "\n"
-            s += "countLevels=" + str(self.form.countLevels.value()) + "\n"
-            s += "levelHeight=" + self.form.levelHeight.text() + "\n"
-            s += "lineWidth=" + str(self.form.lineWidth.value()) + "\n"
-            s += (
-                "lineColor="
-                + str(self.form.lineColor.property("color").getRgbF()[:3])
-                + "\n"
-            )
-            s += "groups=" + ";;".join(groups) + "\n"
-            s += (
-                "addHumanFigure="
-                + str(int(self.form.addHumanFigure.isChecked()))
-                + "\n"
-            )
+            preset = f"# FreeCAD BIM Project setup preset { name }\n"
+
+            for key, value in presets.items():
+                preset += f"{ key }={ value }\n"
 
             f = open(os.path.join(presetdir, name + ".txt"), "w")
-            f.write(s)
+            f.write(preset)
             f.close()
             self.fillPresets()
 
@@ -547,12 +564,7 @@ class BIM_ProjectManager:
                         elif s[0] == "lineWidth":
                             self.form.lineWidth.setValue(int(s[1]))
                         elif s[0] == "lineColor":
-                            col = tuple(
-                                [
-                                    float(t)
-                                    for t in s[1].strip("(").strip(")").split(",")
-                                ]
-                            )
+                            col = tuple([float(t) for t in s[1].strip("(").strip(")").split(",")])
                             col = QtGui.QColor.fromRgbF(*col)
                             self.form.lineColor.setProperty("color", col)
                         elif s[0] == "groups":
@@ -579,9 +591,7 @@ class BIM_ProjectManager:
         values["wpv"] = str(wp.v)
         values["wpaxis"] = str(wp.axis)
         values["unit"] = str(
-            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt(
-                "UserSchema", 0
-            )
+            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("UserSchema", 0)
         )
         values["textsize"] = str(
             FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetFloat(
@@ -594,9 +604,7 @@ class BIM_ProjectManager:
             )
         )
         values["dimstyle"] = str(
-            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetInt(
-                "dimsymbol", 0
-            )
+            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetInt("dimsymbol", 0)
         )
         values["arrowsize"] = str(
             FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetFloat(
@@ -604,9 +612,7 @@ class BIM_ProjectManager:
             )
         )
         values["decimals"] = str(
-            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt(
-                "Decimals", 2
-            )
+            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals", 2)
         )
         values["grid"] = str(
             FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetFloat(
@@ -614,9 +620,7 @@ class BIM_ProjectManager:
             )
         )
         values["squares"] = str(
-            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetInt(
-                "gridEvery", 10
-            )
+            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetInt("gridEvery", 10)
         )
         values["linewidth"] = str(
             FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").GetInt(
@@ -639,9 +643,9 @@ class BIM_ProjectManager:
             )
         )
         values["colConst"] = str(
-            FreeCAD.ParamGet(
-                "User parameter:BaseApp/Preferences/Mod/Draft"
-            ).GetUnsigned("constructioncolor", 746455039)
+            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetUnsigned(
+                "constructioncolor", 746455039
+            )
         )
 
         d.Meta = values
@@ -658,9 +662,7 @@ class BIM_ProjectManager:
             if not filename.lower().endswith(".FCStd"):
                 filename += ".FCStd"
             d.saveCopy(filename)
-            FreeCAD.Console.PrintMessage(
-                translate("BIM", "Template saved successfully") + "\n"
-            )
+            FreeCAD.Console.PrintMessage(translate("BIM", "Template saved successfully") + "\n")
             self.reject()
 
     def loadTemplate(self):
@@ -686,9 +688,7 @@ class BIM_ProjectManager:
                 values = td.Meta
                 FreeCAD.closeDocument(tname)
                 d.mergeProject(filename)
-                FreeCADGui.ActiveDocument = FreeCADGui.getDocument(
-                    d.Name
-                )  # fix b/c hidden doc
+                FreeCADGui.ActiveDocument = FreeCADGui.getDocument(d.Name)  # fix b/c hidden doc
             else:
                 d = FreeCAD.openDocument(filename)
                 FreeCAD.ActiveDocument = d
@@ -712,33 +712,31 @@ class BIM_ProjectManager:
                     FreeCAD.Units.setSchema(int(values["unit"]))
                     bimunit = [0, 2, 3, 3, 1, 5, 0, 4][int(values["unit"])]
             if "textsize" in values:
-                FreeCAD.ParamGet(
-                    "User parameter:BaseApp/Preferences/Mod/Draft"
-                ).SetFloat("textheight", float(values["textsize"]))
+                FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").SetFloat(
+                    "textheight", float(values["textsize"])
+                )
                 if hasattr(FreeCADGui, "draftToolBar"):
-                    FreeCADGui.draftToolBar.fontsizeButton.setValue(
-                        float(values["textsize"])
-                    )
+                    FreeCADGui.draftToolBar.fontsizeButton.setValue(float(values["textsize"]))
             if "textfont" in values:
-                FreeCAD.ParamGet(
-                    "User parameter:BaseApp/Preferences/Mod/Draft"
-                ).SetString("textfont", values["textfont"])
+                FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").SetString(
+                    "textfont", values["textfont"]
+                )
             if "dimstyle" in values:
                 FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").SetInt(
                     "dimsymbol", int(values["dimstyle"])
                 )
             if "arrowsize" in values:
-                FreeCAD.ParamGet(
-                    "User parameter:BaseApp/Preferences/Mod/Draft"
-                ).SetFloat("arrowsize", float(values["arrowsize"]))
+                FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").SetFloat(
+                    "arrowsize", float(values["arrowsize"])
+                )
             if "decimals" in values:
                 FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").SetInt(
                     "Decimals", int(values["decimals"])
                 )
             if "grid" in values:
-                FreeCAD.ParamGet(
-                    "User parameter:BaseApp/Preferences/Mod/Draft"
-                ).SetFloat("gridSpacing", float(values["grid"]))
+                FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").SetFloat(
+                    "gridSpacing", float(values["grid"])
+                )
             if "squares" in values:
                 FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").SetInt(
                     "gridEvery", int(values["squares"])
@@ -750,9 +748,7 @@ class BIM_ProjectManager:
                     "DefautShapeLineWidth", int(values["linewidth"])
                 )
                 if hasattr(FreeCADGui, "draftToolBar"):
-                    FreeCADGui.draftToolBar.widthButton.setValue(
-                        int(values["linewidth"])
-                    )
+                    FreeCADGui.draftToolBar.widthButton.setValue(int(values["linewidth"]))
             if "colFace" in values:
                 FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").SetUnsigned(
                     "DefaultShapeColor", int(values["colFace"])
@@ -762,13 +758,13 @@ class BIM_ProjectManager:
                     "DefaultShapeLineColor", int(values["colLine"])
                 )
             if "colHelp" in values:
-                FreeCAD.ParamGet(
-                    "User parameter:BaseApp/Preferences/Mod/Arch"
-                ).SetUnsigned("ColorHelpers", int(values["colHelp"]))
+                FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetUnsigned(
+                    "ColorHelpers", int(values["colHelp"])
+                )
             if "colConst" in values:
-                FreeCAD.ParamGet(
-                    "User parameter:BaseApp/Preferences/Mod/Draft"
-                ).SetUnsigned("constructioncolor", int(values["colConst"]))
+                FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").SetUnsigned(
+                    "constructioncolor", int(values["colConst"])
+                )
 
             # set the status bar widgets
             mw = FreeCADGui.getMainWindow()
@@ -793,8 +789,7 @@ class BIM_ProjectManager:
                         )
 
             FreeCAD.Console.PrintMessage(
-                translate("BIM", "Template successfully loaded into the current document")
-                + "\n"
+                translate("BIM", "Template successfully loaded into the current document") + "\n"
             )
             self.reject()
 

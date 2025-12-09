@@ -103,7 +103,8 @@ void SoArrowGeometry::notify(SoNotList* notList)
 
     if (lastField == &coneHeight || lastField == &cylinderHeight) {
         auto translation = SO_GET_ANY_PART(this, "_arrowTipTranslation", SoTranslation);
-        translation->translation = SbVec3f(0, (cylinderHeight.getValue() + coneHeight.getValue()) / 2.0f, 0);
+        translation->translation
+            = SbVec3f(0, (cylinderHeight.getValue() + coneHeight.getValue()) / 2.0f, 0);
 
         tipPosition = {0, cylinderHeight.getValue() + 1.5f * coneHeight.getValue(), 0};
     }
@@ -178,12 +179,15 @@ void SoArrowBase::notify(SoNotList* notList)
         cylinder->height = cylinderHeight.getValue() * translation.getValue()[1];
 
         auto cylinderTranslation = SO_GET_ANY_PART(this, "_cylinderTranslation", SoTranslation);
-        cylinderTranslation->translation = {0, cylinder->height.getValue() / 2, 0 };
-    } else if (lastField == &cylinderRadius || lastField == &geometryScale) {
+        cylinderTranslation->translation = {0, cylinder->height.getValue() / 2, 0};
+    }
+    else if (lastField == &cylinderRadius || lastField == &geometryScale) {
         auto cylinder = SO_GET_ANY_PART(this, "cylinder", SoCylinder);
-        assert(geometryScale.getValue()[0] == geometryScale.getValue()[1]
+        assert(
+            geometryScale.getValue()[0] == geometryScale.getValue()[1]
             && geometryScale.getValue()[1] == geometryScale.getValue()[2]
-            && "Camera scale should be equal along all three axes");
+            && "Camera scale should be equal along all three axes"
+        );
         cylinder->radius = cylinderRadius.getValue() * geometryScale.getValue()[0];
     }
 }

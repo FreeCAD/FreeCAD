@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -29,7 +31,7 @@
 namespace Part
 {
 
-class ImportBrep :public Part::Feature
+class ImportBrep: public Part::Feature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::ImportBrep);
 
@@ -41,16 +43,17 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
     short mustExecute() const override;
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "PartGui::ViewProviderImport";
     }
     //@}
 };
 
-}
+}  // namespace Part
 
 
-#endif // PART_FEATUREPARTIMPORTBREP_H
+#endif  // PART_FEATUREPARTIMPORTBREP_H

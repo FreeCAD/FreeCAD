@@ -1,7 +1,10 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export
 from App.DocumentObjectExtension import DocumentObjectExtension
 from typing import Any, Final
-
 
 @export(
     Twin="AttachExtension",
@@ -30,7 +33,7 @@ class AttachExtension(DocumentObjectExtension):
         """
         ...
 
-    def changeAttacherType(self, typename: str) -> None:
+    def changeAttacherType(self, typename: str, /) -> None:
         """
         changeAttacherType(typename) -> None
 

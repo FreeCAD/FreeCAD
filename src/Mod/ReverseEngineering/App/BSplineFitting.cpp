@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,28 +22,25 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 #if defined(HAVE_PCL_OPENNURBS)
-#ifndef _PreComp_
-#include <map>
+# include <map>
 
-#include <Geom_BSplineSurface.hxx>
-#include <TColStd_Array1OfInteger.hxx>
-#include <TColStd_Array1OfReal.hxx>
-#include <TColStd_Array2OfReal.hxx>
-#include <TColgp_Array2OfPnt.hxx>
-#endif
+# include <Geom_BSplineSurface.hxx>
+# include <TColStd_Array1OfInteger.hxx>
+# include <TColStd_Array1OfReal.hxx>
+# include <TColStd_Array2OfReal.hxx>
+# include <TColgp_Array2OfPnt.hxx>
 
-#include <Mod/Points/App/PointsPy.h>
+# include <Mod/Points/App/PointsPy.h>
 
-#include "BSplineFitting.h"
+# include "BSplineFitting.h"
 
-#include <pcl/pcl_config.h>
-#include <pcl/io/pcd_io.h>
-#include <pcl/point_cloud.h>
-#include <pcl/point_types.h>
-#include <pcl/surface/on_nurbs/fitting_curve_2d_asdm.h>
-#include <pcl/surface/on_nurbs/fitting_surface_tdm.h>
+# include <pcl/pcl_config.h>
+# include <pcl/io/pcd_io.h>
+# include <pcl/point_cloud.h>
+# include <pcl/point_types.h>
+# include <pcl/surface/on_nurbs/fitting_curve_2d_asdm.h>
+# include <pcl/surface/on_nurbs/fitting_surface_tdm.h>
 
 using namespace Reen;
 
@@ -202,16 +201,18 @@ Handle(Geom_BSplineSurface) BSplineFitting::perform()
         vMultArray.SetValue(index, it->second);
     }
 
-    Handle(Geom_BSplineSurface) spline = new Geom_BSplineSurface(poles,
-                                                                 weights,
-                                                                 uKnotArray,
-                                                                 vKnotArray,
-                                                                 uMultArray,
-                                                                 vMultArray,
-                                                                 uDegree,
-                                                                 vDegree,
-                                                                 uPeriodic,
-                                                                 vPeriodic);
+    Handle(Geom_BSplineSurface) spline = new Geom_BSplineSurface(
+        poles,
+        weights,
+        uKnotArray,
+        vKnotArray,
+        uMultArray,
+        vMultArray,
+        uDegree,
+        vDegree,
+        uPeriodic,
+        vPeriodic
+    );
     return spline;
 }
 #endif  // HAVE_PCL_OPENNURBS

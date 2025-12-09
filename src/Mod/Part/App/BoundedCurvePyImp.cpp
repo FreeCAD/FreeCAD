@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2019 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -20,10 +22,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <sstream>
-#endif
+#include <sstream>
+
 
 #include <Base/GeometryPyCXX.h>
 
@@ -39,11 +39,13 @@ std::string BoundedCurvePy::representation() const
     return "<Curve object>";
 }
 
-PyObject *BoundedCurvePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject* BoundedCurvePy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // never create such objects with the constructor
-    PyErr_SetString(PyExc_RuntimeError,
-                    "You cannot create an instance of the abstract class 'BoundedCurve'.");
+    PyErr_SetString(
+        PyExc_RuntimeError,
+        "You cannot create an instance of the abstract class 'BoundedCurve'."
+    );
     return nullptr;
 }
 
@@ -63,7 +65,7 @@ Py::Object BoundedCurvePy::getEndPoint() const
     return Py::Vector(getGeomBoundedCurvePtr()->getEndPoint());
 }
 
-PyObject *BoundedCurvePy::getCustomAttributes(const char* /*attr*/) const
+PyObject* BoundedCurvePy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }

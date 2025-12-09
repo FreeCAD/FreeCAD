@@ -31,11 +31,13 @@
 
 using namespace Gui;
 
-ToolBarAreaWidget::ToolBarAreaWidget(QWidget* parent,
-                                     ToolBarArea area,
-                                     const ParameterGrp::handle& hParam,
-                                     boost::signals2::scoped_connection& conn,
-                                     QTimer* timer)
+ToolBarAreaWidget::ToolBarAreaWidget(
+    QWidget* parent,
+    ToolBarArea area,
+    const ParameterGrp::handle& hParam,
+    boost::signals2::scoped_connection& conn,
+    QTimer* timer
+)
     : QWidget(parent)
     , _sizingTimer(timer)
     , _hParam(hParam)
@@ -120,18 +122,18 @@ void ToolBarAreaWidget::saveState()
 {
     Base::ConnectionBlocker block(_conn);
 
-    for (auto &v : _hParam->GetIntMap()) {
+    for (auto& v : _hParam->GetIntMap()) {
         _hParam->RemoveInt(v.first.c_str());
     }
 
-    foreachToolBar([this](QToolBar *toolbar, int idx, ToolBarAreaWidget*) {
+    foreachToolBar([this](QToolBar* toolbar, int idx, ToolBarAreaWidget*) {
         _hParam->SetInt(toolbar->objectName().toUtf8().constData(), idx);
     });
 }
 
 void ToolBarAreaWidget::restoreState(const std::map<int, QToolBar*>& toolbars)
 {
-    for (const auto &[index, toolbar] : toolbars) {
+    for (const auto& [index, toolbar] : toolbars) {
         bool visible = toolbar->isVisible();
         getMainWindow()->removeToolBar(toolbar);
         toolbar->setOrientation(Qt::Horizontal);
@@ -139,7 +141,7 @@ void ToolBarAreaWidget::restoreState(const std::map<int, QToolBar*>& toolbars)
         toolbar->setVisible(visible);
     }
 
-    for (const auto &[name, visible] : _hParam->GetBoolMap()) {
+    for (const auto& [name, visible] : _hParam->GetBoolMap()) {
         auto widget = findChild<QWidget*>(QString::fromUtf8(name.c_str()));
 
         if (widget) {

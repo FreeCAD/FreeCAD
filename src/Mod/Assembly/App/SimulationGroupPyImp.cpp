@@ -22,8 +22,6 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-
 // inclusion of the generated files (generated out of SimulationGroup.xml)
 #include "SimulationGroupPy.h"
 #include "SimulationGroupPy.cpp"

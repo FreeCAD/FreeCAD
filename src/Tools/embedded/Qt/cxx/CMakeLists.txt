@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 project(MyPlugin)
 cmake_minimum_required(VERSION 3.5)
 

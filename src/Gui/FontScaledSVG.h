@@ -33,25 +33,27 @@
 
 #include <FCGlobal.h>
 
-namespace Gui {
+namespace Gui
+{
 
-class GuiExport FontScaledSVG : public QWidget {
+class GuiExport FontScaledSVG: public QWidget
+{
     Q_OBJECT
 
 public:
-    explicit FontScaledSVG(QWidget *parent = nullptr);
-    void setSvg(const QString &svgPath);
+    explicit FontScaledSVG(QWidget* parent = nullptr);
+    void setSvg(const QString& svgPath);
 
 protected:
-    void paintEvent(QPaintEvent *event) override;
-    void resizeEvent(QResizeEvent *event) override;
+    void paintEvent(QPaintEvent* event) override;
+    void resizeEvent(QResizeEvent* event) override;
 
 private:
-    QSvgRenderer *m_svgRenderer;
+    QSvgRenderer* m_svgRenderer;
 
     void updateScaledSize();
 };
 
 }  // namespace Gui
 
-#endif // FONTSCALEDSVG_H
+#endif  // FONTSCALEDSVG_H

@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 # *   Copyright (c) 2016 sliptonic <shopinthewoods@gmail.com>               *
@@ -312,9 +313,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
     def areaOpOnDocumentRestored(self, obj):
         self.propertiesReady = False
 
-        self.initAreaOpProperties(obj, warn=True)
-        self.areaOpSetDefaultValues(obj, PathUtils.findParentJob(obj))
-        self.setOpEditorProperties(obj)
         if not hasattr(obj, "NumPasses"):
             obj.addProperty(
                 "App::PropertyInteger",
@@ -325,6 +323,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     "The number of passes to do. Requires a non-zero value for Stepover",
                 ),
             )
+
         if not hasattr(obj, "Stepover"):
             obj.addProperty(
                 "App::PropertyDistance",
@@ -335,6 +334,10 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     "If doing multiple passes, the extra offset of each additional pass",
                 ),
             )
+
+        self.initAreaOpProperties(obj, warn=True)
+        self.areaOpSetDefaultValues(obj, PathUtils.findParentJob(obj))
+        self.setOpEditorProperties(obj)
 
     def areaOpOnChanged(self, obj, prop):
         """areaOpOnChanged(obj, prop) ... updates certain property visibilities depending on changed properties."""

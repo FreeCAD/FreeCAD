@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -77,7 +78,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
     def areaOpSetDefaultValues(self, obj, job):
         """areaOpSetDefaultValues(obj, job) ... set default values"""
-        obj.OffsetPattern = "Offset"
+        obj.ClearingPattern = "Offset"
         obj.StepOver = 50
         obj.ZigZagAngle = 45
         obj.UseOutline = False
@@ -204,27 +205,30 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         """
         face = bs.Shape.getElement(sub)
 
-        if type(face.Surface) == Part.Plane:
-            Path.Log.debug("type() == Part.Plane")
-            if Path.Geom.isVertical(face.Surface.Axis):
-                Path.Log.debug("  -isVertical()")
-                # it's a flat horizontal face
+        if isinstance(face.Surface, Part.BSplineSurface):
+            Path.Log.debug("face Part.BSplineSurface")
+            if Path.Geom.isRoughly(face.BoundBox.ZLength, 0):
+                Path.Log.debug("  flat horizontal or almost flat horizontal")
+                self.horiz.append(face)
+                return True
+
+        elif isinstance(face.Surface, Part.Plane):
+            Path.Log.debug("face Part.Plane")
+            if Path.Geom.isRoughly(abs(face.Surface.Axis.z), 1, 0.001):
+                Path.Log.debug("  flat horizontal or almost flat horizontal")
                 self.horiz.append(face)
                 return True
 
             elif Path.Geom.isHorizontal(face.Surface.Axis):
-                Path.Log.debug("  -isHorizontal()")
+                Path.Log.debug("  flat vertical")
                 self.vert.append(face)
                 return True
 
-            else:
-                return False
-
-        elif type(face.Surface) == Part.Cylinder and Path.Geom.isVertical(face.Surface.Axis):
-            Path.Log.debug("type() == Part.Cylinder")
+        elif isinstance(face.Surface, Part.Cylinder) and Path.Geom.isVertical(face.Surface.Axis):
+            Path.Log.debug("face Part.Cylinder")
             # vertical cylinder wall
             if any(e.isClosed() for e in face.Edges):
-                Path.Log.debug("  -e.isClosed()")
+                Path.Log.debug("  isClosed()")
                 # complete cylinder
                 circle = Part.makeCircle(face.Surface.Radius, face.Surface.Center)
                 disk = Part.Face(Part.Wire(circle))
@@ -233,12 +237,12 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 return True
 
             else:
-                Path.Log.debug("  -none isClosed()")
+                Path.Log.debug("  not isClosed()")
                 # partial cylinder wall
                 self.vert.append(face)
                 return True
 
-        elif type(face.Surface) == Part.SurfaceOfExtrusion:
+        elif isinstance(face.Surface, Part.SurfaceOfExtrusion):
             # extrusion wall
             Path.Log.debug("type() == Part.SurfaceOfExtrusion")
             # Save face to self.horiz for processing or display error
@@ -250,7 +254,8 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
         else:
             Path.Log.debug("  -type(face.Surface): {}".format(type(face.Surface)))
-            return False
+
+        return False
 
 
 # Eclass

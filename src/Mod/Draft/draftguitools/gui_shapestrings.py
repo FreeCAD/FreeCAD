@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>                  *
 # *   (c) 2009, 2010 Ken Cline <cline@frii.com>                             *
@@ -56,9 +58,13 @@ class ShapeString(gui_base.GuiCommandBase):
     def GetResources(self):
         """Set icon, menu and tooltip."""
 
-        return {"Pixmap": "Draft_ShapeString",
-                "MenuText": QT_TRANSLATE_NOOP("Draft_ShapeString", "Shape From Text"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_ShapeString", "Creates a shape from a text string and a specified font")}
+        return {
+            "Pixmap": "Draft_ShapeString",
+            "MenuText": QT_TRANSLATE_NOOP("Draft_ShapeString", "Shape From Text"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Draft_ShapeString", "Creates a shape from a text string and a specified font"
+            ),
+        }
 
     def Activated(self):
         """Execute when the command is called."""
@@ -84,6 +90,6 @@ class ShapeString(gui_base.GuiCommandBase):
         super().finish()
 
 
-Gui.addCommand('Draft_ShapeString', ShapeString())
+Gui.addCommand("Draft_ShapeString", ShapeString())
 
 ## @}

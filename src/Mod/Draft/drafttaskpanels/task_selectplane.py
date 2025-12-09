@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2019 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
@@ -52,5 +54,6 @@ class SelectPlaneTaskPanel:
     def getStandardButtons(self):
         """Execute to set the standard buttons."""
         return QtWidgets.QDialogButtonBox.Close
+
 
 ## @}

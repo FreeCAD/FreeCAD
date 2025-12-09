@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
 
 set(PathSimulator_LIBS
     Path
@@ -18,7 +19,6 @@ SET(PathSimulator_SRCS
     PathSim.h
     VolSim.cpp
     VolSim.h
-    PreCompiled.cpp
     PreCompiled.h
     ${Python_SRCS}
 )

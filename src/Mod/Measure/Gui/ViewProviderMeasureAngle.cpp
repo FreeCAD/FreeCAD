@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 David Friedli <david[at]friedli-be.ch>             *
  *   Copyright (c) 2013 Thomas Anderson <blobfish[at]gmx.com>              *
@@ -20,9 +22,7 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <sstream>
 #include <QApplication>
 #include <Inventor/draggers/SoTranslate2Dragger.h>
@@ -51,7 +51,7 @@
 #include <Inventor/nodes/SoTransform.h>
 #include <Inventor/nodes/SoVertexProperty.h>
 #include <Inventor/nodekits/SoBaseKit.h>
-#endif
+
 
 #include <Precision.hxx>
 #include <Geom_Curve.hxx>
@@ -168,22 +168,24 @@ SbMatrix ViewProviderMeasureAngle::getMatrix()
         gp_Vec yAxis = zAxis.Crossed(xAxis).Normalized();
         zAxis = xAxis.Crossed(yAxis).Normalized();
 
-        dimSys = SbMatrix(xAxis.X(),
-                          yAxis.X(),
-                          zAxis.X(),
-                          origin.X(),
-                          xAxis.Y(),
-                          yAxis.Y(),
-                          zAxis.Y(),
-                          origin.Y(),
-                          xAxis.Z(),
-                          yAxis.Z(),
-                          zAxis.Z(),
-                          origin.Z(),
-                          0.0,
-                          0.0,
-                          0.0,
-                          1.0);
+        dimSys = SbMatrix(
+            xAxis.X(),
+            yAxis.X(),
+            zAxis.X(),
+            origin.X(),
+            xAxis.Y(),
+            yAxis.Y(),
+            zAxis.Y(),
+            origin.Y(),
+            xAxis.Z(),
+            yAxis.Z(),
+            zAxis.Z(),
+            origin.Z(),
+            0.0,
+            0.0,
+            0.0,
+            1.0
+        );
         dimSys = dimSys.transpose();
 
         radius = midPointProjection.Magnitude();
@@ -236,22 +238,24 @@ SbMatrix ViewProviderMeasureAngle::getMatrix()
         gp_Vec zAxis = (xAxis.Crossed(fakeYAxis)).Normalized();
         gp_Vec yAxis = zAxis.Crossed(xAxis).Normalized();
 
-        dimSys = SbMatrix(xAxis.X(),
-                          yAxis.X(),
-                          zAxis.X(),
-                          dimensionOriginPoint.X(),
-                          xAxis.Y(),
-                          yAxis.Y(),
-                          zAxis.Y(),
-                          dimensionOriginPoint.Y(),
-                          xAxis.Z(),
-                          yAxis.Z(),
-                          zAxis.Z(),
-                          dimensionOriginPoint.Z(),
-                          0.0,
-                          0.0,
-                          0.0,
-                          1.0);
+        dimSys = SbMatrix(
+            xAxis.X(),
+            yAxis.X(),
+            zAxis.X(),
+            dimensionOriginPoint.X(),
+            xAxis.Y(),
+            yAxis.Y(),
+            zAxis.Y(),
+            dimensionOriginPoint.Y(),
+            xAxis.Z(),
+            yAxis.Z(),
+            zAxis.Z(),
+            dimensionOriginPoint.Z(),
+            0.0,
+            0.0,
+            0.0,
+            1.0
+        );
 
         dimSys = dimSys.transpose();
     }
@@ -292,7 +296,8 @@ ViewProviderMeasureAngle::ViewProviderMeasureAngle()
     engineAngle->A.connectFrom(&arcEngine->midpoint);
     engineAngle->B.connectFrom(&pLabelTranslation->translation);
     engineAngle->expression.setValue(
-        "tA=normalize(A); tB=normalize(B); oa=atan2(tB[1], tB[0])-atan2(tA[1], tA[0])");
+        "tA=normalize(A); tB=normalize(B); oa=atan2(tB[1], tB[0])-atan2(tA[1], tA[0])"
+    );
 
     Gui::ArcEngine* arcEngineSecondary = new Gui::ArcEngine();
     arcEngineSecondary->radius.connectFrom(&calculatorRadius->oa);
@@ -334,8 +339,7 @@ void ViewProviderMeasureAngle::redrawAnnotation()
         pcTransform->setMatrix(matrix);
     }
     catch (const Base::Exception& e) {
-        Base::Console().error("Error in ViewProviderMeasureAngle::redrawAnnotation: %s\n",
-                              e.what());
+        Base::Console().error("Error in ViewProviderMeasureAngle::redrawAnnotation: %s\n", e.what());
         return;
     }
 

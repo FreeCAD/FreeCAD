@@ -36,9 +36,7 @@ class BIM_MoveView:
         return {
             "Pixmap": "BIM_MoveView",
             "MenuText": QT_TRANSLATE_NOOP("BIM_MoveView", "Move View"),
-            "ToolTip": QT_TRANSLATE_NOOP(
-                "BIM_MoveView", "Moves this view to an existing page"
-            ),
+            "ToolTip": QT_TRANSLATE_NOOP("BIM_MoveView", "Moves this view to an existing page"),
         }
 
     def Activated(self):

@@ -21,18 +21,15 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+#include <QMenu>
 
-#ifndef _PreComp_
-# include <QMenu>
-#endif
 
 #include "TaskRevolutionParameters.h"
 #include "ViewProviderRevolution.h"
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderRevolution,PartDesignGui::ViewProviderSketchBased)
+PROPERTY_SOURCE(PartDesignGui::ViewProviderRevolution, PartDesignGui::ViewProviderSketchBased)
 
 ViewProviderRevolution::ViewProviderRevolution()
 {
@@ -47,7 +44,7 @@ void ViewProviderRevolution::setupContextMenu(QMenu* menu, QObject* receiver, co
     PartDesignGui::ViewProviderSketchBased::setupContextMenu(menu, receiver, member);
 }
 
-TaskDlgFeatureParameters *ViewProviderRevolution::getEditDialog()
+TaskDlgFeatureParameters* ViewProviderRevolution::getEditDialog()
 {
-    return new TaskDlgRevolutionParameters( this );
+    return new TaskDlgRevolutionParameters(this);
 }

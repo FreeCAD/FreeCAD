@@ -27,8 +27,8 @@
 #include <SMESH_Mesh.hxx>
 
 #ifdef FCWithNetgen
-#include <NETGENPlugin_Hypothesis.hxx>
-#include <NETGENPlugin_Mesher.hxx>
+# include <NETGENPlugin_Hypothesis.hxx>
+# include <NETGENPlugin_Mesher.hxx>
 #endif
 
 #include <App/DocumentObjectPy.h>
@@ -44,8 +44,8 @@ using namespace App;
 
 PROPERTY_SOURCE(Fem::FemMeshShapeNetgenObject, Fem::FemMeshShapeBaseObject)
 
-const char* FinenessEnums[] =
-    {"VeryCoarse", "Coarse", "Moderate", "Fine", "VeryFine", "UserDefined", nullptr};
+const char* FinenessEnums[]
+    = {"VeryCoarse", "Coarse", "Moderate", "Fine", "VeryFine", "UserDefined", nullptr};
 
 FemMeshShapeNetgenObject::FemMeshShapeNetgenObject()
 {
@@ -59,19 +59,22 @@ FemMeshShapeNetgenObject::FemMeshShapeNetgenObject()
         (0.3),
         "MeshParams",
         Prop_None,
-        " allows defining how much the linear dimensions of two adjacent cells can differ");
+        " allows defining how much the linear dimensions of two adjacent cells can differ"
+    );
     ADD_PROPERTY_TYPE(
         NbSegsPerEdge,
         (1),
         "MeshParams",
         Prop_None,
-        "allows defining the minimum number of mesh segments in which edges will be split");
+        "allows defining the minimum number of mesh segments in which edges will be split"
+    );
     ADD_PROPERTY_TYPE(
         NbSegsPerRadius,
         (2),
         "MeshParams",
         Prop_None,
-        "allows defining the minimum number of mesh segments in which radii will be split");
+        "allows defining the minimum number of mesh segments in which radii will be split"
+    );
     ADD_PROPERTY_TYPE(Optimize, (true), "MeshParams", Prop_None, "Optimize the resulting mesh");
 }
 
@@ -91,11 +94,11 @@ App::DocumentObjectExecReturn* FemMeshShapeNetgenObject::execute()
     TopoDS_Shape shape = feat->Shape.getValue();
 
     NETGENPlugin_Mesher myNetGenMesher(newMesh.getSMesh(), shape, true);
-#if SMESH_VERSION_MAJOR >= 9
+# if SMESH_VERSION_MAJOR >= 9
     NETGENPlugin_Hypothesis* tet = new NETGENPlugin_Hypothesis(0, newMesh.getGenerator());
-#else
+# else
     NETGENPlugin_Hypothesis* tet = new NETGENPlugin_Hypothesis(0, 0, newMesh.getGenerator());
-#endif
+# endif
     tet->SetMaxSize(MaxSize.getValue());
     tet->SetMinSize(MinSize.getValue());
     tet->SetSecondOrder(SecondOrder.getValue());
@@ -125,6 +128,7 @@ App::DocumentObjectExecReturn* FemMeshShapeNetgenObject::execute()
 #else
     return new App::DocumentObjectExecReturn(
         "The FEM module is built without NETGEN support. Meshing will not work!!!",
-        this);
+        this
+    );
 #endif
 }

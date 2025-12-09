@@ -26,6 +26,8 @@
 #include <App/GeoFeature.h>
 #include <App/PropertyFile.h>
 
+#include <Mod/Robot/RobotGlobal.h>
+
 #include "Robot6Axis.h"
 
 

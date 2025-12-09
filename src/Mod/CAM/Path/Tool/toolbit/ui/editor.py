@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2025 Samuel Abels <knipknap@gmail.com>                  *
 # *                                                                         *
@@ -53,6 +54,16 @@ class ToolBitPropertiesWidget(QtGui.QWidget):
         self._toolbit = None
         self._show_shape = icon
         self._tool_no = tool_no
+
+        # Set schema to user preference if no document is open
+        # TODO: Add a preference for toolbit unit schema.
+        # We probably want to look at making it possible to have a toolbit be metric
+        # or imperial regardless of document settings / or user preferences, but for now this is sufficient.
+        if FreeCAD.ActiveDocument is None:
+            pref_schema = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt(
+                "UserSchema", 0
+            )
+            FreeCAD.Units.setSchema(pref_schema)
 
         # UI Elements
         self._label_edit = QtGui.QLineEdit()

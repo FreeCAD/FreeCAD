@@ -37,15 +37,16 @@ PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
 
 class Arch_Site:
-
     "the Arch Site command definition"
 
     def GetResources(self):
 
-        return {'Pixmap'  : 'Arch_Site',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Site","Site"),
-                'Accel': "S, I",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Site","Creates a site including selected objects")}
+        return {
+            "Pixmap": "Arch_Site",
+            "MenuText": QT_TRANSLATE_NOOP("Arch_Site", "Site"),
+            "Accel": "S, I",
+            "ToolTip": QT_TRANSLATE_NOOP("Arch_Site", "Creates a site including selected objects"),
+        }
 
     def IsActive(self):
 
@@ -54,7 +55,7 @@ class Arch_Site:
 
     def Activated(self):
 
-        FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Site"))
+        FreeCAD.ActiveDocument.openTransaction(translate("Arch", "Create Site"))
         FreeCADGui.addModule("Arch")
         FreeCADGui.addModule("Draft")
         FreeCADGui.doCommand("obj = Arch.makeSite()")
@@ -63,4 +64,4 @@ class Arch_Site:
         FreeCAD.ActiveDocument.recompute()
 
 
-FreeCADGui.addCommand('Arch_Site', Arch_Site())
+FreeCADGui.addCommand("Arch_Site", Arch_Site())
