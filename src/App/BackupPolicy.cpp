@@ -22,6 +22,7 @@
  ***************************************************************************/
 
 #include <boost/algorithm/string/replace.hpp>
+#include <boost/algorithm/string/trim.hpp>
 #include <boost/regex.hpp>
 #include <string>
 
@@ -36,6 +37,10 @@
 #include "BackupPolicy.h"
 
 using namespace App;
+namespace fs = std::filesystem;
+namespace ba = boost::algorithm;
+
+bool directoryIsWritable(const fs::path& dir);
 
 void BackupPolicy::setPolicy(const Policy p)
 {
@@ -65,16 +70,54 @@ void BackupPolicy::apply(const std::string& sourcename, const std::string& targe
     }
 }
 
+namespace {
+Base::FileInfo getBackupDir( Base::FileInfo project_file )
+{
+    Base::FileInfo project_dir(project_file.dirPath());
+    std::string backup_dir_str("FCBak");
+    ba::trim(backup_dir_str);
+
+    if(backup_dir_str.size() == 0 )
+        return project_dir;
+
+    fs::path backup_dir_path(backup_dir_str);
+    fs::path project_dir_path(project_file.dirPath());
+    if(backup_dir_path.is_relative())
+        backup_dir_path = project_dir_path.append(backup_dir_str);
+
+    Base::FileInfo backup_dir(backup_dir_path.string());
+    if( !fs::exists(backup_dir_path) )
+    {
+        bool ok = backup_dir.createDirectories();
+        if(!ok)
+        {
+            Base::Console().warning("Could not create backup directory: %s",
+                                    backup_dir.filePath().c_str());
+            return project_dir;
+        }
+    }
+
+    if( !directoryIsWritable(backup_dir_path) )
+    {
+        Base::Console().warning("Backup directory is not writable: %s",
+                                backup_dir.filePath().c_str());
+        return project_dir;
+    }
+
+    return backup_dir;
+}
+}
+
 void BackupPolicy::applyStandard(const std::string& sourcename, const std::string& targetname) const
 {
-    // if saving the project data succeeded rename to the actual file name
+    // if saving the project data succeeded, rename to the actual file name
     if (Base::FileInfo fi(targetname); fi.exists()) {
+        Base::FileInfo backup_dir = getBackupDir(fi);
         if (numberOfFiles > 0) {
             int nSuff = 0;
             std::string fn = fi.fileName();
-            Base::FileInfo di(fi.dirPath());
             std::vector<Base::FileInfo> backup;
-            std::vector<Base::FileInfo> files = di.getDirectoryContent();
+            std::vector<Base::FileInfo> files = backup_dir.getDirectoryContent();
             for (const Base::FileInfo& it : files) {
                 if (std::string file = it.fileName(); file.substr(0, fn.length()) == fn) {
                     // starts with the same file name
@@ -105,9 +148,11 @@ void BackupPolicy::applyStandard(const std::string& sourcename, const std::strin
             }
             else {
                 // create a new backup file
-                std::stringstream str;
-                str << fi.filePath() << (nSuff + 1);
-                fn = str.str();
+                fs::path backup_path(backup_dir.filePath());
+                backup_path.append(fi.fileName());
+                std::string suffix_number(std::to_string(nSuff+1));
+                backup_path.concat(suffix_number);
+                fn = backup_path.string();
             }
 
             if (!fi.renameFile(fn.c_str())) {
@@ -144,15 +189,15 @@ void BackupPolicy::applyTimeStamp(const std::string& sourcename, const std::stri
 
     bool backupManagementError = false;  // Note error and report at the end
     if (fi.exists()) {
+        Base::FileInfo backup_dir = getBackupDir(fi);
         if (numberOfFiles > 0) {
             // replace . by - in format to avoid . between base name and extension
             boost::replace_all(saveBackupDateFormat, ".", "-");
             {
                 // Remove all extra backups
                 std::string filename = fi.fileName();
-                Base::FileInfo di(fi.dirPath());
                 std::vector<Base::FileInfo> backup;
-                std::vector<Base::FileInfo> files = di.getDirectoryContent();
+                std::vector<Base::FileInfo> files = backup_dir.getDirectoryContent();
                 for (const Base::FileInfo& it : files) {
                     if (it.isFile()) {
                         std::string file = it.fileName();
@@ -233,8 +278,11 @@ void BackupPolicy::applyTimeStamp(const std::string& sourcename, const std::stri
                         std::strftime(buffer.data(), bufferLength, knownGoodFormat, &local_tm);
                     }
                     str << bn << buffer.data();
+                    fs::path backup_path(backup_dir.filePath());
+                    fs::path project_path(str.str());
+                    backup_path.append(project_path.filename().string());
 
-                    fn = str.str();
+                    fn = backup_path.string();
                     bool done = false;
 
                     if ((fn.empty()) || (fn[fn.length() - 1] == ' ')
@@ -264,10 +312,13 @@ void BackupPolicy::applyTimeStamp(const std::string& sourcename, const std::stri
                 else {
                     // changed but simpler and solves also the delay sometimes introduced by
                     // google drive
+                    fs::path backup_path(backup_dir.filePath());
+                    fs::path project_path(fi.filePath());
+                    backup_path.append(project_path.filename().string());
                     while (ext2 < numberOfFiles + 10) {
                         // linux just replace the file if exists, and then the existence is to
                         // be tested before rename
-                        if (renameFileNoErase(fi, fi.filePath() + std::to_string(ext2))) {
+                        if (renameFileNoErase(fi, backup_path.string() + std::to_string(ext2))) {
                             break;
                         }
                         ext2++;
