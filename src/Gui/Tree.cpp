@@ -813,6 +813,9 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
     connect(this->selectTimer, &QTimer::timeout, this, &TreeWidget::onSelectTimer);
     preselectTime.start();
 
+    visibilityIconDoubleClickTimer.setSingleShot(true);
+    visibilityIconDoubleClickTimer.setInterval(QApplication::doubleClickInterval());
+
     setupText();
     if (!documentPixmap) {
         documentPixmap = std::make_unique<QPixmap>(Gui::BitmapFactory().pixmap("Document"));
@@ -1981,6 +1984,7 @@ void TreeWidget::mousePressEvent(QMouseEvent* event)
                     visible = obj->Visibility.getValue();
                     obj->Visibility.setValue(!visible);
                 }
+                visibilityIconDoubleClickTimer.start();
 
                 // to prevent selection of the item via QTreeWidget::mousePressEvent
                 event->accept();
@@ -1996,6 +2000,11 @@ void TreeWidget::mouseDoubleClickEvent(QMouseEvent* event)
 {
     QTreeWidgetItem* item = itemAt(event->pos());
     if (!item) {
+        return;
+    }
+
+    if (visibilityIconDoubleClickTimer.isActive()) {
+        TreeWidget::mousePressEvent(event);
         return;
     }
 

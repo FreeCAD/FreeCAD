@@ -25,6 +25,7 @@
 #define GUI_TREE_H
 
 #include <unordered_map>
+#include <QTimer>
 #include <QElapsedTimer>
 #include <QStyledItemDelegate>
 #include <QTreeWidget>
@@ -276,6 +277,10 @@ private:
     QTimer* selectTimer;
     QTimer* preselectTimer;
     QElapsedTimer preselectTime;
+
+    // this timer is used to prevent double click event on visibility icon
+    QTimer visibilityIconDoubleClickTimer;
+
     static std::unique_ptr<QPixmap> documentPixmap;
     static std::unique_ptr<QPixmap> documentPartialPixmap;
     std::unordered_map<const Gui::Document*, DocumentItem*> DocumentMap;
