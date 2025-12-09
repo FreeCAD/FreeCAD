@@ -25,7 +25,10 @@ import pathlib
 import tempfile
 import FreeCAD
 import Path
+import json
 from PySide import QtGui, QtCore
+from ....Machine.ui.editor import MachineEditorDialog
+from ....Machine.models.machine import MachineFactory
 
 translate = FreeCAD.Qt.translate
 
@@ -81,17 +84,47 @@ class AssetPreferencesPage:
         edit_button_layout.addWidget(self.select_path_button, 0, 2, QtCore.Qt.AlignVCenter)
         edit_button_layout.addWidget(self.reset_path_button, 0, 3, QtCore.Qt.AlignVCenter)
         edit_button_layout.addWidget(self.asset_path_note_label, 1, 1, 1, 1, QtCore.Qt.AlignTop)
-        edit_button_layout.addItem(
-            QtGui.QSpacerItem(0, 0, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding),
-            2,
-            0,
-            1,
-            4,
-        )
+        edit_button_layout.setRowStretch(3, 1)
 
         main_layout.addLayout(edit_button_layout, QtCore.Qt.AlignTop)
 
         self.form.addItem(asset_path_widget, translate("CAM_PreferencesAssets", "Assets"))
+
+        # Integrate machines list into the Assets panel
+        machines_list_layout = QtGui.QVBoxLayout()
+        machines_label = QtGui.QLabel(translate("CAM_PreferencesAssets", "Machines"))
+        machines_list_layout.addWidget(machines_label)
+
+        self.machines_list = QtGui.QListWidget()
+        machines_list_layout.addWidget(self.machines_list)
+
+        # Buttons: Add / Edit / Delete
+        btn_layout = QtGui.QHBoxLayout()
+        self.add_machine_btn = QtGui.QPushButton(translate("CAM_PreferencesAssets", "Add"))
+        self.edit_machine_btn = QtGui.QPushButton(translate("CAM_PreferencesAssets", "Edit"))
+        self.delete_machine_btn = QtGui.QPushButton(translate("CAM_PreferencesAssets", "Delete"))
+        btn_layout.addWidget(self.add_machine_btn)
+        btn_layout.addWidget(self.edit_machine_btn)
+        btn_layout.addWidget(self.delete_machine_btn)
+        machines_list_layout.addLayout(btn_layout)
+
+        # Insert the machines list directly under the path controls
+        edit_button_layout.addLayout(machines_list_layout, 2, 0, 1, 4)
+
+        # Wire up buttons
+        self.add_machine_btn.clicked.connect(self.add_machine)
+        self.edit_machine_btn.clicked.connect(self.edit_machine)
+        self.delete_machine_btn.clicked.connect(self.delete_machine)
+
+        # Connect double-click to edit
+        self.machines_list.itemDoubleClicked.connect(self.edit_machine)
+
+        for name, filename in MachineFactory.list_configuration_files():
+            if name == "<any>" or filename is None:
+                continue
+            item = QtGui.QListWidgetItem(name)
+            item.setData(QtCore.Qt.UserRole, filename)
+            self.machines_list.addItem(item)
 
     def selectAssetPath(self):
         # Implement directory selection dialog
@@ -131,3 +164,61 @@ class AssetPreferencesPage:
         if not asset_path:
             asset_path = str(Path.Preferences.getDefaultAssetPath())
         self.asset_path_edit.setText(asset_path)
+
+    def add_machine(self):
+        # Create a new machine JSON file in the user's machine asset folder
+        try:
+            # Open editor for new machine, filename will be generated on save
+            editor = MachineEditorDialog()
+            if editor.exec_() == QtGui.QDialog.Accepted:
+                # add to list
+                filename = editor.filename
+                display_name = MachineFactory.get_machine_display_name(filename)
+                item = QtGui.QListWidgetItem(display_name)
+                item.setData(QtCore.Qt.UserRole, filename)  # Store filename only
+                self.machines_list.addItem(item)
+        except Exception as e:
+            Path.Log.error(f"Failed to create machine file: {e}")
+
+    def edit_machine(self):
+        try:
+            item = self.machines_list.currentItem()
+            if not item:
+                return
+            filename = item.data(QtCore.Qt.UserRole)
+            if not filename:
+                return
+            dlg = MachineEditorDialog(filename)
+            if dlg.exec_() == QtGui.QDialog.Accepted:
+                # Reload display name from file after save
+                display = MachineFactory.get_machine_display_name(filename)
+                if display:
+                    item.setText(display)
+        except Exception as e:
+            Path.Log.error(f"Failed to open machine editor: {e}")
+
+    def delete_machine(self):
+        try:
+            item = self.machines_list.currentItem()
+            if not item:
+                return
+            filename = item.data(QtCore.Qt.UserRole)
+            if not filename:
+                return
+            # Confirm delete
+            resp = QtGui.QMessageBox.question(
+                self.form,
+                translate("CAM_PreferencesAssets", "Delete Machine"),
+                translate(
+                    "CAM_PreferencesAssets", "Are you sure you want to delete this machine file?"
+                ),
+                QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
+            )
+            if resp != QtGui.QMessageBox.Yes:
+                return
+            if MachineFactory.delete_configuration(filename):
+                self.machines_list.takeItem(self.machines_list.currentRow())
+            else:
+                Path.Log.error("Failed to delete machine file.")
+        except Exception as e:
+            Path.Log.error(f"Failed to delete machine: {e}")
