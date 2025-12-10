@@ -596,7 +596,7 @@ int SketchObject::solve(bool updateGeoAfterSolving /*=true*/)
     }
 
     if (lastHasPartialRedundancies) {
-        QString uniqueName = QString::fromLatin1(this->getNameInDocument());   
+        QString uniqueName = QString::fromLatin1(this->getNameInDocument());
         QString userLabel = QString::fromUtf8(Label.getValue());
 
         QString ref;
