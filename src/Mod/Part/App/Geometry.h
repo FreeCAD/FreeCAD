@@ -531,6 +531,12 @@ public:
     {
         GeomRestrictedCurve(basis, basis.getFirstParameter(), basis.getLastParameter());
     }
+    void setBasis(const GeomCurve* newBasis)
+    {
+        setBasis(Handle(Geom_Curve)::DownCast(newBasis->handle()));
+    }
+    void setBasis(const Handle(Geom_Curve) & newBasis);
+
     explicit GeomRestrictedCurve(const Handle(Geom_TrimmedCurve) &);
     ~GeomRestrictedCurve() override;
     Geometry* copy() const override;
