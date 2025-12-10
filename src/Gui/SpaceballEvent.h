@@ -56,7 +56,7 @@ protected:
     explicit EventBase(QEvent::Type event);
 
 private:
-    bool handled{false};
+    bool handled {false};
 };
 
 /**
@@ -84,9 +84,18 @@ public:
         zTrans = zTransIn;
     }
 
-    [[nodiscard]] int translationX() const { return xTrans; }
-    [[nodiscard]] int translationY() const { return yTrans; }
-    [[nodiscard]] int translationZ() const { return zTrans; }
+    [[nodiscard]] int translationX() const
+    {
+        return xTrans;
+    }
+    [[nodiscard]] int translationY() const
+    {
+        return yTrans;
+    }
+    [[nodiscard]] int translationZ() const
+    {
+        return zTrans;
+    }
 
     [[nodiscard]] std::tuple<int, int, int> rotations() const
     {
@@ -98,9 +107,18 @@ public:
         yRot = yRotIn;
         zRot = zRotIn;
     }
-    [[nodiscard]] int rotationX() const { return xRot; }
-    [[nodiscard]] int rotationY() const { return yRot; }
-    [[nodiscard]] int rotationZ() const { return zRot; }
+    [[nodiscard]] int rotationX() const
+    {
+        return xRot;
+    }
+    [[nodiscard]] int rotationY() const
+    {
+        return yRot;
+    }
+    [[nodiscard]] int rotationZ() const
+    {
+        return zRot;
+    }
 
     static int MotionEventType;
 
@@ -147,8 +165,8 @@ public:
     static int ButtonEventType;
 
 private:
-    ButtonState buttonState{ButtonState::None};
-    int button{0};
+    ButtonState buttonState {ButtonState::None};
+    int button {0};
 };
 
 }  // namespace Spaceball

@@ -51,7 +51,8 @@
 #endif   // Spacemice
 
 #if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
-namespace {
+namespace
+{
 
 // Strings found in `src/Gui/3Dconnexion/3DConnexion.xml`.
 constexpr auto ctrlString = "CTRL";
@@ -59,49 +60,51 @@ constexpr auto altString = "ALT";
 constexpr auto shiftString = "SHIFT";
 constexpr auto escString = "ESC";
 
-enum class SpecialKey {
-  None = 0,
-  Ctrl,
-  Alt,
-  Shift,
-  Esc
+enum class SpecialKey
+{
+    None = 0,
+    Ctrl,
+    Alt,
+    Shift,
+    Esc
 };
 
 // @brief Pressed or released special key on Spaceball
 //
 // @Return {"Ctrl", "Alt", "Shift", "Esc"} or None if not a special
 // or if mapped to a command (what makes is unspecial).
-SpecialKey getSpecialKey(int buttonNumber) {
-  const ParameterGrp::handle group = App::GetApplication()
-      .GetUserParameter()
-      .GetGroup("BaseApp")
-      ->GetGroup("Spaceball")
-      ->GetGroup("Buttons");
-  QByteArray groupName(QVariant(buttonNumber).toByteArray());
-  if (group->HasGroup(groupName.data())) {
-      ParameterGrp::handle commandGroup = group->GetGroup(groupName.data());
-      const std::string commandName(commandGroup->GetASCII("Command"));
-      if (!commandName.empty()) {
-          return SpecialKey::None;
-      }
-      const std::string buttonName(commandGroup->GetASCII("Description"));
-      if (buttonName == escString) {
-          return SpecialKey::Esc;
-      }
-      if (buttonName == altString) {
-          return SpecialKey::Alt;
-      }
-      if (buttonName == shiftString) {
-          return SpecialKey::Shift;
-      }
-      if (buttonName == ctrlString) {
-          return SpecialKey::Ctrl;
-      }
-  }
-  return SpecialKey::None;
+SpecialKey getSpecialKey(int buttonNumber)
+{
+    const ParameterGrp::handle group = App::GetApplication()
+                                           .GetUserParameter()
+                                           .GetGroup("BaseApp")
+                                           ->GetGroup("Spaceball")
+                                           ->GetGroup("Buttons");
+    QByteArray groupName(QVariant(buttonNumber).toByteArray());
+    if (group->HasGroup(groupName.data())) {
+        ParameterGrp::handle commandGroup = group->GetGroup(groupName.data());
+        const std::string commandName(commandGroup->GetASCII("Command"));
+        if (!commandName.empty()) {
+            return SpecialKey::None;
+        }
+        const std::string buttonName(commandGroup->GetASCII("Description"));
+        if (buttonName == escString) {
+            return SpecialKey::Esc;
+        }
+        if (buttonName == altString) {
+            return SpecialKey::Alt;
+        }
+        if (buttonName == shiftString) {
+            return SpecialKey::Shift;
+        }
+        if (buttonName == ctrlString) {
+            return SpecialKey::Ctrl;
+        }
+    }
+    return SpecialKey::None;
 }
 
-} // Anonymous namespace
+}  // Anonymous namespace
 #endif
 
 Gui::GUIApplicationNativeEventAware::GUIApplicationNativeEventAware(int& argc, char* argv[])
@@ -162,27 +165,31 @@ bool Gui::GUIApplicationNativeEventAware::processSpaceballEvent(QObject* object,
             const auto specialKey = getSpecialKey(buttonEvent->buttonNumber());
             if (specialKey == SpecialKey::Esc) {
                 /* If button number is 10, create and send a keyboard event, Esc key. */
-                auto keyEvent = QKeyEvent{
-                    buttonEvent->buttonStatus() == Spaceball::ButtonState::Pressed ? QEvent::KeyPress : QEvent::KeyRelease,
+                auto keyEvent = QKeyEvent {
+                    buttonEvent->buttonStatus() == Spaceball::ButtonState::Pressed
+                        ? QEvent::KeyPress
+                        : QEvent::KeyRelease,
                     Qt::Key_Escape,
                     Qt::KeyboardModifier::NoModifier
                 };
-                QWidget *focusWidget = QApplication::focusWidget();
+                QWidget* focusWidget = QApplication::focusWidget();
                 if (focusWidget) {
                     QApplication::postEvent(focusWidget, new QKeyEvent(keyEvent));
                 }
             }
             else if (specialKey == SpecialKey::Alt) {
-                spaceballAltIsPressed = (buttonEvent->buttonStatus() == Spaceball::ButtonState::Pressed);
+                spaceballAltIsPressed
+                    = (buttonEvent->buttonStatus() == Spaceball::ButtonState::Pressed);
             }
             else if (specialKey == SpecialKey::Shift) {
-                spacebackShiftIsPressed = (buttonEvent->buttonStatus() == Spaceball::ButtonState::Pressed);
+                spacebackShiftIsPressed
+                    = (buttonEvent->buttonStatus() == Spaceball::ButtonState::Pressed);
             }
             else if (specialKey == SpecialKey::Ctrl) {
-                spaceballCtrlIsPressed = (buttonEvent->buttonStatus() == Spaceball::ButtonState::Pressed);
+                spaceballCtrlIsPressed
+                    = (buttonEvent->buttonStatus() == Spaceball::ButtonState::Pressed);
             }
-            else
-            {
+            else {
                 // Other buttons.
                 // make a new event and post to parent.
                 auto newEvent = new Spaceball::ButtonEvent(*buttonEvent);
@@ -271,7 +278,7 @@ void Gui::GUIApplicationNativeEventAware::importSettings(std::vector<int>& motio
     float generalSensitivity = convertPrefToSensitivity(group->GetInt("GlobalSensitivity"));
 
     // array that has stored info about "Enabled" checkboxes of all axes
-    std::array<bool, 6> enabled{};
+    std::array<bool, 6> enabled {};
     enabled[0] = group->GetBool("Translations", true) && group->GetBool("PanLREnable", true);
     enabled[1] = group->GetBool("Translations", true) && group->GetBool("PanUDEnable", true);
     enabled[2] = group->GetBool("Translations", true) && group->GetBool("ZoomEnable", true);
@@ -280,7 +287,7 @@ void Gui::GUIApplicationNativeEventAware::importSettings(std::vector<int>& motio
     enabled[5] = group->GetBool("Rotations", true) && group->GetBool("SpinEnable", true);
 
     // array that has stored info about "Reversed" checkboxes of all axes
-    std::array<bool, 6> reversed{};
+    std::array<bool, 6> reversed {};
     reversed[0] = group->GetBool("PanLRReverse");
     reversed[1] = group->GetBool("PanUDReverse");
     reversed[2] = group->GetBool("ZoomReverse");
@@ -291,7 +298,7 @@ void Gui::GUIApplicationNativeEventAware::importSettings(std::vector<int>& motio
     // array that has stored info about sliders - on each slider you need to use method
     // DlgSpaceballSettings::GetValuefromSlider which will convert <-50, 50> linear integers from
     // slider to <0.1, 10> exponential floating values
-    std::array<float, 6> sensitivity{};
+    std::array<float, 6> sensitivity {};
     sensitivity[0] = convertPrefToSensitivity(group->GetInt("PanLRSensitivity"));
     sensitivity[1] = convertPrefToSensitivity(group->GetInt("PanUDSensitivity"));
     sensitivity[2] = convertPrefToSensitivity(group->GetInt("ZoomSensitivity"));

@@ -58,7 +58,10 @@ void ButtonView::selectButton(int number)
     this->scrollTo(this->model()->index(number, 0), QAbstractItemView::EnsureVisible);
 }
 
-void ButtonView::goSelectionChanged(const QItemSelection& selected, [[maybe_unused]] const QItemSelection& deselected)
+void ButtonView::goSelectionChanged(
+    const QItemSelection& selected,
+    [[maybe_unused]] const QItemSelection& deselected
+)
 {
     if (selected.indexes().isEmpty()) {
         return;
@@ -343,8 +346,7 @@ void CommandView::goClicked(const QModelIndex& index)
 
 CommandNode::CommandNode(NodeType typeIn)
     : nodeType(typeIn)
-{
-}
+{}
 
 CommandNode::~CommandNode()
 {

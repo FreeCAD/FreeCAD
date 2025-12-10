@@ -87,9 +87,8 @@ bool GUIApplication::notify(QObject* receiver, QEvent* event)
 
     // https://github.com/FreeCAD/FreeCAD/issues/16905
 #if FC_DEBUG
-    const std::string exceptionWarning =
-        "Exceptions must be caught before they go through Qt."
-        " Ignoring this will cause crashes on some systems.\n";
+    const std::string exceptionWarning = "Exceptions must be caught before they go through Qt."
+                                         " Ignoring this will cause crashes on some systems.\n";
 #else
     const std::string exceptionWarning;
 #endif
@@ -101,10 +100,9 @@ bool GUIApplication::notify(QObject* receiver, QEvent* event)
         }
         // If the event is a pointer device event, modify according to `isSpaceballCtrlPressed`.
         if (isSpaceballCtrlPressed()) {
-            if (event->type() == QEvent::MouseMove
-                    || event->type() == QEvent::Wheel
-                    || event->type() == QEvent::MouseButtonPress
-                    || event->type() == QEvent::MouseButtonRelease) {
+            if (event->type() == QEvent::MouseMove || event->type() == QEvent::Wheel
+                || event->type() == QEvent::MouseButtonPress
+                || event->type() == QEvent::MouseButtonRelease) {
                 auto inputEvent = static_cast<QInputEvent*>(event);
                 Qt::KeyboardModifiers mods = inputEvent->modifiers();
                 mods |= Qt::ControlModifier;
