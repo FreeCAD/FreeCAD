@@ -50,6 +50,7 @@
 #include <Mod/Part/App/HyperbolaPy.h>
 #include <Mod/Part/App/LineSegmentPy.h>
 #include <Mod/Part/App/OffsetCurvePy.h>
+#include <Mod/Part/App/RestrictedCurvePy.h>
 #include <Mod/Part/App/ParabolaPy.h>
 
 #include "Constraint.h"
@@ -669,6 +670,8 @@ const char* nameByType(Sketch::GeoType type)
             return "bspline";
         case Sketch::OffsetCurve:
             return "offsetcurve";
+        case Sketch::RestrictedCurve:
+            return "restrictedcurve";
         case Sketch::None:
         default:
             return "unknown";
@@ -2043,6 +2046,11 @@ Py::Tuple Sketch::getPyGeometry() const
                 tuple[i] = Py::asObject(new OffsetCurvePy(offc));
                 break;
             }
+            case RestrictedCurve: {
+                auto* offc = static_cast<GeomRestrictedCurve*>(it->geo->clone());
+                tuple[i] = Py::asObject(new RestrictedCurvePy(offc));
+                break;
+            }
             default:
                 // not implemented type in the sketch!
                 break;
@@ -2084,6 +2092,8 @@ GCS::Curve* Sketch::getGCSCurveByGeoId(int geoId)
             return &BSplines[Geoms[geoId].index];
         case OffsetCurve:
             return &OffsetCurves[Geoms[geoId].index];
+        case RestrictedCurve:
+            return &RestrictedCurves[Geoms[geoId].index];
         default:
             return nullptr;
     };
@@ -2652,6 +2662,30 @@ int Sketch::addConstraint(const Constraint* constraint)
             }
 
             rtn = addOffsetConstraint(constraint->First, constraint->Second, c.value, c.driving);
+        } break;
+        case Restriction: {
+            c.value = new double(constraint->getValue());
+            c.secondvalue = new double(constraint->getValue());
+
+            // TODO: Ensure that this is NOT driving
+            // Driving doesn't make sense here, like point-on-object
+            if (c.driving) {
+                FixParameters.push_back(c.value);
+            }
+            else {
+                Parameters.push_back(c.value);
+                DrivenParameters.push_back(c.value);
+                Parameters.push_back(c.secondvalue);
+                DrivenParameters.push_back(c.secondvalue);
+            }
+
+            rtn = addRestrictionConstraint(
+                constraint->First,
+                constraint->Second,
+                c.value,
+                c.secondvalue,
+                c.driving
+            );
         } break;
         case Sketcher::None:   // ambiguous enum value
         case Sketcher::Block:  // handled separately while adding geometry
@@ -3758,6 +3792,53 @@ int Sketch::addOffsetConstraint(int geoIdBasis, int geoIdOffCurve, double* value
     return ConstraintsCounter;
 }
 
+int Sketch::addRestrictionConstraint(
+    int geoIdBasis,
+    int geoIdResCurve,
+    double* value,
+    double* secondValue,
+    bool driving
+)
+{
+    geoIdBasis = checkGeoId(geoIdBasis);
+    geoIdResCurve = checkGeoId(geoIdResCurve);
+
+    if (Geoms[geoIdResCurve].type != RestrictedCurve) {
+        throw Base::TypeError(
+            "Sketch::addRestrictionConstraint(): second curve must be of type restricted curve"
+        );
+    }
+
+    Geoms[geoIdResCurve].basisId = geoIdBasis;
+
+    GCS::Curve* cBasis = getGCSCurveByGeoId(geoIdBasis);
+    GCS::RestrictedCurve* cRestricted = &RestrictedCurves[Geoms[geoIdResCurve].index];
+    if (!cBasis) {
+        throw Base::ValueError(
+            "addRestrictionConstraint: getGCSCurveByGeoId returned NULL for basis!\n"
+        );
+    }
+    if (!cRestricted) {
+        throw Base::ValueError(
+            "addRestrictionConstraint: getGCSCurveByGeoId returned NULL for restricted curve!\n"
+        );
+    }
+
+    // TODO: Check somewhere that an additional offset constraint does not exist on the same curve
+    if (cRestricted->basis != nullptr && cRestricted->basis != cBasis) {
+        throw Base::ValueError(
+            "addRestrictionConstraint: this offset curve already has a different basis"
+        );
+    }
+
+    cRestricted->basis = cBasis;
+
+    int tag = ++ConstraintsCounter;
+    // TODO: we can put two (probably unneeded) point-on-object constraints, will it do any good?
+    // GCSsys.addConstraintRestriction(*cRes, value, tag, driving);
+    return ConstraintsCounter;
+}
+
 int Sketch::addRadiusConstraint(int geoId, double* value, bool driving)
 {
     geoId = checkGeoId(geoId);
@@ -4754,6 +4835,9 @@ void Sketch::updateGeometry(const GeoDef& it)
     else if (it.type == OffsetCurve) {
         updateOffsetCurve(it);
     }
+    else if (it.type == RestrictedCurve) {
+        updateRestrictedCurve(it);
+    }
 }
 
 void Sketch::updatePoint(const GeoDef& def)
@@ -4937,6 +5021,17 @@ void Sketch::updateOffsetCurve(const GeoDef& def)
     // FIXME: It is assumed that basis curve is already updated.
     auto* basis = static_cast<GeomCurve*>(Geoms[def.basisId].geo);
     offc->setBasis(basis);
+}
+
+void Sketch::updateRestrictedCurve(const GeoDef& def)
+{
+    auto* restrc = static_cast<GeomRestrictedCurve*>(def.geo);
+
+    // Find basis and update
+    // TODO: Basis can be stored in Geoms
+    // FIXME: It is assumed that basis curve is already updated.
+    auto* basis = static_cast<GeomCurve*>(Geoms[def.basisId].geo);
+    restrc->setBasis(basis);
 }
 
 bool Sketch::updateNonDrivingConstraints()
