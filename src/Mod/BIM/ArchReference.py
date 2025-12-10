@@ -511,6 +511,7 @@ class ArchReference:
 
         if writemode2:
             # Old DiffuseColor support:
+            alpha_to_transparency = False
             for i in range(1, int(len(buf) / 4)):
                 # ShapeAppearance material with default v0.21 properties:
                 material = FreeCAD.Material()
@@ -518,6 +519,13 @@ class ArchReference:
                 material.DiffuseColor = color[:3] + (255,)
                 material.Transparency = color[3] / 255.0
                 colors.append(material)
+                if material.Transparency == 1.0:
+                    # Assumption: a face with 100% transparency indicates
+                    # we are actually dealing with alpha values.
+                    alpha_to_transparency = True
+            if alpha_to_transparency:
+                for material in colors:
+                    material.Transparency = 1.0 - material.Transparency
 
         if writemode3:
             # File format ShapeAppearance files in FCStd file:
