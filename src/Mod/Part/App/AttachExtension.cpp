@@ -607,6 +607,29 @@ void AttachExtension::handleLegacyTangentPlaneOrientation()
         }
 
         // convert placement and expressions according to the dominant axis
+        auto makeRotatedExpression = [owner](const App::Expression* expr, double angle)
+                                   -> App::Expression* {
+            if (!expr)
+                return nullptr;
+
+            std::string s = "(" + expr->toString() + ")";
+            if (angle >= 0) {
+                s += " + " + std::to_string(angle);
+            } else {
+                s += " - " + std::to_string(-angle);
+            }
+
+            if (const App::Expression* simple = expr->eval()) {
+                if (auto ue = dynamic_cast<const App::UnitExpression*>(simple)) {
+                    const auto& q = ue->getQuantity();
+                    if (q.getUnit() == Base::Unit::Angle) {
+                        s += " deg";
+                    }
+                }
+            }
+
+            return App::ExpressionParser::parse(owner, s.c_str());
+        };
         App::Expression* newExprX = nullptr;
         App::Expression* newExprY = nullptr;
         App::Expression* newExprYaw = nullptr;
@@ -625,8 +648,10 @@ void AttachExtension::handleLegacyTangentPlaneOrientation()
                 newExprX = App::ExpressionParser::parse(owner, expr.c_str());
             }
             if (exprYaw) {
-                std::string expr = "(" + exprYaw->toString() + ") + 90 deg";
-                newExprYaw = App::ExpressionParser::parse(owner, expr.c_str());
+                if (yaw > 90)
+                    newExprYaw = makeRotatedExpression(exprYaw, -270);
+                else
+                    newExprYaw = makeRotatedExpression(exprYaw, 90);
             }
         }
         else if (axis == 1) {  // normal mostly Y
@@ -644,8 +669,10 @@ void AttachExtension::handleLegacyTangentPlaneOrientation()
                 newExprX = App::ExpressionParser::parse(owner, exprY->toString().c_str());
             }
             if (exprYaw) {
-                std::string expr = "(" + exprYaw->toString() + ") - 90 deg";
-                newExprYaw = App::ExpressionParser::parse(owner, expr.c_str());
+                if (yaw < -90)
+                    newExprYaw = makeRotatedExpression(exprYaw, 270);
+                else
+                    newExprYaw = makeRotatedExpression(exprYaw, -90);
             }
         }
         else {
