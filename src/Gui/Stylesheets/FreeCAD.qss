@@ -1259,7 +1259,7 @@ QToolBar QToolButton {
   background-color: transparent;
   padding: @ToolbarButtonsPadding;
   outline: none;
-  border-style: none;
+  border: 1px solid transparent;
   border-radius: @InputFieldBorderRadius;
 }
 
