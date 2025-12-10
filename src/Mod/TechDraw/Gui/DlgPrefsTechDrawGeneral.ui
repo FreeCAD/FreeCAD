@@ -873,6 +873,11 @@ for ProjectionGroups</string>
           <string>Off</string>
          </property>
         </item>
+        <item>
+         <property name="text">
+          <string>Manual</string>
+         </property>
+        </item>
        </widget>
       </item>
       <item row="0" column="0">

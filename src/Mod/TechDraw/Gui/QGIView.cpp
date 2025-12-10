@@ -165,7 +165,6 @@ void QGIView::alignTo(QGraphicsItem*item, const QString &alignment)
 
 QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
 {
-    //    Base::Console().message("QGIV::itemChange(%d)\n", change);
     if(change == ItemPositionChange && scene()) {
         QPointF newPos = value.toPointF();            //position within parent!
         TechDraw::DrawView* viewObj = getViewObject();
@@ -1063,34 +1062,7 @@ void QGIView::makeMark(QPointF pos, QColor color)
 
 void QGIView::updateFrameVisibility()
 {
-    // Get the preference group
-    auto hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/View");
-
-    // 0 = Auto (Default), 1 = Always On, 2 = Always Off
-    int frameMode = hGrp->GetInt("ViewFrameMode", 0);
-
-    bool shouldShow = false;
-
-    if (isSelected()) {
-        shouldShow = true;
-    }
-    else {
-        if (frameMode == 1) {
-            // Always On
-            shouldShow = true;
-        }
-        else if (frameMode == 2) {
-            // Always Off
-            shouldShow = false;
-        }
-        else {
-            // Auto (Default)
-            shouldShow = m_isHovered;
-        }
-    }
-
-    if (shouldShow) {
+    if (shouldShowFrame()) {
         m_border->show();
         m_label->show();
         if (m_lock && getViewObject()) {
@@ -1099,8 +1071,45 @@ void QGIView::updateFrameVisibility()
     } else {
         m_border->hide();
         m_label->hide();
-        if (m_lock) m_lock->hide();
+        if (m_lock) {
+             m_lock->hide();
+        }
     }
+}
+
+bool QGIView::shouldShowFrame() const
+{
+    if (isSelected()) {
+        return true;
+    }
+
+    ViewFrameMode frameMode = PreferencesGui::getViewFrameMode();
+    switch(frameMode) {
+        case ViewFrameMode::Manual:
+            return shouldShowFromViewProvider();
+        case ViewFrameMode::AlwaysOn:
+            return true;
+        case ViewFrameMode::AlwaysOff:
+            return false;
+            break;
+        default:
+            return m_isHovered;
+    };
+
+}
+
+bool QGIView::shouldShowFromViewProvider() const
+{
+    DrawView* feature = getViewObject();
+    if (!feature) {
+        return false;
+    }
+    ViewProviderPage* vpPage = getViewProviderPage(feature);
+    if (!vpPage) {
+        return false;
+    }
+
+    return vpPage->getFrameState();
 }
 
 //! Retrieves objects of type T with given indexes
