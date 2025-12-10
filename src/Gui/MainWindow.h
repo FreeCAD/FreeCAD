@@ -370,6 +370,12 @@ private Q_SLOTS:
      * \internal
      */
     void delayedStartup();
+#ifdef Q_OS_MAC
+    /**
+     * \internal
+     */
+    void registerQuickLookExtensions();
+#endif
     /**
      * \internal
      */
