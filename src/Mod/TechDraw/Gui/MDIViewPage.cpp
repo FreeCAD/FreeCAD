@@ -71,6 +71,7 @@
 #include "QGVPage.h"
 #include "ViewProviderPage.h"
 #include "PagePrinter.h"
+#include "PreferencesGui.h"
 
 using namespace TechDrawGui;
 using namespace TechDraw;
@@ -88,6 +89,9 @@ MDIViewPage::MDIViewPage(ViewProviderPage* pageVp, Gui::Document* doc, QWidget* 
 
     m_toggleKeepUpdatedAction = new QAction(tr("Toggle &Keep Updated"), this);
     connect(m_toggleKeepUpdatedAction, &QAction::triggered, this, &MDIViewPage::toggleKeepUpdated);
+
+    m_toggleFrameAction = new QAction(tr("Toggle &Frames"), this);
+    connect(m_toggleFrameAction, &QAction::triggered, this, &MDIViewPage::toggleFrame);
 
     m_exportSVGAction = new QAction(tr("&Export SVG"), this);
 
@@ -435,17 +439,22 @@ PyObject* MDIViewPage::getPyObject()
 
 void MDIViewPage::contextMenuEvent(QContextMenuEvent* event)
 {
-    //    Base::Console().message("MDIVP::contextMenuEvent() - reason: %d\n", event->reason());
     if (isContextualMenuEnabled) {
         QMenu menu;
+        menu.addAction(m_toggleFrameAction);
         menu.addAction(m_toggleKeepUpdatedAction);
         menu.addAction(m_exportSVGAction);
         menu.addAction(m_exportDXFAction);
         menu.addAction(m_exportPDFAction);
         menu.addAction(m_printAllAction);
+        if (PreferencesGui::getViewFrameMode() != ViewFrameMode::Manual) {
+            m_toggleFrameAction->setEnabled(false);
+        }
         menu.exec(event->globalPos());
     }
 }
+
+void MDIViewPage::toggleFrame() { m_vpPage->toggleFrameState(); }
 
 void MDIViewPage::toggleKeepUpdated()
 {

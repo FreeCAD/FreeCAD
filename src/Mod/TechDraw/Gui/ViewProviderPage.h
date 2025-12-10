@@ -122,6 +122,10 @@ public:
 
     Gui::MDIView* getMDIView() const override;
 
+    bool getFrameState() const;
+    void setFrameState(bool state);
+    void toggleFrameState();
+
     void setTemplateMarkers(bool state) const;
 
     bool canDelete(App::DocumentObject* obj) const override;
@@ -148,6 +152,8 @@ private:
     std::string m_pageName;
     QPointer<QGVPage> m_graphicsView;
     QGSPage* m_graphicsScene;
+
+    bool m_frameToggle{false};      // replacement for ShowFrame property to avoid marking document changed
 };
 
 }// namespace TechDrawGui
