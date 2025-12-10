@@ -25,6 +25,7 @@
 #include <App/DocumentObjectPy.h>
 #include <Base/Interpreter.h>
 #include <Base/MatrixPy.h>
+#include <Base/PlacementPy.h>
 #include <Base/Tools.h>
 
 #include "FeaturePython.h"
@@ -630,6 +631,103 @@ bool FeaturePythonImp::editProperty(const char* name)
         e.reportException();
     }
     return false;
+}
+
+FeaturePythonImp::ValueT FeaturePythonImp::isLink() const
+{
+    _FC_PY_CALL_CHECK(isLink, return (NotImplemented));
+    Base::PyGILStateLocker lock;
+    try {
+        Py::Tuple args(1);
+        args.setItem(0, Py::Object(object->getPyObject(), true));
+        Py::Boolean ok(Base::pyCall(py_isLink.ptr(), args.ptr()));
+        return ok ? Accepted : Rejected;
+    }
+    catch (Py::Exception&) {
+        if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
+            PyErr_Clear();
+            return NotImplemented;
+        }
+
+        Base::PyException e;  // extract the Python error text
+        e.reportException();
+        return Rejected;
+    }
+}
+
+FeaturePythonImp::ValueT FeaturePythonImp::isLinkGroup() const
+{
+    _FC_PY_CALL_CHECK(isLinkGroup, return (NotImplemented));
+    Base::PyGILStateLocker lock;
+    try {
+        Py::Tuple args(1);
+        args.setItem(0, Py::Object(object->getPyObject(), true));
+        Py::Boolean ok(Base::pyCall(py_isLinkGroup.ptr(), args.ptr()));
+        return ok ? Accepted : Rejected;
+    }
+    catch (Py::Exception&) {
+        if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
+            PyErr_Clear();
+            return NotImplemented;
+        }
+
+        Base::PyException e;  // extract the Python error text
+        e.reportException();
+        return Rejected;
+    }
+}
+
+bool FeaturePythonImp::getPlacementOf(
+    Base::Placement& ret,
+    const char* subname,
+    App::DocumentObject* target
+) const
+{
+    FC_PY_CALL_CHECK(getPlacementOf);  // Standard macro check
+    Base::PyGILStateLocker lock;
+    try {
+        Py::Tuple args(3);
+
+        // Arg 0: The object itself
+        args.setItem(0, Py::Object(object->getPyObject(), true));
+
+        // Arg 1: The subname string
+        args.setItem(1, Py::String(subname ? subname : ""));
+
+        // Arg 2: The target object (or None)
+        if (target) {
+            args.setItem(2, Py::Object(target->getPyObject(), true));
+        }
+        else {
+            args.setItem(2, Py::None());
+        }
+
+        // Call the Python method
+        Py::Object res(Base::pyCall(py_getPlacementOf.ptr(), args.ptr()));
+
+        // Check if Python returned None (implies "use base implementation")
+        if (res.isNone()) {
+            return false;
+        }
+
+        // Check return type
+        if (!PyObject_TypeCheck(res.ptr(), &Base::PlacementPy::Type)) {
+            throw Py::TypeError("getPlacementOf expects a Base.Placement object return");
+        }
+
+        // Convert Python object back to C++ Placement
+        ret = *static_cast<Base::PlacementPy*>(res.ptr())->getPlacementPtr();
+        return true;
+    }
+    catch (Py::Exception&) {
+        if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
+            PyErr_Clear();
+            return false;
+        }
+        Base::PyException e;
+        e.reportException();
+        return false;
+    }
 }
 
 // ---------------------------------------------------------
