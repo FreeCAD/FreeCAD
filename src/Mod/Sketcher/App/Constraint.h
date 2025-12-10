@@ -74,6 +74,7 @@ enum ConstraintType : int
     Group = 20,
     Text = 21,
     Offset = 22,
+    Restriction = 23,
     NumConstraintTypes  // must be the last item!
 };
 
@@ -207,7 +208,8 @@ private:
          "Weight",
          "Group",
          "Text",
-         "Offset"}};
+         "Offset",
+         "Restriction"}};
     // clang-format on
 
     constexpr static std::array<const char*, InternalAlignmentType::NumInternalAlignmentType>
