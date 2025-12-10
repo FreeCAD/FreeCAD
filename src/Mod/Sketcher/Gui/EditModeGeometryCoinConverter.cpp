@@ -291,6 +291,21 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeoListFacade& geoli
             );
             offsetCurveGeoIds.push_back(GeoId);
         }
+        else if (type == Part::GeomRestrictedCurve::getClassTypeId()) {  // add a restricted curve
+            convert<
+                Part::GeomRestrictedCurve,
+                EditModeGeometryCoinConverter::PointsMode::InsertStartEnd,
+                EditModeGeometryCoinConverter::CurveMode::OpenCurve,
+                EditModeGeometryCoinConverter::AnalyseMode::BoundingBoxMagnitude>(geom, GeoId, subLayerId);
+            setTracking(
+                GeoId,
+                coinLayer,
+                EditModeGeometryCoinConverter::PointsMode::InsertStartEnd,
+                1,
+                subLayerId
+            );
+            restrictedCurveGeoIds.push_back(GeoId);
+        }
     }
 
     // Coin Nodes Editing
