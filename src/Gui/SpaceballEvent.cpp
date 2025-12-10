@@ -37,18 +37,14 @@ EventBase::EventBase(QEvent::Type event)
 EventBase::EventBase(QEvent::Type event)
     : QInputEvent(static_cast<QEvent::Type>(event), QPointingDevice::primaryPointingDevice())
 #endif
-{
-}
+{}
 
 MotionEvent::MotionEvent()
     : EventBase(static_cast<QEvent::Type>(MotionEventType))
-{
-}
+{}
 
 ButtonEvent::ButtonEvent()
     : EventBase(static_cast<QEvent::Type>(ButtonEventType))
-{
-}
+{}
 
-} // namespace Spaceball
-
+}  // namespace Spaceball

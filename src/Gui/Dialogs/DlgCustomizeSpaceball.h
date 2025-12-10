@@ -104,7 +104,7 @@ public:
     Command* aCommand = nullptr;
     QString labelText;
     CommandNode* parent = nullptr;
-    QList<CommandNode*> children{};
+    QList<CommandNode*> children {};
 };
 
 class CommandModel: public QAbstractItemModel
