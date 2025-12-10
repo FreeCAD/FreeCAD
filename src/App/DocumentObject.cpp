@@ -1620,7 +1620,7 @@ void DocumentObject::onPropertyStatusChanged(const Property& prop, unsigned long
 Base::Placement DocumentObject::getPlacementOf(const std::string& sub, DocumentObject* targetObj)
 {
     Base::Placement plc;
-    auto* propPlacement = dynamic_cast<App::PropertyPlacement*>(getPropertyByName("Placement"));
+    auto* propPlacement = freecad_cast<App::PropertyPlacement*>(getPropertyByName("Placement"));
     if (!propPlacement) {
         return plc;
     }
