@@ -30,6 +30,7 @@
 
 #include <Base/Console.h>
 #include <Base/Matrix.h>
+#include <Base/Placement.h>
 #include <Base/Tools.h>
 #include <Base/Writer.h>
 
@@ -1614,4 +1615,31 @@ void DocumentObject::onPropertyStatusChanged(const Property& prop, unsigned long
     if (!Document::isAnyRestoring() && isAttachedToDocument() && getDocument()) {
         getDocument()->signalChangePropertyEditor(*getDocument(), prop);
     }
+}
+
+Base::Placement DocumentObject::getPlacementOf(const std::string& sub, DocumentObject* targetObj)
+{
+    Base::Placement plc;
+    auto* propPlacement = dynamic_cast<App::PropertyPlacement*>(getPropertyByName("Placement"));
+    if (!propPlacement) {
+        return plc;
+    }
+    plc = propPlacement->getValue();
+
+    std::vector<std::string> names = Base::Tools::splitSubName(sub);
+
+    if (names.empty() || this == targetObj) {
+        return plc;
+    }
+
+    DocumentObject* subObj = getDocument()->getObject(names.front().c_str());
+
+    if (!subObj) {
+        return plc;
+    }
+
+    std::vector<std::string> newNames(names.begin() + 1, names.end());
+    std::string newSub = Base::Tools::joinList(newNames, ".");
+
+    return plc * subObj->getPlacementOf(newSub, targetObj);
 }

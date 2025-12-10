@@ -23,6 +23,7 @@
 
 #include <Base/GeometryPyCXX.h>
 #include <Base/MatrixPy.h>
+#include <Base/PlacementPy.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>
 
 #include "DocumentObject.h"
@@ -1002,4 +1003,28 @@ Py::Boolean DocumentObjectPy::getNoTouch() const
 void DocumentObjectPy::setNoTouch(Py::Boolean value)
 {
     getDocumentObjectPtr()->setStatus(ObjectStatus::NoTouch, value.isTrue());
+}
+
+PyObject* DocumentObjectPy::getPlacementOf(PyObject* args)
+{
+    char* subname;
+    PyObject* target = Py_None;
+
+    // Parse arguments: strictly require a string, optionally a DocumentObject (or None)
+    if (!PyArg_ParseTuple(args, "s|O!", &subname, &DocumentObjectPy::Type, &target)) {
+        return nullptr;
+    }
+
+    App::DocumentObject* targetObj = nullptr;
+    if (target && target != Py_None) {
+        // We already checked the type with O! &DocumentObjectPy::Type
+        targetObj = static_cast<DocumentObjectPy*>(target)->getDocumentObjectPtr();
+    }
+
+    PY_TRY
+    {
+        Base::Placement p = getDocumentObjectPtr()->getPlacementOf(subname, targetObj);
+        return new Base::PlacementPy(new Base::Placement(p));
+    }
+    PY_CATCH
 }
