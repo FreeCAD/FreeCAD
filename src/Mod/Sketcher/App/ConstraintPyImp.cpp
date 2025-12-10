@@ -162,6 +162,10 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 constraint->Type = Equal;
                 valid = true;
             }
+            else if (strcmp("Restriction", ConstraintType) == 0) {
+                constraint->Type = Restriction;
+                valid = true;
+            }
             else if (strstr(ConstraintType, "InternalAlignment")) {
                 constraint->Type = InternalAlignment;
 
@@ -903,6 +907,10 @@ std::string ConstraintPy::representation() const
             result << "'Offset' (" << getConstraintPtr()->First << "," << getConstraintPtr()->Second
                    << ")>";
             break;
+        case Restriction:
+            result << "'Restriction' (" << getConstraintPtr()->First << ","
+                   << getConstraintPtr()->Second << ")>";
+            break;
         default:
             result << "'?'>";
             break;
@@ -975,6 +983,9 @@ Py::String ConstraintPy::getType() const
             break;
         case Offset:
             return Py::String("Offset");
+            break;
+        case Restriction:
+            return Py::String("Restriction");
             break;
         default:
             return Py::String("Undefined");
