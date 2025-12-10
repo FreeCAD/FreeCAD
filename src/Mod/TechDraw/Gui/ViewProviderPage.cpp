@@ -72,7 +72,8 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderPage, Gui::ViewProviderDocumentObject)
 // Construction/Destruction
 
 ViewProviderPage::ViewProviderPage()
-    : m_mdiView(nullptr),  m_graphicsView(nullptr), m_graphicsScene(nullptr)
+    : m_mdiView(nullptr),  m_graphicsView(nullptr), m_graphicsScene(nullptr),
+      m_frameToggle(false)
 {
     initExtension(this);
 
@@ -80,6 +81,12 @@ ViewProviderPage::ViewProviderPage()
     static const char* group = "Grid";
 
     // NOLINTBEGIN
+    // ShowFrames is no longer used
+    ADD_PROPERTY_TYPE(ShowFrames, (false), group, App::Prop_None,
+                      "Show or hide view frames and labels on this page");
+    ShowFrames.setStatus(App::Property::Hidden, true);
+    ShowFrames.setStatus(App::Property::ReadOnly, true);
+
     ADD_PROPERTY_TYPE(ShowGrid, (PreferencesGui::showGrid()), group, App::Prop_None,
                       "Show or hide a grid on this page");
     ADD_PROPERTY_TYPE(GridSpacing, (PreferencesGui::gridSpacing()), group,
@@ -97,6 +104,7 @@ ViewProviderPage::ViewProviderPage()
                                  //out of sync.  missing prepareGeometryChange
                                  //somewhere???? QTBUG-18021???
 }
+
 
 ViewProviderPage::~ViewProviderPage()
 {
@@ -131,6 +139,9 @@ void ViewProviderPage::onChanged(const App::Property* prop)
     }
     else if (prop == &Visibility) {
         //Visibility changes are handled in VPDO::onChanged -> show() or hide()
+    } else if ( prop == &ShowFrames) {
+        // I don't think we do anything here because we don't want to trigger a cascade?
+        return;
     }
 
     Gui::ViewProviderDocumentObject::onChanged(prop);
@@ -430,6 +441,24 @@ std::vector<App::DocumentObject*> ViewProviderPage::claimChildren() const
 }
 
 bool ViewProviderPage::isShow() const { return Visibility.getValue(); }
+
+
+bool ViewProviderPage::getFrameState() const { return m_frameToggle; }
+
+void ViewProviderPage::setFrameState(bool state) { m_frameToggle = state; }
+
+void ViewProviderPage::toggleFrameState()
+{
+    if (PreferencesGui::getViewFrameMode() != ViewFrameMode::Manual) {
+        return;
+    }
+    if (m_graphicsScene) {
+        setFrameState(!getFrameState());
+        m_graphicsScene->refreshViews();
+        setTemplateMarkers(getFrameState());
+    }
+}
+
 
 void ViewProviderPage::setTemplateMarkers(bool state) const
 {

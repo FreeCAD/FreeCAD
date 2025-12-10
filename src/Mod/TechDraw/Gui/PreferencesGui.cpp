@@ -304,3 +304,10 @@ int PreferencesGui::get3dMarkerSize()
     return hGrp->GetInt("MarkerSize", 9L);
 }
 
+
+ViewFrameMode PreferencesGui::getViewFrameMode()
+{
+    int temp = Preferences::getPreferenceGroup("View")->GetInt("ViewFrameMode", 0);
+    return static_cast<ViewFrameMode>(temp);
+}
+

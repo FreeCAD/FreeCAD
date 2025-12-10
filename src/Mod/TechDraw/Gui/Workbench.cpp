@@ -222,6 +222,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *views << "Separator";
     *views << "TechDraw_ShareView";
     *views << "Separator";
+    *views << "TechDraw_ToggleFrame";
     *views << "Separator";
     *views << "TechDraw_ProjectShape";
 
@@ -380,6 +381,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 
     Gui::ToolBarItem* decor = new Gui::ToolBarItem(root);
     decor->setCommand("TechDraw Decoration");
+    *decor << "TechDraw_ToggleFrame";
     *decor << "TechDraw_Hatch";
     *decor << "TechDraw_GeometricHatch";
 
@@ -476,6 +478,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
 
     Gui::ToolBarItem* decor = new Gui::ToolBarItem(root);
     decor->setCommand("TechDraw Decoration");
+    *decor << "TechDraw_ToggleFrame";
     *decor << "TechDraw_Hatch";
     *decor << "TechDraw_GeometricHatch";
 
