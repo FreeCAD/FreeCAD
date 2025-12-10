@@ -1140,6 +1140,8 @@ def isRefValid(ref, number_sub):
         return False
     if len(ref[1]) < number_sub:
         return False
+    if ref[1][0].find("?") != -1:
+        return False
 
     return True
 
