@@ -2523,6 +2523,23 @@ GeomRestrictedCurve::GeomRestrictedCurve(const Handle(Geom_TrimmedCurve) & c)
 
 GeomRestrictedCurve::~GeomRestrictedCurve() = default;
 
+void GeomRestrictedCurve::setBasis(const Handle(Geom_Curve) & newBasis)
+{
+    double firstParam;
+    double lastParam;
+    getRange(firstParam, lastParam);
+    if (newBasis->IsKind(STANDARD_TYPE(Geom_TrimmedCurve))) {
+        Handle(Geom_TrimmedCurve) tc = Handle(Geom_TrimmedCurve)::DownCast(newBasis);
+        Handle(Geom_Curve) bc = tc->BasisCurve();
+        // TODO: Are we guaranteed this basis is never itself trimmed curve?
+        this->myCurve = new Geom_TrimmedCurve(bc, firstParam, lastParam);
+    }
+    else {
+        Handle(Geom_TrimmedCurve) curve2 = new Geom_TrimmedCurve(newBasis, firstParam, lastParam);
+        setHandle(curve2);
+    }
+}
+
 Geometry* GeomRestrictedCurve::copy() const
 {
     auto* newCurve = new GeomRestrictedCurve(myCurve);
