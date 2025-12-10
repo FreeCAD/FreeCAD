@@ -607,15 +607,17 @@ void AttachExtension::handleLegacyTangentPlaneOrientation()
         }
 
         // convert placement and expressions according to the dominant axis
-        auto makeRotatedExpression = [owner](const App::Expression* expr, double angle)
-                                   -> App::Expression* {
-            if (!expr)
+        auto makeRotatedExpression =
+            [owner](const App::Expression* expr, double angle) -> App::Expression* {
+            if (!expr) {
                 return nullptr;
+            }
 
             std::string s = "(" + expr->toString() + ")";
             if (angle >= 0) {
                 s += " + " + std::to_string(angle);
-            } else {
+            }
+            else {
                 s += " - " + std::to_string(-angle);
             }
 
@@ -648,10 +650,12 @@ void AttachExtension::handleLegacyTangentPlaneOrientation()
                 newExprX = App::ExpressionParser::parse(owner, expr.c_str());
             }
             if (exprYaw) {
-                if (yaw > 90)
+                if (yaw > 90) {
                     newExprYaw = makeRotatedExpression(exprYaw, -270);
-                else
+                }
+                else {
                     newExprYaw = makeRotatedExpression(exprYaw, 90);
+                }
             }
         }
         else if (axis == 1) {  // normal mostly Y
@@ -669,10 +673,12 @@ void AttachExtension::handleLegacyTangentPlaneOrientation()
                 newExprX = App::ExpressionParser::parse(owner, exprY->toString().c_str());
             }
             if (exprYaw) {
-                if (yaw < -90)
+                if (yaw < -90) {
                     newExprYaw = makeRotatedExpression(exprYaw, 270);
-                else
+                }
+                else {
                     newExprYaw = makeRotatedExpression(exprYaw, -90);
+                }
             }
         }
         else {
