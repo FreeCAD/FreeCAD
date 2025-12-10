@@ -933,6 +933,11 @@ QSize QuantitySpinBox::sizeHintCalculator(int h) const
     constexpr int maxDigits = 5;
     const int maxStrLen = maxDigits + 1 /*separator*/ + decimals + 1 /*space*/ + unit.length();
 
+    if (auto le = lineEdit()) {
+        // limit number of typed characters to keep unit visible
+        le->setMaxLength(maxStrLen);
+    }
+
     QString longestString = QString("8").repeated(maxStrLen);
     int w = qMax(0, QtTools::horizontalAdvance(fm, longestString));
     w += 2;  // cursor blinking space
