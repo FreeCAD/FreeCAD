@@ -71,6 +71,7 @@ enum ConstraintType : int
     Diameter = 18,
     Weight = 19,
     Offset = 20,
+    Restriction = 21,
     NumConstraintTypes  // must be the last item!
 };
 
@@ -193,7 +194,8 @@ private:
          "Block",
          "Diameter",
          "Weight",
-         "Offset"}};
+         "Offset",
+         "Restriction"}};
     // clang-format on
 
     constexpr static std::array<const char*, InternalAlignmentType::NumInternalAlignmentType>
