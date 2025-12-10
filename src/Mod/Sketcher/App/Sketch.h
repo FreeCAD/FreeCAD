@@ -370,6 +370,21 @@ public:
      */
     int addOffsetConstraint(int geoIdBasis, int geoIdOffCurve, double* value, bool driving = true);
 
+    /**
+     *   add a restriction constraint
+     *
+     *   double * value, secondValue are pointers to double allocated in the heap, containing the
+     *   constraint value and already inserted into either the FixParameters or
+     *   Parameters array, as the case may be.
+     */
+    int addRestrictionConstraint(
+        int geoIdBasis,
+        int geoIdResCurve,
+        double* value,
+        double* secondValue,
+        bool driving = true
+    );
+
     /// add a parallel constraint between two lines
     int addParallelConstraint(int geoId1, int geoId2);
     /// add a perpendicular constraint between two lines
@@ -769,6 +784,7 @@ private:
     void updateEllipse(const GeoDef&);
     void updateBSpline(const GeoDef&);
     void updateOffsetCurve(const GeoDef&);
+    void updateRestrictedCurve(const GeoDef&);
     bool updateNonDrivingConstraints();
 
     void calculateDependentParametersElements();
