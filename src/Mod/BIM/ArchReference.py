@@ -755,6 +755,7 @@ class ViewProviderArchReference:
             FreeCAD.Console.PrintWarning(t + " " + obj.Label + "\n")
             return
         from pivy import coin
+        from draftutils import gui_utils
 
         inputnode = coin.SoInput()
         inputnode.setBuffer(ivstring)
@@ -773,13 +774,9 @@ class ViewProviderArchReference:
 
         # check node contents
         rootnode = obj.ViewObject.RootNode
-        if rootnode.getNumChildren() < 3:
-            FreeCAD.Console.PrintError(
-                translate("Arch", "Invalid root node in") + " " + obj.Label + "\n"
-            )
-            return
-        switch = rootnode.getChild(2)
-        if switch.getNumChildren() != 4:
+        # display mode switch
+        switch = gui_utils.find_coin_node(obj.ViewObject.RootNode, coin.SoSwitch)
+        if switch is None or switch.getNumChildren() != 4:
             FreeCAD.Console.PrintError(
                 translate("Arch", "Invalid root node in") + " " + obj.Label + "\n"
             )
@@ -804,16 +801,14 @@ class ViewProviderArchReference:
             return
         if (not hasattr(self, "orig_wireframe")) or (not self.orig_wireframe):
             return
+        from pivy import coin
+        from draftutils import gui_utils
 
         # check node contents
         rootnode = obj.ViewObject.RootNode
-        if rootnode.getNumChildren() < 3:
-            FreeCAD.Console.PrintError(
-                translate("Arch", "Invalid root node in") + " " + obj.Label + "\n"
-            )
-            return
-        switch = rootnode.getChild(2)
-        if switch.getNumChildren() != 4:
+        # display mode switch
+        switch = gui_utils.find_coin_node(obj.ViewObject.RootNode, coin.SoSwitch)
+        if switch is None or switch.getNumChildren() != 4:
             FreeCAD.Console.PrintError(
                 translate("Arch", "Invalid root node in") + " " + obj.Label + "\n"
             )
