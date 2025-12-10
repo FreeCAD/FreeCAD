@@ -129,6 +129,23 @@ bool FeatureExtrude::hasTaperedAngle() const
         || fabs(TaperAngle2.getValue()) > Base::toRadians(Precision::Angular());
 }
 
+void FeatureExtrude::onChanged(const App::Property* prop)
+{
+    if (prop == &Midplane) {
+        // Deprecation notice: Midplane property is deprecated and has been replaced by SideType in
+        // FreeCAD 1.1 when FeatureExtrude was refactored.
+        Base::Console().warning(
+            "The 'Midplane' property is deprecated and has been replaced by the 'SideType' "
+            "property in FeatureExtrude. Please update your script, this property will be "
+            "removed in a future version.\n"
+        );
+        if (Midplane.getValue()) {
+            SideType.setValue("Symmetric");
+        }
+    }
+    ProfileBased::onChanged(prop);
+}
+
 TopoShape FeatureExtrude::makeShellFromUpToShape(TopoShape shape, TopoShape sketchshape, gp_Dir dir)
 {
 
@@ -932,6 +949,7 @@ void FeatureExtrude::onDocumentRestored()
         SideType.setValue("Two sides");
     }
     else if (Midplane.getValue()) {
+        // This code is probably now dead, replaced by the onChanged watcher for the Midplane value
         Midplane.setValue(false);
         SideType.setValue("Symmetric");
     }
