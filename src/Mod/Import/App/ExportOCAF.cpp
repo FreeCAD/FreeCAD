@@ -220,6 +220,7 @@ void ExportOCAF::createNode(
     root_id = hierarchical_label.size();
 }
 
+<<<<<<< HEAD
 int ExportOCAF::saveShape(
     Part::Feature* part,
     const std::vector<Base::Color>& colors,
@@ -227,6 +228,22 @@ int ExportOCAF::saveShape(
     std::vector<TopLoc_Location>& hierarchical_loc,
     std::vector<App::DocumentObject*>& hierarchical_part
 )
+||||||| parent of b33f579c8b (Reverted ugly commits 6fd6558040bb61cc1a9d35fd360cb1a169276cd3 and f218c5f25cdb8dfe216583dc25e1e0f55e500555)
+int ExportOCAF::saveShape(
+    Part::Feature* part,
+    const std::vector<Base::Color>& colors,
+    std::vector<TDF_Label>& hierarchical_label,
+    std::vector<TopLoc_Location>& hierarchical_loc,
+    std::vector<App::DocumentObject*>& hierarchical_part,
+    const char* labelOverride
+)
+=======
+int ExportOCAF::saveShape(Part::Feature* part,
+                          const std::vector<Base::Color>& colors,
+                          std::vector<TDF_Label>& hierarchical_label,
+                          std::vector<TopLoc_Location>& hierarchical_loc,
+                          std::vector<App::DocumentObject*>& hierarchical_part)
+>>>>>>> b33f579c8b (Reverted ugly commits 6fd6558040bb61cc1a9d35fd360cb1a169276cd3 and f218c5f25cdb8dfe216583dc25e1e0f55e500555)
 {
     const TopoDS_Shape& shape = part->Shape.getValue();
     if (shape.IsNull()) {
