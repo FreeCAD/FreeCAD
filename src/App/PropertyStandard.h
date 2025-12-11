@@ -337,6 +337,9 @@ public:
     }
     void setPyObject(PyObject* py) override;
 
+    void Save(Base::Writer& writer) const override;
+    void Restore(Base::XMLReader& reader) override;
+
 protected:
     const Constraints* _ConstStruct {nullptr};
 };
@@ -670,6 +673,9 @@ public:
     }
 
     void setPyObject(PyObject* py) override;
+
+    void Save(Base::Writer& writer) const override;
+    void Restore(Base::XMLReader& reader) override;
 
 protected:
     const Constraints* _ConstStruct {nullptr};
