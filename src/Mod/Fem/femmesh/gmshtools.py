@@ -200,12 +200,14 @@ class GmshTools:
         self.size_field_list = []
 
         # transfinite meshes
-        self.transfinite_curve_settings = []       # list of dict, one entry per curve definition
-        self.transfinite_curve_elements = set()    # set to remove duplicated element edge or faces
-        self.transfinite_surface_settings = []     # list of dict, one entry per surface definition
-        self.transfinite_surface_elements = set()  # set to remove duplicated element vertex or faces
-        self.transfinite_volume_settings = []      # list of dict, one entry per volume definition
-        self.transfinite_volume_elements = set()   # set to remove duplicated volumes
+        self.transfinite_curve_settings = []  # list of dict, one entry per curve definition
+        self.transfinite_curve_elements = set()  # set to remove duplicated element edge or faces
+        self.transfinite_surface_settings = []  # list of dict, one entry per surface definition
+        self.transfinite_surface_elements = (
+            set()
+        )  # set to remove duplicated element vertex or faces
+        self.transfinite_volume_settings = []  # list of dict, one entry per volume definition
+        self.transfinite_volume_elements = set()  # set to remove duplicated volumes
 
         # other initializations
         self.temp_file_geometry = ""
@@ -480,7 +482,7 @@ class GmshTools:
 
         return result
 
-    def _get_reference_elements(self, mr_obj, duplicates_set = None):
+    def _get_reference_elements(self, mr_obj, duplicates_set=None):
 
         # don't use set to avoid duplicates, as we need to keep the user defined order
         # of reference elements. This is important for example in transfinite surfaces
@@ -507,17 +509,13 @@ class GmshTools:
                     # the method getElement(element)
                     # does not return Solid elements
                     ele_shape = geomtools.get_element(sub[0], element)
-                    found_element = geomtools.find_element_in_shape(
-                        self.part_obj.Shape, ele_shape
-                    )
+                    found_element = geomtools.find_element_in_shape(self.part_obj.Shape, ele_shape)
                     if found_element:
                         element = found_element
                     else:
                         Console.PrintError(
                             "One element of the mesh refinement {} could not be found "
-                            "in the Part to mesh. It will be ignored.\n".format(
-                                mr_obj.Name
-                            )
+                            "in the Part to mesh. It will be ignored.\n".format(mr_obj.Name)
                         )
                 if not element in elements:
                     elements.append(element)
@@ -526,18 +524,15 @@ class GmshTools:
             duplicates = duplicates_set.intersection(set(elements))
             if duplicates:
                 Console.PrintError(
-                                "The elements {} of the mesh refinement {} have been added"
-                                "to another mesh refinement already.\n".format(
-                                    duplicates, mr_obj.Name
-                                )
-                            )
+                    "The elements {} of the mesh refinement {} have been added"
+                    "to another mesh refinement already.\n".format(duplicates, mr_obj.Name)
+                )
                 for duplicate in duplicates:
                     elements.remove(duplicate)
 
             duplicates_set.update(set(elements))
 
         return elements
-
 
     def _element_list_to_shape_idx_dict(self, element_list):
         # takes element list and builds a dict from it mapping from
@@ -674,14 +669,17 @@ class GmshTools:
                     )
             Console.PrintMessage(f"  {self.bl_setting_list}\n")
 
-
     def _build_constant_size_field(self, obj):
 
         elements = self._get_reference_elements(obj, set())
 
         if not elements:
-            Console.PrintError( ("The mesh constant size region {} is not used because no unique"
-                                "elements are selected.\n").format(obj.Name))
+            Console.PrintError(
+                (
+                    "The mesh constant size region {} is not used because no unique"
+                    "elements are selected.\n"
+                ).format(obj.Name)
+            )
             return -1
 
         element_dict = self._element_list_to_shape_idx_dict(elements)
@@ -707,13 +705,15 @@ class GmshTools:
         self.size_field_list.append(settings)
         return settings["FieldID"]
 
-
     def _build_distance_size_field(self, obj):
 
         elements = self._get_reference_elements(obj, set())
         if not elements:
-            Console.PrintError( ("The mesh distance {} is not used because no unique"
-                                    "elements are selected.\n").format(obj.Name))
+            Console.PrintError(
+                (
+                    "The mesh distance {} is not used because no unique" "elements are selected.\n"
+                ).format(obj.Name)
+            )
             return -1
 
         idx_dict = self._element_list_to_shape_idx_dict(elements)
@@ -783,9 +783,9 @@ class GmshTools:
         settings["Option"]["XCenter"] = Units.Quantity(cylinder.CylinderCenter.x).Value
         settings["Option"]["YCenter"] = Units.Quantity(cylinder.CylinderCenter.y).Value
         settings["Option"]["ZCenter"] = Units.Quantity(cylinder.CylinderCenter.z).Value
-        settings["Option"]["XAxis"] = Units.Quantity(cylinder.CylinderAxis.x).Value*1000
-        settings["Option"]["YAxis"] = Units.Quantity(cylinder.CylinderAxis.y).Value*1000
-        settings["Option"]["ZAxis"] = Units.Quantity(cylinder.CylinderAxis.z).Value*1000
+        settings["Option"]["XAxis"] = Units.Quantity(cylinder.CylinderAxis.x).Value * 1000
+        settings["Option"]["YAxis"] = Units.Quantity(cylinder.CylinderAxis.y).Value * 1000
+        settings["Option"]["ZAxis"] = Units.Quantity(cylinder.CylinderAxis.z).Value * 1000
         settings["Option"]["VIn"] = Units.Quantity(cylinder.SizeIn).Value
         settings["Option"]["VOut"] = Units.Quantity(cylinder.SizeOut).Value
 
@@ -797,12 +797,24 @@ class GmshTools:
 
         settings = {"Field": "Box", "Option": {}}
         settings["FieldID"] = self._next_field_number()
-        settings["Option"]["XMin"] = Units.Quantity(box.BoxCenter.x) - Units.Quantity(box.BoxLength/2).Value
-        settings["Option"]["XMax"] = Units.Quantity(box.BoxCenter.x) + Units.Quantity(box.BoxLength/2).Value
-        settings["Option"]["YMin"] = Units.Quantity(box.BoxCenter.y) - Units.Quantity(box.BoxWidth/2).Value
-        settings["Option"]["YMax"] = Units.Quantity(box.BoxCenter.y) + Units.Quantity(box.BoxWidth/2).Value
-        settings["Option"]["ZMin"] = Units.Quantity(box.BoxCenter.z) - Units.Quantity(box.BoxHeight/2).Value
-        settings["Option"]["ZMax"] = Units.Quantity(box.BoxCenter.z) + Units.Quantity(box.BoxHeight/2).Value
+        settings["Option"]["XMin"] = (
+            Units.Quantity(box.BoxCenter.x) - Units.Quantity(box.BoxLength / 2).Value
+        )
+        settings["Option"]["XMax"] = (
+            Units.Quantity(box.BoxCenter.x) + Units.Quantity(box.BoxLength / 2).Value
+        )
+        settings["Option"]["YMin"] = (
+            Units.Quantity(box.BoxCenter.y) - Units.Quantity(box.BoxWidth / 2).Value
+        )
+        settings["Option"]["YMax"] = (
+            Units.Quantity(box.BoxCenter.y) + Units.Quantity(box.BoxWidth / 2).Value
+        )
+        settings["Option"]["ZMin"] = (
+            Units.Quantity(box.BoxCenter.z) - Units.Quantity(box.BoxHeight / 2).Value
+        )
+        settings["Option"]["ZMax"] = (
+            Units.Quantity(box.BoxCenter.z) + Units.Quantity(box.BoxHeight / 2).Value
+        )
         settings["Option"]["Thickness"] = Units.Quantity(box.Thickness).Value
         settings["Option"]["VIn"] = Units.Quantity(box.SizeIn).Value
         settings["Option"]["VOut"] = Units.Quantity(box.SizeOut).Value
@@ -815,8 +827,11 @@ class GmshTools:
 
         elements = self._get_reference_elements(obj, set())
         if not elements:
-            Console.PrintError( ("The restriction {} is not used because no unique"
-                                    "elements are selected.\n").format(obj.Name))
+            Console.PrintError(
+                (
+                    "The restriction {} is not used because no unique" "elements are selected.\n"
+                ).format(obj.Name)
+            )
             return -1
 
         idx_dict = self._element_list_to_shape_idx_dict(elements)
@@ -846,8 +861,11 @@ class GmshTools:
     def _build_math_size_field(self, obj, equation_fields):
 
         if len(equation_fields) > 8:
-            Console.PrintError( ("The math equation {} has more than 8 child fields,"
-                                    "which is not supported.\n").format(obj.Name))
+            Console.PrintError(
+                (
+                    "The math equation {} has more than 8 child fields," "which is not supported.\n"
+                ).format(obj.Name)
+            )
             return -1
 
         # process the equation to use the correct field values!
@@ -862,10 +880,12 @@ class GmshTools:
 
             if replace:
                 if character.isdigit():
-                    idx = int(character)-1
+                    idx = int(character) - 1
                     if idx >= len(equation_fields):
-                        Console.PrintError( f"The math equation {obj.Label} uses invalid field variable"
-                                    f" F{character}, hence it cannot be used.\n")
+                        Console.PrintError(
+                            f"The math equation {obj.Label} uses invalid field variable"
+                            f" F{character}, hence it cannot be used.\n"
+                        )
                         return -1
 
                     new_equation += str(equation_fields[idx])
@@ -887,7 +907,7 @@ class GmshTools:
         # iterate recursively over field definitions
 
         if obj.Suppressed:
-                return
+            return
 
         children = []
         if hasattr(obj, "Refinement"):
@@ -916,17 +936,25 @@ class GmshTools:
             case "Fem::MeshShape":
                 return self._build_shape_size_field(obj)
             case "Fem::MeshRestrict":
-                if children_fields and (children_fields[0]>0):
+                if children_fields and (children_fields[0] > 0):
                     return self._build_restrict_size_field(obj, children_fields[0])
                 else:
-                    Console.PrintError( ("The restriction {} is not used because no valid"
-                                         "child refinement available.\n").format(obj.Name))
+                    Console.PrintError(
+                        (
+                            "The restriction {} is not used because no valid"
+                            "child refinement available.\n"
+                        ).format(obj.Name)
+                    )
 
             case "Fem::MeshMath":
                 # make sure all children are valid (if any)! otherwise the fields used in equation will not match
-                if  -1 in children_fields:
-                    Console.PrintError( ("The math equation {} is not used because some child"
-                                            "refinements refinements are not setup correctly.\n").format(obj.Name))
+                if -1 in children_fields:
+                    Console.PrintError(
+                        (
+                            "The math equation {} is not used because some child"
+                            "refinements refinements are not setup correctly.\n"
+                        ).format(obj.Name)
+                    )
                     return -1
 
                 return self._build_math_size_field(obj, children_fields)
@@ -936,7 +964,7 @@ class GmshTools:
     def get_size_field_data(self):
 
         # get all size field objects
-        size_field_list =  self._get_definitions_of_type("Fem::MeshRegion")
+        size_field_list = self._get_definitions_of_type("Fem::MeshRegion")
         size_field_list += self._get_definitions_of_type("Fem::MeshDistance")
         size_field_list += self._get_definitions_of_type("Fem::MeshShape")
         size_field_list += self._get_definitions_of_type("Fem::MeshRestrict")
@@ -944,12 +972,10 @@ class GmshTools:
 
         if size_field_list:
             part = self.part_obj
-            if (part.Shape.ShapeType == "Compound"
-                and (
-                    femutils.is_of_type(part, "FeatureBooleanFragments")
-                    or femutils.is_of_type(part, "FeatureSlice")
-                    or femutils.is_of_type(part, "FeatureXOR")
-                )
+            if part.Shape.ShapeType == "Compound" and (
+                femutils.is_of_type(part, "FeatureBooleanFragments")
+                or femutils.is_of_type(part, "FeatureSlice")
+                or femutils.is_of_type(part, "FeatureXOR")
             ):
                 self.outputCompoundWarning()
 
@@ -1004,7 +1030,9 @@ class GmshTools:
                 self.outputCompoundWarning()
 
             try:
-                surface_map =  tft.setup_transfinite_surface_map(self.part_obj.Shape, transfinite_surface_list)
+                surface_map = tft.setup_transfinite_surface_map(
+                    self.part_obj.Shape, transfinite_surface_list
+                )
             except Exception as e:
                 # error: some user settings are incompatible, abort all transfinite
                 Console.PrintError(str(e))
@@ -1023,12 +1051,13 @@ class GmshTools:
 
                     definition = tft.TFCurveDefinition.from_tfcurve_obj(mr_obj)
                     try:
-                        tft.add_automatic_transfinite_edges_from_faces(surface_map, edge_map, self.part_obj.Shape, elements, definition)
+                        tft.add_automatic_transfinite_edges_from_faces(
+                            surface_map, edge_map, self.part_obj.Shape, elements, definition
+                        )
                     except Exception as e:
                         # error: some user settings are incompatible, abort all transfinite
                         Console.PrintError(str(e))
                         return
-
 
         # transfinite volumes
         transfinite_volume_list = self._get_definitions_of_type("Fem::MeshTransfiniteVolume")
@@ -1054,10 +1083,16 @@ class GmshTools:
                 if mr_obj.References:
 
                     # collect all elements!
-                    elements = self._get_reference_elements(mr_obj, self.transfinite_volume_elements)
+                    elements = self._get_reference_elements(
+                        mr_obj, self.transfinite_volume_elements
+                    )
                     if not elements:
-                        Console.PrintError( ("The transfinite volume {} is not used because no unique"
-                                             "elements are selected.\n").format(mr_obj.Name))
+                        Console.PrintError(
+                            (
+                                "The transfinite volume {} is not used because no unique"
+                                "elements are selected.\n"
+                            ).format(mr_obj.Name)
+                        )
                         continue
 
                     idx_dict = self._element_list_to_shape_idx_dict(elements)
@@ -1076,8 +1111,20 @@ class GmshTools:
                         curve_definition = tft.TFCurveDefinition.from_tfcurve_obj(mr_obj)
                         surf_definition = tft.TFSurfaceDefinition.from_tfsurface_obj(mr_obj)
                         try:
-                            tft.add_automatic_transfinite_surfaces_from_solids(surface_map, edge_map, self.part_obj.Shape, elements, surf_definition)
-                            tft.add_automatic_transfinite_edges_from_solids(surface_map, edge_map, self.part_obj.Shape, elements, curve_definition)
+                            tft.add_automatic_transfinite_surfaces_from_solids(
+                                surface_map,
+                                edge_map,
+                                self.part_obj.Shape,
+                                elements,
+                                surf_definition,
+                            )
+                            tft.add_automatic_transfinite_edges_from_solids(
+                                surface_map,
+                                edge_map,
+                                self.part_obj.Shape,
+                                elements,
+                                curve_definition,
+                            )
 
                         except Exception as e:
                             # error: some user settings are incompatible, abort all transfinite
@@ -1097,7 +1144,7 @@ class GmshTools:
         for definition, edges in definition_map.items():
             prefix = definition.tag_prefix()
             setting = definition.to_gmshtools_setting()
-            setting["tag"] = ",".join(prefix+str(i) for i in edges)
+            setting["tag"] = ",".join(prefix + str(i) for i in edges)
             self.transfinite_curve_settings.append(setting)
 
         # and remaining transfinite surface settings!
@@ -1106,7 +1153,6 @@ class GmshTools:
             setting = definition.to_gmshtools_setting()
             setting["surfaces"] = ",".join(str(i) for i in surfaces)
             self.transfinite_surface_settings.append(setting)
-
 
     def write_groups(self, geo):
         # find shape type and index from group elements and isolate them from possible prefix
@@ -1143,7 +1189,6 @@ class GmshTools:
 
             geo.write("\n")
 
-
     def write_boundary_layer(self, geo):
         # currently single body is supported
         if len(self.bl_setting_list):
@@ -1176,7 +1221,6 @@ class GmshTools:
             # print("  no boundary layer setup is found for this mesh")
             geo.write("// no boundary layer settings for this mesh\n")
 
-
     def write_size_fields(self, geo):
 
         geo.write("// size field based refinements\n\n")
@@ -1193,7 +1237,6 @@ class GmshTools:
 
         geo.write("// size field based refinements finished\n")
         geo.write("\n")
-
 
     def write_transfinite(self, geo):
 
@@ -1215,7 +1258,7 @@ class GmshTools:
         for setting in self.transfinite_surface_settings:
             geo.write(f'Transfinite Surface {{ {setting["surfaces"]} }}')
             if "nodes" in setting:
-                geo.write( f' = {{ {setting["nodes"]} }}' )
+                geo.write(f' = {{ {setting["nodes"]} }}')
             if "orientation" in setting:
                 geo.write(f' {setting["orientation"]}')
             if "recombine" in setting and setting["recombine"]:
@@ -1236,7 +1279,6 @@ class GmshTools:
 
         geo.write("// Transfinite elements finished\n")
         geo.write("\n")
-
 
     def write_part_file(self):
         global_pla = self.part_obj.getGlobalPlacement()
@@ -1290,7 +1332,6 @@ class GmshTools:
             geo.write("Mesh.MeshSizeExtendFromBoundary = 0;\n")
             geo.write("\n")
 
-
         # mesh parameter
         geo.write("// min, max Characteristic Length\n")
         geo.write("Mesh.MeshSizeMax = " + str(self.clmax) + ";\n")
@@ -1309,7 +1350,6 @@ class GmshTools:
             )
         geo.write("Mesh.MeshSizeFromPoints = 0;\n")
         geo.write("\n")
-
 
         if hasattr(self.mesh_obj, "RecombineAll") and self.mesh_obj.RecombineAll is True:
             geo.write("// recombination for surfaces\n")
@@ -1385,7 +1425,6 @@ class GmshTools:
         geo.write("// subdivision algorithm\n")
         geo.write("Mesh.SubdivisionAlgorithm = " + self.SubdivisionAlgorithm + ";\n")
         geo.write("\n")
-
 
         geo.write("// meshing\n")
         # remove duplicate vertices

@@ -31,7 +31,9 @@ __url__ = "https://www.freecad.org"
 
 from . import base_femmeshelement
 from . import base_fempythonobject
+
 _PropHelper = base_fempythonobject._PropHelper
+
 
 class MeshTransfiniteSurface(base_femmeshelement.BaseFemMeshElement):
     """
@@ -48,7 +50,7 @@ class MeshTransfiniteSurface(base_femmeshelement.BaseFemMeshElement):
                 name="TriangleOrientation",
                 group="Transfinite",
                 doc="Define how the triangles are oriented within the transfinite mesh (if not recombined)",
-                value=["Left", "Right",  "AlternateRight", "AlternateLeft"],
+                value=["Left", "Right", "AlternateRight", "AlternateLeft"],
             ),
             _PropHelper(
                 type="App::PropertyBool",
@@ -62,7 +64,7 @@ class MeshTransfiniteSurface(base_femmeshelement.BaseFemMeshElement):
                 name="UseAutomation",
                 group="Automation",
                 doc="Enables the automatic application of transfinite curve definitions on all yet undefined edges",
-                value=False
+                value=False,
             ),
             _PropHelper(
                 type="App::PropertyInteger",

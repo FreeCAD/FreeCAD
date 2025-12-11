@@ -31,7 +31,9 @@ __url__ = "https://www.freecad.org"
 
 from . import base_femmeshelement
 from . import base_fempythonobject
+
 _PropHelper = base_fempythonobject._PropHelper
+
 
 class MeshRestrict(base_femmeshelement.BaseFemMeshElement):
     """
@@ -57,14 +59,13 @@ class MeshRestrict(base_femmeshelement.BaseFemMeshElement):
                 doc="Include the boundary of the selected entities",
                 value=True,
             ),
-            #_PropHelper(
+            # _PropHelper(
             #    type="App::PropertyBool",
             #    name="IncludeEmbedded",
             #    group="Restrict",
             #    doc="Include elements that are embedded in the selected entities",
             #    value=True,
-            #),
+            # ),
         ]
 
         return super()._get_properties() + props
-

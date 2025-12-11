@@ -48,12 +48,13 @@ PyObject* ViewProviderShapeExtensionPy::createControlWidget(PyObject* args)
     // extensions are available, and return a stacked widget if multiple are available
 
     auto view_obj = getViewProviderShapeExtensionPtr()->getExtendedViewProvider();
-    auto shape_extensions = view_obj->getExtensionsDerivedFromType<FemGui::ViewProviderShapeExtension>();
+    auto shape_extensions
+        = view_obj->getExtensionsDerivedFromType<FemGui::ViewProviderShapeExtension>();
 
     QWidget* widget = nullptr;
     if (shape_extensions.size() > 1) {
         auto stack = new QStackedWidget();
-        for(FemGui::ViewProviderShapeExtension* extension : shape_extensions)  {
+        for (FemGui::ViewProviderShapeExtension* extension : shape_extensions) {
             auto ui = extension->createShapeWidget();
             ui->setViewProvider(view_obj);
             ui->setObjectName(QString::fromStdString(extension->name()));

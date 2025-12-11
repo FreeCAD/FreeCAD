@@ -37,12 +37,13 @@ from femtools import geomtools
 from enum import Enum, auto
 from dataclasses import dataclass, field
 
+
 @dataclass(frozen=True)
 class TFCurveDefinition:
-    Nodes: int = 2                  # number of nodes
-    Coefficient: float = 1.2        # the distribution coeficcient
+    Nodes: int = 2  # number of nodes
+    Coefficient: float = 1.2  # the distribution coeficcient
     Distribution: str = "Constant"  # the curve type
-    Invert: bool = False            # invert direction?
+    Invert: bool = False  # invert direction?
 
     def tag_prefix(self):
         if self.Invert and (self.Distribution == "Progression"):
@@ -56,7 +57,7 @@ class TFCurveDefinition:
         coef = self.Coefficient
 
         if self.Invert and (self.Distribution == "Bump"):
-                coef = 1.0/coef
+            coef = 1.0 / coef
 
         settings["numNodes"] = self.Nodes
         if self.Distribution != "Constant":
@@ -67,8 +68,8 @@ class TFCurveDefinition:
 
     @staticmethod
     def from_tfcurve_obj(obj):
-        return TFCurveDefinition(obj.Nodes, obj.Coefficient,
-                                 obj.Distribution, obj.Invert)
+        return TFCurveDefinition(obj.Nodes, obj.Coefficient, obj.Distribution, obj.Invert)
+
 
 @dataclass(frozen=True)
 class TFSurfaceDefinition:
@@ -96,16 +97,17 @@ class TFSurfaceDefinition:
 
 
 class Creation(Enum):
-    Undefined           = auto()
-    User                = auto() # user created
-    AutomaticSurface    = auto() # created by surface automation
-    AutomaticVolume     = auto() # created by volume automation
+    Undefined = auto()
+    User = auto()  # user created
+    AutomaticSurface = auto()  # created by surface automation
+    AutomaticVolume = auto()  # created by volume automation
+
 
 @dataclass
 class EdgeData:
 
-    Creation: Creation          = Creation.Undefined
-    Data:     TFCurveDefinition = field(default_factory=TFCurveDefinition)
+    Creation: Creation = Creation.Undefined
+    Data: TFCurveDefinition = field(default_factory=TFCurveDefinition)
 
     @property
     def IsDefined(self):
@@ -113,15 +115,17 @@ class EdgeData:
 
     @property
     def IsAutomatic(self):
-        return (self.Creation == Creation.AutomaticSurface or
-                self.Creation == Creation.AutomaticVolume)
+        return (
+            self.Creation == Creation.AutomaticSurface or self.Creation == Creation.AutomaticVolume
+        )
+
 
 @dataclass
 class FaceData:
 
-    Creation: Creation            = Creation.Undefined
-    Data:     TFSurfaceDefinition = field(default_factory=TFSurfaceDefinition)
-    GuideVertex: int              = 0       # The vertex that decides which are the two guide edges on a 3-sided face
+    Creation: Creation = Creation.Undefined
+    Data: TFSurfaceDefinition = field(default_factory=TFSurfaceDefinition)
+    GuideVertex: int = 0  # The vertex that decides which are the two guide edges on a 3-sided face
 
     @property
     def IsDefined(self):
@@ -131,6 +135,7 @@ class FaceData:
     def IsAutomatic(self):
         # Automatic Surface is invalid for face, as it can only be created automaticall by volume automation
         return self.Creation == Creation.AutomaticVolume
+
 
 @dataclass
 class Key:
@@ -150,9 +155,10 @@ def _get_common_shapes(shape_list_1, shape_list_2):
     for shape1 in shape_list_1:
         for shape2 in shape_list_2:
             if shape1.isSame(shape2):
-               result.append(shape1)
+                result.append(shape1)
 
     return result
+
 
 def _get_opposing_edge(surface_map, face, edge):
     # Within face, find the edge that is opposite of the given one for transfinite meshing
@@ -166,17 +172,17 @@ def _get_opposing_edge(surface_map, face, edge):
                 guide_vertex = face.Vertexes[surface_map[face_key].GuideVertex]
 
             # is the edge we non-guiding in this face?
-            if not (edge.Vertexes[0].isSame(guide_vertex) or
-                    edge.Vertexes[1].isSame(guide_vertex)):
-                return  None
+            if not (edge.Vertexes[0].isSame(guide_vertex) or edge.Vertexes[1].isSame(guide_vertex)):
+                return None
 
             # the edge is guiding for this face, so find the other guiding edge to return
             for face_edge in face.Edges:
                 if face_edge.isSame(edge):
                     continue
 
-                if (face_edge.Vertexes[0].isSame(guide_vertex) or
-                    face_edge.Vertexes[1].isSame(guide_vertex)):
+                if face_edge.Vertexes[0].isSame(guide_vertex) or face_edge.Vertexes[1].isSame(
+                    guide_vertex
+                ):
                     return face_edge
 
             # we should never be here!
@@ -188,10 +194,12 @@ def _get_opposing_edge(surface_map, face, edge):
                 if candidate.isSame(edge):
                     continue
 
-                if (candidate.Vertexes[0].isSame(edge.Vertexes[0]) or
-                    candidate.Vertexes[1].isSame(edge.Vertexes[0]) or
-                    candidate.Vertexes[0].isSame(edge.Vertexes[1]) or
-                    candidate.Vertexes[1].isSame(edge.Vertexes[1])):
+                if (
+                    candidate.Vertexes[0].isSame(edge.Vertexes[0])
+                    or candidate.Vertexes[1].isSame(edge.Vertexes[0])
+                    or candidate.Vertexes[0].isSame(edge.Vertexes[1])
+                    or candidate.Vertexes[1].isSame(edge.Vertexes[1])
+                ):
 
                     continue
 
@@ -200,9 +208,9 @@ def _get_opposing_edge(surface_map, face, edge):
         case _:
             raise Exception("Only 3 or 4 sided faces can be automated")
 
-
     # if we are here something went terrible wrong, that should not happen
     raise Exception("Could not find opposing edge")
+
 
 def _get_opposing_surface(surface_map, solid, face):
     # Within face, find the edge that is opposite of the given one for transfinite meshing
@@ -237,10 +245,8 @@ def _get_opposing_surface(surface_map, solid, face):
 
     # if we are here we are a 5-sided solid, and the face is one of the 3 connected sides.
     # to solve this we need to use the faces guide vertex
-    #guiding_vertex = face.findSubShape(surface_map[Key(face)].GuideVertex)
-    #TODO: finish
-
-
+    # guiding_vertex = face.findSubShape(surface_map[Key(face)].GuideVertex)
+    # TODO: finish
 
     # if we are here something went terrible wrong, that should not happen
     raise Exception("Could not find opposing edge")
@@ -257,6 +263,7 @@ def _connected(shape, vertex1, vertex2):
                 return True
 
     return False
+
 
 def _propagate_edge(surfaces_map, edges_map, shape, faces, edge_key, origin_face, creator):
     # Propagates the edge values through the map
@@ -288,7 +295,9 @@ def _propagate_edge(surfaces_map, edges_map, shape, faces, edge_key, origin_face
         if edges_map[opposite_key].IsDefined:
             # check if compatibel, and raise error if not
             if edges_map[opposite_key].Data.Nodes != edges_map[edge_key].Data.Nodes:
-                raise Exception("Transfinite curve data is inconsitent, cannot apply automatic algorithm")
+                raise Exception(
+                    "Transfinite curve data is inconsitent, cannot apply automatic algorithm"
+                )
 
             # and go on to the next face
             continue
@@ -299,11 +308,15 @@ def _propagate_edge(surfaces_map, edges_map, shape, faces, edge_key, origin_face
             if data.Distribution == "Progression":
                 # progression goes towards edge.V0. Therefore, we may need to invert
                 # if the opposite edge has turned vertices
-                if not _connected(shape, edge_key.Shape.Vertexes[0], opposite_key.Shape.Vertexes[0]):
-                    data = TFCurveDefinition(Nodes=data.Nodes,
-                                             Coefficient=data.Coefficient,
-                                             Distribution=data.Distribution,
-                                             Invert=(not data.Invert))
+                if not _connected(
+                    shape, edge_key.Shape.Vertexes[0], opposite_key.Shape.Vertexes[0]
+                ):
+                    data = TFCurveDefinition(
+                        Nodes=data.Nodes,
+                        Coefficient=data.Coefficient,
+                        Distribution=data.Distribution,
+                        Invert=(not data.Invert),
+                    )
 
             # transfer the data as automatic definition
             edges_map[opposite_key].Data = data
@@ -311,6 +324,7 @@ def _propagate_edge(surfaces_map, edges_map, shape, faces, edge_key, origin_face
 
             # propagate the opposite edge further
             _propagate_edge(surfaces_map, edges_map, shape, faces, opposite_key, face, creator)
+
 
 def _propagate_surface(surfaces_map, edges_map, shape, solids, face_key, origin_solid, creator):
     # Propagates the surface values through the map
@@ -378,7 +392,7 @@ def _propagate_surface(surfaces_map, edges_map, shape, solids, face_key, origin_
                 if not name:
                     raise Exception("Unable to popagate guiding vertex")
 
-                if surfaces_map[opposite_key].GuideVertex != guide_vertex_idx -1:
+                if surfaces_map[opposite_key].GuideVertex != guide_vertex_idx - 1:
                     # the opposite surface requries a non-default guide vertex
                     # including the new VertexIdx to support this
 
@@ -395,7 +409,9 @@ def _propagate_surface(surfaces_map, edges_map, shape, solids, face_key, origin_
                     _, guide_idx_shape = shape.findSubShape(opposite_guide_vertex)
                     order.insert(0, order.pop(order.index(guide_idx_shape)))
                     order_str = TFSurfaceDefinition.vertexIdx_string_from_list(order)
-                    surfaces_map[opposite_key].Data = TFSurfaceDefinition(Recombine=data.Recombine, Orientation=data.Orientation, VertexIdx=order_str)
+                    surfaces_map[opposite_key].Data = TFSurfaceDefinition(
+                        Recombine=data.Recombine, Orientation=data.Orientation, VertexIdx=order_str
+                    )
                     surfaces_map[opposite_key].Creation = creator
 
             else:
@@ -435,24 +451,23 @@ def _get_reference_elements(shape, obj):
                 # the method getElement(element)
                 # does not return Solid elements
                 ele_shape = geomtools.get_element(sub[0], element)
-                found_element = geomtools.find_element_in_shape(
-                    shape, ele_shape
-                )
+                found_element = geomtools.find_element_in_shape(shape, ele_shape)
                 if found_element:
                     element = found_element
                 else:
                     Console.PrintError(
                         "One element of the mesh refinement {} could not be found "
-                        "in the Part to mesh. It will be ignored.\n".format(
-                            obj.Name
-                        )
+                        "in the Part to mesh. It will be ignored.\n".format(obj.Name)
                     )
             if not element in elements:
                 elements.append(element)
 
     return elements
 
-def _get_automatic_transfinite_edges(surfaces_map, edge_map, shape, faces, auto_curve_data, creator):
+
+def _get_automatic_transfinite_edges(
+    surfaces_map, edge_map, shape, faces, auto_curve_data, creator
+):
     # Updates the edge map for all edges that require transfinite curve definitions in faces list
     #
     # shape: The Part shape object all the faces belong to
@@ -469,7 +484,7 @@ def _get_automatic_transfinite_edges(surfaces_map, edge_map, shape, faces, auto_
     # 2. get all already defined edges
     user_edges = set()
     surf_edges = set()
-    vol_edges  = set()
+    vol_edges = set()
     for key, data in edge_map.items():
 
         if data.Creation == Creation.User:
@@ -499,7 +514,10 @@ def _get_automatic_transfinite_edges(surfaces_map, edge_map, shape, faces, auto_
             data.Data = auto_curve_data
             data.Creation = creator
 
-def _get_automatic_transfinite_surfaces(surfaces_map, edge_map, shape, solids, auto_surface_data, creator):
+
+def _get_automatic_transfinite_surfaces(
+    surfaces_map, edge_map, shape, solids, auto_surface_data, creator
+):
     # Updates the surface map for all surfaces that require transfinite surface definitions in solids list
     #
     # shape: The Part shape object all the faces belong to
@@ -514,7 +532,7 @@ def _get_automatic_transfinite_surfaces(surfaces_map, edge_map, shape, solids, a
 
     # 2. get all already defined surfaces
     user_surfaces = set()
-    vol_surfaces  = set()
+    vol_surfaces = set()
     for key, data in surfaces_map.items():
 
         if data.Creation == Creation.User:
@@ -557,12 +575,17 @@ def setup_transfinite_edge_map(shape, tf_curve_objs):
             key = Key(ref_shape)
             if key in edges_map:
                 # double definition: ignore latest
-                Console.PrintError( (f"The transfinite curve {tf.Label} redefines already setup edges. Those definitions are ignored.\n") )
+                Console.PrintError(
+                    (
+                        f"The transfinite curve {tf.Label} redefines already setup edges. Those definitions are ignored.\n"
+                    )
+                )
                 continue
 
             edges_map[key] = EdgeData(Creation=Creation.User, Data=data)
 
     return edges_map
+
 
 def setup_transfinite_surface_map(shape, tf_surface_objs):
     # Builds the initial surface map with user defined surfaces
@@ -592,8 +615,12 @@ def setup_transfinite_surface_map(shape, tf_surface_objs):
             key = Key(face)
             if key in faces_map:
                 # double definition: ignore latest
-                Console.PrintError( (f"The transfinite surface {tf.Label} redefines an already"
-                                    " setup face. Those definitions are ignored.\n") )
+                Console.PrintError(
+                    (
+                        f"The transfinite surface {tf.Label} redefines an already"
+                        " setup face. Those definitions are ignored.\n"
+                    )
+                )
                 continue
 
             faces_map[key] = FaceData(Creation=Creation.User, Data=data)
@@ -611,7 +638,6 @@ def setup_transfinite_surface_map(shape, tf_surface_objs):
                 else:
                     name, idx = face.findSubShape(face.Edges[0].Vertexes[0])
                     faces_map[key].GuideVertex = idx - 1
-
 
         # handle vertex selections
         # ########################
@@ -636,10 +662,12 @@ def setup_transfinite_surface_map(shape, tf_surface_objs):
 
                 if len(vertices) == 1:
                     if not len(face.Edges) == 3:
-                        raise Exception("Invalid vertex selection: single vertex only valid for 3-sided face")
+                        raise Exception(
+                            "Invalid vertex selection: single vertex only valid for 3-sided face"
+                        )
 
                     # change guide vertex and vertex order if we have a non-default case
-                    if faces_map[key].GuideVertex != (guide_idx-1):
+                    if faces_map[key].GuideVertex != (guide_idx - 1):
                         faces_map[key].GuideVertex = guide_idx - 1
 
                         # build vertex order (in shape idx, not face idx!)
@@ -651,7 +679,11 @@ def setup_transfinite_surface_map(shape, tf_surface_objs):
                         order.insert(0, order.pop(order.index(shape_guide_idx)))
                         order_str = TFSurfaceDefinition.vertexIdx_string_from_list(order)
                         data = faces_map[key].Data
-                        faces_map[key].Data = TFSurfaceDefinition(Recombine=data.Recombine, Orientation=data.Orientation, VertexIdx=order_str)
+                        faces_map[key].Data = TFSurfaceDefinition(
+                            Recombine=data.Recombine,
+                            Orientation=data.Orientation,
+                            VertexIdx=order_str,
+                        )
 
                 else:
                     # 3 or 4 vertexes indicating the corner points of a multi-edges face
@@ -665,7 +697,9 @@ def setup_transfinite_surface_map(shape, tf_surface_objs):
                         vidx.append(idx)
 
                     order_str = TFSurfaceDefinition.vertexIdx_string_from_list(vidx)
-                    faces_map[key].Data = TFSurfaceDefinition(Recombine=data.Recombine, Orientation=data.Orientation, VertexIdx=order_str)
+                    faces_map[key].Data = TFSurfaceDefinition(
+                        Recombine=data.Recombine, Orientation=data.Orientation, VertexIdx=order_str
+                    )
             else:
                 # find the correct vertex to use as guide if 3-sided
                 for face in faces:
@@ -691,7 +725,11 @@ def setup_transfinite_surface_map(shape, tf_surface_objs):
                                 order_str = TFSurfaceDefinition.vertexIdx_string_from_list(order)
 
                                 faces_map[face_key].GuideVertex = vidx
-                                faces_map[face_key].Data = TFSurfaceDefinition(Recombine=data.Recombine, Orientation=data.Orientation, VertexIdx=order_str)
+                                faces_map[face_key].Data = TFSurfaceDefinition(
+                                    Recombine=data.Recombine,
+                                    Orientation=data.Orientation,
+                                    VertexIdx=order_str,
+                                )
 
                                 break
                         else:
@@ -699,10 +737,8 @@ def setup_transfinite_surface_map(shape, tf_surface_objs):
 
                         break
 
-
-
-
     return faces_map
+
 
 def map_to_definitions(edge_map, shape, only_by_creator=None):
 
@@ -722,7 +758,9 @@ def map_to_definitions(edge_map, shape, only_by_creator=None):
     return result
 
 
-def add_automatic_transfinite_edges_from_faces(surfaces_map, edge_map, shape, faces, auto_curve_data):
+def add_automatic_transfinite_edges_from_faces(
+    surfaces_map, edge_map, shape, faces, auto_curve_data
+):
     # adds automatic transfinite curves to the edge map based on the faces that should be automatically
     # extended
 
@@ -730,10 +768,14 @@ def add_automatic_transfinite_edges_from_faces(surfaces_map, edge_map, shape, fa
     face_shapes = [shape.getElement(name) for name in faces]
 
     # get transfinite data for all edges
-    _get_automatic_transfinite_edges(surfaces_map, edge_map, shape, face_shapes, auto_curve_data, Creation.AutomaticSurface)
+    _get_automatic_transfinite_edges(
+        surfaces_map, edge_map, shape, face_shapes, auto_curve_data, Creation.AutomaticSurface
+    )
 
 
-def add_automatic_transfinite_edges_from_solids(surface_map, edge_map, shape, solids, auto_curve_data):
+def add_automatic_transfinite_edges_from_solids(
+    surface_map, edge_map, shape, solids, auto_curve_data
+):
 
     # solid names to solids
     solid_shapes = [shape.Solids[int(e.lstrip("Solid")) - 1] for e in solids]
@@ -743,15 +785,19 @@ def add_automatic_transfinite_edges_from_solids(surface_map, edge_map, shape, so
     for solid in solid_shapes:
         face_shapes += solid.Faces
 
-    _get_automatic_transfinite_edges(surface_map, edge_map, shape, face_shapes, auto_curve_data, Creation.AutomaticVolume)
+    _get_automatic_transfinite_edges(
+        surface_map, edge_map, shape, face_shapes, auto_curve_data, Creation.AutomaticVolume
+    )
 
 
-def add_automatic_transfinite_surfaces_from_solids(surface_map, edge_map, shape, solids, auto_surface_data):
+def add_automatic_transfinite_surfaces_from_solids(
+    surface_map, edge_map, shape, solids, auto_surface_data
+):
 
     # solid names to solids
     solid_shapes = [shape.Solids[int(e.lstrip("Solid")) - 1] for e in solids]
 
     # faces names to faces shape
-    _get_automatic_transfinite_surfaces(surface_map, edge_map, shape, solid_shapes, auto_surface_data, Creation.AutomaticVolume)
-
-
+    _get_automatic_transfinite_surfaces(
+        surface_map, edge_map, shape, solid_shapes, auto_surface_data, Creation.AutomaticVolume
+    )

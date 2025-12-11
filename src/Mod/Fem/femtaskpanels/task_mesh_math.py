@@ -77,8 +77,8 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         ui.Equation.editingFinished.connect(self.equationChanged)
 
         info = FreeCADGui.getIcon("info.svg")
-        ui.Icon.setPixmap(info.pixmap(QtCore.QSize(32,32)))
-        ui.EqIcon.setPixmap(info.pixmap(QtCore.QSize(32,32)))
+        ui.Icon.setPixmap(info.pixmap(QtCore.QSize(32, 32)))
+        ui.EqIcon.setPixmap(info.pixmap(QtCore.QSize(32, 32)))
 
         self._update_field_list()
 
@@ -102,4 +102,3 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
     @QtCore.Slot()
     def equationChanged(self):
         self.obj.Equation = self.parameter_widget.Equation.text()
-
