@@ -442,7 +442,9 @@ public:
     /// Starts to drag the object
     void dragObject(App::DocumentObject* obj) override
     {
-        App::AutoTransaction committer;
+        // Commented because AutoTransaction does not work the way it used
+        // to, plus the called method should deal with transaction itself - theo-vt
+        // App::AutoTransaction committer;
         switch (imp->dragObject(obj)) {
             case ViewProviderFeaturePythonImp::Accepted:
             case ViewProviderFeaturePythonImp::Rejected:
@@ -478,7 +480,9 @@ public:
     /// If the dropped object type is accepted the object will be added as child
     void dropObject(App::DocumentObject* obj) override
     {
-        App::AutoTransaction committer;
+        // Commented because AutoTransaction does not work the way it used
+        // to, plus the called method should deal with transaction itself - theo-vt
+        // App::AutoTransaction committer;
         switch (imp->dropObject(obj)) {
             case ViewProviderFeaturePythonImp::Accepted:
             case ViewProviderFeaturePythonImp::Rejected:
@@ -523,7 +527,9 @@ public:
         const std::vector<std::string>& elements
     ) override
     {
-        App::AutoTransaction committer;
+        // Commented because AutoTransaction does not work the way it used
+        // to, plus the called method should deal with transaction itself - theo-vt
+        // App::AutoTransaction committer;
         std::string ret;
         if (!imp->dropObjectEx(obj, owner, subname, elements, ret)) {
             ret = ViewProviderT::dropObjectEx(obj, owner, subname, elements);
@@ -677,7 +683,9 @@ protected:
 
     int replaceObject(App::DocumentObject* oldObj, App::DocumentObject* newObj) override
     {
-        App::AutoTransaction committer;
+        // Commented because AutoTransaction does not work the way it used
+        // to, plus the called method should deal with transaction itself - theo-vt
+        // App::AutoTransaction committer;
         switch (imp->replaceObject(oldObj, newObj)) {
             case ViewProviderFeaturePythonImp::Accepted:
                 return 1;
@@ -718,7 +726,9 @@ public:
 protected:
     bool doubleClicked() override
     {
-        App::AutoTransaction committer;
+        // Commented because AutoTransaction does not work the way it used
+        // to, plus the called method should deal with transaction itself - theo-vt
+        // App::AutoTransaction committer;
         switch (imp->doubleClicked()) {
             case ViewProviderFeaturePythonImp::Accepted:
                 return true;

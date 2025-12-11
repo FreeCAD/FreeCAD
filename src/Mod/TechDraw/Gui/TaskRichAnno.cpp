@@ -284,7 +284,7 @@ void TaskRichAnno::createAnnoFeature()
 
     std::string PageName = m_basePage->getNameInDocument();
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Anno"));
+    int tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Create Anno"));
     Command::doCommand(Command::Doc, "App.activeDocument().addObject('%s', '%s')",
                        annoType.c_str(), annoName.c_str());
     Command::doCommand(Command::Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)",
@@ -328,7 +328,7 @@ void TaskRichAnno::createAnnoFeature()
     std::string translatedObjectName{tr(objectName.c_str()).toStdString()};
     obj->Label.setValue(translatedObjectName + generatedSuffix);
 
-    Gui::Command::commitCommand();
+    Gui::Command::commitCommand(tid);
     Gui::Command::updateActive();
 
     //trigger claimChildren in tree
@@ -346,7 +346,7 @@ void TaskRichAnno::createAnnoFeature()
 void TaskRichAnno::updateAnnoFeature()
 {
 //    Base::Console().message("TRA::updateAnnoFeature()\n");
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit Anno"));
+    int tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Edit Anno"));
     commonFeatureUpdate();
     Base::Color ac;
     ac.setValue<QColor>(ui->cpFrameColor->color());
@@ -354,7 +354,7 @@ void TaskRichAnno::updateAnnoFeature()
     m_annoVP->LineWidth.setValue(ui->dsbWidth->rawValue());
     m_annoVP->LineStyle.setValue(ui->cFrameStyle->currentIndex());
 
-    Gui::Command::commitCommand();
+    Gui::Command::commitCommand(tid);
     Gui::Command::updateActive();
 }
 

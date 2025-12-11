@@ -210,6 +210,13 @@ public:
     /// is called by the framework if the user press the redo button
     virtual void onRedo();
 
+    /// Called by the framework when it becomes the shown dialog
+    /// of the stacked task panel (e.g. when it's document becomes active)
+    virtual void activate();
+    /// Called by the framework when it stops being the shown dialog
+    /// of the stacked task panel (e.g. when it's document stops being active)
+    virtual void deactivate();
+
     void emitDestructionSignal()
     {
         Q_EMIT aboutToBeDestroyed();

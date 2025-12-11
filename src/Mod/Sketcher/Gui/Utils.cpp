@@ -162,6 +162,21 @@ void SketcherGui::tryAutoRecomputeIfNotSolve(Sketcher::SketchObject* obj)
     }
 }
 
+void SketcherGui::closeAndRecompute(int& tid, bool abort, Sketcher::SketchObject* Obj)
+{
+    if (tid == 0) {
+        tryAutoRecompute(Obj);
+    }
+    if (abort) {
+        Gui::Command::abortCommand(tid);
+        tryAutoRecompute(Obj);
+    }
+    else {
+        tryAutoRecompute(Obj);
+        Gui::Command::commitCommand(tid);
+    }
+}
+
 std::string SketcherGui::getStrippedPythonExceptionString(const Base::Exception& e)
 {
     std::string msg = e.what();
