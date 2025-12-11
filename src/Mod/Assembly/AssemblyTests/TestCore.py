@@ -206,8 +206,8 @@ class TestCore(unittest.TestCase):
         JointObject.Joint(joint, 0)
 
         refs = [
-            [self.assembly, [box2.Name + ".Face6", box2.Name + ".Vertex7"]],
-            [self.assembly, [box.Name + ".Face6", box.Name + ".Vertex7"]],
+            [box2, ["Face6", "Vertex7"]],
+            [box, ["Face6", "Vertex7"]],
         ]
 
         joint.Proxy.setJointConnectors(joint, refs)

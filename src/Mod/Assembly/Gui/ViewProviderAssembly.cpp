@@ -194,10 +194,10 @@ bool ViewProviderAssembly::canDragObjectToTarget(App::DocumentObject* obj, App::
 
     for (auto joint : allJoints) {
         // getLinkObjFromProp returns nullptr if the property doesn't exist.
-        App::DocumentObject* part1 = getMovingPartFromRef(assemblyPart, joint, "Reference1");
-        App::DocumentObject* part2 = getMovingPartFromRef(assemblyPart, joint, "Reference2");
-        App::DocumentObject* obj1 = getObjFromRef(joint, "Reference1");
-        App::DocumentObject* obj2 = getObjFromRef(joint, "Reference2");
+        App::DocumentObject* part1 = getMovingPartFromRef(joint, "Reference1");
+        App::DocumentObject* part2 = getMovingPartFromRef(joint, "Reference2");
+        App::DocumentObject* obj1 = getObjFromJointRef(joint, "Reference1");
+        App::DocumentObject* obj2 = getObjFromJointRef(joint, "Reference2");
         App::DocumentObject* obj3 = getObjFromProp(joint, "ObjectToGround");
         if (obj == obj1 || obj == obj2 || obj == part1 || obj == part2 || obj == obj3) {
             if (!prompted) {
@@ -752,7 +752,7 @@ bool ViewProviderAssembly::getSelectedObjectsWithinAssembly(bool addPreselection
         App::DocumentObject* selRoot = Gui::Selection().getPreselection().Object.getObject();
         std::string sub = Gui::Selection().getPreselection().pSubName;
 
-        App::DocumentObject* obj = getMovingPartFromRef(assemblyPart, selRoot, sub);
+        App::DocumentObject* obj = getMovingPartFromSel(assemblyPart, selRoot, sub);
         if (canDragObjectIn3d(obj)) {
 
             bool alreadyIn = false;
@@ -821,7 +821,7 @@ void ViewProviderAssembly::collectMovableObjects(
         return;
     }
 
-    App::DocumentObject* part = getMovingPartFromRef(assemblyPart, selRoot, subNamePrefix);
+    App::DocumentObject* part = getMovingPartFromSel(assemblyPart, selRoot, subNamePrefix);
 
     if (onlySolids && assemblyPart->isPartConnected(part)) {
         return;  // No dragger for connected parts.
@@ -923,7 +923,7 @@ ViewProviderAssembly::DragMode ViewProviderAssembly::findDragMode()
         if (!ref) {
             return DragMode::Translation;
         }
-        auto* obj = getObjFromRef(movingJoint, pName.c_str());
+        auto* obj = getObjFromJointRef(movingJoint, pName.c_str());
         Base::Placement global_plc = App::GeoFeature::getGlobalPlacement(obj, ref);
         jcsGlobalPlc = global_plc * jcsPlc;
 
@@ -990,6 +990,7 @@ void ViewProviderAssembly::tryInitMove(const SbVec2s& cursorPos, Gui::View3DInve
         else if (visible) {
             joint->Visibility.setValue(false);
         }
+        joint->purgeTouched();
     }
 
     SbVec3f vec;
@@ -1068,6 +1069,7 @@ void ViewProviderAssembly::endMove()
         bool visible = pair.first->Visibility.getValue();
         if (visible != pair.second) {
             pair.first->Visibility.setValue(pair.second);
+            pair.first->purgeTouched();
         }
     }
 
@@ -1456,10 +1458,8 @@ void ViewProviderAssembly::isolateJointReferences(App::DocumentObject* joint, Is
         return;
     }
 
-    AssemblyObject* assembly = getObject<AssemblyObject>();
-
-    App::DocumentObject* part1 = getMovingPartFromRef(assembly, joint, "Reference1");
-    App::DocumentObject* part2 = getMovingPartFromRef(assembly, joint, "Reference2");
+    App::DocumentObject* part1 = getMovingPartFromRef(joint, "Reference1");
+    App::DocumentObject* part2 = getMovingPartFromRef(joint, "Reference2");
     if (!part1 || !part2) {
         return;
     }
