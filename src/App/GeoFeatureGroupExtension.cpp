@@ -356,12 +356,14 @@ void GeoFeatureGroupExtension::onCommitTransaction(const App::Document& doc)
     // Cerchiamo i pending touches per questo documento
     auto it = s_docPendingPlacementTouches.find(d);
     if (it == s_docPendingPlacementTouches.end()) {
+        depth--;  // restore before returning
         return;
     }
 
     auto& pending = it->second;
     if (pending.empty()) {
         s_docPendingPlacementTouches.erase(it);
+        depth--;  // restore before returning
         return;
     }
 
