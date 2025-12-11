@@ -714,6 +714,9 @@ public:
     */
     virtual Base::Placement getPlacementOf(const std::string& sub, DocumentObject* targetObj = nullptr);
 
+    /* Returns the Placement property to use if any*/
+    App::PropertyPlacement* getPlacementProperty() const;
+
 protected:
     /// recompute only this object
     virtual App::DocumentObjectExecReturn* recompute();
@@ -814,3 +817,4 @@ private:
 }  // namespace App
 
 #endif  // SRC_APP_DOCUMENTOBJECT_H_
+
