@@ -49,25 +49,29 @@ BoxExtension::BoxExtension()
 {
     initExtensionType(BoxExtension::getExtensionClassTypeId());
 
-    EXTENSION_ADD_PROPERTY_TYPE(Center,
+    EXTENSION_ADD_PROPERTY_TYPE(
+        BoxCenter,
                                 (Base::Vector3d(0.0, 0.0, 0.0)),
                                 "Box",
                                 (App::PropertyType)(App::Prop_None),
                                 "the center point of the box");
 
-    EXTENSION_ADD_PROPERTY_TYPE(Length,
+    EXTENSION_ADD_PROPERTY_TYPE(
+        BoxLength,
                                 (10),
                                 "Box",
                                 (App::PropertyType)(App::Prop_None),
                                 "The length of the box (along X axis)");
 
-    EXTENSION_ADD_PROPERTY_TYPE(Width,
+    EXTENSION_ADD_PROPERTY_TYPE(
+        BoxWidth,
                                 (10),
                                 "Box",
                                 (App::PropertyType)(App::Prop_None),
                                 "The width of the box (along Y axis)");
 
-    EXTENSION_ADD_PROPERTY_TYPE(Height,
+    EXTENSION_ADD_PROPERTY_TYPE(
+        BoxHeight,
                                 (10),
                                 "Box",
                                 (App::PropertyType)(App::Prop_None),
@@ -81,19 +85,22 @@ CylinderExtension::CylinderExtension()
 {
     initExtensionType(CylinderExtension::getExtensionClassTypeId());
 
-    EXTENSION_ADD_PROPERTY_TYPE(Center,
+    EXTENSION_ADD_PROPERTY_TYPE(
+        CylinderCenter,
                                 (Base::Vector3d(0.0, 0.0, 0.0)),
                                 "Cylinder",
                                 (App::PropertyType)(App::Prop_None),
                                 "The center point of the cylinder");
 
-    EXTENSION_ADD_PROPERTY_TYPE(Axis,
+    EXTENSION_ADD_PROPERTY_TYPE(
+        CylinderAxis,
                                 (Base::Vector3d(0.0, 0.0, 1.0)),
                                 "Cylinder",
                                 (App::PropertyType)(App::Prop_None),
                                 "The axis along wich the cylinder is defined");
 
-    EXTENSION_ADD_PROPERTY_TYPE(Radius,
+    EXTENSION_ADD_PROPERTY_TYPE(
+        CylinderRadius,
                                 (5),
                                 "Cylinder",
                                 (App::PropertyType)(App::Prop_None),
@@ -107,13 +114,15 @@ SphereExtension::SphereExtension()
 {
     initExtensionType(SphereExtension::getExtensionClassTypeId());
 
-    EXTENSION_ADD_PROPERTY_TYPE(Center,
+    EXTENSION_ADD_PROPERTY_TYPE(
+        SphereCenter,
                                 (Base::Vector3d(0.0, 0.0, 0.0)),
                                 "Sphere",
                                 (App::PropertyType)(App::Prop_None),
                                 "The center point of the sphere");
 
-    EXTENSION_ADD_PROPERTY_TYPE(Radius,
+    EXTENSION_ADD_PROPERTY_TYPE(
+        SphereRadius,
                                 (5),
                                 "Sphere",
                                 (App::PropertyType)(App::Prop_None),
@@ -127,13 +136,15 @@ PlaneExtension::PlaneExtension()
 {
     initExtensionType(PlaneExtension::getExtensionClassTypeId());
 
-    EXTENSION_ADD_PROPERTY_TYPE(Origin,
+    EXTENSION_ADD_PROPERTY_TYPE(
+        PlaneOrigin,
                                 (Base::Vector3d(0.0, 0.0, 0.0)),
                                 "Plane",
                                 (App::PropertyType)(App::Prop_None),
                                 "The origin of the plane");
 
-    EXTENSION_ADD_PROPERTY_TYPE(Normal,
+    EXTENSION_ADD_PROPERTY_TYPE(
+        PlaneNormal,
                                 (Base::Vector3d(0.0, 0.0, 1.0)),
                                 "Plane",
                                 (App::PropertyType)(App::Prop_None),

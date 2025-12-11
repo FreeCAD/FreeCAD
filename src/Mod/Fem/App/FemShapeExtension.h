@@ -49,10 +49,10 @@ public:
     ~BoxExtension() override;
 
     /// Properties
-    App::PropertyVectorDistance Center;
-    App::PropertyDistance       Length;
-    App::PropertyDistance       Width;
-    App::PropertyDistance       Height;
+    App::PropertyVectorDistance BoxCenter;
+    App::PropertyDistance       BoxLength;
+    App::PropertyDistance       BoxWidth;
+    App::PropertyDistance       BoxHeight;
 
 };
 
@@ -71,9 +71,9 @@ public:
     ~CylinderExtension() override;
 
     /// Properties
-    App::PropertyVector Axis;
-    App::PropertyVectorDistance Center;
-    App::PropertyDistance Radius;
+    App::PropertyVector CylinderAxis;
+    App::PropertyVectorDistance CylinderCenter;
+    App::PropertyDistance CylinderRadius;
 
 };
 
@@ -92,8 +92,8 @@ public:
     ~SphereExtension() override;
 
     /// Properties
-    App::PropertyDistance Radius;
-    App::PropertyVectorDistance Center;
+    App::PropertyDistance SphereRadius;
+    App::PropertyVectorDistance SphereCenter;
 
 };
 
@@ -112,8 +112,8 @@ public:
     ~PlaneExtension() override;
 
     /// Properties
-    App::PropertyVector Normal;
-    App::PropertyVectorDistance Origin;
+    App::PropertyVector PlaneNormal;
+    App::PropertyVectorDistance PlaneOrigin;
 };
 
 

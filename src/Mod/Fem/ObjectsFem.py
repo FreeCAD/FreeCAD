@@ -584,7 +584,7 @@ def makeMeshRegion(doc, base_mesh, element_length=0.0, name="MeshRegion"):
         view_mesh_region.VPMeshRegion(obj.ViewObject)
     return obj
 
-def makeMeshDistance(doc, base_mesh, name="MeshDistance"):
+def makeMeshDistance(doc, base_mesh, name="Distance"):
     """makeMeshDistance(document, base_mesh, [name]):
     creates a FEM mesh refinement object to define properties for a refinement of a FEM mesh
     """
@@ -638,14 +638,14 @@ def makeMeshMath(doc, base_mesh, name="MeshMath"):
         view_mesh_math.VPMeshMath(obj.ViewObject)
     return obj
 
-def makeMeshSphere(doc, base_mesh, name="MeshSphere"):
-    """makeMeshSphere(document, base_mesh [name]):
+def makeMeshShape(doc, base_mesh, name="Shape"):
+    """makeMeshShape(document, base_mesh [name]):
     creates a FEM mesh refinement object to define properties for a refinement of a FEM mesh
     """
     obj = doc.addObject("Fem::FeaturePython", name)
     from femobjects import mesh_shape
 
-    mesh_shape.MeshSphere(obj)
+    mesh_shape.MeshShape(obj)
 
     tmplist = base_mesh.MeshRefinementList
     tmplist.append(obj)
@@ -653,43 +653,7 @@ def makeMeshSphere(doc, base_mesh, name="MeshSphere"):
     if FreeCAD.GuiUp:
         from femviewprovider import view_mesh_shape
 
-        view_mesh_shape.VPMeshSphere(obj.ViewObject)
-    return obj
-
-def makeMeshBox(doc, base_mesh, name="MeshBox"):
-    """makeMeshBox(document, base_mesh [name]):
-    creates a FEM mesh refinement object to define properties for a refinement of a FEM mesh
-    """
-    obj = doc.addObject("Fem::FeaturePython", name)
-    from femobjects import mesh_shape
-
-    mesh_shape.MeshBox(obj)
-
-    tmplist = base_mesh.MeshRefinementList
-    tmplist.append(obj)
-    base_mesh.MeshRefinementList = tmplist
-    if FreeCAD.GuiUp:
-        from femviewprovider import view_mesh_shape
-
-        view_mesh_shape.VPMeshBox(obj.ViewObject)
-    return obj
-
-def makeMeshCylinder(doc, base_mesh, name="MeshCylinder"):
-    """makeMeshCylinder(document, base_mesh [name]):
-    creates a FEM mesh refinement object to define properties for a refinement of a FEM mesh
-    """
-    obj = doc.addObject("Fem::FeaturePython", name)
-    from femobjects import mesh_shape
-
-    mesh_shape.MeshCylinder(obj)
-
-    tmplist = base_mesh.MeshRefinementList
-    tmplist.append(obj)
-    base_mesh.MeshRefinementList = tmplist
-    if FreeCAD.GuiUp:
-        from femviewprovider import view_mesh_shape
-
-        view_mesh_shape.VPMeshCylinder(obj.ViewObject)
+        view_mesh_shape.VPMeshShape(obj.ViewObject)
     return obj
 
 def makeMeshTransfiniteCurve(doc, base_mesh, name="TransfiniteCurve"):
