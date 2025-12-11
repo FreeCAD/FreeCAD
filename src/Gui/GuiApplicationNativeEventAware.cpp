@@ -165,7 +165,7 @@ bool Gui::GUIApplicationNativeEventAware::processSpaceballEvent(QObject* object,
             const auto specialKey = getSpecialKey(buttonEvent->buttonNumber());
             if (specialKey == SpecialKey::Esc) {
                 /* If button number is 10, create and send a keyboard event, Esc key. */
-                auto keyEvent = QKeyEvent {
+                const auto keyEvent = new QKeyEvent {
                     buttonEvent->buttonStatus() == Spaceball::ButtonState::Pressed
                         ? QEvent::KeyPress
                         : QEvent::KeyRelease,
@@ -174,7 +174,7 @@ bool Gui::GUIApplicationNativeEventAware::processSpaceballEvent(QObject* object,
                 };
                 QWidget* focusWidget = QApplication::focusWidget();
                 if (focusWidget) {
-                    QApplication::postEvent(focusWidget, new QKeyEvent(keyEvent));
+                    QApplication::postEvent(focusWidget, keyEvent);
                 }
             }
             else if (specialKey == SpecialKey::Alt) {
