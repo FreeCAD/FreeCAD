@@ -1646,7 +1646,7 @@ Base::Placement DocumentObject::getPlacementOf(const std::string& sub, DocumentO
 
 App::PropertyPlacement* DocumentObject::getPlacementProperty() const
 {
-    if (auto linkExtension = getExtensionByType<App::LinkBaseExtension>()) {
+    if (auto linkExtension = getExtensionByType<App::LinkBaseExtension>(true)) {
         if (auto linkPlacementProp = linkExtension->getLinkPlacementProperty()) {
             return linkPlacementProp;
         }
@@ -1656,3 +1656,4 @@ App::PropertyPlacement* DocumentObject::getPlacementProperty() const
 
     return getPropertyByName<App::PropertyPlacement>("Placement");
 }
+
