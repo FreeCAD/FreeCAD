@@ -968,6 +968,7 @@ public:
     // Signaled when solver has done update
     boost::signals2::signal<void()> signalSolverUpdate;
     boost::signals2::signal<void()> signalElementsChanged;
+    boost::signals2::signal<void(Constraint*)> signalConstraintAdded;
 
     Part::TopoShape buildInternals(const Part::TopoShape& edges) const;
 
