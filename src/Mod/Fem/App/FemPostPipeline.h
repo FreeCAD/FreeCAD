@@ -32,7 +32,7 @@
 #include "FemResultObject.h"
 #include "VTKExtensions/vtkFemFrameSourceAlgorithm.h"
 
-#if VTK_VERSION_NUMBER < VTK_VERSION_CHECK(9, 3, 0)
+#if VTK_VERSION_NUMBER < VTK_VERSION_CHECK(9, 2, 20230125)
 # include "VTKExtensions/vtkCleanUnstructuredGrid.h"
 #else
 # include <vtkCleanUnstructuredGrid.h>
