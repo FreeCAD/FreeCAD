@@ -546,7 +546,11 @@ bool Gui::GuiNativeEvent::Is3dmouseAttached()
             for (unsigned int j = 0; j < numDevicesOfInterest; ++j) {
                 if (devicesToRegister[j].usUsage == rdi.hid.usUsage
                     && devicesToRegister[j].usUsagePage == rdi.hid.usUsagePage) {
-                    Base::Console().log("Found 3D mouse device ID {%04X:%04X}.\n", rdi.hid.dwVendorId, rdi.hid.dwProductId);
+                    Base::Console().log(
+                        "Found 3D mouse device ID {%04X:%04X}.\n",
+                        rdi.hid.dwVendorId,
+                        rdi.hid.dwProductId
+                    );
                     return true;
                 }
             }

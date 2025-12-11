@@ -78,7 +78,8 @@ void Gui::GUIApplicationNativeEventAware::initSpaceball(QMainWindow* window)
     if (nativeEvent && hViewGrp->GetBool("LegacySpaceMouseDevices", false)) {
         // Even though Navlib is enabled, process native events to support legacy devices.
         nativeEvent->initSpaceball(window);
-    } else {
+    }
+    else {
         Base::Console().log("Legacy device support not enabled\n");
     }
 # else
