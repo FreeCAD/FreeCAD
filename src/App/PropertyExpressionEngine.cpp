@@ -20,6 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <algorithm>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -143,7 +144,7 @@ Property* PropertyExpressionEngine::Copy() const
 
 void PropertyExpressionEngine::hasSetValue()
 {
-    App::DocumentObject* owner = dynamic_cast<App::DocumentObject*>(getContainer());
+    auto* owner = freecad_cast<App::DocumentObject*>(getContainer());
     if (!owner || !owner->isAttachedToDocument() || owner->isRestoring()
         || testFlag(LinkDetached)) {
         PropertyExpressionContainer::hasSetValue();
@@ -151,13 +152,14 @@ void PropertyExpressionEngine::hasSetValue()
     }
 
     std::map<App::DocumentObject*, bool> deps;
+    std::map<std::pair<std::string, App::DocumentObject*>, bool> propDeps;
     std::vector<std::string> labels;
     unregisterElementReference();
     UpdateElementReferenceExpressionVisitor<PropertyExpressionEngine> v(*this);
     for (auto& e : expressions) {
         auto expr = e.second.expression;
         if (expr) {
-            expr->getDepObjects(deps, &labels);
+            expr->getDepObjects(deps, &labels, &propDeps);
             if (!restoring) {
                 expr->visit(v);
             }
@@ -165,7 +167,7 @@ void PropertyExpressionEngine::hasSetValue()
     }
     registerLabelReferences(std::move(labels));
 
-    updateDeps(std::move(deps));
+    updateDeps(std::move(deps), &propDeps);
 
     if (pimpl) {
         pimpl->conns.clear();
@@ -878,15 +880,36 @@ PropertyExpressionEngine::validateExpression(const ObjectIdentifier& path,
     DocumentObject* pathDocObj = usePath.getDocumentObject();
     assert(pathDocObj);
 
-    auto inList = pathDocObj->getInListEx(true);
-    for (auto& v : expr->getDepObjects()) {
-        auto docObj = v.first;
-        if (!v.second && inList.contains(docObj)) {
-            std::stringstream ss;
-            ss << "cyclic reference to " << docObj->getFullName();
-            return ss.str();
+    if (GetApplication().fineGrained) {
+        // Fully mimics the else part except for taking into account input properties.
+        auto inList = pathDocObj->getInListEx(true);
+
+        std::map<DocumentObject*, bool> depObjects;
+        std::map<std::pair<std::string, DocumentObject*>, bool> propDeps;
+        expr->getDepObjects(depObjects, nullptr, &propDeps);
+
+        for (const auto& [pair, hidden] : propDeps) {
+            auto* docObj = pair.second;
+            auto& propName = pair.first;
+            if (!hidden && inList.contains(docObj) && !docObj->isInputProperty(propName)) {
+                std::stringstream ss;
+                ss << "cyclic reference to " << docObj->getFullName() << "." << propName;
+                return ss.str();
+            }
         }
     }
+    else {
+        auto inList = pathDocObj->getInListEx(true);
+        for (auto& v : expr->getDepObjects()) {
+            auto docObj = v.first;
+            if (!v.second && inList.contains(docObj)) {
+                std::stringstream ss;
+                ss << "cyclic reference to " << docObj->getFullName();
+                return ss.str();
+            }
+        }
+    }
+
 
     // Check for internal document object dependencies
 
