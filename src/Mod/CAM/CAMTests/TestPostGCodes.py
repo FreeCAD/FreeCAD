@@ -713,6 +713,106 @@ class TestPostGCodes(PathTestUtils.PathTestBase):
 
     def test10730(self):
         """Test G73 command Generation."""
+        #
+        # Test translate_drill with G73, G90, and G98.
+        #
+        path = [
+            Path.Command("G0 X1 Y2"),
+            Path.Command("G0 Z8"),
+            Path.Command("G90"),
+            Path.Command("G98"),
+            Path.Command("G73 X1 Y2 Z0 F123 Q1.5 R5"),
+            Path.Command("G80"),
+            Path.Command("G90"),
+        ]
+        self.multi_compare(
+            path,
+            """G90
+G21
+G54
+G0 X1.000 Y2.000
+G0 Z8.000
+G90
+G98
+G73 X1.000 Y2.000 Z0.000 R5.000 Q1.500 F7380.000
+G80
+G90
+""",
+            "",
+        )
+        self.multi_compare(
+            path,
+            """G90
+G21
+G54
+G0 X1.000 Y2.000
+G0 Z8.000
+G90
+G0 X1.000 Y2.000
+G1 Z5.000 F7380.000
+G0 Z5.075
+G1 Z3.500 F7380.000
+G0 Z3.750
+G0 Z3.575
+G1 Z2.000 F7380.000
+G0 Z2.250
+G0 Z2.075
+G1 Z0.500 F7380.000
+G0 Z0.750
+G0 Z0.575
+G1 Z0.000 F7380.000
+G0 Z8.000
+G90
+""",
+            "--translate_drill",
+        )
+        self.multi_compare(
+            path,
+            """(Begin preamble)
+G90
+G21
+(Begin operation)
+G54
+(Finish operation)
+(Begin operation)
+(TC: Default Tool)
+(Begin toolchange)
+(M6 T1)
+(Finish operation)
+(Begin operation)
+G0 X1.000 Y2.000
+G0 Z8.000
+G90
+(G98)
+(G73 X1.000 Y2.000 Z0.000 R5.000 Q1.500 F7380.000)
+G0 X1.000 Y2.000
+G1 Z5.000 F7380.000
+G0 Z5.075
+G1 Z3.500 F7380.000
+G0 Z3.750
+G0 Z3.575
+G1 Z2.000 F7380.000
+G0 Z2.250
+G0 Z2.075
+G1 Z0.500 F7380.000
+G0 Z0.750
+G0 Z0.575
+G1 Z0.000 F7380.000
+G0 Z8.000
+(G80)
+G90
+(Finish operation)
+(Begin postamble)
+""",
+            "--comments --translate_drill",
+        )
+        #
+        # reinitialize the postprocessor data structures before doing more tests
+        #
+        self.post.reinitialize()
+        #
+        # Test translate_drill with G73, G90 and G99.
+        #
         path = [
             Path.Command("G0 X1 Y2"),
             Path.Command("G0 Z8"),
@@ -735,7 +835,7 @@ G73 X1.000 Y2.000 Z0.000 R5.000 Q1.500 F7380.000
 G80
 G90
 """,
-            "",
+            "--no-comments --no-translate_drill",
         )
         self.multi_compare(
             path,
@@ -806,7 +906,104 @@ G90
         #
         self.post.reinitialize()
         #
-        # Test translate_drill with G73 and G91.
+        # Test translate_drill with G73, G91, and G98.
+        #
+        path = [
+            Path.Command("G0 X1 Y2"),
+            Path.Command("G0 Z8"),
+            Path.Command("G90"),
+            Path.Command("G98"),
+            Path.Command("G73 X1 Y2 Z0 F123 Q1.5 R5"),
+            Path.Command("G80"),
+            Path.Command("G90"),
+        ]
+        self.multi_compare(
+            path,
+            """G90
+G21
+G54
+G0 X1.000 Y2.000
+G0 Z8.000
+G90
+G98
+G73 X1.000 Y2.000 Z0.000 R5.000 Q1.500 F7380.000
+G80
+G90
+""",
+            "",
+        )
+        self.multi_compare(
+            path,
+            """G90
+G21
+G54
+G0 X1.000 Y2.000
+G0 Z8.000
+G90
+G0 X1.000 Y2.000
+G1 Z5.000 F7380.000
+G0 Z5.075
+G1 Z3.500 F7380.000
+G0 Z3.750
+G0 Z3.575
+G1 Z2.000 F7380.000
+G0 Z2.250
+G0 Z2.075
+G1 Z0.500 F7380.000
+G0 Z0.750
+G0 Z0.575
+G1 Z0.000 F7380.000
+G0 Z8.000
+G90
+""",
+            "--translate_drill",
+        )
+        self.multi_compare(
+            path,
+            """(Begin preamble)
+G90
+G21
+(Begin operation)
+G54
+(Finish operation)
+(Begin operation)
+(TC: Default Tool)
+(Begin toolchange)
+(M6 T1)
+(Finish operation)
+(Begin operation)
+G0 X1.000 Y2.000
+G0 Z8.000
+G90
+(G98)
+(G73 X1.000 Y2.000 Z0.000 R5.000 Q1.500 F7380.000)
+G0 X1.000 Y2.000
+G1 Z5.000 F7380.000
+G0 Z5.075
+G1 Z3.500 F7380.000
+G0 Z3.750
+G0 Z3.575
+G1 Z2.000 F7380.000
+G0 Z2.250
+G0 Z2.075
+G1 Z0.500 F7380.000
+G0 Z0.750
+G0 Z0.575
+G1 Z0.000 F7380.000
+G0 Z8.000
+(G80)
+G90
+(Finish operation)
+(Begin postamble)
+""",
+            "--comments --translate_drill",
+        )
+        #
+        # reinitialize the postprocessor data structures before doing more tests
+        #
+        self.post.reinitialize()
+        #
+        # Test translate_drill with G73, G91 and G99.
         #
         path = [
             Path.Command("G0 X1 Y2"),
@@ -905,6 +1102,167 @@ G90
 
     def test10810(self):
         """Test G81 command Generation."""
+        #
+        # Test translate_drill with G81, G90, and G98.
+        #
+        path = [
+            Path.Command("G0 X1 Y2"),
+            Path.Command("G0 Z8"),
+            Path.Command("G90"),
+            Path.Command("G98"),
+            Path.Command("G81 X1 Y2 Z0 F123 R5"),
+            Path.Command("G80"),
+            Path.Command("G90"),
+        ]
+        self.multi_compare(
+            path,
+            """G90
+G21
+G54
+G0 X1.000 Y2.000
+G0 Z8.000
+G90
+G98
+G81 X1.000 Y2.000 Z0.000 R5.000 F7380.000
+G80
+G90
+""",
+            "--no-translate_drill",
+        )
+        self.multi_compare(
+            path,
+            """G90
+G21
+G54
+G0 X1.000 Y2.000
+G0 Z8.000
+G90
+G0 X1.000 Y2.000
+G1 Z5.000 F7380.000
+G1 Z0.000 F7380.000
+G0 Z8.000
+G90
+""",
+            "--translate_drill",
+        )
+        self.multi_compare(
+            path,
+            """(Begin preamble)
+G90
+G21
+(Begin operation)
+G54
+(Finish operation)
+(Begin operation)
+(TC: Default Tool)
+(Begin toolchange)
+(M6 T1)
+(Finish operation)
+(Begin operation)
+G0 X1.000 Y2.000
+G0 Z8.000
+G90
+(G98)
+(G81 X1.000 Y2.000 Z0.000 R5.000 F7380.000)
+G0 X1.000 Y2.000
+G1 Z5.000 F7380.000
+G1 Z0.000 F7380.000
+G0 Z8.000
+(G80)
+G90
+(Finish operation)
+(Begin postamble)
+""",
+            "--comments --translate_drill",
+        )
+        #
+        # reinitialize the postprocessor data structures before doing more tests
+        #
+        self.post.reinitialize()
+        #
+        # Test translate_drill with G81, G91, and G98.
+        #
+        path = [
+            Path.Command("G0 X1 Y2"),
+            Path.Command("G0 Z8"),
+            Path.Command("G91"),
+            Path.Command("G98"),
+            Path.Command("G81 X1 Y2 Z0 F123 R5"),
+            Path.Command("G80"),
+            Path.Command("G90"),
+        ]
+        self.multi_compare(
+            path,
+            """G90
+G21
+G54
+G0 X1.000 Y2.000
+G0 Z8.000
+G91
+G98
+G81 X1.000 Y2.000 Z0.000 R5.000 F7380.000
+G80
+G90
+""",
+            "--no-translate_drill",
+        )
+        self.multi_compare(
+            path,
+            """G90
+G21
+G54
+G0 X1.000 Y2.000
+G0 Z8.000
+G91
+G90
+G0 Z13.000
+G0 X2.000 Y4.000
+G1 Z8.000 F7380.000
+G0 Z13.000
+G91
+G90
+""",
+            "--translate_drill",
+        )
+        self.multi_compare(
+            path,
+            """(Begin preamble)
+G90
+G21
+(Begin operation)
+G54
+(Finish operation)
+(Begin operation)
+(TC: Default Tool)
+(Begin toolchange)
+(M6 T1)
+(Finish operation)
+(Begin operation)
+G0 X1.000 Y2.000
+G0 Z8.000
+G91
+(G98)
+(G81 X1.000 Y2.000 Z0.000 R5.000 F7380.000)
+G90
+G0 Z13.000
+G0 X2.000 Y4.000
+G1 Z8.000 F7380.000
+G0 Z13.000
+G91
+(G80)
+G90
+(Finish operation)
+(Begin postamble)
+""",
+            "--comments --translate_drill",
+        )
+        #
+        # reinitialize the postprocessor data structures before doing more tests
+        #
+        self.post.reinitialize()
+        #
+        # Test translate_drill with G81, G90, and G99.
+        #
         path = [
             Path.Command("G0 X1 Y2"),
             Path.Command("G0 Z8"),
@@ -980,7 +1338,7 @@ G90
         #
         self.post.reinitialize()
         #
-        # Test translate_drill with G81 and G91.
+        # Test translate_drill with G81, G91, and G99.
         #
         path = [
             Path.Command("G0 X1 Y2"),
@@ -1061,6 +1419,88 @@ G90
 
     def test10820(self):
         """Test G82 command Generation."""
+        #
+        # Test translate_drill with G82, G90, and G98.
+        #
+        path = [
+            Path.Command("G0 X1 Y2"),
+            Path.Command("G0 Z8"),
+            Path.Command("G90"),
+            Path.Command("G98"),
+            Path.Command("G82 X1 Y2 Z0 F123 R5 P1.23456"),
+            Path.Command("G80"),
+            Path.Command("G90"),
+        ]
+        self.multi_compare(
+            path,
+            """G90
+G21
+G54
+G0 X1.000 Y2.000
+G0 Z8.000
+G90
+G98
+G82 X1.000 Y2.000 Z0.000 R5.000 P1.23456 F7380.000
+G80
+G90
+""",
+            "--no-translate_drill",
+        )
+        self.multi_compare(
+            path,
+            """G90
+G21
+G54
+G0 X1.000 Y2.000
+G0 Z8.000
+G90
+G0 X1.000 Y2.000
+G1 Z5.000 F7380.000
+G1 Z0.000 F7380.000
+G4 P1.23456
+G0 Z8.000
+G90
+""",
+            "--translate_drill",
+        )
+        self.multi_compare(
+            path,
+            """(Begin preamble)
+G90
+G21
+(Begin operation)
+G54
+(Finish operation)
+(Begin operation)
+(TC: Default Tool)
+(Begin toolchange)
+(M6 T1)
+(Finish operation)
+(Begin operation)
+G0 X1.000 Y2.000
+G0 Z8.000
+G90
+(G98)
+(G82 X1.000 Y2.000 Z0.000 R5.000 P1.23456 F7380.000)
+G0 X1.000 Y2.000
+G1 Z5.000 F7380.000
+G1 Z0.000 F7380.000
+G4 P1.23456
+G0 Z8.000
+(G80)
+G90
+(Finish operation)
+(Begin postamble)
+""",
+            "--comments --translate_drill",
+        )
+        #
+        # reinitialize the postprocessor data structures before doing more tests
+        #
+        self.post.reinitialize()
+        #
+        # Test translate_drill with G82, G90, and G99.
+        #
         path = [
             Path.Command("G0 X1 Y2"),
             Path.Command("G0 Z8"),
@@ -1138,7 +1578,90 @@ G90
         #
         self.post.reinitialize()
         #
-        # Test translate_drill with G82 and G91.
+        # Test translate_drill with G82, G91, and G98.
+        #
+        path = [
+            Path.Command("G0 X1 Y2"),
+            Path.Command("G0 Z8"),
+            Path.Command("G91"),
+            Path.Command("G98"),
+            Path.Command("G82 X1 Y2 Z0 F123 R5 P1.23456"),
+            Path.Command("G80"),
+            Path.Command("G90"),
+        ]
+        self.multi_compare(
+            path,
+            """G90
+G21
+G54
+G0 X1.000 Y2.000
+G0 Z8.000
+G91
+G98
+G82 X1.000 Y2.000 Z0.000 R5.000 P1.23456 F7380.000
+G80
+G90
+""",
+            "--no-translate_drill",
+        )
+        self.multi_compare(
+            path,
+            """G90
+G21
+G54
+G0 X1.000 Y2.000
+G0 Z8.000
+G91
+G90
+G0 Z13.000
+G0 X2.000 Y4.000
+G1 Z8.000 F7380.000
+G4 P1.23456
+G0 Z13.000
+G91
+G90
+""",
+            "--translate_drill",
+        )
+        self.multi_compare(
+            path,
+            """(Begin preamble)
+G90
+G21
+(Begin operation)
+G54
+(Finish operation)
+(Begin operation)
+(TC: Default Tool)
+(Begin toolchange)
+(M6 T1)
+(Finish operation)
+(Begin operation)
+G0 X1.000 Y2.000
+G0 Z8.000
+G91
+(G98)
+(G82 X1.000 Y2.000 Z0.000 R5.000 P1.23456 F7380.000)
+G90
+G0 Z13.000
+G0 X2.000 Y4.000
+G1 Z8.000 F7380.000
+G4 P1.23456
+G0 Z13.000
+G91
+(G80)
+G90
+(Finish operation)
+(Begin postamble)
+""",
+            "--comments --translate_drill",
+        )
+        #
+        # reinitialize the postprocessor data structures before doing more tests
+        #
+        self.post.reinitialize()
+        #
+        # Test translate_drill with G82, G91, and G99.
         #
         path = [
             Path.Command("G0 X1 Y2"),
@@ -1221,6 +1744,205 @@ G90
 
     def test10830(self):
         """Test G83 command Generation."""
+        #
+        # Test translate_drill with G83, G90, and G98.
+        #
+        path = [
+            Path.Command("G0 X1 Y2"),
+            Path.Command("G0 Z8"),
+            Path.Command("G90"),
+            Path.Command("G98"),
+            Path.Command("G83 X1 Y2 Z0 F123 Q1.5 R5"),
+            Path.Command("G80"),
+            Path.Command("G90"),
+        ]
+        self.multi_compare(
+            path,
+            """G90
+G21
+G54
+G0 X1.000 Y2.000
+G0 Z8.000
+G90
+G98
+G83 X1.000 Y2.000 Z0.000 R5.000 Q1.500 F7380.000
+G80
+G90
+""",
+            "--no-translate_drill",
+        )
+        self.multi_compare(
+            path,
+            """G90
+G21
+G54
+G0 X1.000 Y2.000
+G0 Z8.000
+G90
+G0 X1.000 Y2.000
+G1 Z5.000 F7380.000
+G0 Z5.075
+G1 Z3.500 F7380.000
+G0 Z8.000
+G0 Z3.575
+G1 Z2.000 F7380.000
+G0 Z8.000
+G0 Z2.075
+G1 Z0.500 F7380.000
+G0 Z8.000
+G0 Z0.575
+G1 Z0.000 F7380.000
+G0 Z8.000
+G90
+""",
+            "--translate_drill",
+        )
+        self.multi_compare(
+            path,
+            """(Begin preamble)
+G90
+G21
+(Begin operation)
+G54
+(Finish operation)
+(Begin operation)
+(TC: Default Tool)
+(Begin toolchange)
+(M6 T1)
+(Finish operation)
+(Begin operation)
+G0 X1.000 Y2.000
+G0 Z8.000
+G90
+(G98)
+(G83 X1.000 Y2.000 Z0.000 R5.000 Q1.500 F7380.000)
+G0 X1.000 Y2.000
+G1 Z5.000 F7380.000
+G0 Z5.075
+G1 Z3.500 F7380.000
+G0 Z8.000
+G0 Z3.575
+G1 Z2.000 F7380.000
+G0 Z8.000
+G0 Z2.075
+G1 Z0.500 F7380.000
+G0 Z8.000
+G0 Z0.575
+G1 Z0.000 F7380.000
+G0 Z8.000
+(G80)
+G90
+(Finish operation)
+(Begin postamble)
+""",
+            "--comments --translate_drill",
+        )
+        #
+        # reinitialize the postprocessor data structures before doing more tests
+        #
+        self.post.reinitialize()
+        #
+        # Test translate_drill with G83, G91 and G98.
+        #
+        path = [
+            Path.Command("G0 X1 Y2"),
+            Path.Command("G0 Z8"),
+            Path.Command("G91"),
+            Path.Command("G98"),
+            Path.Command("G83 X1 Y2 Z0 F123 Q1.5 R5"),
+            Path.Command("G80"),
+            Path.Command("G90"),
+        ]
+        self.multi_compare(
+            path,
+            """G90
+G21
+G54
+G0 X1.000 Y2.000
+G0 Z8.000
+G91
+G98
+G83 X1.000 Y2.000 Z0.000 R5.000 Q1.500 F7380.000
+G80
+G90
+""",
+            "--no-translate_drill",
+        )
+        self.multi_compare(
+            path,
+            """G90
+G21
+G54
+G0 X1.000 Y2.000
+G0 Z8.000
+G91
+G90
+G0 Z13.000
+G0 X2.000 Y4.000
+G1 Z11.500 F7380.000
+G0 Z13.000
+G0 Z11.575
+G1 Z10.000 F7380.000
+G0 Z13.000
+G0 Z10.075
+G1 Z8.500 F7380.000
+G0 Z13.000
+G0 Z8.575
+G1 Z8.000 F7380.000
+G0 Z13.000
+G91
+G90
+""",
+            "--translate_drill",
+        )
+        self.multi_compare(
+            path,
+            """(Begin preamble)
+G90
+G21
+(Begin operation)
+G54
+(Finish operation)
+(Begin operation)
+(TC: Default Tool)
+(Begin toolchange)
+(M6 T1)
+(Finish operation)
+(Begin operation)
+G0 X1.000 Y2.000
+G0 Z8.000
+G91
+(G98)
+(G83 X1.000 Y2.000 Z0.000 R5.000 Q1.500 F7380.000)
+G90
+G0 Z13.000
+G0 X2.000 Y4.000
+G1 Z11.500 F7380.000
+G0 Z13.000
+G0 Z11.575
+G1 Z10.000 F7380.000
+G0 Z13.000
+G0 Z10.075
+G1 Z8.500 F7380.000
+G0 Z13.000
+G0 Z8.575
+G1 Z8.000 F7380.000
+G0 Z13.000
+G91
+(G80)
+G90
+(Finish operation)
+(Begin postamble)
+""",
+            "--comments --translate_drill",
+        )
+        #
+        # reinitialize the postprocessor data structures before doing more tests
+        #
+        self.post.reinitialize()
+        #
+        # Test translate_drill with G83, G90, and G98.
+        #
         path = [
             Path.Command("G0 X1 Y2"),
             Path.Command("G0 Z8"),
@@ -1314,7 +2036,7 @@ G90
         #
         self.post.reinitialize()
         #
-        # Test translate_drill with G83 and G91.
+        # Test translate_drill with G83, G91 and G98.
         #
         path = [
             Path.Command("G0 X1 Y2"),
