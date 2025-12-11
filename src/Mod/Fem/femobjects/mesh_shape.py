@@ -38,74 +38,67 @@ class MeshShape(base_femmeshelement.BaseFemMeshElement):
     """
     The FemMeshShape object
     """
+
+    Type = "Fem::MeshShape"
+
+    def __init__(self, obj):
+        obj.addExtension("Fem::BoxExtensionPython")
+        obj.addExtension("Fem::SphereExtensionPython")
+        obj.addExtension("Fem::CylinderExtensionPython")
+        super().__init__(obj)
+
     def _get_properties(self):
 
         props = [
             _PropHelper(
+                type="App::PropertyEnumeration",
+                name="ShapeType",
+                group="Mesh",
+                doc="Mesh shape to be used",
+                value = ["Box", "Sphere", "Cylinder"],
+            ),
+            _PropHelper(
                 type="App::PropertyLength",
                 name="SizeIn",
-                group="MeshSize",
+                group="Mesh",
                 doc="Mesh size within the sphere",
                 value="100mm",
             ),
             _PropHelper(
                 type="App::PropertyLength",
                 name="SizeOut",
-                group="MeshSize",
+                group="Mesh",
                 doc="Mesh size outside of the sphere",
                 value="1000mm",
             ),
+             _PropHelper(
+                type="App::PropertyLength",
+                name="Thickness",
+                group="Mesh",
+                doc="Thickness of transition layer between in/out mesh sizes (added outside of the sphere)",
+                value="0mm",
+            )
         ]
 
-        return super()._get_properties() + props
-
-
-class MeshSphere(MeshShape):
-
-    Type = "Fem::MeshSphere"
-
-    def __init__(self, obj):
-        obj.addExtension("Fem::SphereExtensionPython")
-        super().__init__(obj)
-
-    def _get_properties(self):
-        props = super()._get_properties()
-        props.append(
-            _PropHelper(
-                type="App::PropertyLength",
-                name="Thickness",
-                group="MeshSize",
-                doc="Thickness of transition layer between in/out mesh sizes (added outside of the sphere)",
-                value="0mm",
-            ))
         return props
 
+    def onChanged(self, obj, prop):
 
-class MeshBox(MeshShape):
+        if "Center" in prop:
+            if hasattr(self, "_block_center_change") and self._block_center_change:
+                return
 
-    Type = "Fem::MeshBox"
+            # make sure all 3 shape centers are equal
+            self._block_center_change = True
+            match prop:
+                case "BoxCenter":
+                    obj.SphereCenter = obj.BoxCenter
+                    obj.CylinderCenter = obj.BoxCenter
+                case "SphereCenter":
+                    obj.BoxCenter = obj.SphereCenter
+                    obj.CylinderCenter = obj.SphereCenter
+                case "CylinderCenter":
+                    obj.SphereCenter = obj.CylinderCenter
+                    obj.BoxCenter = obj.CylinderCenter
+            self._block_center_change = False
 
-    def __init__(self, obj):
-        obj.addExtension("Fem::BoxExtensionPython")
-        super().__init__(obj)
-
-    def _get_properties(self):
-        props = super()._get_properties()
-        props.append(
-            _PropHelper(
-                type="App::PropertyLength",
-                name="Thickness",
-                group="MeshSize",
-                doc="Thickness of transition layer between in/out mesh sizes (added outside of the sphere)",
-                value="0mm",
-            ))
-        return props
-
-
-class MeshCylinder(MeshShape):
-
-    Type = "Fem::MeshCylinder"
-
-    def __init__(self, obj):
-        obj.addExtension("Fem::CylinderExtensionPython")
-        super().__init__(obj)

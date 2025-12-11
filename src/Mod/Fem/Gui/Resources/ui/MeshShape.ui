@@ -6,17 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>278</width>
-    <height>185</height>
+    <width>372</width>
+    <height>226</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
-   <property name="spacing">
-    <number>12</number>
-   </property>
    <property name="leftMargin">
     <number>0</number>
    </property>
@@ -51,6 +48,58 @@
       <string/>
      </property>
      <layout class="QFormLayout" name="formLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_4">
+        <property name="toolTip">
+         <string>Mesh size within the sphere</string>
+        </property>
+        <property name="text">
+         <string>Size inside</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="Gui::QuantitySpinBox" name="SizeIn">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Mesh size within the sphere</string>
+        </property>
+        <property name="unit" stdset="0">
+         <string notr="true"/>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_3">
+        <property name="toolTip">
+         <string>Mesh size outside of the sphere</string>
+        </property>
+        <property name="text">
+         <string>Size outside</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="Gui::QuantitySpinBox" name="SizeOut">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Mesh size outside of the sphere</string>
+        </property>
+        <property name="unit" stdset="0">
+         <string notr="true"/>
+        </property>
+       </widget>
+      </item>
       <item row="2" column="0">
        <widget class="QLabel" name="ThicknessLabel">
         <property name="toolTip">
@@ -86,59 +135,26 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
-       <widget class="Gui::QuantitySpinBox" name="SizeOut">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="toolTip">
-         <string>Mesh size outside of the sphere</string>
-        </property>
-        <property name="unit" stdset="0">
-         <string notr="true"/>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="Gui::QuantitySpinBox" name="SizeIn">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="toolTip">
-         <string>Mesh size within the sphere</string>
-        </property>
-        <property name="unit" stdset="0">
-         <string notr="true"/>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_3">
-        <property name="toolTip">
-         <string>Mesh size outside of the sphere</string>
-        </property>
-        <property name="text">
-         <string>Size outside</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_4">
-        <property name="toolTip">
-         <string>Mesh size within the sphere</string>
-        </property>
-        <property name="text">
-         <string>Size inside</string>
-        </property>
-       </widget>
-      </item>
      </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QComboBox" name="Shape">
+     <item>
+      <property name="text">
+       <string>Box</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Sphere</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Cylinder</string>
+      </property>
+     </item>
     </widget>
    </item>
   </layout>

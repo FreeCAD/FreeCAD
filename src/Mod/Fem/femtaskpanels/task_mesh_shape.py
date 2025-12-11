@@ -41,28 +41,37 @@ class _TaskPanelShape(base_femtaskpanel._BaseTaskPanel):
     The TaskPanel for editing References property of FemMeshRegion objects
     """
 
-    def __init__(self, obj, name, icon):
+    def __init__(self, obj):
         super().__init__(obj)
 
         self.parameter_widget = FreeCADGui.PySideUic.loadUi(
             FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/MeshShape.ui"
         )
         self.parameter_widget.setWindowTitle("Mesh size")
-        self.parameter_widget.setWindowIcon(FreeCADGui.getIcon(icon))
+        self.parameter_widget.setWindowIcon(FreeCADGui.getIcon(":icons/FEM_MeshShape.svg"))
         self._init_parameter_widget()
 
         # shape definition widget
-        # only allow valid distance objects!
         self.shape_widget = obj.ViewObject.createControlWidget()
-        self.shape_widget.setWindowTitle(name)
-        self.shape_widget.setWindowIcon(FreeCADGui.getIcon(icon))
+        self.parameter_widget.setWindowTitle("Shape definition")
+        self.shape_widget.setWindowIcon(FreeCADGui.getIcon(":icons/FEM_MeshShape.svg"))
+        self._init_shape_widget()
+
+        self.parameter_widget.layout().addWidget(self.shape_widget)
 
         # form made from param and selection widget
-        self.form = [self.parameter_widget, self.shape_widget]
+        self.form = [self.parameter_widget]
 
     def _init_parameter_widget(self):
 
         ui = self.parameter_widget
+
+        ui.Shape.setCurrentText(self.obj.ShapeType)
+        ui.Shape.currentTextChanged.connect(self.shapeChanged)
+
+        ui.Shape.setItemIcon(0, FreeCADGui.getIcon(":icons/FEM_MeshBox.svg"))
+        ui.Shape.setItemIcon(1, FreeCADGui.getIcon(":icons/FEM_MeshSphere.svg"))
+        ui.Shape.setItemIcon(2, FreeCADGui.getIcon(":icons/FEM_MeshCylinder.svg"))
 
         ui.SizeIn.setProperty("value", self.obj.SizeIn)
         FreeCADGui.ExpressionBinding(ui.SizeIn).bind(self.obj, "SizeIn")
@@ -72,14 +81,35 @@ class _TaskPanelShape(base_femtaskpanel._BaseTaskPanel):
         FreeCADGui.ExpressionBinding(ui.SizeOut).bind(self.obj, "SizeOut")
         ui.SizeOut.valueChanged.connect(self.sizeOutChanged)
 
-        if hasattr(self.obj, "Thickness"):
-            ui.Thickness.setProperty("value", self.obj.Thickness)
-            FreeCADGui.ExpressionBinding(ui.Thickness).bind(self.obj, "Thickness")
-            ui.Thickness.valueChanged.connect(self.thicknessChanged)
-        else:
+        ui.Thickness.setProperty("value", self.obj.Thickness)
+        FreeCADGui.ExpressionBinding(ui.Thickness).bind(self.obj, "Thickness")
+        ui.Thickness.valueChanged.connect(self.thicknessChanged)
+
+        if self.obj.ShapeType == "Cylinder":
             ui.Thickness.hide()
             ui.ThicknessLabel.hide()
 
+    def _init_shape_widget(self):
+
+        for i in range(self.shape_widget.count()):
+            w = self.shape_widget.widget(i)
+
+            if w.objectName() == f"ViewProvider{self.obj.ShapeType}ExtensionPython":
+                self.shape_widget.setCurrentIndex(i)
+                return
+
+
+    @QtCore.Slot(str)
+    def shapeChanged(self, value):
+        self.obj.ShapeType = value
+        self._init_shape_widget()
+
+        if self.obj.ShapeType == "Cylinder":
+            self.parameter_widget.Thickness.hide()
+            self.parameter_widget.ThicknessLabel.hide()
+        else:
+            self.parameter_widget.Thickness.show()
+            self.parameter_widget.ThicknessLabel.show()
 
     @QtCore.Slot(FreeCAD.Units.Quantity)
     def sizeInChanged(self, value):
@@ -93,18 +123,3 @@ class _TaskPanelShape(base_femtaskpanel._BaseTaskPanel):
     def thicknessChanged(self, value):
         self.obj.Thickness = value
 
-
-class _TaskPanelSphere(_TaskPanelShape):
-
-    def __init__(self, obj):
-        super().__init__(obj, "Sphere", ":icons/FEM_MeshSphere.svg")
-
-class _TaskPanelBox(_TaskPanelShape):
-
-    def __init__(self, obj):
-        super().__init__(obj, "Box", ":icons/FEM_MeshBox.svg")
-
-class _TaskPanelCylinder(_TaskPanelShape):
-
-    def __init__(self, obj):
-        super().__init__(obj, "Cylinder", ":icons/FEM_MeshCylinder.svg")

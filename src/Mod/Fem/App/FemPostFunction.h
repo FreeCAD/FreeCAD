@@ -119,6 +119,8 @@ protected:
     void onDocumentRestored() override;
 
     vtkSmartPointer<vtkBox> m_box;
+
+    void handleChangedPropertyName(Base::XMLReader& reader, const char* typeName, const char* propName) override;
 };
 
 // ---------------------------------------------------------------------------
@@ -140,6 +142,8 @@ protected:
     void onChanged(const App::Property* prop) override;
     /// get called after a document has been fully restored
     void onDocumentRestored() override;
+
+    void handleChangedPropertyName(Base::XMLReader& reader, const char* typeName, const char* propName) override;
 
     vtkSmartPointer<vtkCylinder> m_cylinder;
 };
@@ -164,6 +168,8 @@ protected:
     /// get called after a document has been fully restored
     void onDocumentRestored() override;
 
+    void handleChangedPropertyName(Base::XMLReader& reader, const char* typeName, const char* propName) override;
+
     vtkSmartPointer<vtkPlane> m_plane;
 };
 
@@ -184,6 +190,8 @@ public:
 
 protected:
     void onChanged(const App::Property* prop) override;
+
+    void handleChangedPropertyName(Base::XMLReader& reader, const char* typeName, const char* propName) override;
 
     vtkSmartPointer<vtkSphere> m_sphere;
 };
