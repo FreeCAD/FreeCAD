@@ -27,6 +27,7 @@
 
 #include <App/TransactionalObject.h>
 #include <App/PropertyExpressionEngine.h>
+#include <App/PropertyGeo.h>
 #include <App/PropertyLinks.h>
 #include <App/PropertyStandard.h>
 #include <Base/SmartPtrPy.h>
@@ -817,3 +818,4 @@ private:
 }  // namespace App
 
 #endif  // SRC_APP_DOCUMENTOBJECT_H_
+
