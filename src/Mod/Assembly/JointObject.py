@@ -2102,7 +2102,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         if not sub_name:
             self.presel_ref = None
             return
-        
+
         sub_name = UtilsAssembly.fixBodyExtraFeatureInSub(doc_name, sub_name)
 
         self.presel_ref = [App.getDocument(doc_name).getObject(obj_name), [sub_name]]
