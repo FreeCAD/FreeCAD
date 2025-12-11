@@ -28,6 +28,7 @@
 
 #include <cmath>
 #include <numbers>
+#include <iostream>
 
 #include <algorithm>
 #define DEBUG_DERIVS 0
@@ -838,7 +839,8 @@ double ConstraintP2PAngle::maxStep(MAP_pD_D& dir, double lim)
 
 // --------------------------------------------------------
 // P2LDistance
-ConstraintP2LDistance::ConstraintP2LDistance(Point& p, Line& l, double* d)
+ConstraintP2LDistance::ConstraintP2LDistance(Point& p, Line& l, double* d, bool ccw)
+    : ccw(ccw)
 {
     pvec.push_back(p.x);
     pvec.push_back(p.y);
@@ -860,11 +862,12 @@ double ConstraintP2LDistance::error()
 {
     double x0 = *p0x(), x1 = *p1x(), x2 = *p2x();
     double y0 = *p0y(), y1 = *p1y(), y2 = *p2y();
-    double dist = *distance();
+    double dist = ccw ? *distance() : -*distance();
     double dx = x2 - x1;
     double dy = y2 - y1;
     double d = sqrt(dx * dx + dy * dy);  // line length
-    double area = std::abs(-x0 * dy + y0 * dx + x1 * y2 - x2 * y1);
+    double area = (-x0 * dy + y0 * dx + x1 * y2 - x2 * y1);
+
     return scale * (area / d - dist);
 }
 
@@ -881,6 +884,7 @@ double ConstraintP2LDistance::grad(double* param)
         double d2 = dx * dx + dy * dy;
         double d = sqrt(d2);
         double area = -x0 * dy + y0 * dx + x1 * y2 - x2 * y1;
+
         if (param == p0x()) {
             deriv += (y1 - y2) / d;
         }
@@ -898,9 +902,6 @@ double ConstraintP2LDistance::grad(double* param)
         }
         if (param == p2y()) {
             deriv += ((x1 - x0) * d - (dy / d) * area) / d2;
-        }
-        if (area < 0) {
-            deriv *= -1;
         }
     }
     if (param == distance()) {
