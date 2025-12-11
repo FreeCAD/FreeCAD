@@ -24,8 +24,6 @@
 import re
 import os
 import time
-import cv2
-from PIL import Image
 import tempfile
 from pathlib import Path
 
@@ -1055,8 +1053,6 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
         if not file_path:
             return  # User cancelled
 
-        file_extension = Path(file_path).suffix.lower()
-
         # Get parameters
         view = Gui.ActiveDocument.ActiveView
         width, height = view.getSize()
@@ -1102,6 +1098,7 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
                 progress.setLabelText(translate("Assembly", "Assembling animation..."))
                 progress.setMaximum(0)  # Indeterminate progress
 
+                file_extension = Path(file_path).suffix.lower()
                 if file_extension == ".gif":
                     self.create_gif(file_path, frame_files, fps)
                 elif file_extension in [".mp4", ".avi"]:
@@ -1119,6 +1116,8 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
 
     def create_gif(self, output_path, frame_files, fps):
         """Creates an animated GIF from a list of image files using Pillow."""
+        from PIL import Image
+
         pil_images = [Image.open(f) for f in frame_files]
         duration_ms = int(1000 / fps)
         pil_images[0].save(
@@ -1132,6 +1131,8 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
 
     def create_video(self, output_path, frame_files, fps, size):
         """Creates a video file from a list of image files using OpenCV."""
+        import cv2
+
         file_extension = Path(output_path).suffix.lower()
 
         # Select codec based on file type
