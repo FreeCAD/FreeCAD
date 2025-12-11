@@ -162,7 +162,7 @@ Application* Application::Instance = nullptr;
 
 #ifdef USE_3DCONNEXION_NAVLIB
 extern "C" {
-  extern const long NlErrorCode;  // initialized before main() by navlib_load.cpp
+extern const long NlErrorCode;  // initialized before main() by navlib_load.cpp
 }
 #endif
 
@@ -692,8 +692,9 @@ Application::~Application()
 {
     Base::Console().log("Destruct Gui::Application\n");
 #ifdef USE_3DCONNEXION_NAVLIB
-    if (pNavlibInterface)
+    if (pNavlibInterface) {
         delete pNavlibInterface;
+    }
 #endif
     WorkbenchManager::destruct();
     WorkbenchManipulator::removeAll();
@@ -2610,7 +2611,8 @@ void Application::init3DMouse(MainWindow* mainWindow, QApplication* qtApp)
     );
     if (NlErrorCode) {
         Base::Console().log("Init: 3Dconnexion driver not installed\n");
-    } else {
+    }
+    else {
         Base::Console().log("Init: 3Dconnexion Navigation Framework present\n");
     }
     if (!hViewGrp->GetBool("LegacySpaceMouseDevices", false)) {
@@ -2620,7 +2622,8 @@ void Application::init3DMouse(MainWindow* mainWindow, QApplication* qtApp)
             Base::Console().log("Init: Enabling 3Dconnexion Navigation Framework\n");
             Instance->pNavlibInterface->enableNavigation();
         }
-    } else {
+    }
+    else {
         Base::Console().log("Init: Using legacy SpaceMouse support\n");
     }
 #endif

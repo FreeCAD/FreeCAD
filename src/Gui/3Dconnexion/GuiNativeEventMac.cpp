@@ -60,7 +60,7 @@ void Gui::GuiNativeEvent::tdx_drv_handler(
     static bool firstTime = true;
     if (firstTime) {
         firstTime = false;
-        //Base::Console().log("Call connexion handler\n");
+        // Base::Console().log("Call connexion handler\n");
     }
     Q_UNUSED(connection)
     // printf("tdx_drv_handler\n");
@@ -77,7 +77,7 @@ void Gui::GuiNativeEvent::tdx_drv_handler(
              * assigned id when the connection to the driver was established.
              */
             // printf("msg->client: %d, tdxClientID: %d\n", msg->client, tdxClientID);
-            //Base::Console().log("msg->client: %d, msg->command: %d\n", msg->client, msg->command);
+            // Base::Console().log("msg->client: %d, msg->command: %d\n", msg->client, msg->command);
 
             if (msg->client == tdxClientID) {
                 switch (msg->command) {
