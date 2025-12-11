@@ -163,8 +163,8 @@ void ViewProviderShapeExtension::extensionAttach(App::DocumentObject* pcObj)
         dragger->addMotionCallback(dragMotionCallback, this);
     }
 
-    getExtendedViewProvider()->addDisplayMaskMode(pcEditNode, "Default");
-    getExtendedViewProvider()->setDisplayMaskMode("Default");
+    getExtendedViewProvider()->addDisplayMaskMode(pcEditNode, m_mask_mode.c_str());
+    getExtendedViewProvider()->setDisplayMaskMode(m_mask_mode.c_str());
     pcEditNode->unref();
 }
 
@@ -301,42 +301,42 @@ void BoxWidget::setViewProvider(Gui::ViewProviderDocumentObject* view)
     FemGui::ShapeWidget::setViewProvider(view);
     setBlockObjectUpdates(true);
     Fem::BoxExtension* box = getObjectExtension<Fem::BoxExtension>();
-    Base::Unit unit = box->Center.getUnit();
+    Base::Unit unit = box->BoxCenter.getUnit();
     ui->centerX->setUnit(unit);
     ui->centerY->setUnit(unit);
     ui->centerZ->setUnit(unit);
-    unit = box->Length.getUnit();
+    unit = box->BoxLength.getUnit();
     ui->length->setUnit(unit);
-    unit = box->Width.getUnit();
+    unit = box->BoxWidth.getUnit();
     ui->width->setUnit(unit);
-    unit = box->Height.getUnit();
+    unit = box->BoxHeight.getUnit();
     ui->height->setUnit(unit);
     setBlockObjectUpdates(false);
-    onChange(box->Center);
-    onChange(box->Length);
-    onChange(box->Width);
-    onChange(box->Height);
+    onChange(box->BoxCenter);
+    onChange(box->BoxLength);
+    onChange(box->BoxWidth);
+    onChange(box->BoxHeight);
 }
 
 void BoxWidget::onChange(const App::Property& p)
 {
     setBlockObjectUpdates(true);
     Fem::BoxExtension* box = getObjectExtension<Fem::BoxExtension>();
-    if (&p == &box->Center) {
+    if (&p == &box->BoxCenter) {
         const Base::Vector3d& vec = static_cast<const App::PropertyVector*>(&p)->getValue();
         ui->centerX->setValue(vec.x);
         ui->centerY->setValue(vec.y);
         ui->centerZ->setValue(vec.z);
     }
-    else if (&p == &box->Length) {
+    else if (&p == &box->BoxLength) {
         double l = static_cast<const App::PropertyDistance*>(&p)->getValue();
         ui->length->setValue(l);
     }
-    else if (&p == &box->Width) {
+    else if (&p == &box->BoxWidth) {
         double w = static_cast<const App::PropertyDistance*>(&p)->getValue();
         ui->width->setValue(w);
     }
-    else if (&p == &box->Height) {
+    else if (&p == &box->BoxHeight) {
         double h = static_cast<const App::PropertyDistance*>(&p)->getValue();
         ui->height->setValue(h);
     }
@@ -349,7 +349,7 @@ void BoxWidget::centerChanged(double)
         Base::Vector3d vec(ui->centerX->value().getValue(),
                            ui->centerY->value().getValue(),
                            ui->centerZ->value().getValue());
-        getObjectExtension<Fem::BoxExtension>()->Center.setValue(vec);
+        getObjectExtension<Fem::BoxExtension>()->BoxCenter.setValue(vec);
     }
 }
 
@@ -357,7 +357,7 @@ void BoxWidget::lengthChanged(double)
 {
     if (!blockObjectUpdates()) {
         double l = ui->length->value().getValue();
-        getObjectExtension<Fem::BoxExtension>()->Length.setValue(l);
+        getObjectExtension<Fem::BoxExtension>()->BoxLength.setValue(l);
     }
 }
 
@@ -365,7 +365,7 @@ void BoxWidget::widthChanged(double)
 {
     if (!blockObjectUpdates()) {
         double w = ui->width->value().getValue();
-        getObjectExtension<Fem::BoxExtension>()->Width.setValue(w);
+        getObjectExtension<Fem::BoxExtension>()->BoxWidth.setValue(w);
     }
 }
 
@@ -373,7 +373,7 @@ void BoxWidget::heightChanged(double)
 {
     if (!blockObjectUpdates()) {
         double h = ui->height->value().getValue();
-        getObjectExtension<Fem::BoxExtension>()->Height.setValue(h);
+        getObjectExtension<Fem::BoxExtension>()->BoxHeight.setValue(h);
     }
 }
 
@@ -384,6 +384,8 @@ ViewProviderBoxExtension::ViewProviderBoxExtension()
 
     // setup the visualisation geometry
     getGeometryNode()->addChild(ShapeNodes::postBox());
+
+    m_mask_mode = "Box";
 }
 
 ViewProviderBoxExtension::~ViewProviderBoxExtension() = default;
@@ -397,21 +399,21 @@ void ViewProviderBoxExtension::draggerUpdate(SoDragger* m)
     const SbVec3f& center = dragger->translation.getValue();
     SbVec3f scale = dragger->scaleFactor.getValue();
 
-    box->Center.setValue(center[0], center[1], center[2]);
-    box->Length.setValue(scale[0]);
-    box->Width.setValue(scale[1]);
-    box->Height.setValue(scale[2]);
+    box->BoxCenter.setValue(center[0], center[1], center[2]);
+    box->BoxLength.setValue(scale[0]);
+    box->BoxWidth.setValue(scale[1]);
+    box->BoxHeight.setValue(scale[2]);
 }
 
 void ViewProviderBoxExtension::extensionUpdateData(const App::Property* p)
 {
     Fem::BoxExtension* box = getObjectExtension<Fem::BoxExtension>();
     if (!isDragging()
-        && (p == &box->Center || p == &box->Length || p == &box->Width || p == &box->Height)) {
-        const Base::Vector3d& center = box->Center.getValue();
-        float l = box->Length.getValue();
-        float w = box->Width.getValue();
-        float h = box->Height.getValue();
+        && (p == &box->BoxCenter || p == &box->BoxLength || p == &box->BoxWidth || p == &box->BoxHeight)) {
+        const Base::Vector3d& center = box->BoxCenter.getValue();
+        float l = box->BoxLength.getValue();
+        float w = box->BoxWidth.getValue();
+        float h = box->BoxHeight.getValue();
 
         SbMatrix s, t;
         s.setScale(SbVec3f(l, w, h));
@@ -495,35 +497,35 @@ void CylinderWidget::setViewProvider(Gui::ViewProviderDocumentObject* view)
     FemGui::ShapeWidget::setViewProvider(view);
     setBlockObjectUpdates(true);
     Fem::CylinderExtension* cyl = getObjectExtension<Fem::CylinderExtension>();
-    Base::Unit unit = cyl->Center.getUnit();
+    Base::Unit unit = cyl->CylinderCenter.getUnit();
     ui->centerX->setUnit(unit);
     ui->centerY->setUnit(unit);
     ui->centerZ->setUnit(unit);
-    unit = cyl->Radius.getUnit();
+    unit = cyl->CylinderRadius.getUnit();
     ui->radius->setUnit(unit);
     setBlockObjectUpdates(false);
-    onChange(cyl->Center);
-    onChange(cyl->Radius);
-    onChange(cyl->Axis);
+    onChange(cyl->CylinderCenter);
+    onChange(cyl->CylinderRadius);
+    onChange(cyl->CylinderAxis);
 }
 
 void CylinderWidget::onChange(const App::Property& p)
 {
     setBlockObjectUpdates(true);
     Fem::CylinderExtension* cyl = getObjectExtension<Fem::CylinderExtension>();
-    if (&p == &cyl->Axis) {
+    if (&p == &cyl->CylinderAxis) {
         const Base::Vector3d& vec = static_cast<const App::PropertyVector*>(&p)->getValue();
         ui->axisX->setValue(vec.x);
         ui->axisY->setValue(vec.y);
         ui->axisZ->setValue(vec.z);
     }
-    else if (&p == &cyl->Center) {
+    else if (&p == &cyl->CylinderCenter) {
         const Base::Vector3d& vec = static_cast<const App::PropertyVectorDistance*>(&p)->getValue();
         ui->centerX->setValue(vec.x);
         ui->centerY->setValue(vec.y);
         ui->centerZ->setValue(vec.z);
     }
-    else if (&p == &cyl->Radius) {
+    else if (&p == &cyl->CylinderRadius) {
         double val = static_cast<const App::PropertyDistance*>(&p)->getValue();
         ui->radius->setValue(val);
     }
@@ -536,7 +538,7 @@ void CylinderWidget::centerChanged(double)
         Base::Vector3d vec(ui->centerX->value().getValue(),
                            ui->centerY->value().getValue(),
                            ui->centerZ->value().getValue());
-        getObjectExtension<Fem::CylinderExtension>()->Center.setValue(vec);
+        getObjectExtension<Fem::CylinderExtension>()->CylinderCenter.setValue(vec);
     }
 }
 
@@ -546,14 +548,14 @@ void CylinderWidget::axisChanged(double)
         Base::Vector3d vec(ui->axisX->value().getValue(),
                            ui->axisY->value().getValue(),
                            ui->axisZ->value().getValue());
-        getObjectExtension<Fem::CylinderExtension>()->Axis.setValue(vec);
+        getObjectExtension<Fem::CylinderExtension>()->CylinderAxis.setValue(vec);
     }
 }
 
 void CylinderWidget::radiusChanged(double)
 {
     if (!blockObjectUpdates()) {
-        getObjectExtension<Fem::CylinderExtension>()->Radius.setValue(ui->radius->value().getValue());
+        getObjectExtension<Fem::CylinderExtension>()->CylinderRadius.setValue(ui->radius->value().getValue());
     }
 }
 
@@ -563,6 +565,8 @@ ViewProviderCylinderExtension::ViewProviderCylinderExtension()
 
     // setup the visualisation geometry
     getGeometryNode()->addChild(ShapeNodes::postCylinder());
+
+    m_mask_mode = "Cylinder";
 }
 
 ViewProviderCylinderExtension::~ViewProviderCylinderExtension() = default;
@@ -574,18 +578,18 @@ void ViewProviderCylinderExtension::draggerUpdate(SoDragger* m)
     const SbVec3f& center = dragger->translation.getValue();
     SbVec3f norm(0, 0, 1);
     dragger->rotation.getValue().multVec(norm, norm);
-    cyl->Center.setValue(center[0], center[1], center[2]);
-    cyl->Radius.setValue(dragger->scaleFactor.getValue()[0]);
-    cyl->Axis.setValue(norm[0], norm[1], norm[2]);
+    cyl->CylinderCenter.setValue(center[0], center[1], center[2]);
+    cyl->CylinderRadius.setValue(dragger->scaleFactor.getValue()[0]);
+    cyl->CylinderAxis.setValue(norm[0], norm[1], norm[2]);
 }
 
 void ViewProviderCylinderExtension::extensionUpdateData(const App::Property* p)
 {
     Fem::CylinderExtension* cyl = getObjectExtension<Fem::CylinderExtension>();
-    if (!isDragging() && (p == &cyl->Center || p == &cyl->Radius || p == &cyl->Axis)) {
-        Base::Vector3d trans = cyl->Center.getValue();
-        Base::Vector3d axis = cyl->Axis.getValue();
-        double radius = cyl->Radius.getValue();
+    if (!isDragging() && (p == &cyl->CylinderCenter || p == &cyl->CylinderRadius || p == &cyl->CylinderAxis)) {
+        Base::Vector3d trans = cyl->CylinderCenter.getValue();
+        Base::Vector3d axis = cyl->CylinderAxis.getValue();
+        double radius = cyl->CylinderRadius.getValue();
 
         SbMatrix translate;
         SbRotation rot(SbVec3f(0.0, 0.0, 1.0), SbVec3f(axis.x, axis.y, axis.z));
@@ -653,26 +657,26 @@ void SphereWidget::setViewProvider(Gui::ViewProviderDocumentObject* view)
     FemGui::ShapeWidget::setViewProvider(view);
     setBlockObjectUpdates(true);
     Fem::SphereExtension* sph = getObjectExtension<Fem::SphereExtension>();
-    Base::Unit unit = sph->Center.getUnit();
+    Base::Unit unit = sph->SphereCenter.getUnit();
     ui->centerX->setUnit(unit);
     ui->centerY->setUnit(unit);
     ui->centerZ->setUnit(unit);
-    unit = sph->Radius.getUnit();
+    unit = sph->SphereRadius.getUnit();
     ui->radius->setUnit(unit);
     setBlockObjectUpdates(false);
-    onChange(sph->Center);
-    onChange(sph->Radius);
+    onChange(sph->SphereCenter);
+    onChange(sph->SphereRadius);
 }
 
 void SphereWidget::onChange(const App::Property& p)
 {
     setBlockObjectUpdates(true);
     Fem::SphereExtension* sph = getObjectExtension<Fem::SphereExtension>();
-    if (&p == &sph->Radius) {
+    if (&p == &sph->SphereRadius) {
         double val = static_cast<const App::PropertyDistance*>(&p)->getValue();
         ui->radius->setValue(val);
     }
-    else if (&p == &sph->Center) {
+    else if (&p == &sph->SphereCenter) {
         const Base::Vector3d& vec = static_cast<const App::PropertyVectorDistance*>(&p)->getValue();
         ui->centerX->setValue(vec.x);
         ui->centerY->setValue(vec.y);
@@ -687,14 +691,14 @@ void SphereWidget::centerChanged(double)
         Base::Vector3d vec(ui->centerX->value().getValue(),
                            ui->centerY->value().getValue(),
                            ui->centerZ->value().getValue());
-        getObjectExtension<Fem::SphereExtension>()->Center.setValue(vec);
+        getObjectExtension<Fem::SphereExtension>()->SphereCenter.setValue(vec);
     }
 }
 
 void SphereWidget::radiusChanged(double)
 {
     if (!blockObjectUpdates()) {
-        getObjectExtension<Fem::SphereExtension>()->Radius.setValue(ui->radius->value().getValue());
+        getObjectExtension<Fem::SphereExtension>()->SphereRadius.setValue(ui->radius->value().getValue());
     }
 }
 
@@ -705,6 +709,8 @@ ViewProviderSphereExtension::ViewProviderSphereExtension()
 
     // setup the visualisation geometry
     getGeometryNode()->addChild(ShapeNodes::postSphere());
+
+    m_mask_mode = "Sphere";
 }
 
 ViewProviderSphereExtension::~ViewProviderSphereExtension() = default;
@@ -738,18 +744,18 @@ void ViewProviderSphereExtension::draggerUpdate(SoDragger* m)
     const SbVec3f& center = dragger->translation.getValue();
 
     SbVec3f norm(0, 0, 1);
-    sph->Center.setValue(center[0], center[1], center[2]);
-    sph->Radius.setValue(dragger->scaleFactor.getValue()[0]);
+    sph->SphereCenter.setValue(center[0], center[1], center[2]);
+    sph->SphereRadius.setValue(dragger->scaleFactor.getValue()[0]);
 }
 
 void ViewProviderSphereExtension::extensionUpdateData(const App::Property* p)
 {
     Fem::SphereExtension* sph = getObjectExtension<Fem::SphereExtension>();
 
-    if (!isDragging() && (p == &sph->Center || p == &sph->Radius)) {
+    if (!isDragging() && (p == &sph->SphereCenter || p == &sph->SphereRadius)) {
 
-        Base::Vector3d trans = sph->Center.getValue();
-        double radius = sph->Radius.getValue();
+        Base::Vector3d trans = sph->SphereCenter.getValue();
+        double radius = sph->SphereRadius.getValue();
 
         SbMatrix t, translate;
         t.setScale(radius);
@@ -823,7 +829,7 @@ void PlaneWidget::setViewProvider(Gui::ViewProviderDocumentObject* view)
 {
     FemGui::ShapeWidget::setViewProvider(view);
     Fem::PlaneExtension* pln = getObjectExtension<Fem::PlaneExtension>();
-    const Base::Unit unit = pln->Origin.getUnit();
+    const Base::Unit unit = pln->PlaneOrigin.getUnit();
     setBlockObjectUpdates(true);
     ui->originX->setUnit(unit);
     ui->originY->setUnit(unit);
@@ -831,21 +837,21 @@ void PlaneWidget::setViewProvider(Gui::ViewProviderDocumentObject* view)
     setBlockObjectUpdates(false);
     // The normal vector is unitless. It uses nevertheless Gui::PrefQuantitySpinBox to keep dialog
     // uniform.
-    onChange(pln->Normal);
-    onChange(pln->Origin);
+    onChange(pln->PlaneNormal);
+    onChange(pln->PlaneOrigin);
 }
 
 void PlaneWidget::onChange(const App::Property& p)
 {
     setBlockObjectUpdates(true);
     Fem::PlaneExtension* pln = getObjectExtension<Fem::PlaneExtension>();
-    if (&p == &pln->Normal) {
+    if (&p == &pln->PlaneNormal) {
         const Base::Vector3d& vec = static_cast<const App::PropertyVector*>(&p)->getValue();
         ui->normalX->setValue(vec.x);
         ui->normalY->setValue(vec.y);
         ui->normalZ->setValue(vec.z);
     }
-    else if (&p == &pln->Origin) {
+    else if (&p == &pln->PlaneOrigin) {
         const Base::Vector3d& vec = static_cast<const App::PropertyVectorDistance*>(&p)->getValue();
         ui->originX->setValue(vec.x);
         ui->originY->setValue(vec.y);
@@ -860,7 +866,7 @@ void PlaneWidget::normalChanged(double)
         Base::Vector3d vec(ui->normalX->value().getValue(),
                            ui->normalY->value().getValue(),
                            ui->normalZ->value().getValue());
-        getObjectExtension<Fem::PlaneExtension>()->Normal.setValue(vec);
+        getObjectExtension<Fem::PlaneExtension>()->PlaneNormal.setValue(vec);
     }
 }
 
@@ -870,7 +876,7 @@ void PlaneWidget::originChanged(double)
         Base::Vector3d vec(ui->originX->value().getValue(),
                            ui->originY->value().getValue(),
                            ui->originZ->value().getValue());
-        getObjectExtension<Fem::PlaneExtension>()->Origin.setValue(vec);
+        getObjectExtension<Fem::PlaneExtension>()->PlaneOrigin.setValue(vec);
     }
 }
 
@@ -895,6 +901,8 @@ ViewProviderPlaneExtension::ViewProviderPlaneExtension()
 
     // setup the visualisation geometry
     getGeometryNode()->addChild(ShapeNodes::postPlane());
+
+    m_mask_mode = "Plane";
 }
 
 ViewProviderPlaneExtension::~ViewProviderPlaneExtension() = default;
@@ -910,8 +918,8 @@ void ViewProviderPlaneExtension::draggerUpdate(SoDragger* m)
 
     SbVec3f norm(0.0, 0.0, 1.0);
     dragger->rotation.getValue().multVec(norm, norm);
-    pln->Origin.setValue(base[0], base[1], base[2]);
-    pln->Normal.setValue(norm[0], norm[1], norm[2]);
+    pln->PlaneOrigin.setValue(base[0], base[1], base[2]);
+    pln->PlaneNormal.setValue(norm[0], norm[1], norm[2]);
     this->Scale.setValue(scale[0]);
 }
 
@@ -943,7 +951,7 @@ void ViewProviderPlaneExtension::extensionUpdateData(const App::Property* p)
 {
     Fem::PlaneExtension* pln = getObjectExtension<Fem::PlaneExtension>();
 
-    if (!isDragging() && (p == &pln->Origin || p == &pln->Normal)) {
+    if (!isDragging() && (p == &pln->PlaneOrigin || p == &pln->PlaneNormal)) {
         // Auto-scale from geometry size at restore
         if (m_detectscale) {
             double s;
@@ -953,8 +961,8 @@ void ViewProviderPlaneExtension::extensionUpdateData(const App::Property* p)
                 m_detectscale = false;
             }
         }
-        Base::Vector3d trans = pln->Origin.getValue();
-        Base::Vector3d norm = pln->Normal.getValue();
+        Base::Vector3d trans = pln->PlaneOrigin.getValue();
+        Base::Vector3d norm = pln->PlaneNormal.getValue();
 
         norm.Normalize();
         SbRotation rot(SbVec3f(0.0, 0.0, 1.0), SbVec3f(norm.x, norm.y, norm.z));

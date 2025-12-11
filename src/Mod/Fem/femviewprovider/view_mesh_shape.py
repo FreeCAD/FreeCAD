@@ -33,68 +33,34 @@ from femtaskpanels import task_mesh_shape
 from . import view_base_femmeshelement
 
 
-class VPMeshSphere(view_base_femmeshelement.VPBaseFemMeshElement):
+class VPMeshShape(view_base_femmeshelement.VPBaseFemMeshElement):
     """
     A View Provider for the FemMeshSphere object
     """
 
     def __init__(self, vobj):
-        vobj.addExtension("FemGui::ViewProviderSphereExtensionPython")
-        super().__init__(vobj)
-
-    def setEdit(self, vobj, mode=0):
-        return super().setEdit(vobj, mode, task_mesh_shape._TaskPanelSphere)
-
-    def getDisplayModes(self,obj):
-        '''Return a list of display modes.'''
-        modes=[]
-        modes.append("Default")
-        return modes
-
-    def getDefaultDisplayMode(self):
-        '''Return the name of the default display mode. It must be defined in getDisplayModes.'''
-        return "Default"
-
-class VPMeshBox(view_base_femmeshelement.VPBaseFemMeshElement):
-    """
-    A View Provider for the FemMeshBox object
-    """
-
-    def __init__(self, vobj):
         vobj.addExtension("FemGui::ViewProviderBoxExtensionPython")
-        super().__init__(vobj)
-
-    def setEdit(self, vobj, mode=0):
-        return super().setEdit(vobj, mode, task_mesh_shape._TaskPanelBox)
-
-    def getDisplayModes(self,obj):
-        '''Return a list of display modes.'''
-        modes=[]
-        modes.append("Default")
-        return modes
-
-    def getDefaultDisplayMode(self):
-        '''Return the name of the default display mode. It must be defined in getDisplayModes.'''
-        return "Default"
-
-class VPMeshCylinder(view_base_femmeshelement.VPBaseFemMeshElement):
-    """
-    A View Provider for the FemMeshCylinder object
-    """
-
-    def __init__(self, vobj):
+        vobj.addExtension("FemGui::ViewProviderSphereExtensionPython")
         vobj.addExtension("FemGui::ViewProviderCylinderExtensionPython")
         super().__init__(vobj)
 
     def setEdit(self, vobj, mode=0):
-        return super().setEdit(vobj, mode, task_mesh_shape._TaskPanelCylinder)
+        return super().setEdit(vobj, mode, task_mesh_shape._TaskPanelShape)
 
     def getDisplayModes(self,obj):
         '''Return a list of display modes.'''
-        modes=[]
-        modes.append("Default")
+        modes=["Box", "Sphere", "Cylinder"]
         return modes
 
     def getDefaultDisplayMode(self):
         '''Return the name of the default display mode. It must be defined in getDisplayModes.'''
-        return "Default"
+        return "Box"
+
+    def updateData(self, obj, prop):
+
+        if prop == "ShapeType":
+            self.ViewObject.DisplayMode = obj.ShapeType
+            self.ViewObject.signalChangeIcon()
+
+    def getIcon(self):
+        return f":icons/FEM_Mesh{self.Object.ShapeType}.svg"

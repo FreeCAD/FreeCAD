@@ -25,6 +25,7 @@
 #include "ViewProviderShapeExtensionPy.cpp"
 
 #include <Gui/PythonWrapper.h>
+#include <QStackedWidget>
 
 
 using namespace Gui;
@@ -42,12 +43,34 @@ PyObject* ViewProviderShapeExtensionPy::createControlWidget(PyObject* args)
         return nullptr;
     }
 
-    auto ui = getViewProviderShapeExtensionPtr()->createShapeWidget();
-    ui->setViewProvider(getViewProviderShapeExtensionPtr()->getExtendedViewProvider());
+    // we support having multiple shape extensions in a single object. But as this python function
+    // is always named the same, only one can be called. Therefore we check which shape
+    // extensions are available, and return a stacked widget if multiple are available
+
+    auto view_obj = getViewProviderShapeExtensionPtr()->getExtendedViewProvider();
+    auto shape_extensions = view_obj->getExtensionsDerivedFromType<FemGui::ViewProviderShapeExtension>();
+
+    QWidget* widget = nullptr;
+    if (shape_extensions.size() > 1) {
+        auto stack = new QStackedWidget();
+        for(FemGui::ViewProviderShapeExtension* extension : shape_extensions)  {
+            auto ui = extension->createShapeWidget();
+            ui->setViewProvider(view_obj);
+            ui->setObjectName(QString::fromStdString(extension->name()));
+            ui->setWindowTitle(QString::fromStdString(extension->name()));
+            stack->addWidget(ui);
+        }
+        widget = stack;
+    }
+    else {
+        auto ui = getViewProviderShapeExtensionPtr()->createShapeWidget();
+        ui->setViewProvider(view_obj);
+        widget = ui;
+    }
 
     Gui::PythonWrapper wrap;
     if (wrap.loadCoreModule()) {
-        return Py::new_reference_to(wrap.fromQWidget(ui));
+        return Py::new_reference_to(wrap.fromQWidget(widget));
     }
 
     PyErr_SetString(PyExc_TypeError, "creating the ui element failed");

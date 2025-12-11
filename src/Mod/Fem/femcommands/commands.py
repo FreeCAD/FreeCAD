@@ -943,33 +943,13 @@ class _MeshMath(CommandManager):
         self.is_active = "with_gmsh_femmesh"
         self.do_activated = "add_obj_on_gui_selobj_set_edit"
 
-class _MeshSphere(CommandManager):
+class _MeshShape(CommandManager):
     "The FEM_MeshRefinement command definition"
 
     def __init__(self):
         super().__init__()
-        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_MeshSphere", "Refine spherical region")
-        self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_MeshSphere", "Sets mesh size within and outside of a pherical region")
-        self.is_active = "with_gmsh_femmesh"
-        self.do_activated = "add_obj_on_gui_selobj_set_edit"
-
-class _MeshBox(CommandManager):
-    "The FEM_MeshRefinement command definition"
-
-    def __init__(self):
-        super().__init__()
-        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_MeshBox", "Refine box region")
-        self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_MeshBox", "Sets mesh size within and outside of a box region")
-        self.is_active = "with_gmsh_femmesh"
-        self.do_activated = "add_obj_on_gui_selobj_set_edit"
-
-class _MeshCylinder(CommandManager):
-    "The FEM_MeshRefinement command definition"
-
-    def __init__(self):
-        super().__init__()
-        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_MeshCylinder", "Refine cylindrical region")
-        self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_MeshCylinder", "Sets mesh size within and outside of a cylindrical region")
+        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_MeshShape", "Shape based refinement")
+        self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_MeshSphere", "Sets mesh size within and outside of a geometric shape (box, sphere or cylinder)")
         self.is_active = "with_gmsh_femmesh"
         self.do_activated = "add_obj_on_gui_selobj_set_edit"
 
@@ -1014,8 +994,7 @@ class _GMSHRefine():
 
     def GetCommands(self):
         return ["FEM_MeshDistance", "FEM_MeshBoundaryLayer",
-                "FEM_MeshSphere", "FEM_MeshBox", "FEM_MeshCylinder",
-                "FEM_MeshRestrict", "FEM_MeshMath",
+                "FEM_MeshShape", "FEM_MeshRestrict", "FEM_MeshMath",
                 "FEM_MeshTransfiniteCurve", "FEM_MeshTransfiniteSurface", "FEM_MeshTransfiniteVolume"]
 
     def GetDefaultCommand(self):
@@ -1428,9 +1407,7 @@ FreeCADGui.addCommand("FEM_MeshRegion", _MeshRegion())
 FreeCADGui.addCommand("FEM_MeshDistance", _MeshDistance())
 FreeCADGui.addCommand("FEM_MeshRestrict", _MeshRestrict())
 FreeCADGui.addCommand("FEM_MeshMath", _MeshMath())
-FreeCADGui.addCommand("FEM_MeshSphere", _MeshSphere())
-FreeCADGui.addCommand("FEM_MeshBox", _MeshBox())
-FreeCADGui.addCommand("FEM_MeshCylinder", _MeshCylinder())
+FreeCADGui.addCommand("FEM_MeshShape", _MeshShape())
 FreeCADGui.addCommand("FEM_MeshTransfiniteCurve", _MeshTransfiniteCurve())
 FreeCADGui.addCommand("FEM_MeshTransfiniteSurface", _MeshTransfiniteSurface())
 FreeCADGui.addCommand("FEM_MeshTransfiniteVolume", _MeshTransfiniteVolume())

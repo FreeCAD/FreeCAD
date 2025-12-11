@@ -749,15 +749,24 @@ class GmshTools:
         self.size_field_list.append(settings)
         return settings["FieldID"]
 
+    def _build_shape_size_field(self, shape):
+
+        match shape.ShapeType:
+            case "Box":
+                return self._build_box_size_field(shape)
+            case "Cylinder":
+                return self._build_cylinder_size_field(shape)
+            case "Sphere":
+                return self._build_sphere_size_field(shape)
 
     def _build_sphere_size_field(self, sphere):
 
         settings = {"Field": "Ball", "Option": {}}
         settings["FieldID"] = self._next_field_number()
-        settings["Option"]["Radius"] = Units.Quantity(sphere.Radius).Value
-        settings["Option"]["XCenter"] = Units.Quantity(sphere.Center.x).Value
-        settings["Option"]["YCenter"] = Units.Quantity(sphere.Center.y).Value
-        settings["Option"]["ZCenter"] = Units.Quantity(sphere.Center.z).Value
+        settings["Option"]["Radius"] = Units.Quantity(sphere.SphereRadius).Value
+        settings["Option"]["XCenter"] = Units.Quantity(sphere.SphereCenter.x).Value
+        settings["Option"]["YCenter"] = Units.Quantity(sphere.SphereCenter.y).Value
+        settings["Option"]["ZCenter"] = Units.Quantity(sphere.SphereCenter.z).Value
         settings["Option"]["Thickness"] = Units.Quantity(sphere.Thickness).Value
         settings["Option"]["VIn"] = Units.Quantity(sphere.SizeIn).Value
         settings["Option"]["VOut"] = Units.Quantity(sphere.SizeOut).Value
@@ -766,17 +775,17 @@ class GmshTools:
         self.size_field_list.append(settings)
         return settings["FieldID"]
 
-    def _build_cylinder_size_field(self, sphere):
+    def _build_cylinder_size_field(self, cylinder):
 
         settings = {"Field": "Cylinder", "Option": {}}
         settings["FieldID"] = self._next_field_number()
-        settings["Option"]["Radius"] = Units.Quantity(cylinder.Radius).Value
-        settings["Option"]["XCenter"] = Units.Quantity(cylinder.Center.x).Value
-        settings["Option"]["YCenter"] = Units.Quantity(cylinder.Center.y).Value
-        settings["Option"]["ZCenter"] = Units.Quantity(cylinder.Center.z).Value
-        settings["Option"]["XAxis"] = Units.Quantity(cylinder.Axis.x).Value*1000
-        settings["Option"]["YAxis"] = Units.Quantity(cylinder.Axis.y).Value*1000
-        settings["Option"]["ZAxis"] = Units.Quantity(cylinder.Axis.z).Value*1000
+        settings["Option"]["Radius"] = Units.Quantity(cylinder.CylinderRadius).Value
+        settings["Option"]["XCenter"] = Units.Quantity(cylinder.CylinderCenter.x).Value
+        settings["Option"]["YCenter"] = Units.Quantity(cylinder.CylinderCenter.y).Value
+        settings["Option"]["ZCenter"] = Units.Quantity(cylinder.CylinderCenter.z).Value
+        settings["Option"]["XAxis"] = Units.Quantity(cylinder.CylinderAxis.x).Value*1000
+        settings["Option"]["YAxis"] = Units.Quantity(cylinder.CylinderAxis.y).Value*1000
+        settings["Option"]["ZAxis"] = Units.Quantity(cylinder.CylinderAxis.z).Value*1000
         settings["Option"]["VIn"] = Units.Quantity(cylinder.SizeIn).Value
         settings["Option"]["VOut"] = Units.Quantity(cylinder.SizeOut).Value
 
@@ -784,16 +793,16 @@ class GmshTools:
         self.size_field_list.append(settings)
         return settings["FieldID"]
 
-    def _build_box_size_field(self, sphere):
+    def _build_box_size_field(self, box):
 
         settings = {"Field": "Box", "Option": {}}
         settings["FieldID"] = self._next_field_number()
-        settings["Option"]["XMin"] = Units.Quantity(box.Center.x) - Units.Quantity(box.Length/2).Value
-        settings["Option"]["XMax"] = Units.Quantity(box.Center.x) + Units.Quantity(box.Length/2).Value
-        settings["Option"]["YMin"] = Units.Quantity(box.Center.y) - Units.Quantity(box.Width/2).Value
-        settings["Option"]["YMax"] = Units.Quantity(box.Center.y) + Units.Quantity(box.Width/2).Value
-        settings["Option"]["ZMin"] = Units.Quantity(box.Center.z) - Units.Quantity(box.Height/2).Value
-        settings["Option"]["ZMax"] = Units.Quantity(box.Center.z) + Units.Quantity(box.Height/2).Value
+        settings["Option"]["XMin"] = Units.Quantity(box.BoxCenter.x) - Units.Quantity(box.BoxLength/2).Value
+        settings["Option"]["XMax"] = Units.Quantity(box.BoxCenter.x) + Units.Quantity(box.BoxLength/2).Value
+        settings["Option"]["YMin"] = Units.Quantity(box.BoxCenter.y) - Units.Quantity(box.BoxWidth/2).Value
+        settings["Option"]["YMax"] = Units.Quantity(box.BoxCenter.y) + Units.Quantity(box.BoxWidth/2).Value
+        settings["Option"]["ZMin"] = Units.Quantity(box.BoxCenter.z) - Units.Quantity(box.BoxHeight/2).Value
+        settings["Option"]["ZMax"] = Units.Quantity(box.BoxCenter.z) + Units.Quantity(box.BoxHeight/2).Value
         settings["Option"]["Thickness"] = Units.Quantity(box.Thickness).Value
         settings["Option"]["VIn"] = Units.Quantity(box.SizeIn).Value
         settings["Option"]["VOut"] = Units.Quantity(box.SizeOut).Value
@@ -904,12 +913,8 @@ class GmshTools:
                 return self._build_constant_size_field(obj)
             case "Fem::MeshDistance":
                 return self._build_distance_size_field(obj)
-            case "Fem::MeshSphere":
-                return self._build_sphere_size_field(obj)
-            case "Fem::MeshCylinder":
-                return self._build_cylinder_size_field(obj)
-            case "Fem::MeshBox":
-                return self._build_box_size_field(obj)
+            case "Fem::MeshShape":
+                return self._build_shape_size_field(obj)
             case "Fem::MeshRestrict":
                 if children_fields and (children_fields[0]>0):
                     return self._build_restrict_size_field(obj, children_fields[0])
@@ -933,9 +938,7 @@ class GmshTools:
         # get all size field objects
         size_field_list =  self._get_definitions_of_type("Fem::MeshRegion")
         size_field_list += self._get_definitions_of_type("Fem::MeshDistance")
-        size_field_list += self._get_definitions_of_type("Fem::MeshSphere")
-        size_field_list += self._get_definitions_of_type("Fem::MeshCylinder")
-        size_field_list += self._get_definitions_of_type("Fem::MeshBox")
+        size_field_list += self._get_definitions_of_type("Fem::MeshShape")
         size_field_list += self._get_definitions_of_type("Fem::MeshRestrict")
         size_field_list += self._get_definitions_of_type("Fem::MeshMath")
 
