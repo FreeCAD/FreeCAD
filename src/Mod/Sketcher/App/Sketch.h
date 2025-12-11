@@ -330,7 +330,14 @@ public:
      *   constraint value and already inserted into either the FixParameters or
      *   Parameters array, as the case may be.
      */
-    int addDistanceConstraint(int geoId1, PointPos pos1, int geoId2, double* value, bool driving = true);
+    int addDistanceConstraint(
+        int geoId1,
+        PointPos pos1,
+        int geoId2,
+        double* value,
+        ConstraintOrientation orientation,
+        bool driving = true
+    );
     /**
      *   add a length or distance constraint
      *

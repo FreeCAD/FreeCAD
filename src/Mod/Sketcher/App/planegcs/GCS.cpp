@@ -649,9 +649,9 @@ int System::addConstraintP2PAngle(Point& p1, Point& p2, double* angle, int /*tag
     return addConstraintP2PAngle(p1, p2, angle, 0., 0, driving);
 }
 
-int System::addConstraintP2LDistance(Point& p, Line& l, double* distance, int tagId, bool driving)
+int System::addConstraintP2LDistance(Point& p, Line& l, double* distance, bool ccw, int tagId, bool driving)
 {
-    Constraint* constr = new ConstraintP2LDistance(p, l, distance);
+    Constraint* constr = new ConstraintP2LDistance(p, l, distance, ccw);
     constr->setTag(tagId);
     constr->setDriving(driving);
     return addConstraint(constr);

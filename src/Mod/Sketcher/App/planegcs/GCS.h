@@ -296,7 +296,14 @@ public:
         bool driving = true
     );
     int addConstraintP2PAngle(Point& p1, Point& p2, double* angle, int tagId = 0, bool driving = true);
-    int addConstraintP2LDistance(Point& p, Line& l, double* distance, int tagId = 0, bool driving = true);
+    int addConstraintP2LDistance(
+        Point& p,
+        Line& l,
+        double* distance,
+        bool ccw,
+        int tagId = 0,
+        bool driving = true
+    );
     int addConstraintPointOnLine(Point& p, Line& l, int tagId = 0, bool driving = true);
     int addConstraintPointOnLine(Point& p, Point& lp1, Point& lp2, int tagId = 0, bool driving = true);
     int addConstraintPointOnPerpBisector(Point& p, Line& l, int tagId = 0, bool driving = true);
