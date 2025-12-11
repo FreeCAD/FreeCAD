@@ -41,6 +41,10 @@ std::map<App::Document*, std::vector<App::DocumentObject*>>
 
 bool GeoFeatureGroupExtension::s_appSignalsConnected = false;
 
+std::unordered_map<App::Document*, int> GeoFeatureGroupExtension::s_docRecomputeDepth;
+const int GeoFeatureGroupExtension::MAX_RECOMPUTE_DEPTH;
+
+
 EXTENSION_PROPERTY_SOURCE(App::GeoFeatureGroupExtension, App::GroupExtension)
 
 
@@ -335,12 +339,27 @@ void GeoFeatureGroupExtension::onCommitTransaction(const App::Document& doc)
 {
     App::Document* d = const_cast<App::Document*>(&doc);
 
+    // Protezione contro ricorsione infinita del recompute
+    int& depth = s_docRecomputeDepth[d];
+    depth++;
+    if (depth > MAX_RECOMPUTE_DEPTH) {
+        Base::Console().error(
+            "GeoFeatureGroupExtension: maximum recompute recursion depth (%d) exceeded in document "
+            "%s\n",
+            MAX_RECOMPUTE_DEPTH,
+            d->getName()
+        );
+        depth--;  // restore before returning
+        return;
+    }
+
     // Cerchiamo i pending touches per questo documento
     auto it = s_docPendingPlacementTouches.find(d);
-    if (it == s_docPendingPlacementTouches.end())
+    if (it == s_docPendingPlacementTouches.end()) {
         return;
+    }
 
-    auto &pending = it->second;
+    auto& pending = it->second;
     if (pending.empty()) {
         s_docPendingPlacementTouches.erase(it);
         return;
@@ -348,24 +367,27 @@ void GeoFeatureGroupExtension::onCommitTransaction(const App::Document& doc)
 
     // Tocchiamo gli oggetti in sospeso
     for (auto* obj : pending) {
-        if (!obj) continue;
-        if (obj->getDocument() != d) continue; // oggetto eliminato?
+        if (!obj) {
+            continue;
+        }
+        if (obj->getDocument() != d) {
+            continue;  // oggetto eliminato?
+        }
 
         // Touch delle properties rilevanti
-        if (auto* prop = obj->getPropertyByName("Placement"))
+        if (auto* prop = obj->getPropertyByName("Placement")) {
             prop->touch();
+        }
 
         // Per gli sketch aggiorniamo la ExternalGeometry
         std::string tid = obj->getTypeId().getName();
-        bool isSketch =
-            (tid == "Sketcher::SketchObject") ||
-            (tid == "Sketcher::SketchObjectPython") ||
-            (tid == "PartDesign::Sketch") ||
-            (tid == "PartDesign::SketchPython");
+        bool isSketch = (tid == "Sketcher::SketchObject") || (tid == "Sketcher::SketchObjectPython")
+            || (tid == "PartDesign::Sketch") || (tid == "PartDesign::SketchPython");
 
         if (isSketch) {
-            if (auto* ext = obj->getPropertyByName("ExternalGeometry"))
+            if (auto* ext = obj->getPropertyByName("ExternalGeometry")) {
                 ext->touch();
+            }
         }
     }
 
@@ -376,6 +398,7 @@ void GeoFeatureGroupExtension::onCommitTransaction(const App::Document& doc)
         d->recompute();
     }
 
+    depth--;
 }
 
 

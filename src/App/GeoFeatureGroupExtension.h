@@ -173,6 +173,8 @@ private:
 
     // Slot statico chiamato alla fine di una transazione
     static void onCommitTransaction(const App::Document& doc);
+    static std::unordered_map<App::Document*, int> s_docRecomputeDepth;
+    static const int MAX_RECOMPUTE_DEPTH = 20;
 
 };
 
