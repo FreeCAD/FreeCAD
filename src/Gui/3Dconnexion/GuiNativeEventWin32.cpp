@@ -337,7 +337,7 @@ Gui::GuiNativeEvent::~GuiNativeEvent()
 {
     if (gMouseInput == this) {
         gMouseInput = 0;
-        Base::Console().log("3Dconnexion device detached.\n");
+        Base::Console().log("3Dconnexion device disabled.\n");
     }
 }
 
@@ -356,11 +356,11 @@ void Gui::GuiNativeEvent::initSpaceball(QMainWindow* mainWindow)
             Base::Console().log("3Dconnexion device initialized.\n");
         }
         else {
-            Base::Console().log("3Dconnexion device is attached, but not initialized.\n");
+            Base::Console().log("3Dconnexion device is present, but not initialized.\n");
         }
     }
     else {
-        Base::Console().log("3Dconnexion device not attached.\n");
+        Base::Console().log("3Dconnexion device not found.\n");
     }
 }
 
@@ -510,6 +510,7 @@ static PRAWINPUTDEVICE GetDevicesToRegister(unsigned int* pNumDevices)
 */
 bool Gui::GuiNativeEvent::Is3dmouseAttached()
 {
+    Base::Console().log("Searching for 3Dconnexion device...\n");
     unsigned int numDevicesOfInterest = 0;
     PRAWINPUTDEVICE devicesToRegister = GetDevicesToRegister(&numDevicesOfInterest);
 
@@ -545,6 +546,7 @@ bool Gui::GuiNativeEvent::Is3dmouseAttached()
             for (unsigned int j = 0; j < numDevicesOfInterest; ++j) {
                 if (devicesToRegister[j].usUsage == rdi.hid.usUsage
                     && devicesToRegister[j].usUsagePage == rdi.hid.usUsagePage) {
+                    Base::Console().log("Found 3D mouse device ID {%04X:%04X}.\n", rdi.hid.dwVendorId, rdi.hid.dwProductId);
                     return true;
                 }
             }

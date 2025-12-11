@@ -160,6 +160,12 @@ FC_LOG_LEVEL_INIT("Gui")
 
 Application* Application::Instance = nullptr;
 
+#ifdef USE_3DCONNEXION_NAVLIB
+extern "C" {
+  extern const long NlErrorCode;  // initialized before main() by navlib_load.cpp
+}
+#endif
+
 namespace Gui
 {
 
@@ -679,12 +685,19 @@ Application::Application(bool GUIenabled)
     ParameterGrp::handle hViewGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/View"
     );
-    if (!hViewGrp->GetBool("LegacySpaceMouseDevices", false)) {
-        // Instantiate the 3Dconnexion controller
-        pNavlibInterface = new NavlibInterface();
+    if (NlErrorCode) {
+        Base::Console().log("Init: 3Dconnexion driver not installed\n");
+    } else {
+        Base::Console().log("Init: 3Dconnexion Navigation Framework present\n");
     }
-    else {
-        pNavlibInterface = nullptr;
+    pNavlibInterface = nullptr;
+    if (!hViewGrp->GetBool("LegacySpaceMouseDevices", false)) {
+        if (!NlErrorCode) {
+            // Instantiate the 3Dconnexion controller
+            pNavlibInterface = new NavlibInterface();
+        }
+    } else {
+        Base::Console().log("Init: Using legacy SpaceMouse support\n");
     }
 #endif
 
@@ -2602,6 +2615,7 @@ void Application::runApplication()
 
 #ifdef USE_3DCONNEXION_NAVLIB
     if (Instance->pNavlibInterface) {
+        Base::Console().log("Init: Enabling 3Dconnexion Navigation Framework\n");
         Instance->pNavlibInterface->enableNavigation();
     }
 #endif

@@ -533,6 +533,7 @@ void StartupPostProcess::activateWorkbench()
 
     // initialize spaceball.
     if (auto fcApp = qobject_cast<GUIApplicationNativeEventAware*>(qtApp)) {
+        Base::Console().log("Init: Initializing 3D mouse event handling\n");
         fcApp->initSpaceball(mainWindow);
     }
 
