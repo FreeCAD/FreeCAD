@@ -817,4 +817,3 @@ private:
 }  // namespace App
 
 #endif  // SRC_APP_DOCUMENTOBJECT_H_
-
