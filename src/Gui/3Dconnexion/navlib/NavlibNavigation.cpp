@@ -47,6 +47,11 @@
 #include <Gui/WorkbenchManager.h>
 
 #include <Base/BoundBox.h>
+#include <Base/Console.h>
+
+#if defined(Q_OS_MAC)
+#include <CoreFoundation/CFBundle.h>
+#endif
 
 NavlibInterface::NavlibInterface()
     : CNavigation3D(false, navlib::nlOptions_t::no_ui),
@@ -174,6 +179,17 @@ void NavlibInterface::onViewChanged(const Gui::MDIView* view)
 
 void NavlibInterface::enableNavigation()
 {
+#if defined(Q_OS_MAC)
+    if (!CFBundleGetIdentifier(CFBundleGetMainBundle())) {
+        // As of 3DxWare version 10.8.11, EnableNavigation will silently fail if there's
+        // no bundle identifier. This happens when executing the binary directly rather
+        // than opening the .app. If future versions of the driver report the error,
+        // this special case can be removed.
+        Base::Console().error("3Dconnexion Navigation Framework does not support running apart from an .app!\n");
+        return;
+    }
+#endif
+
     PutProfileHint("FreeCAD");
     CNav3D::EnableNavigation(true, errorCode);
     if (errorCode)
