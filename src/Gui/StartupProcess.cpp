@@ -531,12 +531,6 @@ void StartupPostProcess::activateWorkbench()
         mainWindow->loadWindowSettings();
     }
 
-    // initialize spaceball.
-    if (auto fcApp = qobject_cast<GUIApplicationNativeEventAware*>(qtApp)) {
-        Base::Console().log("Init: Initializing 3D mouse event handling\n");
-        fcApp->initSpaceball(mainWindow);
-    }
-
     // Now run the background autoload, for workbenches that should be loaded at startup, but not
     // displayed to the user immediately
     autoloadModules(wb);
