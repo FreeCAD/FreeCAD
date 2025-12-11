@@ -157,8 +157,17 @@ void NavlibInterface::onViewChanged(const Gui::MDIView* view)
         navlib::box_t extents;
         navlib::matrix_t camera;
 
-        GetModelExtents(extents);
-        GetCameraMatrix(camera);
+        static unsigned long error_count = 0;  // Limit the number of error messages emitted.
+        long error = GetModelExtents(extents);
+        if (error && error_count <= 20) {
+            Base::Console().error("NavlibInterface::GetModelExtents error %ld\n", error);
+            error_count++;
+        }
+        error = GetCameraMatrix(camera);
+        if (error && error_count <= 20) {
+            Base::Console().error("NavlibInterface::GetCameraMatrix error %ld\n", error);
+            error_count++;
+        }
 
         Write(navlib::model_extents_k, extents);
         Write(navlib::view_affine_k, camera);
@@ -192,8 +201,10 @@ void NavlibInterface::enableNavigation()
 
     PutProfileHint("FreeCAD");
     CNav3D::EnableNavigation(true, errorCode);
-    if (errorCode)
+    if (errorCode) {
+        Base::Console().error("NavlibInterface::EnableNavigation error %d\n", errorCode.value());
         return;
+    }
 
     PutFrameTimingSource(TimingSource::SpaceMouse);
 
@@ -391,12 +402,18 @@ long NavlibInterface::SetViewExtents(const navlib::box_t& extents)
             return navlib::make_result_code(navlib::navlib_errc::no_data_available);
 
         navlib::box_t oldExtents;
-        GetViewExtents(oldExtents);
-
-        pCamera->scaleHeight(extents.max.x / oldExtents.max.x);
-        orthoNearDistance = pCamera->nearDistance.getValue();
-
-        return 0;
+        static unsigned long error_count = 0;  // Limit the number of error messages emitted.
+        long error = GetViewExtents(oldExtents);
+        if (error) {
+            if (error_count <= 10) {
+                Base::Console().error("NavlibInterface::GetViewExtents error %ld\n", error);
+                error_count++;
+            }
+        } else {
+            pCamera->scaleHeight(extents.max.x / oldExtents.max.x);
+            orthoNearDistance = pCamera->nearDistance.getValue();
+        }
+        return error;
     }
 
     return navlib::make_result_code(navlib::navlib_errc::no_data_available);
