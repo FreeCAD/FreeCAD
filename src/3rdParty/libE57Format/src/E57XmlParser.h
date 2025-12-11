@@ -27,7 +27,6 @@
 
 #pragma once
 
-#include <limits>
 #include <stack>
 
 #include <xercesc/sax/InputSource.hpp>
