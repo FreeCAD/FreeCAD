@@ -154,7 +154,7 @@ void BomObject::generateBOM()
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Assembly"
     );
-    mirroredSuffix = hGrp->GetASCII("BomMirroredSuffix", " (-1)"); 
+    mirroredSuffix = hGrp->GetASCII("BomMirroredSuffix", " (-1)");
 
     // Populate headers
     for (auto& columnName : columnsNames.getValues()) {
