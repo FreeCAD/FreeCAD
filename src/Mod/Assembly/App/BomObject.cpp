@@ -33,6 +33,7 @@
 #include <App/PropertyPythonObject.h>
 #include <App/Range.h>
 #include <Base/Console.h>
+#include <Base/Parameter.h>
 #include <Base/Placement.h>
 #include <Base/Rotation.h>
 #include <Base/Tools.h>
@@ -149,6 +150,12 @@ void BomObject::generateBOM()
     obj_mirrored_list.clear();
     size_t row = 0;
     size_t col = 0;
+
+    auto hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Assembly"
+    );
+    // Default to " (-1)" if the preference doesn't exist yet
+    mirroredSuffix = hGrp->GetASCII("BomMirroredSuffix", " (-1)"); 
 
     // Populate headers
     for (auto& columnName : columnsNames.getValues()) {
@@ -277,7 +284,7 @@ void BomObject::addObjectToBom(App::DocumentObject* obj, size_t row, std::string
             std::string name = obj->Label.getValue();
             // Distinctly label mirrored parts so they are identifiable in the BOM
             if (isMirrored) {
-                name += " (-1)";
+                name += mirroredSuffix;
             }
             setCell(App::CellAddress(row, col), name.c_str());
         }
