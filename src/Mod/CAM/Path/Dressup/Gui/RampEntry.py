@@ -343,13 +343,6 @@ class ObjectDressup:
 
             last_params.update(params)
 
-            if cmd.Name in Path.Geom.CmdMoveAll and (
-                "X" not in params or "Y" not in params or "Z" not in params
-            ):
-                params["X"] = params.get("X", start_point[0])
-                params["Y"] = params.get("Y", start_point[1])
-                params["Z"] = params.get("Z", start_point[2])
-                cmd = Path.Command(cmd.Name, params)
             annotated = AnnotatedGCode(cmd, start_point)
             self.edges.append(annotated)
             start_point = annotated.end_point
