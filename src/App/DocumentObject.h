@@ -30,6 +30,7 @@
 #include <App/PropertyLinks.h>
 #include <App/PropertyStandard.h>
 #include <Base/SmartPtrPy.h>
+#include <Base/Placement.h>
 
 #include <bitset>
 #include <unordered_map>
@@ -707,6 +708,11 @@ public:
     static const std::string& hiddenMarker();
     /// Check if the subname reference ends with hidden marker.
     static const char* hasHiddenMarker(const char* subname);
+
+    /* Find the placement of a target object as seen from this.
+    If no targetObj given, the last object found in the subname is used as target.
+    */
+    virtual Base::Placement getPlacementOf(const std::string& sub, DocumentObject* targetObj = nullptr);
 
 protected:
     /// recompute only this object

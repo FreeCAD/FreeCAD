@@ -2162,13 +2162,15 @@ void ViewProviderLink::updateData(const App::Property* prop)
     if (childVp) {
         childVp->updateData(prop);
     }
+
+    inherited::updateData(prop);
+
     if (!isRestoring() && !pcObject->isRestoring()) {
         auto ext = getLinkExtension();
         if (ext) {
             updateDataPrivate(getLinkExtension(), prop);
         }
     }
-    return inherited::updateData(prop);
 }
 
 static inline bool canScale(const Base::Vector3d& v)
@@ -2208,7 +2210,7 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension* ext, const App:
     }
     else if (prop == ext->getPlacementProperty() || prop == ext->getLinkPlacementProperty()) {
         auto propLinkPlacement = ext->getLinkPlacementProperty();
-        if (!propLinkPlacement || propLinkPlacement == prop) {
+        if (!propLinkPlacement || propLinkPlacement == prop || prop == ext->getPlacementProperty()) {
             const auto& v = ext->getScaleVector();
             if (canScale(v)) {
                 pcTransform->scaleFactor.setValue(v.x, v.y, v.z);

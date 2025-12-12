@@ -493,7 +493,6 @@ def _get_param_dictionary():
         "LayersManagerWidth":          ("int",       640),
         "MakeFaceMode":                ("bool",      True),
         "maxSnapEdges":                ("int",       0),
-        "maxSnapFaces":                ("int",       0),
         "OffsetCopyMode":              ("bool",      False),
         "Offset_OCC":                  ("bool",      False),
         "RelativeMode":                ("bool",      True),
