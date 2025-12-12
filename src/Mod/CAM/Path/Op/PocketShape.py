@@ -59,47 +59,47 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
     def removeHoles(self, solid, face, tolerance=1e-6):
         """removeHoles(solid, face, tolerance) ... Remove hole wires from a face, keeping outer wire and boss wires.
-        
+
         Uses a cross-section algorithm: sections the solid slightly above the face level.
         Wires that appear in the section are bosses (material above).
         Wires that don't appear are holes (voids).
-        
+
         Args:
             solid: The parent solid object
             face: The face to process
             tolerance: Distance tolerance for comparisons
-            
+
         Returns:
             New face with outer wire and boss wires only
         """
         outer_wire = face.OuterWire
         candidate_wires = [w for w in face.Wires if not w.isSame(outer_wire)]
-        
+
         if not candidate_wires:
             return face
-        
+
         boss_wires = []
-        
+
         try:
             # Create cutting plane from outer wire, offset above face by tolerance
             cutting_plane = Part.Face(outer_wire)
             cutting_plane.translate(FreeCAD.Vector(0, 0, tolerance))
-            
+
             # Section the solid
             section = solid.Shape.section(cutting_plane)
-            
-            if hasattr(section, 'Edges') and section.Edges:
+
+            if hasattr(section, "Edges") and section.Edges:
                 # Translate section edges back to face level
                 translated_edges = []
                 for edge in section.Edges:
                     translated_edge = edge.copy()
                     translated_edge.translate(FreeCAD.Vector(0, 0, -tolerance))
                     translated_edges.append(translated_edge)
-                
+
                 # Build closed wires from edges
                 edge_groups = Part.sortEdges(translated_edges)
                 all_section_wires = []
-                
+
                 for edge_list in edge_groups:
                     try:
                         wire = Part.Wire(edge_list)
@@ -108,22 +108,22 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                     except Exception:
                         # ignore any wires that can't be built
                         pass
-                
+
                 # Filter out outer wire, keep remaining as boss wires
                 for wire in all_section_wires:
                     if not wire.isSame(outer_wire):
                         length_diff = abs(wire.Length - outer_wire.Length)
                         if length_diff > tolerance:
                             boss_wires.append(wire)
-                            
+
         except Exception as e:
             Path.Log.error("removeHoles: Section algorithm failed: {}".format(e))
             boss_wires = candidate_wires
-        
+
         # Construct new face with outer wire and boss wires
         wire_compound = Part.makeCompound([outer_wire] + boss_wires)
         new_face = Part.makeFace(wire_compound, "Part::FaceMakerBullseye")
-        
+
         return new_face
 
     def initPocketOp(self, obj):
@@ -334,7 +334,10 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         else:
             Path.Log.debug("  -type(face.Surface): {}".format(type(face.Surface)))
             return False
+
+
 # Eclass
+
 
 def SetupProperties():
     setup = PathPocketBase.SetupProperties()  # Add properties from PocketBase module
