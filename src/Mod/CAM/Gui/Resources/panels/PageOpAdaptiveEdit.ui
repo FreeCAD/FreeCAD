@@ -301,7 +301,7 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <item row="14" column="0">
        <widget class="QLabel" name="label_9">
         <property name="text">
-         <string>Max diameter percent</string>
+         <string>Max diameter</string>
         </property>
        </widget>
       </item>
@@ -319,12 +319,18 @@ Larger values (further to the right) will calculate faster; smaller values (furt
         <property name="singleStep">
          <number>5</number>
         </property>
+        <property name="suffix">
+         <string>%</string>
+        </property>
+        <property name="decimals">
+         <number>1</number>
+        </property>
        </widget>
       </item>
       <item row="15" column="0">
        <widget class="QLabel" name="label_9">
         <property name="text">
-         <string>Min diameter percent</string>
+         <string>Min diameter</string>
         </property>
        </widget>
       </item>
@@ -341,6 +347,12 @@ Larger values (further to the right) will calculate faster; smaller values (furt
         </property>
         <property name="singleStep">
          <number>5</number>
+        </property>
+        <property name="suffix">
+         <string>%</string>
+        </property>
+        <property name="decimals">
+         <number>1</number>
         </property>
        </widget>
       </item>
