@@ -3181,7 +3181,9 @@ void ViewProviderLink::_setupContextMenu(
         });
         action->setCheckable(true);
         action->setChecked(prop->getValue() < 0.0);
-        action->setToolTip(QObject::tr("This affect only the selected link. The original object remains unchanged."));
+        action->setToolTip(
+            QObject::tr("This affect only the selected link. The original object remains unchanged.")
+        );
     }
 
     if ((ext->getPlacementProperty() && !ext->getPlacementProperty()->isReadOnly())
