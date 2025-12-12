@@ -146,6 +146,7 @@ void BomObject::generateBOM()
     saveCustomColumnData();
     clearAll();
     obj_list.clear();
+    obj_mirrored_list.clear();
     size_t row = 0;
     size_t col = 0;
 
@@ -186,6 +187,9 @@ void BomObject::addObjectChildrenToBom(
         if (!child) {
             continue;
         }
+
+        bool isMirrored = isObjMirrored(child);
+
         if (auto* asmLink = freecad_cast<AssemblyLink*>(child)) {
             child = asmLink->getLinkedAssembly();
             if (!child) {
@@ -208,10 +212,14 @@ void BomObject::addObjectChildrenToBom(
             // Check if the object is not already in (case of links). And if so just increment.
             // Note: an object can be used in several parts. In which case we do no want to blindly
             // increment.
+            // We also check if the Mirror state matches. Mirrored parts should not group with
+            // non-mirrored parts.
             bool found = false;
             for (size_t i = siblingsInitialRow; i <= row; ++i) {
                 size_t idInList = i - 1;  // -1 for the header
-                if (idInList < obj_list.size() && child == obj_list[idInList]) {
+                if (idInList < obj_list.size() && child == obj_list[idInList]
+                    && idInList < obj_mirrored_list.size()
+                    && isMirrored == obj_mirrored_list[idInList]) {
 
                     int qty = std::stoi(getText(i, quantityColIndex)) + 1;
                     setCell(App::CellAddress(i, quantityColIndex), std::to_string(qty).c_str());
@@ -227,7 +235,7 @@ void BomObject::addObjectChildrenToBom(
         std::string sub_index = index + std::to_string(sub_i);
         ++sub_i;
 
-        addObjectToBom(child, row, sub_index);
+        addObjectToBom(child, row, sub_index, isMirrored);
         ++row;
 
         if ((child->isDerivedFrom<AssemblyObject>() && detailSubAssemblies.getValue())
@@ -238,7 +246,31 @@ void BomObject::addObjectChildrenToBom(
     }
 }
 
-void BomObject::addObjectToBom(App::DocumentObject* obj, size_t row, std::string index)
+bool BomObject::isObjMirrored(App::DocumentObject* obj)
+{
+    // Determine mirror state based on Scale properties.
+    // We multiply scales to handle nested mirroring (e.g., Mirrored LinkElement inside Mirrored
+    // LinkGroup = Normal).
+    double accumulatedScale = 1.0;
+    if (auto element = static_cast<App::LinkElement*>(obj)) {
+        accumulatedScale *= element->Scale.getValue();
+
+        if (auto group = element->getLinkGroup()) {
+            accumulatedScale *= group->Scale.getValue();
+        }
+    }
+    else if (auto link = static_cast<App::Link*>(obj)) {
+        accumulatedScale *= link->Scale.getValue();
+    }
+    return accumulatedScale < 0.0;
+}
+
+void BomObject::addObjectToBom(
+    App::DocumentObject* obj,
+    size_t row,
+    std::string index,
+    bool isMirrored
+)
 {
     obj_list.push_back(obj);
     size_t col = 0;
@@ -247,7 +279,12 @@ void BomObject::addObjectToBom(App::DocumentObject* obj, size_t row, std::string
             setCell(App::CellAddress(row, col), (std::string("'") + index).c_str());
         }
         else if (columnName == "Name") {
-            setCell(App::CellAddress(row, col), obj->Label.getValue());
+            std::string name = obj->Label.getValue();
+            // Distinctly label mirrored parts so they are identifiable in the BOM
+            if (isMirrored) {
+                name += " (-1)";
+            }
+            setCell(App::CellAddress(row, col), name.c_str());
         }
         else if (columnName == "File Name") {
             setCell(App::CellAddress(row, col), obj->getDocument()->getFileName());
