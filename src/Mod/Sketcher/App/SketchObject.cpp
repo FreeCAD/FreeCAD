@@ -3444,6 +3444,34 @@ void createNewConstraintsForTrim(
     }
 }
 
+std::optional<size_t> findPieceContainingPoint(
+    const SketchObject* obj,
+    const Part::Geometry* geo,
+    const Base::Vector3d& point,
+    const std::vector<int>& newIds,
+    const std::vector<const Part::Geometry*>& newGeos
+)
+{
+    double conParam;
+    auto* geoAsCurve = static_cast<const Part::GeomCurve*>(geo);
+    geoAsCurve->closestParameter(point, conParam);
+    // Choose based on where the closest point lies
+    // If it's not there, just leave this constraint out
+    for (size_t i = 0; i < newIds.size(); ++i) {
+        double newGeoFirstParam = static_cast<const Part::GeomCurve*>(newGeos[i])->getFirstParameter();
+        double newGeoLastParam = static_cast<const Part::GeomCurve*>(newGeos[i])->getLastParameter();
+        // For periodic curves the point may need a full revolution
+        if ((newGeoFirstParam - conParam) > Precision::PApproximation() && obj->isClosedCurve(geo)) {
+            conParam += (geoAsCurve->getLastParameter() - geoAsCurve->getFirstParameter());
+        }
+        if ((newGeoFirstParam - conParam) <= Precision::PApproximation()
+            && (conParam - newGeoLastParam) <= Precision::PApproximation()) {
+            return i;
+        }
+    }
+    return std::nullopt;
+}
+
 int SketchObject::trim(int GeoId, const Base::Vector3d& point)
 {
     if (!isGeoIdAllowedForTrim(this, GeoId)) {
@@ -3741,20 +3769,30 @@ bool SketchObject::deriveConstraintsForPieces(
                     return false;
                 }
 
-                // TODO: transfer only to the curve that actually intersects
-                for (auto& newId : newIds) {
+                // transfer only to the curve that actually intersects
+                Base::Vector3d point(getPoint(thirdGeo, thirdPos));
+                std::optional<size_t> idx = findPieceContainingPoint(this, geo, point, newIds, newGeos);
+
+                if (idx.has_value()) {
                     Constraint* trans = con->copy();
                     trans->substituteIndexAndPos(GeoIdList[0], PosIdList[0], GeoIdList[1], PosIdList[1]);
-                    trans->substituteIndex(oldId, newId);
+                    trans->substituteIndex(oldId, newIds[idx.value()]);
                     newConstraints.push_back(trans);
+                    return true;
                 }
-
-                return true;
             }
             else if (thirdGeo != GeoEnum::GeoUndef) {
                 // Angle via point but the point won't change, can transfer to all or first
-                // TODO: transfer only to the curve that actually intersects
-                transferToAll = true;
+                // transfer only to the curve that actually intersects
+                Base::Vector3d point(getPoint(thirdGeo, thirdPos));
+                std::optional<size_t> idx = findPieceContainingPoint(this, geo, point, newIds, newGeos);
+
+                if (idx.has_value()) {
+                    Constraint* trans = con->copy();
+                    trans->substituteIndex(oldId, newIds[idx.value()]);
+                    newConstraints.push_back(trans);
+                    return true;
+                }
                 break;
             }
             else if (std::ranges::any_of(newGeos, [](const Part::Geometry* geo) {
