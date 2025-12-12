@@ -56,9 +56,11 @@ void ButtonView::selectButton(int number)
     this->scrollTo(this->model()->index(number, 0), QAbstractItemView::EnsureVisible);
 }
 
-void ButtonView::goSelectionChanged(const QItemSelection& selected, const QItemSelection& deselected)
+void ButtonView::goSelectionChanged(
+    const QItemSelection& selected,
+    [[maybe_unused]] const QItemSelection& deselected
+)
 {
-    Q_UNUSED(deselected);
     if (selected.indexes().isEmpty()) {
         return;
     }
@@ -92,7 +94,7 @@ void ButtonModel::load3DConnexionButtonMapping(boost::property_tree::ptree Butto
         const boost::property_tree::ptree::value_type& Map,
         ButtonMapTree.get_child("Mapping")
     ) {
-        if ("Map" == Map.first) {
+        if (Map.first == "Map") {
             std::string ButtonDescription;
             std::string ButtonCode;
             std::string ButtonCommand;
@@ -103,22 +105,19 @@ void ButtonModel::load3DConnexionButtonMapping(boost::property_tree::ptree Butto
                 const boost::property_tree::ptree::value_type& kv,
                 Map.second.get_child("<xmlattr>")
             ) {
-                std::string Attribute;
-                std::string Value;
+                const std::string Attribute = kv.first;
+                const std::string Value = kv.second.data();
 
-                Attribute = kv.first.data();
-                Value = kv.second.data();
-
-                if (0 == Attribute.compare("Description")) {
+                if (Attribute == "Description") {
                     ButtonDescription = Value;
                 }
-                if (0 == Attribute.compare("KeyCode")) {
+                if (Attribute == "KeyCode") {
                     ButtonCode = Value;
                 }
-                if (0 == Attribute.compare("DownTime")) {
+                if (Attribute == "DownTime") {
                     ButtonDownTime = Value;
                 }
-                if (0 == Attribute.compare("Command")) {
+                if (Attribute == "Command") {
                     ButtonCommand = Value;
                 }
             }
@@ -136,7 +135,7 @@ void ButtonModel::load3DConnexionButtonMapping(boost::property_tree::ptree Butto
 }
 
 // Optionally preload Button model with 3DConnexion configuration to match Solidworks
-// For now the Button mapping file (3DConnexion.xml) is held the same folder as the FreeCAD executable.
+// The Button mapping file is `share/3DConnexion/3DConnexion.xml` in the build directory.
 void ButtonModel::load3DConnexionButtons(const char* RequiredDeviceName)
 {
     try {
@@ -146,23 +145,20 @@ void ButtonModel::load3DConnexionButtons(const char* RequiredDeviceName)
         // exception thrown if no file found
         std::string path = App::Application::getResourceDir();
         path += "3Dconnexion/3DConnexion.xml";
-        read_xml(path.c_str(), tree);
+        read_xml(path, tree);
 
         BOOST_FOREACH (const boost::property_tree::ptree::value_type& ButtonMap, tree.get_child("")) {
-            if ("ButtonMap" == ButtonMap.first) {
+            if (ButtonMap.first == "ButtonMap") {
                 // Inspect ButtonMap attributes for DeviceName
                 BOOST_FOREACH (
                     const boost::property_tree::ptree::value_type& kv,
                     ButtonMap.second.get_child("<xmlattr>")
                 ) {
-                    std::string Attribute;
-                    std::string Value;
+                    const std::string Attribute = kv.first;
+                    const std::string Value = kv.second.data();
 
-                    Attribute = kv.first.data();
-                    Value = kv.second.data();
-
-                    if (0 == Attribute.compare("DeviceName")) {
-                        if (0 == Value.compare(RequiredDeviceName)) {
+                    if (Attribute == "DeviceName") {
+                        if (Value == RequiredDeviceName) {
                             // We found the ButtonMap we want to load up
                             DeviceTree = ButtonMap.second;
                         }
@@ -181,9 +177,8 @@ void ButtonModel::load3DConnexionButtons(const char* RequiredDeviceName)
     }
 }
 
-int ButtonModel::rowCount(const QModelIndex& parent) const
+int ButtonModel::rowCount([[maybe_unused]] const QModelIndex& parent) const
 {
-    Q_UNUSED(parent);
     return spaceballButtonGroup()->GetGroups().size();
 }
 
@@ -229,7 +224,6 @@ void ButtonModel::insertButtonRows(int number)
         newGroup->SetASCII("Description", "");
     }
     endInsertRows();
-    return;
 }
 
 void ButtonModel::setCommand(int row, QString command)
@@ -290,9 +284,7 @@ QString ButtonModel::getLabel(const int& number) const
         }
         return tr("Button %1").arg(number + 1) + desc;
     }
-    else {
-        return tr("Out of range");
-    }
+    return tr("Out of range");
 }
 
 void ButtonModel::loadConfig(const char* RequiredDeviceName)
@@ -351,14 +343,8 @@ void CommandView::goClicked(const QModelIndex& index)
 /////////////////////////////////////////////////////////////////////////////////////////
 
 CommandNode::CommandNode(NodeType typeIn)
-{
-    // NOLINTBEGIN
-    nodeType = typeIn;
-    parent = nullptr;
-    children.clear();
-    aCommand = nullptr;
-    // NOLINTEND
-}
+    : nodeType(typeIn)
+{}
 
 CommandNode::~CommandNode()
 {
@@ -371,7 +357,6 @@ CommandModel::CommandModel(QObject* parent)
     : QAbstractItemModel(parent)
 {
     // NOLINTBEGIN
-    rootNode = nullptr;
     initialize();
     // NOLINTEND
 }
@@ -433,9 +418,8 @@ int CommandModel::rowCount(const QModelIndex& parent) const
     return parentNode->children.count();
 }
 
-int CommandModel::columnCount(const QModelIndex& parent) const
+int CommandModel::columnCount([[maybe_unused]] const QModelIndex& parent) const
 {
-    Q_UNUSED(parent);
     return 1;
 }
 
@@ -664,15 +648,13 @@ PrintModel::PrintModel(QObject* parent, ButtonModel* buttonModelIn, CommandModel
     // NOLINTEND
 }
 
-int PrintModel::rowCount(const QModelIndex& parent) const
+int PrintModel::rowCount([[maybe_unused]] const QModelIndex& parent) const
 {
-    Q_UNUSED(parent);
     return buttonModel->rowCount();
 }
 
-int PrintModel::columnCount(const QModelIndex& parent) const
+int PrintModel::columnCount([[maybe_unused]] const QModelIndex& parent) const
 {
-    Q_UNUSED(parent);
     return 2;
 }
 
@@ -728,13 +710,6 @@ QVariant PrintModel::headerData(int section, Qt::Orientation orientation, int ro
 
 DlgCustomizeSpaceball::DlgCustomizeSpaceball(QWidget* parent)
     : CustomizeActionPage(parent)
-    , buttonView(nullptr)
-    , buttonModel(nullptr)
-    , commandView(nullptr)
-    , commandModel(nullptr)
-    , clearButton(nullptr)
-    , printReference(nullptr)
-    , devModel(nullptr)
 {
     this->setWindowTitle(tr("Spaceball Buttons"));
     auto app = qobject_cast<GUIApplicationNativeEventAware*>(QApplication::instance());
@@ -896,7 +871,7 @@ bool DlgCustomizeSpaceball::event(QEvent* event)
         return true;
     }
     buttonEvent->setHandled(true);
-    if (buttonEvent->buttonStatus() == Spaceball::BUTTON_PRESSED) {
+    if (buttonEvent->buttonStatus() == Spaceball::ButtonState::Pressed) {
         buttonModel->goButtonPress(buttonEvent->buttonNumber());
     }
     buttonView->selectButton(buttonEvent->buttonNumber());
@@ -959,10 +934,9 @@ void DlgCustomizeSpaceball::onRemoveMacroAction(const QByteArray& macroName)
     }
 }
 
-void DlgCustomizeSpaceball::onModifyMacroAction(const QByteArray& macroName)
+void DlgCustomizeSpaceball::onModifyMacroAction([[maybe_unused]] const QByteArray& macroName)
 {
     // don't think I need to do anything here.
-    Q_UNUSED(macroName);
 }
 
 QStringList DlgCustomizeSpaceball::getModels()
@@ -975,7 +949,7 @@ QStringList DlgCustomizeSpaceball::getModels()
         // exception thrown if no file found
         std::string path = App::Application::getResourceDir();
         path += "3Dconnexion/3DConnexion.xml";
-        read_xml(path.c_str(), tree);
+        read_xml(path, tree);
 
         BOOST_FOREACH (const boost::property_tree::ptree::value_type& ButtonMap, tree.get_child("")) {
             if ("ButtonMap" == ButtonMap.first) {
@@ -984,13 +958,10 @@ QStringList DlgCustomizeSpaceball::getModels()
                     const boost::property_tree::ptree::value_type& kv,
                     ButtonMap.second.get_child("<xmlattr>")
                 ) {
-                    std::string Attribute;
-                    std::string Value;
+                    const std::string Attribute = kv.first;
+                    const std::string Value = kv.second.data();
 
-                    Attribute = kv.first.data();
-                    Value = kv.second.data();
-
-                    if (0 == Attribute.compare("DeviceName")) {
+                    if (Attribute == "DeviceName") {
                         modelList << QString::fromStdString(Value);
                     }
                 }
