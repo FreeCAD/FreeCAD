@@ -330,7 +330,11 @@ void BaseDelegate::setEditorData(QWidget* editor, const QModelIndex& index) cons
     if (type == Materials::MaterialValue::Quantity) {
         auto input = dynamic_cast<Gui::QuantitySpinBox*>(editor);
         // input->setQuantityString(item.toString());
-        input->setValue(item.value<Base::Quantity>());
+        auto qty = item.value<Base::Quantity>();
+        input->setValue(qty);
+        if (qty.isDimensionless()) {
+            input->setUnitText(getUnits(index));
+        }
         return;
     }
     if (type == Materials::MaterialValue::List || type == Materials::MaterialValue::ImageList) {
@@ -445,8 +449,11 @@ BaseDelegate::createWidget(QWidget* parent, const QVariant& item, const QModelIn
         auto input = new Gui::QuantitySpinBox(parent);
         input->setMinimum(std::numeric_limits<double>::min());
         input->setMaximum(std::numeric_limits<double>::max());
-        input->setUnitText(getUnits(index));
-        input->setValue(item.value<Base::Quantity>());
+        auto qty = item.value<Base::Quantity>();
+        input->setValue(qty);
+        if (qty.isDimensionless()) {
+            input->setUnitText(getUnits(index));
+        }
 
         widget = input;
     }

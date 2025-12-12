@@ -482,9 +482,12 @@ QWidget* MaterialDelegate::createWidget(QWidget* parent,
         auto input = new Gui::QuantitySpinBox(parent);
         input->setMinimum(std::numeric_limits<double>::min());
         input->setMaximum(std::numeric_limits<double>::max());
-        input->setUnitText(getUnits(index));
         // input->setPrecision(6);
-        input->setValue(item.value<Base::Quantity>());
+        auto qty = item.value<Base::Quantity>();
+        input->setValue(qty);
+        if (qty.isDimensionless()) {
+            input->setUnitText(getUnits(index));
+        }
 
         widget = input;
     }
