@@ -648,6 +648,9 @@ public:
     ) const;
     bool arePointsCoincident(int GeoId1, PointPos PosId1, int GeoId2, PointPos PosId2);
 
+    // Returns true if the sketch has 1 or more block constraint
+    bool hasBlockConstraint() const;
+
     /// returns a list of indices of all constraints involving given GeoId
     void getConstraintIndices(int GeoId, std::vector<int>& constraintList);
 
