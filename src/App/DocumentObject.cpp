@@ -1644,3 +1644,26 @@ Base::Placement DocumentObject::getPlacementOf(const std::string& sub, DocumentO
     return plc * subObj->getPlacementOf(newSub, targetObj);
 }
 
+Base::Placement DocumentObject::getPlacement() const
+{
+    Base::Placement plc;
+    if (auto* prop = getPlacementProperty()) {
+        plc = prop->getValue();
+    }
+    return plc;
+}
+
+App::PropertyPlacement* DocumentObject::getPlacementProperty() const
+{
+    if (auto linkExtension = getExtensionByType<App::LinkBaseExtension>(true)) {
+        if (auto linkPlacementProp = linkExtension->getLinkPlacementProperty()) {
+            return linkPlacementProp;
+        }
+
+        return linkExtension->getPlacementProperty();
+    }
+
+    return getPropertyByName<App::PropertyPlacement>("Placement");
+}
+
+
