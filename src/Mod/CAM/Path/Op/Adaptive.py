@@ -541,11 +541,9 @@ def Execute(op, obj):
 
     try:
         obj.HelixMinDiameterPercent = max(obj.HelixMinDiameterPercent, 10)
-        obj.HelixIdealDiameterPercent = max(
-            obj.HelixIdealDiameterPercent, obj.HelixMinDiameterPercent
-        )
+        obj.HelixMaxDiameterPercent = max(obj.HelixMaxDiameterPercent, obj.HelixMinDiameterPercent)
 
-        helixDiameter = obj.HelixIdealDiameterPercent / 100 * op.tool.Diameter.Value
+        helixDiameter = obj.HelixMaxDiameterPercent / 100 * op.tool.Diameter.Value
         helixMinDiameter = obj.HelixMinDiameterPercent / 100 * op.tool.Diameter.Value
         topZ = op.stock.Shape.BoundBox.ZMax
         obj.Stopped = False
@@ -710,12 +708,10 @@ def ExecuteModelAware(op, obj):
 
     try:
         obj.HelixMinDiameterPercent = max(obj.HelixMinDiameterPercent, 10)
-        obj.HelixIdealDiameterPercent = max(
-            obj.HelixIdealDiameterPercent, obj.HelixMinDiameterPercent
-        )
+        obj.HelixMaxDiameterPercent = max(obj.HelixMaxDiameterPercent, obj.HelixMinDiameterPercent)
         obj.StepOver = max(obj.StepOver, 1)
 
-        helixDiameter = obj.HelixIdealDiameterPercent / 100 * op.tool.Diameter.Value
+        helixDiameter = obj.HelixMaxDiameterPercent / 100 * op.tool.Diameter.Value
         helixMinDiameter = obj.HelixMinDiameterPercent / 100 * op.tool.Diameter.Value
         topZ = op.stock.Shape.BoundBox.ZMax
         obj.Stopped = False
@@ -1840,11 +1836,11 @@ class PathAdaptive(PathOp.ObjectOp):
         )
         obj.addProperty(
             "App::PropertyPercent",
-            "HelixIdealDiameterPercent",
+            "HelixMaxDiameterPercent",
             "Adaptive",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Ideal helix entry diameter, as a percentage of the tool diameter",
+                "Maximum (and nominal) helix entry diameter, as a percentage of the tool diameter",
             ),
         )
         obj.addProperty(
@@ -1912,7 +1908,7 @@ class PathAdaptive(PathOp.ObjectOp):
         obj.StopProcessing = False
         obj.HelixAngle = 5
         obj.HelixConeAngle = 0
-        obj.HelixIdealDiameterPercent = 100
+        obj.HelixMaxDiameterPercent = 100
         obj.HelixMinDiameterPercent = 10
         obj.AdaptiveInputState = ""
         obj.AdaptiveOutputState = ""
@@ -2008,11 +2004,11 @@ class PathAdaptive(PathOp.ObjectOp):
             obj.removeProperty("HelixDiameterLimit")
             obj.addProperty(
                 "App::PropertyPercent",
-                "HelixIdealDiameterPercent",
+                "HelixMaxDiameterPercent",
                 "Adaptive",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Ideal helix entry diameter, as a percentage of the tool diameter",
+                    "Maximum (and nominal) helix entry diameter, as a percentage of the tool diameter",
                 ),
             )
             obj.addProperty(
@@ -2026,7 +2022,7 @@ class PathAdaptive(PathOp.ObjectOp):
             )
             obj.HelixMinDiameterPercent = 10
             if hasattr(obj, "ToolController"):
-                obj.HelixIdealDiameterPercent = int(
+                obj.HelixMaxDiameterPercent = int(
                     75 if oldD == 0 else 100 * oldD / obj.ToolController.Tool.Diameter.Value
                 )
 
@@ -2063,7 +2059,7 @@ def SetupProperties():
         "AdaptiveOutputState",
         "HelixAngle",
         "HelixConeAngle",
-        "HelixIdealDiameterPercent",
+        "HelixMaxDiameterPercent",
         "HelixMinDiameterPercent",
         "UseOutline",
         "OrderCutsByRegion",

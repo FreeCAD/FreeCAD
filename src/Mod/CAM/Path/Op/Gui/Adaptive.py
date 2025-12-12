@@ -62,7 +62,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.HelixAngle.valueChanged)
         signals.append(self.form.HelixMaxStepdown.valueChanged)
         signals.append(self.form.HelixConeAngle.valueChanged)
-        signals.append(self.form.HelixIdealDiameterPercent.valueChanged)
+        signals.append(self.form.HelixMaxDiameterPercent.valueChanged)
         signals.append(self.form.HelixMinDiameterPercent.valueChanged)
         signals.append(self.form.LiftDistance.valueChanged)
         signals.append(self.form.KeepToolDownRatio.valueChanged)
@@ -95,7 +95,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             FreeCAD.Units.Quantity(obj.HelixConeAngle, FreeCAD.Units.Angle).UserString
         )
 
-        self.form.HelixIdealDiameterPercent.setValue(obj.HelixIdealDiameterPercent)
+        self.form.HelixMaxDiameterPercent.setValue(obj.HelixMaxDiameterPercent)
         self.form.HelixMinDiameterPercent.setValue(obj.HelixMinDiameterPercent)
 
         self.form.LiftDistance.setProperty("rawValue", obj.LiftDistance.Value)
@@ -128,8 +128,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if obj.StepOver != self.form.stepOverPercent.value():
             obj.StepOver = self.form.stepOverPercent.value()
 
-        if obj.HelixIdealDiameterPercent != self.form.HelixIdealDiameterPercent.value():
-            obj.HelixIdealDiameterPercent = self.form.HelixIdealDiameterPercent.value()
+        if obj.HelixMaxDiameterPercent != self.form.HelixMaxDiameterPercent.value():
+            obj.HelixMaxDiameterPercent = self.form.HelixMaxDiameterPercent.value()
 
         if obj.HelixMinDiameterPercent != self.form.HelixMinDiameterPercent.value():
             obj.HelixMinDiameterPercent = self.form.HelixMinDiameterPercent.value()

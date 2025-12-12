@@ -294,14 +294,14 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <item row="14" column="0">
        <widget class="QLabel" name="label_9">
         <property name="text">
-         <string>Helix ideal diameter percent</string>
+         <string>Helix max diameter percent</string>
         </property>
        </widget>
       </item>
       <item row="14" column="1">
-       <widget class="QSpinBox" name="HelixIdealDiameterPercent">
+       <widget class="QSpinBox" name="HelixMaxDiameterPercent">
         <property name="toolTip">
-         <string>Ideal helix entry diameter, as a percentage of the tool diameter.</string>
+         <string>Maximum (and nominal) helix entry diameter, as a percentage of the tool diameter.</string>
         </property>
         <property name="minimum">
          <number>10</number>
