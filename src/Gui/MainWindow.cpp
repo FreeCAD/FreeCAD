@@ -321,7 +321,7 @@ struct MainWindowP
     int actionUpdateDelay = 0;
     QMap<QString, QPointer<UrlHandler>> urlHandler;
     std::string hiddenDockWindows;
-    boost::signals2::scoped_connection connParam;
+    fastsignals::advanced_scoped_connection connParam;
     ParameterGrp::handle hGrp;
     bool _restoring = false;
     QTime _showNormal;
@@ -367,7 +367,8 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
                 OverlayManager::instance()->reload(OverlayManager::ReloadMode::ReloadPause);
                 d->restoreStateTimer.start(100);
             }
-        }
+        },
+        fastsignals::advanced_tag()
     );
 
     d->hGrp = App::GetApplication().GetParameterGroupByPath(
