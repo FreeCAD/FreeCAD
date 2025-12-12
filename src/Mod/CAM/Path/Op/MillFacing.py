@@ -323,7 +323,7 @@ class ObjectMillFacing(PathOp.ObjectOp):
 
         boundary_wire = boundary_wire.makeOffset2D(
             obj.StockExtension.Value, 2
-        )  # offset with interesection joins
+        )  # offset with intersection joins
 
         # Determine milling direction
         milling_direction = "climb" if obj.CutMode == "Climb" else "conventional"
