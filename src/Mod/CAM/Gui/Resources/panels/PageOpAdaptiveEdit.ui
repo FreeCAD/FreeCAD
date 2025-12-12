@@ -240,10 +240,17 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <enum>QFrame::Shadow::Raised</enum>
      </property>
      <layout class="QGridLayout" name="helixLayout">
+      <item row="0" column="0" colspan="2">
+       <widget class="QLabel" name="helix_header">
+        <property name="text">
+         <string>&lt;b&gt;Helix Parameters&lt;/b&gt;</string>
+        </property>
+       </widget>
+      </item>
       <item row="9" column="0">
        <widget class="QLabel" name="label_max_stepdown">
         <property name="text">
-         <string>Helix max stepdown</string>
+         <string>Max stepdown</string>
         </property>
        </widget>
       </item>
@@ -260,7 +267,7 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <item row="10" column="0">
        <widget class="QLabel" name="label_7">
         <property name="text">
-         <string>Helix ramp angle</string>
+         <string>Ramp angle</string>
         </property>
        </widget>
       </item>
@@ -277,7 +284,7 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <item row="12" column="0">
        <widget class="QLabel" name="label_8">
         <property name="text">
-         <string>Helix cone angle</string>
+         <string>Cone angle</string>
         </property>
        </widget>
       </item>
@@ -294,7 +301,7 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <item row="14" column="0">
        <widget class="QLabel" name="label_9">
         <property name="text">
-         <string>Helix max diameter percent</string>
+         <string>Max diameter percent</string>
         </property>
        </widget>
       </item>
@@ -317,7 +324,7 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <item row="15" column="0">
        <widget class="QLabel" name="label_9">
         <property name="text">
-         <string>Helix min diameter percent</string>
+         <string>Min diameter percent</string>
         </property>
        </widget>
       </item>
