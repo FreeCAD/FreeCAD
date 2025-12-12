@@ -261,3 +261,111 @@ class TestArchWall(TestArchBase.TestArchBase):
             delta=1e-6,
             msg="Wall should remain parametric and its volume should change with height.",
         )
+
+    def test_makeWall_baseless_alignment(self):
+        """
+        Tests that Arch.makeWall correctly creates a baseless wall with the
+        specified alignment.
+        """
+        self.printTestMessage("Checking baseless wall alignment from makeWall...")
+
+        # Define the test cases: (Alignment Mode, Expected final Y-center)
+        test_cases = [
+            ("Center", 0.0),
+            ("Left", -100.0),
+            ("Right", 100.0),
+        ]
+
+        for align_mode, expected_y_center in test_cases:
+            with self.subTest(alignment=align_mode):
+                # 1. Arrange & Act: Create a baseless wall using the API call.
+                wall = Arch.makeWall(length=2000, width=200, height=1500, align=align_mode)
+                self.document.recompute()
+
+                # 2. Assert Geometry: Verify the shape is valid.
+                self.assertFalse(
+                    wall.Shape.isNull(), msg=f"[{align_mode}] Shape should not be null."
+                )
+                expected_volume = 2000 * 200 * 1500
+                self.assertAlmostEqual(
+                    wall.Shape.Volume,
+                    expected_volume,
+                    delta=1e-6,
+                    msg=f"[{align_mode}] Wall volume is incorrect.",
+                )
+
+                # 3. Assert Placement and Alignment.
+                # The wall's Placement should be at the origin.
+                self.assertTrue(
+                    wall.Placement.Base.isEqual(App.Vector(0, 0, 0), 1e-6),
+                    msg=f"[{align_mode}] Default placement Base should be at the origin.",
+                )
+                self.assertAlmostEqual(
+                    wall.Placement.Rotation.Angle,
+                    0.0,
+                    delta=1e-6,
+                    msg=f"[{align_mode}] Default placement Rotation should be zero.",
+                )
+
+                # The shape's center should be offset according to the alignment.
+                shape_center = wall.Shape.BoundBox.Center
+                expected_center = App.Vector(0, expected_y_center, 750)
+
+                self.assertTrue(
+                    shape_center.isEqual(expected_center, 1e-5),
+                    msg=f"For '{align_mode}' align, wall center {shape_center} does not match expected {expected_center}",
+                )
+
+    def test_baseless_wall_stretch_api(self):
+        """
+        Tests the proxy methods for graphically editing baseless walls:
+        calc_endpoints() and set_from_endpoints().
+        """
+        self.printTestMessage("Checking baseless wall stretch API...")
+
+        # 1. Arrange: Create a baseless wall and then set its placement.
+        initial_placement = App.Placement(
+            App.Vector(1000, 1000, 0), App.Rotation(App.Vector(0, 0, 1), 45)
+        )
+        # Create wall first, then set its placement.
+        wall = Arch.makeWall(length=2000)
+        wall.Placement = initial_placement
+        self.document.recompute()
+
+        # 2. Test calc_endpoints()
+        endpoints = wall.Proxy.calc_endpoints(wall)
+        self.assertEqual(len(endpoints), 2, "calc_endpoints should return two points.")
+
+        # Verify the calculated endpoints against manual calculation
+        half_len_vec_x = App.Vector(1000, 0, 0)
+        rotated_half_vec = initial_placement.Rotation.multVec(half_len_vec_x)
+        expected_p1 = initial_placement.Base - rotated_half_vec
+        expected_p2 = initial_placement.Base + rotated_half_vec
+
+        self.assertTrue(endpoints[0].isEqual(expected_p1, 1e-6), "Start point is incorrect.")
+        self.assertTrue(endpoints[1].isEqual(expected_p2, 1e-6), "End point is incorrect.")
+
+        # 3. Test set_from_endpoints()
+        new_p1 = App.Vector(0, 0, 0)
+        new_p2 = App.Vector(4000, 0, 0)
+        wall.Proxy.set_from_endpoints(wall, [new_p1, new_p2])
+        self.document.recompute()
+
+        # Assert that the wall's properties have been updated correctly
+        self.assertAlmostEqual(
+            wall.Length.Value, 4000.0, delta=1e-6, msg="Length was not updated correctly."
+        )
+
+        expected_center = App.Vector(2000, 0, 0)
+        self.assertTrue(
+            wall.Placement.Base.isEqual(expected_center, 1e-6),
+            "Placement.Base (center) was not updated correctly.",
+        )
+
+        # Check rotation (should now be zero as the new points are on the X-axis)
+        self.assertAlmostEqual(
+            wall.Placement.Rotation.Angle,
+            0.0,
+            delta=1e-6,
+            msg="Placement.Rotation was not updated correctly.",
+        )
