@@ -98,6 +98,8 @@ public:
 
 private:
     std::string getBomPropertyValue(App::DocumentObject* obj, const std::string& baseName);
+
+    std::string mirroredSuffix;
 };
 
 
