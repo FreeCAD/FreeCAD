@@ -40,6 +40,21 @@ SET(MaterialLib_Files
     Resources/Materials/Standard/Metal/Aluminum/Aluminum-7075-T6.FCMat
     Resources/Materials/Standard/Metal/Aluminum/Aluminum-Generic.FCMat
     Resources/Materials/Standard/Metal/Aluminum/AlZn4-5Mg1F35.FCMat
+    Resources/Materials/Standard/Metal/Copper/Copper-102.FCMat
+    Resources/Materials/Standard/Metal/Copper/Copper-122a.FCMat
+    Resources/Materials/Standard/Metal/Copper/Copper-122b.FCMat
+    Resources/Materials/Standard/Metal/Copper/Copper-150.FCMat
+    Resources/Materials/Standard/Metal/Copper/Copper-220.FCMat
+    Resources/Materials/Standard/Metal/Copper/Copper-230.FCMat
+    Resources/Materials/Standard/Metal/Copper/Copper-443.FCMat
+    Resources/Materials/Standard/Metal/Copper/Copper-464.FCMat
+    Resources/Materials/Standard/Metal/Copper/Copper-510.FCMat
+    Resources/Materials/Standard/Metal/Copper/Copper-614.FCMat
+    Resources/Materials/Standard/Metal/Copper/Copper-647.FCMat
+    Resources/Materials/Standard/Metal/Copper/Copper-655.FCMat
+    Resources/Materials/Standard/Metal/Copper/Copper-706.FCMat
+    Resources/Materials/Standard/Metal/Copper/Copper-715.FCMat
+    Resources/Materials/Standard/Metal/Copper/Copper-955.FCMat
     Resources/Materials/Standard/Metal/Copper/Copper-Generic.FCMat
     Resources/Materials/Standard/Metal/Iron/Iron-Generic.FCMat
     Resources/Materials/Standard/Metal/Steel/CalculiX-Steel.FCMat
