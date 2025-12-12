@@ -6262,13 +6262,23 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
         }
 
         if (currentStatus & Status::External) {
-            static QPixmap pxExternal;
             constexpr int px = 12;
-            if (pxExternal.isNull()) {
-                pxExternal = Gui::BitmapFactory().pixmapFromSvg("LinkOverlay", QSize(px, px));
+            if(getOwnerDocument()->document()->getDocument()->isReadOnlyFile() 
+                || (linked && linked->getDocument()->isReadOnlyFile())) {
+                static QPixmap pxReadOnly;
+                if (pxReadOnly.isNull()) {
+                    pxReadOnly = Gui::BitmapFactory().pixmapFromSvg("LinkOverlayReadOnly", QSize(px, px));
+                }
+                pxOff = BitmapFactory().merge(pxOff, pxReadOnly, BitmapFactoryInst::BottomRight);
+                pxOn = BitmapFactory().merge(pxOn, pxReadOnly, BitmapFactoryInst::BottomRight);
+            } else {
+                static QPixmap pxExternal;
+                if (pxExternal.isNull()) {
+                    pxExternal = Gui::BitmapFactory().pixmapFromSvg("LinkOverlay", QSize(px, px));
+                }
+                pxOff = BitmapFactory().merge(pxOff, pxExternal, BitmapFactoryInst::BottomRight);
+                pxOn = BitmapFactory().merge(pxOn, pxExternal, BitmapFactoryInst::BottomRight);
             }
-            pxOff = BitmapFactory().merge(pxOff, pxExternal, BitmapFactoryInst::BottomRight);
-            pxOn = BitmapFactory().merge(pxOn, pxExternal, BitmapFactoryInst::BottomRight);
         }
 
         if (currentStatus & Status::Freezed) {
