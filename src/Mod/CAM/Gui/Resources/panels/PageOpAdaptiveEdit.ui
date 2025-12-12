@@ -164,12 +164,15 @@ Larger values (further to the right) will calculate faster; smaller values (furt
         <property name="value">
          <number>100</number>
         </property>
+        <property name="suffix">
+         <string>%</string>
+        </property>
        </widget>
       </item>
       <item row="4" column="0">
        <widget class="QLabel" name="label_4">
         <property name="text">
-         <string>Step over percent</string>
+         <string>Step over</string>
         </property>
        </widget>
       </item>
