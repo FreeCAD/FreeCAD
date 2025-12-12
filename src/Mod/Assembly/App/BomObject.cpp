@@ -265,12 +265,7 @@ bool BomObject::isObjMirrored(App::DocumentObject* obj)
     return accumulatedScale < 0.0;
 }
 
-void BomObject::addObjectToBom(
-    App::DocumentObject* obj,
-    size_t row,
-    std::string index,
-    bool isMirrored
-)
+void BomObject::addObjectToBom(App::DocumentObject* obj, size_t row, std::string index, bool isMirrored)
 {
     obj_list.push_back(obj);
     size_t col = 0;
