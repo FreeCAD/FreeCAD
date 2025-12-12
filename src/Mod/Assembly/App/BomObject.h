@@ -76,9 +76,10 @@ public:
     App::DocumentObjectExecReturn* execute() override;
 
     void generateBOM();
-    void addObjectToBom(App::DocumentObject* obj, size_t row, std::string index);
+    void addObjectToBom(App::DocumentObject* obj, size_t row, std::string index, bool isMirrored = false);
     void addObjectChildrenToBom(std::vector<App::DocumentObject*> objs, size_t& row, std::string index);
     void saveCustomColumnData();
+    bool isObjMirrored(App::DocumentObject* obj);
 
     AssemblyObject* getAssembly();
 
@@ -93,6 +94,7 @@ public:
 
     std::vector<BomDataElement> dataElements;
     std::vector<App::DocumentObject*> obj_list;
+    std::vector<bool> obj_mirrored_list;
 
 private:
     std::string getBomPropertyValue(App::DocumentObject* obj, const std::string& baseName);
