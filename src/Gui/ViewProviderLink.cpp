@@ -3167,6 +3167,23 @@ void ViewProviderLink::_setupContextMenu(
         );
     }
 
+    if (ext->getScaleProperty() && !ext->getScaleProperty()->isReadOnly()) {
+        auto prop = ext->getScaleProperty();
+        auto action = menu->addAction(QObject::tr("Mirror link"), [prop] {
+            try {
+                App::AutoTransaction guard(QT_TRANSLATE_NOOP("Command", "Mirror link"));
+                prop->setValue(prop->getValue() * -1.0);
+                Command::updateActive();
+            }
+            catch (Base::Exception& e) {
+                e.reportException();
+            }
+        });
+        action->setCheckable(true);
+        action->setChecked(prop->getValue() < 0.0);
+        action->setToolTip(QObject::tr("This affect only the selected link. The original object remains unchanged."));
+    }
+
     if ((ext->getPlacementProperty() && !ext->getPlacementProperty()->isReadOnly())
         || (ext->getLinkPlacementProperty() && !ext->getLinkPlacementProperty()->isReadOnly())) {
         bool found = false;
