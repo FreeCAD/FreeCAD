@@ -1012,7 +1012,7 @@ class ExtMod(Mod):
     Module based Mod (aka extension module).
 
     This kind of Mods are loaded using python module system, no direct filesystem or
-    copile/execute hacks are used.
+    compile/execute hacks are used.
 
     extension modules must be defined in namespace freecad.*, i.e. freecad.MyAddon.
     """
