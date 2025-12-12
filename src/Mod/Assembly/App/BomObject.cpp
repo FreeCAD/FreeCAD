@@ -154,7 +154,6 @@ void BomObject::generateBOM()
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Assembly"
     );
-    // Default to " (-1)" if the preference doesn't exist yet
     mirroredSuffix = hGrp->GetASCII("BomMirroredSuffix", " (-1)"); 
 
     // Populate headers
