@@ -34,6 +34,7 @@ Models:
     UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
     Density: "8940 kg/m^3"
     ShearModulus: "44.5 GPa"
+    UltimateStrain: "0.397"
     UltimateTensileStrength: "216 MPa"
     YieldStrength: "46.2 MPa"
     YoungsModulus: "104 GPa"

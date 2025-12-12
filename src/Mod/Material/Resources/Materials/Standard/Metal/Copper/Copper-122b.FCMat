@@ -35,6 +35,7 @@ Models:
   LinearElastic:
     UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
     Density: "8940 kg/m^3"
+    UltimateStrain: "0.0146"
     UltimateTensileStrength: "357 MPa"
     YieldStrength: "341 MPa"
     YoungsModulus: "130 GPa"
