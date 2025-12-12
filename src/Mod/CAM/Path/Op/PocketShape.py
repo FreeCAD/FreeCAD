@@ -299,7 +299,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             Path.Log.debug("face Part.BSplineSurface")
             if Path.Geom.isRoughly(face.BoundBox.ZLength, 0):
                 Path.Log.debug("  flat horizontal or almost flat horizontal")
-                self.horiz.append(face)
+                self.horiz.append((face, bs))
                 return True
 
         elif isinstance(face.Surface, Part.Cylinder) and Path.Geom.isVertical(face.Surface.Axis):
