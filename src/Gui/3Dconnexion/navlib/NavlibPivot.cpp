@@ -48,6 +48,8 @@
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/ViewProvider.h>
 
+#include <Base/Console.h>
+
 long NavlibInterface::GetSelectionTransform(navlib::matrix_t&) const
 {
     return navlib::make_result_code(navlib::navlib_errc::no_data_available);
@@ -140,7 +142,12 @@ long NavlibInterface::GetHitLookAt(navlib::point_t& position) const
     initializePattern();
 
     navlib::bool_t isPerspective;
-    GetIsViewPerspective(isPerspective);
+    static unsigned long error_count = 0;  // Limit the number of error messages emitted.
+    long error = GetIsViewPerspective(isPerspective);
+    if (error && error_count <= 10) {
+        Base::Console().error("GetHitLookAt: NavlibInterface::GetIsViewPerspective error %ld\n", error);
+        error_count++;
+    }
 
     for (uint32_t i = 0; i < hitTestingResolution; i++) {
 
@@ -247,7 +254,12 @@ long NavlibInterface::SetHitLookFrom(const navlib::point_t& eye)
 {
     navlib::bool_t isPerspective;
 
-    GetIsViewPerspective(isPerspective);
+    static unsigned long error_count = 0;  // Limit the number of error messages emitted.
+    long error = GetIsViewPerspective(isPerspective);
+    if (error && error_count <= 0) {
+        Base::Console().error("SetHitLookFrom: NavlibInterface::GetIsViewPerspective error %ld\n", error);
+        error_count++;
+    }
 
     if (isPerspective) {
         ray.origin.setValue(eye.x, eye.y, eye.z);
