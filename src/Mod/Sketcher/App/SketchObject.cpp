@@ -9567,6 +9567,12 @@ bool SketchObject::arePointsCoincident(int GeoId1, PointPos PosId1, int GeoId2, 
 
     return false;
 }
+bool SketchObject::hasBlockConstraint() const
+{
+    return std::ranges::any_of(Constraints.getValues(), [](auto& c) {
+        return c->Type == Block;
+    });
+}
 
 void SketchObject::getConstraintIndices(int GeoId, std::vector<int>& constraintList)
 {
