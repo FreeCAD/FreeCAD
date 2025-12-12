@@ -1190,14 +1190,16 @@ void DSHOffsetController::configureToolWidget()
             WCheckbox::FirstBox,
             QApplication::translate(
                 "TaskSketcherTool_c1_offset",
-                "Deletes the original geometry. If creating a single copy, this effectively performs a 'Move' operation."
+                "Deletes the original geometry. If creating a single copy, this effectively "
+                "performs a 'Move' operation."
             )
         );
         toolWidget->setCheckboxToolTip(
             WCheckbox::SecondBox,
             QApplication::translate(
                 "TaskSketcherTool_c2_offset",
-                "Adds a distance constraint with additional construction geometries that allows the distance to modify the entire offset geometry."
+                "Adds a distance constraint with additional construction geometries that allows "
+                "the distance to modify the entire offset geometry."
             )
         );
     }
@@ -1328,4 +1330,3 @@ void DSHOffsetController::computeNextDrawSketchHandlerMode()
 
 
 #endif  // SKETCHERGUI_DrawSketchHandlerOffset_H
-
