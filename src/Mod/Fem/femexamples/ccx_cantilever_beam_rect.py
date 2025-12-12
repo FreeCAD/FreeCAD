@@ -96,7 +96,7 @@ def setup(doc=None, solvertype="ccxtools"):
     cs_face.Length = height
     cs_face.Placement = FreeCAD.Placement(
         FreeCAD.Vector(0, 500 - 0.5 * width, 500 + 0.5 * height),
-        FreeCAD.Rotation(0, 90, 0),
+        FreeCAD.Rotation(0, 0, 0),
         FreeCAD.Vector(0, 0, 0),
     )
     doc.recompute()
