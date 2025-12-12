@@ -154,7 +154,7 @@ void BomObject::generateBOM()
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Assembly"
     );
-    mirroredSuffix = hGrp->GetASCII("BomMirroredSuffix", " (-1)");
+    mirroredSuffix = hGrp->GetASCII("BomMirroredSuffix", " (mirrored)");
 
     // Populate headers
     for (auto& columnName : columnsNames.getValues()) {
@@ -283,7 +283,12 @@ void BomObject::addObjectToBom(App::DocumentObject* obj, size_t row, std::string
             std::string name = obj->Label.getValue();
             // Distinctly label mirrored parts so they are identifiable in the BOM
             if (isMirrored) {
-                name += mirroredSuffix;
+                if (auto* linkedObj = obj->getLinkedObject()) {
+                    // We add a suffix only if the label is the same.
+                    if (name == linkedObj->Label.getValue()) {
+                        name += mirroredSuffix;
+                    }
+                }
             }
             setCell(App::CellAddress(row, col), name.c_str());
         }
