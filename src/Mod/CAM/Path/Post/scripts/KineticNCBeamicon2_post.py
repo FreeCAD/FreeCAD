@@ -57,6 +57,18 @@ import KineticNCBeamicon2_post
 KineticNCBeamicon2_post.export(object,"/path/to/file.ncc","")
 """
 
+# Preamble text will appear at the beginning of the GCODE output file.
+PREAMBLE = """%
+G17 G21 G40 G49 G80 G90
+"""
+
+# Postamble text will appear following the last operation.
+POSTAMBLE = """M05
+M09
+G17 G90 G80 G40
+M30
+"""
+
 now = datetime.datetime.now()
 
 parser = argparse.ArgumentParser(
@@ -74,11 +86,15 @@ parser.add_argument(
 parser.add_argument("--precision", default="3", help="number of digits of precision, default=3")
 parser.add_argument(
     "--preamble",
-    help=r'set commands to be issued before the first command, default="%%\nG17 G21 G40 G49 G80 G90\nM08\n"',
+    help='set commands to be issued before the first command, default="'
+    + PREAMBLE.replace("\n", "\\n")
+    + '"',
 )
 parser.add_argument(
     "--postamble",
-    help=r'set commands to be issued after the last command, default="M05 M09\nG17 G90 G80 G40\nM30\n"',
+    help='set commands to be issued after the last command, default="'
+    + POSTAMBLE.replace("\n", "\\n")
+    + '"',
 )
 parser.add_argument(
     "--inches", action="store_true", help="Convert output for US imperial mode (G20)"
@@ -111,18 +127,6 @@ MACHINE_NAME = "not set"
 CORNER_MIN = {"x": 0, "y": 0, "z": 0}
 CORNER_MAX = {"x": 1000, "y": 600, "z": 300}
 PRECISION = 3
-
-# Preamble text will appear at the beginning of the GCODE output file.
-PREAMBLE = """%
-G17 G21 G40 G49 G80 G90
-"""
-
-# Postamble text will appear following the last operation.
-POSTAMBLE = """M05
-M09
-G17 G90 G80 G40
-M30
-"""
 
 # Pre operation text will be inserted before every operation
 PRE_OPERATION = """"""
