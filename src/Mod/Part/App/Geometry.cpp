@@ -2498,6 +2498,61 @@ void GeomTrimmedCurve::setRange(double u, double v)
 }
 
 // -------------------------------------------------
+TYPESYSTEM_SOURCE(Part::GeomRestrictedCurve, Part::GeomTrimmedCurve)
+
+GeomRestrictedCurve::GeomRestrictedCurve() = default;
+
+GeomRestrictedCurve::GeomRestrictedCurve(const GeomCurve& basis, double firstParam, double lastParam)
+{
+    Handle(Geom_Curve) curve = Handle(Geom_Curve)::DownCast(basis.handle());
+
+    if (curve->IsKind(STANDARD_TYPE(Geom_TrimmedCurve))) {
+        Handle(Geom_TrimmedCurve) tc = Handle(Geom_TrimmedCurve)::DownCast(basis.handle());
+        Handle(Geom_Curve) bc = tc->BasisCurve();
+        this->myCurve = new Geom_TrimmedCurve(bc, firstParam, lastParam);
+        return;
+    }
+
+    this->myCurve = new Geom_TrimmedCurve(curve, firstParam, lastParam);
+}
+
+GeomRestrictedCurve::GeomRestrictedCurve(const Handle(Geom_TrimmedCurve) & c)
+{
+    setHandle(c);
+}
+
+GeomRestrictedCurve::~GeomRestrictedCurve() = default;
+
+void GeomRestrictedCurve::setBasis(const Handle(Geom_Curve) & newBasis)
+{
+    double firstParam;
+    double lastParam;
+    getRange(firstParam, lastParam);
+    if (newBasis->IsKind(STANDARD_TYPE(Geom_TrimmedCurve))) {
+        Handle(Geom_TrimmedCurve) tc = Handle(Geom_TrimmedCurve)::DownCast(newBasis);
+        Handle(Geom_Curve) bc = tc->BasisCurve();
+        // TODO: Are we guaranteed this basis is never itself trimmed curve?
+        this->myCurve = new Geom_TrimmedCurve(bc, firstParam, lastParam);
+    }
+    else {
+        Handle(Geom_TrimmedCurve) curve2 = new Geom_TrimmedCurve(newBasis, firstParam, lastParam);
+        setHandle(curve2);
+    }
+}
+
+Geometry* GeomRestrictedCurve::copy() const
+{
+    auto* newCurve = new GeomRestrictedCurve(myCurve);
+    newCurve->copyNonTag(this);
+    return newCurve;
+}
+
+GeomCurve* GeomRestrictedCurve::createArc(double first, double last) const
+{
+    THROWM(Base::NotImplementedError, "createArc: not implemented for this type of curve");
+}
+
+// -------------------------------------------------
 TYPESYSTEM_SOURCE_ABSTRACT(Part::GeomArcOfConic, Part::GeomTrimmedCurve)
 
 GeomArcOfConic::GeomArcOfConic() = default;
@@ -4879,6 +4934,32 @@ Base::Vector3d GeomOffsetCurve::getDir() const
 double GeomOffsetCurve::getOffset() const
 {
     return this->myCurve->Offset();
+}
+
+Base::Vector3d GeomOffsetCurve::getStartPoint() const
+{
+    double startParam = this->getFirstParameter();
+    if (startParam == RealFirst() || startParam == RealLast()) {
+        // TODO: should this be ValueError or something else?
+        throw Base::ValueError("GeomOffsetCurve::getStartPoint: curve is infinite");
+    }
+    return this->value(startParam);
+}
+
+Base::Vector3d GeomOffsetCurve::getEndPoint() const
+{
+    double endParam = this->getLastParameter();
+    if (endParam == RealFirst() || endParam == RealLast()) {
+        // TODO: should this be ValueError or something else?
+        throw Base::ValueError("GeomOffsetCurve::getEndPoint: curve is infinite");
+    }
+    return this->value(endParam);
+}
+
+void GeomOffsetCurve::setBasis(const Handle(Geom_Curve) & newBasis)
+{
+    Handle(Geom_OffsetCurve) myOffsetCurve = Handle(Geom_OffsetCurve)::DownCast(myCurve);
+    myOffsetCurve->SetBasisCurve(newBasis);
 }
 
 void GeomOffsetCurve::setHandle(const Handle(Geom_OffsetCurve) & c)
