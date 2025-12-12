@@ -1428,26 +1428,9 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         return p1.add(toEnd.add(perp))
 
     def _distMidToMid(self, wireA, wireB):
-        mpA = self._findWireMidpoint(wireA)
-        mpB = self._findWireMidpoint(wireB)
+        mpA = wireA.discretize(3)[1]
+        mpB = wireB.discretize(3)[1]
         return mpA.sub(mpB).Length
-
-    def _findWireMidpoint(self, wire):
-        midPnt = None
-        dist = 0.0
-        wL = wire.Length
-        midW = wL / 2
-
-        for E in Part.sortEdges(wire.Edges)[0]:
-            elen = E.Length
-            d_ = dist + elen
-            if dist < midW and midW <= d_:
-                dtm = midW - dist
-                midPnt = E.valueAt(E.getParameterByLength(dtm))
-                break
-            else:
-                dist += elen
-        return midPnt
 
     # Method to add temporary debug object
     def _addDebugObject(self, objName, objShape):
