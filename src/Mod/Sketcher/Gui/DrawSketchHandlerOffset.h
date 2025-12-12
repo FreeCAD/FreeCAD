@@ -1199,7 +1199,8 @@ void DSHOffsetController::configureToolWidget()
             QApplication::translate(
                 "TaskSketcherTool_c2_offset",
                 "Adds a distance constraint with additional construction geometries that allows "
-                "the distance to modify the entire offset geometry."
+                "the distance to modify the entire offset geometry"
+
             )
         );
     }
