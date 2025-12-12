@@ -314,6 +314,8 @@ protected:
     void changeEvent(QEvent* e) override;
 
 private:
+    bool checkFirstRun();
+    void moveToDefaultPosition(QRect rect, QPoint pos);
     void setupDockWindows();
     bool setupTaskView();
     bool setupSelectionView();
