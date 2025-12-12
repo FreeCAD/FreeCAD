@@ -300,6 +300,9 @@ void DlgCustomToolbars::onMoveActionRightButtonClicked()
 {
     QTreeWidgetItem* item = ui->commandTreeWidget->currentItem();
     if (item) {
+        if (!ui->toolbarTreeWidget->topLevelItemCount()) {
+            onNewButtonClicked();
+        }
         QTreeWidgetItem* current = ui->toolbarTreeWidget->currentItem();
         if (!current) {
             current = ui->toolbarTreeWidget->topLevelItem(0);
