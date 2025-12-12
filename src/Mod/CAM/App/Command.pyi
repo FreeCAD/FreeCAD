@@ -13,10 +13,11 @@ from Base.Placement import Placement
 @class_declarations("mutable Py::Dict parameters_copy_dict;")
 class Command(Persistence):
     """
-    Command([name],[parameters]): Represents a basic Gcode command
+    Command([name],[parameters],[annotations]): Represents a basic Gcode command
     name (optional) is the name of the command, ex. G1
     parameters (optional) is a dictionary containing string:number
     pairs, or a placement, or a vector
+    annotations (optional) is a dictionary containing string:string or string:number pairs
     """
 
     @constmethod
