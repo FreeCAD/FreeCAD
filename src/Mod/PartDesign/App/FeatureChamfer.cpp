@@ -41,6 +41,8 @@
 
 #include "FeatureChamfer.h"
 
+#include <Base/ProgramVersion.h>
+
 
 using namespace PartDesign;
 
@@ -205,6 +207,8 @@ App::DocumentObjectExecReturn* Chamfer::execute()
 void Chamfer::Restore(Base::XMLReader& reader)
 {
     DressUp::Restore(reader);
+
+    migrateFlippedProperties(reader);
 }
 
 void Chamfer::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop)
@@ -218,6 +222,29 @@ void Chamfer::handleChangedPropertyType(Base::XMLReader& reader, const char* Typ
     else {
         DressUp::handleChangedPropertyType(reader, TypeName, prop);
     }
+}
+
+bool Chamfer::requiresSizeSwapping(const Base::XMLReader& reader)
+{
+    return Base::getVersion(reader.ProgramVersion) < Base::Version::v1_0
+        && (ChamferType.getValue() == 1 || ChamferType.getValue() == 2);
+}
+
+void Chamfer::migrateFlippedProperties(const Base::XMLReader& reader)
+{
+    if (!requiresSizeSwapping(reader)) {
+        return;
+    }
+
+    Base::Console().warning(
+        "The 'FlipDirection' property being set for the chamfer of %s was adjusted to "
+        "maintain the same result in this FreeCAD version. If the file is opened in "
+        "FreeCAD 0.21.x, the chamfer result may differ due to the previous parameter "
+        "interpretation.\n",
+        getFullName()
+    );
+
+    FlipDirection.setValue(!FlipDirection.getValue());
 }
 
 void Chamfer::onChanged(const App::Property* prop)
