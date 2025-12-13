@@ -25,7 +25,12 @@
 #include <FCGlobal.h>
 #include <memory>
 
+#include <QAbstractScrollArea>
 #include <QCompleter>
+#include <QPainterPath>
+#include <QPoint>
+#include <QScrollBar>
+#include <QTextLayout>
 #include <QWidget>
 
 namespace Gui
@@ -204,7 +209,7 @@ private:
 
     QPoint offset() const
     {
-        return QPoint {horizontalScrollBar()->value(), verticalScrollBar()->value()};
+        return QPoint(horizontalScrollBar()->value(), verticalScrollBar()->value());
     }
 
     bool inCrossArea(size_t tag_index, QPoint const& point, QPoint const& offset) const
