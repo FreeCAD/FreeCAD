@@ -33,17 +33,6 @@ using namespace Gui;
 
 /* TRANSLATOR Gui::TagWidget */
 
-// Initialize static variables
-QMargins TagWidget::_pillThickness = {7, 7, 8, 7};
-int TagWidget::_pillsHorizontalSpacing = 7;
-int TagWidget::_tagVerticalSpacing = 2;
-qreal TagWidget::_tagCrossSize = 8;
-int TagWidget::_tagCrossSpacing = 3;
-qreal TagWidget::_roundingXRadius = 5;
-qreal TagWidget::_roundingYRadius = 5;
-bool TagWidget::_uniqueTagsOnly = true;
-QColor TagWidget::_tagColor {255, 164, 100, 100};
-
 TagWidget::TagWidget(QWidget* parent)
     : QAbstractScrollArea(parent)
 {
@@ -68,10 +57,6 @@ TagWidget::TagWidget(QWidget* parent)
  *  Destroys the object and frees any allocated resources
  */
 TagWidget::~TagWidget() = default;
-// {
-//     // no need to delete child widgets, Qt does it all for us
-//     // but we can't use default as Ui_PropertiesWidget is undefined
-// }
 
 void TagWidget::setupCompleter()
 {
@@ -311,14 +296,14 @@ void TagWidget::mouseMoveEvent(QMouseEvent* event)
 }
 
 /// Calculate the width that a tag would have with the given text width
-int TagWidget::pillWidth(int textWidth, bool hasCross)
+int TagWidget::pillWidth(int textWidth, bool hasCross) const
 {
     return textWidth + _pillThickness.left()
         + (hasCross ? (_tagCrossSpacing + _tagCrossSize) : 0) + _pillThickness.right();
 }
 
 /// Calculate the height that a tag would have with the given text height
-int TagWidget::pillHeight(int textHeight)
+int TagWidget::pillHeight(int textHeight) const
 {
     return textHeight + _pillThickness.top() + _pillThickness.bottom();
 }
@@ -365,7 +350,7 @@ void TagWidget::updateVScrollRange()
     }
 
     auto const metrics = fontMetrics();
-    auto const row_h = pillHeight(metrics.height()) + _tagVerticalSpacing;
+    auto const row_h = pillHeight(metrics.height()) + _pillVerticalSpacing;
     verticalScrollBar()->setPageStep(row_h);
     assert(!_tags.empty());  // Invariant-1
 
@@ -540,6 +525,63 @@ void TagWidget::setCompletions(std::vector<QString> const& completions)
         return ret;
     }());
     setupCompleter();
+}
+
+void TagWidget::setReadOnly(bool readOnly)
+{
+    _readOnly = readOnly;
+    updateTagDisplay();
+}
+
+void TagWidget::setUnique(bool unique)
+{
+    _uniqueTagsOnly = unique;
+    updateTagDisplay();
+}
+
+void TagWidget::setRestoreCursorPositionOnFocusClick(bool restore)
+{
+    _restoreCursorPositionOnFocusClick = restore;
+}
+
+void TagWidget::setPillThickness(const QMargins& thickness)
+{
+    _pillThickness = thickness;
+}
+
+void TagWidget::setPillHorizontalSpacing(int spacing)
+{
+    _pillHorizontalSpacing = spacing;
+}
+
+void TagWidget::setPillVerticalSpacing(int spacing)
+{
+    _pillVerticalSpacing = spacing;
+}
+
+void TagWidget::setTagCrossSize(qreal size)
+{
+    _tagCrossSize = size;
+}
+
+void TagWidget::setTagCrossSpacing(int spacing)
+{
+    _tagCrossSpacing = spacing;
+}
+
+void TagWidget::setRoundingXRadius(qreal radius)
+{
+    _roundingXRadius = radius;
+}
+
+void TagWidget::setRoundingYRadius(qreal radius)
+{
+    _roundingYRadius = radius;
+}
+
+void TagWidget::setTagColor(const QColor& color)
+{
+    _tagColor = color;
 }
 
 void TagWidget::_setTags(std::vector<QString> const& tags)
@@ -767,6 +809,18 @@ void TagWidget::setEditorText(QString const& text)
     editorText() = text;
     moveCursor(editorText().length(), false);
     updateTagDisplay();
+}
+
+QRectF TagWidget::crossRectangle(QRectF const& rectangle, qreal crossSize)
+{
+    QRectF cross(QPointF {0, 0}, QSizeF {crossSize, crossSize});
+    cross.moveCenter(QPointF(rectangle.right() - crossSize, rectangle.center().y()));
+    return cross;
+}
+
+QRectF TagWidget::crossRectangle(QRectF const& rectangle) const
+{
+    return crossRectangle(rectangle, _tagCrossSize);
 }
 
 #include "moc_TagWidget.cpp"

@@ -2111,7 +2111,17 @@ void PrefFontBox::setParamGrpPath(const QByteArray& name)
 
 TagWidget::TagWidget(QWidget* parent)
     : QAbstractScrollArea(parent)
-{}
+{
+    QSizePolicy size_policy(QSizePolicy::Ignored, QSizePolicy::Preferred);
+    size_policy.setHeightForWidth(true);
+    setSizePolicy(size_policy);
+
+    setFocusPolicy(Qt::StrongFocus);
+    viewport()->setCursor(Qt::IBeamCursor);
+    // setAttribute(Qt::WA_InputMethodEnabled, true);
+    // setMouseTracking(true);
+    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+}
 
 TagWidget::~TagWidget()
 {}
@@ -2129,4 +2139,59 @@ std::vector<QString> TagWidget::getTags() const
 void TagWidget::clear()
 {
     m_tags.clear();
+}
+
+void TagWidget::setReadOnly(bool readOnly)
+{
+    _readOnly = readOnly;
+}
+
+void TagWidget::setUnique(bool unique)
+{
+    _uniqueTagsOnly = unique;
+}
+
+void TagWidget::setRestoreCursorPositionOnFocusClick(bool restore)
+{
+    _restoreCursorPositionOnFocusClick = restore;
+}
+
+void TagWidget::setPillThickness(const QMargins& thickness)
+{
+    _pillThickness = thickness;
+}
+
+void TagWidget::setPillHorizontalSpacing(int spacing)
+{
+    _pillHorizontalSpacing = spacing;
+}
+
+void TagWidget::setPillVerticalSpacing(int spacing)
+{
+    _pillVerticalSpacing = spacing;
+}
+
+void TagWidget::setTagCrossSize(qreal size)
+{
+    _tagCrossSize = size;
+}
+
+void TagWidget::setTagCrossSpacing(int spacing)
+{
+    _tagCrossSpacing = spacing;
+}
+
+void TagWidget::setRoundingXRadius(qreal radius)
+{
+    _roundingXRadius = radius;
+}
+
+void TagWidget::setRoundingYRadius(qreal radius)
+{
+    _roundingYRadius = radius;
+}
+
+void TagWidget::setTagColor(const QColor& color)
+{
+    _tagColor = color;
 }

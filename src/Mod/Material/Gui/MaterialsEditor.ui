@@ -26,11 +26,11 @@
    <item>
     <widget class="QSplitter" name="splitter">
      <property name="orientation">
-      <enum>Qt::Horizontal</enum>
+      <enum>Qt::Orientation::Horizontal</enum>
      </property>
      <widget class="QTreeView" name="treeMaterials">
       <property name="selectionBehavior">
-       <enum>QAbstractItemView::SelectItems</enum>
+       <enum>QAbstractItemView::SelectionBehavior::SelectItems</enum>
       </property>
       <property name="headerHidden">
        <bool>true</bool>
@@ -54,7 +54,7 @@
         <item>
          <layout class="QGridLayout" name="gridLayout">
           <property name="sizeConstraint">
-           <enum>QLayout::SetMinAndMaxSize</enum>
+           <enum>QLayout::SizeConstraint::SetMinAndMaxSize</enum>
           </property>
           <property name="leftMargin">
            <number>7</number>
@@ -110,7 +110,8 @@
            </widget>
           </item>
           <item row="6" column="2">
-           <widget class="QLineEdit" name="editTags"/>
+           <widget class="Gui::TagWidget" name="editTags">
+           </widget>
           </item>
           <item row="4" column="2">
            <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -172,7 +173,7 @@
           <item>
            <spacer name="horizontalSpacer_3">
             <property name="orientation">
-             <enum>Qt::Horizontal</enum>
+             <enum>Qt::Orientation::Horizontal</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
@@ -220,7 +221,7 @@
           <item>
            <spacer name="horizontalSpacer">
             <property name="orientation">
-             <enum>Qt::Horizontal</enum>
+             <enum>Qt::Orientation::Horizontal</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
@@ -270,7 +271,7 @@
           <item>
            <spacer name="horizontalSpacer_2">
             <property name="orientation">
-             <enum>Qt::Horizontal</enum>
+             <enum>Qt::Orientation::Horizontal</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
@@ -313,15 +314,44 @@
    <item>
     <widget class="QDialogButtonBox" name="standardButtons">
      <property name="orientation">
-      <enum>Qt::Horizontal</enum>
+      <enum>Qt::Orientation::Horizontal</enum>
      </property>
      <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok|QDialogButtonBox::Save</set>
+      <set>QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Ok|QDialogButtonBox::StandardButton::Save</set>
      </property>
     </widget>
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::TagWidget</class>
+   <extends>QAbstractScrollArea</extends>
+   <header>Gui/TagWidget.h</header>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>treeMaterials</tabstop>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>editName</tabstop>
+  <tabstop>editAuthor</tabstop>
+  <tabstop>editLicense</tabstop>
+  <tabstop>editParent</tabstop>
+  <tabstop>editSourceURL</tabstop>
+  <tabstop>buttonURL</tabstop>
+  <tabstop>editSourceReference</tabstop>
+  <tabstop>editTags</tabstop>
+  <tabstop>editDescription</tabstop>
+  <tabstop>buttonNew</tabstop>
+  <tabstop>buttonInheritNew</tabstop>
+  <tabstop>buttonFavorite</tabstop>
+  <tabstop>buttonPhysicalAdd</tabstop>
+  <tabstop>buttonPhysicalRemove</tabstop>
+  <tabstop>treePhysicalProperties</tabstop>
+  <tabstop>buttonAppearanceAdd</tabstop>
+  <tabstop>buttonAppearanceRemove</tabstop>
+  <tabstop>treeAppearance</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

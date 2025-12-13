@@ -46,7 +46,24 @@ struct Tag
 class GuiExport TagWidget: public QAbstractScrollArea
 {
     Q_OBJECT
-    Q_PROPERTY(std::vector<QString> tags READ getTags WRITE setTags RESET clear)
+    
+    Q_PROPERTY(std::vector<QString> tags READ getTags WRITE setTags RESET clear NOTIFY tagsEdited)
+    Q_PROPERTY(bool readOnly MEMBER _readOnly WRITE setReadOnly)
+    Q_PROPERTY(bool unique MEMBER _uniqueTagsOnly WRITE setUnique)
+    Q_PROPERTY(
+        bool restoreCursorPositionOnFocusClick MEMBER _restoreCursorPositionOnFocusClick WRITE
+            setRestoreCursorPositionOnFocusClick
+    )
+    Q_PROPERTY(QMargins pillThickness MEMBER _pillThickness WRITE setPillThickness)
+    Q_PROPERTY(
+        int pillHorizontalSpacing MEMBER _pillHorizontalSpacing WRITE setPillHorizontalSpacing
+    )
+    Q_PROPERTY(int pillVerticalSpacing MEMBER _pillVerticalSpacing WRITE setPillVerticalSpacing)
+    Q_PROPERTY(qreal tagCrossSize MEMBER _tagCrossSize WRITE setTagCrossSize)
+    Q_PROPERTY(int tagCrossSpacing MEMBER _tagCrossSpacing WRITE setTagCrossSpacing)
+    Q_PROPERTY(qreal roundingXRadius MEMBER _roundingXRadius WRITE setRoundingXRadius)
+    Q_PROPERTY(qreal roundingYRadius MEMBER _roundingYRadius WRITE setRoundingYRadius)
+    Q_PROPERTY(QColor tagColor MEMBER _tagColor WRITE setTagColor)
 
 public:
     explicit TagWidget(QWidget* parent = nullptr);
@@ -56,17 +73,27 @@ public:
     QSize minimumSizeHint() const override;
     int heightForWidth(int width) const override;
 
-    /// Set tags
+    /// Tags
     void setTags(std::vector<QString> const& tags);
-
-    /// Get tags
     std::vector<QString> getTags() const;
-
-    /// Clear tags
     void clear();
 
     /// Set list of completions
     void setCompletions(std::vector<QString> const& completions);
+
+    /// Behaviours
+    void setReadOnly(bool readOnly);
+    void setUnique(bool unique);
+    void setRestoreCursorPositionOnFocusClick(bool restore);
+
+    void setPillThickness(const QMargins& thickness);
+    void setPillHorizontalSpacing(int spacing);
+    void setPillVerticalSpacing(int spacing);
+    void setTagCrossSize(qreal size);
+    void setTagCrossSpacing(int spacing);
+    void setRoundingXRadius(qreal radius);
+    void setRoundingYRadius(qreal radius);
+    void setTagColor(const QColor& color);
 
 Q_SIGNALS:
     void tagsEdited();
@@ -95,40 +122,38 @@ private:
     std::chrono::steady_clock::time_point _focusedAt {};
 
     // Behaviour config
-    bool _restoreCursorPositionOnFocusClick = false;
-    bool _readOnly = false;
+    bool _restoreCursorPositionOnFocusClick {false};
+    bool _readOnly {false};
+    bool _uniqueTagsOnly {true};
 
     /// Padding from the text to the the pill border
-    static QMargins _pillThickness;
+    QMargins _pillThickness = {7, 7, 8, 7};
 
     /// Space between pills
-    static int _pillsHorizontalSpacing;
+    int _pillHorizontalSpacing = 7;
 
     /// Space between rows of pills (for multi line tags)
-    static int _tagVerticalSpacing;
+    int _pillVerticalSpacing = 2;
 
     /// Size of cross side
-    static qreal _tagCrossSize;
+    qreal _tagCrossSize = 8;
 
     /// Distance between text and the cross
-    static int _tagCrossSpacing;
+    int _tagCrossSpacing = 3;
 
     /// Rounding of the pill
-    static qreal _roundingXRadius;
+    qreal _roundingXRadius = 5;
 
     /// Rounding of the pill
-    static qreal _roundingYRadius;
+    qreal _roundingYRadius = 5;
 
-    /// Maintain only unique tags
-    static bool _uniqueTagsOnly;
-
-    static QColor _tagColor;
+    QColor _tagColor {255, 164, 100, 100};
 
     /// Calculate the width that a tag would have with the given text width
-    static int pillWidth(int textWidth, bool hasCross);
+    int pillWidth(int textWidth, bool hasCross) const;
 
     /// Calculate the height that a tag would have with the given text height
-    static int pillHeight(int textHeight);
+    int pillHeight(int textHeight) const;
 
     void _setTags(std::vector<QString> const& tags);
     bool isCurrentTagADuplicate() const;
@@ -209,13 +234,13 @@ private:
     }
 
     template<std::ranges::output_range<Tag> Range>
-    static void calculateRectangles(
+    void calculateRectangles(
         QPoint& leftTop,
         Range&& tags,
         QFontMetrics const& metrics,
         std::optional<QRect> const& fit,
         bool hasCross
-    )
+    ) const
     {
         for (auto& tag : tags) {
             auto const text_width = metrics.horizontalAdvance(tag.text);
@@ -226,13 +251,13 @@ private:
                     fit->right() < rectangle.right() &&  // doesn't fit in current line
                     rectangle.left() != fit->left()      // doesn't occupy entire line already
                 ) {
-                    rectangle.moveTo(fit->left(), rectangle.bottom() + _tagVerticalSpacing);
+                    rectangle.moveTo(fit->left(), rectangle.bottom() + _pillVerticalSpacing);
                     leftTop = rectangle.topLeft();
                 }
             }
 
             tag.rectangle = rectangle;
-            leftTop.setX(rectangle.right() + _pillsHorizontalSpacing);
+            leftTop.setX(rectangle.right() + _pillHorizontalSpacing);
         }
     }
 
@@ -248,13 +273,13 @@ private:
     }
 
     template<std::ranges::input_range Range>
-    static void drawTags(
+    void drawTags(
         QPainter& painter,
         Range&& tags,
         QFontMetrics const& metrics,
         QPoint const& offset,
         bool hasCross
-    )
+    ) const
     {
         for (auto const& tag : tags) {
             QRect const& i_r = tag.rectangle.translated(offset);
@@ -292,17 +317,8 @@ private:
         drawTags(painter, range, fontMetrics(), -offset(), !_readOnly);
     }
 
-    static QRectF crossRectangle(QRectF const& rectangle, qreal crossSize)
-    {
-        QRectF cross(QPointF {0, 0}, QSizeF {crossSize, crossSize});
-        cross.moveCenter(QPointF(rectangle.right() - crossSize, rectangle.center().y()));
-        return cross;
-    }
-
-    QRectF crossRectangle(QRectF const& rectangle) const
-    {
-        return crossRectangle(rectangle, _tagCrossSize);
-    }
+    static QRectF crossRectangle(QRectF const& rectangle, qreal crossSize);
+    QRectF crossRectangle(QRectF const& rectangle) const;
 };
 
 }  // namespace Gui
