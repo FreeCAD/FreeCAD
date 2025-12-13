@@ -29,6 +29,8 @@
 #include "DocumentObject.h"
 #include "GroupExtension.h"
 #include "PropertyGeo.h"
+#include <map>
+#include <vector>
 
 
 namespace App
@@ -94,6 +96,16 @@ public:
      * system
      */
     Base::Placement globalGroupPlacement();
+    static Base::Placement globalGroupPlacementInBoundary(const App::DocumentObject* obj);
+
+    // New: capability flag — does this group act as a link/scope boundary?
+    // Default: true (current upstream behavior).
+    bool actsAsGroupBoundary() const noexcept { return m_actsAsGroupBoundary; }
+    void setActsAsGroupBoundary(bool v) noexcept { m_actsAsGroupBoundary = v; }
+
+    // New: helper used by selection/validation to hop over transparent groups.
+    // Returns the nearest GeoFeatureGroup that *acts as a boundary*; nullptr = top level.
+    static const App::DocumentObject* getBoundaryGroupOfObject(const App::DocumentObject* obj);
 
     /// Returns true if the given DocumentObject is DocumentObjectGroup but not GeoFeatureGroup
     static bool isNonGeoGroup(const DocumentObject* obj)
@@ -129,6 +141,7 @@ public:
     static void getInvalidLinkObjects(const App::DocumentObject* obj,
                                       std::vector<App::DocumentObject*>& vec);
 
+
 private:
     Base::Placement recursiveGroupPlacement(GeoFeatureGroupExtension* group,
                                             std::unordered_set<GeoFeatureGroupExtension*>& history);
@@ -150,6 +163,17 @@ private:
 
     static void recursiveCSRelevantLinks(const App::DocumentObject* obj,
                                          std::vector<App::DocumentObject*>& vec);
+    bool m_actsAsGroupBoundary = false;
+
+    static std::map<App::Document*, std::vector<App::DocumentObject*>> s_docPendingPlacementTouches;
+
+    static bool s_appSignalsConnected;
+
+    // Slot statico chiamato alla fine di una transazione
+    static void onCommitTransaction(const App::Document& doc);
+    static std::unordered_map<App::Document*, int> s_docRecomputeDepth;
+    static const int MAX_RECOMPUTE_DEPTH = 20;
+
 };
 
 using GeoFeatureGroupExtensionPython =

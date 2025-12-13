@@ -54,6 +54,7 @@ public:
         otherBody,
         otherPart,
         notInBody,
+        notInPart,
         basePlane,
         afterTip
     };
