@@ -70,6 +70,7 @@ private:
     void onTreeViewFailureItemDoubleClicked(QTreeWidgetItem* item, int column);
     void onHelpButtonClicked();
     void onAboutButtonClicked();
+    void onCopyButtonClicked();
     void onStartButtonClicked();
     void setupConnections();
 
