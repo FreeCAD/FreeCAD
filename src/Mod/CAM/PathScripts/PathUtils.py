@@ -557,60 +557,6 @@ def addToJob(obj, jobname=None):
     return job
 
 
-def sort_locations(locations, keys, attractors=None):
-    """sort holes by the nearest neighbor method
-    keys: two-element list of keys for X and Y coordinates. for example ['x','y']
-    originally written by m0n5t3r for PathHelix
-    """
-    from queue import PriorityQueue
-    from collections import defaultdict
-
-    if attractors is None:
-        attractors = []
-
-    attractors = attractors or [keys[0]]
-
-    def sqdist(a, b):
-        """square Euclidean distance"""
-        d = 0
-        for k in keys:
-            d += (a[k] - b[k]) ** 2
-
-        return d
-
-    def weight(location):
-        w = 0
-
-        for k in attractors:
-            w += abs(location[k])
-
-        return w
-
-    def find_closest(location_list, location, dist):
-        q = PriorityQueue()
-
-        for i, j in enumerate(location_list):
-            # prevent dictionary comparison by inserting the index
-            q.put((dist(j, location) + weight(j), i, j))
-
-        prio, i, result = q.get()
-
-        return result
-
-    out = []
-    zero = defaultdict(lambda: 0)
-
-    out.append(find_closest(locations, zero, sqdist))
-    locations.remove(out[-1])
-
-    while locations:
-        closest = find_closest(locations, out[-1], sqdist)
-        out.append(closest)
-        locations.remove(closest)
-
-    return out
-
-
 def guessDepths(objshape, subs=None):
     """
     takes an object shape and optional list of subobjects and returns a depth_params

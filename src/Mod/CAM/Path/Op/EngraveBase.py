@@ -25,7 +25,7 @@ from lazy_loader.lazy_loader import LazyLoader
 import Path
 import Path.Op.Base as PathOp
 import Path.Op.Util as PathOpUtil
-import PathScripts.PathUtils as PathUtils
+import PathScripts.tsp as tsp
 
 # import copy
 
@@ -70,7 +70,7 @@ class ObjectOp(PathOp.ObjectOp):
             for w in wires:
                 locations.append({"x": w.BoundBox.Center.x, "y": w.BoundBox.Center.y, "wire": w})
 
-            locations = PathUtils.sort_locations(locations, ["x", "y"])
+            locations = tsp.sort_locations(locations, ["x", "y"])
             wires = [j["wire"] for j in locations]
 
         decomposewires = []
