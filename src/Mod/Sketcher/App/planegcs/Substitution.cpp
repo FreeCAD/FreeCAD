@@ -723,9 +723,8 @@ struct SubstitutionFactory
             return Attempt::No;
         }
 
-        // This line will never be horizontal/vertical
-        if (lineDesc.isExternal && lineDesc.orientation == Orientation::None) {
-            return Attempt::No;
+        if (lineDesc.orientation == Orientation::None) {
+            return lineDesc.isExternal ? Attempt::No : Attempt::Maybe;
         }
 
         Point p1 = point;
