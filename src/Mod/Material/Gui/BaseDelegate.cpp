@@ -81,12 +81,12 @@ QRgb BaseDelegate::parseColor(const QString& color) const
     if (parts.length() < 3) {
         return qRgba(0, 0, 0, 255);
     }
-    int red = parts.at(0).toDouble() * 255;
-    int green = parts.at(1).toDouble() * 255;
-    int blue = parts.at(2).toDouble() * 255;
+    int red = static_cast<int>(std::round(parts.at(0).toDouble() * 255));
+    int green = static_cast<int>(std::round(parts.at(1).toDouble() * 255));
+    int blue = static_cast<int>(std::round(parts.at(2).toDouble() * 255));
     int alpha = 255;
     if (parts.length() > 3) {
-        alpha = parts.at(3).toDouble() * 255;
+        alpha = static_cast<int>(std::round(parts.at(3).toDouble() * 255));
     }
 
     return qRgba(red, green, blue, alpha);
