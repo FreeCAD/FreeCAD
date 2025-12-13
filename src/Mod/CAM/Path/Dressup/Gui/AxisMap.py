@@ -67,6 +67,12 @@ class ObjectDressup:
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "The radius of the wrapped axis"),
         )
+        obj.addProperty(
+            "App::PropertyBool",
+            "Invert",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "Invert rotary axis direction"),
+        )
         obj.AxisMap = maplist
         obj.AxisMap = "Y->A"
         obj.Proxy = self
@@ -77,10 +83,75 @@ class ObjectDressup:
     def loads(self, state):
         return None
 
-    def _linear2angular(self, radius, length):
-        """returns an angular distance in degrees to achieve a linear move of a given length"""
-        circum = 2 * math.pi * float(radius)
-        return 360 * (float(length) / circum)
+    def onChanged(self, obj, prop):
+        if "Restore" not in obj.State and prop == "Radius":
+            job = PathUtils.findParentJob(obj)
+            if job:
+                job.Proxy.setCenterOfRotation(self.center(obj))
+
+        if prop == "Path" and obj.ViewObject:
+            obj.ViewObject.signalChangeIcon()
+
+    def onDocumentRestored(self, obj):
+        if not hasattr(obj, "Invert"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "Invert",
+                "Path",
+                QT_TRANSLATE_NOOP("App::Property", "Invert axis"),
+            )
+
+    def execute(self, obj):
+
+        inAxis = obj.AxisMap[0]
+        outAxis = obj.AxisMap[3]
+
+        if (
+            not obj.Base
+            or not obj.Base.isDerivedFrom("Path::Feature")
+            or not obj.Base.Path
+            or not obj.Base.Path.Commands
+        ):
+            obj.Path = Path.Path()
+            return
+
+        pp = PathUtils.getPathWithPlacement(obj.Base).Commands
+        if len([i for i in pp if i.Name in Path.Geom.CmdMoveArc]) == 0:
+            pathlist = pp
+        else:
+            job = PathUtils.findParentJob(obj)
+            tol = job.GeometryTolerance.Value
+            pathlist = self._stripArcs(pp, tol)
+
+        newcommandlist = []
+        currLocation = {"X": 0, "Y": 0, "Z": 0, "F": 0}
+
+        for c in pathlist:
+            newparams = dict(c.Parameters)
+            remapvar = newparams.pop(inAxis, None)
+            if remapvar is not None:
+                newparams[outAxis] = self._linear2angular(obj.Radius, remapvar)
+                if obj.Invert:
+                    newparams[outAxis] = -newparams[outAxis]
+                locdiff = dict(set(newparams.items()) - set(currLocation.items()))
+                if (
+                    len(locdiff) == 1 and outAxis in locdiff
+                ):  # pure rotation.  Calculate rotational feed rate
+                    if "F" in c.Parameters:
+                        feed = c.Parameters["F"]
+                    else:
+                        feed = currLocation["F"]
+                    newparams.update({"F": self._linear2angular(obj.Radius, feed)})
+                newcommand = Path.Command(c.Name, newparams)
+                newcommandlist.append(newcommand)
+                currLocation.update(newparams)
+            else:
+                newcommandlist.append(c)
+                currLocation.update(c.Parameters)
+
+        path = Path.Path(newcommandlist)
+        path.Center = self.center(obj)
+        obj.Path = path
 
     def _stripArcs(self, path, d):
         """converts all G2/G3 commands into G1 commands"""
@@ -102,60 +173,13 @@ class ObjectDressup:
 
         return newcommandlist
 
-    def execute(self, obj):
-
-        inAxis = obj.AxisMap[0]
-        outAxis = obj.AxisMap[3]
-        d = 0.1
-
-        if obj.Base:
-            if obj.Base.isDerivedFrom("Path::Feature"):
-                if obj.Base.Path:
-                    if obj.Base.Path.Commands:
-                        pp = PathUtils.getPathWithPlacement(obj.Base).Commands
-                        if len([i for i in pp if i.Name in Path.Geom.CmdMoveArc]) == 0:
-                            pathlist = pp
-                        else:
-                            pathlist = self._stripArcs(pp, d)
-
-                        newcommandlist = []
-                        currLocation = {"X": 0, "Y": 0, "Z": 0, "F": 0}
-
-                        for c in pathlist:
-                            newparams = dict(c.Parameters)
-                            remapvar = newparams.pop(inAxis, None)
-                            if remapvar is not None:
-                                newparams[outAxis] = self._linear2angular(obj.Radius, remapvar)
-                                locdiff = dict(set(newparams.items()) - set(currLocation.items()))
-                                if (
-                                    len(locdiff) == 1 and outAxis in locdiff
-                                ):  # pure rotation.  Calculate rotational feed rate
-                                    if "F" in c.Parameters:
-                                        feed = c.Parameters["F"]
-                                    else:
-                                        feed = currLocation["F"]
-                                    newparams.update({"F": self._linear2angular(obj.Radius, feed)})
-                                newcommand = Path.Command(c.Name, newparams)
-                                newcommandlist.append(newcommand)
-                                currLocation.update(newparams)
-                            else:
-                                newcommandlist.append(c)
-                                currLocation.update(c.Parameters)
-
-                        path = Path.Path(newcommandlist)
-                        path.Center = self.center(obj)
-                        obj.Path = path
-
-    def onChanged(self, obj, prop):
-        if "Restore" not in obj.State and prop == "Radius":
-            job = PathUtils.findParentJob(obj)
-            if job:
-                job.Proxy.setCenterOfRotation(self.center(obj))
-        if prop == "Path" and obj.ViewObject:
-            obj.ViewObject.signalChangeIcon()
-
     def center(self, obj):
         return FreeCAD.Vector(0, 0, 0 - obj.Radius.Value)
+
+    def _linear2angular(self, radius, length):
+        """returns an angular distance in degrees to achieve a linear move of a given length"""
+        circum = 2 * math.pi * float(radius)
+        return 360 * (float(length) / circum)
 
 
 class TaskPanel:
