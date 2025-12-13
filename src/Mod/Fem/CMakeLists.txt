@@ -110,6 +110,16 @@ SET(FemExamples_SRCS
     femexamples/thermomech_bimetal.py
     femexamples/truss_3d_cs_circle_ele_seg2.py
     femexamples/truss_3d_cs_circle_ele_seg3.py
+    femexamples/gmsh_transfinite_manual.py
+    femexamples/gmsh_transfinite_automation.py
+    femtest/data/gmsh/Quad_Strip_Surface_Automated.vtk
+    femtest/data/gmsh/Quad_Strip_Surface_Double_Oriented_Bumped_Automated.vtk
+    femtest/data/gmsh/Quad_Strip_Surface_Oriented_Automated.vtk
+    femtest/data/gmsh/Quad_Strip_Surface_Oriented_Bumped_Automated.vtk
+    femtest/data/gmsh/Quad_Surface_Automated.vtk
+    femtest/data/gmsh/Wedge_Volume_Automated.vtk
+    femtest/data/gmsh/Wedge_Volume_Oriented_Automated.vtk
+    femtest/data/gmsh/Wedge_Volume_Oriented_Bumped_Automated.vtk
 )
 
 
@@ -178,6 +188,7 @@ SET(FemMesh_SRCS
     femmesh/meshsetsgetter.py
     femmesh/meshtools.py
     femmesh/netgentools.py
+    femmesh/transfinitetools.py
 )
 
 SET(FemObjects_SRCS
@@ -210,6 +221,13 @@ SET(FemObjects_SRCS
     femobjects/mesh_group.py
     femobjects/mesh_netgen.py
     femobjects/mesh_region.py
+    femobjects/mesh_distance.py
+    femobjects/mesh_restrict.py
+    femobjects/mesh_math.py
+    femobjects/mesh_shape.py
+    femobjects/mesh_tfcurve.py
+    femobjects/mesh_tfsurface.py
+    femobjects/mesh_tfvolume.py
     femobjects/mesh_result.py
     femobjects/result_mechanical.py
     femobjects/solver_calculix.py
@@ -365,6 +383,7 @@ SET(FemTestsApp_SRCS
     femtest/app/test_solver_elmer.py
     femtest/app/test_solver_mystran.py
     femtest/app/test_solver_z88.py
+    femtest/app/test_gmsh.py
 )
 
 SET(FemTestsFiles_SRCS
@@ -438,6 +457,45 @@ SET(FemTestsMesh_SRCS
     femtest/data/mesh/tetra10_mesh.yml
     femtest/data/mesh/tetra10_mesh.z88
 )
+
+SET(FemTestsGMESH_SRCS
+    femtest/data/gmsh/Hexagon_4_Sided_Surface_Recombined.vtk
+    femtest/data/gmsh/Hexagon_4_Sided_Non_symmetric_Surface_Recombined.vtk
+    femtest/data/gmsh/Hexagon_3_Sided_Surface_Recombined.vtk
+    femtest/data/gmsh/Hexagon_3_Sided_Non_symmetric_Surface_Recombined.vtk
+    femtest/data/gmsh/Quad_Surface_Recombined_Bumped.vtk
+    femtest/data/gmsh/Quad_Surface_Recombined.vtk
+    femtest/data/gmsh/Quad_Surface.vtk
+    femtest/data/gmsh/Quad_3D_Curved_Surface_Recombined_Guided.vtk
+    femtest/data/gmsh/Quad_Curved_Surface_Recombined_Guided.vtk
+    femtest/data/gmsh/Quad_Distorted_Surface_Recombined_Guided.vtk
+    femtest/data/gmsh/Triangle_Surface_Recombined_Unequal_Oriented.vtk
+    femtest/data/gmsh/Triangle_Surface_Recombined_Unequal_Guided.vtk
+    femtest/data/gmsh/Triangle_Surface_Recombined_Orientated.vtk
+    femtest/data/gmsh/Triangle_Surface_Recombined_Bumped.vtk
+    femtest/data/gmsh/Triangle_Surface_Recombined.vtk
+    femtest/data/gmsh/Triangle_Surface.vtk
+    femtest/data/gmsh/Triangle_Strip_Oriented_Guided_Automated.vtk
+    femtest/data/gmsh/Triangle_Surface_Guided_Opposing_Automated.vtk
+    femtest/data/gmsh/Triangle_Surface_Guided_Automated.vtk
+    femtest/data/gmsh/Triangle_Surface_Automated.vtk
+    femtest/data/gmsh/Triangle_Strip_Oriented_Automated.vtk
+    femtest/data/gmsh/Triangle_Strip_Guided_Automated.vtk
+    femtest/data/gmsh/Triangle_Strip_Automated.vtk
+    femtest/data/gmsh/Cube_Volume_Curved_Recombined_Bumped.vtk
+    femtest/data/gmsh/Wedge_Volume_Recombined_Bumped.vtk
+    femtest/data/gmsh/Wedge_Volume_Curved_Recombined_Bumped.vtk
+    femtest/data/gmsh/Cube_Volume_Recombined_Bumped.vtk
+    femtest/data/gmsh/Cube_Volume_Recombined.vtk
+    femtest/data/gmsh/Cube_Volume.vtk
+    femtest/data/gmsh/Wedge_Volume_Recombined.vtk
+    femtest/data/gmsh/Wedge_Volume_Mixed.vtk
+    femtest/data/gmsh/Wedge_Volume.vtk
+    femtest/data/gmsh/Multiface_Surface_Oriented_Bumped.vtk
+    femtest/data/gmsh/Multiface_Surface_Oriented.vtk
+    femtest/data/gmsh/Multiface_Surface.vtk
+)
+
 
 SET(FemTestsMystran_SRCS
     femtest/data/mystran/__init__.py
@@ -541,6 +599,7 @@ SET(FemAllScripts
     ${FemTestsCcx_SRCS}
     ${FemTestsElmer_SRCS}
     ${FemTestsMesh_SRCS}
+    ${FemTestsGMESH_SRCS}
     ${FemTestsMystran_SRCS}
     ${FemTestsOpen_SRCS}
     ${FemTestsZ88Main_SRCS}
@@ -630,6 +689,13 @@ SET(FemGuiTaskPanels_SRCS
     femtaskpanels/task_mesh_gmsh.py
     femtaskpanels/task_mesh_group.py
     femtaskpanels/task_mesh_region.py
+    femtaskpanels/task_mesh_distance.py
+    femtaskpanels/task_mesh_restrict.py
+    femtaskpanels/task_mesh_math.py
+    femtaskpanels/task_mesh_shape.py
+    femtaskpanels/task_mesh_tfcurve.py
+    femtaskpanels/task_mesh_tfsurface.py
+    femtaskpanels/task_mesh_tfvolume.py
     femtaskpanels/task_mesh_netgen.py
     femtaskpanels/task_result_mechanical.py
     femtaskpanels/task_solver_calculix.py
@@ -701,6 +767,13 @@ SET(FemGuiViewProvider_SRCS
     femviewprovider/view_mesh_group.py
     femviewprovider/view_mesh_netgen.py
     femviewprovider/view_mesh_region.py
+    femviewprovider/view_mesh_distance.py
+    femviewprovider/view_mesh_restrict.py
+    femviewprovider/view_mesh_math.py
+    femviewprovider/view_mesh_shape.py
+    femviewprovider/view_mesh_tfcurve.py
+    femviewprovider/view_mesh_tfsurface.py
+    femviewprovider/view_mesh_tfvolume.py
     femviewprovider/view_mesh_result.py
     femviewprovider/view_result_mechanical.py
     femviewprovider/view_solver_calculix.py

@@ -496,9 +496,9 @@ def makeMeshBoundaryLayer(doc, base_mesh, name="MeshBoundaryLayer"):
     # obj.BaseMesh = base_mesh
     # App::PropertyLinkList does not support append
     # we will use a temporary list to append the mesh BoundaryLayer obj. to the list
-    tmplist = base_mesh.MeshBoundaryLayerList
+    tmplist = base_mesh.MeshRefinementList
     tmplist.append(obj)
-    base_mesh.MeshBoundaryLayerList = tmplist
+    base_mesh.MeshRefinementList = tmplist
     if FreeCAD.GuiUp:
         from femviewprovider import view_mesh_boundarylayer
 
@@ -575,13 +575,149 @@ def makeMeshRegion(doc, base_mesh, element_length=0.0, name="MeshRegion"):
     # obj.BaseMesh = base_mesh
     # App::PropertyLinkList does not support append
     # we will use a temporary list to append the mesh region obj. to the list
-    tmplist = base_mesh.MeshRegionList
+    tmplist = base_mesh.MeshRefinementList
     tmplist.append(obj)
-    base_mesh.MeshRegionList = tmplist
+    base_mesh.MeshRefinementList = tmplist
     if FreeCAD.GuiUp:
         from femviewprovider import view_mesh_region
 
         view_mesh_region.VPMeshRegion(obj.ViewObject)
+    return obj
+
+
+def makeMeshDistance(doc, base_mesh, name="Distance"):
+    """makeMeshDistance(document, base_mesh, [name]):
+    creates a FEM mesh refinement object to define properties for a refinement of a FEM mesh
+    """
+    obj = doc.addObject("Fem::FeaturePython", name)
+    from femobjects import mesh_distance
+
+    mesh_distance.MeshDistance(obj)
+
+    tmplist = base_mesh.MeshRefinementList
+    tmplist.append(obj)
+    base_mesh.MeshRefinementList = tmplist
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_mesh_distance
+
+        view_mesh_distance.VPMeshDistance(obj.ViewObject)
+    return obj
+
+
+def makeMeshRestrict(doc, base_mesh, name="MeshRestrict"):
+    """makeMeshRestrict(document, base_mesh, [name]):
+    creates a FEM mesh refinement object to restrict the application of other refinements
+    """
+    obj = doc.addObject("Fem::FeaturePython", name)
+    from femobjects import mesh_restrict
+
+    mesh_restrict.MeshRestrict(obj)
+
+    tmplist = base_mesh.MeshRefinementList
+    tmplist.append(obj)
+    base_mesh.MeshRefinementList = tmplist
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_mesh_restrict
+
+        view_mesh_restrict.VPMeshRestrict(obj.ViewObject)
+    return obj
+
+
+def makeMeshMath(doc, base_mesh, name="MeshMath"):
+    """makeMeshMath(document, base_mesh, [name]):
+    creates a FEM mesh refinement object to calculate mesh size by equation
+    """
+    obj = doc.addObject("Fem::FeaturePython", name)
+    from femobjects import mesh_math
+
+    mesh_math.MeshMath(obj)
+
+    tmplist = base_mesh.MeshRefinementList
+    tmplist.append(obj)
+    base_mesh.MeshRefinementList = tmplist
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_mesh_math
+
+        view_mesh_math.VPMeshMath(obj.ViewObject)
+    return obj
+
+
+def makeMeshShape(doc, base_mesh, name="Shape"):
+    """makeMeshShape(document, base_mesh [name]):
+    creates a FEM mesh refinement object to define properties for a refinement of a FEM mesh
+    """
+    obj = doc.addObject("Fem::FeaturePython", name)
+    from femobjects import mesh_shape
+
+    mesh_shape.MeshShape(obj)
+
+    tmplist = base_mesh.MeshRefinementList
+    tmplist.append(obj)
+    base_mesh.MeshRefinementList = tmplist
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_mesh_shape
+
+        view_mesh_shape.VPMeshShape(obj.ViewObject)
+    return obj
+
+
+def makeMeshTransfiniteCurve(doc, base_mesh, name="TransfiniteCurve"):
+    """makeMeshTransfiniteCurve(document, base_mesh, [name]):
+    creates a FEM mesh refinement for transfinite curves
+    """
+    obj = doc.addObject("Fem::FeaturePython", name)
+    from femobjects import mesh_tfcurve
+
+    mesh_tfcurve.MeshTransfiniteCurve(obj)
+
+    tmplist = base_mesh.MeshRefinementList
+    tmplist.append(obj)
+    base_mesh.MeshRefinementList = tmplist
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_mesh_tfcurve
+
+        view_mesh_tfcurve.VPMeshTransfiniteCurve(obj.ViewObject)
+
+    return obj
+
+
+def makeMeshTransfiniteSurface(doc, base_mesh, name="TransfiniteSurface"):
+    """makeMeshTransfiniteSurface(document, base_mesh, [name]):
+    creates a FEM mesh refinement for transfinite surfaces
+    """
+    obj = doc.addObject("Fem::FeaturePython", name)
+    from femobjects import mesh_tfsurface
+
+    mesh_tfsurface.MeshTransfiniteSurface(obj)
+
+    tmplist = base_mesh.MeshRefinementList
+    tmplist.append(obj)
+    base_mesh.MeshRefinementList = tmplist
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_mesh_tfsurface
+
+        view_mesh_tfsurface.VPMeshTransfiniteSurface(obj.ViewObject)
+
+    return obj
+
+
+def makeMeshTransfiniteVolume(doc, base_mesh, name="TransfiniteVolume"):
+    """makeMeshTransfiniteVolume(document, base_mesh, [name]):
+    creates a FEM mesh refinement for transfinite volumes
+    """
+    obj = doc.addObject("Fem::FeaturePython", name)
+    from femobjects import mesh_tfvolume
+
+    mesh_tfvolume.MeshTransfiniteVolume(obj)
+
+    tmplist = base_mesh.MeshRefinementList
+    tmplist.append(obj)
+    base_mesh.MeshRefinementList = tmplist
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_mesh_tfvolume
+
+        view_mesh_tfvolume.VPMeshTransfiniteVolume(obj.ViewObject)
+
     return obj
 
 
