@@ -57,6 +57,7 @@ public:
     void onChanged(const App::Property* prop) override;
     bool doubleClicked() override;
     bool canDelete(App::DocumentObject* obj) const override;
+    bool setEdit(int ModNum) override;
 
     static const char* LineStyleEnums[];
 
