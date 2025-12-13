@@ -177,11 +177,48 @@ def orientWire(w, forward=True):
 
 def offsetWire(wire, base, offset, forward, Side=None):
     """offsetWire(wire, base, offset, forward) ... offsets the wire away from base and orients the wire accordingly.
-    The function tries to avoid most of the pitfalls of Part.makeOffset2D which is possible because all offsetting
+    This function tries to avoid most of the pitfalls of Part.makeOffset2D which is possible because all offsetting
     happens in the XY plane.
     """
+
+    # only print for debug builds
+    build_type = FreeCAD.ConfigGet("CmakeBuildType")
+    debug_build = build_type in ["Debug", "RelWithDebInfo"]
+
+    def isWireClockwise(w):
+        try:
+            face = Part.Face(w)
+            orientation = face.Orientation
+            if debug_build:
+                print(f"face orientation: {orientation}")
+            return orientation == "Forward"
+        except Exception as e:
+            if debug_build:
+                print(f"cannot make face: {e}")
+            return True  # assume clockwise if we cannot make a face
+
+    if debug_build:
+        print(f"wire orientation - clockwise: {isWireClockwise(wire)}")
+        print(f"inside parameter: {forward}")
+        print(f"wire edges: {len(wire.Edges)}")
+
+    # normalize wire orientation for offset (but only for multi-edge wires)
+    originallyClockwise = isWireClockwise(wire)
+    normalizedWire = wire
+    normalizedForward = forward
+
+    # only normalize if wire has multiple edges AND is not closed
+    should_normalize = len(wire.Edges) > 1 and not wire.isClosed()
+
+    if should_normalize and not originallyClockwise:
+        if debug_build:
+            print("debug: normalizing counter-clockwise wire to clockwise")
+        normalizedWire = Path.Geom.flipWire(wire)
+        normalizedForward = not forward
+
     Path.Log.track("offsetWire")
 
+    # special handling for single-edge circular wires
     if len(wire.Edges) == 1:
         edge = wire.Edges[0]
         curve = edge.Curve
@@ -282,30 +319,30 @@ def offsetWire(wire, base, offset, forward, Side=None):
                     edge = Path.Geom.flipEdge(edge)
             return Part.Wire([edge])
 
-        # if we get to this point the assumption is that makeOffset2D can deal with the edge
+    # if we get to this point the assumption is that makeOffset2D can deal with the edge
+    # use normalizedWire here (NOT wire)!
+    owire = normalizedWire.makeOffset2D(offset)
+    debugWire("makeOffset2D_%d" % len(normalizedWire.Edges), owire)
 
-    owire = orientWire(wire.makeOffset2D(offset), True)
-    debugWire("makeOffset2D_%d" % len(wire.Edges), owire)
-
-    if wire.isClosed():
+    if normalizedWire.isClosed():
         if not base.isInside(owire.Edges[0].Vertexes[0].Point, offset / 2, True):
             Path.Log.track("closed - outside")
             if Side:
                 Side[0] = "Outside"
-            return orientWire(owire, forward)
+            return orientWire(owire, normalizedForward)
         Path.Log.track("closed - inside")
         if Side:
             Side[0] = "Inside"
         try:
-            owire = wire.makeOffset2D(-offset)
+            owire = normalizedWire.makeOffset2D(-offset)
         except Exception:
             # most likely offsetting didn't work because the wire is a hole
             # and the offset is too big - making the hole vanish
             return None
         # For negative offsets (holes) 'forward' is the other way
-        if forward is None:
-            return orientWire(owire, None)
-        return orientWire(owire, not forward)
+        if normalizedForward is None:
+            return orientWire
+        return orientWire(owire, not normalizedForward)
 
     # An edge is considered to be inside of shape if the mid point is inside
     # Of the remaining edges we take the longest wire to be the engraving side
@@ -317,7 +354,7 @@ def offsetWire(wire, base, offset, forward, Side=None):
     # Depending on the Axis of the circle, and which side remains we know if the wire needs to be flipped
 
     # first, let's make sure all edges are oriented the proper way
-    edges = _orientEdges(wire.Edges)
+    edges = _orientEdges(normalizedWire.Edges)
 
     # determine the start and end point
     start = edges[0].firstVertex().Point
@@ -328,24 +365,47 @@ def offsetWire(wire, base, offset, forward, Side=None):
     # find edges that are not inside the shape
     common = base.common(owire)
     insideEndpoints = [e.lastVertex().Point for e in common.Edges]
-    insideEndpoints.append(common.Edges[0].firstVertex().Point)
+    if common.Edges:
+        insideEndpoints.append(common.Edges[0].firstVertex().Point)
 
     def isInside(edge):
         p0 = edge.firstVertex().Point
         p1 = edge.lastVertex().Point
         for p in insideEndpoints:
             if Path.Geom.pointsCoincide(p, p0, 0.01) or Path.Geom.pointsCoincide(p, p1, 0.01):
+                if debug_build:
+                    print(f"edge filtered: p0={p0}, p1={p1}, coincides with {p}")
                 return True
         return False
 
+    if debug_build:
+        print(f"debug: owire has {len(owire.Edges)} edges")
+
+    # filter edges
     outside = [e for e in owire.Edges if not isInside(e)]
-    # discard all edges that are not part of the longest wire
+
+    if debug_build:
+        print(f"debug: after filtering, outside has {len(outside)} edges")
+
+    # OCC 7.9.x compatibility fallback
+    if not outside:
+        if debug_build:
+            print("WARNING: All edges were filtered out!")
+            print("This is expected behavior with OCC 7.9.x for certain wire orientations")
+            print(f"insideEndpoints: {insideEndpoints}")
+            print(f"original owire edges:")
+            for i, e in enumerate(owire.Edges):
+                print(f"edge {i}: {e.firstVertex().Point} -> {e.lastVertex().Point}")
+            print("using all edges as fallback")
+        outside = list(owire.Edges)
+
+    debugWire("outside", Part.Wire(outside))
+
     longestWire = None
     for w in [Part.Wire(el) for el in Part.sortEdges(outside)]:
         if not longestWire or longestWire.Length < w.Length:
             longestWire = w
 
-    debugWire("outside", Part.Wire(outside))
     debugWire("longest", longestWire)
 
     def isCircleAt(edge, center):
@@ -412,7 +472,7 @@ def offsetWire(wire, base, offset, forward, Side=None):
     # traversal (climb milling). If that's not what we want just reverse the order,
     # orientWire takes care of orienting the edges appropriately.
     Path.Log.debug("#use left side edges")
-    if not forward:
+    if not normalizedForward:
         Path.Log.debug("#reverse")
         edges.reverse()
 
