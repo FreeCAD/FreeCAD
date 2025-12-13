@@ -407,7 +407,9 @@ class ObjectDressup:
                             covered = True
                         i = i + 1
                     if len(rampedges) == 0:
-                        Path.Log.warn("No suitable edges for ramping, plunge will remain as such")
+                        Path.Log.warning(
+                            "No suitable edges for ramping, plunge will remain as such"
+                        )
                         outedges.append(edge)
                     else:
                         # Path.Log.debug("Doing ramp to edges: {}".format(rampedges))
@@ -482,7 +484,7 @@ class ObjectDressup:
                         rampedges.append(candidate)
                         j = j + 1
                     if not loopFound:
-                        Path.Log.warn("No suitable helix found, leaving as a plunge")
+                        Path.Log.warning("No suitable helix found, leaving as a plunge")
                         outedges.append(edge)
                     else:
                         outedges.extend(self.createHelix(rampedges, edge.start_point[2]))
