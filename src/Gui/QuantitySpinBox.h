@@ -46,6 +46,7 @@ class GuiExport QuantitySpinBox: public QAbstractSpinBox, public ExpressionSpinB
         double singleStep READ singleStep WRITE setSingleStep
     )  // clazy:exclude=qproperty-without-notify
     Q_PROPERTY(double rawValue READ rawValue WRITE setValue NOTIFY valueChanged)
+    Q_PROPERTY(double decimals READ decimals WRITE setDecimals)
     Q_PROPERTY(Base::Quantity value READ value WRITE setValue NOTIFY valueChanged USER true)
     Q_PROPERTY(
         QString binding READ boundToName WRITE setBoundToByName
