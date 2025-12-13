@@ -2106,3 +2106,27 @@ void PrefFontBox::setParamGrpPath(const QByteArray& name)
 {
     m_sPrefGrp = name;
 }
+
+// --------------------------------------------------------------------
+
+TagWidget::TagWidget(QWidget* parent)
+    : QAbstractScrollArea(parent)
+{}
+
+TagWidget::~TagWidget()
+{}
+
+void TagWidget::setTags(std::vector<QString> const& tags)
+{
+    m_tags = tags;
+}
+
+std::vector<QString> TagWidget::getTags() const
+{
+    return m_tags;
+}
+
+void TagWidget::clear()
+{
+    m_tags.clear();
+}
