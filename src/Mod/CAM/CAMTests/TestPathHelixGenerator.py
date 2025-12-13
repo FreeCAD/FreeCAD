@@ -40,11 +40,12 @@ def _resetArgs():
 
     return {
         "edge": edg,
-        "hole_radius": 10.0,
+        "outer_radius": 7.5,
         "step_down": 1.0,
-        "step_over": 0.5,
+        "step": 2.5,
         "tool_diameter": 5.0,
-        "inner_radius": 0.0,
+        "inner_radius": 2.5,
+        "retract_height": 23,
         "direction": "CW",
         "startAt": "Inside",
     }
@@ -52,7 +53,8 @@ def _resetArgs():
 
 class TestPathHelixGenerator(PathTestUtils.PathTestBase):
 
-    expectedHelixGCode = "G0 X7.500000 Y5.000000\
+    expectedHelixGCode = "G0 Z23.000000\
+G0 X7.500000 Y5.000000\
 G1 Z20.000000\
 G2 I-2.500000 J0.000000 X2.500000 Y5.000000 Z19.500000\
 G2 I2.500000 J0.000000 X7.500000 Y5.000000 Z19.000000\
@@ -60,8 +62,8 @@ G2 I-2.500000 J0.000000 X2.500000 Y5.000000 Z18.500000\
 G2 I2.500000 J0.000000 X7.500000 Y5.000000 Z18.000000\
 G2 I-2.500000 J0.000000 X2.500000 Y5.000000 Z18.000000\
 G2 I2.500000 J0.000000 X7.500000 Y5.000000 Z18.000000\
-G0 X5.000000 Y5.000000 Z18.000000\
-G0 Z20.000000G0 X10.000000 Y5.000000\
+G0 X6.250000 Y5.000000 Z23.000000\
+G0 X10.000000 Y5.000000\
 G1 Z20.000000\
 G2 I-5.000000 J0.000000 X0.000000 Y5.000000 Z19.500000\
 G2 I5.000000 J0.000000 X10.000000 Y5.000000 Z19.000000\
@@ -69,8 +71,8 @@ G2 I-5.000000 J0.000000 X0.000000 Y5.000000 Z18.500000\
 G2 I5.000000 J0.000000 X10.000000 Y5.000000 Z18.000000\
 G2 I-5.000000 J0.000000 X0.000000 Y5.000000 Z18.000000\
 G2 I5.000000 J0.000000 X10.000000 Y5.000000 Z18.000000\
-G0 X5.000000 Y5.000000 Z18.000000\
-G0 Z20.000000G0 X12.500000 Y5.000000\
+G0 X8.750000 Y5.000000 Z23.000000\
+G0 X12.500000 Y5.000000\
 G1 Z20.000000\
 G2 I-7.500000 J0.000000 X-2.500000 Y5.000000 Z19.500000\
 G2 I7.500000 J0.000000 X12.500000 Y5.000000 Z19.000000\
@@ -78,26 +80,27 @@ G2 I-7.500000 J0.000000 X-2.500000 Y5.000000 Z18.500000\
 G2 I7.500000 J0.000000 X12.500000 Y5.000000 Z18.000000\
 G2 I-7.500000 J0.000000 X-2.500000 Y5.000000 Z18.000000\
 G2 I7.500000 J0.000000 X12.500000 Y5.000000 Z18.000000\
-G0 X5.000000 Y5.000000 Z18.000000G0 Z20.000000"
+G0 X11.250000 Y5.000000 Z23.000000"
 
     def test00(self):
         """Test Basic Helix Generator Return"""
         args = _resetArgs()
         result = generator.generate(**args)
-        self.assertTrue(type(result) is list)
-        self.assertTrue(type(result[0]) is Path.Command)
+        self.assertTrue(isinstance(result, list))
+        self.assertTrue(isinstance(result[0], Path.Command))
 
         gcode = "".join([r.toGCode() for r in result])
-        print(gcode)
+        print()
+        print("\n".join([str(r.toGCode()) + "\\" for r in result]))
         self.assertTrue(gcode == self.expectedHelixGCode, "Incorrect helix g-code generated")
 
     def test01(self):
         """Test Value and Type checking"""
         args = _resetArgs()
-        args["hole_radius"] = "10"
+        args["outer_radius"] = "7.5"
         self.assertRaises(TypeError, generator.generate, **args)
 
-        args["hole_radius"] = -10.0
+        args["outer_radius"] = -7.5
         self.assertRaises(ValueError, generator.generate, **args)
 
         args = _resetArgs()
@@ -108,39 +111,11 @@ G0 X5.000000 Y5.000000 Z18.000000G0 Z20.000000"
         args["tool_diameter"] = "5"
         self.assertRaises(TypeError, generator.generate, **args)
 
-        # require tool fit 2: hole diameter not greater than tool diam
-        # with zero inner radius
+        # step is a length and can not be negative
         args = _resetArgs()
-        args["hole_radius"] = 2.0
-        args["inner_radius"] = 0.0
-        args["tool_diameter"] = 5.0
+        args["step"] = -50
         self.assertRaises(ValueError, generator.generate, **args)
-
-        # require tool fit: actual hole diameter after taking Extra Offset into account >= tool diameter
-        # 1. Extra Offset just small enough to leave room for tool should not raise an error
-        args = _resetArgs()
-        designed_hole_diameter = 10.0
-        extra_offset = 2.49
-        args["hole_radius"] = designed_hole_diameter / 2 - extra_offset
-        args["inner_radius"] = extra_offset
-        args["tool_diameter"] = 5.0
-        result = generator.generate(**args)
-        self.assertTrue(result)
-
-        # 2. Extra Offset does not leave room for tool, should raise an error
-        args = _resetArgs()
-        designed_hole_diameter = 10.0
-        extra_offset = 2.50
-        args["hole_radius"] = designed_hole_diameter / 2 - extra_offset
-        args["inner_radius"] = extra_offset
-        args["tool_diameter"] = 5.0
-        self.assertRaises(ValueError, generator.generate, **args)
-
-        # step_over is a percent value between 0 and 1
-        args = _resetArgs()
-        args["step_over"] = 50
-        self.assertRaises(ValueError, generator.generate, **args)
-        args["step_over"] = "50"
+        args["step"] = "50"
         self.assertRaises(TypeError, generator.generate, **args)
 
         # Other argument testing
@@ -192,20 +167,80 @@ G0 X5.000000 Y5.000000 Z18.000000G0 Z20.000000"
     def test10(self):
         """Test Helix Retraction"""
 
-        # if center is clear, the second to last move should be a rapid away
-        # from the wall
+        # if one helix and center is clear,
+        # retraction is inclined line
         args = _resetArgs()
         v1 = FreeCAD.Vector(0, 0, 20)
         v2 = FreeCAD.Vector(0, 0, 18)
         edg = Part.makeLine(v1, v2)
         args["edge"] = edg
-        args["inner_radius"] = 0.0
+        args["outer_radius"] = 2.5
+        args["inner_radius"] = 2.5
         args["tool_diameter"] = 5.0
         result = generator.generate(**args)
-        self.assertTrue(result[-2].Name == "G0")
+        self.assertEqual(result[-2].Name, "G2")
+        self.assertEqual(result[-1].Name, "G0")
+        self.assertTrue(result[-1].x is not None and result[-1].y is not None)
 
-        # if center is not clear, retraction is one straight up on the last
-        # move. the second to last move should be a G2
-        args["inner_radius"] = 2.0
+        # if one helix and center is not clear,
+        # retraction is vertical line
+        args = _resetArgs()
+        v1 = FreeCAD.Vector(0, 0, 20)
+        v2 = FreeCAD.Vector(0, 0, 18)
+        edg = Part.makeLine(v1, v2)
+        args["edge"] = edg
+        args["outer_radius"] = 3.5
+        args["inner_radius"] = 3.5
+        args["tool_diameter"] = 5.0
         result = generator.generate(**args)
-        self.assertTrue(result[-2].Name == "G2")
+        self.assertEqual(result[-2].Name, "G2")
+        self.assertEqual(result[-1].Name, "G0")
+        self.assertTrue(result[-1].x is None and result[-1].y is None)
+
+        # if several helices and start at Inside,
+        # last retraction is inclined line
+        args = _resetArgs()
+        v1 = FreeCAD.Vector(0, 0, 20)
+        v2 = FreeCAD.Vector(0, 0, 18)
+        edg = Part.makeLine(v1, v2)
+        args["edge"] = edg
+        args["outer_radius"] = 10.0
+        args["inner_radius"] = 2.5
+        args["tool_diameter"] = 5.0
+        args["startAt"] = "Inside"
+        result = generator.generate(**args)
+        self.assertEqual(result[-2].Name, "G2")
+        self.assertEqual(result[-1].Name, "G0")
+        self.assertTrue(result[-1].x is not None and result[-1].y is not None)
+
+        # if several helices, start at Outside and center is clear
+        # last retraction is vertical line
+        args = _resetArgs()
+        v1 = FreeCAD.Vector(0, 0, 20)
+        v2 = FreeCAD.Vector(0, 0, 18)
+        edg = Part.makeLine(v1, v2)
+        args["edge"] = edg
+        args["outer_radius"] = 10.0
+        args["inner_radius"] = 2.5
+        args["tool_diameter"] = 5.0
+        args["startAt"] = "Outside"
+        result = generator.generate(**args)
+        self.assertEqual(result[-2].Name, "G2")
+        self.assertEqual(result[-1].Name, "G0")
+        self.assertTrue(result[-1].x is None and result[-1].y is None)
+
+        # if several helices, start at Outside and center is not clear
+        # last retraction is inclinde line
+        args = _resetArgs()
+        v1 = FreeCAD.Vector(0, 0, 20)
+        v2 = FreeCAD.Vector(0, 0, 18)
+        edg = Part.makeLine(v1, v2)
+        args["edge"] = edg
+        args["outer_radius"] = 10.0
+        args["inner_radius"] = 3.5
+        args["tool_diameter"] = 5.0
+        args["startAt"] = "Outside"
+        result = generator.generate(**args)
+        self.assertEqual(result[-2].Name, "G2")
+        self.assertEqual(result[-1].Name, "G0")
+        self.assertTrue(result[-1].x is not None and result[-1].y is not None)
