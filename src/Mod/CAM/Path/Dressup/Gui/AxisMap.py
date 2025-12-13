@@ -90,7 +90,6 @@ class ObjectDressup:
 
         inAxis = obj.AxisMap[0]
         outAxis = obj.AxisMap[3]
-        d = 0.1
 
         if (
             not obj.Base
@@ -105,7 +104,9 @@ class ObjectDressup:
         if len([i for i in pp if i.Name in Path.Geom.CmdMoveArc]) == 0:
             pathlist = pp
         else:
-            pathlist = self._stripArcs(pp, d)
+            job = PathUtils.findParentJob(obj)
+            tol = job.GeometryTolerance.Value
+            pathlist = self._stripArcs(pp, tol)
 
         newcommandlist = []
         currLocation = {"X": 0, "Y": 0, "Z": 0, "F": 0}
