@@ -480,4 +480,3 @@ void Revolution::updateProperties(RevolMethod method)
 }
 
 }  // namespace PartDesign
-

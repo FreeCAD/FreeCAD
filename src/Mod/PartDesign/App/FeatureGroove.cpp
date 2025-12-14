@@ -471,4 +471,3 @@ void Groove::updateProperties(RevolMethod method)
 }
 
 }  // namespace PartDesign
-
