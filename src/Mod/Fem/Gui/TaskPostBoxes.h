@@ -204,7 +204,7 @@ private:
     QPixmap m_icon;
     App::DocumentObjectWeakPtrT m_object;
     Gui::ViewProviderWeakPtrT m_view;
-    boost::signals2::connection m_connection;
+    fastsignals::connection m_connection;
 };
 
 

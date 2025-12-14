@@ -256,7 +256,7 @@ public:
     {
         return lastMalformedConstraints;
     }
-    boost::signals2::signal<void()> signalSolverUpdate;
+    fastsignals::signal<void()> signalSolverUpdate;
 
 private:
     std::shared_ptr<MbD::ASMTAssembly> mbdAssembly;

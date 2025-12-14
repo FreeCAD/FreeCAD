@@ -161,7 +161,7 @@ protected:
     void onDocumentRestored() override;
 
 private:
-    boost::signals2::scoped_connection connection;
+    fastsignals::scoped_connection connection;
     bool showTip = false;
 };
 

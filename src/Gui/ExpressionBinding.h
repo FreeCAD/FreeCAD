@@ -27,7 +27,7 @@
 #include <string>
 #include <App/ObjectIdentifier.h>
 #include <QPalette>
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 
 
 namespace App
@@ -89,9 +89,9 @@ protected:
     void expressionChange(const App::ObjectIdentifier& id);
     void objectDeleted(const App::DocumentObject&);
     void onDocumentDeleted(const App::Document&);
-    boost::signals2::scoped_connection expressionchanged;
-    boost::signals2::scoped_connection objectdeleted;
-    boost::signals2::scoped_connection documentdeleted;
+    fastsignals::scoped_connection expressionchanged;
+    fastsignals::scoped_connection objectdeleted;
+    fastsignals::scoped_connection documentdeleted;
     bool m_autoApply {false};
 };
 

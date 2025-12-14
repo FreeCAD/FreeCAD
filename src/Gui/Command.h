@@ -28,7 +28,7 @@
 #include <map>
 #include <string>
 #include <vector>
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 
 #include <Base/Type.h>
 #include <Gui/Application.h>
@@ -829,9 +829,9 @@ protected:
     /// the activation sequence
     std::string Activation;
     //// set the parameters on action creation
-    void onActionInit() const;
+    void onActionInit();
 
-    boost::signals2::connection connPyCmdInitialized;
+    fastsignals::connection connPyCmdInitialized;
 };
 
 /** The Python group command class
@@ -880,13 +880,13 @@ protected:
     /// Returns the resource values
     const char* getResource(const char* sName) const;
     //// set the parameters on action creation
-    void onActionInit() const;
+    void onActionInit();
     /// a pointer to the Python command object
     PyObject* _pcPyCommand;
     /// the command object resources
     PyObject* _pcPyResource;
 
-    boost::signals2::connection connPyCmdInitialized;
+    fastsignals::connection connPyCmdInitialized;
 };
 
 
@@ -1019,10 +1019,10 @@ public:
     }
 
     /// Signal on any addition or removal of command
-    boost::signals2::signal<void()> signalChanged;
+    fastsignals::signal<void()> signalChanged;
 
     /// Signal to Python command on first workbench activation
-    boost::signals2::signal<void()> signalPyCmdInitialized;
+    fastsignals::signal<void()> signalPyCmdInitialized;
 
     /**
      * Returns a pointer to a conflicting command, or nullptr if there is no conflict.
