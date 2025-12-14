@@ -312,6 +312,8 @@ class PathBoundary:
                                             tc.VertFeed.Value,
                                         )
                                     )
+                                    # restore G0 movement
+                                    commands[-1].Name = cmd.Name
                                 inside.remove(e)
                                 pos = newPos
                                 lastExit = newPos
