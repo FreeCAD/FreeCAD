@@ -66,10 +66,28 @@ public:
         QWidget* parent = nullptr,
         const QString& caption = QString(),
         const QString& dir = QString(),
+        const QStringList& filters = QStringList(),
+        QString* selectedFilter = nullptr,
+        Options options = Options()
+    );
+    [[deprecated("Use getSaveFileName with a QStringList filter list instead")]]
+    static QString getOpenFileName(
+        QWidget* parent = nullptr,
+        const QString& caption = QString(),
+        const QString& dir = QString(),
         const QString& filter = QString(),
         QString* selectedFilter = nullptr,
         Options options = Options()
     );
+    static QString getSaveFileName(
+        QWidget* parent = nullptr,
+        const QString& caption = QString(),
+        const QString& dir = QString(),
+        const QStringList& filters = QStringList(),
+        QString* selectedFilter = nullptr,
+        Options options = Options()
+    );
+    [[deprecated("Use getSaveFileName with a QStringList filter list instead")]]
     static QString getSaveFileName(
         QWidget* parent = nullptr,
         const QString& caption = QString(),
@@ -84,6 +102,15 @@ public:
         const QString& dir = QString(),
         Options options = ShowDirsOnly
     );
+    static QStringList getOpenFileNames(
+        QWidget* parent = nullptr,
+        const QString& caption = QString(),
+        const QString& dir = QString(),
+        const QStringList& filters = QStringList(),
+        QString* selectedFilter = nullptr,
+        Options options = Options()
+    );
+    [[deprecated("Use getSaveFileName with a QStringList filter list instead")]]
     static QStringList getOpenFileNames(
         QWidget* parent = nullptr,
         const QString& caption = QString(),
@@ -112,7 +139,6 @@ private:
     bool hasSuffix(const QString&) const;
     static QList<QUrl> fetchSidebarUrls();
     static QString workingDirectory;
-    static void getSuffixesDescription(QStringList& suffixes, const QString* suffixDescriptions);
 };
 
 // ----------------------------------------------------------------------

@@ -127,8 +127,8 @@ using namespace Gui::DockWnd;
  * protected:
  *   void activated(int)
  *   {
- *     QString filter ... // make a filter of all supported file formats
- *     QStringList FileList = QFileDialog::getOpenFileNames( filter,QString(), getMainWindow() );
+ *     QStringList filters ... // make a filter list of all supported file formats
+ *     QStringList FileList = QFileDialog::getOpenFileNames( filters, QString(), getMainWindow() );
  *     for ( QStringList::Iterator it = FileList.begin(); it != FileList.end(); ++it ) {
  *       getGuiApplication()->open((*it).latin1());
  *     }
