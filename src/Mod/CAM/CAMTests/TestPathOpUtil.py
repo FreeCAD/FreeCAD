@@ -634,7 +634,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         ]
         self.assertEqual(2, len(lEdges))
 
-        wire = PathOpUtil.offsetWire(Part.Wire(lEdges), obj.Shape, 2, True)
+        wire = PathOpUtil.offsetWire(Part.Wire(lEdges), obj.Shape, -2, True)
 
         x = length / 2 + 2 * math.cos(math.pi / 6)
         y = -10 + 2 * math.sin(math.pi / 6)
@@ -678,7 +678,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         self.assertEqual(2, len(lEdges))
 
         w = Path.Geom.flipWire(Part.Wire(lEdges))
-        wire = PathOpUtil.offsetWire(w, obj.Shape, 2, True)
+        wire = PathOpUtil.offsetWire(w, obj.Shape, -2, True)
 
         x = length / 2 + 2 * math.cos(math.pi / 6)
         y = -10 + 2 * math.sin(math.pi / 6)
@@ -793,7 +793,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         ]
         self.assertEqual(2, len(lEdges))
 
-        wire = PathOpUtil.offsetWire(Part.Wire(lEdges), obj.Shape, 2, True)
+        wire = PathOpUtil.offsetWire(Part.Wire(lEdges), obj.Shape, -2, True)
 
         x = length / 2 - 2 * math.cos(math.pi / 6)
         y = -5 - 2 * math.sin(math.pi / 6)
@@ -831,7 +831,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         self.assertEqual(2, len(lEdges))
 
         w = Path.Geom.flipWire(Part.Wire(lEdges))
-        wire = PathOpUtil.offsetWire(w, obj.Shape, 2, True)
+        wire = PathOpUtil.offsetWire(w, obj.Shape, -2, True)
 
         x = length / 2 - 2 * math.cos(math.pi / 6)
         y = -5 - 2 * math.sin(math.pi / 6)
