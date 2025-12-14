@@ -1077,7 +1077,7 @@ struct SubstitutionFactory
             addConst(p2, *p1 + *diff);
         }
         else if (p2External) {
-            addConst(p2, *p1 - *diff);
+            addConst(p1, *p2 - *diff);
         }
         else {
             addRelationship(p1, p2, -*diff, RelationshipOptions::Absolute);
