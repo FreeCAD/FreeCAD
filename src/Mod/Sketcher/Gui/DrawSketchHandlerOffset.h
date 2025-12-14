@@ -270,7 +270,7 @@ private:
         }
 
         // Copying shape to fix strange orientation behavior, OCC7.0.0. See bug #2699
-        //  http://www.freecadweb.org/tracker/view.php?id=2699
+        //  http://www.freecad.org/tracker/view.php?id=2699
         offsetShape = BRepBuilderAPI_Copy(offsetShape).Shape();
         return offsetShape;
     }
@@ -1314,3 +1314,4 @@ void DSHOffsetController::computeNextDrawSketchHandlerMode()
 
 
 #endif  // SKETCHERGUI_DrawSketchHandlerOffset_H
+
