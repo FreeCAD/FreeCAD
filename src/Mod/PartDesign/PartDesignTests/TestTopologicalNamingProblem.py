@@ -569,7 +569,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         #  Pad -> Extrusion -> makes compounds and does booleans, thus the resulting newName element maps
         #  See if we can turn those off, or try them on the other types?
 
-    def testPartDesignElementMapRevolution(self):
+    def _testPartDesignElementMapRevolution(self, order, vertex, face):
         # App.KeepTestDoc = True    # Uncomment this if you want to keep the test document to examine
         self.Doc.UseHasher = False
         # Arrange
@@ -596,6 +596,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         revolution.Profile = sketch2
         revolution.Angle = 180
         revolution.Refine = True
+        revolution.FuseOrder = order
         body.addObject(revolution)
         volume = (math.pi * 3 * 3 - math.pi * 2 * 2) * 2 / 2
         padVolume = 3 * 3 * 2  # 50.26548245743668
@@ -611,8 +612,8 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.assertEqual(
             self.countFacesEdgesVertexes(revolution.Shape.ElementReverseMap), (9, 21, 14)
         )
-        self.assertEqual(revolution.Shape.ElementReverseMap["Vertex9"][1].count(";"), 3)
-        self.assertEqual(revolution.Shape.ElementReverseMap["Face9"].count(";"), 19)
+        self.assertEqual(revolution.Shape.ElementReverseMap[vertex][1].count(";"), 3)
+        self.assertEqual(revolution.Shape.ElementReverseMap[face].count(";"), 19)
 
         ### This test has been removed because FeatureRevolution generates improper element maps when the user select the
         #   UpToFace mode. That behavior seems to be the fault of OpenCASCADE itself, and we need to rewrite that section
@@ -641,6 +642,12 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         # # output elements)
         # self.assertEqual( revolution.Shape.ElementReverseMap["Face8"].count("Face8"), 3)
         # self.assertEqual( revolution.Shape.ElementReverseMap["Face8"].count("Face10"), 3)
+
+    def testPartDesignElementMapRevolutionFuseFeatureFirst(self):
+        self._testPartDesignElementMapRevolution("FeatureFirst", "Vertex9", "Face9")
+
+    def testPartDesignElementMapRevolutionWithDefaultFuseOrder(self):
+        self._testPartDesignElementMapRevolution("BaseFirst", "Vertex8", "Face8")
 
     def testPartDesignBinderRevolution(self):
         doc = self.Doc
