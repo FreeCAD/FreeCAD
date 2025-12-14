@@ -191,6 +191,16 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     "If doing multiple passes, the extra offset of each additional pass",
                 ),
             ),
+            (
+                "App::PropertyEnumeration",
+                "StartPointOverride",
+                "Start Point",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Override start point"
+                    "\nShoud be used only with Individually HandleMultipleFeatures",
+                ),
+            ),
         ]
 
     @classmethod
@@ -223,6 +233,16 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 (translate("PathProfile", "Outside"), "Outside"),
                 (translate("PathProfile", "Inside"), "Inside"),
             ],  # side of profile that cutter is on in relation to direction of profile
+            "StartPointOverride": [
+                (translate("PathProfile", "No"), "No"),
+                (translate("PathProfile", "Corner"), "Corner"),
+                (translate("PathProfile", "Middle-Long"), "Middle-Long"),
+                (translate("PathProfile", "Middle-Long-Line"), "Middle-Long-Line"),
+                (translate("PathProfile", "Middle-Long-Straight"), "Middle-Long-Straight"),
+                (translate("PathProfile", "Middle-Short"), "Middle-Short"),
+                (translate("PathProfile", "Middle-Short-Line"), "Middle-Short-Line"),
+                (translate("PathProfile", "Middle-Short-Straight"), "Middle-Short-Straight"),
+            ],
         }
 
         if dataType == "raw":
@@ -294,6 +314,10 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         elif opType == "Edge":
             pass
 
+        startPointOverrideMode = (
+            0 if obj.HandleMultipleFeatures == "Individually" and not obj.UseStartPoint else 2
+        )
+
         obj.setEditorMode("JoinType", 2)
         obj.setEditorMode("MiterLimit", 2)  # ml
         obj.setEditorMode("Side", side)
@@ -301,6 +325,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         obj.setEditorMode("processCircles", fc)
         obj.setEditorMode("processHoles", fc)
         obj.setEditorMode("processPerimeter", fc)
+        obj.setEditorMode("StartPointOverride", startPointOverrideMode)
 
     def _getOperationType(self, obj):
         if len(obj.Base) == 0:
@@ -318,7 +343,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
     def areaOpOnChanged(self, obj, prop):
         """areaOpOnChanged(obj, prop) ... updates certain property visibilities depending on changed properties."""
-        if prop in ["UseComp", "JoinType", "Base"]:
+        if prop in ["UseComp", "JoinType", "Base", "HandleMultipleFeatures"]:
             if hasattr(self, "propertiesReady") and self.propertiesReady:
                 self.setOpEditorProperties(obj)
 
@@ -559,9 +584,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 FreeCADGui.ActiveDocument.getObject(tmpGrpNm).Visibility = False
             self.tmpGrp.purgeTouched()
 
-        # for shape in shapes:
-        #     Part.show(shape[0])
-        #     print(shape)
         return shapes
 
     # Method to handle each model as a whole, when no faces are selected
