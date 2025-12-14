@@ -393,7 +393,7 @@ void Revolution::generateRevolution(
 
         // revolve the face to a solid
         // BRepPrimAPI is the only option that allows use of this shape for patterns.
-        // See https://forum.freecadweb.org/viewtopic.php?f=8&t=70185&p=611673#p611673.
+        // See https://forum.freecad.org/viewtopic.php?f=8&t=70185&p=611673#p611673.
         revol = from;
         revol = revol.makeElementRevolve(revolAx, angleTotal);
         revol.Tag = -getID();
@@ -480,3 +480,4 @@ void Revolution::updateProperties(RevolMethod method)
 }
 
 }  // namespace PartDesign
+
