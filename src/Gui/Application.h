@@ -236,6 +236,9 @@ public:
     void setStyleSheet(const QString& qssFile, bool tiledBackground);
     void reloadStyleSheet();
     QString replaceVariablesInQss(const QString& qssText);
+
+    /// Set QStyle by name
+    void setStyle(const QString& name);
     //@}
 
     /** @name User Commands */
