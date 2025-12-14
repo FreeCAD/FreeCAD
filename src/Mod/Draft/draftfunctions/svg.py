@@ -1055,9 +1055,14 @@ def get_svg(
 
             if len(wiredEdges) != len(obj.Shape.Edges):
                 fill = "none"  # Required if obj has a face. Edges processed here have no face.
-                
+
                 def get_edge_descriptor(edge):
-                    return (str(edge.Curve), str(edge.Vertexes[0].Point), str(edge.Vertexes[-1].Point))
+                    return (
+                        str(edge.Curve),
+                        str(edge.Vertexes[0].Point),
+                        str(edge.Vertexes[-1].Point),
+                    )
+
                 wiredEdgesSet = set([get_edge_descriptor(e) for e in wiredEdges])
                 for i, e in enumerate(obj.Shape.Edges):
                     if get_edge_descriptor(e) not in wiredEdgesSet:
