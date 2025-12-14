@@ -254,7 +254,7 @@ App::DocumentObjectExecReturn* Revolution::execute()
             this->AddSubShape.setValue(result);
 
             if (!base.isNull()) {
-                result = result.makeElementFuse(base);
+                result = base.makeElementFuse(result);
                 // store shape before refinement
                 this->rawShape = result;
                 result = refineShapeIfActive(result);
