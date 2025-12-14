@@ -40,9 +40,9 @@ struct TSPTunnel
 {
     double startX, startY;
     double endX, endY;
-    bool isOpen;      // Whether the tunnel can be flipped (entry/exit can be swapped)
-    bool flipped;     // Tracks if tunnel has been flipped from original orientation
-    int originalIdx;  // Original index in input array
+    bool isOpen;   // Whether the tunnel can be flipped (entry/exit can be swapped)
+    bool flipped;  // Tracks if tunnel has been flipped from original orientation
+    int index;     // Original index in input array
 
     TSPTunnel(double sx, double sy, double ex, double ey, bool open = true)
         : startX(sx)
@@ -51,7 +51,7 @@ struct TSPTunnel
         , endY(ey)
         , isOpen(open)
         , flipped(false)
-        , originalIdx(-1)
+        , index(-1)
     {}
 };
 

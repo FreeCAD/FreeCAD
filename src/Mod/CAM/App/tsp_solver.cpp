@@ -329,7 +329,7 @@ std::vector<TSPTunnel> TSPSolver::solveTunnels(
 
     // Set original indices
     for (size_t i = 0; i < tunnels.size(); ++i) {
-        tunnels[i].originalIdx = static_cast<int>(i);
+        tunnels[i].index = static_cast<int>(i);
     }
 
     // STEP 1: Add the routeStartPoint (will be deleted at the end)

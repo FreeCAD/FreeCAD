@@ -183,7 +183,7 @@ std::vector<py::dict> tspSolveTunnelsPy(
         tunnelDict["endY"] = tunnel.endY;
         tunnelDict["isOpen"] = tunnel.isOpen;
         tunnelDict["flipped"] = tunnel.flipped;
-        tunnelDict["originalIdx"] = tunnel.originalIdx;
+        tunnelDict["index"] = tunnel.index;
         pyResult.push_back(tunnelDict);
     }
 
