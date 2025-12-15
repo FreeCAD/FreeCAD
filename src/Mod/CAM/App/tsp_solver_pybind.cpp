@@ -108,14 +108,17 @@ std::vector<py::dict> tspSolveTunnelsPy(
     std::vector<TSPTunnel> cppTunnels;
 
     // Convert Python dictionaries to C++ TSPTunnel objects
-    for (const auto& tunnel : tunnels) {
+    for (size_t i = 0; i < tunnels.size(); ++i) {
+        const auto& tunnel = tunnels[i];
         double startX = py::cast<double>(tunnel["startX"]);
         double startY = py::cast<double>(tunnel["startY"]);
         double endX = py::cast<double>(tunnel["endX"]);
         double endY = py::cast<double>(tunnel["endY"]);
         bool isOpen = tunnel.contains("isOpen") ? py::cast<bool>(tunnel["isOpen"]) : true;
 
-        cppTunnels.emplace_back(startX, startY, endX, endY, isOpen);
+        TSPTunnel cppTunnel(startX, startY, endX, endY, isOpen);
+        cppTunnel.index = static_cast<int>(i);
+        cppTunnels.emplace_back(cppTunnel);
     }
 
     // Handle optional start point
@@ -173,10 +176,12 @@ std::vector<py::dict> tspSolveTunnelsPy(
     // Solve the tunnel TSP
     auto result = TSPSolver::solveTunnels(cppTunnels, allowFlipping, pStartPoint, pEndPoint);
 
-    // Convert result back to Python dictionaries
+    // Convert result back to Python dictionaries, preserving extra keys from input
     std::vector<py::dict> pyResult;
     for (const auto& tunnel : result) {
-        py::dict tunnelDict;
+        // Start with a copy of the original input dict to preserve extra keys
+        py::dict tunnelDict = py::dict(tunnels[tunnel.index]);
+        // Update with solver results (may have changed due to flipping)
         tunnelDict["startX"] = tunnel.startX;
         tunnelDict["startY"] = tunnel.startY;
         tunnelDict["endX"] = tunnel.endX;
