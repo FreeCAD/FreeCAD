@@ -99,7 +99,7 @@ void StdCmdRandomColor::activated(int iMsg)
             if (!vpLink->OverrideMaterial.getValue()) {
                 vpLink->OverrideMaterial.setValue(true);
             }
-            vpLink->ShapeMaterial.setDiffuseColor(objColor);
+            vpLink->ShapeAppearance.setDiffuseColor(objColor);
         }
         else if (view) {
             // clang-format off

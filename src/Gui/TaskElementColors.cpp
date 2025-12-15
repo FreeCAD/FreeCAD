@@ -507,9 +507,17 @@ void ElementColors::onAddSelectionClicked()
                 break;
             }
             for (auto& sub : subs) {
-                if (boost::starts_with(sub, d->editSub)) {
-                    d->addItem(-1, sub.c_str() + d->editSub.size(), true);
+                if (!boost::starts_with(sub, d->editSub)) {
+                    continue;
                 }
+                std::string s(sub.c_str() + d->editSub.size());
+                // When no specific element is selected (empty) or a child object
+                // is selected (ends with '.'), default to overriding all faces.
+                constexpr const char* allFacesWildcard = "Face";
+                if (s.empty() || s.back() == '.') {
+                    s += allFacesWildcard;
+                }
+                d->addItem(-1, s.c_str(), true);
             }
             break;
         }
