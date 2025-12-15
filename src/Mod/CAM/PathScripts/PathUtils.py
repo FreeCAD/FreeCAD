@@ -659,12 +659,14 @@ def sort_tunnels_tsp(tunnels, allowFlipping=False, routeStartPoint=None, routeEn
     - index: Original index of the tunnel in the input list
     """
     # Call C++ TSP tunnel solver directly - it handles all the processing
-    return tsp_solver.solveTunnels(
+    orderedTunnels = tsp_solver.solveTunnels(
         tunnels=tunnels,
         allowFlipping=allowFlipping,
         routeStartPoint=routeStartPoint,
         routeEndPoint=routeEndPoint,
     )
+
+    return [tunnels[tunnel["index"]] for tunnel in orderedTunnels]
 
 
 def guessDepths(objshape, subs=None):
