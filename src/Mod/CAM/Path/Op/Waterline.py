@@ -1275,9 +1275,9 @@ class ObjectWaterline(PathOp.ObjectOp):
                 # We pass '0.0' as layDep because Adaptive loops have their own Z embedded
                 cmds = self._loopToGcode(obj, 0.0, loop)
                 commands.extend(cmds)
-            
+
             Path.Log.debug("--Adaptive generation took " + str(time.time() - layTime) + " s")
-            
+
         else:
             # Setup BoundBox for Dropcutter grid
             if subShp is None:
@@ -1298,13 +1298,13 @@ class ObjectWaterline(PathOp.ObjectOp):
                 xmax = subShp.BoundBox.XMax
                 ymin = subShp.BoundBox.YMin
                 ymax = subShp.BoundBox.YMax
-                
+
             # Determine bounding box length for the OCL scan
             bbLength = math.fabs(ymax - ymin)
             numScanLines = int(math.ceil(bbLength / smplInt) + 1)
-            
+
             # Run Scan (Grid  based)
-            fd = depthparams[-1]                                        
+            fd = depthparams[-1]
             oclScan = self._waterlineDropCutScan(stl, smplInt, xmin, xmax, ymin, fd, numScanLines)
             oclScan = [FreeCAD.Vector(P.x, P.y, P.z + depOfst) for P in oclScan]
 
@@ -1381,7 +1381,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         for zh in zheights:
             awl.setZ(zh)
             awl.run()
-            
+
             # OCL returns a list of separate loops (list of lists of Points)
             # Example: [[PerimeterPoints], [HolePoints]]
             temp_loops = awl.getLoops()
@@ -1393,7 +1393,7 @@ class ObjectWaterline(PathOp.ObjectOp):
                 FreeCAD.Console.PrintWarning(newPropMsg + "\n")
                 continue
 
-            # Process each loop separately. 
+            # Process each loop separately.
             # This ensures that islands (holes) remain distinct from perimeters.
             for loop in temp_loops:
                 # Convert OCL Points to FreeCAD Vectors and apply Z offset
@@ -1749,10 +1749,10 @@ class ObjectWaterline(PathOp.ObjectOp):
         """_loopToGcode(obj, layDep, loop) ... Convert set of loop points to Gcode."""
         # generate the path commands
         output = []
-        
+
         # Safety check for empty loops
         if not loop:
-            return output        
+            return output
 
         nxt = FreeCAD.Vector(0.0, 0.0, 0.0)
 
@@ -1770,7 +1770,7 @@ class ObjectWaterline(PathOp.ObjectOp):
             output.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid}))
         else:
             output.append(Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid}))
-            
+
         output.append(Path.Command("G0", {"X": pnt.x, "Y": pnt.y, "F": self.horizRapid}))
         output.append(Path.Command("G1", {"Z": pnt.z, "F": self.vertFeed}))
 
