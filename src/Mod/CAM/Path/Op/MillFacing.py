@@ -506,8 +506,8 @@ class ObjectMillFacing(PathOp.ObjectOp):
                                 ):
                                     # But if Z is different, keep it (it's a plunge or retract)
                                     # Use sentinel values that won't conflict with depth == 0
-                                    z_new = new_params.get("Z", float('inf'))
-                                    z_last = last_params.get("Z", float('-inf'))
+                                    z_new = new_params.get("Z", float("inf"))
+                                    z_last = last_params.get("Z", float("-inf"))
                                     z_changed = abs(z_new - z_last) > 1e-9
                                     if not z_changed:
                                         continue
@@ -630,7 +630,7 @@ class ObjectMillFacing(PathOp.ObjectOp):
                             last = self.commandlist[-1].Parameters
                             # Use sentinel values that won't conflict with depth == 0
                             if all(
-                                abs(cp.get(k, float('inf')) - last.get(k, float('-inf'))) <= 1e-9 
+                                abs(cp.get(k, float("inf")) - last.get(k, float("-inf"))) <= 1e-9
                                 for k in ("X", "Y", "Z")
                             ):
                                 continue
