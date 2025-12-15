@@ -36,6 +36,8 @@
 #include <App/DocumentObject.h>
 #include <App/ExpressionParser.h>
 #include <App/ObjectIdentifier.h>
+#include <Gui/Application.h>
+#include <Gui/MainWindow.h>
 #include <Base/Tools.h>
 #include <CXX/Extensions.hxx>
 
@@ -1306,9 +1308,21 @@ void ExpressionTextEdit::adjustCompleterToCursor()
 
     completer->popup()->setMaximumWidth(this->viewport()->width() * 0.6);
 
+    QScreen* screen = QGuiApplication::primaryScreen();
+    // looking for screen on which popup appears
+    const int cursorGlobalY = mapToGlobal(cursorPos).y();
+    for (QScreen* elem : QGuiApplication::screens()) {
+        const int screenTopY = elem->geometry().top();
+        const int screenBottomY = elem->geometry().bottom();
+
+        if (cursorGlobalY >= screenTopY && cursorGlobalY < screenBottomY) {
+            screen = elem;
+            break;
+        }
+    }
+
     const int rowHeight = completer->popup()->fontMetrics().height();
-    int rowsToEdge = (QGuiApplication::primaryScreen()->availableGeometry().height() * 0.95
-                      - (mapToGlobal(cursorPos).y() + rowHeight))
+    int rowsToEdge = (screen->geometry().bottom() * 0.95 - (mapToGlobal(cursorPos).y() + rowHeight))
         / rowHeight;  // keep 5% margin to screen edge
     const auto adjustHeight = [&rowHeight, &completionsCount](const int _rowsToEdge) -> int {
         return std::min({
@@ -1325,8 +1339,7 @@ void ExpressionTextEdit::adjustCompleterToCursor()
     if (rowsToEdge < 4) {
         // display above cursor
         rowsToEdge = mapToGlobal(cursorPos).y()
-            - QGuiApplication::primaryScreen()->availableGeometry().height()
-                * 0.05;  // keep 5% margin to screen edge
+            - screen->geometry().height() * 0.05;  // keep 5% margin to screen edge
         adjustedPopupHeight = adjustHeight(rowsToEdge);
         posY -= adjustedPopupHeight;
     }
