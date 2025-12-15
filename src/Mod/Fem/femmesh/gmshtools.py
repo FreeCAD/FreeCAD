@@ -686,7 +686,7 @@ class GmshTools:
 
         element_dict = self._element_list_to_shape_idx_dict(elements)
 
-        settings = {"Field": "Constant", "Option": {}}
+        settings = {"Field": "Constant", "Option": {}, "Anisotropic": False}
         settings["FieldID"] = self._next_field_number()
         settings["Option"]["VIn"] = Units.Quantity(obj.CharacteristicLength).Value
         settings["Option"]["IncludeBoundary"] = 1
@@ -718,7 +718,7 @@ class GmshTools:
         idx_dict = self._element_list_to_shape_idx_dict(elements)
 
         # get the settings!
-        settings = {"Field": "Distance", "Option": {}}
+        settings = {"Field": "Distance", "Option": {}, "Anisotropic": False}
         settings["FieldID"] = self._next_field_number()
         settings["Option"]["Sampling"] = obj.Sampling
         if idx_dict["Vertex"]:
@@ -739,7 +739,7 @@ class GmshTools:
 
         dist_field_id = self._build_distance_size_field(obj)
 
-        settings = {"Field": "Threshold", "Option": {}}
+        settings = {"Field": "Threshold", "Option": {}, "Anisotropic": False}
         settings["FieldID"] = self._next_field_number()
         settings["Option"]["InField"] = dist_field_id
         settings["Option"]["DistMin"] = Units.Quantity(obj.DistanceMinimum).Value
@@ -767,7 +767,7 @@ class GmshTools:
 
     def _build_sphere_size_field(self, sphere):
 
-        settings = {"Field": "Ball", "Option": {}}
+        settings = {"Field": "Ball", "Option": {}, "Anisotropic": False}
         settings["FieldID"] = self._next_field_number()
         settings["Option"]["Radius"] = Units.Quantity(sphere.SphereRadius).Value
         settings["Option"]["XCenter"] = Units.Quantity(sphere.SphereCenter.x).Value
@@ -783,7 +783,7 @@ class GmshTools:
 
     def _build_cylinder_size_field(self, cylinder):
 
-        settings = {"Field": "Cylinder", "Option": {}}
+        settings = {"Field": "Cylinder", "Option": {}, "Anisotropic": False}
         settings["FieldID"] = self._next_field_number()
         settings["Option"]["Radius"] = Units.Quantity(cylinder.CylinderRadius).Value
         settings["Option"]["XCenter"] = Units.Quantity(cylinder.CylinderCenter.x).Value
@@ -801,7 +801,7 @@ class GmshTools:
 
     def _build_box_size_field(self, box):
 
-        settings = {"Field": "Box", "Option": {}}
+        settings = {"Field": "Box", "Option": {}, "Anisotropic": False}
         settings["FieldID"] = self._next_field_number()
         settings["Option"]["XMin"] = Units.Quantity(box.BoxCenter.x) - Units.Quantity(box.BoxLength/2).Value
         settings["Option"]["XMax"] = Units.Quantity(box.BoxCenter.x) + Units.Quantity(box.BoxLength/2).Value
@@ -842,7 +842,7 @@ class GmshTools:
         idx_dict = self._element_list_to_shape_idx_dict(elements)
 
         # get the settings!
-        settings = {"Field": "Restrict", "Option": {}}
+        settings = {"Field": "Restrict", "Option": {}, "Anisotropic": False}
         settings["FieldID"] = self._next_field_number()
         settings["Option"]["InField"] = restricted_field
         settings["Option"]["IncludeBoundary"] = int(obj.IncludeBoundary)
@@ -865,7 +865,7 @@ class GmshTools:
 
     def _build_threshold_size_field(self, obj, threshold_field):
 
-        settings = {"Field": "Threshold", "Option": {}}
+        settings = {"Field": "Threshold", "Option": {}, "Anisotropic": False}
         settings["FieldID"] = self._next_field_number()
         settings["Option"]["InField"] = threshold_field
         settings["Option"]["DistMin"] = Units.Quantity(obj.InputMinimum).Value
@@ -882,7 +882,7 @@ class GmshTools:
     def _build_evaluation_size_field(self, obj, evaluation_field):
         # mean, curvature, laplace
 
-        settings = {"Field": evaluation_field.Type, "Option": {}}
+        settings = {"Field": evaluation_field.Type, "Option": {}, "Anisotropic": False}
         settings["FieldID"] = self._next_field_number()
         settings["Option"]["InField"] = evaluation_field
         settings["Option"]["Delta"] = Units.Quantity(obj.Delta).Value
@@ -893,7 +893,7 @@ class GmshTools:
     def _build_gradient_size_field(self, obj, gradient_field):
 
         # get the settings!
-        settings = {"Field": evaluation_field.Type, "Option": {}}
+        settings = {"Field": evaluation_field.Type, "Option": {}, "Anisotropic": False}
         settings["FieldID"] = self._next_field_number()
         settings["Option"]["InField"] = gradient_field
         settings["Option"]["Delta"] = Units.Quantity(obj.Delta).Value
@@ -924,7 +924,7 @@ class GmshTools:
                                     "elements are selected.\n").format(obj.Name))
             return -1
 
-        settings = {"Field": "AttractorAnisoCurve", "Option": {}}
+        settings = {"Field": "AttractorAnisoCurve", "Option": {}, "Anisotropic": True}
         settings["FieldID"] = self._next_field_number()
 
         idx_dict = self._element_list_to_shape_idx_dict(elements)
@@ -988,7 +988,7 @@ class GmshTools:
         new_equation = self._update_replace_equation(obj.Equation, equation_fields)
 
         # get the settings!
-        settings = {"Field": "MathEval", "Option": {}}
+        settings = {"Field": "MathEval", "Option": {}, "Anisotropic": False}
         settings["FieldID"] = self._next_field_number()
         settings["Option"]["F"] = f"'{new_equation}'"
 
@@ -1011,7 +1011,7 @@ class GmshTools:
         m33 = self._update_replace_equation(obj.M33, equation_fields)
 
         # get the settings!
-        settings = {"Field": "MathEvalAniso", "Option": {}}
+        settings = {"Field": "MathEvalAniso", "Option": {}, "Anisotropic": True}
         settings["FieldID"] = self._next_field_number()
         settings["Option"]["M11"] = f"'{m11}'"
         settings["Option"]["M12"] = f"'{m12}'"
@@ -1424,15 +1424,26 @@ class GmshTools:
         # write the background size field, if fields have been added
         if self._background_fields:
 
-            # background field
-            field_id = self._next_field_number()
-            geo.write(f"\nField[{field_id}] = MinAniso;\n")
-            id_list = ", ".join(str(i) for i in self._background_fields)
-            geo.write(f"Field[{field_id}].FieldsList = {{ {id_list} }};\n")
-            geo.write(f"Background Field = {field_id};\n\n")
+            if len(self._background_fields) == 1:
+                geo.write(f"Background Field = {str(self._background_fields[0])};\n\n")
 
-            geo.write("Mesh.MeshSizeExtendFromBoundary = 0;\n")
-            geo.write("\n")
+            else:
+                # check if there are anisotropic size fields
+                bf_type = "Min"
+                for setting in self.size_field_list:
+                    if setting["Anisotropic"]:
+                        bf_type = "MinAniso"
+                        break
+
+                # background field
+                field_id = self._next_field_number()
+                geo.write(f"\nField[{field_id}] = {bf_type};\n")
+                id_list = ", ".join(str(i) for i in self._background_fields)
+                geo.write(f"Field[{field_id}].FieldsList = {{ {id_list} }};\n")
+                geo.write(f"Background Field = {field_id};\n\n")
+
+                geo.write("Mesh.MeshSizeExtendFromBoundary = 0;\n")
+                geo.write("\n")
 
 
         # mesh parameter
