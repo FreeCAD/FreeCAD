@@ -66,8 +66,8 @@
         <file>icons/FEM_MeshNetgenFromShape.svg</file>
         <file>icons/FEM_MeshRegion.svg</file>
         <file>icons/FEM_MeshDistance.svg</file>
-        <file>icons/FEM_MeshRestrict.svg</file>
-        <file>icons/FEM_MeshMath.svg</file>
+        <file>icons/FEM_MeshManipulate.svg</file>
+        <file>icons/FEM_MeshAdvanced.svg</file>
         <file>icons/FEM_MeshShape.svg</file>
         <file>icons/FEM_MeshSphere.svg</file>
         <file>icons/FEM_MeshBox.svg</file>

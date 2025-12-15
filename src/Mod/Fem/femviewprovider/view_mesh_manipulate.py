@@ -21,17 +21,17 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD FEM mesh math ViewProvider for the document object"
+__title__ = "FreeCAD FEM mesh manipulate ViewProvider for the document object"
 __author__ = "Stefan Tröger"
 __url__ = "https://www.freecad.org"
 
-## @package view_mesh_math
+## @package view_mesh_restrict
 #  \ingroup FEM
-#  \brief view provider for mesh math object
+#  \brief view provider for mesh manipulate object
 
 import FreeCAD
 
-from femtaskpanels import task_mesh_math
+from femtaskpanels import task_mesh_manipulate
 from . import view_base_femmeshelement
 
 from femtools import femutils as utils
@@ -50,13 +50,15 @@ def find_parent_gmsh(obj):
     return None
 
 
-class VPMeshMath(view_base_femmeshelement.VPBaseFemMeshElement):
+class VPMeshManipulate(view_base_femmeshelement.VPBaseFemMeshElement):
     """
-    A View Provider for the FemMeshMath object
+    A View Provider for the FemMeshManipulate object
+
+    Can manipulate a single other refinement.
     """
 
     def setEdit(self, vobj, mode=0):
-        return super().setEdit(vobj, mode, task_mesh_math._TaskPanel)
+        return super().setEdit(vobj, mode, task_mesh_manipulate._TaskPanel)
 
     def canDropObjects(self):
         return True
@@ -72,13 +74,23 @@ class VPMeshMath(view_base_femmeshelement.VPBaseFemMeshElement):
         return True
 
     def dropObject(self, vp, obj):
-        self.Object.Refinements = self.Object.Refinements + [obj]
+
+        if self.Object.Refinement:
+
+            # wee need to pass the old refinement to the gmsh object we are in
+            gmsh = find_parent_gmsh(self.Object)
+            if not gmsh:
+                raise FreeCAD.FreeCADError("Manipulate object not within GMSH mesh object")
+
+            refinements = gmsh.MeshRefinementList
+            refinements.append(self.Object.Refinement)
+            gmsh.MeshRefinementList = refinements
+
+        self.Object.Refinement = obj
 
     def dragObject(self, vp, obj):
-        if obj in self.Object.Refinements:
-            list = self.Object.Refinements
-            list.remove(obj)
-            self.Object.Refinements = list
+        if obj == self.Object.Refinement:
+            self.Object.Refinement = None
 
     def claimChildren(self):
-        return self.Object.Refinements
+        return [self.Object.Refinement]

@@ -6,7 +6,7 @@
    height="64px"
    id="svg2860"
    version="1.1"
-   sodipodi:docname="FEM_MeshMath.svg"
+   sodipodi:docname="FEM_MeshAdvanced.svg"
    inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -26,7 +26,7 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#505050"
      inkscape:zoom="17.268873"
-     inkscape:cx="47.715911"
+     inkscape:cx="47.773818"
      inkscape:cy="28.982783"
      inkscape:window-width="3132"
      inkscape:window-height="1772"
@@ -187,17 +187,23 @@
        style="fill:none;stroke:#302b00;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="M 37,31 61,23"
        id="path3915-6" />
-    <text
-       xml:space="preserve"
-       style="font-size:58.0451px;font-family:'Adwaita Mono';-inkscape-font-specification:'Adwaita Mono';text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#bf0000;stroke:#bf0000;stroke-width:4.84243;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;fill-opacity:1"
-       x="-3.9294772"
-       y="55.57143"
-       id="text1"
-       transform="scale(0.99215565,1.0079064)"><tspan
-         sodipodi:role="line"
-         id="tspan1"
-         x="-3.9294772"
-         y="55.57143"
-         style="stroke-width:4.84243;stroke-dasharray:none;fill:#bf0000;fill-opacity:1">Fx</tspan></text>
+    <path
+       sodipodi:type="star"
+       style="fill:#fc0000;fill-opacity:1;stroke:#bf0000;stroke-width:3.083;stroke-linecap:square;stroke-linejoin:miter;stroke-dasharray:none"
+       id="path1"
+       inkscape:flatsided="false"
+       sodipodi:sides="5"
+       sodipodi:cx="11.349901"
+       sodipodi:cy="51.769447"
+       sodipodi:r1="28.808289"
+       sodipodi:r2="14.404144"
+       sodipodi:arg1="-0.26179939"
+       sodipodi:arg2="0.36651914"
+       inkscape:rounded="0"
+       inkscape:randomized="0"
+       d="M 39.176571,44.313314 24.797328,56.931431 27.04002,75.930111 10.596047,66.153851 -6.7797422,74.157692 -2.5634338,55.497514 -15.544953,41.44548 3.5048419,39.689115 12.85761,23.00064 20.414723,40.575325 Z"
+       inkscape:transform-center-x="0.032418426"
+       inkscape:transform-center-y="-2.7200965"
+       transform="rotate(-3.2086507,-302.94538,-325.34311)" />
   </g>
 </svg>
