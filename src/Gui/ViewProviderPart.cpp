@@ -22,7 +22,9 @@
 
 
 #include <QMenu>
-
+# include <QPixmap>
+# include <boost/bind.hpp>
+# include <Inventor/nodes/SoMaterial.h>
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -35,11 +37,15 @@
 #include "Command.h"
 #include "MDIView.h"
 
+#include "ViewParams.h"
+#include "TaskElementColors.h"
+#include "Control.h"
+#include "ViewProviderLink.h"
 
 using namespace Gui;
 
 
-PROPERTY_SOURCE_WITH_EXTENSIONS(Gui::ViewProviderPart, Gui::ViewProviderDragger)
+PROPERTY_SOURCE_WITH_EXTENSIONS(Gui::ViewProviderPart, Gui::ViewProviderGeometryObject)
 
 
 /**
@@ -48,6 +54,10 @@ PROPERTY_SOURCE_WITH_EXTENSIONS(Gui::ViewProviderPart, Gui::ViewProviderDragger)
 ViewProviderPart::ViewProviderPart()
 {
     initExtension(this);
+
+    ADD_PROPERTY_TYPE(OverrideMaterial, (false), 0, App::Prop_None, "Override part material");
+
+    ADD_PROPERTY(OverrideColorList, ());
 
     sPixmap = "Geofeaturegroup.svg";
     aPixmap = "Geoassembly.svg";
@@ -62,7 +72,25 @@ ViewProviderPart::~ViewProviderPart() = default;
  */
 void ViewProviderPart::onChanged(const App::Property* prop)
 {
-    ViewProviderDragger::onChanged(prop);
+    if (prop == &OverrideMaterial) {
+        pcShapeMaterial->setOverride(OverrideMaterial.getValue());
+    }
+    else if (!isRestoring()) {
+        if (prop == &OverrideColorList) {
+            applyColors();
+        }
+    }
+    inherited::onChanged(prop);
+}
+
+void ViewProviderPart::updateData(const App::Property* prop)
+{
+    if (prop && !isRestoring() && !pcObject->isRestoring()) {
+        if (prop == getColoredElementsProperty()) {
+            applyColors();
+        }
+    }
+    inherited::updateData(prop);
 }
 
 void ViewProviderPart::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
@@ -74,7 +102,12 @@ void ViewProviderPart::setupContextMenu(QMenu* menu, QObject* receiver, const ch
     act->setChecked(isActivePart());
     func->trigger(act, [this]() { this->toggleActivePart(); });
 
-    ViewProviderDragger::setupContextMenu(menu, receiver, member);
+    if (getColoredElementsProperty()) {
+        act = menu->addAction(QObject::tr("Override colors..."), receiver, member);
+        act->setData(QVariant((int)ViewProvider::Color));
+    }
+
+    inherited::setupContextMenu(menu, receiver, member);
 }
 
 bool ViewProviderPart::isActivePart()
@@ -143,6 +176,94 @@ QIcon ViewProviderPart::getIcon() const
     return mergeGreyableOverlayIcons(Gui::BitmapFactory().pixmap(pixmap));
 }
 
+App::PropertyLinkSub* ViewProviderPart::getColoredElementsProperty() const
+{
+    if (!getObject()) {
+        return 0;
+    }
+    return freecad_cast<App::PropertyLinkSub*>(
+        getObject()->getPropertyByName("ColoredElements")
+    );
+}
+
+bool ViewProviderPart::setEdit(int ModNum)
+{
+    if (ModNum == ViewProvider::Color) {
+        TaskView::TaskDialog* dlg = Control().activeDialog();
+        if (dlg) {
+            Control().showDialog(dlg);
+            return false;
+        }
+        Selection().clearSelection();
+        return true;
+    }
+    return inherited::setEdit(ModNum);
+}
+
+void ViewProviderPart::setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum)
+{
+    if (ModNum == ViewProvider::Color) {
+        Gui::Control().showDialog(new TaskElementColors(this));
+        return;
+    }
+    return inherited::setEditViewer(viewer, ModNum);
+}
+
+std::map<std::string, Base::Color> ViewProviderPart::getElementColors(const char* subname) const
+{
+    std::map<std::string, Base::Color> res;
+    if (!getObject()) {
+        return res;
+    }
+    auto prop = getColoredElementsProperty();
+    if (!prop) {
+        return res;
+    }
+    const auto& mats = ShapeAppearance.getValue();
+    if (mats.empty()) {
+        return res;
+    }
+    const auto& mat = mats.front();
+
+    return ViewProviderLink::getElementColorsFrom(
+        this,
+        subname,
+        *prop,
+        OverrideColorList,
+        OverrideMaterial.getValue(),
+        &mat
+    );
+}
+
+void ViewProviderPart::setElementColors(const std::map<std::string, Base::Color>& colorMap)
+{
+    if (!getObject()) {
+        return;
+    }
+    auto prop = getColoredElementsProperty();
+    if (!prop) {
+        return;
+    }
+    ViewProviderLink::setElementColorsTo(
+        this,
+        colorMap,
+        *prop,
+        OverrideColorList,
+        &OverrideMaterial,
+        &ShapeAppearance
+    );
+}
+
+void ViewProviderPart::applyColors()
+{
+    prevColorOverride = ViewProviderLink::applyColorsTo(this, prevColorOverride);
+}
+
+void ViewProviderPart::finishRestoring()
+{
+    inherited::finishRestoring();
+    applyColors();
+}
 
 // Python feature -----------------------------------------------------------------------
 

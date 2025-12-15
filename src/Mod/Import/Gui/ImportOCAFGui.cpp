@@ -79,7 +79,7 @@ void ImportOCAFGui::applyLinkColor(App::DocumentObject* obj, int index, Base::Co
     }
     if (index < 0) {
         vp->OverrideMaterial.setValue(true);
-        vp->ShapeMaterial.setDiffuseColor(color);
+        vp->ShapeAppearance.setDiffuseColor(color);
         return;
     }
     if (vp->OverrideMaterialList.getSize() <= index) {
