@@ -3563,4 +3563,3 @@ void PropertyPersistentObject::setValue(const char* type)
     }
     hasSetValue();
 }
-
