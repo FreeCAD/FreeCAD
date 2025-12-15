@@ -2116,7 +2116,7 @@ void ViewProviderLink::handleChangedPropertyName(
 {
     // Migration: ShapeMaterial (App::PropertyMaterial) -> ShapeAppearance (App::PropertyMaterialList)
     if (strcmp(PropName, "ShapeMaterial") == 0
-             && strcmp(TypeName, App::PropertyMaterial::getClassTypeId().getName()) == 0) {
+        && strcmp(TypeName, App::PropertyMaterial::getClassTypeId().getName()) == 0) {
         App::PropertyMaterial prop;
         prop.Restore(reader);
         // Set the whole material object into the list (it will default to index 0)
@@ -3673,13 +3673,13 @@ std::map<std::string, Base::Color> ViewProviderLink::getElementColorsFrom(
 
         if (wildcard != ViewProvider::hiddenMarker()) {
             // Get collapsed array color override.
-            const App::LinkBaseExtension *ext=0;
+            const App::LinkBaseExtension* ext = 0;
             auto vpLink = freecad_cast<ViewProviderLink*>(vp);
             if (vpLink) {
                 ext = vpLink->getLinkExtension();
             }
-            if(ext && ext->_getElementCountValue() && !ext->_getShowElementValue()) {
-                const auto &overrides = vpLink->OverrideMaterialList.getValues();
+            if (ext && ext->_getElementCountValue() && !ext->_getShowElementValue()) {
+                const auto& overrides = vpLink->OverrideMaterialList.getValues();
                 int i = -1;
                 for (const auto& mat : vpLink->MaterialList.getValues()) {
                     if (++i >= (int)overrides.size()) {

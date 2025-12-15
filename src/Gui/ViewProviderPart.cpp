@@ -22,9 +22,9 @@
 
 
 #include <QMenu>
-# include <QPixmap>
-# include <boost/bind.hpp>
-# include <Inventor/nodes/SoMaterial.h>
+#include <QPixmap>
+#include <boost/bind.hpp>
+#include <Inventor/nodes/SoMaterial.h>
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -181,9 +181,7 @@ App::PropertyLinkSub* ViewProviderPart::getColoredElementsProperty() const
     if (!getObject()) {
         return 0;
     }
-    return freecad_cast<App::PropertyLinkSub*>(
-        getObject()->getPropertyByName("ColoredElements")
-    );
+    return freecad_cast<App::PropertyLinkSub*>(getObject()->getPropertyByName("ColoredElements"));
 }
 
 bool ViewProviderPart::setEdit(int ModNum)
