@@ -640,12 +640,12 @@ public:
         PointPos PosId,
         std::vector<int>& GeoIdList,
         std::vector<PointPos>& PosIdList
-    );
+    ) const;
     void getDirectlyCoincidentPoints(
         int VertexId,
         std::vector<int>& GeoIdList,
         std::vector<PointPos>& PosIdList
-    );
+    ) const;
     bool arePointsCoincident(int GeoId1, PointPos PosId1, int GeoId2, PointPos PosId2);
 
     // Returns true if the sketch has 1 or more block constraint
