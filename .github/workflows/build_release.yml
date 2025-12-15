@@ -70,9 +70,9 @@ jobs:
         include:
           - { target: linux-64, os: ubuntu-22.04 }
           - { target: linux-arm64, os: ubuntu-22.04-arm }
-          - { target: osx-64, os: macos-15-intel }
-          - { target: osx-arm64, os: macos-latest }
           - { target: win-64, os: windows-latest }
+#          - { target: osx-64, os: macos-13 }
+#          - { target: osx-arm64, os: macos-latest }
       fail-fast: false
 
     runs-on: ${{ matrix.os }}

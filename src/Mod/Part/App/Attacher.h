@@ -254,6 +254,7 @@ public:  // methods
 
     Base::Placement calculateAttachedPlacement(
         const Base::Placement& origPlacement,
+        Base::Placement* origGroupPlacement = nullptr,
         bool* subChanged = 0
     );
 

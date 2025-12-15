@@ -38,6 +38,7 @@
 #include "Application.h"
 #include "ElementNamingUtils.h"
 #include "Document.h"
+#include "Part.h"
 #include "DocumentObject.h"
 #include "DocumentObjectPy.h"
 #include "DocumentObjectExtension.h"
@@ -103,51 +104,22 @@ void DocumentObject::printInvalidLinks() const
         // Truncate the invalid object list name strings for readability, if they happen to be very
         // long.
         std::vector<App::DocumentObject*> invalid_linkobjs;
-        std::string objnames, scopenames;
         GeoFeatureGroupExtension::getInvalidLinkObjects(this, invalid_linkobjs);
         for (auto& obj : invalid_linkobjs) {
-            objnames += obj->getNameInDocument();
-            objnames += " ";
-            for (auto& scope : obj->getParents()) {
-                if (scopenames.length() > 80) {
-                    scopenames += "... ";
-                    break;
-                }
-
-                scopenames += scope.first->getNameInDocument();
-                scopenames += " ";
-            }
-
-            if (objnames.length() > 80) {
-                objnames += "... ";
-                break;
-            }
-        }
-
-        if (objnames.empty()) {
-            objnames = "N/A";
-        }
-        else {
-            objnames.pop_back();
-        }
-
-        if (scopenames.empty()) {
-            scopenames = "N/A";
-        }
-        else {
-            scopenames.pop_back();
-        }
-
-        Base::Console().warning("%s: Link(s) to object(s) '%s' go out of the allowed scope '%s'. "
+            std::string objname, scopename;
+            objname= obj->getNameInDocument();
+            if (objname.empty()) objname = "N/A";
+	    const App::Part* scope = App::Part::getPartOfObject(obj);
+            scopename = scope ? scope->getNameInDocument() : "N/A";
+            if (scopename.empty()) scopename = "N/A";
+            Base::Console().warning("%s: Link(s) to object(s) '%s' go out of the allowed scope '%s'. "
                                 "Instead, the linked object(s) reside within '%s'.\n",
                                 getTypeId().getName(),
-                                objnames.c_str(),
+                                objname.c_str(),
                                 getNameInDocument(),
-                                scopenames.c_str());
-    }
-    catch (const Base::Exception& e) {
-        e.reportException();
-    }
+                                scopename.c_str());
+        } 
+    } catch (const Base::Exception& e) {e.reportException();}
 }
 
 App::DocumentObjectExecReturn* DocumentObject::recompute()
