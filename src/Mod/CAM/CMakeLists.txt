@@ -432,6 +432,7 @@ SET(PathScripts_SRCS
     PathScripts/PathUtilsGui.py
     PathScripts/PathPropertyBag.py
     PathScripts/PathPropertyBagGui.py
+    PathScripts/tsp.py
     PathScripts/__init__.py
 )
 
