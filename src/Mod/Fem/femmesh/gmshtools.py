@@ -707,7 +707,6 @@ class GmshTools:
         self.size_field_list.append(settings)
         return settings["FieldID"]
 
-
     def _build_distance_size_field(self, obj):
 
         elements = self._get_reference_elements(obj, set())
@@ -733,7 +732,12 @@ class GmshTools:
             settings["Option"]["SurfacesList"] = f"{{ {ids} }}"
 
         self.size_field_list.append(settings)
-        dist_field_id = settings["FieldID"]
+        return settings["FieldID"]
+
+
+    def _build_distancethreshold_size_field(self, obj):
+
+        dist_field_id = self._build_distance_size_field(obj)
 
         settings = {"Field": "Threshold", "Option": {}}
         settings["FieldID"] = self._next_field_number()
@@ -758,6 +762,8 @@ class GmshTools:
                 return self._build_cylinder_size_field(shape)
             case "Sphere":
                 return self._build_sphere_size_field(shape)
+            case _:
+                raise Exception("Unknown shape type")
 
     def _build_sphere_size_field(self, sphere):
 
@@ -811,6 +817,20 @@ class GmshTools:
         self.size_field_list.append(settings)
         return settings["FieldID"]
 
+    def _build_manipulate_size_field(self, manipulate, manipulate_field):
+
+        match manipulate.Type:
+            case "Restrict":
+                return self._build_restrict_size_field(manipulate, manipulate_field)
+            case "Threshold":
+                return self._build_threshold_size_field(manipulate, manipulate_field)
+            case "Mean" | "Curvature" | "Laplacian":
+                return self._build_evaluation_size_field(manipulate, manipulate_field)
+            case "Gradient":
+                return self._build_gradient_size_field(manipulate, manipulate_field)
+            case _:
+                raise Exception("Unknown manipulation type")
+
     def _build_restrict_size_field(self, obj, restricted_field):
 
         elements = self._get_reference_elements(obj, set())
@@ -843,17 +863,98 @@ class GmshTools:
         self.size_field_list.append(settings)
         return settings["FieldID"]
 
-    def _build_math_size_field(self, obj, equation_fields):
+    def _build_threshold_size_field(self, obj, threshold_field):
 
-        if len(equation_fields) > 8:
-            Console.PrintError( ("The math equation {} has more than 8 child fields,"
-                                    "which is not supported.\n").format(obj.Name))
+        settings = {"Field": "Threshold", "Option": {}}
+        settings["FieldID"] = self._next_field_number()
+        settings["Option"]["InField"] = threshold_field
+        settings["Option"]["DistMin"] = Units.Quantity(obj.InputMinimum).Value
+        settings["Option"]["DistMax"] = Units.Quantity(obj.InputMaximum).Value
+        settings["Option"]["SizeMin"] = Units.Quantity(obj.SizeMinimum).Value
+        settings["Option"]["SizeMax"] = Units.Quantity(obj.SizeMaximum).Value
+        settings["Option"]["Sigmoid"] = int(not obj.LinearInterpolation)
+        settings["Option"]["StopAtDistMax"] = int(obj.StopAtInputMax)
+
+        # save everything for later processing
+        self.size_field_list.append(settings)
+        return settings["FieldID"]
+
+    def _build_evaluation_size_field(self, obj, evaluation_field):
+        # mean, curvature, laplace
+
+        settings = {"Field": evaluation_field.Type, "Option": {}}
+        settings["FieldID"] = self._next_field_number()
+        settings["Option"]["InField"] = evaluation_field
+        settings["Option"]["Delta"] = Units.Quantity(obj.Delta).Value
+
+        self.size_field_list.append(settings)
+        return settings["FieldID"]
+
+    def _build_gradient_size_field(self, obj, gradient_field):
+
+        # get the settings!
+        settings = {"Field": evaluation_field.Type, "Option": {}}
+        settings["FieldID"] = self._next_field_number()
+        settings["Option"]["InField"] = gradient_field
+        settings["Option"]["Delta"] = Units.Quantity(obj.Delta).Value
+        settings["Option"]["Kind"] = obj.Kind
+
+        self.size_field_list.append(settings)
+        return settings["FieldID"]
+
+    def _build_advanced_size_field(self, advanced, advanced_fields):
+
+        match advanced.Type:
+            case "AttractorAnisoCurve":
+                return self._build_attractoraniso_size_field(advanced)
+            case "Math":
+                return self._build_math_size_field(advanced, advanced_fields)
+            case "MathAniso":
+                return self._build_mathaniso_size_field(advanced, advanced_fields)
+            case "Distance":
+                return self._build_distance_size_field(advanced, advanced_fields)
+            case _:
+                raise Exception("Unknown advanced type")
+
+    def _build_attractoraniso_size_field(self, obj):
+
+        elements = self._get_reference_elements(obj, set())
+        if not elements:
+            Console.PrintError( ("The advanced AttractorAnisoCurve {} is not used because no"
+                                    "elements are selected.\n").format(obj.Name))
             return -1
+
+        settings = {"Field": "AttractorAnisoCurve", "Option": {}}
+        settings["FieldID"] = self._next_field_number()
+
+        idx_dict = self._element_list_to_shape_idx_dict(elements)
+        if idx_dict["Edge"]:
+            ids = ", ".join(str(i) for i in idx_dict["Edge"])
+            settings["Option"]["CurvesList"] = f"{{ {ids} }}"
+        else:
+            Console.PrintError( ("The advanced AttractorAnisoCurve {} is not used because no edge"
+                                    "elements are selected.\n").format(obj.Name))
+            return -1
+
+
+        settings["Option"]["DistMax"] = Units.Quantity(obj.DistanceMax).Value
+        settings["Option"]["DistMin"] = Units.Quantity(obj.DistanceMin).Value
+        settings["Option"]["SizeMaxNormal"] = Units.Quantity(obj.SizeMaxNormal).Value
+        settings["Option"]["SizeMinNormal"] = Units.Quantity(obj.SizeMinNormal).Value
+        settings["Option"]["SizeMaxTangent"] = Units.Quantity(obj.SizeMaxTangent).Value
+        settings["Option"]["SizeMinTangent"] = Units.Quantity(obj.SizeMinTangent).Value
+        settings["Option"]["Sampling"] = obj.Sampling
+
+        self.size_field_list.append(settings)
+        return settings["FieldID"]
+
+
+    def _update_replace_equation(self, equation, fields):
 
         # process the equation to use the correct field values!
         replace = False
         new_equation = ""
-        for character in obj.Equation:
+        for character in equation:
 
             if character == "F":
                 replace = True
@@ -863,17 +964,28 @@ class GmshTools:
             if replace:
                 if character.isdigit():
                     idx = int(character)-1
-                    if idx >= len(equation_fields):
-                        Console.PrintError( f"The math equation {obj.Label} uses invalid field variable"
+                    if idx >= len(fields):
+                        Console.PrintError( f"The math equation {equation} uses invalid field variable"
                                     f" F{character}, hence it cannot be used.\n")
                         return -1
 
-                    new_equation += str(equation_fields[idx])
+                    new_equation += str(fields[idx])
                 else:
                     new_equation += character
                 replace = False
             else:
                 new_equation += character
+
+            return new_equation
+
+    def _build_math_size_field(self, obj, equation_fields):
+
+        if len(equation_fields) > 8:
+            Console.PrintError( ("The math equation {} has more than 8 child fields,"
+                                    "which is not supported.\n").format(obj.Name))
+            return -1
+
+        new_equation = self._update_replace_equation(obj.Equation, equation_fields)
 
         # get the settings!
         settings = {"Field": "MathEval", "Option": {}}
@@ -882,6 +994,35 @@ class GmshTools:
 
         self.size_field_list.append(settings)
         return settings["FieldID"]
+
+
+    def _build_mathaniso_size_field(self, obj, equation_fields):
+
+        if len(equation_fields) > 8:
+            Console.PrintError( ("The math aniso {} has more than 8 child fields,"
+                                    "which is not supported.\n").format(obj.Name))
+            return -1
+
+        m11 = self._update_replace_equation(obj.M11, equation_fields)
+        m12 = self._update_replace_equation(obj.M12, equation_fields)
+        m13 = self._update_replace_equation(obj.M13, equation_fields)
+        m22 = self._update_replace_equation(obj.M22, equation_fields)
+        m23 = self._update_replace_equation(obj.M23, equation_fields)
+        m33 = self._update_replace_equation(obj.M33, equation_fields)
+
+        # get the settings!
+        settings = {"Field": "MathEvalAniso", "Option": {}}
+        settings["FieldID"] = self._next_field_number()
+        settings["Option"]["M11"] = f"'{m11}'"
+        settings["Option"]["M12"] = f"'{m12}'"
+        settings["Option"]["M13"] = f"'{m13}'"
+        settings["Option"]["M22"] = f"'{m22}'"
+        settings["Option"]["M23"] = f"'{m23}'"
+        settings["Option"]["M33"] = f"'{m33}'"
+
+        self.size_field_list.append(settings)
+        return settings["FieldID"]
+
 
     def _get_recursive_size_field_data(self, obj):
         # iterate recursively over field definitions
@@ -912,24 +1053,24 @@ class GmshTools:
             case "Fem::MeshRegion":
                 return self._build_constant_size_field(obj)
             case "Fem::MeshDistance":
-                return self._build_distance_size_field(obj)
+                return self._build_distancethreshold_size_field(obj)
             case "Fem::MeshShape":
                 return self._build_shape_size_field(obj)
-            case "Fem::MeshRestrict":
+            case "Fem::MeshManipulate":
                 if children_fields and (children_fields[0]>0):
-                    return self._build_restrict_size_field(obj, children_fields[0])
+                    return self._build_manipulate_size_field(obj, children_fields[0])
                 else:
-                    Console.PrintError( ("The restriction {} is not used because no valid"
+                    Console.PrintError( ("The manipulation {} is not used because no valid"
                                          "child refinement available.\n").format(obj.Name))
 
-            case "Fem::MeshMath":
+            case "Fem::MeshAdvanced":
                 # make sure all children are valid (if any)! otherwise the fields used in equation will not match
                 if  -1 in children_fields:
-                    Console.PrintError( ("The math equation {} is not used because some child"
+                    Console.PrintError( ("The advanced mesh refinement {} is not used because some child"
                                             "refinements refinements are not setup correctly.\n").format(obj.Name))
                     return -1
 
-                return self._build_math_size_field(obj, children_fields)
+                return self._build_advanced_size_field(obj, children_fields)
 
         return -1
 
@@ -939,8 +1080,8 @@ class GmshTools:
         size_field_list =  self._get_definitions_of_type("Fem::MeshRegion")
         size_field_list += self._get_definitions_of_type("Fem::MeshDistance")
         size_field_list += self._get_definitions_of_type("Fem::MeshShape")
-        size_field_list += self._get_definitions_of_type("Fem::MeshRestrict")
-        size_field_list += self._get_definitions_of_type("Fem::MeshMath")
+        size_field_list += self._get_definitions_of_type("Fem::MeshManipulate")
+        size_field_list += self._get_definitions_of_type("Fem::MeshAdvanced")
 
         if size_field_list:
             part = self.part_obj
@@ -1282,7 +1423,7 @@ class GmshTools:
 
             # background field
             field_id = self._next_field_number()
-            geo.write(f"\nField[{field_id}] = Min;\n")
+            geo.write(f"\nField[{field_id}] = MinAniso;\n")
             id_list = ", ".join(str(i) for i in self._background_fields)
             geo.write(f"Field[{field_id}].FieldsList = {{ {id_list} }};\n")
             geo.write(f"Background Field = {field_id};\n\n")
@@ -1559,4 +1700,51 @@ writes the input file runs gmsh reads back the unv and returns a FemMesh
 gmsh binary will be collected in the second class
 with this we could mesh without document objects
 create a shape and run meshinging class, get the FemMesh :-)
+"""
+
+"""
+TODO
+Add remaining gmsh size fields. Current distribution of size fields to mesh objects is:
+
+Constant:       Return VIn when inside the entities (and on their boundary if IncludeBoundary is set, and on their embedded entities if IncludeEmbedded is set), and VOut outside.
+
+Distance:       Compute the distance to the given points, curves or surfaces. For efficiency, curves and surfaces are replaced by a set of points (sampled according to Sampling), to which the distance is actually computed.
+
+BoundaryLayer:  Insert a 2D boundary layer mesh next to some curves in the model.
+
+Shape:
+    Box:        Return VIn inside the box, and VOut outside. The box is defined by
+    Cylinder:   Return VIn inside a frustrated cylinder, and VOut outside. The cylinder is defined by
+    Ball:       Return VIn inside a spherical ball, and VOut outside. The ball is defined by
+
+Manipulate:
+    Restrict:   Restrict the application of a field to a given list of geometrical points, curves, surfaces or volumes (as well as their boundaries if IncludeBoundary is set, and their embedded entities if IncludeEmbedded is set).
+    Threshold:  Return F = SizeMin if Field[InField] <= DistMin, F = SizeMax if Field[InField] >= DistMax, and the interpolation between SizeMin and SizeMax if DistMin < Field[InField] < DistMax.
+    Curvature:  Compute the curvature of Field[InField]:
+    Gradient:   Compute the finite difference gradient of Field[InField]:
+    Mean:       Return the mean value
+    Laplacian:  Compute finite difference the Laplacian of Field[InField]:
+
+Advanced:
+    AttractorAnisoCurve:    Compute the distance to the given curves and specify the mesh size independently in the direction normal and parallel to the nearest curve.
+    MathEval:               Evaluate a mathematical expression. The expression can contain x, y, z for spatial coordinates, F0, F1, ... for field values
+    MathEvalAniso:          Evaluate a metric expression. The expressions can contain x, y, z for spatial coordinates, F0, F1, ... for field values, and mathematical functions.
+    Distance:               Compute the distance to the given points, curves or surfaces.
+    PostView:               Evaluate the post processing view with index ViewIndex, or with tag ViewTag if ViewTag is positive.
+
+Combine:
+    Max:            Take the maximum value of a list of fields.
+    Min:            Take the minimum value of a list of fields.
+    MinAniso:       Take the intersection of a list of possibly anisotropic fields.
+    IntersectAniso: Take the intersection of 2 anisotropic fields according to Alauzet.
+
+Unused:
+    AutomaticMeshSizeField: Compute a mesh size field that is quite automatic Takes into account surface curvatures and closeness of objects
+    Extend:                 Compute an extension of the mesh sizes from the given boundary curves (resp. surfaces) inside the surfaces (resp. volumes) being meshed.
+    Frustum:                Interpolate mesh sizes on a extended cylinder frustrum defined by inner (R1i and R2i) and outer (R1o and R2o) radii and two endpoints P1 and P2.The field value F for a point P is given by :
+    LonLat:                 Evaluate Field[InField] in geographic coordinates (longitude, latitude):
+    MaxEigenHessian:        Compute the maximum eigenvalue of the Hessian matrix of Field[InField], with the gradients evaluated by finite differences:
+    Octree:                 Pre compute another field on an octree to speed-up evalution.
+    Param:                  Evaluate Field[InField] in parametric coordinates:
+    Structured:             Linearly interpolate between data provided on a 3D rectangular structured grid.
 """

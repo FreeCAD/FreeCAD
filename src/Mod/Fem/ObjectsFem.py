@@ -602,40 +602,41 @@ def makeMeshDistance(doc, base_mesh, name="Distance"):
         view_mesh_distance.VPMeshDistance(obj.ViewObject)
     return obj
 
-def makeMeshRestrict(doc, base_mesh, name="MeshRestrict"):
-    """makeMeshRestrict(document, base_mesh, [name]):
-    creates a FEM mesh refinement object to restrict the application of other refinements
+def makeMeshManipulate(doc, base_mesh, name="Manipulate"):
+    """makeMeshManipulate(document, base_mesh, [name]):
+    creates a FEM mesh refinement object to manipulate the output of refinements
     """
     obj = doc.addObject("Fem::FeaturePython", name)
-    from femobjects import mesh_restrict
+    from femobjects import mesh_manipulate
 
-    mesh_restrict.MeshRestrict(obj)
+    mesh_manipulate.MeshManipulate(obj)
 
     tmplist = base_mesh.MeshRefinementList
     tmplist.append(obj)
     base_mesh.MeshRefinementList = tmplist
     if FreeCAD.GuiUp:
-        from femviewprovider import view_mesh_restrict
+        from femviewprovider import view_mesh_manipulate
 
-        view_mesh_restrict.VPMeshRestrict(obj.ViewObject)
+        view_mesh_manipulate.VPMeshManipulate(obj.ViewObject)
+
     return obj
 
-def makeMeshMath(doc, base_mesh, name="MeshMath"):
-    """makeMeshMath(document, base_mesh, [name]):
-    creates a FEM mesh refinement object to calculate mesh size by equation
+def makeMeshAdvanced(doc, base_mesh, name="Advanced"):
+    """makeMeshAdvanced(document, base_mesh, [name]):
+    creates a FEM mesh refinement with various advanced methods
     """
     obj = doc.addObject("Fem::FeaturePython", name)
-    from femobjects import mesh_math
+    from femobjects import mesh_advanced
 
-    mesh_math.MeshMath(obj)
+    mesh_advanced.MeshAdvanced(obj)
 
     tmplist = base_mesh.MeshRefinementList
     tmplist.append(obj)
     base_mesh.MeshRefinementList = tmplist
     if FreeCAD.GuiUp:
-        from femviewprovider import view_mesh_math
+        from femviewprovider import view_mesh_advanced
 
-        view_mesh_math.VPMeshMath(obj.ViewObject)
+        view_mesh_advanced.VPMeshAdvanced(obj.ViewObject)
     return obj
 
 def makeMeshShape(doc, base_mesh, name="Shape"):

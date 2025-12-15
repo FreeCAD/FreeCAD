@@ -923,23 +923,23 @@ class _MeshDistance(CommandManager):
         self.is_active = "with_gmsh_femmesh"
         self.do_activated = "add_obj_on_gui_selobj_set_edit"
 
-class _MeshRestrict(CommandManager):
-    "The FEM_MeshRestrict command definition"
+class _MeshManipulate(CommandManager):
+    "The FEM_MeshManipulate command definition"
 
     def __init__(self):
         super().__init__()
-        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_MeshRestrict", "Restrict refinement")
-        self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_MeshRestrict", "Restrict application of a refinement to certain geometries")
+        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_MeshManipulate", "Manipulate refinement")
+        self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_MeshManipulate", "Manipulate the output of a refinement in various ways")
         self.is_active = "with_gmsh_femmesh"
         self.do_activated = "add_obj_on_gui_selobj_set_edit"
 
-class _MeshMath(CommandManager):
-    "The FEM_MeshMath command definition"
+class _MeshAdvanced(CommandManager):
+    "The FEM_MeshAdvanced command definition"
 
     def __init__(self):
         super().__init__()
-        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_MeshMath", "Equation based refinement")
-        self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_MeshMath", "Define mesh size by mathematical equation")
+        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_MeshAdvanced", "Advanced refinement types")
+        self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_MeshAdvanced", "Define mesh size by various advanced means")
         self.is_active = "with_gmsh_femmesh"
         self.do_activated = "add_obj_on_gui_selobj_set_edit"
 
@@ -994,7 +994,7 @@ class _GMSHRefine():
 
     def GetCommands(self):
         return ["FEM_MeshDistance", "FEM_MeshBoundaryLayer",
-                "FEM_MeshShape", "FEM_MeshRestrict", "FEM_MeshMath",
+                "FEM_MeshShape", "FEM_MeshManipulate", "FEM_MeshAdvanced",
                 "FEM_MeshTransfiniteCurve", "FEM_MeshTransfiniteSurface", "FEM_MeshTransfiniteVolume"]
 
     def GetDefaultCommand(self):
@@ -1405,8 +1405,8 @@ FreeCADGui.addCommand("FEM_MeshGroup", _MeshGroup())
 FreeCADGui.addCommand("FEM_MeshNetgenFromShape", _MeshNetgenFromShape())
 FreeCADGui.addCommand("FEM_MeshRegion", _MeshRegion())
 FreeCADGui.addCommand("FEM_MeshDistance", _MeshDistance())
-FreeCADGui.addCommand("FEM_MeshRestrict", _MeshRestrict())
-FreeCADGui.addCommand("FEM_MeshMath", _MeshMath())
+FreeCADGui.addCommand("FEM_MeshManipulate", _MeshManipulate())
+FreeCADGui.addCommand("FEM_MeshAdvanced", _MeshAdvanced())
 FreeCADGui.addCommand("FEM_MeshShape", _MeshShape())
 FreeCADGui.addCommand("FEM_MeshTransfiniteCurve", _MeshTransfiniteCurve())
 FreeCADGui.addCommand("FEM_MeshTransfiniteSurface", _MeshTransfiniteSurface())

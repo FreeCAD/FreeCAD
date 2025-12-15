@@ -222,8 +222,8 @@ SET(FemObjects_SRCS
     femobjects/mesh_netgen.py
     femobjects/mesh_region.py
     femobjects/mesh_distance.py
-    femobjects/mesh_restrict.py
-    femobjects/mesh_math.py
+    femobjects/mesh_manipulate.py
+    femobjects/mesh_advanced.py
     femobjects/mesh_shape.py
     femobjects/mesh_tfcurve.py
     femobjects/mesh_tfsurface.py
@@ -690,8 +690,8 @@ SET(FemGuiTaskPanels_SRCS
     femtaskpanels/task_mesh_group.py
     femtaskpanels/task_mesh_region.py
     femtaskpanels/task_mesh_distance.py
-    femtaskpanels/task_mesh_restrict.py
-    femtaskpanels/task_mesh_math.py
+    femtaskpanels/task_mesh_manipulate.py
+    femtaskpanels/task_mesh_advanced.py
     femtaskpanels/task_mesh_shape.py
     femtaskpanels/task_mesh_tfcurve.py
     femtaskpanels/task_mesh_tfsurface.py
@@ -768,8 +768,8 @@ SET(FemGuiViewProvider_SRCS
     femviewprovider/view_mesh_netgen.py
     femviewprovider/view_mesh_region.py
     femviewprovider/view_mesh_distance.py
-    femviewprovider/view_mesh_restrict.py
-    femviewprovider/view_mesh_math.py
+    femviewprovider/view_mesh_manipulate.py
+    femviewprovider/view_mesh_advanced.py
     femviewprovider/view_mesh_shape.py
     femviewprovider/view_mesh_tfcurve.py
     femviewprovider/view_mesh_tfsurface.py
