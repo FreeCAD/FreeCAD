@@ -44,9 +44,9 @@ Body::Body()
     ADD_PROPERTY_TYPE(
         AllowCompound,
         (true),
-        "Experimental",
+        "Base",
         App::Prop_None,
-        "Allow multiple solids in Body (experimental)"
+        "Allow multiple solids in Body"
     );
 
     _GroupTouched.setStatus(App::Property::Output, true);
