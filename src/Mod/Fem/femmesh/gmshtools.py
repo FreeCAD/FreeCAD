@@ -1393,12 +1393,15 @@ class GmshTools:
         geo.write("// geo file for meshing with Gmsh meshing software created by FreeCAD\n")
         geo.write("\n")
 
-        cpu_count = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Gmsh").GetInt(
-            "NumOfThreads", QThread.idealThreadCount()
-        )
-        geo.write("// enable multi-core processing\n")
-        geo.write(f"General.NumThreads = {cpu_count};\n")
-        geo.write("\n")
+        # enable multicore processing, except for BAMG algorithm. It fails most of the times when used
+        # with multiple threads (tested with gmsh 4.13.1)
+        if self.algorithm2D != "7":
+            cpu_count = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Gmsh").GetInt(
+                "NumOfThreads", QThread.idealThreadCount()
+            )
+            geo.write("// enable multi-core processing\n")
+            geo.write(f"General.NumThreads = {cpu_count};\n")
+            geo.write("\n")
 
         geo.write("// open brep geometry\n")
         # explicit use double quotes in geo file
