@@ -126,6 +126,11 @@ public:
     virtual double getLineWidth();
     virtual double getVertexSize();
 
+    bool isExporting() const;
+    bool hideCenterMarks() const;
+
+
+
 protected:
     bool sceneEventFilter(QGraphicsItem *watched, QEvent *event) override;
     QPainterPath drawPainterPath(TechDraw::BaseGeomPtr baseGeom) const;

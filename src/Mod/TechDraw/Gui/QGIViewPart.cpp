@@ -1338,3 +1338,59 @@ void QGIViewPart::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
     }
     update();
 }
+
+bool QGIViewPart::isExporting() const
+{
+    // dvp already validated
+    auto viewPart {freecad_cast<TechDraw::DrawViewPart*>(getViewObject())};
+    auto vpPage = getViewProviderPage(viewPart);
+
+    QGSPage* scenePage = vpPage->getQGSPage();
+    if (!scenePage) {
+        return false;
+    }
+
+    return scenePage->getExportingAny();
+}
+
+// returns true if vertex dots should be shown
+// note this is only one of the "rules" around showing or hiding vertices.
+bool QGIViewPart::showVertices() const
+{
+    // dvp already validated
+    auto dvp(static_cast<TechDraw::DrawViewPart*>(getViewObject()));
+    return !dvp->CoarseView.getValue();
+}
+
+
+// returns true if arc center marks should be shown
+bool QGIViewPart::showCenterMarks() const
+{
+    // dvp and vp already validated
+    auto dvp(static_cast<TechDraw::DrawViewPart*>(getViewObject()));
+    auto vp(static_cast<ViewProviderViewPart*>(getViewProvider(dvp)));
+
+    if (isExporting() && Preferences::printCenterMarks()) {
+        return true;
+    }
+
+    return vp->ArcCenterMarks.getValue();
+}
+
+//! true if center marks (type of vertex) should be hidden
+bool QGIViewPart::hideCenterMarks() const
+{
+    // printing
+    if (isExporting() &&
+        Preferences::printCenterMarks()) {
+        return false;
+    }
+
+    // on screen
+    if (showCenterMarks()) {
+        return false;
+    }
+
+    return true;
+}
+
