@@ -41,13 +41,7 @@ PROPERTY_SOURCE(PartDesign::Body, Part::BodyBase)
 
 Body::Body()
 {
-    ADD_PROPERTY_TYPE(
-        AllowCompound,
-        (true),
-        "Experimental",
-        App::Prop_None,
-        "Allow multiple solids in Body (experimental)"
-    );
+    ADD_PROPERTY_TYPE(AllowCompound, (true), "Base", App::Prop_None, "Allow multiple solids in Body");
 
     _GroupTouched.setStatus(App::Property::Output, true);
 }
