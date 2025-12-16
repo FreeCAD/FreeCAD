@@ -171,14 +171,12 @@ Base::Vector3d GeoListModel<T>::getPoint(const Part::Geometry* geo, Sketcher::Po
 {
     using namespace Sketcher;
 
-    if (geo->is<Part::GeomPoint>()) {
-        const Part::GeomPoint* p = static_cast<const Part::GeomPoint*>(geo);
+    if (auto* p = freecad_cast<const Part::GeomPoint*>(geo)) {
         if (pos == PointPos::start || pos == PointPos::mid || pos == PointPos::end) {
             return p->getPoint();
         }
     }
-    else if (geo->is<Part::GeomLineSegment>()) {
-        const Part::GeomLineSegment* lineSeg = static_cast<const Part::GeomLineSegment*>(geo);
+    else if (auto* lineSeg = freecad_cast<const Part::GeomLineSegment*>(geo)) {
         if (pos == PointPos::start) {
             return lineSeg->getStartPoint();
         }
@@ -186,20 +184,17 @@ Base::Vector3d GeoListModel<T>::getPoint(const Part::Geometry* geo, Sketcher::Po
             return lineSeg->getEndPoint();
         }
     }
-    else if (geo->is<Part::GeomCircle>()) {
-        const Part::GeomCircle* circle = static_cast<const Part::GeomCircle*>(geo);
+    else if (auto* circle = freecad_cast<const Part::GeomCircle*>(geo)) {
         if (pos == PointPos::mid) {
             return circle->getCenter();
         }
     }
-    else if (geo->is<Part::GeomEllipse>()) {
-        const Part::GeomEllipse* ellipse = static_cast<const Part::GeomEllipse*>(geo);
+    else if (auto* ellipse = freecad_cast<const Part::GeomEllipse*>(geo)) {
         if (pos == PointPos::mid) {
             return ellipse->getCenter();
         }
     }
-    else if (geo->is<Part::GeomArcOfCircle>()) {
-        const Part::GeomArcOfCircle* aoc = static_cast<const Part::GeomArcOfCircle*>(geo);
+    else if (auto* aoc = freecad_cast<const Part::GeomArcOfCircle*>(geo)) {
         if (pos == PointPos::start) {
             return aoc->getStartPoint(/*emulateCCW=*/true);
         }
@@ -210,8 +205,7 @@ Base::Vector3d GeoListModel<T>::getPoint(const Part::Geometry* geo, Sketcher::Po
             return aoc->getCenter();
         }
     }
-    else if (geo->is<Part::GeomArcOfEllipse>()) {
-        const Part::GeomArcOfEllipse* aoc = static_cast<const Part::GeomArcOfEllipse*>(geo);
+    else if (auto* aoc = freecad_cast<const Part::GeomArcOfEllipse*>(geo)) {
         if (pos == PointPos::start) {
             return aoc->getStartPoint(/*emulateCCW=*/true);
         }
@@ -222,8 +216,7 @@ Base::Vector3d GeoListModel<T>::getPoint(const Part::Geometry* geo, Sketcher::Po
             return aoc->getCenter();
         }
     }
-    else if (geo->is<Part::GeomArcOfHyperbola>()) {
-        const Part::GeomArcOfHyperbola* aoh = static_cast<const Part::GeomArcOfHyperbola*>(geo);
+    else if (auto* aoh = freecad_cast<const Part::GeomArcOfHyperbola*>(geo)) {
         if (pos == PointPos::start) {
             return aoh->getStartPoint();
         }
@@ -234,8 +227,7 @@ Base::Vector3d GeoListModel<T>::getPoint(const Part::Geometry* geo, Sketcher::Po
             return aoh->getCenter();
         }
     }
-    else if (geo->is<Part::GeomArcOfParabola>()) {
-        const Part::GeomArcOfParabola* aop = static_cast<const Part::GeomArcOfParabola*>(geo);
+    else if (auto* aop = freecad_cast<const Part::GeomArcOfParabola*>(geo)) {
         if (pos == PointPos::start) {
             return aop->getStartPoint();
         }
@@ -246,13 +238,28 @@ Base::Vector3d GeoListModel<T>::getPoint(const Part::Geometry* geo, Sketcher::Po
             return aop->getCenter();
         }
     }
-    else if (geo->is<Part::GeomBSplineCurve>()) {
-        const Part::GeomBSplineCurve* bsp = static_cast<const Part::GeomBSplineCurve*>(geo);
+    else if (auto* bsp = freecad_cast<const Part::GeomBSplineCurve*>(geo)) {
         if (pos == PointPos::start) {
             return bsp->getStartPoint();
         }
         else if (pos == PointPos::end) {
             return bsp->getEndPoint();
+        }
+    }
+    else if (auto* offsetCurve = freecad_cast<Part::GeomOffsetCurve*>(geo)) {
+        if (pos == PointPos::start) {
+            return offsetCurve->getStartPoint();
+        }
+        else if (pos == PointPos::end) {
+            return offsetCurve->getEndPoint();
+        }
+    }
+    else if (auto* restrictedCurve = freecad_cast<Part::GeomRestrictedCurve*>(geo)) {
+        if (pos == PointPos::start) {
+            return restrictedCurve->getStartPoint();
+        }
+        else if (pos == PointPos::end) {
+            return restrictedCurve->getEndPoint();
         }
     }
 
