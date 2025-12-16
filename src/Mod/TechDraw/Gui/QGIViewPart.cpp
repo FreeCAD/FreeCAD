@@ -1339,21 +1339,6 @@ void QGIViewPart::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 }
 
 
-bool QGIViewPart::isExporting() const
-{
-    // dvp already validated
-    auto viewPart {freecad_cast<TechDraw::DrawViewPart*>(getViewObject())};
-    auto vpPage = getViewProviderPage(viewPart);
-
-    QGSPage* scenePage = vpPage->getQGSPage();
-    if (!scenePage) {
-        return false;
-    }
-
-    return scenePage->getExportingAny();
-}
-
-
 // returns true if vertex dots should be shown
 // note this is only one of the "rules" around showing or hiding vertices.
 bool QGIViewPart::showVertices() const
