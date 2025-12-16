@@ -166,4 +166,3 @@ private:
 
 
 #endif  // MEASURE_MEASUREBASE_H
-
