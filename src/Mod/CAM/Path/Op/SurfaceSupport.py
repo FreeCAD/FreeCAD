@@ -1265,7 +1265,7 @@ def _makeSTL(model, obj, ocl, model_type=None):
         mesh = MeshPart.meshFromShape(
             Shape=shape,
             LinearDeflection=obj.LinearDeflection.Value,
-            AngularDeflection=obj.AngularDeflection.Value
+            AngularDeflection=obj.AngularDeflection.Value,
         )
         vertices = [point.Vector for point in mesh.Points]
         facet_indices = [facet.PointIndices for facet in mesh.Facets]
