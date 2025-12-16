@@ -757,9 +757,9 @@ def add_properties(obj, ifcfile=None, ifcentity=None, links=False, shapemode=0, 
                 obj.addProperty("App::PropertyLength", "Length", "Axis", locked=True)
             if "Text" not in obj.PropertiesList:
                 obj.addProperty("App::PropertyStringList", "Text", "Base", locked=True)
-            obj.Text = [text.Literal]
-            obj.Placement = ifc_export.get_placement(ifcentity.ObjectPlacement, ifcfile)
+            obj.Placement = axisdata[0]
             obj.Length = axisdata[1]
+            # axisdata[2] is the axis tag, it is already applied by other code
     elif ifcentity.is_a("IfcAnnotation"):
         sectionplane = ifc_export.get_sectionplane(ifcentity)
         if sectionplane:
