@@ -7021,8 +7021,8 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
 
     const Base::Vector3d& origin = this->Placement.getValue().getPosition();
     const Base::Rotation& rotation = this->Placement.getValue().getRotation();
-    const Base::Vector3d axisH = rotation.multVec(Base::Vector3d(1, 0, 0));
-    const Base::Vector3d axisV = rotation.multVec(Base::Vector3d(0, 1, 0));
+    const Base::Vector3d axisH = rotation.multVec(Base::Vector3d::UnitX);
+    const Base::Vector3d axisV = rotation.multVec(Base::Vector3d::UnitY);
 
     std::map<int, int> extMap;
     if (psObj->ExternalGeo.getSize() > 1) {
