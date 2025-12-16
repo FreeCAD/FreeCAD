@@ -298,7 +298,7 @@ private:
         return line;
     }
 
-    Part::Geometry* curveToCircleOrArc(BRepAdaptor_Curve curve, const TopoDS_Edge& edge)
+    Part::Geometry* curveToCircleOrArc(BRepAdaptor_Curve curve, const TopoDS_Edge& /*edge*/)
     {
         gp_Circ circle = curve.Circle();
         gp_Pnt cnt = circle.Location();
@@ -330,7 +330,7 @@ private:
         }
     }
 
-    Part::Geometry* curveToEllipseOrArc(BRepAdaptor_Curve curve, const TopoDS_Edge& edge)
+    Part::Geometry* curveToEllipseOrArc(BRepAdaptor_Curve curve, const TopoDS_Edge& /*edge*/)
     {
         gp_Elips ellipse = curve.Ellipse();
         gp_Pnt beg = curve.Value(curve.FirstParameter());
