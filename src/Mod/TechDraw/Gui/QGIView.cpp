@@ -74,8 +74,6 @@ using namespace TechDrawGui;
 using namespace TechDraw;
 using DU = DrawUtil;
 
-const float labelCaptionFudge = 0.2f;   // temp fiddle for devel
-
 QGIView::QGIView()
     :QGraphicsItemGroup(),
     m_isHovered(false),
