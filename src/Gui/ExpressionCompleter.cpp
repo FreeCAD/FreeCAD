@@ -1306,7 +1306,9 @@ void ExpressionTextEdit::adjustCompleterToCursor()
     int posX = cursorPos.x();
     int posY = cursorPos.y();
 
-    completer->popup()->setMaximumWidth(this->viewport()->width() * 0.6);
+    const int widthLimit = this->viewport()->width() * 0.6;
+    completer->popup()->setMaximumWidth(widthLimit);
+    maxCompletionWidth = std::min(maxCompletionWidth, widthLimit);
 
     QScreen* screen = QGuiApplication::primaryScreen();
     // looking for screen on which popup appears
