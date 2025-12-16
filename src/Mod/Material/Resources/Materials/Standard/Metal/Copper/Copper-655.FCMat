@@ -13,8 +13,7 @@ General:
     - "Silicon Bronze"
   Description: >
     Copper-655, High Silicon Bronze A, Commercial anneal (soft).
-    Cu≥96% Si=2.90 Pb=0.01 Fe=0.09% Ni=0.04 Mn=0.88.
-    IACS = 7%.
+    Cu≥96% Si=2.90 Pb=0.01 Fe=0.09% Ni=0.04 Mn=0.88. IACS=7%.
     Values for 295°K imported from 'cda144-8-mechanical-low-temperature.pdf'
     with permission and credit to the 'Copper Development Association' (CDA).
     For your own production accuracy, please use values provided by the
@@ -28,10 +27,12 @@ Models:
     Father: "Metal"
   MaterialStandard:
     UUID: '1e2c0088-904a-4537-925f-64064c07d700'
+    KindOfMaterial: "Annealed, Soft"
     StandardCode: "Copper-655"
   LinearElastic:
     UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
     Density: "8530 kg/m^3"
+    UltimateStrain: "0.104"
     UltimateTensileStrength: "423 MPa"
     YieldStrength: "167 MPa"
     YoungsModulus: "109 GPa"

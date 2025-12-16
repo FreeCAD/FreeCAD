@@ -15,8 +15,7 @@ General:
     - "Cu90Zn10"
   Description: >
     Copper-220, Commercial Bronze 90%, CuZn10, Annealed 573°C 3hr.
-    Cu=90% Zn=10% Pb=0.005% Fe=0.01%.
-    IACS = 44%.
+    Cu=90% Zn=10% Pb=0.005% Fe=0.01%. IACS=44%.
     Values for 295°K imported from 'cda144-8-mechanical-low-temperature.pdf'
     with permission and credit to the 'Copper Development Association' (CDA).
     For your own production accuracy, please use values provided by the
@@ -30,11 +29,13 @@ Models:
     Father: "Metal"
   MaterialStandard:
     UUID: '1e2c0088-904a-4537-925f-64064c07d700'
+    KindOfMaterial: "Annealed"
     StandardCode: "Copper-220"
   LinearElastic:
     UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
     Density: "8800 kg/m^3"
     ShearModulus: "45.4 GPa"
+    UltimateStrain: "0.415"
     UltimateTensileStrength: "265 MPa"
     YieldStrength: "66.2 MPa"
     YoungsModulus: "104 GPa"

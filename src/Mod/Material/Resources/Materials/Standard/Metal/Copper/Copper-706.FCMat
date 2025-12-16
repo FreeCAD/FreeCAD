@@ -13,8 +13,7 @@ General:
     - "Cupro nickel"
   Description: >
     Copper-706, 90-10, Cu90Ni10, Copper Nickel 10%, Annealed 677°C 40min.
-    Cu=89% Pb=0.02% Fe=1.16% Zn=0.07% Ni=9.98%.
-    IACS = 9%.
+    Cu=89% Pb=0.02% Fe=1.16% Zn=0.07% Ni=9.98%. IACS=9%.
     Values for 295°K imported from 'cda144-8-mechanical-low-temperature.pdf'
     with permission and credit to the 'Copper Development Association' (CDA).
     For your own production accuracy, please use values provided by the
@@ -28,10 +27,12 @@ Models:
     Father: "Metal"
   MaterialStandard:
     UUID: '1e2c0088-904a-4537-925f-64064c07d700'
+    KindOfMaterial: "Annealed"
     StandardCode: "Copper-706"
   LinearElastic:
     UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
     Density: "8940 kg/m^3"
+    UltimateStrain: "0.284"
     UltimateTensileStrength: "342 MPa"
     YieldStrength: "148 MPa"
     YoungsModulus: "122 GPa"

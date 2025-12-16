@@ -15,8 +15,7 @@ General:
     - "CuSn5"
   Description: >
     Copper-510, CuSn5, Phosphor Bronze 5%, Spring cold drawn 85%.
-    Cu≥60% Sn=4.85% Pb=0.02% Fe=0.02% Zn=0.05% P=0.18%.
-    IACS = 15%.
+    Cu≥60% Sn=4.85% Pb=0.02% Fe=0.02% Zn=0.05% P=0.18%. IACS=15%.
     Values for 295°K imported from 'cda144-8-mechanical-low-temperature.pdf'
     with permission and credit to the 'Copper Development Association' (CDA).
     For your own production accuracy, please use values provided by the
@@ -30,11 +29,12 @@ Models:
     Father: "Metal"
   MaterialStandard:
     UUID: '1e2c0088-904a-4537-925f-64064c07d700'
-    KindOfMaterial: "Cold drawn copper"
+    KindOfMaterial: "Cold drawn, Spring"
     StandardCode: "Copper-510"
   LinearElastic:
     UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
     Density: "8860 kg/m^3"
+    UltimateStrain: "0.036"
     UltimateTensileStrength: "534 MPa"
     YieldStrength: "496 MPa"
     YoungsModulus: "108 GPa"

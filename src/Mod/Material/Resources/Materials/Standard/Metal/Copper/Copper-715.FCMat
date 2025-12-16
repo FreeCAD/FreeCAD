@@ -14,7 +14,7 @@ General:
   Description: >
     Copper-715, 70-30, Cu70Ni30, Copper Nickel 30%, Commercial anneal.
     Cu=70% Pb<0.01% Fe=0.59% Sn<0.01% Zn=0.04% Ni=30.05% Mn=0.71-0.73% Al<0.01% As<0.01%.
-    IACS = 4.6%.
+    IACS=4.6%.
     Values for 295°K imported from 'cda144-8-mechanical-low-temperature.pdf'
     with permission and credit to the 'Copper Development Association' (CDA).
     For your own production accuracy, please use values provided by the
@@ -28,10 +28,12 @@ Models:
     Father: "Metal"
   MaterialStandard:
     UUID: '1e2c0088-904a-4537-925f-64064c07d700'
+    KindOfMaterial: "Annealed"
     StandardCode: "Copper-715"
   LinearElastic:
     UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
     Density: "8940 kg/m^3"
+    UltimateStrain: "0.399"
     UltimateTensileStrength: "399 MPa"
     YieldStrength: "129 MPa"
     YoungsModulus: "152 GPa"

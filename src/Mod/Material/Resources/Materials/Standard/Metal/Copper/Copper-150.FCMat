@@ -13,8 +13,7 @@ General:
     - "Zirconium"
   Description: >
     Copper-150, Zirconium Copper, Annealed 950°C; Cold drawn 85-90%, Aged 450°C 1hr.
-    Cu≥99.9% +Zr=0.028%.
-    IACS = 90%.
+    Cu≥99.9% +Zr=0.028%. IACS=90%.
     Values for 295°K imported from 'cda144-8-mechanical-low-temperature.pdf'
     with permission and credit to the 'Copper Development Association' (CDA).
     For your own production accuracy, please use values provided by the
@@ -28,10 +27,12 @@ Models:
     Father: "Metal"
   MaterialStandard:
     UUID: '1e2c0088-904a-4537-925f-64064c07d700'
+    KindOfMaterial: "Cold drawn, Aged"
     StandardCode: "Copper-150"
   LinearElastic:
     UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
     Density: "8890 kg/m^3"
+    UltimateStrain: "0.0413"
     UltimateTensileStrength: "444 MPa"
     YieldStrength: "411 MPa"
     YoungsModulus: "109 GPa"

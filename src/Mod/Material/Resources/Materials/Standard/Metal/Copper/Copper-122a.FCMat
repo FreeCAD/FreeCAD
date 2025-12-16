@@ -14,8 +14,7 @@ General:
     - "Phosphorus"
   Description: >
     Copper-122, Phosphorus Deoxidized (DHP), High Residual Phosphorus, Annealed.
-    Cu≥99.9% Pb=0.0002% Fe=0.003% Sn=0.00035% Zn=0.001% P=0.028%.
-    IACS = 85%.
+    Cu≥99.9% Pb=0.0002% Fe=0.003% Sn=0.00035% Zn=0.001% P=0.028%. IACS=85%.
     Values for 295°K imported from 'cda144-8-mechanical-low-temperature.pdf'
     with permission and credit to the 'Copper Development Association' (CDA).
     For your own production accuracy, please use values provided by the
@@ -29,6 +28,7 @@ Models:
     Father: "Metal"
   MaterialStandard:
     UUID: '1e2c0088-904a-4537-925f-64064c07d700'
+    KindOfMaterial: "Annealed"
     StandardCode: "Copper-122"
   LinearElastic:
     UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'

@@ -13,8 +13,7 @@ General:
     - "Aluminum Bronze"
   Description: >
     Copper-614, Aluminum Bronze D, Commercial anneal.
-    Cu=91% Al=6.57% Fe=2.13%.
-    IACS = 14%.
+    Cu=91% Al=6.57% Fe=2.13%. IACS=14%.
     Values for 295°K imported from 'cda144-8-mechanical-low-temperature.pdf'
     with permission and credit to the 'Copper Development Association' (CDA).
     For your own production accuracy, please use values provided by the
@@ -28,10 +27,12 @@ Models:
     Father: "Metal"
   MaterialStandard:
     UUID: '1e2c0088-904a-4537-925f-64064c07d700'
+    KindOfMaterial: "Annealed"
     StandardCode: "Copper-614"
   LinearElastic:
     UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
     Density: "7890 kg/m^3"
+    UltimateStrain: "0.27"
     UltimateTensileStrength: "574 MPa"
     YieldStrength: "410 MPa"
     YoungsModulus: "109 GPa"

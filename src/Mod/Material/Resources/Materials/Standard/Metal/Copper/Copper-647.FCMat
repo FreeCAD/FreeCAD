@@ -12,8 +12,8 @@ General:
     - "Aged"
     - "Copper-nickel silicon"
   Description: >
-    Copper-647, Copper-nickel silicon, Aged 450°C 2hr.
-    Cu≥97% Fe=0.01% Ni=1.97.
+    Copper-647, CuNi2Si, Copper-nickel silicon, Aged 450°C 2hr.
+    Cu≥97% Ni=1.97% 0.4%≥Si≥0.8% Fe=0.01%. 26%≥IACS≥44%.
     Values for 295°K imported from 'cda144-8-mechanical-low-temperature.pdf'
     with permission and credit to the 'Copper Development Association' (CDA).
     For your own production accuracy, please use values provided by the
@@ -27,10 +27,12 @@ Models:
     Father: "Metal"
   MaterialStandard:
     UUID: '1e2c0088-904a-4537-925f-64064c07d700'
+    KindOfMaterial: "Aged"
     StandardCode: "Copper-647"
   LinearElastic:
     UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
     Density: "8910 kg/m^3"
+    UltimateStrain: "0.099"
     UltimateTensileStrength: "775 MPa"
     YieldStrength: "724 MPa"
     YoungsModulus: "148 GPa"

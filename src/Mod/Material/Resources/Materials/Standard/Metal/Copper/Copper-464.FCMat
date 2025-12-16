@@ -15,8 +15,7 @@ General:
     - "CuZn39Sn1"
   Description: >
     Copper-464, CuZn39Sn1, Naval Brass, Annealed 593°C 1hr.
-    Cu≥60% Zn=39.71% Sn=0.63% Pb=0.09% Fe=0.02%.
-    IACS = 26%.
+    Cu≥60% Zn=39.71% Sn=0.63% Pb=0.09% Fe=0.02%. IACS=26%.
     Values for 295°K imported from 'cda144-8-mechanical-low-temperature.pdf'
     with permission and credit to the 'Copper Development Association' (CDA).
     For your own production accuracy, please use values provided by the
@@ -30,11 +29,13 @@ Models:
     Father: "Metal"
   MaterialStandard:
     UUID: '1e2c0088-904a-4537-925f-64064c07d700'
+    KindOfMaterial: "Annealed"
     StandardCode: "Copper-464"
   LinearElastic:
     UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
     Density: "8410 kg/m^3"
     ShearModulus: "39.7 GPa"
+    UltimateStrain: "0.318"
     UltimateTensileStrength: "436 MPa"
     YieldStrength: "214 MPa"
     YoungsModulus: "96.5 GPa"
