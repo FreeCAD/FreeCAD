@@ -1247,25 +1247,35 @@ class ObjectWaterline(PathOp.ObjectOp):
 
         # Scan the piece to depth at smplInt
         if obj.Algorithm == "OCL Adaptive":
-            # Get Stock boundbox for OCL Adaptive
+            # Get Stock Bounding Box
             BS = JOB.Stock
-            bb = BS.Shape.BoundBox
-            xmin = round(abs(bb.XMin), 6)
-            xmax = round(abs(bb.XMax), 6)
-            ymin = round(abs(bb.YMin), 6)
-            ymax = round(abs(bb.YMax), 6)
+            stock_bb = BS.Shape.BoundBox
 
-            # Check Stock's bounding box and Tool Path limits
-            MinX = round(abs(stl.bb.minpt.x) + self.toolDiam, 6)
-            MinY = round(abs(stl.bb.minpt.y) + self.toolDiam, 6)
-            MaxX = round(abs(stl.bb.maxpt.x) + self.toolDiam, 6)
-            MaxY = round(abs(stl.bb.maxpt.y) + self.toolDiam, 6)
-            if MinX < xmin or MinY < ymin or MaxX > xmax or MaxY > ymax:
+            # Stock Limits
+            s_xmin = stock_bb.XMin
+            s_xmax = stock_bb.XMax
+            s_ymin = stock_bb.YMin
+            s_ymax = stock_bb.YMax
+
+            # Calculate Tool Path Limits based on OCL STL          
+            path_min_x = stl.bb.minpt.x - self.radius
+            path_min_y = stl.bb.minpt.y - self.radius
+            path_max_x = stl.bb.maxpt.x + self.radius
+            path_max_y = stl.bb.maxpt.y + self.radius
+
+            # Compare with a tiny tolerance
+            tol = 0.001 
+            if (path_min_x < s_xmin - tol) or \
+               (path_min_y < s_ymin - tol) or \
+               (path_max_x > s_xmax + tol) or \
+               (path_max_y > s_ymax + tol):
+
                 newPropMsg = translate(
                     "PathWaterline",
                     "The toolpath has exceeded the stock bounding box limits. Consider using a Boundary Dressup.",
                 )
                 FreeCAD.Console.PrintWarning(newPropMsg + "\n")
+
             # Run the Scan (Processing ALL depths at once)
             scanLines = self._waterlineAdaptiveScan(stl, smplInt, minSmplInt, depthparams, depOfst)
 
