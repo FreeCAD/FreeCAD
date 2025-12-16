@@ -156,4 +156,3 @@ std::vector<App::DocumentObject*> MeasurePosition::getSubject() const
 {
     return {Element.getValue()};
 }
-
