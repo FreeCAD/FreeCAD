@@ -6985,6 +6985,8 @@ bool SketchObject::insertBSplineKnot(int GeoId, double param, int multiplicity)
 
 int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
 {
+    using std::numbers::pi;
+
     // no need to check input data validity as this is an sketchobject managed operation.
     Base::StateLocker lock(managedoperation, true);
 
@@ -7157,8 +7159,8 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
         // Angle
         if (newConstr->Type == Sketcher::Angle) {
             auto normalizeAngle = [](double angleDeg) {
-                while (angleDeg > M_PI) angleDeg -= M_PI * 2.0;
-                while (angleDeg <= -M_PI) angleDeg += M_PI * 2.0;
+                while (angleDeg > std::numbers::pi) angleDeg -= std::numbers::pi * 2.0;
+                while (angleDeg <= -std::numbers::pi) angleDeg += std::numbers::pi * 2.0;
                 return angleDeg;
             };
 
@@ -7167,7 +7169,7 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
                     || newConstr->First == -2 || newConstr->Second == -2
                     || newConstr->Second == GeoEnum::GeoUndef) {
                     // angle to horizontal or vertical axis
-                    newConstr->setValue(normalizeAngle(newConstr->getValue() + M_PI));
+                    newConstr->setValue(normalizeAngle(newConstr->getValue() + std::numbers::pi));
                 }
                 else {
                     // angle between two sketch entities
@@ -7177,7 +7179,7 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
             else if (xinv) { // rotation 180 degrees around vertical axis
                 if (newConstr->First == -1 || newConstr->Second == -1 || newConstr->Second == GeoEnum::GeoUndef) {
                     // angle to horizontal axis
-                    newConstr->setValue(normalizeAngle(M_PI - newConstr->getValue()));
+                    newConstr->setValue(normalizeAngle(std::numbers::pi - newConstr->getValue()));
                 }
                 else {
                     // angle between two sketch entities or angle to vertical axis
@@ -7187,7 +7189,7 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
             else if (yinv) { // rotation 180 degrees around horizontal axis
                 if (newConstr->First == -2 || newConstr->Second == -2) {
                     // angle to vertical axis
-                    newConstr->setValue(normalizeAngle(M_PI - newConstr->getValue()));
+                    newConstr->setValue(normalizeAngle(std::numbers::pi - newConstr->getValue()));
                 }
                 else {
                     // angle between two sketch entities or angle to horizontal axis
