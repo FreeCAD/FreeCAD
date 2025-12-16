@@ -1253,7 +1253,7 @@ def _makeSTL(model, obj, ocl, model_type=None):
     """Convert a mesh or shape into an OCL STL, using the tessellation
     tolerance specified in obj.LinearDeflection.
     Returns an ocl.STLSurf()."""
-     # Determine Deflection Values
+    # Determine Deflection Values
     lin_def = obj.LinearDeflection.Value
     ang_def = obj.AngularDeflection.Value
 
@@ -1262,13 +1262,13 @@ def _makeSTL(model, obj, ocl, model_type=None):
     # This fundamental difference makes it sensitive to Topology (how points connect) rather than just density
     # Models with internal features can cause the algorithm to be confused even with very high density values.
     # The following values create the cleanest possible Topology for a vector-slicing algorithm
-    # Setting those values here rather than hacking the Obj values in Waterline.py is preferable. 
-    algo = getattr(obj, "Algorithm", None)   
+    # Setting those values here rather than hacking the Obj values in Waterline.py is preferable.
+    algo = getattr(obj, "Algorithm", None)
     if algo == "OCL Adaptive":
         # Force the "Sweet Spot" values for topology stability (Good enough for 99% or more of operations)
         lin_def = 0.001
         ang_def = 0.15
-    
+
     if model_type == "M":
         facets = model.Mesh.Facets.Points
     else:
