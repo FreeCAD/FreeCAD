@@ -87,4 +87,3 @@ private:
 
 
 #endif  // APP_MEASUREPOSITION_H
-
