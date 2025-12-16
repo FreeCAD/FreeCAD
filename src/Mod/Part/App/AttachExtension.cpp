@@ -613,24 +613,24 @@ void AttachExtension::handleLegacyTangentPlaneOrientation()
                 return nullptr;
             }
 
-            std::string s = "(" + expr->toString() + ")";
+            std::string unitSafeExprStr = "(" + expr->toString() + ")";
             if (angle >= 0) {
-                s += " + " + std::to_string(angle);
+                unitSafeExprStr += " + " + std::to_string(angle);
             }
             else {
-                s += " - " + std::to_string(-angle);
+                unitSafeExprStr += " - " + std::to_string(-angle);
             }
 
             if (const App::Expression* simple = expr->eval()) {
                 if (auto ue = dynamic_cast<const App::UnitExpression*>(simple)) {
                     const auto& q = ue->getQuantity();
                     if (q.getUnit() == Base::Unit::Angle) {
-                        s += " deg";
+                        unitSafeExprStr += " deg";
                     }
                 }
             }
 
-            return App::ExpressionParser::parse(owner, s.c_str());
+            return App::ExpressionParser::parse(owner, unitSafeExprStr.c_str());
         };
         App::Expression* newExprX = nullptr;
         App::Expression* newExprY = nullptr;
