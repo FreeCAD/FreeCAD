@@ -1034,8 +1034,9 @@ public:
         Gui::Selection().rmvSelectionGate();
     }
 
-    void mouseMove(SnapManager::SnapHandle snapHandle) override
-    {}
+    void mouseMove(SnapManager::SnapHandle /*snapHandle*/) override
+    {
+    }
 
     bool pressButton(Base::Vector2d /*onSketchPos*/) override
     {
