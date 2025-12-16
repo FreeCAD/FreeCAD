@@ -142,7 +142,7 @@ QString MeasurePosition::getResultString()
 }
 
 
-Base::Placement MeasurePosition::getPlacement()
+Base::Placement MeasurePosition::getPlacement() const
 {
     Base::Placement placement;
     placement.setPosition(Position.getValue());
@@ -156,3 +156,4 @@ std::vector<App::DocumentObject*> MeasurePosition::getSubject() const
 {
     return {Element.getValue()};
 }
+
