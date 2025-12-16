@@ -1257,18 +1257,20 @@ class ObjectWaterline(PathOp.ObjectOp):
             s_ymin = stock_bb.YMin
             s_ymax = stock_bb.YMax
 
-            # Calculate Tool Path Limits based on OCL STL          
+            # Calculate Tool Path Limits based on OCL STL
             path_min_x = stl.bb.minpt.x - self.radius
             path_min_y = stl.bb.minpt.y - self.radius
             path_max_x = stl.bb.maxpt.x + self.radius
             path_max_y = stl.bb.maxpt.y + self.radius
 
             # Compare with a tiny tolerance
-            tol = 0.001 
-            if (path_min_x < s_xmin - tol) or \
-               (path_min_y < s_ymin - tol) or \
-               (path_max_x > s_xmax + tol) or \
-               (path_max_y > s_ymax + tol):
+            tol = 0.001
+            if (
+                (path_min_x < s_xmin - tol)
+                or (path_min_y < s_ymin - tol)
+                or (path_max_x > s_xmax + tol)
+                or (path_max_y > s_ymax + tol)
+            ):
 
                 newPropMsg = translate(
                     "PathWaterline",
