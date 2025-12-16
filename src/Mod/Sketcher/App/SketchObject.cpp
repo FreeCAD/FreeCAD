@@ -7115,7 +7115,7 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
 
     auto applyGeometryFlipCorrection = [xinv, yinv, origin, axisV, axisH]
                                        (Part::Geometry* geoNew) {
-        if (!(xinv || yinv)) {
+        if (!xinv && !yinv) {
             return;
         }
 
@@ -7142,7 +7142,7 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
 
     auto applyConstraintFlipCorrection = [xinv, yinv]
                                          (Sketcher::Constraint* newConstr) {
-        if (!(xinv || yinv)) {
+        if (!xinv && !yinv) {
             return;
         }
 
@@ -7238,7 +7238,7 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
     auto makeCorrectedExpressionString = [xinv, yinv]
                                          (const Sketcher::Constraint* constr, const std::string expr)
                                          -> std::string {
-        if (!(xinv || yinv)) {
+        if (!xinv && !yinv) {
             return expr;
         }
 
