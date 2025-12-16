@@ -1262,7 +1262,11 @@ def _makeSTL(model, obj, ocl, model_type=None):
             shape = model
         # vertices, facet_indices = shape.tessellate(obj.LinearDeflection.Value) # tessellate workaround
         # Workaround for tessellate bug
-        mesh = MeshPart.meshFromShape(Shape=shape, LinearDeflection=0.001, AngularDeflection=0.25)
+        mesh = MeshPart.meshFromShape(
+            Shape=shape,
+            LinearDeflection=obj.LinearDeflection.Value,
+            AngularDeflection=obj.AngularDeflection.Value
+        )
         vertices = [point.Vector for point in mesh.Points]
         facet_indices = [facet.PointIndices for facet in mesh.Facets]
         facets = ((vertices[f[0]], vertices[f[1]], vertices[f[2]]) for f in facet_indices)
