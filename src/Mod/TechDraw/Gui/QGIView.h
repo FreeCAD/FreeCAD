@@ -185,6 +185,9 @@ public:
 
     static bool hasSelectedChildren(QGIView* parent);
 
+    bool isExporting() const;
+
+
 protected:
     QGIView* getQGIVByName(std::string name) const;
 

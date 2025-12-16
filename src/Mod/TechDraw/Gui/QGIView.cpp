@@ -1086,6 +1086,10 @@ void QGIView::updateFrameVisibility()
 
 bool QGIView::shouldShowFrame() const
 {
+    if (isExporting()) {
+        return false;
+    }
+
     if (isSelected()) {
         return true;
     }
@@ -1117,6 +1121,23 @@ bool QGIView::shouldShowFromViewProvider() const
     }
 
     return vpPage->getFrameState();
+}
+
+
+bool QGIView::isExporting() const
+{
+    auto* view{freecad_cast<TechDraw::DrawView*>(getViewObject())};
+    auto vpPage = getViewProviderPage(view);
+    if (!view || !vpPage) {
+        return false;
+    }
+
+    QGSPage* scenePage = vpPage->getQGSPage();
+    if (!scenePage) {
+        return false;
+    }
+
+    return scenePage->getExportingAny();
 }
 
 //! Retrieves objects of type T with given indexes
