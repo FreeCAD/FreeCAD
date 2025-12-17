@@ -4953,7 +4953,7 @@ The final angle will be the base angle plus this amount.</translation>
       <translation>Πλαίσιο Συμβολοσειράς Κειμένου</translation>
     </message>
     <message>
-      <location filename="../../draftutils/params.py" line="506"/>
+      <location filename="../../draftutils/params.py" line="505"/>
       <source>Default</source>
       <translation>Προεπιλεγμένο</translation>
     </message>

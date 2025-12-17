@@ -3588,7 +3588,7 @@ egyenletek esetén használatos</translation>
     <message>
       <location filename="../ui/PostLineplotFieldAppEdit.ui" line="93"/>
       <source>One Y field for each frame</source>
-      <translation>Jedno pole Y dla każdej klatki</translation>
+      <translation>Egy Y mező minden képkockához</translation>
     </message>
   </context>
   <context>
@@ -4081,7 +4081,7 @@ A lehetséges változókat lásd az alábbi leírási mezőben.</translation>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="110"/>
       <source>Write .inp File</source>
-      <translation>.Inp fájl írása</translation>
+      <translation>.inp fájl írása</translation>
     </message>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="120"/>
@@ -6966,7 +6966,7 @@ Hagyja üresen az alapértelmezett Python futtatható fájl használatához</tra
     <message>
       <location filename="../../TaskPostCalculator.ui" line="62"/>
       <source>Scalars</source>
-      <translation>Skálárok</translation>
+      <translation>Skalárok</translation>
     </message>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="72"/>
@@ -7020,7 +7020,7 @@ Hagyja üresen az alapértelmezett Python futtatható fájl használatához</tra
       <location filename="../../TaskPostBranch.ui" line="73"/>
       <location filename="../../TaskPostBranch.ui" line="90"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the how the output of the branch is determined:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Passthrough:&lt;/span&gt; The branches output is the same as its input, no matter what the branch child filter do.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Append:&lt;/span&gt; The branches output is a collection of all child filter: it appends child outputs together and offers this as branch output.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Válaszd ki, hogyan kerül meghatározásra a változat eredménye:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;- Átadás: &lt;/span&gt;A változatok eredménye megegyezik a forrásával, függetlenül attól, mit csinálnak a változat alont szűrők.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Összeadás: &lt;/span&gt;A változat eredménye az összes alponti szűrő gyűjteménye: összeadja az alpont eredményeit, és azt kínálja a változat eredményeként.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Válaszd ki, hogyan kerül meghatározásra a változat eredménye:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;- Átadás: &lt;/span&gt;A változatok eredménye megegyezik a forrásával, függetlenül attól, mit csinálnak a változat alpont szűrők.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Összeadás: &lt;/span&gt;A változat eredménye az összes alponti szűrő gyűjteménye: összeadja az alpont eredményeit, és azt kínálja a változat eredményeként.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskPostBranch.ui" line="77"/>
@@ -7140,7 +7140,7 @@ Hagyja üresen az alapértelmezett Python futtatható fájl használatához</tra
       <location filename="../ui/TaskPostHistogram.ui" line="37"/>
       <location filename="../ui/TaskPostLineplot.ui" line="37"/>
       <source>The form of the glyph</source>
-      <translation>Glyph formája</translation>
+      <translation>A szimbólum formája</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="25"/>
@@ -7185,7 +7185,7 @@ Hagyja üresen az alapértelmezett Python futtatható fájl használatához</tra
       <location filename="../ui/TaskPostLineplot.ui" line="81"/>
       <location filename="../ui/TaskPostLineplot.ui" line="97"/>
       <source>Which vector field is used to orient the glyphs</source>
-      <translation>Vektormező, amelyet a glyp-ek irányítására használnak</translation>
+      <translation>Vektormező, amelyet a szimbólumok irányítására használnak</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="78"/>
@@ -7203,13 +7203,13 @@ Hagyja üresen az alapértelmezett Python futtatható fájl használatához</tra
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="111"/>
       <source>Sca&amp;le</source>
-      <translation>Mérlegen vagy skálán elhelyezni</translation>
+      <translation>Ská&amp;la</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="126"/>
       <location filename="../ui/TaskPostGlyph.ui" line="144"/>
       <source>Which data field is used to scale the glyphs</source>
-      <translation>Glypf méretezésére használt mező</translation>
+      <translation>Szimbólum méretezésére használt mező</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="129"/>
@@ -7222,7 +7222,7 @@ Hagyja üresen az alapértelmezett Python futtatható fájl használatához</tra
       <location filename="../ui/TaskPostHistogram.ui" line="176"/>
       <location filename="../ui/TaskPostLineplot.ui" line="155"/>
       <source>A constant multiplier the glyphs are scaled with</source>
-      <translation>Glyp-eket méretező szorzótényező állandó</translation>
+      <translation>Szimbólumokat méretező szorzótényező állandó</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="161"/>
@@ -7239,7 +7239,7 @@ Hagyja üresen az alapértelmezett Python futtatható fájl használatához</tra
       <location filename="../ui/TaskPostHistogram.ui" line="166"/>
       <location filename="../ui/TaskPostLineplot.ui" line="145"/>
       <source>If the scale data is a vector this property decides if the glyph is scaled by vector magnitude or by the individual components</source>
-      <translation>Ha a méretarány adat egy vektor, ez a tulajdonság meghatározza, hogy a glyph-et a vektor nagysága vagy az egyes összetevők alapján méretezik-e</translation>
+      <translation>Ha a méretarány adat egy vektor, ez a tulajdonság meghatározza, hogy a szimbólumokat a vektor nagysága vagy az egyes összetevők alapján méretezik-e</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="230"/>
@@ -7265,7 +7265,7 @@ Hagyja üresen az alapértelmezett Python futtatható fájl használatához</tra
       <location filename="../ui/TaskPostGlyph.ui" line="263"/>
       <location filename="../ui/TaskPostGlyph.ui" line="349"/>
       <source>Which vertices are used as glyph locations</source>
-      <translation>Csúcsok glyph helyekként használva</translation>
+      <translation>Csúcsok szimbólum helyekként használva</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="266"/>
@@ -8066,22 +8066,22 @@ Hagyja üresen az alapértelmezett Python futtatható fájl használatához</tra
     <message>
       <location filename="../../../femtools/ccxtools.py" line="405"/>
       <source>No or wrong CalculiX binary ccx</source>
-      <translation type="unfinished">No or wrong CalculiX binary ccx</translation>
+      <translation>Hiányzó vagy hibás CalculiX xszámítás bináris fájl</translation>
     </message>
     <message>
       <location filename="../../../femtools/ccxtools.py" line="439"/>
       <source>FEM: wrong ccx binary</source>
-      <translation type="unfinished">FEM: wrong ccx binary</translation>
+      <translation>VEM: az xszámítás bináris érvénytelen</translation>
     </message>
     <message>
       <location filename="../../../femtools/ccxtools.py" line="452"/>
       <source>FEM: CalculiX binary ccx '{}' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.</source>
-      <translation type="unfinished">FEM: CalculiX binary ccx '{}' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.</translation>
+      <translation>VEM: A CalculiX xszámítás '{}' bináris fájl nem található. Kérlek, állítsd be a CalculiX xszámítás bináris fájl elérési útját a VEM beállításoknál a CalculiX fülön.</translation>
     </message>
     <message>
       <location filename="../../../femtools/ccxtools.py" line="464"/>
       <source>FEM: CalculiX ccx '{}' output '{}' doesn't contain expected phrase '{}'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.</source>
-      <translation type="unfinished">FEM: CalculiX ccx '{}' output '{}' doesn't contain expected phrase '{}'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.</translation>
+      <translation>VEM: A CalculiX xszámítás '{}' kimenete '{}' nem tartalmazza a várt kifejezést '{}'. Valami gond van a xszámítás futtatásakor. Nézd meg, hogy a xszámítás önállóan, FreeCAD nélkül le tud-e futni.</translation>
     </message>
   </context>
   <context>

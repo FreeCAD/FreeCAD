@@ -136,7 +136,7 @@
       <translation>Átalakítás</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3155"/>
+      <location filename="../ViewProviderLink.cpp" line="3157"/>
       <source>Toggle array elements</source>
       <translation>Tömbelemek váltása</translation>
     </message>
@@ -511,7 +511,7 @@ Ennek az objektumnak a tulajdonsága a változóhalmazban lévő tulajdonságra 
     <message>
       <location filename="../Navigation/BlenderNavigationStyle.cpp" line="51"/>
       <source>Press Shift and middle mouse button</source>
-      <translation>Nyomja meg a SHIFT és a középső egér gombot</translation>
+      <translation>Nyomja meg a Shift és a középső egér gombot</translation>
     </message>
     <message>
       <location filename="../Navigation/BlenderNavigationStyle.cpp" line="53"/>
@@ -1673,7 +1673,7 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="281"/>
       <source>Launches a guide on how to set up a macro in a custom global toolbar</source>
-      <translation>Indíts útmutatót arról, hogyan állítható be egy makró egy testreszabott globális eszköztáron</translation>
+      <translation>Indíts útmutatót arról, hogyan állítható be egy makró egy testre szabott globális eszköztáron</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="307"/>
@@ -1703,7 +1703,7 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="106"/>
       <source>Filter by file content, case-insensitive. Regular expressions are supported.</source>
-      <translation>Szűrj fájl tartalma szerint, a kis- és nagybetűk megkülönböztetése nélkül. Álltalános kifejezések is használhatók.</translation>
+      <translation>Szűrj fájl tartalma szerint, a kis- és nagybetűk megkülönböztetése nélkül. Általános kifejezések is használhatók.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="310"/>
@@ -4014,9 +4014,9 @@ Turntable: the part will be rotated around the Z-axis (with constrained axes).
 Free Turntable: the part will be rotated around the Z-axis.
          </source>
       <translation>Forgó pályastílus.
-Kerekített ívlabda: ha az egárrel a képernyő sarkába mozog, az alkatrész csak gördül.
+Kerekített ívlabda: ha az egérrel a képernyő sarkába mozog, az alkatrész csak gördül.
 Trackball: ha az egér vízszintesen mozog, az alkatrész a Y-tengely körül forog.
-Klasszikus Trackball: amikor mozog az egért, az alkatrész forog fordulékonység lehetőségével.
+Klasszikus Trackball: amikor mozog az egért, az alkatrész forog fordulékonyság lehetőségével.
 Forgóasztal: az alkatrész a Z-tengely körül forog (korlátozott tengelyekkel).
 Szabad forgóasztal: az alkatrész a Z-tengely körül forog         </translation>
     </message>
@@ -4183,7 +4183,7 @@ Ez a beállítás nem tiltja le az egérrel döntés beállítást.</translation
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="20"/>
       <source>Navigation Cube</source>
-      <translation>Navigációskocka</translation>
+      <translation>Navigációs kocka</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="84"/>
@@ -5339,7 +5339,7 @@ Az 'Állapot' oszlop tájékoztatja a visszaállítás sikerességéről.</trans
     <message>
       <location filename="../Placement.cpp" line="856"/>
       <source>There are input fields with incorrect input. Ensure valid placement values!</source>
-      <translation>Vannak helytelen adatú adatbeviteli mezők. Biztosjtda az érvényes értékeket!</translation>
+      <translation>Vannak helytelen adatú adatbeviteli mezők. Ellenőrizze az érvényes elhelyezési értékeket!</translation>
     </message>
   </context>
   <context>
@@ -6535,7 +6535,7 @@ a jobboldali nézetben %2 pont lett jelölve.</translation>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="869"/>
       <source>Expand All</source>
-      <translation>Minded kibont</translation>
+      <translation>Mindet kibont</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="871"/>
@@ -6581,7 +6581,7 @@ a jobboldali nézetben %2 pont lett jelölve.</translation>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="991"/>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1171"/>
       <source>Edit Property Tooltip</source>
-      <translation>Tulajdonságeszköztipp szerkesztése</translation>
+      <translation>Szerszámcsúcs tulajdonságainak szerkesztése</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1008"/>
@@ -6663,7 +6663,7 @@ a jobboldali nézetben %2 pont lett jelölve.</translation>
       <location filename="../PythonConsole.cpp" line="849"/>
       <source>The application is still running.
 Exit without saving all data?</source>
-      <translation>L'aplicació està encara en funcionament.
+      <translation>Az alkalmazés még mindig fut.
 Kilépés mentés nélkül?</translation>
     </message>
     <message>
@@ -6826,7 +6826,7 @@ Kilépés mentés nélkül?</translation>
     <message>
       <location filename="../Navigation/RevitNavigationStyle.cpp" line="55"/>
       <source>Press Shift and middle mouse button</source>
-      <translation>Nyomja meg a SHIFT és a középső egér gombot</translation>
+      <translation>Nyomja meg a Shift és a középső egér gombot</translation>
     </message>
     <message>
       <location filename="../Navigation/RevitNavigationStyle.cpp" line="57"/>
@@ -7528,7 +7528,7 @@ Szeretne megadni egy másik könyvtárat?</translation>
     <message>
       <location filename="../Tree.cpp" line="3806"/>
       <source>Enables or disables the recomputating editing object when 'skip recomputation' is enabled</source>
-      <translation>Szerkeszttett objektum újraszámításának engedélyezése vagy letiltása, ha az 'újraszámítás kihagyása' engedélyezve van</translation>
+      <translation>Szerkesztett objektum újraszámításának engedélyezése vagy letiltása, ha az 'újraszámítás kihagyása' engedélyezve van</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3810"/>
@@ -8600,12 +8600,12 @@ A 'Megszakítás' választásával megszakít</translation>
       <translation>Nem lehet megnyitni a rendszer böngészőt.</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2553"/>
+      <location filename="../View3DInventorViewer.cpp" line="2555"/>
       <source>Out of memory</source>
       <translation>Kevés a memória</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2554"/>
+      <location filename="../View3DInventorViewer.cpp" line="2556"/>
       <source>Not enough memory available to display the data.</source>
       <translation>Nincs elég memória az adatok megjelenítéséhez.</translation>
     </message>
@@ -8631,7 +8631,7 @@ A 'Megszakítás' választásával megszakít</translation>
       <translation>Kijelölés pontosítása</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3182"/>
+      <location filename="../ViewProviderLink.cpp" line="3184"/>
       <location filename="../ViewProviderDragger.cpp" line="127"/>
       <source>Transform</source>
       <translation>Átalakítás</translation>
@@ -8761,53 +8761,53 @@ A 'Megszakítás' választásával megszakít</translation>
       <translation>A fogd &amp; vidd sikertelen</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2997"/>
+      <location filename="../ViewProviderLink.cpp" line="2999"/>
       <location filename="../MainWindow.cpp" line="870"/>
       <source>Apply to all</source>
       <translation>Alkalmazás mindegyikre</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2971"/>
+      <location filename="../ViewProviderLink.cpp" line="2973"/>
       <source>Setup Configurable Object</source>
       <translation>Paraméteres objektum konfigurációja</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2973"/>
+      <location filename="../ViewProviderLink.cpp" line="2975"/>
       <source>Selects which object to copy or exclude when configuration changes. All external linked objects are excluded by default.</source>
       <translation>Válassza ki, hogy mely objektumokat másolja vagy zárja ki a konfiguráció módosításakor. Alapértelmezés szerint az összes külsőleg kapcsolódó objektum ki van zárva.</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2995"/>
+      <location filename="../ViewProviderLink.cpp" line="2997"/>
       <source>Select which objects to copy when the configuration is changed</source>
       <translation>A konfiguráció módosítása után válassza ki, hogy mely objektumokat másolja</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2998"/>
+      <location filename="../ViewProviderLink.cpp" line="3000"/>
       <source>Applies the setting to all links</source>
       <translation>Alkalmazza a beállítást minden hivatkozásra</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3051"/>
+      <location filename="../ViewProviderLink.cpp" line="3053"/>
       <source>Copy on Change</source>
       <translation>Másolás módosításkor</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3052"/>
+      <location filename="../ViewProviderLink.cpp" line="3054"/>
       <source>Enable</source>
       <translation>Bekapcsolás</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3054"/>
+      <location filename="../ViewProviderLink.cpp" line="3056"/>
       <source>Enable auto copy of linked object when its configuration is changed</source>
       <translation>Csatolt objektum automatikus másolásának engedélyezése a konfiguráció módosításakor</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3070"/>
+      <location filename="../ViewProviderLink.cpp" line="3072"/>
       <source>Tracking</source>
       <translation>Léptetés</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3072"/>
+      <location filename="../ViewProviderLink.cpp" line="3074"/>
       <source>Copies the linked object when its configuration is changed.
 Also auto redo the copy if the original linked object is changed.
 </source>
@@ -8816,46 +8816,46 @@ A másolat automatikusan visszaáll, ha az eredeti csatolt objektum megváltozik
 </translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3092"/>
+      <location filename="../ViewProviderLink.cpp" line="3094"/>
       <source>Disable Copy on Change</source>
       <translation>Másolás letiltása módosításkor</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3110"/>
+      <location filename="../ViewProviderLink.cpp" line="3112"/>
       <source>Refresh Configurable Object</source>
       <translation>Konfigurálható objektum frissítése</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3112"/>
+      <location filename="../ViewProviderLink.cpp" line="3114"/>
       <source>Synchronizes the original configurable source object by
 creating a new deep copy. Any changes made to
 the current copy will be lost.
 </source>
-      <translation>A konfigurálható eredeti forrásobjektumot úgy szinkronizálja,
-hogy új mélymásolatot hoz létre. A jelenlegi másolaton végrehajtott 
-bármilyen változtatás elveszik.
+      <translation>Az eredeti konfigurálható forrásobjektum szinkronizálása
+új, igaz másolat létrehozásával. A jelenlegi másolaton végrehajtott
+bármilyen változás elveszik.
 </translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3153"/>
+      <location filename="../ViewProviderLink.cpp" line="3155"/>
       <source>Toggle Array Elements</source>
       <translation>Tömbelemek kapcsolása</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3164"/>
+      <location filename="../ViewProviderLink.cpp" line="3166"/>
       <source>Changes whether to show each link array element as individual objects</source>
       <translation>Beállítja, hogy minden hivatkozáselem tömb elemét egyedi objektumként jelenítse-e meg</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3183"/>
+      <location filename="../ViewProviderLink.cpp" line="3185"/>
       <source>Transforms the object at the origin of the placement</source>
       <translation>Átalakítja az objektumot az elhelyezés kiindulópontjánál</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3193"/>
-      <location filename="../ViewProviderLink.cpp" line="3199"/>
+      <location filename="../ViewProviderLink.cpp" line="3195"/>
+      <location filename="../ViewProviderLink.cpp" line="3201"/>
       <source>Override Colors</source>
-      <translation>Színek fellülírása</translation>
+      <translation>Színek felülírása</translation>
     </message>
     <message>
       <location filename="../ViewProviderDocumentObject.cpp" line="275"/>
@@ -9667,7 +9667,7 @@ bármilyen változtatás elveszik.
     <message>
       <location filename="../CommandView.cpp" line="1555"/>
       <source>Sets the camera to the dimetric view</source>
-      <translation>Kamerát dimetrikus nézetre állítja</translation>
+      <translation>Kamerát kétméretes nézetre állítja</translation>
     </message>
   </context>
   <context>
@@ -9779,7 +9779,7 @@ bármilyen változtatás elveszik.
     <message>
       <location filename="../CommandView.cpp" line="1433"/>
       <source>&amp;6 Left</source>
-      <translation>&amp;6 Balnézet</translation>
+      <translation>&amp;6 Bal nézet</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1434"/>
@@ -9831,12 +9831,12 @@ bármilyen változtatás elveszik.
     <message>
       <location filename="../CommandView.cpp" line="1505"/>
       <source>&amp;2 Top</source>
-      <translation>&amp;2 Fellülnézet</translation>
+      <translation>&amp;2 Felülnézet</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1506"/>
       <source>Sets the camera to the top view</source>
-      <translation>Kamerát fellül nézetre állítja</translation>
+      <translation>Kamerát felülnézetre állítja</translation>
     </message>
   </context>
   <context>
@@ -9948,7 +9948,7 @@ bármilyen változtatás elveszik.
     <message>
       <location filename="../CommandView.cpp" line="3695"/>
       <source>&amp;4 Preselection</source>
-      <translation>&amp;4 Présélection</translation>
+      <translation>&amp;4 Előválogatás</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3696"/>
@@ -10083,7 +10083,7 @@ Folytatja?
     <message>
       <location filename="../CommandView.cpp" line="791"/>
       <source>&amp;5 No shading</source>
-      <translation>&amp;5 Nincs árnyékolás</translation>
+      <translation>&amp;5 Árnyékolásmentes</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="794"/>
@@ -10960,7 +10960,7 @@ after FreeCAD launches</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsEditor.ui" line="156"/>
       <source>Tab size</source>
-      <translation>Flikstorlek</translation>
+      <translation>Tabulátorméret</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsEditor.ui" line="182"/>
@@ -12301,7 +12301,7 @@ A teljes hely kitöltéséhez állítsa 0-ra.</translation>
     <message>
       <location filename="../TaskTransform.ui" line="56"/>
       <source>Align dragger rotation with selected coordinate system</source>
-      <translation>Igazítsa a kezelő forgását a kiválasztott koordinátarendszerhez</translation>
+      <translation>Igazítsa a kezelő forgását a kiválasztott koordináta rendszerhez</translation>
     </message>
     <message>
       <location filename="../TaskTransform.ui" line="94"/>
@@ -12390,7 +12390,7 @@ A teljes hely kitöltéséhez állítsa 0-ra.</translation>
     <message>
       <location filename="../TaskTransform.ui" line="435"/>
       <source>Dragger</source>
-      <translation>Húzzópont</translation>
+      <translation>Húzópont</translation>
     </message>
     <message>
       <location filename="../TaskTransform.ui" line="465"/>
@@ -12537,7 +12537,7 @@ A teljes hely kitöltéséhez állítsa 0-ra.</translation>
       <location filename="../InputHintWidget.cpp" line="248"/>
       <source>Backtab</source>
       <extracomment>Keyboard key for Backtab</extracomment>
-      <translation>Backtab</translation>
+      <translation>Előző fül</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="252"/>
@@ -13128,7 +13128,7 @@ Folytatja?</translation>
     <message>
       <location filename="../CommandLink.cpp" line="258"/>
       <source>Make Link</source>
-      <translation>Utwórz łącze</translation>
+      <translation>Hivatkozás létrehozása</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="259"/>
@@ -13237,7 +13237,7 @@ Folytatja?</translation>
     <message>
       <location filename="../CommandLink.cpp" line="1030"/>
       <source>Commands that operate on link objects</source>
-      <translation>Parancsok, amelyek a hivatrkozott objektumain működnek</translation>
+      <translation>Parancsok, amelyek a hivatkozott objektumain működnek</translation>
     </message>
   </context>
   <context>
@@ -13510,7 +13510,7 @@ Folytatja?</translation>
     <message>
       <location filename="../CommandStructure.cpp" line="122"/>
       <source>Creates a group, which is a general-purpose container to group objects in the tree view, regardless of their data type. It is a simple folder to organize the objects in a model.</source>
-      <translation>Látrehoz egy csoportot, egy általános célú tárolót a fa nézetben lévő objektum elemek csoportosítására, függetlenül azok adattípusától. Ez egy egyszerű mappa a modellben lévő objektum elemek rendszerezésére.</translation>
+      <translation>Létrehoz egy csoportot, egy általános célú tárolót a fa nézetben lévő objektum elemek csoportosítására, függetlenül azok adattípusától. Ez egy egyszerű mappa a modellben lévő objektum elemek rendszerezésére.</translation>
     </message>
   </context>
   <context>
@@ -13523,7 +13523,7 @@ Folytatja?</translation>
     <message>
       <location filename="../CommandStructure.cpp" line="195"/>
       <source>Creates a variable set, which is an object that maintains a set of properties to be used as variables</source>
-      <translation>Látrehoz egy változókészletet, ami egy objektum, amely egy tulajdonságkészletet tart fenn, hogy változókként lehessen használni</translation>
+      <translation>Létrehoz egy változókészletet, ami egy objektum, amely egy tulajdonságkészletet tart fenn, hogy változókként lehessen használni</translation>
     </message>
   </context>
   <context>
@@ -13796,7 +13796,7 @@ Folytatja?</translation>
     <message>
       <location filename="../CommandView.cpp" line="2295"/>
       <source>Toggles between navigation and edit mode</source>
-      <translation>Kapcs a navigációs és szerkesztési mód közt</translation>
+      <translation>Navigációs és szerkesztési mód közti kapcsolás</translation>
     </message>
   </context>
   <context>
@@ -13856,7 +13856,7 @@ Folytatja?</translation>
     <message>
       <location filename="../CommandView.cpp" line="2619"/>
       <source>Issue Camera &amp;Position</source>
-      <translation>Pokaż pozycję &amp;ujęcia widoku</translation>
+      <translation>A kamera pozíciójának továbbítása</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2620"/>
@@ -13965,7 +13965,7 @@ Folytatja?</translation>
     <message>
       <location filename="../CommandView.cpp" line="3378"/>
       <source>Opens the scene inspector</source>
-      <translation>Jelenetfelügyelő megynyitása</translation>
+      <translation>Jelenetfelügyelő megnyitása</translation>
     </message>
   </context>
   <context>
@@ -14082,7 +14082,7 @@ Folytatja?</translation>
     <message>
       <location filename="../CommandView.cpp" line="3678"/>
       <source>Adjusts the placement on drag-and-drop of objects across coordinate systems (e.g. in part containers)</source>
-      <translation>Beállítja az elhelyezást az objektumok koordináta-rendszerek közötti húzásakor és ejtésekor (például alkatrész tárolókban)</translation>
+      <translation>Beállítja az elhelyezést az objektumok koordináta-rendszerek közötti húzásakor és ejtésekor (például alkatrész tárolókban)</translation>
     </message>
   </context>
   <context>
@@ -14629,7 +14629,7 @@ Ezáltal a dokkolt panel mindig átlátszó marad.</translation>
     <message>
       <location filename="../Dialogs/DlgVersionMigrator.ui" line="36"/>
       <source>Configuration data and addons from a previous program version were found. Migrate the configuration to a new directory for this version?</source>
-      <translation>Korábbi programverzióból származó konfigurációs adatokat és bővítményeket találtunk. Át szeretné telpíteini a konfigurációt ehhez a verzióhoz egy új könyvtárba?</translation>
+      <translation>Korábbi programverzióból származó konfigurációs adatokat és bővítményeket találtunk. Át szeretné telepíteni a konfigurációt ehhez a verzióhoz egy új könyvtárba?</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgVersionMigrator.ui" line="49"/>

@@ -70,12 +70,12 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="760"/>
       <source>Increase knot multiplicity</source>
-      <translation>Augmenter la multiplicité du nœud</translation>
+      <translation>Augmenter la multiplicité d'un nœud</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="776"/>
       <source>Decrease knot multiplicity</source>
-      <translation>Diminuer la multiplicité du nœud</translation>
+      <translation>Diminuer la multiplicité d'un nœud</translation>
     </message>
   </context>
   <context>
@@ -83,7 +83,7 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="114"/>
       <source>Geometry to B-Spline</source>
-      <translation>Convertir la géométrie en B-splines</translation>
+      <translation>Convertir en B-splines</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="115"/>
@@ -109,12 +109,12 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="269"/>
       <source>Decrease B-Spline Degree</source>
-      <translation>Diminuer le degré de la B-spline</translation>
+      <translation>Diminuer le degré d'une B-spline</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="270"/>
       <source>Decreases the degree of the B-spline</source>
-      <translation>Diminue le degré de la B-spline</translation>
+      <translation>Diminue le degré d'une B-spline.</translation>
     </message>
   </context>
   <context>
@@ -122,7 +122,7 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="548"/>
       <source>Decrease Knot Multiplicity</source>
-      <translation>Diminuer la multiplicité du nœud</translation>
+      <translation>Diminuer la multiplicité d'un nœud</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="549"/>
@@ -140,7 +140,7 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="193"/>
       <source>Increases the degree of the B-spline</source>
-      <translation>Augmenter le degré de la B-spline</translation>
+      <translation>Augmente le degré d'une B-spline.</translation>
     </message>
   </context>
   <context>
@@ -148,12 +148,12 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="391"/>
       <source>Increase Knot Multiplicity</source>
-      <translation>Augmenter la multiplicité de nœuds</translation>
+      <translation>Augmenter la multiplicité d'un nœud</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="392"/>
       <source>Increases the multiplicity of the selected knot of a B-spline</source>
-      <translation>Augmenter la multiplicité du nœud sélectionné d’une B-spline</translation>
+      <translation>Augmente la multiplicité d'un nœud sélectionné d’une B-spline.</translation>
     </message>
   </context>
   <context>
@@ -763,22 +763,22 @@ invalid constraints, and degenerate geometry</source>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="218"/>
       <source>Increase B-spline degree</source>
-      <translation>Augmenter le degré de la B-spline</translation>
+      <translation>Augmenter le degré d'une B-spline</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="297"/>
       <source>Decrease B-spline degree</source>
-      <translation>Diminuer le degré de la B-spline</translation>
+      <translation>Diminuer le degré d'une B-spline</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="429"/>
       <source>Increase knot multiplicity</source>
-      <translation>Augmenter la multiplicité du nœud</translation>
+      <translation>Augmenter la multiplicité d'un nœud</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="586"/>
       <source>Decrease knot multiplicity</source>
-      <translation>Diminuer la multiplicité du nœud</translation>
+      <translation>Diminuer la multiplicité d'un nœud</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="851"/>
@@ -1655,7 +1655,7 @@ Combinaisons acceptées : deux courbes ; une extrémité et une courbe ; deux ex
     <message>
       <location filename="../../CommandConstraints.cpp" line="786"/>
       <source>Unexpected error. More information may be available in the report view.</source>
-      <translation>Une erreur inattendue s'est produite. Vous trouverez peut-être plus d'informations dans la vue rapport.</translation>
+      <translation>Une erreur inattendue s'est produite. Plus d'informations seront peut-être disponibles dans la vue rapport.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="838"/>
@@ -3914,7 +3914,7 @@ Cela est fait en analysant les géométries et les contraintes de l'esquisse.</t
       <location filename="../../CommandSketcherBSpline.cpp" line="779"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="785"/>
       <source>Decreases the multiplicity of the selected knot of a B-spline</source>
-      <translation>Diminuer la multiplicité du nœud sélectionné d’une B-spline</translation>
+      <translation>Diminue la multiplicité d'un nœud sélectionné d’une B-spline.</translation>
     </message>
   </context>
   <context>
@@ -3923,7 +3923,7 @@ Cela est fait en analysant les géométries et les contraintes de l'esquisse.</t
       <location filename="../../CommandSketcherBSpline.cpp" line="763"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="769"/>
       <source>Increases the multiplicity of the selected knot of a B-spline</source>
-      <translation>Augmenter la multiplicité du nœud sélectionné d’une B-spline</translation>
+      <translation>Augmente la multiplicité d'un nœud sélectionné d’une B-spline.</translation>
     </message>
   </context>
   <context>
@@ -3976,12 +3976,12 @@ Cela est fait en analysant les géométries et les contraintes de l'esquisse.</t
     <message>
       <location filename="../../DrawSketchHandlerCircle.h" line="414"/>
       <source>Center</source>
-      <translation>Au centre</translation>
+      <translation>Par le centre</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerCircle.h" line="415"/>
       <source>3 rim points</source>
-      <translation>Cercle par 3 points de la circonférence</translation>
+      <translation>Par 3 points du périmètre</translation>
     </message>
   </context>
   <context>
@@ -4409,7 +4409,7 @@ L'algorithme Eigen Sparse QR est optimisé pour les matrices peu denses, génér
     <message>
       <location filename="../../Workbench.cpp" line="43"/>
       <source>Sketcher Helpers</source>
-      <translation>Assistant de Sketcher</translation>
+      <translation>Assistants de Sketcher</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>
@@ -4419,7 +4419,7 @@ L'algorithme Eigen Sparse QR est optimisé pour les matrices peu denses, génér
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
       <source>Visual Helpers</source>
-      <translation type="unfinished">Visual Helpers</translation>
+      <translation>Assistants graphiques</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
@@ -5443,7 +5443,7 @@ Au lieu de cela, des contraintes d'égalité sont appliquées entre les objets o
     <message>
       <location filename="../../DrawSketchHandlerArc.h" line="535"/>
       <source>3 rim points</source>
-      <translation>Arc par 3 points de la circonférence</translation>
+      <translation>Par 3 points du périmètre</translation>
     </message>
   </context>
   <context>
@@ -6348,7 +6348,7 @@ sélectionnée.</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="669"/>
       <source>Creates an ellipse from 3 points on its perimeter</source>
-      <translation>Crée une ellipse à partir de 3 points sur son périmètre.</translation>
+      <translation>Crée une ellipse à partir de 3 points de son périmètre.</translation>
     </message>
   </context>
   <context>
@@ -6790,7 +6790,7 @@ sélectionnée.</translation>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="66"/>
       <source>Toggles the visibility of the degree for all B-splines</source>
-      <translation>Active/masque la visibilité du degré pour toutes les B-splines.</translation>
+      <translation>Affiche/masque la visibilité du degré pour toutes les B-splines.</translation>
     </message>
   </context>
   <context>
@@ -6798,12 +6798,12 @@ sélectionnée.</translation>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="94"/>
       <source>Toggle B-Spline Control Polygon</source>
-      <translation>Activer/masquer le polygone de contrôle des B-splines</translation>
+      <translation>Afficher/masquer le polygone de contrôle des B-splines</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="95"/>
       <source>Toggles the visibility of the control polygons for all B-splines</source>
-      <translation>Active/masque la visibilité des polygones de contrôle pour toutes les B-splines.</translation>
+      <translation>Affiche/masque la visibilité des polygones de contrôle pour toutes les B-splines.</translation>
     </message>
   </context>
   <context>
@@ -6811,12 +6811,12 @@ sélectionnée.</translation>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="123"/>
       <source>Toggle B-Spline Curvature Comb</source>
-      <translation>Activer/masquer le peigne de courbure des B-splines</translation>
+      <translation>Afficher/masquer le peigne de courbure des B-splines</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="124"/>
       <source>Toggles the visibility of the curvature comb for all B-splines</source>
-      <translation>Active/masque la visibilité du peigne de courbure pour toutes les B-splines.</translation>
+      <translation>Affiche/masque la visibilité du peigne de courbure pour toutes les B-splines.</translation>
     </message>
   </context>
   <context>
@@ -6829,7 +6829,7 @@ sélectionnée.</translation>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="153"/>
       <source>Toggles the visibility of the knot multiplicity for all B-splines</source>
-      <translation>Afficher/masquer la multiplicité des nœuds de toutes les B-splines</translation>
+      <translation>Affiche/masque la multiplicité des nœuds de toutes les B-splines.</translation>
     </message>
   </context>
   <context>
@@ -6842,7 +6842,7 @@ sélectionnée.</translation>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="182"/>
       <source>Toggles the visibility of control point weights for all B-splines</source>
-      <translation>Active/masque la visibilité des poids des points de contrôle pour toutes les B-splines.</translation>
+      <translation>Affiche/masque la visibilité des poids des points de contrôle pour toutes les B-splines.</translation>
     </message>
   </context>
   <context>
@@ -6850,12 +6850,12 @@ sélectionnée.</translation>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="210"/>
       <source>Toggle B-Spline Information Layer</source>
-      <translation>Activer/masquer les informations des B-Splines</translation>
+      <translation>Informations des B-splines</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="211"/>
       <source>Toggles the visibility of the information layer for all B-splines</source>
-      <translation>Active/masque la visibilité des informations pour toutes les B-splines.</translation>
+      <translation>Affiche/masque la visibilité des informations pour toutes les B-splines.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="293"/>
@@ -6865,17 +6865,17 @@ sélectionnée.</translation>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="309"/>
       <source>Toggle B-Spline Control Polygon</source>
-      <translation>Activer/masquer le polygone de contrôle des B-splines</translation>
+      <translation>Afficher/masquer le polygone de contrôle des B-splines</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="328"/>
       <source>Toggle B-Spline Curvature Comb</source>
-      <translation>Activer/masquer le peigne de courbure des B-splines</translation>
+      <translation>Afficher/masquer le peigne de courbure des B-splines</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="347"/>
       <source>Toggle B-Spline Knot Multiplicity</source>
-      <translation>Activer/masquer la multiplicité des nœuds des B-splines</translation>
+      <translation>Afficher/masquer la multiplicité des nœuds des B-splines</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="367"/>
@@ -6889,7 +6889,7 @@ sélectionnée.</translation>
       <location filename="../../CommandSketcherOverlay.cpp" line="296"/>
       <location filename="../../CommandSketcherOverlay.cpp" line="302"/>
       <source>Toggles the visibility of the degree for all B-splines</source>
-      <translation>Active/masque la visibilité du degré pour toutes les B-splines.</translation>
+      <translation>Affiche/masque la visibilité du degré pour toutes les B-splines.</translation>
     </message>
   </context>
   <context>
@@ -6898,7 +6898,7 @@ sélectionnée.</translation>
       <location filename="../../CommandSketcherOverlay.cpp" line="315"/>
       <location filename="../../CommandSketcherOverlay.cpp" line="321"/>
       <source>Toggles the visibility of the control polygons for all B-splines</source>
-      <translation>Active/masque la visibilité des polygones de contrôle pour toutes les B-splines.</translation>
+      <translation>Affiche/masque la visibilité des polygones de contrôle pour toutes les B-splines.</translation>
     </message>
   </context>
   <context>
@@ -6907,7 +6907,7 @@ sélectionnée.</translation>
       <location filename="../../CommandSketcherOverlay.cpp" line="334"/>
       <location filename="../../CommandSketcherOverlay.cpp" line="340"/>
       <source>Toggles the visibility of the curvature comb for all B-splines</source>
-      <translation>Active/masque la visibilité du peigne de courbure pour toutes les B-splines.</translation>
+      <translation>Affiche/masque la visibilité du peigne de courbure pour toutes les B-splines.</translation>
     </message>
   </context>
   <context>
@@ -6916,7 +6916,7 @@ sélectionnée.</translation>
       <location filename="../../CommandSketcherOverlay.cpp" line="353"/>
       <location filename="../../CommandSketcherOverlay.cpp" line="359"/>
       <source>Toggles the visibility of the knot multiplicity for all B-splines</source>
-      <translation>Afficher/masquer la multiplicité des nœuds de toutes les B-splines</translation>
+      <translation>Affiche/masque la multiplicité des nœuds de toutes les B-splines.</translation>
     </message>
   </context>
   <context>
@@ -6925,7 +6925,7 @@ sélectionnée.</translation>
       <location filename="../../CommandSketcherOverlay.cpp" line="373"/>
       <location filename="../../CommandSketcherOverlay.cpp" line="379"/>
       <source>Toggles the visibility of the control point weight for all B-splines</source>
-      <translation>Active/masque la visibilité du poids des points de contrôle pour toutes les B-splines.</translation>
+      <translation>Affiche/masque la visibilité du poids des points de contrôle pour toutes les B-splines.</translation>
     </message>
   </context>
   <context>
@@ -6938,7 +6938,7 @@ sélectionnée.</translation>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="403"/>
       <source>Toggles the visibility of the circular helpers for all arcs</source>
-      <translation>Active/désactive la visibilité des cercles auxiliaires pour les arcs</translation>
+      <translation>Affiche/masque la visibilité des cercles auxiliaires pour les arcs.</translation>
     </message>
   </context>
   <context>
@@ -7115,12 +7115,12 @@ sélectionnée.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="989"/>
       <source>Toggle Internal Geometry</source>
-      <translation>Afficher/masquer les géométries internes</translation>
+      <translation>Afficher/masquer la géométrie interne</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="990"/>
       <source>Toggles the visibility of all internal geometry</source>
-      <translation>Active/désactive la visibilité de toute la géométrie interne.</translation>
+      <translation>Affiche/masque la visibilité de toute la géométrie interne.</translation>
     </message>
   </context>
   <context>

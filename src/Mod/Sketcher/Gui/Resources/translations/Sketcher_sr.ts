@@ -4424,7 +4424,7 @@ Eigen редак QR алгоритам је оптимизован за ретк
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
       <source>Visual Helpers</source>
-      <translation type="unfinished">Visual Helpers</translation>
+      <translation>Визуелне смернице</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>

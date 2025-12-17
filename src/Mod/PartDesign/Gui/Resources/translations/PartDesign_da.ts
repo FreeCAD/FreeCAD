@@ -326,7 +326,7 @@ så profilet ikke overlapper sig selv.</translation>
     <message>
       <location filename="../../Command.cpp" line="1961"/>
       <source>Applies a fillet to the selected edges or faces</source>
-      <translation>Tilføjer en runding af de valgte kanter eller flader</translation>
+      <translation>Afrunder af de valgte kanter eller flader</translation>
     </message>
   </context>
   <context>
@@ -686,7 +686,7 @@ så profilet ikke overlapper sig selv.</translation>
     <message>
       <location filename="../../Command.cpp" line="385"/>
       <source>Creates a reference to geometry from one or more objects, allowing it to be used inside or outside a body. It tracks relative placements, supports multiple geometry types (solids, faces, edges, vertices), and can work with objects in the same or external documents.</source>
-      <translation>Opretter en reference til en geometri på et eller flere objekter, så den kan bruges på eller uden for et emne. Referencen holder styr på relative placeringer, understøtter flere geometrityper (masive elmeneter, flader, kanter, knudepunkter), og kan anvendes på objekter i samme eller eksterne dokumenter.</translation>
+      <translation>Opretter en reference til en geometri på et eller flere objekter, så den kan bruges på eller uden for et emne. Referencen holder styr på relative placeringer, understøtter flere geometrityper (massive emner, flader, kanter, knudepunkter), og kan anvendes på objekter i samme eller eksterne dokumenter.</translation>
     </message>
   </context>
   <context>
@@ -1574,7 +1574,7 @@ Hvis nul, sættes den lig med Radius2</translation>
   <context>
     <name>PartDesignGui::TaskDlgFeatureParameters</name>
     <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="226"/>
+      <location filename="../../TaskFeatureParameters.cpp" line="228"/>
       <source>The feature could not be created with the given parameters.
 The geometry may be invalid or the parameters may be incompatible.
 Please adjust the parameters and try again.</source>
@@ -1583,7 +1583,7 @@ The geometry may be invalid or the parameters may be incompatible.
 Please adjust the parameters and try again.</translation>
     </message>
     <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="233"/>
+      <location filename="../../TaskFeatureParameters.cpp" line="235"/>
       <source>Input error</source>
       <translation type="unfinished">Input error</translation>
     </message>
@@ -3201,7 +3201,7 @@ målt i den angivne retning</translation>
     <message>
       <location filename="../../Command.cpp" line="992"/>
       <source>Cannot use this command as there is no solid to subtract from.</source>
-      <translation>Kan ikke bruge denne kommando da der ikke er et massivt legene at subtrahere fra.</translation>
+      <translation>Kan ikke bruge denne operation, da der ikke er et massivt emne at fjerne materiale fra.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="995"/>
@@ -3326,7 +3326,7 @@ målt i den angivne retning</translation>
       <location filename="../../CommandBody.cpp" line="177"/>
       <source>The selected shape consists of multiple solids.
 This may lead to unexpected results.</source>
-      <translation>Den valgte geometri består af flere massive legemer.
+      <translation>Den valgte geometri består af flere massive emner.
 Dette kan føre til uventede resultater.</translation>
     </message>
     <message>
@@ -3412,7 +3412,7 @@ Dette kan føre til uventede resultater.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="712"/>
       <source>Only a solid feature can be the tip of a body.</source>
-      <translation>Kun operationer som danner en geometri kan være arbejdsposition for et emne.</translation>
+      <translation>Kun operationer som ændrer et massivt emne kan være arbejdsposition for et emne.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="846"/>
@@ -4408,7 +4408,7 @@ over 90: større hulradius i bunden</translation>
     <message>
       <location filename="../../../WizardShaft/WizardShaft.py" line="124"/>
       <source>The Plot add-on is not installed. Install it to enable this feature.</source>
-      <translation type="unfinished">The Plot add-on is not installed. Install it to enable this feature.</translation>
+      <translation>Tilføjelsen 'Plot' er ikke installeret. Installer den for at aktivere denne funktion.</translation>
     </message>
   </context>
   <context>
@@ -4478,11 +4478,11 @@ over 90: større hulradius i bunden</translation>
       <location filename="../../../App/FeaturePipe.cpp" line="529"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="263"/>
       <location filename="../../../App/FeatureGroove.cpp" line="254"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="739"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="755"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="768"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="756"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="772"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="785"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
-      <translation>Operationen resulterer i flere massive elementer. Aktiver 'Tillad sammensatte emner' i det aktive emne.</translation>
+      <translation>Operationen resulterer i flere massive emner. Aktiver 'Tillad sammensatte emner' i det aktive emne.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="114"/>
@@ -4495,22 +4495,22 @@ over 90: større hulradius i bunden</translation>
       <translation>Ikke-understøttet boolesk operation</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="326"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="343"/>
       <source>Cannot create a pad with a total length of zero.</source>
       <translation>Kan ikke oprette en ekstrudering med en samlet længde på nul.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="331"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="348"/>
       <source>Cannot create a pocket with a total length of zero.</source>
       <translation>Kan ikke oprette en indpresning med en samlet længde på nul.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="670"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="687"/>
       <source>No extrusion geometry was generated.</source>
       <translation>Der blev ikke genereret en ekstruderet geometri.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="694"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="711"/>
       <source>Resulting fused extrusion is null.</source>
       <translation type="unfinished">Resulting fused extrusion is null.</translation>
     </message>
@@ -4518,9 +4518,9 @@ over 90: større hulradius i bunden</translation>
       <location filename="../../../App/FeatureLoft.cpp" line="368"/>
       <location filename="../../../App/FeaturePipe.cpp" line="521"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="139"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="730"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="747"/>
       <source>Resulting shape is not a solid</source>
-      <translation>Resulterende geometri er ikke én sammenhængende geometri</translation>
+      <translation>Resulterende geometri er ikke et massivt emne</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="170"/>
@@ -4566,7 +4566,7 @@ over 90: større hulradius i bunden</translation>
     <message>
       <location filename="../../../App/FeatureFillet.cpp" line="157"/>
       <source>Fillet operation failed. The selected edges may contain geometry that cannot be filleted together. Try filleting edges individually or with a smaller radius.</source>
-      <translation type="unfinished">Fillet operation failed. The selected edges may contain geometry that cannot be filleted together. Try filleting edges individually or with a smaller radius.</translation>
+      <translation>Rundingen kunne oprettes. De valgte kanter kan indeholde geometri, der ikke kan afrundes sammen. Prøv at runde kanterne individuelt eller at runde dem med en mindre radius.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureGroove.cpp" line="101"/>
@@ -4590,19 +4590,19 @@ over 90: større hulradius i bunden</translation>
   - den valgte skitse ikke hører til det aktive emne.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="375"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="392"/>
       <source>Failed to obtain profile shape</source>
       <translation>Kunne ikke finde profil</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="429"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="446"/>
       <source>Creation failed because direction is orthogonal to sketch's normal vector</source>
       <translation>Oprettelse mislykkedes, fordi retningen vinkelret på skitsens normalvektor</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureRevolution.cpp" line="163"/>
       <location filename="../../../App/FeatureGroove.cpp" line="154"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="452"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="469"/>
       <source>Creating a face from sketch failed</source>
       <translation>Oprettelse af en flade fra en skitse mislykkedes</translation>
     </message>
@@ -4679,7 +4679,7 @@ Krydsende linjer i en skitse er ikke tilladt.</translation>
       <location filename="../../../App/FeatureHelix.cpp" line="443"/>
       <location filename="../../../App/FeatureHelix.cpp" line="484"/>
       <source>Error: Result is not a solid</source>
-      <translation>Fejl: Resultatet er ikke en sammenhængende geometri</translation>
+      <translation>Fejl: Resultatet er ikke et massivt emne</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="413"/>
@@ -4691,7 +4691,7 @@ Krydsende linjer i en skitse er ikke tilladt.</translation>
       <location filename="../../../App/FeatureHelix.cpp" line="449"/>
       <location filename="../../../App/FeatureHelix.cpp" line="490"/>
       <source>Error: Result has multiple solids</source>
-      <translation>Fejl: Resultatet bliver ikke en sammenhængende geometri</translation>
+      <translation>Fejl: Resultatet bliver til flere uforbundne massive emner</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="434"/>
@@ -4843,7 +4843,7 @@ Krydsende skitselinjer eller flere flader i en skitse er ikke tilladt.</translat
       <translation>Transformér: Kunne ikke oprette fladegeometri</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="783"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="800"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed.</source>
       <translation>Kunne ikke oprette en flade fra skitsen.
@@ -4907,7 +4907,7 @@ Krydsende linjer eller flere flader i en skitse er ikke tilladt.</translation>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="436"/>
       <source>Result is not a solid</source>
-      <translation>Resultatet er ikke en sammenhængende geometri</translation>
+      <translation>Resultatet er ikke et massivt emne</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="475"/>
@@ -5083,7 +5083,7 @@ Krydsende linjer eller flere flader i en skitse er ikke tilladt.</translation>
       <translation>Referenceaksen er ugyldig</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="722"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="739"/>
       <source>Fusion with base feature failed</source>
       <translation>Fusion med basisgeometri mislykkedes</translation>
     </message>
