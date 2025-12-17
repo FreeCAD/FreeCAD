@@ -4422,7 +4422,7 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</sour
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
       <source>Visual Helpers</source>
-      <translation type="unfinished">Visual Helpers</translation>
+      <translation>Визуальные помощники </translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
