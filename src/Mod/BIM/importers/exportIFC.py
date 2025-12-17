@@ -1812,11 +1812,11 @@ def exportIfcAttributes(obj, kwargs, scale=0.001):
 
 def buildAddress(obj, ifcfile):
 
-    a = obj.Address or None
-    p = obj.PostalCode or None
-    t = obj.City or None
-    r = obj.Region or None
-    c = obj.Country or None
+    a = getattr(obj, "Address", None)
+    p = getattr(obj, "PostalCode", None)
+    t = getattr(obj, "City", None)
+    r = getattr(obj, "Region", None)
+    c = getattr(obj, "Country", None)
     if a or p or t or r or c:
         addr = ifcfile.createIfcPostalAddress(
             "SITE", "Site Address", "", None, [a], None, t, r, p, c
@@ -2571,11 +2571,13 @@ def createProduct(
         "Representation": representation,
     }
     if ifctype == "IfcSite":
+        # obj need not be an ArchSite
+        elev = obj.Elevation.Value if hasattr(obj, "Elevation") else 0
         kwargs.update(
             {
-                "RefLatitude": dd2dms(obj.Latitude),
-                "RefLongitude": dd2dms(obj.Longitude),
-                "RefElevation": obj.Elevation.Value * preferences["SCALE_FACTOR"],
+                "RefLatitude": dd2dms(getattr(obj, "Latitude", 0)),
+                "RefLongitude": dd2dms(getattr(obj, "Longitude", 0)),
+                "RefElevation": elev * preferences["SCALE_FACTOR"],
                 "SiteAddress": buildAddress(obj, ifcfile),
                 "CompositionType": "ELEMENT",
             }
