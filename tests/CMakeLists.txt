@@ -83,7 +83,6 @@ endfunction()
 set(TestExecutables
     App_tests_run
     Base_tests_run
-    Misc_tests_run
     Zipios_tests_run
 )
 

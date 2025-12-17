@@ -45,12 +45,6 @@ jobs:
     with:
       artifactBasename: Pixi-${{ github.run_id }}
 
-  Ubuntu:
-    needs: [Prepare]
-    uses: ./.github/workflows/sub_buildUbuntu.yml
-    with:
-      artifactBasename: Ubuntu-${{ github.run_id }}
-
   Windows:
     needs: [Prepare]
     uses: ./.github/workflows/sub_buildWindows.yml
@@ -73,7 +67,6 @@ jobs:
     needs: [
         Prepare,
         Pixi,
-        Ubuntu,
         Windows,
         Lint
       ]

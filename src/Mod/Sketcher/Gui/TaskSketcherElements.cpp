@@ -694,16 +694,16 @@ void ElementView::changeLayer(ElementItem* item, int layer)
             Gui::Selection().rmvSelection(docName.c_str(), objName.c_str(), convertedName.c_str());
         };
 
-        deselect(fmt::format("Edge{}", geoid + 1));
+        deselect(std::format("Edge{}", geoid + 1));
 
         if (startingVertex >= 0) {
-            deselect(fmt::format("Vertex{}", startingVertex + 1));
+            deselect(std::format("Vertex{}", startingVertex + 1));
         }
         if (midVertex >= 0) {
-            deselect(fmt::format("Vertex{}", midVertex + 1));
+            deselect(std::format("Vertex{}", midVertex + 1));
         }
         if (endVertex >= 0) {
-            deselect(fmt::format("Vertex{}", endVertex + 1));
+            deselect(std::format("Vertex{}", endVertex + 1));
         }
     }
 }
