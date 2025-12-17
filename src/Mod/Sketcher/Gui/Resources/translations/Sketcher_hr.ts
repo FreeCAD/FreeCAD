@@ -3882,7 +3882,7 @@ To se radi analizom geometrije i ograničenja skice.</translation>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="3339"/>
       <source>Close this dialog?</source>
-      <translation type="unfinished">Close this dialog?</translation>
+      <translation>Zatvoriti ovaj dijalog?</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="3358"/>

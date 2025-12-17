@@ -574,7 +574,7 @@ SLOPE definierar brantheten i övergången mellan 0 och H1 och H2 till 0 vid tid
     <message>
       <location filename="../../../JointObject.py" line="384"/>
       <source>This is the angle of the joint. It is used only by the Angle joint.</source>
-      <translation type="unfinished">This is the angle of the joint. It is used only by the Angle joint.</translation>
+      <translation>Detta är vinkel för fogen. Den används endast av vinkelfogen.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="420"/>

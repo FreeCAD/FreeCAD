@@ -4424,7 +4424,7 @@ Eigen redak QR algoritam je optimizovan za retke matrice; obično brže</transla
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
       <source>Visual Helpers</source>
-      <translation type="unfinished">Visual Helpers</translation>
+      <translation>Vizuelne smernice</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
