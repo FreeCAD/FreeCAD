@@ -1449,10 +1449,10 @@ class AreaCalculator:
         horizontalFaces = []
 
         # Compute vertical area and collect horizontal faces
-        for face in self.obj.Shape.Faces:
-            if self.isFaceVertical(face):
+        for i, face in enumerate(self.obj.Shape.Faces, start=1):
+            if self.isFaceVertical(face, face_index=i):
                 verticalArea += face.Area
-            elif self.isFaceHorizontal(face):
+            elif self.isFaceHorizontal(face, face_index=i):
                 horizontalFaces.append(face)
 
         # Update vertical area
