@@ -31,6 +31,7 @@ These are common functions and classes for creating custom post processors.
 
 from Path.Base.MachineState import MachineState
 from Path.Main.Gui.Editor import CodeEditor
+from Path.Geom import CmdMoveDrill
 
 from PySide import QtCore, QtGui
 
@@ -412,3 +413,50 @@ def splitArcs(path, deflection=None):
         machine.addCommand(command)
 
     return Path.Path(results)
+
+def cannedCycleTerminator(path):
+    """ iterate through a Path object and insert G80 commands to terminate canned cycles at the correct time"""
+
+    # Canned cycles terminate if any parameter change other than XY coordinates.
+    # - if Z depth changes
+    # - if feed rate changes
+    # - if retract plane changes
+
+    result = []
+    cycle_active = False
+    last_cycle_params = {}
+    
+    for command in path.Commands:
+        if command.Name == "G80":   # This shouldn't happen because cycle generators shouldn't be inserting it. Be safe anyway.
+            # G80 is already a cycle terminator, don't terminate before it
+            # Just mark cycle as inactive and pass it through
+            cycle_active = False
+            result.append(command)
+        elif command.Name in CmdMoveDrill:
+            # Check if this cycle has different parameters than the last one
+            current_params = {k: v for k, v in command.Parameters.items() if k not in ['X', 'Y']}
+            
+            if cycle_active and current_params != last_cycle_params:
+                # Parameters changed, terminate previous cycle
+                result.append(Path.Command("G80"))
+                cycle_active = False
+            
+            # Add the cycle command
+            result.append(command)
+            cycle_active = True
+            last_cycle_params = current_params
+        else:
+            # Non-cycle command (not G80 or drill cycle)
+            if cycle_active:
+                # Terminate active cycle
+                result.append(Path.Command("G80"))
+                cycle_active = False
+            result.append(command)
+    
+    # If cycle is still active at the end, terminate it
+    if cycle_active:
+        result.append(Path.Command("G80"))
+    
+    return Path.Path(result)
+
+           
