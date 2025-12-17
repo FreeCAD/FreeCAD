@@ -117,3 +117,4 @@ from CAMTests.TestCentroidLegacyPost import TestCentroidLegacyPost
 from CAMTests.TestMach3Mach4LegacyPost import TestMach3Mach4LegacyPost
 
 from CAMTests.TestSnapmakerPost import TestSnapmakerPost
+from CAMTests.TestTSPSolver import TestTSPSolver

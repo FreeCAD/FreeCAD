@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 /****************************************************************************
  *                                                                          *
- *   Copyright (c) 2024 Kacper Donat <kacper@kadet.net>                     *
+ *   Copyright (c) 2025 Kacper Donat <kacper@kadet.net>                     *
  *                                                                          *
  *   This file is part of FreeCAD.                                          *
  *                                                                          *
@@ -21,15 +21,20 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "Services.h"
+#include "FreeCADStyle.h"
 
-std::optional<Base::Vector3d>
-App::NullCenterOfMass::ofDocumentObject([[maybe_unused]] DocumentObject* object) const
-{
-    return std::nullopt;
-}
+using namespace Gui;
 
-bool App::NullCenterOfMass::supports(DocumentObject* object) const
+bool FreeCADStyle::eventFilter(QObject* obj, QEvent* event)
 {
-    return false;
+    // This is a hacky fix for https://github.com/FreeCAD/FreeCAD/issues/23607
+    // Basically after widget is shown or polished we enforce it's minimum size to at least cover
+    // the minimum size hint - something that QSS ignores if min-width is specified
+    if (event->type() == QEvent::Polish || event->type() == QEvent::Show) {
+        if (auto* btn = qobject_cast<QPushButton*>(obj)) {
+            btn->setMinimumWidth(std::max(btn->minimumSizeHint().width(), btn->minimumWidth()));
+        }
+    }
+
+    return QObject::eventFilter(obj, event);
 }

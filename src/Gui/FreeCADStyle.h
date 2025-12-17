@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 /****************************************************************************
  *                                                                          *
- *   Copyright (c) 2024 Kacper Donat <kacper@kadet.net>                     *
+ *   Copyright (c) 2025 Kacper Donat <kacper@kadet.net>                     *
  *                                                                          *
  *   This file is part of FreeCAD.                                          *
  *                                                                          *
@@ -21,15 +21,30 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "Services.h"
+#ifndef FREECAD_FREECADSTYLE_H
+#define FREECAD_FREECADSTYLE_H
 
-std::optional<Base::Vector3d>
-App::NullCenterOfMass::ofDocumentObject([[maybe_unused]] DocumentObject* object) const
-{
-    return std::nullopt;
-}
+#include <FCGlobal.h>
+#include <QProxyStyle>
+#include <QEvent>
+#include <QPushButton>
 
-bool App::NullCenterOfMass::supports(DocumentObject* object) const
+namespace Gui
 {
-    return false;
-}
+
+class GuiExport FreeCADStyle: public QProxyStyle
+{
+    Q_OBJECT
+
+public:
+    FreeCADStyle()
+        : QProxyStyle(QStringLiteral("Fusion"))
+    {}
+
+protected:
+    bool eventFilter(QObject* obj, QEvent* event) override;
+};
+
+}  // namespace Gui
+
+#endif  // FREECAD_FREECADSTYLE_H
