@@ -91,7 +91,12 @@ public:
 
     bool pressButton(Base::Vector2d onSketchPos) override
     {
+        // ensure controller state is initialized even if no mouseMove occurred
+        // ie. when a modal dialog blocks input before the first click
+        toolWidgetManager.mouseMoved(onSketchPos);
         toolWidgetManager.enforceControlParameters(onSketchPos);
+        updateDataAndDrawToPosition(onSketchPos);
+        toolWidgetManager.adaptParameters(onSketchPos);
 
         onButtonPressed(onSketchPos);
         return true;
