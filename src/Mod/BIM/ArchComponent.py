@@ -1438,9 +1438,9 @@ class AreaCalculator:
         verticalArea = 0
         horizontalAreaFaces = []
 
-        # Compute vertical area and collect faces to be projected for the horizontal area
-        for face in self.obj.Shape.Faces:
-            if self.isFaceVertical(face):
+        # Compute vertical area and collect horizontal faces
+        for i, face in enumerate(self.obj.Shape.Faces, start=1):
+            if self.isFaceVertical(face, face_index=i):
                 verticalArea += face.Area
             else:
                 horizontalAreaFaces.append(face)
