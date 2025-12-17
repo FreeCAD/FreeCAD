@@ -34,23 +34,26 @@ ENDIF(DOCDIR)
 set(_vars "const char CMakeVariables[] =\"cmake = [")
 set(_delim "")
 get_cmake_property(_variableNames VARIABLES)
-foreach (_variableName ${_variableNames})
-    if (${_variableName})
-        STRING(REGEX MATCH "^[_]?[^_]*" _prefix "${_variableName}_")
+foreach(_variableName ${_variableNames})
+    if(${_variableName})
+        string(REGEX MATCH "^[_]?[^_]*" _prefix "${_variableName}_")
         if(${_prefix} STREQUAL "BUILD")
-            STRING(REPLACE "\\" "\\\\" _name ${_variableName})
+            string(REPLACE "\\" "\\\\" _name ${_variableName})
             set(_vars "${_vars}${_delim}\\n\"\n\"\\\"${_name}\\\"")
             set(_delim ",")
         endif()
-    endif ()
+    endif()
 endforeach()
 set(_vars "${_vars}]\\n\" \n;")
-file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/CMakeScript.hh "${_vars}" )
+file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/CMakeScript.hh "${_vars}")
 
 fc_copy_file_if_different(
     "${CMAKE_CURRENT_BINARY_DIR}/CMakeScript.hh"
     "${CMAKE_CURRENT_BINARY_DIR}/CMakeScript.h"
 )
+
+# Export CMAKE_BUILD_TYPE as a preprocessor definition
+add_definitions(-DFREECAD_BUILD_TYPE="${CMAKE_BUILD_TYPE}")
 
 # -----------------------------------------------------------------------------
 
