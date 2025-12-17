@@ -109,7 +109,7 @@
 
 #include "GeoEnum.h"
 #include "SketchObject.h"
-#include "Mod/Sketcher/App/Constraint.h"
+#include "Constraint.h"
 #include "SketchObjectPy.h"
 #include "SolverGeometryExtension.h"
 #include "ExternalGeometryFacade.h"

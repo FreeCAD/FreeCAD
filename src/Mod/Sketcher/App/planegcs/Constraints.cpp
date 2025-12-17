@@ -28,7 +28,6 @@
 
 #include <cmath>
 #include <numbers>
-#include <iostream>
 
 #include <algorithm>
 #define DEBUG_DERIVS 0
