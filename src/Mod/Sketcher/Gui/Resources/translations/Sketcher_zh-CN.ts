@@ -4421,7 +4421,7 @@ Eigen Sparse QR算法针对稀疏矩阵进行了优化；通常较快</translati
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
       <source>Visual Helpers</source>
-      <translation type="unfinished">Visual Helpers</translation>
+      <translation>可视化帮助</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>

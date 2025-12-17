@@ -1214,17 +1214,17 @@ des plans vertical et horizontal avec un sommet ou le long d'une ligne.</transla
     <message>
       <location filename="../../Command.cpp" line="2408"/>
       <source>Box Selection</source>
-      <translation>Sélectionner par une boîte</translation>
+      <translation>Sélectionner des faces par une boîte</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2409"/>
       <source>Selects elements in the 3D view using a box selection</source>
-      <translation>Sélectionne des éléments dans la vue 3D à l'aide d'une boîte de sélection.</translation>
+      <translation>Sélectionne des faces dans la vue 3D par une boîte de sélection.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2411"/>
       <source>Box selection</source>
-      <translation>Sélectionner par une boîte</translation>
+      <translation>Sélectionner des faces par une boîte</translation>
     </message>
   </context>
   <context>
@@ -4689,7 +4689,7 @@ only created cuts will be visible</source>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="225"/>
       <source>Box selection for shells is not supported</source>
-      <translation>La sélection par boîte n'est pas prise en charge pour les coques</translation>
+      <translation>La sélection par boîte n'est pas prise en charge pour les coques.</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="234"/>
@@ -5495,7 +5495,7 @@ Valeur par défaut : true</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="101"/>
       <source>Box Selection</source>
-      <translation>Sélectionner par une boîte</translation>
+      <translation>Sélectionner des faces par une boîte</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="122"/>
@@ -6749,7 +6749,7 @@ formes à l'intérieur d'un composé. Les volumes se chevauchant seront supprim�
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="101"/>
       <source>Box Selection</source>
-      <translation>Sélectionner par une boîte</translation>
+      <translation>Sélectionner des faces par une boîte</translation>
     </message>
   </context>
   <context>

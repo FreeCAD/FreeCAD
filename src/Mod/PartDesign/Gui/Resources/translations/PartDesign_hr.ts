@@ -213,7 +213,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../Command.cpp" line="2577"/>
       <source>Boolean Operation</source>
-      <translation>Booleove operacije</translation>
+      <translation>Booleova operacija</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2578"/>
@@ -303,7 +303,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="756"/>
       <source>Duplicate &amp;Object</source>
-      <translation type="unfinished">Duplicate &amp;Object</translation>
+      <translation>Dupliciraj &amp;Objekt</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="757"/>
@@ -1258,17 +1258,17 @@ Ako je nula, jednak je Polumjeru2</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1413"/>
       <source>Z min/max</source>
-      <translation type="unfinished">Z min/max</translation>
+      <translation>Z min/max</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1443"/>
       <source>X2 min/max</source>
-      <translation type="unfinished">X2 min/max</translation>
+      <translation>X2 min/max</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1476"/>
       <source>Z2 min/max</source>
-      <translation type="unfinished">Z2 min/max</translation>
+      <translation>Z2 min/max</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1560"/>
@@ -1278,7 +1278,7 @@ Ako je nula, jednak je Polumjeru2</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1637"/>
       <source>Coordinate system</source>
-      <translation type="unfinished">Coordinate system</translation>
+      <translation>Koordinatni sustav</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1709"/>
@@ -1288,7 +1288,7 @@ Ako je nula, jednak je Polumjeru2</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1729"/>
       <source>Number of rotations</source>
-      <translation type="unfinished">Number of rotations</translation>
+      <translation>Broj rotacija</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1825"/>
@@ -1562,7 +1562,7 @@ Ako je nula, jednak je Polumjeru2</translation>
     <message>
       <location filename="../../TaskDatumParameters.cpp" line="105"/>
       <source>Incompatible Reference Set</source>
-      <translation type="unfinished">Incompatible Reference Set</translation>
+      <translation>Neuskladiva  postavka reference</translation>
     </message>
     <message>
       <location filename="../../TaskDatumParameters.cpp" line="107"/>
@@ -1573,16 +1573,16 @@ Ako je nula, jednak je Polumjeru2</translation>
   <context>
     <name>PartDesignGui::TaskDlgFeatureParameters</name>
     <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="226"/>
+      <location filename="../../TaskFeatureParameters.cpp" line="228"/>
       <source>The feature could not be created with the given parameters.
 The geometry may be invalid or the parameters may be incompatible.
 Please adjust the parameters and try again.</source>
-      <translation type="unfinished">The feature could not be created with the given parameters.
-The geometry may be invalid or the parameters may be incompatible.
-Please adjust the parameters and try again.</translation>
+      <translation>Značajka se nije mogla stvoriti s danim parametrima.
+Geometrija možda nije valjana ili parametri možda nisu kompatibilni.
+Molimo prilagodite parametre i pokušajte ponovno.</translation>
     </message>
     <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="233"/>
+      <location filename="../../TaskFeatureParameters.cpp" line="235"/>
       <source>Input error</source>
       <translation>Pogreška na ulazu</translation>
     </message>
@@ -1731,7 +1731,7 @@ Please adjust the parameters and try again.</translation>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="1355"/>
       <source>One sided</source>
-      <translation type="unfinished">One sided</translation>
+      <translation>Na jednu stranu</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="1356"/>
@@ -2057,7 +2057,7 @@ Please adjust the parameters and try again.</translation>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="71"/>
       <source>ISO metric regular</source>
-      <translation type="unfinished">ISO metric regular</translation>
+      <translation>ISO metrički standardni</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="72"/>
@@ -2288,17 +2288,17 @@ Please adjust the parameters and try again.</translation>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="38"/>
       <source>Pad Parameters</source>
-      <translation type="unfinished">Pad Parameters</translation>
+      <translation>Parametri izvlačenja</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="40"/>
       <source>Offset the pad from the face at which the pad will end on side 1</source>
-      <translation type="unfinished">Offset the pad from the face at which the pad will end on side 1</translation>
+      <translation>Pomak od odabrane površine na kojem će izvlačenje završiti na strani 1</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="41"/>
       <source>Offset the pad from the face at which the pad will end on side 2</source>
-      <translation type="unfinished">Offset the pad from the face at which the pad will end on side 2</translation>
+      <translation>Pomak od odabrane površine na kojem će izvlačenje završiti na strani 2</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="42"/>
@@ -2961,7 +2961,7 @@ mjereno duž navedenog smjera</translation>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="93"/>
       <source>Recto verso</source>
-      <translation type="unfinished">Recto verso</translation>
+      <translation>Lice naličje</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="101"/>
@@ -2988,8 +2988,7 @@ mjereno duž navedenog smjera</translation>
       <location filename="../../TaskThicknessParameters.cpp" line="267"/>
       <source>Empty thickness created!
 </source>
-      <translation type="unfinished">Empty thickness created!
-</translation>
+      <translation>Napravljena je prazna debljina !</translation>
     </message>
   </context>
   <context>
@@ -3038,17 +3037,17 @@ mjereno duž navedenog smjera</translation>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="456"/>
       <source>Base XY-plane</source>
-      <translation type="unfinished">Base XY-plane</translation>
+      <translation>Osnovna XY ploha</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="457"/>
       <source>Base YZ-plane</source>
-      <translation type="unfinished">Base YZ-plane</translation>
+      <translation>Osnovna YZ ploha</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="458"/>
       <source>Base XZ-plane</source>
-      <translation type="unfinished">Base XZ-plane</translation>
+      <translation>Osnovna XZ ploha</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="430"/>
@@ -3069,12 +3068,12 @@ mjereno duž navedenog smjera</translation>
     <message>
       <location filename="../../TaskTransformedParameters.ui" line="78"/>
       <source>Add Feature</source>
-      <translation type="unfinished">Add Feature</translation>
+      <translation>Dodaj svojstva</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.ui" line="88"/>
       <source>Remove Feature</source>
-      <translation type="unfinished">Remove Feature</translation>
+      <translation>Ukloni svojstva</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.ui" line="122"/>
@@ -3092,7 +3091,7 @@ mjereno duž navedenog smjera</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="908"/>
       <source>Select Body</source>
-      <translation type="unfinished">Select Body</translation>
+      <translation>Odaberi tijelo</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="909"/>
@@ -3115,12 +3114,12 @@ mjereno duž navedenog smjera</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="1178"/>
       <source>Move Tip</source>
-      <translation type="unfinished">Move Tip</translation>
+      <translation>Pomjeri radnu poziciju</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="1184"/>
       <source>Set tip to last feature?</source>
-      <translation type="unfinished">Set tip to last feature?</translation>
+      <translation>Postaviti radnu poziciju na posljednju značajku?</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="1179"/>
@@ -3155,22 +3154,22 @@ mjereno duž navedenog smjera</translation>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="810"/>
       <source>Select a single face as support for a sketch!</source>
-      <translation type="unfinished">Select a single face as support for a sketch!</translation>
+      <translation>Odaberite jednu površinu kao potporu za skicu!</translation>
     </message>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="817"/>
       <source>Select a face as support for a sketch!</source>
-      <translation type="unfinished">Select a face as support for a sketch!</translation>
+      <translation>Odaberite površinu kao potporu za skicu!</translation>
     </message>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="824"/>
       <source>Need a planar face as support for a sketch!</source>
-      <translation type="unfinished">Need a planar face as support for a sketch!</translation>
+      <translation>Odaberite ravnu površinu kao potporu za skicu!</translation>
     </message>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="831"/>
       <source>Create a plane first or select a face to sketch on</source>
-      <translation type="unfinished">Create a plane first or select a face to sketch on</translation>
+      <translation>Prvo stvorite ravninu ili odaberite lice za crtanje na</translation>
     </message>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="816"/>
@@ -3214,12 +3213,12 @@ mjereno duž navedenog smjera</translation>
     <message>
       <location filename="../../Command.cpp" line="161"/>
       <source>There is no active body. Please activate a body before inserting a datum entity.</source>
-      <translation type="unfinished">There is no active body. Please activate a body before inserting a datum entity.</translation>
+      <translation>Nema aktivnog tijela. Molimo vas aktivirate tijelo prije umetanja pomoćnog polazišta.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="467"/>
       <source>Sub-shape binder</source>
-      <translation type="unfinished">Sub-shape binder</translation>
+      <translation>Poveznik za pod-objekt</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1051"/>
@@ -3238,7 +3237,7 @@ mjereno duž navedenog smjera</translation>
       <location filename="../../Command.cpp" line="1139"/>
       <location filename="../../SketchWorkflow.cpp" line="729"/>
       <source>Close this dialog?</source>
-      <translation type="unfinished">Close this dialog?</translation>
+      <translation>Zatvoriti ovaj dijalog?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1821"/>
@@ -3255,12 +3254,12 @@ mjereno duž navedenog smjera</translation>
       <location filename="../../Command.cpp" line="1829"/>
       <location filename="../../Command.cpp" line="2191"/>
       <source>Selection is not in the active body</source>
-      <translation type="unfinished">Selection is not in the active body</translation>
+      <translation>Označeno nije u aktivnom tijelu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1857"/>
       <source>Shape of the selected part is empty</source>
-      <translation type="unfinished">Shape of the selected part is empty</translation>
+      <translation>Oblik odabranog dijela je prazan</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1830"/>
@@ -3270,7 +3269,7 @@ mjereno duž navedenog smjera</translation>
     <message>
       <location filename="../../Command.cpp" line="1022"/>
       <source>Consider using a shape binder or a base feature to reference external geometry in a body</source>
-      <translation type="unfinished">Consider using a shape binder or a base feature to reference external geometry in a body</translation>
+      <translation>Razmislite o korištenju (ShapeBinder)Poveznik Oblika ili (BaseFeature) Osnovne Značajke za referencu vanjske geometrije u tijelu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1843"/>
@@ -3313,7 +3312,7 @@ mjereno duž navedenog smjera</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="134"/>
       <source>%1 already belongs to a body and cannot be used as a base feature for another body.</source>
-      <translation type="unfinished">%1 already belongs to a body and cannot be used as a base feature for another body.</translation>
+      <translation>%1 već pripada tijelu, ne može ga koristiti kao osnovnu značajku za još jedno tijelo.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="150"/>
@@ -3371,17 +3370,17 @@ To može dovesti do neočekivanih rezultata.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="692"/>
       <source>Select exactly one Part Design feature or a body.</source>
-      <translation type="unfinished">Select exactly one Part Design feature or a body.</translation>
+      <translation>Odaberite točno jedan Dizajn komponenti element ili tijelo.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="700"/>
       <source>Could not determine a body for the selected feature '%s'.</source>
-      <translation type="unfinished">Could not determine a body for the selected feature '%s'.</translation>
+      <translation>Nije mogao odrediti tijelo za odabrani objekt '%s '.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="877"/>
       <source>Only features of a single source body can be moved</source>
-      <translation type="unfinished">Only features of a single source body can be moved</translation>
+      <translation>Samo objekti jedino jednog izvora tijela mogu biti premješteni</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="616"/>
@@ -4482,9 +4481,9 @@ preko 90: veći polumjer rupe na dnu</translation>
       <location filename="../../../App/FeaturePipe.cpp" line="529"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="263"/>
       <location filename="../../../App/FeatureGroove.cpp" line="254"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="739"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="755"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="768"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="756"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="772"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="785"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>Rezultat ima više čvrstih tijela: omogućite 'Dopusti spoj' u aktivnom tijelu.</translation>
     </message>
@@ -4499,22 +4498,22 @@ preko 90: veći polumjer rupe na dnu</translation>
       <translation>Booleova operacija nije moguća</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="326"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="343"/>
       <source>Cannot create a pad with a total length of zero.</source>
       <translation type="unfinished">Cannot create a pad with a total length of zero.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="331"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="348"/>
       <source>Cannot create a pocket with a total length of zero.</source>
       <translation type="unfinished">Cannot create a pocket with a total length of zero.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="670"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="687"/>
       <source>No extrusion geometry was generated.</source>
       <translation type="unfinished">No extrusion geometry was generated.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="694"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="711"/>
       <source>Resulting fused extrusion is null.</source>
       <translation type="unfinished">Resulting fused extrusion is null.</translation>
     </message>
@@ -4522,7 +4521,7 @@ preko 90: veći polumjer rupe na dnu</translation>
       <location filename="../../../App/FeatureLoft.cpp" line="368"/>
       <location filename="../../../App/FeaturePipe.cpp" line="521"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="139"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="730"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="747"/>
       <source>Resulting shape is not a solid</source>
       <translation>Stvoreni oblik nije volumen tijelo</translation>
     </message>
@@ -4594,19 +4593,19 @@ preko 90: veći polumjer rupe na dnu</translation>
   - odabrana skica ne pripada aktivnom tijelu.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="375"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="392"/>
       <source>Failed to obtain profile shape</source>
       <translation>Nije moguće dobiti oblik profila</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="429"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="446"/>
       <source>Creation failed because direction is orthogonal to sketch's normal vector</source>
       <translation>Kreiranje nije uspjelo jer je smjer ortogonalan na normalu vektora skice.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureRevolution.cpp" line="163"/>
       <location filename="../../../App/FeatureGroove.cpp" line="154"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="452"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="469"/>
       <source>Creating a face from sketch failed</source>
       <translation>Stvaranje lice od skice nije uspjelo</translation>
     </message>
@@ -4848,7 +4847,7 @@ Ukrštanje elemenata skice ili više površina u skici nije dozvoljeno za izradu
       <translation>Izvlačenje forme: Stvaranje ljuske nije uspjelo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="783"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="800"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed.</source>
       <translation>Nije moguće napraviti površinu pomoću skice.
@@ -5088,7 +5087,7 @@ Nije dozvoljeno presjecanje elemenata ili višestruke površine na skici.</trans
       <translation>Referentna os nije važeća</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="722"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="739"/>
       <source>Fusion with base feature failed</source>
       <translation>Spajanje sa baznom značajkom nije uspjelo</translation>
     </message>

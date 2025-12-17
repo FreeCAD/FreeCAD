@@ -333,7 +333,7 @@
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="77"/>
       <source>The assembly document must be saved before inserting a new part.</source>
-      <translation type="unfinished">The assembly document must be saved before inserting a new part.</translation>
+      <translation>在插入新零件之前，必须先保存装配文档。</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="80"/>

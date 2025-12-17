@@ -8239,7 +8239,7 @@ med hjälp av de angivna X/Y-avstånden</translation>
     <message>
       <location filename="../../TaskRichAnno.ui" line="102"/>
       <source>Start Rich Text Editor</source>
-      <translation>Starta Rich Text Editor</translation>
+      <translation>Starta redigerare för rik text</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.ui" line="53"/>

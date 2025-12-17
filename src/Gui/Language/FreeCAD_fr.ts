@@ -136,7 +136,7 @@
       <translation>Transformer</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3155"/>
+      <location filename="../ViewProviderLink.cpp" line="3157"/>
       <source>Toggle array elements</source>
       <translation>Activer/désactiver des éléments du réseau</translation>
     </message>
@@ -8587,12 +8587,12 @@ Choisissez "Interrompre" pour annuler.</translation>
       <translation>Impossible d'ouvrir le navigateur système.</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2553"/>
+      <location filename="../View3DInventorViewer.cpp" line="2555"/>
       <source>Out of memory</source>
       <translation>Mémoire insuffisante</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2554"/>
+      <location filename="../View3DInventorViewer.cpp" line="2556"/>
       <source>Not enough memory available to display the data.</source>
       <translation>Mémoire insuffisante pour afficher les données.</translation>
     </message>
@@ -8618,7 +8618,7 @@ Choisissez "Interrompre" pour annuler.</translation>
       <translation>Définir une sélection</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3182"/>
+      <location filename="../ViewProviderLink.cpp" line="3184"/>
       <location filename="../ViewProviderDragger.cpp" line="127"/>
       <source>Transform</source>
       <translation>Paramètres de la transformation</translation>
@@ -8631,7 +8631,7 @@ Choisissez "Interrompre" pour annuler.</translation>
     <message>
       <location filename="../MainWindow.cpp" line="860"/>
       <source>Save all changes to document '%1' before closing?</source>
-      <translation>Faut-il enregistrer toutes les modifications au document «%1» avant de le fermer ?</translation>
+      <translation>Faut-il enregistrer toutes les modifications dans le document «%1» avant de le fermer ?</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="861"/>
@@ -8641,7 +8641,7 @@ Choisissez "Interrompre" pour annuler.</translation>
     <message>
       <location filename="../MainWindow.cpp" line="865"/>
       <source>Otherwise, all changes will be lost.</source>
-      <translation>Sinon, toutes les modifications seront perdues.</translation>
+      <translation>Si ce n'est pas fait, toutes les modifications seront perdues.</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="991"/>
@@ -8748,70 +8748,70 @@ Choisissez "Interrompre" pour annuler.</translation>
       <translation>Le glisser/déposer a échoué</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2997"/>
+      <location filename="../ViewProviderLink.cpp" line="2999"/>
       <location filename="../MainWindow.cpp" line="870"/>
       <source>Apply to all</source>
       <translation>Appliquer à tout</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2971"/>
+      <location filename="../ViewProviderLink.cpp" line="2973"/>
       <source>Setup Configurable Object</source>
       <translation>Configurer l'objet configurable</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2973"/>
+      <location filename="../ViewProviderLink.cpp" line="2975"/>
       <source>Selects which object to copy or exclude when configuration changes. All external linked objects are excluded by default.</source>
       <translation>Sélectionne quel objet copier ou exclure lorsque la configuration change. Tous les objets externes liés sont exclus par défaut.</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2995"/>
+      <location filename="../ViewProviderLink.cpp" line="2997"/>
       <source>Select which objects to copy when the configuration is changed</source>
       <translation>Sélectionner les objets à copier lorsque la configuration est modifiée</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2998"/>
+      <location filename="../ViewProviderLink.cpp" line="3000"/>
       <source>Applies the setting to all links</source>
       <translation>Applique le paramètre à tous les liens.</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3051"/>
+      <location filename="../ViewProviderLink.cpp" line="3053"/>
       <source>Copy on Change</source>
       <translation>Copier lors de la modification</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3052"/>
+      <location filename="../ViewProviderLink.cpp" line="3054"/>
       <source>Enable</source>
       <translation>Activer</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3054"/>
+      <location filename="../ViewProviderLink.cpp" line="3056"/>
       <source>Enable auto copy of linked object when its configuration is changed</source>
       <translation>Activer la copie automatique de l'objet lié lorsque sa configuration est modifiée</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3070"/>
+      <location filename="../ViewProviderLink.cpp" line="3072"/>
       <source>Tracking</source>
       <translation>Suivi</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3072"/>
+      <location filename="../ViewProviderLink.cpp" line="3074"/>
       <source>Copies the linked object when its configuration is changed.
 Also auto redo the copy if the original linked object is changed.
 </source>
       <translation>Copie l'objet lié lorsque sa configuration est modifiée. Répète également automatiquement la copie si l'objet lié d'origine est modifié.</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3092"/>
+      <location filename="../ViewProviderLink.cpp" line="3094"/>
       <source>Disable Copy on Change</source>
       <translation>Désactiver la copie lors de la modification</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3110"/>
+      <location filename="../ViewProviderLink.cpp" line="3112"/>
       <source>Refresh Configurable Object</source>
       <translation>Rafraîchir l'objet configurable</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3112"/>
+      <location filename="../ViewProviderLink.cpp" line="3114"/>
       <source>Synchronizes the original configurable source object by
 creating a new deep copy. Any changes made to
 the current copy will be lost.
@@ -8820,23 +8820,23 @@ the current copy will be lost.
 sera perdue.</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3153"/>
+      <location filename="../ViewProviderLink.cpp" line="3155"/>
       <source>Toggle Array Elements</source>
       <translation>Activer/désactiver les éléments du réseau</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3164"/>
+      <location filename="../ViewProviderLink.cpp" line="3166"/>
       <source>Changes whether to show each link array element as individual objects</source>
       <translation>Modifie l'affichage de chaque élément du réseau de liens en tant qu'objet individuel.</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3183"/>
+      <location filename="../ViewProviderLink.cpp" line="3185"/>
       <source>Transforms the object at the origin of the placement</source>
       <translation>Transforme l'objet à l'origine de la position.</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3193"/>
-      <location filename="../ViewProviderLink.cpp" line="3199"/>
+      <location filename="../ViewProviderLink.cpp" line="3195"/>
+      <location filename="../ViewProviderLink.cpp" line="3201"/>
       <source>Override Colors</source>
       <translation>Remplacer les couleurs</translation>
     </message>
@@ -13468,7 +13468,7 @@ d'assemblages complexes.</translation>
     <message>
       <location filename="../CommandStructure.cpp" line="49"/>
       <source>New Part</source>
-      <translation>Insérer une nouvelle pièce</translation>
+      <translation>Nouvelle pièce</translation>
     </message>
     <message>
       <location filename="../CommandStructure.cpp" line="50"/>
@@ -13860,7 +13860,7 @@ Il s'agit d'un simple dossier permettant d'organiser les objets dans un modèle.
     <message>
       <location filename="../CommandView.cpp" line="2901"/>
       <source>&amp;Box Selection</source>
-      <translation>&amp;Sélectionner par une boîte</translation>
+      <translation>&amp;Sélectionner des objets par une boîte</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2902"/>
@@ -13873,12 +13873,12 @@ Il s'agit d'un simple dossier permettant d'organiser les objets dans un modèle.
     <message>
       <location filename="../CommandView.cpp" line="3176"/>
       <source>Bo&amp;x Element Selection</source>
-      <translation>Sé&amp;lectionner des éléments par une boîte</translation>
+      <translation>Sé&amp;lectionner des faces par une boîte</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3177"/>
       <source>Activates box element selection</source>
-      <translation>Active la sélection des éléments par une boîte.</translation>
+      <translation>Active la sélection de faces par une boîte.</translation>
     </message>
   </context>
   <context>

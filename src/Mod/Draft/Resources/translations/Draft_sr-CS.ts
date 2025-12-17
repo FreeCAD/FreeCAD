@@ -4932,7 +4932,7 @@ Krajnji ugao će biti početni ugao plus ovaj iznos.</translation>
       <translation>Tekstualni oblik</translation>
     </message>
     <message>
-      <location filename="../../draftutils/params.py" line="506"/>
+      <location filename="../../draftutils/params.py" line="505"/>
       <source>Default</source>
       <translation>Podrazumevano</translation>
     </message>

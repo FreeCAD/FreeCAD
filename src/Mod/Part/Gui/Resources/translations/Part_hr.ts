@@ -1235,12 +1235,12 @@
     <message>
       <location filename="../../Command.cpp" line="1416"/>
       <source>Part</source>
-      <translation>Geometrijsko tijelo</translation>
+      <translation>Komponenta</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1417"/>
       <source>Boolean Operation</source>
-      <translation>Booleove operacije</translation>
+      <translation>Booleova operacija</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1418"/>
@@ -2443,7 +2443,7 @@ Napomena: Položaj je izražen u lokalnom prostoru predmeta koji se pridružuje.
       <location filename="../../DlgBooleanOperation.ui" line="14"/>
       <location filename="../../DlgBooleanOperation.ui" line="20"/>
       <source>Boolean Operation</source>
-      <translation>Booleove operacije</translation>
+      <translation>Booleova operacija</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="32"/>
