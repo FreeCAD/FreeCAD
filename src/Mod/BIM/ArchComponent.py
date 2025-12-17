@@ -1361,19 +1361,32 @@ class AreaCalculator:
         from DraftGeomUtils import findWires
         from TechDraw import project
 
-        try:
-            projectedFace = Face(findWires(project(face, FreeCAD.Vector(0, 0, 1))[0].Edges))
-        except OCCError:
-            FreeCAD.Console.PrintWarning(
-                translate("Arch", f"Could not project face from {self.obj.Label}\n")
-            )
-            return False
-
-        isProjectedAreaZero = projectedFace.Area < 0.0001
+        if face.Surface.TypeId == "Part::GeomCylinder":
+            angle = face.Surface.Axis.getAngle(FreeCAD.Vector(0, 0, 1))
+            return self.isZeroAngle(angle)
+        elif face.Surface.TypeId == "Part::GeomSurfaceOfExtrusion":
+            angle = face.Surface.Direction.getAngle(FreeCAD.Vector(0, 0, 1))
+            return self.isZeroAngle(angle)
+        elif face.Surface.TypeId == "Part::GeomPlane":
+            projectedArea = 0  # dummy value, isRightAngle check is sufficient here
+        elif face.findPlane() is not None:
+            projectedArea = 0  # dummy value, idem
+        else:
+            try:
+                wires = findWires(project(face, FreeCAD.Vector(0, 0, 1))[0].Edges)
+                if len(wires) == 1 and not wires[0].isClosed():
+                    projectedArea = 0
+                else:
+                    projectedArea = Face(wires).Area
+            except OCCError:
+                FreeCAD.Console.PrintWarning(
+                    translate("Arch", f"Could not project face from {self.obj.Label}\n")
+                )
+                return False
 
         try:
             angle = face.normalAt(0, 0).getAngle(FreeCAD.Vector(0, 0, 1))
-            return self.isRightAngle(angle) and isProjectedAreaZero
+            return self.isRightAngle(angle) and projectedArea < 0.0001
         except OCCError:
             FreeCAD.Console.PrintWarning(
                 translate(
@@ -1406,7 +1419,10 @@ class AreaCalculator:
 
     def isRightAngle(self, angle):
         """Check if the angle is close to 90 degrees."""
-        return 1.57 < angle < 1.571
+        return round(angle, 3) == 1.571
+
+    def isZeroAngle(self, angle):
+        return round(angle, 3) in (0, 3.142)
 
     def compute(self):
         """Compute the vertical area, horizontal area, and perimeter length.
@@ -1437,9 +1453,8 @@ class AreaCalculator:
                 horizontalFaces.append(face)
 
         # Update vertical area
-        if verticalArea and hasattr(self.obj, "VerticalArea"):
-            if self.obj.VerticalArea.Value != verticalArea:
-                self.obj.VerticalArea = verticalArea
+        if hasattr(self.obj, "VerticalArea") and self.obj.VerticalArea.Value != verticalArea:
+            self.obj.VerticalArea = verticalArea
 
         # Compute horizontal area and perimeter length
         if horizontalFaces and hasattr(self.obj, "HorizontalArea"):
