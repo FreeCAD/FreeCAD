@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "Mod/Sketcher/App/Constraint.h"
 #include <QDateTime>
 #include <boost/random.hpp>
 #include <algorithm>
@@ -38,6 +37,7 @@
 
 #include <boost/thread/mutex.hpp>
 #include <boost/thread/thread.hpp>
+#include "Constraint.h"
 
 #include "ConstraintPy.h"
 
@@ -79,6 +79,7 @@ Constraint* Constraint::copy() const
     temp->Value = this->Value;
     temp->Type = this->Type;
     temp->AlignmentType = this->AlignmentType;
+    temp->Orientation = this->Orientation;
     temp->Name = this->Name;
     temp->LabelDistance = this->LabelDistance;
     temp->LabelPosition = this->LabelPosition;
@@ -155,6 +156,7 @@ void Constraint::Save(Writer& writer) const
         writer.Stream() << "InternalAlignmentType=\"" << (int)AlignmentType << "\" "
                         << "InternalAlignmentIndex=\"" << InternalAlignmentIndex << "\" ";
     }
+    writer.Stream() << "Orientation=\"" << static_cast<int>(Orientation) << "\" ";
     writer.Stream() << "Value=\"" << Value << "\" "
                     << "LabelDistance=\"" << LabelDistance << "\" "
                     << "LabelPosition=\"" << LabelPosition << "\" "
@@ -207,13 +209,8 @@ void Constraint::Restore(XMLReader& reader)
     else {
         AlignmentType = Undef;
     }
-    if (this->Type == Distance) {
-        if (reader.hasAttribute("Orientation")) {
-            Orientation = reader.getAttribute<ConstraintOrientation>("Orientation");
-        }
-        else {
-            Orientation = ConstraintOrientation::None;
-        }
+    if (reader.hasAttribute("Orientation")) {
+        Orientation = reader.getAttribute<ConstraintOrientation>("Orientation");
     }
     else {
         Orientation = ConstraintOrientation::None;
