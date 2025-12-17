@@ -52,15 +52,8 @@ DlgSettingsFemZ88Imp::~DlgSettingsFemZ88Imp() = default;
 void DlgSettingsFemZ88Imp::saveSettings()
 {
     ui->fc_z88_binary_path->onSave();
-
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Fem/Z88"
-    );
-    hGrp->SetInt("Solver", ui->cmb_solver->currentIndex());
     ui->cmb_solver->onSave();
-    hGrp->SetInt("MaxGS", ui->sb_Z88_MaxGS->value());
     ui->sb_Z88_MaxGS->onSave();
-    hGrp->SetInt("MaxKOI", ui->sb_Z88_MaxKOI->value());
     ui->sb_Z88_MaxKOI->onSave();
 }
 
@@ -69,22 +62,7 @@ void DlgSettingsFemZ88Imp::loadSettings()
     ui->fc_z88_binary_path->onRestore();
     ui->cmb_solver->onRestore();
     ui->sb_Z88_MaxGS->onRestore();
-
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Fem/Z88"
-    );
-    int index = hGrp->GetInt("Solver", 0);
-    if (index > -1) {
-        ui->cmb_solver->setCurrentIndex(index);
-    }
-    int places = hGrp->GetInt("MaxGS", 100000000);
-    if (places > -1) {
-        ui->sb_Z88_MaxGS->setValue(places);
-    }
-    places = hGrp->GetInt("MaxKOI", 2800000);
-    if (places > -1) {
-        ui->sb_Z88_MaxKOI->setValue(places);
-    }
+    ui->sb_Z88_MaxKOI->onRestore();
 }
 
 /**
