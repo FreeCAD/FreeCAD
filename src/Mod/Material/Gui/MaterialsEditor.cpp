@@ -1071,11 +1071,9 @@ QString MaterialsEditor::getColorHash(const QString& colorString, int colorRange
         stream >> alpha;
     }
 
-    QColor color(static_cast<int>(std::round(red * colorRange)),
-                 static_cast<int>(std::round(green * colorRange)),
-                 static_cast<int>(std::round(blue * colorRange)),
-                 static_cast<int>(std::round(alpha * colorRange)));
-    return color.name();
+    Base::Color color(red, green, blue, alpha);
+    QColor qcolor = color.asValue<QColor>();
+    return qcolor.name();
 }
 
 void MaterialsEditor::updateMaterialAppearance()
