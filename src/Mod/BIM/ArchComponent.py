@@ -1394,14 +1394,22 @@ class AreaCalculator:
             )
             return False
 
-    def isFaceHorizontal(self, face):
+    def isFaceHorizontal(self, face, face_index=None):
         """Determine if a face is horizontal.
 
         A face is considered horizontal if its normal vector is parallel to the Z-axis.
 
+        Parameters
+        ----------
+        face : Part.Face
+            The face object to be checked.
+        face_index : str, optional
+            The face's 1-based index identifier, used for debugging error messages.
+            Defaults to None.
         """
         from Part import OCCError
 
+        face_name = f" Face{face_index}" if face_index is not None else ""
         try:
             angle = face.normalAt(0, 0).getAngle(FreeCAD.Vector(0, 0, 1))
             return not self.isRightAngle(angle)
@@ -1409,7 +1417,7 @@ class AreaCalculator:
             FreeCAD.Console.PrintWarning(
                 translate(
                     "Arch",
-                    f"Could not determine if a face from {self.obj.Label}"
+                    f"Could not determine if face{face_name} from {self.obj.Label}"
                     " is horizontal: normalAt() failed\n",
                 )
             )
