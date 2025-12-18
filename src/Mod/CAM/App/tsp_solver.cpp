@@ -179,22 +179,37 @@ std::vector<int> solve_impl(
     // Two optimization techniques:
     // 1. 2-Opt: Reverse segments of the route to eliminate crossing paths
     // 2. Relocation: Move individual points to better positions in the route
-    bool improvementFound = true;
-    while (improvementFound) {
-        improvementFound = false;
+    //
+    // For open routes (no endPoint), additional optimizations are applied that
+    // allow reversing/relocating segments to the end of the route.
+    size_t limitReorderI = route.size() - 2;
+    if (tempEndIdx != -1) {
+        limitReorderI -= 1;
+    }
+    size_t limitReorderJ = route.size();
+    size_t limitRelocationI = route.size() - 1;
+    size_t limitRelocationJ = route.size() - 1;
+    int lastImprovementAtStep = 0;
+
+    while (true) {
 
         // --- 2-Opt Optimization ---
         // Try reversing every possible segment of the route.
         // If reversing segment [i+1...j-1] reduces total distance, keep it.
         //
         // Example: Route A-B-C-D-E becomes A-D-C-B-E if reversing B-C-D is better
+        if (lastImprovementAtStep == 1) {
+            break;
+        }
         bool reorderFound = true;
         while (reorderFound) {
             reorderFound = false;
-            for (size_t i = 0; i + 3 < route.size(); ++i) {
-                for (size_t j = i + 3; j < route.size(); ++j) {
+            for (size_t i = 0; i < limitReorderI; ++i) {
+                double subRouteLengthCurrentPart = dist(pts[route[i]], pts[route[i + 1]]);
+
+                for (size_t j = i + 3; j < limitReorderJ; ++j) {
                     // Current edges: i→(i+1) and (j-1)→j
-                    double curLen = dist(pts[route[i]], pts[route[i + 1]])
+                    double curLen = subRouteLengthCurrentPart
                         + dist(pts[route[j - 1]], pts[route[j]]);
 
                     // New edges after reversal: (i+1)→j and i→(j-1)
@@ -205,8 +220,23 @@ std::vector<int> solve_impl(
                     if (newLen < curLen) {
                         // Reverse the segment between i+1 and j (exclusive)
                         std::reverse(route.begin() + i + 1, route.begin() + j);
+                        subRouteLengthCurrentPart = dist(pts[route[i]], pts[route[i + 1]]);
                         reorderFound = true;
-                        improvementFound = true;
+                        lastImprovementAtStep = 1;
+                    }
+                }
+
+                // Open route optimization: can reverse from i to end if no endpoint constraint
+                if (tempEndIdx == -1) {
+                    double curLen = dist(pts[route[i]], pts[route[i + 1]]);
+                    double newLen = dist(pts[route[i]], pts[route[limitReorderJ - 1]])
+                        + Base::Precision::Confusion();
+
+                    if (newLen < curLen) {
+                        // Reverse the order of points after i-th to the last point
+                        std::reverse(route.begin() + i + 1, route.begin() + limitReorderJ);
+                        reorderFound = true;
+                        lastImprovementAtStep = 1;
                     }
                 }
             }
@@ -215,52 +245,93 @@ std::vector<int> solve_impl(
         // --- Relocation Optimization ---
         // Try moving each point to a different position in the route.
         // If moving point i to position j improves the route, do it.
+        if (lastImprovementAtStep == 2) {
+            break;
+        }
         bool relocateFound = true;
         while (relocateFound) {
             relocateFound = false;
-            for (size_t i = 1; i + 1 < route.size(); ++i) {
+            for (size_t i = 1; i < limitRelocationI; ++i) {
+                double subRouteLengthCurrentPart = dist(pts[route[i - 1]], pts[route[i]])
+                    + dist(pts[route[i]], pts[route[i + 1]]);
+                double subRouteLengthNewPart = dist(pts[route[i - 1]], pts[route[i + 1]])
+                    + Base::Precision::Confusion();
 
                 // Try moving point i backward (to positions before i)
-                for (size_t j = 1; j + 2 < i; ++j) {
+                for (size_t j = 0; j + 2 < i; ++j) {
                     // Current cost: edges around point i and edge j→(j+1)
-                    double curLen = dist(pts[route[i - 1]], pts[route[i]])
-                        + dist(pts[route[i]], pts[route[i + 1]])
+                    double curLen = subRouteLengthCurrentPart
                         + dist(pts[route[j]], pts[route[j + 1]]);
 
                     // New cost: bypass i, insert i after j
-                    double newLen = dist(pts[route[i - 1]], pts[route[i + 1]])
-                        + dist(pts[route[j]], pts[route[i]])
-                        + dist(pts[route[i]], pts[route[j + 1]]) + Base::Precision::Confusion();
+                    double newLen = subRouteLengthNewPart + dist(pts[route[j]], pts[route[i]])
+                        + dist(pts[route[i]], pts[route[j + 1]]);
 
                     if (newLen < curLen) {
                         // Move point i to position after j
                         int node = route[i];
                         route.erase(route.begin() + i);
                         route.insert(route.begin() + j + 1, node);
+                        subRouteLengthCurrentPart = dist(pts[route[i - 1]], pts[route[i]])
+                            + dist(pts[route[i]], pts[route[i + 1]]);
+                        subRouteLengthNewPart = dist(pts[route[i - 1]], pts[route[i + 1]])
+                            + Base::Precision::Confusion();
                         relocateFound = true;
-                        improvementFound = true;
+                        lastImprovementAtStep = 2;
                     }
                 }
 
                 // Try moving point i forward (to positions after i)
-                for (size_t j = i + 1; j + 1 < route.size(); ++j) {
-                    double curLen = dist(pts[route[i - 1]], pts[route[i]])
-                        + dist(pts[route[i]], pts[route[i + 1]])
+                for (size_t j = i + 1; j < limitRelocationJ; ++j) {
+                    double curLen = subRouteLengthCurrentPart
                         + dist(pts[route[j]], pts[route[j + 1]]);
 
-                    double newLen = dist(pts[route[i - 1]], pts[route[i + 1]])
-                        + dist(pts[route[j]], pts[route[i]])
-                        + dist(pts[route[i]], pts[route[j + 1]]) + Base::Precision::Confusion();
+                    double newLen = subRouteLengthNewPart + dist(pts[route[j]], pts[route[i]])
+                        + dist(pts[route[i]], pts[route[j + 1]]);
 
                     if (newLen < curLen) {
                         int node = route[i];
                         route.erase(route.begin() + i);
                         route.insert(route.begin() + j, node);
+                        subRouteLengthCurrentPart = dist(pts[route[i - 1]], pts[route[i]])
+                            + dist(pts[route[i]], pts[route[i + 1]]);
+                        subRouteLengthNewPart = dist(pts[route[i - 1]], pts[route[i + 1]])
+                            + Base::Precision::Confusion();
                         relocateFound = true;
-                        improvementFound = true;
+                        lastImprovementAtStep = 2;
                     }
                 }
             }
+
+            // Open route optimization: can relocate the last point anywhere
+            if (tempEndIdx == -1) {
+                double subRouteLengthCurrentPart
+                    = dist(pts[route[route.size() - 2]], pts[route[route.size() - 1]]);
+
+                for (size_t j = 0; j + 2 < route.size(); ++j) {
+                    double curLen = subRouteLengthCurrentPart
+                        + dist(pts[route[j]], pts[route[j + 1]]);
+
+                    double newLen = dist(pts[route[j]], pts[route[route.size() - 1]])
+                        + dist(pts[route[route.size() - 1]], pts[route[j + 1]])
+                        + Base::Precision::Confusion();
+
+                    if (newLen < curLen) {
+                        // Relocate the last point after j-th point
+                        int node = route[route.size() - 1];
+                        route.erase(route.begin() + route.size() - 1);
+                        route.insert(route.begin() + j + 1, node);
+                        subRouteLengthCurrentPart
+                            = dist(pts[route[route.size() - 2]], pts[route[route.size() - 1]]);
+                        relocateFound = true;
+                        lastImprovementAtStep = 2;
+                    }
+                }
+            }
+        }
+
+        if (lastImprovementAtStep == 0) {
+            break;  // No additional improvements could be made
         }
     }
 

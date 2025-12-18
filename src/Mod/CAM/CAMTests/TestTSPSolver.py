@@ -31,6 +31,8 @@ from CAMTests.PathTestUtils import PathTestBase
 class TestTSPSolver(PathTestBase):
     """Test class for the TSP (Traveling Salesman Problem) solver."""
 
+    DEBUG = False  # Global debug flag for print_tunnels
+
     def setUp(self):
         """Set up test environment."""
         # Create test points arranged in a simple pattern
@@ -54,6 +56,8 @@ class TestTSPSolver(PathTestBase):
 
     def print_tunnels(self, tunnels, title):
         """Helper function to print tunnel information."""
+        if not self.DEBUG:
+            return
         print(f"\n{title}:")
         for i, tunnel in enumerate(tunnels):
             orig_idx = tunnel.get("index", "N/A")
