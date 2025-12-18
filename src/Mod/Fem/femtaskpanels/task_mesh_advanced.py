@@ -170,6 +170,29 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         FreeCADGui.ExpressionBinding(ui.Sampling_Dist).bind(self.obj, "Sampling")
         ui.Sampling_Dist.valueChanged.connect(self.samplingChanged)
 
+
+        # Result
+
+        # find all possible result objects
+        ui.ResultObject.addItem(FreeCADGui.getIcon("button_invalid.svg"), "None selected", None)
+        for res_obj in self.obj.Document.Objects:
+            if res_obj.isDerivedFrom("Fem::FemPostObject"):
+                icon = res_obj.ViewObject.Icon
+                ui.ResultObject.addItem(icon, res_obj.Label, res_obj)
+
+        # set selection
+        if self.obj.ResultObject:
+            ui.ResultObject.setCurrentText(self.obj.ResultObject.Label)
+            ui.ResultField.addItems(self.obj.ResultObject.ViewObject.getEnumerationsOfProperty("Field"))
+            ui.ResultField.setCurrentText(self.obj.ResultField)
+        else:
+            ui.ResultField.addItem(FreeCADGui.getIcon("button_invalid.svg"), "No object selected")
+
+
+        ui.ResultObject.currentIndexChanged.connect(self.resultObjectChanged)
+        ui.ResultField.currentTextChanged.connect(self.resultFieldChanged)
+
+
     def slotChangedObject(self, obj, prop):
         # callback of document observer for changed property
         if (obj == self.obj) and (prop == "Refinements"):
@@ -241,3 +264,19 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         self.obj.M23 = self.parameter_widget.M23.text()
         self.obj.M33 = self.parameter_widget.M33.text()
 
+    @QtCore.Slot(int)
+    def resultObjectChanged(self, value):
+
+        old_field = self.obj.ResultField
+        self.obj.ResultObject = self.parameter_widget.ResultObject.itemData(value)
+        fields = self.obj.ResultObject.ViewObject.getEnumerationsOfProperty("Field")
+
+        self.parameter_widget.ResultField.clear()
+        self.parameter_widget.ResultField.addItems(fields)
+        if old_field in fields:
+            self.parameter_widget.ResultField.setCurrentText(old_field)
+
+
+    @QtCore.Slot(int)
+    def resultFieldChanged(self, value):
+        self.obj.ResultField = value

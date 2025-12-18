@@ -40,6 +40,7 @@ from FreeCAD import Units
 import Fem
 from . import meshtools
 from . import transfinitetools as tft
+from . import adaptivetools as adt
 from femtools import femutils
 from femtools import geomtools
 
@@ -196,6 +197,9 @@ class GmshTools:
         self.bl_setting_list = []  # list of dict, each item map to MeshBoundaryLayer object
         self.bl_boundary_list = []  # to remove duplicated boundary edge or faces
 
+        # gmsh result view setting required for a specific size field
+        self.result_view_settings = []
+
         # gmsh size fields
         self.size_field_list = []
 
@@ -228,12 +232,39 @@ class GmshTools:
         self.write_part_file()
         self.write_geo()
 
+    def convert(self):
+        # converts all available vtk files into msh files, and add element definition
+        # to it. Workaround to use adaptive meshing
+
+        vtk_files = [file for file in os.listdir(self.working_dir) if file.endswith('.vtk')]
+
+        process = QProcess()
+        for vtk_file in vtk_files:
+            Console.PrintLog(f"Convert VTK file {vtk_file} \n")
+
+            file_name = vtk_file.split(".")[0]
+            command_list = [os.path.join(self.working_dir,vtk_file),
+                            "-save",
+                            os.path.join(self.working_dir,file_name+".msh")]
+
+            process.start(self.gmsh_bin, command_list)
+            process.waitForFinished();
+
+            # append element data onto mesh file
+            with open(os.path.join(self.working_dir, file_name + ".elementdata"), "r") as element_f:
+                with open(os.path.join(self.working_dir, file_name + ".msh"), "a+") as msh_f:
+                    msh_f.write(element_f.read())
+                    msh_f.flush()
+
+            process.close()
+
     def prepare(self):
         self.load_properties()
         self.update_mesh_data()
         self.get_tmp_file_paths()
         self.get_gmsh_command()
         self.write_gmsh_input_files()
+        self.convert()
 
     def compute(self):
         log_level = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Gmsh").GetString(
@@ -882,7 +913,7 @@ class GmshTools:
     def _build_evaluation_size_field(self, obj, evaluation_field):
         # mean, curvature, laplace
 
-        settings = {"Field": evaluation_field.Type, "Option": {}, "Anisotropic": False}
+        settings = {"Field": obj.Type, "Option": {}, "Anisotropic": False}
         settings["FieldID"] = self._next_field_number()
         settings["Option"]["InField"] = evaluation_field
         settings["Option"]["Delta"] = Units.Quantity(obj.Delta).Value
@@ -893,11 +924,11 @@ class GmshTools:
     def _build_gradient_size_field(self, obj, gradient_field):
 
         # get the settings!
-        settings = {"Field": evaluation_field.Type, "Option": {}, "Anisotropic": False}
+        settings = {"Field": obj.Type, "Option": {}, "Anisotropic": False}
         settings["FieldID"] = self._next_field_number()
         settings["Option"]["InField"] = gradient_field
         settings["Option"]["Delta"] = Units.Quantity(obj.Delta).Value
-        settings["Option"]["Kind"] = obj.Kind
+        settings["Option"]["Kind"] = f"'{obj.Kind}'"
 
         self.size_field_list.append(settings)
         return settings["FieldID"]
@@ -912,7 +943,9 @@ class GmshTools:
             case "MathAniso":
                 return self._build_mathaniso_size_field(advanced, advanced_fields)
             case "Distance":
-                return self._build_distance_size_field(advanced, advanced_fields)
+                return self._build_distance_size_field(advanced)
+            case "Result":
+                return self._build_result_size_field(advanced)
             case _:
                 raise Exception("Unknown advanced type")
 
@@ -1022,6 +1055,33 @@ class GmshTools:
 
         self.size_field_list.append(settings)
         return settings["FieldID"]
+
+    def _build_result_size_field(self, obj):
+
+        # double use id: as size fild id and view tag
+        id = self._next_field_number()
+
+        # we need to build the result object as well as the size field
+        # utilizing it
+        if not obj.ResultObject:
+            raise Exception("No result object linked")
+        if not obj.ResultField or obj.ResultField == "None":
+            raise Exception("No valid result field specified")
+
+        result = {"name": obj.ResultObject.Name,
+                  "data": obj.ResultObject.Data,
+                  "field": obj.ResultField,
+                  "view_tag": id}
+
+        self.result_view_settings.append(result)
+
+        # now create the size field
+        settings = {"Field": "PostView", "Option": {}, "Anisotropic": False}
+        settings["FieldID"] = id
+        settings["Option"]["ViewTag"] = id
+
+        self.size_field_list.append(settings)
+        return id
 
 
     def _get_recursive_size_field_data(self, obj):
@@ -1317,8 +1377,29 @@ class GmshTools:
             # print("  no boundary layer setup is found for this mesh")
             geo.write("// no boundary layer settings for this mesh\n")
 
+    def write_result_data(self, geo):
+
+        if not self.result_view_settings:
+            geo.write("// no result views required for adaptive meshing\n")
+            return
+
+        geo.write("// result views for adaptive meshing\n\n")
+
+
+        folder = os.path.dirname(self.temp_file_geo)
+        try:
+            adt.write_result_settings(self.result_view_settings, geo, folder)
+        except Exception as e:
+            Console.PrintError(f"Cannot create result based refinements: {str(e)}")
+
+        geo.write("// result views finished\n")
+        geo.write("\n")
 
     def write_size_fields(self, geo):
+
+        if not self.size_field_list:
+            geo.write("// no size field based refinement\n")
+            return
 
         geo.write("// size field based refinements\n\n")
 
@@ -1337,6 +1418,13 @@ class GmshTools:
 
 
     def write_transfinite(self, geo):
+
+        if not self.transfinite_curve_settings and \
+           not self.transfinite_surface_settings and \
+           not self.transfinite_volume_settings:
+
+            geo.write("// no transfinite refinements\n")
+            return
 
         geo.write("\n")
         geo.write("// Transfinite elements\n")
@@ -1403,6 +1491,11 @@ class GmshTools:
             geo.write(f"General.NumThreads = {cpu_count};\n")
             geo.write("\n")
 
+        # first create other models that may be required for adaptive meshing
+        self.write_result_data(geo)
+
+
+        # now create the geometry model
         geo.write("// open brep geometry\n")
         # explicit use double quotes in geo file
         geo.write(f'Merge "{os.path.relpath(self.temp_file_geometry, temp_dir)}";\n')
