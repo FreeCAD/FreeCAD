@@ -26,6 +26,8 @@
 #include "../../SketcherGlobal.h"
 #include "Geo.h"
 
+#include <optional>
+
 // This enables debugging code intended to extract information to file bug reports against Eigen,
 // not for production code
 // #define _GCS_EXTRACT_SOLVER_SUBSYSTEM_
@@ -488,7 +490,10 @@ public:
 class ConstraintP2LDistance: public Constraint
 {
 private:
-    bool ccw;
+    // Describes the orientation of the constraint
+    // if ccw is nullopt, the constraint describes
+    // an absolute distance
+    std::optional<bool> ccw;
 
     double* p0x()
     {
@@ -520,7 +525,7 @@ private:
     }
 
 public:
-    ConstraintP2LDistance(Point& p, Line& l, double* d, bool ccw);
+    ConstraintP2LDistance(Point& p, Line& l, double* d, std::optional<bool> ccw);
 #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
     ConstraintP2LDistance()
     {}
