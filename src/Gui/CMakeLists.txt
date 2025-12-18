@@ -1226,6 +1226,7 @@ SET(Widget_CPP_SRCS
     ElideLabel.cpp
     ElideCheckBox.cpp
     FontScaledSVG.cpp
+    SplitButton.cpp
 )
 SET(Widget_HPP_SRCS
     ComboLinks.h
@@ -1251,6 +1252,7 @@ SET(Widget_HPP_SRCS
     ElideLabel.h
     ElideCheckBox.h
     FontScaledSVG.h
+    SplitButton.h
 )
 SET(Widget_SRCS
     ${Widget_CPP_SRCS}
@@ -1369,6 +1371,7 @@ SET(FreeCADGui_CPP_SRCS
     ExpressionCompleter.cpp
     FileHandler.cpp
     FileHandler.h
+    FreeCADStyle.cpp
     GuiApplication.cpp
     GuiApplicationNativeEventAware.cpp
     GuiConsole.cpp
@@ -1406,6 +1409,7 @@ SET(FreeCADGui_SRCS
     ExpressionBindingPy.h
     ExpressionCompleter.h
     FreeCADGuiInit.py
+    FreeCADStyle.h
     GraphicsViewZoom.h
     GuiApplication.h
     GuiApplicationNativeEventAware.h

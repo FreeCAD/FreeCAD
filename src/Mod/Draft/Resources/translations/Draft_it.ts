@@ -37,7 +37,7 @@
     <message>
       <location filename="../ui/dialogLayers.ui" line="14"/>
       <source>Layers Manager</source>
-      <translation>Gestore Livelli</translation>
+      <translation>Gestore layer</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayers.ui" line="43"/>
@@ -225,7 +225,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="434"/>
       <source>End arrow type</source>
-      <translation type="unfinished">End arrow type</translation>
+      <translation>Tipo di freccia finale</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="490"/>
@@ -236,7 +236,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="493"/>
       <source>End arrow size</source>
-      <translation type="unfinished">End arrow size</translation>
+      <translation>Dimensione freccia finale</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="536"/>
@@ -380,7 +380,7 @@
       <location filename="../ui/TaskPanel_CircularArray.ui" line="34"/>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="44"/>
       <source>Distance from one layer of objects to the next layer of objects</source>
-      <translation>Distanza da un livello di oggetti al livello successivo di oggetti</translation>
+      <translation>Distanza da un layer di oggetti al successivo layer di oggetti</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="37"/>
@@ -1269,12 +1269,12 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="464"/>
       <source>End arrow type</source>
-      <translation type="unfinished">End arrow type</translation>
+      <translation>Tipo di freccia finale</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="505"/>
       <source>End arrow size</source>
-      <translation type="unfinished">End arrow size</translation>
+      <translation>Dimensione freccia finale</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="563"/>
@@ -1786,7 +1786,7 @@ da aggiungere ai motivi standard</translation>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="354"/>
       <source>End arrow type</source>
-      <translation type="unfinished">End arrow type</translation>
+      <translation>Tipo di freccia finale</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="367"/>
@@ -1796,7 +1796,7 @@ da aggiungere ai motivi standard</translation>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="410"/>
       <source>End arrow size</source>
-      <translation type="unfinished">End arrow size</translation>
+      <translation>Dimensione freccia finale</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="417"/>
@@ -2330,9 +2330,9 @@ objects, maintaining the block structure. Good for referencing and measuring.</t
       <source>Merges all geometry per layer into a single, non-editable shape. Block
 structures are not preserved; their geometry becomes part of the layer's
 shape. Best for importing and viewing very large files with maximum performance.</source>
-      <translation type="unfinished">Merges all geometry per layer into a single, non-editable shape. Block
-structures are not preserved; their geometry becomes part of the layer's
-shape. Best for importing and viewing very large files with maximum performance.</translation>
+      <translation>Unisce tutte le geometrie per layer in una singola forma non modificabile. Le strutture del blocco
+non sono conservate; la loro geometria diventa parte della forma
+del layer. Ideale per l'importazione e la visualizzazione di file molto grandi con le massime prestazioni.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="202"/>
@@ -3045,7 +3045,7 @@ se corrispondono agli assi X, Y o Z del sistema di coordinate globali</translati
     </message>
     <message>
       <location filename="../../DraftGui.py" line="641"/>
-      <location filename="../../DraftGui.py" line="997"/>
+      <location filename="../../DraftGui.py" line="998"/>
       <source>Continue</source>
       <translation>Continua</translation>
     </message>
@@ -3166,8 +3166,8 @@ se corrispondono agli assi X, Y o Z del sistema di coordinate globali</translati
     <message>
       <location filename="../../DraftGui.py" line="553"/>
       <location filename="../../DraftGui.py" line="582"/>
-      <location filename="../../DraftGui.py" line="1663"/>
-      <location filename="../../DraftGui.py" line="1681"/>
+      <location filename="../../DraftGui.py" line="1664"/>
+      <location filename="../../DraftGui.py" line="1682"/>
       <location filename="../../draftguitools/gui_groups.py" line="273"/>
       <source>None</source>
       <translation>Nessuno</translation>
@@ -3215,7 +3215,7 @@ se corrispondono agli assi X, Y o Z del sistema di coordinate globali</translati
     </message>
     <message>
       <location filename="../../DraftGui.py" line="602"/>
-      <location filename="../../DraftGui.py" line="980"/>
+      <location filename="../../DraftGui.py" line="981"/>
       <source>Radius</source>
       <translation>Raggio</translation>
     </message>
@@ -3235,12 +3235,12 @@ se corrispondono agli assi X, Y o Z del sistema di coordinate globali</translati
       <translation>Attiva/Disattiva la modalità costruzione</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="934"/>
+      <location filename="../../DraftGui.py" line="935"/>
       <source>Label Type</source>
       <translation>Tipo di etichetta</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="981"/>
+      <location filename="../../DraftGui.py" line="982"/>
       <source>Radius of Circle</source>
       <translation>Raggio del Cerchio</translation>
     </message>
@@ -3304,12 +3304,12 @@ Deseleziona per usare il sistema di coordinate del piano di lavoro</translation>
       <translation>Termina il disegno corrente o l'operazione di modifica</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1885"/>
+      <location filename="../../DraftGui.py" line="1886"/>
       <source>Modify Objects</source>
       <translation>Modifica Oggetti</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2042"/>
+      <location filename="../../DraftGui.py" line="2043"/>
       <source>Facebinder Elements</source>
       <translation type="unfinished">Facebinder Elements</translation>
     </message>
@@ -3402,50 +3402,50 @@ Not available if the 'Use Part Primitives' preference is enabled</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="738"/>
-      <location filename="../../DraftGui.py" line="1669"/>
-      <location filename="../../DraftGui.py" line="1687"/>
+      <location filename="../../DraftGui.py" line="1670"/>
+      <location filename="../../DraftGui.py" line="1688"/>
       <source>Autogroup off</source>
       <translation>Disattiva auto-gruppo</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="841"/>
+      <location filename="../../DraftGui.py" line="842"/>
       <location filename="../../draftguitools/gui_lines.py" line="71"/>
       <source>Line</source>
       <translation>Linea</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="856"/>
+      <location filename="../../DraftGui.py" line="857"/>
       <source>DWire</source>
       <translation>Polilinea</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="879"/>
+      <location filename="../../DraftGui.py" line="880"/>
       <source>Circle</source>
       <translation>Cerchio</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="884"/>
+      <location filename="../../DraftGui.py" line="885"/>
       <source>Arc</source>
       <translation>Arco</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="889"/>
+      <location filename="../../DraftGui.py" line="890"/>
       <location filename="../../draftguitools/gui_rotate.py" line="286"/>
       <source>Rotate</source>
       <translation>Ruota</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="895"/>
+      <location filename="../../DraftGui.py" line="896"/>
       <source>Point</source>
       <translation>Punto</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="932"/>
+      <location filename="../../DraftGui.py" line="933"/>
       <source>Label</source>
       <translation>Etichetta</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="951"/>
+      <location filename="../../DraftGui.py" line="952"/>
       <location filename="../../draftguitools/gui_offset.py" line="243"/>
       <location filename="../../draftguitools/gui_offset.py" line="258"/>
       <location filename="../../draftguitools/gui_offset.py" line="321"/>
@@ -3453,31 +3453,31 @@ Not available if the 'Use Part Primitives' preference is enabled</translation>
       <translation>Offset</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="956"/>
-      <location filename="../../DraftGui.py" line="973"/>
+      <location filename="../../DraftGui.py" line="957"/>
+      <location filename="../../DraftGui.py" line="974"/>
       <location filename="../../draftguitools/gui_trimex.py" line="223"/>
       <source>Distance</source>
       <translation>Distanza</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="957"/>
-      <location filename="../../DraftGui.py" line="974"/>
+      <location filename="../../DraftGui.py" line="958"/>
+      <location filename="../../DraftGui.py" line="975"/>
       <location filename="../../draftguitools/gui_trimex.py" line="224"/>
       <source>Offset distance</source>
       <translation>Distanza di offset</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="970"/>
+      <location filename="../../DraftGui.py" line="971"/>
       <source>Trimex</source>
       <translation>Taglia/Estendi</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1053"/>
-      <location filename="../../DraftGui.py" line="1055"/>
+      <location filename="../../DraftGui.py" line="1054"/>
       <location filename="../../DraftGui.py" line="1056"/>
-      <location filename="../../DraftGui.py" line="1058"/>
+      <location filename="../../DraftGui.py" line="1057"/>
       <location filename="../../DraftGui.py" line="1059"/>
       <location filename="../../DraftGui.py" line="1060"/>
+      <location filename="../../DraftGui.py" line="1061"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="122"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="123"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="124"/>
@@ -3485,12 +3485,12 @@ Not available if the 'Use Part Primitives' preference is enabled</translation>
       <translation>Locale {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1062"/>
       <location filename="../../DraftGui.py" line="1063"/>
       <location filename="../../DraftGui.py" line="1064"/>
-      <location filename="../../DraftGui.py" line="1066"/>
+      <location filename="../../DraftGui.py" line="1065"/>
       <location filename="../../DraftGui.py" line="1067"/>
       <location filename="../../DraftGui.py" line="1068"/>
+      <location filename="../../DraftGui.py" line="1069"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="118"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="119"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="120"/>
@@ -3498,22 +3498,22 @@ Not available if the 'Use Part Primitives' preference is enabled</translation>
       <translation>Globale {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1677"/>
+      <location filename="../../DraftGui.py" line="1678"/>
       <source>Autogroup:</source>
       <translation>Gruppo automatico:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2039"/>
+      <location filename="../../DraftGui.py" line="2040"/>
       <source>Faces</source>
       <translation>Facce</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2040"/>
+      <location filename="../../DraftGui.py" line="2041"/>
       <source>Remove</source>
       <translation>Rimuovi</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2041"/>
+      <location filename="../../DraftGui.py" line="2042"/>
       <source>Add</source>
       <translation>Aggiungi</translation>
     </message>
@@ -3976,7 +3976,7 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="100"/>
       <source>%1/%2/%3 switch constraint</source>
-      <translation type="unfinished">%1/%2/%3 switch constraint</translation>
+      <translation>%1/%2/%3 commuta vincolo</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="110"/>
@@ -4267,13 +4267,13 @@ L'angolo finale sarà l'angolo base più questa quantità.</translation>
       <location filename="../../draftguitools/gui_groups.py" line="317"/>
       <location filename="../../draftguitools/gui_layers.py" line="165"/>
       <source>New Layer</source>
-      <translation>Nuovo Layer</translation>
+      <translation>Nuovo layer</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="318"/>
       <location filename="../../draftguitools/gui_layers.py" line="166"/>
       <source>Layer name</source>
-      <translation>Nome livello</translation>
+      <translation>Nome layer</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="319"/>
@@ -4920,7 +4920,7 @@ L'angolo finale sarà l'angolo base più questa quantità.</translation>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="434"/>
       <source>Switch to Ortho Mode</source>
-      <translation type="unfinished">Switch to Ortho Mode</translation>
+      <translation>Passa alla modalità ortogonale</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="451"/>
@@ -4961,7 +4961,7 @@ L'angolo finale sarà l'angolo base più questa quantità.</translation>
       <translation>Forma da Testo</translation>
     </message>
     <message>
-      <location filename="../../draftutils/params.py" line="506"/>
+      <location filename="../../draftutils/params.py" line="505"/>
       <source>Default</source>
       <translation>Predefinito</translation>
     </message>
@@ -4990,7 +4990,7 @@ L'angolo finale sarà l'angolo base più questa quantità.</translation>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="177"/>
       <source>Number of layers must be at least 2</source>
-      <translation type="unfinished">Number of layers must be at least 2</translation>
+      <translation>Il numero di layer deve essere almeno 2</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="163"/>
@@ -5687,37 +5687,37 @@ degli oggetti esistenti in tutti i documenti aperti?</translation>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="87"/>
       <source>Create layer</source>
-      <translation type="unfinished">Create layer</translation>
+      <translation>Crea layer</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="126"/>
       <source>Remove From Layer</source>
-      <translation>Rimuovi da Livello</translation>
+      <translation>Rimuovi dal layer</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="130"/>
       <source>Add to New Layer</source>
-      <translation>Aggiungi un nuovo Livello</translation>
+      <translation>Aggiungi a un nuovo layer</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="151"/>
       <source>Remove from layer</source>
-      <translation type="unfinished">Remove from layer</translation>
+      <translation>Rimuovi dal layer</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="173"/>
       <source>Add to new layer</source>
-      <translation type="unfinished">Add to new layer</translation>
+      <translation>Aggiungi al nuovo layer</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="191"/>
       <source>Add to layer</source>
-      <translation type="unfinished">Add to layer</translation>
+      <translation>Aggiungi al layer</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="279"/>
       <source>Layers change</source>
-      <translation type="unfinished">Layers change</translation>
+      <translation>Cambia i layer</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimension_ops.py" line="57"/>
@@ -5818,34 +5818,34 @@ degli oggetti esistenti in tutti i documenti aperti?</translation>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="489"/>
       <source>Activate Layer</source>
-      <translation type="unfinished">Activate Layer</translation>
+      <translation>Attiva il layer</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="496"/>
       <source>Reassign Properties of Layer</source>
-      <translation type="unfinished">Reassign Properties of Layer</translation>
+      <translation>Riassegna le proprietà di tutti i layer</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="504"/>
       <source>Select Layer Contents</source>
-      <translation type="unfinished">Select Layer Contents</translation>
+      <translation>Seleziona il contenuto del layer</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="547"/>
       <location filename="../../draftviewproviders/view_layer.py" line="573"/>
       <source>Add New Layer</source>
-      <translation type="unfinished">Add New Layer</translation>
+      <translation>Aggiungi un nuovo layer</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="554"/>
       <source>Reassign Properties of All Layers</source>
-      <translation type="unfinished">Reassign Properties of All Layers</translation>
+      <translation>Riassegna le proprietà di tutti i layer</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="562"/>
       <location filename="../../draftviewproviders/view_layer.py" line="595"/>
       <source>Merge Layer Duplicates</source>
-      <translation type="unfinished">Merge Layer Duplicates</translation>
+      <translation>Unisci i layer duplicati</translation>
     </message>
     <message>
       <location filename="../../importDXF.py" line="168"/>
@@ -6126,7 +6126,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="427"/>
       <source>New Layer</source>
-      <translation>Nuovo Layer</translation>
+      <translation>Nuovo layer</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="315"/>
@@ -6528,7 +6528,7 @@ If the "Copy" option is active, it will create rotated copies.</translation>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="73"/>
       <source>New Layer</source>
-      <translation>Nuovo Layer</translation>
+      <translation>Nuovo layer</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="77"/>
@@ -8648,7 +8648,7 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="147"/>
       <source>Switches the view style of the selected objects from Flat Lines to Wireframe and back</source>
-      <translation type="unfinished">Switches the view style of the selected objects from Flat Lines to Wireframe and back</translation>
+      <translation>Commuta lo stile di visualizzazione degli oggetti selezionati da linee a reticolo e viceversa</translation>
     </message>
   </context>
   <context>

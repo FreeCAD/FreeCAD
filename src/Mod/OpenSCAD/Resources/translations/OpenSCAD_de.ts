@@ -367,12 +367,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="285"/>
       <source>Expand Placements</source>
-      <translation>Elemente erweitern</translation>
+      <translation>Positionierung erweitern</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="288"/>
       <source>Expands all placements downwards in the Tree View</source>
-      <translation>Alle Platzierungen in der Baumansicht nach unten vergrößern</translation>
+      <translation>Alle Positionierung in der Baumansicht nach unten vergrößern</translation>
     </message>
   </context>
   <context>
@@ -445,7 +445,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="191"/>
       <source>Mirrors the mesh</source>
-      <translation>Das Netz spiegeln</translation>
+      <translation>Spiegelt das Netz</translation>
     </message>
   </context>
   <context>

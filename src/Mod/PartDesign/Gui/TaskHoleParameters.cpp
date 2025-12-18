@@ -845,16 +845,18 @@ void TaskHoleParameters::changedObject(const App::Document&, const App::Property
             hole->ThreadSize.getEnumVector(),
             hole->ThreadSize.getValue()
         );
-        updateComboBoxItems(
-            ui->HoleCutType,
-            hole->HoleCutType.getEnumVector(),
-            hole->HoleCutType.getValue()
-        );
-        updateComboBoxItems(
-            ui->ThreadClass,
-            hole->ThreadClass.getEnumVector(),
-            hole->ThreadClass.getValue()
-        );
+
+        std::vector<std::string> translatedCutTypes;
+        for (const auto& it : hole->HoleCutType.getEnumVector()) {
+            translatedCutTypes.push_back(tr(it.c_str()).toStdString());
+        }
+        updateComboBoxItems(ui->HoleCutType, translatedCutTypes, hole->HoleCutType.getValue());
+
+        std::vector<std::string> translatedClassTypes;
+        for (const auto& it : hole->ThreadClass.getEnumVector()) {
+            translatedClassTypes.push_back(tr(it.c_str()).toStdString());
+        }
+        updateComboBoxItems(ui->ThreadClass, translatedClassTypes, hole->ThreadClass.getValue());
     }
     else if (&Prop == &hole->ThreadSize) {
         ui->ThreadSize->setEnabled(true);

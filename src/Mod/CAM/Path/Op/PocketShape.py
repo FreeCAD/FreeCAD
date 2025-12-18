@@ -57,6 +57,75 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
     def areaOpFeatures(self, obj):
         return super(self.__class__, self).areaOpFeatures(obj) | PathOp.FeatureLocations
 
+    def removeHoles(self, solid, face, tolerance=1e-6):
+        """removeHoles(solid, face, tolerance) ... Remove hole wires from a face, keeping outer wire and boss wires.
+
+        Uses a cross-section algorithm: sections the solid slightly above the face level.
+        Wires that appear in the section are bosses (material above).
+        Wires that don't appear are holes (voids).
+
+        Args:
+            solid: The parent solid object
+            face: The face to process
+            tolerance: Distance tolerance for comparisons
+
+        Returns:
+            New face with outer wire and boss wires only
+        """
+        outer_wire = face.OuterWire
+        candidate_wires = [w for w in face.Wires if not w.isSame(outer_wire)]
+
+        if not candidate_wires:
+            return face
+
+        boss_wires = []
+
+        try:
+            # Create cutting plane from outer wire, offset above face by tolerance
+            cutting_plane = Part.Face(outer_wire)
+            cutting_plane.translate(FreeCAD.Vector(0, 0, tolerance))
+
+            # Section the solid
+            section = solid.Shape.section(cutting_plane)
+
+            if hasattr(section, "Edges") and section.Edges:
+                # Translate section edges back to face level
+                translated_edges = []
+                for edge in section.Edges:
+                    translated_edge = edge.copy()
+                    translated_edge.translate(FreeCAD.Vector(0, 0, -tolerance))
+                    translated_edges.append(translated_edge)
+
+                # Build closed wires from edges
+                edge_groups = Part.sortEdges(translated_edges)
+                all_section_wires = []
+
+                for edge_list in edge_groups:
+                    try:
+                        wire = Part.Wire(edge_list)
+                        if wire.isClosed():
+                            all_section_wires.append(wire)
+                    except Exception:
+                        # ignore any wires that can't be built
+                        pass
+
+                # Filter out outer wire, keep remaining as boss wires
+                for wire in all_section_wires:
+                    if not wire.isSame(outer_wire):
+                        length_diff = abs(wire.Length - outer_wire.Length)
+                        if length_diff > tolerance:
+                            boss_wires.append(wire)
+
+        except Exception as e:
+            Path.Log.error("removeHoles: Section algorithm failed: {}".format(e))
+            boss_wires = candidate_wires
+
+        # Construct new face with outer wire and boss wires
+        wire_compound = Part.makeCompound([outer_wire] + boss_wires)
+        new_face = Part.makeFace(wire_compound, "Part::FaceMakerBullseye")
+
+        return new_face
+
     def initPocketOp(self, obj):
         """initPocketOp(obj) ... setup receiver"""
         if not hasattr(obj, "UseOutline"):
@@ -106,15 +175,20 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             for base, subList in obj.Base:
                 for sub in subList:
                     if "Face" in sub:
-                        if sub not in avoidFeatures and not self.clasifySub(base, sub):
+                        if sub not in avoidFeatures and not self.classifySub(base, sub):
                             Path.Log.error(
                                 "Pocket does not support shape {}.{}".format(base.Label, sub)
                             )
 
             # Convert horizontal faces to use outline only if requested
+            Path.Log.debug("UseOutline: {}".format(obj.UseOutline))
+            Path.Log.debug("self.horiz: {}".format(self.horiz))
             if obj.UseOutline and self.horiz:
-                horiz = [Part.Face(f.Wire1) for f in self.horiz]
+                horiz = [self.removeHoles(base, face) for (face, base) in self.horiz]
                 self.horiz = horiz
+            else:
+                # Extract just the faces from the tuples for further processing
+                self.horiz = [face for (face, base) in self.horiz]
 
             # Check if selected vertical faces form a loop
             if len(self.vert) > 0:
@@ -133,6 +207,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                         self.horiz.append(face)
 
             # Add faces for extensions
+            # Note: Extension faces don't have a parent base object, so we append them directly
             self.exts = []
             for ext in extensions:
                 if not ext.avoid:
@@ -198,30 +273,36 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 return True
         return False
 
-    def clasifySub(self, bs, sub):
-        """clasifySub(bs, sub)...
+    def classifySub(self, bs, sub):
+        """classifySub(bs, sub)...
         Given a base and a sub-feature name, returns True
-        if the sub-feature is a horizontally oriented flat face.
+        if the sub-feature is a horizontally or vertically oriented flat face.
         """
         face = bs.Shape.getElement(sub)
 
-        if type(face.Surface) == Part.Plane:
+        if isinstance(face.Surface, Part.Plane):
             Path.Log.debug("type() == Part.Plane")
             if Path.Geom.isVertical(face.Surface.Axis):
                 Path.Log.debug("  -isVertical()")
                 # it's a flat horizontal face
-                self.horiz.append(face)
+                self.horiz.append((face, bs))
                 return True
 
             elif Path.Geom.isHorizontal(face.Surface.Axis):
                 Path.Log.debug("  -isHorizontal()")
                 self.vert.append(face)
                 return True
-
             else:
                 return False
 
-        elif type(face.Surface) == Part.Cylinder and Path.Geom.isVertical(face.Surface.Axis):
+        elif isinstance(face.Surface, Part.BSplineSurface):
+            Path.Log.debug("face Part.BSplineSurface")
+            if Path.Geom.isRoughly(face.BoundBox.ZLength, 0):
+                Path.Log.debug("  flat horizontal or almost flat horizontal")
+                self.horiz.append((face, bs))
+                return True
+
+        elif isinstance(face.Surface, Part.Cylinder) and Path.Geom.isVertical(face.Surface.Axis):
             Path.Log.debug("type() == Part.Cylinder")
             # vertical cylinder wall
             if any(e.isClosed() for e in face.Edges):
@@ -230,7 +311,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 circle = Part.makeCircle(face.Surface.Radius, face.Surface.Center)
                 disk = Part.Face(Part.Wire(circle))
                 disk.translate(FreeCAD.Vector(0, 0, face.BoundBox.ZMin - disk.BoundBox.ZMin))
-                self.horiz.append(disk)
+                self.horiz.append((disk, bs))
                 return True
 
             else:
@@ -239,7 +320,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 self.vert.append(face)
                 return True
 
-        elif type(face.Surface) == Part.SurfaceOfExtrusion:
+        elif isinstance(face.Surface, Part.SurfaceOfExtrusion):
             # extrusion wall
             Path.Log.debug("type() == Part.SurfaceOfExtrusion")
             # Save face to self.horiz for processing or display error
@@ -248,6 +329,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 return True
             else:
                 Path.Log.error("Failed to identify vertical face from {}".format(sub))
+                return False
 
         else:
             Path.Log.debug("  -type(face.Surface): {}".format(type(face.Surface)))
@@ -271,6 +353,4 @@ def Create(name, obj=None, parentJob=None):
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     obj.Proxy = ObjectPocket(obj, name, parentJob)
-    return obj
-
     return obj

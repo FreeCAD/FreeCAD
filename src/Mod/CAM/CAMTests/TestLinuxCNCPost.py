@@ -188,3 +188,14 @@ class TestLinuxCNCPost(PathTestUtils.PathTestBase):
         lines = gcode.splitlines()
         has_g64_without_p = any("G64" in line and "P" not in line for line in lines)
         self.assertTrue(has_g64_without_p, "Expected G64 without P parameter when tolerance is 0")
+
+    def test_blend_interaction_with_preamble_argument(self):
+        """Test interaction with a --preamble command line argument."""
+        self.profile_op.Path = Path.Path([])
+        self.job.PostProcessorArgs = (
+            '--no-header --no-comments --blend-mode BLEND --preamble="G80 G90" --no-show-editor'
+        )
+        gcode = self.post.export()[0][1]
+        lines = gcode.splitlines()
+        self.assertEqual(lines[0], "G80 G90")
+        self.assertEqual(lines[1], "G64")

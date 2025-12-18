@@ -1,0 +1,12 @@
+linux/AppDir/usr
+linux/AppDir/*.desktop
+linux/AppDir/*.svg
+linux/AppDir/packages.txt
+windows/FreeCAD_*Windows*
+osx/FreeCAD.app
+**.AppImage
+**.AppImage.zsync
+**.dmg
+**.7z
+**.exe
+**-SHA256.txt

@@ -22,6 +22,7 @@
  **************************************************************************/
 
 #include <FCConfig.h>
+#include <ParamHandler.h>
 
 #ifdef FC_OS_WIN32
 # include <windows.h>
@@ -37,6 +38,7 @@
 #include <QThread>
 #include <QTimer>
 #include <QWindow>
+
 #include <Inventor/SoDB.h>
 
 #include <set>
@@ -52,6 +54,8 @@
 #include "MainWindow.h"
 #include "Language/Translator.h"
 #include "Dialogs/DlgVersionMigrator.h"
+#include "FreeCADStyle.h"
+
 #include <App/Application.h>
 #include <Base/Console.h>
 
@@ -225,6 +229,7 @@ void StartupPostProcess::execute()
     setLocale();
     setCursorFlashing();
     setQtStyle();
+    setStyleSheet();
     checkOpenGL();
     loadOpenInventor();
     setBranding();
@@ -308,19 +313,24 @@ void StartupPostProcess::setCursorFlashing()
     QApplication::setCursorFlashTime(blinkTime);
 }
 
+
 void StartupPostProcess::setQtStyle()
 {
+    static ParamHandlers handlers;
+
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("MainWindow");
-    auto qtStyle = hGrp->GetASCII("QtStyle");
-    if (qtStyle.empty()) {
-        qtStyle = "Fusion";
-        hGrp->SetASCII("QtStyle", qtStyle);
-    }
-    else if (qtStyle == "System") {
-        // Special value to not set a QtStyle explicitly
-        return;
-    }
-    QApplication::setStyle(QString::fromStdString(qtStyle));
+
+    const auto setStyleFromParameters = [hGrp]() {
+        const auto style = hGrp->GetASCII("QtStyle");
+
+        Application::Instance->setStyle(QString::fromStdString(style));
+    };
+
+    auto handler = handlers.addHandler(hGrp, "QtStyle", [setStyleFromParameters](const ParamKey*) {
+        setStyleFromParameters();
+    });
+
+    setStyleFromParameters();
 }
 
 void StartupPostProcess::checkOpenGL()
@@ -502,8 +512,6 @@ void StartupPostProcess::activateWorkbench()
     if (auto fcApp = qobject_cast<GUIApplicationNativeEventAware*>(qtApp)) {
         fcApp->initSpaceball(mainWindow);
     }
-
-    setStyleSheet();
 
     // Now run the background autoload, for workbenches that should be loaded at startup, but not
     // displayed to the user immediately

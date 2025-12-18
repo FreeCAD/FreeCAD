@@ -2308,9 +2308,8 @@ scripts et l'intégration de l'atelier Part.</translation>
       <source>Creates a non-parametric shape for each DXF entity. Block definitions are
 imported as reusable objects (Part Compounds) and instances become `App::Link`
 objects, maintaining the block structure. Good for referencing and measuring.</source>
-      <translation>Crée une forme non paramétrique pour chaque entité DXF. Les définitions de blocs sont importées en
-tant qu'objets réutilisables (composés de Part) et les instances deviennent des objets « App::Link »,
-conservant ainsi la structure du bloc. Idéal pour référencer et mesurer.</translation>
+      <translation>Crée une forme non paramétrique pour chaque entité DXF. Les définitions de blocs sont importées en tant qu'objets réutilisables (composés
+de Part) et les instances deviennent des objets « App::Link », conservant ainsi la structure du bloc. Idéal pour référencer et mesurer.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="175"/>
@@ -2411,8 +2410,8 @@ polylignes fermées (ancien importateur uniquement).</translation>
       <location filename="../ui/preferences-dxf.ui" line="388"/>
       <source>If checked, colors will be set as specified in the DXF file whenever
 possible. Otherwise, default FreeCAD colors are applied</source>
-      <translation>Si cette option est cochée, les couleurs seront définies comme spécifié dans le fichier DXF dans la
-mesure du possible, sinon, les couleurs par défaut de FreeCAD seront appliquées.</translation>
+      <translation>Si cette option est cochée, les couleurs seront définies comme spécifié dans le fichier DXF dans la mesure du possible, sinon, les couleurs
+par défaut de FreeCAD seront appliquées.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="411"/>
@@ -2444,8 +2443,8 @@ forme de faces représentant cette largeur (ancien importateur uniquement).</tra
       <location filename="../ui/preferences-dxf.ui" line="482"/>
       <source>If checked, the legacy importer will attempt to create Sketcher objects
 instead of Draft or Part objects. This overrides the 'Import As' setting</source>
-      <translation>Si cette option est cochée, l'ancien importateur tentera de créer des objets Sketcher au lieu d'objets
-Draft ou Part. Cela remplace le paramètre « Importer en tant que ».</translation>
+      <translation>Si cette option est cochée, l'ancien importateur tentera de créer des objets Sketcher au lieu d'objets Draft ou Part. Cela remplace le
+paramètre « Importer en tant que ».</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="486"/>
@@ -3049,7 +3048,7 @@ des commandes.</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="641"/>
-      <location filename="../../DraftGui.py" line="997"/>
+      <location filename="../../DraftGui.py" line="998"/>
       <source>Continue</source>
       <translation>Continuer</translation>
     </message>
@@ -3171,8 +3170,8 @@ placée précédemment.</translation>
     <message>
       <location filename="../../DraftGui.py" line="553"/>
       <location filename="../../DraftGui.py" line="582"/>
-      <location filename="../../DraftGui.py" line="1663"/>
-      <location filename="../../DraftGui.py" line="1681"/>
+      <location filename="../../DraftGui.py" line="1664"/>
+      <location filename="../../DraftGui.py" line="1682"/>
       <location filename="../../draftguitools/gui_groups.py" line="273"/>
       <source>None</source>
       <translation>Aucun</translation>
@@ -3220,7 +3219,7 @@ placée précédemment.</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="602"/>
-      <location filename="../../DraftGui.py" line="980"/>
+      <location filename="../../DraftGui.py" line="981"/>
       <source>Radius</source>
       <translation>Rayon</translation>
     </message>
@@ -3240,12 +3239,12 @@ placée précédemment.</translation>
       <translation>Active/désactive le mode construction.</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="934"/>
+      <location filename="../../DraftGui.py" line="935"/>
       <source>Label Type</source>
       <translation>Type d'étiquette</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="981"/>
+      <location filename="../../DraftGui.py" line="982"/>
       <source>Radius of Circle</source>
       <translation>Rayon du cercle</translation>
     </message>
@@ -3309,12 +3308,12 @@ Décocher pour utiliser le système de coordonnées du plan de travail.</transla
       <translation>Termine l'opération de dessin ou de l'édition en cours</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1885"/>
+      <location filename="../../DraftGui.py" line="1886"/>
       <source>Modify Objects</source>
       <translation>Éditer des objets</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2042"/>
+      <location filename="../../DraftGui.py" line="2043"/>
       <source>Facebinder Elements</source>
       <translation>Éléments de la surface liée</translation>
     </message>
@@ -3407,50 +3406,50 @@ préférence « Créer des primitives de Part si possible » est activée.</tran
     </message>
     <message>
       <location filename="../../DraftGui.py" line="738"/>
-      <location filename="../../DraftGui.py" line="1669"/>
-      <location filename="../../DraftGui.py" line="1687"/>
+      <location filename="../../DraftGui.py" line="1670"/>
+      <location filename="../../DraftGui.py" line="1688"/>
       <source>Autogroup off</source>
       <translation>Groupement automatique désactivé</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="841"/>
+      <location filename="../../DraftGui.py" line="842"/>
       <location filename="../../draftguitools/gui_lines.py" line="71"/>
       <source>Line</source>
       <translation>Ligne</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="856"/>
+      <location filename="../../DraftGui.py" line="857"/>
       <source>DWire</source>
       <translation>Polyligne</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="879"/>
+      <location filename="../../DraftGui.py" line="880"/>
       <source>Circle</source>
       <translation>Cercle</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="884"/>
+      <location filename="../../DraftGui.py" line="885"/>
       <source>Arc</source>
       <translation>Arc</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="889"/>
+      <location filename="../../DraftGui.py" line="890"/>
       <location filename="../../draftguitools/gui_rotate.py" line="286"/>
       <source>Rotate</source>
       <translation>Pivoter</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="895"/>
+      <location filename="../../DraftGui.py" line="896"/>
       <source>Point</source>
       <translation>Point</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="932"/>
+      <location filename="../../DraftGui.py" line="933"/>
       <source>Label</source>
       <translation>Étiquette</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="951"/>
+      <location filename="../../DraftGui.py" line="952"/>
       <location filename="../../draftguitools/gui_offset.py" line="243"/>
       <location filename="../../draftguitools/gui_offset.py" line="258"/>
       <location filename="../../draftguitools/gui_offset.py" line="321"/>
@@ -3458,31 +3457,31 @@ préférence « Créer des primitives de Part si possible » est activée.</tran
       <translation>Décaler</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="956"/>
-      <location filename="../../DraftGui.py" line="973"/>
+      <location filename="../../DraftGui.py" line="957"/>
+      <location filename="../../DraftGui.py" line="974"/>
       <location filename="../../draftguitools/gui_trimex.py" line="223"/>
       <source>Distance</source>
       <translation>Distance</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="957"/>
-      <location filename="../../DraftGui.py" line="974"/>
+      <location filename="../../DraftGui.py" line="958"/>
+      <location filename="../../DraftGui.py" line="975"/>
       <location filename="../../draftguitools/gui_trimex.py" line="224"/>
       <source>Offset distance</source>
       <translation>Distance de décalage</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="970"/>
+      <location filename="../../DraftGui.py" line="971"/>
       <source>Trimex</source>
       <translation>Ajuster ou prolonger</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1053"/>
-      <location filename="../../DraftGui.py" line="1055"/>
+      <location filename="../../DraftGui.py" line="1054"/>
       <location filename="../../DraftGui.py" line="1056"/>
-      <location filename="../../DraftGui.py" line="1058"/>
+      <location filename="../../DraftGui.py" line="1057"/>
       <location filename="../../DraftGui.py" line="1059"/>
       <location filename="../../DraftGui.py" line="1060"/>
+      <location filename="../../DraftGui.py" line="1061"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="122"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="123"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="124"/>
@@ -3490,12 +3489,12 @@ préférence « Créer des primitives de Part si possible » est activée.</tran
       <translation>{} local</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1062"/>
       <location filename="../../DraftGui.py" line="1063"/>
       <location filename="../../DraftGui.py" line="1064"/>
-      <location filename="../../DraftGui.py" line="1066"/>
+      <location filename="../../DraftGui.py" line="1065"/>
       <location filename="../../DraftGui.py" line="1067"/>
       <location filename="../../DraftGui.py" line="1068"/>
+      <location filename="../../DraftGui.py" line="1069"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="118"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="119"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="120"/>
@@ -3503,22 +3502,22 @@ préférence « Créer des primitives de Part si possible » est activée.</tran
       <translation>{} global</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1677"/>
+      <location filename="../../DraftGui.py" line="1678"/>
       <source>Autogroup:</source>
       <translation>Groupement automatique :</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2039"/>
+      <location filename="../../DraftGui.py" line="2040"/>
       <source>Faces</source>
       <translation>Faces</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2040"/>
+      <location filename="../../DraftGui.py" line="2041"/>
       <source>Remove</source>
       <translation>Supprimer</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2041"/>
+      <location filename="../../DraftGui.py" line="2042"/>
       <source>Add</source>
       <translation>Ajouter</translation>
     </message>
@@ -4966,7 +4965,7 @@ groupes.</translation>
       <translation>Forme à partir d'un texte</translation>
     </message>
     <message>
-      <location filename="../../draftutils/params.py" line="506"/>
+      <location filename="../../draftutils/params.py" line="505"/>
       <source>Default</source>
       <translation>Par défaut</translation>
     </message>
@@ -5357,8 +5356,7 @@ Utiliser 0 à la place.</translation>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="375"/>
       <source>Wrong input: object does not have at least 1 element in 'Vertexes' to use for measuring.</source>
-      <translation>Saisie incorrecte : l'objet ne comporte pas au moins un élément dans « Sommets » pouvant être
-utilisé pour la mesure.</translation>
+      <translation>Saisie incorrecte : l'objet ne comporte pas au moins un élément dans « Sommets » pouvant être utilisé pour la mesure.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="381"/>
@@ -6066,7 +6064,7 @@ pour permettre à FreeCAD de télécharger ces bibliothèques. Répondre Oui.</t
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="206"/>
       <source>Edit Scale</source>
-      <translation>Éditer la mise à l'échelle</translation>
+      <translation>Modifier l'échelle</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="104"/>
@@ -7462,9 +7460,7 @@ There are various possibilities:
 - An object, and one of its edges.
 - An object, and two of its vertices.
 - An arc object, and its edge.</source>
-      <translation>L'objet, et ses sous-éléments spécifiques, que cette dimension mesure.
-
-Il existe plusieurs possibilités :
+      <translation>L'objet, et ses sous-éléments spécifiques, que cette dimension mesure. Il existe plusieurs possibilités :
 - Un objet et l'une de ses arêtes.
 - Un objet et deux de ses sommets.
 - Un objet arc et son arête.</translation>
@@ -7522,17 +7518,14 @@ from the 'Start' and 'End' properties.
 
 If the 'Linked Geometry' is an arc or circle, this 'Distance'
 is the radius or diameter, depending on the 'Diameter' property.</source>
-      <translation>La valeur de la mesure
-
-Cette propriété est en lecture seule car la valeur est calculée à partir des propriétés "Start" et "End".
-
-Si "'Linked Geometry" est un arc ou un cercle, cette "Distance" est le rayon ou le diamètre, selon la propriété "Diameter".</translation>
+      <translation>La valeur de la mesure. Cette propriété est en lecture seule car la valeur est calculée à partir des propriétés « Start » et « End ».
+Si « Linked Geometry » est un arc ou un cercle, cette « Distance » est le rayon ou le diamètre, selon la propriété « Diameter ».</translation>
     </message>
     <message>
       <location filename="../../draftobjects/dimension.py" line="286"/>
       <source>When measuring circular arcs, it determines whether to display
 the radius or the diameter value</source>
-      <translation>Lors de la mesure d'arcs circulaires, cela détermine s'il faut afficher le rayon ou le diamètre</translation>
+      <translation>Lors de la mesure d'arcs circulaires, cela détermine s'il faut afficher le rayon ou le diamètre.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/dimension.py" line="516"/>
@@ -7564,9 +7557,7 @@ qui donne l'« angle » mesuré entre eux.</translation>
 
 This property is read-only because the value is calculated from
 the 'First Angle' and 'Last Angle' properties.</source>
-      <translation>La valeur de la mesure.
-
-Cette propriété est en lecture seule. La valeur est calculée à partir des propriétés "First Angle" et "Last Angle".</translation>
+      <translation>La valeur de la mesure. Cette propriété est en lecture seule. La valeur est calculée à partir des propriétés « First Angle » et « Last Angle ».</translation>
     </message>
     <message>
       <location filename="../../draftobjects/rectangle.py" line="48"/>
@@ -8081,9 +8072,9 @@ Si d'autres objets sont sélectionnés, ils seront ignorés.</translation>
       <source>Converts bidirectionally between Draft objects and sketches.
 Multiple selected Draft objects are converted into a single sketch.
 However, a single sketch with disconnected traces is converted into several individual Draft objects.</source>
-      <translation>Convertit bidirectionnellement des objets Draft et des esquisses.
-Plusieurs objets Draft sélectionnés sont convertis en une seule esquisse.
-Cependant, une seule esquisse avec des ruptures est convertie en plusieurs objets Draft.</translation>
+      <translation>Convertit de manieère bidirectionnelle des objets Draft et des esquisses.
+Plusieurs objets Draft sélectionnés sont convertis en une seule esquisse. Cependant, une seule esquisse avec des ruptures est
+convertie en plusieurs objets Draft.</translation>
     </message>
   </context>
   <context>
@@ -8722,9 +8713,8 @@ importées en tant qu'objets réutilisables (composés de Part) et les instances
       <source>Creates a non-parametric shape for each DXF entity. Block definitions are
 imported as reusable objects (Part Compounds) and instances become `App::Link`
 objects, maintaining the block structure. Good for referencing and measuring.</source>
-      <translation>Crée une forme non paramétrique pour chaque entité DXF. Les définitions de blocs sont importées en
-tant qu'objets réutilisables (composés de Part) et les instances deviennent des objets « App::Link »,
-conservant ainsi la structure du bloc. Idéal pour référencer et mesurer.</translation>
+      <translation>Crée une forme non paramétrique pour chaque entité DXF. Les définitions de blocs sont importées en tant qu'objets réutilisables (composés
+de Part) et les instances deviennent des objets « App::Link », conservant ainsi la structure du bloc. Idéal pour référencer et mesurer.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf-import.ui" line="57"/>

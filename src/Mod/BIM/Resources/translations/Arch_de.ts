@@ -219,11 +219,11 @@
 Examples of valid filters (everything is case-insensitive): Name:Wall - Will only consider objects with 'wall' in their name (internal name); !Name:Wall - Will only consider objects which DO NOT have 'wall' in their name (internal name); Description:Win - Will only consider objects with 'win' in their description; !Label:Win - Will only consider objects which DO NOT have 'win' in their label; IfcType:Wall - Will only consider objects which Ifc Type is 'Wall'; !Tag:Wall - Will only consider objects which tag is NOT 'Wall'. If you leave this field empty, no filtering is applied
 
 When dealing with native IFC objects, you can use FreeCAD properties name, ex: 'Class:IfcWall' or any other IFC attribute (ex. 'IsTypedBy:#455'). If the 'Objects' column has been set to an IFC project or document, all the IFC entities of that project will be considered.</source>
-      <translation type="unfinished">An optional semicolon (;) separated list of property:value filters. Prepend ! to a property name to invert the effect of the filter (exclude objects that match the filter). Objects whose property contains the value will be matched.
+      <translation>Eine optionale, durch Semikolons (;) getrennte Liste von Eigenschaft:Wert-Filtern. Man setzt ein ! vor einen Eigenschaftsnamen, um die Wirkung des Filters umzukehren (Objekte ausschließen, die dem Filter entsprechen). Objekte, deren Eigenschaft den Wert enthält, werden abgeglichen.
 
-Examples of valid filters (everything is case-insensitive): Name:Wall - Will only consider objects with 'wall' in their name (internal name); !Name:Wall - Will only consider objects which DO NOT have 'wall' in their name (internal name); Description:Win - Will only consider objects with 'win' in their description; !Label:Win - Will only consider objects which DO NOT have 'win' in their label; IfcType:Wall - Will only consider objects which Ifc Type is 'Wall'; !Tag:Wall - Will only consider objects which tag is NOT 'Wall'. If you leave this field empty, no filtering is applied
+Beispiele für gültige Filter (Groß-/Kleinschreibung wird nicht berücksichtigt): Name:Wall – Berücksichtigt nur Objekte, deren Name (interner Name) „wall“ enthält; !Name:Wall – Berücksichtigt nur Objekte, deren Name (interner Name) NICHT „wall“ enthält; Beschreibung:Win – Berücksichtigt nur Objekte, deren Beschreibung „win“ enthält; !Label:Win – Berücksichtigt nur Objekte, deren Bezeichnung NICHT „win“ enthält; IfcType:Wall – Berücksichtigt nur Objekte, deren Ifc-Typ „Wall“ ist; !Tag:Wall – Berücksichtigt nur Objekte, deren Tag NICHT „Wall“ ist. Wenn Sie dieses Feld leer lassen, wird keine Filterung angewendet.
 
-When dealing with native IFC objects, you can use FreeCAD properties name, ex: 'Class:IfcWall' or any other IFC attribute (ex. 'IsTypedBy:#455'). If the 'Objects' column has been set to an IFC project or document, all the IFC entities of that project will be considered.</translation>
+Bei der Arbeit mit nativen IFC-Objekten können Sie FreeCAD-Eigenschaftsnamen verwenden, z. B. „Class:IfcWall” oder jedes andere IFC-Attribut (z. B. „IsTypedBy:#455”). Wenn die Spalte „Objekte” auf ein IFC-Projekt oder -Dokument gesetzt wurde, werden alle IFC-Entitäten dieses Projekts berücksichtigt.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="149"/>
@@ -1984,7 +1984,7 @@ des Projekts zu erhalten egal, ob sie erweitert werden oder nicht.</translation>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="20"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The following test will check the model or the selected object(s) and their children for conformity to IFC standards.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Important&lt;/span&gt;: None of the failed tests below will prevent exporting IFC files, nor do these tests guarantee that the IFC files meets some specific quality or standard requirement. They are there to assess which elements are included or excluded from the exported file. Choose which item is of importance manually. Hovering the mouse over each description will show more information.&lt;/p&gt;&lt;p&gt;After a test is run, clicking the corresponding button will show more information to help fix the problems.&lt;/p&gt;&lt;p&gt;The &lt;a href="http://www.buildingsmart-tech.org/specifications"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;official IFC website&lt;/span&gt;&lt;/a&gt; contains a lot of useful information about IFC standards.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The following test will check the model or the selected object(s) and their children for conformity to IFC standards.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Important&lt;/span&gt;: None of the failed tests below will prevent exporting IFC files, nor do these tests guarantee that the IFC files meets some specific quality or standard requirement. They are there to assess which elements are included or excluded from the exported file. Choose which item is of importance manually. Hovering the mouse over each description will show more information.&lt;/p&gt;&lt;p&gt;After a test is run, clicking the corresponding button will show more information to help fix the problems.&lt;/p&gt;&lt;p&gt;The &lt;a href="http://www.buildingsmart-tech.org/specifications"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;official IFC website&lt;/span&gt;&lt;/a&gt; contains a lot of useful information about IFC standards.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Der folgende Test überprüft das Modell oder die ausgewählten Objekte und deren untergeordnete Elemente auf Konformität mit den IFC-Standards.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Wichtig&lt;/span&gt;: Keiner der unten aufgeführten fehlgeschlagenen Tests verhindert den Export von IFC-Dateien, noch garantieren diese Tests, dass die IFC-Dateien bestimmte Qualitäts- oder Standardanforderungen erfüllen. Sie dienen dazu, zu beurteilen, welche Elemente in die exportierte Datei aufgenommen oder aus ihr ausgeschlossen werden. Manuell auswählen, welche Elemente wichtig sind. Wenn man mit der Maus über die einzelnen Beschreibungen fährt, werden weitere Informationen angezeigt. &lt;/p&gt;&lt;p&gt;Nach Durchführung eines Tests werden durch Klicken auf die entsprechende Schaltfläche weitere Informationen angezeigt, die bei der Behebung der Probleme helfen. &lt;/p&gt;&lt;p&gt;Die &lt;a href="http://www.buildingsmart-tech.org/specifications"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;offizielle IFC-Website&lt;/span&gt;&lt;/a&gt; enthält viele nützliche Informationen zu IFC-Standards. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="30"/>
@@ -2004,7 +2004,7 @@ des Projekts zu erhalten egal, ob sie erweitert werden oder nicht.</translation>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="79"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IFC export in FreeCAD is performed by an open-source third-party library called IfcOpenShell. To be able to export to the newer IFC4 standard, IfcOpenShell must have been compiled with IFC4 support enabled. This test will check if IFC4 support is available in the installed version of IfcOpenShell. If not, FreeCAD will only export IFC files in the older IFC2x3 standard. Note that some applications out there still have incomplete or inexistent IFC4 support, so in some cases IFC2x3 might still work better.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IFC export in FreeCAD is performed by an open-source third-party library called IfcOpenShell. To be able to export to the newer IFC4 standard, IfcOpenShell must have been compiled with IFC4 support enabled. This test will check if IFC4 support is available in the installed version of IfcOpenShell. If not, FreeCAD will only export IFC files in the older IFC2x3 standard. Note that some applications out there still have incomplete or inexistent IFC4 support, so in some cases IFC2x3 might still work better.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Der IFC-Export in FreeCAD wird durch eine Open-Source-Bibliothek eines Drittanbieters namens IfcOpenShell durchgeführt. Um in den neueren IFC4-Standard exportieren zu können, muss IfcOpenShell mit aktivierter IFC4-Unterstützung kompiliert worden sein. Dieser Test überprüft, ob die installierte Version von IfcOpenShell IFC4 unterstützt. Ist dies nicht der Fall, exportiert FreeCAD IFC-Dateien nur im älteren IFC2x3-Standard. Es muss beachtet werden, dass einige Anwendungen noch keine vollständige oder gar keine IFC4-Unterstützung bieten, sodass in manchen Fällen IFC2x3 möglicherweise immer noch besser funktioniert. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="102"/>
@@ -2014,32 +2014,32 @@ des Projekts zu erhalten egal, ob sie erweitert werden oder nicht.</translation>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="115"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;All IfcBuildingStorey (levels) elements are required to be inside an IfcBuilding element. This is a mandatory requirement of the IFC standard. When exporting the FreeCAD model to IFC, a default IfcBuilding will be created for all level objects (BuildingPart objects with their IFC role set as Building Storey) found that are not inside a Building. However, it is best to manually create that building, to have more control over its name and properties. This test is here to help find those levels without buildings.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;All IfcBuildingStorey (levels) elements are required to be inside an IfcBuilding element. This is a mandatory requirement of the IFC standard. When exporting the FreeCAD model to IFC, a default IfcBuilding will be created for all level objects (BuildingPart objects with their IFC role set as Building Storey) found that are not inside a Building. However, it is best to manually create that building, to have more control over its name and properties. This test is here to help find those levels without buildings.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Alle IfcBuildingStorey-Elemente (Ebenen) müssen sich innerhalb eines IfcBuilding-Elements befinden. Dies ist eine zwingende Anforderung des IFC-Standards. Beim Exportieren des FreeCAD-Modells nach IFC wird für alle Ebenenobjekte (BuildingPart-Objekte, deren IFC-Rolle als „Building Storey” festgelegt ist), die sich nicht innerhalb eines Gebäudes befinden, ein Standard-IfcBuilding erstellt. Es ist jedoch am besten, dieses Gebäude manuell zu erstellen, um mehr Kontrolle über seinen Namen und seine Eigenschaften zu haben. Dieser Test dient dazu, diese Ebenen ohne Gebäude zu finden. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="128"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;All elements derived from IfcProduct (that is, all the BIM elements that compose the model) are required to be inside an IfcBuildingStorey (level) element. This is a mandatory requirement of the IFC standard. When exporting the FreeCAD model to IFC, a default IfcBuildingStorey will be created for all BIM objects found that are not inside one already. However, it is best to check that all elements are correctly located inside a level to have more control over it. This test is here to help find those BIM objects without a level.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;All elements derived from IfcProduct (that is, all the BIM elements that compose the model) are required to be inside an IfcBuildingStorey (level) element. This is a mandatory requirement of the IFC standard. When exporting the FreeCAD model to IFC, a default IfcBuildingStorey will be created for all BIM objects found that are not inside one already. However, it is best to check that all elements are correctly located inside a level to have more control over it. This test is here to help find those BIM objects without a level.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Alle von IfcProduct abgeleiteten Elemente (d. h. alle BIM-Elemente, aus denen das Modell besteht) müssen sich innerhalb eines IfcBuildingStorey-Elements (Ebene) befinden. Dies ist eine zwingende Anforderung des IFC-Standards. Beim Exportieren des FreeCAD-Modells nach IFC wird für alle BIM-Objekte, die sich noch nicht in einem IfcBuildingStorey-Element befinden, ein Standard-IfcBuildingStorey-Element erstellt. Es ist jedoch ratsam, zu überprüfen, ob sich alle Elemente korrekt innerhalb einer Ebene befinden, um mehr Kontrolle darüber zu haben. Dieser Test hilft dabei, BIM-Objekte ohne Ebene zu finden. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="148"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;All IfcBuilding elements are required to be inside an IfcSite element. This is a mandatory requirement of the IFC standard. When exporting the FreeCAD model to IFC, a default IfcSite will be created for all Building objects found that are not inside a Site. However, it is best to manually create that site to have more control over its name and properties. This test is here to help find those buildings without sites.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;All IfcBuilding elements are required to be inside an IfcSite element. This is a mandatory requirement of the IFC standard. When exporting the FreeCAD model to IFC, a default IfcSite will be created for all Building objects found that are not inside a Site. However, it is best to manually create that site to have more control over its name and properties. This test is here to help find those buildings without sites.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Alle IfcBuilding-Elemente müssen sich innerhalb eines IfcSite-Elements befinden. Dies ist eine zwingende Anforderung des IFC-Standards. Beim Exportieren des FreeCAD-Modells nach IFC wird für alle Building-Objekte, die sich nicht innerhalb eines Site-Elements befinden, ein Standard-IfcSite-Element erstellt. Es ist jedoch empfehlenswert, dieses Site-Element manuell zu erstellen, um mehr Kontrolle über seinen Namen und seine Eigenschaften zu haben. Dieser Test dient dazu, solche Gebäude ohne Site-Elemente zu finden. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="168"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The IFC standard requires at least one site, one building and one level or building storey per project. This test will ensure that at least one object of each of these 3 types exists in the model.&lt;/p&gt;&lt;p&gt;Note that, as this is a mandatory requirement, FreeCAD will automatically add a default site, a default building and/or a default building storey if any of these is missing. So even if this test did not pass, the exported IFC file will meet the requirements.&lt;/p&gt;&lt;p&gt;However, it is always better to manually create these projects to gain more control over naming and properties.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The IFC standard requires at least one site, one building and one level or building storey per project. This test will ensure that at least one object of each of these 3 types exists in the model.&lt;/p&gt;&lt;p&gt;Note that, as this is a mandatory requirement, FreeCAD will automatically add a default site, a default building and/or a default building storey if any of these is missing. So even if this test did not pass, the exported IFC file will meet the requirements.&lt;/p&gt;&lt;p&gt;However, it is always better to manually create these projects to gain more control over naming and properties.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Der IFC-Standard verlangt mindestens einen Standort, ein Gebäude und eine Ebene oder ein Stockwerk pro Projekt. Dieser Test stellt sicher, dass mindestens ein Objekt jedes dieser drei Typen im Modell vorhanden ist. &lt;/p&gt;&lt;p&gt;Es muss beachtet werden, dass es sich hierbei um eine zwingende Anforderung handelt und FreeCAD automatisch einen Standardstandort, ein Standardgebäude und/oder ein Standardgeschoss hinzufügt, wenn eines dieser Elemente fehlt. Selbst wenn dieser Test nicht bestanden wird, erfüllt die exportierte IFC-Datei somit die Anforderungen. &lt;/p&gt;&lt;p&gt;Es ist jedoch immer besser, diese Projekte manuell zu erstellen, um mehr Kontrolle über die Benennung und Eigenschaften zu haben. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="204"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Although it is not a requirement for IFC objects to have fully clean and solid geometry, it is better if they do. This will reduce chances of problems with other applications. In real life, all objects have solid shapes.&lt;/p&gt;&lt;p&gt;FreeCAD has a lot of tools to check for geometry quality, and most parametric objects, including BIM objects, will usually warn the user if their geometry becomes unclean or not solid at some point. This test makes validates the solidity of the geometry.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Although it is not a requirement for IFC objects to have fully clean and solid geometry, it is better if they do. This will reduce chances of problems with other applications. In real life, all objects have solid shapes.&lt;/p&gt;&lt;p&gt;FreeCAD has a lot of tools to check for geometry quality, and most parametric objects, including BIM objects, will usually warn the user if their geometry becomes unclean or not solid at some point. This test makes validates the solidity of the geometry.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Obwohl es keine Voraussetzung für IFC-Objekte ist, eine vollständig saubere und solide Geometrie zu haben, ist es besser, wenn dies der Fall ist. Dadurch wird die Wahrscheinlichkeit von Problemen mit anderen Anwendungen verringert. In der Realität haben alle Objekte feste Formen. &lt;/p&gt;&lt;p&gt;FreeCAD verfügt über zahlreiche Werkzeuge zur Überprüfung der Geometriequalität, und die meisten parametrischen Objekte, einschließlich BIM-Objekte, warnen den Benutzer in der Regel, wenn ihre Geometrie an einer Stelle unvollständig oder nicht solide ist. Dieser Test überprüft die Solidität der Geometrie. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="217"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The IFC format provides a defined type for most of the objects that compose a building, for example walls, columns, doors, or sinks. But it also supports undefined objects, which are given the generic BuildingElementProxy type. This test will check that all objects have a defined type.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Note that failing this test is not necessarily bad, as it may be desirable for some object to not have any defined type. In some cases, this might even give better results, as some applications like Revit might add unwanted additional constraints or transformations to some known types such as structural elements (beams or columns). Exporting them as BuildingElementProxies will prevent that.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The IFC format provides a defined type for most of the objects that compose a building, for example walls, columns, doors, or sinks. But it also supports undefined objects, which are given the generic BuildingElementProxy type. This test will check that all objects have a defined type.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Note that failing this test is not necessarily bad, as it may be desirable for some object to not have any defined type. In some cases, this might even give better results, as some applications like Revit might add unwanted additional constraints or transformations to some known types such as structural elements (beams or columns). Exporting them as BuildingElementProxies will prevent that.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Das IFC-Format bietet einen definierten Typ für die meisten Objekte, aus denen ein Gebäude besteht, z. B. Wände, Säulen, Türen oder Waschbecken. Es unterstützt jedoch auch undefinierte Objekte, denen der generische Typ „BuildingElementProxy“ zugewiesen wird. Dieser Test überprüft, ob alle Objekte einen definierten Typ haben. &lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Es muss beachtet werden, dass ein Fehlschlagen dieses Tests nicht unbedingt schlecht ist, da es für manche Objekte wünschenswert sein kann, keinen definierten Typ zu haben. In einigen Fällen kann dies sogar zu besseren Ergebnissen führen, da manche Anwendungen wie Revit unerwünschte zusätzliche Einschränkungen oder Transformationen zu einigen bekannten Typen wie Strukturelementen (Balken oder Säulen) hinzufügen könnten. Durch den Export als BuildingElementProxies wird dies verhindert. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="246"/>
@@ -2049,7 +2049,7 @@ des Projekts zu erhalten egal, ob sie erweitert werden oder nicht.</translation>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="273"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The IFC standard offers standard, predefined property sets for many object types. For example, the property set Pset_WallCommon contains properties that the IFC standard thinks all walls should have. This test will check that all BIM objects have the right property set, if available.&lt;/p&gt;&lt;p&gt;Note that this is by no means a formal requirement, and these will inflate the size of the IFC file consequently. It is recommended to add standard property sets only if they are in use.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The IFC standard offers standard, predefined property sets for many object types. For example, the property set Pset_WallCommon contains properties that the IFC standard thinks all walls should have. This test will check that all BIM objects have the right property set, if available.&lt;/p&gt;&lt;p&gt;Note that this is by no means a formal requirement, and these will inflate the size of the IFC file consequently. It is recommended to add standard property sets only if they are in use.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Der IFC-Standard bietet standardmäßige, vordefinierte Eigenschaftssätze für viele Objekttypen. Der Eigenschaftssatz Pset_WallCommon enthält beispielsweise Eigenschaften, die laut IFC-Standard alle Wände aufweisen sollten. Dieser Test überprüft, ob alle BIM-Objekte über den richtigen Eigenschaftssatz verfügen, sofern verfügbar. &lt;/p&gt;&lt;p&gt;Es muss beachtet werden, dass dies keineswegs eine formale Anforderung ist und dass diese Eigenschaften die Größe der IFC-Datei entsprechend erhöhen. Es wird empfohlen, Standard-Eigenschaftssätze nur dann hinzuzufügen, wenn sie tatsächlich verwendet werden. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="286"/>
@@ -2059,7 +2059,7 @@ des Projekts zu erhalten egal, ob sie erweitert werden oder nicht.</translation>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="299"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Although there is no requirement for IFC objects to have a material defined, in the real world, it is an important layer of information to be added to the model. This test will find BIM objects without a material defined.&lt;/p&gt;&lt;p&gt;If a BIM object is exported without a material, it will nevertheless be assigned an IfcSurfaceStyle, which will be created from the object color. Some BIM applications disregard materials, and only consider the surface style of an object. No IfcMaterial will be attributed to that object.&lt;/p&gt;&lt;p&gt;If a BIM object has a material defined, a surface style will still be created (an IfcMaterial too), but its surface style will take the same name and properties as the material, thus giving more consistency to the file.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Although there is no requirement for IFC objects to have a material defined, in the real world, it is an important layer of information to be added to the model. This test will find BIM objects without a material defined.&lt;/p&gt;&lt;p&gt;If a BIM object is exported without a material, it will nevertheless be assigned an IfcSurfaceStyle, which will be created from the object color. Some BIM applications disregard materials, and only consider the surface style of an object. No IfcMaterial will be attributed to that object.&lt;/p&gt;&lt;p&gt;If a BIM object has a material defined, a surface style will still be created (an IfcMaterial too), but its surface style will take the same name and properties as the material, thus giving more consistency to the file.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Obwohl für IFC-Objekte keine Materialdefinition erforderlich ist, handelt es sich in der Praxis um eine wichtige Informationsebene, die dem Modell hinzugefügt werden sollte. Dieser Test findet BIM-Objekte ohne Materialdefinition. &lt;/p&gt;&lt;p&gt;Wenn ein BIM-Objekt ohne Material exportiert wird, wird ihm dennoch ein IfcSurfaceStyle zugewiesen, der aus der Objektfarbe erstellt wird. Einige BIM-Anwendungen ignorieren Materialien und berücksichtigen nur den Oberflächentyp eines Objekts. Diesem Objekt wird kein IfcMaterial zugewiesen. &lt;/p&gt;&lt;p&gt;Wenn für ein BIM-Objekt ein Material definiert ist, wird dennoch ein Oberflächentyp erstellt (auch ein IfcMaterial), aber dieser Oberflächentyp erhält denselben Namen und dieselben Eigenschaften wie das Material, wodurch die Datei konsistenter wird. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="302"/>
@@ -2094,12 +2094,12 @@ des Projekts zu erhalten egal, ob sie erweitert werden oder nicht.</translation>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="375"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Walls, columns and beams in FreeCAD can be constructed in a wide number of ways, but some simpler BIM applications might have difficulties with walls that are not of the most simple type. That is, a single, straight piece of wall (which correspond to the IfcWallStandardCase type) or beams and columns that are not based on a straight extrusion of a flat profile (BeamStandardCase, ColumnStandardCase)&lt;/p&gt;&lt;p&gt;This test will find any wall which is not such a standard case.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note&lt;/span&gt;: At the moment, BIM objects that meet the requirements to be of a standard case, are still exported as IfcWall, IfcBeam, IfcColumn.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Walls, columns and beams in FreeCAD can be constructed in a wide number of ways, but some simpler BIM applications might have difficulties with walls that are not of the most simple type. That is, a single, straight piece of wall (which correspond to the IfcWallStandardCase type) or beams and columns that are not based on a straight extrusion of a flat profile (BeamStandardCase, ColumnStandardCase)&lt;/p&gt;&lt;p&gt;This test will find any wall which is not such a standard case.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note&lt;/span&gt;: At the moment, BIM objects that meet the requirements to be of a standard case, are still exported as IfcWall, IfcBeam, IfcColumn.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wände, Stützen und Träger können in FreeCAD auf vielfältige Weise konstruiert werden, aber einige einfachere BIM-Anwendungen könnten Schwierigkeiten mit Wänden haben, die nicht dem einfachsten Typ entsprechen. Das heißt, ein einzelnes, gerades Wandstück (das dem Typ IfcWallStandardCase entspricht) oder Balken und Säulen, die nicht auf einer geraden Extrusion eines flachen Profils basieren (BeamStandardCase, ColumnStandardCase).&lt;/p&gt;&lt;p&gt;Dieser Test findet alle Wände, die nicht einem solchen Standardfall entsprechen. &lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Hinweis&lt;/span&gt;: Derzeit werden BIM-Objekte, die die Anforderungen eines Standardfalls erfüllen, weiterhin als IfcWall, IfcBeam und IfcColumn exportiert.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="415"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When exporting a model to IFC, all BIM objects that are an extrusion of a rectangular profile will use an IfcRectangleProfileDef entity as their extrusion profile. However, Revit will not import these correctly. If using the IFC file in Revit, it is recommended to disable this behavior by checking the option under menu &lt;span style=" font-weight:600;"&gt;Edit -&amp;gt; Preferences -&amp;gt; BIM -&amp;gt; Native IFC -&amp;gt; Disable IfcRectangularProfileDef&lt;/span&gt;.&lt;/p&gt;&lt;p&gt;When that option is checked, all extrusion profiles will be exported as generic IfcArbitraryProfileDef entities, regardless of if they are rectangular or not, which will contain a little less information, but will open correctly in Revit.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When exporting a model to IFC, all BIM objects that are an extrusion of a rectangular profile will use an IfcRectangleProfileDef entity as their extrusion profile. However, Revit will not import these correctly. If using the IFC file in Revit, it is recommended to disable this behavior by checking the option under menu &lt;span style=" font-weight:600;"&gt;Edit -&amp;gt; Preferences -&amp;gt; BIM -&amp;gt; Native IFC -&amp;gt; Disable IfcRectangularProfileDef&lt;/span&gt;.&lt;/p&gt;&lt;p&gt;When that option is checked, all extrusion profiles will be exported as generic IfcArbitraryProfileDef entities, regardless of if they are rectangular or not, which will contain a little less information, but will open correctly in Revit.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Beim Exportieren eines Modells nach IFC verwenden alle BIM-Objekte, die eine Extrusion eines rechteckigen Profils sind, eine IfcRectangleProfileDef-Entität als Extrusionsprofil. Revit importiert diese jedoch nicht korrekt. Wenn Sie die IFC-Datei in Revit verwenden, wird empfohlen, dieses Verhalten zu deaktivieren, indem man die Option unter dem Menü &lt;span style=" font-weight:600;"&gt;Bearbeiten -&amp;gt; Einstellungen -&amp;gt; BIM -&amp;gt; Native IFC -&amp;gt; IfcRectangularProfileDef deaktivieren&lt;/span&gt; aktiviert. &lt;/p&gt;&lt;p&gt;Wenn diese Option aktiviert ist, werden alle Extrusionsprofile als generische IfcArbitraryProfileDef-Entitäten exportiert, unabhängig davon, ob sie rechteckig sind oder nicht. Diese enthalten etwas weniger Informationen, lassen sich jedoch in Revit korrekt öffnen.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="378"/>
@@ -4069,17 +4069,17 @@ Die Standardvorlage befindet sich unter:
 If Angle = 0 and Run = 0 then the profile is identical to the relative profile.
 If Angle = 0 then the angle is calculated so that the height is the same as the relative profile.
 If Run = 0 then the run is calculated so that the height is the same as the relative profile.</source>
-      <translation type="unfinished">Parameters of the roof profiles:
-* Angle: slope in degrees relative to the horizontal.
-* Run: horizontal distance between the wall and the ridge.
-* IdRel: Id of the relative profile used for automatic calculations.
-* Thickness: thickness of the roof.
-* Overhang: horizontal distance between the eave and the wall.
-* Height: height of the ridge above the base (calculated automatically).
+      <translation>Parameter der Dachprofile:
+* Winkel: Neigung in Grad relativ zur Horizontalen.
+* Lauf: horizontaler Abstand zwischen Wand und First.
+* IdRel: ID des relativen Profils, das für automatische Berechnungen verwendet wird.
+* Dicke: Dicke des Daches.
+* Überhang: horizontaler Abstand zwischen Traufe und Wand.
+* Höhe: Höhe des Firsts über der Basis (wird automatisch berechnet).
 ---
-If Angle = 0 and Run = 0 then the profile is identical to the relative profile.
-If Angle = 0 then the angle is calculated so that the height is the same as the relative profile.
-If Run = 0 then the run is calculated so that the height is the same as the relative profile.</translation>
+Wenn Winkel = 0 und Länge = 0, dann ist das Profil identisch mit dem relativen Profil.
+Wenn Winkel = 0, dann wird der Winkel so berechnet, dass die Höhe mit dem relativen Profil übereinstimmt.
+Wenn Länge = 0, dann wird die Länge so berechnet, dass die Höhe mit dem relativen Profil übereinstimmt.</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="1080"/>
@@ -4184,90 +4184,90 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Upgraden</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="170"/>
+      <location filename="../../ArchReference.py" line="173"/>
       <source>Part not found in file</source>
       <translation>Bauteil nicht in Datei gefunden</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="192"/>
-      <location filename="../../ArchReference.py" line="237"/>
-      <location filename="../../ArchReference.py" line="433"/>
-      <location filename="../../ArchReference.py" line="868"/>
+      <location filename="../../ArchReference.py" line="195"/>
+      <location filename="../../ArchReference.py" line="240"/>
+      <location filename="../../ArchReference.py" line="436"/>
+      <location filename="../../ArchReference.py" line="871"/>
       <source>NativeIFC not available - unable to process IFC files</source>
       <translation>NativeIFC nicht verfügbar - IFC-Dateien können nicht verarbeitet werden</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="290"/>
+      <location filename="../../ArchReference.py" line="293"/>
       <source>Error removing splitter</source>
       <translation>Fehler beim Entfernen des Teilers</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="700"/>
+      <location filename="../../ArchReference.py" line="703"/>
       <source>Reload reference</source>
       <translation>Referenz neu laden</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="706"/>
+      <location filename="../../ArchReference.py" line="709"/>
       <source>Open reference</source>
       <translation>Referenz öffnen</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="744"/>
+      <location filename="../../ArchReference.py" line="747"/>
       <source>Unable to get lightWeight node for object referenced in</source>
       <translation>Konnte lightWeight-Knoten für Objekt nicht erhalten, für Objekt referenziert in</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="753"/>
-      <location filename="../../ArchReference.py" line="757"/>
+      <location filename="../../ArchReference.py" line="756"/>
+      <location filename="../../ArchReference.py" line="760"/>
       <source>Invalid lightWeight node for object referenced in</source>
       <translation>Ungültiger lightWeight Knoten für Objekt referenziert in</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="767"/>
-      <location filename="../../ArchReference.py" line="773"/>
-      <location filename="../../ArchReference.py" line="801"/>
-      <location filename="../../ArchReference.py" line="807"/>
+      <location filename="../../ArchReference.py" line="770"/>
+      <location filename="../../ArchReference.py" line="776"/>
+      <location filename="../../ArchReference.py" line="804"/>
+      <location filename="../../ArchReference.py" line="810"/>
       <source>Invalid root node in</source>
       <translation>Ungültiger Basis-Knoten in</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="892"/>
+      <location filename="../../ArchReference.py" line="895"/>
       <source>External reference</source>
       <translation>Externe Referenz</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="894"/>
+      <location filename="../../ArchReference.py" line="897"/>
       <source>External file</source>
       <translation>Externe Datei</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="898"/>
+      <location filename="../../ArchReference.py" line="901"/>
       <source>Open</source>
       <translation>Öffnen</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="905"/>
+      <location filename="../../ArchReference.py" line="908"/>
       <source>Part to use:</source>
       <translation>Zu verwendendes Bauteil:</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="910"/>
+      <location filename="../../ArchReference.py" line="913"/>
       <source>Choose File</source>
       <translation>Datei auswählen</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="921"/>
-      <location filename="../../ArchReference.py" line="984"/>
+      <location filename="../../ArchReference.py" line="924"/>
+      <location filename="../../ArchReference.py" line="987"/>
       <source>None (Use whole object)</source>
       <translation>Keine (Gesamtes Objekt verwenden)</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="972"/>
+      <location filename="../../ArchReference.py" line="975"/>
       <source>Reference files</source>
       <translation>Referenzdateien</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="974"/>
+      <location filename="../../ArchReference.py" line="977"/>
       <source>Choose reference file</source>
       <translation>Referenzdatei auswählen</translation>
     </message>
@@ -4480,7 +4480,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchSectionPlane.py" line="1503"/>
       <location filename="../../ArchGrid.py" line="384"/>
       <location filename="../../ArchSite.py" line="1294"/>
-      <location filename="../../ArchReference.py" line="695"/>
+      <location filename="../../ArchReference.py" line="698"/>
       <location filename="../../ArchAxisSystem.py" line="222"/>
       <location filename="../../ArchComponent.py" line="1874"/>
       <location filename="../../ArchSchedule.py" line="766"/>
@@ -4604,8 +4604,8 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../importers/importWebGL.py" line="371"/>
       <location filename="../../importers/importJSON.py" line="62"/>
-      <location filename="../../importers/importOBJ.py" line="302"/>
-      <location filename="../../importers/importOBJ.py" line="340"/>
+      <location filename="../../importers/importOBJ.py" line="301"/>
+      <location filename="../../importers/importOBJ.py" line="339"/>
       <source>Successfully written</source>
       <translation>Erfolgreich geschrieben</translation>
     </message>
@@ -5267,7 +5267,7 @@ Geschoß-Erstellung abgebrochen.</translation>
       <translation>Form mit Kurven gefunden, Trianguliere (Annäherung mittels Geraden)</translation>
     </message>
     <message>
-      <location filename="../../importers/importOBJ.py" line="451"/>
+      <location filename="../../importers/importOBJ.py" line="450"/>
       <source>Successfully imported</source>
       <translation>Erfolgreich importiert</translation>
     </message>
@@ -5421,7 +5421,7 @@ Geschoß-Erstellung abgebrochen.</translation>
     <message>
       <location filename="../../ArchComponent.py" line="2431"/>
       <source>New...</source>
-      <translation>Neu ...</translation>
+      <translation>Neu...</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2582"/>
@@ -5474,7 +5474,7 @@ Geschoß-Erstellung abgebrochen.</translation>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1732"/>
       <source>Placement and Visuals</source>
-      <translation>Platzierung und Darstellung</translation>
+      <translation>Positionierung und Darstellung</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1735"/>
@@ -5698,7 +5698,7 @@ Gebäudeerstellung abgebrochen.</translation>
       <translation>Fehler: Das Basisobjekt für diese Wand kann nicht geändert werden</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1715"/>
+      <location filename="../../ArchWall.py" line="1755"/>
       <source>Flip Direction</source>
       <translation>Richtung umkehren</translation>
     </message>
@@ -6729,12 +6729,12 @@ Gebäudeerstellung abgebrochen.</translation>
       <translation>Vereinige Objekte aus gleichem Material</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="584"/>
+      <location filename="../../ArchReference.py" line="587"/>
       <source>The latest time stamp of the linked file</source>
       <translation>Der letzte Zeitstempel der verknüpften Datei</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="590"/>
+      <location filename="../../ArchReference.py" line="593"/>
       <source>If true, the colors from the linked file will be kept updated</source>
       <translation>Wenn aktiviert, werden die Farben der verknüpften Datei aktualisiert</translation>
     </message>
@@ -6761,7 +6761,7 @@ Gebäudeerstellung abgebrochen.</translation>
     <message>
       <location filename="../../ArchFrame.py" line="115"/>
       <source>An optional additional placement to add to the profile before extruding it</source>
-      <translation>Eine optionale zusätzliche Platzierung, die dem Profil vor dem Extrudieren hinzugefügt wird</translation>
+      <translation>Eine optionale zusätzliche Positionierung, die dem Profil vor dem Extrudieren hinzugefügt wird</translation>
     </message>
     <message>
       <location filename="../../ArchFrame.py" line="125"/>
@@ -7159,7 +7159,7 @@ Gebäudeerstellung abgebrochen.</translation>
     <message>
       <location filename="../../ArchStairs.py" line="532"/>
       <source>Selected edges of the base Sketch/ArchSketch, to use in creating the shape (flight) of this Arch Stairs (instead of using all the Base ArchSketch's edges by default).  Input are index numbers of edges.  Disabled and ignored if Base object (ArchSketch) provides selected edges (as Flight Axis) information, with getStairsBaseShapeEdgesInfo() method.  [ENHANCEMENT by ArchSketch] GUI 'Edit Stairs' Tool is provided in external SketchArch Add-on to let users to (de)select the edges interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used.</source>
-      <translation type="unfinished">Selected edges of the base Sketch/ArchSketch, to use in creating the shape (flight) of this Arch Stairs (instead of using all the Base ArchSketch's edges by default).  Input are index numbers of edges.  Disabled and ignored if Base object (ArchSketch) provides selected edges (as Flight Axis) information, with getStairsBaseShapeEdgesInfo() method.  [ENHANCEMENT by ArchSketch] GUI 'Edit Stairs' Tool is provided in external SketchArch Add-on to let users to (de)select the edges interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used.</translation>
+      <translation>Ausgewählte Kanten der Basis-Skizze/ArchSketch, die zur Erstellung der Form (Flucht) dieser Arc Treppen verwendet werden sollen (anstelle der standardmäßig verwendeten Kanten der Basis-ArchSketch).  Als Eingabe dienen die Indexnummern der Kanten.  Deaktiviert und ignoriert, wenn das Basisobjekt (ArchSketch) Informationen zu ausgewählten Kanten (als Flucht-Achse) mit der Methode getStairsBaseShapeEdgesInfo() bereitstellt.  [VERBESSERUNG durch ArchSketch] Das GUI-Werkzeug „Treppe bearbeiten” wird im externen SketchArch-Add-on bereitgestellt, damit Benutzer die Kanten interaktiv auswählen oder abwählen können.  „Toponaming-tolerant”, wenn ArchSketch in der Basis verwendet wird (und das SketchArch-Add-on installiert ist).  Warnung: Nicht „Toponaming-tolerant”, wenn nur Sketch verwendet wird.</translation>
     </message>
     <message>
       <location filename="../../ArchFence.py" line="70"/>
@@ -8257,7 +8257,7 @@ Gebäudeerstellung abgebrochen.</translation>
     <message>
       <location filename="../../ArchWall.py" line="393"/>
       <source>Selected edges (or group of edges) of the base Sketch/ArchSketch, to use in creating the shape of this Arch Wall (instead of using all the Base Sketch/ArchSketch's edges by default).  Input are index numbers of edges or groups.  Disabled and ignored if Base object (ArchSketch) provides selected edges (as Wall Axis) information, with getWallBaseShapeEdgesInfo() method.  [ENHANCEMENT by ArchSketch] GUI 'Edit Wall Segment' Tool is provided in external SketchArch Add-on to let users to (de)select the edges interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used.</source>
-      <translation type="unfinished">Selected edges (or group of edges) of the base Sketch/ArchSketch, to use in creating the shape of this Arch Wall (instead of using all the Base Sketch/ArchSketch's edges by default).  Input are index numbers of edges or groups.  Disabled and ignored if Base object (ArchSketch) provides selected edges (as Wall Axis) information, with getWallBaseShapeEdgesInfo() method.  [ENHANCEMENT by ArchSketch] GUI 'Edit Wall Segment' Tool is provided in external SketchArch Add-on to let users to (de)select the edges interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used.</translation>
+      <translation>Ausgewählte Kanten (oder Kanten-Gruppen) der Basis-Skizze/ArchSketch, die zur Erstellung der Form dieser Arc Wand verwendet werden sollen (anstelle der standardmäßig verwendeten Kanten der Basis-Skizze/ArchSketch).  Als Eingabe dienen die Indexnummern der Kanten oder Gruppen.  Deaktiviert und ignoriert, wenn das Basisobjekt (ArchSketch) Informationen zu ausgewählten Kanten (als Wandachse) mit der Methode getWallBaseShapeEdgesInfo() bereitstellt.  [VERBESSERUNG durch ArchSketch] Das GUI-Werkzeug „Wandsegment bearbeiten” wird im externen SketchArch-Add-on bereitgestellt, damit Benutzer die Kanten interaktiv auswählen oder abwählen können. „Toponaming-tolerant”, wenn ArchSketch in der Basis verwendet wird (und das SketchArch-Add-on installiert ist). Warnung: Nicht „Toponaming-tolerant”, wenn nur Sketch verwendet wird.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="404"/>
@@ -9071,7 +9071,7 @@ Gebäudeerstellung abgebrochen.</translation>
     <message>
       <location filename="../../InitGui.py" line="712"/>
       <source>Import-Export</source>
-      <translation>Import / Export</translation>
+      <translation>Import/Export</translation>
     </message>
   </context>
   <context>
@@ -9158,7 +9158,7 @@ STRG + / um zwischen automatischem und manuellem Mosus umzuschalten</translation
     <message>
       <location filename="../../bimcommands/BimClassification.py" line="90"/>
       <source>Search...</source>
-      <translation>Suche ...</translation>
+      <translation>Suche...</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimClassification.py" line="91"/>
@@ -9426,7 +9426,7 @@ STRG + / um zwischen automatischem und manuellem Mosus umzuschalten</translation
     <message>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="186"/>
       <source>Add quantity set...</source>
-      <translation>Menge hinzufügen ...</translation>
+      <translation>Menge hinzufügen…</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="203"/>
@@ -9878,78 +9878,78 @@ STRG + / um zwischen automatischem und manuellem Mosus umzuschalten</translation
       <translation>Tipp: Die Ergebnisse werden am besten im Drahtgitter-Modus angezeigt (Menü Ansichten -&gt; Zeichenstil -&gt; Drahtgitter)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="294"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="295"/>
       <source>Building Layout</source>
       <translation>Gebäudeaufteilung</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="320"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="321"/>
       <source>Building Outline</source>
       <translation>Gebäudeumriss</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="339"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="340"/>
       <source>Building Label</source>
       <translation>Building Label</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="349"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="350"/>
       <source>Vertical Axes</source>
       <translation>Vertikale Achsen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="360"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="361"/>
       <source>Horizontal Axes</source>
       <translation>Horizontale Achsen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="370"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="371"/>
       <source>Axes</source>
       <translation>Achsen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="384"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="385"/>
       <source>Level</source>
       <translation>Stockwerk</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="445"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="446"/>
       <source>Save Preset</source>
       <translation>Voreinstellungen speichern</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="446"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="447"/>
       <source>Preset name</source>
       <translation>Voreinstellungs-Name</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="495"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="496"/>
       <source>User preset</source>
       <translation>Benutzer-Voreinstellung</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="785"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="786"/>
       <source>Template successfully loaded into the current document</source>
       <translation>Vorlage erfolgreich in das aktuelle Dokument geladen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="430"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="431"/>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="156"/>
       <source>New Group</source>
       <translation>Neue Gruppe</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="649"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="650"/>
       <source>Save template file</source>
       <translation>Vorlagendatei speichern</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="658"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="659"/>
       <source>Template saved successfully</source>
       <translation>Vorlage erfolgreich gespeichert</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="671"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="672"/>
       <source>Open template file</source>
       <translation>Vorlagendatei öffnen</translation>
     </message>
@@ -10206,12 +10206,12 @@ STRG + / um zwischen automatischem und manuellem Mosus umzuschalten</translation
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="78"/>
       <source>Add IFC property...</source>
-      <translation>IFC-Eigenschaft hinzufügen ...</translation>
+      <translation>IFC-Eigenschaft hinzufügen...</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="83"/>
       <source>Add standard IFC Property Set...</source>
-      <translation>Standard IFC Eigenschaften-Set hinzufügen ...</translation>
+      <translation>Standard IFC Eigenschaften-Set hinzufügen...</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="140"/>

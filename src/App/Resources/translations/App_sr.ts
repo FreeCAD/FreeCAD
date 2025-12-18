@@ -44,37 +44,37 @@ The user should then click the Refresh button in the main toolbar.
   <context>
     <name>App::LocalCoordinateSystem</name>
     <message>
-      <location filename="../../Datums.cpp" line="260"/>
+      <location filename="../../Datums.cpp" line="265"/>
       <source>X-axis</source>
       <translation>X-оса</translation>
     </message>
     <message>
-      <location filename="../../Datums.cpp" line="261"/>
+      <location filename="../../Datums.cpp" line="266"/>
       <source>Y-axis</source>
       <translation>Y-оса</translation>
     </message>
     <message>
-      <location filename="../../Datums.cpp" line="262"/>
+      <location filename="../../Datums.cpp" line="267"/>
       <source>Z-axis</source>
       <translation>Z-оса</translation>
     </message>
     <message>
-      <location filename="../../Datums.cpp" line="263"/>
+      <location filename="../../Datums.cpp" line="268"/>
       <source>XY-plane</source>
       <translation>XY раван</translation>
     </message>
     <message>
-      <location filename="../../Datums.cpp" line="264"/>
+      <location filename="../../Datums.cpp" line="269"/>
       <source>XZ-plane</source>
       <translation>XZ раван</translation>
     </message>
     <message>
-      <location filename="../../Datums.cpp" line="265"/>
+      <location filename="../../Datums.cpp" line="270"/>
       <source>YZ-plane</source>
       <translation>YZ раван</translation>
     </message>
     <message>
-      <location filename="../../Datums.cpp" line="266"/>
+      <location filename="../../Datums.cpp" line="271"/>
       <source>Origin</source>
       <translation>Координатни почетак</translation>
     </message>

@@ -1614,7 +1614,7 @@ void RenderingOrderAction::updateWidget()
     int midid = hGrp->GetInt("MidRenderGeometryId", 2);
     int lowid = hGrp->GetInt("LowRenderGeometryId", 3);
 
-    auto idToText = [this](int id) -> QString {
+    auto idToText = [](int id) -> QString {
         switch (id) {
         case 1:
             return tr("Normal geometry");

@@ -1357,7 +1357,7 @@ void TreeWidget::onCreateGroup()
                           "App.getDocument(\"%1\").addObject"
                           "(\"App::DocumentObjectGroup\",\"Group\").Label=\"%2\""
         )
-                          .arg(QString::fromLatin1(doc->getName()), name);
+                          .arg(QString::fromUtf8(doc->getName()), name);
         Gui::Command::runCommand(Gui::Command::App, cmd.toUtf8());
     }
     else if (this->contextItem->type() == ObjectType) {
@@ -1369,8 +1369,8 @@ void TreeWidget::onCreateGroup()
                           ".newObject(\"App::DocumentObjectGroup\",\"Group\").Label=\"%3\""
         )
                           .arg(
-                              QString::fromLatin1(doc->getName()),
-                              QString::fromLatin1(obj->getNameInDocument()),
+                              QString::fromUtf8(doc->getName()),
+                              QString::fromUtf8(obj->getNameInDocument()),
                               name
                           );
         Gui::Command::runCommand(Gui::Command::App, cmd.toUtf8());

@@ -373,19 +373,22 @@ private:
                     }
                     else if ((cstr->Type == Distance || cstr->Type == DistanceX
                               || cstr->Type == DistanceY)
-                             && firstIndex >= 0 && secondIndex >= 0) {
+                             && firstIndex >= 0) {
                         if (!deleteOriginal && cloneConstraints
-                            && cstr->First == cstr->Second) {  // only line distances
-                            if (indexOfGeoId(geoIdsWhoAlreadyHasEqual, secondIndexi) != -1) {
+                            && (cstr->First == cstr->Second || secondIndex < 0)) {  // only line
+                                                                                    // distances
+                            if (indexOfGeoId(geoIdsWhoAlreadyHasEqual, firstIndexi) != -1) {
                                 continue;
                             }
                             newConstr->Type = Equal;
                             newConstr->First = cstr->First;
-                            newConstr->Second = secondIndexi;
-                            geoIdsWhoAlreadyHasEqual.push_back(secondIndexi);
+                            newConstr->Second = firstIndexi;
+                            geoIdsWhoAlreadyHasEqual.push_back(firstIndexi);
                         }
                         else if (cstr->Type == Distance) {
-                            newConstr->Second = secondIndexi;
+                            if (secondIndex >= 0) {
+                                newConstr->Second = secondIndexi;
+                            }
                         }
                         else {
                             // We should be able to handle cases where rotation is 90 or 180, but

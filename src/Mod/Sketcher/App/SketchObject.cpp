@@ -3417,7 +3417,7 @@ void createNewConstraintsForTrim(
         }
         // We have already transferred all constraints on endpoints to the new pieces.
         // If there is still any left, this means one of the remaining pieces was degenerate.
-        if (!con->involvesGeoIdAndPosId(GeoId, PointPos::none)) {
+        if (!(con->Type == Angle || con->involvesGeoIdAndPosId(GeoId, PointPos::none))) {
             continue;
         }
         // constraint has not yet been changed
@@ -3442,6 +3442,34 @@ void createNewConstraintsForTrim(
                 .release()
         );
     }
+}
+
+std::optional<size_t> findPieceContainingPoint(
+    const SketchObject* obj,
+    const Part::Geometry* geo,
+    const Base::Vector3d& point,
+    const std::vector<int>& newIds,
+    const std::vector<const Part::Geometry*>& newGeos
+)
+{
+    double conParam;
+    auto* geoAsCurve = static_cast<const Part::GeomCurve*>(geo);
+    geoAsCurve->closestParameter(point, conParam);
+    // Choose based on where the closest point lies
+    // If it's not there, just leave this constraint out
+    for (size_t i = 0; i < newIds.size(); ++i) {
+        double newGeoFirstParam = static_cast<const Part::GeomCurve*>(newGeos[i])->getFirstParameter();
+        double newGeoLastParam = static_cast<const Part::GeomCurve*>(newGeos[i])->getLastParameter();
+        // For periodic curves the point may need a full revolution
+        if ((newGeoFirstParam - conParam) > Precision::PApproximation() && obj->isClosedCurve(geo)) {
+            conParam += (geoAsCurve->getLastParameter() - geoAsCurve->getFirstParameter());
+        }
+        if ((newGeoFirstParam - conParam) <= Precision::PApproximation()
+            && (conParam - newGeoLastParam) <= Precision::PApproximation()) {
+            return i;
+        }
+    }
+    return std::nullopt;
 }
 
 int SketchObject::trim(int GeoId, const Base::Vector3d& point)
@@ -3693,8 +3721,7 @@ bool SketchObject::deriveConstraintsForPieces(
         case Vertical:
         case Parallel: {
             transferToAll = geo->is<Part::GeomLineSegment>();
-            break;
-        }
+        } break;
         case Tangent:
         case Perpendicular: {
             if (geo->is<Part::GeomLineSegment>()) {
@@ -3728,9 +3755,63 @@ bool SketchObject::deriveConstraintsForPieces(
                     return true;
                 }
             }
+        } break;
+        case Angle: {
+            const auto [thirdGeo, thirdPos] = con->getElement(2);
+            if (thirdGeo == oldId) {
+                // TODO: transfer to a coincident point,
+                // is it possible to do it somewhere else and avoid?
+                std::vector<int> GeoIdList;
+                std::vector<PointPos> PosIdList;
+                getDirectlyCoincidentPoints(thirdGeo, thirdPos, GeoIdList, PosIdList);
+                if (GeoIdList.size() <= 1) {
+                    // TODO: Even in this case we can add a point
+                    return false;
+                }
 
-            break;
-        }
+                // transfer only to the curve that actually intersects
+                Base::Vector3d point(getPoint(thirdGeo, thirdPos));
+                std::optional<size_t> idx = findPieceContainingPoint(this, geo, point, newIds, newGeos);
+
+                if (idx.has_value()) {
+                    Constraint* trans = con->copy();
+                    trans->substituteIndexAndPos(GeoIdList[0], PosIdList[0], GeoIdList[1], PosIdList[1]);
+                    trans->substituteIndex(oldId, newIds[idx.value()]);
+                    newConstraints.push_back(trans);
+                    return true;
+                }
+            }
+            else if (thirdGeo != GeoEnum::GeoUndef) {
+                // Angle via point but the point won't change, can transfer to all or first
+                // transfer only to the curve that actually intersects
+                Base::Vector3d point(getPoint(thirdGeo, thirdPos));
+                std::optional<size_t> idx = findPieceContainingPoint(this, geo, point, newIds, newGeos);
+
+                if (idx.has_value()) {
+                    Constraint* trans = con->copy();
+                    trans->substituteIndex(oldId, newIds[idx.value()]);
+                    newConstraints.push_back(trans);
+                    return true;
+                }
+                break;
+            }
+            else if (std::ranges::any_of(newGeos, [](const Part::Geometry* geo) {
+                         return !geo->is<Part::GeomLineSegment>();
+                     })) {
+                // Angle without a specific point is only supported when _all_ geometries are lines.
+                // If the original was a line, we may reach this point, for example, when converting
+                // it to NURBS.
+
+                // NOTE: We may decide to change this logic in the future. Follows
+                // `Sketch::addConstraint`.
+                return false;
+            }
+            else {
+                // Straight up angle, can transfer to all or first
+                transferToAll = true;
+                break;
+            }
+        } break;
         case Distance:
         case DistanceX:
         case DistanceY:
@@ -3778,9 +3859,7 @@ bool SketchObject::deriveConstraintsForPieces(
                     return true;
                 }
             }
-
-            break;
-        }
+        } break;
         case Radius:
         case Diameter:
         case Equal: {
@@ -3794,7 +3873,7 @@ bool SketchObject::deriveConstraintsForPieces(
                 newConstraints.push_back(trans);
                 break;
             }
-        }
+        } break;
         default:
             // Release other constraints
             break;
@@ -8826,6 +8905,22 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
 {
     Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
 
+    // Analyze the state of existing external geometries to infer the desired state for new ones.
+    // If any geometry from a source link is "defining", we'll treat the whole link as "defining".
+    std::map<std::string, bool> linkIsDefiningMap;
+    for (const auto& geo : ExternalGeo.getValues()) {
+        auto egf = ExternalGeometryFacade::getFacade(geo);
+        if (!egf->getRef().empty()) {
+            bool isDefining = egf->testFlag(ExternalGeometryExtension::Defining);
+            if (linkIsDefiningMap.find(egf->getRef()) == linkIsDefiningMap.end()) {
+                linkIsDefiningMap[egf->getRef()] = isDefining;
+            }
+            else {
+                linkIsDefiningMap[egf->getRef()] = linkIsDefiningMap[egf->getRef()] && isDefining;
+            }
+        }
+    }
+
     // get the actual lists of the externals
     auto Types       = ExternalTypes.getValues();
     auto Objects     = ExternalGeometry.getValues();
@@ -9135,10 +9230,24 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
 
     // now update the geometries
     for(auto &geos : newGeos) {
+        if (geos.empty()) {
+            continue;
+        }
+
+        // Get the reference key for this group of geometries. All geos in this vector share the same ref.
+        const std::string& key = ExternalGeometryFacade::getFacade(geos.front().get())->getRef();
+        auto itKey = linkIsDefiningMap.find(key);
+        bool hasLinkState = itKey != linkIsDefiningMap.end();
+        bool isLinkDefining = hasLinkState ? itKey->second : false;
+
         for(auto &geo : geos) {
             auto it = externalGeoMap.find(GeometryFacade::getId(geo.get()));
             if(it == externalGeoMap.end()) {
                 // This is a new geometries.
+                // Set its defining state based on the inferred state of its parent link.
+                if (hasLinkState) {
+                    ExternalGeometryFacade::getFacade(geo.get())->setFlag(ExternalGeometryExtension::Defining, isLinkDefining);
+                }
                 geoms.push_back(geo.release());
                 continue;
             }
@@ -9463,7 +9572,7 @@ const std::map<int, Sketcher::PointPos> SketchObject::getAllCoincidentPoints(int
 
 void SketchObject::getDirectlyCoincidentPoints(int GeoId, PointPos PosId,
                                                std::vector<int>& GeoIdList,
-                                               std::vector<PointPos>& PosIdList)
+                                               std::vector<PointPos>& PosIdList) const
 {
     const std::vector<Constraint*>& constraints = this->Constraints.getValues();
 
@@ -9505,7 +9614,7 @@ void SketchObject::getDirectlyCoincidentPoints(int GeoId, PointPos PosId,
 }
 
 void SketchObject::getDirectlyCoincidentPoints(int VertexId, std::vector<int>& GeoIdList,
-                                               std::vector<PointPos>& PosIdList)
+                                               std::vector<PointPos>& PosIdList) const
 {
     int GeoId;
     PointPos PosId;
@@ -9536,6 +9645,12 @@ bool SketchObject::arePointsCoincident(int GeoId1, PointPos PosId1, int GeoId2, 
     }
 
     return false;
+}
+bool SketchObject::hasBlockConstraint() const
+{
+    return std::ranges::any_of(Constraints.getValues(), [](auto& c) {
+        return c->Type == Block;
+    });
 }
 
 void SketchObject::getConstraintIndices(int GeoId, std::vector<int>& constraintList)
@@ -11408,6 +11523,17 @@ Data::IndexedName SketchObject::checkSubName(const char *subname) const{
         int posId = static_cast<int>(PointPos::none);
         if ((iss >> sep >> posId) && sep == 'v') {
             int idx = getVertexIndexGeoPos(geoId, static_cast<PointPos>(posId));
+
+            // Outside edit-mode circles exposes the seam point but not the center, while in edit-mode we expose the center but not the seam.
+            // getVertexIndexGeoPos searching for a circle start point (g1v1 for example) (which happens outside of edit mode) will fail.
+            // see https://github.com/FreeCAD/FreeCAD/issues/25089
+            // The following fix works because circles have always 1 vertex, whether in or out of edit mode.
+            if (idx < 0 && (static_cast<PointPos>(posId) == PointPos::start || static_cast<PointPos>(posId) == PointPos::end)) {
+                if (geo->is<Part::GeomCircle>() || geo->is<Part::GeomEllipse>()) {
+                    idx = getVertexIndexGeoPos(geoId, PointPos::mid);
+                }
+            }
+
             if (idx < 0) {
                 FC_ERR("invalid subname " << subname);
                 return Data::IndexedName();

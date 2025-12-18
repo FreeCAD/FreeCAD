@@ -26,7 +26,7 @@
     <message>
       <location filename="../ui/dialogLayers.ui" line="29"/>
       <source>New</source>
-      <translation>Новый</translation>
+      <translation>Создать</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayers.ui" line="36"/>
@@ -176,7 +176,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="38"/>
       <source>The name of the style. Existing style names can be edited.</source>
-      <translation>Название вашего стиля. Существующие имена стилей могут быть изменены.</translation>
+      <translation>Название стиля. Существующие имена стилей могут быть изменены.</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="50"/>
@@ -1527,7 +1527,7 @@ Objects can then automatically be added to groups as well.</source>
 Note that this is not fully supported, and many objects will not be editable with
 Draft modification commands.</source>
       <translation>Если флажок установлен, команды верстака Набросок будут создавать примитивы из верстака Деталь вместо объектов верстака Набросок.
-Обратите внимание, что это не полностью поддерживается, и многие объекты не будут редактироваться с помощью различных функций для модификации из верстака Набросок.</translation>
+Обратите внимание, что это не полностью поддерживается, и многие объекты не будет невозможно редактировать с помощью различных функций для модификации из верстака Набросок.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="209"/>
@@ -1538,8 +1538,8 @@ Draft modification commands.</source>
       <location filename="../ui/preferences-draft.ui" line="222"/>
       <source>If checked, Draft Downgrade and Draft Upgrade will keep face colors.
 Only for the splitFaces and makeShell options.</source>
-      <translation>Если этот флажок установлен, при Апгрейде и Даунгрейде 
-в Наброске будут сохранены цвета исходных раней.
+      <translation>Если этот флажок установлен, при Разделении и Объединении
+в Наброске будут сохранены цвета исходных граней.
 Только для операций splitFaces (разделить Поверхность) 
 и makeShell (создать Оболочку).</translation>
     </message>
@@ -1552,7 +1552,7 @@ Only for the splitFaces and makeShell options.</source>
       <location filename="../ui/preferences-draft.ui" line="239"/>
       <source>If checked, Draft Downgrade and Draft Upgrade will keep face names.
 Only for the splitFaces and makeShell options.</source>
-      <translation>Если этот флажок установлен, при Даунгрейде и Апгрейде Наброска имена граней сохранятся.
+      <translation>Если этот флажок установлен, при Разделении и Объединении объектов Наброска имена граней сохранятся.
 Только для операций splitFaces (разделить Поверхность) 
 и makeShell (создать Оболочку).</translation>
     </message>
@@ -1609,8 +1609,7 @@ accidentally and modifying the entered value.</source>
     <message>
       <location filename="../ui/preferences-draft.ui" line="422"/>
       <source>The default color for Draft objects in construction mode</source>
-      <translation>Цвет по умолчанию для объектов чертежа во вспомогательном 
-режиме построения</translation>
+      <translation>Цвет по умолчанию для объектов наброска в режиме построения</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="26"/>
@@ -1630,7 +1629,7 @@ accidentally and modifying the entered value.</source>
     <message>
       <location filename="../ui/preferences-draft.ui" line="155"/>
       <source>If checked, instructions are displayed in the Report View when using Draft commands</source>
-      <translation>Если флажок установлен, инструкции отображаются в отчёте при использовании команд Наброска</translation>
+      <translation>Если флажок установлен, при использовании команд верстака Набросок инструкции отображаются в отчёте</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="158"/>
@@ -1671,7 +1670,7 @@ This allows indicating a direction and then type a distance.</source>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="321"/>
       <source>Draft classic style</source>
-      <translation>Классический стиль Наброска</translation>
+      <translation>Классический стиль верстка Набросок</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="326"/>
@@ -2117,7 +2116,7 @@ a raw wire from the original shape is added</source>
     <message>
       <location filename="../ui/preferences-svg.ui" line="212"/>
       <source>Style of SVG file to write when exporting a sketch</source>
-      <translation>Стиль SVG файла для записи при экспорте эскиза</translation>
+      <translation>Стиль создания SVG файла при экспорте эскиза</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="225"/>
@@ -2289,7 +2288,7 @@ workbench. </source>
       <translation>Создаёт полностью параметрические объекты верстака Набросок.
 Определения блоков импортируются как повторно используемые
 объекты (Составные объекты верстака Деталь), а экземпляры
-становятся объектами "App::Link", сохраняя структуру блока. 
+становятся "ссылками" на объекты, сохраняя структуру блока. 
 Лучше всего подходит для полной интеграции с верстаком Набросок. </translation>
     </message>
     <message>
@@ -2471,7 +2470,7 @@ representing that width. (Legacy importer only)</source>
       <source>If checked, the legacy importer will attempt to create Sketcher objects
 instead of Draft or Part objects. This overrides the 'Import As' setting</source>
       <translation>Если этот флажок установлен, устаревший импортёр попытается 
-создать объекты верстака Скетчер вместо объектов верстаков Набросок или Деталь. Это переопределяет параметр "Импортировать как"</translation>
+создать объекты верстака Эскиз вместо объектов верстаков Набросок или Деталь. Это переопределяет параметр "Импортировать как"</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="486"/>
@@ -2607,7 +2606,7 @@ Major grid lines are thicker than minor grid lines.</source>
       <source>If checked, the grid will always be visible in new views.
 Use Draft ToggleGrid to change this for the active view.</source>
       <translation>Если этот флажок установлен, сетка будет всегда отображаться 
-в новых видах. Используйте Набросок ПерключитьСетку, чтобы изменить это для активного вида.</translation>
+в новых видах. Используйте Набросок Переключить Сетку, чтобы изменить это для активного вида.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="188"/>
@@ -2618,7 +2617,7 @@ Use Draft ToggleGrid to change this for the active view.</source>
       <location filename="../ui/preferences-draft.ui" line="303"/>
       <source>The maximum number of objects Draft Edit is allowed to process at the same time</source>
       <translation>Максимальное количество объектов, которые могут обрабатываться 
-одновременно командой Набросок Редактировать</translation>
+одновременно в режиме редактирования верстака Набросок</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="20"/>
@@ -2635,7 +2634,7 @@ Use Draft ToggleGrid to change this for the active view.</source>
       <source>If checked, the grid will be visible during commands in new views.
 Use Draft ToggleGrid to change this for the active view.</source>
       <translation>Если этот флажок установлен, сетка будет видна во время выполнения команд в новых видах.
-Используйте Набросок ПерключитьСетку, чтобы изменить это для активного вида.</translation>
+Используйте Набросок Переключить Сетку, чтобы изменить это для активного вида.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="53"/>
@@ -3031,7 +3030,7 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="790"/>
       <source>Only show the Draft Snap toolbar during commands</source>
-      <translation>Показывать панель инструментов черновика только во время команд</translation>
+      <translation>Показывать панель инструментов наброска только во время команд</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="806"/>
@@ -3053,8 +3052,7 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="828"/>
       <source>Show the Draft Scale Widget in the Draft Workbench</source>
-      <translation>Показать виджет Масштабировать верстака
- Набросок в верстаке Набросок</translation>
+      <translation>Показать виджет Масштаб наброска в верстаке Набросок</translation>
     </message>
   </context>
   <context>
@@ -3071,7 +3069,7 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="641"/>
-      <location filename="../../DraftGui.py" line="997"/>
+      <location filename="../../DraftGui.py" line="998"/>
       <source>Continue</source>
       <translation>Продолжить</translation>
     </message>
@@ -3192,8 +3190,8 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     <message>
       <location filename="../../DraftGui.py" line="553"/>
       <location filename="../../DraftGui.py" line="582"/>
-      <location filename="../../DraftGui.py" line="1663"/>
-      <location filename="../../DraftGui.py" line="1681"/>
+      <location filename="../../DraftGui.py" line="1664"/>
+      <location filename="../../DraftGui.py" line="1682"/>
       <location filename="../../draftguitools/gui_groups.py" line="273"/>
       <source>None</source>
       <translation>Ничего</translation>
@@ -3241,7 +3239,7 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="602"/>
-      <location filename="../../DraftGui.py" line="980"/>
+      <location filename="../../DraftGui.py" line="981"/>
       <source>Radius</source>
       <translation>Радиус</translation>
     </message>
@@ -3261,12 +3259,12 @@ if they match the X, Y or Z axis of the global coordinate system</source>
       <translation>Переключает вспомогательный режим</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="934"/>
+      <location filename="../../DraftGui.py" line="935"/>
       <source>Label Type</source>
       <translation>Тип метки</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="981"/>
+      <location filename="../../DraftGui.py" line="982"/>
       <source>Radius of Circle</source>
       <translation>Радиус окружности</translation>
     </message>
@@ -3331,12 +3329,12 @@ Uncheck to use working plane coordinate system</source>
       <translation>Завершает текущую операцию черчения или редактирования</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1885"/>
+      <location filename="../../DraftGui.py" line="1886"/>
       <source>Modify Objects</source>
       <translation>Изменить объекты</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2042"/>
+      <location filename="../../DraftGui.py" line="2043"/>
       <source>Facebinder Elements</source>
       <translation>Элементы связывания граней</translation>
     </message>
@@ -3430,50 +3428,50 @@ Not available if the 'Use Part Primitives' preference is enabled</source>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="738"/>
-      <location filename="../../DraftGui.py" line="1669"/>
-      <location filename="../../DraftGui.py" line="1687"/>
+      <location filename="../../DraftGui.py" line="1670"/>
+      <location filename="../../DraftGui.py" line="1688"/>
       <source>Autogroup off</source>
       <translation>Автогруппирование выключено</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="841"/>
+      <location filename="../../DraftGui.py" line="842"/>
       <location filename="../../draftguitools/gui_lines.py" line="71"/>
       <source>Line</source>
       <translation>Линия</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="856"/>
+      <location filename="../../DraftGui.py" line="857"/>
       <source>DWire</source>
       <translation>Полилиния</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="879"/>
+      <location filename="../../DraftGui.py" line="880"/>
       <source>Circle</source>
       <translation>Окружность</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="884"/>
+      <location filename="../../DraftGui.py" line="885"/>
       <source>Arc</source>
       <translation>Дуга</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="889"/>
+      <location filename="../../DraftGui.py" line="890"/>
       <location filename="../../draftguitools/gui_rotate.py" line="286"/>
       <source>Rotate</source>
       <translation>Повернуть</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="895"/>
+      <location filename="../../DraftGui.py" line="896"/>
       <source>Point</source>
       <translation>Точка</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="932"/>
+      <location filename="../../DraftGui.py" line="933"/>
       <source>Label</source>
       <translation>Ярлык</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="951"/>
+      <location filename="../../DraftGui.py" line="952"/>
       <location filename="../../draftguitools/gui_offset.py" line="243"/>
       <location filename="../../draftguitools/gui_offset.py" line="258"/>
       <location filename="../../draftguitools/gui_offset.py" line="321"/>
@@ -3481,31 +3479,31 @@ Not available if the 'Use Part Primitives' preference is enabled</source>
       <translation>Смещение</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="956"/>
-      <location filename="../../DraftGui.py" line="973"/>
+      <location filename="../../DraftGui.py" line="957"/>
+      <location filename="../../DraftGui.py" line="974"/>
       <location filename="../../draftguitools/gui_trimex.py" line="223"/>
       <source>Distance</source>
       <translation>Расстояние</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="957"/>
-      <location filename="../../DraftGui.py" line="974"/>
+      <location filename="../../DraftGui.py" line="958"/>
+      <location filename="../../DraftGui.py" line="975"/>
       <location filename="../../draftguitools/gui_trimex.py" line="224"/>
       <source>Offset distance</source>
       <translation>Расстояние смещения</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="970"/>
+      <location filename="../../DraftGui.py" line="971"/>
       <source>Trimex</source>
       <translation>ОбрезатьПродлить</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1053"/>
-      <location filename="../../DraftGui.py" line="1055"/>
+      <location filename="../../DraftGui.py" line="1054"/>
       <location filename="../../DraftGui.py" line="1056"/>
-      <location filename="../../DraftGui.py" line="1058"/>
+      <location filename="../../DraftGui.py" line="1057"/>
       <location filename="../../DraftGui.py" line="1059"/>
       <location filename="../../DraftGui.py" line="1060"/>
+      <location filename="../../DraftGui.py" line="1061"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="122"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="123"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="124"/>
@@ -3513,12 +3511,12 @@ Not available if the 'Use Part Primitives' preference is enabled</source>
       <translation>Локальная {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1062"/>
       <location filename="../../DraftGui.py" line="1063"/>
       <location filename="../../DraftGui.py" line="1064"/>
-      <location filename="../../DraftGui.py" line="1066"/>
+      <location filename="../../DraftGui.py" line="1065"/>
       <location filename="../../DraftGui.py" line="1067"/>
       <location filename="../../DraftGui.py" line="1068"/>
+      <location filename="../../DraftGui.py" line="1069"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="118"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="119"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="120"/>
@@ -3526,22 +3524,22 @@ Not available if the 'Use Part Primitives' preference is enabled</source>
       <translation>Глобальная {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1677"/>
+      <location filename="../../DraftGui.py" line="1678"/>
       <source>Autogroup:</source>
       <translation>Автогруппировка:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2039"/>
+      <location filename="../../DraftGui.py" line="2040"/>
       <source>Faces</source>
       <translation>Грани</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2040"/>
+      <location filename="../../DraftGui.py" line="2041"/>
       <source>Remove</source>
       <translation>Удалить</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2041"/>
+      <location filename="../../DraftGui.py" line="2042"/>
       <source>Add</source>
       <translation>Добавить</translation>
     </message>
@@ -3630,7 +3628,7 @@ or try saving to a lower DWG version.</source>
       <location filename="../../draftutils/init_draft_statusbar.py" line="225"/>
       <source>Draft Scale Widget</source>
       <comment>A context menu action used to show or hide this toolbar widget</comment>
-      <translation>Набросок виджет Масштаба</translation>
+      <translation>Виджет Масштаб Наброска</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="249"/>
@@ -3641,7 +3639,7 @@ or try saving to a lower DWG version.</source>
       <location filename="../../draftutils/init_draft_statusbar.py" line="289"/>
       <source>Draft Snap Widget</source>
       <comment>A context menu action used to show or hide this toolbar widget</comment>
-      <translation>Набросок виджет Привязки</translation>
+      <translation>Виджет Привязки наброска</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="186"/>
@@ -3882,7 +3880,7 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftguitools/gui_join.py" line="96"/>
       <source>Only Draft lines and wires can be joined</source>
-      <translation>Только линии и кривые верстака Набросок могут быть объединены</translation>
+      <translation>Объединить можно только линии и кривые верстака Набросок</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_join.py" line="106"/>
@@ -3913,7 +3911,7 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftguitools/gui_draft2sketch.py" line="121"/>
       <source>Convert to Draft</source>
-      <translation>Преобразовать в Эскиз</translation>
+      <translation>Преобразовать в Набросок</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_draft2sketch.py" line="150"/>
@@ -4989,7 +4987,7 @@ The final angle will be the base angle plus this amount.</source>
       <translation>ТекстоваяГеометрия</translation>
     </message>
     <message>
-      <location filename="../../draftutils/params.py" line="506"/>
+      <location filename="../../draftutils/params.py" line="505"/>
       <source>Default</source>
       <translation>По умолчанию</translation>
     </message>
@@ -5586,7 +5584,7 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="610"/>
       <source>Found 1 closed sketch object: creating a face from it</source>
-      <translation>Найден 1 замкнутый эскиз объекта: создаю из него грань</translation>
+      <translation>Найден 1 замкнутый объект эскиза: создаю из него грань</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="615"/>
@@ -5710,7 +5708,7 @@ of existing objects in all opened documents?</source>
     <message>
       <location filename="../../draftguitools/gui_edit_sketcher_objects.py" line="72"/>
       <source>Sketch is too complex to edit: it is suggested to use the default Sketcher editor</source>
-      <translation>Эскиз слишком сложен для редактирования: предлагается использовать sketcher по умолчанию</translation>
+      <translation>Эскиз слишком сложен для редактирования: рекомендуется использовать верстак Эскиз</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="87"/>
@@ -5887,7 +5885,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
 To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation>Библиотеки импорта/экспорта DXF, необходимые FreeCAD для работы 
 с форматом DXF, не были найдены в этой системе.
-Пожалуйста, разрешите FreeCAD загрузить следующие библиотеки:
+Пожалуйста, разрешите FreeCAD загрузить эти библиотеки:
   1 - Запустите верстак Набросок
   2 - Меню Правка → Настройки → Импорт/Эскспорт → DXF → Включить загрузку
 Или загрузите эти библиотеки вручную, как описано на
@@ -6003,7 +6001,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="498"/>
       <source>Name of this new style</source>
-      <translation>Имя этого нового стиля</translation>
+      <translation>Название этого нового стиля</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="506"/>
@@ -6324,7 +6322,7 @@ from menu Tools → Addon Manager</source>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="352"/>
       <source>Creates a polyline</source>
-      <translation>Создаёт полилинию</translation>
+      <translation>Создаёт ломаную линию</translation>
     </message>
   </context>
   <context>
@@ -8173,7 +8171,7 @@ If other objects are selected they are ignored.</source>
 Multiple selected Draft objects are converted into a single sketch.
 However, a single sketch with disconnected traces is converted into several individual Draft objects.</source>
       <translation>Осуществляет двунаправленное преобразование между объектами 
-верстаков Набросок и Скетчер.
+верстаков Набросок и Эскиз.
 Несколько выбранных объектов Наброска преобразуются в один 
 Эскиз.
 Однако один Эскиз с разобщёнными участками преобразуется в несколько отдельных объектов Наброска.</translation>
@@ -8318,7 +8316,7 @@ The slope will always change the Z value, therefore this command only works well
 straight Draft lines that are drawn on the XY-plane.</source>
       <translation>Устанавливает наклон выбранной линии путём изменения
 значения Z одной из её точек.
-Если выбрана полилиния, то преобразование наклона будет 
+Если выбрана ломаная линия, то преобразование наклона будет 
 применено к каждому из её сегментов.
 
 Наклон всегда изменяет значение Z, поэтому эта команда 
@@ -8463,7 +8461,7 @@ straight Draft lines that are drawn on the XY-plane.</source>
     <message>
       <location filename="../../draftguitools/gui_shape2dview.py" line="62"/>
       <source>Shape 2D View</source>
-      <translation>2D проекция фигуры</translation>
+      <translation>Двухмерная проекция фигуры</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_shape2dview.py" line="66"/>
@@ -8795,7 +8793,7 @@ workbench.</source>
       <translation>Создаёт полностью параметрические объекты Наброска. 
 Значения блоков импортируются как объекты 
 многократного использования (Составные объекты верстака 
-Деталь), а экземпляры становятся объектами "App::Link",
+Деталь), а экземпляры становятся "ссылками" на объекты,
 сохраняя структуру блоков. Лучше всего подходит для 
 полной интеграции с верстаком Набросок.</translation>
     </message>

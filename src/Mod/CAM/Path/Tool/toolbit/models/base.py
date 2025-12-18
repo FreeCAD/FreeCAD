@@ -39,6 +39,7 @@ from ...assets.asset import Asset
 from ...camassets import cam_assets
 from ...shape import ToolBitShape, ToolBitShapeCustom, ToolBitShapeIcon
 from ..util import to_json, format_value
+from ..migration import ParameterAccessor, migrate_parameters
 
 
 ToolBitView = LazyLoader("Path.Tool.toolbit.ui.view", globals(), "Path.Tool.toolbit.ui.view")
@@ -128,6 +129,8 @@ class ToolBit(Asset, ABC):
             raise ValueError("ToolBit dictionary is missing 'shape' key")
 
         # Try to find the shape type. Default to Unknown if necessary.
+        if "shape" in attrs and "shape-type" not in attrs:
+            attrs["shape-type"] = attrs["shape"]
         shape_type = attrs.get("shape-type")
         shape_class = ToolBitShape.get_shape_class_from_id(shape_id, shape_type)
         if not shape_class:
@@ -176,9 +179,19 @@ class ToolBit(Asset, ABC):
         params = attrs.get("parameter", {})
         attr = attrs.get("attribute", {})
 
+        # Filter parameters if method exists
+        if (
+            hasattr(tool_bit_shape.__class__, "filter_parameters")
+            and callable(getattr(tool_bit_shape.__class__, "filter_parameters"))
+            and isinstance(params, dict)
+        ):
+            params = tool_bit_shape.__class__.filter_parameters(params)
+
         # Update parameters.
         for param_name, param_value in params.items():
             tool_bit_shape.set_parameter(param_name, param_value)
+            if hasattr(toolbit.obj, param_name):
+                PathUtil.setProperty(toolbit.obj, param_name, param_value)
 
         # Update attributes; the separation between parameters and attributes
         # is currently not well defined, so for now we add them to the
@@ -294,6 +307,16 @@ class ToolBit(Asset, ABC):
         self.obj.setEditorMode("Shape", 2)
 
         # Create the ToolBit properties that are shared by all tool bits
+
+        if not hasattr(self.obj, "Units"):
+            self.obj.addProperty(
+                "App::PropertyEnumeration",
+                "Units",
+                "Attributes",
+                QT_TRANSLATE_NOOP("App::Property", "Measurement units for the tool bit"),
+            )
+            self.obj.Units = ["Metric", "Imperial"]
+            self.obj.Units = "Metric"  # Default value
         if not hasattr(self.obj, "SpindleDirection"):
             self.obj.addProperty(
                 "App::PropertyEnumeration",
@@ -505,6 +528,20 @@ class ToolBit(Asset, ABC):
                 Path.Log.debug(f"onDocumentRestored: Attaching ViewProvider for {self.obj.Label}")
                 ToolBitView.ViewProvider(self.obj.ViewObject, "ToolBit")
 
+        # Migrate legacy parameters using unified accessor
+        migrate_parameters(ParameterAccessor(obj))
+
+        # Filter parameters if method exists (removes FlatRadius from obj)
+        filter_func = getattr(self._tool_bit_shape.__class__, "filter_parameters", None)
+        if callable(filter_func):
+            # Only filter if FlatRadius is present
+            if "FlatRadius" in self.obj.PropertiesList:
+                try:
+                    self.obj.removeProperty("FlatRadius")
+                    Path.Log.info(f"Filtered out FlatRadius for {self.obj.Label}")
+                except Exception as e:
+                    Path.Log.error(f"Failed to remove FlatRadius for {self.obj.Label}: {e}")
+
         # Copy properties from the restored object to the ToolBitShape.
         for name, item in self._tool_bit_shape.schema().items():
             if name in self.obj.PropertiesList:
@@ -643,7 +680,7 @@ class ToolBit(Asset, ABC):
         self, name: str, default: str | None = None, precision: int | None = None
     ) -> str | None:
         value = self.get_property(name)
-        return format_value(value, precision=precision) if value else default
+        return format_value(value, precision=precision, units=self.obj.Units) if value else default
 
     def set_property(self, name: str, value: Any):
         return self.obj.setPropertyByName(name, value)
@@ -754,7 +791,23 @@ class ToolBit(Asset, ABC):
                 PathUtil.setProperty(self.obj, name, value)
             self.obj.setEditorMode(name, 0)
 
-        # 3. Ensure SpindleDirection property exists and is set
+        # 3. Ensure Units property exists and is set
+        if not hasattr(self.obj, "Units"):
+            print("Adding Units property")
+            self.obj.addProperty(
+                "App::PropertyEnumeration",
+                "Units",
+                "Attributes",
+                QT_TRANSLATE_NOOP("App::Property", "Measurement units for the tool bit"),
+            )
+            self.obj.Units = ["Metric", "Imperial"]
+            self.obj.Units = "Metric"  # Default value
+
+        units_value = self._tool_bit_shape.get_parameters().get("Units")
+        if units_value in ("Metric", "Imperial") and self.obj.Units != units_value:
+            PathUtil.setProperty(self.obj, "Units", units_value)
+
+        # 4. Ensure SpindleDirection property exists and is set
         # Maybe this could be done with a global schema or added to each
         # shape schema?
         if not hasattr(self.obj, "SpindleDirection"):
@@ -775,7 +828,7 @@ class ToolBit(Asset, ABC):
             # self.obj.SpindleDirection = spindle_value
             PathUtil.setProperty(self.obj, "SpindleDirection", spindle_value)
 
-        # 4. Ensure Material property exists and is set
+        # 5. Ensure Material property exists and is set
         if not hasattr(self.obj, "Material"):
             self.obj.addProperty(
                 "App::PropertyEnumeration",
@@ -932,6 +985,14 @@ class ToolBit(Asset, ABC):
         return state
 
     def get_spindle_direction(self) -> toolchange.SpindleDirection:
+        """
+        Returns the spindle direction for this toolbit.
+        The direction is determined by the ToolBit's properties and safety rules:
+        - Returns SpindleDirection.OFF if the tool cannot rotate (e.g., a probe).
+        - Returns SpindleDirection.CW for clockwise or 'forward' spindle direction.
+        - Returns SpindleDirection.CCW for counterclockwise or any other value.
+        - Defaults to SpindleDirection.OFF if not specified.
+        """
         # To be safe, never allow non-rotatable shapes (such as probes) to rotate.
         if not self.can_rotate():
             return toolchange.SpindleDirection.OFF

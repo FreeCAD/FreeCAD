@@ -1,9 +1,10 @@
 
 SET(Stylesheets_Files
-	"FreeCAD.qss"
-	#remove below after testing new stylesheet system 8/6/2025
-	"FreeCAD Dark.qss"
-	"FreeCAD Light.qss"
+    "FreeCAD.qss"
+    "defaults.qss"
+    #remove below after testing new stylesheet system 8/6/2025
+    "FreeCAD Dark.qss"
+    "FreeCAD Light.qss"
 )
 
 SET(Parameters_Files

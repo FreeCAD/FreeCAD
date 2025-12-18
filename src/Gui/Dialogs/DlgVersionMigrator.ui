@@ -102,32 +102,20 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="copyButton">
-       <property name="text">
-        <string>Copy Configuration (Recommended)</string>
-       </property>
-       <property name="default">
-        <bool>true</bool>
-       </property>
-       <property name="flat">
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QToolButton" name="menuButton">
-       <property name="text">
-        <string notr="true">⋮</string>
-       </property>
-       <property name="toolButtonStyle">
-        <enum>Qt::ToolButtonTextOnly</enum>
-       </property>
-      </widget>
+      <widget class="Gui::SplitButton" name="copyButton" native="true"/>
      </item>
     </layout>
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::SplitButton</class>
+   <extends>QWidget</extends>
+   <header>Gui/SplitButton.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
