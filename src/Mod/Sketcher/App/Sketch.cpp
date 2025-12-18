@@ -3451,16 +3451,15 @@ int Sketch::addDistanceConstraint(
     if (Geoms[geoId2].type == Line) {
         GCS::Line& l2 = Lines[Geoms[geoId2].index];
 
-        std::optional<bool> ccw = std::nullopt;
-        if (orientation == ConstraintOrientation::CounterClockwise) {
-            ccw = true;
-        }
-        else if (orientation == ConstraintOrientation::Clockwise) {
-            ccw = false;
-        }
-
         int tag = ++ConstraintsCounter;
-        GCSsys.addConstraintP2LDistance(p1, l2, value, ccw, tag, driving);
+        GCSsys.addConstraintP2LDistance(
+            p1,
+            l2,
+            value,
+            orientation == ConstraintOrientation::CounterClockwise,
+            tag,
+            driving
+        );
         return ConstraintsCounter;
     }
     else {
