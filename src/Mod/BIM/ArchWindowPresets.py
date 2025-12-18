@@ -550,13 +550,13 @@ def makeWindowPreset(
             obj.Frame = w2
             obj.Offset = o1
             obj.Placement = FreeCAD.Placement()  # unable to find where this bug comes from...
-            # If window_sill is provided, set obj.Sill (and trigger onChanged()
+            # If window_sill is provided, set obj.SillHeight (and trigger onChanged()
             # codes to track and adjust disposition of the Window object).
             # Do not set the property (to 0) and not trigger onChanged()
             # if otherwise.
-            # obj.Sill = window_sill if window_sill is not None else 0
+            # obj.SillHeight = window_sill if window_sill is not None else 0
             if window_sill is not None:
-                obj.Sill = window_sill
+                obj.SillHeight = window_sill
             if "door" in windowtype.lower():
                 obj.IfcType = "Door"
                 obj.Label = translate("Arch", "Door")
