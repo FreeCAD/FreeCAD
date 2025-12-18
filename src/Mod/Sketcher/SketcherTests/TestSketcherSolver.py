@@ -510,6 +510,46 @@ class TestSketcherSolver(unittest.TestCase):
             msg="Negative length constraint did not return the expected distance.",
         )
 
+    def testPointToLineDistanceSigned(self):
+        # Test the signed p2l constraint by trying to flip the sketch
+        # with a big constraint datum change
+
+        sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
+
+        lv_idx = sketch.addGeometry(Part.LineSegment(vec(0, -25), vec(0, 0)))
+        lh_idx = sketch.addGeometry(Part.LineSegment(vec(0, 0), vec(25, 0)))
+        ln_idx = sketch.addGeometry(Part.LineSegment(vec(0, -25), vec(25, 0)))
+        pt_idx = sketch.addGeometry(Part.Point(vec(20, -20)))
+
+        linepose_idx = sketch.addConstraint(
+            [
+                Sketcher.Constraint("PointOnObject", lv_idx, 1, -2),
+                Sketcher.Constraint("Coincident", lv_idx, 2, -1, 1),
+                Sketcher.Constraint("Coincident", lh_idx, 1, lv_idx, 2),
+                Sketcher.Constraint("PointOnObject", lh_idx, 2, -1),
+                Sketcher.Constraint("Coincident", ln_idx, 1, lv_idx, 1),
+                Sketcher.Constraint("Coincident", ln_idx, 2, lh_idx, 2),
+                Sketcher.Constraint("Equal", lv_idx, lh_idx),
+                Sketcher.Constraint("DistanceX", lh_idx, 1, lh_idx, 2, 25.0),
+                Sketcher.Constraint("Distance", pt_idx, 1, ln_idx, 5.0),
+            ]
+        )[7]
+
+        self.assertSuccessfulSolve(sketch)
+
+        sketch.setDatum(linepose_idx, App.Units.Quantity("100.000000 mm"))
+
+        self.assertSuccessfulSolve(sketch)
+
+        A = sketch.Geometry[pt_idx]
+        ln = sketch.Geometry[ln_idx]
+        B = ln.StartPoint
+        C = ln.EndPoint
+
+        ccw = B.x * C.y - B.y * C.x - A.X * C.y + A.Y * C.x + A.X * B.y - A.Y * B.x > 0.0
+
+        self.assertEqual(ccw, False)
+
     def testRemovedExternalGeometryReference(self):
         if "BUILD_PARTDESIGN" in FreeCAD.__cmake__:
             body = self.Doc.addObject("PartDesign::Body", "Body")
