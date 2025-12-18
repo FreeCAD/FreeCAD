@@ -2304,6 +2304,8 @@ int SketchObject::addConstraints(const std::vector<Constraint*>& ConstraintList)
             AutoLockTangencyAndPerpty(cnew);
         }
 
+        setOrientation(cnew);
+
         addGeometryState(cnew);
     }
 
