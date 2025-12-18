@@ -304,7 +304,7 @@ public:
         Point& p,
         Line& l,
         double* distance,
-        std::optional<bool> ccw,
+        bool ccw,
         int tagId = 0,
         bool driving = true
     );
