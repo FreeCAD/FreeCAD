@@ -263,3 +263,163 @@ class TestArchComponent(TestArchBase.TestArchBase):
         # Assert: the wall should no longer be in the window's Hosts list.
         self.assertNotIn(wall, window.Hosts, "Wall should not be in window.Hosts after removal.")
         self.assertEqual(len(window.Hosts), 0, "Window.Hosts list should be empty after removal.")
+
+    def test_if_face_vertical(self):
+        """
+        Test the ArchComponent.AreaCalculator.isFaceVertical method directly.
+
+        Verifies classification of standard walls, periodic surfaces (cylinders),
+        extruded surfaces (B-Splines), and sloped faces (tapered wedge) using
+        white-box testing on the internal calculator.
+        """
+        import math
+        import ArchComponent
+
+        tolerance = Part.Precision.confusion()
+
+        def get_normal_z(face):
+            return abs(face.normalAt(0, 0).z)
+
+        def is_vertical(normal_z):
+            return math.isclose(normal_z, 0.0, abs_tol=tolerance)
+
+        def is_horizontal(normal_z):
+            return math.isclose(normal_z, 1.0, abs_tol=tolerance)
+
+        def is_sloped(normal_z):
+            return not (is_vertical(normal_z) or is_horizontal(normal_z))
+
+        with self.subTest(case="Standard Wall"):
+            line = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(10, 0, 0))
+            wall = Arch.makeWall(line, width=2, height=10)
+            self.document.recompute()
+
+            calc = ArchComponent.AreaCalculator(wall)
+            vertical_count = 0
+
+            for face in wall.Shape.Faces:
+                is_vert = calc.isFaceVertical(face)
+                normal_z = get_normal_z(face)
+
+                if is_vertical(normal_z):
+                    self.assertTrue(is_vert, "Side face should be vertical")
+                    vertical_count += 1
+                elif is_horizontal(normal_z):
+                    self.assertFalse(is_vert, "Top/Bottom face should not be vertical")
+
+            self.assertEqual(
+                vertical_count, 4, f"Expected 4 vertical sides on wall, found {vertical_count}"
+            )
+
+        with self.subTest(case="Closed Extrusion"):
+            points = [App.Vector(0, 0, 0), App.Vector(10, 0, 0), App.Vector(5, 5, 0)]
+            bspline = Draft.makeBSpline(points, closed=True)
+            structure = Arch.makeStructure(bspline, height=10)
+            self.document.recompute()
+
+            calc_bspline = ArchComponent.AreaCalculator(structure)
+            extrusion_vert_count = 0
+
+            for face in structure.Shape.Faces:
+                is_vert = calc_bspline.isFaceVertical(face)
+
+                if "SurfaceOfExtrusion" in face.Surface.TypeId:
+                    self.assertTrue(is_vert, "Extruded B-Spline surface should be vertical")
+                    extrusion_vert_count += 1
+
+            self.assertGreater(
+                extrusion_vert_count,
+                0,
+                f"Expected at least one vertical extruded face, found {extrusion_vert_count}",
+            )
+
+        with self.subTest(case="Cylinder"):
+            circle = Draft.makeCircle(radius=5)
+            struct = Arch.makeStructure(circle, height=20)
+            self.document.recompute()
+
+            calc_struct = ArchComponent.AreaCalculator(struct)
+            cyl_vertical_count = 0
+
+            for face in struct.Shape.Faces:
+                is_vert = calc_struct.isFaceVertical(face)
+
+                if "Cylinder" in face.Surface.TypeId:
+                    self.assertTrue(is_vert, "Cylindrical face should be vertical")
+                    cyl_vertical_count += 1
+                else:
+                    self.assertFalse(is_vert, "Caps of cylinder should not be vertical")
+
+            self.assertEqual(
+                cyl_vertical_count,
+                1,
+                f"Expected exactly 1 vertical face on cylinder, found {cyl_vertical_count}",
+            )
+
+        with self.subTest(case="Tapered Wedge"):
+            wedge = self.document.addObject("Part::Wedge", "Wedge")
+            wedge.Ymin = 0
+            wedge.Zmin = 0
+            wedge.Xmin = 0
+            wedge.Ymax = 10
+            wedge.Zmax = 10
+            wedge.Xmax = 10
+            # Taper top to create slopes
+            wedge.X2min = 2
+            wedge.X2max = 8
+            wedge.Z2min = 2
+            wedge.Z2max = 8
+            self.document.recompute()
+
+            comp = Arch.makeComponent(wedge)
+            calc_wedge = ArchComponent.AreaCalculator(comp)
+
+            tapered_vertical_count = 0
+            for face in comp.Shape.Faces:
+                normal_z = get_normal_z(face)
+
+                if is_vertical(normal_z):
+                    self.assertTrue(
+                        calc_wedge.isFaceVertical(face), "X-Tapered face should be vertical"
+                    )
+                    tapered_vertical_count += 1
+                elif is_sloped(normal_z):
+                    self.assertFalse(
+                        calc_wedge.isFaceVertical(face), "Sloped face must not be vertical"
+                    )
+
+            self.assertGreater(
+                tapered_vertical_count,
+                0,
+                f"Expected at least one vertical face on tapered wedge, found {tapered_vertical_count}",
+            )
+
+    def test_vertical_area_update_to_zero(self):
+        """
+        Verify that VerticalArea property updates correctly even when the result is zero.
+        """
+
+        line = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(10, 0, 0))
+        wall = Arch.makeWall(line, width=2, height=10)
+        self.document.recompute()
+
+        initial_area = wall.VerticalArea.Value
+        self.assertGreater(
+            initial_area, 0, f"Setup error: Wall should have vertical area, found {initial_area}"
+        )
+
+        # Get the footprint to simulate a flat wall (valid shape, but 0 height)
+        footprint_faces = wall.Proxy.getFootprint(wall)
+
+        # Exactly one face is expected for this particular footprint (straight wall)
+        self.assertEqual(len(footprint_faces), 1, "Setup error: Expected exactly 1 footprint face")
+
+        # Manually assign the single footprint face as the wall shape. We do this as an alternative
+        # to setting height=0, because ArchWall.applyShape protects against null shapes (which
+        # height=0 produces), preventing area updates
+        wall.Shape = footprint_faces[0]
+
+        wall.Proxy.computeAreas(wall)
+
+        final_area = wall.VerticalArea.Value
+        self.assertEqual(final_area, 0.0, f"VerticalArea must update to zero, found {final_area}")
