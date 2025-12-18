@@ -47,7 +47,7 @@ class MeshAdvanced(base_femmeshelement.BaseFemMeshElement):
                 type="App::PropertyLinkList",
                 name="Refinements",
                 group="Advanced",
-                doc="Refinements usable in the advanced mesh refinements",
+                doc="Refinements usable in the math eval mesh refinements",
                 value=None,
             ),
             _PropHelper(
@@ -55,7 +55,7 @@ class MeshAdvanced(base_femmeshelement.BaseFemMeshElement):
                 name="Type",
                 group="Advanced",
                 doc="Which advanced method is used to define the mesh size",
-                value=["AttractorAnisoCurve", "MathEval", "MathEvalAniso", "Distance"],
+                value=["AttractorAnisoCurve", "MathEval", "MathEvalAniso", "Distance", "Result"],
             ),
 
             # AttractorAnisoCurve
@@ -159,6 +159,22 @@ class MeshAdvanced(base_femmeshelement.BaseFemMeshElement):
                 name="M33",
                 group="MathEvalAniso",
                 doc="The equation to calculate element 33 of the metric tensor",
+                value="",
+            ),
+
+            # Result
+            _PropHelper(
+                type="App::PropertyLink",
+                name="ResultObject",
+                group="Result",
+                doc="The result object which defines the mesh size",
+                value=None,
+            ),
+            _PropHelper(
+                type="App::PropertyString",
+                name="ResultField",
+                group="Result",
+                doc="The data field of the result object used to define the mesh size",
                 value="",
             ),
         ]
