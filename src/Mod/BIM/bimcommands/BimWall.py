@@ -273,9 +273,14 @@ class Arch_Wall:
             # The `addObject` command sets the new object as active.
             if self.doc.ActiveObject:
                 baseline_name = self.doc.ActiveObject.Name
+                user_label = translate("BimWall", "Wall Trace")
                 # Apply placement and geometry using the correctly identified object name.
                 FreeCADGui.doCommand(
                     f"FreeCAD.ActiveDocument.{baseline_name}.Placement = {placement_str}"
+                )
+                # Set the user-facing, translated label.
+                FreeCADGui.doCommand(
+                    f"FreeCAD.ActiveDocument.{baseline_name}.Label = {repr(user_label)}"
                 )
                 FreeCADGui.doCommand(f"FreeCAD.ActiveDocument.{baseline_name}.addGeometry(trace)")
 
