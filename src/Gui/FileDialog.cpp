@@ -562,6 +562,7 @@ FileOptionsDialog::FileOptionsDialog(QWidget* parent, Qt::WindowFlags fl)
     extensionButton->setText(tr("Extended"));
 
     setOption(QFileDialog::DontUseNativeDialog);
+    setDirectory(FileDialog::getWorkingDirectory());
 
     // search for the grid layout and add the new button
     auto grid = this->findChild<QGridLayout*>();
