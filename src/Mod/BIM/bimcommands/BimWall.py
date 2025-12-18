@@ -198,14 +198,18 @@ class Arch_Wall:
         midpoint = (p0 + p1) * 0.5
         direction = line_vector.normalize()
         rotation = FreeCAD.Rotation(FreeCAD.Vector(1, 0, 0), direction)
-        placement = FreeCAD.Placement(midpoint, rotation)
+
+        # This placement is local to the working plane.
+        local_placement = FreeCAD.Placement(midpoint, rotation)
+        # Transform the local placement into the global coordinate system.
+        final_placement = self.wp.get_placement().multiply(local_placement)
 
         wall_var = "new_baseless_wall"
 
-        # Construct command strings
+        # Construct command strings using the final, correct global placement.
         placement_str = (
-            f"FreeCAD.Placement(FreeCAD.Vector({placement.Base.x}, {placement.Base.y}, {placement.Base.z}), "
-            f"FreeCAD.Rotation({placement.Rotation.Q[0]}, {placement.Rotation.Q[1]}, {placement.Rotation.Q[2]}, {placement.Rotation.Q[3]}))"
+            f"FreeCAD.Placement(FreeCAD.Vector({final_placement.Base.x}, {final_placement.Base.y}, {final_placement.Base.z}), "
+            f"FreeCAD.Rotation({final_placement.Rotation.Q[0]}, {final_placement.Rotation.Q[1]}, {final_placement.Rotation.Q[2]}, {final_placement.Rotation.Q[3]}))"
         )
 
         make_wall_cmd = (
