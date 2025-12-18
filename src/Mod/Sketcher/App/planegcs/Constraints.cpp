@@ -838,7 +838,7 @@ double ConstraintP2PAngle::maxStep(MAP_pD_D& dir, double lim)
 
 // --------------------------------------------------------
 // P2LDistance
-ConstraintP2LDistance::ConstraintP2LDistance(Point& p, Line& l, double* d, bool ccw)
+ConstraintP2LDistance::ConstraintP2LDistance(Point& p, Line& l, double* d, std::optional<bool> ccw)
     : ccw(ccw)
 {
     pvec.push_back(p.x);
@@ -861,11 +861,15 @@ double ConstraintP2LDistance::error()
 {
     double x0 = *p0x(), x1 = *p1x(), x2 = *p2x();
     double y0 = *p0y(), y1 = *p1y(), y2 = *p2y();
-    double dist = ccw ? *distance() : -*distance();
+    double dist = (!ccw.has_value() || *ccw) ? *distance() : -*distance();
     double dx = x2 - x1;
     double dy = y2 - y1;
     double d = sqrt(dx * dx + dy * dy);  // line length
     double area = (-x0 * dy + y0 * dx + x1 * y2 - x2 * y1);
+
+    if (!ccw.has_value()) {
+        area = std::abs(area);
+    }
 
     return scale * (area / d - dist);
 }
@@ -901,6 +905,10 @@ double ConstraintP2LDistance::grad(double* param)
         }
         if (param == p2y()) {
             deriv += ((x1 - x0) * d - (dy / d) * area) / d2;
+        }
+
+        if (!ccw.has_value() && area < 0.0) {
+            deriv *= -1.0;
         }
     }
     if (param == distance()) {
