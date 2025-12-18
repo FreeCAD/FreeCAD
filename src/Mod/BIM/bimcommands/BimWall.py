@@ -253,40 +253,35 @@ class Arch_Wall:
         if self.baseline_mode == WallBaselineMode.DRAFT_LINE:
             FreeCADGui.doCommand("import Draft")
 
-            # Methodical object capture: get doc state before creation
-            objects_before = set(self.doc.Objects)
-
-            # Execute creation command without trying to set a name
+            # Execute creation command. FreeCAD will ensure a unique name.
             FreeCADGui.doCommand("base = Draft.make_line(trace)")
 
-            # Find the newly created object by set difference
-            objects_after = set(self.doc.Objects)
-            new_objects = objects_after - objects_before
-
-            if len(new_objects) == 1:
-                new_line = new_objects.pop()
-                baseline_name = new_line.Name
-                # Now apply placement to the correctly identified object
+            # The `make_line` command sets the new object as active.
+            if self.doc.ActiveObject:
+                baseline_name = self.doc.ActiveObject.Name
+                # Apply placement using the correctly identified object name.
                 FreeCADGui.doCommand(
                     f"FreeCAD.ActiveDocument.{baseline_name}.Placement = {placement_str}"
                 )
 
         elif self.baseline_mode == WallBaselineMode.SKETCH:
-            baseline_name = "WallTrace"
-            # This works because addObject() allows setting the name
+            # Execute creation command with a suggested name. FreeCAD will ensure uniqueness.
             FreeCADGui.doCommand(
-                f"base = FreeCAD.ActiveDocument.addObject('Sketcher::SketchObject', '{baseline_name}')"
+                "base = FreeCAD.ActiveDocument.addObject('Sketcher::SketchObject', 'WallTrace')"
             )
-            FreeCADGui.doCommand(f"base.Placement = {placement_str}")
-            FreeCADGui.doCommand("base.addGeometry(trace)")
+
+            # The `addObject` command sets the new object as active.
+            if self.doc.ActiveObject:
+                baseline_name = self.doc.ActiveObject.Name
+                # Apply placement and geometry using the correctly identified object name.
+                FreeCADGui.doCommand(
+                    f"FreeCAD.ActiveDocument.{baseline_name}.Placement = {placement_str}"
+                )
+                FreeCADGui.doCommand(f"FreeCAD.ActiveDocument.{baseline_name}.addGeometry(trace)")
 
         FreeCADGui.doCommand("FreeCAD.ActiveDocument.recompute()")
 
-        if baseline_name:
-            # Verify the object exists before returning its name
-            obj = self.doc.getObject(baseline_name)
-            return obj.Name if obj else None
-        return None
+        return baseline_name
 
     def _create_wall_from_baseline(self, baseline_name):
         """Creates a wall from a baseline object, ensuring all steps are macro-recordable."""
