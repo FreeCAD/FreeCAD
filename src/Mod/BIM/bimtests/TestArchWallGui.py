@@ -32,6 +32,25 @@ from bimtests import TestArchBaseGui
 from bimcommands.BimWall import Arch_Wall
 
 
+class MockTracker:
+    """A dummy tracker to absorb GUI calls during logic tests."""
+
+    def off(self):
+        pass
+
+    def on(self):
+        pass
+
+    def finalize(self):
+        pass
+
+    def update(self, points):
+        pass
+
+    def setorigin(self, arg):
+        pass
+
+
 class TestArchWallGui(TestArchBaseGui.TestArchBaseGui):
 
     def setUp(self):
@@ -258,4 +277,112 @@ class TestArchWallGui(TestArchBaseGui.TestArchBaseGui):
         self.assertTrue(
             p_end_final.isEqual(expected_end_point, 1e-6),
             f"Stretched endpoint {p_end_final} does not match expected {expected_end_point}",
+        )
+
+    def test_create_baseless_wall_on_rotated_working_plane(self):
+        """Tests that a baseless wall respects the current working plane."""
+        import Part
+
+        self.printTestMessage("Testing baseless wall creation on a rotated working plane...")
+
+        # Arrange: Create a non-standard working plane (rotated and elevated)
+        wp = WorkingPlane.plane()
+        placement = FreeCAD.Placement(
+            FreeCAD.Vector(0, 0, 1000), FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), 45)
+        )
+
+        # Apply the placement to the working plane, ensuring translation is included
+        wp.setFromPlacement(placement, rebase=True)
+
+        # Define points in the local coordinate system of the working plane
+        p1_local = FreeCAD.Vector(0, 0, 0)
+        p2_local = FreeCAD.Vector(2000, 0, 0)
+
+        # Convert local points to the global coordinates the command will receive
+        p1_global = wp.getGlobalCoords(p1_local)
+        p2_global = wp.getGlobalCoords(p2_local)
+
+        self.params.SetInt("WallBaseline", 0)
+
+        cmd = Arch_Wall()
+        cmd.doc = self.document
+        cmd.wp = wp
+        cmd.points = [p1_global, p2_global]
+        cmd.Align = "Center"
+        cmd.Width = 200.0
+        cmd.Height = 1500.0
+
+        # Use a mock tracker to isolate logic tests from the 3D view environment
+        cmd.tracker = MockTracker()
+        cmd.existing = []
+
+        # Act
+        cmd.create_wall()
+
+        # Assert
+        wall = self.document.ActiveObject
+        self.assertEqual(Draft.get_type(wall), "Wall")
+
+        # Calculate the expected global placement
+        midpoint_local = (p1_local + p2_local) * 0.5
+        direction_local = (p2_local - p1_local).normalize()
+        rotation_local = FreeCAD.Rotation(FreeCAD.Vector(1, 0, 0), direction_local)
+        placement_local = FreeCAD.Placement(midpoint_local, rotation_local)
+
+        # The wall's final placement must be the local placement transformed by the WP
+        expected_placement = wp.get_placement().multiply(placement_local)
+
+        # Compare Position (Vector)
+        self.assertTrue(
+            wall.Placement.Base.isEqual(expected_placement.Base, Part.Precision.confusion()),
+            f"Wall position {wall.Placement.Base} does not match expected {expected_placement.Base}",
+        )
+
+        # Compare Orientation (Rotation)
+        self.assertTrue(
+            wall.Placement.Rotation.isSame(expected_placement.Rotation, Part.Precision.confusion()),
+            f"Wall rotation {wall.Placement.Rotation.Q} does not match expected {expected_placement.Rotation.Q}",
+        )
+
+    def test_create_multiple_sketch_based_walls(self):
+        """Tests that creating multiple sketch-based walls uses separate sketches."""
+        self.printTestMessage("Testing creation of multiple sketch-based walls...")
+
+        self.params.SetInt("WallBaseline", 2)
+
+        cmd = Arch_Wall()
+        cmd.doc = self.document
+        cmd.wp = WorkingPlane.get_working_plane()
+        cmd.Align = "Left"
+        cmd.Width = 200.0
+        cmd.Height = 1500.0
+        cmd.tracker = MockTracker()
+        cmd.existing = []
+
+        initial_object_count = len(self.document.Objects)
+
+        # Act: Create the first wall
+        cmd.points = [FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(1000, 0, 0)]
+        cmd.create_wall()
+        base1 = self.document.getObject("Wall").Base
+
+        # Act again: Create the second wall
+        cmd.points = [FreeCAD.Vector(0, 1000, 0), FreeCAD.Vector(1000, 1000, 0)]
+        cmd.create_wall()
+
+        # Retrieve the last object to ensure we get the newest wall
+        wall2 = self.document.ActiveObject
+        base2 = wall2.Base
+
+        # Assert
+        self.assertEqual(
+            len(self.document.Objects),
+            initial_object_count + 4,
+            "Should have created two Walls and two Sketches.",
+        )
+        self.assertIsNotNone(base1, "First wall should have a base sketch.")
+        self.assertIsNotNone(base2, "Second wall should have a base sketch.")
+
+        self.assertNotEqual(
+            base1, base2, "Each sketch-based wall should have its own unique sketch object."
         )
