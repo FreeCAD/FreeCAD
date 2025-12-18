@@ -1474,6 +1474,7 @@ class InitPipeline:
             env_path=PathPriority.Ignore,
             sys_path=PathPriority.FallbackLast,
         )
+        self.search_paths.commit()
 
     def post(self) -> None:
         """
