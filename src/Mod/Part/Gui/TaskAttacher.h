@@ -174,7 +174,7 @@ private:
     Attacher::SuggestResult lastSuggestResult;
     bool completed;
 
-    using Connection = boost::signals2::connection;
+    using Connection = fastsignals::connection;
     Connection connectDelObject;
     Connection connectDelDocument;
 
