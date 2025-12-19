@@ -518,9 +518,7 @@ TEST_F(BackupPolicyTest, TimestampDetectsOldBackupFormat)
     apply(source.string(), target.string());
 
     // Assert
-    bool check1 = std::filesystem::exists(
-        getTempPath() / expected
-    );
+    bool check1 = std::filesystem::exists(getTempPath() / expected);
     bool check2 = std::filesystem::exists(backup);
     EXPECT_NE(check1, check2);
 }
@@ -549,9 +547,7 @@ TEST_F(BackupPolicyTest, TimestampDetectsOldBackupFormatIgnoresOther)
     apply(source.string(), target.string());
 
     // Assert
-    bool check1 = std::filesystem::exists(
-        getTempPath() / expected
-    );
+    bool check1 = std::filesystem::exists(getTempPath() / expected);
     bool check2 = std::filesystem::exists(backup);
     EXPECT_NE(check1, check2);
     EXPECT_TRUE(std::filesystem::exists(weird));
@@ -577,11 +573,7 @@ TEST_F(BackupPolicyTest, TimestampDetectsAndRetainsOldBackupWhenAllowed)
     apply(source.string(), target.string());
 
     // Assert
-    EXPECT_TRUE(
-        std::filesystem::exists(
-            getTempPath() / expected
-        )
-    );
+    EXPECT_TRUE(std::filesystem::exists(getTempPath() / expected));
     EXPECT_TRUE(std::filesystem::exists(backup));
 }
 
@@ -601,9 +593,7 @@ TEST_F(BackupPolicyTest, TimestampFormatStringEndsWithSpace)
     apply(source.string(), target.string());
 
     // Assert (the space is stripped, and an index is added)
-    EXPECT_TRUE(
-        std::filesystem::exists(getTempPath() / expected)
-    );
+    EXPECT_TRUE(std::filesystem::exists(getTempPath() / expected));
 }
 
 TEST_F(BackupPolicyTest, TimestampFormatStringEndsWithDash)
@@ -622,11 +612,7 @@ TEST_F(BackupPolicyTest, TimestampFormatStringEndsWithDash)
     apply(source.string(), target.string());
 
     // Assert (the dash is left, and an index is added)
-    EXPECT_TRUE(
-        std::filesystem::exists(
-            getTempPath() / expected
-        )
-    );
+    EXPECT_TRUE(std::filesystem::exists(getTempPath() / expected));
 }
 
 TEST_F(BackupPolicyTest, TimestampFormatFileAlreadyExists)
@@ -652,11 +638,7 @@ TEST_F(BackupPolicyTest, TimestampFormatFileAlreadyExists)
 
     // Assert (An index is appended)
     EXPECT_TRUE(std::filesystem::exists(backup));
-    EXPECT_TRUE(
-        std::filesystem::exists(
-            getTempPath() / expected
-        )
-    );
+    EXPECT_TRUE(std::filesystem::exists(getTempPath() / expected));
 }
 
 TEST_F(BackupPolicyTest, TimestampFormatFileAlreadyExistsMultipleTimes)
@@ -670,7 +652,7 @@ TEST_F(BackupPolicyTest, TimestampFormatFileAlreadyExistsMultipleTimes)
     backup_base.append("target." + filenameFromDateFormatString("%Y-%m-%d"));
 
 
-    auto backup  = createTempFile(backup_base.string() + ".FCBak");
+    auto backup = createTempFile(backup_base.string() + ".FCBak");
     auto backup1 = createTempFile(backup_base.string() + "-1.FCBak");
     auto backup2 = createTempFile(backup_base.string() + "-2.FCBak");
     auto backup3 = createTempFile(backup_base.string() + "-3.FCBak");
@@ -683,9 +665,5 @@ TEST_F(BackupPolicyTest, TimestampFormatFileAlreadyExistsMultipleTimes)
     EXPECT_TRUE(std::filesystem::exists(backup1));
     EXPECT_TRUE(std::filesystem::exists(backup2));
     EXPECT_TRUE(std::filesystem::exists(backup3));
-    EXPECT_TRUE(
-        std::filesystem::exists(
-            getTempPath() / (backup_base.string() + "-4.FCBak")
-        )
-    );
+    EXPECT_TRUE(std::filesystem::exists(getTempPath() / (backup_base.string() + "-4.FCBak")));
 }
