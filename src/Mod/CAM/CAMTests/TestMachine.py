@@ -14,11 +14,10 @@ import FreeCAD
 import tempfile
 import pathlib
 import CAMTests.PathTestUtils as PathTestUtils
-from Path.Machine.models.machine import (
+from Machine.models.machine import (
     Machine,
-    Spindle,
+    Toolhead,
     OutputOptions,
-    GCodeBlocks,
     ProcessingOptions,
     MachineFactory,
 )
@@ -58,12 +57,6 @@ class TestMachineDataclass(PathTestUtils.PathTestBase):
         machine.add_rotary_axis("C", FreeCAD.Vector(0, 0, 1), -360, 360)
         self.assertEqual(machine.machine_type, "xyzac")
 
-        # Coordinate system defaults
-        self.assertEqual(machine.reference_system["X"], FreeCAD.Vector(1, 0, 0))
-        self.assertEqual(machine.reference_system["Y"], FreeCAD.Vector(0, 1, 0))
-        self.assertEqual(machine.reference_system["Z"], FreeCAD.Vector(0, 0, 1))
-        self.assertEqual(machine.tool_axis, FreeCAD.Vector(0, 0, -1))
-
         # Units and versioning
         self.assertEqual(machine.configuration_units, "metric")
         self.assertEqual(machine.version, 1)
@@ -71,8 +64,9 @@ class TestMachineDataclass(PathTestUtils.PathTestBase):
 
         # Post-processor defaults
         self.assertIsInstance(machine.output, OutputOptions)
-        self.assertIsInstance(machine.blocks, GCodeBlocks)
         self.assertIsInstance(machine.processing, ProcessingOptions)
+        self.assertEqual(machine.postprocessor_file_name, "")
+        self.assertIsInstance(machine.postprocessor_properties, dict)
 
     def test_custom_initialization(self):
         """Test Machine initialization with custom values and verify machine_type is derived"""
@@ -113,44 +107,99 @@ class TestOutputOptions(PathTestUtils.PathTestBase):
         """Test OutputOptions initialization with defaults"""
         opts = OutputOptions()
 
-        # Default values
-        self.assertTrue(opts.comments)
-        self.assertTrue(opts.blank_lines)
-        self.assertTrue(opts.header)
+        # Default values - using current field names
+        from Machine.models.machine import OutputUnits
+
+        self.assertEqual(opts.output_units, OutputUnits.METRIC)
+        self.assertEqual(opts.command_space, " ")
+        self.assertEqual(opts.comment_symbol, "(")
+        self.assertEqual(opts.end_of_line_chars, "\n")
+        self.assertEqual(opts.line_increment, 10)
+        self.assertEqual(opts.line_number_start, 100)
         self.assertFalse(opts.line_numbers)
-        self.assertFalse(opts.bcnc_blocks)
-        self.assertFalse(opts.path_labels)
-        self.assertFalse(opts.machine_name)
-        self.assertTrue(opts.tool_change)
-        self.assertTrue(opts.doubles)
-        self.assertFalse(opts.adaptive)
+        self.assertEqual(opts.line_number_prefix, "N")
+        self.assertTrue(opts.output_comments)
+        self.assertTrue(opts.output_blank_lines)
+        self.assertTrue(opts.output_bcnc_comments)
+        self.assertTrue(opts.output_header)
+        self.assertFalse(opts.output_labels)
+        self.assertTrue(opts.output_operation_labels)
+        self.assertFalse(opts.list_tools_in_header)
+        self.assertTrue(opts.list_fixtures_in_header)
+        self.assertFalse(opts.machine_name_in_header)
+        self.assertTrue(opts.description_in_header)
+        self.assertTrue(opts.project_file_in_header)
+        self.assertTrue(opts.output_units_in_header)
+        self.assertTrue(opts.date_in_header)
+        self.assertTrue(opts.document_name_in_header)
+        self.assertTrue(opts.output_duplicate_parameters)
+        self.assertTrue(opts.output_duplicate_commands)
+        self.assertEqual(opts.axis_precision, 3)
+        self.assertEqual(opts.feed_precision, 3)
+        self.assertEqual(opts.spindle_precision, 0)
 
     def test_custom_initialization(self):
         """Test OutputOptions initialization with custom values"""
+        from Machine.models.machine import OutputUnits
+
         opts = OutputOptions(
-            comments=False,
-            blank_lines=False,
-            header=False,
+            output_units=OutputUnits.IMPERIAL,
+            command_space="",
+            comment_symbol=";",
+            end_of_line_chars="\r\n",
+            line_increment=5,
+            line_number_start=10,
             line_numbers=True,
-            bcnc_blocks=True,
-            path_labels=True,
-            machine_name=True,
-            tool_change=False,
-            doubles=False,
-            adaptive=True,
+            line_number_prefix="L",
+            output_comments=False,
+            output_blank_lines=False,
+            output_bcnc_comments=False,
+            output_header=False,
+            output_labels=True,
+            output_operation_labels=False,
+            list_tools_in_header=True,
+            list_fixtures_in_header=False,
+            machine_name_in_header=True,
+            description_in_header=False,
+            project_file_in_header=False,
+            output_units_in_header=False,
+            date_in_header=False,
+            document_name_in_header=False,
+            output_duplicate_parameters=False,
+            output_duplicate_commands=False,
+            axis_precision=4,
+            feed_precision=2,
+            spindle_precision=1,
         )
 
         # Verify custom values
-        self.assertFalse(opts.comments)
-        self.assertFalse(opts.blank_lines)
-        self.assertFalse(opts.header)
+        self.assertEqual(opts.output_units, OutputUnits.IMPERIAL)
+        self.assertEqual(opts.command_space, "")
+        self.assertEqual(opts.comment_symbol, ";")
+        self.assertEqual(opts.end_of_line_chars, "\r\n")
+        self.assertEqual(opts.line_increment, 5)
+        self.assertEqual(opts.line_number_start, 10)
         self.assertTrue(opts.line_numbers)
-        self.assertTrue(opts.bcnc_blocks)
-        self.assertTrue(opts.path_labels)
-        self.assertTrue(opts.machine_name)
-        self.assertFalse(opts.tool_change)
-        self.assertFalse(opts.doubles)
-        self.assertTrue(opts.adaptive)
+        self.assertEqual(opts.line_number_prefix, "L")
+        self.assertFalse(opts.output_comments)
+        self.assertFalse(opts.output_blank_lines)
+        self.assertFalse(opts.output_bcnc_comments)
+        self.assertFalse(opts.output_header)
+        self.assertTrue(opts.output_labels)
+        self.assertFalse(opts.output_operation_labels)
+        self.assertTrue(opts.list_tools_in_header)
+        self.assertFalse(opts.list_fixtures_in_header)
+        self.assertTrue(opts.machine_name_in_header)
+        self.assertFalse(opts.description_in_header)
+        self.assertFalse(opts.project_file_in_header)
+        self.assertFalse(opts.output_units_in_header)
+        self.assertFalse(opts.date_in_header)
+        self.assertFalse(opts.document_name_in_header)
+        self.assertFalse(opts.output_duplicate_parameters)
+        self.assertFalse(opts.output_duplicate_commands)
+        self.assertEqual(opts.axis_precision, 4)
+        self.assertEqual(opts.feed_precision, 2)
+        self.assertEqual(opts.spindle_precision, 1)
 
     def test_equality(self):
         """Test OutputOptions equality comparison"""
@@ -158,63 +207,98 @@ class TestOutputOptions(PathTestUtils.PathTestBase):
         opts2 = OutputOptions()
         self.assertEqual(opts1, opts2)
 
-        opts2.comments = False
+        opts2.output_comments = False
         self.assertNotEqual(opts1, opts2)
 
 
-class TestSpindle(PathTestUtils.PathTestBase):
-    """Test Spindle dataclass"""
+class TestProcessingOptions(PathTestUtils.PathTestBase):
+    """Test ProcessingOptions dataclass"""
 
-    def test_spindle_initialization(self):
-        """Test Spindle initialization with defaults"""
-        spindle = Spindle(
-            name="Main Spindle",
+    def test_default_initialization(self):
+        """Test ProcessingOptions initialization with defaults"""
+        opts = ProcessingOptions()
+
+        # Default values
+        self.assertFalse(opts.early_tool_prep)
+        self.assertFalse(opts.filter_inefficient_moves)
+        self.assertFalse(opts.split_arcs)
+        self.assertTrue(opts.tool_change)
+        self.assertFalse(opts.translate_rapid_moves)
+        self.assertIsNone(opts.return_to)
+
+    def test_custom_initialization(self):
+        """Test ProcessingOptions initialization with custom values"""
+        opts = ProcessingOptions(
+            early_tool_prep=True,
+            filter_inefficient_moves=True,
+            split_arcs=True,
+            tool_change=False,
+            translate_rapid_moves=True,
+            return_to=(10.0, 20.0, 30.0),
+        )
+
+        # Verify custom values
+        self.assertTrue(opts.early_tool_prep)
+        self.assertTrue(opts.filter_inefficient_moves)
+        self.assertTrue(opts.split_arcs)
+        self.assertFalse(opts.tool_change)
+        self.assertTrue(opts.translate_rapid_moves)
+        self.assertEqual(opts.return_to, (10.0, 20.0, 30.0))
+
+    def test_equality(self):
+        """Test ProcessingOptions equality comparison"""
+        opts1 = ProcessingOptions()
+        opts2 = ProcessingOptions()
+        self.assertEqual(opts1, opts2)
+
+        opts2.filter_inefficient_moves = True
+        self.assertNotEqual(opts1, opts2)
+
+
+class TestToolhead(PathTestUtils.PathTestBase):
+    """Test Toolhead dataclass"""
+
+    def test_toolhead_initialization(self):
+        """Test Toolhead initialization with defaults"""
+        toolhead = Toolhead(
+            name="Main Toolhead",
             max_power_kw=5.5,
             max_rpm=24000,
             min_rpm=1000,
             tool_change="automatic",
         )
 
-        self.assertEqual(spindle.name, "Main Spindle")
-        self.assertEqual(spindle.max_power_kw, 5.5)
-        self.assertEqual(spindle.max_rpm, 24000)
-        self.assertEqual(spindle.min_rpm, 1000)
-        self.assertEqual(spindle.tool_change, "automatic")
-        # Default tool axis should be set
-        self.assertEqual(spindle.tool_axis, FreeCAD.Vector(0, 0, -1))
+        self.assertEqual(toolhead.name, "Main Toolhead")
+        self.assertEqual(toolhead.max_power_kw, 5.5)
+        self.assertEqual(toolhead.max_rpm, 24000)
+        self.assertEqual(toolhead.min_rpm, 1000)
+        self.assertEqual(toolhead.tool_change, "automatic")
+        # Default toolhead_wait should be 0.0
+        self.assertEqual(toolhead.toolhead_wait, 0.0)
 
-    def test_spindle_custom_tool_axis(self):
-        """Test Spindle with custom tool axis"""
-        spindle = Spindle(
-            name="Side Spindle",
-            tool_axis=FreeCAD.Vector(1, 0, 0),
-        )
-
-        self.assertEqual(spindle.tool_axis, FreeCAD.Vector(1, 0, 0))
-
-    def test_spindle_serialization(self):
+    def test_toolhead_serialization(self):
         """Test to_dict and from_dict"""
-        spindle = Spindle(
-            name="Test Spindle",
-            id="spindle-001",
+        toolhead = Toolhead(
+            name="Test Toolhead",
+            id="toolhead-001",
             max_power_kw=3.0,
             max_rpm=18000,
             min_rpm=500,
             tool_change="manual",
-            tool_axis=FreeCAD.Vector(0, 1, 0),
+            toolhead_wait=1.5,
         )
 
-        data = spindle.to_dict()
-        self.assertEqual(data["name"], "Test Spindle")
-        self.assertEqual(data["id"], "spindle-001")
+        data = toolhead.to_dict()
+        self.assertEqual(data["name"], "Test Toolhead")
+        self.assertEqual(data["id"], "toolhead-001")
         self.assertEqual(data["max_power_kw"], 3.0)
-        self.assertEqual(data["tool_axis"], [0, 1, 0])
+        self.assertEqual(data["toolhead_wait"], 1.5)
 
-        restored = Spindle.from_dict(data)
-        self.assertEqual(restored.name, spindle.name)
-        self.assertEqual(restored.id, spindle.id)
-        self.assertEqual(restored.max_power_kw, spindle.max_power_kw)
-        self.assertEqual(restored.tool_axis, spindle.tool_axis)
+        restored = Toolhead.from_dict(data)
+        self.assertEqual(restored.name, toolhead.name)
+        self.assertEqual(restored.id, toolhead.id)
+        self.assertEqual(restored.max_power_kw, toolhead.max_power_kw)
+        self.assertEqual(restored.toolhead_wait, toolhead.toolhead_wait)
 
 
 class TestMachineFactory(PathTestUtils.PathTestBase):
@@ -257,14 +341,14 @@ class TestMachineFactory(PathTestUtils.PathTestBase):
         machine.add_linear_axis("Y", FreeCAD.Vector(0, 1, 0))
         machine.add_linear_axis("Z", FreeCAD.Vector(0, 0, 1))
 
-        # Add a spindle
-        spindle = Spindle(
-            name="Main Spindle",
+        # Add a toolhead
+        toolhead = Toolhead(
+            name="Main Toolhead",
             max_power_kw=5.5,
             max_rpm=24000,
             min_rpm=1000,
         )
-        machine.spindles.append(spindle)
+        machine.toolheads.append(toolhead)
 
         # Save configuration
         filepath = MachineFactory.save_configuration(machine, "test_machine.fcm")
@@ -279,8 +363,8 @@ class TestMachineFactory(PathTestUtils.PathTestBase):
         self.assertEqual(loaded_machine.description, "Test description")
         self.assertEqual(loaded_machine.machine_type, "xyz")
         self.assertEqual(loaded_machine.configuration_units, "metric")
-        self.assertEqual(len(loaded_machine.spindles), 1)
-        self.assertEqual(loaded_machine.spindles[0].name, "Main Spindle")
+        self.assertEqual(len(loaded_machine.toolheads), 1)
+        self.assertEqual(loaded_machine.toolheads[0].name, "Main Toolhead")
 
     def test_save_configuration_auto_filename(self):
         """Test saving with automatic filename generation"""
@@ -305,7 +389,7 @@ class TestMachineFactory(PathTestUtils.PathTestBase):
         # The data structure has nested "machine" key
         self.assertIn("machine", data)
         self.assertEqual(data["machine"]["name"], "New Machine")
-        self.assertIn("spindles", data["machine"])
+        self.assertIn("toolheads", data["machine"])
 
     def test_list_configuration_files(self):
         """Test listing available configuration files"""
@@ -381,9 +465,9 @@ class TestMachineFactory(PathTestUtils.PathTestBase):
             configuration_units="metric",
         )
 
-        # Add spindle
-        machine.spindles.append(
-            Spindle(
+        # Add toolhead
+        machine.toolheads.append(
+            Toolhead(
                 name="Main",
                 max_power_kw=7.5,
                 max_rpm=30000,
@@ -391,9 +475,9 @@ class TestMachineFactory(PathTestUtils.PathTestBase):
         )
 
         # Configure post-processor settings
-        machine.output.output_comments = False
-        machine.output.axis_precision = 4
-        machine.output.line_increment = 5
+        machine.output.comments.enabled = False
+        machine.output.precision.axis = 4
+        machine.output.formatting.line_increment = 5
 
         # line_increment is set to default 10 in OutputOptions
 
@@ -404,7 +488,7 @@ class TestMachineFactory(PathTestUtils.PathTestBase):
         # Verify all components
         self.assertEqual(loaded.name, machine.name)
         self.assertEqual(loaded.manufacturer, machine.manufacturer)
-        self.assertEqual(len(loaded.spindles), 1)
-        self.assertFalse(loaded.output.output_comments)
-        self.assertEqual(loaded.output.axis_precision, 4)
-        self.assertEqual(loaded.output.line_increment, 5)
+        self.assertEqual(len(loaded.toolheads), 1)
+        self.assertFalse(loaded.output.comments.enabled)
+        self.assertEqual(loaded.output.precision.axis, 4)
+        self.assertEqual(loaded.output.formatting.line_increment, 5)
