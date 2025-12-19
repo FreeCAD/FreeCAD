@@ -630,6 +630,9 @@ fs::path ApplicationDirectories::findHomePath(const char* sCall)
 #include <cstdio>
 #include <cstdlib>
 #include <sys/param.h>
+#if defined(__FreeBSD__)
+#include <sys/sysctl.h>
+#endif
 
 fs::path ApplicationDirectories::findHomePath(const char* sCall)
 {
