@@ -459,7 +459,7 @@ class AttachmentEditorTaskPanel(FrozenClass):
             if parent is not None:
                 path = [objname] + subname.split(".")
                 if parent.Name in path:
-                    path = path[path.index(parent.Name)+1:]
+                    path = path[path.index(parent.Name) + 1 :]
                     if len(path) > 1:
                         objname = path[0]
                         subname = ".".join(path[1:])
