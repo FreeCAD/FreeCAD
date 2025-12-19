@@ -181,7 +181,10 @@ def check_for_tool_change(
 def create_comment(values: Values, comment_string: str) -> str:
     """Create a comment from a string using the correct comment symbol."""
     if values["COMMENT_SYMBOL"] == "(":
-        return f"({comment_string})"
+        # Sanitize nested parentheses to prevent breaking G-code comment format
+        # Replace ( with [ and ) with ] to preserve readability
+        sanitized = comment_string.replace("(", "[").replace(")", "]")
+        return f"({sanitized})"
     return values["COMMENT_SYMBOL"] + comment_string
 
 
