@@ -271,7 +271,7 @@ PropertyModel::GroupInfo& PropertyModel::getGroupInfo(App::Property* prop)
 {
     const char* group = prop->getGroup();
     bool isEmpty = Base::Tools::isNullOrEmpty(group);
-    QString groupName = QString::fromLatin1(
+    QString groupName = QString::fromUtf8(
         isEmpty ? QT_TRANSLATE_NOOP("App::Property", "Base") : group
     );
 
