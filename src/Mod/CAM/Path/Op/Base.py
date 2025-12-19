@@ -169,6 +169,14 @@ class ObjectOp(object):
             ),
         )
         obj.addProperty(
+            "App::PropertyBool",
+            "BlockDelete",
+            "Path",
+            QT_TRANSLATE_NOOP(
+                "App::Property", "Enable post processor to add block delete commands"
+            ),
+        )
+        obj.addProperty(
             "App::PropertyString",
             "Comment",
             "Path",
@@ -443,6 +451,15 @@ class ObjectOp(object):
                 "Path",
                 QT_TRANSLATE_NOOP("App::Property", "Operations Cycle Time Estimation"),
             )
+        if not hasattr(obj, "BlockDelete"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "BlockDelete",
+                "Path",
+                QT_TRANSLATE_NOOP(
+                "App::Property", "Enable post processor to add block delete commands"
+            ),
+        )
 
         if FeatureStepDown & features and not hasattr(obj, "StepDown"):
             obj.addProperty(
@@ -803,7 +820,15 @@ class ObjectOp(object):
             # Let's finish by rapid to clearance...just for safety
             self.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
 
+        # Add block delete annotations if enabled
+        if obj.BlockDelete:
+            for command in self.commandlist:
+                annotations = command.Annotations
+                annotations['BlockDelete'] = True
+                command.Annotations = annotations
+
         path = Path.Path(self.commandlist)
+
         obj.Path = path
         obj.CycleTime = getCycleTimeEstimate(obj)
         self.job.Proxy.getCycleTime()
