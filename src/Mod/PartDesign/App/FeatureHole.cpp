@@ -28,6 +28,7 @@
 #include <BRep_Builder.hxx>
 #include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
 #include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
+#include <BRepAlgoAPI_Section.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepBuilderAPI_MakeSolid.hxx>
@@ -58,6 +59,7 @@
 #include <Mod/Part/App/TopoShapeMapper.h>
 #include <Mod/Part/App/TopoShapeOpCode.h>
 #include <Mod/Part/App/Tools.h>
+#include <Mod/PartDesign/App/Body.h>
 
 #include "FeatureHole.h"
 #include "json.hpp"
@@ -551,6 +553,8 @@ Hole::Hole()
     ADD_PROPERTY_TYPE(Threaded, (false), "Hole", App::Prop_None, "Threaded");
 
     ADD_PROPERTY_TYPE(ModelThread, (false), "Hole", App::Prop_None, "Model actual thread");
+
+    ADD_PROPERTY_TYPE(CosmeticThread, (true), "Hole", App::Prop_None, "Texture the thread");
 
     ADD_PROPERTY_TYPE(ThreadType, (0L), "Hole", App::Prop_None, "Thread type");
     ThreadType.setEnums(ThreadTypeEnums);
@@ -1406,6 +1410,7 @@ void Hole::onChanged(const App::Property* prop)
         // thread class and direction are only sensible if threaded
         // fit only sensible if not threaded
         if (Threaded.getValue()) {
+            CosmeticThread.setReadOnly(false);
             ThreadClass.setReadOnly(false);
             ThreadDirection.setReadOnly(false);
             ThreadFit.setReadOnly(true);
@@ -1419,6 +1424,8 @@ void Hole::onChanged(const App::Property* prop)
             }
         }
         else {
+            CosmeticThread.setValue(false);
+            CosmeticThread.setReadOnly(true);
             ThreadClass.setReadOnly(true);
             ThreadDirection.setReadOnly(true);
             if (type == "None") {
@@ -1441,6 +1448,14 @@ void Hole::onChanged(const App::Property* prop)
         // Diameter parameter depends on this
         updateDiameterParam();
         UseCustomThreadClearance.setReadOnly(!ModelThread.getValue());
+        if (CosmeticThread.getValue() && ModelThread.getValue()) {
+            CosmeticThread.setValue(false);
+        }
+    }
+    else if (prop == &CosmeticThread) {
+        if (CosmeticThread.getValue() && ModelThread.getValue()) {
+            ModelThread.setValue(false);
+        }
     }
     else if (prop == &DrillPoint) {
         if (DrillPoint.getValue() == 1) {
@@ -2069,6 +2084,70 @@ App::DocumentObjectExecReturn* Hole::execute()
                 "Result has multiple solids: enable 'Allow Compound' in the active body."
             ));
         }
+        if (CosmeticThread.getValue()) {
+            try {
+                double threadDepth = this->ThreadDepth.getValue();
+                // Prepare compound with main solid
+                BRep_Builder builder;
+                TopoDS_Compound comp;
+                builder.MakeCompound(comp);
+                builder.Add(comp, result.getShape());
+                // Determine last shown shape of the body for trimming edges
+                TopoDS_Shape targetShape;
+                if (auto* body = PartDesign::Body::findBodyOf(this)) {
+                    const auto& features = body->Group.getValues();
+                    auto holeIt = std::ranges::find(features, this);
+                    if (holeIt != features.end()) {
+                        for (auto it = holeIt; it != features.end(); ++it) {
+                            auto* posteriorFeature = dynamic_cast<PartDesign::Feature*>(*it);
+                            if (posteriorFeature && posteriorFeature->Visibility.getValue()) {
+                                targetShape = posteriorFeature->Shape.getValue();
+                                break;
+                            }
+                        }
+                    }
+                    if (targetShape.IsNull()) {
+                        targetShape = body->Shape.getValue();
+                    }
+                }
+                if (targetShape.IsNull()) {
+                    targetShape = result.getShape();  // fallback
+                }
+                // Add trimmed thread edges for each hole
+                for (const auto& h : holes) {
+                    if (h.isNull()) {
+                        continue;
+                    }
+                    // Compute ring center at threaded depth
+                    gp_Pnt ringCenter = firstPoint.Translated(gp_Vec(zDir) * -threadDepth);
+                    ringCenter.Transform(h.getShape().Location().Transformation());
+                    double ringRadius = (Tapered.getValue() ? radiusBottom : radius);
+                    if (ringRadius <= Precision::Confusion()) {
+                        continue;
+                    }
+                    gp_Ax2 circAx2(ringCenter, gp_Dir(zDir));
+                    gp_Circ circ(circAx2, ringRadius);
+                    TopoDS_Edge fullCircleEdge = BRepBuilderAPI_MakeEdge(circ);
+                    // Trim edge against last shown shape
+                    BRepAlgoAPI_Section section(targetShape, fullCircleEdge, Precision::Confusion());
+                    section.Build();
+                    if (section.IsDone() && !section.Shape().IsNull()) {
+                        for (TopExp_Explorer exp(section.Shape(), TopAbs_EDGE); exp.More();
+                             exp.Next()) {
+                            builder.Add(comp, exp.Current());
+                        }
+                    }
+                    else {
+                        builder.Add(comp, fullCircleEdge);  // fallback
+                    }
+                }
+                result = TopoShape(comp);
+            }
+            catch (...) {
+                FC_WARN(getFullName() << ": Cosmetic thread generation failed");
+            }
+        }
+
         this->Shape.setValue(result);
 
         return App::DocumentObject::StdReturn;
