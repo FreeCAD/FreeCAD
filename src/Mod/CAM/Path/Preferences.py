@@ -51,6 +51,7 @@ PostProcessorDefaultArgs = "PostProcessorDefaultArgs"
 PostProcessorBlacklist = "PostProcessorBlacklist"
 PostProcessorOutputFile = "PostProcessorOutputFile"
 PostProcessorOutputPolicy = "PostProcessorOutputPolicy"
+PostProcessorShowEditor = "PostProcessorShowEditor"
 
 ToolGroup = PreferencesGroup + "/Tools"
 ToolPath = "ToolPath"
@@ -321,6 +322,26 @@ def defaultOutputFile():
 def defaultOutputPolicy():
     pref = preferences()
     return pref.GetString(PostProcessorOutputPolicy, "")
+
+
+def showEditorOnPostProcess():
+    """Get user preference for showing editor before writing G-code.
+
+    Returns:
+        bool: True to show editor, False to skip it (default: True)
+    """
+    pref = preferences()
+    return pref.GetBool(PostProcessorShowEditor, True)
+
+
+def setShowEditorOnPostProcess(show: bool):
+    """Set user preference for showing editor before writing G-code.
+
+    Args:
+        show: True to show editor, False to skip it
+    """
+    pref = preferences()
+    pref.SetBool(PostProcessorShowEditor, show)
 
 
 def defaultStockTemplate():

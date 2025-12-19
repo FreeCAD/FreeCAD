@@ -25,6 +25,10 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+#
+# DEPRECATED: This post processor is deprecated and replaced by the generic
+# post processor with Masso_G3.fcm machine configuration file.
+# Use the generic post processor instead.
 
 from typing import Any, Dict
 
