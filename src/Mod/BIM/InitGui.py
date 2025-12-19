@@ -143,11 +143,11 @@ class BIMWorkbench(Workbench):
 
         self.modify_gen = [
             "Draft_Move",
-            "BIM_Copy",
             "Draft_Rotate",
             "Draft_Scale",
             "Draft_Mirror",
             "BIM_Clone",
+            "BIM_Copy",
             "BIM_SimpleCopy",
             "BIM_Compound",
         ]
