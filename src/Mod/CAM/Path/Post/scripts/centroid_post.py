@@ -51,6 +51,34 @@ Visible = Dict[str, bool]
 class Centroid(PostProcessor):
     """The Centroid post processor class."""
 
+    @classmethod
+    def get_common_property_schema(cls):
+        """Override common properties with Centroid-specific defaults."""
+        common_props = super().get_common_property_schema()
+        
+        # Override defaults for Centroid
+        for prop in common_props:
+            if prop["name"] == "supports_tool_radius_compensation":
+                prop["default"] = False  # Centroid doesn't support G41/G42
+            elif prop["name"] == "preamble":
+                prop["default"] = "G53 G00 G17"
+            elif prop["name"] == "postamble":
+                prop["default"] = "M99"
+            elif prop["name"] == "safetyblock":
+                prop["default"] = "G90 G80 G40 G49"
+            elif prop["name"] == "tool_return":
+                prop["default"] = "M5\nM25\nG49 H0"
+        
+        return common_props
+
+    @classmethod
+    def get_property_schema(cls):
+        """Return schema for Centroid-specific configurable properties."""
+        return [
+            # Centroid doesn't have specific properties beyond common ones
+            # All Centroid-specific configuration is in common properties
+        ]
+
     def __init__(
         self,
         job,
@@ -73,6 +101,14 @@ class Centroid(PostProcessor):
         #
         # Set any values here that need to override the default values set
         # in the parent routine.
+        #
+        # TODO: Migrate to postprocessor properties system
+        # This postprocessor now supports schema-based configuration via:
+        # - get_common_property_schema() - defines common properties with Centroid defaults
+        # - get_property_schema() - defines Centroid-specific properties (currently none)
+        # 
+        # The machine editor can now configure this postprocessor using the new property system.
+        # Future updates should migrate hardcoded values below to use postprocessor_properties.
         #
         # Use 4 digits for axis precision by default.
         #

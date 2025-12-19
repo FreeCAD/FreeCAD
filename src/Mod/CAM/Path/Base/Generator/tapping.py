@@ -46,6 +46,7 @@ def generate(
     righthand=True,
     pitch=None,
     spindle_speed=None,
+    rigid=False,
 ):
     """
     Generates Gcode for tapping a single hole.
@@ -118,5 +119,8 @@ def generate(
         cmd = "G74"
     else:
         cmd = "G84"
+    
+    finalcmd = Path.Command(cmd, cmdParams)
+    finalcmd.addAnnotations({"rigid": str(rigid)})
 
-    return [Path.Command(cmd, cmdParams)]
+    return [finalcmd]

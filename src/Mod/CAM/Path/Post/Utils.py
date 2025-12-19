@@ -56,8 +56,9 @@ if FreeCAD.GuiUp:
 
 
 class FilenameGenerator:
-    def __init__(self, job):
+    def __init__(self, job, file_extension=None):
         self.job = job
+        self._file_extension_override = file_extension
         self.subpartname = ""
         self.sequencenumber = 0
         path, filename, ext = self.get_path_and_filename_default()
@@ -69,7 +70,7 @@ class FilenameGenerator:
     def get_path_and_filename_default(self):
         outputpath = ""
         filename = ""
-        ext = ".nc"
+        ext = ""
 
         validPathSubstitutions = ["D", "d", "M", "j"]
         validFilenameSubstitutions = ["j", "d", "T", "t", "W", "O", "S"]
@@ -98,7 +99,9 @@ class FilenameGenerator:
                 os.getcwd()
             )  ## TODO: This should be avoided as it gives the Freecad executable's path in some systems (e.g. Windows)
 
-        if not ext:
+        if self._file_extension_override:
+            ext = f".{self._file_extension_override}" if not self._file_extension_override.startswith('.') else self._file_extension_override
+        elif not ext:
             ext = ".nc"
 
         # Check for invalid matches

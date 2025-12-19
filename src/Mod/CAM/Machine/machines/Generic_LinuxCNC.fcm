@@ -1,0 +1,135 @@
+{
+    "freecad_version": "1.2.0",
+    "machine": {
+        "axes": {
+            "X": {
+                "type": "linear",
+                "role": "table_linear",
+                "parent": null,
+                "sequence": 0,
+                "joint": {
+                    "origin": [0, 0, 0],
+                    "axis": [1, 0, 0]
+                },
+                "limits": {
+                    "min": 0,
+                    "max": 1000
+                },
+                "max_velocity": 10000
+            },
+            "Y": {
+                "type": "linear",
+                "role": "table_linear",
+                "parent": null,
+                "sequence": 0,
+                "joint": {
+                    "origin": [0, 0, 0],
+                    "axis": [0, 1, 0]
+                },
+                "limits": {
+                    "min": 0,
+                    "max": 1000
+                },
+                "max_velocity": 10000
+            },
+            "Z": {
+                "type": "linear",
+                "role": "head_linear",
+                "parent": null,
+                "sequence": 0,
+                "joint": {
+                    "origin": [0, 0, 0],
+                    "axis": [0, 0, 1]
+                },
+                "limits": {
+                    "min": 0,
+                    "max": 1000
+                },
+                "max_velocity": 10000
+            }
+        },
+        "description": "Basic LinuxCNC configuration",
+        "manufacturer": "",
+        "name": "Generic LinuxCNC",
+        "toolheads": [
+            {
+                "id": "toolhead1",
+                "name": "Toolhead 1",
+                "toolhead_type": "rotary",
+                "tool_change": "manual",
+                "max_power_kw": 3.0,
+                "min_rpm": 6000,
+                "max_rpm": 24000,
+                "coolant_flood": false,
+                "coolant_mist": false,
+                "coolant_delay": 0.0,
+                "toolhead_wait": 0.0
+            }
+        ],
+        "units": "metric"
+    },
+    "output": {
+        "units": "metric",
+        "output_tool_length_offset": true,
+        "output_header": true,
+        "header": {
+            "include_date": true,
+            "include_description": true,
+            "include_document_name": true,
+            "include_machine_name": false,
+            "include_project_file": true,
+            "include_units": true,
+            "include_tool_list": false,
+            "include_fixture_list": true
+        },
+        "comments": {
+            "enabled": true,
+            "symbol": "(",
+            "include_operation_labels": true,
+            "include_blank_lines": true,
+            "output_bcnc_comments": true
+        },
+        "formatting": {
+            "line_numbers": false,
+            "line_number_start": 100,
+            "line_number_prefix": "N",
+            "line_increment": 10,
+            "command_space": " ",
+            "end_of_line_chars": "\n"
+        },
+        "precision": {
+            "axis": 3,
+            "feed": 3,
+            "spindle": 0
+        },
+        "duplicates": {
+            "commands": true,
+            "parameters": true
+        }
+    },
+    "postprocessor": {
+        "file_name": "linuxcnc",
+        "properties": {
+            "supports_tool_radius_compensation": true,
+            "supported_commands": "G0\nG00\nG1\nG01\nG2\nG02\nG3\nG03\nG73\nG74\nG81\nG82\nG83\nG84\nG38.2\nG54\nG55\nG56\nG57\nG58\nG59\nG59.1\nG59.2\nG59.3\nG59.4\nG59.5\nG59.6\nG59.7\nG59.8\nG59.9\nM0\nM00\nM1\nM01\nM3\nM03\nM4\nM04\nM6\nM06",
+            "drill_cycles_to_translate": "",
+            "preamble": "G17 G54 G40 G49 G80 G90",
+            "postamble": "M05\nG17 G54 G90 G80 G40\nM2",
+            "safetyblock": "G40 G49 G80",
+            "pre_operation": "",
+            "post_operation": "",
+            "pre_tool_change": "",
+            "post_tool_change": "",
+            "blend_mode": "BLEND",
+            "blend_tolerance": 0.0
+        }
+    },
+    "processing": {
+        "early_tool_prep": false,
+        "filter_inefficient_moves": false,
+        "split_arcs": false,
+        "tool_change": true,
+        "translate_rapid_moves": false
+    },
+    "version": 1
+}

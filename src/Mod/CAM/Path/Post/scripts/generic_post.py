@@ -41,9 +41,24 @@ Values = Dict[str, Any]
 
 
 class Generic(PostProcessor):
+    
+    @classmethod
+    def get_common_property_schema(cls):
+        """Return common properties with Generic defaults (uses base defaults)."""
+        # Generic postprocessor uses base defaults without overrides
+        return super().get_common_property_schema()
+
+    @classmethod
+    def get_property_schema(cls):
+        """Return schema for Generic-specific configurable properties."""
+        return [
+            # Generic doesn't have specific properties beyond common ones
+            # All configuration is handled through common properties with base defaults
+        ]
+
     def __init__(self, job):
         super().__init__(
-            job,
+            job=job,
             tooltip=translate("CAM", "Generic post processor"),
             tooltipargs=[],
             units="Metric",
@@ -54,6 +69,15 @@ class Generic(PostProcessor):
         """Initialize values that are used throughout the postprocessor."""
         #
         super().init_values(values)
+        #
+        # TODO: Migrate to postprocessor properties system
+        # This postprocessor now supports schema-based configuration via:
+        # - get_common_property_schema() - defines common properties with base defaults
+        # - get_property_schema() - defines Generic-specific properties (currently none)
+        # 
+        # The machine editor can now configure this postprocessor using the new property system.
+        # Future updates should migrate hardcoded values below to use postprocessor_properties.
+        #
         values["POSTPROCESSOR_FILE_NAME"] = __name__
         values["MACHINE_NAME"] = "Generic"
 
