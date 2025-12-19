@@ -124,12 +124,12 @@ def setup(doc=None, solver=None):
 
     # initial analysis for stress estimation
     # with pipeline so that we can setup the adaptive analysis already
-    analysis, gmsh = create_analysis(doc, "Initial Analysis", part_obj)
+    analysis, gmsh = create_analysis(doc, "Adaptive Initial Analysis", part_obj)
     pipeline = doc.addObject("Fem::FemPostPipeline", "Result")
     analysis.addObject(pipeline)
 
     # Adapted Analysis
-    analysis, gmsh = create_analysis(doc, "Adaptive Analysis", part_obj)
+    analysis, gmsh = create_analysis(doc, "Adaptive Refined Analysis", part_obj)
 
     gmsh.CharacteristicLengthMax = 10
 
