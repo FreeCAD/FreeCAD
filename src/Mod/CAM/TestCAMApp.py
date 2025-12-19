@@ -29,7 +29,6 @@ from CAMTests.TestLinkingGenerator import TestGetLinkingMoves
 from CAMTests.TestMachine import (
     TestMachineDataclass,
     TestMachineFactory,
-    TestSpindle,
 )
 from CAMTests.TestPathProfile import TestPathProfile
 

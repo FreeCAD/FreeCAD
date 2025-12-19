@@ -26,23 +26,29 @@ from .machine import (
     MachineFactory,
     LinearAxis,
     RotaryAxis,
-    Spindle,
+    Toolhead,
+    ToolheadType,
     MachineUnits,
     OutputUnits,
     OutputOptions,
-    GCodeBlocks,
     ProcessingOptions,
 )
+
+# Legacy compatibility aliases
+Spindle = Toolhead
+SpindleType = ToolheadType
 
 __all__ = [
     "Machine",
     "MachineFactory",
     "LinearAxis",
     "RotaryAxis",
-    "Spindle",
+    "Toolhead",
+    "ToolheadType",
+    "Spindle",  # Legacy alias
+    "SpindleType",  # Legacy alias
     "MachineUnits",
     "OutputUnits",
     "OutputOptions",
-    "GCodeBlocks",
     "ProcessingOptions",
 ]
