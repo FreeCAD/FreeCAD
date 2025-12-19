@@ -23,6 +23,8 @@
  ***************************************************************************/
 
 #include <Approx_Curve3d.hxx>
+#include <Bnd_Box.hxx>
+#include <BRepBndLib.hxx>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_Surface.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
@@ -7326,3 +7328,4 @@ std::unique_ptr<GeomCurve> makeFromCurveAdaptor(const Adaptor3d_Curve& adapt, bo
 }
 
 }  // namespace Part
+
