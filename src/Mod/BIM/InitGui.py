@@ -78,11 +78,11 @@ class BIMWorkbench(Workbench):
             "Draft_Rectangle",
             "BIM_ArcTools",
             "Draft_Circle",
-            "Draft_Fillet",
             "Draft_Ellipse",
             "Draft_Polygon",
             "BIM_SplineTools",
             "Draft_Point",
+            "Draft_Fillet",
         ]
 
         self.annotationtools = [
