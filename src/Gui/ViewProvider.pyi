@@ -281,7 +281,7 @@ class ViewProvider(ExtensionContainer):
         transform: bool = True,
         view: Any = None,
         mat: Any = None,
-        depth: int = 0
+        depth: int = 0,
     ) -> BoundBox:
         """
         Obtain the bounding box of this view object.
