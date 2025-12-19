@@ -87,6 +87,9 @@ def run_all():
     run_example("square_pipe_end_twisted_edgeforces", run_solver=True)
     run_example("square_pipe_end_twisted_nodeforces", run_solver=True)
     run_example("thermomech_bimetal", run_solver=True)
+    run_example("gmsh_transfinite_manual", run_solver=True)
+    run_example("gmsh_transfinite_automation", run_solver=True)
+    run_example("gmsh_adaptive", run_solver=True)
 
 
 def setup_all():
@@ -125,31 +128,23 @@ def setup_all():
     run_example("square_pipe_end_twisted_edgeforces")
     run_example("square_pipe_end_twisted_nodeforces")
     run_example("thermomech_bimetal")
+    run_example("gmsh_transfinite_manual")
+    run_example("gmsh_transfinite_automation")
+    run_example("gmsh_adaptive")
 
 
-def run_mesh_generation(doc, base_name, filepath=""):
-    from os.path import join, exists
-    from os import makedirs
-    from tempfile import gettempdir as gettmp
-
-    # recompute
-    doc.recompute()
-
-    # print(doc.Objects)
-    # print([obj.Name for obj in doc.Objects])
-
-    # filepath
-    if filepath == "":
-        filepath = join(gettmp(), "FEM_examples")
-    if not exists(filepath):
-        makedirs(filepath)
+def run_mesh_generation(doc, analysis=None):
 
     # find all mesh generation objects
     from femtools.femutils import is_derived_from
 
+    objects = doc.Objects
+    if analysis:
+        objects = analysis.Group
+
     gmsh_generators = []
     netgen_generators = []
-    for m in doc.Objects:
+    for m in objects:
         if is_derived_from(m, "Fem::FemMeshGmsh"):
             gmsh_generators.append(m)
         elif is_derived_from(m, "Fem::FemMeshNetgen"):
@@ -159,15 +154,15 @@ def run_mesh_generation(doc, base_name, filepath=""):
         # no meshes to generate
         return
 
-    # a file name is needed for the besides dir to work
-    save_fc_file = join(filepath, (base_name + ".FCStd"))
-    FreeCAD.Console.PrintMessage(f"Save FreeCAD file for {base_name} analysis to {save_fc_file}\n.")
-    doc.saveAs(save_fc_file)
-
     # run generations
     from femmesh import gmshtools, netgentools
 
     for gmsh in gmsh_generators:
+
+        if gmsh.FemMesh.NodeCount > 0:
+            # only mesh unmehsed generators
+            continue
+
         tool = gmshtools.GmshTools(gmsh)
         tool.create_mesh()
 
@@ -176,27 +171,33 @@ def run_mesh_generation(doc, base_name, filepath=""):
         gmsh.Shape.ViewObject.Visibility=False
 
     for netgen in netgen_generators:
+        if netgen.FemMesh.NodeCount > 0:
+            # only mesh unmehsed generators
+            continue
+
         tool = netgentools.NetgenTools(netgen)
         tool.compute()
 
-    # save doc once again with results
-    doc.save()
 
-def run_analysis(doc, base_name, filepath="", run_solver=False):
+def run_analysis(doc, base_name, analysis=None, filepath="", run_solver=False):
 
     from os.path import join, exists
     from os import makedirs
     from tempfile import gettempdir as gettmp
 
     # computable?
-    if not hasattr(doc, "Analysis"):
+    if not analysis and not hasattr(doc, "Analysis"):
         return
+
+    # get the default analysis if not specified otherwise
+    if not analysis:
+        analysis = doc.Analysis
 
     # recompute
     doc.recompute()
 
-    # print(doc.Objects)
-    # print([obj.Name for obj in doc.Objects])
+    # check if we need to generate the mesh
+    run_mesh_generation(doc, analysis=analysis)
 
     # filepath
     if filepath == "":
@@ -209,7 +210,7 @@ def run_analysis(doc, base_name, filepath="", run_solver=False):
     from femtools.femutils import is_derived_from
 
     solver = None
-    for m in doc.Analysis.Group:
+    for m in analysis.Group:
         if is_derived_from(m, "Fem::FemSolverObjectPython"):
             solver = m
             break
@@ -256,8 +257,24 @@ def run_example(example, solver=None, base_name=None, run_solver=False):
         if solver is not None:
             base_name += "_" + solver
 
-    run_mesh_generation(doc, base_name)
-    run_analysis(doc, base_name, run_solver=run_solver)
+    # We support rigth now:
+    # 1. Multiple analysis objects, each having a mesh and solver object
+    # 2. Or multiple mesh objects outside of analysis
+
+    # find all analysis
+    analysis = []
+    for obj in doc.Objects:
+        if obj.isDerivedFrom('Fem::FemAnalysis'):
+            analysis.append(obj)
+
+    if not analysis:
+        # run all mesh generators in the document!
+        run_mesh_generation(doc)
+    else:
+        # run each analysis
+        for ana in analysis:
+            run_analysis(doc, base_name, analysis=ana, run_solver=run_solver)
+
     doc.recompute()
 
     return doc
