@@ -3852,21 +3852,14 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
     SoCamera* camera = viewer->getSoRenderManager()->getCamera();
     SbVec3f curdir;// current view direction
     camera->orientation.getValue().multVec(SbVec3f(0, 0, -1), curdir);
-    SbVec3f focal = camera->position.getValue() + camera->focalDistance.getValue() * curdir;
-
-    SbVec3f newdir;// future view direction
-    rot.multVec(SbVec3f(0, 0, -1), newdir);
-    SbVec3f newpos = focal - camera->focalDistance.getValue() * newdir;
-
     SbVec3f plnpos = Base::convertTo<SbVec3f>(plm.getPosition());
-    double dist = (plnpos - newpos).dot(newdir);
-    if (dist < 0) {
-        float focalLength = camera->focalDistance.getValue() - dist + 5;
-        camera->position = focal - focalLength * curdir;
-        camera->focalDistance.setValue(focalLength);
-    }
-
+    camera->position.setValue(plnpos - camera->focalDistance.getValue() * curdir);
     viewer->setCameraOrientation(rot);
+    if (getSketchObject()->Geometry.getSize() > 0 || getSketchObject()->ExternalGeometry.getSize() > 0) {
+        std::vector<App::SubObjectT> objs;
+        objs.emplace_back(getObject(), "");
+        viewer->viewObjects(objs);
+    }
 
     viewer->setEditing(true);
     viewer->setSelectionEnabled(false);
