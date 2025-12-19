@@ -186,6 +186,9 @@ class GmshTools:
         else:
             self.SubdivisionAlgorithm = "0"
 
+        # multi-threading
+        self.ParallelProcessing = self.mesh_obj.ParallelProcessing
+
         # mesh groups
         if self.mesh_obj.GroupsOfNodes is True:
             self.group_nodes_export = True
@@ -938,9 +941,9 @@ class GmshTools:
         match advanced.Type:
             case "AttractorAnisoCurve":
                 return self._build_attractoraniso_size_field(advanced)
-            case "Math":
+            case "MathEval":
                 return self._build_math_size_field(advanced, advanced_fields)
-            case "MathAniso":
+            case "MathEvalAniso":
                 return self._build_mathaniso_size_field(advanced, advanced_fields)
             case "Distance":
                 return self._build_distance_size_field(advanced)
@@ -1009,7 +1012,7 @@ class GmshTools:
             else:
                 new_equation += character
 
-            return new_equation
+        return new_equation
 
     def _build_math_size_field(self, obj, equation_fields):
 
@@ -1058,9 +1061,6 @@ class GmshTools:
 
     def _build_result_size_field(self, obj):
 
-        # double use id: as size fild id and view tag
-        id = self._next_field_number()
-
         # we need to build the result object as well as the size field
         # utilizing it
         if not obj.ResultObject:
@@ -1068,20 +1068,22 @@ class GmshTools:
         if not obj.ResultField or obj.ResultField == "None":
             raise Exception("No valid result field specified")
 
+        # create the size field. Do not set ViewIndex or Tag as it is not known yet
+        settings = {"Field": "PostView", "Option": {}, "Anisotropic": False}
+        settings["FieldID"] = self._next_field_number()
+        self.size_field_list.append(settings)
+
+        # create the result data setting. We need to store a reference to the settings
+        # in here, as we later need to update the ViewIndex option when it is known
+        # at writing time
         result = {"name": obj.ResultObject.Name,
                   "data": obj.ResultObject.Data,
                   "field": obj.ResultField,
-                  "view_tag": id}
+                  "settings": settings}
 
         self.result_view_settings.append(result)
 
-        # now create the size field
-        settings = {"Field": "PostView", "Option": {}, "Anisotropic": False}
-        settings["FieldID"] = id
-        settings["Option"]["ViewTag"] = id
-
-        self.size_field_list.append(settings)
-        return id
+        return settings["FieldID"]
 
 
     def _get_recursive_size_field_data(self, obj):
@@ -1389,6 +1391,7 @@ class GmshTools:
         folder = os.path.dirname(self.temp_file_geo)
         try:
             adt.write_result_settings(self.result_view_settings, geo, folder)
+
         except Exception as e:
             Console.PrintError(f"Cannot create result based refinements: {str(e)}")
 
@@ -1481,9 +1484,9 @@ class GmshTools:
         geo.write("// geo file for meshing with Gmsh meshing software created by FreeCAD\n")
         geo.write("\n")
 
-        # enable multicore processing, except for BAMG algorithm. It fails most of the times when used
+        # enable multicore processing, except for: BAMG algorithm. It fails most of the times when used
         # with multiple threads (tested with gmsh 4.13.1)
-        if self.algorithm2D != "7":
+        if self.ParallelProcessing and self.algorithm2D != "7":
             cpu_count = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Gmsh").GetInt(
                 "NumOfThreads", QThread.idealThreadCount()
             )

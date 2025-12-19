@@ -112,6 +112,7 @@ SET(FemExamples_SRCS
     femexamples/truss_3d_cs_circle_ele_seg3.py
     femexamples/gmsh_transfinite_manual.py
     femexamples/gmsh_transfinite_automation.py
+    femexamples/gmsh_adaptive.py
     femtest/data/gmsh/Quad_Strip_Surface_Automated.vtk
     femtest/data/gmsh/Quad_Strip_Surface_Double_Oriented_Bumped_Automated.vtk
     femtest/data/gmsh/Quad_Strip_Surface_Oriented_Automated.vtk

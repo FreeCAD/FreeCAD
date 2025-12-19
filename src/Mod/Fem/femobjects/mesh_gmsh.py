@@ -259,6 +259,15 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
                 value=["None", "All Quadrangles", "All Hexahedra", "Barycentric"],
             )
         )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyBool",
+                name="ParallelProcessing",
+                group="Mesh Parameters",
+                doc="Use multiple threads to create the mesh",
+                value=True,
+            )
+        )
 
         return prop
 

@@ -125,8 +125,8 @@ class MeshManipulate(base_femmeshelement.BaseFemMeshElement):
                 type="App::PropertyLength",
                 name="Delta",
                 group="Evaluation",
-                doc="Distance used to compute the mean value",
-                value="1um",
+                doc="Distance over which the field shall be computed",
+                value="10mm",
             ),
 
         ]
