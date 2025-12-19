@@ -26,6 +26,7 @@
 #include <vector>
 #include <list>
 #include <time.h>
+#include <fstream>
 
 #ifndef ADAPTIVE_HPP
 # define ADAPTIVE_HPP
@@ -199,8 +200,10 @@ private:
     void AddPathToProgress(TPaths& progressPaths, const Path pth, MotionType mt = MotionType::mtCutting);
     void ApplyStockToLeave(Paths& inputPaths);
 
+    std::ofstream* fout;
+
 private:  // constants for fine tuning
-    const double MIN_STEP_CLIPPER = 16.0;
+    const double MIN_STEP_CLIPPER = 16.0 * 3;
     const int MAX_ITERATIONS = 10;
     const double AREA_ERROR_FACTOR = 0.05;     /* how precise to match the cut area to optimal,
                                                   reasonable value: 0.05 = 5%*/
@@ -208,9 +211,9 @@ private:  // constants for fine tuning
     const int DIRECTION_SMOOTHING_BUFLEN = 3;  // gyro points - used for angle smoothing
 
 
-    const double MIN_CUT_AREA_FACTOR = 0.1
+    const double MIN_CUT_AREA_FACTOR = 0.4
         * 16;  // used for filtering out of insignificant cuts (should be < ENGAGE_AREA_THR_FACTOR)
-    const double ENGAGE_AREA_THR_FACTOR = 0.5 * 16;  // influences minimal engage area
+    const double ENGAGE_AREA_THR_FACTOR = .3;        // 0.5 * 16;  // influences minimal engage area
     const double ENGAGE_SCAN_DISTANCE_FACTOR = 0.2;  // influences the engage scan/stepping distance
 
     const double CLEAN_PATH_TOLERANCE = 1.41;            // should be >1
