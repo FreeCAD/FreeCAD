@@ -733,4 +733,11 @@ const std::string ComplexGeoData::dumpElementMap() const
     return ss.str();
 }
 
+const char* ComplexGeoData::isMappedElement(const char* name)
+{
+    if (name && boost::starts_with(name, elementMapPrefix())) {
+        return name + elementMapPrefix().size();
+    }
+    return nullptr;
+}
 // NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic)

@@ -560,7 +560,14 @@ void SoFCSelection::GLRenderBelowPath(SoGLRenderAction* action)
     }
 
     // check if preselection is active
-    if (this->setOverride(action, ctx)) {
+    if (this->style.getValue() == SoFCSelection::BOX
+        || ViewParams::instance()->getShowSelectionBoundingBox()) {
+        inherited::GLRenderBelowPath(action);
+        if (this->setOverride(action, ctx)) {
+            state->pop();
+        }
+    }
+    else if (this->setOverride(action, ctx)) {
         inherited::GLRenderBelowPath(action);
         state->pop();
     }
