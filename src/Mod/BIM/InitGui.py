@@ -179,7 +179,6 @@ class BIMWorkbench(Workbench):
 
         self.manage = [
             "BIM_Setup",
-            "BIM_Views",
             "BIM_ProjectManager",
             "BIM_Windows",
             "BIM_IfcManageTools",
