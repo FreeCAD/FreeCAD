@@ -7328,4 +7328,3 @@ std::unique_ptr<GeomCurve> makeFromCurveAdaptor(const Adaptor3d_Curve& adapt, bo
 }
 
 }  // namespace Part
-
