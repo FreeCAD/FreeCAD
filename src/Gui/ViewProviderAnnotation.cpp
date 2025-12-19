@@ -28,8 +28,10 @@
 #include <QPainter>
 #include <Inventor/SbLine.h>
 #include <Inventor/SbPlane.h>
+#include <Inventor/actions/SoHandleEventAction.h>
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/events/SoEvent.h>
+#include <Inventor/events/SoMouseButtonEvent.h>
 #include <Inventor/nodes/SoAnnotation.h>
 #include <Inventor/nodes/SoAsciiText.h>
 #include <Inventor/nodes/SoBaseColor.h>
@@ -64,6 +66,7 @@
 #include "ViewParams.h"
 #include "Window.h"
 
+#include "Utilities.h"
 
 using namespace Gui;
 
@@ -486,14 +489,12 @@ void ViewProviderAnnotationLabel::updateData(const App::Property* prop)
 
 void ViewProviderAnnotationLabel::dragStartCallback(void* data, SoDragger* drag)
 {
-    auto that = static_cast<ViewProviderAnnotationLabel*>(data);
-    that->dragState.reset();
-    if (auto* obj = that->getObject<App::AnnotationLabel>()) {
+    auto vp = static_cast<ViewProviderAnnotationLabel*>(data);
+    vp->dragState.reset();
+    if (auto* obj = vp->getObject<App::AnnotationLabel>()) {
         const Base::Vector3d basePosition = obj->BasePosition.getValue();
         const Base::Vector3d startTextPosition = obj->TextPosition.getValue();
-        const Base::Vector3d pickedPoint = Base::convertTo<Base::Vector3d>(
-            drag->getWorldStartingPoint()
-        );
+        const auto pickedPoint = Base::convertTo<Base::Vector3d>(drag->getWorldStartingPoint());
 
         DragState state;
         state.basePosition = basePosition;
@@ -503,7 +504,17 @@ void ViewProviderAnnotationLabel::dragStartCallback(void* data, SoDragger* drag)
         state.planeNormal = Base::convertTo<Base::Vector3d>(
             drag->getViewVolume().getProjectionDirection()
         );
-        that->dragState = state;
+        vp->dragState = state;
+    }
+
+    const SoEvent* event = drag->getEvent();
+    const auto* mbe = dynamic_cast<const SoMouseButtonEvent*>(event);
+    if (mbe && vp->doubleClickData.isDoubleClick(mbe)) {
+        drag->isActive.setValue(false);  // cancel the dragger action
+        vp->dragState.reset();
+        Gui::Application::Instance->activeDocument()->abortCommand();
+        vp->labelDoubleClicked();
+        return;
     }
 
     // This is called when a manipulator is about to manipulating
@@ -512,18 +523,17 @@ void ViewProviderAnnotationLabel::dragStartCallback(void* data, SoDragger* drag)
     );
 }
 
-void ViewProviderAnnotationLabel::dragFinishCallback(void* data, SoDragger*)
+void ViewProviderAnnotationLabel::dragFinishCallback(void* data, SoDragger* /*drag*/)
 {
-    auto that = static_cast<ViewProviderAnnotationLabel*>(data);
-    if (that->dragState) {
-        if (auto* obj = that->getObject<App::AnnotationLabel>()) {
-            obj->TextPosition.setValue(that->dragState->currentTextPosition);
+    auto vp = static_cast<ViewProviderAnnotationLabel*>(data);
+    if (vp->dragState) {
+        // This is called when a manipulator has done manipulating
+        if (auto* obj = vp->getObject<App::AnnotationLabel>()) {
+            obj->TextPosition.setValue(vp->dragState->currentTextPosition);
         }
-        that->dragState.reset();
+        Gui::Application::Instance->activeDocument()->commitCommand();
+        vp->dragState.reset();
     }
-
-    // This is called when a manipulator has done manipulating
-    Gui::Application::Instance->activeDocument()->commitCommand();
 }
 
 void ViewProviderAnnotationLabel::dragMotionCallback(void* data, SoDragger* drag)
