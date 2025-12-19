@@ -184,8 +184,7 @@ class BIMWorkbench(Workbench):
             "BIM_IfcManageTools",
             "BIM_Layers",
             "BIM_Material",
-            "Arch_Schedule",
-            "BIM_Report",
+            "BIM_ReportTools",
             "BIM_Preflight",
             "Draft_AnnotationStyleEditor",
         ]
@@ -344,6 +343,18 @@ class BIMWorkbench(Workbench):
             def IsActive(self):
                 return True
 
+        class BIM_ReportTools:
+            def GetCommands(self):
+                return ("BIM_Report", "Arch_Schedule")
+
+            def GetResources(self):
+                label = QT_TRANSLATE_NOOP("BIM_ReportTools", "Report Tools")
+                tooltip = label
+                return {"MenuText": label, "ToolTip": tooltip, "Icon": "BIM_Report"}
+
+            def IsActive(self):
+                return hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+
         # Register grouped commands
         FreeCADGui.addCommand("BIM_ArcTools", BIM_ArcTools())
         FreeCADGui.addCommand("BIM_SplineTools", BIM_SplineTools())
@@ -352,6 +363,7 @@ class BIMWorkbench(Workbench):
         FreeCADGui.addCommand("BIM_ArrayTools", BIM_ArrayTools())
         FreeCADGui.addCommand("BIM_BooleanTools", BIM_BooleanTools())
         FreeCADGui.addCommand("BIM_IfcManageTools", BIM_IfcManageTools())
+        FreeCADGui.addCommand("BIM_ReportTools", BIM_ReportTools())
 
         # create generic tools command
         class BIM_GenericTools:
@@ -422,16 +434,6 @@ class BIMWorkbench(Workbench):
             if hasattr(RebarTools, "updateLocale"):
                 RebarTools.updateLocale()
             # self.rebar = RebarTools.RebarCommands + ["Arch_Rebar"]
-
-        # load Reporting
-
-        try:
-            import report
-        except ImportError:
-            pass
-        else:
-            if "Report_Create" in Gui.listCommands():
-                self.manage[self.manage.index("Arch_Schedule")] = "Report_Create"
 
         # load webtools
 
