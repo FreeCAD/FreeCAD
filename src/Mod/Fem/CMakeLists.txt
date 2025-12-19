@@ -496,7 +496,7 @@ SET(FemTestsGMESH_SRCS
     femtest/data/gmsh/Wedge_Volume_Automated.vtk
     femtest/data/gmsh/Wedge_Volume_Oriented_Automated.vtk
     femtest/data/gmsh/Wedge_Volume_Oriented_Bumped_Automated.vtk
-    femtest/data/gmsh/Adaptiv_Initial_Analysis.vtk
+    femtest/data/gmsh/Adaptive_Initial_Analysis.vtk
     femtest/data/gmsh/Adaptive_Refined_Analysis.vtk
 )
 
