@@ -2214,6 +2214,98 @@ bool ViewProviderSketch::isSelectable() const
         return PartGui::ViewProvider2DObject::isSelectable();
 }
 
+Base::BoundBox3d ViewProviderSketch::_getBoundingBox(
+    const char* subname,
+    const Base::Matrix4D* mat,
+    bool transform,
+    const Gui::View3DInventorViewer* viewer,
+    int depth) const
+{
+    // If not in edit mode, delegate to parent class.
+    if (!isInEditMode()) {
+        return PartGui::ViewProvider2DObject::_getBoundingBox(subname, mat, transform, viewer, depth);
+    }
+
+    // Prepare the transformation matrix
+    Base::Matrix4D m;
+    if (mat) {
+        m = *mat;
+    }
+
+    // In Edit Mode, apply EditPlacement if transformation is requested
+    if (transform) {
+        m = m * getEditingPlacement().toMatrix();
+    }
+
+    Base::BoundBox3d bbox;
+    std::string name(subname ? subname : "");
+
+    // Handle hierarchy or TNP naming (remove prefixes like Body.Sketch.)
+    auto lastDot = name.find_last_of('.');
+    if (lastDot != std::string::npos) {
+        name = name.substr(lastDot + 1);
+    }
+
+    Sketcher::SketchObject* obj = getSketchObject();
+
+    // Helper to merge the bounding box of a specific geometry ID
+    auto addGeometryBBox = [&](int geoId) {
+        if (auto* geo = obj->getGeometry(geoId)) {
+            bbox.Add(geo->getBoundBox());
+        }
+    };
+
+    // Case 1: Whole Sketch (empty) or Axes
+    if (name.empty() || name == "H_Axis" || name == "V_Axis") {
+        // Add Internal Geometry
+        for (int i = 0; i <= obj->getHighestCurveIndex(); ++i) {
+            addGeometryBBox(i);
+        }
+        // Add External Geometry
+        for (int i = 0; i < obj->getExternalGeometryCount(); ++i) {
+            addGeometryBBox(Sketcher::GeoEnum::RefExt - i);
+        }
+        // Add Root Point
+        bbox.Add(Base::Vector3d(0.0, 0.0, 0.0));
+    }
+    // Case 2: Specific sub-element selected
+    else {
+        // Check for "Edge" or "edge"
+        if (name.size() > 4 && (name.compare(0, 4, "Edge") == 0 || name.compare(0, 4, "edge") == 0)) {
+            int geoId = std::atoi(name.substr(4).c_str()) - 1;
+            addGeometryBBox(geoId);
+        }
+        // Check for "ExternalEdge" or "externaledge"
+        else if (name.size() > 12 && (name.compare(0, 12, "ExternalEdge") == 0 || name.compare(0, 12, "externaledge") == 0)) {
+            int idx = std::atoi(name.substr(12).c_str()) - 1;
+            int geoId = Sketcher::GeoEnum::RefExt - idx;
+            addGeometryBBox(geoId);
+        }
+        // Check for "Vertex" or "vertex"
+        else if (name.size() > 6 && (name.compare(0, 6, "Vertex") == 0 || name.compare(0, 6, "vertex") == 0)) {
+            int vtId = std::atoi(name.substr(6).c_str()) - 1;
+            int geoId = Sketcher::GeoEnum::GeoUndef;
+            Sketcher::PointPos posId = Sketcher::PointPos::none;
+
+            obj->getGeoVertexIndex(vtId, geoId, posId);
+            if (geoId != Sketcher::GeoEnum::GeoUndef) {
+                Base::Vector3d pt = obj->getPoint(geoId, posId);
+                bbox.Add(pt);
+            }
+        }
+        else if (name == "RootPoint" || name == "rootpoint") {
+            bbox.Add(Base::Vector3d(0.0, 0.0, 0.0));
+        }
+    }
+
+    // Apply the accumulated transformation
+    if (bbox.IsValid()) {
+        bbox.Transformed(m);
+    }
+
+    return bbox;
+}
+
 void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     // are we in edit?
