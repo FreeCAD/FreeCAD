@@ -24,6 +24,7 @@
 
 #include <Inventor/SbBox.h>
 #include <Inventor/elements/SoLazyElement.h>
+#include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoText2.h>
 #include <Inventor/nodes/SoTransform.h>
