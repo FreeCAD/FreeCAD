@@ -113,14 +113,6 @@ SET(FemExamples_SRCS
     femexamples/gmsh_transfinite_manual.py
     femexamples/gmsh_transfinite_automation.py
     femexamples/gmsh_adaptive.py
-    femtest/data/gmsh/Quad_Strip_Surface_Automated.vtk
-    femtest/data/gmsh/Quad_Strip_Surface_Double_Oriented_Bumped_Automated.vtk
-    femtest/data/gmsh/Quad_Strip_Surface_Oriented_Automated.vtk
-    femtest/data/gmsh/Quad_Strip_Surface_Oriented_Bumped_Automated.vtk
-    femtest/data/gmsh/Quad_Surface_Automated.vtk
-    femtest/data/gmsh/Wedge_Volume_Automated.vtk
-    femtest/data/gmsh/Wedge_Volume_Oriented_Automated.vtk
-    femtest/data/gmsh/Wedge_Volume_Oriented_Bumped_Automated.vtk
 )
 
 
@@ -496,6 +488,16 @@ SET(FemTestsGMESH_SRCS
     femtest/data/gmsh/Multiface_Surface_Oriented_Bumped.vtk
     femtest/data/gmsh/Multiface_Surface_Oriented.vtk
     femtest/data/gmsh/Multiface_Surface.vtk
+    femtest/data/gmsh/Quad_Strip_Surface_Automated.vtk
+    femtest/data/gmsh/Quad_Strip_Surface_Double_Oriented_Bumped_Automated.vtk
+    femtest/data/gmsh/Quad_Strip_Surface_Oriented_Automated.vtk
+    femtest/data/gmsh/Quad_Strip_Surface_Oriented_Bumped_Automated.vtk
+    femtest/data/gmsh/Quad_Surface_Automated.vtk
+    femtest/data/gmsh/Wedge_Volume_Automated.vtk
+    femtest/data/gmsh/Wedge_Volume_Oriented_Automated.vtk
+    femtest/data/gmsh/Wedge_Volume_Oriented_Bumped_Automated.vtk
+    femtest/data/gmsh/Adaptiv_Initial_Analysis.vtk
+    femtest/data/gmsh/Adaptive_Refined_Analysis.vtk
 )
 
 

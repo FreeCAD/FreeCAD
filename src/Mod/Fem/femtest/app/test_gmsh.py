@@ -33,6 +33,7 @@ from os.path import join
 import FreeCAD
 
 import Fem
+from femexamples import manager
 from femtools.femutils import is_derived_from
 from femmesh import gmshtools
 from . import support_utils as testtools
@@ -84,6 +85,14 @@ class TestGMSHBase(unittest.TestCase):
         # opens a example file to process for testing
         module = importlib.import_module(f"femexamples.{name}")
         self.doc = module.setup()
+
+        if FreeCAD.GuiUp:
+            import FreeCADGui
+            FreeCADGui.SendMsgToActiveView("ViewFit")
+
+    def load_and_run_example_file(self, name):
+        # opens and runs example file to process for testing
+        self.doc = manager.run_example(name, run_solver=True)
 
         if FreeCAD.GuiUp:
             import FreeCADGui
@@ -228,4 +237,26 @@ class TestGMSHTransfinite(TestGMSHBase):
                 FreeCADGui.updateGui()
 
 
+class TestGMSHRefinements(TestGMSHBase):
+    fcc_print("import TestGMSHRefinements")
+
+    # ********************************************************************************************
+    def test_00print(self):
+        # since method name starts with 00 this will be run first
+        # this test just prints a line with stars
+
+        fcc_print(
+            "\n{0}\n{1} run FEM TestGMSHRefinement tests {2}\n{0}".format(
+                100 * "*", 10 * "*", 56 * "*"
+            )
+        )
+
+
+    # ********************************************************************************************
+    def test_GMSHTAdaptiv(self):
+
+        self.load_and_run_example_file("gmsh_adaptive")
+        gmshs = self.get_gmsh_objects()
+        for gmsh in gmshs:
+            self.compare_mesh_to_sample(gmsh)
 
