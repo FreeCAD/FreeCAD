@@ -7159,8 +7159,8 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
         // Angle
         if (newConstr->Type == Sketcher::Angle) {
             auto normalizeAngle = [](double angleDeg) {
-                while (angleDeg > std::numbers::pi) angleDeg -= std::numbers::pi * 2.0;
-                while (angleDeg <= -std::numbers::pi) angleDeg += std::numbers::pi * 2.0;
+                while (angleDeg > pi) angleDeg -= pi * 2.0;
+                while (angleDeg <= -pi) angleDeg += pi * 2.0;
                 return angleDeg;
             };
 
@@ -7169,7 +7169,7 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
                     || newConstr->First == -2 || newConstr->Second == -2
                     || newConstr->Second == GeoEnum::GeoUndef) {
                     // angle to horizontal or vertical axis
-                    newConstr->setValue(normalizeAngle(newConstr->getValue() + std::numbers::pi));
+                    newConstr->setValue(normalizeAngle(newConstr->getValue() + pi));
                 }
                 else {
                     // angle between two sketch entities
@@ -7179,7 +7179,7 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
             else if (xinv) { // rotation 180 degrees around vertical axis
                 if (newConstr->First == -1 || newConstr->Second == -1 || newConstr->Second == GeoEnum::GeoUndef) {
                     // angle to horizontal axis
-                    newConstr->setValue(normalizeAngle(std::numbers::pi - newConstr->getValue()));
+                    newConstr->setValue(normalizeAngle(pi - newConstr->getValue()));
                 }
                 else {
                     // angle between two sketch entities or angle to vertical axis
@@ -7189,7 +7189,7 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
             else if (yinv) { // rotation 180 degrees around horizontal axis
                 if (newConstr->First == -2 || newConstr->Second == -2) {
                     // angle to vertical axis
-                    newConstr->setValue(normalizeAngle(std::numbers::pi - newConstr->getValue()));
+                    newConstr->setValue(normalizeAngle(pi - newConstr->getValue()));
                 }
                 else {
                     // angle between two sketch entities or angle to horizontal axis
