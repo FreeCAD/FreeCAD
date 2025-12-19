@@ -290,6 +290,9 @@ void TaskHoleParameters::holeTypeChanged(int index)
     pcHole->Threaded.setValue(isThreaded);
     pcHole->ModelThread.setValue(isModeled);
 
+    ui->ThreadFit->setHidden(isThreaded);
+    ui->labelThreadClearance->setHidden(isThreaded);
+
     ui->ThreadGroupBox->setVisible(isThreaded);
     // update view not active if modeling threads
     // this will also ensure that the feature is recomputed.
