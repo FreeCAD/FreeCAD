@@ -95,23 +95,24 @@ ViewProviderGeometryObject::ViewProviderGeometryObject()
     pcShapeMaterial->ref();
     pcShapeMaterial->setName("ShapeMaterial");
 
-    pcBoundingBox = new Gui::SoFCBoundingBox;
-    pcBoundingBox->ref();
-    pcBoundingBox->setName("BoundingBox");
-
-    pcBoundColor = new SoBaseColor();
-    pcBoundColor->ref();
-    pcBoundColor->setName("BoundColor");
-
     sPixmap = "Feature";
 }
 
 ViewProviderGeometryObject::~ViewProviderGeometryObject()
 {
-    pcShapeMaterial->unref();
-    pcBoundingBox->unref();
-    pcBoundColor->unref();
-    pickStyle->unref();
+    if (pcShapeMaterial) {
+        pcShapeMaterial->unref();
+    }
+    if (pcBoundingBox) {
+        pcBoundingBox->unref();
+    }
+    if (pcBoundSwitch) {
+        pcBoundSwitch->unref();
+    }
+    if (pcBoundColor) {
+        pcBoundColor->unref();
+    }
+    delete pcSwitchSensor;
 }
 
 bool ViewProviderGeometryObject::isSelectionEnabled() const
@@ -169,20 +170,7 @@ void ViewProviderGeometryObject::attach(App::DocumentObject* pcObj)
 void ViewProviderGeometryObject::updateData(const App::Property* prop)
 {
     if (prop->isDerivedFrom<App::PropertyComplexGeoData>()) {
-        Base::BoundBox3d box = static_cast<const App::PropertyComplexGeoData*>(prop)->getBoundingBox();
-        pcBoundingBox->minBounds.setValue(box.MinX, box.MinY, box.MinZ);
-        pcBoundingBox->maxBounds.setValue(box.MaxX, box.MaxY, box.MaxZ);
-    }
-    else if (prop->isDerivedFrom<App::PropertyPlacement>()) {
-        auto geometry = getObject<App::GeoFeature>();
-        if (geometry && prop == &geometry->Placement) {
-            const App::PropertyComplexGeoData* data = geometry->getPropertyOfGeometry();
-            if (data) {
-                Base::BoundBox3d box = data->getBoundingBox();
-                pcBoundingBox->minBounds.setValue(box.MinX, box.MinY, box.MinZ);
-                pcBoundingBox->maxBounds.setValue(box.MaxX, box.MaxY, box.MaxZ);
-            }
-        }
+        updateBoundingBox();
     }
     else if (std::string(prop->getName()) == "ShapeMaterial") {
         // Set the appearance from the material
@@ -205,6 +193,18 @@ void ViewProviderGeometryObject::updateData(const App::Property* prop)
     }
 
     ViewProviderDragger::updateData(prop);
+}
+
+void ViewProviderGeometryObject::updateBoundingBox()
+{
+    if (pcBoundingBox) {
+        Base::BoundBox3d box = this->getBoundingBox(nullptr, nullptr, false);
+        if (!box.IsValid()) {
+            return;
+        }
+        pcBoundingBox->minBounds.setValue(box.MinX, box.MinY, box.MinZ);
+        pcBoundingBox->maxBounds.setValue(box.MaxX, box.MaxY, box.MaxZ);
+    }
 }
 
 SoPickedPointList ViewProviderGeometryObject::getPickedPoints(
@@ -277,6 +277,30 @@ void ViewProviderGeometryObject::setCoinAppearance(const App::Material& source)
     pcShapeMaterial->transparency.setValue(source.transparency);
 }
 
+void ViewProviderGeometryObject::addBoundSwitch()
+{
+    if (!pcBoundSwitch) {
+        return;
+    }
+
+    for (int i = 0; i < pcModeSwitch->getNumChildren(); ++i) {
+        auto node = pcModeSwitch->getChild(i);
+        if (!node->isOfType(SoGroup::getClassTypeId())) {
+            continue;
+        }
+        auto group = static_cast<SoGroup*>(node);
+        int idx = group->findChild(pcBoundSwitch);
+        if (idx >= 0) {
+            // make sure we are added last
+            if (idx == group->getNumChildren() - 1) {
+                continue;
+            }
+            group->removeChild(idx);
+        }
+        group->addChild(pcBoundSwitch);
+    }
+}
+
 namespace
 {
 float getBoundBoxFontSize()
@@ -300,26 +324,45 @@ void ViewProviderGeometryObject::showBoundingBox(bool show)
         blue = ((bbcol >> 8) & 0xff) / 255.0F;
 
         pcBoundSwitch = new SoSwitch();
+        pcBoundSwitch->ref();
         pcBoundSwitch->setName("BoundSwitch");
         auto pBoundingSep = new SoSeparator();
         auto lineStyle = new SoDrawStyle;
         lineStyle->lineWidth = 2.0F;
         pBoundingSep->addChild(lineStyle);
 
+        if (!pcBoundColor) {
+            pcBoundColor = new SoBaseColor;
+            pcBoundColor->ref();
+            pcBoundColor->setName("BoundColor");
+        }
         pcBoundColor->rgb.setValue(red, green, blue);
         pBoundingSep->addChild(pcBoundColor);
         auto font = new SoFont();
         font->size.setValue(getBoundBoxFontSize());
         pBoundingSep->addChild(font);
 
-        pBoundingSep->addChild(new SoResetTransform());
+        if (!pcBoundingBox) {
+            pcBoundingBox = new SoFCBoundingBox;
+            pcBoundingBox->ref();
+            pcBoundingBox->setName("BoundingBox");
+        }
         pBoundingSep->addChild(pcBoundingBox);
         pcBoundingBox->coordsOn.setValue(false);
         pcBoundingBox->dimensionsOn.setValue(true);
 
         // add to the highlight node
         pcBoundSwitch->addChild(pBoundingSep);
-        pcRoot->addChild(pcBoundSwitch);
+
+        updateBoundingBox();
+
+        addBoundSwitch();
+        pcSwitchSensor = new SoNodeSensor;
+        pcSwitchSensor->setData(this);
+        pcSwitchSensor->attach(pcModeSwitch);
+        pcSwitchSensor->setFunction([](void* data, SoSensor*) {
+            reinterpret_cast<ViewProviderGeometryObject*>(data)->addBoundSwitch();
+        });
     }
 
     if (pcBoundSwitch) {

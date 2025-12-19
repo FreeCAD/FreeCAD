@@ -2933,12 +2933,12 @@ static std::vector<std::string> getBoxSelection(
     // DO NOT check this view object Visibility, let the caller do this. Because
     // we may be called by upper object hierarchy that manages our visibility.
 
-    auto bbox3 = vp->getBoundingBox(nullptr, transform);
+    auto bbox3 = vp->getBoundingBox(nullptr, &mat, transform);
     if (!bbox3.IsValid()) {
         return ret;
     }
 
-    auto bbox = bbox3.Transformed(mat).ProjectBox(&proj);
+    auto bbox = bbox3.ProjectBox(&proj);
 
     // check if both two boundary points are inside polygon, only
     // valid since we know the given polygon is a box.

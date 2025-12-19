@@ -30,10 +30,12 @@
 #include <Inventor/events/SoKeyboardEvent.h>
 #include <Inventor/events/SoLocation2Event.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
+#include <Inventor/nodes/SoCamera.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/nodes/SoTransform.h>
 
+#include <unordered_map>
 
 #include <Base/BoundBox.h>
 #include <Base/Console.h>
@@ -110,7 +112,7 @@ ViewProvider::ViewProvider()
     // selection context tracking.
     //
     // pcRoot = new SoFCSeparator(true);
-    pcRoot = new SoFCSelectionRoot(true);
+    pcRoot = new SoFCSelectionRoot(true, this);
     pcRoot->ref();
     pcModeSwitch = new SoSwitch();
     pcModeSwitch->ref();
@@ -131,6 +133,10 @@ ViewProvider::~ViewProvider()
         Base::PyGILStateLocker lock;
         pyViewObject->setInvalid();
         pyViewObject->DecRef();
+    }
+
+    if (pcRoot && pcRoot->isOfType(SoFCSelectionRoot::getClassTypeId())) {
+        static_cast<SoFCSelectionRoot*>(pcRoot)->setViewProvider(nullptr);
     }
 
     pcRoot->unref();
@@ -1112,70 +1118,231 @@ void ViewProvider::setRenderCacheMode(int mode)
                                       : (mode == 1 ? SoSeparator::ON : SoSeparator::OFF);
 }
 
-Base::BoundBox3d ViewProvider::getBoundingBox(const char* subname, bool transform, MDIView* view) const
+const View3DInventorViewer* ViewProvider::getActiveViewer() const
+{
+    auto view = dynamic_cast<View3DInventor*>(Application::Instance->activeView());
+    if (!view) {
+        auto doc = Application::Instance->activeDocument();
+        if (doc) {
+            auto views = doc->getMDIViewsOfType(View3DInventor::getClassTypeId());
+            if (!views.empty()) {
+                view = dynamic_cast<View3DInventor*>(views.front());
+            }
+        }
+        if (!view) {
+            return nullptr;
+        }
+    }
+    return view->getViewer();
+}
+
+static int BBoxCacheId;
+struct BBoxKey
+{
+    std::string subname;
+    Base::Matrix4D mat;
+    bool transform;
+
+    BBoxKey(const char* str, const Base::Matrix4D* matrix, bool trans)
+        : subname(str ? str : "")
+        , transform(trans)
+    {
+        if (matrix) {
+            mat = *matrix;
+        }
+    }
+
+    bool operator==(const BBoxKey& other) const
+    {
+        return subname == other.subname && mat == other.mat;
+    }
+};
+
+static std::hash<std::string> StringHasher;
+static std::hash<bool> BoolHasher;
+static std::hash<double> DoubleHasher;
+
+struct BBoxKeyHasher
+{
+    std::size_t operator()(const BBoxKey& key) const
+    {
+        std::size_t seed = StringHasher(key.subname);
+        Base::hash_combine(seed, BoolHasher(key.transform));
+        Base::hash_combine(seed, DoubleHasher(key.mat[0][0]));
+        Base::hash_combine(seed, DoubleHasher(key.mat[0][1]));
+        Base::hash_combine(seed, DoubleHasher(key.mat[0][2]));
+        Base::hash_combine(seed, DoubleHasher(key.mat[0][3]));
+        Base::hash_combine(seed, DoubleHasher(key.mat[1][0]));
+        Base::hash_combine(seed, DoubleHasher(key.mat[1][1]));
+        Base::hash_combine(seed, DoubleHasher(key.mat[1][2]));
+        Base::hash_combine(seed, DoubleHasher(key.mat[1][3]));
+        Base::hash_combine(seed, DoubleHasher(key.mat[2][0]));
+        Base::hash_combine(seed, DoubleHasher(key.mat[2][1]));
+        Base::hash_combine(seed, DoubleHasher(key.mat[2][2]));
+        Base::hash_combine(seed, DoubleHasher(key.mat[2][3]));
+        Base::hash_combine(seed, DoubleHasher(key.mat[3][0]));
+        Base::hash_combine(seed, DoubleHasher(key.mat[3][1]));
+        Base::hash_combine(seed, DoubleHasher(key.mat[3][2]));
+        Base::hash_combine(seed, DoubleHasher(key.mat[3][3]));
+        return seed;
+    }
+};
+
+struct ViewProvider::BoundingBoxCache
+{
+    int cacheId = 0;
+    bool busy = false;
+    std::unordered_map<BBoxKey, Base::BoundBox3d, BBoxKeyHasher> cache;
+};
+
+void ViewProvider::clearBoundingBoxCache()
+{
+    ++BBoxCacheId;
+}
+
+Base::BoundBox3d ViewProvider::getBoundingBox(
+    const char* subname,
+    const Base::Matrix4D* mat,
+    bool transform,
+    const View3DInventorViewer* viewer,
+    int depth
+) const
+{
+    if (testStatus(Gui::isRestoring)) {
+        if (bboxCache) {
+            auto it = bboxCache->cache.find(BBoxKey(subname, mat, transform));
+            if (it != bboxCache->cache.end()) {
+                return it->second;
+            }
+        }
+        return Base::BoundBox3d();
+    }
+
+    if (!bboxCache) {
+        bboxCache.reset(new BoundingBoxCache);
+    }
+
+    if (bboxCache->busy) {
+        return ViewProvider::_getBoundingBox(subname, mat, transform, viewer, depth);
+    }
+
+    if (!ViewParams::instance()->getUseBoundingBoxCache()) {
+        Base::FlagToggler<> guard(bboxCache->busy);
+        return _getBoundingBox(subname, mat, transform, viewer, depth);
+    }
+
+    if (bboxCache->cacheId != BBoxCacheId) {
+        bboxCache->cache.clear();
+        bboxCache->cacheId = BBoxCacheId;
+    }
+
+    auto& bbox = bboxCache->cache[BBoxKey(subname, mat, transform)];
+    if (!bbox.IsValid()) {
+        Base::FlagToggler<> guard(bboxCache->busy);
+        bbox = _getBoundingBox(subname, mat, transform, viewer, depth);
+    }
+    return bbox;
+}
+
+Base::BoundBox3d ViewProvider::_getBoundingBox(
+    const char* subname,
+    const Base::Matrix4D* mat,
+    bool transform,
+    const View3DInventorViewer* viewer,
+    int
+) const
 {
     if (!pcRoot || !pcModeSwitch || pcRoot->findChild(pcModeSwitch) < 0) {
         return Base::BoundBox3d();
     }
 
-    if (!view) {
-        view = Application::Instance->activeView();
-    }
-    auto iview = qobject_cast<View3DInventor*>(view);
-    if (!iview) {
-        auto doc = Application::Instance->activeDocument();
-        if (doc) {
-            auto views = doc->getMDIViewsOfType(View3DInventor::getClassTypeId());
-            if (!views.empty()) {
-                iview = qobject_cast<View3DInventor*>(views.front());
-            }
-        }
-        if (!iview) {
+    if (!viewer) {
+        viewer = getActiveViewer();
+        if (!viewer) {
             FC_ERR("no view");
             return Base::BoundBox3d();
         }
     }
+    static thread_local SoGetBoundingBoxAction* bboxAction;
+    if (!bboxAction) {
+        bboxAction = new SoGetBoundingBoxAction(SbViewportRegion());
+    }
+    bboxAction->setViewportRegion(viewer->getSoRenderManager()->getViewportRegion());
 
-    View3DInventorViewer* viewer = iview->getViewer();
-    SoGetBoundingBoxAction bboxAction(viewer->getSoRenderManager()->getViewportRegion());
+    static thread_local SoTempPath path(20);
+    path.ref();
+    path.truncate(0);
+    static thread_local CoinPtr<SoGroup> fakeRoot;
+    if (!fakeRoot) {
+        fakeRoot = new SoGroup;
+    }
+    coinRemoveAllChildren(fakeRoot);
+    fakeRoot->addChild(viewer->getSoRenderManager()->getCamera());
+    fakeRoot->addChild(pcRoot);
+    path.append(fakeRoot);
 
-    auto mode = pcModeSwitch->whichChild.getValue();
+    static thread_local SoSelectionElementAction
+        selAction(SoSelectionElementAction::Append, true/*, true*/);
+
+    SoDetail* det = nullptr;
+    if (subname && subname[0]) {
+        if (!getDetailPath(subname, &path, true, det)) {
+            path.truncate(0);
+            path.unrefNoDelete();
+            coinRemoveAllChildren(fakeRoot);
+            return Base::BoundBox3d();
+        }
+        if (det) {
+            selAction.setType(SoSelectionElementAction::Append);
+            selAction.setElement(det);
+            selAction.apply(&path);
+        }
+    }
+    static thread_local SoTempPath resetPath(3);
+    resetPath.ref();
+    resetPath.truncate(0);
+    if (!transform) {
+        resetPath.append(pcRoot);
+        resetPath.append(pcModeSwitch);
+        bboxAction->setResetPath(&resetPath, true, SoGetBoundingBoxAction::TRANSFORM);
+    }
+
+    // If the object is hidden, we must temporarily make it visible
+    // so the bounding box action can traverse the geometry.
+    int mode = pcModeSwitch->whichChild.getValue();
     if (mode < 0) {
         pcModeSwitch->whichChild = getDefaultMode();
     }
 
-    SoTempPath path(20);
-    path.ref();
-    if (!Base::Tools::isNullOrEmpty(subname)) {
-        SoDetail* det = nullptr;
-        if (!getDetailPath(subname, &path, true, det)) {
-            if (mode < 0) {
-                pcModeSwitch->whichChild = mode;
-            }
-            path.unrefNoDelete();
-            return Base::BoundBox3d();
-        }
+    if (path.getLength() == 1) {
+        path.append(pcRoot);
+        path.append(pcModeSwitch);
+    }
+    bboxAction->apply(&path);
+
+    if (det) {
         delete det;
+        selAction.setElement(nullptr);
+        selAction.setType(SoSelectionElementAction::None);
+        selAction.apply(&path);
     }
-    SoTempPath resetPath(3);
-    resetPath.ref();
-    if (!transform) {
-        resetPath.append(pcRoot);
-        resetPath.append(pcModeSwitch);
-        bboxAction.setResetPath(&resetPath, true, SoGetBoundingBoxAction::TRANSFORM);
-    }
-    if (path.getLength()) {
-        bboxAction.apply(&path);
-    }
-    else {
-        bboxAction.apply(pcRoot);
-    }
+
+    // Restore the original visibility state
     if (mode < 0) {
         pcModeSwitch->whichChild = mode;
     }
+
+    resetPath.truncate(0);
     resetPath.unrefNoDelete();
+    path.truncate(0);
     path.unrefNoDelete();
-    auto bbox = bboxAction.getBoundingBox();
+    coinRemoveAllChildren(fakeRoot);
+
+    auto xbbox = bboxAction->getXfBoundingBox();
+    if (mat) {
+        xbbox.transform(convert(*mat));
+    }
+    auto bbox = xbbox.project();
     float minX, minY, minZ, maxX, maxY, maxZ;
     bbox.getMax().getValue(maxX, maxY, maxZ);
     bbox.getMin().getValue(minX, minY, minZ);

@@ -216,7 +216,7 @@ long NavlibInterface::GetSelectionExtents(navlib::box_t& extents) const
                       if (pViewProvider == nullptr)
                           return navlib::make_result_code(navlib::navlib_errc::no_data_available);
 
-                      boundingBox.Add(pViewProvider->getBoundingBox(selection.SubName, true));
+                      boundingBox.Add(pViewProvider->getBoundingBox(selection.SubName, nullptr, true));
 
                       return 0l;
                   });

@@ -659,31 +659,44 @@ PyObject* ViewProviderPy::signalChangeIcon(PyObject* args) const
     Py_Return;
 }
 
-PyObject* ViewProviderPy::getBoundingBox(PyObject* args)
+PyObject* ViewProviderPy::getBoundingBox(PyObject* args, PyObject* kwd)
 {
     PyObject* transform = Py_True;
     PyObject* pyView = nullptr;
+    PyObject* pyMat = nullptr;
     const char* subname = nullptr;
-    if (!PyArg_ParseTuple(
+    int depth = 0;
+    static const char* kwlist[] = {"subname", "transform", "view", "mat", "depth", NULL};
+    if (!PyArg_ParseTupleAndKeywords(
             args,
-            "|sO!O!",
+            kwd,
+            "|sOO!O!i",
+            (char**)kwlist,
             &subname,
-            &PyBool_Type,
             &transform,
             View3DInventorPy::type_object(),
-            &pyView
+            &pyView,
+            &subname,
+            &Base::MatrixPy::Type,
+            &pyMat,
+            &depth
         )) {
         return nullptr;
     }
-
     PY_TRY
     {
-        View3DInventor* view = nullptr;
+        View3DInventorViewer* viewer = nullptr;
         if (pyView) {
-            view = static_cast<View3DInventorPy*>(pyView)->getView3DInventorPtr();
+            viewer = static_cast<View3DInventorPy*>(pyView)->getView3DInventorPtr()->getViewer();
         }
-        auto bbox = getViewProviderPtr()->getBoundingBox(subname, Base::asBoolean(transform), view);
-        return new Base::BoundBoxPy(new Base::BoundBox3d(bbox));
+        const Base::Matrix4D* mat = nullptr;
+        if (pyMat) {
+            mat = static_cast<Base::MatrixPy*>(pyMat)->getMatrixPtr();
+        }
+        auto bbox = getViewProviderPtr()
+                        ->getBoundingBox(subname, mat, PyObject_IsTrue(transform), viewer, depth);
+        Py::Object ret(new Base::BoundBoxPy(new Base::BoundBox3d(bbox)));
+        return Py::new_reference_to(ret);
     }
     PY_CATCH;
 }

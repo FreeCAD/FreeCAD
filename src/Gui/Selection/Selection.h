@@ -527,6 +527,20 @@ public:
         ResolveMode resolve = ResolveMode::OldStyleElement,
         bool single = false
     ) const;
+    /** Returns a vector of selection objects that are safer to access
+     *
+     * Unlike getSelection() whose returned vector is invalidated when the
+     * selection is changed. The returned objects is not affected by current
+     * selection state, and are even safe to access when the objects are
+     * deleted.
+     *
+     * @sa getSelection()
+     */
+    std::vector<App::SubObjectT> getSelectionT(
+        const char* pDocName = nullptr,
+        ResolveMode resolve = ResolveMode::OldStyleElement,
+        bool single = false
+    ) const;
     /** Returns a vector of selection objects
      *
      * @param pDocName: document name. If no document name is given the objects
