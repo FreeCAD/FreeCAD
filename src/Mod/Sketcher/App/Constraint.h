@@ -91,7 +91,9 @@ enum class ConstraintOrientation
 {
     None = 0,
     CounterClockwise = 1,
-    Clockwise = 2
+    Clockwise = 2,
+    Internal = 4,
+    External = 8
 };
 
 class SketcherExport Constraint: public Base::Persistence

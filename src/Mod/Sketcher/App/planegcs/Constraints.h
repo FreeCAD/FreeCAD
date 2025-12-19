@@ -25,6 +25,7 @@
 
 #include "../../SketcherGlobal.h"
 #include "Geo.h"
+#include <optional>
 
 // This enables debugging code intended to extract information to file bug reports against Eigen,
 // not for production code
@@ -1287,9 +1288,12 @@ public:
 
 class ConstraintC2CDistance: public Constraint
 {
+public:
 private:
     Circle c1;
     Circle c2;
+    std::optional<bool> c1Bigger;
+
     double* distance()
     {
         return pvec[0];
@@ -1299,7 +1303,7 @@ private:
     void errorgrad(double* err, double* grad, double* param) override;
 
 public:
-    ConstraintC2CDistance(Circle& c1, Circle& c2, double* d);
+    ConstraintC2CDistance(Circle& c1, Circle& c2, double* d, std::optional<bool> c1Bigger);
     ConstraintType getTypeId() override;
 };
 
