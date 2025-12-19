@@ -355,16 +355,6 @@ class BIMWorkbench(Workbench):
             def IsActive(self):
                 return hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
 
-        # Register grouped commands
-        FreeCADGui.addCommand("BIM_ArcTools", BIM_ArcTools())
-        FreeCADGui.addCommand("BIM_SplineTools", BIM_SplineTools())
-        FreeCADGui.addCommand("BIM_AxisTools", BIM_AxisTools())
-        FreeCADGui.addCommand("BIM_OffsetTools", BIM_OffsetTools())
-        FreeCADGui.addCommand("BIM_ArrayTools", BIM_ArrayTools())
-        FreeCADGui.addCommand("BIM_BooleanTools", BIM_BooleanTools())
-        FreeCADGui.addCommand("BIM_IfcManageTools", BIM_IfcManageTools())
-        FreeCADGui.addCommand("BIM_ReportTools", BIM_ReportTools())
-
         # create generic tools command
         class BIM_GenericTools:
             def __init__(self, tools):
@@ -381,10 +371,7 @@ class BIMWorkbench(Workbench):
                 v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
                 return v
 
-        FreeCADGui.addCommand("BIM_GenericTools", BIM_GenericTools(self.generictools))
-        self.bimtools.append("BIM_GenericTools")
-
-        # create create 2D views command
+        # create 2D views command
         class BIM_Create2DViews:
             def __init__(self, tools):
                 self.tools = tools
@@ -400,7 +387,20 @@ class BIMWorkbench(Workbench):
                 v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
                 return v
 
+        # Register grouped commands
+        FreeCADGui.addCommand("BIM_ArcTools", BIM_ArcTools())
+        FreeCADGui.addCommand("BIM_SplineTools", BIM_SplineTools())
+        FreeCADGui.addCommand("BIM_AxisTools", BIM_AxisTools())
+        FreeCADGui.addCommand("BIM_OffsetTools", BIM_OffsetTools())
+        FreeCADGui.addCommand("BIM_ArrayTools", BIM_ArrayTools())
+        FreeCADGui.addCommand("BIM_BooleanTools", BIM_BooleanTools())
+        FreeCADGui.addCommand("BIM_IfcManageTools", BIM_IfcManageTools())
+        FreeCADGui.addCommand("BIM_ReportTools", BIM_ReportTools())
+        FreeCADGui.addCommand("BIM_GenericTools", BIM_GenericTools(self.generictools))
         FreeCADGui.addCommand("BIM_Create2DViews", BIM_Create2DViews(self.create_2dviews))
+
+        # Inject some of the grouped commands
+        self.bimtools.append("BIM_GenericTools")
         insert_at_index = self.annotationtools.index("BIM_TDPage")
         self.annotationtools.insert(insert_at_index, "BIM_Create2DViews")
 
