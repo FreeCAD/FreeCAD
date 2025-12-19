@@ -2379,4 +2379,3 @@ void SoFCPathAnnotation::getBoundingBox(SoGetBoundingBoxAction* action)
         }
     }
 }
-
