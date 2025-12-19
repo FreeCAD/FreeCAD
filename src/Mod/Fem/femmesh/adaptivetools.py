@@ -63,7 +63,7 @@ def create_mesh_file(objname, data, folder_path):
         raise Exception("Failed to write result mesh to gmsh")
 
 
-def create_element_file(objname, data, field, folder_path):
+def append_to_element_file(objname, data, field, folder_path):
     # writes a element file in msh file format, to be appended to a msh file
     #
     # name = object name
@@ -107,7 +107,7 @@ def create_element_file(objname, data, field, folder_path):
         field_name = field.replace(" ", "_")
         f.write("$NodeData\n")
         f.write("1\n")                              # 1 string
-        f.write(field_name + "\n")                  # field name
+        f.write(f"'{field_name}'\n")                # field name
         f.write("1\n")                              # 1 int
         f.write("0.0\n")                            # time value (always 0 here)
         f.write("3\n")                              # 3 ints
@@ -164,6 +164,7 @@ def write_result_settings(settings, geo, folder):
 
 
     # 2: iterate all unique objects and create the files and geo files
+    field_idx = 0
     code = ""
     for objname in settings_map:
 
@@ -180,15 +181,17 @@ def write_result_settings(settings, geo, folder):
         # for each field of that object create geo file and the correct code
         for obj_setting in obj_settings:
 
-            create_element_file(objname,
-                                obj_setting["data"],
-                                obj_setting["field"],
-                                folder)
+            append_to_element_file(objname,
+                                    obj_setting["data"],
+                                    obj_setting["field"],
+                                    folder)
 
-            #code += generate_view_code(objname,
-            #                          obj_setting["data"],
-            #                          obj_setting["field"],
-            #                          obj_setting["view_tag"])
+            # store field index, so that the size field finds back the correct view
+            # we can simply increase idx, as we iterate
+            # all object after eachother in the order they are included, and all fields
+            # for a single object file in the order it is appended to the mesh file
+            obj_setting["settings"]["Option"]["ViewIndex"] = field_idx
+            field_idx += 1
 
     # we write the code only at the end into the geo file,
     # in case some exception was thrown during file creation
