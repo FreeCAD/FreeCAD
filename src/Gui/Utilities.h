@@ -32,8 +32,10 @@
 #include <Inventor/SbColor4f.h>
 #include <Inventor/SbMatrix.h>
 #include <Inventor/SbRotation.h>
+#include <Inventor/SbTime.h>
 #include <Inventor/SbVec2f.h>
 #include <Inventor/SbViewVolume.h>
+#include <Inventor/events/SoMouseButtonEvent.h>
 
 class SbViewVolume;
 class QAbstractItemView;
@@ -541,6 +543,25 @@ struct TransformComponents
 
     return comps;
 }
+
+class GuiExport DoubleClick
+{
+
+public:
+    static constexpr float DoubleClickRadius = 5.0F;  // pixels
+    static constexpr int UnreachableX = -1000;
+
+    DoubleClick()
+        : prvClickTime(SbTime::getTimeOfDay())
+        , prvClickPos(0, 0)
+    {}
+
+    bool isDoubleClick(const SoMouseButtonEvent* mbe);
+
+private:
+    SbTime prvClickTime;
+    SbVec2s prvClickPos;
+};
 
 }  // namespace Gui
 
