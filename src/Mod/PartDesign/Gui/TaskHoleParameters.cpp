@@ -183,7 +183,7 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
     ui->UpdateView->setVisible(isThreaded && isModeled);
 
     ui->Depth->setEnabled(depthIsDimension);
-    ui->ThreadDepthWidget->setVisible(isThreaded && isModeled);
+    ui->ThreadDepthWidget->setVisible(isThreaded);
 
     ui->ThreadDepthDimensionWidget->setVisible(
         std::string(pcHole->ThreadDepthType.getValueAsString()) == "Dimension"
@@ -300,7 +300,7 @@ void TaskHoleParameters::holeTypeChanged(int index)
     ui->CustomClearanceWidget->setVisible(isModeled);
     ui->CustomThreadClearance->setEnabled(pcHole->UseCustomThreadClearance.getValue());
 
-    ui->ThreadDepthWidget->setVisible(isThreaded && isModeled);
+    ui->ThreadDepthWidget->setVisible(isThreaded);
     ui->ThreadDepthDimensionWidget->setVisible(
         std::string(pcHole->ThreadDepthType.getValueAsString()) == "Dimension"
     );
