@@ -145,6 +145,8 @@ class BIMWorkbench(Workbench):
             "Draft_Move",
             "BIM_Copy",
             "Draft_Rotate",
+            "Draft_Scale",
+            "Draft_Mirror",
             "BIM_Clone",
             "BIM_SimpleCopy",
             "BIM_Compound",
@@ -154,7 +156,6 @@ class BIMWorkbench(Workbench):
             "Draft_Trimex",
             "Draft_Join",
             "Draft_Split",
-            "Draft_Scale",
             "Draft_Stretch",
             "Draft_Draft2Sketch",
         ]
@@ -167,7 +168,6 @@ class BIMWorkbench(Workbench):
         self.modify_3d = [
             "BIM_ArrayTools",
             "Arch_CutPlane",
-            "Draft_Mirror",
             "BIM_Extrude",
             "BIM_BooleanTools",
         ]
