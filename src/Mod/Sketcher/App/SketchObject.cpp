@@ -3083,28 +3083,54 @@ void SketchObject::setOrientation(Constraint* constr, bool reset)
         return;
     }
 
-    if (constr->FirstPos == PointPos::none || constr->Second == GeoEnum::GeoUndef) {
+    // Try to find the orientation of point-line distance
+    if (constr->FirstPos != PointPos::none && constr->Second != GeoEnum::GeoUndef) {
+        const Part::Geometry* secGeo = getGeometry(constr->Second);
+        if (!secGeo->is<Part::GeomLineSegment>()) {
+            return; // circle-point distance
+        }
+
+        auto* geoLine = static_cast<const Part::GeomLineSegment*>(secGeo);
+
+        // line
+        Base::Vector3d A = geoLine->getStartPoint();
+        Base::Vector3d B = geoLine->getEndPoint();
+
+        // point to line distance, circle to line distance
+        Base::Vector3d C = getPoint(constr->First, constr->FirstPos);
+
+        bool ccw = B.x * C.y - B.y*C.x - A.x*C.y + A.y*C.x + A.x*B.y - A.y*B.x > 0.0;
+
+        constr->Orientation = ccw ? ConstraintOrientation::CounterClockwise
+                                : ConstraintOrientation::Clockwise;
         return;
     }
 
-    const Part::Geometry* secGeo = getGeometry(constr->Second);
-    if (!secGeo->is<Part::GeomLineSegment>()) {
-        return; // circle-point distance
+    // Try to find the orientation of circle-circle distance
+    if (constr->FirstPos == PointPos::none && constr->SecondPos == PointPos::none && constr->Second != GeoEnum::GeoUndef) {
+        const Part::Geometry* firGeo = getGeometry(constr->First);
+        const Part::Geometry* secGeo = getGeometry(constr->Second);
+        if (!secGeo->is<Part::GeomCircle>() || !secGeo->is<Part::GeomCircle>()) {
+            return;
+        }
+
+        auto* geoCirc1 = static_cast<const Part::GeomCircle*>(firGeo);
+        auto* geoCirc2 = static_cast<const Part::GeomCircle*>(secGeo);
+
+        // If one of the circle is completly within the other, we will say that
+        // it is internal, if they are not within each other or intersect we won't
+        // make a call
+
+        double centerDistance = Base::Distance(geoCirc1->getLocation(), geoCirc2->getLocation());
+
+        if (centerDistance + geoCirc1->getRadius() < geoCirc2->getRadius()) {
+            constr->Orientation = ConstraintOrientation::Internal; // Circ1 is within circ2
+        } else if (centerDistance + geoCirc2->getRadius() < geoCirc1->getRadius()) {
+            constr->Orientation = ConstraintOrientation::External; // Circ2 is within circ1
+        }
+        return;
     }
 
-    auto* geoLine = static_cast<const Part::GeomLineSegment*>(secGeo);
-
-    // line
-    Base::Vector3d A = geoLine->getStartPoint();
-    Base::Vector3d B = geoLine->getEndPoint();
-
-    // point to line distance, circle to line distance
-    Base::Vector3d C = getPoint(constr->First, constr->FirstPos);
-
-    bool ccw = B.x * C.y - B.y*C.x - A.x*C.y + A.y*C.x + A.x*B.y - A.y*B.x > 0.0;
-
-    constr->Orientation = ccw ? ConstraintOrientation::CounterClockwise
-                              : ConstraintOrientation::Clockwise;
 }
 
 std::unique_ptr<Constraint>

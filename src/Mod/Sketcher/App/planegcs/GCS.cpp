@@ -855,9 +855,16 @@ int System::addConstraintTangentAtBSplineKnot(
     return addConstraint(constr);
 }
 
-int System::addConstraintC2CDistance(Circle& c1, Circle& c2, double* dist, int tagId, bool driving)
+int System::addConstraintC2CDistance(
+    Circle& c1,
+    Circle& c2,
+    double* dist,
+    std::optional<bool> c1bigger,
+    int tagId,
+    bool driving
+)
 {
-    Constraint* constr = new ConstraintC2CDistance(c1, c2, dist);
+    Constraint* constr = new ConstraintC2CDistance(c1, c2, dist, c1bigger);
     constr->setTag(tagId);
     constr->setDriving(driving);
     return addConstraint(constr);

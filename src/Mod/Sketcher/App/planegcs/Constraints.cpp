@@ -2882,9 +2882,10 @@ void ConstraintEqualLineLength::errorgrad(double* err, double* grad, double* par
 
 // --------------------------------------------------------
 // ConstraintC2CDistance
-ConstraintC2CDistance::ConstraintC2CDistance(Circle& c1, Circle& c2, double* d)
+ConstraintC2CDistance::ConstraintC2CDistance(Circle& c1, Circle& c2, double* d, std::optional<bool> c1Bigger)
     : c1(c1)
     , c2(c2)
+    , c1Bigger(c1Bigger)
 {
     pvec.push_back(d);
     this->c1.PushOwnParams(pvec);
@@ -2935,8 +2936,21 @@ void ConstraintC2CDistance::errorgrad(double* err, double* grad, double* param)
         }
     }
     else {
-        double* bigradius = (*c1.rad >= *c2.rad) ? c1.rad : c2.rad;
-        double* smallradius = (*c1.rad >= *c2.rad) ? c2.rad : c1.rad;
+        double* bigradius = nullptr;
+        double* smallradius = nullptr;
+
+        if (!c1Bigger.has_value()) {
+            bigradius = (*c1.rad >= *c2.rad) ? c1.rad : c2.rad;
+            smallradius = (*c1.rad >= *c2.rad) ? c2.rad : c1.rad;
+        }
+        else if (*c1Bigger) {
+            bigradius = c1.rad;
+            smallradius = c2.rad;
+        }
+        else {  // c2Bigger
+            bigradius = c2.rad;
+            smallradius = c1.rad;
+        }
 
         double smallspan = *smallradius + length_ct12 + *distance();
 
