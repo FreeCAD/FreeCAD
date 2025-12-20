@@ -1399,7 +1399,7 @@ class AreaCalculator:
 
     def isRightAngle(self, angle):
         """Check if the angle is close to 90 degrees."""
-        return math.isclose(angle, math.pi/2, abs_tol=0.0005)
+        return math.isclose(angle, math.pi / 2, abs_tol=0.0005)
 
     def isZeroAngle(self, angle):
         """Check if the angle is close to 0 or 180 degrees."""
