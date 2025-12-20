@@ -443,6 +443,27 @@ class AttachmentEditorTaskPanel(FrozenClass):
             self.updateRefButtons()
             return
         if i > -1:
+            if ";" in subname:
+                # Test code:
+                # Gui.Selection.getSelectionEx("", 0)[0].SubElementNames
+                # Return value examples:
+                # ('Part.Body.;Edge10;:Hf19,E.Edge10',)
+                # ('Part.Body.;#1a:1;:H-f28,E;:Hf28,E.Edge15',)
+                # ('Part.Body.;#16:1;:G#28;FUS;:H-f28:a,E;:Hf28,E.Edge10',)
+                # ('Part.Body.Pad.;#1d:1;:H-f28,F.Face7',)
+                # ('Part.Box.Edge10',)
+                # ('Part.Sketch.;g1;SKT.Edge1',)
+                tmp = subname.split(";")
+                subname = tmp[0] + tmp[-1].split(".")[-1]
+            parent = self.obj.getParentGeoFeatureGroup()
+            if parent is not None:
+                path = [objname] + subname.split(".")
+                if parent.Name in path:
+                    path = path[path.index(parent.Name) + 1 :]
+                    if len(path) > 1:
+                        objname = path[0]
+                        subname = ".".join(path[1:])
+
             # assign the selected reference
             if objname == self.obj.Name:
                 self.form.message.setText(
