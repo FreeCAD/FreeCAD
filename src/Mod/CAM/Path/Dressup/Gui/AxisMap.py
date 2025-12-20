@@ -27,6 +27,7 @@ import math
 import Path.Base.Gui.Util as PathGuiUtil
 import PathScripts.PathUtils as PathUtils
 import Path.Dressup.Utils as PathDressup
+import Path.Post.Utils as PostUtils
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 if False:
@@ -82,26 +83,6 @@ class ObjectDressup:
         circum = 2 * math.pi * float(radius)
         return 360 * (float(length) / circum)
 
-    def _stripArcs(self, path, d):
-        """converts all G2/G3 commands into G1 commands"""
-        newcommandlist = []
-        currLocation = {"X": 0, "Y": 0, "Z": 0, "F": 0}
-
-        for p in path:
-            if p.Name in Path.Geom.CmdMoveArc:
-                curVec = FreeCAD.Vector(currLocation["X"], currLocation["Y"], currLocation["Z"])
-                arcwire = Path.Geom.edgeForCmd(p, curVec)
-                pointlist = arcwire.discretize(Deflection=d)
-                for point in pointlist:
-                    newcommand = Path.Command("G1", {"X": point.x, "Y": point.y, "Z": point.z})
-                    newcommandlist.append(newcommand)
-                    currLocation.update(newcommand.Parameters)
-            else:
-                newcommandlist.append(p)
-                currLocation.update(p.Parameters)
-
-        return newcommandlist
-
     def execute(self, obj):
 
         inAxis = obj.AxisMap[0]
@@ -112,16 +93,13 @@ class ObjectDressup:
             if obj.Base.isDerivedFrom("Path::Feature"):
                 if obj.Base.Path:
                     if obj.Base.Path.Commands:
-                        pp = PathUtils.getPathWithPlacement(obj.Base).Commands
-                        if len([i for i in pp if i.Name in Path.Geom.CmdMoveArc]) == 0:
-                            pathlist = pp
-                        else:
-                            pathlist = self._stripArcs(pp, d)
+                        pp = PathUtils.getPathWithPlacement(obj.Base)
+                        pp = PostUtils.splitArcs(pp, deflection=d)
 
                         newcommandlist = []
                         currLocation = {"X": 0, "Y": 0, "Z": 0, "F": 0}
 
-                        for c in pathlist:
+                        for c in pp.Commands:
                             newparams = dict(c.Parameters)
                             remapvar = newparams.pop(inAxis, None)
                             if remapvar is not None:
