@@ -1356,9 +1356,9 @@ class AreaCalculator:
         as vertical and be counted. This is an improvement over the fix for
         https://github.com/FreeCAD/FreeCAD/issues/14687.
         """
-        from Part import OCCError, Face
-        from DraftGeomUtils import findWires
-        from TechDraw import project
+        import Part
+        import DraftGeomUtils
+        import TechDraw
 
         if face.Surface.TypeId == "Part::GeomCylinder":
             angle = face.Surface.Axis.getAngle(FreeCAD.Vector(0, 0, 1))
@@ -1372,12 +1372,13 @@ class AreaCalculator:
             projectedArea = 0  # dummy value, idem
         else:
             try:
-                wires = findWires(project(face, FreeCAD.Vector(0, 0, 1))[0].Edges)
+                edges = TechDraw.project(face, FreeCAD.Vector(0, 0, 1))[0].Edges
+                wires = DraftGeomUtils.findWires(edges)
                 if len(wires) == 1 and not wires[0].isClosed():
                     projectedArea = 0
                 else:
-                    projectedArea = Face(wires).Area
-            except OCCError:
+                    projectedArea = Part.Face(wires).Area
+            except Part.OCCError:
                 FreeCAD.Console.PrintWarning(
                     translate("Arch", f"Could not project face from {self.obj.Label}\n")
                 )
@@ -1386,7 +1387,7 @@ class AreaCalculator:
         try:
             angle = face.normalAt(0, 0).getAngle(FreeCAD.Vector(0, 0, 1))
             return self.isRightAngle(angle) and projectedArea < 0.0001
-        except OCCError:
+        except Part.OCCError:
             FreeCAD.Console.PrintWarning(
                 translate(
                     "Arch",
@@ -1398,7 +1399,7 @@ class AreaCalculator:
 
     def isRightAngle(self, angle):
         """Check if the angle is close to 90 degrees."""
-        return math.isclose(angle, math.pi / 2, abs_tol=0.0005)
+        return math.isclose(angle, math.pi/2, abs_tol=0.0005)
 
     def isZeroAngle(self, angle):
         """Check if the angle is close to 0 or 180 degrees."""
