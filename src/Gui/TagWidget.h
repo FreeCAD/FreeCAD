@@ -51,7 +51,7 @@ struct Tag
 class GuiExport TagWidget: public QAbstractScrollArea
 {
     Q_OBJECT
-    
+
     Q_PROPERTY(std::vector<QString> tags READ getTags WRITE setTags RESET clear NOTIFY tagsEdited)
     Q_PROPERTY(bool readOnly MEMBER _readOnly WRITE setReadOnly)
     Q_PROPERTY(bool unique MEMBER _uniqueTagsOnly WRITE setUnique)
@@ -322,7 +322,7 @@ private:
         drawTags(painter, range, fontMetrics(), -offset(), !_readOnly);
     }
 
-    static QRectF crossRectangle(QRectF const& rectangle, qreal crossSize);
+    QRectF crossRectangle(QRectF const& rectangle, qreal crossSize) const;
     QRectF crossRectangle(QRectF const& rectangle) const;
 };
 

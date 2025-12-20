@@ -485,7 +485,6 @@ int TagWidget::heightForWidth(int width) const
     auto const content_width = width;
     QRect contents_rect(0, 0, content_width, 100);
     contents_rect -= contentsMargins() + viewport()->contentsMargins() + viewportMargins();
-    // auto tags = impl->tags;
     contents_rect = const_cast<TagWidget*>(this)->calculateRectangles(contents_rect);
     contents_rect += contentsMargins() + viewport()->contentsMargins() + viewportMargins();
     return contents_rect.height();
@@ -811,7 +810,7 @@ void TagWidget::setEditorText(QString const& text)
     updateTagDisplay();
 }
 
-QRectF TagWidget::crossRectangle(QRectF const& rectangle, qreal crossSize)
+QRectF TagWidget::crossRectangle(QRectF const& rectangle, qreal crossSize) const
 {
     QRectF cross(QPointF {0, 0}, QSizeF {crossSize, crossSize});
     cross.moveCenter(QPointF(rectangle.right() - crossSize, rectangle.center().y()));
