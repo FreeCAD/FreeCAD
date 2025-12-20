@@ -26,8 +26,8 @@ import FreeCADGui
 import Path
 import Path.Op.Base as PathOp
 import PathScripts.PathUtils as PathUtils
-import Path.Base.Util as PathUtil
-from Path.Dressup.Utils import toolController
+from Path.Base.Util import coolantModeForOp
+from Path.Base.Util import toolControllerForOp
 from PySide import QtCore
 
 import random
@@ -237,7 +237,7 @@ class ObjectArray:
             obj.Path = Path.Path()
             return
 
-        obj.ToolController = toolController(base[0])
+        obj.ToolController = toolControllerForOp(base[0])
 
         # use seed if specified, otherwise default to object name for consistency during recomputes
         seed = obj.JitterSeed or obj.Name
@@ -263,31 +263,37 @@ class ObjectArray:
     def isBaseCompatible(self, obj):
         if not obj.Base:
             return False
-        tcs = []
-        cms = []
-        for sel in obj.Base:
-            if not sel.isDerivedFrom("Path::Feature"):
+
+        tc0 = toolControllerForOp(obj.Base[0])
+        for base in obj.Base:
+            if not base.isDerivedFrom("Path::Feature"):
                 return False
-            tcs.append(toolController(sel))
-            cms.append(PathUtil.coolantModeForOp(sel))
 
-        if tcs == {None} or len(set(tcs)) > 1:
-            Path.Log.warning(
-                translate(
-                    "PathArray",
-                    "Arrays of toolpaths having different tool controllers or tool controller not selected.",
+            tc = toolControllerForOp(base)
+            if not tc:
+                Path.Log.warning(
+                    translate("PathArray", "Tool controller not selected for operation %s")
+                    % base.Label
                 )
-            )
-            return False
+                return False
 
-        if set(cms) != {"None"}:
-            Path.Log.warning(
-                translate(
-                    "PathArray",
-                    "Arrays not compatible with coolant modes.",
+            if tc != tc0:
+                Path.Log.warning(
+                    translate(
+                        "PathArray", "Operation %s and first one having different tool controllers"
+                    )
+                    % base.Label
                 )
-            )
-            return False
+                return False
+
+            if coolantModeForOp(base) != "None":
+                Path.Log.warning(
+                    translate(
+                        "PathArray", "Arrays not compatible with coolant modes\nCheck operation %s"
+                    )
+                    % base.Label
+                )
+                return False
 
         return True
 
@@ -485,21 +491,21 @@ class CommandPathArray:
         selection = FreeCADGui.Selection.getSelection()
         if not selection:
             return False
-        tcs = []
+
+        tc0 = toolControllerForOp(selection[0])
         for sel in selection:
             if not sel.isDerivedFrom("Path::Feature"):
                 return False
-            tc = toolController(sel)
-            if tc:
+
+            tc = toolControllerForOp(sel)
+            if not tc or tc != tc0:
                 # Active only for operations with identical tool controller
-                tcs.append(tc)
-                if len(set(tcs)) != 1:
-                    return False
-            else:
                 return False
-            if PathUtil.coolantModeForOp(sel) != "None":
+
+            if coolantModeForOp(sel) != "None":
                 # Active only for operations without cooling
                 return False
+
         return True
 
     def Activated(self):
