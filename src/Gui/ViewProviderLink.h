@@ -226,7 +226,7 @@ class GuiExport ViewProviderLink: public ViewProviderDragger
 
 public:
     App::PropertyBool OverrideMaterial;
-    App::PropertyMaterial ShapeMaterial;
+    App::PropertyMaterialList ShapeAppearance;
     App::PropertyEnumeration DrawStyle;
     App::PropertyFloatConstraint LineWidth;
     App::PropertyFloatConstraint PointSize;
@@ -297,6 +297,28 @@ public:
     std::map<std::string, Base::Color> getElementColors(const char* subname = nullptr) const override;
     void setElementColors(const std::map<std::string, Base::Color>& colors) override;
 
+    static std::map<std::string, Base::Color> getElementColorsFrom(
+        const ViewProviderDocumentObject* vp,
+        const char* subname,
+        const App::PropertyLinkSub& coloredElements,
+        const App::PropertyColorList& colorList,
+        bool overrideMaterial,
+        const App::Material* shapeMaterial,
+        int elementCount = 0
+    );
+
+    static void setElementColorsTo(
+        ViewProviderDocumentObject* vp,
+        const std::map<std::string, Base::Color>& colors,
+        App::PropertyLinkSub& coloredElements,
+        App::PropertyColorList& colorList,
+        App::PropertyBool* overrideMaterial,
+        App::PropertyMaterialList* shapeMaterial,
+        int elementCount = 0
+    );
+
+    static bool applyColorsTo(ViewProviderDocumentObject* vp, bool prevOverride);
+
     void setOverrideMode(const std::string& mode) override;
 
     void onBeforeChange(const App::Property*) override;
@@ -361,6 +383,12 @@ protected:
     bool initDraggingPlacement();
     bool callDraggerProxy(const char* fname);
 
+    void handleChangedPropertyName(
+        Base::XMLReader& reader,
+        const char* TypeName,
+        const char* PropName
+    ) override;
+
 private:
     static void dragStartCallback(void* data, SoDragger* d);
     static void dragFinishCallback(void* data, SoDragger* d);
@@ -371,6 +399,7 @@ protected:
     LinkType linkType;
     bool hasSubName;
     bool hasSubElement;
+    bool prevColorOverride {false};
 
     struct DraggerContext
     {

@@ -507,9 +507,14 @@ void ElementColors::onAddSelectionClicked()
                 break;
             }
             for (auto& sub : subs) {
-                if (boost::starts_with(sub, d->editSub)) {
-                    d->addItem(-1, sub.c_str() + d->editSub.size(), true);
+                if (!boost::starts_with(sub, d->editSub)) {
+                    continue;
                 }
+                std::string s(sub.c_str() + d->editSub.size());
+                if (s.empty() || s.back() == '.') {
+                    s += "Face";
+                }
+                d->addItem(-1, s.c_str(), true);
             }
             break;
         }
