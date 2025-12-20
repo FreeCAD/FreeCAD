@@ -518,6 +518,30 @@ protected:
     Handle(Geom_TrimmedCurve) myCurve;
 };
 
+class PartExport GeomRestrictedCurve: public GeomTrimmedCurve
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    // FIXME: This is made public just because for python wrappers. Behaviour when no basis is
+    // provided needs to be handled.
+    GeomRestrictedCurve();
+    GeomRestrictedCurve(const GeomCurve& basis, double firstParam, double lastParam);
+    GeomRestrictedCurve(const GeomTrimmedCurve& basis)
+    {
+        GeomRestrictedCurve(basis, basis.getFirstParameter(), basis.getLastParameter());
+    }
+    void setBasis(const GeomCurve* newBasis)
+    {
+        setBasis(Handle(Geom_Curve)::DownCast(newBasis->handle()));
+    }
+    void setBasis(const Handle(Geom_Curve) & newBasis);
+
+    explicit GeomRestrictedCurve(const Handle(Geom_TrimmedCurve) &);
+    ~GeomRestrictedCurve() override;
+    Geometry* copy() const override;
+    GeomCurve* createArc(double first, double last) const override;
+};
 
 class PartExport GeomArcOfConic: public GeomTrimmedCurve
 {
@@ -917,6 +941,15 @@ public:
 
     Base::Vector3d getDir() const;
     double getOffset() const;
+
+    Base::Vector3d getStartPoint() const;
+    Base::Vector3d getEndPoint() const;
+
+    void setBasis(const GeomCurve* newBasis)
+    {
+        setBasis(Handle(Geom_Curve)::DownCast(newBasis->handle()));
+    }
+    void setBasis(const Handle(Geom_Curve) & newBasis);
 
     // Persistence implementer ---------------------
     unsigned int getMemSize() const override;
