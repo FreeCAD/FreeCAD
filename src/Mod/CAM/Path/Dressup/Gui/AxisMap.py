@@ -40,7 +40,8 @@ else:
 if FreeCAD.GuiUp:
     import FreeCADGui
 
-__doc__ = """Axis remapping Dressup object and FreeCAD command.  This dressup remaps one axis of motion to another.
+__doc__ = """Axis remapping Dressup object and FreeCAD command.
+This dressup remaps one axis of motion to another.
 For example, you can re-map the Y axis to A to control a 4th axis rotary."""
 
 
@@ -49,7 +50,6 @@ translate = FreeCAD.Qt.translate
 
 class ObjectDressup:
     def __init__(self, obj):
-        maplist = ["X->A", "Y->A", "X->B", "Y->B", "X->C", "Y->C"]
         obj.addProperty(
             "App::PropertyLink",
             "Base",
@@ -68,15 +68,25 @@ class ObjectDressup:
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "The radius of the wrapped axis"),
         )
-        obj.AxisMap = maplist
+        obj.AxisMap = ("X->A", "Y->A", "X->B", "Y->B", "X->C", "Y->C")
         obj.AxisMap = "Y->A"
+        obj.Radius = 45
         obj.Proxy = self
 
     def dumps(self):
-        return None
+        return
 
     def loads(self, state):
-        return None
+        return
+
+    def onChanged(self, obj, prop):
+        if "Restore" not in obj.State and prop == "Radius":
+            job = PathUtils.findParentJob(obj)
+            if job:
+                job.Proxy.setCenterOfRotation(self.center(obj))
+
+        if prop == "Path" and obj.ViewObject:
+            obj.ViewObject.signalChangeIcon()
 
     def execute(self, obj):
 
@@ -84,48 +94,41 @@ class ObjectDressup:
         outAxis = obj.AxisMap[3]
         d = 0.1
 
-        if obj.Base:
-            if obj.Base.isDerivedFrom("Path::Feature"):
-                if obj.Base.Path:
-                    if obj.Base.Path.Commands:
-                        pp = PathUtils.getPathWithPlacement(obj.Base)
-                        pp = PostUtils.splitArcs(pp, deflection=d)
+        if (
+            not obj.Base
+            or not obj.Base.isDerivedFrom("Path::Feature")
+            or not obj.Base.Path
+            or not obj.Base.Path.Commands
+        ):
+            obj.Path = Path.Path()
+            return
 
-                        newcommandlist = []
-                        currLocation = {"X": 0, "Y": 0, "Z": 0, "F": 0}
+        path = PathUtils.getPathWithPlacement(obj.Base)
+        path = PostUtils.splitArcs(path, deflection=d)
 
-                        for c in pp.Commands:
-                            newparams = dict(c.Parameters)
-                            remapvar = newparams.pop(inAxis, None)
-                            if remapvar is not None:
-                                newparams[outAxis] = math.degrees(remapvar / obj.Radius.Value)
-                                locdiff = dict(set(newparams.items()) - set(currLocation.items()))
-                                if (
-                                    len(locdiff) == 1 and outAxis in locdiff
-                                ):  # pure rotation.  Calculate rotational feed rate
-                                    if "F" in c.Parameters:
-                                        feed = c.Parameters["F"]
-                                    else:
-                                        feed = currLocation["F"]
-                                    newparams.update({"F": math.degrees(feed / obj.Radius.Value)})
-                                newcommand = Path.Command(c.Name, newparams)
-                                newcommandlist.append(newcommand)
-                                currLocation.update(newparams)
-                            else:
-                                newcommandlist.append(c)
-                                currLocation.update(c.Parameters)
+        newcommandlist = []
+        lastPar = {"X": 0, "Y": 0, "Z": 0, "F": 0}
 
-                        path = Path.Path(newcommandlist)
-                        path.Center = self.center(obj)
-                        obj.Path = path
+        for cmd in path.Commands:
+            newparams = dict(cmd.Parameters)
+            remapvar = newparams.pop(inAxis, None)
+            if remapvar is not None:
+                newparams[outAxis] = math.degrees(remapvar / obj.Radius.Value)
+                locdiff = dict(set(newparams.items()) - set(lastPar.items()))
+                if len(locdiff) == 1 and outAxis in locdiff:
+                    # calculate rotational feed rate
+                    feed = cmd.Parameters["F"] if "F" in cmd.Parameters else lastPar["F"]
+                    newparams.update({"F": math.degrees(feed / obj.Radius.Value)})
+                newcommand = Path.Command(cmd.Name, newparams)
+                newcommandlist.append(newcommand)
+                lastPar.update(newparams)
+            else:
+                newcommandlist.append(cmd)
+                lastPar.update(cmd.Parameters)
 
-    def onChanged(self, obj, prop):
-        if "Restore" not in obj.State and prop == "Radius":
-            job = PathUtils.findParentJob(obj)
-            if job:
-                job.Proxy.setCenterOfRotation(self.center(obj))
-        if prop == "Path" and obj.ViewObject:
-            obj.ViewObject.signalChangeIcon()
+        path = Path.Path(newcommandlist)
+        path.Center = self.center(obj)
+        obj.Path = path
 
     def center(self, obj):
         return FreeCAD.Vector(0, 0, 0 - obj.Radius.Value)
@@ -136,7 +139,7 @@ class TaskPanel:
         self.obj = obj
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/AxisMapEdit.ui")
         self.radius = PathGuiUtil.QuantitySpinBox(self.form.radius, obj, "Radius")
-        FreeCAD.ActiveDocument.openTransaction("Edit Dragknife Dress-up")
+        FreeCAD.ActiveDocument.openTransaction("Edit AxisMap Dress-up")
 
     def reject(self):
         FreeCAD.ActiveDocument.abortTransaction()
@@ -179,6 +182,7 @@ class TaskPanel:
 class ViewProviderDressup:
     def __init__(self, vobj):
         self.obj = vobj.Object
+        vobj.Proxy = self
 
     def attach(self, vobj):
         self.obj = vobj.Object
@@ -190,7 +194,6 @@ class ViewProviderDressup:
                         if g.Name == self.obj.Base.Name:
                             group.remove(g)
                     i.Group = group
-            # FreeCADGui.ActiveDocument.getObject(obj.Base.Name).Visibility = False
         return
 
     def unsetEdit(self, vobj, mode=0):
@@ -207,10 +210,10 @@ class ViewProviderDressup:
         return [self.obj.Base]
 
     def dumps(self):
-        return None
+        return
 
     def loads(self, state):
-        return None
+        return
 
     def onDelete(self, arg1=None, arg2=None):
         """this makes sure that the base operation is added back to the project and visible"""
@@ -272,12 +275,9 @@ class CommandPathDressup:
         FreeCADGui.doCommand("base = FreeCAD.ActiveDocument." + selection[0].Name)
         FreeCADGui.doCommand("job = PathScripts.PathUtils.findParentJob(base)")
         FreeCADGui.doCommand("obj.Base = base")
-        FreeCADGui.doCommand("obj.Radius = 45")
         FreeCADGui.doCommand("job.Proxy.addOperation(obj, base)")
-        FreeCADGui.doCommand(
-            "obj.ViewObject.Proxy = Path.Dressup.Gui.AxisMap.ViewProviderDressup(obj.ViewObject)"
-        )
-        FreeCADGui.doCommand("Gui.ActiveDocument.getObject(base.Name).Visibility = False")
+        FreeCADGui.doCommand("Path.Dressup.Gui.AxisMap.ViewProviderDressup(obj.ViewObject)")
+        FreeCADGui.doCommand("base.Visibility = False")
         FreeCADGui.doCommand("obj.ViewObject.Document.setEdit(obj.ViewObject, 0)")
         # FreeCAD.ActiveDocument.commitTransaction()  # Final `commitTransaction()` called via TaskPanel.accept()
         FreeCAD.ActiveDocument.recompute()
