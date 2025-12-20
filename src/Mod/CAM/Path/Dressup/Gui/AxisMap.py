@@ -67,6 +67,12 @@ class ObjectDressup:
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "The radius of the wrapped axis"),
         )
+        obj.addProperty(
+            "App::PropertyBool",
+            "Invert",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "Invert rotary axis direction"),
+        )
         obj.AxisMap = ("X->A", "Y->A", "X->B", "Y->B", "X->C", "Y->C")
         obj.AxisMap = "Y->A"
         obj.Proxy = self
@@ -85,6 +91,15 @@ class ObjectDressup:
 
         if prop == "Path" and obj.ViewObject:
             obj.ViewObject.signalChangeIcon()
+
+    def onDocumentRestored(self, obj):
+        if not hasattr(obj, "Invert"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "Invert",
+                "Path",
+                QT_TRANSLATE_NOOP("App::Property", "Invert axis"),
+            )
 
     def execute(self, obj):
 
@@ -111,6 +126,8 @@ class ObjectDressup:
             newparams = dict(cmd.Parameters)
             remapvar = newparams.pop(inAxis, None)
             if remapvar is not None:
+                if obj.Invert:
+                    remapvar = -remapvar
                 newparams[outAxis] = math.degrees(remapvar / obj.Radius.Value)
                 locdiff = dict(set(newparams.items()) - set(lastPar.items()))
                 if len(locdiff) == 1 and outAxis in locdiff:
