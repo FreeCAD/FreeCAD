@@ -164,8 +164,8 @@ public:
 class TimeTracker
 {
 public:
-    explicit TimeTracker(const std::string& name)
-        : name(name)
+    explicit TimeTracker(std::string name)
+        : name(std::move(name))
         , lastCheckpoint("start")
     {}
 
