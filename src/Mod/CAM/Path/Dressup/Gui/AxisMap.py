@@ -107,7 +107,6 @@ class ObjectDressup:
 
         inAxis = obj.AxisMap[0]
         outAxis = obj.AxisMap[3]
-        d = 0.1
 
         if (
             not obj.Base
@@ -118,8 +117,10 @@ class ObjectDressup:
             obj.Path = Path.Path()
             return
 
+        job = PathUtils.findParentJob(obj)
+        deflection = job.GeometryTolerance.Value
         path = PathUtils.getPathWithPlacement(obj.Base)
-        path = PostUtils.splitArcs(path, deflection=d)
+        path = PostUtils.splitArcs(path, deflection=deflection)
 
         newcommandlist = []
         lastPar = {"X": 0, "Y": 0, "Z": 0, "F": 0}
