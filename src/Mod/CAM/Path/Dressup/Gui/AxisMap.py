@@ -78,11 +78,6 @@ class ObjectDressup:
     def loads(self, state):
         return None
 
-    def _linear2angular(self, radius, length):
-        """returns an angular distance in degrees to achieve a linear move of a given length"""
-        circum = 2 * math.pi * float(radius)
-        return 360 * (float(length) / circum)
-
     def execute(self, obj):
 
         inAxis = obj.AxisMap[0]
@@ -103,7 +98,7 @@ class ObjectDressup:
                             newparams = dict(c.Parameters)
                             remapvar = newparams.pop(inAxis, None)
                             if remapvar is not None:
-                                newparams[outAxis] = self._linear2angular(obj.Radius, remapvar)
+                                newparams[outAxis] = math.degrees(remapvar / obj.Radius.Value)
                                 locdiff = dict(set(newparams.items()) - set(currLocation.items()))
                                 if (
                                     len(locdiff) == 1 and outAxis in locdiff
@@ -112,7 +107,7 @@ class ObjectDressup:
                                         feed = c.Parameters["F"]
                                     else:
                                         feed = currLocation["F"]
-                                    newparams.update({"F": self._linear2angular(obj.Radius, feed)})
+                                    newparams.update({"F": math.degrees(feed / obj.Radius.Value)})
                                 newcommand = Path.Command(c.Name, newparams)
                                 newcommandlist.append(newcommand)
                                 currLocation.update(newparams)
