@@ -762,7 +762,8 @@ bool PopPathWithClosestPoint(
                     start with closest point */
     ,
     IntPoint p1,
-    Path& result
+    Path& result,
+    double extraDistanceAround = 0
 )
 {
 
@@ -785,14 +786,18 @@ bool PopPathWithClosestPoint(
         }
     }
 
+    Path& closestPath = paths.at(closestPathIndex);
+    while (extraDistanceAround > 0) {
+        long nexti = (closestPointIndex + 1) % closestPath.size();
+        extraDistanceAround -= sqrt(DistanceSqrd(closestPath[closestPointIndex], closestPath[nexti]));
+        closestPointIndex = nexti;
+    }
+
     result.clear();
     // make new path starting with that point
-    Path& closestPath = paths.at(closestPathIndex);
     for (size_t i = 0; i < closestPath.size(); i++) {
         long index = closestPointIndex + long(i);
-        if (index >= long(closestPath.size())) {
-            index -= long(closestPath.size());
-        }
+        index = index % closestPath.size();
         result.push_back(closestPath.at(index));
     }
     // remove the closest path
@@ -3468,7 +3473,8 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
         Path finShiftedPath;
 
         bool allCutsAllowed = true;
-        while (!stopProcessing && PopPathWithClosestPoint(finishingPaths, lastPoint, finShiftedPath)) {
+        while (!stopProcessing
+               && PopPathWithClosestPoint(finishingPaths, lastPoint, finShiftedPath, stepOverScaled)) {
             if (finShiftedPath.empty()) {
                 continue;
             }
