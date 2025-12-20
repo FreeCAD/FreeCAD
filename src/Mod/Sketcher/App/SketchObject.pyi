@@ -301,7 +301,7 @@ class SketchObject(Part2DObject):
         """
         ...
 
-    def setAllowUnaligned(state: bool, /) -> None:
+    def setAllowUnaligned(self, state: bool, /) -> None:
         """
         Set whether unaligned geometry is allowed in the sketch.
 
