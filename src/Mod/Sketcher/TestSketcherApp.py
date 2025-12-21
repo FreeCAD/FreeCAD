@@ -27,6 +27,16 @@ from SketcherTests.TestSketchFillet import TestSketchFillet
 from SketcherTests.TestSketchExpression import TestSketchExpression
 from SketcherTests.TestSketchValidateCoincidents import TestSketchValidateCoincidents
 
+# GUI-dependent tests - only import if GUI is available
+try:
+    import FreeCADGui
+
+    if FreeCADGui.getMainWindow() is not None:
+        from SketcherTests.TestPlacementUpdate import TestSketchPlacementUpdate
+except (ImportError, AttributeError):
+    pass  # GUI not available, skip GUI tests
+
+
 # Path and PartDesign tests use these functions that used to live here
 # but moved to SketcherTests/TestSketcherSolver.py
 from SketcherTests.TestSketcherSolver import CreateCircleSketch
