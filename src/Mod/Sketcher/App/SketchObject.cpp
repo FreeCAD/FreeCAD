@@ -2295,6 +2295,8 @@ int SketchObject::addConstraints(const std::vector<Constraint*>& ConstraintList)
         }
 
         addGeometryState(cnew);
+
+        signalConstraintAdded(cnew);
     }
 
     this->Constraints.setValues(std::move(newVals));
@@ -2367,6 +2369,8 @@ int SketchObject::addConstraint(std::unique_ptr<Constraint> constraint)
         AutoLockTangencyAndPerpty(constNew);
 
     addGeometryState(constNew);
+
+    signalConstraintAdded(constNew);
 
     newVals.push_back(constNew);// add new constraint at the back
 
