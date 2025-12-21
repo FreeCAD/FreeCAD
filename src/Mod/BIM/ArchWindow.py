@@ -358,7 +358,7 @@ class _Window(ArchComponent.Component):
         # Sill -> SillHeight property rename migration
         if hasattr(obj, "Sill"):
             obj.SillHeight = obj.Sill
-            obj.setPropertyStatus(prop, "-LockDynamic")
+            obj.setPropertyStatus("Sill", "-LockDynamic")
             obj.removeProperty("Sill")
 
     def loads(self, state):
