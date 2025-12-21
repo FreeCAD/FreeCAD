@@ -91,7 +91,7 @@ def calc_length_adaptive(kink, angle, nominal_length, custom_length):
             f"{kink}: angle={180*angle/PI}, dist={dist:.4f}, da={180*da/PI}, depth={depth:.4f}"
         )
 
-    return depth
+    return custom_length if custom_length and depth > custom_length else depth
 
 
 def calc_length_nominal(kink, angle, nominal_length, custom_length):
@@ -235,7 +235,13 @@ class Proxy(object):
             "App::PropertyEnumeration",
             "Incision",
             "Dressup",
-            QT_TRANSLATE_NOOP("App::Property", "The algorithm to determine the bone length"),
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "The algorithm to determine the bone length\n\n"
+                "Adaptive: length depend from shape\n"
+                "Fixed: length equal tool radius\n"
+                "Custom: length from Custom property",
+            ),
         )
         obj.Incision = Incision.All
         obj.Incision = Incision.Adaptive
@@ -244,7 +250,11 @@ class Proxy(object):
             "App::PropertyLength",
             "Custom",
             "Dressup",
-            QT_TRANSLATE_NOOP("App::Property", "Dressup length if incision is set to 'custom'"),
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Dressup length if incision is set to 'custom'"
+                "\nAlso non zero value limit max 'adaptive' length",
+            ),
         )
         obj.Custom = 0.0
 
