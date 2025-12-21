@@ -2238,6 +2238,7 @@ void StdViewLoadImage::activated(int iMsg)
     // Reading an image
     QFileDialog dialog(Gui::getMainWindow());
     dialog.setWindowTitle(QObject::tr("Choose an Image File to Open"));
+    dialog.setDirectory(FileDialog::getWorkingDirectory());
     dialog.setMimeTypeFilters(mimeTypeFilters);
     dialog.selectMimeTypeFilter(QStringLiteral("image/png"));
     dialog.setDefaultSuffix(QStringLiteral("png"));
