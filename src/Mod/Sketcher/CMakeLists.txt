@@ -24,6 +24,9 @@ if(BUILD_GUI)
           InitGui.py
           TestSketcherGui.py
     )
+    list (APPEND Sketcher_TestScripts
+          SketcherTests/TestPlacementUpdate.py
+    )
 endif(BUILD_GUI)
 
 set(Sketcher_Profiles
