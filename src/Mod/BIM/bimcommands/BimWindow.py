@@ -179,6 +179,8 @@ class Arch_Window:
         from draftutils.messages import _wrn
         from ArchWindowPresets import WindowPresets
 
+        SketchArch = False
+
         FreeCAD.activeDraftCommand = None
         FreeCADGui.Snapper.off()
         self.tracker.off()
