@@ -80,7 +80,7 @@ class MockFeaturePython(object):
         if typ is None and val is None:
             raise AttributeError
         if typ == "App::PropertyLength":
-            if type(val) == float or type(val) == int:
+            if isinstance(val, (float, int)):
                 return FreeCAD.Units.Quantity(val, FreeCAD.Units.Length)
             return FreeCAD.Units.Quantity(val)
         return val
@@ -129,7 +129,7 @@ class TestDressupDogboneII(PathTestUtils.PathTestBase):
         """Verify adaptive length"""
 
         def adaptive(k, a, n):
-            return Path.Dressup.DogboneII.calc_length_adaptive(k, a, n, n)
+            return Path.Dressup.DogboneII.calc_length_adaptive(k, a, n, 0)
 
         if True:
             # horizontal bones
