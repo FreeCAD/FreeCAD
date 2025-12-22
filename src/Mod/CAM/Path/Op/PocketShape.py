@@ -57,8 +57,8 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
     def areaOpFeatures(self, obj):
         return super(self.__class__, self).areaOpFeatures(obj) | PathOp.FeatureLocations
 
-    def removeHoles(self, solid, face, tolerance=1e-6):
-        """removeHoles(solid, face, tolerance) ... Remove hole wires from a face, keeping outer wire and boss wires.
+    def removeHoles(self, solid, face):
+        """removeHoles(solid, face) ... Remove hole wires from a face, keeping outer wire and boss wires.
 
         Uses a cross-section algorithm: sections the solid slightly above the face level.
         Wires that appear in the section are bosses (material above).
@@ -67,7 +67,6 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         Args:
             solid: The parent solid object
             face: The face to process
-            tolerance: Distance tolerance for comparisons
 
         Returns:
             New face with outer wire and boss wires only
@@ -75,15 +74,22 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         outer_wire = face.OuterWire
         candidate_wires = [w for w in face.Wires if not w.isSame(outer_wire)]
 
+        # Adaptive tolerance based on face size
+        adaptive_tolerance = max(1e-6, min(1e-2, face.BoundBox.DiagonalLength * 1e-5))
+        Path.Log.debug(f"removeHoles: Using adaptive tolerance {adaptive_tolerance} (face diagonal: {face.BoundBox.DiagonalLength})")
+
+        for i, w in enumerate(candidate_wires):
+            Path.Log.debug(f"  Candidate {i}: Length={w.Length}")
+
         if not candidate_wires:
             return face
 
         boss_wires = []
 
         try:
-            # Create cutting plane from outer wire, offset above face by tolerance
+            # Create cutting plane from outer wire, offset above face by adaptive_tolerance
             cutting_plane = Part.Face(outer_wire)
-            cutting_plane.translate(FreeCAD.Vector(0, 0, tolerance))
+            cutting_plane.translate(FreeCAD.Vector(0, 0, adaptive_tolerance))
 
             # Section the solid
             section = solid.Shape.section(cutting_plane)
@@ -93,7 +99,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 translated_edges = []
                 for edge in section.Edges:
                     translated_edge = edge.copy()
-                    translated_edge.translate(FreeCAD.Vector(0, 0, -tolerance))
+                    translated_edge.translate(FreeCAD.Vector(0, 0, -adaptive_tolerance))
                     translated_edges.append(translated_edge)
 
                 # Build closed wires from edges
@@ -109,16 +115,33 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                         # ignore any wires that can't be built
                         pass
 
+                Path.Log.debug(f"removeHoles: Section found {len(all_section_wires)} wires")
+                for i, w in enumerate(all_section_wires):
+                    Path.Log.debug(f"  Section wire {i}: Length={w.Length}")
+
                 # Filter out outer wire, keep remaining as boss wires
                 for wire in all_section_wires:
                     if not wire.isSame(outer_wire):
                         length_diff = abs(wire.Length - outer_wire.Length)
-                        if length_diff > tolerance:
+                        if length_diff > adaptive_tolerance:
                             boss_wires.append(wire)
+                            Path.Log.debug(f"  Preserving boss wire: Length={wire.Length}, diff={length_diff}")
+                        else:
+                            Path.Log.debug(f"  Discarding wire (too similar to outer): Length={wire.Length}, diff={length_diff}")
 
         except Exception as e:
             Path.Log.error("removeHoles: Section algorithm failed: {}".format(e))
             boss_wires = candidate_wires
+            Path.Log.debug("removeHoles: Section failed, preserving all candidate wires as bosses")
+
+        Path.Log.debug(f"removeHoles: Preserving {len(boss_wires)} boss wires")
+        for i, w in enumerate(boss_wires):
+            Path.Log.debug(f"  Preserved boss {i}: Length={w.Length}")
+
+        removed_wires = [w for w in candidate_wires if not any(w.isSame(bw) for bw in boss_wires)]
+        Path.Log.debug(f"removeHoles: Removing {len(removed_wires)} hole wires")
+        for i, w in enumerate(removed_wires):
+            Path.Log.debug(f"  Removed hole {i}: Length={w.Length}")
 
         # Construct new face with outer wire and boss wires
         wire_compound = Part.makeCompound([outer_wire] + boss_wires)
