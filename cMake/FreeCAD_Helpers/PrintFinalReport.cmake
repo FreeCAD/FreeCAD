@@ -221,6 +221,7 @@ macro(PrintFinalReport)
     conditional(fmt fmt_FOUND "Sources downloaded to ${fmt_SOURCE_DIR}" "${fmt_VERSION}")
     conditional(yaml-cpp yaml-cpp_FOUND "not found" "${yaml-cpp_VERSION}")
     conditional(Vtk VTK_FOUND "not found" ${VTK_VERSION})
+    conditional(Lark LARK_FOUND "not found" "${LARK_VERSION}")
 
     section_end()
 
