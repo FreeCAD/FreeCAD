@@ -26,6 +26,7 @@ from SketcherTests.TestSketcherSolver import TestSketcherSolver
 from SketcherTests.TestSketchFillet import TestSketchFillet
 from SketcherTests.TestSketchExpression import TestSketchExpression
 from SketcherTests.TestSketchValidateCoincidents import TestSketchValidateCoincidents
+from SketcherTests.TestSketchCarbonCopyReverseMapping import TestSketchCarbonCopyReverseMapping
 
 # GUI-dependent tests - only import if GUI is available
 try:
