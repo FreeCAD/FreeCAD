@@ -82,8 +82,6 @@ public:
     void printPdf(std::string file);
     void printPreview() override;
     static void printAllPages();
-    static void printAll(QPrinter* printer,
-                         App::Document* doc);
     static void printAllPdf(QPrinter* printer,
                             App::Document* doc);
 
