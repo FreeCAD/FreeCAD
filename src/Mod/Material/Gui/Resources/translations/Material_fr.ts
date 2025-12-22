@@ -231,7 +231,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="100"/>
       <source>Appearance</source>
-      <translation>Définir l'apparence</translation>
+      <translation>Apparence</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="107"/>
@@ -859,7 +859,7 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
     <message>
       <location filename="../../MaterialsEditor.ui" line="262"/>
       <source>Appearance</source>
-      <translation>Définir l'apparence</translation>
+      <translation>Apparence</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="286"/>
@@ -1025,7 +1025,7 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
     <message>
       <location filename="../../ModelSelect.cpp" line="446"/>
       <source>Appearance</source>
-      <translation>Définir l'apparence</translation>
+      <translation>Apparence</translation>
     </message>
   </context>
   <context>

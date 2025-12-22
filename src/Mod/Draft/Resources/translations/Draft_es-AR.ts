@@ -4919,7 +4919,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="434"/>
       <source>Switch to Ortho Mode</source>
-      <translation type="unfinished">Switch to Ortho Mode</translation>
+      <translation>Cambiar al modo ortográfico</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="451"/>
@@ -5752,7 +5752,7 @@ de los objetos existentes en todos los documentos abiertos?</translation>
     <message>
       <location filename="../../draftguitools/gui_pointarray.py" line="107"/>
       <source>Select exactly 2 objects, the base object and the point object, before calling this command</source>
-      <translation type="unfinished">Select exactly 2 objects, the base object and the point object, before calling this command</translation>
+      <translation>Seleccione exactamente dos objetos, el objeto base y el objeto de punto, antes de llamar a este comando</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_pointarray.py" line="127"/>

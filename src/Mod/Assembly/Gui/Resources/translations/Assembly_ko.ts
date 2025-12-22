@@ -187,7 +187,7 @@
     <message>
       <location filename="../../../JointObject.py" line="1704"/>
       <source>Thread pitch</source>
-      <translation type="unfinished">Thread pitch</translation>
+      <translation>나사 피치</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="1706"/>
