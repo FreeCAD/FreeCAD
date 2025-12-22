@@ -141,7 +141,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1661"/>
       <source>Additive Helix</source>
-      <translation type="unfinished">Additive Helix</translation>
+      <translation>添加螺旋</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1662"/>

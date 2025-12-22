@@ -6090,7 +6090,7 @@ Um FreeCAD das Herunterladen dieser Bibliotheken zu ermöglichen, mit Ja antwort
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="401"/>
       <source>Draw Style</source>
-      <translation>Zeichnungsstil</translation>
+      <translation>Linienart</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="402"/>
@@ -6105,7 +6105,7 @@ Um FreeCAD das Herunterladen dieser Bibliotheken zu ermöglichen, mit Ja antwort
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="405"/>
       <source>Line Print Color</source>
-      <translation>Linienfarbe</translation>
+      <translation>Linien-Druckfarbe</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="404"/>
@@ -7788,7 +7788,7 @@ den Werten der Eigenschaften 'Erster Winkel' und 'Letzter Winkel' berechnet wird
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="138"/>
       <source>The draw style of the objects contained within this layer</source>
-      <translation>Der Zeichenstil der Objekte in dieser Ebene</translation>
+      <translation>Die Linienart der in dieser Ebene enthaltenen Objekte</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="146"/>

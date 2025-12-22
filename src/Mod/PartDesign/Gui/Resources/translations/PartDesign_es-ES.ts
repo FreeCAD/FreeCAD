@@ -2152,7 +2152,7 @@ Please adjust the parameters and try again.</translation>
       <location filename="../../TaskHoleParameters.cpp" line="702"/>
       <source>Close</source>
       <comment>Distance between thread crest and hole wall</comment>
-      <translation>Cerrar</translation>
+      <translation>Cercano</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="703"/>
