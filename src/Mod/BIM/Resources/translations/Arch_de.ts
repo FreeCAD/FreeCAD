@@ -10674,7 +10674,7 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
     <message>
       <location filename="../../bimcommands/BimHelp.py" line="42"/>
       <source>Opens the BIM help page on the FreeCAD documentation website</source>
-      <translation>Öffnet die BIM Hilfeseite auf der FreeCAD Dokumentations-Webseite</translation>
+      <translation>Öffnet die BIM-Hilfeseite auf der FreeCAD-Dokumentations-Webseite</translation>
     </message>
   </context>
   <context>

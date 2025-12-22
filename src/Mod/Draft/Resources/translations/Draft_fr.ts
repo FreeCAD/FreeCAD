@@ -2404,7 +2404,7 @@ polylignes fermées (ancien importateur uniquement).</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="379"/>
       <source>Appearance</source>
-      <translation>Définir l'apparence</translation>
+      <translation>Apparence</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="388"/>
@@ -4271,7 +4271,7 @@ groupes.</translation>
       <location filename="../../draftguitools/gui_groups.py" line="317"/>
       <location filename="../../draftguitools/gui_layers.py" line="165"/>
       <source>New Layer</source>
-      <translation>Nouveau calque</translation>
+      <translation>Créer un calque</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="318"/>
@@ -4289,7 +4289,7 @@ groupes.</translation>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="325"/>
       <source>New layer</source>
-      <translation>Nouvelle couche</translation>
+      <translation>Nouveau calque</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="382"/>
@@ -4738,7 +4738,7 @@ groupes.</translation>
     <message>
       <location filename="../../draftguitools/gui_mirror.py" line="122"/>
       <source>Mirror</source>
-      <translation>Mettre en miroir</translation>
+      <translation>Symétrie</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_mirror.py" line="167"/>
@@ -6064,7 +6064,7 @@ pour permettre à FreeCAD de télécharger ces bibliothèques. Répondre Oui.</t
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="206"/>
       <source>Edit Scale</source>
-      <translation>Modifier l'échelle</translation>
+      <translation>Éditer l'échelle</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="104"/>
@@ -6130,7 +6130,7 @@ pour permettre à FreeCAD de télécharger ces bibliothèques. Répondre Oui.</t
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="427"/>
       <source>New Layer</source>
-      <translation>Nouveau calque</translation>
+      <translation>Créer un calque</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="315"/>
@@ -6392,7 +6392,7 @@ Si l'option « Copier » est activée, cela crée des copies déplacées.</trans
     <message>
       <location filename="../../draftguitools/gui_points.py" line="67"/>
       <source>Creates a point</source>
-      <translation>Crée un point</translation>
+      <translation>Crée un point.</translation>
     </message>
   </context>
   <context>
@@ -6531,7 +6531,7 @@ If the "Copy" option is active, it will create rotated copies.</source>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="73"/>
       <source>New Layer</source>
-      <translation>Nouveau calque</translation>
+      <translation>Créer un calque</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="77"/>
@@ -6586,7 +6586,7 @@ ou une dimension angulaire pour deux arêtes droites.</translation>
     <message>
       <location filename="../../draftguitools/gui_mirror.py" line="67"/>
       <source>Mirror</source>
-      <translation>Mettre en miroir</translation>
+      <translation>Symétrie</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_mirror.py" line="70"/>
@@ -8276,7 +8276,7 @@ que pour les lignes de Draft droites tracées sur le plan XY.</translation>
     <message>
       <location filename="../../draftguitools/gui_planeproxy.py" line="48"/>
       <source>Working Plane Proxy</source>
-      <translation>Proxy du plan de travail</translation>
+      <translation>Créer un proxy de plan de travail</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_planeproxy.py" line="52"/>
@@ -8329,7 +8329,7 @@ caméra et la visibilité des objets.</translation>
     <message>
       <location filename="../../draftguitools/gui_selectplane.py" line="61"/>
       <source>Working Plane</source>
-      <translation>Plan de travail</translation>
+      <translation>Sélectionner un plan de travail</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_selectplane.py" line="65"/>
@@ -8605,12 +8605,12 @@ proxys du plan de travail et des pièces de construction.</translation>
     <message>
       <location filename="../../draftguitools/gui_styles.py" line="50"/>
       <source>Apply Current Style</source>
-      <translation>Appliquer le style actuel</translation>
+      <translation>Appliquer le style en cours</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_styles.py" line="53"/>
       <source>Applies the current style to the selected objects and groups</source>
-      <translation>Applique le style actuel aux objets et aux groupes sélectionnés.</translation>
+      <translation>Applique le style en cours aux objets et aux groupes sélectionnés.</translation>
     </message>
   </context>
   <context>
@@ -8645,7 +8645,7 @@ mettre à l'échelle.</translation>
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="143"/>
       <source>Toggle Wireframe</source>
-      <translation>Basculer en mode filaire</translation>
+      <translation>Basculer entre mode filaire ombré/filaire</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="147"/>

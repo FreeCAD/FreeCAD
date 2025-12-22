@@ -214,12 +214,12 @@ False = roue dentée planétaire</translation>
     <message>
       <location filename="../../Command.cpp" line="2577"/>
       <source>Boolean Operation</source>
-      <translation>Opération booléenne</translation>
+      <translation>Créer une opération booléenne</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2578"/>
       <source>Applies boolean operations with the selected objects and the active body</source>
-      <translation>Applique des opérations booléennes avec les objets sélectionnés et le corps actif.</translation>
+      <translation>Applique une opération booléenne à des objets sélectionnés et au corps actif.</translation>
     </message>
   </context>
   <context>
@@ -430,7 +430,7 @@ False = roue dentée planétaire</translation>
     <message>
       <location filename="../../Command.cpp" line="2215"/>
       <source>Mirror</source>
-      <translation>Mettre en miroir</translation>
+      <translation>Symétrie</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2216"/>
@@ -967,7 +967,7 @@ avec des objets dans le même document ou dans des documents externes.</translat
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="258"/>
       <source>Mirror</source>
-      <translation>Mettre en miroir</translation>
+      <translation>Symétrie</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="298"/>
@@ -1428,7 +1428,7 @@ S'il est égal à zéro, il est égal à Radius2.</translation>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="50"/>
       <source>Boolean Parameters</source>
-      <translation>Paramètres booléens</translation>
+      <translation>Paramètres de l'opération booléenne</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="81"/>
@@ -1528,7 +1528,7 @@ S'il est égal à zéro, il est égal à Radius2.</translation>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="146"/>
       <source>Size 2</source>
-      <translation>Taille 2</translation>
+      <translation>Dimension 2</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="179"/>
@@ -1936,7 +1936,7 @@ les paramètres sont peut-être incompatibles. Ajuster les paramètres et réess
     <message>
       <location filename="../../TaskHelixParameters.ui" line="90"/>
       <source>Mode</source>
-      <translation>Structure des documents</translation>
+      <translation>Mode</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="98"/>
@@ -2480,7 +2480,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="22"/>
       <source>Mode</source>
-      <translation>Structure des documents</translation>
+      <translation>Mode</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="46"/>
@@ -2941,12 +2941,12 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="46"/>
       <source>Thickness</source>
-      <translation>Évider</translation>
+      <translation>Épaisseur</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="75"/>
       <source>Mode</source>
-      <translation>Structure des documents</translation>
+      <translation>Mode</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="83"/>
@@ -2988,7 +2988,7 @@ measured along the specified direction</source>
       <location filename="../../TaskThicknessParameters.cpp" line="267"/>
       <source>Empty thickness created!
 </source>
-      <translation>L'évidemment a été créé !</translation>
+      <translation>Un évidemment vide a été créé !</translation>
     </message>
   </context>
   <context>
@@ -3670,7 +3670,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../ViewProviderMirrored.cpp" line="38"/>
       <source>Edit Mirror</source>
-      <translation>Modifier la mise en miroir</translation>
+      <translation>Éditer la symétrie</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMultiTransform.cpp" line="47"/>
@@ -3710,7 +3710,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../ViewProviderScaled.cpp" line="38"/>
       <source>Edit Scale</source>
-      <translation>Modifier l'échelle</translation>
+      <translation>Éditer l'échelle</translation>
     </message>
     <message>
       <location filename="../../ViewProviderThickness.cpp" line="40"/>
@@ -4451,7 +4451,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="104"/>
       <source>Cannot do boolean operation with invalid base shape</source>
-      <translation>Impossible de faire une opération booléenne avec une forme de base invalide</translation>
+      <translation>Impossible d'appliquer une opération booléenne à une forme de base invalide</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="190"/>
@@ -4528,12 +4528,12 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="266"/>
       <source>Size must be greater than zero</source>
-      <translation>La distance doit être plus grande que zéro</translation>
+      <translation>La dimension doit être plus grande que zéro.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="277"/>
       <source>Size2 must be greater than zero</source>
-      <translation>La dimension 2 doit être plus grande que zéro</translation>
+      <translation>La dimension 2 doit être plus grande que zéro.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="284"/>
@@ -4784,7 +4784,7 @@ Les entités d'intersection d'esquisse dans une esquisse ne sont pas autorisées
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="151"/>
       <source>Boolean operation failed</source>
-      <translation>L'opération booléenne a échoué</translation>
+      <translation>L'opération booléenne a échoué.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="2080"/>
@@ -5363,7 +5363,7 @@ Les entités d'esquisse qui se croisent ou les faces multiples dans une esquisse
     <message>
       <location filename="../../ViewProviderDraft.h" line="44"/>
       <source>Draft Parameters</source>
-      <translation>Paramètres de la dépouille</translation>
+      <translation>Paramètres des dépouilles</translation>
     </message>
   </context>
   <context>
@@ -5371,7 +5371,7 @@ Les entités d'esquisse qui se croisent ou les faces multiples dans une esquisse
     <message>
       <location filename="../../ViewProviderFillet.h" line="43"/>
       <source>Fillet Parameters</source>
-      <translation>Paramètres du congé</translation>
+      <translation>Paramètres des congés</translation>
     </message>
   </context>
   <context>
