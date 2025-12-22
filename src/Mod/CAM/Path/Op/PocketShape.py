@@ -76,7 +76,9 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
         # Adaptive tolerance based on face size
         adaptive_tolerance = max(1e-6, min(1e-2, face.BoundBox.DiagonalLength * 1e-5))
-        Path.Log.debug(f"removeHoles: Using adaptive tolerance {adaptive_tolerance} (face diagonal: {face.BoundBox.DiagonalLength})")
+        Path.Log.debug(
+            f"removeHoles: Using adaptive tolerance {adaptive_tolerance} (face diagonal: {face.BoundBox.DiagonalLength})"
+        )
 
         for i, w in enumerate(candidate_wires):
             Path.Log.debug(f"  Candidate {i}: Length={w.Length}")
@@ -125,9 +127,13 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                         length_diff = abs(wire.Length - outer_wire.Length)
                         if length_diff > adaptive_tolerance:
                             boss_wires.append(wire)
-                            Path.Log.debug(f"  Preserving boss wire: Length={wire.Length}, diff={length_diff}")
+                            Path.Log.debug(
+                                f"  Preserving boss wire: Length={wire.Length}, diff={length_diff}"
+                            )
                         else:
-                            Path.Log.debug(f"  Discarding wire (too similar to outer): Length={wire.Length}, diff={length_diff}")
+                            Path.Log.debug(
+                                f"  Discarding wire (too similar to outer): Length={wire.Length}, diff={length_diff}"
+                            )
 
         except Exception as e:
             Path.Log.error("removeHoles: Section algorithm failed: {}".format(e))
