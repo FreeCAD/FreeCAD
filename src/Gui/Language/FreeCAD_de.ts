@@ -12229,7 +12229,7 @@ der Region nicht transparent sind.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="657"/>
       <source>FreeCAD W&amp;ebsite</source>
-      <translation>FreeCAD Webseite</translation>
+      <translation>FreeCAD-Webseite</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="658"/>

@@ -169,7 +169,7 @@
     <message>
       <location filename="../CommandView.cpp" line="956"/>
       <source>Toggle Transparency</source>
-      <translation type="unfinished">Toggle Transparency</translation>
+      <translation>Alternar transparência</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1075"/>
@@ -247,7 +247,7 @@
     <message>
       <location filename="../Workbench.cpp" line="583"/>
       <source>Tree View</source>
-      <translation type="unfinished">Tree View</translation>
+      <translation>Visão em árvore</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="584"/>
@@ -4577,7 +4577,7 @@ A larger value makes it easier to select elements, but may prevent selection of 
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="281"/>
       <source>Tree View</source>
-      <translation type="unfinished">Tree View</translation>
+      <translation>Visão em árvore</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="341"/>
@@ -7846,7 +7846,7 @@ Specify another directory?</translation>
     <message>
       <location filename="../MainWindow.cpp" line="673"/>
       <source>Tree View</source>
-      <translation type="unfinished">Tree View</translation>
+      <translation>Visão em árvore</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="703"/>
@@ -12014,7 +12014,7 @@ da região forem não opacos.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="207"/>
       <source>Tree View</source>
-      <translation type="unfinished">Tree View</translation>
+      <translation>Visão em árvore</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="213"/>
@@ -14406,7 +14406,7 @@ This makes the docked panel stay transparent at all times.</translation>
     <message>
       <location filename="../Tree.cpp" line="4180"/>
       <source>Tree View</source>
-      <translation type="unfinished">Tree View</translation>
+      <translation>Visão em árvore</translation>
     </message>
   </context>
   <context>

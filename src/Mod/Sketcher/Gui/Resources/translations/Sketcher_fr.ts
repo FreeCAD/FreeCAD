@@ -127,7 +127,7 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="549"/>
       <source>Decreases the multiplicity of the selected knot of a B-spline</source>
-      <translation>Diminuer la multiplicité du nœud sélectionné d’une B-spline</translation>
+      <translation>Diminue la multiplicité du nœud sélectionné d’une B-spline.</translation>
     </message>
   </context>
   <context>
@@ -1992,7 +1992,7 @@ Combinaisons acceptées : deux courbes ; une extrémité et une courbe ; deux ex
     <message>
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="88"/>
       <source>This object belongs to another body. Hold Ctrl to allow cross-references.</source>
-      <translation>Cet objet appartient à un autre corps. Maintenez Ctrl enfoncé pour autoriser les références croisées.</translation>
+      <translation>Cet objet appartient à un autre corps. Maintenez la touche Ctrl enfoncée pour autoriser les références croisées.</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="94"/>
@@ -2007,17 +2007,19 @@ Combinaisons acceptées : deux courbes ; une extrémité et une courbe ; deux ex
     <message>
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="103"/>
       <source>The selected sketch is not parallel to this sketch. Hold Ctrl+Alt to allow non-parallel sketches.</source>
-      <translation>L’esquisse sélectionnée n’est pas parallèle à cette esquisse. Utiliser Ctrl + Alt pour permettre des esquisses non parallèles.</translation>
+      <translation>L’esquisse sélectionnée n’est pas parallèle à cette esquisse. Maintenez les touches Ctrl+Alt enfoncées pour permettre des esquisses non parallèles.</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="109"/>
       <source>The XY axes of the selected sketch do not have the same direction as this sketch. Hold Ctrl+Alt to disregard it.</source>
-      <translation>Les axes XY de l’esquisse sélectionnée n’ont pas le même direction que cette esquisse. Utiliser Ctrl + Alt pour ne pas en tenir compte.</translation>
+      <translation>Les axes XY de l’esquisse sélectionnée n’ont pas le même direction que cette esquisse. Maintenez les touches Ctrl+Alt enfoncées pour ne
+pas en tenir compte.</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="115"/>
       <source>The origin of the selected sketch is not aligned with the origin of this sketch. Hold Ctrl+Alt to disregard it.</source>
-      <translation>L’origine de l’esquisse sélectionnée ne correspond pas à l’origine de cette esquisse. Appuyez sur Ctrl + Alt pour ne pas en tenir compte.</translation>
+      <translation>L’origine de l’esquisse sélectionnée ne correspond pas à l’origine de cette esquisse. Maintenez les touches Ctrl+Alt enfoncées pour ne pas
+en tenir compte.</translation>
     </message>
   </context>
   <context>
@@ -2770,7 +2772,7 @@ Cela nécessite de re-rentrer en mode édition pour que cela prenne effet.</tran
     <message>
       <location filename="../../SketcherSettings.ui" line="129"/>
       <source>Esc key can leave sketch edit mode</source>
-      <translation>La touche Échap permet de quitter le mode d'édition de l'esquisse.</translation>
+      <translation>Touche Échap pour quitter le mode d'édition des esquisses</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="148"/>
@@ -4915,7 +4917,7 @@ L'espacement de la grille change s'il devient inférieur à la taille en pixels 
       <location filename="../../SketcherToolDefaultWidget.ui" line="46"/>
       <location filename="../../SketcherToolDefaultWidget.ui" line="70"/>
       <source>Mode</source>
-      <translation>Structure des documents</translation>
+      <translation>Mode</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="94"/>
@@ -5087,7 +5089,7 @@ Au lieu de cela, des contraintes d'égalité sont appliquées entre les objets o
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="14"/>
       <source>Appearance</source>
-      <translation>Définir l'apparence</translation>
+      <translation>Apparence</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="34"/>

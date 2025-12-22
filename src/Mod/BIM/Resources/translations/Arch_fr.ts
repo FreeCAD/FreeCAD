@@ -6340,7 +6340,7 @@ La création du bâtiment est annulée.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="659"/>
       <source>If True, double-clicking this object in the tree activates it</source>
-      <translation>Si mis à vrai, double-cliquer sur cet objet dans la vue en arborescence le rendra actif.</translation>
+      <translation>Si mis à vrai, double-cliquer sur cet objet dans l'arborescence le rendra actif.</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="673"/>
@@ -10260,7 +10260,7 @@ l'installer maintenant ? Il sera installé dans le répertoire des macros de Fre
     <message>
       <location filename="../../bimcommands/BimViews.py" line="133"/>
       <source>Saves the current camera position to the selected items</source>
-      <translation>Enregistrer la position de la caméra sur les éléments sélectionnés</translation>
+      <translation>Enregistre la position de la caméra sur les éléments sélectionnés.</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="134"/>

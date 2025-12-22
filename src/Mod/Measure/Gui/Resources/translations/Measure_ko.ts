@@ -60,7 +60,7 @@
     <message>
       <location filename="../../QuickMeasure.cpp" line="212"/>
       <source>Total area: %1</source>
-      <translation type="unfinished">Total area: %1</translation>
+      <translation>총 면적: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="223"/>
@@ -71,17 +71,17 @@
     <message>
       <location filename="../../QuickMeasure.cpp" line="226"/>
       <source>Area: %1</source>
-      <translation type="unfinished">Area: %1</translation>
+      <translation>면적: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="230"/>
       <source>Area: %1, Radius: %2</source>
-      <translation type="unfinished">Area: %1, Radius: %2</translation>
+      <translation>면적: %1, 반경: %2</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="234"/>
       <source>Area: %1, Diameter: %2</source>
-      <translation type="unfinished">Area: %1, Diameter: %2</translation>
+      <translation>면적: %1, 직경: %2</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="243"/>
@@ -101,22 +101,22 @@
     <message>
       <location filename="../../QuickMeasure.cpp" line="263"/>
       <source>Angle: %1, Total length: %2</source>
-      <translation type="unfinished">Angle: %1, Total length: %2</translation>
+      <translation>각도: %1, 총 거리: %2</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="267"/>
       <source>Length: %1</source>
-      <translation type="unfinished">Length: %1</translation>
+      <translation>거리: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="270"/>
       <source>Radius: %1</source>
-      <translation type="unfinished">Radius: %1</translation>
+      <translation>반경: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="273"/>
       <source>Diameter: %1</source>
-      <translation type="unfinished">Diameter: %1</translation>
+      <translation>직경: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="276"/>

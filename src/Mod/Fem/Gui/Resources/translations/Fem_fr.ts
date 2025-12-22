@@ -716,7 +716,7 @@
     <message>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="269"/>
       <source>Edit Mirror</source>
-      <translation>Modifier la mise en miroir</translation>
+      <translation>Éditer la symétrie</translation>
     </message>
   </context>
   <context>
@@ -4959,7 +4959,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="236"/>
       <source>Mode</source>
-      <translation>Structure des documents</translation>
+      <translation>Mode</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="263"/>
@@ -5020,7 +5020,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="28"/>
       <source>Mode</source>
-      <translation>Structure des documents</translation>
+      <translation>Mode</translation>
     </message>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="42"/>
@@ -6989,7 +6989,7 @@ Laisser ce champ vide pour utiliser l'exécutable de Python par défaut.</transl
     <message>
       <location filename="../../TaskPostBranch.ui" line="37"/>
       <source>Mode</source>
-      <translation>Structure des documents</translation>
+      <translation>Mode</translation>
     </message>
     <message>
       <location filename="../../TaskPostBranch.ui" line="50"/>
@@ -7264,7 +7264,7 @@ Laisser ce champ vide pour utiliser l'exécutable de Python par défaut.</transl
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="266"/>
       <source>Mode</source>
-      <translation>Structure des documents</translation>
+      <translation>Mode</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="282"/>
