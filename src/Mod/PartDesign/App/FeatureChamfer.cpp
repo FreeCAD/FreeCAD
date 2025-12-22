@@ -224,7 +224,7 @@ void Chamfer::handleChangedPropertyType(Base::XMLReader& reader, const char* Typ
     }
 }
 
-bool Chamfer::requiresSizeSwapping(const Base::XMLReader& reader)
+bool Chamfer::requiresSizeSwapping(const Base::XMLReader& reader) const
 {
     return Base::getVersion(reader.ProgramVersion) < Base::Version::v1_0
         && (ChamferType.getValue() == 1 || ChamferType.getValue() == 2);
@@ -237,9 +237,9 @@ void Chamfer::migrateFlippedProperties(const Base::XMLReader& reader)
     }
 
     Base::Console().warning(
-        "The 'FlipDirection' property being set for the chamfer of %s was adjusted to "
-        "maintain the same result in this FreeCAD version. If the file is opened in "
-        "FreeCAD 0.21.x, the chamfer result may differ due to the previous parameter "
+        "The 'FlipDirection' property of the chamfer of %s is being adjusted to maintain"
+        "the same geometry in this FreeCAD version. If the re-saved file is later opened "
+        "in FreeCAD 0.21.x the chamfer result may differ due to the changed parameter "
         "interpretation.\n",
         getFullName()
     );

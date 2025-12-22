@@ -71,7 +71,7 @@ protected:
     static const App::PropertyQuantityConstraint::Constraints floatSize;
     static const App::PropertyAngle::Constraints floatAngle;
 
-    bool requiresSizeSwapping(const Base::XMLReader& reader);
+    bool requiresSizeSwapping(const Base::XMLReader& reader) const;
     void migrateFlippedProperties(const Base::XMLReader& reader);
 };
 
