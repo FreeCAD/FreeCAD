@@ -1306,7 +1306,9 @@ void ExpressionTextEdit::adjustCompleterToCursor()
     int posX = cursorPos.x();
     int posY = cursorPos.y();
 
-    const int widthLimit = this->viewport()->width() * 0.6;
+    constexpr double popupLengthRatio = 0.6;  // popup shall not be longer than 0.6 of
+                                              // TextEdit length
+    const int widthLimit = static_cast<int>(this->viewport()->width() * popupLengthRatio);
     completer->popup()->setMaximumWidth(widthLimit);
     maxCompletionWidth = std::min(maxCompletionWidth, widthLimit);
 
@@ -1323,12 +1325,19 @@ void ExpressionTextEdit::adjustCompleterToCursor()
         }
     }
 
+    constexpr double marginToScreen = 0.05;  // margin to screen as percent of screen
+                                             // height; keep 5% margin to screen edge
+    constexpr int rowsLimit = 20;            // max. count of rows that shall be shown at once
+
     const int rowHeight = completer->popup()->fontMetrics().height();
-    int rowsToEdge = (screen->geometry().bottom() * 0.95 - (mapToGlobal(cursorPos).y() + rowHeight))
-        / rowHeight;  // keep 5% margin to screen edge
+    int rowsToEdge = static_cast<int>(
+        (screen->geometry().bottom() * (1.0 - marginToScreen)
+         - (mapToGlobal(cursorPos).y() + rowHeight))
+        / rowHeight
+    );
     const auto adjustHeight = [&rowHeight, &completionsCount](const int _rowsToEdge) -> int {
         return std::min({
-            rowHeight * 20,                   // up to 20 elements shall be shown at once
+            rowHeight * rowsLimit,            // up to 'rowsLimit' elements shall be shown at once
             _rowsToEdge * rowHeight,          // or less limited to screen edge
             completionsCount * rowHeight + 5  // or all, if only there are only few; 5 is magic
                                               // number, somehow last entry is partly hovered
@@ -1340,8 +1349,9 @@ void ExpressionTextEdit::adjustCompleterToCursor()
     // vertical correction to cursor
     if (rowsToEdge < 4) {
         // display above cursor
-        rowsToEdge = mapToGlobal(cursorPos).y()
-            - screen->geometry().height() * 0.05;  // keep 5% margin to screen edge
+        rowsToEdge = static_cast<int>(
+            mapToGlobal(cursorPos).y() - screen->geometry().height() * marginToScreen
+        );
         adjustedPopupHeight = adjustHeight(rowsToEdge);
         posY -= adjustedPopupHeight;
     }
