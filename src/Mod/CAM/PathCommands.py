@@ -26,6 +26,8 @@ import Part
 import Path
 import traceback
 
+import Path.Dressup.Utils as PathDressup
+
 from PathScripts.PathUtils import loopdetect
 from PathScripts.PathUtils import wiredetect
 from PathScripts.PathUtils import horizontalEdgeLoop
@@ -244,20 +246,35 @@ class _CopyOperation:
         }
 
     def IsActive(self):
-        if bool(FreeCADGui.Selection.getSelection()) is False:
+        selection = FreeCADGui.Selection.getSelection()
+        if not selection:
             return False
-        try:
-            for sel in FreeCADGui.Selection.getSelectionEx():
-                if not isinstance(sel.Object.Proxy, Path.Op.Base.ObjectOp):
-                    return False
-            return True
-        except (IndexError, AttributeError):
+        if any([not hasattr(sel, "Path") for sel in selection]):
+            return False
+        if any([sel.Name.startswith("Job") for sel in selection]):
             return False
 
+        return True
+
     def Activated(self):
-        for sel in FreeCADGui.Selection.getSelectionEx():
-            jobname = findParentJob(sel.Object).Name
-            addToJob(FreeCAD.ActiveDocument.copyObject(sel.Object, False), jobname)
+        selection = FreeCADGui.Selection.getSelection()
+        for sel in selection:
+            job = findParentJob(sel)
+            prevOp = PathDressup.baseOp(sel)
+            prevOpCopy = FreeCAD.ActiveDocument.copyObject(prevOp, False)
+            while prevOp != sel:
+                # recursive processing Dressup
+                op = sel
+                while op.Base != prevOp:
+                    # get higher level operation
+                    op = op.Base
+                opCopy = FreeCAD.ActiveDocument.copyObject(op, False)
+                opCopy.Base = prevOpCopy
+                prevOpCopy = opCopy
+                prevOp = op
+
+            # add to Job top object
+            addToJob(prevOpCopy, job.Name)
 
 
 if FreeCAD.GuiUp:
