@@ -130,7 +130,12 @@ else()
 endif()
 
 if (WIN32)
+    # In order to make menus and tooltips usable in fullscreen under Windows we need to call setHasBorderInFullScreen(),
+    # defined in Qt's private Gui code. See issue #7563, and the calls to QNativeInterface::Private in MainWindow.cpp
     if(FREECAD_QT_MAJOR_VERSION EQUAL 6)
+        if(Qt6_VERSION VERSION_GREATER_EQUAL "6.10.0")
+            find_package(Qt6 REQUIRED COMPONENTS GuiPrivate)
+        endif()
         list(APPEND FreeCADGui_LIBS
             Qt6::GuiPrivate
         )
