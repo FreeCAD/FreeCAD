@@ -424,7 +424,7 @@ void CleanPath(const Path& inp, Path& outpt, double tolerance)
     long size = long(tmp.size());
 
     // CleanPolygon will have empty result if all points are collinear,
-    //     need to add first and last point to the output
+    // 	need to add first and last point to the output
     if (size <= 2) {
         outpt.push_back(inp.front());
         outpt.push_back(inp.back());
@@ -957,7 +957,6 @@ private:
 
 PerfCounter Perf_ProcessPolyNode("ProcessPolyNode");
 PerfCounter Perf_CalcCutAreaCirc("CalcCutArea");
-PerfCounter Perf_CalcCutAreaTest("CalcCutAreaTest");
 PerfCounter Perf_CalcCutAreaClip("CalcCutAreaClip");
 PerfCounter Perf_NextEngagePoint("NextEngagePoint");
 PerfCounter Perf_PointIterations("PointIterations");
@@ -1158,7 +1157,7 @@ public:
     }
 
 public:
-    //{{angle, clipper point}, error}
+    // {{angle, clipper point}, error}
     std::optional<std::pair<std::pair<double, IntPoint>, double>> m_min;
     std::optional<std::pair<std::pair<double, IntPoint>, double>> m_max;
 };
@@ -1166,8 +1165,6 @@ public:
 //***************************************
 // Engage Point
 //***************************************
-
-const IntPoint dummyPrevPoint(-1000000000, -1000000000);
 
 class EngagePoint
 {
@@ -1233,8 +1230,8 @@ public:
         Paths toChain = toolBoundPaths;
         toolBoundPaths.clear();
         // if(toChain.size()>0) {
-        //     toolBoundPaths.push_back(toChain.front());
-        //     toChain.erase(toChain.begin());
+        // 	toolBoundPaths.push_back(toChain.front());
+        // 	toChain.erase(toChain.begin());
         // }
         while (PopPathWithClosestPoint(toChain, current, result)) {
             toolBoundPaths.push_back(result);
@@ -1283,6 +1280,7 @@ public:
         Perf_NextEngagePoint.Start();
         double prevArea = 0;  // we want to make sure that we catch the point where the area is on
                               // raising slope
+        const IntPoint dummyInitialPoint(-1000000000, -1000000000);
         for (;;) {
             if (!moveForward(step)) {
                 if (!nextPath()) {
@@ -1296,7 +1294,7 @@ public:
                 }
             }
             IntPoint cpt = getCurrentPoint();
-            double area = parent->CalcCutArea(clip, dummyPrevPoint, cpt, clearedArea);
+            double area = parent->CalcCutArea(clip, dummyInitialPoint, cpt, clearedArea);
             (*parent->fout) << "Testint point:"
                             << " cpt=(" << cpt.X << "," << cpt.Y << ")"
                             << " area=" << area << "\n";
@@ -1446,23 +1444,24 @@ double Adaptive2d::CalcCutArea(
 )
 {
 
-    double dist = DistanceSqrd(c1, c2);
+    double dist = sqrt(DistanceSqrd(c1, c2));
     if (dist < NTOL) {
         return 0;
     }
 
     Perf_CalcCutAreaCirc.Start();
-    Perf_CalcCutAreaTest.Start();
 
     // 0) Extract from clearedArea a set of polygons close enough to potentially affect the bounded area
     vector<vector<DoublePoint>> polygons;
     vector<DoublePoint> inters;  // temporary, to hold intersection results
     const BoundBox c2BB(c2, toolRadiusScaled);
     // get curves from slightly enlarged region that will cover all points tested in this iteration
+    const bool useC2 = dist > 2 * toolRadiusScaled;
     const Paths& clearedBounded = clearedArea.GetBoundedClearedAreaClipped(
-        c1 == dummyPrevPoint ? c2 : c1,
-        toolRadiusScaled + (c1 == dummyPrevPoint ? 0 : (int)dist) + 4
+        useC2 ? c2 : c1,
+        toolRadiusScaled + (useC2 ? 0 : (int)dist) + 4
     );
+
     for (const Path& path : clearedBounded) {
         if (path.size() == 0) {
             continue;
@@ -1476,7 +1475,6 @@ double Adaptive2d::CalcCutArea(
         if (!pathBB.CollidesWith(c2BB)) {
             continue;  // this path cannot colide with tool
         }
-        //** end of BB check
 
         vector<DoublePoint> polygon;
         for (const auto p : path) {
@@ -1558,7 +1556,6 @@ double Adaptive2d::CalcCutArea(
         const double y = p1.Y * interp + p0.Y * (1 - interp);
         return y;
     };
-    Perf_CalcCutAreaTest.Stop();
 
     // 3) For each non-empty range in x, construct a vertical line through its midpoint
     const vector<DoublePoint> circles = {c2, c1};
@@ -1786,8 +1783,7 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
     tolerance = min(tolerance, 1.0);
 
     // 1/"tolerance" = number of min-size adaptive steps per stepover
-    scaleFactor = MIN_STEP_CLIPPER / tolerance / min(1., stepOverFactor * toolDiameter);
-    // scaleFactor = MIN_STEP_CLIPPER / tolerance / (stepOverFactor * toolDiameter);
+    scaleFactor = MIN_STEP_CLIPPER / tolerance / min(1.0, stepOverFactor * toolDiameter);
 
     current_region = 0;
     cout << "Tool Diameter: " << toolDiameter << endl;
@@ -1878,7 +1874,7 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
     // CleanPolygons(stockInputPaths,0.707);
 
     //***************************************
-    //    Resolve hierarchy and run processing
+    //	Resolve hierarchy and run processing
     //***************************************
     double cornerRoundingOffset = 0.15 * toolRadiusScaled / 2;
     if (opType == OperationType::otClearingInside || opType == OperationType::otClearingOutside) {
@@ -2978,13 +2974,6 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
     }
     fout << "\n";
 
-    // This constant is chosen so that when cutting a small strip (i.e.  at the
-    // end of helixing out), the strip size at which the cut is too small to
-    // continue is _also_ too small to be worth starting a new engagement
-    // elsewhere in the strip
-    const double CORRECT_MIN_CUT_VS_ENGAGE = MIN_STEP_CLIPPER * 1.
-        / toolRadiusScaled;  // tolerance * stepOverFactor;
-
     //*******************************
     // LOOP - PASSES
     //*******************************
@@ -3210,19 +3199,6 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
             if (relDistToBoundary <= 1.0 && passLength > 2 * stepOverFactor
                 && distanceToEngage > 2 * stepOverScaled
                 && distBoundaryPointToEngage > 2 * stepOverScaled) {
-                // double wb = 1 - relDistToBoundary;
-                // newToolDir = DoublePoint(
-                //     newToolDir.X + wb * boundaryDir.X,
-                //     newToolDir.Y + wb * boundaryDir.Y
-                // );
-                // NormalizeV(newToolDir);
-                // newToolPos = IntPoint(
-                //     long(toolPos.X + newToolDir.X * stepScaled),
-                //     long(toolPos.Y + newToolDir.Y * stepScaled)
-                // );
-                // recalcArea = true;
-                // fout << "\tRewrote tooldir/toolpos for boundary approach"
-                // 	<< "(" << newToolPos.X << ", " << newToolPos.Y << ")" << "\n";
 
                 // 10 degrees per stepOver? idk, let's try it
                 double maxAngleToBoundary = 10 * std::numbers::pi / 180
@@ -3252,8 +3228,7 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
                          << ", " << newToolPos.Y << ")" << "\n";
                 }
                 else {
-                    fout << "\tRewrote tooldir/toolpos for boundary approach BUT NOT ACTUALLY"
-                         << "\n";
+                    fout << "\tRewrote tooldir/toolpos for boundary approach BUT NOT ACTUALLY \n";
                 }
             }
 
@@ -3304,9 +3279,8 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
             prevDistTrend = distanceTrend;
             prevDistFromStart = distFromStart;
 
-            if (area > 0 * 0.5 * MIN_CUT_AREA_FACTOR * optimalCutAreaPD) {  // cut is ok - record it
-                fout << "\tFinal cut acceptance (" << newToolPos.X << "," << newToolPos.Y << ")"
-                     << "\n";
+            if (area > 0) {  // cut is ok - record it
+                fout << "\tFinal cut acceptance (" << newToolPos.X << "," << newToolPos.Y << ")\n";
                 noCutDistance = 0;
                 if (toClearPath.empty()) {
                     toClearPath.push_back(toolPos);
@@ -3350,13 +3324,6 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
                 CheckReportProgress(progressPaths);
             }
             else {
-#ifdef DEV_MODE
-                // if(point_index==0) {
-                //     engage_no_cut_count++;
-                //     cout<<"Break:no cut #" << engage_no_cut_count << ", bad engage, pass:" << pass
-                // << " over_cut_count:" << over_cut_count << endl;
-                // }
-#endif
                 // cout<<"Break: no cut @" << point_index << endl;
                 if (noCutDistance > stepOverScaled) {
                     fout << "Points: " << point_index << "\n";
@@ -3371,7 +3338,7 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
             cleared.ExpandCleared(toClearPath);
             toClearPath.clear();
         }
-        const double minArea = MIN_CUT_AREA_FACTOR * optimalCutAreaPD;
+        const double minArea = MIN_CUT_AREA_FACTOR * MIN_STEP_CLIPPER * optimalCutAreaPD;
         if (cumulativeCutArea > minArea) {
             Path cleaned;
             CleanPath(passToolPath, cleaned, CLEAN_PATH_TOLERANCE);
@@ -3401,13 +3368,19 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
         }
 
         {
+            // This constant is chosen so that when cutting a small strip (i.e. when
+            // approaching a boundary), the strip size at which the cut is too small to
+            // continue is _also_ too small to be worth starting a new engagement
+            // elsewhere in the strip
+            const double CORRECT_MIN_CUT_VS_ENGAGE = toolRadiusScaled * 1. / MIN_STEP_CLIPPER;
+
             double moveDistance = ENGAGE_SCAN_DISTANCE_FACTOR * stepOverScaled * refinement_factor;
 
             if (!engage.nextEngagePoint(
                     this,
                     cleared,
                     moveDistance,
-                    ENGAGE_AREA_THR_FACTOR * optimalCutAreaPD / CORRECT_MIN_CUT_VS_ENGAGE,
+                    ENGAGE_AREA_THR_FACTOR * optimalCutAreaPD * CORRECT_MIN_CUT_VS_ENGAGE,
                     4 * referenceCutArea * stepOverFactor
                 )) {
                 // check if there are any uncleared area left
@@ -3445,7 +3418,7 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
                         this,
                         cleared,
                         moveDistance,
-                        ENGAGE_AREA_THR_FACTOR * optimalCutAreaPD / CORRECT_MIN_CUT_VS_ENGAGE,
+                        ENGAGE_AREA_THR_FACTOR * optimalCutAreaPD * CORRECT_MIN_CUT_VS_ENGAGE,
                         4 * referenceCutArea * stepOverFactor
                     )) {
                     break;
@@ -3558,7 +3531,6 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
         Perf_ProcessPolyNode.DumpResults();
         Perf_PointIterations.DumpResults();
         Perf_CalcCutAreaCirc.DumpResults();
-        Perf_CalcCutAreaTest.DumpResults();
         Perf_CalcCutAreaClip.DumpResults();
         Perf_NextEngagePoint.DumpResults();
         Perf_ExpandCleared.DumpResults();
