@@ -46,6 +46,7 @@ from ...toolbit.serializers import all_serializers as toolbit_serializers
 from ...toolbit.ui import ToolBitEditor
 from ...toolbit.ui.toollist import ToolBitUriListMimeType
 from ...toolbit.ui.util import natural_sort_key
+from ...toolbit.util import setToolBitSchema
 from ..serializers import all_serializers as library_serializers
 from ..models import Library
 from .browser import LibraryBrowserWidget
@@ -531,6 +532,7 @@ class LibraryEditor(QWidget):
             )
             raise
 
+        setToolBitSchema()  # Ensure correct schema is set for the new toolbit
         self.browser.refresh()
         self.browser.select_by_uri([str(new_toolbit.get_uri())])
         self._update_button_states()

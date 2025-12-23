@@ -2028,7 +2028,7 @@ der Projektion.</translation>
     <message>
       <location filename="../../Command.cpp" line="1775"/>
       <source>Sweep</source>
-      <translation>Sweep</translation>
+      <translation>Austragung</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1776"/>
@@ -2264,7 +2264,7 @@ der Projektion.</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="423"/>
       <source>Sweep</source>
-      <translation>Sweep</translation>
+      <translation>Austragung</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.cpp" line="1603"/>
@@ -4814,7 +4814,7 @@ nur die beschnittenen Objeke sichtbar</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="526"/>
       <source>Sweep</source>
-      <translation>Sweep</translation>
+      <translation>Austragung</translation>
     </message>
   </context>
   <context>
@@ -5470,7 +5470,7 @@ Einzelne Überprüfungen boolescher Verknüpfungen:</translation>
     <message>
       <location filename="../../TaskSweep.ui" line="14"/>
       <source>Sweep</source>
-      <translation>Sweep</translation>
+      <translation>Austragung</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.ui" line="23"/>

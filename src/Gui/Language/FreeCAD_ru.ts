@@ -136,7 +136,7 @@
       <translation>Переместить</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3155"/>
+      <location filename="../ViewProviderLink.cpp" line="3157"/>
       <source>Toggle array elements</source>
       <translation>Переключить элементы массива</translation>
     </message>
@@ -8598,12 +8598,12 @@ Choose 'Abort' to abort</source>
       <translation>Не удается открыть ваш системный браузере.</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2553"/>
+      <location filename="../View3DInventorViewer.cpp" line="2555"/>
       <source>Out of memory</source>
       <translation>Недостаточно памяти</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2554"/>
+      <location filename="../View3DInventorViewer.cpp" line="2556"/>
       <source>Not enough memory available to display the data.</source>
       <translation>Недостаточно памяти для отображения данных.</translation>
     </message>
@@ -8629,7 +8629,7 @@ Choose 'Abort' to abort</source>
       <translation>Уточнить выбор</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3182"/>
+      <location filename="../ViewProviderLink.cpp" line="3184"/>
       <location filename="../ViewProviderDragger.cpp" line="127"/>
       <source>Transform</source>
       <translation>Переместить</translation>
@@ -8759,53 +8759,53 @@ Choose 'Abort' to abort</source>
       <translation>Перетаскивание не удалось</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2997"/>
+      <location filename="../ViewProviderLink.cpp" line="2999"/>
       <location filename="../MainWindow.cpp" line="870"/>
       <source>Apply to all</source>
       <translation>Применить ко всем</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2971"/>
+      <location filename="../ViewProviderLink.cpp" line="2973"/>
       <source>Setup Configurable Object</source>
       <translation>Настройка конфигурируемого объекта</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2973"/>
+      <location filename="../ViewProviderLink.cpp" line="2975"/>
       <source>Selects which object to copy or exclude when configuration changes. All external linked objects are excluded by default.</source>
       <translation>Выбирает, какой объект копировать или исключать при изменении конфигурации. Все внешние связанные объекты по умолчанию исключаются.</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2995"/>
+      <location filename="../ViewProviderLink.cpp" line="2997"/>
       <source>Select which objects to copy when the configuration is changed</source>
       <translation>Выберите, какие объекты копировать при изменении конфигурации</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2998"/>
+      <location filename="../ViewProviderLink.cpp" line="3000"/>
       <source>Applies the setting to all links</source>
       <translation>Применяет параметр ко всем ссылкам</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3051"/>
+      <location filename="../ViewProviderLink.cpp" line="3053"/>
       <source>Copy on Change</source>
       <translation>Копировать при изменении</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3052"/>
+      <location filename="../ViewProviderLink.cpp" line="3054"/>
       <source>Enable</source>
       <translation>Включить</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3054"/>
+      <location filename="../ViewProviderLink.cpp" line="3056"/>
       <source>Enable auto copy of linked object when its configuration is changed</source>
       <translation>Включить автоматическое копирование связанного объекта при изменении его конфигурации</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3070"/>
+      <location filename="../ViewProviderLink.cpp" line="3072"/>
       <source>Tracking</source>
       <translation>Отслеживание</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3072"/>
+      <location filename="../ViewProviderLink.cpp" line="3074"/>
       <source>Copies the linked object when its configuration is changed.
 Also auto redo the copy if the original linked object is changed.
 </source>
@@ -8814,17 +8814,17 @@ Also auto redo the copy if the original linked object is changed.
 </translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3092"/>
+      <location filename="../ViewProviderLink.cpp" line="3094"/>
       <source>Disable Copy on Change</source>
       <translation>Отключить копирование при изменении</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3110"/>
+      <location filename="../ViewProviderLink.cpp" line="3112"/>
       <source>Refresh Configurable Object</source>
       <translation>Обновить конфигурируемый объект</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3112"/>
+      <location filename="../ViewProviderLink.cpp" line="3114"/>
       <source>Synchronizes the original configurable source object by
 creating a new deep copy. Any changes made to
 the current copy will be lost.
@@ -8834,23 +8834,23 @@ the current copy will be lost.
 </translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3153"/>
+      <location filename="../ViewProviderLink.cpp" line="3155"/>
       <source>Toggle Array Elements</source>
       <translation>Переключить элементы массива</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3164"/>
+      <location filename="../ViewProviderLink.cpp" line="3166"/>
       <source>Changes whether to show each link array element as individual objects</source>
       <translation>Изменяет, отображать или нет каждый элемент массива ссылок как отдельный объект</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3183"/>
+      <location filename="../ViewProviderLink.cpp" line="3185"/>
       <source>Transforms the object at the origin of the placement</source>
       <translation>Преобразует объект в начале координат его размещения</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3193"/>
-      <location filename="../ViewProviderLink.cpp" line="3199"/>
+      <location filename="../ViewProviderLink.cpp" line="3195"/>
+      <location filename="../ViewProviderLink.cpp" line="3201"/>
       <source>Override Colors</source>
       <translation>Переопределить цвета</translation>
     </message>
@@ -10060,13 +10060,7 @@ Continue?
     <message>
       <location filename="../CommandView.cpp" line="780"/>
       <source>Normal mode</source>
-      <translation>Отображается заданный стиль для каждого объекта 
-модели в трёхмерном пространстве установленном 
-на вкладке "Вид" панели свойств: 
-- Всё с затенением - Flat Lines (по умолчанию) 
-- Грани с затенением - Shaded 
-- Каркас - Wireframe 
-- Вершины - Points</translation>
+      <translation>Обычный режим</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="782"/>

@@ -136,7 +136,7 @@
       <translation>Transformer</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3155"/>
+      <location filename="../ViewProviderLink.cpp" line="3157"/>
       <source>Toggle array elements</source>
       <translation>Activer/désactiver des éléments du réseau</translation>
     </message>
@@ -247,7 +247,7 @@
     <message>
       <location filename="../Workbench.cpp" line="583"/>
       <source>Tree View</source>
-      <translation>Vue en arborescence</translation>
+      <translation>Arborescence</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="584"/>
@@ -3424,10 +3424,9 @@ Then only referenced objects and their dependencies will be loaded
 when a linked document is auto-opened together with the main document.
 A partially loaded document cannot be edited. Double click the document
 icon in the tree view to fully reload it.</source>
-      <translation>Activer le chargement partiel des documents externes liés. Ainsi, seuls les objets
-référencés et leurs dépendances seront chargés lorsqu'un document lié est ouvert
-automatiquement avec le document principal. Double-cliquez sur l'icône du document
-dans l'arborescence pour le recharger complètement.</translation>
+      <translation>Activer le chargement partiel des documents externes liés. Ainsi, seuls les objets référencés et leurs dépendances seront chargés lorsqu'un
+document lié est ouvert automatiquement avec le document principal. Double-cliquez sur l'icône du document dans l'arborescence pour le
+recharger complètement.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="603"/>
@@ -4451,7 +4450,7 @@ la sélection de petits éléments.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="221"/>
       <source>Record selection in tree view in order to go back/forward using navigation button</source>
-      <translation>Enregistrer la sélection dans l'arborescence pour revenir en arrière/avancer à l'aide du bouton de navigation</translation>
+      <translation>Enregistrer la sélection dans l'arborescence pour revenir/avancer par le bouton de navigation</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="234"/>
@@ -4566,12 +4565,12 @@ la sélection de petits éléments.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="281"/>
       <source>Tree View</source>
-      <translation>Vue en arborescence</translation>
+      <translation>Arborescence</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="341"/>
       <source>Background color for objects in the tree view that are currently edited</source>
-      <translation>Couleur de l'arrière-plan des objets en cours d'édition dans la vue en arborescence</translation>
+      <translation>Couleur de l'arrière-plan des objets en cours d'édition dans l'arborescence</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="361"/>
@@ -4581,7 +4580,7 @@ la sélection de petits éléments.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="374"/>
       <source>Background color for active containers (e.g. part or body) in the tree view</source>
-      <translation>Couleur d'arrière-plan des conteneurs actifs (par exemple, pièce ou corps) dans la vue arborescence</translation>
+      <translation>Couleur d'arrière-plan des conteneurs actifs (par exemple, pièce ou corps) dans l'arborescence</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="475"/>
@@ -5256,7 +5255,7 @@ La colonne "État" indique si le document a pu être récupéré.</translation>
     <message>
       <location filename="../Placement.ui" line="108"/>
       <source>Apply Axial</source>
-      <translation>Appliquer l'axe</translation>
+      <translation>Appliquer un axe</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="118"/>
@@ -5741,7 +5740,7 @@ originally selected prior to opening this dialog</source>
     <message>
       <location filename="../Selection/SelectionView.cpp" line="667"/>
       <source>Selects and locates this object in the tree view</source>
-      <translation>Sélectionne et localise cet objet dans l'arborescence</translation>
+      <translation>Sélectionne et localise cet objet dans l'arborescence.</translation>
     </message>
     <message>
       <location filename="../Selection/SelectionView.cpp" line="675"/>
@@ -6989,7 +6988,7 @@ Specify another directory?</source>
       <location filename="../TaskView/TaskAppearance.ui" line="17"/>
       <location filename="../TaskView/TaskAppearance.cpp" line="42"/>
       <source>Appearance</source>
-      <translation>Définir l'apparence</translation>
+      <translation>Apparence</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskAppearance.ui" line="37"/>
@@ -7038,7 +7037,7 @@ Specify another directory?</source>
     <message>
       <location filename="../TaskView/TaskSelectLinkProperty.ui" line="14"/>
       <source>Appearance</source>
-      <translation>Définir l'apparence</translation>
+      <translation>Apparence</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskSelectLinkProperty.cpp" line="41"/>
@@ -7438,7 +7437,7 @@ Specify another directory?</source>
     <message>
       <location filename="../Tree.cpp" line="3771"/>
       <source>Toggle Visibility in Tree View</source>
-      <translation>Activer/désactiver la visibilité dans la vue en arborescence</translation>
+      <translation>Activer/désactiver la visibilité dans l'arborescence</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3776"/>
@@ -7836,7 +7835,7 @@ en modifiant la propriété « label2 ».</translation>
     <message>
       <location filename="../MainWindow.cpp" line="673"/>
       <source>Tree View</source>
-      <translation>Vue en arborescence</translation>
+      <translation>Arborescence</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="703"/>
@@ -8587,12 +8586,12 @@ Choisissez "Interrompre" pour annuler.</translation>
       <translation>Impossible d'ouvrir le navigateur système.</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2553"/>
+      <location filename="../View3DInventorViewer.cpp" line="2555"/>
       <source>Out of memory</source>
       <translation>Mémoire insuffisante</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2554"/>
+      <location filename="../View3DInventorViewer.cpp" line="2556"/>
       <source>Not enough memory available to display the data.</source>
       <translation>Mémoire insuffisante pour afficher les données.</translation>
     </message>
@@ -8618,7 +8617,7 @@ Choisissez "Interrompre" pour annuler.</translation>
       <translation>Définir une sélection</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3182"/>
+      <location filename="../ViewProviderLink.cpp" line="3184"/>
       <location filename="../ViewProviderDragger.cpp" line="127"/>
       <source>Transform</source>
       <translation>Paramètres de la transformation</translation>
@@ -8631,7 +8630,7 @@ Choisissez "Interrompre" pour annuler.</translation>
     <message>
       <location filename="../MainWindow.cpp" line="860"/>
       <source>Save all changes to document '%1' before closing?</source>
-      <translation>Faut-il enregistrer toutes les modifications au document «%1» avant de le fermer ?</translation>
+      <translation>Faut-il enregistrer toutes les modifications dans le document «%1» avant de le fermer ?</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="861"/>
@@ -8641,7 +8640,7 @@ Choisissez "Interrompre" pour annuler.</translation>
     <message>
       <location filename="../MainWindow.cpp" line="865"/>
       <source>Otherwise, all changes will be lost.</source>
-      <translation>Sinon, toutes les modifications seront perdues.</translation>
+      <translation>Si ce n'est pas fait, toutes les modifications seront perdues.</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="991"/>
@@ -8748,70 +8747,70 @@ Choisissez "Interrompre" pour annuler.</translation>
       <translation>Le glisser/déposer a échoué</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2997"/>
+      <location filename="../ViewProviderLink.cpp" line="2999"/>
       <location filename="../MainWindow.cpp" line="870"/>
       <source>Apply to all</source>
       <translation>Appliquer à tout</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2971"/>
+      <location filename="../ViewProviderLink.cpp" line="2973"/>
       <source>Setup Configurable Object</source>
       <translation>Configurer l'objet configurable</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2973"/>
+      <location filename="../ViewProviderLink.cpp" line="2975"/>
       <source>Selects which object to copy or exclude when configuration changes. All external linked objects are excluded by default.</source>
       <translation>Sélectionne quel objet copier ou exclure lorsque la configuration change. Tous les objets externes liés sont exclus par défaut.</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2995"/>
+      <location filename="../ViewProviderLink.cpp" line="2997"/>
       <source>Select which objects to copy when the configuration is changed</source>
       <translation>Sélectionner les objets à copier lorsque la configuration est modifiée</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2998"/>
+      <location filename="../ViewProviderLink.cpp" line="3000"/>
       <source>Applies the setting to all links</source>
       <translation>Applique le paramètre à tous les liens.</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3051"/>
+      <location filename="../ViewProviderLink.cpp" line="3053"/>
       <source>Copy on Change</source>
       <translation>Copier lors de la modification</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3052"/>
+      <location filename="../ViewProviderLink.cpp" line="3054"/>
       <source>Enable</source>
       <translation>Activer</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3054"/>
+      <location filename="../ViewProviderLink.cpp" line="3056"/>
       <source>Enable auto copy of linked object when its configuration is changed</source>
       <translation>Activer la copie automatique de l'objet lié lorsque sa configuration est modifiée</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3070"/>
+      <location filename="../ViewProviderLink.cpp" line="3072"/>
       <source>Tracking</source>
       <translation>Suivi</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3072"/>
+      <location filename="../ViewProviderLink.cpp" line="3074"/>
       <source>Copies the linked object when its configuration is changed.
 Also auto redo the copy if the original linked object is changed.
 </source>
       <translation>Copie l'objet lié lorsque sa configuration est modifiée. Répète également automatiquement la copie si l'objet lié d'origine est modifié.</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3092"/>
+      <location filename="../ViewProviderLink.cpp" line="3094"/>
       <source>Disable Copy on Change</source>
       <translation>Désactiver la copie lors de la modification</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3110"/>
+      <location filename="../ViewProviderLink.cpp" line="3112"/>
       <source>Refresh Configurable Object</source>
       <translation>Rafraîchir l'objet configurable</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3112"/>
+      <location filename="../ViewProviderLink.cpp" line="3114"/>
       <source>Synchronizes the original configurable source object by
 creating a new deep copy. Any changes made to
 the current copy will be lost.
@@ -8820,23 +8819,23 @@ the current copy will be lost.
 sera perdue.</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3153"/>
+      <location filename="../ViewProviderLink.cpp" line="3155"/>
       <source>Toggle Array Elements</source>
       <translation>Activer/désactiver les éléments du réseau</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3164"/>
+      <location filename="../ViewProviderLink.cpp" line="3166"/>
       <source>Changes whether to show each link array element as individual objects</source>
       <translation>Modifie l'affichage de chaque élément du réseau de liens en tant qu'objet individuel.</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3183"/>
+      <location filename="../ViewProviderLink.cpp" line="3185"/>
       <source>Transforms the object at the origin of the placement</source>
       <translation>Transforme l'objet à l'origine de la position.</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3193"/>
-      <location filename="../ViewProviderLink.cpp" line="3199"/>
+      <location filename="../ViewProviderLink.cpp" line="3195"/>
+      <location filename="../ViewProviderLink.cpp" line="3201"/>
       <source>Override Colors</source>
       <translation>Remplacer les couleurs</translation>
     </message>
@@ -10144,33 +10143,33 @@ Save the document now?</source>
     <message>
       <location filename="../TreeParams.cpp" line="1416"/>
       <source>Hide extra tree view column for item description.</source>
-      <translation>Masquer la colonne supplémentaire de l'arborescence pour la description de l'élément.</translation>
+      <translation>Masque la colonne supplémentaire de l'arborescence pour la description des éléments.</translation>
     </message>
     <message>
       <location filename="../TreeParams.cpp" line="1448"/>
       <source>Hide extra tree view column - Internal Names.</source>
-      <translation>Masquer une colonne supplémentaire de l'arborescence, les noms internes.</translation>
+      <translation>Masquer une colonne supplémentaire de l'arborescence, les noms internes</translation>
     </message>
     <message>
       <location filename="../TreeParams.cpp" line="1480"/>
       <source>Hide tree view scroll bar in dock overlay.</source>
-      <translation>Masquer la barre de défilement de l'arborescence dans le panneau ancrable superposé</translation>
+      <translation>Masque la barre de défilement de l'arborescence dans le panneau ancrable superposé.</translation>
     </message>
     <message>
       <location filename="../TreeParams.cpp" line="1512"/>
       <source>Hide tree view header view in dock overlay.</source>
-      <translation>Masquer la barre de défilement de l'arborescence dans le panneau ancrable superposé</translation>
+      <translation>Masque la barre de défilement de l'arborescence dans le panneau ancrable superposé.</translation>
     </message>
     <message>
       <location filename="../TreeParams.cpp" line="1544"/>
       <source>Allow tree view columns to be manually resized.</source>
-      <translation>Permettre de redimensionner manuellement les colonnes de l'arborescence.</translation>
+      <translation>Permet de redimensionner manuellement les colonnes de l'arborescence.</translation>
     </message>
     <message>
       <location filename="../TreeParams.cpp" line="1704"/>
       <source>Displays an eye icon in front of the tree view items, showing the items visibility status. When clicked the visibility is toggled</source>
-      <translation>Affiche une icône en forme d'œil devant les éléments de l'arborescence, indiquant leur statut de visibilité. Lorsque vous cliquez dessus,
-la visibilité est activée ou désactivée.</translation>
+      <translation>Affiche une icône en forme d'œil devant les éléments de l'arborescence, indiquant leur statut de visibilité. En cliquant dessus, la visibilité est
+activée ou désactivée.</translation>
     </message>
   </context>
   <context>
@@ -11765,7 +11764,7 @@ Mettre à zéro pour remplir l'espace.</translation>
     <message>
       <location filename="../OverlayParams.cpp" line="1040"/>
       <source>Hide tab bar in dock overlay</source>
-      <translation>Masquer la barre des onglets dans les panneaux ancrables superposés</translation>
+      <translation>Masque la barre des onglets dans les panneaux ancrables superposés.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="1072"/>
@@ -11785,7 +11784,7 @@ Mettre à zéro pour remplir l'espace.</translation>
     <message>
       <location filename="../OverlayParams.cpp" line="1168"/>
       <source>Hide property view scroll bar in dock overlay</source>
-      <translation>Masquer la barre de défilement de l'éditeur de propriétés dans les panneaux ancrables superposés</translation>
+      <translation>Masque la barre de défilement de l'éditeur de propriétés dans les panneaux ancrables superposés.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="1200"/>
@@ -11803,7 +11802,7 @@ Mettre à zéro pour remplir l'espace.</translation>
     <message>
       <location filename="../OverlayWidgets.cpp" line="953"/>
       <source>None</source>
-      <translation>Aucun</translation>
+      <translation>Ne pas masquer</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="954"/>
@@ -11950,12 +11949,12 @@ Mettre à zéro pour remplir l'espace.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="280"/>
       <source>Allow tree view columns to be manually resized.</source>
-      <translation>Permettre de redimensionner manuellement les colonnes de l'arborescence.</translation>
+      <translation>Permet de redimensionner manuellement les colonnes de l'arborescence.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="283"/>
       <source>Resizable columns</source>
-      <translation>Colonnes redimensionnables</translation>
+      <translation>Redimensionner les colonnes</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="296"/>
@@ -11970,8 +11969,7 @@ Mettre à zéro pour remplir l'espace.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="26"/>
       <source>Customize the current theme. The offered settings are optional for theme developers so they may or may not have an effect in the current theme.</source>
-      <translation>Personnaliser le thème en cours. Les paramètres proposés sont facultatifs pour les développeurs de thèmes, ils peuvent donc avoir ou non
-un effet sur le thème en cours.</translation>
+      <translation>Personnaliser le thème en cours. Les paramètres proposés sont facultatifs pour les développeurs de thèmes, ils peuvent donc avoir ou non un effet sur le thème en cours.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="94"/>
@@ -11991,7 +11989,7 @@ un effet sur le thème en cours.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="207"/>
       <source>Tree View</source>
-      <translation>Vue en arborescence</translation>
+      <translation>Arborescence</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="213"/>
@@ -12021,8 +12019,8 @@ un effet sur le thème en cours.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="316"/>
       <source>Displays an eye icon in front of the tree view items, showing their visibility status. When clicked the visibility is toggled.</source>
-      <translation>Affiche une icône en forme d'œil devant les éléments de l'arborescence, indiquant leur statut de visibilité. Lorsque vous cliquez dessus,
-la visibilité est activée ou désactivée.</translation>
+      <translation>Affiche une icône en forme d'œil devant les éléments de l'arborescence, indiquant leur statut de visibilité. En cliquant dessus, la visibilité est
+activée ou désactivée.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="319"/>
@@ -12032,7 +12030,7 @@ la visibilité est activée ou désactivée.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="335"/>
       <source>Hide header with column names from the tree view.</source>
-      <translation>Masquer l'en-tête avec le nom des colonnes dans l'arborescence.</translation>
+      <translation>Masquer l'en-tête avec le nom des colonnes dans l'arborescence</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="338"/>
@@ -12042,8 +12040,7 @@ la visibilité est activée ou désactivée.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="354"/>
       <source>Hide scroll bar from the tree view, scrolling will still be possible using mouse wheel.</source>
-      <translation>Masquer la barre de défilement de l'arborescence. Le défilement
-sera toujours possible à l'aide de la molette de la souris.</translation>
+      <translation>Masque la barre de défilement de l'arborescence. Le défilement sera toujours possible à l'aide de la molette de la souris.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="357"/>
@@ -12053,7 +12050,7 @@ sera toujours possible à l'aide de la molette de la souris.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="373"/>
       <source>Hide column with object description in tree view.</source>
-      <translation>Masquer la colonne contenant la description de l'objet dans l'arborescence.</translation>
+      <translation>Masque la colonne contenant la description des objets dans l'arborescence.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="376"/>
@@ -12128,7 +12125,7 @@ sera toujours possible à l'aide de la molette de la souris.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="518"/>
       <source>Suggest actions in the task view based on the selection</source>
-      <translation>Suggère des actions dans la vue des tâches en fonction de la sélection.</translation>
+      <translation>Suggérer des actions dans la vue des tâches en fonction de la sélection</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="471"/>
@@ -12382,7 +12379,7 @@ sera toujours possible à l'aide de la molette de la souris.</translation>
     <message>
       <location filename="../TaskTransform.ui" line="584"/>
       <source>Mode</source>
-      <translation>Structure des documents</translation>
+      <translation>Mode</translation>
     </message>
     <message>
       <location filename="../TaskTransform.ui" line="600"/>
@@ -13468,7 +13465,7 @@ d'assemblages complexes.</translation>
     <message>
       <location filename="../CommandStructure.cpp" line="49"/>
       <source>New Part</source>
-      <translation>Insérer une nouvelle pièce</translation>
+      <translation>Nouvelle pièce</translation>
     </message>
     <message>
       <location filename="../CommandStructure.cpp" line="50"/>
@@ -13860,7 +13857,7 @@ Il s'agit d'un simple dossier permettant d'organiser les objets dans un modèle.
     <message>
       <location filename="../CommandView.cpp" line="2901"/>
       <source>&amp;Box Selection</source>
-      <translation>&amp;Sélectionner par une boîte</translation>
+      <translation>&amp;Sélectionner des objets par une boîte</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2902"/>
@@ -13873,12 +13870,12 @@ Il s'agit d'un simple dossier permettant d'organiser les objets dans un modèle.
     <message>
       <location filename="../CommandView.cpp" line="3176"/>
       <source>Bo&amp;x Element Selection</source>
-      <translation>Sé&amp;lectionner des éléments par une boîte</translation>
+      <translation>Sé&amp;lectionner des faces par une boîte</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3177"/>
       <source>Activates box element selection</source>
-      <translation>Active la sélection des éléments par une boîte.</translation>
+      <translation>Active la sélection de faces par une boîte.</translation>
     </message>
   </context>
   <context>
@@ -14385,7 +14382,7 @@ This makes the docked panel stay transparent at all times.</source>
     <message>
       <location filename="../Tree.cpp" line="4180"/>
       <source>Tree View</source>
-      <translation>Vue en arborescence</translation>
+      <translation>Arborescence</translation>
     </message>
   </context>
   <context>

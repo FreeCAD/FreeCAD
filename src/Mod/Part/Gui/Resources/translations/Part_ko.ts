@@ -320,19 +320,19 @@
       <location filename="../../AttacherTexts.cpp" line="586"/>
       <source>Directrix1</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Directrix1</translation>
+      <translation>준선1</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="587"/>
       <source>Directrix line for ellipse, parabola, hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Directrix line for ellipse, parabola, hyperbola.</translation>
+      <translation>타원, 포물선, 쌍곡선의 준선.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="595"/>
       <source>Directrix2</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Directrix2</translation>
+      <translation>준선2</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="596"/>
@@ -344,7 +344,7 @@
       <location filename="../../AttacherTexts.cpp" line="604"/>
       <source>Asymptote1</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Asymptote1</translation>
+      <translation>점근선1</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="605"/>
@@ -356,7 +356,7 @@
       <location filename="../../AttacherTexts.cpp" line="609"/>
       <source>Asymptote2</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Asymptote2</translation>
+      <translation>점근선2</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="610"/>

@@ -1371,6 +1371,7 @@ SET(FreeCADGui_CPP_SRCS
     ExpressionCompleter.cpp
     FileHandler.cpp
     FileHandler.h
+    FreeCADStyle.cpp
     GuiApplication.cpp
     GuiApplicationNativeEventAware.cpp
     GuiConsole.cpp
@@ -1408,6 +1409,7 @@ SET(FreeCADGui_SRCS
     ExpressionBindingPy.h
     ExpressionCompleter.h
     FreeCADGuiInit.py
+    FreeCADStyle.h
     GraphicsViewZoom.h
     GuiApplication.h
     GuiApplicationNativeEventAware.h

@@ -17,12 +17,17 @@ set(Sketcher_TestScripts
     SketcherTests/TestSketcherSolver.py
     SketcherTests/TestSketchExpression.py
     SketcherTests/TestSketchValidateCoincidents.py
+    SketcherTests/TestSketchCarbonCopyReverseMapping.py
+    SketcherTests/TestSketchCarbonCopyReverseMapping.FCStd
 )
 
 if(BUILD_GUI)
     list (APPEND Sketcher_Scripts
           InitGui.py
           TestSketcherGui.py
+    )
+    list (APPEND Sketcher_TestScripts
+          SketcherTests/TestPlacementUpdate.py
     )
 endif(BUILD_GUI)
 

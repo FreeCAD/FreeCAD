@@ -136,7 +136,7 @@
       <translation>Transformace</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3155"/>
+      <location filename="../ViewProviderLink.cpp" line="3157"/>
       <source>Toggle array elements</source>
       <translation>Přepnout prvky pole</translation>
     </message>
@@ -8605,12 +8605,12 @@ Zvolte 'Přerušit' pro zrušení</translation>
       <translation>Nelze otevřít systémový prohlížeč.</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2553"/>
+      <location filename="../View3DInventorViewer.cpp" line="2555"/>
       <source>Out of memory</source>
       <translation>Nedostatek paměti</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2554"/>
+      <location filename="../View3DInventorViewer.cpp" line="2556"/>
       <source>Not enough memory available to display the data.</source>
       <translation>Není dostatek paměti pro zobrazení dat.</translation>
     </message>
@@ -8636,7 +8636,7 @@ Zvolte 'Přerušit' pro zrušení</translation>
       <translation>Upřesnit výběr</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3182"/>
+      <location filename="../ViewProviderLink.cpp" line="3184"/>
       <location filename="../ViewProviderDragger.cpp" line="127"/>
       <source>Transform</source>
       <translation>Transformace</translation>
@@ -8766,53 +8766,53 @@ Zvolte 'Přerušit' pro zrušení</translation>
       <translation>Přetažení se nezdařilo</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2997"/>
+      <location filename="../ViewProviderLink.cpp" line="2999"/>
       <location filename="../MainWindow.cpp" line="870"/>
       <source>Apply to all</source>
       <translation>Použít na všechny</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2971"/>
+      <location filename="../ViewProviderLink.cpp" line="2973"/>
       <source>Setup Configurable Object</source>
       <translation>Nastavit konfigurovatelný objekt</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2973"/>
+      <location filename="../ViewProviderLink.cpp" line="2975"/>
       <source>Selects which object to copy or exclude when configuration changes. All external linked objects are excluded by default.</source>
       <translation>Vybere, který objekt zkopírovat nebo vyloučit při změně konfigurace. Všechny externí propojené objekty jsou ve výchozím nastavení vyloučeny.</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2995"/>
+      <location filename="../ViewProviderLink.cpp" line="2997"/>
       <source>Select which objects to copy when the configuration is changed</source>
       <translation>Vyberte, které objekty se mají kopírovat při změně konfigurace</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2998"/>
+      <location filename="../ViewProviderLink.cpp" line="3000"/>
       <source>Applies the setting to all links</source>
       <translation>Použije nastavení na všechny odkazy</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3051"/>
+      <location filename="../ViewProviderLink.cpp" line="3053"/>
       <source>Copy on Change</source>
       <translation>Kopírovat při změně</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3052"/>
+      <location filename="../ViewProviderLink.cpp" line="3054"/>
       <source>Enable</source>
       <translation>Povolit</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3054"/>
+      <location filename="../ViewProviderLink.cpp" line="3056"/>
       <source>Enable auto copy of linked object when its configuration is changed</source>
       <translation>Povolit automatické kopírování propojených objektů při změně jejich konfigurace</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3070"/>
+      <location filename="../ViewProviderLink.cpp" line="3072"/>
       <source>Tracking</source>
       <translation>Sledování</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3072"/>
+      <location filename="../ViewProviderLink.cpp" line="3074"/>
       <source>Copies the linked object when its configuration is changed.
 Also auto redo the copy if the original linked object is changed.
 </source>
@@ -8821,17 +8821,17 @@ Také automaticky opakujte kopírování, pokud se změní původní propojený 
 </translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3092"/>
+      <location filename="../ViewProviderLink.cpp" line="3094"/>
       <source>Disable Copy on Change</source>
       <translation>Zakázat kopírování při změně</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3110"/>
+      <location filename="../ViewProviderLink.cpp" line="3112"/>
       <source>Refresh Configurable Object</source>
       <translation>Obnovit konfigurovatelný objekt</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3112"/>
+      <location filename="../ViewProviderLink.cpp" line="3114"/>
       <source>Synchronizes the original configurable source object by
 creating a new deep copy. Any changes made to
 the current copy will be lost.
@@ -8842,23 +8842,23 @@ na aktuální kopii budou ztraceny.
 </translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3153"/>
+      <location filename="../ViewProviderLink.cpp" line="3155"/>
       <source>Toggle Array Elements</source>
       <translation>Přepnout prvky pole</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3164"/>
+      <location filename="../ViewProviderLink.cpp" line="3166"/>
       <source>Changes whether to show each link array element as individual objects</source>
       <translation>Změní zda se zobrazí prvky napojeného pole jako samostatné objekty</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3183"/>
+      <location filename="../ViewProviderLink.cpp" line="3185"/>
       <source>Transforms the object at the origin of the placement</source>
       <translation>Transformuje objekt na počátku umístění</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3193"/>
-      <location filename="../ViewProviderLink.cpp" line="3199"/>
+      <location filename="../ViewProviderLink.cpp" line="3195"/>
+      <location filename="../ViewProviderLink.cpp" line="3201"/>
       <source>Override Colors</source>
       <translation>Přepsat barvy</translation>
     </message>
@@ -10762,7 +10762,7 @@ po spuštění FreeCADu</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="262"/>
       <source>Sort Alphabetically</source>
-      <translation type="unfinished">Sort Alphabetically</translation>
+      <translation>Seřadit abecedně</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="591"/>
@@ -10780,7 +10780,7 @@ po spuštění FreeCADu</translation>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="598"/>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="609"/>
       <source>Icon and text</source>
-      <translation type="unfinished">Icon and text</translation>
+      <translation>Ikona a text</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="599"/>
@@ -10805,7 +10805,7 @@ po spuštění FreeCADu</translation>
     <message>
       <location filename="../NotificationArea.cpp" line="715"/>
       <source>Delete User Notifications</source>
-      <translation type="unfinished">Delete User Notifications</translation>
+      <translation>Odstranit uživatelská oznámení</translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="722"/>
@@ -10818,7 +10818,7 @@ po spuštění FreeCADu</translation>
     <message>
       <location filename="../NotificationArea.cpp" line="1004"/>
       <source>Delete User Notifications</source>
-      <translation type="unfinished">Delete User Notifications</translation>
+      <translation>Odstranit uživatelská oznámení</translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="1013"/>
@@ -10841,17 +10841,17 @@ po spuštění FreeCADu</translation>
     <message>
       <location filename="../ImageView.cpp" line="179"/>
       <source>Fit to Window</source>
-      <translation type="unfinished">Fit to Window</translation>
+      <translation>Přizpůsobit oknu</translation>
     </message>
     <message>
       <location filename="../ImageView.cpp" line="184"/>
       <source>Zoom In</source>
-      <translation type="unfinished">Zoom In</translation>
+      <translation>Přiblížit</translation>
     </message>
     <message>
       <location filename="../ImageView.cpp" line="187"/>
       <source>Zoom Out</source>
-      <translation type="unfinished">Zoom Out</translation>
+      <translation>Oddálit</translation>
     </message>
   </context>
   <context>
@@ -10859,7 +10859,7 @@ po spuštění FreeCADu</translation>
     <message>
       <location filename="../CommandView.cpp" line="2219"/>
       <source>&amp;Load Image…</source>
-      <translation type="unfinished">&amp;Load Image…</translation>
+      <translation>&amp;Načíst obrázek…</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2220"/>
@@ -10872,7 +10872,7 @@ po spuštění FreeCADu</translation>
     <message>
       <location filename="../NaviCube.cpp" line="1337"/>
       <source>Movable Navigation Cube</source>
-      <translation type="unfinished">Movable Navigation Cube</translation>
+      <translation>Pohyblivá navigační kostka</translation>
     </message>
     <message>
       <location filename="../NaviCube.cpp" line="1338"/>
@@ -10967,22 +10967,22 @@ po spuštění FreeCADu</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsEditor.ui" line="156"/>
       <source>Tab size</source>
-      <translation type="unfinished">Tab size</translation>
+      <translation>Velikost tabulátoru</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsEditor.ui" line="182"/>
       <source>Indent size</source>
-      <translation type="unfinished">Indent size</translation>
+      <translation>Velikost odsazení</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsEditor.ui" line="255"/>
       <source>Display Items</source>
-      <translation type="unfinished">Display Items</translation>
+      <translation>Zobrazované položky</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsEditor.ui" line="291"/>
       <source>Family</source>
-      <translation type="unfinished">Family</translation>
+      <translation>Rodina</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsEditor.ui" line="311"/>
@@ -11009,7 +11009,7 @@ po spuštění FreeCADu</translation>
       <location filename="../PreferencePages/DlgSettingsEditor.ui" line="192"/>
       <source> spaces</source>
       <comment>Do not remove leading space</comment>
-      <translation type="unfinished"> spaces</translation>
+      <translation> mezery</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsEditor.ui" line="189"/>
@@ -11177,7 +11177,7 @@ po spuštění FreeCADu</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="254"/>
       <source>Tree View and Property View mode</source>
-      <translation type="unfinished">Tree View and Property View mode</translation>
+      <translation>Režim zobrazení stromu a zobrazení vlastností</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="278"/>
@@ -11187,7 +11187,7 @@ po spuštění FreeCADu</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="20"/>
       <source>Language and Number Format</source>
-      <translation type="unfinished">Language and Number Format</translation>
+      <translation>Jazyk a formát čísel</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="41"/>
@@ -11197,7 +11197,7 @@ po spuštění FreeCADu</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="55"/>
       <source>Default unit system</source>
-      <translation type="unfinished">Default unit system</translation>
+      <translation>Výchozí soustava jednotek</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="71"/>
@@ -11207,26 +11207,25 @@ po spuštění FreeCADu</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="93"/>
       <source>Ignores document unit systems</source>
-      <translation type="unfinished">Ignores document unit systems</translation>
+      <translation>Ignorovat soustavy jednotek dokumentu</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="103"/>
       <source>Minimum fractional inch</source>
-      <translation type="unfinished">Minimum fractional inch</translation>
+      <translation>Minimální zlomek palce</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="152"/>
       <source>Number format</source>
-      <translation type="unfinished">Number format</translation>
+      <translation>Formát čísla</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="169"/>
       <source>Substitutes numerical keypad decimal separator with locale separator, except
 in the Python console and the macro editor where a
 dot/period will always be printed</source>
-      <translation type="unfinished">Substitutes numerical keypad decimal separator with locale separator, except
-in the Python console and the macro editor where a
-dot/period will always be printed</translation>
+      <translation>Nahradí oddělovač desetinných z numerické klávesnice místním lokálním oddělovačem, kromě
+Python konzole a editoru maker, kde bude vždy použita desetinná tečka</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="211"/>
@@ -11236,22 +11235,22 @@ dot/period will always be printed</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="218"/>
       <source>Customize the appearance of the user interface</source>
-      <translation type="unfinished">Customize the appearance of the user interface</translation>
+      <translation>Přizpůsobit vzhled uživatelského rozhraní</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="230"/>
       <source>Looking for more themes? You can obtain them using the &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</source>
-      <translation type="unfinished">Looking for more themes? You can obtain them using the &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</translation>
+      <translation>Hledáte více motivů? Můžete je získat prostřednictvím &lt;a href="freecad:Std_AddonMgr"&gt;Správce doplňků&lt;/a&gt;.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="240"/>
       <source>Size of toolbar icons</source>
-      <translation type="unfinished">Size of toolbar icons</translation>
+      <translation>Velikost ikon panelu nástrojů</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="247"/>
       <source>Icon size in the toolbar</source>
-      <translation type="unfinished">Icon size in the toolbar</translation>
+      <translation>Velikost ikony na panelu nástrojů</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="261"/>
@@ -11259,20 +11258,20 @@ dot/period will always be printed</translation>
 
 'Combined': combine tree and property view into one panel.
 'Independent': split tree and property view into separate panels.</source>
-      <translation type="unfinished">Customize how the tree view is shown in the panel (restart required).
+      <translation>Přizpůsobte si, jak je v panelu zobrazeno zobrazení stromu (vyžaduje restart).
 
-'Combined': combine tree and property view into one panel.
-'Independent': split tree and property view into separate panels.</translation>
+'Kombinované': kombinovat zobrazení stromu a zobrazení vlastností v jednom panelu.
+'Nezávislé': rozdělit zobrazení stromu a zobrazení vlastností do samostatných panelů.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="271"/>
       <source>Size of recent file list</source>
-      <translation type="unfinished">Size of recent file list</translation>
+      <translation>Délka seznamu nedávných souborů</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="294"/>
       <source>Background of the main window (when no document is opened) will consist of tiles of an image.</source>
-      <translation type="unfinished">Background of the main window (when no document is opened) will consist of tiles of an image.</translation>
+      <translation>Pozadí hlavního okna (není-li otevřený dokument) se bude skládat z dlaždic obrázku.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="297"/>
@@ -11294,39 +11293,39 @@ dot/period will always be printed</translation>
       <source>A splash screen is a small loading window that is shown
 when FreeCAD is launching. If this option is checked, FreeCAD will
 display the splash screen.</source>
-      <translation type="unfinished">A splash screen is a small loading window that is shown
-when FreeCAD is launching. If this option is checked, FreeCAD will
-display the splash screen.</translation>
+      <translation>Úvodní obrazovka je malé načítací okno, které se zobrazí 
+při spouštění FreeCADu. Je-li tato volba zaškrtnuta, 
+FreeCAD toto okno zobrazí.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="328"/>
       <source>Enable splash screen at start-up</source>
-      <translation type="unfinished">Enable splash screen at start-up</translation>
+      <translation>Povolit úvodní obrazovku při startu</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="344"/>
       <source>Activate overlay handling of docked panels</source>
-      <translation type="unfinished">Activate overlay handling of docked panels</translation>
+      <translation>Aktivovat manipulaci s překrytím zakotvených panelů</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="347"/>
       <source>Activate overlay panels</source>
-      <translation type="unfinished">Activate overlay panels</translation>
+      <translation>Aktivovat překrytí panelů</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="366"/>
       <source>Preference Packs</source>
-      <translation type="unfinished">Preference Packs</translation>
+      <translation>Balíčky předvoleb</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="477"/>
       <source>Import Configuration</source>
-      <translation type="unfinished">Import Configuration</translation>
+      <translation>Nastavení Importu</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="484"/>
       <source>Save as New</source>
-      <translation type="unfinished">Save as New</translation>
+      <translation>Uložit jako nový</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="497"/>
@@ -11336,7 +11335,7 @@ display the splash screen.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="504"/>
       <source>Revert</source>
-      <translation type="unfinished">Revert</translation>
+      <translation>Vrátit</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="432"/>
@@ -11411,7 +11410,7 @@ display the splash screen.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="689"/>
       <source>Applies the %1 preference pack</source>
-      <translation type="unfinished">Applies the %1 preference pack</translation>
+      <translation>Použít balíček předvoleb %1</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="774"/>
@@ -11567,7 +11566,7 @@ při zobrazení této zprávy</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="501"/>
       <source>Python Interpreter</source>
-      <translation type="unfinished">Python Interpreter</translation>
+      <translation>Interpretr Pythonu</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="283"/>
@@ -11630,42 +11629,42 @@ z Python konzole do panelu Report</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="68"/>
       <source>Pushes in</source>
-      <translation type="unfinished">Pushes in</translation>
+      <translation>Zatlačí dovnitř</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="88"/>
       <source>Pulls out</source>
-      <translation type="unfinished">Pulls out</translation>
+      <translation>Vytáhne ven</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="188"/>
       <source>Main light</source>
-      <translation type="unfinished">Main light</translation>
+      <translation>Hlavní světlo</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="224"/>
       <source>Backlight</source>
-      <translation type="unfinished">Backlight</translation>
+      <translation>Podsvícení</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="250"/>
       <source>Vertical angle</source>
-      <translation type="unfinished">Vertical angle</translation>
+      <translation>Vertikální úhel</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="274"/>
       <source>Horizontal angle</source>
-      <translation type="unfinished">Horizontal angle</translation>
+      <translation>Horizontální úhel</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="339"/>
       <source>Fill light</source>
-      <translation type="unfinished">Fill light</translation>
+      <translation>Doplňkové světlo</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="438"/>
       <source>Ambient light</source>
-      <translation type="unfinished">Ambient light</translation>
+      <translation>Světlo okolního prostředí</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="145"/>
@@ -11709,7 +11708,7 @@ Je-li vypnuto, pak se zobrazí kliknutím myší.</translation>
     <message>
       <location filename="../OverlayParams.cpp" line="365"/>
       <source>Overlay layout delay</source>
-      <translation type="unfinished">Overlay layout delay</translation>
+      <translation>Zpoždění překrytého rozložení</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="535"/>
@@ -12454,37 +12453,37 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsPDF.ui" line="56"/>
       <source>PDF/A-1b</source>
-      <translation type="unfinished">PDF/A-1b</translation>
+      <translation>PDF/A-1b</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPDF.ui" line="61"/>
       <source>PDF/1.6</source>
-      <translation type="unfinished">PDF/1.6</translation>
+      <translation>PDF/1.6</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPDF.ui" line="66"/>
       <source>PDF/X-4</source>
-      <translation type="unfinished">PDF/X-4</translation>
+      <translation>PDF/X-4</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPDF.cpp" line="81"/>
       <source>This archival PDF format does not support transparency or layers. All content must be self-contained and static.</source>
-      <translation type="unfinished">This archival PDF format does not support transparency or layers. All content must be self-contained and static.</translation>
+      <translation>Tento archivní formát PDF nepodporuje průhlednost nebo vrstvy. Veškerý obsah musí být samostatný a statický.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPDF.cpp" line="87"/>
       <source>While this version supports more modern features, older PDF readers may not fully handle it.</source>
-      <translation type="unfinished">While this version supports more modern features, older PDF readers may not fully handle it.</translation>
+      <translation>Tato verze sice podporuje modernější funkce, ale starší PDF prohlížeče ji nemusejí plně podporovat.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPDF.cpp" line="93"/>
       <source>This PDF format is intended for professional printing and requires all fonts to be embedded; some interactive features may not be supported.</source>
-      <translation type="unfinished">This PDF format is intended for professional printing and requires all fonts to be embedded; some interactive features may not be supported.</translation>
+      <translation>Tento formát PDF je určen pro profesionální tisk a vyžaduje vložení všech písem. Některé interaktivní funkce nemusí být podporovány.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPDF.cpp" line="99"/>
       <source>This PDF version has limited support for modern features like embedded multimedia and advanced transparency effects.</source>
-      <translation type="unfinished">This PDF version has limited support for modern features like embedded multimedia and advanced transparency effects.</translation>
+      <translation>Tato verze PDF má omezenou podporu pro moderní funkce, jako jsou vnořená multimédia a pokročilé efekty transparentnosti.</translation>
     </message>
   </context>
   <context>
@@ -12497,12 +12496,12 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
     <message>
       <location filename="../TaskTransform.cpp" line="172"/>
       <source>Object origin</source>
-      <translation type="unfinished">Object origin</translation>
+      <translation>Počátek objektu</translation>
     </message>
     <message>
       <location filename="../TaskTransform.cpp" line="178"/>
       <source>Center of mass / centroid</source>
-      <translation type="unfinished">Center of mass / centroid</translation>
+      <translation>Střed hmoty / těžiště</translation>
     </message>
     <message>
       <location filename="../TaskTransform.cpp" line="184"/>
@@ -12532,7 +12531,7 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
     <message>
       <location filename="../TaskTransform.cpp" line="415"/>
       <source>Select face, edge, or vertex…</source>
-      <translation type="unfinished">Select face, edge, or vertex…</translation>
+      <translation>Vyberte plochu, hranu nebo vrchol…</translation>
     </message>
     <message>
       <location filename="../TaskTransform.cpp" line="416"/>
@@ -12547,7 +12546,7 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
       <location filename="../InputHintWidget.cpp" line="248"/>
       <source>Backtab</source>
       <extracomment>Keyboard key for Backtab</extracomment>
-      <translation type="unfinished">Backtab</translation>
+      <translation>Backtab</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="252"/>
@@ -12565,13 +12564,13 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
       <location filename="../InputHintWidget.cpp" line="244"/>
       <source>Esc</source>
       <extracomment>Keyboard key for Escape</extracomment>
-      <translation type="unfinished">Esc</translation>
+      <translation>Esc</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="246"/>
       <source>Tab ⭾</source>
       <extracomment>Keyboard key for Tab</extracomment>
-      <translation type="unfinished">Tab ⭾</translation>
+      <translation>Tab ⭾</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="256"/>
@@ -12589,13 +12588,13 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
       <location filename="../InputHintWidget.cpp" line="260"/>
       <source>Print</source>
       <extracomment>Keyboard key for Print</extracomment>
-      <translation type="unfinished">Print</translation>
+      <translation>Print</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="262"/>
       <source>SysReq</source>
       <extracomment>Keyboard key for SysReq</extracomment>
-      <translation type="unfinished">SysReq</translation>
+      <translation>SysReq</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="264"/>
@@ -12613,85 +12612,85 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
       <location filename="../InputHintWidget.cpp" line="270"/>
       <source>End</source>
       <extracomment>Keyboard key for End</extracomment>
-      <translation type="unfinished">End</translation>
+      <translation>End</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="276"/>
       <source>PgDown</source>
       <extracomment>Keyboard key for Page Down</extracomment>
-      <translation type="unfinished">PgDown</translation>
+      <translation>PgDown</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="278"/>
       <source>PgUp</source>
       <extracomment>Keyboard key for Page Up</extracomment>
-      <translation type="unfinished">PgUp</translation>
+      <translation>PgUp</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="288"/>
       <source>⇧ Shift</source>
       <extracomment>Keyboard key for Shift on Windows &amp; Linux</extracomment>
-      <translation type="unfinished">⇧ Shift</translation>
+      <translation>⇧ Shift</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="345"/>
       <source>Num0</source>
       <extracomment>Keyboard key for numpad 0</extracomment>
-      <translation type="unfinished">Num0</translation>
+      <translation>Num0</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="347"/>
       <source>Num1</source>
       <extracomment>Keyboard key for numpad 1</extracomment>
-      <translation type="unfinished">Num1</translation>
+      <translation>Num1</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="349"/>
       <source>Num2</source>
       <extracomment>Keyboard key for numpad 2</extracomment>
-      <translation type="unfinished">Num2</translation>
+      <translation>Num2</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="351"/>
       <source>Num3</source>
       <extracomment>Keyboard key for numpad 3</extracomment>
-      <translation type="unfinished">Num3</translation>
+      <translation>Num3</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="353"/>
       <source>Num4</source>
       <extracomment>Keyboard key for numpad 4</extracomment>
-      <translation type="unfinished">Num4</translation>
+      <translation>Num4</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="355"/>
       <source>Num5</source>
       <extracomment>Keyboard key for numpad 5</extracomment>
-      <translation type="unfinished">Num5</translation>
+      <translation>Num5</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="357"/>
       <source>Num6</source>
       <extracomment>Keyboard key for numpad 6</extracomment>
-      <translation type="unfinished">Num6</translation>
+      <translation>Num6</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="359"/>
       <source>Num7</source>
       <extracomment>Keyboard key for numpad 7</extracomment>
-      <translation type="unfinished">Num7</translation>
+      <translation>Num7</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="361"/>
       <source>Num8</source>
       <extracomment>Keyboard key for numpad 8</extracomment>
-      <translation type="unfinished">Num8</translation>
+      <translation>Num8</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="363"/>
       <source>Num9</source>
       <extracomment>Keyboard key for numpad 9</extracomment>
-      <translation type="unfinished">Num9</translation>
+      <translation>Num9</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="290"/>
@@ -12709,19 +12708,19 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
       <location filename="../InputHintWidget.cpp" line="300"/>
       <source>Caps Lock</source>
       <extracomment>Keyboard key for Caps Lock</extracomment>
-      <translation type="unfinished">Caps Lock</translation>
+      <translation>Caps Lock</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="302"/>
       <source>Num Lock</source>
       <extracomment>Keyboard key for Num Lock</extracomment>
-      <translation type="unfinished">Num Lock</translation>
+      <translation>Num Lock</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="304"/>
       <source>Scroll Lock</source>
       <extracomment>Keyboard key for Scroll Lock</extracomment>
-      <translation type="unfinished">Scroll Lock</translation>
+      <translation>Scroll Lock</translation>
     </message>
   </context>
   <context>
@@ -12767,7 +12766,7 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
     <message>
       <location filename="../Dialogs/DlgLocationAngle.ui" line="86"/>
       <source>Angle snap</source>
-      <translation type="unfinished">Angle snap</translation>
+      <translation>Přichytávání úhlu</translation>
     </message>
   </context>
   <context>
@@ -12775,7 +12774,7 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.ui" line="14"/>
       <source>Theme Editor</source>
-      <translation type="unfinished">Theme Editor</translation>
+      <translation>Editor motivů</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.ui" line="20"/>
@@ -12790,22 +12789,22 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.ui" line="59"/>
       <source>RadioButton</source>
-      <translation type="unfinished">RadioButton</translation>
+      <translation>Rádiové tlačítko</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.ui" line="67"/>
       <source>Item 1</source>
-      <translation type="unfinished">Item 1</translation>
+      <translation>Položka 1</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.ui" line="72"/>
       <source>Item 2</source>
-      <translation type="unfinished">Item 2</translation>
+      <translation>Položka 2</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.ui" line="80"/>
       <source>PushButton</source>
-      <translation type="unfinished">PushButton</translation>
+      <translation>Tlačítko</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.ui" line="88"/>
@@ -12823,7 +12822,7 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
     <message>
       <location filename="../TaskView/TaskSolverMessages.ui" line="26"/>
       <source>DOF</source>
-      <translation type="unfinished">DOF</translation>
+      <translation>Stupeň volnosti</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskSolverMessages.ui" line="33"/>
@@ -12833,7 +12832,7 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
     <message>
       <location filename="../TaskView/TaskSolverMessages.ui" line="52"/>
       <source>Forces the recomputation of the active document</source>
-      <translation type="unfinished">Forces the recomputation of the active document</translation>
+      <translation>Vynutí přepočtení aktivního dokumentu</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskSolverMessages.ui" line="72"/>
@@ -12846,22 +12845,22 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
     <message>
       <location filename="../Application.cpp" line="425"/>
       <source>Built-in Parameters</source>
-      <translation type="unfinished">Built-in Parameters</translation>
+      <translation>Vestavěné parametry</translation>
     </message>
     <message>
       <location filename="../Application.cpp" line="400"/>
       <source>Theme Parameters</source>
-      <translation type="unfinished">Theme Parameters</translation>
+      <translation>Parametry motivu</translation>
     </message>
     <message>
       <location filename="../Application.cpp" line="434"/>
       <source>Theme Parameters - Fallback</source>
-      <translation type="unfinished">Theme Parameters - Fallback</translation>
+      <translation>Parametry motivu - nouzové</translation>
     </message>
     <message>
       <location filename="../Application.cpp" line="446"/>
       <source>User Parameters</source>
-      <translation type="unfinished">User Parameters</translation>
+      <translation>Uživatelské parametry</translation>
     </message>
   </context>
   <context>
@@ -12869,7 +12868,7 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
     <message>
       <location filename="../AutoSaver.cpp" line="179"/>
       <source>Wait until the auto-recovery file has been saved…</source>
-      <translation type="unfinished">Wait until the auto-recovery file has been saved…</translation>
+      <translation>Počkat než se uloží soubor Automatické obnovy…</translation>
     </message>
   </context>
   <context>
@@ -12877,12 +12876,12 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="628"/>
       <source>Dependency Gra&amp;ph</source>
-      <translation type="unfinished">Dependency Gra&amp;ph</translation>
+      <translation>&amp;Graf závislostí</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="630"/>
       <source>Shows the dependency graph of the objects in the active document</source>
-      <translation type="unfinished">Shows the dependency graph of the objects in the active document</translation>
+      <translation>Zobrazí graf závislosti objektů v aktivním dokumentu</translation>
     </message>
   </context>
   <context>
@@ -12890,7 +12889,7 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="642"/>
       <source>Dependency Graph</source>
-      <translation type="unfinished">Dependency Graph</translation>
+      <translation>Graf závislostí</translation>
     </message>
   </context>
   <context>
@@ -12898,12 +12897,12 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="661"/>
       <source>Export Dependency &amp;Graph</source>
-      <translation type="unfinished">Export Dependency &amp;Graph</translation>
+      <translation>E&amp;xportovat graf závislostí</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="662"/>
       <source>Exports the dependency graph as a Graphviz (.gv) file</source>
-      <translation type="unfinished">Exports the dependency graph as a Graphviz (.gv) file</translation>
+      <translation>Exportuje graf závislostí jako soubor Graphviz (.gv)</translation>
     </message>
   </context>
   <context>
@@ -12911,7 +12910,7 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="769"/>
       <source>Save &amp;As…</source>
-      <translation type="unfinished">Save &amp;As…</translation>
+      <translation>Uložit &amp;jako…</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="770"/>
@@ -12955,12 +12954,12 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="896"/>
       <source>Doc&amp;ument Information</source>
-      <translation type="unfinished">Doc&amp;ument Information</translation>
+      <translation>Informace o dok&amp;umentu</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="898"/>
       <source>Shows information about the active document</source>
-      <translation type="unfinished">Shows information about the active document</translation>
+      <translation>Zobrazí informace o aktivním dokumentu</translation>
     </message>
   </context>
   <context>
@@ -13325,7 +13324,7 @@ Proceed?</translation>
     <message>
       <location filename="../CommandMacro.cpp" line="243"/>
       <source>Steps to the next line in this file</source>
-      <translation type="unfinished">Steps to the next line in this file</translation>
+      <translation>Pokročí na další řádek v tomto souboru</translation>
     </message>
   </context>
   <context>
@@ -13333,12 +13332,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandMacro.cpp" line="269"/>
       <source>Step &amp;Into</source>
-      <translation type="unfinished">Step &amp;Into</translation>
+      <translation>&amp;Vkročit dovnitř</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="270"/>
       <source>Steps to the next line executed</source>
-      <translation type="unfinished">Steps to the next line executed</translation>
+      <translation>Vkročí na další vykonávaný řádek</translation>
     </message>
   </context>
   <context>
@@ -13346,12 +13345,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandMacro.cpp" line="296"/>
       <source>Toggle &amp;Breakpoint</source>
-      <translation type="unfinished">Toggle &amp;Breakpoint</translation>
+      <translation>Přepnout &amp;zarážku</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="297"/>
       <source>Adds or removes a breakpoint at this position</source>
-      <translation type="unfinished">Adds or removes a breakpoint at this position</translation>
+      <translation>Přidá nebo odebere zarážku na této pozici</translation>
     </message>
   </context>
   <context>
@@ -13359,7 +13358,7 @@ Proceed?</translation>
     <message>
       <location filename="../CommandMacro.cpp" line="322"/>
       <source>Open Macro Folder</source>
-      <translation type="unfinished">Open Macro Folder</translation>
+      <translation>Otevřít složku maker</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="323"/>
@@ -13372,12 +13371,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandStd.cpp" line="186"/>
       <source>&amp;Recent Macros</source>
-      <translation type="unfinished">&amp;Recent Macros</translation>
+      <translation>&amp;Nedávná makra</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="187"/>
       <source>Displays the list of recently used macros</source>
-      <translation type="unfinished">Displays the list of recently used macros</translation>
+      <translation>Zobrazí seznam naposledy použitých maker</translation>
     </message>
   </context>
   <context>
@@ -13385,12 +13384,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandStd.cpp" line="387"/>
       <source>E&amp;dit Parameters</source>
-      <translation type="unfinished">E&amp;dit Parameters</translation>
+      <translation>&amp;Upravit parametry</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="389"/>
       <source>Opens a dialog to edit the parameters</source>
-      <translation type="unfinished">Opens a dialog to edit the parameters</translation>
+      <translation>Otevře dialogové okno pro úpravu parametrů</translation>
     </message>
   </context>
   <context>
@@ -13398,12 +13397,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandStd.cpp" line="413"/>
       <source>Prefere&amp;nces</source>
-      <translation type="unfinished">Prefere&amp;nces</translation>
+      <translation>&amp;Nastavení</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="415"/>
       <source>Opens a dialog to edit the preferences</source>
-      <translation type="unfinished">Opens a dialog to edit the preferences</translation>
+      <translation>Otevře dialogové okno pro úpravu nastavení</translation>
     </message>
   </context>
   <context>
@@ -13411,12 +13410,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandStd.cpp" line="460"/>
       <source>Cu&amp;stomize…</source>
-      <translation type="unfinished">Cu&amp;stomize…</translation>
+      <translation>Při&amp;způsobit…</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="461"/>
       <source>Opens a dialog to edit toolbars, shortcuts, and macros</source>
-      <translation type="unfinished">Opens a dialog to edit toolbars, shortcuts, and macros</translation>
+      <translation>Otevře dialogové okno pro úpravu panelu nástrojů, zkratek a maker</translation>
     </message>
   </context>
   <context>
@@ -13424,12 +13423,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandStd.cpp" line="488"/>
       <source>Command &amp;Line</source>
-      <translation type="unfinished">Command &amp;Line</translation>
+      <translation>&amp;Příkazový řádek</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="490"/>
       <source>Opens a command line interface in the console</source>
-      <translation type="unfinished">Opens a command line interface in the console</translation>
+      <translation>Otevře rozhraní příkazové řádky v konzoli</translation>
     </message>
   </context>
   <context>
@@ -13437,12 +13436,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandStd.cpp" line="593"/>
       <source>Donate to FreeCA&amp;D</source>
-      <translation type="unfinished">Donate to FreeCA&amp;D</translation>
+      <translation>Přispět na FreeCA&amp;D</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="594"/>
       <source>Support the FreeCAD development</source>
-      <translation type="unfinished">Support the FreeCAD development</translation>
+      <translation>Podpořte vývoj FreeCADu</translation>
     </message>
   </context>
   <context>
@@ -13450,12 +13449,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandStd.cpp" line="624"/>
       <source>Developers Handbook</source>
-      <translation type="unfinished">Developers Handbook</translation>
+      <translation>Příručka pro vývojáře</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="626"/>
       <source>Handbook about FreeCAD development</source>
-      <translation type="unfinished">Handbook about FreeCAD development</translation>
+      <translation>Příručka o vývoji FreeCADu</translation>
     </message>
   </context>
   <context>
@@ -13463,12 +13462,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandStd.cpp" line="780"/>
       <source>Te&amp;xt Document</source>
-      <translation type="unfinished">Te&amp;xt Document</translation>
+      <translation>Te&amp;xtový dokument</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="781"/>
       <source>Adds a text document to the active document</source>
-      <translation type="unfinished">Adds a text document to the active document</translation>
+      <translation>Přidá textový dokument do aktivního dokumentu</translation>
     </message>
   </context>
   <context>
@@ -13476,12 +13475,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandStd.cpp" line="818"/>
       <source>&amp;Units Converter</source>
-      <translation type="unfinished">&amp;Units Converter</translation>
+      <translation>&amp;Převodník jednotek</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="820"/>
       <source>Starts the units converter</source>
-      <translation type="unfinished">Starts the units converter</translation>
+      <translation>Spustí převodník jednotek</translation>
     </message>
   </context>
   <context>
@@ -13489,12 +13488,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandStd.cpp" line="859"/>
       <source>Edit &amp;Mode</source>
-      <translation type="unfinished">Edit &amp;Mode</translation>
+      <translation>&amp;Režim úprav</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="860"/>
       <source>Defines behavior when editing an object from the tree view</source>
-      <translation type="unfinished">Defines behavior when editing an object from the tree view</translation>
+      <translation>Definuje chování při úpravách objektu ze stromového zobrazení</translation>
     </message>
   </context>
   <context>

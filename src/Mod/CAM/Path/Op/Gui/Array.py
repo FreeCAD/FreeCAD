@@ -187,6 +187,9 @@ class ObjectArray:
         if prop == "Type":
             self.setEditorModes(obj)
 
+        if prop == "Active" and obj.ViewObject:
+            obj.ViewObject.signalChangeIcon()
+
     def onDocumentRestored(self, obj):
         """onDocumentRestored(obj) ... Called automatically when document is restored."""
 
@@ -455,12 +458,12 @@ class PathArray:
 
 class ViewProviderArray:
     def __init__(self, vobj):
-        self.Object = vobj.Object
+        self.attach(vobj)
         vobj.Proxy = self
 
     def attach(self, vobj):
-        self.Object = vobj.Object
-        return
+        self.vobj = vobj
+        self.obj = vobj.Object
 
     def dumps(self):
         return None
@@ -468,12 +471,20 @@ class ViewProviderArray:
     def loads(self, state):
         return None
 
+    def onChanged(self, vobj, prop):
+        return None
+
     def claimChildren(self):
-        if hasattr(self, "Object"):
-            if hasattr(self.Object, "Base"):
-                if self.Object.Base:
-                    return self.Object.Base
         return []
+
+    def onDelete(self, vobj, args):
+        return None
+
+    def getIcon(self):
+        if self.obj.Active:
+            return ":/icons/CAM_Array.svg"
+        else:
+            return ":/icons/CAM_OpActive.svg"
 
 
 class CommandPathArray:
@@ -535,7 +546,9 @@ class CommandPathArray:
         )
         FreeCADGui.doCommand("obj.Base = %s" % baseString)
 
-        FreeCADGui.doCommand("obj.ViewObject.Proxy = 0")
+        FreeCADGui.doCommand(
+            "obj.ViewObject.Proxy = Path.Op.Gui.Array.ViewProviderArray(obj.ViewObject)"
+        )
         FreeCADGui.doCommand("PathScripts.PathUtils.addToJob(obj)")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()

@@ -575,6 +575,7 @@ def add_object(document, otype=None, oname="IfcObject"):
             obj.ViewObject.ShowLevel = False
             obj.ViewObject.ShowLabel = False
             obj.ViewObject.Proxy = ifc_viewproviders.ifc_vp_buildingpart(obj.ViewObject)
+            obj.ViewObject.Proxy.attach(obj.ViewObject)
         for p in obj.PropertiesList:
             if obj.getGroupOfProperty(p) in ["BuildingPart", "IFC Attributes", "Children"]:
                 obj.removeProperty(p)

@@ -1573,7 +1573,7 @@ If zero, it is equal to Radius2</source>
   <context>
     <name>PartDesignGui::TaskDlgFeatureParameters</name>
     <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="226"/>
+      <location filename="../../TaskFeatureParameters.cpp" line="228"/>
       <source>The feature could not be created with the given parameters.
 The geometry may be invalid or the parameters may be incompatible.
 Please adjust the parameters and try again.</source>
@@ -1582,7 +1582,7 @@ Please adjust the parameters and try again.</source>
 请调整参数并重试。</translation>
     </message>
     <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="233"/>
+      <location filename="../../TaskFeatureParameters.cpp" line="235"/>
       <source>Input error</source>
       <translation>输入错误</translation>
     </message>
@@ -4475,9 +4475,9 @@ over 90: larger hole radius at the bottom</source>
       <location filename="../../../App/FeaturePipe.cpp" line="529"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="263"/>
       <location filename="../../../App/FeatureGroove.cpp" line="254"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="739"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="755"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="768"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="756"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="772"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="785"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>结果有多个实体：在活动实体中启用“允许复合”</translation>
     </message>
@@ -4492,22 +4492,22 @@ over 90: larger hole radius at the bottom</source>
       <translation>不支持的布尔操作</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="326"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="343"/>
       <source>Cannot create a pad with a total length of zero.</source>
       <translation>无法创建总长度为零的垫片。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="331"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="348"/>
       <source>Cannot create a pocket with a total length of zero.</source>
       <translation>无法创建总长度为零的口袋。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="670"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="687"/>
       <source>No extrusion geometry was generated.</source>
       <translation>未生成任何拉伸几何体。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="694"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="711"/>
       <source>Resulting fused extrusion is null.</source>
       <translation>结果融合的拉伸为 null。</translation>
     </message>
@@ -4515,7 +4515,7 @@ over 90: larger hole radius at the bottom</source>
       <location filename="../../../App/FeatureLoft.cpp" line="368"/>
       <location filename="../../../App/FeaturePipe.cpp" line="521"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="139"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="730"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="747"/>
       <source>Resulting shape is not a solid</source>
       <translation>结果形状不是实体</translation>
     </message>
@@ -4587,19 +4587,19 @@ over 90: larger hole radius at the bottom</source>
   - 选中的草图不属于活动实体。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="375"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="392"/>
       <source>Failed to obtain profile shape</source>
       <translation>无法获取轮廓形状</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="429"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="446"/>
       <source>Creation failed because direction is orthogonal to sketch's normal vector</source>
       <translation>创建失败，方向与草图的法线矢量正交</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureRevolution.cpp" line="163"/>
       <location filename="../../../App/FeatureGroove.cpp" line="154"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="452"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="469"/>
       <source>Creating a face from sketch failed</source>
       <translation>从草图创建面失败</translation>
     </message>
@@ -4839,7 +4839,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
       <translation>拉伸：创建外壳失败</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="783"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="800"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed.</source>
       <translation>无法从草图立建面。
@@ -5079,7 +5079,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <translation>参考坐标轴无效</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="722"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="739"/>
       <source>Fusion with base feature failed</source>
       <translation>与基本特征联合失败</translation>
     </message>
