@@ -30,6 +30,49 @@ def to_json(value):
     return value
 
 
+def units_from_json(params):
+    """
+    Infer Units (Metric/Imperial) from JSON parameter strings.
+
+    For JSON files from disk, values are stored as strings like "3.175 in" or "6 mm".
+    This function examines common dimensional parameters (Diameter, Length, CuttingEdgeHeight, etc.)
+    to determine if the toolbit uses metric or imperial units.
+
+    Args:
+        params: Dictionary of parameters from JSON (before conversion to FreeCAD.Units.Quantity)
+
+    Returns:
+        str: "Metric" or "Imperial", or None if units cannot be determined
+    """
+    if not isinstance(params, dict):
+        return None
+
+    imperial_count = 0
+    metric_count = 0
+
+    for param_name in ("Diameter", "ShankDiameter", "Length", "CuttingEdgeLength"):
+        value = params.get(param_name)
+        if value is not None:
+            # Check if it's a string with unit suffix
+            if isinstance(value, str):
+                value_lower = value.lower().strip()
+
+                # Check for imperial units
+                if any(unit in value_lower for unit in ["in", "inch", '"', "thou"]):
+                    imperial_count += 1
+                # Check for metric units
+                elif any(unit in value_lower for unit in ["mm", "cm", "m "]):
+                    metric_count += 1
+
+        # Make a decision based on counts
+        if imperial_count > metric_count:
+            return "Imperial"
+        elif metric_count > imperial_count:
+            return "Metric"
+
+    return "Metric"  # Default to Metric if uncertain
+
+
 def format_value(
     value: FreeCAD.Units.Quantity | int | float | None,
     precision: int | None = None,
