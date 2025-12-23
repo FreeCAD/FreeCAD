@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2020 russ4262 <russ4262@gmail.com>                      *
 # *                                                                         *
@@ -1156,7 +1157,7 @@ def _makeSafeSTL(self, JOB, obj, mdlIdx, faceShapes, voidShapes, ocl):
         B = Part.makeBox(bL, bW, bH, crnr, FreeCAD.Vector(0, 0, 1))
         fuseShapes.append(B)
     else:
-        # Original fast "Stock" path
+        # If boundbox is Job.Stock, add hidden pad under stock as base plate
         toolDiam = self.cutter.getDiameter()
         zMin = JOB.Stock.Shape.BoundBox.ZMin
         xMin = JOB.Stock.Shape.BoundBox.XMin - toolDiam
@@ -1170,7 +1171,9 @@ def _makeSafeSTL(self, JOB, obj, mdlIdx, faceShapes, voidShapes, ocl):
 
     if voidShapes:
         voidComp = Part.makeCompound(voidShapes)
-        voidEnv = PathUtils.getEnvelope(partshape=voidComp, depthparams=self.depthParams)
+        voidEnv = PathUtils.getEnvelope(
+            partshape=voidComp, depthparams=self.depthParams
+        )  # Produces .Shape
         fuseShapes.append(voidEnv)
 
     fused = Part.makeCompound(fuseShapes)
@@ -1202,6 +1205,22 @@ def _makeSTL(model, obj, ocl, model_type=None):
     """Convert a mesh or shape into an OCL STL, using the tessellation
     tolerance specified in obj.LinearDeflection.
     Returns an ocl.STLSurf()."""
+    # Determine Deflection Values
+    lin_def = obj.LinearDeflection.Value
+    ang_def = obj.AngularDeflection.Value
+
+    # Apply Overrides for Waterline OCL Adaptive
+    # OCL Adaptive is a Vector-based algorithm, not a Grid-based algorithm (like Dropcutter)
+    # This fundamental difference makes it sensitive to Topology (how points connect) rather than just density
+    # Models with internal features can cause the algorithm to be confused even with very high density values.
+    # The following values create the cleanest possible Topology for a vector-slicing algorithm
+    # Setting those values here rather than hacking the Obj values in Waterline.py is preferable.
+    algo = getattr(obj, "Algorithm", None)
+    if algo == "OCL Adaptive":
+        # Force the "Sweet Spot" values for topology stability (Good enough for 99% or more of operations)
+        lin_def = 0.001
+        ang_def = 0.15
+
     if model_type == "M":
         facets = model.Mesh.Facets.Points
     else:
@@ -1245,11 +1264,11 @@ def _makeSTL(model, obj, ocl, model_type=None):
                 )
 
         # vertices, facet_indices = shape.tessellate(obj.LinearDeflection.Value) # tessellate workaround
-        # Workaround for tessellate bug. Tessellation is often unsuccessful in producing a clean shape from models with sharp edges.
+        # Workaround for tessellate bug
         mesh = MeshPart.meshFromShape(
             Shape=shape,
-            LinearDeflection=obj.LinearDeflection.Value,
-            AngularDeflection=obj.AngularDeflection.Value,
+            LinearDeflection=lin_def,
+            AngularDeflection=ang_def,
         )
 
         # If the user has set a simplification value, we reduce the mesh density here.
@@ -1276,7 +1295,6 @@ def _makeSTL(model, obj, ocl, model_type=None):
             )
         vertices = [point.Vector for point in mesh.Points]
         facet_indices = [facet.PointIndices for facet in mesh.Facets]
-
         facets = ((vertices[f[0]], vertices[f[1]], vertices[f[2]]) for f in facet_indices)
     stl = ocl.STLSurf()
     for tri in facets:
@@ -2604,8 +2622,12 @@ class OCL_Tool:
             return False
         if hasattr(self.tool, "LengthOffset"):
             self.lengthOffset = float(self.tool.LengthOffset)
+        # Derive flatRadius from diameter and cornerRadius if both are present
         if hasattr(self.tool, "FlatRadius"):
             self.flatRadius = float(self.tool.FlatRadius)
+        if hasattr(self.tool, "CornerRadius") and hasattr(self.tool, "Diameter"):
+            self.cornerRadius = float(self.tool.CornerRadius)
+            self.flatRadius = (self.diameter / 2.0) - self.cornerRadius
         if hasattr(self.tool, "CuttingEdgeHeight"):
             self.cutEdgeHeight = float(self.tool.CuttingEdgeHeight)
         if hasattr(self.tool, "CuttingEdgeAngle"):

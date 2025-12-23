@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2016 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -66,6 +67,8 @@ if False:
     Path.Log.trackModule(Path.Log.thisModule())
 else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
+
+FLOAT_EPSILON = 1e-6  # Small value for floating point comparisons
 
 
 class ObjectSurface(PathOp.ObjectOp):
@@ -599,6 +602,7 @@ class ObjectSurface(PathOp.ObjectOp):
                     self._applyAccuracySettings(obj)
                 if prop in ["ScanType", "CutPattern"]:
                     self.setEditorProperties(obj)
+
 
     def _applyAccuracySettings(self, obj):
         """Applies the mesh settings based on the Accuracy slider's value."""
@@ -1388,10 +1392,11 @@ class ObjectSurface(PathOp.ObjectOp):
 
         lenSCANDATA = len(SCANDATA)
         gDIR = ["G3", "G2"]
+
         if self.CutClimb:
             gDIR = ["G2", "G3"]
 
-        peIdx = lenSCANDATA
+        peIdx = lenSCANDATA  # off by default
         if obj.ProfileEdges == "Only":
             peIdx = -1
         elif obj.ProfileEdges == "First":
@@ -1465,9 +1470,11 @@ class ObjectSurface(PathOp.ObjectOp):
             GCODE.extend(cmds)
             lstStpEnd = last
 
+            # Return `OptimizeLinearPaths` to disabled
             if so == peIdx or peIdx == -1:
                 if obj.CutPattern in ["Circular", "CircularZigZag"]:
                     obj.OptimizeLinearPaths = False
+        # Efor
 
         return GCODE
 
@@ -1553,7 +1560,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 if new_so:
                     processed_scandata.append(new_so)
 
-            # Call the single-pass function with our new, intelligently broken-up path data
+            # Call the single-pass function with new, intelligently broken-up path data
             layer_gcode = self._planarDropCutSingle(
                 JOB, obj, pdc, safePDC, [layDep], processed_scandata
             )
@@ -2025,7 +2032,6 @@ class ObjectSurface(PathOp.ObjectOp):
             if (
                 obj.RotationAxis == obj.DropCutterDir
             ):  # Same == indexed (cutter runs parallel to axis)
-
                 # Translate scan to gcode
                 sumAdv = begIdx
                 for sl in range(0, len(scanLines)):
@@ -2287,7 +2293,7 @@ class ObjectSurface(PathOp.ObjectOp):
         # Adjust feed rate based on radius/circumference of cutter.
         # Original feed rate based on travel at circumference.
         if rN > 0:
-            if pnt.z >= self.layerEndzMax:
+            if pnt.z >= self.layerEndzMax - FLOAT_EPSILON:
                 clrZ = pnt.z + 5.0
                 output.append(Path.Command("G1", {"Z": clrZ, "F": self.vertRapid}))
         else:
@@ -2399,71 +2405,6 @@ class ObjectSurface(PathOp.ObjectOp):
             del self.radius
             del self.useTiltCutter
         return True
-
-    def setOclCutter(self, obj, safe=False):
-        """setOclCutter(obj) ... Translation function to convert FreeCAD tool definition to OCL formatted tool."""
-        # Set cutter details
-        #  https://www.freecad.org/api/dd/dfe/classPath_1_1Tool.html#details
-        diam_1 = float(obj.ToolController.Tool.Diameter)
-        lenOfst = (
-            obj.ToolController.Tool.LengthOffset
-            if hasattr(obj.ToolController.Tool, "LengthOffset")
-            else 0
-        )
-        FR = (
-            obj.ToolController.Tool.FlatRadius
-            if hasattr(obj.ToolController.Tool, "FlatRadius")
-            else 0
-        )
-        CEH = (
-            obj.ToolController.Tool.CuttingEdgeHeight
-            if hasattr(obj.ToolController.Tool, "CuttingEdgeHeight")
-            else 0
-        )
-        CEA = (
-            obj.ToolController.Tool.CuttingEdgeAngle
-            if hasattr(obj.ToolController.Tool, "CuttingEdgeAngle")
-            else 0
-        )
-
-        # Make safeCutter with 2 mm buffer around physical cutter
-        if safe is True:
-            diam_1 += 4.0
-            if FR != 0.0:
-                FR += 2.0
-
-        Path.Log.debug("ToolType: {}".format(obj.ToolController.Tool.ToolType))
-        if obj.ToolController.Tool.ToolType == "EndMill":
-            # Standard End Mill
-            return ocl.CylCutter(diam_1, (CEH + lenOfst))
-
-        elif obj.ToolController.Tool.ToolType == "BallEndMill" and FR == 0.0:
-            # Standard Ball End Mill
-            # OCL -> BallCutter::BallCutter(diameter, length)
-            self.useTiltCutter = True
-            return ocl.BallCutter(diam_1, (diam_1 / 2 + lenOfst))
-
-        elif obj.ToolController.Tool.ToolType == "BallEndMill" and FR > 0.0:
-            # Bull Nose or Corner Radius cutter
-            # Reference: https://www.fine-tools.com/halbstabfraeser.html
-            # OCL -> BallCutter::BallCutter(diameter, length)
-            return ocl.BullCutter(diam_1, FR, (CEH + lenOfst))
-
-        elif obj.ToolController.Tool.ToolType == "Engraver" and FR > 0.0:
-            # Bull Nose or Corner Radius cutter
-            # Reference: https://www.fine-tools.com/halbstabfraeser.html
-            # OCL -> ConeCutter::ConeCutter(diameter, angle, lengthOffset)
-            return ocl.ConeCutter(diam_1, (CEA / 2), lenOfst)
-
-        elif obj.ToolController.Tool.ToolType == "ChamferMill":
-            # Bull Nose or Corner Radius cutter
-            # Reference: https://www.fine-tools.com/halbstabfraeser.html
-            # OCL -> ConeCutter::ConeCutter(diameter, angle, lengthOffset)
-            return ocl.ConeCutter(diam_1, (CEA / 2), lenOfst)
-        else:
-            # Default to standard end mill
-            Path.Log.warning("Defaulting cutter to standard end mill.")
-            return ocl.CylCutter(diam_1, (CEH + lenOfst))
 
     def _getTransitionLine(self, pdc, p1, p2, obj):
         """Use an OCL PathDropCutter to generate a safe transition path between
