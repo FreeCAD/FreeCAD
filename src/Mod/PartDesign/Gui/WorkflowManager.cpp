@@ -21,8 +21,8 @@
  ***************************************************************************/
 
 
-# include <QMessageBox>
-# include <QPushButton>
+#include <QMessageBox>
+#include <QPushButton>
 
 
 #include <App/Application.h>
@@ -38,91 +38,106 @@
 using namespace PartDesignGui;
 namespace sp = std::placeholders;
 
-WorkflowManager * WorkflowManager::_instance = nullptr;
+WorkflowManager* WorkflowManager::_instance = nullptr;
 
-WorkflowManager::WorkflowManager() {
+WorkflowManager::WorkflowManager()
+{
     // Fill the map with already opened documents
-   for ( auto doc : App::GetApplication().getDocuments() ) {
-        slotFinishRestoreDocument ( *doc );
-   }
+    for (auto doc : App::GetApplication().getDocuments()) {
+        slotFinishRestoreDocument(*doc);
+    }
 
-    //NOLINTBEGIN
+    // NOLINTBEGIN
     connectNewDocument = App::GetApplication().signalNewDocument.connect(
-            std::bind( &WorkflowManager::slotNewDocument, this, sp::_1 ) );
+        std::bind(&WorkflowManager::slotNewDocument, this, sp::_1)
+    );
     connectFinishRestoreDocument = App::GetApplication().signalFinishRestoreDocument.connect(
-            std::bind( &WorkflowManager::slotFinishRestoreDocument, this, sp::_1 ) );
+        std::bind(&WorkflowManager::slotFinishRestoreDocument, this, sp::_1)
+    );
     connectDeleteDocument = App::GetApplication().signalDeleteDocument.connect(
-            std::bind( &WorkflowManager::slotDeleteDocument, this, sp::_1 ) );
-    //NOLINTEND
+        std::bind(&WorkflowManager::slotDeleteDocument, this, sp::_1)
+    );
+    // NOLINTEND
 }
 
-WorkflowManager::~WorkflowManager() {
+WorkflowManager::~WorkflowManager()
+{
     // they won't be automatically disconnected on destruction!
-    connectNewDocument.disconnect ();
-    connectFinishRestoreDocument.disconnect ();
-    connectDeleteDocument.disconnect ();
+    connectNewDocument.disconnect();
+    connectFinishRestoreDocument.disconnect();
+    connectDeleteDocument.disconnect();
 }
 
 
 // Those destruction/construction is not really needed and could be done in the instance()
 // but to make things a bit more clear, better to keep them around.
-void WorkflowManager::init() {
+void WorkflowManager::init()
+{
     if (!_instance) {
         _instance = new WorkflowManager();
-    } else {
-        //throw Base::RuntimeError( "Trying to init the workflow manager second time." );
+    }
+    else {
+        // throw Base::RuntimeError( "Trying to init the workflow manager second time." );
     }
 }
 
-WorkflowManager *WorkflowManager::instance() {
+WorkflowManager* WorkflowManager::instance()
+{
     if (!_instance) {
         WorkflowManager::init();
     }
     return _instance;
 }
 
-void WorkflowManager::destruct() {
+void WorkflowManager::destruct()
+{
     if (_instance) {
         delete _instance;
         _instance = nullptr;
     }
 }
 
-void WorkflowManager::slotNewDocument( const App::Document &doc ) {
+void WorkflowManager::slotNewDocument(const App::Document& doc)
+{
     // new document always uses new workflow
     dwMap[&doc] = Workflow::Modern;
 }
 
 
-void WorkflowManager::slotFinishRestoreDocument( const App::Document &doc ) {
-    Workflow wf = guessWorkflow (&doc);
+void WorkflowManager::slotFinishRestoreDocument(const App::Document& doc)
+{
+    Workflow wf = guessWorkflow(&doc);
     // Mark document as undetermined if the guessed workflow is not new
-    if( wf != Workflow::Modern ) {
+    if (wf != Workflow::Modern) {
         wf = Workflow::Undetermined;
     }
     dwMap[&doc] = wf;
 }
 
-void WorkflowManager::slotDeleteDocument( const App::Document &doc ) {
+void WorkflowManager::slotDeleteDocument(const App::Document& doc)
+{
     dwMap.erase(&doc);
 }
 
-Workflow WorkflowManager::getWorkflowForDocument( App::Document *doc) {
-    assert (doc);
+Workflow WorkflowManager::getWorkflowForDocument(App::Document* doc)
+{
+    assert(doc);
 
     auto it = dwMap.find(doc);
 
-    if ( it!=dwMap.end() ) {
+    if (it != dwMap.end()) {
         return it->second;
-    } else {
+    }
+    else {
         // We haven't yet checked the file workflow
         // May happen if e.g. file not completely loaded yet
         return Workflow::Undetermined;
     }
 }
 
-Workflow WorkflowManager::determineWorkflow(App::Document *doc) {
-    Workflow rv = getWorkflowForDocument (doc);
+Workflow WorkflowManager::determineWorkflow(App::Document* doc)
+{
+    Workflow rv = getWorkflowForDocument(doc);
 
     if (rv != Workflow::Undetermined) {
         // Return if workflow is known
@@ -130,85 +145,108 @@ Workflow WorkflowManager::determineWorkflow(App::Document *doc) {
     }
 
     // Guess the workflow again
-    rv = guessWorkflow (doc);
+    rv = guessWorkflow(doc);
     if (rv != Workflow::Modern) {
         QMessageBox msgBox(Gui::getMainWindow());
 
-        if ( rv == Workflow::Legacy ) { // legacy messages
-            msgBox.setText( QObject::tr( "The document \"%1\" you are editing was designed with an old version of "
-                            "Part Design workbench." ).arg( QString::fromStdString ( doc->getName()) ) );
-            msgBox.setInformativeText (
-                    QObject::tr( "Migrate in order to use modern Part Design features?" ) );
+        if (rv == Workflow::Legacy) {  // legacy messages
+            msgBox.setText(
+                QObject::tr(
+                    "The document \"%1\" you are editing was designed with an old version of "
+                    "Part Design workbench."
+                )
+                    .arg(QString::fromStdString(doc->getName()))
+            );
+            msgBox.setInformativeText(
+                QObject::tr("Migrate in order to use modern Part Design features?")
+            );
         }
-        else { // The document is already in the middle of migration
-            msgBox.setText( QObject::tr( "The document \"%1\" seems to be either in the middle of"
-                        " the migration process from legacy Part Design or have a slightly broken structure."
-                        ).arg( QString::fromStdString ( doc->getName()) ) );
-            msgBox.setInformativeText (
-                    QObject::tr( "Make the migration automatically?" ) );
+        else {  // The document is already in the middle of migration
+            msgBox.setText(
+                QObject::tr(
+                    "The document \"%1\" seems to be either in the middle of"
+                    " the migration process from legacy Part Design or have a slightly broken "
+                    "structure."
+                )
+                    .arg(QString::fromStdString(doc->getName()))
+            );
+            msgBox.setInformativeText(QObject::tr("Make the migration automatically?"));
         }
-        msgBox.setDetailedText( QObject::tr( "Note: If you choose to migrate you won't be able to edit"
-                    " the file with an older FreeCAD version.\n"
-                    "If you refuse to migrate you won't be able to use new PartDesign features"
-                    " like Bodies and Parts. As a result you also won't be able to use your parts"
-                    " in the assembly workbench.\n"
-                    "Although you will be able to migrate any moment later with 'Part Design -> Migrate'." ) );
-        msgBox.setIcon( QMessageBox::Question );
-        QPushButton * yesBtn      = msgBox.addButton ( QMessageBox::Yes );
-        QPushButton * manuallyBtn = msgBox.addButton (
-                QObject::tr ( "Migrate Manually" ), QMessageBox::YesRole );
+        msgBox.setDetailedText(
+            QObject::tr(
+                "Note: If you choose to migrate you won't be able to edit"
+                " the file with an older FreeCAD version.\n"
+                "If you refuse to migrate you won't be able to use new PartDesign features"
+                " like Bodies and Parts. As a result you also won't be able to use your parts"
+                " in the assembly workbench.\n"
+                "Although you will be able to migrate any moment later with 'Part Design -> "
+                "Migrate'."
+            )
+        );
+        msgBox.setIcon(QMessageBox::Question);
+        QPushButton* yesBtn = msgBox.addButton(QMessageBox::Yes);
+        QPushButton* manuallyBtn
+            = msgBox.addButton(QObject::tr("Migrate Manually"), QMessageBox::YesRole);
 
-        // If it is already a document in the middle of the migration the user shouldn't refuse to migrate
-        if ( rv != Workflow::Undetermined ) {
-            msgBox.addButton ( QMessageBox::No  );
+        // If it is already a document in the middle of the migration the user shouldn't refuse to
+        // migrate
+        if (rv != Workflow::Undetermined) {
+            msgBox.addButton(QMessageBox::No);
         }
-        msgBox.setDefaultButton ( yesBtn );
+        msgBox.setDefaultButton(yesBtn);
         // TODO: Add some description of manual migration mode (2015-08-09, Fat-Zer)
 
         msgBox.exec();
 
-        if ( msgBox.clickedButton() == yesBtn ) {
+        if (msgBox.clickedButton() == yesBtn) {
             Gui::Application::Instance->commandManager().runCommandByName("PartDesign_Migrate");
             rv = Workflow::Modern;
-        } else if ( msgBox.clickedButton() == manuallyBtn ) {
+        }
+        else if (msgBox.clickedButton() == manuallyBtn) {
             rv = Workflow::Undetermined;
-        } else {
+        }
+        else {
             rv = Workflow::Legacy;
         }
     }
 
     // Actually set the result in our map
-    dwMap[ doc ] = rv;
+    dwMap[doc] = rv;
 
     return rv;
 }
 
-void WorkflowManager::forceWorkflow(const App::Document *doc, Workflow wf) {
-    dwMap[ doc ] = wf;
+void WorkflowManager::forceWorkflow(const App::Document* doc, Workflow wf)
+{
+    dwMap[doc] = wf;
 }
 
-Workflow WorkflowManager::guessWorkflow(const App::Document *doc) {
+Workflow WorkflowManager::guessWorkflow(const App::Document* doc)
+{
     // Retrieve bodies of the document
-    auto features = doc->getObjectsOfType( PartDesign::Feature::getClassTypeId() );
+    auto features = doc->getObjectsOfType(PartDesign::Feature::getClassTypeId());
 
-    if( features.empty() ) {
+    if (features.empty()) {
         // a new file should be done in the new workflow
         return Workflow::Modern;
-    } else {
-        auto bodies = doc->getObjectsOfType( PartDesign::Body::getClassTypeId() );
+    }
+    else {
+        auto bodies = doc->getObjectsOfType(PartDesign::Body::getClassTypeId());
         if (bodies.empty()) {
             // If there are no bodies workflow is legacy
             return Workflow::Legacy;
-        } else {
+        }
+        else {
             bool features_without_bodies = false;
 
-            for( auto feat: features ) {
-                if( !PartDesign::Body::findBodyOf( feat ) ) {
+            for (auto feat : features) {
+                if (!PartDesign::Body::findBodyOf(feat)) {
                     features_without_bodies = true;
                     break;
                 }
             }
-            // if there are features not belonging to any body it means that migration was incomplete, otherwise it's Modern
+            // if there are features not belonging to any body it means that migration was
+            // incomplete, otherwise it's Modern
             return features_without_bodies ? Workflow::Undetermined : Workflow::Modern;
         }
     }

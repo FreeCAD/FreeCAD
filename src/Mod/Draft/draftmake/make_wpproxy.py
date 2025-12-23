@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
 # *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
@@ -46,7 +48,7 @@ def make_workingplaneproxy(placement):
         specify the p.
     """
     if App.ActiveDocument:
-        obj = App.ActiveDocument.addObject("App::FeaturePython","WPProxy")
+        obj = App.ActiveDocument.addObject("App::FeaturePython", "WPProxy")
         WorkingPlaneProxy(obj)
         if App.GuiUp:
             ViewProviderWorkingPlaneProxy(obj.ViewObject)

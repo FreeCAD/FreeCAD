@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -146,11 +148,9 @@ public:
         myFormat = fmt;
     }
 
-    std::string
-    toString(const QuantityFormat& format = QuantityFormat(QuantityFormat::Default)) const;
+    std::string toString(const QuantityFormat& format = QuantityFormat(QuantityFormat::Default)) const;
 
-    std::string
-    toNumber(const QuantityFormat& format = QuantityFormat(QuantityFormat::Default)) const;
+    std::string toNumber(const QuantityFormat& format = QuantityFormat(QuantityFormat::Default)) const;
 
     std::string getUserString() const;
     /// transfer to user preferred unit/potence

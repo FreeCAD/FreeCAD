@@ -30,6 +30,7 @@ import FreeCAD
 import FreeCADGui
 import Arch_rc
 
+
 class BIMWorkbench(Workbench):
 
     def __init__(self):
@@ -38,11 +39,10 @@ class BIMWorkbench(Workbench):
             return text
 
         bdir = os.path.join(FreeCAD.getResourceDir(), "Mod", "BIM")
-        tt = QT_TRANSLATE_NOOP("BIM","The BIM workbench is used to model buildings")
+        tt = QT_TRANSLATE_NOOP("BIM", "The BIM workbench is used to model buildings")
         self.__class__.MenuText = QT_TRANSLATE_NOOP("BIM", "BIM")
-        self.__class__.ToolTip =  tt
-        self.__class__.Icon = os.path.join(bdir,"Resources", "icons",
-                                                "BIMWorkbench.svg")
+        self.__class__.ToolTip = tt
+        self.__class__.Icon = os.path.join(bdir, "Resources", "icons", "BIMWorkbench.svg")
 
     def Initialize(self):
 
@@ -59,9 +59,7 @@ class BIMWorkbench(Workbench):
         Log("Loading BIM module… done\n")
         FreeCADGui.updateLocale()
 
-
     def createTools(self):
-
         "Create tolbars and menus"
 
         def QT_TRANSLATE_NOOP(context, text):
@@ -77,30 +75,25 @@ class BIMWorkbench(Workbench):
             "BIM_Sketch",
             "Draft_Line",
             "Draft_Wire",
+            "Draft_Rectangle",
+            "BIM_ArcTools",
             "Draft_Circle",
-            "Draft_Arc",
-            "Draft_Arc_3Points",
-            "Draft_Fillet",
             "Draft_Ellipse",
             "Draft_Polygon",
-            "Draft_Rectangle",
-            "Draft_BSpline",
-            "Draft_BezCurve",
-            "Draft_CubicBezCurve",
+            "BIM_SplineTools",
             "Draft_Point",
+            "Draft_Fillet",
         ]
 
         self.annotationtools = [
-            "BIM_Text",
-            "Draft_ShapeString",
             "BIM_DimensionAligned",
             "BIM_DimensionHorizontal",
             "BIM_DimensionVertical",
+            "BIM_Text",
             "BIM_Leader",
             "Draft_Label",
             "Draft_Hatch",
-            "Arch_Axis",
-            "Arch_AxisSystem",
+            "BIM_AxisTools",
             "Arch_Grid",
             "Arch_SectionPlane",
             "BIM_TDPage",
@@ -108,13 +101,12 @@ class BIMWorkbench(Workbench):
         ]
 
         self.create_2dviews = [
-             "BIM_DrawingView",
-             "BIM_Shape2DView",
-             "BIM_Shape2DCut",
+            "BIM_DrawingView",
+            "BIM_Shape2DView",
+            "BIM_Shape2DCut",
         ]
 
         self.bimtools = [
-            "BIM_Project",
             "Arch_Site",
             "Arch_Building",
             "Arch_Level",
@@ -151,19 +143,19 @@ class BIMWorkbench(Workbench):
 
         self.modify_gen = [
             "Draft_Move",
-            "BIM_Copy",
             "Draft_Rotate",
+            "Draft_Scale",
+            "Draft_Mirror",
             "BIM_Clone",
+            "BIM_Copy",
             "BIM_SimpleCopy",
             "BIM_Compound",
         ]
         self.modify_2d = [
-            "Draft_Offset",
-            "BIM_Offset2D",
+            "BIM_OffsetTools",
             "Draft_Trimex",
             "Draft_Join",
             "Draft_Split",
-            "Draft_Scale",
             "Draft_Stretch",
             "Draft_Draft2Sketch",
         ]
@@ -174,33 +166,25 @@ class BIMWorkbench(Workbench):
             "Arch_Remove",
         ]
         self.modify_3d = [
-            "Draft_OrthoArray",
-            "Draft_PathArray",
-            "Draft_PolarArray",
-            "Draft_PointArray",
+            "BIM_ArrayTools",
             "Arch_CutPlane",
-            "Draft_Mirror",
             "BIM_Extrude",
-            "BIM_Cut",
-            "BIM_Fuse",
-            "BIM_Common",
+            "BIM_BooleanTools",
         ]
 
         sep = ["Separator"]
-        self.modify = self.modify_gen + sep + self.modify_2d + sep + self.modify_obj + sep + self.modify_3d
+        self.modify = (
+            self.modify_gen + sep + self.modify_2d + sep + self.modify_obj + sep + self.modify_3d
+        )
 
         self.manage = [
             "BIM_Setup",
-            "BIM_Views",
             "BIM_ProjectManager",
             "BIM_Windows",
-            "BIM_IfcElements",
-            "BIM_IfcQuantities",
-            "BIM_IfcProperties",
-            "BIM_Classification",
+            "BIM_IfcManageTools",
             "BIM_Layers",
             "BIM_Material",
-            "Arch_Schedule",
+            "BIM_ReportTools",
             "BIM_Preflight",
             "Draft_AnnotationStyleEditor",
         ]
@@ -233,6 +217,7 @@ class BIMWorkbench(Workbench):
             "BIM_Reextrude",
             "Arch_PanelTools",
             "Arch_StructureTools",
+            "BIM_Project",
         ]
 
         nudge = [
@@ -250,6 +235,7 @@ class BIMWorkbench(Workbench):
         # append BIM snaps
 
         from draftutils import init_tools
+
         self.snapbar = init_tools.get_draft_snap_commands()
         self.snapmenu = self.snapbar + [
             "BIM_SetWPFront",
@@ -258,34 +244,163 @@ class BIMWorkbench(Workbench):
             "Draft_SelectPlane",
         ]
 
+        # --- Grouped popup command classes ---
+        class BIM_ArcTools:
+            def GetCommands(self):
+                return ("Draft_Arc", "Draft_Arc_3Points")
+
+            def GetResources(self):
+                label = QT_TRANSLATE_NOOP("BIM_ArcTools", "Arc Tools")
+                tooltip = label
+                return {"MenuText": label, "ToolTip": tooltip, "Icon": "Draft_Arc"}
+
+            def IsActive(self):
+                return hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+
+        class BIM_SplineTools:
+            def GetCommands(self):
+                return ("Draft_BSpline", "Draft_BezCurve", "Draft_CubicBezCurve")
+
+            def GetResources(self):
+                label = QT_TRANSLATE_NOOP("BIM_SplineTools", "Spline Tools")
+                tooltip = label
+                return {"MenuText": label, "ToolTip": tooltip, "Icon": "Draft_BSpline"}
+
+            def IsActive(self):
+                return hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+
+        class BIM_AxisTools:
+            def GetCommands(self):
+                return ("Arch_Axis", "Arch_AxisSystem")
+
+            def GetResources(self):
+                label = QT_TRANSLATE_NOOP("BIM_AxisTools", "Axis Tools")
+                tooltip = label
+                return {"MenuText": label, "ToolTip": tooltip, "Icon": "Arch_Axis"}
+
+            def IsActive(self):
+                return hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+
+        class BIM_OffsetTools:
+            def GetCommands(self):
+                # default: 2D offset
+                return ("BIM_Offset2D", "Draft_Offset")
+
+            def GetResources(self):
+                label = QT_TRANSLATE_NOOP("BIM_OffsetTools", "Offset Tools")
+                tooltip = label
+                return {"MenuText": label, "ToolTip": tooltip, "Icon": "BIM_Offset2D"}
+
+            def IsActive(self):
+                return hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+
+        class BIM_ArrayTools:
+            def GetCommands(self):
+                # default: Draft_ArrayTools (the main Array UI)
+                return (
+                    "Draft_ArrayTools",
+                    "Draft_OrthoArray",
+                    "Draft_PathArray",
+                    "Draft_PolarArray",
+                    "Draft_PointArray",
+                )
+
+            def GetResources(self):
+                label = QT_TRANSLATE_NOOP("BIM_ArrayTools", "Array Tools")
+                tooltip = label
+                return {"MenuText": label, "ToolTip": tooltip, "Icon": "Draft_Array"}
+
+            def IsActive(self):
+                return hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+
+        class BIM_BooleanTools:
+            def GetCommands(self):
+                # default: union (BIM_Fuse)
+                return ("BIM_Fuse", "BIM_Cut", "BIM_Common")
+
+            def GetResources(self):
+                label = QT_TRANSLATE_NOOP("BIM_BooleanTools", "Boolean Tools")
+                tooltip = label
+                return {"MenuText": label, "ToolTip": tooltip, "Icon": "BIM_Fuse"}
+
+            def IsActive(self):
+                return hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+
+        class BIM_IfcManageTools:
+            def GetCommands(self):
+                return (
+                    "BIM_IfcElements",
+                    "BIM_IfcQuantities",
+                    "BIM_IfcProperties",
+                    "BIM_Classification",
+                )
+
+            def GetResources(self):
+                label = QT_TRANSLATE_NOOP("BIM_IfcManageTools", "IFC Management")
+                tooltip = label
+                return {"MenuText": label, "ToolTip": tooltip, "Icon": "BIM_IfcElements"}
+
+            def IsActive(self):
+                return True
+
+        class BIM_ReportTools:
+            def GetCommands(self):
+                return ("BIM_Report", "Arch_Schedule")
+
+            def GetResources(self):
+                label = QT_TRANSLATE_NOOP("BIM_ReportTools", "Report Tools")
+                tooltip = label
+                return {"MenuText": label, "ToolTip": tooltip, "Icon": "BIM_Report"}
+
+            def IsActive(self):
+                return hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+
         # create generic tools command
         class BIM_GenericTools:
             def __init__(self, tools):
                 self.tools = tools
+
             def GetCommands(self):
                 return self.tools
+
             def GetResources(self):
                 t = QT_TRANSLATE_NOOP("BIM_GenericTools", "Generic 3D Tools")
-                return { "MenuText": t, "ToolTip": t, "Icon": "BIM_Box"}
+                return {"MenuText": t, "ToolTip": t, "Icon": "BIM_Box"}
+
             def IsActive(self):
                 v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
                 return v
-        FreeCADGui.addCommand("BIM_GenericTools", BIM_GenericTools(self.generictools))
-        self.bimtools.append("BIM_GenericTools")
 
-        # create create 2D views command
+        # create 2D views command
         class BIM_Create2DViews:
             def __init__(self, tools):
                 self.tools = tools
+
             def GetCommands(self):
                 return self.tools
+
             def GetResources(self):
                 t = QT_TRANSLATE_NOOP("BIM_Create2DViews", "Create 2D Views")
-                return { "MenuText": t, "ToolTip": t, "Icon": "BIM_DrawingView"}
+                return {"MenuText": t, "ToolTip": t, "Icon": "BIM_DrawingView"}
+
             def IsActive(self):
                 v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
                 return v
+
+        # Register grouped commands
+        FreeCADGui.addCommand("BIM_ArcTools", BIM_ArcTools())
+        FreeCADGui.addCommand("BIM_SplineTools", BIM_SplineTools())
+        FreeCADGui.addCommand("BIM_AxisTools", BIM_AxisTools())
+        FreeCADGui.addCommand("BIM_OffsetTools", BIM_OffsetTools())
+        FreeCADGui.addCommand("BIM_ArrayTools", BIM_ArrayTools())
+        FreeCADGui.addCommand("BIM_BooleanTools", BIM_BooleanTools())
+        FreeCADGui.addCommand("BIM_IfcManageTools", BIM_IfcManageTools())
+        FreeCADGui.addCommand("BIM_ReportTools", BIM_ReportTools())
+        FreeCADGui.addCommand("BIM_GenericTools", BIM_GenericTools(self.generictools))
         FreeCADGui.addCommand("BIM_Create2DViews", BIM_Create2DViews(self.create_2dviews))
+
+        # Inject some of the grouped commands
+        self.bimtools.append("BIM_GenericTools")
         insert_at_index = self.annotationtools.index("BIM_TDPage")
         self.annotationtools.insert(insert_at_index, "BIM_Create2DViews")
 
@@ -303,12 +418,8 @@ class BIMWorkbench(Workbench):
 
                 def GetResources(self):
                     return {
-                        "MenuText": QT_TRANSLATE_NOOP(
-                            "Arch_RebarTools", "Reinforcement Tools"
-                        ),
-                        "ToolTip": QT_TRANSLATE_NOOP(
-                            "Arch_RebarTools", "Reinforcement tools"
-                        ),
+                        "MenuText": QT_TRANSLATE_NOOP("Arch_RebarTools", "Reinforcement Tools"),
+                        "ToolTip": QT_TRANSLATE_NOOP("Arch_RebarTools", "Reinforcement tools"),
                         "Icon": "Arch_Rebar",
                     }
 
@@ -322,17 +433,7 @@ class BIMWorkbench(Workbench):
             Log("Load Reinforcement Module… done\n")
             if hasattr(RebarTools, "updateLocale"):
                 RebarTools.updateLocale()
-            #self.rebar = RebarTools.RebarCommands + ["Arch_Rebar"]
-
-        # load Reporting
-
-        try:
-            import report
-        except ImportError:
-            pass
-        else:
-            if "Report_Create" in Gui.listCommands():
-                self.manage[self.manage.index("Arch_Schedule")] = "Report_Create"
+            # self.rebar = RebarTools.RebarCommands + ["Arch_Rebar"]
 
         # load webtools
 
@@ -401,9 +502,7 @@ class BIMWorkbench(Workbench):
             fasteners = None
         else:
             fasteners = [
-                c
-                for c in FastenerBase.FSGetCommands("screws")
-                if not isinstance(c, tuple)
+                c for c in FastenerBase.FSGetCommands("screws") if not isinstance(c, tuple)
             ]
 
         # load nativeifc tools
@@ -433,31 +532,31 @@ class BIMWorkbench(Workbench):
 
         # create menus
 
-        t1 =  QT_TRANSLATE_NOOP("Workbench", "&2D Drafting")
-        t2 =  QT_TRANSLATE_NOOP("Workbench", "&3D/BIM")
-        t3 =  QT_TRANSLATE_NOOP("Workbench", "Reinforcement Tools")
-        t4 =  QT_TRANSLATE_NOOP("Workbench", "&Annotation")
-        t5 =  QT_TRANSLATE_NOOP("Workbench", "&Snapping")
-        t6 =  QT_TRANSLATE_NOOP("Workbench", "&Modify")
-        t7 =  QT_TRANSLATE_NOOP("Workbench", "&Manage")
-        #t8 =  QT_TRANSLATE_NOOP("Workbench", "&IFC")
-        t9 =  QT_TRANSLATE_NOOP("Workbench", "&Flamingo")
+        t1 = QT_TRANSLATE_NOOP("Workbench", "&2D Drafting")
+        t2 = QT_TRANSLATE_NOOP("Workbench", "&3D/BIM")
+        t3 = QT_TRANSLATE_NOOP("Workbench", "Reinforcement Tools")
+        t4 = QT_TRANSLATE_NOOP("Workbench", "&Annotation")
+        t5 = QT_TRANSLATE_NOOP("Workbench", "&Snapping")
+        t6 = QT_TRANSLATE_NOOP("Workbench", "&Modify")
+        t7 = QT_TRANSLATE_NOOP("Workbench", "&Manage")
+        # t8 =  QT_TRANSLATE_NOOP("Workbench", "&IFC")
+        t9 = QT_TRANSLATE_NOOP("Workbench", "&Flamingo")
         t10 = QT_TRANSLATE_NOOP("Workbench", "&Fasteners")
         t11 = QT_TRANSLATE_NOOP("Workbench", "&Utils")
         t12 = QT_TRANSLATE_NOOP("Workbench", "Nudge")
 
-        #self.bimtools_menu = list(self.bimtools)
-        #if "Arch_RebarTools" in self.bimtools_menu:
+        # self.bimtools_menu = list(self.bimtools)
+        # if "Arch_RebarTools" in self.bimtools_menu:
         #    self.bimtools_menu.remove("Arch_RebarTools")
         self.appendMenu(t1, self.draftingtools)
         self.appendMenu(t2, self.bimtools)
-        #if self.rebar:
+        # if self.rebar:
         #    self.appendMenu([t2, t3], self.rebar)
         self.appendMenu(t4, self.annotationtools)
         self.appendMenu(t5, self.snapmenu)
         self.appendMenu(t6, self.modify)
         self.appendMenu(t7, self.manage)
-        #if ifctools:
+        # if ifctools:
         #    self.appendMenu(t8, ifctools)
         if flamingo:
             self.appendMenu(t9, flamingo)
@@ -467,7 +566,6 @@ class BIMWorkbench(Workbench):
         self.appendMenu([t11, t12], nudge)
 
     def loadPreferences(self):
-
         """Set up preferences pages"""
 
         def QT_TRANSLATE_NOOP(context, text):
@@ -482,6 +580,7 @@ class BIMWorkbench(Workbench):
             if hasattr(FreeCADGui.draftToolBar, "loadedPreferences"):
                 return
         from draftutils import params
+
         params._param_observer_start()
         FreeCADGui.addPreferencePage(":/ui/preferences-draft.ui", t2)
         FreeCADGui.addPreferencePage(":/ui/preferences-draftinterface.ui", t2)
@@ -494,9 +593,7 @@ class BIMWorkbench(Workbench):
 
         import BimSelect
 
-        if hasattr(FreeCADGui, "addDocumentObserver") and not hasattr(
-            self, "BimSelectObserver"
-        ):
+        if hasattr(FreeCADGui, "addDocumentObserver") and not hasattr(self, "BimSelectObserver"):
             self.BimSelectObserver = BimSelect.Setup()
             FreeCADGui.addDocumentObserver(self.BimSelectObserver)
 
@@ -572,6 +669,7 @@ class BIMWorkbench(Workbench):
                     {"insert": "BIM_Help", "menuItem": "Std_ReportBug", "after": ""},
                     {"insert": "BIM_Welcome", "menuItem": "Std_ReportBug", "after": ""},
                 ]
+
         reload = hasattr(Gui, "BIM_WBManipulator")  # BIM WB has previously been loaded.
         if not getattr(Gui, "BIM_WBManipulator", None):
             Gui.BIM_WBManipulator = BIM_WBManipulator()
@@ -621,6 +719,7 @@ class BIMWorkbench(Workbench):
         # Ifc stuff
         try:
             from nativeifc import ifc_status
+
             ifc_status.toggle_lock(False)
         except:
             pass
@@ -633,10 +732,10 @@ class BIMWorkbench(Workbench):
 
         Log("BIM workbench deactivated\n")
 
-
     def ContextMenu(self, recipient):
 
         import DraftTools
+
         translate = FreeCAD.Qt.translate
 
         if recipient == "Tree":
@@ -652,9 +751,9 @@ class BIMWorkbench(Workbench):
                     break
             for o in FreeCADGui.Selection.getSelection():
                 for parent in o.InList:
-                    if parent.isDerivedFrom(
-                        "App::DocumentObjectGroup"
-                    ) or parent.hasExtension("App::GroupExtension"):
+                    if parent.isDerivedFrom("App::DocumentObjectGroup") or parent.hasExtension(
+                        "App::GroupExtension"
+                    ):
                         if o in parent.Group:
                             ungroupable = True
                         else:
@@ -700,8 +799,11 @@ FreeCADGui.addWorkbench(BIMWorkbench)
 # Preference pages for importing and exporting various file formats
 # are independent of the loading of the workbench and can be loaded at startup
 
+
 def QT_TRANSLATE_NOOP(context, text):
     return text
+
+
 t = QT_TRANSLATE_NOOP("QObject", "Import-Export")
 FreeCADGui.addPreferencePage(":/ui/preferences-ifc.ui", t)
 FreeCADGui.addPreferencePage(":/ui/preferences-ifc-export.ui", t)

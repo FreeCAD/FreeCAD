@@ -38,8 +38,10 @@ class TaskFemConstraintRigidBody: public TaskFemConstraintOnBoundary
     Q_OBJECT
 
 public:
-    explicit TaskFemConstraintRigidBody(ViewProviderFemConstraintRigidBody* ConstraintView,
-                                        QWidget* parent = nullptr);
+    explicit TaskFemConstraintRigidBody(
+        ViewProviderFemConstraintRigidBody* ConstraintView,
+        QWidget* parent = nullptr
+    );
     ~TaskFemConstraintRigidBody() override;
 
     const std::string getReferences() const override;

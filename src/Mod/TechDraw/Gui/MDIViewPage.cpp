@@ -81,7 +81,8 @@ namespace sp = std::placeholders;
 TYPESYSTEM_SOURCE_ABSTRACT(TechDrawGui::MDIViewPage, Gui::MDIView)
 
 MDIViewPage::MDIViewPage(ViewProviderPage* pageVp, Gui::Document* doc, QWidget* parent)
-    : Gui::MDIView(doc, parent), m_vpPage(pageVp)
+    : Gui::MDIView(doc, parent), m_vpPage(pageVp),
+      m_previewState(false)
 {
     setMouseTracking(true);
 
@@ -330,12 +331,12 @@ void MDIViewPage::print()
 
     QPrinter printer(QPrinter::HighResolution);
     printer.setFullPage(true);
-    if (pageAttr.pageSize() == QPageSize::Custom) {
+    if (pageAttr.pageSizeId() == QPageSize::Custom) {
         printer.setPageSize(
             QPageSize(QSizeF(pageAttr.pageWidth(), pageAttr.pageHeight()), QPageSize::Millimeter));
     }
     else {
-        printer.setPageSize(QPageSize(pageAttr.pageSize()));
+        printer.setPageSize(QPageSize(pageAttr.pageSizeId()));
     }
     printer.setPageOrientation(pageAttr.orientation());
 
@@ -351,18 +352,20 @@ void MDIViewPage::printPreview()
 
     QPrinter printer(QPrinter::HighResolution);
     printer.setFullPage(true);
-    if (pageAttr.pageSize() == QPageSize::Custom) {
+    if (pageAttr.pageSizeId() == QPageSize::Custom) {
         printer.setPageSize(
             QPageSize(QSizeF(pageAttr.pageWidth(), pageAttr.pageHeight()), QPageSize::Millimeter));
     }
     else {
-        printer.setPageSize(QPageSize(pageAttr.pageSize()));
+        printer.setPageSize(QPageSize(pageAttr.pageSizeId()));
     }
     printer.setPageOrientation(pageAttr.orientation());
 
     QPrintPreviewDialog dlg(&printer, this);
     connect(&dlg, &QPrintPreviewDialog::paintRequested, this, qOverload<QPrinter*>(&MDIViewPage::print));
+    m_previewState = true;
     dlg.exec();
+    m_previewState = false;
 }
 
 
@@ -399,7 +402,7 @@ void MDIViewPage::print(QPrinter* printer)
                 return;
             }
         }
-        if (doPrint && psPrtSetting != pageAttr.pageSize()) {
+        if (doPrint && psPrtSetting != pageAttr.pageSizeId()) {
             int ret = QMessageBox::warning(
                 this, tr("Different paper size"),
                 tr("The printer uses a different paper size than the drawing.\n"
@@ -411,7 +414,7 @@ void MDIViewPage::print(QPrinter* printer)
         }
     }
 
-    PagePrinter::print(getViewProviderPage(), printer);
+    PagePrinter::print(getViewProviderPage(), printer, m_previewState);
 }
 
 // static routine to print all pages in a document.  Used by PrintAll command in Command.cpp

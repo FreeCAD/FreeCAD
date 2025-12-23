@@ -31,8 +31,10 @@ AttacherSubObjectPlacement::AttacherSubObjectPlacement()
     attacher->setUp({}, Attacher::mmMidpoint);
 }
 
-Base::Placement AttacherSubObjectPlacement::calculate(App::SubObjectT object,
-                                                         Base::Placement basePlacement) const
+Base::Placement AttacherSubObjectPlacement::calculate(
+    App::SubObjectT object,
+    Base::Placement basePlacement
+) const
 {
     attacher->setReferences({object});
 
@@ -43,15 +45,20 @@ Base::Placement AttacherSubObjectPlacement::calculate(App::SubObjectT object,
 
 std::optional<Base::Vector3d> PartCenterOfMass::ofDocumentObject(App::DocumentObject* object) const
 {
-    if (const auto feature = dynamic_cast<Part::Feature*>(object)) {
+    if (const auto* feature = freecad_cast<Part::Feature*>(object)) {
         const auto shape = feature->Shape.getShape();
 
         if (const auto cog = shape.centerOfGravity()) {
-            const Base::Placement comPlacement { *cog, Base::Rotation { } };
+            const Base::Placement comPlacement {*cog, Base::Rotation {}};
 
             return (feature->Placement.getValue().inverse() * comPlacement).getPosition();
         }
     }
 
     return {};
+}
+
+bool PartCenterOfMass::supports(App::DocumentObject* object) const
+{
+    return object->isDerivedFrom<Part::Feature>();
 }

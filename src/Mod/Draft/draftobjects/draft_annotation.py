@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2020 Carlo Pavan <carlopav@gmail.com>                   *
 # *   Copyright (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
@@ -92,9 +94,7 @@ class DraftAnnotation(object):
             typ = obj.Proxy.Type
             if typ == "Label":
                 vobj.ArrowTypeStart = vobj.ArrowType
-            elif typ == "AngularDimension" \
-                    or obj.Diameter \
-                    or not vobj.Proxy.is_linked_to_circle():
+            elif typ == "AngularDimension" or obj.Diameter or not vobj.Proxy.is_linked_to_circle():
                 vobj.ArrowTypeStart = vobj.ArrowType
                 vobj.ArrowTypeEnd = vobj.ArrowType
             else:  # Radial dimension
@@ -115,7 +115,7 @@ class DraftAnnotation(object):
 
         return
 
-    def loads(self,state):
+    def loads(self, state):
 
         return
 

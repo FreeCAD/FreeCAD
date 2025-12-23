@@ -18,8 +18,12 @@ MACRO (fc_copy_sources target_name outpath)
 	foreach(it ${ARGN})
 		get_filename_component(infile ${it} ABSOLUTE)
 		get_filename_component(outfile "${outpath}/${it}" ABSOLUTE)
+		# Ensure parent directory exists when copying or creating symlinks
+		get_filename_component(outfile_dir "${outfile}" PATH)
 		add_file_dependencies("${infile}" "${outfile}")
 		ADD_CUSTOM_COMMAND(
+			# Make sure destination directory exists before copy/symlink
+			COMMAND   "${CMAKE_COMMAND}" -E make_directory "${outfile_dir}"
 			COMMAND   "${CMAKE_COMMAND}" -E ${copy_command} "${infile}" "${outfile}"
 			OUTPUT   "${outfile}"
 			COMMENT "Copying ${infile} to ${outfile}${fc_details}"
@@ -323,3 +327,4 @@ function(target_compile_warn_error ProjectName)
         target_compile_options(${ProjectName} PRIVATE -Werror)
     endif()
 endfunction()
+

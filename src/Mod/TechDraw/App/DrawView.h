@@ -127,6 +127,8 @@ public:
 
     static bool isProjGroupItem(DrawViewPart* item);
 
+    virtual bool snapsToPosition() const { return true; }
+
 protected:
     void onBeforeChange(const App::Property *prop) override;
     void onChanged(const App::Property* prop) override;

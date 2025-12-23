@@ -30,6 +30,7 @@
 
 #include <Base/Console.h>
 #include <Base/Matrix.h>
+#include <Base/Placement.h>
 #include <Base/Tools.h>
 #include <Base/Writer.h>
 
@@ -824,12 +825,11 @@ DocumentObject::onProposedLabelChange(std::string& newLabel)
     }
     if (doc && !newLabel.empty() && !_hPGrp->GetBool("DuplicateLabels") && !allowDuplicateLabel()
         && doc->containsLabel(newLabel)) {
-        // We must ensure the Label is unique in the document (well, sort of...).
+        // The label already exists but settings are such that duplicate labels should not be assigned.
         std::string objName = getNameInDocument();
-        if (doc->haveSameBaseName(objName, newLabel)) {
-            // The base name of the proposed label equals the base name of the object Name, so we
-            // use the object Name, which could actually be identical to another object's Label, but
-            // probably isn't.
+        if (!doc->containsLabel(objName) && doc->haveSameBaseName(objName, newLabel)) {
+            // The object name is not already a Label and the base name of the proposed label
+            // equals the base name of the object Name, so we use the object Name as the replacement Label.
             newLabel = objName;
         }
         else {
@@ -1616,3 +1616,54 @@ void DocumentObject::onPropertyStatusChanged(const Property& prop, unsigned long
         getDocument()->signalChangePropertyEditor(*getDocument(), prop);
     }
 }
+
+Base::Placement DocumentObject::getPlacementOf(const std::string& sub, DocumentObject* targetObj)
+{
+    Base::Placement plc;
+    auto* propPlacement = freecad_cast<App::PropertyPlacement*>(getPropertyByName("Placement"));
+    if (propPlacement) {
+        // If the object has no placement (like a Group), plc stays identity so we can proceed.
+        plc = propPlacement->getValue();
+    }
+
+    std::vector<std::string> names = Base::Tools::splitSubName(sub);
+
+    if (names.empty() || this == targetObj) {
+        return plc;
+    }
+
+    DocumentObject* subObj = getDocument()->getObject(names.front().c_str());
+
+    if (!subObj) {
+        return plc;
+    }
+
+    std::vector<std::string> newNames(names.begin() + 1, names.end());
+    std::string newSub = Base::Tools::joinList(newNames, ".");
+
+    return plc * subObj->getPlacementOf(newSub, targetObj);
+}
+
+Base::Placement DocumentObject::getPlacement() const
+{
+    Base::Placement plc;
+    if (auto* prop = getPlacementProperty()) {
+        plc = prop->getValue();
+    }
+    return plc;
+}
+
+App::PropertyPlacement* DocumentObject::getPlacementProperty() const
+{
+    if (auto linkExtension = getExtensionByType<App::LinkBaseExtension>(true)) {
+        if (auto linkPlacementProp = linkExtension->getLinkPlacementProperty()) {
+            return linkPlacementProp;
+        }
+
+        return linkExtension->getPlacementProperty();
+    }
+
+    return getPropertyByName<App::PropertyPlacement>("Placement");
+}
+
+

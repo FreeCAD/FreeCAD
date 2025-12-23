@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2016 sliptonic <shopinthewoods@gmail.com>               *
 # *   Copyright (c) 2022 Larry Woestman <LarryWoestman2@gmail.com>          *
@@ -469,14 +470,14 @@ class TestPostProcessorFactory(unittest.TestCase):
 
     def test030(self):
         # test wrapping of old school postprocessor scripts
-        post = PostProcessorFactory.get_post_processor(self.job, "linuxcnc")
+        post = PostProcessorFactory.get_post_processor(self.job, "linuxcnc_legacy")
         self.assertTrue(post is not None)
         self.assertTrue(hasattr(post, "_buildPostList"))
 
     def test040(self):
         """Test that the __name__ of the postprocessor is correct."""
-        post = PostProcessorFactory.get_post_processor(self.job, "linuxcnc")
-        self.assertEqual(post.script_module.__name__, "linuxcnc_post")
+        post = PostProcessorFactory.get_post_processor(self.job, "linuxcnc_legacy")
+        self.assertEqual(post.script_module.__name__, "linuxcnc_legacy_post")
 
 
 class TestPathPostUtils(unittest.TestCase):

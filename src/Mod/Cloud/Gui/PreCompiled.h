@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2019 Jean-Marie Verdun        jmverdun3@gmail.com       *
  *                                                                         *
@@ -43,7 +44,7 @@
 #include <vector>
 
 #ifdef FC_OS_WIN32
-#include <windows.h>
+# include <windows.h>
 #endif
 
 // Qt Toolkit

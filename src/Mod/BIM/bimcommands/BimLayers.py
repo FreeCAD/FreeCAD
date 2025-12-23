@@ -34,7 +34,6 @@ PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
 
 def getColorIcon(color):
-
     "returns a QtGui.QIcon from a color 3-float tuple"
 
     from PySide import QtGui
@@ -47,7 +46,6 @@ def getColorIcon(color):
 
 
 class BIM_Layers:
-
     "The BIM_Layers FreeCAD command"
 
     def GetResources(self):
@@ -70,9 +68,9 @@ class BIM_Layers:
         if getattr(self, "dialog", None):
             self.dialog.raise_()
             return
-            
+
         from PySide import QtGui
-        
+
         # store changes to be committed
         self.deleteList = []
 
@@ -105,9 +103,7 @@ class BIM_Layers:
         # center the dialog over FreeCAD window
         mw = FreeCADGui.getMainWindow()
         self.dialog.move(
-            mw.frameGeometry().topLeft()
-            + mw.rect().center()
-            - self.dialog.rect().center()
+            mw.frameGeometry().topLeft() + mw.rect().center() - self.dialog.rect().center()
         )
 
         # connect signals/slots
@@ -176,15 +172,15 @@ class BIM_Layers:
                     obj = Draft.make_layer(self.model.item(row, 1).text())
                     # By default BIM layers should not swallow their children otherwise
                     # they will disappear from the tree root
-                    obj.ViewObject.addProperty("App::PropertyBool", "HideChildren", "Layer", locked=True)
+                    obj.ViewObject.addProperty(
+                        "App::PropertyBool", "HideChildren", "Layer", locked=True
+                    )
                     obj.ViewObject.HideChildren = True
                 else:
                     from nativeifc import ifc_tools
                     import FreeCADGui
 
-                    active = FreeCADGui.ActiveDocument.ActiveView.getActiveObject(
-                        "NativeIFC"
-                    )
+                    active = FreeCADGui.ActiveDocument.ActiveView.getActiveObject("NativeIFC")
                     project = None
                     if active:
                         project = ifc_tools.get_project(active)
@@ -208,15 +204,10 @@ class BIM_Layers:
                                 )
                         else:
                             FreeCAD.Console.PrintError(
-                                translate(
-                                    "BIM", "There is no IFC project in this document"
-                                )
-                                + "\n"
+                                translate("BIM", "There is no IFC project in this document") + "\n"
                             )
                     if project:
-                        obj = ifc_tools.create_layer(
-                            self.model.item(row, 1).text(), project
-                        )
+                        obj = ifc_tools.create_layer(self.model.item(row, 1).text(), project)
             vobj = obj.ViewObject
 
             # visibility
@@ -331,11 +322,7 @@ class BIM_Layers:
         self.dialog.tree.setColumnWidth(1, 128)  # name column
 
         # populate
-        objs = [
-            obj
-            for obj in FreeCAD.ActiveDocument.Objects
-            if Draft.getType(obj) == "Layer"
-        ]
+        objs = [obj for obj in FreeCAD.ActiveDocument.Objects if Draft.getType(obj) == "Layer"]
         objs.sort(key=lambda o: o.Label)
         for obj in objs:
             self.addItem(obj)
@@ -356,19 +343,13 @@ class BIM_Layers:
         )
         styleItem = QtGui.QStandardItem("Solid")
         lineColorItem = QtGui.QStandardItem()
-        lineColorItem.setData(
-            self.getPref("DefaultShapeLineColor", 421075455), QtCore.Qt.UserRole
-        )
+        lineColorItem.setData(self.getPref("DefaultShapeLineColor", 421075455), QtCore.Qt.UserRole)
         shapeColorItem = QtGui.QStandardItem()
-        shapeColorItem.setData(
-            self.getPref("DefaultShapeColor", 3435973887), QtCore.Qt.UserRole
-        )
+        shapeColorItem.setData(self.getPref("DefaultShapeColor", 3435973887), QtCore.Qt.UserRole)
         transparencyItem = QtGui.QStandardItem()
         transparencyItem.setData(0, QtCore.Qt.DisplayRole)
         linePrintColorItem = QtGui.QStandardItem()
-        linePrintColorItem.setData(
-            self.getPref("DefaultPrintColor", 0), QtCore.Qt.UserRole
-        )
+        linePrintColorItem.setData(self.getPref("DefaultPrintColor", 0), QtCore.Qt.UserRole)
         if FreeCADGui.ActiveDocument.ActiveView.getActiveObject("NativeIFC"):
             nameItem.setIcon(self.ifcicon)
 
@@ -387,14 +368,10 @@ class BIM_Layers:
             shapeColorItem.setData(obj.ViewObject.ShapeColor[:3], QtCore.Qt.UserRole)
             transparencyItem.setData(obj.ViewObject.Transparency, QtCore.Qt.DisplayRole)
             if hasattr(obj.ViewObject, "LinePrintColor"):
-                linePrintColorItem.setData(
-                    obj.ViewObject.LinePrintColor[:3], QtCore.Qt.UserRole
-                )
+                linePrintColorItem.setData(obj.ViewObject.LinePrintColor[:3], QtCore.Qt.UserRole)
         lineColorItem.setIcon(getColorIcon(lineColorItem.data(QtCore.Qt.UserRole)))
         shapeColorItem.setIcon(getColorIcon(shapeColorItem.data(QtCore.Qt.UserRole)))
-        linePrintColorItem.setIcon(
-            getColorIcon(linePrintColorItem.data(QtCore.Qt.UserRole))
-        )
+        linePrintColorItem.setIcon(getColorIcon(linePrintColorItem.data(QtCore.Qt.UserRole)))
 
         # append row
         self.model.appendRow(
@@ -458,10 +435,7 @@ class BIM_Layers:
             if index.column() == 0:
                 # get state from first selected row
                 if state is None:
-                    if (
-                        self.model.itemFromIndex(index).checkState()
-                        == QtCore.Qt.Checked
-                    ):
+                    if self.model.itemFromIndex(index).checkState() == QtCore.Qt.Checked:
                         state = QtCore.Qt.Unchecked
                     else:
                         state = QtCore.Qt.Checked
@@ -561,9 +535,7 @@ if FreeCAD.GuiUp:
             elif index.column() == 2:  # Line width
                 editor.setValue(index.data())
             elif index.column() == 3:  # Line style
-                editor.setCurrentIndex(
-                    ["Solid", "Dashed", "Dotted", "Dashdot"].index(index.data())
-                )
+                editor.setCurrentIndex(["Solid", "Dashed", "Dotted", "Dashdot"].index(index.data()))
             elif index.column() == 4:  # Line color
                 editor.setText(str(index.data(QtCore.Qt.UserRole)))
                 if self.first:

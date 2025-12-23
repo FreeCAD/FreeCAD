@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -28,28 +29,33 @@
 #include "TaskView.h"
 
 
-namespace App {
+namespace App
+{
 class Property;
 }
 
-namespace Gui {
+namespace Gui
+{
 class ViewProvider;
 
-namespace TaskView {
+namespace TaskView
+{
 
 using TaskAppearance_Connection = boost::signals2::connection;
 class Ui_TaskAppearance;
 
-class TaskAppearance : public TaskBox, public Gui::SelectionSingleton::ObserverType
+class TaskAppearance: public TaskBox, public Gui::SelectionSingleton::ObserverType
 {
     Q_OBJECT
 
 public:
-    explicit TaskAppearance(QWidget *parent = nullptr);
+    explicit TaskAppearance(QWidget* parent = nullptr);
     ~TaskAppearance() override;
     /// Observer message from the Selection
-    void OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
-                  Gui::SelectionSingleton::MessageType Reason) override;
+    void OnChange(
+        Gui::SelectionSingleton::SubjectType& rCaller,
+        Gui::SelectionSingleton::MessageType Reason
+    ) override;
 
 private Q_SLOTS:
     void setupConnections();
@@ -60,7 +66,7 @@ private Q_SLOTS:
     void onLineWidthValueChanged(int);
 
 protected:
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
 
 private:
     void slotChangedObject(const Gui::ViewProvider&, const App::Property& Prop);
@@ -76,7 +82,7 @@ private:
     TaskAppearance_Connection connectChangedObject;
 };
 
-} //namespace TaskView
-} //namespace Gui
+}  // namespace TaskView
+}  // namespace Gui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

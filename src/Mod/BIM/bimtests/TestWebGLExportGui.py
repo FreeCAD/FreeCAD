@@ -59,9 +59,7 @@ class TestWebGLExportGui(TestArchBase):
         super().tearDown()
 
     @patch("BIM.importers.importWebGL.FreeCADGui")
-    def test_custom_template_not_found_gui_user_accepts_fallback(
-        self, mock_gui
-    ):
+    def test_custom_template_not_found_gui_user_accepts_fallback(self, mock_gui):
         """Test GUI dialog when custom template not found -
         user accepts fallback"""
         operation = "Testing GUI custom template not found - user accepts fallback"
@@ -70,9 +68,7 @@ class TestWebGLExportGui(TestArchBase):
 
         mock_gui.getMainWindow.return_value = MagicMock()
 
-        with patch(
-            "BIM.importers.importWebGL.params.get_param"
-        ) as mock_params:
+        with patch("BIM.importers.importWebGL.params.get_param") as mock_params:
             mock_params.side_effect = lambda param, path=None: {
                 "useCustomWebGLExportTemplate": True,
                 "WebGLTemplateCustomPath": "/nonexistent/template.html",
@@ -91,9 +87,7 @@ class TestWebGLExportGui(TestArchBase):
                         self.assertIsNotNone(result)
 
     @patch("BIM.importers.importWebGL.FreeCADGui")
-    def test_custom_template_not_found_gui_user_rejects_fallback(
-        self, mock_gui
-    ):
+    def test_custom_template_not_found_gui_user_rejects_fallback(self, mock_gui):
         """Test GUI dialog when custom template not found -
         user rejects fallback"""
         operation = "Testing GUI custom template not found - user rejects fallback"
@@ -102,9 +96,7 @@ class TestWebGLExportGui(TestArchBase):
 
         mock_gui.getMainWindow.return_value = MagicMock()
 
-        with patch(
-            "BIM.importers.importWebGL.params.get_param"
-        ) as mock_params:
+        with patch("BIM.importers.importWebGL.params.get_param") as mock_params:
             mock_params.side_effect = lambda param, path=None: {
                 "useCustomWebGLExportTemplate": True,
                 "WebGLTemplateCustomPath": "/nonexistent/template.html",
@@ -122,18 +114,14 @@ class TestWebGLExportGui(TestArchBase):
         no template is available"""
         operation = "Testing export returns False when no template available"
         self.printTestMessage(operation)
-        with patch(
-            "BIM.importers.importWebGL.getHTMLTemplate", return_value=None
-        ):
+        with patch("BIM.importers.importWebGL.getHTMLTemplate", return_value=None):
             with patch("BIM.importers.importWebGL.FreeCADGui") as mock_gui:
                 # Mock the GUI components that might be accessed
                 mock_active_doc = MagicMock()
                 mock_active_doc.ActiveView = MagicMock()
                 mock_gui.ActiveDocument = mock_active_doc
 
-                result = importWebGL.export(
-                    [], os.path.join(self.test_dir, "test.html")
-                )
+                result = importWebGL.export([], os.path.join(self.test_dir, "test.html"))
                 self.assertFalse(result)
 
     def test_export_returns_true_when_template_available(self):
@@ -148,9 +136,7 @@ class TestWebGLExportGui(TestArchBase):
             "BIM.importers.importWebGL.getHTMLTemplate",
             return_value=mock_template,
         ):
-            with patch(
-                "BIM.importers.importWebGL.FreeCAD.ActiveDocument"
-            ) as mock_doc:
+            with patch("BIM.importers.importWebGL.FreeCAD.ActiveDocument") as mock_doc:
                 mock_doc.Label = "Test Document"
                 with patch("BIM.importers.importWebGL.FreeCADGui") as mock_gui:
                     # Mock the GUI components that might be accessed
@@ -159,16 +145,12 @@ class TestWebGLExportGui(TestArchBase):
                     mock_gui.ActiveDocument = mock_active_doc
 
                     # Mock the functions that populate data to return JSON-serializable values
-                    with patch(
-                        "BIM.importers.importWebGL.populate_camera"
-                    ) as mock_populate_camera:
+                    with patch("BIM.importers.importWebGL.populate_camera") as mock_populate_camera:
                         with patch(
                             "BIM.importers.importWebGL.Draft.get_group_contents",
                             return_value=[],
                         ):
-                            mock_populate_camera.return_value = (
-                                None  # Modifies data dict in place
-                            )
+                            mock_populate_camera.return_value = None  # Modifies data dict in place
 
                             result = importWebGL.export(
                                 [], os.path.join(self.test_dir, "test.html")

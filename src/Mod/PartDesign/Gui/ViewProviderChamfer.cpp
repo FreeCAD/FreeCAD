@@ -21,16 +21,16 @@
  ***************************************************************************/
 
 
-
 #include "TaskChamferParameters.h"
 #include "ViewProviderChamfer.h"
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderChamfer,PartDesignGui::ViewProviderDressUp)
+PROPERTY_SOURCE(PartDesignGui::ViewProviderChamfer, PartDesignGui::ViewProviderDressUp)
 
 
-const std::string & ViewProviderChamfer::featureName() const {
+const std::string& ViewProviderChamfer::featureName() const
+{
     static const std::string name = "Chamfer";
     return name;
 }
@@ -41,6 +41,7 @@ void ViewProviderChamfer::setupContextMenu(QMenu* menu, QObject* receiver, const
     PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
 }
 
-TaskDlgFeatureParameters *ViewProviderChamfer::getEditDialog() {
-    return new TaskDlgChamferParameters (this);
+TaskDlgFeatureParameters* ViewProviderChamfer::getEditDialog()
+{
+    return new TaskDlgChamferParameters(this);
 }

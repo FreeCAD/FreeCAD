@@ -25,6 +25,7 @@
 import Arch
 from bimtests import TestArchBase
 
+
 class TestArchMaterial(TestArchBase.TestArchBase):
 
     def test_makeMaterial(self):
@@ -42,8 +43,12 @@ class TestArchMaterial(TestArchBase.TestArchBase):
         self.printTestMessage(operation)
 
         multi_material = Arch.makeMultiMaterial(name="TestMultiMaterial")
-        self.assertIsNotNone(multi_material, "makeMultiMaterial failed to create a multi-material object.")
-        self.assertEqual(multi_material.Label, "TestMultiMaterial", "Multi-material label is incorrect.")
+        self.assertIsNotNone(
+            multi_material, "makeMultiMaterial failed to create a multi-material object."
+        )
+        self.assertEqual(
+            multi_material.Label, "TestMultiMaterial", "Multi-material label is incorrect."
+        )
 
     def test_getMaterialContainer(self):
         """Test the getMaterialContainer function."""
@@ -51,7 +56,9 @@ class TestArchMaterial(TestArchBase.TestArchBase):
         self.printTestMessage(operation)
 
         container = Arch.getMaterialContainer()
-        self.assertIsNotNone(container, "getMaterialContainer failed to retrieve or create a material container.")
+        self.assertIsNotNone(
+            container, "getMaterialContainer failed to retrieve or create a material container."
+        )
         self.assertEqual(container.Label, "Materials", "Material container label is incorrect.")
 
     def test_getDocumentMaterials(self):

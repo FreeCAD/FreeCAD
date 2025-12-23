@@ -1,7 +1,11 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 from typing import Any, Final
 
 from Base.BaseClass import BaseClass
 from Base.Metadata import constmethod, export
+
+from Base.Vector import Vector
 
 @export(
     Include="Mod/CAM/App/Voronoi.h",
@@ -32,12 +36,12 @@ class Voronoi(BaseClass):
         """Return number of vertices"""
         ...
 
-    def addPoint(self) -> Any:
-        """addPoint(vector|vector2d) add given point to input collection"""
+    def addPoint(self, point: Vector, /) -> None:
+        """add given point to input collection"""
         ...
 
-    def addSegment(self) -> Any:
-        """addSegment(vector|vector2d, vector|vector2d) add given segment to input collection"""
+    def addSegment(self, point1: Vector, point2: Vector, /) -> Any:
+        """add given segment to input collection"""
         ...
 
     def construct(self) -> Any:

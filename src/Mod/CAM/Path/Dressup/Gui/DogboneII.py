@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2022 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -26,6 +27,7 @@ import FreeCAD
 import FreeCADGui
 import Path
 import Path.Dressup.DogboneII as DogboneII
+import Path.Dressup.Utils as PathDressup
 import PathScripts.PathUtils as PathUtils
 
 if False:
@@ -299,6 +301,12 @@ class ViewProviderDressup(object):
                 job.Proxy.addOperation(arg1.Object.Base, arg1.Object)
             arg1.Object.Base = None
         return True
+
+    def getIcon(self):
+        if getattr(PathDressup.baseOp(self.obj), "Active", True):
+            return ":/icons/CAM_Dressup.svg"
+        else:
+            return ":/icons/CAM_OpActive.svg"
 
 
 def Create(base, name="DressupDogbone"):

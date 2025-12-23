@@ -1,4 +1,5 @@
-// SPDX - License - Identifier: LGPL - 2.1 - or -later
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /****************************************************************************
  *                                                                          *
  *   Copyright (c) 2025 Pierre-Louis Boyer                                  *
@@ -43,7 +44,7 @@ public:
 private:
     void onLabelStatusLinkClicked(const QString&) override;
 
-    void updateToolTip(const QString& link);
+    void updateToolTip(const QString& link) override;
 
 protected:
     ViewProviderAssembly* vp;

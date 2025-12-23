@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 #----------------------------- Control certificate validation ------------
 option(ALLOW_SELF_SIGNED_CERTIFICATE "Allow self signed certificate" OFF)
 if (ALLOW_SELF_SIGNED_CERTIFICATE)

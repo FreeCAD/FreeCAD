@@ -45,6 +45,7 @@
 
 
 #include "AssemblyObject.h"
+#include "AssemblyLink.h"
 #include "BomObject.h"
 #include "BomObjectPy.h"
 
@@ -58,30 +59,37 @@ PROPERTY_SOURCE(Assembly::BomObject, Spreadsheet::Sheet)
 BomObject::BomObject()
     : Spreadsheet::Sheet()
 {
-    ADD_PROPERTY_TYPE(columnsNames,
-                      ("Index"),
-                      "Bom",
-                      (App::PropertyType)(App::Prop_None),
-                      "List of the columns of the Bill of Materials.");
+    ADD_PROPERTY_TYPE(
+        columnsNames,
+        ("Index"),
+        "Bom",
+        (App::PropertyType)(App::Prop_None),
+        "List of the columns of the Bill of Materials."
+    );
 
-    ADD_PROPERTY_TYPE(detailSubAssemblies,
-                      (true),
-                      "Bom",
-                      (App::PropertyType)(App::Prop_None),
-                      "Detail sub-assemblies components.");
+    ADD_PROPERTY_TYPE(
+        detailSubAssemblies,
+        (true),
+        "Bom",
+        (App::PropertyType)(App::Prop_None),
+        "Detail sub-assemblies components."
+    );
 
-    ADD_PROPERTY_TYPE(detailParts,
-                      (true),
-                      "Bom",
-                      (App::PropertyType)(App::Prop_None),
-                      "Detail Parts sub-components.");
+    ADD_PROPERTY_TYPE(
+        detailParts,
+        (true),
+        "Bom",
+        (App::PropertyType)(App::Prop_None),
+        "Detail Parts sub-components."
+    );
 
     ADD_PROPERTY_TYPE(
         onlyParts,
         (false),
         "Bom",
         (App::PropertyType)(App::Prop_None),
-        "Only Part containers will be added. Solids like PartDesign Bodies will be ignored.");
+        "Only Part containers will be added. Solids like PartDesign Bodies will be ignored."
+    );
 }
 BomObject::~BomObject() = default;
 
@@ -157,9 +165,11 @@ void BomObject::generateBOM()
     }
 }
 
-void BomObject::addObjectChildrenToBom(std::vector<App::DocumentObject*> objs,
-                                       size_t& row,
-                                       std::string index)
+void BomObject::addObjectChildrenToBom(
+    std::vector<App::DocumentObject*> objs,
+    size_t& row,
+    std::string index
+)
 {
     int quantityColIndex = getColumnIndex("Quantity");
     bool hasQuantityCol = hasQuantityColumn();
@@ -176,7 +186,13 @@ void BomObject::addObjectChildrenToBom(std::vector<App::DocumentObject*> objs,
         if (!child) {
             continue;
         }
-        if (child->isDerivedFrom<App::Link>()) {
+        if (auto* asmLink = freecad_cast<AssemblyLink*>(child)) {
+            child = asmLink->getLinkedAssembly();
+            if (!child) {
+                continue;
+            }
+        }
+        else if (child->isDerivedFrom<App::Link>()) {
             child = static_cast<App::Link*>(child)->getLinkedObject();
             if (!child) {
                 continue;
@@ -215,7 +231,8 @@ void BomObject::addObjectChildrenToBom(std::vector<App::DocumentObject*> objs,
         ++row;
 
         if ((child->isDerivedFrom<AssemblyObject>() && detailSubAssemblies.getValue())
-            || (child->isDerivedFrom<App::Part>() && detailParts.getValue())) {
+            || (!child->isDerivedFrom<AssemblyObject>() && child->isDerivedFrom<App::Part>()
+                && detailParts.getValue())) {
             addObjectChildrenToBom(child->getOutList(), row, sub_index);
         }
     }

@@ -79,11 +79,11 @@ class BIM_Box:
             # we have the base point already
             self.Length.setText(
                 FreeCAD.Units.Quantity(
-                    self.points[-1].sub(point).Length,  FreeCAD.Units.Length
+                    self.points[-1].sub(point).Length, FreeCAD.Units.Length
                 ).UserString
             )
             self.Length.setFocus()
-            self.Length.setSelection(0,FreeCADGui.draftToolBar.number_length(self.Length.text()))
+            self.Length.setSelection(0, FreeCADGui.draftToolBar.number_length(self.Length.text()))
         elif len(self.points) == 2:
             # now we already have our base line, we update the 1st rectangle
             p = point
@@ -101,7 +101,7 @@ class BIM_Box:
                 ).UserString
             )
             self.Width.setFocus()
-            self.Width.setSelection(0,FreeCADGui.draftToolBar.number_length(self.Width.text()))
+            self.Width.setSelection(0, FreeCADGui.draftToolBar.number_length(self.Width.text()))
         elif len(self.points) == 3:
             h = DraftGeomUtils.distance_to_plane(point, self.cubetracker[0].p3(), self.normal)
             w = self.normal * h
@@ -112,7 +112,7 @@ class BIM_Box:
             self.cubetracker[3].p3((self.cubetracker[0].p3()).add(w))
             self.Height.setText(FreeCAD.Units.Quantity(h, FreeCAD.Units.Length).UserString)
             self.Height.setFocus()
-            self.Height.setSelection(0,FreeCADGui.draftToolBar.number_length(self.Height.text()))
+            self.Height.setSelection(0, FreeCADGui.draftToolBar.number_length(self.Height.text()))
 
     def PointCallback(self, point, snapinfo):
         if not point:
@@ -281,7 +281,7 @@ class BIM_Box:
             if self.HeightValue > 0.0:
                 pla = DraftGeomUtils.placement_from_points(p1, p3, p2)
                 self.LengthValue, self.WidthValue = self.WidthValue, self.LengthValue
-        self.doc.openTransaction(translate("Arch","Create Box"))
+        self.doc.openTransaction(translate("Arch", "Create Box"))
         cube = self.doc.addObject("Part::Box", "Box")
         cube.Placement = pla
         cube.Length = self.LengthValue

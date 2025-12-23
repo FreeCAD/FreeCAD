@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -260,6 +261,9 @@ class ViewProvider:
 
     def editObject(self, obj):
         if obj:
+            # Block editing for Boundary objects
+            if hasattr(obj, "IsBoundary") and getattr(obj, "IsBoundary", False):
+                return False
             if obj in self.obj.Model.Group:
                 return self.openTaskPanel("Model")
             if obj == self.obj.Stock:
@@ -301,7 +305,7 @@ class ViewProvider:
         # make sure the resource view providers are setup properly
         if prop == "Model" and self.obj.Model:
             for base in self.obj.Model.Group:
-                if base.ViewObject and base.ViewObject.Proxy:
+                if base.ViewObject and hasattr(base.ViewObject, "Proxy") and base.ViewObject.Proxy:
                     base.ViewObject.Proxy.onEdit(_OpenCloseResourceEditor)
         if (
             prop == "Stock"

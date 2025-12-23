@@ -42,7 +42,8 @@ FemPostGroupExtension::FemPostGroupExtension()
         App::Prop_None,
         "Selects the pipeline data transition mode.\n"
         "In serial, every filter gets the output of the previous one as input.\n"
-        "In parallel, every filter gets the pipeline source as input.\n");
+        "In parallel, every filter gets the pipeline source as input.\n"
+    );
 
     Mode.setEnums(ModeEnums);
 }
@@ -68,13 +69,15 @@ void FemPostGroupExtension::extensionOnChanged(const App::Property* p)
             // sort the group, so that non filter objects are always on top (in case any object
             // using this extension allows those)
             auto objs = Group.getValues();
-            std::sort(objs.begin(),
-                      objs.end(),
-                      [](const App::DocumentObject* lhs, const App::DocumentObject* rhs) {
-                          int l = lhs->isDerivedFrom<FemPostFilter>() ? 0 : 1;
-                          int r = rhs->isDerivedFrom<FemPostFilter>() ? 0 : 1;
-                          return r < l;
-                      });
+            std::sort(
+                objs.begin(),
+                objs.end(),
+                [](const App::DocumentObject* lhs, const App::DocumentObject* rhs) {
+                    int l = lhs->isDerivedFrom<FemPostFilter>() ? 0 : 1;
+                    int r = rhs->isDerivedFrom<FemPostFilter>() ? 0 : 1;
+                    return r < l;
+                }
+            );
             m_blockChange = true;
             Group.setValue(objs);
             m_blockChange = false;

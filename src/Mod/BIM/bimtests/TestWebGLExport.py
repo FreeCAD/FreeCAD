@@ -85,9 +85,7 @@ class TestWebGLExport(TestArchBase):
         with open(custom_path, "w", encoding="utf-8") as f:
             f.write(self.test_template_content)
 
-        with patch(
-            "BIM.importers.importWebGL.params.get_param"
-        ) as mock_params:
+        with patch("BIM.importers.importWebGL.params.get_param") as mock_params:
             mock_params.side_effect = lambda param, path=None: {
                 "useCustomWebGLExportTemplate": True,
                 "WebGLTemplateCustomPath": custom_path,
@@ -95,17 +93,13 @@ class TestWebGLExport(TestArchBase):
 
             result = importWebGL.getHTMLTemplate()
             self.assertIsNotNone(result)
-            self.assertEqual(
-                result.strip(), self.test_template_content.strip()
-            )
+            self.assertEqual(result.strip(), self.test_template_content.strip())
 
     def test_default_template_logic_when_custom_disabled(self):
         """Test code path when custom template is disabled"""
         operation = "Testing default template logic when custom is disabled"
         self.printTestMessage(operation)
-        with patch(
-            "BIM.importers.importWebGL.params.get_param", return_value=False
-        ):
+        with patch("BIM.importers.importWebGL.params.get_param", return_value=False):
             with patch("os.path.isfile", return_value=True):
                 with patch(
                     "builtins.open",
@@ -120,17 +114,13 @@ class TestWebGLExport(TestArchBase):
         """Test behavior when custom template not found in headless mode"""
         operation = "Testing custom template not found in headless mode"
         self.printTestMessage(operation)
-        with patch(
-            "BIM.importers.importWebGL.params.get_param"
-        ) as mock_params:
+        with patch("BIM.importers.importWebGL.params.get_param") as mock_params:
             mock_params.side_effect = lambda param, path=None: {
                 "useCustomWebGLExportTemplate": True,
                 "WebGLTemplateCustomPath": "/nonexistent/template.html",
             }.get(param, False)
 
-            with patch(
-                "BIM.importers.importWebGL.FreeCADGui", None
-            ):  # Simulate headless mode
+            with patch("BIM.importers.importWebGL.FreeCADGui", None):  # Simulate headless mode
                 result = importWebGL.getHTMLTemplate()
                 self.assertIsNone(result)
 

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2020 sliptonic <shopinthewoods@gmail.com>               *
  *                                                                         *
@@ -77,8 +78,10 @@ PyObject* VoronoiCellPy::richCompare(PyObject* lhs, PyObject* rhs, int op)
     return cmp;
 }
 
-const Voronoi::voronoi_diagram_type::cell_type* getCellFromPy(VoronoiCellPy* c,
-                                                              bool throwIfNotBound = true)
+const Voronoi::voronoi_diagram_type::cell_type* getCellFromPy(
+    VoronoiCellPy* c,
+    bool throwIfNotBound = true
+)
 {
     auto self = c->getVoronoiCellPtr();
     if (self->isBound()) {

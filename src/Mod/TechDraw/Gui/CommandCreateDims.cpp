@@ -2231,6 +2231,11 @@ void execDim(Gui::Command* cmd, std::string type, StringVector acceptableGeometr
             return;
         }
     }
+    if (geometryRefs2d == DimensionGeometry::isFace &&
+        references2d.size() > 1) {
+        Base::Console().warning("Multiple faces are selected. Using first.\n");
+        references2d.resize(1);
+    }
 
     //build the dimension
     DrawViewDimension* dim = dimensionMaker(partFeat, type, references2d, references3d);

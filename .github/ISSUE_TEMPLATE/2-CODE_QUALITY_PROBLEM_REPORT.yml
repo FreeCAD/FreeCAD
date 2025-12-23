@@ -1,0 +1,103 @@
+name: Report a Code Quality Issue
+description: Report problems related to code structure, maintainability, performance, correctness, or technical debt that do not directly affect end-user behavior.
+labels: ["Status: Needs triage", "Status: Needs confirmation", "Type: Code Quality"]
+type: "Code Quality"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to help improve FreeCAD's code quality!
+
+        > [!NOTE]
+        > This form is intended **only for code quality issues**, such as:
+        > - Architectural or design problems
+        > - Maintainability or readability issues
+        > - Performance or scalability concerns
+        > - Incorrect abstractions, layering violations, or technical debt
+        >
+        > If the issue affects user-visible behavior, workflows, or UI, please use the regular **Report Problem** form instead.
+
+        Please [search existing issues](https://github.com/FreeCAD/FreeCAD/issues) before submitting.
+        By submitting this issue, you agree to follow our [Code of Conduct](https://github.com/FreeCAD/FreeCAD/blob/main/CODE_OF_CONDUCT.md).
+
+  - type: dropdown
+    id: wb
+    attributes:
+      label: Area / Workbench affected
+      description: Select the primary area affected by the code quality issue.
+      options:
+        - Assembly
+        - BIM
+        - CAM
+        - Core (App, Gui, Base, ...)
+        - Draft
+        - FEM
+        - Material
+        - Measurement
+        - Mesh
+        - Part
+        - Part Design
+        - Sketcher
+        - Spreadsheet
+        - TechDraw
+        - Build system / CI
+        - Documentation
+        - Other (specify below)
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Problem description
+      description: |
+        Describe the code quality issue clearly.
+        Focus on *why* the current implementation is problematic (e.g. maintainability, performance, correctness, extensibility).
+        Reference files, classes, functions, or modules where applicable.
+      placeholder: |
+        Example:
+        - Class X violates dependency rules by including Y
+        - Function Z mixes responsibilities and is hard to reason about
+        - Algorithm has unnecessary complexity or poor performance characteristics
+    validations:
+      required: true
+
+  - type: textarea
+    id: impact
+    attributes:
+      label: Impact
+      description: |
+        Explain the practical impact of this issue.
+        For example: increased maintenance cost, higher bug risk, performance degradation, difficulty extending functionality, or CI/build issues.
+      placeholder: Describe how this affects the codebase long-term.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed_solution
+    attributes:
+      label: Suggested improvement (optional)
+      description: |
+        If you have ideas on how to address the issue, outline them here.
+        This can include refactoring suggestions, alternative designs, or references to best practices.
+      placeholder: Optional — leave empty if unsure.
+
+  - type: textarea
+    id: references
+    attributes:
+      label: References / evidence
+      description: |
+        Add relevant references such as:
+        - File paths or code snippets
+        - Related issues or pull requests
+        - Benchmarks, logs, or static analysis results
+      placeholder: Links, snippets, or related issues.
+
+  - type: textarea
+    id: dev_version
+    attributes:
+      label: Development version (if relevant)
+      description: |
+        If the issue is version-specific or recently introduced, paste the output from the
+        **About FreeCAD** dialog of a development build.
+        Otherwise, this can be left empty.
+      placeholder: Paste About FreeCAD information here.
+      render: shell

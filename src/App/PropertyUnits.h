@@ -515,6 +515,8 @@ class AppExport PropertyLength: public PropertyQuantityConstraint
 public:
     PropertyLength();
     ~PropertyLength() override = default;
+
+    void enableNegative(bool on);
 };
 
 /** LuminousIntensity property
@@ -923,3 +925,4 @@ public:
 }  // namespace App
 
 #endif  // APP_PROPERTYUNITS_H
+

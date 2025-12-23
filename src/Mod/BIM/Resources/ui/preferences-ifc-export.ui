@@ -30,28 +30,6 @@
     <number>9</number>
    </property>
    <item>
-    <widget class="QGroupBox" name="group_box_0">
-     <property name="title">
-      <string>General Options</string>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <item>
-       <widget class="Gui::PrefCheckBox" name="checkBox_7">
-        <property name="text">
-         <string>Show this dialog when exporting</string>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>ifcShowDialog</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Arch</cstring>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
       <string>Export Options</string>

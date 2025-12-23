@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -56,8 +58,7 @@ bool ProgressIndicatorPy::check(PyObject* py)
     return Py::PythonExtension<ProgressIndicatorPy>::check(py);
 }
 
-PyObject*
-ProgressIndicatorPy::PyMake(PyTypeObject* /*unused*/, PyObject* /*unused*/, PyObject* /*unused*/)
+PyObject* ProgressIndicatorPy::PyMake(PyTypeObject* /*unused*/, PyObject* /*unused*/, PyObject* /*unused*/)
 {
     return new ProgressIndicatorPy();
 }

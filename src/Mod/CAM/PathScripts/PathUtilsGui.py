@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2019 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -25,7 +26,6 @@ import FreeCAD
 import Path
 import Path.Main.Gui.JobCmd as PathJobCmd
 import Path.Tool.Controller as PathToolController
-import PathGui
 import PathScripts.PathUtils as PathUtils
 from PySide import QtGui
 

@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
@@ -29,7 +30,7 @@ from collections import defaultdict
 from typing import Optional
 
 
-if True:
+if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
     Path.Log.trackModule(Path.Log.thisModule())
 else:
@@ -153,7 +154,7 @@ def getAssetPath() -> pathlib.Path:
 
 
 def setAssetPath(path: pathlib.Path):
-    Path.Log.info(f"Setting asset path to {path}")
+    Path.Log.debug(f"Setting asset path to {path}")
     assert path.is_dir(), f"Cannot put a non-initialized asset directory into preferences: {path}"
     pref = tool_preferences()
     current_path = pref.GetString(ToolPath, "")
@@ -244,7 +245,7 @@ def defaultFilePath():
 def filePath():
     path = defaultFilePath()
     if not path:
-        path = getAssetPath()
+        path = str(getAssetPath())
     return path
 
 

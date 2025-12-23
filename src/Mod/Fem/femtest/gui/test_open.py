@@ -28,6 +28,7 @@ __url__ = "https://www.freecad.org"
 import tempfile
 import unittest
 from os.path import join
+from os import remove
 
 import FreeCAD
 
@@ -104,6 +105,7 @@ class TestObjectOpen(unittest.TestCase):
         # standard name changed
         from femsolver.elmer.equations.flux import ViewProxy
 
+        remove(file_path)
         self.assertEqual(ViewProxy, self.document.Flux.ViewObject.Proxy.__class__)
 
     # ********************************************************************************************
