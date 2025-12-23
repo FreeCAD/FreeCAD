@@ -275,6 +275,7 @@ class Arch_Window:
 
             if (
                 host
+                and hasattr(host, "Base")
                 and Draft.getType(host.Base) == "ArchSketch"
                 and hasattr(ArchSketchObject, "attachToHost")
                 and hasattr(FreeCAD, "ArchSketchLock")
