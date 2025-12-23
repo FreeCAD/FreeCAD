@@ -970,8 +970,8 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
     // Radius maximum to allow double click event
     const int dblClickRadius = 5;
 
-    double x = NAN;
-    double y = NAN;
+    double x = std::numeric_limits<double>::quiet_NaN();
+    double y = std::numeric_limits<double>::quiet_NaN();
     SbVec3f pos = point;
 
     if (pp) {
