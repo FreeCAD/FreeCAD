@@ -269,22 +269,25 @@ SbBool FusionNavigationStyle::processSoEvent(const SoEvent* const ev)
             break;
         case BUTTON3DOWN:
             if (curmode == NavigationStyle::DRAGGING) {
-                 // Stick in DRAGGING mode even if shift is released
-                 newmode = NavigationStyle::DRAGGING;
-            } else {
-                 newmode = NavigationStyle::PANNING;
+                // Stick in DRAGGING mode even if shift is released
+                newmode = NavigationStyle::DRAGGING;
+            }
+            else {
+                newmode = NavigationStyle::PANNING;
             }
             break;
         case SHIFTDOWN | BUTTON3DOWN:
             if (newmode != NavigationStyle::DRAGGING) {
                 if (curmode == NavigationStyle::PANNING) {
-                     // Do NOT switch to dragging if already panning (Shift press during pan)
-                     newmode = NavigationStyle::PANNING;
-                } else {
+                    // Do NOT switch to dragging if already panning (Shift press during pan)
+                    newmode = NavigationStyle::PANNING;
+                }
+                else {
                     saveCursorPosition(ev);
                     newmode = NavigationStyle::DRAGGING;
                 }
-            } else {
+            }
+            else {
                 newmode = NavigationStyle::DRAGGING;
             }
             break;
@@ -341,4 +344,3 @@ SbBool FusionNavigationStyle::processSoEvent(const SoEvent* const ev)
     }
     return processed;
 }
-
