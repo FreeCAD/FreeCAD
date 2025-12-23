@@ -603,6 +603,8 @@ class ObjectSurface(PathOp.ObjectOp):
                 if prop in ["ScanType", "CutPattern"]:
                     self.setEditorProperties(obj)
 
+        if prop == "Active" and obj.ViewObject:
+            obj.ViewObject.signalChangeIcon()
 
     def _applyAccuracySettings(self, obj):
         """Applies the mesh settings based on the Accuracy slider's value."""
@@ -1396,6 +1398,7 @@ class ObjectSurface(PathOp.ObjectOp):
         if self.CutClimb:
             gDIR = ["G2", "G3"]
 
+        # Set `ProfileEdges` specific trigger indexes
         peIdx = lenSCANDATA  # off by default
         if obj.ProfileEdges == "Only":
             peIdx = -1
