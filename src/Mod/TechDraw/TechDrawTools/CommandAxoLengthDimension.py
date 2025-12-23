@@ -38,7 +38,24 @@ import FreeCADGui as Gui
 import TechDrawTools.TDToolsUtil as Utils
 
 import TechDraw
-from math import degrees
+import math
+
+# A hack to deal with garbage in the low bits causing wrong decisions. dimensionLineAngle is in radians.  If 
+# dimensionLineAngle is 90deg +/- AngularTolerance, we treat it as a vertical dimension line.  This affects which
+# side of the dimension line is used for the dimension text.
+def makePlumb(dimensionLineAngle):
+    HalfPi = math.pi / 2.0
+    
+    AngularTolerance = 0.01   # This value is a guess.  It works for the file in issue #16172, but
+                              # seems small (~0.5deg).  
+
+    if math.isclose(dimensionLineAngle, HalfPi, abs_tol=AngularTolerance):
+        return HalfPi
+    elif math.isclose(dimensionLineAngle, -HalfPi, abs_tol=AngularTolerance):
+        return -HalfPie
+ 
+    return dimensionLineAngle
+    
 
 class CommandAxoLengthDimension:
     """Creates a 3D length dimension."""
@@ -79,9 +96,10 @@ class CommandAxoLengthDimension:
         extLineVec = EndPt.sub(StartPt)
         StartPt, EndPt = edges[0].Vertexes[0].Point, edges[0].Vertexes[1].Point
         dimLineVec = EndPt.sub(StartPt)
+
         xAxis = App.Vector(1,0,0)
-        extAngle = degrees(extLineVec.getAngle(xAxis))
-        lineAngle = degrees(dimLineVec.getAngle(xAxis))
+        extAngle = math.degrees(extLineVec.getAngle(xAxis))
+        lineAngle = math.degrees(makePlumb(dimLineVec.getAngle(xAxis)))
 
         if extLineVec.y < 0.0:
             extAngle = 180-extAngle
