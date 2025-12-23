@@ -722,7 +722,7 @@ class StockFromExistingEdit(StockEdit):
                 # => ridgid string comparison fails
                 # Instead of ridgid string comparsion use partial (needle in haystack)
                 # string comparison
-                #if label == stockName: # ridgid string comparison
+                # if label == stockName: # ridgid string comparison
                 if label in stockName:  # partial string comparison
                     index = i
 
