@@ -957,7 +957,6 @@ private:
 
 PerfCounter Perf_ProcessPolyNode("ProcessPolyNode");
 PerfCounter Perf_CalcCutAreaCirc("CalcCutArea");
-PerfCounter Perf_CalcCutAreaClip("CalcCutAreaClip");
 PerfCounter Perf_NextEngagePoint("NextEngagePoint");
 PerfCounter Perf_PointIterations("PointIterations");
 PerfCounter Perf_ExpandCleared("ExpandCleared");
@@ -1697,43 +1696,9 @@ double Adaptive2d::CalcCutArea(
         }
     }
 
-    // TODO temporary: compute area using clipper, and print both my area and clipper's area.
-    // Return... clipper's, for now
     Perf_CalcCutAreaCirc.Stop();
-    double clipperArea = 0;
-    // {
-    //     Perf_CalcCutAreaClip.Start();
-    //     // old way of calculating cut area based on polygon clipping
-    //     // used in case when there are multiple intersections of tool with cleared poly (very rare
-    //     // case, but important)
-    //     // 1. find difference between old and new tool shape
-    //     Path oldTool;
-    //     Path newTool;
-    //     TranslatePath(toolGeometry, oldTool, c1);
-    //     TranslatePath(toolGeometry, newTool, c2);
-    //     clip.Clear();
-    //     clip.AddPath(newTool, PolyType::ptSubject, true);
-    //     clip.AddPath(oldTool, PolyType::ptClip, true);
-    //     Paths toolDiff;
-    //     clip.Execute(ClipType::ctDifference, toolDiff);
+    (*fout) << "Area=" << area << endl;
 
-    //     // 2. difference to cleared
-    //     clip.Clear();
-    //     clip.AddPaths(toolDiff, PolyType::ptSubject, true);
-    //     clip.AddPaths(clearedBounded, PolyType::ptClip, true);
-    //     Paths cutAreaPoly;
-    //     clip.Execute(ClipType::ctDifference, cutAreaPoly);
-
-    //     // calculate resulting area
-    //     for (Path& path : cutAreaPoly) {
-    //         clipperArea += fabs(Area(path));
-    //     }
-    //     Perf_CalcCutAreaClip.Stop();
-    // }
-    (*fout) << "Area=" << area << " clipperArea=" << clipperArea << " "
-            << int(abs(clipperArea - area) / area * 100) << "%" << endl;
-
-    // return clipperArea;
     return area;
 }
 
@@ -3531,7 +3496,6 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
         Perf_ProcessPolyNode.DumpResults();
         Perf_PointIterations.DumpResults();
         Perf_CalcCutAreaCirc.DumpResults();
-        Perf_CalcCutAreaClip.DumpResults();
         Perf_NextEngagePoint.DumpResults();
         Perf_ExpandCleared.DumpResults();
         Perf_DistanceToBoundary.DumpResults();
