@@ -551,7 +551,7 @@ class TaskPanelPage(object):
         helper function to update obj's Coolant property if a different
         one has been selected in the combo box."""
         option = combo.currentText()
-        if hasattr(obj, "CoolantMode"):
+        if hasattr(obj, "CoolantMode") and option:
             if obj.CoolantMode != option:
                 obj.CoolantMode = option
 
