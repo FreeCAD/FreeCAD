@@ -3015,9 +3015,6 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
                     }
                     break;
                 }
-                if (iteration > 5 && fabs(error - prev_error) < 0.001) {
-                    break;
-                }
                 if (iteration == MAX_ITERATIONS - 1) {
                     total_exceeded++;
                 }
