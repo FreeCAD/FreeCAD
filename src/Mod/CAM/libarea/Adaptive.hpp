@@ -26,7 +26,6 @@
 #include <vector>
 #include <list>
 #include <time.h>
-#include <fstream>
 
 #ifndef ADAPTIVE_HPP
 # define ADAPTIVE_HPP
@@ -199,8 +198,6 @@ private:
     );
     void AddPathToProgress(TPaths& progressPaths, const Path pth, MotionType mt = MotionType::mtCutting);
     void ApplyStockToLeave(Paths& inputPaths);
-
-    std::ofstream* fout;
 
 private:  // constants for fine tuning
     const double MIN_STEP_CLIPPER = 16.0 * 3;
