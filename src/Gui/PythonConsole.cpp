@@ -1403,7 +1403,7 @@ void PythonConsole::onSaveHistoryAs()
         this,
         tr("Save History"),
         cMacroPath,
-        QStringLiteral("%1 (*.FCMacro *.py)").arg(tr("Macro Files"))
+        QStringList(QStringLiteral("%1 (*.FCMacro *.py)").arg(tr("Macro Files")))
     );
     if (!fn.isEmpty()) {
         int dot = fn.indexOf(QLatin1Char('.'));
@@ -1427,7 +1427,7 @@ void PythonConsole::onInsertFileName()
         Gui::getMainWindow(),
         tr("Insert file name"),
         QString(),
-        QStringLiteral("%1 (*.*)").arg(tr("All Files"))
+        QStringList(QStringLiteral("%1 (*.*)").arg(tr("All Files")))
     );
     if (!fn.isEmpty()) {
         insertPlainText(fn);

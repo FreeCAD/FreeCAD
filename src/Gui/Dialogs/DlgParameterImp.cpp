@@ -615,7 +615,7 @@ void ParameterGroup::onExportToFile()
         this,
         tr("Export Parameter to File"),
         QString(),
-        QStringLiteral("XML (*.FCParam)")
+        QStringList(QStringLiteral("XML (*.FCParam)"))
     );
     if (!file.isEmpty()) {
         QTreeWidgetItem* item = currentItem();
@@ -633,7 +633,7 @@ void ParameterGroup::onImportFromFile()
         this,
         tr("Import Parameter From File"),
         QString(),
-        QStringLiteral("XML (*.FCParam)")
+        QStringList(QStringLiteral("XML (*.FCParam)"))
     );
     if (!file.isEmpty()) {
         QTreeWidgetItem* item = currentItem();

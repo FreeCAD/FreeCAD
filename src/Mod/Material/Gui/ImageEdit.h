@@ -94,7 +94,7 @@ private:
     void showPixmap();
     void showSVG();
 
-    QString selectFile(const QString& filePatterns);
+    QString selectFile(const QStringList& filePatterns);
     void onFileSelectImage();
     void onFileSelectSVG();
 };
