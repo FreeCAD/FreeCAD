@@ -114,6 +114,9 @@ class ObjectMillFacing(PathOp.ObjectOp):
             elif obj.StepOver > 100:
                 obj.StepOver = 100
 
+        if prop == "Active" and obj.ViewObject:
+            obj.ViewObject.signalChangeIcon()
+
     def opPropertyDefinitions(self):
         """opPropertyDefinitions(obj) ... Store operation specific properties"""
 
