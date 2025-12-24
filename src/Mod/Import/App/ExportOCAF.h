@@ -72,8 +72,7 @@ public:
         const std::vector<Base::Color>&,
         std::vector<TDF_Label>& hierarchical_label,
         std::vector<TopLoc_Location>& hierarchical_loc,
-        std::vector<App::DocumentObject*>& hierarchical_part,
-        const char* labelOverride = nullptr
+        std::vector<App::DocumentObject*>& hierarchical_part
     );
     void getPartColors(
         std::vector<App::DocumentObject*> hierarchical_part,
