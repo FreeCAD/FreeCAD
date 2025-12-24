@@ -65,6 +65,7 @@ class ObjectOp(PathOp.ObjectOp):
         Path.Log.track(obj.Label, len(wires), zValues)
 
         tol = self.job.GeometryTolerance.Value if getattr(self, "job", None) else 0.01
+        biDir = getattr(obj, "Pattern", None) == "Bidirectional"
 
         # sort wires, adapted from Area.py
         if len(wires) > 1:
@@ -100,7 +101,7 @@ class ObjectOp(PathOp.ObjectOp):
 
             for indexZ, z in enumerate(zValues):
                 Path.Log.debug(z)
-                if indexZ and wire.isClosed():
+                if indexZ and (wire.isClosed() or biDir):
                     # Skip retract and add step down to next Z for closed profile
                     self.appendCommand(
                         Path.Command("G1", {"Z": startPoint.z}),
@@ -112,7 +113,7 @@ class ObjectOp(PathOp.ObjectOp):
                 edgesDir = reversed(edges) if reverseDir else edges
 
                 for indexE, edge in enumerate(edgesDir):
-                    if indexE == 0 and (indexZ == 0 or not wire.isClosed()):
+                    if indexE == 0 and (indexZ == 0 or (not wire.isClosed() and not biDir)):
                         Path.Log.debug("processing first edge entry")
                         # Add moves to first point of wire
                         self.commandlist.append(
@@ -150,6 +151,9 @@ class ObjectOp(PathOp.ObjectOp):
                     for cmd in Path.Geom.cmdsForEdge(edge, flip=flip, tol=tol):
                         # Add gcode for edge
                         self.appendCommand(cmd, z, relZ, self.horizFeed)
+
+                if biDir and not wire.isClosed():
+                    reverseDir = not reverseDir
 
     def appendCommand(self, cmd, z, relZ, feed):
         params = cmd.Parameters
