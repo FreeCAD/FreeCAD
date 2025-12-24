@@ -74,11 +74,12 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
     def initOperation(self, obj):
         """initOperation(obj) ... create engraving specific properties."""
         obj.addProperty(
-            "App::PropertyInteger",
+            "App::PropertyIntegerConstraint",
             "StartVertex",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "The vertex index to start the toolpath from"),
         )
+        obj.StartVertex = (0, 0, 99999, 1)
         self.setupAdditionalProperties(obj)
 
     def opOnDocumentRestored(self, obj):
@@ -135,7 +136,7 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
                 else:
                     shapeWires = shape.Wires
                 Path.Log.debug("jobshape has {} edges".format(len(shape.Edges)))
-                self.buildpathocc(obj, shapeWires, self.getZValues(obj))
+                self.buildpathocc(obj, shapeWires, self.getZValues(obj), start_idx=obj.StartVertex)
                 wires.extend(shapeWires)
             self.wires = wires
             Path.Log.debug("processing {} jobshapes -> {} wires".format(len(jobshapes), len(wires)))
