@@ -26,11 +26,18 @@
 
 import FreeCAD
 import FreeCADGui
+from enum import Enum
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
 
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
+
+
+class WallBaselineMode(Enum):
+    NONE = 0
+    DRAFT_LINE = 1
+    SKETCH = 2
 
 
 class Arch_Wall:
@@ -86,7 +93,12 @@ class Arch_Wall:
         self.Width = params.get_param_arch("WallWidth")
         self.Height = params.get_param_arch("WallHeight")
         self.Offset = params.get_param_arch("WallOffset")
-        self.JOIN_WALLS_SKETCHES = params.get_param_arch("joinWallSketches")
+        # Baseline creation mode (NONE / DRAFT_LINE / SKETCH)
+        mode_index = PARAMS.GetInt("WallBaseline", 0)
+        try:
+            self.baseline_mode = WallBaselineMode(mode_index)
+        except Exception:
+            self.baseline_mode = WallBaselineMode.NONE
         self.AUTOJOIN = params.get_param_arch("autoJoinWalls")
         sel = FreeCADGui.Selection.getSelectionEx()
         self.existing = []
@@ -176,97 +188,201 @@ class Arch_Wall:
             )
 
         elif len(self.points) == 2:
-            FreeCAD.activeDraftCommand = None
-            FreeCADGui.Snapper.off()
-            self.tracker.off()
+            self.create_wall()
 
-            self.doc.openTransaction(translate("Arch", "Create Wall"))
+    def _create_baseless_wall(self, p0, p1):
+        """Creates a baseless wall and ensures all steps are macro-recordable."""
 
-            # Some code in gui_utils.autogroup requires a wall shape to determine
-            # the target group. We therefore need to create a wall first.
-            self.addDefault()
-            wall = self.doc.Objects[-1]
-            wallGrp = wall.getParentGroup()
+        line_vector = p1.sub(p0)
+        length = line_vector.Length
+        midpoint = (p0 + p1) * 0.5
+        direction = line_vector.normalize()
+        rotation = FreeCAD.Rotation(FreeCAD.Vector(1, 0, 0), direction)
 
-            if (
-                (self.JOIN_WALLS_SKETCHES or self.AUTOJOIN)
-                and self.existing
-                and self.existing[-1].getParentGroup() == wallGrp
-            ):
-                oldWall = self.existing[-1]
-                if self.JOIN_WALLS_SKETCHES and ArchWall.areSameWallTypes([wall, oldWall]):
-                    FreeCADGui.doCommand(
-                        "Arch.joinWalls([wall, doc."
-                        + oldWall.Name
-                        + "], "
-                        + "delete=True, deletebase=True)"
-                    )
-                elif self.AUTOJOIN:
-                    if wallGrp is not None:
-                        FreeCADGui.doCommand("wall.getParentGroup().removeObject(wall)")
-                    FreeCADGui.doCommand("Arch.addComponents(wall, doc." + oldWall.Name + ")")
+        # This placement is local to the working plane.
+        local_placement = FreeCAD.Placement(midpoint, rotation)
+        # Transform the local placement into the global coordinate system.
+        final_placement = self.wp.get_placement().multiply(local_placement)
 
-            self.doc.commitTransaction()
-            self.doc.recompute()
-            # gui_utils.end_all_events()  # Causes a crash on Linux.
-            self.tracker.finalize()
-            if FreeCADGui.draftToolBar.continueMode:
-                self.Activated()
+        wall_var = "new_baseless_wall"
 
-    def addDefault(self):
-        """Create a wall using a line segment, with all parameters as the default.
+        # Construct command strings using the final, correct global placement.
+        placement_str = (
+            f"FreeCAD.Placement(FreeCAD.Vector({final_placement.Base.x}, {final_placement.Base.y}, {final_placement.Base.z}), "
+            f"FreeCAD.Rotation({final_placement.Rotation.Q[0]}, {final_placement.Rotation.Q[1]}, {final_placement.Rotation.Q[2]}, {final_placement.Rotation.Q[3]}))"
+        )
 
-        Used solely by _CommandWall.getPoint() when the interactive mode has
-        selected two points.
-        """
-        from draftutils import params
+        make_wall_cmd = (
+            f"{wall_var} = Arch.makeWall(length={length}, width={self.Width}, "
+            f"height={self.Height}, align='{self.Align}')"
+        )
 
-        sta = self.wp.get_local_coords(self.points[0])
-        end = self.wp.get_local_coords(self.points[1])
+        # Execute creation and placement commands
+        FreeCADGui.doCommand("import Arch")
+        FreeCADGui.doCommand(make_wall_cmd)
+        FreeCADGui.doCommand(f"{wall_var}.Placement = {placement_str}")
 
+        # Get a reference to the newly created object to find its final name
+        newly_created_wall = self.doc.Objects[-1]
+
+        # Now, issue the autogroup command using the object's actual name
+        FreeCADGui.doCommand("import Draft")
+        FreeCADGui.doCommand(f"Draft.autogroup(FreeCAD.ActiveDocument.{newly_created_wall.Name})")
+
+        return newly_created_wall.Name
+
+    def _create_baseline_object(self, p0, p1):
+        """Creates a baseline object (Draft line or Sketch) and returns its name."""
+
+        placement = self.wp.get_placement()
+        placement_str = (
+            f"FreeCAD.Placement(FreeCAD.Vector({placement.Base.x}, {placement.Base.y}, {placement.Base.z}), "
+            f"FreeCAD.Rotation({placement.Rotation.Q[0]}, {placement.Rotation.Q[1]}, {placement.Rotation.Q[2]}, {placement.Rotation.Q[3]}))"
+        )
+
+        trace_cmd = (
+            f"trace = Part.LineSegment(FreeCAD.Vector({p0.x}, {p0.y}, {p0.z}), "
+            f"FreeCAD.Vector({p1.x}, {p1.y}, {p1.z}))"
+        )
+
+        FreeCADGui.doCommand("import FreeCAD")
         FreeCADGui.doCommand("import Part")
-        FreeCADGui.addModule("Draft")
-        FreeCADGui.addModule("Arch")
-        FreeCADGui.addModule("WorkingPlane")
-        FreeCADGui.doCommand("doc = FreeCAD.ActiveDocument")
-        FreeCADGui.doCommand("wp = WorkingPlane.get_working_plane()")
-        FreeCADGui.doCommand(
-            "trace = Part.LineSegment(FreeCAD." + str(sta) + ", FreeCAD." + str(end) + ")"
-        )
-        if params.get_param_arch("WallSketches"):
-            # Use ArchSketch if SketchArch add-on is present
-            try:
-                import ArchSketchObject
+        FreeCADGui.doCommand(trace_cmd)
 
-                FreeCADGui.doCommand("import ArchSketchObject")
-                FreeCADGui.doCommand("base = ArchSketchObject.makeArchSketch()")
-            except:
-                FreeCADGui.doCommand('base = doc.addObject("Sketcher::SketchObject", "WallTrace")')
-            FreeCADGui.doCommand("base.Placement = wp.get_placement()")
-            FreeCADGui.doCommand("base.addGeometry(trace)")
-        else:
+        baseline_name = None
+        if self.baseline_mode == WallBaselineMode.DRAFT_LINE:
+            FreeCADGui.doCommand("import Draft")
+
+            # Execute creation command. FreeCAD will ensure a unique name.
             FreeCADGui.doCommand("base = Draft.make_line(trace)")
-            # The created line should not stay selected as this causes an issue in continue mode.
-            # Two walls would then be created based on the same line.
-            FreeCADGui.Selection.clearSelection()
-            FreeCADGui.doCommand("base.Placement = wp.get_placement()")
-            FreeCADGui.doCommand("doc.recompute()")
-        FreeCADGui.doCommand(
-            "wall = Arch.makeWall(base, width="
-            + str(self.Width)
-            + ", height="
-            + str(self.Height)
-            + ', align="'
-            + str(self.Align)
-            + '")'
+
+            # The `make_line` command sets the new object as active.
+            if self.doc.ActiveObject:
+                baseline_name = self.doc.ActiveObject.Name
+                # Apply placement using the correctly identified object name.
+                FreeCADGui.doCommand(
+                    f"FreeCAD.ActiveDocument.{baseline_name}.Placement = {placement_str}"
+                )
+
+        elif self.baseline_mode == WallBaselineMode.SKETCH:
+            # Execute creation command with a suggested name. FreeCAD will ensure uniqueness.
+            FreeCADGui.doCommand(
+                "base = FreeCAD.ActiveDocument.addObject('Sketcher::SketchObject', 'WallTrace')"
+            )
+
+            # The `addObject` command sets the new object as active.
+            if self.doc.ActiveObject:
+                baseline_name = self.doc.ActiveObject.Name
+                user_label = translate("BimWall", "Wall Trace")
+                # Apply placement and geometry using the correctly identified object name.
+                FreeCADGui.doCommand(
+                    f"FreeCAD.ActiveDocument.{baseline_name}.Placement = {placement_str}"
+                )
+                # Set the user-facing, translated label.
+                FreeCADGui.doCommand(
+                    f"FreeCAD.ActiveDocument.{baseline_name}.Label = {repr(user_label)}"
+                )
+                FreeCADGui.doCommand(f"FreeCAD.ActiveDocument.{baseline_name}.addGeometry(trace)")
+
+        FreeCADGui.doCommand("FreeCAD.ActiveDocument.recompute()")
+
+        return baseline_name
+
+    def _create_wall_from_baseline(self, baseline_name):
+        """Creates a wall from a baseline object, ensuring all steps are macro-recordable."""
+
+        if baseline_name is None:
+            return None
+
+        # Get a reference to the baseline object to ensure it exists, although we use its name in
+        # the command
+        base_obj = self.doc.getObject(baseline_name)
+        if base_obj is None:
+            return None
+
+        # Use a unique variable name for the wall in the command string
+        wall_var = "new_wall_from_base"
+
+        # Construct command strings
+        make_wall_cmd = (
+            f"{wall_var} = Arch.makeWall(FreeCAD.ActiveDocument.{baseline_name}, "
+            f"width={self.Width}, height={self.Height}, align='{self.Align}')"
         )
-        FreeCADGui.doCommand("wall.Normal = wp.axis")
-        if self.MultiMat:
-            FreeCADGui.doCommand("wall.Material = doc." + self.MultiMat.Name)
-        FreeCADGui.doCommand(
-            "doc.recompute()"
-        )  # required as some autogroup code requires the wall shape
-        FreeCADGui.doCommand("Draft.autogroup(wall)")
+        set_normal_cmd = f"{wall_var}.Normal = FreeCAD.{self.wp.axis}"
+
+        # Execute creation and property-setting commands
+        FreeCADGui.doCommand("import Arch")
+        FreeCADGui.doCommand(make_wall_cmd)
+        FreeCADGui.doCommand(set_normal_cmd)
+
+        # Get a reference to the newly created object to find its final name
+        newly_created_wall = self.doc.Objects[-1]
+
+        # Now, issue the autogroup command using the object's actual name
+        FreeCADGui.doCommand("import Draft")
+        FreeCADGui.doCommand(f"Draft.autogroup(FreeCAD.ActiveDocument.{newly_created_wall.Name})")
+
+        return newly_created_wall.Name
+
+    def create_wall(self):
+        """Orchestrate wall creation according to the baseline mode."""
+        import Arch
+
+        p0 = self.wp.get_local_coords(self.points[0])
+        p1 = self.wp.get_local_coords(self.points[1])
+
+        self.tracker.off()
+        FreeCAD.activeDraftCommand = None
+        FreeCADGui.Snapper.off()
+
+        self.doc.openTransaction(translate("Arch", "Create Wall"))
+
+        # Ensure baseline_mode is initialized (some tests call create_wall()
+        # directly without going through Activated()).
+        if not hasattr(self, "baseline_mode"):
+            try:
+                self.baseline_mode = WallBaselineMode(PARAMS.GetInt("WallBaseline", 0))
+            except Exception:
+                self.baseline_mode = WallBaselineMode.NONE
+
+        if self.baseline_mode == WallBaselineMode.NONE:
+            wall_name = self._create_baseless_wall(p0, p1)
+            # If autojoin is requested and something was snapped to, add components
+            if self.existing and self.AUTOJOIN and wall_name:
+                FreeCADGui.doCommand(
+                    f"Arch.addComponents(FreeCAD.ActiveDocument.{wall_name}, FreeCAD.ActiveDocument.{self.existing[0].Name})"
+                )
+        else:
+            baseline_name = self._create_baseline_object(p0, p1)
+            if baseline_name and self.baseline_mode == WallBaselineMode.SKETCH and self.existing:
+                # try to join existing sketches first
+                joined = Arch.joinWalls(self.existing)
+                if joined:
+                    # add trace geometry to joined sketch
+                    try:
+                        FreeCADGui.doCommand(
+                            f"FreeCAD.ActiveDocument.{joined.Name}.Base.addGeometry(trace)"
+                        )
+                        FreeCADGui.doCommand(
+                            f"FreeCAD.ActiveDocument.removeObject('{baseline_name}')"
+                        )
+                    except Exception:
+                        # fallback: create a wall from the baseline
+                        self._create_wall_from_baseline(baseline_name)
+                else:
+                    self._create_wall_from_baseline(baseline_name)
+            else:
+                wall_name = self._create_wall_from_baseline(baseline_name)
+                if self.existing and self.AUTOJOIN and wall_name:
+                    FreeCADGui.doCommand(
+                        f"Arch.addComponents(FreeCAD.ActiveDocument.{wall_name}, FreeCAD.ActiveDocument.{self.existing[0].Name})"
+                    )
+
+        self.doc.commitTransaction()
+        self.doc.recompute()
+        self.tracker.finalize()
+        if FreeCADGui.draftToolBar.continueMode:
+            self.Activated()
 
     def update(self, point, info):
         # info parameter is not used but needed for compatibility with the snapper
@@ -374,15 +490,21 @@ class Arch_Wall:
         grid.addWidget(labelOffset, 5, 0, 1, 1)
         grid.addWidget(inputOffset, 5, 1, 1, 1)
 
-        # Wall "use sketches" checkbox
-        labelUseSketches = QtGui.QLabel(translate("Arch", "Use sketches"))
-        checkboxUseSketches = QtGui.QCheckBox()
-        checkboxUseSketches.setObjectName("UseSketches")
-        checkboxUseSketches.setLayoutDirection(QtCore.Qt.RightToLeft)
-        labelUseSketches.setBuddy(checkboxUseSketches)
-        checkboxUseSketches.setChecked(params.get_param_arch("WallSketches"))
-        grid.addWidget(labelUseSketches, 6, 0, 1, 1)
-        grid.addWidget(checkboxUseSketches, 6, 1, 1, 1)
+        # Wall baseline dropdown
+        labelBaseline = QtGui.QLabel(translate("Arch", "Baseline"))
+        comboBaseline = QtGui.QComboBox()
+        comboBaseline.setObjectName("Baseline")
+        labelBaseline.setBuddy(comboBaseline)
+        comboBaseline.addItems(
+            [
+                translate("Arch", "No baseline"),
+                translate("Arch", "Draft line"),
+                translate("Arch", "Sketch"),
+            ]
+        )
+        comboBaseline.setCurrentIndex(PARAMS.GetInt("WallBaseline", 0))
+        grid.addWidget(labelBaseline, 6, 0, 1, 1)
+        grid.addWidget(comboBaseline, 6, 1, 1, 1)
 
         # Enable/disable inputOffset based on inputAlignment
         def updateOffsetState(index):
@@ -401,10 +523,7 @@ class Arch_Wall:
         inputHeight.valueChanged.connect(self.setHeight)
         comboAlignment.currentIndexChanged.connect(self.setAlign)
         inputOffset.valueChanged.connect(self.setOffset)
-        if hasattr(checkboxUseSketches, "checkStateChanged"):  # Qt version >= 6.7.0
-            checkboxUseSketches.checkStateChanged.connect(self.setUseSketch)
-        else:  # Qt version < 6.7.0
-            checkboxUseSketches.stateChanged.connect(self.setUseSketch)
+        comboBaseline.currentIndexChanged.connect(self.setBaseline)
         comboWallPresets.currentIndexChanged.connect(self.setMat)
 
         # Define the workflow of the input fields:
@@ -476,12 +595,13 @@ class Arch_Wall:
         self.Offset = d
         params.set_param_arch("WallOffset", d)
 
-    def setUseSketch(self, i):
-        """Simple callback to set if walls should based on sketches."""
-
-        from draftutils import params
-
-        params.set_param_arch("WallSketches", bool(getattr(i, "value", i)))
+    def setBaseline(self, i):
+        """Simple callback to set the wall baseline creation mode."""
+        try:
+            self.baseline_mode = WallBaselineMode(i)
+        except Exception:
+            self.baseline_mode = WallBaselineMode.NONE
+        PARAMS.SetInt("WallBaseline", i)
 
     def createFromGUI(self):
         """Callback to create wall by using the _CommandWall.taskbox()"""
