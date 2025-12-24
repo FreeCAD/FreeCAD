@@ -3068,7 +3068,7 @@ void SketchObject::setOrientation(Constraint* constr)
 
     const Part::Geometry* secGeo = getGeometry(constr->Second);
     if (!secGeo->is<Part::GeomLineSegment>()) {
-        return; // cirlce-point distance
+        return; // circle-point distance
     }
 
     auto* geoLine = static_cast<const Part::GeomLineSegment*>(secGeo);
@@ -12361,3 +12361,4 @@ template class SketcherExport FeaturePythonT<Sketcher::SketchObject>;
 }// namespace App
 
 // clang-format on
+
