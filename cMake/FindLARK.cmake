@@ -8,21 +8,20 @@
 #  LARK_VERSION_MINOR    - the minor version number of lark
 #  LARK_VERSION_PATCH    - the patch version number of lark
 
+include(FindPackageHandleStandardArgs)
+
 if(Python3_EXECUTABLE)
     # try to import lark into Python interpreter
     execute_process(
         COMMAND "${Python3_EXECUTABLE}" "-c"
         "import lark; print(lark.__version__)"
         RESULT_VARIABLE _LARK_SEARCH_SUCCESS
-        OUTPUT_VARIABLE _LARK_VERSION
+        OUTPUT_VARIABLE LARK_VERSION
         ERROR_VARIABLE _LARK_ERROR_VALUE
         OUTPUT_STRIP_TRAILING_WHITESPACE
     )
 
     if(_LARK_SEARCH_SUCCESS MATCHES 0)
-        set(LARK_FOUND TRUE)
-        set(LARK_VERSION ${_LARK_VERSION})
-
         # extract version components
         string(REGEX REPLACE "\\." ";" _LARK_VERSION_LIST ${LARK_VERSION})
         list(LENGTH _LARK_VERSION_LIST _LARK_VERSION_LIST_LEN)
@@ -35,9 +34,10 @@ if(Python3_EXECUTABLE)
         if(_LARK_VERSION_LIST_LEN GREATER_EQUAL 3)
             list(GET _LARK_VERSION_LIST 2 LARK_VERSION_PATCH)
         endif()
-    else()
-        set(LARK_FOUND FALSE)
     endif()
-else()
-    set(LARK_FOUND FALSE)
 endif()
+
+find_package_handle_standard_args(LARK
+    REQUIRED_VARS LARK_VERSION
+    VERSION_VAR LARK_VERSION
+)
