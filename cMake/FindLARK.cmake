@@ -11,6 +11,8 @@
 include(FindPackageHandleStandardArgs)
 
 if(Python3_EXECUTABLE)
+    message(STATUS "FindLark: Using Python3_EXECUTABLE = ${Python3_EXECUTABLE}")
+
     # try to import lark into Python interpreter
     execute_process(
         COMMAND "${Python3_EXECUTABLE}" "-c"
@@ -20,6 +22,10 @@ if(Python3_EXECUTABLE)
         ERROR_VARIABLE _LARK_ERROR_VALUE
         OUTPUT_STRIP_TRAILING_WHITESPACE
     )
+
+    message(STATUS "FindLark: Result = ${_LARK_SEARCH_SUCCESS}")
+    message(STATUS "FindLark: Version = ${LARK_VERSION}")
+    message(STATUS "FindLark: Error = ${_LARK_ERROR_VALUE}")
 
     if(_LARK_SEARCH_SUCCESS MATCHES 0)
         # extract version components
@@ -35,6 +41,8 @@ if(Python3_EXECUTABLE)
             list(GET _LARK_VERSION_LIST 2 LARK_VERSION_PATCH)
         endif()
     endif()
+else()
+    message(STATUS "FindLark: Python3_EXECUTABLE not set")
 endif()
 
 find_package_handle_standard_args(LARK
