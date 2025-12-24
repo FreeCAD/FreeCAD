@@ -327,11 +327,8 @@ void LinkBaseExtension::setProperty(int idx, Property* prop)
         if (!prop) {
             propName = "<null>";
         }
-        else if (prop->getContainer()) {
-            propName = prop->getName();
-        }
         else {
-            propName = extensionGetPropertyName(prop);
+            propName = prop->getName();
         }
         if (!Property::isValidName(propName)) {
             propName = "?";
