@@ -508,7 +508,7 @@ private:
                 if (firstIndex != GeoEnum::GeoUndef) {
                     listOfLabelsToScale.push_back(
                         LabelToScale {
-                            .constrId = i,
+                            .constrId = static_cast<int>(i),
                             .position = cstr->LabelPosition,
                             .distance = cstr->LabelDistance
                         }
