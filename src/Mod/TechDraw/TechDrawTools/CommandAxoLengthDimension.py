@@ -85,11 +85,17 @@ class CommandAxoLengthDimension:
         edges = Utils.getSelEdges(2)
         vertexes = Utils.getSelVertexes(0)
 
+        vertNames = list()
+        edgeNames = list()
         if len(vertexes)<2:
             vertexes.append(edges[0].Vertexes[0])
             vertexes.append(edges[0].Vertexes[1])
+            edgeNames = Utils.getSelEdgeNames(2)
+        else:
+            vertNames = Utils.getSelVertexNames(2)
 
         view = Utils.getSelView()
+        page = view.findParentPage()
         scale = view.getScale()
 
         StartPt, EndPt = edges[1].Vertexes[0].Point, edges[1].Vertexes[1].Point
@@ -105,14 +111,31 @@ class CommandAxoLengthDimension:
             extAngle = 180-extAngle
         if dimLineVec.y < 0.0:
             lineAngle = 180-lineAngle
+
         if abs(extAngle-lineAngle)>0.1:
-            distanceDim=TechDraw.makeDistanceDim(view,'Distance',vertexes[0].Point*scale,vertexes[1].Point*scale)
+            # re issue: https://github.com/FreeCAD/FreeCAD/issues/13677
+            # Instead of using makeDistanceDim (which is meant for extent dimensions), we use the 
+            # same steps as in CommandCreateDims.cpp to create a regular length dimension.  This avoids
+            # the creation of CosmeticVertex objects to serve as dimension points.  These CosmeticVertex
+            # objects are never deleted, but are no longer used once their dimension is deleted. 
+            # distanceDim=TechDraw.makeDistanceDim(view,'Distance',vertexes[0].Point*scale,vertexes[1].Point*scale)
+            distanceDim = view.Document.addObject("TechDraw::DrawViewDimension", "Dimension")
+            distanceDim.Type = "Distance"
+            distanceDim.MeasureType = "Projected"       #should this not be True?
+            self.setReferences(distanceDim, view, edgeNames, vertNames)
+            page.addView(distanceDim)
+
             distanceDim.AngleOverride = True
             distanceDim.LineAngle = lineAngle
             distanceDim.ExtensionAngle = extAngle
-            distanceDim.X = scale*(vertexes[0].Point.x+vertexes[1].Point.x)/2
-            distanceDim.Y = scale*(vertexes[0].Point.y+vertexes[1].Point.y)/2
-            distanceDim.recompute()
+
+            distanceDim.recompute()     # ensure linearPoints has been set
+
+            # as in CmdCreateDims::positionDimText:
+            linearPoints = distanceDim.getLinearPoints()
+            mid = (linearPoints[0] + linearPoints[1]) / 2
+            distanceDim.X = mid.x
+            distanceDim.Y = -mid.y
 
             (px,py,pz) = Utils.getCoordinateVectors(view)
             arrowTips = distanceDim.getArrowPositions()
@@ -132,8 +155,10 @@ class CommandAxoLengthDimension:
 
             distanceDim.recompute()
             view.requestPaint()
+
         Gui.Selection.clearSelection()
         App.closeActiveTransaction()
+        view.touch()	# make view claim its new child
 
     def IsActive(self):
         """Return True when the command should be active or False when it should be disabled (greyed)."""
@@ -163,6 +188,16 @@ class CommandAxoLengthDimension:
                 return ''.join(strValueList)
         else:
             return formatSpec.format(value)
+
+    def setReferences(self, dimension, view, edgeNameList, vertexNameList):
+        references = list()
+        if vertexNameList:
+            for vert in vertexNameList:
+                references.append((view, vert))
+        else:
+            references.append((view, edgeNameList[0]))
+
+        dimension.References2D = references
 
 #
 # The command must be "registered" with a unique name by calling its class.
