@@ -82,10 +82,8 @@ class ObjectOp(PathOp.ObjectOp):
         wires = decomposewires
         for wire in wires:
             # offset = wire
+            startIdx = min(start_idx, len(wire.Edges) - 1)
 
-            # reorder the wire
-            if hasattr(obj, "StartVertex"):
-                start_idx = obj.StartVertex
             edges = wire.Edges
 
             # edges = copy.copy(PathOpUtil.orientWire(offset, forward).Edges)
@@ -107,8 +105,6 @@ class ObjectOp(PathOp.ObjectOp):
                     )
 
                 first = True
-                if start_idx > len(edges) - 1:
-                    start_idx = len(edges) - 1
 
                 edges = edges[start_idx:] + edges[:start_idx]
                 for edge in edges:
