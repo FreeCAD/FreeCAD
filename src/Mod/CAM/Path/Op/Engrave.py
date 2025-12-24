@@ -79,11 +79,45 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "The vertex index to start the toolpath from"),
         )
-        obj.StartVertex = (0, 0, 99999, 1)
+        obj.StartVertex = (0, 0, 999999, 1)
+        obj.addProperty(
+            "App::PropertyBool",
+            "Reverse",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "Reverse milling direction"),
+        )
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "CutPattern",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "Set the cut pattern for the operation"),
+        )
+        obj.CutPattern = [
+            QT_TRANSLATE_NOOP("CAM_Engrave", "Directional"),
+            QT_TRANSLATE_NOOP("CAM_Engrave", "Bidirectional"),
+        ]
+        obj.CutPattern = "Bidirectional"
         self.setupAdditionalProperties(obj)
 
     def opOnDocumentRestored(self, obj):
-        # upgrade ...
+        if not hasattr(obj, "Reverse"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "Reverse",
+                "Path",
+                QT_TRANSLATE_NOOP("App::Property", "Reverse milling direction"),
+            )
+        if not hasattr(obj, "CutPattern"):
+            obj.addProperty(
+                "App::PropertyEnumeration",
+                "CutPattern",
+                "Path",
+                QT_TRANSLATE_NOOP("App::Property", "Set the cut pattern for the operation"),
+            )
+            obj.CutPattern = [
+                QT_TRANSLATE_NOOP("CAM_Engrave", "Directional"),
+                QT_TRANSLATE_NOOP("CAM_Engrave", "Bidirectional"),
+            ]
         self.setupAdditionalProperties(obj)
 
     def opExecute(self, obj):
@@ -129,7 +163,13 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
                 else:
                     shapeWires = shape.Wires
                 Path.Log.debug("jobshape has {} edges".format(len(shape.Edges)))
-                self.buildpathocc(obj, shapeWires, self.getZValues(obj), start_idx=obj.StartVertex)
+                self.buildpathocc(
+                    obj,
+                    shapeWires,
+                    self.getZValues(obj),
+                    forward=not obj.Reverse,
+                    start_idx=obj.StartVertex,
+                )
                 wires.extend(shapeWires)
             self.wires = wires
             Path.Log.debug("processing {} jobshapes -> {} wires".format(len(jobshapes), len(wires)))
