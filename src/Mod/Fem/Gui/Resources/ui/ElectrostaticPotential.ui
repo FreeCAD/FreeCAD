@@ -103,8 +103,8 @@ with a harmonic/oscillating driving force</string>
         <property name="checkable">
          <bool>false</bool>
         </property>
-        <layout class="QGridLayout" name="gridLayout_3" columnstretch="0,0,255,255">
-         <item row="0" column="2">
+        <layout class="QGridLayout" name="gridLayout_3" columnstretch="0,255,255">
+         <item row="0" column="1">
           <widget class="QLabel" name="labelReal">
            <property name="enabled">
             <bool>true</bool>
@@ -114,7 +114,7 @@ with a harmonic/oscillating driving force</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="3">
+         <item row="0" column="2">
           <widget class="QLabel" name="labelImaginary">
            <property name="enabled">
             <bool>true</bool>
@@ -125,23 +125,13 @@ with a harmonic/oscillating driving force</string>
           </widget>
          </item>
          <item row="1" column="0">
-          <widget class="QLabel" name="labelScalar">
-           <property name="enabled">
-            <bool>true</bool>
-           </property>
+          <widget class="QCheckBox" name="ckb_av">
            <property name="text">
             <string>Scalar</string>
            </property>
           </widget>
          </item>
          <item row="1" column="1">
-          <widget class="QCheckBox" name="ckb_av">
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="2">
           <widget class="Gui::QuantitySpinBox" name="qsb_av_re">
            <property name="enabled">
             <bool>true</bool>
@@ -163,7 +153,7 @@ with a harmonic/oscillating driving force</string>
            </property>
           </widget>
          </item>
-         <item row="1" column="3">
+         <item row="1" column="2">
           <widget class="Gui::QuantitySpinBox" name="qsb_av_im">
            <property name="enabled">
             <bool>true</bool>
@@ -186,23 +176,13 @@ with a harmonic/oscillating driving force</string>
           </widget>
          </item>
          <item row="2" column="0">
-          <widget class="QLabel" name="labelX">
-           <property name="enabled">
-            <bool>true</bool>
-           </property>
+          <widget class="QCheckBox" name="ckb_av_1">
            <property name="text">
             <string>X</string>
            </property>
           </widget>
          </item>
          <item row="2" column="1">
-          <widget class="QCheckBox" name="ckb_av_1">
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="2">
           <widget class="Gui::QuantitySpinBox" name="qsb_av_re_1">
            <property name="enabled">
             <bool>true</bool>
@@ -225,7 +205,7 @@ Note: has no effect if a solid was selected</string>
            </property>
           </widget>
          </item>
-         <item row="2" column="3">
+         <item row="2" column="2">
           <widget class="Gui::QuantitySpinBox" name="qsb_av_im_1">
            <property name="enabled">
             <bool>true</bool>
@@ -249,23 +229,13 @@ Note: has no effect if a solid was selected</string>
           </widget>
          </item>
          <item row="3" column="0">
-          <widget class="QLabel" name="labelY">
-           <property name="enabled">
-            <bool>true</bool>
-           </property>
+          <widget class="QCheckBox" name="ckb_av_2">
            <property name="text">
             <string>Y</string>
            </property>
           </widget>
          </item>
          <item row="3" column="1">
-          <widget class="QCheckBox" name="ckb_av_2">
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="2">
           <widget class="Gui::QuantitySpinBox" name="qsb_av_re_2">
            <property name="enabled">
             <bool>true</bool>
@@ -288,7 +258,7 @@ Note: has no effect if a solid was selected</string>
            </property>
           </widget>
          </item>
-         <item row="3" column="3">
+         <item row="3" column="2">
           <widget class="Gui::QuantitySpinBox" name="qsb_av_im_2">
            <property name="enabled">
             <bool>true</bool>
@@ -312,23 +282,13 @@ Note: has no effect if a solid was selected</string>
           </widget>
          </item>
          <item row="4" column="0">
-          <widget class="QLabel" name="labelZ">
-           <property name="enabled">
-            <bool>true</bool>
-           </property>
+          <widget class="QCheckBox" name="ckb_av_3">
            <property name="text">
             <string>Z</string>
            </property>
           </widget>
          </item>
          <item row="4" column="1">
-          <widget class="QCheckBox" name="ckb_av_3">
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="2">
           <widget class="Gui::QuantitySpinBox" name="qsb_av_re_3">
            <property name="enabled">
             <bool>true</bool>
@@ -351,7 +311,7 @@ Note: has no effect if a solid was selected</string>
            </property>
           </widget>
          </item>
-         <item row="4" column="3">
+         <item row="4" column="2">
           <widget class="Gui::QuantitySpinBox" name="qsb_av_im_3">
            <property name="enabled">
             <bool>true</bool>
@@ -380,15 +340,15 @@ Note: has no effect if a solid was selected</string>
       <item>
        <layout class="QGridLayout" name="gridLayout">
         <item row="3" column="0">
-         <widget class="QCheckBox" name="ckb_electric_infinity">
+         <widget class="QCheckBox" name="ckb_far_field">
           <property name="enabled">
            <bool>true</bool>
           </property>
           <property name="toolTip">
-           <string>Whether the boundary condition defines a farfield potential</string>
+           <string>Far field approximation assuming spherical symmetry</string>
           </property>
           <property name="text">
-           <string>Electric infinity</string>
+           <string>Far field</string>
           </property>
          </widget>
         </item>
@@ -412,6 +372,8 @@ Note: has no effect if a solid was selected</string>
      <property name="title">
       <string>Neumann</string>
      </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
      <layout class="QFormLayout" name="gridLayout_8">
       <item row="0" column="0">
        <widget class="QLabel" name="surfacechargedensityLbl">
@@ -428,6 +390,213 @@ Note: has no effect if a solid was selected</string>
         <property name="unit" stdset="0">
          <string notr="true">C/m^2</string>
         </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+      <item>
+       <widget class="QCheckBox" name="ckb_magnetic">
+        <property name="toolTip">
+         <string>To define magnetic flux density</string>
+        </property>
+        <property name="text">
+         <string>Magnetic flux density</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="gb_magnetic">
+        <property name="title">
+         <string></string>
+        </property>
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="toolTip">
+         <string>Imaginary part is only used for equations
+with a harmonic/oscillating driving force</string>
+        </property>
+        <property name="checkable">
+         <bool>false</bool>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_4" columnstretch="0,255,255">
+         <item row="0" column="1">
+          <widget class="QLabel" name="l_real_magnetic">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="text">
+            <string>Real</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QLabel" name="l_imag_magnetic">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="text">
+            <string>Imaginary</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QCheckBox" name="ckb_magnetic_1">
+           <property name="text">
+            <string>X</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="Gui::QuantitySpinBox" name="qsb_magnetic_re_1">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="toolTip">
+            <string>Real part of magnetic flux density x-component</string>
+           </property>
+           <property name="keyboardTracking">
+            <bool>true</bool>
+           </property>
+           <property name="unit" stdset="0">
+            <string notr="true">Wb/m^2</string>
+           </property>
+           <property name="singleStep">
+            <double>1.000000000000000</double>
+           </property>
+           <property name="value">
+            <double>1.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="2">
+          <widget class="Gui::QuantitySpinBox" name="qsb_magnetic_im_1">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="toolTip">
+            <string>Imaginary part of magnetic flux density x-component</string>
+           </property>
+           <property name="keyboardTracking">
+            <bool>true</bool>
+           </property>
+           <property name="unit" stdset="0">
+            <string notr="true">Wb/m^2</string>
+           </property>
+           <property name="singleStep">
+            <double>1.000000000000000</double>
+           </property>
+           <property name="value">
+            <double>1.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QCheckBox" name="ckb_magnetic_2">
+           <property name="text">
+            <string>Y</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="Gui::QuantitySpinBox" name="qsb_magnetic_re_2">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="toolTip">
+            <string>Real part of magnetic flux density y-component</string>
+           </property>
+           <property name="keyboardTracking">
+            <bool>true</bool>
+           </property>
+           <property name="unit" stdset="0">
+            <string notr="true">Wb/m^2</string>
+           </property>
+           <property name="singleStep">
+            <double>1.000000000000000</double>
+           </property>
+           <property name="value">
+            <double>1.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="2">
+          <widget class="Gui::QuantitySpinBox" name="qsb_magnetic_im_2">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="toolTip">
+            <string>Imaginary part of magnetic flux density y-component</string>
+           </property>
+           <property name="keyboardTracking">
+            <bool>true</bool>
+           </property>
+           <property name="unit" stdset="0">
+            <string notr="true">Wb/m^2</string>
+           </property>
+           <property name="singleStep">
+            <double>1.000000000000000</double>
+           </property>
+           <property name="value">
+            <double>1.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QCheckBox" name="ckb_magnetic_3">
+           <property name="text">
+            <string>Z</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="Gui::QuantitySpinBox" name="qsb_magnetic_re_3">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="toolTip">
+            <string>Real part of magnetic flux density z-component</string>
+           </property>
+           <property name="keyboardTracking">
+            <bool>true</bool>
+           </property>
+           <property name="unit" stdset="0">
+            <string notr="true">Wb/m^2</string>
+           </property>
+           <property name="singleStep">
+            <double>1.000000000000000</double>
+           </property>
+           <property name="value">
+            <double>1.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="2">
+          <widget class="Gui::QuantitySpinBox" name="qsb_magnetic_im_3">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="toolTip">
+            <string>Imaginary part of magnetic flux density z-component</string>
+           </property>
+           <property name="keyboardTracking">
+            <bool>true</bool>
+           </property>
+           <property name="unit" stdset="0">
+            <string notr="true">Wb/m^2</string>
+           </property>
+           <property name="singleStep">
+            <double>1.000000000000000</double>
+           </property>
+           <property name="value">
+            <double>1.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </item>
      </layout>
