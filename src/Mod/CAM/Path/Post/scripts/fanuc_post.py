@@ -360,13 +360,7 @@ def export(objectslist, filename, argstring):
 
     if FreeCAD.GuiUp and SHOW_EDITOR:
         dia = PostUtils.GCodeEditorDialog()
-
-        # Workaround for 1.1 while we wait for
-        # https://github.com/FreeCAD/FreeCAD/pull/26008 to be merged.
-        if hasattr(dia.editor, "setPlainText"):
-            dia.editor.setPlainText(gcode)
-        else:
-            dia.editor.setText(gcode)
+        dia.editor.setText(gcode)
         result = dia.exec_()
         if result:
             final = dia.editor.toPlainText()
