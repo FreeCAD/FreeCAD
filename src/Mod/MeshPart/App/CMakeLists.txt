@@ -18,6 +18,7 @@ target_include_directories(
     PRIVATE
     ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
+    ${pybind11_INCLUDE_DIR}
 )
 
 target_include_directories(
@@ -123,6 +124,7 @@ if (BUILD_FLAT_MESH)
 
     add_library(flatmesh SHARED ${FLATMESH_SRCS})
     SET_PYTHON_PREFIX_SUFFIX(flatmesh)
+    target_include_directories(flatmesh PRIVATE ${pybind11_INCLUDE_DIR})
     target_link_libraries(flatmesh ${Python3_LIBRARIES} ${MeshPart_LIBS})
 
     SET_BIN_DIR(flatmesh flatmesh /Mod/MeshPart)
