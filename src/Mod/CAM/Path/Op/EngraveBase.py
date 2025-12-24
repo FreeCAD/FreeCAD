@@ -98,9 +98,9 @@ class ObjectOp(PathOp.ObjectOp):
             for z in zValues:
                 Path.Log.debug(z)
                 if last and wire.isClosed():
-                    # Add step down to next Z for closed profile
+                    # Skip retract and add step down to next Z for closed profile
                     self.appendCommand(
-                        Path.Command("G1", {"X": last.x, "Y": last.y, "Z": last.z}),
+                        Path.Command("G1", {"Z": last.z}),
                         z,
                         relZ,
                         self.vertFeed,
@@ -129,17 +129,13 @@ class ObjectOp(PathOp.ObjectOp):
                         self.commandlist.append(
                             Path.Command(
                                 "G0",
-                                {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid},
+                                {"Z": obj.ClearanceHeight.Value},
                             )
                         )
-                        self.commandlist.append(
-                            Path.Command("G0", {"X": last.x, "Y": last.y, "F": self.horizRapid})
-                        )
-                        self.commandlist.append(
-                            Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid})
-                        )
+                        self.commandlist.append(Path.Command("G0", {"X": last.x, "Y": last.y}))
+                        self.commandlist.append(Path.Command("G0", {"Z": obj.SafeHeight.Value}))
                         self.appendCommand(
-                            Path.Command("G1", {"X": last.x, "Y": last.y, "Z": last.z}),
+                            Path.Command("G1", {"Z": last.z}),
                             z,
                             relZ,
                             self.vertFeed,
@@ -159,10 +155,6 @@ class ObjectOp(PathOp.ObjectOp):
                             # Add gcode for reversed edge
                             self.appendCommand(cmd, z, relZ, self.horizFeed)
                         last = edge.Vertexes[0].Point
-
-            self.commandlist.append(
-                Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid})
-            )
 
     def appendCommand(self, cmd, z, relZ, feed):
         params = cmd.Parameters

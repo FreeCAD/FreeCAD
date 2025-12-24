@@ -135,16 +135,10 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
                 else:
                     shapeWires = shape.Wires
                 Path.Log.debug("jobshape has {} edges".format(len(shape.Edges)))
-                self.commandlist.append(
-                    Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid})
-                )
                 self.buildpathocc(obj, shapeWires, self.getZValues(obj))
                 wires.extend(shapeWires)
             self.wires = wires
             Path.Log.debug("processing {} jobshapes -> {} wires".format(len(jobshapes), len(wires)))
-        # the last command is a move to clearance, which is automatically added by PathOp
-        if self.commandlist:
-            self.commandlist.pop()
 
     def opUpdateDepths(self, obj):
         """updateDepths(obj) ... engraving is always done at the top most z-value"""
