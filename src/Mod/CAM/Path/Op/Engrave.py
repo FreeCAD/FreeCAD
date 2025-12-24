@@ -86,6 +86,23 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Reverse wires"),
         )
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "Pattern",
+            "Path",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Direction of the path\n"
+                "\nDirectional - use direction from wire"
+                "\nBidirectional - direction can be swapped while step down or optimizing path",
+            ),
+        )
+        pattern = [
+            QT_TRANSLATE_NOOP("CAM_Engrave", "Directional"),
+            QT_TRANSLATE_NOOP("CAM_Engrave", "Bidirectional"),
+        ]
+        obj.Pattern = pattern
+        obj.Pattern = "Bidirectional"
         self.setupAdditionalProperties(obj)
 
     def opOnDocumentRestored(self, obj):
@@ -96,6 +113,23 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
                 "Path",
                 QT_TRANSLATE_NOOP("App::Property", "Reverse wires"),
             )
+        if not hasattr(obj, "Pattern"):
+            obj.addProperty(
+                "App::PropertyEnumeration",
+                "Pattern",
+                "Path",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Direction of the path\n"
+                    "\nDirectional - use direction from wire"
+                    "\nBidirectional - direction can be swapped while step down or optimizing path",
+                ),
+            )
+            pattern = [
+                QT_TRANSLATE_NOOP("CAM_Engrave", "Directional"),
+                QT_TRANSLATE_NOOP("CAM_Engrave", "Bidirectional"),
+            ]
+            obj.Pattern = pattern
         self.setupAdditionalProperties(obj)
 
     def opExecute(self, obj):
