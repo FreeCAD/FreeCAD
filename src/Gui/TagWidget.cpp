@@ -81,8 +81,7 @@ void TagWidget::focusInEvent(QFocusEvent* event)
     setCursorVisible(true);
     updateDisplayText();
     calcRectsUpdateScrollRanges();
-    if (event->reason() != Qt::FocusReason::MouseFocusReason
-        || _restoreCursorPositionOnFocusClick) {
+    if (event->reason() != Qt::FocusReason::MouseFocusReason || _restoreCursorPositionOnFocusClick) {
         ensureCursorIsVisibleH();
         ensureCursorIsVisibleV();
     }
@@ -153,9 +152,7 @@ void TagWidget::mousePressEvent(QMouseEvent* event)
         else if (_editingIndex == i) {
             moveCursor(
                 _textLayout.lineAt(0).xToCursor(
-                    (event->pos()
-                     - (editorRect() - _pillThickness).translated(-offset()).topLeft())
-                        .x()
+                    (event->pos() - (editorRect() - _pillThickness).translated(-offset()).topLeft()).x()
                 ),
                 false
             );
@@ -298,8 +295,8 @@ void TagWidget::mouseMoveEvent(QMouseEvent* event)
 /// Calculate the width that a tag would have with the given text width
 int TagWidget::pillWidth(int textWidth, bool hasCross) const
 {
-    return textWidth + _pillThickness.left()
-        + (hasCross ? (_tagCrossSpacing + _tagCrossSize) : 0) + _pillThickness.right();
+    return textWidth + _pillThickness.left() + (hasCross ? (_tagCrossSpacing + _tagCrossSize) : 0)
+        + _pillThickness.right();
 }
 
 /// Calculate the height that a tag would have with the given text height
@@ -621,7 +618,7 @@ void TagWidget::moveCursor(int pos, bool mark)
         auto e = _selectStart + _selectSize;
         int anchor = _selectSize > 0 && _cursor == _selectStart ? e
             : _selectSize > 0 && _cursor == e                   ? _selectStart
-                                                               : _cursor;
+                                                                : _cursor;
         _selectStart = qMin(anchor, pos);
         _selectSize = qMax(anchor, pos) - _selectStart;
     }

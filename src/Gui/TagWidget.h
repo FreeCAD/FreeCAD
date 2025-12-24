@@ -60,9 +60,7 @@ class GuiExport TagWidget: public QAbstractScrollArea
             setRestoreCursorPositionOnFocusClick
     )
     Q_PROPERTY(QMargins pillThickness MEMBER _pillThickness WRITE setPillThickness)
-    Q_PROPERTY(
-        int pillHorizontalSpacing MEMBER _pillHorizontalSpacing WRITE setPillHorizontalSpacing
-    )
+    Q_PROPERTY(int pillHorizontalSpacing MEMBER _pillHorizontalSpacing WRITE setPillHorizontalSpacing)
     Q_PROPERTY(int pillVerticalSpacing MEMBER _pillVerticalSpacing WRITE setPillVerticalSpacing)
     Q_PROPERTY(qreal tagCrossSize MEMBER _tagCrossSize WRITE setTagCrossSize)
     Q_PROPERTY(int tagCrossSpacing MEMBER _tagCrossSpacing WRITE setTagCrossSpacing)
@@ -214,7 +212,10 @@ private:
 
     bool inCrossArea(size_t tag_index, QPoint const& point, QPoint const& offset) const
     {
-        return crossRectangle(_tags[tag_index].rectangle).adjusted(-1, -1, 1, 1).translated(-offset).contains(point)
+        return crossRectangle(_tags[tag_index].rectangle)
+                   .adjusted(-1, -1, 1, 1)
+                   .translated(-offset)
+                   .contains(point)
             && (!cursorVisible() || tag_index != _editingIndex);
     }
 
@@ -249,7 +250,10 @@ private:
     {
         for (auto& tag : tags) {
             auto const text_width = metrics.horizontalAdvance(tag.text);
-            QRect rectangle(leftTop, QSize(pillWidth(text_width, hasCross), pillHeight(metrics.height())));
+            QRect rectangle(
+                leftTop,
+                QSize(pillWidth(text_width, hasCross), pillHeight(metrics.height()))
+            );
 
             if (fit) {
                 if (

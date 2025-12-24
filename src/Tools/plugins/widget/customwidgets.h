@@ -952,7 +952,7 @@ public:
     void setTags(std::vector<QString> const& tags);
     std::vector<QString> getTags() const;
     void clear();
-    
+
     void setReadOnly(bool readOnly);
     void setUnique(bool unique);
     void setRestoreCursorPositionOnFocusClick(bool restore);
