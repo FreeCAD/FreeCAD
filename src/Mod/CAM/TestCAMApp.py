@@ -118,3 +118,9 @@ from CAMTests.TestMach3Mach4LegacyPost import TestMach3Mach4LegacyPost
 
 from CAMTests.TestSnapmakerPost import TestSnapmakerPost
 from CAMTests.TestTSPSolver import TestTSPSolver
+from CAMTests.TestGcodeProcessingUtils import (
+    TestInsertLineNumbers,
+    TestSuppressRedundantAxesWords,
+    TestFilterInefficientMoves,
+    TestNumberGenerator,
+)
