@@ -32,8 +32,10 @@
 #include <Inventor/nodes/SoIndexedLineSet.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoShape.h>
+#include <Inventor/elements/SoInt32Element.h>
 #include <FCGlobal.h>
 
+class SbBox3f;
 
 namespace Gui
 {
@@ -61,11 +63,11 @@ public:
 
 public:
     SoFCBoundingBox();
-    SoSFVec3f minBounds;   /**< minimum box coordinates */
-    SoSFVec3f maxBounds;   /**< maximum box coordinates */
-    SoSFBool coordsOn;     /**< If true, the coordinates are displayed at each vertex */
-    SoSFBool dimensionsOn; /**< If true, the dimensions are displayed in x,y and z direction */
-
+    SoSFVec3f minBounds;      /**< minimum box coordinates */
+    SoSFVec3f maxBounds;      /**< maximum box coordinates */
+    SoSFBool coordsOn;        /**< If true, the coordinates are displayed at each vertex */
+    SoSFBool dimensionsOn;    /**< If true, the dimensions are displayed in x,y and z direction */
+    SoSFBool skipBoundingBox; /**< If true, skip this node when calculating bounding box */
 
 protected:
     ~SoFCBoundingBox() override;
@@ -74,7 +76,7 @@ protected:
     void computeBBox(SoAction* action, SbBox3f& box, SbVec3f& center) override;
 
 private:
-    SoSeparator *root, *textSep, *dimSep;
+    SoSeparator *bboxSep, *textSep, *dimSep;
     SoCoordinate3* bboxCoords;
     SoIndexedLineSet* bboxLines;
 };
@@ -108,6 +110,35 @@ protected:
     ~SoSkipBoundingGroup() override;
 };
 
+class GuiExport SoSkipBoundingBoxElement: public SoInt32Element
+{
+    typedef SoInt32Element inherited;
+
+    SO_ELEMENT_HEADER(SoSkipBoundingBoxElement);
+
+public:
+    static void initClass(void);
+
+protected:
+    virtual ~SoSkipBoundingBoxElement();
+
+public:
+    typedef SoSkipBoundingGroup::Modes Modes;
+
+    virtual void init(SoState* state);
+
+    static void set(SoState* const state, Modes mode);
+    static Modes get(SoState* const state);
+};
+
+/*libCoin3D SbBox3f::isEmpty() does not check for NaN in the coordinate
+which may happen because of some code in FreeCAD, e.g.
+Base::Vector3d::GetAngle() returns NaN when the input is a zero length
+vector.
+
+The new API is added to check for NaN to improve robustness in bound box
+checking.*/
+bool GuiExport isValidBBox(const SbBox3f& bbox);
 }  // namespace Gui
 
 

@@ -72,6 +72,7 @@
 #include "SoFCVectorizeSVGAction.h"
 #include "View3DInventorViewer.h"
 #include "View3DPy.h"
+#include "ViewParams.h"
 #include "ViewProvider.h"
 #include "ViewProviderDocumentObject.h"
 #include "WaitCursor.h"
@@ -362,7 +363,11 @@ bool View3DInventor::onMsg(const char* pMsg, const char** ppReturn)
         return true;
     }
     else if (strcmp("ViewSelection", pMsg) == 0) {
-        _viewer->viewSelection();
+        _viewer->viewSelection(ViewParams::instance()->getViewSelectionExtend());
+        return true;
+    }
+    else if (strcmp("ViewSelectionExtend", pMsg) == 0) {
+        _viewer->viewSelection(true);
         return true;
     }
     else if (strcmp("SetStereoRedGreen", pMsg) == 0) {
