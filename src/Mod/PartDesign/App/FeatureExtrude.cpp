@@ -145,6 +145,11 @@ void FeatureExtrude::onChanged(const App::Property* prop)
         if (Midplane.getValue()) {
             SideType.setValue("Symmetric");
         }
+        else {
+            Base::Console()
+                .warning("Deprecated Midplane property was explicitly set to False: assuming SideType='One side'\n");
+            SideType.setValue("One side");
+        }
     }
     ProfileBased::onChanged(prop);
 }
