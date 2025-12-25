@@ -38,52 +38,6 @@ class DrillCycleExpander:
         self.motion_mode = motion_mode
         self.current_position = initial_position if initial_position else {"X": 0.0, "Y": 0.0, "Z": 0.0}
         
-    def expand_command(self, command: Path.Command) -> List[Path.Command]:
-        """
-        Expand a single drill cycle command into basic movements.
-        
-        Args:
-            command: Path.Command object (e.g., Path.Command("G81", {"X": 10.0, "Y": 10.0, "Z": -5.0, "R": 2.0, "F": 100.0}))
-        
-        Returns:
-            List of expanded Path.Command objects
-        """
-        cmd_name = command.Name.upper()
-        params = command.Parameters
-        
-        # Handle modal commands
-        if cmd_name == 'G98':
-            self.retract_mode = 'G98'
-            return [command]
-        elif cmd_name == 'G99':
-            self.retract_mode = 'G99'
-            return [command]
-        elif cmd_name == 'G90':
-            self.motion_mode = 'G90'
-            return [command]
-        elif cmd_name == 'G91':
-            self.motion_mode = 'G91'
-            return [command]
-        elif cmd_name == 'G80':
-            # Cancel drill cycle
-            return [command]
-        
-        # Handle drill cycles
-        if cmd_name in ('G81', 'G82', 'G73', 'G83'):
-            return self._expand_drill_cycle(command)
-        
-        # Update position for non-drill commands
-        if cmd_name in ('G0', 'G00', 'G1', 'G01'):
-            for axis in ('X', 'Y', 'Z'):
-                if axis in params:
-                    if self.motion_mode == 'G90':
-                        self.current_position[axis] = params[axis]
-                    else:  # G91
-                        self.current_position[axis] += params[axis]
-        
-        # Pass through other commands unchanged
-        return [command]
-    
     def _expand_drill_cycle(self, command: Path.Command) -> List[Path.Command]:
         """Expand a drill cycle into basic movements."""
         cmd_name = command.Name.upper()

@@ -25,6 +25,7 @@
 import TestApp
 
 from CAMTests.TestCAMSanity import TestCAMSanity
+
 from CAMTests.TestLinkingGenerator import TestGetLinkingMoves
 from CAMTests.TestPathProfile import TestPathProfile
 
@@ -57,6 +58,7 @@ from CAMTests.TestPathPost import TestBuildPostList
 from CAMTests.TestPathPost import TestPostProcessorFactory
 from CAMTests.TestPathPost import TestResolvingPostProcessorName
 from CAMTests.TestPathPost import TestFileNameGenerator
+from CAMTests.TestPathPost import TestHeaderBuilder
 
 from CAMTests.TestPathPreferences import TestPathPreferences
 from CAMTests.TestPathProfile import TestPathProfile

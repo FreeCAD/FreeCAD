@@ -22,9 +22,8 @@
 # *                                                                         *
 # ***************************************************************************
 
-from Path.Post.Command import DlgSelectPostProcessor
-from Path.Post.Processor import PostProcessor, PostProcessorFactory
-from unittest.mock import patch, MagicMock
+from Path.Post.Processor import PostProcessorFactory
+from unittest.mock import patch
 import FreeCAD
 import Path
 import Path.Post.Command as PathCommand
@@ -32,9 +31,9 @@ import Path.Post.Processor as PathPost
 import Path.Post.Utils as PostUtils
 import Path.Main.Job as PathJob
 import Path.Tool.Controller as PathToolController
-import difflib
 import os
 import unittest
+from Path.Post.Processor import _HeaderBuilder
 
 from .FilePathTestUtils import assertFilePathsEqual
 
@@ -816,3 +815,163 @@ class TestBuildPostList(unittest.TestCase):
         firstoplist = firstoutputitem[1]
         self.assertEqual(len(firstoplist), 6)
         self.assertTrue(firstoutputitem[0] == "G54")
+
+class TestHeaderBuilder(unittest.TestCase):
+    """Test the HeaderBuilder class."""
+    
+    def test010_initialization(self):
+        """Test that HeaderBuilder initializes with empty data structures."""
+        
+        builder = _HeaderBuilder()
+        
+        # Check initial state
+        self.assertIsNone(builder._exporter)
+        self.assertIsNone(builder._post_processor)
+        self.assertIsNone(builder._cam_file)
+        self.assertIsNone(builder._output_time)
+        self.assertEqual(builder._tools, [])
+        self.assertEqual(builder._fixtures, [])
+        self.assertEqual(builder._notes, [])
+    
+    def test020_add_methods(self):
+        """Test adding header elements."""
+        
+        builder = _HeaderBuilder()
+        
+        # Add various elements
+        builder.add_exporter_info("TestExporter")
+        builder.add_machine_info("TestMachine")
+        builder.add_post_processor("test_post")
+        builder.add_cam_file("test.fcstd")
+        builder.add_author("Test Author")
+        builder.add_output_time("2024-12-24 10:00:00")
+        builder.add_tool(1, "End Mill")
+        builder.add_tool(2, "Drill Bit")
+        builder.add_fixture("G54")
+        builder.add_fixture("G55")
+        builder.add_note("This is a test note")
+        
+        # Verify elements were added
+        self.assertEqual(builder._exporter, "TestExporter")
+        self.assertEqual(builder._machine, "TestMachine")
+        self.assertEqual(builder._post_processor, "test_post")
+        self.assertEqual(builder._cam_file, "test.fcstd")
+        self.assertEqual(builder._author, "Test Author")
+        self.assertEqual(builder._output_time, "2024-12-24 10:00:00")
+        self.assertEqual(builder._tools, [(1, "End Mill"), (2, "Drill Bit")])
+        self.assertEqual(builder._fixtures, ["G54", "G55"])
+        self.assertEqual(builder._notes, ["This is a test note"])
+    
+    def test030_path_property_empty(self):
+        """Test Path property with no data returns empty Path."""
+        
+        builder = _HeaderBuilder()
+        path = builder.Path
+        
+        self.assertIsInstance(path, Path.Path)
+        self.assertEqual(len(path.Commands), 0)
+    
+    def test040_path_property_complete(self):
+        """Test Path property generates correct comment commands."""
+        
+        builder = _HeaderBuilder()
+        
+        # Add complete header data
+        builder.add_exporter_info("FreeCAD")
+        builder.add_machine_info("CNC Router")
+        builder.add_post_processor("linuxcnc")
+        builder.add_cam_file("project.fcstd")
+        builder.add_author("John Doe")
+        builder.add_output_time("2024-12-24 10:00:00")
+        builder.add_tool(1, "1/4\" End Mill")
+        builder.add_fixture("G54")
+        builder.add_note("Test operation")
+        
+        path = builder.Path
+        
+        # Verify it's a Path object
+        self.assertIsInstance(path, Path.Path)
+        
+        # Check expected number of commands
+        expected_commands = [
+            "(Exported by FreeCAD)",
+            "(Machine: CNC Router)",
+            "(Post Processor: linuxcnc)",
+            "(Cam File: project.fcstd)",
+            "(Author: John Doe)",
+            "(Output Time: 2024-12-24 10:00:00)",
+            "(T1=1/4\" End Mill)",
+            "(Fixture: G54)",
+            "(Note: Test operation)"
+        ]
+        
+        self.assertEqual(len(path.Commands), len(expected_commands))
+        
+        # Verify each command
+        for i, expected_comment in enumerate(expected_commands):
+            self.assertIsInstance(path.Commands[i], Path.Command)
+            self.assertEqual(path.Commands[i].Name, expected_comment)
+    
+    def test050_path_property_partial(self):
+        """Test Path property with partial data."""
+        
+        builder = _HeaderBuilder()
+        
+        # Add only some elements
+        builder.add_exporter_info()
+        builder.add_tool(5, "Drill")
+        builder.add_note("Partial test")
+        
+        path = builder.Path
+        
+        expected_commands = [
+            "(Exported by FreeCAD)",
+            "(T5=Drill)",
+            "(Note: Partial test)"
+        ]
+        
+        self.assertEqual(len(path.Commands), len(expected_commands))
+        for i, expected_comment in enumerate(expected_commands):
+            self.assertEqual(path.Commands[i].Name, expected_comment)
+
+        # converted
+        expected_gcode = "(Exported by FreeCAD)\n(T5=Drill)\n(Note: Partial test)\n"
+        gcode = path.toGCode()
+        self.assertEqual(gcode, expected_gcode)
+
+    
+    def test060_multiple_tools_fixtures_notes(self):
+        """Test adding multiple tools, fixtures, and notes."""
+        
+        builder = _HeaderBuilder()
+        
+        # Add multiple items
+        builder.add_tool(1, "Tool A")
+        builder.add_tool(2, "Tool B")
+        builder.add_tool(3, "Tool C")
+        
+        builder.add_fixture("G54")
+        builder.add_fixture("G55")
+        builder.add_fixture("G56")
+        
+        builder.add_note("Note 1")
+        builder.add_note("Note 2")
+        
+        path = builder.Path
+        
+        # Should have 8 commands (3 tools + 3 fixtures + 2 notes)
+        self.assertEqual(len(path.Commands), 8)
+        
+        # Check tool commands
+        self.assertEqual(path.Commands[0].Name, "(T1=Tool A)")
+        self.assertEqual(path.Commands[1].Name, "(T2=Tool B)")
+        self.assertEqual(path.Commands[2].Name, "(T3=Tool C)")
+        
+        # Check fixture commands
+        self.assertEqual(path.Commands[3].Name, "(Fixture: G54)")
+        self.assertEqual(path.Commands[4].Name, "(Fixture: G55)")
+        self.assertEqual(path.Commands[5].Name, "(Fixture: G56)")
+        
+        # Check note commands
+        self.assertEqual(path.Commands[6].Name, "(Note: Note 1)")
+        self.assertEqual(path.Commands[7].Name, "(Note: Note 2)")
