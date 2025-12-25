@@ -163,7 +163,7 @@ class PartDesignGuiTestCases(unittest.TestCase):
         self.Pad.Type = 0
         self.Pad.UpToFace = None
         self.Pad.Reversed = 0
-        self.Pad.Midplane = 0
+        self.Pad.SideType = "One side"
         self.Pad.Offset = 0.000000
 
         self.BodySource.addObject(self.Pad)
@@ -233,7 +233,7 @@ class PartDesignGuiTestCases(unittest.TestCase):
         self.Pad.Type = 0
         self.Pad.UpToFace = None
         self.Pad.Reversed = 0
-        self.Pad.Midplane = 0
+        self.Pad.SideType = "One side"
         self.Pad.Offset = 0.000000
 
         self.Doc.recompute()
