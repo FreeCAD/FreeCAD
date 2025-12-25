@@ -28,7 +28,6 @@ These utilities do NOT operate on Path.Command objects. They
 operate on strings of pre-processed G-code.
 """
 
-import re
 from typing import List
 
 class NumberGenerator:
@@ -127,19 +126,18 @@ def suppress_redundant_axes_words(gcode: List[str]) -> List[str]:
         
         # First pass: collect all movements in this command
         for word in words:
-            axis = word[0] if word else ''
+            if len(word) <= 1:
+                continue
+            axis = word[0]
+            value_str = word[1:]
+            try:
+                value = float(value_str)
+            except ValueError:
+                continue
             if axis in current_pos:
-                try:
-                    value = float(word[1:])
-                    new_pos[axis] = value
-                except (ValueError, IndexError):
-                    pass
+                new_pos[axis] = value
             elif axis == 'F':
-                try:
-                    value = float(word[1:])
-                    new_feed = value
-                except (ValueError, IndexError):
-                    pass
+                new_feed = value
         
         # Second pass: filter out redundant words
         for word in words:

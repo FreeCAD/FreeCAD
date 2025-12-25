@@ -21,7 +21,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-from unittest.mock import patch, MagicMock
 import unittest
 
 from Path.Post.GcodeProcessingUtils import (

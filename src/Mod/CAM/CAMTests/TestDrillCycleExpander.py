@@ -73,7 +73,7 @@ class TestDrillCycleExpander(unittest.TestCase):
             Path.Command('G81', {'Z': -5.0, 'R': 2.0, 'F': 100.0})  # No X/Y, should use current
         ]
         
-        result = expander.expand_commands(commands)
+        expander.expand_commands(commands)
         
         # Position should be updated from first move
         self.assertEqual(expander.current_position['X'], 5.0)

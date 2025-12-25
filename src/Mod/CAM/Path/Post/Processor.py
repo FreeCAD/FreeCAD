@@ -62,6 +62,101 @@ class _TempObject:
     Label = "Fixture"
 
 
+class _HeaderBuilder:
+    """Builder class for constructing G-code header with structured data storage."""
+    
+    def __init__(self):
+        """Initialize the header builder with empty data structures."""
+        self._exporter = None
+        self._machine = None
+        self._post_processor = None
+        self._cam_file = None
+        self._author = None
+        self._output_time = None
+        self._tools = []  # List of (tool_number, tool_name) tuples
+        self._fixtures = []  # List of fixture names
+        self._notes = []  # list of notes
+    
+    def add_exporter_info(self, exporter: str = "FreeCAD"):
+        """Add exporter information to the header."""
+        self._exporter = exporter
+
+    def add_machine_info(self, machine: str):
+        """Add machine information to the header."""
+        self._machine = machine
+    
+    def add_post_processor(self, name: str):
+        """Add post processor name to the header."""
+        self._post_processor = name
+    
+    def add_cam_file(self, filename: str):
+        """Add CAM file information to the header."""
+        self._cam_file = filename
+
+    def add_author(self, author: str):
+        """Add author information to the header."""
+        self._author = author
+    
+    def add_output_time(self, timestamp: str):
+        """Add output timestamp to the header."""
+        self._output_time = timestamp
+    
+    def add_tool(self, tool_number: int, tool_name: str):
+        """Add a tool to the header."""
+        self._tools.append((tool_number, tool_name))
+    
+    def add_fixture(self, fixture_name: str):
+        """Add a fixture to the header."""
+        self._fixtures.append(fixture_name)
+    
+    def add_note(self, note: str):
+        """Add a note to the header."""
+        self._notes.append(note)
+    
+    @property
+    def Path(self) -> Path.Path:
+        """Return a Path.Path containing Path.Commands as G-code comments for the header."""
+        commands = []
+        
+        # Add exporter info
+        if self._exporter:
+            commands.append(Path.Command(f"(Exported by {self._exporter})"))
+
+        # Add machine info
+        if self._machine:
+            commands.append(Path.Command(f"(Machine: {self._machine})"))
+        
+        # Add post processor info
+        if self._post_processor:
+            commands.append(Path.Command(f"(Post Processor: {self._post_processor})"))
+        
+        # Add CAM file info
+        if self._cam_file:
+            commands.append(Path.Command(f"(Cam File: {self._cam_file})"))
+
+        # Add author info
+        if self._author:
+            commands.append(Path.Command(f"(Author: {self._author})")) 
+
+        # Add output time
+        if self._output_time:
+            commands.append(Path.Command(f"(Output Time: {self._output_time})"))
+        
+        # Add tools
+        for tool_number, tool_name in self._tools:
+            commands.append(Path.Command(f"(T{tool_number}={tool_name})"))
+        
+        # Add fixtures (if needed in header)
+        for fixture in self._fixtures:
+            commands.append(Path.Command(f"(Fixture: {fixture})"))
+        
+        # Add notes
+        for note in self._notes:
+            commands.append(Path.Command(f"(Note: {note})"))
+        
+        return Path.Path(commands)
+
+
 #
 # Define some types that are used throughout this file.
 #
