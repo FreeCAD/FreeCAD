@@ -206,6 +206,11 @@ locations = [
         "../Mod/Start/Gui/Resources/Start.qrc",
     ],
     [
+        "Surface",
+        "../Mod/Surface/Gui/Resources/translations",
+        "../Mod/Surface/Gui/Resources/Surface.qrc",
+    ],
+    [
         "Test",
         "../Mod/Test/Gui/Resources/translations",
         "../Mod/Test/Gui/Resources/Test.qrc",
