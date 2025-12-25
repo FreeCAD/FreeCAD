@@ -126,7 +126,6 @@ public:
     virtual double getLineWidth();
     virtual double getVertexSize();
 
-    bool isExporting() const;
     bool hideCenterMarks() const;
 
 
