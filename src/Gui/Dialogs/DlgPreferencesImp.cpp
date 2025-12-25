@@ -1944,10 +1944,6 @@ void PreferencesSearchController::applyHighlightToWidget(QWidget* widget)
 
 bool PreferencesSearchController::handleSearchBoxKeyPress(QKeyEvent* keyEvent)
 {
-    if (!m_searchResultsList->isVisible() || m_searchResults.isEmpty()) {
-        return false;
-    }
-
     switch (keyEvent->key()) {
         case Qt::Key_Down: {
             // Move selection down in popup, skipping separators
