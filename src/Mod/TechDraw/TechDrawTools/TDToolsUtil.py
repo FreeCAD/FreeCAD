@@ -165,10 +165,10 @@ def getSelVertexNames(nVertex=1, nSel=0):
     nSel=0 ... number of selected view, 0 = first selected
     Return a list of the names of the selected vertexes if at least nVertex vertexes are selected, otherwise return False
     '''
-    if getSelView(nSel):
-        view = getSelView(nSel)
-    else:
+    view = getSelView(nSel)
+    if not view:
         return False
+        
     if not Gui.Selection.getSelectionEx():
         displayMessage('TechDraw_Utils',
                         QT_TRANSLATE_NOOP('TechDraw_Utils','No vertex selected'))
@@ -197,10 +197,10 @@ def getSelEdgeNames(nEdge=1, nSel=0):
     nSel=0 ... number of selected view, 0 = first selected
     Return a list of names for selected edges if at least nedge edges are selected, otherwise return False
     '''
-    if getSelView(nSel):
-        view = getSelView(nSel)
-    else:
+    view = getSelView(nSel)
+    if not view:
         return False
+        
     if not Gui.Selection.getSelectionEx():
         displayMessage('TechDraw_Utils',
                         QT_TRANSLATE_NOOP('TechDraw_Utils','No edge selected'))
