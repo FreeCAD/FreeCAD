@@ -106,6 +106,7 @@ This _Simple API_ has evolved since this original port to fix some problems and 
 These projects use hard forks of libE57Format:
 
 - [FreeCAD](https://github.com/FreeCAD/FreeCAD)
+- [MicMac](https://github.com/micmacIGN/micmac)
 - [PDAL](https://github.com/PDAL/PDAL)
 
 There are also many commercial products using libE57Format. If any of them would like to sponsor the project and be listed here, please <a href="mailto:asmaloney@gmail.com?subject=libE57Format Sponsorship">contact Andy</a>.
