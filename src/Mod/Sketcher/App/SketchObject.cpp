@@ -108,6 +108,7 @@
 
 #include "GeoEnum.h"
 #include "SketchObject.h"
+#include "Constraint.h"
 #include "SketchObjectPy.h"
 #include "SolverGeometryExtension.h"
 #include "ExternalGeometryFacade.h"
@@ -2295,6 +2296,8 @@ int SketchObject::addConstraints(const std::vector<Constraint*>& ConstraintList)
             AutoLockTangencyAndPerpty(cnew);
         }
 
+        setOrientation(cnew);
+
         addGeometryState(cnew);
     }
 
@@ -2364,8 +2367,10 @@ int SketchObject::addConstraint(std::unique_ptr<Constraint> constraint)
 
     Constraint* constNew = constraint.release();
 
-    if (constNew->Type == Tangent || constNew->Type == Perpendicular)
+    if (constNew->Type == Tangent || constNew->Type == Perpendicular) {
         AutoLockTangencyAndPerpty(constNew);
+    }
+    setOrientation(constNew);
 
     addGeometryState(constNew);
 
@@ -3067,6 +3072,61 @@ void SketchObject::addConstraint(Sketcher::ConstraintType constrType, int firstG
         constrType, firstGeoId, firstPos, secondGeoId, secondPos, thirdGeoId, thirdPos);
 
     this->addConstraint(std::move(newConstr));
+}
+void SketchObject::setOrientation(Constraint* constr)
+{
+    if (constr->Type != Distance || constr->Orientation != ConstraintOrientation::None) {
+        return;
+    }
+
+    // Try to find the orientation of point-line distance
+    if (constr->FirstPos != PointPos::none && constr->Second != GeoEnum::GeoUndef) {
+        const Part::Geometry* secGeo = getGeometry(constr->Second);
+        if (!secGeo->is<Part::GeomLineSegment>()) {
+            return; // circle-point distance
+        }
+
+        auto* geoLine = static_cast<const Part::GeomLineSegment*>(secGeo);
+
+        // line
+        Base::Vector3d A = geoLine->getStartPoint();
+        Base::Vector3d B = geoLine->getEndPoint();
+
+        // point to line distance, circle to line distance
+        Base::Vector3d C = getPoint(constr->First, constr->FirstPos);
+
+        bool ccw = B.x * C.y - B.y*C.x - A.x*C.y + A.y*C.x + A.x*B.y - A.y*B.x > 0.0;
+
+        constr->Orientation = ccw ? ConstraintOrientation::CounterClockwise
+                                : ConstraintOrientation::Clockwise;
+        return;
+    }
+
+    // Try to find the orientation of circle-circle distance
+    if (constr->FirstPos == PointPos::none && constr->SecondPos == PointPos::none && constr->Second != GeoEnum::GeoUndef) {
+        const Part::Geometry* firGeo = getGeometry(constr->First);
+        const Part::Geometry* secGeo = getGeometry(constr->Second);
+        if (!secGeo->is<Part::GeomCircle>() || !secGeo->is<Part::GeomCircle>()) {
+            return;
+        }
+
+        auto* geoCirc1 = static_cast<const Part::GeomCircle*>(firGeo);
+        auto* geoCirc2 = static_cast<const Part::GeomCircle*>(secGeo);
+
+        // If one of the circle is completly within the other, we will say that
+        // it is internal, if they are not within each other or intersect we won't
+        // make a call
+
+        double centerDistance = Base::Distance(geoCirc1->getLocation(), geoCirc2->getLocation());
+
+        if (centerDistance + geoCirc1->getRadius() < geoCirc2->getRadius()) {
+            constr->Orientation = ConstraintOrientation::Internal; // Circ1 is within circ2
+        } else if (centerDistance + geoCirc2->getRadius() < geoCirc1->getRadius()) {
+            constr->Orientation = ConstraintOrientation::External; // Circ2 is within circ1
+        }
+        return;
+    }
+
 }
 
 std::unique_ptr<Constraint>
@@ -10835,10 +10895,12 @@ void SketchObject::migrateSketch()
 {
     bool noextensions = false;
 
-    for (const auto& g : getInternalGeometry())
+    for (const auto& g : getInternalGeometry()) {
         // no extension - legacy file
-        if (!g->hasExtension(SketchGeometryExtension::getClassTypeId()))
+        if (!g->hasExtension(SketchGeometryExtension::getClassTypeId())) {
             noextensions = true;
+        }
+    }
 
     if (noextensions) {
         for (auto c : Constraints.getValues()) {
@@ -11000,7 +11062,7 @@ void SketchObject::migrateSketch()
                 }
             }
 
-            Constraints.setValues(std::move(newconstraints));
+            constraints = std::move(newconstraints);
 
             Base::Console().critical(
                 this->getFullName(),
@@ -11009,6 +11071,13 @@ void SketchObject::migrateSketch()
                                   "versions of FreeCAD!!\n"));
         }
     }
+
+    // Migrate point-line and circle-line distance from abs to signed
+    for (auto& constr : constraints) {
+        setOrientation(constr);
+    }
+
+    Constraints.setValues(std::move(constraints));
 }
 
 void SketchObject::getGeoVertexIndex(int VertexId, int& GeoId, PointPos& PosId) const
