@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>356</width>
-    <height>311</height>
+    <width>349</width>
+    <height>360</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,7 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
-    <number>12</number>
+    <number>6</number>
    </property>
    <property name="leftMargin">
     <number>0</number>
@@ -70,24 +70,24 @@
        <property name="keyboardTracking">
         <bool>false</bool>
        </property>
+       <property name="unit" stdset="0">
+        <string notr="true">mm</string>
+       </property>
        <property name="minimum">
         <double>0.000000000000000</double>
        </property>
        <property name="value">
         <double>10.000000000000000</double>
        </property>
-       <property name="unit" stdset="0">
-        <string notr="true">mm</string>
-       </property>
       </widget>
      </item>
      <item row="2" column="0">
       <spacer name="verticalSpacer">
        <property name="orientation">
-        <enum>Qt::Vertical</enum>
+        <enum>Qt::Orientation::Vertical</enum>
        </property>
        <property name="sizeType">
-        <enum>QSizePolicy::Preferred</enum>
+        <enum>QSizePolicy::Policy::Preferred</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -117,14 +117,14 @@
        <property name="keyboardTracking">
         <bool>false</bool>
        </property>
+       <property name="unit" stdset="0">
+        <string notr="true">mm</string>
+       </property>
        <property name="minimum">
         <double>0.000000000000000</double>
        </property>
        <property name="value">
         <double>10.000000000000000</double>
-       </property>
-       <property name="unit" stdset="0">
-        <string notr="true">mm</string>
        </property>
       </widget>
      </item>
@@ -140,17 +140,17 @@
         <string>Size</string>
        </property>
        <property name="alignment">
-        <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
+        <set>Qt::AlignmentFlag::AlignBottom|Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing</set>
        </property>
       </widget>
      </item>
      <item row="4" column="0">
       <spacer name="verticalSpacer_2">
        <property name="orientation">
-        <enum>Qt::Vertical</enum>
+        <enum>Qt::Orientation::Vertical</enum>
        </property>
        <property name="sizeType">
-        <enum>QSizePolicy::Fixed</enum>
+        <enum>QSizePolicy::Policy::Fixed</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -180,14 +180,14 @@
        <property name="keyboardTracking">
         <bool>false</bool>
        </property>
+       <property name="unit" stdset="0">
+        <string notr="true">mm</string>
+       </property>
        <property name="minimum">
         <double>0.000000000000000</double>
        </property>
        <property name="value">
         <double>10.000000000000000</double>
-       </property>
-       <property name="unit" stdset="0">
-        <string notr="true">mm</string>
        </property>
       </widget>
      </item>
@@ -197,7 +197,7 @@
         <string>Distance</string>
        </property>
        <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTop|Qt::AlignTrailing</set>
+        <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTop|Qt::AlignmentFlag::AlignTrailing</set>
        </property>
       </widget>
      </item>
@@ -221,24 +221,24 @@
        <property name="keyboardTracking">
         <bool>false</bool>
        </property>
+       <property name="unit" stdset="0">
+        <string notr="true">mm</string>
+       </property>
        <property name="minimum">
         <double>0.000000000000000</double>
        </property>
        <property name="value">
         <double>10.000000000000000</double>
        </property>
-       <property name="unit" stdset="0">
-        <string notr="true">mm</string>
-       </property>
       </widget>
      </item>
      <item row="6" column="1">
       <spacer name="horizontalSpacer">
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeType">
-        <enum>QSizePolicy::Fixed</enum>
+        <enum>QSizePolicy::Policy::Fixed</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -333,12 +333,39 @@
      </layout>
     </widget>
    </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Orientation::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QToolButton" name="Visualize">
+       <property name="text">
+        <string>Visualize</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
   </layout>
  </widget>
  <customwidgets>
   <customwidget>
    <class>Gui::QuantitySpinBox</class>
-   <extends>QDoubleSpinBox</extends>
+   <extends>QAbstractSpinBox</extends>
    <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
  </customwidgets>

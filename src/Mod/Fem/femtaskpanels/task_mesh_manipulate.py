@@ -36,15 +36,18 @@ import FreeCADGui
 
 from femguiutils import selection_widgets
 from . import base_femtaskpanel
+from . import base_fempreviewpanel
 
 
-class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
+class _TaskPanel(base_femtaskpanel._BaseTaskPanel, base_fempreviewpanel._TaskPanel):
     """
     The TaskPanel for editing References property of FemMeshRegion objects
     """
 
     def __init__(self, obj):
-        super().__init__(obj)
+
+        base_femtaskpanel._BaseTaskPanel.__init__(self, obj)
+        base_fempreviewpanel._TaskPanel.__init__(self, obj)
 
         self.parameter_widget = FreeCADGui.PySideUic.loadUi(
             FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/MeshManipulate.ui"
@@ -144,48 +147,58 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         FreeCADGui.ExpressionBinding(ui.Laplacian_Delta).bind(self.obj, "Delta")
         ui.Laplacian_Delta.valueChanged.connect(self.deltaChanged)
 
-
+        ui.Visualize.toggled.connect(self.visualize)
 
     def accept(self):
         self.obj.References = self.selection_widget.references
         self.selection_widget.finish_selection()
+        self.stop_preview()
         return super().accept()
 
     def reject(self):
         self.selection_widget.finish_selection()
+        self.stop_preview()
         return super().reject()
 
     @QtCore.Slot(str)
     def typeChanged(self, value):
         self.obj.Type = value
+        self.update_preview()
 
     @QtCore.Slot(bool)
     def boundaryChanged(self, value):
         self.obj.IncludeBoundary = value
+        self.update_preview()
 
     @QtCore.Slot(FreeCAD.Units.Quantity)
     def distMaxChanged(self, value):
         self.obj.InputMaximum = value
+        self.update_preview()
 
     @QtCore.Slot(FreeCAD.Units.Quantity)
     def distMinChanged(self, value):
         self.obj.InputMinimum = value
+        self.update_preview()
 
     @QtCore.Slot(FreeCAD.Units.Quantity)
     def sizeMaxChanged(self, value):
         self.obj.SizeMaximum = value
+        self.update_preview()
 
     @QtCore.Slot(FreeCAD.Units.Quantity)
     def sizeMinChanged(self, value):
         self.obj.SizeMinimum = value
+        self.update_preview()
 
     @QtCore.Slot(bool)
     def linearChanged(self, value):
         self.obj.LinearInterpolation = value
+        self.update_preview()
 
     @QtCore.Slot(bool)
     def stopChanged(self, value):
         self.obj.StopAtInputMax = value
+        self.update_preview()
 
     @QtCore.Slot(FreeCAD.Units.Quantity)
     def deltaChanged(self, value):
@@ -198,7 +211,9 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
             self.parameter_widget.Curvature_Delta.setProperty("value", value)
             self.parameter_widget.Laplacian_Delta.setProperty("value", value)
             self._block_delta_update = False
+            self.update_preview()
 
     @QtCore.Slot(str)
     def kindChanged(self, value):
         self.obj.Kind = value
+        self.update_preview()
