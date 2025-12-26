@@ -83,12 +83,14 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel, base_fempreviewpanel._TaskPan
         ui.Boundary.toggled.connect(self.boundaryChanged)
 
         info = FreeCADGui.getIcon("info.svg")
-        ui.Icon.setPixmap(info.pixmap(QtCore.QSize(32,32)))
+        ui.Icon.setPixmap(info.pixmap(QtCore.QSize(32, 32)))
 
         # Threshold
         # #########
 
-        stylesheet = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/MainWindow").GetString("StyleSheet")
+        stylesheet = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/MainWindow").GetString(
+            "StyleSheet"
+        )
         if "dark" in stylesheet.lower():
             lightness = "Light"
         elif "light" in stylesheet.lower():
@@ -96,7 +98,10 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel, base_fempreviewpanel._TaskPan
         else:
             # use the qt style background and text color to detect the image to use
             palette = ui.palette()
-            if palette.color(QtGui.QPalette.Text).lightness() > palette.color(QtGui.QPalette.Window).lightness():
+            if (
+                palette.color(QtGui.QPalette.Text).lightness()
+                > palette.color(QtGui.QPalette.Window).lightness()
+            ):
                 lightness = "Light"
             else:
                 lightness = "Dark"

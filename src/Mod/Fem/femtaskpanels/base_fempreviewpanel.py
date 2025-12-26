@@ -1,4 +1,3 @@
-
 # ***************************************************************************
 # *   Copyright (c) 2025 Stefan Tröger <stefantroeger@gmx.net>              *
 # *                                                                         *
@@ -68,14 +67,14 @@ class SettingsDialog(QtGui.QDialog):
             FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/MeshPreviewSettings.ui"
         )
 
-        auto = FreeCAD.ParamGet(
-            "User parameter:BaseApp/Preferences/Mod/Fem/Gmsh"
-        ).GetBool("previewAutoEnable", False)
+        auto = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Gmsh").GetBool(
+            "previewAutoEnable", False
+        )
         self.widget.AutoOpen.setChecked(auto)
 
-        factor = FreeCAD.ParamGet(
-            "User parameter:BaseApp/Preferences/Mod/Fem/Gmsh"
-        ).GetInt("previewMeshFactor", 5)
+        factor = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Gmsh").GetInt(
+            "previewMeshFactor", 5
+        )
         self.widget.PreviewFactor.setValue(factor)
 
         layout = QtGui.QVBoxLayout()
@@ -85,13 +84,13 @@ class SettingsDialog(QtGui.QDialog):
 
     def accept(self):
 
-        FreeCAD.ParamGet(
-            "User parameter:BaseApp/Preferences/Mod/Fem/Gmsh"
-        ).SetBool("previewAutoEnable", self.widget.AutoOpen.isChecked())
+        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Gmsh").SetBool(
+            "previewAutoEnable", self.widget.AutoOpen.isChecked()
+        )
 
-        FreeCAD.ParamGet(
-            "User parameter:BaseApp/Preferences/Mod/Fem/Gmsh"
-        ).SetInt("previewMeshFactor", self.widget.PreviewFactor.value())
+        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Gmsh").SetInt(
+            "previewMeshFactor", self.widget.PreviewFactor.value()
+        )
 
         self.close()
 
@@ -107,6 +106,7 @@ def _get_parent_gmsh_obj(obj):
             if gmsh:
                 return gmsh
     return None
+
 
 class _TaskPanel:
     """
@@ -133,12 +133,14 @@ class _TaskPanel:
         self._preview_widget = FreeCADGui.PySideUic.loadUi(
             FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/MeshPreview.ui"
         )
-        self._preview_widget.Preferences.setIcon(FreeCADGui.getIcon(":icons/preferences-general.svg"))
+        self._preview_widget.Preferences.setIcon(
+            FreeCADGui.getIcon(":icons/preferences-general.svg")
+        )
         self._preview_widget.Process.hide()
 
-        auto = FreeCAD.ParamGet(
-            "User parameter:BaseApp/Preferences/Mod/Fem/Gmsh"
-        ).GetBool("previewAutoEnable", False)
+        auto = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Gmsh").GetBool(
+            "previewAutoEnable", False
+        )
         if auto:
             self.start_preview()
             self._preview_widget.Visualize.setChecked(True)
@@ -147,8 +149,9 @@ class _TaskPanel:
         self._preview_widget.Preferences.clicked.connect(self._settings)
 
     def preview_is_calculating(self):
-        return (self.logtask._thread.isRunning() or
-                (self.logtask.tool.process.state() != QtCore.QProcess.ProcessState.NotRunning))
+        return self.logtask._thread.isRunning() or (
+            self.logtask.tool.process.state() != QtCore.QProcess.ProcessState.NotRunning
+        )
 
     def preview_is_running(self):
         return self._preview_running
@@ -203,8 +206,8 @@ class _TaskPanel:
         if self.preview_is_calculating():
             self._abort_process()
 
-        self.gmsh_obj.ViewObject.resetNodeColor() # does not really work if color mode is not Node
-        self.gmsh_obj.ViewObject.ColorMode = self.gmsh_obj.ViewObject.ColorMode # workaround
+        self.gmsh_obj.ViewObject.resetNodeColor()  # does not really work if color mode is not Node
+        self.gmsh_obj.ViewObject.ColorMode = self.gmsh_obj.ViewObject.ColorMode  # workaround
         self.gmsh_obj.FemMesh = self.default_mesh
 
         self.gmsh_obj.ViewObject.Visibility = False
@@ -228,9 +231,8 @@ class _TaskPanel:
                 self.gmsh_obj.Shape.ViewObject.Visibility = False
 
         limits = self.logtask.tool.size_limits
-        self._preview_widget.Min.setText("%.2e"%limits[0])
-        self._preview_widget.Max.setText("%.2e"%limits[1])
-
+        self._preview_widget.Min.setText("%.2e" % limits[0])
+        self._preview_widget.Max.setText("%.2e" % limits[1])
 
     @QtCore.Slot(bool)
     def _visualize(self, enabled):
@@ -243,9 +245,3 @@ class _TaskPanel:
     def _settings(self):
         dlg = SettingsDialog()
         dlg.exec()
-
-
-
-
-
-

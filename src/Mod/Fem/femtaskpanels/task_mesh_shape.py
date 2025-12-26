@@ -36,6 +36,7 @@ import FreeCADGui
 
 from . import base_femtaskpanel
 
+
 class _TaskPanelShape(base_femtaskpanel._BaseTaskPanel):
     """
     The TaskPanel for editing References property of FemMeshRegion objects
@@ -98,7 +99,6 @@ class _TaskPanelShape(base_femtaskpanel._BaseTaskPanel):
                 self.shape_widget.setCurrentIndex(i)
                 return
 
-
     @QtCore.Slot(str)
     def shapeChanged(self, value):
         self.obj.ShapeType = value
@@ -122,4 +122,3 @@ class _TaskPanelShape(base_femtaskpanel._BaseTaskPanel):
     @QtCore.Slot(FreeCAD.Units.Quantity)
     def thicknessChanged(self, value):
         self.obj.Thickness = value
-

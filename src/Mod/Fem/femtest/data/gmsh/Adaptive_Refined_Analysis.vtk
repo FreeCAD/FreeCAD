@@ -1,5 +1,5 @@
 # vtk DataFile Version 2.0
-Geometry_Geometry, Created by Gmsh 4.13.1 
+Geometry_Geometry, Created by Gmsh 4.13.1
 ASCII
 DATASET UNSTRUCTURED_GRID
 POINTS 5071 double

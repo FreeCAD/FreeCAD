@@ -72,7 +72,9 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
 
         # There is no known way to access the colors set by stylesheets. It is hence not posssible to make a universal
         # correct desicion on which image to use. Workaround is to check stylesheet name if one ist set for "dark" and "ligth"
-        stylesheet = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/MainWindow").GetString("StyleSheet")
+        stylesheet = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/MainWindow").GetString(
+            "StyleSheet"
+        )
         if "dark" in stylesheet.lower():
             lightness = "Light"
         elif "light" in stylesheet.lower():
@@ -80,7 +82,10 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         else:
             # use the qt style background and text color to detect the image to use
             palette = ui.palette()
-            if palette.color(QtGui.QPalette.Text).lightness() > palette.color(QtGui.QPalette.Window).lightness():
+            if (
+                palette.color(QtGui.QPalette.Text).lightness()
+                > palette.color(QtGui.QPalette.Window).lightness()
+            ):
                 lightness = "Light"
             else:
                 lightness = "Dark"
@@ -88,7 +93,7 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         ui.Diagram.setPixmap(QtGui.QPixmap(f":images/FEM_MeshTransfiniteVolume{lightness}.svg"))
 
         info = FreeCADGui.getIcon("info.svg")
-        ui.Icon.setPixmap(info.pixmap(QtCore.QSize(32,32)))
+        ui.Icon.setPixmap(info.pixmap(QtCore.QSize(32, 32)))
 
         ui.Mixed.setChecked(self.obj.MixedElements)
         ui.Mixed.toggled.connect(self.mixedChanged)
@@ -99,7 +104,9 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         ui.Recombine.toggled.connect(self.recombineChanged)
 
         ui.Orientation.addItems(self.obj.getEnumerationsOfProperty("TriangleOrientation"))
-        idx = self.obj.getEnumerationsOfProperty("TriangleOrientation").index(self.obj.TriangleOrientation)
+        idx = self.obj.getEnumerationsOfProperty("TriangleOrientation").index(
+            self.obj.TriangleOrientation
+        )
         ui.Orientation.setCurrentIndex(idx)
         ui.Orientation.currentIndexChanged.connect(self.orientationChanged)
         ui.Orientation.setDisabled(self.obj.Recombine)
@@ -119,9 +126,9 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
             case "Constant":
                 ui.Distribution.setCurrentIndex(0)
             case "Bump":
-                ui.Distribution.setCurrentIndex(1+int(self.obj.Invert))
+                ui.Distribution.setCurrentIndex(1 + int(self.obj.Invert))
             case "Progression":
-                ui.Distribution.setCurrentIndex(3+int(self.obj.Invert))
+                ui.Distribution.setCurrentIndex(3 + int(self.obj.Invert))
 
         ui.Distribution.currentIndexChanged.connect(self.distributionChanged)
 

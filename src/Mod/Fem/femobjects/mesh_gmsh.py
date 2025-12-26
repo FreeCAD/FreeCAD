@@ -319,6 +319,6 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
                 value = obj.getPropertyByName(prop)
                 obj.setPropertyStatus(prop, "-LockDynamic")
                 obj.removeProperty(prop)
-                obj.MeshRefinementList =  obj.MeshRefinementList + value
+                obj.MeshRefinementList = obj.MeshRefinementList + value
             except Base.PropertyError:
                 pass

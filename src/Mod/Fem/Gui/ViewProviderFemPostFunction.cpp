@@ -126,9 +126,7 @@ ViewProviderFemPostFunction::ViewProviderFemPostFunction()
 }
 
 ViewProviderFemPostFunction::~ViewProviderFemPostFunction()
-{
-
-}
+{}
 
 bool ViewProviderFemPostFunction::doubleClicked()
 {
@@ -202,9 +200,11 @@ void ViewProviderFemPostFunction::onChanged(const App::Property* prop)
 
     if (m_autoscale) {
         auto scale = getExtension<ViewProviderShapeExtension>()->getScaleNode();
-        scale->scaleFactor = SbVec3f(AutoScaleFactorX.getValue(),
-                                     AutoScaleFactorY.getValue(),
-                                     AutoScaleFactorZ.getValue());
+        scale->scaleFactor = SbVec3f(
+            AutoScaleFactorX.getValue(),
+            AutoScaleFactorY.getValue(),
+            AutoScaleFactorZ.getValue()
+        );
     }
 }
 
@@ -236,7 +236,10 @@ ViewProviderFemPostBoxFunction::~ViewProviderFemPostBoxFunction() = default;
 
 // ***************************************************************************
 
-PROPERTY_SOURCE_WITH_EXTENSIONS(FemGui::ViewProviderFemPostCylinderFunction, FemGui::ViewProviderFemPostFunction)
+PROPERTY_SOURCE_WITH_EXTENSIONS(
+    FemGui::ViewProviderFemPostCylinderFunction,
+    FemGui::ViewProviderFemPostFunction
+)
 
 ViewProviderFemPostCylinderFunction::ViewProviderFemPostCylinderFunction()
 {
@@ -252,7 +255,10 @@ ViewProviderFemPostCylinderFunction::~ViewProviderFemPostCylinderFunction() = de
 
 // ***************************************************************************
 
-PROPERTY_SOURCE_WITH_EXTENSIONS(FemGui::ViewProviderFemPostPlaneFunction, FemGui::ViewProviderFemPostFunction)
+PROPERTY_SOURCE_WITH_EXTENSIONS(
+    FemGui::ViewProviderFemPostPlaneFunction,
+    FemGui::ViewProviderFemPostFunction
+)
 
 ViewProviderFemPostPlaneFunction::ViewProviderFemPostPlaneFunction()
 {
@@ -267,7 +273,10 @@ ViewProviderFemPostPlaneFunction::~ViewProviderFemPostPlaneFunction() = default;
 
 // ***************************************************************************
 
-PROPERTY_SOURCE_WITH_EXTENSIONS(FemGui::ViewProviderFemPostSphereFunction, FemGui::ViewProviderFemPostFunction)
+PROPERTY_SOURCE_WITH_EXTENSIONS(
+    FemGui::ViewProviderFemPostSphereFunction,
+    FemGui::ViewProviderFemPostFunction
+)
 
 ViewProviderFemPostSphereFunction::ViewProviderFemPostSphereFunction()
 {

@@ -31,7 +31,9 @@ __url__ = "https://www.freecad.org"
 
 from . import base_femmeshelement
 from . import base_fempythonobject
+
 _PropHelper = base_fempythonobject._PropHelper
+
 
 class MeshAdvanced(base_femmeshelement.BaseFemMeshElement):
     """
@@ -57,7 +59,6 @@ class MeshAdvanced(base_femmeshelement.BaseFemMeshElement):
                 doc="Which advanced method is used to define the mesh size",
                 value=["AttractorAnisoCurve", "MathEval", "MathEvalAniso", "Distance", "Result"],
             ),
-
             # AttractorAnisoCurve
             _PropHelper(
                 type="App::PropertyLength",
@@ -108,7 +109,6 @@ class MeshAdvanced(base_femmeshelement.BaseFemMeshElement):
                 doc="Number of sampling points on each curve or surface for AttractorAnisoCurve and Distance",
                 value=20,
             ),
-
             # MathEval
             _PropHelper(
                 type="App::PropertyString",
@@ -117,7 +117,6 @@ class MeshAdvanced(base_femmeshelement.BaseFemMeshElement):
                 doc="The equation to calculate for the mesh size",
                 value="",
             ),
-
             # MathEvalAniso
             _PropHelper(
                 type="App::PropertyString",
@@ -161,7 +160,6 @@ class MeshAdvanced(base_femmeshelement.BaseFemMeshElement):
                 doc="The equation to calculate element 33 of the metric tensor",
                 value="",
             ),
-
             # Result
             _PropHelper(
                 type="App::PropertyLink",
@@ -180,4 +178,3 @@ class MeshAdvanced(base_femmeshelement.BaseFemMeshElement):
         ]
 
         return super()._get_properties() + props
-

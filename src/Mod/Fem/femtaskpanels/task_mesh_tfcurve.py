@@ -47,7 +47,7 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         super().__init__(obj)
 
         self.parameter_widget = FreeCADGui.PySideUic.loadUi(
-             FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/MeshTransfiniteCurve.ui"
+            FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/MeshTransfiniteCurve.ui"
         )
         self.parameter_widget.setWindowTitle("Structured transfinite curve mesh")
         self.parameter_widget.setWindowIcon(FreeCADGui.getIcon(":icons/FEM_MeshDistance.svg"))
@@ -70,7 +70,9 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
 
         # There is no known way to access the colors set by stylesheets. It is hence not posssible to make a universal
         # correct desicion on which image to use. Workaround is to check stylesheet name if one ist set for "dark" and "ligth"
-        stylesheet = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/MainWindow").GetString("StyleSheet")
+        stylesheet = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/MainWindow").GetString(
+            "StyleSheet"
+        )
         if "dark" in stylesheet.lower():
             lightness = "Light"
         elif "light" in stylesheet.lower():
@@ -78,7 +80,10 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         else:
             # use the qt style background and text color to detect the image to use
             palette = ui.palette()
-            if palette.color(QtGui.QPalette.Text).lightness() > palette.color(QtGui.QPalette.Window).lightness():
+            if (
+                palette.color(QtGui.QPalette.Text).lightness()
+                > palette.color(QtGui.QPalette.Window).lightness()
+            ):
                 lightness = "Light"
             else:
                 lightness = "Dark"
@@ -128,5 +133,3 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
     @QtCore.Slot(FreeCAD.Units.Quantity)
     def coefficientChanged(self, value):
         self.obj.Coefficient = float(value)
-
-

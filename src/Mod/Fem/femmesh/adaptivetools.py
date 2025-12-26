@@ -33,6 +33,7 @@ import FreeCAD
 from FreeCAD import Console
 from os import path
 
+
 def create_mesh_file(objname, data, folder_path):
     # writes a mesh file to the folder, that gmsh can import
     #
@@ -71,7 +72,7 @@ def append_to_element_file(objname, data, field, folder_path):
     # field = Field name of result in data
     # folder_path = the path where the file should be written to
 
-    '''
+    """
     Format:
 
     $ElementData
@@ -84,7 +85,7 @@ def append_to_element_file(objname, data, field, folder_path):
     elementTag(int) value(double) ...
     ...
     $EndElementData
-    '''
+    """
 
     if not "BUILD_FEM_VTK_PYTHON" in FreeCAD.__cmake__:
         raise Exception("Need vtk python support")
@@ -100,33 +101,34 @@ def append_to_element_file(objname, data, field, folder_path):
         if not array:
             raise Exception("Field ist not available in data object")
 
-        #f.write(f"{name} = {{ {tuple_to_str(array.GetTuple(0))}")
+        # f.write(f"{name} = {{ {tuple_to_str(array.GetTuple(0))}")
 
         components = array.GetNumberOfComponents()
 
         field_name = field.replace(" ", "_")
         f.write("$NodeData\n")
-        f.write("1\n")                              # 1 string
-        f.write(f"'{field_name}'\n")                # field name
-        f.write("1\n")                              # 1 int
-        f.write("0.0\n")                            # time value (always 0 here)
-        f.write("3\n")                              # 3 ints
-        f.write("0\n")                              # time step (always 0 here)
-        f.write(str(components)+"\n")               # components of data
-        f.write(str(data.GetNumberOfPoints())+"\n") # number of datasets
+        f.write("1\n")  # 1 string
+        f.write(f"'{field_name}'\n")  # field name
+        f.write("1\n")  # 1 int
+        f.write("0.0\n")  # time value (always 0 here)
+        f.write("3\n")  # 3 ints
+        f.write("0\n")  # time step (always 0 here)
+        f.write(str(components) + "\n")  # components of data
+        f.write(str(data.GetNumberOfPoints()) + "\n")  # number of datasets
 
-        for i in range(0,array.GetNumberOfTuples()):
-            s = str(i+1) + " " + " ".join(map(str, array.GetTuple(i))) + "\n"
+        for i in range(0, array.GetNumberOfTuples()):
+            s = str(i + 1) + " " + " ".join(map(str, array.GetTuple(i))) + "\n"
             f.write(s)
 
         f.write("$EndNodeData\n")
         f.flush()
 
+
 def generate_model_code(objname):
 
-    code  = f"NewModel;\n"              # open model
-    code += f"SetName '{objname}';\n"     # name model
-    code += f"Merge '{objname}.msh';\n" # add mesh
+    code = f"NewModel;\n"  # open model
+    code += f"SetName '{objname}';\n"  # name model
+    code += f"Merge '{objname}.msh';\n"  # add mesh
 
     return code
 
@@ -134,12 +136,11 @@ def generate_model_code(objname):
 def generate_view_code(objname, data, field, view_tag):
     # Returns the code required to use the mesh file and node data
 
-    name = objname + "_"  + field.replace(" ", "_")
+    name = objname + "_" + field.replace(" ", "_")
 
-
-    code  = f"view_tag = gmsh.view.add('{field.replace(" ", "_")}', {view_tag});\n"   # open view
-    code += f"Include {name}.geo;\n"                                # data array
-    code += f"nodes[] = {{0:{data.GetNumberOfPoints()-1}}};\n"    # node array
+    code = f"view_tag = gmsh.view.add('{field.replace(" ", "_")}', {view_tag});\n"  # open view
+    code += f"Include {name}.geo;\n"  # data array
+    code += f"nodes[] = {{0:{data.GetNumberOfPoints()-1}}};\n"  # node array
 
     # add data to view
     code += f"gmsh.view.addHomogeneousModelData(view_tag, 0, {objname}, 'NodeData', nodes, {name}, 0, components);\n"
@@ -150,6 +151,7 @@ def generate_view_code(objname, data, field, view_tag):
 def generate_closeout_code():
     # make sure everything else is handled in annother model, to not interfere between mesh and geometry
     return f"NewModel;\n"
+
 
 def write_result_settings(settings, geo, folder):
 
@@ -162,7 +164,6 @@ def write_result_settings(settings, geo, folder):
 
         settings_map[setting["name"]].append(setting)
 
-
     # 2: iterate all unique objects and create the files and geo files
     field_idx = 0
     code = ""
@@ -172,19 +173,14 @@ def write_result_settings(settings, geo, folder):
         if not obj_settings:
             continue
 
-        create_mesh_file(objname,
-                         obj_settings[0]["data"],
-                         folder)
+        create_mesh_file(objname, obj_settings[0]["data"], folder)
 
         code += generate_model_code(objname)
 
         # for each field of that object create geo file and the correct code
         for obj_setting in obj_settings:
 
-            append_to_element_file(objname,
-                                    obj_setting["data"],
-                                    obj_setting["field"],
-                                    folder)
+            append_to_element_file(objname, obj_setting["data"], obj_setting["field"], folder)
 
             # store field index, so that the size field finds back the correct view
             # we can simply increase idx, as we iterate
@@ -197,10 +193,3 @@ def write_result_settings(settings, geo, folder):
     # in case some exception was thrown during file creation
     code += generate_closeout_code()
     geo.write(code)
-
-
-
-
-
-
-

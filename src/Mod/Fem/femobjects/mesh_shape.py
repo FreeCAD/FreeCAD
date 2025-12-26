@@ -1,4 +1,3 @@
-
 # ***************************************************************************
 # *   Copyright (c) 2025 Stefan Tröger <stefantroeger@gmx.net               *
 # *                                                                         *
@@ -32,7 +31,9 @@ __url__ = "https://www.freecad.org"
 
 from . import base_femmeshelement
 from . import base_fempythonobject
+
 _PropHelper = base_fempythonobject._PropHelper
+
 
 class MeshShape(base_femmeshelement.BaseFemMeshElement):
     """
@@ -55,7 +56,7 @@ class MeshShape(base_femmeshelement.BaseFemMeshElement):
                 name="ShapeType",
                 group="Mesh",
                 doc="Mesh shape to be used",
-                value = ["Box", "Sphere", "Cylinder"],
+                value=["Box", "Sphere", "Cylinder"],
             ),
             _PropHelper(
                 type="App::PropertyLength",
@@ -71,13 +72,13 @@ class MeshShape(base_femmeshelement.BaseFemMeshElement):
                 doc="Mesh size outside of the sphere",
                 value="1000mm",
             ),
-             _PropHelper(
+            _PropHelper(
                 type="App::PropertyLength",
                 name="Thickness",
                 group="Mesh",
                 doc="Thickness of transition layer between in/out mesh sizes (added outside of the sphere)",
                 value="0mm",
-            )
+            ),
         ]
 
         return props
@@ -101,4 +102,3 @@ class MeshShape(base_femmeshelement.BaseFemMeshElement):
                     obj.SphereCenter = obj.CylinderCenter
                     obj.BoxCenter = obj.CylinderCenter
             self._block_center_change = False
-
