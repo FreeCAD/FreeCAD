@@ -83,54 +83,54 @@ class Dumper(PostProcessor):
         print()
 
         postables = super()._buildPostList()
-        
+
         for idx, postable in enumerate(postables, 1):
             group_key = postable[0]
             objects = postable[1]
-            
+
             # Format the group key display
             if group_key == "":
                 display_key = "(empty string)"
             else:
                 display_key = f'"{group_key}"'
-            
+
             print(f"[{idx}] Postable Group: {display_key}")
             print(f"    Objects: {len(objects)}")
             print()
-            
+
             for obj_idx, obj in enumerate(objects, 1):
                 print(f"    [{obj_idx}] {obj.Label}")
-                
+
                 # Determine object type/role
                 obj_type = None
-                if type(obj).__name__ == '_TempObject':
+                if type(obj).__name__ == "_TempObject":
                     obj_type = "Fixture Setup"
-                    if hasattr(obj, 'Path') and obj.Path and len(obj.Path.Commands) > 0:
+                    if hasattr(obj, "Path") and obj.Path and len(obj.Path.Commands) > 0:
                         fixture_cmd = obj.Path.Commands[0]
                         print(f"        Fixture: {fixture_cmd.Name}")
-                elif hasattr(obj, 'TypeId'):
+                elif hasattr(obj, "TypeId"):
                     # Check if it's a tool controller
-                    if 'ToolController' in obj.TypeId or obj.Name.startswith('TC'):
+                    if "ToolController" in obj.TypeId or obj.Name.startswith("TC"):
                         obj_type = "Tool Change"
-                        if hasattr(obj, 'ToolNumber'):
+                        if hasattr(obj, "ToolNumber"):
                             print(f"        Tool Number: {obj.ToolNumber}")
-                        if hasattr(obj, 'Label'):
+                        if hasattr(obj, "Label"):
                             print(f"        Tool: {obj.Label}")
                     else:
                         # It's an operation
                         obj_type = "Operation"
-                        if hasattr(obj, 'ToolController') and obj.ToolController:
+                        if hasattr(obj, "ToolController") and obj.ToolController:
                             tc = obj.ToolController
                             print(f"        ToolController: {tc.Label} (T{tc.ToolNumber})")
-                        elif hasattr(obj, 'ToolController'):
+                        elif hasattr(obj, "ToolController"):
                             print(f"        ToolController: None")
                 else:
                     obj_type = type(obj).__name__
-                
+
                 print(f"        Type: {obj_type}")
-            
+
             print()
-        
+
         print("=" * 80)
         print(f"Total Groups: {len(postables)}")
         total_objects = sum(len(p[1]) for p in postables)
