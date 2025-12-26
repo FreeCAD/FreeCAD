@@ -183,6 +183,7 @@ Command = PathOpGui.SetupOperation(
         "Creates a Tapping toolpath from the features of a base object",
     ),
     PathTapping.SetupProperties,
+    commandClass=PathCircularHoleBaseGui.CircularHoleCommand,
 )
 
 FreeCAD.Console.PrintLog("Loading PathTappingGui... done\n")

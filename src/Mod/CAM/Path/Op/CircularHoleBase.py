@@ -199,8 +199,8 @@ class ObjectOp(PathOp.ObjectOp):
         Must be overwritten by subclasses."""
         pass
 
-    def findAllHoles(self, obj):
-        """findAllHoles(obj) ... find all holes of all base models and assign as features."""
+    def findAllHoles(self, obj, selection=None):
+        """findAllHoles(obj, selection) ... find holes and assign as features."""
         Path.Log.track()
         job = self.getJob(obj)
         if not job:
@@ -210,9 +210,38 @@ class ObjectOp(PathOp.ObjectOp):
         tooldiameter = obj.ToolController.Tool.Diameter
 
         features = []
-        for base in self.model:
-            features.extend(
-                Drillable.getDrillableTargets(base, ToolDiameter=tooldiameter, vector=matchvector)
-            )
+        if selection:
+            # get drillable holes from selection
+            for sel in selection:
+                baseObj = sel.Object
+                if not hasattr(baseObj, "Shape"):
+                    continue
+                if sel.SubElementNames:
+                    # get drillable holes from shapes selected in 3d view
+                    for subName in sel.SubElementNames:
+                        subElement = baseObj.getSubObject(subName)
+                        if Drillable.isDrillable(
+                            baseObj.Shape,
+                            candidate=subElement,
+                            tooldiameter=tooldiameter,
+                            vector=matchvector,
+                        ):
+                            features.append((baseObj, subName))
+                else:
+                    # get drillable holes from model selected in tree view
+                    features.extend(
+                        Drillable.getDrillableTargets(
+                            baseObj, ToolDiameter=tooldiameter, vector=matchvector
+                        )
+                    )
+        else:
+            # get drillable holes from all base models
+            for base in self.model:
+                features.extend(
+                    Drillable.getDrillableTargets(
+                        base, ToolDiameter=tooldiameter, vector=matchvector
+                    )
+                )
+
         obj.Base = features
         obj.Disabled = []

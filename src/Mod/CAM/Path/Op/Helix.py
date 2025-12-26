@@ -301,6 +301,5 @@ def Create(name, obj=None, parentJob=None):
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     obj.Proxy = ObjectHelix(obj, name, parentJob)
-    if obj.Proxy:
-        obj.Proxy.findAllHoles(obj)
+
     return obj
