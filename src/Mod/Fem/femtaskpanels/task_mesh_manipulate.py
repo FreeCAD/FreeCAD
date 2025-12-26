@@ -63,6 +63,7 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel, base_fempreviewpanel._TaskPan
         )
         self.selection_widget.setWindowTitle("Reference geometries for restriction")
         self.selection_widget.setWindowIcon(FreeCADGui.getIcon(":icons/FEM_MeshManipulate.svg"))
+        self.selection_widget.referencesUpdated.connect(self.referencesUpdated)
 
         # form made from param and selection widget
         self.form = [self.parameter_widget, self.selection_widget]
@@ -217,4 +218,9 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel, base_fempreviewpanel._TaskPan
     @QtCore.Slot(str)
     def kindChanged(self, value):
         self.obj.Kind = value
+        self.update_preview()
+
+    @QtCore.Slot(object)
+    def referencesUpdated(self, references):
+        self.obj.References = references
         self.update_preview()
