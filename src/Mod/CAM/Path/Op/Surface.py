@@ -133,7 +133,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 "Mesh Conversion",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Controls the trade-off between path accuracy and processing speed.",
+                    "Controls the trade-off between path accuracy and processing speed (1 max Speed - 7 max Accuracy).",
                 ),
             ),
             (
@@ -544,9 +544,9 @@ class ObjectSurface(PathOp.ObjectOp):
             "AvoidLastX_Faces": 0,
             "PatternCenterCustom": FreeCAD.Vector(0.0, 0.0, 0.0),
             "GapThreshold": 0.005,
-            "Accuracy": 3,  # Default slider to the middle position
-            "AngularDeflection": 0.15,
-            "LinearDeflection": 0.01,
+            "Accuracy": 3,  # Default slider position
+            "AngularDeflection": 0.25,
+            "LinearDeflection": 0.02,
             "MeshSimplification": 0.0,
             # For debugging
             "ShowTempObjects": False,
@@ -616,7 +616,7 @@ class ObjectSurface(PathOp.ObjectOp):
             7: [0.05, 0.001, 0.0],
         }
 
-        settings = accuracy_map.get(obj.Accuracy, accuracy_map[5])  # Default to level 3 if invalid
+        settings = accuracy_map.get(obj.Accuracy, accuracy_map[3])  # Default to level 3 if invalid
 
         obj.AngularDeflection = settings[0]
         obj.LinearDeflection = settings[1]
@@ -741,6 +741,15 @@ class ObjectSurface(PathOp.ObjectOp):
             obj.AvoidLastX_Faces = 100
             Path.Log.error("AvoidLastX_Faces: Avoid last X faces count limited to 100.")
 
+        # Limit Accuracy values between 1-7
+        if obj.Accuracy < 1:
+            obj.Accuracy = 1
+            Path.Log.error("Accuracy: Only values between 1 and 7 are permitted.")
+
+        if obj.Accuracy > 7:
+            obj.Accuracy = 7
+            Path.Log.error("Accuracy: Only values between 1 and 7 are permitted.")
+
     def opUpdateDepths(self, obj):
         if hasattr(obj, "Base") and obj.Base:
             base, sublist = obj.Base[0]
@@ -802,6 +811,12 @@ class ObjectSurface(PathOp.ObjectOp):
             deleteTempsFlag = False
         else:
             self.showDebugObjects = False
+
+        # Impose property limits
+        self.opApplyPropertyLimits(obj)
+
+        # Ensure accuracy settings are applied before printing or processing
+        self._applyAccuracySettings(obj)
 
         # Inform the user about the accuracy slider settings.
         accuracy_msg = (
@@ -881,9 +896,6 @@ class ObjectSurface(PathOp.ObjectOp):
                     },
                 )
             )
-
-        # Impose property limits
-        self.opApplyPropertyLimits(obj)
 
         # Create temporary group for temporary objects, removing existing
         tempGroupName = "tempPathSurfaceGroup"
