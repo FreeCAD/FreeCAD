@@ -36,15 +36,18 @@ import FreeCADGui
 
 from femguiutils import selection_widgets
 from . import base_femtaskpanel
+from . import base_fempreviewpanel
 
 
-class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
+class _TaskPanel(base_femtaskpanel._BaseTaskPanel, base_fempreviewpanel._TaskPanel):
     """
     The TaskPanel for editing References property of FemMeshMath objects
     """
 
     def __init__(self, obj):
-        super().__init__(obj)
+
+        base_femtaskpanel._BaseTaskPanel.__init__(self, obj)
+        base_fempreviewpanel._TaskPanel.__init__(self, obj)
 
         self.parameter_widget = FreeCADGui.PySideUic.loadUi(
             FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/MeshAdvanced.ui"
@@ -192,6 +195,9 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         ui.ResultObject.currentIndexChanged.connect(self.resultObjectChanged)
         ui.ResultField.currentTextChanged.connect(self.resultFieldChanged)
 
+        # visualization
+        ui.Visualize.toggled.connect(self.visualize)
+
 
     def slotChangedObject(self, obj, prop):
         # callback of document observer for changed property
@@ -206,45 +212,55 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         FreeCAD.removeDocumentObserver(self)
         self.obj.References = self.selection_widget.references
         self.selection_widget.finish_selection()
+        self.stop_preview()
         return super().accept()
 
     def reject(self):
         FreeCAD.removeDocumentObserver(self)
         self.selection_widget.finish_selection()
+        self.stop_preview()
         return super().reject()
 
     @QtCore.Slot(str)
     def typeChanged(self, value):
         self.obj.Type = value
+        self.update_preview()
 
     @QtCore.Slot(FreeCAD.Units.Quantity)
     def distMaxChanged(self, value):
         self.obj.DistanceMax = value
+        self.update_preview()
 
     @QtCore.Slot(FreeCAD.Units.Quantity)
     def distMinChanged(self, value):
         self.obj.DistanceMin = value
+        self.update_preview()
 
     @QtCore.Slot(FreeCAD.Units.Quantity)
     def sizeMaxNormalChanged(self, value):
         self.obj.SizeMaxNormal = value
+        self.update_preview()
 
     @QtCore.Slot(FreeCAD.Units.Quantity)
     def sizeMinNormalChanged(self, value):
         self.obj.SizeMinNormal = value
+        self.update_preview()
 
     @QtCore.Slot(FreeCAD.Units.Quantity)
     def sizeMaxTangentChanged(self, value):
         self.obj.SizeMaxTangent = value
+        self.update_preview()
 
     @QtCore.Slot(FreeCAD.Units.Quantity)
     def sizeMinTangentChanged(self, value):
         self.obj.SizeMinTangent = value
+        self.update_preview()
 
     @QtCore.Slot(FreeCAD.Units.Quantity)
     def samplingChanged(self, value):
         if not self._block_sampling_update:
             self.obj.Sampling = int(value)
+            self.update_preview()
 
             self._block_sampling_update = True
             self.parameter_widget.Sampling_Aniso.setValue(value)
@@ -254,6 +270,7 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
     @QtCore.Slot()
     def equationChanged(self):
         self.obj.Equation = self.parameter_widget.Equation.text()
+        self.update_preview()
 
     @QtCore.Slot()
     def anisoEquationChanged(self):
@@ -263,6 +280,7 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         self.obj.M22 = self.parameter_widget.M22.text()
         self.obj.M23 = self.parameter_widget.M23.text()
         self.obj.M33 = self.parameter_widget.M33.text()
+        self.update_preview()
 
     @QtCore.Slot(int)
     def resultObjectChanged(self, value):
@@ -276,7 +294,10 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         if old_field in fields:
             self.parameter_widget.ResultField.setCurrentText(old_field)
 
+        self.update_preview()
 
     @QtCore.Slot(int)
     def resultFieldChanged(self, value):
         self.obj.ResultField = value
+        self.update_preview()
+

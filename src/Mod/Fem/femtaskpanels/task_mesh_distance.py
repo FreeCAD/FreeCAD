@@ -36,15 +36,18 @@ import FreeCADGui
 
 from femguiutils import selection_widgets
 from . import base_femtaskpanel
+from . import base_fempreviewpanel
 
 
-class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
+class _TaskPanel(base_femtaskpanel._BaseTaskPanel, base_fempreviewpanel._TaskPanel):
     """
     The TaskPanel for editing References property of FemMeshRegion objects
     """
 
     def __init__(self, obj):
-        super().__init__(obj)
+
+        base_femtaskpanel._BaseTaskPanel.__init__(self, obj)
+        base_fempreviewpanel._TaskPanel.__init__(self, obj)
 
         self.parameter_widget = FreeCADGui.PySideUic.loadUi(
             FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/MeshDistance.ui"
@@ -109,38 +112,46 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         ui.Linear.setChecked(self.obj.LinearInterpolation)
         ui.Linear.toggled.connect(self.linearChanged)
 
+        ui.Visualize.toggled.connect(self.visualize)
 
     def accept(self):
         self.obj.References = self.selection_widget.references
         self.selection_widget.finish_selection()
+        self.stop_preview()
         return super().accept()
 
     def reject(self):
         self.selection_widget.finish_selection()
+        self.stop_preview()
         return super().reject()
 
     @QtCore.Slot(FreeCAD.Units.Quantity)
     def distMaxChanged(self, value):
         self.obj.DistanceMaximum = value
+        self.update_preview()
 
     @QtCore.Slot(FreeCAD.Units.Quantity)
     def distMinChanged(self, value):
         self.obj.DistanceMinimum = value
+        self.update_preview()
 
     @QtCore.Slot(FreeCAD.Units.Quantity)
     def sizeMaxChanged(self, value):
         self.obj.SizeMaximum = value
+        self.update_preview()
 
     @QtCore.Slot(FreeCAD.Units.Quantity)
     def sizeMinChanged(self, value):
         self.obj.SizeMinimum = value
+        self.update_preview()
 
     @QtCore.Slot(FreeCAD.Units.Quantity)
     def samplingChanged(self, value):
         self.obj.Sampling = int(value)
+        self.update_preview()
 
     @QtCore.Slot(bool)
     def linearChanged(self, value):
         self.obj.LinearInterpolation = value
-
+        self.update_preview()
 

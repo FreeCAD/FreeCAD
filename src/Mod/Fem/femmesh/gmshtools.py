@@ -31,6 +31,7 @@ import os
 import re
 import shutil
 import subprocess
+import numpy as np
 from PySide.QtCore import QProcess, QThread
 
 import FreeCAD
@@ -707,7 +708,8 @@ class GmshTools(ObjectTools):
 
         element_dict = self._element_list_to_shape_idx_dict(elements)
 
-        settings = {"Field": "Constant", "Option": {}, "Anisotropic": False}
+        settings = {"Source": obj.Name, "Field": "Constant",
+                    "Option": {}, "Anisotropic": False}
         settings["FieldID"] = self._next_field_number()
         settings["Option"]["VIn"] = Units.Quantity(obj.CharacteristicLength).Value
         settings["Option"]["IncludeBoundary"] = 1
@@ -739,7 +741,8 @@ class GmshTools(ObjectTools):
         idx_dict = self._element_list_to_shape_idx_dict(elements)
 
         # get the settings!
-        settings = {"Field": "Distance", "Option": {}, "Anisotropic": False}
+        settings = {"Source": obj.Name, "Field": "Distance",
+                    "Option": {}, "Anisotropic": False}
         settings["FieldID"] = self._next_field_number()
         settings["Option"]["Sampling"] = obj.Sampling
         if idx_dict["Vertex"]:
@@ -760,7 +763,8 @@ class GmshTools(ObjectTools):
 
         dist_field_id = self._build_distance_size_field(obj)
 
-        settings = {"Field": "Threshold", "Option": {}, "Anisotropic": False}
+        settings = {"Source": obj.Name, "Field": "Threshold",
+                    "Option": {}, "Anisotropic": False}
         settings["FieldID"] = self._next_field_number()
         settings["Option"]["InField"] = dist_field_id
         settings["Option"]["DistMin"] = Units.Quantity(obj.DistanceMinimum).Value
@@ -768,7 +772,6 @@ class GmshTools(ObjectTools):
         settings["Option"]["SizeMin"] = Units.Quantity(obj.SizeMinimum).Value
         settings["Option"]["SizeMax"] = Units.Quantity(obj.SizeMaximum).Value
         settings["Option"]["Sigmoid"] = int(not obj.LinearInterpolation)
-        settings["Option"]["StopAtDistMax"] = 1
 
         # save everything for later processing
         self.size_field_list.append(settings)
@@ -788,7 +791,8 @@ class GmshTools(ObjectTools):
 
     def _build_sphere_size_field(self, sphere):
 
-        settings = {"Field": "Ball", "Option": {}, "Anisotropic": False}
+        settings = {"Source": sphere.Name, "Field": "Ball",
+                    "Option": {}, "Anisotropic": False}
         settings["FieldID"] = self._next_field_number()
         settings["Option"]["Radius"] = Units.Quantity(sphere.SphereRadius).Value
         settings["Option"]["XCenter"] = Units.Quantity(sphere.SphereCenter.x).Value
@@ -804,7 +808,8 @@ class GmshTools(ObjectTools):
 
     def _build_cylinder_size_field(self, cylinder):
 
-        settings = {"Field": "Cylinder", "Option": {}, "Anisotropic": False}
+        settings = {"Source": cylinder.Name, "Field": "Cylinder",
+                    "Option": {}, "Anisotropic": False}
         settings["FieldID"] = self._next_field_number()
         settings["Option"]["Radius"] = Units.Quantity(cylinder.CylinderRadius).Value
         settings["Option"]["XCenter"] = Units.Quantity(cylinder.CylinderCenter.x).Value
@@ -822,7 +827,8 @@ class GmshTools(ObjectTools):
 
     def _build_box_size_field(self, box):
 
-        settings = {"Field": "Box", "Option": {}, "Anisotropic": False}
+        settings = {"Source": box.Name, "Field": "Box",
+                    "Option": {}, "Anisotropic": False}
         settings["FieldID"] = self._next_field_number()
         settings["Option"]["XMin"] = Units.Quantity(box.BoxCenter.x) - Units.Quantity(box.BoxLength/2).Value
         settings["Option"]["XMax"] = Units.Quantity(box.BoxCenter.x) + Units.Quantity(box.BoxLength/2).Value
@@ -863,7 +869,8 @@ class GmshTools(ObjectTools):
         idx_dict = self._element_list_to_shape_idx_dict(elements)
 
         # get the settings!
-        settings = {"Field": "Restrict", "Option": {}, "Anisotropic": False}
+        settings = {"Source": obj.Name, "Field": "Restrict",
+                    "Option": {}, "Anisotropic": False}
         settings["FieldID"] = self._next_field_number()
         settings["Option"]["InField"] = restricted_field
         settings["Option"]["IncludeBoundary"] = int(obj.IncludeBoundary)
@@ -886,7 +893,8 @@ class GmshTools(ObjectTools):
 
     def _build_threshold_size_field(self, obj, threshold_field):
 
-        settings = {"Field": "Threshold", "Option": {}, "Anisotropic": False}
+        settings = {"Source": obj.Name, "Field": "Threshold",
+                    "Option": {}, "Anisotropic": False}
         settings["FieldID"] = self._next_field_number()
         settings["Option"]["InField"] = threshold_field
         settings["Option"]["DistMin"] = Units.Quantity(obj.InputMinimum).Value
@@ -903,7 +911,8 @@ class GmshTools(ObjectTools):
     def _build_evaluation_size_field(self, obj, evaluation_field):
         # mean, curvature, laplace
 
-        settings = {"Field": obj.Type, "Option": {}, "Anisotropic": False}
+        settings = {"Source": obj.Name, "Field": obj.Type,
+                    "Option": {}, "Anisotropic": False}
         settings["FieldID"] = self._next_field_number()
         settings["Option"]["InField"] = evaluation_field
         settings["Option"]["Delta"] = Units.Quantity(obj.Delta).Value
@@ -914,7 +923,8 @@ class GmshTools(ObjectTools):
     def _build_gradient_size_field(self, obj, gradient_field):
 
         # get the settings!
-        settings = {"Field": obj.Type, "Option": {}, "Anisotropic": False}
+        settings = {"Source": obj.Name, "Field": obj.Type,
+                    "Option": {}, "Anisotropic": False}
         settings["FieldID"] = self._next_field_number()
         settings["Option"]["InField"] = gradient_field
         settings["Option"]["Delta"] = Units.Quantity(obj.Delta).Value
@@ -947,7 +957,8 @@ class GmshTools(ObjectTools):
                                     "elements are selected.\n").format(obj.Name))
             return -1
 
-        settings = {"Field": "AttractorAnisoCurve", "Option": {}, "Anisotropic": True}
+        settings = {"Source": obj.Name, "Field": "AttractorAnisoCurve",
+                    "Option": {}, "Anisotropic": True}
         settings["FieldID"] = self._next_field_number()
 
         idx_dict = self._element_list_to_shape_idx_dict(elements)
@@ -1011,7 +1022,8 @@ class GmshTools(ObjectTools):
         new_equation = self._update_replace_equation(obj.Equation, equation_fields)
 
         # get the settings!
-        settings = {"Field": "MathEval", "Option": {}, "Anisotropic": False}
+        settings = {"Source": obj.Name, "Field": "MathEval",
+                    "Option": {}, "Anisotropic": False}
         settings["FieldID"] = self._next_field_number()
         settings["Option"]["F"] = f"'{new_equation}'"
 
@@ -1034,7 +1046,8 @@ class GmshTools(ObjectTools):
         m33 = self._update_replace_equation(obj.M33, equation_fields)
 
         # get the settings!
-        settings = {"Field": "MathEvalAniso", "Option": {}, "Anisotropic": True}
+        settings = {"Source": obj.Name, "Field": "MathEvalAniso",
+                    "Option": {}, "Anisotropic": True}
         settings["FieldID"] = self._next_field_number()
         settings["Option"]["M11"] = f"'{m11}'"
         settings["Option"]["M12"] = f"'{m12}'"
@@ -1056,7 +1069,8 @@ class GmshTools(ObjectTools):
             raise Exception("No valid result field specified")
 
         # create the size field. Do not set ViewIndex or Tag as it is not known yet
-        settings = {"Field": "PostView", "Option": {}, "Anisotropic": False}
+        settings = {"Source": obj.Name, "Field": "PostView",
+                    "Option": {}, "Anisotropic": False}
         settings["FieldID"] = self._next_field_number()
         self.size_field_list.append(settings)
 
@@ -1787,6 +1801,102 @@ for len in max_mesh_sizes:
     print("Done length = {}".format(quantity_len))
 
 """
+
+class GmshPreviewTools(GmshTools):
+    # overriden tool to not generate a meshing gmsh file, but a sizefield preview
+
+    def __init__(self, gmsh_mesh_obj, preview_object, analysis=None):
+
+        super().__init__(gmsh_mesh_obj, analysis)
+        self.preview_object = preview_object
+
+    # mandatory functions for logtaskpanel
+    # ####################################
+
+    def prepare(self):
+        self.load_properties()
+        self.update_mesh_data()
+        self.get_tmp_file_paths()
+        self.get_gmsh_command()
+        self.write_part_file()
+        self.write_preview_geo()
+        self.convert()
+
+    def update_properties(self):
+        # visualize the preview node data
+
+        # load the generated mesh
+        self.mesh_obj.FemMesh = Fem.read(self.temp_file_mesh)
+        self.rename_groups()
+
+        # read and extract node data
+        dir = os.path.dirname(self.temp_file_geometry)
+        with open(os.path.join(dir, "preview_data.msh")) as file:
+
+            # get the node data
+            lines =  [line.rstrip() for line in file]
+            node_data_idx = lines.index("$NodeData")
+            end_node_data_idx = lines.index("$EndNodeData")
+            lines = lines[node_data_idx+1:end_node_data_idx]
+
+            # skip the 3 headers
+            lines = lines[int(lines[0])+1:]
+            lines = lines[int(lines[0])+1:]
+            lines = lines[int(lines[0])+1:]
+
+            # read the ID - Data pairs
+            ids = []
+            data = []
+            for datapair in lines:
+                entries = datapair.split(" ")
+                ids.append(int(entries[0]))
+                data.append(float(entries[1]))
+
+        # visualize node data
+        self.mesh_obj.ViewObject.setNodeColorByScalars(ids, data)
+
+
+    # internal helper functions
+    # #########################
+
+    def write_preview_geo(self):
+        # writes a geo file for previewing the mesh size generated from
+        # size fields
+
+        temp_dir = os.path.dirname(self.temp_file_geo)
+        geo = open(self.temp_file_geo, "w")
+
+        # first create other models that may be required for adaptive meshing
+        self.write_result_data(geo)
+
+        # now create the geometry model
+        geo.write("// open brep geometry\n")
+        # explicit use double quotes in geo file
+        geo.write(f'Merge "{os.path.relpath(self.temp_file_geometry, temp_dir)}";\n')
+
+        # size fields
+        self.write_size_fields(geo)
+
+        # estimate good max mesh size values for coarse visualizaion mesh
+        area = self.part_obj.Shape.Area
+        char_max_length = np.sqrt(area/500)
+        geo.write(f"Mesh.MeshSizeMax = {char_max_length};\n")
+        geo.write( "Mesh 2;\n")
+        geo.write(f'Save "{os.path.relpath(self.temp_file_mesh, temp_dir)}";\n')
+
+        # visualize view (find number first)
+        fieldID = -1
+        for settings in self.size_field_list:
+            if settings["Source"] == self.preview_object.Name:
+                fieldID = settings["FieldID"]
+
+        geo.write( "Plugin(NewView).Run;\n")
+        geo.write(f"Plugin(MeshSizeFieldView).MeshSizeField = {fieldID};\n")
+        geo.write( "Plugin(MeshSizeFieldView).Run;\n")
+        geo.write( "\n")
+
+        # save view msh for later data extraction (we have addiotional views for result size field)
+        geo.write(f"Save View[{len(self.result_view_settings)}] 'preview_data.msh';\n")
 
 """
 TODO
