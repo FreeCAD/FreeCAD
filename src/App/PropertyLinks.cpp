@@ -4552,7 +4552,7 @@ PropertyXLink::getDocumentInList(App::Document* doc)
 {
     std::map<App::Document*, std::set<App::Document*>> ret;
     for (auto& v : _DocInfoMap) {
-        if (!v.second->pcDoc || (doc && doc != v.second->pcDoc)) {
+        if (!v.second->pcDoc || (doc && doc != v.second->pcDoc) || v.second->links.empty()) {
             continue;
         }
         auto& docs = ret[v.second->pcDoc];
