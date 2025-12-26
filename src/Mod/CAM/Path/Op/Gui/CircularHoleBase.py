@@ -185,3 +185,10 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
     def taskPanelBaseGeometryPage(self, obj, features):
         """taskPanelBaseGeometryPage(obj, features) ... Return circular hole specific page controller for Base Geometry."""
         return TaskPanelHoleGeometryPage(obj, features)
+
+
+class CircularHoleCommand(PathOpGui.CommandPathOp):
+    def Activated(self):
+        obj = super().Activated()
+        selection = FreeCADGui.Selection.getSelectionEx()
+        obj.Proxy.findAllHoles(obj, selection)
