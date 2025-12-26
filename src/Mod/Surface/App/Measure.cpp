@@ -35,4 +35,3 @@ void Surface::Measure::initialize()
 
     App::MeasureManager::addMeasureHandler("Surface", handler.typeCb);
 }
-
