@@ -556,9 +556,6 @@ class ObjectSurface(PathOp.ObjectOp):
         if hasattr(job, "GeometryTolerance"):
             if job.GeometryTolerance.Value != 0.0:
                 warn = False
-                # Override the LinearDeflection default if a Job tolerance is set
-                # The user can still use the slider, which will then set the value.
-                pass
         if warn:
             msg = translate("PathSurface", "The GeometryTolerance for this Job is 0.0.")
             msg += translate("PathSurface", "This may impact the quality of the generated path.")
