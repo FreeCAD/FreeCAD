@@ -450,6 +450,8 @@ SET(FemGuiPythonUI_SRCS
     Resources/ui/MeshGroupXDMFExport.ui
     Resources/ui/MeshNetgen.ui
     Resources/ui/MeshRegion.ui
+    Resources/ui/MeshPreview.ui
+    Resources/ui/MeshPreviewSettings.ui
     Resources/ui/MeshDistance.ui
     Resources/ui/MeshManipulate.ui
     Resources/ui/MeshAdvanced.ui

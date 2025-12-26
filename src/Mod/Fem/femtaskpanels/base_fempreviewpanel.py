@@ -30,7 +30,7 @@ __url__ = "https://www.freecad.org"
 #  \ingroup FEM
 #  \brief task panel for mesh gmsh refinement mesh size previews
 
-import FreeCAD
+import FreeCAD, FreeCADGui
 
 from PySide import QtCore, QtGui
 
@@ -38,6 +38,7 @@ from femmesh import gmshtools
 from femtools import femutils
 
 from . import base_femlogtaskpanel
+
 
 class _LogTask(base_femlogtaskpanel._BaseLogTaskPanel):
 
@@ -49,6 +50,51 @@ class _LogTask(base_femlogtaskpanel._BaseLogTaskPanel):
 
     def set_object_params(self):
         pass
+
+
+class SettingsDialog(QtGui.QDialog):
+
+    def __init__(self):
+        super().__init__()
+
+        self.setWindowTitle("Preview preferences")
+
+        QBtn = QtGui.QDialogButtonBox.Ok
+
+        self.buttonBox = QtGui.QDialogButtonBox(QBtn)
+        self.buttonBox.accepted.connect(self.accept)
+
+        self.widget = FreeCADGui.PySideUic.loadUi(
+            FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/MeshPreviewSettings.ui"
+        )
+
+        auto = FreeCAD.ParamGet(
+            "User parameter:BaseApp/Preferences/Mod/Fem/Gmsh"
+        ).GetBool("previewAutoEnable", False)
+        self.widget.AutoOpen.setChecked(auto)
+
+        factor = FreeCAD.ParamGet(
+            "User parameter:BaseApp/Preferences/Mod/Fem/Gmsh"
+        ).GetInt("previewMeshFactor", 5)
+        self.widget.PreviewFactor.setValue(factor)
+
+        layout = QtGui.QVBoxLayout()
+        layout.addWidget(self.widget)
+        layout.addWidget(self.buttonBox)
+        self.setLayout(layout)
+
+    def accept(self):
+
+        FreeCAD.ParamGet(
+            "User parameter:BaseApp/Preferences/Mod/Fem/Gmsh"
+        ).SetBool("previewAutoEnable", self.widget.AutoOpen.isChecked())
+
+        FreeCAD.ParamGet(
+            "User parameter:BaseApp/Preferences/Mod/Fem/Gmsh"
+        ).SetInt("previewMeshFactor", self.widget.PreviewFactor.value())
+
+        self.close()
+
 
 def _get_parent_gmsh_obj(obj):
 
@@ -79,9 +125,26 @@ class _TaskPanel:
         # for visualization button purposes
         self.logtask = _LogTask(obj, gmshtools.GmshPreviewTools(self.gmsh_obj, obj))
         self.logtask.setup_connections()
-        self.logtask.tool.process.finished.connect(self._calculation_finished)
+        self.logtask.tool.preview_finished.connect(self._calculation_finished)
 
         self._preview_running = False
+
+        # setup ui
+        self._preview_widget = FreeCADGui.PySideUic.loadUi(
+            FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/MeshPreview.ui"
+        )
+        self._preview_widget.Preferences.setIcon(FreeCADGui.getIcon(":icons/preferences-general.svg"))
+        self._preview_widget.Process.hide()
+
+        auto = FreeCAD.ParamGet(
+            "User parameter:BaseApp/Preferences/Mod/Fem/Gmsh"
+        ).GetBool("previewAutoEnable", False)
+        if auto:
+            self.start_preview()
+            self._preview_widget.Visualize.setChecked(True)
+
+        self._preview_widget.Visualize.toggled.connect(self._visualize)
+        self._preview_widget.Preferences.clicked.connect(self._settings)
 
     def preview_is_calculating(self):
         return (self.logtask._thread.isRunning() or
@@ -89,6 +152,10 @@ class _TaskPanel:
 
     def preview_is_running(self):
         return self._preview_running
+
+    def preview_widget(self):
+        # returns the preview widget
+        return self._preview_widget
 
     def start_preview(self):
 
@@ -102,7 +169,10 @@ class _TaskPanel:
         self.default_mesh = self.gmsh_obj.FemMesh.copy()
 
         # create the initial view
+        self._preview_widget.Process.show()
+        self._preview_widget.Process.setCurrentIndex(0)
         self.logtask.run_process()
+        self._mesh_display_mode = self.gmsh_obj.ViewObject.DisplayMode
         self._preview_running = True
 
     def update_preview(self):
@@ -110,17 +180,13 @@ class _TaskPanel:
         if not self._preview_running:
             return
 
+        if self.preview_is_calculating():
+            self._abort_process()
+
+        self._preview_widget.Process.setCurrentIndex(0)
         self.logtask.run_process()
 
-    def stop_preview(self):
-
-        if not self._preview_running:
-            return
-
-        self.gmsh_obj.ViewObject.resetNodeColor() # does not really work if color mode is not Node
-        self.gmsh_obj.ViewObject.ColorMode = self.gmsh_obj.ViewObject.ColorMode # workaround
-        self.gmsh_obj.FemMesh = self.default_mesh
-
+    def _abort_process(self):
         if self.logtask._thread.isRunning():
             self.logtask._thread.quit()
 
@@ -129,31 +195,54 @@ class _TaskPanel:
         if self.logtask.tool.process.state() != QtCore.QProcess.ProcessState.NotRunning:
             self.logtask.tool.process.kill()
 
+    def stop_preview(self):
+
+        if not self._preview_running:
+            return
+
+        if self.preview_is_calculating():
+            self._abort_process()
+
+        self.gmsh_obj.ViewObject.resetNodeColor() # does not really work if color mode is not Node
+        self.gmsh_obj.ViewObject.ColorMode = self.gmsh_obj.ViewObject.ColorMode # workaround
+        self.gmsh_obj.FemMesh = self.default_mesh
+
         self.gmsh_obj.ViewObject.Visibility = False
+        self.gmsh_obj.ViewObject.DisplayMode = self._mesh_display_mode
         if self.gmsh_obj.Shape:
             self.gmsh_obj.Shape.ViewObject.Visibility = True
 
+        self._preview_widget.Process.hide()
+
         self._preview_running = False
 
-    @QtCore.Slot(int, QtCore.QProcess.ExitStatus)
-    def _calculation_finished(self, code, status):
+    @QtCore.Slot()
+    def _calculation_finished(self):
 
-        if status != QtCore.QProcess.ExitStatus.NormalExit:
-            return
+        self._preview_widget.Process.setCurrentIndex(1)
 
         if not self.gmsh_obj.ViewObject.Visibility:
             self.gmsh_obj.ViewObject.Visibility = True
+            self.gmsh_obj.ViewObject.DisplayMode = "Faces"
             if self.gmsh_obj.Shape:
                 self.gmsh_obj.Shape.ViewObject.Visibility = False
 
+        limits = self.logtask.tool.size_limits
+        self._preview_widget.Min.setText("%.2e"%limits[0])
+        self._preview_widget.Max.setText("%.2e"%limits[1])
+
 
     @QtCore.Slot(bool)
-    def visualize(self, enabled):
+    def _visualize(self, enabled):
         if enabled:
             self.start_preview()
         else:
             self.stop_preview()
 
+    @QtCore.Slot()
+    def _settings(self):
+        dlg = SettingsDialog()
+        dlg.exec()
 
 
 

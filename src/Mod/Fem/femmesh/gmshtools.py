@@ -32,6 +32,7 @@ import re
 import shutil
 import subprocess
 import numpy as np
+from PySide import QtCore
 from PySide.QtCore import QProcess, QThread
 
 import FreeCAD
@@ -1815,12 +1816,15 @@ for len in max_mesh_sizes:
 
 """
 
-class GmshPreviewTools(GmshTools):
+class GmshPreviewTools(GmshTools, QtCore.QObject):
     # overriden tool to not generate a meshing gmsh file, but a sizefield preview
+
+    preview_finished = QtCore.Signal()
 
     def __init__(self, gmsh_mesh_obj, preview_object, analysis=None):
 
         super().__init__(gmsh_mesh_obj, analysis)
+        QtCore.QObject.__init__(self)
         self.preview_object = preview_object
 
     # mandatory functions for logtaskpanel
@@ -1867,6 +1871,9 @@ class GmshPreviewTools(GmshTools):
 
         # visualize node data
         self.mesh_obj.ViewObject.setNodeColorByScalars(ids, data)
+        self.size_limits = (min(data), max(data))
+
+        self.preview_finished.emit()
 
 
     # internal helper functions
@@ -1892,7 +1899,10 @@ class GmshPreviewTools(GmshTools):
 
         # estimate good max mesh size values for coarse visualizaion mesh
         area = self.part_obj.Shape.Area
-        char_max_length = np.sqrt(area/500)
+        factor = FreeCAD.ParamGet(
+            "User parameter:BaseApp/Preferences/Mod/Fem/Gmsh"
+        ).GetInt("previewMeshFactor", 5)
+        char_max_length = np.sqrt(area/(100*1.3**factor))
         geo.write(f"Mesh.MeshSizeMax = {char_max_length};\n")
         geo.write( "Mesh 2;\n")
         geo.write(f'Save "{os.path.relpath(self.temp_file_mesh, temp_dir)}";\n')

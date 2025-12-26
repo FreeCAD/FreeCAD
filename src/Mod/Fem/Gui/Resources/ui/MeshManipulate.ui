@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>562</width>
-    <height>604</height>
+    <width>552</width>
+    <height>416</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -814,33 +814,6 @@ F = G(x+d,y,z) + G(x-d,y,z) + G(x,y+d,z) + G(x,y-d,z) + G(x,y,z+d) + G(x,y,z-d) 
       </item>
      </layout>
     </widget>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_4">
-     <item>
-      <spacer name="horizontalSpacer_3">
-       <property name="orientation">
-        <enum>Qt::Orientation::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QToolButton" name="Visualize">
-       <property name="text">
-        <string>Visualize</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
    </item>
   </layout>
  </widget>

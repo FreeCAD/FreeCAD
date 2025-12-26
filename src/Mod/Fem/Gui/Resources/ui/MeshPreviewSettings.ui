@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>261</width>
+    <height>111</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>15</number>
+   </property>
+   <property name="topMargin">
+    <number>15</number>
+   </property>
+   <item>
+    <widget class="QLabel" name="label_3">
+     <property name="text">
+      <string>Global refinement preview settings:</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QFormLayout" name="formLayout">
+     <item row="1" column="1">
+      <widget class="Gui::PrefCheckBox" name="AutoOpen">
+       <property name="toolTip">
+        <string>Automatically enables the visualization of the refinement mesh size when opening a refinement task dialog.</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="prefEntry" stdset="0">
+        <cstring>previewAutoEnable</cstring>
+       </property>
+       <property name="prefPath" stdset="0">
+        <cstring>User parameter:BaseApp/Preferences/Mod/Fem/Gmsh</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="toolTip">
+        <string>Automatically enables the visualization of the refinement mesh size when opening a refinement task dialog.</string>
+       </property>
+       <property name="text">
+        <string>Auto enable on open</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="Gui::PrefSpinBox" name="PreviewFactor">
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>999999999</number>
+       </property>
+       <property name="value">
+        <number>1</number>
+       </property>
+       <property name="prefEntry" stdset="0">
+        <cstring>previewFactor</cstring>
+       </property>
+       <property name="prefPath" stdset="0">
+        <cstring>User parameter:BaseApp/Preferences/Mod/Fem/Gmsh</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label">
+       <property name="toolTip">
+        <string>Determines how fine the preview mesh is. Larger number means finer mesh (smaller mesh elements)</string>
+       </property>
+       <property name="text">
+        <string>Preview mesh finess</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::PrefSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

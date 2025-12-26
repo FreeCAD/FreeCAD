@@ -147,7 +147,8 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel, base_fempreviewpanel._TaskPan
         FreeCADGui.ExpressionBinding(ui.Laplacian_Delta).bind(self.obj, "Delta")
         ui.Laplacian_Delta.valueChanged.connect(self.deltaChanged)
 
-        ui.Visualize.toggled.connect(self.visualize)
+        # add the preview widget
+        ui.layout().addWidget(self.preview_widget())
 
     def accept(self):
         self.obj.References = self.selection_widget.references
