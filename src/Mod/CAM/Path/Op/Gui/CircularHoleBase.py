@@ -25,7 +25,6 @@ import FreeCAD
 import FreeCADGui
 import Path
 import Path.Op.Gui.Base as PathOpGui
-import PathGui
 
 from PySide import QtCore, QtGui
 
@@ -104,7 +103,7 @@ class TaskPanelHoleGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
             activatedRows = []
             for item in self.form.baseList.selectedItems():
                 row = item.row()
-                if not row in activatedRows:
+                if row not in activatedRows:
                     activatedRows.append(row)
                     obj = item.data(self.DataObject)
                     sub = str(item.data(self.DataObjectSub))
