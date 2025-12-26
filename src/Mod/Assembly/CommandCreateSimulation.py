@@ -24,6 +24,9 @@
 import re
 import os
 import time
+import tempfile
+from pathlib import Path
+
 import FreeCAD as App
 
 from pivy import coin
@@ -43,6 +46,8 @@ if App.GuiUp:
         QGridLayout,
         QLabel,
         QDialogButtonBox,
+        QFileDialog,
+        QProgressDialog,
     )
     from PySide.QtCore import Qt, QPoint
     from PySide.QtGui import QCursor, QIcon, QGuiApplication
@@ -818,6 +823,8 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
         self.form.AddButton.clicked.connect(self.addMotionClicked)
         self.form.RemoveButton.clicked.connect(self.deleteSelectedMotions)
         self.form.groupBox_player.hide()
+        self.form.SaveAnimationButton.clicked.connect(self.saveAnimation)
+        self.form.SaveAnimationButton.hide()
 
         if simFeaturePy:
             self.simFeaturePy = simFeaturePy
@@ -921,6 +928,7 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
         self.form.frameSlider.setMaximum(nFrms - 1)
         self.setFrameValue(nFrms - 1)
         self.form.groupBox_player.show()
+        self.form.SaveAnimationButton.show()
 
     def onFrameChanged(self, val):
         self.assembly.updateForFrame(val)
@@ -1027,6 +1035,126 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
                 self.simFeaturePy.Group.remove(motion)
                 # Delete the object
                 motion.Document.removeObject(motion.Name)
+
+    def saveAnimation(self):
+        num_frames = self.assembly.numberOfFrames()
+        if num_frames <= 1:
+            App.Console.PrintWarning("Not enough frames to create an animation.\n")
+            return
+
+        # Prompt user for file location and type
+        file_path, selected_filter = QFileDialog.getSaveFileName(
+            self.form,
+            translate("Assembly", "Save Animation"),
+            "",
+            "MP4 Video (*.mp4);;Animated GIF (*.gif);;AVI Video (*.avi)",
+        )
+
+        if not file_path:
+            return  # User cancelled
+
+        # Get parameters
+        view = Gui.ActiveDocument.ActiveView
+        width, height = view.getSize()
+        # Ensure dimensions are even, as required by many video codecs
+        if width % 2 != 0:
+            width -= 1
+        if height % 2 != 0:
+            height -= 1
+        fps = self.form.FramesPerSecondSpinBox.value()
+
+        # Setup temporary directory and progress bar
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_path = Path(temp_dir)
+            progress = QProgressDialog(
+                translate("Assembly", "Generating Frames..."),
+                translate("Assembly", "Cancel"),
+                0,
+                num_frames,
+                self.form,
+            )
+            progress.setWindowModality(Qt.WindowModal)
+            progress.show()
+
+            original_frame = self.form.frameSlider.value()
+
+            try:
+                # Generate and save all frames as temporary images
+                frame_files = []
+                for i in range(num_frames):
+                    progress.setValue(i)
+                    if progress.wasCanceled():
+                        App.Console.PrintMessage("Animation save cancelled.\n")
+                        return
+
+                    self.assembly.updateForFrame(i)
+                    Gui.updateGui()  # Ensure the 3D view is redrawn
+
+                    frame_filename = temp_path / f"frame_{i:05d}.png"
+                    view.saveImage(str(frame_filename), width, height, "Current")
+                    frame_files.append(str(frame_filename))
+
+                # Assemble the final animation file
+                progress.setLabelText(translate("Assembly", "Assembling animation..."))
+                progress.setMaximum(0)  # Indeterminate progress
+
+                file_extension = Path(file_path).suffix.lower()
+                if file_extension == ".gif":
+                    self.create_gif(file_path, frame_files, fps)
+                elif file_extension in [".mp4", ".avi"]:
+                    self.create_video(file_path, frame_files, fps, (width, height))
+
+                App.Console.PrintMessage(f"Animation successfully saved to {file_path}\n")
+
+            except Exception as e:
+                App.Console.PrintError(f"An error occurred while saving the animation: {e}\n")
+            finally:
+                progress.close()
+                # Restore original state
+                self.assembly.updateForFrame(original_frame)
+                self.form.frameSlider.setValue(original_frame)
+
+    def create_gif(self, output_path, frame_files, fps):
+        """Creates an animated GIF from a list of image files using Pillow."""
+        from PIL import Image
+
+        pil_images = [Image.open(f) for f in frame_files]
+        duration_ms = int(1000 / fps)
+        pil_images[0].save(
+            output_path,
+            save_all=True,
+            append_images=pil_images[1:],
+            optimize=True,
+            duration=duration_ms,
+            loop=0,  # 0 means loop forever
+        )
+
+    def create_video(self, output_path, frame_files, fps, size):
+        """Creates a video file from a list of image files using OpenCV."""
+        import cv2
+
+        file_extension = Path(output_path).suffix.lower()
+
+        # Select codec based on file type
+        if file_extension == ".mp4":
+            fourcc = cv2.VideoWriter_fourcc(*"mp4v")  # or 'avc1'
+        elif file_extension == ".avi":
+            fourcc = cv2.VideoWriter_fourcc(*"XVID")
+        else:
+            # Fallback for other types, may not be supported
+            fourcc = cv2.VideoWriter_fourcc(*"mp4v")
+
+        video_writer = cv2.VideoWriter(output_path, fourcc, fps, size)
+        if not video_writer.isOpened():
+            App.Console.PrintError("Could not open video writer. Check codecs.\n")
+            return
+
+        for filename in frame_files:
+            # OpenCV reads images in BGR format by default
+            frame = cv2.imread(str(filename))
+            video_writer.write(frame)
+
+        video_writer.release()
 
 
 if App.GuiUp:
