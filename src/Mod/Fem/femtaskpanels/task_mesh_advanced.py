@@ -195,8 +195,8 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel, base_fempreviewpanel._TaskPan
         ui.ResultObject.currentIndexChanged.connect(self.resultObjectChanged)
         ui.ResultField.currentTextChanged.connect(self.resultFieldChanged)
 
-        # visualization
-        ui.Visualize.toggled.connect(self.visualize)
+        # add the preview widget
+        ui.layout().addWidget(self.preview_widget())
 
 
     def slotChangedObject(self, obj, prop):

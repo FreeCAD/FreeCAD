@@ -112,7 +112,8 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel, base_fempreviewpanel._TaskPan
         ui.Linear.setChecked(self.obj.LinearInterpolation)
         ui.Linear.toggled.connect(self.linearChanged)
 
-        ui.Visualize.toggled.connect(self.visualize)
+        # add the preview widget
+        ui.layout().addWidget(self.preview_widget())
 
     def accept(self):
         self.obj.References = self.selection_widget.references
