@@ -1467,7 +1467,7 @@ double Adaptive2d::CalcCutArea(
 
         vector<DoublePoint> polygon;
         for (const auto p : path) {
-            polygon.push_back({p.X, p.Y});
+            polygon.push_back({(double)p.X, (double)p.Y});
         }
         polygons.push_back(polygon);
     }
