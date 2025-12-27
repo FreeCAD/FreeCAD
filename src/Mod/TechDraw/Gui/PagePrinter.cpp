@@ -424,14 +424,20 @@ void PagePrinter::saveDXF(ViewProviderPage* vpPage, const std::string& inFileNam
     TechDraw::DrawPage* page = vpPage->getDrawPage();
     std::string PageName = page->getNameInDocument();
 
+    // Get the dimension font size from TechDraw's preferences to pass to the exporter.
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/TechDraw/Dimensions");
+    double fontSize = hGrp->GetFloat("FontSize", 3.5);
+
     auto filespec = Base::Tools::escapeEncodeFilename(inFileName);
     filespec = DU::cleanFilespecBackslash(filespec);
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Save page to DXF"));
     Gui::Command::doCommand(Gui::Command::Doc, "import TechDraw");
     Gui::Command::doCommand(Gui::Command::Doc,
-                            "TechDraw.writeDXFPage(App.activeDocument().%s, u\"%s\")",
+                            "TechDraw.writeDXFPage(App.activeDocument().%s, u\"%s\", %f)",
                             PageName.c_str(),
-                            filespec.c_str());
+                            filespec.c_str(),
+                            fontSize);
     Gui::Command::commitCommand();
 }
 
