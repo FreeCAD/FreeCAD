@@ -27,6 +27,7 @@
 #include "ViewProviderDocumentObject.h"
 #include <App/PropertyUnits.h>
 #include "SoTextLabel.h"
+#include "Utilities.h"
 
 class SoFont;
 class SoText2;
@@ -110,6 +111,12 @@ public:
 protected:
     void onChanged(const App::Property* prop) override;
     void drawImage(const std::vector<std::string>&);
+    virtual void labelDoubleClicked()
+    {}
+    SoTranslation* getBaseTranslation()
+    {
+        return pBaseTranslation;
+    }
 
 private:
     static void dragStartCallback(void* data, SoDragger* d);
@@ -122,6 +129,8 @@ private:
     SoBaseColor* pColor;
     SoTranslation* pBaseTranslation;
     TranslateManip* pTextTranslation;
+    DoubleClick doubleClickData;
+    bool isDragging = false;
 
     static const char* JustificationEnums[];
 };
