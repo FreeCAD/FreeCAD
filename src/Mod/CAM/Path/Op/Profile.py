@@ -174,7 +174,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 ),
             ),
             (
-                "App::PropertyInteger",
+                "App::PropertyIntegerConstraint",
                 "NumPasses",
                 "Profile",
                 QT_TRANSLATE_NOOP(
@@ -255,7 +255,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             "processHoles": False,
             "processPerimeter": True,
             "Stepover": 0,
-            "NumPasses": 1,
+            "NumPasses": (1, 1, 99999, 1),
         }
 
     def areaOpApplyPropertyDefaults(self, obj, job, propList):
@@ -334,7 +334,8 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         num_passes = max(1, obj.NumPasses)
         stepover = obj.Stepover.Value
         if num_passes > 1 and stepover == 0:
-            # This check is important because C++ code has a default value for stepover if it's 0 and extra passes are requested
+            # This check is important because C++ code has a default value for stepover
+            # if it's 0 and extra passes are requested
             num_passes = 1
             Path.Log.warning(
                 "Multipass profile requires a non-zero stepover. Reducing to a single pass."
