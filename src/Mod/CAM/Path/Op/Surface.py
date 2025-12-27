@@ -1632,7 +1632,7 @@ class ObjectSurface(PathOp.ObjectOp):
         if obj.LayerMode == "Single-pass" and obj.CutPattern == "Spiral":
             obj.OptimizeStepOverTransitions = False
 
-        # Optimize Step Over Transition
+        # Optimize Step Over Transitions
         if obj.OptimizeStepOverTransitions:
             if p1 and p2:
                 # Short distance within step over
