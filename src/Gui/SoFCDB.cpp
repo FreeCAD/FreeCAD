@@ -731,10 +731,9 @@ bool Gui::SoFCDB::writeToX3DOM(SoNode* node, std::string& buffer)
            "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n";
     out << "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n"
         << "  <head>\n"
-        << "    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/>\n"
+        << "    <meta charset=\"utf-8\"/>\n"
         << "    <title>FreeCAD X3DOM Export</title>\n"
-        << "    <script type=\"text/javascript\" src=\"http://www.x3dom.org/download/x3dom.js\"> "
-           "</script>\n"
+        << "    <script src=\"http://www.x3dom.org/download/x3dom.js\"> </script>\n"
         << "    <link rel=\"stylesheet\" type=\"text/css\" "
            "href=\"http://www.x3dom.org/download/x3dom.css\"/>\n"
         << "  </head>\n"
