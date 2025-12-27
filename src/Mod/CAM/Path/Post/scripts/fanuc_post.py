@@ -49,6 +49,16 @@ import fanuc_post
 fanuc_post.export(object,"/path/to/file.ncc","")
 """
 
+# Preamble text will appear at the beginning of the GCODE output file.
+DEFAULT_PREAMBLE = """G17 G54 G40 G49 G80 G90
+"""
+
+# Postamble text will appear following the last operation.
+DEFAULT_POSTAMBLE = """M05
+G17 G54 G90 G80 G40
+M30
+"""
+
 now = datetime.datetime.now()
 
 parser = argparse.ArgumentParser(prog="fanuc", add_help=False)
@@ -63,11 +73,15 @@ parser.add_argument(
 parser.add_argument("--precision", help="number of digits of precision, default=3 (mm) or 4 (in)")
 parser.add_argument(
     "--preamble",
-    help='set commands to be issued before the first command, default="G17 G54 G40 G49 G80 G90\\n"',
+    help='set commands to be issued before the first command, default="'
+    + DEFAULT_PREAMBLE.replace("\n", "\\n")
+    + '"',
 )
 parser.add_argument(
     "--postamble",
-    help='set commands to be issued after the last command, default="M05\\nG17 G54 G90 G80 G40\\nM30\\n"',
+    help='set commands to be issued after the last command, default="'
+    + DEFAULT_POSTAMBLE.replace("\n", "\\n")
+    + '"',
 )
 parser.add_argument(
     "--inches", action="store_true", help="Convert output for US imperial mode (G20)"
@@ -122,15 +136,8 @@ PRECISION = 3
 # rigid tapping.
 tapSpeed = 0
 
-# Preamble text will appear at the beginning of the GCODE output file.
-DEFAULT_PREAMBLE = """G17 G54 G40 G49 G80 G90
-"""
-
-# Postamble text will appear following the last operation.
-DEFAULT_POSTAMBLE = """M05
-G17 G54 G90 G80 G40
-M30
-"""
+PREAMBLE = DEFAULT_PREAMBLE
+POSTAMBLE = DEFAULT_POSTAMBLE
 
 # Pre operation text will be inserted before every operation
 PRE_OPERATION = """"""
@@ -150,6 +157,8 @@ def processArguments(argstring):
     global OUTPUT_LINE_NUMBERS
     global SHOW_EDITOR
     global PRECISION
+    global DEFAULT_PREAMBLE
+    global DEFAULT_POSTAMBLE
     global PREAMBLE
     global POSTAMBLE
     global UNITS
