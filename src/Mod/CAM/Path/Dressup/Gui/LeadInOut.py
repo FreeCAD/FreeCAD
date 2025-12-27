@@ -1410,12 +1410,8 @@ class CommandPathDressupLeadInOut:
         }
 
     def IsActive(self):
-        selection = FreeCADGui.Selection.getSelection()
-        if len(selection) != 1:
-            return False
-        if not selection[0].isDerivedFrom("Path::Feature"):
-            return False
-        baseOp = PathDressup.baseOp(selection[0])
+        op = PathDressup.selection()
+        baseOp = PathDressup.baseOp(op)
         if not hasattr(baseOp, "ClearanceHeight"):
             return False
         if not hasattr(baseOp, "SafeHeight"):
