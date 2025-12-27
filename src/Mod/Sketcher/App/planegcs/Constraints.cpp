@@ -2358,6 +2358,7 @@ double ConstraintAngleViaPoint::error()
         ReconstructGeomPointers();
     }
     double ang = *angle();
+
     DeriVector2 n1 = crv1->CalculateNormal(poa);
     DeriVector2 n2 = crv2->CalculateNormal(poa);
 
@@ -2573,7 +2574,6 @@ double ConstraintAngleViaPointAndParam::grad(double* param)
     if (findParamInPvec(param) == -1) {
         return 0.0;
     }
-
     double deriv = 0.;
 
     if (pvecChangedFlag) {
@@ -3164,6 +3164,153 @@ void ConstraintArcLength::errorgrad(double* err, double* grad, double* param)
             double dEndA = param == arc.endAngle ? 1. : 0.;
             *grad = rad * (dEndA - dStartA) + dRad * (endA - startA);
         }
+    }
+}
+
+// --------------------------------------------------------
+// ConstraintPointOnSegment
+ConstraintPointOnSegment::ConstraintPointOnSegment(Point& p, Line& l)
+    : point(p)
+    , line(l)
+{
+    point.PushOwnParams(pvec);
+    line.PushOwnParams(pvec);
+
+    origpvec = pvec;
+    pvecChangedFlag = true;
+    rescale();
+}
+
+void ConstraintPointOnSegment::ReconstructGeomPointers()
+{
+    int i = 0;
+    point.ReconstructOnNewPvec(pvec, i);
+    line.ReconstructOnNewPvec(pvec, i);
+    pvecChangedFlag = false;
+}
+
+void ConstraintPointOnSegment::errorgrad(double* err, double* grad, double* param)
+{
+    if (pvecChangedFlag) {
+        ReconstructGeomPointers();
+    }
+
+    const DeriVector2 p(point, param);
+    const DeriVector2 l1(line.p1, param);
+    const DeriVector2 l2(line.p2, param);
+
+    const DeriVector2 v_line = l2.subtr(l1);
+    const DeriVector2 v_l1p = p.subtr(l1);
+    const DeriVector2 v_l2p = p.subtr(l2);
+
+    // point to line distance (=h) and its derivative (=dh)
+    // see ConstraintC2LDistance::errorgrad for explanation
+    double darea = 0.0;
+    const double area = v_line.crossProdZ(v_l1p, darea);
+    darea = std::signbit(area) ? -darea : darea;
+
+    double dlength = 0.;
+    const double length = v_line.length(dlength);
+
+    const double h = std::abs(area) / length;
+    const double dh = (darea - h * dlength) / length;
+
+    // if on the line but not on segment, this vector point to the nearest end
+    // if on segment, is null
+    DeriVector2 v_toNearest = v_l1p.getNormalized().sum(v_l2p.getNormalized()).mult(-0.5);
+
+    if (v_toNearest.sum(v_l1p.getNormalized()).length() == 0) {
+        v_toNearest = v_l1p;
+    }
+    else if (v_toNearest.sum(v_l2p.getNormalized()).length() == 0) {
+        v_toNearest = v_l2p;
+    }
+    double dDist;
+    const double dist = v_toNearest.length(dDist);
+
+    if (err) {
+        *err = h + dist;
+    }
+    if (grad) {
+        *grad = dh + dDist;
+    }
+}
+// --------------------------------------------------------
+// ConstraintPointOnArcRange
+ConstraintPointOnArcRange::ConstraintPointOnArcRange(Point& p, Arc& a)
+    : point(p)
+    , arc(a)
+{
+    point.PushOwnParams(pvec);
+    arc.PushOwnParams(pvec);
+
+    origpvec = pvec;
+    pvecChangedFlag = true;
+    rescale();
+}
+
+void ConstraintPointOnArcRange::ReconstructGeomPointers()
+{
+    int i = 0;
+    point.ReconstructOnNewPvec(pvec, i);
+    arc.ReconstructOnNewPvec(pvec, i);
+    pvecChangedFlag = false;
+}
+
+void ConstraintPointOnArcRange::errorgrad(double* err, double* grad, double* param)
+{
+    if (pvecChangedFlag) {
+        ReconstructGeomPointers();
+    }
+
+    const DeriVector2 p(point, param);
+    const DeriVector2 ct(arc.center, param);
+
+    const DeriVector2 v_p = p.subtr(ct);
+
+    double dist = 0.;
+    double dDist = 0.;
+    dist = v_p.length(dDist);
+
+    // error for point on cirlce
+    const double cErr = dist - *arc.rad;
+    // grad for point on circle
+    const double cGrad = dDist - (param == arc.rad ? 1. : 0.);
+
+    // unit vector from center to point, arc start and arc end
+    const DeriVector2 v_pN = v_p.getNormalized();
+    const DeriVector2 v_sN = DeriVector2(arc.start, param).subtr(ct).getNormalized();
+    const DeriVector2 v_eN = DeriVector2(arc.end, param).subtr(ct).getNormalized();
+
+    double dCrossStart;
+    const double crossStart = v_sN.crossProdZ(v_pN, dCrossStart);
+    double dCrossEnd;
+    const double crossEnd = v_eN.crossProdZ(v_pN, dCrossEnd);
+
+    // error for range
+    double rErr = 0.;
+    // grad for range
+    double rGrad = 0.;
+    // this gap is required to prevent the point to jump at the arc line of symetry
+    const double epsilon = 1e-9;
+    if (*arc.endAngle - *arc.startAngle < std::numbers::pi) {
+        if (crossStart < 0 || crossEnd > 0) {
+            rErr = crossStart + (std::abs(crossStart + crossEnd) > epsilon ? crossEnd : 0.);
+            rGrad = dCrossStart + (std::abs(crossStart + crossEnd) > epsilon ? dCrossEnd : 0.);
+        }
+    }
+    else {
+        if (crossStart < 0 && crossEnd > 0) {
+            rErr = crossStart + (crossStart + crossEnd > epsilon ? crossEnd : 0.);
+            rGrad = dCrossStart + (crossStart + crossEnd > epsilon ? dCrossEnd : 0.);
+        }
+    }
+
+    if (err) {
+        *err = rErr == 0. ? cErr : rErr;
+    }
+    if (grad) {
+        *grad = rGrad == 0. ? cGrad : rGrad;
     }
 }
 
