@@ -29,6 +29,7 @@ import FreeCAD
 import Path
 from Path.Tool.toolbit import ToolBit
 import Path.Base.Generator.toolchange as toolchange
+import Path.Dressup.Utils as PathDressup
 
 
 if False:
@@ -91,7 +92,7 @@ def _migrateRampDressups(tc):
                                 else "HorizFeed"
                             )
 
-                        if op.Base.ToolController == tc:
+                        if PathDressup.baseOp(op).ToolController == tc:
                             ramps.add(ramp)
                             if rampFeedRate == "Horizontal Feed Rate":
                                 feed = "HorizFeed"
@@ -130,7 +131,7 @@ def _migrateRampDressups(tc):
 
     # Loop over ramps and assign each one the appropriate TC
     for _, ramp, feed in job_ramp_feeds:
-        ramp.Base.ToolController = feed_to_tc[feed]
+        PathDressup.baseOp(ramp).ToolController = feed_to_tc[feed]
 
 
 class ToolController:
