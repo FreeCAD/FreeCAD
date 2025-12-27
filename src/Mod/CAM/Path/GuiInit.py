@@ -47,6 +47,7 @@ def Startup():
         from Path.Dressup.Gui import DogboneII
         from Path.Dressup.Gui import Dragknife
         from Path.Dressup.Gui import LeadInOut
+        from Path.Dressup.Gui import Mirror
         from Path.Dressup.Gui import Boundary
         from Path.Dressup.Gui import RampEntry
         from Path.Dressup.Gui import Tags
