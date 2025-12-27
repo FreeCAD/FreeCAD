@@ -1621,7 +1621,6 @@ class ObjectSurface(PathOp.ObjectOp):
         cmds = []
         rtpd = False
         height = obj.SafeHeight.Value
-        ChecklayDep = obj.OpStartDepth.Value - obj.StepDown.Value
         # Allow cutter-down transitions with a distance up to 2x cutter
         # diameter. We might be able to extend this further to the
         # full-retract-and-rapid break even point in the future, but this will
@@ -1634,7 +1633,7 @@ class ObjectSurface(PathOp.ObjectOp):
             obj.OptimizeStepOverTransitions = False
 
         # if obj.OptimizeStepOverTransitions:
-        if obj.OptimizeStepOverTransitions and p2.z != ChecklayDep:
+        if obj.OptimizeStepOverTransitions:
             if p1 and p2:
                 # Short distance within step over
                 xyDistanceSqrd = (p1.x - p2.x) ** 2 + (p1.y - p2.y) ** 2
