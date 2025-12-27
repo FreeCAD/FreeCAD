@@ -103,10 +103,10 @@ public:
     ~CommandNode();
 
     NodeType nodeType;
-    Command* aCommand;
+    Command* aCommand = nullptr;
     QString labelText;
-    CommandNode* parent;
-    QList<CommandNode*> children;
+    CommandNode* parent = nullptr;
+    QList<CommandNode*> children {};
 };
 
 class CommandModel: public QAbstractItemModel
@@ -126,7 +126,7 @@ public:
     void goRemoveMacro(const QByteArray& macroName);
 
 private:
-    CommandNode* rootNode;
+    CommandNode* rootNode = nullptr;
     CommandNode* nodeFromIndex(const QModelIndex& index) const;
     void initialize();
     void groupCommands(const QString& groupName);
@@ -177,13 +177,13 @@ private:
     void setMessage(const QString& message);
     QStringList getModels();
 
-    ButtonView* buttonView;
-    ButtonModel* buttonModel;
-    CommandView* commandView;
-    CommandModel* commandModel;
-    QPushButton* clearButton;
-    QPushButton* printReference;
-    QComboBox* devModel;
+    ButtonView* buttonView = nullptr;
+    ButtonModel* buttonModel = nullptr;
+    CommandView* commandView = nullptr;
+    CommandModel* commandModel = nullptr;
+    QPushButton* clearButton = nullptr;
+    QPushButton* printReference = nullptr;
+    QComboBox* devModel = nullptr;
 };
 }  // namespace Dialog
 }  // namespace Gui
