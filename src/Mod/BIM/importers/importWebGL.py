@@ -182,6 +182,58 @@ def getHTMLTemplate():
     return None
 
 
+def expand_part_containers(objectslist):
+    """Recursively expand App::Part containers to include their Group contents.
+
+    This function handles Part containers that are not recognized by
+    Draft.get_group_contents. App::Part containers are treated as follows:
+    - If the Part has a valid Shape, it is added as a single object (the Part
+      itself will be exported with proper placement)
+    - If the Part has no Shape but has Group contents, the children are expanded
+      and their global placements are used to account for the Part's transformation
+
+    Parameters
+    ----------
+    objectslist : list
+        List of objects to expand
+
+    Returns
+    -------
+    list
+        Expanded list with Part container contents included
+    """
+    expanded = []
+    if not isinstance(objectslist, list):
+        objectslist = [objectslist]
+
+    for obj in objectslist:
+        if obj:
+            # check if this is an App::Part container - if it has shape, add it as is,
+            # otherwise expand its Group contents
+            if obj.isDerivedFrom("App::Part"):
+                if hasattr(obj, "Shape") and not obj.Shape.isNull():
+                    expanded.append(obj)
+                elif hasattr(obj, "Group") and obj.Group:
+                    expanded.extend(expand_part_containers(obj.Group))
+            # check for other group types (but not App::Part which is handled above)
+            elif hasattr(obj, "Group") and obj.Group and not obj.isDerivedFrom("App::Part"):
+                # recursively expand the Group contents
+                expanded.extend(expand_part_containers(obj.Group))
+            else:
+                # add the object itself if it's not a container
+                expanded.append(obj)
+
+    # remove duplicates while preserving order
+    seen = set()
+    result = []
+    for obj in expanded:
+        if obj not in seen:
+            seen.add(obj)
+            result.append(obj)
+
+    return result
+
+
 def export(
     exportList, filename: str, colors: dict[str, str] | None = None, camera: str | None = None
 ) -> bool:
@@ -206,6 +258,8 @@ def export(
 
     # Take the objects out of groups
     objectslist = Draft.get_group_contents(exportList, walls=True, addgroups=False)
+    # Also expand Part containers that Draft.get_group_contents might miss
+    objectslist = expand_part_containers(objectslist)
     # objectslist = Arch.pruneIncluded(objectslist)
 
     for obj in objectslist:
@@ -220,6 +274,10 @@ def export(
         if obj.isDerivedFrom("Part::Feature"):
             objShape = obj.Shape
             validObject = True
+        if obj.isDerivedFrom("App::Part"):
+            if hasattr(obj, "Shape") and not obj.Shape.isNull():
+                objShape = obj.Shape
+                validObject = True
         if obj.isDerivedFrom("App::Link"):
             linkPlacement = obj.LinkPlacement
             while True:  # drill down to get to the actual obj
@@ -258,7 +316,9 @@ def export(
             "floats": [],
         }
 
-        if obj.isDerivedFrom("Part::Feature"):
+        if obj.isDerivedFrom("Part::Feature") or (
+            obj.isDerivedFrom("App::Part") and hasattr(obj, "Shape")
+        ):
             deviation = 0.5
             if FreeCADGui and hasattr(obj.ViewObject, "Deviation"):
                 deviation = obj.ViewObject.Deviation
@@ -449,6 +509,9 @@ def compress_wires(wires: list[list[str]], floats: list[str]) -> tuple[list[list
         lengths.append(len(w))
         floats.extend(w)
 
+    if len(floats) == 0:
+        return [], []
+
     float_arr, all_wires = np.unique(floats, return_inverse=True)
     wire_arrays = np.array_split(all_wires, np.cumsum(lengths[:-1]))
     return [baseEncode(w.tolist()) for w in wire_arrays], float_arr.tolist()
@@ -458,6 +521,9 @@ def compress_verts(verts: list[str], floats: list[str]) -> tuple[list[int], list
     """
     Create floats list to compress verts and wires being written into the JS
     """
+    if len(verts) == 0:
+        return [], floats
+
     floats_v, ind, verts_v = np.unique(verts, return_index=True, return_inverse=True)
 
     # Reorder as np.unique orders the resulting array (needed for facet matching)
