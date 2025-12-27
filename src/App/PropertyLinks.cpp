@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -473,9 +475,12 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject* feature,
         // to version change, i.e. 'reverse', try search by geometry first
         const char* oldElement = Data::findElementName(shadow.oldName.c_str());
         if (!Data::hasMissingElement(oldElement)) {
-            const auto& names = geo->searchElementCache(oldElement);
-
-            if (names.size() || reverse) {
+            auto names = geo->searchElementCache(oldElement);
+            if (names.empty()) {
+                // try floating point tolerance
+                names = geo->searchElementCache(oldElement, Data::SearchOptions());
+            }
+            if (names.size()) {
                 missing = false;
                 std::string newsub(subname, strlen(subname) - strlen(element));
                 if (names.size()) {

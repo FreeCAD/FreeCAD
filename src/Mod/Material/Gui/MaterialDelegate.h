@@ -80,7 +80,6 @@ Q_SIGNALS:
 
 private:
     QWidget* createWidget(QWidget* parent, const QVariant& item, const QModelIndex& index) const;
-    // QRgb parseColor(const QString& color) const;
     void showColorModal(const QString& propertyName, QStandardItem* item);
     void showImageModal(const QString& propertyName, QStandardItem* item);
     void showListModal(const QString& propertyName, QStandardItem* item);

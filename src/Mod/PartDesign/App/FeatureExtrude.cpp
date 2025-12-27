@@ -129,6 +129,26 @@ bool FeatureExtrude::hasTaperedAngle() const
         || fabs(TaperAngle2.getValue()) > Base::toRadians(Precision::Angular());
 }
 
+void FeatureExtrude::onChanged(const App::Property* prop)
+{
+    if (!isRestoring() && prop == &Midplane) {
+        // Deprecation notice: Midplane property is deprecated and has been replaced by SideType in
+        // FreeCAD 1.1 when FeatureExtrude was refactored.
+        App::DocumentObject* obj = Profile.getValue();
+        auto baseName = obj ? obj->getNameInDocument() : "";
+        Base::Console().warning(
+            "The 'Midplane' property being set for the extrusion of %s is deprecated and has "
+            "been replaced by the 'SideType' property in FeatureExtrude. Please update your script,"
+            " this property will be removed in a future version.\n",
+            baseName
+        );
+        if (Midplane.getValue()) {
+            SideType.setValue("Symmetric");
+        }
+    }
+    ProfileBased::onChanged(prop);
+}
+
 TopoShape FeatureExtrude::makeShellFromUpToShape(TopoShape shape, TopoShape sketchshape, gp_Dir dir)
 {
 

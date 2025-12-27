@@ -4961,7 +4961,7 @@ L'angolo finale sarà l'angolo base più questa quantità.</translation>
       <translation>Forma da Testo</translation>
     </message>
     <message>
-      <location filename="../../draftutils/params.py" line="506"/>
+      <location filename="../../draftutils/params.py" line="505"/>
       <source>Default</source>
       <translation>Predefinito</translation>
     </message>

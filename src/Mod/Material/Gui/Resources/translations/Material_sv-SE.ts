@@ -754,7 +754,7 @@ Om det inte är markerat kommer de att sorteras efter sitt namn.</translation>
     <message>
       <location filename="../../MaterialTreeWidget.cpp" line="140"/>
       <source>Launch Editor</source>
-      <translation>Starta Editor</translation>
+      <translation>Starta redigerare</translation>
     </message>
     <message>
       <location filename="../../MaterialTreeWidget.cpp" line="313"/>

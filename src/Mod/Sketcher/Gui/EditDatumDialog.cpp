@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -418,10 +420,12 @@ void EditDatumDialog::performAutoScale(double newDatum)
     // if there are external geometries, it is safe to assume that the sketch
     // was drawn with these geometries as scale references (use <= 2 because
     // the sketch axis are considered as external geometries)
+    // if the sketch has blocked geometries, it is considered a scale indicator
+    // and autoscale is not performed either
     if ((autoScaleMode == static_cast<int>(SketcherGui::AutoScaleMode::Always)
          || (autoScaleMode == static_cast<int>(SketcherGui::AutoScaleMode::WhenNoScaleFeatureIsVisible)
              && !hasVisualFeature(sketch, nullptr, Gui::Application::Instance->activeDocument())))
-        && sketch->getExternalGeometryCount() <= 2) {
+        && sketch->getExternalGeometryCount() <= 2 && !sketch->hasBlockConstraint()) {
         try {
             // Handle the case where multiple datum constraints are present but only one is scale
             // defining e.g. a bunch of angle constraints and a single length constraint

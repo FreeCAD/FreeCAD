@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+
 /****************************************************************************
  *                                                                          *
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>               *
@@ -3417,7 +3418,7 @@ void createNewConstraintsForTrim(
         }
         // We have already transferred all constraints on endpoints to the new pieces.
         // If there is still any left, this means one of the remaining pieces was degenerate.
-        if (!con->involvesGeoIdAndPosId(GeoId, PointPos::none)) {
+        if (!(con->Type == Angle || con->involvesGeoIdAndPosId(GeoId, PointPos::none))) {
             continue;
         }
         // constraint has not yet been changed
@@ -3442,6 +3443,34 @@ void createNewConstraintsForTrim(
                 .release()
         );
     }
+}
+
+std::optional<size_t> findPieceContainingPoint(
+    const SketchObject* obj,
+    const Part::Geometry* geo,
+    const Base::Vector3d& point,
+    const std::vector<int>& newIds,
+    const std::vector<const Part::Geometry*>& newGeos
+)
+{
+    double conParam;
+    auto* geoAsCurve = static_cast<const Part::GeomCurve*>(geo);
+    geoAsCurve->closestParameter(point, conParam);
+    // Choose based on where the closest point lies
+    // If it's not there, just leave this constraint out
+    for (size_t i = 0; i < newIds.size(); ++i) {
+        double newGeoFirstParam = static_cast<const Part::GeomCurve*>(newGeos[i])->getFirstParameter();
+        double newGeoLastParam = static_cast<const Part::GeomCurve*>(newGeos[i])->getLastParameter();
+        // For periodic curves the point may need a full revolution
+        if ((newGeoFirstParam - conParam) > Precision::PApproximation() && obj->isClosedCurve(geo)) {
+            conParam += (geoAsCurve->getLastParameter() - geoAsCurve->getFirstParameter());
+        }
+        if ((newGeoFirstParam - conParam) <= Precision::PApproximation()
+            && (conParam - newGeoLastParam) <= Precision::PApproximation()) {
+            return i;
+        }
+    }
+    return std::nullopt;
 }
 
 int SketchObject::trim(int GeoId, const Base::Vector3d& point)
@@ -3693,8 +3722,7 @@ bool SketchObject::deriveConstraintsForPieces(
         case Vertical:
         case Parallel: {
             transferToAll = geo->is<Part::GeomLineSegment>();
-            break;
-        }
+        } break;
         case Tangent:
         case Perpendicular: {
             if (geo->is<Part::GeomLineSegment>()) {
@@ -3728,9 +3756,63 @@ bool SketchObject::deriveConstraintsForPieces(
                     return true;
                 }
             }
+        } break;
+        case Angle: {
+            const auto [thirdGeo, thirdPos] = con->getElement(2);
+            if (thirdGeo == oldId) {
+                // TODO: transfer to a coincident point,
+                // is it possible to do it somewhere else and avoid?
+                std::vector<int> GeoIdList;
+                std::vector<PointPos> PosIdList;
+                getDirectlyCoincidentPoints(thirdGeo, thirdPos, GeoIdList, PosIdList);
+                if (GeoIdList.size() <= 1) {
+                    // TODO: Even in this case we can add a point
+                    return false;
+                }
 
-            break;
-        }
+                // transfer only to the curve that actually intersects
+                Base::Vector3d point(getPoint(thirdGeo, thirdPos));
+                std::optional<size_t> idx = findPieceContainingPoint(this, geo, point, newIds, newGeos);
+
+                if (idx.has_value()) {
+                    Constraint* trans = con->copy();
+                    trans->substituteIndexAndPos(GeoIdList[0], PosIdList[0], GeoIdList[1], PosIdList[1]);
+                    trans->substituteIndex(oldId, newIds[idx.value()]);
+                    newConstraints.push_back(trans);
+                    return true;
+                }
+            }
+            else if (thirdGeo != GeoEnum::GeoUndef) {
+                // Angle via point but the point won't change, can transfer to all or first
+                // transfer only to the curve that actually intersects
+                Base::Vector3d point(getPoint(thirdGeo, thirdPos));
+                std::optional<size_t> idx = findPieceContainingPoint(this, geo, point, newIds, newGeos);
+
+                if (idx.has_value()) {
+                    Constraint* trans = con->copy();
+                    trans->substituteIndex(oldId, newIds[idx.value()]);
+                    newConstraints.push_back(trans);
+                    return true;
+                }
+                break;
+            }
+            else if (std::ranges::any_of(newGeos, [](const Part::Geometry* geo) {
+                         return !geo->is<Part::GeomLineSegment>();
+                     })) {
+                // Angle without a specific point is only supported when _all_ geometries are lines.
+                // If the original was a line, we may reach this point, for example, when converting
+                // it to NURBS.
+
+                // NOTE: We may decide to change this logic in the future. Follows
+                // `Sketch::addConstraint`.
+                return false;
+            }
+            else {
+                // Straight up angle, can transfer to all or first
+                transferToAll = true;
+                break;
+            }
+        } break;
         case Distance:
         case DistanceX:
         case DistanceY:
@@ -3778,9 +3860,7 @@ bool SketchObject::deriveConstraintsForPieces(
                     return true;
                 }
             }
-
-            break;
-        }
+        } break;
         case Radius:
         case Diameter:
         case Equal: {
@@ -3794,7 +3874,7 @@ bool SketchObject::deriveConstraintsForPieces(
                 newConstraints.push_back(trans);
                 break;
             }
-        }
+        } break;
         default:
             // Release other constraints
             break;
@@ -6985,6 +7065,8 @@ bool SketchObject::insertBSplineKnot(int GeoId, double param, int multiplicity)
 
 int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
 {
+    using std::numbers::pi;
+
     // no need to check input data validity as this is an sketchobject managed operation.
     Base::StateLocker lock(managedoperation, true);
 
@@ -7016,6 +7098,11 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
 
     newVals.reserve(vals.size() + svals.size());
     newcVals.reserve(cvals.size() + scvals.size());
+
+    const Base::Vector3d& origin = this->Placement.getValue().getPosition();
+    const Base::Rotation& rotation = this->Placement.getValue().getRotation();
+    const Base::Vector3d axisH = rotation.multVec(Base::Vector3d::UnitX);
+    const Base::Vector3d axisV = rotation.multVec(Base::Vector3d::UnitY);
 
     std::map<int, int> extMap;
     if (psObj->ExternalGeo.getSize() > 1) {
@@ -7106,14 +7193,91 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
         solverNeedsUpdate = true;
     }
 
+    auto applyGeometryFlipCorrection = [xinv, yinv, origin, axisV, axisH]
+                                       (Part::Geometry* geoNew) {
+        if (!xinv && !yinv) {
+            return;
+        }
+
+        if (xinv) {
+            geoNew->mirror(origin, axisV);
+        }
+        if (yinv) {
+            geoNew->mirror(origin, axisH);
+        }
+    };
+
     for (std::vector<Part::Geometry*>::const_iterator it = svals.begin(); it != svals.end(); ++it) {
         Part::Geometry* geoNew = (*it)->copy();
+        if (xinv || yinv) {
+            // corrections for flipped geometry
+            applyGeometryFlipCorrection(geoNew);
+        }
         generateId(geoNew);
         if (construction && !geoNew->is<Part::GeomPoint>()) {
             GeometryFacade::setConstruction(geoNew, true);
         }
         newVals.push_back(geoNew);
     }
+
+    auto applyConstraintFlipCorrection = [xinv, yinv]
+                                         (Sketcher::Constraint* newConstr) {
+        if (!xinv && !yinv) {
+            return;
+        }
+
+        // DistanceX, DistanceY
+        if ((xinv && newConstr->Type == Sketcher::DistanceX) ||
+            (yinv && newConstr->Type == Sketcher::DistanceY)) {
+            if (newConstr->First == newConstr->Second) {
+                std::swap(newConstr->FirstPos, newConstr->SecondPos);
+            } else{
+                newConstr->setValue(-newConstr->getValue());
+            }
+        }
+
+        // Angle
+        if (newConstr->Type == Sketcher::Angle) {
+            auto normalizeAngle = [](double angleDeg) {
+                while (angleDeg > pi) angleDeg -= pi * 2.0;
+                while (angleDeg <= -pi) angleDeg += pi * 2.0;
+                return angleDeg;
+            };
+
+            if (xinv && yinv) { // rotation 180 degrees around normal axis
+                if (newConstr->First ==-1 || newConstr->Second == -1
+                    || newConstr->First == -2 || newConstr->Second == -2
+                    || newConstr->Second == GeoEnum::GeoUndef) {
+                    // angle to horizontal or vertical axis
+                    newConstr->setValue(normalizeAngle(newConstr->getValue() + pi));
+                }
+                else {
+                    // angle between two sketch entities
+                    // do nothing
+                }
+            }
+            else if (xinv) { // rotation 180 degrees around vertical axis
+                if (newConstr->First == -1 || newConstr->Second == -1 || newConstr->Second == GeoEnum::GeoUndef) {
+                    // angle to horizontal axis
+                    newConstr->setValue(normalizeAngle(pi - newConstr->getValue()));
+                }
+                else {
+                    // angle between two sketch entities or angle to vertical axis
+                    newConstr->setValue(normalizeAngle(-newConstr->getValue()));
+                }
+            }
+            else if (yinv) { // rotation 180 degrees around horizontal axis
+                if (newConstr->First == -2 || newConstr->Second == -2) {
+                    // angle to vertical axis
+                    newConstr->setValue(normalizeAngle(pi - newConstr->getValue()));
+                }
+                else {
+                    // angle between two sketch entities or angle to horizontal axis
+                    newConstr->setValue(normalizeAngle(-newConstr->getValue()));
+                }
+            }
+        }
+    };
 
     for (std::vector<Sketcher::Constraint*>::const_iterator it = scvals.begin(); it != scvals.end();
          ++it) {
@@ -7132,6 +7296,11 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
         if ((*it)->Third < -2 && (*it)->Third != GeoEnum::GeoUndef)
             newConstr->Third -= (nextextgeoid - 2);
 
+        if (xinv || yinv) {
+            // corrections for flipped constraints
+            applyConstraintFlipCorrection(newConstr);
+        }
+
         newcVals.push_back(newConstr);
     }
 
@@ -7146,6 +7315,62 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
     // ViewProvider::UpdateData is triggered.
     Geometry.touch();
 
+    auto makeCorrectedExpressionString = [xinv, yinv]
+                                         (const Sketcher::Constraint* constr, const std::string expr)
+                                         -> std::string {
+        if (!xinv && !yinv) {
+            return expr;
+        }
+
+        // DistanceX, DistanceY
+        if ((xinv && constr->Type == Sketcher::DistanceX) ||
+            (yinv && constr->Type == Sketcher::DistanceY)) {
+            if (constr->First == constr->Second) {
+                return expr;
+            } else{
+                return "-(" + expr + ")";
+            }
+        }
+
+        // Angle
+        if (constr->Type == Sketcher::Angle) {
+            if (xinv && yinv) { // rotation 180 degrees around normal axis
+                if (constr->First ==-1 || constr->Second == -1
+                    || constr->First == -2 || constr->Second == -2
+                    || constr->Second == GeoEnum::GeoUndef) {
+                    // angle to horizontal or vertical axis
+                    return "(" + expr + ") + 180 deg";
+                }
+                else {
+                    // angle between two sketch entities
+                    // do nothing
+                    return expr;
+                }
+            }
+            else if (xinv) { // rotation 180 degrees around vertical axis
+                if (constr->First == -1 || constr->Second == -1 || constr->Second == GeoEnum::GeoUndef) {
+                    // angle to horizontal axis
+                    return "180 deg - (" + expr + ")";
+                }
+                else {
+                    // angle between two sketch entities or angle to vertical axis
+                    return "-(" + expr + ")";
+                }
+            }
+            else if (yinv) { // rotation 180 degrees around horizontal axis
+                if (constr->First == -2 || constr->Second == -2) {
+                    // angle to vertical axis
+                    return "180 deg - (" + expr + ")";
+                }
+                else {
+                    // angle between two sketch entities or angle to horizontal axis
+                    return "-(" + expr + ")";
+                }
+            }
+        }
+        return expr;
+    };
+
     int sourceid = 0;
     for (std::vector<Sketcher::Constraint*>::const_iterator it = scvals.begin(); it != scvals.end();
          ++it, nextcid++, sourceid++) {
@@ -7156,19 +7381,22 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
                 App::ObjectIdentifier spath;
                 std::shared_ptr<App::Expression> expr;
                 std::string scname = (*it)->Name;
+                std::string sref;
                 if (App::ExpressionParser::isTokenAnIndentifier(scname)) {
                     spath = App::ObjectIdentifier(psObj->Constraints)
                         << App::ObjectIdentifier::SimpleComponent(scname);
-                    expr = std::shared_ptr<App::Expression>(App::Expression::parse(
-                        this, spath.getDocumentObjectName().getString() + spath.toString()));
+                    sref = spath.getDocumentObjectName().getString() + spath.toString();
                 }
                 else {
                     spath = psObj->Constraints.createPath(sourceid);
-                    expr = std::shared_ptr<App::Expression>(
-                        App::Expression::parse(this,
-                                               spath.getDocumentObjectName().getString()
-                                                   + std::string(1, '.') + spath.toString()));
+                    sref = spath.getDocumentObjectName().getString()
+                           + std::string(1, '.') + spath.toString();
                 }
+                if (xinv || yinv) {
+                    // corrections for flipped expressions
+                    sref = makeCorrectedExpressionString((*it), sref);
+                }
+                expr = std::shared_ptr<App::Expression>(App::Expression::parse(this, sref));
                 setExpression(Constraints.createPath(nextcid), std::move(expr));
             }
         }
@@ -9493,7 +9721,7 @@ const std::map<int, Sketcher::PointPos> SketchObject::getAllCoincidentPoints(int
 
 void SketchObject::getDirectlyCoincidentPoints(int GeoId, PointPos PosId,
                                                std::vector<int>& GeoIdList,
-                                               std::vector<PointPos>& PosIdList)
+                                               std::vector<PointPos>& PosIdList) const
 {
     const std::vector<Constraint*>& constraints = this->Constraints.getValues();
 
@@ -9535,7 +9763,7 @@ void SketchObject::getDirectlyCoincidentPoints(int GeoId, PointPos PosId,
 }
 
 void SketchObject::getDirectlyCoincidentPoints(int VertexId, std::vector<int>& GeoIdList,
-                                               std::vector<PointPos>& PosIdList)
+                                               std::vector<PointPos>& PosIdList) const
 {
     int GeoId;
     PointPos PosId;
@@ -9566,6 +9794,12 @@ bool SketchObject::arePointsCoincident(int GeoId1, PointPos PosId1, int GeoId2, 
     }
 
     return false;
+}
+bool SketchObject::hasBlockConstraint() const
+{
+    return std::ranges::any_of(Constraints.getValues(), [](auto& c) {
+        return c->Type == Block;
+    });
 }
 
 void SketchObject::getConstraintIndices(int GeoId, std::vector<int>& constraintList)

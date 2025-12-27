@@ -91,6 +91,7 @@ class Snapper:
     def __init__(self):
         self.activeview = None
         self.lastObj = []
+        self.lastObjSubelements = []
         self.radius = 0
         self.constraintAxis = None
         self.basepoint = None
@@ -99,7 +100,6 @@ class Snapper:
         self.cursorMode = None
         self.cursorQt = None
         self.maxEdges = params.get_param("maxSnapEdges")
-        self.maxFaces = params.get_param("maxSnapFaces")
 
         # we still have no 3D view when the draft module initializes
         self.tracker = None
@@ -460,10 +460,13 @@ class Snapper:
         # objects must be added even if no snap has been found for the object
         # otherwise Intersection snap (for example) will not work
         if obj.Name in self.lastObj:
+            self.lastObjSubelements.pop(self.lastObj.index(obj.Name))
             self.lastObj.remove(obj.Name)
         self.lastObj.append(obj.Name)
+        self.lastObjSubelements.append(subname.split(".")[-1])
         if len(self.lastObj) > 8:
             self.lastObj = self.lastObj[-8:]
+            self.lastObjSubelements = self.lastObjSubelements[-8:]
 
         if not snaps:
             return None
@@ -1035,18 +1038,33 @@ class Snapper:
         snaps = []
         if self.isEnabled("Intersection"):
             # get the stored objects to calculate intersections
-            for obj_name in self.lastObj:
+            for obj_name, sub_name in zip(self.lastObj, self.lastObjSubelements):
                 obj = App.ActiveDocument.getObject(obj_name)
                 if obj and (obj.isDerivedFrom("Part::Feature") or (Draft.getType(obj) == "Axis")):
-                    if (not self.maxFaces) or (len(obj.Shape.Faces) <= self.maxFaces):
-                        for face in obj.Shape.Faces:
-                            try:
-                                pts = DraftGeomUtils.findIntersection(face, shape)
-                                for pt in pts:
-                                    snaps.append([pt, "intersection", self.toWP(pt)])
-                            except Exception:
-                                pass
-                    if (not self.maxEdges) or (len(obj.Shape.Edges) <= self.maxEdges):
+                    # obj sub is face, shape is edge:
+                    if "Face" in sub_name and shape.ShapeType == "Edge":
+                        face = obj.Shape.Faces[int(sub_name[4:]) - 1]
+                        try:
+                            pts = DraftGeomUtils.findIntersection(face, shape)
+                            for pt in pts:
+                                snaps.append([pt, "intersection", self.toWP(pt)])
+                        except Exception:
+                            pass
+                    elif "Edge" not in sub_name:
+                        pass
+                    # obj sub is edge, shape is face:
+                    elif shape.ShapeType == "Face":
+                        edge = obj.Shape.Edges[int(sub_name[4:]) - 1]
+                        try:
+                            pts = DraftGeomUtils.findIntersection(edge, shape)
+                            for pt in pts:
+                                snaps.append([pt, "intersection", self.toWP(pt)])
+                        except Exception:
+                            pass
+                    elif shape.ShapeType != "Edge":
+                        pass
+                    # obj sub is edge, shape is edge:
+                    elif (not self.maxEdges) or (len(obj.Shape.Edges) <= self.maxEdges):
                         for edge in obj.Shape.Edges:
                             try:
                                 if (
@@ -1247,6 +1265,7 @@ class Snapper:
         self.running = False
         self.holdPoints = []
         self.lastObj = []
+        self.lastObjSubelements = []
 
         if hasattr(App, "activeDraftCommand") and App.activeDraftCommand:
             return

@@ -1878,7 +1878,7 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="262"/>
       <source>Save As…</source>
-      <translation type="unfinished">Save As…</translation>
+      <translation>Opslaan Als…</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="14"/>

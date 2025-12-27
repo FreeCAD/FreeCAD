@@ -4419,7 +4419,7 @@ L'algoritmo di Eigen Sparse QR è ottimizzato per matrici sparsi; solitamente pi
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
       <source>Visual Helpers</source>
-      <translation type="unfinished">Visual Helpers</translation>
+      <translation>Aiuti visivi</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>

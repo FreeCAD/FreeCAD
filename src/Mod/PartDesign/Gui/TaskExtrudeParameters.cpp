@@ -116,6 +116,10 @@ void TaskExtrudeParameters::setupDialog()
     updateUI(Side::First);
 
     setupGizmos();
+
+    // trigger recompute to ensure external geometry references update correctly.
+    // see freecad issue #25794
+    tryRecomputeFeature();
 }
 
 void TaskExtrudeParameters::setupSideDialog(SideController& side)

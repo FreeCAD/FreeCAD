@@ -512,8 +512,8 @@ void DlgAddProperty::setTitle()
 void DlgAddProperty::setAddEnabled(bool enabled)
 {
     QPushButton* addButton = ui->buttonBox->button(QDialogButtonBox::Ok);
-    QPushButton* cancelButton = ui->buttonBox->button(QDialogButtonBox::Cancel);
-    cancelButton->setDefault(!enabled);
+    QPushButton* closeButton = ui->buttonBox->button(QDialogButtonBox::Close);
+    closeButton->setDefault(!enabled);
     addButton->setDefault(enabled);
     addButton->setEnabled(enabled);
 }
