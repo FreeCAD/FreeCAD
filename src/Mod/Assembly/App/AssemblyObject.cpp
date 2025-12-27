@@ -368,9 +368,7 @@ bool AssemblyObject::validateNewPlacements()
     // First we check if a grounded object has moved. It can happen that they flip.
     auto groundedParts = getGroundedParts();
     for (auto* obj : groundedParts) {
-        auto* propPlacement = dynamic_cast<App::PropertyPlacement*>(
-            obj->getPropertyByName("Placement")
-        );
+        auto* propPlacement = obj->getPlacementProperty();
         if (propPlacement) {
             Base::Placement oldPlc = propPlacement->getValue();
 
@@ -417,7 +415,7 @@ void AssemblyObject::savePlacementsForUndo()
         savePair.first = obj;
 
         // Check if the object has a "Placement" property
-        auto* propPlc = dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"));
+        auto* propPlc = obj->getPlacementProperty();
         if (!propPlc) {
             continue;
         }
@@ -440,9 +438,7 @@ void AssemblyObject::undoSolve()
         }
 
         // Check if the object has a "Placement" property
-        auto* propPlacement = dynamic_cast<App::PropertyPlacement*>(
-            obj->getPropertyByName("Placement")
-        );
+        auto* propPlacement = obj->getPlacementProperty();
         if (!propPlacement) {
             continue;
         }
@@ -484,9 +480,7 @@ void AssemblyObject::setNewPlacements()
         }
 
         // Check if the object has a "Placement" property
-        auto* propPlacement = dynamic_cast<App::PropertyPlacement*>(
-            obj->getPropertyByName("Placement")
-        );
+        auto* propPlacement = obj->getPlacementProperty();
         if (!propPlacement) {
             continue;
         }
@@ -1992,7 +1986,7 @@ void AssemblyObject::ensureIdentityPlacements()
         // When used in assembly, link groups must have identity placements.
         if (obj->isLinkGroup()) {
             auto* link = dynamic_cast<App::Link*>(obj);
-            auto* pPlc = dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"));
+            auto* pPlc = obj->getPlacementProperty();
             if (!pPlc || !link) {
                 continue;
             }
@@ -2008,7 +2002,7 @@ void AssemblyObject::ensureIdentityPlacements()
             // To keep the LinkElement positions, we apply plc to their placements
             std::vector<App::DocumentObject*> elts = link->ElementList.getValues();
             for (auto* elt : elts) {
-                pPlc = dynamic_cast<App::PropertyPlacement*>(elt->getPropertyByName("Placement"));
+                pPlc = elt->getPlacementProperty();
                 pPlc->setValue(plc * pPlc->getValue());
                 elt->purgeTouched();
             }

@@ -484,9 +484,7 @@ bool ViewProviderAssembly::tryMouseMove(const SbVec2s& cursorPos, Gui::View3DInv
 
         for (auto& objToMove : docsToMove) {
             App::DocumentObject* obj = objToMove.obj;
-            auto* propPlacement = dynamic_cast<App::PropertyPlacement*>(
-                obj->getPropertyByName("Placement")
-            );
+            auto* propPlacement = obj->getPlacementProperty();
             if (propPlacement) {
                 Base::Placement plc = objToMove.plc;
 
@@ -687,7 +685,7 @@ bool ViewProviderAssembly::canDragObjectIn3d(App::DocumentObject* obj) const
         return false;
     }
 
-    auto* propPlacement = dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"));
+    auto* propPlacement = obj->getPlacementProperty();
     if (!propPlacement) {
         return false;
     }
@@ -787,7 +785,7 @@ bool ViewProviderAssembly::getSelectedObjectsWithinAssembly(bool addPreselection
             }
 
             if (!alreadyIn) {
-                auto* pPlc = dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"));
+                auto* pPlc = obj->getPlacementProperty();
                 if (!ctrlPressed && !moveOnlyPreselected) {
                     Gui::Selection().clearSelection();
                     docsToMove.clear();
@@ -850,7 +848,7 @@ void ViewProviderAssembly::collectMovableObjects(
     }
 
     if (canDragObjectIn3d(part)) {
-        auto* pPlc = dynamic_cast<App::PropertyPlacement*>(part->getPropertyByName("Placement"));
+        auto* pPlc = part->getPlacementProperty();
         if (pPlc) {
             docsToMove.emplace_back(part, pPlc->getValue(), selRoot, subNamePrefix);
         }
@@ -864,9 +862,7 @@ ViewProviderAssembly::DragMode ViewProviderAssembly::findDragMode()
             if (!partRef.obj) {
                 continue;
             }
-            auto* pPlc = dynamic_cast<App::PropertyPlacement*>(
-                partRef.obj->getPropertyByName("Placement")
-            );
+            auto* pPlc = partRef.obj->getPlacementProperty();
             if (pPlc) {
                 App::DocumentObject* selRoot = partRef.ref->getValue();
                 if (!selRoot) {
@@ -914,7 +910,7 @@ ViewProviderAssembly::DragMode ViewProviderAssembly::findDragMode()
                 return DragMode::None;
             }
 
-            auto* pPlc = dynamic_cast<App::PropertyPlacement*>(upPart->getPropertyByName("Placement"));
+            auto* pPlc = upPart->getPlacementProperty();
             if (pPlc) {
                 auto* ref = dynamic_cast<App::PropertyXLinkSub*>(
                     movingJoint->getPropertyByName(pName.c_str())
@@ -1162,7 +1158,7 @@ void ViewProviderAssembly::draggerMotionCallback(void* data, SoDragger* d)
     for (auto& movingObj : sudoThis->docsToMove) {
         App::DocumentObject* obj = movingObj.obj;
 
-        auto* pPlc = dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"));
+        auto* pPlc = obj->getPlacementProperty();
         if (pPlc) {
             pPlc->setValue(movePlc * movingObj.plc);
         }
