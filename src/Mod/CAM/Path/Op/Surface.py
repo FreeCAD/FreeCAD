@@ -1632,7 +1632,7 @@ class ObjectSurface(PathOp.ObjectOp):
         if obj.LayerMode == "Single-pass" and obj.CutPattern == "Spiral":
             obj.OptimizeStepOverTransitions = False
 
-        # if obj.OptimizeStepOverTransitions:
+        # Optimize Step Over Transition
         if obj.OptimizeStepOverTransitions:
             if p1 and p2:
                 # Short distance within step over
@@ -1645,28 +1645,27 @@ class ObjectSurface(PathOp.ObjectOp):
                     # no dropping below the min of p1 and p2, primarily for multi
                     # layer path safety.
                     zFloor = min(p1.z, p2.z)
-                    if abs(minZ - maxZ) < self.cutter.getDiameter():
-                        for pt in transLine[1:-1]:
-                            cmds.append(
-                                Path.Command(
-                                    "G1",
-                                    {
-                                        "X": pt.x,
-                                        "Y": pt.y,
-                                        # Enforce zFloor
-                                        "Z": max(pt.z, zFloor),
-                                        "F": self.horizFeed,
-                                    },
-                                )
-                            )
-                        # Use p2 (start of next step) verbatim
+                    for pt in transLine[1:-1]:
                         cmds.append(
                             Path.Command(
                                 "G1",
-                                {"X": p2.x, "Y": p2.y, "Z": p2.z, "F": self.horizFeed},
+                                {
+                                    "X": pt.x,
+                                    "Y": pt.y,
+                                    # Enforce zFloor
+                                    "Z": max(pt.z, zFloor),
+                                    "F": self.horizFeed,
+                                },
                             )
                         )
-                        return cmds
+                    # Use p2 (start of next step) verbatim
+                    cmds.append(
+                        Path.Command(
+                            "G1",
+                            {"X": p2.x, "Y": p2.y, "Z": p2.z, "F": self.horizFeed},
+                        )
+                    )
+                    return cmds
                 # For longer distances or large z deltas, we conservatively lift
                 # to SafeHeight for lack of an accurate stock model, but then
                 # speed up the drop back down when using multi pass, dropping
