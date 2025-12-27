@@ -70,16 +70,17 @@ def RePopulateIcons():
 
     a1.setIcon(QtGui.QIcon(":/icons/NavigationBlender_" + StyleSheetType + ".svg"))
     a2.setIcon(QtGui.QIcon(":/icons/NavigationCAD_" + StyleSheetType + ".svg"))
-    a3.setIcon(QtGui.QIcon(":/icons/NavigationGesture_" + StyleSheetType + ".svg"))
-    a4.setIcon(QtGui.QIcon(":/icons/NavigationMayaGesture_" + StyleSheetType + ".svg"))
-    a5.setIcon(QtGui.QIcon(":/icons/NavigationOpenCascade_" + StyleSheetType + ".svg"))
-    a6.setIcon(QtGui.QIcon(":/icons/NavigationOpenInventor_" + StyleSheetType + ".svg"))
-    a7.setIcon(QtGui.QIcon(":/icons/NavigationOpenSCAD_" + StyleSheetType + ".svg"))
-    a8.setIcon(QtGui.QIcon(":/icons/NavigationRevit_" + StyleSheetType + ".svg"))
-    a9.setIcon(QtGui.QIcon(":/icons/NavigationSiemensNX_" + StyleSheetType + ".svg"))
-    a10.setIcon(QtGui.QIcon(":/icons/NavigationSolidWorks_" + StyleSheetType + ".svg"))
-    a11.setIcon(QtGui.QIcon(":/icons/NavigationTinkerCAD_" + StyleSheetType + ".svg"))
-    a12.setIcon(QtGui.QIcon(":/icons/NavigationTouchpad_" + StyleSheetType + ".svg"))
+    a3.setIcon(QtGui.QIcon(":/icons/NavigationRevit_" + StyleSheetType + ".svg"))
+    a4.setIcon(QtGui.QIcon(":/icons/NavigationGesture_" + StyleSheetType + ".svg"))
+    a5.setIcon(QtGui.QIcon(":/icons/NavigationMayaGesture_" + StyleSheetType + ".svg"))
+    a6.setIcon(QtGui.QIcon(":/icons/NavigationOpenCascade_" + StyleSheetType + ".svg"))
+    a7.setIcon(QtGui.QIcon(":/icons/NavigationOpenInventor_" + StyleSheetType + ".svg"))
+    a8.setIcon(QtGui.QIcon(":/icons/NavigationOpenSCAD_" + StyleSheetType + ".svg"))
+    a9.setIcon(QtGui.QIcon(":/icons/NavigationRevit_" + StyleSheetType + ".svg"))
+    a10.setIcon(QtGui.QIcon(":/icons/NavigationSiemensNX_" + StyleSheetType + ".svg"))
+    a11.setIcon(QtGui.QIcon(":/icons/NavigationSolidWorks_" + StyleSheetType + ".svg"))
+    a12.setIcon(QtGui.QIcon(":/icons/NavigationTinkerCAD_" + StyleSheetType + ".svg"))
+    a13.setIcon(QtGui.QIcon(":/icons/NavigationTouchpad_" + StyleSheetType + ".svg"))
 
 
 def retranslateUi():
@@ -177,6 +178,40 @@ def retranslateUi():
 
     global t3
     t3 = (
+        "<p align='center'><b>Fusion</b> "
+        + text06
+        + """</p>
+    <table>
+     <tr>
+      <th><small>"""
+        + text01
+        + """</small></th>
+      <th><small>"""
+        + text02
+        + """</small></th>
+      <th><small>"""
+        + text03
+        + """</small></th>
+      <th><small>"""
+        + text04
+        + """</small></th>
+     </tr>
+     <tr>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Left.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Scroll.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_ShiftMiddle.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Middle.svg'></td>
+     </tr>
+    </table>
+    <b>"""
+        + text08
+        + ":</b> "
+        + text10
+        + "</small></p>"
+    )
+
+    global t4
+    t4 = (
         "<p align='center'><b>Gesture</b> "
         + text06
         + """</p>
@@ -250,8 +285,8 @@ def retranslateUi():
         + "</small></p>"
     )
 
-    global t4
-    t4 = (
+    global t5
+    t5 = (
         "<p align='center'><b>MayaGesture</b> "
         + text06
         + """</p>
@@ -325,8 +360,8 @@ def retranslateUi():
         + "</small></p>"
     )
 
-    global t5
-    t5 = (
+    global t6
+    t6 = (
         "<p align='center'><b>OpenCascade</b> "
         + text06
         + """</p>
@@ -362,8 +397,8 @@ def retranslateUi():
     </table>"""
     )
 
-    global t6
-    t6 = (
+    global t7
+    t7 = (
         "<p align='center'><b>OpenInventor</b> "
         + text06
         + """</p>
@@ -400,8 +435,8 @@ def retranslateUi():
         + "</small></p>"
     )
 
-    global t7
-    t7 = (
+    global t8
+    t8 = (
         "<p align='center'><b>OpenSCAD</b> "
         + text06
         + """</p>
@@ -437,8 +472,8 @@ def retranslateUi():
     </table>"""
     )
 
-    global t8
-    t8 = (
+    global t9
+    t9 = (
         "<p align='center'><b>Revit</b> "
         + text06
         + """</p>
@@ -475,8 +510,8 @@ def retranslateUi():
         + "</small></p>"
     )
 
-    global t9
-    t9 = (
+    global t10
+    t10 = (
         "<p align='center'><b>Siemens NX</b> "
         + text06
         + """</p>
@@ -517,8 +552,8 @@ def retranslateUi():
         + "</small></p>"
     )
 
-    global t10
-    t10 = (
+    global t11
+    t11 = (
         "<p align='center'><b>SolidWorks</b> "
         + text06
         + """</p>
@@ -555,8 +590,8 @@ def retranslateUi():
         + "</small></p>"
     )
 
-    global t11
-    t11 = (
+    global t12
+    t12 = (
         "<p align='center'><b>TinkerCAD</b> "
         + text06
         + """</p>
@@ -584,8 +619,8 @@ def retranslateUi():
     </table>"""
     )
 
-    global t12
-    t12 = (
+    global t13
+    t13 = (
         "<p align='center'><b>Touchpad</b> "
         + text06
         + """</p>
@@ -731,54 +766,59 @@ a2.setData("Gui::CADNavigationStyle")
 a2.setObjectName("Indicator_NavigationCAD")
 
 a3 = QtGui.QAction(gStyle)
-a3.setText("Gesture  ")
-a3.setData("Gui::GestureNavigationStyle")
-a3.setObjectName("Indicator_NavigationGesture")
+a3.setText("Fusion  ")
+a3.setData("Gui::FusionNavigationStyle")
+a3.setObjectName("Indicator_NavigationFusion")
 
 a4 = QtGui.QAction(gStyle)
-a4.setText("MayaGesture  ")
-a4.setData("Gui::MayaGestureNavigationStyle")
-a4.setObjectName("Indicator_NavigationMayaGesture")
+a4.setText("Gesture  ")
+a4.setData("Gui::GestureNavigationStyle")
+a4.setObjectName("Indicator_NavigationGesture")
 
 a5 = QtGui.QAction(gStyle)
-a5.setText("OpenCascade  ")
-a5.setData("Gui::OpenCascadeNavigationStyle")
-a5.setObjectName("Indicator_NavigationOpenCascade")
+a5.setText("MayaGesture  ")
+a5.setData("Gui::MayaGestureNavigationStyle")
+a5.setObjectName("Indicator_NavigationMayaGesture")
 
 a6 = QtGui.QAction(gStyle)
-a6.setText("OpenInventor  ")
-a6.setData("Gui::InventorNavigationStyle")
-a6.setObjectName("Indicator_NavigationOpenInventor")
+a6.setText("OpenCascade  ")
+a6.setData("Gui::OpenCascadeNavigationStyle")
+a6.setObjectName("Indicator_NavigationOpenCascade")
 
 a7 = QtGui.QAction(gStyle)
-a7.setText("OpenSCAD  ")
-a7.setData("Gui::OpenSCADNavigationStyle")
-a7.setObjectName("Indicator_NavigationOpenSCAD")
+a7.setText("OpenInventor  ")
+a7.setData("Gui::InventorNavigationStyle")
+a7.setObjectName("Indicator_NavigationOpenInventor")
 
 a8 = QtGui.QAction(gStyle)
-a8.setText("Revit  ")
-a8.setData("Gui::RevitNavigationStyle")
-a8.setObjectName("Indicator_NavigationRevit")
+a8.setText("OpenSCAD  ")
+a8.setData("Gui::OpenSCADNavigationStyle")
+a8.setObjectName("Indicator_NavigationOpenSCAD")
 
 a9 = QtGui.QAction(gStyle)
-a9.setText("Siemens NX  ")
-a9.setData("Gui::SiemensNXNavigationStyle")
-a9.setObjectName("Indicator_NavigationSiemensNX")
+a9.setText("Revit  ")
+a9.setData("Gui::RevitNavigationStyle")
+a9.setObjectName("Indicator_NavigationRevit")
 
 a10 = QtGui.QAction(gStyle)
-a10.setText("SolidWorks  ")
-a10.setData("Gui::SolidWorksNavigationStyle")
-a10.setObjectName("Indicator_NavigationSolidWorks")
+a10.setText("Siemens NX  ")
+a10.setData("Gui::SiemensNXNavigationStyle")
+a10.setObjectName("Indicator_NavigationSiemensNX")
 
 a11 = QtGui.QAction(gStyle)
-a11.setText("TinkerCAD  ")
-a11.setData("Gui::TinkerCADNavigationStyle")
-a11.setObjectName("Indicator_NavigationTinkerCAD")
+a11.setText("SolidWorks  ")
+a11.setData("Gui::SolidWorksNavigationStyle")
+a11.setObjectName("Indicator_NavigationSolidWorks")
 
 a12 = QtGui.QAction(gStyle)
-a12.setText("Touchpad  ")
-a12.setData("Gui::TouchpadNavigationStyle")
-a12.setObjectName("Indicator_NavigationTouchpad")
+a12.setText("TinkerCAD  ")
+a12.setData("Gui::TinkerCADNavigationStyle")
+a12.setObjectName("Indicator_NavigationTinkerCAD")
+
+a13 = QtGui.QAction(gStyle)
+a13.setText("Touchpad  ")
+a13.setData("Gui::TouchpadNavigationStyle")
+a13.setObjectName("Indicator_NavigationTouchpad")
 
 RePopulateIcons()
 
@@ -797,6 +837,7 @@ menu.addAction(a9)
 menu.addAction(a10)
 menu.addAction(a11)
 menu.addAction(a12)
+menu.addAction(a13)
 
 pView.Attach(indicator)
 
@@ -839,6 +880,7 @@ def onTooltip():
         a10.setToolTip(t10)
         a11.setToolTip(t11)
         a12.setToolTip(t12)
+        a13.setToolTip(t13)
         p.SetBool("Tooltip", 1)
     else:
         for i in gStyle.actions():
