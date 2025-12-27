@@ -655,12 +655,11 @@ void Gui::SoFCDB::writeX3DChild(
 void Gui::SoFCDB::writeX3D(SoVRMLGroup* node, bool exportViewpoints, std::ostream& out)
 {
     out << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
-    out << "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" "
-           "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n";
-    out << "<X3D profile=\"Immersive\" version=\"3.2\" "
+    out << "<!DOCTYPE X3D PUBLIC \"ISO//Web3D//DTD X3D 3.3//EN\" "
+           "\"http://www.web3d.org/specifications/x3d-3.3.dtd\">\n";
+    out << "<X3D profile=\"Immersive\" version=\"3.3\" "
            "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema-instance\" "
-           "xsd:noNamespaceSchemaLocation=\"http://www.web3d.org/specifications/x3d-3.2.xsd\" "
-           "width=\"1280px\"  height=\"1024px\">\n";
+           "xsd:noNamespaceSchemaLocation=\"http://www.web3d.org/specifications/x3d-3.3.xsd\">\n";
     out << "  <head>\n"
            "    <meta name=\"generator\" content=\"FreeCAD\"/>\n"
            "    <meta name=\"author\" content=\"\"/>\n"
@@ -727,22 +726,23 @@ bool Gui::SoFCDB::writeToX3DOM(SoNode* node, std::string& buffer)
     x3d = x3d.erase(0, pos + 1);
 
     std::stringstream out;
-    out << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-        << "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" "
+    out << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+    out << "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" "
            "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n";
-    out << "<html xmlns='http://www.w3.org/1999/xhtml'>\n"
+    out << "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n"
         << "  <head>\n"
-        << "    <title>FreeCAD X3DOM Export</title>\n"
         << "    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/>\n"
-        << "    <script type='text/javascript' src='http://www.x3dom.org/download/x3dom.js'> "
+        << "    <title>FreeCAD X3DOM Export</title>\n"
+        << "    <script type=\"text/javascript\" src=\"http://www.x3dom.org/download/x3dom.js\"> "
            "</script>\n"
-        << "    <link rel='stylesheet' type='text/css' "
-           "href='http://www.x3dom.org/download/x3dom.css'></link>\n"
+        << "    <link rel=\"stylesheet\" type=\"text/css\" "
+           "href=\"http://www.x3dom.org/download/x3dom.css\"/>\n"
         << "  </head>\n"
-        << "  <body>\n";
+        << "  <body>\n"
+        << "    <div>\n";
 
     auto onclick = [&out](const char* text) {
-        out << "    <button onclick=\"document.getElementById('" << text
+        out << "      <button onclick=\"document.getElementById('" << text
             << "').setAttribute('set_bind','true');\">" << text << "</button>\n";
     };
 
@@ -754,7 +754,7 @@ bool Gui::SoFCDB::writeToX3DOM(SoNode* node, std::string& buffer)
     onclick("Top");
     onclick("Bottom");
 
-    out << x3d;
+    out << "    </div>\n" << x3d;
 
     out << "  </body>\n"
         << "</html>\n";
