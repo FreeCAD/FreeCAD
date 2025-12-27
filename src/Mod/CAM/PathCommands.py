@@ -249,9 +249,7 @@ class _CopyOperation:
         selection = FreeCADGui.Selection.getSelection()
         if not selection:
             return False
-        if any([not hasattr(sel, "Path") for sel in selection]):
-            return False
-        if any([sel.Name.startswith("Job") for sel in selection]):
+        if any([not PathDressup.isOp(sel) for sel in selection]):
             return False
 
         return True
