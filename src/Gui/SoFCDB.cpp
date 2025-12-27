@@ -690,14 +690,17 @@ bool Gui::SoFCDB::writeToX3DOM(SoNode* node, std::string& buffer)
            "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n";
     out << "<html xmlns='http://www.w3.org/1999/xhtml'>\n"
         << "  <head>\n"
+        << "    <title>FreeCAD X3DOM Export</title>\n"
+        << "    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/>\n"
         << "    <script type='text/javascript' src='http://www.x3dom.org/download/x3dom.js'> "
            "</script>\n"
         << "    <link rel='stylesheet' type='text/css' "
            "href='http://www.x3dom.org/download/x3dom.css'></link>\n"
-        << "  </head>\n";
+        << "  </head>\n"
+        << "  <body>\n";
 
     auto onclick = [&out](const char* text) {
-        out << "  <button onclick=\"document.getElementById('" << text
+        out << "    <button onclick=\"document.getElementById('" << text
             << "').setAttribute('set_bind','true');\">" << text << "</button>\n";
     };
 
@@ -711,7 +714,8 @@ bool Gui::SoFCDB::writeToX3DOM(SoNode* node, std::string& buffer)
 
     out << x3d;
 
-    out << "</html>\n";
+    out << "  </body>\n"
+        << "</html>\n";
 
     buffer = out.str();
 
