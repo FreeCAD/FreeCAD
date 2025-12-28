@@ -49,13 +49,13 @@ class ObjectArray:
         obj.addProperty(
             "App::PropertyEnumeration",
             "Type",
-            "Path",
+            "Pattern",
             QT_TRANSLATE_NOOP("App::Property", "Pattern method"),
         )
         obj.addProperty(
             "App::PropertyVectorDistance",
             "Offset",
-            "Path",
+            "Pattern",
             QT_TRANSLATE_NOOP(
                 "App::Property",
                 "The spacing between the array copies in linear pattern",
@@ -64,7 +64,7 @@ class ObjectArray:
         obj.addProperty(
             "App::PropertyInteger",
             "CopiesX",
-            "Path",
+            "Pattern",
             QT_TRANSLATE_NOOP(
                 "App::Property", "The number of copies in X-direction in linear pattern"
             ),
@@ -72,7 +72,7 @@ class ObjectArray:
         obj.addProperty(
             "App::PropertyInteger",
             "CopiesY",
-            "Path",
+            "Pattern",
             QT_TRANSLATE_NOOP(
                 "App::Property", "The number of copies in Y-direction in linear pattern"
             ),
@@ -80,13 +80,13 @@ class ObjectArray:
         obj.addProperty(
             "App::PropertyAngle",
             "Angle",
-            "Path",
+            "Pattern",
             QT_TRANSLATE_NOOP("App::Property", "Total angle in polar pattern"),
         )
         obj.addProperty(
             "App::PropertyInteger",
             "Copies",
-            "Path",
+            "Pattern",
             QT_TRANSLATE_NOOP(
                 "App::Property", "The number of copies in linear 1D and polar pattern"
             ),
@@ -94,13 +94,13 @@ class ObjectArray:
         obj.addProperty(
             "App::PropertyVector",
             "Centre",
-            "Path",
+            "Pattern",
             QT_TRANSLATE_NOOP("App::Property", "The centre of rotation in polar pattern"),
         )
         obj.addProperty(
             "App::PropertyBool",
             "SwapDirection",
-            "Path",
+            "Pattern",
             QT_TRANSLATE_NOOP(
                 "App::Property",
                 "Make copies in X direction before Y in Linear 2D pattern",
@@ -109,19 +109,19 @@ class ObjectArray:
         obj.addProperty(
             "App::PropertyInteger",
             "JitterPercent",
-            "Path",
+            "Random",
             QT_TRANSLATE_NOOP("App::Property", "Percent of copies to randomly offset"),
         )
         obj.addProperty(
             "App::PropertyVectorDistance",
             "JitterMagnitude",
-            "Path",
+            "Random",
             QT_TRANSLATE_NOOP("App::Property", "Maximum random offset of copies"),
         )
         obj.addProperty(
             "App::PropertyInteger",
             "JitterSeed",
-            "Path",
+            "Random",
             QT_TRANSLATE_NOOP("App::Property", "Seed value for jitter randomness"),
         )
         obj.addProperty(
@@ -209,7 +209,7 @@ class ObjectArray:
             obj.addProperty(
                 "App::PropertyInteger",
                 "JitterSeed",
-                "Path",
+                "Random",
                 QT_TRANSLATE_NOOP("App::Property", "Seed value for jitter randomness"),
             )
             obj.JitterSeed = 0
