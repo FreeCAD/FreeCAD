@@ -593,20 +593,16 @@ class ViewProviderLayer:
             except (AttributeError, ReferenceError):
                 continue
 
-            # give the child's view provider a chance to handle deletion
             child_vobj = getattr(child, "ViewObject", None)
             if child_vobj:
-                if hasattr(child_vobj, "Proxy") and hasattr(child_vobj.Proxy, "onDelete"):
-                    try:
-                        should_delete = child_vobj.Proxy.onDelete(
-                            child_vobj, ["group_recursive_deletion"]
-                        )
-                        if not should_delete:
-                            continue
-                    except Exception as e:
-                        App.Console.PrintWarning(
-                            "Error calling onDelete for {}: {}\n".format(child.Label, str(e))
-                        )
+                try:
+                    should_delete = child_vobj.onDelete(["group_recursive_deletion"])
+                    if not should_delete:
+                        continue
+                except Exception as e:
+                    App.Console.PrintWarning(
+                        "Error calling onDelete for {}: {}\n".format(child.Label, str(e))
+                    )
 
             # delete the object if it still exists
             try:
