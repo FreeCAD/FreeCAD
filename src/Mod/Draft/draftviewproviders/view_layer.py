@@ -529,13 +529,13 @@ class ViewProviderLayer:
         """Handle deletion of the layer.
 
         This method is called when the layer is about to be deleted.
-        It prompts the user to decide whether to delete the layer's contents
-        recursively, similar to how group deletion works."""
+        It prompts the user to decide whether to delete the layer's contents.
+        """
         from PySide import QtGui
 
         # check the marker to see if we can delete everything
         if subelements and len(subelements) > 0 and subelements[0] == "group_recursive_deletion":
-            self._delete_layer_contents_recursively()
+            self._delete_layer_contents()
             return True
 
         if not hasattr(self.Object, "Group"):
@@ -546,18 +546,10 @@ class ViewProviderLayer:
         if not children:
             return True
 
-        all_descendants = self._get_all_descendants(children)
-        if len(all_descendants) == len(children):
-            message = translate(
-                "draft",
-                "The layer '{0}' contains {1} object(s). Do you want to delete them as well?",
-            ).format(self.Object.Label, len(children))
-        else:
-            message = translate(
-                "draft",
-                "The layer '{0}' contains {1} direct children and {2} total descendants "
-                "(including nested groups). Do you want to delete all of them recursively?",
-            ).format(self.Object.Label, len(children), len(all_descendants))
+        message = translate(
+            "draft",
+            "The layer '{0}' contains {1} object(s). Do you want to delete them as well?",
+        ).format(self.Object.Label, len(children))
 
         choice = QtGui.QMessageBox.question(
             Gui.getMainWindow(),
@@ -571,26 +563,14 @@ class ViewProviderLayer:
             return False
 
         if choice == QtGui.QMessageBox.Yes:
-            self._delete_layer_contents_recursively()
+            self._delete_layer_contents()
 
         return True
 
-    def _get_all_descendants(self, objects):
-        """Recursively get all descendants of the given objects."""
-        all_descendants = []
-        for obj in objects:
-            if obj and hasattr(obj, "isDerivedFrom"):
-                all_descendants.append(obj)
-                # extend group objects
-                if hasattr(obj, "Group"):
-                    all_descendants.extend(self._get_all_descendants(obj.Group))
-        return all_descendants
+    def _delete_layer_contents(self):
+        """Delete all contents of the layer.
 
-    def _delete_layer_contents_recursively(self):
-        """Delete all contents of the layer recursively.
-
-        This method respects the onDelete methods of child view providers,
-        similar to how ViewProviderGroupExtension handles deletion.
+        This method respects the onDelete methods of child view providers.
         """
         if not hasattr(self.Object, "Group"):
             return
@@ -613,15 +593,7 @@ class ViewProviderLayer:
             except (AttributeError, ReferenceError):
                 continue
 
-            # if the child has a Group property, recursively delete its contents first
-            if hasattr(child, "Group") and child.Group:
-                child_vobj = getattr(child, "ViewObject", None)
-                if child_vobj and hasattr(child_vobj, "Proxy"):
-                    proxy = child_vobj.Proxy
-                    if hasattr(proxy, "_delete_layer_contents_recursively"):
-                        proxy._delete_layer_contents_recursively()
-
-            # get child object and also pass recursive marker to it's vp
+            # give the child's view provider a chance to handle deletion
             child_vobj = getattr(child, "ViewObject", None)
             if child_vobj:
                 if hasattr(child_vobj, "Proxy") and hasattr(child_vobj.Proxy, "onDelete"):
