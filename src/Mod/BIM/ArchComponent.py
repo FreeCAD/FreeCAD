@@ -1342,12 +1342,20 @@ class AreaCalculator:
         for prop in ["VerticalArea", "HorizontalArea", "PerimeterLength"]:
             setattr(self.obj, prop, 0)
 
-    def isFaceVertical(self, face):
+    def isFaceVertical(self, face, face_index=None):
         """Determine if a face is vertical.
 
         A face is considered vertical if:
         - Its normal vector forms an angle close to 90 degrees with the Z-axis.
         - The projected face has an area of zero.
+
+        Parameters
+        ----------
+        face : Part.Face
+            The face object to be checked.
+        face_index : str, optional
+            The face's 1-based index identifier, used for debugging error messages.
+            Defaults to None.
 
         Notes
         -----
@@ -1361,11 +1369,13 @@ class AreaCalculator:
         from DraftGeomUtils import findWires
         from TechDraw import project
 
+        face_name = f" Face{face_index}" if face_index is not None else ""
+
         try:
             projectedFace = Face(findWires(project(face, FreeCAD.Vector(0, 0, 1))[0].Edges))
         except OCCError:
             FreeCAD.Console.PrintWarning(
-                translate("Arch", f"Could not project face from {self.obj.Label}\n")
+                translate("Arch", f"Could not project face{face_name} from {self.obj.Label}\n")
             )
             return False
 
@@ -1378,19 +1388,28 @@ class AreaCalculator:
             FreeCAD.Console.PrintWarning(
                 translate(
                     "Arch",
-                    f"Could not determine if a face from {self.obj.Label}"
+                    f"Could not determine if face{face_name} from {self.obj.Label}"
                     " is vertical: normalAt() failed\n",
                 )
             )
             return False
 
-    def isFaceHorizontal(self, face):
+    def isFaceHorizontal(self, face, face_index=None):
         """Determine if a face is horizontal.
 
         A face is considered horizontal if its normal vector is parallel to the Z-axis.
+
+        Parameters
+        ----------
+        face : Part.Face
+            The face object to be checked.
+        face_index : str, optional
+            The face's 1-based index identifier, used for debugging error messages.
+            Defaults to None.
         """
         from Part import OCCError
 
+        face_name = f" Face{face_index}" if face_index is not None else ""
         try:
             angle = face.normalAt(0, 0).getAngle(FreeCAD.Vector(0, 0, 1))
             return not self.isRightAngle(angle)
@@ -1398,7 +1417,7 @@ class AreaCalculator:
             FreeCAD.Console.PrintWarning(
                 translate(
                     "Arch",
-                    f"Could not determine if a face from {self.obj.Label}"
+                    f"Could not determine if face{face_name} from {self.obj.Label}"
                     " is horizontal: normalAt() failed\n",
                 )
             )
@@ -1430,10 +1449,10 @@ class AreaCalculator:
         horizontalFaces = []
 
         # Compute vertical area and collect horizontal faces
-        for face in self.obj.Shape.Faces:
-            if self.isFaceVertical(face):
+        for i, face in enumerate(self.obj.Shape.Faces, start=1):
+            if self.isFaceVertical(face, face_index=i):
                 verticalArea += face.Area
-            elif self.isFaceHorizontal(face):
+            elif self.isFaceHorizontal(face, face_index=i):
                 horizontalFaces.append(face)
 
         # Update vertical area
