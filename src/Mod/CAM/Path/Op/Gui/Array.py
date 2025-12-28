@@ -191,6 +191,8 @@ class ObjectArray:
 
     def onDocumentRestored(self, obj):
         """onDocumentRestored(obj) ... Called automatically when document is restored."""
+        if not obj.ViewObject.Proxy:
+            Path.Op.Gui.Array.ViewProviderArray(obj.ViewObject)
 
         if not hasattr(obj, "Active"):
             obj.addProperty(
@@ -531,9 +533,7 @@ class CommandPathArray:
         )
         FreeCADGui.doCommand("obj.Base = %s" % baseString)
 
-        FreeCADGui.doCommand(
-            "obj.ViewObject.Proxy = Path.Op.Gui.Array.ViewProviderArray(obj.ViewObject)"
-        )
+        FreeCADGui.doCommand("Path.Op.Gui.Array.ViewProviderArray(obj.ViewObject)")
         FreeCADGui.doCommand("PathScripts.PathUtils.addToJob(obj)")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
