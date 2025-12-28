@@ -61,10 +61,12 @@ Model:
       https://github.com/FreeCAD/FreeCAD/pull/2156
   UltimateStrain:
     DisplayName: "Ultimate Strain"
-    Type: 'Quantity'
-    Units: 'kPa'
+    Type: 'Float'
+    Units: ''
     URL: 'https://en.wikipedia.org/wiki/Deformation_(mechanics)'
-    Description: " "
+    Description: >
+      Maximum deformation a material can endure before it fails or fractures.
+      Fraction value of type ΔL/L (No Units defined).
   UltimateTensileStrength:
     DisplayName: "Ultimate Tensile Strength"
     Type: 'Quantity'
