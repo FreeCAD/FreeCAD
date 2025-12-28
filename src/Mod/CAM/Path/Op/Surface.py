@@ -2424,14 +2424,22 @@ class ObjectSurface(PathOp.ObjectOp):
         if obj.OptimizeLinearPaths:
             pdcLine = PathUtils.simplify3dLine(pdcLine, tolerance=obj.LinearDeflection.Value)
         zs = [obj.z for obj in pdcLine]
-        # PDC z values are based on the model, and do not take into account
-        # any remaining stock / multi layer paths. Adjust raw PDC z values to
-        # align with p1 and p2 z values.
-        zDelta = p1.z - pdcLine[0].z
-        if zDelta > 0:
+        # Apply DepthOffset explicitly to the raw geometry.
+        # This ensures Single-Pass maintains clearance over bumps,
+        # and Multi-Pass lifts correctly without "floating" arbitrarily high.
+        depth_offset = obj.DepthOffset.Value
+        if depth_offset != 0.0:
             for p in pdcLine:
-                p.z += zDelta
-        return (pdcLine, min(zs), max(zs))
+                p.z += depth_offset
+
+        zs = [p.z for p in pdcLine]
+        if not zs:
+            minZ = maxZ = 0.0
+        else:
+            minZ = min(zs)
+            maxZ = max(zs)
+            
+        return (pdcLine, minZ, maxZ)
 
     def showDebugObject(self, objShape, objName):
         if self.showDebugObjects:
