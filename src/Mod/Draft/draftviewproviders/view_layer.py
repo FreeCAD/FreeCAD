@@ -553,7 +553,7 @@ class ViewProviderLayer:
 
         choice = QtGui.QMessageBox.question(
             Gui.getMainWindow(),
-            translate("draft", "Delete layer contents recursively?"),
+            translate("draft", "Delete Layer Contents Recursively?"),
             message,
             QtGui.QMessageBox.Yes | QtGui.QMessageBox.No | QtGui.QMessageBox.Cancel,
             QtGui.QMessageBox.No,
