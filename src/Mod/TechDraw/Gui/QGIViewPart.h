@@ -115,6 +115,7 @@ public:
                                      double x, double y,
                                      double curx, double cury);
 
+    void addToGroupWithoutUpdate(QGraphicsItem* item);
     bool getGroupSelection() override;
     void setGroupSelection(bool isSelected) override;
     void setGroupSelection(bool isSelected, const std::vector<std::string> &subNames) override;
