@@ -191,6 +191,8 @@ class ObjectArray:
 
     def onDocumentRestored(self, obj):
         """onDocumentRestored(obj) ... Called automatically when document is restored."""
+        if not obj.ViewObject.Proxy:
+            obj.ViewObject.Proxy = Path.Op.Gui.Array.ViewProviderArray(obj.ViewObject)
 
         if not hasattr(obj, "Active"):
             obj.addProperty(
