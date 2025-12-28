@@ -28,7 +28,6 @@ import Path.Op.Base as PathOp
 import PathScripts.PathUtils as PathUtils
 import Path.Base.Util as PathUtil
 from Path.Dressup.Utils import toolController
-from PySide import QtCore
 
 import random
 
@@ -209,7 +208,7 @@ class ObjectArray:
                 "App::PropertyInteger",
                 "JitterSeed",
                 "Path",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Seed value for jitter randomness"),
+                QT_TRANSLATE_NOOP("App::Property", "Seed value for jitter randomness"),
             )
             obj.JitterSeed = 0
 
