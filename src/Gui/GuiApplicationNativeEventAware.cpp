@@ -50,7 +50,6 @@
 # endif  // Platform switch
 #endif   // Spacemice
 
-#if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
 namespace
 {
 
@@ -105,7 +104,6 @@ SpecialKey getSpecialKey(int buttonNumber)
 }
 
 }  // Anonymous namespace
-#endif
 
 Gui::GUIApplicationNativeEventAware::GUIApplicationNativeEventAware(int& argc, char* argv[])
     : QApplication(argc, argv)

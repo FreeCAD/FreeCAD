@@ -73,13 +73,13 @@ protected:
 
 private:
     bool spaceballPresent;
+    bool spaceballAltIsPressed = false;
+    bool spacebackShiftIsPressed = false;
+    bool spaceballCtrlIsPressed = false;
     void importSettings(std::vector<int>& motionDataArray);
     float convertPrefToSensitivity(long value);
 #if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
     GuiNativeEvent* nativeEvent;
-    bool spaceballAltIsPressed = false;
-    bool spacebackShiftIsPressed = false;
-    bool spaceballCtrlIsPressed = false;
 #endif
 };  // end class GUIApplicationNativeEventAware
 
