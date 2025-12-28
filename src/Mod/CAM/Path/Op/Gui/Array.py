@@ -40,6 +40,13 @@ translate = FreeCAD.Qt.translate
 
 class ObjectArray:
     def __init__(self, obj):
+        # Path properties group
+        obj.addProperty(
+            "App::PropertyBool",
+            "Active",
+            "Path",
+            QT_TRANSLATE_NOOP("PathOp", "Make False, to prevent operation from generating code"),
+        )
         obj.addProperty(
             "App::PropertyLinkList",
             "Base",
@@ -47,10 +54,35 @@ class ObjectArray:
             QT_TRANSLATE_NOOP("App::Property", "The toolpaths to array"),
         )
         obj.addProperty(
+            "App::PropertyString",
+            "CycleTime",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "Operations cycle time estimation"),
+        )
+        obj.addProperty(
+            "App::PropertyLink",
+            "ToolController",
+            "Path",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "The tool controller that will be used to calculate the toolpath\nShould be identical for all base operations",
+            ),
+        )
+
+        # Pattern properties group
+        obj.addProperty(
             "App::PropertyEnumeration",
             "Type",
             "Pattern",
             QT_TRANSLATE_NOOP("App::Property", "Pattern method"),
+        )
+        obj.addProperty(
+            "App::PropertyIntegerConstraint",
+            "Copies",
+            "Pattern",
+            QT_TRANSLATE_NOOP(
+                "App::Property", "The number of copies in Linear1D and Polar pattern"
+            ),
         )
         obj.addProperty(
             "App::PropertyVectorDistance",
@@ -84,14 +116,6 @@ class ObjectArray:
             QT_TRANSLATE_NOOP("App::Property", "Total angle in polar pattern"),
         )
         obj.addProperty(
-            "App::PropertyIntegerConstraint",
-            "Copies",
-            "Pattern",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "The number of copies in linear 1D and polar pattern"
-            ),
-        )
-        obj.addProperty(
             "App::PropertyVector",
             "Centre",
             "Pattern",
@@ -106,12 +130,8 @@ class ObjectArray:
                 "Make copies in X direction before Y in Linear 2D pattern",
             ),
         )
-        obj.addProperty(
-            "App::PropertyPercent",
-            "JitterPercent",
-            "Random",
-            QT_TRANSLATE_NOOP("App::Property", "Percent of copies to randomly offset"),
-        )
+
+        # Random properties group
         obj.addProperty(
             "App::PropertyVectorDistance",
             "JitterMagnitude",
@@ -119,31 +139,16 @@ class ObjectArray:
             QT_TRANSLATE_NOOP("App::Property", "Maximum random offset of copies"),
         )
         obj.addProperty(
+            "App::PropertyPercent",
+            "JitterPercent",
+            "Random",
+            QT_TRANSLATE_NOOP("App::Property", "Percent of copies to randomly offset"),
+        )
+        obj.addProperty(
             "App::PropertyIntegerConstraint",
             "JitterSeed",
             "Random",
             QT_TRANSLATE_NOOP("App::Property", "Seed value for jitter randomness"),
-        )
-        obj.addProperty(
-            "App::PropertyLink",
-            "ToolController",
-            "Path",
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "The tool controller that will be used to calculate the toolpath",
-            ),
-        )
-        obj.addProperty(
-            "App::PropertyBool",
-            "Active",
-            "Path",
-            QT_TRANSLATE_NOOP("PathOp", "Make False, to prevent operation from generating code"),
-        )
-        obj.addProperty(
-            "App::PropertyString",
-            "CycleTime",
-            "Path",
-            QT_TRANSLATE_NOOP("App::Property", "Operations cycle time estimation"),
         )
 
         obj.setEditorMode("CycleTime", 1)  # read-only
