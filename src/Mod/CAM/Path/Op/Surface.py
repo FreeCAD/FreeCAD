@@ -2438,7 +2438,7 @@ class ObjectSurface(PathOp.ObjectOp):
         else:
             minZ = min(zs)
             maxZ = max(zs)
-            
+
         return (pdcLine, minZ, maxZ)
 
     def showDebugObject(self, objShape, objName):
