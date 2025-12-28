@@ -1140,12 +1140,6 @@ class ObjectSurface(PathOp.ObjectOp):
         final = []
         SCANDATA = []
 
-        def getTransition(two):
-            first = two[0][0][0]  # [step][item][point]
-            safe = obj.SafeHeight.Value + 0.1
-            trans = [[FreeCAD.Vector(first.x, first.y, safe)]]
-            return trans
-
         # Compute number and size of stepdowns, and final depth
         if obj.LayerMode == "Single-pass":
             depthparams = [obj.FinalDepth.Value]
@@ -1211,7 +1205,6 @@ class ObjectSurface(PathOp.ObjectOp):
         if obj.ProfileEdges == "None":
             SCANDATA.extend(geoScan)
         if obj.ProfileEdges == "First":
-            profScan.append(getTransition(geoScan))
             SCANDATA.extend(profScan)
             SCANDATA.extend(geoScan)
         if obj.ProfileEdges == "Last":
