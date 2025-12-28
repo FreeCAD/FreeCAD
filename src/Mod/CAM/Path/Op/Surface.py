@@ -2422,8 +2422,7 @@ class ObjectSurface(PathOp.ObjectOp):
         p1xy, p2xy = ((p1.x, p1.y), (p2.x, p2.y))
         pdcLine = self._planarDropCutScan(pdc, p1xy, p2xy)
         if obj.OptimizeLinearPaths:
-            pdcLine = PathUtils.simplify3dLine(pdcLine, tolerance=obj.LinearDeflection.Value)
-        zs = [obj.z for obj in pdcLine]
+            pdcLine = PathUtils.simplify3dLine(pdcLine, tolerance=obj.LinearDeflection.Value)       
         # Apply DepthOffset explicitly to the raw geometry.
         # This ensures Single-Pass maintains clearance over bumps,
         # and Multi-Pass lifts correctly without "floating" arbitrarily high.
