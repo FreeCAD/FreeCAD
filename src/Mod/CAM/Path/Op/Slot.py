@@ -167,15 +167,6 @@ class ObjectSlot(PathOp.ObjectOp):
             ),
             (
                 "App::PropertyEnumeration",
-                "LayerMode",
-                "Slot",
-                QtCore.QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "Complete the operation in a single pass at depth, or multiple passes to final depth.",
-                ),
-            ),
-            (
-                "App::PropertyEnumeration",
                 "PathOrientation",
                 "Slot",
                 QtCore.QT_TRANSLATE_NOOP(
@@ -250,12 +241,9 @@ class ObjectSlot(PathOp.ObjectOp):
 
         enums = {
             "CutPattern": [
-                (translate("CAM_Slot", "Line"), "Line"),
-                (translate("CAM_Slot", "ZigZag"), "ZigZag"),
-            ],
-            "LayerMode": [
-                (translate("CAM_Slot", "Single-pass"), "Single-pass"),
-                (translate("CAM_Slot", "Multi-pass"), "Multi-pass"),
+                (translate("CAM_Slot", "Directional"), "Directional"),
+                (translate("CAM_Slot", "Bidirectional"), "Bidirectional"),
+                (translate("CAM_Slot", "Inclined"), "Inclined"),
             ],
             "PathOrientation": [
                 (translate("CAM_Slot", "Start to End"), "Start to End"),
@@ -309,8 +297,7 @@ class ObjectSlot(PathOp.ObjectOp):
             "CustomPoint2": FreeCAD.Vector(0, 0, 0),
             "ExtendPathEnd": 0,
             "Reference2": "Center of Mass",
-            "LayerMode": "Multi-pass",
-            "CutPattern": "ZigZag",
+            "CutPattern": "Bidirectional",
             "PathOrientation": "Start to End",
             "ExtendRadius": 0,
             "ReverseDirection": False,
@@ -356,6 +343,7 @@ class ObjectSlot(PathOp.ObjectOp):
         ENUMS = self.getActiveEnumerations(obj)
         obj.Reference1 = ENUMS["Reference1"]
         obj.Reference2 = ENUMS["Reference2"]
+        obj.CutPattern = ENUMS["CutPattern"]
 
         # Restore pre-existing values if available with active enumerations.
         # If not, set to first element in active enumeration list.
@@ -400,6 +388,16 @@ class ObjectSlot(PathOp.ObjectOp):
             obj.ViewObject.signalChangeIcon()
 
     def opOnDocumentRestored(self, obj):
+        if obj.CutPattern == "Line":
+            self.updateEnumerations(obj)
+            obj.CutPattern = "Directional"
+        if obj.CutPattern == "ZigZag":
+            self.updateEnumerations(obj)
+            obj.CutPattern = "Bidirectional"
+
+        if hasattr(obj, "LayerMode"):
+            obj.removeProperty("LayerMode")
+
         self.propertiesReady = False
         job = PathUtils.findParentJob(obj)
 
@@ -570,11 +568,6 @@ class ObjectSlot(PathOp.ObjectOp):
             self.commandlist.clear()
             return False
 
-        # Final move to clearance height
-        self.commandlist.append(
-            Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid})
-        )
-
         # Hide debug visuals
         if self.showDebugObjects and FreeCAD.GuiUp:
             FreeCADGui.ActiveDocument.getObject(self.tmpGrp.Name).Visibility = False
@@ -731,17 +724,10 @@ class ObjectSlot(PathOp.ObjectOp):
         """This method is the last step in the overall arc slot creation process.
         It accepts the operation object and two end points for the path.
         It returns the gcode for the slot operation."""
-        CMDS = list()
-        PATHS = [(p2, p1, "G2"), (p1, p2, "G3")]
-        if obj.ReverseDirection:
-            path_index = 1
-        else:
-            path_index = 0
 
         def arcPass(POINTS, depth):
-            cmds = list()
+            cmds = []
             (st_pt, end_pt, arcCmd) = POINTS
-            # cmds.append(Path.Command('N (Tool type: {})'.format(toolType), {}))
             cmds.append(Path.Command("G0", {"X": st_pt.x, "Y": st_pt.y, "F": self.horizRapid}))
             cmds.append(Path.Command("G1", {"Z": depth, "F": self.vertFeed}))
             vtc = self.arcCenter.sub(st_pt)  # vector to center
@@ -759,28 +745,38 @@ class ObjectSlot(PathOp.ObjectOp):
             )
             return cmds
 
-        if obj.LayerMode == "Single-pass":
-            CMDS.extend(arcPass(PATHS[path_index], obj.FinalDepth.Value))
-        else:
-            if obj.CutPattern == "Line":
-                for depth in self.depthParams:
-                    CMDS.extend(arcPass(PATHS[path_index], depth))
-                    CMDS.append(
-                        Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid})
-                    )
-            elif obj.CutPattern == "ZigZag":
-                i = 0
-                for depth in self.depthParams:
-                    if i % 2 == 0:  # even
-                        CMDS.extend(arcPass(PATHS[path_index], depth))
-                    else:  # odd
-                        CMDS.extend(arcPass(PATHS[not path_index], depth))
-                    i += 1
-        # Raise to SafeHeight when finished
-        CMDS.append(Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid}))
+        CMDS = []
+        PATHS = {True: (p2, p1, "G2"), False: (p1, p2, "G3")}
+        safeCmd = Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid})
+        revDir = obj.ReverseDirection
+
+        if obj.CutPattern == "Directional":
+            for depth in self.depthParams:
+                CMDS.extend(arcPass(PATHS[revDir], depth))
+                CMDS.append(safeCmd)
+            CMDS.pop()  # remove last move to safe height
+        elif obj.CutPattern == "Bidirectional":
+            for i, depth in enumerate(self.depthParams):
+                if i == 0:
+                    CMDS.extend(arcPass(PATHS[revDir], depth))
+                elif i & 1 == 0:
+                    CMDS.extend(arcPass(PATHS[revDir], depth)[1:])
+                else:
+                    CMDS.extend(arcPass(PATHS[not revDir], depth)[1:])
+        else:  # obj.CutPattern == "Inclined"
+            CMDS.extend(arcPass(PATHS[revDir], obj.StartDepth.Value)[:2])
+            for depth in self.depthParams:
+                cmd = arcPass(PATHS[revDir], depth)[-1]
+                par = cmd.Parameters
+                par.update({"Z": depth})
+                cmd.Parameters = par
+                CMDS.append(cmd)
+                CMDS.append(arcPass(PATHS[not revDir], 0)[-1])
 
         if self.isDebug:
-            Path.Log.debug("G-code arc command is: {}".format(PATHS[path_index][2]))
+            Path.Log.debug("G-code arc command is: {}".format(PATHS[revDir][2]))
+
+        CMDS.insert(1, safeCmd)
 
         return CMDS
 
@@ -864,39 +860,39 @@ class ObjectSlot(PathOp.ObjectOp):
         """This method is the last in the overall line slot creation process.
         It accepts the operation object and two end points for the path.
         It returns the gcode for the slot operation."""
-        CMDS = list()
+        CMDS = []
 
         def linePass(p1, p2, depth):
-            cmds = list()
-            # cmds.append(Path.Command('N (Tool type: {})'.format(toolType), {}))
-            cmds.append(Path.Command("G0", {"X": p1.x, "Y": p1.y, "F": self.horizRapid}))
+            cmds = []
+            cmds.append(Path.Command("G0", {"X": p1.x, "Y": p1.y}))
             cmds.append(Path.Command("G1", {"Z": depth, "F": self.vertFeed}))
             cmds.append(Path.Command("G1", {"X": p2.x, "Y": p2.y, "F": self.horizFeed}))
             return cmds
 
-        # CMDS.append(Path.Command('N (Tool type: {})'.format(toolType), {}))
-        if obj.LayerMode == "Single-pass":
-            CMDS.extend(linePass(p1, p2, obj.FinalDepth.Value))
-            CMDS.append(Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid}))
-        else:
-            if obj.CutPattern == "Line":
-                for dep in self.depthParams:
-                    CMDS.extend(linePass(p1, p2, dep))
-                    CMDS.append(
-                        Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid})
-                    )
-            elif obj.CutPattern == "ZigZag":
-                CMDS.append(Path.Command("G0", {"X": p1.x, "Y": p1.y, "F": self.horizRapid}))
-                i = 0
-                for dep in self.depthParams:
-                    if i % 2 == 0:  # even
-                        CMDS.append(Path.Command("G1", {"Z": dep, "F": self.vertFeed}))
-                        CMDS.append(Path.Command("G1", {"X": p2.x, "Y": p2.y, "F": self.horizFeed}))
-                    else:  # odd
-                        CMDS.append(Path.Command("G1", {"Z": dep, "F": self.vertFeed}))
-                        CMDS.append(Path.Command("G1", {"X": p1.x, "Y": p1.y, "F": self.horizFeed}))
-                    i += 1
-            CMDS.append(Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid}))
+        safeCmd = Path.Command("G0", {"Z": obj.SafeHeight.Value})
+
+        if obj.CutPattern == "Directional":
+            for depth in self.depthParams:
+                CMDS.extend(linePass(p1, p2, depth))
+                CMDS.append(safeCmd)
+            CMDS.pop()  # remove last useless move to safe height
+        elif obj.CutPattern == "Bidirectional":
+            for i, depth in enumerate(self.depthParams):
+                if i == 0:
+                    CMDS.extend(linePass(p1, p2, depth))
+                if i & 1 == 0:
+                    CMDS.extend(linePass(p1, p2, depth)[1:])
+                else:
+                    CMDS.extend(linePass(p2, p1, depth)[1:])
+        else:  # obj.CutPattern == "Inclined"
+            CMDS.extend(linePass(p1, p2, obj.StartDepth.Value)[:2])
+            for depth in self.depthParams:
+                CMDS.append(
+                    Path.Command("G1", {"X": p2.x, "Y": p2.y, "Z": depth, "F": self.horizFeed})
+                )
+                CMDS.append(Path.Command("G1", {"X": p1.x, "Y": p1.y, "F": self.horizFeed}))
+
+        CMDS.insert(1, safeCmd)  # add first move to safe height
 
         return CMDS
 
