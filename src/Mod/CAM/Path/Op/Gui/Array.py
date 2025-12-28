@@ -62,7 +62,7 @@ class ObjectArray:
             ),
         )
         obj.addProperty(
-            "App::PropertyInteger",
+            "App::PropertyIntegerConstraint",
             "CopiesX",
             "Pattern",
             QT_TRANSLATE_NOOP(
@@ -70,7 +70,7 @@ class ObjectArray:
             ),
         )
         obj.addProperty(
-            "App::PropertyInteger",
+            "App::PropertyIntegerConstraint",
             "CopiesY",
             "Pattern",
             QT_TRANSLATE_NOOP(
@@ -84,7 +84,7 @@ class ObjectArray:
             QT_TRANSLATE_NOOP("App::Property", "Total angle in polar pattern"),
         )
         obj.addProperty(
-            "App::PropertyInteger",
+            "App::PropertyIntegerConstraint",
             "Copies",
             "Pattern",
             QT_TRANSLATE_NOOP(
@@ -107,7 +107,7 @@ class ObjectArray:
             ),
         )
         obj.addProperty(
-            "App::PropertyInteger",
+            "App::PropertyPercent",
             "JitterPercent",
             "Random",
             QT_TRANSLATE_NOOP("App::Property", "Percent of copies to randomly offset"),
@@ -119,7 +119,7 @@ class ObjectArray:
             QT_TRANSLATE_NOOP("App::Property", "Maximum random offset of copies"),
         )
         obj.addProperty(
-            "App::PropertyInteger",
+            "App::PropertyIntegerConstraint",
             "JitterSeed",
             "Random",
             QT_TRANSLATE_NOOP("App::Property", "Seed value for jitter randomness"),
@@ -149,6 +149,10 @@ class ObjectArray:
         obj.setEditorMode("CycleTime", 1)  # read-only
         obj.Active = True
         obj.Type = ["Linear1D", "Linear2D", "Polar"]
+        obj.Copies = (0, 0, 99999, 1)
+        obj.CopiesX = (0, 0, 99999, 1)
+        obj.CopiesY = (0, 0, 99999, 1)
+        obj.JitterSeed = (0, 0, 2147483647, 1)
 
         self.setEditorModes(obj)
         obj.Proxy = self
