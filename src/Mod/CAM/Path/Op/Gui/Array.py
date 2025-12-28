@@ -151,7 +151,6 @@ class ObjectArray:
             QT_TRANSLATE_NOOP("App::Property", "Seed value for jitter randomness"),
         )
 
-        obj.setEditorMode("CycleTime", 1)  # read-only
         obj.Active = True
         obj.Type = ["Linear1D", "Linear2D", "Polar"]
         obj.Copies = (0, 0, 99999, 1)
@@ -169,19 +168,22 @@ class ObjectArray:
         return None
 
     def setEditorModes(self, obj):
+        obj.setEditorMode("ToolController", 2)  # hidden
+        obj.setEditorMode("CycleTime", 1)  # read-only
+
         if obj.Type == "Linear1D":
             angleMode = centreMode = copiesXMode = copiesYMode = swapDirectionMode = 2
             copiesMode = offsetMode = 0
         elif obj.Type == "Linear2D":
             angleMode = copiesMode = centreMode = 2
             copiesXMode = copiesYMode = offsetMode = swapDirectionMode = 0
-        elif obj.Type == "Polar":
-            angleMode = copiesMode = centreMode = 0
+        else:  # Polar
             copiesXMode = copiesYMode = offsetMode = swapDirectionMode = 2
+            angleMode = copiesMode = centreMode = 0
 
         obj.setEditorMode("Angle", angleMode)
-        obj.setEditorMode("Copies", copiesMode)
         obj.setEditorMode("Centre", centreMode)
+        obj.setEditorMode("Copies", copiesMode)
         obj.setEditorMode("CopiesX", copiesXMode)
         obj.setEditorMode("CopiesY", copiesYMode)
         obj.setEditorMode("Offset", offsetMode)
@@ -189,10 +191,9 @@ class ObjectArray:
         obj.setEditorMode("JitterPercent", 0)
         obj.setEditorMode("JitterMagnitude", 0)
         obj.setEditorMode("JitterSeed", 0)
-        obj.setEditorMode("ToolController", 2)
 
     def onChanged(self, obj, prop):
-        if prop == "Type":
+        if prop == "Type" and not obj.Document.Restoring:
             self.setEditorModes(obj)
 
         if prop == "Active" and obj.ViewObject:
