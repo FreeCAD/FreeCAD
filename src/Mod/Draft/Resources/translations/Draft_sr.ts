@@ -4707,7 +4707,7 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftguitools/gui_mirror.py" line="122"/>
       <source>Mirror</source>
-      <translation>Симетрично пресликај</translation>
+      <translation>Симетрично пресликавање</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_mirror.py" line="167"/>
@@ -6555,7 +6555,7 @@ Objects added to this layer can share the same visual properties.</source>
     <message>
       <location filename="../../draftguitools/gui_mirror.py" line="67"/>
       <source>Mirror</source>
-      <translation>Симетрично пресликај</translation>
+      <translation>Симетрично пресликавање</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_mirror.py" line="70"/>

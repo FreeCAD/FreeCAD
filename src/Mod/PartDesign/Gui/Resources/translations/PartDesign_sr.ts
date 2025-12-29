@@ -429,7 +429,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="2215"/>
       <source>Mirror</source>
-      <translation>Симетрично пресликај</translation>
+      <translation>Симетрично пресликавање</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2216"/>
@@ -964,7 +964,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="258"/>
       <source>Mirror</source>
-      <translation>Симетрично пресликај</translation>
+      <translation>Симетрично пресликавање</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="298"/>
@@ -4426,12 +4426,12 @@ over 90: larger hole radius at the bottom</source>
   <context>
     <name>Exception</name>
     <message>
-      <location filename="../../../App/Body.cpp" line="408"/>
+      <location filename="../../../App/Body.cpp" line="402"/>
       <source>Linked object is not a PartDesign feature</source>
       <translation>Повезани објекат није објекат окружења Конструисање делова</translation>
     </message>
     <message>
-      <location filename="../../../App/Body.cpp" line="417"/>
+      <location filename="../../../App/Body.cpp" line="411"/>
       <source>Tip shape is empty</source>
       <translation>Крајњи облик је празан</translation>
     </message>
@@ -4477,9 +4477,9 @@ over 90: larger hole radius at the bottom</source>
       <location filename="../../../App/FeaturePipe.cpp" line="529"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="263"/>
       <location filename="../../../App/FeatureGroove.cpp" line="254"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="756"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="772"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="785"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="759"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="775"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="788"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation type="unfinished">Result has multiple solids: enable 'Allow Compound' in the active body.</translation>
     </message>
@@ -4494,22 +4494,22 @@ over 90: larger hole radius at the bottom</source>
       <translation>Неподржана булова операција</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="343"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="346"/>
       <source>Cannot create a pad with a total length of zero.</source>
       <translation>Није могуће направити извлачење ако је дужина нула.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="348"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="351"/>
       <source>Cannot create a pocket with a total length of zero.</source>
       <translation>Није могуће направити удубљење ако је дужина нула.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="687"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="690"/>
       <source>No extrusion geometry was generated.</source>
       <translation>Извлачењем није направљена никаква геометрија.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="711"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="714"/>
       <source>Resulting fused extrusion is null.</source>
       <translation>Облик добијен унијом је празан.</translation>
     </message>
@@ -4517,7 +4517,7 @@ over 90: larger hole radius at the bottom</source>
       <location filename="../../../App/FeatureLoft.cpp" line="368"/>
       <location filename="../../../App/FeaturePipe.cpp" line="521"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="139"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="747"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="750"/>
       <source>Resulting shape is not a solid</source>
       <translation>Добијени облик није пуно тело</translation>
     </message>
@@ -4589,19 +4589,19 @@ over 90: larger hole radius at the bottom</source>
  - изабрана скица не припада активном Телу.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="392"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="395"/>
       <source>Failed to obtain profile shape</source>
       <translation>Није могуће обезбедити профилни облик</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="446"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="449"/>
       <source>Creation failed because direction is orthogonal to sketch's normal vector</source>
       <translation>Прављење није успело пошто правац заклапа угао од 90° са вектором нормале скице</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureRevolution.cpp" line="163"/>
       <location filename="../../../App/FeatureGroove.cpp" line="154"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="469"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="472"/>
       <source>Creating a face from sketch failed</source>
       <translation>Прављење страница помоћу скице није успело</translation>
     </message>
@@ -4842,7 +4842,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
       <translation>Извлачење по пресецима: Није успело прављење љуске</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="800"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="803"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed.</source>
       <translation>Није могуће направити странице помоћу скице.
@@ -5082,7 +5082,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <translation>Референтна оса је неисправна</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="739"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="742"/>
       <source>Fusion with base feature failed</source>
       <translation>Унија са почетним типским обликом није успела</translation>
     </message>
@@ -5310,7 +5310,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>PartDesignGui::TaskDlgRevolutionParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="824"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="823"/>
       <source>Revolution Parameters</source>
       <translation>Параметри обртања</translation>
     </message>
@@ -5318,7 +5318,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>PartDesignGui::TaskDlgGrooveParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="834"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="833"/>
       <source>Groove Parameters</source>
       <translation>Параметри кружног удубљења</translation>
     </message>
