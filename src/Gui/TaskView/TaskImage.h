@@ -120,8 +120,8 @@ private:
 
 private:
     void changeTransparency(int val);
-    void changeWidth(double val);
-    void changeHeight(double val);
+    void changeWidth();
+    void changeHeight();
 
 private:
     std::unique_ptr<Ui_TaskImage> ui;
