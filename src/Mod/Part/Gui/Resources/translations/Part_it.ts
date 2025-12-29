@@ -883,7 +883,7 @@
       <location filename="../../AttacherTexts.cpp" line="189"/>
       <source>XY-plane by 3 points</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">XY-plane by 3 points</translation>
+      <translation>Piano XY per 3 punti</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="190"/>
@@ -895,7 +895,7 @@
       <location filename="../../AttacherTexts.cpp" line="198"/>
       <source>XZ-plane by 3 points</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">XZ-plane by 3 points</translation>
+      <translation>Piano XZ per 3 punti</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="199"/>
@@ -2307,7 +2307,7 @@ of the projection.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="101"/>
       <source>Attachment mode</source>
-      <translation type="unfinished">Attachment mode</translation>
+      <translation>Modalità di associazione</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="124"/>
@@ -3555,23 +3555,23 @@ Check one or more edge entities first.</translation>
       <location filename="../../DlgPrimitives.ui" line="1064"/>
       <location filename="../../DlgPrimitives.ui" line="1253"/>
       <source>U parameter</source>
-      <translation type="unfinished">U parameter</translation>
+      <translation>Parametro U</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="872"/>
       <source>V parameters</source>
-      <translation type="unfinished">V parameters</translation>
+      <translation>Parametri V</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1015"/>
       <source>Radius 3</source>
-      <translation type="unfinished">Radius 3</translation>
+      <translation>Raggio 3</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1084"/>
       <location filename="../../DlgPrimitives.ui" line="1273"/>
       <source>V parameter</source>
-      <translation type="unfinished">V parameter</translation>
+      <translation>Parametro V</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1376"/>
@@ -4846,7 +4846,7 @@ saranno visibili solo i tagli creati</translation>
     <message>
       <location filename="../../TaskAttacher.ui" line="101"/>
       <source>Attachment mode</source>
-      <translation type="unfinished">Attachment mode</translation>
+      <translation>Modalità di associazione</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="124"/>
@@ -6316,67 +6316,67 @@ for collision or distance filtering.</translation>
       <translation>Modifica l'associazione di {}</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="450"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="471"/>
       <source>Ignored. Can't attach object to itself!</source>
       <translation>Ignorato. Non è possibile associare l'oggetto a se stesso!</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="458"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="479"/>
       <source>{} depends on object being attached, can't use it for attachment</source>
       <translation>{} dipende dall'oggetto che viene associato, non è possibile utilizzarlo per l'associazione</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="610"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="631"/>
       <source>{} (add {})</source>
       <translation>{} (aggiungi {})</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="614"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="635"/>
       <source>{} (add more references)</source>
       <translation>{} (aggiungere ulteriori riferimenti)</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="650"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="671"/>
       <source>Reference combinations:</source>
       <translation>Combinazioni di riferimenti:</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="665"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="686"/>
       <source>Reference{}</source>
       <translation>Riferimento{}</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="672"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="693"/>
       <source>Selecting…</source>
       <translation type="unfinished">Selecting…</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="701"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="722"/>
       <source>Failed to resolve links. {}</source>
       <translation>Impossibile risolvere i collegamenti. {}</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="712"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="733"/>
       <source>Not attached</source>
       <translation>Non associato</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="715"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="736"/>
       <source>Attached with mode {}</source>
       <translation>Associato con modalità {}</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="725"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="746"/>
       <source>Error: {}</source>
       <translation>Errore: {}</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="731"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="752"/>
       <source>Attachment Offset (in local coordinates):</source>
       <translation>Offset di associazione (in coordinate locali):</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="736"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="757"/>
       <source>Attachment Offset (inactive - not attached):</source>
       <translation>Offset di associazione (inattivo - non associato):</translation>
     </message>
@@ -6818,7 +6818,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../Command.cpp" line="2576"/>
       <source>Datum Plane</source>
-      <translation type="unfinished">Datum Plane</translation>
+      <translation>Piano di riferimento</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2577"/>
@@ -6836,7 +6836,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../Command.cpp" line="2609"/>
       <source>Datum Line</source>
-      <translation type="unfinished">Datum Line</translation>
+      <translation>Linea di riferimento</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2610"/>
@@ -6854,7 +6854,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../Command.cpp" line="2642"/>
       <source>Datum Point</source>
-      <translation type="unfinished">Datum Point</translation>
+      <translation>Punto di riferimento</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2643"/>

@@ -4418,12 +4418,12 @@ over 90: larger hole radius at the bottom</source>
   <context>
     <name>Exception</name>
     <message>
-      <location filename="../../../App/Body.cpp" line="408"/>
+      <location filename="../../../App/Body.cpp" line="402"/>
       <source>Linked object is not a PartDesign feature</source>
       <translation>リンクされたオブジェクトはパートデザインのフィーチャーではありません。</translation>
     </message>
     <message>
-      <location filename="../../../App/Body.cpp" line="417"/>
+      <location filename="../../../App/Body.cpp" line="411"/>
       <source>Tip shape is empty</source>
       <translation>TIPのシェイプが空です。</translation>
     </message>
@@ -4469,9 +4469,9 @@ over 90: larger hole radius at the bottom</source>
       <location filename="../../../App/FeaturePipe.cpp" line="529"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="263"/>
       <location filename="../../../App/FeatureGroove.cpp" line="254"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="756"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="772"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="785"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="759"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="775"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="788"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>結果に複数のソリッドがあります: アクティブなボディーで「コンパウンドを許可」を有効にしてください。</translation>
     </message>
@@ -4486,22 +4486,22 @@ over 90: larger hole radius at the bottom</source>
       <translation>サポートされていないブーリアン演算です。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="343"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="346"/>
       <source>Cannot create a pad with a total length of zero.</source>
       <translation>合計長さゼロのパッドは作成できません。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="348"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="351"/>
       <source>Cannot create a pocket with a total length of zero.</source>
       <translation>合計長さゼロのポケットは作成できません。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="687"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="690"/>
       <source>No extrusion geometry was generated.</source>
       <translation>押し出しジオメトリーは生成されませんでした。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="711"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="714"/>
       <source>Resulting fused extrusion is null.</source>
       <translation>結合された押し出し結果が無効です。</translation>
     </message>
@@ -4509,7 +4509,7 @@ over 90: larger hole radius at the bottom</source>
       <location filename="../../../App/FeatureLoft.cpp" line="368"/>
       <location filename="../../../App/FeaturePipe.cpp" line="521"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="139"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="747"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="750"/>
       <source>Resulting shape is not a solid</source>
       <translation>結果シェイプはソリッドではありません。</translation>
     </message>
@@ -4580,19 +4580,19 @@ over 90: larger hole radius at the bottom</source>
 ・ 選択されたスケッチがアクティブなボディーに属していない。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="392"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="395"/>
       <source>Failed to obtain profile shape</source>
       <translation>プロファイルのシェイプを取得できませんでした。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="446"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="449"/>
       <source>Creation failed because direction is orthogonal to sketch's normal vector</source>
       <translation>方向とスケッチの法線ベクトルが直交しているため作成に失敗しました。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureRevolution.cpp" line="163"/>
       <location filename="../../../App/FeatureGroove.cpp" line="154"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="469"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="472"/>
       <source>Creating a face from sketch failed</source>
       <translation>スケッチから面を作成できませんでした。</translation>
     </message>
@@ -4833,7 +4833,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
       <translation>ロフト: シェルの作成に失敗しました。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="800"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="803"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed.</source>
       <translation>スケッチから面を作成できませんでした。
@@ -5073,7 +5073,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <translation>参照軸が無効です。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="739"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="742"/>
       <source>Fusion with base feature failed</source>
       <translation>ベースフィーチャーとの結合に失敗しました。</translation>
     </message>
@@ -5301,7 +5301,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>PartDesignGui::TaskDlgRevolutionParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="824"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="823"/>
       <source>Revolution Parameters</source>
       <translation>回転押し出しパラメーター</translation>
     </message>
@@ -5309,7 +5309,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>PartDesignGui::TaskDlgGrooveParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="834"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="833"/>
       <source>Groove Parameters</source>
       <translation>グルーブパラメーター</translation>
     </message>

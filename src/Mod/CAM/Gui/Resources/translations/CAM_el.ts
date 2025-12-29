@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="47"/>
       <source>CAM</source>
-      <translation type="unfinished">CAM</translation>
+      <translation>CAM</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="48"/>
@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="49"/>
       <source>Creates a feature area from the selected objects</source>
-      <translation type="unfinished">Creates a feature area from the selected objects</translation>
+      <translation>Δημιουργεί μια περιοχή χαρακτηριστικών από τα επιλεγμένα αντικείμενα</translation>
     </message>
   </context>
   <context>
@@ -24,12 +24,12 @@
     <message>
       <location filename="../../Command.cpp" line="146"/>
       <source>CAM</source>
-      <translation type="unfinished">CAM</translation>
+      <translation>CAM</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="147"/>
       <source>Area Workplane</source>
-      <translation type="unfinished">Area Workplane</translation>
+      <translation>Τομέας Εργασίας</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="148"/>
