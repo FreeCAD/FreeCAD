@@ -1314,6 +1314,7 @@ private:
     Circle circle;
     Line line;
     bool ccw;
+    bool internal;
 
     double* distance()
     {
@@ -1324,7 +1325,7 @@ private:
     void errorgrad(double* err, double* grad, double* param) override;
 
 public:
-    ConstraintC2LDistance(Circle& c, Line& l, double* d);
+    ConstraintC2LDistance(Circle& c, Line& l, double* d, bool ccw, bool internal);
     ConstraintType getTypeId() override;
 };
 

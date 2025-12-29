@@ -870,9 +870,17 @@ int System::addConstraintC2CDistance(
     return addConstraint(constr);
 }
 
-int System::addConstraintC2LDistance(Circle& c, Line& l, double* dist, int tagId, bool driving)
+int System::addConstraintC2LDistance(
+    Circle& c,
+    Line& l,
+    double* dist,
+    bool ccw,
+    bool internal,
+    int tagId,
+    bool driving
+)
 {
-    Constraint* constr = new ConstraintC2LDistance(c, l, dist);
+    Constraint* constr = new ConstraintC2LDistance(c, l, dist, ccw, internal);
     constr->setTag(tagId);
     constr->setDriving(driving);
     return addConstraint(constr);

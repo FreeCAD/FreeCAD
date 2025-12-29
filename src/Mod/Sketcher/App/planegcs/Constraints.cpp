@@ -2981,9 +2981,11 @@ void ConstraintC2CDistance::errorgrad(double* err, double* grad, double* param)
 
 // --------------------------------------------------------
 // ConstraintC2LDistance
-ConstraintC2LDistance::ConstraintC2LDistance(Circle& c, Line& l, double* d)
+ConstraintC2LDistance::ConstraintC2LDistance(Circle& c, Line& l, double* d, bool ccw, bool internal)
     : circle(c)
     , line(l)
+    , ccw(ccw)
+    , internal(internal)
 {
     pvec.push_back(d);
     this->circle.PushOwnParams(pvec);
@@ -3033,27 +3035,26 @@ void ConstraintC2LDistance::errorgrad(double* err, double* grad, double* param)
     // the base, which is the distance from the center of the circle to the line.
     //
     // However, the vector (which points in z direction), can be positive or negative.
-    // the area is the absolute value
-    double h = std::abs(area) / length;
-
-    // darea is the magnitude of a vector in the z direction, which makes the area vector
-    // increase or decrease. If area vector is negative a negative value makes the area increase
-    // and a positive value makes it decrease.
-    darea = std::signbit(area) ? -darea : darea;
+    // here our area is signed which does not make geometric sense, but allows
+    // us to solve for a signed distance
+    double h = area / length;
 
     double dh = (darea - h * dlength) / length;
 
     if (err) {
-        if (h < *circle.rad) {
-            *err = *circle.rad - std::abs(*distance()) - h;
+        double target;
+        if (internal) {
+            target = *circle.rad - std::abs(*distance());
         }
         else {
-            *err = *circle.rad + std::abs(*distance()) - h;
+            target = *circle.rad + std::abs(*distance());
         }
+        target = ccw ? target : -target;  // Solve for one side of the line or the other
+        *err = target - h;
     }
     else if (grad) {
         if (param == distance() || param == circle.rad) {
-            if (h < *circle.rad) {
+            if (internal) {
                 *grad = -1.0;
             }
             else {

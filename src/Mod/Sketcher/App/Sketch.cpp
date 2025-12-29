@@ -3539,7 +3539,15 @@ int Sketch::addDistanceConstraint(
 
         GCS::Line* l = &Lines[Geoms[geoId2].index];
         int tag = ++ConstraintsCounter;
-        GCSsys.addConstraintC2LDistance(*c1, *l, value, tag, driving);
+        GCSsys.addConstraintC2LDistance(
+            *c1,
+            *l,
+            value,
+            orientation.testFlag(ConstraintOrientations::CounterClockwise),
+            orientation.testFlag(ConstraintOrientations::Internal),
+            tag,
+            driving
+        );
         return ConstraintsCounter;
     }
     else {
