@@ -1464,4 +1464,3 @@ bool TaskDlgExtrudeParameters::reject()
 }
 
 #include "moc_TaskExtrudeParameters.cpp"
-
