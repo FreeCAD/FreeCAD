@@ -3110,7 +3110,7 @@ void SketchObject::setOrientation(Constraint* constr, bool reset)
     if (constr->FirstPos == PointPos::none && constr->SecondPos == PointPos::none && constr->Second != GeoEnum::GeoUndef) {
         const Part::Geometry* firGeo = getGeometry(constr->First);
         const Part::Geometry* secGeo = getGeometry(constr->Second);
-        if (!secGeo->is<Part::GeomCircle>() || !secGeo->is<Part::GeomCircle>()) {
+        if (!firGeo->is<Part::GeomCircle>() || !secGeo->is<Part::GeomCircle>()) {
             return;
         }
 
