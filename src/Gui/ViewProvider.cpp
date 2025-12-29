@@ -1282,7 +1282,7 @@ Base::BoundBox3d ViewProvider::_getBoundingBox(
     path.append(fakeRoot);
 
     static thread_local SoSelectionElementAction
-        selAction(SoSelectionElementAction::Append, true/*, true*/);
+        selAction(SoSelectionElementAction::Append, true /*, true*/);
 
     SoDetail* det = nullptr;
     if (subname && subname[0]) {

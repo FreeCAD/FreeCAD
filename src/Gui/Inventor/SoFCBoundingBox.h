@@ -61,10 +61,10 @@ public:
 
 public:
     SoFCBoundingBox();
-    SoSFVec3f minBounds;   /**< minimum box coordinates */
-    SoSFVec3f maxBounds;   /**< maximum box coordinates */
-    SoSFBool coordsOn;     /**< If true, the coordinates are displayed at each vertex */
-    SoSFBool dimensionsOn; /**< If true, the dimensions are displayed in x,y and z direction */
+    SoSFVec3f minBounds;      /**< minimum box coordinates */
+    SoSFVec3f maxBounds;      /**< maximum box coordinates */
+    SoSFBool coordsOn;        /**< If true, the coordinates are displayed at each vertex */
+    SoSFBool dimensionsOn;    /**< If true, the dimensions are displayed in x,y and z direction */
     SoSFBool skipBoundingBox; /**< If true, skip this node when calculating bounding box */
 
 protected:

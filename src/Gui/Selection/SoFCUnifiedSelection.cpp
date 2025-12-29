@@ -1452,7 +1452,7 @@ void SoFCSelectionRoot::setupSelectionLineRendering(
         SoLineWidthElement::set(state, width);
     }
 
-    //SoShadowStyleElement::set(state, SoShadowStyleElement::NO_SHADOWING);
+    // SoShadowStyleElement::set(state, SoShadowStyleElement::NO_SHADOWING);
 
     SoLightModelElement::set(state, SoLightModelElement::BASE_COLOR);
     SoOverrideElement::setLightModelOverride(state, node, TRUE);
@@ -2256,8 +2256,9 @@ void SoFCPathAnnotation::GLRenderBelowPath(SoGLRenderAction* action)
                             SoFCSelectionRoot::renderBBox(action, this, hl ? hlColor : selColor);
                         }
                         else {
-                            Base::Matrix4D mat = ViewProvider::convert(SoModelMatrixElement::get(state
-                            ));
+                            Base::Matrix4D mat = ViewProvider::convert(
+                                SoModelMatrixElement::get(state)
+                            );
                             auto fcbox
                                 = viewProvider->getBoundingBox(subname.c_str(), &mat, true, viewer);
                             SbBox3f bbox(
