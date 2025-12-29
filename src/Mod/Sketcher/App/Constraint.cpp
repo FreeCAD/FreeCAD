@@ -156,7 +156,7 @@ void Constraint::Save(Writer& writer) const
         writer.Stream() << "InternalAlignmentType=\"" << (int)AlignmentType << "\" "
                         << "InternalAlignmentIndex=\"" << InternalAlignmentIndex << "\" ";
     }
-    writer.Stream() << "Orientation=\"" << static_cast<int>(Orientation) << "\" ";
+    writer.Stream() << "Orientation=\"" << Orientation.toUnderlyingType() << "\" ";
     writer.Stream() << "Value=\"" << Value << "\" "
                     << "LabelDistance=\"" << LabelDistance << "\" "
                     << "LabelPosition=\"" << LabelPosition << "\" "
@@ -210,10 +210,10 @@ void Constraint::Restore(XMLReader& reader)
         AlignmentType = Undef;
     }
     if (reader.hasAttribute("Orientation")) {
-        Orientation = reader.getAttribute<ConstraintOrientation>("Orientation");
+        Orientation = reader.getAttribute<ConstraintOrientations>("Orientation");
     }
     else {
-        Orientation = ConstraintOrientation::None;
+        Orientation = ConstraintOrientations::None;
     }
 
     // Read the distance a constraint label has been moved

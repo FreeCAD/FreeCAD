@@ -3079,7 +3079,7 @@ void SketchObject::addConstraint(Sketcher::ConstraintType constrType, int firstG
 }
 void SketchObject::setOrientation(Constraint* constr, bool reset)
 {
-    if (constr->Type != Distance || (!reset && constr->Orientation != ConstraintOrientation::None)) {
+    if (constr->Type != Distance || (!reset && !constr->Orientation.testFlag(ConstraintOrientations::None))) {
         return;
     }
 
@@ -3099,36 +3099,44 @@ void SketchObject::setOrientation(Constraint* constr, bool reset)
         // point to line distance, circle to line distance
         Base::Vector3d C = getPoint(constr->First, constr->FirstPos);
 
-        bool ccw = B.x * C.y - B.y*C.x - A.x*C.y + A.y*C.x + A.x*B.y - A.y*B.x > 0.0;
-
-        constr->Orientation = ccw ? ConstraintOrientation::CounterClockwise
-                                : ConstraintOrientation::Clockwise;
+        constr->Orientation = ccw2d(A, B, C) ? ConstraintOrientations::CounterClockwise
+                                : ConstraintOrientations::Clockwise;
         return;
     }
 
-    // Try to find the orientation of circle-circle distance
+    // Try to find the orientation of circle-circle distance or circle-line
     if (constr->FirstPos == PointPos::none && constr->SecondPos == PointPos::none && constr->Second != GeoEnum::GeoUndef) {
         const Part::Geometry* firGeo = getGeometry(constr->First);
         const Part::Geometry* secGeo = getGeometry(constr->Second);
-        if (!firGeo->is<Part::GeomCircle>() || !secGeo->is<Part::GeomCircle>()) {
+
+        if (firGeo->is<Part::GeomCircle>() && secGeo->is<Part::GeomCircle>()) { // circle-circle distance
+            auto* geoCirc1 = static_cast<const Part::GeomCircle*>(firGeo);
+            auto* geoCirc2 = static_cast<const Part::GeomCircle*>(secGeo);
+
+            // If one of the circle is completly within the other, we will say that
+            // it is internal, if they are not within each other or intersect we won't
+            // make a call
+
+            double centerDistance = Base::Distance(geoCirc1->getLocation(), geoCirc2->getLocation());
+
+            if (centerDistance + geoCirc1->getRadius() < geoCirc2->getRadius()) {
+                constr->Orientation = ConstraintOrientations::Internal; // Circ1 is within circ2
+            } else if (centerDistance + geoCirc2->getRadius() < geoCirc1->getRadius()) {
+                constr->Orientation = ConstraintOrientations::External; // Circ2 is within circ1
+            }
             return;
         }
 
-        auto* geoCirc1 = static_cast<const Part::GeomCircle*>(firGeo);
-        auto* geoCirc2 = static_cast<const Part::GeomCircle*>(secGeo);
+        if (firGeo->is<Part::GeomCircle>() && secGeo->is<Part::GeomLineSegment>()) { // circle-line distance
+            auto* geoCirc = static_cast<const Part::GeomCircle*>(firGeo);
+            auto* geoLine = static_cast<const Part::GeomLineSegment*>(secGeo);
 
-        // If one of the circle is completly within the other, we will say that
-        // it is internal, if they are not within each other or intersect we won't
-        // make a call
+            bool internal = geoCirc->getLocation().DistanceToLine(geoLine->getStartPoint(), geoLine->getEndPoint()-geoLine->getStartPoint()) < geoCirc->getRadius();
+            bool ccw = ccw2d(geoLine->getStartPoint(), geoLine->getEndPoint(), geoCirc->getLocation());
 
-        double centerDistance = Base::Distance(geoCirc1->getLocation(), geoCirc2->getLocation());
-
-        if (centerDistance + geoCirc1->getRadius() < geoCirc2->getRadius()) {
-            constr->Orientation = ConstraintOrientation::Internal; // Circ1 is within circ2
-        } else if (centerDistance + geoCirc2->getRadius() < geoCirc1->getRadius()) {
-            constr->Orientation = ConstraintOrientation::External; // Circ2 is within circ1
+            constr->Orientation = (ccw ? ConstraintOrientations::CounterClockwise : ConstraintOrientations::Clockwise) |
+                                    (internal ? ConstraintOrientations::Internal : ConstraintOrientations::External);
         }
-        return;
     }
 
 }

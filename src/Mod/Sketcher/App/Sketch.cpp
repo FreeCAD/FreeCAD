@@ -3462,7 +3462,7 @@ int Sketch::addDistanceConstraint(
             p1,
             l2,
             value,
-            orientation == ConstraintOrientation::CounterClockwise,
+            orientation.testFlag(ConstraintOrientations::CounterClockwise),
             tag,
             driving
         );
@@ -3563,10 +3563,10 @@ int Sketch::addDistanceConstraint(
         int tag = ++ConstraintsCounter;
 
         std::optional<bool> c1Bigger = std::nullopt;
-        if (orientation == ConstraintOrientation::Internal) {
+        if (orientation.testFlag(ConstraintOrientations::Internal)) {
             c1Bigger = false;
         }
-        else if (orientation == ConstraintOrientation::External) {
+        else if (orientation.testFlag(ConstraintOrientations::External)) {
             c1Bigger = true;
         }
 
