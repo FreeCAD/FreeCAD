@@ -26,6 +26,7 @@
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
 #include <App/PropertyFile.h>
+#include <App/PropertyLinks.h>
 #include <Base/BoundBox.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -48,6 +49,8 @@ public:
     App::PropertyFloat        Width;
     App::PropertyFloat        Height;
     App::PropertyLink         Owner;
+    App::PropertyLinkList     Source;
+    App::PropertyXLinkList    XSource;
 
     /** @name methods override Feature */
     //@{
@@ -64,6 +67,9 @@ public:
 
     QRectF getRect() const override;
     void setupObject() override;
+    
+    /// Get all 3D objects referenced by this ActiveView
+    std::vector<App::DocumentObject*> get3DObjects() const;
 
 protected:
     void replaceImageIncluded(std::string newImageFile);
