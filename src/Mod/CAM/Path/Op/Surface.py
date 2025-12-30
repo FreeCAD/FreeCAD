@@ -607,7 +607,7 @@ class ObjectSurface(PathOp.ObjectOp):
         """Applies the mesh settings based on the Accuracy slider's value."""
         accuracy_map = {
             # Level: [AngularDeflection, LinearDeflection, MeshSimplification]
-            1: [0.25, 0.02, 20.0],
+            1: [0.25, 0.03, 15.0],
             2: [0.25, 0.02, 10.0],
             3: [0.25, 0.02, 0.0],
             4: [0.15, 0.01, 0.0],
