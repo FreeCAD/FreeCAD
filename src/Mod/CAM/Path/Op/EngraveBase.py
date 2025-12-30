@@ -174,9 +174,12 @@ class ObjectOp(PathOp.ObjectOp):
     def opSetDefaultValues(self, obj, job):
         """opSetDefaultValues(obj) ... set depths for engraving"""
         if PathOp.FeatureDepths & self.opFeatures(obj):
-            if job and len(job.Model.Group) > 0:
-                bb = job.Proxy.modelBoundBox(job)
-                obj.OpStartDepth = bb.ZMax
-                obj.OpFinalDepth = bb.ZMax - max(obj.StepDown.Value, 0.1)
-            else:
-                obj.OpFinalDepth = -0.1
+            if job and job.Stock:
+                obj.OpStartDepth = job.Stock.Shape.BoundBox.ZMax
+                obj.OpFinalDepth = job.Stock.Shape.BoundBox.ZMax
+            if obj.Base:
+                obj.OpFinalDepth = obj.Base[0][0].Shape.BoundBox.ZMax
+            elif obj.BaseShapes:
+                obj.OpFinalDepth = obj.BaseShapes[0].Shape.BoundBox.ZMax
+            if obj.OpStartDepth < obj.OpFinalDepth:
+                obj.OpStartDepth = obj.OpFinalDepth
