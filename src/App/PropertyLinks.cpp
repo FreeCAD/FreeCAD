@@ -422,7 +422,6 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject* feature,
                                                bool reverse,
                                                bool notify)
 {
-    FC_WARN("update reverse: " << reverse);
     if (!obj || !obj->getNameInDocument()) {
         return false;
     }
@@ -502,8 +501,6 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject* feature,
                            << " auto change element reference " << ret->getFullName() << " "
                            << oldName << " -> " << newName);
                 }
-            } else if (reverse) {
-                FC_WARN("not found in cache");
             }
         }
     }

@@ -205,7 +205,7 @@ std::string ComplexGeoData::getElementMapVersion() const
 
 bool ComplexGeoData::checkElementMapVersion(const char* ver) const
 {
-    return !boost::ends_with(ver, "3") && !boost::ends_with(ver, "5");
+    return !boost::ends_with(ver, "5");
 }
 
 size_t ComplexGeoData::getElementMapSize(bool flush) const
