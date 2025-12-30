@@ -984,6 +984,8 @@ int SketchObject::setActive(int ConstrId, bool isactive)
     // clone the changed Constraint
     Constraint* constNew = vals[ConstrId]->clone();
     constNew->isActive = isactive;
+    setOrientation(constNew, constNew->isActive);
+
     newVals[ConstrId] = constNew;
     this->Constraints.setValues(std::move(newVals));
 
@@ -1021,6 +1023,8 @@ int SketchObject::toggleActive(int ConstrId)
     // clone the changed Constraint
     Constraint* constNew = vals[ConstrId]->clone();
     constNew->isActive = !constNew->isActive;
+    setOrientation(constNew, constNew->isActive);
+
     newVals[ConstrId] = constNew;
     this->Constraints.setValues(std::move(newVals));
 
@@ -2304,7 +2308,7 @@ int SketchObject::addConstraints(const std::vector<Constraint*>& ConstraintList)
             AutoLockTangencyAndPerpty(cnew);
         }
 
-        setOrientation(cnew);
+        setOrientation(cnew, false);
 
         addGeometryState(cnew);
     }
@@ -2378,7 +2382,7 @@ int SketchObject::addConstraint(std::unique_ptr<Constraint> constraint)
     if (constNew->Type == Tangent || constNew->Type == Perpendicular) {
         AutoLockTangencyAndPerpty(constNew);
     }
-    setOrientation(constNew);
+    setOrientation(constNew, false);
 
     addGeometryState(constNew);
 
@@ -3056,9 +3060,9 @@ void SketchObject::addConstraint(Sketcher::ConstraintType constrType, int firstG
 
     this->addConstraint(std::move(newConstr));
 }
-void SketchObject::setOrientation(Constraint* constr)
+void SketchObject::setOrientation(Constraint* constr, bool reset)
 {
-    if (constr->Type != Distance || constr->Orientation != ConstraintOrientation::None) {
+    if (constr->Type != Distance || (!reset && constr->Orientation != ConstraintOrientation::None)) {
         return;
     }
 
@@ -11097,7 +11101,7 @@ void SketchObject::migrateSketch()
     // Migrate point-line and circle-line distance from abs to signed
     auto constraints = Constraints.getValues();
     for (auto& constr : constraints) {
-        setOrientation(constr);
+        setOrientation(constr, false);
     }
 
     Constraints.setValues(std::move(constraints));
