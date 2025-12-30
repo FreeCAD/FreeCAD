@@ -104,7 +104,7 @@ bool ViewProviderCompound::onDelete(const std::vector<std::string>& subNames)
                 if (parent && parent != pComp && parent->isDerivedFrom<Part::Compound>()) {
                     auto otherCompound = static_cast<Part::Compound*>(parent);
                     auto otherLinks = otherCompound->Links.getValues();
-                    if (std::find(otherLinks.begin(), otherLinks.end(), pLink) != otherLinks.end()) {
+                    if (std::ranges::find(otherLinks, pLink) != otherLinks.end()) {
                         hasOtherParent = true;
                         break;
                     }
