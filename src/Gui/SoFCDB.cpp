@@ -42,6 +42,7 @@
 
 
 #include <Base/FileInfo.h>
+#include <Base/Persistence.h>
 #include <Base/Stream.h>
 #include <Base/Tools.h>
 #include <zipios++/gzipoutputstream.h>
@@ -497,42 +498,6 @@ bool Gui::SoFCDB::writeToX3D(SoNode* node, bool exportViewpoints, std::string& b
     return true;
 }
 
-namespace
-{
-std::string escapeXmlAttribute(const char* str)
-{
-    if (!str) {
-        return std::string();
-    }
-
-    std::string result;
-    result.reserve(strlen(str));
-
-    for (const char* p = str; *p; ++p) {
-        switch (*p) {
-            case '"':
-                result.append("&quot;");
-                break;
-            case '&':
-                result.append("&amp;");
-                break;
-            case '<':
-                result.append("&lt;");
-                break;
-            case '>':
-                result.append("&gt;");
-                break;
-            case '\'':
-                result.append("&apos;");
-                break;
-            default:
-                result.push_back(*p);
-                break;
-        }
-    }
-    return result;
-}
-}  // namespace
 
 void Gui::SoFCDB::writeX3DFields(
     SoNode* node,
@@ -559,7 +524,7 @@ void Gui::SoFCDB::writeX3DFields(
         }
 
         nodeMap[node] = str.str();
-        std::string escapedName = escapeXmlAttribute(str.str().c_str());
+        std::string escapedName = Base::Persistence::encodeAttribute(str.str());
         out << " DEF=\"" << escapedName << "\"";
     }
 
@@ -584,7 +549,9 @@ void Gui::SoFCDB::writeX3DFields(
                     }
 
                     // escape XML special characters in attribute value
-                    std::string escapedValue = escapeXmlAttribute(ba.data());
+                    std::string escapedValue = Base::Persistence::encodeAttribute(
+                        std::string(ba.data())
+                    );
 
                     out << '\n'
                         << Base::blanks(spaces + 2) << fielddata->getFieldName(i).getString()
@@ -647,7 +614,7 @@ void Gui::SoFCDB::writeX3DChild(
         // remove the VRML prefix from the type name
         std::string sftype(node->getTypeId().getName().getString());
         sftype = sftype.substr(4);
-        std::string escapedRef = escapeXmlAttribute(mapIt->second.c_str());
+        std::string escapedRef = Base::Persistence::encodeAttribute(mapIt->second);
         out << Base::blanks(spaces) << "<" << sftype << " USE=\"" << escapedRef << "\" />\n";
     }
 }
