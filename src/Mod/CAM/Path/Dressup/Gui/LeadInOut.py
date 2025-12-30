@@ -57,6 +57,7 @@ lead_styles = (
     # additional options, alphabetical order
     QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Arc3d"),
     QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "ArcZ"),
+    QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "ArcZFollow"),
     QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Helix"),
     QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Line3d"),
     QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "LineZ"),
@@ -211,21 +212,21 @@ class ObjectDressup:
         if obj.RadiusOut <= 0:
             obj.RadiusOut = 1
 
-        nonZeroAngleStyles = ("Arc", "Arc3d", "ArcZ", "Helix", "LineZ")
+        nonZeroAngleStyles = ("Arc", "Arc3d", "ArcZ", "ArcZFollow", "Helix", "LineZ")
         limit_angle_in = 1 if obj.StyleIn in nonZeroAngleStyles else 0
         limit_angle_out = 1 if obj.StyleOut in nonZeroAngleStyles else 0
         if obj.AngleIn > 180:
             obj.AngleIn = 180
         if obj.AngleIn < limit_angle_in:
             obj.AngleIn = limit_angle_in
-        if obj.StyleIn == "ArcZ" and obj.AngleIn > 179:
+        if obj.StyleIn in ("ArcZ", "ArcZFollow") and obj.AngleIn > 179:
             obj.AngleIn = 179
 
         if obj.AngleOut > 180:
             obj.AngleOut = 180
         if obj.AngleOut < limit_angle_out:
             obj.AngleOut = limit_angle_out
-        if obj.StyleOut == "ArcZ" and obj.AngleOut > 179:
+        if obj.StyleOut in ("ArcZ", "ArcZFollow") and obj.AngleOut > 179:
             obj.AngleOut = 179
 
         # Use shared hideModes from TaskDressupLeadInOut
@@ -760,7 +761,7 @@ class ObjectDressup:
 
             # prepend "ArcZ" style lead-in - vertical Arc
             # Should be applied only on straight Path segment or open profile
-            elif styleIn == "ArcZ":
+            elif styleIn in ("ArcZ", "ArcZFollow"):
                 # tangent vector in XY plane
                 # normal vector is vertical
                 arcRadius = length
@@ -775,7 +776,7 @@ class ObjectDressup:
                 tangent = -self.angleToVector(angleTangent) * tangentLength
                 normal = App.Vector(0, 0, normalLength)
                 arcBegin = begin + tangent + normal
-                if not self.closedProfile and obj.OffsetIn >= 0:
+                if styleIn == "ArcZ":
                     lead.extend(
                         self.createArcZMoveDown(obj, arcBegin, begin, arcRadius, self.entranceFeed)
                     )
@@ -905,7 +906,7 @@ class ObjectDressup:
 
             # prepend "ArcZ" style lead-out - vertical Arc
             # Should be apply only on straight Path segment
-            elif obj.StyleOut == "ArcZ":
+            elif obj.StyleOut in ("ArcZ", "ArcZFollow"):
                 # tangent vector in XY plane
                 # normal vector is vertical
                 arcRadius = length
@@ -920,7 +921,7 @@ class ObjectDressup:
                 tangent = self.angleToVector(angleTangent) * tangentLength
                 normal = App.Vector(0, 0, normalLength)
                 arcEnd = end + tangent + normal
-                if not self.closedProfile and obj.OffsetOut >= 0:
+                if obj.StyleOut == "ArcZ":
                     lead.extend(self.createArcZMoveUp(obj, end, arcEnd, arcRadius, self.exitFeed))
                 else:
                     lead.extend(self.createArcZ2MoveUp(obj, end, arcEnd, arcRadius, self.exitFeed))
@@ -1393,14 +1394,22 @@ class TaskDressupLeadInOut(SimpleEditPanel):
     # Shared hideModes for both LeadIn and LeadOut
     hideModes = {
         "Angle": ("No Retract", "Perpendicular", "Tangent", "Vertical"),
-        "Invert": ("No Retract", "ArcZ", "LineZ", "Vertical", "Perpendicular", "Tangent"),
+        "Invert": (
+            "No Retract",
+            "ArcZ",
+            "ArcZFollow",
+            "LineZ",
+            "Vertical",
+            "Perpendicular",
+            "Tangent",
+        ),
         "Offset": ("No Retract"),
         "Radius": ("No Retract", "Vertical"),
     }
 
     def updateLeadVisibility(self, style, angleWidget, invertWidget, angleLabel, radiusLabel=None):
         # Dynamic label for Radius/Length
-        arc_styles = ("Arc", "Arc3d", "ArcZ", "Helix")
+        arc_styles = ("Arc", "Arc3d", "ArcZ", "ArcZFollow", "Helix")
         if radiusLabel and hasattr(self.form, radiusLabel):
             if style in arc_styles:
                 getattr(self.form, radiusLabel).setText("Radius")
