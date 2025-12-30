@@ -27,8 +27,6 @@ import Path.Op.Base as PathOp
 import Path.Op.Util as PathOpUtil
 import PathScripts.PathUtils as PathUtils
 
-# import copy
-
 __doc__ = "Base class for all ops in the engrave family."
 
 # lazily loaded modules
@@ -88,15 +86,15 @@ class ObjectOp(PathOp.ObjectOp):
             # get start point of wire
             if wire.isClosed():
                 # forward and reversed closed wire
-                edges = wire.Edges[startIdx:] + wire.Edges[:startIdx]
+                edges = wire.OrderedEdges[startIdx:] + wire.OrderedEdges[:startIdx]
                 startPoint = wire.OrderedVertexes[startIdx].Point
             elif forward:
                 # forward open wire
-                edges = wire.Edges[startIdx:]
+                edges = wire.OrderedEdges[startIdx:]
                 startPoint = wire.OrderedVertexes[startIdx].Point
             else:
                 # reversed open wire
-                edges = wire.Edges[: len(wire.Edges) - startIdx]
+                edges = wire.OrderedEdges[: len(wire.Edges) - startIdx]
                 startPoint = wire.OrderedVertexes[len(wire.Vertexes) - startIdx - 1].Point
 
             for indexZ, z in enumerate(zValues):
@@ -134,20 +132,20 @@ class ObjectOp(PathOp.ObjectOp):
                         )
                         lastPoint = startPoint
 
-                    if Path.Geom.pointsCoincide(edge.Vertexes[0].Point, edge.Vertexes[-1].Point):
-                        # wire is circle
+                    if Path.Geom.pointsCoincide(
+                        edge.valueAt(edge.FirstParameter), edge.valueAt(edge.LastParameter)
+                    ):
+                        # wire with one closed edge
                         flip = reverseDir
-                        indexLastPoint = 0
-                    elif Path.Geom.pointsCoincide(lastPoint, edge.Vertexes[0].Point):
+                    elif Path.Geom.pointsCoincide(lastPoint, edge.valueAt(edge.FirstParameter)):
                         flip = False
-                        indexLastPoint = -1
-                    elif Path.Geom.pointsCoincide(lastPoint, edge.Vertexes[-1].Point):
+                        lastPoint = edge.valueAt(edge.LastParameter)
+                    elif Path.Geom.pointsCoincide(lastPoint, edge.valueAt(edge.LastParameter)):
                         flip = True
-                        indexLastPoint = 0
+                        lastPoint = edge.valueAt(edge.FirstParameter)
                     else:
                         Path.Log.warning("Error while checks points coincide")
 
-                    lastPoint = edge.Vertexes[indexLastPoint].Point
                     for cmd in Path.Geom.cmdsForEdge(edge, flip=flip, tol=tol):
                         # Add gcode for edge
                         self.appendCommand(cmd, z, relZ, self.horizFeed)
