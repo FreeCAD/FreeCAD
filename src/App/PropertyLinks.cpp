@@ -482,11 +482,7 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject* feature,
             if (names.size()) {
                 missing = false;
                 std::string newsub(subname, strlen(subname) - strlen(element));
-                if (names.size()) {
-                    newsub += names.front();
-                } else if (reverse) {
-                    newsub += oldElement;
-                }
+                newsub += names.front();
                 GeoFeature::resolveElement(obj,
                                            newsub.c_str(),
                                            elementName,
