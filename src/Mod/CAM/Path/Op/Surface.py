@@ -1516,7 +1516,6 @@ class ObjectSurface(PathOp.ObjectOp):
         last_point_of_previous_layer = None
 
         for i, layDep in enumerate(depthparams):
-            FreeCAD.Console.PrintMessage(f"Processing layer {i+1} at Z={layDep}\n")
             pdc.setZ(layDep)
 
             # Get the depth of the previous layer to check for "air cutting"
