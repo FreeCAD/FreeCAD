@@ -3090,4 +3090,3 @@ std::vector<App::DocumentObject*> Document::getTreeRootObjects() const
     }
     return rootObjs;
 }
-
