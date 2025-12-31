@@ -2195,7 +2195,9 @@ class ObjectSurface(PathOp.ObjectOp):
                     rSTG = self._rotationalScanToGcode(obj, rng, rNum, prevDepth, layDep, advances)
                     commands.extend(rSTG)
                     if arc != 360.0:
-                        commands.append(Path.Command("G0", {"Z": self.clearHeight, "F": self.vertRapid}))
+                        commands.append(
+                            Path.Command("G0", {"Z": self.clearHeight, "F": self.vertRapid})
+                        )
                     rNum += 1
                 # Eol
 
@@ -2315,13 +2317,13 @@ class ObjectSurface(PathOp.ObjectOp):
 
         #  Always retract to full clearHeight before any A/B axis rotation
         output.append(Path.Command("G0", {"Z": self.clearHeight, "F": self.vertRapid}))
-    
+
         # Rotate to correct index location
         if obj.RotationAxis == "X":
             output.append(Path.Command("G0", {"A": idxAng, "F": self.axialFeed}))
         else:
             output.append(Path.Command("G0", {"B": idxAng, "F": self.axialFeed}))
-    
+
         output.append(Path.Command("G0", {"X": pnt.x, "Y": pnt.y, "F": self.horizRapid}))
         output.append(Path.Command("G1", {"Z": pnt.z, "F": self.vertFeed}))
 
