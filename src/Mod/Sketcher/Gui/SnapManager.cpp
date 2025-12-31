@@ -221,7 +221,7 @@ Base::Vector2d SnapManager::snap(Base::Vector2d inputPos, SnapType mask)
         return snapPos;
     }
 
-    return inputPos;
+    return snapPos;
 }
 
 bool SnapManager::snapAtAngle(Base::Vector2d inputPos, Base::Vector2d& snapPos)
@@ -407,3 +407,4 @@ Base::Vector2d SketcherGui::SnapManager::SnapHandle::compute(SnapType mask)
     }
     return mgr->snap(cursorPos, mask);
 }
+
