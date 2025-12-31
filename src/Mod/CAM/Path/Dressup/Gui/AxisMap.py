@@ -266,26 +266,12 @@ class CommandPathDressup:
         }
 
     def IsActive(self):
-        if FreeCAD.ActiveDocument is not None:
-            for o in FreeCAD.ActiveDocument.Objects:
-                if o.Name[:3] == "Job":
-                    return True
-        return False
+        return bool(PathDressup.selection())
 
     def Activated(self):
-
         # check that the selection contains exactly what we want
-        selection = FreeCADGui.Selection.getSelection()
-        if len(selection) != 1:
-            FreeCAD.Console.PrintError(translate("CAM_Dressup", "Select one toolpath object\n"))
-            return
-        if not selection[0].isDerivedFrom("Path::Feature"):
-            FreeCAD.Console.PrintError(
-                translate("CAM_Dressup", "The selected object is not a toolpath\n")
-            )
-            return
-        if selection[0].isDerivedFrom("Path::FeatureCompoundPython"):
-            FreeCAD.Console.PrintError(translate("CAM_Dressup", "Select a toolpath object"))
+        baseOp = PathDressup.selection(verbose=True)
+        if not baseOp:
             return
 
         # everything ok!
@@ -296,7 +282,7 @@ class CommandPathDressup:
             'obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "AxisMapDressup")'
         )
         FreeCADGui.doCommand("Path.Dressup.Gui.AxisMap.ObjectDressup(obj)")
-        FreeCADGui.doCommand("base = FreeCAD.ActiveDocument." + selection[0].Name)
+        FreeCADGui.doCommand("base = FreeCAD.ActiveDocument." + baseOp.Name)
         FreeCADGui.doCommand("job = PathScripts.PathUtils.findParentJob(base)")
         FreeCADGui.doCommand("obj.Base = base")
         FreeCADGui.doCommand("obj.Radius = 45")

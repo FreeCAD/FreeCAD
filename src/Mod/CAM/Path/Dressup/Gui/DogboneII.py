@@ -336,33 +336,19 @@ class CommandDressupDogboneII(object):
         }
 
     def IsActive(self):
-        if FreeCAD.ActiveDocument is not None:
-            for o in FreeCAD.ActiveDocument.Objects:
-                if o.Name[:3] == "Job":
-                    return True
-        return False
+        return bool(PathDressup.selection())
 
     def Activated(self):
-
         # check that the selection contains exactly what we want
-        selection = FreeCADGui.Selection.getSelection()
-        if len(selection) != 1:
-            FreeCAD.Console.PrintError(
-                translate("CAM_DressupDogbone", "Select one toolpath object") + "\n"
-            )
-            return
-        baseObject = selection[0]
-        if not baseObject.isDerivedFrom("Path::Feature"):
-            FreeCAD.Console.PrintError(
-                translate("CAM_DressupDogbone", "The selected object is not a toolpath") + "\n"
-            )
+        baseOp = PathDressup.selection(verbose=True)
+        if not baseOp:
             return
 
         # everything ok!
         FreeCAD.ActiveDocument.openTransaction("Create Dogbone Dress-up")
         FreeCADGui.addModule("Path.Dressup.Gui.DogboneII")
         FreeCADGui.doCommand(
-            "Path.Dressup.Gui.DogboneII.Create(FreeCAD.ActiveDocument.%s)" % baseObject.Name
+            "Path.Dressup.Gui.DogboneII.Create(FreeCAD.ActiveDocument.%s)" % baseOp.Name
         )
         # FreeCAD.ActiveDocument.commitTransaction()  # Final `commitTransaction()` called via TaskPanel.accept()
         FreeCAD.ActiveDocument.recompute()
