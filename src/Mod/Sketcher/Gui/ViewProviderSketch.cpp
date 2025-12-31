@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Juergen Riegel <juergen.riegel@web.de>             *
  *                                                                         *
@@ -970,8 +972,10 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
     // Radius maximum to allow double click event
     const int dblClickRadius = 5;
 
-    double x, y;
+    double x = std::numeric_limits<double>::quiet_NaN();
+    double y = std::numeric_limits<double>::quiet_NaN();
     SbVec3f pos = point;
+
     if (pp) {
         const SoDetail* detail = pp->getDetail();
         if (detail && detail->getTypeId() == SoPointDetail::getClassTypeId()) {
@@ -1017,7 +1021,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     }
 
                     // Double click events variables
-                    float dci = (float)QApplication::doubleClickInterval() / 1000.0f;
+                    float dci = (float)QApplication::doubleClickInterval() / 1000.0F;
 
                     if (done
                         && SbVec2f(cursorPos - DoubleClick::prvClickPos).length() < dblClickRadius
@@ -1040,8 +1044,9 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                         DoubleClick::prvClickPos = cursorPos;
                         DoubleClick::prvCursorPos = cursorPos;
                         DoubleClick::newCursorPos = cursorPos;
-                        if (!done)
+                        if (!done) {
                             setSketchMode(STATUS_SKETCH_StartRubberBand);
+                        }
                     }
 
                     return done;
@@ -1108,7 +1113,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     setSketchMode(STATUS_NONE);
                     return true;
                 }
-                case STATUS_SELECT_Constraint:
+                case STATUS_SELECT_Constraint: {
                     if (pp) {
                         auto sels = preselection.PreselectConstraintSet;
                         for (int id : sels) {
@@ -1120,11 +1125,14 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     }
                     setSketchMode(STATUS_NONE);
                     return true;
-                case STATUS_SKETCH_Drag:
-                    commitDragMove(x, y);
+                }
+                case STATUS_SKETCH_Drag: {
+                    Base::Vector2d snappedPos = snapHandle->compute();
+                    commitDragMove(snappedPos.x, snappedPos.y);
                     setSketchMode(STATUS_NONE);
                     return true;
-                case STATUS_SKETCH_DragConstraint:
+                }
+                case STATUS_SKETCH_DragConstraint: {
                     if (!drag.DragConstraintSet.empty()) {
                         auto idset = drag.DragConstraintSet;
                         // restore the old positions before opening the transaction and setting the new positions
@@ -1134,9 +1142,13 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
 
                         getDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Drag Constraint"));
                         std::vector<Sketcher::Constraint*> constraints = getConstraints();
+
+                        // get snapped position
+                        Base::Vector2d snappedPos = snapHandle->compute();
+
                         for (int id : idset) {
                             Sketcher::Constraint* constr = constraints[id]->clone();
-                            moveConstraint(constr, id, Base::Vector2d(x, y));
+                            moveConstraint(constr, id, snappedPos);
                             constraints[id] = constr;
                         }
 
@@ -1150,6 +1162,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     }
                     setSketchMode(STATUS_NONE);
                     return true;
+                }
                 case STATUS_SKETCH_StartRubberBand:// a single click happened, so clear selection
                                                    // unless user hold control.
                     if (!(QApplication::keyboardModifiers() & Qt::ControlModifier)) {
@@ -1435,8 +1448,9 @@ bool ViewProviderSketch::mouseMove(const SbVec2s& cursorPos, Gui::View3DInventor
         }
     }
 
-    if (!isInEditMode())
+    if (!isInEditMode()) {
         return false;
+    }
 
     // ignore small moves after selection
     switch (Mode) {
@@ -1446,8 +1460,9 @@ bool ViewProviderSketch::mouseMove(const SbVec2s& cursorPos, Gui::View3DInventor
         case STATUS_SKETCH_StartRubberBand:
             short dx, dy;
             (cursorPos - DoubleClick::prvCursorPos).getValue(dx, dy);
-            if (std::abs(dx) < dragIgnoredDistance && std::abs(dy) < dragIgnoredDistance)
+            if (std::abs(dx) < dragIgnoredDistance && std::abs(dy) < dragIgnoredDistance) {
                 return false;
+            }
         default:
             break;
     }
@@ -1589,7 +1604,7 @@ void ViewProviderSketch::initDragging(int geoId, Sketcher::PointPos pos, Gui::Vi
 
     drag.reset();
     setSketchMode(STATUS_SKETCH_Drag);
-    drag.Dragged.push_back(GeoElementId(geoId, pos));
+    drag.Dragged.emplace_back(geoId, pos);
 
     // Adding selected geos that should be dragged as well.
     for (auto& geoIdi : selection.SelCurvSet) {
@@ -1608,12 +1623,12 @@ void ViewProviderSketch::initDragging(int geoId, Sketcher::PointPos pos, Gui::Vi
             // For group dragging, we skip the internal geos.
             const Part::Geometry* geo = getSketchObject()->getGeometry(geoId);
             if (!GeometryFacade::isInternalAligned(geo)) {
-                drag.Dragged.push_back(GeoElementId(geoIdi));
+                drag.Dragged.emplace_back(geoIdi);
             }
         }
     }
     for (auto& pointId : selection.SelPointSet) {
-        int geoIdi;
+        int geoIdi = 0;
         Sketcher::PointPos posi;
         getSketchObject()->getGeoVertexIndex(pointId, geoIdi, posi);
         if (geoIdi < 0) {
@@ -1630,7 +1645,7 @@ void ViewProviderSketch::initDragging(int geoId, Sketcher::PointPos pos, Gui::Vi
             }
         }
         if (add) {
-            drag.Dragged.push_back(GeoElementId(geoIdi, posi));
+            drag.Dragged.emplace_back(geoIdi, posi);
         }
     }
 
@@ -1640,9 +1655,14 @@ void ViewProviderSketch::initDragging(int geoId, Sketcher::PointPos pos, Gui::Vi
         // Calculate the click position and use it as the initial point
         SbLine line2;
         getProjectingLine(DoubleClick::prvCursorPos, viewer, line2);
-        getCoordsOnSketchPlane(
-            line2.getPosition(), line2.getDirection(), drag.xInit, drag.yInit);
-        snapManager->snap(Base::Vector2d(drag.xInit, drag.yInit), SnapType::All);
+
+        double x, y;
+        getCoordsOnSketchPlane(line2.getPosition(), line2.getDirection(), x, y);
+
+        auto snapHandle = std::make_unique<SnapManager::SnapHandle>(snapManager.get(), Base::Vector2d(x, y));
+        Base::Vector2d snappedPos = snapHandle->compute();
+        drag.xInit = snappedPos.x;
+        drag.yInit = snappedPos.y;
     };
 
     if (drag.Dragged.size() == 1 && pos == Sketcher::PointPos::none) {
@@ -3123,22 +3143,54 @@ void ViewProviderSketch::drawEditMarkers(const std::vector<Base::Vector2d>& Edit
 }
 
 void ViewProviderSketch::updateData(const App::Property* prop) {
-    if (std::string(prop->getName()) != "ShapeMaterial") {
-        // We don't want material to override the colors of sketches.
-        ViewProvider2DObject::updateData(prop);
-    }
-
     if (prop == &getSketchObject()->InternalShape) {
         const auto& shape = getSketchObject()->InternalShape.getValue();
         setupCoinGeometry(shape,
-                          pcSketchFaces,
-                          Deviation.getValue(),
-                          AngularDeflection.getValue());
+                pcSketchFaces,
+                Deviation.getValue(),
+                AngularDeflection.getValue());
     }
 
     if (prop != &getSketchObject()->Constraints) {
         signalElementsChanged();
     }
+
+    // clang-format on
+    // update placement changes while in edit mode
+    if (isInEditMode() && prop) {
+        // check if the changed property is `placement` or `attachmentoffset`
+        if (strcmp(prop->getName(), "Placement") == 0
+            || strcmp(prop->getName(), "AttachmentOffset") == 0) {
+
+#ifdef FC_DEBUG
+            Base::Console().warning("updating editing transform!\n");
+#endif
+            // recalculate the placement matrix
+            Sketcher::SketchObject* sketchObj = getSketchObject();
+            if (sketchObj) {
+                // use globalPlacement for both attached and unattached sketches
+                Base::Placement plm = sketchObj->Placement.getValue();
+
+#ifdef FC_DEBUG
+                // log what is actually being set
+                Base::Console().warning(
+                    "Placement: pos=(%f,%f,%f)\n",
+                    plm.getPosition().x,
+                    plm.getPosition().y,
+                    plm.getPosition().z
+                );
+#endif
+
+                // update the document's editing transform
+                getDocument()->setEditingTransform(plm.toMatrix());
+            }
+        }
+    }
+    if (std::string(prop->getName()) != "ShapeMaterial") {
+        // We don't want material to override the colors of sketches.
+        ViewProvider2DObject::updateData(prop);
+    }
+    // clang-format off
 }
 
 void ViewProviderSketch::slotSolverUpdate()

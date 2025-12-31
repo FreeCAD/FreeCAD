@@ -74,7 +74,7 @@ public:
     }
 
     // Return a placement for the viewprovider, just use the first element for now
-    Base::Placement getPlacement() override;
+    Base::Placement getPlacement() const override;
     // Return a point on curve for the viewprovider
     Base::Vector3d getPointOnCurve() const;
 

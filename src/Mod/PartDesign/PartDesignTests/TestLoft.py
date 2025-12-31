@@ -252,7 +252,7 @@ class TestLoft(unittest.TestCase):
         pad.Type = 0
         pad.UpToFace = None
         pad.Reversed = False
-        pad.Midplane = 0
+        pad.SideType = "One side"
         pad.Offset = 0
         cone.Visibility = True
         self.Doc.recompute()

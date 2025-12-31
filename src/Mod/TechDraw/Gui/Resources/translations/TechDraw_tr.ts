@@ -336,7 +336,7 @@
     <message>
       <location filename="../../Command.cpp" line="1009"/>
       <source>Detail View</source>
-      <translation type="unfinished">Detail View</translation>
+      <translation>Detaylı Görünüm</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1010"/>
@@ -815,7 +815,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1573"/>
       <source>Inserts a sequence of aligned vertical dimensions to at least three selected vertices, where the first two define the direction</source>
-      <translation type="unfinished">Inserts a sequence of aligned vertical dimensions to at least three selected vertices, where the first two define the direction</translation>
+      <translation>Seçilen en az üç köşeye, ilk ikisi yönü tanımlayan, hizalanmış dikey boyutlardan oluşan bir dizi ekler</translation>
     </message>
   </context>
   <context>
@@ -4882,7 +4882,7 @@ when hatching a face with a PAT pattern</source>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="91"/>
       <source>Draws the section annotation on the source view. Otherwise, no section line, arrows or symbol will be shown in the source view.</source>
-      <translation type="unfinished">Draws the section annotation on the source view. Otherwise, no section line, arrows or symbol will be shown in the source view.</translation>
+      <translation>Kaynak görünümde kesit açıklamasını çizer. Aksi takdirde, kaynak görünümde hiçbir kesit çizgisi, ok veya sembol gösterilmez.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="94"/>

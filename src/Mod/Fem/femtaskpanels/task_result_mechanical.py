@@ -256,8 +256,8 @@ class _TaskPanel:
 
             df = FreeCAD.FEM_dialog["disp_factor"]
             dfm = FreeCAD.FEM_dialog["disp_factor_max"]
-            # self.result_widget.hsb_displacement_factor.setMaximum(dfm)
-            # self.result_widget.hsb_displacement_factor.setValue(df)
+            self.result_widget.hsb_displacement_factor.setMaximum(dfm)
+            self.result_widget.hsb_displacement_factor.setValue(df)
             self.result_widget.sb_displacement_factor_max.setValue(dfm)
             self.result_widget.sb_displacement_factor.setValue(df)
             # animate

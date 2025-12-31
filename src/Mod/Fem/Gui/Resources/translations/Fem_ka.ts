@@ -1428,7 +1428,7 @@ adding an analysis container</source>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="97"/>
       <source>Silent</source>
-      <translation type="unfinished">Silent</translation>
+      <translation>ჩუმი</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="98"/>
@@ -1443,7 +1443,7 @@ adding an analysis container</source>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="100"/>
       <source>Direct</source>
-      <translation type="unfinished">Direct</translation>
+      <translation>პირდაპირი</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="101"/>
@@ -1458,7 +1458,7 @@ adding an analysis container</source>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="103"/>
       <source>Debug</source>
-      <translation type="unfinished">Debug</translation>
+      <translation>გამართვა</translation>
     </message>
   </context>
   <context>

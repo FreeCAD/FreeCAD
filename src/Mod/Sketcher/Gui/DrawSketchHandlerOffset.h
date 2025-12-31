@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Boyer Pierre-Louis <pierrelouis.boyer@gmail.com>   *
  *                                                                         *
@@ -270,7 +272,7 @@ private:
         }
 
         // Copying shape to fix strange orientation behavior, OCC7.0.0. See bug #2699
-        //  http://www.freecadweb.org/tracker/view.php?id=2699
+        //  http://www.freecad.org/tracker/view.php?id=2699
         offsetShape = BRepBuilderAPI_Copy(offsetShape).Shape();
         return offsetShape;
     }
@@ -298,7 +300,7 @@ private:
         return line;
     }
 
-    Part::Geometry* curveToCircleOrArc(BRepAdaptor_Curve curve, const TopoDS_Edge& edge)
+    Part::Geometry* curveToCircleOrArc(BRepAdaptor_Curve curve, const TopoDS_Edge& /*edge*/)
     {
         gp_Circ circle = curve.Circle();
         gp_Pnt cnt = circle.Location();
@@ -330,7 +332,7 @@ private:
         }
     }
 
-    Part::Geometry* curveToEllipseOrArc(BRepAdaptor_Curve curve, const TopoDS_Edge& edge)
+    Part::Geometry* curveToEllipseOrArc(BRepAdaptor_Curve curve, const TopoDS_Edge& /*edge*/)
     {
         gp_Elips ellipse = curve.Ellipse();
         gp_Pnt beg = curve.Value(curve.FirstParameter());

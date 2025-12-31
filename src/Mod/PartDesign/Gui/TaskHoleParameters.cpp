@@ -183,7 +183,7 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
     ui->UpdateView->setVisible(isThreaded && isModeled);
 
     ui->Depth->setEnabled(depthIsDimension);
-    ui->ThreadDepthWidget->setVisible(isThreaded && isModeled);
+    ui->ThreadDepthWidget->setVisible(isThreaded);
 
     ui->ThreadDepthDimensionWidget->setVisible(
         std::string(pcHole->ThreadDepthType.getValueAsString()) == "Dimension"
@@ -290,6 +290,9 @@ void TaskHoleParameters::holeTypeChanged(int index)
     pcHole->Threaded.setValue(isThreaded);
     pcHole->ModelThread.setValue(isModeled);
 
+    ui->ThreadFit->setHidden(isThreaded);
+    ui->labelThreadClearance->setHidden(isThreaded);
+
     ui->ThreadGroupBox->setVisible(isThreaded);
     // update view not active if modeling threads
     // this will also ensure that the feature is recomputed.
@@ -300,7 +303,7 @@ void TaskHoleParameters::holeTypeChanged(int index)
     ui->CustomClearanceWidget->setVisible(isModeled);
     ui->CustomThreadClearance->setEnabled(pcHole->UseCustomThreadClearance.getValue());
 
-    ui->ThreadDepthWidget->setVisible(isThreaded && isModeled);
+    ui->ThreadDepthWidget->setVisible(isThreaded);
     ui->ThreadDepthDimensionWidget->setVisible(
         std::string(pcHole->ThreadDepthType.getValueAsString()) == "Dimension"
     );
@@ -845,16 +848,18 @@ void TaskHoleParameters::changedObject(const App::Document&, const App::Property
             hole->ThreadSize.getEnumVector(),
             hole->ThreadSize.getValue()
         );
-        updateComboBoxItems(
-            ui->HoleCutType,
-            hole->HoleCutType.getEnumVector(),
-            hole->HoleCutType.getValue()
-        );
-        updateComboBoxItems(
-            ui->ThreadClass,
-            hole->ThreadClass.getEnumVector(),
-            hole->ThreadClass.getValue()
-        );
+
+        std::vector<std::string> translatedCutTypes;
+        for (const auto& it : hole->HoleCutType.getEnumVector()) {
+            translatedCutTypes.push_back(tr(it.c_str()).toStdString());
+        }
+        updateComboBoxItems(ui->HoleCutType, translatedCutTypes, hole->HoleCutType.getValue());
+
+        std::vector<std::string> translatedClassTypes;
+        for (const auto& it : hole->ThreadClass.getEnumVector()) {
+            translatedClassTypes.push_back(tr(it.c_str()).toStdString());
+        }
+        updateComboBoxItems(ui->ThreadClass, translatedClassTypes, hole->ThreadClass.getValue());
     }
     else if (&Prop == &hole->ThreadSize) {
         ui->ThreadSize->setEnabled(true);

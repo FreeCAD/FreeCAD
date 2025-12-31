@@ -1456,7 +1456,7 @@ If not checked, it depends on the option "Enable backlight color"
 (preferences section Display -&gt; 3D View). Either the backlight color
 will be used or black.</source>
       <translation>A felület alsó oldala ugyanúgy lesz megjelenítve, mint a felső oldal.
-Ha nincs bejelölve, a megjelenítés a „Hátvilágítás színánek engedélyezése” beállítástól függ
+Ha nincs bejelölve, a megjelenítés a „Hátvilágítás színének engedélyezése” beállítástól függ
 (lásd a testreszabás szakasz Beállítások → Megjelenítés → 3D nézet). A hátvilágítás színét használja
 vagy fekete lesz.</translation>
     </message>
@@ -1567,7 +1567,7 @@ Ha a felület szöge ≥ gyűrődésszögét, a feület árnyékolást használj
     <message>
       <location filename="../../RemeshGmsh.cpp" line="107"/>
       <source>Quasi-structured quad</source>
-      <translation>Kvázistrukturált négyszög</translation>
+      <translation>Kvázi-strukturált négyszög</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="201"/>
@@ -1578,7 +1578,7 @@ Ha a felület szöge ≥ gyűrődésszögét, a feület árnyékolást használj
     <message>
       <location filename="../../RemeshGmsh.cpp" line="247"/>
       <source>Running Gmsh…</source>
-      <translation>Futó gmsh…</translation>
+      <translation>Futó Gmsh…</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="270"/>
@@ -2323,12 +2323,12 @@ Kérjük, látogasson el ide: https://openscad.org a telepítéshez.</translatio
     <message>
       <location filename="../../Workbench.cpp" line="81"/>
       <source>Maximum bound</source>
-      <translation>Maimális határérték</translation>
+      <translation>Maximális határérték</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="88"/>
       <source>Mesh Info Box</source>
-      <translation>Háló info mező</translation>
+      <translation>Háló infó mező</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="89"/>

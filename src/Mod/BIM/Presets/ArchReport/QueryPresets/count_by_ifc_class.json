@@ -1,0 +1,5 @@
+{
+    "name": "Count by IfcType",
+    "description": "Counts all objects, grouped by their IfcType.",
+    "query": "SELECT IfcType, COUNT(*) FROM document GROUP BY IfcType"
+}

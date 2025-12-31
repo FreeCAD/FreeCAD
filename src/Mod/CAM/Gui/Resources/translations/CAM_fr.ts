@@ -1302,7 +1302,7 @@ activées seront en violet et les extensions non activées en jaune.</translatio
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="101"/>
       <source>Tree of existing edges and their potential extensions</source>
-      <translation>Arborescence des bords existants et leurs extensions potentielles</translation>
+      <translation>Arborescence des arêtes existantes et leurs extensions potentielles</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="126"/>

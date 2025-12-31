@@ -4791,8 +4791,8 @@ Augmenter la limite si nécessaire.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="34"/>
       <source>If this box is checked, double-clicking on a page in the tree will automatically switch to TechDraw and the page will be made visible.</source>
-      <translation>Si cette option est cochée, double-cliquer sur une feuille dans l'arborescence
-fera passer automatiquement à l'atelier TechDraw et la feuille sera rendue visible.</translation>
+      <translation>Si cette option est cochée, double-cliquer sur une feuille dans l'arborescence fera passer automatiquement à l'atelier TechDraw et la feuille
+sera rendue visible.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="151"/>

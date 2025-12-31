@@ -244,7 +244,7 @@ Cette commande ne fonctionne qu'avec un objet Mesh, et non avec une face ou une 
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="87"/>
       <source>Spline Approximation</source>
-      <translation>Approximation de spline</translation>
+      <translation>Approximation par splines</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="96"/>
@@ -264,7 +264,7 @@ Cette commande ne fonctionne qu'avec un objet Mesh, et non avec une face ou une 
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="153"/>
       <source>Start</source>
-      <translation>Début</translation>
+      <translation>Démarrer</translation>
     </message>
   </context>
   <context>

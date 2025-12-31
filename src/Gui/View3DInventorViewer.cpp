@@ -1776,6 +1776,8 @@ void View3DInventorViewer::savePicture(int width, int height, int sample, const 
     }
 
     root->addChild(getHeadlight());
+    root->addChild(getBacklight());
+    root->addChild(getFillLight());
     root->addChild(camera);
     auto gl = new SoCallback;
     gl->setCallback(setGLWidgetCB, this->getGLWidget());

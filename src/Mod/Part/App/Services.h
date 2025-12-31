@@ -42,6 +42,7 @@ class PartCenterOfMass final: public App::CenterOfMassProvider
 {
 public:
     std::optional<Base::Vector3d> ofDocumentObject(App::DocumentObject* object) const override;
+    bool supports(App::DocumentObject* object) const override;
 };
 
 #endif  // PART_SERVICES_H

@@ -387,7 +387,7 @@ def splitArcs(path, deflection=None):
     if not isinstance(path, Path.Path):
         raise TypeError("path must be a Path object")
 
-    if deflection is None:
+    if not deflection:
         prefGrp = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/CAM")
         deflection = prefGrp.GetFloat("LibAreaCurveAccuracy", 0.01)
 

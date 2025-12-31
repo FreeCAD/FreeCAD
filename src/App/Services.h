@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+
 /****************************************************************************
  *                                                                          *
  *   Copyright (c) 2024 Kacper Donat <kacper@kadet.net>                     *
@@ -55,6 +56,7 @@ class CenterOfMassProvider
 public:
     virtual ~CenterOfMassProvider() = default;
 
+    virtual bool supports(DocumentObject* object) const = 0;
     virtual std::optional<Base::Vector3d> ofDocumentObject(DocumentObject* object) const = 0;
 };
 
@@ -66,6 +68,7 @@ class NullCenterOfMass final : public CenterOfMassProvider
 {
 public:
     std::optional<Base::Vector3d> ofDocumentObject(DocumentObject* object) const override;
+    bool supports(DocumentObject* object) const override;
 };
 
 }

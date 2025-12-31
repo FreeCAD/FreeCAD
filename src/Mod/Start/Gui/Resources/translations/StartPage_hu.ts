@@ -16,12 +16,12 @@
     <message>
       <location filename="../../FirstStartWidget.cpp" line="98"/>
       <source>Set your basic configuration options below.</source>
-      <translation type="unfinished">Set your basic configuration options below.</translation>
+      <translation>Alább állítsa be az alapbeállításokat.</translation>
     </message>
     <message>
       <location filename="../../FirstStartWidget.cpp" line="99"/>
       <source>These options (and many more) can be changed later in the preferences.</source>
-      <translation type="unfinished">These options (and many more) can be changed later in the preferences.</translation>
+      <translation>Ezek a lehetőségek (és még sok más) később módosíthatók a testreszabásokban.</translation>
     </message>
   </context>
   <context>
@@ -52,12 +52,12 @@
     <message>
       <location filename="../../Manipulator.cpp" line="46"/>
       <source>&amp;Start Page</source>
-      <translation>&amp;Kezdő oldal</translation>
+      <translation>Kezdő oldal</translation>
     </message>
     <message>
       <location filename="../../Manipulator.cpp" line="47"/>
       <source>Displays the start page</source>
-      <translation type="unfinished">Displays the start page</translation>
+      <translation>Megjeleníti a kezdőlapot</translation>
     </message>
   </context>
   <context>
@@ -80,7 +80,7 @@
     <message>
       <location filename="../../StartView.cpp" line="224"/>
       <source>Creates a 2D Draft document</source>
-      <translation type="unfinished">Creates a 2D Draft document</translation>
+      <translation>Létrehoz egy 2D tervrajz dokumentumot</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="227"/>
@@ -90,37 +90,37 @@
     <message>
       <location filename="../../StartView.cpp" line="204"/>
       <source>Empty File</source>
-      <translation type="unfinished">Empty File</translation>
+      <translation>Üres fájl</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="205"/>
       <source>Creates a new empty FreeCAD file</source>
-      <translation type="unfinished">Creates a new empty FreeCAD file</translation>
+      <translation>Létrehoz egy új FreeCAD fájlt</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="210"/>
       <source>Opens an existing CAD file or 3D model</source>
-      <translation type="unfinished">Opens an existing CAD file or 3D model</translation>
+      <translation>Megnyit egy meglévő CAD fájlt vagy 3D modellt</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="214"/>
       <source>Parametric Body</source>
-      <translation type="unfinished">Parametric Body</translation>
+      <translation>Változós test</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="215"/>
       <source>Creates a body with the Part Design workbench</source>
-      <translation type="unfinished">Creates a body with the Part Design workbench</translation>
+      <translation>Létrehoz egy testet az alkatrész tervezés munkafelülettel</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="220"/>
       <source>Creates an assembly project</source>
-      <translation type="unfinished">Creates an assembly project</translation>
+      <translation>Létrehoz egy összeszerelési tervet</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="228"/>
       <source>Creates an architectural project</source>
-      <translation type="unfinished">Creates an architectural project</translation>
+      <translation>Létrehoz egy építészeti tervet</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="503"/>
@@ -140,12 +140,12 @@
     <message>
       <location filename="../../StartView.cpp" line="521"/>
       <source>Open First Start Setup</source>
-      <translation type="unfinished">Open First Start Setup</translation>
+      <translation>Első indítási beállítás megnyitása</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="522"/>
       <source>Do not show this Start page again (start with blank screen)</source>
-      <translation type="unfinished">Do not show this Start page again (start with blank screen)</translation>
+      <translation>Ne jelenítse meg újra ezt a kezdőlapot (üres képernyővel kezdje)</translation>
     </message>
   </context>
   <context>
@@ -212,40 +212,40 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="20"/>
       <source>Contents</source>
-      <translation type="unfinished">Contents</translation>
+      <translation>Tartalom</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="26"/>
       <location filename="../../DlgStartPreferences.ui" line="86"/>
       <source>Show only FreeCAD files in additional folder</source>
-      <translation type="unfinished">Show only FreeCAD files in additional folder</translation>
+      <translation>Csak a FreeCAD fájlok megjelenítése a további mappában</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="33"/>
       <source>Show examples folder contents</source>
-      <translation type="unfinished">Show examples folder contents</translation>
+      <translation>Mutassa a példák mappa tartalmát</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="40"/>
       <source>Show additional folder contents</source>
-      <translation type="unfinished">Show additional folder contents</translation>
+      <translation>Mutassa a kiegészítő mappák tartalmát</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="47"/>
       <source>An optional custom folder to be displayed on the Start page.
 Multiple folders can be added using ";;" to separate paths.</source>
-      <translation type="unfinished">An optional custom folder to be displayed on the Start page.
-Multiple folders can be added using ";;" to separate paths.</translation>
+      <translation>Egy választható egyéni mappa, amely megjelenik a Start oldalon.
+Több mappa is hozzáadható a mappák elérési útjainak pontosvesszővel ";;" történő elválasztásával.</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="64"/>
       <source>Shows example files on the start page</source>
-      <translation type="unfinished">Shows example files on the start page</translation>
+      <translation>Példafájlokat mutat a kezdőoldalon</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="114"/>
       <source>The start page is closed automatically when FreeCAD launches</source>
-      <translation type="unfinished">The start page is closed automatically when FreeCAD launches</translation>
+      <translation>A kezdőlap automatikusan bezáródik, amikor a FreeCAD elindul</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="108"/>
@@ -255,7 +255,7 @@ Multiple folders can be added using ";;" to separate paths.</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="133"/>
       <source>Close start page after loading</source>
-      <translation type="unfinished">Close start page after loading</translation>
+      <translation>Kezdő oldal bezárása a betöltés után</translation>
     </message>
   </context>
   <context>

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /****************************************************************************
  *   Copyright (c) 2017 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
  *                                                                          *
@@ -2671,7 +2673,7 @@ Base::Placement Link::getPlacementOf(const std::string& sub, DocumentObject* tar
         }
 
         std::vector<Base::Placement> plcs = PlacementList.getValues();
-        if (plcs.size() <= i) {
+        if (plcs.size() <= static_cast<size_t>(i)) {
             return plc;
         }
         plc = plc * plcs[i];

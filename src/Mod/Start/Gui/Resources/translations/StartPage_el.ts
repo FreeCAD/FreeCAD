@@ -16,12 +16,12 @@
     <message>
       <location filename="../../FirstStartWidget.cpp" line="98"/>
       <source>Set your basic configuration options below.</source>
-      <translation type="unfinished">Set your basic configuration options below.</translation>
+      <translation>Ορίστε τις βασικές επιλογές ρύθμισης παραμέτρων σας παρακάτω.</translation>
     </message>
     <message>
       <location filename="../../FirstStartWidget.cpp" line="99"/>
       <source>These options (and many more) can be changed later in the preferences.</source>
-      <translation type="unfinished">These options (and many more) can be changed later in the preferences.</translation>
+      <translation>Αυτές οι επιλογές (και πολλές άλλες) μπορούν να αλλάξουν αργότερα από την καρτέλα Προτιμήσεις.</translation>
     </message>
   </context>
   <context>
@@ -57,7 +57,7 @@
     <message>
       <location filename="../../Manipulator.cpp" line="47"/>
       <source>Displays the start page</source>
-      <translation type="unfinished">Displays the start page</translation>
+      <translation>Εμφανίζει την Αρχική Σελίδα</translation>
     </message>
   </context>
   <context>
@@ -80,7 +80,7 @@
     <message>
       <location filename="../../StartView.cpp" line="224"/>
       <source>Creates a 2D Draft document</source>
-      <translation type="unfinished">Creates a 2D Draft document</translation>
+      <translation>Δημιουργεί ένα δισδιάστατο (2D) προσχέδιο εγγράφου</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="227"/>
@@ -90,37 +90,37 @@
     <message>
       <location filename="../../StartView.cpp" line="204"/>
       <source>Empty File</source>
-      <translation type="unfinished">Empty File</translation>
+      <translation>Άδειο Αρχείο</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="205"/>
       <source>Creates a new empty FreeCAD file</source>
-      <translation type="unfinished">Creates a new empty FreeCAD file</translation>
+      <translation>Δημιουργήστε ένα κενό αρχείο FreeCAD</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="210"/>
       <source>Opens an existing CAD file or 3D model</source>
-      <translation type="unfinished">Opens an existing CAD file or 3D model</translation>
+      <translation>Άνοιγμα ενός υπάρχοντος αρχείου CAD ή 3D μοντέλου</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="214"/>
       <source>Parametric Body</source>
-      <translation type="unfinished">Parametric Body</translation>
+      <translation>Παραμετρικό Σώμα</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="215"/>
       <source>Creates a body with the Part Design workbench</source>
-      <translation type="unfinished">Creates a body with the Part Design workbench</translation>
+      <translation>Δημιουργήστε ένα τμήμα με τον πάγκο εργασίας Σχεδίου Εξαρτήματος</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="220"/>
       <source>Creates an assembly project</source>
-      <translation type="unfinished">Creates an assembly project</translation>
+      <translation>Δημιουργία έργου συναρμολόγησης</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="228"/>
       <source>Creates an architectural project</source>
-      <translation type="unfinished">Creates an architectural project</translation>
+      <translation>Δημιουργήστε ένα έργο αρχιτεκτονικής</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="503"/>
@@ -140,12 +140,12 @@
     <message>
       <location filename="../../StartView.cpp" line="521"/>
       <source>Open First Start Setup</source>
-      <translation type="unfinished">Open First Start Setup</translation>
+      <translation>Άνοιγμα Ρύθμισης Πρώτης Εκκίνησης</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="522"/>
       <source>Do not show this Start page again (start with blank screen)</source>
-      <translation type="unfinished">Do not show this Start page again (start with blank screen)</translation>
+      <translation>Να μην εμφανιστεί ξανά αυτή η αρχική σελίδα (έναρξη με κενή οθόνη)</translation>
     </message>
   </context>
   <context>
@@ -234,18 +234,18 @@
       <location filename="../../DlgStartPreferences.ui" line="47"/>
       <source>An optional custom folder to be displayed on the Start page.
 Multiple folders can be added using ";;" to separate paths.</source>
-      <translation type="unfinished">An optional custom folder to be displayed on the Start page.
-Multiple folders can be added using ";;" to separate paths.</translation>
+      <translation>Ένας προαιρετικός προσαρμοσμένος φάκελος που θα εμφανιστεί στη σελίδα έναρξης.
+Πολλαπλοί φάκελοι μπορούν να προστεθούν χρησιμοποιώντας ";;" για να διαχωρίσετε διαδρομές.</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="64"/>
       <source>Shows example files on the start page</source>
-      <translation type="unfinished">Shows example files on the start page</translation>
+      <translation>Εμφάνιση παραδειγμάτων αρχείων στην αρχική σελίδα</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="114"/>
       <source>The start page is closed automatically when FreeCAD launches</source>
-      <translation type="unfinished">The start page is closed automatically when FreeCAD launches</translation>
+      <translation>Η αρχική σελίδα κλείνει αυτόματα όταν ξεκινήσει το FreeCAD</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="108"/>

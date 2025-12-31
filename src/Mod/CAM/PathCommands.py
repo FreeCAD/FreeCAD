@@ -26,6 +26,8 @@ import Part
 import Path
 import traceback
 
+import Path.Dressup.Utils as PathDressup
+
 from PathScripts.PathUtils import loopdetect
 from PathScripts.PathUtils import wiredetect
 from PathScripts.PathUtils import horizontalEdgeLoop
@@ -38,10 +40,8 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 if FreeCAD.GuiUp:
     import FreeCADGui
-    from PySide import QtCore
-    from PySide import QtGui
 
-# translate = FreeCAD.Qt.translate
+translate = FreeCAD.Qt.translate
 
 __title__ = "FreeCAD Path Commands"
 __author__ = "sliptonic"
@@ -143,13 +143,7 @@ class _CommandSelectLoop:
                         FreeCADGui.Selection.addSelection(obj, f"Edge{objEdges.index(eo) + 1}")
             return
 
-        # Final fallback
-        if FreeCAD.GuiUp:
-            QtGui.QMessageBox.information(
-                None,
-                QT_TRANSLATE_NOOP("CAM_SelectLoop", "Feature Completion"),
-                QT_TRANSLATE_NOOP("CAM_SelectLoop", "Closed loop detection failed."),
-            )
+        Path.Log.warning(translate("CAM_SelectLoop", "Closed loop detection failed."))
 
     def formsPartOfALoop(self, obj, sub, names):
         try:
@@ -189,6 +183,14 @@ class _ToggleOperation:
         if not selection:
             return False
 
+        if len(selection) == 1:
+            # allows to toggle all operations in Job
+            sel = selection[0]
+            if hasattr(sel, "Group") and sel.Name.startswith("Job"):
+                return True
+            if hasattr(sel, "Group") and sel.Name.startswith("Operations"):
+                return True
+
         for sel in selection:
             baseOp = Path.Dressup.Utils.baseOp(sel)
             if not hasattr(baseOp, "Active"):
@@ -198,9 +200,32 @@ class _ToggleOperation:
 
     def Activated(self):
         selection = FreeCADGui.Selection.getSelection()
-        for sel in selection:
-            baseOp = Path.Dressup.Utils.baseOp(sel)
-            baseOp.Active = not baseOp.Active
+        if (len(selection) == 1 and hasattr(selection[0], "Group")) and (
+            selection[0].Name.startswith("Job") or selection[0].Name.startswith("Operations")
+        ):
+            sel = selection[0]
+            # process all Operations in Job
+            if sel.Name.startswith("Job"):
+                selection = sel.Operations.Group
+            elif sel.Name.startswith("Operations"):
+                selection = sel.Group
+
+            states = [Path.Dressup.Utils.baseOp(sel).Active for sel in selection]
+            if all(states) or not any(states):
+                # all operations in one state (active or inactive) - toggle state
+                for sel in selection:
+                    baseOp = Path.Dressup.Utils.baseOp(sel)
+                    baseOp.Active = not baseOp.Active
+            else:
+                # operations in different states - set Active state
+                for sel in selection:
+                    baseOp = Path.Dressup.Utils.baseOp(sel)
+                    baseOp.Active = True
+
+        else:
+            for sel in selection:
+                baseOp = Path.Dressup.Utils.baseOp(sel)
+                baseOp.Active = not baseOp.Active
 
         FreeCAD.ActiveDocument.recompute()
 
@@ -221,20 +246,35 @@ class _CopyOperation:
         }
 
     def IsActive(self):
-        if bool(FreeCADGui.Selection.getSelection()) is False:
+        selection = FreeCADGui.Selection.getSelection()
+        if not selection:
             return False
-        try:
-            for sel in FreeCADGui.Selection.getSelectionEx():
-                if not isinstance(sel.Object.Proxy, Path.Op.Base.ObjectOp):
-                    return False
-            return True
-        except (IndexError, AttributeError):
+        if any([not hasattr(sel, "Path") for sel in selection]):
+            return False
+        if any([sel.Name.startswith("Job") for sel in selection]):
             return False
 
+        return True
+
     def Activated(self):
-        for sel in FreeCADGui.Selection.getSelectionEx():
-            jobname = findParentJob(sel.Object).Name
-            addToJob(FreeCAD.ActiveDocument.copyObject(sel.Object, False), jobname)
+        selection = FreeCADGui.Selection.getSelection()
+        for sel in selection:
+            job = findParentJob(sel)
+            prevOp = PathDressup.baseOp(sel)
+            prevOpCopy = FreeCAD.ActiveDocument.copyObject(prevOp, False)
+            while prevOp != sel:
+                # recursive processing Dressup
+                op = sel
+                while op.Base != prevOp:
+                    # get higher level operation
+                    op = op.Base
+                opCopy = FreeCAD.ActiveDocument.copyObject(op, False)
+                opCopy.Base = prevOpCopy
+                prevOpCopy = opCopy
+                prevOp = op
+
+            # add to Job top object
+            addToJob(prevOpCopy, job.Name)
 
 
 if FreeCAD.GuiUp:

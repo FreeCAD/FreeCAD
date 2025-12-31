@@ -8076,22 +8076,25 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femtools/ccxtools.py" line="405"/>
       <source>No or wrong CalculiX binary ccx</source>
-      <translation type="unfinished">No or wrong CalculiX binary ccx</translation>
+      <translation>Отсутствует или неправильный двоичный ccx CalculiX</translation>
     </message>
     <message>
       <location filename="../../../femtools/ccxtools.py" line="439"/>
       <source>FEM: wrong ccx binary</source>
-      <translation type="unfinished">FEM: wrong ccx binary</translation>
+      <translation>FEM: Некорректный двоичный файл ccx </translation>
     </message>
     <message>
       <location filename="../../../femtools/ccxtools.py" line="452"/>
       <source>FEM: CalculiX binary ccx '{}' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.</source>
-      <translation type="unfinished">FEM: CalculiX binary ccx '{}' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.</translation>
+      <translation>FEM: Двоичный код CalculiX ccx '{}' не найден.
+Укажите путь к исполняемому файлу CalculiX ccx на вкладке настроек CalculiX FEM. </translation>
     </message>
     <message>
       <location filename="../../../femtools/ccxtools.py" line="464"/>
       <source>FEM: CalculiX ccx '{}' output '{}' doesn't contain expected phrase '{}'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.</source>
-      <translation type="unfinished">FEM: CalculiX ccx '{}' output '{}' doesn't contain expected phrase '{}'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.</translation>
+      <translation>FEM: ccx Вывод CalculiX '{} '{} ' не содержит ожидаемой фразы '{}'.
+При запуске исполняемого файла ccx возникают некоторые проблемы.
+Проверьте, работает ли ccx автономно, без FreeCAD. </translation>
     </message>
   </context>
   <context>

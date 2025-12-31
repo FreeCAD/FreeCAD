@@ -4930,7 +4930,7 @@ L'angle final serà l'angle base més aquesta quantitat.</translation>
       <translation>Forma d'Etiqueta</translation>
     </message>
     <message>
-      <location filename="../../draftutils/params.py" line="506"/>
+      <location filename="../../draftutils/params.py" line="505"/>
       <source>Default</source>
       <translation>Per defecte</translation>
     </message>

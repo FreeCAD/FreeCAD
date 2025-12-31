@@ -284,7 +284,6 @@ private:
         std::set<App::DocumentObject*>& visited
     );
 
-    TaskAssemblyMessages* taskSolver;
     boost::signals2::connection connectSolverUpdate;
     boost::signals2::scoped_connection m_preTransactionConn;
 };

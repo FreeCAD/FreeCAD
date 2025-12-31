@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 #***************************************************************************
 #*   Copyright (c) 2001,2002 Jürgen Riegel <juergen.riegel@web.de>         *
 #*   Copyright (c) 2025 Frank Martínez <mnesarco at gmail dot com>         *
@@ -1012,7 +1014,7 @@ class ExtMod(Mod):
     Module based Mod (aka extension module).
 
     This kind of Mods are loaded using python module system, no direct filesystem or
-    copile/execute hacks are used.
+    compile/execute hacks are used.
 
     extension modules must be defined in namespace freecad.*, i.e. freecad.MyAddon.
     """
@@ -1474,6 +1476,7 @@ class InitPipeline:
             env_path=PathPriority.Ignore,
             sys_path=PathPriority.FallbackLast,
         )
+        self.search_paths.commit()
 
     def post(self) -> None:
         """

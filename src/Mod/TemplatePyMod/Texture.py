@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # (c) 2012 Werner Mayer LGPL
 
 import FreeCAD, FreeCADGui

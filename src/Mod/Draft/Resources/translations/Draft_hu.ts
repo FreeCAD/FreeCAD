@@ -4958,7 +4958,7 @@ A teljes szög az alap szög plusz ennek az összeg lesz.</translation>
       <translation>AlakzatSzövegből</translation>
     </message>
     <message>
-      <location filename="../../draftutils/params.py" line="506"/>
+      <location filename="../../draftutils/params.py" line="505"/>
       <source>Default</source>
       <translation>Alapértelmezett</translation>
     </message>

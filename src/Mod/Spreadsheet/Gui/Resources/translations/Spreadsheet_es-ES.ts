@@ -978,7 +978,7 @@ Por defecto: %V = %A
     <message>
       <location filename="../../DlgSettings.ui" line="76"/>
       <source>Default zoom level</source>
-      <translation type="unfinished">Default zoom level</translation>
+      <translation>Nivel de acercamiento por defecto</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="131"/>
@@ -1198,7 +1198,7 @@ Por defecto: %V = %A
     <message>
       <location filename="../../ZoomableView.cpp" line="113"/>
       <source>Zoom Level</source>
-      <translation type="unfinished">Zoom Level</translation>
+      <translation>Nivel de acercamiento</translation>
     </message>
   </context>
   <context>

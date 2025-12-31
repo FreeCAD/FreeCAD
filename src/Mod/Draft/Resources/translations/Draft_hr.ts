@@ -4983,7 +4983,7 @@ Konačni kut bit će osnovni kut plus ovaj iznos.</translation>
       <translation>Oblik Teksta</translation>
     </message>
     <message>
-      <location filename="../../draftutils/params.py" line="506"/>
+      <location filename="../../draftutils/params.py" line="505"/>
       <source>Default</source>
       <translation>Inicijalno</translation>
     </message>

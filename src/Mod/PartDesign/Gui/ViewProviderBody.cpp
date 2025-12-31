@@ -349,6 +349,21 @@ void ViewProviderBody::unifyVisualProperty(const App::Property* prop)
     }
 }
 
+std::map<std::string, Base::Color> ViewProviderBody::getElementColors(const char* element) const
+{
+    // A PartDesign Body doesn't really have element colors on its own: it's a sort of container,
+    // and its subshapes are the ones that have actual colors. If you query a body's ViewProvider
+    // for its element colors, what you are really asking for is the element colors of its tip.
+    PartDesign::Body* body = static_cast<PartDesign::Body*>(getObject());
+    if (App::DocumentObject* tip = body->Tip.getValue()) {
+        Gui::Document* guiDoc = Gui::Application::Instance->getDocument(tip->getDocument());
+        Gui::ViewProvider* vp = guiDoc->getViewProvider(tip);
+        return vp->getElementColors(element);
+    }
+    return ViewProviderPart::getElementColors(element);
+}
+
+
 void ViewProviderBody::setVisualBodyMode(bool bodymode)
 {
 
