@@ -3147,7 +3147,7 @@ void ViewProviderSketch::updateData(const App::Property* prop) {
         // We don't want material to override the colors of sketches.
         ViewProvider2DObject::updateData(prop);
     }
-    
+
     if (prop == &getSketchObject()->InternalShape) {
         const auto& shape = getSketchObject()->InternalShape.getValue();
         setupCoinGeometry(shape,
