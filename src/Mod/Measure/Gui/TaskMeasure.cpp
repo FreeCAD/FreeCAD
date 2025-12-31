@@ -379,6 +379,7 @@ void TaskMeasure::initViewObject(Measure::MeasureBase* measure)
 void TaskMeasure::closeDialog()
 {
     Gui::Control().closeDialog();
+    Gui::getMainWindow()->showMessage(QString());
 }
 
 
@@ -409,6 +410,16 @@ void TaskMeasure::ensureGroup(Measure::MeasureBase* measurement)
 void TaskMeasure::invoke()
 {
     update();
+
+    bool greedy = Gui::Selection().getSelectionStyle() == SelectionStyle::GreedySelection;
+    QString msg;
+    if (greedy) {
+        msg = tr("Select objects. Ctrl to start new measurement. Shift to invert auto-save.");
+    }
+    else {
+        msg = tr("Select objects. Ctrl to add to measurement. Shift to invert auto-save.");
+    }
+    Gui::getMainWindow()->showMessage(msg);
 }
 
 bool TaskMeasure::apply()
@@ -593,6 +604,15 @@ void TaskMeasure::newMeasurementBehaviourChanged(bool checked)
         settings.setValue(QLatin1String(taskMeasureGreedySelection), true);
     }
     settings.endGroup();
+
+    QString msg;
+    if (checked) {
+        msg = tr("Select objects. Ctrl to start new measurement. Shift to invert auto-save.");
+    }
+    else {
+        msg = tr("Select objects. Ctrl to add to measurement. Shift to invert auto-save.");
+    }
+    Gui::getMainWindow()->showMessage(msg);
 }
 
 void TaskMeasure::setModeSilent(App::MeasureType* mode)
