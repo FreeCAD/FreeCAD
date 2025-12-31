@@ -3141,6 +3141,11 @@ void ViewProviderSketch::drawEditMarkers(const std::vector<Base::Vector2d>& Edit
 }
 
 void ViewProviderSketch::updateData(const App::Property* prop) {
+    if (std::string(prop->getName()) != "ShapeMaterial") {
+        // We don't want material to override the colors of sketches.
+        ViewProvider2DObject::updateData(prop);
+    }
+
     if (prop == &getSketchObject()->InternalShape) {
         const auto& shape = getSketchObject()->InternalShape.getValue();
         setupCoinGeometry(shape,
@@ -3152,43 +3157,6 @@ void ViewProviderSketch::updateData(const App::Property* prop) {
     if (prop != &getSketchObject()->Constraints) {
         signalElementsChanged();
     }
-
-    // clang-format on
-    // update placement changes while in edit mode
-    if (isInEditMode() && prop) {
-        // check if the changed property is `placement` or `attachmentoffset`
-        if (strcmp(prop->getName(), "Placement") == 0
-            || strcmp(prop->getName(), "AttachmentOffset") == 0) {
-
-#ifdef FC_DEBUG
-            Base::Console().warning("updating editing transform!\n");
-#endif
-            // recalculate the placement matrix
-            Sketcher::SketchObject* sketchObj = getSketchObject();
-            if (sketchObj) {
-                // use globalPlacement for both attached and unattached sketches
-                Base::Placement plm = sketchObj->Placement.getValue();
-
-#ifdef FC_DEBUG
-                // log what is actually being set
-                Base::Console().warning(
-                    "Placement: pos=(%f,%f,%f)\n",
-                    plm.getPosition().x,
-                    plm.getPosition().y,
-                    plm.getPosition().z
-                );
-#endif
-
-                // update the document's editing transform
-                getDocument()->setEditingTransform(plm.toMatrix());
-            }
-        }
-    }
-    if (std::string(prop->getName()) != "ShapeMaterial") {
-        // We don't want material to override the colors of sketches.
-        ViewProvider2DObject::updateData(prop);
-    }
-    // clang-format off
 }
 
 void ViewProviderSketch::slotSolverUpdate()
@@ -3431,9 +3399,6 @@ bool ViewProviderSketch::setEdit(int ModNum)
     setGridOrientation(plm.getPosition(), plm.getRotation());
     addNodeToRoot(gridnode);
     setGridEnabled(true);
-
-    // update the documents stored transform
-    getDocument()->setEditingTransform(plm.toMatrix());
 
     // create the container for the additional edit data
     assert(!isInEditMode());
