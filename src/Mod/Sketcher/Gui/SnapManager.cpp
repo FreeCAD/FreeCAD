@@ -407,4 +407,3 @@ Base::Vector2d SketcherGui::SnapManager::SnapHandle::compute(SnapType mask)
     }
     return mgr->snap(cursorPos, mask);
 }
-
