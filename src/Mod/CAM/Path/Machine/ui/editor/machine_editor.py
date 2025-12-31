@@ -22,11 +22,12 @@
 # ***************************************************************************
 from PySide import QtGui, QtCore
 import FreeCAD
+import Path
 import json
-from typing import Optional, Dict, Any, get_type_hints, get_origin, get_args
-from dataclasses import fields, is_dataclass
+from typing import Optional, Dict, Any, get_origin, get_args
+from dataclasses import fields
 from enum import Enum
-from ...models.machine import *
+from ...models import Machine, MachineFactory, LinearAxis, RotaryAxis, Spindle
 from ....Main.Gui.Editor import CodeEditor
 from Path.Post.Processor import PostProcessorFactory
 import re
@@ -241,7 +242,7 @@ class DataclassGUIGenerator:
             )
 
             label = DataclassGUIGenerator.get_field_label(field.name)
-            layout.addRow(label + ":", widget)
+            layout.addRow(label, widget)
             widgets[field.name] = widget
 
         return group, widgets
@@ -615,34 +616,34 @@ class MachineEditorDialog(QtGui.QDialog):
 
         self.name_edit = QtGui.QLineEdit()
         self.name_edit.textChanged.connect(self._on_name_changed)
-        layout.addRow(translate("CAM_MachineEditor", "Name:"), self.name_edit)
+        layout.addRow(translate("CAM_MachineEditor", "Name"), self.name_edit)
 
         self.manufacturer_edit = QtGui.QLineEdit()
         self.manufacturer_edit.textChanged.connect(self._on_manufacturer_changed)
-        layout.addRow(translate("CAM_MachineEditor", "Manufacturer:"), self.manufacturer_edit)
+        layout.addRow(translate("CAM_MachineEditor", "Manufacturer"), self.manufacturer_edit)
 
         self.description_edit = QtGui.QLineEdit()
         self.description_edit.textChanged.connect(self._on_description_changed)
-        layout.addRow(translate("CAM_MachineEditor", "Description:"), self.description_edit)
+        layout.addRow(translate("CAM_MachineEditor", "Description"), self.description_edit)
 
         self.units_combo = QtGui.QComboBox()
         self.units_combo.addItem(translate("CAM_MachineEditor", "Metric"), "metric")
         self.units_combo.addItem(translate("CAM_MachineEditor", "Imperial"), "imperial")
         self.units_combo.currentIndexChanged.connect(self._on_units_changed)
-        layout.addRow(translate("CAM_MachineEditor", "Units:"), self.units_combo)
+        layout.addRow(translate("CAM_MachineEditor", "Units"), self.units_combo)
 
         self.type_combo = QtGui.QComboBox()
         for key, value in self.MACHINE_TYPES.items():
             self.type_combo.addItem(value["name"], key)
         self.type_combo.currentIndexChanged.connect(self._on_type_changed)
-        layout.addRow(translate("CAM_MachineEditor", "Type:"), self.type_combo)
+        layout.addRow(translate("CAM_MachineEditor", "Type"), self.type_combo)
 
         self.spindle_count_combo = QtGui.QComboBox()
         for i in range(1, 10):  # 1 to 9 spindles
             self.spindle_count_combo.addItem(str(i), i)
         self.spindle_count_combo.currentIndexChanged.connect(self.update_spindles)
         layout.addRow(
-            translate("CAM_MachineEditor", "Number of Spindles:"), self.spindle_count_combo
+            translate("CAM_MachineEditor", "Number of Spindles"), self.spindle_count_combo
         )
 
         # Axes group
@@ -743,14 +744,14 @@ class MachineEditorDialog(QtGui.QDialog):
                 )
 
                 axis_layout = QtGui.QHBoxLayout()
-                axis_layout.addWidget(QtGui.QLabel("Min:"))
+                axis_layout.addWidget(QtGui.QLabel("Min"))
                 axis_layout.addWidget(min_edit)
-                axis_layout.addWidget(QtGui.QLabel("Max:"))
+                axis_layout.addWidget(QtGui.QLabel("Max"))
                 axis_layout.addWidget(max_edit)
-                axis_layout.addWidget(QtGui.QLabel("Max Vel:"))
+                axis_layout.addWidget(QtGui.QLabel("Max Vel"))
                 axis_layout.addWidget(vel_edit)
 
-                linear_layout.addRow(f"{axis}:", axis_layout)
+                linear_layout.addRow(f"{axis}", axis_layout)
                 self.axis_edits[axis] = {
                     "min": min_edit,
                     "max": max_edit,
@@ -832,22 +833,22 @@ class MachineEditorDialog(QtGui.QDialog):
                 axis_grid = QtGui.QGridLayout()
 
                 # Row 0: Min, Max, Vel
-                axis_grid.addWidget(QtGui.QLabel("Min:"), 0, 0, QtCore.Qt.AlignRight)
+                axis_grid.addWidget(QtGui.QLabel("Min"), 0, 0, QtCore.Qt.AlignRight)
                 axis_grid.addWidget(min_edit, 0, 1)
-                axis_grid.addWidget(QtGui.QLabel("Max:"), 0, 2, QtCore.Qt.AlignRight)
+                axis_grid.addWidget(QtGui.QLabel("Max"), 0, 2, QtCore.Qt.AlignRight)
                 axis_grid.addWidget(max_edit, 0, 3)
-                axis_grid.addWidget(QtGui.QLabel("Max Vel:"), 0, 4, QtCore.Qt.AlignRight)
+                axis_grid.addWidget(QtGui.QLabel("Max Vel"), 0, 4, QtCore.Qt.AlignRight)
                 axis_grid.addWidget(vel_edit, 0, 5)
 
                 # Row 1: Sequence, Joint, Prefer+
-                axis_grid.addWidget(QtGui.QLabel("Sequence:"), 1, 0, QtCore.Qt.AlignRight)
+                axis_grid.addWidget(QtGui.QLabel("Sequence"), 1, 0, QtCore.Qt.AlignRight)
                 axis_grid.addWidget(sequence_spin, 1, 1)
-                axis_grid.addWidget(QtGui.QLabel("Joint:"), 1, 2, QtCore.Qt.AlignRight)
+                axis_grid.addWidget(QtGui.QLabel("Joint"), 1, 2, QtCore.Qt.AlignRight)
                 axis_grid.addWidget(joint_combo, 1, 3)
-                axis_grid.addWidget(QtGui.QLabel("Prefer+:"), 1, 4, QtCore.Qt.AlignRight)
+                axis_grid.addWidget(QtGui.QLabel("Prefer+"), 1, 4, QtCore.Qt.AlignRight)
                 axis_grid.addWidget(prefer_positive, 1, 5)
 
-                rotary_layout.addRow(f"{axis}:", axis_grid)
+                rotary_layout.addRow(f"{axis}", axis_grid)
                 self.axis_edits[axis] = {
                     "min": min_edit,
                     "max": max_edit,
@@ -926,14 +927,14 @@ class MachineEditorDialog(QtGui.QDialog):
             name_edit.textChanged.connect(
                 lambda text, idx=i: self._on_spindle_field_changed(idx, "name", text)
             )
-            layout.addRow("Name:", name_edit)
+            layout.addRow("Name", name_edit)
 
             id_edit = QtGui.QLineEdit()
             id_edit.setText(spindle.id if spindle and spindle.id else f"spindle{i+1}")
             id_edit.textChanged.connect(
                 lambda text, idx=i: self._on_spindle_field_changed(idx, "id", text)
             )
-            layout.addRow("ID:", id_edit)
+            layout.addRow("ID", id_edit)
 
             max_power_edit = QtGui.QDoubleSpinBox()
             max_power_edit.setRange(0, 100)
@@ -941,7 +942,7 @@ class MachineEditorDialog(QtGui.QDialog):
             max_power_edit.valueChanged.connect(
                 lambda value, idx=i: self._on_spindle_field_changed(idx, "max_power_kw", value)
             )
-            layout.addRow("Max Power (kW):", max_power_edit)
+            layout.addRow("Max Power (kW)", max_power_edit)
 
             max_rpm_edit = QtGui.QSpinBox()
             max_rpm_edit.setRange(0, 100000)
@@ -949,7 +950,7 @@ class MachineEditorDialog(QtGui.QDialog):
             max_rpm_edit.valueChanged.connect(
                 lambda value, idx=i: self._on_spindle_field_changed(idx, "max_rpm", value)
             )
-            layout.addRow("Max RPM:", max_rpm_edit)
+            layout.addRow("Max RPM", max_rpm_edit)
 
             min_rpm_edit = QtGui.QSpinBox()
             min_rpm_edit.setRange(0, 100000)
@@ -957,7 +958,7 @@ class MachineEditorDialog(QtGui.QDialog):
             min_rpm_edit.valueChanged.connect(
                 lambda value, idx=i: self._on_spindle_field_changed(idx, "min_rpm", value)
             )
-            layout.addRow("Min RPM:", min_rpm_edit)
+            layout.addRow("Min RPM", min_rpm_edit)
 
             tool_change_combo = QtGui.QComboBox()
             tool_change_combo.addItem("Manual", "manual")
@@ -1016,7 +1017,7 @@ class MachineEditorDialog(QtGui.QDialog):
         )
         self.postProcessorDefaultTooltip = translate("CAM_MachineEditor", "Select a post processor")
         self.post_processor_combo.setToolTip(self.postProcessorDefaultTooltip)
-        pp_layout.addRow("Post Processor:", self.post_processor_combo)
+        pp_layout.addRow("Post Processor", self.post_processor_combo)
         self.post_widgets["postprocessor_file_name"] = self.post_processor_combo
 
         self.post_processor_args_edit = QtGui.QLineEdit()
@@ -1027,7 +1028,7 @@ class MachineEditorDialog(QtGui.QDialog):
             "CAM_MachineEditor", "Additional arguments"
         )
         self.post_processor_args_edit.setToolTip(self.postProcessorArgsDefaultTooltip)
-        pp_layout.addRow("Arguments:", self.post_processor_args_edit)
+        pp_layout.addRow("Arguments", self.post_processor_args_edit)
         self.post_widgets["postprocessor_args"] = self.post_processor_args_edit
 
         layout.addWidget(pp_group)
@@ -1301,10 +1302,6 @@ class MachineEditorDialog(QtGui.QDialog):
 
         # Get units for suffixes in populate
         units = self.units_combo.itemData(self.units_combo.currentIndex())
-        length_suffix = " mm" if units == "metric" else " in"
-        vel_suffix = " mm/min" if units == "metric" else " in/min"
-        angle_suffix = " deg"
-        angle_vel_suffix = " deg/min"
 
         # Update axes UI after loading machine data
         self.update_axes()
@@ -1432,7 +1429,8 @@ class MachineEditorDialog(QtGui.QDialog):
                     current_name = current_machine.name.lower()
                     if machine_name_lower == current_name:
                         current_name_allowed = True
-                except:
+                except Exception:
+                    # Failed to load current machine configuration, assume name is not allowed
                     pass
 
             if machine_name_lower in existing_names_lower and not current_name_allowed:

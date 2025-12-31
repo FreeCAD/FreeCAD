@@ -11,10 +11,8 @@
 # ***************************************************************************
 
 import FreeCAD
-import unittest
 import tempfile
 import pathlib
-import json
 import CAMTests.PathTestUtils as PathTestUtils
 from Path.Machine.models.machine import (
     Machine,
@@ -406,7 +404,7 @@ class TestMachineFactory(PathTestUtils.PathTestBase):
 
         # Save and load
         filepath = MachineFactory.save_configuration(machine, "complex.fcm")
-        loaded = MachineFactory.load_configuration("complex.fcm")
+        loaded = MachineFactory.load_configuration(filepath)
 
         # Verify all components
         self.assertEqual(loaded.name, machine.name)

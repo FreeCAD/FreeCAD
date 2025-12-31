@@ -20,3 +20,31 @@
 # *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
+
+from .machine import (
+    Machine,
+    MachineFactory,
+    LinearAxis,
+    RotaryAxis,
+    Spindle,
+    MachineUnits,
+    MotionMode,
+    OutputUnits,
+    OutputOptions,
+    GCodeBlocks,
+    ProcessingOptions,
+)
+
+__all__ = [
+    "Machine",
+    "MachineFactory",
+    "LinearAxis",
+    "RotaryAxis",
+    "Spindle",
+    "MachineUnits",
+    "MotionMode",
+    "OutputUnits",
+    "OutputOptions",
+    "GCodeBlocks",
+    "ProcessingOptions",
+]

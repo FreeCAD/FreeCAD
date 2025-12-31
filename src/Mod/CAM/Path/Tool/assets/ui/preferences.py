@@ -25,10 +25,9 @@ import pathlib
 import tempfile
 import FreeCAD
 import Path
-import json
 from PySide import QtGui, QtCore
 from ....Machine.ui.editor import MachineEditorDialog
-from ....Machine.models.machine import MachineFactory
+from ....Machine.models import MachineFactory
 
 translate = FreeCAD.Qt.translate
 

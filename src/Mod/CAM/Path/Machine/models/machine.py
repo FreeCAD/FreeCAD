@@ -349,6 +349,14 @@ class Spindle:
 
 @dataclass
 class Machine:
+    """Represents a CNC machine configuration with axes, spindles, and output settings.
+
+    This class encapsulates all machine parameters including linear and rotary axes,
+    spindles, post-processor settings, and G-code generation options. It provides
+    methods for serialization to/from JSON and various factory methods for common
+    machine configurations (3-axis, 4-axis, 5-axis).
+    """
+
     def __init__(
         self, name: str = "Default Machine", configuration_units: str = "metric", **kwargs
     ):
@@ -949,22 +957,6 @@ class Machine:
 
     def _initialize_3axis_config(self) -> None:
         """Initialize as a standard 3-axis XYZ configuration (no rotary axes)"""
-        self.name = self.name or "3-Axis XYZ Configuration"
-        self.linear_axes = {
-            "X": LinearAxis("X", FreeCAD.Vector(1, 0, 0)),
-            "Y": LinearAxis("Y", FreeCAD.Vector(0, 1, 0)),
-            "Z": LinearAxis("Z", FreeCAD.Vector(0, 0, 1)),
-        }
-
-    @classmethod
-    def create_3axis_config(cls) -> "Machine":
-        """Create standard 3-axis XYZ configuration (no rotary axes)"""
-        config = cls("3-Axis XYZ Configuration")
-        config._initialize_3axis_config()
-        return config
-
-    def _initialize_3axis_config(self) -> None:
-        """Initialize as a standard 3-axis XYZ configuration (no rotary axes)"""
         self.linear_axes = {
             "X": LinearAxis("X", FreeCAD.Vector(1, 0, 0)),
             "Y": LinearAxis("Y", FreeCAD.Vector(0, 1, 0)),
@@ -974,6 +966,13 @@ class Machine:
         self.primary_rotary_axis = None
         self.secondary_rotary_axis = None
         self.compound_moves = True
+
+    @classmethod
+    def create_3axis_config(cls) -> "Machine":
+        """Create standard 3-axis XYZ configuration (no rotary axes)"""
+        config = cls("3-Axis XYZ Configuration")
+        config._initialize_3axis_config()
+        return config
 
     def _initialize_4axis_A_config(self, a_limits=(-120, 120)) -> None:
         """Initialize as a 4-axis XYZA configuration (rotary table around X)"""
@@ -1320,6 +1319,7 @@ class MachineFactory:
                     name = cls.get_machine_display_name(p.name)
                     machines.append((name, p.name))
         except Exception:
+            # Failed to access machine directory or read files, return default list only
             pass
         return machines
 
