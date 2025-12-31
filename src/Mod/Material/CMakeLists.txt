@@ -284,6 +284,7 @@ SET(MaterialModel_Files
     Resources/Models/Mechanical/ReducedPolynomialN1.yml
     Resources/Models/Mechanical/ReducedPolynomialN2.yml
     Resources/Models/Mechanical/ReducedPolynomialN3.yml
+    Resources/Models/Mechanical/Toughness.yml
     Resources/Models/Mechanical/Yeoh.yml
     Resources/Models/Patterns/PAT.yml
     "Resources/Models/Patterns/Pattern File.yml"

@@ -35,9 +35,12 @@ Models:
     UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
     CompressiveStrength: "414 MPa"
     Density: "7530 kg/m^3"
+    Elongation: "11"
     PoissonRatio: "0.32"
-    UltimateStrain: "0.106"
+    ReductionOfArea: "9"
+    UltimateStrain: "10.6"
     UltimateTensileStrength: "697.7 MPa"
+    YieldStrain: "0.31"
     YieldStrength: "303 MPa"
     YoungsModulus: "116 GPa"
   Thermal:
@@ -54,3 +57,7 @@ Models:
     UUID: '3d1a6141-d032-4d82-8bb5-a8f339fff8ad'
     Hardness: "93"
     HardnessUnits: "HRB"
+  Toughness:
+    UUID: '5bd8188b-2e72-4891-b9fb-7c5abc62ff2d'
+    ImpactCharpy: "14 J"
+    NotchTensileStrength: "725 MPa"

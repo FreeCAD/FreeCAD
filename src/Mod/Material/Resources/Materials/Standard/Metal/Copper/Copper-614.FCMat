@@ -32,8 +32,11 @@ Models:
   LinearElastic:
     UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
     Density: "7890 kg/m^3"
-    UltimateStrain: "0.27"
+    Elongation: "40"
+    ReductionOfArea: "66"
+    UltimateStrain: "27"
     UltimateTensileStrength: "574 MPa"
+    YieldStrain: "0.39"
     YieldStrength: "410 MPa"
     YoungsModulus: "109 GPa"
   Thermal:
@@ -49,3 +52,7 @@ Models:
     UUID: '3d1a6141-d032-4d82-8bb5-a8f339fff8ad'
     Hardness: "97"
     HardnessUnits: "HRB"
+  Toughness:
+    UUID: '5bd8188b-2e72-4891-b9fb-7c5abc62ff2d'
+    ImpactCharpy: "149 J"
+    NotchTensileStrength: "845 MPa"
