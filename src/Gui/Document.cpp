@@ -648,8 +648,6 @@ bool Document::trySetEdit(Gui::ViewProvider* p, int ModNum, const char* subname)
 {
     auto vp = DocumentP::throwIfCastFails(p);
 
-    resetIfEditing();
-
     auto obj = DocumentP::tryGetObject(vp);
 
     std::string _subname = subname ? subname : "";
@@ -660,10 +658,19 @@ bool Document::trySetEdit(Gui::ViewProvider* p, int ModNum, const char* subname)
             obj = finder.getObject();
             vp = finder.getViewProvider();
             if (vp->getDocument() != this) {
+                resetIfEditing();
+
                 return vp->getDocument()->setEdit(vp, ModNum, _subname.c_str());
             }
         }
     }
+
+    // Fix for #13852: When switching edit directly between sketches, resetIfEditing()
+    // triggers unsetEdit() on the previous sketch which restores its selection.
+    // This clobbers the selection of the new sketch that ParentFinder relies on.
+    // Moving resetIfEditing() after ParentFinder ensures we resolve the parent context correctly
+    // using the current selection before closing the previous edit.
+    resetIfEditing();
 
     d->throwIfNotInMap(obj, getDocument());
 
