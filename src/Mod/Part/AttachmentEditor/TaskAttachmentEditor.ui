@@ -98,7 +98,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Attachment mode</string>
+      <string>Attachment Mode</string>
      </property>
     </widget>
    </item>
@@ -415,3 +415,4 @@ Note: The placement is expressed in local space of object being attached.</strin
   </property>
  </designerdata>
 </ui>
+
