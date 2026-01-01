@@ -395,7 +395,7 @@ void DlgAddProperty::addEditor(PropertyItem* propertyItem)
 
     setWidgetForLabel("labelValue", editor.get(), layout());
 
-    QWidget::setTabOrder(ui->comboBoxType, editor.get());
+    QWidget::setTabOrder(ui->lineEditName, editor.get());
     QWidget::setTabOrder(editor.get(), ui->lineEditToolTip);
 
     removeSelectionEditor();
@@ -539,7 +539,8 @@ void DlgAddProperty::initializeWidgets(ViewProviderVarSet* viewProvider)
 
     ui->lineEditName->setFocus();
 
-    QWidget::setTabOrder(ui->lineEditName, &comboBoxGroup);
+    QWidget::setTabOrder(ui->lineEditName, ui->lineEditToolTip);
+    QWidget::setTabOrder(ui->lineEditToolTip, &comboBoxGroup);
     QWidget::setTabOrder(&comboBoxGroup, ui->comboBoxType);
 
     adjustSize();
@@ -632,7 +633,7 @@ void DlgAddProperty::removeEditor()
     placeholder->setMinimumHeight(comboBoxGroup.height());
     setWidgetForLabel("labelValue", placeholder, layout());
 
-    QWidget::setTabOrder(ui->comboBoxType, ui->lineEditToolTip);
+    QWidget::setTabOrder(ui->lineEditName, ui->lineEditToolTip);
     editor = nullptr;
 }
 
