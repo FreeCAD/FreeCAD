@@ -2163,10 +2163,7 @@ TopoShape& TopoShape::makeElementEvolve(
     if (profileShape.IsNull() || !BRepBuilderAPI_FindPlane(profileShape).Found()) {
         if (profileShape.IsNull() || profile.countSubShapes(TopAbs_EDGE) > 1
             || !profile.getSubTopoShape(TopAbs_EDGE, 1).isLinearEdge()) {
-            FC_THROWM(
-                Base::CADKernelError,
-                "Expect the profile to be a planar wire or a face or a line"
-            );
+            FC_THROWM(Base::CADKernelError, "Expect the profile to be a planar wire or a face or a line");
         }
     }
     if (spineShape.ShapeType() == TopAbs_FACE) {
