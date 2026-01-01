@@ -939,10 +939,21 @@ def get_bbox(obj, debug=False):
     return App.BoundBox(xmin, ymin, zmin, xmax, ymax, zmax)
 
 
-# Code by Yorik van Havre.
+# Code by Yorik van Havre (adapted).
 def find_coin_node(parent, nodetype):
+    if not hasattr(parent, "getNumChildren"):
+        return None
     for i in range(parent.getNumChildren()):
         if isinstance(parent.getChild(i), nodetype):
+            return parent.getChild(i)
+    return None
+
+
+def find_coin_node_by_name(parent, name):
+    if not hasattr(parent, "getNumChildren"):
+        return None
+    for i in range(parent.getNumChildren()):
+        if parent.getChild(i).getName() == name:
             return parent.getChild(i)
     return None
 
