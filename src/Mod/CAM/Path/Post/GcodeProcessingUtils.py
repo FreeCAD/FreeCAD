@@ -24,35 +24,36 @@
 # ***************************************************************************
 """
 Various utilities for handling G-code.
-These utilities do NOT operate on Path.Command objects. They 
+These utilities do NOT operate on Path.Command objects. They
 operate on strings of pre-processed G-code.
 """
 
 from typing import List
 
+
 class NumberGenerator:
     """
     Generate a sequence of line numbers with configurable formatting.
-    
+
     Args:
         template: Format string for the line number (e.g., 'N{:04d}')
         start: Starting number for the sequence (default: 1)
         increment: Step size for the sequence (default: 1)
     """
-    
-    def __init__(self, template: str = '{}', start: int = 1, increment: int = 1):
+
+    def __init__(self, template: str = "{}", start: int = 1, increment: int = 1):
         """Initialize the number generator with template, start, and increment values."""
         self._template = template
         self._start = start
         self._increment = increment
         self.reset()
-    
+
     def get(self) -> str:
         """Get the next number in the sequence and format it according to the template."""
         current = self._current
         self._current += self._increment
         return self._template.format(current)
-    
+
     def reset(self) -> None:
         """Reset the sequence to the starting number."""
         self._current = self._start
@@ -60,70 +61,83 @@ class NumberGenerator:
 
 # Insert Line Numbers
 
+
 def insert_line_numbers(gcode: List[str]) -> List[str]:
     """Insert line numbers (N-codes) into G-code lines.
-    
+
     Args:
         gcode: List of G-code strings
-        
+
     Returns:
         List of G-code strings with line numbers inserted
     """
     result = []
-    line_generator = NumberGenerator(template='N{}', start=10, increment=10)
-    
+    line_generator = NumberGenerator(template="N{}", start=10, increment=10)
+
     for line in gcode:
         # Skip empty lines and comments
         stripped = line.strip()
-        if not stripped or stripped.startswith('('):
+        if not stripped or stripped.startswith("("):
             result.append(line)
             continue
-            
+
         # Insert line number at the beginning
         line_number = line_generator.get()
         result.append(f"{line_number} {line}")
-        
+
     return result
+
 
 # Suppress redundant axes words
 
+
 def suppress_redundant_axes_words(gcode: List[str]) -> List[str]:
     """Suppress redundant axis and feed rate words by tracking current machine state.
-    
+
     Removes axis words where the value matches the current machine position,
     and F words where the feed rate matches the current feed rate.
-    
+
     Args:
         gcode: List of G-code strings
-        
+
     Returns:
         List of G-code strings with redundant words suppressed
     """
     result = []
-    current_pos = {'X': None, 'Y': None, 'Z': None, 'U': None, 'V': None, 'W': None, 'A': None, 'B': None, 'C': None}
+    current_pos = {
+        "X": None,
+        "Y": None,
+        "Z": None,
+        "U": None,
+        "V": None,
+        "W": None,
+        "A": None,
+        "B": None,
+        "C": None,
+    }
     current_feed = None  # Track current feed rate
-    
+
     for line in gcode:
         stripped = line.strip()
-        
+
         # Keep comments and empty lines unchanged
-        if not stripped or stripped.startswith('('):
+        if not stripped or stripped.startswith("("):
             result.append(line)
             continue
-            
+
         # Check for blockdelete slash
-        has_blockdelete = line.lstrip().startswith('/')
-        blockdelete_prefix = '/' if has_blockdelete else ''
-        
+        has_blockdelete = line.lstrip().startswith("/")
+        blockdelete_prefix = "/" if has_blockdelete else ""
+
         # Parse the line for axis and feed movements
         words = stripped.split()
-        if has_blockdelete and words and words[0].startswith('/'):
+        if has_blockdelete and words and words[0].startswith("/"):
             # Remove the slash from the first word if it's a blockdelete command
             words[0] = words[0][1:]
         new_pos = current_pos.copy()
         new_feed = current_feed
         filtered_words = []
-        
+
         # First pass: collect all movements in this command
         for word in words:
             if len(word) <= 1:
@@ -136,12 +150,12 @@ def suppress_redundant_axes_words(gcode: List[str]) -> List[str]:
                 continue
             if axis in current_pos:
                 new_pos[axis] = value
-            elif axis == 'F':
+            elif axis == "F":
                 new_feed = value
-        
+
         # Second pass: filter out redundant words
         for word in words:
-            axis = word[0] if word else ''
+            axis = word[0] if word else ""
             if axis in current_pos:
                 try:
                     value = float(word[1:])
@@ -151,7 +165,7 @@ def suppress_redundant_axes_words(gcode: List[str]) -> List[str]:
                 except (ValueError, IndexError):
                     # If we can't parse the value, keep the word
                     filtered_words.append(word)
-            elif axis == 'F':
+            elif axis == "F":
                 try:
                     value = float(word[1:])
                     # Only include F if it differs from current feed rate
@@ -163,59 +177,69 @@ def suppress_redundant_axes_words(gcode: List[str]) -> List[str]:
             else:
                 # Non-axis, non-feed words are always included
                 filtered_words.append(word)
-        
+
         # Update current state for next command
         current_pos = new_pos
         current_feed = new_feed
-        
+
         # Join the filtered words back into a line with preserved blockdelete
         if filtered_words:
             result.append(f"{blockdelete_prefix}{' '.join(filtered_words)}")
         else:
             # If no words left, keep the original line (shouldn't happen for valid G-code)
             result.append(line)
-        
+
     return result
+
 
 # Filter inefficient moves
 
+
 def filter_inefficient_moves(gcode: List[str]) -> List[str]:
     """Filter out inefficient or redundant moves from G-code.
-    
+
     Removes unnecessary rapid (G0) moves by collapsing chains that only move
     along single axes or within linear/rotary groups.
-    
+
     Args:
         gcode: List of G-code strings
-        
+
     Returns:
         List of G-code strings with inefficient moves filtered out
     """
     AXES = ("X", "Y", "Z", "A", "B", "C")
-    
+
     SIDE_EFFECT_KEYS = {
-        "tool", "tool_change", "spindle", "spindle_on", "spindle_off",
-        "coolant", "dwell", "feed", "F", "M"
+        "tool",
+        "tool_change",
+        "spindle",
+        "spindle_on",
+        "spindle_off",
+        "coolant",
+        "dwell",
+        "feed",
+        "F",
+        "M",
     }
-    
+
     def parse_gcode_line(line: str) -> dict:
         """Parse a G-code line into command name and parameters."""
         stripped = line.strip()
-        if not stripped or stripped.startswith('('):
-            return {'name': 'COMMENT', 'params': {}, 'original': line}
-            
+        if not stripped or stripped.startswith("("):
+            return {"name": "COMMENT", "params": {}, "original": line}
+
         # Check for blockdelete
-        has_blockdelete = stripped.startswith('/')
+        has_blockdelete = stripped.startswith("/")
         if has_blockdelete:
             stripped = stripped[1:]
-            
+
         words = stripped.split()
         if not words:
-            return {'name': 'EMPTY', 'params': {}, 'original': line}
-            
+            return {"name": "EMPTY", "params": {}, "original": line}
+
         cmd_name = words[0]
         params = {}
-        
+
         for word in words[1:]:
             if len(word) > 1:
                 key = word[0]
@@ -224,42 +248,54 @@ def filter_inefficient_moves(gcode: List[str]) -> List[str]:
                     params[key] = value
                 except (ValueError, IndexError):
                     params[word] = None  # Non-numeric parameter
-                    
+
         return {
-            'name': cmd_name,
-            'params': params,
-            'original': line,
-            'blockdelete': has_blockdelete
+            "name": cmd_name,
+            "params": params,
+            "original": line,
+            "blockdelete": has_blockdelete,
         }
-    
+
     def is_rapid(parsed_cmd: dict) -> bool:
         """Check if command is a rapid move (G0)."""
-        return parsed_cmd['name'] in ('G0', 'G00')
-    
+        return parsed_cmd["name"] in ("G0", "G00")
+
     def has_side_effects(parsed_cmd: dict) -> bool:
         """Check if command has side effects that prevent optimization."""
         # Check for side effect parameter keys
-        if any(k in parsed_cmd['params'] for k in SIDE_EFFECT_KEYS):
+        if any(k in parsed_cmd["params"] for k in SIDE_EFFECT_KEYS):
             return True
-            
+
         # Check for M-codes and other side effect commands
-        cmd = parsed_cmd['name']
-        if cmd.startswith('M') or cmd in ('G28', 'G30', 'G53', 'G54', 'G55', 'G56', 'G57', 'G58', 'G59',
-                                         'G92', 'G10', 'T'):  # Tool change
+        cmd = parsed_cmd["name"]
+        if cmd.startswith("M") or cmd in (
+            "G28",
+            "G30",
+            "G53",
+            "G54",
+            "G55",
+            "G56",
+            "G57",
+            "G58",
+            "G59",
+            "G92",
+            "G10",
+            "T",
+        ):  # Tool change
             return True
-            
+
         return False
-    
+
     def full_position(parsed_cmd: dict, last_pos: dict) -> dict:
         """Compute full position from command and last position."""
         pos = {}
         for ax in AXES:
-            if ax in parsed_cmd['params'] and parsed_cmd['params'][ax] is not None:
-                pos[ax] = parsed_cmd['params'][ax]
+            if ax in parsed_cmd["params"] and parsed_cmd["params"][ax] is not None:
+                pos[ax] = parsed_cmd["params"][ax]
             else:
                 pos[ax] = last_pos.get(ax)
         return pos
-    
+
     def collapse_rapid_chain(chain):
         """
         Collapse a chain of rapid moves.
@@ -267,60 +303,56 @@ def filter_inefficient_moves(gcode: List[str]) -> List[str]:
         """
         if not chain:
             return []
-            
+
         # Check which axes change across the chain
-        first = chain[0]['pos']
-        axes_changed = {ax for ax in AXES if any(c['pos'][ax] != first[ax] for c in chain)}
-        
+        first = chain[0]["pos"]
+        axes_changed = {ax for ax in AXES if any(c["pos"][ax] != first[ax] for c in chain)}
+
         # If only one axis changes → keep only the last command
         if len(axes_changed) == 1:
-            return [chain[-1]['original']]
-            
+            return [chain[-1]["original"]]
+
         # If changes are only within linear or rotary groups → keep only last
         lin = {"X", "Y", "Z"}
         rot = {"A", "B", "C"}
-        
+
         if axes_changed <= lin or axes_changed <= rot:
-            return [chain[-1]['original']]
-            
+            return [chain[-1]["original"]]
+
         # Mixed changes → can't collapse, keep all
-        return [c['original'] for c in chain]
-    
+        return [c["original"] for c in chain]
+
     # Main optimization logic
     result = []
     rapid_chain = []
     last_full_pos = {ax: None for ax in AXES}
-    
+
     def flush_chain():
         nonlocal rapid_chain
         if rapid_chain:
             result.extend(collapse_rapid_chain(rapid_chain))
             rapid_chain = []
-    
+
     for line in gcode:
         parsed = parse_gcode_line(line)
-        
+
         # Skip comments and empty lines
-        if parsed['name'] in ('COMMENT', 'EMPTY'):
+        if parsed["name"] in ("COMMENT", "EMPTY"):
             flush_chain()  # Flush any pending rapid chain
             result.append(line)
             continue
-            
+
         # Get full position for this command
         pos = full_position(parsed, last_full_pos)
         last_full_pos = pos
-        
+
         # Check if this is a rapid move without side effects
         if is_rapid(parsed) and not has_side_effects(parsed):
-            rapid_chain.append({
-                'parsed': parsed,
-                'pos': pos,
-                'original': line
-            })
+            rapid_chain.append({"parsed": parsed, "pos": pos, "original": line})
         else:
             flush_chain()  # Flush any pending rapid chain before adding this command
             result.append(line)
-    
+
     # Flush any remaining rapid chain
     flush_chain()
     return result

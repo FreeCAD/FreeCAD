@@ -502,138 +502,175 @@ class TestPathPostUtils(unittest.TestCase):
         # self.assertTrue(len(results.Commands) == 117)
         self.assertTrue(len([c for c in results.Commands if c.Name in ["G2", "G3"]]) == 0)
 
-
     def test020(self):
-        """ Test Termination of Canned Cycles"""
+        """Test Termination of Canned Cycles"""
         # Test basic cycle termination when parameters change
-        test_path = Path.Path([
-            Path.Command('G0', {'Z': 1.0}),
-            Path.Command('G81', {'X': 1.0, 'Y': 1.0, 'Z': -0.5, 'R': 0.1, 'F': 10.0}),
-            Path.Command('G81', {'X': 2.0, 'Y': 2.0, 'Z': -1.0, 'R': 0.2, 'F': 10.0}),  # Different Z depth
-            Path.Command('G1', {'X': 3.0, 'Y': 3.0})
-        ])
+        test_path = Path.Path(
+            [
+                Path.Command("G0", {"Z": 1.0}),
+                Path.Command("G81", {"X": 1.0, "Y": 1.0, "Z": -0.5, "R": 0.1, "F": 10.0}),
+                Path.Command(
+                    "G81", {"X": 2.0, "Y": 2.0, "Z": -1.0, "R": 0.2, "F": 10.0}
+                ),  # Different Z depth
+                Path.Command("G1", {"X": 3.0, "Y": 3.0}),
+            ]
+        )
 
-        expected_path = Path.Path([
-            Path.Command('G0', {'Z': 1.0}),
-            Path.Command('G81', {'X': 1.0, 'Y': 1.0, 'Z': -0.5, 'R': 0.1, 'F': 10.0}),
-            Path.Command('G80'),  # Terminate due to parameter change
-            Path.Command('G81', {'X': 2.0, 'Y': 2.0, 'Z': -1.0, 'R': 0.2, 'F': 10.0}),
-            Path.Command('G80'),  # Final termination
-            Path.Command('G1', {'X': 3.0, 'Y': 3.0})
-        ])
+        expected_path = Path.Path(
+            [
+                Path.Command("G0", {"Z": 1.0}),
+                Path.Command("G81", {"X": 1.0, "Y": 1.0, "Z": -0.5, "R": 0.1, "F": 10.0}),
+                Path.Command("G80"),  # Terminate due to parameter change
+                Path.Command("G81", {"X": 2.0, "Y": 2.0, "Z": -1.0, "R": 0.2, "F": 10.0}),
+                Path.Command("G80"),  # Final termination
+                Path.Command("G1", {"X": 3.0, "Y": 3.0}),
+            ]
+        )
 
         result = PostUtils.cannedCycleTerminator(test_path)
-        
+
         self.assertEqual(len(result.Commands), len(expected_path.Commands))
         for i, (res, exp) in enumerate(zip(result.Commands, expected_path.Commands)):
             self.assertEqual(res.Name, exp.Name, f"Command {i}: name mismatch")
             self.assertEqual(res.Parameters, exp.Parameters, f"Command {i}: parameters mismatch")
-    
+
     def test030_canned_cycle_termination_with_non_cycle_commands(self):
         """Test cycle termination when non-cycle commands are encountered"""
-        test_path = Path.Path([
-            Path.Command('G81', {'X': 1.0, 'Y': 1.0, 'Z': -0.5, 'R': 0.1, 'F': 10.0}),
-            Path.Command('G0', {'X': 2.0, 'Y': 2.0}),  # Non-cycle command
-            Path.Command('G82', {'X': 3.0, 'Y': 3.0, 'Z': -1.0, 'R': 0.2, 'P': 1.0, 'F': 10.0}),
-        ])
+        test_path = Path.Path(
+            [
+                Path.Command("G81", {"X": 1.0, "Y": 1.0, "Z": -0.5, "R": 0.1, "F": 10.0}),
+                Path.Command("G0", {"X": 2.0, "Y": 2.0}),  # Non-cycle command
+                Path.Command("G82", {"X": 3.0, "Y": 3.0, "Z": -1.0, "R": 0.2, "P": 1.0, "F": 10.0}),
+            ]
+        )
 
-        expected_path = Path.Path([
-            Path.Command('G81', {'X': 1.0, 'Y': 1.0, 'Z': -0.5, 'R': 0.1, 'F': 10.0}),
-            Path.Command('G80'),  # Terminate before non-cycle command
-            Path.Command('G0', {'X': 2.0, 'Y': 2.0}),
-            Path.Command('G82', {'X': 3.0, 'Y': 3.0, 'Z': -1.0, 'R': 0.2, 'P': 1.0, 'F': 10.0}),
-            Path.Command('G80'),  # Final termination
-        ])
+        expected_path = Path.Path(
+            [
+                Path.Command("G81", {"X": 1.0, "Y": 1.0, "Z": -0.5, "R": 0.1, "F": 10.0}),
+                Path.Command("G80"),  # Terminate before non-cycle command
+                Path.Command("G0", {"X": 2.0, "Y": 2.0}),
+                Path.Command("G82", {"X": 3.0, "Y": 3.0, "Z": -1.0, "R": 0.2, "P": 1.0, "F": 10.0}),
+                Path.Command("G80"),  # Final termination
+            ]
+        )
 
         result = PostUtils.cannedCycleTerminator(test_path)
         self.assertEqual(len(result.Commands), len(expected_path.Commands))
         for i, (res, exp) in enumerate(zip(result.Commands, expected_path.Commands)):
             self.assertEqual(res.Name, exp.Name, f"Command {i}: name mismatch")
             self.assertEqual(res.Parameters, exp.Parameters, f"Command {i}: parameters mismatch")
-    
+
     def test040_canned_cycle_modal_same_parameters(self):
         """Test modal cycles with same parameters don't get terminated"""
-        test_path = Path.Path([
-            Path.Command('G81', {'X': 1.0, 'Y': 1.0, 'Z': -0.5, 'R': 0.1, 'F': 10.0}),
-            Path.Command('G81', {'X': 2.0, 'Y': 2.0, 'Z': -0.5, 'R': 0.1, 'F': 10.0}),  # Modal - same parameters
-            Path.Command('G81', {'X': 3.0, 'Y': 3.0, 'Z': -0.5, 'R': 0.1, 'F': 10.0}),  # Modal - same parameters
-        ])
+        test_path = Path.Path(
+            [
+                Path.Command("G81", {"X": 1.0, "Y": 1.0, "Z": -0.5, "R": 0.1, "F": 10.0}),
+                Path.Command(
+                    "G81", {"X": 2.0, "Y": 2.0, "Z": -0.5, "R": 0.1, "F": 10.0}
+                ),  # Modal - same parameters
+                Path.Command(
+                    "G81", {"X": 3.0, "Y": 3.0, "Z": -0.5, "R": 0.1, "F": 10.0}
+                ),  # Modal - same parameters
+            ]
+        )
 
-        expected_path = Path.Path([
-            Path.Command('G81', {'X': 1.0, 'Y': 1.0, 'Z': -0.5, 'R': 0.1, 'F': 10.0}),
-            Path.Command('G81', {'X': 2.0, 'Y': 2.0, 'Z': -0.5, 'R': 0.1, 'F': 10.0}),  # No termination - same params
-            Path.Command('G81', {'X': 3.0, 'Y': 3.0, 'Z': -0.5, 'R': 0.1, 'F': 10.0}),  # No termination - same params
-            Path.Command('G80'),  # Final termination
-        ])
+        expected_path = Path.Path(
+            [
+                Path.Command("G81", {"X": 1.0, "Y": 1.0, "Z": -0.5, "R": 0.1, "F": 10.0}),
+                Path.Command(
+                    "G81", {"X": 2.0, "Y": 2.0, "Z": -0.5, "R": 0.1, "F": 10.0}
+                ),  # No termination - same params
+                Path.Command(
+                    "G81", {"X": 3.0, "Y": 3.0, "Z": -0.5, "R": 0.1, "F": 10.0}
+                ),  # No termination - same params
+                Path.Command("G80"),  # Final termination
+            ]
+        )
 
         result = PostUtils.cannedCycleTerminator(test_path)
         self.assertEqual(len(result.Commands), len(expected_path.Commands))
         for i, (res, exp) in enumerate(zip(result.Commands, expected_path.Commands)):
             self.assertEqual(res.Name, exp.Name, f"Command {i}: name mismatch")
             self.assertEqual(res.Parameters, exp.Parameters, f"Command {i}: parameters mismatch")
-    
+
     def test050_canned_cycle_feed_rate_change(self):
         """Test cycle termination when feed rate changes"""
-        test_path = Path.Path([
-            Path.Command('G81', {'X': 1.0, 'Y': 1.0, 'Z': -0.5, 'R': 0.1, 'F': 10.0}),
-            Path.Command('G81', {'X': 2.0, 'Y': 2.0, 'Z': -0.5, 'R': 0.1, 'F': 20.0}),  # Different feed rate
-        ])
+        test_path = Path.Path(
+            [
+                Path.Command("G81", {"X": 1.0, "Y": 1.0, "Z": -0.5, "R": 0.1, "F": 10.0}),
+                Path.Command(
+                    "G81", {"X": 2.0, "Y": 2.0, "Z": -0.5, "R": 0.1, "F": 20.0}
+                ),  # Different feed rate
+            ]
+        )
 
-        expected_path = Path.Path([
-            Path.Command('G81', {'X': 1.0, 'Y': 1.0, 'Z': -0.5, 'R': 0.1, 'F': 10.0}),
-            Path.Command('G80'),  # Terminate due to feed rate change
-            Path.Command('G81', {'X': 2.0, 'Y': 2.0, 'Z': -0.5, 'R': 0.1, 'F': 20.0}),
-            Path.Command('G80'),  # Final termination
-        ])
+        expected_path = Path.Path(
+            [
+                Path.Command("G81", {"X": 1.0, "Y": 1.0, "Z": -0.5, "R": 0.1, "F": 10.0}),
+                Path.Command("G80"),  # Terminate due to feed rate change
+                Path.Command("G81", {"X": 2.0, "Y": 2.0, "Z": -0.5, "R": 0.1, "F": 20.0}),
+                Path.Command("G80"),  # Final termination
+            ]
+        )
 
         result = PostUtils.cannedCycleTerminator(test_path)
         self.assertEqual(len(result.Commands), len(expected_path.Commands))
         for i, (res, exp) in enumerate(zip(result.Commands, expected_path.Commands)):
             self.assertEqual(res.Name, exp.Name, f"Command {i}: name mismatch")
             self.assertEqual(res.Parameters, exp.Parameters, f"Command {i}: parameters mismatch")
-    
+
     def test060_canned_cycle_retract_plane_change(self):
         """Test cycle termination when retract plane changes"""
-        test_path = Path.Path([
-            Path.Command('G81', {'X': 1.0, 'Y': 1.0, 'Z': -0.5, 'R': 0.1, 'F': 10.0}),
-            Path.Command('G81', {'X': 2.0, 'Y': 2.0, 'Z': -0.5, 'R': 0.2, 'F': 10.0}),  # Different R plane
-        ])
+        test_path = Path.Path(
+            [
+                Path.Command("G81", {"X": 1.0, "Y": 1.0, "Z": -0.5, "R": 0.1, "F": 10.0}),
+                Path.Command(
+                    "G81", {"X": 2.0, "Y": 2.0, "Z": -0.5, "R": 0.2, "F": 10.0}
+                ),  # Different R plane
+            ]
+        )
 
-        expected_path = Path.Path([
-            Path.Command('G81', {'X': 1.0, 'Y': 1.0, 'Z': -0.5, 'R': 0.1, 'F': 10.0}),
-            Path.Command('G80'),  # Terminate due to R plane change
-            Path.Command('G81', {'X': 2.0, 'Y': 2.0, 'Z': -0.5, 'R': 0.2, 'F': 10.0}),
-            Path.Command('G80'),  # Final termination
-        ])
+        expected_path = Path.Path(
+            [
+                Path.Command("G81", {"X": 1.0, "Y": 1.0, "Z": -0.5, "R": 0.1, "F": 10.0}),
+                Path.Command("G80"),  # Terminate due to R plane change
+                Path.Command("G81", {"X": 2.0, "Y": 2.0, "Z": -0.5, "R": 0.2, "F": 10.0}),
+                Path.Command("G80"),  # Final termination
+            ]
+        )
 
         result = PostUtils.cannedCycleTerminator(test_path)
         self.assertEqual(len(result.Commands), len(expected_path.Commands))
         for i, (res, exp) in enumerate(zip(result.Commands, expected_path.Commands)):
             self.assertEqual(res.Name, exp.Name, f"Command {i}: name mismatch")
             self.assertEqual(res.Parameters, exp.Parameters, f"Command {i}: parameters mismatch")
-    
+
     def test070_canned_cycle_mixed_cycle_types(self):
         """Test termination between different cycle types"""
-        test_path = Path.Path([
-            Path.Command('G81', {'X': 1.0, 'Y': 1.0, 'Z': -0.5, 'R': 0.1, 'F': 10.0}),
-            Path.Command('G82', {'X': 2.0, 'Y': 2.0, 'Z': -0.5, 'R': 0.1, 'P': 1.0, 'F': 10.0}),  # Different cycle type
-        ])
+        test_path = Path.Path(
+            [
+                Path.Command("G81", {"X": 1.0, "Y": 1.0, "Z": -0.5, "R": 0.1, "F": 10.0}),
+                Path.Command(
+                    "G82", {"X": 2.0, "Y": 2.0, "Z": -0.5, "R": 0.1, "P": 1.0, "F": 10.0}
+                ),  # Different cycle type
+            ]
+        )
 
-        expected_path = Path.Path([
-            Path.Command('G81', {'X': 1.0, 'Y': 1.0, 'Z': -0.5, 'R': 0.1, 'F': 10.0}),
-            Path.Command('G80'),  # Terminate due to different cycle type (different parameters)
-            Path.Command('G82', {'X': 2.0, 'Y': 2.0, 'Z': -0.5, 'R': 0.1, 'P': 1.0, 'F': 10.0}),
-            Path.Command('G80'),  # Final termination
-        ])
+        expected_path = Path.Path(
+            [
+                Path.Command("G81", {"X": 1.0, "Y": 1.0, "Z": -0.5, "R": 0.1, "F": 10.0}),
+                Path.Command("G80"),  # Terminate due to different cycle type (different parameters)
+                Path.Command("G82", {"X": 2.0, "Y": 2.0, "Z": -0.5, "R": 0.1, "P": 1.0, "F": 10.0}),
+                Path.Command("G80"),  # Final termination
+            ]
+        )
 
         result = PostUtils.cannedCycleTerminator(test_path)
         self.assertEqual(len(result.Commands), len(expected_path.Commands))
         for i, (res, exp) in enumerate(zip(result.Commands, expected_path.Commands)):
             self.assertEqual(res.Name, exp.Name, f"Command {i}: name mismatch")
             self.assertEqual(res.Parameters, exp.Parameters, f"Command {i}: parameters mismatch")
-        
-        
-        
+
 
 class TestBuildPostList(unittest.TestCase):
     """
@@ -816,14 +853,15 @@ class TestBuildPostList(unittest.TestCase):
         self.assertEqual(len(firstoplist), 6)
         self.assertTrue(firstoutputitem[0] == "G54")
 
+
 class TestHeaderBuilder(unittest.TestCase):
     """Test the HeaderBuilder class."""
-    
+
     def test010_initialization(self):
         """Test that HeaderBuilder initializes with empty data structures."""
-        
+
         builder = _HeaderBuilder()
-        
+
         # Check initial state
         self.assertIsNone(builder._exporter)
         self.assertIsNone(builder._post_processor)
@@ -832,12 +870,12 @@ class TestHeaderBuilder(unittest.TestCase):
         self.assertEqual(builder._tools, [])
         self.assertEqual(builder._fixtures, [])
         self.assertEqual(builder._notes, [])
-    
+
     def test020_add_methods(self):
         """Test adding header elements."""
-        
+
         builder = _HeaderBuilder()
-        
+
         # Add various elements
         builder.add_exporter_info("TestExporter")
         builder.add_machine_info("TestMachine")
@@ -850,7 +888,7 @@ class TestHeaderBuilder(unittest.TestCase):
         builder.add_fixture("G54")
         builder.add_fixture("G55")
         builder.add_note("This is a test note")
-        
+
         # Verify elements were added
         self.assertEqual(builder._exporter, "TestExporter")
         self.assertEqual(builder._machine, "TestMachine")
@@ -861,21 +899,21 @@ class TestHeaderBuilder(unittest.TestCase):
         self.assertEqual(builder._tools, [(1, "End Mill"), (2, "Drill Bit")])
         self.assertEqual(builder._fixtures, ["G54", "G55"])
         self.assertEqual(builder._notes, ["This is a test note"])
-    
+
     def test030_path_property_empty(self):
         """Test Path property with no data returns empty Path."""
-        
+
         builder = _HeaderBuilder()
         path = builder.Path
-        
+
         self.assertIsInstance(path, Path.Path)
         self.assertEqual(len(path.Commands), 0)
-    
+
     def test040_path_property_complete(self):
         """Test Path property generates correct comment commands."""
-        
+
         builder = _HeaderBuilder()
-        
+
         # Add complete header data
         builder.add_exporter_info("FreeCAD")
         builder.add_machine_info("CNC Router")
@@ -883,15 +921,15 @@ class TestHeaderBuilder(unittest.TestCase):
         builder.add_cam_file("project.fcstd")
         builder.add_author("John Doe")
         builder.add_output_time("2024-12-24 10:00:00")
-        builder.add_tool(1, "1/4\" End Mill")
+        builder.add_tool(1, '1/4" End Mill')
         builder.add_fixture("G54")
         builder.add_note("Test operation")
-        
+
         path = builder.Path
-        
+
         # Verify it's a Path object
         self.assertIsInstance(path, Path.Path)
-        
+
         # Check expected number of commands
         expected_commands = [
             "(Exported by FreeCAD)",
@@ -900,36 +938,32 @@ class TestHeaderBuilder(unittest.TestCase):
             "(Cam File: project.fcstd)",
             "(Author: John Doe)",
             "(Output Time: 2024-12-24 10:00:00)",
-            "(T1=1/4\" End Mill)",
+            '(T1=1/4" End Mill)',
             "(Fixture: G54)",
-            "(Note: Test operation)"
+            "(Note: Test operation)",
         ]
-        
+
         self.assertEqual(len(path.Commands), len(expected_commands))
-        
+
         # Verify each command
         for i, expected_comment in enumerate(expected_commands):
             self.assertIsInstance(path.Commands[i], Path.Command)
             self.assertEqual(path.Commands[i].Name, expected_comment)
-    
+
     def test050_path_property_partial(self):
         """Test Path property with partial data."""
-        
+
         builder = _HeaderBuilder()
-        
+
         # Add only some elements
         builder.add_exporter_info()
         builder.add_tool(5, "Drill")
         builder.add_note("Partial test")
-        
+
         path = builder.Path
-        
-        expected_commands = [
-            "(Exported by FreeCAD)",
-            "(T5=Drill)",
-            "(Note: Partial test)"
-        ]
-        
+
+        expected_commands = ["(Exported by FreeCAD)", "(T5=Drill)", "(Note: Partial test)"]
+
         self.assertEqual(len(path.Commands), len(expected_commands))
         for i, expected_comment in enumerate(expected_commands):
             self.assertEqual(path.Commands[i].Name, expected_comment)
@@ -939,39 +973,38 @@ class TestHeaderBuilder(unittest.TestCase):
         gcode = path.toGCode()
         self.assertEqual(gcode, expected_gcode)
 
-    
     def test060_multiple_tools_fixtures_notes(self):
         """Test adding multiple tools, fixtures, and notes."""
-        
+
         builder = _HeaderBuilder()
-        
+
         # Add multiple items
         builder.add_tool(1, "Tool A")
         builder.add_tool(2, "Tool B")
         builder.add_tool(3, "Tool C")
-        
+
         builder.add_fixture("G54")
         builder.add_fixture("G55")
         builder.add_fixture("G56")
-        
+
         builder.add_note("Note 1")
         builder.add_note("Note 2")
-        
+
         path = builder.Path
-        
+
         # Should have 8 commands (3 tools + 3 fixtures + 2 notes)
         self.assertEqual(len(path.Commands), 8)
-        
+
         # Check tool commands
         self.assertEqual(path.Commands[0].Name, "(T1=Tool A)")
         self.assertEqual(path.Commands[1].Name, "(T2=Tool B)")
         self.assertEqual(path.Commands[2].Name, "(T3=Tool C)")
-        
+
         # Check fixture commands
         self.assertEqual(path.Commands[3].Name, "(Fixture: G54)")
         self.assertEqual(path.Commands[4].Name, "(Fixture: G55)")
         self.assertEqual(path.Commands[5].Name, "(Fixture: G56)")
-        
+
         # Check note commands
         self.assertEqual(path.Commands[6].Name, "(Note: Note 1)")
         self.assertEqual(path.Commands[7].Name, "(Note: Note 2)")
