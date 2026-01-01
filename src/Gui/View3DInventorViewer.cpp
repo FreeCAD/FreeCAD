@@ -548,6 +548,19 @@ void View3DInventorViewer::init()
     pcViewProviderRoot->addChild(threePointLightingSeparator);
     pcViewProviderRoot->addChild(environment);
 
+    // add a global hidden anchor object to ensure transparent objects work correctly
+    // in empty scenes - OpenInventor's two-pass transparency rendering requires at least
+    // one opaque object to properly initialize the depth buffer. so this fixes transparency
+    // issues for image planes, planes, and other transparent geometry.
+    // check #15192 #24003
+    auto hiddenAnchor = new SoSeparator();
+    auto hiddenScale = new SoScale();
+    hiddenScale->scaleFactor = SbVec3f(0, 0, 0);
+    auto hiddenCube = new SoCube();
+    hiddenAnchor->addChild(hiddenScale);
+    hiddenAnchor->addChild(hiddenCube);
+    pcViewProviderRoot->addChild(hiddenAnchor);
+
     // increase refcount before passing it to setScenegraph(), to avoid
     // premature destruction
     pcViewProviderRoot->ref();
@@ -1530,15 +1543,6 @@ void View3DInventorViewer::showRotationCenter(bool show)
             rotationCenterGroup = new SoSkipBoundingGroup();
 
             auto sphere = new SoSphere();
-
-            // There needs to be a non-transparent object to ensure the transparent sphere works
-            // when opening an new empty document
-            auto hidden = new SoSeparator();
-            auto hiddenScale = new SoScale();
-            hiddenScale->scaleFactor = SbVec3f(0, 0, 0);
-            hidden->addChild(hiddenScale);
-            hidden->addChild(sphere);
-
             auto complexity = new SoComplexity();
             complexity->value = 1;
 
@@ -1561,7 +1565,6 @@ void View3DInventorViewer::showRotationCenter(bool show)
             scaledSphere->scaleFactor = size;
 
             rotationCenterGroup->addChild(translation);
-            rotationCenterGroup->addChild(hidden);
             rotationCenterGroup->addChild(scaledSphere);
 
             sep->addChild(rotationCenterGroup);
