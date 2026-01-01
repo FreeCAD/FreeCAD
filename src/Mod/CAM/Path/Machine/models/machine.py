@@ -97,7 +97,8 @@ class OutputOptions:
     line_numbers: bool = False
     path_labels: bool = False
     machine_name: bool = False
-    doubles: bool = False
+    output_double_parameters: bool = False  # Controls whether to output duplicate axis values
+    output_bcnc_comments: bool = True
 
     # Line formatting options
     command_space: str = " "
@@ -105,6 +106,11 @@ class OutputOptions:
     line_increment: int = 10
     line_number_start: int = 100
     end_of_line_chars: str = "\n"
+
+    # UI and display options
+    show_editor: bool = True  # Show editor after G-code generation
+    list_tools_in_preamble: bool = False  # List tools in preamble
+    show_operation_labels: bool = True  # Show operation labels in output
 
     # Numeric precision settings
     axis_precision: int = 3  # Decimal places for axis coordinates
@@ -166,10 +172,7 @@ class ProcessingOptions:
     modal: bool = False  # Suppress repeated commands
     translate_drill_cycles: bool = False
     split_arcs: bool = False
-    show_editor: bool = True
-    list_tools_in_preamble: bool = False
     show_machine_units: bool = True
-    show_operation_labels: bool = True
     tool_before_change: bool = False  # Output T before M6 (e.g., T1 M6 instead of M6 T1)
 
     # Lists of commands
@@ -183,7 +186,6 @@ class ProcessingOptions:
     adaptive: bool = False  # Enable adaptive toolpath optimization
 
     # Numeric settings
-    chipbreaking_amount: float = 0.25  # mm
     spindle_wait: float = 0.0  # seconds
     return_to: Optional[Tuple[float, float, float]] = None  # (x, y, z) or None
 
@@ -395,33 +397,6 @@ class Machine:
         self.postprocessor_args = kwargs.get("postprocessor_args", "")
         self.motion_mode = kwargs.get("motion_mode", MotionMode.ABSOLUTE)
         self.parameter_functions = kwargs.get("parameter_functions", {})
-        self.parameter_order = kwargs.get(
-            "parameter_order",
-            [
-                "D",
-                "H",
-                "L",
-                "X",
-                "Y",
-                "Z",
-                "A",
-                "B",
-                "C",
-                "U",
-                "V",
-                "W",
-                "I",
-                "J",
-                "K",
-                "R",
-                "P",
-                "E",
-                "Q",
-                "F",
-                "S",
-                "T",
-            ],
-        )
 
         # Initialize computed fields
         self.freecad_version = ".".join(FreeCAD.Version()[0:3])
@@ -494,36 +469,15 @@ class Machine:
 
     # Dynamic state (for runtime)
     parameter_functions: Dict[str, Callable] = field(default_factory=dict)
-    parameter_order: List[str] = field(
-        default_factory=lambda: [
-            "D",
-            "H",
-            "L",
-            "X",
-            "Y",
-            "Z",
-            "A",
-            "B",
-            "C",
-            "U",
-            "V",
-            "W",
-            "I",
-            "J",
-            "K",
-            "R",
-            "P",
-            "E",
-            "Q",
-            "F",
-            "S",
-            "T",
-        ]
-    )
 
     def __post_init__(self):
         """Initialize computed fields"""
         self.freecad_version = ".".join(FreeCAD.Version()[0:3])
+        # Backward compatibility for doubles
+        if not hasattr(self, 'output_double_parameters'):
+            self.output.output_double_parameters = getattr(self.output, 'doubles', False)
+        # Set deprecated doubles for backward compatibility
+        self.output.doubles = self.output.output_double_parameters
         # Initialize configuration_units if not set
         if not hasattr(self, "_configuration_units"):
             self._configuration_units = "metric"
@@ -887,8 +841,12 @@ class Machine:
             "line_numbers": self.output.line_numbers,
             "path_labels": self.output.path_labels,
             "machine_name": self.output.machine_name,
-            "doubles": self.output.doubles,
+            "output_double_parameters": self.output.output_double_parameters,
+            "output_bcnc_comments": self.output.output_bcnc_comments,
             "output_units": self.output.output_units.value,
+            "show_editor": self.output.show_editor,
+            "list_tools_in_preamble": self.output.list_tools_in_preamble,
+            "show_operation_labels": self.output.show_operation_labels,
             "axis_precision": self.output.axis_precision,
             "feed_precision": self.output.feed_precision,
             "spindle_decimals": self.output.spindle_decimals,
@@ -938,16 +896,12 @@ class Machine:
             "modal": self.processing.modal,
             "translate_drill_cycles": self.processing.translate_drill_cycles,
             "split_arcs": self.processing.split_arcs,
-            "show_editor": self.processing.show_editor,
-            "list_tools_in_preamble": self.processing.list_tools_in_preamble,
             "show_machine_units": self.processing.show_machine_units,
-            "show_operation_labels": self.processing.show_operation_labels,
             "tool_before_change": self.processing.tool_before_change,
             "drill_cycles_to_translate": self.processing.drill_cycles_to_translate,
             "suppress_commands": self.processing.suppress_commands,
             "tool_change": self.processing.tool_change,
             "adaptive": self.processing.adaptive,
-            "chipbreaking_amount": self.processing.chipbreaking_amount,
             "spindle_wait": self.processing.spindle_wait,
         }
         if self.processing.return_to:
@@ -1112,7 +1066,8 @@ class Machine:
             config.output.line_numbers = output_data.get("line_numbers", False)
             config.output.path_labels = output_data.get("path_labels", False)
             config.output.machine_name = output_data.get("machine_name", False)
-            config.output.doubles = output_data.get("doubles", False)
+            config.output.output_double_parameters = output_data.get("output_double_parameters", False)
+            config.output.output_bcnc_comments = output_data.get("output_bcnc_comments", True)
 
             # Handle output_units conversion from string to enum
             output_units_str = output_data.get("output_units", "metric")
@@ -1125,6 +1080,14 @@ class Machine:
                 config.processing.tool_change = output_data["tool_change"]
             if "adaptive" in output_data:
                 config.processing.adaptive = output_data["adaptive"]
+            
+            # Migrate fields from ProcessingOptions to OutputOptions if needed
+            if "show_editor" in output_data:
+                config.output.show_editor = output_data["show_editor"]
+            if "list_tools_in_preamble" in output_data:
+                config.output.list_tools_in_preamble = output_data["list_tools_in_preamble"]
+            if "show_operation_labels" in output_data:
+                config.output.show_operation_labels = output_data["show_operation_labels"]
 
             # Set precision values from output_data
             if "axis_precision" in output_data:
@@ -1149,14 +1112,7 @@ class Machine:
                 "translate_drill_cycles", False
             )
             config.processing.split_arcs = processing_data.get("split_arcs", False)
-            config.processing.show_editor = processing_data.get("show_editor", True)
-            config.processing.list_tools_in_preamble = processing_data.get(
-                "list_tools_in_preamble", False
-            )
             config.processing.show_machine_units = processing_data.get("show_machine_units", True)
-            config.processing.show_operation_labels = processing_data.get(
-                "show_operation_labels", True
-            )
             config.processing.tool_before_change = processing_data.get("tool_before_change", False)
             config.processing.drill_cycles_to_translate = processing_data.get(
                 "drill_cycles_to_translate", ["G73", "G81", "G82", "G83"]
@@ -1164,7 +1120,6 @@ class Machine:
             config.processing.suppress_commands = processing_data.get("suppress_commands", [])
             config.processing.tool_change = processing_data.get("tool_change", True)
             config.processing.adaptive = processing_data.get("adaptive", False)
-            config.processing.chipbreaking_amount = processing_data.get("chipbreaking_amount", 0.25)
             config.processing.spindle_wait = processing_data.get("spindle_wait", 0.0)
             return_to = processing_data.get("return_to", None)
             config.processing.return_to = tuple(return_to) if return_to is not None else None

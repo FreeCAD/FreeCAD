@@ -73,7 +73,8 @@ class DataclassGUIGenerator:
         "line_numbers": translate("CAM_MachineEditor", "Line Numbers"),
         "path_labels": translate("CAM_MachineEditor", "Path Labels"),
         "machine_name": translate("CAM_MachineEditor", "Include Machine Name"),
-        "tool_change": translate("CAM_MachineEditor", "Tool Change Commands"),
+        "output_double_parameters": translate("CAM_MachineEditor", "Output Duplicate Axis Values"),
+        "output_bcnc_comments": translate("CAM_MachineEditor", "Output bCNC Comments"),
         "doubles": translate("CAM_MachineEditor", "Output Duplicate Axis Values"),
         "adaptive": translate("CAM_MachineEditor", "Adaptive Output"),
         "axis_precision": translate("CAM_MachineEditor", "Axis Precision"),
@@ -643,7 +644,7 @@ class MachineEditorDialog(QtGui.QDialog):
             self.spindle_count_combo.addItem(str(i), i)
         self.spindle_count_combo.currentIndexChanged.connect(self.update_spindles)
         layout.addRow(
-            translate("CAM_MachineEditor", "Number of Spindles"), self.spindle_count_combo
+            translate("CAM_MachineEditor", "Number of spindles"), self.spindle_count_combo
         )
 
         # Axes group
