@@ -29,6 +29,7 @@
 #include <Inventor/nodes/SoSwitch.h>
 
 #include <QEvent>
+#include <QFontMetrics>
 #include <QKeyEvent>
 #include <QPixmap>
 #include <QLabel>
@@ -364,8 +365,9 @@ void EditableDatumLabel::positionSpinbox()
 
     // Update lock icon position inside the spinbox if it exists and is visible
     if (lockIconLabel && lockIconLabel->isVisible()) {
-        int iconSize = 14;
-        int padding = 4;
+        const QFontMetrics fm(spinBox->fontMetrics());
+        int iconSize = fm.height();
+        int padding = spinBox->getMargin();
         QSize spinboxSize = spinBox->size();
         lockIconLabel->setGeometry(
             spinboxSize.width() - iconSize - padding,
@@ -510,56 +512,43 @@ void EditableDatumLabel::setSpinboxVisibleToMouse(bool val)
 
 void EditableDatumLabel::setLockedAppearance(bool locked)
 {
+    if (!locked) {
+        this->hasFinishedEditing = false;
+    }
+    if (!spinBox) {
+        return;
+    }
+    const QFontMetrics fm(spinBox->fontMetrics());
+    int iconSize = fm.height();
+    int padding = spinBox->getMargin();
     if (locked) {
-        if (spinBox) {
+        // create lock icon label it it doesn't exist, if it does - show it
+        if (!lockIconLabel) {
+            lockIconLabel = new QLabel(spinBox);
+            lockIconLabel->setAttribute(Qt::WA_TransparentForMouseEvents, true);
+            lockIconLabel->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 
-            // create lock icon label it it doesn't exist, if it does - show it
-            if (!lockIconLabel) {
-                lockIconLabel = new QLabel(spinBox);
-                lockIconLabel->setAttribute(Qt::WA_TransparentForMouseEvents, true);
-                lockIconLabel->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+            // load icon and scale it to fit in spinbox
+            QPixmap lockIcon = Gui::BitmapFactory().pixmap("Constraint_Lock");
+            QPixmap scaledIcon
+                = lockIcon.scaled(iconSize, iconSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+            lockIconLabel->setPixmap(scaledIcon);
 
-                // load icon and scale it to fit in spinbox
-                QPixmap lockIcon = Gui::BitmapFactory().pixmap("Constraint_Lock");
-                QPixmap scaledIcon
-                    = lockIcon.scaled(14, 14, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-                lockIconLabel->setPixmap(scaledIcon);
-
-                // position lock icon inside the spinbox
-                int iconSize = 14;
-                int padding = 4;
-                QSize spinboxSize = spinBox->size();
-                lockIconLabel->setGeometry(
-                    spinboxSize.width() - iconSize - padding,
-                    (spinboxSize.height() - iconSize) / 2,
-                    iconSize,
-                    iconSize
-                );
-                // style spinbox and add padding for lock
-                QString styleSheet = QString::fromLatin1(
-                                         "QSpinBox { "
-                                         "padding-right: %1px; "
-                                         "}"
-                )
-                                         .arg(iconSize + padding + 2);
-
-                spinBox->setStyleSheet(styleSheet);
-            }
-
-            lockIconLabel->show();
+            // position lock icon inside the spinbox
+            QSize spinboxSize = spinBox->size();
+            lockIconLabel->setGeometry(
+                spinboxSize.width() - iconSize - padding,
+                (spinboxSize.height() - iconSize) / 2,
+                iconSize,
+                iconSize
+            );
         }
+        lockIconLabel->show();
     }
     else {
-        this->hasFinishedEditing = false;
-
-        // if spinbox exists, reset its appearance
-        if (spinBox) {
-            spinBox->setStyleSheet(QString());
-
-            // hide lock icon if it exists for later reuse
-            if (lockIconLabel) {
-                lockIconLabel->hide();
-            }
+        // hide lock icon if it exists for later reuse
+        if (lockIconLabel) {
+            lockIconLabel->hide();
         }
     }
 }
