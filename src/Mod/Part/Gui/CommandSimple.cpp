@@ -543,4 +543,3 @@ void CreateSimplePartCommands()
     rcCmdMgr.addCommand(new CmdPartRefineShape());
     rcCmdMgr.addCommand(new CmdPartDefeaturing());
 }
-

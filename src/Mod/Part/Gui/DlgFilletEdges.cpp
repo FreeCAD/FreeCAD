@@ -1247,4 +1247,3 @@ bool TaskChamferEdges::reject()
 }
 
 #include "moc_DlgFilletEdges.cpp"
-

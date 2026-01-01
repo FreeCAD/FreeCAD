@@ -670,4 +670,3 @@ bool TaskRevolution::accept()
 }
 
 #include "moc_DlgRevolution.cpp"
-

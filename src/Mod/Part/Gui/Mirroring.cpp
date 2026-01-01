@@ -413,4 +413,3 @@ bool TaskMirroring::reject()
 }
 
 #include "moc_Mirroring.cpp"
-
