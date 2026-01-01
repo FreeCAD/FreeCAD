@@ -55,7 +55,7 @@ class AssetPreferencesPage:
         main_layout = QtGui.QHBoxLayout(asset_path_widget)
 
         # Create widgets
-        self.asset_path_label = QtGui.QLabel(translate("CAM_PreferencesAssets", "Asset Directory:"))
+        self.asset_path_label = QtGui.QLabel(translate("CAM_PreferencesAssets", "Asset directory"))
         self.asset_path_edit = QtGui.QLineEdit()
         self.asset_path_note_label = QtGui.QLabel(
             translate(

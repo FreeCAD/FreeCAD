@@ -680,11 +680,14 @@ class MachineEditorDialog(QtGui.QDialog):
         # Clear references before deleting widgets
         self.axis_edits = {}
 
-        # Clear existing axes widgets
+        # Clear existing axes widgets and disconnect signals
         for i in reversed(range(self.axes_layout.count())):
             widget = self.axes_layout.itemAt(i).widget()
             if widget:
-                widget.setParent(None)
+                # Disconnect all signals to prevent callbacks to deleted widgets
+                widget.blockSignals(True)
+                widget.deleteLater()
+                self.axes_layout.removeWidget(widget)
 
         # Get current type
         type_key = self.type_combo.itemData(self.type_combo.currentIndex())
@@ -891,8 +894,14 @@ class MachineEditorDialog(QtGui.QDialog):
                     edits["tool_change"].currentIndex()
                 )
 
-        # Clear existing spindle tabs
-        self.spindles_tabs.clear()
+        # Clear existing spindle tabs - this properly disconnects signals
+        while self.spindles_tabs.count() > 0:
+            tab = self.spindles_tabs.widget(0)
+            if tab:
+                tab.blockSignals(True)
+                tab.deleteLater()
+            self.spindles_tabs.removeTab(0)
+
         self.spindle_edits = []
         count = self.spindle_count_combo.itemData(self.spindle_count_combo.currentIndex())
 
@@ -1042,20 +1051,6 @@ class MachineEditorDialog(QtGui.QDialog):
             )
             layout.addWidget(output_group)
             self._connect_widgets_to_machine(output_widgets, "output")
-
-            # # Precision Settings
-            # precision_group, precision_widgets = DataclassGUIGenerator.create_group_for_dataclass(
-            #     self.machine.precision, "Precision Settings"
-            # )
-            # layout.addWidget(precision_group)
-            # self._connect_widgets_to_machine(precision_widgets, "precision")
-
-            # Line Formatting
-            # formatting_group, formatting_widgets = DataclassGUIGenerator.create_group_for_dataclass(
-            #     self.machine.formatting, "Line Formatting"
-            # )
-            # layout.addWidget(formatting_group)
-            # self._connect_widgets_to_machine(formatting_widgets, "formatting")
 
             # G-Code Blocks
             blocks_group, blocks_widgets = DataclassGUIGenerator.create_group_for_dataclass(
@@ -1212,8 +1207,6 @@ class MachineEditorDialog(QtGui.QDialog):
         # Update nested dataclass fields
         dataclass_groups = [
             ("output", machine.output),
-            # ("precision", machine.precision),
-            # ("formatting", machine.formatting),
             ("blocks", machine.blocks),
             ("processing", machine.processing),
         ]

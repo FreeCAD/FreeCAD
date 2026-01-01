@@ -142,7 +142,7 @@ class GCodeBlocks:
     # Tool change lifecycle
     pre_tool_change: str = ""
     post_tool_change: str = ""
-    tool_return: str = ""  # Return to tool change position  # do we need this?
+    tool_return: str = ""  # Return to tool change position
 
     # Fixture/WCS change lifecycle
     pre_fixture_change: str = ""
@@ -151,13 +151,6 @@ class GCodeBlocks:
     # Rotary axis lifecycle
     pre_rotary_move: str = ""
     post_rotary_move: str = ""
-
-    # Spindle lifecycle
-    # pre_spindle_change: str = ""   # Futures
-    # post_spindle_change: str = ""   # Futures
-
-    # Miscellaneous
-    # finish_label: str = "Finish"   # do we need this?   Looks like bullshit
 
     post_job: str = ""
     postamble: str = ""  # Typically inserted at end of job
@@ -207,8 +200,20 @@ class LinearAxis:
     sequence: int = 0
 
     def __post_init__(self):
-        """Normalize direction vector after initialization"""
+        """Normalize direction vector and validate parameters after initialization"""
         self.direction_vector = self.direction_vector.normalize()
+
+        # Validate limits
+        if self.min_limit >= self.max_limit:
+            Path.Log.warning(
+                f"LinearAxis {self.name}: min_limit ({self.min_limit}) >= max_limit ({self.max_limit})"
+            )
+
+        # Validate velocity
+        if self.max_velocity <= 0:
+            Path.Log.warning(
+                f"LinearAxis {self.name}: max_velocity must be positive, got {self.max_velocity}"
+            )
 
     def is_valid_position(self, position):
         """Check if a position is within this axis's limits"""
@@ -258,12 +263,24 @@ class RotaryAxis:
     prefer_positive: bool = True
 
     def __post_init__(self):
-        """Normalize rotation vector after initialization"""
+        """Normalize rotation vector and validate parameters after initialization"""
         if self.rotation_vector is None or self.rotation_vector.Length < 1e-6:
             # Default to Z-axis rotation if vector is null or zero-length
             self.rotation_vector = FreeCAD.Vector(0, 0, 1)
         else:
             self.rotation_vector = self.rotation_vector.normalize()
+
+        # Validate limits
+        if self.min_limit >= self.max_limit:
+            Path.Log.warning(
+                f"RotaryAxis {self.name}: min_limit ({self.min_limit}) >= max_limit ({self.max_limit})"
+            )
+
+        # Validate velocity
+        if self.max_velocity <= 0:
+            Path.Log.warning(
+                f"RotaryAxis {self.name}: max_velocity must be positive, got {self.max_velocity}"
+            )
 
     def is_valid_angle(self, angle):
         """Check if an angle is within this axis's limits"""
@@ -359,52 +376,6 @@ class Machine:
     machine configurations (3-axis, 4-axis, 5-axis).
     """
 
-    def __init__(
-        self, name: str = "Default Machine", configuration_units: str = "metric", **kwargs
-    ):
-        # Set default values for all fields
-        self.name = name
-        self.manufacturer = kwargs.get("manufacturer", "")
-        self.description = kwargs.get("description", "")
-        self.linear_axes = {}
-        self.rotary_axes = {}
-        self.spindles = []
-        self.reference_system = kwargs.get(
-            "reference_system",
-            {
-                "X": FreeCAD.Vector(1, 0, 0),
-                "Y": FreeCAD.Vector(0, 1, 0),
-                "Z": FreeCAD.Vector(0, 0, 1),
-            },
-        )
-        self.tool_axis = kwargs.get("tool_axis", FreeCAD.Vector(0, 0, -1))
-        self.primary_rotary_axis = kwargs.get("primary_rotary_axis")
-        self.secondary_rotary_axis = kwargs.get("secondary_rotary_axis")
-        self.compound_moves = kwargs.get("compound_moves", True)
-        self.prefer_positive_rotation = kwargs.get("prefer_positive_rotation", True)
-        self._configuration_units = configuration_units
-        self.version = kwargs.get("version", 1)
-        self.output = kwargs.get("output", OutputOptions())
-        # Handle legacy precision settings if provided
-        precision = kwargs.get("precision")
-        if precision is not None:
-            self.output.axis_precision = precision.axis_precision
-            self.output.feed_precision = precision.feed_precision
-            self.output.spindle_decimals = precision.spindle_decimals
-        self.blocks = kwargs.get("blocks", GCodeBlocks())
-        self.processing = kwargs.get("processing", ProcessingOptions())
-        self.postprocessor_file_name = kwargs.get("postprocessor_file_name", "")
-        self.postprocessor_args = kwargs.get("postprocessor_args", "")
-        self.motion_mode = kwargs.get("motion_mode", MotionMode.ABSOLUTE)
-        self.parameter_functions = kwargs.get("parameter_functions", {})
-
-        # Initialize computed fields
-        self.freecad_version = ".".join(FreeCAD.Version()[0:3])
-
-        # Handle machine_type if provided (for backward compatibility)
-        if "machine_type" in kwargs and kwargs["machine_type"]:
-            self._initialize_from_machine_type(kwargs["machine_type"])
-
     """
     Unified machine configuration combining physical machine definition
     with post-processor settings.
@@ -445,9 +416,7 @@ class Machine:
     prefer_positive_rotation: bool = True
 
     # Units and versioning
-    _configuration_units: str = field(
-        default="metric", init=False
-    )  # Internal storage for configuration_units
+    configuration_units: str = "metric"  # Internal storage for configuration_units
     version: int = 1
     freecad_version: str = field(init=False)
 
@@ -471,36 +440,25 @@ class Machine:
     parameter_functions: Dict[str, Callable] = field(default_factory=dict)
 
     def __post_init__(self):
-        """Initialize computed fields"""
+        """Initialize computed fields and handle backward compatibility"""
+        # Initialize computed fields
         self.freecad_version = ".".join(FreeCAD.Version()[0:3])
+
+        # Validate configuration_units
+        if self.configuration_units not in ["metric", "imperial"]:
+            raise ValueError(
+                f"configuration_units must be 'metric' or 'imperial', got '{self.configuration_units}'"
+            )
+
         # Backward compatibility for doubles
-        if not hasattr(self, 'output_double_parameters'):
-            self.output.output_double_parameters = getattr(self.output, 'doubles', False)
+        if not hasattr(self.output, "output_double_parameters"):
+            self.output.output_double_parameters = getattr(self.output, "doubles", False)
         # Set deprecated doubles for backward compatibility
         self.output.doubles = self.output.output_double_parameters
-        # Initialize configuration_units if not set
-        if not hasattr(self, "_configuration_units"):
-            self._configuration_units = "metric"
 
     # ========================================================================
     # PROPERTIES - Bridge between physical machine and post-processor
     # ========================================================================
-
-    @property
-    def configuration_units(self) -> str:
-        """Get machine configuration units ("metric" or "imperial")"""
-        if not hasattr(self, "_configuration_units"):
-            self._configuration_units = "metric"
-        return self._configuration_units
-
-    @configuration_units.setter
-    def configuration_units(self, value: str) -> None:
-        """Set machine configuration units ("metric" or "imperial")"""
-        if not value:  # Skip empty strings
-            return
-        if value not in ["metric", "imperial"]:
-            raise ValueError("configuration_units must be 'metric' or 'imperial'")
-        self._configuration_units = value
 
     @property
     def machine_units(self) -> MachineUnits:
@@ -818,7 +776,6 @@ class Machine:
                 "name": self.name,
                 "manufacturer": self.manufacturer,
                 "description": self.description,
-                # "type": self.machine_type,
                 "units": self.configuration_units,
                 "axes": axes,
                 "spindles": [spindle.to_dict() for spindle in self.spindles],
@@ -984,12 +941,6 @@ class Machine:
             configuration_units=machine_data.get("units", "metric"),
             manufacturer=machine_data.get("manufacturer", ""),
             description=machine_data.get("description", ""),
-            # machine_type=machine_data.get("type"),
-            **{
-                k: v
-                for k, v in machine_data.items()
-                if k not in ["name", "units", "manufacturer", "description", "type"]
-            },
         )
 
         # Parse axes from new flattened structure
@@ -1029,8 +980,8 @@ class Machine:
                     max_velocity=max_velocity,
                 )
             elif axis_type == "angular":
-                joint = axis_data.get("joint", [[0, 0, 1], [0, 0, 0]])
-                rotation_vec = FreeCAD.Vector(joint[0][0], joint[0][1], joint[0][2])
+                joint = axis_data.get("joint", [[0, 0, 0], [0, 0, 1]])
+                rotation_vec = FreeCAD.Vector(joint[1][0], joint[1][1], joint[1][2])
 
                 min_limit = axis_data.get("min", -360)
                 max_limit = axis_data.get("max", 360)
@@ -1066,7 +1017,9 @@ class Machine:
             config.output.line_numbers = output_data.get("line_numbers", False)
             config.output.path_labels = output_data.get("path_labels", False)
             config.output.machine_name = output_data.get("machine_name", False)
-            config.output.output_double_parameters = output_data.get("output_double_parameters", False)
+            config.output.output_double_parameters = output_data.get(
+                "output_double_parameters", False
+            )
             config.output.output_bcnc_comments = output_data.get("output_bcnc_comments", True)
 
             # Handle output_units conversion from string to enum
@@ -1080,7 +1033,7 @@ class Machine:
                 config.processing.tool_change = output_data["tool_change"]
             if "adaptive" in output_data:
                 config.processing.adaptive = output_data["adaptive"]
-            
+
             # Migrate fields from ProcessingOptions to OutputOptions if needed
             if "show_editor" in output_data:
                 config.output.show_editor = output_data["show_editor"]

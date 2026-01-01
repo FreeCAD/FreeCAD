@@ -382,7 +382,6 @@ class TestMachineFactory(PathTestUtils.PathTestBase):
             name="Complex Machine",
             manufacturer="Test Mfg",
             description="Full featured machine",
-            machine_type="xyzac",
             configuration_units="metric",
         )
 
