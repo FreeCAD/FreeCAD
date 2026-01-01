@@ -669,7 +669,8 @@ void TaskSketcherSolverAdvanced::onSpinBoxMaxIterValueChanged(int i)
 void TaskSketcherSolverAdvanced::onSpinBoxAutoQRAlgoChanged(int i)
 {
     ui->spinBoxAutoQRThreshold->onSave();
-    const_cast<Sketcher::Sketch&>(sketchView->getSketchObject()->getSolvedSketch()).setAutoQRThreshold(i);
+    const_cast<Sketcher::Sketch&>(sketchView->getSketchObject()->getSolvedSketch())
+        .setAutoQRThreshold(i);
 }
 
 void TaskSketcherSolverAdvanced::onCheckBoxAutoQRAlgoStateChanged(int state)
