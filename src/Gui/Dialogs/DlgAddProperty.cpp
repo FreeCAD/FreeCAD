@@ -537,11 +537,12 @@ void DlgAddProperty::initializeWidgets(ViewProviderVarSet* viewProvider)
     addButton->setText(tr("Add"));
     setAddEnabled(false);
 
-    ui->lineEditName->setFocus();
+    comboBoxGroup.setFocus();
 
-    QWidget::setTabOrder(ui->lineEditName, ui->lineEditToolTip);
-    QWidget::setTabOrder(ui->lineEditToolTip, &comboBoxGroup);
     QWidget::setTabOrder(&comboBoxGroup, ui->comboBoxType);
+    QWidget::setTabOrder(ui->comboBoxType, ui->lineEditName);
+    QWidget::setTabOrder(ui->lineEditName, editor.get());
+    QWidget::setTabOrder(editor.get(), ui->lineEditToolTip);
 
     adjustSize();
 }
