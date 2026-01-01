@@ -1,6 +1,11 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
+import FreeCAD
+import Path
 import math
+
+
+translate = FreeCAD.Qt.translate
 
 
 def tsp_solver_points(points, routeStartPoint=None, routeEndPoint=None):
@@ -38,9 +43,11 @@ def tsp_solver_points(points, routeStartPoint=None, routeEndPoint=None):
     """
 
     # STEP 0: Checking input data
-    if not isinstance(points, list) or not points or not isinstance(points[0], dict):
+    if not isinstance(points, list) or not points or not isinstance(points[-1], dict):
+        Path.Log.warning(translate("TSP", "Error input data"))
         return None
-    if "x" not in points[0] or "y" not in points[0]:
+    if {"x", "y"} > points[-1].keys():
+        Path.Log.warning(translate("TSP", "Not enough keys in dictionary 'points'"))
         return None
 
     # STEP 1: Adds the routeStartPoint (it will be deleted at the end)
@@ -263,7 +270,7 @@ def tsp_solver_tunnels(tunnels, allowFlipping=False, routeStartPoint=None, route
     for i, wire in wires:
         tunnels.append(
             {
-                "index": i,                                     # index of the wire
+                "index": i,                                     # *index of the wire
                 "startX": wire.OrderedEdges[0].firstVertex().X, # point.x tunnel start
                 "startY": wire.OrderedEdges[0].firstVertex().Y, # point.y tunnel start
                 "endX": (
@@ -276,12 +283,15 @@ def tsp_solver_tunnels(tunnels, allowFlipping=False, routeStartPoint=None, route
                     if wire.isClosed()
                     else wire.OrderedVertexes[-1].Y
                 ),                                              # point.y tunnel end
-                "isOpen": not wire.isClosed(),                  # is wire open?
-                "flipped": False,                               # init value should be False
+                "isOpen": not wire.isClosed(),                  # *is wire open?
+                "flipped": False,                               # *init value should be False
                                                                 # Result will be True,
                                                                 # if flipped wire get better sorting result
             }
         )
+
+    # *Keys 'index', 'isOpen' and 'fipped' will be added to dictionary automatically
+
 
     # get reordered tunnels
     orderedTunnels = tsp_solver_tunnels(
@@ -299,19 +309,23 @@ def tsp_solver_tunnels(tunnels, allowFlipping=False, routeStartPoint=None, route
             orderedWires.append(wires[wire["index"]])
     """
 
-    # STEP 0: Checking input data
-    if not isinstance(tunnels, list) or not tunnels or not isinstance(tunnels[0], dict):
+    # STEP 0.1: Checking and prepare input data
+    if not isinstance(tunnels, list) or not tunnels or not isinstance(tunnels[-1], dict):
+        Path.Log.warning(translate("TSP", "Error input data"))
         return None
-    if (
-        "index" not in tunnels[0]
-        or "startX" not in tunnels[0]
-        or "startY" not in tunnels[0]
-        or "endX" not in tunnels[0]
-        or "endY" not in tunnels[0]
-        or "isOpen" not in tunnels[0]
-        or "flipped" not in tunnels[0]
-    ):
+    if {"startX", "startY", "endX", "endY"} > tunnels[-1].keys():
+        Path.Log.warning(translate("TSP", "Not enough keys in dictionary 'tunnels'"))
         return None
+
+    # STEP 0.2: Add keys 'index', 'isOpen' and 'fipped'
+    for i in range(len(tunnels)):
+        isOpen = (
+            True
+            if tunnels[i]["startX"] != tunnels[i]["endX"]
+            or tunnels[i]["startY"] != tunnels[i]["endY"]
+            else False
+        )
+        tunnels[i].update({"index": i, "isOpen": isOpen, "flipped": False})
 
     # STEP 1: Adds the routeStartPoint (it will be deleted at the end)
     if routeStartPoint is None:
