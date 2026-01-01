@@ -2165,7 +2165,7 @@ TopoShape& TopoShape::makeElementEvolve(
             || !profile.getSubTopoShape(TopAbs_EDGE, 1).isLinearEdge()) {
             FC_THROWM(
                 Base::CADKernelError,
-                "Expect the the profile to be a planar wire or a face or a line"
+                "Expect the profile to be a planar wire or a face or a line"
             );
         }
     }
@@ -3642,7 +3642,7 @@ struct MapperPrism: MapperMaker
             TopoShape shape(maker.Shape());
             for (auto& vertex : bottom.getSubShapes(TopAbs_VERTEX)) {
                 for (auto& e : shape.findAncestorsShapes(vertex, TopAbs_EDGE)) {
-                    // Make sure to not visit the the same edge twice.
+                    // Make sure to not visit the same edge twice.
                     // And check only edge that are not found in the bottom profile
                     if (!edgeSet.insert(e).second && !bottom.findShape(e)) {
                         auto otherVertex = TopExp::FirstVertex(TopoDS::Edge(e));

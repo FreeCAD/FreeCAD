@@ -208,7 +208,7 @@ be used without having to re-specify the SourceDestBuffers.
 
 If a conversion or bounds error occurs during the transfer, the CompressedVectorWriter is left in an
 undocumented state (it can't be used any further), and all previously written records are deleted
-from the the associated CompressedVectorNode which will then have zero children. If a file I/O or
+from the associated CompressedVectorNode which will then have zero children. If a file I/O or
 checksum error occurs during the transfer, both this CompressedVectorWriter and the associated
 ImageFile are left in an undocumented state (they can't be used any further).
 
