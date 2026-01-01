@@ -121,11 +121,13 @@ public:
      App::PropertyEnumeration,                                                                     \
      ((long)0),                                                                                    \
      "Disabled: disable copy on change\n"                                                          \
-     "Enabled: enable copy linked object on change of any of its properties marked as "            \
+     "Enabled: enable copying of the linked object on change of any of its properties marked as "  \
      "CopyOnChange\n"                                                                              \
-     "Owned: indicate the linked object has been copied and is own owned by the link. And the\n"   \
-     "       the link will try to sync any change of the original linked object back to the "      \
-     "copy.",                                                                                      \
+     "Owned: indicate that the linked object has been copied and the copy is owned by the link. "  \
+     "This state is set by the link automatically, not by the user. In this state, the link will " \
+     "not try to sync any changes of the original linked object back to the copy.\n"               \
+     "Tracking: same as enabled, but additionally the copy will be automatically refreshed if "    \
+     "the original source object changes."                                                         \
      ##__VA_ARGS__)
 
 #define LINK_PARAM_COPY_ON_CHANGE_SOURCE(...)                                                      \
