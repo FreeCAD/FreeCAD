@@ -201,7 +201,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         Path.Log.track()
         machinestate = PathMachineState.MachineState()
 
-        mode = 'G99' if obj.KeepToolDown else 'G98'
+        mode = "G99" if obj.KeepToolDown else "G98"
 
         # Calculate offsets to add to target edge
         endoffset = 0.0
@@ -217,7 +217,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             v2 = FreeCAD.Vector(hole["x"], hole["y"], obj.FinalDepth.Value - endoffset)
             edgelist.append(Part.makeLine(v1, v2))
 
-        # build list of solids for collision detection. 
+        # build list of solids for collision detection.
         # Include base objects from job
         solids = []
         for base in job.BaseObjects:
@@ -233,9 +233,9 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         # Start computing the Path
         self.commandlist.append(Path.Command("(Begin Drilling)"))
 
-        # Make sure tool is at a clearance height 
+        # Make sure tool is at a clearance height
         command = Path.Command("G0", {"Z": obj.ClearanceHeight.Value})
-        #machine.addCommand(command)
+        # machine.addCommand(command)
         self.commandlist.append(command)
 
         # iterate the edgelist and generate gcode
@@ -257,7 +257,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                 firstMove = False
 
             else:  # Use get_linking_moves generator
-                linking_moves = get_linking_moves(
+                linking_moves = linking.get_linking_moves(
                     machinestate.getPosition(),
                     startPoint,
                     obj.ClearanceHeight.Value,
@@ -295,10 +295,10 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             # Set RetractMode annotation for each command
             for command in drillcommands:
                 annotations = command.Annotations
-                annotations['RetractMode'] = mode
+                annotations["RetractMode"] = mode
                 command.Annotations = annotations
                 self.commandlist.append(command)
-                 #machine.addCommand(command)
+                # machine.addCommand(command)
 
         # Apply feedrates to commands
         PathFeedRate.setFeedRate(self.commandlist, obj.ToolController)
