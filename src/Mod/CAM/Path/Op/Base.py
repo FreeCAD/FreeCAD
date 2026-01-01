@@ -457,9 +457,9 @@ class ObjectOp(object):
                 "BlockDelete",
                 "Path",
                 QT_TRANSLATE_NOOP(
-                "App::Property", "Enable post processor to add block delete commands"
-            ),
-        )
+                    "App::Property", "Enable post processor to add block delete commands"
+                ),
+            )
 
         if FeatureStepDown & features and not hasattr(obj, "StepDown"):
             obj.addProperty(
@@ -824,7 +824,7 @@ class ObjectOp(object):
         if obj.BlockDelete:
             for command in self.commandlist:
                 annotations = command.Annotations
-                annotations['BlockDelete'] = True
+                annotations["BlockDelete"] = True
                 command.Annotations = annotations
 
         path = Path.Path(self.commandlist)
