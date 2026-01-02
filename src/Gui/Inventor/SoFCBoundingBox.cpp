@@ -29,6 +29,7 @@
 #include <Inventor/nodes/SoText2.h>
 #include <Inventor/nodes/SoTransform.h>
 #include <Inventor/actions/SoActions.h>
+#include <GL/glext.h>
 
 #include "ViewParams.h"
 #include "SoFCUnifiedSelection.h"
