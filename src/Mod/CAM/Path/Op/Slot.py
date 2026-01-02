@@ -569,11 +569,6 @@ class ObjectSlot(PathOp.ObjectOp):
             self.commandlist.clear()
             return False
 
-        # Final move to clearance height
-        self.commandlist.append(
-            Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid})
-        )
-
         # Hide debug visuals
         if self.showDebugObjects and FreeCAD.GuiUp:
             FreeCADGui.ActiveDocument.getObject(self.tmpGrp.Name).Visibility = False
@@ -763,16 +758,17 @@ class ObjectSlot(PathOp.ObjectOp):
                     CMDS.append(
                         Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid})
                     )
+                CMDS.pop()  # remove move to safe height at last step down
             elif obj.CutPattern == "ZigZag":
                 i = 0
                 for depth in self.depthParams:
-                    if i % 2 == 0:  # even
+                    if i == 0:  # first
                         CMDS.extend(arcPass(PATHS[path_index], depth))
+                    elif i % 2 == 0:  # even
+                        CMDS.extend(arcPass(PATHS[path_index], depth)[1:])
                     else:  # odd
-                        CMDS.extend(arcPass(PATHS[not path_index], depth))
+                        CMDS.extend(arcPass(PATHS[not path_index], depth)[1:])
                     i += 1
-        # Raise to SafeHeight when finished
-        CMDS.append(Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid}))
 
         if self.isDebug:
             Path.Log.debug("G-code arc command is: {}".format(PATHS[path_index][2]))
@@ -870,7 +866,6 @@ class ObjectSlot(PathOp.ObjectOp):
         # CMDS.append(Path.Command('N (Tool type: {})'.format(toolType), {}))
         if obj.LayerMode == "Single-pass":
             CMDS.extend(linePass(p1, p2, obj.FinalDepth.Value))
-            CMDS.append(Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid}))
         else:
             if obj.CutPattern == "Line":
                 for dep in self.depthParams:
@@ -878,6 +873,7 @@ class ObjectSlot(PathOp.ObjectOp):
                     CMDS.append(
                         Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid})
                     )
+                CMDS.pop()  # remove move to safe height at last step down
             elif obj.CutPattern == "ZigZag":
                 CMDS.append(Path.Command("G0", {"X": p1.x, "Y": p1.y, "F": self.horizRapid}))
                 i = 0
@@ -889,7 +885,6 @@ class ObjectSlot(PathOp.ObjectOp):
                         CMDS.append(Path.Command("G1", {"Z": dep, "F": self.vertFeed}))
                         CMDS.append(Path.Command("G1", {"X": p1.x, "Y": p1.y, "F": self.horizFeed}))
                     i += 1
-            CMDS.append(Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid}))
 
         return CMDS
 
