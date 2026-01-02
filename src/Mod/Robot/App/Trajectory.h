@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -27,6 +29,8 @@
 
 #include <Base/Persistence.h>
 #include <Base/Placement.h>
+
+#include <Mod/Robot/RobotGlobal.h>
 
 #include "Waypoint.h"
 

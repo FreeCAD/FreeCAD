@@ -28,7 +28,7 @@ from bimtests.TestArchSpace import TestArchSpace
 from bimtests.TestArchWall import TestArchWall
 from bimtests.TestArchBuildingPart import TestArchBuildingPart
 from bimtests.TestArchAxis import TestArchAxis
-from bimtests.TestArch import TestArch
+from bimtests.TestArchStructure import TestArchStructure
 from bimtests.TestArchMaterial import TestArchMaterial
 from bimtests.TestArchPanel import TestArchPanel
 from bimtests.TestArchWindow import TestArchWindow
@@ -47,4 +47,5 @@ from bimtests.TestArchReference import TestArchReference
 from bimtests.TestArchSchedule import TestArchSchedule
 from bimtests.TestArchTruss import TestArchTruss
 from bimtests.TestArchComponent import TestArchComponent
-
+from bimtests.TestWebGLExport import TestWebGLExport
+from bimtests.TestArchReport import TestArchReport

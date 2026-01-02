@@ -1,4 +1,5 @@
-#  -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2014 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -26,6 +27,7 @@ import Path.Base.Gui.Util as PathGuiUtil
 from PySide import QtCore
 import math
 import PathScripts.PathUtils as PathUtils
+import Path.Dressup.Utils as PathDressup
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 # lazily loaded modules
@@ -86,6 +88,10 @@ class ObjectDressup:
 
     def loads(self, state):
         return None
+
+    def onChanged(self, obj, prop):
+        if prop == "Path" and obj.ViewObject:
+            obj.ViewObject.signalChangeIcon()
 
     def shortcut(self, queue):
         """Determines whether its shorter to twist CW or CCW to align with
@@ -149,16 +155,17 @@ class ObjectDressup:
         return myAngle
 
     def getIncidentAngle(self, queue):
-        # '''returns in the incident angle in radians between the current and previous moves'''
+        # '''returns in the incident angle in degrees between the current and previous moves'''
 
         angleatend = float(math.degrees(self.segmentAngleXY(queue[2], queue[1], True)))
-        if angleatend < 0:
-            angleatend = 360 + angleatend
         angleatstart = float(math.degrees(self.segmentAngleXY(queue[1], queue[0])))
-        if angleatstart < 0:
-            angleatstart = 360 + angleatstart
 
-        incident_angle = angleatend - angleatstart
+        incident_angle = (angleatstart - angleatend + 360) % 360
+
+        # The incident can never be greater than 180 degrees.  If it is
+        # then we need to measure the other way around the circle.
+        if incident_angle > 180:
+            incident_angle = 360 - incident_angle
 
         return incident_angle
 
@@ -571,12 +578,18 @@ class ViewProviderDressup:
             arg1.Object.Base = None
         return True
 
+    def getIcon(self):
+        if getattr(PathDressup.baseOp(self.Object), "Active", True):
+            return ":/icons/CAM_Dressup.svg"
+        else:
+            return ":/icons/CAM_OpActive.svg"
+
 
 class CommandDressupDragknife:
     def GetResources(self):
         return {
             "Pixmap": "CAM_Dressup",
-            "MenuText": QT_TRANSLATE_NOOP("CAM_DressupDragKnife", "DragKnife"),
+            "MenuText": QT_TRANSLATE_NOOP("CAM_DressupDragKnife", "Drag Knife"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "CAM_DressupDragKnife",
                 "Modifies a toolpath to add dragknife corner actions",
@@ -596,7 +609,7 @@ class CommandDressupDragknife:
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
             FreeCAD.Console.PrintError(
-                translate("CAM_DressupDragKnife", "Please select one toolpath object") + "\n"
+                translate("CAM_DressupDragKnife", "Select one toolpath object") + "\n"
             )
             return
         if not selection[0].isDerivedFrom("Path::Feature"):
@@ -606,7 +619,7 @@ class CommandDressupDragknife:
             return
         if selection[0].isDerivedFrom("Path::FeatureCompoundPython"):
             FreeCAD.Console.PrintError(
-                translate("CAM_DressupDragKnife", "Please select a toolpath object")
+                translate("CAM_DressupDragKnife", "Select a toolpath object")
             )
             return
 
@@ -639,4 +652,4 @@ if FreeCAD.GuiUp:
     # register the FreeCAD command
     FreeCADGui.addCommand("CAM_DressupDragKnife", CommandDressupDragknife())
 
-FreeCAD.Console.PrintLog("Loading CAM_DressupDragKnife... done\n")
+FreeCAD.Console.PrintLog("Loading CAM_DressupDragKnife… done\n")

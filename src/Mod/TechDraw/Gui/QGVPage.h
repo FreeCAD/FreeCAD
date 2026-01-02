@@ -162,7 +162,7 @@ protected:
     void initNavigationStyle();
     void setNavigationStyle(std::string navParm);
 
-    void createStandardCursors(double dpr);
+    void createStandardCursors();
 
 private:
     RendererType m_renderer;

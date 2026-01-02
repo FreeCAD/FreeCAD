@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
  *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
@@ -21,27 +23,25 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <stack>
 #include <memory>
 #include <map>
 #include <set>
 #include <vector>
 #include <string>
-#endif
 
-#include <App/DocumentObjectPy.h>
 #include <Base/Console.h>
 #include <Base/Matrix.h>
+#include <Base/Placement.h>
 #include <Base/Tools.h>
 #include <Base/Writer.h>
 
+#include "Expression.h"
 #include "Application.h"
 #include "ElementNamingUtils.h"
 #include "Document.h"
 #include "DocumentObject.h"
+#include "DocumentObjectPy.h"
 #include "DocumentObjectExtension.h"
 #include "DocumentObjectGroup.h"
 #include "GeoFeatureGroupExtension.h"
@@ -231,6 +231,19 @@ void DocumentObject::touch(bool noRecompute)
 void DocumentObject::freeze()
 {
     StatusBits.set(ObjectStatus::Freeze);
+
+    // store read-only property names
+    this->readOnlyProperties.clear();
+    std::vector<std::pair<const char*, Property*>> list;
+    static_cast<App::PropertyContainer*>(this)->getPropertyNamedList(list);
+    for (auto pair: list){
+        if (pair.second->isReadOnly()){
+            this->readOnlyProperties.push_back(pair.first);
+        } else {
+            pair.second->setReadOnly(true);
+        }
+    }
+
     // use the signalTouchedObject to refresh the Gui
     if (_pDoc) {
         _pDoc->signalTouchedObject(*this);
@@ -244,6 +257,17 @@ void DocumentObject::freeze()
 void DocumentObject::unfreeze(bool noRecompute)
 {
     StatusBits.reset(ObjectStatus::Freeze);
+
+    // reset read-only property status
+    std::vector<std::pair<const char*, Property*>> list;
+    static_cast<App::PropertyContainer*>(this)->getPropertyNamedList(list);
+
+    for (auto pair: list){
+        if (! std::count(readOnlyProperties.begin(), readOnlyProperties.end(), pair.first)){
+            pair.second->setReadOnly(false);
+        }
+    }
+
     touch(noRecompute);
 }
 
@@ -712,6 +736,39 @@ bool DocumentObject::removeDynamicProperty(const char* name)
     return TransactionalObject::removeDynamicProperty(name);
 }
 
+bool DocumentObject::renameDynamicProperty(Property* prop, const char* name)
+{
+    std::string oldName = prop->getName();
+
+    auto expressions = ExpressionEngine.getExpressions();
+    std::vector<std::shared_ptr<Expression>> expressionsToMove;
+    std::vector<App::ObjectIdentifier> idsWithExprsToRemove;
+
+    for (const auto& [id, expr] : expressions) {
+        if (id.getProperty() == prop) {
+            idsWithExprsToRemove.push_back(id);
+            expressionsToMove.emplace_back(expr->copy());
+        }
+    }
+
+    for (const auto& it : idsWithExprsToRemove) {
+        ExpressionEngine.setValue(it, std::shared_ptr<Expression>());
+    }
+
+    bool renamed = TransactionalObject::renameDynamicProperty(prop, name);
+    if (renamed && _pDoc) {
+        _pDoc->renamePropertyOfObject(this, prop, oldName.c_str());
+    }
+
+
+    App::ObjectIdentifier idNewProp(prop->getContainer(), std::string(name));
+    for (auto& exprToMove : expressionsToMove) {
+        ExpressionEngine.setValue(idNewProp, exprToMove);
+    }
+
+    return renamed;
+}
+
 App::Property* DocumentObject::addDynamicProperty(const char* type,
                                                   const char* name,
                                                   const char* group,
@@ -770,12 +827,11 @@ DocumentObject::onProposedLabelChange(std::string& newLabel)
     }
     if (doc && !newLabel.empty() && !_hPGrp->GetBool("DuplicateLabels") && !allowDuplicateLabel()
         && doc->containsLabel(newLabel)) {
-        // We must ensure the Label is unique in the document (well, sort of...).
+        // The label already exists but settings are such that duplicate labels should not be assigned.
         std::string objName = getNameInDocument();
-        if (doc->haveSameBaseName(objName, newLabel)) {
-            // The base name of the proposed label equals the base name of the object Name, so we
-            // use the object Name, which could actually be identical to another object's Label, but
-            // probably isn't.
+        if (!doc->containsLabel(objName) && doc->haveSameBaseName(objName, newLabel)) {
+            // The object name is not already a Label and the base name of the proposed label
+            // equals the base name of the object Name, so we use the object Name as the replacement Label.
             newLabel = objName;
         }
         else {
@@ -810,6 +866,10 @@ DocumentObject::onProposedLabelChange(std::string& newLabel)
 
 void DocumentObject::onEarlyChange(const Property* prop)
 {
+    if (isFreezed() && prop != &Visibility) {
+        return;
+    }
+
     if (GetApplication().isClosingAll()) {
         return;
     }
@@ -1558,3 +1618,54 @@ void DocumentObject::onPropertyStatusChanged(const Property& prop, unsigned long
         getDocument()->signalChangePropertyEditor(*getDocument(), prop);
     }
 }
+
+Base::Placement DocumentObject::getPlacementOf(const std::string& sub, DocumentObject* targetObj)
+{
+    Base::Placement plc;
+    auto* propPlacement = freecad_cast<App::PropertyPlacement*>(getPropertyByName("Placement"));
+    if (propPlacement) {
+        // If the object has no placement (like a Group), plc stays identity so we can proceed.
+        plc = propPlacement->getValue();
+    }
+
+    std::vector<std::string> names = Base::Tools::splitSubName(sub);
+
+    if (names.empty() || this == targetObj) {
+        return plc;
+    }
+
+    DocumentObject* subObj = getDocument()->getObject(names.front().c_str());
+
+    if (!subObj) {
+        return plc;
+    }
+
+    std::vector<std::string> newNames(names.begin() + 1, names.end());
+    std::string newSub = Base::Tools::joinList(newNames, ".");
+
+    return plc * subObj->getPlacementOf(newSub, targetObj);
+}
+
+Base::Placement DocumentObject::getPlacement() const
+{
+    Base::Placement plc;
+    if (auto* prop = getPlacementProperty()) {
+        plc = prop->getValue();
+    }
+    return plc;
+}
+
+App::PropertyPlacement* DocumentObject::getPlacementProperty() const
+{
+    if (auto linkExtension = getExtensionByType<App::LinkBaseExtension>(true)) {
+        if (auto linkPlacementProp = linkExtension->getLinkPlacementProperty()) {
+            return linkPlacementProp;
+        }
+
+        return linkExtension->getPlacementProperty();
+    }
+
+    return getPropertyByName<App::PropertyPlacement>("Placement");
+}
+
+

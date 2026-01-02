@@ -20,14 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <string>
 # include <QColor>
 # include <QFont>
 # include <QString>
-#endif
+
 
 #include <App/Application.h>
 #include <App/Material.h>

@@ -35,6 +35,7 @@ import datetime
 from datetime import date
 import csv
 import codecs
+from fractions import Fraction
 import os.path
 
 CreatedByChkLst = []
@@ -55,7 +56,6 @@ listofkeys = [
     "CreatedDateChkLst",
     "LastModifiedDateChkLst",
 ]
-
 
 """Run the following code when the command is activated (button press)."""
 file_path = App.getResourceDir() + "Mod/TechDraw/CSVdata/FillTemplateFields.csv"
@@ -91,11 +91,11 @@ keyLst = []
 
 class TaskFillTemplateFields:
     def __init__(self):
-        objs = App.ActiveDocument.Objects
+        objs = App.ActiveDocument.findObjects(Type="TechDraw::DrawPage")
+
         for obj in objs:
             if (
-                obj.TypeId == "TechDraw::DrawPage"
-                and os.path.exists(file_path)
+                os.path.exists(file_path)
                 and listofkeys == reader.fieldnames
             ):
                 self.page = obj
@@ -103,7 +103,7 @@ class TaskFillTemplateFields:
                     msgBox = QtGui.QMessageBox()
                     msgTitle = QtCore.QT_TRANSLATE_NOOP(
                         "Techdraw_FillTemplateFields",
-                        "View or Projection Group missing",
+                        "View or projection group missing",
                     )
                     msg = QtCore.QT_TRANSLATE_NOOP(
                         "Techdraw_FillTemplateFields",
@@ -112,15 +112,17 @@ class TaskFillTemplateFields:
                     )
                     msgBox.setText(msg)
                     msgBox.setWindowTitle(msgTitle)
+                    msgBox.setWindowFlag(QtCore.Qt.WindowStaysOnTopHint, True)
                     msgBox.exec_()
                     break
 
                 projgrp_view = None
                 for pageObj in obj.Views:
-                    if pageObj.isDerivedFrom("TechDraw::DrawViewPart"):
-                        projgrp_view = self.page.Views[0]
-                    elif pageObj.isDerivedFrom("TechDraw::DrawProjGroup"):
-                        projgrp_view = self.page.Views[0]
+                    if hasattr(pageObj, "Scale"):
+                        # use the scale from the first DVP or DPG encountered to fill the template's
+                        # Scale editable text.
+                        projgrp_view = pageObj
+                        break
 
                 self.texts = self.page.Template.EditableTexts
 
@@ -131,7 +133,7 @@ class TaskFillTemplateFields:
                 self.dialog.resize(1050, 400)
                 self.dialog.setWindowTitle(
                     QtCore.QT_TRANSLATE_NOOP(
-                        "TechDraw_FillTemplateFields", "Fill Template Fields in "
+                        "TechDraw_FillTemplateFields", "Fill Template Fields In "
                     )
                     + self.page.Label
                 )
@@ -140,134 +142,199 @@ class TaskFillTemplateFields:
                 updateCb = QtCore.QT_TRANSLATE_NOOP(
                     "TechDraw_FillTemplateFields", "Update"
                 )
-                updateTxt = (
-                    "                                                       ==>>"
-                )
+                icon_name = "button_right"
+                svg = ":/icons/" + icon_name
+                pix = QtGui.QPixmap(svg)
                 self.checkBoxList = []
                 self.lineTextList = []
+                dialogRow = 0
+                longestText = 0
                 for key, value in self.texts.items():
                     App.Console.PrintLog("{0} = {1} | ".format(key, value))
                     if str(key).lower() in CreatedByChkLst:
                         t1 = QtGui.QLabel(value)
-                        self.la.addWidget(t1, 0, 0)
+                        self.la.addWidget(t1, dialogRow, 0)
                         self.cb1 = QtGui.QCheckBox(updateCb)
                         self.cb1.setObjectName(key)
-                        self.cb1.setChecked(QtCore.Qt.Checked)
-                        self.la.addWidget(self.cb1, 0, 1)
-                        u1 = QtGui.QLabel(updateTxt)
-                        self.la.addWidget(u1, 0, 2)
+                        if hasattr(self.cb1, "setCheckState"):
+                            self.cb1.setCheckState(QtCore.Qt.Checked)
+                        else:
+                            self.cb1.setChecked(QtCore.Qt.Checked)
+                        self.la.addWidget(self.cb1, dialogRow, 1)
+                        u1 = QtGui.QLabel("")
+                        u1.setPixmap(pix.scaled(32, 32))
+                        self.la.addWidget(u1, dialogRow, 2)
                         self.s1 = QtGui.QLineEdit()
                         self.s1.setText(App.ActiveDocument.CreatedBy)
-                        self.la.addWidget(self.s1, 0, 3)
+                        self.la.addWidget(self.s1, dialogRow, 3)
                         self.cb1.setObjectName(key)
                         keyLst.append(self.cb1.objectName())
                         self.checkBoxList.append(self.cb1)
                         self.lineTextList.append(self.s1)
                         self.cb1.clicked.connect(self.on_cb1_clicked)
+                        longestText = max(
+                            longestText, len(App.ActiveDocument.CreatedBy)
+                        )
+                        dialogRow += 1
                     if str(key).lower() in ScaleChkLst and projgrp_view:
                         t2 = QtGui.QLabel(value)
-                        self.la.addWidget(t2, 1, 0)
+                        self.la.addWidget(t2, dialogRow, 0)
                         self.cb2 = QtGui.QCheckBox(updateCb)
                         self.cb2.setObjectName(key)
-                        self.cb2.setChecked(QtCore.Qt.Checked)
-                        self.la.addWidget(self.cb2, 1, 1)
-                        u2 = QtGui.QLabel(updateTxt)
-                        self.la.addWidget(u2, 1, 2)
+                        if hasattr(self.cb2, "setCheckState"):
+                            self.cb2.setCheckState(QtCore.Qt.Checked)
+                        else:
+                            self.cb2.setChecked(QtCore.Qt.Checked)
+                        self.la.addWidget(self.cb2, dialogRow, 1)
+                        u2 = QtGui.QLabel("")
+                        u2.setPixmap(pix.scaled(32, 32))
+                        self.la.addWidget(u2, dialogRow, 2)
                         self.s2 = QtGui.QLineEdit()
-                        self.la.addWidget(self.s2, 1, 3)
+                        self.la.addWidget(self.s2, dialogRow, 3)
                         self.cb2.setObjectName(key)
                         keyLst.append(self.cb2.objectName())
                         self.checkBoxList.append(self.cb2)
                         self.lineTextList.append(self.s2)
                         self.cb2.clicked.connect(self.on_cb2_clicked)
                         if projgrp_view.Scale < 1:
-                            self.s2.setText("1 : " + str(int(1 / projgrp_view.Scale)))
-                        else:
+                            fracScale = Fraction(projgrp_view.Scale).limit_denominator()
+                            self.s2.setText(
+                                str(fracScale.numerator)
+                                + " : "
+                                + str(fracScale.denominator)
+                            )
+                        elif int(projgrp_view.Scale) == 1 or (
+                            projgrp_view.Scale > 1
+                            and int(projgrp_view.Scale) == projgrp_view.Scale
+                        ):
                             self.s2.setText(str(int(projgrp_view.Scale)) + " : 1")
+                        else:  # must be something like 2.5 = 5 : 2
+                            for x in range(2, 10):
+                                if (
+                                    int(projgrp_view.Scale * x)
+                                    == projgrp_view.Scale * x
+                                ):
+                                    fracScale = Fraction(projgrp_view.Scale)
+                                    self.s2.setText(
+                                        str(fracScale.numerator)
+                                        + " : "
+                                        + str(fracScale.denominator)
+                                    )
+                                    break
+                        dialogRow += 1
                     if str(key).lower() in LabelChkLst:
                         t3 = QtGui.QLabel(value)
-                        self.la.addWidget(t3, 2, 0)
+                        self.la.addWidget(t3, dialogRow, 0)
                         self.cb3 = QtGui.QCheckBox(updateCb)
                         self.cb3.setObjectName(key)
-                        self.cb3.setChecked(QtCore.Qt.Checked)
-                        self.la.addWidget(self.cb3, 2, 1)
-                        u3 = QtGui.QLabel(updateTxt)
-                        self.la.addWidget(u3, 2, 2)
+                        if hasattr(self.cb3, "setCheckState"):
+                            self.cb3.setCheckState(QtCore.Qt.Checked)
+                        else:
+                            self.cb3.setChecked(QtCore.Qt.Checked)
+                        self.la.addWidget(self.cb3, dialogRow, 1)
+                        u3 = QtGui.QLabel("")
+                        u3.setPixmap(pix.scaled(32, 32))
+                        self.la.addWidget(u3, dialogRow, 2)
                         self.s3 = QtGui.QLineEdit()
-                        self.la.addWidget(self.s3, 2, 3)
+                        self.la.addWidget(self.s3, dialogRow, 3)
                         self.s3.setText(App.ActiveDocument.Label)
                         self.cb3.setObjectName(key)
                         keyLst.append(self.cb3.objectName())
                         self.checkBoxList.append(self.cb3)
                         self.lineTextList.append(self.s3)
                         self.cb3.clicked.connect(self.on_cb3_clicked)
+                        longestText = max(longestText, len(App.ActiveDocument.Label))
+                        dialogRow += 1
                     if str(key).lower() in CommentChkLst:
                         t4 = QtGui.QLabel(value)
-                        self.la.addWidget(t4, 3, 0)
+                        self.la.addWidget(t4, dialogRow, 0)
                         self.cb4 = QtGui.QCheckBox(updateCb)
                         self.cb4.setObjectName(key)
-                        self.cb4.setChecked(QtCore.Qt.Checked)
-                        self.la.addWidget(self.cb4, 3, 1)
-                        u4 = QtGui.QLabel(updateTxt)
-                        self.la.addWidget(u4, 3, 2)
+                        if hasattr(self.cb4, "setCheckState"):
+                            self.cb4.setCheckState(QtCore.Qt.Checked)
+                        else:
+                            self.cb4.setChecked(QtCore.Qt.Checked)
+                        self.la.addWidget(self.cb4, dialogRow, 1)
+                        u4 = QtGui.QLabel("")
+                        u4.setPixmap(pix.scaled(32, 32))
+                        self.la.addWidget(u4, dialogRow, 2)
                         self.s4 = QtGui.QLineEdit()
-                        self.la.addWidget(self.s4, 3, 3)
+                        self.la.addWidget(self.s4, dialogRow, 3)
                         self.s4.setText(App.ActiveDocument.Comment)
                         self.cb4.setObjectName(key)
                         keyLst.append(self.cb4.objectName())
                         self.checkBoxList.append(self.cb4)
                         self.lineTextList.append(self.s4)
                         self.cb4.clicked.connect(self.on_cb4_clicked)
+                        longestText = max(longestText, len(App.ActiveDocument.Comment))
+                        dialogRow += 1
                     if str(key).lower() in CompanyChkLst:
                         t5 = QtGui.QLabel(value)
-                        self.la.addWidget(t5, 4, 0)
+                        self.la.addWidget(t5, dialogRow, 0)
                         self.cb5 = QtGui.QCheckBox(updateCb)
                         self.cb5.setObjectName(key)
-                        self.cb5.setChecked(QtCore.Qt.Checked)
-                        self.la.addWidget(self.cb5, 4, 1)
-                        u5 = QtGui.QLabel(updateTxt)
-                        self.la.addWidget(u5, 4, 2)
+                        if hasattr(self.cb5, "setCheckState"):
+                            self.cb5.setCheckState(QtCore.Qt.Checked)
+                        else:
+                            self.cb5.setChecked(QtCore.Qt.Checked)
+                        self.la.addWidget(self.cb5, dialogRow, 1)
+                        u5 = QtGui.QLabel("")
+                        u5.setPixmap(pix.scaled(32, 32))
+                        self.la.addWidget(u5, dialogRow, 2)
                         self.s5 = QtGui.QLineEdit()
-                        self.la.addWidget(self.s5, 4, 3)
+                        self.la.addWidget(self.s5, dialogRow, 3)
                         self.s5.setText(App.ActiveDocument.Company)
                         self.cb5.setObjectName(key)
                         keyLst.append(self.cb5.objectName())
                         self.checkBoxList.append(self.cb5)
                         self.lineTextList.append(self.s5)
                         self.cb5.clicked.connect(self.on_cb5_clicked)
+                        longestText = max(longestText, len(App.ActiveDocument.Company))
+                        dialogRow += 1
                     if str(key).lower() in LicenseChkLst:
                         t6 = QtGui.QLabel(value)
-                        self.la.addWidget(t6, 5, 0)
+                        self.la.addWidget(t6, dialogRow, 0)
                         self.cb6 = QtGui.QCheckBox(updateCb)
                         self.cb6.setObjectName(key)
-                        self.cb6.setChecked(QtCore.Qt.Checked)
-                        self.la.addWidget(self.cb6, 5, 1)
-                        u6 = QtGui.QLabel(updateTxt)
-                        self.la.addWidget(u6, 5, 2)
+                        if hasattr(self.cb6, "setCheckState"):
+                            self.cb6.setCheckState(QtCore.Qt.Checked)
+                        else:
+                            self.cb6.setChecked(QtCore.Qt.Checked)
+                        self.la.addWidget(self.cb6, dialogRow, 1)
+                        u6 = QtGui.QLabel("")
+                        u6.setPixmap(pix.scaled(32, 32))
+                        self.la.addWidget(u6, dialogRow, 2)
                         self.s6 = QtGui.QLineEdit()
-                        self.la.addWidget(self.s6, 5, 3)
+                        self.la.addWidget(self.s6, dialogRow, 3)
                         self.s6.setText(App.ActiveDocument.License)
                         self.cb6.setObjectName(key)
                         keyLst.append(self.cb6.objectName())
                         self.checkBoxList.append(self.cb6)
                         self.lineTextList.append(self.s6)
                         self.cb6.clicked.connect(self.on_cb6_clicked)
+                        longestText = max(longestText, len(App.ActiveDocument.License))
+                        dialogRow += 1
                     if str(key).lower() in LastModifiedDateChkLst:
                         t7 = QtGui.QLabel(value)
-                        self.la.addWidget(t7, 6, 0)
+                        self.la.addWidget(t7, dialogRow, 0)
                         self.cb7 = QtGui.QCheckBox(updateCb)
                         self.cb7.setObjectName(key)
-                        self.cb7.setChecked(QtCore.Qt.Checked)
-                        self.la.addWidget(self.cb7, 6, 1)
-                        u7 = QtGui.QLabel(updateTxt)
-                        self.la.addWidget(u7, 6, 2)
+                        if hasattr(self.cb7, "setCheckState"):
+                            self.cb7.setCheckState(QtCore.Qt.Checked)
+                        else:
+                            self.cb7.setChecked(QtCore.Qt.Checked)
+                        self.la.addWidget(self.cb7, dialogRow, 1)
+                        u7 = QtGui.QLabel("")
+                        u7.setPixmap(pix.scaled(32, 32))
+                        self.la.addWidget(u7, dialogRow, 2)
                         self.s7 = QtGui.QLineEdit()
-                        self.la.addWidget(self.s7, 6, 3)
+                        self.la.addWidget(self.s7, dialogRow, 3)
                         self.cb7.setObjectName(key)
                         keyLst.append(self.cb7.objectName())
                         self.checkBoxList.append(self.cb7)
                         self.lineTextList.append(self.s7)
                         self.cb7.clicked.connect(self.on_cb7_clicked)
+                        dialogRow += 1
                         try:
                             dt = datetime.datetime.strptime(
                                 App.ActiveDocument.LastModifiedDate,
@@ -300,20 +367,25 @@ class TaskFillTemplateFields:
                             )
                     if str(key).lower() in CreatedDateChkLst:
                         t8 = QtGui.QLabel(value)
-                        self.la.addWidget(t8, 7, 0)
+                        self.la.addWidget(t8, dialogRow, 0)
                         self.cb8 = QtGui.QCheckBox(updateCb)
                         self.cb8.setObjectName(key)
-                        self.cb8.setChecked(QtCore.Qt.Checked)
-                        self.la.addWidget(self.cb8, 7, 1)
-                        u8 = QtGui.QLabel(updateTxt)
-                        self.la.addWidget(u8, 7, 2)
+                        if hasattr(self.cb8, "setCheckState"):
+                            self.cb8.setCheckState(QtCore.Qt.Checked)
+                        else:
+                            self.cb8.setChecked(QtCore.Qt.Checked)
+                        self.la.addWidget(self.cb8, dialogRow, 1)
+                        u8 = QtGui.QLabel("")
+                        u8.setPixmap(pix.scaled(32, 32))
+                        self.la.addWidget(u8, dialogRow, 2)
                         self.s8 = QtGui.QLineEdit()
-                        self.la.addWidget(self.s8, 7, 3)
+                        self.la.addWidget(self.s8, dialogRow, 3)
                         self.cb8.setObjectName(key)
                         keyLst.append(self.cb8.objectName())
                         self.checkBoxList.append(self.cb8)
                         self.lineTextList.append(self.s8)
                         self.cb8.clicked.connect(self.on_cb8_clicked)
+                        dialogRow += 1
                         try:
                             dt = datetime.datetime.strptime(
                                 App.ActiveDocument.CreationDate, "%Y-%m-%dT%H:%M:%SZ"
@@ -343,6 +415,7 @@ class TaskFillTemplateFields:
                                     date.today().year,
                                 )
                             )
+                App.Console.PrintLog("\n")
                 if len(keyLst) > 1:
                     self.cbAll = QtGui.QCheckBox(
                         QtCore.QT_TRANSLATE_NOOP(
@@ -350,8 +423,11 @@ class TaskFillTemplateFields:
                             "Update All",
                         )
                     )
-                    self.cbAll.setChecked(QtCore.Qt.Checked)
-                    self.la.addWidget(self.cbAll, 8, 1)
+                    if hasattr(self.cbAll, "setCheckState"):
+                        self.cbAll.setCheckState(QtCore.Qt.Checked)
+                    else:
+                        self.cbAll.setChecked(QtCore.Qt.Checked)
+                    self.la.addWidget(self.cbAll, dialogRow, 1)
                     self.cbAll.clicked.connect(self.on_cbAll_clicked)
 
                 if len(keyLst) > 0:
@@ -368,11 +444,18 @@ class TaskFillTemplateFields:
                     QtCore.QObject.connect(
                         self.okbox, QtCore.SIGNAL("rejected()"), self.close
                     )
+                    self.okbox.button(QtGui.QDialogButtonBox.Ok).setText("&OK")
+                    self.okbox.button(QtGui.QDialogButtonBox.Cancel).setText("&Cancel")
                     self.button = self.okbox.button(QtGui.QDialogButtonBox.Ok)
                     self.button.setEnabled(True)
+                    self.dialog.resize(600 + longestText, dialogRow * 50 + 75)
+                    self.dialog.move(400, 200 * (400 / (dialogRow * 50 + 75)))
+                    self.dialog.setWindowFlag(QtCore.Qt.WindowStaysOnTopHint, True)
                     QtCore.QMetaObject.connectSlotsByName(self.dialog)
                     self.dialog.show()
                     self.dialog.exec_()
+
+                # App.setActiveTransaction("Fill template fields")
                 else:
                     msgBox = QtGui.QMessageBox()
                     msgTitle = QtCore.QT_TRANSLATE_NOOP(
@@ -384,18 +467,26 @@ class TaskFillTemplateFields:
                         "There were no corresponding fields found in "
                         + self.page.Label,
                     )
+                    msgBox.setWindowFlag(QtCore.Qt.WindowStaysOnTopHint, True)
                     msgBox.setText(msg)
                     msgBox.setWindowTitle(msgTitle)
+                    msgBox.move(400, 450)
                     msgBox.exec_()
 
     def on_cbAll_clicked(self):
         if self.cbAll.isChecked():
             for cbEach in self.checkBoxList:
-                cbEach.setChecked(QtCore.Qt.Checked)
+                if hasattr(cbEach, "setCheckState"):
+                    cbEach.setCheckState(QtCore.Qt.Checked)
+                else:
+                    cbEach.setChecked(QtCore.Qt.Checked)
             self.button.setEnabled(True)
         else:
             for cbEach in self.checkBoxList:
-                cbEach.setChecked(QtCore.Qt.Unchecked)
+                if hasattr(cbEach, "setCheckState"):
+                    cbEach.setCheckState(QtCore.Qt.Unchecked)
+                else:
+                    cbEach.setChecked(QtCore.Qt.Unchecked)
             self.button.setEnabled(False)
 
     def on_cb1_clicked(self):
@@ -457,15 +548,22 @@ class TaskFillTemplateFields:
             self.button.setEnabled(False)
 
     def proceed(self):
+        transactionName = QtCore.QT_TRANSLATE_NOOP(
+            "Techdraw_FillTemplateFields", "Fill template fields"
+        )
+        App.setActiveTransaction(transactionName)
         i = 0
         for cb in self.checkBoxList:
             if cb.isChecked():
                 self.texts[keyLst[i]] = self.lineTextList[i].text()
             i += 1
         self.page.Template.EditableTexts = self.texts
+        App.closeActiveTransaction(False)
         self.close()
+
+        App.closeActiveTransaction()
 
     def close(self):
         self.dialog.hide()
+        keyLst.clear()
         return True
-

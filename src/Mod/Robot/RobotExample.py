@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # Example how to use the basic robot class Robot6Axis which represent a 6-Axis
 # industrial robot. The Robot Module is dependent on Part but not on other Modules.
 # It works mostly with the basic types Placement, Vector and Matrix. So we need

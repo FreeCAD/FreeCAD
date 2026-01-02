@@ -21,8 +21,6 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_Surface.hxx>
 #include <TopoDS.hxx>
@@ -30,7 +28,7 @@
 #include <gp_Circ.hxx>
 #include <gp_Cylinder.hxx>
 #include <gp_Sphere.hxx>
-#endif
+
 
 #include <App/Application.h>
 #include <App/Datums.h>
@@ -86,9 +84,7 @@ void swapJCS(const App::DocumentObject* joint)
     }
 }
 
-bool isEdgeType(const App::DocumentObject* obj,
-                const std::string& elName,
-                const GeomAbs_CurveType type)
+bool isEdgeType(const App::DocumentObject* obj, const std::string& elName, const GeomAbs_CurveType type)
 {
     auto* base = dynamic_cast<const PartApp::Feature*>(obj);
     if (!base) {
@@ -104,9 +100,7 @@ bool isEdgeType(const App::DocumentObject* obj,
     return sf.GetType() == type;
 }
 
-bool isFaceType(const App::DocumentObject* obj,
-                const std::string& elName,
-                const GeomAbs_SurfaceType type)
+bool isFaceType(const App::DocumentObject* obj, const std::string& elName, const GeomAbs_SurfaceType type)
 {
     auto* base = dynamic_cast<const PartApp::Feature*>(obj);
     if (!base) {
@@ -404,8 +398,8 @@ void setJointActivated(const App::DocumentObject* joint, bool val)
         return;
     }
 
-    if (auto propActivated = joint->getPropertyByName<App::PropertyBool>("Activated")) {
-        propActivated->setValue(val);
+    if (auto propSuppressed = joint->getPropertyByName<App::PropertyBool>("Suppressed")) {
+        propSuppressed->setValue(!val);
     }
 }
 
@@ -415,8 +409,8 @@ bool getJointActivated(const App::DocumentObject* joint)
         return false;
     }
 
-    if (const auto propActivated = joint->getPropertyByName<App::PropertyBool>("Activated")) {
-        return propActivated->getValue();
+    if (const auto propActivated = joint->getPropertyByName<App::PropertyBool>("Suppressed")) {
+        return !propActivated->getValue();
     }
     return false;
 }
@@ -433,6 +427,11 @@ double getJointDistance(const App::DocumentObject* joint, const char* propertyNa
     }
 
     return prop->getValue();
+}
+
+double getJointAngle(const App::DocumentObject* joint)
+{
+    return getJointDistance(joint, "Angle");
 }
 
 double getJointDistance(const App::DocumentObject* joint)
@@ -534,8 +533,8 @@ App::DocumentObject* getObjFromRef(const App::DocumentObject* obj, const std::st
     const auto isBodySubObject = [](App::DocumentObject* obj) -> bool {
         // PartDesign::Point + Line + Plane + CoordinateSystem
         // getViewProviderName instead of isDerivedFrom to avoid dependency on sketcher
-        const auto isDerivedFromVpSketch =
-            strcmp(obj->getViewProviderName(), "SketcherGui::ViewProviderSketch") == 0;
+        const auto isDerivedFromVpSketch
+            = strcmp(obj->getViewProviderName(), "SketcherGui::ViewProviderSketch") == 0;
         return isDerivedFromVpSketch || obj->isDerivedFrom<PartApp::Datum>()
             || obj->isDerivedFrom<App::DatumElement>()
             || obj->isDerivedFrom<App::LocalCoordinateSystem>();
@@ -545,10 +544,22 @@ App::DocumentObject* getObjFromRef(const App::DocumentObject* obj, const std::st
     const auto handlePartDesignBody =
         [&](App::DocumentObject* obj,
             std::vector<std::string>::const_iterator it) -> App::DocumentObject* {
-        const auto nextIt = std::next(it);
+        auto nextIt = std::next(it);
         if (nextIt != names.end()) {
             for (auto* obji : obj->getOutList()) {
                 if (*nextIt == obji->getNameInDocument() && isBodySubObject(obji)) {
+                    // if obji is a LCS then perhaps we need to resolve one more level
+                    if (auto* lcs = freecad_cast<App::LocalCoordinateSystem*>(obji)) {
+                        nextIt = std::next(nextIt);
+                        if (nextIt != names.end()) {
+                            for (auto* objj : lcs->baseObjects()) {
+                                if (*nextIt == objj->getNameInDocument()
+                                    && objj->isDerivedFrom<App::DatumElement>()) {
+                                    return objj;
+                                }
+                            }
+                        }
+                    }
                     return obji;
                 }
             }
@@ -642,9 +653,11 @@ App::DocumentObject* getLinkedObjFromRef(const App::DocumentObject* joint, const
     return nullptr;
 }
 
-App::DocumentObject* getMovingPartFromRef(const AssemblyObject* assemblyObject,
-                                          App::DocumentObject* obj,
-                                          const std::string& sub)
+App::DocumentObject* getMovingPartFromRef(
+    const AssemblyObject* assemblyObject,
+    App::DocumentObject* obj,
+    const std::string& sub
+)
 {
     if (!obj) {
         return nullptr;
@@ -697,8 +710,10 @@ App::DocumentObject* getMovingPartFromRef(const AssemblyObject* assemblyObject,
     return nullptr;
 }
 
-App::DocumentObject* getMovingPartFromRef(const AssemblyObject* assemblyObject,
-                                          App::PropertyXLinkSub* prop)
+App::DocumentObject* getMovingPartFromRef(
+    const AssemblyObject* assemblyObject,
+    App::PropertyXLinkSub* prop
+)
 {
     if (!prop) {
         return nullptr;
@@ -716,9 +731,11 @@ App::DocumentObject* getMovingPartFromRef(const AssemblyObject* assemblyObject,
     return getMovingPartFromRef(assemblyObject, obj, subs[0]);
 }
 
-App::DocumentObject* getMovingPartFromRef(const AssemblyObject* assemblyObject,
-                                          App::DocumentObject* joint,
-                                          const char* pName)
+App::DocumentObject* getMovingPartFromRef(
+    const AssemblyObject* assemblyObject,
+    App::DocumentObject* joint,
+    const char* pName
+)
 {
     if (!joint) {
         return nullptr;
@@ -728,5 +745,16 @@ App::DocumentObject* getMovingPartFromRef(const AssemblyObject* assemblyObject,
     return getMovingPartFromRef(assemblyObject, prop);
 }
 
+void syncPlacements(App::DocumentObject* src, App::DocumentObject* to)
+{
+    auto* plcPropSource = dynamic_cast<App::PropertyPlacement*>(src->getPropertyByName("Placement"));
+    auto* plcPropLink = dynamic_cast<App::PropertyPlacement*>(to->getPropertyByName("Placement"));
+
+    if (plcPropSource && plcPropLink) {
+        if (!plcPropSource->getValue().isSame(plcPropLink->getValue())) {
+            plcPropLink->setValue(plcPropSource->getValue());
+        }
+    }
+}
 
 }  // namespace Assembly

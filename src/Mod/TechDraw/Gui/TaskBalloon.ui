@@ -19,7 +19,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Text:</string>
+        <string>Text</string>
        </property>
       </widget>
      </item>
@@ -33,14 +33,14 @@
      <item row="1" column="0">
       <widget class="QLabel" name="label_5">
        <property name="text">
-        <string>Text Color:</string>
+        <string>Text color</string>
        </property>
       </widget>
      </item>
      <item row="1" column="1">
       <widget class="Gui::ColorButton" name="textColor">
        <property name="toolTip">
-        <string>Color for 'Text'</string>
+        <string>Color for text</string>
        </property>
        <property name="color">
         <color>
@@ -54,7 +54,7 @@
      <item row="2" column="0">
       <widget class="QLabel" name="label_7">
        <property name="text">
-        <string>Font Size:</string>
+        <string>Font size</string>
        </property>
       </widget>
      </item>
@@ -73,7 +73,7 @@
         </size>
        </property>
        <property name="toolTip">
-        <string>Fontsize for 'Text'</string>
+        <string>Font size for text</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -92,7 +92,7 @@
      <item row="3" column="0">
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>Bubble Shape:</string>
+        <string>Bubble shape</string>
        </property>
       </widget>
      </item>
@@ -178,7 +178,7 @@
      <item row="4" column="0">
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>Shape Scale:</string>
+        <string>Shape scale</string>
        </property>
       </widget>
      </item>
@@ -210,7 +210,7 @@
      <item row="5" column="0">
       <widget class="QLabel" name="label_4">
        <property name="text">
-        <string>End Symbol:</string>
+        <string>End symbol</string>
        </property>
       </widget>
      </item>
@@ -224,7 +224,7 @@
      <item row="6" column="0">
       <widget class="QLabel" name="label_10">
        <property name="text">
-        <string>End Symbol Scale:</string>
+        <string>End symbol scale</string>
        </property>
       </widget>
      </item>
@@ -256,14 +256,14 @@
      <item row="7" column="0">
       <widget class="QLabel" name="label_9">
        <property name="text">
-        <string>Line Visible:</string>
+        <string>Line visible</string>
        </property>
       </widget>
      </item>
      <item row="7" column="1">
       <widget class="QComboBox" name="comboLineVisible">
        <property name="toolTip">
-        <string>Whether the leader line is visible or not</string>
+        <string>Controls whether the leader line is visible or not</string>
        </property>
        <property name="currentIndex">
         <number>0</number>
@@ -283,7 +283,7 @@
      <item row="8" column="0">
       <widget class="QLabel" name="label_8">
        <property name="text">
-        <string>Line Width:</string>
+        <string>Line width</string>
        </property>
       </widget>
      </item>
@@ -321,7 +321,7 @@
      <item row="9" column="0">
       <widget class="QLabel" name="label_6">
        <property name="text">
-        <string>Leader Kink Length:</string>
+        <string>Leader kink length</string>
        </property>
       </widget>
      </item>

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -33,21 +35,24 @@
 
 // (re-)defined in pyconfig.h
 #if defined(_POSIX_C_SOURCE)
-#undef _POSIX_C_SOURCE
+# undef _POSIX_C_SOURCE
 #endif
 #if defined(_XOPEN_SOURCE)
-#undef _XOPEN_SOURCE
+# undef _XOPEN_SOURCE
 #endif
 
 #include <Python.h>
+
+#include <FCConfig.h>
+
 #ifdef FC_OS_MACOSX
-#undef toupper
-#undef tolower
-#undef isupper
-#undef islower
-#undef isspace
-#undef isalpha
-#undef isalnum
+# undef toupper
+# undef tolower
+# undef isupper
+# undef islower
+# undef isspace
+# undef isalpha
+# undef isalnum
 #endif
 
 namespace Base

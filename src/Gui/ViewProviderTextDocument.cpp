@@ -20,12 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QMenu>
-# include <QPlainTextEdit>
-#endif
+#include <QMenu>
+#include <QPlainTextEdit>
+
 
 #include <App/Application.h>
 #include <Base/Type.h>
@@ -42,26 +40,57 @@
 using namespace Gui;
 
 PROPERTY_SOURCE(Gui::ViewProviderTextDocument, Gui::ViewProviderDocumentObject)
-const char* ViewProviderTextDocument::SyntaxEnums[]= {"None","Python",nullptr};
+const char* ViewProviderTextDocument::SyntaxEnums[] = {"None", "Python", nullptr};
 
 ViewProviderTextDocument::ViewProviderTextDocument()
 {
     sPixmap = "TextDocument";
 
     ADD_PROPERTY_TYPE(
-            ReadOnly, (false), "Editor", App::Prop_None,
-            "Defines whether the content can be edited.");
+        ReadOnly,
+        (false),
+        "Editor",
+        App::Prop_None,
+        "Defines whether the content can be edited."
+    );
 
     QFont font;
-    font.setFamily(QString::fromLatin1(App::GetApplication().GetUserParameter().
-        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Editor")->GetASCII("Font", font.family().toLatin1()).c_str()));
-    font.setPointSize(App::GetApplication().GetUserParameter().
-        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Editor")->GetInt("FontSize", font.pointSize()));
+    font.setFamily(
+        QString::fromLatin1(
+            App::GetApplication()
+                .GetUserParameter()
+                .GetGroup("BaseApp")
+                ->GetGroup("Preferences")
+                ->GetGroup("Editor")
+                ->GetASCII("Font", font.family().toLatin1())
+                .c_str()
+        )
+    );
+    font.setPointSize(
+        App::GetApplication()
+            .GetUserParameter()
+            .GetGroup("BaseApp")
+            ->GetGroup("Preferences")
+            ->GetGroup("Editor")
+            ->GetInt("FontSize", font.pointSize())
+    );
 
-    ADD_PROPERTY_TYPE(FontSize,(font.pointSize()), "Editor", App::Prop_None, "Font size");
-    ADD_PROPERTY_TYPE(FontName,((const char*)font.family().toLatin1()), "Editor", App::Prop_None, "Font name");
+    ADD_PROPERTY_TYPE(FontSize, (font.pointSize()), "Editor", App::Prop_None, "Font size");
+    ADD_PROPERTY_TYPE(
+        FontName,
+        ((const char*)font.family().toLatin1()),
+        "Editor",
+        App::Prop_None,
+        "Font name"
+    );
 
-    ADD_PROPERTY_TYPE(SyntaxHighlighter,(static_cast<long>(0)), "Editor", App::Prop_None, "Syntax highlighting");
+    ADD_PROPERTY_TYPE(
+        SyntaxHighlighter,
+        (static_cast<long>(0)),
+        "Editor",
+        App::Prop_None,
+        "Syntax highlighting"
+    );
     SyntaxHighlighter.setEnums(SyntaxEnums);
 
     DisplayMode.setStatus(App::Property::Hidden, true);
@@ -73,10 +102,8 @@ ViewProviderTextDocument::ViewProviderTextDocument()
 void ViewProviderTextDocument::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     auto func = new Gui::ActionFunction(menu);
-    QAction* act = menu->addAction(QObject::tr("Edit text"));
-    func->trigger(act, [this](){
-        this->doubleClicked();
-    });
+    QAction* act = menu->addAction(QObject::tr("Edit Text"));
+    func->trigger(act, [this]() { this->doubleClicked(); });
 
     ViewProviderDocumentObject::setupContextMenu(menu, receiver, member);
 }
@@ -90,9 +117,8 @@ bool ViewProviderTextDocument::doubleClicked()
         SyntaxHighlighter.touch();
 
         getMainWindow()->addWindow(
-            new TextDocumentEditorView {
-                getObject<App::TextDocument>(),
-                editorWidget, getMainWindow()});
+            new TextDocumentEditorView {getObject<App::TextDocument>(), editorWidget, getMainWindow()}
+        );
     }
     return true;
 }
@@ -115,8 +141,9 @@ void ViewProviderTextDocument::onChanged(const App::Property* prop)
             }
             else {
                 auto shl = editorWidget->findChild<QSyntaxHighlighter*>();
-                if (shl)
+                if (shl) {
                     shl->deleteLater();
+                }
             }
         }
     }
@@ -125,10 +152,9 @@ void ViewProviderTextDocument::onChanged(const App::Property* prop)
 
 MDIView* ViewProviderTextDocument::getMDIView() const
 {
-    auto views = getDocument()->getMDIViewsOfType(
-            TextDocumentEditorView::getClassTypeId());
+    auto views = getDocument()->getMDIViewsOfType(TextDocumentEditorView::getClassTypeId());
     for (auto v : views) {
-        auto textView = static_cast<TextDocumentEditorView *>(v);
+        auto textView = static_cast<TextDocumentEditorView*>(v);
         if (textView->getTextObject() == getObject()) {
             return textView;
         }
@@ -138,10 +164,9 @@ MDIView* ViewProviderTextDocument::getMDIView() const
 
 bool ViewProviderTextDocument::activateView() const
 {
-    auto views = getDocument()->getMDIViewsOfType(
-            TextDocumentEditorView::getClassTypeId());
+    auto views = getDocument()->getMDIViewsOfType(TextDocumentEditorView::getClassTypeId());
     for (auto v : views) {
-        auto textView = static_cast<TextDocumentEditorView *>(v);
+        auto textView = static_cast<TextDocumentEditorView*>(v);
         if (textView->getTextObject() == getObject()) {
             getMainWindow()->setActiveWindow(textView);
             return true;

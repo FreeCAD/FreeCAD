@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # flake8: noqa import
 # ***************************************************************************
 # *   Copyright (c) 2024 FreeCAD Team                                       *

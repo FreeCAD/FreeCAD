@@ -68,18 +68,22 @@ def get_export_preferences(ifcfile, preferred_context=None, create=None):
             second_choice = None
             for context in contexts:
                 if len(preferred_context) > 2:
-                    if (context.TargetView == preferred_context[2]
+                    if (
+                        context.TargetView == preferred_context[2]
                         and context.ContextType == preferred_context[1]
-                        and context.ContextIdentifier == preferred_context[0]):
-                            best_context = context
-                            exact_match = True
+                        and context.ContextIdentifier == preferred_context[0]
+                    ):
+                        best_context = context
+                        exact_match = True
                 if len(preferred_context) > 1:
-                    if (context.ContextType == preferred_context[1]
-                        and context.ContextIdentifier == preferred_context[0]):
-                            if not exact_match:
-                                best_context = context
-                                if len(preferred_context) == 2:
-                                    exact_match = True
+                    if (
+                        context.ContextType == preferred_context[1]
+                        and context.ContextIdentifier == preferred_context[0]
+                    ):
+                        if not exact_match:
+                            best_context = context
+                            if len(preferred_context) == 2:
+                                exact_match = True
                 if context.ContextType == preferred_context[0]:
                     if not exact_match:
                         best_context = context
@@ -91,52 +95,58 @@ def get_export_preferences(ifcfile, preferred_context=None, create=None):
         if create:
             if not exact_match:
                 if isinstance(preferred_context, str):
-                    best_context = ifc_tools.api_run("context.add_context",
-                                                     ifcfile,
-                                                     context_type = preferred_context)
+                    best_context = ifc_tools.api_run(
+                        "context.add_context", ifcfile, context_type=preferred_context
+                    )
                 elif best_context:
                     if len(preferred_context) > 2:
-                        best_context = ifc_tools.api_run("context.add_context",
-                                                         ifcfile,
-                                                         context_type = preferred_context[1],
-                                                         context_identifier = preferred_context[0],
-                                                         target_view = preferred_context[2],
-                                                         parent = best_context)
+                        best_context = ifc_tools.api_run(
+                            "context.add_context",
+                            ifcfile,
+                            context_type=preferred_context[1],
+                            context_identifier=preferred_context[0],
+                            target_view=preferred_context[2],
+                            parent=best_context,
+                        )
                     elif len(preferred_context) > 1:
-                        best_context = ifc_tools.api_run("context.add_context",
-                                                         ifcfile,
-                                                         context_type = preferred_context[1],
-                                                         context_identifier = preferred_context[0],
-                                                         parent = best_context)
+                        best_context = ifc_tools.api_run(
+                            "context.add_context",
+                            ifcfile,
+                            context_type=preferred_context[1],
+                            context_identifier=preferred_context[0],
+                            parent=best_context,
+                        )
                 else:
                     if len(preferred_context) > 1:
-                        best_context = ifc_tools.api_run("context.add_context",
-                                                         ifcfile,
-                                                         context_type = preferred_context[1])
+                        best_context = ifc_tools.api_run(
+                            "context.add_context", ifcfile, context_type=preferred_context[1]
+                        )
                         if len(preferred_context) > 2:
-                            best_context = ifc_tools.api_run("context.add_context",
-                                                             ifcfile,
-                                                             context_type = preferred_context[1],
-                                                             context_identifier = preferred_context[0],
-                                                             target_view = preferred_context[2],
-                                                             parent = best_context)
+                            best_context = ifc_tools.api_run(
+                                "context.add_context",
+                                ifcfile,
+                                context_type=preferred_context[1],
+                                context_identifier=preferred_context[0],
+                                target_view=preferred_context[2],
+                                parent=best_context,
+                            )
                         else:
-                            best_context = ifc_tools.api_run("context.add_context",
-                                                             ifcfile,
-                                                             context_type = preferred_context[1],
-                                                             context_identifier = preferred_context[0],
-                                                             parent = best_context)
+                            best_context = ifc_tools.api_run(
+                                "context.add_context",
+                                ifcfile,
+                                context_type=preferred_context[1],
+                                context_identifier=preferred_context[0],
+                                parent=best_context,
+                            )
                     else:
-                        best_context = ifc_tools.api_run("context.add_context",
-                                                         ifcfile,
-                                                         context_type = preferred_context[0])
+                        best_context = ifc_tools.api_run(
+                            "context.add_context", ifcfile, context_type=preferred_context[0]
+                        )
     if not best_context:
         if contexts:
             best_context = contexts[0]
         else:
-            best_context = ifc_tools.api_run("context.add_context",
-                                             ifcfile,
-                                             context_type = "Model")
+            best_context = ifc_tools.api_run("context.add_context", ifcfile, context_type="Model")
     return prefs, best_context
 
 
@@ -215,23 +225,27 @@ def is_annotation(obj):
         return True
     elif obj.isDerivedFrom("App::Annotation"):
         return True
-    elif Draft.getType(obj) in ["BezCurve",
-                                "BSpline",
-                                "Wire",
-                                "DraftText",
-                                "Text",
-                                "Dimension",
-                                "LinearDimension",
-                                "AngularDimension",
-                                "SectionPlane"]:
+    elif Draft.getType(obj) in [
+        "BezCurve",
+        "BSpline",
+        "Wire",
+        "DraftText",
+        "Text",
+        "Dimension",
+        "LinearDimension",
+        "AngularDimension",
+        "SectionPlane",
+    ]:
         return True
     elif obj.isDerivedFrom("Part::Feature"):
         if obj.Shape and (not obj.Shape.Solids) and obj.Shape.Edges:
             if not obj.Shape.Faces:
                 return True
-            elif (obj.Shape.BoundBox.XLength < 0.0001) \
-                or (obj.Shape.BoundBox.YLength < 0.0001) \
-                or (obj.Shape.BoundBox.ZLength < 0.0001):
+            elif (
+                (obj.Shape.BoundBox.XLength < 0.0001)
+                or (obj.Shape.BoundBox.YLength < 0.0001)
+                or (obj.Shape.BoundBox.ZLength < 0.0001)
+            ):
                 return True
     return False
 
@@ -271,7 +285,7 @@ def get_dimension(annotation):
                             res.append(shape[0].Vertexes[1].Point)
                         return res
                 else:
-                    print(annotation,"NOT A DIMENSION")
+                    print(annotation, "NOT A DIMENSION")
     return None
 
 
@@ -288,9 +302,9 @@ def get_sectionplane(annotation):
                 for item in rep.Items:
                     if item.is_a("IfcCsgSolid"):
                         if item.TreeRootExpression.is_a("IfcBlock"):
-                            result.append(item.TreeRootExpression.XLength*s)
-                            result.append(item.TreeRootExpression.YLength*s)
-                            result.append(item.TreeRootExpression.ZLength*s)
+                            result.append(item.TreeRootExpression.XLength * s)
+                            result.append(item.TreeRootExpression.YLength * s)
+                            result.append(item.TreeRootExpression.ZLength * s)
             return result
     return None
 
@@ -314,7 +328,7 @@ def get_axis(obj):
             length = edge.Length
             placement = FreeCAD.Placement()
             placement.Base = p0
-            placement.Rotation = FreeCAD.Rotation(FreeCAD.Vector(0,1,0), p1.sub(p0))
+            placement.Rotation = FreeCAD.Rotation(FreeCAD.Vector(0, 1, 0), p1.sub(p0))
             return (placement, length, tag)
     return None
 
@@ -334,7 +348,7 @@ def create_annotation(obj, ifcfile):
     else:
         context_type = "Model"
     prefs, context = get_export_preferences(ifcfile, preferred_context=context_type, create=True)
-    prefs["BBIMDIMS"] = True # Save dimensions as 2-point polylines
+    prefs["BBIMDIMS"] = True  # Save dimensions as 2-point polylines
     history = get_history(ifcfile)
     # TODO The following prints each edge as a separate IfcGeometricCurveSet
     # It should be refined to create polylines instead

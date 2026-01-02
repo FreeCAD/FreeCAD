@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2005 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "Core/Iterator.h"
 #include "Core/SetOperations.h"
@@ -87,15 +88,19 @@ App::DocumentObjectExecReturn* SetOperations::execute()
             type = MeshCore::SetOperations::Outer;
         }
         else {
-            throw Base::ValueError("Operation type must either be 'union' or 'intersection'"
-                                   " or 'difference' or 'inner' or 'outer'");
+            throw Base::ValueError(
+                "Operation type must either be 'union' or 'intersection'"
+                " or 'difference' or 'inner' or 'outer'"
+            );
         }
 
-        MeshCore::SetOperations setOp(meshKernel1.getKernel(),
-                                      meshKernel2.getKernel(),
-                                      pcKernel->getKernel(),
-                                      type,
-                                      1.0e-5F);
+        MeshCore::SetOperations setOp(
+            meshKernel1.getKernel(),
+            meshKernel2.getKernel(),
+            pcKernel->getKernel(),
+            type,
+            1.0e-5F
+        );
         setOp.Do();
         Mesh.setValuePtr(pcKernel.release());
     }

@@ -153,7 +153,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="textLabel1">
         <property name="text">
-         <string>Tab size:</string>
+         <string>Tab size</string>
         </property>
        </widget>
       </item>
@@ -179,7 +179,7 @@
       <item row="1" column="0">
        <widget class="QLabel" name="textLabel2">
         <property name="text">
-         <string>Indent size:</string>
+         <string>Indent size</string>
         </property>
        </widget>
       </item>
@@ -252,7 +252,7 @@
       </sizepolicy>
      </property>
      <property name="title">
-      <string>Display items</string>
+      <string>Display Items</string>
      </property>
      <layout class="QGridLayout">
       <property name="leftMargin">
@@ -288,7 +288,7 @@
       <item row="0" column="1">
        <widget class="QLabel" name="TextLabel3">
         <property name="text">
-         <string>Family:</string>
+         <string>Family</string>
         </property>
        </widget>
       </item>
@@ -308,7 +308,7 @@
       <item row="1" column="1">
        <widget class="QLabel" name="TextLabel4">
         <property name="text">
-         <string>Size:</string>
+         <string>Size</string>
         </property>
        </widget>
       </item>
@@ -343,7 +343,7 @@
       <item row="2" column="1">
        <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>Color:</string>
+         <string>Color</string>
         </property>
        </widget>
       </item>
@@ -372,7 +372,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Preview:</string>
+         <string>Preview</string>
         </property>
        </widget>
       </item>

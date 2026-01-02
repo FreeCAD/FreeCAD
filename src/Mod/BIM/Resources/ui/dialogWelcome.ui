@@ -75,7 +75,7 @@
        <item>
         <widget class="QLabel" name="label_2">
          <property name="text">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This appears to be the first time that you are using the BIM workbench. If you press OK, the next screen will propose you to set a couple of typical FreeCAD options that are suitable for BIM work. You can change these options anytime later under menu &lt;span style=&quot; font-weight:600;&quot;&gt;Manage -&amp;gt; BIM Setup...&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This appears to be the first time BIM workbench is used. Selecting OK will open a setup screen with a few recommended FreeCAD options tailored for BIM workflows. These settings can be modified later under &lt;span style=&quot; font-weight:600;&quot;&gt;Manage -&amp;gt; BIM Setup…&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="wordWrap">
           <bool>true</bool>
@@ -97,7 +97,7 @@
        <item>
         <widget class="QLabel" name="label_4">
          <property name="text">
-          <string>FreeCAD is a complex application. If this is your first contact with FreeCAD, or you have never worked with 3D or BIM before, you might want to take our &lt;a href=&quot;https://wiki.freecad.org/BIM_ingame_tutorial&quot;&gt;BIM tutorial&lt;/a&gt; first (Also available under menu &lt;span style=&quot; font-weight:600;&quot;&gt;Help -&amp;gt; BIM Tutorial&lt;/span&gt;).</string>
+          <string>FreeCAD is a complex application. For those new to FreeCAD, or without prior experience in 3D modelling or BIM, it is recommended to begin with the &lt;a href=&quot;https://wiki.freecad.org/BIM_ingame_tutorial&quot;&gt;BIM tutorial&lt;/a&gt;. This can also be accessed under menu &lt;span style=&quot; font-weight:600;&quot;&gt;Help -&amp;gt; BIM Tutorial&lt;/span&gt;.</string>
          </property>
          <property name="wordWrap">
           <bool>true</bool>
@@ -107,7 +107,7 @@
        <item>
         <widget class="QLabel" name="label_7">
          <property name="text">
-          <string>The BIM workbench also has a &lt;a href=&quot;https://wiki.freecad.org/BIM_Workbench&quot;&gt;complete documentation&lt;/a&gt;  available under the Help menu. The &quot;what's this?&quot; button will also open the help page of any tool from the toolbars.</string>
+          <string>The BIM workbench also has a &lt;a href=&quot;https://wiki.freecad.org/BIM_Workbench&quot;&gt;complete documentation&lt;/a&gt; available under the Help menu. The &quot;What's This?&quot; button will open the help page of any tool from the toolbars.</string>
          </property>
          <property name="wordWrap">
           <bool>true</bool>
@@ -117,7 +117,7 @@
        <item>
         <widget class="QLabel" name="label_5">
          <property name="text">
-          <string>A good way to start building a BIM model is by setting up basic characteristics of your project, under menu &lt;span style=&quot; font-weight:600;&quot;&gt;Manage -&amp;gt; Project setup&lt;/span&gt;. You can also directly configure different floor plans for your project, under menu &lt;span style=&quot; font-weight:600;&quot;&gt;Manage -&amp;gt; Levels.&lt;/span&gt;</string>
+          <string>A good way to start building a BIM model is by setting up basic characteristics of the project, under menu &lt;span style=&quot; font-weight:600;&quot;&gt;Manage -&amp;gt; Project setup&lt;/span&gt;. Different floor plans for the project can be configured via &lt;span style=&quot; font-weight:600;&quot;&gt;Manage -&amp;gt; Levels.&lt;/span&gt;</string>
          </property>
          <property name="wordWrap">
           <bool>true</bool>
@@ -127,7 +127,7 @@
        <item>
         <widget class="QLabel" name="label_8">
          <property name="text">
-          <string>There is no mandatory behaviour here though, and you can also start creating walls and columns directly, and care about organizing things in levels later.</string>
+          <string>There is no required workflow; walls and columns can be created directly, with levels organised later if preferred.</string>
          </property>
          <property name="wordWrap">
           <bool>true</bool>
@@ -137,7 +137,7 @@
        <item>
         <widget class="QLabel" name="label_6">
          <property name="text">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You might also want to start from an existing floor plan or 3D model made in another application. Under menu &lt;span style=&quot; font-weight:600;&quot;&gt;File -&amp;gt; Import&lt;/span&gt;, you will find a wide range of file formats that can be imported into FreeCAD.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;An existing floor plan or 3D model created in another application can also be used as a starting point. Under menu &lt;span style=&quot; font-weight:600;&quot;&gt;File -&amp;gt; Import&lt;/span&gt;, a wide range of file formats that can be imported into FreeCAD is available.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="wordWrap">
           <bool>true</bool>

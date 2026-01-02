@@ -2,119 +2,67 @@
 <svg
    version="1.1"
    id="svg2985"
-   height="64px"
-   width="64px"
-   sodipodi:docname="Draft_AddToLayer.svg"
-   inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   height="64"
+   width="64"
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:cc="http://creativecommons.org/ns#"
    xmlns:dc="http://purl.org/dc/elements/1.1/">
-  <sodipodi:namedview
-     id="namedview11517"
-     pagecolor="#ffffff"
-     bordercolor="#000000"
-     borderopacity="0.25"
-     inkscape:showpageshadow="2"
-     inkscape:pageopacity="0.0"
-     inkscape:pagecheckerboard="0"
-     inkscape:deskcolor="#d1d1d1"
-     showgrid="false"
-     inkscape:zoom="10.429825"
-     inkscape:cx="23.442388"
-     inkscape:cy="37.632463"
-     inkscape:window-width="1280"
-     inkscape:window-height="971"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="svg2985" />
   <title
-     id="title853">Draft_Layer</title>
+     id="title853">Draft_AddToLayer</title>
   <defs
      id="defs2987">
     <linearGradient
-       id="linearGradient1852">
-      <stop
-         id="stop1848"
-         offset="0"
-         style="stop-color:#06989a;stop-opacity:1;" />
-      <stop
-         id="stop1850"
-         offset="1"
-         style="stop-color:#34e0e2;stop-opacity:1;" />
-    </linearGradient>
+       xlink:href="#linearGradient14"
+       id="linearGradient13"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.66067504,0,0,0.63929414,18.06576,5.8678762)"
+       x1="27.753059"
+       y1="54.125957"
+       x2="13.901636"
+       y2="23.420826" />
     <linearGradient
-       id="linearGradient3815">
+       id="linearGradient14">
       <stop
-         id="stop3817"
+         id="stop13"
          offset="0"
          style="stop-color:#d3d7cf;stop-opacity:1;" />
       <stop
-         id="stop3819"
+         id="stop14"
          offset="1"
-         style="stop-color:#ffffff;stop-opacity:1" />
+         style="stop-color:#ffffff;stop-opacity:1;" />
     </linearGradient>
     <linearGradient
-       xlink:href="#linearGradient3815"
+       xlink:href="#linearGradient3895"
+       id="linearGradient50"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(-17,4)"
+       x1="42"
+       y1="41"
+       x2="62"
+       y2="31.000002" />
+    <linearGradient
+       id="linearGradient3895">
+      <stop
+         id="stop3897"
+         offset="0"
+         style="stop-color:#729fcf;stop-opacity:1;" />
+      <stop
+         id="stop3899"
+         offset="1"
+         style="stop-color:#204a87;stop-opacity:1;" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient3895"
        id="linearGradient2"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(0.64426076,0,0,0.63928583,17.931015,13.729721)"
-       x1="53.257175"
-       y1="19.086002"
-       x2="25.928942"
-       y2="-1.3815211" />
-    <linearGradient
-       xlink:href="#linearGradient1852"
-       id="linearGradient1"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(0.66067504,0,0,0.63929414,18.06576,5.8678762)"
-       x1="53.257175"
-       y1="19.086002"
-       x2="25.928942"
-       y2="-1.3815211" />
-    <linearGradient
-       xlink:href="#linearGradient3815"
-       id="linearGradient3"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(0.66067504,0,0,0.63929414,18.06576,-1.9839915)"
-       x1="53.257175"
-       y1="19.086002"
-       x2="25.928942"
-       y2="-1.3815211" />
-    <linearGradient
-       xlink:href="#linearGradient3057"
-       id="linearGradient3053"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(1.9455392,0,0,1.9455392,-47.998185,-58.673094)"
-       x1="41.511921"
-       y1="26.271811"
-       x2="42.984806"
-       y2="49.460072" />
-    <linearGradient
-       id="linearGradient3057">
-      <stop
-         style="stop-color:#8ae234;stop-opacity:1"
-         offset="0.0000000"
-         id="stop3059" />
-      <stop
-         style="stop-color:#4e9a06;stop-opacity:1"
-         offset="1.0000000"
-         id="stop3061" />
-    </linearGradient>
-    <linearGradient
-       xlink:href="#linearGradient3057"
-       id="linearGradient3053-3"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(1.9455392,0,0,1.9455392,-47.998185,-58.673094)"
-       x1="41.511921"
-       y1="26.271811"
-       x2="42.984806"
-       y2="49.460072" />
+       gradientTransform="translate(-17,4)"
+       x1="42"
+       y1="41"
+       x2="62"
+       y2="31.000002" />
   </defs>
   <metadata
      id="metadata5826">
@@ -124,13 +72,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title>Draft_Layer</dc:title>
-        <dc:date>Tue Jun 10 10:21:01 2014 -0300</dc:date>
-        <dc:creator>
-          <cc:Agent>
-            <dc:title>[Yorik van Havre]</dc:title>
-          </cc:Agent>
-        </dc:creator>
+        <dc:title>Draft_AddToLayer</dc:title>
         <dc:rights>
           <cc:Agent>
             <dc:title>FreeCAD LGPL2+</dc:title>
@@ -141,13 +83,8 @@
             <dc:title>FreeCAD</dc:title>
           </cc:Agent>
         </dc:publisher>
-        <dc:identifier>FreeCAD/src/Mod/Draft/Resources/icons/Draft_Layer.svg</dc:identifier>
+        <dc:identifier>FreeCAD/src/Mod/Draft/Resources/icons/Draft_AddToLayer.svg</dc:identifier>
         <dc:relation>https://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
-        <dc:contributor>
-          <cc:Agent>
-            <dc:title>[agryson] Alexander Gryson</dc:title>
-          </cc:Agent>
-        </dc:contributor>
         <dc:subject>
           <rdf:Bag>
             <rdf:li>page</rdf:li>
@@ -156,7 +93,7 @@
             <rdf:li>stack</rdf:li>
           </rdf:Bag>
         </dc:subject>
-        <dc:description>Three pages or rectangles stacked on top of each other. Previously VisGroup.</dc:description>
+        <dc:description>A layer with two arrows on top of it.</dc:description>
         <cc:license
            rdf:resource="http://creativecommons.org/licenses/by-sa/4.0/" />
       </cc:Work>
@@ -178,40 +115,56 @@
     </rdf:RDF>
   </metadata>
   <g
-     id="layer2"
-     style="display:inline;stroke-width:0.653981"
-     transform="matrix(1.5298962,0,0,1.5282988,-17.190014,-6.6523599)">
+     id="layer2-0-1-9"
+     style="display:inline;stroke-width:0.653974"
+     transform="matrix(1.5298726,0,0,1.5283528,-16.689679,-5.8528404)">
     <path
-       d="M 27.250224,20.840975 50.127593,30.001487 37.05481,40.470644 14.177442,31.310132 Z"
-       style="display:inline;overflow:visible;fill:url(#linearGradient1);fill-rule:evenodd;stroke:#2e3436;stroke-width:1.30796;stroke-linejoin:round;stroke-dasharray:none;marker:none;enable-background:accumulate"
-       id="path1-2-9" />
+       d="M 27.250224,20.840975 49.474498,30.001516 36.401715,40.470673 14.177442,31.310132 Z"
+       style="display:inline;overflow:visible;fill:url(#linearGradient13);fill-rule:evenodd;stroke:#2e3436;stroke-width:1.30795;stroke-linejoin:round;stroke-dasharray:none;marker:none;enable-background:accumulate"
+       id="path1-2-9-6-49-3" />
     <path
-       id="path3-5"
-       style="display:inline;fill:none;stroke:#34e0e2;stroke-width:1.30796;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
-       d="m 16.744141,30.928014 c 6.697265,2.682292 13.394531,5.364583 20.091797,8.046875 3.574869,-2.863281 7.149739,-5.726563 10.724609,-8.589844 -6.697266,-2.682292 -13.394531,-5.364583 -20.091797,-8.046875 -3.57487,2.863281 -7.14974,5.726563 -10.724609,8.589844 z" />
+       id="path3-5-1-2-6"
+       style="display:inline;fill:none;stroke:#ffffff;stroke-width:1.30795;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
+       d="M 16.744141,30.928014 36.182843,38.974918 46.907452,30.385074 27.46875,22.33817 Z" />
   </g>
-  <path
-     style="fill:none;stroke:#042a2a;stroke-width:8;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-     d="M 6.05697,18.049229 H 29.844572"
-     id="path853" />
-  <path
-     id="path851"
-     d="M 17.950771,6.1554283 V 29.94303"
-     style="fill:none;stroke:#042a2a;stroke-width:8;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-  <path
-     id="path847"
-     d="M 6.05697,18.049229 H 29.844572"
-     style="fill:none;stroke:#34e0e2;stroke-width:4;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-  <path
-     style="fill:none;stroke:#34e0e2;stroke-width:4;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-     d="M 17.950771,6.1554283 V 29.94303"
-     id="path849" />
-  <path
-     id="path855"
-     d="M 17.950771,6.1554283 V 29.94303"
-     style="fill:none;stroke:#179a9b;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-  <path
-     style="fill:none;stroke:#0aa0a2;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-     d="M 6.05697,18.049229 H 29.844572"
-     id="path857" />
+  <g
+     id="layer1-1-0"
+     transform="translate(-1.178643,7.4967296)">
+    <g
+       id="g28-29-9"
+       transform="translate(-11.821639,-17.496692)">
+      <g
+         transform="rotate(90,38,36)"
+         id="g4636-8-3-6">
+        <path
+           style="fill:url(#linearGradient2);fill-opacity:1;fill-rule:evenodd;stroke:#0b1521;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           d="m 38.000002,26.999894 v 7.999965 h -17 v 10 h 17 v 8 L 50.999983,39.999877 Z"
+           id="path3343-4-1-1-3" />
+      </g>
+      <path
+         style="fill:none;stroke:#729fcf;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="M 42.357223,37.999998 H 37.000141 V 21.000002 h -6 V 37.999998 H 25.64264 l 8.357501,8.472469 z"
+         id="path3343-2-06-3-9-8" />
+    </g>
+  </g>
+  <g
+     id="layer1-1-1-5"
+     transform="rotate(180,32.589095,20.251625)">
+    <g
+       id="g28-29-7-6"
+       transform="translate(-11.821639,-17.496692)">
+      <g
+         transform="rotate(90,38,36)"
+         id="g4636-8-3-2-1">
+        <path
+           style="fill:url(#linearGradient50);fill-opacity:1;fill-rule:evenodd;stroke:#0b1521;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           d="m 38.000002,26.999894 v 7.999965 h -17 v 10 h 17 v 8 L 50.999983,39.999877 Z"
+           id="path3343-4-1-1-7-1" />
+      </g>
+      <path
+         style="fill:none;stroke:#729fcf;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="M 42.357223,37.999998 H 37.000141 V 21.000002 h -6 V 37.999998 H 25.64264 l 8.357501,8.472469 z"
+         id="path3343-2-06-3-9-2-5" />
+    </g>
+  </g>
 </svg>

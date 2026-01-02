@@ -40,8 +40,10 @@ class TaskFemConstraintFixed: public TaskFemConstraintOnBoundary
     Q_OBJECT
 
 public:
-    explicit TaskFemConstraintFixed(ViewProviderFemConstraintFixed* ConstraintView,
-                                    QWidget* parent = nullptr);
+    explicit TaskFemConstraintFixed(
+        ViewProviderFemConstraintFixed* ConstraintView,
+        QWidget* parent = nullptr
+    );
     ~TaskFemConstraintFixed() override;
     const std::string getReferences() const override;
 

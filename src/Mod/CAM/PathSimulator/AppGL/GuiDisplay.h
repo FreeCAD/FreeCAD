@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2024 Shai Seger <shaise at gmail>                       *
  *                                                                         *
@@ -66,7 +68,7 @@ struct GuiItem
     unsigned int flags {};
     bool mouseOver {};
     TextureItem texItem {};
-    QString toolTip;
+    QString toolTip {};
 
     int posx()
     {

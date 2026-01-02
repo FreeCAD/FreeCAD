@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QStatusBar>
-#endif
+
 
 #include <App/Document.h>
 #include <Base/Console.h>
@@ -87,7 +85,7 @@ TaskLeaderLine::TaskLeaderLine(TechDrawGui::ViewProviderLeader* leadVP) :
 
     m_basePage = m_lineFeat->findParentPage();
     if (!m_basePage) {
-        Base::Console().error("TaskRichAnno - bad parameters (2).  Can not proceed.\n");
+        Base::Console().error("TaskRichAnno - bad parameters (2).  Cannot proceed.\n");
         return;
     }
     App::DocumentObject* obj = m_lineFeat->LeaderParent.getValue();
@@ -108,7 +106,7 @@ TaskLeaderLine::TaskLeaderLine(TechDrawGui::ViewProviderLeader* leadVP) :
 
     //TODO: when/if leaders are allowed to be parented to Page, check for m_baseFeat will be removed
     if (!m_baseFeat || !m_basePage) {
-        Base::Console().error("TaskLeaderLine - bad parameters (2).  Can not proceed.\n");
+        Base::Console().error("TaskLeaderLine - bad parameters (2).  Cannot proceed.\n");
         return;
     }
 
@@ -488,7 +486,7 @@ void TaskLeaderLine::onTrackerClicked(bool clicked)
 {
     Q_UNUSED(clicked);
     if (!m_vpp->getMDIViewPage()) {
-        Base::Console().message("TLL::onTrackerClicked - no Mdi, no Tracker!\n");
+        Base::Console().message("TLL::onTrackerClicked - no MDI, no tracker!\n");
         return;
     }
 
@@ -498,7 +496,7 @@ void TaskLeaderLine::onTrackerClicked(bool clicked)
             m_tracker->terminateDrawing();
         }
         m_pbTrackerState = TrackerAction::PICK;
-        ui->pbTracker->setText(tr("Pick Points"));
+        ui->pbTracker->setText(tr("Pick points"));
         ui->pbCancelEdit->setEnabled(false);
         enableTaskButtons(true);
 
@@ -512,7 +510,7 @@ void TaskLeaderLine::onTrackerClicked(bool clicked)
             m_qgLeader->closeEdit();
         }
         m_pbTrackerState = TrackerAction::PICK;
-        ui->pbTracker->setText(tr("Edit Points"));
+        ui->pbTracker->setText(tr("Edit points"));
         ui->pbCancelEdit->setEnabled(false);
         enableTaskButtons(true);
 
@@ -532,7 +530,7 @@ void TaskLeaderLine::onTrackerClicked(bool clicked)
         QString msg = tr("Pick a starting point for leader line");
         getMainWindow()->statusBar()->show();
         Gui::getMainWindow()->showMessage(msg, MessageDisplayTime);
-        ui->pbTracker->setText(tr("Save Points"));
+        ui->pbTracker->setText(tr("Save points"));
         ui->pbTracker->setEnabled(true);
         ui->pbCancelEdit->setEnabled(true);
         m_pbTrackerState = TrackerAction::SAVE;
@@ -557,7 +555,7 @@ void TaskLeaderLine::onTrackerClicked(bool clicked)
 
             if (!qgLead) {
                 //tarfu
-                Base::Console().error("TaskLeaderLine - can't find leader graphic\n");
+                Base::Console().error("TaskLeaderLine - cannot find leader graphic\n");
                 //now what? throw will generate "unknown unhandled exception"
             } else {
                 m_qgLeader = qgLead;
@@ -636,9 +634,9 @@ void TaskLeaderLine::onTrackerFinished(std::vector<QPointF> trackerScenePoints, 
         m_attachPoint = Base::Vector3d(mapped.x(), mapped.y(), 0.0);
         m_sceneDeltas = scenePointsToDeltas(trackerScenePoints);
     } else {
-        Base::Console().message("TTL::onTrackerFinished - can't find parent graphic!\n");
+        Base::Console().message("TTL::onTrackerFinished - cannot find parent graphic!\n");
         //blow up!?
-        throw Base::RuntimeError("TaskLeaderLine - can not find parent graphic");
+        throw Base::RuntimeError("TaskLeaderLine - cannot find parent graphic");
     }
 
     QString msg = tr("Press OK or Cancel to continue");

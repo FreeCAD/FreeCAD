@@ -70,7 +70,7 @@
            </font>
           </property>
           <property name="text">
-           <string>Page Scale</string>
+           <string>Page scale</string>
           </property>
          </widget>
         </item>
@@ -82,7 +82,7 @@
            </font>
           </property>
           <property name="text">
-           <string>View Custom Scale</string>
+           <string>View custom scale</string>
           </property>
          </widget>
         </item>
@@ -181,7 +181,7 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>Default scale for views if 'View Scale Type' is 'Custom'</string>
+           <string>Default scale for views if 'View scale type' is 'Custom'</string>
           </property>
           <property name="statusTip">
            <string/>
@@ -211,7 +211,7 @@
            </font>
           </property>
           <property name="text">
-           <string>View Scale Type</string>
+           <string>View scale type</string>
           </property>
          </widget>
         </item>
@@ -223,10 +223,10 @@
            </font>
           </property>
           <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, Svg symbols, spreadsheet views and Draft views will use the original (incorrect) scaling method as used in v1.0 and earlier.  If unchecked, a more accurate method will be used.  &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>Uses the original (incorrect) scaling method for SVG symbols, Spreadsheet views and Draft views as used in v1.0 and earlier. Otherwise, a more accurate method will be used.</string>
           </property>
           <property name="text">
-           <string>Legacy Symbol Scaling</string>
+           <string>Legacy symbol scaling</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>LegacySvgScaling</cstring>
@@ -256,7 +256,7 @@
       </size>
      </property>
      <property name="title">
-      <string>Size Adjustments</string>
+      <string>Size adjustments</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
@@ -264,7 +264,7 @@
         <item row="0" column="0">
          <widget class="QLabel" name="label">
           <property name="text">
-           <string>Vertex Scale</string>
+           <string>Vertex scale</string>
           </property>
          </widget>
         </item>
@@ -310,7 +310,7 @@
            </font>
           </property>
           <property name="text">
-           <string>Center Mark Scale</string>
+           <string>Center mark scale</string>
           </property>
          </widget>
         </item>
@@ -367,7 +367,7 @@
         <item row="2" column="0">
          <widget class="QLabel" name="label_7">
           <property name="text">
-           <string>Template Edit Mark</string>
+           <string>Template edit mark</string>
           </property>
          </widget>
         </item>
@@ -402,7 +402,7 @@
         <item row="3" column="0">
          <widget class="QLabel" name="label_5">
           <property name="text">
-           <string>Welding Symbol Scale</string>
+           <string>Welding symbol scale</string>
           </property>
          </widget>
         </item>

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2019 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,11 +22,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QMessageBox>
 #include <QPushButton>
-#endif
 
 #include "Dialogs/DlgParameterFind.h"
 #include "ui_DlgParameterFind.h"
@@ -306,9 +305,7 @@ void DlgParameterFind::accept()
             groupTree->setCurrentItem(next);
         }
         else {
-            QMessageBox::warning(this,
-                                 tr("Not found"),
-                                 tr("Can't find the text: %1").arg(opt.text));
+            QMessageBox::warning(this, tr("Not found"), tr("Cannot find the text: %1").arg(opt.text));
         }
     }
 }

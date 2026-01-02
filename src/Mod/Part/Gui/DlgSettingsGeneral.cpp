@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2007 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,14 +22,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QButtonGroup>
-# include <QRegularExpression>
-# include <QRegularExpressionValidator>
-# include <QVBoxLayout>
-# include <Interface_Static.hxx>
-#endif
+#include <QButtonGroup>
+#include <QRegularExpression>
+#include <QRegularExpressionValidator>
+#include <QVBoxLayout>
+#include <Interface_Static.hxx>
+
 
 #include <Mod/Part/App/Interface.h>
 #include <Mod/Part/App/FuzzyHelper.h>
@@ -45,7 +45,8 @@
 using namespace PartGui;
 
 DlgSettingsGeneral::DlgSettingsGeneral(QWidget* parent)
-  : PreferencePage(parent), ui(new Ui_DlgSettingsGeneral)
+    : PreferencePage(parent)
+    , ui(new Ui_DlgSettingsGeneral)
 {
     ui->setupUi(this);
 }
@@ -62,7 +63,13 @@ void DlgSettingsGeneral::saveSettings()
     ui->checkSketchBaseRefine->onSave();
     ui->checkObjectNaming->onSave();
     ui->checkAllowCompoundBody->onSave();
+    ui->enableGizmos->onSave();
+    ui->delayedGizmoUpdate->onSave();
     ui->comboDefaultProfileTypeForHole->onSave();
+    ui->checkShowFinalPreview->onSave();
+    ui->checkShowTransparentPreview->onSave();
+    ui->checkShowProfilePreview->onSave();
+    ui->checkSwitchToTask->onSave();
 }
 
 void DlgSettingsGeneral::loadSettings()
@@ -72,13 +79,19 @@ void DlgSettingsGeneral::loadSettings()
     ui->checkSketchBaseRefine->onRestore();
     ui->checkObjectNaming->onRestore();
     ui->checkAllowCompoundBody->onRestore();
+    ui->enableGizmos->onRestore();
+    ui->delayedGizmoUpdate->onRestore();
     ui->comboDefaultProfileTypeForHole->onRestore();
+    ui->checkShowFinalPreview->onRestore();
+    ui->checkShowTransparentPreview->onRestore();
+    ui->checkShowProfilePreview->onRestore();
+    ui->checkSwitchToTask->onRestore();
 }
 
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgSettingsGeneral::changeEvent(QEvent *e)
+void DlgSettingsGeneral::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
@@ -91,7 +104,8 @@ void DlgSettingsGeneral::changeEvent(QEvent *e)
 // ----------------------------------------------------------------------------
 
 DlgImportExportIges::DlgImportExportIges(QWidget* parent)
-  : PreferencePage(parent), ui(new Ui_DlgImportExportIges)
+    : PreferencePage(parent)
+    , ui(new Ui_DlgImportExportIges)
 {
     ui->setupUi(this);
     ui->lineEditProduct->setReadOnly(true);
@@ -102,7 +116,9 @@ DlgImportExportIges::DlgImportExportIges(QWidget* parent)
 
     QRegularExpression rx;
     rx.setPattern(QStringLiteral("[\\x00-\\x7F]+"));
-    QRegularExpressionValidator* companyValidator = new QRegularExpressionValidator(ui->lineEditCompany);
+    QRegularExpressionValidator* companyValidator = new QRegularExpressionValidator(
+        ui->lineEditCompany
+    );
     companyValidator->setRegularExpression(rx);
     ui->lineEditCompany->setValidator(companyValidator);
     QRegularExpressionValidator* authorValidator = new QRegularExpressionValidator(ui->lineEditAuthor);
@@ -138,10 +154,12 @@ void DlgImportExportIges::loadSettings()
     ui->comboBoxUnits->setCurrentIndex(static_cast<int>(settings.getUnit()));
 
     bool brep = settings.getBRepMode();
-    if (brep)
+    if (brep) {
         ui->radioButtonBRepOn->setChecked(true);
-    else
+    }
+    else {
         ui->radioButtonBRepOff->setChecked(true);
+    }
 
     // Import
     ui->checkSkipBlank->setChecked(settings.getSkipBlankEntities());
@@ -155,7 +173,7 @@ void DlgImportExportIges::loadSettings()
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgImportExportIges::changeEvent(QEvent *e)
+void DlgImportExportIges::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
@@ -168,10 +186,10 @@ void DlgImportExportIges::changeEvent(QEvent *e)
 // ----------------------------------------------------------------------------
 
 DlgImportExportStep::DlgImportExportStep(QWidget* parent)
-  : PreferencePage(parent)
-  , exportStep(new DlgExportStep(this))
-  , importStep(new DlgImportStep(this))
-  , headerStep(new DlgExportHeaderStep(this))
+    : PreferencePage(parent)
+    , exportStep(new DlgExportStep(this))
+    , importStep(new DlgImportStep(this))
+    , headerStep(new DlgExportHeaderStep(this))
 {
     setWindowTitle(QLatin1String("STEP"));
     QVBoxLayout* layout = new QVBoxLayout(this);
@@ -206,7 +224,7 @@ void DlgImportExportStep::loadSettings()
     headerStep->loadSettings();
 }
 
-void DlgImportExportStep::changeEvent(QEvent *)
+void DlgImportExportStep::changeEvent(QEvent*)
 {
     // do nothing
 }

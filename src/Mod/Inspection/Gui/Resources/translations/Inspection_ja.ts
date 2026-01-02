@@ -10,13 +10,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="75"/>
-      <source>Inspection...</source>
-      <translation>ずれを計測...</translation>
+      <source>Inspection…</source>
+      <translation>検査…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="76"/>
-      <source>Get distance information</source>
-      <translation>ずれを計測</translation>
+      <source>Inspects distance information</source>
+      <translation>距離情報を検査</translation>
     </message>
   </context>
   <context>
@@ -28,20 +28,19 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="49"/>
-      <source>Visual inspection...</source>
-      <translation>外観検査...</translation>
+      <source>Visual Inspection…</source>
+      <translation>外観検査…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="50"/>
-      <location filename="../../Command.cpp" line="51"/>
-      <source>Visual inspection</source>
-      <translation>外観検査</translation>
+      <source>Inspects the objects visually</source>
+      <translation>オブジェクトを視覚的に検査</translation>
     </message>
   </context>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../VisualInspection.cpp" line="237"/>
+      <location filename="../../VisualInspection.cpp" line="234"/>
       <source>Visual Inspection</source>
       <translation>外観検査</translation>
     </message>
@@ -94,38 +93,38 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="502"/>
+      <location filename="../../ViewProviderInspection.cpp" line="510"/>
       <source>Remove annotations</source>
       <translation>画面上の計測値を削除する</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="503"/>
+      <location filename="../../ViewProviderInspection.cpp" line="511"/>
       <source>Do you want to remove all annotations?</source>
       <translation>画面上の全ての計測値を削除しますか？</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="561"/>
+      <location filename="../../ViewProviderInspection.cpp" line="569"/>
       <source>Annotation</source>
       <translation>計測値を画面上に記録する</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="564"/>
-      <source>Leave info mode</source>
-      <translation>計測値を画面上に記録しない</translation>
+      <location filename="../../ViewProviderInspection.cpp" line="572"/>
+      <source>Leave Info Mode</source>
+      <translation>情報モードを終了</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="695"/>
+      <location filename="../../ViewProviderInspection.cpp" line="708"/>
       <source>Distance: &gt; %1</source>
       <translation>ずれ： &gt; %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="699"/>
+      <location filename="../../ViewProviderInspection.cpp" line="711"/>
       <source>Distance: &lt; %1</source>
       <translation>ずれ： &lt; %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="719"/>
-      <location filename="../../ViewProviderInspection.cpp" line="736"/>
+      <location filename="../../ViewProviderInspection.cpp" line="730"/>
+      <location filename="../../ViewProviderInspection.cpp" line="748"/>
       <source>Distance: %1</source>
       <translation>ずれ： %1</translation>
     </message>

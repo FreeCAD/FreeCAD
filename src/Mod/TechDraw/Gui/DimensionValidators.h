@@ -101,6 +101,10 @@ long int mapGeometryTypeToDimType(long int dimType, DimensionGeometry geometry2d
 
 bool  refsMatchToken(const ReferenceVector& refs, const std::string& matchToken);
 
+DimensionGeometry lineOrientation(const Base::Vector3d& point0,
+                                  const Base::Vector3d& point1);
+
+
 }
 #endif //TECHDRAW_DIMENSIONVALIDATORS_H
 

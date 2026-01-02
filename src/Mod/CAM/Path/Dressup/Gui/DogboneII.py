@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2022 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -26,6 +27,7 @@ import FreeCAD
 import FreeCADGui
 import Path
 import Path.Dressup.DogboneII as DogboneII
+import Path.Dressup.Utils as PathDressup
 import PathScripts.PathUtils as PathUtils
 
 if False:
@@ -300,10 +302,16 @@ class ViewProviderDressup(object):
             arg1.Object.Base = None
         return True
 
+    def getIcon(self):
+        if getattr(PathDressup.baseOp(self.obj), "Active", True):
+            return ":/icons/CAM_Dressup.svg"
+        else:
+            return ":/icons/CAM_OpActive.svg"
+
 
 def Create(base, name="DressupDogbone"):
     """
-    Create(obj, name='DressupDogbone') ... dresses the given Path.Op.Profile object with dogbones.
+    Create(obj, name='DressupDogbone')… dresses the given Path.Op.Profile object with dogbones.
     """
     obj = DogboneII.Create(base, name)
     job = PathUtils.findParentJob(base)
@@ -323,7 +331,7 @@ class CommandDressupDogboneII(object):
             "MenuText": QT_TRANSLATE_NOOP("CAM_DressupDogbone", "Dogbone"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "CAM_DressupDogbone",
-                "Creates a Dogbone Dress-up object from a selected toolpath",
+                "Creates a dogbone dress-up object from a selected toolpath",
             ),
         }
 
@@ -340,7 +348,7 @@ class CommandDressupDogboneII(object):
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
             FreeCAD.Console.PrintError(
-                translate("CAM_DressupDogbone", "Please select one toolpath object") + "\n"
+                translate("CAM_DressupDogbone", "Select one toolpath object") + "\n"
             )
             return
         baseObject = selection[0]
@@ -367,4 +375,4 @@ if FreeCAD.GuiUp:
 
     FreeCADGui.addCommand("CAM_DressupDogbone", CommandDressupDogboneII())
 
-FreeCAD.Console.PrintLog("Loading DressupDogboneII ... done\n")
+FreeCAD.Console.PrintLog("Loading DressupDogboneII… done\n")

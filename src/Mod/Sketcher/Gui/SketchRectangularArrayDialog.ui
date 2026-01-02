@@ -14,7 +14,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Create array</string>
+   <string>Create Array</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -22,7 +22,7 @@
      <item>
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Columns:</string>
+        <string>Columns</string>
        </property>
       </widget>
      </item>
@@ -49,7 +49,7 @@
      <item>
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>Rows:</string>
+        <string>Rows</string>
        </property>
       </widget>
      </item>
@@ -90,8 +90,7 @@
    <item>
     <widget class="Gui::PrefCheckBox" name="ConstraintSeparationCheckBox">
      <property name="toolTip">
-      <string>If selected, each element in the array is constrained
-with respect to the others using construction lines</string>
+      <string>Constrains each element in the array with respect to the others using construction lines</string>
      </property>
      <property name="layoutDirection">
       <enum>Qt::LeftToRight</enum>
@@ -113,9 +112,8 @@ with respect to the others using construction lines</string>
    <item>
     <widget class="Gui::PrefCheckBox" name="CloneCheckBox">
      <property name="toolTip">
-      <string>If selected, it substitutes dimensional constraints by geometric constraints
-in the copies, so that a change in the original element is directly
-reflected on copies</string>
+      <string>Substitutes dimensional constraints by geometric constraints
+in the copies, so that a change in the original element is reflected on copies</string>
      </property>
      <property name="text">
       <string>Clone</string>

@@ -26,59 +26,61 @@
 
 #include "ViewProvider.h"
 
-namespace PartDesign {
-    class Transformed;
+#include <Inventor/nodes/SoMultipleCopy.h>
+
+namespace PartDesign
+{
+class Transformed;
 }
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
 class TaskDlgTransformedParameters;
 
-class PartDesignGuiExport ViewProviderTransformed : public ViewProvider
+class PartDesignGuiExport ViewProviderTransformed: public ViewProvider
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderTransformed);
 
 public:
     ViewProviderTransformed() = default;
-    ~ViewProviderTransformed() override  = default;
+    ~ViewProviderTransformed() override = default;
 
     // The feature name of the subclass
-    virtual const std::string & featureName() const;
+    virtual const std::string& featureName() const;
     std::string featureIcon() const;
+
+    void recomputeFeature(bool recompute = true);
     void setupContextMenu(QMenu*, QObject*, const char*) override;
 
-    bool onDelete(const std::vector<std::string> &) override;
-
     /// signals if the transformation contains errors
-    boost::signals2::signal<void (QString msg)> signalDiagnosis;
+    boost::signals2::signal<void(QString msg)> signalDiagnosis;
 
     // Name of menu dialog
     QString menuName;
 
-    Gui::ViewProvider *startEditing(int ModNum=0) override;
+    Gui::ViewProvider* startEditing(int ModNum = 0) override;
+
+    QString getMessage() const
+    {
+        return diagMessage;
+    }
 
 protected:
     bool setEdit(int ModNum) override;
-    void unsetEdit(int ModNum) override;
+
+    void attachPreview() override;
+    void updatePreview() override;
 
     bool checkDlgOpen(TaskDlgTransformedParameters* transformedDlg);
-    void handleTranformedResult(PartDesign::Transformed* transformed);
+    void handleTransformedResult(PartDesign::Transformed* transformed);
 
-    // node for the representation of rejected repetitions
-    SoGroup           * pcRejectedRoot{nullptr};
-
+    Gui::CoinPtr<SoMultipleCopy> pcMultipleCopy;
     QString diagMessage;
-
-public:
-    void recomputeFeature(bool recompute=true);
-    QString getMessage() const {return diagMessage;}
-
-private:
-    void showRejectedShape(TopoDS_Shape shape);
 };
 
 
-} // namespace PartDesignGui
+}  // namespace PartDesignGui
 
 
-#endif // PARTGUI_ViewProviderTransformed_H
+#endif  // PARTGUI_ViewProviderTransformed_H

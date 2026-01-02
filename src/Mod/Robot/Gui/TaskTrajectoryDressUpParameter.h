@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -36,8 +38,10 @@ class TaskTrajectoryDressUpParameter: public Gui::TaskView::TaskBox
     Q_OBJECT
 
 public:
-    explicit TaskTrajectoryDressUpParameter(Robot::TrajectoryDressUpObject* obj,
-                                            QWidget* parent = nullptr);
+    explicit TaskTrajectoryDressUpParameter(
+        Robot::TrajectoryDressUpObject* obj,
+        QWidget* parent = nullptr
+    );
     ~TaskTrajectoryDressUpParameter() override;
 
     /// this methode write the values from the Gui to the object, usually in accept()

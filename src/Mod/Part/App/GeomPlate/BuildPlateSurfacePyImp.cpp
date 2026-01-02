@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2020 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,10 +22,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Standard_Failure.hxx>
-#endif
+#include <Mod/Part/PartGlobal.h>
+
+#include <Standard_Failure.hxx>
+
 
 #include "GeomPlate/BuildPlateSurfacePy.h"
 #include "GeomPlate/BuildPlateSurfacePy.cpp"
@@ -75,7 +77,7 @@ Part.show(l4.toShape())
 bp.surfInit()
  * \endcode
  */
-PyObject *BuildPlateSurfacePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject* BuildPlateSurfacePy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // create a new instance of BuildPlateSurfacePy
     return new BuildPlateSurfacePy(nullptr);
@@ -84,7 +86,7 @@ PyObject *BuildPlateSurfacePy::PyMake(struct _typeobject *, PyObject *, PyObject
 // constructor method
 int BuildPlateSurfacePy::PyInit(PyObject* args, PyObject* kwds)
 {
-    PyObject *surf = nullptr;
+    PyObject* surf = nullptr;
     int degree = 3;
     int nbPtsOnCur = 10;
     int nbIter = 3;
@@ -94,19 +96,49 @@ int BuildPlateSurfacePy::PyInit(PyObject* args, PyObject* kwds)
     double tolCurv = 0.1;
     PyObject* anisotropy = Py_False;
 
-    static const std::array<const char *, 10> keywords{"Surface", "Degree", "NbPtsOnCur", "NbIter", "Tol2d", "Tol3d",
-                                                       "TolAng", "TolCurv", "Anisotropy", nullptr};
-    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "|O!iiiddddO!", keywords,
-                                             &(GeometrySurfacePy::Type), &surf, &degree,
-                                             &nbPtsOnCur, &nbIter, &tol2d, &tol3d,
-                                             &tolAng, &tolCurv, &PyBool_Type, &anisotropy)) {
+    static const std::array<const char*, 10> keywords {
+        "Surface",
+        "Degree",
+        "NbPtsOnCur",
+        "NbIter",
+        "Tol2d",
+        "Tol3d",
+        "TolAng",
+        "TolCurv",
+        "Anisotropy",
+        nullptr
+    };
+    if (!Base::Wrapped_ParseTupleAndKeywords(
+            args,
+            kwds,
+            "|O!iiiddddO!",
+            keywords,
+            &(GeometrySurfacePy::Type),
+            &surf,
+            &degree,
+            &nbPtsOnCur,
+            &nbIter,
+            &tol2d,
+            &tol3d,
+            &tolAng,
+            &tolCurv,
+            &PyBool_Type,
+            &anisotropy
+        )) {
         return -1;
     }
 
     try {
-        std::unique_ptr<GeomPlate_BuildPlateSurface> ptr(new GeomPlate_BuildPlateSurface
-                                                         (degree, nbPtsOnCur, nbIter, tol2d, tol3d, tolAng, tolCurv,
-                                                          Base::asBoolean(anisotropy)));
+        std::unique_ptr<GeomPlate_BuildPlateSurface> ptr(new GeomPlate_BuildPlateSurface(
+            degree,
+            nbPtsOnCur,
+            nbIter,
+            tol2d,
+            tol3d,
+            tolAng,
+            tolCurv,
+            Base::asBoolean(anisotropy)
+        ));
 
         if (surf) {
             GeomSurface* surface = static_cast<GeometrySurfacePy*>(surf)->getGeomSurfacePtr();
@@ -134,10 +166,11 @@ std::string BuildPlateSurfacePy::representation() const
     return {"<GeomPlate_BuildPlateSurface object>"};
 }
 
-PyObject* BuildPlateSurfacePy::init(PyObject *args)
+PyObject* BuildPlateSurfacePy::init(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     try {
         getGeomPlate_BuildPlateSurfacePtr()->Init();
@@ -149,11 +182,12 @@ PyObject* BuildPlateSurfacePy::init(PyObject *args)
     }
 }
 
-PyObject* BuildPlateSurfacePy::loadInitSurface(PyObject *args)
+PyObject* BuildPlateSurfacePy::loadInitSurface(PyObject* args)
 {
     PyObject* surf;
-    if (!PyArg_ParseTuple(args, "O!", &(GeometrySurfacePy::Type), &surf))
+    if (!PyArg_ParseTuple(args, "O!", &(GeometrySurfacePy::Type), &surf)) {
         return nullptr;
+    }
 
     GeomSurface* surface = static_cast<GeometrySurfacePy*>(surf)->getGeomSurfacePtr();
     Handle(Geom_Surface) handle = Handle(Geom_Surface)::DownCast(surface->handle());
@@ -172,20 +206,23 @@ PyObject* BuildPlateSurfacePy::loadInitSurface(PyObject *args)
     }
 }
 
-PyObject* BuildPlateSurfacePy::add(PyObject *args)
+PyObject* BuildPlateSurfacePy::add(PyObject* args)
 {
     PyObject* cont;
-    if (!PyArg_ParseTuple(args, "O", &cont))
+    if (!PyArg_ParseTuple(args, "O", &cont)) {
         return nullptr;
+    }
 
     try {
         if (PyObject_TypeCheck(cont, &PointConstraintPy::Type)) {
-            GeomPlate_PointConstraint* pc = static_cast<PointConstraintPy*>(cont)->getGeomPlate_PointConstraintPtr();
+            GeomPlate_PointConstraint* pc
+                = static_cast<PointConstraintPy*>(cont)->getGeomPlate_PointConstraintPtr();
             getGeomPlate_BuildPlateSurfacePtr()->Add(new GeomPlate_PointConstraint(*pc));
             Py_Return;
         }
         else if (PyObject_TypeCheck(cont, &CurveConstraintPy::Type)) {
-            GeomPlate_CurveConstraint* cc = static_cast<CurveConstraintPy*>(cont)->getGeomPlate_CurveConstraintPtr();
+            GeomPlate_CurveConstraint* cc
+                = static_cast<CurveConstraintPy*>(cont)->getGeomPlate_CurveConstraintPtr();
             getGeomPlate_BuildPlateSurfacePtr()->Add(new GeomPlate_CurveConstraint(*cc));
             Py_Return;
         }
@@ -200,11 +237,12 @@ PyObject* BuildPlateSurfacePy::add(PyObject *args)
     }
 }
 
-PyObject* BuildPlateSurfacePy::setNbBounds(PyObject *args)
+PyObject* BuildPlateSurfacePy::setNbBounds(PyObject* args)
 {
     int count;
-    if (!PyArg_ParseTuple(args, "i", &count))
+    if (!PyArg_ParseTuple(args, "i", &count)) {
         return nullptr;
+    }
 
     try {
         getGeomPlate_BuildPlateSurfacePtr()->SetNbBounds(count);
@@ -216,10 +254,11 @@ PyObject* BuildPlateSurfacePy::setNbBounds(PyObject *args)
     }
 }
 
-PyObject* BuildPlateSurfacePy::perform(PyObject *args)
+PyObject* BuildPlateSurfacePy::perform(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     try {
         getGeomPlate_BuildPlateSurfacePtr()->Perform();
@@ -231,10 +270,11 @@ PyObject* BuildPlateSurfacePy::perform(PyObject *args)
     }
 }
 
-PyObject* BuildPlateSurfacePy::isDone(PyObject *args) const
+PyObject* BuildPlateSurfacePy::isDone(PyObject* args) const
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     try {
         Standard_Boolean ok = getGeomPlate_BuildPlateSurfacePtr()->IsDone();
@@ -246,15 +286,17 @@ PyObject* BuildPlateSurfacePy::isDone(PyObject *args) const
     }
 }
 
-PyObject* BuildPlateSurfacePy::surface(PyObject *args) const
+PyObject* BuildPlateSurfacePy::surface(PyObject* args) const
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     try {
         Handle(Geom_Surface) hSurf = getGeomPlate_BuildPlateSurfacePtr()->Surface();
-        if (hSurf.IsNull())
+        if (hSurf.IsNull()) {
             Py_Return;
+        }
 
         std::unique_ptr<GeomSurface> geo(makeFromSurface(hSurf));
         return geo->getPyObject();
@@ -265,15 +307,17 @@ PyObject* BuildPlateSurfacePy::surface(PyObject *args) const
     }
 }
 
-PyObject* BuildPlateSurfacePy::surfInit(PyObject *args) const
+PyObject* BuildPlateSurfacePy::surfInit(PyObject* args) const
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     try {
         Handle(Geom_Surface) hSurf = getGeomPlate_BuildPlateSurfacePtr()->SurfInit();
-        if (hSurf.IsNull())
+        if (hSurf.IsNull()) {
             Py_Return;
+        }
 
         std::unique_ptr<GeomSurface> geo(makeFromSurface(hSurf));
         return geo->getPyObject();
@@ -284,16 +328,20 @@ PyObject* BuildPlateSurfacePy::surfInit(PyObject *args) const
     }
 }
 
-PyObject* BuildPlateSurfacePy::curveConstraint(PyObject *args) const
+PyObject* BuildPlateSurfacePy::curveConstraint(PyObject* args) const
 {
     int index;
-    if (!PyArg_ParseTuple(args, "i", &index))
+    if (!PyArg_ParseTuple(args, "i", &index)) {
         return nullptr;
+    }
 
     try {
-        Handle(GeomPlate_CurveConstraint) hCC = getGeomPlate_BuildPlateSurfacePtr()->CurveConstraint(index);
-        if (hCC.IsNull())
+        Handle(GeomPlate_CurveConstraint) hCC = getGeomPlate_BuildPlateSurfacePtr()->CurveConstraint(
+            index
+        );
+        if (hCC.IsNull()) {
             Py_Return;
+        }
 
         std::unique_ptr<GeomPlate_CurveConstraint> ptr(new GeomPlate_CurveConstraint(*hCC));
         return new CurveConstraintPy(ptr.release());
@@ -304,16 +352,20 @@ PyObject* BuildPlateSurfacePy::curveConstraint(PyObject *args) const
     }
 }
 
-PyObject* BuildPlateSurfacePy::pointConstraint(PyObject *args) const
+PyObject* BuildPlateSurfacePy::pointConstraint(PyObject* args) const
 {
     int index;
-    if (!PyArg_ParseTuple(args, "i", &index))
+    if (!PyArg_ParseTuple(args, "i", &index)) {
         return nullptr;
+    }
 
     try {
-        Handle(GeomPlate_PointConstraint) hPC = getGeomPlate_BuildPlateSurfacePtr()->PointConstraint(index);
-        if (hPC.IsNull())
+        Handle(GeomPlate_PointConstraint) hPC = getGeomPlate_BuildPlateSurfacePtr()->PointConstraint(
+            index
+        );
+        if (hPC.IsNull()) {
             Py_Return;
+        }
 
         std::unique_ptr<GeomPlate_PointConstraint> ptr(new GeomPlate_PointConstraint(*hPC));
         return new PointConstraintPy(ptr.release());
@@ -324,11 +376,12 @@ PyObject* BuildPlateSurfacePy::pointConstraint(PyObject *args) const
     }
 }
 
-PyObject* BuildPlateSurfacePy::disc2dContour(PyObject *args)
+PyObject* BuildPlateSurfacePy::disc2dContour(PyObject* args)
 {
     int index;
-    if (!PyArg_ParseTuple(args, "i", &index))
+    if (!PyArg_ParseTuple(args, "i", &index)) {
         return nullptr;
+    }
 
     try {
         TColgp_SequenceOfXY seq2d;
@@ -351,11 +404,12 @@ PyObject* BuildPlateSurfacePy::disc2dContour(PyObject *args)
     }
 }
 
-PyObject* BuildPlateSurfacePy::disc3dContour(PyObject *args)
+PyObject* BuildPlateSurfacePy::disc3dContour(PyObject* args)
 {
     int index, order;
-    if (!PyArg_ParseTuple(args, "ii", &index, &order))
+    if (!PyArg_ParseTuple(args, "ii", &index, &order)) {
         return nullptr;
+    }
 
     try {
         TColgp_SequenceOfXYZ seq3d;
@@ -379,10 +433,11 @@ PyObject* BuildPlateSurfacePy::disc3dContour(PyObject *args)
     }
 }
 
-PyObject* BuildPlateSurfacePy::sense(PyObject *args) const
+PyObject* BuildPlateSurfacePy::sense(PyObject* args) const
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     try {
         Handle(TColStd_HArray1OfInteger) hOrder = getGeomPlate_BuildPlateSurfacePtr()->Sense();
@@ -400,10 +455,11 @@ PyObject* BuildPlateSurfacePy::sense(PyObject *args) const
     }
 }
 
-PyObject* BuildPlateSurfacePy::curves2d(PyObject *args) const
+PyObject* BuildPlateSurfacePy::curves2d(PyObject* args) const
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     try {
         Handle(TColGeom2d_HArray1OfCurve) hCurves = getGeomPlate_BuildPlateSurfacePtr()->Curves2d();
@@ -412,8 +468,9 @@ PyObject* BuildPlateSurfacePy::curves2d(PyObject *args) const
             for (auto i = hCurves->Lower(); i <= hCurves->Upper(); ++i) {
                 Handle(Geom2d_Curve) hCurve = hCurves->Value(i);
                 std::unique_ptr<Geom2dCurve> ptr(makeFromCurve2d(hCurve));
-                if (ptr)
+                if (ptr) {
                     list.append(Py::asObject(ptr->getPyObject()));
+                }
             }
         }
         return Py::new_reference_to(list);
@@ -424,10 +481,11 @@ PyObject* BuildPlateSurfacePy::curves2d(PyObject *args) const
     }
 }
 
-PyObject* BuildPlateSurfacePy::order(PyObject *args) const
+PyObject* BuildPlateSurfacePy::order(PyObject* args) const
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     try {
         Handle(TColStd_HArray1OfInteger) hOrder = getGeomPlate_BuildPlateSurfacePtr()->Order();
@@ -445,11 +503,12 @@ PyObject* BuildPlateSurfacePy::order(PyObject *args) const
     }
 }
 
-PyObject* BuildPlateSurfacePy::G0Error(PyObject *args) const
+PyObject* BuildPlateSurfacePy::G0Error(PyObject* args) const
 {
     int index = 0;
-    if (!PyArg_ParseTuple(args, "|i", &index))
+    if (!PyArg_ParseTuple(args, "|i", &index)) {
         return nullptr;
+    }
 
     try {
         Standard_Real v = index < 1 ? getGeomPlate_BuildPlateSurfacePtr()->G0Error()
@@ -462,11 +521,12 @@ PyObject* BuildPlateSurfacePy::G0Error(PyObject *args) const
     }
 }
 
-PyObject* BuildPlateSurfacePy::G1Error(PyObject *args) const
+PyObject* BuildPlateSurfacePy::G1Error(PyObject* args) const
 {
     int index = 0;
-    if (!PyArg_ParseTuple(args, "|i", &index))
+    if (!PyArg_ParseTuple(args, "|i", &index)) {
         return nullptr;
+    }
 
     try {
         Standard_Real v = index < 1 ? getGeomPlate_BuildPlateSurfacePtr()->G1Error()
@@ -479,11 +539,12 @@ PyObject* BuildPlateSurfacePy::G1Error(PyObject *args) const
     }
 }
 
-PyObject* BuildPlateSurfacePy::G2Error(PyObject *args) const
+PyObject* BuildPlateSurfacePy::G2Error(PyObject* args) const
 {
     int index = 0;
-    if (!PyArg_ParseTuple(args, "|i", &index))
+    if (!PyArg_ParseTuple(args, "|i", &index)) {
         return nullptr;
+    }
 
     try {
         Standard_Real v = index < 1 ? getGeomPlate_BuildPlateSurfacePtr()->G2Error()
@@ -496,7 +557,7 @@ PyObject* BuildPlateSurfacePy::G2Error(PyObject *args) const
     }
 }
 
-PyObject *BuildPlateSurfacePy::getCustomAttributes(const char* /*attr*/) const
+PyObject* BuildPlateSurfacePy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }

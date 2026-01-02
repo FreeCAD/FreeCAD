@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 David Friedli <david[at]friedli-be.ch>             *
  *                                                                         *
@@ -19,10 +21,8 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QApplication>
-#endif
+
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Base/PyObjectBase.h>
@@ -32,7 +32,6 @@
 #include <Gui/WidgetFactory.h>
 
 #include "DlgPrefsMeasureAppearanceImp.h"
-#include "QuickMeasure.h"
 #include "QuickMeasurePy.h"
 #include "ViewProviderMeasureAngle.h"
 #include "ViewProviderMeasureDistance.h"
@@ -84,7 +83,7 @@ PyMOD_INIT_FUNC(MeasureGui)
     }
 
     PyObject* mod = MeasureGui::initModule();
-    Base::Console().log("Loading GUI of Measure module... done\n");
+    Base::Console().log("Loading GUI of Measure module… done\n");
 
     // instantiating the commands
     CreateMeasureCommands();
@@ -102,19 +101,20 @@ PyMOD_INIT_FUNC(MeasureGui)
     MeasureGui::ViewProviderMeasureLength              ::init();
     MeasureGui::ViewProviderMeasurePosition            ::init();
     MeasureGui::ViewProviderMeasureRadius              ::init();
+    MeasureGui::ViewProviderMeasureCOM                 ::init();
     // clang-format on
 
     // register preferences pages
     new Gui::PrefPageProducer<MeasureGui::DlgPrefsMeasureAppearanceImp>(
-        QT_TRANSLATE_NOOP("QObject", "Measure"));
+        QT_TRANSLATE_NOOP("QObject", "Measure")
+    );
 
     //    Q_INIT_RESOURCE(Measure);
 
     Base::Interpreter().addType(&MeasureGui::QuickMeasurePy::Type, mod, "QuickMeasure");
 
     // Create a QuickMeasure instance
-    auto measure = new MeasureGui::QuickMeasure(QApplication::instance());
-    Q_UNUSED(measure)
+    new MeasureGui::QuickMeasure(QApplication::instance());
 
     PyMOD_Return(mod);
 }

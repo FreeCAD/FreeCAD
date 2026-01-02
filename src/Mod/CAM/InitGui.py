@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
@@ -22,6 +23,14 @@
 # *                                                                         *
 # ***************************************************************************
 import FreeCAD
+
+if FreeCAD.GuiUp:
+    import FreeCADGui
+    from FreeCADGui import Workbench
+else:
+    # Provide a dummy Workbench class when GUI is not available
+    class Workbench:
+        pass
 
 
 FreeCAD.__unit_test__ += ["TestCAMGui"]
@@ -83,6 +92,16 @@ class CAMWorkbench(Workbench):
         from Path.Tool.toolbit.ui import cmd as PathToolBitCmd
         from Path.Tool.library.ui import cmd as PathToolBitLibraryCmd
 
+        from Path.Tool.camassets import cam_assets
+
+        cam_assets.setup()
+
+        # Check if CAM asset migration is needed for version upgrade
+        from Path.Tool.migration.migration import CAMAssetMigrator
+
+        migrator = CAMAssetMigrator()
+        migrator.check_migration_needed()
+
         from PySide.QtCore import QT_TRANSLATE_NOOP
 
         import PathCommands
@@ -105,16 +124,17 @@ class CAMWorkbench(Workbench):
         Path.GuiInit.Startup()
 
         # build commands list
-        projcmdlist = ["CAM_Job", "CAM_Post", "CAM_Sanity"]
-        toolcmdlist = [
-            "CAM_Inspect",
-            "CAM_Simulator",
-            "CAM_SimulatorGL",
-            "CAM_SelectLoop",
-            "CAM_OpActiveToggle",
-        ]
+        projcmdlist = ["CAM_Job", "CAM_Sanity"]
+        postcmdlist = ["CAM_Post", "CAM_PostSelected"]
+        toolcmdlist = ["CAM_Inspect", "CAM_SelectLoop", "CAM_OpActiveToggle"]
+
+        simcmdlist = ["CAM_SimulatorGL", "CAM_Simulator"]
+        prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/CAM")
+        simLegacy = prefs.GetBool("DefaultSimulatorLegacy", False)
+        if simLegacy:
+            simcmdlist.reverse()
+
         prepcmdlist = [
-            "CAM_Fixture",
             "CAM_Comment",
             "CAM_Stop",
             "CAM_Custom",
@@ -123,13 +143,14 @@ class CAMWorkbench(Workbench):
         twodopcmdlist = [
             "CAM_Profile",
             "CAM_Pocket_Shape",
-            "CAM_MillFace",
+            "CAM_MillFacing",
             "CAM_Helix",
             "CAM_Adaptive",
+            "CAM_Slot",
         ]
         threedopcmdlist = ["CAM_Pocket3D"]
         engravecmdlist = ["CAM_Engrave", "CAM_Deburr", "CAM_Vcarve"]
-        drillingcmdlist = ["CAM_Drilling", "CAM_Tapping"]
+        drillingcmdlist = ["CAM_Drilling"]
         modcmdlist = ["CAM_OperationCopy", "CAM_Array", "CAM_SimpleCopy"]
         dressupcmdlist = [
             "CAM_DressupArray",
@@ -148,6 +169,22 @@ class CAMWorkbench(Workbench):
         toolcmdlist.extend(PathToolBitLibraryCmd.BarList)
         toolbitcmdlist = PathToolBitLibraryCmd.MenuList
 
+        postcmdgroup = ["CAM_PostTools"]
+        FreeCADGui.addCommand(
+            "CAM_PostTools",
+            PathCommandGroup(
+                postcmdlist,
+                QT_TRANSLATE_NOOP("CAM_PostTools", "Post process Operations"),
+            ),
+        )
+        simcmdgroup = ["CAM_SimTools"]
+        FreeCADGui.addCommand(
+            "CAM_SimTools",
+            PathCommandGroup(
+                simcmdlist,
+                QT_TRANSLATE_NOOP("CAM_SimTools", "Simulators"),
+            ),
+        )
         engravecmdgroup = ["CAM_EngraveTools"]
         FreeCADGui.addCommand(
             "CAM_EngraveTools",
@@ -156,14 +193,21 @@ class CAMWorkbench(Workbench):
                 QT_TRANSLATE_NOOP("CAM_EngraveTools", "Engraving Operations"),
             ),
         )
-        drillingcmdgroup = ["CAM_DrillingTools"]
-        FreeCADGui.addCommand(
-            "CAM_DrillingTools",
-            PathCommandGroup(
-                drillingcmdlist,
-                QT_TRANSLATE_NOOP("CAM_DrillingTools", "Drilling Operations"),
-            ),
-        )
+        if Path.Preferences.experimentalFeaturesEnabled():
+            drillingcmdlist.append("CAM_Tapping")
+
+        if set(["CAM_Drilling", "CAM_Tapping"]).issubset(drillingcmdlist):
+            drillingcmdgroup = ["CAM_DrillingTools"]
+            FreeCADGui.addCommand(
+                "CAM_DrillingTools",
+                PathCommandGroup(
+                    drillingcmdlist,
+                    QT_TRANSLATE_NOOP("CAM_DrillingTools", "Drilling Operations"),
+                ),
+            )
+        else:
+            drillingcmdgroup = drillingcmdlist
+
         dressupcmdgroup = ["CAM_DressupTools"]
         FreeCADGui.addCommand(
             "CAM_DressupTools",
@@ -218,8 +262,14 @@ class CAMWorkbench(Workbench):
                 if not Path.Preferences.suppressOpenCamLibWarning():
                     FreeCAD.Console.PrintError("OpenCamLib is not working!\n")
 
-        self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Project Setup"), projcmdlist)
-        self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Tool Commands"), toolcmdlist)
+        self.appendToolbar(
+            QT_TRANSLATE_NOOP("Workbench", "Project Setup"),
+            projcmdlist + postcmdgroup,
+        )
+        self.appendToolbar(
+            QT_TRANSLATE_NOOP("Workbench", "Tool Commands"),
+            simcmdgroup + toolcmdlist,
+        )
         self.appendToolbar(
             QT_TRANSLATE_NOOP("Workbench", "New Operations"),
             twodopcmdlist + drillingcmdgroup + engravecmdgroup + threedcmdgroup,
@@ -233,7 +283,9 @@ class CAMWorkbench(Workbench):
         self.appendMenu(
             [QT_TRANSLATE_NOOP("Workbench", "&CAM")],
             projcmdlist
+            + postcmdlist
             + ["CAM_ExportTemplate", "Separator"]
+            + simcmdlist
             + toolcmdlist
             + toolbitcmdlist
             + ["Separator"]
@@ -317,16 +369,17 @@ class CAMWorkbench(Workbench):
         import PathScripts
 
         menuAppended = False
-        if len(FreeCADGui.Selection.getSelection()) == 1:
-            obj = FreeCADGui.Selection.getSelection()[0]
+        selection = FreeCADGui.Selection.getSelection()
+        if len(selection) == 1:
+            obj = selection[0]
+            selectedName = obj.Name
             if obj.isDerivedFrom("Path::Feature"):
                 self.appendContextMenu("", "Separator")
                 self.appendContextMenu("", ["CAM_Inspect"])
-                selectedName = obj.Name
                 if "Remote" in selectedName:
                     self.appendContextMenu("", ["Refresh_Path"])
                 if "Job" in selectedName:
-                    self.appendContextMenu("", ["CAM_ExportTemplate"] + self.toolbitctxmenu)
+                    self.appendContextMenu("", ["CAM_ExportTemplate"])
                 menuAppended = True
             if isinstance(obj.Proxy, Path.Op.Base.ObjectOp):
                 self.appendContextMenu("", ["CAM_OperationCopy", "CAM_OpActiveToggle"])
@@ -338,6 +391,7 @@ class CAMWorkbench(Workbench):
                     "Profile" in selectedName
                     or "Contour" in selectedName
                     or "Dressup" in selectedName
+                    or "Pocket" in selectedName
                 ):
                     self.appendContextMenu("", "Separator")
                     # self.appendContextMenu("", ["Set_StartPoint"])
@@ -348,6 +402,14 @@ class CAMWorkbench(Workbench):
             if isinstance(obj.Proxy, Path.Tool.ToolBit):
                 self.appendContextMenu("", ["CAM_ToolBitSave", "CAM_ToolBitSaveAs"])
                 menuAppended = True
+
+        if selection:
+            for obj in selection:
+                if not obj.isDerivedFrom("Path::Feature"):
+                    break
+            else:
+                self.appendContextMenu("", ["CAM_Post", "CAM_PostSelected"])
+
         if menuAppended:
             self.appendContextMenu("", "Separator")
 

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,10 +22,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <Inventor/events/SoButtonEvent.h>
-#endif
+
 
 #include <App/Document.h>
 #include <Gui/Application.h>
@@ -46,9 +46,9 @@ CmdVisualInspection::CmdVisualInspection()
 {
     sAppModule = "Inspection";
     sGroup = QT_TR_NOOP("Inspection");
-    sMenuText = QT_TR_NOOP("Visual inspection...");
-    sToolTipText = QT_TR_NOOP("Visual inspection");
-    sStatusTip = QT_TR_NOOP("Visual inspection");
+    sMenuText = QT_TR_NOOP("Visual Inspection…");
+    sToolTipText = QT_TR_NOOP("Inspects the objects visually");
+    sStatusTip = sToolTipText;
     sWhatsThis = "Inspection_VisualInspection";
 }
 
@@ -72,8 +72,8 @@ CmdInspectElement::CmdInspectElement()
 {
     sAppModule = "Inspection";
     sGroup = QT_TR_NOOP("Inspection");
-    sMenuText = QT_TR_NOOP("Inspection...");
-    sToolTipText = QT_TR_NOOP("Get distance information");
+    sMenuText = QT_TR_NOOP("Inspection…");
+    sToolTipText = QT_TR_NOOP("Inspects distance information");
     sWhatsThis = "Inspection_InspectElement";
     sStatusTip = sToolTipText;
     sPixmap = "inspect_pipette";
@@ -90,9 +90,12 @@ void CmdInspectElement::activated(int)
         viewer->setRedirectToSceneGraph(true);
         viewer->setSelectionEnabled(false);
         viewer->setEditingCursor(
-            QCursor(Gui::BitmapFactory().pixmapFromSvg("inspect_pipette", QSize(32, 32)), 4, 29));
-        viewer->addEventCallback(SoButtonEvent::getClassTypeId(),
-                                 InspectionGui::ViewProviderInspection::inspectCallback);
+            QCursor(Gui::BitmapFactory().pixmapFromSvg("inspect_pipette", QSize(32, 32)), 4, 29)
+        );
+        viewer->addEventCallback(
+            SoButtonEvent::getClassTypeId(),
+            InspectionGui::ViewProviderInspection::inspectCallback
+        );
     }
 }
 

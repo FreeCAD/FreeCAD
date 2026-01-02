@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2016 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -557,7 +558,7 @@ class TestPathGeom(PathTestBase):
         commands.append(Path.Command("G0", {"X": 0}))
         commands.append(Path.Command("G1", {"Y": 0}))
 
-        wire, rapid = Path.Geom.wireForPath(Path.Path(commands))
+        wire, rapid, rapid_indexes = Path.Geom.wireForPath(Path.Path(commands))
         self.assertEqual(len(wire.Edges), 4)
         self.assertLine(wire.Edges[0], Vector(0, 0, 0), Vector(1, 0, 0))
         self.assertLine(wire.Edges[1], Vector(1, 0, 0), Vector(1, 1, 0))

@@ -24,22 +24,33 @@
 #ifndef GUI_TASKVIEW_TaskChamferParameters_H
 #define GUI_TASKVIEW_TaskChamferParameters_H
 
+#include <Gui/Inventor/Draggers/Gizmo.h>
+
 #include "TaskDressUpParameters.h"
 #include "ViewProviderChamfer.h"
 
 class Ui_TaskChamferParameters;
-namespace PartDesign {
+namespace PartDesign
+{
 class Chamfer;
 }
 
-namespace PartDesignGui {
+namespace Gui
+{
+class LinearGizmo;
+class RotationalGizmo;
+class GizmoContainer;
+}  // namespace Gui
 
-class TaskChamferParameters : public TaskDressUpParameters
+namespace PartDesignGui
+{
+
+class TaskChamferParameters: public TaskDressUpParameters
 {
     Q_OBJECT
 
 public:
-    explicit TaskChamferParameters(ViewProviderDressUp *DressUpView, QWidget *parent=nullptr);
+    explicit TaskChamferParameters(ViewProviderDressUp* DressUpView, QWidget* parent = nullptr);
     ~TaskChamferParameters() override;
 
     void apply() override;
@@ -56,7 +67,7 @@ private Q_SLOTS:
 
 protected:
     void setButtons(const selectionModes mode) override;
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
     int getType() const;
@@ -66,18 +77,25 @@ protected:
     bool getFlipDirection() const;
 
 private:
+    std::unique_ptr<Ui_TaskChamferParameters> ui;
+
     void setUpUI(PartDesign::Chamfer* pcChamfer);
 
-    std::unique_ptr<Ui_TaskChamferParameters> ui;
+    std::unique_ptr<Gui::GizmoContainer> gizmoContainer;
+    Gui::LinearGizmo* distanceGizmo = nullptr;
+    Gui::LinearGizmo* secondDistanceGizmo = nullptr;
+    Gui::RotationGizmo* angleGizmo = nullptr;
+    void setupGizmos(ViewProviderDressUp* vp);
+    void setGizmoPositions();
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgChamferParameters : public TaskDlgDressUpParameters
+class TaskDlgChamferParameters: public TaskDlgDressUpParameters
 {
     Q_OBJECT
 
 public:
-    explicit TaskDlgChamferParameters(ViewProviderChamfer *DressUpView);
+    explicit TaskDlgChamferParameters(ViewProviderChamfer* DressUpView);
     ~TaskDlgChamferParameters() override;
 
 public:
@@ -85,6 +103,6 @@ public:
     bool accept() override;
 };
 
-} //namespace PartDesignGui
+}  // namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TaskChamferParameters_H
+#endif  // GUI_TASKVIEW_TaskChamferParameters_H

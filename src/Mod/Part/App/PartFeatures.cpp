@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,8 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <memory>
 #include <BRepAdaptor_CompCurve.hxx>
 #include <BRepAdaptor_Curve.hxx>
@@ -41,7 +41,7 @@
 #include <TopoDS_Shell.hxx>
 #include <TopTools_HSequenceOfShape.hxx>
 #include <TopTools_ListIteratorOfListOfShape.hxx>
-#endif
+
 
 #include <App/Link.h>
 
@@ -59,11 +59,13 @@ RuledSurface::RuledSurface()
 {
     ADD_PROPERTY_TYPE(Curve1, (nullptr), "Ruled Surface", App::Prop_None, "Curve of ruled surface");
     ADD_PROPERTY_TYPE(Curve2, (nullptr), "Ruled Surface", App::Prop_None, "Curve of ruled surface");
-    ADD_PROPERTY_TYPE(Orientation,
-                      ((long)0),
-                      "Ruled Surface",
-                      App::Prop_None,
-                      "Orientation of ruled surface");
+    ADD_PROPERTY_TYPE(
+        Orientation,
+        ((long)0),
+        "Ruled Surface",
+        App::Prop_None,
+        "Orientation of ruled surface"
+    );
     Orientation.setEnums(OrientationEnums);
 }
 
@@ -86,11 +88,14 @@ void RuledSurface::onChanged(const App::Property* prop)
     Part::Feature::onChanged(prop);
 }
 
-App::DocumentObjectExecReturn* RuledSurface::getShape(const App::PropertyLinkSub& link,
-                                                      TopoDS_Shape& shape) const
+App::DocumentObjectExecReturn* RuledSurface::getShape(
+    const App::PropertyLinkSub& link,
+    TopoDS_Shape& shape
+) const
 {
     App::DocumentObject* obj = link.getValue();
-    const Part::TopoShape part = Part::Feature::getTopoShape(obj, ShapeOption::ResolveLink | ShapeOption::Transform);
+    const Part::TopoShape part
+        = Part::Feature::getTopoShape(obj, ShapeOption::ResolveLink | ShapeOption::Transform);
     if (part.isNull()) {
         return new App::DocumentObjectExecReturn("No shape linked.");
     }
@@ -127,7 +132,8 @@ App::DocumentObjectExecReturn* RuledSurface::execute()
         std::array<App::PropertyLinkSub*, 2> links = {&Curve1, &Curve2};
         for (auto link : links) {
             App::DocumentObject* obj = link->getValue();
-            const Part::TopoShape part = Part::Feature::getTopoShape(obj, ShapeOption::ResolveLink | ShapeOption::Transform);
+            const Part::TopoShape part
+                = Part::Feature::getTopoShape(obj, ShapeOption::ResolveLink | ShapeOption::Transform);
             if (part.isNull()) {
                 return new App::DocumentObjectExecReturn("No shape linked.");
             }
@@ -140,21 +146,20 @@ App::DocumentObjectExecReturn* RuledSurface::execute()
                 return new App::DocumentObjectExecReturn("Not exactly one sub-shape linked.");
             }
             else {
-                shapes.push_back(getTopoShape(link->getValue(),
-                                                 ShapeOption::NeedSubElement
-                                               | ShapeOption::ResolveLink
-                                               | ShapeOption::Transform,
-                                              subs.front().c_str()));
+                shapes.push_back(getTopoShape(
+                    link->getValue(),
+                    ShapeOption::NeedSubElement | ShapeOption::ResolveLink | ShapeOption::Transform,
+                    subs.front().c_str()
+                ));
             }
             if (shapes.back().isNull()) {
                 return new App::DocumentObjectExecReturn("Invalid link.");
             }
         }
-        TopoShape res(0);
+        TopoShape res(0, getDocument()->getStringHasher());
         res.makeElementRuledSurface(shapes, Orientation.getValue());
         this->Shape.setValue(res);
         return Part::Feature::execute();
-
     }
     catch (Standard_Failure& e) {
 
@@ -167,9 +172,7 @@ App::DocumentObjectExecReturn* RuledSurface::execute()
 
 // ----------------------------------------------------------------------------
 
-App::PropertyIntegerConstraint::Constraints Loft::Degrees = {2,
-                                                             Geom_BSplineSurface::MaxDegree(),
-                                                             1};
+App::PropertyIntegerConstraint::Constraints Loft::Degrees = {2, Geom_BSplineSurface::MaxDegree(), 1};
 
 PROPERTY_SOURCE(Part::Loft, Part::Feature)
 
@@ -177,12 +180,17 @@ Loft::Loft()
 {
     ADD_PROPERTY_TYPE(Sections, (nullptr), "Loft", App::Prop_None, "List of sections");
     Sections.setSize(0);
-    ADD_PROPERTY_TYPE(Solid, (false), "Loft", App::Prop_None, "Create solid");
+    ADD_PROPERTY_TYPE(Solid, (true), "Loft", App::Prop_None, "Create solid");
     ADD_PROPERTY_TYPE(Ruled, (false), "Loft", App::Prop_None, "Ruled surface");
     ADD_PROPERTY_TYPE(Closed, (false), "Loft", App::Prop_None, "Close Last to First Profile");
     ADD_PROPERTY_TYPE(MaxDegree, (5), "Loft", App::Prop_None, "Maximum Degree");
-    ADD_PROPERTY_TYPE(Linearize,(false), "Loft", App::Prop_None,
-                      "Linearize the result shape by simplifying linear edge and planar face into line and plane");
+    ADD_PROPERTY_TYPE(
+        Linearize,
+        (false),
+        "Loft",
+        App::Prop_None,
+        "Linearize the result shape by simplifying linear edge and planar face into line and plane"
+    );
     MaxDegree.setConstraints(&Degrees);
 }
 
@@ -229,10 +237,10 @@ App::DocumentObjectExecReturn* Loft::execute()
         IsRuled isRuled = Ruled.getValue() ? IsRuled::ruled : IsRuled::notRuled;
         IsClosed isClosed = Closed.getValue() ? IsClosed::closed : IsClosed::notClosed;
         int degMax = MaxDegree.getValue();
-        TopoShape result(0);
+        TopoShape result(0, getDocument()->getStringHasher());
         result.makeElementLoft(shapes, isSolid, isRuled, isClosed, degMax);
         if (Linearize.getValue()) {
-            result.linearize( LinearizeFace::linearizeFaces, LinearizeEdge::noEdges);
+            result.linearize(LinearizeFace::linearizeFaces, LinearizeEdge::noEdges);
         }
         this->Shape.setValue(result);
         return Part::Feature::execute();
@@ -245,10 +253,7 @@ App::DocumentObjectExecReturn* Loft::execute()
 
 // ----------------------------------------------------------------------------
 
-const char* Part::Sweep::TransitionEnums[] = {"Transformed",
-                                              "Right corner",
-                                              "Round corner",
-                                              nullptr};
+const char* Part::Sweep::TransitionEnums[] = {"Transformed", "Right corner", "Round corner", nullptr};
 
 PROPERTY_SOURCE(Part::Sweep, Part::Feature)
 
@@ -257,11 +262,16 @@ Sweep::Sweep()
     ADD_PROPERTY_TYPE(Sections, (nullptr), "Sweep", App::Prop_None, "List of sections");
     Sections.setSize(0);
     ADD_PROPERTY_TYPE(Spine, (nullptr), "Sweep", App::Prop_None, "Path to sweep along");
-    ADD_PROPERTY_TYPE(Solid, (false), "Sweep", App::Prop_None, "Create solid");
+    ADD_PROPERTY_TYPE(Solid, (true), "Sweep", App::Prop_None, "Create solid");
     ADD_PROPERTY_TYPE(Frenet, (true), "Sweep", App::Prop_None, "Frenet");
     ADD_PROPERTY_TYPE(Transition, (long(1)), "Sweep", App::Prop_None, "Transition mode");
-    ADD_PROPERTY_TYPE(Linearize,(false), "Sweep", App::Prop_None,
-                      "Linearize the result shape by simplifying linear edge and planar face into line and plane");
+    ADD_PROPERTY_TYPE(
+        Linearize,
+        (false),
+        "Sweep",
+        App::Prop_None,
+        "Linearize the result shape by simplifying linear edge and planar face into line and plane"
+    );
     Transition.setEnums(TransitionEnums);
 }
 
@@ -312,7 +322,11 @@ App::DocumentObjectExecReturn* Sweep::execute()
             }
             spineShapes.push_back(shape);
         }
-        spine = TopoShape().makeElementCompound(spineShapes, 0, TopoShape::SingleShapeCompoundCreationPolicy::returnShape);
+        spine = TopoShape(0).makeElementCompound(
+            spineShapes,
+            0,
+            TopoShape::SingleShapeCompoundCreationPolicy::returnShape
+        );
     }
     std::vector<TopoShape> shapes;
     shapes.push_back(spine);
@@ -326,7 +340,7 @@ App::DocumentObjectExecReturn* Sweep::execute()
     Standard_Boolean isFrenet = Frenet.getValue() ? Standard_True : Standard_False;
     auto transMode = static_cast<TransitionMode>(Transition.getValue());
     try {
-        TopoShape result(0);
+        TopoShape result(0, getDocument()->getStringHasher());
         result.makeElementPipeShell(shapes, isSolid, isFrenet, transMode, Part::OpCodes::Sweep);
         if (Linearize.getValue()) {
             result.linearize(LinearizeFace::linearizeFaces, LinearizeEdge::noEdges);
@@ -388,9 +402,11 @@ short Thickness::mustExecute() const
     return 0;
 }
 
-void Thickness::handleChangedPropertyType(Base::XMLReader& reader,
-                                          const char* TypeName,
-                                          App::Property* prop)
+void Thickness::handleChangedPropertyType(
+    Base::XMLReader& reader,
+    const char* TypeName,
+    App::Property* prop
+)
 {
     if (prop == &Value && strcmp(TypeName, "App::PropertyFloat") == 0) {
         App::PropertyFloat v;
@@ -427,15 +443,10 @@ App::DocumentObjectExecReturn* Thickness::execute()
     short mode = (short)Mode.getValue();
     short join = (short)Join.getValue();
 
-    this->Shape.setValue(TopoShape(0,getDocument()->getStringHasher())
-                             .makeElementThickSolid(base,
-                                                    shapes,
-                                                    thickness,
-                                                    tol,
-                                                    inter,
-                                                    self,
-                                                    mode,
-                                                    static_cast<JoinType>(join)));
+    this->Shape.setValue(
+        TopoShape(0, getDocument()->getStringHasher())
+            .makeElementThickSolid(base, shapes, thickness, tol, inter, self, mode, static_cast<JoinType>(join))
+    );
     return Part::Feature::execute();
 }
 
@@ -477,7 +488,8 @@ Reverse::Reverse()
 App::DocumentObjectExecReturn* Reverse::execute()
 {
     App::DocumentObject* source = Source.getValue<App::DocumentObject*>();
-    Part::TopoShape topoShape = Part::Feature::getTopoShape(source, ShapeOption::ResolveLink | ShapeOption::Transform);
+    Part::TopoShape topoShape
+        = Part::Feature::getTopoShape(source, ShapeOption::ResolveLink | ShapeOption::Transform);
     if (topoShape.isNull()) {
         return new App::DocumentObjectExecReturn("No part object linked.");
     }

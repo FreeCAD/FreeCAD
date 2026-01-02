@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 # *   Copyright (c) 2014 sliptonic <shopinthewoods@gmail.com>               *
@@ -115,6 +116,17 @@ class PostProcessorFactory:
                     Path.Log.debug(f"Post processor {postname} is a script")
                     return WrapperPost(job, module_path, module_name)
 
+        return None
+
+
+def needsTcOp(oldTc, newTc):
+    return (
+        oldTc is None
+        or oldTc.ToolNumber != newTc.ToolNumber
+        or oldTc.SpindleSpeed != newTc.SpindleSpeed
+        or oldTc.SpindleDir != newTc.SpindleDir
+    )
+
 
 class PostProcessor:
     """Base Class.  All non-legacy postprocessors should inherit from this class."""
@@ -123,10 +135,18 @@ class PostProcessor:
         self._tooltip = tooltip
         self._tooltipargs = tooltipargs
         self._units = units
-        self._job = job
         self._args = args
         self._kwargs = kwargs
         self.reinitialize()
+
+        if isinstance(job, dict):
+            # process only selected operations
+            self._job = job["job"]
+            self._operations = job["operations"]
+        else:
+            # get all operations from 'Operations' group
+            self._job = job
+            self._operations = getattr(job.Operations, "Group", [])
 
     @classmethod
     def exists(cls, processor):
@@ -187,19 +207,19 @@ class PostProcessor:
             # Order by fixture means all operations and tool changes will be
             # completed in one fixture before moving to the next.
 
-            currTool = None
+            currTc = None
             for index, f in enumerate(wcslist):
                 # create an object to serve as the fixture path
                 sublist = [__fixtureSetup(index, f, self._job)]
 
                 # Now generate the gcode
-                for obj in self._job.Operations.Group:
+                for obj in self._operations:
                     tc = PathUtil.toolControllerForOp(obj)
                     if tc is not None and PathUtil.activeForOp(obj):
-                        if tc.ToolNumber != currTool:
+                        if needsTcOp(currTc, tc):
                             sublist.append(tc)
                             Path.Log.debug(f"Appending TC: {tc.Name}")
-                            currTool = tc.ToolNumber
+                            currTc = tc
                     sublist.append(obj)
                 postlist.append((f, sublist))
 
@@ -210,7 +230,7 @@ class PostProcessor:
             # fixture before moving to the next fixture.
 
             toolstring = "None"
-            currTool = None
+            currTc = None
 
             # Build the fixture list
             fixturelist = []
@@ -230,7 +250,7 @@ class PostProcessor:
                     postlist.append((toolstring, sublist))
 
             Path.Log.track(self._job.PostProcessorOutputFile)
-            for idx, obj in enumerate(self._job.Operations.Group):
+            for idx, obj in enumerate(self._operations):
                 Path.Log.track(obj.Label)
 
                 # check if the operation is active
@@ -243,7 +263,7 @@ class PostProcessor:
                 # The operation has no ToolController or uses the same
                 # ToolController as the previous operations
 
-                if tc is None or tc.ToolNumber == currTool:
+                if tc is None or not needsTcOp(currTc, tc):
                     # Queue current operation
                     curlist.append(obj)
 
@@ -257,7 +277,7 @@ class PostProcessor:
                     # Queue current ToolController and operation
                     sublist = [tc]
                     curlist = [obj]
-                    currTool = tc.ToolNumber
+                    currTc = tc
 
                     # Determine the proper string for the operation's
                     # ToolController
@@ -273,10 +293,10 @@ class PostProcessor:
             Path.Log.debug("Ordering by Operation")
             # Order by operation means ops are done in each fixture in
             # sequence.
-            currTool = None
+            currTc = None
 
             # Now generate the gcode
-            for obj in self._job.Operations.Group:
+            for obj in self._operations:
 
                 # check if the operation is active
                 if not PathUtil.activeForOp(obj):
@@ -289,9 +309,9 @@ class PostProcessor:
                     sublist.append(__fixtureSetup(index, f, self._job))
                     tc = PathUtil.toolControllerForOp(obj)
                     if tc is not None:
-                        if self._job.SplitOutput or (tc.ToolNumber != currTool):
+                        if self._job.SplitOutput or needsTcOp(currTc, tc):
                             sublist.append(tc)
-                            currTool = tc.ToolNumber
+                            currTc = tc
                     sublist.append(obj)
                 postlist.append((obj.Label, sublist))
 

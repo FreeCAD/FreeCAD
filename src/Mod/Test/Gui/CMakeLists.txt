@@ -1,8 +1,3 @@
-include_directories(
-    ${CMAKE_CURRENT_BINARY_DIR}
-    ${CMAKE_SOURCE_DIR}/src
-)
-
 set(TestGui_LIBS
     FreeCADGui
 )
@@ -37,7 +32,6 @@ SET(TestGui_SRCS
     ${Dialogs_SRCS}
     ${Resource_SRCS}
     AppTestGui.cpp
-    PreCompiled.cpp
     PreCompiled.h
 )
 SET(TestGuiPy_SRCS
@@ -48,16 +42,28 @@ SET(TestGuiIcon_SVG
     Resources/icons/TestWorkbench.svg
 )
 
+add_library(QtUnitGui SHARED ${TestGui_SRCS} ${TestGuiPy_SRCS} ${TestGuiIcon_SVG})
+
 if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${TestGui_SRCS})
-    ADD_MSVC_PRECOMPILED_HEADER(QtUnitGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
+    target_precompile_headers(QtUnitGui PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
 endif(FREECAD_USE_PCH)
 
-add_library(QtUnitGui SHARED ${TestGui_SRCS} ${TestGuiPy_SRCS} ${TestGuiIcon_SVG})
+target_include_directories(
+    QtUnitGui
+    PRIVATE
+    ${CMAKE_CURRENT_BINARY_DIR}
+    ${CMAKE_SOURCE_DIR}/src
+)
 
 target_link_libraries(QtUnitGui ${TestGui_LIBS})
 add_dependencies(QtUnitGui Test)
+
+if (MSVC)
+    target_compile_options(QtUnitGui PRIVATE /wd4251)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(QtUnitGui)
 endif()

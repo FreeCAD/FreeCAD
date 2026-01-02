@@ -50,18 +50,14 @@ public:
     }
     //@}
 
-    std::vector<App::DocumentObject*> getOriginals() const
-    {
-        return Originals.getValues();
-    }
-
     /** Create transformations
      * Returns a list containing the product of all transformations of the subfeatures given
      * by the Transformations property. Subfeatures can be Mirrored, LinearPattern, PolarPattern and
      * Scaled.
      */
-    const std::list<gp_Trsf>
-    getTransformations(const std::vector<App::DocumentObject*> originals) override;
+    const std::list<gp_Trsf> getTransformations(
+        const std::vector<App::DocumentObject*> originals
+    ) override;
 
 protected:
     void positionBySupport() override;

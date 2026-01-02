@@ -21,14 +21,16 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <Python.h>
-#endif
+
 
 #include "FemPostObjectPy.h"
 #include "FemPostObjectPy.cpp"
 
+#ifdef FC_USE_VTK_PYTHON
+# include <vtkDataSet.h>
+# include <vtkPythonUtil.h>
+#endif  // BUILD_FEM_VTK
 
 using namespace Fem;
 
@@ -53,6 +55,29 @@ PyObject* FemPostObjectPy::writeVTK(PyObject* args)
     getFemPostObjectPtr()->writeVTK(utf8Name.c_str());
 
     Py_Return;
+}
+
+PyObject* FemPostObjectPy::getDataSet(PyObject* args)
+{
+#ifdef FC_USE_VTK_PYTHON
+    // we take no arguments
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    // return python object for the dataset
+    auto dataset = getFemPostObjectPtr()->getDataSet();
+    if (dataset) {
+        PyObject* py_algorithm = vtkPythonUtil::GetObjectFromPointer(dataset);
+        return py_algorithm;
+    }
+
+    Py_Return;
+#else
+    (void)args;
+    PyErr_SetString(PyExc_NotImplementedError, "VTK python wrapper not available");
+    return nullptr;
+#endif
 }
 
 PyObject* FemPostObjectPy::getCustomAttributes(const char* /*attr*/) const

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Konstantinos Poulios <logari81@gmail.com>          *
  *                                                                         *
@@ -21,10 +23,12 @@
  ***************************************************************************/
 #include <Eigen/Dense>
 
-int qp_eq(Eigen::MatrixXd& H,
-          Eigen::VectorXd& g,
-          Eigen::MatrixXd& A,
-          Eigen::VectorXd& c,
-          Eigen::VectorXd& x,
-          Eigen::MatrixXd& Y,
-          Eigen::MatrixXd& Z);
+int qp_eq(
+    Eigen::MatrixXd& H,
+    Eigen::VectorXd& g,
+    Eigen::MatrixXd& A,
+    Eigen::VectorXd& c,
+    Eigen::VectorXd& x,
+    Eigen::MatrixXd& Y,
+    Eigen::MatrixXd& Z
+);

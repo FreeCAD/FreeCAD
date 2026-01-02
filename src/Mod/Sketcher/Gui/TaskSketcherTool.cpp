@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Pierre-Louis Boyer <pierrelouis.boyer@gmail.com>   *
  *                                                                         *
@@ -21,11 +23,6 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
-#endif
-
 #include "TaskSketcherTool.h"
 #include <Gui/Application.h>
 #include <Gui/Document.h>
@@ -45,7 +42,7 @@ using namespace SketcherGui;
 using namespace Gui::TaskView;
 
 TaskSketcherTool::TaskSketcherTool(ViewProviderSketch* sketchView)
-    : TaskBox(Gui::BitmapFactory().pixmap("document-new"), tr("Tool parameters"), true, nullptr)
+    : TaskBox(Gui::BitmapFactory().pixmap("document-new"), tr("Tool Parameters"), true, nullptr)
     , sketchView(sketchView)
 {}
 

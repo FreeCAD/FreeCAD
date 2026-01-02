@@ -11,13 +11,13 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Beam section parameter</string>
+   <string>Beam Section Parameter</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QGroupBox" name="groupBox_2">
      <property name="title">
-      <string>Cross section parameter</string>
+      <string>Cross-Section Parameter</string>
      </property>
      <layout class="QGridLayout" name="_2">
       <item row="0" column="0">
@@ -38,7 +38,7 @@
             <item row="0" column="0">
              <widget class="QLabel" name="l_rec_width">
               <property name="text">
-               <string>Width:</string>
+               <string>Width</string>
               </property>
              </widget>
             </item>
@@ -64,7 +64,7 @@
             <item row="1" column="0">
              <widget class="QLabel" name="l_rec_height">
               <property name="text">
-               <string>Height:</string>
+               <string>Height</string>
               </property>
              </widget>
             </item>
@@ -101,7 +101,7 @@
             <item row="0" column="0">
              <widget class="QLabel" name="l_circ_diameter">
               <property name="text">
-               <string>Diameter:</string>
+               <string>Diameter</string>
               </property>
              </widget>
             </item>
@@ -138,7 +138,7 @@
             <item row="0" column="0">
              <widget class="QLabel" name="l_pipe_diameter">
               <property name="text">
-               <string>Outer diameter:</string>
+               <string>Outer diameter</string>
               </property>
              </widget>
             </item>
@@ -164,7 +164,7 @@
             <item row="1" column="0">
              <widget class="QLabel" name="l_pipe_thickness">
               <property name="text">
-               <string>Thickness:</string>
+               <string>Thickness</string>
               </property>
              </widget>
             </item>
@@ -201,7 +201,7 @@
             <item row="1" column="0">
              <widget class="QLabel" name="l_elliptical_axis1">
               <property name="text">
-               <string>Axis1 Length:</string>
+               <string>Axis1 length</string>
               </property>
              </widget>
             </item>
@@ -233,7 +233,7 @@
             <item row="2" column="0">
              <widget class="QLabel" name="l_elliptical_axis2">
               <property name="text">
-               <string>Axis2 Length:</string>
+               <string>Axis2 length</string>
               </property>
              </widget>
             </item>
@@ -274,14 +274,14 @@
              <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
             </property>
             <item row="1" column="0">
-             <widget class="QLabel" name="l_box_height">
+             <widget class="QLabel" name="l_box_width">
               <property name="text">
-               <string>Height:</string>
+               <string>Width</string>
               </property>
              </widget>
             </item>
             <item row="1" column="1">
-             <widget class="Gui::QuantitySpinBox" name="qsb_box_height">
+             <widget class="Gui::QuantitySpinBox" name="qsb_box_width">
               <property name="alignment">
                <set>Qt::AlignLeft|Qt::AlignTrailing|Qt::AlignVCenter</set>
               </property>
@@ -306,14 +306,14 @@
              </widget>
             </item>
             <item row="2" column="0">
-             <widget class="QLabel" name="l_box_width">
+             <widget class="QLabel" name="l_box_height">
               <property name="text">
-               <string>Width:</string>
+               <string>Height</string>
               </property>
              </widget>
             </item>
             <item row="2" column="1">
-             <widget class="Gui::QuantitySpinBox" name="qsb_box_width">
+             <widget class="Gui::QuantitySpinBox" name="qsb_box_height">
               <property name="alignment">
                <set>Qt::AlignLeft|Qt::AlignTrailing|Qt::AlignVCenter</set>
               </property>
@@ -340,7 +340,7 @@
             <item row="3" column="0">
              <widget class="QLabel" name="l_box_t1">
               <property name="text">
-               <string>T1 Thickness:</string>
+               <string>T1 thickness</string>
               </property>
              </widget>
             </item>
@@ -372,7 +372,7 @@
             <item row="4" column="0">
              <widget class="QLabel" name="l_box_t2">
               <property name="text">
-               <string>T2 Thickness:</string>
+               <string>T2 thickness</string>
               </property>
              </widget>
             </item>
@@ -404,7 +404,7 @@
             <item row="5" column="0">
              <widget class="QLabel" name="l_box_t3">
               <property name="text">
-               <string>T3 Thickness:</string>
+               <string>T3 thickness</string>
               </property>
              </widget>
             </item>
@@ -436,7 +436,7 @@
             <item row="6" column="0">
              <widget class="QLabel" name="l_box_t4">
               <property name="text">
-               <string>T4 Thickness:</string>
+               <string>T4 thickness</string>
               </property>
              </widget>
             </item>

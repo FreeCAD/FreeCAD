@@ -39,9 +39,9 @@ translate = App.Qt.translate
 class TaskHoleShaftFit:
     def __init__(self, sel):
 
-        loose = translate("TechDraw_HoleShaftFit", "loose fit")
-        snug = translate("TechDraw_HoleShaftFit", "snug fit")
-        press = translate("TechDraw_HoleShaftFit", "press fit")
+        loose = translate("TechDraw_HoleShaftFit", "Loose fit")
+        snug = translate("TechDraw_HoleShaftFit", "Snug fit")
+        press = translate("TechDraw_HoleShaftFit", "Press fit")
         self.isHole = True
         self.sel = sel
         self.holeValues = [
@@ -88,12 +88,14 @@ class TaskHoleShaftFit:
         self.form = Gui.PySideUic.loadUi(self._uiPath)
 
         self.form.setWindowTitle(
-            translate("TechDraw_HoleShaftFit", "Hole / Shaft Fit ISO 286")
+            translate("TechDraw_HoleShaftFit", "Hole/Shaft Fit ISO 286")
         )
 
         self.form.rbHoleBase.clicked.connect(partial(self.on_HoleShaftChanged, True))
         self.form.rbShaftBase.clicked.connect(partial(self.on_HoleShaftChanged, False))
         self.form.cbField.currentIndexChanged.connect(self.on_FieldChanged)
+
+        App.setActiveTransaction("Add hole or shaft fit")
 
     def setHoleFields(self):
         """set hole fields in the combo box"""
@@ -168,8 +170,10 @@ class TaskHoleShaftFit:
         else:
             dim.FormatSpecUnderTolerance = "( %-0.6w)"
         Gui.Control.closeDialog()
+        App.closeActiveTransaction()
 
     def reject(self):
+        App.closeActiveTransaction(True)
         return True
 
 

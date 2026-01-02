@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 David Carter <dcarter@david.carter.ca>             *
  *                                                                         *
@@ -19,8 +21,6 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QBuffer>
 #include <QFile>
 #include <QMenu>
@@ -30,7 +30,7 @@
 #include <QString>
 #include <QSvgRenderer>
 #include <QTextStream>
-#endif
+
 
 #include <Gui/FileDialog.h>
 #include <Gui/MainWindow.h>
@@ -134,7 +134,7 @@ ImageEdit::ImageEdit(const QString& propertyName,
             QString value = _property->getString();
             if (!value.isEmpty()) {
                 QByteArray by = QByteArray::fromBase64(value.toUtf8());
-                QImage img = QImage::fromData(by, "PNG");
+                QImage img = QImage::fromData(by);
                 _pixmap = QPixmap::fromImage(img);
             }
             showPixmap();

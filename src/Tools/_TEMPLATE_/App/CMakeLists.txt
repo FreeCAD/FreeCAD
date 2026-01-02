@@ -1,10 +1,11 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 set(_TEMPLATE__LIBS
     FreeCADApp
 )
 
 SET(_TEMPLATE__SRCS
     App_TEMPLATE_.cpp
-    PreCompiled.cpp
     PreCompiled.h
 )
 

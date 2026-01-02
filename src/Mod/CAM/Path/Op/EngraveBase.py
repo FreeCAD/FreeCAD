@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2018 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -24,7 +25,9 @@ from lazy_loader.lazy_loader import LazyLoader
 import Path
 import Path.Op.Base as PathOp
 import Path.Op.Util as PathOpUtil
-import copy
+import PathScripts.PathUtils as PathUtils
+
+# import copy
 
 __doc__ = "Base class for all ops in the engrave family."
 
@@ -61,6 +64,15 @@ class ObjectOp(PathOp.ObjectOp):
         """buildpathocc(obj, wires, zValues, relZ=False) ... internal helper function to generate engraving commands."""
         Path.Log.track(obj.Label, len(wires), zValues)
 
+        # sort wires, adapted from Area.py
+        if len(wires) > 1:
+            locations = []
+            for w in wires:
+                locations.append({"x": w.BoundBox.Center.x, "y": w.BoundBox.Center.y, "wire": w})
+
+            locations = PathUtils.sort_locations(locations, ["x", "y"])
+            wires = [j["wire"] for j in locations]
+
         decomposewires = []
         for wire in wires:
             decomposewires.extend(PathOpUtil.makeWires(wire.Edges))
@@ -83,7 +95,8 @@ class ObjectOp(PathOp.ObjectOp):
 
             for z in zValues:
                 Path.Log.debug(z)
-                if last:
+                if last and wire.isClosed():
+                    # Add step down to next Z for closed profile
                     self.appendCommand(
                         Path.Command("G1", {"X": last.x, "Y": last.y, "Z": last.z}),
                         z,
@@ -108,7 +121,7 @@ class ObjectOp(PathOp.ObjectOp):
                     )
                     if first and (not last or not wire.isClosed()):
                         Path.Log.debug("processing first edge entry")
-                        # we set the first move to our first point
+                        # Add moves to first point of wire
                         last = edge.Vertexes[0].Point
 
                         self.commandlist.append(
@@ -133,13 +146,18 @@ class ObjectOp(PathOp.ObjectOp):
 
                     if Path.Geom.pointsCoincide(last, edge.valueAt(edge.FirstParameter)):
                         # if Path.Geom.pointsCoincide(last, edge.Vertexes[0].Point):
+                        # Edge not reversed
                         for cmd in Path.Geom.cmdsForEdge(edge):
+                            # Add gcode for edge
                             self.appendCommand(cmd, z, relZ, self.horizFeed)
                         last = edge.Vertexes[-1].Point
                     else:
+                        # Edge reversed
                         for cmd in Path.Geom.cmdsForEdge(edge, True):
+                            # Add gcode for reversed edge
                             self.appendCommand(cmd, z, relZ, self.horizFeed)
                         last = edge.Vertexes[0].Point
+
             self.commandlist.append(
                 Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid})
             )

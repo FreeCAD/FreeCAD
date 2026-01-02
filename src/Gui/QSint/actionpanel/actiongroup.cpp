@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-3.0-only
 /***************************************************************************
  *                                                                         *
  *   Copyright: https://code.google.com/p/qsint/                           *
@@ -57,6 +58,7 @@ void ActionGroup::init(bool hasHeader)
     separator->setFrameShadow(QFrame::Raised);
     separator->setFixedHeight(separatorHeight);
     separator->setContentsMargins(8, 0, 8, 0);
+    separator->setProperty("class", "separator");
     layout->addWidget(separator);
 
     myGroup = new TaskGroup(this, hasHeader);

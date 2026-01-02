@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -21,8 +23,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
+#include <FCConfig.h>
 
 #include <Base/Console.h>
 #include <Base/Exception.h>

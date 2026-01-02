@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2006 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,8 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <Inventor/nodes/SoBaseColor.h>
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoDrawStyle.h>
@@ -30,7 +30,7 @@
 #include <Inventor/nodes/SoMarkerSet.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoShapeHints.h>
-#endif
+
 
 #include <App/Application.h>
 #include <Base/Parameter.h>
@@ -100,7 +100,8 @@ SoMarkerSet* ViewProviderMeshDefects::makeMarkerSet() const
         "PLUS",
         int(App::GetApplication()
                 .GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")
-                ->GetInt("MarkerSize", 7)));
+                ->GetInt("MarkerSize", 7))
+    );
     return marker;
 }
 
@@ -521,14 +522,18 @@ void ViewProviderMeshDegenerations::showDefects(const std::vector<Mesh::ElementI
 
                 // adjust the neighbourhoods and point indices
                 if (cVec1 * cVec2 < 0.0F) {
-                    pcCoords->point.set1Value(i++,
-                                              cF->_aclPoints[(j + 1) % 3].x,
-                                              cF->_aclPoints[(j + 1) % 3].y,
-                                              cF->_aclPoints[(j + 1) % 3].z);
-                    pcCoords->point.set1Value(i++,
-                                              cF->_aclPoints[(j + 2) % 3].x,
-                                              cF->_aclPoints[(j + 2) % 3].y,
-                                              cF->_aclPoints[(j + 2) % 3].z);
+                    pcCoords->point.set1Value(
+                        i++,
+                        cF->_aclPoints[(j + 1) % 3].x,
+                        cF->_aclPoints[(j + 1) % 3].y,
+                        cF->_aclPoints[(j + 1) % 3].z
+                    );
+                    pcCoords->point.set1Value(
+                        i++,
+                        cF->_aclPoints[(j + 2) % 3].x,
+                        cF->_aclPoints[(j + 2) % 3].y,
+                        cF->_aclPoints[(j + 2) % 3].z
+                    );
                     break;
                 }
             }

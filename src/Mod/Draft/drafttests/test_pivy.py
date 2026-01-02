@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
 # *   Copyright (c) 2019 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
@@ -50,10 +52,12 @@ class DraftPivy(test_base.DraftTestCaseDoc):
     def test_pivy_draw(self):
         """Use Coin (pivy.coin) to draw a cube on the active view."""
         import pivy.coin as coin
+
         cube = coin.SoCube()
         _msg("  Draw cube")
         Gui.getDocument(self.doc).ActiveView.getSceneGraph().addChild(cube)
         _msg("  Adding cube to the active view scene")
         self.assertTrue(cube, "Pivy is not working properly.")
+
 
 ## @}

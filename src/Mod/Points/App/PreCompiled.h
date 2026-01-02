@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -25,15 +27,6 @@
 
 #include <FCConfig.h>
 
-// point at which warnings of overly long specifiers disabled (needed for VC6)
-#ifdef _MSC_VER
-#pragma warning(disable : 4181)
-#pragma warning(disable : 4305)
-#pragma warning(disable : 4522)
-#endif
-
-#ifdef _PreComp_
-
 // standard
 #include <cstdio>
 
@@ -54,7 +47,5 @@
 
 // Qt
 #include <QtConcurrentMap>
-
-#endif  //_PreComp_
 
 #endif

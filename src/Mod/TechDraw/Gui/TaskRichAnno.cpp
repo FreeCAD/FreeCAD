@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <cmath>
 # include <QDialog>
-#endif
+
 
 #include <App/Document.h>
 #include <Base/Console.h>
@@ -75,7 +73,7 @@ TaskRichAnno::TaskRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP) :
 
     m_basePage = m_annoFeat->findParentPage();
     if (!m_basePage) {
-        Base::Console().error("TaskRichAnno - bad parameters (2).  Can not proceed.\n");
+        Base::Console().error("TaskRichAnno - bad parameters (2).  Cannot proceed.\n");
         return;
     }
 
@@ -98,7 +96,7 @@ TaskRichAnno::TaskRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP) :
 
     ui->setupUi(this);
 
-    m_title = QObject::tr("Rich text editor");
+    m_title = QObject::tr("Rich Text Editor");
     setUiEdit();
 
     m_attachPoint = Rez::guiX(Base::Vector3d(m_annoFeat->X.getValue(),
@@ -136,7 +134,7 @@ TaskRichAnno::TaskRichAnno(TechDraw::DrawView* baseFeat,
     }
 
     ui->setupUi(this);
-    m_title = QObject::tr("Rich text creator");
+    m_title = QObject::tr("Rich Text Creator");
 
     setUiPrimary();
 

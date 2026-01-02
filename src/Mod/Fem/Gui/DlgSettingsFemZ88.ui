@@ -26,7 +26,7 @@
       <enum>Qt::LeftToRight</enum>
      </property>
      <property name="title">
-      <string>Z88 binary</string>
+      <string>Z88 Binary</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -34,33 +34,8 @@
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
        <layout class="QGridLayout" name="gl_z88">
-        <item row="0" column="2">
-         <widget class="Gui::PrefCheckBox" name="cb_z88_binary_std">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Search in known binary directories</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>UseStandardZ88Location</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Fem/Z88</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
+        <item row="0" column="0">
          <widget class="QLabel" name="l_z88_binary_path">
-          <property name="enabled">
-           <bool>true</bool>
-          </property>
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -74,15 +49,12 @@
            </size>
           </property>
           <property name="text">
-           <string>z88r binary path</string>
+           <string>z88r path</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="2">
-         <widget class="Gui::PrefFileChooser" name="fc_z88_binary_path">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
+        <item row="0" column="1">
+         <widget class="Gui::PrefFileChooser" name="fc_z88_binary_path" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -92,7 +64,7 @@
           <property name="minimumSize">
            <size>
             <width>0</width>
-            <height>20</height>
+            <height>0</height>
            </size>
           </property>
           <property name="sizeIncrement">
@@ -108,7 +80,7 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>Leave blank to use default Z88, z88r binary file</string>
+           <string>Leave blank to use default z88r binary file</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>z88BinaryPath</cstring>
@@ -135,7 +107,7 @@
       <enum>Qt::LeftToRight</enum>
      </property>
      <property name="title">
-      <string>Solver settings</string>
+      <string>Solver Settings</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -206,9 +178,9 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>Maximal places in stiffnes matrix.
+           <string>Maximum places in the stiffness matrix.
 You might need to increase this when using the
-Cholesky solver and you get the error message
+Cholesky solver and getting the error message
 that &quot;MAXGS&quot; needs to be increased.</string>
           </property>
           <property name="alignment">
@@ -237,7 +209,7 @@ that &quot;MAXGS&quot; needs to be increased.</string>
         <item row="3" column="0">
          <widget class="QLabel" name="l_max_coincidence">
           <property name="text">
-           <string>Max places in coincidence vector</string>
+           <string>Maximum places in coincidence vector</string>
           </property>
          </widget>
         </item>
@@ -332,38 +304,4 @@ that &quot;MAXKOI&quot; needs to be increased.</string>
  <resources>
   <include location="Resources/Fem.qrc"/>
  </resources>
- <connections>
-  <connection>
-   <sender>cb_z88_binary_std</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>l_z88_binary_path</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>406</x>
-     <y>45</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>148</x>
-     <y>68</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cb_z88_binary_std</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>fc_z88_binary_path</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>406</x>
-     <y>45</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>406</x>
-     <y>68</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
 </ui>

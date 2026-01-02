@@ -1,0 +1,42 @@
+/tests:
+  /TestAssemblyWorkbench :
+    test: /usr/bin/FreeCADCmd -t  TestAssemblyWorkbench
+  /TestArch              :
+    test: /usr/bin/FreeCADCmd -t  TestArch
+  /TestCAMApp            :
+    test: /usr/bin/FreeCADCmd -t  TestCAMApp
+  /TestDraft             :
+    test: /usr/bin/FreeCADCmd -t  TestDraft
+  /TestFemApp            :
+    test: /usr/bin/FreeCADCmd -t  TestFemApp
+  /TestMaterialsApp      :
+    test: /usr/bin/FreeCADCmd -t  TestMaterialsApp
+  /MeshTestsApp          :
+    test: /usr/bin/FreeCADCmd -t  MeshTestsApp
+  /TestPartApp           :
+    test: /usr/bin/FreeCADCmd -t  TestPartApp
+  /TestPartDesignApp     :
+    test: /usr/bin/FreeCADCmd -t  TestPartDesignApp
+  /TestSketcherApp       :
+    test: /usr/bin/FreeCADCmd -t  TestSketcherApp
+  /TestSpreadsheet       :
+    test: /usr/bin/FreeCADCmd -t  TestSpreadsheet
+  /TestSurfaceApp        :
+    test: /usr/bin/FreeCADCmd -t  TestSurfaceApp
+  /TestTechDrawApp       :
+    test: /usr/bin/FreeCADCmd -t  TestTechDrawApp
+  /BaseTests             :
+    test: /usr/bin/FreeCADCmd -t  BaseTests
+  /UnitTests             :
+    test: /usr/bin/FreeCADCmd -t  UnitTests
+  /Document              :
+    test: /usr/bin/FreeCADCmd -t  Document
+  /Metadata              :
+    test: /usr/bin/FreeCADCmd -t  Metadata
+  /StringHasher          :
+    test: /usr/bin/FreeCADCmd -t  StringHasher
+  /UnicodeTests          :
+    test: /usr/bin/FreeCADCmd -t  UnicodeTests
+  /TestPythonSyntax      :
+    test: /usr/bin/FreeCADCmd -t  TestPythonSyntax
+

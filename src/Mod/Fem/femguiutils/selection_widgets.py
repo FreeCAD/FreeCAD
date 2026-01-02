@@ -292,10 +292,17 @@ class GeometryElementsSelection(QtGui.QWidget):
     def initUI(self):
         # ArchPanel is coded without ui-file too
         # title
-        self.setWindowTitle(self.tr("Geometry reference selector"))
+        self.setWindowTitle(self.tr("Geometry Reference Selector"))
         # button
         self.pushButton_Add = QtGui.QPushButton(self.tr("Add"))
         self.pushButton_Remove = QtGui.QPushButton(self.tr("Remove"))
+        # label
+        self.lb_help = QtGui.QLabel()
+        self.lb_help.setWordWrap(True)
+        selectHelpText = self.tr("Select geometry of type: {}{}{}").format(
+            "<b>", self.sel_elem_text, "</b>"
+        )
+        self.lb_help.setText(selectHelpText)
         # list
         self.list_References = QtGui.QListWidget()
         # radiobutton down the list
@@ -314,6 +321,7 @@ class GeometryElementsSelection(QtGui.QWidget):
         subLayout.addWidget(self.pushButton_Remove)
         # main layout
         mainLayout = QtGui.QVBoxLayout()
+        mainLayout.addWidget(self.lb_help)
         mainLayout.addLayout(subLayout)
         mainLayout.addWidget(self.list_References)
 
@@ -433,8 +441,8 @@ class GeometryElementsSelection(QtGui.QWidget):
 
     def references_list_right_clicked(self, QPos):
         self.contextMenu = QtGui.QMenu()
-        menu_item_remove_selected = self.contextMenu.addAction("Remove selected geometry")
-        menu_item_remove_all = self.contextMenu.addAction("Clear list")
+        menu_item_remove_selected = self.contextMenu.addAction("Remove Selected Geometry")
+        menu_item_remove_all = self.contextMenu.addAction("Clear List")
         if not self.references:
             menu_item_remove_selected.setDisabled(True)
             menu_item_remove_all.setDisabled(True)
@@ -603,6 +611,13 @@ class FemSelectionObserver:
 
     def addSelection(self, docName, objName, sub, pos):
         selected_object = FreeCAD.getDocument(docName).getObject(objName)  # get the obj objName
+        if FreeCADGui.editDocument().getInEdit().Object.Document != selected_object.Document:
+            QtGui.QMessageBox.critical(
+                None, "Selection error", "External object selection is not supported"
+            )
+            FreeCADGui.Selection.clearSelection()
+            return
+
         self.added_obj = (selected_object, sub)
         # on double click on a vertex of a solid sub is None and obj is the solid
         self.parseSelectionFunction(self.added_obj)

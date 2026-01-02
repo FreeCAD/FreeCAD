@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 David Friedli <david[at]friedli-be.ch>             *
  *                                                                         *
@@ -19,7 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
+#include <Mod/Measure/MeasureGlobal.h>
 
 #include <App/PropertyGeo.h>
 #include <Base/PlacementPy.h>
@@ -42,7 +44,8 @@ MeasureBase::MeasureBase()
         (Base::Placement()),
         nullptr,
         App::PropertyType(App::Prop_ReadOnly | App::Prop_Output | App::Prop_NoRecompute),
-        "Visual placement of the measurement");
+        "Visual placement of the measurement"
+    );
 }
 
 
@@ -181,7 +184,8 @@ QString MeasureBase::getResultString()
 
     if (prop->isDerivedFrom<App::PropertyQuantity>()) {
         return QString::fromStdString(
-            static_cast<App::PropertyQuantity*>(prop)->getQuantityValue().getUserString());
+            static_cast<App::PropertyQuantity*>(prop)->getQuantityValue().getUserString()
+        );
     }
 
 
@@ -194,12 +198,6 @@ void MeasureBase::onDocumentRestored()
     recompute();
 }
 
-Base::Placement MeasureBase::getPlacement()
-{
-    return this->Placement.getValue();
-}
-
-
 // Python Drawing feature ---------------------------------------------------------
 
 namespace App
@@ -209,6 +207,18 @@ PROPERTY_SOURCE_TEMPLATE(Measure::MeasurePython, Measure::MeasureBase)
 template<>
 const char* Measure::MeasurePython::getViewProviderName(void) const
 {
+    std::string objName = this->getNameInDocument();
+
+    // check object's name, this is brute-forceish way to determine
+    // VP name for COM, but at this point python assignments haven't
+    // been run, so we have no way to determine that easily
+    if (objName.starts_with("Center_of_mass")
+
+        || objName.find("CenterOfMass") != std::string::npos
+        || objName.find("centerofmass") != std::string::npos) {
+        return "MeasureGui::ViewProviderMeasureCOM";
+    }
+
     return "MeasureGui::ViewProviderMeasure";
 }
 template<>

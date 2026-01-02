@@ -81,10 +81,12 @@ Efaces
 *MATERIAL, NAME=MechanicalMaterial
 *ELASTIC
 210000,0.3
+*EXPANSION, ZERO=0
+0
 
 ***********************************************************
 ** Sections
-*SHELL SECTION, ELSET=MechanicalMaterialThickness, MATERIAL=MechanicalMaterial
+*SHELL SECTION, ELSET=MechanicalMaterialThickness, MATERIAL=MechanicalMaterial, OFFSET=0
 1000
 
 ***********************************************************
@@ -107,8 +109,8 @@ ConstraintFixed,6
 
 ***********************************************************
 ** constraints force node loads
-*CLOAD
 ** ConstraintForce
+*CLOAD
 ** node loads on shape: CanileverPlate:Edge3
 3,3,-2250000
 4,3,-2250000

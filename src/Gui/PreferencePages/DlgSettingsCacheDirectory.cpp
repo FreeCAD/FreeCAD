@@ -20,21 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
-# include <cmath>
-# include <limits>
-# include <vector>
-# include <QCoreApplication>
-# include <QDate>
-# include <QDesktopServices>
-# include <QDir>
-# include <QLocale>
-# include <QMessageBox>
-# include <QSettings>
-# include <QUrl>
-#endif
+#include <cmath>
+#include <limits>
+#include <vector>
+#include <QCoreApplication>
+#include <QDate>
+#include <QDesktopServices>
+#include <QDir>
+#include <QLocale>
+#include <QMessageBox>
+#include <QSettings>
+#include <QUrl>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -52,13 +48,14 @@ using namespace Gui::Dialog;
 QString DlgSettingsCacheDirectory::currentSize;
 
 DlgSettingsCacheDirectory::DlgSettingsCacheDirectory(QWidget* parent)
-  : PreferencePage(parent)
-  , ui(new Ui_DlgSettingsCacheDirectory)
+    : PreferencePage(parent)
+    , ui(new Ui_DlgSettingsCacheDirectory)
 {
     ui->setupUi(this);
     ui->labelCache->setToolTip(tr("Notify the user if the cache size exceeds the specified limit"));
-    if (currentSize.isEmpty())
+    if (currentSize.isEmpty()) {
         currentSize = tr("Unknown");
+    }
     setCurrentCacheSize(currentSize);
 
     QString path = QString::fromStdString(App::Application::getUserCachePath());
@@ -86,8 +83,9 @@ void DlgSettingsCacheDirectory::saveSettings()
 void DlgSettingsCacheDirectory::loadSettings()
 {
     int period = ApplicationCacheSettings::getCheckPeriod();
-    if (period >= 0 && period < ui->comboBoxPeriod->count())
+    if (period >= 0 && period < ui->comboBoxPeriod->count()) {
         ui->comboBoxPeriod->setCurrentIndex(period);
+    }
     unsigned int limit = ApplicationCacheSettings::getCacheSizeLimit();
     int index = ui->comboBoxLimit->findData(limit);
 
@@ -103,16 +101,16 @@ void DlgSettingsCacheDirectory::resetSettingsToDefaults()
 {
     ParameterGrp::handle hGrp;
     hGrp = WindowParameter::getDefaultParameter()->GetGroup("CacheDirectory");
-    //reset "Limit" parameter
+    // reset "Limit" parameter
     hGrp->RemoveUnsigned("Limit");
-    //reset "Period" parameter
+    // reset "Period" parameter
     hGrp->RemoveInt("Period");
 
-    //finally reset all the parameters associated to Gui::Pref* widgets
+    // finally reset all the parameters associated to Gui::Pref* widgets
     PreferencePage::resetSettingsToDefaults();
 }
 
-void DlgSettingsCacheDirectory::changeEvent(QEvent *e)
+void DlgSettingsCacheDirectory::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         int period = ui->comboBoxPeriod->currentIndex();
@@ -167,24 +165,24 @@ ApplicationCache::ApplicationCache()
 void ApplicationCache::setPeriod(ApplicationCache::Period period)
 {
     switch (period) {
-    case Period::Always:
-        numDays = -1;
-        break;
-    case Period::Daily:
-        numDays = 1;
-        break;
-    case Period::Weekly:
-        numDays = 7;
-        break;
-    case Period::Monthly:
-        numDays = 31;
-        break;
-    case Period::Yearly:
-        numDays = 365;
-        break;
-    case Period::Never:
-        numDays = std::numeric_limits<int>::max();
-        break;
+        case Period::Always:
+            numDays = -1;
+            break;
+        case Period::Daily:
+            numDays = 1;
+            break;
+        case Period::Weekly:
+            numDays = 7;
+            break;
+        case Period::Monthly:
+            numDays = 31;
+            break;
+        case Period::Yearly:
+            numDays = 365;
+            break;
+        case Period::Never:
+            numDays = std::numeric_limits<int>::max();
+            break;
     }
 }
 
@@ -239,12 +237,14 @@ bool ApplicationCache::performAction(qint64 total)
         QString path = QString::fromStdString(App::Application::getUserCachePath());
         QMessageBox msgBox(Gui::getMainWindow());
         msgBox.setIcon(QMessageBox::Warning);
-        msgBox.setWindowTitle(tr("Cache directory"));
+        msgBox.setWindowTitle(tr("Cache Directory"));
 
-        QString hint = tr("The cache directory %1 exceeds the size of %2.").arg(path, ApplicationCache::toString(limit));
-        QString ask = tr("Do you want to clear it now?");
-        QString warn = tr("Warning: Please make sure that this is the only running %1 instance "
-                          "and that no documents are opened as this may result into data loss!").arg(QCoreApplication::applicationName());
+        QString hint = tr("The cache directory %1 exceeds the size of %2.")
+                           .arg(path, ApplicationCache::toString(limit));
+        QString ask = tr("Clear it now?");
+        QString warn = tr("Warning: Make sure that this is the only running %1 instance "
+                          "and that no documents are opened as this may result into data loss!")
+                           .arg(QCoreApplication::applicationName());
 
         msgBox.setText(QStringLiteral("%1 %2\n\n\n%3").arg(hint, ask, warn));
         msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No | QMessageBox::Open);
@@ -322,8 +322,9 @@ qint64 ApplicationCache::dirSize(QString dirPath) const
     // traverse sub-directories recursively
     QDir::Filters dirFilters = QDir::Dirs | QDir::NoDotAndDotDot;
     const auto& dirs = dir.entryList(dirFilters);
-    for (const QString& subDirPath : dirs)
+    for (const QString& subDirPath : dirs) {
         total += dirSize(dirPath + QDir::separator() + subDirPath);
+    }
     return total;
 }
 
@@ -348,15 +349,14 @@ qint64 ApplicationCache::toBytes(unsigned int sizeInMB)
 
 QString ApplicationCache::toString(qint64 size)
 {
-    QStringList units = {QStringLiteral("Bytes"),
-                         QStringLiteral("KB"),
-                         QStringLiteral("MB"),
-                         QStringLiteral("GB")};
+    QStringList units
+        = {QStringLiteral("Bytes"), QStringLiteral("KB"), QStringLiteral("MB"), QStringLiteral("GB")};
     int i;
     double outputSize = size;
-    for (i=0; i<units.size()-1; i++) {
-        if (outputSize < 1024)
+    for (i = 0; i < units.size() - 1; i++) {
+        if (outputSize < 1024) {
             break;
+        }
         outputSize /= 1024;
     }
 

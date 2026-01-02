@@ -4,11 +4,6 @@
   <context>
     <name>Gui::Dialog::DlgSettingsOpenSCAD</name>
     <message>
-      <location filename="../ui/openscadprefs-base.ui" line="14"/>
-      <source>General settings</source>
-      <translation>全般的な設定</translation>
-    </message>
-    <message>
       <location filename="../ui/openscadprefs-base.ui" line="35"/>
       <source>General OpenSCAD Settings</source>
       <translation>OpenSCAD 全般の設定</translation>
@@ -24,11 +19,6 @@
       <translation>OpenSCAD 実行可能ファイルのパス</translation>
     </message>
     <message>
-      <location filename="../ui/openscadprefs-base.ui" line="74"/>
-      <source>OpenSCAD import</source>
-      <translation>OpenSCADのインポート</translation>
-    </message>
-    <message>
       <location filename="../ui/openscadprefs-base.ui" line="82"/>
       <source>Print debug information in the Console</source>
       <translation>コンソールにデバッグ情報を表示</translation>
@@ -37,11 +27,6 @@
       <location filename="../ui/openscadprefs-base.ui" line="99"/>
       <source>If this is checked, Features will claim their children in the tree view</source>
       <translation>チェックされている場合、ツリービューでフィーチャーが子を持ちます</translation>
-    </message>
-    <message>
-      <location filename="../ui/openscadprefs-base.ui" line="102"/>
-      <source>Use ViewProvider in Tree View</source>
-      <translation>ツリービューでViewProviderを使用</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="119"/>
@@ -63,11 +48,6 @@
       <location filename="../ui/openscadprefs-base.ui" line="142"/>
       <source>Maximum number of faces for polygons (fn)</source>
       <translation>ポリゴンの最大面数（fn）</translation>
-    </message>
-    <message>
-      <location filename="../ui/openscadprefs-base.ui" line="182"/>
-      <source>Send to OpenSCAD via:</source>
-      <translation>以下を使って OpenSCAD へ送信:</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="195"/>
@@ -100,11 +80,6 @@
       <translation>OpenSCAD とファイルをやりとりするためのディレクトリのパス</translation>
     </message>
     <message>
-      <location filename="../ui/openscadprefs-base.ui" line="261"/>
-      <source>OpenSCAD export</source>
-      <translation>OpenSCADへエクスポート</translation>
-    </message>
-    <message>
       <location filename="../ui/openscadprefs-base.ui" line="269"/>
       <source>Maximum fragment size</source>
       <translation>最大フラグメントサイズ</translation>
@@ -124,6 +99,31 @@
       <location filename="../ui/openscadprefs-base.ui" line="299"/>
       <source>Minimum angle for a fragment</source>
       <translation>フラグメントの最小角度</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="14"/>
+      <source>General</source>
+      <translation>標準</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="74"/>
+      <source>OpenSCAD Import</source>
+      <translation>OpenSCADのインポート</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="102"/>
+      <source>Use ViewProviders in Tree View</source>
+      <translation>ツリービューでViewProvidersを使用</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="182"/>
+      <source>Send to OpenSCAD via</source>
+      <translation>以下を使って OpenSCAD へ送信</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="261"/>
+      <source>OpenSCAD Export</source>
+      <translation>OpenSCADへエクスポート</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="331"/>
@@ -166,142 +166,146 @@
   <context>
     <name>OpenSCAD</name>
     <message>
-      <location filename="../../InitGui.py" line="130"/>
+      <location filename="../../InitGui.py" line="132"/>
       <source>It looks like you may be using a Snap version of OpenSCAD.</source>
       <translation>Snap 版の OpenSCAD を使用しているようです。</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="135"/>
-      <location filename="../../InitGui.py" line="148"/>
+      <location filename="../../InitGui.py" line="137"/>
+      <location filename="../../InitGui.py" line="150"/>
       <source>If OpenSCAD execution fails to load the temporary file, use FreeCAD's OpenSCAD Workbench Preferences to change the transfer mechanism.</source>
       <translation>OpenSCAD が一時ファイルの読み込みに失敗する場合は FreeCAD の OpenSCAD ワークベンチのユーザー設定で転送方法を変更してください。</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="143"/>
+      <location filename="../../InitGui.py" line="145"/>
       <source>It looks like you may be using a sandboxed version of FreeCAD.</source>
       <translation>サンドボックス版の FreeCAD を使用しているようです。</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="92"/>
+      <location filename="../../OpenSCADCommands.py" line="94"/>
       <source>Unable to explode %s</source>
       <translation>%s を分解できません</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="139"/>
-      <source>Convert Edges to Faces</source>
-      <translation>エッジを面に変換</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="301"/>
-      <source>Please select 3 objects first</source>
-      <translation>最初に3つのオブジェクトを選択してください</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="333"/>
-      <location filename="../../OpenSCADCommands.py" line="364"/>
+      <location filename="../../OpenSCADCommands.py" line="335"/>
+      <location filename="../../OpenSCADCommands.py" line="366"/>
       <source>Add</source>
       <translation>追加</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="368"/>
+      <location filename="../../OpenSCADCommands.py" line="370"/>
       <source>Clear</source>
       <translation>クリア</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="365"/>
+      <location filename="../../OpenSCADCommands.py" line="367"/>
       <source>Load</source>
       <translation>読み込み</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="366"/>
+      <location filename="../../OpenSCADCommands.py" line="368"/>
       <source>Save</source>
       <translation>保存</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="334"/>
-      <location filename="../../OpenSCADCommands.py" line="367"/>
+      <location filename="../../OpenSCADCommands.py" line="336"/>
+      <location filename="../../OpenSCADCommands.py" line="369"/>
       <source>Refresh</source>
       <translation>更新</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="335"/>
-      <source>Clear code</source>
-      <translation>コードをクリア</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="336"/>
-      <source>Open...</source>
-      <translation>開く...</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="337"/>
-      <source>Save...</source>
-      <translation>保存...</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="338"/>
-      <location filename="../../OpenSCADCommands.py" line="369"/>
+      <location filename="../../OpenSCADCommands.py" line="371"/>
       <source>as Mesh</source>
       <translation>メッシュとして</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="351"/>
-      <location filename="../../OpenSCADCommands.py" line="370"/>
+      <location filename="../../OpenSCADCommands.py" line="353"/>
+      <location filename="../../OpenSCADCommands.py" line="372"/>
       <source>Add OpenSCAD Element</source>
       <translation>OpenSCAD 要素を追加</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="427"/>
+      <location filename="../../OpenSCADCommands.py" line="141"/>
+      <source>Converts edges to faces</source>
+      <translation>エッジを面に変換</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="303"/>
+      <source>Select 3 objects first</source>
+      <translation>最初に3つのオブジェクトを選択してください</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="337"/>
+      <source>Clear Code</source>
+      <translation>コードをクリア</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="338"/>
+      <source>Open…</source>
+      <translation>開く…</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="339"/>
+      <source>Save…</source>
+      <translation>保存…</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="340"/>
+      <source>as mesh</source>
+      <translation>メッシュとして</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="429"/>
       <source>Open file</source>
       <translation>ファイルを開く</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="429"/>
-      <location filename="../../OpenSCADCommands.py" line="443"/>
+      <location filename="../../OpenSCADCommands.py" line="431"/>
+      <location filename="../../OpenSCADCommands.py" line="445"/>
       <source>OpenSCAD Files</source>
       <translation>OpenSCADファイル</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="441"/>
+      <location filename="../../OpenSCADCommands.py" line="443"/>
       <source>Save file</source>
       <translation>ファイルを保存</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="455"/>
-      <location filename="../../OpenSCADCommands.py" line="484"/>
+      <location filename="../../OpenSCADCommands.py" line="457"/>
+      <location filename="../../OpenSCADCommands.py" line="486"/>
       <source>Perform</source>
       <translation>実行</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="481"/>
-      <location filename="../../OpenSCADCommands.py" line="485"/>
+      <location filename="../../OpenSCADCommands.py" line="483"/>
+      <location filename="../../OpenSCADCommands.py" line="487"/>
       <source>Mesh Boolean</source>
       <translation>メッシュのブール演算</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="486"/>
+      <location filename="../../OpenSCADCommands.py" line="488"/>
       <source>Minkowski sum</source>
       <translation>ミンコフスキー和</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADUtils.py" line="653"/>
+      <location filename="../../OpenSCADUtils.py" line="650"/>
       <source>OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.</source>
       <translation>OpenSCAD ファイルには、2次元形状と3次元形状の両方が含まれています。このインポートではサポートされていません。すべての形状は同じ次元である必要があります。</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADUtils.py" line="664"/>
+      <location filename="../../OpenSCADUtils.py" line="661"/>
       <source>Error: either all shapes must be 2D or all shapes must be 3D</source>
       <translation>エラー：形状はすべて2Dか、すべて3Dでなければなりません</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="517"/>
-      <location filename="../../importCSG.py" line="1389"/>
+      <location filename="../../importCSG.py" line="518"/>
+      <location filename="../../importCSG.py" line="1390"/>
       <source>Unsupported Function</source>
       <translation>サポートされていない関数です</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="517"/>
-      <location filename="../../importCSG.py" line="1389"/>
+      <location filename="../../importCSG.py" line="518"/>
+      <location filename="../../importCSG.py" line="1390"/>
       <source>Press OK</source>
       <translation>OKを押してください</translation>
     </message>
@@ -309,204 +313,204 @@
   <context>
     <name>OpenSCAD_ExplodeGroup</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="100"/>
+      <location filename="../../OpenSCADCommands.py" line="102"/>
       <source>Explode Group</source>
       <translation>グループを分解</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="103"/>
-      <source>Remove fusion, apply placement to children, and color randomly</source>
-      <translation>結合を解除し、 子要素の位置と色をランダムに設定</translation>
+      <location filename="../../OpenSCADCommands.py" line="105"/>
+      <source>Explodes a fusion or compound and applies random colors</source>
+      <translation>結合またはコンパウンド化を分解してランダムな色を適用</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD_ColorCodeShape</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="116"/>
+      <location filename="../../OpenSCADCommands.py" line="118"/>
       <source>Color Shapes</source>
       <translation>形状に着色</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="119"/>
-      <source>Color Shapes by validity and type</source>
+      <location filename="../../OpenSCADCommands.py" line="121"/>
+      <source>Colors shapes by validity and type</source>
       <translation>有効性と種類に従って形状を着色</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_Edgestofaces</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="136"/>
-      <source>Convert Edges To Faces</source>
-      <translation>エッジを面に変換</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD_RefineShapeFeature</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="156"/>
+      <location filename="../../OpenSCADCommands.py" line="158"/>
       <source>Refine Shape Feature</source>
-      <translation>高精度形状フィーチャー</translation>
+      <translation>形状フィーチャーの高精度化</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="159"/>
-      <source>Create Refine Shape Feature</source>
-      <translation>高精度形状フィーチャーを作成</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_MirrorMeshFeature</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="186"/>
-      <source>Mirror Mesh Feature...</source>
-      <translation>鏡像メッシュフィーチャー...</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="189"/>
-      <source>Create Mirror Mesh Feature</source>
-      <translation>鏡像メッシュフィーチャーを作成</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_ScaleMeshFeature</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="215"/>
-      <source>Scale Mesh Feature...</source>
-      <translation>拡大縮小メッシュフィーチャー...</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="219"/>
-      <source>Create Scale Mesh Feature</source>
-      <translation>拡大縮小メッシュフィーチャーを作成</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_ResizeMeshFeature</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="245"/>
-      <source>Resize Mesh Feature...</source>
-      <translation>サイズ変更メッシュフィーチャー...</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="249"/>
-      <source>Create Resize Mesh Feature</source>
-      <translation>サイズ変更メッシュフィーチャーを作成</translation>
+      <location filename="../../OpenSCADCommands.py" line="161"/>
+      <source>Creates a refined shape</source>
+      <translation>高精度化された形状を作成</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD_IncreaseToleranceFeature</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="266"/>
+      <location filename="../../OpenSCADCommands.py" line="268"/>
       <source>Increase Tolerance Feature</source>
       <translation>トレランス増加フィーチャー</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="269"/>
-      <source>Create Feature that allows increasing the tolerance</source>
-      <translation>トレランスを増加できるようにするフィーチャーを作成</translation>
+      <location filename="../../OpenSCADCommands.py" line="271"/>
+      <source>Creates a feature to increase the tolerance</source>
+      <translation>許容値を増加させるフィーチャーを作成</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD_ExpandPlacements</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="283"/>
+      <location filename="../../OpenSCADCommands.py" line="285"/>
       <source>Expand Placements</source>
       <translation>配置を展開</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="286"/>
-      <source>Expand all placements downwards in the Tree view</source>
+      <location filename="../../OpenSCADCommands.py" line="288"/>
+      <source>Expands all placements downwards in the Tree View</source>
       <translation>ツリー ビューですべての配置を下に展開</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD_ReplaceObject</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="304"/>
+      <location filename="../../OpenSCADCommands.py" line="306"/>
       <source>Replace Object</source>
       <translation>オブジェクトの置換</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="307"/>
-      <source>Replace an object in the Tree view. Please select old, new, and parent object</source>
-      <translation>ツリービューのオブジェクトを置換します。古いオブジェクト、新規オブジェクト、親オブジェクトを選択してください。</translation>
+      <location filename="../../OpenSCADCommands.py" line="309"/>
+      <source>Replaces an object in the Tree View</source>
+      <translation>ツリー ビューでオブジェクトを置き換え</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD_RemoveSubtree</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="317"/>
-      <source>Remove Objects and their Children</source>
-      <translation>オブジェクトとその子オブジェクトを削除</translation>
+      <location filename="../../OpenSCADCommands.py" line="319"/>
+      <source>Remove Objects and Children</source>
+      <translation>オブジェクトと子オブジェクトを削除</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="320"/>
-      <source>Removes the selected objects and all children that are not referenced from other objects</source>
-      <translation>選択したオブジェクトと他のオブジェクトから参照されていないすべての子オブジェクトを削除</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_AddOpenSCADElement</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="529"/>
-      <source>Add OpenSCAD Element...</source>
-      <translation>OpenSCAD 要素を追加...</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="533"/>
-      <source>Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</source>
-      <translation>OpenSCADコードを入力してOpenSCADバイナリを実行することでOpenSCAD要素を追加</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_MeshBoolean</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="544"/>
-      <source>Mesh Boolean...</source>
-      <translation>メッシュのブール演算...</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="548"/>
-      <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
-      <translation>オブジェクトをメッシュとしてエクスポートし、OpenSCAD を使用してブール演算を実行</translation>
+      <location filename="../../OpenSCADCommands.py" line="322"/>
+      <source>Removes the selected objects and all children that are not referenced by other objects</source>
+      <translation>選択されているオブジェクトと他のオブジェクトから参照されていないその子オブジェクトを全て削除</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD_Hull</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="565"/>
+      <location filename="../../OpenSCADCommands.py" line="567"/>
       <source>Hull</source>
       <translation>凸包</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="568"/>
-      <source>Use OpenSCAD to create a hull</source>
-      <translation>OpenSCADを使用して凸包を作成</translation>
+      <location filename="../../OpenSCADCommands.py" line="570"/>
+      <source>Creates a hull</source>
+      <translation>凸包を作成</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../InitGui.py" line="152"/>
+      <location filename="../../InitGui.py" line="154"/>
       <source>OpenSCAD Tools</source>
       <translation>OpenSCADツール</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="156"/>
+      <location filename="../../InitGui.py" line="158"/>
       <source>Frequently-used Part WB tools</source>
       <translation>よく使用される Part ワークベンチのツール</translation>
     </message>
   </context>
   <context>
+    <name>OpenSCAD_Edgestofaces</name>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="138"/>
+      <source>Convert Edges to Faces</source>
+      <translation>エッジを面に変換</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_MirrorMeshFeature</name>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="188"/>
+      <source>Mirror Mesh Feature</source>
+      <translation>メッシュ形体を鏡像コピー</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="191"/>
+      <source>Mirrors the mesh</source>
+      <translation>メッシュを鏡像コピー</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_ScaleMeshFeature</name>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="217"/>
+      <source>Scale Mesh Feature</source>
+      <translation>メッシュフィーチャーの拡大縮小</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="221"/>
+      <source>Scales the mesh</source>
+      <translation>メッシュを拡大縮小</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_ResizeMeshFeature</name>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="247"/>
+      <source>Resize Mesh Feature</source>
+      <translation>メッシュフィーチャーのサイズ変更</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="251"/>
+      <source>Resizes the mesh</source>
+      <translation>メッシュｗをサイズ変更</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_AddOpenSCADElement</name>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="531"/>
+      <source>Add OpenSCAD Element</source>
+      <translation>OpenSCAD 要素を追加</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="535"/>
+      <source>Adds an OpenSCAD element based on entered OpenSCAD code using the OpenSCAD binary</source>
+      <translation>OpenSCADバイナリを使用して入力されたOpenSCADコードに基づいてOpenSCAD要素を追加</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_MeshBoolean</name>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="546"/>
+      <source>Mesh Boolean</source>
+      <translation>メッシュのブール演算</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="550"/>
+      <source>Performs a boolean operation using the OpenSCAD binary</source>
+      <translation>OpenSCADバイナリを使用してブーリアン演算を実行</translation>
+    </message>
+  </context>
+  <context>
     <name>OpenSCAD_Minkowski</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="585"/>
-      <source>Minkowski sum</source>
+      <location filename="../../OpenSCADCommands.py" line="587"/>
+      <source>Minkowski Sum</source>
       <translation>ミンコフスキー和</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="588"/>
-      <source>Use OpenSCAD to create a Minkowski sum</source>
-      <translation>OpenSCADを使用してミンコフスキー和を作成</translation>
+      <location filename="../../OpenSCADCommands.py" line="590"/>
+      <source>Creates a Minkowski sum</source>
+      <translation>ミンコフスキー和を作成</translation>
     </message>
   </context>
 </TS>

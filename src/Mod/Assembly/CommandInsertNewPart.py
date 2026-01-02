@@ -51,14 +51,12 @@ class CommandInsertNewPart:
     def GetResources(self):
         return {
             "Pixmap": "Geofeaturegroup",
-            "MenuText": QT_TRANSLATE_NOOP("Assembly_InsertNewPart", "Insert New Part"),
+            "MenuText": QT_TRANSLATE_NOOP("Assembly_InsertNewPart", "New Part"),
             "Accel": "P",
-            "ToolTip": "<p>"
-            + QT_TRANSLATE_NOOP(
+            "ToolTip": QT_TRANSLATE_NOOP(
                 "Assembly_InsertNewPart",
                 "Insert a new part into the active assembly. The new part's origin can be positioned in the assembly.",
-            )
-            + "</p>",
+            ),
             "CmdType": "ForEdit",
         }
 
@@ -66,8 +64,34 @@ class CommandInsertNewPart:
         return UtilsAssembly.isAssemblyCommandActive()
 
     def Activated(self):
+        # Check if document is saved before proceeding
+        doc = App.ActiveDocument
+        if not doc.FileName:
+            msgBox = QtWidgets.QMessageBox()
+            msgBox.setIcon(QtWidgets.QMessageBox.Warning)
+            msgBox.setText(
+                translate(
+                    "Assembly",
+                    "The assembly document must be saved before inserting a new part.",
+                )
+            )
+            msgBox.setWindowTitle(translate("Assembly", "Save Document"))
+            saveButton = msgBox.addButton(
+                translate("Assembly", "Save"), QtWidgets.QMessageBox.AcceptRole
+            )
+            msgBox.addButton(QtWidgets.QMessageBox.Cancel)
+            msgBox.exec_()
+            if msgBox.clickedButton() == saveButton:
+                if not Gui.getDocument(doc).saveAs():
+                    return
+            else:
+                return
+
         panel = TaskAssemblyNewPart()
-        Gui.Control.showDialog(panel)
+        dialog = Gui.Control.showDialog(panel)
+        if dialog is not None:
+            dialog.setAutoCloseOnDeletedDocument(True)
+            dialog.setDocumentName(App.ActiveDocument.Name)
 
 
 class TaskAssemblyNewPart(JointObject.TaskAssemblyCreateJoint):
@@ -130,14 +154,17 @@ class TaskAssemblyNewPart(JointObject.TaskAssemblyCreateJoint):
                 msgBox = QtWidgets.QMessageBox()
                 msgBox.setIcon(QtWidgets.QMessageBox.Warning)
                 msgBox.setText(
-                    "If the new document is not saved the new part cannot be linked in the assembly."
+                    translate(
+                        "Assembly",
+                        "If the new document is not saved the new part cannot be linked in the assembly.",
+                    )
                 )
                 msgBox.setWindowTitle(translate("Assembly", "Save Document"))
                 saveButton = msgBox.addButton(
                     translate("Assembly", "Save"), QtWidgets.QMessageBox.AcceptRole
                 )
                 cancelButton = msgBox.addButton(
-                    translate("Assembly", "Don't link"), QtWidgets.QMessageBox.RejectRole
+                    translate("Assembly", "Do not Link"), QtWidgets.QMessageBox.RejectRole
                 )
 
                 msgBox.exec_()
@@ -177,9 +204,9 @@ class TaskAssemblyNewPart(JointObject.TaskAssemblyCreateJoint):
             cmds = UtilsAssembly.generatePropertySettings(self.joint)
             Gui.doCommand(cmds)
 
-        self.createPart()
-
         self.deactivate()
+
+        self.createPart()
 
         App.closeActiveTransaction()
 

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
@@ -20,15 +22,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <boost/regex.hpp>
 #include <cassert>
 #include <sstream>
 #include <string>
 #include <cmath>
 #include <regex>
-#endif
 
 #include <string_view>
 #include <Base/Exception.h>

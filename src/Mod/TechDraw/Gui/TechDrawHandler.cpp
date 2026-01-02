@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <cmath>
 
 #include <QGuiApplication>
@@ -31,7 +29,6 @@
 #include <QTimer>
 
 #include <Inventor/events/SoKeyboardEvent.h>
-#endif  // #ifndef _PreComp_
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -109,7 +106,9 @@ void TechDrawHandler::mouseReleaseEvent(QMouseEvent* event)
 
 void TechDrawHandler::quit()
 {
-    viewPage->deactivateHandler();
+    if (viewPage) {
+        viewPage->deactivateHandler();
+    }
 }
 
 QWidget* TechDrawHandler::getCursorWidget()
@@ -127,5 +126,5 @@ void TechDrawHandler::setWidgetCursor(QCursor cursor)
 
 TechDraw::DrawPage* TechDrawHandler::getPage()
 {
-    return viewPage->getDrawPage();
+    return viewPage ? viewPage->getDrawPage() : nullptr;
 }

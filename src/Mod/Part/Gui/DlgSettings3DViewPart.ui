@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Shape view</string>
+   <string>Shape View</string>
   </property>
   <layout class="QGridLayout">
    <property name="margin">

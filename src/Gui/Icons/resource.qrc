@@ -18,6 +18,7 @@
         <file>button_invalid.svg</file>
         <file>button_left.svg</file>
         <file>button_right.svg</file>
+        <file>button_rotate.svg</file>
         <file>button_sort.svg</file>
         <file>button_up.svg</file>
         <file>button_valid.svg</file>
@@ -38,7 +39,10 @@
         <file>clear-selection.svg</file>
         <file>colors.svg</file>
         <file>critical-info.svg</file>
+        <file>cursor-pan.svg</file>
         <file>cursor-through.svg</file>
+        <file>cursor-rotate.svg</file>
+        <file>cursor-zoom.svg</file>
         <file>dagViewFail.svg</file>
         <file>dagViewPass.svg</file>
         <file>dagViewPending.svg</file>
@@ -89,6 +93,7 @@
         <file>freecad-doc.svg</file>
         <file>freecad.svg</file>
         <file>freecadabout.png</file>
+        <file>freecadaboutdev.png</file>
         <file>freecadsplash_2x.png</file>
         <file>freecadsplash.png</file>
         <file>freecadsplash0_2x.png</file>
@@ -199,6 +204,7 @@
         <file>Std_DockOverlayToggleTop.svg</file>
         <file>Std_DuplicateSelection.svg</file>
         <file>Std_Export.svg</file>
+        <file>Std_SelectGroupContents.svg</file>
         <file>Std_HideObjects.svg</file>
         <file>Std_HideSelection.svg</file>
         <file>Std_Import.svg</file>
@@ -333,6 +339,7 @@
         <file>button_down.svg</file>
         <file>button_left.svg</file>
         <file>button_right.svg</file>
+        <file>button_rotate.svg</file>
         <file>button_up.svg</file>
         <file>button_sort.svg</file>
         <file>button_add_all.svg</file>

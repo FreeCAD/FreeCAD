@@ -84,10 +84,7 @@ def compare(file1, file2):
     with open(file2) as f2:
         f2_text = f2.readlines()
     res = [
-        l
-        for l in difflib.unified_diff(
-            f1_text, f2_text, fromfile=file1, tofile=file2, lineterm=""
-        )
+        l for l in difflib.unified_diff(f1_text, f2_text, fromfile=file1, tofile=file2, lineterm="")
     ]
     res = [l for l in res if l.startswith("+") or l.startswith("-")]
     res = [l for l in res if not l.startswith("+++") and not l.startswith("---")]
@@ -110,9 +107,7 @@ class NativeIFCTest(unittest.TestCase):
         pass
 
     def test01_ImportCoinSingle(self):
-        FreeCAD.Console.PrintMessage(
-            "NativeIFC 01: Importing single object, coin mode..."
-        )
+        FreeCAD.Console.PrintMessage("NativeIFC 01: Importing single object, coin mode...")
         clearObjects()
         fp = getIfcFilePath()
         ifc_import.insert(
@@ -128,9 +123,7 @@ class NativeIFCTest(unittest.TestCase):
         self.assertTrue(fco == 1 - SDU, "ImportCoinSingle failed")
 
     def test02_ImportCoinStructure(self):
-        FreeCAD.Console.PrintMessage(
-            "NativeIFC 02: Importing model structure, coin mode..."
-        )
+        FreeCAD.Console.PrintMessage("NativeIFC 02: Importing model structure, coin mode...")
         clearObjects()
         fp = getIfcFilePath()
         ifc_import.insert(
@@ -182,9 +175,7 @@ class NativeIFCTest(unittest.TestCase):
         self.assertTrue(fco > 4 - SDU, "ImportShapeFull failed")
 
     def test05_ImportFreeCAD(self):
-        FreeCAD.Console.PrintMessage(
-            "NativeIFC 05: FreeCAD import of NativeIFC coin file..."
-        )
+        FreeCAD.Console.PrintMessage("NativeIFC 05: FreeCAD import of NativeIFC coin file...")
         clearObjects()
         doc = FreeCAD.open(FCSTD_FILE_PATH)
         obj = doc.Objects[-1]
@@ -204,9 +195,7 @@ class NativeIFCTest(unittest.TestCase):
         ifc_diff = compare(IFC_FILE_PATH, proj.IfcFilePath)
         obj.ShapeMode = 0
         obj.Proxy.execute(obj)
-        self.assertTrue(
-            obj.Shape.Volume > 2 and len(ifc_diff) <= 5, "ModifyObjects failed"
-        )
+        self.assertTrue(obj.Shape.Volume > 2 and len(ifc_diff) <= 5, "ModifyObjects failed")
 
     def test07_CreateDocument(self):
         FreeCAD.Console.PrintMessage("NativeIFC 07: Creating new IFC document...")
@@ -307,6 +296,7 @@ class NativeIFCTest(unittest.TestCase):
 
     def test12_RemoveObject(self):
         from . import ifc_observer
+
         ifc_observer.add_observer()
         FreeCAD.Console.PrintMessage("NativeIFC 12: Remove object...")
         clearObjects()
@@ -393,7 +383,7 @@ class NativeIFCTest(unittest.TestCase):
         self.assertTrue(ifc_psets.has_psets(obj), "Psets failed")
 
 
-IFCFILECONTENT="""ISO-10303-21;
+IFCFILECONTENT = """ISO-10303-21;
 HEADER;
 FILE_DESCRIPTION(('ViewDefinition [CoordinationView]'),'2;1');
 FILE_NAME('IfcOpenHouse.ifc','2014-05-05T15:42:14',(''),('',''),'IfcOpenShell 0.5.0-dev','IfcOpenShell 0.5.0-dev','');

@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
+        <file>icons/Assembly_ActivateAssembly.svg</file>
         <file>icons/Assembly_AssemblyLink.svg</file>
         <file>icons/Assembly_AssemblyLinkRigid.svg</file>
         <file>icons/Assembly_InsertLink.svg</file>

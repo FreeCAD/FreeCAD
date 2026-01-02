@@ -1,4 +1,6 @@
-target_sources(Material_tests_run PRIVATE
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+add_executable(Material_tests_run
         TestMaterialCards.cpp
         TestMaterialFilter.cpp
         TestMaterialProperties.cpp

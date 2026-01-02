@@ -23,11 +23,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
-#endif
-
 #include "Mod/Fem/App/FemConstraintContact.h"
 #include "TaskFemConstraintContact.h"
 #include "ViewProviderFemConstraintContact.h"

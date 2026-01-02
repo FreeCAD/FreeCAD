@@ -1,13 +1,10 @@
-include_directories(
-    ${CMAKE_CURRENT_BINARY_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}
-)
+# SPDX-License-Identifier: LGPL-2.1-or-later
 
-generate_from_xml(ViewProviderSpreadsheetPy)
+generate_from_py(ViewProviderSpreadsheet)
 
 # The XML files
 set(SpreadsheetGui_XML_SRCS
-    ViewProviderSpreadsheetPy.xml
+    ViewProviderSpreadsheet.pyi
 )
 
 set(SpreadsheetGui_LIBS
@@ -69,7 +66,6 @@ SET(SpreadsheetGui_SRCS
     SheetTableViewAccessibleInterface.cpp
     SheetModel.h
     SheetModel.cpp
-    PreCompiled.cpp
     PreCompiled.h
     Workbench.cpp
     Workbench.h
@@ -105,8 +101,30 @@ set(SpreadsheetGui_UIC_SRCS
     DlgSettings.ui
 )
 
-add_library(SpreadsheetGui SHARED ${SpreadsheetGui_SRCS} ${SpreadsheetGuiIcon_SVG})
+add_library(SpreadsheetGui SHARED
+    ${SpreadsheetGui_SRCS}
+    ${SpreadsheetGuiIcon_SVG}
+)
+
+if(FREECAD_USE_PCH)
+    target_precompile_headers(SpreadsheetGui PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
+endif(FREECAD_USE_PCH)
+
+target_include_directories(
+    SpreadsheetGui
+    PRIVATE
+    ${CMAKE_CURRENT_BINARY_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
 target_link_libraries(SpreadsheetGui ${SpreadsheetGui_LIBS})
+
+if (MSVC)
+    target_compile_options(SpreadsheetGui PRIVATE /wd4251)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(SpreadsheetGui)
 endif()

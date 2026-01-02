@@ -24,11 +24,7 @@ macro(InitializeFreeCADBuildOptions)
     option(INSTALL_TO_SITEPACKAGES "If ON the freecad root namespace (python) is installed into python's site-packages" ON)
     option(INSTALL_PREFER_SYMLINKS "If ON then fc_copy_sources macro will create symlinks instead of copying files" OFF)
     option(OCCT_CMAKE_FALLBACK "disable usage of occt-config files" OFF)
-    if (WIN32 OR APPLE)
-        option(FREECAD_USE_QT_FILEDIALOG "Use Qt's file dialog instead of the native one." OFF)
-    else()
-        option(FREECAD_USE_QT_FILEDIALOG "Use Qt's file dialog instead of the native one." ON)
-    endif()
+    option(FREECAD_USE_QT_DIALOGS "Use Qt's dialogs instead of the native one." OFF)
 
     # == Win32 is default behaviour use the LibPack copied in Source tree ==========
     if(MSVC)
@@ -75,13 +71,6 @@ macro(InitializeFreeCADBuildOptions)
     endif(MSVC)
 
     ChooseQtVersion()
-
-    # https://blog.kitware.com/constraining-values-with-comboboxes-in-cmake-cmake-gui/
-    set(FREECAD_USE_OCC_VARIANT "Community Edition"  CACHE STRING  "Official OpenCASCADE version or community edition")
-    set_property(CACHE FREECAD_USE_OCC_VARIANT PROPERTY STRINGS
-                 "Official Version"
-                 "Community Edition"
-    )
 
     option(BUILD_DESIGNER_PLUGIN "Build and install the designer plugin" OFF)
 

@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2015 Yorik van Havre <yorik@uncreated.net>              *
 # *   Reimplemented as dressup in 2025  phaseloop <phaseloop@protonmail.com *
@@ -53,7 +54,7 @@ class DressupArray:
             "Path",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "The spacing between the array copies in Linear pattern",
+                "The spacing between the array copies in linear pattern",
             ),
         )
         obj.addProperty(
@@ -61,7 +62,7 @@ class DressupArray:
             "CopiesX",
             "Path",
             QT_TRANSLATE_NOOP(
-                "App::Property", "The number of copies in X direction in Linear pattern"
+                "App::Property", "The number of copies in X-direction in linear pattern"
             ),
         )
         obj.addProperty(
@@ -69,28 +70,28 @@ class DressupArray:
             "CopiesY",
             "Path",
             QT_TRANSLATE_NOOP(
-                "App::Property", "The number of copies in Y direction in Linear pattern"
+                "App::Property", "The number of copies in Y-direction in linear pattern"
             ),
         )
         obj.addProperty(
             "App::PropertyAngle",
             "Angle",
             "Path",
-            QT_TRANSLATE_NOOP("App::Property", "Total angle in Polar pattern"),
+            QT_TRANSLATE_NOOP("App::Property", "Total angle in polar pattern"),
         )
         obj.addProperty(
             "App::PropertyInteger",
             "Copies",
             "Path",
             QT_TRANSLATE_NOOP(
-                "App::Property", "The number of copies in Linear 1D and Polar pattern"
+                "App::Property", "The number of copies in linear 1D and polar pattern"
             ),
         )
         obj.addProperty(
             "App::PropertyVector",
             "Centre",
             "Path",
-            QT_TRANSLATE_NOOP("App::Property", "The centre of rotation in Polar pattern"),
+            QT_TRANSLATE_NOOP("App::Property", "The centre of rotation in polar pattern"),
         )
         obj.addProperty(
             "App::PropertyBool",
@@ -98,7 +99,7 @@ class DressupArray:
             "Path",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Make copies in X direction before Y in Linear 2D pattern",
+                "Make copies in X-direction before Y in linear 2D pattern",
             ),
         )
         obj.addProperty(
@@ -165,6 +166,8 @@ class DressupArray:
     def onChanged(self, obj, prop):
         if prop == "Type":
             self.setEditorModes(obj)
+        if prop == "Path" and obj.ViewObject:
+            obj.ViewObject.signalChangeIcon()
 
     def onDocumentRestored(self, obj):
         """onDocumentRestored(obj) ... Called automatically when document is restored."""

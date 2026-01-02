@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,39 +22,89 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-#ifndef _PreComp_
+#include <unicode/unistr.h>
+#include <unicode/uchar.h>
 #include <vector>
 #include <string>
 #include <sstream>
 #include <QDateTime>
-#endif
+#include <QTimeZone>
 
 #include "PyExport.h"
 #include "Interpreter.h"
 #include "Tools.h"
+
+namespace
+{
+constexpr auto underscore = static_cast<UChar32>(U'_');
+
+bool isValidFirstChar(UChar32 c)
+{
+    auto category = static_cast<UCharCategory>(u_charType(c));
+
+    return (c == underscore)
+        || (category == U_UPPERCASE_LETTER || category == U_LOWERCASE_LETTER
+            || category == U_TITLECASE_LETTER || category == U_MODIFIER_LETTER
+            || category == U_OTHER_LETTER || category == U_LETTER_NUMBER);
+}
+
+bool isValidSubsequentChar(UChar32 c)
+{
+    auto category = static_cast<UCharCategory>(u_charType(c));
+    return (c == underscore)
+        || (category == U_UPPERCASE_LETTER || category == U_LOWERCASE_LETTER
+            || category == U_TITLECASE_LETTER || category == U_MODIFIER_LETTER
+            || category == U_OTHER_LETTER || category == U_LETTER_NUMBER
+            || category == U_DECIMAL_DIGIT_NUMBER || category == U_NON_SPACING_MARK
+            || category == U_COMBINING_SPACING_MARK || category == U_CONNECTOR_PUNCTUATION);
+}
+
+std::string unicodeCharToStdString(UChar32 c)
+{
+    icu::UnicodeString uChar(c);
+    std::string utf8Char;
+    return uChar.toUTF8String(utf8Char);
+}
+
+};  // namespace
 
 std::string Base::Tools::getIdentifier(const std::string& name)
 {
     if (name.empty()) {
         return "_";
     }
-    // check for first character whether it's a digit
-    std::string CleanName = name;
-    if (!CleanName.empty() && CleanName[0] >= 48 && CleanName[0] <= 57) {
-        CleanName[0] = '_';
+
+    icu::UnicodeString uName = icu::UnicodeString::fromUTF8(name);
+    std::stringstream result;
+
+    // Handle the first character independently, prepending an underscore if it is not a valid
+    // first character, but *is* a valid later character
+    UChar32 firstChar = uName.char32At(0);
+    const int32_t firstCharLength = U16_LENGTH(firstChar);
+    if (!isValidFirstChar(firstChar)) {
+        result << "_";
+        if (isValidSubsequentChar(firstChar)) {
+            result << unicodeCharToStdString(firstChar);
+        }
     }
-    // strip illegal chars
-    for (char& it : CleanName) {
-        if (!((it >= 48 && it <= 57) ||    // number
-              (it >= 65 && it <= 90) ||    // uppercase letter
-              (it >= 97 && it <= 122))) {  // lowercase letter
-            it = '_';                      // it's neither number nor letter
+    else {
+        result << unicodeCharToStdString(firstChar);
+    }
+
+    for (int32_t i = firstCharLength; i < uName.length(); /* will increment by char length */) {
+        UChar32 c = uName.char32At(i);
+        int32_t charLength = U16_LENGTH(c);
+        i += charLength;
+
+        if (isValidSubsequentChar(c)) {
+            result << unicodeCharToStdString(c);
+        }
+        else {
+            result << "_";
         }
     }
 
-    return CleanName;
+    return result.str();
 }
 
 std::wstring Base::Tools::widen(const std::string& str)
@@ -100,8 +152,8 @@ std::string Base::Tools::escapedUnicodeToUtf8(const std::string& s)
     Base::PyGILStateLocker lock;
     std::string string;
 
-    PyObject* unicode =
-        PyUnicode_DecodeUnicodeEscape(s.c_str(), static_cast<Py_ssize_t>(s.size()), "strict");
+    PyObject* unicode
+        = PyUnicode_DecodeUnicodeEscape(s.c_str(), static_cast<Py_ssize_t>(s.size()), "strict");
     if (!unicode) {
         return string;
     }
@@ -244,7 +296,7 @@ std::string Base::Tools::joinList(const std::vector<std::string>& vec, const std
 std::string Base::Tools::currentDateTimeString()
 {
     return QDateTime::currentDateTime()
-        .toTimeSpec(Qt::OffsetFromUTC)
+        .toTimeZone(QTimeZone::systemTimeZone())
         .toString(Qt::ISODate)
         .toStdString();
 }

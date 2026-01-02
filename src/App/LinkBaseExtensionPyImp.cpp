@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /****************************************************************************
  *   Copyright (c) 2017 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
  *                                                                          *
@@ -20,11 +22,7 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <sstream>
-#endif
 
 #include "DocumentObjectPy.h"
 #include "LinkBaseExtensionPy.h"

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2017 Lorenz Lechner                                     *
 # *                                                                         *
@@ -46,9 +48,9 @@ class CreateFlatMesh(BaseCommand):
     def GetResources(self):
         return {
             "Pixmap": "MeshPart_CreateFlatMesh.svg",
-            "MenuText": QT_TRANSLATE_NOOP("MeshPart_CreateFlatMesh", "Unwrap mesh"),
+            "MenuText": QT_TRANSLATE_NOOP("MeshPart_CreateFlatMesh", "Unwrap Mesh"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "MeshPart_CreateFlatMesh", "Find a flat representation of a mesh."
+                "MeshPart_CreateFlatMesh", "Finds a flat representation of a mesh"
             ),
         }
 
@@ -85,9 +87,9 @@ class CreateFlatFace(BaseCommand):
     def GetResources(self):
         return {
             "Pixmap": "MeshPart_CreateFlatFace.svg",
-            "MenuText": QT_TRANSLATE_NOOP("MeshPart_CreateFlatFace", "Unwrap face"),
+            "MenuText": QT_TRANSLATE_NOOP("MeshPart_CreateFlatFace", "Unwrap Face"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "MeshPart_CreateFlatFace", "Find a flat representation of a face."
+                "MeshPart_CreateFlatFace", "Finds a flat representation of a face"
             ),
         }
 

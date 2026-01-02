@@ -21,9 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <QAction>
 #include <QApplication>
 #include <QContextMenuEvent>
@@ -39,7 +37,7 @@
 #include <QPrinter>
 #include <boost/signals2.hpp>
 #include <cmath>
-#endif
+
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -83,26 +81,28 @@ namespace sp = std::placeholders;
 TYPESYSTEM_SOURCE_ABSTRACT(TechDrawGui::MDIViewPage, Gui::MDIView)
 
 MDIViewPage::MDIViewPage(ViewProviderPage* pageVp, Gui::Document* doc, QWidget* parent)
-    : Gui::MDIView(doc, parent), m_vpPage(pageVp)
+    : Gui::MDIView(doc, parent), m_vpPage(pageVp),
+      m_previewState(false)
 {
     setMouseTracking(true);
 
     m_toggleKeepUpdatedAction = new QAction(tr("Toggle &Keep Updated"), this);
     connect(m_toggleKeepUpdatedAction, &QAction::triggered, this, &MDIViewPage::toggleKeepUpdated);
 
-    m_toggleFrameAction = new QAction(tr("Toggle &Frames"), this);
-    connect(m_toggleFrameAction, &QAction::triggered, this, &MDIViewPage::toggleFrame);
-
     m_exportSVGAction = new QAction(tr("&Export SVG"), this);
+
     connect(m_exportSVGAction, &QAction::triggered, this, qOverload<>(&MDIViewPage::saveSVG));
 
     m_exportDXFAction = new QAction(tr("Export DXF"), this);
+
     connect(m_exportDXFAction, &QAction::triggered, this, qOverload<>(&MDIViewPage::saveDXF));
 
     m_exportPDFAction = new QAction(tr("Export PDF"), this);
+
     connect(m_exportPDFAction, &QAction::triggered, this, qOverload<>(&MDIViewPage::savePDF));
 
     m_printAllAction = new QAction(tr("Print All Pages"), this);
+
     connect(m_printAllAction, &QAction::triggered, this, qOverload<>(&MDIViewPage::printAllPages));
 
     isSelectionBlocked = false;
@@ -312,7 +312,8 @@ void MDIViewPage::printPdf()
     filter << QObject::tr("PDF (*.pdf)");
     filter << QObject::tr("All Files (*.*)");
     QString fn =
-        Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export Page As PDF"),
+        Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export Page as PDF"),
+
                                          QString(), filter.join(QLatin1String(";;")));
     if (fn.isEmpty()) {
         return;
@@ -330,12 +331,12 @@ void MDIViewPage::print()
 
     QPrinter printer(QPrinter::HighResolution);
     printer.setFullPage(true);
-    if (pageAttr.pageSize() == QPageSize::Custom) {
+    if (pageAttr.pageSizeId() == QPageSize::Custom) {
         printer.setPageSize(
             QPageSize(QSizeF(pageAttr.pageWidth(), pageAttr.pageHeight()), QPageSize::Millimeter));
     }
     else {
-        printer.setPageSize(QPageSize(pageAttr.pageSize()));
+        printer.setPageSize(QPageSize(pageAttr.pageSizeId()));
     }
     printer.setPageOrientation(pageAttr.orientation());
 
@@ -351,18 +352,20 @@ void MDIViewPage::printPreview()
 
     QPrinter printer(QPrinter::HighResolution);
     printer.setFullPage(true);
-    if (pageAttr.pageSize() == QPageSize::Custom) {
+    if (pageAttr.pageSizeId() == QPageSize::Custom) {
         printer.setPageSize(
             QPageSize(QSizeF(pageAttr.pageWidth(), pageAttr.pageHeight()), QPageSize::Millimeter));
     }
     else {
-        printer.setPageSize(QPageSize(pageAttr.pageSize()));
+        printer.setPageSize(QPageSize(pageAttr.pageSizeId()));
     }
     printer.setPageOrientation(pageAttr.orientation());
 
     QPrintPreviewDialog dlg(&printer, this);
     connect(&dlg, &QPrintPreviewDialog::paintRequested, this, qOverload<QPrinter*>(&MDIViewPage::print));
+    m_previewState = true;
     dlg.exec();
+    m_previewState = false;
 }
 
 
@@ -399,7 +402,7 @@ void MDIViewPage::print(QPrinter* printer)
                 return;
             }
         }
-        if (doPrint && psPrtSetting != pageAttr.pageSize()) {
+        if (doPrint && psPrtSetting != pageAttr.pageSizeId()) {
             int ret = QMessageBox::warning(
                 this, tr("Different paper size"),
                 tr("The printer uses a different paper size than the drawing.\n"
@@ -411,7 +414,7 @@ void MDIViewPage::print(QPrinter* printer)
         }
     }
 
-    PagePrinter::print(getViewProviderPage(), printer);
+    PagePrinter::print(getViewProviderPage(), printer, m_previewState);
 }
 
 // static routine to print all pages in a document.  Used by PrintAll command in Command.cpp
@@ -435,7 +438,6 @@ void MDIViewPage::contextMenuEvent(QContextMenuEvent* event)
     //    Base::Console().message("MDIVP::contextMenuEvent() - reason: %d\n", event->reason());
     if (isContextualMenuEnabled) {
         QMenu menu;
-        menu.addAction(m_toggleFrameAction);
         menu.addAction(m_toggleKeepUpdatedAction);
         menu.addAction(m_exportSVGAction);
         menu.addAction(m_exportDXFAction);
@@ -444,8 +446,6 @@ void MDIViewPage::contextMenuEvent(QContextMenuEvent* event)
         menu.exec(event->globalPos());
     }
 }
-
-void MDIViewPage::toggleFrame() { m_vpPage->toggleFrameState(); }
 
 void MDIViewPage::toggleKeepUpdated()
 {
@@ -488,9 +488,10 @@ void MDIViewPage::saveSVG()
 {
     QStringList filter;
     filter << QStringLiteral("SVG (*.svg)");
-    filter << QObject::tr("All Files (*.*)");
+    filter << QObject::tr("All files (*.*)");
     QString fn =
         Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export page as SVG"),
+
                                          defaultFileName(), filter.join(QLatin1String(";;")));
     if (fn.isEmpty()) {
         return;
@@ -509,9 +510,10 @@ void MDIViewPage::saveDXF()
 {
     QStringList filter;
     filter << QStringLiteral("DXF (*.dxf)");
-    filter << QObject::tr("All Files (*.*)");
+    filter << QObject::tr("All files (*.*)");
     QString fn =
         Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export page as DXF"),
+
                                          defaultFileName(), filter.join(QLatin1String(";;")));
     if (fn.isEmpty()) {
         return;
@@ -536,6 +538,7 @@ void MDIViewPage::savePDF()
     filter << QObject::tr("All Files (*.*)");
     QString fn =
         Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export page as PDF"),
+
                                          defaultFileName(), filter.join(QLatin1String(";;")));
     if (fn.isEmpty()) {
         return;
@@ -1119,12 +1122,11 @@ MDIViewPagePy::~MDIViewPagePy() {}
 
 Py::Object MDIViewPagePy::repr()
 {
-    std::ostringstream s_out;
     if (!getMDIViewPagePtr()) {
         throw Py::RuntimeError("Cannot print representation of deleted object");
     }
-    s_out << "MDI view page";
-    return Py::String(s_out.str());
+
+    return Py::String("MDI view page");
 }
 
 // Since with PyCXX it is not possible to make a sub-class of MDIViewPy

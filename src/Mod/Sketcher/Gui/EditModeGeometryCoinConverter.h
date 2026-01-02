@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2021 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -109,11 +111,13 @@ public:
      *
      * @param drawingparameters: Parameters for drawing the overlay information
      */
-    EditModeGeometryCoinConverter(ViewProviderSketch& vp,
-                                  GeometryLayerNodes& geometrylayernodes,
-                                  DrawingParameters& drawingparameters,
-                                  GeometryLayerParameters& geometryLayerParams,
-                                  CoinMapping& coinMap);
+    EditModeGeometryCoinConverter(
+        ViewProviderSketch& vp,
+        GeometryLayerNodes& geometrylayernodes,
+        DrawingParameters& drawingparameters,
+        GeometryLayerParameters& geometryLayerParams,
+        CoinMapping& coinMap
+    );
 
     /**
      * converts the geometry defined by GeometryLayer into the coin nodes.
@@ -152,9 +156,11 @@ public:
 
 private:
     template<typename GeoType, PointsMode pointmode, CurveMode curvemode, AnalyseMode analysemode>
-    void convert(const Sketcher::GeometryFacade* geometryfacade,
-                 [[maybe_unused]] int geoId,
-                 [[maybe_unused]] int subLayerId = 0);
+    void convert(
+        const Sketcher::GeometryFacade* geometryfacade,
+        [[maybe_unused]] int geoId,
+        [[maybe_unused]] int subLayerId = 0
+    );
 
 private:
     /// Reference to ViewProviderSketch in order to access the public and the Attorney Interface
@@ -180,8 +186,8 @@ private:
 
     // measurements
     float boundingBoxMaxMagnitude = 100;
-    double combrepscale =
-        0;  // the repscale that would correspond to this comb based only on this calculation.
+    double combrepscale = 0;  // the repscale that would correspond to this comb based only on this
+                              // calculation.
     std::vector<int> bsplineGeoIds;
     std::vector<int> arcGeoIds;
 };

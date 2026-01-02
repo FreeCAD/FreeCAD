@@ -17,13 +17,13 @@
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Theme customization</string>
+      <string>Theme Customization</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>This section lets you customize your current theme. The offered settings are optional for theme developers so they may or may not have an effect in your current theme.</string>
+         <string>Customize the current theme. The offered settings are optional for theme developers so they may or may not have an effect in the current theme.</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>
@@ -31,7 +31,7 @@
        </widget>
       </item>
       <item>
-       <layout class="QGridLayout" columnstretch="2,1,0">
+       <layout class="QGridLayout" columnstretch="2,1">
         <item row="0" column="0">
          <widget class="QLabel" name="label1">
           <property name="text">
@@ -91,7 +91,7 @@
         <item row="3" column="0">
          <widget class="QLabel" name="styleSheetLabel">
           <property name="text">
-           <string>Style sheet (advanced):</string>
+           <string>Style sheet (advanced)</string>
           </property>
           <property name="buddy">
            <cstring>StyleSheets</cstring>
@@ -101,7 +101,7 @@
         <item row="4" column="0">
          <widget class="QLabel" name="label_2">
           <property name="text">
-           <string>Overlay style sheet:</string>
+           <string>Overlay style sheet</string>
           </property>
           <property name="buddy">
            <cstring>OverlayStyleSheets</cstring>
@@ -165,11 +165,11 @@
           <property name="toolTip">
            <string>Style sheet how user interface will look like</string>
           </property>
-          <property name="prefPath" stdset="0">
-           <cstring>MainWindow</cstring>
-          </property>
           <property name="prefEntry" stdset="0">
            <cstring>StyleSheet</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>MainWindow</cstring>
           </property>
           <property name="prefType" stdset="0">
            <cstring></cstring>
@@ -178,11 +178,11 @@
         </item>
         <item row="4" column="1">
          <widget class="Gui::PrefComboBox" name="OverlayStyleSheets">
-          <property name="prefPath" stdset="0">
-           <cstring>MainWindow</cstring>
-          </property>
           <property name="prefEntry" stdset="0">
            <cstring>OverlayActiveStyleSheet</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>MainWindow</cstring>
           </property>
           <property name="prefType" stdset="0">
            <cstring></cstring>
@@ -191,22 +191,29 @@
         </item>
        </layout>
       </item>
+      <item>
+       <widget class="QPushButton" name="themeEditorButton">
+        <property name="text">
+         <string>Open Theme Editor</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
    <item>
     <widget class="QGroupBox" name="groupBox_2">
      <property name="title">
-      <string>Tree view</string>
+      <string>Tree View</string>
      </property>
      <layout class="QGridLayout" name="gridLayout1" columnstretch="2,1">
       <item row="5" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="hideInternalNamesCheckBox">
         <property name="toolTip">
-         <string>Hide extra tree view column - Internal Names.</string>
+         <string>Hide extra tree view column for internal names</string>
         </property>
         <property name="text">
-         <string>Hide Internal Names</string>
+         <string>Hide internal names</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -220,6 +227,34 @@
        </widget>
       </item>
       <item row="0" column="1">
+       <widget class="Gui::PrefSpinBox" name="fontSizeSpinBox">
+        <property name="toolTip">
+         <string>Font size override, set to 0 for the default value.</string>
+        </property>
+        <property name="minimum">
+         <number>0</number>
+        </property>
+        <property name="maximum">
+         <number>100</number>
+        </property>
+        <property name="singleStep">
+         <number>1</number>
+        </property>
+        <property name="suffix">
+         <string> pt</string>
+        </property>
+        <property name="value">
+         <number>0</number>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>TreeView</cstring>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>FontSize</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
        <widget class="Gui::PrefSpinBox" name="iconSizeSpinBox">
         <property name="toolTip">
          <string>Icon size override, set to 0 for the default value.</string>
@@ -230,25 +265,16 @@
         <property name="value">
          <number>16</number>
         </property>
-        <property name="prefPath" stdset="0">
-         <cstring>TreeView</cstring>
-        </property>
         <property name="prefEntry" stdset="0">
          <cstring>IconSize</cstring>
         </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="rowSpacingLabel">
-        <property name="text">
-         <string>Additional row spacing</string>
-        </property>
-        <property name="buddy">
-         <cstring>rowSpacingSpinBox</cstring>
+        <property name="prefPath" stdset="0">
+         <cstring>TreeView</cstring>
         </property>
        </widget>
       </item>
-      <item row="2" column="0" colspan="2">
+
+      <item row="3" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="resizableColumnsCheckBox">
         <property name="toolTip">
          <string>Allow tree view columns to be manually resized.</string>
@@ -264,7 +290,7 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="0">
+      <item row="1" column="0">
        <widget class="QLabel" name="iconSizeLabel">
         <property name="text">
          <string>Icon size</string>
@@ -274,29 +300,20 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
-       <widget class="Gui::PrefSpinBox" name="rowSpacingSpinBox">
-        <property name="toolTip">
-         <string>Additional spacing for tree view rows. Bigger values will increase row item heights.</string>
+      <item row="0" column="0">
+       <widget class="QLabel" name="fontSizeLabel">
+        <property name="text">
+         <string>Font size</string>
         </property>
-        <property name="singleStep">
-         <number>1</number>
-        </property>
-        <property name="value">
-         <number>0</number>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>TreeView</cstring>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>ItemSpacing</cstring>
+        <property name="buddy">
+         <cstring>fontSizeSpinBox</cstring>
         </property>
        </widget>
       </item>
-      <item row="3" column="0" colspan="2">
+      <item row="2" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="showVisibilityIconCheckBox">
         <property name="toolTip">
-         <string>If enabled, show an eye icon before the tree view items, showing their visibility status. When clicked the visibility is toggled.</string>
+         <string>Displays an eye icon in front of the tree view items, showing their visibility status. When clicked the visibility is toggled.</string>
         </property>
         <property name="text">
          <string>Show visibility icon</string>
@@ -378,7 +395,7 @@
       <string>Overlay</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="0" column="0">
+      <item row="2" column="0">
        <widget class="Gui::PrefCheckBox" name="hideTabBarCheckBox">
         <property name="toolTip">
          <string>Hide tab bar in dock overlay</string>
@@ -397,7 +414,7 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
+      <item row="3" column="0">
        <widget class="Gui::PrefCheckBox" name="hintShowTabBarCheckBox">
         <property name="toolTip">
          <string>Show tab bar on mouse over when auto hide</string>
@@ -413,7 +430,7 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
+      <item row="4" column="0">
        <widget class="Gui::PrefCheckBox" name="hidePropertyViewScrollBarCheckBox">
         <property name="toolTip">
          <string>Hide property view scroll bar in dock overlay</string>
@@ -429,13 +446,13 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="0">
+      <item row="5" column="0">
        <widget class="Gui::PrefCheckBox" name="overlayAutoHideCheckBox">
         <property name="toolTip">
-         <string>Automatically hide overlaid dock panels when in non 3D view (like TechDraw or Spreadsheet).</string>
+         <string>Automatically hide overlaid dock panels when in non 3D view (e.g. TechDraw or Spreadsheet)</string>
         </property>
         <property name="text">
-         <string>Auto hide in non 3D view</string>
+         <string>Automatically hide in non-3D view</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -448,13 +465,13 @@
         </property>
        </widget>
       </item>
-      <item row="4" column="0">
+      <item row="6" column="0">
        <widget class="Gui::PrefCheckBox" name="mouseClickPassThroughCheckBox">
         <property name="toolTip">
          <string>Auto mouse click through transparent part of dock overlay.</string>
         </property>
         <property name="text">
-         <string>Auto mouse pass through</string>
+         <string>Automatically pass through of the mouse cursor</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -467,13 +484,13 @@
         </property>
        </widget>
       </item>
-      <item row="5" column="0">
+      <item row="7" column="0">
        <widget class="Gui::PrefCheckBox" name="mouseWheelPassThroughCheckBox">
         <property name="toolTip">
-         <string>Auto pass through mouse wheel event on transparent dock overlay.</string>
+         <string>Automatically passes mouse wheel events through the transparent areas of an overlay panel</string>
         </property>
         <property name="text">
-         <string>Auto mouse wheel pass through</string>
+         <string>Automatically pass through of the mouse wheel</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -490,10 +507,32 @@
     </widget>
    </item>
    <item>
-    <spacer name="spacer_3">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
+    <widget class="QGroupBox" name="groupBox_4">
+     <property name="title">
+      <string>Suggested Actions</string>
      </property>
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="0" column="0">
+       <widget class="Gui::PrefCheckBox" name="showTaskWatcherCheckBox">
+        <property name="text">
+         <string>Suggest actions in the task view based on the selection</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ShowTaskWatcher</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>General</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="spacer_3">
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
@@ -511,23 +550,23 @@
    <header>Gui/Widgets.h</header>
   </customwidget>
   <customwidget>
-   <class>Gui::PrefColorButton</class>
-   <extends>Gui::ColorButton</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
-  <customwidget>
-   <class>Gui::PrefComboBox</class>
-   <extends>QComboBox</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
-  <customwidget>
    <class>Gui::PrefSpinBox</class>
    <extends>QSpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
+   <class>Gui::PrefColorButton</class>
+   <extends>Gui::ColorButton</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
    <class>Gui::PrefCheckBox</class>
    <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefComboBox</class>
+   <extends>QComboBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>
@@ -537,8 +576,8 @@
   <tabstop>ThemeAccentColor3</tabstop>
   <tabstop>StyleSheets</tabstop>
   <tabstop>OverlayStyleSheets</tabstop>
+  <tabstop>fontSizeSpinBox</tabstop>
   <tabstop>iconSizeSpinBox</tabstop>
-  <tabstop>rowSpacingSpinBox</tabstop>
   <tabstop>resizableColumnsCheckBox</tabstop>
   <tabstop>showVisibilityIconCheckBox</tabstop>
   <tabstop>hideDescriptionCheckBox</tabstop>

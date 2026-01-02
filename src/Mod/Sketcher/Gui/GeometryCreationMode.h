@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -31,6 +33,6 @@ enum class GeometryCreationMode
     Normal = 0,
     Construction = 1
 };
-}
+}  // namespace SketcherGui
 
 #endif  // SKETCHERGUI_GEOMETRYCREATIONMODE_H

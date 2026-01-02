@@ -48,7 +48,7 @@
       </size>
      </property>
      <property name="title">
-      <string>Default property values</string>
+      <string>Default Property Values</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>

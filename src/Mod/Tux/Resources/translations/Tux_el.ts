@@ -4,115 +4,115 @@
   <context>
     <name>NavigationIndicator</name>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="86"/>
+      <location filename="../../NavigationIndicatorGui.py" line="89"/>
       <source>Select</source>
       <translation>Επιλέξτε</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="87"/>
+      <location filename="../../NavigationIndicatorGui.py" line="90"/>
       <source>Zoom</source>
       <translation>Εστίαση</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="88"/>
+      <location filename="../../NavigationIndicatorGui.py" line="91"/>
       <source>Rotate</source>
       <translation>Περιστρέψτε</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="89"/>
+      <location filename="../../NavigationIndicatorGui.py" line="92"/>
       <source>Pan</source>
       <translation>Μεταφορική Κίνηση Κάμερας</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="90"/>
+      <location filename="../../NavigationIndicatorGui.py" line="93"/>
       <source>Tilt</source>
       <translation>Ρύθμιση Κλίσης Κάμερας</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="91"/>
+      <location filename="../../NavigationIndicatorGui.py" line="94"/>
       <source>Navigation style</source>
       <translation>Τύπος Πλοήγησης</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="92"/>
+      <location filename="../../NavigationIndicatorGui.py" line="95"/>
       <source>Page Up or Page Down key.</source>
       <translation>Το πλήκτρο Μετακίνησης της Σελίδας προς τα Πάνω ή προς τα Κάτω.</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="93"/>
+      <location filename="../../NavigationIndicatorGui.py" line="96"/>
       <source>Rotation focus</source>
       <translation>Άξονας περιστροφής</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="94"/>
+      <location filename="../../NavigationIndicatorGui.py" line="97"/>
       <source>Middle mouse button or H key.</source>
       <translation>Μεσαίο πλήκτρο του ποντικιού ή πλήκτρο H.</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="96"/>
+      <location filename="../../NavigationIndicatorGui.py" line="99"/>
       <source>Middle mouse button.</source>
       <translation>Μεσαίο πλήκτρο του ποντικιού.</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="99"/>
+      <location filename="../../NavigationIndicatorGui.py" line="102"/>
       <source>Navigation style not recognized.</source>
       <translation>Ο τύπος πλοήγησης δεν αναγνωρίζεται.</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="608"/>
+      <location filename="../../NavigationIndicatorGui.py" line="653"/>
       <source>Settings</source>
       <translation>Ρυθμίσεις</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="609"/>
+      <location filename="../../NavigationIndicatorGui.py" line="654"/>
       <source>Orbit style</source>
       <translation>Τύπος μορφοποίησης τροχιάς</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="610"/>
+      <location filename="../../NavigationIndicatorGui.py" line="655"/>
       <source>Compact</source>
       <translation>Συμπαγής</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="611"/>
+      <location filename="../../NavigationIndicatorGui.py" line="656"/>
       <source>Tooltip</source>
       <translation>Επεξήγηση εργαλείου</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="612"/>
+      <location filename="../../NavigationIndicatorGui.py" line="657"/>
       <source>Turntable</source>
       <translation>Περιστρεφόμενη βάση</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="613"/>
+      <location filename="../../NavigationIndicatorGui.py" line="658"/>
       <source>Free Turntable</source>
       <translation>Ελεύθερη Περιστροφική πλάκα</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="614"/>
+      <location filename="../../NavigationIndicatorGui.py" line="659"/>
       <source>Trackball</source>
       <translation>Ιχνόσφαιρα</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="615"/>
+      <location filename="../../NavigationIndicatorGui.py" line="660"/>
       <source>Trackball Classic</source>
-      <translation type="unfinished">Trackball Classic</translation>
+      <translation>Κλασικό Trackball (συσκευή κατάδειξης)</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="616"/>
+      <location filename="../../NavigationIndicatorGui.py" line="661"/>
       <source>Rounded Arcball</source>
-      <translation type="unfinished">Rounded Arcball</translation>
+      <translation>Στυλ πλοήγηση Arcball (περιστροφή 360 μοιρών)</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="617"/>
+      <location filename="../../NavigationIndicatorGui.py" line="662"/>
       <source>Undefined</source>
       <translation>Απροσδιόριστο</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="629"/>
+      <location filename="../../NavigationIndicatorGui.py" line="674"/>
       <source>Navigation indicator</source>
       <comment>A context menu action used to show or hide the &apos;Navigation indicator&apos; toolbar widget</comment>
-      <translation type="unfinished">Navigation indicator</translation>
+      <translation>Ένδειξη πλοήγησης</translation>
     </message>
   </context>
 </TS>

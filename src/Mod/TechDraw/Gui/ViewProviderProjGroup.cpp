@@ -20,15 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+#include <FCConfig.h>
+
 # ifdef FC_OS_WIN32
 #  include <windows.h>
 # endif
 # include <QMenu>
 # include <QMessageBox>
 # include <QTextStream>
-#endif
 
 #include <App/DocumentObject.h>
 #include <Gui/Control.h>

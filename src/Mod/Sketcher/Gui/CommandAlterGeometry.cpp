@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -19,10 +21,6 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
-
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
 
 #include <Gui/Action.h>
 #include <Gui/Application.h>
@@ -48,8 +46,7 @@ bool isAlterGeoActive(Gui::Document* doc)
 {
     if (doc) {
         // checks if a Sketch Viewprovider is in Edit
-        if (doc->getInEdit()
-            && doc->getInEdit()->isDerivedFrom<SketcherGui::ViewProviderSketch>()) {
+        if (doc->getInEdit() && doc->getInEdit()->isDerivedFrom<SketcherGui::ViewProviderSketch>()) {
             return true;
         }
     }
@@ -70,8 +67,8 @@ CmdSketcherToggleConstruction::CmdSketcherToggleConstruction()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Toggle construction geometry");
-    sToolTipText = QT_TR_NOOP("Toggles the toolbar or selected geometry to/from construction mode");
+    sMenuText = QT_TR_NOOP("Toggle Construction Geometry");
+    sToolTipText = QT_TR_NOOP("Toggles between defining geometry and construction geometry modes");
     sWhatsThis = "Sketcher_ToggleConstruction";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_ToggleConstruction";
@@ -130,8 +127,7 @@ void CmdSketcherToggleConstruction::updateAction(int mode)
                 act->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_ToggleConstruction"));
                 break;
             case GeometryCreationMode::Construction:
-                act->setIcon(
-                    Gui::BitmapFactory().iconFromTheme("Sketcher_ToggleConstruction_Constr"));
+                act->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_ToggleConstruction_Constr"));
                 break;
         }
     }
@@ -158,30 +154,33 @@ void CmdSketcherToggleConstruction::activated(int iMsg)
     {
         // get the selection
         std::vector<Gui::SelectionObject> selection;
-        selection =
-            getSelection().getSelectionEx(nullptr, Sketcher::SketchObject::getClassTypeId());
+        selection = getSelection().getSelectionEx(nullptr, Sketcher::SketchObject::getClassTypeId());
 
         auto* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
         // only one sketch with its subelements are allowed to be selected
         if (selection.size() != 1) {
-            Gui::TranslatedUserWarning(Obj,
-                                       QObject::tr("Wrong selection"),
-                                       QObject::tr("Select edge(s) from the sketch."));
+            Gui::TranslatedUserWarning(
+                Obj,
+                QObject::tr("Wrong selection"),
+                QObject::tr("Select edges from the sketch")
+            );
             return;
         }
 
         // get the needed lists and objects
         const std::vector<std::string>& SubNames = selection[0].getSubNames();
         if (SubNames.empty()) {
-            Gui::TranslatedUserWarning(Obj,
-                                       QObject::tr("Wrong selection"),
-                                       QObject::tr("Select edge(s) from the sketch."));
+            Gui::TranslatedUserWarning(
+                Obj,
+                QObject::tr("Wrong selection"),
+                QObject::tr("Select edges from the sketch")
+            );
             return;
         }
 
         // undo command open
-        openCommand(QT_TRANSLATE_NOOP("Command", "Toggle draft from/to draft"));
+        openCommand(QT_TRANSLATE_NOOP("Command", "Toggle construction geometry"));
 
         // go through the selected subelements
         bool verticesonly = true;

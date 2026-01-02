@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Centrif parameter</string>
+   <string>Centrif Parameter</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -31,7 +31,7 @@
         <item row="0" column="0">
          <widget class="QLabel" name="l_rotation_frequency">
           <property name="text">
-           <string>Rotation Frequency:</string>
+           <string>Rotation frequency</string>
           </property>
          </widget>
         </item>

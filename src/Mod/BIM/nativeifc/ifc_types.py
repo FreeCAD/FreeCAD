@@ -51,6 +51,34 @@ def show_type(obj):
             obj.Type = typeobj
 
 
+def load_types(prj_obj):
+    """
+    Loads IFC types for all objects in the project, used during
+    import of IFC files.
+    prj_obj is the project object, either a document or a document object.
+    """
+
+    def process_object(obj):
+        """Recursively process an object and its children"""
+        # Check if this object has IFC data and can have types
+        if hasattr(obj, "StepId") and obj.StepId:
+            show_type(obj)
+
+        # Process children recursively
+        if hasattr(obj, "Group"):
+            for child in obj.Group:
+                process_object(child)
+
+    if isinstance(prj_obj, FreeCAD.DocumentObject):
+        # Handle document object case
+        process_object(prj_obj)
+    else:
+        # Handle document case - process all IFC objects in the document
+        for obj in prj_obj.Objects:
+            if hasattr(obj, "StepId") and obj.StepId:
+                show_type(obj)
+
+
 def is_typable(obj):
     """Checks if an object can become a type"""
 
@@ -83,14 +111,14 @@ def convert_to_type(obj, keep_object=False):
 
     if FreeCAD.GuiUp and ask_again:
         import FreeCADGui
+
         dlg = FreeCADGui.PySideUic.loadUi(":/ui/dialogConvertType.ui")
 
         original_text = dlg.label.text()
-        dlg.label.setText(original_text.replace("%1", obj.Class+"Type"))
-        
+        dlg.label.setText(original_text.replace("%1", obj.Class + "Type"))
+
         # Set the initial state of the checkbox from the "always keep" preference
         dlg.checkKeepObject.setChecked(always_keep)
-
         result = dlg.exec_()
         if not result:
             return
@@ -112,7 +140,9 @@ def convert_to_type(obj, keep_object=False):
     if not element or not ifcfile or not project:
         return
     type_element = ifc_tools.api_run("root.copy_class", ifcfile, product=element)
-    type_element = ifc_tools.api_run("root.reassign_class", ifcfile, product=type_element, ifc_class=obj.Class+"Type")
+    type_element = ifc_tools.api_run(
+        "root.reassign_class", ifcfile, product=type_element, ifc_class=obj.Class + "Type"
+    )
     type_obj = ifc_tools.create_object(type_element, obj.Document, ifcfile)
     if keep_object:
         obj.Type = type_obj
@@ -133,8 +163,8 @@ def edit_type(obj):
     if obj.Type:
         # verify the type is compatible -ex IFcWall in IfcWallType
         if obj.Type.Class != element.is_a() + "Type":
-            t = translate("BIM","Error: Incompatible type")
-            FreeCAD.Console.PrintError(obj.Label+": "+t+": "+obj.Type.Class+"\n")
+            t = translate("BIM", "Error: Incompatible type")
+            FreeCAD.Console.PrintError(obj.Label + ": " + t + ": " + obj.Type.Class + "\n")
             obj.Type = None
             return
         # change type
@@ -145,10 +175,8 @@ def edit_type(obj):
             if rel.RelatingType == new_type:
                 return
         # assign the new type
-        ifc_tools.api_run("type.assign_type",
-                          ifcfile,
-                          related_objects=[element],
-                          relating_type=new_type
+        ifc_tools.api_run(
+            "type.assign_type", ifcfile, related_objects=[element], relating_type=new_type
         )
     elif typerel:
         # TODO remove type?

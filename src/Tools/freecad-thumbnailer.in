@@ -1,4 +1,6 @@
 #!/usr/bin/python3
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 """Support file to show FreeCAD thumbnails on Free Desktop Environments (like GNOME or KDE)
 
 Installation:
@@ -28,7 +30,7 @@ HINT: Make sure that the symlink /usr/bin/python exists and points to the Python
 
 NOTE: To make sure FreeCAD saves thumbnail information:
 
-    Edit -> Preferences... -> Document -> Save thumbnail into project when saving document
+    Edit → Preferences → Document → Save thumbnail into project when saving document
 """
 import sys
 import zipfile

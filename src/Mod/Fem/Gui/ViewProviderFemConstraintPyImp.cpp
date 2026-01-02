@@ -21,10 +21,8 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <Inventor/nodes/SoSeparator.h>
-#endif
+
 
 #include <Base/Interpreter.h>
 
@@ -60,8 +58,8 @@ Py::Object ViewProviderFemConstraintPy::getSymbolNode() const
     try {
         SoSeparator* sep = getViewProviderFemConstraintPtr()->getSymbolSeparator();
         if (sep) {
-            PyObject* Ptr =
-                Base::Interpreter().createSWIGPointerObj("pivy.coin", "_p_SoSeparator", sep, 1);
+            PyObject* Ptr
+                = Base::Interpreter().createSWIGPointerObj("pivy.coin", "_p_SoSeparator", sep, 1);
             sep->ref();
 
             return Py::Object(Ptr, true);
@@ -80,8 +78,8 @@ Py::Object ViewProviderFemConstraintPy::getExtraSymbolNode() const
     try {
         SoSeparator* sep = getViewProviderFemConstraintPtr()->getExtraSymbolSeparator();
         if (sep) {
-            PyObject* Ptr =
-                Base::Interpreter().createSWIGPointerObj("pivy.coin", "_p_SoSeparator", sep, 1);
+            PyObject* Ptr
+                = Base::Interpreter().createSWIGPointerObj("pivy.coin", "_p_SoSeparator", sep, 1);
             sep->ref();
 
             return Py::Object(Ptr, true);

@@ -19,8 +19,6 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <algorithm>
 #include <array>
 #include <cmath>
@@ -28,7 +26,6 @@
 #include <limits>
 #include <ranges>
 #include <vector>
-#endif
 
 #include <fmt/format.h>
 #include <fmt/ranges.h>
@@ -113,20 +110,24 @@ constexpr auto unitSpecs = std::to_array<UnitSpec>({
     { "YoungsModulus"                         , { -1,  1, -2                     } },
 });  // clang-format on
 
-Unit::Unit(const int length,  // NOLINT
-           const int mass,
-           const int time,
-           const int electricCurrent,
-           const int thermodynamicTemperature,
-           const int amountOfSubstance,
-           const int luminousIntensity,
-           const int angle)
+Unit::Unit(
+    const int length,  // NOLINT
+    const int mass,
+    const int time,
+    const int electricCurrent,
+    const int thermodynamicTemperature,
+    const int amountOfSubstance,
+    const int luminousIntensity,
+    const int angle
+)
     : _name {""}
 {
     auto cast = [](auto val) {
-        return static_cast<int8_t>(std::clamp<decltype(val)>(val,
-                                                             std::numeric_limits<int8_t>::min(),
-                                                             std::numeric_limits<int8_t>::max()));
+        return static_cast<int8_t>(std::clamp<decltype(val)>(
+            val,
+            std::numeric_limits<int8_t>::min(),
+            std::numeric_limits<int8_t>::max()
+        ));
     };
 
     _exps[0] = cast(length);
@@ -260,10 +261,11 @@ std::string Unit::getString() const
 
     auto denominatorStr = buildStr(negValIndexes);
 
-    return fmt::format("{}/{}",
-                       numeratorStr.empty() ? "1" : numeratorStr,
-                       negValIndexes.size() > 1 ? fmt::format("({})", denominatorStr)
-                                                : denominatorStr);
+    return fmt::format(
+        "{}/{}",
+        numeratorStr.empty() ? "1" : numeratorStr,
+        negValIndexes.size() > 1 ? fmt::format("({})", denominatorStr) : denominatorStr
+    );
 }
 
 std::string Unit::representation() const
@@ -345,10 +347,10 @@ constexpr Unit Unit::InverseArea                           = make("InverseArea" 
 constexpr Unit Unit::InverseLength                         = make("InverseLength"               );
 constexpr Unit Unit::InverseVolume                         = make("InverseVolume"               );
 constexpr Unit Unit::KinematicViscosity                    = make("KinematicViscosity"          );
-constexpr Unit Unit::MagneticFieldStrength                 = make("Magnetization"               );
+constexpr Unit Unit::MagneticFieldStrength                 = make("MagneticFieldStrength"       );
 constexpr Unit Unit::MagneticFlux                          = make("MagneticFlux"                );
 constexpr Unit Unit::MagneticFluxDensity                   = make("MagneticFluxDensity"         );
-constexpr Unit Unit::Magnetization                         = make("MagneticFieldStrength"       );
+constexpr Unit Unit::Magnetization                         = make("Magnetization"               );
 constexpr Unit Unit::Moment                                = make("Moment"                      );
 constexpr Unit Unit::Pressure                              = make("Pressure"                    );
 constexpr Unit Unit::Power                                 = make("Power"                       );

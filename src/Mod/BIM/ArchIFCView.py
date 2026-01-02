@@ -32,8 +32,10 @@ if FreeCAD.GuiUp:
     import FreeCADGui
     from draftutils.translate import translate
 else:
-    def translate(ctxt,txt):
+
+    def translate(ctxt, txt):
         return txt
+
 
 class IfcContextView:
     """A default view provider for IfcContext objects."""
@@ -56,25 +58,22 @@ class IfcContextView:
         return True
 
     def setupContextMenu(self, vobj, menu):
-        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+        if FreeCADGui.activeWorkbench().name() != "BIMWorkbench":
             return
-        actionEdit = QtGui.QAction(translate("Arch", "Edit"),
-                                   menu)
-        QtCore.QObject.connect(actionEdit,
-                               QtCore.SIGNAL("triggered()"),
-                               self.edit)
+        actionEdit = QtGui.QAction(translate("Arch", "Edit"), menu)
+        QtCore.QObject.connect(actionEdit, QtCore.SIGNAL("triggered()"), self.edit)
         menu.addAction(actionEdit)
 
         # The default Part::FeaturePython context menu contains a `Set colors`
         # option. This option does not makes sense here. We therefore
         # override this menu and have to add our own `Transform` item.
         # To override the default menu this function must return `True`.
-        actionTransform = QtGui.QAction(FreeCADGui.getIcon("Std_TransformManip.svg"),
-                                        translate("Command", "Transform"), # Context `Command` instead of `Arch`.
-                                        menu)
-        QtCore.QObject.connect(actionTransform,
-                               QtCore.SIGNAL("triggered()"),
-                               self.transform)
+        actionTransform = QtGui.QAction(
+            FreeCADGui.getIcon("Std_TransformManip.svg"),
+            translate("Command", "Transform"),  # Context `Command` instead of `Arch`.
+            menu,
+        )
+        QtCore.QObject.connect(actionTransform, QtCore.SIGNAL("triggered()"), self.transform)
         menu.addAction(actionTransform)
 
         return True
@@ -88,7 +87,7 @@ class IfcContextView:
     def dumps(self):
         return None
 
-    def loads(self,state):
+    def loads(self, state):
         return None
 
 
@@ -112,7 +111,9 @@ class IfcContextUI:
         data = {}
         for lineEdit in self.lineEditObjects:
             data[lineEdit.objectName()] = lineEdit.text()
-        ArchIFC.IfcRoot.setObjIfcComplexAttributeValue(self, self.object, "RepresentationContexts", data)
+        ArchIFC.IfcRoot.setObjIfcComplexAttributeValue(
+            self, self.object, "RepresentationContexts", data
+        )
         FreeCADGui.ActiveDocument.resetEdit()
         return True
 
@@ -146,7 +147,9 @@ class IfcContextUI:
         self.baseLayout.addLayout(self.createFormEntry("eastings", "Eastings"))
         self.baseLayout.addLayout(self.createFormEntry("northings", "Northings"))
         self.baseLayout.addLayout(self.createFormEntry("orthogonal_height", "Orthogonal height"))
-        self.baseLayout.addLayout(self.createFormEntry("true_north", "True north (anti-clockwise from +Y)"))
+        self.baseLayout.addLayout(
+            self.createFormEntry("true_north", "True north (anti-clockwise from +Y)")
+        )
         self.baseLayout.addLayout(self.createFormEntry("scale", "Scale"))
 
     def prefillMapConversionForm(self):
@@ -155,7 +158,9 @@ class IfcContextUI:
         Gets the existing value from the object's IfcData, specifically the complex
         attribute, RepresentationContexts.
         """
-        data = ArchIFC.IfcRoot.getObjIfcComplexAttribute(self, self.object, "RepresentationContexts")
+        data = ArchIFC.IfcRoot.getObjIfcComplexAttribute(
+            self, self.object, "RepresentationContexts"
+        )
         for lineEdit in self.lineEditObjects:
             if lineEdit.objectName() in data:
                 lineEdit.setText(data[lineEdit.objectName()])

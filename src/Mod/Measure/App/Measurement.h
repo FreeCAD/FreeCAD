@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
  *                                                                         *
@@ -24,6 +26,7 @@
 #define MEASURE_MEASUREMENT_H
 
 #include <gp_Pnt.hxx>
+#include <TopAbs_ShapeEnum.hxx>
 
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
@@ -44,18 +47,27 @@ enum class MeasureType
     TwoLines,          // Two lines
     TwoParallelLines,  // Two parallel lines
     Circle,            // One circle
-    Surfaces,          // Measure the surface(s)
-    Cylinder,          // One Cylinder
-    Cone,              // One Cone
-    Sphere,            // One Sphere
-    Torus,             // One Torus
-    Plane,             // One Plane
-    TwoPlanes,         // One Plane
+    CircleArc,         // One circle arc
+    TwoCircles,
+    CircleToEdge,
+    CircleToSurface,
+    CircleToCylinder,
+    Surfaces,         // Measure the surface(s)
+    Cylinder,         // One Cylinder
+    CylinderSection,  // One cylinder section
+    TwoCylinders,
+    Cone,       // One Cone
+    Sphere,     // One Sphere
+    Torus,      // One Torus
+    Plane,      // One Plane
+    TwoPlanes,  // One Plane
     Points,
-    PointToPoint,    // Measure between TWO points
-    PointToEdge,     // Measure between ONE point and ONE edge
+    PointToPoint,  // Measure between TWO points
+    PointToEdge,   // Measure between ONE point and ONE edge
+    PointToCircle,
     PointToSurface,  // Measure between ONE point and ONE surface
-    EdgeToEdge,      // Measure between TWO edges
+    PointToCylinder,
+    EdgeToEdge,  // Measure between TWO edges
     Invalid
 };
 
@@ -88,14 +100,18 @@ public:
     double length() const;
     Base::Vector3d delta() const;  // when would client use delta??
     double lineLineDistance() const;
+    double circleCenterDistance() const;
     double planePlaneDistance() const;
+    double cylinderAxisDistance() const;
 
     // Calculates the radius for an arc or circular edge
     double radius() const;
 
+    // Calculates the diameter for a circle or a cylinder
+    double diameter() const;
+
     // Calculates the angle between two edges
-    double
-    angle(const Base::Vector3d& param = Base::Vector3d(0, 0, 0)) const;  // param is never used???
+    double angle(const Base::Vector3d& param = Base::Vector3d(0, 0, 0)) const;  // param is never used???
 
     // Calculate the center of mass
     Base::Vector3d massCenter() const;
@@ -115,7 +131,13 @@ public:
     bool linesAreParallel() const;
 
 protected:
-    TopoDS_Shape getShape(App::DocumentObject* obj, const char* subName) const;
+    // Hint parameter helps sort out compound shapes by specifying a subelement type
+    // use hint = TopAbs_COMPOUND to give no hint
+    TopoDS_Shape getShape(
+        App::DocumentObject* obj,
+        const char* subName,
+        TopAbs_ShapeEnum hint = TopAbs_COMPOUND
+    ) const;
 
 private:
     MeasureType measureType;

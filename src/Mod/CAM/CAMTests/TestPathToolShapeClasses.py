@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # Unit tests for the Path.Tool.Shape module and its utilities.
 
 from pathlib import Path
@@ -63,8 +64,10 @@ class TestPathToolShapeClasses(PathTestWithAssets):
         """Test base class initialization uses default parameters."""
         # Provide a dummy filepath and id for instantiation
         shape = DummyShape(id="dummy_shape_1", filepath=Path("/fake/dummy.fcstd"))
-        self.assertEqual(str(shape.get_parameter("Param1")), "10.0 mm")
-        self.assertEqual(str(shape.get_parameter("Param2")), "5.0 deg")
+        self.assertEqual(shape.get_parameter("Param1").Value, 10.0)
+        self.assertEqual(shape.get_parameter("Param1").Unit, FreeCAD.Units.Unit("mm"))
+        self.assertEqual(shape.get_parameter("Param2").Value, 5.0)
+        self.assertEqual(shape.get_parameter("Param2").Unit, FreeCAD.Units.Unit("deg"))
 
     def test_base_init_with_kwargs(self):
         """Test base class initialization overrides defaults with kwargs."""
@@ -151,13 +154,11 @@ class TestPathToolShapeClasses(PathTestWithAssets):
     def test_base_resolve_name(self):
         """Test resolving shape aliases to canonical names."""
         self.assertEqual(ToolBitShape.resolve_name("ballend").asset_id, "ballend")
-        self.assertEqual(ToolBitShape.resolve_name("Ballend").asset_id, "ballend")
-        self.assertEqual(ToolBitShape.resolve_name("v-bit").asset_id, "vbit")
-        self.assertEqual(ToolBitShape.resolve_name("VBit").asset_id, "vbit")
-        self.assertEqual(ToolBitShape.resolve_name("torus").asset_id, "bullnose")
+        self.assertEqual(ToolBitShape.resolve_name("v-bit").asset_id, "v-bit")
+        self.assertEqual(ToolBitShape.resolve_name("vbit").asset_id, "vbit")
         self.assertEqual(ToolBitShape.resolve_name("bullnose").asset_id, "bullnose")
-        self.assertEqual(ToolBitShape.resolve_name("slitting-saw").asset_id, "slittingsaw")
-        self.assertEqual(ToolBitShape.resolve_name("SlittingSaw").asset_id, "slittingsaw")
+        self.assertEqual(ToolBitShape.resolve_name("bullnose.fcstd").asset_id, "bullnose")
+        self.assertEqual(ToolBitShape.resolve_name("SlittingSaw").asset_id, "SlittingSaw")
         # Test unknown name - should return the input name
         self.assertEqual(ToolBitShape.resolve_name("nonexistent").asset_id, "nonexistent")
         self.assertEqual(ToolBitShape.resolve_name("UnknownShape").asset_id, "UnknownShape")
@@ -322,13 +323,13 @@ class TestPathToolShapeClasses(PathTestWithAssets):
     def test_toolbitshapethreadmill_defaults(self):
         """Test ToolBitShapeThreadMill default parameters and labels."""
         # Provide a dummy filepath for instantiation.
-        shape = self._test_shape_common("threadmill")
+        shape = self._test_shape_common("thread-mill")
         self.assertEqual(shape["Diameter"].Value, 5.0)
         self.assertEqual(unit(shape["Diameter"]), "mm")
         self.assertEqual(shape["cuttingAngle"].Value, 60.0)
         self.assertEqual(unit(shape["cuttingAngle"]), "°")
         # Need an instance to get parameter labels, get it from the asset manager
-        uri = ToolBitShape.resolve_name("threadmill")
+        uri = ToolBitShape.resolve_name("thread-mill")
         instance = self.assets.get(uri)
         self.assertEqual(instance.get_parameter_label("cuttingAngle"), "Cutting angle")
 
@@ -338,17 +339,17 @@ class TestPathToolShapeClasses(PathTestWithAssets):
         shape = self._test_shape_common("bullnose")
         self.assertEqual(shape["Diameter"].Value, 5.0)
         self.assertEqual(unit(shape["Diameter"]), "mm")
-        self.assertEqual(shape["FlatRadius"].Value, 1.5)
-        self.assertEqual(unit(shape["FlatRadius"]), "mm")
+        self.assertEqual(shape["CornerRadius"].Value, 1.5)
+        self.assertEqual(unit(shape["CornerRadius"]), "mm")
         # Need an instance to get parameter labels, get it from the asset manager
         uri = ToolBitShape.resolve_name("bullnose")
         instance = self.assets.get(uri)
-        self.assertEqual(instance.get_parameter_label("FlatRadius"), "Torus radius")
+        self.assertEqual(instance.get_parameter_label("CornerRadius"), "Corner radius")
 
     def test_toolbitshapevbit_defaults(self):
         """Test ToolBitShapeVBit default parameters and labels."""
         # Provide a dummy filepath for instantiation.
-        shape = self._test_shape_common("vbit")
+        shape = self._test_shape_common("v-bit")
         self.assertEqual(shape["Diameter"].Value, 10.0)
         self.assertEqual(unit(shape["Diameter"]), "mm")
         self.assertEqual(shape["CuttingEdgeAngle"].Value, 90.0)
@@ -356,7 +357,7 @@ class TestPathToolShapeClasses(PathTestWithAssets):
         self.assertEqual(shape["TipDiameter"].Value, 1.0)
         self.assertEqual(unit(shape["TipDiameter"]), "mm")
         # Need an instance to get parameter labels, get it from the asset manager
-        uri = ToolBitShape.resolve_name("vbit")
+        uri = ToolBitShape.resolve_name("v-bit")
         instance = self.assets.get(uri)
         self.assertEqual(instance.get_parameter_label("CuttingEdgeAngle"), "Cutting edge angle")
 

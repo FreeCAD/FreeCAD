@@ -1,8 +1,8 @@
-target_sources(
-    Start_tests_run
-        PRIVATE
-            ${CMAKE_CURRENT_SOURCE_DIR}/FileUtilities.cpp
-            ${CMAKE_CURRENT_SOURCE_DIR}/ThumbnailSource.cpp
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+add_executable(Start_tests_run
+        FileUtilities.cpp
+        ThumbnailSource.cpp
 )
 
 target_include_directories(

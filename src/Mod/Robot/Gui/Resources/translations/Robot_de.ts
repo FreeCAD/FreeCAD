@@ -4,181 +4,109 @@
   <context>
     <name>CmdRobotAddToolShape</name>
     <message>
-      <location filename="../../CommandInsertRobot.cpp" line="240"/>
+      <location filename="../../CommandInsertRobot.cpp" line="44"/>
       <source>Robot</source>
       <translation>Roboter</translation>
     </message>
     <message>
-      <location filename="../../CommandInsertRobot.cpp" line="241"/>
-      <source>Add tool</source>
-      <translation>Werkzeug hinzufügen</translation>
+      <location filename="../../CommandInsertRobot.cpp" line="45"/>
+      <source>Tool</source>
+      <translation>Werkzeug</translation>
     </message>
     <message>
-      <location filename="../../CommandInsertRobot.cpp" line="242"/>
-      <source>Add a tool shape to the robot</source>
-      <translation>Hinzufügen einer Werkzeug-Form zum Roboter</translation>
+      <location filename="../../CommandInsertRobot.cpp" line="46"/>
+      <source>Adds a tool shape to the robot</source>
+      <translation>Fügt dem Roboter eine Werkzeugform hinzu</translation>
     </message>
   </context>
   <context>
     <name>CmdRobotConstraintAxle</name>
     <message>
-      <location filename="../../Command.cpp" line="163"/>
+      <location filename="../../Command.cpp" line="199"/>
       <source>Robot</source>
       <translation>Roboter</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="164"/>
-      <source>Place robot...</source>
-      <translation>Plaziert einen Roboter...</translation>
+      <location filename="../../Command.cpp" line="200"/>
+      <source>Place Robot</source>
+      <translation>Roboter platzieren</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="165"/>
-      <source>Place a robot (experimental!)</source>
-      <translation>Platziere einen Roboter (experimental!)</translation>
+      <location filename="../../Command.cpp" line="201"/>
+      <source>Places a robot in the scene</source>
+      <translation>Platziert einen Roboter in der Szene</translation>
     </message>
   </context>
   <context>
     <name>CmdRobotCreateTrajectory</name>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="55"/>
+      <location filename="../../CommandTrajectory.cpp" line="53"/>
       <source>Robot</source>
       <translation>Roboter</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="56"/>
-      <source>Create trajectory</source>
-      <translation>Erstelle Bewegungsbahn</translation>
+      <location filename="../../CommandTrajectory.cpp" line="54"/>
+      <source>Trajectory</source>
+      <translation>Bewegungsbahn</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="57"/>
-      <source>Create a new empty trajectory</source>
-      <translation>Eine neue, leere Bewegungsbahn erstellen</translation>
+      <location filename="../../CommandTrajectory.cpp" line="55"/>
+      <source>Creates a new empty trajectory</source>
+      <translation>Erzeugt eine neue leere Trajektorie</translation>
     </message>
   </context>
   <context>
     <name>CmdRobotEdge2Trac</name>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="360"/>
+      <location filename="../../CommandTrajectory.cpp" line="377"/>
       <source>Robot</source>
       <translation>Roboter</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="361"/>
-      <source>Edge to Trajectory...</source>
-      <translation>Bewegungsbahn aus Kanten...</translation>
+      <location filename="../../CommandTrajectory.cpp" line="378"/>
+      <source>Edge to Trajectory</source>
+      <translation>Kante zu Trajektorie</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="362"/>
-      <source>Generate a Trajectory from a set of edges</source>
-      <translation>Erstellen einer Bewegungsbahn aus einer Menge von Kanten</translation>
+      <location filename="../../CommandTrajectory.cpp" line="379"/>
+      <source>Generates a trajectory from the selected edges</source>
+      <translation>Erzeugt eine Trajektorie aus den ausgewählten Kanten</translation>
     </message>
   </context>
   <context>
     <name>CmdRobotExportKukaCompact</name>
     <message>
-      <location filename="../../CommandExport.cpp" line="46"/>
+      <location filename="../../CommandExport.cpp" line="44"/>
       <source>Robot</source>
       <translation>Roboter</translation>
     </message>
     <message>
-      <location filename="../../CommandExport.cpp" line="47"/>
-      <source>Kuka compact subroutine...</source>
-      <translation>KUKA kompaktes Unterprogramm ...</translation>
+      <location filename="../../CommandExport.cpp" line="45"/>
+      <source>Kuka Compact Subroutine</source>
+      <translation>Kompaktes Kuka-Unterprogramm</translation>
     </message>
     <message>
-      <location filename="../../CommandExport.cpp" line="48"/>
-      <source>Export the trajectory as a compact KRL subroutine.</source>
-      <translation>Exportiert die Bewegungsbahn als kompaktes KRL-Unterprogramm.</translation>
+      <location filename="../../CommandExport.cpp" line="46"/>
+      <source>Exports the trajectory as a compact KRL subroutine</source>
+      <translation>Exportiert die Trajektorie als kompaktes KRL-Unterprogramm</translation>
     </message>
   </context>
   <context>
     <name>CmdRobotExportKukaFull</name>
     <message>
-      <location filename="../../CommandExport.cpp" line="121"/>
+      <location filename="../../CommandExport.cpp" line="125"/>
       <source>Robot</source>
       <translation>Roboter</translation>
     </message>
     <message>
-      <location filename="../../CommandExport.cpp" line="122"/>
-      <source>Kuka full subroutine...</source>
-      <translation>KUKA vollständiges Unterprogramm ...</translation>
+      <location filename="../../CommandExport.cpp" line="126"/>
+      <source>Kuka Full Subroutine</source>
+      <translation>Vollständiges Kuka-Unterprogramm</translation>
     </message>
     <message>
-      <location filename="../../CommandExport.cpp" line="123"/>
-      <source>Export the trajectory as a full KRL subroutine.</source>
-      <translation>Exportiert die Bewegungsbahn als eine volle KRL-Unterroutine.</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdRobotInsertKukaIR125</name>
-    <message>
-      <location filename="../../CommandInsertRobot.cpp" line="192"/>
-      <source>Robot</source>
-      <translation>Roboter</translation>
-    </message>
-    <message>
-      <location filename="../../CommandInsertRobot.cpp" line="193"/>
-      <source>Kuka IR125</source>
-      <translation>KUKA IR125</translation>
-    </message>
-    <message>
-      <location filename="../../CommandInsertRobot.cpp" line="194"/>
-      <source>Insert a Kuka IR125 into the document.</source>
-      <translation>Einen Kuka-IR125 in das Dokument einfügen.</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdRobotInsertKukaIR16</name>
-    <message>
-      <location filename="../../CommandInsertRobot.cpp" line="97"/>
-      <source>Robot</source>
-      <translation>Roboter</translation>
-    </message>
-    <message>
-      <location filename="../../CommandInsertRobot.cpp" line="98"/>
-      <source>Kuka IR16</source>
-      <translation>KUKA IR16</translation>
-    </message>
-    <message>
-      <location filename="../../CommandInsertRobot.cpp" line="99"/>
-      <source>Insert a Kuka IR16 into the document.</source>
-      <translation>Einen Kuka-IR16 in das Dokument einfügen.</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdRobotInsertKukaIR210</name>
-    <message>
-      <location filename="../../CommandInsertRobot.cpp" line="145"/>
-      <source>Robot</source>
-      <translation>Roboter</translation>
-    </message>
-    <message>
-      <location filename="../../CommandInsertRobot.cpp" line="146"/>
-      <source>Kuka IR210</source>
-      <translation>KUKA IR210</translation>
-    </message>
-    <message>
-      <location filename="../../CommandInsertRobot.cpp" line="147"/>
-      <source>Insert a Kuka IR210 into the document.</source>
-      <translation>Einen Kuka-IR210 in das Dokument einfügen.</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdRobotInsertKukaIR500</name>
-    <message>
-      <location filename="../../CommandInsertRobot.cpp" line="46"/>
-      <source>Robot</source>
-      <translation>Roboter</translation>
-    </message>
-    <message>
-      <location filename="../../CommandInsertRobot.cpp" line="47"/>
-      <source>Kuka IR500</source>
-      <translation>KUKA IR500</translation>
-    </message>
-    <message>
-      <location filename="../../CommandInsertRobot.cpp" line="48"/>
-      <source>Insert a Kuka IR500 into the document.</source>
-      <translation>Einen Kuka-IR500 in das Dokument einfügen.</translation>
+      <location filename="../../CommandExport.cpp" line="127"/>
+      <source>Exports the trajectory as a full KRL subroutine</source>
+      <translation>Exportiert die Trajektorie als vollständiges KRL-Unterprogramm</translation>
     </message>
   </context>
   <context>
@@ -190,165 +118,173 @@
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="90"/>
-      <source>Insert in trajectory</source>
+      <source>Insert in Trajectory</source>
       <translation>In Bewegungsbahn einfügen</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="91"/>
-      <source>Insert robot Tool location into trajectory</source>
-      <translation>Lage des Roboterwerkzeugs in Bewegungsbahn einfügen</translation>
+      <source>Inserts the robot tool location into the trajectory</source>
+      <translation>Fügt die Position des Roboter-Werkzeugs in die Bewegungsbahn ein</translation>
     </message>
   </context>
   <context>
     <name>CmdRobotInsertWaypointPreselect</name>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="158"/>
+      <location filename="../../CommandTrajectory.cpp" line="162"/>
       <source>Robot</source>
       <translation>Roboter</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="159"/>
-      <source>Insert in trajectory</source>
+      <location filename="../../CommandTrajectory.cpp" line="163"/>
+      <source>Insert in Trajectory</source>
       <translation>In Bewegungsbahn einfügen</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="160"/>
-      <source>Insert preselection position into trajectory (W)</source>
-      <translation>Vorausgewählte Position in Bewegungsbahn einfügen (W)</translation>
+      <location filename="../../CommandTrajectory.cpp" line="164"/>
+      <source>Inserts the preselection position into the trajectory (W)</source>
+      <translation>Fügt die Vorauswahlposition in die Bewegungsbahn ein (W)</translation>
     </message>
   </context>
   <context>
     <name>CmdRobotRestoreHomePos</name>
     <message>
-      <location filename="../../Command.cpp" line="110"/>
+      <location filename="../../Command.cpp" line="144"/>
       <source>Robot</source>
       <translation>Roboter</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="111"/>
-      <location filename="../../Command.cpp" line="112"/>
-      <source>Move to home</source>
+      <location filename="../../Command.cpp" line="145"/>
+      <source>Move to Home</source>
       <translation>Zur Ausgangsposition bewegen</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="146"/>
+      <source>Moves to the home position</source>
+      <translation>Zur Ausgangsposition verschieben</translation>
     </message>
   </context>
   <context>
     <name>CmdRobotSetDefaultOrientation</name>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="235"/>
+      <location filename="../../CommandTrajectory.cpp" line="248"/>
       <source>Robot</source>
       <translation>Roboter</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="236"/>
-      <source>Set default orientation</source>
-      <translation>Setze Standardrichtung</translation>
+      <location filename="../../CommandTrajectory.cpp" line="249"/>
+      <source>Set Default Orientation</source>
+      <translation>Standardausrichtung festlegen</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="238"/>
-      <source>Set the default orientation for subsequent commands for waypoint creation</source>
-      <translation>Lege die Standardausrichtung für nachfolgende Befehle zur Wegpunkterstellung fest</translation>
+      <location filename="../../CommandTrajectory.cpp" line="250"/>
+      <source>Sets the default orientation for subsequent commands for waypoint creation</source>
+      <translation>Legt die Standardausrichtung für folgende Befehle für die Erstellung von Wegpunkten fest</translation>
     </message>
   </context>
   <context>
     <name>CmdRobotSetDefaultValues</name>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="279"/>
+      <location filename="../../CommandTrajectory.cpp" line="288"/>
       <source>Robot</source>
       <translation>Roboter</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="280"/>
-      <source>Set default values</source>
-      <translation>Festlegen von Standardwerten</translation>
+      <location filename="../../CommandTrajectory.cpp" line="289"/>
+      <source>Set Default Values</source>
+      <translation>Standardwerte festlegen</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="281"/>
-      <source>Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
-      <translation>Lege die Standardwerte für Geschwindigkeit, Beschleunigung und Dauer für nachfolgende Befehle zur Wegpunkterstellung fest</translation>
+      <location filename="../../CommandTrajectory.cpp" line="290"/>
+      <source>Sets the default values for speed, acceleration, and continuity for subsequent commands of waypoint creation</source>
+      <translation>Legt die Standardwerte für Geschwindigkeit, Beschleunigung und Kontinuität für nachfolgende Befehle der Wegpunkterstellung fest</translation>
     </message>
   </context>
   <context>
     <name>CmdRobotSetHomePos</name>
     <message>
-      <location filename="../../Command.cpp" line="51"/>
+      <location filename="../../Command.cpp" line="81"/>
       <source>Robot</source>
       <translation>Roboter</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="52"/>
-      <location filename="../../Command.cpp" line="53"/>
-      <source>Set the home position</source>
+      <location filename="../../Command.cpp" line="82"/>
+      <source>Set Home Position</source>
       <translation>Ausgangsposition festlegen</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="83"/>
+      <source>Sets the home position</source>
+      <translation>Legt die Ausgangsposition fest</translation>
     </message>
   </context>
   <context>
     <name>CmdRobotSimulate</name>
     <message>
-      <location filename="../../Command.cpp" line="211"/>
+      <location filename="../../Command.cpp" line="242"/>
       <source>Robot</source>
       <translation>Roboter</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="212"/>
-      <source>Simulate a trajectory</source>
-      <translation>Simulieren einer Bewegungsbahn</translation>
+      <location filename="../../Command.cpp" line="243"/>
+      <source>Simulate Trajectory</source>
+      <translation>Bewegungsbahn simulieren</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="213"/>
-      <source>Run a simulation on a trajectory</source>
-      <translation>Simulation der Bewegungsbahn starten</translation>
+      <location filename="../../Command.cpp" line="244"/>
+      <source>Simulates robot movement along a selected trajectory</source>
+      <translation>Simuliert die Roboter-Bewegung entlang der ausgewählten Bewegungsbahn</translation>
     </message>
   </context>
   <context>
     <name>CmdRobotTrajectoryCompound</name>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="483"/>
+      <location filename="../../CommandTrajectory.cpp" line="504"/>
       <source>Robot</source>
       <translation>Roboter</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="484"/>
-      <source>Trajectory compound...</source>
-      <translation>Bewegungsbahnverbund ...</translation>
+      <location filename="../../CommandTrajectory.cpp" line="505"/>
+      <source>Trajectory Compound</source>
+      <translation>Bewegungsbahnverbund</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="485"/>
-      <source>Group and connect some trajectories to one</source>
-      <translation>Gruppieren und Verbinden mehrerer Bewegungsbahnen zu einer einzigen</translation>
+      <location filename="../../CommandTrajectory.cpp" line="506"/>
+      <source>Groups and connects multiple trajectories into one</source>
+      <translation>Gruppiert und verbindet mehrere Bewegungsbahnen zu einer</translation>
     </message>
   </context>
   <context>
     <name>CmdRobotTrajectoryDressUp</name>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="426"/>
+      <location filename="../../CommandTrajectory.cpp" line="440"/>
       <source>Robot</source>
       <translation>Roboter</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="427"/>
-      <source>Dress-up trajectory...</source>
-      <translation>Verkleidete Bewegungsbahn...</translation>
+      <location filename="../../CommandTrajectory.cpp" line="441"/>
+      <source>Dress-Up Trajectory</source>
+      <translation>Überlagerungs-Trajektorie</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="429"/>
-      <source>Create a dress-up object which overrides some aspects of a trajectory</source>
-      <translation>Erstellt ein Verkleidungsobjekt, das gewisse Eigenschaften einer Bewegungsbahn überschreibt</translation>
+      <location filename="../../CommandTrajectory.cpp" line="442"/>
+      <source>Creates a dress-up object that overrides aspects of a trajectory</source>
+      <translation>Erstellt ein Überlagerungs-Objekt das Teile der Trajektorie überschreibt</translation>
     </message>
   </context>
   <context>
     <name>Gui::TaskView::TaskWatcherCommands</name>
     <message>
-      <location filename="../../Workbench.cpp" line="51"/>
-      <source>Trajectory tools</source>
+      <location filename="../../Workbench.cpp" line="49"/>
+      <source>Trajectory Tools</source>
       <translation>Bewegungsbahnwerkzeuge</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="52"/>
-      <source>Robot tools</source>
+      <location filename="../../Workbench.cpp" line="50"/>
+      <source>Robot Tools</source>
       <translation>Roboter-Werkzeuge</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="53"/>
+      <location filename="../../Workbench.cpp" line="51"/>
       <source>Insert Robot</source>
       <translation>Roboter einfügen</translation>
     </message>
@@ -356,135 +292,145 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../CommandInsertRobot.cpp" line="260"/>
-      <location filename="../../CommandTrajectory.cpp" line="106"/>
-      <location filename="../../CommandTrajectory.cpp" line="173"/>
-      <location filename="../../CommandTrajectory.cpp" line="192"/>
-      <location filename="../../CommandTrajectory.cpp" line="464"/>
-      <location filename="../../Command.cpp" line="71"/>
-      <location filename="../../Command.cpp" line="130"/>
-      <location filename="../../Command.cpp" line="235"/>
-      <location filename="../../CommandExport.cpp" line="62"/>
-      <location filename="../../CommandExport.cpp" line="137"/>
+      <location filename="../../CommandInsertRobot.cpp" line="68"/>
+      <location filename="../../CommandExport.cpp" line="61"/>
+      <location filename="../../CommandExport.cpp" line="142"/>
+      <location filename="../../Command.cpp" line="102"/>
+      <location filename="../../Command.cpp" line="165"/>
+      <location filename="../../Command.cpp" line="267"/>
+      <location filename="../../CommandTrajectory.cpp" line="107"/>
+      <location filename="../../CommandTrajectory.cpp" line="178"/>
+      <location filename="../../CommandTrajectory.cpp" line="199"/>
+      <location filename="../../CommandTrajectory.cpp" line="484"/>
       <source>Wrong selection</source>
       <translation>Falsche Auswahl</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="72"/>
+      <location filename="../../Command.cpp" line="52"/>
+      <source>Select VRML file for Robot</source>
+      <translation>VRML-Datei für Roboter auswählen</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="54"/>
+      <source>VRML Files (*.wrl *.vrml)</source>
+      <translation>VRML-Dateien (*.wrl, *.vrml)</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="66"/>
+      <source>Select Kinematic CSV file for Robot</source>
+      <translation>CSV-Kinematikdatei für Roboter auswählen</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="68"/>
+      <source>CSV Files (*.csv)</source>
+      <translation>CSV-Dateien (*.csv)</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="103"/>
       <source>Select one Robot to set home position</source>
       <translation>Einen Roboter auswählen, um die Ausgangsposition festzulegen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="131"/>
+      <location filename="../../Command.cpp" line="166"/>
       <source>Select one Robot</source>
       <translation>Einen Roboter auswählen</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="107"/>
-      <location filename="../../Command.cpp" line="236"/>
-      <location filename="../../CommandExport.cpp" line="63"/>
-      <location filename="../../CommandExport.cpp" line="138"/>
+      <location filename="../../CommandExport.cpp" line="62"/>
+      <location filename="../../CommandExport.cpp" line="143"/>
+      <location filename="../../Command.cpp" line="268"/>
+      <location filename="../../CommandTrajectory.cpp" line="108"/>
       <source>Select one Robot and one Trajectory object.</source>
       <translation>Einen Roboter und eine Bewegungsbahn auswählen.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="243"/>
+      <location filename="../../Command.cpp" line="276"/>
       <source>Trajectory not valid</source>
       <translation>Bewegungsbahn nicht gültig</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="244"/>
+      <location filename="../../Command.cpp" line="277"/>
       <source>You need at least two waypoints in a trajectory to simulate.</source>
       <translation>Es werden für die Simulation mindestens zwei Wegpunkte auf der Bewegungsbahn benötigt.</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="89"/>
-      <location filename="../../CommandExport.cpp" line="164"/>
+      <location filename="../../CommandExport.cpp" line="170"/>
       <source>KRL file</source>
       <translation>KRL-Datei</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="90"/>
-      <location filename="../../CommandExport.cpp" line="165"/>
+      <location filename="../../CommandExport.cpp" line="171"/>
       <source>All Files</source>
       <translation>Alle Dateien</translation>
     </message>
     <message>
-      <location filename="../../CommandExport.cpp" line="92"/>
-      <location filename="../../CommandExport.cpp" line="167"/>
+      <location filename="../../CommandExport.cpp" line="93"/>
+      <location filename="../../CommandExport.cpp" line="174"/>
       <source>Export program</source>
       <translation>Programm exportieren</translation>
     </message>
     <message>
-      <location filename="../../CommandInsertRobot.cpp" line="261"/>
+      <location filename="../../CommandInsertRobot.cpp" line="69"/>
       <source>Select one robot and one shape or VRML object.</source>
       <translation>Einen Roboter und eine Form oder ein VRML-Objekt auswählen.</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="174"/>
-      <location filename="../../CommandTrajectory.cpp" line="193"/>
+      <location filename="../../CommandTrajectory.cpp" line="179"/>
+      <location filename="../../CommandTrajectory.cpp" line="200"/>
       <source>Select one Trajectory object.</source>
       <translation>Eine Bewegungsbahn wählen.</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="201"/>
+      <location filename="../../CommandTrajectory.cpp" line="209"/>
       <source>No preselection</source>
       <translation>Keine Vorauswahl</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="202"/>
+      <location filename="../../CommandTrajectory.cpp" line="210"/>
       <source>You have to hover above a geometry (Preselection) with the mouse to use this command. See documentation for details.</source>
       <translation>Die Maus muss über einer Geometrie schweben (Vorauswahl), um diesen Befehl verwenden zu können. Siehe Dokumentation für Details.</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="294"/>
+      <location filename="../../CommandTrajectory.cpp" line="306"/>
       <source>Set default speed</source>
       <translation>Standardgeschwindigkeit einstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="295"/>
+      <location filename="../../CommandTrajectory.cpp" line="307"/>
       <source>speed: (e.g. 1 m/s or 3 cm/s)</source>
       <translation>Geschwindigkeit: (z.B. 1 m/s oder 3 cm/s)</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="308"/>
+      <location filename="../../CommandTrajectory.cpp" line="322"/>
       <source>Set default continuity</source>
       <translation>Setze Standart Dauer</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="309"/>
+      <location filename="../../CommandTrajectory.cpp" line="323"/>
       <source>continuous ?</source>
       <translation>Fortlaufend ?</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="322"/>
+      <location filename="../../CommandTrajectory.cpp" line="338"/>
       <source>Set default acceleration</source>
       <translation>Standardbeschleunigung einstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="323"/>
+      <location filename="../../CommandTrajectory.cpp" line="339"/>
       <source>acceleration: (e.g. 1 m/s^2 or 3 cm/s^2)</source>
       <translation>Beschleunigung: (zB 1 m / s ^ 2 oder 3 cm / s ^ 2)</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="465"/>
+      <location filename="../../CommandTrajectory.cpp" line="485"/>
       <source>Select the Trajectory which you want to dress up.</source>
       <translation>Die aufzubereitende Bewegungsbahn auswählen.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderTrajectory.cpp" line="145"/>
+      <location filename="../../ViewProviderTrajectory.cpp" line="143"/>
       <source>Modify</source>
       <translation>Bearbeiten</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="74"/>
-      <source>No robot files installed</source>
-      <translation>Keine Roboter-Dateien installiert</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="75"/>
-      <source>Please visit %1 and copy the files to %2</source>
-      <translation>Bitte die Dateien aus %1 in %2 kopieren</translation>
     </message>
   </context>
   <context>
@@ -548,14 +494,14 @@
   <context>
     <name>RobotGui::TaskEdge2TracParameter</name>
     <message>
-      <location filename="../../TaskEdge2TracParameter.cpp" line="42"/>
+      <location filename="../../TaskEdge2TracParameter.cpp" line="39"/>
       <source>TaskEdge2TracParameter</source>
       <translation>TaskEdge2TracParameter</translation>
     </message>
     <message>
       <location filename="../../TaskEdge2TracParameter.ui" line="29"/>
-      <source>Hide / Show</source>
-      <translation>Verbergen / Zeigen</translation>
+      <source>Hide/Show</source>
+      <translation>Verbergen/Anzeigen</translation>
     </message>
     <message>
       <location filename="../../TaskEdge2TracParameter.ui" line="47"/>
@@ -569,8 +515,8 @@
     </message>
     <message>
       <location filename="../../TaskEdge2TracParameter.ui" line="72"/>
-      <source>Sizing Value:</source>
-      <translation>Größenwert:</translation>
+      <source>Sizing Value</source>
+      <translation>Größenordnung</translation>
     </message>
     <message>
       <location filename="../../TaskEdge2TracParameter.ui" line="103"/>
@@ -621,7 +567,7 @@
       <translation>Werkzeug: (0,0,400,0,0,0)</translation>
     </message>
     <message>
-      <location filename="../../TaskRobot6Axis.cpp" line="41"/>
+      <location filename="../../TaskRobot6Axis.cpp" line="39"/>
       <source>TaskRobot6Axis</source>
       <translation>TaskRobot6Axis</translation>
     </message>
@@ -629,7 +575,7 @@
   <context>
     <name>RobotGui::TaskRobotControl</name>
     <message>
-      <location filename="../../TaskRobotControl.cpp" line="36"/>
+      <location filename="../../TaskRobotControl.cpp" line="34"/>
       <source>TaskRobotControl</source>
       <translation>TaskRobotControl</translation>
     </message>
@@ -747,14 +693,14 @@
   <context>
     <name>RobotGui::TaskRobotMessages</name>
     <message>
-      <location filename="../../TaskRobotMessages.cpp" line="35"/>
+      <location filename="../../TaskRobotMessages.cpp" line="34"/>
       <source>TaskRobotMessages</source>
       <translation>TaskRobotMessages</translation>
     </message>
     <message>
       <location filename="../../TaskRobotMessages.ui" line="20"/>
-      <source>clear</source>
-      <translation>Zurücksetzen</translation>
+      <source>Clear</source>
+      <translation>Löschen</translation>
     </message>
   </context>
   <context>
@@ -840,7 +786,7 @@
       <translation>A</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectory.cpp" line="39"/>
+      <location filename="../../TaskTrajectory.cpp" line="40"/>
       <source>Trajectory</source>
       <translation>Bewegungsbahn</translation>
     </message>
@@ -848,19 +794,9 @@
   <context>
     <name>RobotGui::TaskTrajectoryDressUpParameter</name>
     <message>
-      <location filename="../../TaskTrajectoryDressUpParameter.cpp" line="42"/>
+      <location filename="../../TaskTrajectoryDressUpParameter.cpp" line="41"/>
       <source>Dress Up Parameter</source>
       <translation>Dress Up Parameter</translation>
-    </message>
-    <message>
-      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="20"/>
-      <source>Speed &amp; Acceleration:</source>
-      <translation>Geschwindigkeit &amp; Beschleunigung:</translation>
-    </message>
-    <message>
-      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="29"/>
-      <source>Speed:</source>
-      <translation>Geschwindigkeit:</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="55"/>
@@ -869,72 +805,82 @@
       <translation>Verwenden</translation>
     </message>
     <message>
+      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="20"/>
+      <source>Speed &amp; acceleration</source>
+      <translation>Geschwindigkeit und Beschleunigung</translation>
+    </message>
+    <message>
+      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="29"/>
+      <source>Speed</source>
+      <translation>Geschwindigkeit</translation>
+    </message>
+    <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="66"/>
-      <source>Accel:</source>
-      <translation>Beschleunigung:</translation>
+      <source>Acceleration</source>
+      <translation>Beschleunigung</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="102"/>
-      <source>Don't change Cont</source>
-      <translation>Don't change Cont</translation>
+      <source>Do not change continuous mode</source>
+      <translation>Kontinuierlichen Modus nicht ändern</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="107"/>
+      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="108"/>
       <source>Continues</source>
       <translation>Continues</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="112"/>
+      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="113"/>
       <source>Discontinues</source>
       <translation>Discontinues</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="127"/>
-      <source>Position and Orientation:</source>
-      <translation>Position und Orientierung:</translation>
+      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="128"/>
+      <source>Position and orientation</source>
+      <translation>Position und Ausrichtung</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="159"/>
-      <source>Don't change Position &amp; Orientation</source>
-      <translation>Position und Richtung nicht verändern</translation>
+      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="160"/>
+      <source>Do not change position &amp; orientation</source>
+      <translation>Position und Ausrichtung nicht ändern</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="164"/>
-      <source>Use Orientation</source>
-      <translation>Benutze Orientierung</translation>
+      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="165"/>
+      <source>Use orientation</source>
+      <translation>Ausrichtung verwenden</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="169"/>
-      <source>Add Position</source>
+      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="170"/>
+      <source>Add position</source>
       <translation>Position hinzufügen</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="174"/>
-      <source>Add Orientation</source>
-      <translation>Hinzufügen der Orientierung</translation>
+      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="175"/>
+      <source>Add orientation</source>
+      <translation>Ausrichtung hinzufügen</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="47"/>
+      <location filename="../../Workbench.cpp" line="45"/>
       <source>Robot</source>
       <translation>Roboter</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="48"/>
-      <source>Insert Robots</source>
+      <location filename="../../Workbench.cpp" line="46"/>
+      <source>Insert Robot</source>
       <translation>Roboter einfügen</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="49"/>
-      <source>&amp;Robot</source>
-      <translation>&amp;Roboter</translation>
+      <location filename="../../Workbench.cpp" line="48"/>
+      <source>Export Trajectory</source>
+      <translation>Bewegungsbahn exportieren</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="50"/>
-      <source>Export trajectory</source>
-      <translation>Exportiere Bewegungsbahn</translation>
+      <location filename="../../Workbench.cpp" line="47"/>
+      <source>&amp;Robot</source>
+      <translation>&amp;Roboter</translation>
     </message>
   </context>
 </TS>

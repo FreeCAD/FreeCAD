@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -36,6 +38,7 @@
 #include "GeometryCreationMode.h"
 #include "Utils.h"
 #include "ViewProviderSketch.h"
+#include "SnapManager.h"
 
 
 namespace SketcherGui
@@ -64,8 +67,9 @@ public:
         STATUS_Close
     };
 
-    void mouseMove(Base::Vector2d onSketchPos) override
+    void mouseMove(SnapManager::SnapHandle snapHandle) override
     {
+        Base::Vector2d onSketchPos = snapHandle.compute();
         if (Mode == STATUS_SEEK_First) {
             setPositionText(onSketchPos);
             seekAndRenderAutoConstraint(sugConstr1, onSketchPos, Base::Vector2d(0.f, 0.f));
@@ -83,10 +87,12 @@ public:
             }
 
             drawEdit(EditCurve);
-            seekAndRenderAutoConstraint(sugConstr2,
-                                        onSketchPos,
-                                        Base::Vector2d(0.f, 0.f),
-                                        AutoConstraint::CURVE);
+            seekAndRenderAutoConstraint(
+                sugConstr2,
+                onSketchPos,
+                Base::Vector2d(0.f, 0.f),
+                AutoConstraint::CURVE
+            );
         }
         else if (Mode == STATUS_SEEK_Third) {
             // angle between the major axis of the hyperbola and the X axis
@@ -94,9 +100,11 @@ public:
             double phi = atan2(axisPoint.y - centerPoint.y, axisPoint.x - centerPoint.x);
 
             // This is the angle at cursor point
-            double angleatpoint = acosh(((onSketchPos.x - centerPoint.x) * cos(phi)
-                                         + (onSketchPos.y - centerPoint.y) * sin(phi))
-                                        / a);
+            double angleatpoint = acosh(
+                ((onSketchPos.x - centerPoint.x) * cos(phi)
+                 + (onSketchPos.y - centerPoint.y) * sin(phi))
+                / a
+            );
             double b = ((onSketchPos.y - centerPoint.y) * cos(phi)
                         - (onSketchPos.x - centerPoint.x) * sin(phi))
                 / sinh(angleatpoint);
@@ -130,9 +138,11 @@ public:
             double phi = atan2(axisPoint.y - centerPoint.y, axisPoint.x - centerPoint.x);
 
             // This is the angle at cursor point
-            double angleatstartingpoint = acosh(((startingPoint.x - centerPoint.x) * cos(phi)
-                                                 + (startingPoint.y - centerPoint.y) * sin(phi))
-                                                / a);
+            double angleatstartingpoint = acosh(
+                ((startingPoint.x - centerPoint.x) * cos(phi)
+                 + (startingPoint.y - centerPoint.y) * sin(phi))
+                / a
+            );
             double b = ((startingPoint.y - centerPoint.y) * cos(phi)
                         - (startingPoint.x - centerPoint.x) * sin(phi))
                 / sinh(angleatstartingpoint);
@@ -142,12 +152,14 @@ public:
             // double angleatpoint =
             // acosh(((onSketchPos.x-centerPoint.x)*cos(phi)+(onSketchPos.y-centerPoint.y)*sin(phi))/a);
 
-            double angleatpoint = atanh((((onSketchPos.y - centerPoint.y) * cos(phi)
-                                          - (onSketchPos.x - centerPoint.x) * sin(phi))
-                                         * a)
-                                        / (((onSketchPos.x - centerPoint.x) * cos(phi)
-                                            + (onSketchPos.y - centerPoint.y) * sin(phi))
-                                           * b));
+            double angleatpoint = atanh(
+                (((onSketchPos.y - centerPoint.y) * cos(phi)
+                  - (onSketchPos.x - centerPoint.x) * sin(phi))
+                 * a)
+                / (((onSketchPos.x - centerPoint.x) * cos(phi)
+                    + (onSketchPos.y - centerPoint.y) * sin(phi))
+                   * b)
+            );
 
             /*double angle1 = angleatpoint - startAngle;
 
@@ -228,9 +240,11 @@ public:
             double phi = atan2(axisPoint.y - centerPoint.y, axisPoint.x - centerPoint.x);
 
             // This is the angle at cursor point
-            double angleatstartingpoint = acosh(((startingPoint.x - centerPoint.x) * cos(phi)
-                                                 + (startingPoint.y - centerPoint.y) * sin(phi))
-                                                / a);
+            double angleatstartingpoint = acosh(
+                ((startingPoint.x - centerPoint.x) * cos(phi)
+                 + (startingPoint.y - centerPoint.y) * sin(phi))
+                / a
+            );
 
             double b = ((startingPoint.y - centerPoint.y) * cos(phi)
                         - (startingPoint.x - centerPoint.x) * sin(phi))
@@ -244,9 +258,9 @@ public:
             double endAngle = atanh(
                 (((endPoint.y - centerPoint.y) * cos(phi) - (endPoint.x - centerPoint.x) * sin(phi))
                  * a)
-                / (((endPoint.x - centerPoint.x) * cos(phi)
-                    + (endPoint.y - centerPoint.y) * sin(phi))
-                   * b));
+                / (((endPoint.x - centerPoint.x) * cos(phi) + (endPoint.y - centerPoint.y) * sin(phi))
+                   * b)
+            );
 
             if (boost::math::isnan(startAngle) || boost::math::isnan(endAngle)) {
                 Gui::NotifyError(
@@ -254,7 +268,9 @@ public:
                     QT_TRANSLATE_NOOP("Notifications", "Error"),
                     QT_TRANSLATE_NOOP(
                         "Notifications",
-                        "Cannot create arc of hyperbola from invalid angles, try again!"));
+                        "Cannot create arc of hyperbola from invalid angles, try again!"
+                    )
+                );
                 sketchgui->purgeHandler();
                 return false;
             }
@@ -301,37 +317,37 @@ public:
 
             try {
 
-                Gui::Command::openCommand(
-                    QT_TRANSLATE_NOOP("Command", "Add sketch arc of hyperbola"));
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch arc of hyperbola"));
 
                 // Add arc of hyperbola, point and constrain point as focus2. We add focus2 for it
                 // to balance the intrinsic focus1, in order to balance out the intrinsic invisible
                 // focus1 when AOE is dragged by its center
-                Gui::cmdAppObjectArgs(sketchgui->getObject(),
-                                      "addGeometry(Part.ArcOfHyperbola"
-                                      "(Part.Hyperbola(App.Vector(%f,%f,0),App.Vector(%f,%f,0),App."
-                                      "Vector(%f,%f,0)),%f,%f),%s)",
-                                      majAxisPoint.x,
-                                      majAxisPoint.y,
-                                      minAxisPoint.x,
-                                      minAxisPoint.y,
-                                      centerPoint.x,
-                                      centerPoint.y,
-                                      startAngle,
-                                      endAngle,
-                                      constructionModeAsBooleanText());
+                Gui::cmdAppObjectArgs(
+                    sketchgui->getObject(),
+                    "addGeometry(Part.ArcOfHyperbola"
+                    "(Part.Hyperbola(App.Vector(%f,%f,0),App.Vector(%f,%f,0),App."
+                    "Vector(%f,%f,0)),%f,%f),%s)",
+                    majAxisPoint.x,
+                    majAxisPoint.y,
+                    minAxisPoint.x,
+                    minAxisPoint.y,
+                    centerPoint.x,
+                    centerPoint.y,
+                    startAngle,
+                    endAngle,
+                    constructionModeAsBooleanText()
+                );
 
                 currentgeoid++;
 
-                Gui::cmdAppObjectArgs(sketchgui->getObject(),
-                                      "exposeInternalGeometry(%d)",
-                                      currentgeoid);
+                Gui::cmdAppObjectArgs(sketchgui->getObject(), "exposeInternalGeometry(%d)", currentgeoid);
             }
             catch (const Base::Exception&) {
                 Gui::NotifyError(
                     sketchgui,
                     QT_TRANSLATE_NOOP("Notifications", "Error"),
-                    QT_TRANSLATE_NOOP("Notifications", "Cannot create arc of hyperbola"));
+                    QT_TRANSLATE_NOOP("Notifications", "Cannot create arc of hyperbola")
+                );
                 Gui::Command::abortCommand();
 
                 tryAutoRecomputeIfNotSolve(sketchgui->getObject<Sketcher::SketchObject>());
@@ -355,26 +371,29 @@ public:
 
             // add suggested constraints for start of arc
             if (!sugConstr3.empty()) {
-                createAutoConstraints(sugConstr3,
-                                      currentgeoid,
-                                      isOriginalArcCCW ? Sketcher::PointPos::start
-                                                       : Sketcher::PointPos::end);
+                createAutoConstraints(
+                    sugConstr3,
+                    currentgeoid,
+                    isOriginalArcCCW ? Sketcher::PointPos::start : Sketcher::PointPos::end
+                );
                 sugConstr3.clear();
             }
 
             // add suggested constraints for start of arc
             if (!sugConstr4.empty()) {
-                createAutoConstraints(sugConstr4,
-                                      currentgeoid,
-                                      isOriginalArcCCW ? Sketcher::PointPos::end
-                                                       : Sketcher::PointPos::start);
+                createAutoConstraints(
+                    sugConstr4,
+                    currentgeoid,
+                    isOriginalArcCCW ? Sketcher::PointPos::end : Sketcher::PointPos::start
+                );
                 sugConstr4.clear();
             }
 
             tryAutoRecomputeIfNotSolve(sketchgui->getObject<Sketcher::SketchObject>());
 
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-                "User parameter:BaseApp/Preferences/Mod/Sketcher");
+                "User parameter:BaseApp/Preferences/Mod/Sketcher"
+            );
             bool continuousMode = hGrp->GetBool("ContinuousCreationMode", true);
 
             if (continuousMode) {
@@ -404,6 +423,35 @@ private:
         return QStringLiteral("Sketcher_Pointer_Create_ArcOfHyperbola");
     }
 
+    std::list<Gui::InputHint> getToolHints() const override
+    {
+        using enum Gui::InputHint::UserInput;
+
+        return Gui::lookupHints<SelectMode>(
+            Mode,
+            {
+                {.state = STATUS_SEEK_First,
+                 .hints =
+                     {
+                         {tr("%1 pick center point"), {MouseLeft}},
+                     }},
+                {.state = STATUS_SEEK_Second,
+                 .hints =
+                     {
+                         {tr("%1 pick axis point"), {MouseLeft}},
+                     }},
+                {.state = STATUS_SEEK_Third,
+                 .hints =
+                     {
+                         {tr("%1 pick arc start point"), {MouseLeft}},
+                     }},
+                {.state = STATUS_SEEK_Fourth,
+                 .hints =
+                     {
+                         {tr("%1 pick arc end point"), {MouseLeft}},
+                     }},
+            });
+    }
 
 protected:
     SelectMode Mode;
@@ -411,52 +459,7 @@ protected:
     Base::Vector2d centerPoint, axisPoint, startingPoint, endPoint;
     double arcAngle, arcAngle_t;
     std::vector<AutoConstraint> sugConstr1, sugConstr2, sugConstr3, sugConstr4;
-
-private:
-    std::list<Gui::InputHint> getToolHints() const override
-    {
-        return lookupArcOfHyperbolaHints(Mode);
-    }
-
-private:
-    struct HintEntry
-    {
-        int mode;
-        std::list<Gui::InputHint> hints;
-    };
-
-    using HintTable = std::vector<HintEntry>;
-
-    static HintTable getArcOfHyperbolaHintTable();
-    static std::list<Gui::InputHint> lookupArcOfHyperbolaHints(int mode);
 };
-
-DrawSketchHandlerArcOfHyperbola::HintTable
-DrawSketchHandlerArcOfHyperbola::getArcOfHyperbolaHintTable()
-{
-    return {// Structure: {mode, {hints...}}
-            {STATUS_SEEK_First,
-             {{QObject::tr("%1 pick center point"), {Gui::InputHint::UserInput::MouseLeft}}}},
-            {STATUS_SEEK_Second,
-             {{QObject::tr("%1 pick axis point"), {Gui::InputHint::UserInput::MouseLeft}}}},
-            {STATUS_SEEK_Third,
-             {{QObject::tr("%1 pick arc start point"), {Gui::InputHint::UserInput::MouseLeft}}}},
-            {STATUS_SEEK_Fourth,
-             {{QObject::tr("%1 pick arc end point"), {Gui::InputHint::UserInput::MouseLeft}}}}};
-}
-
-std::list<Gui::InputHint> DrawSketchHandlerArcOfHyperbola::lookupArcOfHyperbolaHints(int mode)
-{
-    const auto arcOfHyperbolaHintTable = getArcOfHyperbolaHintTable();
-
-    auto it = std::find_if(arcOfHyperbolaHintTable.begin(),
-                           arcOfHyperbolaHintTable.end(),
-                           [mode](const HintEntry& entry) {
-                               return entry.mode == mode;
-                           });
-
-    return (it != arcOfHyperbolaHintTable.end()) ? it->hints : std::list<Gui::InputHint> {};
-}
 
 }  // namespace SketcherGui
 

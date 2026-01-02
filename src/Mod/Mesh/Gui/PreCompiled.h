@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2003 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -25,18 +27,6 @@
 
 #include <FCConfig.h>
 
-// point at which warnings of overly long specifiers disabled (needed for VC6)
-#ifdef _MSC_VER
-#pragma warning(disable : 4005)
-#pragma warning(disable : 4251)
-#pragma warning(disable : 4503)
-#pragma warning(disable : 4275)
-#pragma warning(disable : 4273)
-#pragma warning(disable : 4786)  // specifier longer then 255 chars
-#endif
-
-#ifdef _PreComp_
-
 // standard
 #include <ios>
 
@@ -56,11 +46,8 @@
 // Inventor
 #include <Gui/InventorAll.h>
 
-#elif defined(FC_OS_WIN32)
-#ifndef NOMINMAX
-#define NOMINMAX
+#if defined(FC_OS_WIN32)
+# include <Windows.h>
 #endif
-#include <Windows.h>
-#endif  //_PreComp_
 
 #endif  // MESHGUI_PRECOMPILED_H

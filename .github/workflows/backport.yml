@@ -1,0 +1,52 @@
+name: Backport merged pull request
+
+on:
+  pull_request_target:
+    types: [closed, labeled]
+    branches: [main, releases/*]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  backport:
+    name: Create backport pull request
+    runs-on: ubuntu-latest
+
+    # Run the action if a PR is merged with backport labels
+    # OR
+    # when already merged PR is labeled with backport labels
+    if: >
+      github.event.pull_request.merged
+      && (
+        github.event.action == 'closed'
+        || (
+          github.event.action == 'labeled'
+          && startsWith(github.event.label.name, 'backport ')
+        )
+      )
+    steps:
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          token: ${{ secrets.GH_TOKEN_FOR_CI_RUNNERS }}
+
+      - name: Create backport pull requests
+        uses: korthout/backport-action@d07416681cab29bf2661702f925f020aaa962997 # v3.4.1
+        with:
+          # Inputs documented here: https://github.com/korthout/backport-action?tab=readme-ov-file#inputs
+          github_token: ${{ secrets.GH_TOKEN_FOR_CI_RUNNERS }}
+          github_workspace: ${{ github.workspace }}
+
+          # permit PRs with merge commits to be backported
+          merge_commits: 'skip'
+
+          # copy labels to backport to identify affected systems and priorities
+          copy_labels_pattern: '.*'
+
+          # Regex pattern to match github labels
+          # The capture group catches the target branch
+          # i.e. label "backport releases/FreeCAD-1-0" will create backport
+          # PR for branch releases/FreeCAD-1-0
+          label_pattern: ^backport ([^ ]+)$

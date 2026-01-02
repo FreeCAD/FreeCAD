@@ -4,11 +4,6 @@
   <context>
     <name>Gui::Dialog::DlgSettingsOpenSCAD</name>
     <message>
-      <location filename="../ui/openscadprefs-base.ui" line="14"/>
-      <source>General settings</source>
-      <translation>Загальні налаштування</translation>
-    </message>
-    <message>
       <location filename="../ui/openscadprefs-base.ui" line="35"/>
       <source>General OpenSCAD Settings</source>
       <translation>Загальні налаштування OpenSCAD</translation>
@@ -24,11 +19,6 @@
       <translation>Шлях до виконуваного файлу OpenSCAD</translation>
     </message>
     <message>
-      <location filename="../ui/openscadprefs-base.ui" line="74"/>
-      <source>OpenSCAD import</source>
-      <translation>OpenSCAD імпорт</translation>
-    </message>
-    <message>
       <location filename="../ui/openscadprefs-base.ui" line="82"/>
       <source>Print debug information in the Console</source>
       <translation>Вивести налагоджувальну інформацію в консолі</translation>
@@ -37,11 +27,6 @@
       <location filename="../ui/openscadprefs-base.ui" line="99"/>
       <source>If this is checked, Features will claim their children in the tree view</source>
       <translation>Якщо встановити, то властивості будуть застосовані до дочірніх обʼєктів у дереві перегляду</translation>
-    </message>
-    <message>
-      <location filename="../ui/openscadprefs-base.ui" line="102"/>
-      <source>Use ViewProvider in Tree View</source>
-      <translation>Використовувати ViewProvider у дереві перегляду</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="119"/>
@@ -63,11 +48,6 @@
       <location filename="../ui/openscadprefs-base.ui" line="142"/>
       <source>Maximum number of faces for polygons (fn)</source>
       <translation>Максимальна кількість граней многокутника (fn)</translation>
-    </message>
-    <message>
-      <location filename="../ui/openscadprefs-base.ui" line="182"/>
-      <source>Send to OpenSCAD via:</source>
-      <translation>Надіслати до OpenSCAD через:</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="195"/>
@@ -100,11 +80,6 @@
       <translation>Шлях до каталогу для перенесення файлів в OpenSCAD</translation>
     </message>
     <message>
-      <location filename="../ui/openscadprefs-base.ui" line="261"/>
-      <source>OpenSCAD export</source>
-      <translation>OpenSCAD експорт</translation>
-    </message>
-    <message>
       <location filename="../ui/openscadprefs-base.ui" line="269"/>
       <source>Maximum fragment size</source>
       <translation>Максимальний розмір фрагменту</translation>
@@ -124,6 +99,31 @@
       <location filename="../ui/openscadprefs-base.ui" line="299"/>
       <source>Minimum angle for a fragment</source>
       <translation>Мінімальний кут для фрагменту</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="14"/>
+      <source>General</source>
+      <translation>Загальні</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="74"/>
+      <source>OpenSCAD Import</source>
+      <translation type="unfinished">OpenSCAD Import</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="102"/>
+      <source>Use ViewProviders in Tree View</source>
+      <translation type="unfinished">Use ViewProviders in Tree View</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="182"/>
+      <source>Send to OpenSCAD via</source>
+      <translation type="unfinished">Send to OpenSCAD via</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="261"/>
+      <source>OpenSCAD Export</source>
+      <translation type="unfinished">OpenSCAD Export</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="331"/>
@@ -166,142 +166,146 @@
   <context>
     <name>OpenSCAD</name>
     <message>
-      <location filename="../../InitGui.py" line="130"/>
+      <location filename="../../InitGui.py" line="132"/>
       <source>It looks like you may be using a Snap version of OpenSCAD.</source>
       <translation>Схоже, ви використовуєте Snap версію OpenSCAD.</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="135"/>
-      <location filename="../../InitGui.py" line="148"/>
+      <location filename="../../InitGui.py" line="137"/>
+      <location filename="../../InitGui.py" line="150"/>
       <source>If OpenSCAD execution fails to load the temporary file, use FreeCAD's OpenSCAD Workbench Preferences to change the transfer mechanism.</source>
       <translation>Якщо виконання OpenSCAD не завантажить тимчасовий файл, використовуйте налаштування верстата OpenSCAD у FreeCAD для зміни механізму передачі.</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="143"/>
+      <location filename="../../InitGui.py" line="145"/>
       <source>It looks like you may be using a sandboxed version of FreeCAD.</source>
       <translation>Схоже, що ви використовуєте ізольовану версію FreeCAD.</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="92"/>
+      <location filename="../../OpenSCADCommands.py" line="94"/>
       <source>Unable to explode %s</source>
       <translation>Не вдалося роз'єднати %s</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="139"/>
-      <source>Convert Edges to Faces</source>
-      <translation>Перетворити ребра на грані</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="301"/>
-      <source>Please select 3 objects first</source>
-      <translation>Будь ласка, спочатку оберіть 3 об'єкти</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="333"/>
-      <location filename="../../OpenSCADCommands.py" line="364"/>
+      <location filename="../../OpenSCADCommands.py" line="335"/>
+      <location filename="../../OpenSCADCommands.py" line="366"/>
       <source>Add</source>
       <translation>Додати</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="368"/>
+      <location filename="../../OpenSCADCommands.py" line="370"/>
       <source>Clear</source>
       <translation>Очистити</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="365"/>
+      <location filename="../../OpenSCADCommands.py" line="367"/>
       <source>Load</source>
       <translation>Завантажити</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="366"/>
+      <location filename="../../OpenSCADCommands.py" line="368"/>
       <source>Save</source>
       <translation>Зберегти</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="334"/>
-      <location filename="../../OpenSCADCommands.py" line="367"/>
+      <location filename="../../OpenSCADCommands.py" line="336"/>
+      <location filename="../../OpenSCADCommands.py" line="369"/>
       <source>Refresh</source>
       <translation>Оновити</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="335"/>
-      <source>Clear code</source>
-      <translation>Очистити код</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="336"/>
-      <source>Open...</source>
-      <translation>Відкрити...</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="337"/>
-      <source>Save...</source>
-      <translation>Зберегти...</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="338"/>
-      <location filename="../../OpenSCADCommands.py" line="369"/>
+      <location filename="../../OpenSCADCommands.py" line="371"/>
       <source>as Mesh</source>
       <translation>як сітка</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="351"/>
-      <location filename="../../OpenSCADCommands.py" line="370"/>
+      <location filename="../../OpenSCADCommands.py" line="353"/>
+      <location filename="../../OpenSCADCommands.py" line="372"/>
       <source>Add OpenSCAD Element</source>
       <translation>Додати елемент OpenSCAD</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="427"/>
+      <location filename="../../OpenSCADCommands.py" line="141"/>
+      <source>Converts edges to faces</source>
+      <translation type="unfinished">Converts edges to faces</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="303"/>
+      <source>Select 3 objects first</source>
+      <translation type="unfinished">Select 3 objects first</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="337"/>
+      <source>Clear Code</source>
+      <translation type="unfinished">Clear Code</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="338"/>
+      <source>Open…</source>
+      <translation type="unfinished">Open…</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="339"/>
+      <source>Save…</source>
+      <translation type="unfinished">Save…</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="340"/>
+      <source>as mesh</source>
+      <translation type="unfinished">as mesh</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="429"/>
       <source>Open file</source>
       <translation>Відкрити файл</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="429"/>
-      <location filename="../../OpenSCADCommands.py" line="443"/>
+      <location filename="../../OpenSCADCommands.py" line="431"/>
+      <location filename="../../OpenSCADCommands.py" line="445"/>
       <source>OpenSCAD Files</source>
       <translation>Файли OpenSCAD</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="441"/>
+      <location filename="../../OpenSCADCommands.py" line="443"/>
       <source>Save file</source>
       <translation>Зберегти файл</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="455"/>
-      <location filename="../../OpenSCADCommands.py" line="484"/>
+      <location filename="../../OpenSCADCommands.py" line="457"/>
+      <location filename="../../OpenSCADCommands.py" line="486"/>
       <source>Perform</source>
       <translation>Виконати</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="481"/>
-      <location filename="../../OpenSCADCommands.py" line="485"/>
+      <location filename="../../OpenSCADCommands.py" line="483"/>
+      <location filename="../../OpenSCADCommands.py" line="487"/>
       <source>Mesh Boolean</source>
       <translation>Логічна сітка</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="486"/>
+      <location filename="../../OpenSCADCommands.py" line="488"/>
       <source>Minkowski sum</source>
       <translation>Сума Мінковського</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADUtils.py" line="653"/>
+      <location filename="../../OpenSCADUtils.py" line="650"/>
       <source>OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.</source>
       <translation>Файл OpenSCAD містить як 2D, так і 3D фігури. У цьому модулі імпорту це не підтримується, усі фігури повинні мати однакову розмірність.</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADUtils.py" line="664"/>
+      <location filename="../../OpenSCADUtils.py" line="661"/>
       <source>Error: either all shapes must be 2D or all shapes must be 3D</source>
       <translation>Помилка: усі фігури мають бути тільки 2D або тільки 3D</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="517"/>
-      <location filename="../../importCSG.py" line="1389"/>
+      <location filename="../../importCSG.py" line="518"/>
+      <location filename="../../importCSG.py" line="1390"/>
       <source>Unsupported Function</source>
       <translation>Непідтримувана функція</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="517"/>
-      <location filename="../../importCSG.py" line="1389"/>
+      <location filename="../../importCSG.py" line="518"/>
+      <location filename="../../importCSG.py" line="1390"/>
       <source>Press OK</source>
       <translation>Натисніть OK</translation>
     </message>
@@ -309,204 +313,204 @@
   <context>
     <name>OpenSCAD_ExplodeGroup</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="100"/>
+      <location filename="../../OpenSCADCommands.py" line="102"/>
       <source>Explode Group</source>
       <translation>Роз'єднати групу</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="103"/>
-      <source>Remove fusion, apply placement to children, and color randomly</source>
-      <translation>Прибирає злиття, розміщує і змінює колір дочірніх елементів випадковим чином</translation>
+      <location filename="../../OpenSCADCommands.py" line="105"/>
+      <source>Explodes a fusion or compound and applies random colors</source>
+      <translation type="unfinished">Explodes a fusion or compound and applies random colors</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD_ColorCodeShape</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="116"/>
+      <location filename="../../OpenSCADCommands.py" line="118"/>
       <source>Color Shapes</source>
       <translation>Колір фігур</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="119"/>
-      <source>Color Shapes by validity and type</source>
-      <translation>Забарвлення фігур за значенням і типом</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_Edgestofaces</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="136"/>
-      <source>Convert Edges To Faces</source>
-      <translation>Перетворити ребра на грані</translation>
+      <location filename="../../OpenSCADCommands.py" line="121"/>
+      <source>Colors shapes by validity and type</source>
+      <translation type="unfinished">Colors shapes by validity and type</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD_RefineShapeFeature</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="156"/>
+      <location filename="../../OpenSCADCommands.py" line="158"/>
       <source>Refine Shape Feature</source>
       <translation>Уточнити властивості форми</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="159"/>
-      <source>Create Refine Shape Feature</source>
-      <translation>Створити елемент, що уточнює форму</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_MirrorMeshFeature</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="186"/>
-      <source>Mirror Mesh Feature...</source>
-      <translation>Віддзеркалити сітку...</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="189"/>
-      <source>Create Mirror Mesh Feature</source>
-      <translation>Створити дзеркальне відображення сітки</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_ScaleMeshFeature</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="215"/>
-      <source>Scale Mesh Feature...</source>
-      <translation>Масштабувати сітку...</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="219"/>
-      <source>Create Scale Mesh Feature</source>
-      <translation>Створити функцію масштабування сітки</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_ResizeMeshFeature</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="245"/>
-      <source>Resize Mesh Feature...</source>
-      <translation>Змінити розмір елемента сітки...</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="249"/>
-      <source>Create Resize Mesh Feature</source>
-      <translation>Створити функцію зміни розміру сітки</translation>
+      <location filename="../../OpenSCADCommands.py" line="161"/>
+      <source>Creates a refined shape</source>
+      <translation type="unfinished">Creates a refined shape</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD_IncreaseToleranceFeature</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="266"/>
+      <location filename="../../OpenSCADCommands.py" line="268"/>
       <source>Increase Tolerance Feature</source>
       <translation>Збільшити допуск</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="269"/>
-      <source>Create Feature that allows increasing the tolerance</source>
-      <translation>Створіть функцію, яка дає змогу збільшити допуск</translation>
+      <location filename="../../OpenSCADCommands.py" line="271"/>
+      <source>Creates a feature to increase the tolerance</source>
+      <translation type="unfinished">Creates a feature to increase the tolerance</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD_ExpandPlacements</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="283"/>
+      <location filename="../../OpenSCADCommands.py" line="285"/>
       <source>Expand Placements</source>
       <translation>Розгорнути</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="286"/>
-      <source>Expand all placements downwards in the Tree view</source>
-      <translation>Розгорнути всі місця розміщення вниз по дереву</translation>
+      <location filename="../../OpenSCADCommands.py" line="288"/>
+      <source>Expands all placements downwards in the Tree View</source>
+      <translation type="unfinished">Expands all placements downwards in the Tree View</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD_ReplaceObject</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="304"/>
+      <location filename="../../OpenSCADCommands.py" line="306"/>
       <source>Replace Object</source>
       <translation>Замінити об'єкт</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="307"/>
-      <source>Replace an object in the Tree view. Please select old, new, and parent object</source>
-      <translation>Замінити об'єкт у вигляді дерева. Будь ласка, виберіть старий, новий і батьківський об'єкт</translation>
+      <location filename="../../OpenSCADCommands.py" line="309"/>
+      <source>Replaces an object in the Tree View</source>
+      <translation type="unfinished">Replaces an object in the Tree View</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD_RemoveSubtree</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="317"/>
-      <source>Remove Objects and their Children</source>
-      <translation>Видалити об'єкти та їхні дочірні елементи</translation>
+      <location filename="../../OpenSCADCommands.py" line="319"/>
+      <source>Remove Objects and Children</source>
+      <translation type="unfinished">Remove Objects and Children</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="320"/>
-      <source>Removes the selected objects and all children that are not referenced from other objects</source>
-      <translation>Видаляє вибрані об'єкти та всi дочірні об'єкти, на які немає посилань від інших об'єктів</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_AddOpenSCADElement</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="529"/>
-      <source>Add OpenSCAD Element...</source>
-      <translation>Додати елемент OpenSCAD...</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="533"/>
-      <source>Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</source>
-      <translation>Додайте елемент OpenSCAD, ввівши код OpenSCAD та виконавши бінарний файл OpenSCAD</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_MeshBoolean</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="544"/>
-      <source>Mesh Boolean...</source>
-      <translation>Логічна сітка...</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="548"/>
-      <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
-      <translation>Експортувати об'єкти у вигляді полігональної сітки та використовувати OpenSCAD, щоб здійснити логічну операцію</translation>
+      <location filename="../../OpenSCADCommands.py" line="322"/>
+      <source>Removes the selected objects and all children that are not referenced by other objects</source>
+      <translation type="unfinished">Removes the selected objects and all children that are not referenced by other objects</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD_Hull</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="565"/>
+      <location filename="../../OpenSCADCommands.py" line="567"/>
       <source>Hull</source>
       <translation>Корпус</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="568"/>
-      <source>Use OpenSCAD to create a hull</source>
-      <translation>Використовувати OpenSCAD для створення опуклої оболонки</translation>
+      <location filename="../../OpenSCADCommands.py" line="570"/>
+      <source>Creates a hull</source>
+      <translation type="unfinished">Creates a hull</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../InitGui.py" line="152"/>
+      <location filename="../../InitGui.py" line="154"/>
       <source>OpenSCAD Tools</source>
       <translation>Інструменти OpenSCAD</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="156"/>
+      <location filename="../../InitGui.py" line="158"/>
       <source>Frequently-used Part WB tools</source>
       <translation>Часто використовувані інструменти робочої області Part</translation>
     </message>
   </context>
   <context>
-    <name>OpenSCAD_Minkowski</name>
+    <name>OpenSCAD_Edgestofaces</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="585"/>
-      <source>Minkowski sum</source>
-      <translation>Сума Мінковського</translation>
+      <location filename="../../OpenSCADCommands.py" line="138"/>
+      <source>Convert Edges to Faces</source>
+      <translation type="unfinished">Convert Edges to Faces</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_MirrorMeshFeature</name>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="188"/>
+      <source>Mirror Mesh Feature</source>
+      <translation type="unfinished">Mirror Mesh Feature</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="588"/>
-      <source>Use OpenSCAD to create a Minkowski sum</source>
-      <translation>Використовувати OpenSCAD, щоб зробити суму Мінковського</translation>
+      <location filename="../../OpenSCADCommands.py" line="191"/>
+      <source>Mirrors the mesh</source>
+      <translation type="unfinished">Mirrors the mesh</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_ScaleMeshFeature</name>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="217"/>
+      <source>Scale Mesh Feature</source>
+      <translation type="unfinished">Scale Mesh Feature</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="221"/>
+      <source>Scales the mesh</source>
+      <translation type="unfinished">Scales the mesh</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_ResizeMeshFeature</name>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="247"/>
+      <source>Resize Mesh Feature</source>
+      <translation type="unfinished">Resize Mesh Feature</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="251"/>
+      <source>Resizes the mesh</source>
+      <translation type="unfinished">Resizes the mesh</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_AddOpenSCADElement</name>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="531"/>
+      <source>Add OpenSCAD Element</source>
+      <translation>Додати елемент OpenSCAD</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="535"/>
+      <source>Adds an OpenSCAD element based on entered OpenSCAD code using the OpenSCAD binary</source>
+      <translation type="unfinished">Adds an OpenSCAD element based on entered OpenSCAD code using the OpenSCAD binary</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_MeshBoolean</name>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="546"/>
+      <source>Mesh Boolean</source>
+      <translation>Логічна сітка</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="550"/>
+      <source>Performs a boolean operation using the OpenSCAD binary</source>
+      <translation type="unfinished">Performs a boolean operation using the OpenSCAD binary</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_Minkowski</name>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="587"/>
+      <source>Minkowski Sum</source>
+      <translation type="unfinished">Minkowski Sum</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="590"/>
+      <source>Creates a Minkowski sum</source>
+      <translation type="unfinished">Creates a Minkowski sum</translation>
     </message>
   </context>
 </TS>

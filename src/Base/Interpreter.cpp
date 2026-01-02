@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -21,13 +23,10 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <sstream>
 #include <boost/regex.hpp>
-#endif
+
+#include <FCConfig.h>
 
 #include "Interpreter.h"
 #include "Console.h"
@@ -128,11 +127,13 @@ void PyException::reportException() const
         // set sys.last_vars to make post-mortem debugging work
         PyGILStateLocker locker;
         PySys_SetObject("last_traceback", PP_last_traceback);
-        Console().developerError("pyException",
-                                 "%s%s: %s\n",
-                                 _stackTrace.c_str(),
-                                 _errorType.c_str(),
-                                 what());
+        Console().developerError(
+            "pyException",
+            "%s%s: %s\n",
+            _stackTrace.c_str(),
+            _errorType.c_str(),
+            what()
+        );
     }
 }
 
@@ -276,9 +277,11 @@ std::string InterpreterSingleton::runString(const char* sCmd)
  * if the error occurs after changing it inside the script.
  */
 
-std::string InterpreterSingleton::runStringWithKey(const char* psCmd,
-                                                   const char* key,
-                                                   const char* key_initial_value)
+std::string InterpreterSingleton::runStringWithKey(
+    const char* psCmd,
+    const char* key,
+    const char* key_initial_value
+)
 {
     PyGILStateLocker locker;
     Py::Module module("__main__");
@@ -287,8 +290,8 @@ std::string InterpreterSingleton::runStringWithKey(const char* psCmd,
     Py::String initial_value(key_initial_value);
     localDictionary.setItem(key, initial_value);
 
-    PyObject* presult =
-        PyRun_String(psCmd, Py_file_input, globalDictionary.ptr(), localDictionary.ptr());
+    PyObject* presult
+        = PyRun_String(psCmd, Py_file_input, globalDictionary.ptr(), localDictionary.ptr());
     if (!presult) {
         if (PyErr_ExceptionMatches(PyExc_SystemExit)) {
             throw SystemExitException();
@@ -509,12 +512,12 @@ void InterpreterSingleton::cleanupModules()
 {
     // This is only needed to make the address sanitizer happy
 #if defined(__has_feature)
-#if __has_feature(address_sanitizer)
+# if __has_feature(address_sanitizer)
     for (auto it : _modules) {
         delete it;
     }
     _modules.clear();
-#endif
+# endif
 #endif
 }
 
@@ -588,7 +591,8 @@ std::string InterpreterSingleton::init(int argc, char* argv[])
                 "base_path = os.getenv(\"VIRTUAL_ENV\")\n"
                 "if not base_path is None:\n"
                 "    activate_this = os.path.join(base_path, \"bin\", \"activate_this.py\")\n"
-                "    exec(open(activate_this).read(), {'__file__':activate_this})\n");
+                "    exec(open(activate_this).read(), {'__file__':activate_this})\n"
+            );
         }
 
         size_t size = argc;
@@ -735,11 +739,13 @@ int InterpreterSingleton::runCommandLine(const char* prompt)
 void InterpreterSingleton::runMethodVoid(PyObject* pobject, const char* method)
 {
     PyGILStateLocker locker;
-    if (PP_Run_Method(pobject,  // object
-                      method,   // run method
-                      nullptr,  // no return type
-                      nullptr,  // so no return object
-                      "()")     // no arguments
+    if (PP_Run_Method(
+            pobject,  // object
+            method,   // run method
+            nullptr,  // no return type
+            nullptr,  // so no return object
+            "()"
+        )  // no arguments
         != 0) {
         throw PyException(/*"Error running InterpreterSingleton::RunMethodVoid()"*/);
     }
@@ -750,11 +756,13 @@ PyObject* InterpreterSingleton::runMethodObject(PyObject* pobject, const char* m
     PyObject* pcO {};
 
     PyGILStateLocker locker;
-    if (PP_Run_Method(pobject,  // object
-                      method,   // run method
-                      "O",      // return type
-                      &pcO,     // return object
-                      "()")     // no arguments
+    if (PP_Run_Method(
+            pobject,  // object
+            method,   // run method
+            "O",      // return type
+            &pcO,     // return object
+            "()"
+        )  // no arguments
         != 0) {
         throw PyException();
     }
@@ -762,12 +770,14 @@ PyObject* InterpreterSingleton::runMethodObject(PyObject* pobject, const char* m
     return pcO;
 }
 
-void InterpreterSingleton::runMethod(PyObject* pobject,
-                                     const char* method,
-                                     const char* resfmt,
-                                     void* cresult, /* convert to c/c++ */
-                                     const char* argfmt,
-                                     ...) /* convert to python */
+void InterpreterSingleton::runMethod(
+    PyObject* pobject,
+    const char* method,
+    const char* resfmt,
+    void* cresult, /* convert to c/c++ */
+    const char* argfmt,
+    ...
+) /* convert to python */
 {
     PyObject* pmeth {};
     PyObject* pargs {};
@@ -780,8 +790,9 @@ void InterpreterSingleton::runMethod(PyObject* pobject,
     if (!pmeth) { /* get callable object */
         va_end(argslist);
         throw AttributeError(
-            "Error running InterpreterSingleton::RunMethod() method not defined"); /* bound method?
-                                                                                      has self */
+            "Error running InterpreterSingleton::RunMethod() method not defined"
+        ); /* bound method?
+              has self */
     }
 
     pargs = Py_VaBuildValue(argfmt, argslist); /* args: c->python */
@@ -801,7 +812,8 @@ void InterpreterSingleton::runMethod(PyObject* pobject,
             PyErr_Print();
         }
         throw RuntimeError(
-            "Error running InterpreterSingleton::RunMethod() exception in called method");
+            "Error running InterpreterSingleton::RunMethod() exception in called method"
+        );
     }
 }
 
@@ -926,10 +938,12 @@ extern int getSWIGPointerTypeObj_T(const char* TypeName, PyTypeObject** ptr);
 }  // namespace Swig_python
 #endif
 
-PyObject* InterpreterSingleton::createSWIGPointerObj(const char* Module,
-                                                     const char* TypeName,
-                                                     void* Pointer,
-                                                     int own)
+PyObject* InterpreterSingleton::createSWIGPointerObj(
+    const char* Module,
+    const char* TypeName,
+    void* Pointer,
+    int own
+)
 {
     int result = 0;
     PyObject* proxy = nullptr;
@@ -952,11 +966,13 @@ PyObject* InterpreterSingleton::createSWIGPointerObj(const char* Module,
     throw Base::RuntimeError("No SWIG wrapped library loaded");
 }
 
-bool InterpreterSingleton::convertSWIGPointerObj(const char* Module,
-                                                 const char* TypeName,
-                                                 PyObject* obj,
-                                                 void** ptr,
-                                                 int flags)
+bool InterpreterSingleton::convertSWIGPointerObj(
+    const char* Module,
+    const char* TypeName,
+    PyObject* obj,
+    void** ptr,
+    int flags
+)
 {
     int result = 0;
     PyGILStateLocker locker;

@@ -91,7 +91,7 @@ TEST_F(FeatureOffsetTest, testOffset2D)
     EXPECT_EQ(getArea(_offset2->Shape.getShape().getShape()), 20);
     EXPECT_TRUE(boxesMatch(bb, Base::BoundBox3d(-1, -1, 0, 3, 4, 0)));
     // Assert correct element Map
-    EXPECT_EQ(_offset2->Shape.getShape().getElementMapSize(), 0);
+    EXPECT_EQ(_offset2->Shape.getShape().getElementMapSize(), 9);
 }
 
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)

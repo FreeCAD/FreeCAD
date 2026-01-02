@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
@@ -21,13 +23,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Interface_Static.hxx>
-# include <IGESControl_Controller.hxx>
-# include <STEPControl_Controller.hxx>
-# include <Standard_Version.hxx>
-#endif
+#include <Interface_Static.hxx>
+#include <IGESControl_Controller.hxx>
+#include <STEPControl_Controller.hxx>
+#include <Standard_Version.hxx>
+
+#include <FCConfig.h>
 
 #include <App/Application.h>
 #include <Base/Console.h>
@@ -98,6 +99,7 @@
 #include "GeometryIntExtensionPy.h"
 #include "GeometryMigrationExtension.h"
 #include "GeometryStringExtensionPy.h"
+#include "PreviewExtension.h"
 #include "HyperbolaPy.h"
 #include "ImportStep.h"
 #include "LinePy.h"
@@ -194,7 +196,8 @@
 #include <App/Services.h>
 #include <Services.h>
 
-namespace Part {
+namespace Part
+{
 extern PyObject* initModule();
 }
 
@@ -435,7 +438,7 @@ PyMOD_INIT_FUNC(Part)
 
     Part::AttachExtension       ::init();
     Part::AttachExtensionPython ::init();
-
+    Part::PreviewExtension      ::init();
     Part::PrismExtension        ::init();
 
     Part::Feature               ::init();

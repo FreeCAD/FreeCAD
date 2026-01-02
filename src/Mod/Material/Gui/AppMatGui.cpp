@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 David Carter <dcarter@david.carter.ca>             *
  *                                                                         *
@@ -19,10 +21,6 @@
  *                                                                         *
  **************************************************************************/
 
-
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
@@ -94,7 +92,7 @@ PyMOD_INIT_FUNC(MatGui)
 
     PyObject* matGuiModule = MatGui::initModule();
 
-    Base::Console().log("Loading GUI of Material module... done\n");
+    Base::Console().log("Loading GUI of Material module… done\n");
 
     MatGui::Workbench ::init();
     auto manip = std::make_shared<MatGui::WorkbenchManipulator>();
@@ -107,7 +105,7 @@ PyMOD_INIT_FUNC(MatGui)
     // widget
     Gui::Dialog::DlgPreferencesImp::setGroupData("Material",
                                                  "Material",
-                                                 QObject::tr("Material workbench"));
+                                                 QObject::tr("Material Workbench"));
     new Gui::PrefPageProducer<MatGui::DlgSettingsMaterial>(
         QT_TRANSLATE_NOOP("QObject", "Material"));
     new Gui::PrefPageProducer<MatGui::DlgSettingsDefaultMaterial>(

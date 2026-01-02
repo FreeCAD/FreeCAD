@@ -62,10 +62,13 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         self.axis_selection_widget = selection_widgets.GeometryElementsSelection(
             obj.RotationAxis, ["Edge"], False, False
         )
+        self.axis_selection_widget.setWindowTitle(
+            self.axis_selection_widget.tr("Axis Reference Selector")
+        )
 
         # loaded body selection widget
         self.body_selection_widget = selection_widgets.GeometryElementsSelection(
-            obj.References, ["Solid"], False, False
+            obj.References, ["Solid", "Face"], False, False
         )
 
         # form made from param and selection widget
@@ -86,7 +89,7 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
             msgBox.setText(
                 f"Constraint Centrif requires exactly one line\n\nfound references: {items}"
             )
-            msgBox.setWindowTitle("FreeCAD FEM Constraint Centrif - Axis selection")
+            msgBox.setWindowTitle("FreeCAD FEM Constraint Centrif - Axis Selection")
             retryButton = msgBox.addButton(QtGui.QMessageBox.Retry)
             ignoreButton = msgBox.addButton(QtGui.QMessageBox.Ignore)
             msgBox.exec_()
@@ -110,7 +113,7 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
             msgBox = QtGui.QMessageBox()
             msgBox.setIcon(QtGui.QMessageBox.Question)
             msgBox.setText("Constraint Centrif requires at least one solid")
-            msgBox.setWindowTitle("FreeCAD FEM Constraint Centrif - Body selection")
+            msgBox.setWindowTitle("FEM Constraint Centrifuge - Body Selection")
             retryButton = msgBox.addButton(QtGui.QMessageBox.Retry)
             ignoreButton = msgBox.addButton(QtGui.QMessageBox.Ignore)
             msgBox.exec_()
@@ -126,7 +129,7 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
             msgBox = QtGui.QMessageBox()
             msgBox.setIcon(QtGui.QMessageBox.Question)
             msgBox.setText("Rotational speed is zero")
-            msgBox.setWindowTitle("FreeCAD FEM Constraint Centrif - Rotational speed setting")
+            msgBox.setWindowTitle("FEM Constraint Centrifuge - Rotational Speed Setting")
             retryButton = msgBox.addButton(QtGui.QMessageBox.Retry)
             ignoreButton = msgBox.addButton(QtGui.QMessageBox.Ignore)
             msgBox.exec_()

@@ -20,12 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QApplication>
-# include <QStyle>
-#endif
+#include <QApplication>
+#include <QStyle>
+
 
 #include "ViewProviderMaterialObject.h"
 #include "Application.h"
@@ -57,21 +55,28 @@ bool ViewProviderMaterialObject::doubleClicked()
 QIcon ViewProviderMaterialObject::getIcon() const
 {
     QIcon groupIcon;
-    groupIcon.addPixmap(QApplication::style()->standardPixmap(QStyle::SP_DirClosedIcon),
-                        QIcon::Normal, QIcon::Off);
-    groupIcon.addPixmap(QApplication::style()->standardPixmap(QStyle::SP_DirOpenIcon),
-                        QIcon::Normal, QIcon::On);
+    groupIcon.addPixmap(
+        QApplication::style()->standardPixmap(QStyle::SP_DirClosedIcon),
+        QIcon::Normal,
+        QIcon::Off
+    );
+    groupIcon.addPixmap(
+        QApplication::style()->standardPixmap(QStyle::SP_DirOpenIcon),
+        QIcon::Normal,
+        QIcon::On
+    );
     return groupIcon;
 }
 
 
 // Python feature -----------------------------------------------------------------------
 
-namespace Gui {
+namespace Gui
+{
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(Gui::ViewProviderMaterialObjectPython, Gui::ViewProviderMaterialObject)
 /// @endcond
 
 // explicit template instantiation
 template class GuiExport ViewProviderFeaturePythonT<ViewProviderMaterialObject>;
-}
+}  // namespace Gui

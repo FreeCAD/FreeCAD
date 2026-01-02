@@ -92,7 +92,7 @@
           </sizepolicy>
          </property>
          <property name="text">
-          <string>File...</string>
+          <string>File</string>
          </property>
         </widget>
        </item>

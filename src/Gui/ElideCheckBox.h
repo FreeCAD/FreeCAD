@@ -26,31 +26,30 @@
 #ifndef ELIDECHECKBOX_H
 #define ELIDECHECKBOX_H
 
-#ifndef _PreComp_
 #include <QCheckBox>
 #include <QPainter>
 #include <QFontMetrics>
 #include <QStyleOptionButton>
-#endif
 
 #include <FCGlobal.h>
 
-namespace Gui {
+namespace Gui
+{
 
-class GuiExport ElideCheckBox : public QCheckBox {
+class GuiExport ElideCheckBox: public QCheckBox
+{
     Q_OBJECT
 
 public:
-    explicit ElideCheckBox(QWidget *parent = nullptr);
+    explicit ElideCheckBox(QWidget* parent = nullptr);
     ~ElideCheckBox() override = default;
 
 protected:
-    void paintEvent(QPaintEvent *event) override;
+    void paintEvent(QPaintEvent* event) override;
     QSize sizeHint() const override;
     QSize minimumSizeHint() const override;
 };
 
 }  // namespace Gui
 
-#endif // ELIDECHECKBOX_H
-
+#endif  // ELIDECHECKBOX_H

@@ -1,9 +1,8 @@
-#include "PreCompiled.h"
-#ifndef _PreComp_
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 #include <unordered_map>
 #ifndef FC_DEBUG
 #include <random>
-#endif
 #endif
 
 #include "ElementMap.h"
@@ -16,6 +15,7 @@
 
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/split.hpp>
+#include <boost/io/ios_state.hpp>
 
 
 FC_LOG_LEVEL_INIT("ElementMap", true, 2);  // NOLINT
@@ -1194,7 +1194,7 @@ void ElementMap::addChildElements(long masterTag, const std::vector<MappedChildE
 
         // do child mapping only if the child element count >= 5
         const int threshold {5};
-        if (child.count >= threshold || !child.elementMap) {
+        if ((child.count >= threshold && masterTag != 0) || !child.elementMap) {
             encodeElementName(child.indexedName[0],
                               tmp,
                               ss,

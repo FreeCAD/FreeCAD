@@ -23,14 +23,12 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <QAction>
 # include <QMenu>
 #include <QTextStream>
 #include <QMessageBox>
-#endif
+
 
 #include <App/DocumentObject.h>
 #include <Gui/ActionFunction.h>
@@ -48,6 +46,7 @@
 #include "QGIViewBalloon.h"
 #include "TaskBalloon.h"
 #include "ViewProviderBalloon.h"
+#include "ViewProviderPage.h"
 
 using namespace TechDrawGui;
 using namespace TechDraw;
@@ -115,10 +114,16 @@ void ViewProviderBalloon::updateData(const App::Property* prop)
     //Balloon handles X, Y updates differently that other QGIView
     //call QGIViewBalloon::updateView
     if (prop == &(getViewObject()->X)  ||
-        prop == &(getViewObject()->Y) ){
+        prop == &(getViewObject()->Y)){
         QGIView* qgiv = getQView();
         if (qgiv) {
             qgiv->updateView(true);
+        }
+    }
+    if (prop == &(getViewObject()->SourceView)) {
+        // Ensure the QGraphicsItems hierarchy matches the DocumentObject's
+        if (ViewProviderPage* vpp = getViewProviderPage()) {
+            vpp->fixSceneDependencies();
         }
     }
 

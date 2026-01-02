@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2014 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -20,8 +22,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+#include <FCConfig.h>
+
 #include <memory>
 
 #include <QApplication>
@@ -29,7 +31,6 @@
 #include <QMessageBox>
 
 #include <Inventor/SbString.h>
-#endif
 
 #include <App/Application.h>
 #include <Base/Console.h>
@@ -65,6 +66,7 @@
 #include "DrawSketchHandlerRotate.h"
 #include "DrawSketchHandlerScale.h"
 #include "DrawSketchHandlerSymmetry.h"
+#include "SnapManager.h"
 
 // Hint: this is to prevent to re-format big parts of the file. Remove it later again.
 // clang-format off
@@ -83,7 +85,7 @@ std::vector<int> getListOfSelectedGeoIds(bool forceInternalSelection)
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
         QMessageBox::warning(Gui::getMainWindow(),
-            QObject::tr("Wrong selection"),
+            QObject::tr("Wrong Selection"),
             QObject::tr("Select elements from a single sketch."));
         return {};
     }
@@ -222,8 +224,8 @@ CmdSketcherCopyClipboard::CmdSketcherCopyClipboard()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("C&opy in sketcher");
-    sToolTipText = QT_TR_NOOP("Copy selected geometries and constraints to the clipboard");
+    sMenuText = QT_TR_NOOP("C&opy Elements");
+    sToolTipText = QT_TR_NOOP("Copies the selected geometries and constraints to the clipboard");
     sWhatsThis = "Sketcher_CopyClipboard";
     sStatusTip = sToolTipText;
     sPixmap = "edit-copy";
@@ -239,7 +241,7 @@ void CmdSketcherCopyClipboard::activated(int iMsg)
 
 bool CmdSketcherCopyClipboard::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), true);
+    return isCommandNeedingGeometryActive(getActiveGuiDocument());
 }
 
 // ================================================================================
@@ -253,8 +255,8 @@ CmdSketcherCut::CmdSketcherCut()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("C&ut in sketcher");
-    sToolTipText = QT_TR_NOOP("Cut selected geometries and constraints to the clipboard");
+    sMenuText = QT_TR_NOOP("C&ut Elements");
+    sToolTipText = QT_TR_NOOP("Cuts the selected geometries and constraints to the clipboard");
     sWhatsThis = "Sketcher_Cut";
     sStatusTip = sToolTipText;
     sPixmap = "edit-cut";
@@ -279,7 +281,7 @@ void CmdSketcherCut::activated(int iMsg)
 
 bool CmdSketcherCut::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), true);
+    return isCommandNeedingGeometryActive(getActiveGuiDocument());
 }
 
 // ================================================================================
@@ -293,8 +295,8 @@ CmdSketcherPaste::CmdSketcherPaste()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("P&aste in sketcher");
-    sToolTipText = QT_TR_NOOP("Paste selected geometries and constraints from the clipboard");
+    sMenuText = QT_TR_NOOP("P&aste Elements");
+    sToolTipText = QT_TR_NOOP("Pastes the geometries and constraints from the clipboard into the sketch");
     sWhatsThis = "Sketcher_Paste";
     sStatusTip = sToolTipText;
     sPixmap = "edit-paste";
@@ -328,7 +330,7 @@ void CmdSketcherPaste::activated(int iMsg)
 
 bool CmdSketcherPaste::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), false);
+    return isCommandActive(getActiveGuiDocument());
 }
 
 // ================================================================================
@@ -341,9 +343,9 @@ CmdSketcherSelectConstraints::CmdSketcherSelectConstraints()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Select associated constraints");
+    sMenuText = QT_TR_NOOP("Select Associated Constraints");
     sToolTipText =
-        QT_TR_NOOP("Select the constraints associated with the selected geometrical elements");
+        QT_TR_NOOP("Selects the constraints associated with the selected geometrical elements");
     sWhatsThis = "Sketcher_SelectConstraints";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_SelectConstraints";
@@ -375,7 +377,7 @@ void CmdSketcherSelectConstraints::activated(int iMsg)
     // get the needed lists and objects
     const std::vector<std::string>& SubNames = selection[0].getSubNames();
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
-    const std::vector<Sketcher::Constraint*>& vals = Obj->Constraints.getValues();
+    const std::vector<Sketcher::Constraint*>& constraints = Obj->Constraints.getValues();
 
     std::string doc_name = Obj->getDocument()->getName();
     std::string obj_name = Obj->getNameInDocument();
@@ -384,23 +386,26 @@ void CmdSketcherSelectConstraints::activated(int iMsg)
 
     std::vector<std::string> constraintSubNames;
     // go through the selected subelements
-    for (std::vector<std::string>::const_iterator it = SubNames.begin(); it != SubNames.end();
-         ++it) {
-        // only handle edges
-        if (it->size() > 4 && it->substr(0, 4) == "Edge") {
-            int GeoId = std::atoi(it->substr(4, 4000).c_str()) - 1;
-
-            // push all the constraints
-            int i = 0;
-            for (std::vector<Sketcher::Constraint*>::const_iterator it = vals.begin();
-                 it != vals.end();
-                 ++it, ++i) {
-                if ((*it)->First == GeoId || (*it)->Second == GeoId || (*it)->Third == GeoId) {
-                    constraintSubNames.push_back(
-                        Sketcher::PropertyConstraintList::getConstraintName(i));
-                }
+    int i = 0;
+    for (auto const& constraint : constraints) {
+        auto isRelated = [&] (const std::string& subName){
+            int geoId;
+            PointPos pointPos;
+            Data::IndexedName name = Obj->checkSubName(subName.c_str());
+            if (!Obj->geoIdFromShapeType(name, geoId, pointPos)) {
+                return false;
             }
+            if (pointPos != PointPos::none) {
+                return constraint->involvesGeoIdAndPosId(geoId, pointPos);
+            } else {
+                return constraint->involvesGeoId(geoId);
+            }
+        };
+
+        if (std::ranges::any_of(SubNames, isRelated)) {
+            constraintSubNames.push_back(PropertyConstraintList::getConstraintName(i));
         }
+        ++i;
     }
 
     if (!constraintSubNames.empty())
@@ -409,7 +414,7 @@ void CmdSketcherSelectConstraints::activated(int iMsg)
 
 bool CmdSketcherSelectConstraints::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), true);
+    return isCommandNeedingGeometryActive(getActiveGuiDocument());
 }
 
 // ================================================================================
@@ -422,8 +427,8 @@ CmdSketcherSelectOrigin::CmdSketcherSelectOrigin()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Select origin");
-    sToolTipText = QT_TR_NOOP("Select the local origin point of the sketch");
+    sMenuText = QT_TR_NOOP("Select Origin");
+    sToolTipText = QT_TR_NOOP("Selects the local origin point of the sketch");
     sWhatsThis = "Sketcher_SelectOrigin";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_SelectOrigin";
@@ -453,7 +458,7 @@ void CmdSketcherSelectOrigin::activated(int iMsg)
 
 bool CmdSketcherSelectOrigin::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), false);
+    return isCommandActive(getActiveGuiDocument());
 }
 
 // ================================================================================
@@ -466,8 +471,8 @@ CmdSketcherSelectVerticalAxis::CmdSketcherSelectVerticalAxis()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Select vertical axis");
-    sToolTipText = QT_TR_NOOP("Select the local vertical axis of the sketch");
+    sMenuText = QT_TR_NOOP("Select Vertical Axis");
+    sToolTipText = QT_TR_NOOP("Selects the local vertical axis of the sketch");
     sWhatsThis = "Sketcher_SelectVerticalAxis";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_SelectVerticalAxis";
@@ -494,7 +499,7 @@ void CmdSketcherSelectVerticalAxis::activated(int iMsg)
 
 bool CmdSketcherSelectVerticalAxis::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), false);
+    return isCommandActive(getActiveGuiDocument());
 }
 
 // ================================================================================
@@ -507,8 +512,8 @@ CmdSketcherSelectHorizontalAxis::CmdSketcherSelectHorizontalAxis()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Select horizontal axis");
-    sToolTipText = QT_TR_NOOP("Select the local horizontal axis of the sketch");
+    sMenuText = QT_TR_NOOP("Select Horizontal Axis");
+    sToolTipText = QT_TR_NOOP("Selects the local horizontal axis of the sketch");
     sWhatsThis = "Sketcher_SelectHorizontalAxis";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_SelectHorizontalAxis";
@@ -535,7 +540,7 @@ void CmdSketcherSelectHorizontalAxis::activated(int iMsg)
 
 bool CmdSketcherSelectHorizontalAxis::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), false);
+    return isCommandActive(getActiveGuiDocument());
 }
 
 // ================================================================================
@@ -547,8 +552,8 @@ CmdSketcherSelectRedundantConstraints::CmdSketcherSelectRedundantConstraints()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Select redundant constraints");
-    sToolTipText = QT_TR_NOOP("Select redundant constraints");
+    sMenuText = QT_TR_NOOP("Select Redundant Constraints");
+    sToolTipText = QT_TR_NOOP("Selects all redundant constraints");
     sWhatsThis = "Sketcher_SelectRedundantConstraints";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_SelectRedundantConstraints";
@@ -593,7 +598,7 @@ void CmdSketcherSelectRedundantConstraints::activated(int iMsg)
 
 bool CmdSketcherSelectRedundantConstraints::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), false);
+    return isCommandActive(getActiveGuiDocument());
 }
 
 // ================================================================================
@@ -605,8 +610,8 @@ CmdSketcherSelectMalformedConstraints::CmdSketcherSelectMalformedConstraints()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Select malformed constraints");
-    sToolTipText = QT_TR_NOOP("Select malformed constraints");
+    sMenuText = QT_TR_NOOP("Select Malformed Constraints");
+    sToolTipText = QT_TR_NOOP("Selects all malformed constraints");
     sWhatsThis = "Sketcher_SelectMalformedConstraints";
     sStatusTip = sToolTipText;
     eType = ForEdit;
@@ -648,7 +653,7 @@ void CmdSketcherSelectMalformedConstraints::activated(int iMsg)
 
 bool CmdSketcherSelectMalformedConstraints::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), false);
+    return isCommandActive(getActiveGuiDocument());
 }
 
 // ================================================================================
@@ -660,8 +665,8 @@ CmdSketcherSelectPartiallyRedundantConstraints::CmdSketcherSelectPartiallyRedund
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Select partially redundant constraints");
-    sToolTipText = QT_TR_NOOP("Select partially redundant constraints");
+    sMenuText = QT_TR_NOOP("Select Partially Redundant Constraints");
+    sToolTipText = QT_TR_NOOP("Selects all partially redundant constraints");
     sWhatsThis = "Sketcher_SelectPartiallyRedundantConstraints";
     sStatusTip = sToolTipText;
     eType = ForEdit;
@@ -704,7 +709,7 @@ void CmdSketcherSelectPartiallyRedundantConstraints::activated(int iMsg)
 
 bool CmdSketcherSelectPartiallyRedundantConstraints::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), false);
+    return isCommandActive(getActiveGuiDocument());
 }
 
 // ================================================================================
@@ -716,8 +721,8 @@ CmdSketcherSelectConflictingConstraints::CmdSketcherSelectConflictingConstraints
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Select conflicting constraints");
-    sToolTipText = QT_TR_NOOP("Select conflicting constraints");
+    sMenuText = QT_TR_NOOP("Select Conflicting Constraints");
+    sToolTipText = QT_TR_NOOP("Selects all conflicting constraints");
     sWhatsThis = "Sketcher_SelectConflictingConstraints";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_SelectConflictingConstraints";
@@ -761,7 +766,7 @@ void CmdSketcherSelectConflictingConstraints::activated(int iMsg)
 
 bool CmdSketcherSelectConflictingConstraints::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), false);
+    return isCommandActive(getActiveGuiDocument());
 }
 
 // ================================================================================
@@ -774,9 +779,9 @@ CmdSketcherSelectElementsAssociatedWithConstraints::
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Select associated geometry");
+    sMenuText = QT_TR_NOOP("Select Associated Geometry");
     sToolTipText =
-        QT_TR_NOOP("Select the geometrical elements associated with the selected constraints");
+        QT_TR_NOOP("Selects the geometrical elements associated with the selected constraints");
     sWhatsThis = "Sketcher_SelectElementsAssociatedWithConstraints";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_SelectElementsAssociatedWithConstraints";
@@ -882,7 +887,7 @@ void CmdSketcherSelectElementsAssociatedWithConstraints::activated(int iMsg)
 
 bool CmdSketcherSelectElementsAssociatedWithConstraints::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), true);
+    return isCommandNeedingConstraintActive(getActiveGuiDocument());
 }
 
 // ================================================================================
@@ -894,9 +899,9 @@ CmdSketcherSelectElementsWithDoFs::CmdSketcherSelectElementsWithDoFs()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Select under-constrained elements");
-    sToolTipText = QT_TR_NOOP("Select geometrical elements where the solver still detects "
-                              "unconstrained degrees of freedom.");
+    sMenuText = QT_TR_NOOP("Select Under-Constrained Elements");
+    sToolTipText = QT_TR_NOOP("Selects geometrical elements where the solver still detects "
+                              "unconstrained degrees of freedom");
     sWhatsThis = "Sketcher_SelectElementsWithDoFs";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_SelectElementsWithDoFs";
@@ -971,7 +976,7 @@ void CmdSketcherSelectElementsWithDoFs::activated(int iMsg)
 
 bool CmdSketcherSelectElementsWithDoFs::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), false);
+    return isCommandActive(getActiveGuiDocument());
 }
 
 // ================================================================================
@@ -983,8 +988,8 @@ CmdSketcherRestoreInternalAlignmentGeometry::CmdSketcherRestoreInternalAlignment
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Show/hide internal geometry");
-    sToolTipText = QT_TR_NOOP("Show all internal geometry or hide unused internal geometry");
+    sMenuText = QT_TR_NOOP("Toggle Internal Geometry");
+    sToolTipText = QT_TR_NOOP("Toggles the visibility of all internal geometry");
     sWhatsThis = "Sketcher_RestoreInternalAlignmentGeometry";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_Element_Ellipse_All";
@@ -1086,7 +1091,7 @@ void CmdSketcherRestoreInternalAlignmentGeometry::activated(int iMsg)
 
 bool CmdSketcherRestoreInternalAlignmentGeometry::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), true);
+    return isCommandNeedingGeometryActive(getActiveGuiDocument());
 }
 
 // ================================================================================
@@ -1098,9 +1103,9 @@ CmdSketcherSymmetry::CmdSketcherSymmetry()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Symmetry");
+    sMenuText = QT_TR_NOOP("Mirror");
     sToolTipText =
-        QT_TR_NOOP("Creates symmetric of selected geometry. After starting the tool select the reference line or point.");
+        QT_TR_NOOP("Creates a mirrored copy of the selected geometry");
     sWhatsThis = "Sketcher_Symmetry";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_Symmetry";
@@ -1121,7 +1126,7 @@ void CmdSketcherSymmetry::activated(int iMsg)
 
 bool CmdSketcherSymmetry::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), true);
+    return isCommandNeedingGeometryActive(getActiveGuiDocument());
 }
 
 // ================================================================================
@@ -1209,9 +1214,10 @@ public:
         Snap5Degree
     };
 
-    void mouseMove(Base::Vector2d onSketchPos) override
+    void mouseMove(SnapManager::SnapHandle snapHandle) override
     {
         using std::numbers::pi;
+        Base::Vector2d onSketchPos = snapHandle.compute();
 
         if (Mode == STATUS_SEEK_First) {
 
@@ -1435,7 +1441,7 @@ void SketcherCopy::activate(SketcherCopy::Op op)
     // Ask the user if they want to clone or to simple copy
     /*
     int ret = QMessageBox::question(Gui::getMainWindow(), QObject::tr("Dimensional/Geometric
-    constraints"), QObject::tr("Do you want to clone the object, i.e. substitute dimensional
+    Constraints"), QObject::tr("Do you want to clone the object, i.e. substitute dimensional
     constraints by geometric constraints?"), QMessageBox::Yes, QMessageBox::No,
     QMessageBox::Cancel);
     // use an equality constraint
@@ -1499,7 +1505,7 @@ void CmdSketcherCopy::activate()
 
 bool CmdSketcherCopy::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), true);
+    return isCommandNeedingGeometryActive(getActiveGuiDocument());
 }
 
 // ================================================================================
@@ -1549,7 +1555,7 @@ void CmdSketcherClone::activate()
 
 bool CmdSketcherClone::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), true);
+    return isCommandNeedingGeometryActive(getActiveGuiDocument());
 }
 
 class CmdSketcherMove: public SketcherCopy
@@ -1596,7 +1602,7 @@ void CmdSketcherMove::activate()
 
 bool CmdSketcherMove::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), true);
+    return isCommandNeedingGeometryActive(getActiveGuiDocument());
 }
 
 // ================================================================================
@@ -1707,7 +1713,7 @@ void CmdSketcherCompCopy::languageChange()
 
 bool CmdSketcherCompCopy::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), true);
+    return isCommandNeedingGeometryActive(getActiveGuiDocument());
 }
 
 // ================================================================================
@@ -1787,9 +1793,10 @@ public:
         Snap5Degree
     };
 
-    void mouseMove(Base::Vector2d onSketchPos) override
+    void mouseMove(SnapManager::SnapHandle snapHandle) override
     {
         using std::numbers::pi;
+        Base::Vector2d onSketchPos = snapHandle.compute();
 
         if (Mode == STATUS_SEEK_First) {
 
@@ -1916,7 +1923,7 @@ CmdSketcherRectangularArray::CmdSketcherRectangularArray()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Rectangular array");
+    sMenuText = QT_TR_NOOP("Rectangular Array");
     sToolTipText = QT_TR_NOOP("Creates a rectangular array pattern of the geometry taking as "
                               "reference the last selected point");
     sWhatsThis = "Sketcher_RectangularArray";
@@ -2056,7 +2063,7 @@ void CmdSketcherRectangularArray::activated(int iMsg)
 
 bool CmdSketcherRectangularArray::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), true);
+    return isCommandNeedingGeometryActive(getActiveGuiDocument());
 }
 
 // ================================================================================
@@ -2068,8 +2075,8 @@ CmdSketcherDeleteAllGeometry::CmdSketcherDeleteAllGeometry()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Delete all geometry");
-    sToolTipText = QT_TR_NOOP("Delete all geometry and constraints in the current sketch, "
+    sMenuText = QT_TR_NOOP("Delete All Geometry");
+    sToolTipText = QT_TR_NOOP("Deletes all geometry and their constraints in the current sketch, "
                               "with the exception of external geometry");
     sWhatsThis = "Sketcher_DeleteAllGeometry";
     sStatusTip = sToolTipText;
@@ -2085,7 +2092,7 @@ void CmdSketcherDeleteAllGeometry::activated(int iMsg)
     int ret = QMessageBox::question(
         Gui::getMainWindow(),
         QObject::tr("Delete All Geometry"),
-        QObject::tr("Are you really sure you want to delete all geometry and constraints?"),
+        QObject::tr("Delete all geometry and constraints?"),
         QMessageBox::Yes,
         QMessageBox::Cancel);
     // use an equality constraint
@@ -2121,7 +2128,7 @@ void CmdSketcherDeleteAllGeometry::activated(int iMsg)
 
 bool CmdSketcherDeleteAllGeometry::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), false);
+    return isCommandActive(getActiveGuiDocument());
 }
 
 // ================================================================================
@@ -2133,8 +2140,8 @@ CmdSketcherDeleteAllConstraints::CmdSketcherDeleteAllConstraints()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Delete all constraints");
-    sToolTipText = QT_TR_NOOP("Delete all constraints in the sketch");
+    sMenuText = QT_TR_NOOP("Delete All Constraints");
+    sToolTipText = QT_TR_NOOP("Deletes all constraints in the sketch");
     sWhatsThis = "Sketcher_DeleteAllConstraints";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_DeleteConstraints";
@@ -2149,7 +2156,7 @@ void CmdSketcherDeleteAllConstraints::activated(int iMsg)
     int ret = QMessageBox::question(
         Gui::getMainWindow(),
         QObject::tr("Delete All Constraints"),
-        QObject::tr("Are you really sure you want to delete all the constraints?"),
+        QObject::tr("Delete all the constraints in the sketch?"),
         QMessageBox::Yes,
         QMessageBox::Cancel);
 
@@ -2158,7 +2165,7 @@ void CmdSketcherDeleteAllConstraints::activated(int iMsg)
         Sketcher::SketchObject* Obj = getSketchObject();
 
         try {
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Delete All Constraints"));
+            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Delete all constraints"));
             Gui::cmdAppObjectArgs(Obj, "deleteAllConstraints()");
             Gui::Command::commitCommand();
         }
@@ -2187,7 +2194,7 @@ void CmdSketcherDeleteAllConstraints::activated(int iMsg)
 
 bool CmdSketcherDeleteAllConstraints::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), false);
+    return isCommandActive(getActiveGuiDocument());
 }
 
 // ================================================================================
@@ -2200,8 +2207,8 @@ CmdSketcherRemoveAxesAlignment::CmdSketcherRemoveAxesAlignment()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Remove axes alignment");
-    sToolTipText = QT_TR_NOOP("Modifies constraints to remove axes alignment while trying to "
+    sMenuText = QT_TR_NOOP("Remove Axes Alignment");
+    sToolTipText = QT_TR_NOOP("Modifies the constraints to remove axes alignment while trying to "
                               "preserve the constraint relationship of the selection");
     sWhatsThis = "Sketcher_RemoveAxesAlignment";
     sStatusTip = sToolTipText;
@@ -2308,7 +2315,7 @@ void CmdSketcherRemoveAxesAlignment::activated(int iMsg)
 
 bool CmdSketcherRemoveAxesAlignment::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), true);
+    return isCommandNeedingGeometryActive(getActiveGuiDocument());
 }
 
 
@@ -2320,8 +2327,8 @@ CmdSketcherOffset::CmdSketcherOffset()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Offset geometry");
-    sToolTipText = QT_TR_NOOP("Offset selected geometries. A positive offset length makes the offset go outward, a negative length inward.");
+    sMenuText = QT_TR_NOOP("Offset");
+    sToolTipText = QT_TR_NOOP("Adds an equidistant closed contour around selected geometry: positive values offset outward, negative values inward");
     sWhatsThis = "Sketcher_Offset";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_Offset";
@@ -2391,7 +2398,7 @@ void CmdSketcherOffset::activated(int iMsg)
 
 bool CmdSketcherOffset::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), true);
+    return isCommandNeedingGeometryActive(getActiveGuiDocument());
 }
 
 // Rotate tool =====================================================================
@@ -2403,8 +2410,8 @@ CmdSketcherRotate::CmdSketcherRotate()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Rotate / Polar transform");
-    sToolTipText = QT_TR_NOOP("Rotate selected geometries, making n copies, enable creation of circular patterns.");
+    sMenuText = QT_TR_NOOP("Rotate / Polar Transform");
+    sToolTipText = QT_TR_NOOP("Rotates the selected geometry by creating 'n' copies, enabling circular pattern creation");
     sWhatsThis = "Sketcher_Rotate";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_Rotate";
@@ -2425,7 +2432,7 @@ void CmdSketcherRotate::activated(int iMsg)
 
 bool CmdSketcherRotate::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), true);
+    return isCommandNeedingGeometryActive(getActiveGuiDocument());
 }
 
 // Scale tool =====================================================================
@@ -2437,8 +2444,8 @@ CmdSketcherScale::CmdSketcherScale()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Scale transform");
-    sToolTipText = QT_TR_NOOP("Scale selected geometries. After selecting the center point you can either enter the scale factor, or select two reference points then scale factor = length(p2-center) / length(p1-center).");
+    sMenuText = QT_TR_NOOP("Scale");
+    sToolTipText = QT_TR_NOOP("Scales the selected geometries");
     sWhatsThis = "Sketcher_Scale";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_Scale";
@@ -2459,7 +2466,7 @@ void CmdSketcherScale::activated(int iMsg)
 
 bool CmdSketcherScale::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), true);
+    return isCommandNeedingGeometryActive(getActiveGuiDocument());
 }
 
 // Translate / rectangular pattern tool =======================================================
@@ -2471,8 +2478,8 @@ CmdSketcherTranslate::CmdSketcherTranslate()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Move / Array transform");
-    sToolTipText = QT_TR_NOOP("Translate selected geometries. Enable creation of i * j copies.");
+    sMenuText = QT_TR_NOOP("Move / Array Transform");
+    sToolTipText = QT_TR_NOOP("Translates the selected geometries and enables the creation of 'i' * 'j' copies");
     sWhatsThis = "Sketcher_Translate";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_Translate";
@@ -2493,7 +2500,7 @@ void CmdSketcherTranslate::activated(int iMsg)
 
 bool CmdSketcherTranslate::isActive()
 {
-    return isCommandActive(getActiveGuiDocument(), true);
+    return isCommandNeedingGeometryActive(getActiveGuiDocument());
 }
 
 void CreateSketcherCommandsConstraintAccel()
@@ -2530,14 +2537,11 @@ void CreateSketcherCommandsConstraintAccel()
 }
 // clang-format on
 
-void SketcherGui::centerScale(Sketcher::SketchObject* Obj, double scaleFactor)
+void SketcherGui::centerScale(double scaleFactor)
 {
-    std::vector<int> allGeoIds(Obj->Geometry.getValues().size());
-    std::iota(allGeoIds.begin(), allGeoIds.end(), 0);
-
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
     auto* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-    auto scaler = DrawSketchHandlerScale::make_centerScale(allGeoIds, scaleFactor, false);
+    auto scaler = DrawSketchHandlerScale::make_centerScaleAll(vp, scaleFactor, false);
     scaler->setSketchGui(vp);
     scaler->executeCommands();
 

@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <App/DocumentObject.h>
 
@@ -35,12 +34,12 @@ PROPERTY_SOURCE(Gui::ViewProviderFeature, Gui::ViewProviderDocumentObject)
 ViewProviderFeature::ViewProviderFeature()
 {
     Base::Color c;
-    ADD_PROPERTY(ColourList,(c));
+    ADD_PROPERTY(ColourList, (c));
 }
 
 ViewProviderFeature::~ViewProviderFeature() = default;
 
-void ViewProviderFeature::attach(App::DocumentObject *pcObj)
+void ViewProviderFeature::attach(App::DocumentObject* pcObj)
 {
     ViewProviderDocumentObject::attach(pcObj);
 }

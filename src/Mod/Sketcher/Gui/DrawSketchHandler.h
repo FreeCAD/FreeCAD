@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -23,8 +25,8 @@
 #ifndef SKETCHERGUI_DrawSketchHandler_H
 #define SKETCHERGUI_DrawSketchHandler_H
 
-#include <QCursor>
 #include <QPixmap>
+#include <QCoreApplication>
 
 #include <Inventor/SbString.h>
 
@@ -32,10 +34,14 @@
 #include <Base/Tools2D.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/ToolHandler.h>
+#include <Gui/InputHint.h>
+
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Sketcher/App/Constraint.h>
 
 #include "AutoConstraint.h"
+#include "Utils.h"
+#include "SnapManager.h"
 
 class QWidget;
 
@@ -69,8 +75,9 @@ public:
 
     std::vector<Base::Vector2d> toVector2D(const Part::Geometry* geometry);
 
-    std::list<std::vector<Base::Vector2d>>
-    toVector2DList(const std::vector<Part::Geometry*>& geometries);
+    std::list<std::vector<Base::Vector2d>> toVector2DList(
+        const std::vector<Part::Geometry*>& geometries
+    );
 
 private:
     void updateCurvedEdgeCountSegmentsParameter();
@@ -82,7 +89,6 @@ private:
     int curvedEdgeCountSegments;
 };
 
-
 /**
  * In order to enforce a certain degree of encapsulation and promote a not
  * too tight coupling, while still allowing well defined collaboration,
@@ -92,31 +98,43 @@ class ViewProviderSketchDrawSketchHandlerAttorney
 {
 private:
     static inline void setConstraintSelectability(ViewProviderSketch& vp, bool enabled = true);
-    static inline void
-    setPositionText(ViewProviderSketch& vp, const Base::Vector2d& Pos, const SbString& txt);
+    static inline void setPositionText(
+        ViewProviderSketch& vp,
+        const Base::Vector2d& Pos,
+        const SbString& txt
+    );
     static inline void setPositionText(ViewProviderSketch& vp, const Base::Vector2d& Pos);
     static inline void resetPositionText(ViewProviderSketch& vp);
-    static inline void drawEdit(ViewProviderSketch& vp,
-                                const std::vector<Base::Vector2d>& EditCurve);
-    static inline void drawEdit(ViewProviderSketch& vp,
-                                const std::list<std::vector<Base::Vector2d>>& list);
-    static inline void drawEditMarkers(ViewProviderSketch& vp,
-                                       const std::vector<Base::Vector2d>& EditMarkers,
-                                       unsigned int augmentationlevel = 0);
+    static inline void drawEdit(ViewProviderSketch& vp, const std::vector<Base::Vector2d>& EditCurve);
+    static inline void drawEdit(
+        ViewProviderSketch& vp,
+        const std::list<std::vector<Base::Vector2d>>& list
+    );
+    static inline void drawEditMarkers(
+        ViewProviderSketch& vp,
+        const std::vector<Base::Vector2d>& EditMarkers,
+        unsigned int augmentationlevel = 0
+    );
     static inline void setAxisPickStyle(ViewProviderSketch& vp, bool on);
     static inline void moveCursorToSketchPoint(ViewProviderSketch& vp, Base::Vector2d point);
     static inline void ensureFocus(ViewProviderSketch& vp);
     static inline void preselectAtPoint(ViewProviderSketch& vp, Base::Vector2d point);
-    static inline void setAngleSnapping(ViewProviderSketch& vp,
-                                        bool enable,
-                                        Base::Vector2d referencePoint = Base::Vector2d(0., 0.));
+    static inline void setAngleSnapping(
+        ViewProviderSketch& vp,
+        bool enable,
+        Base::Vector2d referencePoint = Base::Vector2d(0., 0.)
+    );
 
     static inline int getPreselectPoint(const ViewProviderSketch& vp);
     static inline int getPreselectCurve(const ViewProviderSketch& vp);
     static inline int getPreselectCross(const ViewProviderSketch& vp);
 
-    static inline void
-    moveConstraint(ViewProviderSketch& vp, int constNum, const Base::Vector2d& toPos);
+    static inline void moveConstraint(
+        ViewProviderSketch& vp,
+        int constNum,
+        const Base::Vector2d& toPos,
+        OffsetMode offset = NoOffset
+    );
 
     static inline void signalToolChanged(const ViewProviderSketch& vp, const std::string& toolname);
 
@@ -140,6 +158,8 @@ private:
  */
 class SketcherGuiExport DrawSketchHandler: public Gui::ToolHandler
 {
+    Q_DECLARE_TR_FUNCTIONS(DrawSketchHandler)
+
 public:
     DrawSketchHandler();
     virtual ~DrawSketchHandler();
@@ -148,7 +168,7 @@ public:
     void setSketchGui(ViewProviderSketch* vp);
     void deactivate() override;
 
-    virtual void mouseMove(Base::Vector2d pos) = 0;
+    virtual void mouseMove(SnapManager::SnapHandle snapHandle) = 0;
     virtual bool pressButton(Base::Vector2d pos) = 0;
     virtual bool releaseButton(Base::Vector2d pos) = 0;
 
@@ -160,6 +180,11 @@ public:
         return false;
     }
 
+    std::list<Gui::InputHint> getToolHints() const override
+    {
+        return {};
+    }
+
     void quit() override;
 
     friend class ViewProviderSketch;
@@ -169,23 +194,29 @@ public:
     // get the actual highest edge index, the next use will be +1
     int getHighestCurveIndex();
 
-    int seekAutoConstraint(std::vector<AutoConstraint>& suggestedConstraints,
-                           const Base::Vector2d& Pos,
-                           const Base::Vector2d& Dir,
-                           AutoConstraint::TargetType type = AutoConstraint::VERTEX);
+    int seekAutoConstraint(
+        std::vector<AutoConstraint>& suggestedConstraints,
+        const Base::Vector2d& Pos,
+        const Base::Vector2d& Dir,
+        AutoConstraint::TargetType type = AutoConstraint::VERTEX
+    );
 
-    int seekAndRenderAutoConstraint(std::vector<AutoConstraint>& suggestedConstraints,
-                                    const Base::Vector2d& Pos,
-                                    const Base::Vector2d& Dir,
-                                    AutoConstraint::TargetType type = AutoConstraint::VERTEX);
+    int seekAndRenderAutoConstraint(
+        std::vector<AutoConstraint>& suggestedConstraints,
+        const Base::Vector2d& Pos,
+        const Base::Vector2d& Dir,
+        AutoConstraint::TargetType type = AutoConstraint::VERTEX
+    );
 
     // createowncommand indicates whether a separate command shall be create and committed (for
     // example for undo purposes) or not is not it is the responsibility of the developer to create
     // and commit the command appropriately.
-    void createAutoConstraints(const std::vector<AutoConstraint>& autoConstrs,
-                               int geoId,
-                               Sketcher::PointPos pointPos = Sketcher::PointPos::none,
-                               bool createowncommand = true);
+    void createAutoConstraints(
+        const std::vector<AutoConstraint>& autoConstrs,
+        int geoId,
+        Sketcher::PointPos pointPos = Sketcher::PointPos::none,
+        bool createowncommand = true
+    );
 
     void setPositionText(const Base::Vector2d& Pos, const SbString& text);
     void setPositionText(const Base::Vector2d& Pos);
@@ -241,8 +272,10 @@ protected:
     void drawEdit(const std::vector<Base::Vector2d>& EditCurve) const;
     void drawEdit(const std::list<std::vector<Base::Vector2d>>& list) const;
     void drawEdit(const std::vector<Part::Geometry*>& geometries) const;
-    void drawEditMarkers(const std::vector<Base::Vector2d>& EditMarkers,
-                         unsigned int augmentationlevel = 0) const;
+    void drawEditMarkers(
+        const std::vector<Base::Vector2d>& EditMarkers,
+        unsigned int augmentationlevel = 0
+    ) const;
 
     void clearEdit() const;
     void clearEditMarkers() const;
@@ -254,11 +287,12 @@ protected:
 
     void drawPositionAtCursor(const Base::Vector2d& position);
     void drawDirectionAtCursor(const Base::Vector2d& position, const Base::Vector2d& origin);
-    void
-    drawWidthHeightAtCursor(const Base::Vector2d& position, const double val1, const double val2);
-    void drawDoubleAtCursor(const Base::Vector2d& position,
-                            const double radius,
-                            Base::Unit unit = Base::Unit::Length);
+    void drawWidthHeightAtCursor(const Base::Vector2d& position, const double val1, const double val2);
+    void drawDoubleAtCursor(
+        const Base::Vector2d& position,
+        const double radius,
+        Base::Unit unit = Base::Unit::Length
+    );
 
     int getPreselectPoint() const;
     int getPreselectCurve() const;
@@ -268,7 +302,7 @@ protected:
 
     void setAngleSnapping(bool enable, Base::Vector2d referencePoint = Base::Vector2d(0., 0.));
 
-    void moveConstraint(int constNum, const Base::Vector2d& toPos);
+    void moveConstraint(int constNum, const Base::Vector2d& toPos, OffsetMode offset = NoOffset);
 
     void signalToolChanged() const;
 
@@ -284,26 +318,28 @@ protected:
     };
     PreselectionData getPreselectionData();
 
-    void seekPreselectionAutoConstraint(std::vector<AutoConstraint>& constraints,
-                                        const Base::Vector2d& Pos,
-                                        const Base::Vector2d& Dir,
-                                        AutoConstraint::TargetType type);
+    void seekPreselectionAutoConstraint(
+        std::vector<AutoConstraint>& constraints,
+        const Base::Vector2d& Pos,
+        const Base::Vector2d& Dir,
+        AutoConstraint::TargetType type
+    );
 
     bool isLineCenterAutoConstraint(int GeoId, const Base::Vector2d& Pos) const;
 
-    void seekAlignmentAutoConstraint(std::vector<AutoConstraint>& constraints,
-                                     const Base::Vector2d& Dir);
+    void seekAlignmentAutoConstraint(std::vector<AutoConstraint>& constraints, const Base::Vector2d& Dir);
 
-    void seekTangentAutoConstraint(std::vector<AutoConstraint>& constraints,
-                                   const Base::Vector2d& Pos,
-                                   const Base::Vector2d& Dir);
+    void seekTangentAutoConstraint(
+        std::vector<AutoConstraint>& constraints,
+        const Base::Vector2d& Pos,
+        const Base::Vector2d& Dir
+    );
 
 protected:
     /**
      * Returns constraints icons scaled to width.
      **/
-    std::vector<QPixmap>
-    suggestedConstraintsPixmaps(std::vector<AutoConstraint>& suggestedConstraints);
+    std::vector<QPixmap> suggestedConstraintsPixmaps(std::vector<AutoConstraint>& suggestedConstraints);
 
     ViewProviderSketch* sketchgui;
 

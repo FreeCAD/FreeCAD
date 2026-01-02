@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Jürgen Riegel <juergen.riegel@web.de>              *
  *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
@@ -21,7 +23,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <boost/tokenizer.hpp>
 
@@ -119,11 +120,13 @@ PyObject* SheetPy::get(PyObject* args)
             do {
                 App::Property* prop = getSheetPtr()->getPropertyByName(range.address().c_str());
                 if (!prop) {
-                    PyErr_Format(PyExc_ValueError,
-                                 "Invalid address '%s' in range %s:%s",
-                                 range.address().c_str(),
-                                 address,
-                                 address2);
+                    PyErr_Format(
+                        PyExc_ValueError,
+                        "Invalid address '%s' in range %s:%s",
+                        range.address().c_str(),
+                        address,
+                        address2
+                    );
                     return nullptr;
                 }
                 tuple.setItem(i++, Py::Object(prop->getPyObject(), true));
@@ -221,12 +224,7 @@ PyObject* SheetPy::importFile(PyObject* args)
     const char* quoteChar = "\"";
     const char* escapeChar = "\\";
 
-    if (!PyArg_ParseTuple(args,
-                          "s|sss:importFile",
-                          &filename,
-                          &delimiter,
-                          &quoteChar,
-                          &escapeChar)) {
+    if (!PyArg_ParseTuple(args, "s|sss:importFile", &filename, &delimiter, &quoteChar, &escapeChar)) {
         return nullptr;
     }
 
@@ -245,12 +243,7 @@ PyObject* SheetPy::exportFile(PyObject* args)
     const char* quoteChar = "\"";
     const char* escapeChar = "\\";
 
-    if (!PyArg_ParseTuple(args,
-                          "s|sss:exportFile",
-                          &filename,
-                          &delimiter,
-                          &quoteChar,
-                          &escapeChar)) {
+    if (!PyArg_ParseTuple(args, "s|sss:exportFile", &filename, &delimiter, &quoteChar, &escapeChar)) {
         return nullptr;
     }
 
@@ -385,14 +378,13 @@ PyObject* SheetPy::setStyle(PyObject* args)
         std::string line = PyUnicode_AsUTF8(value);
         tokenizer<escaped_list_separator<char>> tok(line, e);
 
-        for (tokenizer<escaped_list_separator<char>>::iterator i = tok.begin(); i != tok.end();
-             ++i) {
+        for (tokenizer<escaped_list_separator<char>>::iterator i = tok.begin(); i != tok.end(); ++i) {
             style.insert(*i);
         }
     }
     else {
-        std::string error =
-            std::string("style must be either set or string, not ") + value->ob_type->tp_name;
+        std::string error = std::string("style must be either set or string, not ")
+            + value->ob_type->tp_name;
         PyErr_SetString(PyExc_TypeError, error.c_str());
         return nullptr;
     }
@@ -475,7 +467,8 @@ PyObject* SheetPy::setStyle(PyObject* args)
     else {
         PyErr_SetString(
             PyExc_ValueError,
-            "Optional parameter must be either 'replace', 'add', 'remove', or 'invert'");
+            "Optional parameter must be either 'replace', 'add', 'remove', or 'invert'"
+        );
         return nullptr;
     }
 
@@ -683,16 +676,15 @@ PyObject* SheetPy::setAlignment(PyObject* args)
         std::string line = PyUnicode_AsUTF8(value);
         tokenizer<escaped_list_separator<char>> tok(line, e);
 
-        for (tokenizer<escaped_list_separator<char>>::iterator i = tok.begin(); i != tok.end();
-             ++i) {
+        for (tokenizer<escaped_list_separator<char>>::iterator i = tok.begin(); i != tok.end(); ++i) {
             if (!i->empty()) {
                 alignment = Cell::decodeAlignment(*i, alignment);
             }
         }
     }
     else {
-        std::string error =
-            std::string("style must be either set or string, not ") + value->ob_type->tp_name;
+        std::string error = std::string("style must be either set or string, not ")
+            + value->ob_type->tp_name;
         PyErr_SetString(PyExc_TypeError, error.c_str());
         return nullptr;
     }

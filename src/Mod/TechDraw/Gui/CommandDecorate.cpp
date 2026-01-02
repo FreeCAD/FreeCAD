@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QMessageBox>
 # include <sstream>
-#endif
+
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -74,8 +72,8 @@ CmdTechDrawHatch::CmdTechDrawHatch()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Hatch a Face using Image File");
-    sToolTipText    = sMenuText;
+    sMenuText       = QT_TR_NOOP("Image Hatch");
+    sToolTipText    = QT_TR_NOOP("Applies a hatch pattern to the selected faces using an image file");
     sWhatsThis      = "TechDraw_Hatch";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/TechDraw_Hatch";
@@ -108,8 +106,8 @@ void CmdTechDrawHatch::activated(int iMsg)
         int face = TechDraw::DrawUtil::getIndexFromName(s);
         if (TechDraw::DrawHatch::faceIsHatched(face, hatchObjs)) {
             QMessageBox::StandardButton rc =
-                    QMessageBox::question(Gui::getMainWindow(), QObject::tr("Replace Hatch?"),
-                            QObject::tr("Some Faces in selection are already hatched. Replace?"));
+                    QMessageBox::question(Gui::getMainWindow(), QObject::tr("Replace hatch?"),
+                            QObject::tr("Some faces in the selection are already hatched. Replace?"));
             if (rc == QMessageBox::StandardButton::NoButton) {
                 return;
             }
@@ -120,7 +118,7 @@ void CmdTechDrawHatch::activated(int iMsg)
     }
 
     if (removeOld) {
-        openCommand(QT_TRANSLATE_NOOP("Command", "Remove old Hatch"));
+        openCommand(QT_TRANSLATE_NOOP("Command", "Remove old hatch"));
         std::vector<std::pair< int, TechDraw::DrawHatch*> > toRemove;
         for (auto& h: hatchObjs) {             //all the hatch objects for selected DVP
             std::vector<std::string> hatchSubs = h->Source.getSubValues();
@@ -169,8 +167,8 @@ CmdTechDrawGeometricHatch::CmdTechDrawGeometricHatch()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Apply Geometric Hatch to Face");
-    sToolTipText    = sMenuText;
+    sMenuText       = QT_TR_NOOP("Geometric Hatch");
+    sToolTipText    = QT_TR_NOOP("Applies a geometric hatch pattern to the selected faces");
     sWhatsThis      = "TechDraw_GeometricHatch";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/TechDraw_GeometricHatch";
@@ -240,10 +238,10 @@ CmdTechDrawImage::CmdTechDrawImage()
 {
     // setting the Gui eye-candy
     sGroup        = QT_TR_NOOP("TechDraw");
-    sMenuText     = QT_TR_NOOP("Insert Bitmap Image");
-    sToolTipText  = QT_TR_NOOP("Insert Bitmap from a file into a page");
+    sMenuText     = QT_TR_NOOP("Bitmap Image");
+    sToolTipText  = QT_TR_NOOP("Inserts a bitmap from a file into the current page");
     sWhatsThis    = "TechDraw_Image";
-    sStatusTip    = QT_TR_NOOP("Insert Bitmap from a file into a page");
+    sStatusTip    = QT_TR_NOOP("Insert bitmap from a file into a page");
     sPixmap       = "actions/TechDraw_Image";
 }
 
@@ -258,7 +256,7 @@ void CmdTechDrawImage::activated(int iMsg)
 
     // Reading an image
     QString fileName = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(),
-        QString::fromUtf8(QT_TR_NOOP("Select an Image File")),
+        QString::fromUtf8(QT_TR_NOOP("Select an image file")),
         Preferences::defaultSymbolDir(),
         QString::fromUtf8(QT_TR_NOOP("Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)")));
     if (fileName.isEmpty()) {
@@ -292,78 +290,6 @@ bool CmdTechDrawImage::isActive()
     return DrawGuiUtil::needPage(this);
 }
 
-//===========================================================================
-// TechDraw_ToggleFrame
-//===========================================================================
-
-DEF_STD_CMD_AC(CmdTechDrawToggleFrame)
-
-CmdTechDrawToggleFrame::CmdTechDrawToggleFrame()
-  : Command("TechDraw_ToggleFrame")
-{
-    sAppModule      = "TechDraw";
-    sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Turn View Frames On/Off");
-    sToolTipText    = QT_TR_NOOP("Turn View Frames On/Off");
-    sWhatsThis      = "TechDraw_Toggle";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "actions/TechDraw_ToggleFrame";
-}
-
-Gui::Action *CmdTechDrawToggleFrame::createAction()
-{
-    Gui::Action *action = Gui::Command::createAction();
-    action->setCheckable(true);
-
-    return action;
-}
-
-void CmdTechDrawToggleFrame::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
-    if (!page) {
-        return;
-    }
-
-    Gui::Document* activeGui = Gui::Application::Instance->getDocument(page->getDocument());
-    Gui::ViewProvider* vp = activeGui->getViewProvider(page);
-    ViewProviderPage* vpPage = freecad_cast<ViewProviderPage*>(vp);
-
-    if (!vpPage) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No TechDraw Page"),
-            QObject::tr("Need a TechDraw Page for this command"));
-        return;
-    }
-
-    vpPage->toggleFrameState();
-
-    Gui::Action *action = this->getAction();
-    if (action) {
-        action->setBlockedChecked(!vpPage->getFrameState());
-    }
-}
-
-//! true if the active tab is a TechDraw Page.
-// There is an assumption here that you would only want to toggle the frames on a page when you are
-// currently looking at that page
-bool CmdTechDrawToggleFrame::isActive()
-{
-    auto mvp = qobject_cast<MDIViewPage*>(Gui::getMainWindow()->activeWindow());
-    if (!mvp) {
-        return false;
-    }
-
-    ViewProviderPage* vpp = mvp->getViewProviderPage();
-
-    Gui::Action* action = this->getAction();
-    if (action) {
-        action->setBlockedChecked(vpp && !vpp->getFrameState());
-    }
-
-    return true;
-}
-
 void CreateTechDrawCommandsDecorate()
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -371,7 +297,6 @@ void CreateTechDrawCommandsDecorate()
     rcCmdMgr.addCommand(new CmdTechDrawHatch());
     rcCmdMgr.addCommand(new CmdTechDrawGeometricHatch());
     rcCmdMgr.addCommand(new CmdTechDrawImage());
-    rcCmdMgr.addCommand(new CmdTechDrawToggleFrame());
 //    rcCmdMgr.addCommand(new CmdTechDrawLeaderLine());
 //    rcCmdMgr.addCommand(new CmdTechDrawRichTextAnnotation());
 }
@@ -384,7 +309,7 @@ bool _checkSelectionHatch(Gui::Command* cmd) {
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
     if (selection.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect selection"),
-                             QObject::tr("Select a Face first"));
+                             QObject::tr("Select a face first"));
         return false;
     }
 
@@ -398,20 +323,20 @@ bool _checkSelectionHatch(Gui::Command* cmd) {
     std::vector<App::DocumentObject*> pages = cmd->getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
     if (pages.empty()){
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect selection"),
-            QObject::tr("Create a page to insert."));
+            QObject::tr("Create a page to insert"));
         return false;
     }
 
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
     if (SubNames.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
-        QObject::tr("No Faces to hatch in this selection"));
+        QObject::tr("No faces to hatch in this selection"));
         return false;
     }
     std::string gType = TechDraw::DrawUtil::getGeomTypeFromName(SubNames.at(0));
     if (!(gType == "Face")) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
-        QObject::tr("No Faces to hatch in this selection"));
+        QObject::tr("No faces to hatch in this selection"));
         return false;
     }
 

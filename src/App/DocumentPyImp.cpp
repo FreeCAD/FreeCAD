@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2007 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -19,9 +21,6 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
-
-
-#include "PreCompiled.h"
 
 #include <Base/FileInfo.h>
 #include <Base/Interpreter.h>
@@ -119,7 +118,7 @@ PyObject* DocumentPy::removeProperty(PyObject* args)
 std::string DocumentPy::representation() const
 {
     std::stringstream str;
-    str << "<Document object at " << getDocumentPtr() << ">";
+    str << "<Document '" << getDocumentPtr()->getName() << "' (" << getDocumentPtr()->Label.getValue() << ") >";
 
     return str.str();
 }

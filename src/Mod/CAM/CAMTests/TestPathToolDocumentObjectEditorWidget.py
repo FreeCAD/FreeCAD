@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2024 FreeCAD Team                                       *
 # *                                                                         *
@@ -26,7 +27,9 @@ import unittest
 from unittest.mock import MagicMock
 import FreeCAD
 from PySide import QtGui
-from Path.Tool.ui.property import (
+from Path.Tool.docobject import DetachedDocumentObject
+from Path.Tool.docobject.ui.docobject import DocumentObjectEditorWidget, _get_label_text
+from Path.Tool.docobject.ui.property import (
     BasePropertyEditorWidget,
     QuantityPropertyEditorWidget,
     BoolPropertyEditorWidget,
@@ -34,8 +37,6 @@ from Path.Tool.ui.property import (
     EnumPropertyEditorWidget,
     LabelPropertyEditorWidget,
 )
-from Path.Tool.ui.docobject import DocumentObjectEditorWidget, _get_label_text
-from Path.Tool.toolbit.docobject import DetachedDocumentObject
 
 
 class TestDocumentObjectEditorWidget(unittest.TestCase):

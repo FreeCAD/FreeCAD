@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2004 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <Base/Console.h>
 #include <Base/PyObjectBase.h>
@@ -57,7 +58,7 @@ PyMOD_INIT_FUNC(Inspection)
     //
     //
     PyObject* mod = Inspection::initModule();
-    Base::Console().log("Loading Inspection module... done\n");
+    Base::Console().log("Loading Inspection module… done\n");
     // clang-format off
     Inspection::PropertyDistanceList    ::init();
     Inspection::Feature                 ::init();

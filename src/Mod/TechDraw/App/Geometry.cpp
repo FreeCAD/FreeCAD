@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 # include <limits>
 # include <Approx_Curve3d.hxx>
 # include <BRep_Tool.hxx>
@@ -70,7 +67,6 @@
 #if OCC_VERSION_HEX < 0x070600
 # include <BRepAdaptor_HCurve.hxx>
 #endif
-#endif  // #ifndef _PreComp_
 
 #include <Base/Console.h>
 #include <Base/Converter.h>
@@ -1529,13 +1525,14 @@ bool GeometryUtils::getCircleParms(const TopoDS_Edge& occEdge, double& radius, B
         pointsOnCurve.push_back(Base::convertTo<Base::Vector3d>(newpoint));
     }
 
-    auto edgeLong = edgeLength(occEdge);
-    constexpr double LimitFactor{0.001};     // 0.1%  not sure about this value
-    double tolerance = edgeLong * LimitFactor;
+    double tolerance = EWTOLERANCE;     // not as demanding as Precision::Confusion() but more
+                                        // demanding than using the edge length
 
-    isArc = true;
-    if (firstPoint.IsEqual(lastPoint, tolerance)) {
-        isArc = false;
+    isArc = false;
+    if (!firstPoint.IsEqual(lastPoint, tolerance)) {
+        // we were dropping information by not including lastPoint
+        pointsOnCurve.push_back(lastPoint);
+        isArc = true;
     }
 
     int passCount{0};
@@ -1576,6 +1573,7 @@ bool GeometryUtils::getCircleParms(const TopoDS_Edge& occEdge, double& radius, B
         return true;
     }
     catch (Standard_Failure&) {
+        // we think this is a circle, but occt disagrees
         Base::Console().message("Geo::getCircleParms - failed to make a circle\n");
     }
 

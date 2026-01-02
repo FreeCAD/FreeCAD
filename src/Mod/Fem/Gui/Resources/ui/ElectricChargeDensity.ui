@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Analysis feature properties</string>
+   <string>Analysis Feature Properties</string>
   </property>
   <layout class="QVBoxLayout" name="horizontalLayout">
    <item>
@@ -22,7 +22,7 @@
         <item row="0" column="0">
          <widget class="QLabel" name="lbl_mode">
           <property name="text">
-           <string>Mode:</string>
+           <string>Mode</string>
           </property>
          </widget>
         </item>
@@ -52,7 +52,7 @@
             <item row="0" column="0">
              <widget class="QLabel" name="lbl_interface_charge_density">
               <property name="text">
-               <string>Density:</string>
+               <string>Density</string>
               </property>
              </widget>
             </item>
@@ -95,7 +95,7 @@
             <item row="0" column="0">
              <widget class="QLabel" name="lbl_source_charge_density">
               <property name="text">
-               <string>Density:</string>
+               <string>Density</string>
               </property>
              </widget>
             </item>
@@ -138,7 +138,7 @@
             <item row="0" column="0">
              <widget class="QLabel" name="lbl_total_charge">
               <property name="text">
-               <string>Total Charge:</string>
+               <string>Total charge</string>
               </property>
              </widget>
             </item>
@@ -161,6 +161,16 @@
               </property>
               <property name="value">
                <double>0.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QCheckBox" name="ckb_concentrated">
+              <property name="visible">
+                <bool>false</bool>
+              </property>
+              <property name="text">
+               <string>Concentrated</string>
               </property>
              </widget>
             </item>

@@ -26,7 +26,8 @@
 
 #include <Base/PyObjectBase.h>
 
-namespace Gui{
+namespace Gui
+{
 
 /** The ApplicationPy class
  * This is the Python wrapper class of Application.
@@ -111,10 +112,13 @@ public:
     static PyObject* sGetUserEditMode          (PyObject *self,PyObject *args);
     static PyObject* sSetUserEditMode          (PyObject *self,PyObject *args);
 
+    static PyObject* sSuspendWaitCursor        (PyObject *self, PyObject *args);
+    static PyObject* sResumeWaitCursor         (PyObject *self, PyObject *args);
+
     static PyMethodDef    Methods[];
     // clang-format on
 };
 
-} //namespace Gui
+}  // namespace Gui
 
 #endif

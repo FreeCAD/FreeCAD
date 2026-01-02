@@ -22,10 +22,8 @@
 //this file originally part of TechDraw workbench
 //migrated to TechDraw workbench 2022-01-26 by Wandererfan
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QMessageBox>
-#endif
+
 
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -61,13 +59,13 @@ bool TaskProjection::accept()
 {
     Gui::Document* document = Gui::Application::Instance->activeDocument();
     if (!document) {
-        QMessageBox::warning(Gui::getMainWindow(), tr("No active document"),
+        QMessageBox::warning(Gui::getMainWindow(), tr("No Active Document"),
             tr("There is currently no active document to complete the operation"));
         return true;
     }
     std::list<Gui::MDIView*> mdis = document->getMDIViewsOfType(Gui::View3DInventor::getClassTypeId());
     if (mdis.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(), tr("No active view"),
+        QMessageBox::warning(Gui::getMainWindow(), tr("No Active View"),
             tr("There is currently no active view to complete the operation"));
         return false;
     }

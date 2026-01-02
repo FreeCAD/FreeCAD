@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>FEM material</string>
+   <string>FEM Material</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -37,7 +37,7 @@
         <item row="0" column="0">
          <widget class="QLabel" name="label_8">
           <property name="text">
-           <string>Density:</string>
+           <string>Density</string>
           </property>
          </widget>
         </item>
@@ -99,7 +99,7 @@
         <item row="0" column="0">
          <widget class="QLabel" name="label_6">
           <property name="text">
-           <string>Young's Modulus:</string>
+           <string>Young's modulus</string>
           </property>
          </widget>
         </item>
@@ -139,7 +139,7 @@
         <item row="1" column="0">
          <widget class="QLabel" name="label_7">
           <property name="text">
-           <string>Poisson Ratio:</string>
+           <string>Poisson ratio</string>
           </property>
          </widget>
         </item>
@@ -198,7 +198,7 @@
         <item row="0" column="0">
          <widget class="QLabel" name="label_16">
           <property name="text">
-           <string>Kinematic Viscosity:</string>
+           <string>Kinematic viscosity</string>
           </property>
          </widget>
         </item>
@@ -260,7 +260,7 @@
         <item row="0" column="0">
          <widget class="QLabel" name="label_12">
           <property name="text">
-           <string>Thermal Conductivity:</string>
+           <string>Thermal conductivity</string>
           </property>
          </widget>
         </item>
@@ -300,7 +300,7 @@
         <item row="1" column="0">
          <widget class="QLabel" name="label_expansion_coefficient">
           <property name="text">
-           <string>Expansion Coefficient:</string>
+           <string>Expansion coefficient</string>
           </property>
          </widget>
         </item>
@@ -340,7 +340,7 @@
         <item row="2" column="0">
          <widget class="QLabel" name="label_expansion_reference_temperature">
           <property name="text">
-           <string>Reference Temperature:</string>
+           <string>Reference temperature</string>
           </property>
           <property name="toolTip">
            <string>Reference temperature for thermal expansion</string>
@@ -383,7 +383,7 @@
         <item row="3" column="0">
          <widget class="QLabel" name="label_14">
           <property name="text">
-           <string>Specific Heat Capacity:</string>
+           <string>Specific heat capacity</string>
           </property>
          </widget>
         </item>

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,14 +22,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QDockWidget>
 #include <QSignalBlocker>
 #include <QString>
 #include <algorithm>
 #include <boost/signals2.hpp>
-#endif
 
 #include <Base/Console.h>
 #include <Gui/Application.h>
@@ -96,7 +95,7 @@ DlgMaterialImp::DlgMaterialImp(bool floating, QWidget* parent, Qt::WindowFlags f
     if (floating) {
         Gui::DockWindowManager* pDockMgr = Gui::DockWindowManager::instance();
         QDockWidget* dw =
-            pDockMgr->addDockWindow("Display properties", this, Qt::AllDockWidgetAreas);
+            pDockMgr->addDockWindow("Display Properties", this, Qt::AllDockWidgetAreas);
         dw->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
         dw->setFloating(true);
         dw->show();

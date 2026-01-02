@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2005 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,11 +22,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
-#endif
 
 #include "Dialogs/DlgSettingsImageImp.h"
 #include "ui_DlgSettingsImage.h"
@@ -54,8 +53,8 @@ DlgSettingsImageImp::DlgSettingsImageImp(QWidget* parent)
     _height = height();
     _fRatio = (float)_width / (float)_height;
 
-    ui->comboMethod->addItem(tr("Offscreen (New)"), QByteArray("QtOffscreenRenderer"));
-    ui->comboMethod->addItem(tr("Offscreen (Old)"), QByteArray("CoinOffscreenRenderer"));
+    ui->comboMethod->addItem(tr("Offscreen (new)"), QByteArray("QtOffscreenRenderer"));
+    ui->comboMethod->addItem(tr("Offscreen (old)"), QByteArray("CoinOffscreenRenderer"));
     ui->comboMethod->addItem(tr("Framebuffer (custom)"), QByteArray("FramebufferObject"));
     ui->comboMethod->addItem(tr("Framebuffer (as is)"), QByteArray("GrabFramebuffer"));
 }
@@ -185,8 +184,9 @@ bool DlgSettingsImageImp::addWatermark() const
 
 void DlgSettingsImageImp::onSelectedFilter(const QString& filter)
 {
-    bool ok = (filter.startsWith(QLatin1String("JPG")) || filter.startsWith(QLatin1String("JPEG"))
-               || filter.startsWith(QLatin1String("PNG")));
+    bool ok
+        = (filter.startsWith(QLatin1String("JPG")) || filter.startsWith(QLatin1String("JPEG"))
+           || filter.startsWith(QLatin1String("PNG")));
     ui->buttonGroupComment->setEnabled(ok);
 }
 

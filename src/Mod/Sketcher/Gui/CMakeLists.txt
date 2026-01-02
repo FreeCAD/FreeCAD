@@ -1,9 +1,4 @@
-include_directories(
-    ${CMAKE_BINARY_DIR}
-    ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_BINARY_DIR}/src
-    ${CMAKE_CURRENT_BINARY_DIR}
-)
+# SPDX-License-Identifier: LGPL-2.1-or-later
 
 set(SketcherGui_LIBS
     Sketcher
@@ -23,7 +18,6 @@ set(SketcherGui_UIC_SRCS
     TaskSketcherConstraints.ui
     TaskSketcherElements.ui
     SketcherToolDefaultWidget.ui
-    TaskSketcherMessages.ui
     TaskSketcherSolverAdvanced.ui
     TaskSketcherValidation.ui
     InsertDatum.ui
@@ -42,6 +36,7 @@ SET(SketcherGui_SRCS
     ${SketcherGui_UIC_HDRS}
     AppSketcherGui.cpp
     GeometryCreationMode.h
+    Command.h
     Command.cpp
     AutoConstraint.h
     Utils.h
@@ -82,7 +77,6 @@ SET(SketcherGui_SRCS
     CommandSketcherVirtualSpace.cpp
     CommandAlterGeometry.cpp
     Resources/Sketcher.qrc
-    PreCompiled.cpp
     PreCompiled.h
     SoZoomTranslation.cpp
     SoZoomTranslation.h
@@ -102,7 +96,6 @@ SET(SketcherGui_SRCS
     SketcherToolDefaultWidget.h
     TaskSketcherTool.cpp
     TaskSketcherTool.h
-    TaskSketcherMessages.ui
     TaskSketcherMessages.cpp
     TaskSketcherMessages.h
     TaskSketcherSolverAdvanced.ui
@@ -113,6 +106,8 @@ SET(SketcherGui_SRCS
     TaskSketcherValidation.h
     ShortcutListener.cpp
     ShortcutListener.h
+    SketcherTransformationExpressionHelper.cpp
+    SketcherTransformationExpressionHelper.h
     EditModeInformationOverlayCoinConverter.cpp
     EditModeInformationOverlayCoinConverter.h
     EditModeGeometryCoinConverter.cpp
@@ -155,6 +150,7 @@ SET(SketcherGui_SRCS
     SketcherRegularPolygonDialog.cpp
     SnapManager.cpp
     SnapManager.h
+    StyleParameters.h
     TaskDlgEditSketch.cpp
     TaskDlgEditSketch.h
     ViewProviderPython.cpp
@@ -176,18 +172,30 @@ SET(SketcherGui_SRCS
     ${Python_SRCS}
 )
 
-if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${SketcherGui_SRCS})
-    ADD_MSVC_PRECOMPILED_HEADER(SketcherGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
-endif(FREECAD_USE_PCH)
-
-
 SET(SketcherGuiIcon_SVG
     Resources/icons/SketcherWorkbench.svg
 )
 
-add_library(SketcherGui SHARED ${SketcherGui_SRCS} ${SketcherGuiIcon_SVG})
+add_library(SketcherGui SHARED
+    ${SketcherGui_SRCS}
+    ${SketcherGuiIcon_SVG}
+)
+
+if(FREECAD_USE_PCH)
+    target_precompile_headers(SketcherGui PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
+endif(FREECAD_USE_PCH)
+
+target_include_directories(
+    SketcherGui
+    PRIVATE
+    ${CMAKE_BINARY_DIR}
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_BINARY_DIR}/src
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
+
 target_link_libraries(SketcherGui ${SketcherGui_LIBS})
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(SketcherGui)

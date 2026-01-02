@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <Inventor/nodes/SoTransform.h>
-#endif
+
 
 #include "Gui/Control.h"
 #include <Mod/Fem/App/FemConstraintRigidBody.h>
@@ -35,8 +33,7 @@
 
 using namespace FemGui;
 
-PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintRigidBody,
-                FemGui::ViewProviderFemConstraintOnBoundary)
+PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintRigidBody, FemGui::ViewProviderFemConstraintOnBoundary)
 
 
 ViewProviderFemConstraintRigidBody::ViewProviderFemConstraintRigidBody()

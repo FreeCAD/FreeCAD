@@ -21,11 +21,8 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+#include <QMenu>
 
-#ifndef _PreComp_
-# include <QMenu>
-#endif
 
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -37,25 +34,27 @@
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderLoft,PartDesignGui::ViewProvider)
+PROPERTY_SOURCE(PartDesignGui::ViewProviderLoft, PartDesignGui::ViewProvider)
 
 ViewProviderLoft::ViewProviderLoft() = default;
 
 ViewProviderLoft::~ViewProviderLoft() = default;
 
-std::vector<App::DocumentObject*> ViewProviderLoft::claimChildren()const
+std::vector<App::DocumentObject*> ViewProviderLoft::claimChildren() const
 {
     std::vector<App::DocumentObject*> temp;
 
     PartDesign::Loft* pcLoft = getObject<PartDesign::Loft>();
 
     App::DocumentObject* sketch = pcLoft->getVerifiedSketch(true);
-    if (sketch)
+    if (sketch) {
         temp.push_back(sketch);
+    }
 
-    for(App::DocumentObject* obj : pcLoft->Sections.getValues()) {
-        if (obj && obj->isDerivedFrom<Part::Part2DObject>())
+    for (App::DocumentObject* obj : pcLoft->Sections.getValues()) {
+        if (obj && obj->isDerivedFrom<Part::Part2DObject>()) {
             temp.push_back(obj);
+        }
     }
 
     return temp;
@@ -63,51 +62,23 @@ std::vector<App::DocumentObject*> ViewProviderLoft::claimChildren()const
 
 void ViewProviderLoft::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    addDefaultAction(menu, QObject::tr("Edit loft"));
-    PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
+    addDefaultAction(menu, QObject::tr("Edit Loft"));
+    ViewProvider::setupContextMenu(menu, receiver, member);
 }
 
-bool ViewProviderLoft::setEdit(int ModNum)
+TaskDlgFeatureParameters* ViewProviderLoft::getEditDialog()
 {
-    if (ModNum == ViewProvider::Default)
-        setPreviewDisplayMode(true);
-
-    return ViewProviderAddSub::setEdit(ModNum);
-}
-
-TaskDlgFeatureParameters* ViewProviderLoft::getEditDialog() {
     return new TaskDlgLoftParameters(this);
-}
-
-
-void ViewProviderLoft::unsetEdit(int ModNum) {
-    setPreviewDisplayMode(false);
-    ViewProviderAddSub::unsetEdit(ModNum);
-}
-
-
-bool ViewProviderLoft::onDelete(const std::vector<std::string> & /*s*/)
-{/*
-    PartDesign::Loft* pcLoft = getObject<PartDesign::Loft>();
-
-    // get the Sketch
-    Sketcher::SketchObject *pcSketch = 0;
-    if (pcLoft->Sketch.getValue())
-        pcSketch = static_cast<Sketcher::SketchObject*>(pcLoft->Sketch.getValue());
-
-    // if abort command deleted the object the sketch is visible again
-    if (pcSketch && Gui::Application::Instance->getViewProvider(pcSketch))
-        Gui::Application::Instance->getViewProvider(pcSketch)->show();
-
-    return ViewProvider::onDelete(s);*/
-    return true;
 }
 
 void ViewProviderLoft::highlightProfile(bool on)
 {
     PartDesign::Loft* pcLoft = getObject<PartDesign::Loft>();
-    highlightReferences(dynamic_cast<Part::Feature*>(pcLoft->Profile.getValue()),
-                        pcLoft->Profile.getSubValues(), on);
+    highlightReferences(
+        dynamic_cast<Part::Feature*>(pcLoft->Profile.getValue()),
+        pcLoft->Profile.getSubValues(),
+        on
+    );
 }
 
 void ViewProviderLoft::highlightSection(bool on)
@@ -128,30 +99,37 @@ void ViewProviderLoft::highlightSection(bool on)
 void ViewProviderLoft::highlightReferences(ViewProviderLoft::Reference mode, bool on)
 {
     switch (mode) {
-    case Profile:
-        highlightProfile(on);
-        break;
-    case Section:
-        highlightSection(on);
-        break;
-    case Both:
-        highlightProfile(on);
-        highlightSection(on);
-        break;
-    default:
-        break;
+        case Profile:
+            highlightProfile(on);
+            break;
+        case Section:
+            highlightSection(on);
+            break;
+        case Both:
+            highlightProfile(on);
+            highlightSection(on);
+            break;
+        default:
+            break;
     }
 }
 
-void ViewProviderLoft::highlightReferences(Part::Feature* base, const std::vector<std::string>& elements, bool on)
+void ViewProviderLoft::highlightReferences(
+    Part::Feature* base,
+    const std::vector<std::string>& elements,
+    bool on
+)
 {
-    if (!base)
+    if (!base) {
         return;
+    }
 
     PartGui::ViewProviderPart* svp = dynamic_cast<PartGui::ViewProviderPart*>(
-                Gui::Application::Instance->getViewProvider(base));
-    if (!svp)
+        Gui::Application::Instance->getViewProvider(base)
+    );
+    if (!svp) {
         return;
+    }
 
     std::vector<Base::Color>& edgeColors = originalLineColors[base->getID()];
 
@@ -169,15 +147,19 @@ void ViewProviderLoft::highlightReferences(Part::Feature* base, const std::vecto
     }
 }
 
-QIcon ViewProviderLoft::getIcon() const {
+QIcon ViewProviderLoft::getIcon() const
+{
     QString str = QStringLiteral("PartDesign_");
     auto* prim = getObject<PartDesign::Loft>();
-    if(prim->getAddSubType() == PartDesign::FeatureAddSub::Additive)
+    if (prim->getAddSubType() == PartDesign::FeatureAddSub::Additive) {
         str += QStringLiteral("Additive");
-    else
+    }
+    else {
         str += QStringLiteral("Subtractive");
+    }
 
     str += QStringLiteral("Loft.svg");
-    return PartDesignGui::ViewProvider::mergeGreyableOverlayIcons(Gui::BitmapFactory().pixmap(str.toStdString().c_str()));
+    return PartDesignGui::ViewProvider::mergeGreyableOverlayIcons(
+        Gui::BitmapFactory().pixmap(str.toStdString().c_str())
+    );
 }
-

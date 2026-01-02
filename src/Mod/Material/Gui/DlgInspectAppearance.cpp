@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2024 David Carter <dcarter@david.carter.ca>             *
  *                                                                         *
@@ -19,11 +21,9 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QPainter>
 #include <QPaintEvent>
-#endif
+
 
 #include <App/Document.h>
 #include <Gui/Application.h>
@@ -199,7 +199,11 @@ QWidget* DlgInspectAppearance::makeAppearanceTab(const App::Material& material)
 
     int row = 0;
     auto* labelDiffuse = new QLabel();
-    labelDiffuse->setText(tr("Diffuse Color"));
+    labelDiffuse->setText(tr("Diffuse color"));
+    labelDiffuse->setToolTip(
+        tr("Defines the base color of a surface when illuminated by light. It represents how the "
+           "object scatters light evenly in all directions, independent of the viewer’s angle. "
+           "This property will influence the material color the most."));
     auto* colorDiffuse = new ColorWidget(material.diffuseColor);
     colorDiffuse->setMaximumHeight(23);
 
@@ -208,7 +212,11 @@ QWidget* DlgInspectAppearance::makeAppearanceTab(const App::Material& material)
     row += 1;
 
     auto* labelAmbient = new QLabel();
-    labelAmbient->setText(tr("Ambient Color"));
+    labelAmbient->setText(tr("Ambient color"));
+    labelAmbient->setToolTip(
+        tr("Defines the color of a surface under indirect, uniform lighting, representing how it "
+           "appears when illuminated only by ambient light in a scene, without directional light, "
+           "shading, or highlights"));
     auto* colorAmbient = new ColorWidget(material.ambientColor);
     colorAmbient->setMaximumHeight(23);
 
@@ -217,7 +225,11 @@ QWidget* DlgInspectAppearance::makeAppearanceTab(const App::Material& material)
     row += 1;
 
     auto* labelEmissive = new QLabel();
-    labelEmissive->setText(tr("Emissive Color"));
+    labelEmissive->setText(tr("Emissive color"));
+    labelEmissive->setToolTip(
+        tr("Defines the color of a surface that appears to emit as if it were a light source, "
+           "independent of external lighting, making the object look self-illuminated. Set to "
+           "black to have no emissive color."));
     auto* colorEmissive = new ColorWidget(material.emissiveColor);
     colorEmissive->setMaximumHeight(23);
 
@@ -226,7 +238,11 @@ QWidget* DlgInspectAppearance::makeAppearanceTab(const App::Material& material)
     row += 1;
 
     auto* labelSpecular = new QLabel();
-    labelSpecular->setText(tr("Specular Color"));
+    labelSpecular->setText(tr("Specular color"));
+    labelSpecular->setToolTip(
+        tr("Defines the color and intensity of the bright, mirror-like highlights that appear on "
+           "shiny or reflective surfaces when light hits them directly. Set to bright colors for "
+           "shiny objects."));
     auto* colorSpecular = new ColorWidget(material.specularColor);
     colorSpecular->setMaximumHeight(23);
 
@@ -236,6 +252,10 @@ QWidget* DlgInspectAppearance::makeAppearanceTab(const App::Material& material)
 
     auto* labelShininess = new QLabel();
     labelShininess->setText(tr("Shininess"));
+    labelShininess->setToolTip(
+        tr("Defines the size and sharpness of specular highlights on a surface. Higher values "
+           "produce small, sharp highlights, while lower values create broad, soft highlights. "
+           "Note that the highlight intensity is defined by specular color."));
     auto* editShininess = new QLineEdit();
     editShininess->setText(QString::number(material.shininess));
     editShininess->setEnabled(false);
@@ -246,6 +266,8 @@ QWidget* DlgInspectAppearance::makeAppearanceTab(const App::Material& material)
 
     auto* labelTransparency = new QLabel();
     labelTransparency->setText(tr("Transparency"));
+    labelTransparency->setToolTip(tr("Defines how much light passes through an object, making it "
+                                     "partially or fully see-through"));
     auto* editTransparency = new QLineEdit();
     editTransparency->setText(QString::number(material.transparency));
     editTransparency->setEnabled(false);

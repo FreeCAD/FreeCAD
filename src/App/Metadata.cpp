@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /**************************************************************************
  *                                                                         *
  *   Copyright (c) 2021-2023 FreeCAD Project Association                   *
@@ -20,18 +22,16 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <boost/core/ignore_unused.hpp>
 #include <memory>
 #include <sstream>
-#endif
 
 #include <xercesc/framework/LocalFileFormatTarget.hpp>
 #include <xercesc/framework/LocalFileInputSource.hpp>
 #include <xercesc/framework/MemBufInputSource.hpp>
 #include <xercesc/sax/HandlerBase.hpp>
+
+#include <FCConfig.h>
 
 #include "App/Application.h"
 #include "App/Expression.h"

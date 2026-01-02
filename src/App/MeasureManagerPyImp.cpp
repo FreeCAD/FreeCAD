@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 David Friedli <david@friedli-be.ch>                *
  *   Copyright (c) 2023 Wandererfan <wandererfan@gmail.com>                *
@@ -20,7 +22,6 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
 
 // inclusion of the generated files (generated out of MeasureManagerPy.xml)
 #include "MeasureManagerPy.h"

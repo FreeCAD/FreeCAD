@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <cmath>
 # include <BRepBuilderAPI_MakeEdge.hxx>
-#endif
+
 
 #include <Base/Console.h>
 #include <Gui/BitmapFactory.h>
@@ -59,7 +57,7 @@ TaskCosmeticLine::TaskCosmeticLine(TechDraw::DrawViewPart* partFeat,
 
     m_ce = m_partFeat->getCosmeticEdgeBySelection(m_edgeName);
     if (!m_ce) {
-        Base::Console().error("TaskCosmeticLine - bad parameters.  Can not proceed.\n");
+        Base::Console().error("TaskCosmeticLine - bad parameters.  Cannot proceed.\n");
         return;
     }
 
@@ -250,7 +248,7 @@ bool TaskCosmeticLine::accept()
         m_partFeat->requestPaint();
     } else {
         //update mode
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Update CosmeticLine"));
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Update Cosmetic Line"));
         updateCosmeticLine();
         m_partFeat->refreshCEGeoms();
         m_partFeat->requestPaint();

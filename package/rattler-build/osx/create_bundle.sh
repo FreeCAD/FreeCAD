@@ -9,9 +9,6 @@ mkdir -p ${conda_env}
 
 cp -a ../.pixi/envs/default/* ${conda_env}
 
-export PATH="${PWD}/${conda_env}/bin:${PATH}"
-export CONDA_PREFIX="${PWD}/${conda_env}"
-
 # delete unnecessary stuff
 rm -rf ${conda_env}/include
 find ${conda_env} -name \*.a -delete
@@ -42,7 +39,7 @@ find . -name "*.pyc" -type f -delete
 # see https://github.com/FreeCAD/FreeCAD/issues/10144#issuecomment-1836686775
 # and https://github.com/FreeCAD/FreeCAD-Bundle/pull/203
 # and https://github.com/FreeCAD/FreeCAD-Bundle/issues/375
-python ../scripts/fix_macos_lib_paths.py ${conda_env}/lib
+python ../scripts/fix_macos_lib_paths.py ${conda_env}/lib -r
 
 # build and install the launcher
 cmake -B build launcher
@@ -50,7 +47,7 @@ cmake --build build
 mkdir -p FreeCAD.app/Contents/MacOS
 cp build/FreeCAD FreeCAD.app/Contents/MacOS/FreeCAD
 
-python_version=$(python -c 'import platform; print("py" + platform.python_version_tuple()[0] + platform.python_version_tuple()[1])')
+python_version=$(${conda_env}/bin/python -c 'import platform; print("py" + platform.python_version_tuple()[0] + platform.python_version_tuple()[1])')
 version_name="FreeCAD_${BUILD_TAG}-macOS-$(uname -m)-${python_version}"
 application_menu_name="FreeCAD_${BUILD_TAG}"
 
@@ -71,7 +68,7 @@ rm -rf ${conda_env}/Library
 
 if [[ "${SIGN_RELEASE}" == "true" ]]; then
     # create the signed dmg
-    ./macos_sign_and_notarize.zsh -p "FreeCAD" -k ${SIGNING_KEY_ID} -o "${version_name}.dmg"
+    ../../scripts/macos_sign_and_notarize.zsh -p "FreeCAD" -k ${SIGNING_KEY_ID} -o "${version_name}.dmg"
 else
     # create the dmg
     dmgbuild -s dmg_settings.py "FreeCAD" "${version_name}.dmg"

@@ -2555,10 +2555,12 @@ Efaces
 *MATERIAL, NAME=FemMaterial
 *ELASTIC
 200000,0.3
+*EXPANSION, ZERO=0
+0
 
 ***********************************************************
 ** Sections
-*SHELL SECTION, ELSET=FemMaterialShellThickness, MATERIAL=FemMaterial
+*SHELL SECTION, ELSET=FemMaterialShellThickness, MATERIAL=FemMaterial, OFFSET=0
 15
 
 ***********************************************************
@@ -2581,8 +2583,8 @@ ConstraintFixed,6
 
 ***********************************************************
 ** constraints force node loads
-*CLOAD
 ** ConstraintForce1
+*CLOAD
 ** node loads on shape: SquareTube:Edge9
 1,1,2777.777777778
 236,1,2777.777777778
@@ -2600,6 +2602,7 @@ ConstraintFixed,6
 
 
 ** ConstraintForce2
+*CLOAD
 ** node loads on shape: SquareTube:Edge3
 2,1,-2777.777777778
 129,1,-2777.777777778
@@ -2617,6 +2620,7 @@ ConstraintFixed,6
 
 
 ** ConstraintForce3
+*CLOAD
 ** node loads on shape: SquareTube:Edge11
 1,2,2777.777777778
 2,2,2777.777777778
@@ -2634,6 +2638,7 @@ ConstraintFixed,6
 
 
 ** ConstraintForce4
+*CLOAD
 ** node loads on shape: SquareTube:Edge6
 129,2,-2777.777777778
 236,2,-2777.777777778

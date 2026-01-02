@@ -26,41 +26,45 @@
 #include "TaskExtrudeParameters.h"
 #include "ViewProviderPad.h"
 
+class QComboBox;
 
-namespace App {
+namespace App
+{
 class Property;
 }
 
-namespace Gui {
+namespace Gui
+{
 class ViewProvider;
 }
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
 
-class TaskPadParameters : public TaskExtrudeParameters
+class TaskPadParameters: public TaskExtrudeParameters
 {
     Q_OBJECT
 
 public:
-    explicit TaskPadParameters(ViewProviderPad *PadView, QWidget *parent = nullptr, bool newObj=false);
+    explicit TaskPadParameters(ViewProviderPad* PadView, QWidget* parent = nullptr, bool newObj = false);
     ~TaskPadParameters() override;
 
     void apply() override;
 
 private:
-    void onModeChanged(int index) override;
-    void translateModeList(int index) override;
-    void updateUI(int index) override;
+    void onModeChanged(int index, Side side) override;
+    void translateModeList(QComboBox* box, int index) override;
+    void updateUI(Side side) override;
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgPadParameters : public TaskDlgExtrudeParameters
+class TaskDlgPadParameters: public TaskDlgExtrudeParameters
 {
     Q_OBJECT
 
 public:
-    explicit TaskDlgPadParameters(ViewProviderPad *PadView, bool newObj=false);
+    explicit TaskDlgPadParameters(ViewProviderPad* PadView, bool newObj = false);
 
 protected:
     TaskExtrudeParameters* getTaskParameters() override
@@ -72,6 +76,6 @@ private:
     TaskPadParameters* parameters;
 };
 
-} //namespace PartDesignGui
+}  // namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

@@ -28,7 +28,7 @@
         </size>
        </property>
        <property name="text">
-        <string>Accuracy:</string>
+        <string>Accuracy</string>
        </property>
       </widget>
      </item>
@@ -83,7 +83,7 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>Job:</string>
+        <string>Job</string>
        </property>
       </widget>
      </item>
@@ -100,7 +100,7 @@
      <item>
       <widget class="QToolButton" name="toolButtonPlay">
        <property name="toolTip">
-        <string>Activate / resume simulation</string>
+        <string>Activate/resume simulation</string>
        </property>
        <property name="text">
         <string>Play</string>

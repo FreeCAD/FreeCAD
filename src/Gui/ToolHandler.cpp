@@ -20,15 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <cmath>
 
 #include <QGuiApplication>
 #include <QPainter>
 
 #include <Inventor/events/SoKeyboardEvent.h>
-#endif  // #ifndef _PreComp_
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -86,8 +83,9 @@ void ToolHandler::deactivate()
 unsigned long ToolHandler::getCrosshairColor()
 {
     unsigned long color = 0xFFFFFFFF;  // white
-    ParameterGrp::handle hGrp =
-        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/View"
+    );
     color = hGrp->GetUnsigned("CursorCrosshairColor", color);
     // from rgba to rgb
     color = (color >> 8) & 0xFFFFFF;
@@ -112,10 +110,12 @@ void ToolHandler::setCrosshairCursor(const char* svgName)
     setCrosshairCursor(cursorName);
 }
 
-void ToolHandler::setSvgCursor(const QString& cursorName,
-                                     int x,
-                                     int y,
-                                     const std::map<unsigned long, unsigned long>& colorMapping)
+void ToolHandler::setSvgCursor(
+    const QString& cursorName,
+    int x,
+    int y,
+    const std::map<unsigned long, unsigned long>& colorMapping
+)
 {
     // The TechDraw_Pointer_*.svg icons have a default size of 64x64. When directly creating
     // them with a size of 32x32 they look very bad.
@@ -134,9 +134,11 @@ void ToolHandler::setSvgCursor(const QString& cursorName,
     }
 #endif
 
-    QPixmap pointer = Gui::BitmapFactory().pixmapFromSvg(cursorName.toStdString().c_str(),
-                                                         QSizeF{cursorSize, cursorSize},
-                                                         colorMapping);
+    QPixmap pointer = Gui::BitmapFactory().pixmapFromSvg(
+        cursorName.toStdString().c_str(),
+        QSizeF {cursorSize, cursorSize},
+        colorMapping
+    );
     if (isRatioOne) {
         pointer = pointer.scaled(32, 32);
     }
@@ -197,17 +199,14 @@ void ToolHandler::addCursorTail(std::vector<QPixmap>& pixmaps)
     int newIconWidth = baseCursorWidth + tailWidth;
     int newIconHeight = baseCursorHeight;
 
-    QPixmap newIcon(newIconWidth, newIconHeight);
+    QPixmap newIcon(newIconWidth * pixelRatio, newIconHeight * pixelRatio);
+    newIcon.setDevicePixelRatio(pixelRatio);
     newIcon.fill(Qt::transparent);
 
     QPainter qp;
     qp.begin(&newIcon);
 
-    qp.drawPixmap(QPointF(0, 0),
-                    baseIcon.scaled(baseCursorWidth * pixelRatio,
-                                    baseCursorHeight * pixelRatio,
-                                    Qt::KeepAspectRatio,
-                                    Qt::SmoothTransformation));
+    qp.drawPixmap(QPointF(0, 0), baseIcon);
 
     // Iterate through pixmaps and them to the cursor pixmap
     qreal currentIconX = baseCursorWidth;
@@ -215,7 +214,7 @@ void ToolHandler::addCursorTail(std::vector<QPixmap>& pixmaps)
 
     for (auto& icon : pixmaps) {
         currentIconY = baseCursorHeight - icon.height();
-        qp.drawPixmap(QPointF(currentIconX, currentIconY), icon);
+        qp.drawPixmap(QPointF(currentIconX, currentIconY) / pixelRatio, icon);
         currentIconX += icon.width();
     }
 

@@ -20,8 +20,6 @@
  *                                                                            *
  ******************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <Bnd_Box.hxx>
 #include <BRep_Builder.hxx>
 #include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
@@ -31,7 +29,7 @@
 #include <BRepBuilderAPI_Transform.hxx>
 #include <Precision.hxx>
 #include <TopExp_Explorer.hxx>
-#endif
+
 
 #include <array>
 
@@ -62,9 +60,7 @@ extern bool getPDRefineModelParameter();
 
 PROPERTY_SOURCE(PartDesign::Transformed, PartDesign::FeatureRefine)
 
-std::array<char const*, 3> transformModeEnums = {"Transform tool shapes",
-                                                 "Transform body",
-                                                 nullptr};
+std::array<char const*, 3> transformModeEnums = {"Features", "Whole shape", nullptr};
 
 Transformed::Transformed()
 {
@@ -72,7 +68,7 @@ Transformed::Transformed()
     Originals.setSize(0);
     Placement.setStatus(App::Property::ReadOnly, true);
 
-    ADD_PROPERTY(TransformMode, (static_cast<long>(Mode::TransformToolShapes)));
+    ADD_PROPERTY(TransformMode, (static_cast<long>(Mode::Features)));
     TransformMode.setEnums(transformModeEnums.data());
 }
 
@@ -100,8 +96,10 @@ Part::Feature* Transformed::getBaseObject(bool silent) const
     if (firstOriginal) {
         rv = freecad_cast<Part::Feature*>(firstOriginal);
         if (!rv) {
-            err = QT_TRANSLATE_NOOP("Exception",
-                                    "Transformation feature Linked object is not a Part object");
+            err = QT_TRANSLATE_NOOP(
+                "Exception",
+                "Transformation feature Linked object is not a Part object"
+            );
         }
     }
     else {
@@ -115,9 +113,33 @@ Part::Feature* Transformed::getBaseObject(bool silent) const
     return rv;
 }
 
+std::vector<App::DocumentObject*> Transformed::getOriginals() const
+{
+    auto const mode = static_cast<Mode>(TransformMode.getValue());
+
+    if (mode == Mode::WholeShape) {
+        return {};
+    }
+
+    std::vector<DocumentObject*> originals = Originals.getValues();
+
+    const auto isSuppressed = [](const DocumentObject* obj) {
+        auto feature = freecad_cast<Feature*>(obj);
+
+        return feature != nullptr && feature->Suppressed.getValue();
+    };
+
+    // Remove suppressed features from the list so the transformations behave as if they are not
+    // there
+    auto [first, last] = std::ranges::remove_if(originals, isSuppressed);
+    originals.erase(first, last);
+
+    return originals;
+}
+
 App::DocumentObject* Transformed::getSketchObject() const
 {
-    std::vector<DocumentObject*> originals = Originals.getValues();
+    std::vector<DocumentObject*> originals = getOriginals();
     DocumentObject const* firstOriginal = !originals.empty() ? originals.front() : nullptr;
 
     if (auto feature = freecad_cast<PartDesign::ProfileBased*>(firstOriginal)) {
@@ -162,8 +184,8 @@ bool Transformed::isMultiTransformChild() const
     }
     */
 
-    // instead check for default property values because these are invalid for a standalone transform feature.
-    // This will mislabel standalone features during the initialization phase.
+    // instead check for default property values because these are invalid for a standalone
+    // transform feature. This will mislabel standalone features during the initialization phase.
     if (TransformMode.getValue() == 0 && Originals.getValue().empty()) {
         return true;
     }
@@ -171,9 +193,11 @@ bool Transformed::isMultiTransformChild() const
     return false;
 }
 
-void Transformed::handleChangedPropertyType(Base::XMLReader& reader,
-                                            const char* TypeName,
-                                            App::Property* prop)
+void Transformed::handleChangedPropertyType(
+    Base::XMLReader& reader,
+    const char* TypeName,
+    App::Property* prop
+)
 {
     // The property 'Angle' of PolarPattern has changed from PropertyFloat
     // to PropertyAngle and the property 'Length' has changed to PropertyLength.
@@ -199,36 +223,70 @@ short Transformed::mustExecute() const
     return PartDesign::Feature::mustExecute();
 }
 
+App::DocumentObjectExecReturn* Transformed::recomputePreview()
+{
+    const auto mode = static_cast<Mode>(TransformMode.getValue());
+
+    const auto makeCompoundOfToolShapes = [this]() {
+        BRep_Builder builder;
+        TopoDS_Compound compound;
+
+        builder.MakeCompound(compound);
+        for (const auto& original : getOriginals()) {
+            if (auto* feature = freecad_cast<FeatureAddSub*>(original)) {
+                const auto& shape = feature->AddSubShape.getShape();
+
+                if (shape.isNull()) {
+                    continue;
+                }
+
+                builder.Add(compound, shape.getShape());
+            }
+        }
+
+        return compound;
+    };
+
+    switch (mode) {
+        case Mode::Features:
+            PreviewShape.setValue(makeCompoundOfToolShapes());
+            return StdReturn;
+
+        case Mode::WholeShape:
+            PreviewShape.setValue(getBaseShape());
+            return StdReturn;
+
+        default:
+            return FeatureRefine::recomputePreview();
+    }
+}
+
+void Transformed::onChanged(const App::Property* prop)
+{
+    if (prop == &TransformMode) {
+        auto const mode = static_cast<Mode>(TransformMode.getValue());
+        Originals.setStatus(App::Property::Status::Hidden, mode == Mode::WholeShape);
+    }
+
+    FeatureRefine::onChanged(prop);
+}
+
 App::DocumentObjectExecReturn* Transformed::execute()
 {
     if (isMultiTransformChild()) {
         return App::DocumentObject::StdReturn;
     }
 
-    std::vector<App::DocumentObject*> originals;
     auto const mode = static_cast<Mode>(TransformMode.getValue());
-    if (mode == Mode::TransformBody) {
-        Originals.setStatus(App::Property::Status::Hidden, true);
-    } else {
-        Originals.setStatus(App::Property::Status::Hidden, false);
-        originals = Originals.getValues();
-    }
-    // Remove suppressed features from the list so the transformations behave as if they are not
-    // there
-    auto eraseIter =
-        std::remove_if(originals.begin(), originals.end(), [](App::DocumentObject const* obj) {
-            auto feature = freecad_cast<PartDesign::Feature*>(obj);
-            return feature != nullptr && feature->Suppressed.getValue();
-        });
-    originals.erase(eraseIter, originals.end());
 
-    if (mode == Mode::TransformToolShapes && originals.empty()) {
+    std::vector<DocumentObject*> originals = getOriginals();
+
+    if (mode == Mode::Features && originals.empty()) {
         return App::DocumentObject::StdReturn;
     }
 
     if (!this->BaseFeature.getValue()) {
-        auto body = getFeatureBody();
-        if (body) {
+        if (auto body = getFeatureBody()) {
             body->setBaseProperty(this);
         }
     }
@@ -265,7 +323,8 @@ App::DocumentObjectExecReturn* Transformed::execute()
     const Part::TopoShape& supportTopShape = supportFeature->Shape.getShape();
     if (supportTopShape.getShape().IsNull()) {
         return new App::DocumentObjectExecReturn(
-            QT_TRANSLATE_NOOP("Exception", "Cannot transform invalid support shape"));
+            QT_TRANSLATE_NOOP("Exception", "Cannot transform invalid support shape")
+        );
     }
 
     // create an untransformed copy of the support shape
@@ -277,11 +336,11 @@ App::DocumentObjectExecReturn* Transformed::execute()
 
     auto getTransformedCompShape = [&](const auto& supportShape, const auto& origShape) {
         std::vector<TopoShape> shapes = {supportShape};
-        TopoShape shape (origShape);
-        int idx=1;
+        TopoShape shape(origShape);
+        int idx = 1;
         auto transformIter = transformations.cbegin();
         transformIter++;
-        for ( ; transformIter != transformations.end(); transformIter++) {
+        for (; transformIter != transformations.end(); transformIter++) {
             if (OCCTProgressIndicator::getAppIndicator().UserBreak()) {
                 return std::vector<TopoShape>();
             }
@@ -292,7 +351,7 @@ App::DocumentObjectExecReturn* Transformed::execute()
     };
 
     switch (mode) {
-        case Mode::TransformToolShapes:
+        case Mode::Features:
             // NOTE: It would be possible to build a compound from all original addShapes/subShapes
             // and then transform the compounds as a whole. But we choose to apply the
             // transformations to each Original separately. This way it is easier to discover what
@@ -308,14 +367,15 @@ App::DocumentObjectExecReturn* Transformed::execute()
                 if (!feature) {
                     return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
                         "Exception",
-                        "Only additive and subtractive features can be transformed"));
+                        "Only additive and subtractive features can be transformed"
+                    ));
                 }
 
                 feature->getAddSubShape(fuseShape, cutShape);
                 if (fuseShape.isNull() && cutShape.isNull()) {
                     return new App::DocumentObjectExecReturn(
-                        QT_TRANSLATE_NOOP("Exception",
-                                          "Shape of additive/subtractive feature is empty"));
+                        QT_TRANSLATE_NOOP("Exception", "Shape of additive/subtractive feature is empty")
+                    );
                 }
                 gp_Trsf trsf = feature->getLocation().Transformation().Multiplied(trsfInv);
                 if (!fuseShape.isNull()) {
@@ -340,7 +400,7 @@ App::DocumentObjectExecReturn* Transformed::execute()
                 }
             }
             break;
-        case Mode::TransformBody: {
+        case Mode::WholeShape: {
             auto shapes = getTransformedCompShape(supportShape, supportShape);
             if (OCCTProgressIndicator::getAppIndicator().UserBreak()) {
                 return new App::DocumentObjectExecReturn("User aborted");
@@ -351,9 +411,6 @@ App::DocumentObjectExecReturn* Transformed::execute()
     }
 
     supportShape = refineShapeIfActive((supportShape));
-    if (!isSingleSolidRuleSatisfied(supportShape.getShape())) {
-        Base::Console().warning("Transformed: Result has multiple solids. Only keeping the first.\n");
-    }
 
     this->Shape.setValue(getSolid(supportShape));  // picking the first solid
     rejected = getRemainingSolids(supportShape.getShape());

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2019 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -20,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "SketchGeometryExtensionPy.h"
 
@@ -69,10 +70,12 @@ int SketchGeometryExtensionPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
 
 
-    PyErr_SetString(PyExc_TypeError,
-                    "SketchGeometryExtension constructor accepts:\n"
-                    "-- empty parameter list\n"
-                    "-- int\n");
+    PyErr_SetString(
+        PyExc_TypeError,
+        "SketchGeometryExtension constructor accepts:\n"
+        "-- empty parameter list\n"
+        "-- int\n"
+    );
     return -1;
 }
 
@@ -94,8 +97,7 @@ Py::String SketchGeometryExtensionPy::getInternalType() const
         throw Py::NotImplementedError("String name of enum not implemented");
     }
 
-    std::string typestr =
-        this->getSketchGeometryExtensionPtr()->internaltype2str[internaltypeindex];
+    std::string typestr = this->getSketchGeometryExtensionPtr()->internaltype2str[internaltypeindex];
 
     return Py::String(typestr);
 }
@@ -125,8 +127,7 @@ void SketchGeometryExtensionPy::setBlocked(Py::Boolean arg)
 
 Py::Boolean SketchGeometryExtensionPy::getConstruction() const
 {
-    return Py::Boolean(
-        getSketchGeometryExtensionPtr()->testGeometryMode(GeometryMode::Construction));
+    return Py::Boolean(getSketchGeometryExtensionPtr()->testGeometryMode(GeometryMode::Construction));
 }
 
 void SketchGeometryExtensionPy::setConstruction(Py::Boolean arg)
@@ -143,7 +144,8 @@ PyObject* SketchGeometryExtensionPy::testGeometryMode(PyObject* args) const
 
         if (getSketchGeometryExtensionPtr()->getGeometryModeFromName(flag, mode)) {
             return new_reference_to(
-                Py::Boolean(getSketchGeometryExtensionPtr()->testGeometryMode(mode)));
+                Py::Boolean(getSketchGeometryExtensionPtr()->testGeometryMode(mode))
+            );
         }
 
         PyErr_SetString(PyExc_TypeError, "Flag string does not exist.");

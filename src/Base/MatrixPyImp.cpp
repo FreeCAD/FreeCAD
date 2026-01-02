@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,10 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <limits>
-#endif
 
 #include "GeometryPyCXX.h"
 
@@ -287,10 +286,12 @@ PyObject* MatrixPy::move(PyObject* args)
         }
         // clears the error from previous PyArg_ParseTuple()
         PyErr_Clear();
-        if (PyArg_ParseTuple(args,
-                             "O!;three floats, or a tuple, or a vector is needed",
-                             &(VectorPy::Type),
-                             &pcVecObj)) {
+        if (PyArg_ParseTuple(
+                args,
+                "O!;three floats, or a tuple, or a vector is needed",
+                &(VectorPy::Type),
+                &pcVecObj
+            )) {
             VectorPy* pcObject = static_cast<VectorPy*>(pcVecObj);
             Vector3d* val = pcObject->getVectorPtr();
             vec.Set(val->x, val->y, val->z);
@@ -336,10 +337,12 @@ PyObject* MatrixPy::scale(PyObject* args)
         }
         // clears the error from previous PyArg_ParseTuple()
         PyErr_Clear();
-        if (PyArg_ParseTuple(args,
-                             "O!;one or three floats, or a tuple, or a vector is needed",
-                             &(VectorPy::Type),
-                             &pcVecObj)) {
+        if (PyArg_ParseTuple(
+                args,
+                "O!;one or three floats, or a tuple, or a vector is needed",
+                &(VectorPy::Type),
+                &pcVecObj
+            )) {
             VectorPy* pcObject = static_cast<VectorPy*>(pcVecObj);
             Vector3d* val = pcObject->getVectorPtr();
             vec.Set(val->x, val->y, val->z);
@@ -366,7 +369,8 @@ PyObject* MatrixPy::hasScale(PyObject* args) const
     ScaleType type = getMatrixPtr()->hasScale(tol);
     Py::Module mod("FreeCAD");
     return Py::new_reference_to(
-        mod.callMemberFunction("ScaleType", Py::TupleN(Py::Long(static_cast<int>(type)))));
+        mod.callMemberFunction("ScaleType", Py::TupleN(Py::Long(static_cast<int>(type))))
+    );
 }
 
 PyObject* MatrixPy::decompose(PyObject* args) const
@@ -441,7 +445,8 @@ PyObject* MatrixPy::transform(PyObject* args)
             &(VectorPy::Type),
             &pcVecObj,
             &(MatrixPy::Type),
-            &pcMatObj)) {
+            &pcMatObj
+        )) {
         return nullptr;
     }
 

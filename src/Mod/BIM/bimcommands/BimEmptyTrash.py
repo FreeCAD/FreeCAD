@@ -35,10 +35,10 @@ class BIM_EmptyTrash:
     def GetResources(self):
         return {
             "Pixmap": "BIM_Trash",
-            "MenuText": QT_TRANSLATE_NOOP("BIM_EmptyTrash", "Clean Trash"),
+            "MenuText": QT_TRANSLATE_NOOP("BIM_EmptyTrash", "Empty Trash"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_EmptyTrash",
-                "Deletes from the trash bin all objects that are not used by any other",
+                "Deletes all objects from the trash bin that are not used by any other",
             ),
         }
 

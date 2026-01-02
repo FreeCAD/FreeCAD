@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Document utility</string>
+   <string>Document Utility</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_4">
    <item row="0" column="0" colspan="2">
@@ -19,7 +19,7 @@
      <item row="0" column="0">
       <widget class="QGroupBox" name="groupBox">
        <property name="title">
-        <string>Extract document</string>
+        <string>Extract Document</string>
        </property>
        <layout class="QGridLayout" name="gridLayout">
         <item row="0" column="0">
@@ -69,7 +69,7 @@
      <item row="1" column="0">
       <widget class="QGroupBox" name="groupBox_2">
        <property name="title">
-        <string>Create document</string>
+        <string>Create Document</string>
        </property>
        <layout class="QGridLayout" name="gridLayout_2">
         <item row="0" column="0">

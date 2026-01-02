@@ -24,11 +24,12 @@
 #ifndef PARTGUI_ViewProviderPrimitive_H
 #define PARTGUI_ViewProviderPrimitive_H
 
-#include "ViewProviderAddSub.h"
+#include "ViewProvider.h"
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
-class PartDesignGuiExport ViewProviderPrimitive : public ViewProviderAddSub
+class PartDesignGuiExport ViewProviderPrimitive: public ViewProvider
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderPrimitive);
 
@@ -38,21 +39,16 @@ public:
     /// destructor
     ~ViewProviderPrimitive() override;
 
-    void attach(App::DocumentObject*) override;
-    void updateData(const App::Property*) override;
-
 protected:
     QIcon getIcon() const override;
     void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
-    bool  setEdit(int ModNum) override;
-    void unsetEdit(int ModNum) override;
 
-    void updateAddSubShapeIndicator();
+    TaskDlgFeatureParameters* getEditDialog() override;
 
-    std::string                 displayMode;
+    std::string displayMode;
 };
 
-} // namespace PartDesignGui
+}  // namespace PartDesignGui
 
 
-#endif // PARTGUI_ViewProviderBoolean_H
+#endif  // PARTGUI_ViewProviderBoolean_H

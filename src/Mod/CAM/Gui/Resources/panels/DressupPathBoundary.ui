@@ -42,22 +42,22 @@
            </property>
            <item>
             <property name="text">
-             <string>Create Box</string>
+             <string>Create box</string>
             </property>
            </item>
            <item>
             <property name="text">
-             <string>Create Cylinder</string>
+             <string>Create cylinder</string>
             </property>
            </item>
            <item>
             <property name="text">
-             <string>Extend Model's Bounding Box</string>
+             <string>Extend model's bounding box</string>
             </property>
            </item>
            <item>
             <property name="text">
-             <string>Use Existing Solid</string>
+             <string>Use existing solid</string>
             </property>
            </item>
           </widget>
@@ -84,7 +84,7 @@
          <item row="0" column="1">
           <widget class="QComboBox" name="stockExisting">
            <property name="toolTip">
-            <string>Select the body to be used to constrain the underlying Path.</string>
+            <string>Select the body to be used to constrain the underlying path</string>
            </property>
           </widget>
          </item>
@@ -179,7 +179,7 @@
          <item row="0" column="2">
           <widget class="Gui::InputField" name="stockCylinderRadius">
            <property name="toolTip">
-            <string>Radius of the Cylinder</string>
+            <string>Radius of the cylinder</string>
            </property>
           </widget>
          </item>
@@ -193,7 +193,7 @@
         <item row="1" column="2">
           <widget class="Gui::InputField" name="stockCylinderHeight">
            <property name="toolTip">
-            <string>Height of the Cylinder</string>
+            <string>Height of the cylinder</string>
            </property>
           </widget>
          </item>
@@ -213,7 +213,7 @@
          <item row="0" column="2">
           <widget class="Gui::InputField" name="stockBoxLength">
            <property name="toolTip">
-            <string>Length of the Box</string>
+            <string>Length of the box</string>
            </property>
           </widget>
          </item>
@@ -227,7 +227,7 @@
          <item row="1" column="2">
           <widget class="Gui::InputField" name="stockBoxWidth">
            <property name="toolTip">
-            <string>Width of the Box</string>
+            <string>Width of the box</string>
            </property>
           </widget>
          </item>
@@ -241,7 +241,7 @@
         <item row="2" column="2">
           <widget class="Gui::InputField" name="stockBoxHeight">
            <property name="toolTip">
-            <string>Height of the Box</string>
+            <string>Height of the box</string>
            </property>
           </widget>
          </item>
@@ -257,7 +257,7 @@
       <string>If checked, the path is constrained by the solid. Otherwise the volume of the solid describes a 'keep out' zone</string>
      </property>
      <property name="text">
-      <string>Constrained to Inside</string>
+      <string>Constrained to inside</string>
      </property>
      <property name="checked">
       <bool>true</bool>

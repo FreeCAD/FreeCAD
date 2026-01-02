@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,14 +22,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 /// Qt Include Files
 #include <Inventor/sensors/SoSensor.h>
 #include <QApplication>
 #include <QDialog>
-#endif
+
 
 #include <Base/Tools.h>
 #include <Gui/Application.h>
@@ -56,16 +56,18 @@ using namespace SketcherGui;
 
 /* TRANSLATOR SketcherGui::EditDatumDialog */
 
-bool SketcherGui::checkConstraintName(const Sketcher::SketchObject* sketch,
-                                      std::string constraintName)
+bool SketcherGui::checkConstraintName(const Sketcher::SketchObject* sketch, std::string constraintName)
 {
     if (constraintName != Base::Tools::getIdentifier(constraintName)) {
         Gui::NotifyUserError(
             sketch,
             QT_TRANSLATE_NOOP("Notifications", "Value Error"),
-            QT_TRANSLATE_NOOP("Notifications",
-                              "Invalid constraint name (must only contain alphanumericals and "
-                              "underscores, and must not start with digit)"));
+            QT_TRANSLATE_NOOP(
+                "Notifications",
+                "Invalid constraint name (must only contain alphanumericals and "
+                "underscores, and must not start with digit)"
+            )
+        );
         return false;
     }
 
@@ -99,10 +101,14 @@ int EditDatumDialog::exec(bool atCursor)
     if (Constr->isDimensional()) {
 
         if (sketch->hasConflicts()) {
-            Gui::TranslatedUserWarning(sketch,
-                                       QObject::tr("Dimensional constraint"),
-                                       QObject::tr("Not allowed to edit the datum because the "
-                                                   "sketch contains conflicting constraints"));
+            Gui::TranslatedUserWarning(
+                sketch,
+                QObject::tr("Dimensional constraint"),
+                QObject::tr(
+                    "Not allowed to edit the datum because the "
+                    "sketch contains conflicting constraints"
+                )
+            );
             return QDialog::Rejected;
         }
 
@@ -118,45 +124,51 @@ int EditDatumDialog::exec(bool atCursor)
         ui_ins_datum->labelEdit->setEntryName(QByteArray("DatumValue"));
         if (Constr->Type == Sketcher::Angle) {
             datum = Base::toDegrees<double>(datum);
-            dlg.setWindowTitle(tr("Insert angle"));
+            dlg.setWindowTitle(tr("Insert Angle"));
             init_val.setUnit(Base::Unit::Angle);
             ui_ins_datum->label->setText(tr("Angle:"));
             ui_ins_datum->labelEdit->setParamGrpPath(
-                QByteArray("User parameter:BaseApp/History/SketcherAngle"));
+                QByteArray("User parameter:BaseApp/History/SketcherAngle")
+            );
         }
         else if (Constr->Type == Sketcher::Radius) {
-            dlg.setWindowTitle(tr("Insert radius"));
+            dlg.setWindowTitle(tr("Insert Radius"));
             init_val.setUnit(Base::Unit::Length);
             ui_ins_datum->label->setText(tr("Radius:"));
             ui_ins_datum->labelEdit->setParamGrpPath(
-                QByteArray("User parameter:BaseApp/History/SketcherLength"));
+                QByteArray("User parameter:BaseApp/History/SketcherLength")
+            );
         }
         else if (Constr->Type == Sketcher::Diameter) {
-            dlg.setWindowTitle(tr("Insert diameter"));
+            dlg.setWindowTitle(tr("Insert Diameter"));
             init_val.setUnit(Base::Unit::Length);
             ui_ins_datum->label->setText(tr("Diameter:"));
             ui_ins_datum->labelEdit->setParamGrpPath(
-                QByteArray("User parameter:BaseApp/History/SketcherLength"));
+                QByteArray("User parameter:BaseApp/History/SketcherLength")
+            );
         }
         else if (Constr->Type == Sketcher::Weight) {
-            dlg.setWindowTitle(tr("Insert weight"));
+            dlg.setWindowTitle(tr("Insert Weight"));
             ui_ins_datum->label->setText(tr("Weight:"));
             ui_ins_datum->labelEdit->setParamGrpPath(
-                QByteArray("User parameter:BaseApp/History/SketcherWeight"));
+                QByteArray("User parameter:BaseApp/History/SketcherWeight")
+            );
         }
         else if (Constr->Type == Sketcher::SnellsLaw) {
-            dlg.setWindowTitle(tr("Refractive index ratio", "Constraint_SnellsLaw"));
+            dlg.setWindowTitle(tr("Refractive Index Ratio", "Constraint_SnellsLaw"));
             ui_ins_datum->label->setText(tr("Ratio n2/n1:", "Constraint_SnellsLaw"));
             ui_ins_datum->labelEdit->setParamGrpPath(
-                QByteArray("User parameter:BaseApp/History/SketcherRefrIndexRatio"));
+                QByteArray("User parameter:BaseApp/History/SketcherRefrIndexRatio")
+            );
             ui_ins_datum->labelEdit->setSingleStep(0.05);
         }
         else {
-            dlg.setWindowTitle(tr("Insert length"));
+            dlg.setWindowTitle(tr("Insert Length"));
             init_val.setUnit(Base::Unit::Length);
             ui_ins_datum->label->setText(tr("Length:"));
             ui_ins_datum->labelEdit->setParamGrpPath(
-                QByteArray("User parameter:BaseApp/History/SketcherLength"));
+                QByteArray("User parameter:BaseApp/History/SketcherLength")
+            );
         }
 
         init_val.setValue(datum);
@@ -169,18 +181,19 @@ int EditDatumDialog::exec(bool atCursor)
 
         ui_ins_datum->cbDriving->setChecked(!Constr->isDriving);
 
-        connect(ui_ins_datum->cbDriving,
-                &QCheckBox::toggled,
-                this,
-                &EditDatumDialog::drivingToggled);
-        connect(ui_ins_datum->labelEdit,
-                qOverload<const Base::Quantity&>(&Gui::QuantitySpinBox::valueChanged),
-                this,
-                &EditDatumDialog::datumChanged);
-        connect(ui_ins_datum->labelEdit,
-                &Gui::QuantitySpinBox::showFormulaDialog,
-                this,
-                &EditDatumDialog::formEditorOpened);
+        connect(ui_ins_datum->cbDriving, &QCheckBox::toggled, this, &EditDatumDialog::drivingToggled);
+        connect(
+            ui_ins_datum->labelEdit,
+            qOverload<const Base::Quantity&>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &EditDatumDialog::datumChanged
+        );
+        connect(
+            ui_ins_datum->labelEdit,
+            &Gui::QuantitySpinBox::showFormulaDialog,
+            this,
+            &EditDatumDialog::formEditorOpened
+        );
         connect(&dlg, &QDialog::accepted, this, &EditDatumDialog::accepted);
         connect(&dlg, &QDialog::rejected, this, &EditDatumDialog::rejected);
 
@@ -231,11 +244,13 @@ void EditDatumDialog::accepted()
 
                     performAutoScale(newDatum);
 
-                    Gui::cmdAppObjectArgs(sketch,
-                                          "setDatum(%i,App.Units.Quantity('%f %s'))",
-                                          ConstrNbr,
-                                          newDatum,
-                                          unitString);
+                    Gui::cmdAppObjectArgs(
+                        sketch,
+                        "setDatum(%i,App.Units.Quantity('%f %s'))",
+                        ConstrNbr,
+                        newDatum,
+                        unitString
+                    );
                 }
             }
 
@@ -247,10 +262,12 @@ void EditDatumDialog::accepted()
                     constraintName = currConstraintName;
                 }
 
-                Gui::cmdAppObjectArgs(sketch,
-                                      "renameConstraint(%d, u'%s')",
-                                      ConstrNbr,
-                                      constraintName.c_str());
+                Gui::cmdAppObjectArgs(
+                    sketch,
+                    "renameConstraint(%d, u'%s')",
+                    ConstrNbr,
+                    constraintName.c_str()
+                );
             }
 
             Gui::Command::commitCommand();
@@ -276,9 +293,7 @@ void EditDatumDialog::accepted()
             success = true;
         }
         catch (const Base::Exception& e) {
-            Gui::NotifyUserError(sketch,
-                                 QT_TRANSLATE_NOOP("Notifications", "Value Error"),
-                                 e.what());
+            Gui::NotifyUserError(sketch, QT_TRANSLATE_NOOP("Notifications", "Value Error"), e.what());
 
             Gui::Command::abortCommand();
 
@@ -314,8 +329,7 @@ void EditDatumDialog::drivingToggled(bool state)
 
 void EditDatumDialog::datumChanged()
 {
-    if (ui_ins_datum->labelEdit->text()
-        != std::as_const(ui_ins_datum->labelEdit)->getHistory()[0]) {
+    if (ui_ins_datum->labelEdit->text() != std::as_const(ui_ins_datum->labelEdit)->getHistory()[0]) {
         ui_ins_datum->cbDriving->setChecked(false);
     }
 }
@@ -396,28 +410,37 @@ bool hasVisualFeature(App::DocumentObject* obj, App::DocumentObject* rootObj, Gu
 void EditDatumDialog::performAutoScale(double newDatum)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning");
-    long autoScaleMode =
-        hGrp->GetInt("AutoScaleMode", static_cast<int>(SketcherGui::AutoScaleMode::Always));
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning"
+    );
+    long autoScaleMode
+        = hGrp->GetInt("AutoScaleMode", static_cast<int>(SketcherGui::AutoScaleMode::Always));
 
     // There is a single constraint in the sketch so it can
     // be used as a reference to scale the geometries around the origin
     // if there are external geometries, it is safe to assume that the sketch
     // was drawn with these geometries as scale references (use <= 2 because
     // the sketch axis are considered as external geometries)
+    // if the sketch has blocked geometries, it is considered a scale indicator
+    // and autoscale is not performed either
     if ((autoScaleMode == static_cast<int>(SketcherGui::AutoScaleMode::Always)
-         || (autoScaleMode
-                 == static_cast<int>(SketcherGui::AutoScaleMode::WhenNoScaleFeatureIsVisible)
+         || (autoScaleMode == static_cast<int>(SketcherGui::AutoScaleMode::WhenNoScaleFeatureIsVisible)
              && !hasVisualFeature(sketch, nullptr, Gui::Application::Instance->activeDocument())))
-        && sketch->getExternalGeometryCount() <= 2 && sketch->hasSingleScaleDefiningConstraint()) {
+        && sketch->getExternalGeometryCount() <= 2 && !sketch->hasBlockConstraint()) {
         try {
+            // Handle the case where multiple datum constraints are present but only one is scale
+            // defining e.g. a bunch of angle constraints and a single length constraint
+            int scaleDefiningConstraint = sketch->getSingleScaleDefiningConstraint();
+            if (scaleDefiningConstraint != ConstrNbr) {
+                return;
+            }
+
             double oldDatum = sketch->getDatum(ConstrNbr);
-            double scale_factor = newDatum / oldDatum;
-            float initLabelDistance = sketch->Constraints[ConstrNbr]->LabelDistance;
-            float initLabelPosition = sketch->Constraints[ConstrNbr]->LabelPosition;
-            centerScale(sketch, scale_factor);
-            sketch->setLabelDistance(ConstrNbr, initLabelDistance * scale_factor);
-            sketch->setLabelPosition(ConstrNbr, initLabelPosition * scale_factor);
+            double scaleFactor = newDatum / oldDatum;
+            centerScale(scaleFactor);
+
+            // Some constraints cannot be scaled so the actual datum constraint
+            // might change index
+            ConstrNbr = sketch->getSingleScaleDefiningConstraint();
         }
         catch (const Base::Exception& e) {
             Base::Console().error("Exception performing autoscale: %s\n", e.what());

@@ -21,18 +21,18 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QBuffer>
-# include <QPainter>
-#endif
+#include <QBuffer>
+#include <QPainter>
+
+#include <FCConfig.h>
 
 #include <BitmapFactory.h>
 
 #include "InputHint.h"
 #include "InputHintWidget.h"
 
-Gui::InputHintWidget::InputHintWidget(QWidget* parent) : QLabel(parent)
+Gui::InputHintWidget::InputHintWidget(QWidget* parent)
+    : StatusBarLabel(parent, "InputHintEnabled")
 {}
 
 void Gui::InputHintWidget::showHints(const std::list<InputHint>& hints)
@@ -52,9 +52,11 @@ void Gui::InputHintWidget::showHints(const std::list<InputHint>& hints)
             QColor color = palette().text().color();
 
             if (auto iconPath = getCustomIconPath(key)) {
-                return factory.pixmapFromSvg(*iconPath,
-                                             QSize(iconSize, iconSize),
-                                             {{0xFFFFFF, color.rgb() & RGB_MASK}});
+                return factory.pixmapFromSvg(
+                    *iconPath,
+                    QSize(iconSize, iconSize),
+                    {{0xFFFFFF, color.rgb() & RGB_MASK}}
+                );
             }
 
             return generateKeyIcon(key, color, iconSize);
@@ -90,9 +92,11 @@ void Gui::InputHintWidget::showHints(const std::list<InputHint>& hints)
         messages.append(getHintHTML(hint));
     }
 
-    QString html = QStringLiteral("<table style=\"line-height: %1px\" height=%1>"
-                                  "<tr>%2</tr>"
-                                  "</table>")
+    QString html = QStringLiteral(
+                       "<table style=\"line-height: %1px\" height=%1>"
+                       "<tr>%2</tr>"
+                       "</table>"
+    )
                        .arg(iconSize + iconMargin * 2);
 
     setText(html.arg(messages.join(QStringLiteral("<td width=10></td>"))));
@@ -141,7 +145,7 @@ QPixmap Gui::InputHintWidget::generateKeyIcon(const InputHint::UserInput key, co
 
     const QRect keyRect(margin, margin, symbolWidth, iconSymbolHeight);
 
-    QPixmap pixmap = BitmapFactory().empty({ symbolWidth + margin * 2, height });
+    QPixmap pixmap = BitmapFactory().empty({symbolWidth + margin * 2, height});
 
     QPainter painter(&pixmap);
     painter.setRenderHint(QPainter::Antialiasing);
@@ -153,7 +157,8 @@ QPixmap Gui::InputHintWidget::generateKeyIcon(const InputHint::UserInput key, co
         // this is important for characters that are below baseline
         keyRect.translated(0, -(textBoundingRect.y() + textBoundingRect.height()) / 2),
         Qt::AlignHCenter,
-        text);
+        text
+    );
 
     return pixmap;
 }

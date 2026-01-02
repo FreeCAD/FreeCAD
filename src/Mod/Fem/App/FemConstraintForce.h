@@ -38,6 +38,8 @@ public:
     /// Constructor
     ConstraintForce();
 
+    App::PropertyBool EnableAmplitude;
+    App::PropertyStringList AmplitudeValues;
     App::PropertyForce Force;
     App::PropertyLinkSub Direction;
     App::PropertyBool Reversed;
@@ -53,9 +55,11 @@ public:
     }
 
 protected:
-    void handleChangedPropertyType(Base::XMLReader& reader,
-                                   const char* TypeName,
-                                   App::Property* prop) override;
+    void handleChangedPropertyType(
+        Base::XMLReader& reader,
+        const char* TypeName,
+        App::Property* prop
+    ) override;
     void onChanged(const App::Property* prop) override;
 
 private:

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
@@ -100,7 +101,7 @@ PyMOD_INIT_FUNC(RobotGui)
         PyMOD_Return(nullptr);
     }
     PyObject* mod = RobotGui::initModule();
-    Base::Console().log("Loading GUI of Robot module... done\n");
+    Base::Console().log("Loading GUI of Robot module… done\n");
 
     // instantiating the commands
     CreateRobotCommands();

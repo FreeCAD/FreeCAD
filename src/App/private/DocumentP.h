@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -42,6 +44,7 @@
 #include <App/DocumentObject.h>
 #include <App/DocumentObserver.h>
 #include <App/StringHasher.h>
+#include <App/ExportInfo.h>
 #include <Base/UniqueNameManager.h>
 
 // using VertexProperty = boost::property<boost::vertex_root_t, DocumentObject* >;
@@ -95,6 +98,7 @@ struct DocumentP
     mutable HasherMap hashers;
     std::multimap<const App::DocumentObject*, std::unique_ptr<App::DocumentObjectExecReturn>>
         _RecomputeLog;
+    ExportInfo exportInfo;
 
     StringHasherRef Hasher {new StringHasher};
 

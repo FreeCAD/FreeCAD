@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2005 Imetric 3D GmbH                                    *
  *                                                                         *
@@ -142,8 +144,10 @@ public:
     //@}
 
     /// Check if Vector is on a line segment
-    [[nodiscard]] bool IsOnLineSegment(const Vector3<float_type>& startVct,
-                                       const Vector3<float_type>& endVct) const;
+    [[nodiscard]] bool IsOnLineSegment(
+        const Vector3<float_type>& startVct,
+        const Vector3<float_type>& endVct
+    ) const;
 
     /** @name Modification */
     //@{
@@ -170,6 +174,7 @@ public:
     [[nodiscard]] float_type Sqr() const;
     /// Set length to 1.
     Vector3& Normalize();
+    Vector3 Normalized() const;
     /// Checks whether this is the null vector
     [[nodiscard]] bool IsNull() const;
     /// Get angle between both vectors. The returned value lies in the interval [0,pi].
@@ -181,9 +186,11 @@ public:
      * vector \a vector rclDirX and vector \a vector rclDirY.
      * \note \a rclDirX must be perpendicular to \a rclDirY, i.e. \a rclDirX * \a rclDirY = 0..
      */
-    void TransformToCoordinateSystem(const Vector3& rclBase,
-                                     const Vector3& rclDirX,
-                                     const Vector3& rclDirY);
+    void TransformToCoordinateSystem(
+        const Vector3& rclBase,
+        const Vector3& rclDirX,
+        const Vector3& rclDirY
+    );
     /**
      * @brief IsEqual
      * @param rclPnt
@@ -245,8 +252,7 @@ Vector3<float_type> const Vector3<float_type>::UnitZ(0.0, 0.0, 1.0);
 
 /// Returns the distance between two points
 template<class float_type>
-[[nodiscard]] inline float_type Distance(const Vector3<float_type>& v1,
-                                         const Vector3<float_type>& v2)
+[[nodiscard]] inline float_type Distance(const Vector3<float_type>& v1, const Vector3<float_type>& v2)
 {
     float_type x = v1.x - v2.x;
     float_type y = v1.y - v2.y;
@@ -256,8 +262,7 @@ template<class float_type>
 
 /// Returns the squared distance between two points
 template<class float_type>
-[[nodiscard]] inline float_type DistanceP2(const Vector3<float_type>& v1,
-                                           const Vector3<float_type>& v2)
+[[nodiscard]] inline float_type DistanceP2(const Vector3<float_type>& v1, const Vector3<float_type>& v2)
 {
     float_type x = v1.x - v2.x;
     float_type y = v1.y - v2.y;
@@ -267,8 +272,7 @@ template<class float_type>
 
 /// Multiplication of scalar with vector.
 template<class float_type>
-[[nodiscard]] inline Vector3<float_type> operator*(float_type fFac,
-                                                   const Vector3<float_type>& rcVct)
+[[nodiscard]] inline Vector3<float_type> operator*(float_type fFac, const Vector3<float_type>& rcVct)
 {
     return Vector3<float_type>(rcVct.x * fFac, rcVct.y * fFac, rcVct.z * fFac);
 }

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
@@ -74,7 +75,7 @@ PyMOD_INIT_FUNC(MeshPartGui)
     }
 
     PyObject* mod = MeshPartGui::initModule();
-    Base::Console().log("Loading GUI of MeshPart module... done\n");
+    Base::Console().log("Loading GUI of MeshPart module… done\n");
 
     // clang-format off
     // instantiating the commands

@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "DrawSVGTemplate.h"
 // inclusion of the generated files (generated out of DrawSVGTemplatePy.xml)

@@ -34,34 +34,8 @@
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="0">
        <layout class="QGridLayout" name="gridLayout" columnstretch="2,3">
-        <item row="2" column="0">
-         <widget class="QLabel" name="l_ccx_binary_std">
-          <property name="text">
-           <string>CalculiX binary</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="Gui::PrefCheckBox" name="cb_ccx_binary_std">
-          <property name="text">
-           <string>Search in known binary directories</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>UseStandardCcxLocation</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Fem/Ccx</cstring>
-          </property>
-         </widget>
-        </item>
         <item row="3" column="0">
          <widget class="QLabel" name="l_ccx_binary_path">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
           <property name="minimumSize">
            <size>
             <width>100</width>
@@ -69,15 +43,12 @@
            </size>
           </property>
           <property name="text">
-           <string>ccx binary path</string>
+           <string>CalculiX path</string>
           </property>
          </widget>
         </item>
         <item row="3" column="1">
-         <widget class="Gui::PrefFileChooser" name="fc_ccx_binary_path">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
+         <widget class="Gui::PrefFileChooser" name="fc_ccx_binary_path" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -116,7 +87,7 @@
         <item row="4" column="0">
          <widget class="QLabel" name="l_editor">
           <property name="text">
-           <string>Input file Editor</string>
+           <string>Input file editor</string>
           </property>
          </widget>
         </item>
@@ -148,7 +119,7 @@
            </size>
           </property>
           <property name="text">
-           <string>External editor:</string>
+           <string>External editor</string>
           </property>
          </widget>
         </item>
@@ -199,7 +170,7 @@
    <item>
     <widget class="QGroupBox" name="gb_02_analysis_param">
      <property name="title">
-      <string>Analysis defaults</string>
+      <string>Analysis Defaults</string>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_3">
       <item>
@@ -283,7 +254,7 @@
    <item>
     <widget class="QGroupBox" name="gb_03_solver_param">
      <property name="title">
-      <string>Solver defaults</string>
+      <string>Solver Defaults</string>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_1">
       <item>
@@ -302,16 +273,16 @@
          </spacer>
         </item>
         <item row="5" column="0">
-         <widget class="QLabel" name="l_ccx_initial_time_step">
+         <widget class="QLabel" name="l_ccx_initial_time_increment">
           <property name="text">
-           <string>Time Initial Step</string>
+           <string>Initial time increment</string>
           </property>
          </widget>
         </item>
         <item row="6" column="0">
-         <widget class="QLabel" name="l_ccx_analysis_time">
+         <widget class="QLabel" name="l_ccx_time_period">
           <property name="text">
-           <string>Time End</string>
+           <string>Time period</string>
           </property>
          </widget>
         </item>
@@ -334,7 +305,7 @@
         <item row="0" column="0">
          <widget class="QLabel" name="l_ccx_numcpu">
           <property name="text">
-           <string>Number of CPU's to use</string>
+           <string>Number of CPUs to use</string>
           </property>
          </widget>
         </item>
@@ -427,38 +398,10 @@
          </widget>
         </item>
         <item row="8" column="2">
-         <widget class="Gui::PrefDoubleSpinBox" name="dsb_ccx_maximum_time_step">
+         <widget class="Gui::PrefDoubleSpinBox" name="dsb_ccx_maximum_time_increment">
           <property name="contextMenuPolicy">
            <enum>Qt::DefaultContextMenu</enum>
           </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="suffix">
-           <string notr="true"> s</string>
-          </property>
-          <property name="decimals">
-           <number>9</number>
-          </property>
-          <property name="minimum">
-           <double>0.000000001000000</double>
-          </property>
-          <property name="singleStep">
-           <double>1.000000000000000</double>
-          </property>
-          <property name="value">
-           <double>1.000000000000000</double>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>AnalysisTimeMaximumStep</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Fem/Ccx</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="2">
-         <widget class="Gui::PrefDoubleSpinBox" name="dsb_ccx_analysis_time">
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
@@ -478,7 +421,35 @@
            <double>1.000000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>AnalysisTime</cstring>
+           <cstring>TimeMaximumIncrement</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Fem/Ccx</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="2">
+         <widget class="Gui::PrefDoubleSpinBox" name="dsb_ccx_time_period">
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="suffix">
+           <string notr="true"> s</string>
+          </property>
+          <property name="decimals">
+           <number>9</number>
+          </property>
+          <property name="minimum">
+           <double>0.000000001000000</double>
+          </property>
+          <property name="singleStep">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="value">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>TimePeriod</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Fem/Ccx</cstring>
@@ -516,16 +487,16 @@
          </spacer>
         </item>
         <item row="4" column="0">
-         <widget class="QLabel" name="l_ccx_max_iterations">
+         <widget class="QLabel" name="l_ccx_max_increments">
           <property name="text">
-           <string>Maximum number of iterations</string>
+           <string>Maximum number of increments</string>
           </property>
          </widget>
         </item>
         <item row="7" column="0">
-         <widget class="QLabel" name="l_ccx_minimum_time_step">
+         <widget class="QLabel" name="l_ccx_minimum_time_increment">
           <property name="text">
-           <string>Time Minimum Step</string>
+           <string>Minimum time increment</string>
           </property>
          </widget>
         </item>
@@ -543,7 +514,7 @@
          </spacer>
         </item>
         <item row="7" column="2">
-         <widget class="Gui::PrefDoubleSpinBox" name="dsb_ccx_minimum_time_step">
+         <widget class="Gui::PrefDoubleSpinBox" name="dsb_ccx_minimum_time_increment">
           <property name="contextMenuPolicy">
            <enum>Qt::DefaultContextMenu</enum>
           </property>
@@ -566,7 +537,7 @@
            <double>0.000010000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>AnalysisTimeMinimumStep</cstring>
+           <cstring>TimeMinimumIncrement</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Fem/Ccx</cstring>
@@ -590,7 +561,7 @@
          </widget>
         </item>
         <item row="5" column="2">
-         <widget class="Gui::PrefDoubleSpinBox" name="dsb_ccx_initial_time_step">
+         <widget class="Gui::PrefDoubleSpinBox" name="dsb_ccx_initial_time_increment">
           <property name="contextMenuPolicy">
            <enum>Qt::DefaultContextMenu</enum>
           </property>
@@ -610,10 +581,10 @@
            <double>0.010000000000000</double>
           </property>
           <property name="value">
-           <double>0.010000000000000</double>
+           <double>1.000000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>AnalysisTimeInitialStep</cstring>
+           <cstring>TimeInitialIncrement</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Fem/Ccx</cstring>
@@ -628,7 +599,7 @@
          </widget>
         </item>
         <item row="4" column="2">
-         <widget class="Gui::PrefSpinBox" name="sb_ccx_max_iterations">
+         <widget class="Gui::PrefSpinBox" name="sb_ccx_max_increments">
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
@@ -645,7 +616,7 @@
            <number>2000</number>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>AnalysisMaxIterations</cstring>
+           <cstring>StepMaxIncrements</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Fem/Ccx</cstring>
@@ -653,9 +624,9 @@
          </widget>
         </item>
         <item row="8" column="0">
-         <widget class="QLabel" name="l_ccx_maximum_time_step">
+         <widget class="QLabel" name="l_ccx_maximum_time_increment">
           <property name="text">
-           <string>Time Maximum Step</string>
+           <string>Maximum time increment</string>
           </property>
          </widget>
         </item>
@@ -721,7 +692,7 @@ Only takes effect if 'Pipeline only' is enabled</string>
    <item>
     <widget class="QGroupBox" name="gb_04_thermomech_params">
      <property name="title">
-      <string>Thermo mechanical defaults</string>
+      <string>Thermo-Mechanical Defaults</string>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
@@ -757,7 +728,7 @@ Only takes effect if 'Pipeline only' is enabled</string>
    <item>
     <widget class="QGroupBox" name="gb_05_frequercy_params">
      <property name="title">
-      <string>Frequency defaults</string>
+      <string>Frequency Defaults</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
@@ -965,38 +936,6 @@ Only takes effect if 'Pipeline only' is enabled</string>
     <hint type="destinationlabel">
      <x>406</x>
      <y>88</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cb_ccx_binary_std</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>l_ccx_binary_path</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>406</x>
-     <y>45</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>148</x>
-     <y>68</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cb_ccx_binary_std</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>fc_ccx_binary_path</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>406</x>
-     <y>45</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>406</x>
-     <y>68</y>
     </hint>
    </hints>
   </connection>

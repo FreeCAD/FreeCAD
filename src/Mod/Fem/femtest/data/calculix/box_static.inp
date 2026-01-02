@@ -485,6 +485,8 @@ Evolumes
 *MATERIAL, NAME=MechanicalMaterial
 *ELASTIC
 200000,0.3
+*EXPANSION, ZERO=0
+0
 
 ***********************************************************
 ** Sections
@@ -507,8 +509,8 @@ FemConstraintFixed,3
 
 ***********************************************************
 ** constraints force node loads
-*CLOAD
 ** FemConstraintForce
+*CLOAD
 ** node loads on shape: Box:Face6
 2,3,-0
 4,3,-0
@@ -558,7 +560,7 @@ FemConstraintFixed,3
 ** constraints pressure element face loads
 ** FemConstraintPressure
 *DLOAD
-** FemConstraintPressure: face load
+** Box.Face2
 3,P1,1000.0
 6,P3,1000.0
 9,P2,1000.0

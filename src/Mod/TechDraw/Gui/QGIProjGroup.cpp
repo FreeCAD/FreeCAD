@@ -20,12 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QGraphicsScene>
 # include <QGraphicsSceneMouseEvent>
 # include <QList>
-#endif
+
 
 #include <App/Document.h>
 #include <Base/Console.h>
@@ -34,10 +32,13 @@
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
 
 #include "QGIProjGroup.h"
+#include "QGIViewDimension.h"
+#include "QGIViewPart.h"
 #include "Rez.h"
 
 
 using namespace TechDrawGui;
+using namespace TechDraw;
 
 QGIProjGroup::QGIProjGroup()
 {
@@ -47,7 +48,6 @@ QGIProjGroup::QGIProjGroup()
     setFlag(ItemIsSelectable, false);
     setFlag(ItemIsMovable, true);
     setFiltersChildEvents(true);
-//    setFrameState(false);
 }
 
 TechDraw::DrawProjGroup * QGIProjGroup::getDrawView() const
@@ -56,37 +56,60 @@ TechDraw::DrawProjGroup * QGIProjGroup::getDrawView() const
     return dynamic_cast<TechDraw::DrawProjGroup *>(obj);
 }
 
+bool QGIProjGroup::autoDistributeEnabled() const
+{
+    return getDrawView() && getDrawView()->AutoDistribute.getValue();
+}
+
+
+// note that we are not actually handling any of these events (ie we don't return true, and we don't
+// set the the event to ignore) here.
 bool QGIProjGroup::sceneEventFilter(QGraphicsItem* watched, QEvent *event)
 {
-// i want to handle events before the child item that would ordinarily receive them
+    auto qvpart = dynamic_cast<QGIViewPart*>(watched);
+    if (!qvpart ||
+        !isMember(qvpart->getViewObject())) {
+        // if qwatched is not in this projgroup, we ignore the event as none of our business
+        return false;
+    }
+
+    // i want to handle events before the child item that would ordinarily receive them
     if(event->type() == QEvent::GraphicsSceneMousePress ||
        event->type() == QEvent::GraphicsSceneMouseMove  ||
        event->type() == QEvent::GraphicsSceneMouseRelease) {
-
-        QGIView *qAnchor = getAnchorQItem();
-        if(qAnchor && watched == qAnchor) {
-            auto *mEvent = dynamic_cast<QGraphicsSceneMouseEvent*>(event);
-
-            switch(event->type()) {
-              case QEvent::GraphicsSceneMousePress:
-                  // TODO - Perhaps just pass the mouse event on to the anchor somehow?
-                  if (scene() && !qAnchor->isSelected()) {
-                      scene()->clearSelection();
-                      qAnchor->setSelected(true);
-                  }
-                  mousePressEvent(mEvent);
-                  break;
-              case QEvent::GraphicsSceneMouseMove:
-                  mouseMoveEvent(mEvent);
-                  break;
-              case QEvent::GraphicsSceneMouseRelease:
-                  mouseReleaseEvent(mEvent);
-                  break;
-              default:
-                  break;
-            }
-            return true;
+        auto* qWatched = dynamic_cast<QGIView*>(watched);
+        if (!qWatched) {
+            return false;
         }
+
+        auto *mEvent = dynamic_cast<QGraphicsSceneMouseEvent*>(event);
+
+        // Disable moves on the view to prevent double drag
+        std::vector<QGraphicsItem*> modifiedChildren;
+        for (auto* child : childItems()) {
+            if (child->isSelected() && (child->flags() & QGraphicsItem::ItemIsMovable)) {
+                child->setFlag(QGraphicsItem::ItemIsMovable, false);
+                modifiedChildren.push_back(child);
+            }
+        }
+
+        switch (event->type()) {
+            case QEvent::GraphicsSceneMousePress:
+                mousePressEvent(mEvent);
+                break;
+            case QEvent::GraphicsSceneMouseMove:
+                mouseMoveEvent(mEvent);
+                break;
+            case QEvent::GraphicsSceneMouseRelease:
+                mouseReleaseEvent(qWatched, mEvent);
+                break;
+            default:
+                break;
+        }
+        for (auto* child : modifiedChildren) {
+            child->setFlag(QGraphicsItem::ItemIsMovable, true);
+        }
+        return false;
     }
 
     return false;
@@ -98,7 +121,8 @@ QVariant QGIProjGroup::itemChange(GraphicsItemChange change, const QVariant &val
          QGIView* gView = dynamic_cast<QGIView *>(childItem);
          if(gView) {
             TechDraw::DrawView *fView = gView->getViewObject();
-            if(fView->isDerivedFrom<TechDraw::DrawProjGroupItem>()) {
+            auto dvp = freecad_cast<TechDraw::DrawViewPart*>(fView);
+            if (dvp && TechDraw::DrawView::isProjGroupItem(dvp)) {
                 auto *projItemPtr = static_cast<TechDraw::DrawProjGroupItem *>(fView);
                 QString type = QString::fromLatin1(projItemPtr->Type.getValueAsString());
 
@@ -131,41 +155,44 @@ QVariant QGIProjGroup::itemChange(GraphicsItemChange change, const QVariant &val
 
 void QGIProjGroup::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
+    // save the new mousePos, but don't do anything else.
     QGIView *qAnchor = getAnchorQItem();
     if(qAnchor) {
         QPointF transPos = qAnchor->mapFromScene(event->scenePos());
-        if(qAnchor->shape().contains(transPos)) {
+        if(qAnchor->shape().contains(transPos) || autoDistributeEnabled()) {
             mousePos = event->screenPos();
         }
     }
-    event->accept();
 }
 
 void QGIProjGroup::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 {
     QGIView *qAnchor = getAnchorQItem();
-    if(scene() && qAnchor && (qAnchor == scene()->mouseGrabberItem())) {
+    // this is obsolete too?
+    if(scene() && qAnchor && (qAnchor == scene()->mouseGrabberItem() || autoDistributeEnabled())) {
         if((mousePos - event->screenPos()).manhattanLength() > 5) {    //if the mouse has moved more than 5, process the mouse event
             QGIViewCollection::mouseMoveEvent(event);
         }
-
     }
-    event->accept();
 }
 
 void QGIProjGroup::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
-     if(scene()) {
-       QGIView *qAnchor = getAnchorQItem();
+    mouseReleaseEvent(getAnchorQItem(), event);
+}
+
+
+void QGIProjGroup::mouseReleaseEvent(QGIView* originator, QGraphicsSceneMouseEvent* event)
+{
+    if(scene()) {
+        // this assumes we are dragging?
         if((mousePos - event->screenPos()).manhattanLength() < 5) {
-            if(qAnchor && qAnchor->shape().contains(event->pos())) {
-                event->ignore();
-                qAnchor->mouseReleaseEvent(event);
+            if(originator && originator->shape().contains(event->pos())) {
+                return;
             }
         }
-        else if(scene() && qAnchor) {
-            // End of Drag
-            getViewObject()->setPosition(Rez::appX(x()), Rez::appX(getY()));
+        else if(scene() && originator) {
+            dragFinished();
         }
     }
     QGIViewCollection::mouseReleaseEvent(event);
@@ -203,4 +230,17 @@ void QGIProjGroup::drawBorder()
 //QGIProjGroup does not have a border!
 //    Base::Console().message("TRACE - QGIProjGroup::drawBorder - doing nothing!!\n");
 }
+
+
+//! true if dvpObj is a member of our projection group
+bool QGIProjGroup::isMember(App::DocumentObject* dvpObj) const
+{
+    std::vector<App::DocumentObject*> groupOutlist = getViewObject()->getOutList();
+    auto itMatch = std::find_if(groupOutlist.begin(), groupOutlist.end(),
+             [dvpObj](App::DocumentObject* child) {
+                return child == dvpObj;
+             });
+    return itMatch != groupOutlist.end();
+}
+
 

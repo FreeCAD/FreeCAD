@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2019 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
 # *   Copyright (c) 2024 FreeCAD Project Association                        *
@@ -48,6 +50,7 @@ DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 ## \addtogroup draftmake
 # @{
 
+
 def _preprocess(objs, radius, chamfer):
     """Check the inputs and return the edges for the fillet and the objects to be deleted."""
     edges = []
@@ -71,12 +74,12 @@ def _preprocess(objs, radius, chamfer):
                 edges.append(shape.Edges[0])
 
     if len(edges) != 2:
-        _err(translate("draft", "Two edges are needed."))
+        _err(translate("draft", "2 edges are needed"))
         return None, None
 
     edges = DraftGeomUtils.fillet(edges, radius, chamfer)
     if len(edges) < 3:
-        _err(translate("draft", "Edges are not connected or radius is too large."))
+        _err(translate("draft", "Edges are not connected or radius is too large"))
         return None, None
 
     return edges, del_objs
@@ -138,5 +141,6 @@ def make_fillet(objs, radius=100, chamfer=False, delete=False):
         gui_utils.select(obj)
 
     return obj
+
 
 ## @}

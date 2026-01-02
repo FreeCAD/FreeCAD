@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2020 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -28,6 +29,7 @@ import FreeCADGui
 import Mesh
 import Path
 import PathScripts
+import PathScripts.PathUtils as PathUtils
 import Path.Post.Command as PathPost
 import camotics
 import io
@@ -191,7 +193,7 @@ class CamoticsSimulation(QtCore.QObject):
             self.SIM.set_tool(
                 t.ToolNumber,
                 metric=True,
-                shape=self.SHAPEMAP.get(t.Tool.ShapeName, "Cylindrical"),
+                shape=self.SHAPEMAP.get(PathUtils.getToolShapeName(t.Tool), "Cylindrical"),
                 length=t.Tool.Length.Value,
                 diameter=t.Tool.Diameter.Value,
             )
@@ -283,7 +285,9 @@ class CamoticsSimulation(QtCore.QObject):
             if hasattr(t.Tool, "Camotics"):
                 toolitem["shape"] = t.Tool.Camotics
             else:
-                toolitem["shape"] = self.SHAPEMAP.get(t.Tool.ShapeName, "Cylindrical")
+                toolitem["shape"] = self.SHAPEMAP.get(
+                    PathUtils.getToolShapeName(t.Tool), "Cylindrical"
+                )
 
             toolitem["length"] = t.Tool.Length.Value
             toolitem["diameter"] = t.Tool.Diameter.Value
@@ -309,7 +313,7 @@ class CommandCamoticsSimulate:
             "Pixmap": "CAM_Camotics",
             "MenuText": QT_TRANSLATE_NOOP("CAM_Camotics", "CAMotics"),
             "Accel": "P, C",
-            "ToolTip": QT_TRANSLATE_NOOP("CAM_Camotics", "Simulate using CAMotics"),
+            "ToolTip": QT_TRANSLATE_NOOP("CAM_Camotics", "Simulates using CAMotics"),
             "CmdType": "ForEdit",
         }
 
@@ -331,4 +335,4 @@ if FreeCAD.GuiUp:
     FreeCADGui.addCommand("CAM_Camotics", CommandCamoticsSimulate())
 
 
-FreeCAD.Console.PrintLog("Loading PathCamoticsSimulateGui ... done\n")
+FreeCAD.Console.PrintLog("Loading PathCamoticsSimulateGui… done\n")

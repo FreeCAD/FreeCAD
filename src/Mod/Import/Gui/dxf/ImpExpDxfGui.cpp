@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Yorik van Havre (yorik@uncreated.net)              *
  *                                                                         *
@@ -21,10 +23,10 @@
  ***************************************************************************/
 
 #include <FCConfig.h>
-#ifndef _PreComp_
+
 #include <Standard_Version.hxx>
 #if OCC_VERSION_HEX < 0x070600
-#include <BRepAdaptor_HCurve.hxx>
+# include <BRepAdaptor_HCurve.hxx>
 #endif
 #include <Approx_Curve3d.hxx>
 #include <BRepAdaptor_Curve.hxx>
@@ -49,12 +51,15 @@
 #include <gp_Elips.hxx>
 #include <gp_Pnt.hxx>
 #include <gp_Vec.hxx>
-#endif
+
 #include <regex>
+
+#include <App/Link.h>
 
 #include <Gui/Application.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/ViewProviderDocumentObject.h>
+#include <Gui/ViewProviderLink.h>
 #include <Mod/Part/Gui/ViewProvider.h>
 
 #include "ImpExpDxfGui.h"
@@ -75,6 +80,43 @@ void ImpExpDxfReadGui::ApplyGuiStyles(Part::Feature* object) const
     view->ShapeAppearance.setDiffuseColor(color);
     view->DrawStyle.setValue(GetDrawStyle());
     view->Transparency.setValue(0);
+}
+
+void ImpExpDxfReadGui::ApplyGuiStyles(App::Link* object) const
+{
+    auto view = GuiDocument->getViewProvider(object);
+
+    // The ViewProvider for an App::Link is a ViewProviderLink
+    auto* vpLink = dynamic_cast<Gui::ViewProviderLink*>(view);
+    if (!vpLink) {
+        return;
+    }
+
+    if (m_preserveColors) {
+        // The user wants to see colors from the DXF file.
+        // We style the link by setting its ViewProvider's properties directly,
+        // which is the same mechanism used for standard Part::Features.
+        Base::Color color = ObjectColor(m_entityAttributes.m_Color);
+
+        // The ViewProviderLink does not have LineColor/PointColor properties itself,
+        // but setting them on the base ViewProvider seems to be respected by the renderer.
+        // If this does not work, the properties would need to be added to ViewProviderLink.
+        if (auto* prop = view->getPropertyByName("LineColor")) {
+            static_cast<App::PropertyColor*>(prop)->setValue(color);
+        }
+        if (auto* prop = view->getPropertyByName("PointColor")) {
+            static_cast<App::PropertyColor*>(prop)->setValue(color);
+        }
+        if (auto* prop = view->getPropertyByName("ShapeColor")) {
+            static_cast<App::PropertyColor*>(prop)->setValue(color);
+        }
+        if (auto* prop = view->getPropertyByName("DrawStyle")) {
+            static_cast<App::PropertyEnumeration*>(prop)->setValue(GetDrawStyle());
+        }
+        if (auto* prop = view->getPropertyByName("Transparency")) {
+            static_cast<App::PropertyInteger*>(prop)->setValue(0);
+        }
+    }
 }
 
 void ImpExpDxfReadGui::ApplyGuiStyles(App::FeaturePython* object) const
@@ -131,7 +173,8 @@ int ImpExpDxfReadGui::GetDrawStyle() const
         // starts with dot : return dotted
         std::basic_regex("^dot", std::regex::icase),
         // dash & dot or center/centre/divide/phantom : return DashDot
-        std::basic_regex("dot.*dash|dash.*dot|^cent(er|re)|^divide|^phantom", std::regex::icase)};
+        std::basic_regex("dot.*dash|dash.*dot|^cent(er|re)|^divide|^phantom", std::regex::icase)
+    };
     // Some line type names can match several patterns, in particular dotdash can also match ^dot
     // and dashdot can match ^dash Rather than code the latter patterns to forbid subsequent "dash"
     // or "dot" so they are mutually exclusive, we just match the more specific pattern, which is

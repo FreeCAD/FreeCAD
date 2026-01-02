@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,10 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <limits>
-#endif
 
 #include "MeshFeature.h"
 // inclusion of the generated files (generated out of MeshFeaturePy.xml)
@@ -125,8 +124,10 @@ PyObject* MeshFeaturePy::decimate(PyObject* args)
         Py_Return;
     }
 
-    PyErr_SetString(PyExc_ValueError,
-                    "decimate(tolerance=float, reduction=float) or decimate(targetSize=int)");
+    PyErr_SetString(
+        PyExc_ValueError,
+        "decimate(tolerance=float, reduction=float) or decimate(targetSize=int)"
+    );
     return nullptr;
 }
 

@@ -20,11 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QApplication>
 #include <QGraphicsSceneMouseEvent>
-#endif
 
 #include <Gui/Application.h>
 #include <Mod/TechDraw/App/DimensionFormatter.h>
@@ -551,7 +548,7 @@ void QGIDatumLabel::setPrettyNormal()
     m_tolTextOver->setPrettyNormal();
     m_tolTextUnder->setPrettyNormal();
     m_unitText->setPrettyNormal();
-    setFrameColor(PreferencesGui::normalQColor());
+    setFrameColor(m_colNormal);
     Q_EMIT setPretty(NORMAL);
 }
 

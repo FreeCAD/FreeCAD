@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2025 Samuel Abels <knipknap@gmail.com>                  *
 # *                                                                         *
@@ -36,8 +37,8 @@ class ToolBitSlittingSaw(ToolBit, CuttingToolMixin, RotaryToolBitMixin):
 
     @property
     def summary(self) -> str:
-        diameter = self.get_property_str("Diameter", "?")
-        blade_thickness = self.get_property_str("BladeThickness", "?")
+        diameter = self.get_property_str("Diameter", "?", precision=3)
+        blade_thickness = self.get_property_str("BladeThickness", "?", precision=3)
         flutes = self.get_property("Flutes")
 
         return FreeCAD.Qt.translate(

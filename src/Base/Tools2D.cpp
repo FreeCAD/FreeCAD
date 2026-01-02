@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2005 Imetric 3D GmbH                                    *
  *                                                                         *
@@ -20,14 +22,9 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <array>
 #include <limits>
 #include <set>
-#endif
 
 #include "Tools2D.h"
 #include "Vector3D.h"
@@ -338,8 +335,7 @@ bool Polygon2d::Contains(const Vector2d& rclV) const
     return sTorsion != 0;
 }
 
-void Polygon2d::Intersect(const Polygon2d& rclPolygon,
-                          std::list<Polygon2d>& rclResultPolygonList) const
+void Polygon2d::Intersect(const Polygon2d& rclPolygon, std::list<Polygon2d>& rclResultPolygonList) const
 {
     // trim the passed polygon with the current one, the result is a list of polygons (subset of the
     // passed polygon) your own (trim) polygon is closed

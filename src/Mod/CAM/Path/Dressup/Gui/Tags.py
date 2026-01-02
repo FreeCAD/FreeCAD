@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -28,8 +29,8 @@ import FreeCADGui
 import Path
 import Path.Base.Gui.GetPoint as PathGetPoint
 import Path.Dressup.Tags as PathDressupTag
-import PathGui
 import PathScripts.PathUtils as PathUtils
+import Path.Dressup.Utils as PathDressup
 
 
 if False:
@@ -63,6 +64,7 @@ class PathDressupTagTaskPanel:
             self.jvoVisible = self.jvo.isVisible()
             if self.jvoVisible:
                 self.jvo.hide()
+                self.obj.ViewObject.show()
         else:
             self.jvoVisible = jvoVisibility
         self.pt = FreeCAD.Vector(0, 0, 0)
@@ -452,7 +454,7 @@ class PathDressupTagViewProvider:
         tags = []
         for i, p in enumerate(positions):
             tag = HoldingTagMarker(self.obj.Proxy.pointAtBottom(self.obj, p), self.colors)
-            tag.setEnabled(not i in disabled)
+            tag.setEnabled(i not in disabled)
             tags.append(tag)
             self.switch.addChild(tag.sep)
         self.tags = tags
@@ -524,10 +526,16 @@ class PathDressupTagViewProvider:
 
     def addSelection(self, doc, obj, sub, point):
         Path.Log.track(doc, obj, sub, point)
-        if self.panel:
+        if hasattr(self, "panel") and self.panel:
             i = self.tagAtPoint(point, sub is None)
             self.panel.selectTagWithId(i)
         FreeCADGui.updateGui()
+
+    def getIcon(self):
+        if getattr(PathDressup.baseOp(self.obj), "Active", True):
+            return ":/icons/CAM_Dressup.svg"
+        else:
+            return ":/icons/CAM_OpActive.svg"
 
 
 def Create(baseObject, name="DressupTag"):
@@ -549,7 +557,7 @@ class CommandPathDressupTag:
             "Pixmap": "CAM_Dressup",
             "MenuText": QT_TRANSLATE_NOOP("CAM_DressupTag", "Tag"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "CAM_DressupTag", "Creates a Tag Dress-up object from a selected toolpath"
+                "CAM_DressupTag", "Creates a tag dress-up object from a selected toolpath"
             ),
         }
 

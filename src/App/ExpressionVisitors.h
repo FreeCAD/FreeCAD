@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2016 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
@@ -24,6 +26,8 @@
 #define RENAMEOBJECTIDENTIFIEREXPRESSIONVISITOR_H
 
 #include "Expression.h"
+
+#include "Document.h"
 
 namespace App
 {

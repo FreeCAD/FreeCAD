@@ -31,11 +31,11 @@
 namespace PartDesign
 {
 
- /** PartDesign feature
+/** PartDesign feature
  *   Base class of all PartDesign features.
  *   This kind of features only produce solids or fail.
  */
-class PartDesignExport Solid : public Feature
+class PartDesignExport Solid: public Feature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Solid);
 
@@ -43,10 +43,9 @@ public:
     Solid();
 
 protected:
-
 };
 
-} //namespace PartDesign
+}  // namespace PartDesign
 
 
-#endif // PARTDESIGN_Feature_H
+#endif  // PARTDESIGN_Feature_H

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2017 Lorenz Lechner                                     *
  *                                                                         *
@@ -20,11 +22,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <cmath>
 #include <iostream>
-#endif
+
 
 #include "MeshFlatteningNurbs.h"
 
@@ -368,7 +368,7 @@ Eigen::Matrix<double, Eigen::Dynamic, 2> NurbsBase2D::getUVMesh(int num_u_points
     double v_min = this->v_knots(0);
     double v_max = this->v_knots(this->v_knots.size() - 1);
     Eigen::Matrix<double, Eigen::Dynamic, 2> uv_points;
-    uv_points.resize(num_u_points * num_v_points, 2);
+    uv_points.resize(static_cast<Eigen::Index>(num_u_points) * static_cast<Eigen::Index>(num_v_points), 2);
     int i = 0;
     for (int u = 0; u < num_u_points; u++)
     {

@@ -40,7 +40,7 @@
            <string>Show arc centers in printed output</string>
           </property>
           <property name="text">
-           <string>Print Center Marks</string>
+           <string>Print center marks</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>PrintCenterMarks</cstring>
@@ -67,7 +67,7 @@
            <string>Show arc center marks in views</string>
           </property>
           <property name="text">
-           <string>Show Center Marks</string>
+           <string>Show center marks</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -88,10 +88,10 @@
            </font>
           </property>
           <property name="toolTip">
-           <string>If checked, the section annotation will be drawn on the Source view.  If unchecked, no section line, arrows or symbol will be shown in the Source view.</string>
+           <string>Draws the section annotation on the source view. Otherwise, no section line, arrows or symbol will be shown in the source view.</string>
           </property>
           <property name="text">
-           <string>Show Section Line in Source View</string>
+           <string>Show section line in source view</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -131,10 +131,10 @@
            </font>
           </property>
           <property name="toolTip">
-           <string>If checked, the cut line will be drawn on the Source view.  If unchecked, only the change marks, arrows and symbols will be displayed.</string>
+           <string>Draws a cut line on the source view. Otherwise, only the change marks, arrows and symbols will be displayed.</string>
           </property>
           <property name="text">
-           <string>Include Cut Line in Section Annotation</string>
+           <string>Include cut line in section annotation</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -174,10 +174,10 @@
            </font>
           </property>
           <property name="toolTip">
-           <string>Length of horizontal portion of Balloon leader</string>
+           <string>Length of horizontal portion of balloon leader</string>
           </property>
           <property name="text">
-           <string>Balloon Leader Kink Length</string>
+           <string>Balloon leader kink length</string>
           </property>
          </widget>
         </item>
@@ -189,7 +189,7 @@
            </font>
           </property>
           <property name="text">
-           <string>Broken View Break Type</string>
+           <string>Broken view break type</string>
           </property>
          </widget>
         </item>
@@ -202,10 +202,10 @@
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Restrict Filled Triangle line end to vertical or horizontal directions</string>
+           <string>Restrict filled triangle line end to vertical or horizontal directions</string>
           </property>
           <property name="text">
-           <string>Balloon Orthogonal Triangle</string>
+           <string>Balloon orthogonal triangle</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -239,17 +239,17 @@
           </item>
           <item>
            <property name="text">
-            <string>Solid Color</string>
+            <string>Solid color</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>SVG Hatch</string>
+            <string>SVG hatch</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>PAT Hatch</string>
+            <string>PAT hatch</string>
            </property>
           </item>
          </widget>
@@ -257,10 +257,10 @@
         <item row="5" column="0">
          <widget class="Gui::PrefCheckBox" name="pcbDetailMatting">
           <property name="toolTip">
-           <string>This checkbox controls whether or not to display the outline around a detail view.</string>
+           <string>Displays the outline around a detail view</string>
           </property>
           <property name="text">
-           <string>Detail View Show Matting</string>
+           <string>Detail view show matting</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -276,10 +276,10 @@
         <item row="6" column="0">
          <widget class="Gui::PrefCheckBox" name="pcbDetailHighlight">
           <property name="toolTip">
-           <string>This checkbox controls whether or not to display a highlight around the detail area in the detail's source view.</string>
+           <string>Highlights the detail area in the source view of the detail</string>
           </property>
           <property name="text">
-           <string>Detail Source Show Highlight</string>
+           <string>Detail source show highlight</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -300,7 +300,7 @@
            </font>
           </property>
           <property name="text">
-           <string>Detail View Outline Shape</string>
+           <string>Detail view outline shape</string>
           </property>
          </widget>
         </item>
@@ -321,7 +321,7 @@
            <string>Forces last leader line segment to be horizontal</string>
           </property>
           <property name="text">
-           <string>Leader Line Auto Horizontal</string>
+           <string>Leader line auto horizontal</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -355,7 +355,7 @@
            </font>
           </property>
           <property name="text">
-           <string>Balloon Leader End</string>
+           <string>Balloon leader end</string>
           </property>
          </widget>
         </item>
@@ -372,17 +372,17 @@
           </property>
           <item>
            <property name="text">
-            <string>No Break Lines</string>
+            <string>No break lines</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>ZigZag Lines</string>
+            <string>Zigzag lines</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>Simple Lines</string>
+            <string>Simple lines</string>
            </property>
           </item>
          </widget>
@@ -395,7 +395,7 @@
            </font>
           </property>
           <property name="text">
-           <string>Balloon Shape</string>
+           <string>Balloon shape</string>
           </property>
          </widget>
         </item>
@@ -407,7 +407,7 @@
            </font>
           </property>
           <property name="text">
-           <string>Section Cut Surface</string>
+           <string>Section cut surface</string>
           </property>
          </widget>
         </item>
@@ -438,10 +438,10 @@
            </font>
           </property>
           <property name="toolTip">
-           <string>Show or hide marks at direction changes on ComplexSection lines.</string>
+           <string>Shows markers at direction changes on complex section lines</string>
           </property>
           <property name="text">
-           <string>Complex Section Line Marks</string>
+           <string>Complex section line marks</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -479,10 +479,10 @@
         <item row="13" column="0">
          <widget class="Gui::PrefCheckBox" name="cbISODates">
           <property name="toolTip">
-           <string>If this box is checked, templates will auto fill date fields using ccyy-mm-dd format even if that is not the standard format for the current locale.</string>
+           <string>Fills out template date fields using ccyy-mm-dd format automatically, even if that is not the standard format for the current locale.</string>
           </property>
           <property name="text">
-           <string>Enforce ISO 8601 Date Format</string>
+           <string>Enforce ISO 8601 date format</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>EnforceISODate</cstring>
@@ -547,7 +547,7 @@
            </font>
           </property>
           <property name="text">
-           <string>Center Line Style</string>
+           <string>Center line style</string>
           </property>
          </widget>
         </item>
@@ -628,7 +628,7 @@
            <string>Line style of detail highlight on base view</string>
           </property>
           <property name="text">
-           <string>Detail Highlight Style</string>
+           <string>Detail highlight style</string>
           </property>
          </widget>
         </item>
@@ -640,7 +640,7 @@
            </font>
           </property>
           <property name="text">
-           <string>Section Line Style</string>
+           <string>Section line style</string>
           </property>
          </widget>
         </item>
@@ -677,7 +677,7 @@
            </font>
           </property>
           <property name="text">
-           <string>Line Standard</string>
+           <string>Line standard</string>
           </property>
          </widget>
         </item>
@@ -695,9 +695,9 @@
            </font>
           </property>
           <property name="toolTip">
-           <string>Shape of line end caps.  The default (round) should almost
+           <string>Shape of line end caps. The default (round) should almost
 always be the right choice.  Flat or square caps are useful
-if you are planning to use a drawing as a 1:1 cutting guide.
+for using drawings as a 1:1 cutting guide.
 </string>
           </property>
           <property name="prefEntry" stdset="0">
@@ -765,7 +765,7 @@ if you are planning to use a drawing as a 1:1 cutting guide.
            <string>Line group used to set line widths</string>
           </property>
           <property name="text">
-           <string>Line Width Group</string>
+           <string>Line width group</string>
           </property>
          </widget>
         </item>
@@ -777,14 +777,14 @@ if you are planning to use a drawing as a 1:1 cutting guide.
            </font>
           </property>
           <property name="text">
-           <string>Line End Cap Shape</string>
+           <string>Line end cap shape</string>
           </property>
          </widget>
         </item>
         <item row="2" column="0">
          <widget class="QLabel" name="label_7">
           <property name="text">
-           <string>Hidden Line Style</string>
+           <string>Hidden line style</string>
           </property>
          </widget>
         </item>
@@ -809,14 +809,14 @@ if you are planning to use a drawing as a 1:1 cutting guide.
            </font>
           </property>
           <property name="text">
-           <string>Break Line Style</string>
+           <string>Break line style</string>
           </property>
          </widget>
         </item>
         <item row="6" column="2">
          <widget class="Gui::PrefComboBox" name="pcbBreakStyle">
           <property name="toolTip">
-           <string>Style of line to be used in BrokenView.</string>
+           <string>Style of line to be used in broken view.</string>
           </property>
           <property name="iconSize">
            <size>

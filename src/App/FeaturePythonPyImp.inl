@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -82,6 +84,9 @@ PyTypeObject FeaturePythonPyT<FeaturePyT>::Type = {
     ,0                                                /*tp_vectorcall */
 #if PY_VERSION_HEX >= 0x030c0000
     ,0                                                /*tp_watched */
+#endif
+#if PY_VERSION_HEX >= 0x030d0000
+    ,0                                                /*tp_versions_used */
 #endif
 };
 

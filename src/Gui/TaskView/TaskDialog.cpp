@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -21,11 +22,8 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+#include <QMessageBox>
 
-#ifndef _PreComp_
-# include <QMessageBox>
-#endif
 
 #include <App/Document.h>
 #include <Gui/Application.h>
@@ -47,14 +45,13 @@ using namespace Gui::TaskView;
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskDialog::TaskDialog()
-    : QObject(nullptr), pos(North)
+    : QObject(nullptr)
+    , pos(North)
     , escapeButton(true)
     , autoCloseTransaction(false)
     , autoCloseDeletedDocument(false)
     , autoCloseClosedView(false)
-{
-
-}
+{}
 
 TaskDialog::~TaskDialog()
 {
@@ -71,10 +68,7 @@ QWidget* TaskDialog::addTaskBox(QWidget* widget, bool expandable, QWidget* paren
     return addTaskBox(QPixmap(), widget, expandable, parent);
 }
 
-QWidget* TaskDialog::addTaskBox(const QPixmap& icon,
-                                QWidget* widget,
-                                bool expandable,
-                                QWidget* parent)
+QWidget* TaskDialog::addTaskBox(const QPixmap& icon, QWidget* widget, bool expandable, QWidget* parent)
 {
     auto taskbox = new Gui::TaskView::TaskBox(icon, widget->windowTitle(), expandable, parent);
     taskbox->groupLayout()->addWidget(widget);
@@ -90,7 +84,7 @@ QWidget* TaskDialog::addTaskBoxWithoutHeader(QWidget* widget)
     return taskbox;
 }
 
-const std::vector<QWidget*> &TaskDialog::getDialogContent() const
+const std::vector<QWidget*>& TaskDialog::getDialogContent() const
 {
     return Content;
 }
@@ -99,7 +93,7 @@ bool TaskDialog::canClose() const
 {
     QMessageBox msgBox(Gui::getMainWindow());
     msgBox.setText(tr("A dialog is already open in the task panel"));
-    msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
+    msgBox.setInformativeText(QObject::tr("Close this dialog?"));
     msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     msgBox.setDefaultButton(QMessageBox::Yes);
     int ret = msgBox.exec();
@@ -128,34 +122,22 @@ void TaskDialog::associateToObject3dView(App::DocumentObject* obj)
 //==== calls from the TaskView ===============================================================
 
 void TaskDialog::open()
-{
-
-}
+{}
 
 void TaskDialog::closed()
-{
-
-}
+{}
 
 void TaskDialog::autoClosedOnTransactionChange()
-{
-
-}
+{}
 
 void TaskDialog::autoClosedOnDeletedDocument()
-{
-
-}
+{}
 
 void TaskDialog::autoClosedOnClosedView()
-{
-
-}
+{}
 
 void TaskDialog::clicked(int)
-{
-
-}
+{}
 
 bool TaskDialog::accept()
 {
@@ -168,21 +150,13 @@ bool TaskDialog::reject()
 }
 
 void TaskDialog::helpRequested()
-{
-
-}
+{}
 
 void TaskDialog::onUndo()
-{
-
-}
+{}
 
 void TaskDialog::onRedo()
-{
-
-}
-
-
+{}
 
 
 #include "moc_TaskDialog.cpp"

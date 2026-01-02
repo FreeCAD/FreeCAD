@@ -1,7 +1,4 @@
-include_directories(
-    ${CMAKE_BINARY_DIR}
-    ${CMAKE_CURRENT_BINARY_DIR}
-)
+# SPDX-License-Identifier: LGPL-2.1-or-later
 
 set(ImportGui_LIBS
     FreeCADGui
@@ -23,14 +20,31 @@ SET(ImportGui_SRCS
     ImportOCAFGui.h
     OCAFBrowser.cpp
     OCAFBrowser.h
-    PreCompiled.cpp
     PreCompiled.h
     Workbench.cpp
     Workbench.h
 )
 
 add_library(ImportGui SHARED ${ImportGui_SRCS})
+
+if(FREECAD_USE_PCH)
+    target_precompile_headers(ImportGui PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
+endif(FREECAD_USE_PCH)
+
+target_include_directories(
+    ImportGui
+    PRIVATE
+    ${CMAKE_BINARY_DIR}
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
 target_link_libraries(ImportGui ${ImportGui_LIBS})
+
+if (MSVC)
+    target_compile_options(ImportGui PRIVATE /wd4251)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(ImportGui)
 endif()

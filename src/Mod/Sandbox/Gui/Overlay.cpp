@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Werner Mayer <wmayer@users.sourceforge.net>        *
  *                                                                         *
@@ -21,14 +23,12 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QImage>
 # include <QMouseEvent>
 # include <QPainter>
 # include <Inventor/nodes/SoOrthographicCamera.h>
 # include <Inventor/nodes/SoImage.h>
-#endif
+
 
 #include <Gui/Application.h>
 #include <Gui/Document.h>

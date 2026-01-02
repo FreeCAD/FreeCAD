@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -25,19 +27,6 @@
 
 #include <FCConfig.h>
 
-// Exporting of App classes
-#ifdef FC_OS_WIN32
-#define RobotExport __declspec(dllexport)
-#define PartExport __declspec(dllimport)
-#define MeshExport __declspec(dllimport)
-#else  // for Linux
-#define RobotExport
-#define PartExport
-#define MeshExport
-#endif
-
-#ifdef _PreComp_
-
 // STL
 #include <memory>
 #include <sstream>
@@ -63,5 +52,4 @@
 #include <TopoDS.hxx>
 #include <TopoDS_Edge.hxx>
 
-#endif  // _PreComp_
 #endif

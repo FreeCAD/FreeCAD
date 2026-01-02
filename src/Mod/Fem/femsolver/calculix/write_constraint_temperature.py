@@ -68,8 +68,12 @@ def write_constraint(f, femobj, temp_obj, ccxwriter):
     # floats read from ccx should use {:.13G}, see comment in writer module
 
     NumberOfNodes = len(femobj["Nodes"])
+    if temp_obj.EnableAmplitude:
+        temp_amplitude = f", AMPLITUDE={temp_obj.Name}"
+    else:
+        temp_amplitude = ""
     if temp_obj.ConstraintType == "Temperature":
-        f.write("*BOUNDARY\n")
+        f.write(f"*BOUNDARY{temp_amplitude}\n")
         f.write(
             "{},11,11,{}\n".format(
                 temp_obj.Name, FreeCAD.Units.Quantity(temp_obj.Temperature.getValueAs("K"))
@@ -77,7 +81,7 @@ def write_constraint(f, femobj, temp_obj, ccxwriter):
         )
         f.write("\n")
     elif temp_obj.ConstraintType == "CFlux":
-        f.write("*CFLUX\n")
+        f.write(f"*CFLUX{temp_amplitude}\n")
         # CFLUX has to be specified in mW
         f.write(
             "{},11,{}\n".format(

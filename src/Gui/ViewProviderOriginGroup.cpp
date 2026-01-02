@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "ViewProviderOriginGroup.h"
 
@@ -30,9 +29,9 @@ using namespace Gui;
 
 PROPERTY_SOURCE_WITH_EXTENSIONS(Gui::ViewProviderOriginGroup, Gui::ViewProviderDocumentObject)
 
-ViewProviderOriginGroup::ViewProviderOriginGroup ()
+ViewProviderOriginGroup::ViewProviderOriginGroup()
 {
     initExtension(this);
 }
 
-ViewProviderOriginGroup::~ViewProviderOriginGroup () = default;
+ViewProviderOriginGroup::~ViewProviderOriginGroup() = default;

@@ -64,22 +64,23 @@ class CommandCreateSimulation:
     def GetResources(self):
         return {
             "Pixmap": "Assembly_CreateSimulation",
-            "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateSimulation", "Create Simulation"),
-            "Accel": "S",
-            "ToolTip": "<p>"
-            + QT_TRANSLATE_NOOP(
+            "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateSimulation", "Simulation"),
+            "Accel": "V",
+            "ToolTip": QT_TRANSLATE_NOOP(
                 "Assembly_CreateSimulation",
-                "Create a simulation of the current assembly.",
-            )
-            + "</p>",
+                "Creates a new simulation of the current assembly",
+            ),
             "CmdType": "ForEdit",
         }
 
     def IsActive(self):
-        return (
-            UtilsAssembly.isAssemblyCommandActive()
-            and UtilsAssembly.assembly_has_at_least_n_parts(1)
-        )
+        if not UtilsAssembly.isAssemblyCommandActive():
+            return False
+
+        assembly = UtilsAssembly.activeAssembly()
+        joint_types = ["Revolute", "Slider", "Cylindrical"]
+        joints = UtilsAssembly.getJointsOfType(assembly, joint_types)
+        return len(joints) > 0
 
     def Activated(self):
         assembly = UtilsAssembly.activeAssembly()
@@ -87,7 +88,10 @@ class CommandCreateSimulation:
             return
 
         self.panel = TaskAssemblyCreateSimulation()
-        Gui.Control.showDialog(self.panel)
+        dialog = Gui.Control.showDialog(self.panel)
+        if dialog is not None:
+            dialog.setAutoCloseOnDeletedDocument(True)
+            dialog.setDocumentName(App.ActiveDocument.Name)
 
 
 ######### Simulation Object ###########
@@ -264,7 +268,10 @@ class ViewProviderSimulation:
             Gui.ActiveDocument.setEdit(assembly)
 
         panel = TaskAssemblyCreateSimulation(vpDoc.Object)
-        Gui.Control.showDialog(panel)
+        dialog = Gui.Control.showDialog(panel)
+        if dialog is not None:
+            dialog.setAutoCloseOnDeletedDocument(True)
+            dialog.setDocumentName(App.ActiveDocument.Name)
 
         return True
 
@@ -349,7 +356,7 @@ class Motion:
     def getAssembly(self, feaPy):
         simulation = self.getSimulation(feaPy)
         if simulation is not None:
-            return simulation.getAssembly()
+            return simulation.Proxy.getAssembly(simulation)
         return None
 
 
@@ -361,7 +368,6 @@ class ViewProviderMotion:
     def attach(self, vpDoc):
         """Setup the scene sub-graph of the view provider, this method is mandatory"""
         self.app_obj = vpDoc.Object
-        self.assembly = self.app_obj.Proxy.getAssembly(self.app_obj)
 
         self.display_mode = coin.SoType.fromName("SoFCSelection").createInstance()
 
@@ -402,22 +408,19 @@ class ViewProviderMotion:
         return None
 
     def doubleClicked(self, vpDoc):
-        if self.assembly is None:
-            return False
-
-        if UtilsAssembly.activeAssembly() != self.assembly:
-            Gui.ActiveDocument.setEdit(self.assembly)
-
         self.openEditDialog()
 
     def openEditDialog(self):
+        assembly = self.getAssembly()
+
+        if assembly is None:
+            return False
+
         joint = None
         if self.app_obj.Joint is not None:
             joint = self.app_obj.Joint[0]
 
-        dialog = MotionEditDialog(
-            self.assembly, self.app_obj.MotionType, joint, self.app_obj.Formula
-        )
+        dialog = MotionEditDialog(assembly, self.app_obj.MotionType, joint, self.app_obj.Formula)
         if dialog.exec_():
             self.app_obj.MotionType = dialog.motionType
             self.app_obj.Joint = dialog.joint
@@ -434,6 +437,17 @@ class ViewProviderMotion:
         self.app_obj.Label = "{label} ({type_})".format(
             label=self.app_obj.Joint[0].Label, type_=translate("Assembly", typeStr)
         )
+
+    def getAssembly(self):
+        assembly = self.app_obj.Proxy.getAssembly(self.app_obj)
+
+        if assembly is None:
+            return None
+
+        if UtilsAssembly.activeAssembly() != assembly:
+            Gui.ActiveDocument.setEdit(assembly)
+
+        return assembly
 
 
 class MotionEditDialog:
@@ -492,13 +506,13 @@ class MotionEditDialog:
         layout = QGridLayout(self.dialog)
 
         # Add labels and widgets to the layout
-        layout.addWidget(QLabel("Joint:"), 0, 0)
+        layout.addWidget(QLabel("Joint"), 0, 0)
         layout.addWidget(self.joint_combo, 0, 1)
 
-        layout.addWidget(QLabel("Motion Type:"), 1, 0)
+        layout.addWidget(QLabel("Motion Type"), 1, 0)
         layout.addWidget(self.motion_type_combo, 1, 1)
 
-        layout.addWidget(QLabel("Formula:"), 2, 0)
+        layout.addWidget(QLabel("Formula"), 2, 0)
         layout.addWidget(formula_edit, 2, 1)
 
         # Add the help label above the buttons
@@ -523,7 +537,7 @@ class MotionEditDialog:
         self.help_label0 = QLabel(
             translate(
                 "Assembly",
-                "In capital are variables that you need to replace with actual values. More details about each example in it's tooltip.",
+                "In capital are variables that you need to replace with actual values. More details about each example in its tooltip.",
             ),
             self.dialog,
         )

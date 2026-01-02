@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2015 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
@@ -29,6 +30,7 @@ import FreeCADGui
 import Path
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import PathScripts.PathUtils as PathUtils
+from Path.Main.Gui.Editor import CodeEditor
 
 translate = FreeCAD.Qt.translate
 
@@ -111,15 +113,15 @@ class GCodeEditorDialog(QtGui.QDialog):
         self.selectionobj.ViewObject.LineWidth = 4
         self.selectionobj.ViewObject.NormalColor = highlightcolor
 
-        # nice text editor widget for editing the gcode
-        self.editor = QtGui.QTextEdit()
+        # self.editor = QtGui.QTextEdit()  # without lines enumeration
+        self.editor = CodeEditor()  # with lines enumeration
         font = QtGui.QFont()
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Editor")
         font.setFamily(p.GetString("Font", "Courier"))
         font.setFixedPitch(True)
         font.setPointSize(p.GetInt("FontSize", 10))
         self.editor.setFont(font)
-        self.editor.setText("G01 X55 Y4.5 F300.0")
+        self.editor.setPlainText("G01 X55 Y4.5 F300.0")
         layout.addWidget(self.editor)
 
         # Note
@@ -127,7 +129,8 @@ class GCodeEditorDialog(QtGui.QDialog):
         lab.setText(
             translate(
                 "CAM_Inspect",
-                "<b>Note</b>: This dialog shows Path Commands in FreeCAD base units (mm/s). \n Values will be converted to the desired unit during post processing.",
+                "<b>Note</b>: This dialog shows path commands in FreeCAD base units (mm/s)."
+                "<br>Values will be converted to the desired unit during post processing.",
             )
         )
         lab.setWordWrap(True)
@@ -213,18 +216,18 @@ def show(obj):
     "show(obj): shows the G-code data of the given Path object in a dialog"
 
     prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/CAM")
-    # default Max Highlighter Size = 512 Ko
-    defaultMHS = 512 * 1024
+    # default Max Highlighter Size = 256 Ko
+    defaultMHS = 256 * 1024
     mhs = prefs.GetUnsigned("inspecteditorMaxHighlighterSize", defaultMHS)
 
     if hasattr(obj, "Path"):
         if obj.Path:
             dia = GCodeEditorDialog(obj)
-            dia.editor.setText(obj.Path.toGCode())
+            dia.editor.setPlainText(obj.Path.toGCode())
             gcodeSize = len(dia.editor.toPlainText())
             if gcodeSize <= mhs:
                 # because of poor performance, syntax highlighting is
-                # limited to mhs octets (default 512 KB).
+                # limited to mhs octets (default 256 KB).
                 # It seems than the response time curve has an inflexion near 500 KB
                 # beyond 500 KB, the response time increases exponentially.
                 dia.highlighter = GCodeHighlighter(dia.editor.document())
@@ -238,8 +241,7 @@ def show(obj):
                     )
                 )
             result = dia.exec_()
-            # exec_() returns 0 or 1 depending on the button pressed (Ok or
-            # Cancel)
+            # exec_() returns 0 or 1 depending on the button pressed (Ok or Cancel)
             if result:
                 p = Path.Path(dia.editor.toPlainText())
                 FreeCAD.ActiveDocument.openTransaction("Edit Path")
@@ -252,7 +254,7 @@ class CommandPathInspect:
     def GetResources(self):
         return {
             "Pixmap": "CAM_Inspect",
-            "MenuText": QT_TRANSLATE_NOOP("CAM_Inspect", "Inspect toolPath Commands"),
+            "MenuText": QT_TRANSLATE_NOOP("CAM_Inspect", "Inspect Toolpath"),
             "Accel": "P, I",
             "ToolTip": QT_TRANSLATE_NOOP(
                 "CAM_Inspect", "Inspects the contents of a toolpath object"
@@ -260,7 +262,10 @@ class CommandPathInspect:
         }
 
     def IsActive(self):
-        obj = FreeCADGui.Selection.getSelection()[0]
+        selection = FreeCADGui.Selection.getSelection()
+        if len(selection) == 0:
+            return False
+        obj = selection[0]
         return hasattr(obj, "Path") and len(obj.Path.Commands) > 0
 
     def Activated(self):
@@ -268,12 +273,12 @@ class CommandPathInspect:
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
             FreeCAD.Console.PrintError(
-                translate("CAM_Inspect", "Please select exactly one path object") + "\n"
+                translate("CAM_Inspect", "Select exactly one path object") + "\n"
             )
             return
         if not (selection[0].isDerivedFrom("Path::Feature")):
             FreeCAD.Console.PrintError(
-                translate("CAM_Inspect", "Please select exactly one path object") + "\n"
+                translate("CAM_Inspect", "Select exactly one path object") + "\n"
             )
             return
 

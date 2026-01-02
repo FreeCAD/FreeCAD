@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2019 sliptonic <shopinthewoods@gmail.com>               *
 # *                 2025 Samuel Abels <knipknap@gmail.com>                  *
@@ -49,8 +50,8 @@ class CommandToolBitCreate:
     def GetResources(self):
         return {
             "Pixmap": "CAM_ToolBit",
-            "MenuText": QT_TRANSLATE_NOOP("CAM_ToolBitCreate", "Create Tool"),
-            "ToolTip": QT_TRANSLATE_NOOP("CAM_ToolBitCreate", "Creates a new ToolBit object"),
+            "MenuText": QT_TRANSLATE_NOOP("CAM_ToolBitCreate", "New Toolbit"),
+            "ToolTip": QT_TRANSLATE_NOOP("CAM_ToolBitCreate", "Creates a new toolbit object"),
         }
 
     def IsActive(self):
@@ -73,14 +74,14 @@ class CommandToolBitSave:
 
     def GetResources(self):
         if self.saveAs:
-            menuTxt = QT_TRANSLATE_NOOP("CAM_ToolBitSaveAs", "Save Tool as...")
+            menuTxt = QT_TRANSLATE_NOOP("CAM_ToolBitSaveAs", "Save Tool As…")
         else:
             menuTxt = QT_TRANSLATE_NOOP("CAM_ToolBitSave", "Save Tool")
         return {
             "Pixmap": "CAM_ToolBit",
             "MenuText": menuTxt,
             "ToolTip": QT_TRANSLATE_NOOP(
-                "CAM_ToolBitSave", "Save an existing ToolBit object to a file"
+                "CAM_ToolBitSave", "Saves an existing toolbit object to a file"
             ),
         }
 
@@ -123,7 +124,7 @@ class CommandToolBitLoad:
             "Pixmap": "CAM_ToolBit",
             "MenuText": QT_TRANSLATE_NOOP("CAM_ToolBitLoad", "Load Tool"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "CAM_ToolBitLoad", "Load an existing ToolBit object from a file"
+                "CAM_ToolBitLoad", "Loads an existing toolbit object from a file"
             ),
         }
 

@@ -21,12 +21,10 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QCoreApplication>
 #include <QCoreApplication>
 #include <QLayout>
-#endif
+
 
 #include "Manipulator.h"
 #include "StartView.h"
@@ -46,7 +44,7 @@ CmdStart::CmdStart()
     sAppModule = "Start";
     sGroup = QT_TR_NOOP("Start");
     sMenuText = QT_TR_NOOP("&Start Page");
-    sToolTipText = QT_TR_NOOP("Displays the Start Page");
+    sToolTipText = QT_TR_NOOP("Displays the start page");
     sWhatsThis = "Start_Start";
     sStatusTip = sToolTipText;
     sPixmap = "StartCommandIcon";

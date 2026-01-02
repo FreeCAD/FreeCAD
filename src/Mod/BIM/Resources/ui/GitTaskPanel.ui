@@ -61,7 +61,7 @@
       <item>
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>List of files to be committed:</string>
+         <string>List of files to be committed</string>
         </property>
        </widget>
       </item>
@@ -97,7 +97,7 @@
         <item>
          <widget class="QPushButton" name="buttonSelectAll">
           <property name="text">
-           <string>Select all</string>
+           <string>Select All</string>
           </property>
          </widget>
         </item>

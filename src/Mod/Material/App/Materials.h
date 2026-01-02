@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 David Carter <dcarter@david.carter.ca>             *
  *                                                                         *
@@ -282,13 +284,11 @@ public:
     {
         _editState = ModelEdit_None;
     }
-    void addTag(const QString& tag)
+    void addTag(const QString& tag);
+    void removeTag(const QString& tag);
+    bool hasTag(const QString& tag)
     {
-        Q_UNUSED(tag);
-    }
-    void removeTag(const QString& tag)
-    {
-        Q_UNUSED(tag);
+        return _tags.contains(tag);
     }
     void addPhysical(const QString& uuid);
     void removePhysical(const QString& uuid);

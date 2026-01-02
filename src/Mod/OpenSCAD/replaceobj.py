@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
 #***************************************************************************
 #*   Copyright (c) 2012 Sebastian Hoogen <github@sebastianhoogen.de>       *
 #*                                                                         *
@@ -60,8 +61,8 @@ def replaceobjfromselection(objs):
             oldchild,newchild  = objs
             parent = oldchild.InList[0]
         else:
-            raise ValueError("Selection ambiguous. Please select oldchild,\
-            newchild and parent")
+            raise ValueError("Selection ambiguous. Select old child,\
+            new child, and parent")
     elif len(objs) == 3:
         if objs[2] in objs[0].InList: oldchild, newchild, parent = objs
         elif objs[0] in objs[1].InList: parent, oldchild, newchild = objs

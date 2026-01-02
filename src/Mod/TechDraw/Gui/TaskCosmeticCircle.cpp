@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <BRepBuilderAPI_MakeEdge.hxx>
-#endif
+
 
 #include <QMessageBox>
 
@@ -62,7 +60,7 @@ TaskCosmeticCircle::TaskCosmeticCircle(TechDraw::DrawViewPart* partFeat,
 
     m_ce = m_partFeat->getCosmeticEdgeBySelection(m_circleName);
     if (!m_ce) {
-        Base::Console().error("TaskCosmeticCircle - bad parameters.  Can not proceed.\n");
+        Base::Console().error("TaskCosmeticCircle - bad parameters. Cannot proceed.\n");
         return;
     }
 
@@ -289,7 +287,7 @@ bool TaskCosmeticCircle::accept()
 {
     if (ui->qsbRadius->value().getValue() <= 0.0) {
         // this won't work!
-        Base::Console().error("TaskCosmeticCircle - can not create a circle with radius: %.3f\n",
+        Base::Console().error("TaskCosmeticCircle - cannot create a circle with radius: %.3f\n",
                                 ui->qsbRadius->value().getValue());
         return false;
     }
@@ -300,7 +298,7 @@ bool TaskCosmeticCircle::accept()
         m_partFeat->requestPaint();
     } else {
         //update mode
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Update CosmeticCircle"));
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Update Cosmetic Circle"));
         updateCosmeticCircle();
         m_partFeat->refreshCEGeoms();
         m_partFeat->requestPaint();

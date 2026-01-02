@@ -116,7 +116,6 @@ public Q_SLOTS:
     void saveSVG();
     void saveDXF();
     void savePDF();
-    void toggleFrame();
     void toggleKeepUpdated();
     void sceneSelectionChanged();
     void printAll();
@@ -139,7 +138,6 @@ private:
     using Connection = boost::signals2::connection;
     Connection connectDeletedObject;
 
-    QAction *m_toggleFrameAction;
     QAction *m_toggleKeepUpdatedAction;
     QAction *m_exportSVGAction;
     QAction *m_exportDXFAction;
@@ -158,6 +156,8 @@ private:
     QList<QGraphicsItem*> m_orderedSceneSelection;        //items in selection order
 
     QString defaultFileName();
+
+    bool m_previewState{false};
 };
 
 class MDIViewPagePy : public Py::PythonExtension<MDIViewPagePy>

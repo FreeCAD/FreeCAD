@@ -1,5 +1,6 @@
 #! python
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # (c) 2007 Juergen Riegel GPL
 
 Usage = """dir2qrc - merging all files in a directory in a qrc file

@@ -23,7 +23,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Import options</string>
+      <string>Import Options</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
@@ -44,7 +44,7 @@
         <item>
          <widget class="Gui::PrefComboBox" name="gui::prefcombobox_3">
           <property name="toolTip">
-           <string>Method for importing SVG object colors into FreeCAD</string>
+           <string>Method for importing SVG object colors</string>
           </property>
           <property name="currentIndex">
            <number>0</number>
@@ -95,7 +95,7 @@ One unit in the SVG file will be interpreted as one millimeter.</string>
          <widget class="Gui::PrefCheckBox" name="checkBox">
           <property name="toolTip">
            <string>If face generation results in a degenerated face,
-a raw Wire from the original Shape is added.</string>
+a raw wire from the original shape is added</string>
           </property>
           <property name="text">
            <string>Add wires for invalid faces</string>
@@ -114,7 +114,7 @@ a raw Wire from the original Shape is added.</string>
         <item>
          <widget class="Gui::PrefCheckBox" name="checkBox">
           <property name="toolTip">
-           <string>Check to cut shapes according to the even/odd SVG fill rule.</string>
+           <string>Check to cut shapes according to the even/odd SVG fill rule</string>
           </property>
           <property name="text">
            <string>Apply Cuts</string>
@@ -188,7 +188,7 @@ a raw Wire from the original Shape is added.</string>
    <item>
     <widget class="QGroupBox" name="GroupBox12_2">
      <property name="title">
-      <string>Export options</string>
+      <string>Export Options</string>
      </property>
      <layout class="QVBoxLayout" name="_3">
       <property name="spacing">
@@ -242,7 +242,7 @@ a raw Wire from the original Shape is added.</string>
            <string>All white lines will appear in black in the SVG for better readability against white backgrounds</string>
           </property>
           <property name="text">
-           <string>Translate white line color to black</string>
+           <string>Convert white line color to black</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -262,7 +262,7 @@ a raw Wire from the original Shape is added.</string>
         <item>
          <widget class="QLabel" name="label">
           <property name="text">
-           <string>Max segment length for discretized arcs</string>
+           <string>Maximum segment length for discretized arcs</string>
           </property>
           <property name="buddy">
            <cstring/>

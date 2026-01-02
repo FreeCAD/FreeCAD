@@ -20,15 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <cmath>
 # include <limits>
 # include <sstream>
 # include <Standard_Failure.hxx>
 # include <Precision.hxx>
-#endif
+
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -94,8 +92,8 @@ DrawView::DrawView():
     m_overrideKeepUpdated(false)
 {
     static const char *group = "Base";
-    ADD_PROPERTY_TYPE(X, (0.0), group, (App::PropertyType)(App::Prop_None), "X position");
-    ADD_PROPERTY_TYPE(Y, (0.0), group, (App::PropertyType)(App::Prop_None), "Y position");
+    ADD_PROPERTY_TYPE(X, (0.0), group, App::Prop_None, "X position");
+    ADD_PROPERTY_TYPE(Y, (0.0), group, App::Prop_None, "Y position");
     ADD_PROPERTY_TYPE(LockPosition, (false), group, App::Prop_Output, "Lock View position to parent Page or Group");
     ADD_PROPERTY_TYPE(Rotation, (0.0), group, App::Prop_Output, "Rotation in degrees counterclockwise");
 
@@ -109,8 +107,19 @@ DrawView::DrawView():
     setScaleAttribute();
 }
 
-DrawView::~DrawView()
+
+App::DocumentObjectExecReturn* DrawView::recompute()
 {
+    try {
+        return App::DocumentObject::recompute();
+    }
+    catch (Standard_Failure& e) {
+        auto ret = new App::DocumentObjectExecReturn(e.GetMessageString());
+        if (ret->Why.empty()) {
+            ret->Why = "Unknown OCC exception";
+        }
+        return ret;
+    }
 }
 
 App::DocumentObjectExecReturn *DrawView::execute()
@@ -120,8 +129,7 @@ App::DocumentObjectExecReturn *DrawView::execute()
         return App::DocumentObject::execute();
     }
     handleXYLock();
-    //should not be necessary to purgeTouched here, but it prevents a superfluous feature recompute
-    purgeTouched();                           //this should not be necessary!
+
     requestPaint();
     return App::DocumentObject::execute();
 }
@@ -133,7 +141,6 @@ void DrawView::checkScale()
         if (ScaleType.isValue("Page")) {
             if(std::abs(page->Scale.getValue() - Scale.getValue()) > std::numeric_limits<float>::epsilon()) {
                 Scale.setValue(page->Scale.getValue());
-                Scale.purgeTouched();
             }
         }
     }
@@ -209,15 +216,12 @@ void DrawView::onChanged(const App::Property* prop)
     } else if (prop == &LockPosition) {
         handleXYLock();
         requestPaint();         //change lock icon
-        LockPosition.purgeTouched();
     } else if ((prop == &Caption) ||
         (prop == &Label)) {
         requestPaint();
     } else if ( prop == &X ||
                 prop == &Y ) {
         //X,Y changes are only interesting to DPGI and Gui side
-        X.purgeTouched();
-        Y.purgeTouched();
     }
 
     App::PropertyLink *ownerProp = getOwnerProperty();
@@ -244,20 +248,16 @@ void DrawView::handleXYLock()
     if (isLocked()) {
         if (!X.testStatus(App::Property::ReadOnly)) {
             X.setStatus(App::Property::ReadOnly, true);
-            X.purgeTouched();
         }
         if (!Y.testStatus(App::Property::ReadOnly)) {
             Y.setStatus(App::Property::ReadOnly, true);
-            Y.purgeTouched();
         }
     } else {
         if (X.testStatus(App::Property::ReadOnly)) {
             X.setStatus(App::Property::ReadOnly, false);
-            X.purgeTouched();
         }
         if (Y.testStatus(App::Property::ReadOnly)) {
             Y.setStatus(App::Property::ReadOnly, false);
-            Y.purgeTouched();
         }
     }
 }

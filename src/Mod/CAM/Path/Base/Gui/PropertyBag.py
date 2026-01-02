@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
 # *   Copyright (c) 2020 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -128,7 +128,10 @@ class PropertyCreate(object):
         self.form = FreeCADGui.PySideUic.loadUi(":panels/PropertyCreate.ui")
 
         obj.Proxy.refreshCustomPropertyGroups()
-        for g in sorted(obj.CustomPropertyGroups):
+        groups = obj.CustomPropertyGroups
+        if not isinstance(groups, (list, tuple)):
+            groups = [groups]
+        for g in sorted(groups):
             self.form.propertyGroup.addItem(g)
         if grp:
             self.form.propertyGroup.setCurrentText(grp)
@@ -150,7 +153,6 @@ class PropertyCreate(object):
         self.form.propertyEnum.textChanged.connect(self.updateUI)
 
     def updateUI(self):
-
         typeSet = True
         if self.propertyIsEnumeration():
             self.form.labelEnum.setEnabled(True)
@@ -239,7 +241,17 @@ class TaskPanel(object):
         pass
 
     def _setupProperty(self, i, name):
-        typ = PathPropertyBag.getPropertyTypeName(self.obj.getTypeIdOfProperty(name))
+        if name not in self.obj.PropertiesList:
+            Path.Log.warning(f"Property '{name}' not found in object {self.obj.Name}")
+            return
+        prop_type_id = self.obj.getTypeIdOfProperty(name)
+        try:
+            typ = PathPropertyBag.getPropertyTypeName(prop_type_id)
+        except IndexError:
+            Path.Log.error(
+                f"Unknown property type id '{prop_type_id}' for property '{name}' in object {self.obj.Name}"
+            )
+            return
         val = PathUtil.getPropertyValueString(self.obj, name)
         info = self.obj.getDocumentationOfProperty(name)
 
@@ -414,10 +426,10 @@ class PropertyBagCreateCommand(object):
 
     def GetResources(self):
         return {
-            "MenuText": translate("CAM_PropertyBag", "PropertyBag"),
+            "MenuText": translate("CAM_PropertyBag", "Property Bag"),
             "ToolTip": translate(
                 "CAM_PropertyBag",
-                "Creates an object which can be used to store reference properties.",
+                "Creates an object which can be used to store reference properties",
             ),
         }
 
@@ -443,4 +455,4 @@ class PropertyBagCreateCommand(object):
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand("CAM_PropertyBag", PropertyBagCreateCommand())
 
-FreeCAD.Console.PrintLog("Loading PathPropertyBagGui ... done\n")
+FreeCAD.Console.PrintLog("Loading PathPropertyBagGui… done\n")

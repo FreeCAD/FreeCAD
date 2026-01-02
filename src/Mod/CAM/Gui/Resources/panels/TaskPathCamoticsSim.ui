@@ -72,7 +72,7 @@
    <item>
     <widget class="QPushButton" name="btnMakeFile">
      <property name="text">
-      <string>Make CAMotics File</string>
+      <string>New CAMotics File</string>
      </property>
     </widget>
    </item>

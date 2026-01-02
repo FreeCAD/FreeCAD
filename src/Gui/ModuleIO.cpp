@@ -21,11 +21,9 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 #include <QFileInfo>
 #include <QMessageBox>
-#endif
 
 
 #include "ModuleIO.h"
@@ -42,9 +40,11 @@ bool ModuleIO::verifyFile(const QString& filename)
 {
     QFileInfo fi(filename);
     if (!fi.exists() || !fi.isFile()) {
-        QMessageBox::critical(Gui::getMainWindow(),
-                              tr("File not found"),
-                              tr("The file '%1' cannot be opened.").arg(filename));
+        QMessageBox::critical(
+            Gui::getMainWindow(),
+            tr("File not found"),
+            tr("The file '%1' cannot be opened.").arg(filename)
+        );
         return false;
     }
 

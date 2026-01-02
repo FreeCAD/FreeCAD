@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 David Friedli <david[at]friedli-be.ch>             *
  *                                                                         *
@@ -41,10 +43,12 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection/Selection.h>
 
-namespace Gui
+#include <boost/signals2/connection.hpp>
+
+namespace MeasureGui
 {
 
-class TaskMeasure: public TaskView::TaskDialog, public Gui::SelectionObserver
+class TaskMeasure: public Gui::TaskView::TaskDialog, public Gui::SelectionObserver
 {
 
 public:
@@ -59,7 +63,7 @@ public:
 
     void invoke();
     void update();
-    void close();
+    void closeDialog();
     bool apply();
     bool apply(bool reset);
     bool reject() override;
@@ -67,10 +71,14 @@ public:
 
     bool hasSelection();
     void clearSelection();
-    bool eventFilter(QObject* obj, QEvent* event) override;
 
 private:
+    void setupShortcuts(QWidget* parent);
+    void tryUpdate();
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
+    void onObjectDeleted(const App::DocumentObject& obj);
+    void saveMeasurement();
+    void quitMeasurement();
 
     Measure::MeasureBase* _mMeasureObject = nullptr;
 
@@ -82,6 +90,8 @@ private:
     QAction* newMeasurementBehaviourAction {nullptr};
     QToolButton* mSettings {nullptr};
 
+    boost::signals2::connection m_deletedConnection;
+
     void removeObject();
     void onModeChanged(int index);
     void showDeltaChanged(int checkState);
@@ -90,10 +100,10 @@ private:
     void setModeSilent(App::MeasureType* mode);
     App::MeasureType* getMeasureType();
     void enableAnnotateButton(bool state);
-    Measure::MeasureBase* createObject(const App::MeasureType* measureType);
+    void createObject(const App::MeasureType* measureType);
     void ensureGroup(Measure::MeasureBase* measurement);
     void setDeltaPossible(bool possible);
-    void initViewObject();
+    void initViewObject(Measure::MeasureBase* measure);
 
     // Stores if the mode is explicitly set by the user or implicitly through the selection
     bool explicitMode = false;
@@ -103,6 +113,6 @@ private:
     bool mAutoSave = false;
 };
 
-}  // namespace Gui
+}  // namespace MeasureGui
 
 #endif  // MEASURE_TASKMEASURE_H

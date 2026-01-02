@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2021 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -86,12 +88,14 @@ class SketcherGuiExport EditModeGeometryCoinManager
 {
 
 public:
-    explicit EditModeGeometryCoinManager(ViewProviderSketch& vp,
-                                         DrawingParameters& drawingParams,
-                                         GeometryLayerParameters& geometryLayerParams,
-                                         AnalysisResults& analysisResultStruct,
-                                         EditModeScenegraphNodes& editModeScenegraph,
-                                         CoinMapping& coinMap);
+    explicit EditModeGeometryCoinManager(
+        ViewProviderSketch& vp,
+        DrawingParameters& drawingParams,
+        GeometryLayerParameters& geometryLayerParams,
+        AnalysisResults& analysisResultStruct,
+        EditModeScenegraphNodes& editModeScenegraph,
+        CoinMapping& coinMap
+    );
     ~EditModeGeometryCoinManager();
 
 

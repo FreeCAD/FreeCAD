@@ -51,6 +51,9 @@ public:
     App::PropertyBool Friction;
     App::PropertyFloat FrictionCoefficient;
     App::PropertyStiffnessDensity StickSlope;
+    App::PropertyBool EnableThermalContact;
+    App::PropertyStringList ThermalContactConductance;
+    App::PropertyEnumeration SurfaceBehavior;
 
     // etc
     /* */
@@ -63,9 +66,11 @@ public:
 
 protected:
     void onChanged(const App::Property* prop) override;
-    void handleChangedPropertyType(Base::XMLReader& reader,
-                                   const char* typeName,
-                                   App::Property* prop) override;
+    void handleChangedPropertyType(
+        Base::XMLReader& reader,
+        const char* typeName,
+        App::Property* prop
+    ) override;
 };
 
 }  // namespace Fem

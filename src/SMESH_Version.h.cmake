@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 #ifndef SMESH_VERSION_H
 #define SMESH_VERSION_H
 

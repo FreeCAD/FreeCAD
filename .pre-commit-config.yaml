@@ -6,20 +6,24 @@ files: |
     (?x)^(
         .github|
         src/Base|
+        src/Gui|
         src/Main|
         src/Tools|
-        tests/src|
         src/Mod/Assembly|
+        src/Mod/BIM|
         src/Mod/CAM|
         src/Mod/Cloud|
+        src/Mod/Draft|
         src/Mod/Fem|
         src/Mod/Help|
         src/Mod/Import|
         src/Mod/Inspection|
         src/Mod/JtReader|
         src/Mod/Measure|
-        src/Mod/Mesh|
         src/Mod/MeshPart|
+        src/Mod/Mesh|
+        src/Mod/PartDesign|
+        src/Mod/Part|
         src/Mod/Plot|
         src/Mod/Points|
         src/Mod/ReverseEngineering|
@@ -31,7 +35,8 @@ files: |
         src/Mod/Surface|
         src/Mod/Test|
         src/Mod/Tux|
-        src/Mod/Web
+        src/Mod/Web|
+        tests/src
     )
 exclude: |
     (?x)^(
@@ -44,28 +49,31 @@ exclude: |
         src/Gui/3Dconnexion/navlib|
         src/Gui/QSint|
         src/Gui/Quarter|
+        src/Mod/Fem/femexamples|
         src/Mod/Import/App/SCL|
         src/Mod/Import/App/SCL_output|
         src/Mod/Mesh/App/TestData|
         src/Mod/Mesh/App/WildMagic4|
         src/Mod/Robot/App/kdl_cp|
-        src/Mod/Robot/Lib
+        src/Mod/Robot/Lib|
+        .*\.ts$|
+        .*\.brep$
     )
 repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: cef0300fd0fc4d2a87a85fa2093c6b283ea36f4b # frozen: v5.0.0
+    rev: 3e8a8703264a2f4a69428a0aa4dcb512790b2c8c  # frozen: v6.0.0
     hooks:
     -   id: trailing-whitespace
     -   id: end-of-file-fixer
     -   id: check-yaml
     -   id: check-added-large-files
     -   id: mixed-line-ending
--   repo: https://github.com/psf/black
-    rev: 8a737e727ac5ab2f1d4cf5876720ed276dc8dc4b  # frozen: 25.1.0
+-   repo: https://github.com/psf/black-pre-commit-mirror
+    rev: 2892f1f81088477370d4fbc56545c05d33d2493f  # frozen: 25.11.0
     hooks:
         -   id: black
             args: ['--line-length', '100']
 -   repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: 64827eb3528d4dc019b01153e9fb79107241405f  # frozen: v20.1.6
+    rev: 317810f3c6a0ad3572367dc86cb6e41863e16e08  # frozen: v21.1.5
     hooks:
         -   id: clang-format

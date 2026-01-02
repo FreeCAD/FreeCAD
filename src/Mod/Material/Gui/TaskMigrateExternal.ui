@@ -17,7 +17,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Select Material Libraries</string>
+      <string>Select material libraries</string>
      </property>
     </widget>
    </item>
@@ -31,7 +31,7 @@
    <item>
     <widget class="QLabel" name="label_2">
      <property name="text">
-      <string>Select Model Libraries</string>
+      <string>Select model libraries</string>
      </property>
     </widget>
    </item>

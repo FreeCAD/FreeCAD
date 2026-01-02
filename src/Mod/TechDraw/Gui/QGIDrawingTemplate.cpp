@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QPainterPath>
-#endif
+
 
 #include <Mod/TechDraw/App/Geometry.h>
 #include <Mod/TechDraw/App/DrawParametricTemplate.h>

@@ -99,7 +99,6 @@ public:
 
     void hideFrame();               //used by derived classes that don't display a frame
 
-    virtual bool getFrameState();
     virtual void toggleCache(bool state);
     virtual void updateView(bool update = false);
     virtual void drawBorder();
@@ -111,7 +110,7 @@ public:
     virtual void setGroupSelection(bool isSelected, const std::vector<std::string> &subNames);
 
     virtual void draw();
-    virtual void drawCaption();
+    virtual void prepareCaption();
     virtual void rotateView();
     void makeMark(double xPos, double yPos, QColor color = Qt::red);
     void makeMark(Base::Vector3d pos, QColor color = Qt::red);
@@ -173,15 +172,24 @@ public:
     template <typename T>
     std::vector<T> getObjects(std::vector<int> indexes);
 
+    bool pseudoEventFilter(QGraphicsItem *watched, QEvent *event) { return sceneEventFilter(watched, event); }
+
+    static bool hasSelectedChildren(QGIView* parent);
+
 protected:
-    QGIView* getQGIVByName(std::string name);
+    QGIView* getQGIVByName(std::string name) const;
 
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
+    virtual void dragFinished();
+
     // Preselection events:
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
     virtual QRectF customChildrenBoundingRect() const;
+    virtual QRectF frameRect() const;
     void dumpRect(const char* text, QRectF rect);
+    bool m_isHovered;
+
 
     Base::Reference<ParameterGrp> getParmGroupCol();
 
@@ -213,6 +221,13 @@ private:
 
     bool m_snapped{false};
 
+    void layoutDecorations(const QRectF& contentArea,
+                       const QRectF& captionRect,
+                       const QRectF& labelRect,
+                       QRectF& outFrameRect,
+                       QPointF& outCaptionPos,
+                       QPointF& outLabelPos,
+                       QPointF& outLockPos) const;
 };
 
 } // namespace

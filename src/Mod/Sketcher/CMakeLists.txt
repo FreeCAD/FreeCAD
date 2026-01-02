@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
 
 add_subdirectory(App)
 if(BUILD_GUI)
@@ -17,12 +18,17 @@ set(Sketcher_TestScripts
     SketcherTests/TestSketcherSolver.py
     SketcherTests/TestSketchExpression.py
     SketcherTests/TestSketchValidateCoincidents.py
+    SketcherTests/TestSketchCarbonCopyReverseMapping.py
+    SketcherTests/TestSketchCarbonCopyReverseMapping.FCStd
 )
 
 if(BUILD_GUI)
     list (APPEND Sketcher_Scripts
           InitGui.py
           TestSketcherGui.py
+    )
+    list (APPEND Sketcher_TestScripts
+          SketcherTests/TestPlacementUpdate.py
     )
 endif(BUILD_GUI)
 

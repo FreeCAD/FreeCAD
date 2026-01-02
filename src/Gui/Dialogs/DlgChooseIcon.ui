@@ -35,7 +35,7 @@
      <item>
       <widget class="QPushButton" name="addButton">
        <property name="text">
-        <string>Icon folders...</string>
+        <string>Icon Folders</string>
        </property>
       </widget>
      </item>

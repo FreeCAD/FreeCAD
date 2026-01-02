@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /**************************************************************************
  *                                                                         *
  *   Copyright (c) 2022 FreeCAD Project Association                        *
@@ -20,7 +22,6 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "Metadata.h"
 

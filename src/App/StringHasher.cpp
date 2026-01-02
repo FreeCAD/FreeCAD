@@ -20,7 +20,6 @@
  *                                                                                                 *
  **************************************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <QCryptographicHash>
 #include <QHash>

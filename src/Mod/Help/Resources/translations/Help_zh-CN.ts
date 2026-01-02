@@ -14,8 +14,14 @@
       <translation>来源</translation>
     </message>
     <message>
+      <location filename="../../dlgPreferencesHelp.ui" line="29"/>
+      <source>Fetches the documentation from pages rendered on GitHub.
+This is currently not available.</source>
+      <translation>从 GitHub 上渲染的页面获取文档。
+此功能目前不可用。</translation>
+    </message>
+    <message>
       <location filename="../../dlgPreferencesHelp.ui" line="46"/>
-      <location filename="../../dlgPreferencesHelp.ui" line="86"/>
       <source>Set this to a custom URL or the folder where the help files are located.
 You can easily download the documentation for offline use by using the Addon
 Manager and installing the &quot;offline-documentation&quot; addon. If this
@@ -33,21 +39,9 @@ the default location ($USERAPPDATADIR/Mod/offline-documentation).</source>
       <translation>自定义位置</translation>
     </message>
     <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="112"/>
-      <source>    Translation suffix:</source>
-      <translation>    翻译后缀：</translation>
-    </message>
-    <message>
       <location filename="../../dlgPreferencesHelp.ui" line="123"/>
       <source>FreeCAD Wiki (online)</source>
       <translation>FreeCAD Wiki (在线)</translation>
-    </message>
-    <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="29"/>
-      <source>This will fetch the documentation from pages rendered on GitHub.
-This is currently not available...</source>
-      <translation>这将从 GitHub 上呈现的页面获取文档。
-目前不可用...</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="33"/>
@@ -60,6 +54,21 @@ This is currently not available...</source>
 to get French translation of the documentation.</source>
       <translation>要使用的翻译后缀，例如 &quot;fr&quot;
 获取文档的法语翻译。</translation>
+    </message>
+    <message>
+      <location filename="../../dlgPreferencesHelp.ui" line="86"/>
+      <source>Set this to a custom URL or the folder where the help files are located.
+Documentation can be downloaded for offline use via the Addon Manager and installing the
+&quot;offline-documentation&quot; addon. If this field is left blank, FreeCAD will
+automatically search for the help files at the default location
+($USERAPPDATADIR/Mod/offline-documentation).</source>
+      <translation>将此设置为自定义 URL 或帮助文件所在的文件夹。
+可以通过附加组件管理器下载文档以供离线使用，并安装“offline-documentation”附加组件。如果此字段留空，FreeCAD 将自动在默认位置（$USERAPPDATADIR/Mod/offline-documentation）搜索帮助文件。</translation>
+    </message>
+    <message>
+      <location filename="../../dlgPreferencesHelp.ui" line="112"/>
+      <source>Translation suffix</source>
+      <translation>平移后缀</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="119"/>
@@ -91,44 +100,47 @@ custom stylesheet below and can look nicer than the wiki option. The &apos;Markd
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="170"/>
-      <source>Note: if PySide Web components are not found on your system, help pages will open in your default web browser regardless of the options below</source>
-      <translation>注意：如果您的系统中没有 PySide Web 组件，无论以下选项如何，帮助页面都将在您的默认 Web 浏览器中打开</translation>
+      <source>Note: if PySide Web components are not found on the system, help pages will open in the default web browser regardless of the options below.</source>
+      <translation>注意：如果系统上未找到 PySide Web 组件，则无论以下选项如何，帮助页面都将在默认 Web 浏览器中打开。</translation>
+    </message>
+    <message>
+      <location filename="../../dlgPreferencesHelp.ui" line="180"/>
+      <source>The documentation will open in the default web browser</source>
+      <translation>该文档将在默认 Web 浏览器中打开</translation>
+    </message>
+    <message>
+      <location filename="../../dlgPreferencesHelp.ui" line="183"/>
+      <source>In the default web browser</source>
+      <translation>在默认的 Web 浏览器</translation>
+    </message>
+    <message>
+      <location filename="../../dlgPreferencesHelp.ui" line="199"/>
+      <source>The documentation will open in a new tab inside the FreeCAD interface. This requires the PySide QtWebengineWidgets component.</source>
+      <translation>文档将在 FreeCAD 界面的新标签页中打开。这需要 PySide QtWebengineWidgets 组件。</translation>
+    </message>
+    <message>
+      <location filename="../../dlgPreferencesHelp.ui" line="221"/>
+      <source>Documentation opens in a dockable dialog within FreeCAD, allowing simultaneous work in the 3D view.
+Requires the PySide QtWebengineWidgets component.</source>
+      <translation>文档在 FreeCAD 中的可停靠对话框中打开，允许在 3D 视图中同时工作。
+需要 PySide QtWebengineWidgets 组件。</translation>
+    </message>
+    <message>
+      <location filename="../../dlgPreferencesHelp.ui" line="249"/>
+      <source>Custom stylesheet</source>
+      <translation>自定义样式表</translation>
+    </message>
+    <message>
+      <location filename="../../dlgPreferencesHelp.ui" line="256"/>
+      <source>Specify the path to an alternative CSS file for styling Markdown pages.
+This only applies if Markdown is selected above.</source>
+      <translation>指定用于设置 Markdown 页面样式的备用 CSS 文件的路径。
+此设置仅适用于上方选择 Markdown 的情况。</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="202"/>
       <source>In a FreeCAD tab</source>
-      <translation>在 FreeCAD 选项卡</translation>
-    </message>
-    <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="180"/>
-      <source>The documentation will open in your default web browser.</source>
-      <translation>文档将在您的默认网络浏览器中打开。</translation>
-    </message>
-    <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="221"/>
-      <source>The documentation will open in a dockable dialog inside the FreeCAD window,
-which allows you to keep it open while working in the 3D view. This requires the PySide QtWebengineWidgets component</source>
-      <translation>文档将在 FreeCAD 窗口内的可停靠对话框中打开、
-这样您就可以在 3D 视图中工作时使之保持打开状态。这需要 PySide QtWebengineWidgets 组件</translation>
-    </message>
-    <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="256"/>
-      <source>You can here indicate the path to an alternative CSS file to be used
-to style the Markdown pages. This will only work if you have selected the
-Markdown version above.</source>
-      <translation>您可以在此指明替代的 CSS 文件的路径，使用
-样式Markdown页面。 只有在您选择了上面的
-Markdown 版本的情况下，这才会起作用。</translation>
-    </message>
-    <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="183"/>
-      <source>In your default web browser</source>
-      <translation>在您的默认网络浏览器</translation>
-    </message>
-    <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="199"/>
-      <source>The documentation will open in a new tab inside the FreeCAD interface. This requires the PySide QtWebengineWidgets component</source>
-      <translation>文档将在 FreeCAD 界面的新标签页中打开。这需要 PySide QtWebengineWidgets 组件</translation>
+      <translation>在 FreeCAD 标签页</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="225"/>
@@ -140,23 +152,18 @@ Markdown 版本的情况下，这才会起作用。</translation>
       <source>Options</source>
       <translation>选项</translation>
     </message>
-    <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="249"/>
-      <source>      Custom stylesheet:</source>
-      <translation>      自定义样式表：</translation>
-    </message>
   </context>
   <context>
     <name>Help</name>
     <message>
       <location filename="../../Help.py" line="75"/>
-      <source>Contents for this page could not be retrieved. Please check settings under menu Edit -&gt; Preferences -&gt; General -&gt; Help</source>
-      <translation>无法检索此页面的内容。请检查菜单编辑下的设置 -&gt; 首选项 -&gt; 常规-&gt; 帮助</translation>
+      <source>Contents for this page could not be retrieved. Please check settings under menu Edit → Preferences → General → Help</source>
+      <translation>无法检索此页面的内容。请检查菜单“编辑 → 首选项 → 常规 → 帮助”下的设置。</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="79"/>
-      <source>Help files location could not be determined. Please check settings under menu Edit -&gt; Preferences -&gt; General -&gt; Help</source>
-      <translation>无法确定帮助文件位置。请检查菜单下的设置：编辑 -&gt; 首选项 -&gt; 常规-&gt; 帮助</translation>
+      <source>Help files location could not be determined. Please check settings under menu Edit → Preferences → General → Help</source>
+      <translation>无法确定帮助文件的位置。请检查菜单“编辑 → 首选项 → 常规 → 帮助”下的设置。</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="83"/>
@@ -177,7 +184,7 @@ Markdown 版本的情况下，这才会起作用。</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Help.py" line="432"/>
+      <location filename="../../Help.py" line="435"/>
       <source>General</source>
       <translation>常规</translation>
     </message>

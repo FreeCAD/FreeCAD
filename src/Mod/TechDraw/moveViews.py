@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # **************************************************************************
 #   Copyright (c) 2018 WandererFan <wandererfan@gmail.com>                *
 #                                                                         *
@@ -43,7 +42,7 @@ def moveViews():
     s = FreeCADGui.Selection.getSelection()
 
     if len(s) != 2:
-        print("Please select 1 Drawing Page and 1 TechDraw Page")
+        print("Select 1 Drawing page and 1 TechDraw page")
         return
 
     print("First object in selection is a: ", s[0].TypeId)
@@ -59,7 +58,7 @@ def moveViews():
         tPage = s[0]
         dPage = s[1]
     else:
-        print("Please select 1 Drawing Page and 1 TechDraw Page")
+        print("Select 1 Drawing page and 1 TechDraw page")
         return
 
     for o in dPage.OutList:

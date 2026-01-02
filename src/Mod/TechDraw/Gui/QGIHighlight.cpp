@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QPainter>
 # include <QStyleOptionGraphicsItem>
-#endif
+
 
 #include <Base/Tools.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
@@ -64,6 +62,8 @@ QGIHighlight::~QGIHighlight()
 
 }
 
+
+// QGIHighlight is no longer dragged except through TaskDetail.
 void QGIHighlight::onDragFinished()
 {
 //    Base::Console().message("QGIH::onDragFinished - pos: %s\n",

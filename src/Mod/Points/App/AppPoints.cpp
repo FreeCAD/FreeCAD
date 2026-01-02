@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
@@ -42,7 +43,7 @@ PyMOD_INIT_FUNC(Points)
 {
     // clang-format off
     PyObject* pointsModule = Points::initModule();
-    Base::Console().log("Loading Points module... done\n");
+    Base::Console().log("Loading Points module… done\n");
 
     // add python types
     Base::Interpreter().addType(&Points::PointsPy::Type, pointsModule, "Points");

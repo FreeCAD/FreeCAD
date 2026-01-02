@@ -29,10 +29,13 @@
 
 class QPlainTextEdit;
 
-namespace Gui {
+namespace Gui
+{
 
-class GuiExport ViewProviderTextDocument : public ViewProviderDocumentObject {
+class GuiExport ViewProviderTextDocument: public ViewProviderDocumentObject
+{
     PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderTextDocument);
+
 public:
     ViewProviderTextDocument();
     ~ViewProviderTextDocument() override = default;
@@ -44,11 +47,14 @@ public:
 
     bool doubleClicked() override;
     void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
-    bool isShow() const override { return true; }
+    bool isShow() const override
+    {
+        return true;
+    }
 
     void onChanged(const App::Property* prop) override;
 
-    MDIView *getMDIView() const override;
+    MDIView* getMDIView() const override;
 
 private:
     bool activateView() const;
@@ -58,7 +64,6 @@ private:
     static const char* SyntaxEnums[];
 };
 
-}
+}  // namespace Gui
 
 #endif
-

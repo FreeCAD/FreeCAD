@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /****************************************************************************
  *   Copyright (c) 2019 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
  *                                                                          *
@@ -20,7 +22,6 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <Base/Interpreter.h>
 
@@ -132,10 +133,12 @@ void AutoTransaction::setEnable(bool enable)
 
 int Application::setActiveTransaction(const char* name, bool persist)
 {
+
     if (!name || !name[0]) {
         name = "Command";
     }
-
+    
+    this->signalBeforeOpenTransaction(name);
     if (_activeTransactionGuard > 0 && getActiveTransaction()) {
         if (_activeTransactionTmpName) {
             FC_LOG("transaction rename to '" << name << "'");

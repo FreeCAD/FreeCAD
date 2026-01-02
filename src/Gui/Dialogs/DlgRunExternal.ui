@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Running external program</string>
+   <string>Running External Program</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
@@ -84,7 +84,7 @@
         <item>
          <widget class="QPushButton" name="chooseProgram">
           <property name="text">
-           <string notr="true">...</string>
+           <string notr="true">Choose Program</string>
           </property>
          </widget>
         </item>
@@ -101,21 +101,21 @@
      <item>
       <widget class="QPushButton" name="buttonAccept">
        <property name="text">
-        <string>Accept changes</string>
+        <string>Accept Changes</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="buttonDiscard">
        <property name="text">
-        <string>Discard changes</string>
+        <string>Discard Changes</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="buttonAbort">
        <property name="text">
-        <string>Abort program</string>
+        <string>Abort Program</string>
        </property>
       </widget>
      </item>

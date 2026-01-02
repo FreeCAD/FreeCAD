@@ -35,7 +35,7 @@ class BIM_ResetCloneColors:
     def GetResources(self):
         return {
             "Pixmap": "BIM_ResetCloneColors",
-            "MenuText": QT_TRANSLATE_NOOP("BIM_ResetCloneColors", "Reset colors"),
+            "MenuText": QT_TRANSLATE_NOOP("BIM_ResetCloneColors", "Reset Colors"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_ResetCloneColors",
                 "Resets the colors of this object from its cloned original",

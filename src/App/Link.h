@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /****************************************************************************
  *   Copyright (c) 2017 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
  *                                                                          *
@@ -664,6 +666,8 @@ public:
 
     bool canLinkProperties() const override;
 
+    Base::Placement getPlacementOf(const std::string& sub, DocumentObject* targetObj = nullptr) override;
+
     bool isLink() const override;
 
     bool isLinkGroup() const override;
@@ -718,6 +722,8 @@ public:
     bool isLink() const override;
 
     App::Link* getLinkGroup() const;
+
+    Base::Placement getPlacementOf(const std::string& sub, DocumentObject* targetObj = nullptr) override;
 };
 
 using LinkElementPython = App::FeaturePythonT<LinkElement>;

@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1000</width>
-    <height>900</height>
+    <width>750</width>
+    <height>800</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Tool Parameter Editor</string>
+   <string>Toolbit Parameter Editor</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -41,14 +41,14 @@
            </property>
            <property name="sizeIncrement">
             <size>
-             <width>1000</width>
-             <height>1000</height>
+             <width>650</width>
+             <height>850</height>
             </size>
            </property>
            <property name="baseSize">
             <size>
-             <width>1000</width>
-             <height>1000</height>
+             <width>650</width>
+             <height>850</height>
             </size>
            </property>
            <property name="currentIndex">
@@ -62,7 +62,7 @@
              </sizepolicy>
             </property>
             <attribute name="title">
-             <string>Tool</string>
+             <string>Toolbit</string>
             </attribute>
             <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,1">
              <item>
@@ -104,7 +104,7 @@
                <item row="1" column="0">
                 <widget class="QLabel" name="label_4">
                  <property name="text">
-                  <string>Coating:</string>
+                  <string>Coating</string>
                  </property>
                 </widget>
                </item>
@@ -114,7 +114,7 @@
                <item row="3" column="0">
                 <widget class="QLabel" name="label_3">
                  <property name="text">
-                  <string>Hardness:</string>
+                  <string>Hardness</string>
                  </property>
                 </widget>
                </item>
@@ -124,7 +124,7 @@
                <item row="2" column="0">
                 <widget class="QLabel" name="label_2">
                  <property name="text">
-                  <string>Materials:</string>
+                  <string>Materials</string>
                  </property>
                 </widget>
                </item>
@@ -137,7 +137,7 @@
                <item row="4" column="0">
                 <widget class="QLabel" name="label">
                  <property name="text">
-                  <string>Supplier:</string>
+                  <string>Supplier</string>
                  </property>
                 </widget>
                </item>

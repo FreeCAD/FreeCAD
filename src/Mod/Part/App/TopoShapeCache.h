@@ -25,10 +25,6 @@
 #ifndef FREECAD_TOPOSHAPECACHE_H
 #define FREECAD_TOPOSHAPECACHE_H
 
-
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <TopoDS.hxx>
 #include <TopoDS_Compound.hxx>
 #include <TopoDS_Iterator.hxx>
@@ -38,9 +34,10 @@
 #include <TopExp_Explorer.hxx>
 #include <TopTools_ListIteratorOfListOfShape.hxx>
 #include <utility>
-#endif
 
 #include <App/ElementMap.h>
+
+#include <Mod/Part/PartGlobal.h>
 
 #include "TopoShape.h"
 
@@ -131,10 +128,12 @@ public:
     /// the result. Subsequent calls to this method given unchanged geometry will use the cached
     /// data rather than re-running MapShapesAndAncestors.
     /// If ancestors is given, it is cleared and overwritten with the ancestry data.
-    TopoDS_Shape findAncestor(const TopoDS_Shape& parent,
-                              const TopoDS_Shape& subShape,
-                              TopAbs_ShapeEnum type,
-                              std::vector<TopoDS_Shape>* ancestors = nullptr);
+    TopoDS_Shape findAncestor(
+        const TopoDS_Shape& parent,
+        const TopoDS_Shape& subShape,
+        TopAbs_ShapeEnum type,
+        std::vector<TopoDS_Shape>* ancestors = nullptr
+    );
 
     /// Ancestor and children shape caches of all shape types. Note that
     /// shapeAncestryCache[TopAbs_SHAPE] is also valid and stores the direct children of a

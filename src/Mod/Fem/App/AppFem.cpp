@@ -21,7 +21,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <SMESH_Version.h>
 
@@ -62,11 +61,11 @@
 #include "HypothesisPy.h"
 
 #ifdef FC_USE_VTK
-#include "FemPostFilter.h"
-#include "FemPostFunction.h"
-#include "FemPostPipeline.h"
-#include "FemPostBranchFilter.h"
-#include "PropertyPostDataObject.h"
+# include "FemPostFilter.h"
+# include "FemPostFunction.h"
+# include "FemPostPipeline.h"
+# include "FemPostBranchFilter.h"
+# include "PropertyPostDataObject.h"
 #endif
 
 
@@ -87,7 +86,7 @@ PyMOD_INIT_FUNC(Fem)
         PyMOD_Return(nullptr);
     }
     PyObject* femModule = Fem::initModule();
-    Base::Console().log("Loading Fem module... done\n");
+    Base::Console().log("Loading FEM module… done\n");
 
     // clang-format off
     Fem::StdMeshers_Arithmetic1DPy              ::init_type(femModule);

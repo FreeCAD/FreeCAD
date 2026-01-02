@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -30,12 +31,13 @@ import Path.Base.Util as PathUtil
 import Path.Main.Job as PathJob
 import Path.Op.Base as PathOp
 import Path.Op.Gui.Selection as PathSelection
-import PathGui
+import Path.Tool.Controller as PathToolController
+from Path.Tool.library.ui.dock import ToolBitLibraryDock
 import PathScripts.PathUtils as PathUtils
 import importlib
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
-from PySide import QtCore, QtGui
+from PySide import QtCore, QtGui, QtWidgets
 
 __title__ = "CAM Operation UI base classes"
 __author__ = "sliptonic (Brad Collette)"
@@ -212,9 +214,12 @@ class TaskPanelPage(object):
         self.isdirty = False
         self.parent = None
         self.panelTitle = "Operation"
+        self.tcEditor = None
+        self.combo = None
 
         if self._installTCUpdate():
             PathJob.Notification.updateTC.connect(self.resetToolController)
+            self.form.toolController.currentIndexChanged.connect(self.tcComboChanged)
 
     def show_error_message(self, title, message):
         msg_box = QtGui.QMessageBox()
@@ -366,50 +371,157 @@ class TaskPanelPage(object):
     def selectInComboBox(self, name, combo):
         """selectInComboBox(name, combo) ...
         helper function to select a specific value in a combo box."""
-        blocker = QtCore.QSignalBlocker(combo)
-        index = combo.currentIndex()  # Save initial index
+        try:
+            combo.blockSignals(True)
+            index = combo.currentIndex()  # Save initial index
 
-        # Search using currentData and return if found
-        newindex = combo.findData(name)
-        if newindex >= 0:
-            combo.setCurrentIndex(newindex)
-            return
+            # Search using currentData and return if found
+            newindex = combo.findData(name)
+            if newindex >= 0:
+                combo.setCurrentIndex(newindex)
+                return
 
-        # if not found, search using current text
-        newindex = combo.findText(name, QtCore.Qt.MatchFixedString)
-        if newindex >= 0:
-            combo.setCurrentIndex(newindex)
-            return
+            # if not found, search using current text
+            newindex = combo.findText(name, QtCore.Qt.MatchFixedString)
+            if newindex >= 0:
+                combo.setCurrentIndex(newindex)
+                return
 
-        # not found, return unchanged
-        combo.setCurrentIndex(index)
-        return
+            # not found, return unchanged
+            combo.setCurrentIndex(index)
+        finally:
+            combo.blockSignals(False)
 
     def populateCombobox(self, form, enumTups, comboBoxesPropertyMap):
         """populateCombobox(form, enumTups, comboBoxesPropertyMap) ... proxy for PathGuiUtil.populateCombobox()"""
         PathGuiUtil.populateCombobox(form, enumTups, comboBoxesPropertyMap)
 
-    def resetToolController(self, job, tc):
-        if self.obj is not None:
-            self.obj.ToolController = tc
-            combo = self.form.toolController
-            self.setupToolController(self.obj, combo)
+    def tcComboChanged(self, newIndex):
+        if self.obj is not None and self.tcEditor:
+            if newIndex == self.combo.count() - 1:
+                # Special entry: new tool controller. Show the tool dock and reset combo
+                dock = ToolBitLibraryDock(self.job, True)
+                dock.open()
+                self.resetTCCombo()
+            elif newIndex == self.combo.count() - 2:
+                # Special entry: copy tool controller
+                self.copyToolController()  # this function also rebuilds the combo
+                self.resetTCCombo()
+            else:
+                tc = PathUtils.findToolController(
+                    self.obj, self.obj.Proxy, self.form.toolController.currentText()
+                )
+                self.obj.ToolController = tc
+                self.setupToolController()
 
-    def setupToolController(self, obj, combo):
+    def updateToolControllerEditorVisibility(self):
+        if self.form.editToolController.isChecked():
+            self.tcEditor.controller.show()
+        else:
+            self.tcEditor.controller.hide()
+
+    def resetToolController(self, job, tc):
+        if self.obj is None:
+            return
+        self.obj.ToolController = tc
+        self.setupToolController()
+
+    def copyToolController(self):
+        oldTc = self.tcEditor.obj
+        self.tcEditor.updateToolController()
+        job = self.obj.Proxy.getJob(self.obj)
+        self.obj.ToolController = PathToolController.copyTC(oldTc, job)
+        self.setupToolController()
+
+    def tcEditorChanged(self):
+        self.setDirty()
+        self.resetTCCombo()
+
+    def resetTCCombo(self):
+        controllers = PathUtils.getToolControllers(self.obj)
+
+        if self.obj.ToolController is None:
+            self.obj.ToolController = PathUtils.findToolController(self.obj, self.obj.Proxy)
+        if len(controllers) > 0 and not self.obj.Proxy.isToolSupported(
+            self.obj, self.obj.ToolController.Tool
+        ):
+            self.obj.ToolController = controllers[0]
+
+        tcName = self.obj.ToolController.Label if self.obj.ToolController else ""
+        labels = [c.Label for c in controllers]
+        labels.append(FreeCAD.Qt.translate("CAM_Operation", "Copy {0}…").format(tcName))
+        labels.append(FreeCAD.Qt.translate("CAM_Operation", "New tool controller…"))
+        self.combo.blockSignals(True)
+        self.combo.clear()
+        self.combo.addItems(labels)
+        self.combo.insertSeparator(len(controllers))
+        self.combo.blockSignals(False)
+
+        if self.obj.ToolController is not None:
+            self.selectInComboBox(self.obj.ToolController.Label, self.combo)
+
+    def setupToolController(self, obj=None, combo=None):
         """setupToolController(obj, combo) ...
         helper function to setup obj's ToolController
         in the given combo box."""
-        controllers = PathUtils.getToolControllers(self.obj)
-        labels = [c.Label for c in controllers]
-        combo.blockSignals(True)
-        combo.clear()
-        combo.addItems(labels)
-        combo.blockSignals(False)
+        obj = obj or self.obj
+        combo = combo or self.combo
+        self.obj, self.combo = obj, combo
 
-        if obj.ToolController is None:
-            obj.ToolController = PathUtils.findToolController(obj, obj.Proxy)
-        if obj.ToolController is not None:
-            self.selectInComboBox(obj.ToolController.Label, combo)
+        self.resetTCCombo()
+
+        if hasattr(self.form, "editToolController"):
+            layout = self.form.editToolController.parent().layout()
+            oldEditor = self.tcEditor
+
+            # Count the number of times the tool controller is used in other operations
+            # If it is used in other operations, we will offer the "copy tool controller" button
+            tcCount = 0
+            for job in PathUtils.GetJobs():
+                for op in job.Operations.Group:
+                    if op == self.obj:
+                        continue
+                    elif hasattr(op, "ToolController") and op.ToolController == obj.ToolController:
+                        tcCount += 1
+
+            self.tcEditor = Path.Tool.Gui.Controller.ToolControllerEditor(
+                obj.ToolController,
+                False,
+                self.tcEditorChanged,
+                True,
+                True,
+            )
+            self.tcEditor.setupUi()
+
+            labelStr = FreeCAD.Qt.translate(
+                "CAM_Operation", "This tool controller is used by {0} other operations."
+            ).format(tcCount)
+            self.tcEditor.controller.tcOperationCountLabel.setText(labelStr)
+
+            # add to layout -- requires a grid layout
+            if isinstance(layout, QtWidgets.QGridLayout):
+                layout.addWidget(
+                    self.tcEditor.controller, layout.rowCount(), 0, 1, layout.columnCount()
+                )
+            else:
+                Path.Log.error(
+                    "Panel uses a layout incompatible with editing tool controllers. Report a bug: it should be a QGridLayout"
+                )
+
+            self.updateToolControllerEditorVisibility()
+            self.tcEditor.updateUi()
+            checkbox = self.form.editToolController
+            checkboxSignal = (
+                checkbox.checkStateChanged
+                if hasattr(checkbox, "checkStateChanged")
+                else checkbox.stateChanged
+            )
+            checkboxSignal.connect(self.updateToolControllerEditorVisibility)
+
+            if oldEditor:
+                oldEditor.updateToolController()
+                oldEditor.controller.hide()
+                layout.removeWidget(oldEditor.controller)
 
     def updateToolController(self, obj, combo):
         """updateToolController(obj, combo) ...
@@ -418,6 +530,8 @@ class TaskPanelPage(object):
         tc = PathUtils.findToolController(obj, obj.Proxy, combo.currentText())
         if obj.ToolController != tc:
             obj.ToolController = tc
+        if self.tcEditor:
+            self.tcEditor.updateToolController()
 
     def setupCoolant(self, obj, combo):
         """setupCoolant(obj, combo) ...
@@ -437,7 +551,7 @@ class TaskPanelPage(object):
         helper function to update obj's Coolant property if a different
         one has been selected in the combo box."""
         option = combo.currentText()
-        if hasattr(obj, "CoolantMode"):
+        if hasattr(obj, "CoolantMode") and option:
             if obj.CoolantMode != option:
                 obj.CoolantMode = option
 
@@ -488,15 +602,23 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         # Load available operations into combobox
         if len(availableOps) > 0:
             # Populate the operations list
-            panel.geometryImportList.blockSignals(True)
-            panel.geometryImportList.clear()
-            availableOps.sort()
-            for opLbl in availableOps:
-                panel.geometryImportList.addItem(opLbl)
-            panel.geometryImportList.blockSignals(False)
+            try:
+                panel.geometryImportList.blockSignals(True)
+                panel.geometryImportList.clear()
+                availableOps.sort()
+                for opLbl in availableOps:
+                    panel.geometryImportList.addItem(opLbl)
+                panel.geometryImportList.blockSignals(False)
+            except (AttributeError, RuntimeError):
+                # Widget doesn't exist in UI or C++ object already deleted
+                pass
         else:
-            panel.geometryImportList.hide()
-            panel.geometryImportButton.hide()
+            try:
+                panel.geometryImportList.hide()
+                panel.geometryImportButton.hide()
+            except (AttributeError, RuntimeError):
+                # Widget doesn't exist in UI or C++ object already deleted
+                pass
 
     def getTitle(self, obj):
         return translate("PathOp", "Base Geometry")
@@ -548,22 +670,13 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
             return "edges"
         return "nothing"
 
-    def selectionSupportedAsBaseGeometry(self, selection, ignoreErrors):
-        if len(selection) != 1:
-            if not ignoreErrors:
-                msg = translate(
-                    "PathOp",
-                    "Please select %s from a single solid" % self.featureName(),
-                )
-                Path.Log.debug(msg)
-            return False
-        sel = selection[0]
+    def selectionSupportedAsBaseGeometry(self, sel, ignoreErrors):
         if sel.HasSubObjects:
-            if not self.supportsVertexes() and selection[0].SubObjects[0].ShapeType == "Vertex":
+            if not self.supportsVertexes() and sel.SubObjects[0].ShapeType == "Vertex":
                 return False
-            if not self.supportsEdges() and selection[0].SubObjects[0].ShapeType == "Edge":
+            if not self.supportsEdges() and sel.SubObjects[0].ShapeType == "Edge":
                 return False
-            if not self.supportsFaces() and selection[0].SubObjects[0].ShapeType == "Face":
+            if not self.supportsFaces() and sel.SubObjects[0].ShapeType == "Face":
                 return False
         else:
             if not self.supportsPanels() or "Panel" not in sel.Object.Name:
@@ -572,11 +685,11 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
 
     def addBaseGeometry(self, selection):
         Path.Log.track(selection)
-        if self.selectionSupportedAsBaseGeometry(selection, False):
-            sel = selection[0]
-            for sub in sel.SubElementNames:
-                self.obj.Proxy.addBase(self.obj, sel.Object, sub)
-            return True
+        for sel in selection:
+            # check each selection
+            if self.selectionSupportedAsBaseGeometry(sel, False):
+                for sub in sel.SubElementNames:
+                    self.obj.Proxy.addBase(self.obj, sel.Object, sub)
         return False
 
     def addBase(self):
@@ -638,11 +751,12 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         if prop in ["Base"]:
             self.setFields(obj)
 
-    def updateSelection(self, obj, sel):
-        if self.selectionSupportedAsBaseGeometry(sel, True):
-            self.form.addBase.setEnabled(True)
-        else:
-            self.form.addBase.setEnabled(False)
+    def updateSelection(self, obj, selection):
+        for sel in selection:
+            if self.selectionSupportedAsBaseGeometry(sel, True):
+                self.form.addBase.setEnabled(True)
+            else:
+                self.form.addBase.setEnabled(False)
 
     def resizeBaseList(self):
         # Set base geometry list window to resize based on contents
@@ -1245,7 +1359,10 @@ class TaskPanel(object):
 
         # Update properties based upon expressions in case expression value has changed
         for prp, expr in self.obj.ExpressionEngine:
-            val = FreeCAD.Units.Quantity(self.obj.evalExpression(expr))
+            evalExpr = self.obj.evalExpression(expr)
+            if not isinstance(evalExpr, (int, float, FreeCAD.Units.Quantity)):
+                continue
+            val = FreeCAD.Units.Quantity(evalExpr)
             value = val.Value if hasattr(val, "Value") else val
             prop = getattr(self.obj, prp)
             if hasattr(prop, "Value"):
@@ -1292,8 +1409,8 @@ class CommandSetStartPoint:
     def GetResources(self):
         return {
             "Pixmap": "CAM_StartPoint",
-            "MenuText": QT_TRANSLATE_NOOP("PathOp", "Pick Start Point"),
-            "ToolTip": QT_TRANSLATE_NOOP("PathOp", "Pick Start Point"),
+            "MenuText": QT_TRANSLATE_NOOP("PathOp", "Start Point Selection"),
+            "ToolTip": QT_TRANSLATE_NOOP("PathOp", "Selects the start point"),
         }
 
     def IsActive(self):
@@ -1329,6 +1446,9 @@ def Create(res):
     this function directly, but calls the Activated() function of the Command object
     that is created in each operations Gui implementation."""
     FreeCAD.ActiveDocument.openTransaction("Create %s" % res.name)
+    if res.job is None:
+        FreeCAD.ActiveDocument.abortTransaction()
+        raise ValueError("No job selected. Operation creation aborted.")
     try:
         obj = res.objFactory(res.name, obj=None, parentJob=res.job)
         if obj.Proxy:
@@ -1377,6 +1497,17 @@ class CommandPathOp:
         return False
 
     def Activated(self):
+        jobs = PathUtils.GetJobs()
+        if not jobs:
+            return
+        job = PathUtils.UserInput.chooseJob(jobs)
+        if job is None:
+            return  # Abort if no job selected or canceled
+        self.res.job = job
+        return Create(self.res)
+
+    def setJob(self, job):
+        self.res.job = job
         return Create(self.res)
 
 
@@ -1416,4 +1547,4 @@ def SetupOperation(name, objFactory, opPageClass, pixmap, menuText, toolTip, set
 
 FreeCADGui.addCommand("CAM_SetStartPoint", CommandSetStartPoint())
 
-FreeCAD.Console.PrintLog("Loading PathOpGui... done\n")
+FreeCAD.Console.PrintLog("Loading PathOpGui… done\n")

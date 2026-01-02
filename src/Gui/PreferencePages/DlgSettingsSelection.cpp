@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <App/Application.h>
 
@@ -69,7 +68,7 @@ void DlgSettingsSelection::loadSettings()
     ui->checkBoxSelectionCheckBoxes->onRestore();
 }
 
-void DlgSettingsSelection::changeEvent(QEvent *e)
+void DlgSettingsSelection::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);

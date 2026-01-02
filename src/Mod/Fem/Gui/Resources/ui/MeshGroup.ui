@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Mesh group</string>
+   <string>Mesh Group</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -23,7 +23,7 @@
       </size>
      </property>
      <property name="title">
-      <string>Identifier used for mesh export</string>
+      <string>Identifier Used for Mesh Export</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_5">
       <item>

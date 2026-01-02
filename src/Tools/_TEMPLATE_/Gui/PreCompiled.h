@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) YEAR YOUR NAME <Your e-mail address>                    *
  *                                                                         *
@@ -21,21 +23,19 @@
  ***************************************************************************/
 
 
-#ifndef GUI_PRECOMPILED_H
-#define GUI_PRECOMPILED_H
+#ifndef TEMPLATE_GUI_PRECOMPILED_H
+#define TEMPLATE_GUI_PRECOMPILED_H
 
 #include <FCConfig.h>
 
 // Importing of App classes
 #ifdef FC_OS_WIN32
-#define _TEMPLATE_AppExport __declspec(dllimport)
-#define _TEMPLATE_GuiExport __declspec(dllexport)
+# define _TEMPLATE_AppExport __declspec(dllimport)
+# define _TEMPLATE_GuiExport __declspec(dllexport)
 #else  // for Linux
-#define _TEMPLATE_AppExport
-#define _TEMPLATE_GuiExport
+# define _TEMPLATE_AppExport
+# define _TEMPLATE_GuiExport
 #endif
-
-#ifdef _PreComp_
 
 // standard
 #include <cassert>
@@ -57,12 +57,10 @@
 #include <xercesc/util/XercesDefs.hpp>
 
 #ifdef FC_OS_WIN32
-#include <windows.h>
+# include <windows.h>
 #endif
 
 // Qt Toolkit
 #include <Gui/QtAll.h>
-
-#endif  //_PreComp_
 
 #endif  // GUI_PRECOMPILED_H

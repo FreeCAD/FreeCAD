@@ -17,7 +17,7 @@
    <item row="0" column="0" colspan="2">
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Boolean operation</string>
+      <string>Boolean Operation</string>
      </property>
      <layout class="QGridLayout">
       <property name="margin">
@@ -152,7 +152,7 @@
    <item row="2" column="1">
     <widget class="QPushButton" name="swapButton">
      <property name="text">
-      <string>Swap selection</string>
+      <string>Swap Selection</string>
      </property>
     </widget>
    </item>

@@ -17,7 +17,7 @@
    <item>
     <widget class="QCheckBox" name="ckb_working_directory">
      <property name="text">
-      <string>Working Directory</string>
+      <string>Working directory</string>
      </property>
     </widget>
    </item>
@@ -51,19 +51,15 @@
       <item>
        <layout class="QHBoxLayout" name="hbl_working_directory">
         <item>
-         <widget class="QLineEdit" name="let_working_directory">
+         <widget class="Gui::FileChooser" name="fc_working_directory">
           <property name="toolTip">
            <string>Path to working directory</string>
           </property>
           <property name="readOnly">
-           <bool>true</bool>
+           <bool>false</bool>
           </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QToolButton" name="pb_working_directory">
-          <property name="text">
-           <string>...</string>
+          <property name="mode">
+            <enum>Gui::FileChooser::Mode::Directory</enum>
           </property>
          </widget>
         </item>
@@ -83,7 +79,7 @@
         <item row="0" column="0">
          <widget class="QLabel" name="lbl_analysis_type">
           <property name="text">
-           <string>Analysis Type:</string>
+           <string>Analysis type</string>
           </property>
          </widget>
         </item>
@@ -123,7 +119,7 @@
          </font>
         </property>
         <property name="text">
-         <string>Time:</string>
+         <string>Time</string>
         </property>
        </widget>
       </item>

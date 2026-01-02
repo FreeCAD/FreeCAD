@@ -59,6 +59,8 @@ public:
 
     void drawBorder() override;
 
+    bool isMember(App::DocumentObject* dvpObj) const;
+
 protected:
     bool sceneEventFilter(QGraphicsItem* watched, QEvent *event) override;
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
@@ -66,11 +68,14 @@ protected:
     void mouseMoveEvent(QGraphicsSceneMouseEvent * event ) override;
     void mousePressEvent(QGraphicsSceneMouseEvent * event) override;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent * event) override;
-    QGIView * getAnchorQItem() const;
+
+    void mouseReleaseEvent(QGIView* originator, QGraphicsSceneMouseEvent* event);
+    QGIView* getAnchorQItem() const;
 
 private:
     /// Convenience function
     TechDraw::DrawProjGroup* getDrawView() const;
+    bool autoDistributeEnabled() const;
 
     QGraphicsItem* m_origin;
     QPoint mousePos;

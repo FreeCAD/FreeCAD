@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
 # *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
@@ -36,7 +38,7 @@ import Part
 from draftgeoutils import faces
 from draftobjects.base import DraftObject
 from draftutils import gui_utils
-from draftutils.messages import _err, _wrn
+from draftutils.messages import _err, _log
 from draftutils.translate import translate
 
 
@@ -66,24 +68,41 @@ class ShapeString(DraftObject):
         if "Justification" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property", "Horizontal and vertical alignment")
             obj.addProperty("App::PropertyEnumeration", "Justification", "Draft", _tip, locked=True)
-            obj.Justification = ["Top-Left", "Top-Center", "Top-Right",
-                                 "Middle-Left", "Middle-Center", "Middle-Right",
-                                 "Bottom-Left", "Bottom-Center", "Bottom-Right"]
+            obj.Justification = [
+                "Top-Left",
+                "Top-Center",
+                "Top-Right",
+                "Middle-Left",
+                "Middle-Center",
+                "Middle-Right",
+                "Bottom-Left",
+                "Bottom-Center",
+                "Bottom-Right",
+            ]
             obj.Justification = "Bottom-Left"
 
         if "JustificationReference" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property", "Height reference used for justification")
-            obj.addProperty("App::PropertyEnumeration", "JustificationReference", "Draft", _tip, locked=True)
+            obj.addProperty(
+                "App::PropertyEnumeration", "JustificationReference", "Draft", _tip, locked=True
+            )
             obj.JustificationReference = ["Cap Height", "Shape Height"]
             obj.JustificationReference = "Cap Height"
 
         if "KeepLeftMargin" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property", "Keep left margin and leading white space when justification is left")
-            obj.addProperty("App::PropertyBool", "KeepLeftMargin", "Draft", _tip, locked=True).KeepLeftMargin = False
+            _tip = QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Keep left margin and leading white space when justification is left",
+            )
+            obj.addProperty(
+                "App::PropertyBool", "KeepLeftMargin", "Draft", _tip, locked=True
+            ).KeepLeftMargin = False
 
         if "ScaleToSize" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property", "Scale to ensure cap height is equal to size")
-            obj.addProperty("App::PropertyBool", "ScaleToSize", "Draft", _tip, locked=True).ScaleToSize = True
+            obj.addProperty(
+                "App::PropertyBool", "ScaleToSize", "Draft", _tip, locked=True
+            ).ScaleToSize = True
 
         if "Tracking" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property", "Inter-character spacing")
@@ -95,10 +114,15 @@ class ShapeString(DraftObject):
 
         if "MakeFace" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property", "Fill letters with faces")
-            obj.addProperty("App::PropertyBool", "MakeFace", "Draft", _tip, locked=True).MakeFace = True
+            obj.addProperty(
+                "App::PropertyBool", "MakeFace", "Draft", _tip, locked=True
+            ).MakeFace = True
 
         if "Fuse" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property", "Fuse faces if faces overlap, usually not required (can be very slow)")
+            _tip = QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Fuse faces if faces overlap, usually not required (can be very slow)",
+            )
             obj.addProperty("App::PropertyBool", "Fuse", "Draft", _tip, locked=True).Fuse = False
 
     def onDocumentRestored(self, obj):
@@ -106,130 +130,147 @@ class ShapeString(DraftObject):
         gui_utils.restore_view_object(
             obj, vp_module="view_shapestring", vp_class="ViewProviderShapeString"
         )
-        if not hasattr(obj, "ObliqueAngle"): # several more properties were added
+        if not hasattr(obj, "ObliqueAngle"):  # several more properties were added
             self.update_properties_1v0(obj)
 
     def update_properties_1v0(self, obj):
         """Update view properties."""
-        old_tracking = obj.Tracking # no need for obj.getTypeIdOfProperty("Tracking")
+        old_tracking = obj.Tracking  # no need for obj.getTypeIdOfProperty("Tracking")
         obj.removeProperty("Tracking")
         self.set_properties(obj)
         obj.KeepLeftMargin = True
         obj.ScaleToSize = False
         obj.Tracking = old_tracking
-        _wrn("v1.0, " + obj.Label + ", "
-             + translate("draft", "added 'Fuse', 'Justification', 'JustificationReference', 'KeepLeftMargin', 'ObliqueAngle' and 'ScaleToSize'  properties"))
-        _wrn("v1.0, " + obj.Label + ", "
-             + translate("draft", "changed 'Tracking' property type"))
+        _log(
+            "v1.0, "
+            + obj.Name
+            + ", "
+            + "added 'Fuse', 'Justification', 'JustificationReference', 'KeepLeftMargin', "
+            + "'ObliqueAngle' and 'ScaleToSize' properties"
+        )
+        _log("v1.0, " + obj.Name + ", changed 'Tracking' property type")
 
     def execute(self, obj):
-        if self.props_changed_placement_only():
+        if self.props_changed_placement_only() or not obj.String or not obj.FontFile:
             obj.positionBySupport()
             self.props_changed_clear()
             return
 
-        if obj.String and obj.FontFile:
-            plm = obj.Placement
+        if obj.FontFile[0] == ".":
+            # FontFile path relative to the FreeCAD file directory.
+            font_file = os.path.join(os.path.dirname(obj.Document.FileName), obj.FontFile)
+            # We need the absolute path to do some file checks.
+            font_file = os.path.abspath(font_file)
+        else:
+            font_file = obj.FontFile
 
-            if obj.FontFile[0] == ".":
-                # FontFile path relative to the FreeCAD file directory.
-                font_file = os.path.join(os.path.dirname(obj.Document.FileName), obj.FontFile)
-                # We need the absolute path to do some file checks.
-                font_file = os.path.abspath(font_file)
+        # File checks:
+        if not os.path.exists(font_file):
+            _err(obj.Label + ": " + translate("draft", "Font file not found"))
+            self.props_changed_clear()
+            return
+        if not os.path.isfile(font_file):
+            _err(obj.Label + ": " + translate("draft", "Specified font file is not a file"))
+            self.props_changed_clear()
+            return
+        if not os.path.splitext(font_file)[1].lower() in (".ttc", ".ttf", ".otf", ".pfb"):
+            _err(obj.Label + ": " + translate("draft", "Specified font type is not supported"))
+            self.props_changed_clear()
+            return
+
+        plm = obj.Placement
+        fill = obj.MakeFace
+        if fill is True:
+            # Test a simple letter to know if we have a sticky font or not.
+            # If the font is sticky change fill to `False`.
+            # The 0.03 total area minimum is based on tests with:
+            # 1CamBam_Stick_0.ttf and 1CamBam_Stick_0C.ttf.
+            # See the make_faces function for more information.
+            char = Part.makeWireString("L", font_file, 1, 0)[0]
+            shapes = self.make_faces(char)  # char is list of wires
+            if not shapes:
+                fill = False
             else:
-                font_file = obj.FontFile
+                # Depending on the font the size of char can be very small.
+                # For the area check to make sense we need to use a scale factor.
+                # https://github.com/FreeCAD/FreeCAD/issues/21501
+                char_comp = Part.Compound(char)
+                factor = 1 / char_comp.BoundBox.YLength
+                fill = sum([shape.Area for shape in shapes]) > (0.03 / factor**2) and math.isclose(
+                    char_comp.BoundBox.DiagonalLength,
+                    Part.Compound(shapes).BoundBox.DiagonalLength,
+                    rel_tol=1e-7,
+                )
 
-            # File checks:
-            if not os.path.exists(font_file):
-                _err(obj.Label + ": " + translate("draft", "Font file not found"))
-                return
-            if not os.path.isfile(font_file):
-                _err(obj.Label + ": " + translate("draft", "Specified font file is not a file"))
-                return
-            if not os.path.splitext(font_file)[1].lower() in (".ttc", ".ttf", ".otf", ".pfb"):
-                _err(obj.Label + ": " + translate("draft", "Specified font type is not supported"))
-                return
+        chars = Part.makeWireString(obj.String, font_file, obj.Size, obj.Tracking)
+        shapes = []
 
-            fill = obj.MakeFace
-            if fill is True:
-                # Test a simple letter to know if we have a sticky font or not.
-                # If the font is sticky change fill to `False`.
-                # The 0.03 total area minimum is based on tests with:
-                # 1CamBam_Stick_0.ttf and 1CamBam_Stick_0C.ttf.
-                # See the make_faces function for more information.
-                char = Part.makeWireString("L", font_file, 1, 0)[0]
-                shapes = self.make_faces(char)  # char is list of wires
-                if not shapes:
-                    fill = False
-                else:
-                    # Depending on the font the size of char can be very small.
-                    # For the area check to make sense we need to use a scale factor.
-                    # https://github.com/FreeCAD/FreeCAD/issues/21501
-                    char_comp = Part.Compound(char)
-                    factor = 1 / char_comp.BoundBox.YLength
-                    fill = sum([shape.Area for shape in shapes]) > (0.03 / factor ** 2) \
-                            and math.isclose(char_comp.BoundBox.DiagonalLength,
-                                             Part.Compound(shapes).BoundBox.DiagonalLength,
-                                             rel_tol=1e-7)
-
-            chars = Part.makeWireString(obj.String, font_file, obj.Size, obj.Tracking)
-            shapes = []
-
-            for char in chars:
-                if fill is False:
-                    shapes.extend(char)
-                elif char:
-                    shapes.extend(self.make_faces(char))
-            if shapes:
-                if fill and obj.Fuse:
-                    ss_shape = shapes[0].fuse(shapes[1:])
-                    ss_shape = faces.concatenate(ss_shape)
-                    # Concatenate returns a Face or a Compound. We always
-                    # need a Compound as we use ss_shape.SubShapes later.
-                    if ss_shape.ShapeType == "Face":
-                        ss_shape = Part.Compound([ss_shape])
-                else:
-                    ss_shape = Part.Compound(shapes)
-                cap_char = Part.makeWireString("M", font_file, obj.Size, obj.Tracking)[0]
-                cap_height = Part.Compound(cap_char).BoundBox.YMax
-                if obj.ScaleToSize:
-                    ss_shape.scale(obj.Size / cap_height)
-                    cap_height = obj.Size
-                if obj.ObliqueAngle:
-                    if -80 <= obj.ObliqueAngle <= 80:
-                        mtx = App.Matrix()
-                        mtx.A12 = math.tan(math.radians(obj.ObliqueAngle))
-                        ss_shape = ss_shape.transformGeometry(mtx)
-                    else:
-                        wrn = translate("draft", "ShapeString: oblique angle must be in the -80 to +80 degree range") + "\n"
-                        App.Console.PrintWarning(wrn)
-                just_vec = self.justification_vector(ss_shape,
-                                                     cap_height,
-                                                     obj.Justification,
-                                                     obj.JustificationReference,
-                                                     obj.KeepLeftMargin)
-                shapes = ss_shape.SubShapes
-                for shape in shapes:
-                    shape.translate(just_vec)
-                obj.Shape = Part.Compound(shapes)
+        for char in chars:
+            if fill is False:
+                shapes.extend(char)
+            elif char:
+                shapes.extend(self.make_faces(char))
+        if shapes:
+            if fill and obj.Fuse:
+                ss_shape = shapes[0].fuse(shapes[1:])
+                ss_shape = faces.concatenate(ss_shape)
+                # Concatenate returns a Face or a Compound. We always
+                # need a Compound as we use ss_shape.SubShapes later.
+                if ss_shape.ShapeType == "Face":
+                    ss_shape = Part.Compound([ss_shape])
             else:
-                App.Console.PrintWarning(translate("draft", "ShapeString: string has no wires") + "\n")
+                ss_shape = Part.Compound(shapes)
+            cap_char = Part.makeWireString("M", font_file, obj.Size, obj.Tracking)[0]
+            cap_height = Part.Compound(cap_char).BoundBox.YMax
+            if obj.ScaleToSize:
+                ss_shape.scale(obj.Size / cap_height)
+                cap_height = obj.Size
+            if obj.ObliqueAngle:
+                if -80 <= obj.ObliqueAngle <= 80:
+                    mtx = App.Matrix()
+                    mtx.A12 = math.tan(math.radians(obj.ObliqueAngle))
+                    ss_shape = ss_shape.transformGeometry(mtx)
+                else:
+                    wrn = (
+                        translate(
+                            "draft",
+                            "ShapeString: oblique angle must be in the -80 to +80 degree range",
+                        )
+                        + "\n"
+                    )
+                    App.Console.PrintWarning(wrn)
+            just_vec = self.justification_vector(
+                ss_shape,
+                cap_height,
+                obj.Justification,
+                obj.JustificationReference,
+                obj.KeepLeftMargin,
+            )
+            shapes = ss_shape.SubShapes
+            for shape in shapes:
+                shape.translate(just_vec)
+            obj.Shape = Part.Compound(shapes)
+        else:
+            App.Console.PrintWarning(translate("draft", "ShapeString: string has no wires") + "\n")
 
-            obj.Placement = plm
-
+        obj.Placement = plm
         obj.positionBySupport()
         self.props_changed_clear()
 
     def onChanged(self, obj, prop):
         self.props_changed_store(prop)
 
-    def justification_vector(self, ss_shape, cap_height, just, just_ref, keep_left_margin): # ss_shape is a compound
+    def justification_vector(
+        self, ss_shape, cap_height, just, just_ref, keep_left_margin
+    ):  # ss_shape is a compound
         box = ss_shape.optimalBoundingBox()
         if keep_left_margin is True and "Left" in just:
             vec = App.Vector(0, 0, 0)
         else:
-            vec = App.Vector(-box.XMin, 0, 0) # remove left margin caused by kerning and white space characters
-        width  = box.XLength
+            vec = App.Vector(
+                -box.XMin, 0, 0
+            )  # remove left margin caused by kerning and white space characters
+        width = box.XLength
         if "Shape" in just_ref:
             vec = vec + App.Vector(0, -box.YMin, 0)
             height = box.YLength
@@ -238,11 +279,11 @@ class ShapeString(DraftObject):
         if "Top" in just:
             vec = vec + App.Vector(0, -height, 0)
         elif "Middle" in just:
-            vec = vec + App.Vector(0, -height/2, 0)
+            vec = vec + App.Vector(0, -height / 2, 0)
         if "Right" in just:
             vec = vec + App.Vector(-width, 0, 0)
         elif "Center" in just:
-            vec = vec + App.Vector(-width/2, 0, 0)
+            vec = vec + App.Vector(-width / 2, 0, 0)
         return vec
 
     def make_faces(self, wireChar):
@@ -301,7 +342,7 @@ class ShapeString(DraftObject):
         for face in faces:
             try:
                 # some fonts fail here
-                if face.normalAt(0, 0).z < 0: # Does not seem to occur for FaceMakerBullseye.
+                if face.normalAt(0, 0).z < 0:  # Does not seem to occur for FaceMakerBullseye.
                     face.reverse()
             except Exception:
                 pass

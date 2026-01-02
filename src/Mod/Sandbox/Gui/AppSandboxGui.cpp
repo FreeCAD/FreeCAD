@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Werner Mayer <wmayer@users.sourceforge.net>        *
  *                                                                         *
@@ -21,14 +23,12 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <Python.h>
 # include <Inventor/nodes/SoLineSet.h>
 # include <Inventor/nodes/SoBaseColor.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoCoordinate3.h>
-#endif
+
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
@@ -215,6 +215,6 @@ PyMOD_INIT_FUNC(SandboxGui)
     // the following constructor call registers our extension module
     // with the Python runtime system
     PyObject* mod = SandboxGui::initModule();
-    Base::Console().log("Loading GUI of Sandbox module... done\n");
+    Base::Console().log("Loading GUI of Sandbox module… done\n");
     PyMOD_Return(mod);
 }

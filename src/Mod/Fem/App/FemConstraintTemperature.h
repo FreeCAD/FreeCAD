@@ -40,6 +40,9 @@ public:
     /// Constructor
     ConstraintTemperature();
 
+    App::PropertyBool EnableAmplitude;
+    App::PropertyStringList AmplitudeValues;
+
     // Temperature parameters
     App::PropertyTemperature Temperature;
     App::PropertyPower CFlux;
@@ -53,9 +56,11 @@ public:
     const char* getViewProviderName() const override;
 
 protected:
-    void handleChangedPropertyType(Base::XMLReader& reader,
-                                   const char* TypeName,
-                                   App::Property* prop) override;
+    void handleChangedPropertyType(
+        Base::XMLReader& reader,
+        const char* TypeName,
+        App::Property* prop
+    ) override;
     void onChanged(const App::Property* prop) override;
 };
 

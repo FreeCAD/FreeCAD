@@ -72,7 +72,9 @@ SET(FemExamples_SRCS
     femexamples/ccx_cantilever_faceload.py
     femexamples/ccx_cantilever_nodeload.py
     femexamples/ccx_cantilever_prescribeddisplacement.py
+    femexamples/ccx_disc_cyclic_symm_centrif.py
     femexamples/ccx_rigid_body.py
+    femexamples/ccx_pipe_pressure_2D.py
     femexamples/constraint_centrif.py
     femexamples/constraint_contact_shell_shell.py
     femexamples/constraint_contact_solid_solid.py
@@ -85,6 +87,7 @@ SET(FemExamples_SRCS
     femexamples/elmer_nonguitutorial01_eigenvalue_of_elastic_beam.py
     femexamples/equation_deformation_spring_elmer.py
     femexamples/equation_electrostatics_capacitance_two_balls.py
+    femexamples/equation_electrostatics_capacitance_two_balls_ccx.py
     femexamples/equation_electrostatics_electricforce_elmer_nongui6.py
     femexamples/equation_flow_elmer_2D.py
     femexamples/equation_flow_initial_elmer_2D.py
@@ -211,12 +214,19 @@ SET(FemObjects_SRCS
     femobjects/result_mechanical.py
     femobjects/solver_calculix.py
     femobjects/solver_ccxtools.py
+    femobjects/solver_elmer.py
 )
 
 if(BUILD_FEM_VTK_PYTHON)
-    SET(FemObjects_SRCS
-        ${FemObjects_SRCS}
+    list(APPEND FemObjects_SRCS
+        femobjects/base_fempostextractors.py
+        femobjects/base_fempostvisualizations.py
         femobjects/post_glyphfilter.py
+        femobjects/post_extract1D.py
+        femobjects/post_extract2D.py
+        femobjects/post_histogram.py
+        femobjects/post_lineplot.py
+        femobjects/post_table.py
     )
 endif(BUILD_FEM_VTK_PYTHON)
 
@@ -255,6 +265,7 @@ SET(FemSolverCalculix_SRCS
     femsolver/calculix/write_constraint_force.py
     femsolver/calculix/write_constraint_heatflux.py
     femsolver/calculix/write_constraint_initialtemperature.py
+    femsolver/calculix/write_constraint_finaltemperature.py
     femsolver/calculix/write_constraint_planerotation.py
     femsolver/calculix/write_constraint_pressure.py
     femsolver/calculix/write_constraint_rigidbody.py
@@ -267,6 +278,7 @@ SET(FemSolverCalculix_SRCS
     femsolver/calculix/write_femelement_geometry.py
     femsolver/calculix/write_femelement_material.py
     femsolver/calculix/write_femelement_matgeosets.py
+    femsolver/calculix/write_amplitude.py
     femsolver/calculix/write_footer.py
     femsolver/calculix/write_mesh.py
     femsolver/calculix/write_step_equation.py
@@ -277,9 +289,8 @@ SET(FemSolverCalculix_SRCS
 SET(FemSolverElmer_SRCS
     femsolver/elmer/__init__.py
     femsolver/elmer/sifio.py
-    femsolver/elmer/solver.py
-    femsolver/elmer/tasks.py
     femsolver/elmer/writer.py
+    femsolver/elmer/elmertools.py
 )
 
 SET(FemSolverElmerEquations_SRCS
@@ -597,6 +608,7 @@ SET(FemGuiTaskPanels_SRCS
     femtaskpanels/__init__.py
     femtaskpanels/base_femtaskpanel.py
     femtaskpanels/base_femlogtaskpanel.py
+    femtaskpanels/base_fempostpanel.py
     femtaskpanels/task_constraint_bodyheatsource.py
     femtaskpanels/task_constraint_centrif.py
     femtaskpanels/task_constraint_currentdensity.py
@@ -622,12 +634,16 @@ SET(FemGuiTaskPanels_SRCS
     femtaskpanels/task_result_mechanical.py
     femtaskpanels/task_solver_calculix.py
     femtaskpanels/task_solver_ccxtools.py
+    femtaskpanels/task_solver_elmer.py
 )
 
 if(BUILD_FEM_VTK_PYTHON)
-    SET(FemGuiTaskPanels_SRCS
-        ${FemGuiTaskPanels_SRCS}
+    list(APPEND FemGuiTaskPanels_SRCS
         femtaskpanels/task_post_glyphfilter.py
+        femtaskpanels/task_post_histogram.py
+        femtaskpanels/task_post_lineplot.py
+        femtaskpanels/task_post_table.py
+        femtaskpanels/task_post_extractor.py
     )
 endif(BUILD_FEM_VTK_PYTHON)
 
@@ -641,8 +657,17 @@ SET(FemGuiUtils_SRCS
     femguiutils/disambiguate_solid_selection.py
     femguiutils/migrate_gui.py
     femguiutils/selection_widgets.py
-    femguiutils/vtk_module_handling.py
 )
+
+if(BUILD_FEM_VTK_PYTHON)
+    list(APPEND FemGuiUtils_SRCS
+        femguiutils/vtk_module_handling.py
+        femguiutils/vtk_table_view.py
+        femguiutils/data_extraction.py
+        femguiutils/extract_link_view.py
+        femguiutils/post_visualization.py
+    )
+endif(BUILD_FEM_VTK_PYTHON)
 
 SET(FemGuiViewProvider_SRCS
     femviewprovider/__init__.py
@@ -680,12 +705,17 @@ SET(FemGuiViewProvider_SRCS
     femviewprovider/view_result_mechanical.py
     femviewprovider/view_solver_calculix.py
     femviewprovider/view_solver_ccxtools.py
+    femviewprovider/view_solver_elmer.py
 )
 
 if(BUILD_FEM_VTK_PYTHON)
-    SET(FemGuiViewProvider_SRCS
-        ${FemGuiViewProvider_SRCS}
+    list(APPEND FemGuiViewProvider_SRCS
+        femviewprovider/view_base_fempostextractors.py
+        femviewprovider/view_base_fempostvisualization.py
         femviewprovider/view_post_glyphfilter.py
+        femviewprovider/view_post_histogram.py
+        femviewprovider/view_post_lineplot.py
+        femviewprovider/view_post_table.py
     )
 endif(BUILD_FEM_VTK_PYTHON)
 

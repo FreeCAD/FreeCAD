@@ -49,12 +49,10 @@ class CommandSolveAssembly:
             "Pixmap": "Assembly_SolveAssembly",
             "MenuText": QT_TRANSLATE_NOOP("Assembly_SolveAssembly", "Solve Assembly"),
             "Accel": "Z",
-            "ToolTip": "<p>"
-            + QT_TRANSLATE_NOOP(
+            "ToolTip": QT_TRANSLATE_NOOP(
                 "Assembly_SolveAssembly",
-                "Solve the currently active assembly.",
-            )
-            + "</p>",
+                "Solves the currently active assembly.",
+            ),
             "CmdType": "ForEdit",
         }
 

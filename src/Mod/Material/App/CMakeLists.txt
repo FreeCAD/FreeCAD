@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 if(MSVC)
     add_definitions(-DFCAppMaterial -DHAVE_ACOSH -DHAVE_ASINH -DHAVE_ATANH)
 else(MSVC)
@@ -10,35 +12,10 @@ if(BUILD_MATERIAL_EXTERNAL)
     add_definitions(-DBUILD_MATERIAL_EXTERNAL)
 endif(BUILD_MATERIAL_EXTERNAL)
 
-include_directories(
-    ${CMAKE_BINARY_DIR}
-    ${CMAKE_BINARY_DIR}/src
-    ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_CURRENT_BINARY_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}
-)
-
-include_directories(
-    SYSTEM
-    ${YAML_CPP_INCLUDE_DIR}
-)
-
-if(BUILD_MATERIAL_EXTERNAL)
-    include_directories(
-        ${CMAKE_SOURCE_DIR}/src/3rdParty/lru-cache/include
-    )
-endif(BUILD_MATERIAL_EXTERNAL)
-
-link_directories(${YAML_CPP_LIBRARY_DIR})
-
 set(Materials_LIBS
     FreeCADApp
 )
 
-include_directories(
-    SYSTEM
-    ${QtConcurrent_INCLUDE_DIRS}
-)
 list(APPEND Materials_LIBS
     ${QtConcurrent_LIBRARIES}
 )
@@ -77,7 +54,7 @@ SET(MaterialsAPI_Files
 )
 
 SET(Python_SRCS
-    Exceptions.h
+    Exceptions.cpp
     Array2D.pyi
     Array2DPyImp.cpp
     Array3D.pyi
@@ -139,7 +116,6 @@ SET(Materials_SRCS
     ModelManagerLocal.h
     ModelUuids.cpp
     ModelUuids.h
-    PreCompiled.cpp
     PreCompiled.h
     PropertyMaterial.cpp
     PropertyMaterial.h
@@ -159,14 +135,42 @@ if(BUILD_MATERIAL_EXTERNAL)
     )
 endif(BUILD_MATERIAL_EXTERNAL)
 
+add_library(Materials SHARED ${Materials_SRCS})
+
 if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${Materials_SRCS})
-    ADD_MSVC_PRECOMPILED_HEADER(Materials PreCompiled.h PreCompiled.cpp PCH_SRCS)
+    target_precompile_headers(Materials PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
 endif(FREECAD_USE_PCH)
 
-add_library(Materials SHARED ${Materials_SRCS})
+target_include_directories(
+    Materials
+    PRIVATE
+    ${CMAKE_BINARY_DIR}
+    ${CMAKE_BINARY_DIR}/src
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_BINARY_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+target_include_directories(
+    Materials
+    SYSTEM
+    PUBLIC
+    ${YAML_CPP_INCLUDE_DIR}
+    ${QtConcurrent_INCLUDE_DIRS}
+)
+
+if(BUILD_MATERIAL_EXTERNAL)
+    target_include_directories(Materials PUBLIC ${CMAKE_SOURCE_DIR}/src/3rdParty/lru-cache/include)
+endif(BUILD_MATERIAL_EXTERNAL)
+
+target_link_directories(Materials PUBLIC ${YAML_CPP_LIBRARY_DIR})
 target_link_libraries(Materials ${Materials_LIBS})
+
+if (MSVC)
+    target_compile_options(Materials PRIVATE /wd4251 /wd4273)
+endif()
 
 if(FREECAD_WARN_ERROR)
     target_compile_warn_error(Materials)

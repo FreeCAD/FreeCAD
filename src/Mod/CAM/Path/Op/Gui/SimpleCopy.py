@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2015 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
@@ -22,13 +23,39 @@
 
 import FreeCAD
 import FreeCADGui
-import Path
-import PathScripts
+from Path.Base.Util import coolantModeForOp
+from Path.Base.Util import toolControllerForOp
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 __doc__ = """CAM SimpleCopy command"""
 
 translate = FreeCAD.Qt.translate
+
+
+class ViewProvider:
+
+    def __init__(self, vobj):
+        self.attach(vobj)
+        vobj.Proxy = self
+
+    def attach(self, vobj):
+        self.vobj = vobj
+        self.obj = vobj.Object
+
+    def dumps(self):
+        return None
+
+    def loads(self, state):
+        return None
+
+    def onChanged(self, vobj, prop):
+        return
+
+    def getIcon(self):
+        if self.obj.Active:
+            return ":/icons/CAM_SimpleCopy.svg"
+        else:
+            return ":/icons/CAM_OpActive.svg"
 
 
 class CommandPathSimpleCopy:
@@ -37,43 +64,53 @@ class CommandPathSimpleCopy:
             "Pixmap": "CAM_SimpleCopy",
             "MenuText": QT_TRANSLATE_NOOP("CAM_SimpleCopy", "Simple Copy"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "CAM_SimpleCopy", "Creates a non-parametric copy of another toolpath"
+                "CAM_SimpleCopy",
+                "Creates a non-parametric copy of another toolpath\n"
+                "Several operations can be used with identical tool controller and coolant mode",
             ),
         }
 
     def IsActive(self):
-        if bool(FreeCADGui.Selection.getSelection()) is False:
+        selection = FreeCADGui.Selection.getSelection()
+        if not selection:
             return False
-        try:
-            obj = FreeCADGui.Selection.getSelectionEx()[0].Object
-            return isinstance(obj.Proxy, Path.Op.Base.ObjectOp)
-        except Exception:
+        if any([not hasattr(sel, "Path") for sel in selection]):
             return False
+        if any([not op.Path.Commands for op in selection]):
+            return False
+
+        coolant = coolantModeForOp(selection[0])
+        if not all([coolant == coolantModeForOp(op) for op in selection]):
+            return False
+
+        toolController = toolControllerForOp(selection[0])
+        if not all([toolController == toolControllerForOp(op) for op in selection]):
+            return False
+
+        return True
 
     def Activated(self):
         # check that the selection contains exactly what we want
-        selection = FreeCADGui.Selection.getSelection()
-        if len(selection) != 1:
-            FreeCAD.Console.PrintError(
-                translate("CAM_SimpleCopy", "Please select exactly one toolpath object") + "\n"
-            )
-            return
-        if not (selection[0].isDerivedFrom("Path::Feature")):
-            FreeCAD.Console.PrintError(
-                translate("CAM_SimpleCopy", "Please select exactly one toolpath object") + "\n"
-            )
-            return
-
         FreeCAD.ActiveDocument.openTransaction("Simple Copy")
-        FreeCADGui.doCommand("srcobj = FreeCADGui.Selection.getSelectionEx()[0].Object\n")
-
+        FreeCADGui.doCommand("selection = FreeCADGui.Selection.getSelection()")
+        FreeCADGui.doCommand(
+            "name = selection[0].Name+'_SimpleCopy' if len(selection) == 1 else 'SimpleCopy'"
+        )
         FreeCADGui.addModule("PathScripts.PathUtils")
-        FreeCADGui.doCommand("srcpath = PathScripts.PathUtils.getPathWithPlacement(srcobj)\n")
+        FreeCADGui.doCommand("job = PathScripts.PathUtils.findParentJob(selection[0])")
+        FreeCADGui.doCommand(
+            "paths = [PathScripts.PathUtils.getPathWithPlacement(sel) for sel in selection]"
+        )
         FreeCADGui.addModule("Path.Op.Custom")
-        FreeCADGui.doCommand('obj = Path.Op.Custom.Create("' + selection[0].Name + '_SimpleCopy")')
-        FreeCADGui.doCommand("obj.ViewObject.Proxy = 0")
-        FreeCADGui.doCommand("obj.Gcode = [c.toGCode() for c in srcpath.Commands]")
-        FreeCADGui.doCommand("PathScripts.PathUtils.addToJob(obj)")
+        FreeCADGui.doCommand("obj = Path.Op.Custom.Create(name, parentJob=job)")
+        FreeCADGui.doCommand(
+            "obj.ToolController = Path.Base.Util.toolControllerForOp(selection[0])"
+        )
+        FreeCADGui.doCommand("obj.CoolantMode = Path.Base.Util.coolantModeForOp(selection[0])")
+        FreeCADGui.doCommand(
+            "obj.ViewObject.Proxy = Path.Op.Gui.SimpleCopy.ViewProvider(obj.ViewObject)"
+        )
+        FreeCADGui.doCommand("obj.Gcode = [c.toGCode() for path in paths for c in path.Commands]")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 

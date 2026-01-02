@@ -20,11 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <cmath>
 # include <QStatusBar>
-#endif // #ifndef _PreComp_
 
 #include <Base/Console.h>
 #include <Base/UnitsApi.h>
@@ -156,7 +153,7 @@ void TaskCosVertex::onTrackerClicked(bool clicked)
 
     if (m_pbTrackerState == TrackerAction::CANCEL) {
         m_pbTrackerState = TrackerAction::PICK;
-        ui->pbTracker->setText(tr("Pick Points"));
+        ui->pbTracker->setText(tr("Pick points"));
         enableTaskButtons(true);
 
         setEditCursor(Qt::ArrowCursor);
@@ -188,6 +185,9 @@ void TaskCosVertex::startTracker()
 
     if (!m_tracker) {
         m_tracker = new QGTracker(m_vpp->getQGSPage(), m_trackerMode);
+        std::string parentName = m_baseFeat->getNameInDocument();
+        QGIView* parentView = m_vpp->getQGSPage()->getQGIVByName(parentName);
+        m_tracker->setOwnerQView(parentView);
         QObject::connect(
             m_tracker, &QGTracker::drawingFinished,
             this, &TaskCosVertex::onTrackerFinished
@@ -245,7 +245,7 @@ void TaskCosVertex::onTrackerFinished(std::vector<QPointF> pts, QGIView* qgParen
     m_tracker->sleep(true);
     m_inProgressLock = false;
     m_pbTrackerState = TrackerAction::PICK;
-    ui->pbTracker->setText(tr("Pick Points"));
+    ui->pbTracker->setText(tr("Pick points"));
     ui->pbTracker->setEnabled(true);
     enableTaskButtons(true);
     setEditCursor(Qt::ArrowCursor);

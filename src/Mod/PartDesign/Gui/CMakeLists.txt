@@ -1,10 +1,4 @@
 include_directories(
-    ${CMAKE_BINARY_DIR}
-    ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_CURRENT_BINARY_DIR}
-)
-
-include_directories(
     SYSTEM
     ${CMAKE_SOURCE_DIR}/src/3rdParty/json/single_include/nlohmann/
 )
@@ -39,11 +33,11 @@ set(PartDesignGui_UIC_SRCS
     TaskTransformedMessages.ui
     TaskTransformedParameters.ui
     TaskMirroredParameters.ui
-    TaskLinearPatternParameters.ui
-    TaskPolarPatternParameters.ui
+    TaskPatternParameters.ui
     TaskScaledParameters.ui
     TaskMultiTransformParameters.ui
     TaskShapeBinder.ui
+    TaskPreviewParameters.ui
     TaskPrimitiveParameters.ui
     TaskPipeParameters.ui
     TaskPipeOrientation.ui
@@ -109,8 +103,6 @@ SET(PartDesignGuiViewProvider_SRCS
     ViewProviderShapeBinder.cpp
     ViewProviderBoolean.cpp
     ViewProviderBoolean.h
-    ViewProviderAddSub.cpp
-    ViewProviderAddSub.h
     ViewProviderPrimitive.h
     ViewProviderPrimitive.cpp
     ViewProviderPipe.h
@@ -166,12 +158,9 @@ SET(PartDesignGuiTaskDlgs_SRCS
     TaskMirroredParameters.ui
     TaskMirroredParameters.cpp
     TaskMirroredParameters.h
-    TaskLinearPatternParameters.ui
-    TaskLinearPatternParameters.cpp
-    TaskLinearPatternParameters.h
-    TaskPolarPatternParameters.ui
-    TaskPolarPatternParameters.cpp
-    TaskPolarPatternParameters.h
+    TaskPatternParameters.ui
+    TaskPatternParameters.cpp
+    TaskPatternParameters.h
     TaskScaledParameters.ui
     TaskScaledParameters.cpp
     TaskScaledParameters.h
@@ -214,10 +203,10 @@ SET(PartDesignGuiModule_SRCS
     CommandBody.cpp
     EnumFlags.h
     Resources/PartDesign.qrc
-    PreCompiled.cpp
     PreCompiled.h
     SketchWorkflow.cpp
     SketchWorkflow.h
+    StyleParameters.h
     Utils.cpp
     Utils.h
     Workbench.cpp
@@ -244,18 +233,25 @@ SET(PartDesignGui_SRCS
     ${Python_SRCS}
 )
 
-if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${PartDesignGui_SRCS})
-    ADD_MSVC_PRECOMPILED_HEADER(PartDesignGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
-endif(FREECAD_USE_PCH)
-
-
 SET(PartDesignGuiIcon_SVG
     Resources/icons/PartDesignWorkbench.svg
 )
 
 add_library(PartDesignGui SHARED ${PartDesignGui_SRCS} ${PartDesignGuiIcon_SVG})
+
+if(FREECAD_USE_PCH)
+    target_precompile_headers(PartDesignGui PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
+endif(FREECAD_USE_PCH)
+
+target_include_directories(
+    PartDesignGui
+    PRIVATE
+    ${CMAKE_BINARY_DIR}
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
 target_link_libraries(PartDesignGui ${PartDesignGui_LIBS})
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(PartDesignGui)

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
 
 add_subdirectory(App)
 if(BUILD_GUI)
@@ -17,23 +18,6 @@ if(BUILD_GUI)
         MovieTool.py
     )
 endif(BUILD_GUI)
-
-if (EXISTS ${CMAKE_SOURCE_DIR}/src/Mod/Robot/Lib/Kuka)
-SET(Robot_Resources
-    Lib/Kuka/kr500_1.wrl
-    Lib/Kuka/kr500_1.csv
-    Lib/Kuka/kr_500_2.pdf
-    Lib/Kuka/kr210.WRL
-    Lib/Kuka/kr_210_2.csv
-    Lib/Kuka/kr_210_2.pdf
-    Lib/Kuka/kr16.wrl
-    Lib/Kuka/kr_16.csv
-    Lib/Kuka/kr_16.pdf
-    Lib/Kuka/kr125_3.wrl
-    Lib/Kuka/kr_125.csv
-    Lib/Kuka/kr125_2.pdf
-)
-endif ()
 
 add_custom_target(RobotScripts ALL
     SOURCES ${Robot_Scripts} ${Robot_Resources}
@@ -65,7 +49,6 @@ INSTALL(
     DESTINATION
         ${CMAKE_INSTALL_DATADIR}/Mod/Robot
     PATTERN "Makefile*" EXCLUDE
-    PATTERN "*.pdf" EXCLUDE
     PATTERN "testprog.*" EXCLUDE
 )
 endif()

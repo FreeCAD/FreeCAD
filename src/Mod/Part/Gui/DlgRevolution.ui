@@ -53,7 +53,7 @@
       </size>
      </property>
      <property name="title">
-      <string>Revolution axis</string>
+      <string>Revolution Axis</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
@@ -61,7 +61,7 @@
         <item row="0" column="0">
          <widget class="QLabel" name="label">
           <property name="text">
-           <string>Center X:</string>
+           <string>Center X</string>
           </property>
          </widget>
         </item>
@@ -81,7 +81,7 @@
         <item row="1" column="0">
          <widget class="QLabel" name="label_2">
           <property name="text">
-           <string>Center Y:</string>
+           <string>Center Y</string>
           </property>
          </widget>
         </item>
@@ -101,7 +101,7 @@
         <item row="2" column="0">
          <widget class="QLabel" name="label_3">
           <property name="text">
-           <string>Center Z:</string>
+           <string>Center Z</string>
           </property>
          </widget>
         </item>
@@ -143,10 +143,10 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>Click to set this as axis</string>
+           <string>Sets this as axis</string>
           </property>
           <property name="text">
-           <string>Dir. X:</string>
+           <string>X-Direction</string>
           </property>
          </widget>
         </item>
@@ -184,10 +184,10 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>Click to set this as axis</string>
+           <string>Sets this as axis</string>
           </property>
           <property name="text">
-           <string>Dir. Y:</string>
+           <string>Y-Direction</string>
           </property>
          </widget>
         </item>
@@ -225,7 +225,7 @@
            </size>
           </property>
           <property name="text">
-           <string>Dir. Z:</string>
+           <string>Z-Direction</string>
           </property>
          </widget>
         </item>
@@ -247,7 +247,7 @@
       <item>
        <widget class="QPushButton" name="selectLine">
         <property name="text">
-         <string>Select reference</string>
+         <string>Select Reference</string>
         </property>
        </widget>
       </item>
@@ -278,7 +278,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label_5">
        <property name="text">
-        <string>Angle:</string>
+        <string>Angle</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -312,7 +312,7 @@
    <item row="4" column="3">
     <widget class="QCheckBox" name="checkSymmetric">
      <property name="toolTip">
-      <string>If checked, revolution will extend forwards and backwards by half the angle.</string>
+      <string>Extends the revolution forwards and backwards by half the angle</string>
      </property>
      <property name="text">
       <string>Symmetric angle</string>
@@ -322,10 +322,10 @@
   <item row="5" column="3">
     <widget class="QCheckBox" name="checkSolid">
      <property name="toolTip">
-      <string>If checked, revolving wires will produce solids. If not, revolving a wire yields a shell.</string>
+      <string>Creates a solid. Otherwise it results in a shell.</string>
      </property>
      <property name="text">
-      <string>Create Solid</string>
+      <string>Create solid</string>
      </property>
     </widget>
    </item>

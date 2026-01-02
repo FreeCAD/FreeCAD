@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -24,6 +26,8 @@
 #define ROBOT_TrajectoryCompound_H
 
 #include <App/PropertyLinks.h>
+
+#include <Mod/Robot/RobotGlobal.h>
 
 #include "TrajectoryObject.h"
 

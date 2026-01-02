@@ -21,11 +21,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <qobject.h>
-#endif
+
 
 #include <App/Application.h>
 #include <Gui/MenuManager.h>
@@ -47,20 +45,20 @@ using namespace FemGui;
     qApp->translate("Workbench", "&Materials");
     qApp->translate("Workbench", "Element Geometry");
     qApp->translate("Workbench", "&Element Geometry");
-    qApp->translate("Workbench", "Electrostatic boundary conditions");
-    qApp->translate("Workbench", "&Electrostatic boundary conditions");
-    qApp->translate("Workbench", "Fluid boundary conditions");
-    qApp->translate("Workbench", "&Fluid boundary conditions");
-    qApp->translate("Workbench", "Electromagnetic boundary conditions");
-    qApp->translate("Workbench", "&Electromagnetic boundary conditions");
-    qApp->translate("Workbench", "Geometrical analysis features");
-    qApp->translate("Workbench", "&Geometrical analysis features");
-    qApp->translate("Workbench", "Mechanical boundary conditions and loads");
-    qApp->translate("Workbench", "&Mechanical boundary conditions and loads");
-    qApp->translate("Workbench", "Thermal boundary conditions and loads");
-    qApp->translate("Workbench", "&Thermal boundary conditions and loads");
-    qApp->translate("Workbench", "Analysis features without solver");
-    qApp->translate("Workbench", "&Analysis features without solver");
+    qApp->translate("Workbench", "Electrostatic Boundary Conditions");
+    qApp->translate("Workbench", "&Electrostatic Boundary Conditions");
+    qApp->translate("Workbench", "Fluid Boundary Conditions");
+    qApp->translate("Workbench", "&Fluid Boundary Conditions");
+    qApp->translate("Workbench", "Electromagnetic Boundary Conditions");
+    qApp->translate("Workbench", "&Electromagnetic Boundary Conditions");
+    qApp->translate("Workbench", "Geometrical Analysis Features");
+    qApp->translate("Workbench", "&Geometrical Analysis Features");
+    qApp->translate("Workbench", "Mechanical Boundary Conditions and Loads");
+    qApp->translate("Workbench", "&Mechanical Boundary Conditions and Loads");
+    qApp->translate("Workbench", "Thermal Boundary Conditions and Loads");
+    qApp->translate("Workbench", "&Thermal Boundary Conditions and Loads");
+    qApp->translate("Workbench", "Analysis Features Without Solver");
+    qApp->translate("Workbench", "&Analysis Features Without Solver");
     qApp->translate("Workbench", "Overwrite Constants");
     qApp->translate("Workbench", "&Overwrite Constants");
     //
@@ -72,8 +70,8 @@ using namespace FemGui;
     //
     qApp->translate("Workbench", "Results");
     qApp->translate("Workbench", "&Results");
-    qApp->translate("Workbench", "Filter functions");
-    qApp->translate("Workbench", "&Filter functions");
+    qApp->translate("Workbench", "Filter Functions");
+    qApp->translate("Workbench", "&Filter Functions");
     //
     qApp->translate("Workbench", "Utilities");
 #endif
@@ -114,24 +112,24 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
            << "FEM_ElementFluid1D";
 
     Gui::ToolBarItem* electromag = new Gui::ToolBarItem(root);
-    electromag->setCommand("Electromagnetic boundary conditions");
+    electromag->setCommand("Electromagnetic Boundary Conditions");
     *electromag << "FEM_CompEmConstraints";
 
     Gui::ToolBarItem* fluid = new Gui::ToolBarItem(root);
-    fluid->setCommand("Fluid boundary conditions");
+    fluid->setCommand("Fluid Boundary Conditions");
     *fluid << "FEM_ConstraintInitialFlowVelocity"
            << "FEM_ConstraintInitialPressure"
            << "Separator"
            << "FEM_ConstraintFlowVelocity";
 
     Gui::ToolBarItem* geom = new Gui::ToolBarItem(root);
-    geom->setCommand("Geometrical analysis features");
+    geom->setCommand("Geometrical Analysis Features");
     *geom << "FEM_ConstraintPlaneRotation"
           << "FEM_ConstraintSectionPrint"
           << "FEM_ConstraintTransform";
 
     Gui::ToolBarItem* mech = new Gui::ToolBarItem(root);
-    mech->setCommand("Mechanical boundary conditions and loads");
+    mech->setCommand("Mechanical Boundary Conditions and Loads");
     *mech << "FEM_ConstraintFixed"
           << "FEM_ConstraintRigidBody"
           << "FEM_ConstraintDisplacement"
@@ -145,7 +143,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "FEM_ConstraintSelfWeight";
 
     Gui::ToolBarItem* thermal = new Gui::ToolBarItem(root);
-    thermal->setCommand("Thermal boundary conditions and loads");
+    thermal->setCommand("Thermal Boundary Conditions and Loads");
     *thermal << "FEM_ConstraintInitialTemperature"
              << "Separator"
              << "FEM_ConstraintHeatflux"
@@ -206,15 +204,19 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
              << "FEM_PostFilterCutFunction"
              << "FEM_PostFilterClipRegion"
              << "FEM_PostFilterContours"
-#ifdef FC_USE_VTK_PYTHON
+# ifdef FC_USE_VTK_PYTHON
              << "FEM_PostFilterGlyph"
-#endif
+# endif
              << "FEM_PostFilterDataAlongLine"
              << "FEM_PostFilterLinearizedStresses"
              << "FEM_PostFilterDataAtPoint"
              << "FEM_PostFilterCalculator"
              << "Separator"
-             << "FEM_PostCreateFunctions";
+             << "FEM_PostCreateFunctions"
+# ifdef FC_USE_VTK_PYTHON
+             << "FEM_PostVisualization"
+# endif
+        ;
 #endif
 
     Gui::ToolBarItem* utils = new Gui::ToolBarItem(root);
@@ -247,27 +249,27 @@ Gui::MenuItem* Workbench::setupMenuBar() const
              << "FEM_ElementFluid1D";
 
     Gui::MenuItem* elec = new Gui::MenuItem;
-    elec->setCommand("&Electromagnetic boundary conditions");
+    elec->setCommand("&Electromagnetic Boundary Conditions");
     *elec << "FEM_ConstraintElectrostaticPotential"
           << "FEM_ConstraintCurrentDensity"
           << "FEM_ConstraintMagnetization"
           << "FEM_ConstraintElectricChargeDensity";
 
     Gui::MenuItem* fluid = new Gui::MenuItem;
-    fluid->setCommand("&Fluid boundary conditions");
+    fluid->setCommand("&Fluid Boundary Conditions");
     *fluid << "FEM_ConstraintInitialFlowVelocity"
            << "FEM_ConstraintInitialPressure"
            << "Separator"
            << "FEM_ConstraintFlowVelocity";
 
     Gui::MenuItem* geom = new Gui::MenuItem;
-    geom->setCommand("&Geometrical analysis features");
+    geom->setCommand("&Geometrical Analysis Features");
     *geom << "FEM_ConstraintPlaneRotation"
           << "FEM_ConstraintSectionPrint"
           << "FEM_ConstraintTransform";
 
     Gui::MenuItem* mech = new Gui::MenuItem;
-    mech->setCommand("&Mechanical boundary conditions and loads");
+    mech->setCommand("&Mechanical Boundary Conditions and Loads");
     *mech << "FEM_ConstraintFixed"
           << "FEM_ConstraintRigidBody"
           << "FEM_ConstraintDisplacement"
@@ -281,7 +283,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "FEM_ConstraintSelfWeight";
 
     Gui::MenuItem* thermal = new Gui::MenuItem;
-    thermal->setCommand("&Thermal boundary conditions and loads");
+    thermal->setCommand("&Thermal Boundary Conditions and Loads");
     *thermal << "FEM_ConstraintInitialTemperature"
              << "Separator"
              << "FEM_ConstraintHeatflux"
@@ -352,21 +354,26 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *results << "Separator"
              << "FEM_PostApplyChanges"
              << "FEM_PostPipelineFromResult"
+             << "FEM_PostBranchFilter"
              << "Separator"
              << "FEM_PostFilterWarp"
              << "FEM_PostFilterClipScalar"
              << "FEM_PostFilterCutFunction"
              << "FEM_PostFilterClipRegion"
              << "FEM_PostFilterContours"
-#ifdef FC_USE_VTK_PYTHON
+# ifdef FC_USE_VTK_PYTHON
              << "FEM_PostFilterGlyph"
-#endif
+# endif
              << "FEM_PostFilterDataAlongLine"
              << "FEM_PostFilterLinearizedStresses"
              << "FEM_PostFilterDataAtPoint"
              << "FEM_PostFilterCalculator"
              << "Separator"
-             << "FEM_PostCreateFunctions";
+             << "FEM_PostCreateFunctions"
+# ifdef FC_USE_VTK_PYTHON
+             << "FEM_PostVisualization"
+# endif
+        ;
 #endif
 
     Gui::MenuItem* utils = new Gui::MenuItem;

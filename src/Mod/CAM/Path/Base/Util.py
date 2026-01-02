@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -77,11 +77,11 @@ def getPropertyValueString(obj, prop):
 def setProperty(obj, prop, value):
     """setProperty(obj, prop, value) ... set the property value of obj's property defined by its canonical name."""
     o, attr, name = _getProperty(obj, prop)
-    if not attr is None and type(value) == str:
-        if type(attr) == int:
-            value = int(value, 0)
-        elif type(attr) == bool:
+    if attr is not None and isinstance(value, str):
+        if isinstance(attr, bool):
             value = value.lower() in ["true", "1", "yes", "ok"]
+        elif isinstance(attr, int):
+            value = int(value, 0)
     if o and name:
         setattr(o, name, value)
 
@@ -98,6 +98,10 @@ def isValidBaseObject(obj):
         return False
     if hasattr(obj, "BitBody") and hasattr(obj, "ShapeName"):
         # ToolBit's are not valid base objects
+        return False
+    if hasattr(obj, "ToolBitID"):
+        return False
+    if any(hasattr(ob, "ToolBitID") for ob in getattr(obj, "InListRecursive", [])):
         return False
     if obj.TypeId in NotValidBaseTypeIds:
         Path.Log.debug("%s is blacklisted (%s)" % (obj.Label, obj.TypeId))

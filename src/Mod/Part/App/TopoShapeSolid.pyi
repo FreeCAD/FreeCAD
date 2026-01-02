@@ -1,9 +1,12 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export, constmethod
 from TopoShape import TopoShape
 from Base.Vector import Vector
 from Base.Matrix import Matrix
 from typing import Final, Dict, Tuple, overload
-
 
 @export(
     Twin="TopoShape",
@@ -36,12 +39,12 @@ class TopoShapeSolid(TopoShape):
     Returns the matrix of inertia. It is a symmetrical matrix.
     The coefficients of the matrix are the quadratic moments of
     inertia.
-    
+
      | Ixx Ixy Ixz 0 |
      | Ixy Iyy Iyz 0 |
      | Ixz Iyz Izz 0 |
      | 0   0   0   1 |
-    
+
     The moments of inertia are denoted by Ixx, Iyy, Izz.
     The products of inertia are denoted by Ixy, Ixz, Iyz.
     The matrix of inertia is returned in the central coordinate
@@ -78,7 +81,7 @@ class TopoShapeSolid(TopoShape):
     """
 
     @constmethod
-    def getMomentOfInertia(self, point: Vector, direction: Vector) -> float:
+    def getMomentOfInertia(self, point: Vector, direction: Vector, /) -> float:
         """
         computes the moment of inertia of the material system about the axis A.
         getMomentOfInertia(point,direction) -> Float
@@ -86,7 +89,7 @@ class TopoShapeSolid(TopoShape):
         ...
 
     @constmethod
-    def getRadiusOfGyration(self, point: Vector, direction: Vector) -> float:
+    def getRadiusOfGyration(self, point: Vector, direction: Vector, /) -> float:
         """
         Returns the radius of gyration of the current system about the axis A.
         getRadiusOfGyration(point,direction) -> Float
@@ -95,16 +98,12 @@ class TopoShapeSolid(TopoShape):
 
     @overload
     @constmethod
-    def offsetFaces(
-        self, facesTuple: Tuple[TopoShape, ...], offset: float
-    ) -> TopoShape: ...
-
+    def offsetFaces(self, facesTuple: Tuple[TopoShape, ...], offset: float, /) -> TopoShape: ...
     @overload
     @constmethod
-    def offsetFaces(self, facesDict: Dict[TopoShape, float]) -> TopoShape: ...
-
+    def offsetFaces(self, facesDict: Dict[TopoShape, float], /) -> TopoShape: ...
     @constmethod
-    def offsetFaces(self, *args, **kwargs) -> TopoShape: 
+    def offsetFaces(self, *args, **kwargs) -> TopoShape:
         """
         Extrude single faces of the solid.
         offsetFaces(facesTuple, offset) -> Solid
@@ -114,6 +113,6 @@ class TopoShapeSolid(TopoShape):
         Example:
         solid.offsetFaces((solid.Faces[0],solid.Faces[1]), 1.5)
 
-        solid.offsetFaces({solid.Faces[0]:1.0,solid.Faces[1]:2.0}) 
+        solid.offsetFaces({solid.Faces[0]:1.0,solid.Faces[1]:2.0})
         """
         ...

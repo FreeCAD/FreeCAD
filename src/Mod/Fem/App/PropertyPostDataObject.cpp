@@ -20,9 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <Python.h>
 #include <vtkCompositeDataSet.h>
 #include <vtkMultiBlockDataSet.h>
@@ -32,20 +30,23 @@
 #include <vtkStructuredGrid.h>
 #include <vtkUniformGrid.h>
 #include <vtkUnstructuredGrid.h>
+#include <vtkTable.h>
+#include <vtkXMLTableWriter.h>
 #include <vtkXMLDataSetWriter.h>
 #include <vtkXMLMultiBlockDataWriter.h>
+#include <vtkXMLTableReader.h>
 #include <vtkXMLMultiBlockDataReader.h>
 #include <vtkXMLImageDataReader.h>
 #include <vtkXMLPolyDataReader.h>
 #include <vtkXMLRectilinearGridReader.h>
 #include <vtkXMLStructuredGridReader.h>
 #include <vtkXMLUnstructuredGridReader.h>
-#endif
+
 
 #ifdef FC_USE_VTK_PYTHON
-#include <vtkPythonUtil.h>
+# include <vtkPythonUtil.h>
 #else
-#include <Base/PyObjectBase.h>
+# include <Base/PyObjectBase.h>
 #endif
 
 #include <App/Application.h>
@@ -59,7 +60,7 @@
 
 
 #ifdef _MSC_VER
-#include <zipios++/zipios-config.h>
+# include <zipios++/zipios-config.h>
 #endif
 #include <zipios++/zipoutputstream.h>
 #include <zipios++/zipinputstream.h>
@@ -243,6 +244,9 @@ void PropertyPostDataObject::createDataObjectByExternalType(vtkSmartPointer<vtkD
         case VTK_MULTIPIECE_DATA_SET:
             m_dataObject = vtkSmartPointer<vtkMultiPieceDataSet>::New();
             break;
+        case VTK_TABLE:
+            m_dataObject = vtkSmartPointer<vtkTable>::New();
+            break;
         default:
             throw Base::TypeError("Unsupported VTK data type");
     };
@@ -313,6 +317,9 @@ void PropertyPostDataObject::Save(Base::Writer& writer) const
         case VTK_MULTIBLOCK_DATA_SET:
             extension = "zip";
             break;
+        case VTK_TABLE:
+            extension = ".vtt";
+            break;
         default:
             break;
     };
@@ -382,13 +389,16 @@ void PropertyPostDataObject::SaveDocFile(Base::Writer& writer) const
         xmlWriter = vtkSmartPointer<vtkXMLMultiBlockDataWriter>::New();
         xmlWriter->SetInputDataObject(m_dataObject);
         xmlWriter->SetFileName(datafile.filePath().c_str());
-        xmlWriter->SetDataModeToBinary();
+    }
+    else if (m_dataObject->IsA("vtkTable")) {
+        xmlWriter = vtkSmartPointer<vtkXMLTableWriter>::New();
+        xmlWriter->SetInputDataObject(m_dataObject);
+        xmlWriter->SetFileName(fi.filePath().c_str());
     }
     else {
         xmlWriter = vtkSmartPointer<vtkXMLDataSetWriter>::New();
         xmlWriter->SetInputDataObject(m_dataObject);
         xmlWriter->SetFileName(fi.filePath().c_str());
-        xmlWriter->SetDataModeToBinary();
 
 #ifdef VTK_CELL_ARRAY_V2
         // Looks like an invalid data object that causes a crash with vtk9
@@ -399,6 +409,7 @@ void PropertyPostDataObject::SaveDocFile(Base::Writer& writer) const
         }
 #endif
     }
+    xmlWriter->SetDataModeToBinary();
 
     if (xmlWriter->Write() != 1) {
         // Note: Do NOT throw an exception here because if the tmp. file could
@@ -408,9 +419,11 @@ void PropertyPostDataObject::SaveDocFile(Base::Writer& writer) const
         App::PropertyContainer* father = this->getContainer();
         if (father && father->isDerivedFrom<App::DocumentObject>()) {
             App::DocumentObject* obj = static_cast<App::DocumentObject*>(father);
-            Base::Console().error("Dataset of '%s' cannot be written to vtk file '%s'\n",
-                                  obj->Label.getValue(),
-                                  fi.filePath().c_str());
+            Base::Console().error(
+                "Dataset of '%s' cannot be written to vtk file '%s'\n",
+                obj->Label.getValue(),
+                fi.filePath().c_str()
+            );
         }
         else {
             Base::Console().error("Cannot save vtk file '%s'\n", fi.filePath().c_str());
@@ -481,6 +494,9 @@ void PropertyPostDataObject::RestoreDocFile(Base::Reader& reader)
         else if (extension == "vti") {
             xmlReader = vtkSmartPointer<vtkXMLImageDataReader>::New();
         }
+        else if (extension == "vtt") {
+            xmlReader = vtkSmartPointer<vtkXMLTableReader>::New();
+        }
         else if (extension == "zip") {
 
             // first unzip the file into a datafolder
@@ -534,13 +550,17 @@ void PropertyPostDataObject::RestoreDocFile(Base::Reader& reader)
                 App::PropertyContainer* father = this->getContainer();
                 if (father && father->isDerivedFrom<App::DocumentObject>()) {
                     App::DocumentObject* obj = static_cast<App::DocumentObject*>(father);
-                    Base::Console().error("Dataset file '%s' with data of '%s' seems to be empty\n",
-                                          fi.filePath().c_str(),
-                                          obj->Label.getValue());
+                    Base::Console().error(
+                        "Dataset file '%s' with data of '%s' seems to be empty\n",
+                        fi.filePath().c_str(),
+                        obj->Label.getValue()
+                    );
                 }
                 else {
-                    Base::Console().warning("Loaded Dataset file '%s' seems to be empty\n",
-                                            fi.filePath().c_str());
+                    Base::Console().warning(
+                        "Loaded Dataset file '%s' seems to be empty\n",
+                        fi.filePath().c_str()
+                    );
                 }
             }
             else {
@@ -554,7 +574,8 @@ void PropertyPostDataObject::RestoreDocFile(Base::Reader& reader)
             Base::Console().error(
                 "Dataset file '%s' is of unsupported type: %s. Data not loaded.\n",
                 fi.filePath().c_str(),
-                extension);
+                extension
+            );
         }
     }
 

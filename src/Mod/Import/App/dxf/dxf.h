@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: BSD-3-Clause
+
 // dxf.h
 // Copyright (c) 2009, Dan Heeks
 // This program is released under the BSD license. See the file COPYING for details.
@@ -7,7 +9,7 @@
 #define Included_dxf_h_
 
 #ifdef _MSC_VER
-#pragma warning(disable : 4251)
+# pragma warning(disable : 4251)
 #endif
 
 #include <algorithm>
@@ -38,7 +40,8 @@ using ColorIndex_t = int;  // DXF color index
 class DxfUnits
 {
 public:
-    using eDxfUnits_t = enum {
+    using eDxfUnits_t = enum
+    {
         eUnspecified = 0,  // Unspecified (No units)
         eInches,
         eFeet,
@@ -164,7 +167,7 @@ struct SplineDataOut
 
 struct LWPolyDataOut
 {
-    double nVert;
+    int nVert;
     int Flag;
     double Width;
     double Elev;
@@ -176,6 +179,23 @@ struct LWPolyDataOut
     point3D Extr;
 };
 
+// Statistics reporting structure
+struct DxfImportStats
+{
+    double importTimeSeconds = 0.0;
+    std::string dxfVersion;
+    std::string dxfEncoding;
+    std::string scalingSource;
+    std::string fileUnits;
+    double finalScalingFactor = 1.0;
+    std::map<std::string, int> entityCounts;
+    std::map<std::string, std::string> importSettings;
+    std::map<std::string, std::vector<std::pair<int, std::string>>> unsupportedFeatures;
+    std::map<std::string, int> systemBlockCounts;
+
+    int totalEntitiesCreated = 0;
+};
+
 
 // "using" for enums is not supported by all platforms
 // https://stackoverflow.com/questions/41167119/how-to-fix-a-wsubobject-linkage-warning
@@ -185,6 +205,7 @@ enum eDXFGroupCode_t
     ePrimaryText = 1,
     eName = 2,
     eExtraText = 3,
+    eHandle = 5,
     eLinetypeName = 6,
     eTextStyleName = 7,
     eLayerName = 8,
@@ -269,25 +290,31 @@ protected:
         return Base::Vector3d(coordinatesXYZ[0], coordinatesXYZ[1], coordinatesXYZ[2]);
     }
 
-    void putLine(const Base::Vector3d& start,
-                 const Base::Vector3d& end,
-                 std::ostringstream* outStream,
-                 const std::string& handle,
-                 const std::string& ownerHandle);
-    void putText(const char* text,
-                 const Base::Vector3d& location1,
-                 const Base::Vector3d& location2,
-                 double height,
-                 int horizJust,
-                 std::ostringstream* outStream,
-                 const std::string& handle,
-                 const std::string& ownerHandle);
-    void putArrow(Base::Vector3d& arrowPos,
-                  Base::Vector3d& barb1Pos,
-                  Base::Vector3d& barb2Pos,
-                  std::ostringstream* outStream,
-                  const std::string& handle,
-                  const std::string& ownerHandle);
+    void putLine(
+        const Base::Vector3d& start,
+        const Base::Vector3d& end,
+        std::ostringstream* outStream,
+        const std::string& handle,
+        const std::string& ownerHandle
+    );
+    void putText(
+        const char* text,
+        const Base::Vector3d& location1,
+        const Base::Vector3d& location2,
+        double height,
+        int horizJust,
+        std::ostringstream* outStream,
+        const std::string& handle,
+        const std::string& ownerHandle
+    );
+    void putArrow(
+        Base::Vector3d& arrowPos,
+        Base::Vector3d& barb1Pos,
+        Base::Vector3d& barb2Pos,
+        std::ostringstream* outStream,
+        const std::string& handle,
+        const std::string& ownerHandle
+    );
 
     //! copy boiler plate file
     std::string getPlateFile(std::string fileSpec);
@@ -357,13 +384,15 @@ public:
     void writeLine(const double* start, const double* end);
     void writePoint(const double*);
     void writeArc(const double* start, const double* end, const double* center, bool dir);
-    void writeEllipse(const double* center,
-                      double major_radius,
-                      double minor_radius,
-                      double rotation,
-                      double start_angle,
-                      double end_angle,
-                      bool endIsCW);
+    void writeEllipse(
+        const double* center,
+        double major_radius,
+        double minor_radius,
+        double rotation,
+        double start_angle,
+        double end_angle,
+        bool endIsCW
+    );
     void writeCircle(const double* center, double radius);
     void writeSpline(const SplineDataOut& sd);
     void writeLWPolyLine(const LWPolyDataOut& pd);
@@ -371,53 +400,71 @@ public:
     // NOLINTNEXTLINE(readability/nolint)
     // NOLINTNEXTLINE(readability-identifier-length)
     void writeVertex(double x, double y, double z);
-    void writeText(const char* text,
-                   const double* location1,
-                   const double* location2,
-                   double height,
-                   int horizJust);
-    void writeLinearDim(const double* textMidPoint,
-                        const double* lineDefPoint,
-                        const double* extLine1,
-                        const double* extLine2,
-                        const char* dimText,
-                        int type);
-    void writeLinearDimBlock(const double* textMidPoint,
-                             const double* lineDefPoint,
-                             const double* extLine1,
-                             const double* extLine2,
-                             const char* dimText,
-                             int type);
-    void writeAngularDim(const double* textMidPoint,
-                         const double* lineDefPoint,
-                         const double* startExt1,
-                         const double* endExt1,
-                         const double* startExt2,
-                         const double* endExt2,
-                         const char* dimText);
-    void writeAngularDimBlock(const double* textMidPoint,
-                              const double* lineDefPoint,
-                              const double* startExt1,
-                              const double* endExt1,
-                              const double* startExt2,
-                              const double* endExt2,
-                              const char* dimText);
-    void writeRadialDim(const double* centerPoint,
-                        const double* textMidPoint,
-                        const double* arcPoint,
-                        const char* dimText);
-    void writeRadialDimBlock(const double* centerPoint,
-                             const double* textMidPoint,
-                             const double* arcPoint,
-                             const char* dimText);
-    void writeDiametricDim(const double* textMidPoint,
-                           const double* arcPoint1,
-                           const double* arcPoint2,
-                           const char* dimText);
-    void writeDiametricDimBlock(const double* textMidPoint,
-                                const double* arcPoint1,
-                                const double* arcPoint2,
-                                const char* dimText);
+    void writeText(
+        const char* text,
+        const double* location1,
+        const double* location2,
+        double height,
+        int horizJust
+    );
+    void writeLinearDim(
+        const double* textMidPoint,
+        const double* lineDefPoint,
+        const double* extLine1,
+        const double* extLine2,
+        const char* dimText,
+        int type
+    );
+    void writeLinearDimBlock(
+        const double* textMidPoint,
+        const double* lineDefPoint,
+        const double* extLine1,
+        const double* extLine2,
+        const char* dimText,
+        int type
+    );
+    void writeAngularDim(
+        const double* textMidPoint,
+        const double* lineDefPoint,
+        const double* startExt1,
+        const double* endExt1,
+        const double* startExt2,
+        const double* endExt2,
+        const char* dimText
+    );
+    void writeAngularDimBlock(
+        const double* textMidPoint,
+        const double* lineDefPoint,
+        const double* startExt1,
+        const double* endExt1,
+        const double* startExt2,
+        const double* endExt2,
+        const char* dimText
+    );
+    void writeRadialDim(
+        const double* centerPoint,
+        const double* textMidPoint,
+        const double* arcPoint,
+        const char* dimText
+    );
+    void writeRadialDimBlock(
+        const double* centerPoint,
+        const double* textMidPoint,
+        const double* arcPoint,
+        const char* dimText
+    );
+    void writeDiametricDim(
+        const double* textMidPoint,
+        const double* arcPoint1,
+        const double* arcPoint2,
+        const char* dimText
+    );
+    void writeDiametricDimBlock(
+        const double* textMidPoint,
+        const double* arcPoint1,
+        const double* arcPoint2,
+        const char* dimText
+    );
 
     void writeDimBlockPreamble();
     void writeBlockTrailer();
@@ -447,6 +494,9 @@ private:
     bool m_not_eof = true;
     int m_line = 0;
     bool m_repeat_last_record = false;
+    int m_current_entity_line_number = 0;
+    std::string m_current_entity_name;
+    std::string m_current_entity_handle;
 
     // The scaling from DXF units to millimetres.
     // This does not include the dxfScaling option
@@ -455,6 +505,7 @@ private:
     double m_unitScalingFactor = 0.0;
 
 protected:
+    DxfImportStats m_stats;
     // An additional scaling factor which can be modified before readDXF is called, and will be
     // incorporated into m_unitScalingFactor.
     void SetAdditionalScaling(double scaling)
@@ -483,7 +534,8 @@ protected:
     // (dxfGetOriginalColors)
     bool m_preserveColors = true;
     // Control object simplification (preserve types and individual identities)
-    using eEntityMergeType_t = enum {
+    using eEntityMergeType_t = enum
+    {
         // Merge shapes (lines, arcs, circles, etc) into a single compound object when attributes
         // match
         MergeShapes,
@@ -607,18 +659,22 @@ private:
     bool ReadLwPolyLine();
     bool ReadPolyLine();
 
-    void OnReadArc(double start_angle,
-                   double end_angle,
-                   double radius,
-                   const Base::Vector3d& center,
-                   double z_extrusion_dir,
-                   bool hidden);
+    void OnReadArc(
+        double start_angle,
+        double end_angle,
+        double radius,
+        const Base::Vector3d& center,
+        double z_extrusion_dir,
+        bool hidden
+    );
     void OnReadCircle(const Base::Vector3d& center, double radius, bool hidden);
-    void OnReadEllipse(const Base::Vector3d& center,
-                       const Base::Vector3d& majorAxisEnd,
-                       double ratio,
-                       double start_angle,
-                       double end_angle);
+    void OnReadEllipse(
+        const Base::Vector3d& center,
+        const Base::Vector3d& majorAxisEnd,
+        double ratio,
+        double start_angle,
+        double end_angle
+    );
     bool ReadInsert();
     bool ReadDimension();
     bool ReadUnknownEntity();
@@ -630,10 +686,12 @@ private:
     void Setup3DDirectionAttribute(eDXFGroupCode_t x_record_type, Base::Vector3d& destination);
     void SetupScaledDoubleAttribute(eDXFGroupCode_t record_type, double& destination);
     void SetupScaledDoubleIntoList(eDXFGroupCode_t record_type, std::list<double>& destination);
-    void Setup3DCoordinatesIntoLists(eDXFGroupCode_t x_record_type,
-                                     std::list<double>& x_destination,
-                                     std::list<double>& y_destination,
-                                     std::list<double>& z_destination);
+    void Setup3DCoordinatesIntoLists(
+        eDXFGroupCode_t x_record_type,
+        std::list<double>& x_destination,
+        std::list<double>& y_destination,
+        std::list<double>& z_destination
+    );
     void SetupStringAttribute(eDXFGroupCode_t record_type, std::string& destination);
     std::map<int, std::pair<void (*)(CDxfRead*, void*), void*>> m_coordinate_attributes;
     static void ProcessScaledDouble(CDxfRead* object, void* target);
@@ -700,7 +758,6 @@ protected:
     void UnsupportedFeature(const char* format, args&&... argValues);
 
 private:
-    std::map<std::string, std::pair<int, int>> m_unsupportedFeaturesNoted;
     std::string m_CodePage;  // Code Page name from $DWGCODEPAGE or null if none/not read yet
     // The following was going to be python's canonical name for the encoding, but this is (a) not
     // easily found and (b) does not speed up finding the encoding object.
@@ -846,8 +903,11 @@ public:
     {
         return m_fail;
     }
-    void
-    DoRead(bool ignore_errors = false);  // this reads the file and calls the following functions
+    void setImportTime(double seconds)
+    {
+        m_stats.importTimeSeconds = seconds;
+    }
+    void DoRead(bool ignore_errors = false);  // this reads the file and calls the following functions
     virtual void StartImport()
     {}
     virtual void FinishImport()
@@ -874,46 +934,53 @@ public:
     {
         return SkipBlockContents();
     }
-    virtual void
-    OnReadLine(const Base::Vector3d& /*start*/, const Base::Vector3d& /*end*/, bool /*hidden*/)
+    virtual void OnReadLine(const Base::Vector3d& /*start*/, const Base::Vector3d& /*end*/, bool /*hidden*/)
     {}
     virtual void OnReadPoint(const Base::Vector3d& /*start*/)
     {}
-    virtual void OnReadText(const Base::Vector3d& /*point*/,
-                            const double /*height*/,
-                            const std::string& /*text*/,
-                            const double /*rotation*/)
+    virtual void OnReadText(
+        const Base::Vector3d& /*point*/,
+        const double /*height*/,
+        const std::string& /*text*/,
+        const double /*rotation*/
+    )
     {}
-    virtual void OnReadArc(const Base::Vector3d& /*start*/,
-                           const Base::Vector3d& /*end*/,
-                           const Base::Vector3d& /*center*/,
-                           bool /*dir*/,
-                           bool /*hidden*/)
+    virtual void OnReadArc(
+        const Base::Vector3d& /*start*/,
+        const Base::Vector3d& /*end*/,
+        const Base::Vector3d& /*center*/,
+        bool /*dir*/,
+        bool /*hidden*/
+    )
     {}
-    virtual void OnReadCircle(const Base::Vector3d& /*start*/,
-                              const Base::Vector3d& /*center*/,
-                              bool /*dir*/,
-                              bool /*hidden*/)
+    virtual void OnReadCircle(const Base::Vector3d& /*start*/, const Base::Vector3d& /*center*/, bool /*dir*/, bool /*hidden*/)
     {}
-    virtual void OnReadEllipse(const Base::Vector3d& /*center*/,
-                               double /*major_radius*/,
-                               double /*minor_radius*/,
-                               double /*rotation*/,
-                               double /*start_angle*/,
-                               double /*end_angle*/,
-                               bool /*dir*/)
+    virtual void OnReadEllipse(
+        const Base::Vector3d& /*center*/,
+        double /*major_radius*/,
+        double /*minor_radius*/,
+        double /*rotation*/,
+        double /*start_angle*/,
+        double /*end_angle*/,
+        bool /*dir*/
+    )
     {}
     virtual void OnReadSpline(struct SplineData& /*sd*/)
     {}
-    virtual void OnReadInsert(const Base::Vector3d& /*point*/,
-                              const Base::Vector3d& /*scale*/,
-                              const std::string& /*name*/,
-                              double /*rotation*/)
+    virtual void OnReadInsert(
+        const Base::Vector3d& /*point*/,
+        const Base::Vector3d& /*scale*/,
+        const std::string& /*name*/,
+        double /*rotation*/
+    )
     {}
-    virtual void OnReadDimension(const Base::Vector3d& /*start*/,
-                                 const Base::Vector3d& /*end*/,
-                                 const Base::Vector3d& /*point*/,
-                                 double /*rotation*/)
+    virtual void OnReadDimension(
+        const Base::Vector3d& /*start*/,
+        const Base::Vector3d& /*end*/,
+        const Base::Vector3d& /*point*/,
+        int /*dimensionType*/,
+        double /*rotation*/
+    )
     {}
     virtual void OnReadPolyline(std::list<VertexInfo>& /*vertices*/, int /*flags*/)
     {}

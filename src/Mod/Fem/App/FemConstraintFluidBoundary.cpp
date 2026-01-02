@@ -21,11 +21,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <Precision.hxx>
-#endif
+
 
 #include <Base/Console.h>
 
@@ -160,8 +158,7 @@ void ConstraintFluidBoundary::onChanged(const App::Property* prop)
             if (Reversed.getValue() && (DirectionVector.getValue() == naturalDirectionVector)) {
                 DirectionVector.setValue(-naturalDirectionVector);
             }
-            else if (!Reversed.getValue()
-                     && (DirectionVector.getValue() != naturalDirectionVector)) {
+            else if (!Reversed.getValue() && (DirectionVector.getValue() != naturalDirectionVector)) {
                 DirectionVector.setValue(naturalDirectionVector);
             }
         }

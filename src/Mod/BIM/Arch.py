@@ -47,15 +47,16 @@ wall = Arch.makeWall(length=5000, width=200, height=3000)  # mm units
 wall.recompute()
 ```
 """
-__title__  = "FreeCAD Arch API"
+__title__ = "FreeCAD Arch API"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecad.org"
+__url__ = "https://www.freecad.org"
 
 import FreeCAD
 from typing import Optional
 
 if FreeCAD.GuiUp:
     import FreeCADGui
+
     FreeCADGui.updateLocale()
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
@@ -66,6 +67,7 @@ translate = FreeCAD.Qt.translate
 # simply importing the Arch module, as if they were part of this module.
 from ArchCommands import *
 from ArchWindowPresets import *
+from ArchSql import *
 
 # TODO: migrate this one
 # Currently makeStructure, makeStructuralSystem need migration
@@ -73,6 +75,7 @@ from ArchStructure import *
 
 
 # make functions
+
 
 def makeAxis(num=1, size=1000, name=None):
     """
@@ -93,6 +96,7 @@ def makeAxis(num=1, size=1000, name=None):
         The created axis object.
     """
     import ArchAxis
+
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
@@ -133,6 +137,7 @@ def makeAxisSystem(axes, name=None):
         The created axis system object.
     """
     import ArchAxisSystem
+
     if not isinstance(axes, list):
         axes = [axes]
     obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython", "AxisSystem")
@@ -164,8 +169,9 @@ def makeBuildingPart(objectslist=None, baseobj=None, name=None):
         The created building part object.
     """
     import ArchBuildingPart
+
     obj = FreeCAD.ActiveDocument.addObject("App::GeometryPython", "BuildingPart")
-    #obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","BuildingPart")
+    # obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","BuildingPart")
     obj.Label = name if name else translate("Arch", "BuildingPart")
     ArchBuildingPart.BuildingPart(obj)
     obj.IfcType = "Building Element Part"
@@ -223,6 +229,7 @@ def makeBuilding(objectslist=None, baseobj=None, name=None):
         The created building object.
     """
     import ArchBuildingPart
+
     obj = makeBuildingPart(objectslist)
     obj.Label = name if name else translate("Arch", "Building")
     obj.IfcType = "Building"
@@ -285,6 +292,7 @@ def convertFloors(floor=None):
     """
     import Draft
     import ArchBuildingPart
+
     todel = []
     if floor:
         objset = [floor]
@@ -309,9 +317,9 @@ def convertFloors(floor=None):
                 if hasattr(parent, "Group"):
                     if obj in parent.Group:
                         parent.addObject(nobj)
-                        #g = parent.Group
-                        #g.append(nobj)
-                        #parent.Group = g
+                        # g = parent.Group
+                        # g.append(nobj)
+                        # parent.Group = g
             todel.append(obj.Name)
             if obj.ViewObject:
                 # some bug makes this trigger even efter the object has been deleted...
@@ -321,6 +329,7 @@ def convertFloors(floor=None):
             nobj.Label = label
     for n in todel:
         from draftutils import todo
+
         todo.ToDo.delay(FreeCAD.ActiveDocument.removeObject, n)
 
 
@@ -425,6 +434,7 @@ def makeFence(section, post, path):
     fence.Path = path
     if FreeCAD.GuiUp:
         import ArchFence
+
         ArchFence.hide(section)
         ArchFence.hide(post)
         ArchFence.hide(path)
@@ -794,12 +804,17 @@ def makePipeConnector(pipes, radius=0, name=None):
 
     # Initialize all relevant properties
     pipeConnector.Pipes = pipes
-    pipeConnector.Radius = radius if radius else pipes[0].Diameter
+    if radius:
+        pipeConnector.Radius = radius
+    elif pipes[0].ProfileType == "Circle":
+        pipeConnector.Radius = pipes[0].Diameter
+    else:
+        pipeConnector.Radius = max(pipes[0].Height, pipes[0].Width)
 
     return pipeConnector
 
 
-def makeProfile(profile=[0, 'REC', 'REC100x100', 'R', 100, 100]):
+def makeProfile(profile=[0, "REC", "REC100x100", "R", 100, 100]):
     """
     Creates a profile object based on the given profile data.
 
@@ -831,6 +846,7 @@ def makeProfile(profile=[0, 'REC', 'REC100x100', 'R', 100, 100]):
         The created profile object.
     """
     import ArchProfile
+
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
@@ -853,6 +869,8 @@ def makeProfile(profile=[0, 'REC', 'REC100x100', 'R', 100, 100]):
             ArchProfile._ProfileL(obj, profile)
         case "T":
             ArchProfile._ProfileT(obj, profile)
+        case "TSLOT":
+            ArchProfile._ProfileTSLOT(obj, profile)
         case _:
             print("Profile not supported")
 
@@ -903,13 +921,14 @@ def makeProject(sites=None, name=None):
 
     return project
 
+
 def makeRebar(
     baseobj: Optional[FreeCAD.DocumentObject] = None,
     sketch: Optional[FreeCAD.DocumentObject] = None,
     diameter: Optional[float] = None,
     amount: int = 1,
     offset: Optional[float] = None,
-    name: Optional[str] = None
+    name: Optional[str] = None,
 ) -> Optional[FreeCAD.DocumentObject]:
     """
     Creates a reinforcement bar (rebar) object.
@@ -1064,19 +1083,22 @@ def makeReference(filepath=None, partname=None, name=None):
         reference.Part = partname
 
     import Draft
+
     Draft.select(reference)
 
     return reference
 
 
-def makeRoof(baseobj=None,
-             facenr=0,
-             angles=[45.0],
-             run=[250.0],
-             idrel=[-1],
-             thickness=[50.0],
-             overhang=[100.0],
-             name=None):
+def makeRoof(
+    baseobj=None,
+    facenr=0,
+    angles=[45.0],
+    run=[250.0],
+    idrel=[-1],
+    thickness=[50.0],
+    overhang=[100.0],
+    name=None,
+):
     """
     Creates a roof object based on a closed wire or an object.
 
@@ -1132,7 +1154,7 @@ def makeRoof(baseobj=None,
                 if FreeCAD.GuiUp:
                     roof.Base.ViewObject.hide()
             else:
-                if (roof.Base.Shape.Faces and roof.Face):
+                if roof.Base.Shape.Faces and roof.Face:
                     baseWire = roof.Base.Shape.Faces[roof.Face - 1].Wires[0]
                     if FreeCAD.GuiUp:
                         roof.Base.ViewObject.hide()
@@ -1146,11 +1168,11 @@ def makeRoof(baseobj=None,
                     roof.Base.ViewObject.hide()
                 edges = Part.__sortEdges__(baseWire.Edges)
                 ln = len(edges)
-                roof.Angles    = ArchRoof.adjust_list_len(angles, ln, angles[0])
-                roof.Runs      = ArchRoof.adjust_list_len(run, ln, run[0])
-                roof.IdRel     = ArchRoof.adjust_list_len(idrel, ln, idrel[0])
+                roof.Angles = ArchRoof.adjust_list_len(angles, ln, angles[0])
+                roof.Runs = ArchRoof.adjust_list_len(run, ln, run[0])
+                roof.IdRel = ArchRoof.adjust_list_len(idrel, ln, idrel[0])
                 roof.Thickness = ArchRoof.adjust_list_len(thickness, ln, thickness[0])
-                roof.Overhang  = ArchRoof.adjust_list_len(overhang, ln, overhang[0])
+                roof.Overhang = ArchRoof.adjust_list_len(overhang, ln, overhang[0])
 
     roof.Face = facenr
 
@@ -1253,6 +1275,7 @@ def makeSite(objectslist=None, baseobj=None, name=None):
         site.Group = objectslist
     if baseobj:
         import Part
+
         if isinstance(baseobj, Part.Shape):
             site.Shape = baseobj
         else:
@@ -1322,12 +1345,13 @@ def makeSpace(objects=None, baseobj=None, name=None):
         # object will determine the type of the set.
         # Input to this function can come into three different formats. First convert it
         # to a common format: [ (<Part::Feature>, ["Face1", ...]), ... ]
-        if (hasattr(objects[0], "isDerivedFrom") and
-                objects[0].isDerivedFrom("Gui::SelectionObject")):
+        if hasattr(objects[0], "isDerivedFrom") and objects[0].isDerivedFrom(
+            "Gui::SelectionObject"
+        ):
             # Selection set: convert to common format
             # [<SelectionObject>, ...]
             objects = [(obj.Object, obj.SubElementNames) for obj in objects]
-        elif (isinstance(objects[0], tuple) or isinstance(objects[0], list)):
+        elif isinstance(objects[0], tuple) or isinstance(objects[0], list):
             # Tuple or list of object with subobjects: pass unmodified
             # [ (<Part::Feature>, ["Face1", ...]), ... ]
             pass
@@ -1351,6 +1375,7 @@ def makeSpace(objects=None, baseobj=None, name=None):
         else:
             space.Proxy.addSubobjects(space, boundaries)
     return space
+
 
 def addSpaceBoundaries(space, subobjects):
     """Adds the given subobjects as defining boundaries of the given space.
@@ -1377,8 +1402,10 @@ def addSpaceBoundaries(space, subobjects):
             subobjects = [(obj, ("Face1", "Face2", "Face3", "Face4"))]
     """
     import Draft
+
     if Draft.getType(space) == "Space":
         space.Proxy.addSubobjects(space, subobjects)
+
 
 def removeSpaceBoundaries(space, subobjects):
     """Remove the given subobjects as defining boundaries of the given space.
@@ -1405,8 +1432,10 @@ def removeSpaceBoundaries(space, subobjects):
             subobjects = [(obj, ("Face1", "Face2", "Face3", "Face4"))]
     """
     import Draft
+
     if Draft.getType(space) == "Space":
         space.Proxy.removeSubobjects(space, subobjects)
+
 
 def makeStairs(baseobj=None, length=None, width=None, height=None, steps=None, name=None):
     """
@@ -1433,6 +1462,7 @@ def makeStairs(baseobj=None, length=None, width=None, height=None, steps=None, n
         The created stairs object.
     """
     import ArchStairs
+
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
@@ -1442,8 +1472,7 @@ def makeStairs(baseobj=None, length=None, width=None, height=None, steps=None, n
     label = name if name else translate("Arch", "Stairs")
 
     def setProperty(obj, length, width, height, steps):
-        """setProperty(obj,length,width,height,steps): sets up the basic properties for this stair
-        """
+        """setProperty(obj,length,width,height,steps): sets up the basic properties for this stair"""
         obj.Length = length if length else params.get_param_arch("StairsLength")
         obj.Width = width if width else params.get_param_arch("StairsWidth")
         obj.Height = height if height else params.get_param_arch("StairsHeight")
@@ -1483,12 +1512,29 @@ def makeStairs(baseobj=None, length=None, width=None, height=None, steps=None, n
             else:
                 stepsI = 20
             setProperty(stairs[i], None, width, height, stepsI)
-            if i > 1:
+
+            if lenSelection > 1:  # More than 1 segment
+                # All semgments in a complex stairs moved together by default
+                # regardless MoveWithHost setting in system setting
+                stair.MoveWithHost = True
+
+            # All segment goes to Additions (rather than previously 1st segment
+            # went to Base) - for consistent in MoveWithHost behaviour
+            if i > 0:
                 additions.append(stairs[i])
-                stairs[i].LastSegment = stairs[i - 1]
-            else:
-                if len(stairs) > 1: # i.e. length >1, have a 'master' staircase created
-                    stairs[0].Base = stairs[1]
+                if i > 1:
+                    stairs[i].LastSegment = stairs[i - 1]
+            # else:
+            # Below made '1st segment' of a complex stairs went to Base
+            # Remarked below out, 2025.8.31.
+            # Seems no other Arch object create an Arch object as its Base
+            # and use a 'master' Arch(Stairs) object like Stairs.  Base is
+            # not moved together with host upon onChanged(), unlike
+            # behaviour in objects of Additions.
+            #
+            # if len(stairs) > 1: # i.e. length >1, have a 'master' staircase created
+            #    stairs[0].Base = stairs[1]
+
             i += 1
         if lenSelection > 1:
             stairs[0].Additions = additions
@@ -1502,6 +1548,8 @@ def makeStairs(baseobj=None, length=None, width=None, height=None, steps=None, n
         if baseobj:
             for stair in stairs:
                 ArchStairs._ViewProviderStairs(stair.ViewObject)
+            for bo in baseobj:
+                bo.ViewObject.hide()
         else:
             ArchStairs._ViewProviderStairs(obj.ViewObject)
     if stairs:
@@ -1528,6 +1576,7 @@ def makeRailing(stairs):
     -------
     None
     """
+
     def makeRailingLorR(stairs, side="L"):
         """makeRailingLorR(stairs,side="L"): Creates a railing on the given side of the stairs, L or
         R"""
@@ -1542,9 +1591,15 @@ def makeRailing(stairs):
                 stairRailingLR = "RailingRight"
             if outlineLR or outlineLRAll:
                 lrRail = makePipe(
-                    baseobj=None, diameter=0, length=0, placement=None,
-                    name=translate("Arch", "Railing")
+                    baseobj=None,
+                    diameter=0,
+                    length=0,
+                    placement=None,
+                    name=translate("Arch", "Railing"),
                 )
+                # All semgments in a complex stairs moved together by default
+                # regardless Move With Host setting in system setting
+                lrRail.MoveWithHost = True
                 if outlineLRAll:
                     setattr(stair, stairRailingLR, lrRail)
                     break
@@ -1609,8 +1664,14 @@ def makeTruss(baseobj=None, name=None):
 
 
 def makeWall(
-        baseobj=None, height=None, length=None, width=None, align=None, offset=None,
-        face=None, name=None
+    baseobj=None,
+    height=None,
+    length=None,
+    width=None,
+    align=None,
+    offset=None,
+    face=None,
+    name=None,
 ):
     """Create a wall based on a given object, and returns the generated wall.
 
@@ -1663,7 +1724,7 @@ def makeWall(
 
     # Initialize all relevant properties
     if baseobj:
-        if hasattr(baseobj, 'Shape') or baseobj.isDerivedFrom("Mesh::Feature"):
+        if hasattr(baseobj, "Shape") or baseobj.isDerivedFrom("Mesh::Feature"):
             wall.Base = baseobj
         else:
             FreeCAD.Console.PrintWarning(
@@ -1686,7 +1747,7 @@ def makeWall(
     return wall
 
 
-def joinWalls(walls, delete=False):
+def joinWalls(walls, delete=False, deletebase=False):
     """Join the given list of walls into one sketch-based wall.
 
     Take the first wall in the list, and adds on the other walls in the list.
@@ -1702,6 +1763,9 @@ def joinWalls(walls, delete=False):
         be based off a base object.
     delete : bool, optional
         If True, deletes the other walls in the list. Defaults to False.
+    deletebase : bool, optional
+        If True, and delete is True, the base of the other walls is also deleted
+        Defaults to False.
 
     Returns
     -------
@@ -1711,6 +1775,7 @@ def joinWalls(walls, delete=False):
     import Part
     import Draft
     import ArchWall
+
     if not walls:
         return None
     if not isinstance(walls, list):
@@ -1728,6 +1793,7 @@ def joinWalls(walls, delete=False):
         else:
             try:
                 import ArchSketchObject
+
                 newSk = ArchSketchObject.makeArchSketch()
             except:
                 if Draft.getType(base.Base) != "Sketcher::SketchObject":
@@ -1740,14 +1806,39 @@ def joinWalls(walls, delete=False):
             else:
                 sk = base.Base
     for w in walls:
-        if w.Base:
-            if not w.Base.Shape.Faces:
-                for e in w.Base.Shape.Edges:
-                    l = e.Curve
-                    if isinstance(l, Part.Line):
-                        l = Part.LineSegment(e.Vertexes[0].Point, e.Vertexes[-1].Point)
-                    sk.addGeometry(l)
-                    deleteList.append(w.Name)
+        if w.Base and not w.Base.Shape.Faces:
+            for hostedObj in w.Proxy.getHosts(w):
+                if hasattr(hostedObj, "Host"):
+                    hostedObj.Host = base
+                else:
+                    tmp = hostedObj.Hosts
+                    if delete:
+                        tmp.remove(w)
+                    if not base in tmp:
+                        tmp.append(base)
+                    hostedObj.Hosts = tmp
+            tmp = []
+            for add in w.Additions:
+                if not add in base.Additions:
+                    tmp.append(add)
+            if delete:
+                w.Additions = None
+            base.Additions += tmp
+            tmp = []
+            for sub in w.Subtractions:
+                if not sub in base.Subtractions:
+                    tmp.append(sub)
+            if delete:
+                w.Subtractions = None
+            base.Subtractions += tmp
+            for e in w.Base.Shape.Edges:
+                l = e.Curve
+                if isinstance(l, Part.Line):
+                    l = Part.LineSegment(e.Vertexes[0].Point, e.Vertexes[-1].Point)
+                sk.addGeometry(l)
+                deleteList.append(w.Name)
+                if deletebase:
+                    deleteList.append(w.Base.Name)
     if delete:
         for n in deleteList:
             FreeCAD.ActiveDocument.removeObject(n)
@@ -1757,32 +1848,230 @@ def joinWalls(walls, delete=False):
     return base
 
 
-def makeWindow(baseobj=None, width=None, height=None, parts=None, name=None):
+def makeWindow(
+    baseobj: Optional[FreeCAD.DocumentObject] = None,
+    width: Optional[float] = None,
+    height: Optional[float] = None,
+    parts: Optional[list[str]] = None,
+    name: Optional[str] = None,
+) -> FreeCAD.DocumentObject:
     """
-    Creates a window object based on the given base object.
+    Creates an Arch Window object, which can represent either a window or a door.
+
+    The created object can be based on a 2D profile (e.g., a Sketch), have its
+    dimensions set directly, or be defined by custom components. It can be
+    inserted into host objects like Walls, creating openings. The IfcType of
+    the object can be set to "Window" or "Door" accordingly (presets often
+    handle this automatically).
 
     Parameters
     ----------
-    baseobj : Draft.Wire or Sketcher.Sketch, optional
-        The base object for the window. It should be a well-formed, closed
-        Draft.Wire or Sketcher.Sketch object. Defaults to None.
+    baseobj : FreeCAD.DocumentObject, optional
+        The base object for the window/door.
+        If `baseobj` is an existing `Arch.Window` (or Door), it will be cloned.
+        If `baseobj` is a 2D object with wires (e.g., `Sketcher::SketchObject`,
+        `Draft.Wire`), these wires are used to define the geometry.
+        If `parts` is None, default components are generated from `baseobj.Shape.Wires`:
+        - If one closed wire: `["Default", "Frame", "Wire0", "1", "0"]` (or "Solid panel").
+        - If multiple closed wires (e.g., Wire0 outer, Wire1 inner):
+          `["Default", "Frame", "Wire0,Wire1", "1", "0"]` (Wire1 cuts Wire0).
+        The `Normal` direction is derived from `baseobj.Placement`.
+        Defaults to None.
     width : float, optional
-        The width of the window. Defaults to None.
+        The total width of the window/door.
+        If `baseobj` is None, this value is used by `ensureBase()` on first
+        recompute to create a default sketch with a "Width" constraint.
+        If `baseobj` is a sketch with a "Width" named constraint, setting
+        `window_or_door.Width` will drive this sketch constraint. `makeWindow` itself
+        does not initially set the object's `Width` *from* a sketch's constraint.
+        Defaults to None (or an Arch preference value if `baseobj` is None).
     height : float, optional
-        The height of the window. Defaults to None.
-    parts : list, optional
-        The parts of the window. Defaults to None.
+        The total height of the window/door.
+        If `baseobj` is None, this value is used by `ensureBase()` on first
+        recompute to create a default sketch with a "Height" constraint.
+        If `baseobj` is a sketch with a "Height" named constraint, setting
+        `window_or_door.Height` will drive this sketch constraint. `makeWindow` itself
+        does not initially set the object's `Height` *from* a sketch's constraint.
+        Defaults to None (or an Arch preference value if `baseobj` is None).
+    parts : list[str], optional
+        A list defining custom components for the window/door. The list is flat, with
+        every 5 elements describing one component:
+        `["Name1", "Type1", "WiresStr1", "ThickStr1", "OffsetStr1", ...]`
+        - `Name`: User-defined name (e.g., "OuterFrame").
+        - `Type`: Component type (e.g., "Frame", "Glass panel", "Solid panel").
+          See `ArchWindow.WindowPartTypes`.
+        - `WiresStr`: Comma-separated string defining wire usage from `baseobj.Shape.Wires`
+          (0-indexed) and optionally hinge/opening from `baseobj.Shape.Edges` (1-indexed).
+          Example: `"Wire0,Wire1,Edge8,Mode1"`.
+          - `"WireN"`: Uses Nth wire for the base face.
+          - `"WireN,WireM"`: WireN is base, WireM is cutout.
+          - `"EdgeK"`: Kth edge is hinge.
+          - `"ModeL"`: Lth opening mode from `ArchWindow.WindowOpeningModes`.
+        - `ThickStr`: Thickness as string (e.g., `"50.0"`). Appending `"+V"`
+          adds the object's `Frame` property value.
+        - `OffsetStr`: Offset along normal as string (e.g., `"25.0"`). Appending `"+V"`
+          adds the object's `Offset` property value.
+        Defaults to None. If None and `baseobj` is a sketch, default parts
+        are generated as described under `baseobj`.
     name : str, optional
-        The name to assign to the created window. Defaults to None.
+        The name (label) for the created window/door. If None, a default localized
+        name ("Window" or "Door", depending on context or subsequent changes) is used.
+        Defaults to None.
 
     Returns
     -------
-    Part::FeaturePython
-        The created window object.
+    FreeCAD.DocumentObject
+        The created Arch Window object (which is a `Part::FeaturePython` instance,
+        configurable to represent a window or a door).
+
+    See Also
+    --------
+    ArchWindowPresets.makeWindowPreset : Create window/door from predefined types.
+    ArchWall.addComponents : Add a window/door to a wall (creates opening).
 
     Notes
     -----
-    1. If baseobj is not a closed shape, the tool may not create a proper solid figure.
+    - **Dual purpose (window/door)**: despite its name, this function is the primary
+      way to programmatically create both windows and doors in the BIM workbench.
+      The distinction is often made by setting the `IfcType` property of the
+      created object to "Window" or "Door", and by the chosen components or preset.
+    - **Sketch-based dimensions**: If `baseobj` is a `Sketcher::SketchObject`
+      with named constraints "Width" and "Height", these sketch constraints will be
+      parametrically driven by the created object's `Width` and `Height` properties
+      respectively *after* the object is created and its properties are changed.
+      `makeWindow` itself does not initially populate the object's `Width`/`Height` from
+      these sketch constraints if `width`/`height` arguments are not passed to it.
+      The object's internal `Width` and `Height` properties are the drivers.
+    - **Object from dimensions (No `baseobj` initially)**: if `baseobj` is `None` but
+      `width` and `height` are provided, `makeWindow` creates an Arch Window object.
+      Upon the first `doc.recompute()`, the `ensureBase()` mechanism generates
+      an internal sketch (`obj.Base`) with "Width" and "Height" constraints
+      driven by `obj.Width` and `obj.Height`. However, `obj.WindowParts`
+      will remain undefined, resulting in a shapeless object until `WindowParts`
+      are manually set.
+    - **`obj.Frame` and `obj.Offset` properties**: these main properties of the
+      created object (e.g., `my_window.Frame = 50.0`) provide the values used when
+      `"+V"` is specified in the `ThicknessString` or `OffsetString` of a component
+      within the `parts` list.
+    - **Hosting and openings**: to create an opening in a host object (e.g., `Arch.Wall`),
+      set `obj.Hosts = [my_wall]`. The opening's shape is typically derived
+      from `obj.HoleWire` (defaulting to the largest wire of `obj.Base`) and
+      extruded by `obj.HoleDepth` (if 0, tries to match host thickness).
+      A custom `obj.Subvolume` can also define the opening shape.
+    - **Component management**: components and their geometry are primarily
+      managed by the `_Window` class and its methods in `ArchWindow.py`.
+    - **Initialization from sketch `baseobj`**: when `baseobj` is a sketch
+      (e.g., `Sketcher::SketchObject`) and `parts` is `None` or provided:
+        - The `window.Shape` (geometric representation) is correctly generated
+          at the global position and orientation defined by `baseobj.Placement`.
+        - However, the created window object's own `window.Placement` property is
+          **not** automatically initialized from `baseobj.Placement` and typically
+          remains at the identity placement (origin, no rotation).
+        - Similarly, the `window.Width` and `window.Height` properties are **not**
+          automatically populated from the dimensions of the `baseobj` sketch.
+          These properties will default to 0.0 or values from Arch preferences
+          (if `width`/`height` arguments to `makeWindow` are also `None`).
+        - If you need the `window` object's `Placement`, `Width`, or `Height`
+          properties to reflect the `baseobj` sketch for subsequent operations
+          (e.g., if other systems query these specific window properties, or if
+          you intend to parametrically drive the sketch via these window properties),
+          you may need to set them manually after `makeWindow` is called:
+        - The `ArchWindow._Window.execute()` method, when recomputing the window,
+          *does* use `window.Base.Shape` (the sketch's shape in its global position)
+          to generate the window's geometry. The `ArchWindow._Window.getSubVolume()`
+          method also correctly uses `window.Base.Shape` and the window object's
+          (identity) `Placement` for creating the cutting volume.
+
+    Examples
+    --------
+    >>> import FreeCAD as App
+    >>> import Draft, Arch, Sketcher, Part
+    >>> doc = App.newDocument("ArchWindowDoorExamples")
+
+    >>> # Ex1: Basic window from sketch and parts definition, oriented to XZ (vertical) plane
+    >>> sketch_ex1 = doc.addObject('Sketcher::SketchObject', 'WindowSketchEx1_Vertical')
+    >>> # Define geometry in sketch's local XY plane (width along local X, height along local Y)
+    >>> sketch_ex1.addGeometry(Part.LineSegment(App.Vector(0,0,0), App.Vector(1000,0,0))) # Wire0 - Outer
+    >>> sketch_ex1.addGeometry(Part.LineSegment(App.Vector(1000,0,0), App.Vector(1000,1200,0)))
+    >>> sketch_ex1.addGeometry(Part.LineSegment(App.Vector(1000,1200,0), App.Vector(0,1200,0)))
+    >>> sketch_ex1.addGeometry(Part.LineSegment(App.Vector(0,1200,0), App.Vector(0,0,0)))
+    >>> sketch_ex1.addGeometry(Part.LineSegment(App.Vector(100,100,0), App.Vector(900,100,0))) # Wire1 - Inner
+    >>> sketch_ex1.addGeometry(Part.LineSegment(App.Vector(900,100,0), App.Vector(900,1100,0)))
+    >>> sketch_ex1.addGeometry(Part.LineSegment(App.Vector(900,1100,0), App.Vector(100,1100,0)))
+    >>> sketch_ex1.addGeometry(Part.LineSegment(App.Vector(100,1100,0), App.Vector(100,100,0)))
+    >>> doc.recompute() # Update sketch Wires
+    >>> # Orient sketch: Rotate +90 deg around X-axis to place sketch's XY onto global XZ.
+    >>> # Sketch's local Y (height) now aligns with global Z. Sketch normal is global -Y.
+    >>> sketch_ex1.Placement.Rotation = App.Rotation(App.Vector(1,0,0), 90)
+    >>> doc.recompute() # Apply sketch placement
+    >>> window_ex1 = Arch.makeWindow(baseobj=sketch_ex1, name="MyWindowEx1_Vertical")
+    >>> # Window Normal will be derived as global +Y, extrusion along +Y.
+    >>> window_ex1.WindowParts = [
+    ...     "Frame", "Frame", "Wire0,Wire1", "60", "0",      # Frame from Wire0-Wire1
+    ...     "Glass", "Glass panel", "Wire1", "10", "25"     # Glass from Wire1, offset in Normal dir
+    ... ]
+    >>> doc.recompute()
+
+    >>> # Ex2: Window from sketch with named "Width"/"Height" constraints (on default XY plane)
+    >>> sketch_ex2 = doc.addObject('Sketcher::SketchObject', 'WindowSketchEx2_Named')
+    >>> sketch_ex2.addGeometry(Part.LineSegment(App.Vector(0,0,0), App.Vector(800,0,0))) # Edge 0
+    >>> sketch_ex2.addGeometry(Part.LineSegment(App.Vector(800,0,0), App.Vector(800,600,0))) # Edge 1
+    >>> sketch_ex2.addGeometry(Part.LineSegment(App.Vector(800,600,0), App.Vector(0,600,0))) # Complete Wire0
+    >>> sketch_ex2.addGeometry(Part.LineSegment(App.Vector(0,600,0), App.Vector(0,0,0)))
+    >>> sketch_ex2.addConstraint(Sketcher.Constraint('DistanceX',0,1,0,2, 800))
+    >>> sketch_ex2.renameConstraint(sketch_ex2.ConstraintCount-1, "Width")
+    >>> sketch_ex2.addConstraint(Sketcher.Constraint('DistanceY',1,1,1,2, 600))
+    >>> sketch_ex2.renameConstraint(sketch_ex2.ConstraintCount-1, "Height")
+    >>> doc.recompute()
+    >>> window_ex2 = Arch.makeWindow(baseobj=sketch_ex2, name="MyWindowEx2_Parametric")
+    >>> window_ex2.WindowParts = ["Frame", "Frame", "Wire0", "50", "0"]
+    >>> doc.recompute()
+    >>> print(f"Ex2 Initial - Sketch Width: {sketch_ex2.getDatum('Width')}, Window Width: {window_ex2.Width.Value}")
+    >>> window_ex2.Width = 950 # This drives the sketch constraint
+    >>> doc.recompute()
+    >>> print(f"Ex2 Updated - Sketch Width: {sketch_ex2.getDatum('Width')}, Window Width: {window_ex2.Width.Value}")
+
+    >>> # Ex3: Window from dimensions only (initially shapeless, sketch on XY plane)
+    >>> window_ex3 = Arch.makeWindow(width=700, height=900, name="MyWindowEx3_Dims")
+    >>> print(f"Ex3 Initial - Base: {window_ex3.Base}, Shape isNull: {window_ex3.Shape.isNull()}")
+    >>> doc.recompute() # ensureBase creates the sketch on XY plane
+    >>> print(f"Ex3 After Recompute - Base: {window_ex3.Base.Name if window_ex3.Base else 'None'}, Shape isNull: {window_ex3.Shape.isNull()}")
+    >>> window_ex3.WindowParts = ["SimpleFrame", "Frame", "Wire0", "40", "0"] # Wire0 from auto-generated sketch
+    >>> doc.recompute()
+    >>> print(f"Ex3 After Parts - Shape isNull: {window_ex3.Shape.isNull()}")
+
+    >>> # Ex4: Door created using an ArchWindowPresets function
+    >>> # Note: Arch.makeWindowPreset calls Arch.makeWindow internally
+    >>> door_ex4_preset = makeWindowPreset(
+    ...     "Simple door", width=900, height=2100,
+    ...     h1=50, h2=0, h3=0, w1=70, w2=40, o1=0, o2=0 # Preset-specific params
+    ... )
+    >>> if door_ex4_preset:
+    ...     door_ex4_preset.Label = "MyDoorEx4_Preset"
+    ...     doc.recompute()
+
+    >>> # Ex5: Door created from a sketch, with IfcType manually set (sketch on XY plane)
+    >>> sketch_ex5_door = doc.addObject('Sketcher::SketchObject', 'DoorSketchEx5')
+    >>> sketch_ex5_door.addGeometry(Part.LineSegment(App.Vector(0,0,0), App.Vector(850,0,0))) # Wire0
+    >>> sketch_ex5_door.addGeometry(Part.LineSegment(App.Vector(850,0,0), App.Vector(850,2050,0)))
+    >>> sketch_ex5_door.addGeometry(Part.LineSegment(App.Vector(850,2050,0), App.Vector(0,2050,0)))
+    >>> sketch_ex5_door.addGeometry(Part.LineSegment(App.Vector(0,2050,0), App.Vector(0,0,0)))
+    >>> doc.recompute()
+    >>> door_ex5_manual = Arch.makeWindow(baseobj=sketch_ex5_door, name="MyDoorEx5_Manual")
+    >>> door_ex5_manual.WindowParts = ["DoorPanel", "Solid panel", "Wire0", "40", "0"]
+    >>> door_ex5_manual.IfcType = "Door" # Explicitly define as a Door
+    >>> doc.recompute()
+
+    >>> # Ex6: Hosting the vertical window from Ex1 in an Arch.Wall
+    >>> wall_ex6 = Arch.makeWall(None, length=4000, width=200, height=2400)
+    >>> wall_ex6.Label = "WallForOpening_Ex6"
+    >>> # Window_ex1 is already oriented (its sketch placement was set in Ex1).
+    >>> # Now, just position the window object itself.
+    >>> window_ex1.Placement.Base = App.Vector(1500, wall_ex6.Width.Value / 2, 900) # X, Y (center of wall), Z (sill)
+    >>> window_ex1.HoleDepth = 0 # Use wall's thickness for the opening depth
+    >>> doc.recompute() # Apply window placement and HoleDepth
+    >>> window_ex1.Hosts = [wall_ex6]
+    >>> doc.recompute() # Wall recomputes to create the opening
     """
     import Draft
     import DraftGeomUtils
@@ -1814,16 +2103,17 @@ def makeWindow(baseobj=None, width=None, height=None, parts=None, name=None):
         # previously hardcoded. With the normal set to 'auto', window object would not suffer weird
         # shape if the Base Sketch is rotated by some reason. Keep the property be 'auto' (0,0,0)
         # here.
-        #obj.Normal = baseobj.Placement.Rotation.multVec(FreeCAD.Vector(0, 0, -1))
+        # obj.Normal = baseobj.Placement.Rotation.multVec(FreeCAD.Vector(0, 0, -1))
         window.Base = baseobj
     if parts is not None:
         window.WindowParts = parts
     else:
         if baseobj:
             linked_obj = baseobj.getLinkedObject(True)
-            if (linked_obj.isDerivedFrom("Part::Part2DObject")
-                or Draft.getType(linked_obj) in ["BezCurve", "BSpline", "Wire"]) \
-                    and DraftGeomUtils.isPlanar(baseobj.Shape):
+            if (
+                linked_obj.isDerivedFrom("Part::Part2DObject")
+                or Draft.getType(linked_obj) in ["BezCurve", "BSpline", "Wire"]
+            ) and DraftGeomUtils.isPlanar(baseobj.Shape):
                 # "BezCurve", "BSpline" and "Wire" objects created with < v1.1 are
                 # "Part::Part2DObject" objects. In all versions these objects need not be planar.
                 if baseobj.Shape.Wires:
@@ -1836,13 +2126,17 @@ def makeWindow(baseobj=None, width=None, height=None, parts=None, name=None):
                             wires.append(f"Wire{i}")
                     wires_str = ",".join(wires)
                     part_name = "Default"
-                    part_frame_thickness = "1" # mm
-                    part_offset = "0" # mm
+                    part_frame_thickness = "1"  # mm
+                    part_offset = "0"  # mm
                     window.WindowParts = [
-                        part_name, part_type, wires_str, part_frame_thickness, part_offset
+                        part_name,
+                        part_type,
+                        wires_str,
+                        part_frame_thickness,
+                        part_offset,
                     ]
             else:
-                # bind properties from base obj if existing
+                # Bind properties from base obj if they exist
                 for prop in ["Height", "Width", "Subvolume", "Tag", "Description", "Material"]:
                     for baseobj_prop in baseobj.PropertiesList:
                         if (baseobj_prop == prop) or baseobj_prop.endswith(f"_{prop}"):
@@ -1850,11 +2144,168 @@ def makeWindow(baseobj=None, width=None, height=None, parts=None, name=None):
 
     if window.Base and FreeCAD.GuiUp:
         from ArchWindow import recolorize
+
         window.Base.ViewObject.DisplayMode = "Wireframe"
         window.Base.ViewObject.hide()
         todo.ToDo.delay(recolorize, [window.Document.Name, window.Name])
 
     return window
+
+
+def is_debasable(wall):
+    """Determines if an Arch Wall can be cleanly converted to a baseless state.
+
+    This function checks if a given wall is a valid candidate for a parametric
+    "debasing" operation, where its dependency on a Base object is removed and
+    it becomes driven by its own Length and Placement properties.
+
+    Parameters
+    ----------
+    wall : FreeCAD.DocumentObject
+        The Arch Wall object to check.
+
+    Returns
+    -------
+    bool
+        ``True`` if the wall is a valid candidate for debasing, otherwise ``False``.
+
+    Notes
+    -----
+    A wall is considered debasable if its ``Base`` object's final shape consists
+    of exactly one single, straight edge. This check is generic and works for
+    any base object that provides a valid ``.Shape`` property, including
+    ``Draft.Line`` and ``Sketcher::SketchObject`` objects.
+    """
+    import Part
+    import Draft
+
+    # Ensure the object is actually a wall
+    if Draft.getType(wall) != "Wall":
+        return False
+
+    # Check for a valid Base object with a geometric Shape
+    if not hasattr(wall, "Base") or not wall.Base:
+        return False
+    if not hasattr(wall.Base, "Shape") or wall.Base.Shape.isNull():
+        return False
+
+    base_shape = wall.Base.Shape
+
+    # The core condition: the final shape must contain exactly one edge.
+    # This correctly handles Sketches with multiple lines or construction geometry.
+    if len(base_shape.Edges) != 1:
+        return False
+
+    # The single edge must be a straight line.
+    edge = base_shape.Edges[0]
+    if not isinstance(edge.Curve, (Part.Line, Part.LineSegment)):
+        return False
+
+    # If all checks pass, the wall is debasable.
+    return True
+
+
+def debaseWall(wall):
+    """
+    Converts a line-based Arch Wall to be parametrically driven by its own
+    properties (Length, Width, Height) and Placement, removing its dependency
+    on a Base object.
+
+    This operation preserves the wall's exact size and global position.
+    It is only supported for walls based on a single, straight line.
+
+    Returns True on success, False otherwise.
+    """
+    import FreeCAD
+
+    if not is_debasable(wall):
+        FreeCAD.Console.PrintWarning(f"Wall '{wall.Label}' is not eligible for debasing.\n")
+        return False
+
+    doc = wall.Document
+    doc.openTransaction(f"Debase Wall: {wall.Label}")
+    try:
+        # Calculate the final state before making any changes
+        # A wall's final position and orientation are derived from its Base object and its own
+        # properties like Width and Align. To make the wall independent, this final state must be
+        # captured. A simple transfer of the Base object's Placement property is unreliable for two
+        # main reasons:
+        # - Ambiguity: A Draft.Line's direction is defined by its vertex coordinates, so a line at
+        #   45° can have a 0° rotation in its Placement.
+        # - Coordinate Systems: A universal method is needed to handle both Draft objects (defined
+        #   in global coordinates) and Sketch objects (defined in a local coordinate system).
+        #
+        # The solution is to use the wall.Proxy.basewires internal attribute. It is non-persistent
+        # and populated on the fly by calling getExtrusionData(). It contains the baseline edge
+        # already transformed into the document's global coordinate system. From the vertex
+        # positions of this globally-aware edge, the new wall's final Placement is calculated.
+        extrusion_data = wall.Proxy.getExtrusionData(wall)
+        if not extrusion_data or not hasattr(wall.Proxy, "basewires") or not wall.Proxy.basewires:
+            raise Exception("Could not retrieve extrusion data to calculate global placement.")
+
+        # In addition to the baseline edge, getExtrusionData() also provides the extrusion vector,
+        # which is used to determine the wall's vertical orientation.
+        extrusion_vector = extrusion_data[1]
+        baseline_edge = wall.Proxy.basewires[0][0]
+
+        # Now determine the wall's rotation inferred from its local axes:
+        # - The local X axis is along the baseline edge (length).
+        # - The local Z axis is along the extrusion vector (height).
+        # - The local Y axis is the cross product of X and Z (width, perpendicular to both the
+        # - above).
+        # Once the local axes are known, a FreeCAD.Rotation matrix can be constructed.
+        z_axis = extrusion_vector.normalize()
+        x_axis = (baseline_edge.lastVertex().Point - baseline_edge.firstVertex().Point).normalize()
+        y_axis = z_axis.cross(x_axis).normalize()
+        final_rotation = FreeCAD.Rotation(x_axis, y_axis, z_axis)
+
+        # This will be the debased wall's local coordinate system origin (0, 0, 0).
+        # The wall's Align property (Left, Center, Right) determines how the wall's
+        # Width offsets the final position from the centerline.
+        centerline_position = baseline_edge.CenterOfMass
+        align_offset_distance = 0
+        if wall.Align == "Left":
+            align_offset_distance = wall.Width.Value / 2.0
+        elif wall.Align == "Right":
+            align_offset_distance = -wall.Width.Value / 2.0
+
+        # Convert the offset distance into a vector in the width direction (local Y axis).
+        align_offset_vector = y_axis * align_offset_distance
+        final_position = centerline_position - align_offset_vector
+
+        final_placement = FreeCAD.Placement(final_position, final_rotation)
+
+        # Store properties before unlinking
+        height = wall.Height.Value
+        length = wall.Length.Value
+        width = wall.Width.Value
+
+        # 1. Apply the final placement first.
+        wall.Placement = final_placement
+
+        # 2. Now, remove the base. The recompute triggered by this change
+        #    will already have the correct placement to work with.
+        wall.Base = None
+
+        # 3. Clear internal caches and set final properties.
+        if hasattr(wall.Proxy, "connectEdges"):
+            wall.Proxy.connectEdges = []
+
+        wall.Height = height
+        wall.Length = length
+        wall.Width = width
+
+        # 4. Add an explicit recompute to ensure the final state is settled.
+        doc.recompute()
+
+    except Exception as e:
+        doc.abortTransaction()
+        FreeCAD.Console.PrintError(f"Error debasing wall '{wall.Label}': {e}\n")
+        return False
+    finally:
+        doc.commitTransaction()
+
+    return True
 
 
 def _initializeArchObject(
@@ -1934,3 +2385,53 @@ def _initializeArchObject(
         return None
 
     return obj
+
+
+def makeReport(name=None):
+    """
+    Creates a BIM Report object in the active document.
+
+    Parameters
+    ----------
+    name : str, optional
+        The name to assign to the created report object. Defaults to None.
+
+    Returns
+    -------
+    App::FeaturePython
+        The created report object.
+    """
+
+    # Use the helper to create the main object. Note that we pass the
+    # correct class and module names.
+    report_obj = _initializeArchObject(
+        objectType="App::FeaturePython",
+        baseClassName="_ArchReport",
+        internalName="ArchReport",
+        defaultLabel=name if name else translate("Arch", "Report"),
+        moduleName="ArchReport",
+        viewProviderName="ViewProviderReport",
+    )
+
+    # The helper returns None if there's no document, so we can exit early.
+    if not report_obj:
+        return None
+
+    # Initialize the Statements property
+    # Report object proxy needs its Statements list initialized before getSpreadSheet is called,
+    # as getSpreadSheet calls execute() which now relies on obj.Statements.
+    # Initialize with one default statement to provide a starting point for the user.
+    default_stmt = ReportStatement(description=translate("Arch", "New Statement"))
+    report_obj.Statements = [default_stmt.dumps()]
+
+    # Initialize a spreadsheet if the report requests one. The report is responsible for how the
+    # association is stored (we use a non-dependent ``ReportName`` on the sheet and persist the
+    # report's ``Target`` link when the report creates the sheet).
+    if hasattr(report_obj, "Proxy") and hasattr(report_obj.Proxy, "getSpreadSheet"):
+        _ = report_obj.Proxy.getSpreadSheet(report_obj, force=True)
+
+    if FreeCAD.GuiUp:
+        # Automatically open the task panel for the new report
+        FreeCADGui.ActiveDocument.setEdit(report_obj.Name, 0)
+
+    return report_obj

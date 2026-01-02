@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -47,8 +49,10 @@ public:
     explicit TaskSketcherCreateCommands(QWidget* parent = nullptr);
     ~TaskSketcherCreateCommands() override;
     /// Observer message from the Selection
-    void OnChange(Gui::SelectionSingleton::SubjectType& rCaller,
-                  Gui::SelectionSingleton::MessageType Reason) override;
+    void OnChange(
+        Gui::SelectionSingleton::SubjectType& rCaller,
+        Gui::SelectionSingleton::MessageType Reason
+    ) override;
 
 private Q_SLOTS:
 

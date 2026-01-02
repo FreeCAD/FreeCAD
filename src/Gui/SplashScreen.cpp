@@ -20,9 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <cstdlib>
 #include <QApplication>
 #include <QClipboard>
@@ -34,7 +32,7 @@
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
 #include <QWaitCondition>
-#endif
+
 
 #include <App/Application.h>
 #include <App/Metadata.h>
@@ -113,11 +111,13 @@ public:
     {
         return "SplashObserver";
     }
-    void sendLog(const std::string& notifiername,
-                 const std::string& msg,
-                 Base::LogStyle level,
-                 Base::IntendedRecipient recipient,
-                 Base::ContentType content) override
+    void sendLog(
+        const std::string& notifiername,
+        const std::string& msg,
+        Base::LogStyle level,
+        Base::IntendedRecipient recipient,
+        Base::ContentType content
+    ) override
     {
         Q_UNUSED(notifiername)
         Q_UNUSED(recipient)
@@ -173,10 +173,12 @@ private:
  * displayed as two lines, regardless of the length of the text (e.g. no wrapping is done). Only the
  * width is considered, the height simply follows from the font size.
  */
-static void renderDevBuildWarning(QPainter& painter,
-                                  const QPoint startPosition,
-                                  const QSize maxSize,
-                                  QColor color)
+static void renderDevBuildWarning(
+    QPainter& painter,
+    const QPoint startPosition,
+    const QSize maxSize,
+    QColor color
+)
 {
     // Create a background box that fades out the artwork for better legibility
     QColor fader(Qt::white);
@@ -187,7 +189,7 @@ static void renderDevBuildWarning(QPainter& painter,
 
     // Construct the lines of text and figure out how much space they need
     const auto devWarningLine1 = QObject::tr("WARNING: This is a development version.");
-    const auto devWarningLine2 = QObject::tr("Please do not use it in a production environment.");
+    const auto devWarningLine2 = QObject::tr("Do not use it in a production environment.");
     QFontMetrics fontMetrics(painter.font());  // Try to use the existing font
     int padding = QtTools::horizontalAdvance(fontMetrics, QLatin1String("M"));  // Arbitrary
     int line1Width = QtTools::horizontalAdvance(fontMetrics, devWarningLine1);
@@ -214,9 +216,7 @@ static void renderDevBuildWarning(QPainter& painter,
     painter.setPen(color);
     painter.drawRect(startPosition.x(), startPosition.y(), boxWidth, boxHeight);
     painter.drawText(startPosition.x() + padding, startPosition.y() + lineHeight, devWarningLine1);
-    painter.drawText(startPosition.x() + padding,
-                     startPosition.y() + 2 * lineHeight,
-                     devWarningLine2);
+    painter.drawText(startPosition.x() + padding, startPosition.y() + 2 * lineHeight, devWarningLine2);
 }
 
 }  // namespace Gui
@@ -281,8 +281,9 @@ QPixmap SplashScreen::splashImage()
     float pixelRatio(1.0);
     if (splash_image.isNull()) {
         // determine the count of splashes
-        QStringList pixmaps =
-            Gui::BitmapFactory().findIconFiles().filter(QString::fromStdString(splash_path));
+        QStringList pixmaps = Gui::BitmapFactory().findIconFiles().filter(
+            QString::fromStdString(splash_path)
+        );
         // divide by 2 since there's two sets (normal and 2x)
         // minus 1 to ignore the default splash that isn't numbered
         int splash_count = pixmaps.count() / 2 - 1;
@@ -306,10 +307,12 @@ QPixmap SplashScreen::splashImage()
     }
 
     // include application name and version number
-    std::map<std::string, std::string>::const_iterator tc =
-        App::Application::Config().find("SplashInfoColor");
-    std::map<std::string, std::string>::const_iterator wc =
-        App::Application::Config().find("SplashWarningColor");
+    std::map<std::string, std::string>::const_iterator tc = App::Application::Config().find(
+        "SplashInfoColor"
+    );
+    std::map<std::string, std::string>::const_iterator wc = App::Application::Config().find(
+        "SplashWarningColor"
+    );
     if (tc != App::Application::Config().end() && wc != App::Application::Config().end()) {
         QString title = qApp->applicationName();
         QString major = QString::fromStdString(App::Application::Config()["BuildVersionMajor"]);
@@ -319,14 +322,18 @@ QPixmap SplashScreen::splashImage()
         QString version = QStringLiteral("%1.%2.%3%4").arg(major, minor, point, suffix);
         QString position, fontFamily;
 
-        std::map<std::string, std::string>::const_iterator te =
-            App::Application::Config().find("SplashInfoExeName");
-        std::map<std::string, std::string>::const_iterator tv =
-            App::Application::Config().find("SplashInfoVersion");
-        std::map<std::string, std::string>::const_iterator tp =
-            App::Application::Config().find("SplashInfoPosition");
-        std::map<std::string, std::string>::const_iterator tf =
-            App::Application::Config().find("SplashInfoFont");
+        std::map<std::string, std::string>::const_iterator te = App::Application::Config().find(
+            "SplashInfoExeName"
+        );
+        std::map<std::string, std::string>::const_iterator tv = App::Application::Config().find(
+            "SplashInfoVersion"
+        );
+        std::map<std::string, std::string>::const_iterator tp = App::Application::Config().find(
+            "SplashInfoPosition"
+        );
+        std::map<std::string, std::string>::const_iterator tf = App::Application::Config().find(
+            "SplashInfoFont"
+        );
         if (te != App::Application::Config().end()) {
             title = QString::fromStdString(te->second);
         }

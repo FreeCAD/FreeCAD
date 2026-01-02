@@ -46,6 +46,8 @@ class TaskAddOffsetVertex():
         self.view = view
         self.vertex = vertex
 
+        App.setActiveTransaction("Add offset vertex")
+
     def accept(self):
         '''slot: OK pressed'''
         point = self.vertex.Point   # this is unscaled and inverted, but is also rotated.
@@ -59,6 +61,8 @@ class TaskAddOffsetVertex():
                                                 # uninverted relative value.
         self.view.makeCosmeticVertex(point+offset)
         Gui.Control.closeDialog()
+        App.closeActiveTransaction()
 
     def reject(self):
+        App.closeActiveTransaction(True)
         return True

@@ -156,10 +156,10 @@
           <item>
            <widget class="QPushButton" name="buttonFavorite">
             <property name="toolTip">
-             <string>Add to favorites</string>
+             <string>Adds or removes to/from favorites</string>
             </property>
             <property name="text">
-             <string notr="true">*</string>
+             <string>Toggle Favorites</string>
             </property>
            </widget>
           </item>

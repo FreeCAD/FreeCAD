@@ -20,12 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QMenu>
-# include <QMessageBox>
-#endif
+#include <QMenu>
+#include <QMessageBox>
+
 
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
@@ -40,115 +38,64 @@
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderPrimitive,PartDesignGui::ViewProvider)
+PROPERTY_SOURCE(PartDesignGui::ViewProviderPrimitive, PartDesignGui::ViewProvider)
 
 ViewProviderPrimitive::ViewProviderPrimitive() = default;
 
 ViewProviderPrimitive::~ViewProviderPrimitive() = default;
 
-void ViewProviderPrimitive::attach(App::DocumentObject* obj) {
-    ViewProviderAddSub::attach(obj);
-}
-
 void ViewProviderPrimitive::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    addDefaultAction(menu, QObject::tr("Edit primitive"));
+    addDefaultAction(menu, QObject::tr("Edit Primitive"));
     PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
 }
 
-bool ViewProviderPrimitive::setEdit(int ModNum)
+TaskDlgFeatureParameters* ViewProviderPrimitive::getEditDialog()
 {
-    if (ModNum == ViewProvider::Default ) {
-        // When double-clicking on the item for this fillet the
-        // object unsets and sets its edit mode without closing
-        // the task panel
-        Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-        TaskPrimitiveParameters *primitiveDlg = qobject_cast<TaskPrimitiveParameters *>(dlg);
-        if (dlg && !primitiveDlg) {
-            QMessageBox msgBox(Gui::getMainWindow());
-            msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
-            msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
-            msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-            msgBox.setDefaultButton(QMessageBox::Yes);
-            int ret = msgBox.exec();
-            if (ret == QMessageBox::Yes)
-                Gui::Control().closeDialog();
-            else
-                return false;
-        }
-
-        // clear the selection (convenience)
-        Gui::Selection().clearSelection();
-
-        // always change to PartDesign WB, remember where we come from
-        oldWb = Gui::Command::assureWorkbench("PartDesignWorkbench");
-
-        // start the edit dialog
-        // another pad left open its task panel
-        if (primitiveDlg)
-            Gui::Control().showDialog(primitiveDlg);
-        else
-            Gui::Control().showDialog(new TaskPrimitiveParameters(this));
-
-        setPreviewDisplayMode(true);
-
-        return true;
-    }
-    else {
-        return ViewProviderAddSub::setEdit(ModNum);
-    }
+    return new TaskDlgPrimitiveParameters(this);
 }
 
-void ViewProviderPrimitive::unsetEdit(int ModNum)
+QIcon ViewProviderPrimitive::getIcon() const
 {
-    setPreviewDisplayMode(false);
-
-    // Rely on parent class to:
-    // restitute old workbench (set setEdit above) and close the dialog if exiting editing
-    PartDesignGui::ViewProvider::unsetEdit(ModNum);
-
-}
-
-void ViewProviderPrimitive::updateData(const App::Property* p) {
-    PartDesignGui::ViewProviderAddSub::updateData(p);
-}
-
-QIcon ViewProviderPrimitive::getIcon() const {
 
     QString str = QStringLiteral("PartDesign_");
     auto* prim = getObject<PartDesign::FeaturePrimitive>();
-    if(prim->getAddSubType() == PartDesign::FeatureAddSub::Additive)
+    if (prim->getAddSubType() == PartDesign::FeatureAddSub::Additive) {
         str += QStringLiteral("Additive");
-    else
+    }
+    else {
         str += QStringLiteral("Subtractive");
+    }
 
-    switch(prim->getPrimitiveType()) {
-    case PartDesign::FeaturePrimitive::Box:
-        str += QStringLiteral("Box");
-        break;
-    case PartDesign::FeaturePrimitive::Cylinder:
-        str += QStringLiteral("Cylinder");
-        break;
-    case PartDesign::FeaturePrimitive::Sphere:
-        str += QStringLiteral("Sphere");
-        break;
-    case PartDesign::FeaturePrimitive::Cone:
-        str += QStringLiteral("Cone");
-        break;
-    case PartDesign::FeaturePrimitive::Ellipsoid:
-        str += QStringLiteral("Ellipsoid");
-        break;
-    case PartDesign::FeaturePrimitive::Torus:
-        str += QStringLiteral("Torus");
-        break;
-    case PartDesign::FeaturePrimitive::Prism:
-        str += QStringLiteral("Prism");
-        break;
-    case PartDesign::FeaturePrimitive::Wedge:
-        str += QStringLiteral("Wedge");
-        break;
+    switch (prim->getPrimitiveType()) {
+        case PartDesign::FeaturePrimitive::Box:
+            str += QStringLiteral("Box");
+            break;
+        case PartDesign::FeaturePrimitive::Cylinder:
+            str += QStringLiteral("Cylinder");
+            break;
+        case PartDesign::FeaturePrimitive::Sphere:
+            str += QStringLiteral("Sphere");
+            break;
+        case PartDesign::FeaturePrimitive::Cone:
+            str += QStringLiteral("Cone");
+            break;
+        case PartDesign::FeaturePrimitive::Ellipsoid:
+            str += QStringLiteral("Ellipsoid");
+            break;
+        case PartDesign::FeaturePrimitive::Torus:
+            str += QStringLiteral("Torus");
+            break;
+        case PartDesign::FeaturePrimitive::Prism:
+            str += QStringLiteral("Prism");
+            break;
+        case PartDesign::FeaturePrimitive::Wedge:
+            str += QStringLiteral("Wedge");
+            break;
     }
 
     str += QStringLiteral(".svg");
-    return PartDesignGui::ViewProvider::mergeGreyableOverlayIcons(Gui::BitmapFactory().pixmap(str.toStdString().c_str()));
+    return PartDesignGui::ViewProvider::mergeGreyableOverlayIcons(
+        Gui::BitmapFactory().pixmap(str.toStdString().c_str())
+    );
 }

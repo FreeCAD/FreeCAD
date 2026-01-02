@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Image settings</string>
+   <string>Image Settings</string>
   </property>
   <layout class="QGridLayout">
    <property name="leftMargin">
@@ -32,7 +32,7 @@
    <item row="0" column="0">
     <widget class="QGroupBox" name="groupBoxDim">
      <property name="title">
-      <string>Image dimensions</string>
+      <string>Image Dimensions</string>
      </property>
      <layout class="QGridLayout">
       <property name="leftMargin">
@@ -70,7 +70,7 @@
         <item row="0" column="0">
          <widget class="QLabel" name="label">
           <property name="text">
-           <string>Standard sizes:</string>
+           <string>Standard sizes</string>
           </property>
          </widget>
         </item>
@@ -196,7 +196,7 @@
         <item row="1" column="0">
          <widget class="QLabel" name="textLabelWidth">
           <property name="text">
-           <string>&amp;Width:</string>
+           <string>&amp;Width</string>
           </property>
           <property name="buddy">
            <cstring>spinWidth</cstring>
@@ -223,7 +223,7 @@
         <item row="2" column="0">
          <widget class="QLabel" name="textLabelHeight">
           <property name="text">
-           <string>&amp;Height:</string>
+           <string>&amp;Height</string>
           </property>
           <property name="buddy">
            <cstring>spinHeight</cstring>
@@ -269,7 +269,7 @@
         <item>
          <widget class="QLabel" name="textLabel1">
           <property name="text">
-           <string>Aspect ratio:</string>
+           <string>Aspect ratio</string>
           </property>
          </widget>
         </item>
@@ -321,7 +321,7 @@
    <item row="1" column="0">
     <widget class="QGroupBox" name="groupBoxProp">
      <property name="title">
-      <string>Image properties</string>
+      <string>Image Properties</string>
      </property>
      <layout class="QGridLayout">
       <property name="leftMargin">
@@ -342,7 +342,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="textLabelColor">
         <property name="text">
-         <string>Back&amp;ground:</string>
+         <string>Back&amp;ground</string>
         </property>
         <property name="buddy">
          <cstring>comboBackground</cstring>
@@ -376,7 +376,7 @@
       <item row="1" column="0">
        <widget class="QLabel" name="label_4">
         <property name="text">
-         <string>Creation method:</string>
+         <string>Creation method</string>
         </property>
        </widget>
       </item>
@@ -392,7 +392,7 @@
       <bool>false</bool>
      </property>
      <property name="title">
-      <string>Image comment</string>
+      <string>Image Comment</string>
      </property>
      <layout class="QGridLayout">
       <property name="leftMargin">

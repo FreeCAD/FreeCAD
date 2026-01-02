@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
@@ -24,12 +26,17 @@
 #define EXPRESSIONENGINE_H
 
 #include <functional>
+#include <set>
+
 #include <boost/unordered/unordered_map.hpp>
 #include <boost/signals2.hpp>
 #include <boost_graph_adjacency_list.hpp>
 #include <boost/graph/topological_sort.hpp>
+
+#include <FCConfig.h>
+
 #include <App/PropertyLinks.h>
-#include <set>
+
 
 namespace Base
 {

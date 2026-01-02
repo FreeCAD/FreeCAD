@@ -24,8 +24,6 @@
 // adjustment QDoubleSpinBox and QPushButtons that increment the spin box by a
 // (usually) larger step than the arrows on the spinbox
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QApplication>
 #include <QLabel>
 #include <QObject>
@@ -33,7 +31,7 @@
 #include <QtGui>
 #include <QtWidgets/QDoubleSpinBox>
 #include <QtWidgets/QVBoxLayout>
-#endif
+
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 

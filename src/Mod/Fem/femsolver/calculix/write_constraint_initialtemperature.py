@@ -29,11 +29,32 @@ from FreeCAD import Units
 
 
 def get_analysis_types():
-    return ["thermomech"]
+    return ["thermomech", "static"]
+
+
+def get_sets_name():
+    return "constraints_initial_temperature_node_sets"
 
 
 def get_constraint_title():
     return "Initial temperature constraint"
+
+
+def write_meshdata_constraint(f, femobj, inittemp_obj, ccxwriter):
+    if inittemp_obj.References and len(inittemp_obj.References) > 0:
+        f.write(f"*NSET,NSET={inittemp_obj.Name}\n")
+        for n in femobj["Nodes"]:
+            f.write(f"{n},\n")
+    else:
+        return
+
+
+def get_before_write_meshdata_constraint():
+    return ""
+
+
+def get_after_write_meshdata_constraint():
+    return ""
 
 
 def get_before_write_constraint():
@@ -48,11 +69,9 @@ def write_constraint(f, femobj, inittemp_obj, ccxwriter):
 
     # floats read from ccx should use {:.13G}, see comment in writer module
 
-    f.write(
-        "{},{}\n".format(
-            ccxwriter.ccx_nall, Units.Quantity(inittemp_obj.initialTemperature.getValueAs("K"))
-        )
-    )
+    initialtemp = inittemp_obj.initialTemperature.getValueAs("K")
 
-
-# Should only be one object in the analysis
+    if inittemp_obj.References and len(inittemp_obj.References) > 0:
+        f.write(f"{inittemp_obj.Name},{initialtemp}\n")
+    else:
+        f.write(f"{ccxwriter.ccx_nall},{initialtemp}\n")

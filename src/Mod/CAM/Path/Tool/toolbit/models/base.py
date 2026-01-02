@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2019 sliptonic <shopinthewoods@gmail.com>               *
 # *                 2025 Samuel Abels <knipknap@gmail.com>                  *
@@ -33,14 +34,40 @@ from lazy_loader.lazy_loader import LazyLoader
 from typing import Any, List, Optional, Tuple, Type, Union, Mapping, cast
 from PySide.QtCore import QT_TRANSLATE_NOOP
 from Path.Base.Generator import toolchange
-from ...assets import Asset
+from ...docobject import DetachedDocumentObject
+from ...assets.asset import Asset
 from ...camassets import cam_assets
 from ...shape import ToolBitShape, ToolBitShapeCustom, ToolBitShapeIcon
-from ..docobject import DetachedDocumentObject
 from ..util import to_json, format_value
+from ..migration import ParameterAccessor, migrate_parameters
 
 
 ToolBitView = LazyLoader("Path.Tool.toolbit.ui.view", globals(), "Path.Tool.toolbit.ui.view")
+
+
+class ToolBitRecomputeObserver:
+    """Document observer that triggers queued visual updates after recompute completes."""
+
+    def __init__(self, toolbit_proxy):
+        self.toolbit_proxy = toolbit_proxy
+
+    def slotRecomputedDocument(self, doc):
+        """Called when document recompute is finished."""
+        # Check if the toolbit object is still valid
+        try:
+            obj_doc = self.toolbit_proxy.obj.Document
+        except ReferenceError:
+            # Object has been deleted or does not exist, nothing to do
+            return
+
+        # Only process updates for the correct document
+        if doc != obj_doc:
+            return
+
+        # Process any queued visual updates
+        if self.toolbit_proxy and hasattr(self.toolbit_proxy, "_process_queued_visual_update"):
+            Path.Log.debug("Document recompute finished, processing queued visual update")
+            self.toolbit_proxy._process_queued_visual_update()
 
 
 PropertyGroupShape = "Shape"
@@ -56,7 +83,7 @@ class ToolBit(Asset, ABC):
     asset_type: str = "toolbit"
     SHAPE_CLASS: Type[ToolBitShape]  # Abstract class attribute
 
-    def __init__(self, tool_bit_shape: ToolBitShape, id: str | None = None):
+    def __init__(self, tool_bit_shape: ToolBitShape, id: Optional[str] = None):
         Path.Log.track("ToolBit __init__ called")
         self.id = id if id is not None else str(uuid.uuid4())
         self.obj = DetachedDocumentObject()
@@ -102,6 +129,8 @@ class ToolBit(Asset, ABC):
             raise ValueError("ToolBit dictionary is missing 'shape' key")
 
         # Try to find the shape type. Default to Unknown if necessary.
+        if "shape" in attrs and "shape-type" not in attrs:
+            attrs["shape-type"] = attrs["shape"]
         shape_type = attrs.get("shape-type")
         shape_class = ToolBitShape.get_shape_class_from_id(shape_id, shape_type)
         if not shape_class:
@@ -136,7 +165,12 @@ class ToolBit(Asset, ABC):
         return cls.from_shape(tool_bit_shape, attrs, id=attrs.get("id"))
 
     @classmethod
-    def from_shape(cls, tool_bit_shape: ToolBitShape, attrs: Mapping, id: str | None) -> "ToolBit":
+    def from_shape(
+        cls,
+        tool_bit_shape: ToolBitShape,
+        attrs: Mapping,
+        id: Optional[str] = None,
+    ) -> "ToolBit":
         selected_toolbit_subclass = cls._find_subclass_for_shape(tool_bit_shape)
         toolbit = selected_toolbit_subclass(tool_bit_shape, id=id)
         toolbit.label = attrs.get("name") or tool_bit_shape.label
@@ -145,19 +179,26 @@ class ToolBit(Asset, ABC):
         params = attrs.get("parameter", {})
         attr = attrs.get("attribute", {})
 
-        # Update parameters; these are stored in the document model object.
+        # Filter parameters if method exists
+        if (
+            hasattr(tool_bit_shape.__class__, "filter_parameters")
+            and callable(getattr(tool_bit_shape.__class__, "filter_parameters"))
+            and isinstance(params, dict)
+        ):
+            params = tool_bit_shape.__class__.filter_parameters(params)
+
+        # Update parameters.
         for param_name, param_value in params.items():
+            tool_bit_shape.set_parameter(param_name, param_value)
             if hasattr(toolbit.obj, param_name):
                 PathUtil.setProperty(toolbit.obj, param_name, param_value)
-            else:
-                Path.Log.debug(
-                    f" ToolBit {id} Parameter '{param_name}' not found on"
-                    f" {selected_toolbit_subclass.__name__} ({tool_bit_shape})"
-                    f" '{toolbit.obj.Label}'. Skipping."
-                )
 
-        # Update parameters; these are stored in the document model object.
+        # Update attributes; the separation between parameters and attributes
+        # is currently not well defined, so for now we add them to the
+        # ToolBitShape and the DocumentObject.
+        # Discussion: https://github.com/FreeCAD/FreeCAD/issues/21722
         for attr_name, attr_value in attr.items():
+            tool_bit_shape.set_parameter(attr_name, attr_value)
             if hasattr(toolbit.obj, attr_name):
                 PathUtil.setProperty(toolbit.obj, attr_name, attr_value)
             else:
@@ -167,6 +208,7 @@ class ToolBit(Asset, ABC):
                     f" '{toolbit.obj.Label}'. Skipping."
                 )
 
+        toolbit._update_tool_properties()
         return toolbit
 
     @classmethod
@@ -265,6 +307,16 @@ class ToolBit(Asset, ABC):
         self.obj.setEditorMode("Shape", 2)
 
         # Create the ToolBit properties that are shared by all tool bits
+
+        if not hasattr(self.obj, "Units"):
+            self.obj.addProperty(
+                "App::PropertyEnumeration",
+                "Units",
+                "Attributes",
+                QT_TRANSLATE_NOOP("App::Property", "Measurement units for the tool bit"),
+            )
+            self.obj.Units = ["Metric", "Imperial"]
+            self.obj.Units = "Metric"  # Default value
         if not hasattr(self.obj, "SpindleDirection"):
             self.obj.addProperty(
                 "App::PropertyEnumeration",
@@ -288,10 +340,14 @@ class ToolBit(Asset, ABC):
         """Returns the unique ID of the tool bit."""
         return self.id
 
+    def set_id(self, id: str = None):
+        self.id = id if id is not None else str(uuid.uuid4())
+
     def _promote_toolbit(self):
         """
         Updates the toolbit properties for backward compatibility.
         Ensure obj.ShapeID and obj.ToolBitID are set, handling legacy cases.
+        Also promotes embedded toolbits to correct shape type if needed.
         """
         Path.Log.track(f"Promoting tool bit {self.obj.Label}")
 
@@ -331,6 +387,17 @@ class ToolBit(Asset, ABC):
             raise ValueError(f"Failed to identify shape of ToolBit from '{thetype}'")
         self.obj.ShapeType = shape_class.name
 
+        # Promote embedded toolbits to correct shape type if still Custom
+        if self.obj.ShapeType == "Custom":
+            shape_id = getattr(self.obj, "ShapeID", None)
+            if shape_id:
+                shape_class = ToolBitShape.get_subclass_by_name(shape_id)
+                if shape_class and shape_class.name != "Custom":
+                    self.obj.ShapeType = shape_class.name
+                    self._tool_bit_shape = shape_class(shape_id)
+                    Path.Log.info(
+                        f"Promoted embedded toolbit '{self.obj.Label}' to shape '{shape_class.name}' via ShapeID"
+                    )
         # Ensure ToolBitID is set
         if hasattr(self.obj, "File"):
             self.id = pathlib.Path(self.obj.File).stem
@@ -461,6 +528,20 @@ class ToolBit(Asset, ABC):
                 Path.Log.debug(f"onDocumentRestored: Attaching ViewProvider for {self.obj.Label}")
                 ToolBitView.ViewProvider(self.obj.ViewObject, "ToolBit")
 
+        # Migrate legacy parameters using unified accessor
+        migrate_parameters(ParameterAccessor(obj))
+
+        # Filter parameters if method exists (removes FlatRadius from obj)
+        filter_func = getattr(self._tool_bit_shape.__class__, "filter_parameters", None)
+        if callable(filter_func):
+            # Only filter if FlatRadius is present
+            if "FlatRadius" in self.obj.PropertiesList:
+                try:
+                    self.obj.removeProperty("FlatRadius")
+                    Path.Log.info(f"Filtered out FlatRadius for {self.obj.Label}")
+                except Exception as e:
+                    Path.Log.error(f"Failed to remove FlatRadius for {self.obj.Label}: {e}")
+
         # Copy properties from the restored object to the ToolBitShape.
         for name, item in self._tool_bit_shape.schema().items():
             if name in self.obj.PropertiesList:
@@ -507,6 +588,7 @@ class ToolBit(Asset, ABC):
         self._create_base_properties()
 
         # Transfer property values from the detached object to the real object
+        self._suppress_visual_update = True
         temp_obj.copy_to(self.obj)
 
         # Ensure label is set
@@ -514,12 +596,16 @@ class ToolBit(Asset, ABC):
 
         # Update the visual representation now that it's attached
         self._update_tool_properties()
+        self._suppress_visual_update = False
         self._update_visual_representation()
 
     def onChanged(self, obj, prop):
         Path.Log.track(obj.Label, prop)
         # Avoid acting during document restore or internal updates
         if "Restore" in obj.State:
+            return
+
+        if getattr(self, "_suppress_visual_update", False):
             return
 
         if hasattr(self, "_in_update") and self._in_update:
@@ -535,15 +621,19 @@ class ToolBit(Asset, ABC):
             new_value = obj.getPropertyByName(prop)
             Path.Log.debug(
                 f"Shape parameter '{prop}' changed to {new_value}. "
-                f"Updating visual representation."
+                f"Queuing visual representation update."
             )
             self._tool_bit_shape.set_parameter(prop, new_value)
-            self._update_visual_representation()
+            self._queue_visual_update()
         finally:
             self._in_update = False
 
     def onDelete(self, obj, arg2=None):
         Path.Log.track(obj.Label)
+        # Clean up any pending observer
+        if hasattr(self, "_recompute_observer"):
+            FreeCAD.removeDocumentObserver(self._recompute_observer)
+            del self._recompute_observer
         self._removeBitBody()
         obj.Document.removeObject(obj.Name)
 
@@ -586,9 +676,11 @@ class ToolBit(Asset, ABC):
     def get_property(self, name: str):
         return self.obj.getPropertyByName(name)
 
-    def get_property_str(self, name: str, default: str | None = None) -> str | None:
+    def get_property_str(
+        self, name: str, default: str | None = None, precision: int | None = None
+    ) -> str | None:
         value = self.get_property(name)
-        return format_value(value) if value else default
+        return format_value(value, precision=precision, units=self.obj.Units) if value else default
 
     def set_property(self, name: str, value: Any):
         return self.obj.setPropertyByName(name, value)
@@ -654,8 +746,6 @@ class ToolBit(Asset, ABC):
                 )
                 continue
 
-            docstring = self._tool_bit_shape.get_parameter_label(name)
-
             # Add new property
             if not hasattr(self.obj, name):
                 self.obj.addProperty(prop_type, name, "Shape", docstring)
@@ -672,18 +762,117 @@ class ToolBit(Asset, ABC):
             # Conditional to avoid unnecessary migration warning when called
             # from onDocumentRestored.
             if value is not None and getattr(self.obj, name) != value:
-                setattr(self.obj, name, value)
+                PathUtil.setProperty(self.obj, name, value)
 
-        # 2. Remove obsolete shape properties
-        # These are properties currently listed AND in the Shape group,
-        # but not required by the new shape.
-        current_shape_prop_names = set(self._get_props("Shape"))
-        new_shape_param_names = self._tool_bit_shape.schema().keys()
-        obsolete = current_shape_prop_names - new_shape_param_names
-        Path.Log.debug(f"Removing obsolete shape properties: {obsolete} from {self.obj.Label}")
-        # Gracefully skipping the deletion for now;
-        # in future releases we may handle schema violations more strictly
-        # self._remove_properties("Shape", obsolete)
+        # 2. Add additional properties that are part of the shape,
+        # but not part of the schema.
+        schema_prop_names = set(self._tool_bit_shape.schema().keys())
+        for name, value in self._tool_bit_shape.get_parameters().items():
+            if name in schema_prop_names:
+                continue
+            prop_type = self._tool_bit_shape.get_parameter_type(name)
+            docstring = QT_TRANSLATE_NOOP("App::Property", f"Custom property from shape: {name}")
+
+            # Skip existing properties if they have a different type
+            if hasattr(self.obj, name) and self.obj.getTypeIdOfProperty(name) != prop_type:
+                Path.Log.debug(
+                    f"Skipping existing property '{name}' due to type mismatch."
+                    f" has type {self.obj.getTypeIdOfProperty(name)}, expected {prop_type}"
+                )
+                continue
+
+            # Add the property if it does not exist
+            if not hasattr(self.obj, name):
+                self.obj.addProperty(prop_type, name, PropertyGroupShape, docstring)
+                Path.Log.debug(f"Added custom shape property: {name} ({prop_type})")
+
+            # Set the property value
+            if value is not None and getattr(self.obj, name) != value:
+                PathUtil.setProperty(self.obj, name, value)
+            self.obj.setEditorMode(name, 0)
+
+        # 3. Ensure Units property exists and is set
+        if not hasattr(self.obj, "Units"):
+            Path.Log.debug("Adding Units property")
+            self.obj.addProperty(
+                "App::PropertyEnumeration",
+                "Units",
+                "Attributes",
+                QT_TRANSLATE_NOOP("App::Property", "Measurement units for the tool bit"),
+            )
+            self.obj.Units = ["Metric", "Imperial"]
+            self.obj.Units = "Metric"  # Default value
+
+        units_value = self._tool_bit_shape.get_parameters().get("Units")
+        if units_value in ("Metric", "Imperial") and self.obj.Units != units_value:
+            PathUtil.setProperty(self.obj, "Units", units_value)
+
+        # 4. Ensure SpindleDirection property exists and is set
+        # Maybe this could be done with a global schema or added to each
+        # shape schema?
+        if not hasattr(self.obj, "SpindleDirection"):
+            self.obj.addProperty(
+                "App::PropertyEnumeration",
+                "SpindleDirection",
+                "Attributes",
+                QT_TRANSLATE_NOOP("App::Property", "Direction of spindle rotation"),
+            )
+            self.obj.SpindleDirection = ["Forward", "Reverse", "None"]
+            self.obj.SpindleDirection = "Forward"  # Default value
+
+        spindle_value = self._tool_bit_shape.get_parameters().get("SpindleDirection")
+        if (
+            spindle_value in ("Forward", "Reverse", "None")
+            and self.obj.SpindleDirection != spindle_value
+        ):
+            # self.obj.SpindleDirection = spindle_value
+            PathUtil.setProperty(self.obj, "SpindleDirection", spindle_value)
+
+        # 5. Ensure Material property exists and is set
+        if not hasattr(self.obj, "Material"):
+            self.obj.addProperty(
+                "App::PropertyEnumeration",
+                "Material",
+                "Attributes",
+                QT_TRANSLATE_NOOP("App::Property", "Tool material"),
+            )
+            self.obj.Material = ["HSS", "Carbide"]
+            self.obj.Material = "HSS"  # Default value
+
+        material_value = self._tool_bit_shape.get_parameters().get("Material")
+        if material_value in ("HSS", "Carbide") and self.obj.Material != material_value:
+            PathUtil.setProperty(self.obj, "Material", material_value)
+
+    def _queue_visual_update(self):
+        """Queue a visual update to be processed after document recompute is complete."""
+        if not hasattr(self, "_visual_update_queued"):
+            self._visual_update_queued = False
+
+        if not self._visual_update_queued:
+            self._visual_update_queued = True
+            Path.Log.debug(f"Queuing visual update for {self.obj.Label}")
+
+            # Set up a document observer to process the update after recompute
+            self._setup_recompute_observer()
+
+    def _setup_recompute_observer(self):
+        """Set up a document observer to process queued visual updates after recompute."""
+        if not hasattr(self, "_recompute_observer"):
+            Path.Log.debug(f"Setting up recompute observer for {self.obj.Label}")
+            self._recompute_observer = ToolBitRecomputeObserver(self)
+            FreeCAD.addDocumentObserver(self._recompute_observer)
+
+    def _process_queued_visual_update(self):
+        """Process the queued visual update."""
+        if hasattr(self, "_visual_update_queued") and self._visual_update_queued:
+            self._visual_update_queued = False
+            Path.Log.debug(f"Processing queued visual update for {self.obj.Label}")
+            self._update_visual_representation()
+
+            # Clean up the observer
+            if hasattr(self, "_recompute_observer"):
+                FreeCAD.removeDocumentObserver(self._recompute_observer)
+                del self._recompute_observer
 
     def _update_visual_representation(self):
         """
@@ -735,6 +924,7 @@ class ToolBit(Asset, ABC):
         Path.Log.track(self.obj.Label)
         attrs = {}
         attrs["version"] = 2
+        attrs["id"] = self.id
         attrs["name"] = self.obj.Label
         attrs["shape"] = self._tool_bit_shape.get_id() + ".fcstd"
         attrs["shape-type"] = self._tool_bit_shape.name
@@ -795,6 +985,14 @@ class ToolBit(Asset, ABC):
         return state
 
     def get_spindle_direction(self) -> toolchange.SpindleDirection:
+        """
+        Returns the spindle direction for this toolbit.
+        The direction is determined by the ToolBit's properties and safety rules:
+        - Returns SpindleDirection.OFF if the tool cannot rotate (e.g., a probe).
+        - Returns SpindleDirection.CW for clockwise or 'forward' spindle direction.
+        - Returns SpindleDirection.CCW for counterclockwise or any other value.
+        - Defaults to SpindleDirection.OFF if not specified.
+        """
         # To be safe, never allow non-rotatable shapes (such as probes) to rotate.
         if not self.can_rotate():
             return toolchange.SpindleDirection.OFF

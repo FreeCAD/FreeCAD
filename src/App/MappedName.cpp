@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /****************************************************************************
  *   Copyright (c) 2020 Zheng, Lei (realthunder) <realthunder.dev@gmail.com>*
  *                                                                          *
@@ -20,11 +22,7 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <unordered_set>
-#endif
 
 #include "MappedName.h"
 

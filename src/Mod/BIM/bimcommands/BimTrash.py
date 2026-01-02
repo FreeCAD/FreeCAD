@@ -38,7 +38,7 @@ class BIM_Trash:
             "Pixmap": "BIM_Trash",
             "MenuText": QT_TRANSLATE_NOOP("BIM_Trash", "Move to Trash"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "BIM_Trash", "Moves the selected objects to the Trash folder"
+                "BIM_Trash", "Moves the selected objects to the trash folder"
             ),
             "Accel": "Shift+Del",
         }
@@ -47,9 +47,7 @@ class BIM_Trash:
         if FreeCADGui.Selection.getSelection():
             trash = FreeCAD.ActiveDocument.getObject("Trash")
             if not trash or not trash.isDerivedFrom("App::DocumentObjectGroup"):
-                trash = FreeCAD.ActiveDocument.addObject(
-                    "App::DocumentObjectGroup", "Trash"
-                )
+                trash = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup", "Trash")
                 trash.Label = translate("BIM", "Trash")
             for obj in FreeCADGui.Selection.getSelection():
                 trash.addObject(obj)
@@ -69,6 +67,7 @@ class BIM_Trash:
         v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
         return v
 
+
 FreeCADGui.addCommand("BIM_Trash", BIM_Trash())
 
 
@@ -76,7 +75,7 @@ class BIM_EmptyTrash:
     def GetResources(self):
         return {
             "Pixmap": "BIM_Trash",
-            "MenuText": QT_TRANSLATE_NOOP("BIM_EmptyTrash", "Clean Trash"),
+            "MenuText": QT_TRANSLATE_NOOP("BIM_EmptyTrash", "Empty Trash"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_EmptyTrash",
                 "Deletes from the trash bin all objects that are not used by any other",

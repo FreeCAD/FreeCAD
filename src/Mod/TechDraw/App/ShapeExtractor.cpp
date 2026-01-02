@@ -20,9 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <sstream>
 # include <BRep_Builder.hxx>
 # include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
@@ -32,7 +30,7 @@
 # include <TopoDS_Vertex.hxx>
 # include <BRepBuilderAPI_Copy.hxx>
 #include <BRepCheck_Analyzer.hxx>
-#endif
+
 
 #include <App/Document.h>
 #include <App/GroupExtension.h>
@@ -95,14 +93,11 @@ TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> l
         // Copy the pointer as not const so it can be changed if needed.
         App::DocumentObject* obj = l;
 
-        bool isExplodedView = false;
         auto proxy = dynamic_cast<App::PropertyPythonObject*>(l->getPropertyByName("Proxy"));
         Base::PyGILStateLocker lock;
-        if (proxy && proxy->getValue().hasAttr("saveAssemblyAndExplode")) {
-            isExplodedView = true;
-
+        if (proxy && proxy->getValue().hasAttr("getExplodedShape")) {
             Py::Object explodedViewPy = proxy->getValue();
-            Py::Object attr = explodedViewPy.getAttr("saveAssemblyAndExplode");
+            Py::Object attr = explodedViewPy.getAttr("getExplodedShape");
 
             if (attr.ptr() && attr.isCallable()) {
                 Py::Tuple args(1);
@@ -110,18 +105,16 @@ TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> l
                 Py::Callable methode(attr);
                 Py::Object pyResult = methode.apply(args);
 
-                if (PyObject_TypeCheck(pyResult.ptr(), &(Part::TopoShapePy::Type))) {
+                if (pyResult.ptr()
+                    && PyObject_TypeCheck(pyResult.ptr(), &(Part::TopoShapePy::Type))) {
                     auto* shapepy = static_cast<Part::TopoShapePy*>(pyResult.ptr());
                     const TopoDS_Shape& shape = shapepy->getTopoShapePtr()->getShape();
-                    sourceShapes.push_back(shape);
-                }
-            }
 
-            for (auto* inObj : l->getInList()) {
-                if (inObj->isDerivedFrom<App::Part>()) {
-                    // we replace obj by the assembly
-                    obj = inObj;
-                    break;
+                    // The python script returns the complete exploded view shape (parts + lines).
+                    // We add it and immediately continue to the next object in the source links,
+                    // skipping the default shape extraction logic below.
+                    sourceShapes.push_back(shape);
+                    continue;
                 }
             }
         }
@@ -147,17 +140,6 @@ TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> l
                 sourceShapes.insert(sourceShapes.end(), shapeList.begin(), shapeList.end());
             }
         }
-
-        if (isExplodedView) {
-            Py::Object explodedViewPy = proxy->getValue();
-
-            Py::Object attr = explodedViewPy.getAttr("restoreAssembly");
-            if (attr.ptr() && attr.isCallable()) {
-                Py::Tuple args(1);
-                args.setItem(0, Py::asObject(l->getPyObject()));
-                Py::Callable(attr).apply(args);
-            }
-        }
     }
 
     BRep_Builder builder;
@@ -166,25 +148,30 @@ TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> l
     for (auto& s:sourceShapes) {
         if (SU::isShapeReallyNull(s)) {
             continue;
-        } else if (s.ShapeType() < TopAbs_SOLID) {
-            //clean up composite shapes
-            TopoDS_Shape cleanShape = ShapeFinder::ShapeFinder::stripInfiniteShapes(s);
+        }
+
+        if (s.ShapeType() < TopAbs_SOLID) {
+            //clean up TopAbs_COMPOUND & TopAbs_COMPSOLID
+            TopoDS_Shape cleanShape = ShapeFinder::stripInfiniteShapes(s);
             if (!cleanShape.IsNull()) {
                 builder.Add(comp, cleanShape);
             }
         } else if (Part::TopoShape(s).isInfinite()) {
             continue;    //simple shape is infinite
-        } else {
-            //a simple shape - add to compound
-            builder.Add(comp, s);
         }
-    }
-    //it appears that an empty compound is !IsNull(), so we need to check a different way
-    if (!SU::isShapeReallyNull(comp)) {
-        return comp;
+
+        //a simple shape - add to compound
+        builder.Add(comp, s);
     }
 
-    return TopoDS_Shape();
+    //it appears that an empty compound is !IsNull(), so we need to check a different way
+    if (SU::isShapeReallyNull(comp)) {
+        return {};
+    }
+
+    // BRepTools::Write(comp, "SEgetShapesOut.brep");
+
+    return comp;
 }
 
 std::vector<TopoDS_Shape> ShapeExtractor::getXShapes(const App::Link* xLink)

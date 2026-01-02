@@ -20,22 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __PRECOMPILED_GUI__
-#define __PRECOMPILED_GUI__
+#ifndef PART_DESIGN_PRECOMPILED_H
+#define PART_DESIGN_PRECOMPILED_H
 
 #include <FCConfig.h>
 
-#ifdef _MSC_VER
-#   pragma warning(disable : 4005)
-#endif
-
-#ifdef _PreComp_
-
 #ifdef FC_OS_WIN32
-#ifndef NOMINMAX
-#define NOMINMAX
-#endif
-#include <windows.h>
+# include <windows.h>
 #endif
 
 // Boost
@@ -59,10 +50,9 @@
 #include <limits>
 
 // Qt
-# include <Gui/QtAll.h>
+#include <Gui/QtAll.h>
 
 // Inventor
-# include <Gui/InventorAll.h>
+#include <Gui/InventorAll.h>
 
-#endif // _PreComp_
-#endif // __PRECOMPILED_GUI__
+#endif  // PART_DESIGN_PRECOMPILED_H

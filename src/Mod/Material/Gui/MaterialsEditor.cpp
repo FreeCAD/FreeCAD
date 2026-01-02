@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 David Carter <dcarter@david.carter.ca>             *
  *                                                                         *
@@ -19,8 +21,6 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QColorDialog>
 #include <QDesktopServices>
 #include <QIODevice>
@@ -32,7 +32,7 @@
 #include <QTextStream>
 #include <QVariant>
 #include <limits>
-#endif
+
 
 #include <App/Application.h>
 #include <App/License.h>
@@ -589,7 +589,7 @@ void MaterialsEditor::saveMaterial()
 void MaterialsEditor::accept()
 {
     if (_material->isOldFormat()) {
-        Base::Console().log("*** Old Format File ***\n");
+        Base::Console().log("*** Old format file ***\n");
         oldFormatError();
 
         return;
@@ -606,7 +606,7 @@ void MaterialsEditor::oldFormatError()
     box.setWindowTitle(tr("Old Format Material"));
 
     box.setText(tr("This file is in the old material card format."));
-    box.setInformativeText(QObject::tr("You must save the material before using it."));
+    box.setInformativeText(QObject::tr("Save the material before using it."));
     box.adjustSize();  // Silence warnings from Qt on Windows
     box.exec();
 }
@@ -940,12 +940,11 @@ bool MaterialsEditor::updateTexturePreview() const
         try {
             auto property = _material->getAppearanceProperty(QStringLiteral("TextureImage"));
             if (!property->isNull()) {
-                // Base::Console().log("Has 'TextureImage'\n");
                 auto propertyValue = property->getString();
                 if (!propertyValue.isEmpty()) {
                     QByteArray by = QByteArray::fromBase64(propertyValue.toUtf8());
-                    image = QImage::fromData(by, "PNG");  //.scaled(64, 64, Qt::KeepAspectRatio);
-                    hasImage = true;
+                    image = QImage::fromData(by);
+                    hasImage = !image.isNull();
                 }
             }
         }
@@ -962,9 +961,11 @@ bool MaterialsEditor::updateTexturePreview() const
                     if (!image.load(filePath)) {
                         Base::Console().log("Unable to load image '%s'\n",
                                             filePath.toStdString().c_str());
-                        // return;  // ???
+                        hasImage = false;
                     }
-                    hasImage = true;
+                    else {
+                        hasImage = !image.isNull();
+                    }
                 }
             }
             catch (const Materials::PropertyNotFound&) {
@@ -994,28 +995,28 @@ bool MaterialsEditor::updateMaterialPreview() const
 {
     if (_material->hasAppearanceProperty(QStringLiteral("AmbientColor"))) {
         QString color = _material->getAppearanceValueString(QStringLiteral("AmbientColor"));
-        _rendered->setAmbientColor(getColorHash(color, 255));
+        _rendered->setAmbientColor(getColorHash(color));
     }
     else {
         _rendered->resetAmbientColor();
     }
     if (_material->hasAppearanceProperty(QStringLiteral("DiffuseColor"))) {
         QString color = _material->getAppearanceValueString(QStringLiteral("DiffuseColor"));
-        _rendered->setDiffuseColor(getColorHash(color, 255));
+        _rendered->setDiffuseColor(getColorHash(color));
     }
     else {
         _rendered->resetDiffuseColor();
     }
     if (_material->hasAppearanceProperty(QStringLiteral("SpecularColor"))) {
         QString color = _material->getAppearanceValueString(QStringLiteral("SpecularColor"));
-        _rendered->setSpecularColor(getColorHash(color, 255));
+        _rendered->setSpecularColor(getColorHash(color));
     }
     else {
         _rendered->resetSpecularColor();
     }
     if (_material->hasAppearanceProperty(QStringLiteral("EmissiveColor"))) {
         QString color = _material->getAppearanceValueString(QStringLiteral("EmissiveColor"));
-        _rendered->setEmissiveColor(getColorHash(color, 255));
+        _rendered->setEmissiveColor(getColorHash(color));
     }
     else {
         _rendered->resetEmissiveColor();
@@ -1046,7 +1047,7 @@ void MaterialsEditor::updatePreview() const
     updateMaterialPreview();
 }
 
-QString MaterialsEditor::getColorHash(const QString& colorString, int colorRange)
+QString MaterialsEditor::getColorHash(const QString& colorString)
 {
     /*
         returns a '#000000' string from a '(0.1,0.2,0.3)' string. Optionally the string
@@ -1070,11 +1071,9 @@ QString MaterialsEditor::getColorHash(const QString& colorString, int colorRange
         stream >> alpha;
     }
 
-    QColor color(static_cast<int>(red * colorRange),
-                 static_cast<int>(green * colorRange),
-                 static_cast<int>(blue * colorRange),
-                 static_cast<int>(alpha * colorRange));
-    return color.name();
+    Base::Color color(red, green, blue, alpha);
+    QColor qcolor = color.asValue<QColor>();
+    return qcolor.name();
 }
 
 void MaterialsEditor::updateMaterialAppearance()
@@ -1316,13 +1315,13 @@ void MaterialsEditor::onDoubleClick(const QModelIndex& index)
 
 void MaterialsEditor::onContextMenu(const QPoint& pos)
 {
-    QMenu contextMenu(tr("Context menu"), this);
+    QMenu contextMenu(tr("Context Menu"), this);
 
-    QAction action1(tr("Inherit from"), this);
+    QAction action1(tr("Inherit From"), this);
     connect(&action1, &QAction::triggered, this, &MaterialsEditor::onInherit);
     contextMenu.addAction(&action1);
 
-    QAction action2(tr("Inherit new material"), this);
+    QAction action2(tr("Inherit New Material"), this);
     connect(&action2, &QAction::triggered, this, &MaterialsEditor::onInheritNew);
     contextMenu.addAction(&action2);
 
@@ -1344,9 +1343,8 @@ int MaterialsEditor::confirmSave(QWidget* parent)
     QMessageBox box(parent ? parent : this);
     box.setIcon(QMessageBox::Question);
     box.setWindowTitle(QObject::tr("Unsaved Material"));
-    box.setText(QObject::tr("Do you want to save your changes to the material before closing?"));
-
-    box.setInformativeText(QObject::tr("If you don't save, your changes will be lost."));
+    box.setText(QObject::tr("Save changes to the material before closing?"));
+    box.setInformativeText(QObject::tr("Otherwise, all changes will be lost."));
     box.setStandardButtons(QMessageBox::Discard | QMessageBox::Cancel | QMessageBox::Save);
     box.setDefaultButton(QMessageBox::Save);
     box.setEscapeButton(QMessageBox::Cancel);

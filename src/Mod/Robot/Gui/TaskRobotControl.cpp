@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <Gui/BitmapFactory.h>
 
@@ -32,10 +33,7 @@ using namespace RobotGui;
 using namespace Gui;
 
 TaskRobotControl::TaskRobotControl(Robot::RobotObject* pcRobotObject, QWidget* parent)
-    : TaskBox(Gui::BitmapFactory().pixmap("Robot_CreateRobot"),
-              tr("TaskRobotControl"),
-              true,
-              parent)
+    : TaskBox(Gui::BitmapFactory().pixmap("Robot_CreateRobot"), tr("TaskRobotControl"), true, parent)
     , pcRobot(pcRobotObject)
 {
     // we need a separate container widget to add all controls to

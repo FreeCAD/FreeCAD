@@ -34,7 +34,7 @@
            <string>If this box is checked, double-clicking on a page in the tree will automatically switch to TechDraw and the page will be made visible.</string>
           </property>
           <property name="text">
-           <string>Switch Workbench on Click</string>
+           <string>Switch workbench on click</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -56,10 +56,10 @@
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Dump intermediate results during Section view processing</string>
+           <string>Dump intermediate results during section view processing</string>
           </property>
           <property name="text">
-           <string>Debug Section</string>
+           <string>Debug section</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>debugSection</cstring>
@@ -72,17 +72,17 @@
         <item row="8" column="0">
          <widget class="QLabel" name="label_5">
           <property name="text">
-           <string>Edge Fuzz</string>
+           <string>Edge fuzz</string>
           </property>
          </widget>
         </item>
         <item row="1" column="0">
          <widget class="Gui::PrefCheckBox" name="cbNewFaceFinder">
           <property name="toolTip">
-           <string>If checked, FreeCAD will use the new face finder algorithm.  If not checked, FreeCAD will use the legacy face finder algorithm.</string>
+           <string>If checked, FreeCAD will use the new face finder algorithm. If not checked, FreeCAD will use the legacy face finder algorithm.</string>
           </property>
           <property name="text">
-           <string>Use New Face Finder Algorithm</string>
+           <string>Use new face finder algorithm</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -104,10 +104,10 @@
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Dump intermediate results during Detail view processing</string>
+           <string>Dump intermediate results during detail view processing</string>
           </property>
           <property name="text">
-           <string>Debug Detail</string>
+           <string>Debug detail</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>debugDetail</cstring>
@@ -132,7 +132,7 @@ Faces must be detected in order to use hatching, but there
 can be a performance penalty in complex models.</string>
           </property>
           <property name="text">
-           <string>Detect Faces</string>
+           <string>Detect faces</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -154,7 +154,7 @@ can be a performance penalty in complex models.</string>
            <string/>
           </property>
           <property name="text">
-           <string>Auto Correct Dimension Refs</string>
+           <string>Auto-correct dimension references</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -174,7 +174,7 @@ can be a performance penalty in complex models.</string>
 </string>
           </property>
           <property name="text">
-           <string>Validate Shapes</string>
+           <string>Validate shapes</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>CheckShapesBeforeUse</cstring>
@@ -196,7 +196,7 @@ can be a performance penalty in complex models.</string>
            <string>Include edges with unexpected geometry (zero length etc.) in results</string>
           </property>
           <property name="text">
-           <string>Allow Crazy Edges</string>
+           <string>Allow crazy edges</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>allowCrazyEdge</cstring>
@@ -209,10 +209,10 @@ can be a performance penalty in complex models.</string>
         <item row="0" column="2">
          <widget class="Gui::PrefCheckBox" name="cbReportProgress">
           <property name="toolTip">
-           <string>Issue progress messages while building View geometry</string>
+           <string>Issue progress messages while building view geometry</string>
           </property>
           <property name="text">
-           <string>Report Progress</string>
+           <string>Report progress</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>ReportProgress</cstring>
@@ -225,7 +225,7 @@ can be a performance penalty in complex models.</string>
         <item row="7" column="2">
          <widget class="Gui::PrefSpinBox" name="sbScrubCount">
           <property name="toolTip">
-           <string>The number of times FreeCAD should try to remove overlapping edges returned by the Hidden Line Removal algorithm. A value of 0 indicates no scrubbing, 1 indicates a single pass and 2 indicates a second pass should be performed. Values above 2 are generally not productive. Each pass adds to the time required to produce the drawing.</string>
+           <string>The number of times FreeCAD should try to remove overlapping edges returned by the hidden line removal algorithm. A value of 0 indicates no scrubbing, 1 indicates a single pass and 2 indicates a second pass should be performed. Values above 2 are generally not productive. Each pass adds to the time required to produce the drawing.</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
@@ -255,14 +255,14 @@ can be a performance penalty in complex models.</string>
            </font>
           </property>
           <property name="text">
-           <string>Overlap Edges Scrub Passes</string>
+           <string>Overlap edges scrub passes</string>
           </property>
          </widget>
         </item>
         <item row="9" column="0">
          <widget class="QLabel" name="label_4">
           <property name="text">
-           <string>Mark Fuzz</string>
+           <string>Mark fuzz</string>
           </property>
          </widget>
         </item>
@@ -298,7 +298,7 @@ when hatching a face with a PAT pattern</string>
         <item row="10" column="0">
          <widget class="QLabel" name="label">
           <property name="text">
-           <string>Max SVG Hatch Tiles</string>
+           <string>Max SVG hatch tiles</string>
           </property>
          </widget>
         </item>
@@ -308,7 +308,7 @@ when hatching a face with a PAT pattern</string>
            <string>If checked, shapes that fail validation will be saved as BREP files for later analysis.</string>
           </property>
           <property name="text">
-           <string>Debug Bad Shape</string>
+           <string>Debug bad shape</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>debugBadShape</cstring>
@@ -332,10 +332,10 @@ when hatching a face with a PAT pattern</string>
            </font>
           </property>
           <property name="toolTip">
-           <string>Perform a fuse operation on input shape(s) before Section view processing</string>
+           <string>Perform a fuse operation on input shapes before section view processing</string>
           </property>
           <property name="text">
-           <string>Fuse Before Section</string>
+           <string>Fuse before section</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>SectionFuseFirst</cstring>
@@ -409,7 +409,7 @@ Each unit is approx. 0.1 mm wide</string>
           </property>
           <property name="toolTip">
            <string>Size of selection area around edges
-Each unit is approx. 0.1 mm wide</string>
+Each unit is approximately 0.1mm wide</string>
           </property>
           <property name="statusTip">
            <string/>
@@ -440,7 +440,7 @@ Each unit is approx. 0.1 mm wide</string>
            <string>Highlights border of section cut in section views</string>
           </property>
           <property name="text">
-           <string>Show Section Edges</string>
+           <string>Show section edges</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -456,16 +456,16 @@ Each unit is approx. 0.1 mm wide</string>
         <item row="11" column="0">
          <widget class="QLabel" name="label_2">
           <property name="text">
-           <string>Max PAT Hatch Segments</string>
+           <string>Maximum PAT hatch segments</string>
           </property>
          </widget>
         </item>
         <item row="10" column="2">
          <widget class="Gui::PrefSpinBox" name="sbMaxTiles">
           <property name="toolTip">
-           <string>Limit of 64x64 pixel SVG tiles used to hatch a single face.
-For large scalings, you might get an error about too many SVG tiles.
-Then you need to increase the tile limit.</string>
+           <string>Limits the number of 64×64 pixel SVG tiles used to hatch a single face.
+For large scales, errors may occur due to excessive tiling.
+Increase the limit if necessary.</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignmentFlag::AlignRight</set>
@@ -498,7 +498,7 @@ Then you need to increase the tile limit.</string>
    <item>
     <widget class="QGroupBox" name="gbBehaviour">
      <property name="toolTip">
-      <string>Some combinations of OS and Navigation style key bindings may conflict with the default modifier keys for Balloon dragging and View snapping override. You can make adjustments here to find a non-conflicting key binding.</string>
+      <string>Choose non-conflicting key bindings as some combinations of OS and navigation style key bindings may conflict with the default modifier keys for balloon dragging and view snapping override.</string>
      </property>
      <property name="title">
       <string>Behaviour Overrides</string>
@@ -512,7 +512,7 @@ Then you need to increase the tile limit.</string>
            <string>Check this box to use the default modifier keys. Uncheck this box to set a different key combination.</string>
           </property>
           <property name="text">
-           <string>Use Default</string>
+           <string>Use default</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -529,7 +529,7 @@ Then you need to increase the tile limit.</string>
         <item row="0" column="0">
          <widget class="QLabel" name="label_6">
           <property name="text">
-           <string>Balloon Drag</string>
+           <string>Balloon drag</string>
           </property>
          </widget>
         </item>

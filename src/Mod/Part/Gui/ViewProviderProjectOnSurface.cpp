@@ -22,11 +22,9 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QAction>
 #include <QMenu>
-#endif
+
 
 #include "ViewProviderProjectOnSurface.h"
 #include "DlgProjectionOnSurface.h"
@@ -51,7 +49,7 @@ ViewProviderProjectOnSurface::~ViewProviderProjectOnSurface() = default;
 
 void ViewProviderProjectOnSurface::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    QAction* act = menu->addAction(QObject::tr("Edit projection"), receiver, member);
+    QAction* act = menu->addAction(QObject::tr("Edit Projection"), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
 
     ViewProviderPart::setupContextMenu(menu, receiver, member);

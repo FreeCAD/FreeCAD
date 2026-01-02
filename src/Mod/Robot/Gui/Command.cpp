@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,10 +22,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QMessageBox>
-#endif
+
 
 #include <Gui/Application.h>
 #include <Gui/Command.h>
@@ -42,6 +42,38 @@
 using namespace std;
 using namespace RobotGui;
 
+#include <QFileDialog>
+
+namespace
+{
+
+std::string getWrl(const QString& hint_directory)
+{
+    QString fileName = QFileDialog::getOpenFileName(
+        Gui::getMainWindow(),
+        QObject::tr("Select VRML file for Robot"),
+        hint_directory,
+        QObject::tr("VRML Files (*.wrl *.vrml)")
+    );
+
+    return fileName.toStdString();
+}
+
+std::string getCsv(const std::string& wrl_path)
+{
+    QFileInfo wrlInfo(QString::fromStdString(wrl_path));
+    QString hintDir = wrlInfo.absolutePath();
+    QString fileName = QFileDialog::getOpenFileName(
+        Gui::getMainWindow(),
+        QObject::tr("Select Kinematic CSV file for Robot"),
+        hintDir,
+        QObject::tr("CSV Files (*.csv)")
+    );
+    return fileName.toStdString();
+}
+
+}  // namespace
+
 DEF_STD_CMD_A(CmdRobotSetHomePos)
 
 CmdRobotSetHomePos::CmdRobotSetHomePos()
@@ -49,8 +81,8 @@ CmdRobotSetHomePos::CmdRobotSetHomePos()
 {
     sAppModule = "Robot";
     sGroup = QT_TR_NOOP("Robot");
-    sMenuText = QT_TR_NOOP("Set the home position");
-    sToolTipText = QT_TR_NOOP("Set the home position");
+    sMenuText = QT_TR_NOOP("Set Home Position");
+    sToolTipText = QT_TR_NOOP("Sets the home position");
     sWhatsThis = "Robot_SetHomePos";
     sStatusTip = sToolTipText;
     sPixmap = "Robot_SetHomePos";
@@ -67,9 +99,11 @@ void CmdRobotSetHomePos::activated(int)
         pcRobotObject = static_cast<Robot::RobotObject*>(filter.Result[0][0].getObject());
     }
     else {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Wrong selection"),
-                             QObject::tr("Select one Robot to set home position"));
+        QMessageBox::warning(
+            Gui::getMainWindow(),
+            QObject::tr("Wrong selection"),
+            QObject::tr("Select one Robot to set home position")
+        );
         return;
     }
 
@@ -78,18 +112,20 @@ void CmdRobotSetHomePos::activated(int)
 
     const char* n = FeatName.c_str();
     openCommand("Set home");
-    doCommand(Doc,
-              "App.activeDocument().%s.Home = "
-              "[App.activeDocument().%s.Axis1,App.activeDocument().%s.Axis2,App.activeDocument().%"
-              "s.Axis3,App.activeDocument().%s.Axis4,App.activeDocument().%s.Axis5,App."
-              "activeDocument().%s.Axis6]",
-              n,
-              n,
-              n,
-              n,
-              n,
-              n,
-              n);
+    doCommand(
+        Doc,
+        "App.activeDocument().%s.Home = "
+        "[App.activeDocument().%s.Axis1,App.activeDocument().%s.Axis2,App.activeDocument().%"
+        "s.Axis3,App.activeDocument().%s.Axis4,App.activeDocument().%s.Axis5,App."
+        "activeDocument().%s.Axis6]",
+        n,
+        n,
+        n,
+        n,
+        n,
+        n,
+        n
+    );
     updateActive();
     commitCommand();
 }
@@ -108,8 +144,8 @@ CmdRobotRestoreHomePos::CmdRobotRestoreHomePos()
 {
     sAppModule = "Robot";
     sGroup = QT_TR_NOOP("Robot");
-    sMenuText = QT_TR_NOOP("Move to home");
-    sToolTipText = QT_TR_NOOP("Move to home");
+    sMenuText = QT_TR_NOOP("Move to Home");
+    sToolTipText = QT_TR_NOOP("Moves to the home position");
     sWhatsThis = "Robot_RestoreHomePos";
     sStatusTip = sToolTipText;
     sPixmap = "Robot_RestoreHomePos";
@@ -126,9 +162,11 @@ void CmdRobotRestoreHomePos::activated(int)
         pcRobotObject = static_cast<Robot::RobotObject*>(filter.Result[0][0].getObject());
     }
     else {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Wrong selection"),
-                             QObject::tr("Select one Robot"));
+        QMessageBox::warning(
+            Gui::getMainWindow(),
+            QObject::tr("Wrong selection"),
+            QObject::tr("Select one Robot")
+        );
         return;
     }
 
@@ -161,35 +199,30 @@ CmdRobotConstraintAxle::CmdRobotConstraintAxle()
 {
     sAppModule = "Robot";
     sGroup = QT_TR_NOOP("Robot");
-    sMenuText = QT_TR_NOOP("Place robot...");
-    sToolTipText = QT_TR_NOOP("Place a robot (experimental!)");
+    sMenuText = QT_TR_NOOP("Place Robot");
+    sToolTipText = QT_TR_NOOP("Places a robot in the scene");
+
     sWhatsThis = "Robot_Create";
     sStatusTip = sToolTipText;
     sPixmap = "Robot_CreateRobot";
 }
 
 
-void CmdRobotConstraintAxle::activated(int)
+void CmdRobotConstraintAxle::activated([[maybe_unused]] int msg)
 {
-    std::string FeatName = getUniqueObjectName("Robot");
-    std::string RobotPath = "Mod/Robot/Lib/Kuka/kr500_1.wrl";
-    std::string KinematicPath = "Mod/Robot/Lib/Kuka/kr500_1.csv";
+    const std::string FeatName = getUniqueObjectName("Robot");
+    const std::string WrlPath = getWrl(QString());
+    const std::string KinematicPath = getCsv(WrlPath);
 
     openCommand("Place robot");
-    doCommand(Doc,
-              "App.activeDocument().addObject(\"Robot::RobotObject\",\"%s\")",
-              FeatName.c_str());
-    doCommand(Doc,
-              "App.activeDocument().%s.RobotVrmlFile = App.getResourceDir()+\"%s\"",
-              FeatName.c_str(),
-              RobotPath.c_str());
-    doCommand(Doc,
-              "App.activeDocument().%s.RobotKinematicFile = App.getResourceDir()+\"%s\"",
-              FeatName.c_str(),
-              KinematicPath.c_str());
-    doCommand(Doc, "App.activeDocument().%s.Axis2 = -90", FeatName.c_str());
-    doCommand(Doc, "App.activeDocument().%s.Axis3 = 90", FeatName.c_str());
-    doCommand(Doc, "App.activeDocument().%s.Axis5 = 45", FeatName.c_str());
+    doCommand(Doc, "App.activeDocument().addObject(\"Robot::RobotObject\",\"%s\")", FeatName.c_str());
+    doCommand(Doc, "App.activeDocument().%s.RobotVrmlFile = \"%s\"", FeatName.c_str(), WrlPath.c_str());
+    doCommand(
+        Doc,
+        "App.activeDocument().%s.RobotKinematicFile = \"%s\"",
+        FeatName.c_str(),
+        KinematicPath.c_str()
+    );
     updateActive();
     commitCommand();
 }
@@ -209,8 +242,8 @@ CmdRobotSimulate::CmdRobotSimulate()
 {
     sAppModule = "Robot";
     sGroup = QT_TR_NOOP("Robot");
-    sMenuText = QT_TR_NOOP("Simulate a trajectory");
-    sToolTipText = QT_TR_NOOP("Run a simulation on a trajectory");
+    sMenuText = QT_TR_NOOP("Simulate Trajectory");
+    sToolTipText = QT_TR_NOOP("Simulates robot movement along a selected trajectory");
     sWhatsThis = "Robot_Simulate";
     sStatusTip = sToolTipText;
     sPixmap = "Robot_Simulate";
@@ -231,9 +264,11 @@ void CmdRobotSimulate::activated(int)
         pcTrajectoryObject = static_cast<Robot::TrajectoryObject*>(filter.Result[1][0].getObject());
     }
     else {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Wrong selection"),
-                             QObject::tr("Select one Robot and one Trajectory object."));
+        QMessageBox::warning(
+            Gui::getMainWindow(),
+            QObject::tr("Wrong selection"),
+            QObject::tr("Select one Robot and one Trajectory object.")
+        );
         return;
     }
 
@@ -241,7 +276,8 @@ void CmdRobotSimulate::activated(int)
         QMessageBox::warning(
             Gui::getMainWindow(),
             QObject::tr("Trajectory not valid"),
-            QObject::tr("You need at least two waypoints in a trajectory to simulate."));
+            QObject::tr("You need at least two waypoints in a trajectory to simulate.")
+        );
         return;
     }
 
@@ -260,10 +296,10 @@ bool CmdRobotSimulate::isActive()
 
 void CreateRobotCommands()
 {
-    Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
+    Gui::CommandManager& command_manager = Gui::Application::Instance->commandManager();
 
-    rcCmdMgr.addCommand(new CmdRobotRestoreHomePos());
-    rcCmdMgr.addCommand(new CmdRobotSetHomePos());
-    rcCmdMgr.addCommand(new CmdRobotConstraintAxle());
-    rcCmdMgr.addCommand(new CmdRobotSimulate());
+    command_manager.addCommand(new CmdRobotRestoreHomePos());
+    command_manager.addCommand(new CmdRobotSetHomePos());
+    command_manager.addCommand(new CmdRobotConstraintAxle());
+    command_manager.addCommand(new CmdRobotSimulate());
 }

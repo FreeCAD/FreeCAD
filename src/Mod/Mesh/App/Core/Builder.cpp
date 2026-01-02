@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2005 Imetric 3D GmbH                                    *
  *                                                                         *
@@ -20,11 +22,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <algorithm>
-#endif
+
 
 #include <Base/Exception.h>
 #include <Base/Sequencer.h>
@@ -107,20 +107,17 @@ void MeshBuilder::AddFacet(const MeshGeomFacet& facet, bool takeFlag, bool takeP
         prop = facet._ulProp;
     }
 
-    AddFacet(facet._aclPoints[0],
-             facet._aclPoints[1],
-             facet._aclPoints[2],
-             facet.GetNormal(),
-             flag,
-             prop);
+    AddFacet(facet._aclPoints[0], facet._aclPoints[1], facet._aclPoints[2], facet.GetNormal(), flag, prop);
 }
 
-void MeshBuilder::AddFacet(const Base::Vector3f& pt1,
-                           const Base::Vector3f& pt2,
-                           const Base::Vector3f& pt3,
-                           const Base::Vector3f& normal,
-                           unsigned char flag,
-                           unsigned long prop)
+void MeshBuilder::AddFacet(
+    const Base::Vector3f& pt1,
+    const Base::Vector3f& pt2,
+    const Base::Vector3f& pt3,
+    const Base::Vector3f& normal,
+    unsigned char flag,
+    unsigned long prop
+)
 {
     Base::Vector3f facetPoints[4] = {pt1, pt2, pt3, normal};
     AddFacet(facetPoints, flag, prop);
@@ -217,11 +214,11 @@ void MeshBuilder::RemoveUnreferencedPoints()
         }
     }
 
-    unsigned long uValidPts = std::count_if(_meshKernel._aclPointArray.begin(),
-                                            _meshKernel._aclPointArray.end(),
-                                            [](const MeshPoint& p) {
-                                                return p.IsValid();
-                                            });
+    unsigned long uValidPts = std::count_if(
+        _meshKernel._aclPointArray.begin(),
+        _meshKernel._aclPointArray.end(),
+        [](const MeshPoint& p) { return p.IsValid(); }
+    );
     if (uValidPts < _meshKernel.CountPoints()) {
         _meshKernel.RemoveInvalids();
     }

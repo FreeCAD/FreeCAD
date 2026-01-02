@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2018 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -25,6 +26,7 @@ import Path
 import math
 import Path.Base.Gui.Util as PathGuiUtil
 import PathScripts.PathUtils as PathUtils
+import Path.Dressup.Utils as PathDressup
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 if False:
@@ -149,6 +151,8 @@ class ObjectDressup:
             job = PathUtils.findParentJob(obj)
             if job:
                 job.Proxy.setCenterOfRotation(self.center(obj))
+        if prop == "Path" and obj.ViewObject:
+            obj.ViewObject.signalChangeIcon()
 
     def center(self, obj):
         return FreeCAD.Vector(0, 0, 0 - obj.Radius.Value)
@@ -245,6 +249,12 @@ class ViewProviderDressup:
             arg1.Object.Base = None
         return True
 
+    def getIcon(self):
+        if getattr(PathDressup.baseOp(self.obj), "Active", True):
+            return ":/icons/CAM_Dressup.svg"
+        else:
+            return ":/icons/CAM_OpActive.svg"
+
 
 class CommandPathDressup:
     def GetResources(self):
@@ -252,7 +262,7 @@ class CommandPathDressup:
             "Pixmap": "CAM_Dressup",
             "MenuText": QT_TRANSLATE_NOOP("CAM_DressupAxisMap", "Axis Map"),
             "Accel": "",
-            "ToolTip": QT_TRANSLATE_NOOP("CAM_DressupAxisMap", "Remap one axis to another."),
+            "ToolTip": QT_TRANSLATE_NOOP("CAM_DressupAxisMap", "Remaps one axis to another"),
         }
 
     def IsActive(self):
@@ -267,9 +277,7 @@ class CommandPathDressup:
         # check that the selection contains exactly what we want
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
-            FreeCAD.Console.PrintError(
-                translate("CAM_Dressup", "Please select one toolpath object\n")
-            )
+            FreeCAD.Console.PrintError(translate("CAM_Dressup", "Select one toolpath object\n"))
             return
         if not selection[0].isDerivedFrom("Path::Feature"):
             FreeCAD.Console.PrintError(
@@ -277,7 +285,7 @@ class CommandPathDressup:
             )
             return
         if selection[0].isDerivedFrom("Path::FeatureCompoundPython"):
-            FreeCAD.Console.PrintError(translate("CAM_Dressup", "Please select a toolpath object"))
+            FreeCAD.Console.PrintError(translate("CAM_Dressup", "Select a toolpath object"))
             return
 
         # everything ok!
@@ -306,4 +314,4 @@ if FreeCAD.GuiUp:
     # register the FreeCAD command
     FreeCADGui.addCommand("CAM_DressupAxisMap", CommandPathDressup())
 
-FreeCAD.Console.PrintLog("Loading PathDressup... done\n")
+FreeCAD.Console.PrintLog("Loading PathDressup… done\n")

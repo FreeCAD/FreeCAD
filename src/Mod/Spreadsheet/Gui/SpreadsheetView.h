@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) Eivind Kvedalen (eivind@kvedalen.name) 2015             *
  *                                                                         *
@@ -28,6 +30,8 @@
 #include <Gui/MDIView.h>
 #include <Gui/MDIViewPy.h>
 #include <Mod/Spreadsheet/App/Sheet.h>
+
+#include <Mod/Spreadsheet/SpreadsheetGlobal.h>
 
 #include "SheetModel.h"
 
@@ -96,9 +100,11 @@ public:
 
     void select(App::CellAddress cell, QItemSelectionModel::SelectionFlags flags);
 
-    void select(App::CellAddress topLeft,
-                App::CellAddress bottomRight,
-                QItemSelectionModel::SelectionFlags flags);
+    void select(
+        App::CellAddress topLeft,
+        App::CellAddress bottomRight,
+        QItemSelectionModel::SelectionFlags flags
+    );
 
     QModelIndex currentIndex() const;
 

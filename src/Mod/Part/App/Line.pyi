@@ -1,8 +1,11 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export
 from Base.Vector import Vector
 from GeometryCurve import GeometryCurve
-from typing import overload, Final
-
+from typing import overload
 
 @export(
     PythonName="Part.Line",
@@ -37,9 +40,7 @@ class Line(GeometryCurve):
 
     @overload
     def __init__(self) -> None: ...
-
     @overload
     def __init__(self, line: "Line") -> None: ...
-
     @overload
     def __init__(self, point1: Vector, point2: Vector) -> None: ...

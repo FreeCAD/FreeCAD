@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "TrajectoryCompound.h"
 #include "Waypoint.h"
@@ -45,15 +46,14 @@ App::DocumentObjectExecReturn* TrajectoryCompound::execute()
 
     for (auto it : Tracs) {
         if (it->isDerivedFrom<Robot::TrajectoryObject>()) {
-            const std::vector<Waypoint*>& wps =
-                static_cast<Robot::TrajectoryObject*>(it)->Trajectory.getValue().getWaypoints();
+            const std::vector<Waypoint*>& wps
+                = static_cast<Robot::TrajectoryObject*>(it)->Trajectory.getValue().getWaypoints();
             for (auto wp : wps) {
                 result.addWaypoint(*wp);
             }
         }
         else {
-            return new App::DocumentObjectExecReturn(
-                "Not all objects in compound are trajectories!");
+            return new App::DocumentObjectExecReturn("Not all objects in compound are trajectories!");
         }
     }
 

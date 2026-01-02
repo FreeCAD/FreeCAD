@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
@@ -69,14 +70,6 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
                 QT_TRANSLATE_NOOP("App::Property", "Additional base objects to be engraved"),
             )
         obj.setEditorMode("BaseShapes", 2)  # hide
-        if not hasattr(obj, "BaseObject"):
-            obj.addProperty(
-                "App::PropertyLink",
-                "BaseObject",
-                "Path",
-                QT_TRANSLATE_NOOP("App::Property", "Additional base objects to be engraved"),
-            )
-        obj.setEditorMode("BaseObject", 2)  # hide
 
     def initOperation(self, obj):
         """initOperation(obj) ... create engraving specific properties."""
@@ -98,30 +91,31 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
 
         jobshapes = []
 
-        if len(obj.Base) >= 1:  # user has selected specific subelements
+        if obj.Base:
+            # user has selected specific subelements
             Path.Log.track(len(obj.Base))
-            wires = []
             for base, subs in obj.Base:
                 edges = []
-                basewires = []
+                wires = []
                 for feature in subs:
                     sub = base.Shape.getElement(feature)
-                    if type(sub) == Part.Edge:
+                    if isinstance(sub, Part.Edge):
                         edges.append(sub)
                     elif sub.Wires:
-                        basewires.extend(sub.Wires)
+                        wires.extend(sub.Wires)
                     else:
-                        basewires.append(Part.Wire(sub.Edges))
+                        wires.append(Part.Wire(sub.Edges))
 
-                for edgelist in Part.sortEdges(edges):
-                    basewires.append(Part.Wire(edgelist))
+                for sortedEdges in Part.sortEdges(edges):
+                    wires.append(Part.Wire(sortedEdges))
 
-                wires.extend(basewires)
                 jobshapes.append(Part.makeCompound(wires))
 
-        elif len(obj.BaseShapes) > 0:  # user added specific shapes
+        elif obj.BaseShapes:
+            # user added specific shapes
             jobshapes.extend([base.Shape for base in obj.BaseShapes])
         else:
+            # process all objects in Job.Model.Group
             Path.Log.track(self.model)
             for base in self.model:
                 Path.Log.track(base.Label)
@@ -132,11 +126,14 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
                 elif hasattr(base, "ArrayType"):
                     jobshapes.append(base.Shape)
 
-        if len(jobshapes) > 0:
+        if jobshapes:
             Path.Log.debug("processing {} jobshapes".format(len(jobshapes)))
             wires = []
             for shape in jobshapes:
-                shapeWires = shape.Wires
+                if isinstance(shape, Part.Edge):
+                    shapeWires = [Part.Wire(shape)]
+                else:
+                    shapeWires = shape.Wires
                 Path.Log.debug("jobshape has {} edges".format(len(shape.Edges)))
                 self.commandlist.append(
                     Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid})

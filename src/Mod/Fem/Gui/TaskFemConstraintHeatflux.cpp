@@ -23,14 +23,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <QAction>
 #include <QMessageBox>
 #include <limits>
 #include <sstream>
-#endif
+
 
 #include <Gui/Command.h>
 #include <Gui/Selection/SelectionObject.h>
@@ -48,7 +46,8 @@ using namespace Gui;
 
 TaskFemConstraintHeatflux::TaskFemConstraintHeatflux(
     ViewProviderFemConstraintHeatflux* ConstraintView,
-    QWidget* parent)
+    QWidget* parent
+)
     : TaskFemConstraintOnBoundary(ConstraintView, parent, "FEM_ConstraintHeatflux")
     , ui(new Ui_TaskFemConstraintHeatflux)
 {
@@ -58,38 +57,44 @@ TaskFemConstraintHeatflux::TaskFemConstraintHeatflux(
 
     // create a context menu for the listview of the references
     createActions(ui->lw_references);
-    connect(deleteAction,
-            &QAction::triggered,
-            this,
-            &TaskFemConstraintHeatflux::onReferenceDeleted);
-    connect(ui->cb_constr_type,
-            qOverload<int>(&QComboBox::activated),
-            this,
-            &TaskFemConstraintHeatflux::onConstrTypeChanged);
-    connect(ui->qsb_heat_flux,
-            qOverload<double>(&QuantitySpinBox::valueChanged),
-            this,
-            &TaskFemConstraintHeatflux::onHeatFluxChanged);
-    connect(ui->qsb_ambienttemp_conv,
-            qOverload<double>(&QuantitySpinBox::valueChanged),
-            this,
-            &TaskFemConstraintHeatflux::onAmbientTempChanged);
-    connect(ui->qsb_film_coef,
-            qOverload<double>(&QuantitySpinBox::valueChanged),
-            this,
-            &TaskFemConstraintHeatflux::onFilmCoefChanged);
-    connect(ui->dsb_emissivity,
-            qOverload<double>(&DoubleSpinBox::valueChanged),
-            this,
-            &TaskFemConstraintHeatflux::onEmissivityChanged);
-    connect(ui->qsb_ambienttemp_rad,
-            qOverload<double>(&QuantitySpinBox::valueChanged),
-            this,
-            &TaskFemConstraintHeatflux::onAmbientTempChanged);
-    connect(ui->lw_references,
-            &QListWidget::itemClicked,
-            this,
-            &TaskFemConstraintHeatflux::setSelection);
+    connect(deleteAction, &QAction::triggered, this, &TaskFemConstraintHeatflux::onReferenceDeleted);
+    connect(
+        ui->cb_constr_type,
+        qOverload<int>(&QComboBox::activated),
+        this,
+        &TaskFemConstraintHeatflux::onConstrTypeChanged
+    );
+    connect(
+        ui->qsb_heat_flux,
+        qOverload<double>(&QuantitySpinBox::valueChanged),
+        this,
+        &TaskFemConstraintHeatflux::onHeatFluxChanged
+    );
+    connect(
+        ui->qsb_ambienttemp_conv,
+        qOverload<double>(&QuantitySpinBox::valueChanged),
+        this,
+        &TaskFemConstraintHeatflux::onAmbientTempChanged
+    );
+    connect(
+        ui->qsb_film_coef,
+        qOverload<double>(&QuantitySpinBox::valueChanged),
+        this,
+        &TaskFemConstraintHeatflux::onFilmCoefChanged
+    );
+    connect(
+        ui->dsb_emissivity,
+        qOverload<double>(&DoubleSpinBox::valueChanged),
+        this,
+        &TaskFemConstraintHeatflux::onEmissivityChanged
+    );
+    connect(
+        ui->qsb_ambienttemp_rad,
+        qOverload<double>(&QuantitySpinBox::valueChanged),
+        this,
+        &TaskFemConstraintHeatflux::onAmbientTempChanged
+    );
+    connect(ui->lw_references, &QListWidget::itemClicked, this, &TaskFemConstraintHeatflux::setSelection);
 
     this->groupLayout()->addWidget(proxy);
 
@@ -146,6 +151,10 @@ TaskFemConstraintHeatflux::TaskFemConstraintHeatflux(
     if (!Objects.empty()) {
         ui->lw_references->setCurrentRow(0, QItemSelectionModel::ClearAndSelect);
     }
+
+    ui->lbl_references->setText(
+        tr("Select geometry of type: ") + QString::fromUtf8("<b>%1</b>").arg(tr("Edge, Face"))
+    );
 
     // Selection buttons
     buttonGroup->addButton(ui->btnAdd, static_cast<int>(SelectionChangeModes::refAdd));
@@ -209,10 +218,12 @@ void TaskFemConstraintHeatflux::Conv()
 {
     Fem::ConstraintHeatflux* pcConstraint = ConstraintView->getObject<Fem::ConstraintHeatflux>();
     std::string name = ConstraintView->getObject()->getNameInDocument();
-    Gui::Command::doCommand(Gui::Command::Doc,
-                            "App.ActiveDocument.%s.ConstraintType = \"%s\"",
-                            name.c_str(),
-                            getConstraintType().c_str());
+    Gui::Command::doCommand(
+        Gui::Command::Doc,
+        "App.ActiveDocument.%s.ConstraintType = \"%s\"",
+        name.c_str(),
+        getConstraintType().c_str()
+    );
     ui->qsb_ambienttemp_conv->setValue(pcConstraint->AmbientTemp.getQuantityValue());
     ui->qsb_film_coef->setValue(pcConstraint->FilmCoef.getQuantityValue());
     ui->sw_heatflux->setCurrentIndex(1);
@@ -222,10 +233,12 @@ void TaskFemConstraintHeatflux::Rad()
 {
     Fem::ConstraintHeatflux* pcConstraint = ConstraintView->getObject<Fem::ConstraintHeatflux>();
     std::string name = ConstraintView->getObject()->getNameInDocument();
-    Gui::Command::doCommand(Gui::Command::Doc,
-                            "App.ActiveDocument.%s.ConstraintType = \"%s\"",
-                            name.c_str(),
-                            getConstraintType().c_str());
+    Gui::Command::doCommand(
+        Gui::Command::Doc,
+        "App.ActiveDocument.%s.ConstraintType = \"%s\"",
+        name.c_str(),
+        getConstraintType().c_str()
+    );
     ui->qsb_ambienttemp_rad->setValue(pcConstraint->AmbientTemp.getQuantityValue());
     ui->dsb_emissivity->setValue(pcConstraint->Emissivity.getValue());
     ui->sw_heatflux->setCurrentIndex(2);
@@ -235,10 +248,12 @@ void TaskFemConstraintHeatflux::Flux()
 {
     Fem::ConstraintHeatflux* pcConstraint = ConstraintView->getObject<Fem::ConstraintHeatflux>();
     std::string name = ConstraintView->getObject()->getNameInDocument();
-    Gui::Command::doCommand(Gui::Command::Doc,
-                            "App.ActiveDocument.%s.ConstraintType = \"%s\"",
-                            name.c_str(),
-                            getConstraintType().c_str());
+    Gui::Command::doCommand(
+        Gui::Command::Doc,
+        "App.ActiveDocument.%s.ConstraintType = \"%s\"",
+        name.c_str(),
+        getConstraintType().c_str()
+    );
     ui->qsb_heat_flux->setValue(pcConstraint->DFlux.getQuantityValue());
     ui->sw_heatflux->setCurrentIndex(0);
 }
@@ -261,8 +276,8 @@ void TaskFemConstraintHeatflux::onConstrTypeChanged(int item)
 
 void TaskFemConstraintHeatflux::addToSelection()
 {
-    std::vector<Gui::SelectionObject> selection =
-        Gui::Selection().getSelectionEx();  // gets vector of selected objects of active document
+    std::vector<Gui::SelectionObject> selection
+        = Gui::Selection().getSelectionEx();  // gets vector of selected objects of active document
     if (selection.empty()) {
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
@@ -276,15 +291,26 @@ void TaskFemConstraintHeatflux::addToSelection()
             QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
             return;
         }
-        const std::vector<std::string>& subNames = it.getSubNames();
-        App::DocumentObject* obj = it.getObject();
 
+        App::DocumentObject* obj = it.getObject();
+        if (obj->getDocument() != pcConstraint->getDocument()) {
+            QMessageBox::warning(
+                this,
+                tr("Selection error"),
+                tr("External object selection is not supported")
+            );
+            return;
+        }
+
+        const std::vector<std::string>& subNames = it.getSubNames();
         if (!subNames.empty()) {
             for (const auto& subName : subNames) {
-                if (subName.substr(0, 4) != "Face") {
-                    QMessageBox::warning(this,
-                                         tr("Selection error"),
-                                         tr("Selection must only consist of faces!"));
+                if ((subName.substr(0, 4) != "Face") && (subName.substr(0, 4) != "Edge")) {
+                    QMessageBox::warning(
+                        this,
+                        tr("Selection error"),
+                        tr("Selection must only consist of faces! (edges in 2D models)")
+                    );
                     return;
                 }
             }
@@ -297,15 +323,18 @@ void TaskFemConstraintHeatflux::addToSelection()
             bool addMe = true;
             for (auto itr = std::ranges::find(SubElements.begin(), SubElements.end(), subName);
                  itr != SubElements.end();
-                 itr = std::find(++itr,
-                                 SubElements.end(),
-                                 subName)) {  // for every sub element in selection that
-                                              // matches one in old list
+                 itr = std::find(
+                     ++itr,
+                     SubElements.end(),
+                     subName
+                 )) {  // for every sub element in selection that
+                       // matches one in old list
                 if (obj
                     == Objects[std::distance(
                         SubElements.begin(),
-                        itr)]) {  // if selected sub element's object equals the one in old list
-                                  // then it was added before so don't add
+                        itr
+                    )]) {  // if selected sub element's object equals the one in old list
+                           // then it was added before so don't add
                     addMe = false;
                 }
             }
@@ -324,8 +353,8 @@ void TaskFemConstraintHeatflux::addToSelection()
 
 void TaskFemConstraintHeatflux::removeFromSelection()
 {
-    std::vector<Gui::SelectionObject> selection =
-        Gui::Selection().getSelectionEx();  // gets vector of selected objects of active document
+    std::vector<Gui::SelectionObject> selection
+        = Gui::Selection().getSelectionEx();  // gets vector of selected objects of active document
     if (selection.empty()) {
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
@@ -345,10 +374,12 @@ void TaskFemConstraintHeatflux::removeFromSelection()
 
         if (!subNames.empty()) {
             for (const auto& subName : subNames) {
-                if (subName.substr(0, 4) != "Face") {
-                    QMessageBox::warning(this,
-                                         tr("Selection error"),
-                                         tr("Selection must only consist of faces!"));
+                if ((subName.substr(0, 4) != "Face") && (subName.substr(0, 4) != "Edge")) {
+                    QMessageBox::warning(
+                        this,
+                        tr("Selection error"),
+                        tr("Selection must only consist of faces! (edges in 2D models)")
+                    );
                     return;
                 }
             }
@@ -358,16 +389,17 @@ void TaskFemConstraintHeatflux::removeFromSelection()
             // SubElements
         }
         for (const auto& subName : subNames) {  // for every selected sub element
-            for (auto itr = std::ranges::find(SubElements, subName); itr != SubElements.end();
-                 itr = std::find(++itr,
-                                 SubElements.end(),
-                                 subName)) {  // for every sub element in selection that
-                                              // matches one in old list
+            for (auto itr = std::ranges::find(SubElements, subName); itr != SubElements.end(); itr
+                 = std::find(++itr,
+                             SubElements.end(),
+                             subName)) {  // for every sub element in selection that
+                                          // matches one in old list
                 if (obj
                     == Objects[std::distance(
                         SubElements.begin(),
-                        itr)]) {  // if selected sub element's object equals the one in old list
-                                  // then it was added before so mark for deletion
+                        itr
+                    )]) {  // if selected sub element's object equals the one in old list
+                           // then it was added before so mark for deletion
                     itemsToDel.push_back(std::distance(SubElements.begin(), itr));
                 }
             }
@@ -476,7 +508,8 @@ void TaskFemConstraintHeatflux::clearButtons(const SelectionChangeModes notThis)
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskDlgFemConstraintHeatflux::TaskDlgFemConstraintHeatflux(
-    ViewProviderFemConstraintHeatflux* ConstraintView)
+    ViewProviderFemConstraintHeatflux* ConstraintView
+)
 {
     this->ConstraintView = ConstraintView;
     assert(ConstraintView);
@@ -490,26 +523,34 @@ TaskDlgFemConstraintHeatflux::TaskDlgFemConstraintHeatflux(
 bool TaskDlgFemConstraintHeatflux::accept()
 {
     std::string name = ConstraintView->getObject()->getNameInDocument();
-    const TaskFemConstraintHeatflux* parameterHeatflux =
-        static_cast<const TaskFemConstraintHeatflux*>(parameter);
+    const TaskFemConstraintHeatflux* parameterHeatflux
+        = static_cast<const TaskFemConstraintHeatflux*>(parameter);
 
     try {
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.AmbientTemp = \"%s\"",
-                                name.c_str(),
-                                parameterHeatflux->getAmbientTemp().c_str());
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.FilmCoef = \"%s\"",
-                                name.c_str(),
-                                parameterHeatflux->getFilmCoef().c_str());
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.Emissivity = %f",
-                                name.c_str(),
-                                parameterHeatflux->getEmissivity());
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.DFlux = \"%s\"",
-                                name.c_str(),
-                                parameterHeatflux->getDFlux().c_str());
+        Gui::Command::doCommand(
+            Gui::Command::Doc,
+            "App.ActiveDocument.%s.AmbientTemp = \"%s\"",
+            name.c_str(),
+            parameterHeatflux->getAmbientTemp().c_str()
+        );
+        Gui::Command::doCommand(
+            Gui::Command::Doc,
+            "App.ActiveDocument.%s.FilmCoef = \"%s\"",
+            name.c_str(),
+            parameterHeatflux->getFilmCoef().c_str()
+        );
+        Gui::Command::doCommand(
+            Gui::Command::Doc,
+            "App.ActiveDocument.%s.Emissivity = %f",
+            name.c_str(),
+            parameterHeatflux->getEmissivity()
+        );
+        Gui::Command::doCommand(
+            Gui::Command::Doc,
+            "App.ActiveDocument.%s.DFlux = \"%s\"",
+            name.c_str(),
+            parameterHeatflux->getDFlux().c_str()
+        );
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));

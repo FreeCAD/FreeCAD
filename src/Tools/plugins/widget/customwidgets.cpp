@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2006 Werner Mayer <werner.wm.mayer@gmx.de>              *
  *                                                                         *
@@ -22,11 +24,13 @@
 
 #include <limits>
 
+#include <QAction>
 #include <QApplication>
 #include <QColorDialog>
 #include <QCursor>
 #include <QFileDialog>
 #include <QHeaderView>
+#include <QMenu>
 #include <QMessageBox>
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
@@ -53,9 +57,7 @@ UrlLabel::~UrlLabel()
 
 void UrlLabel::mouseReleaseEvent(QMouseEvent*)
 {
-    QMessageBox::information(this,
-                             "Browser",
-                             QString("This starts your browser with url %1").arg(_url));
+    QMessageBox::information(this, "Browser", QString("This starts your browser with url %1").arg(_url));
 }
 
 QString UrlLabel::url() const
@@ -173,19 +175,11 @@ void FileChooser::chooseFile()
     QFileDialog::Options dlgOpt = QFileDialog::DontUseNativeDialog;
     QString fn;
     if (mode() == File) {
-        fn = QFileDialog::getOpenFileName(this,
-                                          tr("Select a file"),
-                                          lineEdit->text(),
-                                          _filter,
-                                          0,
-                                          dlgOpt);
+        fn = QFileDialog::getOpenFileName(this, tr("Select a file"), lineEdit->text(), _filter, 0, dlgOpt);
     }
     else {
         QFileDialog::Options option = QFileDialog::ShowDirsOnly | dlgOpt;
-        fn = QFileDialog::getExistingDirectory(this,
-                                               tr("Select a directory"),
-                                               lineEdit->text(),
-                                               option);
+        fn = QFileDialog::getExistingDirectory(this, tr("Select a directory"), lineEdit->text(), option);
     }
 
     if (!fn.isEmpty()) {
@@ -544,6 +538,66 @@ void InputField::setHistorySize(int i)
 
 // --------------------------------------------------------------------
 
+ExpressionLineEdit::ExpressionLineEdit(QWidget* parent)
+    : QLineEdit(parent)
+    , exactMatch {false}
+{
+    completer = new QCompleter(this);
+    connect(this, &QLineEdit::textEdited, this, &ExpressionLineEdit::slotTextChanged);
+}
+
+void ExpressionLineEdit::setExactMatch(bool enabled)
+{
+    exactMatch = enabled;
+    if (completer) {
+        completer->setFilterMode(exactMatch ? Qt::MatchStartsWith : Qt::MatchContains);
+    }
+}
+
+void ExpressionLineEdit::slotTextChanged(const QString& text)
+{
+    Q_EMIT textChanged2(text, cursorPosition());
+}
+
+void ExpressionLineEdit::slotCompleteText(const QString& completionPrefix, bool isActivated)
+{
+    Q_UNUSED(completionPrefix)
+    Q_UNUSED(isActivated)
+}
+
+void ExpressionLineEdit::slotCompleteTextHighlighted(const QString& completionPrefix)
+{
+    slotCompleteText(completionPrefix, false);
+}
+
+void ExpressionLineEdit::slotCompleteTextSelected(const QString& completionPrefix)
+{
+    slotCompleteText(completionPrefix, true);
+}
+
+void ExpressionLineEdit::keyPressEvent(QKeyEvent* e)
+{
+    QLineEdit::keyPressEvent(e);
+}
+
+void ExpressionLineEdit::contextMenuEvent(QContextMenuEvent* event)
+{
+    QMenu* menu = createStandardContextMenu();
+
+    if (completer) {
+        menu->addSeparator();
+        QAction* match = menu->addAction(tr("Exact match"));
+        match->setCheckable(true);
+        match->setChecked(completer->filterMode() == Qt::MatchStartsWith);
+        QObject::connect(match, &QAction::toggled, this, &Gui::ExpressionLineEdit::setExactMatch);
+    }
+    menu->setAttribute(Qt::WA_DeleteOnClose);
+
+    menu->popup(event->globalPos());
+}
+
+// --------------------------------------------------------------------
+
 namespace Base
 {
 
@@ -758,13 +812,11 @@ public:
                 }
                 break;
             case 2:
-                if (copy.at(1) == locale.decimalPoint()
-                    && (plus && copy.at(0) == QLatin1Char('+'))) {
+                if (copy.at(1) == locale.decimalPoint() && (plus && copy.at(0) == QLatin1Char('+'))) {
                     state = QValidator::Intermediate;
                     goto end;
                 }
-                if (copy.at(1) == locale.decimalPoint()
-                    && (minus && copy.at(0) == QLatin1Char('-'))) {
+                if (copy.at(1) == locale.decimalPoint() && (minus && copy.at(0) == QLatin1Char('-'))) {
                     state = QValidator::Intermediate;
                     copy.insert(1, QLatin1Char('0'));
                     pos++;
@@ -1105,8 +1157,7 @@ void QuantitySpinBox::clearSchema()
     updateText(d->quantity);
 }
 
-QString
-QuantitySpinBox::getUserString(const Base::Quantity& val, double& factor, QString& unitString) const
+QString QuantitySpinBox::getUserString(const Base::Quantity& val, double& factor, QString& unitString) const
 {
     return val.getUserString(factor, unitString);
 }
@@ -1808,8 +1859,8 @@ void ColorButton::paintEvent(QPaintEvent* e)
     QPushButton::paintEvent(e);
 
     // repaint the rectangle area
-    QPalette::ColorGroup group =
-        isEnabled() ? hasFocus() ? QPalette::Active : QPalette::Inactive : QPalette::Disabled;
+    QPalette::ColorGroup group = isEnabled() ? hasFocus() ? QPalette::Active : QPalette::Inactive
+                                             : QPalette::Disabled;
     QColor pen = palette().color(group, QPalette::ButtonText);
     {
         QPainter paint(this);

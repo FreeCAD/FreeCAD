@@ -39,6 +39,7 @@
         <file>icons/CAM_OperationB.svg</file>
         <file>icons/CAM_Pocket.svg</file>
         <file>icons/CAM_Post.svg</file>
+        <file>icons/CAM_PostSelected.svg</file>
         <file>icons/CAM_Probe.svg</file>
         <file>icons/CAM_Profile_Edges.svg</file>
         <file>icons/CAM_Profile_Face.svg</file>
@@ -62,6 +63,8 @@
         <file>icons/CAM_ToolDuplicate.svg</file>
         <file>icons/CAM_Toolpath.svg</file>
         <file>icons/CAM_ToolTable.svg</file>
+        <file>icons/CAM_ToolTableAdd.svg</file>
+        <file>icons/CAM_ToolTableRemove.svg</file>
         <file>icons/CAM_Vcarve.svg</file>
         <file>icons/CAM_Waterline.svg</file>
         <file>icons/arrow-ccw.svg</file>
@@ -93,6 +96,7 @@
         <file>panels/DragKnifeEdit.ui</file>
         <file>panels/DressUpLeadInOutEdit.ui</file>
         <file>panels/HoldingTagsEdit.ui</file>
+        <file>panels/LibraryProperties.ui</file>
         <file>panels/PageBaseGeometryEdit.ui</file>
         <file>panels/PageBaseHoleGeometryEdit.ui</file>
         <file>panels/PageBaseLocationEdit.ui</file>
@@ -107,6 +111,7 @@
         <file>panels/PageOpHelixEdit.ui</file>
         <file>panels/PageOpPocketExtEdit.ui</file>
         <file>panels/PageOpPocketFullEdit.ui</file>
+        <file>panels/PageOpMillFacingEdit.ui</file>
         <file>panels/PageOpProbeEdit.ui</file>
         <file>panels/PageOpProfileFullEdit.ui</file>
         <file>panels/PageOpSlotEdit.ui</file>
@@ -124,6 +129,7 @@
         <file>panels/SetupOp.ui</file>
         <file>panels/ToolBitEditor.ui</file>
         <file>panels/ToolBitLibraryEdit.ui</file>
+        <file>panels/ToolControllerEdit.ui</file>
         <file>panels/TaskPathCamoticsSim.ui</file>
         <file>panels/TaskPathSimulator.ui</file>
         <file>panels/TaskCAMSimulator.ui</file>

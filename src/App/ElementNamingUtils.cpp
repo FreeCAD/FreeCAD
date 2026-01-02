@@ -1,4 +1,4 @@
-#include "PreCompiled.h"
+// SPDX-License-Identifier: LGPL-2.1-or-later
 
 #include "ElementNamingUtils.h"
 #include <boost/algorithm/string/predicate.hpp>

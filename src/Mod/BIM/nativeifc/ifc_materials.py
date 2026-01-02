@@ -109,9 +109,7 @@ def get_material(obj):
     elif element.is_a("IfcMaterialProfileSet"):
         return element.MaterialProfiles
     else:
-        material = ifcopenshell.util.element.get_material(
-            element, should_skip_usage=True
-        )
+        material = ifcopenshell.util.element.get_material(element, should_skip_usage=True)
         return material
 
 
@@ -125,9 +123,7 @@ def set_material(material, obj):
         return
     new = False
     if not material_element or ifc_tools.get_ifcfile(material) != ifcfile:
-        material_element = ifc_tools.api_run(
-            "material.add_material", ifcfile, name=material.Label
-        )
+        material_element = ifc_tools.api_run("material.add_material", ifcfile, name=material.Label)
         new = True
         delete = not (ifc_tools.PARAMS.GetBool("KeepAggregated", False))
         if delete and len(material.InList) == 1:

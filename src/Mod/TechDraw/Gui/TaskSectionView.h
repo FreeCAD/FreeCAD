@@ -156,8 +156,6 @@ public:
     QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Ok | QDialogButtonBox::Cancel; }
 
-    void update();
-
     bool isAllowedAlterSelection() const override
     { return false; }
     bool isAllowedAlterDocument() const override

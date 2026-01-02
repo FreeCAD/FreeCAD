@@ -26,7 +26,7 @@
       <enum>Qt::LeftToRight</enum>
      </property>
      <property name="title">
-      <string>Mystran binary</string>
+      <string>Mystran Binary</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -34,22 +34,6 @@
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
        <layout class="QGridLayout" name="gridLayout">
-        <item row="0" column="1">
-         <widget class="Gui::PrefCheckBox" name="cb_mystran_binary_std">
-          <property name="text">
-           <string>Search in known binary directories</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>UseStandardMystranLocation</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Fem/Mystran</cstring>
-          </property>
-         </widget>
-        </item>
         <item row="1" column="0">
          <widget class="QLabel" name="l_mystran_binary_path">
           <property name="enabled">
@@ -62,15 +46,12 @@
            </size>
           </property>
           <property name="text">
-           <string>Mystran binary path</string>
+           <string>Mystran path</string>
           </property>
          </widget>
         </item>
         <item row="1" column="1">
-         <widget class="Gui::PrefFileChooser" name="fc_mystran_binary_path">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
+         <widget class="Gui::PrefFileChooser" name="fc_mystran_binary_path" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -96,7 +77,7 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>Leave blank to use default Mystran binary file location</string>
+           <string>Leave blank to use default mystran binary file</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>mystranBinaryPath</cstring>
@@ -170,38 +151,4 @@
  <resources>
   <include location="Resources/Fem.qrc"/>
  </resources>
- <connections>
-  <connection>
-   <sender>cb_mystran_binary_std</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>l_mystran_binary_path</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>406</x>
-     <y>45</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>148</x>
-     <y>68</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cb_mystran_binary_std</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>fc_mystran_binary_path</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>406</x>
-     <y>45</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>406</x>
-     <y>68</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
 </ui>

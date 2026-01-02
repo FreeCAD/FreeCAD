@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
 
 # Kuka export lib (c) Jürgen Riegel 2009 LGPL 2.1 or higher
 

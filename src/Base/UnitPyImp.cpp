@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,11 +22,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <algorithm>
 #include <ranges>
-#endif
 
 #include "Unit.h"
 
@@ -239,8 +238,7 @@ PyObject* UnitPy::number_divmod_handler(PyObject* /*self*/, PyObject* /*other*/)
     return nullptr;
 }
 
-PyObject*
-UnitPy::number_power_handler(PyObject* /*self*/, PyObject* /*other*/, PyObject* /*modulo*/)
+PyObject* UnitPy::number_power_handler(PyObject* /*self*/, PyObject* /*other*/, PyObject* /*modulo*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return nullptr;

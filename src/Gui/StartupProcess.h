@@ -28,8 +28,10 @@
 #include <QStringList>
 
 class QApplication;
+class QMessageBox;
 
-namespace Gui {
+namespace Gui
+{
 
 class Application;
 class MainWindow;
@@ -75,6 +77,7 @@ private:
     void showMainWindow();
     void activateWorkbench();
     void checkParameters();
+    void checkVersionMigration() const;
 
 private:
     bool loadFromPythonModule = false;
@@ -84,6 +87,6 @@ private:
 };
 
 
-}
+}  // namespace Gui
 
-#endif // GUI_STARTUPPROCESS_H
+#endif  // GUI_STARTUPPROCESS_H

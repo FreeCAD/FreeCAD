@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
@@ -81,7 +82,7 @@ PyMOD_INIT_FUNC(PointsGui)
         PyMOD_Return(nullptr);
     }
 
-    Base::Console().log("Loading GUI of Points module... done\n");
+    Base::Console().log("Loading GUI of Points module… done\n");
     PyObject* mod = PointsGui::initModule();
 
     // instantiating the commands
@@ -94,8 +95,10 @@ PyMOD_INIT_FUNC(PointsGui)
     PointsGui::ViewProviderPython       ::init();
     PointsGui::Workbench                ::init();
     // clang-format on
-    Gui::ViewProviderBuilder::add(Points::PropertyPointKernel::getClassTypeId(),
-                                  PointsGui::ViewProviderPoints::getClassTypeId());
+    Gui::ViewProviderBuilder::add(
+        Points::PropertyPointKernel::getClassTypeId(),
+        PointsGui::ViewProviderPoints::getClassTypeId()
+    );
 
     // add resources and reloads the translators
     loadPointsResource();

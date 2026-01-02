@@ -20,13 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <boost/algorithm/string/predicate.hpp>
 # include <QComboBox>
 # include <QGraphicsProxyWidget>
 # include <QLineEdit>
-#endif
+
 
 #include <App/Application.h>
 #include <App/Document.h>

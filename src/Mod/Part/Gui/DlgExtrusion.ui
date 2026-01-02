@@ -29,7 +29,7 @@
       <item row="3" column="0">
        <widget class="QRadioButton" name="rbDirModeNormal">
         <property name="toolTip">
-         <string>Extrude perpendicularly to plane of input shape.</string>
+         <string>Extrudes perpendicularly to the plane of the input shape</string>
         </property>
         <property name="text">
          <string>Along normal</string>
@@ -45,14 +45,14 @@
          <string>Set direction to match a direction of straight edge. Hint: to account for length of the edge too, set both lengths to zero.</string>
         </property>
         <property name="text">
-         <string>Along edge:</string>
+         <string>Along edge</string>
         </property>
        </widget>
       </item>
       <item row="4" column="2">
        <widget class="QCheckBox" name="chkReversed">
         <property name="toolTip">
-         <string>If checked, direction of extrusion is reversed.</string>
+         <string>Reverses the direction of the extrusion</string>
         </property>
         <property name="text">
          <string>Reversed</string>
@@ -65,7 +65,7 @@
       <item row="5" column="2">
        <widget class="QPushButton" name="btnSelectEdge">
         <property name="toolTip">
-         <string>Click to start selecting an edge in 3D view.</string>
+         <string>Starts the selection of edges in the 3D view</string>
         </property>
         <property name="text">
          <string>Select</string>
@@ -75,10 +75,10 @@
       <item row="6" column="0">
        <widget class="QRadioButton" name="rbDirModeCustom">
         <property name="toolTip">
-         <string>Specify direction manually using X,Y,Z values.</string>
+         <string>Specify direction manually using X, Y, Z values</string>
         </property>
         <property name="text">
-         <string>Custom direction:</string>
+         <string>Custom direction</string>
         </property>
        </widget>
       </item>
@@ -96,7 +96,7 @@
            <string/>
           </property>
           <property name="text">
-           <string>X:</string>
+           <string>X</string>
           </property>
          </widget>
         </item>
@@ -119,7 +119,7 @@
         <item row="1" column="0">
          <widget class="QPushButton" name="btnY">
           <property name="text">
-           <string>Y:</string>
+           <string>Y</string>
           </property>
          </widget>
         </item>
@@ -142,7 +142,7 @@
         <item row="2" column="0">
          <widget class="QPushButton" name="btnZ">
           <property name="text">
-           <string>Z:</string>
+           <string>Z</string>
           </property>
          </widget>
         </item>
@@ -182,7 +182,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="label_5">
         <property name="text">
-         <string>Along:</string>
+         <string>Along</string>
         </property>
        </widget>
       </item>
@@ -221,7 +221,7 @@ If both lengths are zero, magnitude of direction is used.</string>
       <item row="1" column="0">
        <widget class="QLabel" name="label_6">
         <property name="text">
-         <string>Against:</string>
+         <string>Against</string>
         </property>
        </widget>
       </item>
@@ -240,7 +240,7 @@ If both lengths are zero, magnitude of direction is used.</string>
          </size>
         </property>
         <property name="toolTip">
-         <string>Length to extrude against the direction (can be negative).</string>
+         <string>Length to extrude against the direction (can be negative)</string>
         </property>
         <property name="unit" stdset="0">
          <string notr="true">mm</string>
@@ -259,7 +259,7 @@ If both lengths are zero, magnitude of direction is used.</string>
       <item row="2" column="0" colspan="2">
        <widget class="QCheckBox" name="chkSymmetric">
         <property name="toolTip">
-         <string>Distribute extrusion length equally to both sides.</string>
+         <string>Distributes the extrusion length equally to both sides</string>
         </property>
         <property name="text">
          <string>Symmetric</string>
@@ -334,7 +334,7 @@ If both lengths are zero, magnitude of direction is used.</string>
    <item>
     <widget class="QCheckBox" name="chkSolid">
      <property name="toolTip">
-      <string>If checked, extruding closed wires will give solids, not shells.</string>
+      <string>Results in solids if wires are closed, otherwise in shells</string>
      </property>
      <property name="text">
       <string>Create solid</string>

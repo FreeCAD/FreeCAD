@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2021 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,13 +22,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <TopExp.hxx>
-# include <TopExp_Explorer.hxx>
+#include <TopExp.hxx>
+#include <TopExp_Explorer.hxx>
 
-# include <boost/algorithm/string/predicate.hpp>
-#endif
+#include <boost/algorithm/string/predicate.hpp>
 
 #include "ReferenceHighlighter.h"
 
@@ -35,8 +34,8 @@ using namespace PartGui;
 
 ReferenceHighlighter::ReferenceHighlighter(const TopoDS_Shape& shape, const Base::Color& color)
     : defaultColor(color)
-    , elementColor(1.0f,0.0f,1.0f) // magenta
-    , objectColor(0.6f,0.0f,1.0f) // purple
+    , elementColor(1.0f, 0.0f, 1.0f)  // magenta
+    , objectColor(0.6f, 0.0f, 1.0f)   // purple
 {
     TopExp::MapShapes(shape, TopAbs_VERTEX, vMap);
     TopExp::MapShapes(shape, TopAbs_EDGE, eMap);
@@ -47,16 +46,20 @@ ReferenceHighlighter::ReferenceHighlighter(const TopoDS_Shape& shape, const Base
 void ReferenceHighlighter::getVertexColor(const std::string& element, std::vector<Base::Color>& colors) const
 {
     int idx = std::stoi(element.substr(6)) - 1;
-    assert ( idx >= 0 );
+    assert(idx >= 0);
     std::size_t pos = std::size_t(idx);
-    if (pos < colors.size())
+    if (pos < colors.size()) {
         colors[pos] = elementColor;
+    }
 }
 
-void ReferenceHighlighter::getVertexColorsOfEdge(const std::string& element, std::vector<Base::Color>& colors) const
+void ReferenceHighlighter::getVertexColorsOfEdge(
+    const std::string& element,
+    std::vector<Base::Color>& colors
+) const
 {
     int idx = std::stoi(element.substr(4));
-    assert ( idx > 0 );
+    assert(idx > 0);
     // get the vertexes of the edge
     TopoDS_Shape edge = eMap.FindKey(idx);
     for (TopExp_Explorer xp(edge, TopAbs_VERTEX); xp.More(); xp.Next()) {
@@ -65,16 +68,20 @@ void ReferenceHighlighter::getVertexColorsOfEdge(const std::string& element, std
         // Vertex found?
         if (vertexIndex > 0) {
             std::size_t pos = std::size_t(vertexIndex - 1);
-            if (pos < colors.size())
+            if (pos < colors.size()) {
                 colors[pos] = elementColor;
+            }
         }
     }
 }
 
-void ReferenceHighlighter::getVertexColorsOfWire(const std::string& element, std::vector<Base::Color>& colors) const
+void ReferenceHighlighter::getVertexColorsOfWire(
+    const std::string& element,
+    std::vector<Base::Color>& colors
+) const
 {
     int idx = std::stoi(element.substr(4));
-    assert ( idx > 0 );
+    assert(idx > 0);
     // get the vertexes of the wire
     TopoDS_Shape wire = wMap.FindKey(idx);
     for (TopExp_Explorer xp(wire, TopAbs_VERTEX); xp.More(); xp.Next()) {
@@ -83,16 +90,20 @@ void ReferenceHighlighter::getVertexColorsOfWire(const std::string& element, std
         // Vertex found?
         if (vertexIndex > 0) {
             std::size_t pos = std::size_t(vertexIndex - 1);
-            if (pos < colors.size())
+            if (pos < colors.size()) {
                 colors[pos] = elementColor;
+            }
         }
     }
 }
 
-void ReferenceHighlighter::getVertexColorsOfFace(const std::string& element, std::vector<Base::Color>& colors) const
+void ReferenceHighlighter::getVertexColorsOfFace(
+    const std::string& element,
+    std::vector<Base::Color>& colors
+) const
 {
     int idx = std::stoi(element.substr(4));
-    assert ( idx > 0 );
+    assert(idx > 0);
     // get the vertexes of the face
     TopoDS_Shape face = fMap.FindKey(idx);
     for (TopExp_Explorer xp(face, TopAbs_VERTEX); xp.More(); xp.Next()) {
@@ -101,14 +112,17 @@ void ReferenceHighlighter::getVertexColorsOfFace(const std::string& element, std
         // Vertex found?
         if (vertexIndex > 0) {
             std::size_t pos = std::size_t(vertexIndex - 1);
-            if (pos < colors.size())
+            if (pos < colors.size()) {
                 colors[pos] = elementColor;
+            }
         }
     }
 }
 
-void ReferenceHighlighter::getVertexColors(const std::vector<std::string>& elements,
-                                           std::vector<Base::Color>& colors) const
+void ReferenceHighlighter::getVertexColors(
+    const std::vector<std::string>& elements,
+    std::vector<Base::Color>& colors
+) const
 {
     colors.resize(vMap.Extent(), defaultColor);
 
@@ -136,16 +150,20 @@ void ReferenceHighlighter::getVertexColors(const std::vector<std::string>& eleme
 void ReferenceHighlighter::getEdgeColor(const std::string& element, std::vector<Base::Color>& colors) const
 {
     int idx = std::stoi(element.substr(4)) - 1;
-    assert ( idx >= 0 );
+    assert(idx >= 0);
     std::size_t pos = std::size_t(idx);
-    if (pos < colors.size())
+    if (pos < colors.size()) {
         colors[pos] = elementColor;
+    }
 }
 
-void ReferenceHighlighter::getEdgeColorsOfWire(const std::string& element, std::vector<Base::Color>& colors) const
+void ReferenceHighlighter::getEdgeColorsOfWire(
+    const std::string& element,
+    std::vector<Base::Color>& colors
+) const
 {
     int idx = std::stoi(element.substr(4));
-    assert ( idx > 0 );
+    assert(idx > 0);
     // get the edges of the wire
     TopoDS_Shape wire = wMap.FindKey(idx);
     for (TopExp_Explorer xp(wire, TopAbs_EDGE); xp.More(); xp.Next()) {
@@ -154,16 +172,20 @@ void ReferenceHighlighter::getEdgeColorsOfWire(const std::string& element, std::
         // Edge found?
         if (edgeIndex > 0) {
             std::size_t pos = std::size_t(edgeIndex - 1);
-            if (pos < colors.size())
+            if (pos < colors.size()) {
                 colors[pos] = elementColor;
+            }
         }
     }
 }
 
-void ReferenceHighlighter::getEdgeColorsOfFace(const std::string& element, std::vector<Base::Color>& colors) const
+void ReferenceHighlighter::getEdgeColorsOfFace(
+    const std::string& element,
+    std::vector<Base::Color>& colors
+) const
 {
     int idx = std::stoi(element.substr(4));
-    assert ( idx > 0 );
+    assert(idx > 0);
     // get the edges of the faces
     TopoDS_Shape face = fMap.FindKey(idx);
     for (TopExp_Explorer xp(face, TopAbs_EDGE); xp.More(); xp.Next()) {
@@ -172,14 +194,17 @@ void ReferenceHighlighter::getEdgeColorsOfFace(const std::string& element, std::
         // Edge found?
         if (edgeIndex > 0) {
             std::size_t pos = std::size_t(edgeIndex - 1);
-            if (pos < colors.size())
+            if (pos < colors.size()) {
                 colors[pos] = elementColor;
+            }
         }
     }
 }
 
-void ReferenceHighlighter::getEdgeColors(const std::vector<std::string>& elements,
-                                         std::vector<Base::Color>& colors) const
+void ReferenceHighlighter::getEdgeColors(
+    const std::vector<std::string>& elements,
+    std::vector<Base::Color>& colors
+) const
 {
     colors.resize(eMap.Extent(), defaultColor);
 
@@ -204,14 +229,17 @@ void ReferenceHighlighter::getEdgeColors(const std::vector<std::string>& element
 void ReferenceHighlighter::getFaceColor(const std::string& element, std::vector<Base::Color>& colors) const
 {
     int idx = std::stoi(element.substr(4)) - 1;
-    assert ( idx >= 0 );
+    assert(idx >= 0);
     std::size_t pos = std::size_t(idx);
-    if (pos < colors.size())
+    if (pos < colors.size()) {
         colors[pos] = elementColor;
+    }
 }
 
-void ReferenceHighlighter::getFaceColor(const std::string& element,
-                                        std::vector<App::Material>& materials) const
+void ReferenceHighlighter::getFaceColor(
+    const std::string& element,
+    std::vector<App::Material>& materials
+) const
 {
     int idx = std::stoi(element.substr(4)) - 1;
     assert(idx >= 0);
@@ -221,8 +249,10 @@ void ReferenceHighlighter::getFaceColor(const std::string& element,
     }
 }
 
-void ReferenceHighlighter::getFaceColors(const std::vector<std::string>& elements,
-                                         std::vector<Base::Color>& colors) const
+void ReferenceHighlighter::getFaceColors(
+    const std::vector<std::string>& elements,
+    std::vector<Base::Color>& colors
+) const
 {
     colors.resize(fMap.Extent(), defaultColor);
 
@@ -238,8 +268,10 @@ void ReferenceHighlighter::getFaceColors(const std::vector<std::string>& element
     }
 }
 
-void ReferenceHighlighter::getFaceMaterials(const std::vector<std::string>& elements,
-                                         std::vector<App::Material>& materials) const
+void ReferenceHighlighter::getFaceMaterials(
+    const std::vector<std::string>& elements,
+    std::vector<App::Material>& materials
+) const
 {
     App::Material defaultMaterial;
     materials.resize(fMap.Extent(), defaultMaterial);

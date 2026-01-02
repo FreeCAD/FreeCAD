@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -27,10 +29,13 @@
 
 #include <App/Property.h>
 
+#include <Mod/Part/PartGlobal.h>
+
 #include "Geometry.h"
 
 
-namespace Base {
+namespace Base
+{
 class Writer;
 }
 
@@ -64,39 +69,41 @@ public:
     void setValues(const std::vector<Geometry*>&);
     void setValues(std::vector<Geometry*>&&);
 
-    void moveValues(PropertyGeometryList &&other);
+    void moveValues(PropertyGeometryList&& other);
 
     /// index operator
-    Geometry *operator[] (const int idx) const {
+    Geometry* operator[](const int idx) const
+    {
         return _lValueList[idx];
     }
 
-    const std::vector<Geometry*> &getValues() const {
+    const std::vector<Geometry*>& getValues() const
+    {
         return _lValueList;
     }
 
-    void set1Value(int idx, std::unique_ptr<Geometry> &&);
+    void set1Value(int idx, std::unique_ptr<Geometry>&&);
 
-    PyObject *getPyObject() override;
-    void setPyObject(PyObject *) override;
+    PyObject* getPyObject() override;
+    void setPyObject(PyObject*) override;
 
-    void Save(Base::Writer &writer) const override;
-    void Restore(Base::XMLReader &reader) override;
+    void Save(Base::Writer& writer) const override;
+    void Restore(Base::XMLReader& reader) override;
 
-    App::Property *Copy() const override;
-    void Paste(const App::Property &from) override;
+    App::Property* Copy() const override;
+    void Paste(const App::Property& from) override;
 
     unsigned int getMemSize() const override;
 
 private:
-    void trySaveGeometry(Geometry * geom, Base::Writer &writer) const;
-    void tryRestoreGeometry(Geometry * geom, Base::XMLReader &reader);
+    void trySaveGeometry(Geometry* geom, Base::Writer& writer) const;
+    void tryRestoreGeometry(Geometry* geom, Base::XMLReader& reader);
 
 private:
     std::vector<Geometry*> _lValueList;
 };
 
-} // namespace Part
+}  // namespace Part
 
 
-#endif // APP_PropertyGeometryList_H
+#endif  // APP_PropertyGeometryList_H

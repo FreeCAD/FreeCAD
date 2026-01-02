@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -26,16 +28,6 @@
 #include <FCConfig.h>
 
 #include <Mod/Part/PartGlobal.h>
-
-// point at which warnings of overly long specifiers disabled (needed for VC6)
-#ifdef _MSC_VER
-#	pragma warning( disable : 4251 )
-#	pragma warning( disable : 4275 )
-#	pragma warning( disable : 4503 )
-#	pragma warning( disable : 4786 )  // specifier longer then 255 chars
-#endif
-
-#ifdef _PreComp_
 
 // standard
 #include <cassert>
@@ -74,14 +66,9 @@
 // OpenCasCade
 #include "OpenCascadeAll.h"
 
-#elif defined(FC_OS_WIN32)
-#define WIN32_LEAN_AND_MEAN
-#ifndef NOMINMAX
-# define NOMINMAX
+#if defined(FC_OS_WIN32)
+# include <Windows.h>
 #endif
-#include <Windows.h>
-#include <io.h>
-#endif //_PreComp_
 
 #ifndef _Standard_Version_HeaderFile
 # include <Standard_Version.hxx>

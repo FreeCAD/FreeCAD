@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Remove components</string>
+   <string>Remove Components</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="0">
@@ -86,7 +86,7 @@
       <item row="3" column="0">
        <widget class="QPushButton" name="selectTriangle">
         <property name="text">
-         <string>Pick triangle</string>
+         <string>Pick Triangle</string>
         </property>
        </widget>
       </item>
@@ -172,7 +172,7 @@
       <item row="3" column="0">
        <widget class="QPushButton" name="deselectTriangle">
         <property name="text">
-         <string>Pick triangle</string>
+         <string>Pick Triangle</string>
         </property>
        </widget>
       </item>
@@ -189,7 +189,7 @@
    <item row="2" column="0">
     <widget class="QGroupBox" name="groupBox_3">
      <property name="title">
-      <string>Region options</string>
+      <string>Region Options</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
       <item row="0" column="0">
@@ -205,7 +205,7 @@
       <item row="1" column="0">
        <widget class="QCheckBox" name="screenTriangles">
         <property name="text">
-         <string>Respect only triangles with normals facing screen</string>
+         <string>Respect only triangles with screen-facing normals</string>
         </property>
         <property name="checked">
          <bool>true</bool>

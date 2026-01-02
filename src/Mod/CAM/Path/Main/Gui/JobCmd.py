@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -54,9 +55,9 @@ class CommandJobCreate:
     def GetResources(self):
         return {
             "Pixmap": "CAM_Job",
-            "MenuText": QT_TRANSLATE_NOOP("CAM_Job", "Job"),
+            "MenuText": QT_TRANSLATE_NOOP("CAM_Job", "New Job"),
             "Accel": "P, J",
-            "ToolTip": QT_TRANSLATE_NOOP("CAM_Job", "Creates a CAM Job"),
+            "ToolTip": QT_TRANSLATE_NOOP("CAM_Job", "Creates a CAM job"),
         }
 
     def IsActive(self):
@@ -101,7 +102,7 @@ class CommandJobTemplateExport:
             "MenuText": QT_TRANSLATE_NOOP("CAM_ExportTemplate", "Export Template"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "CAM_ExportTemplate",
-                "Exports CAM Job as a template to be used for other jobs",
+                "Exports the CAM job as a template to be used for other jobs",
             ),
         }
 
@@ -134,7 +135,7 @@ class CommandJobTemplateExport:
         foo = QtGui.QFileDialog.getSaveFileName(
             QtGui.QApplication.activeWindow(),
             "Path - Job Template",
-            Path.Preferences.filePath(),
+            str(Path.Preferences.getTemplateDirectory()),
             "job_*.json",
         )[0]
         if foo:
@@ -200,4 +201,4 @@ if FreeCAD.GuiUp:
     FreeCADGui.addCommand("CAM_Job", CommandJobCreate())
     FreeCADGui.addCommand("CAM_ExportTemplate", CommandJobTemplateExport())
 
-FreeCAD.Console.PrintLog("Loading PathJobCmd... done\n")
+FreeCAD.Console.PrintLog("Loading PathJobCmd… done\n")

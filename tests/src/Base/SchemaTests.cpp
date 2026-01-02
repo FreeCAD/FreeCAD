@@ -53,23 +53,39 @@ protected:
     void TearDown() override
     {}
 
-    static std::string
-    set(const std::string& schemaName, const Unit unit, const double value)  // NOLINT
+    static std::string set(const std::string& schemaName, const Unit unit, const double value)  // NOLINT
     {
         UnitsApi::setSchema(schemaName);
         const auto quantity = Quantity {value, unit};
         return quantity.getSafeUserString();
     }
 
-    static std::string setWithPrecision(const std::string& name,
-                                        const double value,
-                                        const Unit unit,
-                                        const int precision)
+    static std::string setWithPrecision(
+        const std::string& name,
+        const double value,
+        const Unit unit,
+        const int precision
+    )
     {
         UnitsApi::setSchema(name);
         Quantity quantity {value, unit};
         QuantityFormat format = quantity.getFormat();
-        format.precision = precision;
+        format.setPrecision(precision);
+        quantity.setFormat(format);
+        return quantity.getSafeUserString();
+    }
+
+    static std::string setWithDenominator(
+        const std::string& name,
+        const double value,
+        const Unit unit,
+        const int denominator
+    )
+    {
+        UnitsApi::setSchema(name);
+        Quantity quantity {value, unit};
+        QuantityFormat format = quantity.getFormat();
+        format.setDenominator(denominator);
         quantity.setFormat(format);
         return quantity.getSafeUserString();
     }
@@ -111,8 +127,8 @@ TEST_F(SchemaTest, meter_decimal_123456000_W_precision_6)
 
 TEST_F(SchemaTest, meter_decimal_123456000_V_precision_6)
 {
-    const std::string result =
-        setWithPrecision("MeterDecimal", 123456000.0, Unit::ElectricPotential, 6);
+    const std::string result
+        = setWithPrecision("MeterDecimal", 123456000.0, Unit::ElectricPotential, 6);
     const auto expect {"123.456000 V"};
 
     EXPECT_EQ(result, expect);
@@ -186,14 +202,6 @@ TEST_F(SchemaTest, mks_123456000_m_s_precision_6)
 {
     const std::string result = setWithPrecision("MKS", 123.456, Unit::Velocity, 6);
     const auto expect {"0.123456 m/s"};
-
-    EXPECT_EQ(result, expect);
-}
-
-TEST_F(SchemaTest, imperial_decimal_1_mm_default_precision)
-{
-    const std::string result = set("ImperialDecimal", Unit::Length, 1.0);
-    const auto expect {"0.04 in"};
 
     EXPECT_EQ(result, expect);
 }
@@ -298,7 +306,7 @@ TEST_F(SchemaTest, imperial_decimal_0_mm_precision_1)
 TEST_F(SchemaTest, imperial_civil_0_mm_precision_0)
 {
     const std::string result = setWithPrecision("ImperialCivil", 0.0, Unit::Length, 0);
-    const auto expect {"0 mm"};
+    const auto expect {"0 ft"};
 
     EXPECT_EQ(result, expect);
 }
@@ -306,7 +314,7 @@ TEST_F(SchemaTest, imperial_civil_0_mm_precision_0)
 TEST_F(SchemaTest, imperial_civil_0_mm_precision_1)
 {
     const std::string result = setWithPrecision("ImperialCivil", 0.0, Unit::Length, 1);
-    const auto expect {"0.0 mm"};
+    const auto expect {"0.0 ft"};
 
     EXPECT_EQ(result, expect);
 }
@@ -378,7 +386,7 @@ TEST_F(SchemaTest, imperial_decimal_1_mm_precision_4)
 TEST_F(SchemaTest, imperial_safe_user_str_same)
 {
     constexpr auto val {304.8};
-    const auto result = set("Imperial", Unit::Length, val);
+    const auto result = setWithPrecision("Imperial", val, Unit::Length, 2);
     const auto expect = Tools::escapeQuotesFromString("1.00'");
 
     EXPECT_EQ(result, expect);
@@ -387,7 +395,7 @@ TEST_F(SchemaTest, imperial_safe_user_str_same)
 TEST_F(SchemaTest, imperial_safe_user_str_more)
 {
     constexpr auto val {310.0};
-    const auto result = set("Imperial", Unit::Length, val);
+    const auto result = setWithPrecision("Imperial", val, Unit::Length, 2);
     const auto expect = Tools::escapeQuotesFromString("1.02'");
 
     EXPECT_EQ(result, expect);
@@ -396,7 +404,7 @@ TEST_F(SchemaTest, imperial_safe_user_str_more)
 TEST_F(SchemaTest, imperial_safe_user_str_less)
 {
     constexpr auto val {300.0};
-    const auto result = set("Imperial", Unit::Length, val);
+    const auto result = setWithPrecision("Imperial", val, Unit::Length, 2);
     const auto expect = Tools::escapeQuotesFromString("11.81\"");
 
     EXPECT_EQ(result, expect);
@@ -405,7 +413,7 @@ TEST_F(SchemaTest, imperial_safe_user_str_less)
 TEST_F(SchemaTest, imperial_safe_user_str_one_inch)
 {
     constexpr auto val {25.4};
-    const auto result = set("Imperial", Unit::Length, val);
+    const auto result = setWithPrecision("Imperial", val, Unit::Length, 2);
     const auto expect = Tools::escapeQuotesFromString("1.00\"");
 
     EXPECT_EQ(result, expect);
@@ -440,7 +448,7 @@ TEST_F(SchemaTest, imperial_building_special_function_zero_length)
 TEST_F(SchemaTest, imperial_building_special_function_length_negative_fraction_only)
 {
     constexpr auto val {(-1.0 / 8.0) * 25.4};  // -1/8 inch in mm
-    const auto result = set("ImperialBuilding", Unit::Length, val);
+    const auto result = setWithDenominator("ImperialBuilding", val, Unit::Length, 8);
     const auto expect = Tools::escapeQuotesFromString("-1/8\"");
 
     EXPECT_EQ(result, expect);
@@ -458,7 +466,7 @@ TEST_F(SchemaTest, imperial_building_special_function_negative_inches_and_fracti
 TEST_F(SchemaTest, imperial_building_special_function_high_precision_rounding)
 {
     constexpr auto val {25.396};  // Very close to exactly 1 inch
-    const auto result = set("ImperialBuilding", Unit::Length, val);
+    const auto result = setWithDenominator("ImperialBuilding", val, Unit::Length, 8);
     const auto expect = Tools::escapeQuotesFromString("1\"");
 
     EXPECT_EQ(result, expect);
@@ -478,7 +486,7 @@ TEST_F(SchemaTest, imperial_building_special_function_length)
 TEST_F(SchemaTest, imperial_building_special_function_length_neg)
 {
     constexpr auto val {-360.6};
-    const auto result = set("ImperialBuilding", Unit::Length, val);
+    const auto result = setWithDenominator("ImperialBuilding", val, Unit::Length, 8);
     const auto expect = Tools::escapeQuotesFromString("-1' 2\" - 1/4\"");
 
     EXPECT_EQ(result, expect);

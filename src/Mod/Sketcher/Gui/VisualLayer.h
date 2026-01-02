@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com      *
  *                                                                         *
@@ -43,9 +45,7 @@ namespace SketcherGui
 class VisualLayer
 {
 public:
-    explicit VisualLayer(unsigned int linePattern = 0xFFFF,
-                         float lineWidth = 3.0,
-                         bool visible = true);
+    explicit VisualLayer(unsigned int linePattern = 0xFFFF, float lineWidth = 3.0, bool visible = true);
 
     unsigned int getLinePattern() const;
     float getLineWidth() const;

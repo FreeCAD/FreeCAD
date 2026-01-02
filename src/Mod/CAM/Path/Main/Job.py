@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
@@ -216,13 +217,17 @@ class ObjectJob:
             setattr(obj, n[0], n[1])
 
         obj.PostProcessorOutputFile = Path.Preferences.defaultOutputFile()
-        obj.PostProcessor = postProcessors = Path.Preferences.allEnabledPostProcessors()
+        postProcessors = Path.Preferences.allEnabledPostProcessors()
+        # Add empty string as a valid enumeration option
+        if "" not in postProcessors:
+            postProcessors = [""] + postProcessors
+        obj.PostProcessor = postProcessors
         defaultPostProcessor = Path.Preferences.defaultPostProcessor()
         # Check to see if default post processor hasn't been 'lost' (This can happen when Macro dir has changed)
         if defaultPostProcessor in postProcessors:
             obj.PostProcessor = defaultPostProcessor
         else:
-            obj.PostProcessor = postProcessors[0]
+            obj.PostProcessor = ""
         obj.PostProcessorArgs = Path.Preferences.defaultPostProcessorArgs()
         obj.GeometryTolerance = Path.Preferences.defaultGeometryTolerance()
 
@@ -422,6 +427,9 @@ class ObjectJob:
         if getattr(obj, "Tools", None):
             Path.Log.debug("taking down tool controller")
             for tc in obj.Tools.Group:
+                if hasattr(tc.Tool, "BitBody") and tc.Tool.BitBody:
+                    tc.Tool.BitBody.removeObjectsFromDocument()
+                    doc.removeObject(tc.Tool.BitBody.Name)
                 if hasattr(tc.Tool, "Proxy"):
                     PathUtil.clearExpressionEngine(tc.Tool)
                     doc.removeObject(tc.Tool.Name)
@@ -528,7 +536,8 @@ class ObjectJob:
     def baseObject(self, obj, base):
         """Return the base object, not its clone."""
         if isResourceClone(obj, base, "Model") or isResourceClone(obj, base, "Base"):
-            return base.Objects[0]
+            if hasattr(base, "Objects") and base.Objects:
+                return base.Objects[0]
         return base
 
     def baseObjects(self, obj):
@@ -697,7 +706,7 @@ class ObjectJob:
                 "VertRapid",
                 "%s.%s"
                 % (
-                    self.setupSheet.expressionReference(),
+                    self.obj.SetupSheet.Proxy.expressionReference(),
                     PathSetupSheet.Template.VertRapid,
                 ),
             )
@@ -705,7 +714,7 @@ class ObjectJob:
                 "HorizRapid",
                 "%s.%s"
                 % (
-                    self.setupSheet.expressionReference(),
+                    self.obj.SetupSheet.Proxy.expressionReference(),
                     PathSetupSheet.Template.HorizRapid,
                 ),
             )

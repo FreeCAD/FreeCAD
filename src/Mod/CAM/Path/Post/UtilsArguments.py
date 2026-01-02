@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 # *   Copyright (c) 2014 sliptonic <shopinthewoods@gmail.com>               *
@@ -82,8 +83,11 @@ def init_argument_defaults(argument_defaults: Dict[str, bool]) -> None:
     argument_defaults["metric_inches"] = True
     argument_defaults["modal"] = False
     argument_defaults["output_all_arguments"] = False
+    argument_defaults["output_machine_name"] = False
+    argument_defaults["output_path_labels"] = False
     argument_defaults["output_visible_arguments"] = False
     argument_defaults["show-editor"] = True
+    argument_defaults["split_arcs"] = False
     argument_defaults["tlo"] = True
     argument_defaults["tool_change"] = True
     argument_defaults["translate_drill"] = False
@@ -102,6 +106,7 @@ def init_arguments_visible(arguments_visible: Dict[str, bool]) -> None:
     arguments_visible["enable_machine_specific_commands"] = False
     arguments_visible["end_of_line_characters"] = False
     arguments_visible["feed-precision"] = True
+    arguments_visible["finish_label"] = False
     arguments_visible["header"] = True
     arguments_visible["line_number_increment"] = False
     arguments_visible["line_number_start"] = False
@@ -110,12 +115,16 @@ def init_arguments_visible(arguments_visible: Dict[str, bool]) -> None:
     arguments_visible["metric_inches"] = True
     arguments_visible["modal"] = True
     arguments_visible["output_all_arguments"] = True
+    arguments_visible["output_machine_name"] = False
+    arguments_visible["output_path_labels"] = False
     arguments_visible["output_visible_arguments"] = True
     arguments_visible["postamble"] = True
+    arguments_visible["post_operation"] = False
     arguments_visible["preamble"] = True
     arguments_visible["precision"] = True
     arguments_visible["return-to"] = False
     arguments_visible["show-editor"] = True
+    arguments_visible["split_arcs"] = True
     arguments_visible["tlo"] = True
     arguments_visible["tool_change"] = False
     arguments_visible["translate_drill"] = False
@@ -263,6 +272,17 @@ def init_shared_arguments(
         type=int,
         help=help_message,
     )
+    if arguments_visible["finish_label"]:
+        help_message = (
+            "The characters to use in the 'Finish operation' comment, "
+            f'default is "{values["FINISH_LABEL"]}"'
+        )
+    else:
+        help_message = argparse.SUPPRESS
+    shared.add_argument(
+        "--finish_label",
+        help=help_message,
+    )
     add_flag_type_arguments(
         shared,
         argument_defaults["header"],
@@ -334,6 +354,24 @@ def init_shared_arguments(
     )
     add_flag_type_arguments(
         shared,
+        argument_defaults["output_machine_name"],
+        "--output_machine_name",
+        "--no-output_machine_name",
+        "Output the machine name in the pre-operation information",
+        "Don't output the machine name in the pre-operation information",
+        arguments_visible["output_machine_name"],
+    )
+    add_flag_type_arguments(
+        shared,
+        argument_defaults["output_path_labels"],
+        "--output_path_labels",
+        "--no-output_path_labels",
+        "Output Path labels at the beginning of each Path",
+        "Don't output Path labels at the beginning of each Path",
+        arguments_visible["output_path_labels"],
+    )
+    add_flag_type_arguments(
+        shared,
         argument_defaults["output_visible_arguments"],
         "--output_visible_arguments",
         "--no-output_visible_arguments",
@@ -349,6 +387,14 @@ def init_shared_arguments(
     else:
         help_message = argparse.SUPPRESS
     shared.add_argument("--postamble", help=help_message)
+    if arguments_visible["post_operation"]:
+        help_message = (
+            f"Set commands to be issued after every operation, "
+            f'default is "{values["POST_OPERATION"]}"'
+        )
+    else:
+        help_message = argparse.SUPPRESS
+    shared.add_argument("--post_operation", help=help_message)
     if arguments_visible["preamble"]:
         help_message = (
             f"Set commands to be issued before the first command, "
@@ -391,6 +437,15 @@ def init_shared_arguments(
         "Pop up editor before writing output",
         "Don't pop up editor before writing output",
         arguments_visible["show-editor"],
+    )
+    add_flag_type_arguments(
+        shared,
+        argument_defaults["split_arcs"],
+        "--split-arcs",
+        "--no-split-arcs",
+        "Convert G2/G3 arc commands to discrete G1 line segments",
+        "Output G2/G3 arc commands as-is",
+        arguments_visible["split_arcs"],
     )
     add_flag_type_arguments(
         shared,
@@ -659,6 +714,10 @@ def init_shared_values(values: Values) -> None:
     #
     values["SHOW_EDITOR"] = True
     #
+    # If True then G2/G3 arc commands will be converted to discrete G1 line segments.
+    #
+    values["SPLIT_ARCS"] = False
+    #
     # If True then the current machine units are output just before the PRE_OPERATION.
     #
     values["SHOW_MACHINE_UNITS"] = True
@@ -817,6 +876,8 @@ def process_shared_arguments(
                 values["END_OF_LINE_CHARACTERS"] = "\r\n"
             else:
                 print("invalid end_of_line_characters, ignoring")
+        if args.finish_label:
+            values["FINISH_LABEL"] = args.finish_label
         if args.header:
             values["OUTPUT_HEADER"] = True
         if args.no_header:
@@ -837,8 +898,18 @@ def process_shared_arguments(
             values["MODAL"] = True
         if args.no_modal:
             values["MODAL"] = False
+        if args.output_machine_name:
+            values["OUTPUT_MACHINE_NAME"] = True
+        if args.no_output_machine_name:
+            values["OUTPUT_MACHINE_NAME"] = False
+        if args.output_path_labels:
+            values["OUTPUT_PATH_LABELS"] = True
+        if args.no_output_path_labels:
+            values["OUTPUT_PATH_LABELS"] = False
         if args.postamble is not None:
             values["POSTAMBLE"] = args.postamble.replace("\\n", "\n")
+        if args.post_operation is not None:
+            values["POST_OPERATION"] = args.post_operation.replace("\\n", "\n")
         if args.preamble is not None:
             values["PREAMBLE"] = args.preamble.replace("\\n", "\n")
         if args.return_to != "":
@@ -850,6 +921,10 @@ def process_shared_arguments(
             values["SHOW_EDITOR"] = True
         if args.no_show_editor:
             values["SHOW_EDITOR"] = False
+        if args.split_arcs:
+            values["SPLIT_ARCS"] = True
+        if args.no_split_arcs:
+            values["SPLIT_ARCS"] = False
         if args.tlo:
             values["USE_TLO"] = True
         if args.no_tlo:

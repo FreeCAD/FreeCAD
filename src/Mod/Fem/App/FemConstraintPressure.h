@@ -37,6 +37,8 @@ class FemExport ConstraintPressure: public Fem::Constraint
 public:
     ConstraintPressure();
 
+    App::PropertyBool EnableAmplitude;
+    App::PropertyStringList AmplitudeValues;
     App::PropertyPressure Pressure;
     App::PropertyBool Reversed;
 
@@ -47,9 +49,11 @@ public:
     const char* getViewProviderName() const override;
 
 protected:
-    void handleChangedPropertyType(Base::XMLReader& reader,
-                                   const char* TypeName,
-                                   App::Property* prop) override;
+    void handleChangedPropertyType(
+        Base::XMLReader& reader,
+        const char* TypeName,
+        App::Property* prop
+    ) override;
 };
 
 }  // namespace Fem

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
  *                                                                         *
@@ -21,7 +23,6 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
 #include "TextDocument.h"
 #include "DocumentObject.h"

@@ -35,7 +35,7 @@ class BIM_Ungroup:
     def GetResources(self):
         return {
             "Pixmap": "Draft_AddToGroup",
-            "MenuText": QT_TRANSLATE_NOOP("BIM_Convert", "Remove from group"),
+            "MenuText": QT_TRANSLATE_NOOP("BIM_Convert", "Remove From Group"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_Convert", "Removes this object from its parent group"
             ),
@@ -47,9 +47,9 @@ class BIM_Ungroup:
         if sel:
             for obj in sel:
                 for parent in obj.InList:
-                    if parent.isDerivedFrom(
-                        "App::DocumentObjectGroup"
-                    ) or parent.hasExtension("App::GroupExtension"):
+                    if parent.isDerivedFrom("App::DocumentObjectGroup") or parent.hasExtension(
+                        "App::GroupExtension"
+                    ):
                         if obj in parent.Group:
                             if first:
                                 FreeCAD.ActiveDocument.openTransaction("Ungroup")

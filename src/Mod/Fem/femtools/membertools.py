@@ -275,6 +275,7 @@ class AnalysisMember:
         self.cons_force = self.get_several_member("Fem::ConstraintForce")
         self.cons_heatflux = self.get_several_member("Fem::ConstraintHeatflux")
         self.cons_initialtemperature = self.get_several_member("Fem::ConstraintInitialTemperature")
+        self.cons_finaltemperature = self.get_several_member("Fem::ConstraintInitialTemperature")
         self.cons_planerotation = self.get_several_member("Fem::ConstraintPlaneRotation")
         self.cons_pressure = self.get_several_member("Fem::ConstraintPressure")
         self.cons_sectionprint = self.get_several_member("Fem::ConstraintSectionPrint")

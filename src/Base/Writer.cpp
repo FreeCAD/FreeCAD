@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -21,13 +23,10 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <memory>
 #include <set>
 #include <vector>
 #include <string>
-#endif
 
 #include <limits>
 #include <locale>
@@ -319,11 +318,7 @@ void Writer::putNextEntry(const char* file, const char* obj)
 ZipWriter::ZipWriter(const char* FileName)
     : ZipStream(FileName)
 {
-#ifdef _MSC_VER
-    ZipStream.imbue(std::locale::empty());
-#else
     ZipStream.imbue(std::locale::classic());
-#endif
     ZipStream.precision(std::numeric_limits<double>::digits10 + 1);
     ZipStream.setf(std::ios::fixed, std::ios::floatfield);
 }
@@ -331,11 +326,7 @@ ZipWriter::ZipWriter(const char* FileName)
 ZipWriter::ZipWriter(std::ostream& os)
     : ZipStream(os)
 {
-#ifdef _MSC_VER
-    ZipStream.imbue(std::locale::empty());
-#else
     ZipStream.imbue(std::locale::classic());
-#endif
     ZipStream.precision(std::numeric_limits<double>::digits10 + 1);
     ZipStream.setf(std::ios::fixed, std::ios::floatfield);
 }

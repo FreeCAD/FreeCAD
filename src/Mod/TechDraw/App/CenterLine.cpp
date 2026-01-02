@@ -21,13 +21,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-    #include <BRepBuilderAPI_MakeEdge.hxx>
-    #include <BRepBndLib.hxx>
-    #include <Bnd_Box.hxx>
-    #include <TopoDS_Shape.hxx>
-#endif
+#include <BRepBuilderAPI_MakeEdge.hxx>
+#include <BRepBndLib.hxx>
+#include <Bnd_Box.hxx>
+#include <TopoDS_Shape.hxx>
 
 #include <BRepTools.hxx>
 
@@ -197,16 +194,13 @@ CenterLine* CenterLine::CenterLineBuilder(const DrawViewPart* partFeat,
         return nullptr;
     }
 
-
-    TechDraw::CenterLine* cl = new TechDraw::CenterLine(ends.first, ends.second);
-    if (cl) {
-        cl->m_type = type;
-        cl->m_mode = mode;
-        cl->m_faces = faces;
-        cl->m_edges = edges;
-        cl->m_verts = verts;
-        cl->m_flip2Line = flip;
-    }
+    auto * cl = new TechDraw::CenterLine(ends.first, ends.second);
+    cl->m_type = type;
+    cl->m_mode = mode;
+    cl->m_faces = faces;
+    cl->m_edges = edges;
+    cl->m_verts = verts;
+    cl->m_flip2Line = flip;
     return cl;
 }
 

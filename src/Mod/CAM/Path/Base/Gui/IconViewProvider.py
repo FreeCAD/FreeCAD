@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -22,7 +22,6 @@
 
 import FreeCAD
 import Path
-import PathGui
 import importlib
 
 __title__ = "CAM Icon ViewProvider"

@@ -20,10 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif // #ifndef _PreComp_
-
 #include <Base/Console.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -464,7 +460,7 @@ TaskDlgLineDecor::TaskDlgLineDecor(TechDraw::DrawViewPart* partFeat,
     if (parent) {
         restore = new TaskRestoreLines(partFeat, parent);
         restoreBox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/TechDraw_DecorateLine"),
-                                             tr("Restore Invisible Lines"), true, nullptr);
+                                             tr("Restore invisible lines"), true, nullptr);
         restoreBox->groupLayout()->addWidget(restore);
         Content.push_back(restoreBox);
     }

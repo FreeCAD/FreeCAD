@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Boyer Pierre-Louis <pierrelouis.boyer@gmail.com>   *
  *                                                                         *
@@ -24,12 +26,15 @@
 #ifndef SKETCHERGUI_DrawSketchHandlerOffset_H
 #define SKETCHERGUI_DrawSketchHandlerOffset_H
 
+#include <FCConfig.h>
+
 #include <limits>
 
 #include <QApplication>
 
 #include <BRep_Tool.hxx>
 #include <BRepAdaptor_Curve.hxx>
+#include <BRepAdaptor_Surface.hxx>
 #include <BRepClass_FaceClassifier.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
 #include <BRepOffsetAPI_MakeOffset.hxx>
@@ -93,16 +98,16 @@ enum class ModeEnums {
 };*/
 }  // namespace ConstructionMethods
 
-using DSHOffsetController =
-    DrawSketchDefaultWidgetController<DrawSketchHandlerOffset,
-                                      StateMachines::OneSeekEnd,
-                                      /*PAutoConstraintSize =*/0,
-                                      /*OnViewParametersT =*/OnViewParameters<1, 1>,
-                                      /*WidgetParametersT =*/WidgetParameters<0, 0>,
-                                      /*WidgetCheckboxesT =*/WidgetCheckboxes<2, 2>,
-                                      /*WidgetComboboxesT =*/WidgetComboboxes<1, 1>,
-                                      ConstructionMethods::OffsetConstructionMethod,
-                                      /*bool PFirstComboboxIsConstructionMethod =*/true>;
+using DSHOffsetController = DrawSketchDefaultWidgetController<
+    DrawSketchHandlerOffset,
+    StateMachines::OneSeekEnd,
+    /*PAutoConstraintSize =*/0,
+    /*OnViewParametersT =*/OnViewParameters<1, 1>,
+    /*WidgetParametersT =*/WidgetParameters<0, 0>,
+    /*WidgetCheckboxesT =*/WidgetCheckboxes<2, 2>,
+    /*WidgetComboboxesT =*/WidgetComboboxes<1, 1>,
+    ConstructionMethods::OffsetConstructionMethod,
+    /*bool PFirstComboboxIsConstructionMethod =*/true>;
 
 using DSHOffsetControllerBase = DSHOffsetController::ControllerBase;
 
@@ -114,8 +119,10 @@ class DrawSketchHandlerOffset: public DrawSketchHandlerOffsetBase
     friend DSHOffsetControllerBase;
 
 public:
-    DrawSketchHandlerOffset(std::vector<int> listOfGeoIds,
-                            ConstructionMethod constrMethod = ConstructionMethod::Arc)
+    DrawSketchHandlerOffset(
+        std::vector<int> listOfGeoIds,
+        ConstructionMethod constrMethod = ConstructionMethod::Arc
+    )
         : DrawSketchHandlerOffsetBase(constrMethod)
         , listOfGeoIds(listOfGeoIds)
         , deleteOriginal(false)
@@ -179,7 +186,7 @@ private:
 
     QString getToolWidgetText() const override
     {
-        return QString(QObject::tr("Offset parameters"));
+        return QString(tr("Offset Parameters"));
     }
 
     void activated() override
@@ -189,6 +196,16 @@ private:
         firstCurveCreated = getHighestCurveIndex() + 1;
 
         generateSourceWires();
+    }
+
+public:
+    std::list<Gui::InputHint> getToolHints() const override
+    {
+        using enum Gui::InputHint::UserInput;
+
+        return {
+            {tr("%1 set offset direction and distance", "Sketcher Offset: hint"), {MouseLeft}},
+        };
     }
 
 private:
@@ -214,8 +231,9 @@ private:
     TopoDS_Shape makeOffsetShape(bool allowOpenResult = false)
     {
         // in OCC the JointTypes are : Arc(0), Tangent(1), Intersection(2)
-        short joinType =
-            constructionMethod() == DrawSketchHandlerOffset::ConstructionMethod::Arc ? 0 : 2;
+        short joinType = constructionMethod() == DrawSketchHandlerOffset::ConstructionMethod::Arc
+            ? 0
+            : 2;
 
         // Offset will fail for single lines if we don't set a plane in ctor.
         // But if we set a plane, then the direction of offset is forced...
@@ -243,17 +261,18 @@ private:
         }
         catch (...) {
             throw Base::CADKernelError(
-                "BRepOffsetAPI_MakeOffset has crashed! (Unknown exception caught)");
+                "BRepOffsetAPI_MakeOffset has crashed! (Unknown exception caught)"
+            );
         }
 
         TopoDS_Shape offsetShape = mkOffset.Shape();
 
         if (offsetShape.IsNull()) {
-            throw Base::CADKernelError("makeOffset2D: result of offsetting is null!");
+            return offsetShape;
         }
 
         // Copying shape to fix strange orientation behavior, OCC7.0.0. See bug #2699
-        //  http://www.freecadweb.org/tracker/view.php?id=2699
+        //  http://www.freecad.org/tracker/view.php?id=2699
         offsetShape = BRepBuilderAPI_Copy(offsetShape).Shape();
         return offsetShape;
     }
@@ -280,7 +299,8 @@ private:
         GeometryFacade::setConstruction(line, false);
         return line;
     }
-    Part::Geometry* curveToCircleOrArc(BRepAdaptor_Curve curve)
+
+    Part::Geometry* curveToCircleOrArc(BRepAdaptor_Curve curve, const TopoDS_Edge& /*edge*/)
     {
         gp_Circ circle = curve.Circle();
         gp_Pnt cnt = circle.Location();
@@ -296,49 +316,66 @@ private:
             return gCircle;
         }
         else {
+            Handle(Geom_Circle) hCircle = new Geom_Circle(circle);
+
+            double u1 = curve.FirstParameter();
+            double u2 = curve.LastParameter();
+
             auto* gArc = new Part::GeomArcOfCircle();
-            Handle(Geom_Curve) hCircle = new Geom_Circle(circle);
-            Handle(Geom_TrimmedCurve) tCurve =
-                new Geom_TrimmedCurve(hCircle, curve.FirstParameter(), curve.LastParameter());
+            Handle(Geom_TrimmedCurve) tCurve = new Geom_TrimmedCurve(hCircle, u1, u2);
             gArc->setHandle(tCurve);
+
+            gArc->reverseIfReversed();
+
             GeometryFacade::setConstruction(gArc, false);
             return gArc;
         }
     }
-    Part::Geometry* curveToEllipseOrArc(BRepAdaptor_Curve curve)
+
+    Part::Geometry* curveToEllipseOrArc(BRepAdaptor_Curve curve, const TopoDS_Edge& /*edge*/)
     {
         gp_Elips ellipse = curve.Ellipse();
-        // gp_Pnt cnt = ellipse.Location();
         gp_Pnt beg = curve.Value(curve.FirstParameter());
         gp_Pnt end = curve.Value(curve.LastParameter());
 
         if (beg.SquareDistance(end) < Precision::Confusion()) {
             auto* gEllipse = new Part::GeomEllipse();
             Handle(Geom_Ellipse) hEllipse = new Geom_Ellipse(ellipse);
+
             gEllipse->setHandle(hEllipse);
+
+            gEllipse->reverseIfReversed();
+
             GeometryFacade::setConstruction(gEllipse, false);
             return gEllipse;
         }
         else {
-            Handle(Geom_Curve) hEllipse = new Geom_Ellipse(ellipse);
-            Handle(Geom_TrimmedCurve) tCurve =
-                new Geom_TrimmedCurve(hEllipse, curve.FirstParameter(), curve.LastParameter());
+            Handle(Geom_Ellipse) hEllipse = new Geom_Ellipse(ellipse);
+
+            double u1 = curve.FirstParameter();
+            double u2 = curve.LastParameter();
+
+            Handle(Geom_TrimmedCurve) tCurve = new Geom_TrimmedCurve(hEllipse, u1, u2);
             auto* gArc = new Part::GeomArcOfEllipse();
             gArc->setHandle(tCurve);
+
+            gArc->reverseIfReversed();
+
             GeometryFacade::setConstruction(gArc, false);
             return gArc;
         }
     }
 
-    void getOffsetGeos(std::vector<Part::Geometry*>& geometriesToAdd,
-                       std::vector<int>& listOfOffsetGeoIds)
+    void getOffsetGeos(std::vector<Part::Geometry*>& geometriesToAdd, std::vector<int>& listOfOffsetGeoIds)
     {
         TopoDS_Shape offsetShape = makeOffsetShape();
+        if (offsetShape.IsNull()) {
+            return;
+        }
 
         TopExp_Explorer expl(offsetShape, TopAbs_EDGE);
         int geoIdToAdd = firstCurveCreated;
         for (; expl.More(); expl.Next(), geoIdToAdd++) {
-
             const TopoDS_Edge& edge = TopoDS::Edge(expl.Current());
             BRepAdaptor_Curve curve(edge);
             if (curve.GetType() == GeomAbs_Line) {
@@ -346,11 +383,11 @@ private:
                 listOfOffsetGeoIds.push_back(geoIdToAdd);
             }
             else if (curve.GetType() == GeomAbs_Circle) {
-                geometriesToAdd.push_back(curveToCircleOrArc(curve));
+                geometriesToAdd.push_back(curveToCircleOrArc(curve, edge));
                 listOfOffsetGeoIds.push_back(geoIdToAdd);
             }
             else if (curve.GetType() == GeomAbs_Ellipse) {
-                geometriesToAdd.push_back(curveToEllipseOrArc(curve));
+                geometriesToAdd.push_back(curveToEllipseOrArc(curve, edge));
                 listOfOffsetGeoIds.push_back(geoIdToAdd);
             }
             // TODO Bspline support
@@ -373,6 +410,16 @@ private:
         getOffsetGeos(geometriesToAdd, listOfOffsetGeoIds);
 
         SketchObject* Obj = sketchgui->getSketchObject();
+
+        if (listOfOffsetGeoIds.empty()) {
+            Gui::NotifyUserError(
+                Obj,
+                QT_TRANSLATE_NOOP("Notifications", "Offset Error"),
+                QT_TRANSLATE_NOOP("Notifications", "Offset could not be created.")
+            );
+            return;
+        }
+
         Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Offset"));
 
         // Create geos
@@ -393,6 +440,9 @@ private:
 
     void jointOffsetCurves(std::vector<int>& listOfOffsetGeoIds)
     {
+        if (listOfOffsetGeoIds.empty()) {
+            return;
+        }
         std::stringstream stream;
         stream << "conList = []\n";
         for (size_t i = 0; i < listOfOffsetGeoIds.size() - 1; i++) {
@@ -401,9 +451,7 @@ private:
                 // Here we make coincidences based on distance. So they must change after.
                 Base::Vector3d firstStartPoint, firstEndPoint, secondStartPoint, secondEndPoint;
                 if (!getFirstSecondPoints(listOfOffsetGeoIds[i], firstStartPoint, firstEndPoint)
-                    || !getFirstSecondPoints(listOfOffsetGeoIds[j],
-                                             secondStartPoint,
-                                             secondEndPoint)) {
+                    || !getFirstSecondPoints(listOfOffsetGeoIds[j], secondStartPoint, secondEndPoint)) {
                     continue;
                 }
 
@@ -432,8 +480,8 @@ private:
                 }
 
                 if (create) {
-                    bool tangent =
-                        needTangent(listOfOffsetGeoIds[i], listOfOffsetGeoIds[j], posi, posj);
+                    bool tangent
+                        = needTangent(listOfOffsetGeoIds[i], listOfOffsetGeoIds[j], posi, posj);
                     stream << "conList.append(Sketcher.Constraint('"
                            << (tangent ? "Tangent" : "Coincident");
                     stream << "'," << listOfOffsetGeoIds[i] << "," << static_cast<int>(posi) << ", "
@@ -508,9 +556,7 @@ private:
         }
         stream << listOfGeoIds[listOfGeoIds.size() - 1];
         try {
-            Gui::cmdAppObjectArgs(sketchgui->getObject(),
-                                  "delGeometries([%s])",
-                                  stream.str().c_str());
+            Gui::cmdAppObjectArgs(sketchgui->getObject(), "delGeometries([%s])", stream.str().c_str());
         }
         catch (const Base::Exception& e) {
             Base::Console().error("%s\n", e.what());
@@ -629,14 +675,12 @@ private:
                         p2[0] = lineSeg2->getStartPoint();
                         p2[1] = lineSeg2->getEndPoint();
                         // if lines are parallel
-                        if (((p1[1] - p1[0]) % (p2[1] - p2[0])).Length()
-                            < Precision::Intersection()) {
+                        if (((p1[1] - p1[0]) % (p2[1] - p2[0])).Length() < Precision::Intersection()) {
                             // If the lines are space by offsetLength distance
                             Base::Vector3d projectedP;
                             projectedP.ProjectToLine(p1[0] - p2[0], p2[1] - p2[0]);
 
-                            if ((projectedP).Length() - fabs(offsetLength)
-                                < Precision::Confusion()) {
+                            if ((projectedP).Length() - fabs(offsetLength) < Precision::Confusion()) {
                                 if (!forceCreate && !rerunningFirst) {
                                     stream << "conList.append(Sketcher.Constraint('Parallel',"
                                            << curve[j] << ", " << geoId << "))\n";
@@ -772,7 +816,8 @@ private:
                         // const Part::GeomArcOfParabola* arcOfParabola = static_cast<const
                         // Part::GeomArcOfParabola*>(geo2);
                     }
-                    else if (isBSplineCurve(*geo) && isBSplineCurve(*geo2)) {}
+                    else if (isBSplineCurve(*geo) && isBSplineCurve(*geo2)) {
+                    }
                 }
                 if (newCurveCounter != prevCurveCounter) {
                     prevCurveCounter = newCurveCounter;
@@ -869,18 +914,14 @@ private:
                             if (k == 0) {
                                 std::reverse(vcc[j].begin(), vcc[j].end());
                             }
-                            vcc[j].insert(vcc[j].end(),
-                                          vcc[insertedIn].begin(),
-                                          vcc[insertedIn].end());
+                            vcc[j].insert(vcc[j].end(), vcc[insertedIn].begin(), vcc[insertedIn].end());
                             vcc.erase(vcc.begin() + insertedIn);
                         }
                         else {
                             if (k != 0) {  // ie k is  vcc[j].size()-1
                                 std::reverse(vcc[j].begin(), vcc[j].end());
                             }
-                            vcc[insertedIn].insert(vcc[insertedIn].end(),
-                                                   vcc[j].begin(),
-                                                   vcc[j].end());
+                            vcc[insertedIn].insert(vcc[insertedIn].end(), vcc[j].begin(), vcc[j].end());
                             vcc.erase(vcc.begin() + j);
                         }
                         j--;
@@ -917,16 +958,39 @@ private:
 
         for (auto& CC : vCC) {
             BRepBuilderAPI_MakeWire mkWire;
-            for (auto& curve : CC) {
-                mkWire.Add(TopoDS::Edge(Obj->getGeometry(curve)->toShape()));
+            for (auto& curveId : CC) {
+                const Part::Geometry* pGeo = Obj->getGeometry(curveId);
+                auto geoCopy = std::unique_ptr<Part::Geometry>(pGeo->copy());
+                Part::Geometry* geo = geoCopy.get();
+                geo->reverseIfReversed();  // make sure we don't have reversed conics
+
+                // Use the normalized copy to create the edge for the wire
+                mkWire.Add(TopoDS::Edge(geo->toShape()));
+            }
+
+            TopoDS_Wire wire = mkWire.Wire();
+
+            // Fix orientation: ensure all closed wires are CCW relative to Sketch Plane (+Z)
+            if (wire.Closed()) {
+                BRepBuilderAPI_MakeFace mkFace(wire);
+                if (mkFace.IsDone()) {
+                    TopoDS_Face face = mkFace.Face();
+                    BRepAdaptor_Surface surf(face);
+                    if (surf.GetType() == GeomAbs_Plane) {
+                        gp_Dir norm = surf.Plane().Axis().Direction();
+                        if (norm.Z() < 0) {
+                            wire.Reverse();
+                        }
+                    }
+                }
             }
 
             // Here we make sure that if possible the first wire is not a single line.
             if (CC.size() == 1 && isLineSegment(*Obj->getGeometry(CC[0]))) {
-                sourceWires.push_back(mkWire.Wire());
+                sourceWires.push_back(wire);
             }
             else {
-                sourceWires.insert(sourceWires.begin(), mkWire.Wire());
+                sourceWires.insert(sourceWires.begin(), wire);
                 onlySingleLines = false;
             }
         }
@@ -951,9 +1015,11 @@ private:
                     // find direction
                     if (BRep_Tool::IsClosed(wire)) {
                         TopoDS_Face aFace = BRepBuilderAPI_MakeFace(wire);
-                        BRepClass_FaceClassifier checkPoint(aFace,
-                                                            {endpoint.x, endpoint.y, 0.0},
-                                                            Precision::Confusion());
+                        BRepClass_FaceClassifier checkPoint(
+                            aFace,
+                            {endpoint.x, endpoint.y, 0.0},
+                            Precision::Confusion()
+                        );
                         if (checkPoint.State() == TopAbs_IN) {
                             newOffsetLength = -newOffsetLength;
                         }
@@ -1040,10 +1106,12 @@ private:
             return false;
         }
 
-        return ((p11 - p21).Length() < Precision::Confusion()
-                || (p11 - p22).Length() < Precision::Confusion()
-                || (p12 - p21).Length() < Precision::Confusion()
-                || (p12 - p22).Length() < Precision::Confusion());
+        return (
+            (p11 - p21).Length() < Precision::Confusion()
+            || (p11 - p22).Length() < Precision::Confusion()
+            || (p12 - p21).Length() < Precision::Confusion()
+            || (p12 - p22).Length() < Precision::Confusion()
+        );
     }
 
     bool areTangentCoincident(int geoId1, int geoId2)
@@ -1095,29 +1163,37 @@ template<>
 void DSHOffsetController::configureToolWidget()
 {
     if (!init) {  // Code to be executed only upon initialisation
-        QStringList names = {QApplication::translate("Sketcher_CreateOffset", "Arc"),
-                             QApplication::translate("Sketcher_CreateOffset", "Intersection")};
+        QStringList names = {
+            QApplication::translate("Sketcher_CreateOffset", "Arc"),
+            QApplication::translate("Sketcher_CreateOffset", "Intersection")
+        };
         toolWidget->setComboboxElements(WCombobox::FirstCombo, names);
 
-        toolWidget->setComboboxItemIcon(WCombobox::FirstCombo,
-                                        0,
-                                        Gui::BitmapFactory().iconFromTheme("Sketcher_OffsetArc"));
+        toolWidget->setComboboxItemIcon(
+            WCombobox::FirstCombo,
+            0,
+            Gui::BitmapFactory().iconFromTheme("Sketcher_OffsetArc")
+        );
         toolWidget->setComboboxItemIcon(
             WCombobox::FirstCombo,
             1,
-            Gui::BitmapFactory().iconFromTheme("Sketcher_OffsetIntersection"));
+            Gui::BitmapFactory().iconFromTheme("Sketcher_OffsetIntersection")
+        );
 
-        toolWidget->setCheckboxLabel(WCheckbox::FirstBox,
-                                     QApplication::translate("TaskSketcherTool_c1_offset",
-                                                             "Delete original geometries (U)"));
+        toolWidget->setCheckboxLabel(
+            WCheckbox::FirstBox,
+            QApplication::translate("TaskSketcherTool_c1_offset", "Delete original geometries (U)")
+        );
         toolWidget->setCheckboxLabel(
             WCheckbox::SecondBox,
-            QApplication::translate("TaskSketcherTool_c2_offset", "Add offset constraint (J)"));
+            QApplication::translate("TaskSketcherTool_c2_offset", "Add offset constraint (J)")
+        );
     }
 
     onViewParameters[OnViewParameter::First]->setLabelType(
         Gui::SoDatumLabel::DISTANCE,
-        Gui::EditableDatumLabel::Function::Dimensioning);
+        Gui::EditableDatumLabel::Function::Forced
+    );
 }
 
 template<>
@@ -1125,14 +1201,18 @@ void DSHOffsetControllerBase::adaptDrawingToOnViewParameterChange(int labelindex
 {
     switch (labelindex) {
         case OnViewParameter::First: {
-            if (value == 0.) {
-                // Do not accept 0.
+            if (value == 0. && onViewParameters[OnViewParameter::First]->hasFinishedEditing) {
+                // Do not accept 0, but only if user has finished editing the OVP.
                 unsetOnViewParameter(onViewParameters[OnViewParameter::First].get());
+
+                // reset offsetLengthSet so mouse can control the offset again
+                handler->offsetLengthSet = false;
 
                 Gui::NotifyUserError(
                     handler->sketchgui->getSketchObject(),
                     QT_TRANSLATE_NOOP("Notifications", "Invalid Value"),
-                    QT_TRANSLATE_NOOP("Notifications", "Offset value can't be 0."));
+                    QT_TRANSLATE_NOOP("Notifications", "Offset value can't be 0.")
+                );
             }
             else {
                 handler->offsetLengthSet = true;
@@ -1186,9 +1266,29 @@ void DSHOffsetController::adaptParameters(Base::Vector2d onSketchPos)
                 setOnViewParameterValue(OnViewParameter::First, handler->offsetLength);
             }
 
+            Base::Vector3d dimensionEndpoint;
+            if (handler->offsetLengthSet && firstParam->isSet) {
+                // if user has typed a value, calculate correct endpoint based on typed value
+                Base::Vector2d direction = handler->endpoint - handler->pointOnSourceWire;
+                if (direction.Length() > Precision::Confusion()) {
+                    direction.Normalize();
+                    Base::Vector2d correctedEndpoint = handler->pointOnSourceWire
+                        + direction * handler->offsetLength;
+                    dimensionEndpoint = Base::Vector3d(correctedEndpoint.x, correctedEndpoint.y, 0.);
+                }
+                else {
+                    dimensionEndpoint = Base::Vector3d(handler->endpoint.x, handler->endpoint.y, 0.);
+                }
+            }
+            else {
+                // use mouse pos when user hasn't typed a value
+                dimensionEndpoint = Base::Vector3d(handler->endpoint.x, handler->endpoint.y, 0.);
+            }
+
             firstParam->setPoints(
-                Base::Vector3d(handler->endpoint.x, handler->endpoint.y, 0.),
-                Base::Vector3d(handler->pointOnSourceWire.x, handler->pointOnSourceWire.y, 0.));
+                dimensionEndpoint,
+                Base::Vector3d(handler->pointOnSourceWire.x, handler->pointOnSourceWire.y, 0.)
+            );
         } break;
         default:
             break;
@@ -1196,14 +1296,14 @@ void DSHOffsetController::adaptParameters(Base::Vector2d onSketchPos)
 }
 
 template<>
-void DSHOffsetController::doChangeDrawSketchHandlerMode()
+void DSHOffsetController::computeNextDrawSketchHandlerMode()
 {
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
             auto& firstParam = onViewParameters[OnViewParameter::First];
 
             if (firstParam->hasFinishedEditing) {
-                handler->setState(SelectMode::End);
+                handler->setNextState(SelectMode::End);
             }
         } break;
         default:

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Pierre-Louis Boyer <pierrelouis.boyer@gmail.com>   *
  *                                                                         *
@@ -116,8 +118,7 @@ public:
     void configureParameterMin(int parameterindex, double val);
     double getParameter(int parameterindex);
     bool isParameterSet(int parameterindex);
-    void
-    updateVisualValue(int parameterindex, double val, const Base::Unit& unit = Base::Unit::Length);
+    void updateVisualValue(int parameterindex, double val, const Base::Unit& unit = Base::Unit::Length);
 
     void setParameterEnabled(int parameterindex, bool active = true);
     void setParameterFocus(int parameterindex);

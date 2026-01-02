@@ -87,8 +87,8 @@ public:
 
 //NOLINTBEGIN
     App::PropertyLink BaseView;
-    App::PropertyDirection SectionNormal;
-    App::PropertyPosition SectionOrigin;
+    App::PropertyVector SectionNormal;
+    App::PropertyVector SectionOrigin;
     App::PropertyString SectionSymbol;
 
 
@@ -196,7 +196,7 @@ protected:
     bool trimAfterCut() const;
 
     TopoDS_Shape m_cutShape;        // centered, scaled, rotated result of cut
-    TopoDS_Shape m_cutShapeRaw;     // raw result of cut w/o center/scale/rotate
+    TopoDS_Shape m_cutShapeRaw;     // copy of input to prepare shape
 
     void onDocumentRestored() override;
     void setupObject() override;

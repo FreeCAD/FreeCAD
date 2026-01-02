@@ -69,8 +69,6 @@ public:
     void paint( QPainter * painter,
                         const QStyleOptionGraphicsItem * option,
                         QWidget * widget = nullptr ) override;
-    bool sceneEventFilter(QGraphicsItem *watched, QEvent *event) override;
-
 
     void toggleCache(bool state) override;
     void toggleCosmeticLines(bool state);
@@ -128,12 +126,20 @@ public:
     virtual double getLineWidth();
     virtual double getVertexSize();
 
+    bool isExporting() const;
+    bool hideCenterMarks() const;
+
+
+
 protected:
+    bool sceneEventFilter(QGraphicsItem *watched, QEvent *event) override;
     QPainterPath drawPainterPath(TechDraw::BaseGeomPtr baseGeom) const;
     void drawViewPart();
     QGIFace* drawFace(TechDraw::FacePtr f, int idx);
 
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
+    void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override;
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override;
 
     TechDraw::DrawHatch* faceIsHatched(int i, std::vector<TechDraw::DrawHatch*> hatchObjs) const;
     TechDraw::DrawGeomHatch* faceIsGeomHatched(int i, std::vector<TechDraw::DrawGeomHatch*> geomObjs) const;
@@ -141,19 +147,19 @@ protected:
     void removePrimitives();
     void removeDecorations();
     bool prefFaceEdges();
-    bool prefPrintCenters();
     Base::Color prefBreaklineColor();
 
     bool formatGeomFromCosmetic(std::string cTag, QGIEdge* item);
     bool formatGeomFromCenterLine(std::string cTag, QGIEdge* item);
 
-    bool showCenterMarks();
-    bool showVertices();
+    bool showCenterMarks() const;
+    bool showVertices() const;
 
 private:
     QList<QGraphicsItem*> deleteItems;
     PathBuilder* m_pathBuilder;
     TechDraw::LineGenerator* m_dashedLineGenerator;
+    QMetaObject::Connection m_selectionChangedConnection;
 
 };
 

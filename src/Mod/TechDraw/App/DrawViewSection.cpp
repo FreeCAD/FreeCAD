@@ -43,9 +43,7 @@
 //     m_sectionTopoDSFaces = alignSectionFaces(faceIntersections)
 //     m_tdSectionFaces = makeTDSectionFaces(m_sectionTopoDSFaces)
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <BRepAdaptor_Surface.hxx>
 #include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
 #include <BRepBndLib.hxx>
@@ -73,7 +71,7 @@
 #include <gp_Pnt.hxx>
 #include <limits>
 #include <sstream>
-#endif
+
 
 #include <App/Document.h>
 #include <Base/BoundBox.h>
@@ -164,7 +162,7 @@ DrawViewSection::DrawViewSection()
                       "2D View source for this Section");
     BaseView.setScope(App::LinkScope::Global);
 
-    // default of (0, -1, 0) matches 'Front' direction in DVP
+    // default of (0, -1, 0) matches default 'Front' direction in DVP
     ADD_PROPERTY_TYPE(SectionNormal,
                       (0, -1, 0),
                       sgroup,
@@ -182,6 +180,8 @@ DrawViewSection::DrawViewSection()
                       sgroup,
                       App::Prop_None,
                       "Orientation of this Section in the Base View");
+    SectionDirection.setStatus(App::Property::Hidden, true);
+    SectionDirection.setStatus(App::Property::ReadOnly, true);
 
     // properties related to the cut operation
     ADD_PROPERTY_TYPE(FuseBeforeCut,
@@ -259,8 +259,6 @@ DrawViewSection::DrawViewSection()
     Direction.setStatus(App::Property::ReadOnly, true);
     Direction.setValue(SectionNormal.getValue());
 
-    SectionDirection.setStatus(App::Property::Hidden, true);
-    SectionDirection.setStatus(App::Property::ReadOnly, true);
 }
 
 DrawViewSection::~DrawViewSection()
@@ -299,8 +297,7 @@ void DrawViewSection::onChanged(const App::Property* prop)
         return;
     }
 
-    if (prop == &SectionNormal ||
-        prop == &XDirection) {
+    if (prop == &SectionNormal) {
         Direction.setValue(SectionNormal.getValue());
         return;
     }
@@ -558,7 +555,7 @@ void DrawViewSection::makeSectionCut(const TopoDS_Shape& baseShape)
     testBox.SetGap(0.0);
     if (testBox.IsVoid()) {// prism & input don't intersect.  rawShape is
                            // garbage, don't bother.
-        Base::Console().warning("DVS::makeSectionCut - prism & input don't intersect - %s\n",
+        Base::Console().warning("DVS::makeSectionCut - prism & input don not intersect - %s\n",
                                 Label.getValue());
         return;
     }
@@ -568,7 +565,7 @@ void DrawViewSection::makeSectionCut(const TopoDS_Shape& baseShape)
 
 //! position, scale and rotate shape for buildGeometryObject
 //! save the cut shape for further processing
-TopoDS_Shape DrawViewSection::prepareShape(const TopoDS_Shape& rawShape, double shapeSize)
+TopoDS_Shape DrawViewSection::prepareShape(const TopoDS_Shape& uncenteredCutShape, double shapeSize)
 {
     (void)shapeSize;// shapeSize is not used in this base class, but is
                     // interesting for derived classes
@@ -578,11 +575,11 @@ TopoDS_Shape DrawViewSection::prepareShape(const TopoDS_Shape& rawShape, double 
         Base::Vector3d origin(0.0, 0.0, 0.0);
         m_projectionCS = getProjectionCS(origin);
         gp_Pnt inputCenter;
-        inputCenter = ShapeUtils::findCentroid(rawShape, m_projectionCS);
+        inputCenter = ShapeUtils::findCentroid(uncenteredCutShape, m_projectionCS);
         Base::Vector3d centroid(inputCenter.X(), inputCenter.Y(), inputCenter.Z());
 
-        m_cutShapeRaw = rawShape;
-        preparedShape = ShapeUtils::moveShape(rawShape, centroid * -1.0);
+        m_cutShapeRaw = uncenteredCutShape;
+        preparedShape = ShapeUtils::moveShape(uncenteredCutShape, centroid * -1.0);
         m_cutShape = preparedShape;
         m_saveCentroid = centroid;
 
@@ -652,7 +649,6 @@ void DrawViewSection::postHlrTasks()
     if (ScaleType.isValue("Automatic") && !checkFit()) {
         double newScale = autoScale();
         Scale.setValue(newScale);
-        Scale.purgeTouched();
         sectionExec(m_saveShape);
     }
     overrideKeepUpdated(false);
@@ -1067,7 +1063,7 @@ void DrawViewSection::setCSFromBase(const Base::Vector3d& localUnit)
     Base::Vector3d vXDir(newSectionCS.XDirection().X(),
                          newSectionCS.XDirection().Y(),
                          newSectionCS.XDirection().Z());
-    XDirection.setValue(vXDir);// XDir is for projection
+    XDirection.setValue(vXDir);
 }
 
 // reset the section CS based on an XY vector in current section CS
@@ -1230,9 +1226,11 @@ void DrawViewSection::setupObject()
 
 void DrawViewSection::handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop)
 {
+    DrawViewPart::handleChangedPropertyType(reader, TypeName, prop);
+
     if (prop == &SectionOrigin) {
-        // SectionOrigin was PropertyVector but is now PropertyPosition
-        App::PropertyVector tmp;
+        // SectionOrigin was PropertyVector then briefly PropertyPosition, now back to PropertyVector
+        App::PropertyPosition tmp;
         if (strcmp(tmp.getTypeId().getName(), TypeName)==0) {
             tmp.setContainer(this);
             tmp.Restore(reader);
@@ -1243,16 +1241,19 @@ void DrawViewSection::handleChangedPropertyType(Base::XMLReader &reader, const c
     }
 
     if (prop == &SectionNormal) {
-        // Radius was PropertyVector but is now PropertyDirection
-        App::PropertyVector tmp;
+        // Radius was PropertyVector, then briefly PropertyDirection, then PropertyVector
+        App::PropertyDirection tmp;
         if (strcmp(tmp.getTypeId().getName(), TypeName)==0) {
             tmp.setContainer(this);
             tmp.Restore(reader);
             auto tmpValue = tmp.getValue();
             SectionNormal.setValue(tmpValue);
+            Direction.setValue(tmpValue);
         }
         return;
     }
+
+    DrawViewPart::handleChangedPropertyType(reader, TypeName, prop);
 }
 
 // checks that SectionNormal and XDirection are perpendicular and that Direction is the same as

@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
 
 # ***************************************************************************
 # *   Copyright (c) 2021 Yorik van Havre <yorik@uncreated.net>              *
@@ -36,7 +36,7 @@ Basic usage:
     import Help
     Help.show("Draft Line")
     Help.show("Draft_Line") # works with spaces or underscores
-    Help.show("https://wiki.freecadweb.org/Draft_Line")
+    Help.show("https://wiki.freecad.org/Draft_Line")
     Help.show("https://gitlab.com/freecad/FreeCAD-documentation/-/raw/main/wiki/Draft_Line.md")
     Help.show("/home/myUser/.FreeCAD/Documentation/Draft_Line.md")
     Help.show("http://myserver.com/myfolder/Draft_Line.html")
@@ -70,11 +70,11 @@ MD_RENDERED_URL = "https://github.com/FreeCAD/FreeCAD-documentation/blob/main/wi
 MD_TRANSLATIONS_FOLDER = "translations"
 ERRORTXT = translate(
     "Help",
-    "Contents for this page could not be retrieved. Please check settings under menu Edit -> Preferences -> General -> Help",
+    "Contents for this page could not be retrieved. Please check settings under menu Edit → Preferences → General → Help",
 )
 LOCTXT = translate(
     "Help",
-    "Help files location could not be determined. Please check settings under menu Edit -> Preferences -> General -> Help",
+    "Help files location could not be determined. Please check settings under menu Edit → Preferences → General → Help",
 )
 LOGTXT = translate(
     "Help",
@@ -169,7 +169,7 @@ def location_url(url_localized: str, url_english: str) -> tuple:
         req = urllib.request.Request(url_localized)
         with urllib.request.urlopen(req) as response:
             html = response.read().decode("utf-8")
-            if re.search(MD_RAW_URL, url_localized):
+            if url_localized.startswith(MD_RAW_URL):
                 pagename_match = re.search(r"Name/.*?:\s*(.+)", html)
             else:
                 # Pages from FreeCAD Wiki fall here

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Werner Mayer <wmayer@users.sourceforge.net>        *
  *                                                                         *
@@ -21,10 +23,8 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <Python.h>
-#endif
+
 
 #include <Base/Console.h>
 #include <App/DocumentPy.h>
@@ -253,6 +253,6 @@ PyMOD_INIT_FUNC(Sandbox)
     // the following constructor call registers our extension module
     // with the Python runtime system
     PyObject* mod = Sandbox::initModule();
-    Base::Console().log("Loading Sandbox module... done\n");
+    Base::Console().log("Loading Sandbox module… done\n");
     PyMOD_Return(mod);
 }

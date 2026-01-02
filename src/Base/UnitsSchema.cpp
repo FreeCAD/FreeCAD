@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /************************************************************************
  *                                                                      *
  *   This file is part of the FreeCAD CAx development system.           *
@@ -18,8 +20,6 @@
  *   Suite 330, Boston, MA  02111-1307, USA                             *
  *                                                                      *
  ************************************************************************/
-
-#include "PreCompiled.h"
 
 #include <iomanip>
 #include <sstream>
@@ -50,8 +50,7 @@ std::string UnitsSchema::translate(const Quantity& quant) const
     return translate(quant, dummy1, dummy2);
 }
 
-std::string
-UnitsSchema::translate(const Quantity& quant, double& factor, std::string& unitString) const
+std::string UnitsSchema::translate(const Quantity& quant, double& factor, std::string& unitString) const
 {
     // Use defaults without schema-level translation.
     factor = 1.0;
@@ -74,12 +73,21 @@ UnitsSchema::translate(const Quantity& quant, double& factor, std::string& unitS
     auto unitSpecs = spec.translationSpecs.at(unitName);
     const auto unitSpec = std::find_if(unitSpecs.begin(), unitSpecs.end(), isSuitable);
     if (unitSpec == unitSpecs.end()) {
-        throw RuntimeError("Suitable threshold not found. Schema: " + spec.name
-                           + " value: " + std::to_string(value));
+        throw RuntimeError(
+            "Suitable threshold not found. Schema: " + spec.name + " value: " + std::to_string(value)
+        );
     }
 
     if (unitSpec->factor == 0) {
-        return UnitsSchemasData::runSpecial(unitSpec->unitString, value, factor, unitString);
+        const QuantityFormat& format = quant.getFormat();
+        return UnitsSchemasData::runSpecial(
+            unitSpec->unitString,
+            value,
+            format.getPrecision(),
+            format.getDenominator(),
+            factor,
+            unitString
+        );
     }
 
     factor = unitSpec->factor;
@@ -88,8 +96,7 @@ UnitsSchema::translate(const Quantity& quant, double& factor, std::string& unitS
     return toLocale(quant, factor, unitString);
 }
 
-std::string
-UnitsSchema::toLocale(const Quantity& quant, const double factor, const std::string& unitString)
+std::string UnitsSchema::toLocale(const Quantity& quant, const double factor, const std::string& unitString)
 {
     QLocale Lc;
     const QuantityFormat& format = quant.getFormat();
@@ -97,8 +104,8 @@ UnitsSchema::toLocale(const Quantity& quant, const double factor, const std::str
         Lc.setNumberOptions(static_cast<QLocale::NumberOptions>(format.option));
     }
 
-    auto valueString =
-        Lc.toString(quant.getValue() / factor, format.toFormat(), format.precision).toStdString();
+    auto valueString = Lc.toString(quant.getValue() / factor, format.toFormat(), format.getPrecision())
+                           .toStdString();
 
     auto notUnit = [](auto s) {
         return s.empty() || s == "°" || s == "″" || s == "′" || s == "\"" || s == "'";

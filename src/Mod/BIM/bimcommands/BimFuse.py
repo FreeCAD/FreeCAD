@@ -35,7 +35,7 @@ class BIM_Fuse:
         return {
             "Pixmap": "Part_Fuse",
             "MenuText": QT_TRANSLATE_NOOP("Part_Fuse", "Union"),
-            "ToolTip": QT_TRANSLATE_NOOP("Part_Fuse", "Make a union of several shapes"),
+            "ToolTip": QT_TRANSLATE_NOOP("Part_Fuse", "Creates a union of several shapes"),
         }
 
     def IsActive(self):

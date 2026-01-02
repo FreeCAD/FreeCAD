@@ -1,4 +1,4 @@
-target_sources(Tests_run PRIVATE
+add_executable(Base_tests_run
         Axis.cpp
         Base64.cpp
         Bitmask.cpp
@@ -8,6 +8,7 @@ target_sources(Tests_run PRIVATE
         CoordinateSystem.cpp
         DualNumber.cpp
         DualQuaternion.cpp
+        FileInfo.cpp
         Handle.cpp
         Matrix.cpp
         Parameter.cpp
@@ -31,3 +32,11 @@ target_sources(Tests_run PRIVATE
 )
 
 setup_qt_test(InventorBuilder)
+
+target_link_libraries(Base_tests_run PRIVATE
+    GTest::gtest_main
+    GTest::gmock_main
+    ${Google_Tests_LIBS}
+    FreeCADApp
+    ICU::uc ICU::i18n
+)

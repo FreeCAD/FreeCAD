@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 David Carter <dcarter@david.carter.ca>             *
  *                                                                         *
@@ -19,15 +21,13 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QDirIterator>
 #include <QFileInfo>
 #include <QList>
 #include <QMetaType>
 #include <QRegularExpression>
 #include <QString>
-#endif
+
 
 #include <App/Application.h>
 #include <Base/Interpreter.h>
@@ -180,12 +180,23 @@ void MaterialYamlEntry::addToTree(
     QString author = yamlValue(yamlModel["General"], "Author", "");
     QString license = yamlValue(yamlModel["General"], "License", "");
     QString description = yamlValue(yamlModel["General"], "Description", "");
+    QString sourceReference = yamlValue(yamlModel["General"], "ReferenceSource", "");
+    QString sourceURL = yamlValue(yamlModel["General"], "SourceURL", "");
 
     std::shared_ptr<Material> finalModel =
         std::make_shared<Material>(library, directory, uuid, name);
     finalModel->setAuthor(author);
     finalModel->setLicense(license);
     finalModel->setDescription(description);
+    finalModel->setReference(sourceReference);
+    finalModel->setURL(sourceURL);
+
+    if (yamlModel["General"]["Tags"]) {
+        auto tags = readList(yamlModel["General"]["Tags"]);
+        for (auto tag : *tags) {
+            finalModel->addTag(tag.toString());
+        }
+    }
 
     // Add inheritance list
     if (yamlModel["Inherits"]) {

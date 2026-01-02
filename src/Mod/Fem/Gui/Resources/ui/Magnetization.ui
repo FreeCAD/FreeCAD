@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Analysis feature properties</string>
+   <string>Analysis Feature Properties</string>
   </property>
   <layout class="QVBoxLayout" name="vlt_0">
    <item row="0" column="0">
@@ -53,7 +53,7 @@ with harmonic/oscillating driving current</string>
       <item row="1" column="0">
        <widget class="QCheckBox" name="ckb_magnetization_1">
         <property name="text">
-         <string>x</string>
+         <string>X</string>
         </property>
        </widget>
       </item>
@@ -104,7 +104,7 @@ with harmonic/oscillating driving current</string>
       <item row="2" column="0">
        <widget class="QCheckBox" name="ckb_magnetization_2">
         <property name="text">
-         <string>y</string>
+         <string>Y</string>
         </property>
        </widget>
       </item>
@@ -155,7 +155,7 @@ with harmonic/oscillating driving current</string>
       <item row="3" column="0">
        <widget class="QCheckBox" name="ckb_magnetization_3">
         <property name="text">
-         <string>z</string>
+         <string>Z</string>
         </property>
        </widget>
       </item>

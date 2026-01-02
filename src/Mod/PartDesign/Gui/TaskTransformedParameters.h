@@ -24,8 +24,7 @@
 #ifndef GUI_TASKVIEW_TaskTransformedParameters_H
 #define GUI_TASKVIEW_TaskTransformedParameters_H
 
-#include <QComboBox>
-
+#include <Gui/ComboLinks.h>
 #include <Gui/DocumentObserver.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/TaskView/TaskView.h>
@@ -56,78 +55,6 @@ namespace PartDesignGui
 class TaskMultiTransformParameters;
 
 /**
- * @brief The ComboLinks class is a helper class that binds to a combo box and
- * provides an interface to add links, retrieve links and select items by link
- * value
- */
-class ComboLinks
-{
-public:
-    /**
-     * @brief ComboLinks constructor.
-     * @param combo. It will be cleared as soon as it is bound. Don't add or
-     * remove items from the combo directly, otherwise internal tracking list
-     * will go out of sync, and crashes may result.
-     */
-    explicit ComboLinks(QComboBox& combo);
-    ComboLinks() = default;
-
-    void setCombo(QComboBox& combo)
-    {
-        assert(!_combo);
-        this->_combo = &combo;
-        _combo->clear();
-    }
-
-    /**
-     * @brief addLink adds an item to the combo. Doesn't check for duplicates.
-     * @param lnk can be a link to NULL, which is usually used for special item "Select Reference"
-     * @param itemText
-     * @return
-     */
-    int addLink(const App::PropertyLinkSub& lnk, QString const& itemText);
-    int addLink(App::DocumentObject* linkObj, std::string const& linkSubname, QString const& itemText);
-    void clear();
-    App::PropertyLinkSub& getLink(int index) const;
-
-    /**
-     * @brief getCurrentLink
-     * @return the link corresponding to the selected item. May be null link,
-     * which is usually used to indicate a "Select reference..." special item.
-     * Otherwise, the link is automatically tested for validity (oif an object
-     * doesn't exist in the document, an exception will be thrown.)
-     */
-    App::PropertyLinkSub& getCurrentLink() const;
-
-    /**
-     * @brief setCurrentLink selects the item with the link that matches the
-     * argument. If there is no such link in the list, -1 is returned and
-     * selected item is not changed. Signals from combo are blocked in this
-     * function.
-     * @param lnk
-     * @return the index of an item that was selected, -1 if link is not in the list yet.
-     */
-    int setCurrentLink(const App::PropertyLinkSub& lnk);
-
-    QComboBox& combo() const
-    {
-        assert(_combo);
-        return *_combo;
-    }
-
-    ~ComboLinks()
-    {
-        _combo = nullptr;
-        clear();
-    }
-
-private:
-    QComboBox* _combo = nullptr;
-    App::Document* doc = nullptr;
-    std::vector<App::PropertyLinkSub*> linksInList;
-};
-
-/**
   The transformed subclasses will be used in two different modes:
   1. As a stand-alone feature
   2. As a container that stores transformation info for a MultiTransform feature. In this case
@@ -143,8 +70,10 @@ class TaskTransformedParameters: public Gui::TaskView::TaskBox,
 
 public:
     /// Constructor for task with ViewProvider
-    explicit TaskTransformedParameters(ViewProviderTransformed* TransformedView,
-                                       QWidget* parent = nullptr);
+    explicit TaskTransformedParameters(
+        ViewProviderTransformed* TransformedView,
+        QWidget* parent = nullptr
+    );
     /// Constructor for task with parent task (MultiTransform mode)
     explicit TaskTransformedParameters(TaskMultiTransformParameters* parentTask);
     ~TaskTransformedParameters() override;
@@ -178,8 +107,11 @@ protected:
      */
     PartDesign::Transformed* getObject() const;
 
-    template <class T>
-    T* getObject() const { return freecad_cast<T*>(getObject()); }
+    template<class T>
+    T* getObject() const
+    {
+        return freecad_cast<T*>(getObject());
+    }
 
     /// Get the sketch object of the first original either of the object associated with this
     /// feature or with the parent feature (MultiTransform mode)
@@ -212,9 +144,9 @@ protected:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
     /// Fill combobox with the axis from the sketch and the own bodys origin axis
-    void fillAxisCombo(ComboLinks& combolinks, Part::Part2DObject* sketch);
+    void fillAxisCombo(Gui::ComboLinks& combolinks, Part::Part2DObject* sketch);
     /// Fill combobox with the planes from the sketch and the own bodys origin planes
-    void fillPlanesCombo(ComboLinks& combolinks, Part::Part2DObject* sketch);
+    void fillPlanesCombo(Gui::ComboLinks& combolinks, Part::Part2DObject* sketch);
 
     /**
      * Returns the base transformed objectfromStdString

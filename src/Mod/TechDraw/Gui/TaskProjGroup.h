@@ -61,8 +61,7 @@ public:
     virtual bool apply();
     void modifyStandardButtons(QDialogButtonBox* box);
     void saveButtons(QPushButton* btnOK,
-                     QPushButton* btnCancel,
-                     QPushButton* btnApply);
+                     QPushButton* btnCancel);
 
     void updateTask();
     // Sets the numerator and denominator widgets to match newScale
@@ -100,7 +99,7 @@ protected Q_SLOTS:
 
     void customDirectionClicked();
 
-    void projectionTypeChanged(QString qText);
+    void projectionTypeChanged(int index);
     void scaleTypeChanged(int index);
     void AutoDistributeClicked(bool clicked);
     /// Updates item spacing
@@ -126,10 +125,9 @@ private:
 
     QPushButton* m_btnOK{nullptr};
     QPushButton* m_btnCancel{nullptr};
-    QPushButton* m_btnApply{nullptr};
 
     std::vector<App::DocumentObject*> m_saveSource;
-    std::string    m_saveProjType;
+    long           m_saveProjType;
     std::string    m_saveScaleType;
     double         m_saveScale{1};
     bool           m_saveAutoDistribute{false};
@@ -151,7 +149,7 @@ public:
     TechDraw::DrawView* getView() const { return view; }
 
     QDialogButtonBox::StandardButtons getStandardButtons() const override
-    { return QDialogButtonBox::Ok | QDialogButtonBox::Apply | QDialogButtonBox::Cancel; }
+    { return QDialogButtonBox::Ok | QDialogButtonBox::Cancel; }
     void modifyStandardButtons(QDialogButtonBox* box) override;
 
     /// is called the TaskView when the dialog is opened

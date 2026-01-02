@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2004 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,12 +22,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <QAction>
 #include <QList>
-#endif
 
 #include "Dialogs/DlgUndoRedo.h"
 #include "Application.h"
@@ -41,8 +39,8 @@ using namespace Gui::Dialog;
  *  Constructs a UndoRedoDialog which is a child of 'parent', with the
  *  name 'name'.'
  */
-UndoDialog::UndoDialog( QWidget* parent )
-  : QMenu( parent )
+UndoDialog::UndoDialog(QWidget* parent)
+    : QMenu(parent)
 {
     connect(this, &QMenu::aboutToShow, this, &UndoDialog::onFetchInfo);
 }
@@ -58,9 +56,9 @@ UndoDialog::~UndoDialog() = default;
  */
 void UndoDialog::onFetchInfo()
 {
-    clear(); // Remove first all items
+    clear();  // Remove first all items
 
-    MDIView* mdi =  getMainWindow()->activeWindow();
+    MDIView* mdi = getMainWindow()->activeWindow();
     if (mdi) {
         QStringList vecUndos = mdi->undoActions();
         for (QStringList::Iterator i = vecUndos.begin(); i != vecUndos.end(); ++i) {
@@ -76,8 +74,9 @@ void UndoDialog::onSelected()
     QList<QAction*> acts = this->actions();
     for (QList<QAction*>::Iterator it = acts.begin(); it != acts.end(); ++it) {
         Gui::Application::Instance->sendMsgToActiveView("Undo");
-        if (*it == a)
+        if (*it == a) {
             break;
+        }
     }
 }
 
@@ -87,8 +86,8 @@ void UndoDialog::onSelected()
  *  Constructs a UndoRedoDialog which is a child of 'parent', with the
  *  name 'name'.'
  */
-RedoDialog::RedoDialog( QWidget* parent )
-  : QMenu( parent )
+RedoDialog::RedoDialog(QWidget* parent)
+    : QMenu(parent)
 {
     connect(this, &QMenu::aboutToShow, this, &RedoDialog::onFetchInfo);
 }
@@ -104,7 +103,7 @@ RedoDialog::~RedoDialog() = default;
  */
 void RedoDialog::onFetchInfo()
 {
-    clear(); // Remove first all items
+    clear();  // Remove first all items
 
     MDIView* mdi = getMainWindow()->activeWindow();
     if (mdi) {
@@ -122,8 +121,9 @@ void RedoDialog::onSelected()
     QList<QAction*> acts = this->actions();
     for (QList<QAction*>::Iterator it = acts.begin(); it != acts.end(); ++it) {
         Gui::Application::Instance->sendMsgToActiveView("Redo");
-        if (*it == a)
+        if (*it == a) {
             break;
+        }
     }
 }
 

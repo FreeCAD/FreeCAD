@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <App/DocumentObjectPy.h>
 #include <Base/Placement.h>
@@ -37,16 +38,8 @@ PROPERTY_SOURCE(Robot::TrajectoryObject, App::GeoFeature)
 TrajectoryObject::TrajectoryObject()
 {
 
-    ADD_PROPERTY_TYPE(Base,
-                      (Base::Placement()),
-                      "Trajectory",
-                      Prop_None,
-                      "Base frame of the trajectory");
-    ADD_PROPERTY_TYPE(Trajectory,
-                      (Robot::Trajectory()),
-                      "Trajectory",
-                      Prop_None,
-                      "Trajectory object");
+    ADD_PROPERTY_TYPE(Base, (Base::Placement()), "Trajectory", Prop_None, "Base frame of the trajectory");
+    ADD_PROPERTY_TYPE(Trajectory, (Robot::Trajectory()), "Trajectory", Prop_None, "Trajectory object");
 }
 
 short TrajectoryObject::mustExecute() const

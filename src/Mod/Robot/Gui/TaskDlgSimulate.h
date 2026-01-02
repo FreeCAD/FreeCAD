@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -26,6 +28,7 @@
 #include <Gui/TaskView/TaskDialog.h>
 #include <Mod/Robot/App/RobotObject.h>
 #include <Mod/Robot/App/TrajectoryObject.h>
+#include <Mod/Robot/RobotGlobal.h>
 
 #include "TaskRobot6Axis.h"
 #include "TaskRobotControl.h"

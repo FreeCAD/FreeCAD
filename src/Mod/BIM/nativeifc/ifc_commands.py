@@ -48,12 +48,10 @@ class IFC_Diff:
     """Shows a diff of the changes in the current IFC document"""
 
     def GetResources(self):
-        tt = QT_TRANSLATE_NOOP(
-            "IFC_Diff", "Shows the current unsaved changes in the IFC file"
-        )
+        tt = QT_TRANSLATE_NOOP("IFC_Diff", "Shows the current unsaved changes in the IFC file")
         return {
             "Pixmap": "IFC",
-            "MenuText": QT_TRANSLATE_NOOP("IFC_Diff", "IFC Diff..."),
+            "MenuText": QT_TRANSLATE_NOOP("IFC_Diff", "IFC Diff"),
             "ToolTip": tt,
             "Accel": "I, D",
         }
@@ -116,18 +114,14 @@ class IFC_ConvertDocument:
         )
         return {
             "Pixmap": "IFC",
-            "MenuText": QT_TRANSLATE_NOOP("IFC_ConvertDocument", "Convert document"),
+            "MenuText": QT_TRANSLATE_NOOP("IFC_ConvertDocument", "Convert Document"),
             "ToolTip": tt,
             # "Accel": "I, C",
         }
 
     def Activated(self):
         doc = FreeCAD.ActiveDocument
-        if (
-            hasattr(doc, "Proxy")
-            and hasattr(doc.Proxy, "ifcfile")
-            and doc.Proxy.ifcfile
-        ):
+        if hasattr(doc, "Proxy") and hasattr(doc.Proxy, "ifcfile") and doc.Proxy.ifcfile:
             FreeCAD.Console.PrintError(
                 translate("BIM", "The active document is already an IFC document")
             )
@@ -146,7 +140,7 @@ class IFC_MakeProject:
         )
         return {
             "Pixmap": "IFC",
-            "MenuText": QT_TRANSLATE_NOOP("IFC_MakeProject", "Make IFC project"),
+            "MenuText": QT_TRANSLATE_NOOP("IFC_MakeProject", "Convert to IFC Project"),
             "ToolTip": tt,
             "Accel": "I, P",
         }
@@ -181,12 +175,10 @@ class IFC_Save:
     """Saves the current IFC document"""
 
     def GetResources(self):
-        tt = QT_TRANSLATE_NOOP(
-            "IFC_Save", "Saves the current IFC document"
-        )
+        tt = QT_TRANSLATE_NOOP("IFC_Save", "Saves the current IFC document")
         return {
             "Pixmap": "IFC_document",
-            "MenuText": QT_TRANSLATE_NOOP("IFC_Save", "Save IFC file"),
+            "MenuText": QT_TRANSLATE_NOOP("IFC_Save", "Save IFC File"),
             "ToolTip": tt,
             "Accel": "Ctrl+S",
         }
@@ -216,12 +208,10 @@ class IFC_SaveAs:
     """Saves the current IFC document as another name"""
 
     def GetResources(self):
-        tt = QT_TRANSLATE_NOOP(
-            "IFC_SaveAs", "Saves the current IFC document as another file"
-        )
+        tt = QT_TRANSLATE_NOOP("IFC_SaveAs", "Saves the current IFC document as another file")
         return {
             "Pixmap": "IFC_document",
-            "MenuText": QT_TRANSLATE_NOOP("IFC_SaveAs", "Save IFC file as..."),
+            "MenuText": QT_TRANSLATE_NOOP("IFC_SaveAs", "Save IFC File As…"),
             "ToolTip": tt,
             "Accel": "Ctrl+Shift+S",
         }

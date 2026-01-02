@@ -1,8 +1,4 @@
-include_directories(
-    ${CMAKE_BINARY_DIR}
-    ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_CURRENT_BINARY_DIR}
-)
+# SPDX-License-Identifier: LGPL-2.1-or-later
 
 set(ReenGui_LIBS
     ReverseEngineering
@@ -45,7 +41,6 @@ SET(ReenGui_SRCS
     AppReverseEngineeringGui.cpp
     Command.cpp
     Resources/ReverseEngineering.qrc
-    PreCompiled.cpp
     PreCompiled.h
     Workbench.cpp
     Workbench.h
@@ -55,14 +50,31 @@ SET(ReverseEngineeringGuiIcon_SVG
     Resources/icons/ReverseEngineeringWorkbench.svg
 )
 
+add_library(ReverseEngineeringGui SHARED
+    ${ReenGui_SRCS}
+    ${ReverseEngineeringGuiIcon_SVG}
+)
+
 if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${ReenGui_SRCS})
-    ADD_MSVC_PRECOMPILED_HEADER(ReverseEngineeringGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
+    target_precompile_headers(ReverseEngineeringGui PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
 endif(FREECAD_USE_PCH)
 
-add_library(ReverseEngineeringGui SHARED ${ReenGui_SRCS} ${ReverseEngineeringGuiIcon_SVG})
+target_include_directories(
+    ReverseEngineeringGui
+    PRIVATE
+    ${CMAKE_BINARY_DIR}
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
+
 target_link_libraries(ReverseEngineeringGui ${ReenGui_LIBS})
+
+if (MSVC)
+    target_compile_options(ReverseEngineeringGui PRIVATE /wd4275)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(ReverseEngineeringGui)
 endif()

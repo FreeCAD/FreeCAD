@@ -50,8 +50,7 @@ class TaskMirroredParameters: public TaskTransformedParameters
 
 public:
     /// Constructor for task with ViewProvider
-    explicit TaskMirroredParameters(ViewProviderTransformed* TransformedView,
-                                    QWidget* parent = nullptr);
+    explicit TaskMirroredParameters(ViewProviderTransformed* TransformedView, QWidget* parent = nullptr);
     /// Constructor for task with parent task (MultiTransform mode)
     TaskMirroredParameters(TaskMultiTransformParameters* parentTask, QWidget* parameterWidget);
 
@@ -73,7 +72,7 @@ private:
     void getMirrorPlane(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
 
 private:
-    ComboLinks planeLinks;
+    Gui::ComboLinks planeLinks;
     std::unique_ptr<Ui_TaskMirroredParameters> ui;
 };
 

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -42,6 +44,11 @@ public:
      * \brief ReaderOBJ
      */
     explicit ReaderOBJ(MeshKernel& kernel, Material*);
+    /*!
+     * \brief Load the mesh from the file
+     * \return true on success and false otherwise
+     */
+    bool Load(const std::string& file);
     /*!
      * \brief Load the mesh from the input stream
      * \return true on success and false otherwise

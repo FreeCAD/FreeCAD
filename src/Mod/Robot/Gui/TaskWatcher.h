@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -24,6 +26,8 @@
 #define ROBOTGUI_TASKWATCHER_H
 
 #include <Gui/TaskView/TaskWatcher.h>
+
+#include <Mod/Robot/RobotGlobal.h>
 
 #include "TaskRobot6Axis.h"
 #include "TaskRobotControl.h"

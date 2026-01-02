@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: BSL-1.0
+
 // Geometric Tools, LLC
 // Copyright (c) 1998-2010
 // Distributed under the Boost Software License, Version 1.0.

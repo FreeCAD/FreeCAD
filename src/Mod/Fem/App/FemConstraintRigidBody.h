@@ -37,6 +37,9 @@ public:
     /// Constructor
     ConstraintRigidBody();
 
+    App::PropertyBool EnableAmplitude;
+    App::PropertyStringList AmplitudeValues;
+
     // Rigid Body parameters
     App::PropertyPosition ReferenceNode;
     App::PropertyPosition Displacement;

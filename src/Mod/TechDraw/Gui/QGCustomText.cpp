@@ -20,15 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <cassert>
 
 # include <QGraphicsSceneHoverEvent>
 # include <QPainter>
 # include <QRectF>
 # include <QStyleOptionGraphicsItem>
-#endif
 
 #include <Base/Console.h>
 #include <Base/Parameter.h>

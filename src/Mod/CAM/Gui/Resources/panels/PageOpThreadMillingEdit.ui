@@ -15,13 +15,34 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
-    <widget class="QGroupBox" name="groupBox_2">
-     <property name="title">
-      <string>Tool Controller</string>
+    <widget class="QFrame" name="frame">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <item>
-       <widget class="QComboBox" name="toolController"/>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Tool Controller</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="toolController">
+        <property name="toolTip">
+         <string>The tool and its settings to be used for this operation.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="2">
+       <widget class="QCheckBox" name="editToolController">
+        <property name="text">
+         <string>Edit Tool Controller</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
@@ -82,7 +103,7 @@
       <item row="4" column="0">
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>Major Diameter</string>
+         <string>Major diameter</string>
         </property>
        </widget>
       </item>
@@ -96,7 +117,7 @@
       <item row="5" column="0">
        <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>Minor Diameter</string>
+         <string>Minor diameter</string>
         </property>
        </widget>
       </item>
@@ -174,7 +195,7 @@
       <item row="2" column="0">
        <widget class="QCheckBox" name="leadInOut">
         <property name="text">
-         <string>Lead In/Out</string>
+         <string>Lead in/out</string>
         </property>
        </widget>
       </item>

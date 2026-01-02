@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2006 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,15 +22,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QApplication>
 #include <QByteArray>
 #include <QDateTime>
 #include <QDesktopServices>
 #include <QLocale>
 #include <QUrl>
-#endif
 
 #include <App/Document.h>
 #include <App/License.h>
@@ -66,9 +65,7 @@ using namespace Gui::Dialog;
  *  The dialog will by default be modeless, unless you set 'modal' to
  *  true to construct a modal dialog.
  */
-DlgProjectInformationImp::DlgProjectInformationImp(App::Document* doc,
-                                                   QWidget* parent,
-                                                   Qt::WindowFlags fl)
+DlgProjectInformationImp::DlgProjectInformationImp(App::Document* doc, QWidget* parent, Qt::WindowFlags fl)
     : QDialog(parent, fl)
     , _doc(doc)
     , ui(new Ui_DlgProjectInformation)
@@ -132,14 +129,13 @@ DlgProjectInformationImp::DlgProjectInformationImp(App::Document* doc,
 
     QString text = lines.join(QLatin1String("\n"));
     ui->textEditComment->setPlainText(text);
-    connect(ui->pushButtonOpenURL,
-            &QPushButton::clicked,
-            this,
-            &DlgProjectInformationImp::open_url);
-    connect(ui->comboLicense,
-            qOverload<int>(&QComboBox::currentIndexChanged),
-            this,
-            &DlgProjectInformationImp::onLicenseTypeChanged);
+    connect(ui->pushButtonOpenURL, &QPushButton::clicked, this, &DlgProjectInformationImp::open_url);
+    connect(
+        ui->comboLicense,
+        qOverload<int>(&QComboBox::currentIndexChanged),
+        this,
+        &DlgProjectInformationImp::onLicenseTypeChanged
+    );
 }
 
 /**
@@ -169,8 +165,8 @@ void DlgProjectInformationImp::accept()
     _doc->LicenseURL.setValue(ui->lineEditLicenseURL->text().toUtf8());
 
     // Replace newline escape sequence through '\\n' string
-    QStringList lines =
-        ui->textEditComment->toPlainText().split(QLatin1String("\n"), Qt::KeepEmptyParts);
+    QStringList lines
+        = ui->textEditComment->toPlainText().split(QLatin1String("\n"), Qt::KeepEmptyParts);
 
     QString text = lines.join(QLatin1String("\\n"));
     _doc->Comment.setValue(text.isEmpty() ? QByteArray() : text.toUtf8());
@@ -180,9 +176,10 @@ void DlgProjectInformationImp::accept()
 
 void DlgProjectInformationImp::onLicenseTypeChanged(int index)
 {
-    const char* url {index >= 0 && index < App::countOfLicenses
-                         ? App::licenseItems.at(index).at(App::posnOfUrl)
-                         : _doc->LicenseURL.getValue()};
+    const char* url {
+        index >= 0 && index < App::countOfLicenses ? App::licenseItems.at(index).at(App::posnOfUrl)
+                                                   : _doc->LicenseURL.getValue()
+    };
 
     ui->lineEditLicenseURL->setText(QString::fromLatin1(url));
 }

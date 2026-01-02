@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
 # *                                                                         *
@@ -62,21 +61,21 @@ def _addBaseProperties(obj):
         "App::PropertyString",
         "Comment",
         "Path",
-        QT_TRANSLATE_NOOP("App::Property", "An optional comment for this Operation"),
+        QT_TRANSLATE_NOOP("App::Property", "An optional comment for this operation"),
         locked=True,
     )
     obj.addProperty(
         "App::PropertyString",
         "UserLabel",
         "Path",
-        QT_TRANSLATE_NOOP("App::Property", "User Assigned Label"),
+        QT_TRANSLATE_NOOP("App::Property", "User assigned label"),
         locked=True,
     )
     obj.addProperty(
         "App::PropertyString",
         "CycleTime",
         "Path",
-        QT_TRANSLATE_NOOP("App::Property", "Operations Cycle Time Estimation"),
+        QT_TRANSLATE_NOOP("App::Property", "Operations cycle time estimation"),
         locked=True,
     )
     obj.setEditorMode("CycleTime", 1)  # Set property read-only
@@ -180,9 +179,10 @@ class CommandPathShapeTC:
     def GetResources(self):
         return {
             "Pixmap": "CAM_ShapeTC",
-            "MenuText": QT_TRANSLATE_NOOP("CAM_PathShapeTC", "Path from Shape TC"),
+            "MenuText": QT_TRANSLATE_NOOP("CAM_PathShapeTC", "Path From Shape TC"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "CAM_PathShapeTC", "Creates path from selected shapes with tool controller"
+                "CAM_PathShapeTC",
+                "Creates a path from the selected shapes with the tool controller",
             ),
         }
 

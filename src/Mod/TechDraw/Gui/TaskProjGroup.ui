@@ -73,7 +73,7 @@
      <item>
       <widget class="QSpinBox" name="sbScaleNum">
        <property name="toolTip">
-        <string>Scale Numerator</string>
+        <string>Scale numerator</string>
        </property>
        <property name="keyboardTracking">
         <bool>false</bool>
@@ -96,7 +96,7 @@
      <item>
       <widget class="QSpinBox" name="sbScaleDen">
        <property name="toolTip">
-        <string>Scale Denominator</string>
+        <string>Scale denominator</string>
        </property>
        <property name="keyboardTracking">
         <bool>false</bool>
@@ -123,7 +123,7 @@
       <item row="0" column="0">
        <widget class="QPushButton" name="butCWRotate">
         <property name="toolTip">
-         <string>Spin clock wise</string>
+         <string>Spin clockwise</string>
         </property>
         <property name="text">
          <string/>
@@ -171,7 +171,7 @@
       <item row="0" column="2">
        <widget class="QPushButton" name="butCCWRotate">
         <property name="toolTip">
-         <string>Spin counter clock wise</string>
+         <string>Spin counter-clockwise</string>
         </property>
         <property name="text">
          <string/>
@@ -249,7 +249,7 @@
       <item row="2" column="0">
        <widget class="QPushButton" name="butFront">
         <property name="toolTip">
-         <string>Set document front view as primary direction.</string>
+         <string>Sets the document front view as primary direction</string>
         </property>
         <property name="text">
          <string/>
@@ -300,7 +300,7 @@
       <item row="2" column="2">
        <widget class="QPushButton" name="butCam">
         <property name="toolTip">
-         <string>Set direction of the camera, or selected face if any, as primary direction.</string>
+         <string>Sets the direction of the camera, or selected face if any, as the primary direction</string>
         </property>
         <property name="text">
          <string/>
@@ -556,16 +556,16 @@ height: 24px;
         <item>
          <widget class="QComboBox" name="projection">
           <property name="toolTip">
-           <string>First or Third Angle</string>
+           <string>First or third angle</string>
           </property>
           <item>
            <property name="text">
-            <string>First Angle</string>
+            <string>First angle</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>Third Angle</string>
+            <string>Third angle</string>
            </property>
           </item>
           <item>
@@ -581,10 +581,10 @@ height: 24px;
        <widget class="QCheckBox" name="cbAutoDistribute">
         <property name="toolTip">
          <string>Distributes projections automatically
-using the given X/Y Spacing</string>
+using the given X/Y spacings</string>
         </property>
         <property name="text">
-         <string>Auto Distribute</string>
+         <string>Auto distribute</string>
         </property>
        </widget>
       </item>
@@ -605,7 +605,7 @@ using the given X/Y Spacing</string>
            </size>
           </property>
           <property name="text">
-           <string>X Spacing</string>
+           <string>X spacing</string>
           </property>
          </widget>
         </item>
@@ -665,7 +665,7 @@ using the given X/Y Spacing</string>
            </size>
           </property>
           <property name="text">
-           <string>Y Spacing</string>
+           <string>Y spacing</string>
           </property>
          </widget>
         </item>

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -25,6 +27,8 @@
 
 #include <App/GeoFeature.h>
 #include <App/PropertyGeo.h>
+
+#include <Mod/Robot/RobotGlobal.h>
 
 #include "PropertyTrajectory.h"
 #include "Trajectory.h"

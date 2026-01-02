@@ -17,7 +17,7 @@
    <item>
     <widget class="QLabel" name="labelinfo">
      <property name="text">
-      <string>This dialog allows you to display and manage IFC properties attached to BIM objects. Only properties and sets present in all selected objects will be displayed and editable.</string>
+      <string>Display and manage IFC properties common to all selected BIM objects</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -47,7 +47,7 @@
      <item>
       <widget class="QLabel" name="label_6">
        <property name="text">
-        <string>Order by:</string>
+        <string>Order by</string>
        </property>
       </widget>
      </item>
@@ -108,7 +108,7 @@
          <item>
           <widget class="QLabel" name="label_7">
            <property name="text">
-            <string>Search for a property or property set:</string>
+            <string>Search for a property or property set</string>
            </property>
           </widget>
          </item>
@@ -147,7 +147,7 @@
        <item>
         <widget class="QLabel" name="label">
          <property name="text">
-          <string>List of IFC properties for the selected objects. Double-click to edit, drag and drop to reorganize</string>
+          <string>List of IFC properties for the selected objects. Double-click to edit. Drag and drop to reorganize.</string>
          </property>
          <property name="wordWrap">
           <bool>true</bool>
@@ -179,7 +179,7 @@
       <item>
        <widget class="QPushButton" name="buttonIFCPropertiesDelete">
         <property name="text">
-         <string>Delete selected property/set</string>
+         <string>Delete Selected Property/Property Set</string>
         </property>
         <property name="icon">
          <iconset theme="gtk-delete">

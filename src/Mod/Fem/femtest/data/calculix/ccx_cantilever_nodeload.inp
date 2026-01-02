@@ -355,6 +355,8 @@ Evolumes
 *MATERIAL, NAME=FemMaterial
 *ELASTIC
 210000,0.3
+*EXPANSION, ZERO=0
+0
 
 ***********************************************************
 ** Sections
@@ -377,8 +379,8 @@ ConstraintFixed,3
 
 ***********************************************************
 ** constraints force node loads
-*CLOAD
 ** ConstraintForce
+*CLOAD
 ** node load on shape: Box:Vertex5
 4,3,-2250000
 

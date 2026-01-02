@@ -101,10 +101,10 @@
       <item row="3" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBoxKeepPlacement">
         <property name="toolTip">
-         <string>Check this option to keep the placement information when exporting
-a single object. Please note that when importing back the STEP file, the
+         <string>Keeps the placement information when exporting
+a single object. When importing back the STEP file, the
 placement will be encoded into the shape geometry, instead of keeping
-it inside the Placement property.</string>
+it inside the placement property.</string>
         </property>
         <property name="text">
          <string>Export single object placement</string>

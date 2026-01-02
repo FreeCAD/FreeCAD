@@ -20,11 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <cmath>
 # include <QPushButton>
-#endif // #ifndef _PreComp_
 
 #include <App/Document.h>
 #include <Base/Console.h>
@@ -96,7 +93,7 @@ TaskWeldingSymbol::TaskWeldingSymbol(TechDraw::DrawWeldSymbol* weld) :
     App::DocumentObject* obj = m_weldFeat->Leader.getValue();
     if (!obj ||
         !obj->isDerivedFrom<TechDraw::DrawLeaderLine>() )  {
-        Base::Console().error("TaskWeldingSymbol - no leader for welding symbol.  Can not proceed.\n");
+        Base::Console().error("TaskWeldingSymbol - no leader for welding symbol.  Cannot proceed.\n");
         return;
     }
 
@@ -558,7 +555,7 @@ bool TaskWeldingSymbol::accept()
 {
 //    Base::Console().message("TWS::accept()\n");
     if (m_createMode) {
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create WeldSymbol"));
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Weld Symbol"));
         m_weldFeat = createWeldingSymbol();
         updateTiles();
         Gui::Command::updateActive();
@@ -566,7 +563,7 @@ bool TaskWeldingSymbol::accept()
         m_weldFeat->recomputeFeature();
     //    m_weldFeat->requestPaint();    //not a dv!
     } else {
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit WeldSymbol"));
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit Weld Symbol"));
         try {
             updateWeldingSymbol();
             updateTiles();

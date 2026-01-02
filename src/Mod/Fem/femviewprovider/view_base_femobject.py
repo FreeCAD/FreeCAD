@@ -36,7 +36,25 @@ import FreeCADGui
 
 import FemGui  # needed to display the icons in TreeView
 
+from femobjects.base_fempythonobject import _PropHelper
+
 False if FemGui.__name__ else True  # flake8, dummy FemGui usage
+
+
+class _GuiPropHelper(_PropHelper):
+    """
+    Helper class to manage property data inside proxy objects.
+    Based on the App version, but viewprovider addProperty does
+    not take keyword args, hence we use positional arguments here
+    """
+
+    def __init__(self, **kwds):
+        super().__init__(**kwds)
+
+    def add_to_object(self, obj):
+        obj.addProperty(self.info["type"], self.info["name"], self.info["group"], self.info["doc"])
+        obj.setPropertyStatus(self.name, "LockDynamic")
+        setattr(obj, self.name, self.value)
 
 
 class VPBaseFemObject:

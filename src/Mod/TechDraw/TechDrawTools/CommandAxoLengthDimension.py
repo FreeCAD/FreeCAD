@@ -51,20 +51,22 @@ class CommandAxoLengthDimension:
         """Return a dictionary with data that will be used by the button or menu item."""
         return {'Pixmap': 'actions/TechDraw_AxoLengthDimension.svg',
                 'Accel': "",
-                'MenuText': QT_TRANSLATE_NOOP("TechDraw_AxoLengthDimension", "Axonometric length dimension"),
-                'ToolTip': QT_TRANSLATE_NOOP("TechDraw_AxoLengthDimension", "Create an axonometric length dimension<br>\
-                - select first edge to define direction and length of the dimension line<br>\
-                - select second edge to define the direction of the extension lines<br>\
-                - optional: select two more vertexes which define the measurement instead of the length<br>\
-                  of the first selected edge")}
+                'MenuText': QT_TRANSLATE_NOOP("TechDraw_AxoLengthDimension", "Axonometric Length Dimension"),
+                'ToolTip': QT_TRANSLATE_NOOP("TechDraw_AxoLengthDimension", "Creates a length dimension in with "
+                            "axonometric view, using selected edges or vertex pairs to define direction and measurement")}
 
     def Activated(self):
         """Run the following code when the command is activated (button press)."""
+
+        App.setActiveTransaction("Create axonometric length dimension")
         vertexes = []
         edges = []
-        if Utils.getSelEdges(2):
-            edges = Utils.getSelEdges(2)
-            vertexes = Utils.getSelVertexes(0)
+
+        if not Utils.getSelEdges(2):
+            return
+            
+        edges = Utils.getSelEdges(2)
+        vertexes = Utils.getSelVertexes(0)
 
         if len(vertexes)<2:
             vertexes.append(edges[0].Vertexes[0])
@@ -90,8 +92,8 @@ class CommandAxoLengthDimension:
             distanceDim.AngleOverride = True
             distanceDim.LineAngle = lineAngle
             distanceDim.ExtensionAngle = extAngle
-            distanceDim.X = (vertexes[0].Point.x+vertexes[1].Point.x)/2
-            distanceDim.Y = (vertexes[0].Point.y+vertexes[1].Point.y)/2
+            distanceDim.X = scale*(vertexes[0].Point.x+vertexes[1].Point.x)/2
+            distanceDim.Y = scale*(vertexes[0].Point.y+vertexes[1].Point.y)/2
             distanceDim.recompute()
 
             (px,py,pz) = Utils.getCoordinateVectors(view)
@@ -113,6 +115,7 @@ class CommandAxoLengthDimension:
             distanceDim.recompute()
             view.requestPaint()
         Gui.Selection.clearSelection()
+        App.closeActiveTransaction()
 
     def IsActive(self):
         """Return True when the command should be active or False when it should be disabled (greyed)."""

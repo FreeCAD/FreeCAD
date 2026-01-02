@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Thomas Anderson <blobfish[at]gmx.com>              *
  *                                                                         *
@@ -20,44 +22,25 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <cassert>
 #include <numbers>
 
 #include <Inventor/SbRotation.h>
-#include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/engines/SoComposeVec3f.h>
-#include <Inventor/nodes/SoLightModel.h>
-#include <Inventor/nodes/SoDrawStyle.h>
 #include <Inventor/nodes/SoBaseColor.h>
 #include <Inventor/nodes/SoCone.h>
-#include <Inventor/nodes/SoCoordinate3.h>
-#include <Inventor/nodes/SoCylinder.h>
-#include <Inventor/nodes/SoCube.h>
-#include <Inventor/nodes/SoGroup.h>
-#include <Inventor/nodes/SoLineSet.h>
-#include <Inventor/nodes/SoOrthographicCamera.h>
-#include <Inventor/nodes/SoPerspectiveCamera.h>
-#include <Inventor/nodes/SoPickStyle.h>
-#include <Inventor/nodes/SoRotation.h>
-#include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/nodes/SoSphere.h>
-#include <Inventor/nodes/SoSwitch.h>
-#include <Inventor/nodes/SoTranslation.h>
-#include <Inventor/nodes/SoText2.h>
 #include <Inventor/nodes/SoAnnotation.h>
-#include <Inventor/nodes/SoFontStyle.h>
-#endif
-
-#include <Base/Quantity.h>
+#include <Inventor/engines/SoCalculator.h>
+#include <Inventor/nodes/SoTransform.h>
 
 #include "SoRotationDragger.h"
 
-#include "MainWindow.h"
-#include "SoFCDB.h"
+#include <Base/Quantity.h>
+#include <Gui/Inventor/SoToggleSwitch.h>
+#include <Gui/MainWindow.h>
+#include <Gui/Utilities.h>
 
-#include <SoTextLabel.h>
+#include "SoRotationDraggerGeometry.h"
 
 using namespace Gui;
 
@@ -75,30 +58,50 @@ SoRotationDragger::SoRotationDragger()
     this->ref();
 #endif
 
-    SO_KIT_ADD_CATALOG_ENTRY(rotatorSwitch, SoSwitch, TRUE, geomSeparator, "", TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(rotator, SoSeparator, TRUE, rotatorSwitch, "", TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(rotatorActive, SoSeparator, TRUE, rotatorSwitch, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(baseGeomSwitch, SoToggleSwitch, true, topSeparator, motionMatrix, true);
+    SO_KIT_ADD_CATALOG_ABSTRACT_ENTRY(
+        baseGeom,
+        SoRotatorGeometryBaseKit,
+        SoRotatorBase,
+        true,
+        baseGeomSwitch,
+        "",
+        true
+    );
 
-    arcRadius = 8.0;
-
-    if (SO_KIT_IS_FIRST_INSTANCE()) {
-        buildFirstInstance();
-    }
+    FC_ADD_CATALOG_ENTRY(baseColor, SoBaseColor, geomSeparator);
+    FC_ADD_CATALOG_ENTRY(activeSwitch, SoToggleSwitch, geomSeparator);
+    FC_ADD_CATALOG_ENTRY(secondaryColor, SoBaseColor, activeSwitch);
+    FC_ADD_CATALOG_ENTRY(scale, SoScale, geomSeparator);
+    SO_KIT_ADD_CATALOG_ABSTRACT_ENTRY(
+        rotator,
+        SoRotatorGeometryKit,
+        SoRotatorGeometry,
+        false,
+        geomSeparator,
+        "",
+        true
+    );
 
     SO_KIT_ADD_FIELD(rotation, (SbVec3f(0.0, 0.0, 1.0), 0.0));
     SO_KIT_ADD_FIELD(rotationIncrement, (std::numbers::pi / 8.0));
     SO_KIT_ADD_FIELD(rotationIncrementCount, (0));
+    SO_KIT_ADD_FIELD(color, (1, 0, 0));
+    SO_KIT_ADD_FIELD(activeColor, (1, 1, 0));
+    SO_KIT_ADD_FIELD(geometryScale, (1, 1, 1));
+    SO_KIT_ADD_FIELD(active, (false));
+    SO_KIT_ADD_FIELD(baseGeomVisible, (false));
 
     SO_KIT_INIT_INSTANCE();
 
-    // initialize default parts.
-    // first is from 'SO_KIT_CATALOG_ENTRY_HEADER' macro
-    // second is unique name from buildFirstInstance().
-    this->setPartAsDefault("rotator", "CSysDynamics_RDragger_Rotator");
-    this->setPartAsDefault("rotatorActive", "CSysDynamics_RDragger_RotatorActive");
+    setPart("baseColor", buildColor());
+    setPart("secondaryColor", buildActiveColor());
 
-    SoSwitch* sw = SO_GET_ANY_PART(this, "rotatorSwitch", SoSwitch);
-    SoInteractionKit::setSwitchValue(sw, 0);
+    auto scale = SO_GET_ANY_PART(this, "scale", SoScale);
+    scale->scaleFactor.connectFrom(&geometryScale);
+
+    auto rotator = SO_GET_ANY_PART(this, "rotator", SoRotatorGeometryKit);
+    rotator->geometryScale.connectFrom(&geometryScale);
 
     this->addStartCallback(&SoRotationDragger::startCB);
     this->addMotionCallback(&SoRotationDragger::motionCB);
@@ -111,6 +114,8 @@ SoRotationDragger::SoRotationDragger()
     fieldSensor.setPriority(0);
 
     this->setUpConnections(TRUE, TRUE);
+
+    FC_SET_TOGGLE_SWITCH("activeSwitch", false);
 }
 
 SoRotationDragger::~SoRotationDragger()
@@ -124,72 +129,20 @@ SoRotationDragger::~SoRotationDragger()
     removeValueChangedCallback(&SoRotationDragger::valueChangedCB);
 }
 
-void SoRotationDragger::buildFirstInstance()
+SoBaseColor* SoRotationDragger::buildColor()
 {
-    SoGroup* geometryGroup = buildGeometry();
+    auto color = new SoBaseColor;
+    color->rgb.connectFrom(&this->color);
 
-    auto localRotator = new SoSeparator();
-    localRotator->setName("CSysDynamics_RDragger_Rotator");
-    localRotator->addChild(geometryGroup);
-    SoFCDB::getStorage()->addChild(localRotator);
-
-    auto localRotatorActive = new SoSeparator();
-    localRotatorActive->setName("CSysDynamics_RDragger_RotatorActive");
-    auto colorActive = new SoBaseColor();
-    colorActive->rgb.setValue(1.0, 1.0, 0.0);
-    localRotatorActive->addChild(colorActive);
-    localRotatorActive->addChild(geometryGroup);
-    SoFCDB::getStorage()->addChild(localRotatorActive);
+    return color;
 }
 
-SoGroup* SoRotationDragger::buildGeometry()
+SoBaseColor* SoRotationDragger::buildActiveColor()
 {
-    auto root = new SoGroup();
+    auto color = new SoBaseColor;
+    color->rgb.connectFrom(&activeColor);
 
-    // arc
-    auto coordinates = new SoCoordinate3();
-
-    unsigned int segments = 15;
-
-    float angleIncrement = (std::numbers::pi_v<float> / 2.f) / static_cast<float>(segments);
-    SbRotation rotation(SbVec3f(0.0, 0.0, 1.0), angleIncrement);
-    SbVec3f point(arcRadius, 0.0, 0.0);
-    for (unsigned int index = 0; index <= segments; ++index) {
-        coordinates->point.set1Value(index, point);
-        rotation.multVec(point, point);
-    }
-    root->addChild(coordinates);
-
-    auto drawStyle = new SoDrawStyle();
-    drawStyle->lineWidth = 4.0;
-    root->addChild(drawStyle);
-
-    auto lightModel = new SoLightModel();
-    lightModel->model = SoLightModel::BASE_COLOR;
-    root->addChild(lightModel);
-
-    auto lineSet = new SoLineSet();
-    lineSet->numVertices.setValue(segments + 1);
-    root->addChild(lineSet);
-
-    auto pickStyle = new SoPickStyle();
-    pickStyle->style.setValue(SoPickStyle::SHAPE_ON_TOP);
-    pickStyle->setOverride(TRUE);
-    root->addChild(pickStyle);
-
-    // sphere.
-    SbVec3f origin(1.0, 1.0, 0.0);
-    origin.normalize();
-    origin *= arcRadius;
-    auto sphereTranslation = new SoTranslation();
-    sphereTranslation->translation.setValue(origin);
-    root->addChild(sphereTranslation);
-
-    auto sphere = new SoSphere();
-    sphere->radius.setValue(0.8F);
-    root->addChild(sphere);
-
-    return root;
+    return color;
 }
 
 void SoRotationDragger::startCB(void*, SoDragger* d)
@@ -232,10 +185,7 @@ void SoRotationDragger::valueChangedCB(void*, SoDragger* d)
     assert(sudoThis);
     SbMatrix matrix = sudoThis->getMotionMatrix();  // clazy:exclude=rule-of-two-soft
 
-    // all this just to get the translation?
-    SbVec3f translationDummy, scaleDummy;
-    SbRotation localRotation, scaleOrientationDummy;
-    matrix.getTransform(translationDummy, localRotation, scaleDummy, scaleOrientationDummy);
+    SbRotation localRotation = getMatrixTransform(matrix).rotation;
 
     sudoThis->fieldSensor.detach();
     if (sudoThis->rotation.getValue() != localRotation) {
@@ -246,9 +196,7 @@ void SoRotationDragger::valueChangedCB(void*, SoDragger* d)
 
 void SoRotationDragger::dragStart()
 {
-    SoSwitch* sw;
-    sw = SO_GET_ANY_PART(this, "rotatorSwitch", SoSwitch);
-    SoInteractionKit::setSwitchValue(sw, 1);
+    FC_SET_TOGGLE_SWITCH("activeSwitch", true);
 
     projector.setViewVolume(this->getViewVolume());
     projector.setWorkingSpace(this->getLocalToWorldMatrix());
@@ -295,8 +243,8 @@ void SoRotationDragger::drag()
     }
     int incrementCount = roundIncrement(tempRadians);
     rotationIncrementCount.setValue(incrementCount);
-    localRotation =
-        SbRotation(tempVec, incrementCount * static_cast<float>(rotationIncrement.getValue()));
+    localRotation
+        = SbRotation(tempVec, incrementCount * static_cast<float>(rotationIncrement.getValue()));
 
     // same problem as described in tDragger::drag.
     if (localRotation.equals(SbRotation(SbVec3f(0.0, 0.0, 1.0), 0.0), 0.00001f)) {
@@ -304,25 +252,25 @@ void SoRotationDragger::drag()
         this->valueChanged();
     }
     else {
-        setMotionMatrix(
-            appendRotation(getStartMotionMatrix(), localRotation, SbVec3f(0.0, 0.0, 0.0)));
+        setMotionMatrix(appendRotation(getStartMotionMatrix(), localRotation, SbVec3f(0.0, 0.0, 0.0)));
     }
 
     Base::Quantity quantity(
-        static_cast<double>(rotationIncrementCount.getValue())
-            * (180.0 / std::numbers::pi)* rotationIncrement.getValue(),
-        Base::Unit::Angle);
+        static_cast<double>(rotationIncrementCount.getValue()) * (180.0 / std::numbers::pi)
+            * rotationIncrement.getValue(),
+        Base::Unit::Angle
+    );
 
-    QString message =
-        QStringLiteral("%1 %2").arg(QObject::tr("Rotation:"), QString::fromStdString(quantity.getUserString()));
+    QString message = QStringLiteral("%1 %2").arg(
+        QObject::tr("Rotation:"),
+        QString::fromStdString(quantity.getUserString())
+    );
     getMainWindow()->showMessage(message, 3000);
 }
 
 void SoRotationDragger::dragFinish()
 {
-    SoSwitch* sw;
-    sw = SO_GET_ANY_PART(this, "rotatorSwitch", SoSwitch);
-    SoInteractionKit::setSwitchValue(sw, 0);
+    FC_SET_TOGGLE_SWITCH("activeSwitch", false);
 }
 
 SbBool SoRotationDragger::setUpConnections(SbBool onoff, SbBool doitalways)
@@ -364,4 +312,93 @@ int SoRotationDragger::roundIncrement(const float& radiansIn)
     }
 
     return rCount;
+}
+
+void SoRotationDragger::instantiateBaseGeometry()
+{
+    baseGeomVisible = true;
+
+    auto baseGeom = SO_GET_ANY_PART(this, "baseGeom", SoRotatorBase);
+    baseGeom->geometryScale.connectFrom(&geometryScale);
+    baseGeom->rotation.connectFrom(&rotation);
+    baseGeom->active.connectFrom(&active);
+}
+
+SO_KIT_SOURCE(SoRotationDraggerContainer)
+
+void SoRotationDraggerContainer::initClass()
+{
+    SoRotationDragger::initClass();
+    SO_KIT_INIT_CLASS(SoRotationDraggerContainer, SoInteractionKit, "InteractionKit");
+}
+
+SoRotationDraggerContainer::SoRotationDraggerContainer()
+{
+    SO_KIT_CONSTRUCTOR(SoRotationDraggerContainer);
+
+#if defined(Q_OS_MACOS) || defined(Q_OS_FREEBSD) || defined(Q_OS_OPENBSD)
+    this->ref();
+#endif
+
+    FC_ADD_CATALOG_ENTRY(draggerSwitch, SoToggleSwitch, geomSeparator);
+    FC_ADD_CATALOG_ENTRY(transform, SoTransform, draggerSwitch);
+    FC_ADD_CATALOG_ENTRY(dragger, SoRotationDragger, draggerSwitch);
+
+    SO_KIT_ADD_FIELD(rotation, (0, 0, 0, 0));
+    SO_KIT_ADD_FIELD(color, (0, 0, 0));
+    SO_KIT_ADD_FIELD(translation, (0, 0, 0));
+    SO_KIT_ADD_FIELD(visible, (1));
+
+    SO_KIT_INIT_INSTANCE();
+
+    setPart("transform", buildTransform());
+
+    auto sw = SO_GET_ANY_PART(this, "draggerSwitch", SoToggleSwitch);
+    sw->on.connectFrom(&visible);
+
+    getDragger()->color.connectFrom(&color);
+}
+
+SoTransform* SoRotationDraggerContainer::buildTransform()
+{
+    auto transform = new SoTransform;
+    transform->translation.connectFrom(&this->translation);
+    transform->rotation.connectFrom(&this->rotation);
+
+    return transform;
+}
+
+SoRotationDragger* SoRotationDraggerContainer::getDragger()
+{
+    return SO_GET_PART(this, "dragger", SoRotationDragger);
+}
+
+SbVec3f SoRotationDraggerContainer::getPointerDirection()
+{
+    // This is the direction along which the SoLinearDragger points in it local space
+    SbVec3f draggerDir
+        = SO_GET_ANY_PART(this, "rotator", SoRotatorGeometryKit)->pivotPosition.getValue();
+    rotation.getValue().multVec(draggerDir, draggerDir);
+
+    return draggerDir;
+}
+
+void SoRotationDraggerContainer::setPointerDirection(const SbVec3f& dir)
+{
+    // This is the direction from the origin to the spherical pivot of the rotator
+    SbVec3f draggerDir
+        = SO_GET_ANY_PART(this, "rotator", SoRotatorGeometryKit)->pivotPosition.getValue();
+
+    SbRotation rot {draggerDir, dir};
+    rotation.setValue(rot);
+}
+
+void SoRotationDraggerContainer::setArcNormalDirection(const SbVec3f& dir)
+{
+    SbVec3f currentNormal = {0, 0, 1};
+    auto currentRot = rotation.getValue();
+    currentRot.multVec(currentNormal, currentNormal);
+
+    SbRotation rot {currentNormal, dir};
+    rotation = currentRot * rot;
 }

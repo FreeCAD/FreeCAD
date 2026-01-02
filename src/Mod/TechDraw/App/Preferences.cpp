@@ -20,12 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <string>
 # include <QApplication>
 # include <QString>
-#endif
+
 
 #include <App/Application.h>
 #include <App/Material.h>
@@ -34,7 +32,7 @@
 #include <Base/Parameter.h>
 
 #include "Preferences.h"
-#include "DrawBrokenView.h"
+#include "DrawProjGroup.h"
 #include "LineGenerator.h"
 
 //getters for parameters used in multiple places.
@@ -153,7 +151,9 @@ bool Preferences::useGlobalDecimals()
 
 int Preferences::projectionAngle()
 {
-    return getPreferenceGroup("General")->GetInt("ProjectionAngle", 0);  //First Angle
+    int defaultConvention = (int)DrawProjGroup::ViewProjectionConvention::FirstAngle;
+    return getPreferenceGroup("General")->GetInt("ProjectionAngle",
+                                                 defaultConvention);
 }
 
 bool Preferences::groupAutoDistribute()
@@ -524,9 +524,13 @@ int Preferences::BreakLineStyle()
     return getPreferenceGroup("Decorations")->GetInt("LineStyleBreak", 0) + 1;
 }
 
-int Preferences::LineSpacingISO()
+
+// LineSpacingISO is stored as a double in DlgPrefsTechDrawDimensionsImp.cpp but was being accessed
+// as an int here, so the default was always returned. If we make DlgPrefsTechDrawDimensionsImp handle
+// ints, then anybody who had set a custom spacing would need to update their preference.
+float Preferences::LineSpacingISO()
 {
-    return getPreferenceGroup("Dimensions")->GetInt("LineSpacingFactorISO", 2);
+    return getPreferenceGroup("Dimensions")->GetFloat("LineSpacingFactorISO", 2);
 }
 
 std::string Preferences::currentLineDefFile()
@@ -693,3 +697,32 @@ bool Preferences::showUnits()
 }
 
 
+bool Preferences::snapDetailHighlights()
+{
+    return Preferences::getPreferenceGroup("General")->GetBool("SnapHighlights", true);
+}
+
+
+//! distance within which we should snap a highlight to a vertex
+double Preferences::detailSnapRadius()
+{
+    return getPreferenceGroup("General")->GetFloat("DetailSnapRadius", 0.6);
+}
+
+
+bool Preferences::showCenterMarks()
+{
+    return getPreferenceGroup("Decorations")->GetBool("ShowCenterMarks", false);
+}
+
+bool Preferences::printCenterMarks()
+{
+    return getPreferenceGroup("Decorations")->GetBool("PrintCenterMarks", false);
+}
+
+
+//! true if old style transparency values should be converted to new style alpha values for color properties.
+bool Preferences::fixColorAlphaOnLoad()
+{
+    return getPreferenceGroup("General")->GetBool("FixColorAlphaOnLoad", true);
+}

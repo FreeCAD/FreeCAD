@@ -31,23 +31,52 @@
 
 #include "ViewProvider.h"
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
-/// Convenience class to collect common methods for all SketchBased features
-class TaskFeatureParameters : public Gui::TaskView::TaskBox,
-                              public Gui::DocumentObserver
+class Ui_TaskPreviewParameters;
+
+class TaskPreviewParameters: public Gui::TaskView::TaskBox
 {
     Q_OBJECT
 
 public:
-    TaskFeatureParameters(PartDesignGui::ViewProvider* vp, QWidget *parent,
-                              const std::string& pixmapname, const QString& parname);
+    explicit TaskPreviewParameters(ViewProvider* vp, QWidget* parent = nullptr);
+    ~TaskPreviewParameters() override;
+
+public Q_SLOTS:
+    void onShowPreviewChanged(bool show);
+    void onShowFinalChanged(bool show);
+
+private:
+    ViewProvider* vp;
+    std::unique_ptr<Ui_TaskPreviewParameters> ui;
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/PartDesign/Preview"
+    );
+};
+
+/// Convenience class to collect common methods for all SketchBased features
+class TaskFeatureParameters: public Gui::TaskView::TaskBox, public Gui::DocumentObserver
+{
+    Q_OBJECT
+
+public:
+    TaskFeatureParameters(
+        PartDesignGui::ViewProvider* vp,
+        QWidget* parent,
+        const std::string& pixmapname,
+        const QString& parname
+    );
     ~TaskFeatureParameters() override = default;
 
     /// save field history
-    virtual void saveHistory() {}
+    virtual void saveHistory()
+    {}
     /// apply changes made in the parameters input to the model via commands
-    virtual void apply() {}
+    virtual void apply()
+    {}
 
     void recomputeFeature();
 
@@ -65,14 +94,15 @@ private:
     void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj) override;
 
 protected:
-    template<typename T = PartDesignGui::ViewProvider> T* getViewObject() const
+    template<typename T = PartDesignGui::ViewProvider>
+    T* getViewObject() const
     {
-        static_assert(std::is_base_of<PartDesignGui::ViewProvider, T>::value,
-                "Wrong template argument");
+        static_assert(std::is_base_of<PartDesignGui::ViewProvider, T>::value, "Wrong template argument");
         return freecad_cast<T*>(vp);
     }
 
-    template<typename T = App::DocumentObject> T* getObject() const
+    template<typename T = App::DocumentObject>
+    T* getObject() const
     {
         static_assert(std::is_base_of<App::DocumentObject, T>::value, "Wrong template argument");
 
@@ -104,18 +134,20 @@ protected:
         blockUpdate = value;
     }
 
+protected:
+    PartDesignGui::ViewProvider* vp;
+
 private:
-    PartDesignGui::ViewProvider *vp;
     bool blockUpdate;
 };
 
 /// A common base for sketch based, dressup and other solid parameters dialogs
-class TaskDlgFeatureParameters : public Gui::TaskView::TaskDialog
+class TaskDlgFeatureParameters: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
 public:
-    explicit TaskDlgFeatureParameters(PartDesignGui::ViewProvider *vp);
+    explicit TaskDlgFeatureParameters(PartDesignGui::ViewProvider* vp);
     ~TaskDlgFeatureParameters() override;
 
 public:
@@ -124,14 +156,15 @@ public:
     /// is called by the framework if the dialog is rejected (Cancel)
     bool reject() override;
 
-    template<typename T = PartDesignGui::ViewProvider> T* getViewObject() const
+    template<typename T = PartDesignGui::ViewProvider>
+    T* getViewObject() const
     {
-        static_assert(std::is_base_of<PartDesignGui::ViewProvider, T>::value,
-                "Wrong template argument");
+        static_assert(std::is_base_of<PartDesignGui::ViewProvider, T>::value, "Wrong template argument");
         return freecad_cast<T*>(vp);
     }
 
-    template<typename T = App::DocumentObject> T* getObject() const
+    template<typename T = App::DocumentObject>
+    T* getObject() const
     {
         static_assert(std::is_base_of<App::DocumentObject, T>::value, "Wrong template argument");
         if (vp) {
@@ -141,11 +174,14 @@ public:
         return nullptr;
     }
 
+protected:
+    PartDesignGui::TaskPreviewParameters* preview;
+
 private:
     PartDesignGui::ViewProvider* vp;
 };
 
-} //namespace PartDesignGui
+}  // namespace PartDesignGui
 
 
 #endif /* end of include guard: TASKFEATUREPARAMETERS_H_NAHKE2YZ */

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /****************************************************************************
  *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>              *
  *   Copyright (c) 2019 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
@@ -365,6 +367,9 @@ public:
         HIDDENREF,  // hidden reference that has no dependency check
         HREF,       // deprecated alias of HIDDENREF
 
+        // Non aggregated logical
+        NOT,   // logical NOT
+
         // Aggregates
         AGGREGATES,
 
@@ -374,6 +379,10 @@ public:
         MIN,
         STDDEV,
         SUM,
+
+        // Logical aggregates, evaluates to {0,1}
+        AND,  // logical AND
+        OR,  // logical OR
 
         // Last one
         LAST,

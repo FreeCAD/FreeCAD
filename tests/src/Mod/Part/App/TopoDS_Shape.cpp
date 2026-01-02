@@ -9,9 +9,20 @@
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Vertex.hxx>
 
+#include <src/App/InitApplication.h>
+
+class TestTopoDS_Shape: public ::testing::Test
+{
+protected:
+    static void SetUpTestSuite()
+    {
+        tests::initApplication();
+    }
+};
+
 // NOLINTBEGIN
 // clang-format off
-TEST(TopoDS_Shape, TestCastEdgeToVertex)
+TEST_F(TestTopoDS_Shape, TestCastEdgeToVertex)
 {
     BRepBuilderAPI_MakeEdge mkEdge(gp_Pnt(0, 0, 0), gp_Pnt(10, 0, 0));
     TopoDS_Edge edge = mkEdge.Edge();
@@ -20,7 +31,7 @@ TEST(TopoDS_Shape, TestCastEdgeToVertex)
     EXPECT_TRUE(vertex.IsNull());
 }
 
-TEST(TopoDS_Shape, TestCastNullVertex)
+TEST_F(TestTopoDS_Shape, TestCastNullVertex)
 {
     TopoDS_Vertex vertex1;
     TopoDS_Vertex vertex2;
@@ -28,7 +39,7 @@ TEST(TopoDS_Shape, TestCastNullVertex)
     EXPECT_TRUE(vertex2.IsNull());
 }
 
-TEST(TopoDS_Shape, TestCastNullEdge)
+TEST_F(TestTopoDS_Shape, TestCastNullEdge)
 {
     TopoDS_Edge edge;
     TopoDS_Vertex vertex;
@@ -36,7 +47,7 @@ TEST(TopoDS_Shape, TestCastNullEdge)
     EXPECT_TRUE(vertex.IsNull());
 }
 
-TEST(TopoDS_Shape, TestExploreNullShape)
+TEST_F(TestTopoDS_Shape, TestExploreNullShape)
 {
     TopoDS_Face face;
     TopExp_Explorer xp(face, TopAbs_FACE);

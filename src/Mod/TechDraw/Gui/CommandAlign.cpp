@@ -18,10 +18,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QMessageBox>
-#endif
 
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
@@ -54,7 +51,7 @@ void incorrectSelection()
     QMessageBox::warning(
         Gui::getMainWindow(),
         QObject::tr("Incorrect Selection"),
-        QObject::tr("You must select 2 vertexes or 1 edge\n")
+        QObject::tr("You must select 2 vertices or 1 edge\n")
     );
 }
 
@@ -122,8 +119,8 @@ CmdTechDrawAlignVertexesVertically::CmdTechDrawAlignVertexesVertically()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Align vertexes/edge vertically by view rotation");
-    sToolTipText    = sMenuText;
+    sMenuText       = QT_TR_NOOP("Align Vertices/Edge Vertically");
+    sToolTipText    = QT_TR_NOOP("Aligns the selected vertices or edges vertically to the view rotation");
     sWhatsThis      = "TechDraw_AlignGroup";
     sStatusTip      = sToolTipText;
 }
@@ -155,8 +152,8 @@ CmdTechDrawAlignVertexesHorizontally::CmdTechDrawAlignVertexesHorizontally()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Align vertexes/edge horizontally by view rotation");
-    sToolTipText    = sMenuText;
+    sMenuText       = QT_TR_NOOP("Align Vertices/Edge Horizontally");
+    sToolTipText    = QT_TR_NOOP("Aligns the selected vertices or edges horizontally to the view rotation");
     sWhatsThis      = "TechDraw_AlignGroup";
     sStatusTip      = sToolTipText;
 }

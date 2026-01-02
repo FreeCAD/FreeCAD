@@ -48,7 +48,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>Corner Transition</string>
+        <string>Corner transition</string>
        </property>
       </widget>
      </item>
@@ -67,12 +67,12 @@
        </item>
        <item>
         <property name="text">
-         <string>Right Corner</string>
+         <string>Right corner</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Round Corner</string>
+         <string>Round corner</string>
         </property>
        </item>
       </widget>
@@ -82,7 +82,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Path to sweep along</string>
+      <string>Path to Sweep Along</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
@@ -116,7 +116,7 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>Add Edge</string>
+           <string>Add edge</string>
           </property>
           <property name="checkable">
            <bool>true</bool>
@@ -135,7 +135,7 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>Remove Edge</string>
+           <string>Remove edge</string>
           </property>
           <property name="checkable">
            <bool>true</bool>

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
@@ -48,10 +49,12 @@ public:
     Module()
         : Py::ExtensionModule<Module>("Robot")
     {
-        add_varargs_method("simulateToFile",
-                           &Module::simulateToFile,
-                           "simulateToFile(Robot,Trajectory,TickSize,FileName) - runs the "
-                           "simulation and write the result to a file.");
+        add_varargs_method(
+            "simulateToFile",
+            &Module::simulateToFile,
+            "simulateToFile(Robot,Trajectory,TickSize,FileName) - runs the "
+            "simulation and write the result to a file."
+        );
         initialize("This module is the Robot module.");  // register with Python
     }
 
@@ -63,14 +66,16 @@ private:
         float tick;
         char* FileName;
 
-        if (!PyArg_ParseTuple(args.ptr(),
-                              "O!O!fs",
-                              &(Robot6AxisPy::Type),
-                              &pcRobObj,
-                              &(TrajectoryPy::Type),
-                              &pcTracObj,
-                              &tick,
-                              &FileName)) {
+        if (!PyArg_ParseTuple(
+                args.ptr(),
+                "O!O!fs",
+                &(Robot6AxisPy::Type),
+                &pcRobObj,
+                &(TrajectoryPy::Type),
+                &pcTracObj,
+                &tick,
+                &FileName
+            )) {
             throw Py::Exception();
         }
 
@@ -109,7 +114,7 @@ PyMOD_INIT_FUNC(Robot)
     }
 
     PyObject* robotModule = Robot::initModule();
-    Base::Console().log("Loading Robot module... done\n");
+    Base::Console().log("Loading Robot module… done\n");
 
     // Add Types to module
     Base::Interpreter().addType(&Robot::Robot6AxisPy          ::Type,robotModule,"Robot6Axis");

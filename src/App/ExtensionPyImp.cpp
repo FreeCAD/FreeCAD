@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2016 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
@@ -20,12 +22,9 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "ExtensionContainer.h"
 
-#include "PreCompiled.h"
-
-#include "Application.h"
-
-// inclusion of the generated files (generated out of PropertyContainerPy.xml)
+// inclusion of the generated files (generated out of ExtensionPy.pyi)
 #include <App/ExtensionPy.h>
 #include <App/ExtensionPy.cpp>
 
@@ -35,6 +34,11 @@ using namespace App;
 std::string ExtensionPy::representation() const
 {
     return {"<extension>"};
+}
+
+Py::Object ExtensionPy::getExtendedObject() const
+{
+    return Py::Object(getExtensionPtr()->getExtendedContainer()->getPyObject(), true);
 }
 
 PyObject* ExtensionPy::getCustomAttributes(const char* /*attr*/) const

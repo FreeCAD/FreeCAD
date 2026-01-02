@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Stefan Tröger <stefantroeger@gmx.net>              *
  *   Copyright (c) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>    *
@@ -21,10 +23,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <string>
-#endif
 
 #include <App/Document.h>
 #include <Base/Exception.h>
@@ -92,8 +91,14 @@ bool DatumElement::isOriginFeature() const
 
 Base::Vector3d DatumElement::getBasePoint() const
 {
-    Base::Placement plc = Placement.getValue();
-    return plc.getPosition();
+    Base::Vector3d pos = Placement.getValue().getPosition();
+
+    const auto* lcs = getLCS();
+    if (lcs && !lcs->isOrigin()) {
+        pos += lcs->Placement.getValue().getPosition();
+    }
+
+    return pos;
 }
 
 Base::Vector3d DatumElement::getDirection() const
@@ -102,6 +107,13 @@ Base::Vector3d DatumElement::getDirection() const
     Base::Placement plc = Placement.getValue();
     Base::Rotation rot = plc.getRotation();
     rot.multVec(dir, dir);
+
+    const auto* lcs = getLCS();
+    if (lcs && !lcs->isOrigin()) {
+        Base::Rotation lcsRot = lcs->Placement.getValue().getRotation();
+        lcsRot.multVec(dir, dir);
+    }
+
     return dir;
 }
 
@@ -169,10 +181,15 @@ App::DatumElement* LocalCoordinateSystem::getDatumElement(const char* role) cons
     if (featIt != features.end()) {
         return static_cast<App::DatumElement*>(*featIt);
     }
-    std::stringstream err;
-    err << "LocalCoordinateSystem \"" << getFullName() << "\" doesn't contain feature with role \""
-        << role << '"';
-    throw Base::RuntimeError(err.str().c_str());
+    // During restore, if role lookup fails (e.g. timing issues or fallback to internal name),
+    // we suppress the error. The default getSubObject will try to resolve it by Internal Name next.
+    if (!getDocument()->testStatus(App::Document::Restoring)) {
+        std::stringstream err;
+        err << "LocalCoordinateSystem \"" << getFullName()
+            << "\" doesn't contain feature with role \"" << role << '"';
+        throw Base::RuntimeError(err.str().c_str());
+    }
+    return nullptr;
 }
 
 App::Line* LocalCoordinateSystem::getAxis(const char* role) const

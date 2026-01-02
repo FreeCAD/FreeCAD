@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Werner Mayer <wmayer@users.sourceforge.net>        *
  *                                                                         *
@@ -21,21 +23,10 @@
  ***************************************************************************/
 
 
-#ifndef APP_PRECOMPILED_H
-#define APP_PRECOMPILED_H
+#ifndef SANDBOX_APP_PRECOMPILED_H
+#define SANDBOX_APP_PRECOMPILED_H
 
 #include <FCConfig.h>
-
-// Exporting of App classes
-#ifdef FC_OS_WIN32
-# define SandboxAppExport __declspec(dllexport)
-# define MeshExport       __declspec(dllimport)
-#else // for Linux
-# define SandboxAppExport
-# define MeshExport
-#endif
-
-#ifdef _PreComp_
 
 // standard
 #include <cstdio>
@@ -66,8 +57,6 @@
 #include <QWaitCondition>
 #include <QSemaphore>
 #include <QThread>
-
-#endif //_PreComp_
 
 #endif
 

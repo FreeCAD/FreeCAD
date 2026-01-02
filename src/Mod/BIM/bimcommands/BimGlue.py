@@ -47,6 +47,7 @@ class BIM_Glue:
 
     def Activated(self):
         import Part
+
         sel = FreeCADGui.Selection.getSelection()
         if sel:
             rem = []

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 David Friedli <david[at]friedli-be.ch>             *
  *                                                                         *
@@ -145,8 +147,10 @@ protected:
     SoSeparator* getSoSeparatorText();
 
     static constexpr double defaultTolerance = 10e-6;
-    virtual Base::Vector3d getTextDirection(Base::Vector3d elementDirection,
-                                            double tolerance = defaultTolerance);
+    virtual Base::Vector3d getTextDirection(
+        Base::Vector3d elementDirection,
+        double tolerance = defaultTolerance
+    );
     float getViewScale();
 
     // TODO: getters & setters and move variables to private?
@@ -238,6 +242,17 @@ public:
     ViewProviderMeasureRadius()
     {
         sPixmap = "Measurement-Radius";
+    }
+};
+
+class ViewProviderMeasureCOM: public ViewProviderMeasure
+{
+    PROPERTY_HEADER(MeasureGui::ViewProviderMeasureCOM);
+
+public:
+    ViewProviderMeasureCOM()
+    {
+        sPixmap = "Measurement-CenterOfMass";
     }
 };
 

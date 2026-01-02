@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 Pierre-Louis Boyer <development@Ondsel.com>        *
  *                                                                         *
@@ -47,6 +49,7 @@ class QuickMeasure: public QObject, Gui::SelectionObserver
 public:
     explicit QuickMeasure(QObject* parent = nullptr);
     ~QuickMeasure() override;
+    void print(const QString& message);
 
 private:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
@@ -56,7 +59,6 @@ private:
     void addSelectionToMeasurement();
     bool isObjAcceptable(App::DocumentObject* obj);
     void printResult();
-    void print(const QString& message);
 
     void processSelection();
 

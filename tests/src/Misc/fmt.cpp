@@ -1,5 +1,7 @@
-#include "fmt/format.h"
-#include "fmt/printf.h"
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
+#include <fmt/format.h>
+#include <fmt/printf.h>
 #include <gtest/gtest.h>
 #include <stdexcept>
 

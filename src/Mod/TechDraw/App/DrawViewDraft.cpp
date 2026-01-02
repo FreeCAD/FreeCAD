@@ -20,12 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <iomanip>
 # include <sstream>
-#endif
+
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>

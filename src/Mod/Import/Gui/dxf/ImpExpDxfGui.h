@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Yorik van Havre (yorik@uncreated.net)              *
  *                                                                         *
@@ -41,6 +43,7 @@ public:
 
 protected:
     void ApplyGuiStyles(Part::Feature* object) const override;
+    void ApplyGuiStyles(App::Link* object) const override;
     void ApplyGuiStyles(App::FeaturePython* object) const override;
 
 private:

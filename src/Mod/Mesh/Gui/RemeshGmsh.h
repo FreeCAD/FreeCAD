@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2020 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -22,6 +24,8 @@
 
 #ifndef MESHGUI_REMESHGMSH_H
 #define MESHGUI_REMESHGMSH_H
+
+#include <Mod/Mesh/MeshGlobal.h>
 
 #include <memory>
 #include <QDialog>
@@ -95,9 +99,11 @@ class MeshGuiExport RemeshGmsh: public GmshWidget
     Q_OBJECT
 
 public:
-    explicit RemeshGmsh(Mesh::Feature* mesh,
-                        QWidget* parent = nullptr,
-                        Qt::WindowFlags fl = Qt::WindowFlags());
+    explicit RemeshGmsh(
+        Mesh::Feature* mesh,
+        QWidget* parent = nullptr,
+        Qt::WindowFlags fl = Qt::WindowFlags()
+    );
     ~RemeshGmsh() override;
 
 protected:

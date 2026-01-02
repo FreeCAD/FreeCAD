@@ -1,9 +1,4 @@
-include_directories(
-    ${CMAKE_BINARY_DIR}
-    ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_BINARY_DIR}/src
-    ${CMAKE_CURRENT_BINARY_DIR}
-)
+# SPDX-License-Identifier: LGPL-2.1-or-later
 
 set(PartGui_LIBS
     Part
@@ -21,10 +16,6 @@ if(MSVC)
     )
 endif(MSVC)
 
-include_directories(
-    SYSTEM
-    ${QtConcurrent_INCLUDE_DIRS}
-)
 list(APPEND PartGui_LIBS
     ${QtConcurrent_LIBRARIES}
 )
@@ -59,6 +50,7 @@ set(PartGui_UIC_SRCS
     DlgSettingsGeneral.ui
     DlgSettingsObjectColor.ui
     DlgProjectionOnSurface.ui
+    PatternParametersWidget.ui
     SectionCutting.ui
     ShapeFromMesh.ui
     TaskFaceAppearances.ui
@@ -145,8 +137,10 @@ SET(PartGui_SRCS
     DlgProjectionOnSurface.cpp
     DlgProjectionOnSurface.h
     DlgProjectionOnSurface.ui
+    PatternParametersWidget.cpp
+    PatternParametersWidget.h
+    PatternParametersWidget.ui
     Resources/Part.qrc
-    PreCompiled.cpp
     PreCompiled.h
     PropertyEnumAttacherItem.cpp
     PropertyEnumAttacherItem.h
@@ -162,6 +156,8 @@ SET(PartGui_SRCS
     ViewProvider.h
     ViewProviderAttachExtension.h
     ViewProviderAttachExtension.cpp
+    ViewProviderPreviewExtension.h
+    ViewProviderPreviewExtension.cpp
     ViewProviderDatum.cpp
     ViewProviderDatum.h
     ViewProviderExt.cpp
@@ -256,18 +252,39 @@ SET(PartGui_SRCS
     TaskAttacher.cpp
 )
 
-if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${PartGui_SRCS})
-    ADD_MSVC_PRECOMPILED_HEADER(PartGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
-endif(FREECAD_USE_PCH)
-
 SET(PartGuiIcon_SVG
     Resources/icons/PartWorkbench.svg
 )
 
 add_library(PartGui SHARED ${PartGui_SRCS} ${PartGuiIcon_SVG})
+
+if(FREECAD_USE_PCH)
+    target_precompile_headers(PartGui PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
+endif(FREECAD_USE_PCH)
+
+target_include_directories(
+    PartGui
+    PRIVATE
+    ${CMAKE_BINARY_DIR}
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_BINARY_DIR}/src
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+target_include_directories(
+    PartGui
+    SYSTEM
+    PUBLIC
+    ${QtConcurrent_INCLUDE_DIRS}
+)
 target_link_libraries(PartGui ${PartGui_LIBS})
+
+if (MSVC)
+    target_compile_options(PartGui PRIVATE /wd4251 /wd4273)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(PartGui)
 endif()

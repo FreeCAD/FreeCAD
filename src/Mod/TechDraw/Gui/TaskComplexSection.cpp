@@ -20,11 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QMessageBox>
 #include <gp_Pnt.hxx>
-#endif// #ifndef _PreComp_
 
 #include <App/Document.h>
 #include <App/Link.h>
@@ -487,7 +484,7 @@ bool TaskComplexSection::apply(bool forceUpdate)
         if (!DrawComplexSection::canBuild(m_baseView->localVectorToCS(localUnit),
                                           m_profileObject)) {
             Base::Console().error(
-                "Can not build Complex Section with this profile and direction (1)\n");
+                "Cannot build complex section with this profile and direction (1)\n");
             return false;
         }
     }
@@ -497,7 +494,7 @@ bool TaskComplexSection::apply(bool forceUpdate)
                          Base::convertTo<gp_Dir>(m_saveXDir));
         if (!DrawComplexSection::canBuild(sectionCS, m_profileObject)) {
             Base::Console().error(
-                "Can not build Complex Section with this profile and direction (2)\n");
+                "Cannot build complex section with this profile and direction (2)\n");
             return false;
         }
     }
@@ -524,7 +521,7 @@ bool TaskComplexSection::apply(bool forceUpdate)
         m_baseView->requestPaint();
     }
     if (!m_section->checkSectionCS()) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Possible Coordinate System Error"),
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Possible coordinate system error"),
                                                QObject::tr("Check SectionNormal, Direction and/or XDirection."));
     }
 
@@ -553,7 +550,7 @@ void TaskComplexSection::applyAligned()
 //pointer to created view is not returned, but stored in m_section
 void TaskComplexSection::createComplexSection()
 {
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create ComplexSection"));
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Complex Section"));
     if (!m_section) {
         const std::string objectName{QT_TR_NOOP("ComplexSection")};
         m_sectionName = m_page->getDocument()->getUniqueObjectName(objectName.c_str());

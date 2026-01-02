@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 David Friedli <david[at]friedli-be.ch>             *
  *                                                                         *
@@ -20,8 +22,6 @@
  **************************************************************************/
 
 
-#include "PreCompiled.h"
-
 #include <App/Application.h>
 #include <App/MeasureManager.h>
 #include <App/Document.h>
@@ -36,23 +36,30 @@ PROPERTY_SOURCE(Measure::MeasureArea, Measure::MeasureBase)
 
 MeasureArea::MeasureArea()
 {
-    ADD_PROPERTY_TYPE(Elements,
-                      (nullptr),
-                      "Measurement",
-                      App::Prop_None,
-                      "Element to get the area from");
+    ADD_PROPERTY_TYPE(Elements, (nullptr), "Measurement", App::Prop_None, "Element to get the area from");
     Elements.setScope(App::LinkScope::Global);
     Elements.setAllowExternal(true);
 
-    ADD_PROPERTY_TYPE(Area,
-                      (0.0),
-                      "Measurement",
-                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
-                      "Area of element");
+    ADD_PROPERTY_TYPE(
+        Area,
+        (0.0),
+        "Measurement",
+        App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
+        "Area of element"
+    );
 }
 
 MeasureArea::~MeasureArea() = default;
 
+bool MeasureArea::isSupported(App::MeasureElementType type)
+{
+    // clang-format off
+    return (type == App::MeasureElementType::PLANE) ||
+           (type == App::MeasureElementType::CYLINDER) ||
+           (type == App::MeasureElementType::SURFACE) ||
+           (type == App::MeasureElementType::VOLUME);
+    // clang-format on
+}
 
 bool MeasureArea::isValidSelection(const App::MeasureSelection& selection)
 {
@@ -68,8 +75,7 @@ bool MeasureArea::isValidSelection(const App::MeasureSelection& selection)
             return false;
         }
 
-        if ((type != App::MeasureElementType::PLANE && type != App::MeasureElementType::CYLINDER
-             && type != App::MeasureElementType::SURFACE)) {
+        if (!isSupported(type)) {
             return false;
         }
     }
@@ -133,7 +139,7 @@ void MeasureArea::onChanged(const App::Property* prop)
 }
 
 
-Base::Placement MeasureArea::getPlacement()
+Base::Placement MeasureArea::getPlacement() const
 {
     const std::vector<App::DocumentObject*>& objects = Elements.getValues();
     const std::vector<std::string>& subElements = Elements.getSubValues();

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Thomas Anderson <blobfish[at]gmx.com>              *
  *                                                                         *
@@ -20,8 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <cassert>
 #include <numbers>
 
@@ -48,7 +48,6 @@
 #include <Inventor/nodes/SoText2.h>
 #include <Inventor/nodes/SoAnnotation.h>
 #include <Inventor/nodes/SoFontStyle.h>
-#endif
 
 #include <Base/Quantity.h>
 
@@ -77,12 +76,7 @@ SoPlanarDragger::SoPlanarDragger()
 
     SO_KIT_ADD_CATALOG_ENTRY(planarTranslatorSwitch, SoSwitch, TRUE, geomSeparator, "", TRUE);
     SO_KIT_ADD_CATALOG_ENTRY(planarTranslator, SoSeparator, TRUE, planarTranslatorSwitch, "", TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(planarTranslatorActive,
-                             SoSeparator,
-                             TRUE,
-                             planarTranslatorSwitch,
-                             "",
-                             TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(planarTranslatorActive, SoSeparator, TRUE, planarTranslatorSwitch, "", TRUE);
 
     if (SO_KIT_IS_FIRST_INSTANCE()) {
         buildFirstInstance();
@@ -100,8 +94,7 @@ SoPlanarDragger::SoPlanarDragger()
     // first is from 'SO_KIT_CATALOG_ENTRY_HEADER' macro
     // second is unique name from buildFirstInstance().
     this->setPartAsDefault("planarTranslator", "CSysDynamics_TPlanarDragger_Translator");
-    this->setPartAsDefault("planarTranslatorActive",
-                           "CSysDynamics_TPlanarDragger_TranslatorActive");
+    this->setPartAsDefault("planarTranslatorActive", "CSysDynamics_TPlanarDragger_TranslatorActive");
 
     SoSwitch* sw = SO_GET_ANY_PART(this, "planarTranslatorSwitch", SoSwitch);
     SoInteractionKit::setSwitchValue(sw, 0);
@@ -237,8 +230,7 @@ void SoPlanarDragger::dragStart()
 
     projector.setViewVolume(this->getViewVolume());
     projector.setWorkingSpace(this->getLocalToWorldMatrix());
-    projector.setPlane(
-        SbPlane(SbVec3f(0.0, 0.0, 0.0), SbVec3f(1.0, 0.0, 0.0), SbVec3f(0.0, 1.0, 0.0)));
+    projector.setPlane(SbPlane(SbVec3f(0.0, 0.0, 0.0), SbVec3f(1.0, 0.0, 0.0), SbVec3f(0.0, 1.0, 0.0)));
     SbVec3f hitPoint = projector.project(getNormalizedLocaterPosition());
 
     SbMatrix localToWorld = getLocalToWorldMatrix();
@@ -259,8 +251,8 @@ void SoPlanarDragger::drag()
     SbVec3f localMovement = hitPoint - startingPoint;
 
     // scale the increment to match local space.
-    float scaledIncrement =
-        static_cast<float>(translationIncrement.getValue()) / autoScaleResult.getValue();
+    float scaledIncrement = static_cast<float>(translationIncrement.getValue())
+        / autoScaleResult.getValue();
 
     localMovement = roundTranslation(localMovement, scaledIncrement);
     // when the movement vector is null either the appendTranslation or
@@ -276,17 +268,21 @@ void SoPlanarDragger::drag()
         setMotionMatrix(appendTranslation(getStartMotionMatrix(), localMovement));
     }
 
-    Base::Quantity quantityX(static_cast<double>(translationIncrementXCount.getValue())
-                                 * translationIncrement.getValue(),
-                             Base::Unit::Length);
-    Base::Quantity quantityY(static_cast<double>(translationIncrementYCount.getValue())
-                                 * translationIncrement.getValue(),
-                             Base::Unit::Length);
+    Base::Quantity quantityX(
+        static_cast<double>(translationIncrementXCount.getValue()) * translationIncrement.getValue(),
+        Base::Unit::Length
+    );
+    Base::Quantity quantityY(
+        static_cast<double>(translationIncrementYCount.getValue()) * translationIncrement.getValue(),
+        Base::Unit::Length
+    );
 
     QString message = QStringLiteral("%1 %2, %3")
-                          .arg(QObject::tr("Translation XY:"),
-                               QString::fromStdString(quantityX.getUserString()),
-                               QString::fromStdString(quantityY.getUserString()));
+                          .arg(
+                              QObject::tr("Translation XY:"),
+                              QString::fromStdString(quantityX.getUserString()),
+                              QString::fromStdString(quantityY.getUserString())
+                          );
     getMainWindow()->showMessage(message, 3000);
 }
 

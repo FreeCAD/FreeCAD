@@ -14,7 +14,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Create regular polygon</string>
+   <string>Create Regular Polygon</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -22,7 +22,7 @@
      <item>
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Number of sides:</string>
+        <string>Number of sides</string>
        </property>
       </widget>
      </item>

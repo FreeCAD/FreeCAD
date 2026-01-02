@@ -20,7 +20,7 @@
    <item row="0" column="0">
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Mesh groups detected. Please choose values for the different groups.</string>
+      <string>Mesh groups detected. Choose values for the different groups.</string>
      </property>
     </widget>
    </item>

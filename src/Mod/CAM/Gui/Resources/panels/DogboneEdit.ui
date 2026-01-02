@@ -118,17 +118,17 @@
          </property>
          <item>
           <property name="text">
-           <string>adaptive</string>
+           <string>Adaptive</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>custom</string>
+           <string>Custom</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>fixed</string>
+           <string>Fixed</string>
           </property>
          </item>
         </widget>

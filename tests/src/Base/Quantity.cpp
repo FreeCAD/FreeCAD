@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include <Base/Exception.h>
 #include <Base/Quantity.h>
+#include "Base/UnitsApi.h"
 #include <QLocale>
 
 using Base::ParserError;
@@ -198,25 +199,33 @@ protected:
 TEST_F(BaseQuantityLoc, psi_parse_spaced)
 {
     const auto qParsed = Quantity::parse("1 psi");
-    EXPECT_EQ(qParsed.getValue(), 6.8947448254939996);
+    EXPECT_EQ(qParsed.getValue(), 6.8947572931683609);
 }
 
 TEST_F(BaseQuantityLoc, psi_parse_no_space)
 {
     const auto qParsed = Quantity::parse("1psi");
-    EXPECT_EQ(qParsed.getValue(), 6.8947448254939996);
+    EXPECT_EQ(qParsed.getValue(), 6.8947572931683609);
 }
 
 TEST_F(BaseQuantityLoc, psi_parse_user_str)
 {
-    const auto qParsed = Quantity::parse("1 psi");
-    EXPECT_EQ(qParsed.getUserString(), "6894.74 Pa");
+    Base::UnitsApi::setSchema("Internal");
+    auto qParsed = Quantity::parse("1 psi");
+    auto format = qParsed.getFormat();
+    format.setPrecision(2);
+    qParsed.setFormat(format);
+    EXPECT_EQ(qParsed.getUserString(), "6894.76 Pa");
 }
 
 TEST_F(BaseQuantityLoc, psi_parse_safe_user_str)
 {
-    const auto qParsed = Quantity::parse("1 psi");
-    EXPECT_EQ(qParsed.getSafeUserString(), "6894.74 Pa");
+    Base::UnitsApi::setSchema("Internal");
+    auto qParsed = Quantity::parse("1 psi");
+    auto format = qParsed.getFormat();
+    format.setPrecision(2);
+    qParsed.setFormat(format);
+    EXPECT_EQ(qParsed.getSafeUserString(), "6894.76 Pa");
 }
 
 TEST_F(BaseQuantityLoc, psi_parse_unit_type)
@@ -228,7 +237,7 @@ TEST_F(BaseQuantityLoc, psi_parse_unit_type)
 TEST_F(BaseQuantityLoc, psi_to_Pa)
 {
     const auto result = Quantity::parse("1 psi").getValueAs(Quantity::Pascal);
-    const auto expect = 6894.7448254939991;
+    const auto expect = 6894.7572931683608;
 
     EXPECT_EQ(result, expect);
 }
@@ -236,7 +245,7 @@ TEST_F(BaseQuantityLoc, psi_to_Pa)
 TEST_F(BaseQuantityLoc, psi_to_KPa)
 {
     const auto result = Quantity::parse("1 psi").getValueAs(Quantity::KiloPascal);
-    const auto expect = 6.8947448254939996;
+    const auto expect = 6.8947572931683609;
 
     EXPECT_EQ(result, expect);
 }
@@ -244,7 +253,7 @@ TEST_F(BaseQuantityLoc, psi_to_KPa)
 TEST_F(BaseQuantityLoc, psi_to_MPa)
 {
     const auto result = Quantity::parse("1 psi").getValueAs(Quantity::MegaPascal);
-    const auto expect = 0.0068947448254939999;
+    const auto expect = 0.0068947572931683607;
 
     EXPECT_EQ(result, expect);
 }

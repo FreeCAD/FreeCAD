@@ -21,15 +21,14 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoIndexedFaceSet.h>
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/nodes/SoTexture2.h>
 #include <Inventor/nodes/SoTexture3.h>
-#endif
+
 
 #include "ViewProviderTextureExtension.h"
 #include <Gui/BitmapFactory.h>
@@ -91,7 +90,10 @@ SoGroup* ViewProviderTextureExtension::getTextureGroup3D() const
     return pcTextureGroup3D;
 }
 
-void ViewProviderTextureExtension::setCoinAppearance(SoMaterial* pcShapeMaterial, const App::Material& source)
+void ViewProviderTextureExtension::setCoinAppearance(
+    SoMaterial* pcShapeMaterial,
+    const App::Material& source
+)
 {
 #if 0
     if (!source.image.empty()) {
@@ -112,18 +114,14 @@ void ViewProviderTextureExtension::setCoinAppearance(SoMaterial* pcShapeMaterial
     activateMaterial();
 
     // Always set the material for items such as lines that don't support textures
-    pcShapeMaterial->ambientColor.setValue(source.ambientColor.r,
-                                           source.ambientColor.g,
-                                           source.ambientColor.b);
-    pcShapeMaterial->diffuseColor.setValue(source.diffuseColor.r,
-                                           source.diffuseColor.g,
-                                           source.diffuseColor.b);
-    pcShapeMaterial->specularColor.setValue(source.specularColor.r,
-                                            source.specularColor.g,
-                                            source.specularColor.b);
-    pcShapeMaterial->emissiveColor.setValue(source.emissiveColor.r,
-                                            source.emissiveColor.g,
-                                            source.emissiveColor.b);
+    pcShapeMaterial->ambientColor
+        .setValue(source.ambientColor.r, source.ambientColor.g, source.ambientColor.b);
+    pcShapeMaterial->diffuseColor
+        .setValue(source.diffuseColor.r, source.diffuseColor.g, source.diffuseColor.b);
+    pcShapeMaterial->specularColor
+        .setValue(source.specularColor.r, source.specularColor.g, source.specularColor.b);
+    pcShapeMaterial->emissiveColor
+        .setValue(source.emissiveColor.r, source.emissiveColor.g, source.emissiveColor.b);
     pcShapeMaterial->shininess.setValue(source.shininess);
     pcShapeMaterial->transparency.setValue(source.transparency);
 }

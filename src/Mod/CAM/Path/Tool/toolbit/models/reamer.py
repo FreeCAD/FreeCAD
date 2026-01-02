@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2025 Samuel Abels <knipknap@gmail.com>                  *
 # *                                                                         *
@@ -36,7 +37,7 @@ class ToolBitReamer(ToolBit, CuttingToolMixin, RotaryToolBitMixin):
 
     @property
     def summary(self) -> str:
-        diameter = self.get_property_str("Diameter", "?")
-        cutting_edge_height = self.get_property_str("CuttingEdgeHeight", "?")
+        diameter = self.get_property_str("Diameter", "?", precision=3)
+        cutting_edge_height = self.get_property_str("CuttingEdgeHeight", "?", precision=3)
 
         return FreeCAD.Qt.translate("CAM", f"{diameter} reamer, {cutting_edge_height} cutting edge")

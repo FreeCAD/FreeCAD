@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  * Copyright (c) 2014 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>        *
  *                                                                          *
@@ -40,9 +42,11 @@ class PropertyConstraintListItem: public Gui::PropertyEditor::PropertyItem
 
     ~PropertyConstraintListItem() override;
     void assignProperty(const App::Property* prop) override;
-    QWidget* createEditor(QWidget* parent,
-                          const std::function<void()>& method,
-                          FrameOption frameOption) const override;
+    QWidget* createEditor(
+        QWidget* parent,
+        const std::function<void()>& method,
+        FrameOption frameOption
+    ) const override;
     void setEditorData(QWidget* editor, const QVariant& data) const override;
     QVariant editorData(QWidget* editor) const override;
 

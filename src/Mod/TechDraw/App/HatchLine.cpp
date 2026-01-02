@@ -20,14 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <cmath>
 #include <iomanip>
 #include <sstream>
 #include <stdexcept>
-#endif
+
 
 #include <TopoDS_Vertex.hxx>
 #include <TopoDS_Edge.hxx>

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # *****************************************************************************
 # *   Copyright (c) 2020 Rene Bartsch, B.Sc. Informatics <rene@bartschnet.de> *
 # *                                                                           *
@@ -122,7 +124,7 @@ def export(objectslist, filename, argstring):
     # Open editor window
     if FreeCAD.GuiUp:
         dia = PostUtils.GCodeEditorDialog()
-        dia.editor.setText(gcode)
+        dia.editor.setPlainText(gcode)
         result = dia.exec_()
         if result:
             gcode = dia.editor.toPlainText()

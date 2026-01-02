@@ -21,21 +21,24 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/Origin.h>
 #include <Base/Console.h>
+#include <Base/Converter.h>
 #include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/CommandT.h>
 #include <Gui/Document.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/WaitCursor.h>
+#include <Mod/Part/App/Tools.h>
 #include <Gui/ViewProviderCoordinateSystem.h>
+#include <Gui/Inventor/Draggers/SoLinearDragger.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeatureHelix.h>
+#include <Mod/Part/App/GizmoHelper.h>
 
 #include "ReferenceSelection.h"
 #include "ui_TaskHelixParameters.h"
@@ -48,12 +51,8 @@ using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskHelixParameters */
 
-TaskHelixParameters::TaskHelixParameters(PartDesignGui::ViewProviderHelix* HelixView,
-                                         QWidget* parent)
-    : TaskSketchBasedParameters(HelixView,
-                                parent,
-                                "PartDesign_AdditiveHelix",
-                                tr("Helix parameters"))
+TaskHelixParameters::TaskHelixParameters(PartDesignGui::ViewProviderHelix* HelixView, QWidget* parent)
+    : TaskSketchBasedParameters(HelixView, parent, "PartDesign_AdditiveHelix", tr("Helix Parameters"))
     , ui(new Ui_TaskHelixParameters)
 {
     // we need a separate container widget to add all controls to
@@ -74,6 +73,8 @@ TaskHelixParameters::TaskHelixParameters(PartDesignGui::ViewProviderHelix* Helix
     connectSlots();
     setFocus();
     showCoordinateAxes();
+
+    setupGizmos(HelixView);
 }
 
 void TaskHelixParameters::initializeHelix()
@@ -173,7 +174,8 @@ void TaskHelixParameters::showCoordinateAxes()
             App::Origin* origin = body->getOrigin();
             ViewProviderCoordinateSystem* vpOrigin;
             vpOrigin = static_cast<ViewProviderCoordinateSystem*>(
-                Gui::Application::Instance->getViewProvider(origin));
+                Gui::Application::Instance->getViewProvider(origin)
+            );
             vpOrigin->setTemporaryVisibility(Gui::DatumElement::Axes);
         }
         catch (const Base::Exception& ex) {
@@ -201,7 +203,7 @@ void TaskHelixParameters::fillAxisCombo(bool forceRefill)
         addPartAxes();
 
         // add "Select reference"
-        addAxisToCombo(nullptr, std::string(), tr("Select reference..."));
+        addAxisToCombo(nullptr, std::string(), tr("Select reference…"));
     }
 
     // add current link, if not in list and highlight it
@@ -234,9 +236,9 @@ void TaskHelixParameters::addPartAxes()
     if (PartDesign::Body* body = PartDesign::Body::findBodyOf(profile)) {
         try {
             App::Origin* orig = body->getOrigin();
-            addAxisToCombo(orig->getX(), "", tr("Base X axis"));
-            addAxisToCombo(orig->getY(), "", tr("Base Y axis"));
-            addAxisToCombo(orig->getZ(), "", tr("Base Z axis"));
+            addAxisToCombo(orig->getX(), "", tr("Base X-axis"));
+            addAxisToCombo(orig->getY(), "", tr("Base Y-axis"));
+            addAxisToCombo(orig->getZ(), "", tr("Base Z-axis"));
         }
         catch (const Base::Exception& ex) {
             ex.reportException();
@@ -269,9 +271,11 @@ int TaskHelixParameters::addCurrentLink()
     return indexOfCurrent;
 }
 
-void TaskHelixParameters::addAxisToCombo(App::DocumentObject* linkObj,
-                                         std::string linkSubname,
-                                         QString itemText)
+void TaskHelixParameters::addAxisToCombo(
+    App::DocumentObject* linkObj,
+    std::string linkSubname,
+    QString itemText
+)
 {
     this->ui->axis->addItem(itemText);
     this->axesInList.emplace_back(new App::PropertyLinkSub);
@@ -364,8 +368,7 @@ void TaskHelixParameters::adaptVisibilityToMode()
 void TaskHelixParameters::assignToolTipsFromPropertyDocs()
 {
     auto helix = getObject<PartDesign::Helix>();
-    const char* propCategory =
-        "App::Property";  // cf. https://tracker.freecad.org/view.php?id=0002524
+    const char* propCategory = "App::Property";  // cf. https://tracker.freecad.org/view.php?id=0002524
     QString toolTip;
 
     // Beware that "Axis" in the GUI actually represents the property "ReferenceAxis"!
@@ -490,8 +493,9 @@ void TaskHelixParameters::onAxisChanged(int num)
         if (auto sketch = dynamic_cast<Part::Part2DObject*>(helix->Profile.getValue())) {
             Gui::cmdAppObjectShow(sketch);
         }
-        TaskSketchBasedParameters::onSelectReference(AllowSelection::EDGE | AllowSelection::PLANAR
-                                                     | AllowSelection::CIRCLE);
+        TaskSketchBasedParameters::onSelectReference(
+            AllowSelection::EDGE | AllowSelection::PLANAR | AllowSelection::CIRCLE
+        );
         return;
     }
     else {
@@ -526,6 +530,8 @@ void TaskHelixParameters::onAxisChanged(int num)
 
         recomputeFeature();
         updateStatus();
+
+        setGizmoPositions();
     }
     catch (const Base::Exception& e) {
         e.reportException();
@@ -561,6 +567,8 @@ void TaskHelixParameters::onReversedChanged(bool on)
         propReversed->setValue(on);
         recomputeFeature();
         updateUI();
+
+        setGizmoPositions();
     }
 }
 
@@ -584,7 +592,8 @@ TaskHelixParameters::~TaskHelixParameters()
             App::Origin* origin = body->getOrigin();
             ViewProviderCoordinateSystem* vpOrigin {};
             vpOrigin = static_cast<ViewProviderCoordinateSystem*>(
-                Gui::Application::Instance->getViewProvider(origin));
+                Gui::Application::Instance->getViewProvider(origin)
+            );
             vpOrigin->resetTemporaryVisibility();
         }
     }
@@ -614,8 +623,7 @@ void TaskHelixParameters::changeEvent(QEvent* e)
     }
 }
 
-void TaskHelixParameters::getReferenceAxis(App::DocumentObject*& obj,
-                                           std::vector<std::string>& sub) const
+void TaskHelixParameters::getReferenceAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const
 {
     if (axesInList.empty()) {
         throw Base::RuntimeError("Not initialized!");
@@ -624,8 +632,7 @@ void TaskHelixParameters::getReferenceAxis(App::DocumentObject*& obj,
     int num = ui->axis->currentIndex();
     const App::PropertyLinkSub& lnk = *(axesInList.at(num));
     if (!lnk.getValue()) {
-        throw Base::RuntimeError(
-            "Still in reference selection mode; reference wasn't selected yet");
+        throw Base::RuntimeError("Still in reference selection mode; reference was not selected yet");
     }
     else {
         auto revolution = getObject<PartDesign::ProfileBased>();
@@ -641,7 +648,8 @@ void TaskHelixParameters::getReferenceAxis(App::DocumentObject*& obj,
 bool TaskHelixParameters::showPreview(PartDesign::Helix* helix)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/PartDesign");
+        "User parameter:BaseApp/Preferences/Mod/PartDesign"
+    );
     if ((hGrp->GetBool("SubractiveHelixPreview", true)
          && helix->getAddSubType() == PartDesign::FeatureAddSub::Subtractive)
         || (hGrp->GetBool("AdditiveHelixPreview", false)
@@ -652,8 +660,7 @@ bool TaskHelixParameters::showPreview(PartDesign::Helix* helix)
     return false;
 }
 
-void TaskHelixParameters::startReferenceSelection(App::DocumentObject* profile,
-                                                  App::DocumentObject* base)
+void TaskHelixParameters::startReferenceSelection(App::DocumentObject* profile, App::DocumentObject* base)
 {
     if (auto helix = getObject<PartDesign::Helix>()) {
         if (helix && showPreview(helix)) {
@@ -668,8 +675,7 @@ void TaskHelixParameters::startReferenceSelection(App::DocumentObject* profile,
     }
 }
 
-void TaskHelixParameters::finishReferenceSelection(App::DocumentObject* profile,
-                                                   App::DocumentObject* base)
+void TaskHelixParameters::finishReferenceSelection(App::DocumentObject* profile, App::DocumentObject* base)
 {
     if (auto helix = getObject<PartDesign::Helix>()) {
         if (helix && showPreview(helix)) {
@@ -703,6 +709,51 @@ void TaskHelixParameters::apply()  // NOLINT
     FCMD_OBJ_CMD(tobj, "Reversed = " << (propReversed->getValue() ? 1 : 0));
 }
 
+void TaskHelixParameters::setupGizmos(ViewProviderHelix* vp)
+{
+    if (!GizmoContainer::isEnabled()) {
+        return;
+    }
+
+    heightGizmo = new Gui::LinearGizmo(ui->height);
+
+    connect(ui->inputMode, qOverload<int>(&QComboBox::currentIndexChanged), [this](int index) {
+        bool isPitchTurnsAngle = index == static_cast<int>(HelixMode::pitch_turns_angle);
+        heightGizmo->setVisibility(!isPitchTurnsAngle);
+    });
+
+    gizmoContainer = GizmoContainer::create({heightGizmo}, vp);
+
+    setGizmoPositions();
+
+    ui->inputMode->currentIndexChanged(ui->inputMode->currentIndex());
+}
+
+void TaskHelixParameters::setGizmoPositions()
+{
+    if (!gizmoContainer) {
+        return;
+    }
+
+    auto helix = getObject<PartDesign::Helix>();
+    if (!helix || helix->isError()) {
+        gizmoContainer->visible = false;
+        return;
+    }
+    gizmoContainer->visible = true;
+    Part::TopoShape profileShape = helix->getProfileShape();
+    double reversed = propReversed->getValue() ? -1.0 : 1.0;
+    auto profileCentre = getMidPointFromProfile(profileShape);
+    Base::Vector3d axisDir = helix->Axis.getValue() * reversed;
+    Base::Vector3d basePos = helix->Base.getValue();
+
+    // Project the centre point of the helix to a plane passing through the com of the profile
+    // and along the helix axis
+    Base::Vector3d pos = basePos + axisDir.Dot(profileCentre - basePos) * axisDir;
+
+    heightGizmo->Gizmo::setDraggerPlacement(pos, axisDir);
+}
+
 
 //**************************************************************************
 //**************************************************************************
@@ -713,6 +764,7 @@ TaskDlgHelixParameters::TaskDlgHelixParameters(ViewProviderHelix* HelixView)
 {
     assert(HelixView);
     Content.push_back(new TaskHelixParameters(HelixView));
+    Content.push_back(preview);
 }
 
 

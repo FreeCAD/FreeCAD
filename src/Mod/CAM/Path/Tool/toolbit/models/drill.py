@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2025 Samuel Abels <knipknap@gmail.com>                  *
 # *                                                                         *
@@ -36,8 +37,8 @@ class ToolBitDrill(ToolBit, CuttingToolMixin, RotaryToolBitMixin):
 
     @property
     def summary(self) -> str:
-        diameter = self.get_property_str("Diameter", "?")
-        tip_angle = self.get_property_str("TipAngle", "?")
+        diameter = self.get_property_str("Diameter", "?", precision=3)
+        tip_angle = self.get_property_str("TipAngle", "?", precision=3)
         flutes = self.get_property("Flutes")
 
         return FreeCAD.Qt.translate("CAM", f"{diameter} drill, {tip_angle} tip, {flutes}-flute")

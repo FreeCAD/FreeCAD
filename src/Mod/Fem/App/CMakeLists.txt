@@ -14,25 +14,6 @@ if(BUILD_FEM_NETGEN)
     add_definitions(-DFCWithNetgen ${NETGEN_DEFINITIONS})
 endif(BUILD_FEM_NETGEN)
 
-
-include_directories(
-    ${CMAKE_BINARY_DIR}
-    ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_BINARY_DIR}/src
-    ${CMAKE_CURRENT_BINARY_DIR}
-)
-
-include_directories(
-    SYSTEM
-    ${SMESH_INCLUDE_DIR}
-    ${NETGEN_INCLUDE_DIRS}
-    ${VTK_INCLUDE_DIRS}
-)
-
-
-link_directories(${SMESH_LIB_PATH})
-
-
 set(Fem_LIBS
     Part
     FreeCADApp
@@ -49,11 +30,11 @@ else()
 endif()
 
 
-generate_from_xml(FemMeshPy)
+generate_from_py(FemMesh)
 
 
 SET(Python_SRCS
-    FemMeshPy.xml
+    FemMesh.pyi
     FemMeshPyImp.cpp
     HypothesisPy.cpp
     HypothesisPy.h
@@ -63,19 +44,20 @@ SET(Python_SRCS
 if(BUILD_FEM_VTK)
     SET(Python_SRCS
         ${Python_SRCS}
-        FemPostObjectPy.xml
+        FemPostObject.pyi
         FemPostObjectPyImp.cpp
-        FemPostPipelinePy.xml
+        FemPostPipeline.pyi
         FemPostPipelinePyImp.cpp
-        FemPostFilterPy.xml
+        FemPostFilter.pyi
         FemPostFilterPyImp.cpp
-        FemPostBranchFilterPy.xml
+        FemPostBranchFilter.pyi
         FemPostBranchFilterPyImp.cpp
     )
-    generate_from_xml(FemPostObjectPy)
-    generate_from_xml(FemPostPipelinePy)
-    generate_from_xml(FemPostFilterPy)
-    generate_from_xml(FemPostBranchFilterPy)
+    generate_from_py(FemPostObject)
+    generate_from_py(FemPostPipeline)
+    generate_from_py(FemPostFilter)
+    generate_from_py(FemPostBranchFilter)
+
 endif(BUILD_FEM_VTK)
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
@@ -100,6 +82,20 @@ if(BUILD_FEM_VTK)
         FemVTKTools.cpp
     )
     SOURCE_GROUP("PostObjects" FILES ${FemPost_SRCS})
+
+    SET(FemVTK_SRCS
+        VTKExtensions/vtkFemFrameSourceAlgorithm.h
+        VTKExtensions/vtkFemFrameSourceAlgorithm.cpp
+    )
+    SET(VTK_SRCS_0903
+        VTKExtensions/vtkCleanUnstructuredGrid.h
+        VTKExtensions/vtkCleanUnstructuredGrid.cxx
+        VTKExtensions/vtkSMPTools.h
+    )
+    if (${VTK_MAJOR_VERSION} EQUAL 9 AND ${VTK_MINOR_VERSION} LESS 3)
+        list(APPEND FemVTK_SRCS ${VTK_SRCS_0903})
+    endif()
+    SOURCE_GROUP("VTKExtensions" FILES ${FemVTK_SRCS})
 endif(BUILD_FEM_VTK)
 
 
@@ -108,7 +104,6 @@ SET(Mod_SRCS
     AppFemPy.cpp
     FemTools.cpp
     FemTools.h
-    PreCompiled.cpp
     PreCompiled.h
 )
 SOURCE_GROUP("Module" FILES ${Mod_SRCS})
@@ -196,18 +191,45 @@ SET(Fem_SRCS
     ${FemConstraints_SRCS}
     ${FemPost_SRCS}
     ${FemSet_SRCS}
+    ${FemVTK_SRCS}
     ${Mod_SRCS}
     ${Python_SRCS}
 )
 
+add_library(Fem SHARED ${Fem_SRCS})
+
 if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" Fem_CPP_SRCS ${Fem_SRCS})
-    ADD_MSVC_PRECOMPILED_HEADER(Fem PreCompiled.h PreCompiled.cpp Fem_CPP_SRCS)
+    target_precompile_headers(Fem PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
 endif(FREECAD_USE_PCH)
 
-add_library(Fem SHARED ${Fem_SRCS})
+target_include_directories(
+    Fem
+    PRIVATE
+    ${CMAKE_BINARY_DIR}
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_BINARY_DIR}/src
+    ${CMAKE_CURRENT_BINARY_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+target_include_directories(
+    Fem
+    SYSTEM
+    PUBLIC
+    ${SMESH_INCLUDE_DIR}
+    ${NETGEN_INCLUDE_DIRS}
+    ${VTK_INCLUDE_DIRS}
+)
+
+target_link_directories(Fem PUBLIC ${SMESH_LIB_PATH})
 target_link_libraries(Fem ${Fem_LIBS} ${VTK_LIBRARIES})
+
+if (MSVC)
+    target_compile_options(Fem PRIVATE /wd4275)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(Fem)
 endif()

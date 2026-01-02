@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,10 +22,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <Inventor/nodes/SoSeparator.h>
-#endif
+
 
 #include <Gui/ViewProviderBuilder.h>
 
@@ -66,7 +66,8 @@ void ViewProviderCustom::updateData(const App::Property* prop)
                 if (view->isDerivedFrom<Gui::ViewProviderDocumentObject>()) {
                     static_cast<Gui::ViewProviderDocumentObject*>(view)->attach(this->getObject());
                     static_cast<Gui::ViewProviderDocumentObject*>(view)->setDisplayMode(
-                        this->getActiveDisplayMode().c_str());
+                        this->getActiveDisplayMode().c_str()
+                    );
                 }
                 propView[prop] = view;
                 view->updateData(prop);

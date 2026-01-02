@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
@@ -25,28 +27,33 @@
 
 #include <QDialog>
 #include <QTreeWidget>
+#include <QStandardItemModel>
 #include <App/ObjectIdentifier.h>
 #include <Base/Type.h>
 #include <Base/Unit.h>
 #include <memory>
 
-namespace Ui {
+#include "Dialogs/DlgAddProperty.h"
+
+namespace Ui
+{
 class DlgExpressionInput;
 }
 
-namespace Base {
+namespace Base
+{
 class Quantity;
 }
 
-namespace App {
+namespace App
+{
 class Path;
 class Expression;
 class DocumentObject;
-}
+}  // namespace App
 
-namespace Gui {
-
-namespace Dialog {
+namespace Gui::Dialog
+{
 
 class GuiExport NumberRange
 {
@@ -56,75 +63,102 @@ public:
     void throwIfOutOfRange(const Base::Quantity&) const;
 
 private:
-    double minimum{};
-    double maximum{};
-    bool defined{false};
+    double minimum {};
+    double maximum {};
+    bool defined {false};
 };
 
-class GuiExport DlgExpressionInput : public QDialog
+class GuiExport DlgExpressionInput: public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit DlgExpressionInput(const App::ObjectIdentifier & _path, std::shared_ptr<const App::Expression> _expression, const Base::Unit &_impliedUnit, QWidget *parent = nullptr);
+    explicit DlgExpressionInput(
+        const App::ObjectIdentifier& _path,
+        std::shared_ptr<const App::Expression> _expression,
+        const Base::Unit& _impliedUnit,
+        QWidget* parent = nullptr
+    );
     ~DlgExpressionInput() override;
 
     void setRange(double minimum, double maximum);
     void clearRange();
-    std::shared_ptr<App::Expression> getExpression() const { return expression; }
+    std::shared_ptr<App::Expression> getExpression() const
+    {
+        return expression;
+    }
 
-    bool discardedFormula() const { return discarded; }
+    bool discardedFormula() const
+    {
+        return discarded;
+    }
 
     QPoint expressionPosition() const;
-    void   setExpressionInputSize(int width, int height);
 
 public Q_SLOTS:
     void show();
     void accept() override;
 
 protected:
-    void mouseReleaseEvent(QMouseEvent*) override;
-    void mousePressEvent(QMouseEvent*) override;
+    void mouseReleaseEvent(QMouseEvent* event) override;
+    void mousePressEvent(QMouseEvent* event) override;
+    void resizeEvent(QResizeEvent* event) override;
 
 private:
     Base::Type getTypePath();
     Base::Type determineTypeVarSet();
     bool typeOkForVarSet();
+    void initializeErrorFrame();
     void initializeVarSets();
+    bool checkCyclicDependencyVarSet(const QString& text);
     void checkExpression(const QString& text);
+    int getVarSetIndex(const App::Document* doc) const;
+    void preselectGroup();
+    void preselectVarSet();
+    QStandardItemModel* createVarSetModel();
     void setupVarSets();
     std::string getType();
-    void reportVarSetInfo(const char* message);
-    bool reportName(QTreeWidgetItem* item);
-    bool reportGroup(QString& nameGroup);
+    void reportVarSetInfo(const QString& message);
+    bool reportName();
+    bool reportGroup(const QString& nameGroup);
     void updateVarSetInfo(bool checkExpr = true);
+    void createBindingVarSet(App::Property* propVarSet, App::DocumentObject* varSet);
     void acceptWithVarSet();
+    bool isPropertyNameValid(
+        const QString& nameProp,
+        const App::DocumentObject* obj,
+        QString& message
+    ) const;
+    bool isGroupNameValid(const QString& nameGroup, QString& message) const;
+    void setMsgText();
 
 private Q_SLOTS:
-    void textChanged(const QString & text);
+    void textChanged();
     void setDiscarded();
     void onCheckVarSets(int state);
-    void onVarSetSelected(int);
+    void onVarSetSelected(int index);
     void onTextChangedGroup(const QString&);
     void namePropChanged(const QString&);
+    bool needReportOnVarSet();
 
 private:
-    ::Ui::DlgExpressionInput *ui;
+    ::Ui::DlgExpressionInput* ui;
     std::shared_ptr<App::Expression> expression;
     App::ObjectIdentifier path;
     bool discarded;
     const Base::Unit impliedUnit;
     NumberRange numberRange;
 
-    int minimumWidth;
+    std::string message;
 
-    static bool varSetsVisible;
-    std::unique_ptr<QTreeWidget> treeWidget;
+    bool varSetsVisible;
     QPushButton* okBtn = nullptr;
     QPushButton* discardBtn = nullptr;
+
+    EditFinishedComboBox comboBoxGroup;
 };
 
-}
-}
+}  // namespace Gui::Dialog
 
-#endif // GUI_DIALOG_EXPRESSIONINPUT_H
+
+#endif  // GUI_DIALOG_EXPRESSIONINPUT_H

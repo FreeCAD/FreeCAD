@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2012 Petar Perisin <petar.perisin@gmail.com>            *
  *                                                                         *
@@ -20,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "Dialogs/DlgCustomizeSpNavSettings.h"
 #include "ui_DlgCustomizeSpNavSettings.h"
@@ -42,7 +43,7 @@ DlgCustomizeSpNavSettings::DlgCustomizeSpNavSettings(QWidget* parent)
     }
     if (!app->isSpaceballPresent()) {
         this->setWindowTitle(tr("Spaceball Motion"));
-        this->setMessage(tr("No Spaceball Present"));
+        this->setMessage(tr("No Spaceball present"));
         return;
     }
     this->init = true;
@@ -131,7 +132,7 @@ void DlgCustomizeSpNavSettings::changeEvent(QEvent* e)
             this->setWindowTitle(tr("Spaceball Motion"));
             QLabel* messageLabel = this->findChild<QLabel*>();
             if (messageLabel) {
-                messageLabel->setText(tr("No Spaceball Present"));
+                messageLabel->setText(tr("No Spaceball present"));
             }
         }
     }
@@ -196,12 +197,10 @@ void DlgCustomizeSpNavSettings::initialize()
     ui->SliderSpin->setEnabled(ui->CBRotations->isChecked() && ui->CBEnableSpin->isChecked());
 
     ui->CBEnablePanLR->setEnabled(ui->CBTranslations->isChecked());
-    ui->CBReversePanLR->setEnabled(ui->CBTranslations->isChecked()
-                                   && ui->CBEnablePanLR->isChecked());
+    ui->CBReversePanLR->setEnabled(ui->CBTranslations->isChecked() && ui->CBEnablePanLR->isChecked());
     ui->SliderPanLR->setEnabled(ui->CBTranslations->isChecked() && ui->CBEnablePanLR->isChecked());
     ui->CBEnablePanUD->setEnabled(ui->CBTranslations->isChecked());
-    ui->CBReversePanUD->setEnabled(ui->CBTranslations->isChecked()
-                                   && ui->CBEnablePanUD->isChecked());
+    ui->CBReversePanUD->setEnabled(ui->CBTranslations->isChecked() && ui->CBEnablePanUD->isChecked());
     ui->SliderPanUD->setEnabled(ui->CBTranslations->isChecked() && ui->CBEnablePanUD->isChecked());
     ui->CBEnableZoom->setEnabled(ui->CBTranslations->isChecked());
     ui->CBReverseZoom->setEnabled(ui->CBTranslations->isChecked() && ui->CBEnableZoom->isChecked());
@@ -244,12 +243,10 @@ void DlgCustomizeSpNavSettings::on_CBTranslations_clicked()
     spaceballMotionGroup()->SetBool("Translations", ui->CBTranslations->isChecked());
 
     ui->CBEnablePanLR->setEnabled(ui->CBTranslations->isChecked());
-    ui->CBReversePanLR->setEnabled(ui->CBTranslations->isChecked()
-                                   && ui->CBEnablePanLR->isChecked());
+    ui->CBReversePanLR->setEnabled(ui->CBTranslations->isChecked() && ui->CBEnablePanLR->isChecked());
     ui->SliderPanLR->setEnabled(ui->CBTranslations->isChecked() && ui->CBEnablePanLR->isChecked());
     ui->CBEnablePanUD->setEnabled(ui->CBTranslations->isChecked());
-    ui->CBReversePanUD->setEnabled(ui->CBTranslations->isChecked()
-                                   && ui->CBEnablePanUD->isChecked());
+    ui->CBReversePanUD->setEnabled(ui->CBTranslations->isChecked() && ui->CBEnablePanUD->isChecked());
     ui->SliderPanUD->setEnabled(ui->CBTranslations->isChecked() && ui->CBEnablePanUD->isChecked());
     ui->CBEnableZoom->setEnabled(ui->CBTranslations->isChecked());
     ui->CBReverseZoom->setEnabled(ui->CBTranslations->isChecked() && ui->CBEnableZoom->isChecked());

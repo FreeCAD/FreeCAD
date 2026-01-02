@@ -2,7 +2,7 @@
 <svg
    width="64"
    height="64"
-   viewBox="0 0 16.933333 16.933333"
+   viewBox="0 0 16 16"
    version="1.1"
    id="svg8"
    xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -27,10 +27,10 @@
     <linearGradient
        xlink:href="#linearGradient888"
        id="linearGradient848"
-       x1="5"
-       y1="55"
-       x2="55"
-       y2="5"
+       x1="0"
+       y1="16"
+       x2="16"
+       y2="0"
        gradientUnits="userSpaceOnUse" />
   </defs>
   <metadata
@@ -53,6 +53,7 @@
             <dc:title>FreeCAD</dc:title>
           </cc:Agent>
         </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/BIM/Resources/icons/BIM_Background.svg</dc:identifier>
         <dc:relation>https://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
       </cc:Work>
       <cc:License
@@ -72,24 +73,20 @@
       </cc:License>
     </rdf:RDF>
   </metadata>
-  <g
-     id="layer1">
-    <path
-       style="color:#000000;overflow:visible;fill:#ffffff;fill-opacity:0.932327;stroke:#000000;stroke-width:0.529167;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
-       d="M 15.610416,2.3812502 2.3812502,15.610416 H 15.610416 Z"
-       id="path840" />
-    <path
-       style="color:#000000;overflow:visible;fill:url(#linearGradient848);fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
-       d="M 4.9999999,4.9999999 V 55.000001 L 55.000001,4.9999999 Z"
-       transform="scale(0.26458333)"
-       id="rect833" />
-    <path
-       id="path1"
-       style="color:#000000;overflow:visible;fill:none;fill-opacity:1;stroke:#808080;stroke-width:0.52916667;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
-       d="M 1.8515625,13.273438 C 5.6588542,9.4661458 9.4661458,5.6588542 13.273438,1.8515625 c -3.8072922,0 -7.6145838,0 -11.4218755,0 0,3.8072917 0,7.6145833 0,11.4218755 z" />
-    <path
-       id="path1-7"
-       style="color:#000000;overflow:visible;fill:none;fill-opacity:0.932327;stroke:#c0c0c0;stroke-width:0.52916667;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
-       d="m 3.6601562,15.082031 c 3.8072917,0 7.6145838,0 11.4218748,0 0,-3.807291 0,-7.6145831 0,-11.4218748 C 11.27474,7.4674479 7.4674479,11.27474 3.6601562,15.082031 Z" />
-  </g>
+  <path
+     style="color:#000000;overflow:visible;fill:#ffffff;fill-opacity:0.932327;stroke:#2e3436;stroke-width:0.529167;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+     d="m 14.75,2.25 -12.5,12.5 h 12.5 z"
+     id="path840-0" />
+  <path
+     style="color:#000000;overflow:visible;fill:url(#linearGradient848);fill-opacity:1;stroke:#2e3436;stroke-width:0.529167;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+     d="M 1.25,13.75 13.75,1.25 H 1.25 Z"
+     id="rect833-2" />
+  <path
+     id="path1-3"
+     style="color:#000000;overflow:visible;fill:none;fill-opacity:1;stroke:#808080;stroke-width:0.529167;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+     d="M 1.75,12.5 12.5,1.75 H 1.75 Z" />
+  <path
+     id="path1-7-7"
+     style="color:#000000;overflow:visible;fill:none;fill-opacity:0.932327;stroke:#c0c0c0;stroke-width:0.529167;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+     d="M 3.5,14.25 H 14.25 V 3.5 Z" />
 </svg>

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,10 +22,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <sstream>
-#endif
+
 
 #include <Base/MatrixPy.h>
 #include <Base/PlacementPy.h>
@@ -153,8 +153,7 @@ void Robot6AxisPy::setTcp(Py::Object value)
         getRobot6AxisPtr()->setTo(p);
     }
     else if (PyObject_TypeCheck(*value, &(Base::PlacementPy::Type))) {
-        if (!getRobot6AxisPtr()->setTo(
-                *static_cast<Base::PlacementPy*>(*value)->getPlacementPtr())) {
+        if (!getRobot6AxisPtr()->setTo(*static_cast<Base::PlacementPy*>(*value)->getPlacementPtr())) {
             throw Base::RuntimeError("Can not reach Point");
         }
     }

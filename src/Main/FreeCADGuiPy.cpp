@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 /***************************************************************************
  *   Copyright (c) 2009 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -23,19 +24,19 @@
 #include <FCConfig.h>
 
 #if HAVE_CONFIG_H
-#include <config.h>
+# include <config.h>
 #endif  // HAVE_CONFIG_H
 
 #ifdef _MSC_VER
-#pragma warning(disable : 4005)
+# pragma warning(disable : 4005)
 #endif
 
 #include <QApplication>
 #include <QIcon>
 #if defined(Q_OS_WIN)
-#include <windows.h>
+# include <windows.h>
 #elif defined(Q_WS_X11)
-#include <QX11EmbedWidget>
+# include <QX11EmbedWidget>
 #endif
 #include <thread>
 
@@ -93,8 +94,10 @@ LRESULT CALLBACK FilterProc(int nCode, WPARAM wParam, LPARAM lParam)
 static PyObject* FreeCADGui_showMainWindow(PyObject* /*self*/, PyObject* args)
 {
     if (_isSetupWithoutGui) {
-        PyErr_SetString(PyExc_RuntimeError,
-                        "Cannot call showMainWindow() after calling setupWithoutGUI()\n");
+        PyErr_SetString(
+            PyExc_RuntimeError,
+            "Cannot call showMainWindow() after calling setupWithoutGUI()\n"
+        );
         return nullptr;
     }
 
@@ -136,8 +139,7 @@ static PyObject* FreeCADGui_showMainWindow(PyObject* /*self*/, PyObject* args)
             static char** argv = {nullptr};
             (void)new QApplication(argc, argv);
 #else
-            PyErr_SetString(PyExc_RuntimeError,
-                            "Must construct a QApplication before a QPaintDevice\n");
+            PyErr_SetString(PyExc_RuntimeError, "Must construct a QApplication before a QPaintDevice\n");
             return nullptr;
 #endif
         }
@@ -173,8 +175,7 @@ static PyObject* FreeCADGui_exec_loop(PyObject* /*self*/, PyObject* args)
     }
 
     if (!qApp) {
-        PyErr_SetString(PyExc_RuntimeError,
-                        "Must construct a QApplication before a QPaintDevice\n");
+        PyErr_SetString(PyExc_RuntimeError, "Must construct a QApplication before a QPaintDevice\n");
         return nullptr;
     }
     else if (!qobject_cast<QApplication*>(qApp)) {
@@ -309,7 +310,8 @@ static QWidget* setupMainWindow()
         QIcon icon = qApp->windowIcon();
         if (icon.isNull()) {
             qApp->setWindowIcon(
-                Gui::BitmapFactory().pixmap(App::Application::Config()["AppIcon"].c_str()));
+                Gui::BitmapFactory().pixmap(App::Application::Config()["AppIcon"].c_str())
+            );
         }
         mw->setWindowIcon(qApp->windowIcon());
 
@@ -336,9 +338,9 @@ PyMOD_INIT_FUNC(FreeCADGui)
         Base::Interpreter().loadModule("FreeCAD");
         App::Application::Config()["AppIcon"] = "freecad";
         App::Application::Config()["SplashScreen"] = "freecadsplash";
-        App::Application::Config()["CopyrightInfo"] = "\xc2\xa9 Juergen Riegel, Werner Mayer, Yorik van Havre and others 2001-2024\n";
+        App::Application::Config()["CopyrightInfo"] = "\xc2\xa9 Juergen Riegel, Werner Mayer, Yorik van Havre and others 2001-2025\n";
         App::Application::Config()["LicenseInfo"] = "FreeCAD is free and open-source software licensed under the terms of LGPL2+ license.\n";
-        App::Application::Config()["CreditsInfo"] = "FreeCAD wouldn't be possible without FreeCAD community.\n";
+        App::Application::Config()["CreditsInfo"] = "FreeCAD would not be possible without the FreeCAD community.\n";
         // clang-format on
 
         // it's possible that the GUI is already initialized when the Gui version of the executable
@@ -346,15 +348,17 @@ PyMOD_INIT_FUNC(FreeCADGui)
         if (Base::Type::fromName("Gui::BaseView").isBad()) {
             Gui::Application::initApplication();
         }
-        static struct PyModuleDef FreeCADGuiModuleDef = {PyModuleDef_HEAD_INIT,
-                                                         "FreeCADGui",
-                                                         "FreeCAD GUI module\n",
-                                                         -1,
-                                                         FreeCADGui_methods,
-                                                         nullptr,
-                                                         nullptr,
-                                                         nullptr,
-                                                         nullptr};
+        static struct PyModuleDef FreeCADGuiModuleDef = {
+            PyModuleDef_HEAD_INIT,
+            "FreeCADGui",
+            "FreeCAD GUI module\n",
+            -1,
+            FreeCADGui_methods,
+            nullptr,
+            nullptr,
+            nullptr,
+            nullptr
+        };
         PyObject* module = PyModule_Create(&FreeCADGuiModuleDef);
         return module;
     }

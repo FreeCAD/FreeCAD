@@ -1,4 +1,6 @@
-target_sources(MeshPart_tests_run PRIVATE
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+add_executable(MeshPart_tests_run
         MeshPart.cpp
 )
 

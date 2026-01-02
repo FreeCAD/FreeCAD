@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2021 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -23,8 +25,11 @@
 #ifndef SKETCHER_GeoEnum_H
 #define SKETCHER_GeoEnum_H
 
-#include <Mod/Sketcher/SketcherGlobal.h>
 #include <functional>
+
+#include <FCConfig.h>
+
+#include <Mod/Sketcher/SketcherGlobal.h>
 
 namespace Sketcher
 {

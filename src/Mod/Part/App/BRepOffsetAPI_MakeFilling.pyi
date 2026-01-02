@@ -1,11 +1,14 @@
-from Base.Metadata import export, constmethod
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
+from Base.Metadata import export
 from Base.PyObjectBase import PyObjectBase
 from Part.App.Point import Point
 from Part.App.TopoShape import TopoShape
 from Part.App.TopoShapeEdge import TopoShapeEdge
 from Part.App.TopoShapeFace import TopoShapeFace
-from typing import overload, Final
-
+from typing import overload
 
 @export(
     PythonName="Part.BRepOffsetAPI_MakeFilling",
@@ -21,14 +24,23 @@ class BRepOffsetAPI_MakeFilling(PyObjectBase):
     Licence: LGPL
     """
 
-    def setConstrParam(self, *, Tol2d: float = 0.00001, Tol3d: float = 0.0001, TolAng: float = 0.01, TolCurv: float = 0.1) -> None:
+    def setConstrParam(
+        self,
+        *,
+        Tol2d: float = 0.00001,
+        Tol3d: float = 0.0001,
+        TolAng: float = 0.01,
+        TolCurv: float = 0.1,
+    ) -> None:
         """
         setConstrParam(Tol2d=0.00001, Tol3d=0.0001, TolAng=0.01, TolCurv=0.1)
         Sets the values of Tolerances used to control the constraint.
         """
         ...
 
-    def setResolParam(self, *, Degree: int = 3, NbPtsOnCur: int = 15, NbIter: int = 2, Anisotropy: bool = False) -> None:
+    def setResolParam(
+        self, *, Degree: int = 3, NbPtsOnCur: int = 15, NbIter: int = 2, Anisotropy: bool = False
+    ) -> None:
         """
         setResolParam(Degree=3, NbPtsOnCur=15, NbIter=2, Anisotropy=False)
         Sets the parameters used for resolution.
@@ -42,7 +54,7 @@ class BRepOffsetAPI_MakeFilling(PyObjectBase):
         """
         ...
 
-    def loadInitSurface(self, face: TopoShapeFace) -> None:
+    def loadInitSurface(self, face: TopoShapeFace, /) -> None:
         """
         loadInitSurface(face)
         Loads the initial surface.
@@ -50,25 +62,17 @@ class BRepOffsetAPI_MakeFilling(PyObjectBase):
         ...
 
     @overload
-    def add(self, Edge: TopoShapeEdge, Order: int, *, IsBound: bool = True) -> None:
-        ...
-
+    def add(self, Edge: TopoShapeEdge, Order: int, *, IsBound: bool = True) -> None: ...
     @overload
-    def add(self, Edge: TopoShapeEdge, Support: TopoShapeFace, Order: int, *, IsBound: bool = True) -> None:
-        ...
-
+    def add(
+        self, Edge: TopoShapeEdge, Support: TopoShapeFace, Order: int, *, IsBound: bool = True
+    ) -> None: ...
     @overload
-    def add(self, Support: TopoShapeFace, Order: int) -> None:
-        ...
-
+    def add(self, Support: TopoShapeFace, Order: int) -> None: ...
     @overload
-    def add(self, Point: Point) -> None:
-        ...
-
+    def add(self, Point: Point) -> None: ...
     @overload
-    def add(self, U: float, V: float, Support: TopoShapeFace, Order: int) -> None:
-        ...
-
+    def add(self, U: float, V: float, Support: TopoShapeFace, Order: int) -> None: ...
     def add(self, **kwargs) -> None:
         """
         add(Edge, Order, IsBound=True)
@@ -93,14 +97,10 @@ class BRepOffsetAPI_MakeFilling(PyObjectBase):
         ...
 
     @overload
-    def G0Error(self) -> float:
-        ...
-
+    def G0Error(self, /) -> float: ...
     @overload
-    def G0Error(self, arg: int) -> float:
-        ...
-
-    def G0Error(self, arg: int = 0) -> float:
+    def G0Error(self, arg: int, /) -> float: ...
+    def G0Error(self, arg: int = 0, /) -> float:
         """
         G0Error([int])
         Returns the maximum distance between the result and the constraints.
@@ -108,14 +108,10 @@ class BRepOffsetAPI_MakeFilling(PyObjectBase):
         ...
 
     @overload
-    def G1Error(self) -> float:
-        ...
-
+    def G1Error(self, /) -> float: ...
     @overload
-    def G1Error(self, arg: int) -> float:
-        ...
-
-    def G1Error(self, arg: int = 0) -> float:
+    def G1Error(self, arg: int, /) -> float: ...
+    def G1Error(self, arg: int = 0, /) -> float:
         """
         G1Error([int])
         Returns the maximum angle between the result and the constraints.
@@ -123,14 +119,10 @@ class BRepOffsetAPI_MakeFilling(PyObjectBase):
         ...
 
     @overload
-    def G2Error(self) -> float:
-        ...
-
+    def G2Error(self, /) -> float: ...
     @overload
-    def G2Error(self, arg: int) -> float:
-        ...
-
-    def G2Error(self, arg: int = 0) -> float:
+    def G2Error(self, arg: int, /) -> float: ...
+    def G2Error(self, arg: int = 0, /) -> float:
         """
         G2Error([int])
         Returns the greatest difference in curvature between the result and the constraints.

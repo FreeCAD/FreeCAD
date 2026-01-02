@@ -21,11 +21,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
-#endif
-
 #include "Mod/Fem/App/FemConstraintSpring.h"
 #include <Gui/Control.h>
 
@@ -35,8 +30,7 @@
 
 using namespace FemGui;
 
-PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintSpring,
-                FemGui::ViewProviderFemConstraintOnBoundary)
+PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintSpring, FemGui::ViewProviderFemConstraintOnBoundary)
 
 ViewProviderFemConstraintSpring::ViewProviderFemConstraintSpring()
 {

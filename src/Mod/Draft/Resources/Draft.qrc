@@ -185,6 +185,7 @@
         <file>ui/preferences-draftvisual.ui</file>
         <file>ui/preferences-dwg.ui</file>
         <file>ui/preferences-dxf.ui</file>
+        <file>ui/preferences-dxf-import.ui</file>
         <file>ui/preferences-oca.ui</file>
         <file>ui/preferences-svg.ui</file>
         <file>ui/TaskPanel_CircularArray.ui</file>

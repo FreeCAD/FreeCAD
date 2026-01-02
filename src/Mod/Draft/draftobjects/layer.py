@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 # *   Copyright (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
@@ -33,8 +35,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD as App
 from draftutils import gui_utils
 from draftutils import utils
-from draftutils.messages import _wrn
-from draftutils.translate import translate
+from draftutils.messages import _log
 
 
 class Layer:
@@ -53,16 +54,11 @@ class Layer:
     def set_properties(self, obj):
         """Set properties only if they don't exist."""
         if "Group" not in obj.PropertiesList:
-            _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "The objects that are part of this layer")
+            _tip = QT_TRANSLATE_NOOP("App::Property", "The objects that are part of this layer")
             # "App::PropertyLinkListHidden" instead of "App::PropertyLinkList" has 2 advantages:
             # 1. No 'might break' warning when deleting an object nested in a layer.
             # 2. No 'out of scope' warning for objects also nested in f.e. a Std_Part.
-            obj.addProperty("App::PropertyLinkListHidden",
-                            "Group",
-                            "Layer",
-                            _tip,
-                            locked=True)
+            obj.addProperty("App::PropertyLinkListHidden", "Group", "Layer", _tip, locked=True)
 
     def onDocumentRestored(self, obj):
         """Execute code when the document is restored."""
@@ -73,7 +69,7 @@ class Layer:
             self.set_properties(obj)
             if group_removed:
                 obj.Group = grp
-                _wrn("v1.0, " + obj.Label + ", " + translate("draft", "changed 'Group' property type"))
+                _log("v1.0, " + obj.Name + ", changed 'Group' property type")
 
         gui_utils.restore_view_object(
             obj, vp_module="view_layer", vp_class="ViewProviderLayer", format=False
@@ -94,12 +90,12 @@ class Layer:
             material = App.Material()  #  Material with default v0.21 properties.
             material.DiffuseColor = vobj.ShapeColor
             material.Transparency = vobj.Transparency / 100
-            vobj.ShapeAppearance = (material, )
+            vobj.ShapeAppearance = (material,)
             vobj.setPropertyStatus("ShapeColor", "Hidden")
             if hasattr(vobj, "OverrideShapeColorChildren"):  # v0.19 - v0.21
                 vobj.OverrideShapeAppearanceChildren = vobj.OverrideShapeColorChildren
                 vobj.removeProperty("OverrideShapeColorChildren")
-            _wrn("v1.0, " + obj.Label + ", " + translate("draft", "updated view properties"))
+            _log("v1.0, " + obj.Name + ", updated view properties")
 
     def dumps(self):
         """Return a tuple of objects to save or None."""
@@ -214,5 +210,6 @@ def get_layer(obj):
         if utils.get_type(find) == "Layer" and obj in find.Group:
             return find
     return None
+
 
 ## @}

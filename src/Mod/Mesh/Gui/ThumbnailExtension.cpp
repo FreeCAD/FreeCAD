@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,8 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QBuffer>
 #include <QByteArray>
 
@@ -32,7 +32,6 @@
 #include <Inventor/nodes/SoIndexedFaceSet.h>
 #include <Inventor/nodes/SoOrthographicCamera.h>
 #include <Inventor/nodes/SoSeparator.h>
-#endif
 
 #include <Gui/SoFCOffscreenRenderer.h>
 
@@ -78,8 +77,8 @@ Mesh::Extension3MF::Resource ThumbnailExtension3MF::addMesh(const Mesh::MeshObje
     Mesh::Extension3MF::Resource res;
     res.extension = "png";
     res.contentType = "image/png";
-    res.relationshipType =
-        "http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail";
+    res.relationshipType
+        = "http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail";
     res.fileContent = std::string(data.data(), data.size());
     setContentName(res);
 

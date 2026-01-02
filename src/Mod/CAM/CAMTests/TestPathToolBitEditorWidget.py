@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2024 FreeCAD Team                                       *
 # *                                                                         *
@@ -27,7 +28,7 @@ from unittest.mock import MagicMock
 from Path.Tool.toolbit.ui.editor import ToolBitPropertiesWidget
 from Path.Tool.toolbit.models.base import ToolBit
 from Path.Tool.shape.ui.shapewidget import ShapeWidget
-from Path.Tool.ui.property import BasePropertyEditorWidget
+from Path.Tool.docobject.ui.property import BasePropertyEditorWidget
 from .PathTestUtils import PathTestWithAssets
 
 

@@ -33,13 +33,14 @@ namespace e57
    class CompressedVectorNodeImpl : public NodeImpl
    {
    public:
-      CompressedVectorNodeImpl( ImageFileImplWeakPtr destImageFile );
+      explicit CompressedVectorNodeImpl( ImageFileImplWeakPtr destImageFile );
       ~CompressedVectorNodeImpl() override = default;
 
       NodeType type() const override
       {
-         return E57_COMPRESSED_VECTOR;
+         return TypeCompressedVector;
       }
+
       bool isTypeEquivalent( NodeImplSharedPtr ni ) override;
       bool isDefined( const ustring &pathName ) override;
       void setAttachedRecursive() override;
@@ -64,20 +65,23 @@ namespace e57
       {
          return ( recordCount_ );
       }
+
       uint64_t getBinarySectionLogicalStart() const
       {
          return ( binarySectionLogicalStart_ );
       }
+
       void setRecordCount( int64_t recordCount )
       {
          recordCount_ = recordCount;
       }
+
       void setBinarySectionLogicalStart( uint64_t binarySectionLogicalStart )
       {
          binarySectionLogicalStart_ = binarySectionLogicalStart;
       }
 
-#ifdef E57_DEBUG
+#ifdef E57_ENABLE_DIAGNOSTIC_OUTPUT
       void dump( int indent = 0, std::ostream &os = std::cout ) const override;
 #endif
 

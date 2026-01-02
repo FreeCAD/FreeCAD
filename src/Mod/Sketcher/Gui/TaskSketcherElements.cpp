@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2014 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -20,8 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QContextMenuEvent>
 #include <QImage>
 #include <QLineEdit>
@@ -35,7 +35,8 @@
 #include <QWidgetAction>
 #include <boost/core/ignore_unused.hpp>
 #include <limits>
-#endif
+
+#include <fmt/format.h>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -61,29 +62,52 @@ using namespace Gui::TaskView;
 
 // Translation block for context menu: do not remove
 #if 0
-QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Point Coincidence");
-QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Point on Object");
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Coincident Constraint");
+
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Point-On-Object Constraint");
+
 QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Vertical Constraint");
+
 QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Horizontal Constraint");
+
 QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Parallel Constraint");
+
 QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Perpendicular Constraint");
+
 QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Tangent Constraint");
-QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Equal Length");
-QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Symmetric");
+
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Equal Constraint");
+
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Symmetric Constraint");
+
 QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Block Constraint");
-QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Lock Constraint");
-QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Horizontal Distance");
-QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Vertical Distance");
-QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Length Constraint");
-QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Radius Constraint");
-QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Diameter Constraint");
-QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Radiam Constraint");
-QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Angle Constraint");
-QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Toggle construction geometry");
+
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Lock Position");
+
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Horizontal Dimension");
+
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Vertical Dimension");
+
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Distance Dimension");
+
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Radius Dimension");
+
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Diameter Dimension");
+
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Radius/Diameter Dimension");
+
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Angle Dimension");
+
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Toggle Construction Geometry");
+
 QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Select Constraints");
+
 QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Select Origin");
+
 QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Select Horizontal Axis");
+
 QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Select Vertical Axis");
+
 #endif
 
 /// Inserts a QAction into an existing menu
@@ -167,14 +191,16 @@ public:
         Hidden = 2,
     };
 
-    ElementItem(int elementnr,
-                int startingVertex,
-                int midVertex,
-                int endVertex,
-                Base::Type geometryType,
-                GeometryState state,
-                const QString& lab,
-                ViewProviderSketch* sketchView)
+    ElementItem(
+        int elementnr,
+        int startingVertex,
+        int midVertex,
+        int endVertex,
+        Base::Type geometryType,
+        GeometryState state,
+        const QString& lab,
+        ViewProviderSketch* sketchView
+    )
         : ElementNbr(elementnr)
         , StartingVertex(startingVertex)
         , MidVertex(midVertex)
@@ -190,7 +216,9 @@ public:
         , rightClicked(false)
         , label(lab)
         , sketchView(sketchView)
-    {}
+    {
+        setData(Qt::UserRole, elementnr);
+    }
 
     ~ElementItem() override
     {}
@@ -624,14 +652,17 @@ void ElementView::changeLayer(ElementItem* item, int layer)
         return;
     }
 
+    const int geoid = item->ElementNbr;
+    const int startingVertex = item->StartingVertex;
+    const int midVertex = item->MidVertex;
+    const int endVertex = item->EndVertex;
+
     doc->openTransaction("Geometry Layer Change");
 
     auto sketchObject = item->getSketchObject();
 
     auto geometry = sketchObject->Geometry.getValues();
     auto newGeometry(geometry);
-
-    auto geoid = item->ElementNbr;
 
     // currently only internal geometry can be changed from one layer to another
     if (geoid >= 0) {
@@ -655,6 +686,28 @@ void ElementView::changeLayer(ElementItem* item, int layer)
     }
 
     doc->commitTransaction();
+
+    if (layer == static_cast<int>(ElementItem::Layer::Hidden) && geoid >= 0) {
+        const std::string docName = sketchObject->getDocument()->getName();
+        const std::string objName = sketchObject->getNameInDocument();
+
+        auto deselect = [&](const std::string& name) {
+            const std::string convertedName = sketchObject->convertSubName(name);
+            Gui::Selection().rmvSelection(docName.c_str(), objName.c_str(), convertedName.c_str());
+        };
+
+        deselect(fmt::format("Edge{}", geoid + 1));
+
+        if (startingVertex >= 0) {
+            deselect(fmt::format("Vertex{}", startingVertex + 1));
+        }
+        if (midVertex >= 0) {
+            deselect(fmt::format("Vertex{}", midVertex + 1));
+        }
+        if (endVertex >= 0) {
+            deselect(fmt::format("Vertex{}", endVertex + 1));
+        }
+    }
 }
 
 void ElementView::contextMenuEvent(QContextMenuEvent* event)
@@ -667,12 +720,12 @@ void ElementView::contextMenuEvent(QContextMenuEvent* event)
 
     // CONTEXT_ITEM(ICONSTR,NAMESTR,CMDSTR,FUNC,ACTSONSELECTION)
     CONTEXT_ITEM("Constraint_PointOnPoint",
-                 "Point Coincidence",
+                 "Coincident Constraint",
                  "Sketcher_ConstrainCoincident",
                  doPointCoincidence,
                  true)
     CONTEXT_ITEM("Constraint_PointOnObject",
-                 "Point on Object",
+                 "Point-On-Object Constraint",
                  "Sketcher_ConstrainPointOnObject",
                  doPointOnObjectConstraint,
                  true)
@@ -702,12 +755,12 @@ void ElementView::contextMenuEvent(QContextMenuEvent* event)
                  doTangentConstraint,
                  true)
     CONTEXT_ITEM("Constraint_EqualLength",
-                 "Equal Length",
+                 "Equal Constraint",
                  "Sketcher_ConstrainEqual",
                  doEqualConstraint,
                  true)
     CONTEXT_ITEM("Constraint_Symmetric",
-                 "Symmetric",
+                 "Symmetric Constraint",
                  "Sketcher_ConstrainSymmetric",
                  doSymmetricConstraint,
                  true)
@@ -715,47 +768,47 @@ void ElementView::contextMenuEvent(QContextMenuEvent* event)
         "Constraint_Block", "Block Constraint", "Sketcher_ConstrainBlock", doBlockConstraint, true)
 
     CONTEXT_ITEM("Constraint_HorizontalDistance",
-                 "Horizontal Distance",
+                 "Horizontal Dimension",
                  "Sketcher_ConstrainDistanceX",
                  doHorizontalDistance,
                  true)
     CONTEXT_ITEM("Constraint_VerticalDistance",
-                 "Vertical Distance",
+                 "Vertical Dimension",
                  "Sketcher_ConstrainDistanceY",
                  doVerticalDistance,
                  true)
     CONTEXT_ITEM("Constraint_Length",
-                 "Length Constraint",
+                 "Distance Dimension",
                  "Sketcher_ConstrainDistance",
                  doLengthConstraint,
                  true)
     CONTEXT_ITEM("Constraint_Radiam",
-                 "Radiam Constraint",
+                 "Radius/Diameter Dimension",
                  "Sketcher_ConstrainRadiam",
                  doRadiamConstraint,
                  true)
     CONTEXT_ITEM("Constraint_Radius",
-                 "Radius Constraint",
+                 "Radius Dimension",
                  "Sketcher_ConstrainRadius",
                  doRadiusConstraint,
                  true)
     CONTEXT_ITEM("Constraint_Diameter",
-                 "Diameter Constraint",
+                 "Diameter Dimension",
                  "Sketcher_ConstrainDiameter",
                  doDiameterConstraint,
                  true)
     CONTEXT_ITEM("Constraint_InternalAngle",
-                 "Angle Constraint",
+                 "Angle Dimension",
                  "Sketcher_ConstrainAngle",
                  doAngleConstraint,
                  true)
     CONTEXT_ITEM(
-        "Constraint_Lock", "Lock Constraint", "Sketcher_ConstrainLock", doLockConstraint, true)
+        "Constraint_Lock", "Lock Position", "Sketcher_ConstrainLock", doLockConstraint, true)
 
     menu.addSeparator();
 
     CONTEXT_ITEM("Sketcher_ToggleConstruction",
-                 "Toggle construction geometry",
+                 "Toggle Construction Geometry",
                  "Sketcher_ToggleConstruction",
                  doToggleConstruction,
                  true)
@@ -806,6 +859,19 @@ void ElementView::contextMenuEvent(QContextMenuEvent* event)
     menu.menuAction()->setIconVisibleInMenu(true);
 
     menu.exec(event->globalPos());
+}
+
+void ElementView::mousePressEvent(QMouseEvent* event)
+{
+    // If the click is on an empty area (not on an item), it should
+    // clear the global selection.
+    if (!itemAt(event->pos())) {
+        Gui::Selection().clearSelection();
+    }
+
+    // Always call the base class implementation to ensure normal behavior
+    // like item clicks and the widget's own selection management continues to work.
+    QListWidget::mousePressEvent(event);
 }
 
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainCoincident", doPointCoincidence)
@@ -878,9 +944,11 @@ ElementItemDelegate::ElementItemDelegate(ElementView* parent)
 {  // This class relies on the parent being an ElementView, see getElementtItem
 }
 
-void ElementItemDelegate::paint(QPainter* painter,
-                                const QStyleOptionViewItem& option,
-                                const QModelIndex& index) const
+void ElementItemDelegate::paint(
+    QPainter* painter,
+    const QStyleOptionViewItem& option,
+    const QModelIndex& index
+) const
 {
     ElementItem* item = getElementItem(index);
 
@@ -909,9 +977,11 @@ void ElementItemDelegate::paint(QPainter* painter,
     drawSubControl(SubControl::Label, painter, option, index);
 }
 
-QRect ElementItemDelegate::subControlRect(SubControl element,
-                                          const QStyleOptionViewItem& option,
-                                          const QModelIndex& index) const
+QRect ElementItemDelegate::subControlRect(
+    SubControl element,
+    const QStyleOptionViewItem& option,
+    const QModelIndex& index
+) const
 {
     auto itemOption = option;
 
@@ -919,19 +989,18 @@ QRect ElementItemDelegate::subControlRect(SubControl element,
 
     initStyleOption(&itemOption, index);
 
-    QRect checkBoxRect =
-        style->subElementRect(QStyle::SE_CheckBoxIndicator, &itemOption, option.widget);
+    QRect checkBoxRect
+        = style->subElementRect(QStyle::SE_CheckBoxIndicator, &itemOption, option.widget);
 
-    checkBoxRect.moveTo(gap,
-                        option.rect.top() + (option.rect.height() - checkBoxRect.height()) / 2);
+    checkBoxRect.moveTo(gap, option.rect.top() + (option.rect.height() - checkBoxRect.height()) / 2);
 
     if (element == SubControl::CheckBox) {
         return checkBoxRect;
     }
 
-    QRect selectRect =
-        style->subElementRect(QStyle::SE_ItemViewItemDecoration, &itemOption, option.widget)
-            .translated(checkBoxRect.right() + gap, 0);
+    QRect selectRect
+        = style->subElementRect(QStyle::SE_ItemViewItemDecoration, &itemOption, option.widget)
+              .translated(checkBoxRect.right() + gap, 0);
 
     unsigned pos = element - SubControl::LineSelect;
 
@@ -946,10 +1015,12 @@ QRect ElementItemDelegate::subControlRect(SubControl element,
     return rect;
 }
 
-void ElementItemDelegate::drawSubControl(SubControl element,
-                                         QPainter* painter,
-                                         const QStyleOptionViewItem& option,
-                                         const QModelIndex& index) const
+void ElementItemDelegate::drawSubControl(
+    SubControl element,
+    QPainter* painter,
+    const QStyleOptionViewItem& option,
+    const QModelIndex& index
+) const
 {
     auto item = getElementItem(index);
     auto style = option.widget ? option.widget->style() : QApplication::style();
@@ -1004,10 +1075,12 @@ void ElementItemDelegate::drawSubControl(SubControl element,
                 checkboxOption.state |= QStyle::State_Off;
             }
 
-            style->drawPrimitive(QStyle::PE_IndicatorItemViewItemCheck,
-                                 &checkboxOption,
-                                 painter,
-                                 option.widget);
+            style->drawPrimitive(
+                QStyle::PE_IndicatorItemViewItemCheck,
+                &checkboxOption,
+                painter,
+                option.widget
+            );
 
             break;
         }
@@ -1037,10 +1110,11 @@ void ElementItemDelegate::drawSubControl(SubControl element,
 
             auto labelBoundingBox = painter->fontMetrics().tightBoundingRect(item->label);
 
-            painter->drawText(rect.x(),
-                              option.rect.bottom()
-                                  - (option.rect.height() - labelBoundingBox.height()) / 2,
-                              item->label);
+            painter->drawText(
+                rect.x(),
+                option.rect.bottom() - (option.rect.height() - labelBoundingBox.height()) / 2,
+                item->label
+            );
 
             break;
         }
@@ -1446,8 +1520,7 @@ void TaskSketcherElements::onSelectionChanged(const Gui::SelectionChanges& msg)
             bool select = (msg.Type == Gui::SelectionChanges::AddSelection);
             // is it this object??
             if (strcmp(msg.pDocName, sketchView->getSketchObject()->getDocument()->getName()) != 0
-                || strcmp(msg.pObjectName, sketchView->getSketchObject()->getNameInDocument())
-                    != 0) {
+                || strcmp(msg.pObjectName, sketchView->getSketchObject()->getNameInDocument()) != 0) {
                 return;
             }
             if (!msg.pSubName) {
@@ -1712,6 +1785,11 @@ void TaskSketcherElements::onListWidgetElementsItemPressed(QListWidgetItem* it)
         previouslySelectedItemIndex = focusItemIndex;
 
     ui->listWidgetElements->repaint();
+
+    // it seems that addSelections gives back the focus to the view, and not immediately.
+    QTimer::singleShot(200, [this]() {
+        ui->listWidgetElements->setFocus();
+    });
 }
 
 bool TaskSketcherElements::hasInputWidgetFocused()
@@ -1898,21 +1976,21 @@ void TaskSketcherElements::slotElementsChanged()
                                   ? (QStringLiteral("-") + tr("Construction"))
                                   : (internalAligned ? (QStringLiteral("-") + tr("Internal"))
                                                      : QStringLiteral("")))
-                                      : (QStringLiteral("%1-").arg(i) + tr("Elliptical Arc")))
+                                      : (QStringLiteral("%1-").arg(i) + tr("Elliptical arc")))
                 : type == Part::GeomArcOfHyperbola::getClassTypeId()
                 ? (isNamingBoxChecked ? (tr("Hyperbolic Arc") + IdInformation())
                            + (construction
                                   ? (QStringLiteral("-") + tr("Construction"))
                                   : (internalAligned ? (QStringLiteral("-") + tr("Internal"))
                                                      : QStringLiteral("")))
-                                      : (QStringLiteral("%1-").arg(i) + tr("Hyperbolic Arc")))
+                                      : (QStringLiteral("%1-").arg(i) + tr("Hyperbolic arc")))
                 : type == Part::GeomArcOfParabola::getClassTypeId()
                 ? (isNamingBoxChecked ? (tr("Parabolic Arc") + IdInformation())
                            + (construction
                                   ? (QStringLiteral("-") + tr("Construction"))
                                   : (internalAligned ? (QStringLiteral("-") + tr("Internal"))
                                                      : QStringLiteral("")))
-                                      : (QStringLiteral("%1-").arg(i) + tr("Parabolic Arc")))
+                                      : (QStringLiteral("%1-").arg(i) + tr("Parabolic arc")))
                 : type == Part::GeomBSplineCurve::getClassTypeId()
                 ? (isNamingBoxChecked ? (tr("B-spline") + IdInformation())
                            + (construction
@@ -2016,15 +2094,15 @@ void TaskSketcherElements::slotElementsChanged()
                     : type == Part::GeomArcOfEllipse::getClassTypeId()
                     ? (isNamingBoxChecked
                            ? (tr("Elliptical Arc") + linkname)
-                           : (QStringLiteral("%1-").arg(i - 2) + tr("Elliptical Arc")))
+                           : (QStringLiteral("%1-").arg(i - 2) + tr("Elliptical arc")))
                     : type == Part::GeomArcOfHyperbola::getClassTypeId()
                     ? (isNamingBoxChecked
                            ? (tr("Hyperbolic Arc") + linkname)
-                           : (QStringLiteral("%1-").arg(i - 2) + tr("Hyperbolic Arc")))
+                           : (QStringLiteral("%1-").arg(i - 2) + tr("Hyperbolic arc")))
                     : type == Part::GeomArcOfParabola::getClassTypeId()
                     ? (isNamingBoxChecked
                            ? (tr("Parabolic Arc") + linkname)
-                           : (QStringLiteral("%1-").arg(i - 2) + tr("Parabolic Arc")))
+                           : (QStringLiteral("%1-").arg(i - 2) + tr("Parabolic arc")))
                     : type == Part::GeomBSplineCurve::getClassTypeId()
                     ? (isNamingBoxChecked ? (tr("B-spline") + linkname)
                                           : (QStringLiteral("%1-").arg(i - 2) + tr("B-spline")))

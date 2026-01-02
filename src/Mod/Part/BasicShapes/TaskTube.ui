@@ -89,7 +89,7 @@
         <item row="2" column="0">
          <widget class="QLabel" name="textLabel3">
           <property name="text">
-           <string>Height:</string>
+           <string>Height</string>
           </property>
          </widget>
         </item>

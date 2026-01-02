@@ -22,10 +22,6 @@
 
 #include <gtest/gtest.h>
 
-#include <Mod/Material/App/PreCompiled.h>
-#ifndef _PreComp_
-#endif
-
 #include <QLocale>
 #include <QMetaType>
 #include <QString>
@@ -43,7 +39,7 @@
 #include <Mod/Material/App/ModelUuids.h>
 
 #ifdef _MSC_VER
-#pragma warning(disable : 4834)
+# pragma warning(disable : 4834)
 #endif
 
 // clang-format off

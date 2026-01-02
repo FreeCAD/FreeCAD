@@ -1,6 +1,4 @@
-include_directories(
-    ${CMAKE_CURRENT_BINARY_DIR}
-)
+# SPDX-License-Identifier: LGPL-2.1-or-later
 
 set(PointsGui_LIBS
     Points
@@ -36,7 +34,6 @@ SET(PointsGui_SRCS
     ${Resource_SRCS}
     AppPointsGui.cpp
     Command.cpp
-    PreCompiled.cpp
     PreCompiled.h
     ViewProvider.cpp
     ViewProvider.h
@@ -52,13 +49,24 @@ SET(PointsGuiIcon_SVG
     Resources/icons/PointsWorkbench.svg
 )
 
+add_library(PointsGui SHARED
+    ${PointsGui_SRCS}
+    ${PointsGui_Scripts}
+    ${PointsGuiIcon_SVG}
+)
+
 if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${PointsGui_SRCS})
-    ADD_MSVC_PRECOMPILED_HEADER(PointsGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
+    target_precompile_headers(PointsGui PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
 endif(FREECAD_USE_PCH)
 
-add_library(PointsGui SHARED ${PointsGui_SRCS} ${PointsGui_Scripts} ${PointsGuiIcon_SVG})
+target_include_directories(
+    PointsGui
+    PRIVATE
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
+
 target_link_libraries(PointsGui ${PointsGui_LIBS})
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(PointsGui)

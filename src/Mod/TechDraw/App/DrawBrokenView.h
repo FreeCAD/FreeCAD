@@ -149,6 +149,10 @@ private:
                                             const bool descend = false) const;
 
     static std::vector<TopoDS_Shape> getPieces(const TopoDS_Shape& brokenShape);
+    static std::vector<TopoDS_Shape> getPiecesByType(const TopoDS_Shape& shapeToSearch,
+                                                     TopAbs_ShapeEnum desiredShapeType,
+                                                     TopAbs_ShapeEnum avoidShapeType = TopAbs_SHAPE);
+
     static BreakList sortBreaks(BreakList& inList, bool descend = false);
     static bool breakLess(const BreakListEntry& entry0, const BreakListEntry& entry1);
 

@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <Base/Console.h>
 #include <Base/UnitsApi.h>
@@ -115,7 +114,7 @@ TaskCenterLine::TaskCenterLine(TechDraw::DrawViewPart* partFeat,
     } else if (geomType == "Vertex") {
         m_type = Type::VERTEX;
     } else {
-        Base::Console().error("TaskCenterLine - unknown geometry type: %s.  Can not proceed.\n", geomType.c_str());
+        Base::Console().error("TaskCenterLine - unknown geometry type: %s.  Cannot proceed.\n", geomType.c_str());
         return;
     }
 
@@ -163,7 +162,7 @@ void TaskCenterLine::setUiConnect()
 
 void TaskCenterLine::setUiPrimary()
 {
-    setWindowTitle(QObject::tr("Create Center Line"));
+    setWindowTitle(QObject::tr("Centerline"));
 
     if (m_partFeat) {
         std::string baseName = m_partFeat->getNameInDocument();
@@ -206,7 +205,7 @@ void TaskCenterLine::setUiPrimary()
 
 void TaskCenterLine::setUiEdit()
 {
-    setWindowTitle(QObject::tr("Edit Center Line"));
+    setWindowTitle(QObject::tr("Edit Centerline"));
     if (m_partFeat) {
         std::string baseName = m_partFeat->getNameInDocument();
         ui->leBaseView->setText(QString::fromStdString(baseName));

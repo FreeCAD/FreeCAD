@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2024 David Carter <dcarter@david.carter.ca>             *
  *                                                                         *
@@ -18,10 +20,6 @@
  *   <https://www.gnu.org/licenses/>.                                      *
  *                                                                         *
  **************************************************************************/
-
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
 
 #include <Python.h>
 #include <QMutex>
@@ -100,7 +98,7 @@ void ExternalManager::getConfiguration()
 void ExternalManager::instantiate()
 {
     _instantiated = false;
-    Base::Console().log("Loading external manager...\n");
+    Base::Console().log("Loading external manager…\n");
 
     if (_moduleName.empty() || _className.empty()) {
         Base::Console().log("External module not defined\n");

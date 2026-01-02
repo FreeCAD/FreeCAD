@@ -61,7 +61,7 @@ class BIM_Preflight:
     def GetResources(self):
         return {
             "Pixmap": "BIM_Preflight",
-            "MenuText": QT_TRANSLATE_NOOP("BIM_Preflight", "Preflight checks..."),
+            "MenuText": QT_TRANSLATE_NOOP("BIM_Preflight", "Preflight Checks"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_Preflight",
                 "Checks several characteristics of this model before exporting to IFC",
@@ -89,9 +89,7 @@ class BIM_Preflight_TaskPanel:
         self.form.setWindowIcon(QtGui.QIcon(":/icons/BIM_Preflight.svg"))
         for test in tests:
             getattr(self.form, test).setIcon(QtGui.QIcon(":/icons/button_right.svg"))
-            getattr(self.form, test).setToolTip(
-                translate("BIM", "Press to perform the test")
-            )
+            getattr(self.form, test).setToolTip(translate("BIM", "Press to perform the test"))
             if hasattr(self, test):
                 getattr(self.form, test).clicked.connect(getattr(self, test))
             self.results[test] = None
@@ -101,9 +99,7 @@ class BIM_Preflight_TaskPanel:
         self.customTests = {}
         customModulePath = os.path.join(FreeCAD.getUserAppDataDir(), "BIM", "Preflight")
         if os.path.exists(customModulePath):
-            customModules = [
-                m[:-3] for m in os.listdir(customModulePath) if m.endswith(".py")
-            ]
+            customModules = [m[:-3] for m in os.listdir(customModulePath) if m.endswith(".py")]
             if customModules:
                 sys.path.append(customModulePath)
                 for customModule in customModules:
@@ -119,17 +115,9 @@ class BIM_Preflight_TaskPanel:
                         )
                         continue
                     FreeCAD.Console.PrintLog(
-                        "Preflight: found custom module: "
-                        + customModule
-                        + " "
-                        + str(mod)
-                        + "\n"
+                        "Preflight: found custom module: " + customModule + " " + str(mod) + "\n"
                     )
-                    functions = [
-                        o[0]
-                        for o in inspect.getmembers(mod)
-                        if inspect.isfunction(o[1])
-                    ]
+                    functions = [o[0] for o in inspect.getmembers(mod) if inspect.isfunction(o[1])]
                     if functions:
                         box = QtGui.QGroupBox(customModule)
                         lay = QtGui.QGridLayout(box)
@@ -174,9 +162,7 @@ class BIM_Preflight_TaskPanel:
 
         getattr(self.form, test).setIcon(QtGui.QIcon(":/icons/button_valid.svg"))
         getattr(self.form, test).setText(translate("BIM", "Passed"))
-        getattr(self.form, test).setToolTip(
-            translate("BIM", "This test has succeeded.")
-        )
+        getattr(self.form, test).setToolTip(translate("BIM", "This test has succeeded."))
 
     def failed(self, test):
         "sets the button as failed"
@@ -196,9 +182,7 @@ class BIM_Preflight_TaskPanel:
 
         getattr(self.form, test).setIcon(QtGui.QIcon(":/icons/button_right.svg"))
         getattr(self.form, test).setText(translate("BIM", "Test"))
-        getattr(self.form, test).setToolTip(
-            translate("BIM", "Press to perform the test")
-        )
+        getattr(self.form, test).setToolTip(translate("BIM", "Press to perform the test"))
 
     def show(self, test):
         "shows test results"
@@ -213,9 +197,7 @@ class BIM_Preflight_TaskPanel:
                 # center the dialog over FreeCAD window
                 mw = FreeCADGui.getMainWindow()
                 self.rform.move(
-                    mw.frameGeometry().topLeft()
-                    + mw.rect().center()
-                    - self.rform.rect().center()
+                    mw.frameGeometry().topLeft() + mw.rect().center() - self.rform.rect().center()
                 )
                 self.rform.buttonReport.clicked.connect(self.toReport)
                 self.rform.buttonOK.clicked.connect(self.closeReport)
@@ -247,11 +229,7 @@ class BIM_Preflight_TaskPanel:
         if self.form.getAll.isChecked():
             objs = FreeCAD.ActiveDocument.Objects
         elif self.form.getVisible.isChecked():
-            objs = [
-                o
-                for o in FreeCAD.ActiveDocument.Objects
-                if o.ViewObject.Visibility == True
-            ]
+            objs = [o for o in FreeCAD.ActiveDocument.Objects if o.ViewObject.Visibility == True]
         else:
             objs = FreeCADGui.Selection.getSelection()
         # clean objects list of unwanted types
@@ -315,8 +293,10 @@ class BIM_Preflight_TaskPanel:
                 msg = (
                     translate(
                         "BIM",
-                        "ifcopenshell is not installed on your system or not available to FreeCAD. This library is responsible for IFC support in FreeCAD, and therefore IFC support is currently disabled. Check %1 to obtain more information.",
-                    ).replace("%1", "https://www.freecadweb.org/wiki/Extra_python_modules#IfcOpenShell")
+                        "ifcopenshell is not installed on the system or not available to FreeCAD. This library is responsible for IFC support in FreeCAD, and therefore IFC support is currently disabled. Check %1 to obtain more information.",
+                    ).replace(
+                        "%1", "https://www.freecad.org/wiki/Extra_python_modules#IfcOpenShell"
+                    )
                     + " "
                 )
                 self.failed(test)
@@ -328,10 +308,11 @@ class BIM_Preflight_TaskPanel:
                 elif hasattr(ifcopenshell, "version"):
                     try:
                         from packaging import version
+
                         if "-" in ifcopenshell.version:
                             # Prebuild version have a version like 'v0.7.0-<GIT_COMMIT_ID>,
                             # trying to remove the commit id.
-                            cur_version = version.parse(ifcopenshell.version.split('-')[0])
+                            cur_version = version.parse(ifcopenshell.version.split("-")[0])
                         else:
                             cur_version = version.parse(ifcopenshell.version)
                         min_version = version.parse("0.6")
@@ -342,7 +323,7 @@ class BIM_Preflight_TaskPanel:
                             msg = (
                                 translate(
                                     "BIM",
-                                    "The version of Ifcopenshell installed on your system could not be parsed",
+                                    "The version of Ifcopenshell installed on the system could not be parsed",
                                 )
                                 + " "
                             )
@@ -354,7 +335,7 @@ class BIM_Preflight_TaskPanel:
                     msg += (
                         translate(
                             "BIM",
-                            "The version of Ifcopenshell installed on your system will produce files with this schema version:",
+                            "The version of Ifcopenshell installed on the system will produce files with this schema version:",
                         )
                         + "\n\n"
                     )
@@ -396,18 +377,13 @@ class BIM_Preflight_TaskPanel:
                     or (hasattr(obj, "IfcType") and (obj.IfcType == "Building"))
                 ):
                     buildings = True
-                elif (
-                    hasattr(obj, "IfcRole") and (obj.IfcRole == "Building Storey")
-                ) or (hasattr(obj, "IfcType") and (obj.IfcType == "Building Storey")):
+                elif (hasattr(obj, "IfcRole") and (obj.IfcRole == "Building Storey")) or (
+                    hasattr(obj, "IfcType") and (obj.IfcType == "Building Storey")
+                ):
                     storeys = True
             if (not sites) or (not buildings) or (not storeys):
                 msg = self.getToolTip(test)
-                msg += (
-                    translate(
-                        "BIM", "The following types were not found in the project:"
-                    )
-                    + "\n"
-                )
+                msg += translate("BIM", "The following types were not found in the project:") + "\n"
                 if not sites:
                     msg += "\nSite"
                 if not buildings:
@@ -446,14 +422,8 @@ class BIM_Preflight_TaskPanel:
                     for parent in obj.InList:
                         if (
                             (Draft.getType(parent) == "Site")
-                            or (
-                                hasattr(parent, "IfcRole")
-                                and (parent.IfcRole == "Site")
-                            )
-                            or (
-                                hasattr(parent, "IfcType")
-                                and (parent.IfcType == "Site")
-                            )
+                            or (hasattr(parent, "IfcRole") and (parent.IfcRole == "Site"))
+                            or (hasattr(parent, "IfcType") and (parent.IfcType == "Site"))
                         ):
                             if hasattr(parent, "Group") and parent.Group:
                                 if obj in parent.Group:
@@ -466,7 +436,7 @@ class BIM_Preflight_TaskPanel:
                             msg += (
                                 translate(
                                     "BIM",
-                                    "The following Building objects have been found to not be included in any Site. You can resolve the situation by creating a Site object, if none is present in your model, and drag and drop the Building objects into it in the tree view:",
+                                    "The following building objects have been found to not be included in any Site. You can resolve the situation by creating a Site object, if none is present in your model, and drag and drop the building objects into it in the tree view:",
                                 )
                                 + "\n\n"
                             )
@@ -498,12 +468,8 @@ class BIM_Preflight_TaskPanel:
                 ):
                     ok = False
                     for parent in obj.InList:
-                        if (
-                            hasattr(parent, "IfcRole")
-                            and (parent.IfcRole == "Building")
-                        ) or (
-                            hasattr(parent, "IfcType")
-                            and (parent.IfcType == "Building")
+                        if (hasattr(parent, "IfcRole") and (parent.IfcRole == "Building")) or (
+                            hasattr(parent, "IfcType") and (parent.IfcType == "Building")
                         ):
                             if hasattr(parent, "Group") and parent.Group:
                                 if obj in parent.Group:
@@ -516,7 +482,7 @@ class BIM_Preflight_TaskPanel:
                             msg += (
                                 translate(
                                     "BIM",
-                                    'The following Building Storey (BuildingParts with their IFC role set as "Building Storey") objects have been found to not be included in any Building. You can resolve the situation by creating a Building object, if none is present in your model, and drag and drop the Building Storey objects into it in the tree view:',
+                                    'The following building storey (building parts with their IFC role set as "building storey") objects have been found to not be included in any building. Resolve the situation by creating a building object, if none is present in the model, and drag and drop the building storey objects into it in the tree view:',
                                 )
                                 + "\n\n"
                             )
@@ -553,9 +519,9 @@ class BIM_Preflight_TaskPanel:
                     ok = False
                     ancestors = obj.InListRecursive
                     # append extra objects not in InList
-                    if hasattr(obj,"Host") and not obj.Host in ancestors:
+                    if hasattr(obj, "Host") and not obj.Host in ancestors:
                         ancestors.append(obj.Host)
-                    if hasattr(obj,"Hosts"):
+                    if hasattr(obj, "Hosts"):
                         for h in obj.Hosts:
                             if not h in ancestors:
                                 ancestors.append(h)
@@ -577,7 +543,7 @@ class BIM_Preflight_TaskPanel:
                             msg += (
                                 translate(
                                     "BIM",
-                                    'The following BIM objects have been found to not be included in any Building Storey (BuildingParts with their IFC role set as "Building Storey"). You can resolve the situation by creating a Building Storey object, if none is present in your model, and drag and drop these objects into it in the tree view:',
+                                    'The following BIM objects have been found to not be included in any building storey (building parts with their IFC role set as "building storey"). Resolve the situation by creating a building storey object, if none is present in the model, and drag and drop these objects into it in the tree view:',
                                 )
                                 + "\n\n"
                             )
@@ -631,10 +597,7 @@ class BIM_Preflight_TaskPanel:
                     for o in undefined:
                         msg += o.Label + "\n"
                 if notbim:
-                    msg += (
-                        translate("BIM", "The following objects are not BIM objects:")
-                        + "\n\n"
-                    )
+                    msg += translate("BIM", "The following objects are not BIM objects:") + "\n\n"
                     for o in notbim:
                         msg += o.Label + "\n"
                         msg += translate(
@@ -704,9 +667,7 @@ class BIM_Preflight_TaskPanel:
             msg = None
 
             for obj in self.getObjects():
-                if hasattr(obj, "IfcAttributes") and (
-                    Draft.getType(obj) != "BuildingPart"
-                ):
+                if hasattr(obj, "IfcAttributes") and (Draft.getType(obj) != "BuildingPart"):
                     for prop in ["Length", "Width", "Height"]:
                         if prop in obj.PropertiesList:
                             if (not "Export" + prop in obj.IfcAttributes) or (
@@ -719,7 +680,7 @@ class BIM_Preflight_TaskPanel:
                 msg += (
                     translate(
                         "BIM",
-                        "The objects below have Length, Width or Height properties, but these properties won't be explicitly exported to IFC. This is not necessarily an issue, unless you specifically want these quantities to be exported:",
+                        "The objects below have length, width or height properties, but these properties won't be explicitly exported to IFC. This is not necessarily an issue, unless these quantities are desired to be exported:",
                     )
                     + "\n\n"
                 )
@@ -727,7 +688,7 @@ class BIM_Preflight_TaskPanel:
                     msg += o.Label + "\n"
                 msg += "\n" + translate(
                     "BIM",
-                    "To enable exporting of these quantities, use the IFC quantities manager tool located under menu Manage -> Manage IFC Quantities...",
+                    "To enable exporting of these quantities, use the IFC quantities manager tool located under menu Manage -> Manage IFC Quantities",
                 )
             if msg:
                 self.failed(test)
@@ -765,17 +726,13 @@ class BIM_Preflight_TaskPanel:
                     for row in reader:
                         if "Common" in row[0]:
                             psets.append(row[0][5:-6])
-            psets = [
-                "".join(map(lambda x: x if x.islower() else " " + x, p)) for p in psets
-            ]
+            psets = ["".join(map(lambda x: x if x.islower() else " " + x, p)) for p in psets]
             psets = [pset.strip() for pset in psets]
             # print(psets)
 
             for obj in self.getObjects():
                 ok = True
-                if hasattr(obj, "IfcProperties") and isinstance(
-                    obj.IfcProperties, dict
-                ):
+                if hasattr(obj, "IfcProperties") and isinstance(obj.IfcProperties, dict):
                     r = None
                     if hasattr(obj, "IfcType"):
                         r = obj.IfcType
@@ -803,7 +760,7 @@ class BIM_Preflight_TaskPanel:
                     msg += o.Label + "\n"
                 msg += "\n" + translate(
                     "BIM",
-                    "To add common property sets to these objects, use the IFC properties manager tool located under menu Manage -> Manage IFC Properties...",
+                    "To add common property sets to these objects, use the IFC properties manager tool located under menu Manage -> Manage IFC Properties",
                 )
             if msg:
                 self.failed(test)
@@ -844,9 +801,7 @@ class BIM_Preflight_TaskPanel:
 
             for obj in self.getObjects():
                 ok = True
-                if hasattr(obj, "IfcProperties") and isinstance(
-                    obj.IfcProperties, dict
-                ):
+                if hasattr(obj, "IfcProperties") and isinstance(obj.IfcProperties, dict):
                     r = None
                     if hasattr(obj, "IfcType"):
                         r = obj.IfcType
@@ -890,12 +845,15 @@ class BIM_Preflight_TaskPanel:
                     + translate(
                         "BIM",
                         "Verify which properties a certain property set must contain on %1",
-                    ).replace("%1", "https://standards.buildingsmart.org/IFC/DEV/IFC4_2/FINAL/HTML/annex/annex-b/alphabeticalorder_psets.htm")
+                    ).replace(
+                        "%1",
+                        "https://standards.buildingsmart.org/IFC/DEV/IFC4_2/FINAL/HTML/annex/annex-b/alphabeticalorder_psets.htm",
+                    )
                     + "\n\n"
                 )
                 msg += translate(
                     "BIM",
-                    "To fix the property sets of these objects, use the IFC properties manager tool located under menu Manage -> Manage IFC Properties...",
+                    "To fix the property sets of these objects, use the IFC properties manager tool located under menu Manage -> Manage IFC Properties",
                 )
             if msg:
                 self.failed(test)
@@ -925,9 +883,7 @@ class BIM_Preflight_TaskPanel:
             if self.culprits[test]:
                 msg = self.getToolTip(test)
                 msg += (
-                    translate(
-                        "BIM", "The following BIM objects have no material attributed:"
-                    )
+                    translate("BIM", "The following BIM objects have no material attributed:")
                     + "\n\n"
                 )
                 for o in self.culprits[test]:
@@ -1003,9 +959,9 @@ class BIM_Preflight_TaskPanel:
                         and (obj.IfcAttributes["FlagForceBrep"] == "True")
                     ):
                         self.culprits[test].append(obj)
-                    elif hasattr(
-                        obj.Proxy, "getExtrusionData"
-                    ) and not obj.Proxy.getExtrusionData(obj):
+                    elif hasattr(obj.Proxy, "getExtrusionData") and not obj.Proxy.getExtrusionData(
+                        obj
+                    ):
                         self.culprits[test].append(obj)
                     elif Draft.getType(obj) == "BuildingPart":
                         pass
@@ -1019,10 +975,7 @@ class BIM_Preflight_TaskPanel:
                     self.culprits[test].append(obj)
             if self.culprits[test]:
                 msg = self.getToolTip(test)
-                msg += (
-                    translate("BIM", "The following BIM objects are not extrusions:")
-                    + "\n\n"
-                )
+                msg += translate("BIM", "The following BIM objects are not extrusions:") + "\n\n"
                 for o in self.culprits[test]:
                     msg += o.Label + "\n"
             if msg:
@@ -1053,17 +1006,13 @@ class BIM_Preflight_TaskPanel:
                         self.culprits[test].append(obj)
                 elif Draft.getType(obj) == "Structure":
                     if obj.Base and (
-                        (len(obj.Base.Shape.Wires) != 1)
-                        or (not obj.Base.Shape.Wires[0].isClosed())
+                        (len(obj.Base.Shape.Wires) != 1) or (not obj.Base.Shape.Wires[0].isClosed())
                     ):
                         self.culprits[test].append(obj)
             if self.culprits[test]:
                 msg = self.getToolTip(test)
                 msg += (
-                    translate(
-                        "BIM", "The following BIM objects are not standard cases:"
-                    )
-                    + "\n\n"
+                    translate("BIM", "The following BIM objects are not standard cases:") + "\n\n"
                 )
                 for o in self.culprits[test]:
                     msg += o.Label + "\n"
@@ -1101,9 +1050,8 @@ class BIM_Preflight_TaskPanel:
                                     objs.append(obj)
             if edges:
                 import Part
-                result = FreeCAD.ActiveDocument.addObject(
-                    "Part::Feature", "TinyLinesResult"
-                )
+
+                result = FreeCAD.ActiveDocument.addObject("Part::Feature", "TinyLinesResult")
                 result.Shape = Part.makeCompound(edges)
                 result.ViewObject.LineWidth = 5
                 self.culprits[test] = [result]
@@ -1121,7 +1069,7 @@ class BIM_Preflight_TaskPanel:
                     "\n"
                     + translate(
                         "BIM",
-                        'An additional object, called "TinyLinesResult" has been added to this model, and selected. It contains all the tiny lines found, so you can inspect them and fix the needed objects. Be sure to delete the TinyLinesResult object when you are done!',
+                        'An additional object, called "TinyLinesResult" has been added to this model, and selected. It contains all the tiny lines found, for inspection. Be sure to delete the TinyLinesResult object when done!',
                     )
                     + "\n\n"
                 )

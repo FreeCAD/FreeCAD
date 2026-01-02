@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -21,9 +23,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+#include <FCConfig.h>
 
-#ifndef _PreComp_
 # if defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
 #  include <unistd.h>
 #  include <pwd.h>
@@ -48,7 +49,6 @@
 # include <tuple>
 # include <vector>
 # include <fmt/format.h>
-#endif
 
 #ifdef FC_OS_WIN32
 # include <Shlobj.h>
@@ -67,7 +67,6 @@
 #include <QRegularExpression>
 #include <QSettings>
 #include <QStandardPaths>
-#include <Inventor/C/basic.h>
 #include <LibraryVersions.h>
 
 #include <App/MaterialPy.h>
@@ -103,6 +102,8 @@
 
 #include "Annotation.h"
 #include "Application.h"
+#include "ApplicationDirectories.h"
+#include "ApplicationDirectoriesPy.h"
 #include "CleanupProcess.h"
 #include "ComplexGeoData.h"
 #include "Services.h"
@@ -186,6 +187,7 @@ Base::ConsoleObserverStd  *Application::_pConsoleObserverStd = nullptr;
 Base::ConsoleObserverFile *Application::_pConsoleObserverFile = nullptr;
 
 AppExport std::map<std::string, std::string> Application::mConfig;
+std::unique_ptr<ApplicationDirectories> Application::_appDirs;
 
 
 //**************************************************************************
@@ -332,6 +334,7 @@ void Application::setupPythonTypes()
     Base::InterpreterSingleton::addType(&Base::TypePy            ::Type,pBaseModule,"TypeId");
     Base::InterpreterSingleton::addType(&Base::PrecisionPy       ::Type,pBaseModule,"Precision");
 
+    Base::InterpreterSingleton::addType(&ApplicationDirectoriesPy::Type, pAppModule, "ApplicationDirectories");
     Base::InterpreterSingleton::addType(&MaterialPy::Type, pAppModule, "Material");
     Base::InterpreterSingleton::addType(&MetadataPy::Type, pAppModule, "Metadata");
 
@@ -912,6 +915,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
         FC_DURATION_LOG(timing.d2, doc.getDocumentName() << " postprocess");
     }
     FC_TIME_LOG(t,"total");
+    PropertyLinkBase::updateAllElementReferences();
     _isRestoring = false;
 
     signalFinishOpenDocument();
@@ -1113,7 +1117,7 @@ int64_t Application::applicationPid()
 
 std::string Application::getHomePath()
 {
-    return mConfig["AppHomePath"];
+    return Base::FileInfo::pathToString(Application::directories()->getHomePath()) + PATHSEP;
 }
 
 std::string Application::getExecutableName()
@@ -1132,78 +1136,61 @@ std::string Application::getNameWithVersion()
     return fmt::format("{} {}.{}.{}{}", appname, major, minor, point, suffix);
 }
 
+bool Application::isDevelopmentVersion()
+{
+    static std::string suffix = []() constexpr {
+        return FCVersionSuffix;
+    }();
+    return suffix == "dev";
+}
+
+const std::unique_ptr<ApplicationDirectories>& Application::directories() {
+    return _appDirs;
+}
+
 std::string Application::getTempPath()
 {
-    return mConfig["AppTempPath"];
+    return Base::FileInfo::pathToString(_appDirs->getTempPath()) + PATHSEP;
 }
 
 std::string Application::getTempFileName(const char* FileName)
 {
-    return Base::FileInfo::getTempFileName(FileName, getTempPath().c_str());
+    return Base::FileInfo::pathToString(_appDirs->getTempFileName(FileName ? FileName : std::string()));
 }
 
 std::string Application::getUserCachePath()
 {
-    return mConfig["UserCachePath"];
+    return Base::FileInfo::pathToString(_appDirs->getUserCachePath()) + PATHSEP;
 }
 
 std::string Application::getUserConfigPath()
 {
-    return mConfig["UserConfigPath"];
+    return Base::FileInfo::pathToString(_appDirs->getUserConfigPath()) + PATHSEP;
 }
 
 std::string Application::getUserAppDataDir()
 {
-    return mConfig["UserAppData"];
+    return Base::FileInfo::pathToString(_appDirs->getUserAppDataDir()) + PATHSEP;
 }
 
 std::string Application::getUserMacroDir()
 {
-    return mConfig["UserMacroPath"];
+    return Base::FileInfo::pathToString(_appDirs->getUserMacroDir()) + PATHSEP;
 }
 
 std::string Application::getResourceDir()
 {
-#ifdef RESOURCEDIR
-    // #6892: Conda may inject null characters => remove them using c_str()
-    std::string path = std::string(RESOURCEDIR).c_str();
-    path += PATHSEP;
-    const QDir dir(QString::fromStdString(path));
-    if (dir.isAbsolute())
-        return path;
-    return mConfig["AppHomePath"] + path;
-#else
-    return mConfig["AppHomePath"];
-#endif
+    return Base::FileInfo::pathToString(_appDirs->getResourceDir()) + PATHSEP;
 }
 
 std::string Application::getLibraryDir()
 {
-#ifdef LIBRARYDIR
-    // #6892: Conda may inject null characters => remove them using c_str()
-    std::string path = std::string(LIBRARYDIR).c_str();
-    const QDir dir(QString::fromStdString(path));
-    if (dir.isAbsolute())
-        return path;
-    return mConfig["AppHomePath"] + path;
-#else
-    return mConfig["AppHomePath"] + "lib";
-#endif
+    return Base::FileInfo::pathToString(_appDirs->getLibraryDir()) + PATHSEP;
 }
 
 std::string Application::getHelpDir()
 {
-#ifdef DOCDIR
-    // #6892: Conda may inject null characters => remove them using c_str()
-    std::string path = std::string(DOCDIR).c_str();
-    path += PATHSEP;
-    const QDir dir(QString::fromStdString(path));
-    if (dir.isAbsolute())
-        return path;
-    return mConfig["AppHomePath"] + path;
-#else
-    return mConfig["DocPath"];
-#endif
+    return Base::FileInfo::pathToString(_appDirs->getHelpDir()) + PATHSEP;
 }
 
 int Application::checkLinkDepth(int depth, MessageOption option)
@@ -2527,7 +2514,7 @@ void processProgramOptions(const boost::program_options::variables_map& vm, std:
 void Application::initConfig(int argc, char ** argv)
 {
     // find the home path....
-    mConfig["AppHomePath"] = FindHomePath(argv[0]);
+    mConfig["AppHomePath"] = ApplicationDirectories::findHomePath(argv[0]).string();
 
     // Version of the application extracted from SubWCRef into src/Build/Version.h
     // We only set these keys if not yet defined. Therefore it suffices to search
@@ -2584,12 +2571,12 @@ void Application::initConfig(int argc, char ** argv)
         mConfig["KeepDeprecatedPaths"] = "1";
     }
 
-    // extract home paths
-    ExtractUserPath();
-
     if (vm.contains("safe-mode")) {
-        SafeMode::StartSafeMode();
+        mConfig["SafeMode"] = "1";
     }
+
+    // extract home paths
+    _appDirs = std::make_unique<ApplicationDirectories>(mConfig);
 
 #   ifdef FC_DEBUG
     mConfig["Debug"] = "1";
@@ -2797,8 +2784,7 @@ void Application::initApplication()
        ("User parameter:BaseApp/Preferences/Units");
     Base::UnitsApi::setSchema(hGrp->GetInt("UserSchema", Base::UnitsApi::getDefSchemaNum()));
     Base::UnitsApi::setDecimals(hGrp->GetInt("Decimals", Base::UnitsApi::getDecimals()));
-    Base::QuantityFormat::setDefaultDenominator(
-        hGrp->GetInt("FracInch", Base::QuantityFormat::getDefaultDenominator()));
+    Base::UnitsApi::setDenominator(hGrp->GetInt("FracInch", Base::UnitsApi::getDenominator()));
 
 #if defined (_DEBUG)
     Base::Console().log("Application is built with debug information\n");
@@ -3714,7 +3700,7 @@ void Application::getVerboseCommonInfo(QTextStream& str, const std::map<std::str
     // report also the version numbers of the most important libraries in FreeCAD
     str << "Python " << PY_VERSION << ", ";
     str << "Qt " << QT_VERSION_STR << ", ";
-    str << "Coin " << COIN_VERSION << ", ";
+    str << "Coin " << fcCoin3dVersion << ", ";
     str << "Vtk " << fcVtkVersion << ", ";
     str << "boost " << BOOST_LIB_VERSION << ", ";
     str << "Eigen3 " << fcEigen3Version << ", ";
@@ -3796,6 +3782,9 @@ void Application::getVerboseAddOnsInfo(QTextStream& str, const std::map<std::str
     bool firstMod = true;
     if (fs::exists(modDir) && fs::is_directory(modDir)) {
         for (const auto& mod : fs::directory_iterator(modDir)) {
+            if (!fs::is_directory(mod)) {
+                continue; // Ignore files, only show directories
+            }
             auto dirName = mod.path().string();
             addModuleInfo(str, QString::fromStdString(dirName), firstMod);
         }

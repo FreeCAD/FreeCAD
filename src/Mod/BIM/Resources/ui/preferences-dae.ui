@@ -23,7 +23,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox_3">
      <property name="title">
-      <string>Export options</string>
+      <string>Export Options</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
@@ -120,7 +120,7 @@ If using Netgen, make sure that it is available.</string>
         <item>
          <widget class="Gui::PrefDoubleSpinBox" name="doubleSpinBox_2">
           <property name="toolTip">
-           <string>Tessellation value to use with the Builtin and the Mefisto meshing program.</string>
+           <string>Tessellation value to use with the Builtin and the Mefisto meshing program</string>
           </property>
           <property name="decimals">
            <number>4</number>
