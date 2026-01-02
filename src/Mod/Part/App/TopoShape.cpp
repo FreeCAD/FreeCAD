@@ -295,7 +295,7 @@ TopoShape::TopoShape(const TopoShape& shape)
     *this = shape;
 }
 
-std::pair<std::string, unsigned long> TopoShape::getElementTypeAndIndex(const char* Name)
+std::pair<std::string, unsigned long> TopoShape::getElementTypeAndIndex(const char* RawName)
 {
     std::string strName = Data::oldElementName(RawName);
     const char* Name = strName.c_str();
@@ -4581,3 +4581,4 @@ TopoShape& TopoShape::makeGTransform(
     _Shape = shape.transformGShape(rclTrf, copy);
     return *this;
 }
+
