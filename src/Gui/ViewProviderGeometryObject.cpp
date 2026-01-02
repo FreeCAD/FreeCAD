@@ -361,7 +361,7 @@ void ViewProviderGeometryObject::showBoundingBox(bool show)
         pcSwitchSensor->setData(this);
         pcSwitchSensor->attach(pcModeSwitch);
         pcSwitchSensor->setFunction([](void* data, SoSensor*) {
-            reinterpret_cast<ViewProviderGeometryObject*>(data)->addBoundSwitch();
+            static_cast<ViewProviderGeometryObject*>(data)->addBoundSwitch();
         });
     }
 
@@ -431,3 +431,4 @@ void ViewProviderGeometryObject::handleChangedPropertyName(
         ViewProviderDragger::handleChangedPropertyName(reader, TypeName, PropName);
     }
 }
+
