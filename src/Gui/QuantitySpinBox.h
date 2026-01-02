@@ -142,7 +142,7 @@ public:
     /// This is a helper function to determine the size this widget requires to fully display the text
     QSize sizeForText(const QString&) const;
     QSize sizeHint() const override;
-    QSize minimumSizeHint() const override;
+    bool adjustableWidth = false;
     bool event(QEvent* event) override;
 
     void setNumberExpression(App::NumberExpression*) override;
@@ -181,7 +181,8 @@ private:
     void updateFromCache(bool notify, bool updateUnit = true);
     QString getUserString(const Base::Quantity& val, double& factor, QString& unitString) const;
     QString getUserString(const Base::Quantity& val) const;
-    QSize sizeHintCalculator(int height) const;
+    QSize sizeHintCalculator() const;
+    int getMaxStrLength() const;
 
 Q_SIGNALS:
     /** Gets emitted if the user has entered a VALID input

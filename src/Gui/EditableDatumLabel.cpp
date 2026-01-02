@@ -42,6 +42,8 @@
 #include <Gui/View3DInventorViewer.h>
 
 #include "EditableDatumLabel.h"
+#include "Base/Console.h"
+#include "Gui/QuantitySpinBox.h"
 
 
 using namespace Gui;
@@ -176,6 +178,7 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj, bool 
     spinBox->setAutoNormalize(false);
     spinBox->setKeyboardTracking(true);
     spinBox->installEventFilter(this);
+    spinBox->adjustableWidth = true;
 
     if (eventFilteringObj) {
         spinBox->installEventFilter(eventFilteringObj);
@@ -198,7 +201,7 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj, bool 
         if (!spinBox) {
             return;
         }
-
+        updateGeometry();
         if (!spinBox->hasValidInput()) {
             // unset parameters in DrawSketchController, this is needed in a case
             // when user removes values we reset state of the OVP
@@ -424,6 +427,15 @@ void EditableDatumLabel::setPlacement(const Base::Placement& plc)
     Base::Vector3d RN(0, 0, 1);
     RN = plc.getRotation().multVec(RN);
     label->norm.setValue(SbVec3f(float(RN.x), float(RN.y), float(RN.z)));
+}
+
+void EditableDatumLabel::updateGeometry()
+{
+    if (!spinBox) {
+        return;
+    }
+    Base::Console().warning("Update geom\n");
+    spinBox->adjustSize();
 }
 
 // NOLINTNEXTLINE
