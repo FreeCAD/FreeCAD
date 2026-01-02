@@ -552,13 +552,17 @@ void View3DInventorViewer::init()
     // in empty scenes - OpenInventor's two-pass transparency rendering requires at least
     // one opaque object to properly initialize the depth buffer. so this fixes transparency
     // issues for image planes, planes, and other transparent geometry.
+    // wrap in SoSkipBoundingGroup to exclude from bounding box calculations
     // check #15192 #24003
-    auto hiddenAnchor = new SoSeparator();
+    auto hiddenAnchor = new SoSkipBoundingGroup();
+    hiddenAnchor->mode = SoSkipBoundingGroup::EXCLUDE_BBOX;
+    auto hiddenSep = new SoSeparator();
     auto hiddenScale = new SoScale();
     hiddenScale->scaleFactor = SbVec3f(0, 0, 0);
     auto hiddenCube = new SoCube();
-    hiddenAnchor->addChild(hiddenScale);
-    hiddenAnchor->addChild(hiddenCube);
+    hiddenSep->addChild(hiddenScale);
+    hiddenSep->addChild(hiddenCube);
+    hiddenAnchor->addChild(hiddenSep);
     pcViewProviderRoot->addChild(hiddenAnchor);
 
     // increase refcount before passing it to setScenegraph(), to avoid
