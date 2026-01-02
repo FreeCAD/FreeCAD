@@ -22,6 +22,16 @@
 
 #include <sstream>
 
+#ifdef FC_OS_WIN32
+# include <windows.h>
+#endif
+#ifdef FC_OS_MACOSX
+# include <OpenGL/gl.h>
+#else
+# include <GL/gl.h>
+# include <GL/glext.h>
+#endif
+
 #include <Inventor/SbBox.h>
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
@@ -29,7 +39,6 @@
 #include <Inventor/nodes/SoText2.h>
 #include <Inventor/nodes/SoTransform.h>
 #include <Inventor/actions/SoActions.h>
-#include <GL/glext.h>
 
 #include "ViewParams.h"
 #include "SoFCUnifiedSelection.h"
