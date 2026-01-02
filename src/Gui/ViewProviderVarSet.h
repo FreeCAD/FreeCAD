@@ -57,7 +57,7 @@ private:
     void onDynamicPropertyRemoved(const App::Property& prop);
 
     std::unique_ptr<Dialog::DlgAddProperty> dialog;
-    
+
     using Connection = boost::signals2::scoped_connection;
     Connection connPropertyAdded;
     Connection connPropertyRemoved;
