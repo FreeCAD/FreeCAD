@@ -217,7 +217,7 @@ class GCodeEditorDialog(QtGui.QDialog):
         if parent is None:
             parent = FreeCADGui.getMainWindow()
         QtGui.QDialog.__init__(self, parent)
-
+        self.setWindowTitle(translate("CAM", "CAM Export Gcode"))
         layout = QtGui.QVBoxLayout(self)
 
         # self.editor = QtGui.QTextEdit()  # without lines enumeration
