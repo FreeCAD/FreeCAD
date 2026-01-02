@@ -3914,7 +3914,6 @@ void View3DInventorViewer::viewBoundBox(const SbBox3f& box)
         return;
     }
 
-#if (COIN_MAJOR_VERSION >= 4)
     float aspectratio = getSoRenderManager()->getViewportRegion().getViewportAspectRatio();
     switch (cam->viewportMapping.getValue()) {
         case SoCamera::CROP_VIEWPORT_FILL_FRAME:
@@ -3926,27 +3925,6 @@ void View3DInventorViewer::viewBoundBox(const SbBox3f& box)
             break;
     }
     cam->viewBoundingBox(box, aspectratio, 1.0);
-#else
-    SoPath& path = _pimpl->tmpPath;
-    path.truncate(0);
-    auto pcGroup = new SoGroup;
-    pcGroup->ref();
-    auto pcTransform = new SoTransform;
-    pcGroup->addChild(pcTransform);
-    pcTransform->translation = box.getCenter();
-    auto* pcCube = new SoCube;
-    pcGroup->addChild(pcCube);
-    float sizeX, sizeY, sizeZ;
-    box.getSize(sizeX, sizeY, sizeZ);
-    pcCube->width = sizeX;
-    pcCube->height = sizeY;
-    pcCube->depth = sizeZ;
-    path.append(pcGroup);
-    path.append(pcCube);
-    cam->viewAll(&path, getSoRenderManager()->getViewportRegion());
-    path.truncate(0);
-    pcGroup->unref();
-#endif
 }
 
 /**
