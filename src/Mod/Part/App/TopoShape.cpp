@@ -4581,4 +4581,3 @@ TopoShape& TopoShape::makeGTransform(
     _Shape = shape.transformGShape(rclTrf, copy);
     return *this;
 }
-
