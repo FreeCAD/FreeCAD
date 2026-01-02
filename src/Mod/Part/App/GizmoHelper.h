@@ -41,7 +41,8 @@ Base::Vector3d PartExport getCentreOfMassFromFace(TopoDS_Face& face);
 
 struct PartExport PointOnFaceNearEdgeProps
 {
-    enum class State: std::uint8_t {
+    enum class State : std::uint8_t
+    {
         OnFace,
         OutsideFace,
         Undefined

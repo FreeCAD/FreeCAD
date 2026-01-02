@@ -46,7 +46,7 @@ EdgeMidPointProps getEdgeMidPointProps(Part::TopoShape& edge)
     double u1, u2;
     TopoDS_Edge TDSEdge = TopoDS::Edge(edge.getShape());
     Handle(Geom_Curve) curve = BRep_Tool::Curve(TDSEdge, u1, u2);
-    double middle = (u1 + u2)/2.0;
+    double middle = (u1 + u2) / 2.0;
 
     gp_Pnt pos;
     gp_Vec derivative;
@@ -83,7 +83,8 @@ PointOnFaceNearEdgeProps getFaceNormalFromPointNearEdge(
     gp_Dir normal;
     Handle(IntTools_Context) context = new IntTools_Context;
 
-    int res = BOPTools_AlgoTools3D::PointNearEdge(TDSedge, face, middle, inwardPoint2d, inwardPoint, context);
+    int res
+        = BOPTools_AlgoTools3D::PointNearEdge(TDSedge, face, middle, inwardPoint2d, inwardPoint, context);
 
     PointOnFaceNearEdgeProps props;
     switch (res) {
@@ -99,7 +100,7 @@ PointOnFaceNearEdgeProps getFaceNormalFromPointNearEdge(
     }
 
     BOPTools_AlgoTools3D::GetNormalToFaceOnEdge(TDSedge, face, middle, normal, context);
-    
+
     props.position = Base::convertTo<Base::Vector3d>(inwardPoint);
     props.normal = Base::convertTo<Base::Vector3d>(normal);
 
