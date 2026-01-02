@@ -348,7 +348,6 @@ def export(objectslist, filename, argstring):
         gcode += "(BEGIN POSTAMBLE)\n"
     for line in POSTAMBLE.splitlines():
         gcode += linenumber() + line + "\n"
-    gcode += "%\n"
 
     if FreeCAD.GuiUp and SHOW_EDITOR:
         dia = PostUtils.GCodeEditorDialog()
