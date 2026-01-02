@@ -138,8 +138,8 @@ struct DrawingParameters
     int labelFontSize = 17;  // Font size to be used by SoDatumLabel, which uses a QPainter and a
                              // QFont internally
     static QString labelFontName;  // Font face to be used by SoDatumLabel
-    int constraintIconSize = 15;  // Size of constraint icons
-    int markerSize = 7;           // Size used for markers
+    int constraintIconSize = 15;   // Size of constraint icons
+    int markerSize = 7;            // Size used for markers
 
     int CurveWidth = 2;             // width of normal edges
     int ConstructionWidth = 1;      // width of construction edges
