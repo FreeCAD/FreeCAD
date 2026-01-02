@@ -120,12 +120,12 @@ public:
      long,                                                                                         \
      App::PropertyEnumeration,                                                                     \
      ((long)0),                                                                                    \
-     "Disabled: disable copy on change\n"                                                          \
-     "Enabled: enable copy linked object on change of any of its properties marked as "            \
-     "CopyOnChange\n"                                                                              \
-     "Owned: indicate the linked object has been copied and is own owned by the link. And the\n"   \
-     "       the link will try to sync any change of the original linked object back to the "      \
-     "copy.",                                                                                      \
+     "Disabled: turns off copy-on-change\n"                                                        \
+     "Enabled: copies the linked object when any property marked CopyOnChange changes\n"           \
+     "Owned: the linked object has been copied and is owned by the link; changes to the original\n"\
+     "       will be synced back to the copy\n"                                                    \
+     "Tracking: copies the linked object when any property marked CopyOnChange changes, and keeps\n"\
+     "       future edits to the link in sync with the original",                                  \
      ##__VA_ARGS__)
 
 #define LINK_PARAM_COPY_ON_CHANGE_SOURCE(...)                                                      \
@@ -133,7 +133,7 @@ public:
      App::DocumentObject*,                                                                         \
      App::PropertyLink,                                                                            \
      0,                                                                                            \
-     "The copy on change source object",                                                           \
+     "The copy-on-change source object",                                                           \
      ##__VA_ARGS__)
 
 #define LINK_PARAM_COPY_ON_CHANGE_GROUP(...)                                                       \
