@@ -200,7 +200,7 @@ namespace e57
    extern template std::string floatingPointToStr<float>( float value, int precision );
    extern template std::string floatingPointToStr<double>( double value, int precision );
 
-   /// Parse a double according the the classic ("C") locale.
+   /// Parse a double according to the classic ("C") locale.
    /// @return The parsed double or 0.0 on error.
    double strToDouble( const std::string &inStr );
 }

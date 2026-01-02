@@ -1520,7 +1520,7 @@ bool StdMeshers_Penta_3D::LoadIJNodes(StdMeshers_IJNodeMap & theIJNodes,
   // look for a not loaded node considering this node to be the next
   // in a column of the starting second node. Repeat, starting
   // from nodes next to the previous starting nodes in their columns,
-  // and so on while a face can be found. Then go the the next pair
+  // and so on while a face can be found. Then go to the next pair
   // of nodes on theBaseEdge.
   StdMeshers_IJNodeMap::iterator par_nVec_1 = theIJNodes.begin();
   StdMeshers_IJNodeMap::iterator par_nVec_2 = par_nVec_1;

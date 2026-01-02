@@ -93,7 +93,7 @@ TEST( SimpleDataHeader, HeaderMinMaxDouble )
    EXPECT_EQ( dataHeader.pointFields.timeMaximum, e57::DOUBLE_MAX );
 }
 
-// Checks that the Data3D header and the the cartesianX FloatNode data are the same when read,
+// Checks that the Data3D header and the cartesianX FloatNode data are the same when read,
 // written, and read again. https://github.com/asmaloney/libE57Format/issues/126
 TEST( SimpleData, ReadWrite )
 {
