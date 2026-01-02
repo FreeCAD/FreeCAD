@@ -3165,24 +3165,26 @@ void ViewProviderSketch::updateData(const App::Property* prop) {
 #ifdef FC_DEBUG
             Base::Console().warning("updating editing transform!\n");
 #endif
-            // recalculate the placement matrix
-            Sketcher::SketchObject* sketchObj = getSketchObject();
-            if (sketchObj) {
-                // use globalPlacement for both attached and unattached sketches
-                Base::Placement plm = sketchObj->Placement.getValue();
+            // only update the editing transform if we are editing the sketch directly,
+            // not through a link group. when editing through a link, the document
+            // has already set the correct editing transform that includes the full
+            // link chain transformation. overwriting it here would lose that info.
+            // See issue #26481
+            auto editDoc = Gui::Application::Instance->editDocument();
+            if (editDoc) {
+                ViewProviderDocumentObject* editVp = nullptr;
+                std::string editSubName;
+                editDoc->getInEdit(&editVp, &editSubName);
 
-#ifdef FC_DEBUG
-                // log what is actually being set
-                Base::Console().warning(
-                    "Placement: pos=(%f,%f,%f)\n",
-                    plm.getPosition().x,
-                    plm.getPosition().y,
-                    plm.getPosition().z
-                );
-#endif
-
-                // update the document's editing transform
-                getDocument()->setEditingTransform(plm.toMatrix());
+                // if editVp is us and there is no subname path, we are editing directly
+                // If there is a subname path, we are editing through a link/assembly
+                if (editVp == this && editSubName.empty()) {
+                    Sketcher::SketchObject* sketchObj = getSketchObject();
+                    if (sketchObj) {
+                        Base::Placement plm = sketchObj->Placement.getValue();
+                        getDocument()->setEditingTransform(plm.toMatrix());
+                    }
+                }
             }
         }
     }
@@ -3433,9 +3435,6 @@ bool ViewProviderSketch::setEdit(int ModNum)
     setGridOrientation(plm.getPosition(), plm.getRotation());
     addNodeToRoot(gridnode);
     setGridEnabled(true);
-
-    // update the documents stored transform
-    getDocument()->setEditingTransform(plm.toMatrix());
 
     // create the container for the additional edit data
     assert(!isInEditMode());
