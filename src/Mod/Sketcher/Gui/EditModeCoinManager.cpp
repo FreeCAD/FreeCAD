@@ -30,6 +30,7 @@
 #include <Inventor/details/SoLineDetail.h>
 #include <Inventor/details/SoPointDetail.h>
 #include <Inventor/nodes/SoCoordinate3.h>
+#include <Inventor/nodes/SoDepthBuffer.h>
 #include <Inventor/nodes/SoDrawStyle.h>
 #include <Inventor/nodes/SoFont.h>
 #include <Inventor/nodes/SoGroup.h>
@@ -895,33 +896,45 @@ void EditModeCoinManager::createEditModeInventorNodes()
 
     // stuff for the RootCross lines +++++++++++++++++++++++++++++++++++++++
     SoGroup* crossRoot = new Gui::SoSkipBoundingGroup;
+    editModeScenegraphNodes.EditRoot->addChild(crossRoot);
+
+    // separator to isolate the depth buffer state
+    SoSeparator* crossSep = new SoSeparator;
+    crossRoot->addChild(crossSep);
+
+    // disable depth buffer writing for the axes so they are always behind geometry
+    SoDepthBuffer* db = new SoDepthBuffer;
+    db->test.setValue(TRUE);
+    db->write.setValue(FALSE);
+    crossSep->addChild(db);
+
     editModeScenegraphNodes.pickStyleAxes = new SoPickStyle();
     editModeScenegraphNodes.pickStyleAxes->style = SoPickStyle::SHAPE;
-    crossRoot->addChild(editModeScenegraphNodes.pickStyleAxes);
-    editModeScenegraphNodes.EditRoot->addChild(crossRoot);
+    crossSep->addChild(editModeScenegraphNodes.pickStyleAxes);
+
     auto MtlBind = new SoMaterialBinding;
     MtlBind->setName("RootCrossMaterialBinding");
     MtlBind->value = SoMaterialBinding::PER_FACE;
-    crossRoot->addChild(MtlBind);
+    crossSep->addChild(MtlBind);
 
     editModeScenegraphNodes.RootCrossDrawStyle = new SoDrawStyle;
     editModeScenegraphNodes.RootCrossDrawStyle->setName("RootCrossDrawStyle");
     editModeScenegraphNodes.RootCrossDrawStyle->lineWidth = 2 * drawingParameters.pixelScalingFactor;
-    crossRoot->addChild(editModeScenegraphNodes.RootCrossDrawStyle);
+    crossSep->addChild(editModeScenegraphNodes.RootCrossDrawStyle);
 
     editModeScenegraphNodes.RootCrossMaterials = new SoMaterial;
     editModeScenegraphNodes.RootCrossMaterials->setName("RootCrossMaterials");
     editModeScenegraphNodes.RootCrossMaterials->diffuseColor.set1Value(0, drawingParameters.CrossColorH);
     editModeScenegraphNodes.RootCrossMaterials->diffuseColor.set1Value(1, drawingParameters.CrossColorV);
-    crossRoot->addChild(editModeScenegraphNodes.RootCrossMaterials);
+    crossSep->addChild(editModeScenegraphNodes.RootCrossMaterials);
 
     editModeScenegraphNodes.RootCrossCoordinate = new SoCoordinate3;
     editModeScenegraphNodes.RootCrossCoordinate->setName("RootCrossCoordinate");
-    crossRoot->addChild(editModeScenegraphNodes.RootCrossCoordinate);
+    crossSep->addChild(editModeScenegraphNodes.RootCrossCoordinate);
 
     editModeScenegraphNodes.RootCrossSet = new SoLineSet;
     editModeScenegraphNodes.RootCrossSet->setName("RootCrossLineSet");
-    crossRoot->addChild(editModeScenegraphNodes.RootCrossSet);
+    crossSep->addChild(editModeScenegraphNodes.RootCrossSet);
 
     // stuff for the Origin Point
     SoGroup* originPointRoot = new Gui::SoSkipBoundingGroup;
