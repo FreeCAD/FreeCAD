@@ -141,7 +141,7 @@ public:
      App::DocumentObject*,                                                                         \
      App::PropertyLink,                                                                            \
      0,                                                                                            \
-     "Linked to a internal group object for holding on change copies",                             \
+     "Linked to an internal group object for holding on change copies",                             \
      ##__VA_ARGS__)
 
 #define LINK_PARAM_COPY_ON_CHANGE_TOUCHED(...)                                                     \
