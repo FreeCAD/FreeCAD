@@ -93,6 +93,9 @@ public:
     /// Get a list of TaskBoxes associated with this object
     void getTaskViewContent(std::vector<Gui::TaskView::TaskContent*>&) const override;
 
+    /// deliver the label text shown in the tree view
+    std::string getTreeLabel() const override;
+
     /// Run a redraw
     void updateView();
     /// Get the object of this ViewProvider object

@@ -23,7 +23,9 @@
 
 #include <memory>
 
+#include <QTimer>
 
+#include <App/Application.h>
 #include <App/VarSet.h>
 
 #include "MainWindow.h"
@@ -38,6 +40,59 @@ ViewProviderVarSet::ViewProviderVarSet()
 {
     setToggleVisibility(ToggleVisibilityMode::NoToggleVisibility);
     sPixmap = "VarSet";
+}
+
+std::string ViewProviderVarSet::getTreeLabel() const
+{
+    std::string baseLabel = ViewProviderDocumentObject::getTreeLabel();
+    
+    auto* obj = getObject();
+    if (!obj || !obj->isAttachedToDocument()) {
+        return baseLabel;
+    }
+    
+    // Count dynamic properties (exclude built-in properties)
+    auto dynamicNames = obj->getDynamicPropertyNames();
+    int count = static_cast<int>(dynamicNames.size());
+    
+    // Append count if there are dynamic properties
+    if (count > 0) {
+        return baseLabel + " (" + std::to_string(count) + ")";
+    }
+    
+    return baseLabel;
+}
+
+void ViewProviderVarSet::attach(App::DocumentObject* pcObject)
+{
+    ViewProviderDocumentObject::attach(pcObject);
+    
+    // Connect to application-level signals for dynamic property changes
+    connPropertyAdded = App::GetApplication().signalAppendDynamicProperty.connect(
+        [this](const App::Property& prop) { onDynamicPropertyAdded(prop); }
+    );
+    connPropertyRemoved = App::GetApplication().signalRemoveDynamicProperty.connect(
+        [this](const App::Property& prop) { onDynamicPropertyRemoved(prop); }
+    );
+}
+
+void ViewProviderVarSet::onDynamicPropertyAdded(const App::Property& prop)
+{
+    // Only update if the property belongs to our object
+    if (prop.getContainer() == getObject()) {
+        signalChangeTreeLabel();
+    }
+}
+
+void ViewProviderVarSet::onDynamicPropertyRemoved(const App::Property& prop)
+{
+    // Only update if the property belongs to our object
+    // Use deferred update because this signal fires BEFORE the property is removed
+    if (prop.getContainer() == getObject()) {
+        QTimer::singleShot(0, [this]() {
+            signalChangeTreeLabel();
+        });
+    }
 }
 
 bool ViewProviderVarSet::doubleClicked()

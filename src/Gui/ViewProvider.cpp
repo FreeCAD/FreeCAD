@@ -350,6 +350,13 @@ QIcon ViewProvider::getIcon() const
     return mergeGreyableOverlayIcons(Gui::BitmapFactory().pixmap(sPixmap));
 }
 
+std::string ViewProvider::getTreeLabel() const
+{
+    // Default implementation returns empty string
+    // ViewProviderDocumentObject overrides this to return the Label property
+    return {};
+}
+
 QIcon ViewProvider::mergeGreyableOverlayIcons(const QIcon& orig) const
 {
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
