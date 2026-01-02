@@ -100,4 +100,6 @@ SbColor DrawingParameters::ExprBasedConstrDimColor(1.0f, 0.5f, 0.149f);  // #FF7
 SbColor DrawingParameters::DeactivatedConstrDimColor(0.5f, 0.5f, 0.5f);  // ##7f7f7f -> (127,127,127)
 SbColor DrawingParameters::CursorTextColor(0.0f, 0.0f, 1.0f);            // #0000FF -> (0,0,255)
 
+QString DrawingParameters::labelFontName(QString::fromUtf8("")); // Empty string by default
+
 const MultiFieldId MultiFieldId::Invalid = MultiFieldId();

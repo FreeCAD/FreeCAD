@@ -437,6 +437,7 @@ SketcherSettingsDisplay::~SketcherSettingsDisplay()
 
 void SketcherSettingsDisplay::saveSettings()
 {
+    ui->fontBox_EditSketcherFontName->onSave();
     ui->EditSketcherFontSize->onSave();
     ui->ConstraintSymbolSize->onSave();
     ui->viewScalingFactor->onSave();
@@ -459,6 +460,7 @@ void SketcherSettingsDisplay::saveSettings()
 
 void SketcherSettingsDisplay::loadSettings()
 {
+    ui->fontBox_EditSketcherFontName->onRestore();
     ui->EditSketcherFontSize->onRestore();
     ui->ConstraintSymbolSize->onRestore();
     ui->viewScalingFactor->onRestore();
