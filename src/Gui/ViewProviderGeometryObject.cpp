@@ -431,4 +431,3 @@ void ViewProviderGeometryObject::handleChangedPropertyName(
         ViewProviderDragger::handleChangedPropertyName(reader, TypeName, PropName);
     }
 }
-
