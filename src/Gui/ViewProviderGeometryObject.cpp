@@ -34,7 +34,7 @@
 #include <Inventor/nodes/SoResetTransform.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSwitch.h>
-
+#include <Inventor/sensors/SoNodeSensor.h>
 
 #include <App/GeoFeature.h>
 #include <App/PropertyGeo.h>
