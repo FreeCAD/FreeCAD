@@ -143,6 +143,7 @@ public:
     QSize sizeForText(const QString&) const;
     QSize sizeHint() const override;
     bool adjustableWidth = false;
+    bool addIconSpace = false;
     bool event(QEvent* event) override;
 
     void setNumberExpression(App::NumberExpression*) override;

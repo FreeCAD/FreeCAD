@@ -33,6 +33,7 @@
 #include <QKeyEvent>
 #include <QPixmap>
 #include <QLabel>
+#include <QLineEdit>
 #include <QHBoxLayout>
 #include <QString>
 
@@ -189,10 +190,7 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj, bool 
     }
 
     spinBox->show();
-    setSpinboxValue(val);
-    // Note: adjustSize apparently uses the Min/Max values to set the size. So if we don't set them
-    // to INT_MAX, the spinbox are much too big.
-    spinBox->adjustSize();
+    updateGeometry();
     setFocusToSpinbox();
 
     const auto validateAndFinish = [this]() {
@@ -201,7 +199,7 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj, bool 
         if (!spinBox) {
             return;
         }
-        updateGeometry();
+
         if (!spinBox->hasValidInput()) {
             // unset parameters in DrawSketchController, this is needed in a case
             // when user removes values we reset state of the OVP
@@ -221,6 +219,9 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj, bool 
     };
 
     connect(spinBox, qOverload<double>(&QuantitySpinBox::valueChanged), this, validateAndFinish);
+    if (auto* edit = spinBox->findChild<QLineEdit*>()) {
+        connect(edit, &QLineEdit::textChanged, this, &EditableDatumLabel::updateGeometry);
+    }
 }
 
 bool EditableDatumLabel::eventFilter(QObject* watched, QEvent* event)
@@ -434,7 +435,6 @@ void EditableDatumLabel::updateGeometry()
     if (!spinBox) {
         return;
     }
-    Base::Console().warning("Update geom\n");
     spinBox->adjustSize();
 }
 
@@ -534,6 +534,8 @@ void EditableDatumLabel::setLockedAppearance(bool locked)
     int iconSize = fm.height();
     int padding = spinBox->getMargin();
     if (locked) {
+        spinBox->addIconSpace = true;
+        spinBox->adjustSize();
         // create lock icon label it it doesn't exist, if it does - show it
         if (!lockIconLabel) {
             lockIconLabel = new QLabel(spinBox);
@@ -561,6 +563,8 @@ void EditableDatumLabel::setLockedAppearance(bool locked)
         // hide lock icon if it exists for later reuse
         if (lockIconLabel) {
             lockIconLabel->hide();
+            spinBox->addIconSpace = false;
+            spinBox->adjustSize();
         }
     }
 }

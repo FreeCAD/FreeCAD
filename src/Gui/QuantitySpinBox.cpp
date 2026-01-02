@@ -341,6 +341,8 @@ void QuantitySpinBox::bind(const App::ObjectIdentifier& _path)
 
 void QuantitySpinBox::showIcon()
 {
+    addIconSpace = true;
+    adjustSize();
     iconLabel->show();
 }
 
@@ -923,16 +925,17 @@ QSize QuantitySpinBox::sizeHintCalculator() const
     const int maxLen = getMaxStrLength();
     int length = maxLen;
     if (adjustableWidth) {
-        int currenLen = lineEdit()->text().length();
+        int currenLen = qMax(lineEdit()->text().length(), 4);
         length = currenLen < maxLen ? currenLen : maxLen;
     }
     QString longestString = QString("8").repeated(length);
 
     const QFontMetrics fm(fontMetrics());
     int w = qMax(0, QtTools::horizontalAdvance(fm, longestString));
-    w += 2;  // cursor blinking space
-    w += iconHeight;
-
+    w += 4;  // cursor blinking space
+    if (addIconSpace) {
+        w += iconHeight;
+    }
     QStyleOptionSpinBox opt;
     initStyleOption(&opt);
     QSize hint(w, lineEdit()->sizeHint().height());
