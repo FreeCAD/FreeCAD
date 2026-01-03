@@ -67,6 +67,7 @@ public:
         , normalize(true)
         , checkRangeInExpression(false)
         , adjustableWidth(false)
+        , maxExpectedDigits(4)
         , addIconSpace(false)
         , unitValue(0)
         , maximum(std::numeric_limits<double>::max())
@@ -309,6 +310,7 @@ public:
     bool normalize;
     bool checkRangeInExpression;
     bool adjustableWidth;
+    int maxExpectedDigits;
     bool addIconSpace;
     QString validStr;
     Base::Quantity quantity;
@@ -648,6 +650,18 @@ void QuantitySpinBox::addIconSpace(bool addIconSpace)
     d->addIconSpace = addIconSpace;
 }
 
+int QuantitySpinBox::getMaxExpectedDigits()
+{
+    Q_D(const QuantitySpinBox);
+    return d->maxExpectedDigits;
+}
+
+void QuantitySpinBox::setMaxExpectedDigits(int digits)
+{
+    Q_D(QuantitySpinBox);
+    d->maxExpectedDigits = digits;
+}
+
 bool QuantitySpinBox::hasValidInput() const
 {
     Q_D(const QuantitySpinBox);
@@ -956,11 +970,13 @@ QSize QuantitySpinBox::sizeForText(const QString& txt) const
 
 QSize QuantitySpinBox::sizeHint() const
 {
-    if (auto le = lineEdit()) {
+    Q_D(const QuantitySpinBox);
+    auto le = lineEdit();
+    if (le && d->adjustableWidth) {
         // limit number of typed characters to keep unit visible
-        le->setMaxLength(getMaxStrLength(maxExpectedDigits));
+        le->setMaxLength(getMaxStrLength(d->maxExpectedDigits));
     }
-    return sizeHintForDigits(maxExpectedDigits);
+    return sizeHintForDigits(d->maxExpectedDigits);
 }
 
 QSize QuantitySpinBox::sizeHintForDigits(int digits) const

@@ -180,6 +180,7 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj, bool 
     spinBox->setKeyboardTracking(true);
     spinBox->installEventFilter(this);
     spinBox->setAutoAdjustWidth(true);
+    spinBox->setMaxExpectedDigits(16);
 
     if (eventFilteringObj) {
         spinBox->installEventFilter(eventFilteringObj);

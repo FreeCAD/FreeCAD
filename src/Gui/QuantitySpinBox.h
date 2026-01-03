@@ -60,8 +60,9 @@ class GuiExport QuantitySpinBox: public QAbstractSpinBox, public ExpressionSpinB
     Q_PROPERTY(
         bool addIconSpace READ isIconSpaceAdded WRITE addIconSpace
     )  // clazy:exclude=qproperty-without-notify
-
-    static constexpr int maxExpectedDigits = 4;
+    Q_PROPERTY(
+        int maxExpectedDigits READ getMaxExpectedDigits WRITE setMaxExpectedDigits
+    )  // clazy:exclude=qproperty-without-notify
 
 public:
     explicit QuantitySpinBox(QWidget* parent = nullptr);
@@ -106,6 +107,11 @@ public:
     double maximum() const;
     /// Sets the value of the maximum property
     void setMaximum(double max);
+
+    /// Adjust how many digits in the integer part we should expect
+    /// Affects minimum size if width is not adjustable
+    void setMaxExpectedDigits(int digits);
+    int getMaxExpectedDigits();
 
     /// Gets the number of decimals
     int decimals() const;
