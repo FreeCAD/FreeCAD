@@ -53,6 +53,8 @@ private:
     void onComboBoxDefaultSolverCurrentIndexChanged(int index);
     void onComboBoxDogLegGaussStepCurrentIndexChanged(int index);
     void onSpinBoxMaxIterValueChanged(int i);
+    void onSpinBoxAutoQRAlgoChanged(int i);
+    void onCheckBoxAutoQRAlgoStateChanged(int state);
     void onCheckBoxSketchSizeMultiplierStateChanged(int state);
     void onLineEditConvergenceEditingFinished();
     void onComboBoxQRMethodCurrentIndexChanged(int index);
