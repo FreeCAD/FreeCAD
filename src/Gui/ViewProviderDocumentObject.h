@@ -204,6 +204,14 @@ public:
     void startDefaultEditMode();
 
 protected:
+    Base::BoundBox3d _getBoundingBox(
+        const char* subname = 0,
+        const Base::Matrix4D* mat = 0,
+        bool transform = true,
+        const View3DInventorViewer* viewer = 0,
+        int depth = 0
+    ) const override;
+
     /*! Get the active mdi view of the document this view provider is part of.
       @note The returned mdi view doesn't need to be a 3d view but can be e.g.
       an image view, an SVG view or something else.

@@ -34,6 +34,7 @@
 #include <QImage>
 
 #include <Inventor/SbRotation.h>
+#include <Inventor/SbTime.h>
 #include <Inventor/nodes/SoEnvironment.h>
 #include <Inventor/nodes/SoEventCallback.h>
 #include <Inventor/nodes/SoRotation.h>
@@ -50,6 +51,7 @@
 # include <GL/gl.h>
 #endif  // FC_OS_MACOSX
 
+#include <Base/BoundBox.h>
 #include <Base/Placement.h>
 
 #include "Namespace.h"
@@ -80,6 +82,9 @@ class SoGroup;  // NOLINT
 class SoPickStyle;
 class NaviCube;
 class SoClipPlane;
+class SoTimerSensor;
+class SoSensor;
+class SbBox3f;
 
 namespace Quarter = SIM::Coin3D::Quarter;
 
@@ -457,6 +462,7 @@ public:
      */
     void viewAll() override;
     void viewAll(float factor);
+    void viewBoundBox(const SbBox3f& box);
 
     /// Breaks out a VR window for a Rift
     void viewVR();
@@ -467,11 +473,24 @@ public:
     SbBox3f getBoundingBox() const;
 
     /**
-     * Reposition the current camera so we can see all selected objects
-     * of the scene. Therefore we search for all SOFCSelection nodes, if
-     * none of them is selected nothing happens.
+     * Reposition the current camera so we can see all selected objects.
+     *
+     * @param extend: Whether to extend the current view (zoom out if
+     * necessary) to include the selection, or zoom in the camera to view only
+     * the selection.
      */
-    void viewSelection();
+    void viewSelection(bool extend = false);
+
+    /** Reposition the current camera so we can see the given objects
+     *
+     * @param objs: viewing objects
+     *
+     * @param extend: Whether to extend the current view (zoom out if
+     * necessary) to include the objects, or zoom in the camera to view only
+     * the given objects.
+     */
+    void viewObjects(const std::vector<App::SubObjectT>& objs, bool extend = false);
+
 
     void alignToSelection();
 
@@ -515,12 +534,15 @@ public:
 
     virtual PyObject* getPyObject();
 
+    bool getSceneBoundBox(SbBox3f& box) const;
+    bool getSceneBoundBox(Base::BoundBox3d& box) const;
+
 protected:
     static GLenum getInternalTextureFormat();
     void renderScene();
     void renderFramebuffer();
     void renderGLImage();
-    void animatedViewAll(int steps, int ms);
+    void animatedViewAll(const SbBox3f& bbox, int steps, int ms);
     void actualRedraw() override;
     void setSeekMode(bool on) override;
     void afterRealizeHook() override;
@@ -532,6 +554,8 @@ protected:
     bool processSoEventBase(const SoEvent* const ev);
     void printDimension() const;
     void selectAll();
+
+    static void onViewFitTimer(void*, SoSensor*);
 
 private:
     static void setViewportCB(void* userdata, SoAction* action);
@@ -614,6 +638,10 @@ private:
     QCursor editCursor, zoomCursor, panCursor, spinCursor;
     bool redirected;
     bool allowredir;
+
+    bool viewFitting;
+    SbTime viewFitTime;
+    SoTimerSensor* viewFitTimer;
 
     std::string overrideMode;
     Gui::Document* guiDocument = nullptr;

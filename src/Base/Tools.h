@@ -182,6 +182,14 @@ inline T fmod(T numerator, T denominator)
     return (modulo >= T(0)) ? modulo : modulo + denominator;
 }
 
+// copied from boost::hash_combine.
+template<class S, class T>
+inline void hash_combine(S& seed, const T& v)
+{
+    std::hash<T> hasher;
+    seed ^= hasher(v) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+}
+
 template<std::floating_point T>
 inline T angularDist(T v1, T v2)
 {
