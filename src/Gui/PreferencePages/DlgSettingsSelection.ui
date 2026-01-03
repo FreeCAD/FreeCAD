@@ -206,6 +206,9 @@ A larger value makes it easier to select elements, but may prevent selection of 
         <property name="text">
          <string>Auto switch to the 3D view containing the selected item</string>
         </property>
+        <property name="toolTip">
+         <string>Focuses the 3D window where the selected object resides. Useful when working across multiple tiled views or documents.</string>
+        </property>
         <property name="prefEntry" stdset="0">
          <cstring>SyncView</cstring>
         </property>
@@ -221,6 +224,9 @@ A larger value makes it easier to select elements, but may prevent selection of 
         </property>
         <property name="text">
          <string>Auto expand tree item when the corresponding object is selected in the 3D view</string>
+        </property>
+        <property name="toolTip">
+         <string>Locates and reveals the selected object within the tree hierarchy. Prevents manual scrolling in deep, complex document structures.</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>SyncSelection</cstring>
@@ -238,6 +244,9 @@ A larger value makes it easier to select elements, but may prevent selection of 
         <property name="text">
          <string>Record selection in tree view in order to go back/forward using navigation button</string>
         </property>
+        <property name="toolTip">
+         <string>Enables selection history. Use 'Back' and 'Forward' navigation to toggle between previously selected objects without re-searching the tree.</string>
+        </property>
         <property name="prefEntry" stdset="0">
          <cstring>RecordSelection</cstring>
         </property>
@@ -253,6 +262,9 @@ A larger value makes it easier to select elements, but may prevent selection of 
         </property>
         <property name="text">
          <string>Add checkboxes for selection in document tree</string>
+        </property>
+        <property name="toolTip">
+         <string>Provides persistent selection toggles for each item. Simplifies batch operations and complex multi-selection without holding modifier keys (Ctrl/Shift).</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>CheckBoxesSelection</cstring>
