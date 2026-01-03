@@ -179,7 +179,7 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj, bool 
     spinBox->setAutoNormalize(false);
     spinBox->setKeyboardTracking(true);
     spinBox->installEventFilter(this);
-    spinBox->adjustableWidth = true;
+    spinBox->setAutoAdjustWidth(true);
 
     if (eventFilteringObj) {
         spinBox->installEventFilter(eventFilteringObj);
@@ -534,7 +534,7 @@ void EditableDatumLabel::setLockedAppearance(bool locked)
     int iconSize = fm.height();
     int padding = spinBox->getMargin();
     if (locked) {
-        spinBox->addIconSpace = true;
+        spinBox->addIconSpace(true);
         spinBox->adjustSize();
         // create lock icon label it it doesn't exist, if it does - show it
         if (!lockIconLabel) {
@@ -563,7 +563,7 @@ void EditableDatumLabel::setLockedAppearance(bool locked)
         // hide lock icon if it exists for later reuse
         if (lockIconLabel) {
             lockIconLabel->hide();
-            spinBox->addIconSpace = false;
+            spinBox->addIconSpace(false);
             spinBox->adjustSize();
         }
     }

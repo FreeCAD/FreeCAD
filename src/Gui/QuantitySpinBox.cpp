@@ -66,6 +66,8 @@ public:
         , pendingEmit(false)
         , normalize(true)
         , checkRangeInExpression(false)
+        , adjustableWidth(false)
+        , addIconSpace(false)
         , unitValue(0)
         , maximum(std::numeric_limits<double>::max())
         , minimum(-std::numeric_limits<double>::max())
@@ -306,6 +308,8 @@ public:
     bool pendingEmit;
     bool normalize;
     bool checkRangeInExpression;
+    bool adjustableWidth;
+    bool addIconSpace;
     QString validStr;
     Base::Quantity quantity;
     Base::Quantity cached;
@@ -341,7 +345,8 @@ void QuantitySpinBox::bind(const App::ObjectIdentifier& _path)
 
 void QuantitySpinBox::showIcon()
 {
-    addIconSpace = true;
+    addIconSpace(true);
+
     adjustSize();
     iconLabel->show();
 }
@@ -610,6 +615,30 @@ void QuantitySpinBox::setAutoNormalize(bool normalize)
 {
     Q_D(QuantitySpinBox);
     d->normalize = normalize;
+}
+
+bool QuantitySpinBox::autoAdjustWidth() const
+{
+    Q_D(const QuantitySpinBox);
+    return d->adjustableWidth;
+}
+
+void QuantitySpinBox::setAutoAdjustWidth(bool adjust)
+{
+    Q_D(QuantitySpinBox);
+    d->adjustableWidth = adjust;
+}
+
+bool QuantitySpinBox::isIconSpaceAdded() const
+{
+    Q_D(const QuantitySpinBox);
+    return d->addIconSpace;
+}
+
+void QuantitySpinBox::addIconSpace(bool addIconSpace)
+{
+    Q_D(QuantitySpinBox);
+    d->addIconSpace = addIconSpace;
 }
 
 bool QuantitySpinBox::hasValidInput() const
@@ -922,27 +951,30 @@ QSize QuantitySpinBox::sizeHint() const
 {
     if (auto le = lineEdit()) {
         // limit number of typed characters to keep unit visible
-        le->setMaxLength(getMaxStrLength());
+        le->setMaxLength(getMaxStrLength(maxExpectedDigits));
     }
-    return sizeHintCalculator();
+    return sizeHintForDigits(maxExpectedDigits);
 }
 
-QSize QuantitySpinBox::sizeHintCalculator() const
+QSize QuantitySpinBox::sizeHintForDigits(int digits) const
 {
     Q_D(const QuantitySpinBox);
     ensurePolished();
-    const int maxLen = getMaxStrLength();
+
+    const int maxLen = getMaxStrLength(digits);
     int length = maxLen;
-    if (adjustableWidth) {
+
+    if (d->adjustableWidth) {
         int currenLen = qMax(lineEdit()->text().length(), 4);
         length = currenLen < maxLen ? currenLen : maxLen;
     }
-    QString longestString = QString("8").repeated(length);
+
+    QString longestString = QStringLiteral("8").repeated(length);
 
     const QFontMetrics fm(fontMetrics());
     int w = qMax(0, QtTools::horizontalAdvance(fm, longestString));
     w += 4;  // cursor blinking space
-    if (addIconSpace) {
+    if (d->addIconSpace) {
         w += iconHeight;
     }
     QStyleOptionSpinBox opt;
@@ -953,18 +985,17 @@ QSize QuantitySpinBox::sizeHintCalculator() const
     return size;
 }
 
-int QuantitySpinBox::getMaxStrLength() const
+int QuantitySpinBox::getMaxStrLength(int digits) const
 {
     // Calculates the length of the longest string allowed
     Q_D(const QuantitySpinBox);
     ensurePolished();
-    QString unit = d->unit.getString().c_str();
+    QString unit = QString::fromStdString(d->unit.getString());
     int decimals = App::GetApplication()
                        .GetUserParameter()
                        .GetGroup("BaseApp/Preferences/Units")
                        ->GetInt("Decimals", 2);
-    constexpr int maxDigits = 4;
-    return maxDigits + 1 /*separator*/ + decimals + 1 /*space*/ + unit.length();
+    return digits + 1 /*separator*/ + decimals + 1 /*space*/ + unit.length();
 }
 
 void QuantitySpinBox::showEvent(QShowEvent* event)

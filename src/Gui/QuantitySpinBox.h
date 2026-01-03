@@ -54,6 +54,14 @@ class GuiExport QuantitySpinBox: public QAbstractSpinBox, public ExpressionSpinB
     Q_PROPERTY(
         bool autoNormalize READ autoNormalize WRITE setAutoNormalize
     )  // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(
+        bool autoAdjustWidth READ autoAdjustWidth WRITE setAutoAdjustWidth
+    )  // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(
+        bool addIconSpace READ isIconSpaceAdded WRITE addIconSpace
+    )  // clazy:exclude=qproperty-without-notify
+
+    static constexpr int maxExpectedDigits = 4;
 
 public:
     explicit QuantitySpinBox(QWidget* parent = nullptr);
@@ -109,6 +117,16 @@ public:
     /// Enables or disables automatic normalization on enter
     void setAutoNormalize(bool normalize);
 
+    /// Returns if automatic width adjustment is enabled for this input
+    bool autoAdjustWidth() const;
+    /// Enables or disables automatic width adjustement
+    void setAutoAdjustWidth(bool adjust);
+
+    /// Returns if icon space is added for this input
+    bool isIconSpaceAdded() const;
+    /// Enables or disables icon space addition
+    void addIconSpace(bool addIconSpace);
+
     /// Sets a specific unit schema to handle quantities.
     /// The system-wide schema won't be used any more.
     void setSchema(int s);
@@ -142,8 +160,6 @@ public:
     /// This is a helper function to determine the size this widget requires to fully display the text
     QSize sizeForText(const QString&) const;
     QSize sizeHint() const override;
-    bool adjustableWidth = false;
-    bool addIconSpace = false;
     bool event(QEvent* event) override;
 
     void setNumberExpression(App::NumberExpression*) override;
@@ -182,8 +198,9 @@ private:
     void updateFromCache(bool notify, bool updateUnit = true);
     QString getUserString(const Base::Quantity& val, double& factor, QString& unitString) const;
     QString getUserString(const Base::Quantity& val) const;
-    QSize sizeHintCalculator() const;
-    int getMaxStrLength() const;
+
+    QSize sizeHintForDigits(int digits) const;
+    int getMaxStrLength(int digits) const;
 
 Q_SIGNALS:
     /** Gets emitted if the user has entered a VALID input
