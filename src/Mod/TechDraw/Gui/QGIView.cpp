@@ -112,8 +112,7 @@ QGIView::QGIView()
     m_lockHeight = (double) sizeLock.height();
 
     m_lock->hide();
-    m_border->hide();
-    m_label->hide();
+    updateFrameVisibility();
 }
 
 void QGIView::isVisible(bool state)
@@ -198,21 +197,18 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
     if (change == ItemSelectedHasChanged && scene()) {
         if (isSelected() || hasSelectedChildren(this)) {
             m_colCurrent = getSelectColor();
-            m_border->show();
-            m_label->show();
             m_lock->setVisible(getViewObject()->isLocked() && getViewObject()->showLock());
         } else {
             dragFinished();
 
             if (!m_isHovered) {
                 m_colCurrent = PreferencesGui::getAccessibleQColor(PreferencesGui::normalQColor());
-                m_border->hide();
-                m_label->hide();
                 m_lock->hide();
             } else {
                 m_colCurrent = getPreColor();
             }
         }
+        updateFrameVisibility();
         drawBorder();
     }
 
@@ -524,8 +520,7 @@ void QGIView::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
         m_colCurrent = getPreColor();
     }
 
-    m_border->show();
-    m_label->show();
+    updateFrameVisibility();
 
     m_lock->setVisible(getViewObject()->isLocked() && getViewObject()->showLock());
 
@@ -541,16 +536,13 @@ void QGIView::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 
     if (isSelected()) {
         m_colCurrent = getSelectColor();
-        m_border->show();
-        m_label->show();
         m_lock->setVisible(getViewObject()->isLocked() && getViewObject()->showLock());
     } else {
         m_colCurrent = PreferencesGui::getAccessibleQColor(PreferencesGui::normalQColor());
-        m_border->hide();
-        m_label->hide();
         m_lock->hide();
     }
 
+    updateFrameVisibility();
     drawBorder();
 }
 
@@ -603,6 +595,7 @@ void QGIView::updateView(bool forceUpdate)
         rotateView();
     }
 
+    updateFrameVisibility();
     drawBorder();
 
     QGIView::draw();
@@ -1074,6 +1067,47 @@ void QGIView::makeMark(QPointF pos, QColor color)
     makeMark(pos.x(), pos.y(), color);
 }
 
+void QGIView::updateFrameVisibility()
+{
+    // Get the preference group
+    auto hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/View");
+    
+    // 0 = Auto (Default), 1 = Always On, 2 = Always Off
+    int frameMode = hGrp->GetInt("ViewFrameMode", 0);
+
+    bool shouldShow = false;
+
+    if (isSelected()) {
+        shouldShow = true;
+    } 
+    else {
+        if (frameMode == 1) {
+            // Always On
+            shouldShow = true;
+        }
+        else if (frameMode == 2) {
+            // Always Off
+            shouldShow = false;
+        }
+        else {
+            // Auto (Default)
+            shouldShow = m_isHovered;
+        }
+    }
+
+    if (shouldShow) {
+        m_border->show();
+        m_label->show();
+        if (m_lock && getViewObject()) {
+            m_lock->setVisible(getViewObject()->isLocked() && getViewObject()->showLock());
+        }
+    } else {
+        m_border->hide();
+        m_label->hide();
+        if (m_lock) m_lock->hide();
+    }
+}
 
 //! Retrieves objects of type T with given indexes
 template <typename T>
