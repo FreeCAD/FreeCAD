@@ -416,6 +416,8 @@ def createGroundedJoint(obj):
     )
     Gui.doCommand(commands)
     Gui.doCommandGui("JointObject.ViewProviderGroundedJoint(ground.ViewObject)")
+
+    Gui.doCommand("UtilsAssembly.activeAssembly().Document.recompute()")
     return Gui.doCommandEval("ground")
 
 
@@ -471,8 +473,11 @@ class CommandToggleGrounded:
                         Gui.doCommand(commands)
                         continue
 
-                ref = [sel.Object, [sub, sub]]
-                moving_part = UtilsAssembly.getMovingPart(assembly, ref)
+                moving_part, new_sub = UtilsAssembly.getComponentReference(
+                    assembly, sel.Object, sub
+                )
+                if not moving_part:
+                    continue
 
                 # Only objects within the assembly.
                 if moving_part is None:
