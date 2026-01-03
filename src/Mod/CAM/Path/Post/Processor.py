@@ -62,6 +62,101 @@ class _TempObject:
     Label = "Fixture"
 
 
+class _HeaderBuilder:
+    """Builder class for constructing G-code header with structured data storage."""
+
+    def __init__(self):
+        """Initialize the header builder with empty data structures."""
+        self._exporter = None
+        self._machine = None
+        self._post_processor = None
+        self._cam_file = None
+        self._author = None
+        self._output_time = None
+        self._tools = []  # List of (tool_number, tool_name) tuples
+        self._fixtures = []  # List of fixture names
+        self._notes = []  # list of notes
+
+    def add_exporter_info(self, exporter: str = "FreeCAD"):
+        """Add exporter information to the header."""
+        self._exporter = exporter
+
+    def add_machine_info(self, machine: str):
+        """Add machine information to the header."""
+        self._machine = machine
+
+    def add_post_processor(self, name: str):
+        """Add post processor name to the header."""
+        self._post_processor = name
+
+    def add_cam_file(self, filename: str):
+        """Add CAM file information to the header."""
+        self._cam_file = filename
+
+    def add_author(self, author: str):
+        """Add author information to the header."""
+        self._author = author
+
+    def add_output_time(self, timestamp: str):
+        """Add output timestamp to the header."""
+        self._output_time = timestamp
+
+    def add_tool(self, tool_number: int, tool_name: str):
+        """Add a tool to the header."""
+        self._tools.append((tool_number, tool_name))
+
+    def add_fixture(self, fixture_name: str):
+        """Add a fixture to the header."""
+        self._fixtures.append(fixture_name)
+
+    def add_note(self, note: str):
+        """Add a note to the header."""
+        self._notes.append(note)
+
+    @property
+    def Path(self) -> Path.Path:
+        """Return a Path.Path containing Path.Commands as G-code comments for the header."""
+        commands = []
+
+        # Add exporter info
+        if self._exporter:
+            commands.append(Path.Command(f"(Exported by {self._exporter})"))
+
+        # Add machine info
+        if self._machine:
+            commands.append(Path.Command(f"(Machine: {self._machine})"))
+
+        # Add post processor info
+        if self._post_processor:
+            commands.append(Path.Command(f"(Post Processor: {self._post_processor})"))
+
+        # Add CAM file info
+        if self._cam_file:
+            commands.append(Path.Command(f"(Cam File: {self._cam_file})"))
+
+        # Add author info
+        if self._author:
+            commands.append(Path.Command(f"(Author: {self._author})"))
+
+        # Add output time
+        if self._output_time:
+            commands.append(Path.Command(f"(Output Time: {self._output_time})"))
+
+        # Add tools
+        for tool_number, tool_name in self._tools:
+            commands.append(Path.Command(f"(T{tool_number}={tool_name})"))
+
+        # Add fixtures (if needed in header)
+        for fixture in self._fixtures:
+            commands.append(Path.Command(f"(Fixture: {fixture})"))
+
+        # Add notes
+        for note in self._notes:
+            commands.append(Path.Command(f"(Note: {note})"))
+
+        return Path.Path(commands)
+
+
 #
 # Define some types that are used throughout this file.
 #
@@ -93,6 +188,9 @@ class PostProcessorFactory:
 
         module_name = f"{postname}_post"
         class_name = postname.title()
+        Path.Log.debug(f"PostProcessorFactory.get_post_processor() - postname: {postname}")
+        Path.Log.debug(f"PostProcessorFactory.get_post_processor() - module_name: {module_name}")
+        Path.Log.debug(f"PostProcessorFactory.get_post_processor() - class_name: {class_name}")
 
         # Iterate all the paths to find the module
         for path in paths:
@@ -167,153 +265,194 @@ class PostProcessor:
         """Get the units used by the post processor."""
         return self._units
 
-    def _buildPostList(self):
+    def _create_fixture_setup(self, order: int, fixture: str) -> _TempObject:
+        """Convert a Fixture setting to _TempObject instance.
+
+        Creates a fixture setup with a G0 move to safe height for fixture changes.
+        Skips the move for first fixture to avoid moving before tool compensation.
+
+        Args:
+            order: Fixture index (0 for first fixture)
+            fixture: Fixture coordinate system (e.g., "G54", "G55")
+
+        Returns:
+            _TempObject with fixture setup commands
         """
-        determines the specific objects and order to postprocess
-        Returns a list of objects which can be passed to
-        exportObjectsWith() for final posting."""
+        fobj = _TempObject()
+        c1 = Path.Command(fixture)
+        fobj.Path = Path.Path([c1])
 
-        def __fixtureSetup(order, fixture, job):
-            """Convert a Fixture setting to _TempObject instance with a G0 move to a
-            safe height every time the fixture coordinate system change.  Skip
-            the move for first fixture, to avoid moving before tool and tool
-            height compensation is enabled."""
+        # Avoid any tool move after G49 in preamble and before tool change
+        # and G43 in case tool height compensation is in use, to avoid
+        # dangerous move without tool compensation.
+        if order != 0:
+            clearance_z = (
+                self._job.Stock.Shape.BoundBox.ZMax
+                + self._job.SetupSheet.ClearanceHeightOffset.Value
+            )
+            c2 = Path.Command(f"G0 Z{clearance_z}")
+            fobj.Path.addCommands(c2)
 
-            fobj = _TempObject()
-            c1 = Path.Command(fixture)
-            fobj.Path = Path.Path([c1])
-            # Avoid any tool move after G49 in preamble and before tool change
-            # and G43 in case tool height compensation is in use, to avoid
-            # dangerous move without tool compensation.
-            if order != 0:
-                c2 = Path.Command(
-                    "G0 Z"
-                    + str(
-                        job.Stock.Shape.BoundBox.ZMax + job.SetupSheet.ClearanceHeightOffset.Value
-                    )
-                )
-                fobj.Path.addCommands(c2)
-            fobj.InList.append(job)
-            return fobj
+        fobj.InList.append(self._job)
+        return fobj
 
+    def _build_postlist_by_fixture(self) -> list:
+        """Build post list ordered by fixture.
+
+        All operations and tool changes are completed in one fixture
+        before moving to the next.
+
+        Returns:
+            List of (fixture_name, operations) tuples
+        """
+        Path.Log.debug("Ordering by Fixture")
+        postlist = []
         wcslist = self._job.Fixtures
+        currTc = None
+
+        for index, f in enumerate(wcslist):
+            # Create fixture setup
+            sublist = [self._create_fixture_setup(index, f)]
+
+            # Add operations for this fixture
+            for obj in self._operations:
+                tc = PathUtil.toolControllerForOp(obj)
+                if tc is not None and PathUtil.activeForOp(obj):
+                    if needsTcOp(currTc, tc):
+                        sublist.append(tc)
+                        Path.Log.debug(f"Appending TC: {tc.Name}")
+                        currTc = tc
+                sublist.append(obj)
+
+            postlist.append((f, sublist))
+
+        return postlist
+
+    def _build_postlist_by_tool(self) -> list:
+        """Build post list ordered by tool.
+
+        Tool changes are minimized - all operations with the current tool
+        are processed in all fixtures before changing tools.
+
+        Returns:
+            List of (tool_name, operations) tuples
+        """
+        Path.Log.debug("Ordering by Tool")
+        postlist = []
+        wcslist = self._job.Fixtures
+        toolstring = "None"
+        currTc = None
+
+        # Build the fixture list
+        fixturelist = []
+        for index, f in enumerate(wcslist):
+            fixturelist.append(self._create_fixture_setup(index, f))
+
+        # Generate operations grouped by tool
+        curlist = []  # list of ops for current tool, will repeat for each fixture
+        sublist = []  # list of ops for output splitting
+
+        def commitToPostlist():
+            """Commit current tool's operations to postlist."""
+            if len(curlist) > 0:
+                for fixture in fixturelist:
+                    sublist.append(fixture)
+                    sublist.extend(curlist)
+                postlist.append((toolstring, sublist))
+
+        Path.Log.track(self._job.PostProcessorOutputFile)
+        for idx, obj in enumerate(self._operations):
+            Path.Log.track(obj.Label)
+
+            # Check if the operation is active
+            if not PathUtil.activeForOp(obj):
+                Path.Log.track()
+                continue
+
+            tc = PathUtil.toolControllerForOp(obj)
+
+            # Operation has no ToolController or uses same ToolController
+            if tc is None or not needsTcOp(currTc, tc):
+                # Queue current operation
+                curlist.append(obj)
+
+            # Operation uses a different ToolController
+            else:
+                # Commit previous operations
+                commitToPostlist()
+
+                # Queue current ToolController and operation
+                sublist = [tc]
+                curlist = [obj]
+                currTc = tc
+
+                # Determine the proper string for the operation's ToolController
+                if "%T" in self._job.PostProcessorOutputFile:
+                    toolstring = f"{tc.ToolNumber}"
+                else:
+                    toolstring = re.sub(r"[^\w\d-]", "_", tc.Label)
+
+        # Commit remaining operations
+        commitToPostlist()
+
+        return postlist
+
+    def _build_postlist_by_operation(self) -> list:
+        """Build post list ordered by operation.
+
+        Operations are done in each fixture in sequence.
+
+        Returns:
+            List of (operation_name, operations) tuples
+        """
+        Path.Log.debug("Ordering by Operation")
+        postlist = []
+        wcslist = self._job.Fixtures
+        currTc = None
+
+        # Generate operations
+        for obj in self._operations:
+            # Check if the operation is active
+            if not PathUtil.activeForOp(obj):
+                continue
+
+            sublist = []
+            Path.Log.debug(f"obj: {obj.Name}")
+
+            for index, f in enumerate(wcslist):
+                sublist.append(self._create_fixture_setup(index, f))
+                tc = PathUtil.toolControllerForOp(obj)
+                if tc is not None:
+                    if self._job.SplitOutput or needsTcOp(currTc, tc):
+                        sublist.append(tc)
+                        currTc = tc
+                sublist.append(obj)
+
+            postlist.append((obj.Label, sublist))
+
+        return postlist
+
+    def _buildPostList(self):
+        """Determine the specific objects and order to postprocess.
+
+        Returns a list of objects which can be passed to exportObjectsWith()
+        for final posting. The ordering strategy is determined by the job's
+        OrderOutputBy setting.
+
+        Returns:
+            List of (name, operations) tuples
+        """
         orderby = self._job.OrderOutputBy
         Path.Log.debug(f"Ordering by {orderby}")
 
         postlist = []
 
         if orderby == "Fixture":
-            Path.Log.debug("Ordering by Fixture")
-            # Order by fixture means all operations and tool changes will be
-            # completed in one fixture before moving to the next.
-
-            currTc = None
-            for index, f in enumerate(wcslist):
-                # create an object to serve as the fixture path
-                sublist = [__fixtureSetup(index, f, self._job)]
-
-                # Now generate the gcode
-                for obj in self._operations:
-                    tc = PathUtil.toolControllerForOp(obj)
-                    if tc is not None and PathUtil.activeForOp(obj):
-                        if needsTcOp(currTc, tc):
-                            sublist.append(tc)
-                            Path.Log.debug(f"Appending TC: {tc.Name}")
-                            currTc = tc
-                    sublist.append(obj)
-                postlist.append((f, sublist))
-
+            postlist = self._build_postlist_by_fixture()
         elif orderby == "Tool":
-            Path.Log.debug("Ordering by Tool")
-            # Order by tool means tool changes are minimized.
-            # all operations with the current tool are processed in the current
-            # fixture before moving to the next fixture.
-
-            toolstring = "None"
-            currTc = None
-
-            # Build the fixture list
-            fixturelist = []
-            for index, f in enumerate(wcslist):
-                # create an object to serve as the fixture path
-                fixturelist.append(__fixtureSetup(index, f, self._job))
-
-            # Now generate the gcode
-            curlist = []  # list of ops for tool, will repeat for each fixture
-            sublist = []  # list of ops for output splitting
-
-            def commitToPostlist():
-                if len(curlist) > 0:
-                    for fixture in fixturelist:
-                        sublist.append(fixture)
-                        sublist.extend(curlist)
-                    postlist.append((toolstring, sublist))
-
-            Path.Log.track(self._job.PostProcessorOutputFile)
-            for idx, obj in enumerate(self._operations):
-                Path.Log.track(obj.Label)
-
-                # check if the operation is active
-                if not PathUtil.activeForOp(obj):
-                    Path.Log.track()
-                    continue
-
-                tc = PathUtil.toolControllerForOp(obj)
-
-                # The operation has no ToolController or uses the same
-                # ToolController as the previous operations
-
-                if tc is None or not needsTcOp(currTc, tc):
-                    # Queue current operation
-                    curlist.append(obj)
-
-                # The operation is the first operation or uses a different
-                # ToolController as the previous operations
-
-                else:
-                    # Commit previous operations
-                    commitToPostlist()
-
-                    # Queue current ToolController and operation
-                    sublist = [tc]
-                    curlist = [obj]
-                    currTc = tc
-
-                    # Determine the proper string for the operation's
-                    # ToolController
-                    if "%T" in self._job.PostProcessorOutputFile:
-                        toolstring = f"{tc.ToolNumber}"
-                    else:
-                        toolstring = re.sub(r"[^\w\d-]", "_", tc.Label)
-
-            # Commit remaining operations
-            commitToPostlist()
-
+            postlist = self._build_postlist_by_tool()
         elif orderby == "Operation":
-            Path.Log.debug("Ordering by Operation")
-            # Order by operation means ops are done in each fixture in
-            # sequence.
-            currTc = None
-
-            # Now generate the gcode
-            for obj in self._operations:
-
-                # check if the operation is active
-                if not PathUtil.activeForOp(obj):
-                    continue
-
-                sublist = []
-                Path.Log.debug(f"obj: {obj.Name}")
-
-                for index, f in enumerate(wcslist):
-                    sublist.append(__fixtureSetup(index, f, self._job))
-                    tc = PathUtil.toolControllerForOp(obj)
-                    if tc is not None:
-                        if self._job.SplitOutput or needsTcOp(currTc, tc):
-                            sublist.append(tc)
-                            currTc = tc
-                    sublist.append(obj)
-                postlist.append((obj.Label, sublist))
+            postlist = self._build_postlist_by_operation()
 
         Path.Log.debug(f"Postlist: {postlist}")
 

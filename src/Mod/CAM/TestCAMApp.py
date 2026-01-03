@@ -25,6 +25,7 @@
 import TestApp
 
 from CAMTests.TestCAMSanity import TestCAMSanity
+
 from CAMTests.TestLinkingGenerator import TestGetLinkingMoves
 from CAMTests.TestPathProfile import TestPathProfile
 
@@ -37,6 +38,7 @@ from CAMTests.TestPathDressupDogboneII import TestDressupDogboneII
 from CAMTests.TestPathDressupHoldingTags import TestHoldingTags
 from CAMTests.TestPathDrillable import TestPathDrillable
 from CAMTests.TestPathDrillGenerator import TestPathDrillGenerator
+from CAMTests.TestDrillCycleExpander import TestDrillCycleExpander
 from CAMTests.TestPathFacingGenerator import TestPathFacingGenerator
 from CAMTests.TestPathGeneratorDogboneII import TestGeneratorDogboneII
 from CAMTests.TestPathGeom import TestPathGeom
@@ -56,6 +58,7 @@ from CAMTests.TestPathPost import TestBuildPostList
 from CAMTests.TestPathPost import TestPostProcessorFactory
 from CAMTests.TestPathPost import TestResolvingPostProcessorName
 from CAMTests.TestPathPost import TestFileNameGenerator
+from CAMTests.TestPathPost import TestHeaderBuilder
 
 from CAMTests.TestPathPreferences import TestPathPreferences
 from CAMTests.TestPathProfile import TestPathProfile
@@ -118,3 +121,9 @@ from CAMTests.TestMach3Mach4LegacyPost import TestMach3Mach4LegacyPost
 
 from CAMTests.TestSnapmakerPost import TestSnapmakerPost
 from CAMTests.TestTSPSolver import TestTSPSolver
+from CAMTests.TestGcodeProcessingUtils import (
+    TestInsertLineNumbers,
+    TestSuppressRedundantAxesWords,
+    TestFilterInefficientMoves,
+    TestNumberGenerator,
+)
