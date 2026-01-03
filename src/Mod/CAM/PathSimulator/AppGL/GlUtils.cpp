@@ -25,14 +25,12 @@
 #include "GlUtils.h"
 #include <iostream>
 
-namespace MillSim
+#include "OpenGlWrapper.h"
+
+namespace CAMSimulator
 {
-int gWindowSizeW = 800;
-int gWindowSizeH = 600;
 
-int gDebug = -1;
-
-mat4x4 identityMat = {{1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1}};
+const mat4x4 identityMat = {{1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1}};
 
 void GLClearError()
 {
@@ -50,11 +48,4 @@ bool GLLogError()
     return isError;
 }
 
-
-typedef struct Vertex
-{
-    vec3 pos;
-    vec3 col;
-} Vertex;
-
-}  // namespace MillSim
+}  // namespace CAMSimulator
