@@ -1,0 +1,63 @@
+﻿---
+# File created by FreeCAD 1.0.2 Revision: 39319 (Git)
+General:
+  UUID: "3675f617-cf32-4803-8ccb-003ca7077e8a"
+  Name: "Copper-955"
+  Author: "Joe Da Silva"
+  License: "LGPL-2.0-or-later"
+  SourceURL: "https://copper.org/publications/pub_list/pdf/144-8-mechanical.pdf"
+  ReferenceSource: "144-8-mechanical.pdf"
+  Tags:
+    - "C95500"
+    - "Cast"
+    - "Bronzes"
+    - "Nickel aluminum bronze"
+  Description: >
+    NOTE: This alloy not named in source, but Copper-955 appears as closest.
+    Copper-955, Nickel aluminum bronze, Sand cast.
+    Cu≥78% Fe=3.35% Ni=5.20% Al=9.95% Mn=0.3%. IACS=8%.
+    Values for 295°K imported from 'cda144-8-mechanical-low-temperature.pdf'
+    with permission and credit to the 'Copper Development Association' (CDA).
+    For your own production accuracy, please use values provided by the
+    material vendors you are working with.
+Inherits:
+  Brass:
+    UUID: "4151e19c-fd6a-4ca4-83d4-d5e17d76cb9c"
+Models:
+  Father:
+    UUID: '9cdda8b6-b606-4778-8f13-3934d8668e67'
+    Father: "Metal"
+  MaterialStandard:
+    UUID: '1e2c0088-904a-4537-925f-64064c07d700'
+    KindOfMaterial: "Sand cast"
+    StandardCode: "Copper-955"
+  LinearElastic:
+    UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
+    CompressiveStrength: "414 MPa"
+    Density: "7530 kg/m^3"
+    Elongation: "11"
+    PoissonRatio: "0.32"
+    ReductionOfArea: "9"
+    UltimateStrain: "10.6"
+    UltimateTensileStrength: "697.7 MPa"
+    YieldStrain: "0.31"
+    YieldStrength: "303 MPa"
+    YoungsModulus: "116 GPa"
+  Thermal:
+    UUID: '9959d007-a970-4ea7-bae4-3eb1b8b883c7'
+    SpecificHeat: "419 J/kg/K"
+    ThermalConductivity: "41.9 W/m/K"
+    ThermalExpansionCoefficient: "16.2 µm/m/K"
+    ThermalExpansionReferenceTemperature: "293.00 K"
+  Electromagnetic:
+    UUID: 'b2eb5f48-74b3-4193-9fbb-948674f427f3'
+    ElectricalConductivity: "4.64 MS/m"
+    RelativePermeability: "1050119"
+  Hardness:
+    UUID: '3d1a6141-d032-4d82-8bb5-a8f339fff8ad'
+    Hardness: "93"
+    HardnessUnits: "HRB"
+  Toughness:
+    UUID: '5bd8188b-2e72-4891-b9fb-7c5abc62ff2d'
+    ImpactCharpy: "14 J"
+    NotchTensileStrength: "725 MPa"
