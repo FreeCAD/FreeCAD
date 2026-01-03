@@ -916,13 +916,23 @@ Default: &quot;5mm&quot;</string>
    </attribute>
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
+     <widget class="QLabel" name="label_machine">
+      <property name="text">
+       <string>Machine</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1" colspan="2">
+     <widget class="QComboBox" name="machineComboBox"/>
+    </item>
+    <item row="1" column="0">
      <widget class="QLabel" name="label_9">
       <property name="text">
        <string>Output file</string>
       </property>
      </widget>
     </item>
-    <item row="0" column="1">
+    <item row="1" column="1">
      <widget class="QLineEdit" name="postProcessorOutputFile">
       <property name="toolTip">
        <string>Enter a path and optionally file name (see below) to be used as the default for the post processor export.
@@ -953,31 +963,31 @@ See the file save policy below on how to deal with name conflicts.</string>
       </property>
      </widget>
     </item>
-    <item row="0" column="2">
+    <item row="1" column="2">
      <widget class="QToolButton" name="postProcessorSetOutputFile">
       <property name="text">
        <string notr="true">…</string>
       </property>
      </widget>
     </item>
-    <item row="1" column="0">
+    <item row="2" column="0">
      <widget class="QLabel" name="label_10">
       <property name="text">
        <string>Processor</string>
       </property>
      </widget>
     </item>
-    <item row="1" column="1" colspan="2">
+    <item row="2" column="1" colspan="2">
      <widget class="QComboBox" name="postProcessor"/>
     </item>
-    <item row="2" column="0">
+    <item row="3" column="0">
      <widget class="QLabel" name="label_11">
       <property name="text">
        <string>Arguments</string>
       </property>
      </widget>
     </item>
-    <item row="2" column="1" colspan="2">
+    <item row="3" column="1" colspan="2">
      <widget class="QLineEdit" name="postProcessorArguments">
       <property name="toolTip">
        <string>Optional arguments passed to the post processor. The arguments are specific for each post processor, please see its documentation for details.</string>
@@ -1573,6 +1583,7 @@ If &lt;span style=&quot; font-style:italic;&quot;&gt;order by&lt;/span&gt; is se
   </customwidget>
  </customwidgets>
  <tabstops>
+  <tabstop>machineComboBox</tabstop>
   <tabstop>postProcessorOutputFile</tabstop>
   <tabstop>postProcessorSetOutputFile</tabstop>
   <tabstop>postProcessor</tabstop>
