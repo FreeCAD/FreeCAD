@@ -451,7 +451,11 @@ void QuantitySpinBox::resizeEvent(QResizeEvent* event)
 {
     QAbstractSpinBox::resizeEvent(event);
     resizeWidget();
+    moveCursor();
+}
 
+void QuantitySpinBox::moveCursor()
+{
     Q_D(QuantitySpinBox);
     QLineEdit* edit = lineEdit();
     int cursor = edit->cursorPosition();
@@ -482,6 +486,9 @@ void Gui::QuantitySpinBox::keyPressEvent(QKeyEvent* event)
 
     if (isEnter) {
         returnPressed();
+    }
+    else {
+        moveCursor();
     }
 }
 
@@ -520,7 +527,7 @@ void QuantitySpinBox::updateEdit(const QString& text)
         edit->setSelection(0, cursor);
     }
     else {
-        edit->setCursorPosition(empty ? 0 : cursor);
+        moveCursor();
     }
 }
 
