@@ -22,6 +22,8 @@
 
 #include <QFontMetrics>
 #include <QMessageBox>
+#include <QClipboard>
+#include <QApplication>
 
 
 #include <Base/Interpreter.h>
@@ -107,6 +109,7 @@ void UnitTestDialog::setupConnections()
     );
     connect(ui->helpButton, &QPushButton::clicked, this, &UnitTestDialog::onHelpButtonClicked);
     connect(ui->aboutButton, &QPushButton::clicked, this, &UnitTestDialog::onAboutButtonClicked);
+    connect(ui->copyButton, &QPushButton::clicked, this, &UnitTestDialog::onCopyButtonClicked);
     connect(ui->startButton, &QPushButton::clicked, this, &UnitTestDialog::onStartButtonClicked);
 }
 
@@ -184,6 +187,21 @@ void UnitTestDialog::onAboutButtonClicked()
            "FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for "
            "ones own modules.")
     );
+}
+
+void UnitTestDialog::onCopyButtonClicked()
+{
+    QString text;
+    QTreeWidgetItemIterator it(ui->treeViewFailure);
+    while (*it) {
+        text += (*it)->data(0, Qt::UserRole).toString() + "\n\n";
+        ++it;
+    }
+    if (text.isEmpty()) {
+        return;
+    }
+    QApplication::clipboard()->setText(text);
+    setStatusText(tr("Errors copied to clipboard"));
 }
 
 /**
