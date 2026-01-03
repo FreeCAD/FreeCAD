@@ -1706,59 +1706,7 @@ Base::Vector3d EditModeConstraintCoinManager::seekConstraintPosition(
     const SoNode* constraint
 )
 {
-
-    auto rp = ViewProviderSketchCoinAttorney::getRayPickAction(viewProvider);
-
-    float scaled_step = step * ViewProviderSketchCoinAttorney::getScaleFactor(viewProvider);
-
-    int multiplier = 0;
-    Base::Vector3d relPos, freePos;
-    bool isConstraintAtPosition = true;
-    while (isConstraintAtPosition && multiplier < 10) {
-        // Calculate new position of constraint
-        relPos = norm * 0.5f + dir * multiplier;
-        freePos = origPos + relPos * scaled_step;
-
-        // Prevent crash : https://forum.freecad.org/viewtopic.php?f=8&t=65305
-        if (!rp) {
-            return relPos * step;
-        }
-
-        rp->setRadius(0.1f);
-        rp->setPickAll(true);
-        rp->setRay(SbVec3f(freePos.x, freePos.y, -1.f), SbVec3f(0, 0, 1));
-        // problem
-        rp->apply(editModeScenegraphNodes.constrGroup);  // We could narrow it down to just the
-                                                         // SoGroup containing the constraints
-
-        // returns a copy of the point
-        SoPickedPoint* pp = rp->getPickedPoint();
-        const SoPickedPointList ppl = rp->getPickedPointList();
-
-        if (ppl.getLength() <= 1 && pp) {
-            SoPath* path = pp->getPath();
-            int length = path->getLength();
-            SoNode* tailFather1 = path->getNode(length - 2);
-            SoNode* tailFather2 = path->getNode(length - 3);
-
-            // checking if a constraint is the same as the one selected
-            if (tailFather1 == constraint || tailFather2 == constraint) {
-                isConstraintAtPosition = false;
-            }
-        }
-        else {
-            isConstraintAtPosition = false;
-        }
-
-        multiplier *= -1;  // search in both sides
-        if (multiplier >= 0) {
-            multiplier++;  // Increment the multiplier
-        }
-    }
-    if (multiplier == 10) {
-        relPos = norm * 0.5f;  // no free position found
-    }
-    return relPos * step;
+    return norm * 0.5f * step;
 }
 
 void EditModeConstraintCoinManager::updateConstraintColor(

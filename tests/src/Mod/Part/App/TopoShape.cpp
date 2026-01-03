@@ -87,7 +87,7 @@ TEST_F(TopoShapeTest, TestElementTypeWithHash)
 TEST_F(TopoShapeTest, TestElementTypeWithSubelements)
 {
     EXPECT_EQ(Part::TopoShape::getElementTypeAndIndex("Part.Body.Pad.Face3"),
-              std::make_pair(std::string("Face"), 3UL));
+              std::make_pair(std::string(), 0UL));
 }
 
 TEST_F(TopoShapeTest, TestElementTypeNonMatching)

@@ -182,7 +182,7 @@ void CmdPartPointsFromMesh::activated(int iMsg)
         bool ok;
         distance = QInputDialog::getDouble(
             Gui::getMainWindow(),
-            QObject::tr("Distance in parameter space"),
+            QObject::tr("Distance in Parameter Space"),
             QObject::tr("Enter distance:"),
             defaultDistance,
             minimal_tolerance,
