@@ -395,7 +395,7 @@ class TestMachineFactory(PathTestUtils.PathTestBase):
         )
 
         # Configure post-processor settings
-        machine.output.comments = False
+        machine.output.output_comments = False
         machine.output.axis_precision = 4
         machine.output.line_increment = 5
 
@@ -409,6 +409,6 @@ class TestMachineFactory(PathTestUtils.PathTestBase):
         self.assertEqual(loaded.name, machine.name)
         self.assertEqual(loaded.manufacturer, machine.manufacturer)
         self.assertEqual(len(loaded.spindles), 1)
-        self.assertFalse(loaded.output.comments)
+        self.assertFalse(loaded.output.output_comments)
         self.assertEqual(loaded.output.axis_precision, 4)
         self.assertEqual(loaded.output.line_increment, 5)
