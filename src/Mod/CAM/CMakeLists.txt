@@ -170,6 +170,16 @@ SET(PathPythonToolsGui_SRCS
     Path/Tool/Gui/Controller.py
 )
 
+SET(PathPythonMachineUiEditor_SRCS
+    Path/Machine/ui/editor/machine_editor.py
+    Path/Machine/ui/editor/__init__.py
+)
+
+SET(PathPythonMachineModels_SRCS
+    Path/Machine/models/__init__.py
+    Path/Machine/models/machine.py
+)
+
 SET(PathPythonToolsToolBit_SRCS
     Path/Tool/toolbit/__init__.py
     Path/Tool/toolbit/util.py
@@ -246,15 +256,6 @@ SET(PathPythonToolsLibraryUi_SRCS
     Path/Tool/library/ui/dock.py
     Path/Tool/library/ui/editor.py
     Path/Tool/library/ui/properties.py
-)
-
-SET(PathPythonToolsMachine_SRCS
-    Path/Tool/machine/__init__.py
-)
-
-SET(PathPythonToolsMachineModels_SRCS
-    Path/Tool/machine/models/__init__.py
-    Path/Tool/machine/models/machine.py
 )
 
 SET(PathPythonToolsShape_SRCS
@@ -508,6 +509,7 @@ SET(Tests_SRCS
     CAMTests/TestGrblLegacyPost.py
     CAMTests/TestLinuxCNCPost.py
     CAMTests/TestLinkingGenerator.py
+    CAMTests/TestMachine.py
     CAMTests/TestMach3Mach4Post.py
     CAMTests/TestMach3Mach4LegacyPost.py
     CAMTests/TestMassoG3Post.py
@@ -559,7 +561,6 @@ SET(Tests_SRCS
     CAMTests/TestPathToolShapeIcon.py
     CAMTests/TestPathToolLibrary.py
     CAMTests/TestPathToolLibrarySerializer.py
-    CAMTests/TestPathToolMachine.py
     CAMTests/TestPathToolController.py
     CAMTests/TestPathUtil.py
     CAMTests/TestPathVcarve.py
@@ -639,8 +640,8 @@ SET(all_files
     ${PathPythonToolsLibraryModels_SRCS}
     ${PathPythonToolsLibrarySerializers_SRCS}
     ${PathPythonToolsLibraryUi_SRCS}
-    ${PathPythonToolsMachine_SRCS}
-    ${PathPythonToolsMachineModels_SRCS}
+    ${PathPythonMachineModels_SRCS}
+    ${PathPythonMachineUiEditor_SRCS}
     ${PathPythonGui_SRCS}
     ${Tools_SRCS}
     ${Tools_Bit_SRCS}
@@ -914,6 +915,20 @@ INSTALL(
         ${PathPythonToolsMachine_SRCS}
     DESTINATION
         Mod/CAM/Path/Tool/machine
+)
+
+INSTALL(
+    FILES
+        ${PathPythonMachineModels_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Machine/models
+)
+
+INSTALL(
+    FILES
+        ${PathPythonToolsMachineUiEditor_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Machine/ui/editor
 )
 
 INSTALL(
