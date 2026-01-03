@@ -3053,13 +3053,11 @@ void ConstraintC2LDistance::errorgrad(double* err, double* grad, double* param)
         *err = target - h;
     }
     else if (grad) {
-        if (param == distance() || param == circle.rad) {
-            if (internal) {
-                *grad = -1.0;
-            }
-            else {
-                *grad = 1.0;
-            }
+        if (param == distance()) {
+            *grad = internal ? -1.0 : 1.0;
+        }
+        else if (param == circle.rad) {
+            *grad = ccw ? 1.0 : -1.0;
         }
         else {
             *grad = -dh;
