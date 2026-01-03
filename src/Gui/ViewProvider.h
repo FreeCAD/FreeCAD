@@ -294,6 +294,8 @@ public:
     //@{
     /// deliver the icon shown in the tree view
     virtual QIcon getIcon() const;
+    /// deliver the label text shown in the tree view
+    virtual std::string getTreeLabel() const;
 
     /**
      * @brief Whether the viewprovider should allow to toggle the visibility.
@@ -450,6 +452,8 @@ public:
     //@{
     /// signal on icon change
     boost::signals2::signal<void()> signalChangeIcon;
+    /// signal on tree label change
+    boost::signals2::signal<void()> signalChangeTreeLabel;
     /// signal on tooltip change
     boost::signals2::signal<void(const QString&)> signalChangeToolTip;
     /// signal on status tip change
