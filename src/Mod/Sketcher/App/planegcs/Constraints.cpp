@@ -3038,23 +3038,28 @@ void ConstraintC2LDistance::errorgrad(double* err, double* grad, double* param)
     // here our area is signed which does not make geometric sense, but allows
     // us to solve for a signed distance
     double h = area / length;
-
+    if (!isDriving()) {
+        h = std::abs(h);
+    }
     double dh = (darea - h * dlength) / length;
+    
+    bool solve_internal = (internal && isDriving()) || (h < *circle.rad && !isDriving());
 
     if (err) {
         double target;
-        if (internal) {
+        if (solve_internal) {
             target = *circle.rad - std::abs(*distance());
         }
         else {
             target = *circle.rad + std::abs(*distance());
         }
-        target = ccw ? target : -target;  // Solve for one side of the line or the other
+        target = (ccw || !isDriving()) ? target
+                                       : -target;  // Solve for one side of the line or the other
         *err = target - h;
     }
     else if (grad) {
         if (param == distance()) {
-            *grad = internal ? -1.0 : 1.0;
+            *grad =  solve_internal ? -1.0 : 1.0;
         }
         else if (param == circle.rad) {
             *grad = ccw ? 1.0 : -1.0;
