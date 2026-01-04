@@ -91,7 +91,7 @@ class OutputOptions:
     # These options control conversion of Path Objects to actual gcode.
 
     output_units: OutputUnits = OutputUnits.METRIC  # G-code output units
-    
+
     # Line formatting options
     command_space: str = " "
     comment_symbol: str = "("
@@ -100,7 +100,7 @@ class OutputOptions:
     line_number_start: int = 100
     line_numbers: bool = False
     line_number_prefix: str = "N"
-    
+
     # Output content options
     output_comments: bool = True  # Renamed from 'comments'
     output_blank_lines: bool = True  # Renamed from 'blank_lines'
@@ -108,7 +108,7 @@ class OutputOptions:
     output_header: bool = True  # Renamed from 'header'
     output_labels: bool = False  # Renamed from 'path_labels'
     output_operation_labels: bool = True  # Renamed from 'show_operation_labels'
-    
+
     # Header content options
     list_tools_in_header: bool = False  # Renamed from 'list_tools_in_preamble'
     list_fixtures_in_header: bool = True
@@ -116,11 +116,11 @@ class OutputOptions:
     description_in_header: bool = True
     date_in_header: bool = True
     document_name_in_header: bool = True
-    
+
     # Filter options
     filter_double_parameters: bool = False  # Renamed from 'output_double_parameters'
     filter_double_commands: bool = False  # Renamed from 'modal' (moved from ProcessingOptions)
-    
+
     # UI and display options
     show_editor: bool = True  # Show editor after G-code generation
 
@@ -178,7 +178,7 @@ class ProcessingOptions:
     drill_cycles_to_translate: List[str] = field(
         default_factory=lambda: ["G73", "G81", "G82", "G83"]
     )
-    
+
     show_machine_units: bool = True
     spindle_wait: float = 0.0  # seconds
     split_arcs: bool = False
@@ -186,7 +186,7 @@ class ProcessingOptions:
     tool_before_change: bool = False  # Output T before M6 (e.g., T1 M6 instead of M6 T1)
     tool_change: bool = True  # Enable tool change commands
     translate_drill_cycles: bool = False
-    
+
     return_to: Optional[Tuple[float, float, float]] = None  # (x, y, z) or None
 
 
@@ -460,7 +460,9 @@ class Machine:
         # Backward compatibility for renamed fields
         # Support old field names by creating aliases
         if not hasattr(self.output, "filter_double_parameters"):
-            self.output.filter_double_parameters = getattr(self.output, "output_double_parameters", False)
+            self.output.filter_double_parameters = getattr(
+                self.output, "output_double_parameters", False
+            )
         if not hasattr(self.output, "filter_double_commands"):
             self.output.filter_double_commands = getattr(self.processing, "modal", False)
 
@@ -1032,35 +1034,53 @@ class Machine:
             config.output.line_number_start = output_data.get("line_number_start", 100)
             config.output.line_numbers = output_data.get("line_numbers", False)
             config.output.line_number_prefix = output_data.get("line_number_prefix", "N")
-            
+
             # Output content options (with backward compatibility)
-            config.output.output_comments = output_data.get("output_comments", output_data.get("comments", True))
-            config.output.output_blank_lines = output_data.get("output_blank_lines", output_data.get("blank_lines", True))
+            config.output.output_comments = output_data.get(
+                "output_comments", output_data.get("comments", True)
+            )
+            config.output.output_blank_lines = output_data.get(
+                "output_blank_lines", output_data.get("blank_lines", True)
+            )
             config.output.output_bcnc_comments = output_data.get("output_bcnc_comments", True)
-            config.output.output_header = output_data.get("output_header", output_data.get("header", True))
-            config.output.output_labels = output_data.get("output_labels", output_data.get("path_labels", False))
-            config.output.output_operation_labels = output_data.get("output_operation_labels", output_data.get("show_operation_labels", True))
-            
+            config.output.output_header = output_data.get(
+                "output_header", output_data.get("header", True)
+            )
+            config.output.output_labels = output_data.get(
+                "output_labels", output_data.get("path_labels", False)
+            )
+            config.output.output_operation_labels = output_data.get(
+                "output_operation_labels", output_data.get("show_operation_labels", True)
+            )
+
             # Header content options (with backward compatibility)
-            config.output.list_tools_in_header = output_data.get("list_tools_in_header", output_data.get("list_tools_in_preamble", False))
+            config.output.list_tools_in_header = output_data.get(
+                "list_tools_in_header", output_data.get("list_tools_in_preamble", False)
+            )
             config.output.list_fixtures_in_header = output_data.get("list_fixtures_in_header", True)
-            config.output.machine_name_in_header = output_data.get("machine_name_in_header", output_data.get("machine_name", False))
+            config.output.machine_name_in_header = output_data.get(
+                "machine_name_in_header", output_data.get("machine_name", False)
+            )
             config.output.description_in_header = output_data.get("description_in_header", True)
             config.output.date_in_header = output_data.get("date_in_header", True)
             config.output.document_name_in_header = output_data.get("document_name_in_header", True)
-            
+
             # Filter options (with backward compatibility)
-            config.output.filter_double_parameters = output_data.get("filter_double_parameters", output_data.get("output_double_parameters", False))
+            config.output.filter_double_parameters = output_data.get(
+                "filter_double_parameters", output_data.get("output_double_parameters", False)
+            )
             # filter_double_commands comes from processing.modal in old format
             config.output.filter_double_commands = output_data.get("filter_double_commands", False)
-            
+
             # UI and display options
             config.output.show_editor = output_data.get("show_editor", True)
-            
+
             # Numeric precision settings (with backward compatibility)
             config.output.axis_precision = output_data.get("axis_precision", 3)
             config.output.feed_precision = output_data.get("feed_precision", 3)
-            config.output.spindle_precision = output_data.get("spindle_precision", output_data.get("spindle_decimals", 0))
+            config.output.spindle_precision = output_data.get(
+                "spindle_precision", output_data.get("spindle_decimals", 0)
+            )
 
             # Handle output_units conversion from string to enum
             output_units_str = output_data.get("output_units", "metric")
@@ -1092,7 +1112,7 @@ class Machine:
             )
             return_to = processing_data.get("return_to", None)
             config.processing.return_to = tuple(return_to) if return_to is not None else None
-            
+
             # Backward compatibility: modal moved to output.filter_double_commands
             if "modal" in processing_data:
                 config.output.filter_double_commands = processing_data["modal"]
