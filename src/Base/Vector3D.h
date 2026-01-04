@@ -283,6 +283,13 @@ template<class Pr1, class Pr2>
     return Vector3<Pr1>(static_cast<Pr1>(v.x), static_cast<Pr1>(v.y), static_cast<Pr1>(v.z));
 }
 
+// Returns true if the points A-B-C truncated to 2d (x, y) are in a ccw order
+template<class Pr1, class Pr2, class Pr3>
+[[nodiscard]] inline bool ccw2d(const Vector3<Pr1>& A, const Vector3<Pr2>& B, const Vector3<Pr3>& C)
+{
+    return B.x * C.y - B.y * C.x - A.x * C.y + A.y * C.x + A.x * B.y - A.y * B.x > 0.0;
+}
+
 using Vector3f = Vector3<float>;
 using Vector3d = Vector3<double>;
 
