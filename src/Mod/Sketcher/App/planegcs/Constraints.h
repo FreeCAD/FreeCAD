@@ -490,6 +490,8 @@ public:
 class ConstraintP2LDistance: public Constraint
 {
 private:
+    bool ccw;
+
     double* p0x()
     {
         return pvec[0];
@@ -520,7 +522,7 @@ private:
     }
 
 public:
-    ConstraintP2LDistance(Point& p, Line& l, double* d);
+    ConstraintP2LDistance(Point& p, Line& l, double* d, bool ccw);
 #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
     ConstraintP2LDistance()
     {}
@@ -1309,6 +1311,8 @@ class ConstraintC2LDistance: public Constraint
 private:
     Circle circle;
     Line line;
+    bool ccw;
+
     double* distance()
     {
         return pvec[0];

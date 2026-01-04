@@ -2237,6 +2237,7 @@ int Sketch::addConstraint(const Constraint* constraint)
                         constraint->FirstPos,
                         constraint->Second,
                         c.value,
+                        constraint->Orientation,
                         c.driving
                     );
                 }
@@ -3431,7 +3432,14 @@ int Sketch::addDistanceConstraint(int geoId, double* value, bool driving)
 }
 
 // point to line or circular distance constraint
-int Sketch::addDistanceConstraint(int geoId1, PointPos pos1, int geoId2, double* value, bool driving)
+int Sketch::addDistanceConstraint(
+    int geoId1,
+    PointPos pos1,
+    int geoId2,
+    double* value,
+    ConstraintOrientation orientation,
+    bool driving
+)
 {
     geoId1 = checkGeoId(geoId1);
     geoId2 = checkGeoId(geoId2);
@@ -3446,7 +3454,14 @@ int Sketch::addDistanceConstraint(int geoId1, PointPos pos1, int geoId2, double*
         GCS::Line& l2 = Lines[Geoms[geoId2].index];
 
         int tag = ++ConstraintsCounter;
-        GCSsys.addConstraintP2LDistance(p1, l2, value, tag, driving);
+        GCSsys.addConstraintP2LDistance(
+            p1,
+            l2,
+            value,
+            orientation == ConstraintOrientation::CounterClockwise,
+            tag,
+            driving
+        );
         return ConstraintsCounter;
     }
     else {
