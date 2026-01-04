@@ -283,14 +283,13 @@ def tsp_solver_tunnels(tunnels, allowFlipping=False, routeStartPoint=None, route
                     if wire.isClosed()
                     else wire.OrderedVertexes[-1].Y
                 ),                                              # point.y tunnel end
-                "isOpen": not wire.isClosed(),                  # *is wire open?
                 "flipped": False,                               # *init value should be False
                                                                 # Result will be True,
                                                                 # if flipped wire get better sorting result
             }
         )
 
-    # *Keys 'index', 'isOpen' and 'fipped' will be added to dictionary automatically
+    # *Keys 'index' and 'fipped' will be added to dictionary automatically
 
 
     # get reordered tunnels
@@ -317,15 +316,9 @@ def tsp_solver_tunnels(tunnels, allowFlipping=False, routeStartPoint=None, route
         Path.Log.warning(translate("TSP", "Not enough keys in dictionary 'tunnels'"))
         return None
 
-    # STEP 0.2: Add keys 'index', 'isOpen' and 'fipped'
+    # STEP 0.2: Add keys 'index' and 'fipped'
     for i in range(len(tunnels)):
-        isOpen = (
-            True
-            if tunnels[i]["startX"] != tunnels[i]["endX"]
-            or tunnels[i]["startY"] != tunnels[i]["endY"]
-            else False
-        )
-        tunnels[i].update({"index": i, "isOpen": isOpen, "flipped": False})
+        tunnels[i].update({"index": i, "flipped": False})
 
     # STEP 1: Adds the routeStartPoint (it will be deleted at the end)
     if routeStartPoint is None:
@@ -348,14 +341,13 @@ def tsp_solver_tunnels(tunnels, allowFlipping=False, routeStartPoint=None, route
                 nearestNeighbour = neighbour
         if allowFlipping:
             for neighbour in potentialNeighbours:
-                if neighbour["isOpen"]:
-                    costNew = (route[-1]["endX"] - neighbour["endX"]) ** 2 + (
-                        route[-1]["endY"] - neighbour["endY"]
-                    ) ** 2
-                    if costNew < costCurrent:
-                        costCurrent = costNew
-                        toBeFlipped = True
-                        nearestNeighbour = neighbour
+                costNew = (route[-1]["endX"] - neighbour["endX"]) ** 2 + (
+                    route[-1]["endY"] - neighbour["endY"]
+                ) ** 2
+                if costNew < costCurrent:
+                    costCurrent = costNew
+                    toBeFlipped = True
+                    nearestNeighbour = neighbour
         potentialNeighbours.remove(nearestNeighbour)
         if toBeFlipped:
             nearestNeighbour["flipped"] = not nearestNeighbour["flipped"]
@@ -416,16 +408,15 @@ def tsp_solver_tunnels(tunnels, allowFlipping=False, routeStartPoint=None, route
                             for k in range(
                                 i + 1, j
                             ):  # flips direction of each tunnel between i-th and j-th tunnel
-                                if route[k]["isOpen"]:
-                                    route[k]["flipped"] = not route[k]["flipped"]
-                                    route[k]["startX"], route[k]["endX"] = (
-                                        route[k]["endX"],
-                                        route[k]["startX"],
-                                    )
-                                    route[k]["startY"], route[k]["endY"] = (
-                                        route[k]["endY"],
-                                        route[k]["startY"],
-                                    )
+                                route[k]["flipped"] = not route[k]["flipped"]
+                                route[k]["startX"], route[k]["endX"] = (
+                                    route[k]["endX"],
+                                    route[k]["startX"],
+                                )
+                                route[k]["startY"], route[k]["endY"] = (
+                                    route[k]["endY"],
+                                    route[k]["startY"],
+                                )
                             route[i + 1 : j] = route[i + 1 : j][
                                 ::-1
                             ]  # reverse the order of tunnels between i-th and j-th tunnel
@@ -449,16 +440,15 @@ def tsp_solver_tunnels(tunnels, allowFlipping=False, routeStartPoint=None, route
                             for k in range(
                                 i + 1, limitReorderJ
                             ):  # flips direction of each tunnel after i-th to the last tunnel
-                                if route[k]["isOpen"]:
-                                    route[k]["flipped"] = not route[k]["flipped"]
-                                    route[k]["startX"], route[k]["endX"] = (
-                                        route[k]["endX"],
-                                        route[k]["startX"],
-                                    )
-                                    route[k]["startY"], route[k]["endY"] = (
-                                        route[k]["endY"],
-                                        route[k]["startY"],
-                                    )
+                                route[k]["flipped"] = not route[k]["flipped"]
+                                route[k]["startX"], route[k]["endX"] = (
+                                    route[k]["endX"],
+                                    route[k]["startX"],
+                                )
+                                route[k]["startY"], route[k]["endY"] = (
+                                    route[k]["endY"],
+                                    route[k]["startY"],
+                                )
                             route[i + 1 : limitReorderJ] = route[i + 1 : limitReorderJ][
                                 ::-1
                             ]  # reverse the order of tunnels after i-th to the last tunnel
@@ -472,63 +462,55 @@ def tsp_solver_tunnels(tunnels, allowFlipping=False, routeStartPoint=None, route
             while improvementFound:
                 improvementFound = False
                 for i in range(1, limitFlipI):
-                    if route[i]["isOpen"]:
-                        subRouteLengthCurrent = math.dist(
-                            [route[i - 1]["endX"], route[i - 1]["endY"]],
-                            [route[i]["startX"], route[i]["startY"]],
-                        )
-                        subRouteLengthCurrent += math.dist(
-                            [route[i]["endX"], route[i]["endY"]],
-                            [route[i + 1]["startX"], route[i + 1]["startY"]],
-                        )
-                        subRouteLengthNew = math.dist(
-                            [route[i - 1]["endX"], route[i - 1]["endY"]],
-                            [route[i]["endX"], route[i]["endY"]],
-                        )
-                        subRouteLengthNew += math.dist(
-                            [route[i]["startX"], route[i]["startY"]],
-                            [route[i + 1]["startX"], route[i + 1]["startY"]],
-                        )
-                        subRouteLengthNew += 10e-6
-                        if subRouteLengthNew < subRouteLengthCurrent:
-                            route[i]["flipped"] = not route[i][
-                                "flipped"
-                            ]  # flips direction of i-th tunnel
-                            route[i]["startX"], route[i]["endX"] = (
-                                route[i]["endX"],
-                                route[i]["startX"],
-                            )
-                            route[i]["startY"], route[i]["endY"] = (
-                                route[i]["endY"],
-                                route[i]["startY"],
-                            )
-                            improvementFound = True
-                            lastImprovementAtStep = 2
+                    subRouteLengthCurrent = math.dist(
+                        [route[i - 1]["endX"], route[i - 1]["endY"]],
+                        [route[i]["startX"], route[i]["startY"]],
+                    )
+                    subRouteLengthCurrent += math.dist(
+                        [route[i]["endX"], route[i]["endY"]],
+                        [route[i + 1]["startX"], route[i + 1]["startY"]],
+                    )
+                    subRouteLengthNew = math.dist(
+                        [route[i - 1]["endX"], route[i - 1]["endY"]],
+                        [route[i]["endX"], route[i]["endY"]],
+                    )
+                    subRouteLengthNew += math.dist(
+                        [route[i]["startX"], route[i]["startY"]],
+                        [route[i + 1]["startX"], route[i + 1]["startY"]],
+                    )
+                    subRouteLengthNew += 10e-6
+                    if subRouteLengthNew < subRouteLengthCurrent:
+                        route[i]["flipped"] = not route[i][
+                            "flipped"
+                        ]  # flips direction of i-th tunnel
+                        route[i]["startX"], route[i]["endX"] = route[i]["endX"], route[i]["startX"]
+                        route[i]["startY"], route[i]["endY"] = route[i]["endY"], route[i]["startY"]
+                        improvementFound = True
+                        lastImprovementAtStep = 2
                 if routeEndPoint is None:
-                    if route[-1]["isOpen"]:
-                        subRouteLengthCurrent = math.dist(
-                            [route[-2]["endX"], route[-2]["endY"]],
-                            [route[-1]["startX"], route[-1]["startY"]],
+                    subRouteLengthCurrent = math.dist(
+                        [route[-2]["endX"], route[-2]["endY"]],
+                        [route[-1]["startX"], route[-1]["startY"]],
+                    )
+                    subRouteLengthNew = math.dist(
+                        [route[-2]["endX"], route[-2]["endY"]],
+                        [route[-1]["endX"], route[-1]["endY"]],
+                    )
+                    subRouteLengthNew += 10e-6
+                    if subRouteLengthNew < subRouteLengthCurrent:
+                        route[-1]["flipped"] = not route[-1][
+                            "flipped"
+                        ]  # flips direction of the last tunnel
+                        route[-1]["startX"], route[-1]["endX"] = (
+                            route[-1]["endX"],
+                            route[-1]["startX"],
                         )
-                        subRouteLengthNew = math.dist(
-                            [route[-2]["endX"], route[-2]["endY"]],
-                            [route[-1]["endX"], route[-1]["endY"]],
+                        route[-1]["startY"], route[-1]["endY"] = (
+                            route[-1]["endY"],
+                            route[-1]["startY"],
                         )
-                        subRouteLengthNew += 10e-6
-                        if subRouteLengthNew < subRouteLengthCurrent:
-                            route[-1]["flipped"] = not route[-1][
-                                "flipped"
-                            ]  # flips direction of the last tunnel
-                            route[-1]["startX"], route[-1]["endX"] = (
-                                route[-1]["endX"],
-                                route[-1]["startX"],
-                            )
-                            route[-1]["startY"], route[-1]["endY"] = (
-                                route[-1]["endY"],
-                                route[-1]["startY"],
-                            )
-                            improvementFound = True
-                            lastImprovementAtStep = 2
+                        improvementFound = True
+                        lastImprovementAtStep = 2
 
         # STEP 4.3: Applies relocation
         if lastImprovementAtStep == 3:
