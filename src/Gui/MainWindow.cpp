@@ -229,9 +229,8 @@ public:
         getWindowParameter()->Detach(this);
     }
 
-    void OnChange(Base::Subject<const char*>& rCaller, const char* sReason) override
+    void OnChange([[maybe_unused]] Base::Subject<const char*>& rCaller, const char* sReason) override
     {
-        Q_UNUSED(rCaller)
         if (strcmp(sReason, "UserSchema") == 0) {
             unitChanged();
         }
@@ -1126,13 +1125,13 @@ bool MainWindow::event(QEvent* e)
         }
     }
     else if (e->type() == Spaceball::ButtonEvent::ButtonEventType) {
-        auto buttonEvent = dynamic_cast<Spaceball::ButtonEvent*>(e);
+        const auto buttonEvent = dynamic_cast<Spaceball::ButtonEvent*>(e);
         if (!buttonEvent) {
             return true;
         }
         buttonEvent->setHandled(true);
         // only going to respond to button press events.
-        if (buttonEvent->buttonStatus() != Spaceball::BUTTON_PRESSED) {
+        if (buttonEvent->buttonStatus() != Spaceball::ButtonState::Pressed) {
             return true;
         }
         ParameterGrp::handle group = App::GetApplication()
@@ -1147,9 +1146,7 @@ bool MainWindow::event(QEvent* e)
             if (commandName.empty()) {
                 return true;
             }
-            else {
-                Application::Instance->commandManager().runCommandByName(commandName.c_str());
-            }
+            Application::Instance->commandManager().runCommandByName(commandName.c_str());
         }
         else {
             return true;
@@ -1374,9 +1371,8 @@ void MainWindow::removeWindow(Gui::MDIView* view, bool close)
     updateActions();
 }
 
-void MainWindow::tabChanged(MDIView* view)
+void MainWindow::tabChanged([[maybe_unused]] MDIView* view)
 {
-    Q_UNUSED(view)
     updateActions();
 }
 

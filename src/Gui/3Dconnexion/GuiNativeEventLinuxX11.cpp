@@ -81,9 +81,8 @@ void Gui::GuiNativeEvent::initSpaceball(QMainWindow* window)
     }
 }
 
-bool Gui::GuiNativeEvent::xcbEventFilter(void* xcb_void, long* result)
+bool Gui::GuiNativeEvent::xcbEventFilter(void* xcb_void, [[maybe_unused]] long* result)
 {
-    Q_UNUSED(result);
     auto inst(dynamic_cast<Gui::GUIApplicationNativeEventAware*>(QApplication::instance()));
     if (!inst) {
         return false;
@@ -133,10 +132,10 @@ bool Gui::GuiNativeEvent::xcbEventFilter(void* xcb_void, long* result)
             auto buttonEvent(new Spaceball::ButtonEvent());
             buttonEvent->setButtonNumber(navEvent.button.bnum);
             if (navEvent.button.press) {
-                buttonEvent->setButtonStatus(Spaceball::BUTTON_PRESSED);
+                buttonEvent->setButtonStatus(Spaceball::ButtonState::Pressed);
             }
             else {
-                buttonEvent->setButtonStatus(Spaceball::BUTTON_RELEASED);
+                buttonEvent->setButtonStatus(Spaceball::ButtonState::Released);
             }
             inst->postButtonEvent(navEvent.button.bnum, navEvent.button.press);
             return true;
