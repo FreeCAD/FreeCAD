@@ -323,10 +323,12 @@ class _Window(ArchComponent.Component):
         #     https://github.com/FreeCAD/FreeCAD/pull/23014
         # The properties that were added are removed here. Note that we do not check
         # for "SillHeight" so that it is safe to use that property name in the future.
-        if hasattr(obj, "Sill") \
-                or hasattr(obj, "baseSill") \
-                or hasattr(obj, "basePosZ") \
-                or hasattr(obj, "atthOffZ"):
+        if (
+            hasattr(obj, "Sill")
+            or hasattr(obj, "baseSill")
+            or hasattr(obj, "basePosZ")
+            or hasattr(obj, "atthOffZ")
+        ):
             for prop in ("Sill", "SillHeight", "baseSill", "basePosZ", "atthOffZ"):
                 if hasattr(obj, prop):
                     obj.setPropertyStatus(prop, "-LockDynamic")
