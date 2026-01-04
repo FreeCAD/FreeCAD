@@ -275,6 +275,7 @@ def export_common(values: Values, objectslist, filename: str) -> str:
     final: str
     final_for_editor: str
     gcode: Gcode = []
+    editor_result: int = 1
 
     for obj in objectslist:
         if not hasattr(obj, "Path"):
@@ -335,16 +336,17 @@ def export_common(values: Values, objectslist, filename: str) -> str:
         if len(final) > 100000:
             print("Skipping editor since output is greater than 100kb")
         else:
-            dia = PostUtils.GCodeEditorDialog()
             # the editor expects lines to end in "\n", and returns lines ending in "\n"
             if values["END_OF_LINE_CHARACTERS"] == "\n":
-                dia.editor.setText(final)
-                if dia.exec_():
+                dia = PostUtils.GCodeEditorDialog(final, refactored=True)
+                editor_result = dia.exec_()
+                if editor_result == 1:
                     final = dia.editor.toPlainText()
             else:
                 final_for_editor = "\n".join(gcode)
-                dia.editor.setText(final_for_editor)
-                if dia.exec_():
+                dia = PostUtils.GCodeEditorDialog(final_for_editor, refactored=True)
+                editor_result = dia.exec_()
+                if editor_result == 1:
                     final_for_editor = dia.editor.toPlainText()
                     # convert all "\n" to the appropriate end-of-line characters
                     if values["END_OF_LINE_CHARACTERS"] == "\n\n":
@@ -358,7 +360,9 @@ def export_common(values: Values, objectslist, filename: str) -> str:
                         #    "\r\n" means "use \r\n"
                         final = final_for_editor.replace("\n", values["END_OF_LINE_CHARACTERS"])
 
-    print("done postprocessing.")
+    if editor_result == 0:
+        print("aborted postprocessing.")
+        return None
 
     if not filename == "-":
         if final[0:2] == "\n\n":
@@ -377,4 +381,5 @@ def export_common(values: Values, objectslist, filename: str) -> str:
                 # that is running the postprocessor uses".
                 gfile.write(final)
 
+    print("done postprocessing.")
     return final

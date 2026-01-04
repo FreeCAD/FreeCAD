@@ -47,6 +47,16 @@ Command::Command(const char* name, const std::map<std::string, double>& paramete
     , Annotations()
 {}
 
+Command::Command(
+    const char* name,
+    const std::map<std::string, double>& parameters,
+    const std::map<std::string, std::variant<std::string, double>>& annotations
+)
+    : Name(name)
+    , Parameters(parameters)
+    , Annotations(annotations)
+{}
+
 Command::Command()
     : Annotations()
 {}

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Stefan Tröger <stefantroeger@gmx.net>              *
  *   Copyright (c) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>    *
@@ -179,10 +181,15 @@ App::DatumElement* LocalCoordinateSystem::getDatumElement(const char* role) cons
     if (featIt != features.end()) {
         return static_cast<App::DatumElement*>(*featIt);
     }
-    std::stringstream err;
-    err << "LocalCoordinateSystem \"" << getFullName() << "\" doesn't contain feature with role \""
-        << role << '"';
-    throw Base::RuntimeError(err.str().c_str());
+    // During restore, if role lookup fails (e.g. timing issues or fallback to internal name),
+    // we suppress the error. The default getSubObject will try to resolve it by Internal Name next.
+    if (!getDocument()->testStatus(App::Document::Restoring)) {
+        std::stringstream err;
+        err << "LocalCoordinateSystem \"" << getFullName()
+            << "\" doesn't contain feature with role \"" << role << '"';
+        throw Base::RuntimeError(err.str().c_str());
+    }
+    return nullptr;
 }
 
 App::Line* LocalCoordinateSystem::getAxis(const char* role) const

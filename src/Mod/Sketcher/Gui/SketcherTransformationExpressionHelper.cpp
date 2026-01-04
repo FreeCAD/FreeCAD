@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+
 /****************************************************************************
  *                                                                          *
  *   Copyright (c) 2025 The FreeCAD Project Association AISBL               *
@@ -54,10 +55,11 @@ void SketcherTransformationExpressionHelper::storeOriginalExpressions(
                     = sketchObject->getExpression(spath);
 
                 if (expr_info.expression) {
-                    // map expression to geoid as a key
-                    originalExpressions[geoId] = std::shared_ptr<App::Expression>(
-                        expr_info.expression->copy()
-                    );
+                    // map expression to constraint index as a key, storing both expression and geoId
+                    ConstraintExpressionInfo info;
+                    info.expression = std::shared_ptr<App::Expression>(expr_info.expression->copy());
+                    info.geoId = geoId;
+                    originalExpressions[static_cast<int>(i)] = info;
                 }
             }
         }
@@ -91,7 +93,7 @@ void SketcherTransformationExpressionHelper::copyExpressionsToNewConstraints(
         // try to find and apply a matching expression for this constraint
         bool expressionApplied = false;
         for (const auto& exprPair : originalExpressions) {
-            int originalGeoId = exprPair.first;
+            int originalGeoId = exprPair.second.geoId;
             int originalIndex = indexOfGeoId(listOfGeoIds, originalGeoId);
 
             if (originalIndex >= 0) {
@@ -101,7 +103,7 @@ void SketcherTransformationExpressionHelper::copyExpressionsToNewConstraints(
                     originalIndex,
                     params,
                     secondNumberOfCopies,
-                    exprPair.second,
+                    exprPair.second.expression,
                     sketchObj
                 );
 

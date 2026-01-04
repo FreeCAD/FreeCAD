@@ -145,6 +145,68 @@ const char* AttachEngine::eMapModeStrings[] = {
     nullptr
 };
 
+namespace
+{
+
+/**
+ * @brief Returns a rotation aligned to the given normal vector with minimal twist.
+ *
+ * Sets the Z-axis to the given normal. The X-axis is determined by projecting
+ * the original X-axis (from base) onto the plane perpendicular to the normal.
+ * If that projection is degenerate, it falls back to projecting the original Y-axis
+ * or global axes to ensure a valid basis.
+ */
+Base::Rotation rotationAlignedToNormal(
+    const Base::Rotation& rotation,
+    Base::Vector3d normal,
+    const double eps = Precision::Confusion()
+)
+{
+    // If normal is invalid, just return current rotation
+    if (normal.Length() < eps) {
+        return rotation;
+    }
+
+    // 1) Normalize desired Z
+    normal.Normalize();
+
+    // 2) Original basis from base rotation
+    Base::Vector3d xOld = rotation.multVec(Base::Vector3d::UnitX);
+    Base::Vector3d yOld = rotation.multVec(Base::Vector3d::UnitY);
+
+    // 3) Project old X into plane perpendicular to new Z
+    Base::Vector3d xProj = xOld - normal * (xOld * normal);
+
+    if (xProj.Length() < eps) {
+        xProj = yOld - normal * (yOld * normal);
+    }
+
+    // Still degenerate? Pick any axis not parallel to Z
+    if (xProj.Length() < eps) {
+        xProj = Base::Vector3d::UnitX;
+
+        if (std::fabs(xProj * normal) > 1.0 - eps) {
+            xProj = Base::Vector3d::UnitY;
+        }
+    }
+
+    xProj.Normalize();
+
+    // 4) Build Y as Z × X (so it is perpendicular)
+    Base::Vector3d yNew = normal.Cross(xProj);
+    yNew.Normalize();
+
+    // 5) Build rotation matrix from (X, Y, Z) axes
+    Base::Matrix4D matrix;
+    matrix.setCol(0, xProj);
+    matrix.setCol(1, yNew);
+    matrix.setCol(2, normal);
+
+    return {matrix};
+}
+
+}  // namespace
+
 // this list must be in sync with eRefType enum.
 // These strings are used only by Py interface of Attacher. Strings for use in Gui are in
 // Mod/Part/Gui/AttacherTexts.cpp
@@ -2192,9 +2254,10 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
                         dir = -dir;
                     }
 
-                    placement.setRotation(
-                        Base::Rotation::fromNormalVector(Base::convertTo<Base::Vector3d>(dir))
-                    );
+                    placement.setRotation(rotationAlignedToNormal(
+                        placement.getRotation(),
+                        Base::convertTo<Base::Vector3d>(dir)
+                    ));
                 } break;
 
                 default:

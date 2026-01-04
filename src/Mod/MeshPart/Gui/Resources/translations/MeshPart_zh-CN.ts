@@ -4,17 +4,17 @@
   <context>
     <name>CmdMeshPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="273"/>
+      <location filename="../../Command.cpp" line="276"/>
       <source>MeshPart</source>
       <translation>网格零件</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="274"/>
+      <location filename="../../Command.cpp" line="277"/>
       <source>Cross-Sections</source>
       <translation>横截面</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="275"/>
+      <location filename="../../Command.cpp" line="278"/>
       <source>Applies cross-sections to the mesh</source>
       <translation>将横截面应用于网格</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdMeshPartCurveOnMesh</name>
     <message>
-      <location filename="../../Command.cpp" line="309"/>
+      <location filename="../../Command.cpp" line="312"/>
       <source>Mesh</source>
       <translation>网格</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="310"/>
+      <location filename="../../Command.cpp" line="313"/>
       <source>Curve on Mesh</source>
       <translation>网格上的曲线</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="311"/>
+      <location filename="../../Command.cpp" line="314"/>
       <source>Creates an approximated curve on top of a mesh object</source>
       <translation>在网格对象上创建近似曲线</translation>
     </message>
@@ -58,17 +58,17 @@
   <context>
     <name>CmdMeshPartSection</name>
     <message>
-      <location filename="../../Command.cpp" line="189"/>
+      <location filename="../../Command.cpp" line="190"/>
       <source>Mesh</source>
       <translation>网格</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="191"/>
+      <location filename="../../Command.cpp" line="192"/>
       <source>Creates a section from a mesh and plane</source>
       <translation>从网格和平面创建剖面</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="190"/>
+      <location filename="../../Command.cpp" line="191"/>
       <source>Section</source>
       <translation>剖面</translation>
     </message>
@@ -99,7 +99,7 @@
       <translation>用平面修剪</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="213"/>
+      <location filename="../../Command.cpp" line="215"/>
       <source>Section with plane</source>
       <translation>用平面截断</translation>
     </message>
@@ -167,7 +167,7 @@
       <translation>如果距离小于，则连接边缘</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="383"/>
+      <location filename="../../CrossSections.cpp" line="390"/>
       <source>Failure</source>
       <translation>失败</translation>
     </message>
@@ -175,32 +175,32 @@
   <context>
     <name>MeshPartGui::CurveOnMeshHandler</name>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="361"/>
+      <location filename="../../CurveOnMesh.cpp" line="357"/>
       <source>Create</source>
       <translation>创建</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="363"/>
+      <location filename="../../CurveOnMesh.cpp" line="359"/>
       <source>Close wire</source>
       <translation>封闭线</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="365"/>
+      <location filename="../../CurveOnMesh.cpp" line="361"/>
       <source>Clear</source>
       <translation>清除</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="366"/>
+      <location filename="../../CurveOnMesh.cpp" line="362"/>
       <source>Cancel</source>
       <translation>取消</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="622"/>
+      <location filename="../../CurveOnMesh.cpp" line="615"/>
       <source>Wrong mesh selected</source>
       <translation>选择了错误的网格</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="661"/>
+      <location filename="../../CurveOnMesh.cpp" line="655"/>
       <source>No point was selected</source>
       <translation>未选择任何点</translation>
     </message>
@@ -493,21 +493,21 @@ A value in the range of 0.2-10.</source>
       <translation>没有活动文档</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="279"/>
+      <location filename="../../Tessellation.cpp" line="280"/>
       <source>Error: body without a tip selected.
 Either set the tip of the body or select a different shape.</source>
       <translation>错误：选择了一个没有尖端的实体。
 请设置实体的尖端或选择其他形状。</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="285"/>
+      <location filename="../../Tessellation.cpp" line="288"/>
       <source>Error: shape without faces selected.
 Select a different shape.</source>
       <translation>错误：未选择面的形状。
 请选择其他形状。</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="289"/>
+      <location filename="../../Tessellation.cpp" line="293"/>
       <source>Select a shape for meshing, first.</source>
       <translation>请先选择需要网格化的形状.</translation>
     </message>
@@ -515,12 +515,12 @@ Select a different shape.</source>
   <context>
     <name>MeshPart_Section</name>
     <message>
-      <location filename="../../Command.cpp" line="203"/>
+      <location filename="../../Command.cpp" line="204"/>
       <source>Select plane</source>
       <translation>选取平面</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="204"/>
+      <location filename="../../Command.cpp" line="205"/>
       <source>Select a plane to section the mesh with.</source>
       <translation>选择一个平面来划分网格。</translation>
     </message>
@@ -538,27 +538,27 @@ Select a different shape.</source>
       <translation>选择一个平面来修剪网格。</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="104"/>
+      <location filename="../../Command.cpp" line="105"/>
       <source>Trim With Plane</source>
       <translation>用平面修剪</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="105"/>
+      <location filename="../../Command.cpp" line="106"/>
       <source>Select the side to keep</source>
       <translation>选择要保留的一侧</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="107"/>
+      <location filename="../../Command.cpp" line="108"/>
       <source>Below</source>
       <translation>以下</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="109"/>
+      <location filename="../../Command.cpp" line="110"/>
       <source>Above</source>
       <translation>以上</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="111"/>
+      <location filename="../../Command.cpp" line="112"/>
       <source>Split</source>
       <translation>分割</translation>
     </message>

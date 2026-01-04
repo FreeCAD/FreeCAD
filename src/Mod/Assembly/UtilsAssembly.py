@@ -259,6 +259,46 @@ def fixBodyExtraFeatureInSub(doc_name, sub_name):
     return new_sub_name
 
 
+def addTipNameToSub(ref):
+    """
+    Checks if the object referenced is a PartDesign::Body (or a Link to one).
+    If so, it injects the Tip Name before the element name in the sub string.
+    This is required for Gui.Selection to correctly highlight the geometry in the 3D View.
+    Example: 'Body.Face1' -> 'Body.Pad.Face1'
+    Example: 'Link.Face1' -> 'Link.Pad.Face1'
+    """
+    if not isRefValid(ref, 1):
+        return ""
+
+    sub = ref[1][0]
+
+    # Resolve the actual object being pointed to
+    obj = getObject(ref)
+
+    target_body = None
+
+    if obj:
+        if obj.TypeId == "PartDesign::Body":
+            target_body = obj
+        elif isLink(obj):
+            linked = obj.getLinkedObject()
+            if linked and linked.TypeId == "PartDesign::Body":
+                target_body = linked
+
+    if target_body and target_body.Tip:
+        split_sub = sub.split(".")
+        if len(split_sub) > 0:
+            element = split_sub.pop()
+            if not element:  # Empty element name means the whole body is selected
+                return sub
+
+            split_sub.append(target_body.Tip.Name)
+            split_sub.append(element)
+            return ".".join(split_sub)
+
+    return sub
+
+
 # Deprecated. Kept for migrationScript.
 def getObjectInPart(objName, part):
     if part is None:
@@ -343,7 +383,7 @@ def getGlobalPlacement(ref, targetObj=None):
     rootObj = ref[0]
     subName = ref[1][0]
 
-    return App.GeoFeature.getGlobalPlacementOf(targetObj, rootObj, subName)
+    return rootObj.getPlacementOf(subName, targetObj)
 
 
 def isThereOneRootAssembly():
@@ -1099,6 +1139,8 @@ def isRefValid(ref, number_sub):
     if len(ref) != 2:
         return False
     if len(ref[1]) < number_sub:
+        return False
+    if ref[1][0].find("?") != -1:
         return False
 
     return True

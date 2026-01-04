@@ -25,6 +25,7 @@
 import TestApp
 
 from CAMTests.TestCAMSanity import TestCAMSanity
+from CAMTests.TestLinkingGenerator import TestGetLinkingMoves
 from CAMTests.TestPathProfile import TestPathProfile
 
 from CAMTests.TestPathAdaptive import TestPathAdaptive
@@ -36,6 +37,7 @@ from CAMTests.TestPathDressupDogboneII import TestDressupDogboneII
 from CAMTests.TestPathDressupHoldingTags import TestHoldingTags
 from CAMTests.TestPathDrillable import TestPathDrillable
 from CAMTests.TestPathDrillGenerator import TestPathDrillGenerator
+from CAMTests.TestPathFacingGenerator import TestPathFacingGenerator
 from CAMTests.TestPathGeneratorDogboneII import TestGeneratorDogboneII
 from CAMTests.TestPathGeom import TestPathGeom
 from CAMTests.TestPathLanguage import TestPathLanguage
@@ -99,6 +101,7 @@ from CAMTests.TestPathVoronoi import TestPathVoronoi
 
 from CAMTests.TestGenericPost import TestGenericPost
 from CAMTests.TestLinuxCNCPost import TestLinuxCNCPost
+from CAMTests.TestFanucPost import TestFanucPost
 from CAMTests.TestGrblPost import TestGrblPost
 from CAMTests.TestMassoG3Post import TestMassoG3Post
 from CAMTests.TestCentroidPost import TestCentroidPost
@@ -114,3 +117,4 @@ from CAMTests.TestCentroidLegacyPost import TestCentroidLegacyPost
 from CAMTests.TestMach3Mach4LegacyPost import TestMach3Mach4LegacyPost
 
 from CAMTests.TestSnapmakerPost import TestSnapmakerPost
+from CAMTests.TestTSPSolver import TestTSPSolver

@@ -273,22 +273,15 @@ void QGIViewDimension::updateDim()
         return;
     }
 
-    QString labelText =
-        // what about fromStdString?
-        QString::fromUtf8(dim->getFormattedDimensionValue(Format::FORMATTED).c_str());// pre value [unit] post
-    if (dim->isMultiValueSchema()) {
-        labelText =
-            QString::fromUtf8(dim->getFormattedDimensionValue(Format::UNALTERED).c_str());//don't format multis
-    }
-
-    QFont font = datumLabel->getFont();
+    auto labelText = dim->getFormattedDimensionValue(Format::FORMATTED);
+    auto font = datumLabel->getFont();
     font.setFamily(QString::fromUtf8(vp->Font.getValue()));
-    int fontSize = QGIView::exactFontSize(vp->Font.getValue(), vp->Fontsize.getValue());
+    int fontSize = QGIView::exactFontSize(vp->Font.getValue(), std::max(1.0, vp->Fontsize.getValue()));
     font.setPixelSize(fontSize);
     datumLabel->setFont(font);
 
     prepareGeometryChange();
-    datumLabel->setDimString(labelText);
+    datumLabel->setDimString(QString::fromStdString(labelText));
     datumLabel->setToleranceString();
 
     datumLabel->setFramed(dim->TheoreticalExact.getValue());

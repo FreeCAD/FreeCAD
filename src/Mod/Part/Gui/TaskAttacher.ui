@@ -98,7 +98,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Attachment mode</string>
+      <string>Attachment Mode</string>
      </property>
     </widget>
    </item>

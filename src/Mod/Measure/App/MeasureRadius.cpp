@@ -143,7 +143,7 @@ void MeasureRadius::onChanged(const App::Property* prop)
 
 
 //! return a placement (location + orientation) for the first element
-Base::Placement MeasureRadius::getPlacement()
+Base::Placement MeasureRadius::getPlacement() const
 {
     auto loc = getMeasureInfoFirst()->pointOnCurve;
     auto p = Base::Placement();

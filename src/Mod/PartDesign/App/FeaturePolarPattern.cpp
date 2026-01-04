@@ -90,7 +90,6 @@ PolarPattern::PolarPattern()
         "The total angle of the pattern, measured from the first to the last "
         "instance. This is only used when the Mode is set to 'Extent'."
     );
-    Angle.setConstraints(&floatAngle);
     ADD_PROPERTY_TYPE(
         Offset,
         (120.0),
@@ -99,7 +98,6 @@ PolarPattern::PolarPattern()
         "The angular distance between each instance of the pattern. This is only "
         "used when the Mode is set to 'Spacing'."
     );
-    Offset.setConstraints(&floatAngle);
     ADD_PROPERTY_TYPE(
         Spacings,
         ({-1.0, -1.0, -1.0}),
@@ -259,8 +257,8 @@ const std::list<gp_Trsf> PolarPattern::getTransformations(const std::vector<App:
         }
 
         angle = Base::toRadians(angle);
-        if (angle < Precision::Angular()) {
-            throw Base::ValueError("Pattern angle too small");
+        if (fabs(angle) < Precision::Angular()) {
+            throw Base::ValueError("Pattern angle can't be null");
         }
     }
 

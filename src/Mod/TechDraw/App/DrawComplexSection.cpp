@@ -1558,13 +1558,13 @@ DrawComplexSection::findNormalForFace(const TopoDS_Face& face,
                                       const std::vector<std::pair<int, Base::Vector3d>>& normalKV,
                                       const std::vector<TopoDS_Edge>& segmentEdges)
 {
-    int index = getSegmentIndex(face, segmentEdges);
+    size_t index = getSegmentIndex(face, segmentEdges);
     if (index < 0  ||
         index >= segmentEdges.size()) {     //NOLINT
         throw Base::RuntimeError("DCS::findNormalForFace - did not find normal for face!");
     }
     for (auto& keyValue : normalKV) {
-        if (keyValue.first == index) {
+        if (static_cast<size_t>(keyValue.first) == index) {
             return keyValue;
         }
     }

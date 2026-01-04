@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # Script to create a Menger sponge
 # (c) 2012 Werner Mayer LGPL
 

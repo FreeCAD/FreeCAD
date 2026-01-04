@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -2092,6 +2094,16 @@ bool Document::afterRestore(const std::vector<DocumentObject*>& objArray, bool c
             FC_ERR("Failed to restore " << obj->getFullName() << ": " << e.what());
         }
         catch (...) {
+
+            // If a Python exception occurred, it must be cleared immediately.
+            // Otherwise, the interpreter remains in a dirty state, causing
+            // Segfaults later when FreeCAD interacts with Python.
+            if (PyErr_Occurred()) {
+                Base::Console().error("Python error during object restore:\n");
+                PyErr_Print(); // Print the traceback to stderr/Console
+                PyErr_Clear(); // Reset the interpreter state
+            }
+
             d->addRecomputeLog("Unknown exception on restore", obj);
             FC_ERR("Failed to restore " << obj->getFullName() << ": " << "unknown exception");
         }

@@ -45,6 +45,13 @@ from draftutils.translate import translate
 bool(Draft_rc.__name__)
 
 
+def _quantity(st):
+    # workaround for improper handling of plus sign
+    # in Building US unit system
+    # https://github.com/FreeCAD/FreeCAD/issues/11345
+    return U.Quantity(st.replace("+", "--")).Value
+
+
 class TaskPanelPolarArray:
     """TaskPanel code for the PolarArray command.
 
@@ -241,7 +248,7 @@ class TaskPanelPolarArray:
         number = self.form.spinbox_number.value()
 
         angle_str = self.form.spinbox_angle.text()
-        angle = U.Quantity(angle_str).Value
+        angle = _quantity(angle_str)
         return number, angle
 
     def get_center(self):
@@ -249,9 +256,7 @@ class TaskPanelPolarArray:
         c_x_str = self.form.input_c_x.text()
         c_y_str = self.form.input_c_y.text()
         c_z_str = self.form.input_c_z.text()
-        center = App.Vector(
-            U.Quantity(c_x_str).Value, U.Quantity(c_y_str).Value, U.Quantity(c_z_str).Value
-        )
+        center = App.Vector(_quantity(c_x_str), _quantity(c_y_str), _quantity(c_z_str))
         return center
 
     def reset_point(self):

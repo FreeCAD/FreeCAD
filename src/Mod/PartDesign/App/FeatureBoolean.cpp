@@ -40,10 +40,9 @@ using namespace PartDesign;
 
 namespace PartDesign
 {
-
 extern bool getPDRefineModelParameter();
 
-PROPERTY_SOURCE_WITH_EXTENSIONS(PartDesign::Boolean, PartDesign::Feature)
+PROPERTY_SOURCE_WITH_EXTENSIONS(PartDesign::Boolean, PartDesign::FeatureRefine)
 
 const char* Boolean::TypeEnums[] = {"Fuse", "Cut", "Common", nullptr};
 
@@ -51,15 +50,6 @@ Boolean::Boolean()
 {
     ADD_PROPERTY(Type, ((long)0));
     Type.setEnums(TypeEnums);
-
-    ADD_PROPERTY_TYPE(
-        UsePlacement,
-        (0),
-        "Part Design",
-        (App::PropertyType)(App::Prop_None),
-        "Apply the placement of the second ( tool ) object"
-    );
-    this->UsePlacement.setValue(false);
 
     App::GeoFeatureGroupExtension::initExtension(this);
 }
@@ -115,15 +105,6 @@ App::DocumentObjectExecReturn* Boolean::execute()
         );
     }
 
-    // get the body this boolean feature belongs to
-    Part::BodyBase* baseBody = Part::BodyBase::findBodyOf(this);
-
-    if (!baseBody) {
-        return new App::DocumentObjectExecReturn(
-            QT_TRANSLATE_NOOP("Exception", "Cannot do boolean on feature which is not in a body")
-        );
-    }
-
     std::vector<TopoShape> shapes;
     shapes.push_back(baseTopShape);
     for (auto it = tools.begin(); it < tools.end(); ++it) {
@@ -137,36 +118,9 @@ App::DocumentObjectExecReturn* Boolean::execute()
     }
     TopoShape result(baseTopShape);
 
-    Base::Placement bodyPlacement = baseBody->globalPlacement().inverse();
-    for (auto tool : tools) {
-        if (!tool->isDerivedFrom<Part::Feature>()) {
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
-                "Exception",
-                "Cannot do boolean with anything but Part::Feature and its derivatives"
-            ));
-        }
-
-        Part::TopoShape toolShape = static_cast<Part::Feature*>(tool)->Shape.getShape();
-        if (UsePlacement.getValue()) {
-            toolShape.setPlacement(bodyPlacement * toolShape.getPlacement());
-        }
-        TopoDS_Shape shape = toolShape.getShape();
-        TopoDS_Shape boolOp;
-
-        // Must not pass null shapes to the boolean operations
-        if (result.isNull()) {
-            return new App::DocumentObjectExecReturn(
-                QT_TRANSLATE_NOOP("Exception", "Base shape is null")
-            );
-        }
-
-        if (shape.IsNull()) {
-            return new App::DocumentObjectExecReturn(
-                QT_TRANSLATE_NOOP("Exception", "Tool shape is null")
-            );
-        }
-
+    if (!tools.empty()) {
         const char* op = nullptr;
+
         if (type == "Fuse") {
             op = Part::OpCodes::Fuse;
         }
@@ -198,6 +152,8 @@ App::DocumentObjectExecReturn* Boolean::execute()
             );
         }
     }
+
+    result.bakeInTransform();
 
     result = refineShapeIfActive(result);
 
@@ -233,10 +189,9 @@ void Boolean::updatePreviewShape()
         std::vector<TopoShape> shapes;
 
         for (auto& obj : Group.getValues()) {
-            auto shape
-                = getTopoShape(obj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
-            shape.setPlacement(shape.getPlacement().inverse() * globalPlacement());
-            shapes.push_back(shape);
+            shapes.push_back(
+                getTopoShape(obj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform)
+            );
         }
 
         TopoShape result;

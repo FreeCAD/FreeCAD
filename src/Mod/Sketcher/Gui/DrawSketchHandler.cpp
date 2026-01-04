@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -204,7 +206,7 @@ std::vector<Base::Vector2d> CurveConverter::toVector2D(const Part::Geometry* geo
         vector2d.emplace_back(point.x, point.y);
     };
 
-    auto isconic = geometry->isDerivedFrom<Part::GeomConic>();
+    auto isperiodicconic = geometry->is<Part::GeomCircle>() || geometry->is<Part::GeomEllipse>();
     auto isbounded = geometry->isDerivedFrom<Part::GeomBoundedCurve>();
 
     if (geometry->is<Part::GeomLineSegment>()) {  // add a line
@@ -213,7 +215,7 @@ std::vector<Base::Vector2d> CurveConverter::toVector2D(const Part::Geometry* geo
         emplaceasvector2d(geo->getStartPoint());
         emplaceasvector2d(geo->getEndPoint());
     }
-    else if (isconic || isbounded) {
+    else if (isperiodicconic || isbounded) {
 
         auto geo = static_cast<const Part::GeomConic*>(geometry);
 
@@ -225,7 +227,7 @@ std::vector<Base::Vector2d> CurveConverter::toVector2D(const Part::Geometry* geo
         }
 
         // either close the curve for untrimmed conic or set the last point for bounded curves
-        emplaceasvector2d(isconic ? geo->value(0) : geo->value(geo->getLastParameter()));
+        emplaceasvector2d(isperiodicconic ? geo->value(0) : geo->value(geo->getLastParameter()));
     }
 
     return vector2d;

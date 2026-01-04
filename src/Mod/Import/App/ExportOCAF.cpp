@@ -47,7 +47,6 @@
 #include <App/Part.h>
 #include <Mod/Part/App/Interface.h>
 #include <Mod/Part/App/PartFeature.h>
-#include <Mod/PartDesign/App/Body.h>
 
 #include "ExportOCAF.h"
 #include "Tools.h"
@@ -177,26 +176,12 @@ int ExportOCAF::exportObject(
         return_label = root_id;
     }
 
-    // keep a copy of the original object for naming purposes
-    App::DocumentObject* originalObj = obj;
-
-    if (obj->isDerivedFrom(PartDesign::Body::getClassTypeId())) {
-        PartDesign::Body* body = static_cast<PartDesign::Body*>(obj);
-        App::DocumentObject* tip = body->Tip.getValue();
-        if (tip && tip->isDerivedFrom<Part::Feature>()) {
-            // use the tip instead of the body for export
-            obj = tip;
-        }
-    }
-
     if (obj->isDerivedFrom<Part::Feature>()) {
         Part::Feature* part = static_cast<Part::Feature*>(obj);
         std::vector<Base::Color> colors;
         findColors(part, colors);
 
-        const char* label = (originalObj != obj) ? originalObj->Label.getValue() : nullptr;
-        return_label
-            = saveShape(part, colors, hierarchical_label, hierarchical_loc, hierarchical_part, label);
+        return_label = saveShape(part, colors, hierarchical_label, hierarchical_loc, hierarchical_part);
     }
 
     return return_label;
@@ -240,8 +225,7 @@ int ExportOCAF::saveShape(
     const std::vector<Base::Color>& colors,
     std::vector<TDF_Label>& hierarchical_label,
     std::vector<TopLoc_Location>& hierarchical_loc,
-    std::vector<App::DocumentObject*>& hierarchical_part,
-    const char* labelOverride
+    std::vector<App::DocumentObject*>& hierarchical_part
 )
 {
     const TopoDS_Shape& shape = part->Shape.getValue();
@@ -276,8 +260,8 @@ int ExportOCAF::saveShape(
     TDF_Label shapeLabel = aShapeTool->NewShape();
     aShapeTool->SetShape(shapeLabel, baseShape);
 
-    const char* labelToUse = labelOverride ? labelOverride : part->Label.getValue();
-    TDataStd_Name::Set(shapeLabel, TCollection_ExtendedString(labelToUse, true));
+    TDataStd_Name::Set(shapeLabel, TCollection_ExtendedString(part->Label.getValue(), true));
+
 
     /*
         if (keepExplicitPlacement) {

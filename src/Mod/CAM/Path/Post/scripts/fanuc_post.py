@@ -60,14 +60,14 @@ parser.add_argument(
     action="store_true",
     help="don't pop up editor before writing output",
 )
-parser.add_argument("--precision", default="3", help="number of digits of precision, default=3")
+parser.add_argument("--precision", help="number of digits of precision, default=3 (mm) or 4 (in)")
 parser.add_argument(
     "--preamble",
     help='set commands to be issued before the first command, default="G17 G54 G40 G49 G80 G90\\n"',
 )
 parser.add_argument(
     "--postamble",
-    help='set commands to be issued after the last command, default="M05\\nG17 G54 G90 G80 G40\\nM6 T0\\nM2\\n"',
+    help='set commands to be issued after the last command, default="M05\\nG17 G54 G90 G80 G40\\nM30\\n"',
 )
 parser.add_argument(
     "--inches", action="store_true", help="Convert output for US imperial mode (G20)"
@@ -85,6 +85,11 @@ parser.add_argument(
     action="store_true",
     help="suppress tool length offset (G43) following tool changes",
 )
+parser.add_argument(
+    "--end-spindle-empty",
+    action="store_true",
+    help="place last tool in tool change carousel before postamble",
+)
 
 TOOLTIP_ARGS = parser.format_help()
 
@@ -101,6 +106,8 @@ OUTPUT_DOUBLES = (
 COMMAND_SPACE = " "
 LINENR = 100  # line number starting value
 
+END_SPINDLE_EMPTY = False
+
 # These globals will be reflected in the Machine configuration of the project
 UNITS = "G21"  # G21 for metric, G20 for us standard
 UNIT_SPEED_FORMAT = "mm/min"
@@ -116,14 +123,13 @@ PRECISION = 3
 tapSpeed = 0
 
 # Preamble text will appear at the beginning of the GCODE output file.
-PREAMBLE = """G17 G54 G40 G49 G80 G90
+DEFAULT_PREAMBLE = """G17 G54 G40 G49 G80 G90
 """
 
 # Postamble text will appear following the last operation.
-POSTAMBLE = """M05
+DEFAULT_POSTAMBLE = """M05
 G17 G54 G90 G80 G40
-M6 T0
-M2
+M30
 """
 
 # Pre operation text will be inserted before every operation
@@ -133,7 +139,9 @@ PRE_OPERATION = """"""
 POST_OPERATION = """"""
 
 # Tool Change commands will be inserted before a tool change
-TOOL_CHANGE = """"""
+# Move to tool change Z position
+TOOL_CHANGE = """G28 G91 Z0
+"""
 
 
 def processArguments(argstring):
@@ -149,35 +157,66 @@ def processArguments(argstring):
     global UNIT_FORMAT
     global MODAL
     global USE_TLO
+    global END_SPINDLE_EMPTY
     global OUTPUT_DOUBLES
+    global LINENR
 
     try:
         args = parser.parse_args(shlex.split(argstring))
         if args.no_header:
             OUTPUT_HEADER = False
+        else:
+            OUTPUT_HEADER = True
         if args.no_comments:
             OUTPUT_COMMENTS = False
+        else:
+            OUTPUT_COMMENTS = True
         if args.line_numbers:
             OUTPUT_LINE_NUMBERS = True
+            LINENR = 100
+        else:
+            OUTPUT_LINE_NUMBERS = False
         if args.no_show_editor:
             SHOW_EDITOR = False
-        print("Show editor = %d" % SHOW_EDITOR)
-        PRECISION = args.precision
+        else:
+            SHOW_EDITOR = True
+        print("Show editor = %s" % SHOW_EDITOR)
         if args.preamble is not None:
             PREAMBLE = args.preamble.replace("\\n", "\n")
+        else:
+            PREAMBLE = DEFAULT_PREAMBLE
         if args.postamble is not None:
             POSTAMBLE = args.postamble.replace("\\n", "\n")
+        else:
+            POSTAMBLE = DEFAULT_POSTAMBLE
         if args.inches:
             UNITS = "G20"
             UNIT_SPEED_FORMAT = "in/min"
             UNIT_FORMAT = "in"
             PRECISION = 4
+        else:
+            UNITS = "G21"
+            UNIT_SPEED_FORMAT = "mm/min"
+            UNIT_FORMAT = "mm"
+            PRECISION = 3
+        if args.precision:
+            PRECISION = int(args.precision)
         if args.no_modal:
             MODAL = False
+        else:
+            MODAL = True
         if args.no_tlo:
             USE_TLO = False
+        else:
+            USE_TLO = True
         if args.no_axis_modal:
             OUTPUT_DOUBLES = True
+        else:
+            OUTPUT_DOUBLES = False
+        if args.end_spindle_empty:
+            END_SPINDLE_EMPTY = True
+        else:
+            END_SPINDLE_EMPTY = False
 
     except Exception:
         return False
@@ -204,20 +243,20 @@ def export(objectslist, filename, argstring):
     print("postprocessing...")
     gcode = ""
 
+    gcode += "%\n"
+
     # write header
     if OUTPUT_HEADER:
-        gcode += "%\n"
-        gcode += ";\n"
+        # Get current version info
+        major = int(FreeCAD.ConfigGet("BuildVersionMajor"))
+        minor = int(FreeCAD.ConfigGet("BuildVersionMinor"))
+
+        # the filename variable always contain "-", so unable to
+        # provide more accurate information.
+        gcode += "(" + "FREECAD-FILENAME-GOES-HERE" + ", " + "JOB-NAME-GOES-HERE" + ")\n"
         gcode += (
-            os.path.split(filename)[-1]
-            + " ("
-            + "FREECAD-FILENAME-GOES-HERE"
-            + ", "
-            + "JOB-NAME-GOES-HERE"
-            + ")\n"
+            linenumber() + "(POST PROCESSOR: FANUC USING FREECAD %d.%d" % (major, minor) + ")\n"
         )
-        gcode += linenumber() + "(" + filename.upper() + ",EXPORTED BY FREECAD!)\n"
-        gcode += linenumber() + "(POST PROCESSOR: " + __name__.upper() + ")\n"
         gcode += linenumber() + "(OUTPUT TIME:" + str(now).upper() + ")\n"
 
     # Write the preamble
@@ -229,8 +268,20 @@ def export(objectslist, filename, argstring):
 
     for obj in objectslist:
 
+        # to stay compatible with FreeCAD 1.0
+        def activeForOp(obj):
+            # The activeForOp method is available since 2025-05-04 /
+            # commit 1e87d8e6681b755b9757f94b1201e50eb84b28a2
+            if hasattr(PathUtil, "activeForOp"):
+                return PathUtil.activeForOp(obj)
+            if hasattr(obj, "Active"):
+                return obj.Active
+            if hasattr(obj, "Base") and hasattr(obj.Base, "Active"):
+                return obj.Base.Active
+            return True
+
         # Skip inactive operations
-        if not PathUtil.activeForOp(obj):
+        if not activeForOp(obj):
             continue
 
         # do the pre_op
@@ -240,8 +291,26 @@ def export(objectslist, filename, argstring):
         for line in PRE_OPERATION.splitlines(True):
             gcode += linenumber() + line
 
+        # to stay compatible with FreeCAD 1.0
+        def coolantModeForOp(obj):
+            # The coolantModeForOp method is available since
+            # 2025-05-04 / commit
+            # 1e87d8e6681b755b9757f94b1201e50eb84b28a2
+            if hasattr(PathUtil, "coolantModeForOp"):
+                return PathUtil.coolantModeForOp(obj)
+            if (
+                hasattr(obj, "CoolantMode")
+                or hasattr(obj, "Base")
+                and hasattr(obj.Base, "CoolantMode")
+            ):
+                if hasattr(obj, "CoolantMode"):
+                    return obj.CoolantMode
+                else:
+                    return obj.Base.CoolantMode
+            return "None"
+
         # get coolant mode
-        coolantMode = PathUtil.coolantModeForOp(obj)
+        coolantMode = coolantModeForOp(obj)
 
         # turn coolant on if required
         if OUTPUT_COMMENTS:
@@ -267,6 +336,13 @@ def export(objectslist, filename, argstring):
                 gcode += linenumber() + "(COOLANT OFF:" + coolantMode.upper() + ")\n"
             gcode += linenumber() + "M9" + "\n"
 
+    if END_SPINDLE_EMPTY:
+        if OUTPUT_COMMENTS:
+            gcode += "(BEGIN MAKING SPINDLE EMPTY)\n"
+        gcode += linenumber() + "M05\n"
+        for line in TOOL_CHANGE.splitlines(True):
+            gcode += linenumber() + line
+        gcode += linenumber() + "M6 T0\n"
     # do the post_amble
     if OUTPUT_COMMENTS:
         gcode += "(BEGIN POSTAMBLE)\n"
@@ -276,7 +352,13 @@ def export(objectslist, filename, argstring):
 
     if FreeCAD.GuiUp and SHOW_EDITOR:
         dia = PostUtils.GCodeEditorDialog()
-        dia.editor.setText(gcode)
+
+        # Workaround for 1.1 while we wait for
+        # https://github.com/FreeCAD/FreeCAD/pull/26008 to be merged.
+        if hasattr(dia.editor, "setPlainText"):
+            dia.editor.setPlainText(gcode)
+        else:
+            dia.editor.setText(gcode)
         result = dia.exec_()
         if result:
             final = dia.editor.toPlainText()
@@ -392,6 +474,7 @@ def parse(pathobj):
         for index, c in enumerate(commands):
 
             outstring = []
+            outsuffix = []
             command = c.Name
             if index + 1 == len(commands):
                 nextcommand = ""
@@ -409,17 +492,19 @@ def parse(pathobj):
                 if command == "G0":
                     continue
 
-            # if it's a tap, we rigid tap, so don't start the spindle yet...
+            # if tool a tap, we thread tap, so stop the spindle for now.
+            # This only trigger when pathobj is a ToolController.
             if command == "M03" or command == "M3":
-                if pathobj.Tool.ShapeID.lower() == "tap":
+                if hasattr(pathobj, "Tool") and pathobj.Tool.ShapeName.lower() == "tap":
                     tapSpeed = int(pathobj.SpindleSpeed)
                     continue
 
-            # convert drill cycles to tap cycles if tool is a tap
+            # Convert drill cycles to tap cycles if tool is a tap.
+            # This only trigger when pathobj is a Operation.
             if command == "G81" or command == "G83":
                 if (
                     hasattr(pathobj, "ToolController")
-                    and pathobj.ToolController.Tool.ShapeID.lower() == "tap"
+                    and pathobj.ToolController.Tool.ShapeName.lower() == "tap"
                 ):
                     command = "G84"
                     out += linenumber() + "G95\n"
@@ -569,14 +654,14 @@ def parse(pathobj):
             # Check for Tool Change:
             if command == "M6":
                 # stop the spindle
-                out += linenumber() + "M5\n"
+                out += linenumber() + "M05\n"
                 for line in TOOL_CHANGE.splitlines(True):
                     out += linenumber() + line
 
                 # add height offset
                 if USE_TLO:
-                    tool_height = "\nG43 H" + str(int(c.Parameters["T"]))
-                    outstring.append(tool_height)
+                    outsuffix.append("G91 G0 G43 G54 Z-[#[2000+#4120]] H#4120")
+                    outsuffix.append("G90")
 
             if command == "message":
                 if OUTPUT_COMMENTS is False:
@@ -590,9 +675,11 @@ def parse(pathobj):
                     outstring.insert(0, (linenumber()))
 
                 # append the line to the final output
-                for w in outstring:
-                    out += w.upper() + COMMAND_SPACE
+                out += COMMAND_SPACE.join(outstring).upper()
                 out = out.strip() + "\n"
+            if len(outsuffix) >= 1:
+                for line in outsuffix:
+                    out += linenumber() + line + "\n"
 
         return out
 

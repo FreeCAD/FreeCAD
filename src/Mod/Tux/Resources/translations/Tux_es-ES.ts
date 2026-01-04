@@ -61,7 +61,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="653"/>
       <source>Settings</source>
-      <translation>Ajustes</translation>
+      <translation>Configuración</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="654"/>

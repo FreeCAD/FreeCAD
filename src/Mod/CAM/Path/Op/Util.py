@@ -22,7 +22,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import Path
 import math
@@ -56,12 +55,12 @@ def debugEdge(label, e):
         return
     p0 = e.valueAt(e.FirstParameter)
     p1 = e.valueAt(e.LastParameter)
-    if Part.Line == type(e.Curve):
+    if isinstance(e.Curve, Part.Line):
         print(
             "%s Part.makeLine((%.2f, %.2f, %.2f), (%.2f, %.2f, %.2f))"
             % (label, p0.x, p0.y, p0.z, p1.x, p1.y, p1.z)
         )
-    elif Part.Circle == type(e.Curve):
+    elif isinstance(e.Curve, Part.Circle):
         r = e.Curve.Radius
         c = e.Curve.Center
         a = e.Curve.Axis
@@ -139,9 +138,9 @@ def _isWireClockwise(w):
     # handle wires consisting of a single circle or 2 edges where one is an arc.
     # in both cases, because the edges are expected to be oriented correctly, the orientation can be
     # determined by looking at (one of) the circle curves.
-    if 2 >= len(w.Edges) and Part.Circle == type(w.Edges[0].Curve):
+    if len(w.Edges) <= 2 and isinstance(w.Edges[0].Curve, Part.Circle):
         return 0 > w.Edges[0].Curve.Axis.z
-    if 2 == len(w.Edges) and Part.Circle == type(w.Edges[1].Curve):
+    if len(w.Edges) == 2 and isinstance(w.Edges[1].Curve, Part.Circle):
         return 0 > w.Edges[1].Curve.Axis.z
 
     # for all other wires we presume they are polygonial and refer to Gauss
@@ -183,10 +182,10 @@ def offsetWire(wire, base, offset, forward, Side=None):
     """
     Path.Log.track("offsetWire")
 
-    if 1 == len(wire.Edges):
+    if len(wire.Edges) == 1:
         edge = wire.Edges[0]
         curve = edge.Curve
-        if Part.Circle == type(curve) and wire.isClosed():
+        if isinstance(curve, Part.Circle) and wire.isClosed():
             # it's a full circle and there are some problems with that, see
             # https://www.freecad.org/wiki/Part%20Offset2D
             # it's easy to construct them manually though
@@ -205,7 +204,7 @@ def offsetWire(wire, base, offset, forward, Side=None):
 
             return Part.Wire([new_edge])
 
-        if Part.Circle == type(curve) and not wire.isClosed():
+        if isinstance(curve, Part.Circle) and not wire.isClosed():
             # Process arc segment
             z = -1 if forward else 1
             l1 = math.sqrt(
@@ -257,7 +256,7 @@ def offsetWire(wire, base, offset, forward, Side=None):
 
             return Part.Wire([edge])
 
-        if Part.Line == type(curve) or Part.LineSegment == type(curve):
+        if isinstance(curve, (Part.Line, Part.LineSegment)):
             # offsetting a single edge doesn't work because there is an infinite
             # possible planes into which the edge could be offset
             # luckily, the plane here must be the XY-plane ...
@@ -351,7 +350,7 @@ def offsetWire(wire, base, offset, forward, Side=None):
 
     def isCircleAt(edge, center):
         """isCircleAt(edge, center) ... helper function returns True if edge is a circle at the given center."""
-        if Part.Circle == type(edge.Curve) or Part.ArcOfCircle == type(edge.Curve):
+        if isinstance(edge.Curve, (Part.Circle, Part.ArcOfCircle)):
             return Path.Geom.pointsCoincide(edge.Curve.Center, center)
         return False
 

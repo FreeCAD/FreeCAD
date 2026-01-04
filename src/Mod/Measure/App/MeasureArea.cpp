@@ -139,7 +139,7 @@ void MeasureArea::onChanged(const App::Property* prop)
 }
 
 
-Base::Placement MeasureArea::getPlacement()
+Base::Placement MeasureArea::getPlacement() const
 {
     const std::vector<App::DocumentObject*>& objects = Elements.getValues();
     const std::vector<std::string>& subElements = Elements.getSubValues();

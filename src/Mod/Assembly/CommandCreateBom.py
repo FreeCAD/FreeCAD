@@ -225,7 +225,7 @@ class TaskAssemblyCreateBom(QtCore.QObject):
         noneAdded = True
         for name in TranslatedColumnNames:
             if name not in current_columns:
-                action = QtWidgets.QAction(f"Add '{name}' column", self)
+                action = QtGui.QAction(f"Add '{name}' column", self)
                 action.triggered.connect(partial(self.addColItem, name))
                 menu.addAction(action)
                 noneAdded = False
@@ -235,7 +235,7 @@ class TaskAssemblyCreateBom(QtCore.QObject):
             return
 
         # Add the action for adding a custom column
-        action = QtWidgets.QAction("Add custom column", self)
+        action = QtGui.QAction("Add custom column", self)
         action.triggered.connect(self.addColumn)
         menu.addAction(action)
 

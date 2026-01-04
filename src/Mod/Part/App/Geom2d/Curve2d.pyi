@@ -1,3 +1,7 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export, constmethod
 from Base.Vector import Vector
 from Part.App.Geom2d.Geometry2d import Geometry2d
@@ -103,13 +107,13 @@ class Curve2d(Geometry2d):
         ...
 
     @overload
-    def length(self) -> float: ...
+    def length(self, /) -> float: ...
     @overload
-    def length(self, uMin: float) -> float: ...
+    def length(self, uMin: float, /) -> float: ...
     @overload
-    def length(self, uMin: float, uMax: float) -> float: ...
+    def length(self, uMin: float, uMax: float, /) -> float: ...
     @overload
-    def length(self, uMin: float, uMax: float, Tol: float) -> float: ...
+    def length(self, uMin: float, uMax: float, Tol: float, /) -> float: ...
     def length(self, *args: float) -> float:
         """
         Computes the length of a curve
@@ -118,9 +122,9 @@ class Curve2d(Geometry2d):
         ...
 
     @overload
-    def parameterAtDistance(self, abscissa: float) -> float: ...
+    def parameterAtDistance(self, abscissa: float, /) -> float: ...
     @overload
-    def parameterAtDistance(self, abscissa: float, startingParameter: float) -> float: ...
+    def parameterAtDistance(self, abscissa: float, startingParameter: float, /) -> float: ...
     def parameterAtDistance(self, *args: float) -> float:
         """
         Returns the parameter on the curve of a point at
@@ -129,19 +133,19 @@ class Curve2d(Geometry2d):
         """
         ...
 
-    def value(self, u: float) -> Vector:
+    def value(self, u: float, /) -> Vector:
         """
         Computes the point of parameter u on this curve
         """
         ...
 
-    def tangent(self, u: float) -> Vector:
+    def tangent(self, u: float, /) -> Vector:
         """
         Computes the tangent of parameter u on this curve
         """
         ...
 
-    def parameter(self, point: Vector) -> float:
+    def parameter(self, point: Vector, /) -> float:
         """
         Returns the parameter on the curve of the
         nearest orthogonal projection of the point.
@@ -149,37 +153,37 @@ class Curve2d(Geometry2d):
         ...
 
     @constmethod
-    def normal(self, pos: float) -> Vector:
+    def normal(self, pos: float, /) -> Vector:
         """
         Vector = normal(pos) - Get the normal vector at the given parameter [First|Last] if defined.
         """
         ...
 
     @constmethod
-    def curvature(self, pos: float) -> float:
+    def curvature(self, pos: float, /) -> float:
         """
         Float = curvature(pos) - Get the curvature at the given parameter [First|Last] if defined.
         """
         ...
 
     @constmethod
-    def centerOfCurvature(self, pos: float) -> Vector:
+    def centerOfCurvature(self, pos: float, /) -> Vector:
         """
         Vector = centerOfCurvature(float pos) - Get the center of curvature at the given parameter [First|Last] if defined.
         """
         ...
 
     @constmethod
-    def intersectCC(self, other: "Curve2d") -> List[Vector]:
+    def intersectCC(self, other: "Curve2d", /) -> List[Vector]:
         """
         Returns all intersection points between this curve and the given curve.
         """
         ...
 
     @overload
-    def toBSpline(self) -> BSplineCurve: ...
+    def toBSpline(self, /) -> BSplineCurve: ...
     @overload
-    def toBSpline(self, First: float, Last: float) -> BSplineCurve: ...
+    def toBSpline(self, First: float, Last: float, /) -> BSplineCurve: ...
     def toBSpline(self, *args: float) -> BSplineCurve:
         """
         Converts a curve of any type (only part from First to Last)
@@ -188,7 +192,7 @@ class Curve2d(Geometry2d):
         ...
 
     def approximateBSpline(
-        self, Tolerance: float, MaxSegments: int, MaxDegree: int, Order: str = "C2"
+        self, Tolerance: float, MaxSegments: int, MaxDegree: int, Order: str = "C2", /
     ) -> BSplineCurve:
         """
         Approximates a curve of any type to a B-Spline curve

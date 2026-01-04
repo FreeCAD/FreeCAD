@@ -203,6 +203,8 @@ bool PropertyItemDelegate::eventFilter(QObject* o, QEvent* ev)
             auto parentEditor = qobject_cast<PropertyEditor*>(this->parent());
             if (parentEditor && parentEditor->activeEditor == checkBox) {
                 checkBox->toggle();
+                // Delay valueChanged to ensure proper recomputation
+                QTimer::singleShot(0, this, [this]() { valueChanged(); });
             }
         }
     }
@@ -253,6 +255,19 @@ QWidget* PropertyItemDelegate::createEditor(
         parentEditor->closeEditor();
     }
 
+    auto createEditor = [this, childItem, parent]() {
+        // Can't use a terniary here because the lambdas have different types.
+        if (qobject_cast<PropertyBoolItem*>(childItem)) {
+            // Boolean properties use a checkbox that is basically artificial
+            // (it is not rendered).  Therefore, the callback is handled in
+            // eventFilter()
+            return childItem->createEditor(parent, []() noexcept {});
+        }
+        return childItem->createEditor(parent, [this]() {
+            const_cast<PropertyItemDelegate*>(this)->valueChanged();  // NOLINT
+        });
+    };
+
     FC_LOG("create editor " << index.row() << "," << index.column());
     QWidget* editor = nullptr;
     expressionEditor = nullptr;
@@ -270,10 +285,7 @@ QWidget* PropertyItemDelegate::createEditor(
             propertyEditor = editor;
         }
         else {
-            editor = childItem->createEditor(parent, [this]() {
-                const_cast<PropertyItemDelegate*>(this)->valueChanged();  // NOLINT
-            });
-            propertyEditor = editor;
+            propertyEditor = editor = createEditor();
         }
     }
     if (editor) {

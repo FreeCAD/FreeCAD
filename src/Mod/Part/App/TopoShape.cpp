@@ -295,8 +295,10 @@ TopoShape::TopoShape(const TopoShape& shape)
     *this = shape;
 }
 
-std::pair<std::string, unsigned long> TopoShape::getElementTypeAndIndex(const char* Name)
+std::pair<std::string, unsigned long> TopoShape::getElementTypeAndIndex(const char* RawName)
 {
+    std::string strName = Data::oldElementName(RawName);
+    const char* Name = strName.c_str();
     int index = 0;
     std::string element;
     boost::regex ex("^(Face|Edge|Vertex)([1-9][0-9]*)$");
@@ -3265,6 +3267,30 @@ void TopoShape::transformGeometry(const Base::Matrix4D& rclMat)
     catch (const Standard_Failure& e) {
         throw Base::CADKernelError(e.GetMessageString());
     }
+}
+
+void TopoShape::bakeInTransform()
+{
+    if (getShape().IsNull()) {
+        return;
+    }
+
+    if (shapeType() != TopAbs_COMPOUND) {
+        transformGeometry(getTransform());
+        setTransform(Base::Matrix4D {});
+        return;
+    }
+
+    TopoShape result;
+    std::vector<TopoShape> shapes;
+
+    for (auto& subshape : getSubTopoShapes()) {
+        subshape.bakeInTransform();
+        shapes.push_back(subshape);
+    }
+
+    result.makeCompound(shapes);
+    *this = result;
 }
 
 TopoDS_Shape TopoShape::transformGShape(const Base::Matrix4D& rclTrf, bool copy) const

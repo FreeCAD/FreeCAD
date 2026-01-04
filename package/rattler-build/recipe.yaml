@@ -102,6 +102,7 @@ requirements:
     - fmt
     - freetype
     - hdf5
+    - lark
     - libboost-devel
     - matplotlib-base
     - noqt5
@@ -145,7 +146,6 @@ requirements:
     - gmsh
     - graphviz
     - ifcopenshell
-    - jinja2
     - lark
     - lxml
     - matplotlib-base

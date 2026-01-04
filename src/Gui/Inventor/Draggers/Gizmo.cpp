@@ -179,7 +179,9 @@ void LinearGizmo::setDragLength(double dragLength)
 void LinearGizmo::setGeometryScale(float scale)
 {
     dragger->geometryScale = SbVec3f(scale, scale, scale);
-    dragger->translationIncrement = std::pow(10.0f, std::floor(std::log10(scale)));
+    // Scales the dragger increment in exponents of 10 based on the zoom level (scale)
+    constexpr float base = 10.0F;
+    dragger->translationIncrement = multFactor * std::pow(base, std::floor(std::log10(scale)));
 }
 
 SoLinearDraggerContainer* LinearGizmo::getDraggerContainer()

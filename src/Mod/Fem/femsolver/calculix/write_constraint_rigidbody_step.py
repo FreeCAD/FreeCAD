@@ -23,7 +23,7 @@
 
 __title__ = "FreeCAD FEM calculix constraint rigid body"
 __author__ = "Ajinkya Dahale"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 
 
 import FreeCAD

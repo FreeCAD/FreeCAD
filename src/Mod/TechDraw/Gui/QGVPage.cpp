@@ -310,24 +310,6 @@ void QGVPage::drawBackground(QPainter* painter, const QRectF&)
     painter->drawRect(
         viewport()->rect().adjusted(-2, -2, 2, 2));//just bigger than viewport to prevent artifacts
 
-    // Default to A3 landscape, though this is currently relevant
-    // only for opening corrupt docs, etc.
-    float pageWidth = 420, pageHeight = 297;
-
-    if (m_vpPage->getDrawPage()->hasValidTemplate()) {
-        pageWidth = Rez::guiX(m_vpPage->getDrawPage()->getPageWidth());
-        pageHeight = Rez::guiX(m_vpPage->getDrawPage()->getPageHeight());
-    }
-
-    // Draw the white page
-    QRectF paperRect(0, -pageHeight, pageWidth, pageHeight);
-    QPolygon poly = mapFromScene(paperRect);
-
-    QBrush pageBrush(PreferencesGui::pageQColor());
-    painter->setBrush(pageBrush);
-
-    painter->drawRect(poly.boundingRect());
-
     painter->restore();
 }
 

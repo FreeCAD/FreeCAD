@@ -1,0 +1,24 @@
+{
+    "name": "Room and Area Schedule",
+    "description": "A standard schedule listing all rooms and their areas, with a final total.",
+    "statements": [
+        {
+            "description": "Room List",
+            "query_string": "SELECT Label, Area FROM document WHERE IfcType = 'Space'",
+            "use_description_as_header": true,
+            "include_column_names": true,
+            "add_empty_row_after": false,
+            "print_results_in_bold": false,
+            "is_pipelined": false
+        },
+        {
+            "description": "Total Living Area",
+            "query_string": "SELECT 'Total', SUM(Area) FROM document WHERE IfcType = 'Space'",
+            "use_description_as_header": false,
+            "include_column_names": false,
+            "add_empty_row_after": false,
+            "print_results_in_bold": true,
+            "is_pipelined": false
+        }
+    ]
+}

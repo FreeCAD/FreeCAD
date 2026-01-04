@@ -343,7 +343,7 @@ class TestArchWindow(TestArchBase.TestArchBase):
 
         Notes:
         - The clone's name is automatically generated, the `name` argument is ignored.
-        - The clone's WindowParts, Sill and other properties are always empty, despite the original having them.
+        - The clone's WindowParts, SillHeight and other properties are always empty, despite the original having them.
 
         """
         sketch = self._create_sketch_with_wires("OriginalSketch", [(0, 0, 600, 800)])
@@ -352,7 +352,7 @@ class TestArchWindow(TestArchBase.TestArchBase):
             baseobj=sketch, parts=original_parts, name="OriginalWindow"
         )
         original_window.Frame = 60.0
-        original_window.Sill = 100.0
+        original_window.SillHeight = 100.0
         self.document.recompute()
 
         self.assertEqual(original_window.Label, "OriginalWindow")

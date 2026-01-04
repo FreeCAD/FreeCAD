@@ -35,8 +35,6 @@
 #include "Exception.h"
 #include "Quantity.h"
 
-#include "Console.h"
-
 using Base::UnitsSchema;
 using Base::UnitsSchemaSpec;
 
@@ -144,35 +142,4 @@ std::string UnitsSchema::getDescription() const
 int UnitsSchema::getNum() const
 {
     return static_cast<int>(spec.num);
-}
-
-
-//! return the unit text for this quantity in this schema. ex 10 mm => "mm"
-//! a more general approach than getBasicLengthUnit.
-//! TODO: some common code here with translate()
-std::string UnitsSchema::getUnitText(const Base::Quantity& quant) const
-{
-    std::string typeString = quant.getUnit().getTypeString();  // "Area", "Mass", ...
-    const auto value = quant.getValue();
-
-    // TODO: some common code here with translate()
-    if (!spec.translationSpecs.contains(typeString)) {
-        Base::Console().log("Schema %s has no entry for %s\n", getName().c_str(), typeString.c_str());
-        return {};
-    }
-    auto unitSpecs = spec.translationSpecs.at(typeString);
-
-    auto isSuitable = [&](const UnitTranslationSpec& row) {
-        return row.threshold > value || row.threshold == 0;
-    };
-
-    const auto unitSpec = std::ranges::find_if(unitSpecs, isSuitable);
-    if (unitSpec == unitSpecs.end()) {
-        throw RuntimeError(
-            "Suitable threshold not found (2). Schema: " + spec.name
-            + " value: " + std::to_string(value)
-        );
-    }
-
-    return unitSpec->unitString;
 }

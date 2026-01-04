@@ -21,7 +21,7 @@
     <message>
       <location filename="../../UnitsSchemasData.h" line="642"/>
       <source>Imperial for Civil Eng (ft, lb, mph)</source>
-      <translation type="unfinished">Imperial for Civil Eng (ft, lb, mph)</translation>
+      <translation>Angloamerikanska gradnja (ft, ft/sec)</translation>
     </message>
     <message>
       <location filename="../../UnitsSchemasData.h" line="75"/>

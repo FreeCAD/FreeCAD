@@ -24,8 +24,11 @@
 
 #include <BRepAlgo.hxx>
 #include <BRepFilletAPI_MakeFillet.hxx>
+#include <BRep_Tool.hxx>
+#include <Geom_Circle.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Edge.hxx>
+#include <TopExp_Explorer.hxx>
 #include <TopTools_ListOfShape.hxx>
 #include <ShapeFix_Shape.hxx>
 #include <ShapeFix_ShapeTolerance.hxx>
@@ -105,6 +108,12 @@ App::DocumentObjectExecReturn* Fillet::execute()
 
     try {
         TopoShape shape(0);  //,getDocument()->getStringHasher());
+
+        // Add signal handler for segfault protection
+#if defined(__GNUC__) && defined(FC_OS_LINUX)
+        Base::SignalException se;
+#endif
+
         shape.makeElementFillet(baseShape, edges, Radius.getValue(), Radius.getValue());
         if (shape.isNull()) {
             return new App::DocumentObjectExecReturn(
@@ -138,8 +147,19 @@ App::DocumentObjectExecReturn* Fillet::execute()
         this->Shape.setValue(shape);
         return App::DocumentObject::StdReturn;
     }
+    catch (Base::Exception& e) {
+        return new App::DocumentObjectExecReturn(e.what());
+    }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());
+    }
+    catch (...) {
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
+            "Exception",
+            "Fillet operation failed. The selected edges may contain geometry that cannot be "
+            "filleted together. "
+            "Try filleting edges individually or with a smaller radius."
+        ));
     }
 }
 

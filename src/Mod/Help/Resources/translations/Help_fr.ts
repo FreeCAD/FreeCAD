@@ -17,8 +17,7 @@
       <location filename="../../dlgPreferencesHelp.ui" line="29"/>
       <source>Fetches the documentation from pages rendered on GitHub.
 This is currently not available.</source>
-      <translation>Récupère la documentation à partir des pages affichées sur GitHub.
-Ce n'est actuellement pas disponible.</translation>
+      <translation>Récupère la documentation à partir des pages affichées sur GitHub. Ce n'est actuellement pas disponible.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="46"/>
@@ -57,7 +56,7 @@ Documentation can be downloaded for offline use via the Addon Manager and instal
 &quot;offline-documentation&quot; addon. If this field is left blank, FreeCAD will
 automatically search for the help files at the default location
 ($USERAPPDATADIR/Mod/offline-documentation).</source>
-      <translation>Définissez ici une URL personnalisée ou le dossier où se trouvent les fichiers d'aide.
+      <translation>Définir ici une URL personnalisée ou le dossier où se trouvent les fichiers d'aide.
 La documentation peut être téléchargée pour une utilisation hors ligne via le gestionnaire des extensions et l'installation de l'extension « offline-documentation ». Si ce champ est laissé vide, FreeCAD recherchera automatiquement les fichiers d'aide à l'emplacement par défaut
 ($USERAPPDATADIR/Mod/offline-documentation).</translation>
     </message>
@@ -93,8 +92,8 @@ custom stylesheet below and can look nicer than the wiki option. The &apos;Markd
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="170"/>
       <source>Note: if PySide Web components are not found on the system, help pages will open in the default web browser regardless of the options below.</source>
-      <translation>Remarque : si les composants Web de PySide ne sont pas détectés sur le système, les pages
-d'aide s'ouvriront dans le navigateur par défaut, quelles que soient les options ci-dessous.</translation>
+      <translation>Remarque : si les composants Web de PySide ne sont pas détectés sur le système, les pages d'aide s'ouvriront dans le navigateur par
+défaut, quelles que soient les options ci-dessous.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="180"/>
@@ -127,8 +126,8 @@ Cela nécessite le composant QtWebengineWidgets de PySide.</translation>
       <location filename="../../dlgPreferencesHelp.ui" line="256"/>
       <source>Specify the path to an alternative CSS file for styling Markdown pages.
 This only applies if Markdown is selected above.</source>
-      <translation>Spécifiez le chemin d'accès à un fichier CSS alternatif pour la mise en forme des pages Markdown.
-Cela ne s'applique que si Markdown est sélectionné ci-dessus.</translation>
+      <translation>Spécifier le chemin d'accès à un fichier CSS alternatif pour la mise en forme des pages Markdown. Cela ne s'applique que si Markdown est
+sélectionné ci-dessus.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="202"/>
@@ -151,14 +150,12 @@ Cela ne s'applique que si Markdown est sélectionné ci-dessus.</translation>
     <message>
       <location filename="../../Help.py" line="75"/>
       <source>Contents for this page could not be retrieved. Please check settings under menu Edit → Preferences → General → Help</source>
-      <translation>Le contenu de cette page n'a pas pu être récupéré.
-Vérifier les paramètres dans le menu Édition → Préférences → Général → Aide.</translation>
+      <translation>Le contenu de cette page n'a pas pu être récupéré. Vérifier les paramètres dans le menu Édition → Préférences → Général → Aide.</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="79"/>
       <source>Help files location could not be determined. Please check settings under menu Edit → Preferences → General → Help</source>
-      <translation>L'emplacement des fichiers d'aide n'a pas pu être déterminé.
-Vérifier les paramètres dans le menu Édition → Préférences → Général → Aide.</translation>
+      <translation>L'emplacement des fichiers d'aide n'a pas pu être déterminé. Vérifier les paramètres dans le menu Édition → Préférences → Général → Aide.</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="83"/>

@@ -4,17 +4,17 @@
   <context>
     <name>CmdMeshPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="273"/>
+      <location filename="../../Command.cpp" line="276"/>
       <source>MeshPart</source>
       <translation>Полигональная сетка Детали</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="274"/>
+      <location filename="../../Command.cpp" line="277"/>
       <source>Cross-Sections</source>
       <translation>Поперечные сечения</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="275"/>
+      <location filename="../../Command.cpp" line="278"/>
       <source>Applies cross-sections to the mesh</source>
       <translation>Создаёт поперечные сечения сетки</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdMeshPartCurveOnMesh</name>
     <message>
-      <location filename="../../Command.cpp" line="309"/>
+      <location filename="../../Command.cpp" line="312"/>
       <source>Mesh</source>
       <translation>Сетка</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="310"/>
+      <location filename="../../Command.cpp" line="313"/>
       <source>Curve on Mesh</source>
       <translation>Кривая на сетке</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="311"/>
+      <location filename="../../Command.cpp" line="314"/>
       <source>Creates an approximated curve on top of a mesh object</source>
       <translation>Создаёт приблизительную кривую на поверхности объекта сетки</translation>
     </message>
@@ -58,17 +58,17 @@
   <context>
     <name>CmdMeshPartSection</name>
     <message>
-      <location filename="../../Command.cpp" line="189"/>
+      <location filename="../../Command.cpp" line="190"/>
       <source>Mesh</source>
       <translation>Полигональная сетка</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="191"/>
+      <location filename="../../Command.cpp" line="192"/>
       <source>Creates a section from a mesh and plane</source>
       <translation>Создаёт сечение из сетки и плоскости</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="190"/>
+      <location filename="../../Command.cpp" line="191"/>
       <source>Section</source>
       <translation>Разрез (Сечение)</translation>
     </message>
@@ -99,7 +99,7 @@
       <translation>Обрезать плоскостью</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="213"/>
+      <location filename="../../Command.cpp" line="215"/>
       <source>Section with plane</source>
       <translation>Сечение плоскостью</translation>
     </message>
@@ -167,7 +167,7 @@
       <translation>Подключите рёбра, если расстояние меньше, чем</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="383"/>
+      <location filename="../../CrossSections.cpp" line="390"/>
       <source>Failure</source>
       <translation>Сбой</translation>
     </message>
@@ -175,32 +175,32 @@
   <context>
     <name>MeshPartGui::CurveOnMeshHandler</name>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="361"/>
+      <location filename="../../CurveOnMesh.cpp" line="357"/>
       <source>Create</source>
       <translation>Создать</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="363"/>
+      <location filename="../../CurveOnMesh.cpp" line="359"/>
       <source>Close wire</source>
       <translation>Замкнуть ломаную</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="365"/>
+      <location filename="../../CurveOnMesh.cpp" line="361"/>
       <source>Clear</source>
       <translation>Очистить</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="366"/>
+      <location filename="../../CurveOnMesh.cpp" line="362"/>
       <source>Cancel</source>
       <translation>Отмена</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="622"/>
+      <location filename="../../CurveOnMesh.cpp" line="615"/>
       <source>Wrong mesh selected</source>
       <translation>Выбрана неправильная сетка</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="661"/>
+      <location filename="../../CurveOnMesh.cpp" line="655"/>
       <source>No point was selected</source>
       <translation>Не выбрано ни одной точки</translation>
     </message>
@@ -493,21 +493,21 @@ A value in the range of 0.2-10.</source>
       <translation>Нет активного документа</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="279"/>
+      <location filename="../../Tessellation.cpp" line="280"/>
       <source>Error: body without a tip selected.
 Either set the tip of the body or select a different shape.</source>
       <translation>Ошибка: тело без выбранной точки окончания расчётов.
 Либо задайте точки окончания расчётов тела, либо выберите другую форму.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="285"/>
+      <location filename="../../Tessellation.cpp" line="288"/>
       <source>Error: shape without faces selected.
 Select a different shape.</source>
       <translation>Ошибка: выбрана фигура без граней.
 Выберите другую фигуру.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="289"/>
+      <location filename="../../Tessellation.cpp" line="293"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Сначала выберите фигуру для создания полигональной сетки.</translation>
     </message>
@@ -515,12 +515,12 @@ Select a different shape.</source>
   <context>
     <name>MeshPart_Section</name>
     <message>
-      <location filename="../../Command.cpp" line="203"/>
+      <location filename="../../Command.cpp" line="204"/>
       <source>Select plane</source>
       <translation>Выбрать плоскость</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="204"/>
+      <location filename="../../Command.cpp" line="205"/>
       <source>Select a plane to section the mesh with.</source>
       <translation>Выберите плоскость для сечения сетки.</translation>
     </message>
@@ -538,27 +538,27 @@ Select a different shape.</source>
       <translation>Выберите плоскость для обрезки сетки.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="104"/>
+      <location filename="../../Command.cpp" line="105"/>
       <source>Trim With Plane</source>
       <translation>Обрезать плоскостью</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="105"/>
+      <location filename="../../Command.cpp" line="106"/>
       <source>Select the side to keep</source>
       <translation>Выберите сторону, которую нужно сохранить</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="107"/>
+      <location filename="../../Command.cpp" line="108"/>
       <source>Below</source>
       <translation>Ниже</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="109"/>
+      <location filename="../../Command.cpp" line="110"/>
       <source>Above</source>
       <translation>Выше</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="111"/>
+      <location filename="../../Command.cpp" line="112"/>
       <source>Split</source>
       <translation>Разделить</translation>
     </message>

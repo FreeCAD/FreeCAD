@@ -127,7 +127,7 @@ horizontal space in Python console</string>
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="Gui::PrefFileChooser" name="ExternalPythonExecutable" native="true">
+      <widget class="Gui::PrefFileChooser" name="PathToPythonExecutable" native="true">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
          <horstretch>0</horstretch>
@@ -144,7 +144,7 @@ horizontal space in Python console</string>
         <string>Used for package installation with pip and debugging with debugpy. Autodetected if needed and not specified.</string>
        </property>
        <property name="prefEntry" stdset="0">
-        <cstring>ExternalPythonExecutable</cstring>
+        <cstring>PathToPythonExecutable</cstring>
        </property>
        <property name="prefPath" stdset="0">
         <cstring>PythonConsole</cstring>

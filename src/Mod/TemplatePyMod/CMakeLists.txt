@@ -1,4 +1,4 @@
-
+# SPDX-License-Identifier: LGPL-2.1-or-later
 
 fc_copy_to_mod_path("TemplatePyMod"
     InitGui.py

@@ -34,32 +34,51 @@ AppearanceModel:
     Type: 'Color'
     Units: ''
     URL: ''
-    Description: " "
+    Description: > 
+      Defines the color of a surface under indirect, uniform lighting,
+      representing how it appears when illuminated only by ambient light in a
+      scene, without directional light, shading, or highlights
   DiffuseColor:
     DisplayName: "Diffuse Color"
     Type: 'Color'
     Units: ''
     URL: ''
-    Description: " "
+    Description: >
+      Defines the base color of a surface when illuminated by light. It
+      represents how the object scatters light evenly in all directions,
+      independent of the viewer’s angle. This property will influence the
+      material color the most.
   EmissiveColor:
     DisplayName: "Emissive Color"
     Type: 'Color'
     Units: ''
     URL: ''
-    Description: " "
+    Description: >
+      Defines the color of a surface that appears to emit as if it were a light
+      source, independent of external lighting, making the object look
+      self-illuminated. Set to black to have no emissive color.
   Shininess:
     Type: 'Float'
     Units: ''
     URL: ''
-    Description: " "
+    Description: >
+      Defines the size and sharpness of specular highlights on a surface.
+      Higher values produce small, sharp highlights, while lower values create
+      broad, soft highlights. Note that the highlight intensity is defined by
+      specular color."
   SpecularColor:
     DisplayName: "Specular Color"
     Type: 'Color'
     Units: ''
     URL: ''
-    Description: " "
+    Description: >
+      Defines the color and intensity of the bright, mirror-like highlights
+      that appear on shiny or reflective surfaces when light hits them
+      directly. Set to bright colors for shiny objects.
   Transparency:
     Type: 'Float'
     Units: ''
     URL: ''
-    Description: " "
+    Description: >
+      Defines how much light passes through an object, making it partially or
+      fully see-through

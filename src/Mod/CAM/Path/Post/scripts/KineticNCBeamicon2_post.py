@@ -36,6 +36,7 @@
 import FreeCAD
 from FreeCAD import Units
 import Path
+import Path.Base.Util as PathUtil
 import Path.Post.Utils as PostUtils
 import argparse
 import datetime
@@ -114,7 +115,6 @@ PRECISION = 3
 # Preamble text will appear at the beginning of the GCODE output file.
 PREAMBLE = """%
 G17 G21 G40 G49 G80 G90
-M08
 """
 
 # Postamble text will appear following the last operation.
@@ -214,6 +214,9 @@ def export(objectslist, filename, argstring):
     gcode += linenumber() + UNITS + "\n"
 
     for obj in objectslist:
+        # Skip inactive operations
+        if not PathUtil.activeForOp(obj):
+            continue
 
         # fetch machine details
         job = PathUtils.findParentJob(obj)
@@ -243,6 +246,19 @@ def export(objectslist, filename, argstring):
         for line in PRE_OPERATION.splitlines(True):
             gcode += linenumber() + line
 
+        # get coolant mode
+        coolantMode = PathUtil.coolantModeForOp(obj)
+
+        # turn coolant on if required
+        if OUTPUT_COMMENTS:
+            if not coolantMode == "None":
+                gcode += linenumber() + "(Coolant On:" + coolantMode + ")\n"
+        if coolantMode == "Flood":
+            gcode += linenumber() + "M8" + "\n"
+        if coolantMode == "Mist":
+            gcode += linenumber() + "M7" + "\n"
+
+        # process the operation gcode
         gcode += parse(obj)
 
         # do the post_op
@@ -250,6 +266,12 @@ def export(objectslist, filename, argstring):
             gcode += linenumber() + "(finish operation: %s)\n" % obj.Label
         for line in POST_OPERATION.splitlines(True):
             gcode += linenumber() + line
+
+        # turn coolant off if required
+        if not coolantMode == "None":
+            if OUTPUT_COMMENTS:
+                gcode += linenumber() + "(Coolant Off:" + coolantMode + ")\n"
+            gcode += linenumber() + "M9" + "\n"
 
     # do the post_amble
     if OUTPUT_COMMENTS:
@@ -259,7 +281,7 @@ def export(objectslist, filename, argstring):
 
     if FreeCAD.GuiUp and SHOW_EDITOR:
         dia = PostUtils.GCodeEditorDialog()
-        dia.editor.setText(gcode)
+        dia.editor.setPlainText(gcode)
         result = dia.exec_()
         if result:
             final = dia.editor.toPlainText()
@@ -341,6 +363,15 @@ def parse(pathobj):
 
             outstring = []
             command = c.Name
+
+            if pathobj.Label == "Drilling" and command in ["G98", "G99"]:
+                out += linenumber() + "(" + command + " removed as KineticNC do not support it)\n"
+                continue
+
+            if command in ["G85"]:
+                out += linenumber() + "(" + command + " removed as KineticNC do not support it)\n"
+                continue
+
             outstring.append(command)
 
             # if modal: suppress the command if it is the same as the last one
@@ -392,6 +423,20 @@ def parse(pathobj):
                             outstring.append(
                                 param + format(float(pos.getValueAs(UNIT_FORMAT)), precision_string)
                             )
+
+            if (
+                command in ["G0"]
+                and "Z" not in c.Parameters
+                and pathobj.Label == "Drilling"
+                and "R" in currLocation.keys()
+            ):
+                if not OUTPUT_DOUBLES:
+                    continue
+                else:
+                    pos = Units.Quantity(currLocation["R"], FreeCAD.Units.Length)
+                    outstring.append(
+                        "Z" + format(float(pos.getValueAs(UNIT_FORMAT)), precision_string)
+                    )
 
             # store the latest command
             lastcommand = command

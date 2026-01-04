@@ -1,3 +1,7 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export, constmethod
 from Base.BaseClass import BaseClass
 from Base.Axis import Axis
@@ -61,71 +65,71 @@ class GeometryFacade(BaseClass):
         """
         ...
 
-    def rotate(self, Ang: float, axis: Axis) -> None:
+    def rotate(self, Ang: float, axis: Axis, /) -> None:
         """
         Rotates this geometric object at angle Ang (in radians) about axis
         """
         ...
 
-    def scale(self, center: CoordinateSystem, factor: float) -> None:
+    def scale(self, center: CoordinateSystem, factor: float, /) -> None:
         """
         Applies a scaling transformation on this geometric object with a center and scaling factor
         """
         ...
 
-    def transform(self, transformation: Placement) -> None:
+    def transform(self, transformation: Placement, /) -> None:
         """
         Applies a transformation to this geometric object
         """
         ...
 
-    def translate(self, offset: Vector) -> None:
+    def translate(self, offset: Vector, /) -> None:
         """
         Translates this geometric object
         """
         ...
 
     @constmethod
-    def hasExtensionOfType(self, type_str: str) -> bool:
+    def hasExtensionOfType(self, type_str: str, /) -> bool:
         """
         Returns a boolean indicating whether a geometry extension of the type indicated as a string exists.
         """
         ...
 
     @constmethod
-    def hasExtensionOfName(self, name: str) -> bool:
+    def hasExtensionOfName(self, name: str, /) -> bool:
         """
         Returns a boolean indicating whether a geometry extension with the name indicated as a string exists.
         """
         ...
 
     @constmethod
-    def getExtensionOfType(self, type_str: str) -> DocumentObjectExtension:
+    def getExtensionOfType(self, type_str: str, /) -> DocumentObjectExtension:
         """
         Gets the first geometry extension of the type indicated by the string.
         """
         ...
 
     @constmethod
-    def getExtensionOfName(self, name: str) -> DocumentObjectExtension:
+    def getExtensionOfName(self, name: str, /) -> DocumentObjectExtension:
         """
         Gets the first geometry extension of the name indicated by the string.
         """
         ...
 
-    def setExtension(self, extension: DocumentObjectExtension) -> None:
+    def setExtension(self, extension: DocumentObjectExtension, /) -> None:
         """
         Sets a geometry extension of the indicated type.
         """
         ...
 
-    def deleteExtensionOfType(self, type_str: str) -> None:
+    def deleteExtensionOfType(self, type_str: str, /) -> None:
         """
         Deletes all extensions of the indicated type.
         """
         ...
 
-    def deleteExtensionOfName(self, name: str) -> None:
+    def deleteExtensionOfName(self, name: str, /) -> None:
         """
         Deletes all extensions of the indicated name.
         """

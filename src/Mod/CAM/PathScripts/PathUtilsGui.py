@@ -26,7 +26,6 @@ import FreeCAD
 import Path
 import Path.Main.Gui.JobCmd as PathJobCmd
 import Path.Tool.Controller as PathToolController
-import PathGui
 import PathScripts.PathUtils as PathUtils
 from PySide import QtGui
 

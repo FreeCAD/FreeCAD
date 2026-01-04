@@ -36,6 +36,7 @@ Any CAM application meeting the needs above must provide functionality in these 
 | ADR                           | Description                                                                                                | Status |
 | ----------------------------- | ---------------------------------------------------------------------------------------------------------- | ------ |
 | [ADR-002](<./ADR/ADR-002.md>) | Internal representation of tool path                                                                       | Legacy |
+| [ADR-007](<./ADR/ADR-007.md>) | Add semantic information to Path Command                                                                   | DRAFT  |
 
 
 # ⚠️ Pain Points

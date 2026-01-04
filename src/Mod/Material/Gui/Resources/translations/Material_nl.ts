@@ -1071,7 +1071,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../ui/materials-editor.ui" line="80"/>
       <source>Save As…</source>
-      <translation type="unfinished">Save As…</translation>
+      <translation>Opslaan Als…</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="96"/>

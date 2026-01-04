@@ -21,7 +21,7 @@
     <message>
       <location filename="../../UnitsSchemasData.h" line="642"/>
       <source>Imperial for Civil Eng (ft, lb, mph)</source>
-      <translation type="unfinished">Imperial for Civil Eng (ft, lb, mph)</translation>
+      <translation>İnşaat Mühendisliği için İngiliz ölçüsü (ft, lb, mph)</translation>
     </message>
     <message>
       <location filename="../../UnitsSchemasData.h" line="75"/>
@@ -46,7 +46,7 @@
     <message>
       <location filename="../../UnitsSchemasData.h" line="581"/>
       <source>FEM (mm, N, s)</source>
-      <translation>FEM (mm, N, s)</translation>
+      <translation>Sonlu Elemenalar Yöntemi (mm, N, s)</translation>
     </message>
     <message>
       <location filename="../../UnitsSchemasData.h" line="62"/>

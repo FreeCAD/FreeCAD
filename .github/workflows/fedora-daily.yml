@@ -8,7 +8,10 @@ on:
 
 jobs:
   trigger-copr-build:
+    environment: fedora-daily
     env:
+      copr_login: ${{ secrets.COPR_LOGIN }}
+      copr_username: ${{ secrets.COPR_USERNAME }}
       copr_token: ${{ secrets.COPR_TOKEN }}
     runs-on: ubuntu-latest
     container: quay.io/packit/packit
@@ -16,7 +19,13 @@ jobs:
     - name: setup copr token
       run: |
         mkdir -p ~/.config
-        echo "$copr_token" > ~/.config/copr
+        echo \
+        "[copr-cli]
+        login = $copr_login
+        username = $copr_username
+        token = $copr_token
+        copr_url = https://copr.fedorainfracloud.org
+        " > ~/.config/copr
     - name: checkout sources
       uses: actions/checkout@v4
       with:

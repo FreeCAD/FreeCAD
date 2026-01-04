@@ -69,7 +69,7 @@ def get_3d_view():
         return None
 
     # FIXME The following two imports were added as part of PR4926
-    # Also see discussion https://forum.freecadweb.org/viewtopic.php?f=3&t=60251
+    # Also see discussion https://forum.freecad.org/viewtopic.php?f=3&t=60251
     import FreeCADGui as Gui
     from pivy import coin
 
@@ -948,7 +948,7 @@ def find_coin_node(parent, nodetype):
 
 
 # Code by Chris Hennes (chennes).
-# See https://forum.freecadweb.org/viewtopic.php?p=656362#p656362.
+# See https://forum.freecad.org/viewtopic.php?p=656362#p656362.
 # Used to fix https://github.com/FreeCAD/FreeCAD/issues/10469.
 def end_all_events():
     view = get_3d_view()

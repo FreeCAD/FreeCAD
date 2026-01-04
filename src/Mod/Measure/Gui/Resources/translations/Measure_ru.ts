@@ -6,7 +6,7 @@
     <message>
       <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="20"/>
       <source>Appearance</source>
-      <translation>Внешний вид</translation>
+      <translation>Отображение</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="51"/>
@@ -58,109 +58,109 @@
   <context>
     <name>MeasureGui::QuickMeasure</name>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="210"/>
+      <location filename="../../QuickMeasure.cpp" line="212"/>
       <source>Total area: %1</source>
       <translation>Общая площадь: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="221"/>
-      <location filename="../../QuickMeasure.cpp" line="255"/>
+      <location filename="../../QuickMeasure.cpp" line="223"/>
+      <location filename="../../QuickMeasure.cpp" line="260"/>
       <source>Nominal distance: %1</source>
       <translation>Номинальное расстояние: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="224"/>
+      <location filename="../../QuickMeasure.cpp" line="226"/>
       <source>Area: %1</source>
       <translation>Площадь: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="228"/>
+      <location filename="../../QuickMeasure.cpp" line="230"/>
       <source>Area: %1, Radius: %2</source>
       <translation>Площадь: %1, Радиус: %2</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="232"/>
+      <location filename="../../QuickMeasure.cpp" line="234"/>
       <source>Area: %1, Diameter: %2</source>
       <translation>Площадь: %1, Диаметр: %2</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="240"/>
+      <location filename="../../QuickMeasure.cpp" line="243"/>
       <source>Total area: %1, Axis distance: %2</source>
       <translation>Общая площадь: %1, Осевое расстояние: %2</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="245"/>
+      <location filename="../../QuickMeasure.cpp" line="248"/>
       <source>Total area: %1, Axis distance: %2, Axis angle: %3</source>
       <translation>Общая площадь: %1, расстояние оси: %2, осевой угол: %3</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="252"/>
+      <location filename="../../QuickMeasure.cpp" line="257"/>
       <source>Total length: %1</source>
       <translation>Общая длина: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="258"/>
+      <location filename="../../QuickMeasure.cpp" line="263"/>
       <source>Angle: %1, Total length: %2</source>
       <translation>Угол: %1, Общая длина: %2</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="262"/>
+      <location filename="../../QuickMeasure.cpp" line="267"/>
       <source>Length: %1</source>
       <translation>Длина: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="265"/>
+      <location filename="../../QuickMeasure.cpp" line="270"/>
       <source>Radius: %1</source>
       <translation>Радиус: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="268"/>
+      <location filename="../../QuickMeasure.cpp" line="273"/>
       <source>Diameter: %1</source>
       <translation>Диаметр: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="271"/>
+      <location filename="../../QuickMeasure.cpp" line="276"/>
       <source>Distance: %1</source>
       <translation>Расстояние: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="274"/>
+      <location filename="../../QuickMeasure.cpp" line="279"/>
       <source>Minimum distance: %1</source>
       <translation>Минимальное расстояние: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="277"/>
+      <location filename="../../QuickMeasure.cpp" line="283"/>
       <source>Minimum distance: %1, Axis distance: %2</source>
       <translation>Минимальное расстояние: %1, Осевое расстояние: %2</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="282"/>
+      <location filename="../../QuickMeasure.cpp" line="289"/>
       <source>Minimum distance: %1, Center distance: %2</source>
       <translation>Минимальное расстояние: %1, расстояние до центра: %2</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="289"/>
-      <location filename="../../QuickMeasure.cpp" line="301"/>
+      <location filename="../../QuickMeasure.cpp" line="296"/>
+      <location filename="../../QuickMeasure.cpp" line="313"/>
       <source>Total length: %1, Center distance: %2</source>
-      <translation>Общая площадь: %1, расстояние до центра: %2</translation>
+      <translation>Общая длина: %1, расстояние до центра: %2</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="294"/>
+      <location filename="../../QuickMeasure.cpp" line="303"/>
       <source>Total length: %1, Center distance: %2, Axis angle: %3</source>
-      <translation>Общая площадь: %1, расстояние до центра: %2, осевой угол: %3</translation>
+      <translation>Общая длина: %1, расстояние до центра: %2, осевой угол: %3</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="307"/>
+      <location filename="../../QuickMeasure.cpp" line="318"/>
       <source>Center surface distance: %1</source>
       <translation>Расстояние от центра поверхности: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="313"/>
+      <location filename="../../QuickMeasure.cpp" line="323"/>
       <source>Center axis distance: %1</source>
       <translation>Расстояние от центра осей: %1</translation>
     </message>
     <message>
-      <location filename="../../QuickMeasure.cpp" line="316"/>
+      <location filename="../../QuickMeasure.cpp" line="326"/>
       <source>Center axis distance: %1, Axis angle: %2</source>
       <translation>Расстояние от центра осей: %1, осевой угол: %2</translation>
     </message>
@@ -190,62 +190,67 @@
   <context>
     <name>MeasureGui::TaskMeasure</name>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="66"/>
+      <location filename="../../TaskMeasure.cpp" line="67"/>
       <source>Measurement</source>
       <translation>Замеры</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="86"/>
+      <location filename="../../TaskMeasure.cpp" line="88"/>
       <source>Show Delta:</source>
       <translation>Показать разницу:</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="92"/>
+      <location filename="../../TaskMeasure.cpp" line="94"/>
       <source>Auto Save</source>
       <translation>Автосохранение</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="96"/>
+      <location filename="../../TaskMeasure.cpp" line="98"/>
       <source>Auto saving of the last measurement when starting a new measurement. Use the Shift key to temporarily invert the behaviour.</source>
       <translation>Автосохранение последних замеров при запуске нового измерения. Используйте клавишу Shift, чтобы временно инвертировать поведение.</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="100"/>
+      <location filename="../../TaskMeasure.cpp" line="103"/>
       <source>Additive Selection</source>
       <translation>Суммируемый замер</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="105"/>
+      <location filename="../../TaskMeasure.cpp" line="109"/>
       <source>If checked, new selection will be added to the measurement. If unchecked, the Ctrl key must be pressed to add a selection to the current measurement otherwise a new measurement will be started</source>
-      <translation>При отмеченной опции измерения будут суммированы с новым замером. Если флажок не установлен, то необходимо нажать клавишу Ctrl для добавления элемента в текущее измерение, иначе будет начат с нуля новый замер</translation>
+      <translation>При установленном флажке измерения будут суммированы с новым замером. Если флажок не установлен, то необходимо нажать клавишу Ctrl для добавления элемента в текущее измерение, иначе будет начат с нуля новый замер</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="115"/>
+      <location filename="../../TaskMeasure.cpp" line="122"/>
       <source>Settings</source>
       <translation>Настройки</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="156"/>
+      <location filename="../../TaskMeasure.cpp" line="134"/>
+      <source>Auto</source>
+      <translation>Авто</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMeasure.cpp" line="160"/>
       <source>Mode:</source>
       <translation>Режим:</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="158"/>
+      <location filename="../../TaskMeasure.cpp" line="162"/>
       <source>Result:</source>
       <translation>Результат:</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="186"/>
+      <location filename="../../TaskMeasure.cpp" line="197"/>
       <source>Saves the measurement in the active document</source>
       <translation>Сохранить измерения в активном документе</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="192"/>
+      <location filename="../../TaskMeasure.cpp" line="203"/>
       <source>Close</source>
       <translation>Закрыть</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="193"/>
+      <location filename="../../TaskMeasure.cpp" line="204"/>
       <source>Close the measurement task.</source>
       <translation>Закрыть задачу измерения.</translation>
     </message>
@@ -253,9 +258,52 @@
   <context>
     <name>QPlatformTheme</name>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="185"/>
+      <location filename="../../TaskMeasure.cpp" line="196"/>
       <source>Save</source>
       <translation>Сохранить</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskMeasure</name>
+    <message>
+      <location filename="../../../InitGui.py" line="46"/>
+      <source>Center of mass</source>
+      <translation>Центр масс</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="115"/>
+      <source>Distance</source>
+      <translation>Расстояние</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="123"/>
+      <source>Distance Free</source>
+      <translation>Свободная дистанция </translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="131"/>
+      <source>Angle</source>
+      <translation>Угол</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="139"/>
+      <source>Length</source>
+      <translation>Длина</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="147"/>
+      <source>Position</source>
+      <translation>Положение</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="155"/>
+      <source>Area</source>
+      <translation>Площадь</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="163"/>
+      <source>Radius</source>
+      <translation>Радиус</translation>
     </message>
   </context>
 </TS>

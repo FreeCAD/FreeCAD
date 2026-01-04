@@ -77,6 +77,7 @@ protected:
     void onDocumentRestored() override;
     Base::Vector3d computeDirection(const Base::Vector3d& sketchVector, bool inverse);
     bool hasTaperedAngle() const;
+    void onChanged(const App::Property* prop) override;
 
 
     /// Options for buildExtrusion()

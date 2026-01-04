@@ -43,37 +43,37 @@ Man bør derefter klikke på Opdater knappen i hovedværktøjslinjen.
   <context>
     <name>App::LocalCoordinateSystem</name>
     <message>
-      <location filename="../../Datums.cpp" line="260"/>
+      <location filename="../../Datums.cpp" line="265"/>
       <source>X-axis</source>
       <translation>X-akse</translation>
     </message>
     <message>
-      <location filename="../../Datums.cpp" line="261"/>
+      <location filename="../../Datums.cpp" line="266"/>
       <source>Y-axis</source>
       <translation>Y-akse</translation>
     </message>
     <message>
-      <location filename="../../Datums.cpp" line="262"/>
+      <location filename="../../Datums.cpp" line="267"/>
       <source>Z-axis</source>
       <translation>Z-akse</translation>
     </message>
     <message>
-      <location filename="../../Datums.cpp" line="263"/>
+      <location filename="../../Datums.cpp" line="268"/>
       <source>XY-plane</source>
       <translation>XY-plan</translation>
     </message>
     <message>
-      <location filename="../../Datums.cpp" line="264"/>
+      <location filename="../../Datums.cpp" line="269"/>
       <source>XZ-plane</source>
       <translation>XZ-plan</translation>
     </message>
     <message>
-      <location filename="../../Datums.cpp" line="265"/>
+      <location filename="../../Datums.cpp" line="270"/>
       <source>YZ-plane</source>
       <translation>YZ-plan</translation>
     </message>
     <message>
-      <location filename="../../Datums.cpp" line="266"/>
+      <location filename="../../Datums.cpp" line="271"/>
       <source>Origin</source>
       <translation>Origo</translation>
     </message>

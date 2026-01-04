@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
@@ -10,7 +12,6 @@ if(BUILD_QT5)
         ${Qt5Core_INCLUDE_DIRS}
     )
 else()
-    SYSTEM
     include_directories(
         SYSTEM
         ${QT_INCLUDE_DIR}

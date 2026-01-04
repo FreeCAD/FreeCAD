@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -42,7 +44,7 @@ using namespace SketcherGui;
     qApp->translate("Workbench", "Constraints");
     qApp->translate("Workbench", "Sketcher Helpers");
     qApp->translate("Workbench", "B-Spline Tools");
-    qApp->translate("Workbench", "Visual Tools");
+    qApp->translate("Workbench", "Visual Helpers");
     qApp->translate("Workbench", "Virtual Space");
     qApp->translate("Workbench", "Sketcher Edit Tools");
 #endif

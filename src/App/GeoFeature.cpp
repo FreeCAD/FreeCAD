@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -316,42 +318,11 @@ Base::Placement GeoFeature::getGlobalPlacement(App::DocumentObject* targetObj,
                                                App::DocumentObject* rootObj,
                                                const std::string& sub)
 {
-    if (!targetObj || !rootObj) {
+    if (!rootObj) {
         return Base::Placement();
     }
-    std::vector<std::string> names = Base::Tools::splitSubName(sub);
 
-    App::Document* doc = rootObj->getDocument();
-    Base::Placement plc = getPlacementFromProp(rootObj, "Placement");
-
-    if (targetObj == rootObj) {
-        return plc;
-    }
-
-    if (rootObj->isLink()) {
-        // Update doc in case its an external link.
-        doc = rootObj->getLinkedObject()->getDocument();
-    }
-
-    for (auto& name : names) {
-        App::DocumentObject* obj = doc->getObject(name.c_str());
-        if (!obj) {
-            return Base::Placement();
-        }
-
-        plc = plc * getPlacementFromProp(obj, "Placement");
-
-        if (obj == targetObj) {
-            return plc;
-        }
-        if (obj->isLink()) {
-            // Update doc in case its an external link.
-            doc = obj->getLinkedObject()->getDocument();
-        }
-    }
-
-    // If targetObj has not been found there's a problem
-    return Base::Placement();
+    return rootObj->getPlacementOf(sub, targetObj);
 }
 
 Base::Placement GeoFeature::getGlobalPlacement(App::DocumentObject* targetObj,

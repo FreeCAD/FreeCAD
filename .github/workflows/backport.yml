@@ -29,12 +29,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          token: ${{ secrets.GH_TOKEN_FOR_CI_RUNNERS }}
 
       - name: Create backport pull requests
         uses: korthout/backport-action@d07416681cab29bf2661702f925f020aaa962997 # v3.4.1
         with:
           # Inputs documented here: https://github.com/korthout/backport-action?tab=readme-ov-file#inputs
-          github_token: ${{ github.token }}
+          github_token: ${{ secrets.GH_TOKEN_FOR_CI_RUNNERS }}
           github_workspace: ${{ github.workspace }}
 
           # permit PRs with merge commits to be backported

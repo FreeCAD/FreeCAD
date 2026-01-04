@@ -94,7 +94,7 @@ public:
     std::optional<StyleParameters::Parameter> get(const std::string& name) const override;
 
     void reset();
-    void flush();
+    void flush() override;
 
     int rowCount(const QModelIndex& index) const override;
     int columnCount(const QModelIndex& index) const override;

@@ -31,7 +31,6 @@
 #include <QSpacerItem>
 #include <QVBoxLayout>
 
-#include <Base/Color.h>
 #include <Base/Console.h>
 #include <Base/Tools.h>
 #include <Gui/Command.h>

@@ -556,7 +556,6 @@ class MapWireToTag:
                             Path.Geom.cmdsForEdge(
                                 e,
                                 False,
-                                False,
                                 hSpeed=self.hSpeed,
                                 vSpeed=self.vSpeed,
                             )

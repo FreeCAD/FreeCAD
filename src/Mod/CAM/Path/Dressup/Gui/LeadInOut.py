@@ -919,9 +919,9 @@ class ObjectDressup:
         endPoint = self.source[end].positionEnd()
 
         if Path.Geom.pointsCoincide(startPoint, endPoint):
-            self.closedProfile = True
+            return True
         else:
-            self.closedProfile = False
+            return False
 
     # Increase travel length from 'begin', take commands from profile 'end'
     def getOvertravelIn(self, obj, length):
@@ -1103,6 +1103,7 @@ class ObjectDressup:
         self.firstMillIndex = None  # Index start mill instruction for one profile
         self.lastMillIndex = None  # Index end mill instruction for one profile
         self.lastCuttingMoveIndex = self.findLastCuttingMoveIndex()
+        self.closedProfile = True
         inInstrPrev = None  # for RetractThreshold
         outInstrPrev = None  # for RetractThreshold
         measuredLength = 0  # for negative OffsetIn
@@ -1145,7 +1146,8 @@ class ObjectDressup:
                         if self.lastMillIndex is None
                         else self.lastMillIndex
                     )
-                    self.isProfileClosed()
+
+                    self.closedProfile = self.isProfileClosed()
 
                     overtravelIn = None
                     if obj.OffsetIn.Value < 0 and obj.StyleIn != "No Retract":
@@ -1182,29 +1184,31 @@ class ObjectDressup:
 
             # Process Lead-Out
             last = bool(i == self.lastCuttingMoveIndex)
-            if (last or not self.isCuttingMove(source[i + 1])) and obj.LeadOut:
-                measuredLength = 0  # reset measured length for last profile
+            if last or not self.isCuttingMove(source[i + 1]):
+                if obj.LeadOut:
 
-                # Process negative Offset Lead-Out (cut travel from end)
-                if obj.OffsetOut.Value < 0 and obj.StyleOut != "No Retract":
-                    commands = self.cutTravelEnd(obj, commands, abs(obj.OffsetOut.Value))
+                    # Process negative Offset Lead-Out (cut travel from end)
+                    if obj.OffsetOut.Value < 0 and obj.StyleOut != "No Retract":
+                        commands = self.cutTravelEnd(obj, commands, abs(obj.OffsetOut.Value))
 
-                # Process positive Offset Lead-Out (overtravel)
-                if obj.OffsetOut.Value > 0 and obj.StyleOut != "No Retract":
-                    overtravelOut = self.getOvertravelOut(obj, obj.OffsetOut.Value)
-                    if overtravelOut:
-                        commands.extend(overtravelOut)
+                    # Process positive Offset Lead-Out (overtravel)
+                    if obj.OffsetOut.Value > 0 and obj.StyleOut != "No Retract":
+                        overtravelOut = self.getOvertravelOut(obj, obj.OffsetOut.Value)
+                        if overtravelOut:
+                            commands.extend(overtravelOut)
 
-                # add lead end and travel moves
-                leadEndInstr = self.getLeadEnd(obj, commands[-1], last, outInstrPrev)
-                commands.extend(leadEndInstr)
+                    # add lead end and travel moves
+                    leadEndInstr = self.getLeadEnd(obj, commands[-1], last, outInstrPrev)
+                    commands.extend(leadEndInstr)
 
-                # Last mill position to check RetractThreshold
-                if leadEndInstr:
-                    outInstrPrev = leadEndInstr[-1]
-                else:
-                    outInstrPrev = instr
+                    # Last mill position to check RetractThreshold
+                    if leadEndInstr:
+                        outInstrPrev = leadEndInstr[-1]
+                    else:
+                        outInstrPrev = instr
 
+                # preparing for the next profile
+                measuredLength = 0
                 self.firstMillIndex = None
                 self.lastMillIndex = None
                 self.invertAlt = not self.invertAlt if getattr(obj, "InvertAlt", None) else False

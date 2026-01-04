@@ -112,7 +112,7 @@ PyMOD_INIT_FUNC(Measure)
 
     App::MeasureManager::addMeasureType(
         "DISTANCE",
-        "Distance",
+        QT_TRANSLATE_NOOP("TaskMeasure", "Distance"),
         "Measure::MeasureDistance",
         MeasureDistance::isValidSelection,
         MeasureDistance::isPrioritizedSelection
@@ -120,7 +120,7 @@ PyMOD_INIT_FUNC(Measure)
 
     App::MeasureManager::addMeasureType(
         "DISTANCEFREE",
-        "Distance Free",
+        QT_TRANSLATE_NOOP("TaskMeasure", "Distance Free"),
         "Measure::MeasureDistanceDetached",
         MeasureDistanceDetached::isValidSelection,
         nullptr
@@ -128,7 +128,7 @@ PyMOD_INIT_FUNC(Measure)
 
     App::MeasureManager::addMeasureType(
         "ANGLE",
-        "Angle",
+        QT_TRANSLATE_NOOP("TaskMeasure", "Angle"),
         "Measure::MeasureAngle",
         MeasureAngle::isValidSelection,
         MeasureAngle::isPrioritizedSelection
@@ -136,7 +136,7 @@ PyMOD_INIT_FUNC(Measure)
 
     App::MeasureManager::addMeasureType(
         "LENGTH",
-        "Length",
+        QT_TRANSLATE_NOOP("TaskMeasure", "Length"),
         "Measure::MeasureLength",
         MeasureLength::isValidSelection,
         nullptr
@@ -144,7 +144,7 @@ PyMOD_INIT_FUNC(Measure)
 
     App::MeasureManager::addMeasureType(
         "POSITION",
-        "Position",
+        QT_TRANSLATE_NOOP("TaskMeasure", "Position"),
         "Measure::MeasurePosition",
         MeasurePosition::isValidSelection,
         nullptr
@@ -152,7 +152,7 @@ PyMOD_INIT_FUNC(Measure)
 
     App::MeasureManager::addMeasureType(
         "AREA",
-        "Area",
+        QT_TRANSLATE_NOOP("TaskMeasure", "Area"),
         "Measure::MeasureArea",
         MeasureArea::isValidSelection,
         nullptr
@@ -160,7 +160,7 @@ PyMOD_INIT_FUNC(Measure)
 
     App::MeasureManager::addMeasureType(
         "RADIUS",
-        "Radius",
+        QT_TRANSLATE_NOOP("TaskMeasure", "Radius"),
         "Measure::MeasureRadius",
         MeasureRadius::isValidSelection,
         MeasureRadius::isPrioritizedSelection
