@@ -351,25 +351,12 @@ class CommandPathDressup:
         }
 
     def IsActive(self):
-        if FreeCAD.ActiveDocument is not None:
-            for o in FreeCAD.ActiveDocument.Objects:
-                if o.Name[:3] == "Job":
-                    return True
-        return False
+        return bool(PathDressup.selection())
 
     def Activated(self):
         # check that the selection contains exactly what we want
-        selection = FreeCADGui.Selection.getSelection()
-        if len(selection) != 1:
-            FreeCAD.Console.PrintError(translate("CAM_Dressup", "Select one toolpath object\n"))
-            return
-        if not selection[0].isDerivedFrom("Path::Feature"):
-            FreeCAD.Console.PrintError(
-                translate("CAM_Dressup", "The selected object is not a toolpath\n")
-            )
-            return
-        if selection[0].isDerivedFrom("Path::FeatureCompoundPython"):
-            FreeCAD.Console.PrintError(translate("CAM_Dressup", "Select a toolpath object"))
+        baseOp = PathDressup.selection(verbose=True)
+        if not baseOp:
             return
 
         # everything ok!
@@ -380,7 +367,7 @@ class CommandPathDressup:
             'obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "ZCorrectDressup")'
         )
         FreeCADGui.doCommand("Path.Dressup.Gui.ZCorrect.ObjectDressup(obj)")
-        FreeCADGui.doCommand("obj.Base = FreeCAD.ActiveDocument." + selection[0].Name)
+        FreeCADGui.doCommand("obj.Base = FreeCAD.ActiveDocument." + baseOp.Name)
         FreeCADGui.doCommand("Path.Dressup.Gui.ZCorrect.ViewProviderDressup(obj.ViewObject)")
         FreeCADGui.doCommand("PathScripts.PathUtils.addToJob(obj)")
         FreeCADGui.doCommand("Gui.ActiveDocument.getObject(obj.Base.Name).Visibility = False")
