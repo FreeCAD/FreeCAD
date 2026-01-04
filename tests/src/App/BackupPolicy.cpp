@@ -45,6 +45,7 @@
 # include <format>
 #endif
 
+namespace fs = std::filesystem;
 
 class BackupPolicyTest: public ::testing::Test
 {
@@ -83,6 +84,7 @@ protected:
     std::filesystem::path createTempFile(const std::string& filename)
     {
         std::filesystem::path p = _tempDir / filename;
+        fs::create_directories(p.parent_path());
         std::ofstream fileStream(p.string());
         fileStream << "Test data";
         fileStream.close();
@@ -179,11 +181,16 @@ TEST_F(BackupPolicyTest, StandardWithOneFileNoPreviousBackups)
     auto source = createTempFile("source.fcstd");
     auto target = createTempFile("target.fcstd");
 
+    fs::path backup(getTempPath());
+    backup.append("FCBak");
+    backup.append(target.filename().string());
+    backup.concat("1");
+
     // Act
     apply(source.string(), target.string());
 
     // Assert
-    EXPECT_TRUE(std::filesystem::exists(target.string() + "1"));
+    EXPECT_TRUE(std::filesystem::exists(backup));
 }
 
 TEST_F(BackupPolicyTest, StandardWithOneFileOnePreviousBackup)
@@ -192,14 +199,23 @@ TEST_F(BackupPolicyTest, StandardWithOneFileOnePreviousBackup)
     setPolicyTerms(App::BackupPolicy::Policy::Standard, 1, false, "%Y-%m-%d_%H-%M-%S");
     auto source = createTempFile("source.fcstd");
     auto target = createTempFile("target.fcstd");
-    auto backup = createTempFile("target.fcstd1");
+
+    fs::path backup1_filename("FCBak");
+    backup1_filename.append(target.filename().string());
+    backup1_filename.concat("1");
+    fs::path backup1 = createTempFile(backup1_filename.string());
+
+    fs::path backup2(getTempPath());
+    backup2.append("FCBak");
+    backup2.append(target.filename().string());
+    backup2.concat("2");
 
     // Act
     apply(source.string(), target.string());
 
     // Assert
-    EXPECT_TRUE(std::filesystem::exists(backup));
-    EXPECT_FALSE(std::filesystem::exists(target.string() + "2"));
+    EXPECT_TRUE(std::filesystem::exists(backup1));
+    EXPECT_FALSE(std::filesystem::exists(backup2));
 }
 
 TEST_F(BackupPolicyTest, StandardWithTwoFilesOnePreviousBackup)
@@ -208,14 +224,22 @@ TEST_F(BackupPolicyTest, StandardWithTwoFilesOnePreviousBackup)
     setPolicyTerms(App::BackupPolicy::Policy::Standard, 2, false, "%Y-%m-%d_%H-%M-%S");
     auto source = createTempFile("source.fcstd");
     auto target = createTempFile("target.fcstd");
-    auto backup = createTempFile("target.fcstd1");
+
+    fs::path backup1_filename("FCBak");
+    backup1_filename.append(target.filename().string());
+    backup1_filename.concat("1");
+    fs::path backup1 = createTempFile(backup1_filename.string());
+    fs::path backup2(getTempPath());
+    backup2.append("FCBak");
+    backup2.append(target.filename().string());
+    backup2.concat("2");
 
     // Act
     apply(source.string(), target.string());
 
     // Assert
-    EXPECT_TRUE(std::filesystem::exists(backup));
-    EXPECT_TRUE(std::filesystem::exists(target.string() + "2"));
+    EXPECT_TRUE(std::filesystem::exists(backup1));
+    EXPECT_TRUE(std::filesystem::exists(backup2));
 }
 
 TEST_F(BackupPolicyTest, StandardWithTwoFilesOnePreviousBackupUnexpectedSuffix)
@@ -224,15 +248,28 @@ TEST_F(BackupPolicyTest, StandardWithTwoFilesOnePreviousBackupUnexpectedSuffix)
     setPolicyTerms(App::BackupPolicy::Policy::Standard, 2, false, "%Y-%m-%d_%H-%M-%S");
     auto source = createTempFile("source.fcstd");
     auto target = createTempFile("target.fcstd");
-    auto backup = createTempFile("target.fcstd1");
-    auto weird = createTempFile("target.fcstd2a");
+
+    fs::path backup1_filename("FCBak");
+    backup1_filename.append(target.filename().string());
+    backup1_filename.concat("1");
+    fs::path backup1 = createTempFile(backup1_filename.string());
+
+    fs::path weird_filename("FCBak");
+    weird_filename.append(target.filename().string());
+    weird_filename.concat("2a");
+    fs::path weird = createTempFile(weird_filename.string());
+
+    fs::path backup2(getTempPath());
+    backup2.append("FCBak");
+    backup2.append(target.filename().string());
+    backup2.concat("2");
 
     // Act
     apply(source.string(), target.string());
 
     // Assert
-    EXPECT_TRUE(std::filesystem::exists(backup));
-    EXPECT_TRUE(std::filesystem::exists(target.string() + "2"));
+    EXPECT_TRUE(std::filesystem::exists(backup1));
+    EXPECT_TRUE(std::filesystem::exists(backup2));
     EXPECT_TRUE(std::filesystem::exists(weird));
 }
 
@@ -242,15 +279,28 @@ TEST_F(BackupPolicyTest, StandardWithTwoFilesOnePreviousBackupOutOfSequenceNumbe
     setPolicyTerms(App::BackupPolicy::Policy::Standard, 2, false, "%Y-%m-%d_%H-%M-%S");
     auto source = createTempFile("source.fcstd");
     auto target = createTempFile("target.fcstd");
-    auto backup = createTempFile("target.fcstd1");
-    auto weird = createTempFile("target.fcstd999");
+
+    fs::path backup1_filename("FCBak");
+    backup1_filename.append(target.filename().string());
+    backup1_filename.concat("1");
+    fs::path backup1 = createTempFile(backup1_filename.string());
+
+    fs::path weird_filename("FCBak");
+    weird_filename.append(target.filename().string());
+    weird_filename.concat("999");
+    fs::path weird = createTempFile(weird_filename.string());
+
+    fs::path backup2(getTempPath());
+    backup2.append("FCBak");
+    backup2.append(target.filename().string());
+    backup2.concat("2");
 
     // Act
     apply(source.string(), target.string());
 
     // Assert
-    EXPECT_TRUE(std::filesystem::exists(backup));
-    bool check1 = std::filesystem::exists(target.string() + "2");
+    EXPECT_TRUE(std::filesystem::exists(backup1));
+    bool check1 = std::filesystem::exists(backup2);
     bool check2 = std::filesystem::exists(weird);
     EXPECT_NE(check1, check2);  // Only one or the other can exist (we don't know which because it
                                 // depends on file modification date)
@@ -263,11 +313,16 @@ TEST_F(BackupPolicyTest, StandardWithFCBakSet)
     auto source = createTempFile("source.fcstd");
     auto target = createTempFile("target.fcstd");
 
+    fs::path backup(getTempPath());
+    backup.append("FCBak");
+    backup.append(target.filename().string());
+    backup.concat("1");
+
     // Act
     apply(source.string(), target.string());
 
     // Assert
-    EXPECT_TRUE(std::filesystem::exists(target.string() + "1"));  // No FCBak extension for Standard
+    EXPECT_TRUE(std::filesystem::exists(backup));  // No FCBak extension for Standard
 }
 
 TEST_F(BackupPolicyTest, TimestampSourceDoesNotExist)
@@ -321,13 +376,18 @@ TEST_F(BackupPolicyTest, TimestampWithOneFileAndNoneExistingNotFCBakCreatesNumbe
     auto source = createTempFile("source.fcstd");
     auto target = createTempFile("target.fcstd");
 
+    fs::path backup(getTempPath());
+    backup.append("FCBak");
+    backup.append(target.filename().string());
+    backup.concat("1");
+
     // Act
     apply(source.string(), target.string());
 
     // Assert
     // Without the .FCBak extension, the date stuff is completely ignored, even if the policy is set
     // to "Timestamp"
-    EXPECT_TRUE(std::filesystem::exists(target.string() + "1"));
+    EXPECT_TRUE(std::filesystem::exists(backup));
 }
 
 TEST_F(BackupPolicyTest, TimestampSourceHasNoExtension)
@@ -341,7 +401,11 @@ TEST_F(BackupPolicyTest, TimestampSourceHasNoExtension)
     apply(source.string(), target.string());
 
     // Assert
-    auto expected = "target." + filenameFromDateFormatString("%Y-%m-%d") + ".FCBak";
+    fs::path expected("FCBak");
+    expected.append("target.");
+    expected.concat(filenameFromDateFormatString("%Y-%m-%d"));
+    expected.concat(".FCBak");
+
     EXPECT_TRUE(std::filesystem::exists(getTempPath() / expected));
 }
 
@@ -356,7 +420,11 @@ TEST_F(BackupPolicyTest, TimestampTargetHasNoExtension)
     apply(source.string(), target.string());
 
     // Assert
-    auto expected = "target." + filenameFromDateFormatString("%Y-%m-%d") + ".FCBak";
+    fs::path expected("FCBak");
+    expected.append("target.");
+    expected.concat(filenameFromDateFormatString("%Y-%m-%d"));
+    expected.concat(".FCBak");
+
     EXPECT_TRUE(std::filesystem::exists(getTempPath() / expected));
 }
 
@@ -371,7 +439,10 @@ TEST_F(BackupPolicyTest, TimestampWithOneFileAndNoneExistingFCBakCreatesDatedFil
     apply(source.string(), target.string());
 
     // Assert
-    auto expected = "target." + filenameFromDateFormatString("%Y-%m-%d") + ".FCBak";
+    fs::path expected("FCBak");
+    expected.append("target.");
+    expected.concat(filenameFromDateFormatString("%Y-%m-%d"));
+    expected.concat(".FCBak");
     EXPECT_TRUE(std::filesystem::exists(getTempPath() / expected));
 }
 
@@ -386,7 +457,10 @@ TEST_F(BackupPolicyTest, TimestampReplacesDotsWithDashes)
     apply(source.string(), target.string());
 
     // Assert
-    auto expected = "target." + filenameFromDateFormatString("%Y-%m-%d") + ".FCBak";
+    fs::path expected("FCBak");
+    expected.append("target.");
+    expected.concat(filenameFromDateFormatString("%Y-%m-%d"));
+    expected.concat(".FCBak");
     EXPECT_TRUE(std::filesystem::exists(getTempPath() / expected));
 }
 
@@ -430,15 +504,21 @@ TEST_F(BackupPolicyTest, TimestampDetectsOldBackupFormat)
     setPolicyTerms(App::BackupPolicy::Policy::TimeStamp, 1, true, "%Y-%m-%d");
     auto source = createTempFile("source.fcstd");
     auto target = createTempFile("target.fcstd");
-    auto backup = createTempFile("target.fcstd12345");
+
+    fs::path backup_filename("FCBak");
+    backup_filename.append("target.fcstd12345");
+    auto backup = createTempFile(backup_filename.string());
+
+    fs::path expected("FCBak");
+    expected.append("target.");
+    expected.concat(filenameFromDateFormatString("%Y-%m-%d"));
+    expected.concat(".FCBak");
 
     // Act
     apply(source.string(), target.string());
 
     // Assert
-    bool check1 = std::filesystem::exists(
-        getTempPath() / ("target." + filenameFromDateFormatString("%Y-%m-%d") + ".FCBak")
-    );
+    bool check1 = std::filesystem::exists(getTempPath() / expected);
     bool check2 = std::filesystem::exists(backup);
     EXPECT_NE(check1, check2);
 }
@@ -449,16 +529,25 @@ TEST_F(BackupPolicyTest, TimestampDetectsOldBackupFormatIgnoresOther)
     setPolicyTerms(App::BackupPolicy::Policy::TimeStamp, 1, true, "%Y-%m-%d");
     auto source = createTempFile("source.fcstd");
     auto target = createTempFile("target.fcstd");
-    auto backup = createTempFile("target.fcstd12345");
-    auto weird = createTempFile("target.fcstd12345abc");
+
+    fs::path backup_filename("FCBak");
+    backup_filename.append("target.fcstd12345");
+    auto backup = createTempFile(backup_filename.string());
+
+    fs::path weird_filename("FCBak");
+    weird_filename.append("target.fcstd12345abc");
+    auto weird = createTempFile(weird_filename.string());
+
+    fs::path expected("FCBak");
+    expected.append("target.");
+    expected.concat(filenameFromDateFormatString("%Y-%m-%d"));
+    expected.concat(".FCBak");
 
     // Act
     apply(source.string(), target.string());
 
     // Assert
-    bool check1 = std::filesystem::exists(
-        getTempPath() / ("target." + filenameFromDateFormatString("%Y-%m-%d") + ".FCBak")
-    );
+    bool check1 = std::filesystem::exists(getTempPath() / expected);
     bool check2 = std::filesystem::exists(backup);
     EXPECT_NE(check1, check2);
     EXPECT_TRUE(std::filesystem::exists(weird));
@@ -470,17 +559,21 @@ TEST_F(BackupPolicyTest, TimestampDetectsAndRetainsOldBackupWhenAllowed)
     setPolicyTerms(App::BackupPolicy::Policy::TimeStamp, 2, true, "%Y-%m-%d");
     auto source = createTempFile("source.fcstd");
     auto target = createTempFile("target.fcstd");
-    auto backup = createTempFile("target.fcstd12345");
+
+    fs::path backup_filename("FCBak");
+    backup_filename.append("target.fcstd12345");
+    auto backup = createTempFile(backup_filename.string());
+
+    fs::path expected("FCBak");
+    expected.append("target.");
+    expected.concat(filenameFromDateFormatString("%Y-%m-%d"));
+    expected.concat(".FCBak");
 
     // Act
     apply(source.string(), target.string());
 
     // Assert
-    EXPECT_TRUE(
-        std::filesystem::exists(
-            getTempPath() / ("target." + filenameFromDateFormatString("%Y-%m-%d") + ".FCBak")
-        )
-    );
+    EXPECT_TRUE(std::filesystem::exists(getTempPath() / expected));
     EXPECT_TRUE(std::filesystem::exists(backup));
 }
 
@@ -491,15 +584,16 @@ TEST_F(BackupPolicyTest, TimestampFormatStringEndsWithSpace)
     auto source = createTempFile("source.fcstd");
     auto target = createTempFile("target.fcstd");
 
+    fs::path expected("FCBak");
+    expected.append("target.");
+    expected.concat(filenameFromDateFormatString("%Y-%m-%d"));
+    expected.concat("1.FCBak");
+
     // Act
     apply(source.string(), target.string());
 
     // Assert (the space is stripped, and an index is added)
-    EXPECT_TRUE(
-        std::filesystem::exists(
-            getTempPath() / ("target." + filenameFromDateFormatString("%Y-%m-%d") + "1.FCBak")
-        )
-    );
+    EXPECT_TRUE(std::filesystem::exists(getTempPath() / expected));
 }
 
 TEST_F(BackupPolicyTest, TimestampFormatStringEndsWithDash)
@@ -509,15 +603,16 @@ TEST_F(BackupPolicyTest, TimestampFormatStringEndsWithDash)
     auto source = createTempFile("source.fcstd");
     auto target = createTempFile("target.fcstd");
 
+    fs::path expected("FCBak");
+    expected.append("target.");
+    expected.concat(filenameFromDateFormatString("%Y-%m-%d"));
+    expected.concat("-1.FCBak");
+
     // Act
     apply(source.string(), target.string());
 
     // Assert (the dash is left, and an index is added)
-    EXPECT_TRUE(
-        std::filesystem::exists(
-            getTempPath() / ("target." + filenameFromDateFormatString("%Y-%m-%d") + "-1.FCBak")
-        )
-    );
+    EXPECT_TRUE(std::filesystem::exists(getTempPath() / expected));
 }
 
 TEST_F(BackupPolicyTest, TimestampFormatFileAlreadyExists)
@@ -526,18 +621,24 @@ TEST_F(BackupPolicyTest, TimestampFormatFileAlreadyExists)
     setPolicyTerms(App::BackupPolicy::Policy::TimeStamp, 2, true, "%Y-%m-%d");
     auto source = createTempFile("source.fcstd");
     auto target = createTempFile("target.fcstd");
-    auto backup = createTempFile("target." + filenameFromDateFormatString("%Y-%m-%d") + ".FCBak");
+
+    fs::path backup_filename("FCBak");
+    backup_filename.append("target.");
+    backup_filename.concat(filenameFromDateFormatString("%Y-%m-%d"));
+    backup_filename.concat(".FCBak");
+    auto backup = createTempFile(backup_filename.string());
+
+    fs::path expected("FCBak");
+    expected.append("target.");
+    expected.concat(filenameFromDateFormatString("%Y-%m-%d"));
+    expected.concat("-1.FCBak");
 
     // Act
     apply(source.string(), target.string());
 
     // Assert (An index is appended)
     EXPECT_TRUE(std::filesystem::exists(backup));
-    EXPECT_TRUE(
-        std::filesystem::exists(
-            getTempPath() / ("target." + filenameFromDateFormatString("%Y-%m-%d") + "-1.FCBak")
-        )
-    );
+    EXPECT_TRUE(std::filesystem::exists(getTempPath() / expected));
 }
 
 TEST_F(BackupPolicyTest, TimestampFormatFileAlreadyExistsMultipleTimes)
@@ -546,10 +647,15 @@ TEST_F(BackupPolicyTest, TimestampFormatFileAlreadyExistsMultipleTimes)
     setPolicyTerms(App::BackupPolicy::Policy::TimeStamp, 5, true, "%Y-%m-%d");
     auto source = createTempFile("source.fcstd");
     auto target = createTempFile("target.fcstd");
-    auto backup = createTempFile("target." + filenameFromDateFormatString("%Y-%m-%d") + ".FCBak");
-    auto backup1 = createTempFile("target." + filenameFromDateFormatString("%Y-%m-%d") + "-1.FCBak");
-    auto backup2 = createTempFile("target." + filenameFromDateFormatString("%Y-%m-%d") + "-2.FCBak");
-    auto backup3 = createTempFile("target." + filenameFromDateFormatString("%Y-%m-%d") + "-3.FCBak");
+
+    fs::path backup_base("FCBak");
+    backup_base.append("target." + filenameFromDateFormatString("%Y-%m-%d"));
+
+
+    auto backup = createTempFile(backup_base.string() + ".FCBak");
+    auto backup1 = createTempFile(backup_base.string() + "-1.FCBak");
+    auto backup2 = createTempFile(backup_base.string() + "-2.FCBak");
+    auto backup3 = createTempFile(backup_base.string() + "-3.FCBak");
 
     // Act
     apply(source.string(), target.string());
@@ -559,9 +665,5 @@ TEST_F(BackupPolicyTest, TimestampFormatFileAlreadyExistsMultipleTimes)
     EXPECT_TRUE(std::filesystem::exists(backup1));
     EXPECT_TRUE(std::filesystem::exists(backup2));
     EXPECT_TRUE(std::filesystem::exists(backup3));
-    EXPECT_TRUE(
-        std::filesystem::exists(
-            getTempPath() / ("target." + filenameFromDateFormatString("%Y-%m-%d") + "-4.FCBak")
-        )
-    );
+    EXPECT_TRUE(std::filesystem::exists(getTempPath() / (backup_base.string() + "-4.FCBak")));
 }
