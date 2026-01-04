@@ -237,6 +237,8 @@ public:
     double convergence;
     double convergenceRedundant;
     QRAlgorithm qrAlgorithm;
+    bool autoChooseAlgorithm;
+    int autoQRThreshold;
     DogLegGaussStep dogLegGaussStep;
     double qrpivotThreshold;
     DebugMode debugMode;
