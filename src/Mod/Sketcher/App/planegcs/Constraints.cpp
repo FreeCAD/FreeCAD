@@ -861,11 +861,16 @@ double ConstraintP2LDistance::error()
 {
     double x0 = *p0x(), x1 = *p1x(), x2 = *p2x();
     double y0 = *p0y(), y1 = *p1y(), y2 = *p2y();
-    double dist = ccw ? *distance() : -*distance();
     double dx = x2 - x1;
     double dy = y2 - y1;
     double d = sqrt(dx * dx + dy * dy);  // line length
     double area = (-x0 * dy + y0 * dx + x1 * y2 - x2 * y1);
+
+    // Making sure the distance is positive when driven
+    if (!isDriving()) {
+        area = std::abs(area);
+    }
+    double dist = (ccw || !isDriving()) ? std::abs(*distance()) : -std::abs(*distance());
 
     return scale * (area / d - dist);
 }
@@ -902,9 +907,14 @@ double ConstraintP2LDistance::grad(double* param)
         if (param == p2y()) {
             deriv += ((x1 - x0) * d - (dy / d) * area) / d2;
         }
+        // Making sure the distance is positive when driven
+        if (!isDriving() && area < 0.0) {
+            deriv = -deriv;
+        }
     }
+    // Making sure the distance is positive when driven
     if (param == distance()) {
-        deriv += ccw ? -1 : 1;
+        deriv += (ccw || !isDriving()) ? -1 : 1;
     }
 
     return scale * deriv;

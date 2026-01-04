@@ -922,6 +922,7 @@ int SketchObject::setDriving(int ConstrId, bool isdriving)
     std::vector<Constraint*> newVals(vals);
     newVals[ConstrId] = newVals[ConstrId]->clone();
     newVals[ConstrId]->isDriving = isdriving;
+    setOrientation(newVals[ConstrId], newVals[ConstrId]->isDriving);
 
     this->Constraints.setValues(std::move(newVals));
 
