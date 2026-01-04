@@ -84,8 +84,7 @@ void BackupPolicy::applyStandard(const std::string& sourcename, const std::strin
                         if (nPos == std::string::npos) {
                             // store all backup files
                             backup.push_back(it);
-                            nSuff =
-                                std::max<int>(nSuff, static_cast<int>(std::atol(suf.c_str())));
+                            nSuff = std::max<int>(nSuff, static_cast<int>(std::atol(suf.c_str())));
                         }
                     }
                 }
@@ -120,8 +119,10 @@ void BackupPolicy::applyStandard(const std::string& sourcename, const std::strin
     }
 
     if (Base::FileInfo tmp(sourcename); !tmp.renameFile(targetname.c_str())) {
-        throw Base::FileException("Cannot rename tmp save file to project file",
-                                  Base::FileInfo(targetname));
+        throw Base::FileException(
+            "Cannot rename tmp save file to project file",
+            Base::FileInfo(targetname)
+        );
     }
 }
 
@@ -158,10 +159,12 @@ void BackupPolicy::applyTimeStamp(const std::string& sourcename, const std::stri
                         std::string file = it.fileName();
                         std::string fext = it.extension();
                         std::string fextUp = fext;
-                        std::transform(fextUp.begin(),
-                                       fextUp.end(),
-                                       fextUp.begin(),
-                                       static_cast<int (*)(int)>(toupper));
+                        std::transform(
+                            fextUp.begin(),
+                            fextUp.end(),
+                            fextUp.begin(),
+                            static_cast<int (*)(int)>(toupper)
+                        );
                         // re-enforcing identification of the backup file
 
 
@@ -191,14 +194,18 @@ void BackupPolicy::applyTimeStamp(const std::string& sourcename, const std::stri
                             try {
                                 if (!it.deleteFile()) {
                                     backupManagementError = true;
-                                    Base::Console().warning("Cannot remove backup file : %s\n",
-                                                            it.fileName().c_str());
+                                    Base::Console().warning(
+                                        "Cannot remove backup file : %s\n",
+                                        it.fileName().c_str()
+                                    );
                                 }
                             }
                             catch (...) {
                                 backupManagementError = true;
-                                Base::Console().warning("Cannot remove backup file : %s\n",
-                                                        it.fileName().c_str());
+                                Base::Console().warning(
+                                    "Cannot remove backup file : %s\n",
+                                    it.fileName().c_str()
+                                );
                             }
                         }
                     }
@@ -220,25 +227,60 @@ void BackupPolicy::applyTimeStamp(const std::string& sourcename, const std::stri
 #endif
                     constexpr size_t bufferLength = 128;
                     std::array<char, bufferLength> buffer {};
-                    if (size_t bytes = std::strftime(buffer.data(),
-                                                     bufferLength,
-                                                     saveBackupDateFormat.c_str(),
-                                                     &local_tm);
+                    if (size_t bytes = std::strftime(
+                            buffer.data(),
+                            bufferLength,
+                            saveBackupDateFormat.c_str(),
+                            &local_tm
+                        );
                         bytes == 0) {
                         // An error here is typically that we over-ran the maximum buffer length (
                         // which should be a *very* unusual condition).
-                        Base::Console().error("Failed to create valid backup file name from format string:\n");
+                        Base::Console().error(
+                            "Failed to create valid backup file name from format string:\n"
+                        );
                         Base::Console().error(saveBackupDateFormat.c_str());
                         const auto knownGoodFormat {"%Y-%m-%d_%H-%M-%S"};
                         std::strftime(buffer.data(), bufferLength, knownGoodFormat, &local_tm);
                     }
-                    str << bn << buffer.data();
+                    std::string timestamp = buffer.data();
 
+#if defined(_WIN32)
+                    // Windows doesn't allow: < > : " / \ | ? *
+                    const boost::regex re("[<>:\"/\\\\|?*]");
+                    if (boost::regex_search(timestamp, re)) {
+                        timestamp = boost::regex_replace(timestamp, re, "-");
+
+                        static bool warnedWindows = false;
+                        if (!warnedWindows) {
+                            Base::Console().warning(
+                                "Backup filename contained invalid characters for Windows. "
+                                "Automatically replaced with '-'. "
+                                "Consider using a different date format in Preferences/Document.\n"
+                            );
+                            warnedWindows = true;
+                        }
+                    }
+#else
+                    // On POSIX systems, only / is invalid in filenames
+                    const boost::regex re("/");
+                    if (boost::regex_search(timestamp, re)) {
+                        timestamp = boost::regex_replace(timestamp, re, "-");
+
+                        static bool warnedPosix = false;
+                        if (!warnedPosix) {
+                            Base::Console().warning("Backup filename contained '/' character. "
+                                                    "Automatically replaced with '-'.\n");
+                            warnedPosix = true;
+                        }
+                    }
+#endif
+
+                    str << bn << timestamp;
                     fn = str.str();
                     bool done = false;
 
-                    if ((fn.empty()) || (fn[fn.length() - 1] == ' ')
-                        || (fn[fn.length() - 1] == '-')) {
+                    if ((fn.empty()) || (fn[fn.length() - 1] == ' ') || (fn[fn.length() - 1] == '-')) {
                         if (fn[fn.length() - 1] == ' ') {
                             fn = fn.substr(0, fn.length() - 1);
                         }
@@ -276,7 +318,8 @@ void BackupPolicy::applyTimeStamp(const std::string& sourcename, const std::stri
 
                 if (ext2 >= numberOfFiles + 10) {
                     Base::Console().error(
-                        "File not saved: Cannot rename project file to backup file\n");
+                        "File not saved: Cannot rename project file to backup file\n"
+                    );
                     // throw Base::FileException("File not saved: Cannot rename project file to
                     // backup file", fi);
                 }
@@ -287,8 +330,7 @@ void BackupPolicy::applyTimeStamp(const std::string& sourcename, const std::stri
                 fi.deleteFile();
             }
             catch (...) {
-                Base::Console().warning("Cannot remove backup file: %s\n",
-                                        fi.fileName().c_str());
+                Base::Console().warning("Cannot remove backup file: %s\n", fi.fileName().c_str());
                 backupManagementError = true;
             }
         }
@@ -296,15 +338,14 @@ void BackupPolicy::applyTimeStamp(const std::string& sourcename, const std::stri
 
     Base::FileInfo tmp(sourcename);
     if (!tmp.renameFile(targetname.c_str())) {
-        throw Base::FileException(
-            "Save interrupted: Cannot rename temporary file to project file",
-            tmp);
+        throw Base::FileException("Save interrupted: Cannot rename temporary file to project file", tmp);
     }
 
     if (backupManagementError) {
         throw Base::FileException(
             "Warning: Save complete, but error while managing backup history.",
-            fi);
+            fi
+        );
     }
 }
 
@@ -325,12 +366,13 @@ bool BackupPolicy::checkValidString(const std::string& cmpl, const boost::regex&
     return res;
 }
 
-bool BackupPolicy::checkValidComplement(const std::string& file,
-                          const std::string& pbn,
-                          const std::string& ext) const
+bool BackupPolicy::checkValidComplement(
+    const std::string& file,
+    const std::string& pbn,
+    const std::string& ext
+) const
 {
-    const std::string cmpl =
-        file.substr(pbn.length(), file.length() - pbn.length() - ext.length() - 1);
+    const std::string cmpl = file.substr(pbn.length(), file.length() - pbn.length() - ext.length() - 1);
     const boost::regex e(R"(^[^.]*$)");
     return checkValidString(cmpl, e);
 }
