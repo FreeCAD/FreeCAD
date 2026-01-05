@@ -16,6 +16,7 @@ add_executable(Base_tests_run
         FileInfo.cpp
         InputSource.cpp
         Handle.cpp
+        HashUtils.cpp
         Matrix.cpp
         NumericFormatting.cpp
         NumericInput.cpp
