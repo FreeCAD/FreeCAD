@@ -293,6 +293,7 @@ SET(FreeCADApp_CPP_SRCS
     ColorModel.cpp
     ComplexGeoData.cpp
     ComplexGeoDataPyImp.cpp
+    ConsoleQtBridge.cpp
     ElementMap.cpp
     Enumeration.cpp
     IndexedName.cpp
