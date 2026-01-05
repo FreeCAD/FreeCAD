@@ -174,30 +174,30 @@ void DlgExtrusion::createPreviewObject()
     if (!activeDoc) {
         return;
     }
-    
+
     try {
         std::vector<App::DocumentObject*> shapes = getShapesToExtrude();
         if (shapes.empty()) {
             return;
         }
-        
+
         // Create temporary extrusion object
         std::string name = activeDoc->getUniqueObjectName("Extrude").c_str();
         Part::Extrusion* obj = static_cast<Part::Extrusion*>(
             activeDoc->addObject("Part::Extrusion", name.c_str())
         );
-        
+
         // Set base
         obj->Base.setValue(shapes[0]);
-        
+
         // Set defaults
         obj->Dir.setValue(Base::Vector3d(0, 0, 1));
         obj->LengthFwd.setValue(10.0);
         obj->LengthRev.setValue(0.0);
-        
+
         // Setup bindings
         setupExpressionBindings(obj);
-        
+
         // Mark as temporary (will be deleted if cancelled)
         obj->purgeTouched();
     }
@@ -208,44 +208,46 @@ void DlgExtrusion::createPreviewObject()
 
 void DlgExtrusion::setupExpressionBindings(Part::Extrusion* obj)
 {
-    if (!obj) return;
-    
+    if (!obj) {
+        return;
+    }
+
     extrudeObject = obj;
-    
+
     // Clear any existing bindings
     for (auto* binding : bindings) {
         delete binding;
     }
     bindings.clear();
-    
+
     // Create expression bindings for direction components
     auto* bindingX = new Gui::ExpressionBinding(ui->dirX);
     bindingX->bind(obj->Dir.createPath("x"));
     bindings.push_back(bindingX);
-    
+
     auto* bindingY = new Gui::ExpressionBinding(ui->dirY);
     bindingY->bind(obj->Dir.createPath("y"));
     bindings.push_back(bindingY);
-    
+
     auto* bindingZ = new Gui::ExpressionBinding(ui->dirZ);
     bindingZ->bind(obj->Dir.createPath("z"));
     bindings.push_back(bindingZ);
-    
+
     // Bind length forward
     auto* bindingLenFwd = new Gui::ExpressionBinding(ui->spinLenFwd);
     bindingLenFwd->bind(obj->LengthFwd);
     bindings.push_back(bindingLenFwd);
-    
+
     // Bind length reverse
     auto* bindingLenRev = new Gui::ExpressionBinding(ui->spinLenRev);
     bindingLenRev->bind(obj->LengthRev);
     bindings.push_back(bindingLenRev);
-    
+
     // Bind taper angles
     auto* bindingTaper = new Gui::ExpressionBinding(ui->spinTaperAngle);
     bindingTaper->bind(obj->TaperAngle);
     bindings.push_back(bindingTaper);
-    
+
     auto* bindingTaperRev = new Gui::ExpressionBinding(ui->spinTaperAngleRev);
     bindingTaperRev->bind(obj->TaperAngleRev);
     bindings.push_back(bindingTaperRev);
@@ -1001,35 +1003,35 @@ TaskExtrusion::TaskExtrusion()
 {
     widget = new DlgExtrusion();
     addTaskBox(Gui::BitmapFactory().pixmap("Part_Extrude"), widget);
-    
+
     // Create temporary object for expression binding
     App::Document* doc = App::GetApplication().getActiveDocument();
     if (doc) {
         doc->openTransaction("Extrude");
-        
+
         // Get selected shape
         std::vector<App::DocumentObject*> shapes = widget->getShapesToExtrude();
         if (!shapes.empty()) {
             std::string name = doc->getUniqueObjectName("Extrude").c_str();
-            
+
             // Create the extrusion object
             Part::Extrusion* extrudeObj = static_cast<Part::Extrusion*>(
                 doc->addObject("Part::Extrusion", name.c_str())
             );
-            
+
             // Set base shape
             extrudeObj->Base.setValue(shapes[0]);
-            
+
             // Set default values
             extrudeObj->Dir.setValue(Base::Vector3d(0, 0, 1));
             extrudeObj->LengthFwd.setValue(10.0);
             extrudeObj->LengthRev.setValue(0.0);
             extrudeObj->Solid.setValue(true);
             extrudeObj->Symmetric.setValue(false);
-            
+
             // Setup expression bindings in dialog
             widget->setupExpressionBindings(extrudeObj);
-            
+
             // Load current values from object into dialog
             widget->setDir(extrudeObj->Dir.getValue());
             widget->ui->spinLenFwd->setValue(extrudeObj->LengthFwd.getValue());

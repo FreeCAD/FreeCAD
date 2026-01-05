@@ -106,7 +106,7 @@ private:
     class EdgeSelection;
     EdgeSelection* filter;
     std::vector<Gui::ExpressionBinding*> bindings;
-    Part::Extrusion* extrudeObject = nullptr; 
+    Part::Extrusion* extrudeObject = nullptr;
 };
 
 class TaskExtrusion: public Gui::TaskView::TaskDialog
@@ -133,4 +133,3 @@ private:
 }  // namespace PartGui
 
 #endif  // PARTGUI_DLGEXTRUSION_H
-
