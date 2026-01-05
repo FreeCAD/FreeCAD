@@ -2503,10 +2503,7 @@ void EditModeConstraintCoinManager::combineConstraintIcons(IconQueue iconQueue)
 
     // Grid size needs to be slightly larger than the max merge distance to ensure
     // we catch neighbors.
-    float gridSize = std::abs(scale) * 1.1f;
-    if (gridSize < 1.0f) {
-        gridSize = 1.0f;
-    }
+    float gridSize = std::max(1.0f, std::abs(scale) * 1.1f);
 
     // 2. FILTERING & PREPARATION
     // We create a list of valid indices.
