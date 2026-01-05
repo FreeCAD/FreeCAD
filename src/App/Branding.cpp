@@ -22,111 +22,149 @@
  *                                                                         *
  ***************************************************************************/
 
-
-
-#include <QFile>
-
 #include "Branding.h"
+
+#include <mutex>
+#include <system_error>
+
+#include <xercesc/dom/DOM.hpp>
+#include <xercesc/framework/LocalFileInputSource.hpp>
+#include <xercesc/parsers/XercesDOMParser.hpp>
+#include <xercesc/sax/HandlerBase.hpp>
+#include <xercesc/util/PlatformUtils.hpp>
+
+#include <Base/FileInfo.h>
+#include <Base/XMLTools.h>
 
 
 using namespace App;
+using namespace XERCES_CPP_NAMESPACE;
 
 Branding::Branding()
 {
-    filter.push_back("Application");
-    filter.push_back("WindowTitle");
-    filter.push_back("CopyrightInfo");
-    filter.push_back("MaintainerUrl");
-    filter.push_back("WindowIcon");
-    filter.push_back("ProgramLogo");
-    filter.push_back("ProgramIcons");
-    filter.push_back("DesktopFileName");
-    filter.push_back("StyleSheet");
+    filter.insert("Application");
+    filter.insert("WindowTitle");
+    filter.insert("CopyrightInfo");
+    filter.insert("MaintainerUrl");
+    filter.insert("WindowIcon");
+    filter.insert("ProgramLogo");
+    filter.insert("ProgramIcons");
+    filter.insert("DesktopFileName");
+    filter.insert("StyleSheet");
 
-    filter.push_back("BuildVersionMajor");
-    filter.push_back("BuildVersionMinor");
-    filter.push_back("BuildVersionPoint");
-    filter.push_back("BuildRevision");
-    filter.push_back("BuildRevisionDate");
-    filter.push_back("BuildVersionSuffix");
-    filter.push_back("BuildRepositoryURL");
+    filter.insert("BuildVersionMajor");
+    filter.insert("BuildVersionMinor");
+    filter.insert("BuildVersionPoint");
+    filter.insert("BuildRevision");
+    filter.insert("BuildRevisionDate");
+    filter.insert("BuildVersionSuffix");
+    filter.insert("BuildRepositoryURL");
 
-    filter.push_back("AboutImage");
-    filter.push_back("SplashScreen");
-    filter.push_back("SplashAlignment");
-    filter.push_back("SplashTextColor");
-    filter.push_back("SplashInfoColor");
-    filter.push_back("SplashInfoFont");
-    filter.push_back("SplashInfoPosition");
-    filter.push_back("SplashWarningColor");
+    filter.insert("AboutImage");
+    filter.insert("SplashScreen");
+    filter.insert("SplashAlignment");
+    filter.insert("SplashTextColor");
+    filter.insert("SplashInfoColor");
+    filter.insert("SplashInfoFont");
+    filter.insert("SplashInfoPosition");
+    filter.insert("SplashWarningColor");
 
-    filter.push_back("StartWorkbench");
+    filter.insert("StartWorkbench");
 
-    filter.push_back("ExeName");
-    filter.push_back("ExeVendor");
-    filter.push_back("ExeVersion");
-    filter.push_back("AppDataSkipVendor");
-    filter.push_back("NavigationStyle");
-    filter.push_back("UserParameterTemplate");
+    filter.insert("ExeName");
+    filter.insert("ExeVendor");
+    filter.insert("ExeVersion");
+    filter.insert("AppDataSkipVendor");
+    filter.insert("NavigationStyle");
+    filter.insert("UserParameterTemplate");
 }
 
-bool Branding::readFile(const QString& fn)
+static void ensureXercesInitialized()
 {
-    QFile file(fn);
-    if (!file.open(QFile::ReadOnly)) {
-        return false;
-    }
-    if (!evaluateXML(&file, domDocument)) {
-        return false;
-    }
-    file.close();
-    return true;
+    static std::once_flag once;
+    std::call_once(once, []() {
+        XMLPlatformUtils::Initialize();
+        XMLTools::initialize();
+    });
 }
 
-Branding::XmlConfig Branding::getUserDefines() const
+bool Branding::readFile(const std::filesystem::path& filePath)
 {
-    XmlConfig cfg;
-    QDomElement root = domDocument.documentElement();
-    QDomElement child;
-    if (!root.isNull()) {
-        child = root.firstChildElement();
-        while (!child.isNull()) {
-            std::string name = child.localName().toLatin1().constData();
-            std::string value = child.text().toUtf8().constData();
-            if (filter.contains(name)) {
-                cfg[name] = std::move(value);
-            }
-            child = child.nextSiblingElement();
-        }
-    }
-    return cfg;
-}
+    userDefines.clear();
 
-bool Branding::evaluateXML(QIODevice* device, QDomDocument& xmlDocument)
-{
-#if QT_VERSION >= QT_VERSION_CHECK(6,5,0)
-    if (!xmlDocument.setContent(device, QDomDocument::ParseOption::UseNamespaceProcessing)) {
+    std::error_code error;
+    if (!std::filesystem::exists(filePath, error) || error) {
         return false;
     }
-#else
-    QString errorStr;
-    int errorLine;
-    int errorColumn;
-    if (!xmlDocument.setContent(device, true, &errorStr, &errorLine, &errorColumn)) {
-        return false;
-    }
-#endif
 
-    QDomElement root = xmlDocument.documentElement();
-    if (root.tagName() != QLatin1String("Branding")) {
-        return false;
-    }
-    if (root.hasAttribute(QLatin1String("version"))) {
-        QString attr = root.attribute(QLatin1String("version"));
-        if (attr != QLatin1String("1.0")) {
+    try {
+        ensureXercesInitialized();
+
+        XercesDOMParser parser;
+        parser.setValidationScheme(XercesDOMParser::Val_Never);
+        parser.setDoNamespaces(true);
+        parser.setLoadExternalDTD(false);
+        parser.setCreateEntityReferenceNodes(false);
+
+        HandlerBase errorHandler;
+        parser.setErrorHandler(&errorHandler);
+
+        const std::string filename = Base::FileInfo::pathToString(filePath);
+        XStr xmlPath(filename.c_str());
+        LocalFileInputSource source(xmlPath.unicodeForm());
+        parser.parse(source);
+
+        DOMDocument* doc = parser.getDocument();
+        if (!doc) {
             return false;
         }
-    }
 
-    return true;
+        DOMElement* root = doc->getDocumentElement();
+        if (!root) {
+            return false;
+        }
+
+        const XMLCh* rootNameXml = root->getLocalName();
+        if (!rootNameXml) {
+            rootNameXml = root->getTagName();
+        }
+        const std::string rootName = XMLTools::toStdString(rootNameXml);
+        if (rootName != "Branding") {
+            return false;
+        }
+
+        if (root->hasAttribute(XStrLiteral("version").unicodeForm())) {
+            const std::string version = XMLTools::toStdString(root->getAttribute(XStrLiteral("version").unicodeForm()));
+            if (version != "1.0") {
+                return false;
+            }
+        }
+
+        for (DOMNode* child = root->getFirstChild(); child; child = child->getNextSibling()) {
+            if (child->getNodeType() != DOMNode::ELEMENT_NODE) {
+                continue;
+            }
+            auto* elem = static_cast<DOMElement*>(child);
+            const XMLCh* nameXml = elem->getLocalName();
+            if (!nameXml) {
+                nameXml = elem->getTagName();
+            }
+            const std::string name = XMLTools::toStdString(nameXml);
+            if (filter.find(name) == filter.end()) {
+                continue;
+            }
+            const std::string value = XMLTools::toStdString(elem->getTextContent());
+            userDefines[name] = value;
+        }
+
+        return true;
+    }
+    catch (...) {
+        return false;
+    }
+}
+
+const Branding::XmlConfig& Branding::getUserDefines() const
+{
+    return userDefines;
 }

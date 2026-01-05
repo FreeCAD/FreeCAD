@@ -2764,11 +2764,9 @@ void Application::initConfig(int argc, char ** argv)
     const std::filesystem::path brandingPath =
         Base::FileInfo::stringToPath(mConfig["AppHomePath"]) / "bin" / "branding.xml";
     std::error_code error;
-    if (std::filesystem::exists(brandingPath, error) && !error
-        && brand.readFile(QString::fromUtf8(Base::FileInfo::pathToString(brandingPath).c_str()))) {
-        Branding::XmlConfig cfg = brand.getUserDefines();
-        for (Branding::XmlConfig::iterator it = cfg.begin(); it != cfg.end(); ++it) {
-            Application::Config()[it.key()] = it.value();
+    if (std::filesystem::exists(brandingPath, error) && !error && brand.readFile(brandingPath)) {
+        for (const auto& [key, value] : brand.getUserDefines()) {
+            Application::Config()[key] = value;
         }
     }
 
