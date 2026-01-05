@@ -28,6 +28,8 @@
 #include "StringHasherPy.h"
 #include "StringHasherPy.cpp"
 #include <Base/PyWrapParseTupleAndKeywords.h>
+#include <Base/Base64.h>
+#include <Base/BytesView.h>
 
 using namespace App;
 
@@ -98,11 +100,14 @@ PyObject* StringHasherPy::getID(PyObject* args)
         PY_TRY
         {
             std::string txt = PyUnicode_AsUTF8(value);
-            QByteArray data;
             StringIDRef sid;
             if (PyObject_IsTrue(base64)) {
-                data = QByteArray::fromBase64(QByteArray::fromRawData(txt.c_str(), txt.size()));
-                sid = getStringHasherPtr()->getID(data, true);
+                std::string decoded;
+                Base::base64_decode(decoded, txt.c_str(), txt.size());
+                sid = getStringHasherPtr()->getID(
+                    Base::BytesView(decoded.data(), decoded.size()),
+                    StringHasher::Option::Binary | StringHasher::Option::Hashable
+                );
             }
             else {
                 sid = getStringHasherPtr()->getID(txt.c_str(), txt.size());

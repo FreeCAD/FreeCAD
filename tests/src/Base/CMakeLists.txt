@@ -14,6 +14,7 @@ add_executable(Base_tests_run
         FileInfo.cpp
         InputSource.cpp
         Handle.cpp
+        HashUtils.cpp
         Matrix.cpp
         Parameter.cpp
         ParameterObserver.cpp
