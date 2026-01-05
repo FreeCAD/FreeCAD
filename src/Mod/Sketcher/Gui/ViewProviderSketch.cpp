@@ -2296,6 +2296,9 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
                         int ConstrId =
                             Sketcher::PropertyConstraintList::getIndexFromConstraintName(shapetype);
                         selection.SelConstraintSet.insert(ConstrId);
+                        if (!selection.selectionBuffering) {
+                            editCoinManager->drawConstraintIcons();
+                        }
                     }
                     updateColor();
                 }
@@ -2774,6 +2777,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s& startPos, const SbVec2s& 
     }
 
     selection.selectionBuffering = false;
+    editCoinManager->drawConstraintIcons();
     updateColor();
 }
 
@@ -2782,7 +2786,6 @@ void ViewProviderSketch::updateColor()
     assert(isInEditMode());
 
     if (!selection.selectionBuffering) {
-        editCoinManager->drawConstraintIcons();
         editCoinManager->updateColor();
     }
 }
@@ -2929,6 +2932,7 @@ bool ViewProviderSketch::selectAll()
     }
 
     selection.selectionBuffering = false;
+    editCoinManager->drawConstraintIcons();
     updateColor();
 
     return true;
