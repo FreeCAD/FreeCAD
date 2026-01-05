@@ -2,75 +2,37 @@
 
 #include <gtest/gtest.h>
 
-#include <functional>
-
 #include <Python.h>
 
 #include "Base/Translation.h"
 #include "Base/Translate.h"
+#include "TranslationTestHelpers.h"
 
 namespace
 {
 
-class ScopedTranslator
+PyObject* getTranslateModule()
 {
-public:
-    explicit ScopedTranslator(const Base::Translation::Translator* translator)
-        : previous {Base::Translation::getTranslator()}
-    {
-        Base::Translation::setTranslator(translator);
+    PyObject* modules = PyImport_GetModuleDict();
+    PyObject* existing = PyDict_GetItemString(modules, "__Translate__");
+    if (existing) {
+        Py_INCREF(existing);
+        return existing;
     }
 
-    ~ScopedTranslator()
-    {
-        Base::Translation::setTranslator(previous);
+    static Base::Translate* translateModule = new Base::Translate();  // NOLINT
+    const Py::Object moduleObject = translateModule->moduleObject();
+    PyObject* module = moduleObject.ptr();
+    if (!module) {
+        return nullptr;
     }
 
-    ScopedTranslator(const ScopedTranslator&) = delete;
-    ScopedTranslator(ScopedTranslator&&) = delete;
-    ScopedTranslator& operator=(const ScopedTranslator&) = delete;
-    ScopedTranslator& operator=(ScopedTranslator&&) = delete;
-
-private:
-    const Base::Translation::Translator* previous;
-};
-
-class TestTranslator final : public Base::Translation::Translator
-{
-public:
-    std::function<std::string(std::string_view, std::string_view, std::string_view, int)> onTranslate;
-    std::function<bool(std::string_view)> onInstallTranslator;
-    std::function<bool(const std::vector<std::string>&)> onRemoveTranslators;
-
-    std::string translate(
-        std::string_view context,
-        std::string_view sourceText,
-        std::string_view disambiguation,
-        int n
-    ) const override
-    {
-        if (onTranslate) {
-            return onTranslate(context, sourceText, disambiguation, n);
-        }
-        return std::string(sourceText);
+    if (PyDict_SetItemString(modules, "__Translate__", module) != 0) {
+        return nullptr;
     }
-
-    bool installTranslator(std::string_view filename) const override
-    {
-        if (onInstallTranslator) {
-            return onInstallTranslator(filename);
-        }
-        return false;
-    }
-
-    bool removeTranslators(const std::vector<std::string>& filenames) const override
-    {
-        if (onRemoveTranslators) {
-            return onRemoveTranslators(filenames);
-        }
-        return false;
-    }
-};
+    Py_INCREF(module);
+    return module;
+}
 PyObject* callTranslate(PyObject* module, const char* context, const char* source)
 {
     PyObject* func = PyObject_GetAttrString(module, "translate");
@@ -89,10 +51,11 @@ PyObject* callTranslate(PyObject* module, const char* context, const char* sourc
 TEST(TranslateModule, TranslateUsesHandlerOrFallback)
 {
     Py_Initialize();
-    Base::Translation::setTranslator(nullptr);
-    Base::Translate mod;
+    PyGILState_STATE gil = PyGILState_Ensure();
 
-    PyObject* module = PyImport_ImportModule("__Translate__");
+    Base::Translation::setTranslator(nullptr);
+
+    PyObject* module = getTranslateModule();
     ASSERT_NE(nullptr, module);
 
     PyObject* retA = callTranslate(module, "Ctx", "Hello");
@@ -101,11 +64,10 @@ TEST(TranslateModule, TranslateUsesHandlerOrFallback)
     EXPECT_STREQ("Hello", PyUnicode_AsUTF8(retA));
     Py_DECREF(retA);
 
-    TestTranslator translator;
-    translator.onTranslate = [](std::string_view, std::string_view, std::string_view, int) {
-        return std::string("Bonjour");
-    };
-    ScopedTranslator scoped(&translator);
+    Base::Translation::Test::RecordingTranslator translator;
+    translator.translateMode = Base::Translation::Test::RecordingTranslator::TranslateMode::Constant;
+    translator.constantTranslation = "Bonjour";
+    Base::Translation::Test::ScopedTranslator scoped(&translator);
 
     PyObject* retB = callTranslate(module, "Ctx", "Hello");
     ASSERT_NE(nullptr, retB);
@@ -114,33 +76,29 @@ TEST(TranslateModule, TranslateUsesHandlerOrFallback)
     Py_DECREF(retB);
 
     Py_DECREF(module);
+    PyGILState_Release(gil);
 }
 
 TEST(TranslateModule, InstallAndRemoveUseHandlers)
 {
     Py_Initialize();
+    PyGILState_STATE gil = PyGILState_Ensure();
 
-    std::vector<std::string> installed;
-    std::vector<std::string> removed;
+    Base::Translation::Test::RecordingTranslator translator;
+    translator.installResult = true;
+    translator.removeResult = true;
+    Base::Translation::Test::ScopedTranslator scoped(&translator);
 
-    TestTranslator translator;
-    translator.onInstallTranslator = [&installed](std::string_view filename) {
-        installed.push_back(std::string(filename));
-        return true;
-    };
-    translator.onRemoveTranslators = [&removed](const std::vector<std::string>& filenames) {
-        removed = filenames;
-        return true;
-    };
-    ScopedTranslator scoped(&translator);
-
-    Base::Translate mod;
-    PyObject* module = PyImport_ImportModule("__Translate__");
+    PyObject* module = getTranslateModule();
     ASSERT_NE(nullptr, module);
 
     PyObject* funcInstall = PyObject_GetAttrString(module, "installTranslator");
     ASSERT_NE(nullptr, funcInstall);
-    PyObject* argsInstall = Py_BuildValue("(s)", "a.qm");
+    PyObject* argInstall = PyUnicode_FromString("a.qm");
+    ASSERT_NE(nullptr, argInstall);
+    PyObject* argsInstall = PyTuple_Pack(1, argInstall);
+    Py_DECREF(argInstall);
+    ASSERT_NE(nullptr, argsInstall);
     PyObject* retInstall = PyObject_CallObject(funcInstall, argsInstall);
     Py_DECREF(argsInstall);
     Py_DECREF(funcInstall);
@@ -160,6 +118,10 @@ TEST(TranslateModule, InstallAndRemoveUseHandlers)
 
     Py_DECREF(module);
 
-    EXPECT_EQ(std::vector<std::string>({"a.qm"}), installed);
-    EXPECT_EQ(std::vector<std::string>({"a.qm"}), removed);
+    EXPECT_EQ(translator.installCalls, 1);
+    EXPECT_EQ(translator.lastInstalledFilename, "a.qm");
+    EXPECT_EQ(translator.removeCalls, 1);
+    EXPECT_EQ(translator.lastRemovedFilenames, std::vector<std::string>({"a.qm"}));
+
+    PyGILState_Release(gil);
 }
