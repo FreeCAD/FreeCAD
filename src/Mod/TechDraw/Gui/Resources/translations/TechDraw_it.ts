@@ -2181,7 +2181,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Crea vista interrotta</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="424"/>
+      <location filename="../../PagePrinter.cpp" line="428"/>
       <location filename="../../Command.cpp" line="1893"/>
       <source>Save page to DXF</source>
       <translation>Salva la pagina in DXF</translation>
@@ -4218,7 +4218,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Errore di Parametro</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="264"/>
+      <location filename="../../PagePrinter.cpp" line="270"/>
       <source>Document Name:</source>
       <translation>Nome del documento:</translation>
     </message>

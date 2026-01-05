@@ -6,17 +6,17 @@
     <message>
       <location filename="../../TaskFillingEdge.ui" line="20"/>
       <source>Edge Constraints</source>
-      <translation type="unfinished">Edge Constraints</translation>
+      <translation>Περιορισμοί Ακμών</translation>
     </message>
     <message>
       <location filename="../../TaskFillingEdge.ui" line="26"/>
       <source>Constrains the surface to pass through the selected edges</source>
-      <translation type="unfinished">Constrains the surface to pass through the selected edges</translation>
+      <translation>Περιορίζει την επιφάνεια να διέρχεται μέσα από τις επιλεγμένες ακμές</translation>
     </message>
     <message>
       <location filename="../../TaskFillingEdge.ui" line="29"/>
       <source>Non-Boundary Edges</source>
-      <translation type="unfinished">Non-Boundary Edges</translation>
+      <translation>Εσωτερικές Ακμές</translation>
     </message>
     <message>
       <location filename="../../TaskFillingEdge.ui" line="46"/>
@@ -41,7 +41,7 @@
     <message>
       <location filename="../../TaskFillingEdge.ui" line="146"/>
       <source>Accept</source>
-      <translation type="unfinished">Accept</translation>
+      <translation>Αποδοχή</translation>
     </message>
     <message>
       <location filename="../../TaskFillingEdge.ui" line="156"/>
@@ -54,22 +54,22 @@
     <message>
       <location filename="../../TaskFilling.ui" line="20"/>
       <source>Boundaries</source>
-      <translation type="unfinished">Boundaries</translation>
+      <translation>Όρια</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="28"/>
       <source>Support Surface</source>
-      <translation type="unfinished">Support Surface</translation>
+      <translation>Επιφάνεια στήριξης</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="44"/>
       <source>Edges that will limit the surface</source>
-      <translation type="unfinished">Edges that will limit the surface</translation>
+      <translation>Ακμές που θα οριοθετήσουν την επιφάνεια</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="47"/>
       <source>Boundary Edges</source>
-      <translation type="unfinished">Boundary Edges</translation>
+      <translation>Ακμές περιγράμματος</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="64"/>
@@ -85,7 +85,7 @@
       <location filename="../../TaskFilling.ui" line="95"/>
       <location filename="../../TaskFilling.ui" line="111"/>
       <source>Drag the items to reorder the list</source>
-      <translation type="unfinished">Drag the items to reorder the list</translation>
+      <translation>Σύρετε τα στοιχεία για να αλλάξετε τη σειρά της λίστας</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="131"/>
@@ -100,7 +100,7 @@
     <message>
       <location filename="../../TaskFilling.ui" line="184"/>
       <source>Accept</source>
-      <translation type="unfinished">Accept</translation>
+      <translation>Αποδοχή</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="194"/>
@@ -114,12 +114,12 @@
       <location filename="../../TaskSections.ui" line="14"/>
       <location filename="../../TaskSections.ui" line="23"/>
       <source>Sectional Edges</source>
-      <translation type="unfinished">Sectional Edges</translation>
+      <translation>Ακμές διατομής</translation>
     </message>
     <message>
       <location filename="../../TaskSections.ui" line="20"/>
       <source>Constrains the surface to follow the selected sectional edges</source>
-      <translation type="unfinished">Constrains the surface to follow the selected sectional edges</translation>
+      <translation>Αναγκάζει την επιφάνεια να ακολουθεί τις επιλεγμένες ακμές διατομής.(Περιορίζει/Δεσμεύει ότι η επιφάνεια που δημιουργείς δεν μπορεί να ξεφύγει από τις γραμμές που επέλεξες)</translation>
     </message>
     <message>
       <location filename="../../TaskSections.ui" line="40"/>
@@ -134,7 +134,7 @@
     <message>
       <location filename="../../TaskSections.ui" line="71"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List can be reordered by dragging&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List can be reordered by dragging&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Μπορείτε να αλλάξετε τη σειρά στη λίστα σέρνοντας τα στοιχεία με το ποντίκι&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -142,27 +142,27 @@
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="20"/>
       <source>Filling</source>
-      <translation type="unfinished">Filling</translation>
+      <translation>Γέμισμα επιφάνειας</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="26"/>
       <source>Fill Type</source>
-      <translation type="unfinished">Fill Type</translation>
+      <translation>Τύπος Γεμίσματος</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="38"/>
       <source>Stretch</source>
-      <translation type="unfinished">Stretch</translation>
+      <translation>Τέντωμα</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="48"/>
       <source>Coons</source>
-      <translation type="unfinished">Coons</translation>
+      <translation>Coons (Εξομάλυνση ορίων)</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="55"/>
       <source>Curved</source>
-      <translation type="unfinished">Curved</translation>
+      <translation>Καμπυλωτό</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="76"/>
@@ -182,28 +182,28 @@
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="222"/>
       <source>Flip orientation</source>
-      <translation type="unfinished">Flip orientation</translation>
+      <translation>Αντιστροφή Προσανατολισμού</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="378"/>
       <source>Too many edges</source>
-      <translation type="unfinished">Too many edges</translation>
+      <translation>Πάρα πολλές ακμές</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="379"/>
       <location filename="../../TaskGeomFillSurface.cpp" line="387"/>
       <source>The tool requires two, three or four edges</source>
-      <translation type="unfinished">The tool requires two, three or four edges</translation>
+      <translation>Το εργαλείο απαιτεί δύο, τρεις ή τέσσερις ακμές</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="386"/>
       <source>Too less edges</source>
-      <translation type="unfinished">Too less edges</translation>
+      <translation>Πολύ λίγες ακμές</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="398"/>
       <source>Invalid object</source>
-      <translation type="unfinished">Invalid object</translation>
+      <translation>Μη έγκυρο αντικείμενο</translation>
     </message>
   </context>
   <context>
@@ -211,27 +211,27 @@
     <message>
       <location filename="../../TaskFillingVertex.ui" line="14"/>
       <source>Vertex Constraints</source>
-      <translation type="unfinished">Vertex Constraints</translation>
+      <translation>Περιορισμοί Κορυφών</translation>
     </message>
     <message>
       <location filename="../../TaskFillingVertex.ui" line="20"/>
       <source>Constrains the surface to pass through the selected vertices</source>
-      <translation type="unfinished">Constrains the surface to pass through the selected vertices</translation>
+      <translation>Υποχρεώνει την επιφάνεια να διέρχεται από τις επιλεγμένες κορυφές</translation>
     </message>
     <message>
       <location filename="../../TaskFillingVertex.ui" line="23"/>
       <source>Non-Boundary Vertices</source>
-      <translation type="unfinished">Non-Boundary Vertices</translation>
+      <translation>Κορυφές εκτός περιγράμματος</translation>
     </message>
     <message>
       <location filename="../../TaskFillingVertex.ui" line="40"/>
       <source>Add Vertex</source>
-      <translation type="unfinished">Add Vertex</translation>
+      <translation>Προσθήκη κορυφής</translation>
     </message>
     <message>
       <location filename="../../TaskFillingVertex.ui" line="59"/>
       <source>Remove Vertex</source>
-      <translation type="unfinished">Remove Vertex</translation>
+      <translation>Αφαίρεση κορυφής</translation>
     </message>
   </context>
   <context>
@@ -239,12 +239,12 @@
     <message>
       <location filename="../../Blending/TaskBlendCurve.ui" line="14"/>
       <source>Blend Curve</source>
-      <translation type="unfinished">Blend Curve</translation>
+      <translation>Καμπύλη Σύνδεσης</translation>
     </message>
     <message>
       <location filename="../../Blending/TaskBlendCurve.ui" line="20"/>
       <source>Start Edge</source>
-      <translation type="unfinished">Start Edge</translation>
+      <translation>Αρχική ακμή</translation>
     </message>
     <message>
       <location filename="../../Blending/TaskBlendCurve.ui" line="26"/>
@@ -273,7 +273,7 @@
     <message>
       <location filename="../../Blending/TaskBlendCurve.ui" line="113"/>
       <source>End Edge</source>
-      <translation type="unfinished">End Edge</translation>
+      <translation>Τελική ακμή</translation>
     </message>
   </context>
   <context>
@@ -294,12 +294,12 @@
     <message>
       <location filename="../../Command.cpp" line="55"/>
       <source>Surface Cut</source>
-      <translation type="unfinished">Surface Cut</translation>
+      <translation>Κοπή Επιφάνειας</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="56"/>
       <source>Cuts one shape using another</source>
-      <translation type="unfinished">Cuts one shape using another</translation>
+      <translation>Αν έχετε μια μεγάλη επιφάνεια και θέλετε να της ανοίξετε μια τρύπα με ένα συγκεκριμένο σχήμα, τοποθετείτε το δεύτερο σχήμα πάνω στην επιφάνεια και το εργαλείο αυτό αναλαμβάνει να «κόψει» και να πετάξει το κομμάτι που περισσεύει.</translation>
     </message>
   </context>
   <context>
@@ -312,16 +312,16 @@
     <message>
       <location filename="../../Command.cpp" line="113"/>
       <source>Filling</source>
-      <translation type="unfinished">Filling</translation>
+      <translation>Γέμισμα</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="114"/>
       <source>Creates a surface from a series of selected boundary edges.
 Additionally, the surface may be constrained by edges and
 vertices that are not on the boundary.</source>
-      <translation type="unfinished">Creates a surface from a series of selected boundary edges.
-Additionally, the surface may be constrained by edges and
-vertices that are not on the boundary.</translation>
+      <translation>Δημιουργεί μια επιφάνεια από μια σειρά επιλεγμένων ακμών περιγράμματος.
+Το εργαλείο σου επιτρέπει να φτιάξεις μια επιφάνεια ορίζοντας το εξωτερικό της σχήμα,
+και αν θέλεις να προσθέσεις εσωτερικά σημεία ελέγχου για να την καμπυλώσεις με ακρίβεια.</translation>
     </message>
   </context>
   <context>
@@ -331,22 +331,22 @@ vertices that are not on the boundary.</translation>
       <location filename="../../Command.cpp" line="166"/>
       <location filename="../../Command.cpp" line="345"/>
       <source>Create surface</source>
-      <translation type="unfinished">Create surface</translation>
+      <translation>Δημιουργία Επιφάνειας</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="248"/>
       <source>Blend Curve</source>
-      <translation type="unfinished">Blend Curve</translation>
+      <translation>Καμπύλη Σύνδεσης</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="303"/>
       <source>Extend surface</source>
-      <translation type="unfinished">Extend surface</translation>
+      <translation>Επέκταση Επιφάνειας</translation>
     </message>
     <message>
       <location filename="../../Blending/TaskBlendCurve.cpp" line="409"/>
       <source>Edit blending curve</source>
-      <translation type="unfinished">Edit blending curve</translation>
+      <translation>Επεξεργασία καμπύλης σύνδεσης</translation>
     </message>
   </context>
   <context>
@@ -359,12 +359,12 @@ vertices that are not on the boundary.</translation>
     <message>
       <location filename="../../Command.cpp" line="149"/>
       <source>Fill Boundary Curves</source>
-      <translation type="unfinished">Fill Boundary Curves</translation>
+      <translation>Γέμισμα καμπυλών περιγράμματος</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="150"/>
       <source>Creates a surface from 2, 3, or 4 boundary edges</source>
-      <translation type="unfinished">Creates a surface from 2, 3, or 4 boundary edges</translation>
+      <translation>Δημιουργεί μια επιφάνεια από 2, 3 ή 4 ακμές περιγράμματος</translation>
     </message>
   </context>
   <context>
@@ -377,14 +377,14 @@ vertices that are not on the boundary.</translation>
     <message>
       <location filename="../../Command.cpp" line="179"/>
       <source>Curve on Mesh</source>
-      <translation type="unfinished">Curve on Mesh</translation>
+      <translation>Καμπύλη πάνω σε πλέγμα</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="180"/>
       <source>Creates an approximated curve on top of a mesh.
 This command only works with a mesh object.</source>
-      <translation type="unfinished">Creates an approximated curve on top of a mesh.
-This command only works with a mesh object.</translation>
+      <translation>Δημιουργεί μια προσεγγιστική καμπύλη πάνω από ένα πλέγμα (mesh).
+Αυτή η εντολή λειτουργεί μόνο με αντικείμενα πλέγματος.</translation>
     </message>
   </context>
   <context>
@@ -397,12 +397,12 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../Command.cpp" line="221"/>
       <source>Blend Curve</source>
-      <translation type="unfinished">Blend Curve</translation>
+      <translation>Καμπύλη σύνδεσης</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="222"/>
       <source>Joins 2 edges with continuity</source>
-      <translation type="unfinished">Joins 2 edges with continuity</translation>
+      <translation>Ενώνει 2 ακμές με ομαλή συνέχεια</translation>
     </message>
   </context>
   <context>
@@ -415,12 +415,12 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../Command.cpp" line="287"/>
       <source>Extend Face</source>
-      <translation type="unfinished">Extend Face</translation>
+      <translation>Επέκταση Όψης</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="288"/>
       <source>Extrapolates the selected face or surface at its boundaries with its local U and V parameters</source>
-      <translation type="unfinished">Extrapolates the selected face or surface at its boundaries with its local U and V parameters</translation>
+      <translation>Επεκτείνει την επιλεγμένη όψη ή επιφάνεια στα όριά της, χρησιμοποιώντας τις τοπικές παραμέτρους U και V</translation>
     </message>
   </context>
   <context>
@@ -433,7 +433,7 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../Command.cpp" line="316"/>
       <source>Select a single face</source>
-      <translation type="unfinished">Select a single face</translation>
+      <translation>Επιλέξτε μια μεμονωμένη έδρα</translation>
     </message>
   </context>
   <context>
@@ -451,7 +451,8 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../Command.cpp" line="334"/>
       <source>Creates a surface from a series of sectional edges</source>
-      <translation type="unfinished">Creates a surface from a series of sectional edges</translation>
+      <translation>Δημιουργεί μια επιφάνεια από μια σειρά διατομών.
+	  Ενώνει διαδοχικά σχήματα για να φτιάξει μια συνεχή και λεία επιφάνεια.</translation>
     </message>
   </context>
   <context>
@@ -464,14 +465,14 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../TaskFillingEdge.cpp" line="326"/>
       <source>Invalid object</source>
-      <translation type="unfinished">Invalid object</translation>
+      <translation>Μη έγκυρο αντικείμενο</translation>
     </message>
     <message numerus="yes">
       <location filename="../../TaskFillingEdge.cpp" line="406"/>
       <source>Edge has %n adjacent face(s)</source>
-      <translation type="unfinished">
-        <numerusform>Edge has %n adjacent face(s)</numerusform>
-        <numerusform>Edge has %n adjacent face(s)</numerusform>
+      <translation>
+        <numerusform>Η ακμή έχει %n παρακείμενη έδρα</numerusform>
+        <numerusform>Η ακμή έχει %n παρακείμενες έδρες</numerusform>
       </translation>
     </message>
     <message>
@@ -482,7 +483,7 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../TaskFillingEdge.cpp" line="431"/>
       <source>Edge has no adjacent faces</source>
-      <translation type="unfinished">Edge has no adjacent faces</translation>
+      <translation>Η ακμή δεν έχει παρακείμενες έδρες</translation>
     </message>
   </context>
   <context>
@@ -491,7 +492,7 @@ This command only works with a mesh object.</translation>
       <location filename="../../TaskGeomFillSurface.cpp" line="61"/>
       <location filename="../../TaskFilling.cpp" line="64"/>
       <source>Edit Filling</source>
-      <translation type="unfinished">Edit Filling</translation>
+      <translation>Επεξεργασία Πλήρωσης</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="661"/>
@@ -501,7 +502,7 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../TaskSections.cpp" line="59"/>
       <source>Edit Sections</source>
-      <translation type="unfinished">Edit Sections</translation>
+      <translation>Επεξεργασία Τομών</translation>
     </message>
     <message>
       <location filename="../../Blending/ViewProviderBlendCurve.cpp" line="47"/>
@@ -519,14 +520,14 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../TaskFilling.cpp" line="494"/>
       <source>Invalid object</source>
-      <translation type="unfinished">Invalid object</translation>
+      <translation>Μη έγκυρο αντικείμενο</translation>
     </message>
     <message numerus="yes">
       <location filename="../../TaskFilling.cpp" line="615"/>
       <source>Edge has %n adjacent faces</source>
-      <translation type="unfinished">
-        <numerusform>Edge has %n adjacent faces</numerusform>
-        <numerusform>Edge has %n adjacent faces</numerusform>
+      <translation>
+        <numerusform>Η ακμή έχει %n παρακείμενη έδρα</numerusform>
+        <numerusform>Η ακμή έχει %n παρακείμενες έδρες</numerusform>
       </translation>
     </message>
     <message>
@@ -537,7 +538,7 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../TaskFilling.cpp" line="640"/>
       <source>Edge has no adjacent faces</source>
-      <translation type="unfinished">Edge has no adjacent faces</translation>
+      <translation>Η ακμή δεν έχει παρακείμενες έδρες</translation>
     </message>
   </context>
   <context>
@@ -550,7 +551,7 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../TaskSections.cpp" line="420"/>
       <source>Invalid object</source>
-      <translation type="unfinished">Invalid object</translation>
+      <translation>Μη έγκυρο αντικείμενο</translation>
     </message>
   </context>
 </TS>

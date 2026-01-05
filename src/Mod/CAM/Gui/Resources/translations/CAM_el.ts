@@ -9317,7 +9317,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Tool/shape/models/tap.py" line="61"/>
       <source>Thread pitch</source>
-      <translation type="unfinished">Thread pitch</translation>
+      <translation>Βήμα Σπειρώματος</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/tap.py" line="69"/>

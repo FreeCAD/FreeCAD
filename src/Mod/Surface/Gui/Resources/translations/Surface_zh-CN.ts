@@ -6,17 +6,17 @@
     <message>
       <location filename="../../TaskFillingEdge.ui" line="20"/>
       <source>Edge Constraints</source>
-      <translation type="unfinished">Edge Constraints</translation>
+      <translation>边约束</translation>
     </message>
     <message>
       <location filename="../../TaskFillingEdge.ui" line="26"/>
       <source>Constrains the surface to pass through the selected edges</source>
-      <translation type="unfinished">Constrains the surface to pass through the selected edges</translation>
+      <translation>约束曲面使其通过选定的边</translation>
     </message>
     <message>
       <location filename="../../TaskFillingEdge.ui" line="29"/>
       <source>Non-Boundary Edges</source>
-      <translation type="unfinished">Non-Boundary Edges</translation>
+      <translation>非边界边</translation>
     </message>
     <message>
       <location filename="../../TaskFillingEdge.ui" line="46"/>
@@ -41,7 +41,7 @@
     <message>
       <location filename="../../TaskFillingEdge.ui" line="146"/>
       <source>Accept</source>
-      <translation type="unfinished">Accept</translation>
+      <translation>接受</translation>
     </message>
     <message>
       <location filename="../../TaskFillingEdge.ui" line="156"/>
@@ -54,22 +54,22 @@
     <message>
       <location filename="../../TaskFilling.ui" line="20"/>
       <source>Boundaries</source>
-      <translation type="unfinished">Boundaries</translation>
+      <translation>边界</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="28"/>
       <source>Support Surface</source>
-      <translation type="unfinished">Support Surface</translation>
+      <translation>支撑曲面</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="44"/>
       <source>Edges that will limit the surface</source>
-      <translation type="unfinished">Edges that will limit the surface</translation>
+      <translation>将限制曲面的边</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="47"/>
       <source>Boundary Edges</source>
-      <translation type="unfinished">Boundary Edges</translation>
+      <translation>边界边</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="64"/>
@@ -85,7 +85,7 @@
       <location filename="../../TaskFilling.ui" line="95"/>
       <location filename="../../TaskFilling.ui" line="111"/>
       <source>Drag the items to reorder the list</source>
-      <translation type="unfinished">Drag the items to reorder the list</translation>
+      <translation>拖动项目以重新排序列表</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="131"/>
@@ -100,7 +100,7 @@
     <message>
       <location filename="../../TaskFilling.ui" line="184"/>
       <source>Accept</source>
-      <translation type="unfinished">Accept</translation>
+      <translation>接受</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="194"/>
@@ -114,12 +114,12 @@
       <location filename="../../TaskSections.ui" line="14"/>
       <location filename="../../TaskSections.ui" line="23"/>
       <source>Sectional Edges</source>
-      <translation type="unfinished">Sectional Edges</translation>
+      <translation>截面边</translation>
     </message>
     <message>
       <location filename="../../TaskSections.ui" line="20"/>
       <source>Constrains the surface to follow the selected sectional edges</source>
-      <translation type="unfinished">Constrains the surface to follow the selected sectional edges</translation>
+      <translation>约束曲面使其跟随选定的截面边</translation>
     </message>
     <message>
       <location filename="../../TaskSections.ui" line="40"/>
@@ -134,7 +134,7 @@
     <message>
       <location filename="../../TaskSections.ui" line="71"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List can be reordered by dragging&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List can be reordered by dragging&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;可通过拖动重新排序列表&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -142,12 +142,12 @@
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="20"/>
       <source>Filling</source>
-      <translation type="unfinished">Filling</translation>
+      <translation>填充</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="26"/>
       <source>Fill Type</source>
-      <translation type="unfinished">Fill Type</translation>
+      <translation>填充类型</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="38"/>
@@ -157,7 +157,7 @@
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="48"/>
       <source>Coons</source>
-      <translation type="unfinished">Coons</translation>
+      <translation>孔斯</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="55"/>
@@ -182,28 +182,28 @@
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="222"/>
       <source>Flip orientation</source>
-      <translation type="unfinished">Flip orientation</translation>
+      <translation>翻转方向</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="378"/>
       <source>Too many edges</source>
-      <translation type="unfinished">Too many edges</translation>
+      <translation>边过多</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="379"/>
       <location filename="../../TaskGeomFillSurface.cpp" line="387"/>
       <source>The tool requires two, three or four edges</source>
-      <translation type="unfinished">The tool requires two, three or four edges</translation>
+      <translation>此工具需要二、三或四条边</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="386"/>
       <source>Too less edges</source>
-      <translation type="unfinished">Too less edges</translation>
+      <translation>边过少</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="398"/>
       <source>Invalid object</source>
-      <translation type="unfinished">Invalid object</translation>
+      <translation>无效对象</translation>
     </message>
   </context>
   <context>
@@ -211,27 +211,27 @@
     <message>
       <location filename="../../TaskFillingVertex.ui" line="14"/>
       <source>Vertex Constraints</source>
-      <translation type="unfinished">Vertex Constraints</translation>
+      <translation>顶点约束</translation>
     </message>
     <message>
       <location filename="../../TaskFillingVertex.ui" line="20"/>
       <source>Constrains the surface to pass through the selected vertices</source>
-      <translation type="unfinished">Constrains the surface to pass through the selected vertices</translation>
+      <translation>约束曲面使其通过选定的顶点</translation>
     </message>
     <message>
       <location filename="../../TaskFillingVertex.ui" line="23"/>
       <source>Non-Boundary Vertices</source>
-      <translation type="unfinished">Non-Boundary Vertices</translation>
+      <translation>非边界顶点</translation>
     </message>
     <message>
       <location filename="../../TaskFillingVertex.ui" line="40"/>
       <source>Add Vertex</source>
-      <translation type="unfinished">Add Vertex</translation>
+      <translation>添加顶点</translation>
     </message>
     <message>
       <location filename="../../TaskFillingVertex.ui" line="59"/>
       <source>Remove Vertex</source>
-      <translation type="unfinished">Remove Vertex</translation>
+      <translation>移除顶点</translation>
     </message>
   </context>
   <context>
@@ -239,12 +239,12 @@
     <message>
       <location filename="../../Blending/TaskBlendCurve.ui" line="14"/>
       <source>Blend Curve</source>
-      <translation type="unfinished">Blend Curve</translation>
+      <translation>混合曲线</translation>
     </message>
     <message>
       <location filename="../../Blending/TaskBlendCurve.ui" line="20"/>
       <source>Start Edge</source>
-      <translation type="unfinished">Start Edge</translation>
+      <translation>起始边</translation>
     </message>
     <message>
       <location filename="../../Blending/TaskBlendCurve.ui" line="26"/>
@@ -273,7 +273,7 @@
     <message>
       <location filename="../../Blending/TaskBlendCurve.ui" line="113"/>
       <source>End Edge</source>
-      <translation type="unfinished">End Edge</translation>
+      <translation>结束边</translation>
     </message>
   </context>
   <context>
@@ -294,12 +294,12 @@
     <message>
       <location filename="../../Command.cpp" line="55"/>
       <source>Surface Cut</source>
-      <translation type="unfinished">Surface Cut</translation>
+      <translation>曲面切割</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="56"/>
       <source>Cuts one shape using another</source>
-      <translation type="unfinished">Cuts one shape using another</translation>
+      <translation>使用一个形状切割另一个形状</translation>
     </message>
   </context>
   <context>
@@ -312,16 +312,15 @@
     <message>
       <location filename="../../Command.cpp" line="113"/>
       <source>Filling</source>
-      <translation type="unfinished">Filling</translation>
+      <translation>填充</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="114"/>
       <source>Creates a surface from a series of selected boundary edges.
 Additionally, the surface may be constrained by edges and
 vertices that are not on the boundary.</source>
-      <translation type="unfinished">Creates a surface from a series of selected boundary edges.
-Additionally, the surface may be constrained by edges and
-vertices that are not on the boundary.</translation>
+      <translation>从一系列选定的边界边创建曲面。
+此外，曲面还可受到不在边界上的边和顶点的约束。</translation>
     </message>
   </context>
   <context>
@@ -331,22 +330,22 @@ vertices that are not on the boundary.</translation>
       <location filename="../../Command.cpp" line="166"/>
       <location filename="../../Command.cpp" line="345"/>
       <source>Create surface</source>
-      <translation type="unfinished">Create surface</translation>
+      <translation>创建曲面</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="248"/>
       <source>Blend Curve</source>
-      <translation type="unfinished">Blend Curve</translation>
+      <translation>混合曲线</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="303"/>
       <source>Extend surface</source>
-      <translation type="unfinished">Extend surface</translation>
+      <translation>延伸曲面</translation>
     </message>
     <message>
       <location filename="../../Blending/TaskBlendCurve.cpp" line="409"/>
       <source>Edit blending curve</source>
-      <translation type="unfinished">Edit blending curve</translation>
+      <translation>编辑混合曲线</translation>
     </message>
   </context>
   <context>
@@ -359,12 +358,12 @@ vertices that are not on the boundary.</translation>
     <message>
       <location filename="../../Command.cpp" line="149"/>
       <source>Fill Boundary Curves</source>
-      <translation type="unfinished">Fill Boundary Curves</translation>
+      <translation>填充边界曲线</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="150"/>
       <source>Creates a surface from 2, 3, or 4 boundary edges</source>
-      <translation type="unfinished">Creates a surface from 2, 3, or 4 boundary edges</translation>
+      <translation>从 2、3 或 4 条边界边创建曲面</translation>
     </message>
   </context>
   <context>
@@ -383,8 +382,8 @@ vertices that are not on the boundary.</translation>
       <location filename="../../Command.cpp" line="180"/>
       <source>Creates an approximated curve on top of a mesh.
 This command only works with a mesh object.</source>
-      <translation type="unfinished">Creates an approximated curve on top of a mesh.
-This command only works with a mesh object.</translation>
+      <translation>在网格顶部创建近似曲线。
+此命令仅适用于网格对象。</translation>
     </message>
   </context>
   <context>
@@ -397,12 +396,12 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../Command.cpp" line="221"/>
       <source>Blend Curve</source>
-      <translation type="unfinished">Blend Curve</translation>
+      <translation>混合曲线</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="222"/>
       <source>Joins 2 edges with continuity</source>
-      <translation type="unfinished">Joins 2 edges with continuity</translation>
+      <translation>以连续性连接两条边</translation>
     </message>
   </context>
   <context>
@@ -415,12 +414,12 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../Command.cpp" line="287"/>
       <source>Extend Face</source>
-      <translation type="unfinished">Extend Face</translation>
+      <translation>延伸面</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="288"/>
       <source>Extrapolates the selected face or surface at its boundaries with its local U and V parameters</source>
-      <translation type="unfinished">Extrapolates the selected face or surface at its boundaries with its local U and V parameters</translation>
+      <translation>使用其局部 U 和 V 参数在边界处外推所选面或曲面</translation>
     </message>
   </context>
   <context>
@@ -433,7 +432,7 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../Command.cpp" line="316"/>
       <source>Select a single face</source>
-      <translation type="unfinished">Select a single face</translation>
+      <translation>选择单个面</translation>
     </message>
   </context>
   <context>
@@ -451,7 +450,7 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../Command.cpp" line="334"/>
       <source>Creates a surface from a series of sectional edges</source>
-      <translation type="unfinished">Creates a surface from a series of sectional edges</translation>
+      <translation>从一系列截面边创建曲面</translation>
     </message>
   </context>
   <context>
@@ -464,13 +463,13 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../TaskFillingEdge.cpp" line="326"/>
       <source>Invalid object</source>
-      <translation type="unfinished">Invalid object</translation>
+      <translation>无效对象</translation>
     </message>
     <message numerus="yes">
       <location filename="../../TaskFillingEdge.cpp" line="406"/>
       <source>Edge has %n adjacent face(s)</source>
-      <translation type="unfinished">
-        <numerusform>Edge has %n adjacent face(s)</numerusform>
+      <translation>
+        <numerusform>此边有 %n 个相邻面</numerusform>
       </translation>
     </message>
     <message>
@@ -481,7 +480,7 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../TaskFillingEdge.cpp" line="431"/>
       <source>Edge has no adjacent faces</source>
-      <translation type="unfinished">Edge has no adjacent faces</translation>
+      <translation>此边没有相邻面</translation>
     </message>
   </context>
   <context>
@@ -490,7 +489,7 @@ This command only works with a mesh object.</translation>
       <location filename="../../TaskGeomFillSurface.cpp" line="61"/>
       <location filename="../../TaskFilling.cpp" line="64"/>
       <source>Edit Filling</source>
-      <translation type="unfinished">Edit Filling</translation>
+      <translation>编辑填充</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="661"/>
@@ -500,7 +499,7 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../TaskSections.cpp" line="59"/>
       <source>Edit Sections</source>
-      <translation type="unfinished">Edit Sections</translation>
+      <translation>编辑截面</translation>
     </message>
     <message>
       <location filename="../../Blending/ViewProviderBlendCurve.cpp" line="47"/>
@@ -518,13 +517,13 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../TaskFilling.cpp" line="494"/>
       <source>Invalid object</source>
-      <translation type="unfinished">Invalid object</translation>
+      <translation>无效对象</translation>
     </message>
     <message numerus="yes">
       <location filename="../../TaskFilling.cpp" line="615"/>
       <source>Edge has %n adjacent faces</source>
-      <translation type="unfinished">
-        <numerusform>Edge has %n adjacent faces</numerusform>
+      <translation>
+        <numerusform>此边有 %n 个相邻面</numerusform>
       </translation>
     </message>
     <message>
@@ -535,7 +534,7 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../TaskFilling.cpp" line="640"/>
       <source>Edge has no adjacent faces</source>
-      <translation type="unfinished">Edge has no adjacent faces</translation>
+      <translation>此边没有相邻面</translation>
     </message>
   </context>
   <context>
@@ -548,7 +547,7 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../TaskSections.cpp" line="420"/>
       <source>Invalid object</source>
-      <translation type="unfinished">Invalid object</translation>
+      <translation>无效对象</translation>
     </message>
   </context>
 </TS>

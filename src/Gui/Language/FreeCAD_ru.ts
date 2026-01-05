@@ -986,7 +986,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../Dialogs/DlgAddProperty.cpp" line="617"/>
       <source>'%1' is a unit</source>
-      <translation>'%1' является единицей</translation>
+      <translation>«%1» — это единица измерения. </translation>
     </message>
   </context>
   <context>
@@ -5842,13 +5842,13 @@ Save all changes?</source>
   <context>
     <name>Gui::FileDialog</name>
     <message>
-      <location filename="../FileDialog.cpp" line="239"/>
+      <location filename="../FileDialog.cpp" line="281"/>
       <source>Save As</source>
       <translation>Сохранить как</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="331"/>
-      <location filename="../FileDialog.cpp" line="395"/>
+      <location filename="../FileDialog.cpp" line="376"/>
+      <location filename="../FileDialog.cpp" line="441"/>
       <source>Open</source>
       <translation>Открыть</translation>
     </message>
@@ -5856,12 +5856,12 @@ Save all changes?</source>
   <context>
     <name>Gui::FileOptionsDialog</name>
     <message>
-      <location filename="../FileDialog.cpp" line="516"/>
+      <location filename="../FileDialog.cpp" line="562"/>
       <source>Extended</source>
       <translation>Расширенный</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="552"/>
+      <location filename="../FileDialog.cpp" line="598"/>
       <source>All files (*.*)</source>
       <translation>Все файлы (*.*)</translation>
     </message>
@@ -6155,7 +6155,7 @@ Save all changes?</source>
     <name>Gui::MainWindow</name>
     <message>
       <location filename="../MainWindow.cpp" line="194"/>
-      <location filename="../MainWindow.cpp" line="2398"/>
+      <location filename="../MainWindow.cpp" line="2441"/>
       <source>Dimension</source>
       <translation>Размер</translation>
     </message>
@@ -6183,59 +6183,59 @@ Save all changes?</source>
       <translation>Готово</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1268"/>
+      <location filename="../MainWindow.cpp" line="1298"/>
       <source>Close All</source>
       <translation>Закрыть все</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1535"/>
-      <location filename="../MainWindow.cpp" line="1536"/>
-      <location filename="../MainWindow.cpp" line="1537"/>
+      <location filename="../MainWindow.cpp" line="1565"/>
+      <location filename="../MainWindow.cpp" line="1566"/>
+      <location filename="../MainWindow.cpp" line="1567"/>
       <source>Toggles this toolbar</source>
       <translation>Переключение этой панели инструментов</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1556"/>
-      <location filename="../MainWindow.cpp" line="1557"/>
-      <location filename="../MainWindow.cpp" line="1558"/>
+      <location filename="../MainWindow.cpp" line="1586"/>
+      <location filename="../MainWindow.cpp" line="1587"/>
+      <location filename="../MainWindow.cpp" line="1588"/>
       <source>Toggles this dockable window</source>
       <translation>Спрятать/показать это встраиваемое окно</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1755"/>
+      <location filename="../MainWindow.cpp" line="1785"/>
       <source>Safe mode enabled</source>
       <translation>Безопасный режим включен</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1756"/>
+      <location filename="../MainWindow.cpp" line="1786"/>
       <source>FreeCAD is now running in safe mode.</source>
       <translation>FreeCAD теперь работает в безопасном режиме.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1760"/>
+      <location filename="../MainWindow.cpp" line="1790"/>
       <source>Safe mode temporarily disables your configurations and addons. Restart the application to exit safe mode.</source>
       <translation>Безопасный режим временно отключает настройки и дополнения. Перезапустите приложение для выхода из безопасного режима.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2123"/>
-      <location filename="../MainWindow.cpp" line="2275"/>
+      <location filename="../MainWindow.cpp" line="2166"/>
+      <location filename="../MainWindow.cpp" line="2318"/>
       <source>Unsaved document</source>
       <translation>Документ не сохранён</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2124"/>
+      <location filename="../MainWindow.cpp" line="2167"/>
       <source>The exported object contains external link. Save the documentat least once before exporting.</source>
       <translation>Экспортированный объект содержит внешнюю ссылку. Пожалуйста, сохраните документ хотя бы один раз перед экспортом.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2276"/>
+      <location filename="../MainWindow.cpp" line="2319"/>
       <source>To link to external objects, the document must be saved at least once.
 Save the document now?</source>
       <translation>Для создания ссылок на внешние объекты документ должен быть сохранён хотя бы один раз.
 Хотите сохранить документ сейчас?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2606"/>
+      <location filename="../MainWindow.cpp" line="2649"/>
       <source>Safe Mode</source>
       <translation>Безопасный режим</translation>
     </message>
@@ -6858,12 +6858,12 @@ Exit without saving all data?</source>
   <context>
     <name>Gui::SelectModule</name>
     <message>
-      <location filename="../FileDialog.cpp" line="930"/>
+      <location filename="../FileDialog.cpp" line="977"/>
       <source>Select Module</source>
       <translation>Выбрать модуль</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="932"/>
+      <location filename="../FileDialog.cpp" line="979"/>
       <source>Open %1 as</source>
       <translation>Открыть %1 как</translation>
     </message>
@@ -7570,7 +7570,7 @@ Specify another directory?</source>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3779"/>
-      <location filename="../Tree.cpp" line="6340"/>
+      <location filename="../Tree.cpp" line="6373"/>
       <source>Rename</source>
       <translation>Переименовать</translation>
     </message>
@@ -7590,12 +7590,12 @@ Specify another directory?</source>
       <translation>Открыть расположение файла</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6308"/>
+      <location filename="../Tree.cpp" line="6341"/>
       <source> (but must be executed)</source>
       <translation> (но должно быть выполнено)</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6311"/>
+      <location filename="../Tree.cpp" line="6344"/>
       <source>%1, Internal name: %2</source>
       <translation>%1, внутреннее название: %2</translation>
     </message>
@@ -7841,27 +7841,27 @@ Specify another directory?</source>
       <translation>Консоль Python</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="673"/>
+      <location filename="../MainWindow.cpp" line="703"/>
       <source>Tree View</source>
       <translation>Дерево проекта</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="703"/>
+      <location filename="../MainWindow.cpp" line="733"/>
       <source>Property View</source>
       <translation>Просмотр свойств</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="732"/>
+      <location filename="../MainWindow.cpp" line="762"/>
       <source>Task List</source>
       <translation>Список задач</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="761"/>
+      <location filename="../MainWindow.cpp" line="791"/>
       <source>Model</source>
       <translation>Модель</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="791"/>
+      <location filename="../MainWindow.cpp" line="821"/>
       <source>DAG View</source>
       <translation>DAG Вид</translation>
     </message>
@@ -8635,32 +8635,32 @@ Choose 'Abort' to abort</source>
       <translation>Переместить</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="856"/>
+      <location filename="../MainWindow.cpp" line="886"/>
       <source>Unsaved Document</source>
       <translation>Несохранённый документ</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="860"/>
+      <location filename="../MainWindow.cpp" line="890"/>
       <source>Save all changes to document '%1' before closing?</source>
       <translation>Сохранить все изменения в документе '%1' перед закрытием?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="861"/>
+      <location filename="../MainWindow.cpp" line="891"/>
       <source>Save all changes to document before closing?</source>
       <translation>Сохранить все изменения в документе перед закрытием?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="865"/>
+      <location filename="../MainWindow.cpp" line="895"/>
       <source>Otherwise, all changes will be lost.</source>
       <translation>В противном случае все изменения будут потеряны.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="991"/>
+      <location filename="../MainWindow.cpp" line="1021"/>
       <source>%1 Document(s) not saved</source>
       <translation>%1 Документ(ы) не сохранены</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="992"/>
+      <location filename="../MainWindow.cpp" line="1022"/>
       <source>Some documents could not be saved. Cancel closing?</source>
       <translation>Некоторые документы не удалось сохранить. Отменить закрытие?</translation>
     </message>
@@ -8760,7 +8760,7 @@ Choose 'Abort' to abort</source>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2999"/>
-      <location filename="../MainWindow.cpp" line="870"/>
+      <location filename="../MainWindow.cpp" line="900"/>
       <source>Apply to all</source>
       <translation>Применить ко всем</translation>
     </message>
@@ -9410,7 +9410,7 @@ the current copy will be lost.
   <context>
     <name>StdCmdNew</name>
     <message>
-      <location filename="../MainWindow.cpp" line="2391"/>
+      <location filename="../MainWindow.cpp" line="2434"/>
       <location filename="../DocumentRecovery.cpp" line="412"/>
       <source>Unnamed</source>
       <translation>Безымянный</translation>
@@ -14147,12 +14147,12 @@ Proceed?</source>
   <context>
     <name>StdCmdDockOverlayTransparentAll</name>
     <message>
-      <location filename="../CommandView.cpp" line="3883"/>
+      <location filename="../CommandView.cpp" line="3882"/>
       <source>Toggle Tra&amp;nsparent Panels</source>
       <translation>Переключить прозрачность панелей</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3884"/>
+      <location filename="../CommandView.cpp" line="3883"/>
       <source>Toggles transparent mode for all docked overlay panels.
 This makes the docked panels stay transparent at all times.</source>
       <translation>Включает/выключает Прозрачный режим для всех закреплённых наложенных панелей.
@@ -14162,12 +14162,12 @@ This makes the docked panels stay transparent at all times.</source>
   <context>
     <name>StdCmdDockOverlayToggle</name>
     <message>
-      <location filename="../CommandView.cpp" line="3910"/>
+      <location filename="../CommandView.cpp" line="3908"/>
       <source>Toggle &amp;Overlay</source>
       <translation>Переключить наложение</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3911"/>
+      <location filename="../CommandView.cpp" line="3909"/>
       <source>Toggles overlay mode for the docked window under the cursor</source>
       <translation>Переключает режим наложения для закреплённых панелей под курсором</translation>
     </message>
@@ -14175,12 +14175,12 @@ This makes the docked panels stay transparent at all times.</source>
   <context>
     <name>StdCmdDockOverlayToggleTransparent</name>
     <message>
-      <location filename="../CommandView.cpp" line="3934"/>
+      <location filename="../CommandView.cpp" line="3931"/>
       <source>Toggle Tran&amp;sparent Mode</source>
       <translation>Переключить прозрачность</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3935"/>
+      <location filename="../CommandView.cpp" line="3932"/>
       <source>Toggles transparent mode for the docked panel under cursor.
 This makes the docked panel stay transparent at all times.</source>
       <translation>Включает/выключает Прозрачный режим для закреплённой панели под курсором. Благодаря этому закреплённая панель всегда остаётся прозрачной.</translation>
@@ -14189,12 +14189,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdCmdDockOverlayToggleLeft</name>
     <message>
-      <location filename="../CommandView.cpp" line="3961"/>
+      <location filename="../CommandView.cpp" line="3957"/>
       <source>Toggle &amp;Left</source>
       <translation>Переключить влево</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3962"/>
+      <location filename="../CommandView.cpp" line="3958"/>
       <source>Toggles the visibility of the left overlay panel</source>
       <translation>Включает/выключает Видимость левой накладной панели</translation>
     </message>
@@ -14202,12 +14202,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdCmdDockOverlayToggleRight</name>
     <message>
-      <location filename="../CommandView.cpp" line="3986"/>
+      <location filename="../CommandView.cpp" line="3982"/>
       <source>Toggle &amp;Right</source>
       <translation>Переключить вправо</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3987"/>
+      <location filename="../CommandView.cpp" line="3983"/>
       <source>Toggles the visibility of the right overlay panel</source>
       <translation>Включает/выключает Видимость правой накладной панели</translation>
     </message>
@@ -14215,12 +14215,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdCmdDockOverlayToggleTop</name>
     <message>
-      <location filename="../CommandView.cpp" line="4011"/>
+      <location filename="../CommandView.cpp" line="4007"/>
       <source>Toggle &amp;Top</source>
       <translation>Переключить сверху</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4012"/>
+      <location filename="../CommandView.cpp" line="4008"/>
       <source>Toggles the visibility of the top overlay panel</source>
       <translation>Включает/выключает Видимость верхней накладной панели</translation>
     </message>
@@ -14228,12 +14228,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdCmdDockOverlayToggleBottom</name>
     <message>
-      <location filename="../CommandView.cpp" line="4036"/>
+      <location filename="../CommandView.cpp" line="4032"/>
       <source>Toggle &amp;Bottom</source>
       <translation>Переключить снизу</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4037"/>
+      <location filename="../CommandView.cpp" line="4033"/>
       <source>Toggles the visibility of the bottom overlay panel</source>
       <translation>Включает/выключает Видимость нижней накладной панели</translation>
     </message>
@@ -14241,12 +14241,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdCmdDockOverlayMouseTransparent</name>
     <message>
-      <location filename="../CommandView.cpp" line="4061"/>
+      <location filename="../CommandView.cpp" line="4057"/>
       <source>Bypass &amp;Mouse Events in Overlay Panels</source>
       <translation>Пропускать события мыши в накладных панелях</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4062"/>
+      <location filename="../CommandView.cpp" line="4058"/>
       <source>Bypasses all mouse events in docked overlay panels</source>
       <translation>Игнорирует все события мыши в закреплённых накладных панелях</translation>
     </message>
@@ -14254,12 +14254,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdCmdDockOverlay</name>
     <message>
-      <location filename="../CommandView.cpp" line="4107"/>
+      <location filename="../CommandView.cpp" line="4103"/>
       <source>Overlay Docked Panel</source>
       <translation>Накладная закреплённая панель</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4108"/>
+      <location filename="../CommandView.cpp" line="4104"/>
       <source>Sets the docked panel in overlay mode</source>
       <translation>Устанавливает закреплённую панель в режим наложения</translation>
     </message>
@@ -14267,12 +14267,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdStoreWorkingView</name>
     <message>
-      <location filename="../CommandView.cpp" line="4142"/>
+      <location filename="../CommandView.cpp" line="4138"/>
       <source>St&amp;ore Working View</source>
       <translation>Сохранить рабочий вид</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4143"/>
+      <location filename="../CommandView.cpp" line="4139"/>
       <source>Stores a temporary working view for the current document</source>
       <translation>Сохраняет временный рабочий вид для текущего документа</translation>
     </message>
@@ -14280,12 +14280,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdRecallWorkingView</name>
     <message>
-      <location filename="../CommandView.cpp" line="4172"/>
+      <location filename="../CommandView.cpp" line="4168"/>
       <source>R&amp;ecall Working View</source>
       <translation>Вызвать рабочий вид</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4173"/>
+      <location filename="../CommandView.cpp" line="4169"/>
       <source>Recalls a previously stored temporary working view</source>
       <translation>Возвращает ранее сохранённый временный рабочий режим</translation>
     </message>
@@ -14293,12 +14293,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdCmdAlignToSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="4205"/>
+      <location filename="../CommandView.cpp" line="4201"/>
       <source>&amp;Align to Selection</source>
       <translation>&amp;Выровнять по выделенному</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4206"/>
+      <location filename="../CommandView.cpp" line="4202"/>
       <source>Aligns the camera view to the selected elements in the 3D view</source>
       <translation>Выравнивает вид камеры по выделенным элементам в 3D-виде</translation>
     </message>
@@ -14345,7 +14345,7 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::ExpressionLineEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="1066"/>
+      <location filename="../ExpressionCompleter.cpp" line="1070"/>
       <source>Exact Match</source>
       <translation>Точное совпадение</translation>
     </message>
@@ -14353,7 +14353,7 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::ExpressionTextEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="1254"/>
+      <location filename="../ExpressionCompleter.cpp" line="1259"/>
       <source>Exact Match</source>
       <translation>Точное совпадение</translation>
     </message>
@@ -14361,13 +14361,13 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::FileChooser</name>
     <message>
-      <location filename="../FileDialog.cpp" line="817"/>
-      <location filename="../FileDialog.cpp" line="827"/>
+      <location filename="../FileDialog.cpp" line="864"/>
+      <location filename="../FileDialog.cpp" line="874"/>
       <source>Select a File</source>
       <translation>Выберите файл</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="837"/>
+      <location filename="../FileDialog.cpp" line="884"/>
       <source>Select a Directory</source>
       <translation>Выберите папку</translation>
     </message>
@@ -14586,12 +14586,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdCmdClarifySelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="4233"/>
+      <location filename="../CommandView.cpp" line="4229"/>
       <source>Clarify Selection</source>
       <translation>Уточнить выбор</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4234"/>
+      <location filename="../CommandView.cpp" line="4230"/>
       <source>Displays a context menu at the mouse cursor to select overlapping or obstructed geometry in the 3D view.
 </source>
       <translation>Показывает контекстное меню при наведении курсора мыши для выбора перекрывающей или мешающей геометрии в 3D-виде.
