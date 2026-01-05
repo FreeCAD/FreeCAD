@@ -2,6 +2,8 @@
 
 #include <gtest/gtest.h>
 
+#include <QString>
+
 #include "App/Branding.h"
 
 TEST(Branding, one)
