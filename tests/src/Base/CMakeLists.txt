@@ -15,6 +15,7 @@ add_executable(Base_tests_run
         Matrix.cpp
         Parameter.cpp
         Placement.cpp
+        Persistence.cpp
         Quantity.cpp
         Reader.cpp
         Rotation.cpp
