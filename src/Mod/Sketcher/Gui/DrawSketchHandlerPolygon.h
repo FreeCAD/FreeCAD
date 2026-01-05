@@ -65,6 +65,8 @@ using DrawSketchHandlerPolygonBase = DrawSketchControllableHandler<DSHPolygonCon
 
 class DrawSketchHandlerPolygon: public DrawSketchHandlerPolygonBase
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerPolygon)
+
     friend DSHPolygonController;
     friend DSHPolygonControllerBase;
 

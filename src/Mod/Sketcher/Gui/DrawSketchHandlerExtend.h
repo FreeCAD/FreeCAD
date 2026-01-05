@@ -88,6 +88,8 @@ protected:
 
 class DrawSketchHandlerExtend: public DrawSketchHandler
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerExtend)
+
 public:
     DrawSketchHandlerExtend()
         : Mode(STATUS_SEEK_First)

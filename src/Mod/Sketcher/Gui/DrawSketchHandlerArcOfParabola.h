@@ -46,6 +46,8 @@ extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGe
 
 class DrawSketchHandlerArcOfParabola: public DrawSketchHandler
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerArcOfParabola)
+
 public:
     DrawSketchHandlerArcOfParabola()
         : Mode(STATUS_SEEK_First)

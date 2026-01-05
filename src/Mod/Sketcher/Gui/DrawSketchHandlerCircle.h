@@ -66,6 +66,8 @@ using DrawSketchHandlerCircleBase = DrawSketchControllableHandler<DSHCircleContr
 
 class DrawSketchHandlerCircle: public DrawSketchHandlerCircleBase
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerCircle)
+
     friend DSHCircleController;
     friend DSHCircleControllerBase;
 

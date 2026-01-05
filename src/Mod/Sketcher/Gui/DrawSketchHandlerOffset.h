@@ -113,6 +113,8 @@ using DrawSketchHandlerOffsetBase = DrawSketchControllableHandler<DSHOffsetContr
 
 class DrawSketchHandlerOffset: public DrawSketchHandlerOffsetBase
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerOffset)
+
     friend DSHOffsetController;
     friend DSHOffsetControllerBase;
 

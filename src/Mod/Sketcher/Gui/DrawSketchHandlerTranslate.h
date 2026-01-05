@@ -67,6 +67,8 @@ using DrawSketchHandlerTranslateBase = DrawSketchControllableHandler<DSHTranslat
 
 class DrawSketchHandlerTranslate: public DrawSketchHandlerTranslateBase
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerTranslate)
+
     friend DSHTranslateController;
     friend DSHTranslateControllerBase;
 

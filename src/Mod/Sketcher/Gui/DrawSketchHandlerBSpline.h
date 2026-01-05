@@ -74,6 +74,8 @@ using DrawSketchHandlerBSplineBase = DrawSketchControllableHandler<DSHBSplineCon
 
 class DrawSketchHandlerBSpline: public DrawSketchHandlerBSplineBase
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerBSpline)
+
     friend DSHBSplineController;
     friend DSHBSplineControllerBase;
 
