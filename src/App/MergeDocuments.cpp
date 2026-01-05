@@ -24,7 +24,6 @@
 
 #include <stack>
 
-#include <QCoreApplication>
 #include <zipios++/zipinputstream.h>
 
 #include <App/Document.h>
@@ -87,10 +86,7 @@ MergeDocuments::MergeDocuments(App::Document* doc)
         std::bind(&MergeDocuments::importObject, this, sp::_1, sp::_2));
     // NOLINTEND
 
-    QCoreApplication* app = QCoreApplication::instance();
-    if (app && app->inherits("QApplication")) {
-        guiup = true;
-    }
+    guiup = !doc->signalExportViewObjects.empty() || !doc->signalImportViewObjects.empty();
 }
 
 MergeDocuments::~MergeDocuments()
