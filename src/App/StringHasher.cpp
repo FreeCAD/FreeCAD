@@ -317,17 +317,13 @@ StringIDRef StringHasher::getID(Base::BytesView data, Options options)
 StringIDRef StringHasher::getID(const Data::MappedName& name, const std::vector<StringIDRef>& sids)
 {
     StringID tempID;
-    tempID._postfix = Base::ByteBuffer::borrow(
-        Base::BytesView(name.postfixBytes().constData(), name.postfixBytes().size())
-    );
+    tempID._postfix = Base::ByteBuffer::borrow(name.postfixBytes());
 
     Data::IndexedName indexed;
     if (!tempID._postfix.empty()) {
         // Only check for IndexedName if there is postfix, because of the way
         // we restore the StringID. See StringHasher::saveStream/restoreStreamNew()
-        indexed = Data::IndexedName(
-            Base::BytesView(name.dataBytes().constData(), name.dataBytes().size())
-        );
+        indexed = Data::IndexedName(name.dataBytes());
     }
     if (indexed) {
         // If this is an IndexedName, then _data only stores the base part of the name, without the
@@ -338,9 +334,7 @@ StringIDRef StringHasher::getID(const Data::MappedName& name, const std::vector<
     }
     else {
         // Store the entire name in _data, but temporarily reuse the existing memory
-        tempID._data = Base::ByteBuffer::borrow(
-            Base::BytesView(name.dataBytes().constData(), name.dataBytes().size())
-        );
+        tempID._data = Base::ByteBuffer::borrow(name.dataBytes());
     }
 
     // Check to see if there is already an entry in the hash table for this StringID
@@ -355,9 +349,7 @@ StringIDRef StringHasher::getID(const Data::MappedName& name, const std::vector<
 
     if (!indexed && name.isRaw()) {
         // Make a copy of the memory if we didn't do so earlier
-        tempID._data = Base::ByteBuffer::copy(
-            Base::BytesView(name.dataBytes().constData(), name.dataBytes().size())
-        );
+        tempID._data = Base::ByteBuffer::copy(name.dataBytes());
     }
 
     // If the postfix is not already encoded, use getID to encode it:
