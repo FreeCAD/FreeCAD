@@ -26,6 +26,7 @@ add_executable(Base_tests_run
         UnlimitedUnsigned.cpp
         UniqueNameManager.cpp
         Unit.cpp
+        Uuid.cpp
         Vector3D.cpp
         ViewProj.cpp
         Writer.cpp
