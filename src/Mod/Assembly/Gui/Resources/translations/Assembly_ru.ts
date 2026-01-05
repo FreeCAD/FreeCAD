@@ -1267,7 +1267,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <location filename="../../../CommandCreateAssembly.py" line="101"/>
       <location filename="../../../CommandCreateAssembly.py" line="135"/>
       <source>Activate Assembly</source>
-      <translation>Активная Сборка</translation>
+      <translation>Активировать сборку</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateAssembly.py" line="106"/>

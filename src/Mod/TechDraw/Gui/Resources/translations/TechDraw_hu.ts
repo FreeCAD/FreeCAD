@@ -16,7 +16,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="792"/>
       <source>Adds a centerline between 2 selected lines</source>
-      <translation>Egy középvonal hozzáadása 2 vonal között</translation>
+      <translation>Hozzáad egy középvonalat a választott 2 pont közöté</translation>
     </message>
   </context>
   <context>
@@ -34,7 +34,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="867"/>
       <source>Adds a centerline between 2 selected points</source>
-      <translation>Egy középvonal hozzáadása 2 pont között</translation>
+      <translation>Hozzáad egy középvonalat a választott 2 pont közöté</translation>
     </message>
   </context>
   <context>
@@ -52,7 +52,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="980"/>
       <source>Add a cosmetic line that passes through 2 selected points</source>
-      <translation>Adjon egy segédvonalat 2 kiválasztott ponton keresztül</translation>
+      <translation>Hozzáad egy segédvonalat 2 kiválasztott ponton keresztül</translation>
     </message>
   </context>
   <context>
@@ -70,7 +70,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1744"/>
       <source>Inserts an angle dimension between 3 selected points</source>
-      <translation>Helyezzen be egy szögmérőt 3 kiválasztott pont közé</translation>
+      <translation>Beszúrás egy szögmérőt 3 kiválasztott pont közé</translation>
     </message>
   </context>
   <context>
@@ -101,7 +101,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1697"/>
       <source>Inserts an angle dimension between two edges</source>
-      <translation>Szögméretet helyez el két él között</translation>
+      <translation>Beszúr szögméretet két él közé</translation>
     </message>
   </context>
   <context>
@@ -155,7 +155,7 @@
     <message>
       <location filename="../../Command.cpp" line="1276"/>
       <source>Inserts a new balloon annotation in the selected view</source>
-      <translation>Új buborékjegyzet beszúrása a kiválasztott nézetbe</translation>
+      <translation>Beszúrá egy új buborékjegyzet a kiválasztott nézetbe</translation>
     </message>
   </context>
   <context>
@@ -173,7 +173,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="578"/>
       <source>Inserts a centerline to a face, or between 2 lines or edges</source>
-      <translation>Középvonalat helyez el egy felületen, vagy 2 vonal vagy él között</translation>
+      <translation>Beszúr egy középvonalat egy felületen, vagy 2 vonal vagy él közé</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="650"/>
@@ -196,7 +196,7 @@
     <message>
       <location filename="../../Command.cpp" line="1340"/>
       <source>Inserts a new clip group for the selected view</source>
-      <translation>Új kivágás csoport szúr be a kiválasztott nézethez</translation>
+      <translation>Beszúrás egy új kivágás csoportot a kiválasztott nézethez</translation>
     </message>
   </context>
   <context>
@@ -305,7 +305,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="202"/>
       <source>Inserts a cosmetic vertex</source>
-      <translation>Segéd csúcspont beiszúrása</translation>
+      <translation>Beszúr egy segéd csomópontot</translation>
     </message>
   </context>
   <context>
@@ -323,7 +323,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1249"/>
       <source>Opens the &apos;Line decoration&apos; dialog to edit the selected lines</source>
-      <translation>Nyissa meg a &apos;Vonalábrázolás&apos; párbeszédpanelt a kiválasztott vonalak szerkesztéséhez</translation>
+      <translation>Megnyitja a &apos;Vonalábrázolás&apos; párbeszédpanelt a kiválasztott vonalak szerkesztéséhez</translation>
     </message>
   </context>
   <context>
@@ -379,7 +379,7 @@
       <source>Inserts new contextual dimensions to the selection.
 Depending on your selection you might have several dimensions available. You can cycle through them using the M key.
 Left clicking on empty space will validate the current dimension. Right clicking or pressing Esc will cancel.</source>
-      <translation>Új összefüggés szerinti méreteket ad a kiválasztáshoz.
+      <translation>Beszúrja az új összefüggés szerinti méreteket a kiválasztáshoz.
 A kiválasztástól függően több méret is rendelkezésre állhat. Az M billentyűvel lépegethet közöttük.
 Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuális Méretet. A jobb egérgombbal való kattintás vagy az Esc billentyű lenyomása törli a műveletet.</translation>
     </message>
@@ -610,12 +610,12 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="245"/>
       <source>Adds centerlines to the selected circles and arcs</source>
-      <translation>Középvonalakat ad hozzá a kiválasztott körökhöz és ívekhez</translation>
+      <translation>Hozzáad középvonalakat a kiválasztott körökhöz és ívekhez</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="342"/>
       <source>Adds centerlines to selected circles and arcs:</source>
-      <translation>Középvonalakat ad hozzá a kiválasztott körökhöz és ívekhez:</translation>
+      <translation>Hozzáad középvonalakat a kiválasztott körökhöz és ívekhez:</translation>
     </message>
   </context>
   <context>
@@ -751,7 +751,7 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2197"/>
       <source>Inserts an arc length dimension to the selected arc</source>
-      <translation>Hozzáadja a kiválasztott ív hosszméretét</translation>
+      <translation>Beszúrja a kiválasztott ív hosszméretét</translation>
     </message>
   </context>
   <context>
@@ -1018,12 +1018,12 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="172"/>
       <source>Adds centerlines to a circular pattern of three or more selected circles</source>
-      <translation>Három vagy több kijelölt körből álló köralakú mintához ad középső vonalakat</translation>
+      <translation>Három vagy több kijelölt körből álló körkörös mintához ad középső vonalakat</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="348"/>
       <source>Adds centerlines to a circular pattern of selected circles</source>
-      <translation>Középvonalakat ad a kiválasztott körök köralakú mintájához</translation>
+      <translation>Középvonalakat ad a kiválasztott körkörös mintájához</translation>
     </message>
   </context>
   <context>
@@ -1379,7 +1379,7 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
       <location filename="../../CommandExtensionPack.cpp" line="442"/>
       <location filename="../../CommandExtensionPack.cpp" line="671"/>
       <source>Cosmetic Thread Bolt Side View</source>
-      <translation>Segédvinalak a külső menethez oldalnézetben</translation>
+      <translation>Segédvonalak a külső menethez oldalnézetben</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="443"/>
@@ -1399,7 +1399,7 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
       <location filename="../../CommandExtensionPack.cpp" line="494"/>
       <location filename="../../CommandExtensionPack.cpp" line="664"/>
       <source>Cosmetic Thread Hole Bottom View</source>
-      <translation>Segédvonalak belső menethez tengely allulnézetben</translation>
+      <translation>Segédvonalak belső menethez tengely alulnézetben</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="495"/>
@@ -1451,7 +1451,7 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="578"/>
       <source>Add a cosmetic thread to the side view of a selected hole between two selected parallel lines</source>
-      <translation>Egy segéd menetet ad a kiválasztott furat oldalnézetéhez két kiválasztott párhuzamos vonalon kívül</translation>
+      <translation>Hozzáad egy segéd menetet a kiválasztott furat oldalnézetéhez két kiválasztott párhuzamos vonalon kívül</translation>
     </message>
   </context>
   <context>
@@ -1469,7 +1469,7 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="797"/>
       <source>Adds cosmetic vertices at the intersections of selected edges</source>
-      <translation>Segéd csomópontok hozzáadása a kiválasztott élek kereszteződési pontjain</translation>
+      <translation>Hozzáad segéd csomópontokat a kiválasztott élek kereszteződési pontjain</translation>
     </message>
   </context>
   <context>
@@ -1600,17 +1600,17 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
     <message>
       <location filename="../../CommandDecorate.cpp" line="241"/>
       <source>Bitmap Image</source>
-      <translation>Bitmap kép</translation>
+      <translation>Bittérképes kép</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="242"/>
       <source>Inserts a bitmap from a file into the current page</source>
-      <translation>Bitkép beszúrása egy fájlból az aktuális oldalra</translation>
+      <translation>Bittérkép beszúrása egy fájlból az aktuális oldalra</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="244"/>
       <source>Insert bitmap from a file into a page</source>
-      <translation>Bitkép beszúrása az oldalra egy fájlból</translation>
+      <translation>Bittérkép beszúrása az oldalra egy fájlból</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="259"/>
@@ -1792,7 +1792,7 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
     <message>
       <location filename="../../CommandAnnotate.cpp" line="489"/>
       <source>Adds cosmetic vertices at the quadrant points of the selected circles</source>
-      <translation>Segéd csomópontok hozzáadása a kiválasztott körók negyedelő pontjain</translation>
+      <translation>Segéd csomópontok hozzáadása a kiválasztott körök negyedelő pontjain</translation>
     </message>
   </context>
   <context>
@@ -1982,7 +1982,7 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
     <message>
       <location filename="../../CommandStack.cpp" line="64"/>
       <source>Adjusts the stacking order of the selected views</source>
-      <translation>Megváltoztatja a kiválasztott nézetek kötegelási sorrendjét</translation>
+      <translation>Megváltoztatja a kiválasztott nézetek kötegelési sorrendjét</translation>
     </message>
     <message>
       <location filename="../../CommandStack.cpp" line="141"/>
@@ -2092,7 +2092,7 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1649"/>
       <source>Inserts a vertical length dimension of an edge or distance between two points</source>
-      <translation>Beszúrás egy függőleges hosszméretet egy élhez vagy két pont közötti távolsághoz</translation>
+      <translation>Beszúr egy függőleges hosszméretet egy élhez vagy két pont közötti távolsághoz</translation>
     </message>
   </context>
   <context>
@@ -2110,7 +2110,7 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2058"/>
       <source>Inserts a dimension showing the vertical extent (overall length) of an object or feature.</source>
-      <translation>Beszúrás egy méretet, amely az objektum vagy jellemző függőleges kiterjedését (teljes hosszát) mutatja.</translation>
+      <translation>Beszúr egy méretet, amely az objektum vagy jellemző függőleges kiterjedését (teljes hosszát) mutatja.</translation>
     </message>
   </context>
   <context>
@@ -2180,7 +2180,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Törött nézet létrehozása</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="424"/>
+      <location filename="../../PagePrinter.cpp" line="428"/>
       <location filename="../../Command.cpp" line="1893"/>
       <source>Save page to DXF</source>
       <translation>Oldal mentése DXF-be</translation>
@@ -2204,12 +2204,12 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../Command.cpp" line="1428"/>
       <source>Add clip group</source>
-      <translation>Clip csoport hozzáadása</translation>
+      <translation>Kivágás csoport hozzáadása</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1499"/>
       <source>Remove clip group</source>
-      <translation>Clip csoport törlése</translation>
+      <translation>Kivágás csoport törlése</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1634"/>
@@ -2225,7 +2225,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandAnnotate.cpp" line="334"/>
       <source>Add midpoint vertices</source>
-      <translation>Felezőpontos csomópontok hozzáadása</translation>
+      <translation>Középpontos csúcspontok hozzáadása</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="361"/>
@@ -3610,7 +3610,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandAnnotate.cpp" line="721"/>
       <location filename="../../CommandAnnotate.cpp" line="914"/>
       <source>No base view in selection</source>
-      <translation>Nincs alapértmezett nézet a kijelölésben</translation>
+      <translation>Nincs alapértelmezett nézet a kijelölésben</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="754"/>
@@ -4217,7 +4217,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Paraméter hiba</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="264"/>
+      <location filename="../../PagePrinter.cpp" line="270"/>
       <source>Document Name:</source>
       <translation>Dokumentum neve:</translation>
     </message>
@@ -4526,7 +4526,7 @@ Szög, felszínburkolat, gyök</translation>
       <location filename="../../TaskWeldingSymbol.ui" line="241"/>
       <source>Adds the &apos;Field weld&apos; symbol (flag)
 at the kink in the leader line</source>
-      <translation>Hozzáadja a &apos;Hegesztés ivarrat mező&apos; jelölést (zászló)
+      <translation>Hozzáadja a &apos;Hegesztési varrat mező&apos; jelölést (zászló)
 a jelölővonalon lévő törésvonalnál</translation>
     </message>
     <message>
@@ -4713,7 +4713,7 @@ A 0 azt jelenti, hogy nincs eltávolítás, 1 azt jelenti, hogy egyetlen menetet
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="338"/>
       <source>Fuse before section</source>
-      <translation>Egybeolvasztés a szakasz előtt</translation>
+      <translation>Egybeolvasztás a szakasz előtt</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="411"/>
@@ -4744,7 +4744,7 @@ sok csempe miatt. Növelje a határértéket, ha szükséges.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="501"/>
       <source>Choose non-conflicting key bindings as some combinations of OS and navigation style key bindings may conflict with the default modifier keys for balloon dragging and view snapping override.</source>
-      <translation>Oolyan billentyűparancsok válaztása, amelyek nem ütköznek, mivel bizonyos operációs rendszer billentyűparancsok és navigációs stílusok ütközhetnek az alapértelmezett módosító billentyűkkel a buborékok mozgatásához és a nézet rögzítésének felülírásához.</translation>
+      <translation>Olyan billentyűparancsok választása, amelyek nem ütköznek, mivel bizonyos operációs rendszer billentyűparancsok és navigációs stílusok ütközhetnek az alapértelmezett módosító billentyűkkel a buborékok mozgatásához és a nézet rögzítésének felülírásához.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="515"/>
@@ -4764,7 +4764,7 @@ sok csempe miatt. Növelje a határértéket, ha szükséges.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="34"/>
       <source>If this box is checked, double-clicking on a page in the tree will automatically switch to TechDraw and the page will be made visible.</source>
-      <translation>Ha ez a mező bejelölt, a fastruktúrában található lap duplakattintására automatikusan a Műszaki rajzra vált, és a lap láthatóvá válik.</translation>
+      <translation>Ha ez a mező bejelölt, a fastruktúrában található lap dupla kattintására automatikusan a Műszaki rajzra vált, és a lap láthatóvá válik.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="151"/>
@@ -4780,7 +4780,7 @@ sok csempe miatt. Növelje a határértéket, ha szükséges.</translation>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="173"/>
       <source>If checked, input shapes will be checked for errors before use and invalid shapes will be skipped by the shape extractor. Checking for errors is slower, but can prevent crashes from some geometry problems.
 </source>
-      <translation>Ha bjelölt, a bevitt adatok ellenőrzésre kerülnek hibák szempontjából, mielőtt felhasználnánk őket, és az érvénytelen adatokat a forma kivonó kihagyja. A hibák ellenőrzése lassabb, de elkerülhet bizonyos geometriai problémák miatti lefagyást.
+      <translation>Ha bejelölt, a bevitt adatok ellenőrzésre kerülnek hibák szempontjából, mielőtt felhasználnánk őket, és az érvénytelen adatokat a forma kivonó kihagyja. A hibák ellenőrzése lassabb, de elkerülhet bizonyos geometriai problémák miatti lefagyást.
 </translation>
     </message>
     <message>
@@ -4791,7 +4791,7 @@ sok csempe miatt. Növelje a határértéket, ha szükséges.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="308"/>
       <source>If checked, shapes that fail validation will be saved as BREP files for later analysis.</source>
-      <translation>Ha bejelöt, az érvényesítést nem teljesítő alakzatok BREP fájlként lesznek elmentve későbbi elemzés céljából.</translation>
+      <translation>Ha bejelölt, az érvényesítést nem teljesítő alakzatok BREP fájlként lesznek elmentve későbbi elemzés céljából.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="512"/>
@@ -5019,7 +5019,7 @@ for using drawings as a 1:1 cutting guide.
 </source>
       <translation>A vonalvégek formája. Az alapértelmezett beállítás (kerek) szinte
 mindig a megfelelő választás. A lapos vagy négyzetes végek hasznosak
-lehetnek, ha a rajzokat 1:1 méretarányú vágási sémakénz használjuk.
+lehetnek, ha a rajzokat 1:1 méretarányú vágási sémaként használjuk.
 </translation>
     </message>
     <message>
@@ -5080,7 +5080,7 @@ lehetnek, ha a rajzokat 1:1 méretarányú vágási sémakénz használjuk.
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="482"/>
       <source>Fills out template date fields using ccyy-mm-dd format automatically, even if that is not the standard format for the current locale.</source>
-      <translation>A sablon dátummezőit automatikusan kitölti az Éééé-Hh-Nh fnrmátumban, még akkor is, ha az nem egyezik a jelenlegi helyi beállítások szabványos formátumával.</translation>
+      <translation>A sablon dátummezőit automatikusan kitölti az éééé-hh-nh formátumban, még akkor is, ha az nem egyezik a jelenlegi helyi beállítások szabványos formátumával.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="485"/>
@@ -5794,7 +5794,7 @@ felülírhatja-e a globális &apos;Frissítés 3D-vel&apos; beállítást</trans
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="564"/>
       <source>Starting directory for &apos;Insert Page From Template&apos; tool</source>
-      <translation>&apos;Oldal beszúrása sablon használatával&apos; eszköz kezdőkőnyvtára</translation>
+      <translation>&apos;Oldal beszúrása sablon használatával&apos; eszköz kezdőkönyvtára</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="577"/>
@@ -5874,7 +5874,7 @@ felülírhatja-e a globális &apos;Frissítés 3D-vel&apos; beállítást</trans
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="913"/>
       <source>Snap detail highlights</source>
-      <translation>Részlet kiemelések illesztáse</translation>
+      <translation>Részlet kiemelések illesztése</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="643"/>
@@ -7337,7 +7337,7 @@ megegyezik a &apos;Felső tűréshatár&apos; által negatívvá tett értékkel
     <message>
       <location filename="../../TaskDimension.ui" line="65"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Increments the number of decimals of the selected dimenesion&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Növeli a kiválasztott máret tizedesjegyeinek számát&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Növeli a kiválasztott méret tizedesjegyeinek számát&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="72"/>
@@ -7527,7 +7527,7 @@ megegyezik a &apos;Felső tűréshatár&apos; által negatívvá tett értékkel
     <message>
       <location filename="../../TaskGeomHatch.ui" line="153"/>
       <source>Thickness of the lines within the pattern</source>
-      <translation>Mintán bellüli vonalak vastagsága</translation>
+      <translation>Mintán belüli vonalak vastagsága</translation>
     </message>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="188"/>
@@ -7652,7 +7652,7 @@ További pontokat is választhatsz, hogy vonalszakaszokat kapj.</translation>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="149"/>
       <source>Start symbol</source>
-      <translation>Indulási jelölő</translation>
+      <translation>Indulási jelölés</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="169"/>
@@ -9957,7 +9957,7 @@ van egy nyitott feladat párbeszédpanel.</translation>
     <message>
       <location filename="../../CommandAlign.cpp" line="123"/>
       <source>Aligns the selected vertices or edges vertically to the view rotation</source>
-      <translation>Ikiválasztott csomópontokat vagy éleket igazítja függőlegesen a nézet forgásához képest</translation>
+      <translation>Kiválasztott csomópontokat vagy éleket igazítja függőlegesen a nézet forgásához képest</translation>
     </message>
   </context>
   <context>
@@ -9975,7 +9975,7 @@ van egy nyitott feladat párbeszédpanel.</translation>
     <message>
       <location filename="../../CommandAlign.cpp" line="156"/>
       <source>Aligns the selected vertices or edges horizontally to the view rotation</source>
-      <translation>Ikiválasztott csomópontokat vagy éleket igazítja vízszintesen a nézet forgásához képest</translation>
+      <translation>Kiválasztott csomópontokat vagy éleket igazítja vízszintesen a nézet forgásához képest</translation>
     </message>
   </context>
   <context>
@@ -10065,7 +10065,7 @@ van egy nyitott feladat párbeszédpanel.</translation>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="655"/>
       <source>Adds a centerline between 2 selected lines</source>
-      <translation>Egy középvonal hozzáadása 2 vonal között</translation>
+      <translation>Hozzáad egy középvonalat a választott 2 pont közöté</translation>
     </message>
   </context>
   <context>
@@ -10073,7 +10073,7 @@ van egy nyitott feladat párbeszédpanel.</translation>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="659"/>
       <source>Adds a centerline between 2 selected points</source>
-      <translation>Egy középvonal hozzáadása 2 pont között</translation>
+      <translation>Hozzáad egy középvonalat a választott 2 pont közöté</translation>
     </message>
   </context>
   <context>
