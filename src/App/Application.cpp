@@ -107,6 +107,7 @@
 #include "CleanupProcess.h"
 #include "ComplexGeoData.h"
 #include "ConsoleQtBridge.h"
+#include "TranslationQtBridge.h"
 #include "Services.h"
 #include "DocumentObjectFileIncluded.h"
 #include "DocumentObjectGroup.h"
@@ -2642,6 +2643,7 @@ void Application::initConfig(int argc, char ** argv)
         _pConsoleObserverFile = nullptr;
 
     App::installConsoleQtBridge();
+    App::installTranslationQtBridge();
 
     // Banner ===========================================================
     if (mConfig["RunMode"] != "Cmd" && !(vm.contains("verbose") && vm.contains("version"))) {

@@ -294,6 +294,7 @@ SET(FreeCADApp_CPP_SRCS
     ComplexGeoData.cpp
     ComplexGeoDataPyImp.cpp
     ConsoleQtBridge.cpp
+    TranslationQtBridge.cpp
     ElementMap.cpp
     Enumeration.cpp
     IndexedName.cpp
