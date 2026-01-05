@@ -24,6 +24,7 @@
 
 #include <algorithm>
 #include <cstring>
+#include <string>
 #include <QAbstractButton>
 #include <QApplication>
 #include <QCheckBox>
@@ -833,9 +834,9 @@ void DlgPreferencesImp::restoreDefaults()
         mgr->Clear();
 
         // Restore the default preferences template if any
-        const char* templatePath = App::Application::getUserParameterTemplatePath();
-        if (templatePath) {
-            mgr->LoadDocument(templatePath);
+        const std::string templatePath = App::Application::getUserParameterTemplatePath();
+        if (!templatePath.empty()) {
+            mgr->LoadDocument(templatePath.c_str());
             restartRequired = true;  // the reloaded preferences are not applied until restart.
         }
 
