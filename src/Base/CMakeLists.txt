@@ -29,7 +29,6 @@ target_include_directories(
     ${Boost_INCLUDE_DIRS}
     ${PYCXX_INCLUDE_DIR}
     ${Python3_INCLUDE_DIRS}
-    ${QtCore_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
     ${ZIPIOS_INCLUDES}
@@ -82,8 +81,6 @@ if(BUILD_TRACY_FRAME_PROFILER)
     list(APPEND FreeCADBase_LIBS TracyClient)
 endif()
 
-list(APPEND FreeCADBase_LIBS ${QtCore_LIBRARIES})
-
 list(APPEND FreeCADBase_LIBS libfastsignals fmt::fmt)
 
 if (BUILD_DYNAMIC_LINK_PYTHON)
@@ -124,13 +121,6 @@ if(SWIG_FOUND)
 endif(SWIG_FOUND)
 
 SOURCE_GROUP("pycxx" FILES ${PYCXX_SOURCES})
-
-# auto-generate resource file with all available translations
-set (FreeCADBase_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/Base_translation.qrc)
-qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
-    ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
-qt_create_resource_file(${FreeCADBase_TR_QRC} ${QM_SRCS})
-qt_add_resources(FreeCADBase_QRC_SRCS ${FreeCADBase_TR_QRC})
 
 SET(FreeCADBase_Pyi_SRCS
     Axis.pyi
@@ -309,7 +299,6 @@ SET(FreeCADBase_HPP_SRCS
 
 SET(FreeCADBase_SRCS
     ${PYCXX_SOURCES}
-    ${FreeCADBase_QRC_SRCS}
     ${FreeCADBase_CPP_SRCS}
     ${FreeCADBase_HPP_SRCS}
     ${FreeCADBase_Pyi_SRCS}

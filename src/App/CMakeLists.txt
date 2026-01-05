@@ -341,6 +341,8 @@ SET(FreeCADApp_HPP_SRCS
 set (FreeCADApp_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/App_translation.qrc)
 qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
     ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
+qt_find_and_add_translation(QM_SRCS "${CMAKE_SOURCE_DIR}/src/Base/Resources/translations/*_*.ts"
+    ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
 qt_create_resource_file(${FreeCADApp_TR_QRC} ${QM_SRCS})
 qt_add_resources(FreeCADApp_QRC_SRCS ${FreeCADApp_TR_QRC})
 
