@@ -267,6 +267,7 @@ SET(FreeCADBase_CPP_SRCS
     RotationPyImp.cpp
     Sequencer.cpp
     ServiceProvider.cpp
+    Sha1.cpp
     SmartPtrPy.cpp
     Stream.cpp
     StringUtils.cpp
@@ -343,6 +344,7 @@ SET(FreeCADBase_HPP_SRCS
     Rotation.h
     ServiceProvider.h
     Sequencer.h
+    Sha1.h
     SmartPtrPy.h
     Stream.h
     StringUtils.h
