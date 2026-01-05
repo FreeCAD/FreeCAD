@@ -2014,10 +2014,12 @@ class ObjectWaterline(PathOp.ObjectOp):
                 startVect = FreeCAD.Vector(V[0].X, V[0].Y, V[0].Z)
 
             commands.append(Path.Command("N (Wire {}.)".format(w)))
-            
+
             # This ensures the tool is directly above the entry point before plunging,
             # preventing diagonal moves through the material.
-            commands.append(Path.Command("G0", {"X": startVect.x, "Y": startVect.y, "F": self.horizRapid}))            
+            commands.append(
+                Path.Command("G0", {"X": startVect.x, "Y": startVect.y, "F": self.horizRapid})
+            )
             (cmds, endVect) = self._wireToPath(obj, wire, startVect)
             commands.extend(cmds)
             commands.append(Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid}))
