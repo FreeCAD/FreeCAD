@@ -202,6 +202,7 @@ SET(FreeCADBase_CPP_SRCS
     CoordinateSystem.cpp
     CoordinateSystemPyImp.cpp
     DualQuaternion.cpp
+    DirectoryUtils.cpp
     Exception.cpp
     ExceptionFactory.cpp
     Factory.cpp
@@ -209,6 +210,7 @@ SET(FreeCADBase_CPP_SRCS
     FileLock.cpp
     GeometryPyCXX.cpp
     Handle.cpp
+    PathUtils.cpp
     InputSource.cpp
     Interpreter.cpp
     Matrix.cpp
@@ -278,6 +280,7 @@ SET(FreeCADBase_HPP_SRCS
     Converter.h
     Color.h
     CoordinateSystem.h
+    DirectoryUtils.h
     DualNumber.h
     DualQuaternion.h
     Exception.h
@@ -287,6 +290,7 @@ SET(FreeCADBase_HPP_SRCS
     FileLock.h
     GeometryPyCXX.h
     Handle.h
+    PathUtils.h
     InputSource.h
     Interpreter.h
     Matrix.h
