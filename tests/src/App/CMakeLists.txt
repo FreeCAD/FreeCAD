@@ -13,6 +13,7 @@ add_executable(App_tests_run
         Expression.cpp
         ExpressionParser.cpp
         QuantityInput.cpp
+        ExpressionTokenizer.cpp
         ElementMap.cpp
         ElementNamingUtils.cpp
         IndexedName.cpp
