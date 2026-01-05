@@ -189,14 +189,12 @@ SET(FreeCADBase_CPP_SRCS
     Color.cpp
     CoordinateSystem.cpp
     CoordinateSystemPyImp.cpp
-    Debugger.cpp
     DualQuaternion.cpp
     Exception.cpp
     ExceptionFactory.cpp
     Factory.cpp
     FileInfo.cpp
     FileLock.cpp
-    FutureWatcherProgress.cpp
     GeometryPyCXX.cpp
     Handle.cpp
     InputSource.cpp
@@ -261,7 +259,6 @@ SET(FreeCADBase_HPP_SRCS
     Converter.h
     Color.h
     CoordinateSystem.h
-    Debugger.h
     DualNumber.h
     DualQuaternion.h
     Exception.h
@@ -269,7 +266,6 @@ SET(FreeCADBase_HPP_SRCS
     Factory.h
     FileInfo.h
     FileLock.h
-    FutureWatcherProgress.h
     GeometryPyCXX.h
     Handle.h
     InputSource.h
