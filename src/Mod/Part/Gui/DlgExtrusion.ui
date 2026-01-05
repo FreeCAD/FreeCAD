@@ -111,9 +111,6 @@
           <property name="unit" stdset="0">
            <string notr="true"></string>
           </property>
-          <property name="unit" stdset="0">
-           <string notr="true"></string>
-          </property>
           <property name="minimum">
            <double>-2147480000.000000000000000</double>
           </property>
@@ -136,9 +133,6 @@
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
-          </property>
-          <property name="unit" stdset="0">
-           <string notr="true"></string>
           </property>
           <property name="unit" stdset="0">
            <string notr="true"></string>
@@ -168,9 +162,6 @@
           </property>
           <property name="keyboardTracking">
            <bool>false</bool>
-          </property>
-          <property name="unit" stdset="0">
-           <string notr="true"></string>
           </property>
           <property name="unit" stdset="0">
            <string notr="true"></string>
