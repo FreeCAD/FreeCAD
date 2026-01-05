@@ -8,6 +8,7 @@ add_executable(Base_tests_run
         CoordinateSystem.cpp
         DualNumber.cpp
         DualQuaternion.cpp
+        FileLock.cpp
         FileInfo.cpp
         Handle.cpp
         Matrix.cpp
