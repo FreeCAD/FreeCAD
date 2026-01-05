@@ -58,6 +58,8 @@ using DrawSketchHandlerPointBase = DrawSketchControllableHandler<DSHPointControl
 
 class DrawSketchHandlerPoint: public DrawSketchHandlerPointBase
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerPoint)
+
     // Allow specialisations of controllers access to private members
     friend DSHPointController;
 

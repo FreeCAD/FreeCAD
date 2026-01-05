@@ -122,6 +122,8 @@ using DrawSketchHandlerFilletBase = DrawSketchControllableHandler<DSHFilletContr
 
 class DrawSketchHandlerFillet: public DrawSketchHandlerFilletBase
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerFillet)
+
     friend DSHFilletController;
     friend DSHFilletControllerBase;
 

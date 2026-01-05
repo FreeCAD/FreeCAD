@@ -81,6 +81,8 @@ using DrawSketchHandlerLineBase = DrawSketchControllableHandler<DSHLineControlle
 
 class DrawSketchHandlerLine: public DrawSketchHandlerLineBase
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerLine)
+
     friend DSHLineController;
     friend DSHLineControllerBase;
 

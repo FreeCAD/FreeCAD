@@ -62,6 +62,8 @@ using DrawSketchHandlerRotateBase = DrawSketchControllableHandler<DSHRotateContr
 
 class DrawSketchHandlerRotate: public DrawSketchHandlerRotateBase
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerRotate)
+
     friend DSHRotateController;
     friend DSHRotateControllerBase;
 

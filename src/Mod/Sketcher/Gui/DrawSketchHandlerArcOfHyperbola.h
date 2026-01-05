@@ -48,6 +48,8 @@ extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGe
 
 class DrawSketchHandlerArcOfHyperbola: public DrawSketchHandler
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerArcOfHyperbola)
+
 public:
     DrawSketchHandlerArcOfHyperbola()
         : Mode(STATUS_SEEK_First)

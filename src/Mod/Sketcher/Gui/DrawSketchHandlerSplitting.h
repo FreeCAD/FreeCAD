@@ -96,6 +96,8 @@ public:
 
 class DrawSketchHandlerSplitting: public DrawSketchHandler
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerSplitting)
+
 public:
     DrawSketchHandlerSplitting() = default;
     ~DrawSketchHandlerSplitting() override

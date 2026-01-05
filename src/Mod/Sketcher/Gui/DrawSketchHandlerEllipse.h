@@ -71,6 +71,8 @@ using DrawSketchHandlerEllipseBase = DrawSketchControllableHandler<DSHEllipseCon
 
 class DrawSketchHandlerEllipse: public DrawSketchHandlerEllipseBase
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerEllipse)
+
     friend DSHEllipseController;
     friend DSHEllipseControllerBase;
 
