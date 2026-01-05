@@ -1169,6 +1169,7 @@ void SoDatumLabel::GLRender(SoGLRenderAction* action)
 
     // Get the points stored in the pnt field
     const SbVec3f* points = this->pnts.getValues(0);
+    int numPts = this->pnts.getNum();
 
     state->push();
 
@@ -1199,19 +1200,29 @@ void SoDatumLabel::GLRender(SoGLRenderAction* action)
 
     if (this->datumtype.getValue() == DISTANCE || this->datumtype.getValue() == DISTANCEX
         || this->datumtype.getValue() == DISTANCEY) {
-        drawDistance(points, angle, textOffset);
+        if (numPts >= 2) {
+            drawDistance(points, angle, textOffset);
+        }
     }
     else if (this->datumtype.getValue() == RADIUS || this->datumtype.getValue() == DIAMETER) {
-        drawRadiusOrDiameter(points, angle, textOffset);
+        if (numPts >= 2) {
+            drawRadiusOrDiameter(points, angle, textOffset);
+        }
     }
     else if (this->datumtype.getValue() == ANGLE) {
-        drawAngle(points, angle, textOffset);
+        if (numPts >= 1) {
+            drawAngle(points, angle, textOffset);
+        }
     }
     else if (this->datumtype.getValue() == SYMMETRIC) {
-        drawSymmetric(points);
+        if (numPts >= 2) {
+            drawSymmetric(points);
+        }
     }
     else if (this->datumtype.getValue() == ARCLENGTH) {
-        drawArcLength(points, angle, textOffset);
+        if (numPts >= 3) {
+            drawArcLength(points, angle, textOffset);
+        }
     }
 
     if (hasText) {
@@ -1300,9 +1311,11 @@ void SoDatumLabel::drawDistance(const SbVec3f* points, float& angle, SbVec3f& te
 
 void SoDatumLabel::drawDistance(const SbVec3f* points)
 {
+    int numPts = this->pnts.getNum();
+
     // Draw arc helpers if needed
     float range1 = this->param4.getValue();
-    if (range1 != 0.0) {
+    if (range1 != 0.0 && numPts > 2) {
         float startAngle1 = this->param3.getValue();
         float radius1 = this->param5.getValue();
         SbVec3f center1 = points[2];
@@ -1310,7 +1323,7 @@ void SoDatumLabel::drawDistance(const SbVec3f* points)
     }
 
     float range2 = this->param7.getValue();
-    if (range2 != 0.0) {
+    if (range2 != 0.0 && numPts > 3) {
         float startAngle2 = this->param6.getValue();
         float radius2 = this->param8.getValue();
         SbVec3f center2 = points[3];
