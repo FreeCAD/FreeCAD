@@ -99,7 +99,6 @@ PyObject* DrawViewPy::findParentPage(PyObject *args) const
 
     DrawView* dv = getDrawViewPtr();
     DrawPage* parent = dv->findParentPage();
-//    DrawPagePy* parentPy = parent->getPyObject();
 
     return Py::new_reference_to(parent->getPyObject());
 }
