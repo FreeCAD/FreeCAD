@@ -49,6 +49,7 @@
 # include <algorithm>
 # include <iostream>
 # include <map>
+# include <system_error>
 # include <tuple>
 # include <vector>
 # include <fmt/format.h>
@@ -64,8 +65,6 @@
 #endif
 
 #include <QCoreApplication>
-#include <QDir>
-#include <QFileInfo>
 #include <QRegularExpression>
 #include <QSettings>
 #include <LibraryVersions.h>
@@ -77,6 +76,7 @@
 #include <Base/BaseClass.h>
 #include <Base/BoundBoxPy.h>
 #include <Base/ConsoleObserver.h>
+#include <Base/PathUtils.h>
 #include <Base/ServiceProvider.h>
 #include <Base/CoordinateSystemPy.h>
 #include <Base/Exception.h>
@@ -952,15 +952,17 @@ Document *Application::getDocumentByPath(const char *path, PathMatchMode checkCa
     }
 
     const std::string filepath = Base::FileInfo(path).filePath();
-    const QString canonicalPath = QFileInfo(QString::fromUtf8(path)).canonicalFilePath();
+    const std::string canonicalPath = Base::FileInfo::pathToString(
+        Base::canonicalIfExists(Base::FileInfo::stringToPath(path)));
     for (const auto &v : DocMap) {
-        QFileInfo fi(QString::fromUtf8(v.second->FileName.getValue()));
-        if (canonicalPath == fi.canonicalFilePath()) {
+        const std::string existingCanonical = Base::FileInfo::pathToString(
+            Base::canonicalIfExists(Base::FileInfo::stringToPath(v.second->FileName.getValue())));
+        if (canonicalPath == existingCanonical) {
             if (checkCanonical == PathMatchMode::MatchCanonical) {
                 return v.second;
             }
-            const bool samePath = (canonicalPath == QString::fromUtf8(filepath.c_str()));
-            FC_WARN("Identical physical path '" << canonicalPath.toUtf8().constData() << "'\n"
+            const bool samePath = (canonicalPath == filepath);
+            FC_WARN("Identical physical path '" << canonicalPath.c_str() << "'\n"
                     << (samePath?"":"  for file '") << (samePath?"":filepath.c_str()) << (samePath?"":"'\n")
                     << "  with existing document '" << v.second->Label.getValue()
                     << "' in path: '" << v.second->FileName.getValue() << "'");
@@ -2759,9 +2761,11 @@ void Application::initConfig(int argc, char ** argv)
 
     // Now it's time to read-in the file branding.xml if it exists
     Branding brand;
-    QString binDir = QString::fromUtf8((mConfig["AppHomePath"] + "bin").c_str());
-    QFileInfo fi(binDir, QStringLiteral("branding.xml"));
-    if (fi.exists() && brand.readFile(fi.absoluteFilePath())) {
+    const std::filesystem::path brandingPath =
+        Base::FileInfo::stringToPath(mConfig["AppHomePath"]) / "bin" / "branding.xml";
+    std::error_code error;
+    if (std::filesystem::exists(brandingPath, error) && !error
+        && brand.readFile(QString::fromUtf8(Base::FileInfo::pathToString(brandingPath).c_str()))) {
         Branding::XmlConfig cfg = brand.getUserDefines();
         for (Branding::XmlConfig::iterator it = cfg.begin(); it != cfg.end(); ++it) {
             Application::Config()[it.key()] = it.value();
@@ -3283,14 +3287,15 @@ void Application::LoadParameters()
             // this will be used.
             const auto it = mConfig.find("UserParameterTemplate");
             if (it != mConfig.end()) {
-                QString path = QString::fromUtf8(it->second.c_str());
-                if (QDir(path).isRelative()) {
-                    const QString home = QString::fromUtf8(mConfig["AppHomePath"].c_str());
-                    path = QFileInfo(QDir(home), path).absoluteFilePath();
+                std::filesystem::path path = Base::FileInfo::stringToPath(it->second);
+                if (path.is_relative()) {
+                    path = Base::FileInfo::stringToPath(mConfig["AppHomePath"]) / path;
                 }
-                const QFileInfo fi(path);
-                if (fi.exists()) {
-                    _pcUserParamMngr->LoadDocument(path.toUtf8().constData());
+                std::error_code error;
+                path = std::filesystem::absolute(path, error);
+                if (!error && std::filesystem::exists(path, error) && !error) {
+                    const std::string utf8Path = Base::FileInfo::pathToString(path);
+                    _pcUserParamMngr->LoadDocument(utf8Path.c_str());
                 }
             }
 
