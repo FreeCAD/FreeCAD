@@ -30,6 +30,7 @@ add_executable(Base_tests_run
         UniqueNameManager.cpp
         Unit.cpp
         Uuid.cpp
+        UnitsSchemaFormat.cpp
         Vector3D.cpp
         ViewProj.cpp
         Writer.cpp

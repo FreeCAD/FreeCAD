@@ -28,9 +28,11 @@
 #include "Base/UnitsSchemasData.h"
 #include "Base/UnitsSchemas.h"
 
-#include <QLocale>
 #include <array>
 #include <string>
+
+#include <unicode/locid.h>
+#include <unicode/utypes.h>
 
 using Base::Quantity;
 using Base::QuantityFormat;
@@ -46,8 +48,10 @@ class SchemaTest: public testing::Test
 protected:
     void SetUp() override
     {
-        const QLocale loc(QLocale::C);
-        QLocale::setDefault(loc);
+        // Ensure deterministic decimal separator for tests.
+        UErrorCode status = U_ZERO_ERROR;
+        icu::Locale::setDefault(icu::Locale("en_US_POSIX"), status);
+        ASSERT_TRUE(U_SUCCESS(status));
     }
 
     void TearDown() override
