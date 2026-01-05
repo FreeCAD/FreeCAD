@@ -28,9 +28,12 @@
 
 // Std. configurations
 #include <array>
+#include <atomic>
 #include <cassert>
 #include <chrono>
+#include <functional>
 #include <map>
+#include <mutex>
 #include <set>
 #include <string>
 #include <sstream>
@@ -809,6 +812,27 @@ public:
         MsgType_Notification = 32,  // Special message to for notifications to the user
     };
 
+    class BaseExport Bridge
+    {
+    public:
+        virtual ~Bridge() = default;
+
+        virtual void postEvent(
+            FreeCAD_ConsoleMsgType type,
+            IntendedRecipient recipient,
+            ContentType content,
+            const std::string& notifiername,
+            const std::string& msg
+        ) const
+            = 0;
+
+        virtual void refresh() const = 0;
+    };
+
+    using PostEventHandler = std::function<
+        void(FreeCAD_ConsoleMsgType, IntendedRecipient, ContentType, const std::string&, const std::string&)>;
+    using RefreshHandler = std::function<void()>;
+
     /// Enables or disables message types of a certain console observer
     ConsoleMsgFlags setEnabledMsgType(const char* sObs, ConsoleMsgFlags type, bool on) const;
     /// Checks if message types of a certain console observer are enabled
@@ -837,6 +861,10 @@ public:
 
     void refresh() const;
     void enableRefresh(bool enable);
+    void setBridge(const Bridge* bridge);
+    const Bridge* getBridge() const;
+    void setPostEventHandler(PostEventHandler handler);
+    void setRefreshHandler(RefreshHandler handler);
 
     constexpr FreeCAD_ConsoleMsgType getConsoleMsg(LogStyle style);
 
@@ -862,6 +890,11 @@ private:
 
     bool _bCanRefresh {true};
     ConnectionMode connectionMode {Direct};
+
+    std::atomic<const Bridge*> _bridge {nullptr};
+    mutable std::mutex _handlerMutex;
+    PostEventHandler _postEventHandler;
+    RefreshHandler _refreshHandler;
 
     // Singleton!
     ConsoleSingleton();
@@ -898,8 +931,6 @@ private:
 
     std::map<std::string, int> _logLevels;
     int _defaultLogLevel;
-
-    friend class ConsoleOutput;
 };
 
 /** Access to the Console

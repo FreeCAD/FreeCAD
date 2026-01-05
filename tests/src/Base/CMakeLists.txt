@@ -5,6 +5,7 @@ add_executable(Base_tests_run
         BoundBox.cpp
         Builder3D.cpp
         Color.cpp
+        Console.cpp
         CoordinateSystem.cpp
         DualNumber.cpp
         DualQuaternion.cpp
