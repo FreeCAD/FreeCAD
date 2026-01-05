@@ -63,9 +63,6 @@
 #include <sys/sysctl.h>
 #endif
 
-#include <QCoreApplication>
-#include <QRegularExpression>
-#include <QSettings>
 #include <LibraryVersions.h>
 
 #include <App/MaterialPy.h>
@@ -1371,7 +1368,7 @@ std::string Application::getExecutableName()
 
 std::string Application::getNameWithVersion()
 {
-    auto appname = QCoreApplication::applicationName().toStdString();
+    const auto& appname = mConfig.contains("Application") ? mConfig["Application"] : mConfig["ExeName"];
     auto config = Application::Config();
     auto major = config["BuildVersionMajor"];
     auto minor = config["BuildVersionMinor"];
