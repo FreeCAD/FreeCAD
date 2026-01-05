@@ -23,6 +23,7 @@
  ***************************************************************************/
 
 #include <cmath>
+#include <cstring>
 #include <limits>
 #include <sstream>
 
@@ -797,7 +798,7 @@ void TopoShape::setupChild(
         child.tag = 0;
     }
     if (op) {
-        child.postfix = op;
+        child.postfix = Base::ByteBuffer::copy(Base::asBytes(op, std::strlen(op)));
     }
 }
 
@@ -1047,7 +1048,7 @@ std::vector<Data::ElementMap::MappedChildElements> TopoShape::createChildMap(
             child.elementMap = topoShape.elementMap();
             child.tag = topoShape.Tag;
             if (op) {
-                child.postfix = op;
+                child.postfix = Base::ByteBuffer::copy(Base::asBytes(op, std::strlen(op)));
             }
         }
     }
@@ -1111,7 +1112,7 @@ void TopoShape::mapSubElement(const std::vector<TopoShape>& shapes, const char* 
                     child.elementMap = s.elementMap();
                     child.tag = s.Tag;
                     if (op) {
-                        child.postfix = op;
+                        child.postfix = Base::ByteBuffer::copy(Base::asBytes(op, std::strlen(op)));
                     }
                 }
             }

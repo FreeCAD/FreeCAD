@@ -35,6 +35,8 @@
 #include <TopTools_IndexedMapOfShape.hxx>
 #include <utility>
 
+#include <QVector>
+
 #include <App/ElementMap.h>
 
 #include <Mod/Part/PartGlobal.h>
