@@ -25,6 +25,7 @@
 #ifndef GUI_TASKVIEW_TaskSketcherElements_H
 #define GUI_TASKVIEW_TaskSketcherElements_H
 
+#include <unordered_map>
 #include <QListWidget>
 #include <QStyledItemDelegate>
 
@@ -165,6 +166,19 @@ private:
     ElementFilterList* filterList;
 
     bool isNamingBoxChecked;
+
+    // Buffering to speed up large selections
+    std::unordered_map<int, ElementItem*> elementMap;
+
+    struct PendingUpdate
+    {
+        ElementItem* item;
+        bool select;
+    };
+    std::vector<PendingUpdate> selectionBuffer;
+    bool updateTimerPending = false;
+
+    void processSelectionBuffer();
 };
 
 }  // namespace SketcherGui
