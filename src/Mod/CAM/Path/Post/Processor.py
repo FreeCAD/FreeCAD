@@ -143,10 +143,13 @@ class PostProcessor:
             # process only selected operations
             self._job = job["job"]
             self._operations = job["operations"]
-        else:
+        elif job:
             # get all operations from 'Operations' group
             self._job = job
             self._operations = getattr(job.Operations, "Group", [])
+        else:
+            self._job = job
+            self._operations = []
 
     @classmethod
     def exists(cls, processor):
