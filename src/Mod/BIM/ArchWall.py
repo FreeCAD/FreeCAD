@@ -733,7 +733,7 @@ class _Wall(ArchComponent.Component):
             if self.noHeight:
                 FreeCAD.Console.PrintMessage("- Found 0 in Height." + "\n")
             FreeCAD.Console.PrintMessage(
-                "- The Wall object would have no volume unless  1) its Base has object which has Solid or  2) there is object in its Additions." + "\n") 
+                "- The Wall object would have no volume unless  1) its Base has object which has Solid or  2) there is object in its Additions." + "\n")
             )
         if not base:
             # FreeCAD.Console.PrintError(translate("Arch","Error: Invalid base object")+"\n")
