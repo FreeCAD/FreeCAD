@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 // SPDX-FileNotice: Part of the FreeCAD project.
 
+#include <algorithm>
 #include <unordered_map>
+#include <vector>
 #ifndef FC_DEBUG
 #include <random>
 #endif
@@ -11,6 +13,7 @@
 
 #include "App/Application.h"
 #include "Base/Console.h"
+#include <Base/BytesView.h>
 #include "Document.h"
 #include "DocumentObject.h"
 
@@ -170,7 +173,10 @@ void ElementMap::save(std::ostream& stream,
                     }
                 }
                 else {
-                    prefixID = ::App::StringID::fromString(ref->name.dataBytes());
+                    prefixID = ::App::StringID::fromString(
+                        Base::BytesView(ref->name.dataBytes().constData(),
+                                        ref->name.dataBytes().size())
+                    );
                     if (prefixID.id != 0) {
                         for (auto& sid : ref->sids) {
                             if (sid.isMarked() && sid.value() == prefixID.id) {
@@ -430,7 +436,10 @@ ElementMapPtr ElementMap::restore(::App::StringHasherRef hasherRef,
                     }
                     case '$':
                         ref->name = MappedName(tokens[0].c_str() + 1);
-                        prefixID = ::App::StringID::fromString(ref->name.dataBytes());
+                        prefixID = ::App::StringID::fromString(
+                            Base::BytesView(ref->name.dataBytes().constData(),
+                                            ref->name.dataBytes().size())
+                        );
                         break;
                     case ';':
                         ref->name = MappedName(tokens[0].c_str() + 1);
@@ -702,9 +711,15 @@ MappedName ElementMap::hashElementName(const MappedName& name, ElementIDRefs& si
     if (name.find(ELEMENT_MAP_PREFIX) < 0) {
         return name;
     }
-    App::StringIDRef sid = this->hasher->getID(name, sids);
+    App::StringIDRef sid = this->hasher->getID(
+        name, std::vector<App::StringIDRef>(sids.begin(), sids.end())
+    );
     const auto& related = sid.relatedIDs();
-    if (related == sids) {
+
+    const bool sameRelated = related.size() == static_cast<std::size_t>(sids.size())
+        && std::equal(related.begin(), related.end(), sids.begin());
+
+    if (sameRelated) {
         sids.clear();
         sids.push_back(sid);
     }
@@ -712,7 +727,8 @@ MappedName ElementMap::hashElementName(const MappedName& name, ElementIDRefs& si
         ElementIDRefs tmp;
         tmp.push_back(sid);
         for (auto& checkSID : sids) {
-            if (related.indexOf(checkSID) < 0) {
+            const bool present = std::find(related.begin(), related.end(), checkSID) != related.end();
+            if (!present) {
                 tmp.push_back(checkSID);
             }
         }
@@ -729,7 +745,8 @@ MappedName ElementMap::dehashElementName(const MappedName& name) const
     if (!this->hasher) {
         return name;
     }
-    auto id = App::StringID::fromString(name.toRawBytes());
+    const QByteArray raw = name.toRawBytes();
+    auto id = App::StringID::fromString(Base::BytesView(raw.constData(), raw.size()));
     if (!id) {
         return name;
     }

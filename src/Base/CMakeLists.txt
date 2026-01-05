@@ -331,6 +331,7 @@ SET(FreeCADBase_HPP_SRCS
     FileLock.h
     GeometryPyCXX.h
     Handle.h
+    HashUtils.h
     InputSource.h
     Interpreter.h
     Matrix.h
