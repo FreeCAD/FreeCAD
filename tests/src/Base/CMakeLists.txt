@@ -25,6 +25,7 @@ add_executable(Base_tests_run
         Rotation.cpp
         SchemaTests.cpp
         ServiceProvider.cpp
+        Sha1.cpp
         Stream.cpp
         TimeInfo.cpp
         Tools.cpp
