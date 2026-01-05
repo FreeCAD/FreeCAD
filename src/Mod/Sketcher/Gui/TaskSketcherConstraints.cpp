@@ -1398,8 +1398,8 @@ void TaskSketcherConstraints::processSelectionBuffer()
 
     if (specialFilterMode == SpecialFilterType::Selected) {
         updateSelectionFilter();
-        bool block =
-            this->blockSelection(true);// avoid to be notified by itself
+        // avoid to be notified by itself
+        bool block = this->blockSelection(true);
         updateList();
         this->blockSelection(block);
     }
