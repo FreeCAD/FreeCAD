@@ -38,9 +38,6 @@
 #include "FileInfo.h"
 
 
-class QByteArray;
-class QIODevice;
-class QBuffer;
 using PyObject = struct _object;
 
 namespace Base
@@ -356,43 +353,9 @@ private:
 // ----------------------------------------------------------------------------
 
 /**
- * This class implements the streambuf interface to write data to a QByteArray.
- * This class can only be used for writing but not for reading purposes.
- * @author Werner Mayer
- */
-class BaseExport ByteArrayOStreambuf: public std::streambuf
-{
-public:
-    explicit ByteArrayOStreambuf(QByteArray& ba);
-    ~ByteArrayOStreambuf() override;
-
-protected:
-    int_type overflow(std::streambuf::int_type c) override;
-    std::streamsize xsputn(const char* s, std::streamsize num) override;
-    pos_type seekoff(
-        std::streambuf::off_type off,
-        std::ios_base::seekdir way,
-        std::ios_base::openmode which = std::ios::in | std::ios::out
-    ) override;
-    pos_type seekpos(
-        std::streambuf::pos_type pos,
-        std::ios_base::openmode which = std::ios::in | std::ios::out
-    ) override;
-
-public:
-    ByteArrayOStreambuf(const ByteArrayOStreambuf&) = delete;
-    ByteArrayOStreambuf(ByteArrayOStreambuf&&) = delete;
-    ByteArrayOStreambuf& operator=(const ByteArrayOStreambuf&) = delete;
-    ByteArrayOStreambuf& operator=(ByteArrayOStreambuf&&) = delete;
-
-private:
-    QBuffer* _buffer;
-};
-
-/**
  * Streambuf for writing to a std::string.
  *
- * Designed as a replacement for Qt-based ByteArrayOStreambuf in core code paths.
+ * Designed as a replacement for legacy in-memory stream buffers in core code paths.
  */
 class BaseExport StringOStreambuf: public std::streambuf
 {
@@ -425,46 +388,9 @@ private:
 };
 
 /**
- * This class implements the streambuf interface to read data from a QByteArray.
- * This class can only be used for reading but not for writing purposes.
- * @author Werner Mayer
- */
-class BaseExport ByteArrayIStreambuf: public std::streambuf
-{
-public:
-    explicit ByteArrayIStreambuf(const QByteArray& data);
-    ~ByteArrayIStreambuf() override;
-
-protected:
-    int_type uflow() override;
-    int_type underflow() override;
-    int_type pbackfail(int_type ch) override;
-    std::streamsize showmanyc() override;
-    pos_type seekoff(
-        std::streambuf::off_type off,
-        std::ios_base::seekdir way,
-        std::ios_base::openmode which = std::ios::in | std::ios::out
-    ) override;
-    pos_type seekpos(
-        std::streambuf::pos_type pos,
-        std::ios_base::openmode which = std::ios::in | std::ios::out
-    ) override;
-
-public:
-    ByteArrayIStreambuf(const ByteArrayIStreambuf&) = delete;
-    ByteArrayIStreambuf(ByteArrayIStreambuf&&) = delete;
-    ByteArrayIStreambuf& operator=(const ByteArrayIStreambuf&) = delete;
-    ByteArrayIStreambuf& operator=(ByteArrayIStreambuf&&) = delete;
-
-private:
-    const QByteArray& _buffer;
-    int _beg, _end, _cur;
-};
-
-/**
  * Streambuf for reading from a std::string.
  *
- * Designed as a replacement for Qt-based ByteArrayIStreambuf in core code paths.
+ * Designed as a replacement for legacy in-memory stream buffers in core code paths.
  */
 class BaseExport StringIStreambuf: public std::streambuf
 {
@@ -496,80 +422,6 @@ public:
 private:
     const std::string& _buffer;
     int _beg, _end, _cur;
-};
-
-/**
- * Simple class to write data directly into Qt's QIODevice.
- * This class can only be used for writing but not reading purposes.
- * @author Werner Mayer
- */
-class BaseExport IODeviceOStreambuf: public std::streambuf
-{
-public:
-    explicit IODeviceOStreambuf(QIODevice* dev);
-    ~IODeviceOStreambuf() override;
-
-protected:
-    int_type overflow(std::streambuf::int_type c) override;
-    std::streamsize xsputn(const char* s, std::streamsize num) override;
-    pos_type seekoff(
-        std::streambuf::off_type off,
-        std::ios_base::seekdir way,
-        std::ios_base::openmode which = std::ios::in | std::ios::out
-    ) override;
-    pos_type seekpos(
-        std::streambuf::pos_type pos,
-        std::ios_base::openmode which = std::ios::in | std::ios::out
-    ) override;
-
-public:
-    IODeviceOStreambuf(const IODeviceOStreambuf&) = delete;
-    IODeviceOStreambuf(IODeviceOStreambuf&&) = delete;
-    IODeviceOStreambuf& operator=(const IODeviceOStreambuf&) = delete;
-    IODeviceOStreambuf& operator=(IODeviceOStreambuf&&) = delete;
-
-private:
-    QIODevice* device;
-};
-
-/**
- * Simple class to read data directly from Qt's QIODevice.
- * This class can only be used for readihg but not writing purposes.
- * @author Werner Mayer
- */
-class BaseExport IODeviceIStreambuf: public std::streambuf
-{
-public:
-    explicit IODeviceIStreambuf(QIODevice* dev);
-    ~IODeviceIStreambuf() override;
-
-protected:
-    int_type underflow() override;
-    pos_type seekoff(
-        std::streambuf::off_type off,
-        std::ios_base::seekdir way,
-        std::ios_base::openmode which = std::ios::in | std::ios::out
-    ) override;
-    pos_type seekpos(
-        std::streambuf::pos_type pos,
-        std::ios_base::openmode which = std::ios::in | std::ios::out
-    ) override;
-
-public:
-    IODeviceIStreambuf(const IODeviceIStreambuf&) = delete;
-    IODeviceIStreambuf(IODeviceIStreambuf&&) = delete;
-    IODeviceIStreambuf& operator=(const IODeviceIStreambuf&) = delete;
-    IODeviceIStreambuf& operator=(IODeviceIStreambuf&&) = delete;
-
-private:
-    QIODevice* device;
-    /* data buffer:
-     * - at most, pbSize characters in putback area plus
-     * - at most, bufSize characters in ordinary read buffer
-     */
-    static const int pbSize = 4;       // size of putback area
-    static const int bufSize = 1024;   // size of the data buffer
-    char buffer[bufSize + pbSize] {};  // data buffer
 };
 
 class BaseExport PyStreambuf: public std::streambuf
