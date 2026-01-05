@@ -23,32 +23,54 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <array>
+#include <cstdint>
+#include <filesystem>
+#include <map>
+#include <string>
+#include <system_error>
 
-#include <QTemporaryDir>
+#include <Base/FileInfo.h>
 
 #include "Application.h"
 #include "FCConfig.h"
 
 #include "SafeMode.h"
 
-static QTemporaryDir* tempDir = nullptr;
+namespace fs = std::filesystem;
+
+static fs::path tempDir;
 
 static bool _createTemporaryBaseDir()
 {
-    tempDir = new QTemporaryDir();
-    if (!tempDir->isValid()) {
-        delete tempDir;
-        tempDir = nullptr;
+    std::error_code error;
+    const fs::path base = fs::temp_directory_path(error);
+    if (error) {
+        return false;
     }
-    return tempDir;
+
+    auto suffix = static_cast<std::uint64_t>(App::Application::uniqueInstanceId());
+
+    for (int attempt = 0; attempt < 64; ++attempt) {
+        fs::path candidate = base / ("FreeCADSafeMode-" + std::to_string(suffix));
+        if (fs::create_directory(candidate, error) && !error) {
+            tempDir = std::move(candidate);
+            return true;
+        }
+        error.clear();
+        suffix ^= suffix << 7U;
+        suffix ^= suffix >> 9U;
+        suffix += static_cast<std::uint64_t>(attempt) + 1U;
+    }
+
+    return false;
 }
 
-static void _replaceDirs()
+static bool _replaceDirs()
 {
     auto& config = App::GetApplication().Config();
 
-    auto const temp_base = tempDir->path().toStdString();
-    auto const dirs = {
+    constexpr std::array dirs = {
         "UserAppData",
         "UserConfigPath",
         "UserCachePath",
@@ -57,27 +79,47 @@ static void _replaceDirs()
         "UserHomePath",
     };
 
+    std::map<std::string, std::string> replacements;
     for (auto const d : dirs) {
-        auto const path = temp_base + "/" + d + "/";
-        auto const qpath = QDir::cleanPath(QString::fromStdString(path));
-        QDir().mkpath(qpath);
-        config[d] = QDir::toNativeSeparators(qpath).toStdString();
+        try {
+            const fs::path path = tempDir / d;
+            fs::create_directories(path);
+            replacements[d] = Base::FileInfo::pathToString(path) + PATHSEP;
+        }
+        catch (const fs::filesystem_error&) {
+            return false;
+        }
     }
+
+    for (const auto& [key, path] : replacements) {
+        config[key] = path;
+    }
+    return true;
 }
 
 void SafeMode::StartSafeMode()
 {
-    if (_createTemporaryBaseDir()) {
-        _replaceDirs();
+    if (!_createTemporaryBaseDir()) {
+        return;
+    }
+
+    if (!_replaceDirs()) {
+        SafeMode::Destruct();
     }
 }
 
 bool SafeMode::SafeModeEnabled()
 {
-    return tempDir;
+    return !tempDir.empty();
 }
 
 void SafeMode::Destruct()
 {
-    delete tempDir;
+    if (tempDir.empty()) {
+        return;
+    }
+    std::error_code error;
+    // Best-effort cleanup: leaving safe mode should not fail because temporary removal failed.
+    fs::remove_all(tempDir, error);
+    tempDir.clear();
 }
